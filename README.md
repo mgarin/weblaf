@@ -11,6 +11,9 @@ Its main advantages are:
 5. Various utility classes which simplify Swing components usage
 6. Various Swing extensions that allows animated transitions, effects and other features
 
+You can find more information about the library on official site:
+http://weblookandfeel.com
+
 In progress!
 ----------
 **I'm working on bringing Web L&F to GitHub right now.<br>
