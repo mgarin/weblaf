@@ -1,7 +1,17 @@
 Artifacts
 ==========
-**WebLookAndFeel-demo-x.xx.jar** - library demo application
-**WebLookAndFeel-x.xx.jar** - library binary distribution
-**Sources-x.xx.zip** - library sources
-**JavaDoc-x.xx.zip** - zipped library JavaDoc
-**NinePatchEditor-x.xx.jar** - nine-patch (.9.png) format editor
+
+**WebLookAndFeel-demo-x.xx.jar**<br>
+Library demo application
+
+**WebLookAndFeel-x.xx.jar**<br>
+Library binary distribution
+
+**Sources-x.xx.zip**<br>
+Library sources
+
+**JavaDoc-x.xx.zip**<br>
+Zipped library JavaDoc
+
+**NinePatchEditor-x.xx.jar**<br>
+Nine-patch (.9.png) files editor
