@@ -4,8 +4,8 @@ WebLaF
 
 Its main advantages are:
 
-1. Unified style for all components, even extended ones
-2. Simple and yet stylish theme
+1. Simple and yet stylish default theme applied to all components
+2. Stylable through painters and nine-patch resources UIs
 3. Various extended components - collapsible panes, checkbox lists and others
 4. Various managers to simply control application settings, language, tooltips, hotkeys and other aspects
 5. Various utility classes which simplify Swing components usage
