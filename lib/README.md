@@ -2,24 +2,30 @@ Libraries
 ==========
 You can find here a list of WebLaF dependencies
 
-Apache Commons<br>
+Apache Commons
 ----------
 http://commons.apache.org/
 
-Java Image Scaling<br>
+Java Image Scaling
+----------
 https://code.google.com/p/java-image-scaling/
 
-Jericho HTML parser<br>
+Jericho HTML parser
+----------
 http://jericho.htmlparser.net/
 
-Multiline label<br>
+Multiline label
+----------
 http://samuelsjoberg.com/
 
-RSyntaxTextArea<br>
+RSyntaxTextArea
+----------
 http://fifesoft.com/rsyntaxtextarea/
 
-Table Layout<br>
+Table Layout
+----------
 http://www.clearthought.info/
 
-XStream<br>
+XStream
+----------
 http://xstream.codehaus.org/
