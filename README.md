@@ -13,8 +13,3 @@ Its main advantages are:
 
 You can find more information about the library on official site:
 http://weblookandfeel.com
-
-In progress!
-----------
-**I'm working on bringing Web L&F to GitHub right now.<br>
-Pretty soon you will be able to find library sources here!**
