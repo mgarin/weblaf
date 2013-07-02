@@ -85,11 +85,25 @@ public abstract class SettingsProcessor<C extends Component, V extends Serializa
         // Performing initial settings load
         if ( data.isLoadInitialSettings () )
         {
-            load ();
+            try
+            {
+                load ();
+            }
+            catch ( Throwable e )
+            {
+                e.printStackTrace ();
+            }
         }
 
         // Initializing specific processor settings
-        doInit ( getComponent () );
+        try
+        {
+            doInit ( getComponent () );
+        }
+        catch ( Throwable e )
+        {
+            e.printStackTrace ();
+        }
 
         // Apply settings changes to the component
         if ( data.isApplySettingsChanges () )

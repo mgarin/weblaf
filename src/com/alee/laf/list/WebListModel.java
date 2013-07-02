@@ -19,6 +19,7 @@ package com.alee.laf.list;
 
 import javax.swing.*;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Vector;
 
@@ -36,6 +37,32 @@ public class WebListModel<T> extends AbstractListModel
      * List data vector.
      */
     private Vector<T> delegate = new Vector<T> ();
+
+    /**
+     * Constructs empty model.
+     */
+    public WebListModel ()
+    {
+        super ();
+    }
+
+    /**
+     * Constructs model with the specified elements.
+     */
+    public WebListModel ( T... data )
+    {
+        super ();
+        Collections.addAll ( delegate, data );
+    }
+
+    /**
+     * Constructs model with the specified elements.
+     */
+    public WebListModel ( Collection<T> data )
+    {
+        super ();
+        delegate.addAll ( data );
+    }
 
     /**
      * Returns the number of components in this list.
@@ -338,6 +365,21 @@ public class WebListModel<T> extends AbstractListModel
      *
      * @param objects the components to be added
      */
+    public void addElements ( T... objects )
+    {
+        if ( objects.length > 0 )
+        {
+            int index = delegate.size ();
+            Collections.addAll ( delegate, objects );
+            fireIntervalAdded ( this, index, delegate.size () - 1 );
+        }
+    }
+
+    /**
+     * Adds the specified components to the end of this list.
+     *
+     * @param objects the components to be added
+     */
     public void addElements ( Collection<T> objects )
     {
         if ( objects.size () > 0 )
@@ -376,6 +418,19 @@ public class WebListModel<T> extends AbstractListModel
             fireIntervalRemoved ( this, index, index );
         }
         return rv;
+    }
+
+    /**
+     * Removes the specified elements from this list.
+     *
+     * @param objects the components to be removed
+     */
+    public void removeElements ( T... objects )
+    {
+        for ( T object : objects )
+        {
+            removeElement ( object );
+        }
     }
 
     /**

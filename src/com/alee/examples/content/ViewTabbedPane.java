@@ -118,7 +118,7 @@ public class ViewTabbedPane extends WebTabbedPane
     {
         protected void paintComponent ( Graphics g )
         {
-            g.setColor ( new Color ( 245, 245, 245 ) );
+            g.setColor ( new Color ( 237, 237, 237 ) );
             g.fillRect ( 0, 0, getWidth (), getHeight () - 1 );
             g.setColor ( StyleConstants.darkBorderColor );
             g.drawLine ( 0, getHeight () - 1, getWidth () - 1, getHeight () - 1 );

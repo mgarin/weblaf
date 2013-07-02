@@ -39,16 +39,19 @@ public final class WebPanelStyle
 
     /**
      * Draw panel focus.
+     * This variable doesn't affect anything if panel is undecorated.
      */
     public static boolean drawFocus = false;
 
     /**
      * Decoration rounding.
+     * This variable doesn't affect anything if panel is undecorated.
      */
     public static int round = StyleConstants.smallRound;
 
     /**
      * Decoration shade width.
+     * This variable doesn't affect anything if panel is undecorated.
      */
     public static int shadeWidth = StyleConstants.shadeWidth;
 
@@ -59,6 +62,7 @@ public final class WebPanelStyle
 
     /**
      * Default panel border stroke.
+     * This variable doesn't affect anything if panel is undecorated.
      */
     public static Stroke borderStroke = null;
 
@@ -88,10 +92,26 @@ public final class WebPanelStyle
     public static ShapeProvider clipProvider = StyleConstants.clipProvider;
 
     /**
-     * Sides which will drawed when panel is decorated with Web-styled border.
+     * Whether to draw top panel side or not.
+     * This variable doesn't affect anything if panel is undecorated.
      */
     public static boolean drawTop = true;
+
+    /**
+     * Whether to draw left panel side or not.
+     * This variable doesn't affect anything if panel is undecorated.
+     */
     public static boolean drawLeft = true;
+
+    /**
+     * Whether to draw bottom panel side or not.
+     * This variable doesn't affect anything if panel is undecorated.
+     */
     public static boolean drawBottom = true;
+
+    /**
+     * Whether to draw right panel side or not.
+     * This variable doesn't affect anything if panel is undecorated.
+     */
     public static boolean drawRight = true;
 }
