@@ -14,6 +14,24 @@ Its main advantages are:
 You can find more information about the library on official site:
 http://weblookandfeel.com
 
+Usage
+----------
+To install Web L&F you can simply use this line of code:
+
+    WebLookAndFeel.install ();
+    
+You can also use one of the old ways to set L&F:
+
+    UIManager.setLookAndFeel ( WebLookAndFeel.class.getCanonicalName () );
+    
+or 
+
+    UIManager.setLookAndFeel ( new WebLookAndFeel () );
+    
+or 
+
+    UIManager.setLookAndFeel ( "com.alee.laf.WebLookAndFeel" );
+
 Building
 ----------
 To build various WebLaF artifacts you will need [Java 1.6 update 20 (or later)](http://www.oracle.com/technetwork/java/javase/downloads/index.html) and [Apache ANT] (http://ant.apache.org/).<br>
