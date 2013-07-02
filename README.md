@@ -23,13 +23,9 @@ To install Web L&F you can simply use this line of code:
 You can also use one of the old ways to set L&F:
 
     UIManager.setLookAndFeel ( WebLookAndFeel.class.getCanonicalName () );
-    
-or 
-
+    // or 
     UIManager.setLookAndFeel ( new WebLookAndFeel () );
-    
-or 
-
+    // or 
     UIManager.setLookAndFeel ( "com.alee.laf.WebLookAndFeel" );
 
 Building
