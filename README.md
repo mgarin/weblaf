@@ -14,19 +14,20 @@ Its main advantages are:
 You can find more information about the library on official site:
 http://weblookandfeel.com
 
-Usage
+
+Artifacts
 ----------
-To install Web L&F you can simply use this line of code:
+All library artifacts could be found in ["artifacts" folder](https://github.com/mgarin/weblaf/tree/master/artifacts) within the project.
 
-    WebLookAndFeel.install ();
-    
-You can also use one of the old ways to set L&F:
+Here are direct links:
 
-    UIManager.setLookAndFeel ( WebLookAndFeel.class.getCanonicalName () );
-    // or 
-    UIManager.setLookAndFeel ( new WebLookAndFeel () );
-    // or 
-    UIManager.setLookAndFeel ( "com.alee.laf.WebLookAndFeel" );
+1. [**WebLookAndFeel-1.13.jar**](https://github.com/mgarin/weblaf/raw/master/artifacts/WebLookAndFeel-1.13.jar) - library jar
+2. [**WebLookAndFeel-demo-1.13.jar**](https://github.com/mgarin/weblaf/raw/master/artifacts/WebLookAndFeel-demo-1.13.jar) - executable demo jar
+3. [**WebLookAndFeel-nolib-1.13.jar**](https://github.com/mgarin/weblaf/raw/master/artifacts/WebLookAndFeel-nolib-1.13.jar) - library jar w/o 3rd party libraries
+4. [**NinePatchEditor-1.13.jar**](https://github.com/mgarin/weblaf/raw/master/artifacts/NinePatchEditor-1.13.jar) - executable 9patch editor jar
+5. [**Sources-1.13.zip**](https://github.com/mgarin/weblaf/raw/master/artifacts/Sources-1.13.zip) - project sources zip
+6. [**JavaDoc-1.13.zip**](https://github.com/mgarin/weblaf/raw/master/artifacts/JavaDoc-1.13.zip) - JavaDoc zip
+
 
 Building
 ----------
@@ -44,6 +45,21 @@ Here is a full list of usable ANT targets in WebLaF build script:
 7. **run.npe** - build and run NinePatchEditor.jar (Nine-Patch Editor application)
 8. **run.weblaf** - build and run WebLookAndFeel.jar (library information dialog)
 9. **run.weblaf.demo** - build and run WebLookAndFeel_demo.jar (library demo application)
+
+
+Usage
+----------
+To install Web L&F you can simply use this line of code:
+
+    WebLookAndFeel.install ();
+    
+You can also use one of the old ways to set L&F:
+
+    UIManager.setLookAndFeel ( new WebLookAndFeel () );
+    // or 
+    UIManager.setLookAndFeel ( "com.alee.laf.WebLookAndFeel" );
+    // or 
+    UIManager.setLookAndFeel ( WebLookAndFeel.class.getCanonicalName () );
 
 
 Feedback
