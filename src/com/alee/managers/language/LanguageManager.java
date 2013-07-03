@@ -17,7 +17,6 @@
 
 package com.alee.managers.language;
 
-import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.language.data.Dictionary;
 import com.alee.managers.language.data.*;
 import com.alee.managers.language.updaters.*;
@@ -134,9 +133,6 @@ public class LanguageManager implements LanguageConstants
             XmlUtils.processAnnotations ( Text.class );
             XmlUtils.processAnnotations ( Tooltip.class );
             XmlUtils.processAnnotations ( TooltipType.class );
-
-            // Basic language file
-            addDictionary ( WebLookAndFeel.class, "resources/language.xml" );
 
             // Basic language updaters
             registerLanguageUpdater ( new JLabelLU () );
@@ -750,6 +746,12 @@ public class LanguageManager implements LanguageConstants
 
     public static void addDictionary ( Dictionary dictionary )
     {
+        // Removing dictionary with the same ID first
+        if ( isDictionaryAdded ( dictionary ) )
+        {
+            removeDictionary ( dictionary );
+        }
+
         // Updating dictionaries
         dictionaries.add ( dictionary );
 
@@ -765,8 +767,15 @@ public class LanguageManager implements LanguageConstants
 
     public static void removeDictionary ( Dictionary dictionary )
     {
-        if ( dictionaries.contains ( dictionary ) )
+        removeDictionary ( dictionary.getId () );
+    }
+
+    public static void removeDictionary ( String id )
+    {
+        if ( isDictionaryAdded ( id ) )
         {
+            Dictionary dictionary = getDictionary ( id );
+
             // Clearing global dictionaries storage
             globalDictionary.clear ();
 
@@ -783,6 +792,35 @@ public class LanguageManager implements LanguageConstants
             // Firing removal event
             fireDictionaryRemoved ( dictionary );
         }
+    }
+
+    public static boolean isDictionaryAdded ( Dictionary dictionary )
+    {
+        return isDictionaryAdded ( dictionary.getId () );
+    }
+
+    public static boolean isDictionaryAdded ( String id )
+    {
+        for ( Dictionary dictionary : dictionaries )
+        {
+            if ( dictionary.getId ().equals ( id ) )
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static Dictionary getDictionary ( String id )
+    {
+        for ( Dictionary dictionary : dictionaries )
+        {
+            if ( dictionary.getId ().equals ( id ) )
+            {
+                return dictionary;
+            }
+        }
+        return null;
     }
 
     private static void mergeDictionary ( Dictionary dictionary )
