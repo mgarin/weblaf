@@ -19,6 +19,8 @@ package com.alee.laf.rootpane;
 
 import com.alee.managers.focus.FocusManager;
 import com.alee.managers.focus.FocusTracker;
+import com.alee.managers.language.LanguageContainer;
+import com.alee.managers.language.LanguageManager;
 import com.alee.managers.settings.DefaultValue;
 import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.settings.SettingsMethods;
@@ -35,7 +37,7 @@ import java.awt.event.ComponentEvent;
  * User: mgarin Date: 26.06.12 Time: 16:48
  */
 
-public class WebWindow extends JWindow implements FocusTracker, SettingsMethods
+public class WebWindow extends JWindow implements FocusTracker, LanguageContainer, SettingsMethods
 {
     private boolean closeOnFocusLoss = false;
 
@@ -213,6 +215,34 @@ public class WebWindow extends JWindow implements FocusTracker, SettingsMethods
     public void packToHeight ( int height )
     {
         setSize ( getPreferredSize ().width, height );
+    }
+
+    /**
+     * Language container methods
+     */
+
+    /**
+     * {@inheritDoc}
+     */
+    public void setLanguageContainerKey ( String key )
+    {
+        LanguageManager.registerLanguageContainer ( this, key );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void removeLanguageContainerKey ()
+    {
+        LanguageManager.unregisterLanguageContainer ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public String getLanguageContainerKey ()
+    {
+        return LanguageManager.getLanguageContainerKey ( this );
     }
 
     /**

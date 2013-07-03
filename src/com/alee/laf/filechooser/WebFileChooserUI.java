@@ -36,19 +36,46 @@ import java.awt.event.ActionListener;
 
 public class WebFileChooserUI extends BasicFileChooserUI
 {
-    public WebFileChooserUI ( JFileChooser b )
-    {
-        super ( b );
-    }
-
+    /**
+     * Returns an instance of the WebFileChooserUI for the specified component.
+     * This tricky method is used by UIManager to create component UIs when needed.
+     *
+     * @param c component that will use UI instance
+     * @return instance of the WebFileChooserUI
+     */
     public static ComponentUI createUI ( JComponent c )
     {
         return new WebFileChooserUI ( ( JFileChooser ) c );
     }
 
+    /**
+     * Constructs new WebFileChooserUI for the specified JFileChooser.
+     *
+     * @param b JFileChooser for which UI is constructed
+     */
+    public WebFileChooserUI ( JFileChooser b )
+    {
+        super ( b );
+    }
+
+    /**
+     * Installs UI in the specified component.
+     *
+     * @param c component for this UI
+     */
     public void installUI ( JComponent c )
     {
         super.installUI ( c );
+    }
+
+    /**
+     * Uninstalls UI from the specified component.
+     *
+     * @param c component with this UI
+     */
+    public void uninstallUI ( JComponent c )
+    {
+        super.uninstallUI ( c );
     }
 
     public static void main ( String[] args )

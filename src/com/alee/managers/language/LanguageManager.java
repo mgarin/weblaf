@@ -40,7 +40,7 @@ import java.util.List;
  * events. Language could be either loaded from structured xml files or added directly from the application by adding Dictionary type
  * objects into this manager.
  * <p/>
- * Be aware of the fact that all equal key/lanugage pairs will be merged and collected into a single data map.
+ * Be aware of the fact that all equal key-language pairs will be merged and collected into a single data map.
  *
  * @author Mikle Garin
  * @since 1.3
@@ -89,6 +89,10 @@ public class LanguageManager implements LanguageConstants
     private static final Object componentsLock = new Object ();
     private static Map<Component, String> components = new WeakHashMap<Component, String> ();
     private static Map<Component, Object[]> componentsData = new WeakHashMap<Component, Object[]> ();
+
+    // Registered language containers
+    private static final Object languageContainersLock = new Object ();
+    private static Map<Container, String> languageContainers = new WeakHashMap<Container, String> ();
 
     // Registered updaters
     private static final Object updatersLock = new Object ();
@@ -445,7 +449,7 @@ public class LanguageManager implements LanguageConstants
         }
 
         // Not-null value for specified key
-        Value value = getNotNullValue ( key );
+        Value value = getNotNullValue ( component, key );
 
         // Actualized value data
         Object[] actualData;
@@ -856,6 +860,76 @@ public class LanguageManager implements LanguageConstants
             Value tmpValue = new Value ( getLanguage (), key );
             globalCache.put ( key, tmpValue );
             return tmpValue;
+        }
+    }
+
+    /**
+     * Component value request methods
+     */
+
+    public static String get ( Component component, String key )
+    {
+        return get ( combineWithContainerKeys ( component, key ) );
+    }
+
+    public static Character getMnemonic ( Component component, String key )
+    {
+        return getMnemonic ( combineWithContainerKeys ( component, key ) );
+    }
+
+    public static Value getValue ( Component component, String key )
+    {
+        return getValue ( combineWithContainerKeys ( component, key ) );
+    }
+
+    public static Value getNotNullValue ( Component component, String key )
+    {
+        return getNotNullValue ( combineWithContainerKeys ( component, key ) );
+    }
+
+    /**
+     * Language container methods
+     */
+
+    private static String combineWithContainerKeys ( Component component, String key )
+    {
+        if ( component != null )
+        {
+            Container parent = component.getParent ();
+            while ( parent != null )
+            {
+                String containerKey = getLanguageContainerKey ( parent );
+                if ( containerKey != null )
+                {
+                    key = containerKey + "." + key;
+                }
+                parent = parent.getParent ();
+            }
+        }
+        return key;
+    }
+
+    public static void registerLanguageContainer ( Container container, String key )
+    {
+        synchronized ( languageContainersLock )
+        {
+            languageContainers.put ( container, key );
+        }
+    }
+
+    public static void unregisterLanguageContainer ( Container container )
+    {
+        synchronized ( languageContainersLock )
+        {
+            languageContainers.remove ( container );
+        }
+    }
+
+    public static String getLanguageContainerKey ( Container container )
+    {
+        synchronized ( languageContainersLock )
+        {
+            return languageContainers.get ( container );
         }
     }
 

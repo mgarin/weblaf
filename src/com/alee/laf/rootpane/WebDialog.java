@@ -18,6 +18,7 @@
 package com.alee.laf.rootpane;
 
 import com.alee.extended.panel.WebButtonGroup;
+import com.alee.managers.language.LanguageContainer;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.language.LanguageMethods;
 import com.alee.managers.language.updaters.LanguageUpdater;
@@ -34,7 +35,7 @@ import java.awt.*;
  * User: mgarin Date: 11.12.12 Time: 14:51
  */
 
-public class WebDialog extends JDialog implements LanguageMethods, SettingsMethods
+public class WebDialog extends JDialog implements LanguageMethods, LanguageContainer, SettingsMethods
 {
     public WebDialog ()
     {
@@ -370,39 +371,88 @@ public class WebDialog extends JDialog implements LanguageMethods, SettingsMetho
      * Language methods
      */
 
+    /**
+     * {@inheritDoc}
+     */
     public void setLanguage ( String key, Object... data )
     {
         LanguageManager.registerComponent ( this, key, data );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void updateLanguage ( Object... data )
     {
         LanguageManager.updateComponent ( this, data );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void updateLanguage ( String key, Object... data )
     {
         LanguageManager.updateComponent ( this, key, data );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void removeLanguage ()
     {
         LanguageManager.unregisterComponent ( this );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isLanguageSet ()
     {
         return LanguageManager.isRegisteredComponent ( this );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void setLanguageUpdater ( LanguageUpdater updater )
     {
         LanguageManager.registerLanguageUpdater ( this, updater );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void removeLanguageUpdater ()
     {
         LanguageManager.unregisterLanguageUpdater ( this );
+    }
+
+    /**
+     * Language container methods
+     */
+
+    /**
+     * {@inheritDoc}
+     */
+    public void setLanguageContainerKey ( String key )
+    {
+        LanguageManager.registerLanguageContainer ( this, key );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void removeLanguageContainerKey ()
+    {
+        LanguageManager.unregisterLanguageContainer ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public String getLanguageContainerKey ()
+    {
+        return LanguageManager.getLanguageContainerKey ( this );
     }
 
     /**

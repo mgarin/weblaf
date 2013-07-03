@@ -19,6 +19,8 @@ package com.alee.laf.panel;
 
 import com.alee.extended.painter.Painter;
 import com.alee.laf.WebLookAndFeel;
+import com.alee.managers.language.LanguageContainer;
+import com.alee.managers.language.LanguageManager;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.laf.ShapeProvider;
 
@@ -30,7 +32,7 @@ import java.util.List;
  * User: mgarin Date: 26.07.11 Time: 13:12
  */
 
-public class WebPanel extends JPanel implements ShapeProvider
+public class WebPanel extends JPanel implements ShapeProvider, LanguageContainer
 {
     private int preferredWidth = -1;
     private int minimumWidth = -1;
@@ -458,5 +460,33 @@ public class WebPanel extends JPanel implements ShapeProvider
             ps.height = Math.max ( minimumHeight, ps.height );
         }
         return ps;
+    }
+
+    /**
+     * Language container methods
+     */
+
+    /**
+     * {@inheritDoc}
+     */
+    public void setLanguageContainerKey ( String key )
+    {
+        LanguageManager.registerLanguageContainer ( this, key );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void removeLanguageContainerKey ()
+    {
+        LanguageManager.unregisterLanguageContainer ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public String getLanguageContainerKey ()
+    {
+        return LanguageManager.getLanguageContainerKey ( this );
     }
 }

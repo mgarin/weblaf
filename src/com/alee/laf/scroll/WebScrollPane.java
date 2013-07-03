@@ -18,6 +18,8 @@
 package com.alee.laf.scroll;
 
 import com.alee.laf.WebLookAndFeel;
+import com.alee.managers.language.LanguageContainer;
+import com.alee.managers.language.LanguageManager;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.laf.ShapeProvider;
 
@@ -28,7 +30,7 @@ import java.awt.*;
  * User: mgarin Date: 29.04.11 Time: 15:37
  */
 
-public class WebScrollPane extends JScrollPane implements ShapeProvider
+public class WebScrollPane extends JScrollPane implements ShapeProvider, LanguageContainer
 {
     private int preferredWidth = -1;
     private int minimumWidth = -1;
@@ -175,7 +177,7 @@ public class WebScrollPane extends JScrollPane implements ShapeProvider
 
     public WebScrollPane setMargin ( int top, int left, int bottom, int right )
     {
-        return  setMargin ( new Insets ( top, left, bottom, right ) );
+        return setMargin ( new Insets ( top, left, bottom, right ) );
     }
 
     public WebScrollPane setMargin ( int spacing )
@@ -286,5 +288,33 @@ public class WebScrollPane extends JScrollPane implements ShapeProvider
             ps.height = Math.max ( minimumHeight, ps.height );
         }
         return ps;
+    }
+
+    /**
+     * Language container methods
+     */
+
+    /**
+     * {@inheritDoc}
+     */
+    public void setLanguageContainerKey ( String key )
+    {
+        LanguageManager.registerLanguageContainer ( this, key );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void removeLanguageContainerKey ()
+    {
+        LanguageManager.unregisterLanguageContainer ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public String getLanguageContainerKey ()
+    {
+        return LanguageManager.getLanguageContainerKey ( this );
     }
 }

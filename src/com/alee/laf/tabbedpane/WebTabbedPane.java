@@ -19,6 +19,8 @@ package com.alee.laf.tabbedpane;
 
 import com.alee.extended.painter.Painter;
 import com.alee.laf.WebLookAndFeel;
+import com.alee.managers.language.LanguageContainer;
+import com.alee.managers.language.LanguageManager;
 import com.alee.managers.settings.DefaultValue;
 import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.settings.SettingsMethods;
@@ -35,7 +37,7 @@ import java.awt.*;
  * User: mgarin Date: 28.06.11 Time: 0:52
  */
 
-public class WebTabbedPane extends JTabbedPane implements ShapeProvider, SettingsMethods, FontMethods<WebTabbedPane>
+public class WebTabbedPane extends JTabbedPane implements ShapeProvider, SettingsMethods, FontMethods<WebTabbedPane>, LanguageContainer
 {
     public WebTabbedPane ()
     {
@@ -499,5 +501,33 @@ public class WebTabbedPane extends JTabbedPane implements ShapeProvider, Setting
     public String getFontName ()
     {
         return SwingUtils.getFontName ( this );
+    }
+
+    /**
+     * Language container methods
+     */
+
+    /**
+     * {@inheritDoc}
+     */
+    public void setLanguageContainerKey ( String key )
+    {
+        LanguageManager.registerLanguageContainer ( this, key );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void removeLanguageContainerKey ()
+    {
+        LanguageManager.unregisterLanguageContainer ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public String getLanguageContainerKey ()
+    {
+        return LanguageManager.getLanguageContainerKey ( this );
     }
 }
