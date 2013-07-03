@@ -686,4 +686,25 @@ public class ReflectUtils
             }
         }
     }
+
+    /**
+     * Returns whether one of superclasses contains specified text in its name
+     */
+
+    public static boolean containsInClassOrSuperclassName ( Class theClass, String text )
+    {
+        if ( theClass == null )
+        {
+            return false;
+        }
+        final String name = theClass.getCanonicalName ();
+        if ( name != null )
+        {
+            return name.contains ( text ) || containsInClassOrSuperclassName ( theClass.getSuperclass (), text );
+        }
+        else
+        {
+            return containsInClassOrSuperclassName ( theClass.getSuperclass (), text );
+        }
+    }
 }

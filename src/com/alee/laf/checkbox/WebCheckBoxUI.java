@@ -19,10 +19,7 @@ package com.alee.laf.checkbox;
 
 import com.alee.laf.StyleConstants;
 import com.alee.laf.list.WebListElement;
-import com.alee.utils.ColorUtils;
-import com.alee.utils.ImageUtils;
-import com.alee.utils.LafUtils;
-import com.alee.utils.SwingUtils;
+import com.alee.utils.*;
 import com.alee.utils.laf.ShapeProvider;
 import com.alee.utils.swing.WebTimer;
 
@@ -117,7 +114,7 @@ public class WebCheckBoxUI extends BasicCheckBoxUI implements ShapeProvider
         checkIcon = checkBox.isSelected () ? CHECK_STATES.size () - 1 : 0;
 
         // Workaround for Jide TriState checkbox
-        if ( c.getClass ().getCanonicalName ().contains ( "TristateCheckBox" ) )
+        if ( ReflectUtils.containsInClassOrSuperclassName ( c.getClass (), "TristateCheckBox" ) )
         {
             setAnimated ( false );
         }
