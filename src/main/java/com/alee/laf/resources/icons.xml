@@ -1,0 +1,10 @@
+<ResourceList>
+    <ResourceFile location="nearClass" source="icons/icon/icon16.png" className="com.alee.laf.WebLookAndFeel" />
+    <ResourceFile location="nearClass" source="icons/icon/icon24.png" className="com.alee.laf.WebLookAndFeel" />
+    <ResourceFile location="nearClass" source="icons/icon/icon32.png" className="com.alee.laf.WebLookAndFeel" />
+    <ResourceFile location="nearClass" source="icons/icon/icon48.png" className="com.alee.laf.WebLookAndFeel" />
+    <ResourceFile location="nearClass" source="icons/icon/icon64.png" className="com.alee.laf.WebLookAndFeel" />
+    <ResourceFile location="nearClass" source="icons/icon/icon128.png" className="com.alee.laf.WebLookAndFeel" />
+    <ResourceFile location="nearClass" source="icons/icon/icon256.png" className="com.alee.laf.WebLookAndFeel" />
+    <ResourceFile location="nearClass" source="icons/icon/icon512.png" className="com.alee.laf.WebLookAndFeel" />
+</ResourceList>

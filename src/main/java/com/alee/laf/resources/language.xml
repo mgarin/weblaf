@@ -1,0 +1,1048 @@
+<Dictionary name="Web Look and Feel language" prefix="weblaf" author="Alee Software" creationDate="27.04.2012">
+    <Dictionary name="Library information frame" prefix="info">
+        <record key="title">
+            <value lang="en">Library information</value>
+            <value lang="ru">Информация о библиотеке</value>
+            <value lang="pl">Informacje o bibliotece</value>
+            <value lang="ar">معلومات عن البرنامج</value>
+            <value lang="es">Información de la Librería</value>
+            <value lang="fr">Information sur la bibliothèque</value>
+            <value lang="pt">Inflormação sobre a biblioteca</value>
+        </record>
+        <Dictionary name="General information tab" prefix="general">
+            <record key="title">
+                <value lang="en">General</value>
+                <value lang="ru">Общие</value>
+                <value lang="pl">Ogólny</value>
+                <value lang="ar">عام</value>
+                <value lang="es">General</value>
+                <value lang="fr">Général</value>
+                <value lang="pt">Geral</value>
+            </record>
+            <record key="updated">
+                <value lang="en">Updated: %s</value>
+                <value lang="ru">Обновлена: %s</value>
+                <value lang="pl">Zaktualizowano: %s</value>
+                <value lang="ar">تحديث: %s</value>
+                <value lang="es">Actualizado: %s</value>
+                <value lang="fr">Mise à jour: %s</value>
+                <value lang="pt">Actualizado: %s</value>
+            </record>
+            <record key="java.version">
+                <value lang="en">Java v.%s</value>
+                <value lang="ru">Java v.%s</value>
+                <value lang="pl">Java v.%s</value>
+                <value lang="ar">Java v.%s</value>
+                <value lang="es">Java v.%s</value>
+                <value lang="fr">Java v.%s</value>
+                <value lang="pt">Java v.%s</value>
+            </record>
+            <record key="os.arch">
+                <value lang="en">Architecture: %s</value>
+                <value lang="ru">Архитектура: %s</value>
+                <value lang="pl">Architektura: %s</value>
+                <value lang="ar">النظام: %s</value>
+                <value lang="es">Arquitectura: %s</value>
+                <value lang="fr">Architecture: %s</value>
+                <value lang="pt">Arquitectura: %s</value>
+            </record>
+        </Dictionary>
+        <Dictionary name="Libraries list tab" prefix="libraries">
+            <record key="title">
+                <value lang="en">Libraries</value>
+                <value lang="ru">Библиотеки</value>
+                <value lang="pl">Biblioteki</value>
+                <value lang="ar">المكتبات</value>
+                <value lang="es">Bibliotecas</value>
+                <value lang="fr">Bibliothèques</value>
+                <value lang="pt">Bibliotecas</value>
+            </record>
+            <record key="license">
+                <value lang="en">License:</value>
+                <value lang="ru">Лицензия:</value>
+                <value lang="pl">Licencja:</value>
+                <value lang="ar">الترخيص:</value>
+                <value lang="es">Licencia:</value>
+                <value lang="fr">Licence:</value>
+                <value lang="pt">Licença:</value>
+            </record>
+            <record key="site">
+                <value lang="en">Site:</value>
+                <value lang="ru">Сайт:</value>
+                <value lang="pl">Strony:</value>
+                <value lang="ar">موقع:</value>
+                <value lang="es">Sitio:</value>
+                <value lang="fr">Site:</value>
+                <value lang="pt">Site:</value>
+            </record>
+            <record key="error">
+                <value lang="en">Libraries data is unavailable</value>
+                <value lang="ru">Информация о библиотеках недоступна</value>
+                <value lang="pl">Biblioteki dane są niedostępne</value>
+                <value lang="ar">المكتبات البيانات غير متوفرة</value>
+                <value lang="es">Bibliotecas datos no está disponible</value>
+                <value lang="fr">Données des bibliothèques n'est pas disponible</value>
+                <value lang="pt">Bibliotecas de dados está indisponível</value>
+            </record>
+        </Dictionary>
+        <Dictionary name="System properties tab" prefix="properties">
+            <record key="title">
+                <value lang="en">Properties</value>
+                <value lang="ru">Параметры</value>
+                <value lang="pl">Właściwości</value>
+                <value lang="ar">خصائص</value>
+                <value lang="es">Propiedades</value>
+                <value lang="fr">Propriétés</value>
+                <value lang="pt">Propriedades</value>
+            </record>
+            <record key="key">
+                <value lang="en">Key</value>
+                <value lang="ru">Ключ</value>
+                <value lang="pl">Klucz</value>
+                <value lang="ar">مفتاح</value>
+                <value lang="es">Clave</value>
+                <value lang="fr">Clé</value>
+                <value lang="pt">Chave</value>
+            </record>
+            <record key="value">
+                <value lang="en">Value</value>
+                <value lang="ru">Значение</value>
+                <value lang="pl">Wartość</value>
+                <value lang="ar">قيمة</value>
+                <value lang="es">Valor</value>
+                <value lang="fr">Valeur</value>
+                <value lang="pt">Valor</value>
+            </record>
+        </Dictionary>
+    </Dictionary>
+    <Dictionary name="OptionPane language" prefix="optionpane">
+        <record key="title">
+            <value lang="en">Select an option</value>
+            <value lang="ru">Выберите вариант</value>
+            <value lang="pl">Wybierz opcje</value>
+            <value lang="ar">اختر</value>
+            <value lang="es">Seleccione una opción</value>
+            <value lang="fr">Sélectionnez une option</value>
+            <value lang="pt">Seleccione uma opção</value>
+        </record>
+        <record key="ok">
+            <value lang="en" mnemonic="K">OK</value>
+            <value lang="ru" mnemonic="К">ОК</value>
+            <value lang="pl" mnemonic="K">OK</value>
+            <value lang="ar" mnemonic="ح">حسنا</value>
+            <value lang="es" mnemonic="K">OK</value>
+            <value lang="fr" mnemonic="K">OK</value>
+            <value lang="pt" mnemonic="K">OK</value>
+        </record>
+        <record key="cancel">
+            <value lang="en" mnemonic="C">Cancel</value>
+            <value lang="ru" mnemonic="О">Отмена</value>
+            <value lang="pl" mnemonic="A">Anuluj</value>
+            <value lang="ar" mnemonic="إ">إلغاء</value>
+            <value lang="es" mnemonic="C">Cancelar</value>
+            <value lang="fr" mnemonic="A">Annuler</value>
+            <value lang="pt" mnemonic="C">Cancelar</value>
+        </record>
+        <record key="yes">
+            <value lang="en" mnemonic="Y">Yes</value>
+            <value lang="ru" mnemonic="Д">Да</value>
+            <value lang="pl" mnemonic="T">Tak</value>
+            <value lang="ar" mnemonic="ن">نعم</value>
+            <value lang="es" mnemonic="S">Si</value>
+            <value lang="fr" mnemonic="O">Oui</value>
+            <value lang="pt" mnemonic="S">Sim</value>
+        </record>
+        <record key="no">
+            <value lang="en" mnemonic="N">No</value>
+            <value lang="ru" mnemonic="Н">Нет</value>
+            <value lang="pl" mnemonic="N">Nie</value>
+            <value lang="ar" mnemonic="ل">لا</value>
+            <value lang="es" mnemonic="N">No</value>
+            <value lang="fr" mnemonic="N">Non</value>
+            <value lang="pt" mnemonic="N">Não</value>
+        </record>
+    </Dictionary>
+    <Dictionary name="ProxyManager language" prefix="proxy">
+        <record key="use.system.title">
+            <value lang="en">Change proxy settings</value>
+            <value lang="ru">Изменение настроек прокси</value>
+            <value lang="pl">Zmień ustawienia serwera proxy</value>
+            <value lang="ar">تغيير إعدادات البروكسي</value>
+            <value lang="es">Cambiar configuración del proxy</value>
+            <value lang="fr">Modifier les paramètres du proxy</value>
+            <value lang="pt">Alterar as definições de proxy</value>
+        </record>
+        <record key="use.system.text">
+            <value lang="en">&lt;html&gt;Application proxy settings do not match system proxy settings.&lt;br&gt;Would you like to use system settings instead?&lt;/html&gt;</value>
+            <value lang="ru">&lt;html&gt;Настройки прокси приложения не совпадают с установленной в системе прокси.&lt;br&gt;Хотите ли вы использовать системные настройки?&lt;/html&gt;</value>
+            <value lang="pl">&lt;html&gt;Usutawienia serwera proxy aplikacji nie pasują do systemowych ustawień serwera proxy.&lt;br&gt;Chcesz korzystać z ustawień systemowych?&lt;/html&gt;</value>
+            <value lang="ar">&lt;html&gt;إعدادات البروكسي للبرنامج تختلف عن إعدادات البروكسي للنظام.&lt;br&gt;هل ترغب باستخدام إعدادات النظام؟&lt;/html&gt;</value>
+            <value lang="es">&lt;html&gt;La configuración del proxy en la aplicación no coincide con la configuración del sistema.&lt;br&gt;¿Desea usar la configuracion del sistema?&lt;/html&gt;</value>
+            <value lang="fr">&lt;html&gt;Les paramètres du proxy de l&apos;application ne correspondent pas aux paramètres du proxy du système&lt;br&gt;Voulez-vous utiliser les paramètres du système?&lt;/html&gt;</value>
+            <value lang="pt">&lt;html&gt;As definições de proxy da aplicação não são as mesmas do sistema.&lt;br&gt;Deseja usar as definições do sistema?&lt;/html&gt;</value>
+        </record>
+        <record key="use.system.save">
+            <value lang="en">Remember this choice</value>
+            <value lang="ru">Запомнить этот выбор</value>
+            <value lang="pl">Zapamiętaj wybór</value>
+            <value lang="ar">تذكر الخيار</value>
+            <value lang="es">Recordar esta opción</value>
+            <value lang="fr">Se souvenir de ce choix</value>
+            <value lang="pt">Lembrar esta escolha</value>
+        </record>
+        <Dictionary name="WebProxyAuthenticator language" prefix="auth">
+            <record key="title">
+                <value lang="en">Proxy authentication required</value>
+                <value lang="ru">Необходима авторизация на прокси сервере</value>
+                <value lang="pl">Wymagane uwierzytelnienie proxy</value>
+                <value lang="ar">مطلوب بيانات النفاذ للبروكسي</value>
+                <value lang="es">Autenticación de proxy requerida</value>
+                <value lang="fr">Authentification par proxy requise</value>
+                <value lang="pt">Autenticação por proxy necessária</value>
+            </record>
+            <record key="host">
+                <value lang="en">Host:</value>
+                <value lang="ru">Хост:</value>
+                <value lang="pl">Host:</value>
+                <value lang="ar">الخادم (Host):</value>
+                <value lang="es">Host:</value>
+                <value lang="fr">Hôte:</value>
+                <value lang="pt">Host:</value>
+            </record>
+            <record key="port">
+                <value lang="en">Port:</value>
+                <value lang="ru">Порт:</value>
+                <value lang="pl">Port:</value>
+                <value lang="ar">المنفذ (Port):</value>
+                <value lang="es">Puerto:</value>
+                <value lang="fr">Port:</value>
+                <value lang="pt">Porto:</value>
+            </record>
+            <record key="login">
+                <value lang="en">Login:</value>
+                <value lang="ru">Логин:</value>
+                <value lang="pl">Login:</value>
+                <value lang="ar">الدخول:</value>
+                <value lang="es">Nombre usuario:</value>
+                <value lang="fr">Login:</value>
+                <value lang="pt">Nome de utilizador:</value>
+            </record>
+            <record key="pass">
+                <value lang="en">Password:</value>
+                <value lang="ru">Пароль:</value>
+                <value lang="pl">Hasło:</value>
+                <value lang="ar">كلمة المرور:</value>
+                <value lang="es">Contraseña:</value>
+                <value lang="fr">Mot de passe:</value>
+                <value lang="pt">Palavra-chave:</value>
+            </record>
+        </Dictionary>
+    </Dictionary>
+    <Dictionary name="Files language" prefix="file">
+        <Dictionary name="File filters language" prefix="size">
+            <record key="b">
+                <value lang="en">b</value>
+                <value lang="ru">б</value>
+                <value lang="pl">b</value>
+                <value lang="ar">بايت</value>
+                <value lang="es">b</value>
+                <value lang="fr">o</value>
+                <value lang="pt">b</value>
+            </record>
+            <record key="kb">
+                <value lang="en">Kb</value>
+                <value lang="ru">Кб</value>
+                <value lang="pl">Kb</value>
+                <value lang="ar">كيلوبايت</value>
+                <value lang="es">Kb</value>
+                <value lang="fr">Ko</value>
+                <value lang="pt">Kb</value>
+            </record>
+            <record key="mb">
+                <value lang="en">Mb</value>
+                <value lang="ru">Мб</value>
+                <value lang="pl">Mb</value>
+                <value lang="ar">ميجابايت</value>
+                <value lang="es">Mb</value>
+                <value lang="fr">Mo</value>
+                <value lang="pt">Mb</value>
+            </record>
+            <record key="gb">
+                <value lang="en">Gb</value>
+                <value lang="ru">Гб</value>
+                <value lang="pl">Gb</value>
+                <value lang="ar">جيجابايت</value>
+                <value lang="es">Gb</value>
+                <value lang="fr">Go</value>
+                <value lang="pt">Gb</value>
+            </record>
+            <record key="tb">
+                <value lang="en">Tb</value>
+                <value lang="ru">Тб</value>
+                <value lang="pl">Tb</value>
+                <value lang="ar">تيرابايت</value>
+                <value lang="es">Tb</value>
+                <value lang="fr">To</value>
+                <value lang="pt">Tb</value>
+            </record>
+            <record key="pb">
+                <value lang="en">Pb</value>
+                <value lang="ru">Тб</value>
+                <value lang="pl">Pb</value>
+                <value lang="ar">بيتابايت</value>
+                <value lang="es">Pb</value>
+                <value lang="fr">Po</value>
+                <value lang="pt">Pb</value>
+            </record>
+        </Dictionary>
+        <Dictionary name="File filters language" prefix="filter">
+            <record key="all">
+                <value lang="en">All files</value>
+                <value lang="ru">Все файлы</value>
+                <value lang="pl">Wszystkie pliki</value>
+                <value lang="ar">جميع الملفات</value>
+                <value lang="es">Todos los archivos</value>
+                <value lang="fr">Tous les fichiers</value>
+                <value lang="pt">Todos os ficheiros</value>
+            </record>
+            <record key="folders">
+                <value lang="en">Folders only</value>
+                <value lang="ru">Только папки</value>
+                <value lang="pl">Tylko foldery</value>
+                <value lang="ar">مجلدات فقط</value>
+                <value lang="es">Directorios solamente</value>
+                <value lang="fr">Dossiers uniquement</value>
+                <value lang="pt">Apenas pastas</value>
+            </record>
+            <record key="files">
+                <value lang="en">Files only</value>
+                <value lang="ru">Только файлы</value>
+                <value lang="pl">Tylko pliki</value>
+                <value lang="ar">ملفات فقط</value>
+                <value lang="es">Archivos solamente</value>
+                <value lang="fr">Fichiers uniquement</value>
+                <value lang="pt">Apenas ficheiros</value>
+            </record>
+            <record key="images">
+                <value lang="en">Images only</value>
+                <value lang="ru">Только изображения</value>
+                <value lang="pl">Tylko obrazki</value>
+                <value lang="ar">صور فقط</value>
+                <value lang="es">Imagenes solamente</value>
+                <value lang="fr">Images uniquement</value>
+                <value lang="pt">Apenas imagens</value>
+            </record>
+            <record key="nonhidden">
+                <value lang="en">Non-hidden files only</value>
+                <value lang="ru">Только видимые файлы</value>
+                <value lang="pl">Tylko nie ukryte pliki</value>
+                <value lang="ar">الملفات الغير مخفية فقط</value>
+                <value lang="es">Archivos no ocultos solamente</value>
+                <value lang="fr">Fichiers non cachés uniquement</value>
+                <value lang="pt">Apenas ficheiros não ocultos</value>
+            </record>
+        </Dictionary>
+    </Dictionary>
+    <Dictionary name="WebFileChooser language" prefix="filechooser">
+        <record key="title">
+            <value lang="en">Choose files</value>
+            <value lang="ru">Выберите файлы</value>
+            <value lang="pl">Wybierz pliki</value>
+            <value lang="ar">اختر الملفات</value>
+            <value lang="es">Elija los archivos</value>
+            <value lang="fr">Choisissez les fichiers</value>
+            <value lang="pt">Escolher os ficheiros</value>
+        </record>
+        <record key="back">
+            <value lang="en" way="down" state="tooltip">Back</value>
+            <value lang="ru" way="down" state="tooltip">Назад</value>
+            <value lang="pl" way="down" state="tooltip">Wstecz</value>
+            <value lang="ar" way="down" state="tooltip">رجوع</value>
+            <value lang="es" way="down" state="tooltip">Atras</value>
+            <value lang="fr" way="down" state="tooltip">Précédent</value>
+            <value lang="pt" way="down" state="tooltip">Voltar</value>
+        </record>
+        <record key="forward">
+            <value lang="en" way="down" state="tooltip">Forward</value>
+            <value lang="ru" way="down" state="tooltip">Вперёд</value>
+            <value lang="pl" way="down" state="tooltip">Dalej</value>
+            <value lang="ar" way="down" state="tooltip">أمام</value>
+            <value lang="es" way="down" state="tooltip">Adelante</value>
+            <value lang="fr" way="down" state="tooltip">Suivant</value>
+            <value lang="pt" way="down" state="tooltip">Avançar</value>
+        </record>
+        <record key="folderup">
+            <value lang="en" way="down" state="tooltip">Folder up</value>
+            <value lang="ru" way="down" state="tooltip">На уровень вверх</value>
+            <value lang="pl" way="down" state="tooltip">W górę</value>
+            <value lang="ar" way="down" state="tooltip">مجلد للأعلى</value>
+            <value lang="es" way="down" state="tooltip">Subir directorio</value>
+            <value lang="fr" way="down" state="tooltip">Dossier supérieur</value>
+            <value lang="pt" way="down" state="tooltip">Pasta acima</value>
+        </record>
+        <record key="home">
+            <value lang="en" way="down" state="tooltip">Home directory</value>
+            <value lang="ru" way="down" state="tooltip">Домашняя директория</value>
+            <value lang="pl" way="down" state="tooltip">Katalog Domowy</value>
+            <value lang="ar" way="down" state="tooltip">المجلد الرئيسي</value>
+            <value lang="es" way="down" state="tooltip">Directorio de inicio</value>
+            <value lang="fr" way="down" state="tooltip">Répertoire personnel</value>
+            <value lang="pt" way="down" state="tooltip">Pasta pessoal</value>
+        </record>
+        <record key="newfolder">
+            <value lang="en" way="down" state="tooltip">Create new folder</value>
+            <value lang="ru" way="down" state="tooltip">Создать новую папку</value>
+            <value lang="pl" way="down" state="tooltip">Stwórz nowy folder</value>
+            <value lang="ar" way="down" state="tooltip">أنشاء مجلد جديد</value>
+            <value lang="es" way="down" state="tooltip">Crear nuevo directorio</value>
+            <value lang="fr" way="down" state="tooltip">Créer un nouveau dossier</value>
+            <value lang="pt" way="down" state="tooltip">Criar nova pasta</value>
+        </record>
+        <record key="newfolder.name">
+            <value lang="en">New folder</value>
+            <value lang="ru">Новая папка</value>
+            <value lang="pl">Nowy folder</value>
+            <value lang="ar">مجلد جديد</value>
+            <value lang="es">Nuevo directorio</value>
+            <value lang="fr">Nouveau dossier</value>
+            <value lang="pt">Nova pasta</value>
+        </record>
+        <record key="newfolder.error.title">
+            <value lang="en">Error</value>
+            <value lang="ru">Ошибка</value>
+            <value lang="pl">Błąd</value>
+            <value lang="ar">خطأ</value>
+            <value lang="es">Error</value>
+            <value lang="fr">Erreur</value>
+            <value lang="pt">Erro</value>
+        </record>
+        <record key="newfolder.error.text">
+            <value lang="en">Unable to create new folder</value>
+            <value lang="ru">Не удалось создать новую папку</value>
+            <value lang="pl">Nie można utworzyć nowego folderu</value>
+            <value lang="ar">غير قادر على إنشاء مجلد جديد</value>
+            <value lang="es">Imposible crear un nuevo directorio</value>
+            <value lang="fr">Impossible de créer un nouveau dossier</value>
+            <value lang="pt">Não foi possível criar a nova pasta</value>
+        </record>
+        <record key="refresh">
+            <value lang="en" way="down" state="tooltip">Reload folder content</value>
+            <value lang="ru" way="down" state="tooltip">Обновить содержимое папки</value>
+            <value lang="pl" way="down" state="tooltip">Ponownie załaduj zawartość folderu</value>
+            <value lang="ar" way="down" state="tooltip">تحديث محتوى المجلد</value>
+            <value lang="es" way="down" state="tooltip">Recargar contenido del directorio</value>
+            <value lang="fr" way="down" state="tooltip">Recharger le contenu du dossier</value>
+            <value lang="pt" way="down" state="tooltip">Refrescar o conteúdo da pasta</value>
+        </record>
+        <record key="delete">
+            <value lang="en" way="down" state="tooltip">Delete selected files</value>
+            <value lang="ru" way="down" state="tooltip">Удалить выбранные файлы</value>
+            <value lang="pl" way="down" state="tooltip">Usuń wybrane pliki</value>
+            <value lang="ar" way="down" state="tooltip">حذف الملفات المحددة</value>
+            <value lang="es" way="down" state="tooltip">Borrar los archivos seleccionados</value>
+            <value lang="fr" way="down" state="tooltip">Supprimer les fichiers sélectionnés</value>
+            <value lang="pt" way="down" state="tooltip">Apagar os ficheiros seleccionados</value>
+        </record>
+        <record key="delete.confirm.title">
+            <value lang="en">Delete confirmation</value>
+            <value lang="ru">Подтверждение удаления</value>
+            <value lang="pl">Potwierdzenie usunięcia</value>
+            <value lang="ar">التأكد من الحذف</value>
+            <value lang="es">Confirmación de borrado</value>
+            <value lang="fr">Confirmation de suppression</value>
+            <value lang="pt">Confirmação de remoção</value>
+        </record>
+        <record key="delete.confirm.text">
+            <value lang="en">Are you sure you want to delete these files?</value>
+            <value lang="ru">Вы уверены что хотите удалить все эти файлы?</value>
+            <value lang="pl">Jesteś pewny, że chcesz usunąć te pliki?</value>
+            <value lang="ar">هل أنت متأكد من حذف هذه الملفات؟</value>
+            <value lang="es">¿Está seguro que desea borrar los archivos?</value>
+            <value lang="fr">Êtes-vous sûr de vouloir supprimer ces fichiers?</value>
+            <value lang="pt">Tem a certeza que deseja apagar estes ficheiros?</value>
+        </record>
+        <record key="view">
+            <value lang="en" way="down" state="tooltip">Change view</value>
+            <value lang="ru" way="down" state="tooltip">Изменить вид</value>
+            <value lang="pl" way="down" state="tooltip">Zmień widok</value>
+            <value lang="ar" way="down" state="tooltip">تغيير المنظر</value>
+            <value lang="es" way="down" state="tooltip">Cambiar vista</value>
+            <value lang="fr" way="down" state="tooltip">Changer de vue</value>
+            <value lang="pt" way="down" state="tooltip">Alterar a vista</value>
+        </record>
+        <record key="view.table">
+            <value lang="en">Details</value>
+            <value lang="ru">Таблица</value>
+            <value lang="pl">Szczegóły</value>
+            <value lang="ar">التفاصيل</value>
+            <value lang="es">Detalles</value>
+            <value lang="fr">détails</value>
+            <value lang="pt">Detalhes</value>
+        </record>
+        <record key="view.icons">
+            <value lang="en">Icons</value>
+            <value lang="ru">Иконки</value>
+            <value lang="pl">Ikony</value>
+            <value lang="ar">أيقونات</value>
+            <value lang="es">Íconos</value>
+            <value lang="fr">Icônes</value>
+            <value lang="pt">Ícones</value>
+        </record>
+        <record key="view.tiles">
+            <value lang="en">Tiles</value>
+            <value lang="ru">Тайлы</value>
+            <value lang="pl">Kafelki</value>
+            <value lang="ar">أسطح</value>
+            <value lang="es">Azulejos</value>
+            <value lang="fr">Carreaux</value>
+            <value lang="pt">Mozaicos</value>
+        </record>
+        <record key="files.selected">
+            <value lang="en">Selected files:</value>
+            <value lang="ru">Выбранные файлы:</value>
+            <value lang="pl">Wybrane pliki:</value>
+            <value lang="ar">الملفات المحددة:</value>
+            <value lang="es">Archivos seleccionados:</value>
+            <value lang="fr">Fichiers sélectionnés:</value>
+            <value lang="pt">Ficheiros seleccionados:</value>
+        </record>
+        <record key="choose">
+            <value lang="en">Choose</value>
+            <value lang="ru">Выбрать</value>
+            <value lang="pl">Wybierz</value>
+            <value lang="ar">اختر</value>
+            <value lang="es">Elija</value>
+            <value lang="fr">Choisir</value>
+            <value lang="pt">Escolher</value>
+        </record>
+        <record key="cancel">
+            <value lang="en">Cancel</value>
+            <value lang="ru">Отмена</value>
+            <value lang="pl">Anuluj</value>
+            <value lang="ar">إلغاء</value>
+            <value lang="es">Cancelar</value>
+            <value lang="fr">Annuler</value>
+            <value lang="pt">Cancelar</value>
+        </record>
+    </Dictionary>
+    <Dictionary name="WebColorChooser language" prefix="colorchooser">
+        <record key="title">
+            <value lang="en">Choose color</value>
+            <value lang="ru">Выбор цвета</value>
+            <value lang="pl">Wybierz kolor</value>
+            <value lang="ar">اختر اللون</value>
+            <value lang="es">Elija un color</value>
+            <value lang="fr">Choisissez une couleur</value>
+            <value lang="pt">Escolha uma cor</value>
+        </record>
+        <record key="webonly">
+            <value lang="en">Web colors only</value>
+            <value lang="ru">Только Web-цвета</value>
+            <value lang="pl">Tylko kolory html</value>
+            <value lang="ar">ألوان ويب فقط</value>
+            <value lang="es">Colores Web solamente</value>
+            <value lang="fr">Couleurs Web uniquement</value>
+            <value lang="pt">Apenas cores Web</value>
+        </record>
+        <record key="choose">
+            <value lang="en">Choose</value>
+            <value lang="ru">Выбрать</value>
+            <value lang="pl">Wybierz</value>
+            <value lang="ar">اختر</value>
+            <value lang="es">Elegir</value>
+            <value lang="fr">Choisir</value>
+            <value lang="pt">Escolher</value>
+        </record>
+        <record key="reset">
+            <value lang="en">Reset</value>
+            <value lang="ru">Сбросить</value>
+            <value lang="pl">Reset</value>
+            <value lang="ar">إعادة تعيين</value>
+            <value lang="es">Reinicializar</value>
+            <value lang="fr">Réinitialiser</value>
+            <value lang="pt">Repor</value>
+        </record>
+        <record key="cancel">
+            <value lang="en">Cancel</value>
+            <value lang="ru">Отмена</value>
+            <value lang="pl">Anuluj</value>
+            <value lang="ar">إلغاء</value>
+            <value lang="es">Cancelar</value>
+            <value lang="fr">Annuler</value>
+            <value lang="pt">Cancelar</value>
+        </record>
+    </Dictionary>
+    <Dictionary name="Extended components language" prefix="ex">
+        <Dictionary name="WebDirectoryChooser language" prefix="dirchooser">
+            <record key="title">
+                <value lang="en">Choose directory</value>
+                <value lang="ru">Выбор папок</value>
+                <value lang="pl">Wybierz katalog</value>
+                <value lang="ar">اختر مجلد</value>
+                <value lang="es">Elija un directorio</value>
+                <value lang="fr">Choisissez un dossier</value>
+                <value lang="pt">Escolher uma pasta</value>
+            </record>
+            <record key="folderup">
+                <value lang="en" way="down" state="tooltip">Folder up</value>
+                <value lang="ru" way="down" state="tooltip">На уровень вверх</value>
+                <value lang="pl" way="down" state="tooltip">W górę</value>
+                <value lang="ar" way="down" state="tooltip">مجلد للأعلى</value>
+                <value lang="es" way="down" state="tooltip">Subir un directorio</value>
+                <value lang="fr" way="down" state="tooltip">Dossier supérieur</value>
+                <value lang="pt" way="down" state="tooltip">Pasta acima</value>
+            </record>
+            <record key="home">
+                <value lang="en" way="down" state="tooltip">Home directory</value>
+                <value lang="ru" way="down" state="tooltip">Домашняя директория</value>
+                <value lang="pl" way="down" state="tooltip">Katalog domowy</value>
+                <value lang="ar" way="down" state="tooltip">المجلد الرئيسي</value>
+                <value lang="es" way="down" state="tooltip">Directorio de inicio</value>
+                <value lang="fr" way="down" state="tooltip">Répertoire personnel</value>
+                <value lang="pt" way="down" state="tooltip">Pasta pessoal</value>
+            </record>
+            <record key="refresh">
+                <value lang="en" way="down" state="tooltip">Reload folder content</value>
+                <value lang="ru" way="down" state="tooltip">Обновить содержимое папки</value>
+                <value lang="pl" way="down" state="tooltip">Ponownie załaduj zawartość folderu</value>
+                <value lang="ar" way="down" state="tooltip">تحديث محتوى المجلد</value>
+                <value lang="es" way="down" state="tooltip">Recargar el contenido del directorio</value>
+                <value lang="fr" way="down" state="tooltip">Recharger le contenu du dossier</value>
+                <value lang="pt" way="down" state="tooltip">Refrescar o conteúdo da pasta</value>
+            </record>
+            <record key="newfolder">
+                <value lang="en" way="down" state="tooltip">Create new folder</value>
+                <value lang="ru" way="down" state="tooltip">Создать новую папку</value>
+                <value lang="pl" way="down" state="tooltip">Stwórz nowy folder</value>
+                <value lang="ar" way="down" state="tooltip">إنشاء مجلد جديد</value>
+                <value lang="es" way="down" state="tooltip">Crear nuevo directorio</value>
+                <value lang="fr" way="down" state="tooltip">Créer un nouveau dossier</value>
+                <value lang="pt" way="down" state="tooltip">Criar uma nova pasta</value>
+            </record>
+            <record key="newfolder.name">
+                <value lang="en">New folder</value>
+                <value lang="ru">Новая папка</value>
+                <value lang="pl">Nowy folder</value>
+                <value lang="ar">مجلد جديد</value>
+                <value lang="es">Nuevo directorio</value>
+                <value lang="fr">Nouveau dossier</value>
+                <value lang="pt">Nova pasta</value>
+            </record>
+            <record key="newfolder.error.title">
+                <value lang="en">Error</value>
+                <value lang="ru">Ошибка</value>
+                <value lang="pl">Błąd</value>
+                <value lang="ar">خطأ</value>
+                <value lang="es">Error</value>
+                <value lang="fr">Error</value>
+                <value lang="pt">Erro</value>
+            </record>
+            <record key="newfolder.error.text">
+                <value lang="en">Unable to create new folder</value>
+                <value lang="ru">Не удалось создать новую папку</value>
+                <value lang="pl">Nie można utworzyć nowego folderu</value>
+                <value lang="ar">غير قادر على إنشاء مجلد جديد</value>
+                <value lang="es">Imposible crear un nuevo directorio</value>
+                <value lang="fr">Impossible de créer un nouveau dossier</value>
+                <value lang="pt">Não foi possível criar a nova pasta</value>
+            </record>
+            <record key="delete">
+                <value lang="en" way="down" state="tooltip">Delete selected files</value>
+                <value lang="ru" way="down" state="tooltip">Удалить выбранные файлы</value>
+                <value lang="pl" way="down" state="tooltip">Usuń wybrane pliki</value>
+                <value lang="ar" way="down" state="tooltip">حذف الملفات المحددة</value>
+                <value lang="es" way="down" state="tooltip">Borrar los archivos seleccionados</value>
+                <value lang="fr" way="down" state="tooltip">Supprimer les fichiers sélectionnés</value>
+                <value lang="pt" way="down" state="tooltip">Apagar os ficheiros seleccionados</value>
+            </record>
+            <record key="delete.confirm.title">
+                <value lang="en">Delete confirmation</value>
+                <value lang="ru">Подтверждение удаления</value>
+                <value lang="pl">Potwierdzenie usunięcia</value>
+                <value lang="ar">التأكد من الحذف</value>
+                <value lang="es">Confirmación de borrado</value>
+                <value lang="fr">Confirmation de suppression</value>
+                <value lang="pt">Confirmação de remoção</value>
+            </record>
+            <record key="delete.confirm.text">
+                <value lang="en">Are you sure you want to delete directory?</value>
+                <value lang="ru">Вы уверены что хотите удалить папку?</value>
+                <value lang="pl">Jesteś pewien, że chcesz usunąć ten katalog?</value>
+                <value lang="ar">هل أنت متأكد من حذف هذه الملفات؟</value>
+                <value lang="es">¿Está seguro que desea borrar el directorio?</value>
+                <value lang="fr">Êtes-vous sûr de vouloir supprimer le dossier?</value>
+                <value lang="pt">Tem a certeza que deseja apagar estes ficheiros?</value>
+            </record>
+            <record key="choose">
+                <value lang="en">Choose</value>
+                <value lang="ru">Выбрать</value>
+                <value lang="pl">Wybierz</value>
+                <value lang="ar">اختر</value>
+                <value lang="es">Elegir</value>
+                <value lang="fr">Choisir</value>
+                <value lang="pt">Escolher</value>
+            </record>
+            <record key="cancel">
+                <value lang="en">Cancel</value>
+                <value lang="ru">Отмена</value>
+                <value lang="pl">Anuluj</value>
+                <value lang="ar">إلغاء</value>
+                <value lang="es">Cancelar</value>
+                <value lang="fr">Annuler</value>
+                <value lang="pt">Cancelar</value>
+            </record>
+        </Dictionary>
+        <Dictionary name="WebMemoryBar language" prefix="memorybar">
+            <record key="of">
+                <value lang="en">of</value>
+                <value lang="ru">из</value>
+                <value lang="pl">z</value>
+                <value lang="ar">من</value>
+                <value lang="es">de</value>
+                <value lang="fr">de</value>
+                <value lang="pt">de</value>
+            </record>
+            <record key="alloc">
+                <value lang="en">Allocated heap size:</value>
+                <value lang="ru">Выделенная память:</value>
+                <value lang="pl">Zaalokowany rozmiar pamięci:</value>
+                <value lang="ar">حجم الذاكرة المخصصة:</value>
+                <value lang="es">Tamaño asignado de la pila:</value>
+                <value lang="fr">Taille alloué de la pile:</value>
+                <value lang="pt">Tamanho alocado para a pilha:</value>
+            </record>
+            <record key="used">
+                <value lang="en">Used:</value>
+                <value lang="ru">Занятая:</value>
+                <value lang="pl">Użyty:</value>
+                <value lang="ar">مستخدم:</value>
+                <value lang="es">Usado:</value>
+                <value lang="fr">Utilisé:</value>
+                <value lang="pt">Utilizado:</value>
+            </record>
+            <record key="max">
+                <value lang="en">Available:</value>
+                <value lang="ru">Доступная:</value>
+                <value lang="pl">Dostępny:</value>
+                <value lang="ar">متوفر:</value>
+                <value lang="es">Disponible:</value>
+                <value lang="fr">Disponible:</value>
+                <value lang="pt">Disponível:</value>
+            </record>
+        </Dictionary>
+        <Dictionary name="WebFileDrop language" prefix="filedrop">
+            <record key="drop">
+                <value lang="en">Drop files here</value>
+                <value lang="ru">Перетащите файлы сюда</value>
+                <value lang="pl">Puść pliki tutaj</value>
+                <value lang="ar">أسقط الملفات هنا</value>
+                <value lang="es">Soltar archivos aquí</value>
+                <value lang="fr">Déposer des fichiers ici</value>
+                <value lang="pt">Largue ficheiros aqui</value>
+            </record>
+        </Dictionary>
+        <Dictionary name="WebHotkeyField language" prefix="hotkeyfield">
+            <record key="press">
+                <value lang="en">Press any key</value>
+                <value lang="ru">Выберите горячую клавишу</value>
+                <value lang="pl">Naciśnij jakiś klawisz</value>
+                <value lang="ar">اضغط أي مفتاح</value>
+                <value lang="es">Presione cualquier tecla</value>
+                <value lang="fr">Appuyez sur n&apos;importe quelle touche</value>
+                <value lang="pt">Pressione qualquer tecla</value>
+            </record>
+        </Dictionary>
+        <Dictionary name="WebCalendar language" prefix="calendar">
+            <record key="dayOfWeek.1">
+                <value lang="en">Mon</value>
+                <value lang="ru">Пн</value>
+                <value lang="pl">Pon</value>
+                <value lang="ar">الاثنين</value>
+                <value lang="es">Lun</value>
+                <value lang="fr">Lun</value>
+                <value lang="pt">Seg</value>
+            </record>
+            <record key="dayOfWeek.2">
+                <value lang="en">Tue</value>
+                <value lang="ru">Вт</value>
+                <value lang="pl">Wt</value>
+                <value lang="ar">الثلاثاء</value>
+                <value lang="es">Mar</value>
+                <value lang="fr">Mar</value>
+                <value lang="pt">Ter</value>
+            </record>
+            <record key="dayOfWeek.3">
+                <value lang="en">Wed</value>
+                <value lang="ru">Ср</value>
+                <value lang="pl">Śr</value>
+                <value lang="ar">الأربعاء</value>
+                <value lang="es">Mier</value>
+                <value lang="fr">Mer</value>
+                <value lang="pt">Qua</value>
+            </record>
+            <record key="dayOfWeek.4">
+                <value lang="en">Thu</value>
+                <value lang="ru">Чт</value>
+                <value lang="pl">Czw</value>
+                <value lang="ar">الخميس</value>
+                <value lang="es">Jue</value>
+                <value lang="fr">Jeu</value>
+                <value lang="pt">Qui</value>
+            </record>
+            <record key="dayOfWeek.5">
+                <value lang="en">Fri</value>
+                <value lang="ru">Пт</value>
+                <value lang="pl">Pt</value>
+                <value lang="ar">الجمعة</value>
+                <value lang="es">Vier</value>
+                <value lang="fr">Ven</value>
+                <value lang="pt">Sex</value>
+            </record>
+            <record key="dayOfWeek.6">
+                <value lang="en">Sat</value>
+                <value lang="ru">Сб</value>
+                <value lang="pl">Sob</value>
+                <value lang="ar">السبت</value>
+                <value lang="es">Sab</value>
+                <value lang="fr">Sam</value>
+                <value lang="pt">Sab</value>
+            </record>
+            <record key="dayOfWeek.7">
+                <value lang="en">Sun</value>
+                <value lang="ru">Вс</value>
+                <value lang="pl">Niedz</value>
+                <value lang="ar">الأحد</value>
+                <value lang="es">Dom</value>
+                <value lang="fr">Dim</value>
+                <value lang="pt">Dom</value>
+            </record>
+        </Dictionary>
+        <Dictionary name="NinePatchEditor language" prefix="npeditor">
+            <record key="title">
+                <value lang="en">Nine-patch editor</value>
+                <value lang="ru">Nine-patch редактор</value>
+                <value lang="pl">Edytor Nine-patch</value>
+                <value lang="ar">Nine-patch المحرر</value>
+                <value lang="es">Editor Nine-patch</value>
+                <value lang="fr">Editeur Nine-patch</value>
+                <value lang="pt">Editor nine-patch</value>
+            </record>
+            <record key="openImage">
+                <value lang="en" state="tooltip">Open image</value>
+                <value lang="ru" state="tooltip">Открыть изображение</value>
+                <value lang="pl" state="tooltip">Otwórz obraz</value>
+                <value lang="ar" state="tooltip">فتح صورة</value>
+                <value lang="es" state="tooltip">Abrir imagen</value>
+                <value lang="fr" state="tooltip">Ouvrir l&apos;image</value>
+                <value lang="pt" state="tooltip">Abrir imagem</value>
+            </record>
+            <record key="openImage.title">
+                <value lang="en" state="tooltip">Choose image</value>
+                <value lang="ru" state="tooltip">Выберите изображение</value>
+                <value lang="pl" state="tooltip">Wybierz obraz</value>
+                <value lang="ar" state="tooltip">اختر صورة</value>
+                <value lang="es" state="tooltip">Elegir imagen</value>
+                <value lang="fr" state="tooltip">Choisir une image</value>
+                <value lang="pt" state="tooltip">Escolher imagem</value>
+            </record>
+            <record key="saveImage">
+                <value lang="en" state="tooltip">Save image</value>
+                <value lang="ru" state="tooltip">Сохранить изображение</value>
+                <value lang="pl" state="tooltip">Zapisz obrazek</value>
+                <value lang="ar" state="tooltip">حفظ الصورة</value>
+                <value lang="es" state="tooltip">Guardar imagen</value>
+                <value lang="fr" state="tooltip">Enregistrer l&apos;image</value>
+                <value lang="pt" state="tooltip">Guardar imagem</value>
+            </record>
+            <record key="saveImageAs">
+                <value lang="en" state="tooltip">Save image as</value>
+                <value lang="ru" state="tooltip">Сохранить изображение как</value>
+                <value lang="pl" state="tooltip">Zapisz obraz jako</value>
+                <value lang="ar" state="tooltip">حفظ الصورة باسم</value>
+                <value lang="es" state="tooltip">Guardar imagen como</value>
+                <value lang="fr" state="tooltip">Enregistrer l&apos;image sous</value>
+                <value lang="pt" state="tooltip">Guardar imagem como</value>
+            </record>
+            <record key="saveImageAs.title">
+                <value lang="en" state="tooltip">Choose file to save into</value>
+                <value lang="ru" state="tooltip">Выберите файл для сохранения</value>
+                <value lang="pl" state="tooltip">Wybierz plik do zapisu</value>
+                <value lang="ar" state="tooltip">اختر الملف للحفظ فيه</value>
+                <value lang="es" state="tooltip">Elegir archivo para guardar en</value>
+                <value lang="fr" state="tooltip">Choisir un fichier à enregistrer dans</value>
+                <value lang="pt" state="tooltip">Escolha o ficheiro no qual guardar</value>
+            </record>
+            <record key="copyInfo">
+                <value lang="en" state="tooltip">Copy patch locations</value>
+                <value lang="ru" state="tooltip">Копировать расположение патчей</value>
+                <value lang="pl" state="tooltip">Skopiuj miejsca poprawki</value>
+                <value lang="ar" state="tooltip">انسخ مكان النقط</value>
+                <value lang="es" state="tooltip">Copiar localizaciones de parches</value>
+                <value lang="fr" state="tooltip">Copier l&apos;emplacement du patch</value>
+                <value lang="pt" state="tooltip">Copiar as localizações das patch</value>
+            </record>
+            <record key="pasteInfo">
+                <value lang="en" state="tooltip">Paste patch locations</value>
+                <value lang="ru" state="tooltip">Вставить расположение патчей</value>
+                <value lang="pl" state="tooltip">Wklej miejsca poprawki</value>
+                <value lang="ar" state="tooltip">لصق مكان النقط</value>
+                <value lang="es" state="tooltip">Pegar localizaciones de parches</value>
+                <value lang="fr" state="tooltip">Coller l&apos;emplacement du patch</value>
+                <value lang="pt" state="tooltip">Colar as localizações das patch</value>
+            </record>
+            <record key="undo">
+                <value lang="en" state="tooltip">Undo</value>
+                <value lang="ru" state="tooltip">Отмена</value>
+                <value lang="pl" state="tooltip">Cofnij</value>
+                <value lang="ar" state="tooltip">تراجع</value>
+                <value lang="es" state="tooltip">Deshacer</value>
+                <value lang="fr" state="tooltip">Annuler</value>
+                <value lang="pt" state="tooltip">Desfazer</value>
+            </record>
+            <record key="redo">
+                <value lang="en" state="tooltip">Redo</value>
+                <value lang="ru" state="tooltip">Повтор</value>
+                <value lang="pl" state="tooltip">Powtórz</value>
+                <value lang="ar" state="tooltip">أعد</value>
+                <value lang="es" state="tooltip">Rehacer</value>
+                <value lang="fr" state="tooltip">Rétablir</value>
+                <value lang="pt" state="tooltip">Refazer</value>
+            </record>
+            <record key="preview.text">
+                <value lang="en">Simple text</value>
+                <value lang="ru">Простой текст</value>
+                <value lang="pl">Prosty tekst</value>
+                <value lang="ar">كتابة</value>
+                <value lang="es">Texto simple</value>
+                <value lang="fr">Texte simple</value>
+                <value lang="pt">Texto simples</value>
+            </record>
+            <record key="preview.showIcon">
+                <value lang="en" state="tooltip">Show icon</value>
+                <value lang="ru" state="tooltip">Показывать иконку</value>
+                <value lang="pl" state="tooltip">Pokaż ikone</value>
+                <value lang="ar" state="tooltip">أظهر الأيقونة</value>
+                <value lang="es" state="tooltip">Mostrar ícono</value>
+                <value lang="fr" state="tooltip">Afficher l&apos;ícône</value>
+                <value lang="pt" state="tooltip">Mostrar ícone</value>
+            </record>
+            <record key="preview.showText">
+                <value lang="en" state="tooltip">Show text</value>
+                <value lang="ru" state="tooltip">Показывать текст</value>
+                <value lang="pl" state="tooltip">Pokaż tekst</value>
+                <value lang="ar" state="tooltip">أظهر الكتابة</value>
+                <value lang="es" state="tooltip">Mostrar texto</value>
+                <value lang="fr" state="tooltip">Afficher le texte</value>
+                <value lang="pt" state="tooltip">Mostrar texto</value>
+            </record>
+            <record key="preview.transparentBackground">
+                <value lang="en" state="tooltip">Show transparent background</value>
+                <value lang="ru" state="tooltip">Показывать прозрачный фон</value>
+                <value lang="pl" state="tooltip">Pokaż przeźroczyste tło</value>
+                <value lang="ar" state="tooltip">أظهر الخلفية الشفافة</value>
+                <value lang="es" state="tooltip">Mostrar fondo transparente</value>
+                <value lang="fr" state="tooltip">Afficher le fond transparent</value>
+                <value lang="pt" state="tooltip">Mostrar fundo transparente</value>
+            </record>
+            <record key="preview.coloredBackground">
+                <value lang="en" state="tooltip">Show colored background</value>
+                <value lang="ru" state="tooltip">Показывать цветной фон</value>
+                <value lang="pl" state="tooltip">Pokaż kolorowe tło</value>
+                <value lang="ar" state="tooltip">أظهر الخلفية الملونة</value>
+                <value lang="es" state="tooltip">Mostrar fondo colorido</value>
+                <value lang="fr" state="tooltip">Afficher le fond colorié</value>
+                <value lang="pt" state="tooltip">Mostrar fundo colorido</value>
+            </record>
+            <record key="preview.backgroundColor.title">
+                <value lang="en">Choose background color</value>
+                <value lang="ru">Выберите цвет фона</value>
+                <value lang="pl">Wybierz kolor tła</value>
+                <value lang="ar">اختر لون الخلفية</value>
+                <value lang="es">Elije el color de fondo</value>
+                <value lang="fr">Choisisser la couleur du fond</value>
+                <value lang="pt">Escolha uma cor de fundo</value>
+            </record>
+            <record key="preview.foregroundColor">
+                <value lang="en" state="tooltip">Text color</value>
+                <value lang="ru" state="tooltip">Цвет текста</value>
+                <value lang="pl" state="tooltip">Kolor tekstu</value>
+                <value lang="ar" state="tooltip">لون الكتابة</value>
+                <value lang="es" state="tooltip">Color del texto</value>
+                <value lang="fr" state="tooltip">Couleur du texte</value>
+                <value lang="pt" state="tooltip">Cor do texto</value>
+            </record>
+            <record key="showSpacing">
+                <value lang="en" state="tooltip">Display spacing length between guidelines</value>
+                <value lang="ru" state="tooltip">Показывать расстояние между направляющими</value>
+                <value lang="pl" state="tooltip">Pokaż długość odstępu pomiędzy prowadnicami</value>
+                <value lang="ar" state="tooltip">أظهر المسافات بين الأسطر</value>
+                <value lang="es" state="tooltip">Desplegar longitud de espaciamiento entre las directrices</value>
+                <value lang="fr" state="tooltip">Afficher la longueur de l&apos;espacement entre les lignes</value>
+                <value lang="pt" state="tooltip">Mostar o tamanho do espaçamento entre as linhas guia</value>
+            </record>
+            <record key="showRuler">
+                <value lang="en" state="tooltip">Show ruler</value>
+                <value lang="ru" state="tooltip">Показывать линейку</value>
+                <value lang="pl" state="tooltip">Pokaż linie</value>
+                <value lang="ar" state="tooltip">أظهر المسطرة</value>
+                <value lang="es" state="tooltip">Mostrar regla</value>
+                <value lang="fr" state="tooltip">Afficher la règle</value>
+                <value lang="pt" state="tooltip">Mostrar régua</value>
+            </record>
+            <record key="fillContent">
+                <value lang="en" state="tooltip">Show content area</value>
+                <value lang="ru" state="tooltip">Показывать область содержимого</value>
+                <value lang="pl" state="tooltip">Pokaż zawartość obszaru</value>
+                <value lang="ar" state="tooltip">أظهر مكان المحتوى</value>
+                <value lang="es" state="tooltip">Mostrar área de contenido</value>
+                <value lang="fr" state="tooltip">Afficher la zone de contenu</value>
+                <value lang="pt" state="tooltip">Mostrar área de conteúdo</value>
+            </record>
+            <record key="fillStretch">
+                <value lang="en" state="tooltip">Show stretched areas</value>
+                <value lang="ru" state="tooltip">Показывать растягиваемые области</value>
+                <value lang="pl" state="tooltip">Pokaż rozciągniete obszary</value>
+                <value lang="ar" state="tooltip">أظهر الأماكن الممدودة</value>
+                <value lang="es" state="tooltip">Mostrar áreas extendidas</value>
+                <value lang="fr" state="tooltip">Afficher la zone étendue</value>
+                <value lang="pt" state="tooltip">Mostrar áreas esticadas</value>
+            </record>
+            <record key="rulerCursor">
+                <value lang="en" state="tooltip">Show cursor position on ruler</value>
+                <value lang="ru" state="tooltip">Показывать положение курсора на линейке</value>
+                <value lang="pl" state="tooltip">Pokaż pozycję kursora na linijce</value>
+                <value lang="ar" state="tooltip">تظهر موضع المؤشر على الحاكم</value>
+                <value lang="es" state="tooltip">Mostrar posición del cursor en regla</value>
+                <value lang="fr" state="tooltip">Voir la position du curseur sur la règle</value>
+                <value lang="pt" state="tooltip">Mostrar posição do cursor na régua</value>
+            </record>
+            <record key="areaCursor">
+                <value lang="en" state="tooltip">Show cursor position on area</value>
+                <value lang="ru" state="tooltip">Показывать положение курсора на области</value>
+                <value lang="pl" state="tooltip">Pokaż pozycję kursora na obszarze</value>
+                <value lang="ar" state="tooltip">تظهر موضع المؤشر على المنطقة</value>
+                <value lang="es" state="tooltip">Mostrar posición del cursor en el área de</value>
+                <value lang="fr" state="tooltip">Voir la position du curseur sur la zone</value>
+                <value lang="pt" state="tooltip">Mostram a posição do cursor na área</value>
+            </record>
+            <record key="saveChanges.title">
+                <value lang="en">Confirm save</value>
+                <value lang="ru">Подтверждение сохранения</value>
+                <value lang="pl">Potwierdzenie zapisu</value>
+                <value lang="ar">تأكيد الحفظ</value>
+                <value lang="es">Confirmar guardado</value>
+                <value lang="fr">Confirmer l&apos;enregistrement</value>
+                <value lang="pt">Confirmar guardar</value>
+            </record>
+            <record key="saveChanges.text">
+                <value lang="en">Do you want to save edited image?</value>
+                <value lang="ru">Сохранить изменённое изображение?</value>
+                <value lang="pl">Chcesz zapisać zmodyfikowany obraz?</value>
+                <value lang="ar">هل ترغب في حفظ التغييرات؟</value>
+                <value lang="es">¿Desea guardar la imagen editada?</value>
+                <value lang="fr">Voulez-vous enregistrer l&apos;image éditée?</value>
+                <value lang="pt">Deseja guardar a imagem editada?</value>
+            </record>
+        </Dictionary>
+    </Dictionary>
+</Dictionary>
