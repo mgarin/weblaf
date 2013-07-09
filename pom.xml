@@ -6,6 +6,7 @@
     <version>1.14-SNAPSHOT</version>
     <properties>
     	<jdk.version>1.7</jdk.version>
+    	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <inceptionYear>2012</inceptionYear>
     <organization>
@@ -22,31 +23,40 @@
     			<artifactId>maven-compiler-plugin</artifactId>
     			<version>3.1</version>
     			<configuration>
+    				<optimize>true</optimize>
     				<source>${jdk.version}</source>
     				<target>${jdk.version}</target>
     			</configuration>
     		</plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>2.1</version>
-                <configuration>
-                    <createDependencyReducePom>false</createDependencyReducePom>
-                </configuration>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
+    		<plugin>
+    			<groupId>org.apache.maven.plugins</groupId>
+    			<artifactId>maven-source-plugin</artifactId>
+    			<version>2.2.1</version>
+    			<executions>
+                	<execution>
+                    	<id>attach-sources</id>
                         <goals>
-                            <goal>shade</goal>
-                        </goals>
-                        <configuration>
-                            <createSourcesJar>true</createSourcesJar>
-                            <shadedArtifactAttached>true</shadedArtifactAttached>
-                            <shadedClassifierName>allinone</shadedClassifierName>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
+                        	<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+    		</plugin>
+    		<plugin>
+    			<groupId>org.apache.maven.plugins</groupId>
+    			<artifactId>maven-javadoc-plugin</artifactId>
+    			<version>2.9.1</version>
+    			<configuration>
+    				<quiet>true</quiet>
+    			</configuration>
+    			<executions>
+    				<execution>
+    					<id>attach-javadoc</id>
+    					<goals>
+    						<goal>jar</goal>
+    					</goals>
+    				</execution>
+    			</executions>
+    		</plugin>
     	</plugins>
     </build>
     <dependencies>
