@@ -2,21 +2,17 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <artifactId>weblookandfeel-examples</artifactId>
-    <version>1.14-SNAPSHOT</version>
     <parent>
         <groupId>com.weblookandfeel</groupId>
         <artifactId>weblookandfeel-parent</artifactId>
+        <version>1.14-SNAPSHOT</version>
     </parent>
-    <properties>
-    	<jdk.version>1.7</jdk.version>
-    	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
-    <inceptionYear>2012</inceptionYear>
-    <organization>
-        <name>Web Look And Feel</name>
-        <url>http://www.weblookandfeel.com</url>
-    </organization>
-    <prerequisites>
-        <maven>3.0+</maven>
-    </prerequisites>
+    
+    <dependencies>
+    	<dependency>
+    		<groupId>com.weblookandfeel</groupId>
+    		<artifactId>weblookandfeel-core</artifactId>
+    		<version>${parent.version}</version>
+    	</dependency>
+    </dependencies>
 </project>
