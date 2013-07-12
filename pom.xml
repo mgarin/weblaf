@@ -26,6 +26,9 @@
     				<optimize>true</optimize>
     				<source>${jdk.version}</source>
     				<target>${jdk.version}</target>
+    				<excludes>
+    					<exclude>com/alee/examples/**/*</exclude>
+    				</excludes>
     			</configuration>
     		</plugin>
     		<plugin>
