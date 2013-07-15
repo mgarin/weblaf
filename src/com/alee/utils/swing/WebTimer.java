@@ -43,6 +43,14 @@ import java.util.Map;
 public class WebTimer
 {
     /**
+     * Timer constants for calculations.
+     */
+    public static final int msInDay = 86400000;
+    public static final int msInHour = 3600000;
+    public static final int msInMinute = 60000;
+    public static final int msInSecond = 1000;
+
+    /**
      * Default name for timer thread.
      */
     public static String defaultThreadName = "WebTimer";
@@ -128,11 +136,34 @@ public class WebTimer
     /**
      * Constructs timer with specified delay.
      *
+     * @param delay delay between timer cycles
+     * @see #parseDelay(String)
+     */
+    public WebTimer ( String delay )
+    {
+        this ( parseDelay ( delay ) );
+    }
+
+    /**
+     * Constructs timer with specified delay.
+     *
      * @param delay delay between timer cycles in milliseconds
      */
     public WebTimer ( long delay )
     {
         this ( defaultThreadName, delay );
+    }
+
+    /**
+     * Constructs timer with specified internal thread name and delay.
+     *
+     * @param name  internal thread name
+     * @param delay delay between timer cycles
+     * @see #parseDelay(String)
+     */
+    public WebTimer ( String name, String delay )
+    {
+        this ( name, parseDelay ( delay ) );
     }
 
     /**
@@ -172,12 +203,37 @@ public class WebTimer
     /**
      * Constructs timer with specified delay and action listener.
      *
+     * @param delay    delay between timer cycles
+     * @param listener action listener
+     * @see #parseDelay(String)
+     */
+    public WebTimer ( String delay, ActionListener listener )
+    {
+        this ( parseDelay ( delay ), listener );
+    }
+
+    /**
+     * Constructs timer with specified delay and action listener.
+     *
      * @param delay    delay between timer cycles in milliseconds
      * @param listener action listener
      */
     public WebTimer ( long delay, ActionListener listener )
     {
         this ( defaultThreadName, delay, listener );
+    }
+
+    /**
+     * Constructs timer with specified internal thread name, delay and action listener.
+     *
+     * @param name     internal thread name
+     * @param delay    delay between timer cycles
+     * @param listener action listener
+     * @see #parseDelay(String)
+     */
+    public WebTimer ( String name, String delay, ActionListener listener )
+    {
+        this ( name, parseDelay ( delay ), listener );
     }
 
     /**
@@ -208,6 +264,20 @@ public class WebTimer
      * Constructs timer with specified internal thread name, delay, initial delay and action listener.
      *
      * @param name         internal thread name
+     * @param delay        delay between timer cycles
+     * @param initialDelay delay before the first timer cycle run
+     * @param listener     action listener
+     * @see #parseDelay(String)
+     */
+    public WebTimer ( String name, String delay, String initialDelay, ActionListener listener )
+    {
+        this ( name, parseDelay ( delay ), parseDelay ( initialDelay ), listener );
+    }
+
+    /**
+     * Constructs timer with specified internal thread name, delay, initial delay and action listener.
+     *
+     * @param name         internal thread name
      * @param delay        delay between timer cycles in milliseconds
      * @param initialDelay delay before the first timer cycle run in milliseconds
      * @param listener     action listener
@@ -229,6 +299,26 @@ public class WebTimer
     public long getInitialDelay ()
     {
         return initialDelay;
+    }
+
+    /**
+     * Returns delay before the first timer cycle run.
+     *
+     * @return delay before the first timer cycle run
+     */
+    public String getInitialStringDelay ()
+    {
+        return toStringDelay ( initialDelay );
+    }
+
+    /**
+     * Sets delay before the first timer cycle run.
+     *
+     * @param initialDelay delay before the first timer cycle run
+     */
+    public void setInitialDelay ( String initialDelay )
+    {
+        setInitialDelay ( parseDelay ( initialDelay ) );
     }
 
     /**
@@ -256,6 +346,26 @@ public class WebTimer
     public long getDelay ()
     {
         return delay;
+    }
+
+    /**
+     * Returns delay between timer cycles.
+     *
+     * @return delay between timer cycles
+     */
+    public String getStringDelay ()
+    {
+        return toStringDelay ( delay );
+    }
+
+    /**
+     * Sets delay between timer cycles.
+     *
+     * @param delay delay between timer cycles
+     */
+    public void setDelay ( String delay )
+    {
+        setDelay ( parseDelay ( delay ) );
     }
 
     /**
@@ -703,6 +813,27 @@ public class WebTimer
     }
 
     /**
+     * {@inheritDoc}
+     */
+    public String toString ()
+    {
+        return name + ", delay (" + getStringDelay () + "), initialDelay (" + getInitialStringDelay () + ")";
+    }
+
+    /**
+     * Returns newly created and started timer that doesn't repeat and has the specified delay and action listener.
+     *
+     * @param delay    delay between timer cycles
+     * @param listener action listener
+     * @return newly created and started timer
+     * @see #parseDelay(String)
+     */
+    public static WebTimer delay ( String delay, ActionListener listener )
+    {
+        return delay ( parseDelay ( delay ), listener );
+    }
+
+    /**
      * Returns newly created and started timer that doesn't repeat and has the specified delay and action listener.
      *
      * @param delay    delay between timer cycles in milliseconds
@@ -712,6 +843,20 @@ public class WebTimer
     public static WebTimer delay ( long delay, ActionListener listener )
     {
         return delay ( defaultThreadName, delay, listener );
+    }
+
+    /**
+     * Returns newly created and started timer that doesn't repeat and has the specified delay and action listener.
+     *
+     * @param name     thread name
+     * @param delay    delay between timer cycles
+     * @param listener action listener
+     * @return newly created and started timer
+     * @see #parseDelay(String)
+     */
+    public static WebTimer delay ( String name, String delay, ActionListener listener )
+    {
+        return delay ( name, parseDelay ( delay ), listener );
     }
 
     /**
@@ -730,6 +875,20 @@ public class WebTimer
     /**
      * Returns newly created and started timer that doesn't repeat and has the specified delay and action listener.
      *
+     * @param delay                  delay between timer cycles
+     * @param useEventDispatchThread whether actions should be fired from Event Dispatch Thread or not
+     * @param listener               action listener
+     * @return newly created and started timer
+     * @see #parseDelay(String)
+     */
+    public static WebTimer delay ( String delay, boolean useEventDispatchThread, ActionListener listener )
+    {
+        return delay ( parseDelay ( delay ), useEventDispatchThread, listener );
+    }
+
+    /**
+     * Returns newly created and started timer that doesn't repeat and has the specified delay and action listener.
+     *
      * @param delay                  delay between timer cycles in milliseconds
      * @param useEventDispatchThread whether actions should be fired from Event Dispatch Thread or not
      * @param listener               action listener
@@ -738,6 +897,21 @@ public class WebTimer
     public static WebTimer delay ( long delay, boolean useEventDispatchThread, ActionListener listener )
     {
         return delay ( defaultThreadName, delay, useEventDispatchThread, listener );
+    }
+
+    /**
+     * Returns newly created and started timer that doesn't repeat and has the specified delay and action listener.
+     *
+     * @param name                   thread name
+     * @param delay                  delay between timer cycles
+     * @param useEventDispatchThread whether actions should be fired from Event Dispatch Thread or not
+     * @param listener               action listener
+     * @return newly created and started timer
+     * @see #parseDelay(String)
+     */
+    public static WebTimer delay ( String name, String delay, boolean useEventDispatchThread, ActionListener listener )
+    {
+        return delay ( name, parseDelay ( delay ), useEventDispatchThread, listener );
     }
 
     /**
@@ -760,6 +934,19 @@ public class WebTimer
     /**
      * Returns newly created and started timer that repeats and has the specified delay and action listener.
      *
+     * @param delay    delay between timer cycles
+     * @param listener action listener
+     * @return newly created and started timer
+     * @see #parseDelay(String)
+     */
+    public static WebTimer repeat ( String delay, ActionListener listener )
+    {
+        return repeat ( parseDelay ( delay ), listener );
+    }
+
+    /**
+     * Returns newly created and started timer that repeats and has the specified delay and action listener.
+     *
      * @param delay    delay between timer cycles in milliseconds
      * @param listener action listener
      * @return newly created and started timer
@@ -767,6 +954,20 @@ public class WebTimer
     public static WebTimer repeat ( long delay, ActionListener listener )
     {
         return repeat ( defaultThreadName, delay, listener );
+    }
+
+    /**
+     * Returns newly created and started timer that repeats and has the specified delay and action listener.
+     *
+     * @param name     thread name
+     * @param delay    delay between timer cycles
+     * @param listener action listener
+     * @return newly created and started timer
+     * @see #parseDelay(String)
+     */
+    public static WebTimer repeat ( String name, String delay, ActionListener listener )
+    {
+        return repeat ( name, parseDelay ( delay ), listener );
     }
 
     /**
@@ -785,6 +986,20 @@ public class WebTimer
     /**
      * Returns newly created and started timer that repeats and has the specified delay and action listener.
      *
+     * @param delay                  delay between timer cycles
+     * @param useEventDispatchThread whether actions should be fired from Event Dispatch Thread or not
+     * @param listener               action listener
+     * @return newly created and started timer
+     * @see #parseDelay(String)
+     */
+    public static WebTimer repeat ( String delay, boolean useEventDispatchThread, ActionListener listener )
+    {
+        return repeat ( parseDelay ( delay ), useEventDispatchThread, listener );
+    }
+
+    /**
+     * Returns newly created and started timer that repeats and has the specified delay and action listener.
+     *
      * @param delay                  delay between timer cycles in milliseconds
      * @param useEventDispatchThread whether actions should be fired from Event Dispatch Thread or not
      * @param listener               action listener
@@ -793,6 +1008,21 @@ public class WebTimer
     public static WebTimer repeat ( long delay, boolean useEventDispatchThread, ActionListener listener )
     {
         return repeat ( defaultThreadName, delay, useEventDispatchThread, listener );
+    }
+
+    /**
+     * Returns newly created and started timer that repeats and has the specified delay and action listener.
+     *
+     * @param name                   thread name
+     * @param delay                  delay between timer cycles
+     * @param useEventDispatchThread whether actions should be fired from Event Dispatch Thread or not
+     * @param listener               action listener
+     * @return newly created and started timer
+     * @see #parseDelay(String)
+     */
+    public static WebTimer repeat ( String name, String delay, boolean useEventDispatchThread, ActionListener listener )
+    {
+        return repeat ( name, parseDelay ( delay ), useEventDispatchThread, listener );
     }
 
     /**
@@ -866,5 +1096,103 @@ public class WebTimer
         repeat.setRepeats ( true );
         repeat.start ();
         return repeat;
+    }
+
+    /**
+     * Either returns delay retrieved from string or throws an exception if it cannot be parsed.
+     * Full string format is "Xd Yh Zm s ms" but you can skip any part of it. Yet you must specify atleast one value.
+     * For example string "2h 5s" will be a valid delay declaration and will be converted into (2*60*60*1000+5*1000) long value.
+     *
+     * @param delay string delay
+     * @return delay retrieved from string
+     */
+    public static long parseDelay ( String delay ) throws DelayFormatException
+    {
+        try
+        {
+            long summ = 0;
+            String[] parts = delay.split ( " " );
+            for ( String part : parts )
+            {
+                for ( int i = 0; i < part.length (); i++ )
+                {
+                    if ( !Character.isDigit ( part.charAt ( i ) ) )
+                    {
+                        int time = Integer.parseInt ( part.substring ( 0, i ) );
+                        PartType type = PartType.valueOf ( part.substring ( i ) );
+                        switch ( type )
+                        {
+                            case d:
+                                summ += time * msInDay;
+                                break;
+                            case h:
+                                summ += time * msInHour;
+                                break;
+                            case m:
+                                summ += time * msInMinute;
+                                break;
+                            case s:
+                                summ += time * msInSecond;
+                                break;
+                            case ms:
+                                summ += time;
+                                break;
+                        }
+                        break;
+                    }
+                }
+            }
+            return summ;
+        }
+        catch ( Throwable e )
+        {
+            throw new DelayFormatException ( e );
+        }
+    }
+
+    /**
+     * Returns
+     *
+     * @param delay
+     * @return
+     */
+    public static String toStringDelay ( long delay )
+    {
+        if ( delay <= 0 )
+        {
+            throw new IllegalArgumentException ( "Invalid delay: " + delay );
+        }
+
+        long time = delay;
+
+        long d = time / msInDay;
+        time = time - d * msInDay;
+
+        long h = time / msInHour;
+        time = time - h * msInHour;
+
+        long m = time / msInMinute;
+        time = time - m * msInMinute;
+
+        long s = time / msInSecond;
+        time = time - s * msInSecond;
+
+        long ms = time;
+
+        final String stringDelay = ( d > 0 ? d + "d " : "" ) +
+                ( h > 0 ? h + "h " : "" ) +
+                ( m > 0 ? m + "m " : "" ) +
+                ( s > 0 ? s + "s " : "" ) +
+                ( ms > 0 ? ms + "ms " : "" );
+
+        return stringDelay.trim ();
+    }
+
+    /**
+     * Time part type enumeration used to parse string delay.
+     */
+    private static enum PartType
+    {
+        d, h, m, s, ms
     }
 }
