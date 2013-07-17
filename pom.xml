@@ -22,6 +22,12 @@
 		<module>core</module>
 		<module>examples</module>
 	</modules>
+	<distributionManagement>
+		<repository>
+			<id>3rdparty</id>
+			<url>http://emgsydapp99:57502/nexus/content/repositories/macquarie-snapshots</url>
+		</repository>
+	</distributionManagement>
 	<build>
 		<pluginManagement>
 			<plugins>
@@ -50,19 +56,8 @@
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-javadoc-plugin</artifactId>
-					<version>2.9.1</version>
-					<configuration>
-						<quiet>true</quiet>
-					</configuration>
-					<executions>
-						<execution>
-							<id>attach-javadoc</id>
-							<goals>
-								<goal>jar</goal>
-							</goals>
-						</execution>
-					</executions>
+					<artifactId>maven-deploy-plugin</artifactId>
+					<version>2.7</version>
 				</plugin>
 			</plugins>
 		</pluginManagement>
