@@ -20,7 +20,7 @@
 	<packaging>pom</packaging>
 	<modules>
 		<module>core</module>
-		<module>examples</module>
+		<module>demo</module>
 	</modules>
 	<distributionManagement>
 		<repository>
