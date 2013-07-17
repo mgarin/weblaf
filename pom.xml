@@ -8,6 +8,7 @@
 	<properties>
 		<jdk.version>1.7</jdk.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<github.global.server>github</github.global.server>
 	</properties>
 	<inceptionYear>2012</inceptionYear>
 	<organization>
@@ -22,12 +23,9 @@
 		<module>core</module>
 		<module>demo</module>
 	</modules>
-	<distributionManagement>
-		<repository>
-			<id>3rdparty</id>
-			<url>http://emgsydapp99:57502/nexus/content/repositories/macquarie-snapshots</url>
-		</repository>
-	</distributionManagement>
+	<scm>
+		<url>https://github.com/mikesena/weblaf.git</url>
+	</scm>
 	<build>
 		<pluginManagement>
 			<plugins>
@@ -58,8 +56,37 @@
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-deploy-plugin</artifactId>
 					<version>2.7</version>
+					<configuration>
+						 <altDeploymentRepository>internal.repo::default::file://${project.build.directory}/mvn-repo</altDeploymentRepository>
+					</configuration>
 				</plugin>
 			</plugins>
 		</pluginManagement>
+		<plugins>
+			<plugin>
+				<groupId>com.github.github</groupId>
+				<artifactId>site-maven-plugin</artifactId>
+				<version>0.6</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>site</goal>
+						</goals>
+						<phase>site</phase>
+						<configuration>
+							<noJekyll>true</noJekyll>
+							<branch>refs/remotes/mvn-repo</branch>
+							<repositoryName>weblaf</repositoryName>
+							<repositoryOwner>mikesena</repositoryOwner>
+							<message>Creating site for ${project.version}</message>
+							<outputDirectory>${project.build.directory}/mvn-repo</outputDirectory>
+							<includes>
+								<include>**/*</include>
+							</includes>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
 	</build>
 </project>
