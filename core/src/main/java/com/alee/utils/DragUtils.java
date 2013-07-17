@@ -85,17 +85,13 @@ public class DragUtils
      */
     public static List<File> getImportedFiles ( Transferable t )
     {
-        // From URL
+        // From files list (Linux/MacOS)
         try
         {
-            if ( DragUtils.hasURIListFlavor ( t.getTransferDataFlavors () ) )
+            if ( hasURIListFlavor ( t.getTransferDataFlavors () ) )
             {
-                // File link
-                String url = ( String ) t.getTransferData ( DragUtils.getUriListDataFlavor () );
-                final File file = new File ( new URL ( url ).getPath () );
-
-                // Returning file
-                return Arrays.asList ( file );
+                // Parsing incoming files
+                return textURIListToFileList ( ( String ) t.getTransferData ( getUriListDataFlavor () ) );
             }
         }
         catch ( Throwable e )
@@ -103,13 +99,17 @@ public class DragUtils
             //
         }
 
-        // From files list (Linux/MacOS)
+        // From URL
         try
         {
-            if ( DragUtils.hasURIListFlavor ( t.getTransferDataFlavors () ) )
+            if ( hasURIListFlavor ( t.getTransferDataFlavors () ) )
             {
-                // Parsing incoming files
-                return DragUtils.textURIListToFileList ( ( String ) t.getTransferData ( DragUtils.getUriListDataFlavor () ) );
+                // File link
+                String url = ( String ) t.getTransferData ( getUriListDataFlavor () );
+                final File file = new File ( new URL ( url ).getPath () );
+
+                // Returning file
+                return Arrays.asList ( file );
             }
         }
         catch ( Throwable e )
