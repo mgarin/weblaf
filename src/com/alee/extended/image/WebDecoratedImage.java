@@ -130,7 +130,7 @@ public class WebDecoratedImage extends JComponent implements SwingConstants, Sha
     public void setHorizontalAlignment ( int horizontalAlignment )
     {
         this.horizontalAlignment = horizontalAlignment;
-        repaintPreview ();
+        repaint ();
     }
 
     public int getVerticalAlignment ()
@@ -141,7 +141,7 @@ public class WebDecoratedImage extends JComponent implements SwingConstants, Sha
     public void setVerticalAlignment ( int verticalAlignment )
     {
         this.verticalAlignment = verticalAlignment;
-        repaintPreview ();
+        repaint ();
     }
 
     public boolean isDrawBorder ()
@@ -412,6 +412,17 @@ public class WebDecoratedImage extends JComponent implements SwingConstants, Sha
 
     public void updatePreview ()
     {
+        if ( icon == null )
+        {
+            // No preview available
+            previewIcon = null;
+
+            // Updating component view
+            repaint ();
+
+            return;
+        }
+
         // Source image
         Image image = ImageUtils.copy ( icon.getImage () );
 
@@ -483,7 +494,7 @@ public class WebDecoratedImage extends JComponent implements SwingConstants, Sha
         previewIcon = new ImageIcon ( image );
 
         // Updating component view
-        repaintPreview ();
+        repaint ();
     }
 
     private Shape getGlanceShape ()
@@ -516,14 +527,6 @@ public class WebDecoratedImage extends JComponent implements SwingConstants, Sha
         else
         {
             return new Rectangle ( x + shadeWidth, y + shadeWidth, ps.width - shadeWidth * 2 - 1, ps.height - shadeWidth * 2 - 1 );
-        }
-    }
-
-    private void repaintPreview ()
-    {
-        if ( isShowing () )
-        {
-            repaint ();
         }
     }
 
