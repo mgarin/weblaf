@@ -36,6 +36,22 @@ import java.util.Map;
 public class WebFonts
 {
     /**
+     * Windows fonts.
+     */
+    public static final String TAHOMA = "Tahoma";
+    public static final String SEGOE_UI = "Segoe UI";
+
+    /**
+     * Mac OS X fonts.
+     */
+    public static final String LUCIDA_GRANDE = "Lucida Grande";
+
+    /**
+     * Unix fonts.
+     */
+    public static final String SANS_SERIF = Font.SANS_SERIF;
+
+    /**
      * Control components font (buttons, sliders and such).
      */
     private static final String CONTROL = "control";
@@ -83,13 +99,13 @@ public class WebFonts
         if ( SystemUtils.isWindows () )
         {
             // Win8
-            fonts.put ( CONTROL, new FontUIResource ( "Tahoma", Font.PLAIN, 12 ) );
-            fonts.put ( ALERT, new FontUIResource ( "Segoe UI", Font.PLAIN, 13 ) );
-            fonts.put ( MENU, new FontUIResource ( "Segoe UI", Font.PLAIN, 12 ) );
-            fonts.put ( ACCELERATOR, new FontUIResource ( "Segoe UI", Font.PLAIN, 12 ) );
-            fonts.put ( TITLE, new FontUIResource ( "Segoe UI", Font.PLAIN, 14 ) );
-            fonts.put ( TEXT, new FontUIResource ( "Tahoma", Font.PLAIN, 12 ) );
-            fonts.put ( TOOLTIP, new FontUIResource ( "Segoe UI", Font.PLAIN, 12 ) );
+            fonts.put ( CONTROL, new FontUIResource ( TAHOMA, Font.PLAIN, 12 ) );
+            fonts.put ( ALERT, new FontUIResource ( SEGOE_UI, Font.PLAIN, 13 ) );
+            fonts.put ( MENU, new FontUIResource ( SEGOE_UI, Font.PLAIN, 12 ) );
+            fonts.put ( ACCELERATOR, new FontUIResource ( SEGOE_UI, Font.PLAIN, 12 ) );
+            fonts.put ( TITLE, new FontUIResource ( SEGOE_UI, Font.PLAIN, 14 ) );
+            fonts.put ( TEXT, new FontUIResource ( TAHOMA, Font.PLAIN, 12 ) );
+            fonts.put ( TOOLTIP, new FontUIResource ( SEGOE_UI, Font.PLAIN, 12 ) );
 
             // Win7
             // todo
@@ -100,32 +116,42 @@ public class WebFonts
         else if ( SystemUtils.isMac () )
         {
             // Mac OS X
-            fonts.put ( CONTROL, new FontUIResource ( "Lucida Grande", Font.PLAIN, 13 ) );
-            fonts.put ( ALERT, new FontUIResource ( "Lucida Grande", Font.PLAIN, 11 ) );
-            fonts.put ( MENU, new FontUIResource ( "Lucida Grande", Font.PLAIN, 14 ) );
-            fonts.put ( ACCELERATOR, new FontUIResource ( "Lucida Grande", Font.PLAIN, 13 ) );
-            fonts.put ( TITLE, new FontUIResource ( "Lucida Grande", Font.BOLD, 14 ) );
-            fonts.put ( TEXT, new FontUIResource ( "Lucida Grande", Font.PLAIN, 13 ) );
-            fonts.put ( TOOLTIP, new FontUIResource ( "Lucida Grande", Font.PLAIN, 11 ) );
+            fonts.put ( CONTROL, new FontUIResource ( LUCIDA_GRANDE, Font.PLAIN, 13 ) );
+            fonts.put ( ALERT, new FontUIResource ( LUCIDA_GRANDE, Font.PLAIN, 11 ) );
+            fonts.put ( MENU, new FontUIResource ( LUCIDA_GRANDE, Font.PLAIN, 14 ) );
+            fonts.put ( ACCELERATOR, new FontUIResource ( LUCIDA_GRANDE, Font.PLAIN, 13 ) );
+            fonts.put ( TITLE, new FontUIResource ( LUCIDA_GRANDE, Font.BOLD, 14 ) );
+            fonts.put ( TEXT, new FontUIResource ( LUCIDA_GRANDE, Font.PLAIN, 13 ) );
+            fonts.put ( TOOLTIP, new FontUIResource ( LUCIDA_GRANDE, Font.PLAIN, 11 ) );
         }
-        //        else if ( SystemUtils.isUnix () )
-        //        {
-        //            // todo
-        //        }
-        //        else if ( SystemUtils.isSolaris () )
-        //        {
-        //            // todo
-        //        }
         else
         {
-            // Default font for other OS
-            fonts.put ( CONTROL, new FontUIResource ( Font.DIALOG, Font.BOLD, 12 ) );
-            fonts.put ( ALERT, new FontUIResource ( Font.DIALOG, Font.BOLD, 12 ) );
-            fonts.put ( MENU, new FontUIResource ( Font.DIALOG, Font.BOLD, 12 ) );
-            fonts.put ( ACCELERATOR, new FontUIResource ( Font.DIALOG, Font.BOLD, 11 ) );
-            fonts.put ( TITLE, new FontUIResource ( Font.DIALOG, Font.BOLD, 12 ) );
-            fonts.put ( TEXT, new FontUIResource ( Font.DIALOG, Font.BOLD, 12 ) );
-            fonts.put ( TOOLTIP, new FontUIResource ( Font.DIALOG, Font.BOLD, 12 ) );
+            if ( SystemUtils.isUnix () )
+            {
+                // Unix systems
+                fonts.put ( CONTROL, new FontUIResource ( SANS_SERIF, Font.PLAIN, 12 ) );
+                fonts.put ( ALERT, new FontUIResource ( SANS_SERIF, Font.PLAIN, 12 ) );
+                fonts.put ( MENU, new FontUIResource ( SANS_SERIF, Font.PLAIN, 12 ) );
+                fonts.put ( ACCELERATOR, new FontUIResource ( SANS_SERIF, Font.PLAIN, 11 ) );
+                fonts.put ( TITLE, new FontUIResource ( SANS_SERIF, Font.BOLD, 12 ) );
+                fonts.put ( TEXT, new FontUIResource ( SANS_SERIF, Font.PLAIN, 12 ) );
+                fonts.put ( TOOLTIP, new FontUIResource ( SANS_SERIF, Font.PLAIN, 12 ) );
+            }
+            //        else if ( SystemUtils.isSolaris () )
+            //        {
+            //            // todo
+            //        }
+            else
+            {
+                // Other OS
+                fonts.put ( CONTROL, new FontUIResource ( SANS_SERIF, Font.PLAIN, 12 ) );
+                fonts.put ( ALERT, new FontUIResource ( SANS_SERIF, Font.PLAIN, 12 ) );
+                fonts.put ( MENU, new FontUIResource ( SANS_SERIF, Font.PLAIN, 12 ) );
+                fonts.put ( ACCELERATOR, new FontUIResource ( SANS_SERIF, Font.PLAIN, 11 ) );
+                fonts.put ( TITLE, new FontUIResource ( SANS_SERIF, Font.BOLD, 12 ) );
+                fonts.put ( TEXT, new FontUIResource ( SANS_SERIF, Font.PLAIN, 12 ) );
+                fonts.put ( TOOLTIP, new FontUIResource ( SANS_SERIF, Font.PLAIN, 12 ) );
+            }
         }
     }
 

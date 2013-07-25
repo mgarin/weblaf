@@ -438,6 +438,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
         table.put ( "Tree.selectionForeground", Color.BLACK );
         table.put ( "Tree.selectionBackground", StyleConstants.transparent );
         table.put ( "Tree.selectionBorderColor", StyleConstants.transparent );
+        table.put ( "Tree.dropCellBackground", StyleConstants.transparent );
         // Tree default renderer content margins
         table.put ( "Tree.rendererMargins", new InsetsUIResource ( 4, 4, 4, 6 ) );
         table.put ( "Tree.rendererFillBackground", Boolean.FALSE );

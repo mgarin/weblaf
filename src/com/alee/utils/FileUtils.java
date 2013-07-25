@@ -1363,6 +1363,13 @@ public class FileUtils
         return paths;
     }
 
+    /**
+     * Downloads file from the specified url to destination file and returns it if download succeed or null if not.
+     *
+     * @param url     file source url
+     * @param dstFile destination file
+     * @return downloaded file if download succeed, null otherwise
+     */
     public static File downloadFile ( String url, File dstFile )
     {
         return downloadFile ( url, dstFile, false, null, GlobalConstants.SHORT_TIMEOUT, null );
@@ -1762,14 +1769,7 @@ public class FileUtils
      */
     public static boolean ensureDirectoryExists ( File dir )
     {
-        if ( dir.exists () )
-        {
-            return true;
-        }
-        else
-        {
-            return dir.mkdirs ();
-        }
+        return dir.exists () || dir.mkdirs ();
     }
 
     /**
