@@ -8,6 +8,7 @@
             <value lang="es">Información de la Librería</value>
             <value lang="fr">Information sur la bibliothèque</value>
             <value lang="pt">Inflormação sobre a biblioteca</value>
+            <value lang="de">Bibliotheksinformationen</value>
         </record>
         <Dictionary name="General information tab" prefix="general">
             <record key="title">
@@ -18,6 +19,7 @@
                 <value lang="es">General</value>
                 <value lang="fr">Général</value>
                 <value lang="pt">Geral</value>
+                <value lang="de">Allgemein</value>
             </record>
             <record key="updated">
                 <value lang="en">Updated: %s</value>
@@ -27,6 +29,7 @@
                 <value lang="es">Actualizado: %s</value>
                 <value lang="fr">Mise à jour: %s</value>
                 <value lang="pt">Actualizado: %s</value>
+                <value lang="de">Aktualisiert: %s</value>
             </record>
             <record key="java.version">
                 <value lang="en">Java v.%s</value>
@@ -36,6 +39,7 @@
                 <value lang="es">Java v.%s</value>
                 <value lang="fr">Java v.%s</value>
                 <value lang="pt">Java v.%s</value>
+                <value lang="de">Java v.%s</value>
             </record>
             <record key="os.arch">
                 <value lang="en">Architecture: %s</value>
@@ -45,6 +49,7 @@
                 <value lang="es">Arquitectura: %s</value>
                 <value lang="fr">Architecture: %s</value>
                 <value lang="pt">Arquitectura: %s</value>
+                <value lang="de">Architektur: %s</value>
             </record>
         </Dictionary>
         <Dictionary name="Libraries list tab" prefix="libraries">
@@ -56,6 +61,7 @@
                 <value lang="es">Bibliotecas</value>
                 <value lang="fr">Bibliothèques</value>
                 <value lang="pt">Bibliotecas</value>
+                <value lang="de">Bibliotheken</value>
             </record>
             <record key="license">
                 <value lang="en">License:</value>
@@ -65,6 +71,7 @@
                 <value lang="es">Licencia:</value>
                 <value lang="fr">Licence:</value>
                 <value lang="pt">Licença:</value>
+                <value lang="de">Lizenz:</value>
             </record>
             <record key="site">
                 <value lang="en">Site:</value>
@@ -74,6 +81,7 @@
                 <value lang="es">Sitio:</value>
                 <value lang="fr">Site:</value>
                 <value lang="pt">Site:</value>
+                <value lang="de">Seite:</value>
             </record>
             <record key="error">
                 <value lang="en">Libraries data is unavailable</value>
@@ -83,6 +91,7 @@
                 <value lang="es">Bibliotecas datos no está disponible</value>
                 <value lang="fr">Données des bibliothèques n'est pas disponible</value>
                 <value lang="pt">Bibliotecas de dados está indisponível</value>
+                <value lang="de">Bibliotheksinformationen sind nicht verfügbar</value>
             </record>
         </Dictionary>
         <Dictionary name="System properties tab" prefix="properties">
@@ -94,6 +103,7 @@
                 <value lang="es">Propiedades</value>
                 <value lang="fr">Propriétés</value>
                 <value lang="pt">Propriedades</value>
+                <value lang="de">Einstellungen</value>
             </record>
             <record key="key">
                 <value lang="en">Key</value>
@@ -103,6 +113,7 @@
                 <value lang="es">Clave</value>
                 <value lang="fr">Clé</value>
                 <value lang="pt">Chave</value>
+                <value lang="de">Schlüssel</value>
             </record>
             <record key="value">
                 <value lang="en">Value</value>
@@ -112,6 +123,7 @@
                 <value lang="es">Valor</value>
                 <value lang="fr">Valeur</value>
                 <value lang="pt">Valor</value>
+                <value lang="de">Wert</value>
             </record>
         </Dictionary>
     </Dictionary>
@@ -124,6 +136,7 @@
             <value lang="es">Seleccione una opción</value>
             <value lang="fr">Sélectionnez une option</value>
             <value lang="pt">Seleccione uma opção</value>
+            <value lang="de">Wählen Sie eine Option</value>
         </record>
         <record key="ok">
             <value lang="en" mnemonic="K">OK</value>
@@ -133,6 +146,7 @@
             <value lang="es" mnemonic="K">OK</value>
             <value lang="fr" mnemonic="K">OK</value>
             <value lang="pt" mnemonic="K">OK</value>
+            <value lang="de" mnemonic="K">OK</value>
         </record>
         <record key="cancel">
             <value lang="en" mnemonic="C">Cancel</value>
@@ -142,6 +156,7 @@
             <value lang="es" mnemonic="C">Cancelar</value>
             <value lang="fr" mnemonic="A">Annuler</value>
             <value lang="pt" mnemonic="C">Cancelar</value>
+            <value lang="de" mnemonic="A">Abbrechen</value>
         </record>
         <record key="yes">
             <value lang="en" mnemonic="Y">Yes</value>
@@ -151,6 +166,7 @@
             <value lang="es" mnemonic="S">Si</value>
             <value lang="fr" mnemonic="O">Oui</value>
             <value lang="pt" mnemonic="S">Sim</value>
+            <value lang="de" mnemonic="J">Ja</value>
         </record>
         <record key="no">
             <value lang="en" mnemonic="N">No</value>
@@ -160,6 +176,7 @@
             <value lang="es" mnemonic="N">No</value>
             <value lang="fr" mnemonic="N">Non</value>
             <value lang="pt" mnemonic="N">Não</value>
+            <value lang="de" mnemonic="N">Nein</value>
         </record>
     </Dictionary>
     <Dictionary name="ProxyManager language" prefix="proxy">
@@ -171,6 +188,7 @@
             <value lang="es">Cambiar configuración del proxy</value>
             <value lang="fr">Modifier les paramètres du proxy</value>
             <value lang="pt">Alterar as definições de proxy</value>
+            <value lang="de">Proxyeinstellungen ändern</value>
         </record>
         <record key="use.system.text">
             <value lang="en">&lt;html&gt;Application proxy settings do not match system proxy settings.&lt;br&gt;Would you like to use system settings instead?&lt;/html&gt;</value>
@@ -180,6 +198,7 @@
             <value lang="es">&lt;html&gt;La configuración del proxy en la aplicación no coincide con la configuración del sistema.&lt;br&gt;¿Desea usar la configuracion del sistema?&lt;/html&gt;</value>
             <value lang="fr">&lt;html&gt;Les paramètres du proxy de l&apos;application ne correspondent pas aux paramètres du proxy du système&lt;br&gt;Voulez-vous utiliser les paramètres du système?&lt;/html&gt;</value>
             <value lang="pt">&lt;html&gt;As definições de proxy da aplicação não são as mesmas do sistema.&lt;br&gt;Deseja usar as definições do sistema?&lt;/html&gt;</value>
+            <value lang="de">&lt;html&gt;Die Proxyeinstellungen der Anwendungen stimmen nicht mit denen des Systems überein.&lt;br&gt;Möchten Sie statt dessen die Systemeinstellungen verwenden?&lt;/html&gt;</value>
         </record>
         <record key="use.system.save">
             <value lang="en">Remember this choice</value>
@@ -189,6 +208,7 @@
             <value lang="es">Recordar esta opción</value>
             <value lang="fr">Se souvenir de ce choix</value>
             <value lang="pt">Lembrar esta escolha</value>
+            <value lang="de">Diese Auswahl merken</value>
         </record>
         <Dictionary name="WebProxyAuthenticator language" prefix="auth">
             <record key="title">
@@ -199,6 +219,7 @@
                 <value lang="es">Autenticación de proxy requerida</value>
                 <value lang="fr">Authentification par proxy requise</value>
                 <value lang="pt">Autenticação por proxy necessária</value>
+                <value lang="de">Authentifikation für den Proxy erforderlich</value>
             </record>
             <record key="host">
                 <value lang="en">Host:</value>
@@ -208,6 +229,7 @@
                 <value lang="es">Host:</value>
                 <value lang="fr">Hôte:</value>
                 <value lang="pt">Host:</value>
+                <value lang="de">Host:</value>
             </record>
             <record key="port">
                 <value lang="en">Port:</value>
@@ -217,6 +239,7 @@
                 <value lang="es">Puerto:</value>
                 <value lang="fr">Port:</value>
                 <value lang="pt">Porto:</value>
+                <value lang="de">Port:</value>
             </record>
             <record key="login">
                 <value lang="en">Login:</value>
@@ -226,6 +249,7 @@
                 <value lang="es">Nombre usuario:</value>
                 <value lang="fr">Login:</value>
                 <value lang="pt">Nome de utilizador:</value>
+                <value lang="de">Login:</value>
             </record>
             <record key="pass">
                 <value lang="en">Password:</value>
@@ -235,6 +259,7 @@
                 <value lang="es">Contraseña:</value>
                 <value lang="fr">Mot de passe:</value>
                 <value lang="pt">Palavra-chave:</value>
+                <value lang="de">Passwort:</value>
             </record>
         </Dictionary>
     </Dictionary>
@@ -248,6 +273,7 @@
                 <value lang="es">b</value>
                 <value lang="fr">o</value>
                 <value lang="pt">b</value>
+                <value lang="de">b</value>
             </record>
             <record key="kb">
                 <value lang="en">Kb</value>
@@ -257,6 +283,7 @@
                 <value lang="es">Kb</value>
                 <value lang="fr">Ko</value>
                 <value lang="pt">Kb</value>
+                <value lang="de">Kb</value>
             </record>
             <record key="mb">
                 <value lang="en">Mb</value>
@@ -266,6 +293,7 @@
                 <value lang="es">Mb</value>
                 <value lang="fr">Mo</value>
                 <value lang="pt">Mb</value>
+                <value lang="de">Mb</value>
             </record>
             <record key="gb">
                 <value lang="en">Gb</value>
@@ -275,6 +303,7 @@
                 <value lang="es">Gb</value>
                 <value lang="fr">Go</value>
                 <value lang="pt">Gb</value>
+                <value lang="de">Gb</value>
             </record>
             <record key="tb">
                 <value lang="en">Tb</value>
@@ -284,6 +313,7 @@
                 <value lang="es">Tb</value>
                 <value lang="fr">To</value>
                 <value lang="pt">Tb</value>
+                <value lang="de">Tb</value>
             </record>
             <record key="pb">
                 <value lang="en">Pb</value>
@@ -293,6 +323,7 @@
                 <value lang="es">Pb</value>
                 <value lang="fr">Po</value>
                 <value lang="pt">Pb</value>
+                <value lang="de">Pb</value>
             </record>
         </Dictionary>
         <Dictionary name="File filters language" prefix="filter">
@@ -304,6 +335,7 @@
                 <value lang="es">Todos los archivos</value>
                 <value lang="fr">Tous les fichiers</value>
                 <value lang="pt">Todos os ficheiros</value>
+                <value lang="de">Alle Dateien</value>
             </record>
             <record key="folders">
                 <value lang="en">Folders only</value>
@@ -313,6 +345,7 @@
                 <value lang="es">Directorios solamente</value>
                 <value lang="fr">Dossiers uniquement</value>
                 <value lang="pt">Apenas pastas</value>
+                <value lang="de">Nur Verzeichnisse</value>
             </record>
             <record key="files">
                 <value lang="en">Files only</value>
@@ -322,6 +355,7 @@
                 <value lang="es">Archivos solamente</value>
                 <value lang="fr">Fichiers uniquement</value>
                 <value lang="pt">Apenas ficheiros</value>
+                <value lang="de">Nur Dateien</value>
             </record>
             <record key="images">
                 <value lang="en">Images only</value>
@@ -331,6 +365,7 @@
                 <value lang="es">Imagenes solamente</value>
                 <value lang="fr">Images uniquement</value>
                 <value lang="pt">Apenas imagens</value>
+                <value lang="de">Nur Bilder</value>
             </record>
             <record key="nonhidden">
                 <value lang="en">Non-hidden files only</value>
@@ -340,6 +375,7 @@
                 <value lang="es">Archivos no ocultos solamente</value>
                 <value lang="fr">Fichiers non cachés uniquement</value>
                 <value lang="pt">Apenas ficheiros não ocultos</value>
+                <value lang="de">Nur nicht-versteckte Dateien</value>
             </record>
         </Dictionary>
     </Dictionary>
@@ -352,6 +388,7 @@
             <value lang="es">Elija los archivos</value>
             <value lang="fr">Choisissez les fichiers</value>
             <value lang="pt">Escolher os ficheiros</value>
+            <value lang="de">Dateien auswählen</value>
         </record>
         <record key="back">
             <value lang="en" way="down" state="tooltip">Back</value>
@@ -361,6 +398,7 @@
             <value lang="es" way="down" state="tooltip">Atras</value>
             <value lang="fr" way="down" state="tooltip">Précédent</value>
             <value lang="pt" way="down" state="tooltip">Voltar</value>
+            <value lang="de" way="down" state="tooltip">Zurück</value>
         </record>
         <record key="forward">
             <value lang="en" way="down" state="tooltip">Forward</value>
@@ -370,6 +408,7 @@
             <value lang="es" way="down" state="tooltip">Adelante</value>
             <value lang="fr" way="down" state="tooltip">Suivant</value>
             <value lang="pt" way="down" state="tooltip">Avançar</value>
+            <value lang="de" way="down" state="tooltip">Vorwärts</value>
         </record>
         <record key="folderup">
             <value lang="en" way="down" state="tooltip">Folder up</value>
@@ -379,6 +418,7 @@
             <value lang="es" way="down" state="tooltip">Subir directorio</value>
             <value lang="fr" way="down" state="tooltip">Dossier supérieur</value>
             <value lang="pt" way="down" state="tooltip">Pasta acima</value>
+            <value lang="de" way="down" state="tooltip">Verzeichnis nach oben</value>
         </record>
         <record key="home">
             <value lang="en" way="down" state="tooltip">Home directory</value>
@@ -388,6 +428,7 @@
             <value lang="es" way="down" state="tooltip">Directorio de inicio</value>
             <value lang="fr" way="down" state="tooltip">Répertoire personnel</value>
             <value lang="pt" way="down" state="tooltip">Pasta pessoal</value>
+            <value lang="de" way="down" state="tooltip">Nutzerverzeichnis</value>
         </record>
         <record key="newfolder">
             <value lang="en" way="down" state="tooltip">Create new folder</value>
@@ -397,6 +438,7 @@
             <value lang="es" way="down" state="tooltip">Crear nuevo directorio</value>
             <value lang="fr" way="down" state="tooltip">Créer un nouveau dossier</value>
             <value lang="pt" way="down" state="tooltip">Criar nova pasta</value>
+            <value lang="de" way="down" state="tooltip">Neues Verzeichnis erstellen</value>
         </record>
         <record key="newfolder.name">
             <value lang="en">New folder</value>
@@ -406,6 +448,7 @@
             <value lang="es">Nuevo directorio</value>
             <value lang="fr">Nouveau dossier</value>
             <value lang="pt">Nova pasta</value>
+            <value lang="de">Neues Verzeichnis</value>
         </record>
         <record key="newfolder.error.title">
             <value lang="en">Error</value>
@@ -415,6 +458,7 @@
             <value lang="es">Error</value>
             <value lang="fr">Erreur</value>
             <value lang="pt">Erro</value>
+            <value lang="de">Fehler</value>
         </record>
         <record key="newfolder.error.text">
             <value lang="en">Unable to create new folder</value>
@@ -424,6 +468,7 @@
             <value lang="es">Imposible crear un nuevo directorio</value>
             <value lang="fr">Impossible de créer un nouveau dossier</value>
             <value lang="pt">Não foi possível criar a nova pasta</value>
+            <value lang="de">Verzeichnis konnte nicht erstellt werden</value>
         </record>
         <record key="refresh">
             <value lang="en" way="down" state="tooltip">Reload folder content</value>
@@ -433,6 +478,7 @@
             <value lang="es" way="down" state="tooltip">Recargar contenido del directorio</value>
             <value lang="fr" way="down" state="tooltip">Recharger le contenu du dossier</value>
             <value lang="pt" way="down" state="tooltip">Refrescar o conteúdo da pasta</value>
+            <value lang="de" way="down" state="tooltip">Verzeichnisinhalt neu laden</value>
         </record>
         <record key="delete">
             <value lang="en" way="down" state="tooltip">Delete selected files</value>
@@ -442,6 +488,7 @@
             <value lang="es" way="down" state="tooltip">Borrar los archivos seleccionados</value>
             <value lang="fr" way="down" state="tooltip">Supprimer les fichiers sélectionnés</value>
             <value lang="pt" way="down" state="tooltip">Apagar os ficheiros seleccionados</value>
+            <value lang="de" way="down" state="tooltip">Ausgewählte Dateien löschen</value>
         </record>
         <record key="delete.confirm.title">
             <value lang="en">Delete confirmation</value>
@@ -451,6 +498,7 @@
             <value lang="es">Confirmación de borrado</value>
             <value lang="fr">Confirmation de suppression</value>
             <value lang="pt">Confirmação de remoção</value>
+            <value lang="de">Löschbestätigung</value>
         </record>
         <record key="delete.confirm.text">
             <value lang="en">Are you sure you want to delete these files?</value>
@@ -460,6 +508,7 @@
             <value lang="es">¿Está seguro que desea borrar los archivos?</value>
             <value lang="fr">Êtes-vous sûr de vouloir supprimer ces fichiers?</value>
             <value lang="pt">Tem a certeza que deseja apagar estes ficheiros?</value>
+            <value lang="de">Sind Sie sich sicher, dass Sie diese Dateien löschen wollen?</value>
         </record>
         <record key="view">
             <value lang="en" way="down" state="tooltip">Change view</value>
@@ -469,6 +518,7 @@
             <value lang="es" way="down" state="tooltip">Cambiar vista</value>
             <value lang="fr" way="down" state="tooltip">Changer de vue</value>
             <value lang="pt" way="down" state="tooltip">Alterar a vista</value>
+            <value lang="de" way="down" state="tooltip">Ansicht ändern</value>
         </record>
         <record key="view.table">
             <value lang="en">Details</value>
@@ -478,6 +528,7 @@
             <value lang="es">Detalles</value>
             <value lang="fr">détails</value>
             <value lang="pt">Detalhes</value>
+            <value lang="de">Details</value>
         </record>
         <record key="view.icons">
             <value lang="en">Icons</value>
@@ -487,6 +538,7 @@
             <value lang="es">Íconos</value>
             <value lang="fr">Icônes</value>
             <value lang="pt">Ícones</value>
+            <value lang="de">Icons</value>
         </record>
         <record key="view.tiles">
             <value lang="en">Tiles</value>
@@ -496,6 +548,7 @@
             <value lang="es">Azulejos</value>
             <value lang="fr">Carreaux</value>
             <value lang="pt">Mozaicos</value>
+            <value lang="de">Kachel</value>
         </record>
         <record key="files.selected">
             <value lang="en">Selected files:</value>
@@ -505,6 +558,7 @@
             <value lang="es">Archivos seleccionados:</value>
             <value lang="fr">Fichiers sélectionnés:</value>
             <value lang="pt">Ficheiros seleccionados:</value>
+            <value lang="de">Ausgewählte Dateien:</value>
         </record>
         <record key="choose">
             <value lang="en">Choose</value>
@@ -514,6 +568,7 @@
             <value lang="es">Elija</value>
             <value lang="fr">Choisir</value>
             <value lang="pt">Escolher</value>
+            <value lang="de">Auswählen</value>
         </record>
         <record key="cancel">
             <value lang="en">Cancel</value>
@@ -523,6 +578,7 @@
             <value lang="es">Cancelar</value>
             <value lang="fr">Annuler</value>
             <value lang="pt">Cancelar</value>
+            <value lang="de">Abbrechen</value>
         </record>
     </Dictionary>
     <Dictionary name="WebColorChooser language" prefix="colorchooser">
@@ -534,6 +590,7 @@
             <value lang="es">Elija un color</value>
             <value lang="fr">Choisissez une couleur</value>
             <value lang="pt">Escolha uma cor</value>
+            <value lang="de">Farbe wählen</value>
         </record>
         <record key="webonly">
             <value lang="en">Web colors only</value>
@@ -543,6 +600,7 @@
             <value lang="es">Colores Web solamente</value>
             <value lang="fr">Couleurs Web uniquement</value>
             <value lang="pt">Apenas cores Web</value>
+            <value lang="de">Nur Webfarben</value>
         </record>
         <record key="choose">
             <value lang="en">Choose</value>
@@ -552,6 +610,7 @@
             <value lang="es">Elegir</value>
             <value lang="fr">Choisir</value>
             <value lang="pt">Escolher</value>
+            <value lang="de">Auswählen</value>
         </record>
         <record key="reset">
             <value lang="en">Reset</value>
@@ -561,6 +620,7 @@
             <value lang="es">Reinicializar</value>
             <value lang="fr">Réinitialiser</value>
             <value lang="pt">Repor</value>
+            <value lang="de">Zurücksetzen</value>
         </record>
         <record key="cancel">
             <value lang="en">Cancel</value>
@@ -570,6 +630,7 @@
             <value lang="es">Cancelar</value>
             <value lang="fr">Annuler</value>
             <value lang="pt">Cancelar</value>
+            <value lang="de">Abbrechen</value>
         </record>
     </Dictionary>
     <Dictionary name="Extended components language" prefix="ex">
@@ -582,6 +643,7 @@
                 <value lang="es">Elija un directorio</value>
                 <value lang="fr">Choisissez un dossier</value>
                 <value lang="pt">Escolher uma pasta</value>
+                <value lang="de">Verzeichnis auswählen</value>
             </record>
             <record key="folderup">
                 <value lang="en" way="down" state="tooltip">Folder up</value>
@@ -591,6 +653,7 @@
                 <value lang="es" way="down" state="tooltip">Subir un directorio</value>
                 <value lang="fr" way="down" state="tooltip">Dossier supérieur</value>
                 <value lang="pt" way="down" state="tooltip">Pasta acima</value>
+                <value lang="de" way="down" state="tooltip">Verzeichnis nach oben</value>
             </record>
             <record key="home">
                 <value lang="en" way="down" state="tooltip">Home directory</value>
@@ -600,6 +663,7 @@
                 <value lang="es" way="down" state="tooltip">Directorio de inicio</value>
                 <value lang="fr" way="down" state="tooltip">Répertoire personnel</value>
                 <value lang="pt" way="down" state="tooltip">Pasta pessoal</value>
+                <value lang="de" way="down" state="tooltip">Nutzerverzeichnis</value>
             </record>
             <record key="refresh">
                 <value lang="en" way="down" state="tooltip">Reload folder content</value>
@@ -609,6 +673,7 @@
                 <value lang="es" way="down" state="tooltip">Recargar el contenido del directorio</value>
                 <value lang="fr" way="down" state="tooltip">Recharger le contenu du dossier</value>
                 <value lang="pt" way="down" state="tooltip">Refrescar o conteúdo da pasta</value>
+                <value lang="de" way="down" state="tooltip">Verzeichnisinhalt neu laden</value>
             </record>
             <record key="newfolder">
                 <value lang="en" way="down" state="tooltip">Create new folder</value>
@@ -618,6 +683,7 @@
                 <value lang="es" way="down" state="tooltip">Crear nuevo directorio</value>
                 <value lang="fr" way="down" state="tooltip">Créer un nouveau dossier</value>
                 <value lang="pt" way="down" state="tooltip">Criar uma nova pasta</value>
+                <value lang="de" way="down" state="tooltip">Neues Verzeichnis erstellen</value>
             </record>
             <record key="newfolder.name">
                 <value lang="en">New folder</value>
@@ -627,6 +693,7 @@
                 <value lang="es">Nuevo directorio</value>
                 <value lang="fr">Nouveau dossier</value>
                 <value lang="pt">Nova pasta</value>
+                <value lang="de">Neues Verzeichnis</value>
             </record>
             <record key="newfolder.error.title">
                 <value lang="en">Error</value>
@@ -636,6 +703,7 @@
                 <value lang="es">Error</value>
                 <value lang="fr">Error</value>
                 <value lang="pt">Erro</value>
+                <value lang="de">Fehler</value>
             </record>
             <record key="newfolder.error.text">
                 <value lang="en">Unable to create new folder</value>
@@ -645,6 +713,7 @@
                 <value lang="es">Imposible crear un nuevo directorio</value>
                 <value lang="fr">Impossible de créer un nouveau dossier</value>
                 <value lang="pt">Não foi possível criar a nova pasta</value>
+                <value lang="de">Verzeichnis konnte nicht erstellt werden</value>
             </record>
             <record key="delete">
                 <value lang="en" way="down" state="tooltip">Delete selected files</value>
@@ -654,6 +723,7 @@
                 <value lang="es" way="down" state="tooltip">Borrar los archivos seleccionados</value>
                 <value lang="fr" way="down" state="tooltip">Supprimer les fichiers sélectionnés</value>
                 <value lang="pt" way="down" state="tooltip">Apagar os ficheiros seleccionados</value>
+                <value lang="de" way="down" state="tooltip">Ausgewählte Dateien löschen</value>
             </record>
             <record key="delete.confirm.title">
                 <value lang="en">Delete confirmation</value>
@@ -663,6 +733,7 @@
                 <value lang="es">Confirmación de borrado</value>
                 <value lang="fr">Confirmation de suppression</value>
                 <value lang="pt">Confirmação de remoção</value>
+                <value lang="de">Löschbestätigung</value>
             </record>
             <record key="delete.confirm.text">
                 <value lang="en">Are you sure you want to delete directory?</value>
@@ -672,6 +743,7 @@
                 <value lang="es">¿Está seguro que desea borrar el directorio?</value>
                 <value lang="fr">Êtes-vous sûr de vouloir supprimer le dossier?</value>
                 <value lang="pt">Tem a certeza que deseja apagar estes ficheiros?</value>
+                <value lang="de">Sind Sie sich sicher, dass Sie dieses Verzeichnis löschen wollen?</value>
             </record>
             <record key="choose">
                 <value lang="en">Choose</value>
@@ -681,6 +753,7 @@
                 <value lang="es">Elegir</value>
                 <value lang="fr">Choisir</value>
                 <value lang="pt">Escolher</value>
+                <value lang="de">Auswählen</value>
             </record>
             <record key="cancel">
                 <value lang="en">Cancel</value>
@@ -690,6 +763,7 @@
                 <value lang="es">Cancelar</value>
                 <value lang="fr">Annuler</value>
                 <value lang="pt">Cancelar</value>
+                <value lang="de">Abbrechen</value>
             </record>
         </Dictionary>
         <Dictionary name="WebMemoryBar language" prefix="memorybar">
@@ -701,6 +775,7 @@
                 <value lang="es">de</value>
                 <value lang="fr">de</value>
                 <value lang="pt">de</value>
+                <value lang="de">von</value>
             </record>
             <record key="alloc">
                 <value lang="en">Allocated heap size:</value>
@@ -710,6 +785,7 @@
                 <value lang="es">Tamaño asignado de la pila:</value>
                 <value lang="fr">Taille alloué de la pile:</value>
                 <value lang="pt">Tamanho alocado para a pilha:</value>
+                <value lang="de">Größe des reservierten Heaps</value>
             </record>
             <record key="used">
                 <value lang="en">Used:</value>
@@ -719,6 +795,7 @@
                 <value lang="es">Usado:</value>
                 <value lang="fr">Utilisé:</value>
                 <value lang="pt">Utilizado:</value>
+                <value lang="de">Benutzt:</value>
             </record>
             <record key="max">
                 <value lang="en">Available:</value>
@@ -728,6 +805,7 @@
                 <value lang="es">Disponible:</value>
                 <value lang="fr">Disponible:</value>
                 <value lang="pt">Disponível:</value>
+                <value lang="de">Verfügbar:</value>
             </record>
         </Dictionary>
         <Dictionary name="WebFileDrop language" prefix="filedrop">
@@ -739,6 +817,7 @@
                 <value lang="es">Soltar archivos aquí</value>
                 <value lang="fr">Déposer des fichiers ici</value>
                 <value lang="pt">Largue ficheiros aqui</value>
+                <value lang="de">Legen Sie dateien hier ab</value>
             </record>
         </Dictionary>
         <Dictionary name="WebHotkeyField language" prefix="hotkeyfield">
@@ -750,6 +829,7 @@
                 <value lang="es">Presione cualquier tecla</value>
                 <value lang="fr">Appuyez sur n&apos;importe quelle touche</value>
                 <value lang="pt">Pressione qualquer tecla</value>
+                <value lang="de">Drücken Sie irgendeine Taste</value>
             </record>
         </Dictionary>
         <Dictionary name="WebCalendar language" prefix="calendar">
@@ -761,6 +841,7 @@
                 <value lang="es">Lun</value>
                 <value lang="fr">Lun</value>
                 <value lang="pt">Seg</value>
+                <value lang="de">Mo</value>
             </record>
             <record key="dayOfWeek.2">
                 <value lang="en">Tue</value>
@@ -770,6 +851,7 @@
                 <value lang="es">Mar</value>
                 <value lang="fr">Mar</value>
                 <value lang="pt">Ter</value>
+                <value lang="de">Di</value>
             </record>
             <record key="dayOfWeek.3">
                 <value lang="en">Wed</value>
@@ -779,6 +861,7 @@
                 <value lang="es">Mier</value>
                 <value lang="fr">Mer</value>
                 <value lang="pt">Qua</value>
+                <value lang="de">Mi</value>
             </record>
             <record key="dayOfWeek.4">
                 <value lang="en">Thu</value>
@@ -788,6 +871,7 @@
                 <value lang="es">Jue</value>
                 <value lang="fr">Jeu</value>
                 <value lang="pt">Qui</value>
+                <value lang="de">Do</value>
             </record>
             <record key="dayOfWeek.5">
                 <value lang="en">Fri</value>
@@ -797,6 +881,7 @@
                 <value lang="es">Vier</value>
                 <value lang="fr">Ven</value>
                 <value lang="pt">Sex</value>
+                <value lang="de">Fr</value>
             </record>
             <record key="dayOfWeek.6">
                 <value lang="en">Sat</value>
@@ -806,6 +891,7 @@
                 <value lang="es">Sab</value>
                 <value lang="fr">Sam</value>
                 <value lang="pt">Sab</value>
+                <value lang="de">Sa</value>
             </record>
             <record key="dayOfWeek.7">
                 <value lang="en">Sun</value>
@@ -815,6 +901,7 @@
                 <value lang="es">Dom</value>
                 <value lang="fr">Dim</value>
                 <value lang="pt">Dom</value>
+                <value lang="de">So</value>
             </record>
         </Dictionary>
         <Dictionary name="NinePatchEditor language" prefix="npeditor">
@@ -826,6 +913,7 @@
                 <value lang="es">Editor Nine-patch</value>
                 <value lang="fr">Editeur Nine-patch</value>
                 <value lang="pt">Editor nine-patch</value>
+                <value lang="de">Nine-patch Editor</value>
             </record>
             <record key="openImage">
                 <value lang="en" state="tooltip">Open image</value>
@@ -835,6 +923,7 @@
                 <value lang="es" state="tooltip">Abrir imagen</value>
                 <value lang="fr" state="tooltip">Ouvrir l&apos;image</value>
                 <value lang="pt" state="tooltip">Abrir imagem</value>
+                <value lang="de" state="tooltip">Bild öffnen</value>
             </record>
             <record key="openImage.title">
                 <value lang="en" state="tooltip">Choose image</value>
@@ -844,6 +933,7 @@
                 <value lang="es" state="tooltip">Elegir imagen</value>
                 <value lang="fr" state="tooltip">Choisir une image</value>
                 <value lang="pt" state="tooltip">Escolher imagem</value>
+                <value lang="de" state="tooltip">Bild auswählen</value>
             </record>
             <record key="saveImage">
                 <value lang="en" state="tooltip">Save image</value>
@@ -853,6 +943,7 @@
                 <value lang="es" state="tooltip">Guardar imagen</value>
                 <value lang="fr" state="tooltip">Enregistrer l&apos;image</value>
                 <value lang="pt" state="tooltip">Guardar imagem</value>
+                <value lang="de" state="tooltip">Bild speichern</value>
             </record>
             <record key="saveImageAs">
                 <value lang="en" state="tooltip">Save image as</value>
@@ -862,6 +953,7 @@
                 <value lang="es" state="tooltip">Guardar imagen como</value>
                 <value lang="fr" state="tooltip">Enregistrer l&apos;image sous</value>
                 <value lang="pt" state="tooltip">Guardar imagem como</value>
+                <value lang="de" state="tooltip">Bild speichern unter</value>
             </record>
             <record key="saveImageAs.title">
                 <value lang="en" state="tooltip">Choose file to save into</value>
@@ -871,6 +963,7 @@
                 <value lang="es" state="tooltip">Elegir archivo para guardar en</value>
                 <value lang="fr" state="tooltip">Choisir un fichier à enregistrer dans</value>
                 <value lang="pt" state="tooltip">Escolha o ficheiro no qual guardar</value>
+                <value lang="de" state="tooltip">Escolha o ficheiro no qual guardar</value>
             </record>
             <record key="copyInfo">
                 <value lang="en" state="tooltip">Copy patch locations</value>
@@ -880,6 +973,7 @@
                 <value lang="es" state="tooltip">Copiar localizaciones de parches</value>
                 <value lang="fr" state="tooltip">Copier l&apos;emplacement du patch</value>
                 <value lang="pt" state="tooltip">Copiar as localizações das patch</value>
+                <value lang="de" state="tooltip">Patchpfad kopieren</value>
             </record>
             <record key="pasteInfo">
                 <value lang="en" state="tooltip">Paste patch locations</value>
@@ -889,6 +983,7 @@
                 <value lang="es" state="tooltip">Pegar localizaciones de parches</value>
                 <value lang="fr" state="tooltip">Coller l&apos;emplacement du patch</value>
                 <value lang="pt" state="tooltip">Colar as localizações das patch</value>
+                <value lang="de" state="tooltip">Patchpfad einfügen</value>
             </record>
             <record key="undo">
                 <value lang="en" state="tooltip">Undo</value>
@@ -898,6 +993,7 @@
                 <value lang="es" state="tooltip">Deshacer</value>
                 <value lang="fr" state="tooltip">Annuler</value>
                 <value lang="pt" state="tooltip">Desfazer</value>
+                <value lang="de" state="tooltip">Rückgängig</value>
             </record>
             <record key="redo">
                 <value lang="en" state="tooltip">Redo</value>
@@ -907,6 +1003,7 @@
                 <value lang="es" state="tooltip">Rehacer</value>
                 <value lang="fr" state="tooltip">Rétablir</value>
                 <value lang="pt" state="tooltip">Refazer</value>
+                <value lang="de" state="tooltip">Wiederholen</value>
             </record>
             <record key="preview.text">
                 <value lang="en">Simple text</value>
@@ -916,6 +1013,7 @@
                 <value lang="es">Texto simple</value>
                 <value lang="fr">Texte simple</value>
                 <value lang="pt">Texto simples</value>
+                <value lang="de">Einfacher Text</value>
             </record>
             <record key="preview.showIcon">
                 <value lang="en" state="tooltip">Show icon</value>
@@ -925,6 +1023,7 @@
                 <value lang="es" state="tooltip">Mostrar ícono</value>
                 <value lang="fr" state="tooltip">Afficher l&apos;ícône</value>
                 <value lang="pt" state="tooltip">Mostrar ícone</value>
+                <value lang="de" state="tooltip">Icon anzeigen</value>
             </record>
             <record key="preview.showText">
                 <value lang="en" state="tooltip">Show text</value>
@@ -934,6 +1033,7 @@
                 <value lang="es" state="tooltip">Mostrar texto</value>
                 <value lang="fr" state="tooltip">Afficher le texte</value>
                 <value lang="pt" state="tooltip">Mostrar texto</value>
+                <value lang="de" state="tooltip">Text anzeigen</value>
             </record>
             <record key="preview.transparentBackground">
                 <value lang="en" state="tooltip">Show transparent background</value>
@@ -943,6 +1043,7 @@
                 <value lang="es" state="tooltip">Mostrar fondo transparente</value>
                 <value lang="fr" state="tooltip">Afficher le fond transparent</value>
                 <value lang="pt" state="tooltip">Mostrar fundo transparente</value>
+                <value lang="de" state="tooltip">Transparenten Hintergrund anzeigen</value>
             </record>
             <record key="preview.coloredBackground">
                 <value lang="en" state="tooltip">Show colored background</value>
@@ -952,6 +1053,7 @@
                 <value lang="es" state="tooltip">Mostrar fondo colorido</value>
                 <value lang="fr" state="tooltip">Afficher le fond colorié</value>
                 <value lang="pt" state="tooltip">Mostrar fundo colorido</value>
+                <value lang="de" state="tooltip">Farbigen Hintergrund anzeigen</value>
             </record>
             <record key="preview.backgroundColor.title">
                 <value lang="en">Choose background color</value>
@@ -961,6 +1063,7 @@
                 <value lang="es">Elije el color de fondo</value>
                 <value lang="fr">Choisisser la couleur du fond</value>
                 <value lang="pt">Escolha uma cor de fundo</value>
+                <value lang="de">Hintergrundfarbe auswählen</value>
             </record>
             <record key="preview.foregroundColor">
                 <value lang="en" state="tooltip">Text color</value>
@@ -970,6 +1073,7 @@
                 <value lang="es" state="tooltip">Color del texto</value>
                 <value lang="fr" state="tooltip">Couleur du texte</value>
                 <value lang="pt" state="tooltip">Cor do texto</value>
+                <value lang="de" state="tooltip">Textfarbe</value>
             </record>
             <record key="showSpacing">
                 <value lang="en" state="tooltip">Display spacing length between guidelines</value>
@@ -979,6 +1083,7 @@
                 <value lang="es" state="tooltip">Desplegar longitud de espaciamiento entre las directrices</value>
                 <value lang="fr" state="tooltip">Afficher la longueur de l&apos;espacement entre les lignes</value>
                 <value lang="pt" state="tooltip">Mostar o tamanho do espaçamento entre as linhas guia</value>
+                <value lang="de" state="tooltip">Abstandslänge zwischen Hilfslinien anzeigen</value>
             </record>
             <record key="showRuler">
                 <value lang="en" state="tooltip">Show ruler</value>
@@ -988,6 +1093,7 @@
                 <value lang="es" state="tooltip">Mostrar regla</value>
                 <value lang="fr" state="tooltip">Afficher la règle</value>
                 <value lang="pt" state="tooltip">Mostrar régua</value>
+                <value lang="de" state="tooltip">Lineal anzeigen</value>
             </record>
             <record key="fillContent">
                 <value lang="en" state="tooltip">Show content area</value>
@@ -997,6 +1103,7 @@
                 <value lang="es" state="tooltip">Mostrar área de contenido</value>
                 <value lang="fr" state="tooltip">Afficher la zone de contenu</value>
                 <value lang="pt" state="tooltip">Mostrar área de conteúdo</value>
+                <value lang="de" state="tooltip">Inhaltsbereich anzeigen</value>
             </record>
             <record key="fillStretch">
                 <value lang="en" state="tooltip">Show stretched areas</value>
@@ -1006,6 +1113,7 @@
                 <value lang="es" state="tooltip">Mostrar áreas extendidas</value>
                 <value lang="fr" state="tooltip">Afficher la zone étendue</value>
                 <value lang="pt" state="tooltip">Mostrar áreas esticadas</value>
+                <value lang="de" state="tooltip">Gestreckte Bereiche anzeigen</value>
             </record>
             <record key="rulerCursor">
                 <value lang="en" state="tooltip">Show cursor position on ruler</value>
@@ -1015,6 +1123,7 @@
                 <value lang="es" state="tooltip">Mostrar posición del cursor en regla</value>
                 <value lang="fr" state="tooltip">Voir la position du curseur sur la règle</value>
                 <value lang="pt" state="tooltip">Mostrar posição do cursor na régua</value>
+                <value lang="de" state="tooltip">Zeigerposition auf Lineal anzeigen</value>
             </record>
             <record key="areaCursor">
                 <value lang="en" state="tooltip">Show cursor position on area</value>
@@ -1024,6 +1133,7 @@
                 <value lang="es" state="tooltip">Mostrar posición del cursor en el área de</value>
                 <value lang="fr" state="tooltip">Voir la position du curseur sur la zone</value>
                 <value lang="pt" state="tooltip">Mostram a posição do cursor na área</value>
+                <value lang="de" state="tooltip">Zeigerposition in Bereich anzeigen</value>
             </record>
             <record key="saveChanges.title">
                 <value lang="en">Confirm save</value>
@@ -1033,6 +1143,7 @@
                 <value lang="es">Confirmar guardado</value>
                 <value lang="fr">Confirmer l&apos;enregistrement</value>
                 <value lang="pt">Confirmar guardar</value>
+                <value lang="de">Speichern bestätigen</value>
             </record>
             <record key="saveChanges.text">
                 <value lang="en">Do you want to save edited image?</value>
@@ -1042,6 +1153,7 @@
                 <value lang="es">¿Desea guardar la imagen editada?</value>
                 <value lang="fr">Voulez-vous enregistrer l&apos;image éditée?</value>
                 <value lang="pt">Deseja guardar a imagem editada?</value>
+                <value lang="de">Wollen Sie das bearbeitete Bild speichern?</value>
             </record>
         </Dictionary>
     </Dictionary>
