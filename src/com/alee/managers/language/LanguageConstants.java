@@ -60,4 +60,9 @@ public interface LanguageConstants
      * Portuguese language.
      */
     public static final String PORTUGUESE = "pt";
+
+    /**
+     * Portuguese language.
+     */
+    public static final String GERMAN = "de";
 }

@@ -55,7 +55,8 @@ public class LanguageManager implements LanguageConstants
 
     // Supported languages list
     private static final Object supportedLanguagesLock = new Object ();
-    private static List<String> supportedLanguages = CollectionUtils.copy ( ENGLISH, RUSSIAN, POLISH, ARABIC, SPANISH, FRENCH, PORTUGUESE );
+    private static List<String> supportedLanguages =
+            CollectionUtils.copy ( ENGLISH, RUSSIAN, POLISH, ARABIC, SPANISH, FRENCH, PORTUGUESE, GERMAN );
 
     // Current language
     private static String language;
