@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/mikesena/weblaf.png?branch=master)](https://travis-ci.org/mikesena/weblaf)
+
 Web Look and Feel
 ==========
 **WebLaf** is a Java Look and Feel library for cross-platform Swing applications.<br>
