@@ -17,6 +17,7 @@
 
 package com.alee.laf.splitpane;
 
+import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
 import com.alee.utils.LafUtils;
 import com.alee.utils.SwingUtils;
@@ -27,20 +28,46 @@ import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicSplitPaneDivider;
 import javax.swing.plaf.basic.BasicSplitPaneUI;
 import java.awt.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 /**
- * User: mgarin Date: 08.07.11 Time: 16:07
+ * Custom UI for JSplitPane component.
+ *
+ * @author Mikle Garin
+ * @since 1.4
  */
 
 public class WebSplitPaneUI extends BasicSplitPaneUI
 {
+    /**
+     * Style settings.
+     */
+    private Insets margin = WebSplitPaneStyle.margin;
     private Color dragDividerColor = WebSplitPaneStyle.dragDividerColor;
 
+    /**
+     * SplitPane listeners.
+     */
+    private PropertyChangeListener propertyChangeListener;
+
+    /**
+     * Returns an instance of the WebSplitPaneUI for the specified component.
+     * This tricky method is used by UIManager to create component UIs when needed.
+     *
+     * @param c component that will use UI instance
+     * @return instance of the WebSplitPaneUI
+     */
     public static ComponentUI createUI ( JComponent c )
     {
         return new WebSplitPaneUI ();
     }
 
+    /**
+     * Installs UI in the specified component.
+     *
+     * @param c component for this UI
+     */
     public void installUI ( JComponent c )
     {
         super.installUI ( c );
@@ -50,23 +77,98 @@ public class WebSplitPaneUI extends BasicSplitPaneUI
         splitPane.setOpaque ( false );
         splitPane.setBorder ( null );
         splitPane.setDividerSize ( 6 );
+
+        // Updating border
+        updateBorder ();
+
+        // Orientation change listener
+        propertyChangeListener = new PropertyChangeListener ()
+        {
+            public void propertyChange ( PropertyChangeEvent evt )
+            {
+                updateBorder ();
+            }
+        };
+        splitPane.addPropertyChangeListener ( WebLookAndFeel.COMPONENT_ORIENTATION_PROPERTY, propertyChangeListener );
     }
 
+    /**
+     * Uninstalls UI from the specified component.
+     *
+     * @param c component with this UI
+     */
+    public void uninstallUI ( JComponent c )
+    {
+        splitPane.removePropertyChangeListener ( WebLookAndFeel.COMPONENT_ORIENTATION_PROPERTY, propertyChangeListener );
+
+        super.uninstallUI ( c );
+    }
+
+    /**
+     * Updates custom UI border.
+     */
+    private void updateBorder ()
+    {
+        if ( splitPane != null )
+        {
+            // Actual margin
+            final boolean ltr = splitPane.getComponentOrientation ().isLeftToRight ();
+            final Insets m = new Insets ( margin.top, ltr ? margin.left : margin.right, margin.bottom, ltr ? margin.right : margin.left );
+
+            // Installing border
+            splitPane.setBorder ( LafUtils.createWebBorder ( m ) );
+        }
+    }
+
+    /**
+     * Returns component margin.
+     *
+     * @return component margin
+     */
+    public Insets getMargin ()
+    {
+        return margin;
+    }
+
+    /**
+     * Sets component margin.
+     *
+     * @param margin component margin
+     */
+    public void setMargin ( Insets margin )
+    {
+        this.margin = margin;
+        updateBorder ();
+    }
+
+    /**
+     * Returns dragged divider color.
+     *
+     * @return dragged divider color
+     */
     public Color getDragDividerColor ()
     {
         return dragDividerColor;
     }
 
+    /**
+     * Sets dragged divider color.
+     *
+     * @param dragDividerColor dragged divider color
+     */
     public void setDragDividerColor ( Color dragDividerColor )
     {
         this.dragDividerColor = dragDividerColor;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public BasicSplitPaneDivider createDefaultDivider ()
     {
         return new BasicSplitPaneDivider ( this )
         {
-            private Border border = BorderFactory.createEmptyBorder ( 0, 0, 0, 0 );
+            private final Border border = BorderFactory.createEmptyBorder ( 0, 0, 0, 0 );
 
             public Border getBorder ()
             {
@@ -134,6 +236,9 @@ public class WebSplitPaneUI extends BasicSplitPaneUI
         };
     }
 
+    /**
+     * {@inheritDoc}
+     */
     protected Component createDefaultNonContinuousLayoutDivider ()
     {
         return new Canvas ()
@@ -157,6 +262,9 @@ public class WebSplitPaneUI extends BasicSplitPaneUI
         };
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void finishedPaintingChildren ( JSplitPane jc, Graphics g )
     {
         if ( jc == splitPane && getLastDragLocation () != -1 && !isContinuousLayout () &&

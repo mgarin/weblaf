@@ -65,14 +65,36 @@ public class WebSplitPane extends JSplitPane
         getWebUI ().getDivider ().removeComponentListener ( listener );
     }
 
+    public Insets getMargin ()
+    {
+        return getWebUI ().getMargin ();
+    }
+
+    public void setMargin ( Insets margin )
+    {
+        getWebUI ().setMargin ( margin );
+    }
+
+    public WebSplitPane setMargin ( int top, int left, int bottom, int right )
+    {
+        setMargin ( new Insets ( top, left, bottom, right ) );
+        return this;
+    }
+
+    public WebSplitPane setMargin ( int spacing )
+    {
+        return setMargin ( spacing, spacing, spacing, spacing );
+    }
+
     public Color getDragDividerColor ()
     {
         return getWebUI ().getDragDividerColor ();
     }
 
-    public void setDragDividerColor ( Color dragDividerColor )
+    public WebSplitPane setDragDividerColor ( Color dragDividerColor )
     {
         getWebUI ().setDragDividerColor ( dragDividerColor );
+        return this;
     }
 
     public WebSplitPaneUI getWebUI ()

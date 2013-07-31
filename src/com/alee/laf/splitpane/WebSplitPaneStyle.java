@@ -17,16 +17,26 @@
 
 package com.alee.laf.splitpane;
 
+import com.alee.laf.StyleConstants;
+
 import java.awt.*;
 
 /**
- * User: mgarin Date: 11/15/11 Time: 1:37 PM
+ * WebSplitPane style class.
+ *
+ * @author Mikle Garin
+ * @since 1.4
  */
 
 public final class WebSplitPaneStyle
 {
     /**
-     * Split pane divider color when dragged
+     * Default split pane margin.
+     */
+    public static Insets margin = StyleConstants.margin;
+
+    /**
+     * Split pane divider color when dragged.
      */
     public static Color dragDividerColor = Color.LIGHT_GRAY;
 }
