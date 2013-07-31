@@ -32,25 +32,50 @@ import java.beans.PropertyChangeListener;
 import java.util.Map;
 
 /**
- * User: mgarin Date: 26.07.11 Time: 13:16
+ * Custom UI for JLabel component.
+ *
+ * @author Mikle Garin
+ * @since 1.4
  */
 
 public class WebLabelUI extends BasicLabelUI
 {
+    /**
+     * Style settings.
+     */
     private Insets margin = WebLabelStyle.margin;
     private Painter painter = WebLabelStyle.painter;
     private boolean drawShade = WebLabelStyle.drawShade;
     private Color shadeColor = WebLabelStyle.shadeColor;
     private Float transparency = WebLabelStyle.transparency;
 
+    /**
+     * JLabel instance to which this UI is applied.
+     */
     private JLabel label;
+
+    /**
+     * Label listeners.
+     */
     private PropertyChangeListener propertyChangeListener;
 
+    /**
+     * Returns an instance of the WebLabelUI for the specified component.
+     * This tricky method is used by UIManager to create component UIs when needed.
+     *
+     * @param c component that will use UI instance
+     * @return instance of the WebLabelUI
+     */
     public static ComponentUI createUI ( JComponent c )
     {
         return new WebLabelUI ();
     }
 
+    /**
+     * Installs UI in the specified component.
+     *
+     * @param c component for this UI
+     */
     public void installUI ( final JComponent c )
     {
         super.installUI ( c );
@@ -76,6 +101,11 @@ public class WebLabelUI extends BasicLabelUI
         label.addPropertyChangeListener ( WebLookAndFeel.COMPONENT_ORIENTATION_PROPERTY, propertyChangeListener );
     }
 
+    /**
+     * Uninstalls UI from the specified component.
+     *
+     * @param c component with this UI
+     */
     public void uninstallUI ( JComponent c )
     {
         label.removePropertyChangeListener ( WebLookAndFeel.COMPONENT_ORIENTATION_PROPERTY, propertyChangeListener );
@@ -85,19 +115,22 @@ public class WebLabelUI extends BasicLabelUI
         super.uninstallUI ( c );
     }
 
+    /**
+     * Updates custom UI border.
+     */
     private void updateBorder ()
     {
         if ( label != null )
         {
             // Actual margin
-            boolean ltr = label.getComponentOrientation ().isLeftToRight ();
-            Insets m = new Insets ( margin.top, ltr ? margin.left : margin.right, margin.bottom, ltr ? margin.right : margin.left );
+            final boolean ltr = label.getComponentOrientation ().isLeftToRight ();
+            final Insets m = new Insets ( margin.top, ltr ? margin.left : margin.right, margin.bottom, ltr ? margin.right : margin.left );
 
             // Calculating additional borders
             if ( painter != null )
             {
                 // Painter borders
-                Insets pi = painter.getMargin ( label );
+                final Insets pi = painter.getMargin ( label );
                 m.top += pi.top;
                 m.bottom += pi.bottom;
                 m.left += ltr ? pi.left : pi.right;
@@ -109,61 +142,117 @@ public class WebLabelUI extends BasicLabelUI
         }
     }
 
+    /**
+     * Returns component margin.
+     *
+     * @return component margin
+     */
     public Insets getMargin ()
     {
         return margin;
     }
 
+    /**
+     * Sets component margin.
+     *
+     * @param margin component margin
+     */
     public void setMargin ( Insets margin )
     {
         this.margin = margin;
         updateBorder ();
     }
 
+    /**
+     * Returns component painter.
+     *
+     * @return component painter
+     */
     public Painter getPainter ()
     {
         return painter;
     }
 
+    /**
+     * Sets component painter.
+     *
+     * @param painter component painter
+     */
     public void setPainter ( Painter painter )
     {
         this.painter = painter;
         updateBorder ();
     }
 
+    /**
+     * Returns whether text shade is displayed or not.
+     *
+     * @return true if text shade is displayed, false otherwise
+     */
     public boolean isDrawShade ()
     {
         return drawShade;
     }
 
+    /**
+     * Sets whether text shade should be displayed or not.
+     *
+     * @param drawShade whether text shade should be displayed or not
+     */
     public void setDrawShade ( boolean drawShade )
     {
         this.drawShade = drawShade;
         label.repaint ();
     }
 
+    /**
+     * Returns text shade color.
+     *
+     * @return text shade color
+     */
     public Color getShadeColor ()
     {
         return shadeColor;
     }
 
+    /**
+     * Sets text shade color.
+     *
+     * @param shadeColor text shade color
+     */
     public void setShadeColor ( Color shadeColor )
     {
         this.shadeColor = shadeColor;
         label.repaint ();
     }
 
+    /**
+     * Returns label transparency.
+     *
+     * @return label transparency
+     */
     public Float getTransparency ()
     {
         return transparency;
     }
 
+    /**
+     * Sets label transparency.
+     *
+     * @param transparency label transparency
+     */
     public void setTransparency ( Float transparency )
     {
         this.transparency = transparency;
         label.repaint ();
     }
 
+    /**
+     * Paints label.
+     *
+     * @param g graphics
+     * @param c component
+     */
     public void paint ( Graphics g, JComponent c )
     {
         final Graphics2D g2d = ( Graphics2D ) g;
@@ -183,6 +272,9 @@ public class WebLabelUI extends BasicLabelUI
         LafUtils.restoreComposite ( g2d, oc, transparency != null );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     protected void paintEnabledText ( JLabel l, Graphics g, String s, int textX, int textY )
     {
         if ( drawShade )
@@ -193,12 +285,12 @@ public class WebLabelUI extends BasicLabelUI
         else
         {
             super.paintEnabledText ( l, g, s, textX, textY );
-            //            int mnemIndex = l.getDisplayedMnemonicIndex ();
-            //            g.setColor ( l.getForeground () );
-            //            SwingUtils.drawStringUnderlineCharAt ( l, g, s, mnemIndex, textX, textY );
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     protected void paintDisabledText ( JLabel l, Graphics g, String s, int textX, int textY )
     {
         if ( l.isEnabled () && drawShade )
@@ -209,15 +301,17 @@ public class WebLabelUI extends BasicLabelUI
         else
         {
             super.paintDisabledText ( l, g, s, textX, textY );
-            //            int accChar = l.getDisplayedMnemonicIndex ();
-            //            Color background = l.getBackground ();
-            //            g.setColor ( background.brighter () );
-            //            SwingUtils.drawStringUnderlineCharAt ( l, g, s, accChar, textX + 1, textY + 1 );
-            //            g.setColor ( background.darker () );
-            //            SwingUtils.drawStringUnderlineCharAt ( l, g, s, accChar, textX, textY );
         }
     }
 
+    /**
+     * Paints custom text shade.
+     *
+     * @param g     graphics context
+     * @param s     text
+     * @param textX text X coordinate
+     * @param textY text Y coordinate
+     */
     private void paintShadowText ( Graphics g, String s, int textX, int textY )
     {
         g.translate ( textX, textY );
@@ -225,6 +319,9 @@ public class WebLabelUI extends BasicLabelUI
         g.translate ( -textX, -textY );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public Dimension getPreferredSize ( JComponent c )
     {
         Dimension ps = super.getPreferredSize ( c );

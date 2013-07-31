@@ -23,38 +23,41 @@ import com.alee.laf.StyleConstants;
 import java.awt.*;
 
 /**
- * User: mgarin Date: 11/21/11 Time: 4:48 PM
+ * WebLabel style class.
+ *
+ * @author Mikle Garin
+ * @since 1.4
  */
 
 public final class WebLabelStyle
 {
     /**
-     * Default label margin
+     * Default label margin.
      */
     public static Insets margin = StyleConstants.margin;
 
     /**
-     * Default label background painter
+     * Default label background painter.
      */
     public static Painter painter = StyleConstants.painter;
 
     /**
-     * Default label background color
+     * Default label background color.
      */
     public static Color backgroundColor = StyleConstants.backgroundColor;
 
     /**
-     * Draw shade behind the text
+     * Draw shade behind the text.
      */
     public static boolean drawShade = false;
 
     /**
-     * Default label shade color
+     * Default label shade color.
      */
     public static Color shadeColor = new Color ( 200, 200, 200 );
 
     /**
-     * Default label transparency
+     * Default label transparency.
      */
     public static Float transparency = null;
 }
