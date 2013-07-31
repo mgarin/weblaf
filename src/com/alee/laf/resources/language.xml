@@ -560,6 +560,26 @@
             <value lang="pt">Ficheiros seleccionados:</value>
             <value lang="de">Ausgewählte Dateien:</value>
         </record>
+        <record key="save">
+            <value lang="en">Save</value>
+            <value lang="ru">Сохранить</value>
+            <value lang="pl">Wybierz</value>
+            <value lang="ar">حفظ</value>
+            <value lang="es">Guardar</value>
+            <value lang="fr">Sauvegarder</value>
+            <value lang="pt">Salvar</value>
+            <value lang="de">Speichern</value>
+        </record>
+        <record key="open">
+            <value lang="en">Open</value>
+            <value lang="ru">Открыть</value>
+            <value lang="pl">Otwarte</value>
+            <value lang="ar">فتح</value>
+            <value lang="es">Abierto</value>
+            <value lang="fr">Ouvert</value>
+            <value lang="pt">Aberto</value>
+            <value lang="de">Öffnen</value>
+        </record>
         <record key="choose">
             <value lang="en">Choose</value>
             <value lang="ru">Выбрать</value>
