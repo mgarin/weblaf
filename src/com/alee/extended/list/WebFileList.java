@@ -27,6 +27,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.FileFilter;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -340,6 +341,33 @@ public class WebFileList extends WebList
     }
 
     /**
+     * Returns list of selected files.
+     *
+     * @return list of selected files
+     */
+    public List<File> getSelectedFiles ()
+    {
+        final Object[] selectedValues = getSelectedValues ();
+        final List<File> selectedFiles = new ArrayList<File> ( selectedValues.length );
+        for ( Object value : selectedValues )
+        {
+            selectedFiles.add ( ( ( FileElement ) value ).getFile () );
+        }
+        return selectedFiles;
+    }
+
+    /**
+     * Returns selected file.
+     *
+     * @return selected file
+     */
+    public File getSelectedFile ()
+    {
+        final Object selectedValue = getSelectedValue ();
+        return selectedValue != null ? ( ( FileElement ) selectedValue ).getFile () : null;
+    }
+
+    /**
      * Returns scroll pane with fixed preferred size that fits file list settings.
      *
      * @return scroll pane with fixed preferred size that fits file list settings
@@ -369,8 +397,7 @@ public class WebFileList extends WebList
                 {
                     Insets bi = getInsets ();
                     Dimension oneCell = getCellBounds ( 0, 0 ).getSize ();
-                    ps.width = oneCell.width * preferredColumnCount + bi.left + bi.right +
-                            WebScrollBarUI.LENGTH + 1;
+                    ps.width = oneCell.width * preferredColumnCount + bi.left + bi.right + WebScrollBarUI.LENGTH + 1;
                     ps.height = oneCell.height * preferredRowCount + bi.top + bi.bottom + 1;
                 }
                 return ps;
