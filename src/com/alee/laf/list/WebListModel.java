@@ -398,8 +398,11 @@ public class WebListModel<T> extends AbstractListModel
     public void setElements ( Collection<T> objects )
     {
         clear ();
-        delegate.addAll ( objects );
-        fireIntervalAdded ( this, 0, delegate.size () - 1 );
+        if ( objects.size () > 0 )
+        {
+            delegate.addAll ( objects );
+            fireIntervalAdded ( this, 0, delegate.size () - 1 );
+        }
     }
 
     /**
