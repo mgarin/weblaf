@@ -241,6 +241,19 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
     }
 
     /**
+     * Scrolls tree view to selected nodes.
+     */
+    public void scrollToSelection ()
+    {
+        TreePath selectionPath = getSelectionPath ();
+        Rectangle bounds = getPathBounds ( selectionPath );
+        if ( bounds != null )
+        {
+            scrollRectToVisible ( bounds );
+        }
+    }
+
+    /**
      * Returns tree expansion and selection states.
      * Tree nodes must be instances of UniqueNode class.
      *
