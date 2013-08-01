@@ -169,7 +169,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
     }
 
     /**
-     * Reloads specified node childs and selects it if needed.
+     * Reloads specified node childs and selects it if requested.
      *
      * @param node   node to reload
      * @param select whether select the node or not

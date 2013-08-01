@@ -513,14 +513,7 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
     {
         // Checking that node for the file exists
         FileTreeNode parentNode = getNode ( parent );
-        if ( parentNode == null )
-        {
-            return false;
-        }
-        else
-        {
-            return addFiles ( parentNode, files );
-        }
+        return parentNode != null && addFiles ( parentNode, files );
     }
 
     /**
@@ -742,5 +735,30 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
             }
         }
         return pathNode;
+    }
+
+    /**
+     * Reloads child files for the specified folder.
+     *
+     * @param folder folder to reload childs for
+     */
+    public void reloadChilds ( File folder )
+    {
+        reloadChilds ( folder, false );
+    }
+
+    /**
+     * Reloads child files for the specified folder and selects folder node if requested.
+     *
+     * @param folder folder to reload childs for
+     * @param select whether select folder node or not
+     */
+    public void reloadChilds ( File folder, boolean select )
+    {
+        FileTreeNode node = getNode ( folder );
+        if ( node != null )
+        {
+            reloadNode ( node );
+        }
     }
 }
