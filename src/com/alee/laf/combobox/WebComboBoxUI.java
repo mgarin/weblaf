@@ -20,6 +20,7 @@ package com.alee.laf.combobox;
 import com.alee.laf.StyleConstants;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
+import com.alee.laf.list.WebListUI;
 import com.alee.laf.scroll.WebScrollBarUI;
 import com.alee.laf.scroll.WebScrollPaneUI;
 import com.alee.laf.text.WebTextFieldUI;
@@ -32,6 +33,7 @@ import javax.swing.*;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 import javax.swing.plaf.ComponentUI;
+import javax.swing.plaf.ListUI;
 import javax.swing.plaf.ScrollBarUI;
 import javax.swing.plaf.ScrollPaneUI;
 import javax.swing.plaf.basic.BasicComboBoxUI;
@@ -235,9 +237,16 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider
 
             protected JList createList ()
             {
-                //                JList list = ;
-                //                list.setOpaque ( false );
-                return super.createList ();
+                JList list = super.createList ();
+                //  list.setOpaque ( false );
+
+                ListUI listUI = list.getUI ();
+                if ( listUI instanceof WebListUI )
+                {
+                    ( ( WebListUI ) listUI ).setHighlightRolloverCell ( false );
+                }
+
+                return list;
             }
 
             protected void configurePopup ()
