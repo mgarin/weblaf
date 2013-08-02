@@ -147,13 +147,7 @@ public class WebLinkLabel extends WebLabel implements LanguageMethods
 
                     if ( link != null )
                     {
-                        new Thread ( new Runnable ()
-                        {
-                            public void run ()
-                            {
-                                link.run ();
-                            }
-                        } ).start ();
+                        link.run ();
                     }
 
                     fireActionPerformed ();
@@ -426,14 +420,20 @@ public class WebLinkLabel extends WebLabel implements LanguageMethods
             {
                 public void run ()
                 {
-                    try
+                    new Thread ( new Runnable ()
                     {
-                        WebUtils.browseSite ( address );
-                    }
-                    catch ( Throwable e )
-                    {
-                        //
-                    }
+                        public void run ()
+                        {
+                            try
+                            {
+                                WebUtils.browseSite ( address );
+                            }
+                            catch ( Throwable e )
+                            {
+                                //
+                            }
+                        }
+                    } );
                 }
             };
         }
@@ -451,14 +451,20 @@ public class WebLinkLabel extends WebLabel implements LanguageMethods
             {
                 public void run ()
                 {
-                    try
+                    new Thread ( new Runnable ()
                     {
-                        WebUtils.writeEmail ( email );
-                    }
-                    catch ( Throwable e )
-                    {
-                        //
-                    }
+                        public void run ()
+                        {
+                            try
+                            {
+                                WebUtils.writeEmail ( email );
+                            }
+                            catch ( Throwable e )
+                            {
+                                //
+                            }
+                        }
+                    } );
                 }
             };
         }
@@ -476,14 +482,20 @@ public class WebLinkLabel extends WebLabel implements LanguageMethods
             {
                 public void run ()
                 {
-                    try
+                    new Thread ( new Runnable ()
                     {
-                        WebUtils.openFile ( file );
-                    }
-                    catch ( Throwable e )
-                    {
-                        //
-                    }
+                        public void run ()
+                        {
+                            try
+                            {
+                                WebUtils.openFile ( file );
+                            }
+                            catch ( Throwable e )
+                            {
+                                //
+                            }
+                        }
+                    } );
                 }
             };
         }
