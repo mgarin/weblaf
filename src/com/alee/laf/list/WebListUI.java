@@ -171,7 +171,7 @@ public class WebListUI extends BasicListUI
                     {
                         final int index = list.getLeadSelectionIndex ();
                         Rectangle selection = getCellBounds ( list, index, index );
-                        if ( !selection.intersects ( list.getVisibleRect () ) )
+                        if ( selection != null && !selection.intersects ( list.getVisibleRect () ) )
                         {
                             list.scrollRectToVisible ( selection );
                         }
