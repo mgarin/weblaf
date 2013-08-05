@@ -21,9 +21,9 @@ import com.alee.utils.system.JavaVersion;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.StringSelection;
+import java.awt.datatransfer.*;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
 import java.lang.management.ManagementFactory;
 import java.util.ArrayList;
 import java.util.List;
@@ -79,6 +79,32 @@ public class SystemUtils
         {
             e.printStackTrace ();
         }
+    }
+
+    /**
+     * Returns string clipboard content.
+     *
+     * @return string clipboard content
+     */
+    public static String getStringFromClipboard ()
+    {
+        Transferable t = Toolkit.getDefaultToolkit ().getSystemClipboard ().getContents ( null );
+        if ( t != null && t.isDataFlavorSupported ( DataFlavor.stringFlavor ) )
+        {
+            try
+            {
+                return ( String ) t.getTransferData ( DataFlavor.stringFlavor );
+            }
+            catch ( UnsupportedFlavorException e )
+            {
+                return null;
+            }
+            catch ( IOException e )
+            {
+                return null;
+            }
+        }
+        return null;
     }
 
     /**

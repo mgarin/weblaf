@@ -44,10 +44,7 @@ import com.alee.laf.toolbar.WebToolBarStyle;
 import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.settings.SettingsManager;
-import com.alee.utils.CollectionUtils;
-import com.alee.utils.ImageUtils;
-import com.alee.utils.SwingUtils;
-import com.alee.utils.XmlUtils;
+import com.alee.utils.*;
 import com.alee.utils.ninepatch.NinePatchInterval;
 import com.alee.utils.ninepatch.NinePatchIntervalType;
 import info.clearthought.layout.TableLayout;
@@ -57,7 +54,6 @@ import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.tree.TreeSelectionModel;
 import java.awt.*;
-import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
@@ -358,8 +354,7 @@ public class NinePatchEditorPanel extends WebPanel
             {
                 if ( !ninePatchEditor.isSomeDragged () )
                 {
-                    Toolkit.getDefaultToolkit ().getSystemClipboard ()
-                            .setContents ( new StringSelection ( XmlUtils.toXML ( ninePatchEditor.getNinePatchInfo () ) ), null );
+                    SystemUtils.copyToClipboard ( XmlUtils.toXML ( ninePatchEditor.getNinePatchInfo () ) );
                 }
             }
         } );
@@ -375,22 +370,14 @@ public class NinePatchEditorPanel extends WebPanel
             {
                 if ( !ninePatchEditor.isSomeDragged () )
                 {
-                    try
+                    String xml = SystemUtils.getStringFromClipboard ();
+                    if ( xml != null )
                     {
-                        Transferable t = Toolkit.getDefaultToolkit ().getSystemClipboard ().getContents ( null );
-                        if ( t != null && t.isDataFlavorSupported ( DataFlavor.stringFlavor ) )
-                        {
-                            // Retrieving data from clipboard
-                            String data = ( String ) t.getTransferData ( DataFlavor.stringFlavor );
-                            NinePatchInfo info = XmlUtils.fromXML ( data );
+                        // Retrieving data from xml
+                        NinePatchInfo info = XmlUtils.fromXML ( xml );
 
-                            // Restoring data if it fits size
-                            ninePatchEditor.setNinePatchInfo ( info );
-                        }
-                    }
-                    catch ( Throwable ex )
-                    {
-                        //
+                        // Restoring data if it fits size
+                        ninePatchEditor.setNinePatchInfo ( info );
                     }
                 }
             }
