@@ -51,9 +51,9 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
     private final Object listenersLock = new Object ();
 
     /**
-     * Asynchronous tree data provider.
+     * Whether to load childs asynchronously or not.
      */
-    private AsyncTreeDataProvider dataProvider;
+    private boolean asyncLoading = true;
 
     /**
      * Constructs sample asynchronous tree.
@@ -61,7 +61,12 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
     public WebAsyncTree ()
     {
         super ();
+
+        // Installing sample data provider
         setDataProvider ( new SampleDataProvider () );
+        setAsyncLoading ( true );
+
+        // Tree cell renderer & editor
         setCellRenderer ( new SampleTreeCellRenderer () );
         setCellEditor ( new SampleTreeCellEditor () );
     }
@@ -74,9 +79,54 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
     public WebAsyncTree ( AsyncTreeDataProvider dataProvider )
     {
         super ();
+
+        // Installing data provider
         setDataProvider ( dataProvider );
+
+        // Tree cell renderer & editor
         setCellRenderer ( new WebAsyncTreeCellRenderer () );
         setCellEditor ( new WebTreeCellEditor () );
+    }
+
+    /**
+     * Costructs asynchronous tree using the specified tree model.
+     *
+     * @param newModel custom tree model
+     */
+    public WebAsyncTree ( AsyncTreeModel newModel )
+    {
+        super ( newModel );
+
+        // Installing tree model
+        setModel ( newModel );
+
+        // Tree cell renderer & editor
+        setCellRenderer ( new WebAsyncTreeCellRenderer () );
+        setCellEditor ( new WebTreeCellEditor () );
+    }
+
+    /**
+     * Returns whether childs are loaded asynchronously or not.
+     *
+     * @return true if childs are loaded asynchronously, false otherwise
+     */
+    public boolean isAsyncLoading ()
+    {
+        return asyncLoading;
+    }
+
+    /**
+     * Sets whether to load childs asynchronously or not.
+     *
+     * @param asyncLoading whether to load childs asynchronously or not
+     */
+    public void setAsyncLoading ( boolean asyncLoading )
+    {
+        this.asyncLoading = asyncLoading;
+        if ( isAsyncModel () )
+        {
+            getAsyncModel ().setAsyncLoading ( asyncLoading );
+        }
     }
 
     /**
@@ -110,6 +160,10 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
      */
     public void setModel ( TreeModel newModel )
     {
+        // Disable asynchronous loading for the model installation time
+        // This made to load initial data without delay and in EDT
+        setAsyncLoading ( false );
+
         // Removing AsyncTreeModelListener from old model
         if ( getModel () instanceof AsyncTreeModel )
         {
@@ -119,20 +173,57 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
         // Adding AsyncTreeModelListener into new model
         if ( newModel instanceof AsyncTreeModel )
         {
-            ( ( AsyncTreeModel ) newModel ).addAsyncTreeModelListener ( this );
+            final AsyncTreeModel model = ( AsyncTreeModel ) newModel;
+            model.setAsyncLoading ( asyncLoading );
+            model.addAsyncTreeModelListener ( this );
         }
 
         super.setModel ( newModel );
+
+        // Enabling asynchronous loading
+        setAsyncLoading ( true );
     }
 
     /**
-     * Returns asynchronous tree model
+     * Returns asynchronous tree model.
      *
      * @return asynchronous tree model
      */
     public AsyncTreeModel getAsyncModel ()
     {
-        return ( AsyncTreeModel ) super.getModel ();
+        return ( AsyncTreeModel ) getModel ();
+    }
+
+    /**
+     * Returns whether asynchronous tree model is installed or not.
+     *
+     * @return true if asynchronous tree model is installed, false otherwise
+     */
+    public boolean isAsyncModel ()
+    {
+        TreeModel model = getModel ();
+        return model != null && model instanceof AsyncTreeModel;
+    }
+
+    /**
+     * Returns asynchronous tree root node.
+     *
+     * @return asynchronous tree root node
+     */
+    public E getRootNode ()
+    {
+        return ( E ) getAsyncModel ().getRoot ();
+    }
+
+    /**
+     * Reloads selected node childs.
+     * Unlike asynchronous methods this one works in EDT and forces to wait until the nodes load finishes.
+     */
+    public void reloadSelectedNodesSync ()
+    {
+        setAsyncLoading ( false );
+        reloadSelectedNodes ();
+        setAsyncLoading ( true );
     }
 
     /**
@@ -160,6 +251,31 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
 
     /**
      * Reloads specified node childs.
+     * Unlike asynchronous methods this one works in EDT and forces to wait until the nodes load finishes.
+     *
+     * @param node node to reload
+     */
+    public void reloadNodeSync ( E node )
+    {
+        reloadNodeSync ( node, false );
+    }
+
+    /**
+     * Reloads specified node childs and selects it if requested.
+     * Unlike asynchronous methods this one works in EDT and forces to wait until the nodes load finishes.
+     *
+     * @param node   node to reload
+     * @param select whether select the node or not
+     */
+    public void reloadNodeSync ( E node, boolean select )
+    {
+        setAsyncLoading ( false );
+        reloadNode ( node, select );
+        setAsyncLoading ( true );
+    }
+
+    /**
+     * Reloads specified node childs.
      *
      * @param node node to reload
      */
@@ -182,6 +298,31 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
             // Reloading node childs
             performReload ( node, getPathForNode ( node ), select );
         }
+    }
+
+    /**
+     * Reloads node childs at the specified path.
+     * Unlike asynchronous methods this one works in EDT and forces to wait until the nodes load finishes.
+     *
+     * @param path path of the node to reload
+     */
+    public void reloadPathSync ( TreePath path )
+    {
+        reloadPathSync ( path, false );
+    }
+
+    /**
+     * Reloads node childs at the specified path and selects it if needed.
+     * Unlike asynchronous methods this one works in EDT and forces to wait until the nodes load finishes.
+     *
+     * @param path   path of the node to reload
+     * @param select whether select the node or not
+     */
+    public void reloadPathSync ( TreePath path, boolean select )
+    {
+        setAsyncLoading ( false );
+        reloadPath ( path, select );
+        setAsyncLoading ( true );
     }
 
     /**

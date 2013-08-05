@@ -59,6 +59,11 @@ public class AsyncTreeModel<E extends AsyncUniqueNode> extends WebTreeModel<E>
     protected WebAsyncTree<E> tree;
 
     /**
+     * Whether to load childs asynchronously or not.
+     */
+    private boolean asyncLoading = true;
+
+    /**
      * Asynchronous tree data provider.
      */
     protected AsyncTreeDataProvider<E> dataProvider;
@@ -96,6 +101,36 @@ public class AsyncTreeModel<E extends AsyncUniqueNode> extends WebTreeModel<E>
         super ( null );
         this.tree = tree;
         this.dataProvider = dataProvider;
+    }
+
+    /**
+     * Returns whether childs are loaded asynchronously or not.
+     *
+     * @return true if childs are loaded asynchronously, false otherwise
+     */
+    public boolean isAsyncLoading ()
+    {
+        return asyncLoading;
+    }
+
+    /**
+     * Sets whether to load childs asynchronously or not.
+     *
+     * @param asyncLoading whether to load childs asynchronously or not
+     */
+    public void setAsyncLoading ( boolean asyncLoading )
+    {
+        this.asyncLoading = asyncLoading;
+    }
+
+    /**
+     * Returns asynchronous tree data provider.
+     *
+     * @return data provider
+     */
+    public AsyncTreeDataProvider<E> getDataProvider ()
+    {
+        return dataProvider;
     }
 
     /**
@@ -144,8 +179,7 @@ public class AsyncTreeModel<E extends AsyncUniqueNode> extends WebTreeModel<E>
         }
         else
         {
-            loadChilds ( node );
-            return 0;
+            return loadChilds ( node );
         }
     }
 
@@ -184,28 +218,19 @@ public class AsyncTreeModel<E extends AsyncUniqueNode> extends WebTreeModel<E>
     }
 
     /**
-     * Returns asynchronous tree data provider.
-     *
-     * @return data provider
-     */
-    public AsyncTreeDataProvider<E> getDataProvider ()
-    {
-        return dataProvider;
-    }
-
-    /**
-     * Loads (or reloads) node childs.
+     * Loads (or reloads) node childs and returns zero or childs count if async mode is off.
      *
      * @param node node
+     * @return zero or childs count if async mode is off
      */
-    protected void loadChilds ( final E node )
+    protected int loadChilds ( final E node )
     {
-        // Check if the node is busy already
+        // Checking if the node is busy already
         synchronized ( busyLock )
         {
             if ( node.isBusy () )
             {
-                return;
+                return 0;
             }
             else
             {
@@ -217,7 +242,7 @@ public class AsyncTreeModel<E extends AsyncUniqueNode> extends WebTreeModel<E>
         // Firing load started event
         fireChildsLoadStarted ( node );
 
-        // Remove all old childs if such exist
+        // Removing all old childs if such exist
         final int childCount = node.getChildCount ();
         if ( childCount > 0 )
         {
@@ -232,52 +257,80 @@ public class AsyncTreeModel<E extends AsyncUniqueNode> extends WebTreeModel<E>
             nodesWereRemoved ( node, indices, childs );
         }
 
-        // Load new childs
-        new Thread ( new Runnable ()
+        // Loading node childs
+        if ( asyncLoading )
         {
-            public void run ()
+            // Creating a new thread to avoid locking EDT
+            new Thread ( new Runnable ()
             {
-                // Loading childs
-                final List<E> childs = dataProvider.getChilds ( node );
-
-                // Updating cache
-                synchronized ( cacheLock )
+                public void run ()
                 {
-                    nodeCached.put ( node.getId (), true );
-                }
+                    // Loading childs
+                    final List<E> childs = dataProvider.getChilds ( node );
 
-                // Performing UI updates in EDT
-                SwingUtils.invokeLater ( new Runnable ()
-                {
-                    public void run ()
+                    // Updating cache
+                    synchronized ( cacheLock )
                     {
-                        // Checking if any nodes loaded
-                        if ( childs != null && childs.size () > 0 )
-                        {
-                            // Inserting loaded nodes
-                            insertNodesInto ( childs, node, 0 );
-                            //                            for ( int i = 0; i < childs.size (); i++ )
-                            //                            {
-                            //                                final E child = childs.get ( i );
-                            //
-                            //                                // Adding into tree
-                            //                                insertNodeInto ( child, node, i );
-                            //                            }
-                        }
-
-                        // Release node busy state
-                        synchronized ( busyLock )
-                        {
-                            node.setBusy ( false );
-                            nodeChanged ( node );
-                        }
-
-                        // Firing load completed event
-                        fireChildsLoadCompleted ( node, childs );
+                        nodeCached.put ( node.getId (), true );
                     }
-                } );
+
+                    // Performing UI updates in EDT
+                    SwingUtils.invokeLater ( new Runnable ()
+                    {
+                        public void run ()
+                        {
+                            // Checking if any nodes loaded
+                            if ( childs != null && childs.size () > 0 )
+                            {
+                                // Inserting loaded nodes
+                                insertNodesInto ( childs, node, 0 );
+                            }
+
+                            // Releasing node busy state
+                            synchronized ( busyLock )
+                            {
+                                node.setBusy ( false );
+                                nodeChanged ( node );
+                            }
+
+                            // Firing load completed event
+                            fireChildsLoadCompleted ( node, childs );
+                        }
+                    } );
+                }
+            }, "Async childs loader: " + node.getId () ).start ();
+            return 0;
+        }
+        else
+        {
+            // Loading childs
+            final List<E> childs = dataProvider.getChilds ( node );
+
+            // Updating cache
+            synchronized ( cacheLock )
+            {
+                nodeCached.put ( node.getId (), true );
             }
-        }, "Async childs loader: " + node.getId () ).start ();
+
+            // Checking if any nodes loaded
+            if ( childs != null && childs.size () > 0 )
+            {
+                // Inserting loaded nodes
+                insertNodesInto ( childs, node, 0 );
+            }
+
+            // Releasing node busy state
+            synchronized ( busyLock )
+            {
+                node.setBusy ( false );
+                nodeChanged ( node );
+            }
+
+            // Firing load completed event
+            fireChildsLoadCompleted ( node, childs );
+
+            return childs.size ();
+        }
     }
 
     /**

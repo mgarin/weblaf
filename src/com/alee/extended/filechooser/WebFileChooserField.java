@@ -23,6 +23,7 @@ import com.alee.extended.layout.HorizontalFlowLayout;
 import com.alee.extended.panel.CenterPanel;
 import com.alee.laf.StyleConstants;
 import com.alee.laf.button.WebButton;
+import com.alee.laf.filechooser.WebFileChooser;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
 import com.alee.laf.scroll.WebScrollPane;
@@ -48,7 +49,12 @@ public class WebFileChooserField extends WebPanel
 
     private List<File> selectedFiles = new ArrayList<File> ();
 
-    private SelectionMode selectionMode = SelectionMode.MULTIPLE_SELECTION;
+
+    /**
+     * Whether multiply files selection allowed or not.
+     */
+    protected boolean multiSelectionEnabled = false;
+
     private int preferredWidth = -1;
     private boolean showFileShortName = true;
     private boolean showFileIcon = true;
@@ -78,7 +84,7 @@ public class WebFileChooserField extends WebPanel
         this ( null, showChooseButton );
     }
 
-    public WebFileChooserField ( Window owner, boolean showChooseButton )
+    public WebFileChooserField ( final Window owner, boolean showChooseButton )
     {
         super ( true );
 
@@ -138,14 +144,17 @@ public class WebFileChooserField extends WebPanel
 
         if ( this.showChooseButton )
         {
-            webFileChooser = new WebFileChooser ( owner );
-            webFileChooser.setSelectionMode ( selectionMode );
-            webFileChooser.setOkListener ( new ActionListener ()
+            webFileChooser = new WebFileChooser ();
+            webFileChooser.setMultiSelectionEnabled ( multiSelectionEnabled );
+            webFileChooser.addActionListener ( new ActionListener ()
             {
                 public void actionPerformed ( ActionEvent e )
                 {
-                    // Adding all selected files
-                    setSelectedFiles ( webFileChooser.getSelectedFiles () );
+                    if ( e.getActionCommand ().equals ( WebFileChooser.APPROVE_SELECTION ) )
+                    {
+                        // Adding all selected files
+                        setSelectedFiles ( CollectionUtils.toList ( webFileChooser.getSelectedFiles () ) );
+                    }
                 }
             } );
 
@@ -162,7 +171,7 @@ public class WebFileChooserField extends WebPanel
                 public void actionPerformed ( ActionEvent e )
                 {
                     // Files selection
-                    webFileChooser.setVisible ( true );
+                    webFileChooser.showOpenDialog ( owner );
 
                     // Requesting focus back to this component after file chooser close
                     chooseButton.requestFocusInWindow ();
@@ -188,7 +197,7 @@ public class WebFileChooserField extends WebPanel
 
     private void updateContentLayout ()
     {
-        contentPanel.setLayout ( new HorizontalFlowLayout ( 0, isSingleSelection () ) );
+        contentPanel.setLayout ( new HorizontalFlowLayout ( 0, !multiSelectionEnabled ) );
     }
 
     public WebFileChooser getWebFileChooser ()
@@ -206,17 +215,24 @@ public class WebFileChooserField extends WebPanel
         return showChooseButton;
     }
 
-    public SelectionMode getSelectionMode ()
+    // todo Implement this feature
+    //    public void setChooseButton ( WebButton chooseButton )
+    //    {
+    //        this.chooseButton = chooseButton;
+    //        // ...
+    //    }
+
+    public boolean isMultiSelectionEnabled ()
     {
-        return selectionMode;
+        return multiSelectionEnabled;
     }
 
-    public void setSelectionMode ( SelectionMode selectionMode )
+    public void setMultiSelectionEnabled ( boolean multiSelectionEnabled )
     {
-        this.selectionMode = selectionMode;
+        this.multiSelectionEnabled = multiSelectionEnabled;
         if ( webFileChooser != null )
         {
-            webFileChooser.setSelectionMode ( selectionMode );
+            webFileChooser.setMultiSelectionEnabled ( multiSelectionEnabled );
         }
         updateContentLayout ();
     }
@@ -229,53 +245,6 @@ public class WebFileChooserField extends WebPanel
     public void setFilesDropEnabled ( boolean filesDropEnabled )
     {
         this.filesDropEnabled = filesDropEnabled;
-    }
-
-    public void setCurrentDirectory ( String dir )
-    {
-        webFileChooser.setCurrentDirectory ( dir );
-    }
-
-    public void setCurrentDirectory ( File dir )
-    {
-        webFileChooser.setCurrentDirectory ( dir );
-    }
-
-    public File getCurrentDirectory ()
-    {
-        return webFileChooser.getCurrentDirectory ();
-    }
-
-    public FilesToChoose getFilesToChoose ()
-    {
-        return webFileChooser.getFilesToChoose ();
-    }
-
-    public void setFilesToChoose ( FilesToChoose filesToChoose )
-    {
-        webFileChooser.setFilesToChoose ( filesToChoose );
-    }
-
-    public List<DefaultFileFilter> getAvailableFilters ()
-    {
-        if ( webFileChooser != null )
-        {
-            return webFileChooser.getAvailableFilters ();
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    public void setAvailableFilter ( DefaultFileFilter availableFilter )
-    {
-        webFileChooser.setAvailableFilter ( availableFilter );
-    }
-
-    public void setAvailableFilters ( List<DefaultFileFilter> availableFilters )
-    {
-        webFileChooser.setAvailableFilters ( availableFilters );
     }
 
     public boolean isShowFileShortName ()
@@ -345,14 +314,13 @@ public class WebFileChooserField extends WebPanel
         this.selectedFiles.clear ();
         if ( selectedFiles != null && selectedFiles.size () > 0 )
         {
-            if ( isSingleSelection () )
+            if ( multiSelectionEnabled )
             {
                 for ( File file : selectedFiles )
                 {
                     if ( FileUtils.isFileAccepted ( file, getAvailableFilters () ) )
                     {
                         this.selectedFiles.add ( file );
-                        break;
                     }
                 }
             }
@@ -363,6 +331,7 @@ public class WebFileChooserField extends WebPanel
                     if ( FileUtils.isFileAccepted ( file, getAvailableFilters () ) )
                     {
                         this.selectedFiles.add ( file );
+                        break;
                     }
                 }
             }
@@ -391,9 +360,9 @@ public class WebFileChooserField extends WebPanel
         WebFileChooserField.this.repaint ();
     }
 
-    private boolean isSingleSelection ()
+    private List<DefaultFileFilter> getAvailableFilters ()
     {
-        return getSelectionMode ().equals ( SelectionMode.SINGLE_SELECTION );
+        return webFileChooser == null ? null : webFileChooser.getAvailableFilters ();
     }
 
     public class FilePlate extends WebPanel
@@ -427,7 +396,7 @@ public class WebFileChooserField extends WebPanel
                     FilePlate.this.requestFocusInWindow ();
                     if ( SwingUtilities.isRightMouseButton ( e ) )
                     {
-                        if ( getSelectionMode ().equals ( SelectionMode.MULTIPLE_SELECTION ) )
+                        if ( multiSelectionEnabled )
                         {
                             showShortName = !showShortName;
                             fileName.setText ( showShortName ? displayFileName : absolutePath );

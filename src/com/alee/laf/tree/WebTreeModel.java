@@ -74,4 +74,14 @@ public class WebTreeModel<E extends MutableTreeNode> extends DefaultTreeModel
 
         nodesWereInserted ( parent, indices );
     }
+
+    /**
+     * Forces node to be updated.
+     *
+     * @param node node to be updated
+     */
+    public void updateNode ( E node )
+    {
+        fireTreeNodesChanged ( WebTreeModel.this, getPathToRoot ( node ), null, null );
+    }
 }

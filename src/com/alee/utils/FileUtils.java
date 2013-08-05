@@ -27,6 +27,7 @@ import com.alee.utils.file.FileDownloadListener;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileSystemView;
+import javax.swing.text.JTextComponent;
 import java.io.*;
 import java.math.BigInteger;
 import java.net.URL;
@@ -143,6 +144,11 @@ public class FileUtils
     private static Map<String, String> fileTypeDescriptionCache = new HashMap<String, String> ();
 
     /**
+     * Cache for "getDisplayFileCreationDate" method result.
+     */
+    private static Map<String, String> displayFileCreationDateCache = new HashMap<String, String> ();
+
+    /**
      * Cache for "getDisplayFileModificationDate" method result.
      */
     private static Map<String, String> displayFileModificationDateCache = new HashMap<String, String> ();
@@ -156,6 +162,49 @@ public class FileUtils
      * Resource icons cache.
      */
     private static Map<String, ImageIcon> resourceIconsCache = new HashMap<String, ImageIcon> ();
+
+    /**
+     * Clears all caches for specified files.
+     *
+     * @param files files to process
+     */
+    public static void clearFilesCaches ( File... files )
+    {
+        for ( File file : files )
+        {
+            clearFileCaches ( file );
+        }
+    }
+
+    /**
+     * Clears all caches for specified file.
+     *
+     * @param file file to process
+     */
+    public static void clearFileCaches ( File file )
+    {
+        clearFileCaches ( file.getAbsolutePath () );
+    }
+
+    /**
+     * Clears all caches for file under the specified path.
+     *
+     * @param path file path
+     */
+    public static void clearFileCaches ( String path )
+    {
+        clearDisplayFileNameCache ( path );
+        clearIsHiddenCache ( path );
+        clearIsFileCache ( path );
+        clearIsDirectoryCache ( path );
+        clearIsComputerCache ( path );
+        clearIsDriveCache ( path );
+        clearIsCdDriveCache ( path );
+        clearFileDescriptionCache ( path );
+        clearFileTypeDescriptionCache ( path );
+        clearDisplayFileCreationDateCache ( path );
+        clearDisplayFileModificationDateCache ( path );
+    }
 
     /**
      * Returns list of files contained in path of the specified file.
@@ -177,6 +226,31 @@ public class FileUtils
             file = file.getParentFile ();
         }
         return path;
+    }
+
+    /**
+     * Returns whether specified file's name can be edited.
+     *
+     * @param file file to edit
+     * @return true if specified file's name can be edited, false otherwise
+     */
+    public static boolean isNameEditable ( File file )
+    {
+        return file.getParentFile () != null && file.canWrite () && file.getParentFile ().canWrite ();
+    }
+
+    /**
+     * Sets file name as text and selects its name part in any text component.
+     *
+     * @param editor text editor to process
+     * @param file   file to process
+     */
+    public static void displayFileName ( JTextComponent editor, File file )
+    {
+        final String name = file.getName ();
+        editor.setText ( name );
+        editor.setSelectionStart ( 0 );
+        editor.setSelectionEnd ( file.isDirectory () ? name.length () : FileUtils.getFileNamePart ( name ).length () );
     }
 
     /**
@@ -295,6 +369,19 @@ public class FileUtils
     }
 
     /**
+     * Returns directory files array or empty array (instead of null) if no files present.
+     *
+     * @param directory  directory to look into
+     * @param fileFilter file filter
+     * @return directory files array or empty array (instead of null) if no files present
+     */
+    public static File[] listFiles ( File directory, FileFilter fileFilter )
+    {
+        File[] files = directory.listFiles ( fileFilter );
+        return files != null ? files : new File[ 0 ];
+    }
+
+    /**
      * Returns MD5 for specified file.
      *
      * @param file file to process
@@ -409,8 +496,22 @@ public class FileUtils
      */
     public static boolean equals ( File file1, File file2 )
     {
-        return file1 == null && file2 == null || file1 != null && file2 != null &&
-                file1.getAbsolutePath ().equals ( file2.getAbsolutePath () );
+        if ( file1 == null && file2 == null )
+        {
+            return true;
+        }
+        else
+        {
+            final boolean notNull = file1 != null && file2 != null;
+            try
+            {
+                return notNull && file1.getCanonicalPath ().equals ( file2.getCanonicalPath () );
+            }
+            catch ( IOException e )
+            {
+                return notNull && file1.getAbsolutePath ().equals ( file2.getAbsolutePath () );
+            }
+        }
     }
 
     /**
@@ -828,6 +929,22 @@ public class FileUtils
     }
 
     /**
+     * Deletes all specified files.
+     *
+     * @param files files to delete
+     */
+    public static void deleteFiles ( List files )
+    {
+        for ( Object object : files )
+        {
+            if ( object instanceof File )
+            {
+                deleteFile ( ( File ) object );
+            }
+        }
+    }
+
+    /**
      * Deletes file or directory completely.
      * All child files and directories will be removed first in case directory is deleted.
      *
@@ -879,6 +996,98 @@ public class FileUtils
     }
 
     /**
+     * Returns transformed file filter.
+     *
+     * @param fileFilter IO file filter
+     * @return transformed file filter
+     */
+    public static DefaultFileFilter transformFileFilter ( final FileFilter fileFilter )
+    {
+        DefaultFileFilter filter;
+        if ( fileFilter instanceof DefaultFileFilter )
+        {
+            filter = ( DefaultFileFilter ) fileFilter;
+        }
+        else
+        {
+            filter = new DefaultFileFilter ()
+            {
+                public ImageIcon getIcon ()
+                {
+                    return GlobalConstants.ALL_FILES_FILTER.getIcon ();
+                }
+
+                public String getDescription ()
+                {
+                    return LanguageManager.get ( "weblaf.file.filter.custom" );
+                }
+
+                public boolean accept ( File file )
+                {
+                    return fileFilter == null || fileFilter.accept ( file );
+                }
+            };
+        }
+        return filter;
+    }
+
+    /**
+     * Returns transformed file filter.
+     *
+     * @param fileFilter Swing file filter
+     * @return transformed file filter.
+     */
+    public static DefaultFileFilter transformFileFilter ( final javax.swing.filechooser.FileFilter fileFilter )
+    {
+        DefaultFileFilter filter;
+        if ( fileFilter instanceof DefaultFileFilter )
+        {
+            filter = ( DefaultFileFilter ) fileFilter;
+        }
+        else
+        {
+            filter = new DefaultFileFilter ()
+            {
+                public ImageIcon getIcon ()
+                {
+                    return GlobalConstants.ALL_FILES_FILTER.getIcon ();
+                }
+
+                public String getDescription ()
+                {
+                    return LanguageManager.get ( "weblaf.file.filter.custom" );
+                }
+
+                public boolean accept ( File file )
+                {
+                    return fileFilter == null || fileFilter.accept ( file );
+                }
+            };
+        }
+        return filter;
+    }
+
+    /**
+     * Returns filtered files list.
+     *
+     * @param files      files collection to filter
+     * @param fileFilter file filter
+     * @return filtered files list
+     */
+    public static List<File> filterFiles ( Collection<File> files, DefaultFileFilter fileFilter )
+    {
+        List<File> filteredFiles = new ArrayList<File> ( files.size () );
+        for ( File file : files )
+        {
+            if ( fileFilter.accept ( file ) )
+            {
+                filteredFiles.add ( file );
+            }
+        }
+        return filteredFiles;
+    }
+
+    /**
      * Returns complete file description.
      *
      * @param file     file to process
@@ -911,6 +1120,7 @@ public class FileUtils
      */
     public static String getDisplayFileSize ( File file )
     {
+        // todo Cache this value
         return getFileSizeString ( file.length () );
     }
 
@@ -923,6 +1133,7 @@ public class FileUtils
      */
     public static String getDisplayFileSize ( File file, int digits )
     {
+        // todo Cache this value
         return getFileSizeString ( file.length (), digits );
     }
 
@@ -1781,6 +1992,14 @@ public class FileUtils
     }
 
     /**
+     * Clears cache for "isDrive" method for specified file path.
+     */
+    public static void clearIsDriveCache ( String absolutePath )
+    {
+        isDriveCache.remove ( absolutePath );
+    }
+
+    /**
      * Returns whether the specified file points to system hard drive or not.
      *
      * @param file file to process
@@ -1810,6 +2029,14 @@ public class FileUtils
     }
 
     /**
+     * Clears cache for "isComputer" method for specified file path.
+     */
+    public static void clearIsComputerCache ( String absolutePath )
+    {
+        isComputerCache.remove ( absolutePath );
+    }
+
+    /**
      * Returns whether the specified file points to system hard drive or not.
      *
      * @param file file to process
@@ -1836,6 +2063,14 @@ public class FileUtils
     public static void clearIsCdDriveCache ()
     {
         isCdDriveCache.clear ();
+    }
+
+    /**
+     * Clears cache for "isCdDrive" method for specified file path.
+     */
+    public static void clearIsCdDriveCache ( String absolutePath )
+    {
+        isCdDriveCache.remove ( absolutePath );
     }
 
     /**
@@ -1889,6 +2124,14 @@ public class FileUtils
     }
 
     /**
+     * Clears cache for "isFile" method for specified file path.
+     */
+    public static void clearIsFileCache ( String absolutePath )
+    {
+        isFileCache.remove ( absolutePath );
+    }
+
+    /**
      * Returns whether the specified file is actually a file (and not a directory, disk or some system folder) or not.
      *
      * @param file file to process
@@ -1921,6 +2164,14 @@ public class FileUtils
     }
 
     /**
+     * Clears cache for "isDirectory" method for specified file path.
+     */
+    public static void clearIsDirectoryCache ( String absolutePath )
+    {
+        isDirectoryCache.remove ( absolutePath );
+    }
+
+    /**
      * Returns whether the specified file is directory or not.
      *
      * @param file file to process
@@ -1950,6 +2201,14 @@ public class FileUtils
     public static void clearIsHiddenCache ()
     {
         isHiddenCache.clear ();
+    }
+
+    /**
+     * Clears cache for "isHidden" method for specified file path.
+     */
+    public static void clearIsHiddenCache ( String absolutePath )
+    {
+        isHiddenCache.remove ( absolutePath );
     }
 
     /**
@@ -1986,6 +2245,14 @@ public class FileUtils
     }
 
     /**
+     * Clears cache for "getFileDescription" method for specified file path.
+     */
+    public static void clearFileDescriptionCache ( String absolutePath )
+    {
+        fileDescriptionCache.remove ( absolutePath );
+    }
+
+    /**
      * Returns complete file description.
      *
      * @param file     file to process
@@ -2015,6 +2282,14 @@ public class FileUtils
     }
 
     /**
+     * Clears cache for "getDisplayFileName" method for specified file path.
+     */
+    public static void clearDisplayFileNameCache ( String absolutePath )
+    {
+        displayFileNameCache.remove ( absolutePath );
+    }
+
+    /**
      * Returns file name to display.
      *
      * @param file file to process
@@ -2040,11 +2315,56 @@ public class FileUtils
     }
 
     /**
+     * Clears cache for "getDisplayFileCreationDate" method.
+     */
+    public static void clearDisplayFileCreationDateCache ()
+    {
+        displayFileCreationDateCache.clear ();
+    }
+
+    /**
+     * Clears cache for "getDisplayFileCreationDate" method for specified file path.
+     */
+    public static void clearDisplayFileCreationDateCache ( String absolutePath )
+    {
+        displayFileCreationDateCache.remove ( absolutePath );
+    }
+
+    /**
+     * Returns file modification date to display.
+     *
+     * @param file file to process
+     * @return file modification date to display
+     */
+    public static String getDisplayFileCreationDate ( File file )
+    {
+        String absolutePath = file.getAbsolutePath ();
+        if ( displayFileCreationDateCache.containsKey ( absolutePath ) )
+        {
+            return displayFileCreationDateCache.get ( absolutePath );
+        }
+        else
+        {
+            String date = sdf.format ( new Date ( file.lastModified () ) );
+            displayFileCreationDateCache.put ( absolutePath, date );
+            return date;
+        }
+    }
+
+    /**
      * Clears cache for "getDisplayFileModificationDate" method.
      */
     public static void clearDisplayFileModificationDateCache ()
     {
         displayFileModificationDateCache.clear ();
+    }
+
+    /**
+     * Clears cache for "getDisplayFileModificationDate" method for specified file path.
+     */
+    public static void clearDisplayFileModificationDateCache ( String absolutePath )
+    {
+        displayFileModificationDateCache.remove ( absolutePath );
     }
 
     /**
@@ -2077,6 +2397,14 @@ public class FileUtils
     }
 
     /**
+     * Clears cache for "getFileTypeDescription" method for specified file path.
+     */
+    public static void clearFileTypeDescriptionCache ( String absolutePath )
+    {
+        fileTypeDescriptionCache.remove ( absolutePath );
+    }
+
+    /**
      * Returns file type description.
      *
      * @param file file to process
@@ -2088,15 +2416,19 @@ public class FileUtils
         {
             return "";
         }
-        else if ( fileTypeDescriptionCache.containsKey ( file.getAbsolutePath () ) )
-        {
-            return fileTypeDescriptionCache.get ( file.getAbsolutePath () );
-        }
         else
         {
-            String description = fsv.getSystemTypeDescription ( file );
-            fileTypeDescriptionCache.put ( file.getAbsolutePath (), description );
-            return description;
+            final String absolutePath = file.getAbsolutePath ();
+            if ( fileTypeDescriptionCache.containsKey ( absolutePath ) )
+            {
+                return fileTypeDescriptionCache.get ( absolutePath );
+            }
+            else
+            {
+                String description = fsv.getSystemTypeDescription ( file );
+                fileTypeDescriptionCache.put ( absolutePath, description );
+                return description;
+            }
         }
     }
 

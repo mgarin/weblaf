@@ -31,6 +31,11 @@ import java.awt.*;
 public final class WebTreeStyle
 {
     /**
+     * Whether autoexpand node on selection or not.
+     */
+    public static boolean autoExpandSelectedPath = false;
+
+    /**
      * Show rollover node highlight.
      */
     public static boolean highlightRolloverNode = true;

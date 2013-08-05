@@ -31,12 +31,7 @@ import java.awt.*;
 public class FrameLU extends DefaultLanguageUpdater<Frame>
 {
     /**
-     * Updates component language-dependant variables.
-     *
-     * @param c     component
-     * @param key   language key
-     * @param value language value
-     * @param data  formatting data
+     * {@inheritDoc}
      */
     public void update ( Frame c, String key, Value value, Object... data )
     {

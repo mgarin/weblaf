@@ -26,6 +26,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Asynchronous data provider for WebFileTree.
+ *
  * @author Mikle Garin
  * @since 1.4
  */

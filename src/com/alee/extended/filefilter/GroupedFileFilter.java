@@ -25,26 +25,67 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * User: mgarin Date: 08.07.11 Time: 16:39
+ * This file filter groups specified file filters in a certain way defined by filter group type.
+ *
+ * @author Mikle Garin
+ * @since 1.4
  */
 
 public class GroupedFileFilter extends DefaultFileFilter
 {
-    private GroupType groupType;
+    /**
+     * The way file filters will be grouped.
+     */
+    private FilterGroupType filterGroupType;
+
+    /**
+     * Default file filter used to display icon and description.
+     */
     private DefaultFileFilter defaultFilter;
+
+    /**
+     * List of grouped file filters.
+     */
     private List<FileFilter> filters;
 
-    public GroupedFileFilter ( GroupType groupType, FileFilter... filters )
+    /**
+     * Constructs grouped file filter with the specified parameters.
+     *
+     * @param filters list of file filters to be grouped
+     */
+    public GroupedFileFilter ( FileFilter... filters )
+    {
+        this ( FilterGroupType.AND, filters );
+    }
+
+    /**
+     * Constructs grouped file filter with the specified parameters.
+     *
+     * @param filterGroupType the way file filters will be grouped
+     * @param filters         list of file filters to be grouped
+     */
+    public GroupedFileFilter ( FilterGroupType filterGroupType, FileFilter... filters )
+    {
+        this ( filters != null && filters.length > 0 && filters[ 0 ] instanceof DefaultFileFilter ? ( DefaultFileFilter ) filters[ 0 ] :
+                null, filterGroupType, filters );
+    }
+
+    /**
+     * Constructs grouped file filter with the specified parameters.
+     *
+     * @param defaultFilter   default file filter used to display icon and description
+     * @param filterGroupType the way file filters will be grouped
+     * @param filters         list of file filters to be grouped
+     */
+    public GroupedFileFilter ( DefaultFileFilter defaultFilter, FilterGroupType filterGroupType, FileFilter... filters )
     {
         super ();
 
         // Filters grouping type
-        this.groupType = groupType;
+        this.filterGroupType = filterGroupType;
 
         // Default filter
-        this.defaultFilter =
-                filters != null && filters.length > 0 && filters[ 0 ] instanceof DefaultFileFilter ? ( DefaultFileFilter ) filters[ 0 ] :
-                        null;
+        this.defaultFilter = defaultFilter;
 
         // Filters to group
         this.filters = new ArrayList<FileFilter> ();
@@ -64,13 +105,13 @@ public class GroupedFileFilter extends DefaultFileFilter
         return defaultFilter != null ? defaultFilter.getDescription () : null;
     }
 
-    public boolean accept ( File pathname )
+    public boolean accept ( File file )
     {
-        if ( groupType.equals ( GroupType.AND ) )
+        if ( filterGroupType.equals ( FilterGroupType.AND ) )
         {
             for ( FileFilter filter : filters )
             {
-                if ( filter != null && !filter.accept ( pathname ) )
+                if ( filter != null && !filter.accept ( file ) )
                 {
                     return false;
                 }
@@ -81,7 +122,7 @@ public class GroupedFileFilter extends DefaultFileFilter
         {
             for ( FileFilter filter : filters )
             {
-                if ( filter == null || filter.accept ( pathname ) )
+                if ( filter == null || filter.accept ( file ) )
                 {
                     return true;
                 }

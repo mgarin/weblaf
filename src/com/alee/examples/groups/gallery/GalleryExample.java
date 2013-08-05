@@ -20,13 +20,12 @@ package com.alee.examples.groups.gallery;
 import com.alee.examples.WebLookAndFeelDemo;
 import com.alee.examples.content.DefaultExample;
 import com.alee.examples.content.FeatureState;
-import com.alee.extended.filechooser.SelectionMode;
-import com.alee.extended.filechooser.WebFileChooser;
 import com.alee.extended.image.GalleryTransferHandler;
 import com.alee.extended.image.WebImageGallery;
 import com.alee.laf.GlobalConstants;
 import com.alee.laf.StyleConstants;
 import com.alee.laf.button.WebButton;
+import com.alee.laf.filechooser.WebFileChooser;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
 import com.alee.laf.toolbar.ToolbarStyle;
@@ -84,22 +83,21 @@ public class GalleryExample extends DefaultExample
         add.setRound ( StyleConstants.smallRound );
         add.addActionListener ( new ActionListener ()
         {
-            private WebFileChooser wfc = null;
+            private WebFileChooser fileChooser = null;
 
             public void actionPerformed ( ActionEvent e )
             {
-                if ( wfc == null )
+                if ( fileChooser == null )
                 {
-                    wfc = new WebFileChooser ( owner, "Choose an image to add" );
-                    wfc.setSelectionMode ( SelectionMode.MULTIPLE_SELECTION );
-                    wfc.setAvailableFilter ( GlobalConstants.IMAGES_AND_FOLDERS_FILTER );
-                    wfc.setChooseFilter ( GlobalConstants.IMAGES_FILTER );
+                    fileChooser = new WebFileChooser ();
+                    fileChooser.setDialogTitle ( "Choose an image to add" );
+                    fileChooser.setMultiSelectionEnabled ( true );
+                    fileChooser.setAcceptAllFileFilterUsed ( false );
+                    fileChooser.addChoosableFileFilter ( GlobalConstants.IMAGES_FILTER );
                 }
-                wfc.setVisible ( true );
-
-                if ( wfc.getResult () == StyleConstants.OK_OPTION )
+                if ( fileChooser.showOpenDialog ( owner ) == WebFileChooser.APPROVE_OPTION )
                 {
-                    for ( File file : wfc.getSelectedFiles () )
+                    for ( File file : fileChooser.getSelectedFiles () )
                     {
                         wig.addImage ( 0, new ImageIcon ( file.getAbsolutePath () ) );
                     }

@@ -1151,10 +1151,10 @@ public class WebTimer
     }
 
     /**
-     * Returns
+     * Returns delay string representation.
      *
-     * @param delay
-     * @return
+     * @param delay delay to process
+     * @return delay string representation
      */
     public static String toStringDelay ( long delay )
     {

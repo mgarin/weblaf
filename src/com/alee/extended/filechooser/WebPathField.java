@@ -19,8 +19,6 @@ package com.alee.extended.filechooser;
 
 import com.alee.extended.drag.FileDropHandler;
 import com.alee.extended.filefilter.DefaultFileFilter;
-import com.alee.extended.filefilter.GroupType;
-import com.alee.extended.filefilter.GroupedFileFilter;
 import com.alee.extended.layout.HorizontalFlowLayout;
 import com.alee.laf.GlobalConstants;
 import com.alee.laf.StyleConstants;
@@ -77,10 +75,7 @@ public class WebPathField extends WebPanel
 
     private static FileSystemView fsv = FileSystemView.getFileSystemView ();
 
-    private boolean showHiddenFiles = StyleConstants.showHiddenFiles;
     private DefaultFileFilter fileFilter = GlobalConstants.DIRECTORIES_FILTER;
-    private DefaultFileFilter nonHiddenFileFilter =
-            new GroupedFileFilter ( GroupType.AND, GlobalConstants.DIRECTORIES_FILTER, GlobalConstants.NON_HIDDEN_ONLY_FILTER );
 
     private int preferredWidth = -1;
     private boolean filesDropEnabled = true;
@@ -181,7 +176,7 @@ public class WebPathField extends WebPanel
                         }
                         else
                         {
-                            updatePath ( selectedPath );
+                            updatePath ();
                         }
                     }
                     WebPathField.this.transferFocus ();
@@ -197,14 +192,14 @@ public class WebPathField extends WebPanel
                     if ( Hotkey.ESCAPE.isTriggered ( e ) )
                     {
                         if ( selectedPath == null && pathField.getText ().trim ().equals ( "" ) ||
-                                selectedPath != null && selectedPath.getAbsolutePath ().equals ( pathField.getText () ) )
+                                selectedPath != null && getProperSelectedPath ().equals ( pathField.getText () ) )
                         {
-                            updatePath ( selectedPath );
+                            updatePath ();
                             WebPathField.this.transferFocus ();
                         }
                         else
                         {
-                            pathField.setText ( selectedPath.getAbsolutePath () );
+                            pathField.setText ( getProperSelectedPath () );
                         }
                     }
                 }
@@ -216,9 +211,9 @@ public class WebPathField extends WebPanel
             public void focusLost ( FocusEvent e )
             {
                 if ( selectedPath == null && pathField.getText ().trim ().equals ( "" ) ||
-                        selectedPath != null && selectedPath.getAbsolutePath ().equals ( pathField.getText () ) )
+                        selectedPath != null && getProperSelectedPath ().equals ( pathField.getText () ) )
                 {
-                    updatePath ( selectedPath );
+                    updatePath ();
                 }
             }
         };
@@ -492,7 +487,7 @@ public class WebPathField extends WebPanel
             {
                 if ( !pathField.isShowing () )
                 {
-                    updatePath ( selectedPath );
+                    updatePath ();
                 }
             }
         } );
@@ -524,9 +519,7 @@ public class WebPathField extends WebPanel
             // Updating path text
             if ( selectedPath != null )
             {
-                String path = selectedPath.getAbsolutePath ();
-                path = path.endsWith ( File.separator ) ? path : path + File.separator;
-                pathField.setText ( path );
+                pathField.setText ( getProperSelectedPath () );
             }
             else
             {
@@ -541,7 +534,15 @@ public class WebPathField extends WebPanel
 
             // Focusing field
             WebPathField.this.transferFocus ();
+            pathField.addFocusListener ( pathFocusListener );
         }
+    }
+
+    private String getProperSelectedPath ()
+    {
+        String path = selectedPath.getAbsolutePath ();
+        path = path.endsWith ( File.separator ) ? path : path + File.separator;
+        return path;
     }
 
     public boolean isEditing ()
@@ -572,24 +573,10 @@ public class WebPathField extends WebPanel
     public void setFileFilter ( DefaultFileFilter fileFilter, boolean updatePath )
     {
         this.fileFilter = fileFilter;
-        this.nonHiddenFileFilter =
-                fileFilter != null ? new GroupedFileFilter ( GroupType.AND, fileFilter, GlobalConstants.NON_HIDDEN_ONLY_FILTER ) :
-                        GlobalConstants.NON_HIDDEN_ONLY_FILTER;
-
         if ( updatePath )
         {
-            updatePath ( getSelectedPath () );
+            updatePath ();
         }
-    }
-
-    public boolean isShowHiddenFiles ()
-    {
-        return showHiddenFiles;
-    }
-
-    public void setShowHiddenFiles ( boolean showHiddenFiles )
-    {
-        this.showHiddenFiles = showHiddenFiles;
     }
 
     public boolean isFilesDropEnabled ()
@@ -617,7 +604,12 @@ public class WebPathField extends WebPanel
         return pathField;
     }
 
-    private void updatePath ( File path )
+    public void updatePath ()
+    {
+        updatePath ( selectedPath );
+    }
+
+    private synchronized void updatePath ( File path )
     {
         // todo check if path is proper (filter/hidden)
 
@@ -795,9 +787,6 @@ public class WebPathField extends WebPanel
         // Updating pane
         revalidate ();
         repaint ();
-
-        // Focusing field
-        WebPathField.this.transferFocus ();
     }
 
     private List<File> getSimilarFileChilds ( File file, String namePart )
@@ -820,7 +809,7 @@ public class WebPathField extends WebPanel
 
     private File[] getFileChilds ( File file )
     {
-        return file != null ? file.listFiles ( showHiddenFiles ? fileFilter : nonHiddenFileFilter ) : FileUtils.getDiskRoots ();
+        return file != null ? file.listFiles ( fileFilter ) : FileUtils.getDiskRoots ();
     }
 
     private boolean canShortenPath ()
@@ -980,14 +969,17 @@ public class WebPathField extends WebPanel
 
         // Notify about selection change
         fireDirectoryChanged ( folder );
+
+        // Requesting focus as it is internal change from internal event
+        WebPathField.this.transferFocus ();
     }
 
-    public void addWebPathFieldListener ( PathFieldListener listener )
+    public void addPathFieldListener ( PathFieldListener listener )
     {
         listeners.add ( listener );
     }
 
-    public void removeWebPathFieldListener ( PathFieldListener listener )
+    public void removePathFieldListener ( PathFieldListener listener )
     {
         listeners.remove ( listener );
     }
@@ -1003,6 +995,6 @@ public class WebPathField extends WebPanel
     public void applyComponentOrientation ( ComponentOrientation o )
     {
         super.applyComponentOrientation ( o );
-        updatePath ( selectedPath );
+        updatePath ();
     }
 }

@@ -23,6 +23,7 @@ import com.alee.extended.filechooser.WebFileChooserField;
 import com.alee.extended.filechooser.WebPathField;
 import com.alee.extended.panel.WebCollapsiblePane;
 import com.alee.laf.StyleConstants;
+import com.alee.laf.rootpane.WebRootPaneUI;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.hotkey.HotkeyRunnable;
 import com.alee.managers.language.LanguageManager;
@@ -34,6 +35,7 @@ import javax.swing.*;
 import javax.swing.FocusManager;
 import javax.swing.border.Border;
 import javax.swing.event.AncestorListener;
+import javax.swing.plaf.RootPaneUI;
 import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
@@ -112,6 +114,25 @@ public class SwingUtils
      * Soft cache for the left and right side bearings.
      */
     private static Set<SoftReference<BearingCacheEntry>> softBearingCache = new HashSet<SoftReference<BearingCacheEntry>> ();
+
+    /**
+     * Returns whether window is laf-decorated or not.
+     *
+     * @return true if window is laf-decorated, false otherwise
+     */
+    public static boolean isLafDecorated ( Window window )
+    {
+        JRootPane rootPane = getRootPane ( window );
+        if ( rootPane != null )
+        {
+            RootPaneUI ui = rootPane.getUI ();
+            if ( ui instanceof WebRootPaneUI )
+            {
+                return ( ( WebRootPaneUI ) ui ).isStyled ();
+            }
+        }
+        return false;
+    }
 
     /**
      * Returns whether event involves left mouse button or not.

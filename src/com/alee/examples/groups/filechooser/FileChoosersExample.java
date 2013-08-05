@@ -20,12 +20,10 @@ package com.alee.examples.groups.filechooser;
 import com.alee.examples.WebLookAndFeelDemo;
 import com.alee.examples.content.DefaultExample;
 import com.alee.examples.content.FeatureState;
-import com.alee.extended.filechooser.SelectionMode;
-import com.alee.extended.filechooser.WebFileChooser;
 import com.alee.extended.panel.GroupPanel;
 import com.alee.laf.GlobalConstants;
-import com.alee.laf.StyleConstants;
 import com.alee.laf.button.WebButton;
+import com.alee.laf.filechooser.WebFileChooser;
 import com.alee.utils.FileUtils;
 
 import java.awt.*;
@@ -61,19 +59,22 @@ public class FileChoosersExample extends DefaultExample
         fileChooserButton1.addActionListener ( new ActionListener ()
         {
             private WebFileChooser fileChooser = null;
+            private File file = null;
 
             public void actionPerformed ( ActionEvent e )
             {
                 if ( fileChooser == null )
                 {
-                    fileChooser = new WebFileChooser ( owner, "Choose any files" );
-                    fileChooser.setSelectionMode ( SelectionMode.SINGLE_SELECTION );
+                    fileChooser = new WebFileChooser ();
+                    fileChooser.setMultiSelectionEnabled ( false );
                 }
-                fileChooser.setVisible ( true );
-
-                if ( fileChooser.getResult () == StyleConstants.OK_OPTION )
+                if ( file != null )
                 {
-                    File file = fileChooser.getSelectedFile ();
+                    fileChooser.setSelectedFile ( file );
+                }
+                if ( fileChooser.showOpenDialog ( owner ) == WebFileChooser.APPROVE_OPTION )
+                {
+                    file = fileChooser.getSelectedFile ();
                     fileChooserButton1.setIcon ( FileUtils.getFileIcon ( file ) );
                     fileChooserButton1.setText ( FileUtils.getDisplayFileName ( file ) );
                 }
@@ -85,21 +86,24 @@ public class FileChoosersExample extends DefaultExample
         fileChooserButton2.addActionListener ( new ActionListener ()
         {
             private WebFileChooser imageChooser = null;
+            private File file = null;
 
             public void actionPerformed ( ActionEvent e )
             {
                 if ( imageChooser == null )
                 {
-                    imageChooser = new WebFileChooser ( owner, "Choose any image file" );
-                    imageChooser.setSelectionMode ( SelectionMode.SINGLE_SELECTION );
-                    imageChooser.setAvailableFilter ( GlobalConstants.IMAGES_AND_FOLDERS_FILTER );
-                    imageChooser.setChooseFilter ( GlobalConstants.IMAGES_FILTER );
+                    imageChooser = new WebFileChooser ();
+                    imageChooser.setMultiSelectionEnabled ( false );
+                    imageChooser.setAcceptAllFileFilterUsed ( false );
+                    imageChooser.addChoosableFileFilter ( GlobalConstants.IMAGES_FILTER );
                 }
-                imageChooser.setVisible ( true );
-
-                if ( imageChooser.getResult () == StyleConstants.OK_OPTION )
+                if ( file != null )
                 {
-                    File file = imageChooser.getSelectedFile ();
+                    imageChooser.setSelectedFile ( file );
+                }
+                if ( imageChooser.showOpenDialog ( owner ) == WebFileChooser.APPROVE_OPTION )
+                {
+                    file = imageChooser.getSelectedFile ();
                     fileChooserButton2.setIcon ( FileUtils.getFileIcon ( file ) );
                     fileChooserButton2.setText ( FileUtils.getDisplayFileName ( file ) );
                 }

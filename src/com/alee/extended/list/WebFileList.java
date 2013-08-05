@@ -28,6 +28,7 @@ import java.awt.*;
 import java.io.File;
 import java.io.FileFilter;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -36,8 +37,6 @@ import java.util.List;
  * @author Mikle Garin
  * @since 1.4
  */
-
-// todo Add files data set/add/edit methods
 
 public class WebFileList extends WebList
 {
@@ -60,7 +59,7 @@ public class WebFileList extends WebList
     /**
      * File view mode.
      */
-    private FileViewType fileViewType = WebFileListStyle.fileViewType;
+    private FileListViewType fileListViewType = WebFileListStyle.fileListViewType;
 
     /**
      * File filter.
@@ -152,7 +151,8 @@ public class WebFileList extends WebList
      */
     public WebFileListCellRenderer getWebFileListCellRenderer () throws ClassCastException
     {
-        return ( WebFileListCellRenderer ) getCellRenderer ();
+        final ListCellRenderer cellRenderer = getCellRenderer ();
+        return cellRenderer instanceof WebFileListCellRenderer ? ( WebFileListCellRenderer ) cellRenderer : null;
     }
 
     /**
@@ -242,19 +242,19 @@ public class WebFileList extends WebList
      *
      * @return file view mode
      */
-    public FileViewType getFileViewType ()
+    public FileListViewType getFileListViewType ()
     {
-        return fileViewType;
+        return fileListViewType;
     }
 
     /**
      * Sets file view mode.
      *
-     * @param fileViewType new file view mode
+     * @param fileListViewType new file view mode
      */
-    public void setFileViewType ( FileViewType fileViewType )
+    public void setFileListViewType ( FileListViewType fileListViewType )
     {
-        this.fileViewType = fileViewType;
+        this.fileListViewType = fileListViewType;
         getWebFileListCellRenderer ().updateFilesView ();
     }
 
@@ -275,10 +275,15 @@ public class WebFileList extends WebList
      */
     public void setFileFilter ( FileFilter fileFilter )
     {
-        // Setting new filters
         this.fileFilter = fileFilter;
+        reloadFiles ();
+    }
 
-        // Updating content
+    /**
+     * Reloads files from displayed directory.
+     */
+    public void reloadFiles ()
+    {
         setDisplayedDirectory ( getDisplayedDirectory () );
     }
 
@@ -301,43 +306,24 @@ public class WebFileList extends WebList
      */
     public void setDisplayedDirectory ( File file )
     {
+        // Stop cell editing
+        stopCellEditing ();
+
         // Saving selection to restore later
-        final Object[] oldSelection = getSelectedValues ();
+        final List<File> oldSelection = getSelectedFiles ();
 
         // Getting files and updating list model
-        final File[] files;
-        if ( file != null )
-        {
-            files = FileUtils.sortFiles ( file.listFiles ( fileFilter ) );
-        }
-        else
-        {
-            files = FileUtils.getDiskRoots ();
-        }
+        final File[] files = file != null ? FileUtils.sortFiles ( file.listFiles ( fileFilter ) ) : FileUtils.getDiskRoots ();
         getFileListModel ().setData ( files );
 
         // Restoring selection if its same folder
         if ( FileUtils.equals ( displayedDirectory, file ) )
         {
-            clearSelection ();
-            FileListModel actualModel = getFileListModel ();
-            if ( oldSelection != null && oldSelection.length > 0 && actualModel != null )
-            {
-                for ( Object selectedElement : oldSelection )
-                {
-                    int index = actualModel.indexOf ( ( FileElement ) selectedElement );
-                    if ( index != -1 )
-                    {
-                        addSelectionInterval ( index, index );
-                    }
-                }
-            }
+            setSelectedFiles ( oldSelection );
         }
-        else
-        {
-            this.displayedDirectory = file;
-            clearSelection ();
-        }
+
+        // Saving new displayed directory
+        this.displayedDirectory = file;
     }
 
     /**
@@ -368,6 +354,54 @@ public class WebFileList extends WebList
     }
 
     /**
+     * Selects specified file if it presents in the list.
+     *
+     * @param file file to select
+     */
+    public void setSelectedFile ( File file )
+    {
+        setSelectedFile ( file, true );
+    }
+
+    /**
+     * Selects specified file if it presents in the list.
+     *
+     * @param file         file to select
+     * @param shouldScroll whether to scroll to selected file or not
+     */
+    public void setSelectedFile ( File file, boolean shouldScroll )
+    {
+        final FileElement element = getFileListModel ().getElement ( file );
+        if ( element != null )
+        {
+            setSelectedValue ( element, shouldScroll );
+        }
+        else
+        {
+            clearSelection ();
+        }
+    }
+
+    /**
+     * Selects specified files if they present in the list.
+     *
+     * @param files files to select
+     */
+    public void setSelectedFiles ( Collection<File> files )
+    {
+        final List<FileElement> elements = new ArrayList<FileElement> ( files.size () );
+        for ( File file : files )
+        {
+            final FileElement element = getFileListModel ().getElement ( file );
+            if ( element != null )
+            {
+                elements.add ( element );
+            }
+        }
+        setSelectedValues ( elements );
+    }
+
+    /**
      * Returns scroll pane with fixed preferred size that fits file list settings.
      *
      * @return scroll pane with fixed preferred size that fits file list settings
@@ -393,13 +427,26 @@ public class WebFileList extends WebList
             public Dimension getPreferredSize ()
             {
                 Dimension ps = super.getPreferredSize ();
+                Dimension oneCell;
                 if ( getModel ().getSize () > 0 )
                 {
-                    Insets bi = getInsets ();
-                    Dimension oneCell = getCellBounds ( 0, 0 ).getSize ();
-                    ps.width = oneCell.width * preferredColumnCount + bi.left + bi.right + WebScrollBarUI.LENGTH + 1;
-                    ps.height = oneCell.height * preferredRowCount + bi.top + bi.bottom + 1;
+                    oneCell = getCellBounds ( 0, 0 ).getSize ();
                 }
+                else
+                {
+                    WebFileListCellRenderer fileListCellRenderer = getWebFileListCellRenderer ();
+                    if ( fileListCellRenderer != null )
+                    {
+                        oneCell = fileListCellRenderer.getPreferredSize ();
+                    }
+                    else
+                    {
+                        oneCell = new Dimension ( 400, 300 );
+                    }
+                }
+                Insets bi = getInsets ();
+                ps.width = oneCell.width * preferredColumnCount + bi.left + bi.right + WebScrollBarUI.LENGTH + 1;
+                ps.height = oneCell.height * preferredRowCount + bi.top + bi.bottom + 1;
                 return ps;
             }
         };

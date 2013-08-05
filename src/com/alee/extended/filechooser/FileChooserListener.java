@@ -25,6 +25,7 @@ import java.util.List;
  * User: mgarin Date: 14.07.11 Time: 20:40
  */
 
+@Deprecated
 public interface FileChooserListener extends EventListener
 {
     public void directoryChanged ( File newDirectory );

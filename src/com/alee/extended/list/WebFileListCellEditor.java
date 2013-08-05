@@ -21,7 +21,6 @@ import com.alee.laf.list.WebListStyle;
 import com.alee.laf.list.editor.AbstractListCellEditor;
 import com.alee.laf.text.WebTextField;
 import com.alee.managers.hotkey.Hotkey;
-import com.alee.managers.hotkey.HotkeyManager;
 import com.alee.utils.FileUtils;
 
 import javax.swing.*;
@@ -45,9 +44,7 @@ public class WebFileListCellEditor extends AbstractListCellEditor<WebTextField, 
     private Object savedSelection = null;
 
     /**
-     * Installs start edit actions in the list.
-     *
-     * @param list list to process
+     * {@inheritDoc}
      */
     protected void installStartEditActions ( final JList list )
     {
@@ -65,9 +62,7 @@ public class WebFileListCellEditor extends AbstractListCellEditor<WebTextField, 
     }
 
     /**
-     * Uninstalls start edit actions from the list.
-     *
-     * @param list list to process
+     * {@inheritDoc}
      */
     protected void uninstallStartEditActions ( JList list )
     {
@@ -75,43 +70,26 @@ public class WebFileListCellEditor extends AbstractListCellEditor<WebTextField, 
     }
 
     /**
-     * Returns whether list cell under the specified index is editable or not.
-     *
-     * @param list  list to process
-     * @param index cell index
-     * @param value cell value
-     * @return whether list cell under the specified index is editable or not
+     * {@inheritDoc}
      */
     public boolean isCellEditable ( JList list, int index, FileElement value )
     {
-        // Check if file can be edited
-        File file = value.getFile ();
-        return value != null && file.getParentFile () != null && file.canWrite () && file.getParentFile ().canWrite () &&
-                super.isCellEditable ( list, index, value );
+        File file = value != null ? value.getFile () : null;
+        return file != null && FileUtils.isNameEditable ( file ) && super.isCellEditable ( list, index, value );
     }
 
     /**
-     * Creates list cell editor component for the cell nder specified index.
-     *
-     * @param list  list to process
-     * @param index cell index
-     * @param value cell value
-     * @return list cell editor created for the cell under specified index
+     * {@inheritDoc}
      */
     protected WebTextField createCellEditor ( JList list, int index, FileElement value )
     {
-        File file = value.getFile ();
-        String name = file.getName ();
-
         WebTextField editor = WebTextField.createWebTextField ( true, WebListStyle.selectionRound, WebListStyle.selectionShadeWidth );
         editor.setDrawFocus ( false );
-        editor.setText ( name );
-        editor.setSelectionStart ( 0 );
-        editor.setSelectionEnd ( file.isDirectory () ? name.length () : FileUtils.getFileNamePart ( name ).length () );
+        FileUtils.displayFileName ( editor, value.getFile () );
 
         if ( list instanceof WebFileList )
         {
-            final boolean tiles = ( ( WebFileList ) list ).getFileViewType ().equals ( FileViewType.tiles );
+            final boolean tiles = ( ( WebFileList ) list ).getFileListViewType ().equals ( FileListViewType.tiles );
             editor.setHorizontalAlignment ( tiles ? WebTextField.LEFT : WebTextField.CENTER );
         }
 
@@ -119,13 +97,7 @@ public class WebFileListCellEditor extends AbstractListCellEditor<WebTextField, 
     }
 
     /**
-     * Returns list cell editor bounds within the cell.
-     *
-     * @param list       list to process
-     * @param index      cell index
-     * @param value      cell value
-     * @param cellBounds cell bounds
-     * @return list cell editor bounds within the list
+     * {@inheritDoc}
      */
     protected Rectangle getEditorBounds ( JList list, int index, FileElement value, Rectangle cellBounds )
     {
@@ -143,12 +115,7 @@ public class WebFileListCellEditor extends AbstractListCellEditor<WebTextField, 
     }
 
     /**
-     * Returns editor value that will replace the specified old value in the model.
-     *
-     * @param list     list to process
-     * @param index    cell index
-     * @param oldValue old cell value
-     * @return editor value
+     * {@inheritDoc}
      */
     public FileElement getCellEditorValue ( JList list, int index, FileElement oldValue )
     {
@@ -172,15 +139,7 @@ public class WebFileListCellEditor extends AbstractListCellEditor<WebTextField, 
     }
 
     /**
-     * Returns whether value update operation completed successfully or not.
-     * Basically this method should replace old value with a new one in list model and update list view.
-     *
-     * @param list            list to process
-     * @param index           cell index
-     * @param oldValue        old cell value
-     * @param newValue        new cell value
-     * @param updateSelection whether update list selection or not
-     * @return true if list model was updated
+     * {@inheritDoc}
      */
     public boolean updateListModel ( JList list, int index, FileElement oldValue, FileElement newValue, boolean updateSelection )
     {
@@ -216,52 +175,5 @@ public class WebFileListCellEditor extends AbstractListCellEditor<WebTextField, 
         {
             return super.updateListModel ( list, index, oldValue, newValue, updateSelection );
         }
-    }
-
-    /**
-     * Notifies that list cell editing has started.
-     *
-     * @param list  list to process
-     * @param index edited cell index
-     */
-    public void editStarted ( JList list, int index )
-    {
-        // todo Better way to avoid hotkeys interception
-        // Temporary workaround to disable hotkeys like DELETE and such from working outside the editor
-        HotkeyManager.disableHotkeys ();
-
-        super.editStarted ( list, index );
-    }
-
-    /**
-     * Notifies that list cell editing has finished.
-     *
-     * @param list     list to process
-     * @param index    edited cell index
-     * @param oldValue old cell value
-     * @param newValue new cell value
-     */
-    public void editStopped ( JList list, int index, FileElement oldValue, FileElement newValue )
-    {
-        // todo Better way to avoid hotkeys interception
-        // Temporary workaround to disable hotkeys like DELETE and such from working outside the editor
-        HotkeyManager.enableHotkeys ();
-
-        super.editStopped ( list, index, oldValue, newValue );
-    }
-
-    /**
-     * Notifies that list cell editing was cancelled.
-     *
-     * @param list  list to process
-     * @param index edited cell index
-     */
-    public void editCancelled ( JList list, int index )
-    {
-        // todo Better way to avoid hotkeys interception
-        // Temporary workaround to disable hotkeys like DELETE and such from working outside the editor
-        HotkeyManager.enableHotkeys ();
-
-        super.editCancelled ( list, index );
     }
 }

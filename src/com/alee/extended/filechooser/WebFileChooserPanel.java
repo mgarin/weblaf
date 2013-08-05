@@ -19,12 +19,12 @@ package com.alee.extended.filechooser;
 
 import com.alee.extended.drag.FileDropHandler;
 import com.alee.extended.filefilter.DefaultFileFilter;
-import com.alee.extended.filefilter.GroupType;
+import com.alee.extended.filefilter.FilterGroupType;
 import com.alee.extended.filefilter.GroupedFileFilter;
 import com.alee.extended.layout.ToolbarLayout;
 import com.alee.extended.layout.VerticalFlowLayout;
 import com.alee.extended.list.FileElement;
-import com.alee.extended.list.FileViewType;
+import com.alee.extended.list.FileListViewType;
 import com.alee.extended.list.WebFileList;
 import com.alee.extended.panel.GroupPanel;
 import com.alee.extended.tree.FileTreeNode;
@@ -69,6 +69,7 @@ import java.util.List;
  * User: mgarin Date: 28.06.11 Time: 0:31
  */
 
+@Deprecated
 public class WebFileChooserPanel extends WebPanel
 {
     private static final ImageIcon BACKWARD_ICON = new ImageIcon ( WebFileChooserPanel.class.getResource ( "icons/backward.png" ) );
@@ -106,7 +107,7 @@ public class WebFileChooserPanel extends WebPanel
 
     private SelectionMode selectionMode = SelectionMode.SINGLE_SELECTION;
 
-    private FileViewType fileViewType = FileViewType.tiles;
+    private FileListViewType fileListViewType = FileListViewType.tiles;
 
     private WebPathField pathField;
     private WebFileTree fileTree;
@@ -158,7 +159,7 @@ public class WebFileChooserPanel extends WebPanel
         // Path component
         pathField = new WebPathField ();
         pathField.setFileFilter ( previewFilter, false );
-        pathField.addWebPathFieldListener ( new PathFieldListener ()
+        pathField.addPathFieldListener ( new PathFieldListener ()
         {
             public void directoryChanged ( File newDirectory )
             {
@@ -327,37 +328,37 @@ public class WebFileChooserPanel extends WebPanel
                 // todo Table view
                 //                WebRadioButtonMenuItem table = new WebRadioButtonMenuItem ( VIEW_TABLE_ICON );
                 //                table.setLanguage ( "weblaf.filechooser.view.table" );
-                //                table.setSelected ( getFileViewType ().equals ( FileViewType.table ) );
+                //                table.setSelected ( getFileListViewType ().equals ( FileListViewType.table ) );
                 //                table.setEnabled ( false );
                 //                table.addActionListener ( new ActionListener ()
                 //                {
                 //                    public void actionPerformed ( ActionEvent e )
                 //                    {
-                //                        updateFilesView ( FileViewType.table );
+                //                        updateFilesView ( FileListViewType.table );
                 //                    }
                 //                } );
                 //                viewChoose.add ( table );
 
                 WebRadioButtonMenuItem icons = new WebRadioButtonMenuItem ( VIEW_ICONS_ICON );
                 icons.setLanguage ( "weblaf.filechooser.view.icons" );
-                icons.setSelected ( getFileViewType ().equals ( FileViewType.icons ) );
+                icons.setSelected ( getFileListViewType ().equals ( FileListViewType.icons ) );
                 icons.addActionListener ( new ActionListener ()
                 {
                     public void actionPerformed ( ActionEvent e )
                     {
-                        setFileViewType ( FileViewType.icons );
+                        setFileListViewType ( FileListViewType.icons );
                     }
                 } );
                 viewChoose.add ( icons );
 
                 WebRadioButtonMenuItem tiles = new WebRadioButtonMenuItem ( VIEW_TILES_ICON );
                 tiles.setLanguage ( "weblaf.filechooser.view.tiles" );
-                tiles.setSelected ( getFileViewType ().equals ( FileViewType.tiles ) );
+                tiles.setSelected ( getFileListViewType ().equals ( FileListViewType.tiles ) );
                 tiles.addActionListener ( new ActionListener ()
                 {
                     public void actionPerformed ( ActionEvent e )
                     {
-                        setFileViewType ( FileViewType.tiles );
+                        setFileListViewType ( FileListViewType.tiles );
                     }
                 } );
                 viewChoose.add ( tiles );
@@ -396,7 +397,7 @@ public class WebFileChooserPanel extends WebPanel
 
         fileTree = new WebFileTree ();
         fileTree.setAutoExpandSelectedNode ( false );
-        fileTree.setFileFilter ( new GroupedFileFilter ( GroupType.AND, GlobalConstants.DIRECTORIES_FILTER, previewFilter ) );
+        fileTree.setFileFilter ( new GroupedFileFilter ( FilterGroupType.AND, GlobalConstants.DIRECTORIES_FILTER, previewFilter ) );
 
         final WebScrollPane treeScroll = new WebScrollPane ( fileTree, false );
         treeScroll.setBorder ( BorderFactory.createMatteBorder ( 0, 0, 0, 1, StyleConstants.darkBorderColor ) );
@@ -429,7 +430,7 @@ public class WebFileChooserPanel extends WebPanel
 
         fileList = new WebFileList ();
         fileList.setFileFilter ( previewFilter );
-        fileList.setFileViewType ( fileViewType );
+        fileList.setFileListViewType ( fileListViewType );
         fileList.setGenerateThumbnails ( true );
         fileList.setDropMode ( DropMode.ON );
         fileList.setEditable ( true );
@@ -527,7 +528,7 @@ public class WebFileChooserPanel extends WebPanel
         //- view
 
         // Updating and adding initial history record
-        updateShownFolder ( null, true, true, true, true );
+        updateShownFolder ( null, true, true, true );
 
         // Tiles scroll
         final WebScrollPane filesListScroll = new WebScrollPane ( fileList, false );
@@ -538,8 +539,8 @@ public class WebFileChooserPanel extends WebPanel
         // Setting proper scroll preferred size
         Dimension oneCell = fileList.getCellBounds ( 0, 0 ).getSize ();
         Insets bi = filesListScroll.getInsets ();
-        filesListScroll
-                .setPreferredSize ( new Dimension ( oneCell.width * ( fileViewType.equals ( FileViewType.tiles ) ? 3 : 8 ) + bi.left +
+        filesListScroll.setPreferredSize (
+                new Dimension ( oneCell.width * ( fileListViewType.equals ( FileListViewType.tiles ) ? 3 : 8 ) + bi.left +
                         bi.right + WebScrollBarUI.LENGTH + 1, oneCell.height * 6 + bi.top + bi.bottom + 1 ) );
 
         WebSplitPane split = new WebSplitPane ( WebSplitPane.HORIZONTAL_SPLIT );
@@ -689,7 +690,7 @@ public class WebFileChooserPanel extends WebPanel
 
     public void setCurrentDirectory ( File dir )
     {
-        updateShownFolder ( dir, true, true, true, true );
+        updateShownFolder ( dir, true, true, true );
     }
 
     public File getCurrentDirectory ()
@@ -705,7 +706,7 @@ public class WebFileChooserPanel extends WebPanel
     public void setSelectionMode ( SelectionMode selectionMode )
     {
         this.selectionMode = selectionMode;
-        selectedFiles.setSelectionMode ( selectionMode );
+        selectedFiles.setMultiSelectionEnabled ( selectionMode == SelectionMode.MULTIPLE_SELECTION );
         fileList.setSelectionMode ( selectionMode.equals ( SelectionMode.SINGLE_SELECTION ) ? ListSelectionModel.SINGLE_SELECTION :
                 ListSelectionModel.MULTIPLE_INTERVAL_SELECTION );
     }
@@ -721,11 +722,11 @@ public class WebFileChooserPanel extends WebPanel
     {
         if ( filesToChoose.equals ( FilesToChoose.filesOnly ) )
         {
-            return new GroupedFileFilter ( GroupType.AND, GlobalConstants.FILES_FILTER, filter );
+            return new GroupedFileFilter ( FilterGroupType.AND, GlobalConstants.FILES_FILTER, filter );
         }
         else if ( filesToChoose.equals ( FilesToChoose.foldersOnly ) )
         {
-            return new GroupedFileFilter ( GroupType.AND, GlobalConstants.DIRECTORIES_FILTER, filter );
+            return new GroupedFileFilter ( FilterGroupType.AND, GlobalConstants.DIRECTORIES_FILTER, filter );
         }
         else
         {
@@ -954,15 +955,15 @@ public class WebFileChooserPanel extends WebPanel
         return FileUtils.equals ( currentFolder, file );
     }
 
-    public FileViewType getFileViewType ()
+    public FileListViewType getFileListViewType ()
     {
-        return fileViewType;
+        return fileListViewType;
     }
 
-    public void setFileViewType ( FileViewType fileViewType )
+    public void setFileListViewType ( FileListViewType fileListViewType )
     {
-        this.fileViewType = fileViewType;
-        this.fileList.setFileViewType ( fileViewType );
+        this.fileListViewType = fileListViewType;
+        this.fileList.setFileListViewType ( fileListViewType );
         updateList ( currentFolder );
     }
 

@@ -40,7 +40,7 @@ public class AllFilesFilter extends DefaultFileFilter
         return LanguageManager.get ( "weblaf.file.filter.all" );
     }
 
-    public boolean accept ( File pathname )
+    public boolean accept ( File file )
     {
         return true;
     }

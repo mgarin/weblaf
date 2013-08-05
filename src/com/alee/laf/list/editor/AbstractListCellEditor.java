@@ -67,10 +67,7 @@ public abstract class AbstractListCellEditor<E extends Component, T> implements 
     protected KeyAdapter keyAdapter = null;
 
     /**
-     * Installs cell editor in the list.
-     * This method should add all required listeners in the list that will cause editing to start.
-     *
-     * @param list list to process
+     * {@inheritDoc}
      */
     public void install ( final JList list )
     {
@@ -141,10 +138,7 @@ public abstract class AbstractListCellEditor<E extends Component, T> implements 
     }
 
     /**
-     * Uninstalls cell editor from the list.
-     * This method should remove all listeners from the list and cleanup all associated resources.
-     *
-     * @param list list to process
+     * {@inheritDoc}
      */
     public void uninstall ( JList list )
     {
@@ -173,12 +167,7 @@ public abstract class AbstractListCellEditor<E extends Component, T> implements 
     }
 
     /**
-     * Returns whether list cell under the specified index is editable or not.
-     *
-     * @param list  list to process
-     * @param index cell index
-     * @param value cell value
-     * @return whether list cell under the specified index is editable or not
+     * {@inheritDoc}
      */
     public boolean isCellEditable ( JList list, int index, T value )
     {
@@ -193,12 +182,7 @@ public abstract class AbstractListCellEditor<E extends Component, T> implements 
     }
 
     /**
-     * Returns list cell editor created for the cell under specified index.
-     *
-     * @param list  list to process
-     * @param index cell index
-     * @param value cell value
-     * @return list cell editor for the cell under specified index
+     * {@inheritDoc}
      */
     public E getCellEditor ( final JList list, int index, T value )
     {
@@ -261,10 +245,7 @@ public abstract class AbstractListCellEditor<E extends Component, T> implements 
     }
 
     /**
-     * Starts list cell editing.
-     *
-     * @param list  list to process
-     * @param index
+     * {@inheritDoc}
      */
     public void startEdit ( final JList list, int index )
     {
@@ -302,9 +283,7 @@ public abstract class AbstractListCellEditor<E extends Component, T> implements 
     }
 
     /**
-     * Cancels list cell editing.
-     *
-     * @param list list to process
+     * {@inheritDoc}
      */
     public void cancelEdit ( final JList list )
     {
@@ -316,12 +295,15 @@ public abstract class AbstractListCellEditor<E extends Component, T> implements 
     }
 
     /**
-     * Stops list cell editing.
-     *
-     * @param list list to process
+     * {@inheritDoc}
      */
-    public void stopEdit ( final JList list )
+    public boolean stopEdit ( final JList list )
     {
+        if ( !isEditing () )
+        {
+            return false;
+        }
+
         // Saving selected indices to restore them later
         int[] indices = list.getSelectedIndices ();
 
@@ -346,6 +328,7 @@ public abstract class AbstractListCellEditor<E extends Component, T> implements 
             // Notifying about editing cancel
             editCancelled ( list, editedCell );
         }
+        return true;
     }
 
     /**
@@ -409,15 +392,7 @@ public abstract class AbstractListCellEditor<E extends Component, T> implements 
     }
 
     /**
-     * Returns whether value update operation completed successfully or not.
-     * Basically this method should replace old value with a new one in list model and update list view.
-     *
-     * @param list            list to process
-     * @param index           cell index
-     * @param oldValue        old cell value
-     * @param newValue        new cell value
-     * @param updateSelection whether update list selection or not
-     * @return true if list model was updated
+     * {@inheritDoc}
      */
     public boolean updateListModel ( JList list, int index, T oldValue, T newValue, boolean updateSelection )
     {
@@ -470,10 +445,7 @@ public abstract class AbstractListCellEditor<E extends Component, T> implements 
     }
 
     /**
-     * Notifies that list cell editing has started.
-     *
-     * @param list  list to process
-     * @param index edited cell index
+     * {@inheritDoc}
      */
     public void editStarted ( JList list, int index )
     {
@@ -485,12 +457,7 @@ public abstract class AbstractListCellEditor<E extends Component, T> implements 
     }
 
     /**
-     * Notifies that list cell editing has finished.
-     *
-     * @param list     list to process
-     * @param index    edited cell index
-     * @param oldValue old cell value
-     * @param newValue new cell value
+     * {@inheritDoc}
      */
     public void editStopped ( JList list, int index, T oldValue, T newValue )
     {
@@ -502,10 +469,7 @@ public abstract class AbstractListCellEditor<E extends Component, T> implements 
     }
 
     /**
-     * Notifies that list cell editing was cancelled.
-     *
-     * @param list  list to process
-     * @param index edited cell index
+     * {@inheritDoc}
      */
     public void editCancelled ( JList list, int index )
     {
@@ -517,9 +481,7 @@ public abstract class AbstractListCellEditor<E extends Component, T> implements 
     }
 
     /**
-     * Returns whether editor is currently active or not.
-     *
-     * @return true if editor is currently active, false otherwise
+     * {@inheritDoc}
      */
     public boolean isEditing ()
     {

@@ -20,7 +20,6 @@ package com.alee.examples.groups.filechooser;
 import com.alee.examples.WebLookAndFeelDemo;
 import com.alee.examples.content.DefaultExample;
 import com.alee.examples.content.FeatureState;
-import com.alee.extended.filechooser.SelectionMode;
 import com.alee.extended.filechooser.WebFileChooserField;
 import com.alee.extended.panel.GroupPanel;
 
@@ -57,7 +56,7 @@ public class FileChooserFieldsExample extends DefaultExample
         // Single file chooser field with custom root
         WebFileChooserField fileChooserField2 = new WebFileChooserField ( owner );
         fileChooserField2.setPreferredWidth ( 200 );
-        fileChooserField2.setSelectionMode ( SelectionMode.SINGLE_SELECTION );
+        fileChooserField2.setMultiSelectionEnabled ( false );
         fileChooserField2.setShowFileShortName ( false );
         fileChooserField2.setShowRemoveButton ( false );
         fileChooserField2.setSelectedFile ( File.listRoots ()[ 0 ] );

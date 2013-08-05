@@ -20,7 +20,7 @@ package com.alee.examples.groups.list;
 import com.alee.examples.WebLookAndFeelDemo;
 import com.alee.examples.content.DefaultExample;
 import com.alee.extended.list.FileListModel;
-import com.alee.extended.list.FileViewType;
+import com.alee.extended.list.FileListViewType;
 import com.alee.extended.list.WebFileList;
 import com.alee.extended.panel.GroupPanel;
 import com.alee.utils.FileUtils;
@@ -69,7 +69,7 @@ public class FilesListExample extends DefaultExample
     {
         // Files list
         WebFileList webFileList = new WebFileList ();
-        webFileList.setFileViewType ( FileViewType.icons );
+        webFileList.setFileListViewType ( FileListViewType.icons );
         webFileList.setPreferredColumnCount ( 4 );
         webFileList.setPreferredRowCount ( 3 );
 

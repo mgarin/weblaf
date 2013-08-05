@@ -18,15 +18,19 @@
 package com.alee.laf.table;
 
 import com.alee.laf.WebLookAndFeel;
+import com.alee.utils.GeometryUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.FontMethods;
+import com.alee.utils.swing.WebDefaultCellEditor;
 
 import javax.swing.*;
 import javax.swing.plaf.UIResource;
+import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 import java.awt.*;
+import java.util.EventObject;
 import java.util.Vector;
 
 /**
@@ -71,6 +75,124 @@ public class WebTable extends JTable implements FontMethods<WebTable>
     public WebTable ( Object[][] rowData, Object[] columnNames )
     {
         super ( rowData, columnNames );
+    }
+
+    public void setSelectedRow ( int row )
+    {
+        setSelectedRow ( row, true );
+    }
+
+    public void setSelectedRow ( int row, boolean shouldScroll )
+    {
+        clearSelection ();
+        addSelectedRow ( row );
+        if ( shouldScroll )
+        {
+            scrollToRow ( row );
+        }
+    }
+
+    public void addSelectedRow ( int row )
+    {
+        if ( row != -1 )
+        {
+            addColumnSelectionInterval ( 0, getColumnCount () - 1 );
+            addRowSelectionInterval ( row, row );
+        }
+    }
+
+    public void setSelectedRows ( int startRow, int endRow )
+    {
+        clearSelection ();
+        addSelectedRows ( startRow, endRow );
+    }
+
+    public void addSelectedRows ( int startRow, int endRow )
+    {
+        if ( startRow != -1 && endRow != -1 )
+        {
+            addColumnSelectionInterval ( 0, getColumnCount () - 1 );
+            addRowSelectionInterval ( startRow, endRow );
+        }
+    }
+
+    public void setSelectedColumn ( int column )
+    {
+        setSelectedColumn ( column, true );
+    }
+
+    public void setSelectedColumn ( int column, boolean shouldScroll )
+    {
+        clearSelection ();
+        addSelectedColumn ( column );
+        if ( shouldScroll )
+        {
+            scrollToColumn ( column );
+        }
+    }
+
+    public void addSelectedColumn ( int column )
+    {
+        if ( column != -1 )
+        {
+            addColumnSelectionInterval ( column, column );
+            addRowSelectionInterval ( 0, getRowCount () - 1 );
+        }
+    }
+
+    public void setSelectedColumns ( int startColumn, int endColumn )
+    {
+        clearSelection ();
+        addSelectedColumns ( startColumn, endColumn );
+    }
+
+    public void addSelectedColumns ( int startColumn, int endColumn )
+    {
+        if ( startColumn != -1 && endColumn != -1 )
+        {
+            addColumnSelectionInterval ( startColumn, endColumn );
+            addRowSelectionInterval ( 0, getRowCount () - 1 );
+        }
+    }
+
+    public void scrollToRow ( int row )
+    {
+        final Rectangle firstCell = getCellRect ( row, 0, true );
+        final Rectangle lastCell = getCellRect ( row, getColumnCount () - 1, true );
+        final Rectangle rect = GeometryUtils.getContainingRect ( firstCell, lastCell );
+        scrollRectToVisible ( rect );
+    }
+
+    public void scrollToColumn ( int column )
+    {
+        final Rectangle firstCell = getCellRect ( 0, column, true );
+        final Rectangle lastCell = getCellRect ( getRowCount () - 1, column, true );
+        final Rectangle rect = GeometryUtils.getContainingRect ( firstCell, lastCell );
+        scrollRectToVisible ( rect );
+    }
+
+    public boolean editCellAt ( int row, int column, EventObject e )
+    {
+        final boolean editingStarted = super.editCellAt ( row, column, e );
+        if ( editingStarted )
+        {
+            CellEditor cellEditor = getCellEditor ();
+            if ( cellEditor instanceof DefaultCellEditor )
+            {
+                ( ( DefaultCellEditor ) cellEditor ).getComponent ().requestFocusInWindow ();
+            }
+            if ( cellEditor instanceof WebDefaultCellEditor )
+            {
+                ( ( WebDefaultCellEditor ) cellEditor ).getComponent ().requestFocusInWindow ();
+            }
+        }
+        return editingStarted;
+    }
+
+    public boolean stopCellEditing ()
+    {
+        final TableCellEditor cellEditor = getCellEditor ();
+        return cellEditor != null && cellEditor.stopCellEditing ();
     }
 
     public boolean isCellEditable ( int row, int column )

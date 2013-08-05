@@ -18,16 +18,18 @@
 package com.alee.extended.filefilter;
 
 import javax.swing.*;
+import java.io.File;
 import java.io.FileFilter;
 
 /**
  * Default file filter for WebLaF file chooser that provides additional filter information.
+ * This class overrides both IO and Swing file filters.
  *
  * @author Mikle Garin
  * @since 1.4
  */
 
-public abstract class DefaultFileFilter implements FileFilter
+public abstract class DefaultFileFilter extends javax.swing.filechooser.FileFilter implements FileFilter
 {
     /**
      * Returns file filter icon.
@@ -42,4 +44,12 @@ public abstract class DefaultFileFilter implements FileFilter
      * @return short file filter description
      */
     public abstract String getDescription ();
+
+    /**
+     * Returns whether the given file is accepted by this filter or not.
+     *
+     * @param file file to process
+     * @return true if the given file is accepted by this filter, false otherwise
+     */
+    public abstract boolean accept ( File file );
 }

@@ -218,7 +218,7 @@ public class WebDirectoryChooserPanel extends WebPanel
         // Path field
         webPathField = new WebPathField ( selectedFolder );
         webPathField.setFileFilter ( defaultFileFilter );
-        webPathField.addWebPathFieldListener ( new PathFieldListener ()
+        webPathField.addPathFieldListener ( new PathFieldListener ()
         {
             public void directoryChanged ( File newDirectory )
             {

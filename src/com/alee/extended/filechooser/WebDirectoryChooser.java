@@ -25,6 +25,7 @@ import com.alee.laf.rootpane.WebDialog;
 import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.hotkey.HotkeyCondition;
 import com.alee.managers.hotkey.HotkeyManager;
+import com.alee.utils.SwingUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -32,6 +33,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,8 +52,8 @@ public class WebDirectoryChooser extends WebDialog
 
     private List<ActionListener> listeners = new ArrayList<ActionListener> ();
     private WebDirectoryChooserPanel directoryChooserPanel;
-    private WebButton ok;
-    private WebButton cancel;
+    private WebButton approveButton;
+    private WebButton cancelButton;
 
     private int result = StyleConstants.NONE_OPTION;
 
@@ -72,7 +75,6 @@ public class WebDirectoryChooser extends WebDialog
         HotkeyManager.installShowAllHotkeysAction ( this, Hotkey.F1 );
 
         // Default container settings
-        getContentPane ().setBackground ( Color.WHITE );
         getContentPane ().setLayout ( new BorderLayout ( 0, 0 ) );
 
         // Directory chooser itself
@@ -88,22 +90,18 @@ public class WebDirectoryChooser extends WebDialog
             }
         } );
 
-        WebPanel buttonsPanel = new WebPanel ();
-        buttonsPanel.setOpaque ( false );
+        final WebPanel buttonsPanel = new WebPanel ();
         buttonsPanel.setMargin ( 0, 3, 3, 3 );
         buttonsPanel.setLayout ( new BorderLayout ( 0, 0 ) );
         getContentPane ().add ( buttonsPanel, BorderLayout.SOUTH );
 
-        ok = new WebButton ( "", OK_ICON );
-        ok.setLanguage ( "weblaf.ex.dirchooser.choose" );
-        ok.addHotkey ( WebDirectoryChooser.this, Hotkey.CTRL_ENTER );
-        if ( StyleConstants.highlightControlButtons )
-        {
-            ok.setShineColor ( StyleConstants.greenHighlight );
-        }
-        ok.putClientProperty ( GroupPanel.FILL_CELL, true );
-        ok.setEnabled ( false );
-        ok.addActionListener ( new ActionListener ()
+        approveButton = new WebButton ( "", OK_ICON );
+        approveButton.setLanguage ( "weblaf.ex.dirchooser.choose" );
+        approveButton.addHotkey ( WebDirectoryChooser.this, Hotkey.CTRL_ENTER );
+        approveButton.setRolloverShine ( StyleConstants.highlightControlButtons );
+        approveButton.setShineColor ( StyleConstants.greenHighlight );
+        approveButton.setEnabled ( false );
+        approveButton.addActionListener ( new ActionListener ()
         {
             public void actionPerformed ( ActionEvent e )
             {
@@ -112,15 +110,12 @@ public class WebDirectoryChooser extends WebDialog
             }
         } );
 
-        cancel = new WebButton ( "", CANCEL_ICON );
-        cancel.setLanguage ( "weblaf.ex.dirchooser.cancel" );
-        cancel.addHotkey ( WebDirectoryChooser.this, Hotkey.ESCAPE );
-        if ( StyleConstants.highlightControlButtons )
-        {
-            cancel.setShineColor ( StyleConstants.redHighlight );
-        }
-        cancel.putClientProperty ( GroupPanel.FILL_CELL, true );
-        cancel.addActionListener ( new ActionListener ()
+        cancelButton = new WebButton ( "", CANCEL_ICON );
+        cancelButton.setLanguage ( "weblaf.ex.dirchooser.cancel" );
+        cancelButton.addHotkey ( WebDirectoryChooser.this, Hotkey.ESCAPE );
+        cancelButton.setRolloverShine ( StyleConstants.highlightControlButtons );
+        cancelButton.setShineColor ( StyleConstants.redHighlight );
+        cancelButton.addActionListener ( new ActionListener ()
         {
             public void actionPerformed ( ActionEvent e )
             {
@@ -129,7 +124,22 @@ public class WebDirectoryChooser extends WebDialog
             }
         } );
 
-        buttonsPanel.add ( new GroupPanel ( 4, ok, cancel ), BorderLayout.LINE_END );
+        buttonsPanel.add ( new GroupPanel ( 4, approveButton, cancelButton ), BorderLayout.LINE_END );
+
+        // For proper equal sizing of control buttons
+        SwingUtils.equalizeComponentsSize ( approveButton, cancelButton );
+        final PropertyChangeListener pcl = new PropertyChangeListener ()
+        {
+            public void propertyChange ( PropertyChangeEvent evt )
+            {
+                approveButton.setPreferredSize ( null );
+                cancelButton.setPreferredSize ( null );
+                SwingUtils.equalizeComponentsSize ( approveButton, cancelButton );
+                buttonsPanel.revalidate ();
+            }
+        };
+        approveButton.addPropertyChangeListener ( AbstractButton.TEXT_CHANGED_PROPERTY, pcl );
+        cancelButton.addPropertyChangeListener ( AbstractButton.TEXT_CHANGED_PROPERTY, pcl );
 
         // Buttons updater
         directoryChooserPanel.addWebDirectoryChooserListener ( new DirectoryChooserListener ()
@@ -157,7 +167,7 @@ public class WebDirectoryChooser extends WebDialog
 
     private void updateButtons ( File file )
     {
-        ok.setEnabled ( file != null );
+        approveButton.setEnabled ( file != null );
     }
 
     public int getResult ()

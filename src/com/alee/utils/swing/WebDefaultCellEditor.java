@@ -19,6 +19,7 @@ package com.alee.utils.swing;
 
 import com.alee.laf.combobox.WebComboBoxUI;
 import com.alee.laf.table.WebTableStyle;
+import com.alee.managers.hotkey.Hotkey;
 
 import javax.swing.*;
 import javax.swing.table.TableCellEditor;
@@ -32,17 +33,23 @@ import java.util.EventObject;
  * User: mgarin Date: 31.10.12 Time: 16:24
  */
 
-public class WebDefaultCellEditor extends AbstractCellEditor implements TableCellEditor, TreeCellEditor
+public class WebDefaultCellEditor<C extends JComponent> extends AbstractCellEditor implements TableCellEditor, TreeCellEditor
 {
     public static final String COMBOBOX_CELL_EDITOR = "JComboBox.isTableCellEditor";
 
-    protected JComponent editorComponent;
+    protected C editorComponent;
     protected EditorDelegate delegate;
     protected int clickCountToStart = WebTableStyle.clickCountToStartEdit;
 
+    public WebDefaultCellEditor ()
+    {
+        super ();
+    }
+
     public WebDefaultCellEditor ( final JTextField textField )
     {
-        editorComponent = textField;
+        super ();
+        editorComponent = ( C ) textField;
         delegate = new EditorDelegate ()
         {
             public void setValue ( Object value )
@@ -60,7 +67,8 @@ public class WebDefaultCellEditor extends AbstractCellEditor implements TableCel
 
     public WebDefaultCellEditor ( final JCheckBox checkBox )
     {
-        editorComponent = checkBox;
+        super ();
+        editorComponent = ( C ) checkBox;
         delegate = new EditorDelegate ()
         {
             public void setValue ( Object value )
@@ -88,7 +96,8 @@ public class WebDefaultCellEditor extends AbstractCellEditor implements TableCel
 
     public WebDefaultCellEditor ( final JComboBox comboBox )
     {
-        editorComponent = comboBox;
+        super ();
+        editorComponent = ( C ) comboBox;
         if ( comboBox.getUI () instanceof WebComboBoxUI )
         {
             WebComboBoxUI webComboBoxUI = ( WebComboBoxUI ) comboBox.getUI ();
@@ -182,27 +191,40 @@ public class WebDefaultCellEditor extends AbstractCellEditor implements TableCel
         return editorComponent;
     }
 
-    protected class EditorDelegate implements ActionListener, ItemListener, Serializable
+    protected class EditorDelegate<T> implements ActionListener, ItemListener, Serializable
     {
-        protected Object value;
+        protected T value;
 
-        public Object getCellEditorValue ()
+        public T getCellEditorValue ()
         {
             return value;
         }
 
-        public void setValue ( Object value )
+        public void setValue ( T value )
         {
             this.value = value;
         }
 
         public boolean isCellEditable ( EventObject anEvent )
         {
-            if ( anEvent instanceof MouseEvent )
+            if ( anEvent == null || anEvent instanceof ActionEvent )
             {
-                return ( ( MouseEvent ) anEvent ).getClickCount () >= clickCountToStart;
+                return true;
             }
-            return true;
+            else if ( anEvent instanceof KeyEvent )
+            {
+                final KeyEvent keyEvent = ( KeyEvent ) anEvent;
+                return Hotkey.F2.isTriggered ( keyEvent );
+            }
+            else if ( anEvent instanceof MouseEvent )
+            {
+                final MouseEvent mouseEvent = ( MouseEvent ) anEvent;
+                return mouseEvent.getClickCount () >= clickCountToStart;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         public boolean shouldSelectCell ( EventObject anEvent )
@@ -236,5 +258,4 @@ public class WebDefaultCellEditor extends AbstractCellEditor implements TableCel
             WebDefaultCellEditor.this.stopCellEditing ();
         }
     }
-
 }

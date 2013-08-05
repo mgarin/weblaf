@@ -17,6 +17,9 @@
 
 package com.alee.utils;
 
+import com.alee.utils.text.SimpleTextProvider;
+import com.alee.utils.text.TextProvider;
+
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -38,6 +41,11 @@ public class TextUtils
     private static final List<String> textSeparators =
             Arrays.asList ( " ", ".", ",", ":", ";", "/", "\\", "\n", "\t", "|", "{", "}", "[", "]", "(", ")", "<", ">", "-", "+", "\"",
                     "'", "*", "%", "$", "#", "@", "!", "~", "^", "&", "?" );
+
+    /**
+     * Text provider for any type of objects.
+     */
+    private static final SimpleTextProvider simpleTextProvider = new SimpleTextProvider ();
 
     /**
      * Default ID part length.
@@ -269,6 +277,18 @@ public class TextUtils
      */
     public static String listToString ( List list, String separator )
     {
+        return listToString ( list, separator, simpleTextProvider );
+    }
+
+    /**
+     * Returns single text combined using list of strings and specified separator.
+     *
+     * @param list      list to combine into single text
+     * @param separator text parts separator
+     * @return single text
+     */
+    public static <T> String listToString ( List<T> list, String separator, TextProvider<T> textProvider )
+    {
         if ( list.size () > 0 )
         {
             final StringBuilder stringBuilder = new StringBuilder ();
@@ -277,7 +297,7 @@ public class TextUtils
                 final int end = list.size () - 1;
                 for ( int i = 0; i <= end; i++ )
                 {
-                    stringBuilder.append ( list.get ( i ).toString () );
+                    stringBuilder.append ( textProvider.provide ( list.get ( i ) ) );
                     stringBuilder.append ( i != end ? separator : "" );
                 }
             }

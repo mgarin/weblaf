@@ -24,6 +24,7 @@ import java.util.List;
  * User: mgarin Date: 15.07.11 Time: 13:19
  */
 
+@Deprecated
 public abstract class FileChooserAdapter implements FileChooserListener
 {
     public void directoryChanged ( File newDirectory )

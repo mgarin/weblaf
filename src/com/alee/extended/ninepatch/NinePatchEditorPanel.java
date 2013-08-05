@@ -18,8 +18,6 @@
 package com.alee.extended.ninepatch;
 
 import com.alee.extended.drag.FileDropHandler;
-import com.alee.extended.filechooser.SelectionMode;
-import com.alee.extended.filechooser.WebFileChooser;
 import com.alee.extended.painter.AlphaLayerPainter;
 import com.alee.extended.painter.ColorPainter;
 import com.alee.extended.painter.NinePatchIconPainter;
@@ -32,6 +30,7 @@ import com.alee.laf.StyleConstants;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.button.WebToggleButton;
 import com.alee.laf.colorchooser.WebColorChooserDialog;
+import com.alee.laf.filechooser.WebFileChooser;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.optionpane.WebOptionPane;
 import com.alee.laf.panel.WebPanel;
@@ -267,19 +266,19 @@ public class NinePatchEditorPanel extends WebPanel
             {
                 if ( wfc == null )
                 {
-                    wfc = new WebFileChooser ( SwingUtils.getWindowAncestor ( NinePatchEditorPanel.this ), "" );
-                    wfc.setLanguage ( "weblaf.ex.npeditor.openImage.title" );
-                    wfc.setSelectionMode ( SelectionMode.SINGLE_SELECTION );
+                    wfc = new WebFileChooser ( imageSrc );
+                    wfc.setDialogTitleKey ( "weblaf.ex.npeditor.openImage.title" );
+                    wfc.setMultiSelectionEnabled ( false );
+                    wfc.addChoosableFileFilter ( GlobalConstants.IMAGES_FILTER );
+                    wfc.setFileFilter ( GlobalConstants.IMAGES_FILTER );
                 }
                 if ( imageSrc != null )
                 {
-                    wfc.setCurrentDirectory ( imageSrc );
+                    wfc.setSelectedFile ( imageSrc );
                 }
-                int done = wfc.showDialog ();
-                if ( done == StyleConstants.OK_OPTION )
+                if ( wfc.showOpenDialog ( SwingUtils.getWindowAncestor ( NinePatchEditorPanel.this ) ) == WebFileChooser.APPROVE_OPTION )
                 {
-                    File file = wfc.getSelectedFile ();
-                    openImage ( file );
+                    openImage ( wfc.getSelectedFile () );
                 }
             }
         } );
@@ -323,16 +322,15 @@ public class NinePatchEditorPanel extends WebPanel
             {
                 if ( wfc == null )
                 {
-                    wfc = new WebFileChooser ( SwingUtils.getWindowAncestor ( NinePatchEditorPanel.this ), "" );
-                    wfc.setLanguage ( "weblaf.ex.npeditor.saveImageAs.title" );
-                    wfc.setSelectionMode ( SelectionMode.SINGLE_SELECTION );
+                    wfc = new WebFileChooser ( imageSrc );
+                    wfc.setDialogTitleKey ( "weblaf.ex.npeditor.saveImageAs.title" );
+                    wfc.setMultiSelectionEnabled ( false );
                 }
                 if ( imageSrc != null )
                 {
-                    wfc.setCurrentDirectory ( imageSrc );
+                    wfc.setSelectedFile ( imageSrc );
                 }
-                int done = wfc.showDialog ();
-                if ( done == StyleConstants.OK_OPTION )
+                if ( wfc.showSaveDialog ( SwingUtils.getWindowAncestor ( NinePatchEditorPanel.this ) ) == WebFileChooser.APPROVE_OPTION )
                 {
                     try
                     {

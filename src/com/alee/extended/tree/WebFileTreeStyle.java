@@ -31,11 +31,6 @@ import java.io.FileFilter;
 public class WebFileTreeStyle
 {
     /**
-     * Whether autoexpand node on selection or not.
-     */
-    public static boolean autoExpandSelectedPath = false;
-
-    /**
      * Whether allow files location search by dropping a file onto the tree or not.
      */
     public static boolean filesDropSearchEnabled = true;

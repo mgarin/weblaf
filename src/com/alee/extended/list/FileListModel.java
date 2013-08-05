@@ -21,7 +21,9 @@ import com.alee.laf.list.WebListModel;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Custom list model for WebFileList component.
@@ -32,6 +34,11 @@ import java.util.List;
 
 public class FileListModel extends WebListModel<FileElement>
 {
+    /**
+     * File elements cache.
+     */
+    private Map<String, FileElement> elementsCache = new HashMap<String, FileElement> ();
+
     /**
      * Constructs empty file list model.
      */
@@ -85,12 +92,43 @@ public class FileListModel extends WebListModel<FileElement>
     }
 
     /**
+     * Clears file elements cache.
+     */
+    private void clearCache ()
+    {
+        elementsCache.clear ();
+    }
+
+    /**
+     * Returns FileElement for the specified file or null if it is not in the list.
+     *
+     * @param file file to process
+     * @return FileElement for the specified file or null if it is not in the list
+     */
+    public FileElement getElement ( File file )
+    {
+        return getElement ( file != null ? file.getAbsolutePath () : null );
+    }
+
+    /**
+     * Returns FileElement for the file with specified path or null if it is not in the list.
+     *
+     * @param path file path to process
+     * @return FileElement for the file with specified path or null if it is not in the list
+     */
+    public FileElement getElement ( String path )
+    {
+        return elementsCache.get ( path );
+    }
+
+    /**
      * Clears list data and fills it with files from directory under the specified path.
      *
      * @param directoryPath directory path to process
      */
     public void setData ( String directoryPath )
     {
+        clearCache ();
         setElements ( toElementsList ( getData ( new File ( directoryPath ) ) ) );
     }
 
@@ -101,6 +139,7 @@ public class FileListModel extends WebListModel<FileElement>
      */
     public void setData ( File directory )
     {
+        clearCache ();
         setElements ( toElementsList ( getData ( directory ) ) );
     }
 
@@ -111,6 +150,7 @@ public class FileListModel extends WebListModel<FileElement>
      */
     public void setData ( File[] data )
     {
+        clearCache ();
         setElements ( toElementsList ( data ) );
     }
 
@@ -121,6 +161,7 @@ public class FileListModel extends WebListModel<FileElement>
      */
     public void setData ( List<File> data )
     {
+        clearCache ();
         setElements ( toElementsList ( data ) );
     }
 
@@ -130,7 +171,7 @@ public class FileListModel extends WebListModel<FileElement>
      * @param directory directory to process
      * @return files array
      */
-    public static File[] getData ( File directory )
+    protected File[] getData ( File directory )
     {
         if ( directory != null )
         {
@@ -148,14 +189,16 @@ public class FileListModel extends WebListModel<FileElement>
      * @param data File array to process
      * @return FileElement list
      */
-    public static List<FileElement> toElementsList ( File[] data )
+    protected List<FileElement> toElementsList ( File[] data )
     {
         List<FileElement> elements = new ArrayList<FileElement> ( data != null ? data.length : 0 );
         if ( data != null )
         {
             for ( File file : data )
             {
-                elements.add ( new FileElement ( file ) );
+                final FileElement element = new FileElement ( file );
+                elements.add ( element );
+                elementsCache.put ( file.getAbsolutePath (), element );
             }
         }
         return elements;
@@ -167,14 +210,16 @@ public class FileListModel extends WebListModel<FileElement>
      * @param data File list to process
      * @return FileElement list
      */
-    public static List<FileElement> toElementsList ( List<File> data )
+    protected List<FileElement> toElementsList ( List<File> data )
     {
         List<FileElement> elements = new ArrayList<FileElement> ( data != null ? data.size () : 0 );
         if ( data != null )
         {
             for ( File file : data )
             {
-                elements.add ( new FileElement ( file ) );
+                final FileElement element = new FileElement ( file );
+                elements.add ( element );
+                elementsCache.put ( file.getAbsolutePath (), element );
             }
         }
         return elements;

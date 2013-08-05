@@ -35,12 +35,7 @@ import javax.swing.*;
 public class AbstractButtonLU extends DefaultLanguageUpdater<AbstractButton>
 {
     /**
-     * Updates component language-dependant variables.
-     *
-     * @param c     component
-     * @param key   language key
-     * @param value language value
-     * @param data  formatting data
+     * {@inheritDoc}
      */
     public void update ( AbstractButton c, String key, Value value, Object... data )
     {

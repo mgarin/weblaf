@@ -81,9 +81,10 @@ public class HotkeyInfo
         return hidden;
     }
 
-    public void setHidden ( boolean hidden )
+    public HotkeyInfo setHidden ( boolean hidden )
     {
         this.hidden = hidden;
+        return this;
     }
 
     public Component getTopComponent ()
@@ -91,9 +92,10 @@ public class HotkeyInfo
         return topComponent != null ? topComponent.get () : null;
     }
 
-    public void setTopComponent ( Component topComponent )
+    public HotkeyInfo setTopComponent ( Component topComponent )
     {
         this.topComponent = new WeakReference<Component> ( topComponent );
+        return this;
     }
 
     public Component getForComponent ()
@@ -101,9 +103,10 @@ public class HotkeyInfo
         return forComponent != null ? forComponent.get () : null;
     }
 
-    public void setForComponent ( Component forComponent )
+    public HotkeyInfo setForComponent ( Component forComponent )
     {
         this.forComponent = new WeakReference<Component> ( forComponent );
+        return this;
     }
 
     public HotkeyData getHotkeyData ()
@@ -111,9 +114,10 @@ public class HotkeyInfo
         return hotkeyData;
     }
 
-    public void setHotkeyData ( HotkeyData hotkeyData )
+    public HotkeyInfo setHotkeyData ( HotkeyData hotkeyData )
     {
         this.hotkeyData = hotkeyData;
+        return this;
     }
 
     public TooltipWay getHotkeyDisplayWay ()
@@ -121,9 +125,10 @@ public class HotkeyInfo
         return hotkeyDisplayWay;
     }
 
-    public void setHotkeyDisplayWay ( TooltipWay hotkeyDisplayWay )
+    public HotkeyInfo setHotkeyDisplayWay ( TooltipWay hotkeyDisplayWay )
     {
         this.hotkeyDisplayWay = hotkeyDisplayWay;
+        return this;
     }
 
     public HotkeyRunnable getAction ()
@@ -131,8 +136,9 @@ public class HotkeyInfo
         return action;
     }
 
-    public void setAction ( HotkeyRunnable action )
+    public HotkeyInfo setAction ( HotkeyRunnable action )
     {
         this.action = action;
+        return this;
     }
 }

@@ -31,12 +31,7 @@ import java.awt.*;
 public class DialogLU extends DefaultLanguageUpdater<Dialog>
 {
     /**
-     * Updates component language-dependant variables.
-     *
-     * @param c     component
-     * @param key   language key
-     * @param value language value
-     * @param data  formatting data
+     * {@inheritDoc}
      */
     public void update ( Dialog c, String key, Value value, Object... data )
     {

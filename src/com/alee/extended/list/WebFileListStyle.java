@@ -48,7 +48,7 @@ public final class WebFileListStyle
     /**
      * File view mode.
      */
-    public static FileViewType fileViewType = FileViewType.tiles;
+    public static FileListViewType fileListViewType = FileListViewType.tiles;
 
     /**
      * File filter.

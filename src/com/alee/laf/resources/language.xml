@@ -377,6 +377,16 @@
                 <value lang="pt">Apenas ficheiros não ocultos</value>
                 <value lang="de">Nur nicht-versteckte Dateien</value>
             </record>
+            <record key="custom">
+                <value lang="en">...</value>
+                <value lang="ru">...</value>
+                <value lang="pl">...</value>
+                <value lang="ar">...</value>
+                <value lang="es">...</value>
+                <value lang="fr">...</value>
+                <value lang="pt">...</value>
+                <value lang="de">...</value>
+            </record>
         </Dictionary>
     </Dictionary>
     <Dictionary name="WebFileChooser language" prefix="filechooser">
@@ -600,6 +610,68 @@
             <value lang="pt">Cancelar</value>
             <value lang="de">Abbrechen</value>
         </record>
+        <Dictionary name="WebFileTable language" prefix="table.column">
+            <record key="number">
+                <value lang="en">#</value>
+                <value lang="ru">#</value>
+                <value lang="pl">#</value>
+                <value lang="ar">#</value>
+                <value lang="es">#</value>
+                <value lang="fr">#</value>
+                <value lang="pt">#</value>
+                <value lang="de">#</value>
+            </record>
+            <record key="name">
+                <value lang="en">Name</value>
+                <value lang="ru">Имя</value>
+                <value lang="pl">Nazwa</value>
+                <value lang="ar">اسم</value>
+                <value lang="es">Nombre</value>
+                <value lang="fr">Nom</value>
+                <value lang="pt">Nome</value>
+                <value lang="de">Name</value>
+            </record>
+            <record key="size">
+                <value lang="en">Size</value>
+                <value lang="ru">Размер</value>
+                <value lang="pl">Rozmiar</value>
+                <value lang="ar">حجم</value>
+                <value lang="es">Tamaño</value>
+                <value lang="fr">Taille</value>
+                <value lang="pt">Tamanho</value>
+                <value lang="de">Größe</value>
+            </record>
+            <record key="extension">
+                <value lang="en">Extension</value>
+                <value lang="ru">Расширение</value>
+                <value lang="pl">Rozbudowa</value>
+                <value lang="ar">تمديد</value>
+                <value lang="es">Extensión</value>
+                <value lang="fr">Prolongement</value>
+                <value lang="pt">Extensão</value>
+                <value lang="de">Erweiterung</value>
+            </record>
+            <record key="creation.date">
+                <value lang="en">Created</value>
+                <value lang="ru">Создан</value>
+                <value lang="pl">Stworzony</value>
+                <value lang="ar">أنشاء</value>
+                <value lang="es">Creado</value>
+                <value lang="fr">établi</value>
+                <value lang="pt">Criado</value>
+                <value lang="de">Erstellt</value>
+            </record>
+            <record key="modification.date">
+                <value lang="en">Modified</value>
+                <value lang="ru">Изменён</value>
+                <value lang="pl">Zmodyfikowany</value>
+                <value lang="ar">تغيير</value>
+                <value lang="es">Modificado</value>
+                <value lang="fr">Modifié</value>
+                <value lang="pt">Modificado</value>
+                <value lang="de">Geändert</value>
+            </record>
+        </Dictionary>
     </Dictionary>
     <Dictionary name="WebColorChooser language" prefix="colorchooser">
         <record key="title">

@@ -40,6 +40,7 @@ import java.util.List;
  * User: mgarin Date: 05.07.11 Time: 12:27
  */
 
+@Deprecated
 public class WebFileChooser extends WebDialog
 {
     private static final ImageIcon ICON = new ImageIcon ( WebFileChooser.class.getResource ( "icons/file_icon.png" ) );

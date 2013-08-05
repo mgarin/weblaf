@@ -89,6 +89,9 @@ public class LanguageExample extends DefaultExample
 
     public static class MyLabelUpdater extends DefaultLanguageUpdater
     {
+        /**
+         * {@inheritDoc}
+         */
         public void update ( Component c, String key, Value value, Object... data )
         {
             MyLabel myLabel = ( MyLabel ) c;

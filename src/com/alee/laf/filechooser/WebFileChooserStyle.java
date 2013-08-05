@@ -17,11 +17,19 @@
 
 package com.alee.laf.filechooser;
 
+import com.alee.utils.FileUtils;
+
 /**
- * User: mgarin Date: 11/21/11 Time: 4:49 PM
+ * WebFileChooser style class.
+ *
+ * @author Mikle Garin
+ * @since 1.4
  */
 
 public final class WebFileChooserStyle
 {
-    //
+    /**
+     * Default file chooser directory.
+     */
+    public static final String defaultDirectory = FileUtils.getUserHomePath ();
 }

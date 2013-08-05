@@ -145,7 +145,7 @@ public class WebFileListCellRenderer extends WebListCellRenderer
      */
     public void updateFilesView ()
     {
-        if ( fileList.getFileViewType ().equals ( FileViewType.tiles ) )
+        if ( fileList.getFileListViewType ().equals ( FileListViewType.tiles ) )
         {
             removeAll ();
             setBorder ( BorderFactory.createEmptyBorder ( 6, 6, 5, 7 ) );
@@ -182,7 +182,7 @@ public class WebFileListCellRenderer extends WebListCellRenderer
      */
     public void updateFixedCellSize ()
     {
-        if ( fileList.getFileViewType ().equals ( FileViewType.tiles ) )
+        if ( fileList.getFileListViewType ().equals ( FileListViewType.tiles ) )
         {
             fileList.setFixedCellWidth ( 220 );
             fileList.setFixedCellHeight ( 65 );
@@ -304,7 +304,7 @@ public class WebFileListCellRenderer extends WebListCellRenderer
             nameLabel.setText ( fileDescription.getName () );
             descriptionPanel.add ( nameLabel );
 
-            if ( fileList.getFileViewType ().equals ( FileViewType.tiles ) )
+            if ( fileList.getFileListViewType ().equals ( FileListViewType.tiles ) )
             {
                 descriptionLabel.setText ( fileDescription.getDescription () );
                 descriptionPanel.add ( descriptionLabel );
@@ -386,6 +386,7 @@ public class WebFileListCellRenderer extends WebListCellRenderer
                             element.setDisabledThumbnail ( FileUtils.getStandartFileIcon ( element.getFile (), true, false ) );
                         }
 
+                        // todo Sometimes seems to call repaint when list is not visible (for now fixed inside method)
                         // Repainting cell with image
                         fileList.repaint ( element );
 

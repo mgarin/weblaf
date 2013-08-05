@@ -119,6 +119,11 @@ public class WebRootPaneUI extends BasicRootPaneUI implements SwingConstants
      * UI parameters
      */
 
+    public boolean isStyled ()
+    {
+        return styled;
+    }
+
     public Color getTopBg ()
     {
         return topBg;
@@ -994,18 +999,7 @@ public class WebRootPaneUI extends BasicRootPaneUI implements SwingConstants
 
     protected boolean isResizable ()
     {
-        if ( isDialog () )
-        {
-            return dialog.isResizable ();
-        }
-        else if ( isFrame () )
-        {
-            return frame.isResizable ();
-        }
-        else
-        {
-            return false;
-        }
+        return isDialog () ? dialog.isResizable () : isFrame () && frame.isResizable ();
     }
 
     /**

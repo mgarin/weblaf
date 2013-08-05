@@ -32,6 +32,8 @@ import java.util.List;
  * @since 1.4
  */
 
+// todo Change save scheme from indices to IDs
+// todo Add IDs into accordion panes
 public class WebAccordionSettingsProcessor extends SettingsProcessor<WebAccordion, String>
 {
     /**
@@ -92,6 +94,5 @@ public class WebAccordionSettingsProcessor extends SettingsProcessor<WebAccordio
         // For empty selection empty string is used to avoid having null as value as this will call for default value on load
         final String value = TextUtils.listToString ( accordion.getSelectedIndices (), "," );
         saveValue ( value != null ? value : "" );
-        System.out.println ( value );
     }
 }

@@ -40,8 +40,8 @@ public class NonHiddenFilter extends DefaultFileFilter
         return LanguageManager.get ( "weblaf.file.filter.nonhidden" );
     }
 
-    public boolean accept ( File pathname )
+    public boolean accept ( File file )
     {
-        return !pathname.isHidden ();
+        return !file.isHidden ();
     }
 }

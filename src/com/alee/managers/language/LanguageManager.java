@@ -143,6 +143,7 @@ public class LanguageManager implements LanguageConstants
             registerLanguageUpdater ( new WebFormattedTextFieldLU () );
             registerLanguageUpdater ( new WebPasswordFieldLU () );
             registerLanguageUpdater ( new JProgressBarLU () );
+            registerLanguageUpdater ( new JFileChooserLU () );
             registerLanguageUpdater ( new FrameLU () );
             registerLanguageUpdater ( new DialogLU () );
             registerLanguageUpdater ( new JInternalFrameLU () );

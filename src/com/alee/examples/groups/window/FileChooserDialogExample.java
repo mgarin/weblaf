@@ -20,10 +20,10 @@ package com.alee.examples.groups.window;
 import com.alee.examples.WebLookAndFeelDemo;
 import com.alee.examples.content.DefaultExample;
 import com.alee.examples.content.FeatureState;
-import com.alee.extended.filechooser.WebFileChooser;
 import com.alee.extended.panel.GroupPanel;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
+import com.alee.laf.filechooser.WebFileChooser;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -55,6 +55,17 @@ public class FileChooserDialogExample extends DefaultExample
         WebButton showFrame = new WebButton ( "Show file chooser", loadIcon ( "file.png" ) );
         showFrame.addActionListener ( new ActionListener ()
         {
+            private WebFileChooser fileChooser = null;
+
+            private WebFileChooser getFileChooser ()
+            {
+                if ( fileChooser == null )
+                {
+                    fileChooser = new WebFileChooser ();
+                }
+                return fileChooser;
+            }
+
             public void actionPerformed ( ActionEvent e )
             {
                 // Enabling dialog decoration
@@ -62,7 +73,7 @@ public class FileChooserDialogExample extends DefaultExample
                 WebLookAndFeel.setDecorateDialogs ( true );
 
                 // Opening color chooser dialog
-                WebFileChooser.showDialog ( owner );
+                getFileChooser ().showDialog ( owner, null );
 
                 // Restoring dialog decoration option
                 WebLookAndFeel.setDecorateDialogs ( decorateFrames );

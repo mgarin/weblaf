@@ -21,6 +21,7 @@ package com.alee.extended.filechooser;
  * User: mgarin Date: 15.07.11 Time: 11:58
  */
 
+@Deprecated
 public enum SelectionMode
 {
     SINGLE_SELECTION,

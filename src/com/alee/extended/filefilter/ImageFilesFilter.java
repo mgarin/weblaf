@@ -42,8 +42,8 @@ public class ImageFilesFilter extends DefaultFileFilter
         return LanguageManager.get ( "weblaf.file.filter.images" );
     }
 
-    public boolean accept ( File pathname )
+    public boolean accept ( File file )
     {
-        return GlobalConstants.IMAGE_FORMATS.contains ( FileUtils.getFileExtPart ( pathname.getName ().toLowerCase (), false ) );
+        return GlobalConstants.IMAGE_FORMATS.contains ( FileUtils.getFileExtPart ( file.getName ().toLowerCase (), false ) );
     }
 }

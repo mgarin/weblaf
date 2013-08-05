@@ -21,6 +21,7 @@ package com.alee.extended.filechooser;
  * User: mgarin Date: 13.07.11 Time: 19:17
  */
 
+@Deprecated
 public enum FilesToChoose
 {
     all,

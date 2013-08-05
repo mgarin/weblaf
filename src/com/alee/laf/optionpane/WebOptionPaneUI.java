@@ -61,7 +61,10 @@ public class WebOptionPaneUI extends BasicOptionPaneUI
     protected Container createMessageArea ()
     {
         Container messageArea = super.createMessageArea ();
-        SwingUtils.setOpaqueRecursively ( messageArea, false );
+        if ( !( getMessage () instanceof Component ) )
+        {
+            SwingUtils.setOpaqueRecursively ( messageArea, false );
+        }
         return messageArea;
     }
 

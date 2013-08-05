@@ -35,17 +35,19 @@ import java.util.WeakHashMap;
 
 public abstract class DefaultLanguageUpdater<E extends Component> implements LanguageUpdater<E>
 {
-    // Various component states
+    /**
+     * Predefined component states.
+     */
     public static final String INPUT_PROMPT = "inputPropmt";
     public static final String DROP_TEXT = "dropText";
 
-    // Hotkeys cache
+    /**
+     * Hotkeys cache map.
+     */
     private static Map<Component, HotkeyInfo> hotkeysCache = new WeakHashMap<Component, HotkeyInfo> ();
 
     /**
-     * Returns specified class type as component's class.
-     *
-     * @return class type to update
+     * {@inheritDoc}
      */
     public Class getComponentClass ()
     {

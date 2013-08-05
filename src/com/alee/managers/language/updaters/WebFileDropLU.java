@@ -30,12 +30,7 @@ import com.alee.managers.language.data.Value;
 public class WebFileDropLU extends DefaultLanguageUpdater<WebFileDrop>
 {
     /**
-     * Updates component language-dependant variables.
-     *
-     * @param c     component
-     * @param key   language key
-     * @param value language value
-     * @param data  formatting data
+     * {@inheritDoc}
      */
     public void update ( WebFileDrop c, String key, Value value, Object... data )
     {

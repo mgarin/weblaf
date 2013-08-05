@@ -59,6 +59,9 @@ public class WebTableCellRenderer extends WebLabel implements TableCellRenderer
         setBackground ( null );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public Component getTableCellRendererComponent ( JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column )
     {
         Color fg = null;

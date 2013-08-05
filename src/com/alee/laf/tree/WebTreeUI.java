@@ -68,6 +68,7 @@ public class WebTreeUI extends BasicTreeUI
     /**
      * Style settings.
      */
+    private boolean autoExpandSelectedNode = WebTreeStyle.autoExpandSelectedPath;
     private boolean highlightRolloverNode = WebTreeStyle.highlightRolloverNode;
     private boolean paintLines = WebTreeStyle.paintLines;
     private Color linesColor = WebTreeStyle.linesColor;
@@ -137,15 +138,24 @@ public class WebTreeUI extends BasicTreeUI
         };
         tree.addPropertyChangeListener ( WebLookAndFeel.COMPONENT_ORIENTATION_PROPERTY, propertyChangeListener );
 
-        // Optimized selection repaint listeners
+        // Selection listener
         treeSelectionListener = new TreeSelectionListener ()
         {
             public void valueChanged ( TreeSelectionEvent e )
             {
+                // Optimized selection repaint
                 repaintSelection ();
+
+                // Tree expansion on selection
+                if ( autoExpandSelectedNode && tree.getSelectionCount () > 0 )
+                {
+                    tree.expandPath ( tree.getSelectionPath () );
+                }
             }
         };
         tree.addTreeSelectionListener ( treeSelectionListener );
+
+        // Expansion listener
         treeExpansionListener = new TreeExpansionListener ()
         {
             public void treeExpanded ( TreeExpansionEvent event )
@@ -434,6 +444,26 @@ public class WebTreeUI extends BasicTreeUI
         tree.removeMouseMotionListener ( mouseAdapter );
 
         super.uninstallUI ( c );
+    }
+
+    /**
+     * Returns whether tree should expand nodes on selection or not.
+     *
+     * @return true if tree should expand nodes on selection, false otherwise
+     */
+    public boolean isAutoExpandSelectedNode ()
+    {
+        return autoExpandSelectedNode;
+    }
+
+    /**
+     * Sets whether tree should expand nodes on selection or not.
+     *
+     * @param autoExpandSelectedNode whether tree should expand nodes on selection or not
+     */
+    public void setAutoExpandSelectedNode ( boolean autoExpandSelectedNode )
+    {
+        this.autoExpandSelectedNode = autoExpandSelectedNode;
     }
 
     /**

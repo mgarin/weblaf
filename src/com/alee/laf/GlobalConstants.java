@@ -62,10 +62,12 @@ public final class GlobalConstants
     public static final AllFilesFilter ALL_FILES_FILTER = new AllFilesFilter ();
     public static final NonHiddenFilter NON_HIDDEN_ONLY_FILTER = new NonHiddenFilter ();
     public static final DirectoriesFilter DIRECTORIES_FILTER = new DirectoriesFilter ();
+    public static final GroupedFileFilter NON_HIDDEN_DIRECTORIES_FILTER =
+            new GroupedFileFilter ( FilterGroupType.AND, GlobalConstants.DIRECTORIES_FILTER, GlobalConstants.NON_HIDDEN_ONLY_FILTER );
     public static final FilesFilter FILES_FILTER = new FilesFilter ();
     public static final ImageFilesFilter IMAGES_FILTER = new ImageFilesFilter ();
     public static final GroupedFileFilter IMAGES_AND_FOLDERS_FILTER =
-            new GroupedFileFilter ( GroupType.OR, GlobalConstants.IMAGES_FILTER, GlobalConstants.DIRECTORIES_FILTER );
+            new GroupedFileFilter ( FilterGroupType.OR, GlobalConstants.IMAGES_FILTER, GlobalConstants.DIRECTORIES_FILTER );
 
     /**
      * Default file filters.

@@ -31,12 +31,7 @@ import javax.swing.*;
 public class JProgressBarLU extends DefaultLanguageUpdater<JProgressBar>
 {
     /**
-     * Updates component language-dependant variables.
-     *
-     * @param c     component
-     * @param key   language key
-     * @param value language value
-     * @param data  formatting data
+     * {@inheritDoc}
      */
     public void update ( JProgressBar c, String key, Value value, Object... data )
     {

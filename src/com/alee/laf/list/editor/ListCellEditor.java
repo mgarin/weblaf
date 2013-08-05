@@ -85,10 +85,12 @@ public interface ListCellEditor<E extends Component, T>
 
     /**
      * Stops list cell editing.
+     * Usually if value did not change editCancelled event will be thrown, but that depends on implementation.
      *
      * @param list list to process
+     * @return true if cell editing was stopped or cancelled, false otherwise
      */
-    public void stopEdit ( JList list );
+    public boolean stopEdit ( JList list );
 
     /**
      * Returns editor value that will replace the specified old value in the model.
@@ -138,4 +140,11 @@ public interface ListCellEditor<E extends Component, T>
      * @param index edited cell index
      */
     public void editCancelled ( JList list, int index );
+
+    /**
+     * Returns whether editor is currently active or not.
+     *
+     * @return true if editor is currently active, false otherwise
+     */
+    public boolean isEditing ();
 }

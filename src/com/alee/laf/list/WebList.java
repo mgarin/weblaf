@@ -27,6 +27,7 @@ import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.FontMethods;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -112,6 +113,18 @@ public class WebList extends JList implements FontMethods<WebList>
     {
         final ListCellRenderer renderer = getCellRenderer ();
         return renderer instanceof WebListCellRenderer ? ( WebListCellRenderer ) renderer : null;
+    }
+
+    /**
+     * Selects all specified values.
+     * Values which are not in the list are simply ignored.
+     * This method might be slow in case model cannot provide all separate values quickly.
+     *
+     * @param values values to select
+     */
+    public void setSelectedValues ( Object[] values )
+    {
+        setSelectedValues ( CollectionUtils.toList ( values ) );
     }
 
     /**
@@ -266,11 +279,33 @@ public class WebList extends JList implements FontMethods<WebList>
      */
     public void editCell ( int index )
     {
-        if ( index != -1 && getCellEditor () != null )
+        final ListCellEditor cellEditor = getCellEditor ();
+        if ( index != -1 && cellEditor != null )
         {
             setSelectedIndex ( index );
-            getCellEditor ().startEdit ( this, index );
+            cellEditor.startEdit ( this, index );
         }
+    }
+
+    /**
+     * Stops cell editing if possible.
+     */
+    public boolean stopCellEditing ()
+    {
+        final ListCellEditor cellEditor = getCellEditor ();
+        return cellEditor != null && cellEditor.isEditing () && cellEditor.stopEdit ( WebList.this );
+
+    }
+
+    /**
+     * Returns whether some list cell is being edited at the moment or not.
+     *
+     * @return true if some list cell is being edited at the moment, false otherwise
+     */
+    public boolean isEditing ()
+    {
+        final ListCellEditor cellEditor = getCellEditor ();
+        return cellEditor != null && cellEditor.isEditing ();
     }
 
     /**
@@ -403,7 +438,11 @@ public class WebList extends JList implements FontMethods<WebList>
      */
     public void repaint ( int index )
     {
-        repaint ( getCellBounds ( index, index ) );
+        final Rectangle cellBounds = getCellBounds ( index, index );
+        if ( cellBounds != null )
+        {
+            repaint ( cellBounds );
+        }
     }
 
     /**
@@ -414,7 +453,11 @@ public class WebList extends JList implements FontMethods<WebList>
      */
     public void repaint ( int from, int to )
     {
-        repaint ( getCellBounds ( from, to ) );
+        final Rectangle cellBounds = getCellBounds ( from, to );
+        if ( cellBounds != null )
+        {
+            repaint ( cellBounds );
+        }
     }
 
     /**

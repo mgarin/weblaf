@@ -167,6 +167,17 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
     }
 
     /**
+     * Returns node bounds.
+     *
+     * @param node node to process
+     * @return node bounds
+     */
+    public Rectangle getNodeBounds ( E node )
+    {
+        return getPathBounds ( getPathForNode ( node ) );
+    }
+
+    /**
      * Returns tree path for specified node.
      *
      * @param node node to process
@@ -174,14 +185,7 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
      */
     public TreePath getPathForNode ( E node )
     {
-        if ( node != null )
-        {
-            return new TreePath ( node.getPath () );
-        }
-        else
-        {
-            return null;
-        }
+        return node != null ? new TreePath ( node.getPath () ) : null;
     }
 
     /**
@@ -245,8 +249,21 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
      */
     public void scrollToSelection ()
     {
-        TreePath selectionPath = getSelectionPath ();
-        Rectangle bounds = getPathBounds ( selectionPath );
+        Rectangle bounds = getPathBounds ( getSelectionPath () );
+        if ( bounds != null )
+        {
+            scrollRectToVisible ( bounds );
+        }
+    }
+
+    /**
+     * Scrolls tree view to specified node.
+     *
+     * @param node node to scroll to
+     */
+    public void scrollToNode ( E node )
+    {
+        Rectangle bounds = getNodeBounds ( node );
         if ( bounds != null )
         {
             scrollRectToVisible ( bounds );
@@ -297,6 +314,26 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
     public void setTreeState ( TreeState treeState, boolean restoreSelection )
     {
         TreeUtils.setTreeState ( this, treeState, restoreSelection );
+    }
+
+    /**
+     * Returns whether tree should expand nodes on selection or not.
+     *
+     * @return true if tree should expand nodes on selection, false otherwise
+     */
+    public boolean isAutoExpandSelectedNode ()
+    {
+        return getWebUI ().isAutoExpandSelectedNode ();
+    }
+
+    /**
+     * Sets whether tree should expand nodes on selection or not.
+     *
+     * @param autoExpandSelectedNode whether tree should expand nodes on selection or not
+     */
+    public void setAutoExpandSelectedNode ( boolean autoExpandSelectedNode )
+    {
+        getWebUI ().setAutoExpandSelectedNode ( autoExpandSelectedNode );
     }
 
     /**

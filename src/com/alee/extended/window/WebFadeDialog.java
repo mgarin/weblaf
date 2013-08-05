@@ -204,7 +204,6 @@ public class WebFadeDialog extends WebDialog implements ActionListener, WindowFo
 
     private void updateOpacity ()
     {
-        System.out.println ( opacity );
         setWindowOpacity ( opacity );
     }
 }
