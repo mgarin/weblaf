@@ -414,7 +414,8 @@ public class WebCalendar extends WebPanel
             {
                 public void itemStateChanged ( ItemEvent e )
                 {
-                    day.setFont ( day.isSelected () ? day.getFont ().deriveFont ( Font.BOLD ) : day.getFont ().deriveFont ( Font.PLAIN ) );
+                    // Breaks calendar size
+                    // day.setFont ( day.isSelected () ? day.getFont ().deriveFont ( Font.BOLD ) : day.getFont ().deriveFont ( Font.PLAIN ) );
                     if ( day.isSelected () )
                     {
                         setDateImpl ( thisDate, animate );
@@ -446,7 +447,8 @@ public class WebCalendar extends WebPanel
 
             final Date thisDate = calendar.getTime ();
             final WebToggleButton day = new WebToggleButton ();
-            day.setFont ( selected ? day.getFont ().deriveFont ( Font.BOLD ) : day.getFont ().deriveFont ( Font.PLAIN ) );
+            // Breaks calendar size
+            // day.setFont ( selected ? day.getFont ().deriveFont ( Font.BOLD ) : day.getFont ().deriveFont ( Font.PLAIN ) );
             day.setForeground ( weekend ? weekendsColor : Color.BLACK );
             day.setText ( "" + calendar.get ( Calendar.DAY_OF_MONTH ) );
             day.setSelected ( selected );
@@ -458,7 +460,8 @@ public class WebCalendar extends WebPanel
             {
                 public void itemStateChanged ( ItemEvent e )
                 {
-                    day.setFont ( day.isSelected () ? day.getFont ().deriveFont ( Font.BOLD ) : day.getFont ().deriveFont ( Font.PLAIN ) );
+                    // Breaks calendar size
+                    // day.setFont ( day.isSelected () ? day.getFont ().deriveFont ( Font.BOLD ) : day.getFont ().deriveFont ( Font.PLAIN ) );
                 }
             } );
             day.addActionListener ( new ActionListener ()
@@ -509,7 +512,8 @@ public class WebCalendar extends WebPanel
             {
                 public void itemStateChanged ( ItemEvent e )
                 {
-                    day.setFont ( day.isSelected () ? day.getFont ().deriveFont ( Font.BOLD ) : day.getFont ().deriveFont ( Font.PLAIN ) );
+                    // Breaks calendar size
+                    // day.setFont ( day.isSelected () ? day.getFont ().deriveFont ( Font.BOLD ) : day.getFont ().deriveFont ( Font.PLAIN ) );
                     if ( day.isSelected () )
                     {
                         setDateImpl ( thisDate, animate );
