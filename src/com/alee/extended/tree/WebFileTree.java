@@ -255,6 +255,17 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
      * Expands tree structure to the specified file.
      * This method might not have any effect in case the specified field doesn't exist under the file tree root.
      *
+     * @param file file to expand tree sctructure to
+     */
+    public void expandToFile ( File file )
+    {
+        expandToFile ( file, false, false );
+    }
+
+    /**
+     * Expands tree structure to the specified file.
+     * This method might not have any effect in case the specified field doesn't exist under the file tree root.
+     *
      * @param file   file to expand tree sctructure to
      * @param select whether to select file or not
      */
