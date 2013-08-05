@@ -21,17 +21,16 @@ All library artifacts could be found in ["artifacts" folder](https://github.com/
 
 Here are direct links:
 
-1. [**WebLookAndFeel-1.13.jar**](https://github.com/mgarin/weblaf/raw/master/artifacts/WebLookAndFeel-1.13.jar) - library jar
-2. [**WebLookAndFeel-demo-1.13.jar**](https://github.com/mgarin/weblaf/raw/master/artifacts/WebLookAndFeel-demo-1.13.jar) - executable demo jar
-3. [**WebLookAndFeel-nolib-1.13.jar**](https://github.com/mgarin/weblaf/raw/master/artifacts/WebLookAndFeel-nolib-1.13.jar) - library jar w/o 3rd party libraries
-4. [**NinePatchEditor-1.13.jar**](https://github.com/mgarin/weblaf/raw/master/artifacts/NinePatchEditor-1.13.jar) - executable 9patch editor jar
-5. [**Sources-1.13.zip**](https://github.com/mgarin/weblaf/raw/master/artifacts/Sources-1.13.zip) - project sources zip
-6. [**JavaDoc-1.13.zip**](https://github.com/mgarin/weblaf/raw/master/artifacts/JavaDoc-1.13.zip) - JavaDoc zip
+1. [**WebLookAndFeel-1.14.jar**](https://github.com/mgarin/weblaf/raw/master/artifacts/WebLookAndFeel-1.14.jar) - library jar
+2. [**WebLookAndFeel-demo-1.14.jar**](https://github.com/mgarin/weblaf/raw/master/artifacts/WebLookAndFeel-demo-1.14.jar) - executable demo jar
+3. [**NinePatchEditor-1.14.jar**](https://github.com/mgarin/weblaf/raw/master/artifacts/NinePatchEditor-1.14.jar) - executable 9patch editor jar
+4. [**Sources-1.14.zip**](https://github.com/mgarin/weblaf/raw/master/artifacts/Sources-1.14.zip) - project sources zip
+5. [**JavaDoc-1.14.zip**](https://github.com/mgarin/weblaf/raw/master/artifacts/JavaDoc-1.14.zip) - JavaDoc zip
 
 
 Building
 ----------
-To build various WebLaF artifacts you will need [Java 1.6 update 20 (or later)](http://www.oracle.com/technetwork/java/javase/downloads/index.html) and [Apache ANT] (http://ant.apache.org/).<br>
+To build various WebLaF artifacts you will need [Java 1.6 update 30 (or later)](http://www.oracle.com/technetwork/java/javase/downloads/index.html) and [Apache ANT] (http://ant.apache.org/).<br>
 Simply run `ant` command within the "build" library folder to build all artifacts at once.
 
 Here is a full list of usable ANT targets in WebLaF build script:
