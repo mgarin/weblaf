@@ -53,14 +53,15 @@ public class WebTableUI extends BasicTableUI
         // Default settings
         SwingUtils.setOrientation ( table );
         table.setOpaque ( false );
+        table.setFillsViewportHeight ( false );
         table.setBackground ( WebTableStyle.background );
         table.setForeground ( WebTableStyle.foreground );
         table.setSelectionBackground ( WebTableStyle.selectionBackground );
         table.setSelectionForeground ( WebTableStyle.selectionForeground );
-        table.setFillsViewportHeight ( false );
         table.setRowHeight ( WebTableStyle.rowHeight );
-        table.setShowVerticalLines ( false );
-        table.setIntercellSpacing ( new Dimension ( 0, 1 ) );
+        table.setShowHorizontalLines ( WebTableStyle.showHorizontalLines );
+        table.setShowVerticalLines ( WebTableStyle.showVerticalLines );
+        table.setIntercellSpacing ( WebTableStyle.cellsSpacing );
 
         // Configuring default renderers
         table.setDefaultRenderer ( Object.class, new WebTableCellRenderer () );
