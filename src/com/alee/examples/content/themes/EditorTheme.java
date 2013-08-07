@@ -18,8 +18,6 @@
 package com.alee.examples.content.themes;
 
 import javax.swing.*;
-import java.util.EnumMap;
-import java.util.Map;
 
 /**
  * @author Mikle Garin
@@ -50,23 +48,8 @@ public enum EditorTheme
         }
     }
 
-    private Map<EditorTheme, Icon> cache;
-
     public Icon getIcon ()
     {
-        if ( cache == null )
-        {
-            cache = new EnumMap<EditorTheme, Icon> ( EditorTheme.class );
-        }
-        if ( cache.containsKey ( this ) )
-        {
-            return cache.get ( this );
-        }
-        else
-        {
-            ImageIcon icon = new ImageIcon ( EditorTheme.class.getResource ( "icons/" + this + ".png" ) );
-            cache.put ( this, icon );
-            return icon;
-        }
+        return new ImageIcon ( EditorTheme.class.getResource ( "icons/" + this + ".png" ) );
     }
 }
