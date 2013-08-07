@@ -30,6 +30,8 @@ import com.alee.utils.SwingUtils;
 import com.alee.utils.laf.ShapeProvider;
 
 import javax.swing.*;
+import javax.swing.event.AncestorEvent;
+import javax.swing.event.AncestorListener;
 import java.awt.*;
 import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
@@ -146,6 +148,30 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
                 }
             }
         } );
+        addAncestorListener ( new AncestorListener ()
+        {
+            public void ancestorAdded ( AncestorEvent event )
+            {
+                hideCalendarPopup ();
+            }
+
+            public void ancestorRemoved ( AncestorEvent event )
+            {
+                hideCalendarPopup ();
+            }
+
+            public void ancestorMoved ( AncestorEvent event )
+            {
+                hideCalendarPopup ();
+            }
+        } );
+        addComponentListener ( new ComponentAdapter ()
+        {
+            public void componentHidden ( ComponentEvent e )
+            {
+                hideCalendarPopup ();
+            }
+        } );
 
         // Initial field date
         updateFieldFromDate ();
@@ -209,24 +235,6 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
 
             // Correct popup positioning
             updatePopupLocation ();
-            ancestor.addComponentListener ( new ComponentAdapter ()
-            {
-                public void componentMoved ( ComponentEvent e )
-                {
-                    if ( popup.isShowing () )
-                    {
-                        updatePopupLocation ();
-                    }
-                }
-
-                public void componentResized ( ComponentEvent e )
-                {
-                    if ( popup.isShowing () )
-                    {
-                        updatePopupLocation ();
-                    }
-                }
-            } );
             ancestor.addPropertyChangeListener ( WebLookAndFeel.COMPONENT_ORIENTATION_PROPERTY, new PropertyChangeListener ()
             {
                 public void propertyChange ( PropertyChangeEvent evt )
@@ -243,7 +251,7 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
             {
                 public void dateSelected ( Date date )
                 {
-                    popup.setVisible ( false );
+                    hideCalendarPopup ();
                     setDate ( date );
                     requestFocusInWindow ();
                 }
@@ -265,6 +273,11 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
         // Showing popup and changing focus
         popup.setVisible ( true );
         calendar.requestFocusInWindow ();
+    }
+
+    private void hideCalendarPopup ()
+    {
+        popup.setVisible ( false );
     }
 
     private void updatePopupLocation ()
