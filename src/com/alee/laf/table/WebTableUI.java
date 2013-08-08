@@ -32,20 +32,41 @@ import java.awt.*;
 import java.util.Date;
 
 /**
- * User: mgarin Date: 07.07.11 Time: 17:56
+ * Custom UI for JTable component.
+ *
+ * @author Mikle Garin
+ * @since 1.4
  */
 
 public class WebTableUI extends BasicTableUI
 {
+    /**
+     * Style settings.
+     */
     private Color selectionBackground = WebTableStyle.selectionBackground;
 
+    /**
+     * Table listeners.
+     */
     private AncestorAdapter ancestorAdapter;
 
+    /**
+     * Returns an instance of the WebTreeUI for the specified component.
+     * This tricky method is used by UIManager to create component UIs when needed.
+     *
+     * @param c component that will use UI instance
+     * @return instance of the WebTreeUI
+     */
     public static ComponentUI createUI ( JComponent c )
     {
         return new WebTableUI ();
     }
 
+    /**
+     * Installs UI in the specified component.
+     *
+     * @param c component for this UI
+     */
     public void installUI ( final JComponent c )
     {
         super.installUI ( c );
@@ -94,6 +115,11 @@ public class WebTableUI extends BasicTableUI
         table.addAncestorListener ( ancestorAdapter );
     }
 
+    /**
+     * Uninstalls UI from the specified component.
+     *
+     * @param c component with this UI
+     */
     public void uninstallUI ( JComponent c )
     {
         table.removeAncestorListener ( ancestorAdapter );
@@ -101,29 +127,29 @@ public class WebTableUI extends BasicTableUI
         super.uninstallUI ( c );
     }
 
-    protected void configureEnclosingScrollPaneUI ( JComponent c )
+    /**
+     * Configures table scroll pane with UI specific settings.
+     *
+     * @param table table to process
+     */
+    protected void configureEnclosingScrollPaneUI ( JTable table )
     {
-        Container p = c.getParent ();
-        if ( p instanceof JViewport )
+        // Retrieving table scroll pane if it has one
+        JScrollPane scrollPane = SwingUtils.getScrollPane ( table );
+        if ( scrollPane != null )
         {
-            Container gp = p.getParent ();
-            if ( gp instanceof JScrollPane )
+            // Make certain we are the viewPort's view and not, for
+            // example, the rowHeaderView of the scrollPane -
+            // an implementor of fixed columns might do this.
+            JViewport viewport = scrollPane.getViewport ();
+            if ( viewport == null || viewport.getView () != table )
             {
-                JScrollPane scrollPane = ( JScrollPane ) gp;
-
-                // Make certain we are the viewPort's view and not, for
-                // example, the rowHeaderView of the scrollPane -
-                // an implementor of fixed columns might do this.
-                JViewport viewport = scrollPane.getViewport ();
-                if ( viewport == null || viewport.getView () != c )
-                {
-                    return;
-                }
-
-                // Adding both corners to the scroll pane for both orientation cases
-                scrollPane.setCorner ( JScrollPane.UPPER_LEADING_CORNER, new WebTableCorner ( false ) );
-                scrollPane.setCorner ( JScrollPane.UPPER_TRAILING_CORNER, new WebTableCorner ( true ) );
+                return;
             }
+
+            // Adding both corners to the scroll pane for both orientation cases
+            scrollPane.setCorner ( JScrollPane.UPPER_LEADING_CORNER, new WebTableCorner ( false ) );
+            scrollPane.setCorner ( JScrollPane.UPPER_TRAILING_CORNER, new WebTableCorner ( true ) );
         }
     }
 }
