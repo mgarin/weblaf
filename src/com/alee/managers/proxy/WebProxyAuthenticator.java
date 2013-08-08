@@ -30,7 +30,6 @@ import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.hotkey.HotkeyManager;
 import com.alee.managers.hotkey.HotkeyRunnable;
 import com.alee.managers.language.LanguageManager;
-import com.alee.managers.settings.SettingsManager;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.AncestorAdapter;
 import info.clearthought.layout.TableLayout;
@@ -252,7 +251,7 @@ public class WebProxyAuthenticator extends Authenticator
 
 
             saveSettings = new WebCheckBox ( "Save proxy settings" );
-            SettingsManager.registerComponent ( saveSettings, ProxyManager.SETTINGS_GROUP, ProxyManager.SAVE_SETTINGS, true );
+            saveSettings.registerSettings ( ProxyManager.SETTINGS_GROUP, ProxyManager.SAVE_SETTINGS, true );
             setSpecialComponent ( saveSettings );
         }
 

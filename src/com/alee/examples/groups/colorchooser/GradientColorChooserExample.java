@@ -143,7 +143,7 @@ public class GradientColorChooserExample extends DefaultExample
         // Simple color chooser
         colorChooser = new WebGradientColorChooser ();
         colorChooser.setPreferredWidth ( 350 );
-        SettingsManager.registerComponent ( colorChooser, "GradientColorChooserExample.gradientData", GradientData.class );
+        colorChooser.registerSettings ( "GradientColorChooserExample.gradientData", GradientData.class );
 
         // Reset button
         final WebButton colored = new WebButton ( loadIcon ( "colored.png" ) );

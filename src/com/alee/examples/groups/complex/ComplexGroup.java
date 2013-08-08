@@ -19,9 +19,9 @@ package com.alee.examples.groups.complex;
 
 import com.alee.examples.content.DefaultExampleGroup;
 import com.alee.examples.content.Example;
-import com.alee.utils.CollectionUtils;
 
 import javax.swing.*;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -52,6 +52,6 @@ public class ComplexGroup extends DefaultExampleGroup
 
     public List<Example> getGroupExamples ()
     {
-        return CollectionUtils.copy ( ( Example ) new ComplexExample () );
+        return Arrays.asList ( ( Example ) new ComplexExample () );
     }
 }
