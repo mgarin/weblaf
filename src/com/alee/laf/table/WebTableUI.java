@@ -93,13 +93,22 @@ public class WebTableUI extends BasicTableUI
         table.setDefaultRenderer ( Icon.class, new WebIconRenderer () );
         table.setDefaultRenderer ( ImageIcon.class, new WebIconRenderer () );
         table.setDefaultRenderer ( Boolean.class, new WebBooleanRenderer () );
+        // todo Additional renderers:
+        // table.setDefaultRenderer ( Dimension.class,  );
+        // table.setDefaultRenderer ( Point.class,  );
+        // table.setDefaultRenderer ( File.class,  );
+        // table.setDefaultRenderer ( Color.class,  );
+        // table.setDefaultRenderer ( List.class,  );
 
         // Configuring default editors
         table.setDefaultEditor ( Object.class, new WebGenericEditor () );
         table.setDefaultEditor ( Number.class, new WebNumberEditor () );
         table.setDefaultEditor ( Boolean.class, new WebBooleanEditor () );
         // todo Additional editors:
+        // table.setDefaultEditor ( Dimension.class,  );
+        // table.setDefaultEditor ( Point.class,  );
         // table.setDefaultEditor ( Date.class,  );
+        // table.setDefaultEditor ( File.class,  );
         // table.setDefaultEditor ( Color.class,  );
         // table.setDefaultEditor ( List.class,  );
 
