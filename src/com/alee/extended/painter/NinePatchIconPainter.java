@@ -85,7 +85,7 @@ public class NinePatchIconPainter<E extends JComponent> extends DefaultPainter<E
         if ( ninePatchIcon != null )
         {
             ninePatchIcon.setComponent ( c );
-            ninePatchIcon.paintIcon ( c, g2d, 0, 0 );
+            ninePatchIcon.paintIcon ( c, g2d );
         }
     }
 

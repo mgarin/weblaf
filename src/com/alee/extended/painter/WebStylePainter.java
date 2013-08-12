@@ -27,6 +27,7 @@ import java.awt.*;
  * User: mgarin Date: 15.03.12 Time: 18:09
  */
 
+// todo Requires a lot of additions (hideable sides, switchable background etc)
 public class WebStylePainter<E extends JComponent> extends DefaultPainter<E>
 {
     private boolean drawBackground = true;

@@ -98,6 +98,12 @@ public class WebPanel extends JPanel implements ShapeProvider, LanguageContainer
         super ( layout, isDoubleBuffered );
     }
 
+    public WebPanel ( LayoutManager layout, Component... components )
+    {
+        super ( layout );
+        add ( components );
+    }
+
     /**
      * Additional childs interaction methods
      */

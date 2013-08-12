@@ -11,7 +11,7 @@
     <!--  General editor colors. -->
     <background color="ffffff" />
     <caret color="000000" />
-    <selection bg="c8c8ff" />
+    <selection bg="526da5" />
     <currentLineHighlight color="ffffd7" fade="false" />
     <marginLine fg="b0b4b9" />
     <markAllHighlight color="ccccff" />
@@ -64,7 +64,6 @@
         <style token="SEPARATOR" fg="000000" />
         <style token="VARIABLE" fg="810ca8" bold="true" />
         <style token="WHITESPACE" fg="000000" />
-
         <style token="ERROR_IDENTIFIER" fg="ff0000" />
         <style token="ERROR_NUMBER_FORMAT" fg="ff0000" />
         <style token="ERROR_STRING_DOUBLE" fg="ff0000" />

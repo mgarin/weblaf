@@ -438,13 +438,5 @@ public class WebFileChooserUI extends FileChooserUI
         {
             return FileUtils.getFileIcon ( f );
         }
-
-        /**
-         * {@inheritDoc}
-         */
-        public Boolean isTraversable ( File f )
-        {
-            return false;
-        }
     }
 }

@@ -41,7 +41,7 @@ import java.util.List;
 /**
  * User: mgarin Date: 19.12.11 Time: 12:59
  * <p/>
- * This editor (and nine-patch files parsing) is not based on the Android small editor (http://developer.android.com/guide/developing/tools/draw9patch.html)
+ * This editor is not based on the Android dev kit editor (http://developer.android.com/guide/developing/tools/draw9patch.html)
  * - NinePatchEditor is much more advanced and user-friendly. It allows fully visual and quick nine-patch editing, nine-patch information
  * copying and also creation of new nine-patch files based on any image file that could be loaded by WebLookAndFeel library.
  */
@@ -207,10 +207,10 @@ public class NinePatchEditor extends JComponent
         repaint ();
     }
 
-    public BufferedImage getImage ()
+    public BufferedImage getRawImage ()
     {
         // Returns parsed raw image
-        return ninePatchIcon.getImage ();
+        return ninePatchIcon.getRawImage ();
     }
 
     public BufferedImage getNinePatchImage ()
@@ -348,8 +348,8 @@ public class NinePatchEditor extends JComponent
 
         // Update NinePatchIcon data
         ninePatchIcon.setMargin ( SwingUtils.copy ( state.getMargin () ) );
-        ninePatchIcon.setHorizontalStretch ( NinePatchUtils.copy ( state.getHorizontalStretch () ) );
-        ninePatchIcon.setVerticalStretch ( NinePatchUtils.copy ( state.getVerticalStretch () ) );
+        ninePatchIcon.setHorizontalStretch ( CollectionUtils.clone ( state.getHorizontalStretch () ) );
+        ninePatchIcon.setVerticalStretch ( CollectionUtils.clone ( state.getVerticalStretch () ) );
 
         // Updates shown image
         validateIcon ();
@@ -374,8 +374,8 @@ public class NinePatchEditor extends JComponent
             NinePatchInfo info = new NinePatchInfo ();
             info.setImageSize ( ninePatchIcon.getRealImageSize () );
             info.setMargin ( SwingUtils.copy ( ninePatchIcon.getMargin () ) );
-            info.setHorizontalStretch ( NinePatchUtils.copy ( ninePatchIcon.getHorizontalStretch () ) );
-            info.setVerticalStretch ( NinePatchUtils.copy ( ninePatchIcon.getVerticalStretch () ) );
+            info.setHorizontalStretch ( CollectionUtils.clone ( ninePatchIcon.getHorizontalStretch () ) );
+            info.setVerticalStretch ( CollectionUtils.clone ( ninePatchIcon.getVerticalStretch () ) );
             history.add ( info );
             historyState = history.size () - 1;
 
@@ -475,7 +475,7 @@ public class NinePatchEditor extends JComponent
             final int y = e.getY ();
 
             // Variables
-            final BufferedImage image = getImage ();
+            final BufferedImage image = getRawImage ();
             final int cw = NinePatchEditor.this.getWidth ();
             final int ch = NinePatchEditor.this.getHeight ();
             final int iw = image.getWidth () * zoom;
@@ -582,7 +582,7 @@ public class NinePatchEditor extends JComponent
                     {
                         right = image.getWidth () - 1;
                     }
-                    ninePatchIcon.setMargin ( new Insets ( startMargin.top, left, startMargin.bottom, right ) );
+                    ninePatchIcon.setMargin ( startMargin.top, left, startMargin.bottom, right );
                     repaintRequired = true;
                     fireStateChanged ();
                 }
@@ -628,7 +628,7 @@ public class NinePatchEditor extends JComponent
                     {
                         bottom = image.getHeight () - 1;
                     }
-                    ninePatchIcon.setMargin ( new Insets ( top, startMargin.left, bottom, startMargin.right ) );
+                    ninePatchIcon.setMargin ( top, startMargin.left, bottom, startMargin.right );
                     repaintRequired = true;
                     fireStateChanged ();
                 }
@@ -667,7 +667,7 @@ public class NinePatchEditor extends JComponent
                     {
                         left = image.getWidth () - startMargin.right - 1;
                     }
-                    ninePatchIcon.setMargin ( new Insets ( startMargin.top, left, startMargin.bottom, startMargin.right ) );
+                    ninePatchIcon.setMargin ( startMargin.top, left, startMargin.bottom, startMargin.right );
                     repaintRequired = true;
                     fireStateChanged ();
                 }
@@ -704,7 +704,7 @@ public class NinePatchEditor extends JComponent
                     {
                         right = image.getWidth () - startMargin.left - 1;
                     }
-                    ninePatchIcon.setMargin ( new Insets ( startMargin.top, startMargin.left, startMargin.bottom, right ) );
+                    ninePatchIcon.setMargin ( startMargin.top, startMargin.left, startMargin.bottom, right );
                     repaintRequired = true;
                     fireStateChanged ();
                 }
@@ -741,7 +741,7 @@ public class NinePatchEditor extends JComponent
                     {
                         top = image.getHeight () - startMargin.bottom - 1;
                     }
-                    ninePatchIcon.setMargin ( new Insets ( top, startMargin.left, startMargin.bottom, startMargin.right ) );
+                    ninePatchIcon.setMargin ( top, startMargin.left, startMargin.bottom, startMargin.right );
                     repaintRequired = true;
                     fireStateChanged ();
                 }
@@ -778,7 +778,7 @@ public class NinePatchEditor extends JComponent
                     {
                         bottom = image.getHeight () - startMargin.top - 1;
                     }
-                    ninePatchIcon.setMargin ( new Insets ( startMargin.top, startMargin.left, bottom, startMargin.right ) );
+                    ninePatchIcon.setMargin ( startMargin.top, startMargin.left, bottom, startMargin.right );
                     repaintRequired = true;
                     fireStateChanged ();
                 }
@@ -1130,7 +1130,7 @@ public class NinePatchEditor extends JComponent
                         {
                             right = image.getWidth () - 1;
                         }
-                        ninePatchIcon.setMargin ( new Insets ( top, left, bottom, right ) );
+                        ninePatchIcon.setMargin ( top, left, bottom, right );
                         repaintRequired = true;
                         fireStateChanged ();
                     }
@@ -1336,7 +1336,7 @@ public class NinePatchEditor extends JComponent
 
     private boolean[] getHorizontalFilledPixels ()
     {
-        boolean[] filled = new boolean[ getImage ().getWidth () ];
+        boolean[] filled = new boolean[ getRawImage ().getWidth () ];
         for ( NinePatchInterval npi : ninePatchIcon.getHorizontalStretch () )
         {
             for ( int i = npi.getStart (); i <= npi.getEnd (); i++ )
@@ -1359,7 +1359,7 @@ public class NinePatchEditor extends JComponent
 
     private boolean[] getVerticalFilledPixels ()
     {
-        boolean[] filled = new boolean[ getImage ().getHeight () ];
+        boolean[] filled = new boolean[ getRawImage ().getHeight () ];
         for ( NinePatchInterval npi : ninePatchIcon.getVerticalStretch () )
         {
             for ( int i = npi.getStart (); i <= npi.getEnd (); i++ )
@@ -1378,7 +1378,7 @@ public class NinePatchEditor extends JComponent
         // Verifies that margins fit the image size properly
         Insets margin = ninePatchIcon.getMargin ();
 
-        int maxVmargin = getImage ().getHeight () - 1;
+        int maxVmargin = getRawImage ().getHeight () - 1;
         if ( margin.top > maxVmargin )
         {
             margin.top = maxVmargin;
@@ -1388,7 +1388,7 @@ public class NinePatchEditor extends JComponent
             margin.bottom = maxVmargin - margin.top;
         }
 
-        int maxHmargin = getImage ().getWidth () - 1;
+        int maxHmargin = getRawImage ().getWidth () - 1;
         if ( margin.left > maxHmargin )
         {
             margin.left = maxHmargin;
@@ -1430,10 +1430,10 @@ public class NinePatchEditor extends JComponent
         // Assembles editor data into valid Nine-patch image
 
         // New image template
-        ninePatchImage =
-                ImageUtils.createCompatibleImage ( getImage ().getWidth () + 2, getImage ().getHeight () + 2, Transparency.TRANSLUCENT );
+        ninePatchImage = ImageUtils
+                .createCompatibleImage ( getRawImage ().getWidth () + 2, getRawImage ().getHeight () + 2, Transparency.TRANSLUCENT );
         Graphics2D g2d = ninePatchImage.createGraphics ();
-        g2d.drawImage ( getImage (), 1, 1, null );
+        g2d.drawImage ( getRawImage (), 1, 1, null );
         g2d.dispose ();
 
         // Color to fill with marks
@@ -1443,7 +1443,7 @@ public class NinePatchEditor extends JComponent
 
         // Stretch
         boolean[] hf = getHorizontalFilledPixels ();
-        for ( int i = 0; i < getImage ().getWidth (); i++ )
+        for ( int i = 0; i < getRawImage ().getWidth (); i++ )
         {
             if ( hf[ i ] )
             {
@@ -1451,7 +1451,7 @@ public class NinePatchEditor extends JComponent
             }
         }
         boolean[] vf = getVerticalFilledPixels ();
-        for ( int i = 0; i < getImage ().getHeight (); i++ )
+        for ( int i = 0; i < getRawImage ().getHeight (); i++ )
         {
             if ( vf[ i ] )
             {
@@ -1461,11 +1461,11 @@ public class NinePatchEditor extends JComponent
 
         // Content
         Insets margin = ninePatchIcon.getMargin ();
-        for ( int i = margin.left; i < getImage ().getWidth () - margin.right; i++ )
+        for ( int i = margin.left; i < getRawImage ().getWidth () - margin.right; i++ )
         {
             ninePatchImage.setRGB ( i + 1, ninePatchImage.getHeight () - 1, rgb );
         }
-        for ( int i = margin.top; i < getImage ().getHeight () - margin.bottom; i++ )
+        for ( int i = margin.top; i < getRawImage ().getHeight () - margin.bottom; i++ )
         {
             ninePatchImage.setRGB ( ninePatchImage.getWidth () - 1, i + 1, rgb );
         }
@@ -1480,7 +1480,7 @@ public class NinePatchEditor extends JComponent
         {
             Graphics2D g2d = ( Graphics2D ) g;
             FontMetrics fm = g2d.getFontMetrics ();
-            final BufferedImage image = getImage ();
+            final BufferedImage image = getRawImage ();
             final int cw = getWidth ();
             final int ch = getHeight ();
             final int iw = image.getWidth () * zoom;
@@ -1791,9 +1791,9 @@ public class NinePatchEditor extends JComponent
         {
             horizontalGuides.add ( margin.left );
         }
-        if ( !horizontalGuides.contains ( getImage ().getWidth () - margin.right ) )
+        if ( !horizontalGuides.contains ( getRawImage ().getWidth () - margin.right ) )
         {
-            horizontalGuides.add ( getImage ().getWidth () - margin.right );
+            horizontalGuides.add ( getRawImage ().getWidth () - margin.right );
         }
 
         // Sort ascending
@@ -1825,9 +1825,9 @@ public class NinePatchEditor extends JComponent
         {
             verticalGuides.add ( margin.top );
         }
-        if ( !verticalGuides.contains ( getImage ().getHeight () - margin.bottom ) )
+        if ( !verticalGuides.contains ( getRawImage ().getHeight () - margin.bottom ) )
         {
-            verticalGuides.add ( getImage ().getHeight () - margin.bottom );
+            verticalGuides.add ( getRawImage ().getHeight () - margin.bottom );
         }
 
         // Sort ascending

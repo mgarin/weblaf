@@ -905,11 +905,7 @@ public class SwingUtils
      */
     public static boolean isPlainFont ( Component component )
     {
-        if ( component != null && component.getFont () != null )
-        {
-            return component.getFont ().isPlain ();
-        }
-        return true;
+        return !( component != null && component.getFont () != null ) || component.getFont ().isPlain ();
     }
 
     /**
@@ -936,11 +932,7 @@ public class SwingUtils
      */
     public static boolean isBoldFont ( Component component )
     {
-        if ( component != null && component.getFont () != null )
-        {
-            return component.getFont ().isBold ();
-        }
-        return false;
+        return component != null && component.getFont () != null && component.getFont ().isBold ();
     }
 
     /**
@@ -967,11 +959,7 @@ public class SwingUtils
      */
     public static boolean isItalicFont ( Component component )
     {
-        if ( component != null && component.getFont () != null )
-        {
-            return component.getFont ().isItalic ();
-        }
-        return false;
+        return component != null && component.getFont () != null && component.getFont ().isItalic ();
     }
 
     /**
@@ -1198,8 +1186,23 @@ public class SwingUtils
      */
     public static Insets max ( Insets insets1, Insets insets2 )
     {
-        return new Insets ( Math.max ( insets1.top, insets2.top ), Math.max ( insets1.left, insets2.left ),
-                Math.max ( insets1.bottom, insets2.bottom ), Math.max ( insets1.right, insets2.right ) );
+        if ( insets1 != null && insets2 != null )
+        {
+            return new Insets ( Math.max ( insets1.top, insets2.top ), Math.max ( insets1.left, insets2.left ),
+                    Math.max ( insets1.bottom, insets2.bottom ), Math.max ( insets1.right, insets2.right ) );
+        }
+        else if ( insets1 != null )
+        {
+            return insets1;
+        }
+        else if ( insets2 != null )
+        {
+            return insets2;
+        }
+        else
+        {
+            return null;
+        }
     }
 
     /**
@@ -1211,8 +1214,23 @@ public class SwingUtils
      */
     public static Insets min ( Insets insets1, Insets insets2 )
     {
-        return new Insets ( Math.min ( insets1.top, insets2.top ), Math.min ( insets1.left, insets2.left ),
-                Math.min ( insets1.bottom, insets2.bottom ), Math.min ( insets1.right, insets2.right ) );
+        if ( insets1 != null && insets2 != null )
+        {
+            return new Insets ( Math.min ( insets1.top, insets2.top ), Math.min ( insets1.left, insets2.left ),
+                    Math.min ( insets1.bottom, insets2.bottom ), Math.min ( insets1.right, insets2.right ) );
+        }
+        else if ( insets1 != null )
+        {
+            return insets1;
+        }
+        else if ( insets2 != null )
+        {
+            return insets2;
+        }
+        else
+        {
+            return null;
+        }
     }
 
     /**

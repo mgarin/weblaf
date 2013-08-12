@@ -51,7 +51,6 @@ import com.alee.managers.popup.PopupAdapter;
 import com.alee.managers.popup.PopupWay;
 import com.alee.managers.popup.WebButtonPopup;
 import com.alee.managers.popup.WebPopup;
-import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.tooltip.TooltipManager;
 import com.alee.utils.*;
 import com.alee.utils.compare.Filter;
@@ -526,7 +525,7 @@ public class SourceViewer extends WebPanel
         wbp.setContent ( popupContent );
 
         theme = new WebComboBox ( EditorTheme.values () );
-        SettingsManager.registerComponent ( theme, SETTINGS_PREFIX + "theme", 0 );
+        theme.registerSettings ( SETTINGS_PREFIX + "theme", 0 );
         theme.setRenderer ( new WebComboBoxCellRenderer ( theme )
         {
             public Component getListCellRendererComponent ( JList list, Object value, int index, boolean isSelected, boolean cellHasFocus )
@@ -556,7 +555,7 @@ public class SourceViewer extends WebPanel
         popupContent.add ( theme );
 
         allowCodeFolding = new WebToggleButton ( loadEditorIcon ( "allowCodeFolding" ) );
-        SettingsManager.registerComponent ( allowCodeFolding, SETTINGS_PREFIX + "allowCodeFolding", false );
+        allowCodeFolding.registerSettings ( SETTINGS_PREFIX + "allowCodeFolding", false );
         allowCodeFolding.addItemListener ( new ItemListener ()
         {
             public void itemStateChanged ( ItemEvent e )
@@ -586,7 +585,7 @@ public class SourceViewer extends WebPanel
         popupContent.add ( new GroupPanel ( 5, allowCodeFolding, allowCodeFoldingLabel ) );
 
         paintTabLines = new WebToggleButton ( loadEditorIcon ( "paintTabLines" ) );
-        SettingsManager.registerComponent ( paintTabLines, SETTINGS_PREFIX + "paintTabLines", false );
+        paintTabLines.registerSettings ( SETTINGS_PREFIX + "paintTabLines", false );
         paintTabLines.addItemListener ( new ItemListener ()
         {
             public void itemStateChanged ( ItemEvent e )
@@ -616,7 +615,7 @@ public class SourceViewer extends WebPanel
         popupContent.add ( new GroupPanel ( 5, paintTabLines, paintTabLinesLabel ) );
 
         showWhitespaces = new WebToggleButton ( loadEditorIcon ( "showWhitespaces" ) );
-        SettingsManager.registerComponent ( showWhitespaces, SETTINGS_PREFIX + "showWhitespaces", false );
+        showWhitespaces.registerSettings ( SETTINGS_PREFIX + "showWhitespaces", false );
         showWhitespaces.addItemListener ( new ItemListener ()
         {
             public void itemStateChanged ( ItemEvent e )
@@ -646,7 +645,7 @@ public class SourceViewer extends WebPanel
         popupContent.add ( new GroupPanel ( 5, showWhitespaces, showWhitespacesLabel ) );
 
         showEol = new WebToggleButton ( loadEditorIcon ( "showEol" ) );
-        SettingsManager.registerComponent ( showEol, SETTINGS_PREFIX + "showEol", false );
+        showEol.registerSettings ( SETTINGS_PREFIX + "showEol", false );
         showEol.addItemListener ( new ItemListener ()
         {
             public void itemStateChanged ( ItemEvent e )
@@ -768,8 +767,9 @@ public class SourceViewer extends WebPanel
                                 }
 
                                 boolean ltr = rootElement.getComponentOrientation ().isLeftToRight ();
-                                packageMenu.show ( element, ltr ? classPath.getElementOverlap () : element.getWidth () - classPath.getElementOverlap () -
-                                        packageMenu.getPreferredSize ().width, element.getHeight () + 2 );
+                                packageMenu.show ( element,
+                                        ltr ? classPath.getElementOverlap () : element.getWidth () - classPath.getElementOverlap () -
+                                                packageMenu.getPreferredSize ().width, element.getHeight () + 2 );
                             }
                         }
                     } );
