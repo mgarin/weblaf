@@ -321,6 +321,16 @@ public class WebFileChooser extends JFileChooser implements LanguageMethods, Lan
     /**
      * Constructs and displays file open dialog and returns selected file as a result.
      *
+     * @return selected file
+     */
+    public static File showOpenDialog ()
+    {
+        return showOpenDialog ( null, null, null );
+    }
+
+    /**
+     * Constructs and displays file open dialog and returns selected file as a result.
+     *
      * @param configurator file chooser configurator
      * @return selected file
      */
@@ -394,6 +404,16 @@ public class WebFileChooser extends JFileChooser implements LanguageMethods, Lan
     /**
      * Constructs and displays multiply files open dialog and returns selected files list as a result.
      *
+     * @return selected files list
+     */
+    public static List<File> showMultiOpenDialog ()
+    {
+        return showMultiOpenDialog ( null, null, null );
+    }
+
+    /**
+     * Constructs and displays multiply files open dialog and returns selected files list as a result.
+     *
      * @param configurator file chooser configurator
      * @return selected files list
      */
@@ -462,6 +482,16 @@ public class WebFileChooser extends JFileChooser implements LanguageMethods, Lan
         {
             return null;
         }
+    }
+
+    /**
+     * Constructs and displays file save dialog and returns selected file as a result.
+     *
+     * @return selected file
+     */
+    public static File showSaveDialog ()
+    {
+        return showSaveDialog ( null, null, null );
     }
 
     /**
