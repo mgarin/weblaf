@@ -41,7 +41,7 @@ import java.util.List;
 /**
  * User: mgarin Date: 19.12.11 Time: 12:59
  * <p/>
- * This editor (and nine-patch files parsing) is not based on the Android small editor (http://developer.android.com/guide/developing/tools/draw9patch.html)
+ * This editor is not based on the Android dev kit editor (http://developer.android.com/guide/developing/tools/draw9patch.html)
  * - NinePatchEditor is much more advanced and user-friendly. It allows fully visual and quick nine-patch editing, nine-patch information
  * copying and also creation of new nine-patch files based on any image file that could be loaded by WebLookAndFeel library.
  */
