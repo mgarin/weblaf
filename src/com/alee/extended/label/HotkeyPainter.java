@@ -28,8 +28,8 @@ import java.awt.*;
 
 public class HotkeyPainter extends DefaultPainter<JComponent>
 {
-    private static Color border = new Color ( 204, 204, 204 );
-    private static Color bg = new Color ( 247, 247, 247 );
+    public static final Color border = new Color ( 204, 204, 204 );
+    public static final Color bg = new Color ( 247, 247, 247 );
 
     public HotkeyPainter ()
     {

@@ -21,11 +21,11 @@ All library artifacts could be found in ["artifacts" folder](https://github.com/
 
 Here are direct links:
 
-1. [**WebLookAndFeel-1.14.jar**](https://github.com/mgarin/weblaf/raw/master/artifacts/WebLookAndFeel-1.14.jar) - library jar
-2. [**WebLookAndFeel-demo-1.14.jar**](https://github.com/mgarin/weblaf/raw/master/artifacts/WebLookAndFeel-demo-1.14.jar) - executable demo jar
-3. [**NinePatchEditor-1.14.jar**](https://github.com/mgarin/weblaf/raw/master/artifacts/NinePatchEditor-1.14.jar) - executable 9patch editor jar
-4. [**Sources-1.14.zip**](https://github.com/mgarin/weblaf/raw/master/artifacts/Sources-1.14.zip) - project sources zip
-5. [**JavaDoc-1.14.zip**](https://github.com/mgarin/weblaf/raw/master/artifacts/JavaDoc-1.14.zip) - JavaDoc zip
+1. [**weblaf-1.15.jar**](https://github.com/mgarin/weblaf/raw/master/artifacts/weblaf-1.15.jar) - library jar
+2. [**weblaf-demo-1.15.jar**](https://github.com/mgarin/weblaf/raw/master/artifacts/weblaf-demo-1.15.jar) - executable demo jar
+3. [**ninepatch-editor-1.15.jar**](https://github.com/mgarin/weblaf/raw/master/artifacts/ninepatch-editor-1.15.jar) - executable 9patch editor jar
+4. [**weblaf-src-1.15.zip**](https://github.com/mgarin/weblaf/raw/master/artifacts/weblaf-src-1.15.zip) - project sources zip
+5. [**weblaf-javadoc-1.15.zip**](https://github.com/mgarin/weblaf/raw/master/artifacts/weblaf-javadoc-1.15.zip) - JavaDoc zip
 
 
 Building

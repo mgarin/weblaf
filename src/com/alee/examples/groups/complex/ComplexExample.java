@@ -58,14 +58,7 @@ public class ComplexExample extends DefaultExample
     {
         WebPanel container = new WebPanel ( new TexturePainter ( loadIcon ( "bg1.png" ) ) );
 
-        WebPanel panel = new WebPanel ( new ToolbarLayout ( 0, 0, ToolbarLayout.VERTICAL ) )
-        {
-            protected void paintComponent ( Graphics g )
-            {
-                super.paintComponent ( g );
-                //                DebugUtils.paintBorderDebugInfo ( g, this );
-            }
-        };
+        WebPanel panel = new WebPanel ( new ToolbarLayout ( 0, 0, ToolbarLayout.VERTICAL ) );
         panel.setPainter ( new ShadeBackgroundPainter ( ImageUtils.getBufferedImage ( loadIcon ( "bg2.png" ) ) ) );
         container.add ( panel );
 
@@ -105,7 +98,7 @@ public class ComplexExample extends DefaultExample
             protected void paintComponent ( Graphics g )
             {
                 super.paintComponent ( g );
-                DebugUtils.paintBorderDebugInfo ( g, this );
+                //                DebugUtils.paintBorderDebugInfo ( g, this );
             }
         } );
         ppp.add ( new WebLabel ( "345" )
@@ -117,7 +110,7 @@ public class ComplexExample extends DefaultExample
             protected void paintComponent ( Graphics g )
             {
                 super.paintComponent ( g );
-                DebugUtils.paintBorderDebugInfo ( g, this );
+                //                DebugUtils.paintBorderDebugInfo ( g, this );
             }
         }, ToolbarLayout.END );
         return ppp;
@@ -126,7 +119,7 @@ public class ComplexExample extends DefaultExample
     public static void main ( String[] args )
     {
         WebLookAndFeel.install ();
-        final TestFrame tf = new TestFrame ( new ComplexExample ().getPreview ( null ), 0 );
+        final TestFrame tf = TestFrame.show ( new ComplexExample ().getPreview ( null ), 0 );
         HotkeyManager.registerHotkey ( Hotkey.SPACE, new HotkeyRunnable ()
         {
             public void run ( KeyEvent e )
@@ -144,11 +137,7 @@ public class ComplexExample extends DefaultExample
         {
             super ();
             this.bg = bg;
-        }
-
-        public Insets getMargin ( JComponent c )
-        {
-            return new Insets ( 40, 40, 40, 40 );
+            setMargin ( 25 );
         }
 
         public Dimension getPreferredSize ( JComponent c )
@@ -164,7 +153,7 @@ public class ComplexExample extends DefaultExample
             // Background
             LafUtils.setupAntialias ( g2d );
             g2d.setPaint ( bg != null ? new TexturePaint ( bg, new Rectangle ( 0, 0, bg.getWidth (), bg.getHeight () ) ) : Color.WHITE );
-            g2d.fillRoundRect ( bounds.x + 20, bounds.y + 20, bounds.width - 40, bounds.height - 40, 40, 40 );
+            g2d.fillRoundRect ( bounds.x + 20, bounds.y + 20, bounds.width - 40, bounds.height - 40, 20, 20 );
         }
 
         private NinePatchIcon getShadeIcon ()

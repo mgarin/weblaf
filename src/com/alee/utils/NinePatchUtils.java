@@ -17,13 +17,8 @@
 
 package com.alee.utils;
 
-import com.alee.extended.image.WebImage;
-import com.alee.extended.layout.AlignLayout;
-import com.alee.extended.painter.BorderPainter;
-import com.alee.extended.window.TestFrame;
 import com.alee.graphics.filters.ShadowFilter;
 import com.alee.laf.StyleConstants;
-import com.alee.laf.panel.WebPanel;
 import com.alee.utils.ninepatch.NinePatchIcon;
 import com.alee.utils.ninepatch.NinePatchInterval;
 import com.alee.utils.ninepatch.NinePatchIntervalType;
@@ -38,20 +33,30 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * User: mgarin Date: 12.05.12 Time: 14:59
+ * This class provides a set of utilities to work with various nine-patch images.
+ *
+ * @author Mikle Garin
+ * @since 1.4
  */
 
 public class NinePatchUtils
 {
     /**
-     * Creates shade nine-patch icon
+     * Shade nine-patch icons cache.
      */
-
     private static Map<String, NinePatchIcon> shadeIconCache = new HashMap<String, NinePatchIcon> ();
 
+    /**
+     * Returns cached shade nine-patch icon.
+     *
+     * @param shadeWidth   shade width
+     * @param round        corners round
+     * @param shadeOpacity shade opacity
+     * @return cached shade nine-patch icon
+     */
     public static NinePatchIcon getShadeIcon ( int shadeWidth, int round, float shadeOpacity )
     {
-        String key = shadeWidth + ";" + round + ";" + shadeOpacity;
+        String key = "outer;" + shadeWidth + ";" + round + ";" + shadeOpacity;
         if ( shadeIconCache.containsKey ( key ) )
         {
             return shadeIconCache.get ( key );
@@ -64,10 +69,18 @@ public class NinePatchUtils
         }
     }
 
+    /**
+     * Returns shade nine-patch icon.
+     *
+     * @param shadeWidth   shade width
+     * @param round        corners round
+     * @param shadeOpacity shade opacity
+     * @return shade nine-patch icon
+     */
     public static NinePatchIcon createShadeIcon ( int shadeWidth, int round, float shadeOpacity )
     {
         // Calculating width for temprorary image
-        int inner = Math.max ( shadeWidth, round );
+        int inner = Math.max ( shadeWidth, round ) / 2;
         int width = shadeWidth * 2 + inner * 2;
 
         // Creating template image
@@ -98,14 +111,41 @@ public class NinePatchUtils
         ninePatchIcon.addVerticalStretch ( 0, shadeWidth + inner, true );
         ninePatchIcon.addVerticalStretch ( shadeWidth + inner + 1, width - shadeWidth - inner - 1, false );
         ninePatchIcon.addVerticalStretch ( width - shadeWidth - inner, width, true );
-
+        ninePatchIcon.setMargin ( shadeWidth );
         return ninePatchIcon;
     }
 
     /**
-     * Creates inner shade nine-patch icon
+     * Returns cached inner shade nine-patch icon.
+     *
+     * @param shadeWidth   shade width
+     * @param round        corners round
+     * @param shadeOpacity shade opacity
+     * @return cached inner shade nine-patch icon
      */
+    public static NinePatchIcon getInnerShadeIcon ( int shadeWidth, int round, float shadeOpacity )
+    {
+        String key = "inner;" + shadeWidth + ";" + round + ";" + shadeOpacity;
+        if ( shadeIconCache.containsKey ( key ) )
+        {
+            return shadeIconCache.get ( key );
+        }
+        else
+        {
+            NinePatchIcon ninePatchIcon = createInnerShadeIcon ( shadeWidth, round, shadeOpacity );
+            shadeIconCache.put ( key, ninePatchIcon );
+            return ninePatchIcon;
+        }
+    }
 
+    /**
+     * Returns inner shade nine-patch icon.
+     *
+     * @param shadeWidth   shade width
+     * @param round        corners round
+     * @param shadeOpacity shade opacity
+     * @return inner shade nine-patch icon
+     */
     public static NinePatchIcon createInnerShadeIcon ( int shadeWidth, int round, float shadeOpacity )
     {
         // Calculating width for temprorary image
@@ -137,6 +177,7 @@ public class NinePatchUtils
         g2d.dispose ();
 
         BufferedImage croppedShade = shade.getSubimage ( shadeWidth, shadeWidth, width - shadeWidth * 2, width - shadeWidth * 2 );
+        width = croppedShade.getWidth ();
 
         // Creating nine-patch icon
         NinePatchIcon ninePatchIcon = NinePatchIcon.create ( croppedShade );
@@ -146,38 +187,17 @@ public class NinePatchUtils
         ninePatchIcon.addVerticalStretch ( 0, inner, true );
         ninePatchIcon.addVerticalStretch ( inner + 1, width - inner - 1, false );
         ninePatchIcon.addVerticalStretch ( width - inner, width, true );
-
+        ninePatchIcon.setMargin ( shadeWidth );
         return ninePatchIcon;
     }
 
-    public static void main ( String[] args )
-    {
-                new TestFrame ( new AlignLayout (), new WebPanel ( new WebPanel ( new BorderPainter ( 1, Color.RED )
-                {
-                    {
-                        setRound ( 0 );
-                    }
-                }, new WebImage ( createInnerShadeIcon ( 10, 5, 1f ).getImage () ) ) ) );
-    }
-
     /**
-     * Copies nine-patch intervals
+     * Returns a list of nine-patch data intervals from the specified image.
+     *
+     * @param image        nin-patch image to process
+     * @param intervalType intervals type
+     * @return list of nine-patch data intervals from the specified image
      */
-
-    public static List<NinePatchInterval> copy ( List<NinePatchInterval> intervals )
-    {
-        List<NinePatchInterval> copy = new ArrayList<NinePatchInterval> ();
-        for ( NinePatchInterval npi : intervals )
-        {
-            copy.add ( npi.clone () );
-        }
-        return copy;
-    }
-
-    /**
-     * Parses 9-patch image file into usable java Icon
-     */
-
     public static List<NinePatchInterval> parseIntervals ( BufferedImage image, NinePatchIntervalType intervalType )
     {
         final boolean hv = intervalType.equals ( NinePatchIntervalType.horizontalStretch ) ||
@@ -243,6 +263,12 @@ public class NinePatchUtils
         return intervals;
     }
 
+    /**
+     * Returns nine-patch stretch intervals.
+     *
+     * @param filled pixels fill data
+     * @return nine-patch stretch intervals
+     */
     public static List<NinePatchInterval> parseStretchIntervals ( boolean[] filled )
     {
         List<NinePatchInterval> intervals = new ArrayList<NinePatchInterval> ();

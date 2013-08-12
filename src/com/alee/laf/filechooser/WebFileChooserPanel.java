@@ -931,6 +931,10 @@ public class WebFileChooserPanel extends WebPanel
             {
                 setSelectedFile ( toSelect );
             }
+
+            // Updating contols
+            updateControlsState ();
+
             return;
         }
 
@@ -965,11 +969,7 @@ public class WebFileChooserPanel extends WebPanel
         currentFolder = file;
 
         // Updating contols
-        backward.setEnabled ( currentHistoryIndex > 0 );
-        forward.setEnabled ( currentHistoryIndex + 1 < navigationHistory.size () );
-        folderNew.setEnabled ( currentFolder != null );
-        folderUp.setEnabled (
-                SystemUtils.isWindows () ? currentFolder != null : currentFolder != null && currentFolder.getParentFile () != null );
+        updateControlsState ();
 
         // Selecting passed file
         if ( toSelect != null )
@@ -979,6 +979,18 @@ public class WebFileChooserPanel extends WebPanel
 
         // Firing events
         fireDirectoryChanged ( currentFolder );
+    }
+
+    /**
+     * Updates toolbar controls state.
+     */
+    private void updateControlsState ()
+    {
+        backward.setEnabled ( currentHistoryIndex > 0 );
+        forward.setEnabled ( currentHistoryIndex + 1 < navigationHistory.size () );
+        folderNew.setEnabled ( currentFolder != null );
+        folderUp.setEnabled (
+                SystemUtils.isWindows () ? currentFolder != null : currentFolder != null && currentFolder.getParentFile () != null );
     }
 
     /**

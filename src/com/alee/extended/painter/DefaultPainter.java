@@ -47,11 +47,7 @@ public abstract class DefaultPainter<E extends Component> implements Painter<E>
     protected Insets margin = new Insets ( 0, 0, 0, 0 );
 
     /**
-     * Returns whether visual data provided by this painter is opaque or not.
-     * Returned value might affect component opacity depending on painter support inside that component UI.
-     *
-     * @param c component to process
-     * @return true if visual data provided by this painter is opaque, false otherwise
+     * {@inheritDoc}
      */
     public boolean isOpaque ( E c )
     {
@@ -69,11 +65,7 @@ public abstract class DefaultPainter<E extends Component> implements Painter<E>
     }
 
     /**
-     * Returns preferred size required for proper painting of visual data provided by this painter.
-     * This should not take into account any sizes not related to this painter settings (for example text size on button).
-     *
-     * @param c component to process
-     * @return preferred size required for proper painting of visual data provided by this painter
+     * {@inheritDoc}
      */
     public Dimension getPreferredSize ( E c )
     {
@@ -91,11 +83,7 @@ public abstract class DefaultPainter<E extends Component> implements Painter<E>
     }
 
     /**
-     * Returns margin required for visual data provided by this painter.
-     * This margin is usually added to component's margin when the final component border is calculated.
-     *
-     * @param c component to process
-     * @return margin required for visual data provided by this painter
+     * {@inheritDoc}
      */
     public Insets getMargin ( E c )
     {

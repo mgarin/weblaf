@@ -18,12 +18,26 @@
 package com.alee.extended.painter;
 
 /**
- * User: mgarin Date: 08.08.12 Time: 14:02
+ * This enumeration represents the list of possible title positions for TitledBorderPainter.
+ *
+ * @author Mikle Garin
+ * @since 1.4
  */
 
 public enum TitlePosition
 {
+    /**
+     * Title placed above border line.
+     */
     aboveLive,
+
+    /**
+     * Title placed on the border line.
+     */
     onLine,
+
+    /**
+     * Title placed below border line.
+     */
     belowLine
 }

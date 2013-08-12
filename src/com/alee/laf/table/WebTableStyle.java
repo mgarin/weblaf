@@ -44,6 +44,21 @@ public final class WebTableStyle
     public static int rowHeight = 18;
 
     /**
+     * Whether to show horizontal lines by default or not.
+     */
+    public static boolean showHorizontalLines = true;
+
+    /**
+     * Whether to show vertical lines by default or not.
+     */
+    public static boolean showVerticalLines = true;
+
+    /**
+     * Default spacing berween table cells
+     */
+    public static Dimension cellsSpacing = new Dimension ( 0, 1 );
+
+    /**
      * Table selection background.
      */
     public static Color gridColor = new Color ( 176, 176, 176 );
