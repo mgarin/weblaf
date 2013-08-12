@@ -87,6 +87,8 @@ public class WebLookAndFeelDemo extends WebFrame
     public static final String WEBLAF_SITE = "http://weblookandfeel.com/";
     public static final String WEBLAF_EMAIL = "mgarin@alee.com";
 
+    public static final String VERSION_XML_URL = "https://raw.github.com/mgarin/weblaf/master/src/com/alee/laf/resources/version.xml";
+
     private ComponentTransition appearanceTransition;
 
     private SlidingSearch slidingSearch;
@@ -383,7 +385,7 @@ public class WebLookAndFeelDemo extends WebFrame
         statusBar.addToMiddle ( update );
 
         // Version checker
-        WebTimer.repeat ( "WebLookAndFeelDemo.versionCheck", 60000, 1000, new ActionListener ()
+        WebTimer.repeat ( "WebLookAndFeelDemo.versionCheck", 60000, 10000, new ActionListener ()
         {
             private VersionInfo lastVersion = null;
 
@@ -422,8 +424,7 @@ public class WebLookAndFeelDemo extends WebFrame
                 {
                     try
                     {
-                        final String versionUrl = WebLookAndFeelDemo.WEBLAF_SITE + "downloads/version.xml";
-                        lastVersion = XmlUtils.fromXML ( new URL ( versionUrl ) );
+                        lastVersion = XmlUtils.fromXML ( new URL ( WebLookAndFeelDemo.VERSION_XML_URL ) );
                     }
                     catch ( Throwable e )
                     {
@@ -482,7 +483,6 @@ public class WebLookAndFeelDemo extends WebFrame
             {
                 // Updating button
                 enabledUpdater.run ();
-
 
                 // Updating examples
                 boolean enable = enabled.isSelected ();
