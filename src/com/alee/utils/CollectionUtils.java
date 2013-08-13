@@ -56,9 +56,7 @@ public class CollectionUtils
      */
     public static <T> List<T> copy ( Collection<T> collection )
     {
-        List<T> cloned = new ArrayList<T> ( collection.size () );
-        cloned.addAll ( collection );
-        return cloned;
+        return new ArrayList<T> ( collection );
     }
 
     /**
@@ -192,12 +190,7 @@ public class CollectionUtils
      */
     public static <T> List<T> toList ( Deque<T> deque )
     {
-        List<T> list = new ArrayList<T> ( deque.size () );
-        for ( Object object : deque.toArray () )
-        {
-            list.add ( ( T ) object );
-        }
-        return list;
+        return new ArrayList<T> ( deque );
     }
 
     /**

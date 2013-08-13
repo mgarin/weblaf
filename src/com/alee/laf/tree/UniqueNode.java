@@ -20,6 +20,7 @@ package com.alee.laf.tree;
 import com.alee.utils.TextUtils;
 
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreePath;
 import java.io.Serializable;
 
 /**
@@ -93,5 +94,15 @@ public class UniqueNode extends DefaultMutableTreeNode implements Serializable
     private void setId ()
     {
         this.id = TextUtils.generateId ( ID_PREFIX );
+    }
+
+    /**
+     * Returns TreePath for this node.
+     *
+     * @return TreePath for this node
+     */
+    public TreePath getTreePath ()
+    {
+        return new TreePath ( getPath () );
     }
 }
