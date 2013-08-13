@@ -1249,4 +1249,14 @@
             </record>
         </Dictionary>
     </Dictionary>
+    <LanguageInfo>
+        <langInfo lang="en" author="mgarin" info="English" />
+        <langInfo lang="ru" author="mgarin" info="Russian" />
+        <langInfo lang="pl" author="sciepa" info="Polish" />
+        <langInfo lang="ar" author="Abdullah" info="Arabic" />
+        <langInfo lang="es" author="pablovilas" info="Spanish" />
+        <langInfo lang="fr" author="movierenamer" info="French" />
+        <langInfo lang="pt" author="esimoes" info="Portuguese" />
+        <langInfo lang="de" author="trashguru" info="German" />
+    </LanguageInfo>
 </Dictionary>
