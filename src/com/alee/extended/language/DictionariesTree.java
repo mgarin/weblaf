@@ -64,14 +64,14 @@ public class DictionariesTree extends WebTree
         {
             public void treeExpanded ( TreeExpansionEvent event )
             {
-                Object object = event.getPath ().getLastPathComponent ();
-                DefaultMutableTreeNode node = ( DefaultMutableTreeNode ) object;
-                Object uo = node.getUserObject ();
+                final Object object = event.getPath ().getLastPathComponent ();
+                final DefaultMutableTreeNode node = ( DefaultMutableTreeNode ) object;
+                final Object uo = node.getUserObject ();
                 if ( uo instanceof Record )
                 {
                     for ( int i = 0; i < node.getChildCount (); i++ )
                     {
-                        DefaultMutableTreeNode child = ( DefaultMutableTreeNode ) node.getChildAt ( i );
+                        final DefaultMutableTreeNode child = ( DefaultMutableTreeNode ) node.getChildAt ( i );
                         expandPath ( new TreePath ( child.getPath () ) );
                     }
                 }
@@ -97,11 +97,11 @@ public class DictionariesTree extends WebTree
                         int row = getRowForPath ( getSelectionPath () );
 
                         // Removing actual data
-                        Object type = node.getUserObject ();
+                        final Object type = node.getUserObject ();
                         if ( type instanceof Dictionary )
                         {
                             // Removing Dictionary from subdictionaries list
-                            Object uo = ( ( DefaultMutableTreeNode ) node.getParent () ).getUserObject ();
+                            final Object uo = ( ( DefaultMutableTreeNode ) node.getParent () ).getUserObject ();
                             if ( uo != null )
                             {
                                 Dictionary parent = ( Dictionary ) uo;
@@ -111,25 +111,25 @@ public class DictionariesTree extends WebTree
                         else if ( type instanceof Record )
                         {
                             // Removing Record from Dictionary
-                            Object uo = ( ( DefaultMutableTreeNode ) node.getParent () ).getUserObject ();
+                            final Object uo = ( ( DefaultMutableTreeNode ) node.getParent () ).getUserObject ();
                             ( ( Dictionary ) uo ).removeRecord ( ( Record ) type );
                         }
                         else if ( type instanceof Value )
                         {
                             // Removing Value from Record
-                            Object uo = ( ( DefaultMutableTreeNode ) node.getParent () ).getUserObject ();
+                            final Object uo = ( ( DefaultMutableTreeNode ) node.getParent () ).getUserObject ();
                             ( ( Record ) uo ).removeValue ( ( Value ) type );
                         }
                         else if ( type instanceof Text )
                         {
                             // Removing Text from Value
-                            Object uo = ( ( DefaultMutableTreeNode ) node.getParent () ).getUserObject ();
+                            final Object uo = ( ( DefaultMutableTreeNode ) node.getParent () ).getUserObject ();
                             ( ( Value ) uo ).removeText ( ( Text ) type );
                         }
                         else if ( type instanceof Tooltip )
                         {
                             // Removing Tooltip from Value
-                            Object uo = ( ( DefaultMutableTreeNode ) node.getParent () ).getUserObject ();
+                            final Object uo = ( ( DefaultMutableTreeNode ) node.getParent () ).getUserObject ();
                             ( ( Value ) uo ).removeTooltip ( ( Tooltip ) type );
                         }
 
@@ -153,36 +153,26 @@ public class DictionariesTree extends WebTree
 
     public void selectAndShow ( DefaultMutableTreeNode node )
     {
-        TreePath path = new TreePath ( node.getPath () );
+        final TreePath path = new TreePath ( node.getPath () );
         setSelectionPath ( path );
         scrollPathToVisible ( path );
     }
 
     public DefaultMutableTreeNode getSelectedNode ()
     {
-        TreePath path = getSelectionPath ();
-        if ( path != null )
-        {
-            return ( DefaultMutableTreeNode ) path.getLastPathComponent ();
-        }
-        else
-        {
-            return null;
-        }
+        final TreePath path = getSelectionPath ();
+        return path != null ? ( DefaultMutableTreeNode ) path.getLastPathComponent () : null;
     }
 
     public Object getSelectedValue ()
     {
-        TreePath path = getSelectionPath ();
+        final TreePath path = getSelectionPath ();
         if ( path != null )
         {
-            DefaultMutableTreeNode node = ( DefaultMutableTreeNode ) path.getLastPathComponent ();
+            final DefaultMutableTreeNode node = ( DefaultMutableTreeNode ) path.getLastPathComponent ();
             return node.getUserObject ();
         }
-        else
-        {
-            return null;
-        }
+        return null;
     }
 
     public void expandTillRecords ()
@@ -202,13 +192,13 @@ public class DictionariesTree extends WebTree
 
     public void loadDictionary ( Dictionary dictionary )
     {
-        DefaultMutableTreeNode dn = createDictionaryNode ( dictionary );
+        final DefaultMutableTreeNode dn = createDictionaryNode ( dictionary );
         model.insertNodeInto ( dn, root, root.getChildCount () );
     }
 
     public DefaultMutableTreeNode createDictionaryNode ( Dictionary dictionary )
     {
-        DefaultMutableTreeNode dn = new DefaultMutableTreeNode ( dictionary );
+        final DefaultMutableTreeNode dn = new DefaultMutableTreeNode ( dictionary );
         if ( dictionary.getRecords () != null )
         {
             for ( Record record : dictionary.getRecords () )
@@ -228,7 +218,7 @@ public class DictionariesTree extends WebTree
 
     public DefaultMutableTreeNode createRecordNode ( Record record )
     {
-        DefaultMutableTreeNode rn = new DefaultMutableTreeNode ( record );
+        final DefaultMutableTreeNode rn = new DefaultMutableTreeNode ( record );
         if ( record.getValues () != null )
         {
             for ( Value value : record.getValues () )
@@ -241,7 +231,7 @@ public class DictionariesTree extends WebTree
 
     public DefaultMutableTreeNode createValueNode ( Value value )
     {
-        DefaultMutableTreeNode vn = new DefaultMutableTreeNode ( value );
+        final DefaultMutableTreeNode vn = new DefaultMutableTreeNode ( value );
         if ( value.getTexts () != null )
         {
             for ( Text text : value.getTexts () )
