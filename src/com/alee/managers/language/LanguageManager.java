@@ -129,6 +129,7 @@ public class LanguageManager implements LanguageConstants
 
             // Class aliases
             XmlUtils.processAnnotations ( Dictionary.class );
+            XmlUtils.processAnnotations ( LanguageInfo.class );
             XmlUtils.processAnnotations ( Record.class );
             XmlUtils.processAnnotations ( Value.class );
             XmlUtils.processAnnotations ( Text.class );

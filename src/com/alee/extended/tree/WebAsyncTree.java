@@ -201,8 +201,18 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
      */
     public boolean isAsyncModel ()
     {
-        TreeModel model = getModel ();
+        final TreeModel model = getModel ();
         return model != null && model instanceof AsyncTreeModel;
+    }
+
+    /**
+     * Sets maximum threads amount for this asynchronous tree.
+     *
+     * @param amount new maximum threads amount
+     */
+    public void setMaximumThreadsAmount ( int amount )
+    {
+        AsyncTreeQueue.setMaximumThreadsAmount ( this, amount );
     }
 
     /**
@@ -554,7 +564,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
                 {
                     for ( E child : childs )
                     {
-                        performPathExpand ( new TreePath ( child.getPath () ) );
+                        performPathExpand ( child.getTreePath () );
                     }
                 }
             }

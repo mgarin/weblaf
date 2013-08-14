@@ -383,7 +383,7 @@ public class WebLookAndFeelDemo extends WebFrame
         statusBar.addToMiddle ( update );
 
         // Version checker
-        WebTimer.repeat ( "WebLookAndFeelDemo.versionCheck", 60000, 1000, new ActionListener ()
+        WebTimer.repeat ( "WebLookAndFeelDemo.versionCheck", 60000, 10000, new ActionListener ()
         {
             private VersionInfo lastVersion = null;
 
@@ -482,7 +482,6 @@ public class WebLookAndFeelDemo extends WebFrame
             {
                 // Updating button
                 enabledUpdater.run ();
-
 
                 // Updating examples
                 boolean enable = enabled.isSelected ();

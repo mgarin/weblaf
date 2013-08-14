@@ -418,7 +418,7 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
         try
         {
             // Selecting node
-            TreePath path = new TreePath ( node.getPath () );
+            TreePath path = node.getTreePath ();
             setSelectionPath ( path );
 
             // todo Use a better view rect?

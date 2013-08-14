@@ -24,7 +24,6 @@ import com.alee.utils.SwingUtils;
 import javax.swing.*;
 import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreeNode;
-import javax.swing.tree.TreePath;
 import java.awt.*;
 import java.awt.image.ImageObserver;
 import java.util.ArrayList;
@@ -148,8 +147,6 @@ public class AsyncTreeModel<E extends AsyncUniqueNode> extends WebTreeModel<E>
             // Adding image observer
             registerObserver ( rootNode );
         }
-
-        // Return cached root node
         return rootNode;
     }
 
@@ -172,7 +169,7 @@ public class AsyncTreeModel<E extends AsyncUniqueNode> extends WebTreeModel<E>
      */
     public int getChildCount ( Object parent )
     {
-        E node = ( E ) parent;
+        final E node = ( E ) parent;
         if ( nodeCached.containsKey ( node.getId () ) )
         {
             return super.getChildCount ( parent );
@@ -192,7 +189,7 @@ public class AsyncTreeModel<E extends AsyncUniqueNode> extends WebTreeModel<E>
      */
     public E getChild ( Object parent, int index )
     {
-        E node = ( E ) parent;
+        final E node = ( E ) parent;
         if ( nodeCached.containsKey ( node.getId () ) )
         {
             return ( E ) super.getChild ( parent, index );
@@ -246,8 +243,8 @@ public class AsyncTreeModel<E extends AsyncUniqueNode> extends WebTreeModel<E>
         final int childCount = node.getChildCount ();
         if ( childCount > 0 )
         {
-            int[] indices = new int[ childCount ];
-            Object[] childs = new Object[ childCount ];
+            final int[] indices = new int[ childCount ];
+            final Object[] childs = new Object[ childCount ];
             for ( int i = childCount - 1; i >= 0; i-- )
             {
                 indices[ i ] = i;
@@ -260,8 +257,9 @@ public class AsyncTreeModel<E extends AsyncUniqueNode> extends WebTreeModel<E>
         // Loading node childs
         if ( asyncLoading )
         {
-            // Creating a new thread to avoid locking EDT
-            new Thread ( new Runnable ()
+            // Executing childs load in a separate thread to avoid locking EDT
+            // This queue will also take care of amount of threads to execute async trees requests
+            AsyncTreeQueue.execute ( tree, new Runnable ()
             {
                 public void run ()
                 {
@@ -298,7 +296,7 @@ public class AsyncTreeModel<E extends AsyncUniqueNode> extends WebTreeModel<E>
                         }
                     } );
                 }
-            }, "Async childs loader: " + node.getId () ).start ();
+            } );
             return 0;
         }
         else
@@ -372,13 +370,6 @@ public class AsyncTreeModel<E extends AsyncUniqueNode> extends WebTreeModel<E>
                 {
                     // Inserting loaded nodes
                     insertNodesInto ( childs, node, 0 );
-                    //                    for ( int i = 0; i < childs.size (); i++ )
-                    //                    {
-                    //                        final E child = childs.get ( i );
-                    //
-                    //                        // Adding into tree
-                    //                        insertNodeInto ( child, node, i );
-                    //                    }
                 }
 
                 // Release node busy state
@@ -481,7 +472,7 @@ public class AsyncTreeModel<E extends AsyncUniqueNode> extends WebTreeModel<E>
         {
             if ( node.isBusy () && ( flags & ( FRAMEBITS | ALLBITS ) ) != 0 )
             {
-                Rectangle rect = tree.getPathBounds ( new TreePath ( getPathToRoot ( node ) ) );
+                final Rectangle rect = tree.getPathBounds ( node.getTreePath () );
                 if ( rect != null )
                 {
                     tree.repaint ( rect );

@@ -23,10 +23,13 @@ import com.alee.managers.language.LanguageContainer;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.language.LanguageMethods;
 import com.alee.managers.language.updaters.LanguageUpdater;
+import com.alee.utils.CollectionUtils;
 import com.alee.utils.ReflectUtils;
+import com.alee.utils.swing.Configurator;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileSystemView;
+import java.awt.*;
 import java.io.File;
 import java.util.List;
 
@@ -313,5 +316,254 @@ public class WebFileChooser extends JFileChooser implements LanguageMethods, Lan
     public String getLanguageContainerKey ()
     {
         return LanguageManager.getLanguageContainerKey ( this );
+    }
+
+    /**
+     * Constructs and displays file open dialog and returns selected file as a result.
+     *
+     * @return selected file
+     */
+    public static File showOpenDialog ()
+    {
+        return showOpenDialog ( null, null, null );
+    }
+
+    /**
+     * Constructs and displays file open dialog and returns selected file as a result.
+     *
+     * @param configurator file chooser configurator
+     * @return selected file
+     */
+    public static File showOpenDialog ( Configurator<WebFileChooser> configurator )
+    {
+        return showOpenDialog ( null, null, configurator );
+    }
+
+    /**
+     * Constructs and displays file open dialog and returns selected file as a result.
+     *
+     * @param parent       parent component
+     * @param configurator file chooser configurator
+     * @return selected file
+     */
+    public static File showOpenDialog ( Component parent, Configurator<WebFileChooser> configurator )
+    {
+        return showOpenDialog ( parent, null, configurator );
+    }
+
+    /**
+     * Constructs and displays file open dialog and returns selected file as a result.
+     *
+     * @param currentDirectory current file chooser directory
+     * @param configurator     file chooser configurator
+     * @return selected file
+     */
+    public static File showOpenDialog ( String currentDirectory, Configurator<WebFileChooser> configurator )
+    {
+        return showOpenDialog ( null, currentDirectory, configurator );
+    }
+
+    /**
+     * Constructs and displays file open dialog and returns selected file as a result.
+     *
+     * @param parent           parent component
+     * @param currentDirectory current file chooser directory
+     * @return selected file
+     */
+    public static File showOpenDialog ( Component parent, String currentDirectory )
+    {
+        return showOpenDialog ( parent, currentDirectory, null );
+    }
+
+    /**
+     * Constructs and displays file open dialog and returns selected file as a result.
+     *
+     * @param parent           parent component
+     * @param currentDirectory current file chooser directory
+     * @param configurator     file chooser configurator
+     * @return selected file
+     */
+    public static File showOpenDialog ( Component parent, String currentDirectory, Configurator<WebFileChooser> configurator )
+    {
+        WebFileChooser fileChooser = new WebFileChooser ( currentDirectory );
+        fileChooser.setMultiSelectionEnabled ( false );
+        if ( configurator != null )
+        {
+            configurator.configure ( fileChooser );
+        }
+        if ( fileChooser.showOpenDialog ( parent ) == APPROVE_OPTION )
+        {
+            return fileChooser.getSelectedFile ();
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    /**
+     * Constructs and displays multiply files open dialog and returns selected files list as a result.
+     *
+     * @return selected files list
+     */
+    public static List<File> showMultiOpenDialog ()
+    {
+        return showMultiOpenDialog ( null, null, null );
+    }
+
+    /**
+     * Constructs and displays multiply files open dialog and returns selected files list as a result.
+     *
+     * @param configurator file chooser configurator
+     * @return selected files list
+     */
+    public static List<File> showMultiOpenDialog ( Configurator<WebFileChooser> configurator )
+    {
+        return showMultiOpenDialog ( null, null, configurator );
+    }
+
+    /**
+     * Constructs and displays multiply files open dialog and returns selected files list as a result.
+     *
+     * @param parent       parent component
+     * @param configurator file chooser configurator
+     * @return selected files list
+     */
+    public static List<File> showMultiOpenDialog ( Component parent, Configurator<WebFileChooser> configurator )
+    {
+        return showMultiOpenDialog ( parent, null, configurator );
+    }
+
+    /**
+     * Constructs and displays multiply files open dialog and returns selected files list as a result.
+     *
+     * @param currentDirectory current file chooser directory
+     * @param configurator     file chooser configurator
+     * @return selected files list
+     */
+    public static List<File> showMultiOpenDialog ( String currentDirectory, Configurator<WebFileChooser> configurator )
+    {
+        return showMultiOpenDialog ( null, currentDirectory, configurator );
+    }
+
+    /**
+     * Constructs and displays multiply files open dialog and returns selected files list as a result.
+     *
+     * @param parent           parent component
+     * @param currentDirectory current file chooser directory
+     * @return selected files list
+     */
+    public static List<File> showMultiOpenDialog ( Component parent, String currentDirectory )
+    {
+        return showMultiOpenDialog ( parent, currentDirectory, null );
+    }
+
+    /**
+     * Constructs and displays multiply files open dialog and returns selected files list as a result.
+     *
+     * @param parent           parent component
+     * @param currentDirectory current file chooser directory
+     * @param configurator     file chooser configurator
+     * @return selected files list
+     */
+    public static List<File> showMultiOpenDialog ( Component parent, String currentDirectory, Configurator<WebFileChooser> configurator )
+    {
+        WebFileChooser fileChooser = new WebFileChooser ( currentDirectory );
+        fileChooser.setMultiSelectionEnabled ( true );
+        if ( configurator != null )
+        {
+            configurator.configure ( fileChooser );
+        }
+        if ( fileChooser.showOpenDialog ( parent ) == APPROVE_OPTION )
+        {
+            return CollectionUtils.toList ( fileChooser.getSelectedFiles () );
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    /**
+     * Constructs and displays file save dialog and returns selected file as a result.
+     *
+     * @return selected file
+     */
+    public static File showSaveDialog ()
+    {
+        return showSaveDialog ( null, null, null );
+    }
+
+    /**
+     * Constructs and displays file save dialog and returns selected file as a result.
+     *
+     * @param configurator file chooser configurator
+     * @return selected file
+     */
+    public static File showSaveDialog ( Configurator<WebFileChooser> configurator )
+    {
+        return showSaveDialog ( null, null, configurator );
+    }
+
+    /**
+     * Constructs and displays file save dialog and returns selected file as a result.
+     *
+     * @param parent       parent component
+     * @param configurator file chooser configurator
+     * @return selected file
+     */
+    public static File showSaveDialog ( Component parent, Configurator<WebFileChooser> configurator )
+    {
+        return showSaveDialog ( parent, null, configurator );
+    }
+
+    /**
+     * Constructs and displays file save dialog and returns selected file as a result.
+     *
+     * @param currentDirectory current file chooser directory
+     * @param configurator     file chooser configurator
+     * @return selected file
+     */
+    public static File showSaveDialog ( String currentDirectory, Configurator<WebFileChooser> configurator )
+    {
+        return showSaveDialog ( null, currentDirectory, configurator );
+    }
+
+    /**
+     * Constructs and displays file save dialog and returns selected file as a result.
+     *
+     * @param parent           parent component
+     * @param currentDirectory current file chooser directory
+     * @return selected file
+     */
+    public static File showSaveDialog ( Component parent, String currentDirectory )
+    {
+        return showSaveDialog ( parent, currentDirectory, null );
+    }
+
+    /**
+     * Constructs and displays file save dialog and returns selected file as a result.
+     *
+     * @param parent           parent component
+     * @param currentDirectory current file chooser directory
+     * @param configurator     file chooser configurator
+     * @return selected file
+     */
+    public static File showSaveDialog ( Component parent, String currentDirectory, Configurator<WebFileChooser> configurator )
+    {
+        WebFileChooser fileChooser = new WebFileChooser ( currentDirectory );
+        fileChooser.setMultiSelectionEnabled ( true );
+        if ( configurator != null )
+        {
+            configurator.configure ( fileChooser );
+        }
+        if ( fileChooser.showSaveDialog ( parent ) == APPROVE_OPTION )
+        {
+            return fileChooser.getSelectedFile ();
+        }
+        else
+        {
+            return null;
+        }
     }
 }
