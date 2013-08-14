@@ -160,10 +160,6 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
      */
     public void setModel ( TreeModel newModel )
     {
-        // Disable asynchronous loading for the model installation time
-        // This made to load initial data without delay and in EDT
-        setAsyncLoading ( false );
-
         // Removing AsyncTreeModelListener from old model
         if ( getModel () instanceof AsyncTreeModel )
         {
@@ -179,9 +175,6 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
         }
 
         super.setModel ( newModel );
-
-        // Enabling asynchronous loading
-        setAsyncLoading ( true );
     }
 
     /**

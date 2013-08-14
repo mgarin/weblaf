@@ -21,6 +21,7 @@ import com.alee.extended.drag.FileDropHandler;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.FileUtils;
 
+import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 import java.awt.*;
 import java.io.File;
@@ -119,6 +120,21 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
     public FileTreeDataProvider getDataProvider ()
     {
         return ( FileTreeDataProvider ) super.getDataProvider ();
+    }
+
+    public void setModel ( TreeModel newModel )
+    {
+        // Disable asynchronous loading for the model installation time
+        // This made to load initial data without delay using EDT
+        // This is some kind of workaround for file chooser to allow it proper file expansion on first load
+        boolean async = isAsyncLoading ();
+        setAsyncLoading ( false );
+
+        // Set model now
+        super.setModel ( newModel );
+
+        // Restoring old asynchronous loading value
+        setAsyncLoading ( async );
     }
 
     /**
