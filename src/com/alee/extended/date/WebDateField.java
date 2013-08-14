@@ -277,7 +277,10 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
 
     private void hideCalendarPopup ()
     {
-        popup.setVisible ( false );
+        if ( popup != null )
+        {
+            popup.setVisible ( false );
+        }
     }
 
     private void updatePopupLocation ()
