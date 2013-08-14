@@ -78,7 +78,7 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
     private boolean multiplySelectionAllowed = WebAccordionStyle.multiplySelectionAllowed;
 
     /**
-     * Gap between panes.
+     * Gap between panes for separated accordion style.
      */
     private int gap = WebAccordionStyle.gap;
 
@@ -338,9 +338,9 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
     }
 
     /**
-     * Returns gap between panes.
+     * Returns gap between panes for separated accordion style.
      *
-     * @return gap between panes
+     * @return gap between panes for separated accordion style
      */
     public int getGap ()
     {
@@ -348,9 +348,9 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
     }
 
     /**
-     * Sets gap between panes.
+     * Sets gap between panes for separated accordion style.
      *
-     * @param gap new gap between panes
+     * @param gap new gap between panes for separated accordion style
      */
     public void setGap ( int gap )
     {

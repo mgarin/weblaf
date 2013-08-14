@@ -17,6 +17,7 @@
 
 package com.alee.extended.layout;
 
+import com.alee.extended.panel.AccordionStyle;
 import com.alee.extended.panel.WebAccordion;
 import com.alee.extended.panel.WebCollapsiblePane;
 
@@ -79,25 +80,25 @@ public class AccordionLayout implements LayoutManager
      */
     public void layoutContainer ( Container parent )
     {
-        List<WebCollapsiblePane> panes = accordion.getActualPanesList ();
-        int gap = accordion.getGap ();
+        final List<WebCollapsiblePane> panes = accordion.getActualPanesList ();
+        final int gap = accordion.getAccordionStyle () == AccordionStyle.separated ? accordion.getGap () : 0;
+        final Insets insets = parent.getInsets ();
+        final Dimension size = parent.getSize ();
+        final int w = size.width - insets.left - insets.right;
+        final int h = size.height - insets.top - insets.bottom;
+        final boolean hor = accordion.getOrientation () == SwingConstants.HORIZONTAL;
 
-        Insets insets = parent.getInsets ();
-        Dimension size = parent.getSize ();
         int x = insets.left;
         int y = insets.top;
-        int w = size.width - insets.left - insets.right;
-        int h = size.height - insets.top - insets.bottom;
-        boolean hor = accordion.getOrientation () == SwingConstants.HORIZONTAL;
         if ( accordion.isFillSpace () )
         {
             // Computing the part available to fill in with panes content
             float totalStates = 0;
-            int totalFillLength = hor ? size.width - insets.left - insets.right : size.height - insets.top - insets.bottom + gap;
+            int totalFillLength = ( hor ? size.width - insets.left - insets.right : size.height - insets.top - insets.bottom ) + gap;
             int visuallyExpanded = 0;
             int lastFillIndex = -1;
-            java.util.List<Integer> base = new ArrayList<Integer> ();
-            for ( WebCollapsiblePane pane : panes )
+            final List<Integer> base = new ArrayList<Integer> ();
+            for ( final WebCollapsiblePane pane : panes )
             {
                 Dimension bps = pane.getBasePreferredSize ();
                 base.add ( hor ? bps.width : bps.height );
@@ -105,7 +106,7 @@ public class AccordionLayout implements LayoutManager
                 float expandState = pane.getTransitionProgress ();
 
                 totalStates += expandState;
-                totalFillLength -= hor ? bps.width : bps.height + gap;
+                totalFillLength -= ( hor ? bps.width : bps.height ) + gap;
 
                 if ( expandState > 0f )
                 {
@@ -142,9 +143,9 @@ public class AccordionLayout implements LayoutManager
         else
         {
             // Simply layouting panes by preferred size
-            for ( WebCollapsiblePane pane : panes )
+            for ( final WebCollapsiblePane pane : panes )
             {
-                Dimension cps = pane.getPreferredSize ();
+                final Dimension cps = pane.getPreferredSize ();
                 pane.setBounds ( x, y, hor ? cps.width : w, hor ? h : cps.height );
                 if ( hor )
                 {
@@ -189,18 +190,18 @@ public class AccordionLayout implements LayoutManager
      */
     private Dimension getSize ( Container parent, boolean preferred )
     {
-        List<WebCollapsiblePane> panes = accordion.getActualPanesList ();
-        int gap = accordion.getGap ();
+        final List<WebCollapsiblePane> panes = accordion.getActualPanesList ();
+        final int gap = accordion.getAccordionStyle () == AccordionStyle.separated ? accordion.getGap () : 0;
+        final Dimension ps = new Dimension ();
+        final boolean hor = accordion.getOrientation () == SwingConstants.HORIZONTAL;
 
-        Dimension ps = new Dimension ();
-        boolean hor = accordion.getOrientation () == SwingConstants.HORIZONTAL;
-        for ( WebCollapsiblePane pane : panes )
+        for ( final WebCollapsiblePane pane : panes )
         {
-            Dimension cps = preferred || !accordion.isFillSpace () ? pane.getPreferredSize () : pane.getBasePreferredSize ();
+            final Dimension cps = preferred || !accordion.isFillSpace () ? pane.getPreferredSize () : pane.getBasePreferredSize ();
             if ( hor )
             {
                 ps.width += cps.width;
-                ps.height += Math.max ( ps.height, cps.height );
+                ps.height = Math.max ( ps.height, cps.height );
             }
             else
             {
@@ -220,7 +221,7 @@ public class AccordionLayout implements LayoutManager
             }
         }
 
-        Insets insets = parent.getInsets ();
+        final Insets insets = parent.getInsets ();
         ps.width += insets.left + insets.right;
         ps.height += insets.top + insets.bottom;
         return ps;
