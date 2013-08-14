@@ -1455,4 +1455,23 @@ public class LafUtils
         g2d.drawRect ( x1, y1, x2 - x1, y2 - y1 );
         restoreStroke ( g2d, oldStroke );
     }
+
+    /**
+     * Returns shear to center text
+     */
+
+    public static Point getTextCenterShear ( FontMetrics fm, String text )
+    {
+        return new Point ( getTextCenterShearX ( fm, text ), getTextCenterShearY ( fm ) );
+    }
+
+    public static int getTextCenterShearX ( FontMetrics fm, String text )
+    {
+        return -fm.stringWidth ( text ) / 2;
+    }
+
+    public static int getTextCenterShearY ( FontMetrics fm )
+    {
+        return ( fm.getAscent () - fm.getLeading () - fm.getDescent () ) / 2;
+    }
 }

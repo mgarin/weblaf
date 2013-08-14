@@ -18,6 +18,7 @@
 package com.alee.laf.colorchooser;
 
 import com.alee.extended.colorchooser.DoubleColorField;
+import com.alee.extended.colorchooser.DoubleColorFieldListener;
 import com.alee.extended.layout.ToolbarLayout;
 import com.alee.laf.StyleConstants;
 import com.alee.laf.button.WebButton;
@@ -131,15 +132,20 @@ public class WebColorChooserPanel extends WebPanel
         add ( infoPanel, "4,0" );
 
 
-        doubleColorField = new DoubleColorField ()
+        doubleColorField = new DoubleColorField ();
+        doubleColorField.addDoubleColorFieldListener ( new DoubleColorFieldListener ()
         {
-            protected void oldColorPressed ()
+            public void newColorPressed ( Color newColor )
+            {
+                //
+            }
+
+            public void oldColorPressed ( Color currentColor )
             {
                 setColor ( doubleColorField.getOldColor () );
             }
-        };
+        } );
         updateDoubleColorField ( color );
-        //        doubleColorField.setPreferredSize ( new Dimension ( 1, 50 ) );
         doubleColorField.setOldColor ( oldColor );
         infoPanel.add ( doubleColorField, "0,1,2,3" );
 

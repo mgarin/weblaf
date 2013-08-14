@@ -358,22 +358,22 @@ public class WebImageGallery extends JComponent
         }
     }
 
-    protected void paintComponent ( Graphics g )
+    protected void paintComponent ( final Graphics g )
     {
         super.paintComponent ( g );
 
-        int height = getHeight ();
-        int width = getWidth ();
+        final int height = getHeight ();
+        final int width = getWidth ();
 
-        Graphics2D g2d = ( Graphics2D ) g;
+        final Graphics2D g2d = ( Graphics2D ) g;
         LafUtils.setupAntialias ( g2d );
 
         g2d.setPaint ( new GradientPaint ( 0, 0, Color.black, 0, height, Color.darkGray ) );
         g2d.fillRect ( 0, 0, width, height );
 
-        Rectangle vr = getVisibleRect ();
-        Dimension ps = getPreferredSize ();
-        Composite oldComposite = g2d.getComposite ();
+        final Rectangle vr = getVisibleRect ();
+        final Dimension ps = getPreferredSize ();
+        final Composite oldComposite = g2d.getComposite ();
         for ( int i = 0; i < images.size (); i++ )
         {
             if ( !getImageRect ( i ).intersects ( vr ) )
@@ -381,15 +381,15 @@ public class WebImageGallery extends JComponent
                 continue;
             }
 
-            ImageIcon icon = images.get ( i );
-            BufferedImage bi = ImageUtils.getBufferedImage ( icon );
-            int imageWidth = icon.getIconWidth ();
-            int imageHeight = icon.getIconHeight ();
+            final ImageIcon icon = images.get ( i );
+            final BufferedImage bi = ImageUtils.getBufferedImage ( icon );
+            final int imageWidth = icon.getIconWidth ();
+            final int imageHeight = icon.getIconHeight ();
 
-            int x = ( getWidth () > ps.width ? ( getWidth () - ps.width ) / 2 : 0 ) + spacing +
+            final int x = ( getWidth () > ps.width ? ( getWidth () - ps.width ) / 2 : 0 ) + spacing +
                     ( maxWidth + spacing ) * i + maxWidth / 2;
-            int y = height / 2 - spacing / 2 - imageHeight / 2;
-            int y2 = height / 2 + spacing / 2 + imageHeight / 2;
+            final int y = height / 2 - spacing / 2 - imageHeight / 2;
+            final int y2 = height / 2 + spacing / 2 + imageHeight / 2;
 
             // Initial image
 
@@ -410,21 +410,22 @@ public class WebImageGallery extends JComponent
 
             if ( selectedIndex == i || oldSelectedIndex == i )
             {
-                float opacity = selectedIndex == i ? progress : 1f - progress;
+                final float opacity = selectedIndex == i ? progress : 1f - progress;
                 g2d.setComposite ( AlphaComposite.getInstance ( AlphaComposite.SRC_OVER, opacity ) );
                 g2d.setPaint ( Color.WHITE );
-                String infoText = descriptions.get ( i );
-                g2d.drawString ( infoText, x - g2d.getFontMetrics ().stringWidth ( infoText ) / 2,
-                        getHeight () / 2 + spacing / 2 + g2d.getFontMetrics ().getAscent () / 2 );
+
+                final String infoText = descriptions.get ( i );
+                final Point ts = LafUtils.getTextCenterShear ( g2d.getFontMetrics (), infoText );
+                g2d.drawString ( infoText, x + ts.x, getHeight () / 2 + spacing / 2 + ts.y );
                 g2d.setComposite ( oldComposite );
             }
 
             // Reflection
 
-            int rwidth = imageWidth + borderWidth * 2;
-            int rheight = imageHeight + borderWidth * 2;
+            final int rwidth = imageWidth + borderWidth * 2;
+            final int rheight = imageHeight + borderWidth * 2;
 
-            int addition = selectedIndex == i ? Math.round ( progress * spacing ) :
+            final int addition = selectedIndex == i ? Math.round ( progress * spacing ) :
                     ( oldSelectedIndex == i ? spacing - Math.round ( progress * spacing ) : 0 );
             if ( reflections.get ( i ) != null )
             {

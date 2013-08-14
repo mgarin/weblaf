@@ -317,35 +317,26 @@ public class WebMenuItemUI extends BasicMenuItemUI
 
     protected void paintText ( Graphics g, JMenuItem menuItem, Rectangle textRect, String text )
     {
-        FontMetrics fm = SwingUtils.getFontMetrics ( menuItem, g );
-        int mnemIndex = WebLookAndFeel.isMnemonicHidden () ? -1 : menuItem.getDisplayedMnemonicIndex ();
-
-        if ( !menuItem.isEnabled () )
-        {
-            g.setColor ( UIManager.getColor ( "MenuItem.disabledForeground" ) );
-        }
-        else
-        {
-            g.setColor ( menuItem.getForeground () );
-        }
-
-        SwingUtils.drawStringUnderlineCharAt ( menuItem, g, text, mnemIndex, 32, menuItem.getHeight () / 2 + fm.getAscent () / 2 - 1 );
+        // todo Proper placement with RTL orientation
+        final int mnemIndex = WebLookAndFeel.isMnemonicHidden () ? -1 : menuItem.getDisplayedMnemonicIndex ();
+        g.setColor ( menuItem.isEnabled () ? menuItem.getForeground () : UIManager.getColor ( "MenuItem.disabledForeground" ) );
+        SwingUtils.drawStringUnderlineCharAt ( menuItem, g, text, mnemIndex, 32,
+                menuItem.getHeight () / 2 + LafUtils.getTextCenterShearY ( SwingUtils.getFontMetrics ( menuItem, g ) ) );
     }
 
     protected void paintAccText ( Graphics g, MenuItemLayoutHelper lh, MenuItemLayoutHelper.LayoutResult lr )
     {
         if ( !lh.getAccText ().equals ( "" ) )
         {
-            ButtonModel model = lh.getMenuItem ().getModel ();
+            final ButtonModel model = lh.getMenuItem ().getModel ();
 
             g.setFont ( lh.getAccFontMetrics ().getFont () );
             g.setColor ( model.isEnabled () ? StyleConstants.infoTextColor : StyleConstants.disabledInfoTextColor );
 
-            Rectangle rect = lr.getAccRect ();
-            rect.x = lh.getMenuItem ().getWidth () - 7 -
-                    lh.getAccFontMetrics ().stringWidth ( lh.getAccText () );
+            final Rectangle rect = lr.getAccRect ();
+            rect.x = lh.getMenuItem ().getWidth () - 7 - lh.getAccFontMetrics ().stringWidth ( lh.getAccText () );
             SwingUtils.drawString ( lh.getMenuItem (), g, lh.getAccText (), rect.x,
-                    lh.getMenuItem ().getHeight () / 2 + lh.getAccFontMetrics ().getAscent () / 2 - 1 );
+                    lh.getMenuItem ().getHeight () / 2 + LafUtils.getTextCenterShearY ( lh.getAccFontMetrics () ) );
         }
     }
 }

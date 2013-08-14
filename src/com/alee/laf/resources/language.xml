@@ -694,6 +694,26 @@
             <value lang="pt">Apenas cores Web</value>
             <value lang="de">Nur Webfarben</value>
         </record>
+        <record key="color.new">
+            <value lang="en">New</value>
+            <value lang="ru">Новый</value>
+            <value lang="pl">Nowy</value>
+            <value lang="ar">جديد</value>
+            <value lang="es">Nuevo</value>
+            <value lang="fr">Nouveau</value>
+            <value lang="pt">Novo</value>
+            <value lang="de">Neu</value>
+        </record>
+        <record key="color.current">
+            <value lang="en">Current</value>
+            <value lang="ru">Текущий</value>
+            <value lang="pl">Prąd</value>
+            <value lang="ar">حالي</value>
+            <value lang="es">Corriente</value>
+            <value lang="fr">Courant</value>
+            <value lang="pt">Atual</value>
+            <value lang="de">Aktuell</value>
+        </record>
         <record key="choose">
             <value lang="en">Choose</value>
             <value lang="ru">Выбрать</value>

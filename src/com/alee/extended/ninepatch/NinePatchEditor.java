@@ -1580,37 +1580,37 @@ public class NinePatchEditor extends JComponent
             if ( showGuideSpacing )
             {
                 g2d.setPaint ( Color.BLACK );
-                List<Integer> horizontalGuides = getHorizontalGuides ();
+                final List<Integer> horizontalGuides = getHorizontalGuides ();
                 for ( int i = 0; i < horizontalGuides.size () - 1; i++ )
                 {
-                    Integer guide = horizontalGuides.get ( i );
-                    Integer nextGuide = horizontalGuides.get ( i + 1 );
-                    Integer x1 = imageStartX + guide * zoom;
-                    Integer x2 = imageStartX + nextGuide * zoom;
-                    int y1 = imageStartY - zoom - 10;
-                    int y2 = imageStartY - zoom - 7;
+                    final Integer guide = horizontalGuides.get ( i );
+                    final Integer nextGuide = horizontalGuides.get ( i + 1 );
+                    final Integer x1 = imageStartX + guide * zoom;
+                    final Integer x2 = imageStartX + nextGuide * zoom;
+                    final int y1 = imageStartY - zoom - 10;
+                    final int y2 = imageStartY - zoom - 7;
                     g2d.drawLine ( x1, y1, x2, y1 );
                     g2d.drawLine ( x1, y1, x1, y2 );
                     g2d.drawLine ( x2, y1, x2, y2 );
 
-                    String px = "" + ( nextGuide - guide );
-                    g2d.drawString ( px, ( x1 + x2 ) / 2 - fm.stringWidth ( px ) / 2, imageStartY - zoom - 15 );
+                    final String px = "" + ( nextGuide - guide );
+                    g2d.drawString ( px, ( x1 + x2 ) / 2 + LafUtils.getTextCenterShearX ( fm, px ), imageStartY - zoom - 15 );
                 }
                 List<Integer> verticalGuides = getVerticalGuides ();
                 for ( int i = 0; i < verticalGuides.size () - 1; i++ )
                 {
-                    Integer guide = verticalGuides.get ( i );
-                    Integer nextGuide = verticalGuides.get ( i + 1 );
-                    Integer y1 = imageStartY + guide * zoom;
-                    Integer y2 = imageStartY + nextGuide * zoom;
-                    int x1 = imageStartX - zoom - 10;
-                    int x2 = imageStartX - zoom - 7;
+                    final Integer guide = verticalGuides.get ( i );
+                    final Integer nextGuide = verticalGuides.get ( i + 1 );
+                    final Integer y1 = imageStartY + guide * zoom;
+                    final Integer y2 = imageStartY + nextGuide * zoom;
+                    final int x1 = imageStartX - zoom - 10;
+                    final int x2 = imageStartX - zoom - 7;
                     g2d.drawLine ( x1, y1, x1, y2 );
                     g2d.drawLine ( x1, y1, x2, y1 );
                     g2d.drawLine ( x1, y2, x2, y2 );
 
-                    String px = "" + ( nextGuide - guide );
-                    g2d.drawString ( px, x1 - fm.stringWidth ( px ) - 5, ( y1 + y2 ) / 2 + fm.getAscent () / 2 );
+                    final String px = "" + ( nextGuide - guide );
+                    g2d.drawString ( px, x1 - fm.stringWidth ( px ) - 5, ( y1 + y2 ) / 2 + LafUtils.getTextCenterShearY ( fm ) );
                 }
             }
 
@@ -1625,10 +1625,10 @@ public class NinePatchEditor extends JComponent
     private void drawRuler ( Graphics2D g2d, Point zp, int imageStartX, int imageStartY, int iw, int ih )
     {
         // Variables
-        Rectangle vr = NinePatchEditor.this.getVisibleRect ();
-        int minorTick = getMinorTicks ();
-        int majorTick = getMajorTicks ();
-        int ppu = zoom;
+        final Rectangle vr = NinePatchEditor.this.getVisibleRect ();
+        final int minorTick = getMinorTicks ();
+        final int majorTick = getMajorTicks ();
+        final int ppu = zoom;
 
         // Ruler background
         g2d.setPaint ( new GradientPaint ( vr.x, vr.y, METRICS_TOP, vr.x, vr.y + RULER_LENGTH, METRICS_BOTTOM ) );
@@ -1716,11 +1716,10 @@ public class NinePatchEditor extends JComponent
         // Ruler corner
         g2d.setPaint ( Color.WHITE );
         g2d.fillRect ( vr.x, vr.y, RULER_LENGTH, RULER_LENGTH );
-        String unitsName = zoom + "x";
-        FontMetrics fm = g2d.getFontMetrics ();
+        final String unitsName = zoom + "x";
+        final Point ts = LafUtils.getTextCenterShear ( g2d.getFontMetrics (), unitsName );
         g2d.setPaint ( Color.DARK_GRAY );
-        g2d.drawString ( unitsName, vr.x + RULER_LENGTH / 2 - fm.stringWidth ( unitsName ) / 2,
-                vr.y + RULER_LENGTH / 2 + fm.getHeight () / 4 );
+        g2d.drawString ( unitsName, vr.x + RULER_LENGTH / 2 + ts.x, vr.y + RULER_LENGTH / 2 + ts.y );
         g2d.setPaint ( Color.BLACK );
         g2d.drawLine ( vr.x + RULER_LENGTH, vr.y, vr.x + RULER_LENGTH, vr.y + RULER_LENGTH );
         g2d.drawLine ( vr.x, vr.y + RULER_LENGTH, vr.x + RULER_LENGTH, vr.y + RULER_LENGTH );

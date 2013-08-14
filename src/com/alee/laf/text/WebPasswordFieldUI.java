@@ -578,7 +578,7 @@ public class WebPasswordFieldUI extends BasicPasswordFieldUI implements ShapePro
             {
                 x = b.x + b.width - fm.stringWidth ( inputPrompt );
             }
-            g2d.drawString ( inputPrompt, x, b.y + b.height / 2 + ( fm.getAscent () - fm.getDescent () ) / 2 );
+            g2d.drawString ( inputPrompt, x, b.y + b.height / 2 + LafUtils.getTextCenterShearY ( fm ) );
 
             g2d.setClip ( oc );
         }

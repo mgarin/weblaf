@@ -32,8 +32,6 @@ import javax.swing.plaf.basic.BasicProgressBarUI;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.font.FontRenderContext;
-import java.awt.font.GlyphVector;
 import java.awt.geom.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -440,7 +438,7 @@ public class WebProgressBarUI extends BasicProgressBarUI implements ShapeProvide
 
     protected void paintDeterminate ( Graphics g, JComponent c )
     {
-        Graphics2D g2d = ( Graphics2D ) g;
+        final Graphics2D g2d = ( Graphics2D ) g;
 
         // Outer border
         paintProgressBarBorder ( c, g2d );
@@ -526,23 +524,15 @@ public class WebProgressBarUI extends BasicProgressBarUI implements ShapeProvide
                 g2d.translate ( -progressBar.getWidth () / 2, -progressBar.getHeight () / 2 );
             }
 
-            FontMetrics fm = g2d.getFontMetrics ();
-            String string = progressBar.getString ();
-            FontRenderContext frc = fm.getFontRenderContext ();
-            GlyphVector gv = g2d.getFont ().createGlyphVector ( frc, string );
-            Rectangle bounds = gv.getVisualBounds ().getBounds ();
-
+            final String string = progressBar.getString ();
+            final Point ts = LafUtils.getTextCenterShear ( g2d.getFontMetrics (), string );
             if ( !progressBar.isEnabled () )
             {
                 g2d.setPaint ( Color.WHITE );
-                g2d.drawString ( string, progressBar.getWidth () / 2 - bounds.width / 2 + 1,
-                        progressBar.getHeight () / 2 + bounds.height / 2 - 1 + 1 );
+                g2d.drawString ( string, progressBar.getWidth () / 2 + ts.x + 1, progressBar.getHeight () / 2 + ts.y + 1 );
             }
-
             g2d.setPaint ( progressBar.isEnabled () ? progressBar.getForeground () : StyleConstants.disabledTextColor );
-            g2d.drawString ( string, progressBar.getWidth () / 2 - bounds.width / 2, progressBar.getHeight () / 2 + bounds.height / 2 +
-                    ( progressBar.getOrientation () == JProgressBar.VERTICAL && !progressBar.getComponentOrientation ().isLeftToRight () ?
-                            -1 : 0 ) );
+            g2d.drawString ( string, progressBar.getWidth () / 2 + ts.x, progressBar.getHeight () / 2 + ts.y );
 
             if ( progressBar.getOrientation () == JProgressBar.VERTICAL )
             {

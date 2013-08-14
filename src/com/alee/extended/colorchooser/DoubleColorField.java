@@ -19,12 +19,18 @@ package com.alee.extended.colorchooser;
 
 import com.alee.laf.colorchooser.HSBColor;
 import com.alee.laf.panel.WebPanel;
+import com.alee.managers.language.LanguageAdapter;
+import com.alee.managers.language.LanguageManager;
+import com.alee.utils.CollectionUtils;
+import com.alee.utils.LafUtils;
 import com.alee.utils.SwingUtils;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -33,23 +39,45 @@ import java.util.Map;
 
 public class DoubleColorField extends WebPanel
 {
+    private List<DoubleColorFieldListener> listeners = new ArrayList<DoubleColorFieldListener> ();
+
     private Color newColor;
     private Color oldColor;
 
     private HSBColor newHSBColor;
     private HSBColor oldHSBColor;
 
+    private String newText = "new";
+    private String currentText = "current";
+
     public DoubleColorField ()
     {
         super ();
+
         addMouseListener ( new MouseAdapter ()
         {
             public void mousePressed ( MouseEvent e )
             {
-                if ( SwingUtilities.isLeftMouseButton ( e ) && e.getY () >= getHeight () / 2 )
+                if ( SwingUtilities.isLeftMouseButton ( e ) )
                 {
-                    oldColorPressed ();
+                    if ( e.getY () <= getHeight () / 2 )
+                    {
+                        newColorPressed ();
+                    }
+                    else
+                    {
+                        oldColorPressed ();
+                    }
                 }
+            }
+        } );
+
+        LanguageManager.addLanguageListener ( new LanguageAdapter ()
+        {
+            public void languageUpdated ()
+            {
+                repaint ();
+                revalidate ();
             }
         } );
     }
@@ -71,15 +99,18 @@ public class DoubleColorField extends WebPanel
         g2d.setPaint ( newColor );
         g2d.fillRect ( 2, 2, getWidth () - 4, getHeight () / 2 - 2 );
 
+        final String newText = LanguageManager.get ( "weblaf.colorchooser.color.new" );
+        Point nts = LafUtils.getTextCenterShear ( fm, newText );
         g2d.setPaint ( newHSBColor.getBrightness () >= 0.7f && newHSBColor.getSaturation () < 0.7f ? Color.BLACK : Color.WHITE );
-        g2d.drawString ( "new", getWidth () / 2 - fm.stringWidth ( "new" ) / 2, ( getHeight () - 4 ) / 4 + fm.getAscent () / 2 );
+        g2d.drawString ( newText, getWidth () / 2 + nts.x, 2 + ( getHeight () - 4 ) / 4 + nts.y );
 
         g2d.setPaint ( oldColor );
         g2d.fillRect ( 2, getHeight () / 2, getWidth () - 4, getHeight () - getHeight () / 2 - 2 );
 
+        final String currentText = LanguageManager.get ( "weblaf.colorchooser.color.current" );
+        Point cts = LafUtils.getTextCenterShear ( fm, currentText );
         g2d.setPaint ( oldHSBColor.getBrightness () >= 0.7f && oldHSBColor.getSaturation () < 0.7f ? Color.BLACK : Color.WHITE );
-        g2d.drawString ( "current", getWidth () / 2 - fm.stringWidth ( "current" ) / 2,
-                ( getHeight () - 4 ) * 3 / 4 + fm.getAscent () / 2 );
+        g2d.drawString ( currentText, getWidth () / 2 + cts.x, 2 + ( getHeight () - 4 ) * 3 / 4 + cts.y );
 
         SwingUtils.restoreTextAntialias ( g2d, hints );
     }
@@ -108,8 +139,29 @@ public class DoubleColorField extends WebPanel
         this.repaint ();
     }
 
-    protected void oldColorPressed ()
+    public void addDoubleColorFieldListener ( DoubleColorFieldListener listener )
     {
-        //
+        listeners.add ( listener );
+    }
+
+    public void removeDoubleColorFieldListener ( DoubleColorFieldListener listener )
+    {
+        listeners.remove ( listener );
+    }
+
+    private void newColorPressed ()
+    {
+        for ( DoubleColorFieldListener listener : CollectionUtils.copy ( listeners ) )
+        {
+            listener.newColorPressed ( newColor );
+        }
+    }
+
+    private void oldColorPressed ()
+    {
+        for ( DoubleColorFieldListener listener : CollectionUtils.copy ( listeners ) )
+        {
+            listener.oldColorPressed ( oldColor );
+        }
     }
 }

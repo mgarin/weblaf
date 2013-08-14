@@ -446,7 +446,7 @@ public class WebGradientColorChooser extends JComponent implements MouseListener
         int y = lineBounds.y + lineBounds.height - gripperSize.height / 2;
         int textY = y + gripperSize.height;
         FontMetrics fm = g2d.getFontMetrics ();
-        int lineY = textY + fm.getDescent () - fm.getHeight () / 2;
+        int lineY = textY - LafUtils.getTextCenterShearY ( fm ) - 1;
         for ( int i = 0; i < gradientData.size (); i++ )
         {
             GradientColorData gradientColorData = gradientData.get ( i );

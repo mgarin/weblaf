@@ -363,31 +363,33 @@ public class WebFileDrop extends WebPanel implements LanguageMethods
 
         if ( isDropTextVisible () )
         {
-            Graphics2D g2d = ( Graphics2D ) g;
-            Composite old = LafUtils.setupAlphaComposite ( g2d, dropTextOpacity );
+            final Graphics2D g2d = ( Graphics2D ) g;
+            final Composite old = LafUtils.setupAlphaComposite ( g2d, dropTextOpacity );
+            final Object aa = LafUtils.setupAntialias ( g2d );
 
-            Object aa = LafUtils.setupAntialias ( g2d );
-
+            final int dashX = dashSideSpacing + Math.round ( dashStroke.getLineWidth () / 2 );
+            final int dashY = dashSideSpacing + Math.round ( dashStroke.getLineWidth () / 2 );
+            final int dashWidth = getWidth () - dashSideSpacing * 2 - Math.round ( dashStroke.getLineWidth () );
+            final int dashHeight = getHeight () - dashSideSpacing * 2 - Math.round ( dashStroke.getLineWidth () );
             g2d.setPaint ( dropBackground );
-            g2d.fillRoundRect ( dashSideSpacing + Math.round ( dashStroke.getLineWidth () / 2 ),
-                    dashSideSpacing + Math.round ( dashStroke.getLineWidth () / 2 ),
-                    getWidth () - dashSideSpacing * 2 - Math.round ( dashStroke.getLineWidth () ),
-                    getHeight () - dashSideSpacing * 2 - Math.round ( dashStroke.getLineWidth () ), dashRound * 2, dashRound * 2 );
+            g2d.fillRoundRect ( dashX, dashY, dashWidth, dashHeight, dashRound * 2, dashRound * 2 );
 
+            final Stroke os = LafUtils.setupStroke ( g2d, dashStroke );
             g2d.setPaint ( dropBorder );
-
-            Stroke stroke = g2d.getStroke ();
-            g2d.setStroke ( dashStroke );
             g2d.drawRoundRect ( dashSideSpacing, dashSideSpacing, getWidth () - dashSideSpacing * 2 - 1,
                     getHeight () - dashSideSpacing * 2 - 1, dashRound * 2, dashRound * 2 );
-            g2d.setStroke ( stroke );
+            LafUtils.restoreStroke ( g2d, os );
 
             LafUtils.restoreAntialias ( g2d, aa );
 
-            Map hints = SwingUtils.setupTextAntialias ( g2d, this );
-            FontMetrics fm = g2d.getFontMetrics ();
-            g2d.drawString ( dropText, getWidth () / 2 - fm.stringWidth ( dropText ) / 2, getHeight () / 2 + fm.getAscent () / 2 );
-            SwingUtils.restoreTextAntialias ( g2d, hints );
+            final FontMetrics fm = g2d.getFontMetrics ();
+            if ( dashWidth >= fm.stringWidth ( dropText ) && dashHeight > fm.getHeight () )
+            {
+                final Map hints = SwingUtils.setupTextAntialias ( g2d, this );
+                final Point ts = LafUtils.getTextCenterShear ( fm, dropText );
+                g2d.drawString ( dropText, getWidth () / 2 + ts.x, getHeight () / 2 + ts.y );
+                SwingUtils.restoreTextAntialias ( g2d, hints );
+            }
 
             LafUtils.restoreComposite ( g2d, old );
         }
@@ -395,13 +397,13 @@ public class WebFileDrop extends WebPanel implements LanguageMethods
 
     private void updateFilesList ()
     {
-        WebFileDrop.this.removeAll ();
+        removeAll ();
         for ( File file : selectedFiles )
         {
-            WebFileDrop.this.add ( createFilePlate ( file ) );
+            add ( createFilePlate ( file ) );
         }
-        WebFileDrop.this.revalidate ();
-        WebFileDrop.this.repaint ();
+        revalidate ();
+        repaint ();
     }
 
     private WebFilePlate createFilePlate ( final File file )
@@ -413,7 +415,7 @@ public class WebFileDrop extends WebPanel implements LanguageMethods
         {
             public void mousePressed ( MouseEvent e )
             {
-                WebFileDrop.this.requestFocusInWindow ();
+                requestFocusInWindow ();
             }
         } );
 
@@ -455,36 +457,57 @@ public class WebFileDrop extends WebPanel implements LanguageMethods
      * Language methods
      */
 
+    /**
+     * {@inheritDoc}
+     */
     public void setLanguage ( String key, Object... data )
     {
         LanguageManager.registerComponent ( this, key, data );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void updateLanguage ( Object... data )
     {
         LanguageManager.updateComponent ( this, data );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void updateLanguage ( String key, Object... data )
     {
         LanguageManager.updateComponent ( this, key, data );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void removeLanguage ()
     {
         LanguageManager.unregisterComponent ( this );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isLanguageSet ()
     {
         return LanguageManager.isRegisteredComponent ( this );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void setLanguageUpdater ( LanguageUpdater updater )
     {
         LanguageManager.registerLanguageUpdater ( this, updater );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void removeLanguageUpdater ()
     {
         LanguageManager.unregisterLanguageUpdater ( this );
