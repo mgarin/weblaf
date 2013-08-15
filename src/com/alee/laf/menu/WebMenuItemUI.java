@@ -83,7 +83,10 @@ public class WebMenuItemUI extends BasicMenuItemUI
             public void actionPerformed ( ActionEvent e )
             {
                 mouseover = false;
-                menuItem.repaint ();
+                if ( menuItem != null )
+                {
+                    menuItem.repaint ();
+                }
             }
         };
         menuItem.addActionListener ( actionListener );
