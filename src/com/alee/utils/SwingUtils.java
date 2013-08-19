@@ -57,7 +57,7 @@ import java.util.List;
  * @since 1.4
  */
 
-public class SwingUtils
+public final class SwingUtils
 {
     /**
      * Client property key that identifies that component can handle enabled state changes.
@@ -882,22 +882,6 @@ public class SwingUtils
     }
 
     /**
-     * Changes font to plain for the specified component.
-     *
-     * @param component component to modify
-     * @param <C>       component type
-     * @return modified component
-     */
-    public static <C extends Component> C setPlainFont ( C component )
-    {
-        if ( component != null && component.getFont () != null )
-        {
-            component.setFont ( component.getFont ().deriveFont ( Font.PLAIN ) );
-        }
-        return component;
-    }
-
-    /**
      * Returns whether component font is plain or not.
      *
      * @param component component to process
@@ -909,17 +893,30 @@ public class SwingUtils
     }
 
     /**
-     * Changes font to bold for the specified component.
+     * Changes font to plain for the specified component.
      *
      * @param component component to modify
      * @param <C>       component type
      * @return modified component
      */
-    public static <C extends Component> C setBoldFont ( C component )
+    public static <C extends Component> C setPlainFont ( C component )
     {
-        if ( component != null && component.getFont () != null )
+        return setPlainFont ( component, true );
+    }
+
+    /**
+     * Changes font to plain for the specified component.
+     *
+     * @param component component to modify
+     * @param apply     whether to apply font changes or not
+     * @param <C>       component type
+     * @return modified component
+     */
+    public static <C extends Component> C setPlainFont ( C component, boolean apply )
+    {
+        if ( apply && component != null && component.getFont () != null )
         {
-            component.setFont ( component.getFont ().deriveFont ( Font.BOLD ) );
+            component.setFont ( component.getFont ().deriveFont ( Font.PLAIN ) );
         }
         return component;
     }
@@ -936,17 +933,30 @@ public class SwingUtils
     }
 
     /**
-     * Changes font to italic for the specified component.
+     * Changes font to bold for the specified component.
      *
      * @param component component to modify
      * @param <C>       component type
      * @return modified component
      */
-    public static <C extends Component> C setItalicFont ( C component )
+    public static <C extends Component> C setBoldFont ( C component )
     {
-        if ( component != null && component.getFont () != null )
+        return setBoldFont ( component, true );
+    }
+
+    /**
+     * Changes font to bold for the specified component.
+     *
+     * @param component component to modify
+     * @param apply     whether to apply font changes or not
+     * @param <C>       component type
+     * @return modified component
+     */
+    public static <C extends Component> C setBoldFont ( C component, boolean apply )
+    {
+        if ( apply && component != null && component.getFont () != null )
         {
-            component.setFont ( component.getFont ().deriveFont ( Font.ITALIC ) );
+            component.setFont ( component.getFont ().deriveFont ( Font.BOLD ) );
         }
         return component;
     }
@@ -960,6 +970,35 @@ public class SwingUtils
     public static boolean isItalicFont ( Component component )
     {
         return component != null && component.getFont () != null && component.getFont ().isItalic ();
+    }
+
+    /**
+     * Changes font to italic for the specified component.
+     *
+     * @param component component to modify
+     * @param <C>       component type
+     * @return modified component
+     */
+    public static <C extends Component> C setItalicFont ( C component )
+    {
+        return setItalicFont ( component, true );
+    }
+
+    /**
+     * Changes font to italic for the specified component.
+     *
+     * @param component component to modify
+     * @param apply     whether to apply font changes or not
+     * @param <C>       component type
+     * @return modified component
+     */
+    public static <C extends Component> C setItalicFont ( C component, boolean apply )
+    {
+        if ( apply && component != null && component.getFont () != null )
+        {
+            component.setFont ( component.getFont ().deriveFont ( Font.ITALIC ) );
+        }
+        return component;
     }
 
     /**

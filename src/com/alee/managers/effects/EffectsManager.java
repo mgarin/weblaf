@@ -41,7 +41,7 @@ import java.awt.image.BufferedImage;
  * initializing them, one by one).
  */
 
-public class EffectsManager
+public final class EffectsManager
 {
     /**
      * Makes any Swing component fade out using glass pane trick

@@ -17,9 +17,7 @@
 
 package com.alee.extended.tree;
 
-import com.alee.laf.GlobalConstants;
-
-import java.io.FileFilter;
+import com.alee.utils.compare.Filter;
 
 /**
  * WebFileTree style class.
@@ -39,5 +37,5 @@ public class WebFileTreeStyle
      * Default tree file filter.
      * Set to null if you want to display all available files.
      */
-    public static FileFilter fileFilter = GlobalConstants.NON_HIDDEN_ONLY_FILTER;
+    public static Filter<FileTreeNode> filter = new FileTreeNodeFilter ();
 }

@@ -28,7 +28,7 @@ import java.util.Map;
  * @since 1.3
  */
 
-public class MapUtils
+public final class MapUtils
 {
     /**
      * Returns copied Map.

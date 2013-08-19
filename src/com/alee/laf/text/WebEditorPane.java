@@ -300,6 +300,14 @@ public class WebEditorPane extends JEditorPane implements LanguageMethods, Setti
     /**
      * {@inheritDoc}
      */
+    public WebEditorPane setPlainFont ( boolean apply )
+    {
+        return SwingUtils.setPlainFont ( this, apply );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public boolean isPlainFont ()
     {
         return SwingUtils.isPlainFont ( this );
@@ -316,6 +324,14 @@ public class WebEditorPane extends JEditorPane implements LanguageMethods, Setti
     /**
      * {@inheritDoc}
      */
+    public WebEditorPane setBoldFont ( boolean apply )
+    {
+        return SwingUtils.setBoldFont ( this, apply );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public boolean isBoldFont ()
     {
         return SwingUtils.isBoldFont ( this );
@@ -327,6 +343,14 @@ public class WebEditorPane extends JEditorPane implements LanguageMethods, Setti
     public WebEditorPane setItalicFont ()
     {
         return SwingUtils.setItalicFont ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public WebEditorPane setItalicFont ( boolean apply )
+    {
+        return SwingUtils.setItalicFont ( this, apply );
     }
 
     /**

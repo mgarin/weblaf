@@ -553,6 +553,14 @@ public class WebCheckBox extends JCheckBox implements ShapeProvider, LanguageMet
     /**
      * {@inheritDoc}
      */
+    public WebCheckBox setPlainFont ( boolean apply )
+    {
+        return SwingUtils.setPlainFont ( this, apply );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public boolean isPlainFont ()
     {
         return SwingUtils.isPlainFont ( this );
@@ -569,6 +577,14 @@ public class WebCheckBox extends JCheckBox implements ShapeProvider, LanguageMet
     /**
      * {@inheritDoc}
      */
+    public WebCheckBox setBoldFont ( boolean apply )
+    {
+        return SwingUtils.setBoldFont ( this, apply );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public boolean isBoldFont ()
     {
         return SwingUtils.isBoldFont ( this );
@@ -580,6 +596,14 @@ public class WebCheckBox extends JCheckBox implements ShapeProvider, LanguageMet
     public WebCheckBox setItalicFont ()
     {
         return SwingUtils.setItalicFont ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public WebCheckBox setItalicFont ( boolean apply )
+    {
+        return SwingUtils.setItalicFont ( this, apply );
     }
 
     /**

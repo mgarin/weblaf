@@ -45,7 +45,7 @@ import java.util.List;
  * @since 1.3
  */
 
-public class LanguageManager implements LanguageConstants
+public final class LanguageManager implements LanguageConstants
 {
     // Icons
     public static final ImageIcon other = new ImageIcon ( LanguageManager.class.getResource ( "icons/lang/other.png" ) );
@@ -599,6 +599,11 @@ public class LanguageManager implements LanguageConstants
     public static String getLanguage ()
     {
         return language;
+    }
+
+    public static boolean isCurrentLanguage ( String language )
+    {
+        return LanguageManager.language.equals ( language );
     }
 
     public static void setLanguage ( String language )

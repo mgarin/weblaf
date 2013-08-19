@@ -17,9 +17,9 @@
 
 package com.alee.laf.colorchooser;
 
-import com.alee.laf.StyleConstants;
 import com.alee.laf.rootpane.WebDialog;
 import com.alee.utils.SwingUtils;
+import com.alee.utils.swing.DialogOptions;
 
 import javax.swing.*;
 import java.awt.*;
@@ -31,7 +31,7 @@ import java.awt.event.WindowEvent;
  * User: mgarin Date: 20.12.12 Time: 18:31
  */
 
-public class WebColorChooserDialog extends WebDialog
+public class WebColorChooserDialog extends WebDialog implements DialogOptions
 {
     public static final ImageIcon COLOR_CHOOSER_ICON =
             new ImageIcon ( WebColorChooserDialog.class.getResource ( "icons/color_chooser.png" ) );
@@ -89,7 +89,7 @@ public class WebColorChooserDialog extends WebDialog
         {
             public void windowClosed ( WindowEvent e )
             {
-                colorChooser.setResult ( StyleConstants.CLOSE_OPTION );
+                colorChooser.setResult ( CLOSE_OPTION );
             }
         } );
 

@@ -26,7 +26,7 @@ import java.util.Random;
  * @since 1.4
  */
 
-public class MathUtils
+public final class MathUtils
 {
     /**
      * Random numbers generator.

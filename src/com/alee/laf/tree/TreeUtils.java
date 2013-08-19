@@ -116,6 +116,8 @@ public class TreeUtils
             if ( treeState.isExpanded ( element.getId () ) )
             {
                 tree.expandPath ( path );
+
+                // We are going futher only into expanded nodes, otherwise this will expand even collapsed ones
                 for ( int i = 0; i < element.getChildCount (); i++ )
                 {
                     elements.add ( ( UniqueNode ) tree.getModel ().getChild ( element, i ) );

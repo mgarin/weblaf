@@ -35,7 +35,7 @@ public class LanguageEditor extends WebPanel
     public static void main ( String[] args )
     {
         WebLookAndFeel.install ();
-        new TestFrame ( new WebScrollPane ( new LanguageEditor ()
+        TestFrame.show ( new WebScrollPane ( new LanguageEditor ()
         {
             {
                 for ( Dictionary d : LanguageManager.getDictionaries () )
@@ -47,13 +47,7 @@ public class LanguageEditor extends WebPanel
                 getDictionariesTree ().expandTillRecords ();
                 getDictionariesTree ().setRootVisible ( false );
             }
-        }, false ) )
-        {
-            {
-                setSize ( 500, 500 );
-                setLocationRelativeTo ( null );
-            }
-        };
+        }, false ) );
     }
 
     public LanguageEditor ()

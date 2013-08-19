@@ -523,6 +523,14 @@ public class WebTextField extends JTextField implements ShapeProvider, LanguageM
     /**
      * {@inheritDoc}
      */
+    public WebTextField setPlainFont ( boolean apply )
+    {
+        return SwingUtils.setPlainFont ( this, apply );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public boolean isPlainFont ()
     {
         return SwingUtils.isPlainFont ( this );
@@ -539,6 +547,14 @@ public class WebTextField extends JTextField implements ShapeProvider, LanguageM
     /**
      * {@inheritDoc}
      */
+    public WebTextField setBoldFont ( boolean apply )
+    {
+        return SwingUtils.setBoldFont ( this, apply );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public boolean isBoldFont ()
     {
         return SwingUtils.isBoldFont ( this );
@@ -550,6 +566,14 @@ public class WebTextField extends JTextField implements ShapeProvider, LanguageM
     public WebTextField setItalicFont ()
     {
         return SwingUtils.setItalicFont ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public WebTextField setItalicFont ( boolean apply )
+    {
+        return SwingUtils.setItalicFont ( this, apply );
     }
 
     /**

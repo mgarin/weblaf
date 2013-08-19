@@ -61,34 +61,41 @@ import java.util.List;
 
 public class WebPathField extends WebPanel
 {
-    private static final ImageIcon down = new ImageIcon ( WebPathField.class.getResource ( "icons/down.png" ) );
-    private static final ImageIcon left = new ImageIcon ( WebPathField.class.getResource ( "icons/left.png" ) );
-    private static final ImageIcon right = new ImageIcon ( WebPathField.class.getResource ( "icons/right.png" ) );
+    /**
+     * Used icons.
+     */
+    protected static final ImageIcon down = new ImageIcon ( WebPathField.class.getResource ( "icons/down.png" ) );
+    protected static final ImageIcon left = new ImageIcon ( WebPathField.class.getResource ( "icons/left.png" ) );
+    protected static final ImageIcon right = new ImageIcon ( WebPathField.class.getResource ( "icons/right.png" ) );
 
-    private static final ImageIcon COMPUTER_ICON = new ImageIcon ( WebPathField.class.getResource ( "icons/computer.png" ) );
+    protected static final String FILE_ICON = "fileIcon";
 
-    private static final String FILE_ICON = "fileIcon";
+    protected List<PathFieldListener> listeners = new ArrayList<PathFieldListener> ();
 
-    private List<PathFieldListener> listeners = new ArrayList<PathFieldListener> ();
+    protected boolean focusOwner = false;
 
-    private boolean focusOwner = false;
+    protected static FileSystemView fsv = FileSystemView.getFileSystemView ();
 
-    private static FileSystemView fsv = FileSystemView.getFileSystemView ();
+    protected DefaultFileFilter fileFilter = GlobalConstants.DIRECTORIES_FILTER;
 
-    private DefaultFileFilter fileFilter = GlobalConstants.DIRECTORIES_FILTER;
+    protected int preferredWidth = -1;
+    protected boolean filesDropEnabled = true;
 
-    private int preferredWidth = -1;
-    private boolean filesDropEnabled = true;
+    protected File selectedPath;
 
-    private File selectedPath;
+    protected boolean autocompleteEnabled = true;
+    protected JWindow autocompleteDialog = null;
 
-    private boolean autocompleteEnabled = true;
-    private JWindow autocompleteDialog = null;
+    protected WebPanel contentPanel;
 
-    private WebPanel contentPanel;
+    protected WebTextField pathField;
+    protected FocusAdapter pathFocusListener;
 
-    private WebTextField pathField;
-    private FocusAdapter pathFocusListener;
+    protected WebButton myComputer = null;
+
+    protected int rootsMenuItemsCount = 0;
+    protected WebPopupMenu rootsMenu = null;
+    protected WebToggleButton rootsArrowButton = null;
 
     public WebPathField ()
     {
@@ -506,7 +513,7 @@ public class WebPathField extends WebPanel
         updatePath ( path );
     }
 
-    private void startEditing ()
+    protected void startEditing ()
     {
         if ( !pathField.isFocusOwner () )
         {
@@ -538,7 +545,7 @@ public class WebPathField extends WebPanel
         }
     }
 
-    private String getProperSelectedPath ()
+    protected String getProperSelectedPath ()
     {
         String path = selectedPath.getAbsolutePath ();
         path = path.endsWith ( File.separator ) ? path : path + File.separator;
@@ -609,7 +616,7 @@ public class WebPathField extends WebPanel
         updatePath ( selectedPath );
     }
 
-    private synchronized void updatePath ( File path )
+    protected synchronized void updatePath ( File path )
     {
         // todo check if path is proper (filter/hidden)
 
@@ -661,8 +668,8 @@ public class WebPathField extends WebPanel
                 wb.setFocusable ( false );
                 if ( !SystemUtils.isWindows () && first )
                 {
-                    wb.setIcon ( COMPUTER_ICON );
-                    wb.putClientProperty ( FILE_ICON, COMPUTER_ICON );
+                    wb.setIcon ( FileUtils.getMyComputerIcon () );
+                    wb.putClientProperty ( FILE_ICON, FileUtils.getMyComputerIcon () );
                 }
                 else
                 {
@@ -789,7 +796,7 @@ public class WebPathField extends WebPanel
         repaint ();
     }
 
-    private List<File> getSimilarFileChilds ( File file, String namePart )
+    protected List<File> getSimilarFileChilds ( File file, String namePart )
     {
         String searchText = namePart.toLowerCase ();
         File[] childs = getFileChilds ( file );
@@ -807,23 +814,21 @@ public class WebPathField extends WebPanel
         return similar;
     }
 
-    private File[] getFileChilds ( File file )
+    protected File[] getFileChilds ( File file )
     {
         return file != null ? file.listFiles ( fileFilter ) : FileUtils.getDiskRoots ();
     }
 
-    private boolean canShortenPath ()
+    protected boolean canShortenPath ()
     {
         return contentPanel.getPreferredSize ().width > contentPanel.getWidth () && contentPanel.getComponentCount () > 5;
     }
 
-    private WebButton myComputer = null;
-
-    private WebButton getMyComputer ()
+    protected WebButton getMyComputer ()
     {
         if ( myComputer == null )
         {
-            myComputer = WebButton.createIconWebButton ( COMPUTER_ICON );
+            myComputer = WebButton.createIconWebButton ( FileUtils.getMyComputerIcon () );
             myComputer.setRound ( getRound () );
             myComputer.setShadeWidth ( 0 );
             myComputer.setLeftRightSpacing ( 0 );
@@ -843,10 +848,6 @@ public class WebPathField extends WebPanel
         return myComputer;
     }
 
-    private int rootsMenuItemsCount = 0;
-    private WebPopupMenu rootsMenu = null;
-    private WebToggleButton rootsArrowButton = null;
-
     public WebPopupMenu getRootsMenu ()
     {
         return rootsMenu;
@@ -863,7 +864,7 @@ public class WebPathField extends WebPanel
         this.rootsMenuItemsCount = childsCount;
     }
 
-    private WebToggleButton getRootsArrowButton ( boolean ltr )
+    protected WebToggleButton getRootsArrowButton ( boolean ltr )
     {
         if ( rootsArrowButton == null )
         {
@@ -884,28 +885,6 @@ public class WebPathField extends WebPanel
                 rootsMenu.add ( menuItem );
                 rootsMenuItemsCount++;
             }
-
-            //            if ( rootFiles.length == 1 )
-            //            {
-            //                rootsMenu.addSeparator ();
-            //                for ( final File root : FileUtils.sortFiles ( rootFiles[ 0 ].listFiles ( GlobalConstants.NON_HIDDEN_ONLY_FILTER ) ) )
-            //                {
-            //                    if ( root.isDirectory () )
-            //                    {
-            //                        WebMenuItem menuItem = new WebMenuItem ( FileUtils.getDisplayFileName ( root ) );
-            //                        menuItem.setIcon ( FileUtils.getFileIcon ( root, false ) );
-            //                        menuItem.addActionListener ( new ActionListener ()
-            //                        {
-            //                            public void actionPerformed ( ActionEvent e )
-            //                            {
-            //                                folderSelected ( root );
-            //                            }
-            //                        } );
-            //                        rootsMenu.add ( menuItem );
-            //                        rootsMenuItemsCount++;
-            //                    }
-            //                }
-            //            }
 
             rootsArrowButton = new WebToggleButton ();
             rootsArrowButton.setIcon ( ltr ? right : left );
@@ -959,7 +938,7 @@ public class WebPathField extends WebPanel
         return rootsArrowButton;
     }
 
-    private void folderSelected ( File folder )
+    protected void folderSelected ( File folder )
     {
         // Normalize file
         folder = FileUtils.normalize ( folder );
@@ -984,7 +963,7 @@ public class WebPathField extends WebPanel
         listeners.remove ( listener );
     }
 
-    private void fireDirectoryChanged ( File newDirectory )
+    protected void fireDirectoryChanged ( File newDirectory )
     {
         for ( PathFieldListener listener : CollectionUtils.copy ( listeners ) )
         {

@@ -36,7 +36,7 @@ import java.util.List;
  * @since 1.3
  */
 
-public class SystemUtils
+public final class SystemUtils
 {
     /**
      * Windows short name.

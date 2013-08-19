@@ -522,7 +522,7 @@ public class WebToggleButton extends JToggleButton implements ShapeProvider, Lan
 
     public WebToggleButton setMargin ( int spacing )
     {
-       return setMargin ( spacing, spacing, spacing, spacing );
+        return setMargin ( spacing, spacing, spacing, spacing );
     }
 
     public Shape provideShape ()
@@ -757,6 +757,14 @@ public class WebToggleButton extends JToggleButton implements ShapeProvider, Lan
     /**
      * {@inheritDoc}
      */
+    public WebToggleButton setPlainFont ( boolean apply )
+    {
+        return SwingUtils.setPlainFont ( this, apply );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public boolean isPlainFont ()
     {
         return SwingUtils.isPlainFont ( this );
@@ -773,6 +781,14 @@ public class WebToggleButton extends JToggleButton implements ShapeProvider, Lan
     /**
      * {@inheritDoc}
      */
+    public WebToggleButton setBoldFont ( boolean apply )
+    {
+        return SwingUtils.setBoldFont ( this, apply );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public boolean isBoldFont ()
     {
         return SwingUtils.isBoldFont ( this );
@@ -784,6 +800,14 @@ public class WebToggleButton extends JToggleButton implements ShapeProvider, Lan
     public WebToggleButton setItalicFont ()
     {
         return SwingUtils.setItalicFont ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public WebToggleButton setItalicFont ( boolean apply )
+    {
+        return SwingUtils.setItalicFont ( this, apply );
     }
 
     /**

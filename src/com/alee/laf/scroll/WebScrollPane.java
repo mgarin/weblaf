@@ -18,7 +18,7 @@
 package com.alee.laf.scroll;
 
 import com.alee.laf.WebLookAndFeel;
-import com.alee.managers.language.LanguageContainer;
+import com.alee.managers.language.LanguageContainerMethods;
 import com.alee.managers.language.LanguageManager;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.laf.ShapeProvider;
@@ -30,7 +30,7 @@ import java.awt.*;
  * User: mgarin Date: 29.04.11 Time: 15:37
  */
 
-public class WebScrollPane extends JScrollPane implements ShapeProvider, LanguageContainer
+public class WebScrollPane extends JScrollPane implements ShapeProvider, LanguageContainerMethods
 {
     private int preferredWidth = -1;
     private int minimumWidth = -1;

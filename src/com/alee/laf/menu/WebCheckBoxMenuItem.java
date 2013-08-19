@@ -305,6 +305,14 @@ public class WebCheckBoxMenuItem extends JCheckBoxMenuItem implements LanguageMe
     /**
      * {@inheritDoc}
      */
+    public WebCheckBoxMenuItem setPlainFont ( boolean apply )
+    {
+        return SwingUtils.setPlainFont ( this, apply );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public boolean isPlainFont ()
     {
         return SwingUtils.isPlainFont ( this );
@@ -321,6 +329,14 @@ public class WebCheckBoxMenuItem extends JCheckBoxMenuItem implements LanguageMe
     /**
      * {@inheritDoc}
      */
+    public WebCheckBoxMenuItem setBoldFont ( boolean apply )
+    {
+        return SwingUtils.setBoldFont ( this, apply );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public boolean isBoldFont ()
     {
         return SwingUtils.isBoldFont ( this );
@@ -332,6 +348,14 @@ public class WebCheckBoxMenuItem extends JCheckBoxMenuItem implements LanguageMe
     public WebCheckBoxMenuItem setItalicFont ()
     {
         return SwingUtils.setItalicFont ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public WebCheckBoxMenuItem setItalicFont ( boolean apply )
+    {
+        return SwingUtils.setItalicFont ( this, apply );
     }
 
     /**

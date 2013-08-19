@@ -27,7 +27,7 @@ import java.util.List;
  * @since 1.4
  */
 
-public class GeometryUtils
+public final class GeometryUtils
 {
     /**
      * Returns rectangle containing all specified points.

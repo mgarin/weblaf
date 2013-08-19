@@ -19,7 +19,7 @@ package com.alee.laf.rootpane;
 
 import com.alee.managers.focus.FocusManager;
 import com.alee.managers.focus.FocusTracker;
-import com.alee.managers.language.LanguageContainer;
+import com.alee.managers.language.LanguageContainerMethods;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.settings.DefaultValue;
 import com.alee.managers.settings.SettingsManager;
@@ -37,7 +37,7 @@ import java.awt.event.ComponentEvent;
  * User: mgarin Date: 26.06.12 Time: 16:48
  */
 
-public class WebWindow extends JWindow implements FocusTracker, LanguageContainer, SettingsMethods
+public class WebWindow extends JWindow implements FocusTracker, LanguageContainerMethods, SettingsMethods
 {
     private boolean closeOnFocusLoss = false;
 

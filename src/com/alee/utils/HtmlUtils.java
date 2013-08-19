@@ -29,7 +29,7 @@ import net.htmlparser.jericho.Tag;
  * @since 1.4
  */
 
-public class HtmlUtils
+public final class HtmlUtils
 {
     /**
      * Returns plain text extracted from the specified HTML.

@@ -38,6 +38,14 @@ public interface FontMethods<C extends Component> extends SwingMethods
     public C setPlainFont ();
 
     /**
+     * Sets plain font for the component.
+     *
+     * @param apply whether to apply font changes or not
+     * @return modified component
+     */
+    public C setPlainFont ( boolean apply );
+
+    /**
      * Returns whether component font is plain or not.
      *
      * @return true if component font is plain, false otherwise
@@ -52,6 +60,14 @@ public interface FontMethods<C extends Component> extends SwingMethods
     public C setBoldFont ();
 
     /**
+     * Sets bold font for the component.
+     *
+     * @param apply whether to apply font changes or not
+     * @return modified component
+     */
+    public C setBoldFont ( boolean apply );
+
+    /**
      * Returns whether component font is bold or not.
      *
      * @return true if component font is bold, false otherwise
@@ -64,6 +80,14 @@ public interface FontMethods<C extends Component> extends SwingMethods
      * @return modified component
      */
     public C setItalicFont ();
+
+    /**
+     * Sets italic or plain font for the component.
+     *
+     * @param apply whether to apply font changes or not
+     * @return modified component
+     */
+    public C setItalicFont ( boolean apply );
 
     /**
      * Returns whether component font is italic or not.

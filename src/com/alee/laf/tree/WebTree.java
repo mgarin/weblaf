@@ -235,6 +235,31 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
     }
 
     /**
+     * Sets selected nodes.
+     */
+    public void setSelectedNode ( E node )
+    {
+        final TreePath path = getPathForNode ( node );
+        if ( path != null )
+        {
+            setSelectionPath ( path );
+        }
+    }
+
+    /**
+     * Sets selected nodes.
+     */
+    public void setSelectedNodes ( List<E> nodes )
+    {
+        TreePath[] paths = new TreePath[ nodes.size () ];
+        for ( int i = 0; i < nodes.size (); i++ )
+        {
+            paths[ i ] = getPathForNode ( nodes.get ( i ) );
+        }
+        setSelectionPaths ( paths );
+    }
+
+    /**
      * Sets tree selection mode.
      *
      * @param mode tree selection mode
@@ -242,6 +267,14 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
     public void setSelectionMode ( int mode )
     {
         getSelectionModel ().setSelectionMode ( mode );
+    }
+
+    /**
+     * Scrolls tree view to the beginning of the tree.
+     */
+    public void scrollToStart ()
+    {
+        scrollRectToVisible ( new Rectangle ( 0, 0, 1, 1 ) );
     }
 
     /**
@@ -267,6 +300,32 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
         if ( bounds != null )
         {
             scrollRectToVisible ( bounds );
+        }
+    }
+
+    /**
+     * Starts editing selected tree node.
+     */
+    public void startEditingSelectedNode ()
+    {
+        final TreePath path = getSelectionPath ();
+        if ( path != null )
+        {
+            startEditingAtPath ( path );
+        }
+    }
+
+    /**
+     * Starts editing the specified node.
+     *
+     * @param node tree node to edit
+     */
+    public void startEditingNode ( E node )
+    {
+        final TreePath path = getPathForNode ( node );
+        if ( path != null )
+        {
+            startEditingAtPath ( path );
         }
     }
 
@@ -647,9 +706,17 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
     /**
      * {@inheritDoc}
      */
-    public WebTree setPlainFont ()
+    public WebTree<E> setPlainFont ()
     {
         return SwingUtils.setPlainFont ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public WebTree<E> setPlainFont ( boolean apply )
+    {
+        return SwingUtils.setPlainFont ( this, apply );
     }
 
     /**
@@ -663,9 +730,17 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
     /**
      * {@inheritDoc}
      */
-    public WebTree setBoldFont ()
+    public WebTree<E> setBoldFont ()
     {
         return SwingUtils.setBoldFont ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public WebTree<E> setBoldFont ( boolean apply )
+    {
+        return SwingUtils.setBoldFont ( this, apply );
     }
 
     /**
@@ -679,9 +754,17 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
     /**
      * {@inheritDoc}
      */
-    public WebTree setItalicFont ()
+    public WebTree<E> setItalicFont ()
     {
         return SwingUtils.setItalicFont ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public WebTree<E> setItalicFont ( boolean apply )
+    {
+        return SwingUtils.setItalicFont ( this, apply );
     }
 
     /**
@@ -695,7 +778,7 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
     /**
      * {@inheritDoc}
      */
-    public WebTree setFontStyle ( boolean bold, boolean italic )
+    public WebTree<E> setFontStyle ( boolean bold, boolean italic )
     {
         return SwingUtils.setFontStyle ( this, bold, italic );
     }
@@ -703,7 +786,7 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
     /**
      * {@inheritDoc}
      */
-    public WebTree setFontStyle ( int style )
+    public WebTree<E> setFontStyle ( int style )
     {
         return SwingUtils.setFontStyle ( this, style );
     }
@@ -711,7 +794,7 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
     /**
      * {@inheritDoc}
      */
-    public WebTree setFontSize ( int fontSize )
+    public WebTree<E> setFontSize ( int fontSize )
     {
         return SwingUtils.setFontSize ( this, fontSize );
     }
@@ -719,7 +802,7 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
     /**
      * {@inheritDoc}
      */
-    public WebTree changeFontSize ( int change )
+    public WebTree<E> changeFontSize ( int change )
     {
         return SwingUtils.changeFontSize ( this, change );
     }
@@ -735,7 +818,7 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
     /**
      * {@inheritDoc}
      */
-    public WebTree setFontSizeAndStyle ( int fontSize, boolean bold, boolean italic )
+    public WebTree<E> setFontSizeAndStyle ( int fontSize, boolean bold, boolean italic )
     {
         return SwingUtils.setFontSizeAndStyle ( this, fontSize, bold, italic );
     }
@@ -743,7 +826,7 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
     /**
      * {@inheritDoc}
      */
-    public WebTree setFontSizeAndStyle ( int fontSize, int style )
+    public WebTree<E> setFontSizeAndStyle ( int fontSize, int style )
     {
         return SwingUtils.setFontSizeAndStyle ( this, fontSize, style );
     }
@@ -751,7 +834,7 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
     /**
      * {@inheritDoc}
      */
-    public WebTree setFontName ( String fontName )
+    public WebTree<E> setFontName ( String fontName )
     {
         return SwingUtils.setFontName ( this, fontName );
     }
@@ -793,7 +876,7 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
      *
      * @return the default TreeModel
      */
-    protected static TreeModel getDefaultTreeModel ()
+    public static TreeModel getDefaultTreeModel ()
     {
         UniqueNode root = new UniqueNode ( "JTree" );
         UniqueNode parent;

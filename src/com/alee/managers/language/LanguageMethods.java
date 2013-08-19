@@ -26,6 +26,7 @@ import com.alee.utils.swing.SwingMethods;
  *
  * @author Mikle Garin
  * @see SwingMethods
+ * @see LanguageManager
  * @since 1.4
  */
 

@@ -40,7 +40,7 @@ import java.util.zip.ZipInputStream;
  * User: mgarin Date: 11/18/11 Time: 4:09 PM
  */
 
-public class ReflectUtils
+public final class ReflectUtils
 {
     /**
      * Retrieves class by canonical name safely

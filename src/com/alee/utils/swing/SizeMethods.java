@@ -23,9 +23,11 @@ import com.alee.laf.panel.WebPanel;
  * This interface provides a set of methods that should be added into components that support custom size methods.
  *
  * @author Mikle Garin
+ * @see SwingMethods
  * @since 1.4
  */
 
+// todo Add these methods into SwingUtils and implement in components
 public interface SizeMethods extends SwingMethods
 {
     public int getPreferredWidth ();

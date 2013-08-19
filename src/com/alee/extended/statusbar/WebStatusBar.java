@@ -21,7 +21,7 @@ import com.alee.extended.layout.ToolbarLayout;
 import com.alee.laf.StyleConstants;
 import com.alee.laf.separator.WebSeparator;
 import com.alee.laf.toolbar.WhiteSpace;
-import com.alee.managers.language.LanguageContainer;
+import com.alee.managers.language.LanguageContainerMethods;
 import com.alee.managers.language.LanguageManager;
 import com.alee.utils.SwingUtils;
 
@@ -32,7 +32,7 @@ import java.awt.*;
  * User: mgarin Date: 10.10.11 Time: 18:40
  */
 
-public class WebStatusBar extends JComponent implements LanguageContainer
+public class WebStatusBar extends JComponent implements LanguageContainerMethods
 {
     private Color topBgColor = WebStatusBarStyle.topBgColor;
     private Color bottomBgColor = WebStatusBarStyle.bottomBgColor;

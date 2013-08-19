@@ -97,6 +97,14 @@ public class UniqueNode extends DefaultMutableTreeNode implements Serializable
     }
 
     /**
+     * {@inheritDoc}
+     */
+    public UniqueNode getParent ()
+    {
+        return ( UniqueNode ) super.getParent ();
+    }
+
+    /**
      * Returns TreePath for this node.
      *
      * @return TreePath for this node

@@ -27,7 +27,7 @@ import java.util.Date;
  * @since 1.4
  */
 
-public class TimeUtils
+public final class TimeUtils
 {
     /**
      * Pinned time in milliseconds.

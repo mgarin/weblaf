@@ -19,7 +19,7 @@ package com.alee.laf.filechooser;
 
 import com.alee.extended.filefilter.DefaultFileFilter;
 import com.alee.laf.WebLookAndFeel;
-import com.alee.managers.language.LanguageContainer;
+import com.alee.managers.language.LanguageContainerMethods;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.language.LanguageMethods;
 import com.alee.managers.language.updaters.LanguageUpdater;
@@ -41,7 +41,7 @@ import java.util.List;
  * @since 1.4
  */
 
-public class WebFileChooser extends JFileChooser implements LanguageMethods, LanguageContainer
+public class WebFileChooser extends JFileChooser implements LanguageMethods, LanguageContainerMethods
 {
     /**
      * Constructs a WebFileChooser pointing to the user's default directory.

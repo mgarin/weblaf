@@ -94,17 +94,19 @@ public class WebSwitch extends WebPanel
 
         // Left switch label
         leftComponent = new WebLabel ( "ON", WebLabel.CENTER );
+        leftComponent.setBoldFont ();
         leftComponent.setMargin ( 2, 5, 2, 5 );
         leftComponent.setDrawShade ( true );
         leftComponent.setForeground ( Color.DARK_GRAY );
-        add ( SwingUtils.setBoldFont ( leftComponent ), WebSwitchLayout.LEFT );
+        add ( leftComponent, WebSwitchLayout.LEFT );
 
         // Right switch label
         rightComponent = new WebLabel ( "OFF", WebLabel.CENTER );
+        rightComponent.setBoldFont ();
         rightComponent.setMargin ( 2, 5, 2, 5 );
         rightComponent.setDrawShade ( true );
         rightComponent.setForeground ( Color.DARK_GRAY );
-        add ( SwingUtils.setBoldFont ( rightComponent ), WebSwitchLayout.RIGHT );
+        add ( rightComponent, WebSwitchLayout.RIGHT );
 
         // Switch animator
         createAnimator ();

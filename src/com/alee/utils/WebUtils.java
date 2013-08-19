@@ -37,7 +37,7 @@ import java.util.Map;
  * @since 1.3
  */
 
-public class WebUtils
+public final class WebUtils
 {
     /**
      * Returns normalized url path.

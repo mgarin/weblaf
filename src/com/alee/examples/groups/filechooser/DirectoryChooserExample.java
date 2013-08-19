@@ -22,9 +22,9 @@ import com.alee.examples.content.DefaultExample;
 import com.alee.examples.content.FeatureState;
 import com.alee.extended.filechooser.WebDirectoryChooser;
 import com.alee.extended.panel.GroupPanel;
-import com.alee.laf.StyleConstants;
 import com.alee.laf.button.WebButton;
 import com.alee.utils.FileUtils;
+import com.alee.utils.swing.DialogOptions;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -68,9 +68,9 @@ public class DirectoryChooserExample extends DefaultExample
                 }
                 directoryChooser.setVisible ( true );
 
-                if ( directoryChooser.getResult () == StyleConstants.OK_OPTION )
+                if ( directoryChooser.getResult () == DialogOptions.OK_OPTION )
                 {
-                    File file = directoryChooser.getSelectedFolder ();
+                    File file = directoryChooser.getSelectedDirectory ();
                     directoryChooserButton.setIcon ( FileUtils.getFileIcon ( file ) );
                     directoryChooserButton.setText ( FileUtils.getDisplayFileName ( file ) );
                 }

@@ -29,7 +29,7 @@ import java.awt.*;
  * @since 1.4
  */
 
-public class DebugUtils
+public final class DebugUtils
 {
     /**
      * Initializes time debugging.

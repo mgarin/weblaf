@@ -156,6 +156,14 @@ public class WebSpinner extends JSpinner implements ShapeProvider, FontMethods<W
     /**
      * {@inheritDoc}
      */
+    public WebSpinner setPlainFont ( boolean apply )
+    {
+        return SwingUtils.setPlainFont ( this, apply );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public boolean isPlainFont ()
     {
         return SwingUtils.isPlainFont ( this );
@@ -172,6 +180,14 @@ public class WebSpinner extends JSpinner implements ShapeProvider, FontMethods<W
     /**
      * {@inheritDoc}
      */
+    public WebSpinner setBoldFont ( boolean apply )
+    {
+        return SwingUtils.setBoldFont ( this, apply );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public boolean isBoldFont ()
     {
         return SwingUtils.isBoldFont ( this );
@@ -183,6 +199,14 @@ public class WebSpinner extends JSpinner implements ShapeProvider, FontMethods<W
     public WebSpinner setItalicFont ()
     {
         return SwingUtils.setItalicFont ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public WebSpinner setItalicFont ( boolean apply )
+    {
+        return SwingUtils.setItalicFont ( this, apply );
     }
 
     /**

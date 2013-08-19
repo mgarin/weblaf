@@ -35,7 +35,7 @@ import java.util.List;
  * @since 1.4
  */
 
-public class DragUtils
+public final class DragUtils
 {
     /**
      * URI list mime type.

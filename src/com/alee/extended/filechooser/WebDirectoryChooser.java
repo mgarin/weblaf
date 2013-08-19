@@ -26,6 +26,7 @@ import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.hotkey.HotkeyCondition;
 import com.alee.managers.hotkey.HotkeyManager;
 import com.alee.utils.SwingUtils;
+import com.alee.utils.swing.DialogOptions;
 
 import javax.swing.*;
 import java.awt.*;
@@ -36,32 +37,52 @@ import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
- * User: mgarin Date: 13.10.11 Time: 15:07
+ * This custom component provides a dialog shell for WebDirectoryChooserPanel component.
+ *
+ * @author Mikle Garin
+ * @since 1.4
  */
 
-public class WebDirectoryChooser extends WebDialog
+public class WebDirectoryChooser extends WebDialog implements DialogOptions
 {
-    private static final ImageIcon ICON = new ImageIcon ( WebDirectoryChooser.class.getResource ( "icons/dir_icon.png" ) );
-    private static final ImageIcon SETTINGS_ICON = new ImageIcon ( WebDirectoryChooser.class.getResource ( "icons/settings.png" ) );
-    private static final ImageIcon OK_ICON = new ImageIcon ( WebDirectoryChooser.class.getResource ( "icons/ok.png" ) );
-    private static final ImageIcon CANCEL_ICON = new ImageIcon ( WebDirectoryChooser.class.getResource ( "icons/cancel.png" ) );
+    /**
+     * Icons.
+     */
+    protected static final ImageIcon ICON = new ImageIcon ( WebDirectoryChooser.class.getResource ( "icons/dir_icon.png" ) );
+    protected static final ImageIcon SETTINGS_ICON = new ImageIcon ( WebDirectoryChooser.class.getResource ( "icons/settings.png" ) );
+    protected static final ImageIcon OK_ICON = new ImageIcon ( WebDirectoryChooser.class.getResource ( "icons/ok.png" ) );
+    protected static final ImageIcon CANCEL_ICON = new ImageIcon ( WebDirectoryChooser.class.getResource ( "icons/cancel.png" ) );
 
-    private List<ActionListener> listeners = new ArrayList<ActionListener> ();
-    private WebDirectoryChooserPanel directoryChooserPanel;
-    private WebButton approveButton;
-    private WebButton cancelButton;
+    /**
+     * UI components.
+     */
+    protected WebDirectoryChooserPanel directoryChooserPanel;
+    protected WebButton approveButton;
+    protected WebButton cancelButton;
 
-    private int result = StyleConstants.NONE_OPTION;
+    /**
+     * Dialog result.
+     */
+    protected int result = NONE_OPTION;
 
+    /**
+     * Constructs new directory chooser dialog with the specified parent window.
+     *
+     * @param parent parent window
+     */
     public WebDirectoryChooser ( Window parent )
     {
         this ( parent, null );
     }
 
+    /**
+     * Constructs new directory chooser dialog with the specified parent window and title.
+     *
+     * @param parent parent window
+     * @param title  dialog title
+     */
     public WebDirectoryChooser ( Window parent, String title )
     {
         super ( parent, title != null ? title : "" );
@@ -105,7 +126,7 @@ public class WebDirectoryChooser extends WebDialog
         {
             public void actionPerformed ( ActionEvent e )
             {
-                result = StyleConstants.OK_OPTION;
+                result = OK_OPTION;
                 WebDirectoryChooser.this.dispose ();
             }
         } );
@@ -119,7 +140,7 @@ public class WebDirectoryChooser extends WebDialog
         {
             public void actionPerformed ( ActionEvent e )
             {
-                result = StyleConstants.CANCEL_OPTION;
+                result = CANCEL_OPTION;
                 WebDirectoryChooser.this.dispose ();
             }
         } );
@@ -142,21 +163,21 @@ public class WebDirectoryChooser extends WebDialog
         cancelButton.addPropertyChangeListener ( AbstractButton.TEXT_CHANGED_PROPERTY, pcl );
 
         // Buttons updater
-        directoryChooserPanel.addWebDirectoryChooserListener ( new DirectoryChooserListener ()
+        directoryChooserPanel.addDirectoryChooserListener ( new DirectoryChooserListener ()
         {
             public void selectionChanged ( File file )
             {
-                updateButtons ( file );
+                updateButtonsState ( file );
             }
         } );
-        updateButtons ( directoryChooserPanel.getSelectedFolder () );
+        updateButtonsState ( directoryChooserPanel.getSelectedDirectory () );
 
         // Result saver
         addWindowListener ( new WindowAdapter ()
         {
             public void windowClosed ( WindowEvent e )
             {
-                result = StyleConstants.CLOSE_OPTION;
+                result = CLOSE_OPTION;
             }
         } );
 
@@ -165,63 +186,121 @@ public class WebDirectoryChooser extends WebDialog
         setDefaultCloseOperation ( JDialog.DISPOSE_ON_CLOSE );
     }
 
-    private void updateButtons ( File file )
+    /**
+     * Forces buttons update according to selected file.
+     *
+     * @param file newly selected file
+     */
+    protected void updateButtonsState ( File file )
     {
         approveButton.setEnabled ( file != null );
     }
 
+    /**
+     * Returns dialog result.
+     *
+     * @return dialog result
+     */
     public int getResult ()
     {
         return result;
     }
 
-    public File getSelectedFolder ()
+    /**
+     * Returns currently selected directory.
+     *
+     * @return currently selected directory
+     */
+    public File getSelectedDirectory ()
     {
-        return directoryChooserPanel.getSelectedFolder ();
+        return directoryChooserPanel.getSelectedDirectory ();
     }
 
-    public void setSelectedFolder ( File selectedFolder )
+    /**
+     * Sets currently selected directory.
+     *
+     * @param selectedDirectory currently selected directory
+     */
+    public void setSelectedDirectory ( File selectedDirectory )
     {
-        directoryChooserPanel.setSelectedFolder ( selectedFolder );
+        directoryChooserPanel.setSelectedDirectory ( selectedDirectory );
     }
 
-    public void addWebDirectoryChooserListener ( DirectoryChooserListener listener )
+    /**
+     * Adds directory chooser listener.
+     *
+     * @param listener directory chooser listener to add
+     */
+    public void addDirectoryChooserListener ( DirectoryChooserListener listener )
     {
-        directoryChooserPanel.addWebDirectoryChooserListener ( listener );
+        directoryChooserPanel.addDirectoryChooserListener ( listener );
     }
 
-    public void removeWebDirectoryChooserListener ( DirectoryChooserListener listener )
+    /**
+     * Removes directory chooser listener.
+     *
+     * @param listener directory chooser listener to remove
+     */
+    public void removeDirectoryChooserListener ( DirectoryChooserListener listener )
     {
-        directoryChooserPanel.removeWebDirectoryChooserListener ( listener );
+        directoryChooserPanel.removeDirectoryChooserListener ( listener );
     }
 
+    /**
+     * Displays directory chooser dialog and returns its result.
+     *
+     * @return directory chooser dialog result
+     */
     public int showDialog ()
     {
         setVisible ( true );
         return getResult ();
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public void setVisible ( boolean b )
+    {
+        if ( b )
+        {
+            result = NONE_OPTION;
+            setLocationRelativeTo ( getOwner () );
+        }
+        super.setVisible ( b );
+    }
+
+    /**
+     * Displays directory chooser dialog with the specified parent window.
+     * Returns selected directory as a result.
+     *
+     * @param parent parent window
+     * @return selected directory
+     */
+    public static File showDialog ( Window parent )
+    {
+        return showDialog ( parent, null );
+    }
+
+    /**
+     * Displays directory chooser dialog with the specified parent window and title.
+     * Returns selected directory as a result.
+     *
+     * @param parent parent window
+     * @param title  dialog title
+     * @return selected directory
+     */
     public static File showDialog ( Window parent, String title )
     {
         WebDirectoryChooser wdc = new WebDirectoryChooser ( parent, title );
         wdc.setVisible ( true );
-        if ( wdc.getResult () == StyleConstants.OK_OPTION )
+        if ( wdc.getResult () == OK_OPTION )
         {
-            return wdc.getSelectedFolder ();
+            return wdc.getSelectedDirectory ();
         }
         else
         {
             return null;
         }
-    }
-
-    public void setVisible ( boolean b )
-    {
-        if ( b )
-        {
-            result = StyleConstants.NONE_OPTION;
-            setLocationRelativeTo ( getOwner () );
-        }
-        super.setVisible ( b );
     }
 }

@@ -22,7 +22,7 @@ import com.alee.extended.painter.Painter;
 import com.alee.laf.StyleConstants;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.separator.WebSeparator;
-import com.alee.managers.language.LanguageContainer;
+import com.alee.managers.language.LanguageContainerMethods;
 import com.alee.managers.language.LanguageManager;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.laf.ShapeProvider;
@@ -35,7 +35,7 @@ import java.util.List;
  * User: mgarin Date: 23.08.11 Time: 16:15
  */
 
-public class WebToolBar extends JToolBar implements ShapeProvider, LanguageContainer
+public class WebToolBar extends JToolBar implements ShapeProvider, LanguageContainerMethods
 {
     public WebToolBar ()
     {

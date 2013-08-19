@@ -45,30 +45,41 @@ import java.util.List;
  * finalized. HotkeyInfo also keeps a weak reference to both top and hotkey components.
  */
 
-public class HotkeyManager
+public final class HotkeyManager
 {
-    // Synchronization object
-    private static final Object sync = new Object ();
-
-    // Global hotkeys block flag
-    private static boolean hotkeysEnabled = true;
-
-    // Pass focus to fired hotkey component
-    private static boolean transferFocus = false;
-
-    // Added hotkeys
-    private static Map<Component, List<HotkeyInfo>> hotkeys = new WeakHashMap<Component, List<HotkeyInfo>> ();
-
-    // Conditions for top components which might
-    private static Map<Container, List<HotkeyCondition>> topComponentConditions = new WeakHashMap<Container, List<HotkeyCondition>> ();
-
-    // Initialization mark
-    private static boolean initialized = false;
+    /**
+     * Synchronization object.
+     */
+    protected static final Object sync = new Object ();
 
     /**
-     * HotkeyManager initialization
+     * Global hotkeys block flag.
      */
+    protected static boolean hotkeysEnabled = true;
 
+    /**
+     * Pass focus to fired hotkey component.
+     */
+    protected static boolean transferFocus = false;
+
+    /**
+     * Added hotkeys.
+     */
+    protected static Map<Component, List<HotkeyInfo>> hotkeys = new WeakHashMap<Component, List<HotkeyInfo>> ();
+
+    /**
+     * Conditions for top components which might.
+     */
+    protected static Map<Container, List<HotkeyCondition>> topComponentConditions = new WeakHashMap<Container, List<HotkeyCondition>> ();
+
+    /**
+     * Initialization mark.
+     */
+    protected static boolean initialized = false;
+
+    /**
+     * Initializes hotkey manager.
+     */
     public static void initialize ()
     {
         if ( !initialized )
@@ -108,7 +119,13 @@ public class HotkeyManager
         }
     }
 
-    private static boolean hotkeyForEventExists ( KeyEvent keyEvent )
+    /**
+     * Returns whether at least one hotkey for the specified key event exists or not.
+     *
+     * @param keyEvent key event to search hotkeys for
+     * @return true if at least one hotkey for the specified key event exists, false otherwise
+     */
+    protected static boolean hotkeyForEventExists ( KeyEvent keyEvent )
     {
         synchronized ( sync )
         {
@@ -127,7 +144,10 @@ public class HotkeyManager
         }
     }
 
-    private static void processHotkeys ( KeyEvent e )
+    /**
+     * @param e
+     */
+    protected static void processHotkeys ( KeyEvent e )
     {
         synchronized ( sync )
         {
@@ -180,7 +200,7 @@ public class HotkeyManager
         }
     }
 
-    private static boolean meetsParentConditions ( Component forComponent )
+    protected static boolean meetsParentConditions ( Component forComponent )
     {
         synchronized ( sync )
         {
@@ -296,7 +316,7 @@ public class HotkeyManager
         return registerHotkey ( topComponent, forComponent, hotkeyData, createAction ( forComponent ), hidden, null );
     }
 
-    private static HotkeyRunnable createAction ( final AbstractButton forComponent )
+    protected static HotkeyRunnable createAction ( final AbstractButton forComponent )
     {
         return new ButtonHotkeyRunnable ( forComponent );
     }
@@ -356,7 +376,7 @@ public class HotkeyManager
         }
     }
 
-    private static List<HotkeyCondition> getContainerHotkeyConditionsCache ( Container container )
+    protected static List<HotkeyCondition> getContainerHotkeyConditionsCache ( Container container )
     {
         synchronized ( sync )
         {
@@ -406,7 +426,7 @@ public class HotkeyManager
      * Hotkeys cache methods
      */
 
-    private static void cacheHotkey ( HotkeyInfo hotkeyInfo )
+    protected static void cacheHotkey ( HotkeyInfo hotkeyInfo )
     {
         synchronized ( sync )
         {
@@ -416,7 +436,7 @@ public class HotkeyManager
         }
     }
 
-    private static void clearHotkeyCache ( HotkeyInfo hotkeyInfo )
+    protected static void clearHotkeyCache ( HotkeyInfo hotkeyInfo )
     {
         synchronized ( sync )
         {
@@ -425,7 +445,7 @@ public class HotkeyManager
         }
     }
 
-    private static void clearHotkeysCache ( List<HotkeyInfo> hotkeys )
+    protected static void clearHotkeysCache ( List<HotkeyInfo> hotkeys )
     {
         for ( HotkeyInfo hotkeyInfo : hotkeys )
         {
@@ -433,7 +453,7 @@ public class HotkeyManager
         }
     }
 
-    private static void clearHotkeysCache ( Component component )
+    protected static void clearHotkeysCache ( Component component )
     {
         synchronized ( sync )
         {
@@ -441,7 +461,7 @@ public class HotkeyManager
         }
     }
 
-    private static List<HotkeyInfo> getComponentHotkeysCache ( Component component )
+    protected static List<HotkeyInfo> getComponentHotkeysCache ( Component component )
     {
         synchronized ( sync )
         {
@@ -475,7 +495,7 @@ public class HotkeyManager
         showComponentHotkeys ( SwingUtils.getWindowAncestor ( component ) );
     }
 
-    private static void showComponentHotkeys ( Window window )
+    protected static void showComponentHotkeys ( Window window )
     {
         synchronized ( sync )
         {
@@ -533,7 +553,7 @@ public class HotkeyManager
         }
     }
 
-    private static String getComponentHotkeysString ( List<HotkeyInfo> infoList )
+    protected static String getComponentHotkeysString ( List<HotkeyInfo> infoList )
     {
         StringBuilder hotkeys = new StringBuilder ( "" );
         if ( infoList != null )

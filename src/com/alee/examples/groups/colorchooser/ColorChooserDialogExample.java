@@ -21,11 +21,11 @@ import com.alee.examples.WebLookAndFeelDemo;
 import com.alee.examples.content.DefaultExample;
 import com.alee.examples.content.FeatureState;
 import com.alee.extended.panel.GroupPanel;
-import com.alee.laf.StyleConstants;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.colorchooser.WebColorChooserDialog;
 import com.alee.managers.settings.SettingsManager;
 import com.alee.utils.ImageUtils;
+import com.alee.utils.swing.DialogOptions;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -75,7 +75,7 @@ public class ColorChooserDialogExample extends DefaultExample
                 colorChooser.setColor ( lastColor );
                 colorChooser.setVisible ( true );
 
-                if ( colorChooser.getResult () == StyleConstants.OK_OPTION )
+                if ( colorChooser.getResult () == DialogOptions.OK_OPTION )
                 {
                     Color color = colorChooser.getColor ();
                     lastColor = color;

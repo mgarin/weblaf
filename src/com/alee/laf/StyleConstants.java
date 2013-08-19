@@ -48,14 +48,6 @@ public class StyleConstants
     public static final String SEPARATOR = ";#&;";
 
     /**
-     * Choosers choices.
-     */
-    public static final int NONE_OPTION = -2;
-    public static final int CLOSE_OPTION = -1;
-    public static final int OK_OPTION = 0;
-    public static final int CANCEL_OPTION = 1;
-
-    /**
      * Empty 16x16 icon.
      */
     public static final ImageIcon EMPTY_ICON = new ImageIcon ( StyleConstants.class.getResource ( "icons/empty.png" ) );

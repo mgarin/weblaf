@@ -24,7 +24,7 @@ import com.alee.utils.XmlUtils;
  * User: mgarin Date: 03.08.12 Time: 16:46
  */
 
-public class VersionManager
+public final class VersionManager
 {
     // Library version
     private static VersionInfo libraryVersion = null;

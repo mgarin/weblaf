@@ -33,7 +33,7 @@ import java.util.StringTokenizer;
  * @since 1.3
  */
 
-public class TextUtils
+public final class TextUtils
 {
     /**
      * Separators used to determine words in text.

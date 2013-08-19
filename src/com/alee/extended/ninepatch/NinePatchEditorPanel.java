@@ -26,7 +26,6 @@ import com.alee.extended.panel.WebButtonGroup;
 import com.alee.extended.statusbar.WebStatusBar;
 import com.alee.extended.tree.WebFileTree;
 import com.alee.laf.GlobalConstants;
-import com.alee.laf.StyleConstants;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.button.WebToggleButton;
 import com.alee.laf.colorchooser.WebColorChooserDialog;
@@ -47,6 +46,7 @@ import com.alee.managers.settings.SettingsManager;
 import com.alee.utils.*;
 import com.alee.utils.ninepatch.NinePatchInterval;
 import com.alee.utils.ninepatch.NinePatchIntervalType;
+import com.alee.utils.swing.DialogOptions;
 import info.clearthought.layout.TableLayout;
 
 import javax.imageio.ImageIO;
@@ -496,7 +496,7 @@ public class NinePatchEditorPanel extends WebPanel
                     webColorChooser = new WebColorChooserDialog ( SwingUtils.getWindowAncestor ( previewPanel ) );
                     webColorChooser.setColor ( preview.getForeground () );
                 }
-                if ( webColorChooser.showDialog () == StyleConstants.OK_OPTION )
+                if ( webColorChooser.showDialog () == DialogOptions.OK_OPTION )
                 {
                     Color nfg = webColorChooser.getColor ();
                     SettingsManager.set ( "NinePatchEditor", "preview.foregroundColor", nfg );
@@ -541,15 +541,13 @@ public class NinePatchEditorPanel extends WebPanel
                     wcc.setColor ( cbp.getColor () );
                 }
                 wcc.setVisible ( true );
-
-                if ( wcc.getResult () == StyleConstants.OK_OPTION )
+                if ( wcc.getResult () == DialogOptions.OK_OPTION )
                 {
                     Color color = wcc.getColor ();
                     SettingsManager.set ( "NinePatchEditor", "preview.backgroundColor", color );
                     drawColoredBackground.setIcon ( ImageUtils.createColorIcon ( color ) );
                     cbp.setColor ( color );
                 }
-
                 previewPanel.setPainter ( cbp );
             }
         } );

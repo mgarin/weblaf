@@ -47,16 +47,7 @@ public class EventPump implements InvocationHandler
     }
 
     /**
-     * Processes a method invocation on a proxy instance and returns the result. This method will be invoked on an invocation handler when
-     * a
-     * method is invoked on a proxy instance that it is associated with.
-     *
-     * @param proxy  proxy instance that the method was invoked on
-     * @param method method instance corresponding to the interface method invoked on the proxy instance
-     * @param args   an array of objects containing the values of the arguments passed in the method invocation on the proxy instance, or
-     *               null if interface method takes no arguments
-     * @return the value to return from the method invocation on the proxy instance
-     * @throws Throwable the exception to throw from the method invocation on the proxy instance
+     * {@inheritDoc}
      */
     public Object invoke ( Object proxy, Method method, Object[] args ) throws Throwable
     {

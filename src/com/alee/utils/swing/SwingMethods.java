@@ -24,11 +24,16 @@ package com.alee.utils.swing;
  * @author Mikle Garin
  * @see com.alee.managers.settings.SettingsMethods
  * @see com.alee.managers.language.LanguageMethods
+ * @see com.alee.managers.language.LanguageContainerMethods
+ * @see com.alee.managers.hotkey.HotkeyMethods
+ * @see SizeMethods
  * @see FontMethods
  * @since 1.4
  */
 
 public interface SwingMethods
 {
-    // todo TooltipMethods, HotkeyMethods, ButtonHotkeyMethods
+    // todo TooltipMethods
+    // todo SizeMethods
+    // todo HotkeyMethods, ButtonHotkeyMethods - and replace all workarounds
 }

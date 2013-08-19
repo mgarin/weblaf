@@ -36,7 +36,7 @@ import java.util.Map;
  * interface or adding global focus listeners
  */
 
-public class FocusManager
+public final class FocusManager
 {
     private static boolean initialized = false;
 

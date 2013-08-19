@@ -24,7 +24,7 @@ package com.alee.utils;
  * @since 1.4
  */
 
-public class AnimationUtils
+public final class AnimationUtils
 {
     /**
      * Returns move animation speed depending on the animated object location.

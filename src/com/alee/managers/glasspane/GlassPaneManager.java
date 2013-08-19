@@ -32,7 +32,7 @@ import java.util.Map;
  * @since 1.4
  */
 
-public class GlassPaneManager
+public final class GlassPaneManager
 {
     /**
      * Registered glass panes per JRootPane.

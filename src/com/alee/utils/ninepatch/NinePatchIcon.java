@@ -273,7 +273,7 @@ public class NinePatchIcon implements Icon
      * Returns newly created NinePatchIcon with empty patches.
      *
      * @param rawImage raw image without patches
-     * @return
+     * @return newly created NinePatchIcon with empty patches
      */
     public static NinePatchIcon create ( BufferedImage rawImage )
     {
@@ -639,7 +639,7 @@ public class NinePatchIcon implements Icon
     /**
      * Returns fixed minimum height for this icon.
      *
-     * @param addUnfixedSpaceswhether to add 1px for each stretchable area or not
+     * @param addUnfixedSpaces swhether to add 1px for each stretchable area or not
      * @return fixed minimum height for this icon
      */
     protected int calculateFixedPixelsHeight ( boolean addUnfixedSpaces )

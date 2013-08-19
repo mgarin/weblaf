@@ -17,6 +17,9 @@
 
 package com.alee.extended.tree;
 
+import com.alee.utils.compare.Filter;
+
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -39,7 +42,7 @@ public interface AsyncTreeDataProvider<E extends AsyncUniqueNode>
     public E getRoot ();
 
     /**
-     * Returns child nodes for specified asynchronous tree node.
+     * Returns child nodes for the specified asynchronous tree node.
      * <p/>
      * This request uses a separate thread and might take a lot of time to process.
      *
@@ -47,6 +50,24 @@ public interface AsyncTreeDataProvider<E extends AsyncUniqueNode>
      * @return list of child nodes
      */
     public List<E> getChilds ( E node );
+
+    /**
+     * Returns child nodes comparator for the specified asynchronous tree node.
+     * No sorting applied to childs in case null is returned.
+     *
+     * @param node parent node
+     * @return child nodes comparator
+     */
+    public Comparator<E> getChildsComparator ( E node );
+
+    /**
+     * Returns child nodes filter for the specified asynchronous tree node.
+     * No filtering applied to childs in case null is returned.
+     *
+     * @param node parent node
+     * @return child nodes filter
+     */
+    public Filter<E> getChildsFilter ( E node );
 
     /**
      * Returns whether the specified node is leaf (doesn't have any childs) or not.

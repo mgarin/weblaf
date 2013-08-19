@@ -31,6 +31,7 @@ import com.alee.managers.hotkey.Hotkey;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.ColorUtils;
 import com.alee.utils.SwingUtils;
+import com.alee.utils.swing.DialogOptions;
 import info.clearthought.layout.TableLayout;
 
 import javax.swing.*;
@@ -50,7 +51,7 @@ import java.util.List;
  * User: mgarin Date: 10.03.11 Time: 16:46
  */
 
-public class WebColorChooserPanel extends WebPanel
+public class WebColorChooserPanel extends WebPanel implements DialogOptions
 {
     private List<ChangeListener> changeListeners = new ArrayList<ChangeListener> ();
     private List<ColorChooserListener> colorChooserListeners = new ArrayList<ColorChooserListener> ();
@@ -61,7 +62,7 @@ public class WebColorChooserPanel extends WebPanel
     private Color oldColor = Color.WHITE;
     private Color color = Color.WHITE;
 
-    private int result = StyleConstants.NONE_OPTION;
+    private int result = NONE_OPTION;
 
     private boolean adjustingText = false;
 
@@ -365,7 +366,7 @@ public class WebColorChooserPanel extends WebPanel
         {
             public void actionPerformed ( ActionEvent e )
             {
-                result = StyleConstants.OK_OPTION;
+                result = OK_OPTION;
                 fireOkPressed ( e );
             }
         } );
@@ -409,7 +410,7 @@ public class WebColorChooserPanel extends WebPanel
         {
             public void actionPerformed ( ActionEvent e )
             {
-                result = StyleConstants.CANCEL_OPTION;
+                result = CANCEL_OPTION;
                 setColor ( getOldColor () );
                 fireCancelPressed ( e );
             }
@@ -550,7 +551,7 @@ public class WebColorChooserPanel extends WebPanel
 
     public void resetResult ()
     {
-        setResult ( StyleConstants.NONE_OPTION );
+        setResult ( NONE_OPTION );
     }
 
     public void setResult ( int result )

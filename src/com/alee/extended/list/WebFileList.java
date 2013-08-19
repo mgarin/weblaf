@@ -44,37 +44,37 @@ public class WebFileList extends WebList
      * Whether to generate image file thumbnails or not.
      * Thumbnails generation might slow down list rendering in some cases.
      */
-    private boolean generateThumbnails = WebFileListStyle.generateThumbnails;
+    protected boolean generateThumbnails = WebFileListStyle.generateThumbnails;
 
     /**
      * Preferred visible column count.
      */
-    private int preferredColumnCount = WebFileListStyle.preferredColumnCount;
+    protected int preferredColumnCount = WebFileListStyle.preferredColumnCount;
 
     /**
      * Preferred visible row count.
      */
-    private int preferredRowCount = WebFileListStyle.preferredRowCount;
+    protected int preferredRowCount = WebFileListStyle.preferredRowCount;
 
     /**
      * File view mode.
      */
-    private FileListViewType fileListViewType = WebFileListStyle.fileListViewType;
+    protected FileListViewType fileListViewType = WebFileListStyle.fileListViewType;
 
     /**
      * File filter.
      */
-    private FileFilter fileFilter = WebFileListStyle.fileFilter;
+    protected FileFilter fileFilter = WebFileListStyle.fileFilter;
 
     /**
      * Displayed directory.
      */
-    private File displayedDirectory = null;
+    protected File displayedDirectory = null;
 
     /**
      * Scroll pane with fixed preferred size that fits file list settings.
      */
-    private WebScrollPane scrollView = null;
+    protected WebScrollPane scrollView = null;
 
     /**
      * Constructs empty file list.

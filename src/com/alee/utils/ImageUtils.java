@@ -42,7 +42,7 @@ import java.util.Map;
  * User: mgarin Date: 05.07.11 Time: 13:22
  */
 
-public class ImageUtils
+public final class ImageUtils
 {
     /**
      * Default cached image data parts separator

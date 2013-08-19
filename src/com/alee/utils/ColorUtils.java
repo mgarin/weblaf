@@ -27,7 +27,7 @@ import java.util.StringTokenizer;
  * @since 1.3
  */
 
-public class ColorUtils
+public final class ColorUtils
 {
     /**
      * Returns color with alpha value set to 255.

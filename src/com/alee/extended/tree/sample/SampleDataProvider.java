@@ -17,7 +17,7 @@
 
 package com.alee.extended.tree.sample;
 
-import com.alee.extended.tree.AsyncTreeDataProvider;
+import com.alee.extended.tree.AbstractTreeDataProvider;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.MathUtils;
 import com.alee.utils.ThreadUtils;
@@ -31,7 +31,7 @@ import java.util.List;
  * @since 1.4
  */
 
-public class SampleDataProvider implements AsyncTreeDataProvider<SampleNode>
+public class SampleDataProvider extends AbstractTreeDataProvider<SampleNode>
 {
     /**
      * Returns asynchronous tree sample root node.

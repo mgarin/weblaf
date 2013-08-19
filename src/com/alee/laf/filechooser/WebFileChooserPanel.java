@@ -37,6 +37,8 @@ import com.alee.laf.StyleConstants;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.combobox.WebComboBox;
 import com.alee.laf.label.WebLabel;
+import com.alee.laf.list.WebList;
+import com.alee.laf.list.WebListCellRenderer;
 import com.alee.laf.list.editor.ListEditAdapter;
 import com.alee.laf.menu.WebPopupMenu;
 import com.alee.laf.menu.WebRadioButtonMenuItem;
@@ -85,6 +87,7 @@ public class WebFileChooserPanel extends WebPanel
      */
     public static final ImageIcon BACKWARD_ICON = new ImageIcon ( WebFileChooserPanel.class.getResource ( "icons/backward.png" ) );
     public static final ImageIcon FORWARD_ICON = new ImageIcon ( WebFileChooserPanel.class.getResource ( "icons/forward.png" ) );
+    public static final ImageIcon HISTORY_ICON = new ImageIcon ( WebFileChooserPanel.class.getResource ( "icons/history.png" ) );
     public static final ImageIcon FOLDER_UP_ICON = new ImageIcon ( WebFileChooserPanel.class.getResource ( "icons/folder_up.png" ) );
     public static final ImageIcon FOLDER_HOME_ICON = new ImageIcon ( WebFileChooserPanel.class.getResource ( "icons/folder_home.png" ) );
     public static final ImageIcon FOLDER_NEW_ICON = new ImageIcon ( WebFileChooserPanel.class.getResource ( "icons/folder_new.png" ) );
@@ -176,6 +179,7 @@ public class WebFileChooserPanel extends WebPanel
      */
     protected WebButton backward;
     protected WebButton forward;
+    protected WebButton history;
     protected WebPathField pathField;
     protected PathFieldListener pathFieldListener;
     protected WebButton folderUp;
@@ -305,8 +309,7 @@ public class WebFileChooserPanel extends WebPanel
         {
             public void actionPerformed ( ActionEvent e )
             {
-                currentHistoryIndex -= 1;
-                updateCurrentFolder ( navigationHistory.get ( currentHistoryIndex ), UpdateSource.history );
+                updateHistoryState ( currentHistoryIndex - 1 );
             }
         } );
 
@@ -319,8 +322,69 @@ public class WebFileChooserPanel extends WebPanel
         {
             public void actionPerformed ( ActionEvent e )
             {
-                currentHistoryIndex += 1;
-                updateCurrentFolder ( navigationHistory.get ( currentHistoryIndex ), UpdateSource.history );
+                updateHistoryState ( currentHistoryIndex + 1 );
+            }
+        } );
+
+        history = new WebButton ( HISTORY_ICON );
+        history.setLanguage ( "weblaf.filechooser.history" );
+        history.setRolloverDecoratedOnly ( true );
+        history.setFocusable ( false );
+        history.addActionListener ( new ActionListener ()
+        {
+            public void actionPerformed ( ActionEvent e )
+            {
+                final WebPopupMenu historyPopup = new WebPopupMenu ();
+
+                final WebList historyList = new WebList ( navigationHistory );
+                historyList.setVisibleRowCount ( Math.min ( 10, navigationHistory.size () ) );
+                historyList.setRolloverSelectionEnabled ( true );
+                historyList.setCellRenderer ( new WebListCellRenderer ()
+                {
+                    public Component getListCellRendererComponent ( JList list, Object value, int index, boolean isSelected,
+                                                                    boolean cellHasFocus )
+                    {
+                        super.getListCellRendererComponent ( list, value, index, isSelected, cellHasFocus );
+
+                        final File file = ( File ) value;
+                        if ( file == null )
+                        {
+                            setIcon ( FileUtils.getMyComputerIcon () );
+                            setText ( LanguageManager.get ( "weblaf.filechooser.root" ) );
+                        }
+                        else
+                        {
+                            setIcon ( FileUtils.getFileIcon ( file ) );
+                            setText ( FileUtils.getDisplayFileName ( file ) );
+                        }
+                        setBoldFont ( index == currentHistoryIndex );
+
+                        return this;
+                    }
+                } );
+                historyList.addMouseListener ( new MouseAdapter ()
+                {
+                    public void mouseReleased ( MouseEvent e )
+                    {
+                        updateHistoryState ( historyList.getSelectedIndex () );
+                        historyPopup.setVisible ( false );
+                    }
+                } );
+                final WebScrollPane scrollPane = new WebScrollPane ( historyList );
+                scrollPane.setShadeWidth ( 0 );
+                historyPopup.add ( scrollPane );
+
+                if ( history.getComponentOrientation ().isLeftToRight () )
+                {
+                    historyPopup.show ( history, 0, history.getHeight () );
+                }
+                else
+                {
+                    historyPopup.show ( history, history.getWidth () - historyPopup.getPreferredSize ().width, history.getHeight () );
+                }
+
+                historyList.setSelectedIndex ( currentHistoryIndex );
+                historyList.scrollToCell ( currentHistoryIndex );
             }
         } );
 
@@ -488,6 +552,7 @@ public class WebFileChooserPanel extends WebPanel
 
         toolBar.add ( backward );
         toolBar.add ( forward );
+        toolBar.add ( history );
         toolBar.addFill ( pathField );
         toolBar.addToEnd ( folderUp );
         toolBar.addToEnd ( folderHome );
@@ -498,6 +563,20 @@ public class WebFileChooserPanel extends WebPanel
         toolBar.addSeparatorToEnd ();
         toolBar.addToEnd ( view );
         return toolBar;
+    }
+
+    /**
+     * Updates current history state.
+     *
+     * @param historyIndex new history index
+     */
+    protected void updateHistoryState ( int historyIndex )
+    {
+        if ( historyIndex >= 0 && historyIndex < navigationHistory.size () )
+        {
+            currentHistoryIndex = historyIndex;
+            updateCurrentFolder ( navigationHistory.get ( historyIndex ), UpdateSource.history );
+        }
     }
 
     /**
@@ -984,7 +1063,7 @@ public class WebFileChooserPanel extends WebPanel
     /**
      * Updates toolbar controls state.
      */
-    private void updateControlsState ()
+    protected void updateControlsState ()
     {
         backward.setEnabled ( currentHistoryIndex > 0 );
         forward.setEnabled ( currentHistoryIndex + 1 < navigationHistory.size () );
@@ -1187,11 +1266,25 @@ public class WebFileChooserPanel extends WebPanel
      *
      * @param file new current folder
      */
-    protected void updateTree ( File file )
+    protected void updateTree ( final File file )
     {
-        fileTree.removeTreeSelectionListener ( fileTreeListener );
-        fileTree.setSelectedFile ( file );
-        fileTree.addTreeSelectionListener ( fileTreeListener );
+        if ( file != null )
+        {
+            fileTree.expandToFile ( file, false, false, new Runnable ()
+            {
+                public void run ()
+                {
+                    fileTree.removeTreeSelectionListener ( fileTreeListener );
+                    fileTree.setSelectedNode ( fileTree.getNode ( file ) );
+                    fileTree.addTreeSelectionListener ( fileTreeListener );
+                }
+            } );
+        }
+        else
+        {
+            fileTree.clearSelection ();
+            fileTree.scrollToStart ();
+        }
     }
 
     /**

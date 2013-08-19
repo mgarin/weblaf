@@ -103,4 +103,20 @@ public abstract class AsyncUniqueNode extends UniqueNode implements Serializable
         return WebAsyncTreeStyle.loaderIconType.equals ( LoaderIconType.none ) ? null :
                 new ImageIcon ( AsyncUniqueNode.class.getResource ( "icons/" + WebAsyncTreeStyle.loaderIconType + ".gif" ) );
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public AsyncUniqueNode getParent ()
+    {
+        return ( AsyncUniqueNode ) super.getParent ();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public AsyncUniqueNode getChildAt ( int index )
+    {
+        return ( AsyncUniqueNode ) super.getChildAt ( index );
+    }
 }

@@ -21,6 +21,7 @@ import com.alee.extended.image.WebImage;
 import com.alee.laf.checkbox.WebCheckBox;
 import com.alee.laf.combobox.WebComboBox;
 import com.alee.laf.text.WebTextField;
+import com.alee.utils.swing.WebDefaultCellEditor;
 
 import javax.swing.*;
 import javax.swing.plaf.TreeUI;
@@ -35,8 +36,13 @@ import java.awt.event.FocusEvent;
  * @since 1.4
  */
 
-public class WebTreeCellEditor extends DefaultCellEditor
+public class WebTreeCellEditor<C extends JComponent> extends WebDefaultCellEditor<C>
 {
+    /**
+     * Whether should update editor's leading icon automatically when it is possible or not.
+     */
+    protected boolean autoUpdateLeadingIcon = true;
+
     /**
      * Constructs default tree cell editor with a text field as editor.
      */
@@ -137,7 +143,12 @@ public class WebTreeCellEditor extends DefaultCellEditor
                 editor.setDrawFocus ( false );
                 editor.setShadeWidth ( sw );
                 editor.setDrawShade ( false );
-                editor.setLeadingComponent ( new WebImage ( label.getIcon () ) );
+
+                // Leading icon
+                if ( autoUpdateLeadingIcon )
+                {
+                    editor.setLeadingComponent ( new WebImage ( label.getIcon () ) );
+                }
 
                 // Field side margin
                 int sm = sw + 1;

@@ -18,7 +18,7 @@
 package com.alee.laf.rootpane;
 
 import com.alee.extended.panel.WebButtonGroup;
-import com.alee.managers.language.LanguageContainer;
+import com.alee.managers.language.LanguageContainerMethods;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.language.LanguageMethods;
 import com.alee.managers.language.updaters.LanguageUpdater;
@@ -35,7 +35,7 @@ import java.awt.*;
  * User: mgarin Date: 11.12.12 Time: 14:51
  */
 
-public class WebDialog extends JDialog implements LanguageMethods, LanguageContainer, SettingsMethods
+public class WebDialog extends JDialog implements LanguageMethods, LanguageContainerMethods, SettingsMethods
 {
     public WebDialog ()
     {

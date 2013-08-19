@@ -49,7 +49,7 @@ import java.util.Map;
  * @since 1.4
  */
 
-public class SettingsManager
+public final class SettingsManager
 {
     /**
      * Settings change listeners.

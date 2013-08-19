@@ -36,7 +36,7 @@ import java.util.Map;
  * and other Swing components and act differently than standart popups.
  */
 
-public class PopupManager
+public final class PopupManager
 {
     private static Map<Window, ShadeLayer> shadeLayers = new HashMap<Window, ShadeLayer> ();
     private static Map<Window, PopupLayer> popupLayers = new HashMap<Window, PopupLayer> ();

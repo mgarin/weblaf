@@ -26,7 +26,7 @@ import java.util.Date;
  * @since 1.4
  */
 
-public class CompareUtils
+public final class CompareUtils
 {
     /**
      * Returns whether the first String equals to the second String or not.

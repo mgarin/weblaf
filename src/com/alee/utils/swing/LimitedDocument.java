@@ -22,20 +22,41 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;
 
 /**
- * User: mgarin Date: 29.12.11 Time: 15:15
+ * Plain document limited by characters number.
+ *
+ * @author Mikle Garin
+ * @since 1.4
  */
 
 public class LimitedDocument extends PlainDocument
 {
+    /**
+     * Characters limit.
+     */
     private int limit;
+
+    /**
+     * Whether should translate all characters to upper case or not.
+     */
     private boolean toUppercase = false;
 
+    /**
+     * Constructs new limited document.
+     *
+     * @param limit characters limit
+     */
     public LimitedDocument ( int limit )
     {
         super ();
         this.limit = limit;
     }
 
+    /**
+     * Constructs new limited document.
+     *
+     * @param limit characters limit
+     * @param upper whether to translate all characters to upper case or not
+     */
     public LimitedDocument ( int limit, boolean upper )
     {
         super ();
@@ -43,6 +64,9 @@ public class LimitedDocument extends PlainDocument
         toUppercase = upper;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void insertString ( int offset, String str, AttributeSet attr ) throws BadLocationException
     {
         if ( str == null )

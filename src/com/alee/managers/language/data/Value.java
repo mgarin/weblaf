@@ -32,8 +32,8 @@ import java.util.List;
  * User: mgarin Date: 20.04.12 Time: 14:03
  */
 
-@XStreamAlias ( "value" )
-@XStreamConverter ( ValueConverter.class )
+@XStreamAlias ("value")
+@XStreamConverter (ValueConverter.class)
 public final class Value implements Serializable, Cloneable
 {
     private String lang;
@@ -45,44 +45,38 @@ public final class Value implements Serializable, Cloneable
     public Value ()
     {
         super ();
-        setTexts ( new ArrayList<Text> () );
-        setTooltips ( new ArrayList<Tooltip> () );
     }
 
     public Value ( String lang, String text )
     {
         super ();
-        setLang ( lang );
-        setTexts ( CollectionUtils.copy ( new Text ( text ) ) );
-        setTooltips ( new ArrayList<Tooltip> () );
+        this.lang = lang;
+        this.texts = CollectionUtils.copy ( new Text ( text ) );
     }
 
     public Value ( String lang, Character mnemonic, String text )
     {
         super ();
-        setLang ( lang );
-        setMnemonic ( mnemonic );
-        setTexts ( CollectionUtils.copy ( new Text ( text ) ) );
-        setTooltips ( new ArrayList<Tooltip> () );
+        this.lang = lang;
+        this.mnemonic = mnemonic;
+        this.texts = CollectionUtils.copy ( new Text ( text ) );
     }
 
     public Value ( String lang, String hotkey, String text )
     {
         super ();
-        setLang ( lang );
-        setHotkey ( hotkey );
-        setTexts ( CollectionUtils.copy ( new Text ( text ) ) );
-        setTooltips ( new ArrayList<Tooltip> () );
+        this.lang = lang;
+        this.hotkey = hotkey;
+        this.texts = CollectionUtils.copy ( new Text ( text ) );
     }
 
     public Value ( String lang, Character mnemonic, String hotkey, String text )
     {
         super ();
-        setLang ( lang );
-        setMnemonic ( mnemonic );
-        setHotkey ( hotkey );
-        setTexts ( CollectionUtils.copy ( new Text ( text ) ) );
-        setTooltips ( new ArrayList<Tooltip> () );
+        this.lang = lang;
+        this.mnemonic = mnemonic;
+        this.hotkey = hotkey;
+        this.texts = CollectionUtils.copy ( new Text ( text ) );
     }
 
     public String getLang ()
@@ -192,7 +186,12 @@ public final class Value implements Serializable, Cloneable
         //            }
         //        }
 
+        if ( texts == null )
+        {
+            texts = new ArrayList<Text> ( 1 );
+        }
         this.texts.add ( text );
+
         return text;
     }
 
@@ -249,7 +248,12 @@ public final class Value implements Serializable, Cloneable
         //            }
         //        }
 
-        this.tooltips.add ( tooltip );
+        if ( tooltips == null )
+        {
+            tooltips = new ArrayList<Tooltip> ( 1 );
+        }
+        tooltips.add ( tooltip );
+
         return tooltip;
     }
 
@@ -290,8 +294,8 @@ public final class Value implements Serializable, Cloneable
         value.setLang ( lang );
         value.setMnemonic ( mnemonic );
         value.setHotkey ( hotkey );
-        value.setTexts ( CollectionUtils.clone ( texts ) );
-        value.setTooltips ( CollectionUtils.clone ( tooltips ) );
+        value.setTexts ( texts != null ? CollectionUtils.clone ( texts ) : null );
+        value.setTooltips ( tooltips != null ? CollectionUtils.clone ( tooltips ) : null );
         return value;
     }
 

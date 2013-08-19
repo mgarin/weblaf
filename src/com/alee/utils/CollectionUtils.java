@@ -17,6 +17,8 @@
 
 package com.alee.utils;
 
+import com.alee.utils.compare.Filter;
+
 import java.util.*;
 
 /**
@@ -26,7 +28,7 @@ import java.util.*;
  * @since 1.3
  */
 
-public class CollectionUtils
+public final class CollectionUtils
 {
     /**
      * Adds all objects into specified list.
@@ -284,5 +286,26 @@ public class CollectionUtils
             }
         }
         return -1;
+    }
+
+    /**
+     * Returns list of elements filtered from collection.
+     *
+     * @param collection collecton to filter
+     * @param filter     filter to process
+     * @param <T>        elements type
+     * @return list of elements filtered from collection
+     */
+    public static <T> List<T> filter ( Collection<T> collection, Filter<T> filter )
+    {
+        List<T> filtered = new ArrayList<T> ( collection.size () );
+        for ( T element : collection )
+        {
+            if ( filter.accept ( element ) )
+            {
+                filtered.add ( element );
+            }
+        }
+        return filtered;
     }
 }

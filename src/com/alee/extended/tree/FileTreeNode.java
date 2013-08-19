@@ -17,23 +17,46 @@
 
 package com.alee.extended.tree;
 
+import com.alee.utils.FileUtils;
+
 import java.io.File;
 
 /**
- * User: mgarin Date: 15.10.2010 Time: 14:34:35
+ * Custom AsyncUniqueNode for WebFileTree.
+ *
+ * @author Mikle Garin
+ * @since 1.4
  */
 
 public class FileTreeNode extends AsyncUniqueNode
 {
+    /**
+     * File for this node.
+     */
     private File file;
+
+    /**
+     * Custom node name.
+     */
     private String name = null;
 
+    /**
+     * Constructs file node for the specified file.
+     *
+     * @param file node file
+     */
     public FileTreeNode ( File file )
     {
         super ();
         this.file = file;
     }
 
+    /**
+     * Constructs file node for the specified file with custom name.
+     *
+     * @param file node file
+     * @param name custom node name
+     */
     public FileTreeNode ( File file, String name )
     {
         super ();
@@ -41,27 +64,84 @@ public class FileTreeNode extends AsyncUniqueNode
         this.name = name;
     }
 
+    /**
+     * Returns file for this node.
+     *
+     * @return file for this node
+     */
     public File getFile ()
     {
         return file;
     }
 
+    /**
+     * Sets file for this node.
+     *
+     * @param file file for this node
+     */
     public void setFile ( File file )
     {
         this.file = file;
     }
 
+    /**
+     * Returns custom name for this node.
+     *
+     * @return custom name for this node
+     */
     public String getName ()
     {
         return name;
     }
 
+    /**
+     * Sets custom name for this node.
+     *
+     * @param name custom name for this node
+     */
     public void setName ( String name )
     {
         this.name = name;
 
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public FileTreeNode getParent ()
+    {
+        return ( FileTreeNode ) super.getParent ();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public FileTreeNode getChildAt ( int index )
+    {
+        return ( FileTreeNode ) super.getChildAt ( index );
+    }
+
+    /**
+     * Returns index of child node with the specified file.
+     *
+     * @param file file to search for in child nodes
+     * @return index of child node with the specified file
+     */
+    public int indexOfFileChild ( File file )
+    {
+        for ( int i = 0; i < getChildCount (); i++ )
+        {
+            if ( FileUtils.equals ( getChildAt ( i ).getFile (), file ) )
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public String toString ()
     {
         return name != null ? name : ( file != null ? file.getName () : "root" );

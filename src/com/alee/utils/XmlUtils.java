@@ -48,7 +48,7 @@ import java.util.List;
  * @since 1.3
  */
 
-public class XmlUtils
+public final class XmlUtils
 {
     /**
      * Custom color converter.

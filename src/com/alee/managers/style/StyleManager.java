@@ -24,7 +24,7 @@ package com.alee.managers.style;
  * @since 1.4
  */
 
-public class StyleManager
+public final class StyleManager
 {
     // todo Coming soon
 }

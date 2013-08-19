@@ -33,6 +33,7 @@ import java.util.EventObject;
  * User: mgarin Date: 31.10.12 Time: 16:24
  */
 
+// todo Split into three additional editors
 public class WebDefaultCellEditor<C extends JComponent> extends AbstractCellEditor implements TableCellEditor, TreeCellEditor
 {
     public static final String COMBOBOX_CELL_EDITOR = "JComboBox.isTableCellEditor";
@@ -180,8 +181,8 @@ public class WebDefaultCellEditor<C extends JComponent> extends AbstractCellEdit
 
     public Component getTreeCellEditorComponent ( JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row )
     {
-        String stringValue = tree.convertValueToText ( value, isSelected, expanded, leaf, row, false );
-        delegate.setValue ( stringValue );
+        //String stringValue = tree.convertValueToText ( value, isSelected, expanded, leaf, row, false );
+        delegate.setValue ( value );
         return editorComponent;
     }
 

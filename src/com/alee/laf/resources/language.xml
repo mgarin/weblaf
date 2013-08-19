@@ -400,6 +400,16 @@
             <value lang="pt">Escolher os ficheiros</value>
             <value lang="de">Dateien auswählen</value>
         </record>
+        <record key="root">
+            <value lang="en">My computer</value>
+            <value lang="ru">Мой компьютер</value>
+            <value lang="pl">Mój komputer</value>
+            <value lang="ar">جهاز الكمبيوتر الخاص بي</value>
+            <value lang="es">Mi equipo</value>
+            <value lang="fr">Mon ordinateur</value>
+            <value lang="pt">Meu computador</value>
+            <value lang="de">Mein Computer</value>
+        </record>
         <record key="back">
             <value lang="en" way="down" state="tooltip">Back</value>
             <value lang="ru" way="down" state="tooltip">Назад</value>
@@ -419,6 +429,16 @@
             <value lang="fr" way="down" state="tooltip">Suivant</value>
             <value lang="pt" way="down" state="tooltip">Avançar</value>
             <value lang="de" way="down" state="tooltip">Vorwärts</value>
+        </record>
+        <record key="history">
+            <value lang="en" way="down" state="tooltip">History</value>
+            <value lang="ru" way="down" state="tooltip">История</value>
+            <value lang="pl" way="down" state="tooltip">Historia</value>
+            <value lang="ar" way="down" state="tooltip">تاريخ</value>
+            <value lang="es" way="down" state="tooltip">Historia</value>
+            <value lang="fr" way="down" state="tooltip">Histoire</value>
+            <value lang="pt" way="down" state="tooltip">História</value>
+            <value lang="de" way="down" state="tooltip">Geschichte</value>
         </record>
         <record key="folderup">
             <value lang="en" way="down" state="tooltip">Folder up</value>

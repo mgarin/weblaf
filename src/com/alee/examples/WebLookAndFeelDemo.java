@@ -123,7 +123,7 @@ public class WebLookAndFeelDemo extends WebFrame
         final WebPanel contentPane = new WebPanel ();
 
         // Exampler loading dialog
-        WebProgressDialog progress = createProgressDialog ();
+        final WebProgressDialog progress = createProgressDialog ();
         progress.addWindowListener ( new WindowAdapter ()
         {
             public void windowClosed ( WindowEvent e )
@@ -245,7 +245,7 @@ public class WebLookAndFeelDemo extends WebFrame
 
     private JComponent createBackgroundPanel ()
     {
-        WebImage wi = new WebImage ( WebLookAndFeelDemo.class, "icons/text.png" )
+        final WebImage wi = new WebImage ( WebLookAndFeelDemo.class, "icons/text.png" )
         {
             protected void paintComponent ( Graphics g )
             {
@@ -276,7 +276,7 @@ public class WebLookAndFeelDemo extends WebFrame
 
     private ImageIcon getUpdateIcon ()
     {
-        String os = SystemUtils.getShortOsName ();
+        final String os = SystemUtils.getShortOsName ();
         return new ImageIcon ( WebLookAndFeelDemo.class.getResource ( "icons/update/" + ( os != null ? os : "other" ) + ".png" ) );
     }
 
@@ -308,16 +308,16 @@ public class WebLookAndFeelDemo extends WebFrame
     private WebProgressDialog createProgressDialog ()
     {
         // Progress dialog
-        WebProgressDialog progress = new WebProgressDialog ( null, "Loading showcase..." );
+        final WebProgressDialog progress = new WebProgressDialog ( null, "Loading showcase..." );
         progress.setIconImages ( WebLookAndFeel.getImages () );
         progress.setShowProgressBar ( false );
 
-        IconProgress loadedIcons = new IconProgress ();
+        final IconProgress loadedIcons = new IconProgress ();
 
-        List<ExampleGroup> eg = ExamplesManager.getExampleGroups ();
-        Insets m = loadedIcons.getInsets ();
-        int w = m.left + eg.size () * 16 + ( eg.size () - 1 ) * 2 + m.right;
-        int h = m.top + 16 + m.bottom;
+        final List<ExampleGroup> eg = ExamplesManager.getExampleGroups ();
+        final Insets m = loadedIcons.getInsets ();
+        final int w = m.left + eg.size () * 16 + ( eg.size () - 1 ) * 2 + m.right;
+        final int h = m.top + 16 + m.bottom;
         loadedIcons.setPreferredSize ( new Dimension ( w, h ) );
 
         progress.setMiddleComponent ( loadedIcons );
@@ -338,7 +338,7 @@ public class WebLookAndFeelDemo extends WebFrame
 
         statusBar.addSpacing ();
 
-        FeatureState fgs = sg.getFeatureGroupState ();
+        final FeatureState fgs = sg.getFeatureGroupState ();
         final WebLabel featureState = new WebLabel ();
         TooltipManager.setTooltip ( featureState, fgs.getIcon (), fgs.getDescription () );
         featureState.setIcon ( fgs.getIcon () );
@@ -614,7 +614,7 @@ public class WebLookAndFeelDemo extends WebFrame
             FeatureState[] values = FeatureState.values ();
             for ( FeatureState fs : values )
             {
-                legendPanel.add ( SwingUtils.setBoldFont ( new WebLabel ( fs.getDescription (), fs.getIcon (), WebLabel.CENTER ) ) );
+                legendPanel.add ( new WebLabel ( fs.getDescription (), fs.getIcon (), WebLabel.CENTER ).setBoldFont () );
                 legendPanel.add ( new WebLabel ( fs.getFullDescription (), WebLabel.CENTER ) );
 
                 if ( !fs.equals ( values[ values.length - 1 ] ) )
@@ -629,7 +629,7 @@ public class WebLookAndFeelDemo extends WebFrame
 
     private JComponent createLegendSeparator ()
     {
-        WebSeparator s = new WebSeparator ( WebSeparator.HORIZONTAL, true );
+        final WebSeparator s = new WebSeparator ( WebSeparator.HORIZONTAL, true );
         s.setDrawSideLines ( false );
         return SwingUtils.setBorder ( s, 4, 0, 4, 0 );
     }
@@ -645,7 +645,7 @@ public class WebLookAndFeelDemo extends WebFrame
                 return;
             }
         }
-        WebPanel legendPanel;
+        final WebPanel legendPanel;
         if ( legendCache.containsKey ( featureState ) )
         {
             legendPanel = legendCache.get ( featureState );
@@ -654,8 +654,7 @@ public class WebLookAndFeelDemo extends WebFrame
         {
             legendPanel = new WebPanel ( new VerticalFlowLayout () );
             legendPanel.setOpaque ( false );
-            legendPanel.add ( SwingUtils
-                    .setBoldFont ( new WebLabel ( featureState.getDescription (), featureState.getIcon (), WebLabel.CENTER ) ) );
+            legendPanel.add ( new WebLabel ( featureState.getDescription (), featureState.getIcon (), WebLabel.CENTER ).setBoldFont () );
             legendPanel.add ( new WebLabel ( featureState.getFullDescription (), WebLabel.CENTER ) );
             legendCache.put ( featureState, legendPanel );
         }
@@ -666,7 +665,8 @@ public class WebLookAndFeelDemo extends WebFrame
     private WebBreadcrumb getLocationBreadcrumb ()
     {
         locationBreadcrumb = new WebBreadcrumb ( true );
-        ButtonGroup locationGroup = new ButtonGroup ();
+
+        final ButtonGroup locationGroup = new ButtonGroup ();
 
         demosButton = new WebBreadcrumbToggleButton ();
         demosButton.setText ( "Demos" );
@@ -709,7 +709,7 @@ public class WebLookAndFeelDemo extends WebFrame
 
     private void updateCurrentDemo ()
     {
-        ExampleGroup group = getSelectedGroup ();
+        final ExampleGroup group = getSelectedGroup ();
 
         // Updating demos button
         demosButton.setIcon ( group.getGroupIcon () );
@@ -774,7 +774,7 @@ public class WebLookAndFeelDemo extends WebFrame
         {
             public void caretUpdate ( CaretEvent e )
             {
-                List<Component> found =
+                final List<Component> found =
                         HighlightManager.highlightComponentsWithText ( slidingSearch.getSearchField ().getText (), getContentPane () );
                 HighlightManager.removeHigligtedComponent ( exampleTabs );
                 if ( found.size () > 0 )
@@ -790,10 +790,10 @@ public class WebLookAndFeelDemo extends WebFrame
                     }
                     if ( !anyShown )
                     {
-                        Component toShow = found.get ( 0 );
+                        final Component toShow = found.get ( 0 );
                         for ( int i = 0; i < exampleTabs.getTabCount (); i++ )
                         {
-                            Component component = exampleTabs.getComponentAt ( i );
+                            final Component component = exampleTabs.getComponentAt ( i );
                             if ( component instanceof Container && ( ( Container ) component ).isAncestorOf ( toShow ) )
                             {
                                 exampleTabs.setSelectedIndex ( i );

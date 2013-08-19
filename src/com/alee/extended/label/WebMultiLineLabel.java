@@ -189,6 +189,14 @@ public class WebMultiLineLabel extends JLabel implements LanguageMethods, FontMe
     /**
      * {@inheritDoc}
      */
+    public WebMultiLineLabel setPlainFont ( boolean apply )
+    {
+        return SwingUtils.setPlainFont ( this, apply );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public boolean isPlainFont ()
     {
         return SwingUtils.isPlainFont ( this );
@@ -205,6 +213,14 @@ public class WebMultiLineLabel extends JLabel implements LanguageMethods, FontMe
     /**
      * {@inheritDoc}
      */
+    public WebMultiLineLabel setBoldFont ( boolean apply )
+    {
+        return SwingUtils.setBoldFont ( this, apply );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public boolean isBoldFont ()
     {
         return SwingUtils.isBoldFont ( this );
@@ -216,6 +232,14 @@ public class WebMultiLineLabel extends JLabel implements LanguageMethods, FontMe
     public WebMultiLineLabel setItalicFont ()
     {
         return SwingUtils.setItalicFont ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public WebMultiLineLabel setItalicFont ( boolean apply )
+    {
+        return SwingUtils.setItalicFont ( this, apply );
     }
 
     /**

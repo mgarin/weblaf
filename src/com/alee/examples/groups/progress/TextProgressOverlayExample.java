@@ -67,8 +67,9 @@ public class TextProgressOverlayExample extends DefaultExample
 
         // Overlaying components
         final WebLabel progressLabel = new WebLabel ( "0%", WebLabel.CENTER );
+        progressLabel.setBoldFont ();
         progressLabel.setMargin ( 5, 10, 5, 10 );
-        final WebPanel overlayPanel = new WebPanel ( true, SwingUtils.setBoldFont ( progressLabel ) );
+        final WebPanel overlayPanel = new WebPanel ( true, progressLabel );
         overlayPanel.setShadeWidth ( 5 );
         overlayPanel.setVisible ( false );
         overlayPanel.setPreferredSize ( new Dimension ( 60, 40 ) );

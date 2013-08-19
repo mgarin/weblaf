@@ -38,7 +38,7 @@ import java.util.Map;
  * User: mgarin Date: 27.04.11 Time: 17:41
  */
 
-public class LafUtils
+public final class LafUtils
 {
     /**
      * Creates border for web components.

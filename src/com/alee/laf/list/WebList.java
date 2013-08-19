@@ -49,22 +49,22 @@ public class WebList extends JList implements FontMethods<WebList>
     /**
      * List edit lsiteners.
      */
-    private List<ListEditListener> editListeners = new ArrayList<ListEditListener> ();
+    protected List<ListEditListener> editListeners = new ArrayList<ListEditListener> ();
 
     /**
      * Whether this list is editable or not.
      */
-    private boolean editable = false;
+    protected boolean editable = false;
 
     /**
      * List cell editor.
      */
-    private ListCellEditor listCellEditor = null;
+    protected ListCellEditor listCellEditor = null;
 
     /**
      * Currently edited cell index or -1 if none edited at the moment.
      */
-    private int editedCell = -1;
+    protected int editedCell = -1;
 
     /**
      * Constructs empty list.
@@ -72,6 +72,16 @@ public class WebList extends JList implements FontMethods<WebList>
     public WebList ()
     {
         super ();
+    }
+
+    /**
+     * Constructs list with the specified data.
+     *
+     * @param listData list data
+     */
+    public WebList ( List listData )
+    {
+        super ( listData.toArray () );
     }
 
     /**
@@ -319,6 +329,23 @@ public class WebList extends JList implements FontMethods<WebList>
     }
 
     /**
+     * Scrolls list to specified cell.
+     *
+     * @param index cell index
+     */
+    public void scrollToCell ( int index )
+    {
+        if ( index != -1 )
+        {
+            Rectangle cellBounds = getCellBounds ( index, index );
+            if ( cellBounds != null )
+            {
+                scrollRectToVisible ( cellBounds );
+            }
+        }
+    }
+
+    /**
      * Returns whether to highlight rollover cell or not.
      *
      * @return true if rollover cell is being highlighted, false otherwise
@@ -545,6 +572,14 @@ public class WebList extends JList implements FontMethods<WebList>
     /**
      * {@inheritDoc}
      */
+    public WebList setPlainFont ( boolean apply )
+    {
+        return SwingUtils.setPlainFont ( this, apply );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public boolean isPlainFont ()
     {
         return SwingUtils.isPlainFont ( this );
@@ -561,6 +596,14 @@ public class WebList extends JList implements FontMethods<WebList>
     /**
      * {@inheritDoc}
      */
+    public WebList setBoldFont ( boolean apply )
+    {
+        return SwingUtils.setBoldFont ( this, apply );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public boolean isBoldFont ()
     {
         return SwingUtils.isBoldFont ( this );
@@ -572,6 +615,14 @@ public class WebList extends JList implements FontMethods<WebList>
     public WebList setItalicFont ()
     {
         return SwingUtils.setItalicFont ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public WebList setItalicFont ( boolean apply )
+    {
+        return SwingUtils.setItalicFont ( this, apply );
     }
 
     /**

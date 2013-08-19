@@ -41,7 +41,7 @@ import java.util.Properties;
  * @since 1.3
  */
 
-public class ProxyManager
+public final class ProxyManager
 {
     /**
      * Settings group key for proxy settings.

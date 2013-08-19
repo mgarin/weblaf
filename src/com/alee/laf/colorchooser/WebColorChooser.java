@@ -17,9 +17,9 @@
 
 package com.alee.laf.colorchooser;
 
-import com.alee.laf.StyleConstants;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.utils.ReflectUtils;
+import com.alee.utils.swing.DialogOptions;
 
 import javax.swing.*;
 import javax.swing.colorchooser.ColorSelectionModel;
@@ -29,7 +29,7 @@ import java.awt.*;
  * User: mgarin Date: 01.02.2010 Time: 15:00:20
  */
 
-public class WebColorChooser extends JColorChooser
+public class WebColorChooser extends JColorChooser implements DialogOptions
 {
     public WebColorChooser ()
     {
@@ -149,7 +149,7 @@ public class WebColorChooser extends JColorChooser
             wcc.setColor ( color );
         }
         wcc.setVisible ( true );
-        if ( wcc.getResult () == StyleConstants.OK_OPTION )
+        if ( wcc.getResult () == OK_OPTION )
         {
             return wcc.getColor ();
         }

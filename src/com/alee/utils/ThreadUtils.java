@@ -24,7 +24,7 @@ package com.alee.utils;
  * @since 1.4
  */
 
-public class ThreadUtils
+public final class ThreadUtils
 {
     /**
      * Causes calling thread to sleep and ignores thrown InterruptedException.

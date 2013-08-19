@@ -58,6 +58,7 @@ public class SampleTreeCellEditor extends WebTreeCellEditor
      */
     public Component getTreeCellEditorComponent ( JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row )
     {
+        // todo Use delegate instead of direct access!
         this.sampleNode = ( SampleNode ) value;
         WebTextField editor = ( WebTextField ) super.getTreeCellEditorComponent ( tree, value, isSelected, expanded, leaf, row );
         editor.setText ( sampleNode.getName () );

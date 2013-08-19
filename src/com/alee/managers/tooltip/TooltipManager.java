@@ -47,7 +47,7 @@ import java.util.WeakHashMap;
  * @since 1.4
  */
 
-public class TooltipManager
+public final class TooltipManager
 {
     // Default settings
     private static int defaultDelay = 500;

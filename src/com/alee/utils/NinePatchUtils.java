@@ -39,7 +39,7 @@ import java.util.Map;
  * @since 1.4
  */
 
-public class NinePatchUtils
+public final class NinePatchUtils
 {
     /**
      * Shade nine-patch icons cache.

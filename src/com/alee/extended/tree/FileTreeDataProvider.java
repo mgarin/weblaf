@@ -19,9 +19,9 @@ package com.alee.extended.tree;
 
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.FileUtils;
+import com.alee.utils.compare.Filter;
 
 import java.io.File;
-import java.io.FileFilter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,13 +32,8 @@ import java.util.List;
  * @since 1.4
  */
 
-public class FileTreeDataProvider implements AsyncTreeDataProvider<FileTreeNode>
+public class FileTreeDataProvider extends AbstractTreeDataProvider<FileTreeNode>
 {
-    /**
-     * File filter.
-     */
-    private FileFilter fileFilter;
-
     /**
      * Tree root files.
      */
@@ -52,8 +47,9 @@ public class FileTreeDataProvider implements AsyncTreeDataProvider<FileTreeNode>
     public FileTreeDataProvider ( File... rootFiles )
     {
         super ();
-        this.fileFilter = WebFileTreeStyle.fileFilter;
         this.rootFiles = CollectionUtils.copy ( rootFiles );
+        this.comparator = new FileTreeNodeComparator ();
+        this.filter = WebFileTreeStyle.filter;
     }
 
     /**
@@ -64,61 +60,41 @@ public class FileTreeDataProvider implements AsyncTreeDataProvider<FileTreeNode>
     public FileTreeDataProvider ( List<File> rootFiles )
     {
         super ();
-        this.fileFilter = WebFileTreeStyle.fileFilter;
         this.rootFiles = rootFiles;
+        this.comparator = new FileTreeNodeComparator ();
+        this.filter = WebFileTreeStyle.filter;
     }
 
     /**
      * Constructs file tree data provider with the specified files as root.
      *
-     * @param fileFilter tree file filter
-     * @param rootFiles  tree root files
+     * @param filter    tree nodes filter
+     * @param rootFiles tree root files
      */
-    public FileTreeDataProvider ( FileFilter fileFilter, File... rootFiles )
+    public FileTreeDataProvider ( Filter<FileTreeNode> filter, File... rootFiles )
     {
         super ();
-        this.fileFilter = fileFilter;
         this.rootFiles = CollectionUtils.copy ( rootFiles );
+        this.comparator = new FileTreeNodeComparator ();
+        this.filter = filter;
     }
 
     /**
      * Constructs file tree data provider with the specified files as root.
      *
-     * @param fileFilter tree file filter
-     * @param rootFiles  tree root files
+     * @param filter    tree nodes filter
+     * @param rootFiles tree root files
      */
-    public FileTreeDataProvider ( FileFilter fileFilter, List<File> rootFiles )
+    public FileTreeDataProvider ( Filter<FileTreeNode> filter, List<File> rootFiles )
     {
         super ();
-        this.fileFilter = fileFilter;
         this.rootFiles = rootFiles;
+        this.comparator = new FileTreeNodeComparator ();
+        this.filter = filter;
     }
 
     /**
-     * Returns tree files filter.
-     *
-     * @return files filter
-     */
-    public FileFilter getFileFilter ()
-    {
-        return fileFilter;
-    }
-
-    /**
-     * Sets tree files filter.
-     *
-     * @param fileFilter new files filter
-     */
-    public void setFileFilter ( FileFilter fileFilter )
-    {
-        // todo Apply filter to existing childs
-        this.fileFilter = fileFilter;
-    }
-
-    /**
-     * Returns file tree root node.
-     *
-     * @return file tree root node
+     * {@inheritDoc}
      */
     public FileTreeNode getRoot ()
     {
@@ -126,10 +102,7 @@ public class FileTreeDataProvider implements AsyncTreeDataProvider<FileTreeNode>
     }
 
     /**
-     * Returns child nodes for specified node.
-     *
-     * @param node parent node
-     * @return child nodes
+     * {@inheritDoc}
      */
     public List<FileTreeNode> getChilds ( FileTreeNode node )
     {
@@ -143,7 +116,7 @@ public class FileTreeDataProvider implements AsyncTreeDataProvider<FileTreeNode>
      */
     private List<FileTreeNode> getRootChilds ()
     {
-        List<FileTreeNode> childs = new ArrayList<FileTreeNode> ();
+        List<FileTreeNode> childs = new ArrayList<FileTreeNode> ( rootFiles.size () );
         for ( File rootFile : rootFiles )
         {
             childs.add ( new FileTreeNode ( rootFile ) );
@@ -159,59 +132,24 @@ public class FileTreeDataProvider implements AsyncTreeDataProvider<FileTreeNode>
      */
     public List<FileTreeNode> getFileChilds ( FileTreeNode node )
     {
-        // Retrieving files list from file system
-        final File file = node.getFile ();
-        File[] childsList = file.listFiles ();
-        if ( childsList != null )
+        final File[] childsList = node.getFile ().listFiles ();
+        if ( childsList == null || childsList.length == 0 )
         {
-            // Filtering files
-            if ( fileFilter != null )
-            {
-                int decay = 0;
-                for ( int i = childsList.length - 1; i >= 0; i-- )
-                {
-                    if ( fileFilter != null && !fileFilter.accept ( childsList[ i ] ) )
-                    {
-                        childsList[ i ] = null;
-                        decay++;
-                    }
-                }
-                final File[] newList = new File[ childsList.length - decay ];
-                int index = 0;
-                for ( File f : childsList )
-                {
-                    if ( f != null )
-                    {
-                        newList[ index ] = f;
-                        index++;
-                    }
-                }
-                childsList = newList;
-            }
-
-            // Sorting childs
-            FileUtils.sortFiles ( childsList );
+            return new ArrayList<FileTreeNode> ( 0 );
         }
         else
         {
-            childsList = new File[ 0 ];
+            List<FileTreeNode> childs = new ArrayList<FileTreeNode> ( childsList.length );
+            for ( File f : childsList )
+            {
+                childs.add ( new FileTreeNode ( f ) );
+            }
+            return childs;
         }
-
-        // Creating child nodes
-        List<FileTreeNode> childs = new ArrayList<FileTreeNode> ();
-        for ( File f : childsList )
-        {
-            childs.add ( new FileTreeNode ( f ) );
-        }
-
-        return childs;
     }
 
     /**
-     * Returns whether specified node is leaf or not.
-     *
-     * @param node node
-     * @return true if specified node is leaf, false otherwise
+     * {@inheritDoc}
      */
     public boolean isLeaf ( FileTreeNode node )
     {

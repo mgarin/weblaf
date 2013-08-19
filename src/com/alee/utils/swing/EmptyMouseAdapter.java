@@ -21,15 +21,20 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 
 /**
- * User: mgarin Date: 09.08.11 Time: 4:24
- * <p/>
- * This class provides an empty mouse adapter. It could be used, for example, in case you need to block various mouse events from passing
- * to
- * underlying components.
+ * This class provides an empty mouse adapter.
+ * It can be used in case you need to block various mouse events from passing to underlying components.
+ *
+ * @author Mikle Garin
+ * @since 1.4
  */
 
 public class EmptyMouseAdapter extends MouseAdapter
 {
+    /**
+     * Installs an empty mouse adapter into the specified component.
+     *
+     * @param component component to process
+     */
     public static void install ( Component component )
     {
         EmptyMouseAdapter ema = new EmptyMouseAdapter ();

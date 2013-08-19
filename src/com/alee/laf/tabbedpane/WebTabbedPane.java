@@ -19,7 +19,7 @@ package com.alee.laf.tabbedpane;
 
 import com.alee.extended.painter.Painter;
 import com.alee.laf.WebLookAndFeel;
-import com.alee.managers.language.LanguageContainer;
+import com.alee.managers.language.LanguageContainerMethods;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.settings.DefaultValue;
 import com.alee.managers.settings.SettingsManager;
@@ -37,7 +37,8 @@ import java.awt.*;
  * User: mgarin Date: 28.06.11 Time: 0:52
  */
 
-public class WebTabbedPane extends JTabbedPane implements ShapeProvider, SettingsMethods, FontMethods<WebTabbedPane>, LanguageContainer
+public class WebTabbedPane extends JTabbedPane
+        implements ShapeProvider, SettingsMethods, FontMethods<WebTabbedPane>, LanguageContainerMethods
 {
     public WebTabbedPane ()
     {
@@ -394,6 +395,14 @@ public class WebTabbedPane extends JTabbedPane implements ShapeProvider, Setting
     /**
      * {@inheritDoc}
      */
+    public WebTabbedPane setPlainFont ( boolean apply )
+    {
+        return SwingUtils.setPlainFont ( this, apply );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public boolean isPlainFont ()
     {
         return SwingUtils.isPlainFont ( this );
@@ -410,6 +419,14 @@ public class WebTabbedPane extends JTabbedPane implements ShapeProvider, Setting
     /**
      * {@inheritDoc}
      */
+    public WebTabbedPane setBoldFont ( boolean apply )
+    {
+        return SwingUtils.setBoldFont ( this, apply );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public boolean isBoldFont ()
     {
         return SwingUtils.isBoldFont ( this );
@@ -421,6 +438,14 @@ public class WebTabbedPane extends JTabbedPane implements ShapeProvider, Setting
     public WebTabbedPane setItalicFont ()
     {
         return SwingUtils.setItalicFont ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public WebTabbedPane setItalicFont ( boolean apply )
+    {
+        return SwingUtils.setItalicFont ( this, apply );
     }
 
     /**

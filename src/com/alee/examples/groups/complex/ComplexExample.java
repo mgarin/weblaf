@@ -30,7 +30,10 @@ import com.alee.laf.panel.WebPanel;
 import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.hotkey.HotkeyManager;
 import com.alee.managers.hotkey.HotkeyRunnable;
-import com.alee.utils.*;
+import com.alee.utils.DebugUtils;
+import com.alee.utils.ImageUtils;
+import com.alee.utils.LafUtils;
+import com.alee.utils.NinePatchUtils;
 import com.alee.utils.ninepatch.NinePatchIcon;
 
 import javax.swing.*;
@@ -70,9 +73,9 @@ public class ComplexExample extends DefaultExample
                 DebugUtils.paintBorderDebugInfo ( g, this );
             }
         };
+        titleLabel.setBoldFont ();
         titleLabel.setForeground ( Color.WHITE );
         titleLabel.setHorizontalAlignment ( SwingConstants.CENTER );
-        SwingUtils.setBoldFont ( titleLabel );
         panel.add ( titleLabel, ToolbarLayout.START );
 
         WebPanel innerPanel = new WebPanel ( new VerticalFlowLayout ( 15, 15 ) )

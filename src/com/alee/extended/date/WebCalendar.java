@@ -234,10 +234,10 @@ public class WebCalendar extends WebPanel
     private WebLabel createTitleLabel ( String title )
     {
         WebLabel titleLabel = new WebLabel ( title );
+        titleLabel.setBoldFont ();
         titleLabel.setDrawShade ( true );
         titleLabel.setHorizontalAlignment ( WebLabel.CENTER );
         titleLabel.setVerticalAlignment ( WebLabel.CENTER );
-        SwingUtils.setBoldFont ( titleLabel );
         return titleLabel;
     }
 

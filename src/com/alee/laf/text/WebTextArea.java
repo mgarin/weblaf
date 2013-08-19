@@ -331,6 +331,14 @@ public class WebTextArea extends JTextArea implements LanguageMethods, SettingsM
     /**
      * {@inheritDoc}
      */
+    public WebTextArea setPlainFont ( boolean apply )
+    {
+        return SwingUtils.setPlainFont ( this, apply );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public boolean isPlainFont ()
     {
         return SwingUtils.isPlainFont ( this );
@@ -347,6 +355,14 @@ public class WebTextArea extends JTextArea implements LanguageMethods, SettingsM
     /**
      * {@inheritDoc}
      */
+    public WebTextArea setBoldFont ( boolean apply )
+    {
+        return SwingUtils.setBoldFont ( this, apply );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public boolean isBoldFont ()
     {
         return SwingUtils.isBoldFont ( this );
@@ -358,6 +374,14 @@ public class WebTextArea extends JTextArea implements LanguageMethods, SettingsM
     public WebTextArea setItalicFont ()
     {
         return SwingUtils.setItalicFont ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public WebTextArea setItalicFont ( boolean apply )
+    {
+        return SwingUtils.setItalicFont ( this, apply );
     }
 
     /**

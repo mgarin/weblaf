@@ -22,11 +22,17 @@ import java.io.Serializable;
 import java.util.Comparator;
 
 /**
- * User: mgarin Date: 28.06.12 Time: 16:14
+ * Component Z-order comparator.
+ *
+ * @author Mikle Garin
+ * @since 1.4
  */
 
 public class ZOrderComparator implements Comparator<Component>, Serializable
 {
+    /**
+     * {@inheritDoc}
+     */
     public int compare ( Component o1, Component o2 )
     {
         Container parent1 = o1.getParent ();

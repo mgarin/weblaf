@@ -311,6 +311,14 @@ public class WebRadioButtonMenuItem extends JRadioButtonMenuItem
     /**
      * {@inheritDoc}
      */
+    public WebRadioButtonMenuItem setPlainFont ( boolean apply )
+    {
+        return SwingUtils.setPlainFont ( this, apply );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public boolean isPlainFont ()
     {
         return SwingUtils.isPlainFont ( this );
@@ -327,6 +335,14 @@ public class WebRadioButtonMenuItem extends JRadioButtonMenuItem
     /**
      * {@inheritDoc}
      */
+    public WebRadioButtonMenuItem setBoldFont ( boolean apply )
+    {
+        return SwingUtils.setBoldFont ( this, apply );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public boolean isBoldFont ()
     {
         return SwingUtils.isBoldFont ( this );
@@ -338,6 +354,14 @@ public class WebRadioButtonMenuItem extends JRadioButtonMenuItem
     public WebRadioButtonMenuItem setItalicFont ()
     {
         return SwingUtils.setItalicFont ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public WebRadioButtonMenuItem setItalicFont ( boolean apply )
+    {
+        return SwingUtils.setItalicFont ( this, apply );
     }
 
     /**

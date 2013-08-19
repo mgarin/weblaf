@@ -29,7 +29,7 @@ import java.io.UnsupportedEncodingException;
  * @since 1.4
  */
 
-public class EncryptionUtils
+public final class EncryptionUtils
 {
     /**
      * Default text encoding.

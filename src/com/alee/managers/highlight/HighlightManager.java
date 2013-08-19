@@ -31,7 +31,7 @@ import java.util.List;
  * This manager allows you to quickly highlight multiply visual Swing components in any window
  */
 
-public class HighlightManager
+public final class HighlightManager
 {
     /**
      * HighlightManager initialization

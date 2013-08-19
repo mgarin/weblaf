@@ -296,6 +296,14 @@ public class WebProgressBar extends JProgressBar implements ShapeProvider, Langu
     /**
      * {@inheritDoc}
      */
+    public WebProgressBar setPlainFont ( boolean apply )
+    {
+        return SwingUtils.setPlainFont ( this, apply );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public boolean isPlainFont ()
     {
         return SwingUtils.isPlainFont ( this );
@@ -312,6 +320,14 @@ public class WebProgressBar extends JProgressBar implements ShapeProvider, Langu
     /**
      * {@inheritDoc}
      */
+    public WebProgressBar setBoldFont ( boolean apply )
+    {
+        return SwingUtils.setBoldFont ( this, apply );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public boolean isBoldFont ()
     {
         return SwingUtils.isBoldFont ( this );
@@ -323,6 +339,14 @@ public class WebProgressBar extends JProgressBar implements ShapeProvider, Langu
     public WebProgressBar setItalicFont ()
     {
         return SwingUtils.setItalicFont ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public WebProgressBar setItalicFont ( boolean apply )
+    {
+        return SwingUtils.setItalicFont ( this, apply );
     }
 
     /**

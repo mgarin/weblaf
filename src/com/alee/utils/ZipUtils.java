@@ -31,7 +31,7 @@ import java.util.zip.ZipFile;
  * @since 1.4
  */
 
-public class ZipUtils
+public final class ZipUtils
 {
     /**
      * Extracts ZIP archive contents into destination directory.

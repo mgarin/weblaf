@@ -17,6 +17,7 @@
 
 package com.alee.utils;
 
+import com.alee.extended.filechooser.WebPathField;
 import com.alee.extended.filefilter.DefaultFileFilter;
 import com.alee.laf.GlobalConstants;
 import com.alee.laf.StyleConstants;
@@ -49,8 +50,13 @@ import java.util.*;
  * @since 1.4
  */
 
-public class FileUtils
+public final class FileUtils
 {
+    /**
+     * Icons.
+     */
+    private static final ImageIcon COMPUTER_ICON = new ImageIcon ( WebPathField.class.getResource ( "icons/computer.png" ) );
+
     /**
      * Cached file system view.
      */
@@ -2430,6 +2436,16 @@ public class FileUtils
                 return description;
             }
         }
+    }
+
+    /**
+     * Returns default icon for "My computer" file.
+     *
+     * @return default icon for "My computer" file
+     */
+    public static ImageIcon getMyComputerIcon ()
+    {
+        return COMPUTER_ICON;
     }
 
     /**
