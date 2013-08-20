@@ -2,8 +2,8 @@
 <project name="Web Look and Feel" basedir="../" default="build.artifacts">
 
     <!-- Property files -->
-    <property name="version.properties" value="build/version.properties"/>
-    <property name="build.properties" value="build/build.properties"/>
+    <property name="version.properties" value="build/version.properties" />
+    <property name="build.properties" value="build/build.properties" />
     <property file="${version.properties}" />
     <property file="${build.properties}" />
 
@@ -201,6 +201,11 @@
         <delete file="${vupdater.jar}" />
     </target>
 
+    <!-- Copy XML version file into artifacts folder -->
+    <target name="copy.version">
+        <copy file="${xml.version.file}" todir="${artifacts.dir}" />
+    </target>
+
     <!-- Assemble all artifacts -->
     <target name="build.artifacts">
         <antcall description="Cleanup artifacts" target="clean.artifacts" />
@@ -209,7 +214,8 @@
         <antcall description="Build ${demo.jar.name}" target="build.weblaf.demo.jar" />
         <antcall description="Build ${npe.jar.name}" target="build.npe.jar" />
         <antcall description="Build ${javadoc.name}" target="build.javadoc" />
-        <antcall description="Update library version" target="update.library.build" />
+        <antcall description="Copy library version XML file" target="copy.version" />
+        <antcall description="Update library version files" target="update.library.build" />
         <antcall description="Cleanup dist" target="clean.dist" />
     </target>
 
