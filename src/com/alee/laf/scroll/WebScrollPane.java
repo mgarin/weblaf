@@ -21,7 +21,9 @@ import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.language.LanguageContainerMethods;
 import com.alee.managers.language.LanguageManager;
 import com.alee.utils.ReflectUtils;
+import com.alee.utils.SizeUtils;
 import com.alee.utils.laf.ShapeProvider;
+import com.alee.utils.swing.SizeMethods;
 
 import javax.swing.*;
 import java.awt.*;
@@ -30,13 +32,8 @@ import java.awt.*;
  * User: mgarin Date: 29.04.11 Time: 15:37
  */
 
-public class WebScrollPane extends JScrollPane implements ShapeProvider, LanguageContainerMethods
+public class WebScrollPane extends JScrollPane implements ShapeProvider, SizeMethods<WebScrollPane>, LanguageContainerMethods
 {
-    private int preferredWidth = -1;
-    private int minimumWidth = -1;
-    private int preferredHeight = -1;
-    private int minimumHeight = -1;
-
     public WebScrollPane ( Component view )
     {
         this ( view, true );
@@ -81,50 +78,6 @@ public class WebScrollPane extends JScrollPane implements ShapeProvider, Languag
     public WebScrollBar getWebHorizontalScrollBar ()
     {
         return ( WebScrollBar ) super.getHorizontalScrollBar ();
-    }
-
-    public int getPreferredWidth ()
-    {
-        return preferredWidth;
-    }
-
-    public WebScrollPane setPreferredWidth ( int preferredWidth )
-    {
-        this.preferredWidth = preferredWidth;
-        return this;
-    }
-
-    public int getMinimumWidth ()
-    {
-        return minimumWidth;
-    }
-
-    public WebScrollPane setMinimumWidth ( int minimumWidth )
-    {
-        this.minimumWidth = minimumWidth;
-        return this;
-    }
-
-    public int getPreferredHeight ()
-    {
-        return preferredHeight;
-    }
-
-    public WebScrollPane setPreferredHeight ( int preferredHeight )
-    {
-        this.preferredHeight = preferredHeight;
-        return this;
-    }
-
-    public int getMinimumHeight ()
-    {
-        return minimumHeight;
-    }
-
-    public WebScrollPane setMinimumHeight ( int minimumHeight )
-    {
-        this.minimumHeight = minimumHeight;
-        return this;
     }
 
     /**
@@ -259,35 +212,80 @@ public class WebScrollPane extends JScrollPane implements ShapeProvider, Languag
         }
     }
 
-    //    public void setOpaque ( boolean isOpaque )
-    //    {
-    //        super.setOpaque ( isOpaque );
-    //        if ( getViewport () != null )
-    //        {
-    //            getViewport ().setOpaque ( isOpaque );
-    //        }
-    //    }
+    /**
+     * Size methods.
+     */
 
+    /**
+     * {@inheritDoc}
+     */
+    public int getPreferredWidth ()
+    {
+        return SizeUtils.getPreferredWidth ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public WebScrollPane setPreferredWidth ( int preferredWidth )
+    {
+        return SizeUtils.setPreferredWidth ( this, preferredWidth );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public int getPreferredHeight ()
+    {
+        return SizeUtils.getPreferredHeight ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public WebScrollPane setPreferredHeight ( int preferredHeight )
+    {
+        return SizeUtils.setPreferredHeight ( this, preferredHeight );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public int getMinimumWidth ()
+    {
+        return SizeUtils.getMinimumWidth ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public WebScrollPane setMinimumWidth ( int minimumWidth )
+    {
+        return SizeUtils.setMinimumWidth ( this, minimumWidth );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public int getMinimumHeight ()
+    {
+        return SizeUtils.getMinimumHeight ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public WebScrollPane setMinimumHeight ( int minimumHeight )
+    {
+        return SizeUtils.setMinimumHeight ( this, minimumHeight );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public Dimension getPreferredSize ()
     {
-        Dimension ps = super.getPreferredSize ();
-        if ( preferredWidth != -1 )
-        {
-            ps.width = preferredWidth;
-        }
-        else if ( minimumWidth != -1 )
-        {
-            ps.width = Math.max ( minimumWidth, ps.width );
-        }
-        if ( preferredHeight != -1 )
-        {
-            ps.height = preferredHeight;
-        }
-        else if ( minimumHeight != -1 )
-        {
-            ps.height = Math.max ( minimumHeight, ps.height );
-        }
-        return ps;
+        return SizeUtils.getPreferredSize ( this, super.getPreferredSize () );
     }
 
     /**

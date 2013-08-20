@@ -19,20 +19,24 @@ package com.alee.utils.swing;
 
 /**
  * This interface is extended by all interfaces that provide custom methods for multiply Web-components.
- * This is simply an indicator interface.
+ * All those methods are mostly bridges between Web-components and various managers and utility classes.
  *
  * @author Mikle Garin
  * @see com.alee.managers.settings.SettingsMethods
  * @see com.alee.managers.language.LanguageMethods
  * @see com.alee.managers.language.LanguageContainerMethods
  * @see com.alee.managers.hotkey.HotkeyMethods
+ * @see com.alee.managers.hotkey.ButtonHotkeyMethods
  * @see SizeMethods
  * @see FontMethods
  */
 
 public interface SwingMethods
 {
-    // todo TooltipMethods
-    // todo SizeMethods
     // todo HotkeyMethods, ButtonHotkeyMethods - and replace all workarounds
+    // todo TooltipMethods
+
+    // todo SizeMethods - add into all available components
+
+    // todo Move font methods from SwingUtils to FontUtils
 }

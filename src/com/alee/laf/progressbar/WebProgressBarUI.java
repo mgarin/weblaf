@@ -69,7 +69,7 @@ public class WebProgressBarUI extends BasicProgressBarUI implements ShapeProvide
 
     private boolean paintIndeterminateBorder = WebProgressBarStyle.paintIndeterminateBorder;
 
-    private int preferredWidth = WebProgressBarStyle.preferredWidth;
+    private int preferredProgressWidth = WebProgressBarStyle.preferredProgressWidth;
 
     private int determinateAnimationPause = 1500;
     private int animationLocation = 0;
@@ -123,14 +123,14 @@ public class WebProgressBarUI extends BasicProgressBarUI implements ShapeProvide
         this.paintIndeterminateBorder = paintIndeterminateBorder;
     }
 
-    public int getPreferredWidth ()
+    public int getPreferredProgressWidth ()
     {
-        return preferredWidth;
+        return preferredProgressWidth;
     }
 
-    public void setPreferredWidth ( int preferredWidth )
+    public void setPreferredProgressWidth ( int preferredProgressWidth )
     {
-        this.preferredWidth = preferredWidth;
+        this.preferredProgressWidth = preferredProgressWidth;
     }
 
     public Color getBgTop ()
@@ -347,23 +347,16 @@ public class WebProgressBarUI extends BasicProgressBarUI implements ShapeProvide
     protected Dimension getPreferredInnerHorizontal ()
     {
         Dimension ph = super.getPreferredInnerHorizontal ();
-        ph.width = preferredWidth;
+        ph.width = preferredProgressWidth;
         return ph;
     }
 
     protected Dimension getPreferredInnerVertical ()
     {
         Dimension pv = super.getPreferredInnerVertical ();
-        pv.height = preferredWidth;
+        pv.height = preferredProgressWidth;
         return pv;
     }
-
-    //    public Dimension getPreferredSize ( JComponent c )
-    //    {
-    //        Dimension ps = super.getPreferredSize ( c );
-    //        ps.height += shadeWidth * 2;
-    //        return ps;
-    //    }
 
     public void paint ( Graphics g, JComponent c )
     {

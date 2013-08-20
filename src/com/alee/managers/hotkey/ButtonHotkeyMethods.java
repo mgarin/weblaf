@@ -15,26 +15,20 @@
 * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.extended.tree;
+package com.alee.managers.hotkey;
 
-import com.alee.utils.compare.Filter;
+import com.alee.utils.swing.SwingMethods;
 
 /**
- * WebFileTree style class.
+ * This interface provides a set of methods that should be added into button components.
+ * Basically all these methods are already implemented in HotkeyManager but it is much easier to call them directly from component.
  *
  * @author Mikle Garin
+ * @see com.alee.utils.swing.SwingMethods
+ * @see com.alee.managers.hotkey.HotkeyManager
  */
 
-public final class WebFileTreeStyle
+public interface ButtonHotkeyMethods extends SwingMethods
 {
-    /**
-     * Whether allow files location search by dropping a file onto the tree or not.
-     */
-    public static boolean filesDropSearchEnabled = true;
-
-    /**
-     * Default tree file filter.
-     * Set to null if you want to display all available files.
-     */
-    public static Filter<FileTreeNode> filter = new FileTreeNodeFilter ();
+    // todo
 }

@@ -2900,6 +2900,11 @@ public final class SwingUtils
         }
     }
 
+    /**
+     * Adds enty into cache.
+     *
+     * @param entry bearing cache entry
+     */
     private synchronized static void cacheEntry ( BearingCacheEntry entry )
     {
         // Move the oldest entry from the strong cache into the soft cache
@@ -2912,6 +2917,11 @@ public final class SwingUtils
         putEntryInStrongCache ( entry );
     }
 
+    /**
+     * Adds enty into strong cache.
+     *
+     * @param entry bearing cache entry
+     */
     private synchronized static void putEntryInStrongCache ( BearingCacheEntry entry )
     {
         strongBearingCache[ strongBearingCacheNextIndex ] = entry;
@@ -3013,6 +3023,9 @@ public final class SwingUtils
             return ( short ) bearing;
         }
 
+        /**
+         * {@inheritDoc}
+         */
         public boolean equals ( Object entry )
         {
             if ( entry == this )
@@ -3027,6 +3040,9 @@ public final class SwingUtils
             return ( font.equals ( oEntry.font ) && frc.equals ( oEntry.frc ) );
         }
 
+        /**
+         * {@inheritDoc}
+         */
         public int hashCode ()
         {
             int result = 17;

@@ -49,13 +49,13 @@ public final class LanguageManager implements LanguageConstants
     // Icons
     public static final ImageIcon other = new ImageIcon ( LanguageManager.class.getResource ( "icons/lang/other.png" ) );
 
-    // Default language
-    public static String DEFAULT = getDefaultLanguageKey ();
-
     // Supported languages list
     private static final Object supportedLanguagesLock = new Object ();
     private static List<String> supportedLanguages =
             CollectionUtils.copy ( ENGLISH, RUSSIAN, POLISH, ARABIC, SPANISH, FRENCH, PORTUGUESE, GERMAN );
+
+    // Default language
+    public static String DEFAULT = getDefaultLanguageKey ();
 
     // Current language
     private static String language;

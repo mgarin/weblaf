@@ -18,21 +18,49 @@
 package com.alee.utils.file;
 
 /**
- * User: mgarin Date: 08.07.11 Time: 12:16
+ * This class represents single file description fields.
+ *
+ * @author Mikle Garin
  */
 
 public class FileDescription
 {
+    /**
+     * File name.
+     */
     private String name;
+
+    /**
+     * File size.
+     */
     private String size;
+
+    /**
+     * File description.
+     */
     private String description;
+
+    /**
+     * File modification date.
+     */
     private String date;
 
+    /**
+     * Constructs empty file decription.
+     */
     public FileDescription ()
     {
         super ();
     }
 
+    /**
+     * Constructs file description with the specified values.
+     *
+     * @param name        file name
+     * @param size        file size
+     * @param description file description
+     * @param date        file modification date
+     */
     public FileDescription ( String name, String size, String description, String date )
     {
         super ();
@@ -42,41 +70,81 @@ public class FileDescription
         this.date = date;
     }
 
+    /**
+     * Returns file name.
+     *
+     * @return file name
+     */
     public String getName ()
     {
         return name;
     }
 
+    /**
+     * Sets file name.
+     *
+     * @param name new file name
+     */
     public void setName ( String name )
     {
         this.name = name;
     }
 
+    /**
+     * Returns file size.
+     *
+     * @return file size
+     */
     public String getSize ()
     {
         return size;
     }
 
+    /**
+     * Sets file size.
+     *
+     * @param size new file size
+     */
     public void setSize ( String size )
     {
         this.size = size;
     }
 
+    /**
+     * Returns file description.
+     *
+     * @return file description
+     */
     public String getDescription ()
     {
         return description;
     }
 
+    /**
+     * Sets file description.
+     *
+     * @param description new file description
+     */
     public void setDescription ( String description )
     {
         this.description = description;
     }
 
+    /**
+     * Returns modification date.
+     *
+     * @return modification date
+     */
     public String getDate ()
     {
         return date;
     }
 
+    /**
+     * Sets modification date.
+     *
+     * @param date new modification date
+     */
     public void setDate ( String date )
     {
         this.date = date;

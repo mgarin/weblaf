@@ -727,16 +727,16 @@ public final class ReflectUtils
     /**
      * Returns result given by called method.
      *
-     * @param instance   object instance
+     * @param object     object instance
      * @param methodName method name
      * @param arguments  method arguments
      * @return result given by called method
      */
-    public static Object callMethodSafely ( Object instance, String methodName, Object... arguments )
+    public static Object callMethodSafely ( Object object, String methodName, Object... arguments )
     {
         try
         {
-            return callMethod ( instance, methodName, arguments );
+            return callMethod ( object, methodName, arguments );
         }
         catch ( Throwable e )
         {

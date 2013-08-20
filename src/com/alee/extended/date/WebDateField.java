@@ -26,8 +26,10 @@ import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.settings.SettingsMethods;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.CompareUtils;
+import com.alee.utils.SizeUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.laf.ShapeProvider;
+import com.alee.utils.swing.SizeMethods;
 
 import javax.swing.*;
 import javax.swing.event.AncestorEvent;
@@ -45,7 +47,7 @@ import java.util.List;
  * User: mgarin Date: 03.11.11 Time: 10:24
  */
 
-public class WebDateField extends WebFormattedTextField implements ShapeProvider, SettingsMethods
+public class WebDateField extends WebFormattedTextField implements ShapeProvider, SettingsMethods, SizeMethods<WebFormattedTextField>
 {
     public static final ImageIcon selectDateIcon = new ImageIcon ( WebDateField.class.getResource ( "icons/date.png" ) );
 
@@ -53,8 +55,6 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
 
     private SimpleDateFormat dateFormat = new SimpleDateFormat ( "dd.MM.yyyy" );
     private Date date = null;
-
-    private int preferredWidth = -1;
 
     private WebButton popupButton;
 
@@ -419,23 +419,79 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
         }
     }
 
-    public void setPreferredWidth ( int preferredWidth )
-    {
-        this.preferredWidth = preferredWidth;
-    }
+    /**
+     * Size methods.
+     */
 
+    /**
+     * {@inheritDoc}
+     */
     public int getPreferredWidth ()
     {
-        return preferredWidth;
+        return SizeUtils.getPreferredWidth ( this );
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public WebDateField setPreferredWidth ( int preferredWidth )
+    {
+        return SizeUtils.setPreferredWidth ( this, preferredWidth );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public int getPreferredHeight ()
+    {
+        return SizeUtils.getPreferredHeight ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public WebDateField setPreferredHeight ( int preferredHeight )
+    {
+        return SizeUtils.setPreferredHeight ( this, preferredHeight );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public int getMinimumWidth ()
+    {
+        return SizeUtils.getMinimumWidth ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public WebDateField setMinimumWidth ( int minimumWidth )
+    {
+        return SizeUtils.setMinimumWidth ( this, minimumWidth );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public int getMinimumHeight ()
+    {
+        return SizeUtils.getMinimumHeight ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public WebDateField setMinimumHeight ( int minimumHeight )
+    {
+        return SizeUtils.setMinimumHeight ( this, minimumHeight );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public Dimension getPreferredSize ()
     {
-        Dimension ps = super.getPreferredSize ();
-        if ( preferredWidth != -1 )
-        {
-            ps.width = preferredWidth;
-        }
-        return ps;
+        return SizeUtils.getPreferredSize ( this, super.getPreferredSize () );
     }
 }

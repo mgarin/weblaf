@@ -85,5 +85,5 @@ public final class WebProgressBarStyle
     /**
      * Default preferred progress width
      */
-    public static int preferredWidth = 240;
+    public static int preferredProgressWidth = 240;
 }

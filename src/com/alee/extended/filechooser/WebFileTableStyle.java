@@ -26,7 +26,7 @@ import com.alee.laf.GlobalConstants;
  * @author Mikle Garin
  */
 
-public class WebFileTableStyle
+public final class WebFileTableStyle
 {
     /**
      * File filter.

@@ -30,9 +30,11 @@ import com.alee.managers.settings.SettingsMethods;
 import com.alee.managers.settings.SettingsProcessor;
 import com.alee.managers.tooltip.TooltipWay;
 import com.alee.utils.ReflectUtils;
+import com.alee.utils.SizeUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.laf.ShapeProvider;
 import com.alee.utils.swing.FontMethods;
+import com.alee.utils.swing.SizeMethods;
 
 import javax.swing.*;
 import java.awt.*;
@@ -42,7 +44,8 @@ import java.util.List;
  * User: mgarin Date: 28.06.11 Time: 0:50
  */
 
-public class WebCheckBox extends JCheckBox implements ShapeProvider, LanguageMethods, SettingsMethods, FontMethods<WebCheckBox>
+public class WebCheckBox extends JCheckBox
+        implements ShapeProvider, LanguageMethods, SettingsMethods, FontMethods<WebCheckBox>, SizeMethods<WebCheckBox>
 {
     public WebCheckBox ()
     {
@@ -684,5 +687,81 @@ public class WebCheckBox extends JCheckBox implements ShapeProvider, LanguageMet
     public String getFontName ()
     {
         return SwingUtils.getFontName ( this );
+    }
+
+    /**
+     * Size methods.
+     */
+
+    /**
+     * {@inheritDoc}
+     */
+    public int getPreferredWidth ()
+    {
+        return SizeUtils.getPreferredWidth ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public WebCheckBox setPreferredWidth ( int preferredWidth )
+    {
+        return SizeUtils.setPreferredWidth ( this, preferredWidth );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public int getPreferredHeight ()
+    {
+        return SizeUtils.getPreferredHeight ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public WebCheckBox setPreferredHeight ( int preferredHeight )
+    {
+        return SizeUtils.setPreferredHeight ( this, preferredHeight );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public int getMinimumWidth ()
+    {
+        return SizeUtils.getMinimumWidth ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public WebCheckBox setMinimumWidth ( int minimumWidth )
+    {
+        return SizeUtils.setMinimumWidth ( this, minimumWidth );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public int getMinimumHeight ()
+    {
+        return SizeUtils.getMinimumHeight ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public WebCheckBox setMinimumHeight ( int minimumHeight )
+    {
+        return SizeUtils.setMinimumHeight ( this, minimumHeight );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public Dimension getPreferredSize ()
+    {
+        return SizeUtils.getPreferredSize ( this, super.getPreferredSize () );
     }
 }

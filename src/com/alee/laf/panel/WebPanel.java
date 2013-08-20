@@ -22,7 +22,9 @@ import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.language.LanguageContainerMethods;
 import com.alee.managers.language.LanguageManager;
 import com.alee.utils.ReflectUtils;
+import com.alee.utils.SizeUtils;
 import com.alee.utils.laf.ShapeProvider;
+import com.alee.utils.swing.SizeMethods;
 
 import javax.swing.*;
 import java.awt.*;
@@ -32,13 +34,8 @@ import java.util.List;
  * User: mgarin Date: 26.07.11 Time: 13:12
  */
 
-public class WebPanel extends JPanel implements ShapeProvider, LanguageContainerMethods
+public class WebPanel extends JPanel implements ShapeProvider, SizeMethods<WebPanel>, LanguageContainerMethods
 {
-    private int preferredWidth = -1;
-    private int minimumWidth = -1;
-    private int preferredHeight = -1;
-    private int minimumHeight = -1;
-
     public WebPanel ()
     {
         super ( new BorderLayout () );
@@ -402,70 +399,80 @@ public class WebPanel extends JPanel implements ShapeProvider, LanguageContainer
         }
     }
 
+    /**
+     * Size methods.
+     */
+
+    /**
+     * {@inheritDoc}
+     */
     public int getPreferredWidth ()
     {
-        return preferredWidth;
+        return SizeUtils.getPreferredWidth ( this );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public WebPanel setPreferredWidth ( int preferredWidth )
     {
-        this.preferredWidth = preferredWidth;
-        return this;
+        return SizeUtils.setPreferredWidth ( this, preferredWidth );
     }
 
-    public int getMinimumWidth ()
-    {
-        return minimumWidth;
-    }
-
-    public WebPanel setMinimumWidth ( int minimumWidth )
-    {
-        this.minimumWidth = minimumWidth;
-        return this;
-    }
-
+    /**
+     * {@inheritDoc}
+     */
     public int getPreferredHeight ()
     {
-        return preferredHeight;
+        return SizeUtils.getPreferredHeight ( this );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public WebPanel setPreferredHeight ( int preferredHeight )
     {
-        this.preferredHeight = preferredHeight;
-        return this;
+        return SizeUtils.setPreferredHeight ( this, preferredHeight );
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public int getMinimumWidth ()
+    {
+        return SizeUtils.getMinimumWidth ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public WebPanel setMinimumWidth ( int minimumWidth )
+    {
+        return SizeUtils.setMinimumWidth ( this, minimumWidth );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public int getMinimumHeight ()
     {
-        return minimumHeight;
+        return SizeUtils.getMinimumHeight ( this );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public WebPanel setMinimumHeight ( int minimumHeight )
     {
-        this.minimumHeight = minimumHeight;
-        return this;
+        return SizeUtils.setMinimumHeight ( this, minimumHeight );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public Dimension getPreferredSize ()
     {
-        Dimension ps = super.getPreferredSize ();
-        if ( preferredWidth != -1 )
-        {
-            ps.width = preferredWidth;
-        }
-        else if ( minimumWidth != -1 )
-        {
-            ps.width = Math.max ( minimumWidth, ps.width );
-        }
-        if ( preferredHeight != -1 )
-        {
-            ps.height = preferredHeight;
-        }
-        else if ( minimumHeight != -1 )
-        {
-            ps.height = Math.max ( minimumHeight, ps.height );
-        }
-        return ps;
+        return SizeUtils.getPreferredSize ( this, super.getPreferredSize () );
     }
 
     /**

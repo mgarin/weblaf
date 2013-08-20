@@ -17,31 +17,87 @@
 
 package com.alee.utils.swing;
 
-import com.alee.laf.panel.WebPanel;
+import java.awt.*;
 
 /**
  * This interface provides a set of methods that should be added into components that support custom size methods.
  *
+ * @param <C> component type
  * @author Mikle Garin
  * @see SwingMethods
+ * @see com.alee.utils.SizeUtils
  */
 
-// todo Add these methods into SwingUtils and implement in components
-public interface SizeMethods extends SwingMethods
+public interface SizeMethods<C extends Component> extends SwingMethods
 {
+    /**
+     * Returns component preferred width.
+     *
+     * @return component preferred width
+     */
     public int getPreferredWidth ();
 
-    public WebPanel setPreferredWidth ( int preferredWidth );
+    /**
+     * Sets component preferred width.
+     * Pass -1 to let component choose preferred width on its own.
+     *
+     * @param preferredWidth new component preferred width
+     * @return modified component
+     */
+    public C setPreferredWidth ( int preferredWidth );
 
+    /**
+     * Returns component preferred height.
+     *
+     * @return component preferred height
+     */
     public int getPreferredHeight ();
 
-    public WebPanel setPreferredHeight ( int preferredHeight );
+    /**
+     * Sets component preferred height.
+     * Pass -1 to let component choose preferred height on its own.
+     *
+     * @param preferredHeight new component preferred height
+     * @return modified component
+     */
+    public C setPreferredHeight ( int preferredHeight );
 
+    /**
+     * Returns component minimum width.
+     *
+     * @return component minimum width
+     */
     public int getMinimumWidth ();
 
-    public WebPanel setMinimumWidth ( int minimumWidth );
+    /**
+     * Sets component minimum width.
+     * Pass -1 to let component choose minimum width on its own.
+     *
+     * @param minimumWidth new component minimum width
+     * @return modified component
+     */
+    public C setMinimumWidth ( int minimumWidth );
 
+    /**
+     * Returns component minimum height.
+     *
+     * @return component minimum height
+     */
     public int getMinimumHeight ();
 
-    public WebPanel setMinimumHeight ( int minimumHeight );
+    /**
+     * Sets component minimum height.
+     * Pass -1 to let component choose minimum height on its own.
+     *
+     * @param minimumHeight new component minimum height
+     * @return modified component
+     */
+    public C setMinimumHeight ( int minimumHeight );
+
+    /**
+     * Returns component preferred size.
+     *
+     * @return component preferred size
+     */
+    public Dimension getPreferredSize ();
 }

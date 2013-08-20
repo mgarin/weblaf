@@ -231,9 +231,7 @@ public final class HotkeyManager
         hotkeyInfo.setHidden ( true );
         hotkeyInfo.setHotkeyData ( hotkeyData );
         hotkeyInfo.setAction ( action );
-
         cacheHotkey ( hotkeyInfo );
-
         return hotkeyInfo;
     }
 
@@ -274,9 +272,7 @@ public final class HotkeyManager
         hotkeyInfo.setHotkeyData ( hotkeyData );
         hotkeyInfo.setHotkeyDisplayWay ( tooltipWay );
         hotkeyInfo.setAction ( action );
-
         cacheHotkey ( hotkeyInfo );
-
         return hotkeyInfo;
     }
 

@@ -62,9 +62,4 @@ public final class WebGradientColorChooserStyle
      * Default labels foreground
      */
     public static Color foreground = Color.BLACK;
-
-    /**
-     * Default width
-     */
-    public static int preferredWidth = -1;
 }

@@ -26,8 +26,10 @@ import com.alee.managers.tooltip.TooltipWay;
 import com.alee.managers.tooltip.WebCustomTooltip;
 import com.alee.utils.FileUtils;
 import com.alee.utils.LafUtils;
+import com.alee.utils.SizeUtils;
 import com.alee.utils.laf.ShapeProvider;
 import com.alee.utils.swing.ComponentUpdater;
+import com.alee.utils.swing.SizeMethods;
 
 import javax.swing.*;
 import java.awt.*;
@@ -40,7 +42,7 @@ import java.lang.management.MemoryUsage;
  * User: mgarin Date: 10.10.11 Time: 17:51
  */
 
-public class WebMemoryBar extends WebLabel implements ShapeProvider
+public class WebMemoryBar extends WebLabel implements ShapeProvider, SizeMethods<WebLabel>
 {
     public static final String THREAD_NAME = "WebMemoryBar.updater";
 
@@ -62,8 +64,6 @@ public class WebMemoryBar extends WebLabel implements ShapeProvider
     private int tooltipDelay = WebMemoryBarStyle.tooltipDelay;
 
     private boolean showMaximumMemory = WebMemoryBarStyle.showMaximum;
-
-    private int preferredWidth = -1;
 
     private long usedMemory = 0;
     private long allocatedMemory = 0;
@@ -500,23 +500,79 @@ public class WebMemoryBar extends WebLabel implements ShapeProvider
                 ( fill ? 0 : 1 ) ) * progress / ( showMaximumMemory ? maxMemory : allocatedMemory ) );
     }
 
-    public void setPreferredWidth ( int preferredWidth )
-    {
-        this.preferredWidth = preferredWidth;
-    }
+    /**
+     * Size methods.
+     */
 
+    /**
+     * {@inheritDoc}
+     */
     public int getPreferredWidth ()
     {
-        return preferredWidth;
+        return SizeUtils.getPreferredWidth ( this );
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public WebMemoryBar setPreferredWidth ( int preferredWidth )
+    {
+        return SizeUtils.setPreferredWidth ( this, preferredWidth );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public int getPreferredHeight ()
+    {
+        return SizeUtils.getPreferredHeight ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public WebMemoryBar setPreferredHeight ( int preferredHeight )
+    {
+        return SizeUtils.setPreferredHeight ( this, preferredHeight );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public int getMinimumWidth ()
+    {
+        return SizeUtils.getMinimumWidth ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public WebMemoryBar setMinimumWidth ( int minimumWidth )
+    {
+        return SizeUtils.setMinimumWidth ( this, minimumWidth );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public int getMinimumHeight ()
+    {
+        return SizeUtils.getMinimumHeight ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public WebMemoryBar setMinimumHeight ( int minimumHeight )
+    {
+        return SizeUtils.setMinimumHeight ( this, minimumHeight );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public Dimension getPreferredSize ()
     {
-        Dimension ps = super.getPreferredSize ();
-        if ( preferredWidth != -1 )
-        {
-            ps.width = preferredWidth;
-        }
-        return ps;
+        return SizeUtils.getPreferredSize ( this, super.getPreferredSize () );
     }
 }

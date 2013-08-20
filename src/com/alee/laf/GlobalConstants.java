@@ -22,7 +22,6 @@ import com.alee.utils.file.FileComparator;
 
 import javax.swing.*;
 import java.awt.geom.AffineTransform;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -71,15 +70,8 @@ public final class GlobalConstants
     /**
      * Default file filters.
      */
-    public static final List<DefaultFileFilter> DEFAULT_FILTERS;
-
-    static
-    {
-        DEFAULT_FILTERS = new ArrayList<DefaultFileFilter> ();
-        DEFAULT_FILTERS.add ( ALL_FILES_FILTER );
-        DEFAULT_FILTERS.add ( IMAGES_AND_FOLDERS_FILTER );
-        DEFAULT_FILTERS.add ( DIRECTORIES_FILTER );
-    }
+    public static final List<DefaultFileFilter> DEFAULT_FILTERS =
+            Arrays.asList ( ALL_FILES_FILTER, IMAGES_AND_FOLDERS_FILTER, DIRECTORIES_FILTER );
 
     /**
      * Comparators.

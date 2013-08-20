@@ -58,7 +58,7 @@ public class TextAreaOverlayExample extends DefaultExample
 
         // Progress displayed as overlay
         final WebProgressBar overlay = new WebProgressBar ();
-        overlay.setPreferredWidth ( 100 );
+        overlay.setPreferredProgressWidth ( 100 );
         overlay.setStringPainted ( true );
 
         // Additional centering panel that soaks mouse events to prevent textarea interactions

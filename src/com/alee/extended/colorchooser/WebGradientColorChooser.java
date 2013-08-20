@@ -23,10 +23,8 @@ import com.alee.managers.settings.DefaultValue;
 import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.settings.SettingsMethods;
 import com.alee.managers.settings.SettingsProcessor;
-import com.alee.utils.ColorUtils;
-import com.alee.utils.CompareUtils;
-import com.alee.utils.LafUtils;
-import com.alee.utils.SwingUtils;
+import com.alee.utils.*;
+import com.alee.utils.swing.SizeMethods;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -41,7 +39,8 @@ import java.util.List;
  * User: mgarin Date: 23.11.12 Time: 19:04
  */
 
-public class WebGradientColorChooser extends JComponent implements MouseListener, MouseMotionListener, FocusListener, SettingsMethods
+public class WebGradientColorChooser extends JComponent
+        implements MouseListener, MouseMotionListener, FocusListener, SettingsMethods, SizeMethods<WebGradientColorChooser>
 {
     // Style constants
     private static Color borderColor = Color.DARK_GRAY; // new Color ( 51, 51, 51 );
@@ -68,7 +67,6 @@ public class WebGradientColorChooser extends JComponent implements MouseListener
     private Dimension gripperSize = WebGradientColorChooserStyle.gripperSize;
     private Insets margin = WebGradientColorChooserStyle.margin;
     private boolean paintLabels = WebGradientColorChooserStyle.paintLabels;
-    private int preferredWidth = WebGradientColorChooserStyle.preferredWidth;
 
     // Runtime values
     private GradientColorData draggedGripper = null;
@@ -549,30 +547,6 @@ public class WebGradientColorChooser extends JComponent implements MouseListener
                 getWidth () - insets.left - insets.right - Math.max ( gripperSize.width, shadeWidth * 2 ) + 4, lineWidth );
     }
 
-    public void setPreferredWidth ( int preferredWidth )
-    {
-        this.preferredWidth = preferredWidth;
-    }
-
-    public int getPreferredWidth ()
-    {
-        return preferredWidth;
-    }
-
-    public Dimension getPreferredSize ()
-    {
-        Insets insets = getInsets ();
-        Dimension ps =
-                new Dimension ( insets.left + gripperSize.width * 5 + Math.max ( gripperSize.width, shadeWidth * 2 ) - 4 + insets.right,
-                        insets.top + shadeWidth * 2 + lineWidth + gripperSize.height / 2 + ( gripperSize.height % 2 == 0 ? 0 : 1 ) +
-                                insets.bottom );
-        if ( preferredWidth != -1 )
-        {
-            ps.width = preferredWidth;
-        }
-        return ps;
-    }
-
     public List<ChangeListener> getChangeListeners ()
     {
         return changeListeners;
@@ -722,5 +696,87 @@ public class WebGradientColorChooser extends JComponent implements MouseListener
     public void saveSettings ()
     {
         SettingsManager.saveComponentSettings ( this );
+    }
+
+    /**
+     * Size methods.
+     */
+
+    /**
+     * {@inheritDoc}
+     */
+    public int getPreferredWidth ()
+    {
+        return SizeUtils.getPreferredWidth ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public WebGradientColorChooser setPreferredWidth ( int preferredWidth )
+    {
+        return SizeUtils.setPreferredWidth ( this, preferredWidth );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public int getPreferredHeight ()
+    {
+        return SizeUtils.getPreferredHeight ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public WebGradientColorChooser setPreferredHeight ( int preferredHeight )
+    {
+        return SizeUtils.setPreferredHeight ( this, preferredHeight );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public int getMinimumWidth ()
+    {
+        return SizeUtils.getMinimumWidth ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public WebGradientColorChooser setMinimumWidth ( int minimumWidth )
+    {
+        return SizeUtils.setMinimumWidth ( this, minimumWidth );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public int getMinimumHeight ()
+    {
+        return SizeUtils.getMinimumHeight ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public WebGradientColorChooser setMinimumHeight ( int minimumHeight )
+    {
+        return SizeUtils.setMinimumHeight ( this, minimumHeight );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public Dimension getPreferredSize ()
+    {
+        // todo Move to custom UI
+        Insets i = getInsets ();
+        final int width = i.left + gripperSize.width * 5 + Math.max ( gripperSize.width, shadeWidth * 2 ) - 4 + i.right;
+        final int height = i.top + shadeWidth * 2 + lineWidth + gripperSize.height / 2 + ( gripperSize.height % 2 == 0 ? 0 : 1 ) + i.bottom;
+        Dimension ps = new Dimension ( width, height );
+
+        return SizeUtils.getPreferredSize ( this, ps );
     }
 }

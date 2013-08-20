@@ -44,12 +44,16 @@ public class WebDockablePane extends WebPanel
     public WebDockablePane ()
     {
         super ( new DockingPaneLayout () );
-
     }
 
     public DockingPaneLayout getActualLayout ()
     {
         return ( DockingPaneLayout ) getLayout ();
+    }
+
+    public void addDockableFrame ( WebDockableFrame dockableFrame, String position )
+    {
+
     }
 
     protected void paintComponent ( Graphics g )
@@ -137,9 +141,9 @@ public class WebDockablePane extends WebPanel
         pane.add ( new WebToggleButton ( right ), DockingPaneLayout.RIGHT_BOTTOM );
         pane.add ( new WebToggleButton ( right ), DockingPaneLayout.RIGHT_BOTTOM );
         //
-        pane.add ( new WebToggleButton ( "Test 4", bottom ), DockingPaneLayout.BOTTOM_LEFT );
-        pane.add ( new WebToggleButton ( "Test 5", bottom ), DockingPaneLayout.BOTTOM_RIGHT );
-        pane.add ( new WebToggleButton ( "Test 6", bottom ), DockingPaneLayout.BOTTOM_RIGHT );
+        //        pane.add ( new WebToggleButton ( "Test 4", bottom ), DockingPaneLayout.BOTTOM_LEFT );
+        //        pane.add ( new WebToggleButton ( "Test 5", bottom ), DockingPaneLayout.BOTTOM_RIGHT );
+        //        pane.add ( new WebToggleButton ( "Test 6", bottom ), DockingPaneLayout.BOTTOM_RIGHT );
 
         pane.add ( createTopFrame (), DockingPaneLayout.TOP_FRAME );
         pane.add ( createLeftFrame (), DockingPaneLayout.LEFT_FRAME );
@@ -167,8 +171,7 @@ public class WebDockablePane extends WebPanel
             }
         }
 
-        TestFrame tf = new TestFrame ( pane );
-        tf.center ( 600, 500 );
+        TestFrame.show ( pane ).center ( 600, 500 );
     }
 
     private static Component createLeftFrame ()
@@ -197,7 +200,7 @@ public class WebDockablePane extends WebPanel
         {
             content.addTab ( "Tab " + i, new WebLabel () );
         }
-        return content;
+        return new WebPanel ( true, content ).setShadeWidth ( 3 );
         //        return new WebPanel ( PopupManager.getPopupPainter ( PopupStyle.lightSmall ), content );
     }
 }

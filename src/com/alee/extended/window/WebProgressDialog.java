@@ -35,7 +35,7 @@ import java.awt.*;
 
 public class WebProgressDialog extends WebDialog
 {
-    private int preferredWidth = 0;
+    private int preferredProgressWidth = 0;
     private boolean shownOnce = false;
 
     private WebPanel container;
@@ -77,9 +77,9 @@ public class WebProgressDialog extends WebDialog
             public Dimension getPreferredSize ()
             {
                 Dimension ps = super.getPreferredSize ();
-                if ( preferredWidth > 0 )
+                if ( preferredProgressWidth > 0 )
                 {
-                    ps.width = preferredWidth;
+                    ps.width = preferredProgressWidth;
                 }
                 return ps;
             }
@@ -203,14 +203,14 @@ public class WebProgressDialog extends WebDialog
         } );
     }
 
-    public int getPreferredWidth ()
+    public int getPreferredProgressWidth ()
     {
-        return preferredWidth;
+        return preferredProgressWidth;
     }
 
-    public void setPreferredWidth ( int preferredWidth )
+    public void setPreferredProgressWidth ( int preferredProgressWidth )
     {
-        this.preferredWidth = preferredWidth;
+        this.preferredProgressWidth = preferredProgressWidth;
         updateBounds ();
     }
 
