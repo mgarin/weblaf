@@ -50,7 +50,7 @@ public final class LanguageManager implements LanguageConstants
     public static final ImageIcon other = new ImageIcon ( LanguageManager.class.getResource ( "icons/lang/other.png" ) );
 
     // Default language
-    public static String DEFAULT = getSystemLanguageKey ();
+    public static String DEFAULT = getDefaultLanguageKey ();
 
     // Supported languages list
     private static final Object supportedLanguagesLock = new Object ();
@@ -242,6 +242,24 @@ public final class LanguageManager implements LanguageConstants
         }
     }
 
+    public static void setSupportedLanguages ( Collection<String> supportedLanguages )
+    {
+        synchronized ( supportedLanguagesLock )
+        {
+            LanguageManager.supportedLanguages.clear ();
+            LanguageManager.supportedLanguages.addAll ( supportedLanguages );
+        }
+    }
+
+    public static void setSupportedLanguages ( String... supportedLanguages )
+    {
+        synchronized ( supportedLanguagesLock )
+        {
+            LanguageManager.supportedLanguages.clear ();
+            Collections.addAll ( LanguageManager.supportedLanguages, supportedLanguages );
+        }
+    }
+
     public static void addSupportedLanguage ( String language )
     {
         synchronized ( supportedLanguagesLock )
@@ -264,6 +282,14 @@ public final class LanguageManager implements LanguageConstants
         synchronized ( supportedLanguagesLock )
         {
             supportedLanguages.remove ( language );
+        }
+    }
+
+    public static void clearSupportedLanguages ()
+    {
+        synchronized ( supportedLanguagesLock )
+        {
+            supportedLanguages.clear ();
         }
     }
 
@@ -1032,6 +1058,12 @@ public final class LanguageManager implements LanguageConstants
     /**
      * Default system language key
      */
+
+    public static String getDefaultLanguageKey ()
+    {
+        final String systemLang = getSystemLanguageKey ();
+        return supportedLanguages.contains ( systemLang ) ? systemLang : ENGLISH;
+    }
 
     public static String getSystemLanguageKey ()
     {
