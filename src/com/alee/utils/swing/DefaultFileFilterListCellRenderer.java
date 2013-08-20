@@ -28,7 +28,6 @@ import java.awt.*;
  * Custom list and combobox cell renderer for file filters data.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class DefaultFileFilterListCellRenderer extends WebComboBoxCellRenderer

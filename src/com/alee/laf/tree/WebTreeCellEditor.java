@@ -33,7 +33,6 @@ import java.awt.event.FocusEvent;
  * This class provides a styled default cell editor for trees.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class WebTreeCellEditor<C extends JComponent> extends WebDefaultCellEditor<C>

@@ -30,7 +30,6 @@ import java.awt.*;
  * CheckBox list example.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class CheckBoxListExample extends DefaultExample

@@ -21,7 +21,6 @@ package com.alee.utils;
  * This class provides a set of utilities to simplify UI animation code.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public final class AnimationUtils

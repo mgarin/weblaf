@@ -31,7 +31,6 @@ import java.awt.event.*;
  * @param <E> Editor component type
  * @param <T> Editor value type
  * @author Mikle Garin
- * @since 1.3
  */
 
 public abstract class AbstractListCellEditor<E extends Component, T> implements ListCellEditor<E, T>

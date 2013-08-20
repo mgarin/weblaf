@@ -28,7 +28,6 @@ import java.util.List;
  * This file filter groups specified file filters in a certain way defined by filter group type.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class GroupedFileFilter extends DefaultFileFilter

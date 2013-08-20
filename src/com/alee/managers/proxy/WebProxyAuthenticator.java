@@ -45,7 +45,6 @@ import java.net.PasswordAuthentication;
  * It will also remember entered proxy settings if user asks to.
  *
  * @author Mikle Garin
- * @since 1.3
  */
 
 public class WebProxyAuthenticator extends Authenticator

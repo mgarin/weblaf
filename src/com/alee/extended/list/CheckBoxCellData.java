@@ -23,7 +23,6 @@ import com.alee.utils.TextUtils;
  * This class contains minimum data for single checkbox list cell.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class CheckBoxCellData

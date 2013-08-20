@@ -27,7 +27,6 @@ import com.alee.managers.settings.SettingsProcessorData;
  * Custom SettingsProcessor for WebCollapsiblePane component.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class WebCollapsiblePaneSettingsProcessor extends SettingsProcessor<WebCollapsiblePane, Boolean>

@@ -25,7 +25,6 @@ import java.awt.*;
  * This class provides language default updates for Dialog component.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class DialogLU extends DefaultLanguageUpdater<Dialog>

@@ -34,7 +34,6 @@ import java.util.Map;
  * @see BorderPainter
  * @see DefaultPainter
  * @see Painter
- * @since 1.4
  */
 
 public class TitledBorderPainter<E extends JComponent> extends BorderPainter<E> implements SwingConstants

@@ -29,7 +29,6 @@ import java.awt.event.ItemListener;
  * Custom SettingsProcessor for AbstractButton component.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class AbstractButtonSettingsProcessor extends SettingsProcessor<AbstractButton, Boolean>

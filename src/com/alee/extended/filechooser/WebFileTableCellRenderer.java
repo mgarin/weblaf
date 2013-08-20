@@ -28,7 +28,6 @@ import java.io.File;
  * File table cell renderer.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class WebFileTableCellRenderer extends WebTableCellRenderer

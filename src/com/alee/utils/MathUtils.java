@@ -23,7 +23,6 @@ import java.util.Random;
  * This class provides a set of utilities to perform various math operations.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public final class MathUtils

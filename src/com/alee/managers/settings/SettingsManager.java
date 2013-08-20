@@ -46,7 +46,6 @@ import java.util.Map;
  *
  * @author Mikle Garin
  * @see XmlUtils
- * @since 1.4
  */
 
 public final class SettingsManager

@@ -51,7 +51,6 @@ import java.util.List;
  * Pane title, content and style can be modified in any way you like.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class WebCollapsiblePane extends WebPanel implements SwingConstants, ShapeProvider, SettingsMethods

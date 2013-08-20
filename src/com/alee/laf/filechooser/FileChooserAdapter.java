@@ -24,7 +24,6 @@ import java.util.List;
  * File chooser actions listener adapter.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public abstract class FileChooserAdapter implements FileChooserListener

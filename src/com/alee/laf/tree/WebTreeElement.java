@@ -25,7 +25,6 @@ import java.awt.*;
  * Component for default tree cell rendering.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class WebTreeElement extends WebLabel

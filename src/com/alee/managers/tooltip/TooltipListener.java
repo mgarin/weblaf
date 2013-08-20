@@ -23,7 +23,6 @@ import java.util.EventListener;
  * Custom tooltips listener interface.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public interface TooltipListener extends EventListener

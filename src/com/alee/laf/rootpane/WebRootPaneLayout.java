@@ -30,7 +30,6 @@ import java.awt.*;
  * Special layout for decorated root pane.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class WebRootPaneLayout implements LayoutManager

@@ -26,7 +26,6 @@ import net.htmlparser.jericho.Tag;
  * This class provides a set of utilities to work with HTML.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public final class HtmlUtils

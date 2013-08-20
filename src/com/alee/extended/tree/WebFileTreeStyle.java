@@ -23,7 +23,6 @@ import com.alee.utils.compare.Filter;
  * WebFileTree style class.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class WebFileTreeStyle

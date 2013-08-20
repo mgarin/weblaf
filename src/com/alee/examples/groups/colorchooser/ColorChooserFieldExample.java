@@ -27,7 +27,6 @@ import java.awt.*;
 
 /**
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class ColorChooserFieldExample extends DefaultExample

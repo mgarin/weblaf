@@ -28,7 +28,6 @@ import java.io.File;
  * File tree cell renderer.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class WebFileTreeCellRenderer extends WebTreeCellRenderer

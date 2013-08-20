@@ -21,7 +21,6 @@ package com.alee.utils.text;
  * Simple text provider for any type of objects.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class SimpleTextProvider implements TextProvider<Object>

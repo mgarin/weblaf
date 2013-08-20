@@ -28,7 +28,6 @@ import java.awt.*;
  * Custom list cell editor used in WebCheckBoxListCell component.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class WebCheckBoxListCellEditor extends AbstractListCellEditor<WebTextField, CheckBoxCellData>

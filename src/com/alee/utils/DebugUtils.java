@@ -26,7 +26,6 @@ import java.awt.*;
  * This class provides a set of utilities for various code and graphics debug cases.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public final class DebugUtils

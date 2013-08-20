@@ -27,7 +27,6 @@ import java.awt.*;
  * Default list cell editor that is based on various components.
  *
  * @author Mikle Garin
- * @since 1.3
  */
 
 public class DefaultListCellEditor extends AbstractListCellEditor

@@ -27,7 +27,6 @@ import java.io.Serializable;
  *
  * @author Mikle Garin
  * @see SettingsGroup
- * @since 1.4
  */
 
 @XStreamAlias ( "SettingsGroupState" )

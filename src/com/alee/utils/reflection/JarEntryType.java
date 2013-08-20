@@ -21,7 +21,6 @@ package com.alee.utils.reflection;
  * This enumeration represents possible jar entry types.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public enum JarEntryType

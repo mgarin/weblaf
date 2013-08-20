@@ -23,7 +23,6 @@ import java.util.EventListener;
  * Settings change listener interface.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public interface SettingsListener extends EventListener

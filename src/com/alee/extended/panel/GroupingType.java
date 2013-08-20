@@ -22,7 +22,6 @@ package com.alee.extended.panel;
  *
  * @author Mikle Garin
  * @see GroupPanel
- * @since 1.4
  */
 
 public enum GroupingType

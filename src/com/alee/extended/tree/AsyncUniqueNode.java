@@ -27,7 +27,6 @@ import java.io.Serializable;
  * In addition to UniqueNode it contains a loader icon and busy state indicator.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public abstract class AsyncUniqueNode extends UniqueNode implements Serializable

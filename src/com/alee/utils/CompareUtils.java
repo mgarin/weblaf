@@ -23,7 +23,6 @@ import java.util.Date;
  * This class provides a set of utilities to compare various objects.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public final class CompareUtils

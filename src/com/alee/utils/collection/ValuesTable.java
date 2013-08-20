@@ -31,7 +31,6 @@ import java.util.Map;
  * Both key and value should be unique and adding same key or value will replace existing one in the lists.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 @XStreamAlias ("ValuesTable")

@@ -21,7 +21,6 @@ package com.alee.extended.painter;
  * This enumeration represents the list of possible title positions for TitledBorderPainter.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public enum TitlePosition

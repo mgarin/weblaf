@@ -25,7 +25,6 @@ import java.util.Comparator;
  * Abstract data provider with implemented comparator and filter getters and setters.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public abstract class AbstractTreeDataProvider<E extends AsyncUniqueNode> implements AsyncTreeDataProvider<E>

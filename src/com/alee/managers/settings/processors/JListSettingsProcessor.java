@@ -19,7 +19,6 @@ package com.alee.managers.settings.processors;
 
 /**
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class JListSettingsProcessor

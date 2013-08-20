@@ -35,7 +35,6 @@ import java.awt.geom.RoundRectangle2D;
  * Custom UI for JList component.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class WebListUI extends BasicListUI

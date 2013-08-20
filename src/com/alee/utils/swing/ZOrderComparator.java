@@ -25,7 +25,6 @@ import java.util.Comparator;
  * Component Z-order comparator.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class ZOrderComparator implements Comparator<Component>, Serializable

@@ -27,7 +27,6 @@ import javax.swing.plaf.basic.BasicViewportUI;
  * Custom UI for JViewport component.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class WebViewportUI extends BasicViewportUI

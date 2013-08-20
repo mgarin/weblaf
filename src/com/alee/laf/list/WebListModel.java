@@ -28,7 +28,6 @@ import java.util.Vector;
  * This model contains multiply elements add/remove methods and works with typed elements.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class WebListModel<T> extends AbstractListModel

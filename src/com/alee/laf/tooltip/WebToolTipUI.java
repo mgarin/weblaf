@@ -32,7 +32,6 @@ import java.util.Map;
  * Custom UI for JTooltip component.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class WebToolTipUI extends BasicToolTipUI implements ShapeProvider

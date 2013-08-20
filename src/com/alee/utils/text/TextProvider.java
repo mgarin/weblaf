@@ -21,7 +21,6 @@ package com.alee.utils.text;
  * This interface can be used to provide string data for various objects.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public interface TextProvider<T>

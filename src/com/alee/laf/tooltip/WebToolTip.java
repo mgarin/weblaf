@@ -30,7 +30,6 @@ import java.awt.*;
  * This JToolTip extension class provides a direct access to WebToolTipUI methods.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class WebToolTip extends JToolTip implements ShapeProvider, FontMethods<WebToolTip>

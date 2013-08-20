@@ -35,7 +35,6 @@ import java.util.List;
  * Special list component that simplifies files rendering.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class WebFileList extends WebList

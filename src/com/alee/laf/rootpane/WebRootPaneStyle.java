@@ -29,7 +29,6 @@ import java.awt.*;
  * WebRootPane style class.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public final class WebRootPaneStyle

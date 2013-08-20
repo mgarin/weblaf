@@ -45,7 +45,6 @@ import java.util.List;
  * There are is a lot of methods to read specific library objects using various resource files.
  *
  * @author Mikle Garin
- * @since 1.3
  */
 
 public final class XmlUtils

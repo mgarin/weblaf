@@ -25,7 +25,6 @@ import java.util.List;
  * File chooser actions listener.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public interface FileChooserListener extends EventListener

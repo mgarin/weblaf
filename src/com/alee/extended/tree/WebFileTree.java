@@ -34,7 +34,6 @@ import java.util.List;
  * It also contains a few additional methods to find, select and edit visible in tree files.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class WebFileTree extends WebAsyncTree<FileTreeNode>

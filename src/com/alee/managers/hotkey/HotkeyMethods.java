@@ -26,7 +26,6 @@ import com.alee.utils.swing.SwingMethods;
  * @author Mikle Garin
  * @see com.alee.utils.swing.SwingMethods
  * @see com.alee.managers.hotkey.HotkeyManager
- * @since 1.4
  */
 
 public interface HotkeyMethods extends SwingMethods

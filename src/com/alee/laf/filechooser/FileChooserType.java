@@ -21,7 +21,6 @@ package com.alee.laf.filechooser;
  * This enumeration represents all available file chooser types.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public enum FileChooserType

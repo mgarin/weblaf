@@ -37,7 +37,6 @@ import java.util.Map;
  * you can dispatch events in a separate non-EDT thread and as a result avoid using EDT at all where it is not necessary).
  *
  * @author Mikle Garin
- * @since 1.3
  */
 
 public class WebTimer

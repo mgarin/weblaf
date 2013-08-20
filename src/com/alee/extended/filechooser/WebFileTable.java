@@ -34,7 +34,6 @@ import java.util.List;
  * It can either display specified folder content or custom list of files.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class WebFileTable extends WebTable implements WebFileTableColumns

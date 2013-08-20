@@ -34,7 +34,6 @@ import java.io.Serializable;
  * @see SettingsManager#registerSettingsProcessor(Class, Class)
  * @see ComponentSettingsManager#registerSettingsProcessor(Class, Class)
  * @see ComponentSettingsManager
- * @since 1.4
  */
 
 public abstract class SettingsProcessor<C extends Component, V extends Serializable>

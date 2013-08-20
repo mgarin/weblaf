@@ -21,7 +21,6 @@ import javax.swing.*;
 
 /**
  * @author Mikle Garin
- * @since 1.4
  */
 
 public enum EditorTheme

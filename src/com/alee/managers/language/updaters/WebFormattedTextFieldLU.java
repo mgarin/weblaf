@@ -24,7 +24,6 @@ import com.alee.managers.language.data.Value;
  * This class provides language default updates for WebFormattedTextField component.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class WebFormattedTextFieldLU extends DefaultLanguageUpdater<WebFormattedTextField>

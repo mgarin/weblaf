@@ -30,7 +30,6 @@ import java.util.WeakHashMap;
  * Most of default predefined language updaters extend this class.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public abstract class DefaultLanguageUpdater<E extends Component> implements LanguageUpdater<E>

@@ -22,7 +22,6 @@ package com.alee.utils.swing;
  * They can be easily passed into any method to configure complex component or data.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public interface Configurator<T>

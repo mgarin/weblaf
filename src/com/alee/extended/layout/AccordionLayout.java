@@ -30,7 +30,6 @@ import java.util.List;
  * Custom layout for WebAccordion component.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class AccordionLayout implements LayoutManager

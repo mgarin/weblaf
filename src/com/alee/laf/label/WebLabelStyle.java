@@ -26,7 +26,6 @@ import java.awt.*;
  * WebLabel style class.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public final class WebLabelStyle

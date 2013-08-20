@@ -27,7 +27,6 @@ import java.awt.*;
  * WebPanel style class.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public final class WebPanelStyle

@@ -19,7 +19,6 @@ package com.alee.laf.table.renderers;
 
 /**
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class WebColorRenderer

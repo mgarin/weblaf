@@ -23,7 +23,6 @@ package com.alee.utils.xml;
  * This interface might be used as on of the ways to provide aliases (like XStream annotations).
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public interface AliasProvider

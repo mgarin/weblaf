@@ -26,7 +26,6 @@ import java.util.concurrent.Executors;
  * Asynchronous tree childs loading queue.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class AsyncTreeQueue

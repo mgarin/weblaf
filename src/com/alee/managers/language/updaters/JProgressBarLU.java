@@ -25,7 +25,6 @@ import javax.swing.*;
  * This class provides language default updates for JProgressBar component.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class JProgressBarLU extends DefaultLanguageUpdater<JProgressBar>

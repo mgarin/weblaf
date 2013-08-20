@@ -30,7 +30,6 @@ import java.awt.*;
  * @author Mikle Garin
  * @see DefaultPainter
  * @see Painter
- * @since 1.4
  */
 
 public class AlphaLayerPainter<E extends JComponent> extends DefaultPainter<E>

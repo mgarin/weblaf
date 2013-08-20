@@ -34,7 +34,6 @@ import java.awt.event.*;
  * You can also perform mass check/uncheck operations by selection more than one checkbox and pressing space.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class WebCheckBoxList extends WebList

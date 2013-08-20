@@ -24,7 +24,6 @@ import com.alee.managers.language.data.Value;
  * This class provides language default updates for WebPasswordField component.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class WebPasswordFieldLU extends DefaultLanguageUpdater<WebPasswordField>

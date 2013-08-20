@@ -23,7 +23,6 @@ import java.util.Comparator;
  * GradientColorData location comparator.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class GradientColorDataComparator implements Comparator<GradientColorData>

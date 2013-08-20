@@ -35,7 +35,6 @@ import java.net.URL;
  * This component uses less resources than a label and has a few optimization.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class WebImage extends JComponent implements SwingConstants

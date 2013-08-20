@@ -41,7 +41,6 @@ import java.util.List;
  * </code>
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class NinePatchIcon implements Icon

@@ -31,11 +31,10 @@ import java.util.Map;
  *
  * @author Mikle Garin
  * @see TreeUtils
- * @since 1.4
  */
 
-@XStreamAlias ( "TreeState" )
-@XStreamConverter ( TreeStateConverter.class )
+@XStreamAlias ("TreeState")
+@XStreamConverter (TreeStateConverter.class)
 public class TreeState implements Serializable, Cloneable
 {
     /**

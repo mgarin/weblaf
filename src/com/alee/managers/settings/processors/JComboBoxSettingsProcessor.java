@@ -29,7 +29,6 @@ import java.awt.event.ActionListener;
  * Custom SettingsProcessor for JComboBox component.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class JComboBoxSettingsProcessor extends SettingsProcessor<JComboBox, Integer>

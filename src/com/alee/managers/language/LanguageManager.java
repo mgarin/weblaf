@@ -42,7 +42,6 @@ import java.util.List;
  * Be aware of the fact that all equal key-language pairs will be merged and collected into a single data map.
  *
  * @author Mikle Garin
- * @since 1.3
  */
 
 public final class LanguageManager implements LanguageConstants

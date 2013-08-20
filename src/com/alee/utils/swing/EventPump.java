@@ -26,7 +26,6 @@ import java.lang.reflect.Proxy;
  * Event pump for modal frame.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class EventPump implements InvocationHandler

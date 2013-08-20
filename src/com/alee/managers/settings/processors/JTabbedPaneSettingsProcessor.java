@@ -28,7 +28,6 @@ import javax.swing.event.ChangeListener;
  * Custom SettingsProcessor for JTabbedPane component.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class JTabbedPaneSettingsProcessor extends SettingsProcessor<JTabbedPane, Integer>

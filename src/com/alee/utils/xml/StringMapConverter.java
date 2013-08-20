@@ -35,7 +35,6 @@ import java.util.concurrent.ConcurrentHashMap;
  * Custom converter for Map classes with String-type keys.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class StringMapConverter extends ReflectionConverter

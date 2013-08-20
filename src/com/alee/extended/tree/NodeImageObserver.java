@@ -24,7 +24,6 @@ import java.awt.image.ImageObserver;
  * Custom image observer class for animated loader icons.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class NodeImageObserver implements ImageObserver

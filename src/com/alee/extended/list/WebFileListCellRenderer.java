@@ -42,7 +42,6 @@ import java.util.List;
  * This renderer is also able to generate image thumbnails for image file elements.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class WebFileListCellRenderer extends WebListCellRenderer

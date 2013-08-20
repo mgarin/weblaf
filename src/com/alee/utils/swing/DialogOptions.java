@@ -21,7 +21,6 @@ package com.alee.utils.swing;
  * This interface represents various dialogs return options.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public interface DialogOptions

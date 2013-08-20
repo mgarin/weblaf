@@ -25,7 +25,6 @@ import java.io.File;
  * Custom filter for file tree nodes.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class FileTreeNodeSearchFilter extends FileTreeNodeFilter

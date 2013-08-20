@@ -25,7 +25,6 @@ import java.util.Comparator;
  * Custom comparator for file tree nodes.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class FileTreeNodeComparator implements Comparator<FileTreeNode>

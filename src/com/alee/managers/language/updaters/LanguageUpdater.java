@@ -26,7 +26,6 @@ import java.awt.*;
  * There is also a predefined set of language updaters which are registered on LanguageManager initialization.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public interface LanguageUpdater<E extends Component>

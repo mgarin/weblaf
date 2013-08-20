@@ -29,7 +29,6 @@ import java.util.Map;
  *
  * @author Mikle Garin
  * @see WebGlassPane
- * @since 1.4
  */
 
 public final class GlassPaneManager

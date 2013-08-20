@@ -29,7 +29,6 @@ import java.io.Serializable;
  * This node might also be used for some advanced cases like asynchronous tree.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class UniqueNode extends DefaultMutableTreeNode implements Serializable

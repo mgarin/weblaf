@@ -23,7 +23,6 @@ import java.io.File;
  * Text provider for File objects.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class FileNameTextProvider implements TextProvider<File>

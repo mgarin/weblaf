@@ -29,7 +29,6 @@ import java.net.URL;
  * This abstract class provides additional methods for WebLaF demo example groups.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public abstract class DefaultExampleGroup implements ExampleGroup

@@ -24,7 +24,6 @@ import java.util.EventListener;
  * This listener allows you to easilly handle color chooser button events.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public interface ColorChooserListener extends EventListener

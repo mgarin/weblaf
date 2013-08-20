@@ -28,7 +28,6 @@ import java.util.List;
  * Trees example group.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class TreesGroup extends DefaultExampleGroup

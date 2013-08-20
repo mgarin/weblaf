@@ -31,7 +31,6 @@ import java.awt.*;
  * It suits best for writing UI test applications.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class TestFrame extends WebFrame

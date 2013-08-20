@@ -33,7 +33,6 @@ import java.io.File;
  * Custom list cell editor used in WebFileList component.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class WebFileListCellEditor extends AbstractListCellEditor<WebTextField, FileElement>

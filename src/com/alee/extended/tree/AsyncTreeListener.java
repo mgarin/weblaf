@@ -8,7 +8,6 @@ import java.util.List;
  *
  * @param <E> custom node type
  * @author Mikle Garin
- * @since 1.4
  */
 
 public interface AsyncTreeListener<E extends AsyncUniqueNode> extends EventListener

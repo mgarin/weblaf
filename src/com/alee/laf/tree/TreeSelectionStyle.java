@@ -21,7 +21,6 @@ package com.alee.laf.tree;
  * Tree selection styles enumeration.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public enum TreeSelectionStyle

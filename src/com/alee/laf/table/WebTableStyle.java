@@ -23,7 +23,6 @@ import java.awt.*;
  * WebTable style class.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public final class WebTableStyle

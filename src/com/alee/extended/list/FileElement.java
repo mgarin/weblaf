@@ -24,7 +24,6 @@ import java.io.File;
  * This class represents single file list element.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class FileElement

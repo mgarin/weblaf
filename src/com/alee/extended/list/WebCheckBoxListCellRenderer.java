@@ -31,7 +31,6 @@ import java.util.Map;
  * Custom default checkbox list cell renderer for WebLookAndFeel.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class WebCheckBoxListCellRenderer implements ListCellRenderer

@@ -28,10 +28,9 @@ import java.io.Serializable;
  * Single color data for GradientData.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
-@XStreamAlias ( "GradientColorData" )
+@XStreamAlias ("GradientColorData")
 public class GradientColorData implements Serializable, Cloneable
 {
     /**

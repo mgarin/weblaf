@@ -29,7 +29,6 @@ import java.util.Properties;
  * This class is only needed to update library version files during the build process.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class VersionUpdater

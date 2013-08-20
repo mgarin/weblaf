@@ -25,7 +25,6 @@ import javax.swing.*;
  * There are also methods to add new elements and change/retrieve checkbox selection state.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class CheckBoxListModel extends DefaultListModel

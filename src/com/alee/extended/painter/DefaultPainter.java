@@ -26,7 +26,6 @@ import java.awt.*;
  * @param <E> component type
  * @author Mikle Garin
  * @see DefaultPainter
- * @since 1.4
  */
 
 public abstract class DefaultPainter<E extends Component> implements Painter<E>

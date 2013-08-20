@@ -23,7 +23,6 @@ import com.alee.extended.tree.AsyncUniqueNode;
  * Sample node.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class SampleNode extends AsyncUniqueNode

@@ -24,7 +24,6 @@ import java.util.List;
  * This interface contains a list of constants which represent all columns available in WebFileTable.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public interface WebFileTableColumns

@@ -24,7 +24,6 @@ import com.alee.managers.language.data.Value;
  * It is added to reduce the code size of language values requests.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class LM implements LanguageConstants

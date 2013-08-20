@@ -27,7 +27,6 @@ package com.alee.utils.swing;
  * and there are many others.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public interface DataProvider<T>

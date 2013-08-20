@@ -24,7 +24,6 @@ import com.alee.laf.GlobalConstants;
  * WebFileTable style class.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class WebFileTableStyle

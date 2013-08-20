@@ -51,7 +51,6 @@ import java.util.List;
  * It similar to file chooser component but has its own unique interface and doesn't need a lot of configuring to use.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class WebDirectoryChooserPanel extends WebPanel

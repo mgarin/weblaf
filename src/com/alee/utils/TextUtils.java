@@ -30,7 +30,6 @@ import java.util.StringTokenizer;
  * This class provides a set of utilities to work with various text usage cases.
  *
  * @author Mikle Garin
- * @since 1.3
  */
 
 public final class TextUtils

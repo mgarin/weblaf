@@ -37,7 +37,6 @@ import java.util.Map;
  * Most of the styles listed here are used within other style classes.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class StyleConstants

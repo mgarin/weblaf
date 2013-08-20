@@ -21,7 +21,6 @@ package com.alee.utils.swing;
  * Additional custom timer timing options.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 // todo Add those options to WebTimer

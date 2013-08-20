@@ -24,7 +24,6 @@ import com.alee.managers.language.data.Value;
  * This class provides language default updates for WebFileDrop component.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class WebFileDropLU extends DefaultLanguageUpdater<WebFileDrop>

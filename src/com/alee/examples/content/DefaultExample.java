@@ -30,7 +30,6 @@ import java.util.Map;
  * This abstract class provides additional methods for WebLaF demo example classes.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public abstract class DefaultExample implements Example

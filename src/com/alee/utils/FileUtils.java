@@ -47,7 +47,6 @@ import java.util.*;
  * For method "isHidden" you will need to call "clearIsHiddenCache" and all cached values will be resetted.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public final class FileUtils

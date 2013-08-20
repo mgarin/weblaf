@@ -26,7 +26,6 @@ import java.io.UnsupportedEncodingException;
  * This class provides a set of utilities to encode and decode data.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public final class EncryptionUtils

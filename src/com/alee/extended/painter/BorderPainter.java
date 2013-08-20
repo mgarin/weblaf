@@ -33,7 +33,6 @@ import java.awt.geom.RoundRectangle2D;
  * @author Mikle Garin
  * @see DefaultPainter
  * @see Painter
- * @since 1.4
  */
 
 public class BorderPainter<E extends JComponent> extends DefaultPainter<E>

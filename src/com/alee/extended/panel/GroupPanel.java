@@ -35,7 +35,6 @@ import java.awt.*;
  * Gap determines the spacing between the components in pixels.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class GroupPanel extends WebPanel

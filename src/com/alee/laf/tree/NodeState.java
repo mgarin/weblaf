@@ -26,10 +26,9 @@ import java.io.Serializable;
  * Single node state data class.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
-@XStreamAlias ( "NodeState" )
+@XStreamAlias ("NodeState")
 public class NodeState implements Serializable, Cloneable
 {
     /**

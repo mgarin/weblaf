@@ -30,7 +30,6 @@ import java.awt.*;
  * Trees example.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class TreesExample extends DefaultExample

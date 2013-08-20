@@ -25,7 +25,6 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * @author Mikle Garin
  * @see SettingsGroupState
  * @see SettingsGroup
- * @since 1.4
  */
 
 @XStreamAlias ( "ReadState" )

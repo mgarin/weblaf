@@ -23,7 +23,6 @@ import java.awt.*;
  * DoubleColorField actions listener.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public interface DoubleColorFieldListener

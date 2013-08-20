@@ -28,7 +28,6 @@ import java.awt.*;
  * @see BorderPainter
  * @see DefaultPainter
  * @see Painter
- * @since 1.4
  */
 
 public class DashedBorderPainter<E extends JComponent> extends BorderPainter<E>

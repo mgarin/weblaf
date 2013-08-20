@@ -29,7 +29,6 @@ import java.util.List;
  * Asynchronous data provider for WebFileTree.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class FileTreeDataProvider extends AbstractTreeDataProvider<FileTreeNode>

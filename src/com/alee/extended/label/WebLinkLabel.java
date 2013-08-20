@@ -37,7 +37,6 @@ import java.util.List;
  * Link can also be styled by default using custom L&F icons and default naming.
  *
  * @author Mikle Garin
- * @since 1.3
  */
 
 public class WebLinkLabel extends WebLabel implements LanguageMethods

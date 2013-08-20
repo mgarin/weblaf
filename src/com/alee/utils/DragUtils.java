@@ -32,7 +32,6 @@ import java.util.List;
  * This class provides a set of utilities to simplify work with swing drag and drop.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public final class DragUtils

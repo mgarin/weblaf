@@ -25,7 +25,6 @@ import java.awt.*;
  * Custom default list cell renderer for WebLookAndFeel.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class WebListCellRenderer extends WebListElement implements ListCellRenderer

@@ -27,7 +27,6 @@ import java.util.EventListener;
  * animation speed is increased by collapsible pane settings.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public interface CollapsiblePaneListener extends EventListener

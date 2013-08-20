@@ -23,7 +23,6 @@ import com.alee.laf.label.WebLabel;
  * Component for default list cell rendering.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class WebListElement extends WebLabel

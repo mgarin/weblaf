@@ -26,7 +26,6 @@ import javax.swing.*;
  * Demo application applet version.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class WebLookAndFeelApplet extends JApplet

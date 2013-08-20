@@ -25,7 +25,6 @@ import java.awt.event.MouseMotionListener;
  * This adapter allows you to install (and uninstall if needed) select-on-rollover behavior into any JList without any additional coding.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class ListRolloverSelectionAdapter implements MouseMotionListener

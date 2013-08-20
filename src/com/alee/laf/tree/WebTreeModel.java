@@ -26,7 +26,6 @@ import java.util.List;
  * This model contains multiply elements add/remove methods and works with typed elements.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class WebTreeModel<E extends MutableTreeNode> extends DefaultTreeModel

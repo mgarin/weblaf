@@ -38,7 +38,6 @@ import java.util.List;
  * There is also a set of additional methods that allows to modify chooser view and access its components and data directly.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class WebFileChooser extends JFileChooser implements LanguageMethods, LanguageContainerMethods

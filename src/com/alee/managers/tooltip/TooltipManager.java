@@ -44,7 +44,6 @@ import java.util.WeakHashMap;
  * @author Mikle Garin
  * @see GlassPaneManager
  * @see HotkeyManager
- * @since 1.4
  */
 
 public final class TooltipManager

@@ -24,7 +24,6 @@ import java.util.List;
  * This listener interface provide various asynchronous tree model events.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public interface AsyncTreeModelListener<T extends AsyncUniqueNode> extends EventListener

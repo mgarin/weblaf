@@ -21,7 +21,6 @@ package com.alee.managers.style;
  * This class manages all Web Look and Feel component styles.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public final class StyleManager

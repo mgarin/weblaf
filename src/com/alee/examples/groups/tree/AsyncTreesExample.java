@@ -35,7 +35,6 @@ import java.awt.event.MouseEvent;
  * Asynchronous trees example.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class AsyncTreesExample extends DefaultExample

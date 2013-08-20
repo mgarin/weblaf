@@ -29,7 +29,6 @@ import java.util.Map;
  * Custom list model for WebFileList component.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class FileListModel extends WebListModel<FileElement>

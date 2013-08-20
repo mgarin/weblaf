@@ -21,7 +21,6 @@ package com.alee.extended.painter;
  * TitledBorderPainter style class.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public final class TitledBorderPainterStyle

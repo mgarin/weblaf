@@ -21,7 +21,6 @@ package com.alee.extended.image;
  * This enumeration provides options of how image should be displayed.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public enum DisplayType

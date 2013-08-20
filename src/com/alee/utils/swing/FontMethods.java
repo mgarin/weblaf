@@ -25,7 +25,6 @@ import java.awt.*;
  *
  * @author Mikle Garin
  * @see SwingMethods
- * @since 1.4
  */
 
 public interface FontMethods<C extends Component> extends SwingMethods

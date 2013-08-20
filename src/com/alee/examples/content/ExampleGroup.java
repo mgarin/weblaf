@@ -28,7 +28,6 @@ import java.util.List;
  * This interface provides base methods for WebLaF demo example groups managed by ExampleManager.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public interface ExampleGroup

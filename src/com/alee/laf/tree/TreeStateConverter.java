@@ -32,7 +32,6 @@ import java.util.Map;
  * Custom converter for TreeState class.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class TreeStateConverter extends ReflectionConverter

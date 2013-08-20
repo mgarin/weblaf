@@ -39,7 +39,6 @@ import java.util.List;
  * Custom UI for JFileChooser component.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class WebFileChooserUI extends FileChooserUI

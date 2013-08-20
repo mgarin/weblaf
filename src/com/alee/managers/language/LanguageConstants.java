@@ -21,7 +21,6 @@ package com.alee.managers.language;
  * Supported languages.
  *
  * @author Mikle Garin
- * @since 1.3
  */
 
 public interface LanguageConstants

@@ -27,7 +27,6 @@ import java.util.List;
  *
  * @param <E> custom node type
  * @author Mikle Garin
- * @since 1.4
  */
 
 public interface AsyncTreeDataProvider<E extends AsyncUniqueNode>

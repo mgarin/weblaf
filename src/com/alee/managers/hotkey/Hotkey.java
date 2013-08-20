@@ -25,7 +25,6 @@ import java.awt.event.KeyEvent;
  * powerful and useful in various situations.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public final class Hotkey

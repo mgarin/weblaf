@@ -28,7 +28,6 @@ import java.util.Comparator;
  * This comparator is used by some file components by default.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class FileComparator implements Comparator<File>, Serializable

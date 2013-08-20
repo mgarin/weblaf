@@ -25,7 +25,6 @@ import java.util.Map;
  * This class provides a set of utilities to work with various maps.
  *
  * @author Mikle Garin
- * @since 1.3
  */
 
 public final class MapUtils

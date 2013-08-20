@@ -61,7 +61,6 @@ import java.util.List;
  * Library information dialog.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class LibraryInfoDialog extends WebFrame

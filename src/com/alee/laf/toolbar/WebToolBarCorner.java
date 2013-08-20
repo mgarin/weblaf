@@ -28,7 +28,6 @@ import java.awt.*;
  * This component serves as a visual connector between horizontal and vertical toolbars.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class WebToolBarCorner extends WebPanel implements SwingConstants

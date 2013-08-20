@@ -25,7 +25,6 @@ import javax.swing.text.PlainDocument;
  * Plain document limited by characters number.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class LimitedDocument extends PlainDocument

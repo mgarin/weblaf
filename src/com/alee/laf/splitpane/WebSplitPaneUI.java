@@ -35,7 +35,6 @@ import java.beans.PropertyChangeListener;
  * Custom UI for JSplitPane component.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class WebSplitPaneUI extends BasicSplitPaneUI

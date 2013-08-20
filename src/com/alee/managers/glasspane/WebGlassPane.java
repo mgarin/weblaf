@@ -36,7 +36,6 @@ import java.util.List;
  *
  * @author Mikle Garin
  * @see GlassPaneManager
- * @since 1.4
  */
 
 public class WebGlassPane extends WebPanel

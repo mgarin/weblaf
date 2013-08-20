@@ -24,7 +24,6 @@ import java.util.List;
  * This class provides a set of utilities to work with points and various shapes.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public final class GeometryUtils

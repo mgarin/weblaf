@@ -23,7 +23,6 @@ import java.util.EventListener;
  * This listener can be used for transition events tracking.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public interface TransitionListener extends EventListener

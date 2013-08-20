@@ -32,7 +32,6 @@ import java.util.List;
  * Data model for WebFileTable.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class WebFileTableModel extends AbstractTableModel implements WebFileTableColumns

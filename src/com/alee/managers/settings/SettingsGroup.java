@@ -30,7 +30,6 @@ import java.util.Map;
  * Settings group data class.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 @XStreamAlias ( "SettingsGroup" )

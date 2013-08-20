@@ -19,7 +19,6 @@ package com.alee.utils.swing;
 
 /**
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class DelayFormatException extends IllegalArgumentException

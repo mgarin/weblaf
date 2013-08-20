@@ -25,7 +25,6 @@ import java.awt.*;
  * Component for default checkbox list cell rendering.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class WebCheckBoxListElement extends WebCheckBox

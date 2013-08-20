@@ -25,7 +25,6 @@ import javax.swing.text.JTextComponent;
  * This class provides language default updates for JTextComponent component.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class JTextComponentLU extends DefaultLanguageUpdater<JTextComponent>

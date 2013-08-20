@@ -5,7 +5,6 @@ package com.alee.utils.compare;
  * This class is similar to FileFilter from default file chooser, but it doesn't require any specific object type like File.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public interface Filter<E>

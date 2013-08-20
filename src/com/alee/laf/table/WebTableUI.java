@@ -35,7 +35,6 @@ import java.util.Date;
  * Custom UI for JTable component.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class WebTableUI extends BasicTableUI

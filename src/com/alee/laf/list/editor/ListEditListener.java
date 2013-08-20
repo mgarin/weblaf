@@ -23,7 +23,6 @@ import java.util.EventListener;
  * This interface provide methods to track various list editing events.
  *
  * @author Mikle Garin
- * @since 1.3
  */
 
 public interface ListEditListener extends EventListener

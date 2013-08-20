@@ -32,7 +32,6 @@ import java.awt.event.FocusEvent;
  * Custom SettingsProcessor for JPasswordField component.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class JPasswordFieldSettingsProcessor extends SettingsProcessor<JPasswordField, String>

@@ -28,7 +28,6 @@ package com.alee.utils.swing;
  * @see com.alee.managers.hotkey.HotkeyMethods
  * @see SizeMethods
  * @see FontMethods
- * @since 1.4
  */
 
 public interface SwingMethods

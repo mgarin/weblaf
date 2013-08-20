@@ -39,7 +39,6 @@ import java.util.WeakHashMap;
  * to avoid any unexpected component behavior.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class ComponentSettingsManager

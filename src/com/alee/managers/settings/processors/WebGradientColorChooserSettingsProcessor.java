@@ -30,7 +30,6 @@ import javax.swing.event.ChangeListener;
  * Custom SettingsProcessor for WebGradientColorChooser component.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class WebGradientColorChooserSettingsProcessor extends SettingsProcessor<WebGradientColorChooser, GradientData>

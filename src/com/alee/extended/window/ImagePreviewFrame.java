@@ -30,7 +30,6 @@ import java.net.URL;
 
 /**
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class ImagePreviewFrame extends WebFrame

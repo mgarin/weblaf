@@ -26,7 +26,6 @@ import com.alee.utils.swing.SwingMethods;
  * @author Mikle Garin
  * @see SwingMethods
  * @see SettingsManager
- * @since 1.4
  */
 
 public interface SettingsMethods extends SwingMethods

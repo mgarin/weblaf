@@ -30,7 +30,6 @@ import java.util.Map;
  * Usually it is native L&F who setup system fonts but inside it simply has hardcoded fonts, which is not really different from my way.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class WebFonts

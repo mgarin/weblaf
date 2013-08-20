@@ -28,7 +28,6 @@ import java.util.List;
  * Sample asynchronous tree data provider.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class SampleDataProvider extends AbstractTreeDataProvider<SampleNode>

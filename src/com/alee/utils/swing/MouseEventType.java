@@ -21,7 +21,6 @@ package com.alee.utils.swing;
  * This enumeration represents various mouse events.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public enum MouseEventType

@@ -22,7 +22,6 @@ package com.alee.managers.settings;
  * default class instance when called. This method is used by SettingsManager when settings "get" methods called without default value.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public interface DefaultValue

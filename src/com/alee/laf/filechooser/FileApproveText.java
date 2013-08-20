@@ -21,7 +21,6 @@ package com.alee.laf.filechooser;
  * This enumeration represents default file chooser approve button types and provides language keys for them.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public enum FileApproveText

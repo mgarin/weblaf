@@ -28,7 +28,6 @@ import java.awt.event.KeyEvent;
  * Alt hotkey processor for application windows with menu.
  *
  * @author Mikle Garin
- * @since 1.0
  */
 
 public class AltProcessor implements KeyEventPostProcessor

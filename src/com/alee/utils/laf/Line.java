@@ -26,7 +26,6 @@ import java.awt.*;
  * This class represents a simple line data.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 @XStreamAlias ( "Line" )

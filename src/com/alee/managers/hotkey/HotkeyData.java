@@ -28,7 +28,6 @@ import java.io.Serializable;
  * Single hotkey settings description class.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 @XStreamAlias ("HotkeyData")

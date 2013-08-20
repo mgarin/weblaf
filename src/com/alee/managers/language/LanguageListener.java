@@ -25,7 +25,6 @@ import java.util.EventListener;
  * This listener is used to determine language and dictionary changes in LanguageManager.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public interface LanguageListener extends EventListener

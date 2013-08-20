@@ -34,7 +34,6 @@ import java.util.Map;
  * This class provides a set of utilities to work with URLs and email addresses.
  *
  * @author Mikle Garin
- * @since 1.3
  */
 
 public final class WebUtils

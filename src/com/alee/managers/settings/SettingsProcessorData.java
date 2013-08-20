@@ -26,7 +26,6 @@ import java.awt.*;
  * @see SettingsProcessor
  * @see com.alee.managers.settings.ComponentSettingsManager
  * @see com.alee.managers.settings.SettingsManager
- * @since 1.4
  */
 
 public class SettingsProcessorData

@@ -40,7 +40,6 @@ import java.util.List;
  *
  * @param <E> custom node type
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implements AsyncTreeModelListener<E>

@@ -26,7 +26,6 @@ import java.util.List;
  * This class provides a set of utilities to work with trees.
  *
  * @author Mikle Garin
- * @since 1.3
  */
 
 public class TreeUtils

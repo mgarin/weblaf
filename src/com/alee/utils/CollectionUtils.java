@@ -25,7 +25,6 @@ import java.util.*;
  * This class provides a set of utilities to work with various collections and arrays.
  *
  * @author Mikle Garin
- * @since 1.3
  */
 
 public final class CollectionUtils

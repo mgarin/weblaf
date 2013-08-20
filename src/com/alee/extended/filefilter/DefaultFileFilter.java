@@ -28,7 +28,6 @@ import java.io.FileFilter;
  * This class overrides IO, Swing and utils filter classes.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public abstract class DefaultFileFilter extends javax.swing.filechooser.FileFilter implements FileFilter, Filter<File>

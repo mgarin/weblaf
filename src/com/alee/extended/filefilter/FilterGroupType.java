@@ -21,7 +21,6 @@ package com.alee.extended.filefilter;
  * Filters grouping type.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public enum FilterGroupType

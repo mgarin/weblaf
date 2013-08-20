@@ -32,7 +32,6 @@ import java.awt.event.FocusEvent;
  * Custom SettingsProcessor for JTextComponent component.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class JTextComponentSettingsProcessor extends SettingsProcessor<JTextComponent, String>

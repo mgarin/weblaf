@@ -41,7 +41,6 @@ import java.util.Vector;
  * You could stil use that component even if WebLaF is not your application L&F as this component will use Web-UI in any case.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class WebList extends JList implements FontMethods<WebList>

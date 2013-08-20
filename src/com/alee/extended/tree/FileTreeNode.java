@@ -25,7 +25,6 @@ import java.io.File;
  * Custom AsyncUniqueNode for WebFileTree.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class FileTreeNode extends AsyncUniqueNode

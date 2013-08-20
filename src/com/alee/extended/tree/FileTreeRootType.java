@@ -12,7 +12,6 @@ import java.util.List;
  * Also this enumeration provides root files for each of the listed root types.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public enum FileTreeRootType

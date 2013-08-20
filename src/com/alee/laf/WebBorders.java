@@ -24,7 +24,6 @@ import javax.swing.plaf.BorderUIResource;
  * Factory object that can vend Borders appropriate for the Web L&F.
  *
  * @author Mikle Garin
- * @since 1.3
  */
 
 public class WebBorders

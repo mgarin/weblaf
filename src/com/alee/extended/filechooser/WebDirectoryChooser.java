@@ -42,7 +42,6 @@ import java.io.File;
  * This custom component provides a dialog shell for WebDirectoryChooserPanel component.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class WebDirectoryChooser extends WebDialog implements DialogOptions

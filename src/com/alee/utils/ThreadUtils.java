@@ -21,7 +21,6 @@ package com.alee.utils;
  * This class provides a set of utilities to work with threads.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public final class ThreadUtils

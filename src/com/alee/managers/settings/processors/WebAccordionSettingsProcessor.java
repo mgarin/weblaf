@@ -29,7 +29,6 @@ import java.util.List;
  * Custom SettingsProcessor for WebAccordion component.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 // todo Change save scheme from indices to IDs

@@ -77,7 +77,6 @@ import java.util.List;
  * Basically used to provide WebFileChooserUI with all required UI elements.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class WebFileChooserPanel extends WebPanel

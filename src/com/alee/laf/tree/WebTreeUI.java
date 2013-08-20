@@ -44,7 +44,6 @@ import java.util.List;
  * Custom UI for JTree component.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class WebTreeUI extends BasicTreeUI

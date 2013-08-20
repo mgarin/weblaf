@@ -29,7 +29,6 @@ import javax.swing.event.ChangeListener;
  * Custom SettingsProcessor for JSlider component.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class JSliderSettingsProcessor extends SettingsProcessor<JSlider, Integer>

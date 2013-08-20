@@ -4,7 +4,6 @@ package com.alee.extended.painter;
  * This enumeration contains list of exising predefined textures for TexturePainter class.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public enum TextureType

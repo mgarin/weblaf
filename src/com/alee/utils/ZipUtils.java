@@ -28,7 +28,6 @@ import java.util.zip.ZipFile;
  * This class provides a set of utilities to work with ZIP files.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public final class ZipUtils

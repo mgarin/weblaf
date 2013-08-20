@@ -25,7 +25,6 @@ import java.awt.event.MouseAdapter;
  * It can be used in case you need to block various mouse events from passing to underlying components.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class EmptyMouseAdapter extends MouseAdapter

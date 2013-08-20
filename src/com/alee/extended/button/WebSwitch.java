@@ -36,7 +36,6 @@ import java.util.List;
  * This component that allows switching between two states.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class WebSwitch extends WebPanel

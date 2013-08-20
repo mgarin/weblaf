@@ -24,7 +24,6 @@ import java.util.StringTokenizer;
  * This class provides a set of utilities to work with colors.
  *
  * @author Mikle Garin
- * @since 1.3
  */
 
 public final class ColorUtils

@@ -25,7 +25,6 @@ import java.util.zip.ZipEntry;
  * The listener interface for receiving unzip operation events.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public interface UnzipListener extends EventListener

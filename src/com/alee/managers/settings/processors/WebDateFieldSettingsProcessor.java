@@ -29,7 +29,6 @@ import java.util.Date;
  * Custom SettingsProcessor for WebDateField component.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class WebDateFieldSettingsProcessor extends SettingsProcessor<WebDateField, Long>

@@ -36,7 +36,6 @@ import java.util.Map;
  * This class provides a set of utilities to work with various nine-patch images.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public final class NinePatchUtils

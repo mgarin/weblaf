@@ -54,7 +54,6 @@ import java.util.List;
  * This class provides a set of utilities to work with Swing components, their settings and events.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public final class SwingUtils

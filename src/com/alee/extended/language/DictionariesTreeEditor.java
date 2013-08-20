@@ -30,7 +30,6 @@ import java.util.EventObject;
  * Language dictionaries tree cell editor.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class DictionariesTreeEditor extends WebTreeCellEditor

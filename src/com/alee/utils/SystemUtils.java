@@ -33,7 +33,6 @@ import java.util.List;
  * Futher on operating system called shortly - OS.
  *
  * @author Mikle Garin
- * @since 1.3
  */
 
 public final class SystemUtils

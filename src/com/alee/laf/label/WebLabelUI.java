@@ -35,7 +35,6 @@ import java.util.Map;
  * Custom UI for JLabel component.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class WebLabelUI extends BasicLabelUI

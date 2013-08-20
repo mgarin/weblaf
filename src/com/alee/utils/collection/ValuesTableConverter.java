@@ -29,7 +29,6 @@ import com.thoughtworks.xstream.mapper.Mapper;
  * Special XStream converter for ValuesTable object.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class ValuesTableConverter extends ReflectionConverter

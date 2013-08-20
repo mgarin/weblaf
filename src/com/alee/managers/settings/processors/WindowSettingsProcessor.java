@@ -30,7 +30,6 @@ import java.awt.event.ComponentEvent;
  * Custom SettingsProcessor for Window component.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 // todo Save window normal/maximized window states, iconified should be converted into normal

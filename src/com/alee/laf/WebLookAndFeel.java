@@ -78,7 +78,6 @@ import java.util.List;
  * This core class contains methods to install, configure and uninstall WebLookAndFeel.
  *
  * @author Mikle Garin
- * @since 1.0
  */
 
 public class WebLookAndFeel extends BasicLookAndFeel

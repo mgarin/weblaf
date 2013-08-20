@@ -37,7 +37,6 @@ import java.util.List;
  * It also has a few useful features like unified styling and selection mode.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class WebAccordion extends WebPanel implements SwingConstants, SettingsMethods

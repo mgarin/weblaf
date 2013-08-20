@@ -34,10 +34,9 @@ import java.util.List;
  * Data object for WebGradientColorChooser component.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
-@XStreamAlias ( "GradientData" )
+@XStreamAlias ("GradientData")
 public class GradientData implements Serializable, Cloneable, DefaultValue
 {
     /**
@@ -48,7 +47,7 @@ public class GradientData implements Serializable, Cloneable, DefaultValue
     /**
      * All available colors data.
      */
-    @XStreamImplicit ( itemFieldName = "Color" )
+    @XStreamImplicit (itemFieldName = "Color")
     private List<GradientColorData> gradientColorsData;
 
     /**

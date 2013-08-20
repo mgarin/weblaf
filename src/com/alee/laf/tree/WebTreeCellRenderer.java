@@ -28,7 +28,6 @@ import javax.swing.tree.TreeCellRenderer;
  * Custom default tree cell renderer for WebLookAndFeel.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class WebTreeCellRenderer extends WebTreeElement implements TreeCellRenderer

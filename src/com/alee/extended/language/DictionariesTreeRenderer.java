@@ -29,7 +29,6 @@ import javax.swing.tree.DefaultMutableTreeNode;
  * Language dictionaries tree renderer.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class DictionariesTreeRenderer extends WebTreeCellRenderer

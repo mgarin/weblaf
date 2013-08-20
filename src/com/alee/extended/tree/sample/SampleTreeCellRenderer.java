@@ -27,7 +27,6 @@ import javax.swing.*;
  * Sample asynchronous tree cell renderer.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class SampleTreeCellRenderer extends WebAsyncTreeCellRenderer

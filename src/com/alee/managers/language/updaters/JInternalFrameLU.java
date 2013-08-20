@@ -25,7 +25,6 @@ import javax.swing.*;
  * This class provides language default updates for JInternalFrame component.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class JInternalFrameLU extends DefaultLanguageUpdater<JInternalFrame>

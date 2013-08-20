@@ -32,7 +32,6 @@ import java.awt.image.BufferedImage;
  * @author Mikle Garin
  * @see DefaultPainter
  * @see Painter
- * @since 1.4
  */
 
 public class TexturePainter<E extends JComponent> extends DefaultPainter<E>

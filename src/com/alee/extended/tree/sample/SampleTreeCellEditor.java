@@ -27,7 +27,6 @@ import java.awt.*;
  * Sample tree cell editor.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class SampleTreeCellEditor extends WebTreeCellEditor

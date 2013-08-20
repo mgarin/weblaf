@@ -24,7 +24,6 @@ import com.alee.laf.panel.WebPanel;
  *
  * @author Mikle Garin
  * @see SwingMethods
- * @since 1.4
  */
 
 // todo Add these methods into SwingUtils and implement in components

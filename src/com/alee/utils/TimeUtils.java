@@ -24,7 +24,6 @@ import java.util.Date;
  * This class provides a set of utilities for time measurement and comparison.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public final class TimeUtils

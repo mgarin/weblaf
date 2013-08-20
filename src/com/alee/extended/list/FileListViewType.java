@@ -21,7 +21,6 @@ package com.alee.extended.list;
  * This enumeration represents possible file list view types.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public enum FileListViewType

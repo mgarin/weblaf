@@ -25,7 +25,6 @@ import java.util.EventListener;
  * Check out downloadFile methods from FileUtils to see how this listener can be used.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public interface FileDownloadListener extends EventListener

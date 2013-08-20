@@ -28,7 +28,6 @@ import java.io.File;
  * File table cell editor.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class WebFileTableCellEditor extends WebDefaultCellEditor<WebTextField>

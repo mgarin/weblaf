@@ -24,7 +24,6 @@ import java.awt.*;
  * This can be used by components to provide their shape for various usage cases.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public interface ShapeProvider

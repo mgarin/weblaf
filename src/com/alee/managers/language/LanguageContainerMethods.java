@@ -24,7 +24,6 @@ import com.alee.utils.swing.SwingMethods;
  * Basically containers which implement these methods can simplify language keys used for contained components translation.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public interface LanguageContainerMethods extends SwingMethods

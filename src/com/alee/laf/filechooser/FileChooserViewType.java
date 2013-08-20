@@ -21,7 +21,6 @@ package com.alee.laf.filechooser;
  * This enumerations represents different view types of file chooser.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public enum FileChooserViewType

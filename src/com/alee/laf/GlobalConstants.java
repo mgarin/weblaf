@@ -30,7 +30,6 @@ import java.util.List;
  * This class provides various global constants.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public final class GlobalConstants

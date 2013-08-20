@@ -7,7 +7,6 @@ import java.util.EventListener;
  * Two of them are fired before the collapsible pane finished either collapsing or expanding and two other fired after.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public interface AccordionListener extends EventListener

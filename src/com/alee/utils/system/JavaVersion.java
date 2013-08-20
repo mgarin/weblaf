@@ -24,7 +24,6 @@ import java.util.regex.Pattern;
  * Java version information class.
  *
  * @author Mikle Garin
- * @since 1.4
  */
 
 public class JavaVersion

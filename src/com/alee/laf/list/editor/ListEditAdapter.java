@@ -21,7 +21,6 @@ package com.alee.laf.list.editor;
  * ListEditListener interface adapter.
  *
  * @author Mikle Garin
- * @since 1.3
  */
 
 public abstract class ListEditAdapter implements ListEditListener
