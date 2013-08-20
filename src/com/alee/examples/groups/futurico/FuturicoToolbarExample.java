@@ -59,9 +59,10 @@ public class FuturicoToolbarExample extends DefaultExample
         WebToggleButton[] buttons = new WebToggleButton[]{ info, zoom, game, exit };
 
         // Buttons settings
-        ReflectUtils.callMethodSafely ( buttons, "setPainter", XmlUtils.loadNinePatchStatePainter ( getResource ( "toolbarButton.xml" ) ) );
-        ReflectUtils.callMethodSafely ( buttons, "setForeground", Color.WHITE );
-        ReflectUtils.callMethodSafely ( buttons, "setSelectedForeground", Color.BLACK );
+        ReflectUtils
+                .callMethodsSafely ( buttons, "setPainter", XmlUtils.loadNinePatchStatePainter ( getResource ( "toolbarButton.xml" ) ) );
+        ReflectUtils.callMethodsSafely ( buttons, "setForeground", Color.WHITE );
+        ReflectUtils.callMethodsSafely ( buttons, "setSelectedForeground", Color.BLACK );
         toolBar.add ( buttons );
 
         // Buttons grouping
