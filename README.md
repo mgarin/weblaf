@@ -46,7 +46,7 @@ Here is a full list of usable ANT targets in WebLaF build script:
 9. **run.weblaf.demo** - build and run WebLookAndFeel_demo.jar (library demo application)
 
 
-Usage
+L&F usage
 ----------
 To install Web L&F you can simply use this line of code:
 
@@ -59,6 +59,14 @@ You can also use one of the old ways to set L&F:
     UIManager.setLookAndFeel ( "com.alee.laf.WebLookAndFeel" );
     // or 
     UIManager.setLookAndFeel ( WebLookAndFeel.class.getCanonicalName () );
+
+It will also work as intended.
+
+
+Roadmap
+----------
+You can always check what fixes, features and improvements are coming by checking the milestones page:
+https://github.com/mgarin/weblaf/issues/milestones
 
 
 Feedback
