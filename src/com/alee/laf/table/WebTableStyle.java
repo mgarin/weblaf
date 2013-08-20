@@ -55,7 +55,7 @@ public final class WebTableStyle
     /**
      * Default spacing berween table cells
      */
-    public static Dimension cellsSpacing = new Dimension ( 0, 1 );
+    public static Dimension cellsSpacing = new Dimension ( 1, 1 );
 
     /**
      * Table selection background.
