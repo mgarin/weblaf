@@ -311,6 +311,7 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
      * @param select whether to select file or not
      * @param expand whether to expand file or not
      */
+    // todo Replace Runnable with listener (nodeExpanded, beforeSelection, afterSelection, completed)
     public void expandToFile ( File file, final boolean select, final boolean expand, final Runnable finalAction )
     {
         if ( file != null )

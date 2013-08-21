@@ -747,7 +747,7 @@ public final class ReflectUtils
     /**
      * Returns result given by called method.
      *
-     * @param instance   object instance
+     * @param object     object instance
      * @param methodName method name
      * @param arguments  method arguments
      * @return result given by called method
