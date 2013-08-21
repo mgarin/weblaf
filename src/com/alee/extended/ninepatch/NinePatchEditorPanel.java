@@ -39,6 +39,7 @@ import com.alee.laf.splitpane.WebSplitPane;
 import com.alee.laf.text.WebTextField;
 import com.alee.laf.toolbar.ToolbarStyle;
 import com.alee.laf.toolbar.WebToolBar;
+import com.alee.laf.tree.TreeSelectionStyle;
 import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.settings.SettingsManager;
@@ -134,6 +135,7 @@ public class NinePatchEditorPanel extends WebPanel
         setLayout ( new BorderLayout () );
 
         fileTree = new WebFileTree ();
+        fileTree.setSelectionStyle ( TreeSelectionStyle.single );
         fileTree.setSelectionMode ( TreeSelectionModel.SINGLE_TREE_SELECTION );
         fileTree.setFileFilter ( GlobalConstants.IMAGES_AND_FOLDERS_FILTER );
         fileTree.addTreeSelectionListener ( new TreeSelectionListener ()

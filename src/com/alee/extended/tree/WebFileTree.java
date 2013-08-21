@@ -318,8 +318,8 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
             final int selectionId;
             synchronized ( delayedSelectionLock )
             {
-                selectionId = delayedSelectionId;
                 delayedSelectionId++;
+                selectionId = delayedSelectionId;
             }
 
             // Expanding whole path
