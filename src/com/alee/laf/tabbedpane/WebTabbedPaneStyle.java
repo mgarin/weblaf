@@ -23,78 +23,81 @@ import com.alee.laf.StyleConstants;
 import java.awt.*;
 
 /**
- * User: mgarin Date: 11/15/11 Time: 1:17 PM
+ * WebTabbedPane style class.
+ *
+ * @author Mikle Garin
  */
 
 public final class WebTabbedPaneStyle
 {
     /**
-     * Tab content margin
+     * Tab content margin.
      */
     public static TabbedPaneStyle tabbedPaneStyle = TabbedPaneStyle.standalone;
 
     /**
-     * Top tab color
+     * Top tab color.
      */
     public static Color topBg = new Color ( 227, 227, 227 );
 
     /**
-     * Bottom tab color
+     * Bottom tab color.
      */
     public static Color bottomBg = new Color ( 208, 208, 208 );
 
     /**
-     * Top selected tab color
+     * Top selected tab color.
      */
     public static Color selectedTopBg = Color.WHITE;
 
     /**
-     * Bottom selected tab color
+     * Bottom selected tab color.
      */
     public static Color selectedBottomBg = StyleConstants.backgroundColor;
 
     /**
-     * Decoration rounding
+     * Decoration rounding.
      */
     public static int round = StyleConstants.smallRound;
 
     /**
-     * Decoration shade width
+     * Decoration shade width.
      */
     public static int shadeWidth = StyleConstants.shadeWidth;
 
     /**
-     * Rotate tab insets so they will not be the same for different tab positions
+     * Whether to rotate tab insets for different tab positions or not.
      */
     public static boolean rotateTabInsets = false;
 
     /**
-     * Tab content margin
+     * Tab content margin.
      */
     public static Insets contentInsets = new Insets ( 0, 0, 0, 0 );
 
     /**
-     * Tab title margin
+     * Tab title margin.
      */
     public static Insets tabInsets = new Insets ( 3, 4, 3, 4 );
 
     /**
-     * Empty pane Painter (when there are no available tabs)
+     * Empty pane Painter.
+     * Used when there are no available tabs.
      */
     public static Painter painter = null;
 
     /**
-     * Left tab area spacing
+     * Left tab area spacing.
      */
     public static int tabRunIndent = 0;
 
     /**
-     * Tab runs overlay in pixels
+     * Tab runs overlay in pixels.
      */
     public static int tabOverlay = 1;
 
     /**
-     * Tabs stretch type
+     * Tabs stretch type.
      */
     public static TabStretchType tabStretchType = TabStretchType.multiline;
 }
