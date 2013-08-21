@@ -32,16 +32,19 @@ import java.awt.*;
 
 public class CustomDelayedTooltipExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Custom delayed tooltip";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Custom Web-styled delayed tooltip";
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         // This is custom tooltip set by TooltipManager

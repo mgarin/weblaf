@@ -35,12 +35,14 @@ public class ParentProxyDropHandler extends TransferHandler
         this.component = component;
     }
 
+    @Override
     public boolean canImport ( TransferHandler.TransferSupport info )
     {
         TransferHandler th = getParentTransferHandler ();
         return th != null && th.canImport ( info );
     }
 
+    @Override
     public boolean importData ( TransferHandler.TransferSupport info )
     {
         TransferHandler th = getParentTransferHandler ();

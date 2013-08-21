@@ -45,6 +45,7 @@ public class DefaultFileFilterListCellRenderer extends WebComboBoxCellRenderer
     /**
      * {@inheritDoc}
      */
+    @Override
     public Component getListCellRendererComponent ( JList list, Object value, int index, boolean isSelected, boolean cellHasFocus )
     {
         final DefaultFileFilter defaultFileFilter = ( DefaultFileFilter ) value;

@@ -37,16 +37,19 @@ import java.awt.*;
 
 public class PanelBreadcrumbsExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Panel breadcrumbs";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Web-styled panel breadcrumbs";
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         // Decorated breadcrumb

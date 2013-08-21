@@ -130,6 +130,7 @@ public class GradientColorData implements Serializable, Cloneable
      *
      * @return cloned GradientColorData
      */
+    @Override
     public GradientColorData clone ()
     {
         return new GradientColorData ( location, SwingUtils.copy ( color ) );

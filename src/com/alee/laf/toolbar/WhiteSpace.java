@@ -71,6 +71,7 @@ public class WhiteSpace extends JComponent implements SwingConstants
         this.spacing = spacing;
     }
 
+    @Override
     public Dimension getPreferredSize ()
     {
         Container container = getParent ();

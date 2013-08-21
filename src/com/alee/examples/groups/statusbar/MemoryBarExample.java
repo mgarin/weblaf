@@ -30,16 +30,19 @@ import java.awt.*;
 
 public class MemoryBarExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Memory bars";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Web-styled memory bars";
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         // Memory bar that displays maximum, allocated and used memory

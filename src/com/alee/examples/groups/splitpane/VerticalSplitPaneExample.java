@@ -34,16 +34,19 @@ import static com.alee.laf.splitpane.WebSplitPane.VERTICAL_SPLIT;
 
 public class VerticalSplitPaneExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Vertical split pane";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Web-styled vertical split pane with proxy drag";
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         // Top part content

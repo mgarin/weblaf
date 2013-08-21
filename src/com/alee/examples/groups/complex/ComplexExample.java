@@ -47,16 +47,19 @@ import java.awt.image.BufferedImage;
 
 public class ComplexExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Custom panel";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Custom-styled panel";
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         WebPanel container = new WebPanel ( new TexturePainter ( loadIcon ( "bg1.png" ) ) );
@@ -67,6 +70,7 @@ public class ComplexExample extends DefaultExample
 
         WebLabel titleLabel = new WebLabel ( "Custom-styled label" )
         {
+            @Override
             protected void paintComponent ( Graphics g )
             {
                 super.paintComponent ( g );
@@ -80,6 +84,7 @@ public class ComplexExample extends DefaultExample
 
         WebPanel innerPanel = new WebPanel ( new VerticalFlowLayout ( 15, 15 ) )
         {
+            @Override
             protected void paintComponent ( Graphics g )
             {
                 super.paintComponent ( g );
@@ -98,6 +103,7 @@ public class ComplexExample extends DefaultExample
         ppp.setShadeWidth ( 20 );
         ppp.add ( new WebLabel ( "123" )
         {
+            @Override
             protected void paintComponent ( Graphics g )
             {
                 super.paintComponent ( g );
@@ -110,6 +116,7 @@ public class ComplexExample extends DefaultExample
                 setPainter ( new ShadeBackgroundPainter ( null ) );
             }
 
+            @Override
             protected void paintComponent ( Graphics g )
             {
                 super.paintComponent ( g );
@@ -125,6 +132,7 @@ public class ComplexExample extends DefaultExample
         final TestFrame tf = TestFrame.show ( new ComplexExample ().getPreview ( null ), 0 );
         HotkeyManager.registerHotkey ( Hotkey.SPACE, new HotkeyRunnable ()
         {
+            @Override
             public void run ( KeyEvent e )
             {
                 tf.pack ();
@@ -143,11 +151,13 @@ public class ComplexExample extends DefaultExample
             setMargin ( 25 );
         }
 
+        @Override
         public Dimension getPreferredSize ( JComponent c )
         {
             return getShadeIcon ().getPreferredSize ();
         }
 
+        @Override
         public void paint ( Graphics2D g2d, Rectangle bounds, JComponent c )
         {
             // Shade

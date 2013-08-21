@@ -38,16 +38,19 @@ import java.awt.event.ActionListener;
 
 public class ProgressBreadcrumbsExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Progress breadcrumbs";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Web-styled progress breadcrumbs";
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         // Decorated breadcrumb
@@ -83,6 +86,7 @@ public class ProgressBreadcrumbsExample extends DefaultExample
                     private int run = 0;
                     private int element = 0;
 
+                    @Override
                     public void actionPerformed ( ActionEvent e )
                     {
                         // Currently updated element

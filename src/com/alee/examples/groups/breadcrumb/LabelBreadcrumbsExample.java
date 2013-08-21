@@ -31,16 +31,19 @@ import java.awt.*;
 
 public class LabelBreadcrumbsExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Label breadcrumbs";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Web-styled label breadcrumbs";
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         // Decorated breadcrumb

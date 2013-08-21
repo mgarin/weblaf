@@ -32,6 +32,7 @@ public class JTextComponentLU extends DefaultLanguageUpdater<JTextComponent>
     /**
      * {@inheritDoc}
      */
+    @Override
     public void update ( JTextComponent c, String key, Value value, Object... data )
     {
         c.setText ( getDefaultText ( value, data ) );

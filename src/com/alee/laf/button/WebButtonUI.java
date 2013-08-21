@@ -104,6 +104,7 @@ public class WebButtonUI extends BasicButtonUI implements ShapeProvider, SwingCo
         return new WebButtonUI ();
     }
 
+    @Override
     public void installUI ( final JComponent c )
     {
         super.installUI ( c );
@@ -125,6 +126,7 @@ public class WebButtonUI extends BasicButtonUI implements ShapeProvider, SwingCo
         // Rollover listener
         mouseAdapter = new MouseAdapter ()
         {
+            @Override
             public void mouseEntered ( MouseEvent e )
             {
                 rollover = true;
@@ -137,6 +139,7 @@ public class WebButtonUI extends BasicButtonUI implements ShapeProvider, SwingCo
                 {
                     animator = new WebTimer ( "WebButtonUI.fadeInTimer", StyleConstants.fastAnimationDelay, new ActionListener ()
                     {
+                        @Override
                         public void actionPerformed ( ActionEvent e )
                         {
                             transparency += 0.075f;
@@ -164,6 +167,7 @@ public class WebButtonUI extends BasicButtonUI implements ShapeProvider, SwingCo
                 refresh ( c );
             }
 
+            @Override
             public void mouseExited ( MouseEvent e )
             {
                 mousePoint = e.getPoint ();
@@ -174,6 +178,7 @@ public class WebButtonUI extends BasicButtonUI implements ShapeProvider, SwingCo
                 {
                     animator = new WebTimer ( "WebButtonUI.fadeOutTimer", StyleConstants.fastAnimationDelay, new ActionListener ()
                     {
+                        @Override
                         public void actionPerformed ( ActionEvent e )
                         {
                             transparency -= 0.075f;
@@ -207,6 +212,7 @@ public class WebButtonUI extends BasicButtonUI implements ShapeProvider, SwingCo
                 refresh ( c );
             }
 
+            @Override
             public void mouseReleased ( MouseEvent e )
             {
                 // Fix for highlight stuck
@@ -231,6 +237,7 @@ public class WebButtonUI extends BasicButtonUI implements ShapeProvider, SwingCo
                 }
             }
 
+            @Override
             public void mouseDragged ( MouseEvent e )
             {
                 mousePoint = e.getPoint ();
@@ -240,6 +247,7 @@ public class WebButtonUI extends BasicButtonUI implements ShapeProvider, SwingCo
                 }
             }
 
+            @Override
             public void mouseMoved ( MouseEvent e )
             {
                 mousePoint = e.getPoint ();
@@ -266,6 +274,7 @@ public class WebButtonUI extends BasicButtonUI implements ShapeProvider, SwingCo
         // Ancestor listener
         ancestorListener = new AncestorAdapter ()
         {
+            @Override
             public void ancestorRemoved ( AncestorEvent event )
             {
                 rollover = false;
@@ -281,6 +290,7 @@ public class WebButtonUI extends BasicButtonUI implements ShapeProvider, SwingCo
         // Orientation change listener
         propertyChangeListener = new PropertyChangeListener ()
         {
+            @Override
             public void propertyChange ( PropertyChangeEvent evt )
             {
                 updateBorder ();
@@ -289,6 +299,7 @@ public class WebButtonUI extends BasicButtonUI implements ShapeProvider, SwingCo
         c.addPropertyChangeListener ( WebLookAndFeel.COMPONENT_ORIENTATION_PROPERTY, propertyChangeListener );
     }
 
+    @Override
     public void uninstallUI ( JComponent c )
     {
         c.removeMouseListener ( mouseAdapter );
@@ -301,6 +312,7 @@ public class WebButtonUI extends BasicButtonUI implements ShapeProvider, SwingCo
         super.uninstallUI ( c );
     }
 
+    @Override
     public Shape provideShape ()
     {
         if ( painter != null || undecorated )
@@ -719,6 +731,7 @@ public class WebButtonUI extends BasicButtonUI implements ShapeProvider, SwingCo
         updateBorder ();
     }
 
+    @Override
     public void paint ( Graphics g, JComponent c )
     {
         AbstractButton button = ( AbstractButton ) c;
@@ -853,6 +866,7 @@ public class WebButtonUI extends BasicButtonUI implements ShapeProvider, SwingCo
                 buttonModel.isSelected () || buttonModel.isPressed ();
     }
 
+    @Override
     protected void paintText ( Graphics g, JComponent c, Rectangle textRect, String text )
     {
         AbstractButton b = ( AbstractButton ) c;
@@ -883,6 +897,7 @@ public class WebButtonUI extends BasicButtonUI implements ShapeProvider, SwingCo
         return ColorUtils.getIntermediateColor ( StyleConstants.borderColor, StyleConstants.darkBorderColor, transparency );
     }
 
+    @Override
     protected void paintIcon ( Graphics g, JComponent c, Rectangle iconRect )
     {
         AbstractButton button = ( AbstractButton ) c;
@@ -924,6 +939,7 @@ public class WebButtonUI extends BasicButtonUI implements ShapeProvider, SwingCo
         }
     }
 
+    @Override
     public Dimension getPreferredSize ( JComponent c )
     {
         Dimension ps = super.getPreferredSize ( c );

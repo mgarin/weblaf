@@ -374,6 +374,7 @@ public class WebDialog extends JDialog implements LanguageMethods, LanguageConta
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setLanguage ( String key, Object... data )
     {
         LanguageManager.registerComponent ( this, key, data );
@@ -382,6 +383,7 @@ public class WebDialog extends JDialog implements LanguageMethods, LanguageConta
     /**
      * {@inheritDoc}
      */
+    @Override
     public void updateLanguage ( Object... data )
     {
         LanguageManager.updateComponent ( this, data );
@@ -390,6 +392,7 @@ public class WebDialog extends JDialog implements LanguageMethods, LanguageConta
     /**
      * {@inheritDoc}
      */
+    @Override
     public void updateLanguage ( String key, Object... data )
     {
         LanguageManager.updateComponent ( this, key, data );
@@ -398,6 +401,7 @@ public class WebDialog extends JDialog implements LanguageMethods, LanguageConta
     /**
      * {@inheritDoc}
      */
+    @Override
     public void removeLanguage ()
     {
         LanguageManager.unregisterComponent ( this );
@@ -406,6 +410,7 @@ public class WebDialog extends JDialog implements LanguageMethods, LanguageConta
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isLanguageSet ()
     {
         return LanguageManager.isRegisteredComponent ( this );
@@ -414,6 +419,7 @@ public class WebDialog extends JDialog implements LanguageMethods, LanguageConta
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setLanguageUpdater ( LanguageUpdater updater )
     {
         LanguageManager.registerLanguageUpdater ( this, updater );
@@ -422,6 +428,7 @@ public class WebDialog extends JDialog implements LanguageMethods, LanguageConta
     /**
      * {@inheritDoc}
      */
+    @Override
     public void removeLanguageUpdater ()
     {
         LanguageManager.unregisterLanguageUpdater ( this );
@@ -434,6 +441,7 @@ public class WebDialog extends JDialog implements LanguageMethods, LanguageConta
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setLanguageContainerKey ( String key )
     {
         LanguageManager.registerLanguageContainer ( this, key );
@@ -442,6 +450,7 @@ public class WebDialog extends JDialog implements LanguageMethods, LanguageConta
     /**
      * {@inheritDoc}
      */
+    @Override
     public void removeLanguageContainerKey ()
     {
         LanguageManager.unregisterLanguageContainer ( this );
@@ -450,6 +459,7 @@ public class WebDialog extends JDialog implements LanguageMethods, LanguageConta
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getLanguageContainerKey ()
     {
         return LanguageManager.getLanguageContainerKey ( this );
@@ -462,6 +472,7 @@ public class WebDialog extends JDialog implements LanguageMethods, LanguageConta
     /**
      * {@inheritDoc}
      */
+    @Override
     public void registerSettings ( String key )
     {
         SettingsManager.registerComponent ( this, key );
@@ -470,6 +481,7 @@ public class WebDialog extends JDialog implements LanguageMethods, LanguageConta
     /**
      * {@inheritDoc}
      */
+    @Override
     public <T extends DefaultValue> void registerSettings ( String key, Class<T> defaultValueClass )
     {
         SettingsManager.registerComponent ( this, key, defaultValueClass );
@@ -478,6 +490,7 @@ public class WebDialog extends JDialog implements LanguageMethods, LanguageConta
     /**
      * {@inheritDoc}
      */
+    @Override
     public void registerSettings ( String key, Object defaultValue )
     {
         SettingsManager.registerComponent ( this, key, defaultValue );
@@ -486,6 +499,7 @@ public class WebDialog extends JDialog implements LanguageMethods, LanguageConta
     /**
      * {@inheritDoc}
      */
+    @Override
     public void registerSettings ( String group, String key )
     {
         SettingsManager.registerComponent ( this, group, key );
@@ -494,6 +508,7 @@ public class WebDialog extends JDialog implements LanguageMethods, LanguageConta
     /**
      * {@inheritDoc}
      */
+    @Override
     public <T extends DefaultValue> void registerSettings ( String group, String key, Class<T> defaultValueClass )
     {
         SettingsManager.registerComponent ( this, group, key, defaultValueClass );
@@ -502,6 +517,7 @@ public class WebDialog extends JDialog implements LanguageMethods, LanguageConta
     /**
      * {@inheritDoc}
      */
+    @Override
     public void registerSettings ( String group, String key, Object defaultValue )
     {
         SettingsManager.registerComponent ( this, group, key, defaultValue );
@@ -510,6 +526,7 @@ public class WebDialog extends JDialog implements LanguageMethods, LanguageConta
     /**
      * {@inheritDoc}
      */
+    @Override
     public void registerSettings ( String key, boolean loadInitialSettings, boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, key, loadInitialSettings, applySettingsChanges );
@@ -518,6 +535,7 @@ public class WebDialog extends JDialog implements LanguageMethods, LanguageConta
     /**
      * {@inheritDoc}
      */
+    @Override
     public <T extends DefaultValue> void registerSettings ( String key, Class<T> defaultValueClass, boolean loadInitialSettings,
                                                             boolean applySettingsChanges )
     {
@@ -527,6 +545,7 @@ public class WebDialog extends JDialog implements LanguageMethods, LanguageConta
     /**
      * {@inheritDoc}
      */
+    @Override
     public void registerSettings ( String key, Object defaultValue, boolean loadInitialSettings, boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, key, defaultValue, loadInitialSettings, applySettingsChanges );
@@ -535,6 +554,7 @@ public class WebDialog extends JDialog implements LanguageMethods, LanguageConta
     /**
      * {@inheritDoc}
      */
+    @Override
     public <T extends DefaultValue> void registerSettings ( String group, String key, Class<T> defaultValueClass,
                                                             boolean loadInitialSettings, boolean applySettingsChanges )
     {
@@ -544,6 +564,7 @@ public class WebDialog extends JDialog implements LanguageMethods, LanguageConta
     /**
      * {@inheritDoc}
      */
+    @Override
     public void registerSettings ( String group, String key, Object defaultValue, boolean loadInitialSettings,
                                    boolean applySettingsChanges )
     {
@@ -553,6 +574,7 @@ public class WebDialog extends JDialog implements LanguageMethods, LanguageConta
     /**
      * {@inheritDoc}
      */
+    @Override
     public void registerSettings ( SettingsProcessor settingsProcessor )
     {
         SettingsManager.registerComponent ( this, settingsProcessor );
@@ -561,6 +583,7 @@ public class WebDialog extends JDialog implements LanguageMethods, LanguageConta
     /**
      * {@inheritDoc}
      */
+    @Override
     public void unregisterSettings ()
     {
         SettingsManager.unregisterComponent ( this );
@@ -569,6 +592,7 @@ public class WebDialog extends JDialog implements LanguageMethods, LanguageConta
     /**
      * {@inheritDoc}
      */
+    @Override
     public void loadSettings ()
     {
         SettingsManager.loadComponentSettings ( this );
@@ -577,6 +601,7 @@ public class WebDialog extends JDialog implements LanguageMethods, LanguageConta
     /**
      * {@inheritDoc}
      */
+    @Override
     public void saveSettings ()
     {
         SettingsManager.saveComponentSettings ( this );

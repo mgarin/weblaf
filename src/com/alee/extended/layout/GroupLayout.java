@@ -73,16 +73,19 @@ public class GroupLayout implements LayoutManager, SwingConstants
         this.gap = gap;
     }
 
+    @Override
     public void addLayoutComponent ( String name, Component comp )
     {
         constraints.put ( comp, name );
     }
 
+    @Override
     public void removeLayoutComponent ( Component comp )
     {
         constraints.remove ( comp );
     }
 
+    @Override
     public void layoutContainer ( Container parent )
     {
         // Gathering component sizes
@@ -140,11 +143,13 @@ public class GroupLayout implements LayoutManager, SwingConstants
         }
     }
 
+    @Override
     public Dimension preferredLayoutSize ( Container parent )
     {
         return calculateSize ( parent, false );
     }
 
+    @Override
     public Dimension minimumLayoutSize ( Container parent )
     {
         return calculateSize ( parent, true );

@@ -242,6 +242,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
      *
      * @param newModel the TreeModel that is to provide the data
      */
+    @Override
     public void setModel ( TreeModel newModel )
     {
         // Removing AsyncTreeModelListener from old model
@@ -267,12 +268,14 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
      *
      * @param cellEditor cell editor
      */
+    @Override
     public void setCellEditor ( final TreeCellEditor cellEditor )
     {
         super.setCellEditor ( cellEditor );
 
         cellEditor.addCellEditorListener ( new CellEditorAdapter ()
         {
+            @Override
             public void editingStopped ( ChangeEvent e )
             {
                 E node = ( E ) cellEditor.getCellEditorValue ();
@@ -589,6 +592,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
      *
      * @param parent node which childs are being loaded
      */
+    @Override
     public void childsLoadStarted ( E parent )
     {
         fireChildsLoadStarted ( parent );
@@ -618,6 +622,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
      * @param parent node which childs were loaded
      * @param childs loaded child nodes
      */
+    @Override
     public void childsLoadCompleted ( E parent, List<E> childs )
     {
         fireChildsLoadCompleted ( parent, childs );
@@ -650,6 +655,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
      * Even those which are not yet loaded from some custom data provider.
      * So make sure you know what you are doing before calling this method.
      */
+    @Override
     public final void expandAll ()
     {
         for ( int i = getRowCount () - 1; i >= 0; i-- )
@@ -707,6 +713,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
         // Add path expand listener first to get notified when this path will be expanded
         addAsyncTreeListener ( new AsyncTreeAdapter<E> ()
         {
+            @Override
             public void childsLoadCompleted ( E parent, List<E> childs )
             {
                 if ( parent == getNodeForPath ( path ) )

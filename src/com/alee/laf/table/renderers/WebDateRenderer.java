@@ -32,6 +32,7 @@ public class WebDateRenderer extends WebTableCellRenderer.UIResource
         super ();
     }
 
+    @Override
     public void setValue ( Object value )
     {
         if ( formatter == null )

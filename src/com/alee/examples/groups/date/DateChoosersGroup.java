@@ -30,21 +30,25 @@ import java.util.List;
 
 public class DateChoosersGroup extends DefaultExampleGroup
 {
+    @Override
     public Icon getGroupIcon ()
     {
         return loadGroupIcon ( "date.png" );
     }
 
+    @Override
     public String getGroupName ()
     {
         return "Date choosers";
     }
 
+    @Override
     public String getGroupDescription ()
     {
         return "Various examples of date choosers usage";
     }
 
+    @Override
     public List<Example> getGroupExamples ()
     {
         List<Example> examples = new ArrayList<Example> ();

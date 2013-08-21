@@ -36,7 +36,7 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-@XStreamAlias ("GradientData")
+@XStreamAlias ( "GradientData" )
 public class GradientData implements Serializable, Cloneable, DefaultValue
 {
     /**
@@ -47,7 +47,7 @@ public class GradientData implements Serializable, Cloneable, DefaultValue
     /**
      * All available colors data.
      */
-    @XStreamImplicit (itemFieldName = "Color")
+    @XStreamImplicit ( itemFieldName = "Color" )
     private List<GradientColorData> gradientColorsData;
 
     /**
@@ -328,6 +328,7 @@ public class GradientData implements Serializable, Cloneable, DefaultValue
      *
      * @return cloned GradientData
      */
+    @Override
     public GradientData clone ()
     {
         return new GradientData ( CollectionUtils.clone ( gradientColorsData ) );

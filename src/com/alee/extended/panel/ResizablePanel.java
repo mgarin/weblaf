@@ -114,11 +114,13 @@ public class ResizablePanel extends WebPanel
                 }
             }
 
+            @Override
             public void mouseMoved ( MouseEvent e )
             {
                 updateResizeType ( e );
             }
 
+            @Override
             public void mousePressed ( MouseEvent e )
             {
                 updateResizeType ( e );
@@ -130,6 +132,7 @@ public class ResizablePanel extends WebPanel
                 startY = e.getYOnScreen ();
             }
 
+            @Override
             public void mouseDragged ( MouseEvent e )
             {
                 if ( resizing && startX != -1 && startY != -1 )
@@ -150,6 +153,7 @@ public class ResizablePanel extends WebPanel
                 startY = e.getYOnScreen ();
             }
 
+            @Override
             public void mouseReleased ( MouseEvent e )
             {
                 if ( SwingUtilities.isLeftMouseButton ( e ) )
@@ -186,6 +190,7 @@ public class ResizablePanel extends WebPanel
         updateSpacing ();
     }
 
+    @Override
     protected void paintComponent ( Graphics g )
     {
         super.paintComponent ( g );
@@ -193,6 +198,7 @@ public class ResizablePanel extends WebPanel
         LafUtils.drawWebIconedSelection ( ( Graphics2D ) g, new Rectangle ( 6, 6, getWidth () - 13, getHeight () - 13 ), true, true, true );
     }
 
+    @Override
     public Dimension getPreferredSize ()
     {
         Dimension ps = super.getPreferredSize ();

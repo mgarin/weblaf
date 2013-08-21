@@ -62,6 +62,7 @@ public class ComponentMoveAdapter extends MouseAdapter
         this.toDrag = toDrag;
     }
 
+    @Override
     public void mousePressed ( MouseEvent e )
     {
         if ( SwingUtilities.isLeftMouseButton ( e ) )
@@ -81,6 +82,7 @@ public class ComponentMoveAdapter extends MouseAdapter
         return toDrag == null ? SwingUtils.getWindowAncestor ( e.getComponent () ) : toDrag;
     }
 
+    @Override
     public void mouseDragged ( MouseEvent e )
     {
         if ( dragging )
@@ -90,6 +92,7 @@ public class ComponentMoveAdapter extends MouseAdapter
         }
     }
 
+    @Override
     public void mouseReleased ( MouseEvent e )
     {
         dragging = false;

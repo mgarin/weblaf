@@ -30,16 +30,19 @@ import java.awt.*;
 
 public class ToggleButtonsExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Toggle buttons";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Web-styled toggle buttons";
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         // Simple toggle button

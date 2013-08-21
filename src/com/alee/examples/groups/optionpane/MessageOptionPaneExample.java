@@ -33,21 +33,25 @@ import java.awt.event.ActionListener;
 
 public class MessageOptionPaneExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Message optionpane";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Web-styled message optionpane";
     }
 
+    @Override
     public Component getPreview ( final WebLookAndFeelDemo owner )
     {
         WebButton message = new WebButton ( "Show message", loadIcon ( "message.png" ) );
         message.addActionListener ( new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 WebOptionPane.showMessageDialog ( owner, "Sample message goes here", "Message", WebOptionPane.INFORMATION_MESSAGE );

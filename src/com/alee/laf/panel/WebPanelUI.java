@@ -67,6 +67,7 @@ public class WebPanelUI extends BasicPanelUI implements ShapeProvider, FocusTrac
         return new WebPanelUI ();
     }
 
+    @Override
     public void installUI ( JComponent c )
     {
         super.installUI ( c );
@@ -85,6 +86,7 @@ public class WebPanelUI extends BasicPanelUI implements ShapeProvider, FocusTrac
         // Orientation change listener
         propertyChangeListener = new PropertyChangeListener ()
         {
+            @Override
             public void propertyChange ( PropertyChangeEvent evt )
             {
                 updateBorder ();
@@ -96,6 +98,7 @@ public class WebPanelUI extends BasicPanelUI implements ShapeProvider, FocusTrac
         FocusManager.registerFocusTracker ( WebPanelUI.this );
     }
 
+    @Override
     public void uninstallUI ( JComponent c )
     {
         panel.removePropertyChangeListener ( WebLookAndFeel.COMPONENT_ORIENTATION_PROPERTY, propertyChangeListener );
@@ -105,6 +108,7 @@ public class WebPanelUI extends BasicPanelUI implements ShapeProvider, FocusTrac
         super.uninstallUI ( c );
     }
 
+    @Override
     public Shape provideShape ()
     {
         if ( painter != null || undecorated )
@@ -117,26 +121,31 @@ public class WebPanelUI extends BasicPanelUI implements ShapeProvider, FocusTrac
         }
     }
 
+    @Override
     public boolean isTrackingEnabled ()
     {
         return !undecorated && drawFocus;
     }
 
+    @Override
     public Component getTrackedComponent ()
     {
         return panel;
     }
 
+    @Override
     public boolean isUniteWithChilds ()
     {
         return true;
     }
 
+    @Override
     public boolean isListenGlobalChange ()
     {
         return false;
     }
 
+    @Override
     public void focusChanged ( boolean focused )
     {
         this.focused = focused;
@@ -365,6 +374,7 @@ public class WebPanelUI extends BasicPanelUI implements ShapeProvider, FocusTrac
         updateBorder ();
     }
 
+    @Override
     public void paint ( Graphics g, JComponent c )
     {
         // To be applied for all childs painting
@@ -562,6 +572,7 @@ public class WebPanelUI extends BasicPanelUI implements ShapeProvider, FocusTrac
         return new Point ( x, y );
     }
 
+    @Override
     public Dimension getPreferredSize ( JComponent c )
     {
         //        Dimension ps = c.getLayout () != null ? c.getLayout ().preferredLayoutSize ( c ) : null;
@@ -573,6 +584,7 @@ public class WebPanelUI extends BasicPanelUI implements ShapeProvider, FocusTrac
         return null;
     }
 
+    @Override
     public Dimension getMaximumSize ( JComponent c )
     {
         // Fix for some of the Swing layouts

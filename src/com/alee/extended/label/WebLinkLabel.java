@@ -121,6 +121,7 @@ public class WebLinkLabel extends WebLabel implements LanguageMethods
 
         MouseAdapter mouseAdapter = new MouseAdapter ()
         {
+            @Override
             public void mousePressed ( MouseEvent e )
             {
                 if ( onPressAction )
@@ -129,6 +130,7 @@ public class WebLinkLabel extends WebLabel implements LanguageMethods
                 }
             }
 
+            @Override
             public void mouseReleased ( MouseEvent e )
             {
                 if ( !onPressAction && SwingUtils.size ( WebLinkLabel.this ).contains ( e.getPoint () ) )
@@ -153,6 +155,7 @@ public class WebLinkLabel extends WebLabel implements LanguageMethods
                 }
             }
 
+            @Override
             public void mouseEntered ( MouseEvent e )
             {
                 if ( isEnabled () )
@@ -162,6 +165,7 @@ public class WebLinkLabel extends WebLabel implements LanguageMethods
                 }
             }
 
+            @Override
             public void mouseExited ( MouseEvent e )
             {
                 if ( highlight )
@@ -171,6 +175,7 @@ public class WebLinkLabel extends WebLabel implements LanguageMethods
                 }
             }
 
+            @Override
             public void mouseDragged ( MouseEvent e )
             {
                 if ( highlight )
@@ -198,6 +203,7 @@ public class WebLinkLabel extends WebLabel implements LanguageMethods
         setForeground ( foreground );
     }
 
+    @Override
     public void setForeground ( Color foreground )
     {
         this.foreground = foreground;
@@ -229,6 +235,7 @@ public class WebLinkLabel extends WebLabel implements LanguageMethods
         return actualText;
     }
 
+    @Override
     public void setText ( String text )
     {
         this.actualText = text;
@@ -417,10 +424,12 @@ public class WebLinkLabel extends WebLabel implements LanguageMethods
         {
             return new Runnable ()
             {
+                @Override
                 public void run ()
                 {
                     new Thread ( new Runnable ()
                     {
+                        @Override
                         public void run ()
                         {
                             try
@@ -448,10 +457,12 @@ public class WebLinkLabel extends WebLabel implements LanguageMethods
         {
             return new Runnable ()
             {
+                @Override
                 public void run ()
                 {
                     new Thread ( new Runnable ()
                     {
+                        @Override
                         public void run ()
                         {
                             try
@@ -479,10 +490,12 @@ public class WebLinkLabel extends WebLabel implements LanguageMethods
         {
             return new Runnable ()
             {
+                @Override
                 public void run ()
                 {
                     new Thread ( new Runnable ()
                     {
+                        @Override
                         public void run ()
                         {
                             try

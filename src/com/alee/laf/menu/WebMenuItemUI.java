@@ -53,6 +53,7 @@ public class WebMenuItemUI extends BasicMenuItemUI
         return new WebMenuItemUI ();
     }
 
+    @Override
     public void installUI ( final JComponent c )
     {
         super.installUI ( c );
@@ -65,12 +66,14 @@ public class WebMenuItemUI extends BasicMenuItemUI
         // Rollover listeners
         mouseAdapter = new MouseAdapter ()
         {
+            @Override
             public void mouseEntered ( MouseEvent e )
             {
                 mouseover = true;
                 menuItem.repaint ();
             }
 
+            @Override
             public void mouseExited ( MouseEvent e )
             {
                 mouseover = false;
@@ -80,6 +83,7 @@ public class WebMenuItemUI extends BasicMenuItemUI
         menuItem.addMouseListener ( mouseAdapter );
         actionListener = new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 mouseover = false;
@@ -92,6 +96,7 @@ public class WebMenuItemUI extends BasicMenuItemUI
         menuItem.addActionListener ( actionListener );
     }
 
+    @Override
     public void uninstallUI ( JComponent c )
     {
         menuItem.removeMouseListener ( mouseAdapter );
@@ -100,6 +105,7 @@ public class WebMenuItemUI extends BasicMenuItemUI
         super.uninstallUI ( c );
     }
 
+    @Override
     protected Dimension getPreferredMenuItemSize ( JComponent c, Icon checkIcon, Icon arrowIcon, int defaultTextIconGap )
     {
         JMenuItem mi = ( JMenuItem ) c;
@@ -139,11 +145,13 @@ public class WebMenuItemUI extends BasicMenuItemUI
         return result;
     }
 
+    @Override
     public void paint ( Graphics g, JComponent c )
     {
         super.paint ( g, c );
     }
 
+    @Override
     protected void paintMenuItem ( Graphics g, JComponent c, Icon checkIcon, Icon arrowIcon, Color background, Color foreground,
                                    int defaultTextIconGap )
     {
@@ -318,6 +326,7 @@ public class WebMenuItemUI extends BasicMenuItemUI
     }
 
 
+    @Override
     protected void paintText ( Graphics g, JMenuItem menuItem, Rectangle textRect, String text )
     {
         // todo Proper placement with RTL orientation

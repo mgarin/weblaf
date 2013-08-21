@@ -39,6 +39,7 @@ public class FileComparator implements Comparator<File>, Serializable
      * @param f2 second file to be compared
      * @return a negative integer, zero, or a positive integer as the first argument is less than, equal to, or greater than the second
      */
+    @Override
     public int compare ( File f1, File f2 )
     {
         if ( FileUtils.isDirectory ( f1 ) && !FileUtils.isDirectory ( f2 ) )

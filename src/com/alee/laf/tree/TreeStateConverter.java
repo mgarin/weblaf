@@ -50,6 +50,7 @@ public class TreeStateConverter extends ReflectionConverter
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean canConvert ( Class type )
     {
         return type.equals ( TreeState.class );
@@ -58,6 +59,7 @@ public class TreeStateConverter extends ReflectionConverter
     /**
      * {@inheritDoc}
      */
+    @Override
     public void marshal ( Object source, HierarchicalStreamWriter writer, MarshallingContext context )
     {
         TreeState treeState = ( TreeState ) source;
@@ -76,6 +78,7 @@ public class TreeStateConverter extends ReflectionConverter
     /**
      * {@inheritDoc}
      */
+    @Override
     public Object unmarshal ( HierarchicalStreamReader reader, UnmarshallingContext context )
     {
         Map<String, NodeState> states = new LinkedHashMap<String, NodeState> ();

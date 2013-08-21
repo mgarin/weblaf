@@ -50,6 +50,7 @@ public class TreeRolloverSelectionAdapter implements MouseMotionListener
      *
      * @param e mouse event
      */
+    @Override
     public void mouseMoved ( MouseEvent e )
     {
         // Disabled trees aren't affected
@@ -94,6 +95,7 @@ public class TreeRolloverSelectionAdapter implements MouseMotionListener
      *
      * @param e mouse event
      */
+    @Override
     public void mouseDragged ( MouseEvent e )
     {
         //

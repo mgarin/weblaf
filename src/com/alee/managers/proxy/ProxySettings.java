@@ -28,7 +28,7 @@ import java.io.Serializable;
  * User: mgarin Date: 12.10.11 Time: 17:49
  */
 
-@XStreamAlias ("ProxySettings")
+@XStreamAlias ( "ProxySettings" )
 public class ProxySettings implements Serializable
 {
     @XStreamAsAttribute
@@ -50,7 +50,7 @@ public class ProxySettings implements Serializable
     private String proxyLogin = null;
 
     @XStreamAsAttribute
-    @XStreamConverter (PasswordConverter.class)
+    @XStreamConverter ( PasswordConverter.class )
     private String proxyPassword = null;
 
     public ProxySettings ()
@@ -173,6 +173,7 @@ public class ProxySettings implements Serializable
         this.proxyPassword = proxyPassword;
     }
 
+    @Override
     protected ProxySettings clone ()
     {
         ProxySettings proxySettings = new ProxySettings ();

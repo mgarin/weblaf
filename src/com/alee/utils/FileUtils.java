@@ -1017,16 +1017,19 @@ public final class FileUtils
         {
             filter = new DefaultFileFilter ()
             {
+                @Override
                 public ImageIcon getIcon ()
                 {
                     return GlobalConstants.ALL_FILES_FILTER.getIcon ();
                 }
 
+                @Override
                 public String getDescription ()
                 {
                     return LanguageManager.get ( "weblaf.file.filter.custom" );
                 }
 
+                @Override
                 public boolean accept ( File file )
                 {
                     return fileFilter == null || fileFilter.accept ( file );
@@ -1053,16 +1056,19 @@ public final class FileUtils
         {
             filter = new DefaultFileFilter ()
             {
+                @Override
                 public ImageIcon getIcon ()
                 {
                     return GlobalConstants.ALL_FILES_FILTER.getIcon ();
                 }
 
+                @Override
                 public String getDescription ()
                 {
                     return LanguageManager.get ( "weblaf.file.filter.custom" );
                 }
 
+                @Override
                 public boolean accept ( File file )
                 {
                     return fileFilter == null || fileFilter.accept ( file );
@@ -1891,6 +1897,7 @@ public final class FileUtils
     {
         return findFilesRecursively ( dir, new FileFilter ()
         {
+            @Override
             public boolean accept ( File file )
             {
                 return file.isFile () && extension.contains ( getFileExtPart ( file.getName (), withDot ) );

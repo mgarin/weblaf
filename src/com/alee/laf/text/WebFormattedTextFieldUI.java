@@ -44,6 +44,7 @@ public class WebFormattedTextFieldUI extends WebTextFieldUI implements ActionLis
         return new WebFormattedTextFieldUI ( ( JFormattedTextField ) c );
     }
 
+    @Override
     public void installUI ( final JComponent c )
     {
         super.installUI ( c );
@@ -51,6 +52,7 @@ public class WebFormattedTextFieldUI extends WebTextFieldUI implements ActionLis
         ( ( JFormattedTextField ) c ).addActionListener ( WebFormattedTextFieldUI.this );
     }
 
+    @Override
     public void uninstallUI ( JComponent c )
     {
         super.uninstallUI ( c );
@@ -58,6 +60,7 @@ public class WebFormattedTextFieldUI extends WebTextFieldUI implements ActionLis
         ( ( JFormattedTextField ) c ).removeActionListener ( WebFormattedTextFieldUI.this );
     }
 
+    @Override
     public void actionPerformed ( ActionEvent e )
     {
         JFormattedTextField ftf = ( JFormattedTextField ) getComponent ();

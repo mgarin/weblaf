@@ -31,21 +31,25 @@ import java.awt.*;
 
 public class AndroidPanelExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Android panel";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Android-styled panel";
     }
 
+    @Override
     public boolean isFillWidth ()
     {
         return true;
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         // Panel styled with nine-patch icon painter

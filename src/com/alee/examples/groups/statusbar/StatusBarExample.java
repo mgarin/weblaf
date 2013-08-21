@@ -32,16 +32,19 @@ import java.awt.*;
 
 public class StatusBarExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Status bar";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Web-styled status bar";
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         // Simple status bar

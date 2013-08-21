@@ -58,6 +58,7 @@ public class WebInternalFrameTitlePane extends BasicInternalFrameTitlePane
         return true;
     }
 
+    @Override
     public void paintComponent ( Graphics g )
     {
         // super.paintComponent ( g );
@@ -68,15 +69,18 @@ public class WebInternalFrameTitlePane extends BasicInternalFrameTitlePane
         }
     }
 
+    @Override
     protected LayoutManager createLayout ()
     {
         return new BorderLayout ();
     }
 
+    @Override
     protected void addSubComponents ()
     {
         add ( new BorderPanel ( new WebLabel ( frame.getTitle (), new Icon ()
         {
+            @Override
             public void paintIcon ( Component c, Graphics g, int x, int y )
             {
                 if ( frame.getFrameIcon () != null )
@@ -85,11 +89,13 @@ public class WebInternalFrameTitlePane extends BasicInternalFrameTitlePane
                 }
             }
 
+            @Override
             public int getIconWidth ()
             {
                 return frame.getFrameIcon () != null ? frame.getFrameIcon ().getIconWidth () : 16;
             }
 
+            @Override
             public int getIconHeight ()
             {
                 return frame.getFrameIcon () != null ? frame.getFrameIcon ().getIconHeight () : 16;
@@ -122,6 +128,7 @@ public class WebInternalFrameTitlePane extends BasicInternalFrameTitlePane
         add ( new BorderPanel ( buttonsPanel, 0, 0, 0, 0 ), BorderLayout.EAST );
     }
 
+    @Override
     protected void createButtons ()
     {
         iconButton = new WebButton ()
@@ -199,6 +206,7 @@ public class WebInternalFrameTitlePane extends BasicInternalFrameTitlePane
         setButtonIcons ();
     }
 
+    @Override
     protected void setButtonIcons ()
     {
         iconButton.setIcon ( frame.isIcon () ? restoreIcon : iconifyIcon );

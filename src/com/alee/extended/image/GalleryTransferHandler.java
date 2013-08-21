@@ -38,6 +38,7 @@ public class GalleryTransferHandler extends FileDropHandler
         this.gallery = gallery;
     }
 
+    @Override
     protected boolean filesImported ( List<File> files )
     {
         boolean added = false;

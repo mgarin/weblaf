@@ -31,6 +31,7 @@ public class WebFileDropLU extends DefaultLanguageUpdater<WebFileDrop>
     /**
      * {@inheritDoc}
      */
+    @Override
     public void update ( WebFileDrop c, String key, Value value, Object... data )
     {
         c.setDropText ( getDefaultText ( DROP_TEXT, true, value, data ) );

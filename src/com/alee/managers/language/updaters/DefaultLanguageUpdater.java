@@ -48,6 +48,7 @@ public abstract class DefaultLanguageUpdater<E extends Component> implements Lan
     /**
      * {@inheritDoc}
      */
+    @Override
     public Class getComponentClass ()
     {
         try

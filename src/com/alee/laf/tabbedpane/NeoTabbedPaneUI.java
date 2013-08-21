@@ -41,6 +41,7 @@ public class NeoTabbedPaneUI extends BasicTabbedPaneUI
         return new NeoTabbedPaneUI ();
     }
 
+    @Override
     protected void paintTabArea ( Graphics g, int tabPlacement, int selectedIndex )
     {
         Graphics2D g2d = ( Graphics2D ) g;
@@ -129,6 +130,7 @@ public class NeoTabbedPaneUI extends BasicTabbedPaneUI
         //paintFocusIndicator ( g2d, tabPlacement, rects, tabIndex, iconRect, textRect, isSelected, customTabComponent );
     }
 
+    @Override
     protected void paintText ( Graphics g, int tabPlacement, Font font, FontMetrics metrics, int tabIndex, String title, Rectangle textRect,
                                boolean isSelected )
     {
@@ -286,6 +288,7 @@ public class NeoTabbedPaneUI extends BasicTabbedPaneUI
         }
     }
 
+    @Override
     protected void paintContentBorder ( Graphics g, int tabPlacement, int selectedIndex )
     {
         int width = tabPane.getWidth ();

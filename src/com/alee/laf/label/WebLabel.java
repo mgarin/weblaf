@@ -197,6 +197,7 @@ public class WebLabel extends JLabel implements LanguageMethods, FontMethods<Web
         return ( WebLabelUI ) getUI ();
     }
 
+    @Override
     public void updateUI ()
     {
         if ( getUI () == null || !( getUI () instanceof WebLabelUI ) )
@@ -224,6 +225,7 @@ public class WebLabel extends JLabel implements LanguageMethods, FontMethods<Web
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setLanguage ( String key, Object... data )
     {
         LanguageManager.registerComponent ( this, key, data );
@@ -232,6 +234,7 @@ public class WebLabel extends JLabel implements LanguageMethods, FontMethods<Web
     /**
      * {@inheritDoc}
      */
+    @Override
     public void updateLanguage ( Object... data )
     {
         LanguageManager.updateComponent ( this, data );
@@ -240,6 +243,7 @@ public class WebLabel extends JLabel implements LanguageMethods, FontMethods<Web
     /**
      * {@inheritDoc}
      */
+    @Override
     public void updateLanguage ( String key, Object... data )
     {
         LanguageManager.updateComponent ( this, key, data );
@@ -248,6 +252,7 @@ public class WebLabel extends JLabel implements LanguageMethods, FontMethods<Web
     /**
      * {@inheritDoc}
      */
+    @Override
     public void removeLanguage ()
     {
         LanguageManager.unregisterComponent ( this );
@@ -256,6 +261,7 @@ public class WebLabel extends JLabel implements LanguageMethods, FontMethods<Web
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isLanguageSet ()
     {
         return LanguageManager.isRegisteredComponent ( this );
@@ -264,6 +270,7 @@ public class WebLabel extends JLabel implements LanguageMethods, FontMethods<Web
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setLanguageUpdater ( LanguageUpdater updater )
     {
         LanguageManager.registerLanguageUpdater ( this, updater );
@@ -272,6 +279,7 @@ public class WebLabel extends JLabel implements LanguageMethods, FontMethods<Web
     /**
      * {@inheritDoc}
      */
+    @Override
     public void removeLanguageUpdater ()
     {
         LanguageManager.unregisterLanguageUpdater ( this );
@@ -284,6 +292,7 @@ public class WebLabel extends JLabel implements LanguageMethods, FontMethods<Web
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebLabel setPlainFont ()
     {
         return SwingUtils.setPlainFont ( this );
@@ -292,6 +301,7 @@ public class WebLabel extends JLabel implements LanguageMethods, FontMethods<Web
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebLabel setPlainFont ( boolean apply )
     {
         return SwingUtils.setPlainFont ( this, apply );
@@ -300,6 +310,7 @@ public class WebLabel extends JLabel implements LanguageMethods, FontMethods<Web
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isPlainFont ()
     {
         return SwingUtils.isPlainFont ( this );
@@ -308,6 +319,7 @@ public class WebLabel extends JLabel implements LanguageMethods, FontMethods<Web
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebLabel setBoldFont ()
     {
         return SwingUtils.setBoldFont ( this );
@@ -316,6 +328,7 @@ public class WebLabel extends JLabel implements LanguageMethods, FontMethods<Web
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebLabel setBoldFont ( boolean apply )
     {
         return SwingUtils.setBoldFont ( this, apply );
@@ -324,6 +337,7 @@ public class WebLabel extends JLabel implements LanguageMethods, FontMethods<Web
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isBoldFont ()
     {
         return SwingUtils.isBoldFont ( this );
@@ -332,6 +346,7 @@ public class WebLabel extends JLabel implements LanguageMethods, FontMethods<Web
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebLabel setItalicFont ()
     {
         return SwingUtils.setItalicFont ( this );
@@ -340,6 +355,7 @@ public class WebLabel extends JLabel implements LanguageMethods, FontMethods<Web
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebLabel setItalicFont ( boolean apply )
     {
         return SwingUtils.setItalicFont ( this, apply );
@@ -348,6 +364,7 @@ public class WebLabel extends JLabel implements LanguageMethods, FontMethods<Web
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isItalicFont ()
     {
         return SwingUtils.isItalicFont ( this );
@@ -356,6 +373,7 @@ public class WebLabel extends JLabel implements LanguageMethods, FontMethods<Web
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebLabel setFontStyle ( boolean bold, boolean italic )
     {
         return SwingUtils.setFontStyle ( this, bold, italic );
@@ -364,6 +382,7 @@ public class WebLabel extends JLabel implements LanguageMethods, FontMethods<Web
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebLabel setFontStyle ( int style )
     {
         return SwingUtils.setFontStyle ( this, style );
@@ -372,6 +391,7 @@ public class WebLabel extends JLabel implements LanguageMethods, FontMethods<Web
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebLabel setFontSize ( int fontSize )
     {
         return SwingUtils.setFontSize ( this, fontSize );
@@ -380,6 +400,7 @@ public class WebLabel extends JLabel implements LanguageMethods, FontMethods<Web
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebLabel changeFontSize ( int change )
     {
         return SwingUtils.changeFontSize ( this, change );
@@ -388,6 +409,7 @@ public class WebLabel extends JLabel implements LanguageMethods, FontMethods<Web
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getFontSize ()
     {
         return SwingUtils.getFontSize ( this );
@@ -396,6 +418,7 @@ public class WebLabel extends JLabel implements LanguageMethods, FontMethods<Web
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebLabel setFontSizeAndStyle ( int fontSize, boolean bold, boolean italic )
     {
         return SwingUtils.setFontSizeAndStyle ( this, fontSize, bold, italic );
@@ -404,6 +427,7 @@ public class WebLabel extends JLabel implements LanguageMethods, FontMethods<Web
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebLabel setFontSizeAndStyle ( int fontSize, int style )
     {
         return SwingUtils.setFontSizeAndStyle ( this, fontSize, style );
@@ -412,6 +436,7 @@ public class WebLabel extends JLabel implements LanguageMethods, FontMethods<Web
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebLabel setFontName ( String fontName )
     {
         return SwingUtils.setFontName ( this, fontName );
@@ -420,6 +445,7 @@ public class WebLabel extends JLabel implements LanguageMethods, FontMethods<Web
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getFontName ()
     {
         return SwingUtils.getFontName ( this );
@@ -432,6 +458,7 @@ public class WebLabel extends JLabel implements LanguageMethods, FontMethods<Web
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getPreferredWidth ()
     {
         return SizeUtils.getPreferredWidth ( this );
@@ -440,6 +467,7 @@ public class WebLabel extends JLabel implements LanguageMethods, FontMethods<Web
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebLabel setPreferredWidth ( int preferredWidth )
     {
         return SizeUtils.setPreferredWidth ( this, preferredWidth );
@@ -448,6 +476,7 @@ public class WebLabel extends JLabel implements LanguageMethods, FontMethods<Web
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getPreferredHeight ()
     {
         return SizeUtils.getPreferredHeight ( this );
@@ -456,6 +485,7 @@ public class WebLabel extends JLabel implements LanguageMethods, FontMethods<Web
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebLabel setPreferredHeight ( int preferredHeight )
     {
         return SizeUtils.setPreferredHeight ( this, preferredHeight );
@@ -464,6 +494,7 @@ public class WebLabel extends JLabel implements LanguageMethods, FontMethods<Web
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getMinimumWidth ()
     {
         return SizeUtils.getMinimumWidth ( this );
@@ -472,6 +503,7 @@ public class WebLabel extends JLabel implements LanguageMethods, FontMethods<Web
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebLabel setMinimumWidth ( int minimumWidth )
     {
         return SizeUtils.setMinimumWidth ( this, minimumWidth );
@@ -480,6 +512,7 @@ public class WebLabel extends JLabel implements LanguageMethods, FontMethods<Web
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getMinimumHeight ()
     {
         return SizeUtils.getMinimumHeight ( this );
@@ -488,6 +521,7 @@ public class WebLabel extends JLabel implements LanguageMethods, FontMethods<Web
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebLabel setMinimumHeight ( int minimumHeight )
     {
         return SizeUtils.setMinimumHeight ( this, minimumHeight );
@@ -496,6 +530,7 @@ public class WebLabel extends JLabel implements LanguageMethods, FontMethods<Web
     /**
      * {@inheritDoc}
      */
+    @Override
     public Dimension getPreferredSize ()
     {
         return SizeUtils.getPreferredSize ( this, super.getPreferredSize () );

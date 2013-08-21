@@ -38,6 +38,7 @@ public abstract class DefaultExampleGroup implements ExampleGroup
      *
      * @return false
      */
+    @Override
     public boolean isSingleExample ()
     {
         return false;
@@ -48,6 +49,7 @@ public abstract class DefaultExampleGroup implements ExampleGroup
      *
      * @return true
      */
+    @Override
     public boolean isShowWatermark ()
     {
         return true;
@@ -58,6 +60,7 @@ public abstract class DefaultExampleGroup implements ExampleGroup
      *
      * @return release feature state
      */
+    @Override
     public FeatureState getFeatureGroupState ()
     {
         return FeatureState.release;
@@ -69,6 +72,7 @@ public abstract class DefaultExampleGroup implements ExampleGroup
      * @param tabIndex   index of example group tab
      * @param tabbedPane tabbed pane that contains example group tab
      */
+    @Override
     public void modifyExampleTab ( int tabIndex, WebTabbedPane tabbedPane )
     {
         //
@@ -80,6 +84,7 @@ public abstract class DefaultExampleGroup implements ExampleGroup
      * @param separator examples separator
      * @return examples separator
      */
+    @Override
     public WebSeparator modifySeparator ( WebSeparator separator )
     {
         return separator;
@@ -90,6 +95,7 @@ public abstract class DefaultExampleGroup implements ExampleGroup
      *
      * @return black foreground
      */
+    @Override
     public Color getPreferredForeground ()
     {
         return Color.BLACK;
@@ -100,6 +106,7 @@ public abstract class DefaultExampleGroup implements ExampleGroup
      *
      * @return 50% content width
      */
+    @Override
     public double getContentPartSize ()
     {
         return 0.5f;

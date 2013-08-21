@@ -30,21 +30,25 @@ import java.util.List;
 
 public class StatusBarsGroup extends DefaultExampleGroup
 {
+    @Override
     public Icon getGroupIcon ()
     {
         return loadGroupIcon ( "statusbar.png" );
     }
 
+    @Override
     public String getGroupName ()
     {
         return "Statusbars";
     }
 
+    @Override
     public String getGroupDescription ()
     {
         return "Various examples of statusbars usage";
     }
 
+    @Override
     public List<Example> getGroupExamples ()
     {
         List<Example> examples = new ArrayList<Example> ();

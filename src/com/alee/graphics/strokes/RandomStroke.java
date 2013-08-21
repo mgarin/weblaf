@@ -38,6 +38,7 @@ public class RandomStroke implements Stroke
         this.amplitude = amplitude;
     }
 
+    @Override
     public Shape createStrokedShape ( Shape shape )
     {
         GeneralPath result = new GeneralPath ();

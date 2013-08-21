@@ -31,26 +31,31 @@ import java.util.List;
 
 public class WindowsGroup extends DefaultExampleGroup
 {
+    @Override
     public Icon getGroupIcon ()
     {
         return loadGroupIcon ( "window.png" );
     }
 
+    @Override
     public String getGroupName ()
     {
         return "Windows decoration";
     }
 
+    @Override
     public String getGroupDescription ()
     {
         return "Various examples of decorated windows";
     }
 
+    @Override
     public FeatureState getFeatureGroupState ()
     {
         return FeatureState.beta;
     }
 
+    @Override
     public List<Example> getGroupExamples ()
     {
         List<Example> examples = new ArrayList<Example> ();

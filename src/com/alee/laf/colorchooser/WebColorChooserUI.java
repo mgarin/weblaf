@@ -41,6 +41,7 @@ public class WebColorChooserUI extends BasicColorChooserUI
         return new WebColorChooserUI ();
     }
 
+    @Override
     public void installUI ( JComponent c )
     {
         chooser = ( JColorChooser ) c;
@@ -53,6 +54,7 @@ public class WebColorChooserUI extends BasicColorChooserUI
         colorChooserPanel.setColor ( selectionModel.getSelectedColor () );
         colorChooserPanel.addChangeListener ( new ChangeListener ()
         {
+            @Override
             public void stateChanged ( ChangeEvent e )
             {
                 if ( !modifying )
@@ -67,6 +69,7 @@ public class WebColorChooserUI extends BasicColorChooserUI
 
         modelChangeListener = new ChangeListener ()
         {
+            @Override
             public void stateChanged ( ChangeEvent e )
             {
                 if ( !modifying )
@@ -80,6 +83,7 @@ public class WebColorChooserUI extends BasicColorChooserUI
         selectionModel.addChangeListener ( modelChangeListener );
     }
 
+    @Override
     public void uninstallUI ( JComponent c )
     {
         chooser.remove ( colorChooserPanel );

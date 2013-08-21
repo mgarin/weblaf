@@ -59,6 +59,7 @@ public class NinePatchEditorDialog extends WebFrame
         updateTitle ();
         LanguageManager.addLanguageKeyListener ( DIALOG_TITLE_KEY, new LanguageKeyListener ()
         {
+            @Override
             public void languageKeyUpdated ( String key, Value value )
             {
                 updateTitle ();
@@ -71,6 +72,7 @@ public class NinePatchEditorDialog extends WebFrame
         ninePatchEditorPanel = new NinePatchEditorPanel ();
         ninePatchEditorPanel.addChangeListener ( new ChangeListener ()
         {
+            @Override
             public void stateChanged ( ChangeEvent e )
             {
                 updateTitle ();
@@ -113,6 +115,7 @@ public class NinePatchEditorDialog extends WebFrame
         setDefaultCloseOperation ( JFrame.DO_NOTHING_ON_CLOSE );
         addWindowListener ( new WindowAdapter ()
         {
+            @Override
             public void windowClosing ( WindowEvent e )
             {
                 if ( ninePatchEditorPanel.continueAfterSave () )
@@ -151,6 +154,7 @@ public class NinePatchEditorDialog extends WebFrame
     {
         SwingUtilities.invokeLater ( new Runnable ()
         {
+            @Override
             public void run ()
             {
                 WebLookAndFeel.install ();

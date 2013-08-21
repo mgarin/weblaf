@@ -30,16 +30,19 @@ import java.awt.*;
 
 public class CheckBoxExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Checkboxes";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Web-styled checkboxes";
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         // Selected check box

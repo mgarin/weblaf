@@ -89,6 +89,7 @@ public class WebColorChooserField extends WebTextField
         colorButton.setCursor ( Cursor.getDefaultCursor () );
         colorButton.addActionListener ( new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 showColorChooserPopup ();
@@ -99,6 +100,7 @@ public class WebColorChooserField extends WebTextField
         // Actions
         addActionListener ( new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 updateColorFromField ();
@@ -106,6 +108,7 @@ public class WebColorChooserField extends WebTextField
         } );
         addMouseListener ( new MouseAdapter ()
         {
+            @Override
             public void mousePressed ( MouseEvent e )
             {
                 if ( isEnabled () && SwingUtilities.isRightMouseButton ( e ) )
@@ -116,6 +119,7 @@ public class WebColorChooserField extends WebTextField
         } );
         addFocusListener ( new FocusAdapter ()
         {
+            @Override
             public void focusLost ( FocusEvent e )
             {
                 updateColorFromField ();
@@ -123,6 +127,7 @@ public class WebColorChooserField extends WebTextField
         } );
         addKeyListener ( new KeyAdapter ()
         {
+            @Override
             public void keyReleased ( KeyEvent e )
             {
                 if ( isEnabled () )
@@ -181,6 +186,7 @@ public class WebColorChooserField extends WebTextField
         updateFieldType ();
     }
 
+    @Override
     public void setDrawBorder ( boolean drawBorder )
     {
         super.setDrawBorder ( drawBorder );
@@ -308,6 +314,7 @@ public class WebColorChooserField extends WebTextField
                     private BufferedImage screenshot;
                     private Color color;
 
+                    @Override
                     public void mousePressed ( MouseEvent e )
                     {
                         if ( pipetteEnabled && SwingUtils.isLeftMouseButton ( e ) )
@@ -331,6 +338,7 @@ public class WebColorChooserField extends WebTextField
                         }
                     }
 
+                    @Override
                     public void mouseDragged ( MouseEvent e )
                     {
                         if ( pipetteEnabled && SwingUtils.isLeftMouseButton ( e ) && window != null )
@@ -343,6 +351,7 @@ public class WebColorChooserField extends WebTextField
                         }
                     }
 
+                    @Override
                     public void mouseReleased ( MouseEvent e )
                     {
                         if ( pipetteEnabled && SwingUtils.isLeftMouseButton ( e ) && window != null )
@@ -361,6 +370,7 @@ public class WebColorChooserField extends WebTextField
                             updating = true;
                             new Thread ( new Runnable ()
                             {
+                                @Override
                                 public void run ()
                                 {
                                     if ( screen != null )
@@ -397,6 +407,7 @@ public class WebColorChooserField extends WebTextField
 
                         window.addWindowListener ( new WindowAdapter ()
                         {
+                            @Override
                             public void windowClosed ( WindowEvent e )
                             {
                                 if ( screenshot != null )
@@ -416,6 +427,7 @@ public class WebColorChooserField extends WebTextField
 
                         DefaultPainter<WebPanel> screenPainter = new DefaultPainter<WebPanel> ()
                         {
+                            @Override
                             public void paint ( Graphics2D g2d, Rectangle bounds, WebPanel c )
                             {
                                 if ( window.isShowing () && robot != null )
@@ -453,6 +465,7 @@ public class WebColorChooserField extends WebTextField
                         info.setMargin ( 4 );
                         info.setIcon ( new Icon ()
                         {
+                            @Override
                             public void paintIcon ( Component c, Graphics g, int x, int y )
                             {
                                 if ( color != null )
@@ -467,11 +480,13 @@ public class WebColorChooserField extends WebTextField
                                 }
                             }
 
+                            @Override
                             public int getIconWidth ()
                             {
                                 return 16;
                             }
 
+                            @Override
                             public int getIconHeight ()
                             {
                                 return 16;
@@ -479,11 +494,13 @@ public class WebColorChooserField extends WebTextField
                         } );
                         info.setPainter ( new DefaultPainter<WebLabel> ()
                         {
+                            @Override
                             public Insets getMargin ( WebLabel c )
                             {
                                 return new Insets ( 0, 2, 2, 2 );
                             }
 
+                            @Override
                             public void paint ( Graphics2D g2d, Rectangle bounds, WebLabel c )
                             {
                                 g2d.setPaint ( Color.BLACK );
@@ -494,6 +511,7 @@ public class WebColorChooserField extends WebTextField
 
                         HotkeyManager.registerHotkey ( screen, Hotkey.ESCAPE, new HotkeyRunnable ()
                         {
+                            @Override
                             public void run ( KeyEvent e )
                             {
                                 if ( window != null )
@@ -577,6 +595,7 @@ public class WebColorChooserField extends WebTextField
             updatePopupLocation ();
             ancestor.addComponentListener ( new ComponentAdapter ()
             {
+                @Override
                 public void componentMoved ( ComponentEvent e )
                 {
                     if ( popup.isShowing () )
@@ -585,6 +604,7 @@ public class WebColorChooserField extends WebTextField
                     }
                 }
 
+                @Override
                 public void componentResized ( ComponentEvent e )
                 {
                     if ( popup.isShowing () )
@@ -595,6 +615,7 @@ public class WebColorChooserField extends WebTextField
             } );
             ancestor.addPropertyChangeListener ( WebLookAndFeel.COMPONENT_ORIENTATION_PROPERTY, new PropertyChangeListener ()
             {
+                @Override
                 public void propertyChange ( PropertyChangeEvent evt )
                 {
                     if ( popup.isShowing () )
@@ -607,11 +628,13 @@ public class WebColorChooserField extends WebTextField
             // Focus loss listener
             FocusManager.registerFocusTracker ( new DefaultFocusTracker ( colorChooserPanel )
             {
+                @Override
                 public boolean isTrackingEnabled ()
                 {
                     return true;
                 }
 
+                @Override
                 public void focusChanged ( boolean focused )
                 {
                     if ( !focused )
@@ -623,17 +646,20 @@ public class WebColorChooserField extends WebTextField
 
             colorChooserPanel.addColorChooserListener ( new ColorChooserListener ()
             {
+                @Override
                 public void okPressed ( ActionEvent e )
                 {
                     setColor ( colorChooserPanel.getColor () );
                     popup.setVisible ( false );
                 }
 
+                @Override
                 public void resetPressed ( ActionEvent e )
                 {
 
                 }
 
+                @Override
                 public void cancelPressed ( ActionEvent e )
                 {
                     popup.setVisible ( false );

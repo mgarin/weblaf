@@ -224,6 +224,7 @@ public class ImageTransition extends JComponent implements ActionListener
         animator.start ();
     }
 
+    @Override
     public void actionPerformed ( ActionEvent e )
     {
         if ( actualTransitionEffect == null || actualTransitionEffect.performAnimationTick ( ImageTransition.this ) )
@@ -255,6 +256,7 @@ public class ImageTransition extends JComponent implements ActionListener
         fireTransitionFinished ();
     }
 
+    @Override
     protected void paintComponent ( Graphics g )
     {
         super.paintComponent ( g );
@@ -272,6 +274,7 @@ public class ImageTransition extends JComponent implements ActionListener
         }
     }
 
+    @Override
     public Dimension getPreferredSize ()
     {
         if ( currentImage != null )

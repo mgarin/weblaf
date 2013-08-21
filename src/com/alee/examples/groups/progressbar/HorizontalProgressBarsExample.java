@@ -34,16 +34,19 @@ import java.awt.event.ActionListener;
 
 public class HorizontalProgressBarsExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Horizontal progress bars";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Web-styled horizontal progress bars";
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         // Simple progress bar
@@ -77,6 +80,7 @@ public class HorizontalProgressBarsExample extends DefaultExample
                 {
                     private boolean increasing = true;
 
+                    @Override
                     public void actionPerformed ( ActionEvent e )
                     {
                         int value = progressBar1.getValue ();

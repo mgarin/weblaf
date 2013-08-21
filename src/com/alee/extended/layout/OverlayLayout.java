@@ -93,6 +93,7 @@ public class OverlayLayout implements LayoutManager, SwingConstants
         this.overlayMargin = overlayMargin;
     }
 
+    @Override
     public void addLayoutComponent ( String name, Component comp )
     {
         if ( name == null || !name.equals ( COMPONENT ) && !name.equals ( OVERLAY ) )
@@ -102,11 +103,13 @@ public class OverlayLayout implements LayoutManager, SwingConstants
         constraints.put ( comp, name );
     }
 
+    @Override
     public void removeLayoutComponent ( Component comp )
     {
         constraints.remove ( comp );
     }
 
+    @Override
     public void layoutContainer ( Container parent )
     {
         Insets bi = parent.getInsets ();
@@ -193,6 +196,7 @@ public class OverlayLayout implements LayoutManager, SwingConstants
         }
     }
 
+    @Override
     public Dimension preferredLayoutSize ( Container parent )
     {
         Insets bi = parent.getInsets ();
@@ -218,6 +222,7 @@ public class OverlayLayout implements LayoutManager, SwingConstants
                 new Insets ( 0, 0, 0, 0 );
     }
 
+    @Override
     public Dimension minimumLayoutSize ( Container parent )
     {
         return preferredLayoutSize ( parent );

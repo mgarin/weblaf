@@ -44,26 +44,31 @@ import java.awt.event.ActionListener;
 
 public class WebDialogExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Dialog";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Web-styled dialog decoration";
     }
 
+    @Override
     public FeatureState getFeatureState ()
     {
         return FeatureState.beta;
     }
 
+    @Override
     public Component getPreview ( final WebLookAndFeelDemo owner )
     {
         WebButton showFrame = new WebButton ( "Show dialog", loadIcon ( "dialog.png" ) );
         showFrame.addActionListener ( new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 // Enabling dialog decoration
@@ -111,6 +116,7 @@ public class WebDialogExample extends DefaultExample
             WebButton cancel = new WebButton ( "Cancel" );
             ActionListener listener = new ActionListener ()
             {
+                @Override
                 public void actionPerformed ( ActionEvent e )
                 {
                     setVisible ( false );

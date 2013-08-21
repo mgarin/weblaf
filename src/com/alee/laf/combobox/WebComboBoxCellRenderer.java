@@ -41,6 +41,7 @@ public class WebComboBoxCellRenderer extends DefaultListCellRenderer
         return renderer;
     }
 
+    @Override
     public Component getListCellRendererComponent ( JList list, Object value, int index, boolean isSelected, boolean cellHasFocus )
     {
         renderer.setIndex ( index );

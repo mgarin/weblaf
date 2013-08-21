@@ -37,6 +37,7 @@ public class TreesGroup extends DefaultExampleGroup
      *
      * @return example group icon
      */
+    @Override
     public Icon getGroupIcon ()
     {
         return loadGroupIcon ( "tree.png" );
@@ -47,6 +48,7 @@ public class TreesGroup extends DefaultExampleGroup
      *
      * @return example group name
      */
+    @Override
     public String getGroupName ()
     {
         return "Trees";
@@ -57,6 +59,7 @@ public class TreesGroup extends DefaultExampleGroup
      *
      * @return short example group description
      */
+    @Override
     public String getGroupDescription ()
     {
         return "Various examples of trees usage";
@@ -67,6 +70,7 @@ public class TreesGroup extends DefaultExampleGroup
      *
      * @return list of examples
      */
+    @Override
     public List<Example> getGroupExamples ()
     {
         List<Example> examples = new ArrayList<Example> ();
@@ -81,6 +85,7 @@ public class TreesGroup extends DefaultExampleGroup
      *
      * @return examples content side width relative to the whole available to example group width
      */
+    @Override
     public double getContentPartSize ()
     {
         return 0.7f;

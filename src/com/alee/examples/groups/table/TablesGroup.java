@@ -30,21 +30,25 @@ import java.util.List;
 
 public class TablesGroup extends DefaultExampleGroup
 {
+    @Override
     public Icon getGroupIcon ()
     {
         return loadGroupIcon ( "table.png" );
     }
 
+    @Override
     public String getGroupName ()
     {
         return "Tables";
     }
 
+    @Override
     public String getGroupDescription ()
     {
         return "Various examples of tables usage";
     }
 
+    @Override
     public List<Example> getGroupExamples ()
     {
         List<Example> examples = new ArrayList<Example> ();

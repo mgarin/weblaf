@@ -30,21 +30,25 @@ import java.util.List;
 
 public class PopupsGroup extends DefaultExampleGroup
 {
+    @Override
     public Icon getGroupIcon ()
     {
         return loadGroupIcon ( "popup.png" );
     }
 
+    @Override
     public String getGroupName ()
     {
         return "Popup";
     }
 
+    @Override
     public String getGroupDescription ()
     {
         return "Various examples of popup usage";
     }
 
+    @Override
     public List<Example> getGroupExamples ()
     {
         List<Example> examples = new ArrayList<Example> ();

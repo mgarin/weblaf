@@ -32,16 +32,19 @@ import java.awt.*;
 
 public class CustomIconedTooltipExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Iconed tooltip";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Custom Web-styled iconed tooltip";
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         // Iconed tooltip

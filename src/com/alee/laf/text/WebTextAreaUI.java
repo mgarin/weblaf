@@ -50,6 +50,7 @@ public class WebTextAreaUI extends BasicTextAreaUI
         return new WebTextAreaUI ();
     }
 
+    @Override
     public void installUI ( JComponent c )
     {
         super.installUI ( c );
@@ -71,11 +72,13 @@ public class WebTextAreaUI extends BasicTextAreaUI
 
         focusListener = new FocusListener ()
         {
+            @Override
             public void focusLost ( FocusEvent e )
             {
                 textComponent.repaint ();
             }
 
+            @Override
             public void focusGained ( FocusEvent e )
             {
                 textComponent.repaint ();
@@ -85,6 +88,7 @@ public class WebTextAreaUI extends BasicTextAreaUI
 
         marginChangeListener = new PropertyChangeListener ()
         {
+            @Override
             public void propertyChange ( PropertyChangeEvent evt )
             {
                 updateBorder ();
@@ -93,6 +97,7 @@ public class WebTextAreaUI extends BasicTextAreaUI
         textComponent.addPropertyChangeListener ( WebLookAndFeel.COMPONENT_MARGIN_PROPERTY, marginChangeListener );
     }
 
+    @Override
     public void uninstallUI ( JComponent c )
     {
         JTextComponent component = getComponent ();
@@ -141,11 +146,13 @@ public class WebTextAreaUI extends BasicTextAreaUI
         }
     }
 
+    @Override
     protected void paintBackground ( Graphics g )
     {
         //
     }
 
+    @Override
     protected void paintSafely ( Graphics g )
     {
         Graphics2D g2d = ( Graphics2D ) g;
@@ -169,6 +176,7 @@ public class WebTextAreaUI extends BasicTextAreaUI
         SwingUtils.restoreTextAntialias ( g2d, hints );
     }
 
+    @Override
     public Dimension getPreferredSize ( JComponent c )
     {
         Dimension ps = super.getPreferredSize ( c );

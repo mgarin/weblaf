@@ -40,16 +40,19 @@ import java.awt.event.MouseEvent;
 
 public class TextProgressOverlayExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Text progress";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Web-styled text progress overlay";
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         // Overlay panel
@@ -82,6 +85,7 @@ public class TextProgressOverlayExample extends DefaultExample
             private String toAdd = "";
             private int step = 5;
 
+            @Override
             public void mousePressed ( MouseEvent e )
             {
                 // Updating string to write
@@ -95,6 +99,7 @@ public class TextProgressOverlayExample extends DefaultExample
                 overlayPanel.setVisible ( true );
                 new Thread ( new Runnable ()
                 {
+                    @Override
                     public void run ()
                     {
                         while ( toAdd.length () > 0 )
@@ -102,6 +107,7 @@ public class TextProgressOverlayExample extends DefaultExample
                             final int left = Math.min ( step, toAdd.length () );
                             SwingUtils.invokeAndWaitSafely ( new Runnable ()
                             {
+                                @Override
                                 public void run ()
                                 {
                                     textArea.append ( toAdd.substring ( 0, left ) );
@@ -113,6 +119,7 @@ public class TextProgressOverlayExample extends DefaultExample
                         }
                         SwingUtilities.invokeLater ( new Runnable ()
                         {
+                            @Override
                             public void run ()
                             {
                                 progressOverlay.setShowLoad ( false );

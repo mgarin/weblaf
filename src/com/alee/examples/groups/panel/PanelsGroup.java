@@ -30,21 +30,25 @@ import java.util.List;
 
 public class PanelsGroup extends DefaultExampleGroup
 {
+    @Override
     public Icon getGroupIcon ()
     {
         return loadGroupIcon ( "panel.png" );
     }
 
+    @Override
     public String getGroupName ()
     {
         return "Panels";
     }
 
+    @Override
     public String getGroupDescription ()
     {
         return "Various examples of panels usage";
     }
 
+    @Override
     public List<Example> getGroupExamples ()
     {
         List<Example> examples = new ArrayList<Example> ();

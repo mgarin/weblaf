@@ -31,26 +31,31 @@ import java.util.List;
 
 public class CollapsiblePanesGroup extends DefaultExampleGroup
 {
+    @Override
     public Icon getGroupIcon ()
     {
         return loadGroupIcon ( "collapsible.png" );
     }
 
+    @Override
     public String getGroupName ()
     {
         return "Collapsible panes";
     }
 
+    @Override
     public String getGroupDescription ()
     {
         return "Various examples of collapsible panes usage";
     }
 
+    @Override
     public FeatureState getFeatureGroupState ()
     {
         return FeatureState.beta;
     }
 
+    @Override
     public List<Example> getGroupExamples ()
     {
         List<Example> examples = new ArrayList<Example> ();

@@ -32,21 +32,25 @@ import java.awt.*;
 
 public class PathFieldExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Path field";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Web-styled path field";
     }
 
+    @Override
     public FeatureState getFeatureState ()
     {
         return FeatureState.beta;
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         // Simple path field

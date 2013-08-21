@@ -30,16 +30,19 @@ import java.awt.*;
 
 public class ComboBoxExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Combobox";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Web-styled combobox";
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         String[] items = { "Element 1", "Element 2", "Element 3", "Element 4", "Element 5" };

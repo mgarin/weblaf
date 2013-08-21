@@ -63,6 +63,7 @@ public final class FocusManager
             // Global focus listener
             Toolkit.getDefaultToolkit ().addAWTEventListener ( new AWTEventListener ()
             {
+                @Override
                 public void eventDispatched ( AWTEvent event )
                 {
                     if ( event instanceof FocusEvent )
@@ -88,6 +89,7 @@ public final class FocusManager
             // Adding global focus tracker
             registerGlobalFocusListener ( new GlobalFocusListener ()
             {
+                @Override
                 public void focusChanged ( Component oldFocus, Component newFocus )
                 {
                     oldFocusOwner = oldFocus;

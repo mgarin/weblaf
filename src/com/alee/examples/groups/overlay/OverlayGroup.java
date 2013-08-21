@@ -30,21 +30,25 @@ import java.util.List;
 
 public class OverlayGroup extends DefaultExampleGroup
 {
+    @Override
     public Icon getGroupIcon ()
     {
         return loadGroupIcon ( "overlay.png" );
     }
 
+    @Override
     public String getGroupName ()
     {
         return "Overlay";
     }
 
+    @Override
     public String getGroupDescription ()
     {
         return "Various examples of overlay usage";
     }
 
+    @Override
     public List<Example> getGroupExamples ()
     {
         List<Example> examples = new ArrayList<Example> ();

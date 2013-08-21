@@ -38,6 +38,7 @@ public class WebViewport extends JViewport
         return ( WebViewportUI ) getUI ();
     }
 
+    @Override
     public void updateUI ()
     {
         if ( getUI () == null || !( getUI () instanceof WebViewportUI ) )

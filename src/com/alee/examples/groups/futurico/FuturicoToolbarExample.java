@@ -34,16 +34,19 @@ import java.awt.*;
 
 public class FuturicoToolbarExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Futurico toolbar";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Futurico-styled toolbar";
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         // Toolbar with custom painter

@@ -86,6 +86,7 @@ public class ZoomTransitionEffect extends DefaultTransitionEffect
         put ( ZOOM_TYPE, type );
     }
 
+    @Override
     public void prepareAnimation ( ImageTransition imageTransition )
     {
         // Updating settings
@@ -100,6 +101,7 @@ public class ZoomTransitionEffect extends DefaultTransitionEffect
         imageTransition.repaint ();
     }
 
+    @Override
     public boolean performAnimation ( ImageTransition imageTransition )
     {
         if ( size < 1f )
@@ -119,6 +121,7 @@ public class ZoomTransitionEffect extends DefaultTransitionEffect
         return Math.max ( minimumSpeed, speed * ( float ) Math.sqrt ( ( 1f - size ) / 1f ) );
     }
 
+    @Override
     public void paint ( Graphics2D g2d, ImageTransition imageTransition )
     {
         int tw = imageTransition.getWidth ();

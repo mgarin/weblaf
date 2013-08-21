@@ -99,6 +99,7 @@ public class WebRadioButtonUI extends BasicRadioButtonUI implements ShapeProvide
         return new WebRadioButtonUI ();
     }
 
+    @Override
     public void installUI ( final JComponent c )
     {
         super.installUI ( c );
@@ -119,6 +120,7 @@ public class WebRadioButtonUI extends BasicRadioButtonUI implements ShapeProvide
         // Background fade animation
         bgTimer = new WebTimer ( "WebRadioButtonUI.bgUpdater", 40, new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 if ( rollover && bgDarkness < MAX_DARKNESS )
@@ -139,6 +141,7 @@ public class WebRadioButtonUI extends BasicRadioButtonUI implements ShapeProvide
         } );
         mouseAdapter = new MouseAdapter ()
         {
+            @Override
             public void mouseEntered ( MouseEvent e )
             {
                 rollover = true;
@@ -153,6 +156,7 @@ public class WebRadioButtonUI extends BasicRadioButtonUI implements ShapeProvide
                 }
             }
 
+            @Override
             public void mouseExited ( MouseEvent e )
             {
                 rollover = false;
@@ -172,6 +176,7 @@ public class WebRadioButtonUI extends BasicRadioButtonUI implements ShapeProvide
         // Selection changes animation
         checkTimer = new WebTimer ( "WebRadioButtonUI.iconUpdater", 40, new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 if ( checking && checkIcon < CHECK_STATES.size () - 1 )
@@ -192,6 +197,7 @@ public class WebRadioButtonUI extends BasicRadioButtonUI implements ShapeProvide
         } );
         itemListener = new ItemListener ()
         {
+            @Override
             public void itemStateChanged ( ItemEvent e )
             {
                 if ( animated )
@@ -218,6 +224,7 @@ public class WebRadioButtonUI extends BasicRadioButtonUI implements ShapeProvide
         radioButton.addItemListener ( itemListener );
     }
 
+    @Override
     public void uninstallUI ( JComponent c )
     {
         radioButton.removeMouseListener ( mouseAdapter );
@@ -226,6 +233,7 @@ public class WebRadioButtonUI extends BasicRadioButtonUI implements ShapeProvide
         super.uninstallUI ( c );
     }
 
+    @Override
     public Shape provideShape ()
     {
         return LafUtils.getWebBorderShape ( radioButton, getShadeWidth (), getRound () );
@@ -387,6 +395,7 @@ public class WebRadioButtonUI extends BasicRadioButtonUI implements ShapeProvide
     {
         radioButton.setIcon ( new Icon ()
         {
+            @Override
             public void paintIcon ( Component c, Graphics g, int x, int y )
             {
                 iconRect = new Rectangle ( x, y, iconWidth, iconHeight );
@@ -433,11 +442,13 @@ public class WebRadioButtonUI extends BasicRadioButtonUI implements ShapeProvide
                 LafUtils.restoreAntialias ( g2d, aa );
             }
 
+            @Override
             public int getIconWidth ()
             {
                 return iconWidth;
             }
 
+            @Override
             public int getIconHeight ()
             {
                 return iconHeight;
@@ -476,6 +487,7 @@ public class WebRadioButtonUI extends BasicRadioButtonUI implements ShapeProvide
         return iconRect != null ? new Rectangle ( iconRect ) : new Rectangle ();
     }
 
+    @Override
     public synchronized void paint ( Graphics g, JComponent c )
     {
         Map hints = SwingUtils.setupTextAntialias ( g, c );
@@ -483,6 +495,7 @@ public class WebRadioButtonUI extends BasicRadioButtonUI implements ShapeProvide
         SwingUtils.restoreTextAntialias ( g, hints );
     }
 
+    @Override
     protected void paintText ( Graphics g, JComponent c, Rectangle textRect, String text )
     {
         AbstractButton b = ( AbstractButton ) c;

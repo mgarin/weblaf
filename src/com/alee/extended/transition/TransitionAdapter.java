@@ -23,11 +23,13 @@ package com.alee.extended.transition;
 
 public class TransitionAdapter implements TransitionListener
 {
+    @Override
     public void transitionStarted ()
     {
         //
     }
 
+    @Override
     public void transitionFinished ()
     {
         //

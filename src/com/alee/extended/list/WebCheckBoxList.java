@@ -95,6 +95,7 @@ public class WebCheckBoxList extends WebList
      *
      * @return default list cell editor for this list
      */
+    @Override
     protected ListCellEditor createDefaultCellEditor ()
     {
         return new WebCheckBoxListCellEditor ();
@@ -151,6 +152,7 @@ public class WebCheckBoxList extends WebList
             {
                 private int left = WebCheckBoxUI.MAX_DARKNESS + 1;
 
+                @Override
                 public void actionPerformed ( ActionEvent e )
                 {
                     if ( left > 0 )
@@ -196,6 +198,7 @@ public class WebCheckBoxList extends WebList
      */
     private class CheckBoxListMouseAdapter extends MouseAdapter
     {
+        @Override
         public void mousePressed ( MouseEvent e )
         {
             int index = getUI ().locationToIndex ( WebCheckBoxList.this, e.getPoint () );
@@ -227,6 +230,7 @@ public class WebCheckBoxList extends WebList
      */
     private class CheckBoxListKeyAdapter extends KeyAdapter
     {
+        @Override
         public void keyReleased ( KeyEvent e )
         {
             if ( Hotkey.SPACE.isTriggered ( e ) && getSelectedIndex () != -1 && isEnabled () )

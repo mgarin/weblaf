@@ -31,16 +31,19 @@ import java.awt.*;
 
 public class VerticalLabelsExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Vertical labels";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Web-styled vertical labels";
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         // Counter-clockwise vertical label

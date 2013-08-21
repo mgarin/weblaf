@@ -145,16 +145,19 @@ public class DockingPaneLayout implements LayoutManager, DockingPaneConstants
      * Standard layout methods
      */
 
+    @Override
     public void addLayoutComponent ( String name, Component comp )
     {
         constraints.put ( comp, name );
     }
 
+    @Override
     public void removeLayoutComponent ( Component comp )
     {
         constraints.remove ( comp );
     }
 
+    @Override
     public void layoutContainer ( Container parent )
     {
         // Collecting components positioning info
@@ -289,6 +292,7 @@ public class DockingPaneLayout implements LayoutManager, DockingPaneConstants
         }
     }
 
+    @Override
     public Dimension preferredLayoutSize ( Container parent )
     {
         // Collecting components positioning info
@@ -312,6 +316,7 @@ public class DockingPaneLayout implements LayoutManager, DockingPaneConstants
         return new Dimension ( width, height );
     }
 
+    @Override
     public Dimension minimumLayoutSize ( Container parent )
     {
         return preferredLayoutSize ( parent );

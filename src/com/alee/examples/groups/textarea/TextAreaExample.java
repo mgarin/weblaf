@@ -31,16 +31,19 @@ import java.awt.*;
 
 public class TextAreaExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Text area";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Web-styled text area";
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         WebTextArea textArea = new WebTextArea ();

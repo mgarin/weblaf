@@ -48,6 +48,7 @@ public class LineColorChooserPaint implements Paint
         this.height = height;
     }
 
+    @Override
     public PaintContext createContext ( ColorModel cm, Rectangle deviceBounds, Rectangle2D userBounds, final AffineTransform xform,
                                         RenderingHints hints )
     {
@@ -55,16 +56,19 @@ public class LineColorChooserPaint implements Paint
         {
             private Map<Rectangle, WritableRaster> rastersCache = new HashMap<Rectangle, WritableRaster> ();
 
+            @Override
             public void dispose ()
             {
                 rastersCache.clear ();
             }
 
+            @Override
             public ColorModel getColorModel ()
             {
                 return model;
             }
 
+            @Override
             public Raster getRaster ( int x, int y, int w, int h )
             {
                 Rectangle r = new Rectangle ( x, y, w, h );
@@ -124,6 +128,7 @@ public class LineColorChooserPaint implements Paint
         return color;
     }
 
+    @Override
     public int getTransparency ()
     {
         return OPAQUE;

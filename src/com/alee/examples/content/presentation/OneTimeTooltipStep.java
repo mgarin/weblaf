@@ -65,6 +65,7 @@ public class OneTimeTooltipStep extends PresentationStep
     {
         return new Runnable ()
         {
+            @Override
             public void run ()
             {
                 // Updating display location
@@ -79,6 +80,7 @@ public class OneTimeTooltipStep extends PresentationStep
                 // Listening for forceful tooltip disposal
                 forcefulDisposal = new TooltipAdapter ()
                 {
+                    @Override
                     public void tooltipHidden ()
                     {
                         example.nextPresentationStep ();
@@ -93,6 +95,7 @@ public class OneTimeTooltipStep extends PresentationStep
     {
         return new Runnable ()
         {
+            @Override
             public void run ()
             {
                 // No need to listen for force disposal anymore

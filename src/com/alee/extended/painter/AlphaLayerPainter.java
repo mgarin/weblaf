@@ -154,6 +154,7 @@ public class AlphaLayerPainter<E extends JComponent> extends DefaultPainter<E>
      * @param c component to process
      * @return true if visual data provided by this painter is opaque, false otherwise
      */
+    @Override
     public boolean isOpaque ( E c )
     {
         return true;
@@ -168,6 +169,7 @@ public class AlphaLayerPainter<E extends JComponent> extends DefaultPainter<E>
      * @param bounds bounds for painter visual data
      * @param c      component to process
      */
+    @Override
     public void paint ( Graphics2D g2d, Rectangle bounds, E c )
     {
         // todo Optimize paint by using generated texture image

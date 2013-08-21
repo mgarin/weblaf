@@ -53,6 +53,7 @@ public class TextComponentLayout implements LayoutManager
      * Standard LayoutManager methods
      */
 
+    @Override
     public void addLayoutComponent ( String name, Component comp )
     {
         if ( name == null || !name.equals ( LEADING ) && !name.equals ( TRAILING ) )
@@ -62,11 +63,13 @@ public class TextComponentLayout implements LayoutManager
         constraints.put ( comp, name );
     }
 
+    @Override
     public void removeLayoutComponent ( Component comp )
     {
         constraints.remove ( comp );
     }
 
+    @Override
     public Dimension preferredLayoutSize ( Container parent )
     {
         Insets b = getInsets ( parent );
@@ -75,11 +78,13 @@ public class TextComponentLayout implements LayoutManager
         return new Dimension ( b.left + l.width + t.width + b.right, b.top + Math.max ( l.height, t.height ) + b.bottom );
     }
 
+    @Override
     public Dimension minimumLayoutSize ( Container parent )
     {
         return preferredLayoutSize ( parent );
     }
 
+    @Override
     public void layoutContainer ( Container parent )
     {
         boolean ltr = parent.getComponentOrientation ().isLeftToRight ();

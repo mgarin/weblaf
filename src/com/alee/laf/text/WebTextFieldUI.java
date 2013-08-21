@@ -88,6 +88,7 @@ public class WebTextFieldUI extends BasicTextFieldUI implements ShapeProvider, S
         this.textField = textField;
     }
 
+    @Override
     public void installUI ( JComponent c )
     {
         super.installUI ( c );
@@ -110,11 +111,13 @@ public class WebTextFieldUI extends BasicTextFieldUI implements ShapeProvider, S
 
         focusListener = new FocusListener ()
         {
+            @Override
             public void focusLost ( FocusEvent e )
             {
                 textField.repaint ();
             }
 
+            @Override
             public void focusGained ( FocusEvent e )
             {
                 textField.repaint ();
@@ -124,6 +127,7 @@ public class WebTextFieldUI extends BasicTextFieldUI implements ShapeProvider, S
 
         accessibleChangeListener = new PropertyChangeListener ()
         {
+            @Override
             public void propertyChange ( PropertyChangeEvent evt )
             {
                 updateInnerComponents ();
@@ -133,6 +137,7 @@ public class WebTextFieldUI extends BasicTextFieldUI implements ShapeProvider, S
 
         orientationChangeListener = new PropertyChangeListener ()
         {
+            @Override
             public void propertyChange ( PropertyChangeEvent evt )
             {
                 updateBorder ();
@@ -142,6 +147,7 @@ public class WebTextFieldUI extends BasicTextFieldUI implements ShapeProvider, S
 
         marginChangeListener = new PropertyChangeListener ()
         {
+            @Override
             public void propertyChange ( PropertyChangeEvent evt )
             {
                 updateBorder ();
@@ -151,6 +157,7 @@ public class WebTextFieldUI extends BasicTextFieldUI implements ShapeProvider, S
 
         componentResizeListener = new ComponentAdapter ()
         {
+            @Override
             public void componentResized ( ComponentEvent e )
             {
                 updateBorder ();
@@ -158,6 +165,7 @@ public class WebTextFieldUI extends BasicTextFieldUI implements ShapeProvider, S
         };
     }
 
+    @Override
     public void uninstallUI ( JComponent c )
     {
         textField.putClientProperty ( SwingUtils.HANDLES_ENABLE_STATE, null );
@@ -174,6 +182,7 @@ public class WebTextFieldUI extends BasicTextFieldUI implements ShapeProvider, S
         super.uninstallUI ( c );
     }
 
+    @Override
     public Shape provideShape ()
     {
         if ( drawBorder )
@@ -517,6 +526,7 @@ public class WebTextFieldUI extends BasicTextFieldUI implements ShapeProvider, S
         }
     }
 
+    @Override
     protected void paintSafely ( Graphics g )
     {
         JTextComponent c = getComponent ();
@@ -585,12 +595,14 @@ public class WebTextFieldUI extends BasicTextFieldUI implements ShapeProvider, S
         SwingUtils.restoreTextAntialias ( g2d, hints );
     }
 
+    @Override
     protected void paintBackground ( Graphics g )
     {
         //
     }
 
 
+    @Override
     public Dimension getPreferredSize ( JComponent c )
     {
         Dimension ps = super.getPreferredSize ( c );

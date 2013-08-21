@@ -51,6 +51,7 @@ public class AbstractButtonSettingsProcessor extends SettingsProcessor<AbstractB
     /**
      * {@inheritDoc}
      */
+    @Override
     public Boolean getDefaultValue ()
     {
         Boolean defaultValue = super.getDefaultValue ();
@@ -64,10 +65,12 @@ public class AbstractButtonSettingsProcessor extends SettingsProcessor<AbstractB
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void doInit ( AbstractButton abstractButton )
     {
         itemListener = new ItemListener ()
         {
+            @Override
             public void itemStateChanged ( ItemEvent e )
             {
                 if ( SettingsManager.isSaveOnChange () )
@@ -82,6 +85,7 @@ public class AbstractButtonSettingsProcessor extends SettingsProcessor<AbstractB
     /**
      * {@inheritDoc}
      */
+    @Override
     public void doDestroy ( AbstractButton abstractButton )
     {
         abstractButton.removeItemListener ( itemListener );
@@ -91,6 +95,7 @@ public class AbstractButtonSettingsProcessor extends SettingsProcessor<AbstractB
     /**
      * {@inheritDoc}
      */
+    @Override
     public void doLoad ( AbstractButton abstractButton )
     {
         boolean newValue = loadValue ();
@@ -103,6 +108,7 @@ public class AbstractButtonSettingsProcessor extends SettingsProcessor<AbstractB
     /**
      * {@inheritDoc}
      */
+    @Override
     public void doSave ( AbstractButton abstractButton )
     {
         saveValue ( abstractButton.isSelected () );

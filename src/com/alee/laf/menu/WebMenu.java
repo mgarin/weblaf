@@ -62,6 +62,7 @@ public class WebMenu extends JMenu implements LanguageMethods, FontMethods<WebMe
         setIcon ( icon );
     }
 
+    @Override
     public void setMenuLocation ( int x, int y )
     {
         customMenuLocation = new Point ( x, y );
@@ -76,6 +77,7 @@ public class WebMenu extends JMenu implements LanguageMethods, FontMethods<WebMe
         return customMenuLocation;
     }
 
+    @Override
     public void setPopupMenuVisible ( boolean b )
     {
         boolean isVisible = isPopupMenuVisible ();
@@ -103,6 +105,7 @@ public class WebMenu extends JMenu implements LanguageMethods, FontMethods<WebMe
         return ( WebMenuUI ) getUI ();
     }
 
+    @Override
     public void updateUI ()
     {
         if ( getUI () == null || !( getUI () instanceof WebMenuUI ) )
@@ -134,6 +137,7 @@ public class WebMenu extends JMenu implements LanguageMethods, FontMethods<WebMe
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setLanguage ( String key, Object... data )
     {
         LanguageManager.registerComponent ( this, key, data );
@@ -142,6 +146,7 @@ public class WebMenu extends JMenu implements LanguageMethods, FontMethods<WebMe
     /**
      * {@inheritDoc}
      */
+    @Override
     public void updateLanguage ( Object... data )
     {
         LanguageManager.updateComponent ( this, data );
@@ -150,6 +155,7 @@ public class WebMenu extends JMenu implements LanguageMethods, FontMethods<WebMe
     /**
      * {@inheritDoc}
      */
+    @Override
     public void updateLanguage ( String key, Object... data )
     {
         LanguageManager.updateComponent ( this, key, data );
@@ -158,6 +164,7 @@ public class WebMenu extends JMenu implements LanguageMethods, FontMethods<WebMe
     /**
      * {@inheritDoc}
      */
+    @Override
     public void removeLanguage ()
     {
         LanguageManager.unregisterComponent ( this );
@@ -166,6 +173,7 @@ public class WebMenu extends JMenu implements LanguageMethods, FontMethods<WebMe
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isLanguageSet ()
     {
         return LanguageManager.isRegisteredComponent ( this );
@@ -174,6 +182,7 @@ public class WebMenu extends JMenu implements LanguageMethods, FontMethods<WebMe
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setLanguageUpdater ( LanguageUpdater updater )
     {
         LanguageManager.registerLanguageUpdater ( this, updater );
@@ -182,6 +191,7 @@ public class WebMenu extends JMenu implements LanguageMethods, FontMethods<WebMe
     /**
      * {@inheritDoc}
      */
+    @Override
     public void removeLanguageUpdater ()
     {
         LanguageManager.unregisterLanguageUpdater ( this );
@@ -194,6 +204,7 @@ public class WebMenu extends JMenu implements LanguageMethods, FontMethods<WebMe
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebMenu setPlainFont ()
     {
         return SwingUtils.setPlainFont ( this );
@@ -202,6 +213,7 @@ public class WebMenu extends JMenu implements LanguageMethods, FontMethods<WebMe
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebMenu setPlainFont ( boolean apply )
     {
         return SwingUtils.setPlainFont ( this, apply );
@@ -210,6 +222,7 @@ public class WebMenu extends JMenu implements LanguageMethods, FontMethods<WebMe
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isPlainFont ()
     {
         return SwingUtils.isPlainFont ( this );
@@ -218,6 +231,7 @@ public class WebMenu extends JMenu implements LanguageMethods, FontMethods<WebMe
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebMenu setBoldFont ()
     {
         return SwingUtils.setBoldFont ( this );
@@ -226,6 +240,7 @@ public class WebMenu extends JMenu implements LanguageMethods, FontMethods<WebMe
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebMenu setBoldFont ( boolean apply )
     {
         return SwingUtils.setBoldFont ( this, apply );
@@ -234,6 +249,7 @@ public class WebMenu extends JMenu implements LanguageMethods, FontMethods<WebMe
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isBoldFont ()
     {
         return SwingUtils.isBoldFont ( this );
@@ -242,6 +258,7 @@ public class WebMenu extends JMenu implements LanguageMethods, FontMethods<WebMe
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebMenu setItalicFont ()
     {
         return SwingUtils.setItalicFont ( this );
@@ -250,6 +267,7 @@ public class WebMenu extends JMenu implements LanguageMethods, FontMethods<WebMe
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebMenu setItalicFont ( boolean apply )
     {
         return SwingUtils.setItalicFont ( this, apply );
@@ -258,6 +276,7 @@ public class WebMenu extends JMenu implements LanguageMethods, FontMethods<WebMe
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isItalicFont ()
     {
         return SwingUtils.isItalicFont ( this );
@@ -266,6 +285,7 @@ public class WebMenu extends JMenu implements LanguageMethods, FontMethods<WebMe
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebMenu setFontStyle ( boolean bold, boolean italic )
     {
         return SwingUtils.setFontStyle ( this, bold, italic );
@@ -274,6 +294,7 @@ public class WebMenu extends JMenu implements LanguageMethods, FontMethods<WebMe
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebMenu setFontStyle ( int style )
     {
         return SwingUtils.setFontStyle ( this, style );
@@ -282,6 +303,7 @@ public class WebMenu extends JMenu implements LanguageMethods, FontMethods<WebMe
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebMenu setFontSize ( int fontSize )
     {
         return SwingUtils.setFontSize ( this, fontSize );
@@ -290,6 +312,7 @@ public class WebMenu extends JMenu implements LanguageMethods, FontMethods<WebMe
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebMenu changeFontSize ( int change )
     {
         return SwingUtils.changeFontSize ( this, change );
@@ -298,6 +321,7 @@ public class WebMenu extends JMenu implements LanguageMethods, FontMethods<WebMe
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getFontSize ()
     {
         return SwingUtils.getFontSize ( this );
@@ -306,6 +330,7 @@ public class WebMenu extends JMenu implements LanguageMethods, FontMethods<WebMe
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebMenu setFontSizeAndStyle ( int fontSize, boolean bold, boolean italic )
     {
         return SwingUtils.setFontSizeAndStyle ( this, fontSize, bold, italic );
@@ -314,6 +339,7 @@ public class WebMenu extends JMenu implements LanguageMethods, FontMethods<WebMe
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebMenu setFontSizeAndStyle ( int fontSize, int style )
     {
         return SwingUtils.setFontSizeAndStyle ( this, fontSize, style );
@@ -322,6 +348,7 @@ public class WebMenu extends JMenu implements LanguageMethods, FontMethods<WebMe
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebMenu setFontName ( String fontName )
     {
         return SwingUtils.setFontName ( this, fontName );
@@ -330,6 +357,7 @@ public class WebMenu extends JMenu implements LanguageMethods, FontMethods<WebMe
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getFontName ()
     {
         return SwingUtils.getFontName ( this );

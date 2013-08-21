@@ -94,6 +94,7 @@ public class ConditionalVisibilityListener implements FocusListener, MouseListen
         this.component = component;
     }
 
+    @Override
     public void focusGained ( FocusEvent e )
     {
         if ( focusedVisible != null )
@@ -103,6 +104,7 @@ public class ConditionalVisibilityListener implements FocusListener, MouseListen
         }
     }
 
+    @Override
     public void focusLost ( FocusEvent e )
     {
         if ( focusedVisible != null )
@@ -112,21 +114,25 @@ public class ConditionalVisibilityListener implements FocusListener, MouseListen
         }
     }
 
+    @Override
     public void mouseClicked ( MouseEvent e )
     {
         //
     }
 
+    @Override
     public void mousePressed ( MouseEvent e )
     {
         //
     }
 
+    @Override
     public void mouseReleased ( MouseEvent e )
     {
         //
     }
 
+    @Override
     public void mouseEntered ( MouseEvent e )
     {
         if ( mouseoverVisible != null )
@@ -136,6 +142,7 @@ public class ConditionalVisibilityListener implements FocusListener, MouseListen
         }
     }
 
+    @Override
     public void mouseExited ( MouseEvent e )
     {
         if ( mouseoverVisible != null )

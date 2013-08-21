@@ -94,6 +94,7 @@ public class WebFileChooserUI extends FileChooserUI
      *
      * @param c component for this UI
      */
+    @Override
     public void installUI ( JComponent c )
     {
         fileChooser = ( JFileChooser ) c;
@@ -106,6 +107,7 @@ public class WebFileChooserUI extends FileChooserUI
         fileChooserPanel.setMultiSelectionEnabled ( fileChooser.isMultiSelectionEnabled () );
         fileChooserPanel.setApproveListener ( new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 ignoreFileSelectionChanges = true;
@@ -118,6 +120,7 @@ public class WebFileChooserUI extends FileChooserUI
         } );
         fileChooserPanel.setCancelListener ( new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 fileChooser.cancelSelection ();
@@ -143,6 +146,7 @@ public class WebFileChooserUI extends FileChooserUI
 
         propertyChangeListener = new PropertyChangeListener ()
         {
+            @Override
             public void propertyChange ( PropertyChangeEvent evt )
             {
                 propertyChanged ( evt );
@@ -156,6 +160,7 @@ public class WebFileChooserUI extends FileChooserUI
      *
      * @param c component with this UI
      */
+    @Override
     public void uninstallUI ( JComponent c )
     {
         fileChooser.removePropertyChangeListener ( propertyChangeListener );
@@ -315,6 +320,7 @@ public class WebFileChooserUI extends FileChooserUI
     /**
      * {@inheritDoc}
      */
+    @Override
     public FileFilter getAcceptAllFileFilter ( JFileChooser fc )
     {
         return GlobalConstants.ALL_FILES_FILTER;
@@ -323,6 +329,7 @@ public class WebFileChooserUI extends FileChooserUI
     /**
      * {@inheritDoc}
      */
+    @Override
     public FileView getFileView ( JFileChooser fc )
     {
         return fileView;
@@ -339,6 +346,7 @@ public class WebFileChooserUI extends FileChooserUI
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getApproveButtonText ( JFileChooser fc )
     {
         return fileChooserPanel.getApproveButtonText ();
@@ -347,6 +355,7 @@ public class WebFileChooserUI extends FileChooserUI
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getDialogTitle ( JFileChooser fc )
     {
         String dialogTitle = fc.getDialogTitle ();
@@ -356,6 +365,7 @@ public class WebFileChooserUI extends FileChooserUI
     /**
      * {@inheritDoc}
      */
+    @Override
     public void rescanCurrentDirectory ( JFileChooser fc )
     {
         fileChooserPanel.reloadCurrentFolder ();
@@ -364,6 +374,7 @@ public class WebFileChooserUI extends FileChooserUI
     /**
      * {@inheritDoc}
      */
+    @Override
     public void ensureFileIsVisible ( JFileChooser fc, File f )
     {
         //        // This is pretty annoying and pointless method, will ignore it for now
@@ -409,6 +420,7 @@ public class WebFileChooserUI extends FileChooserUI
         /**
          * {@inheritDoc}
          */
+        @Override
         public String getName ( File f )
         {
             return FileUtils.getDisplayFileName ( f );
@@ -417,6 +429,7 @@ public class WebFileChooserUI extends FileChooserUI
         /**
          * {@inheritDoc}
          */
+        @Override
         public String getDescription ( File f )
         {
             return getTypeDescription ( f );
@@ -425,6 +438,7 @@ public class WebFileChooserUI extends FileChooserUI
         /**
          * {@inheritDoc}
          */
+        @Override
         public String getTypeDescription ( File f )
         {
             return FileUtils.getFileTypeDescription ( f );
@@ -433,6 +447,7 @@ public class WebFileChooserUI extends FileChooserUI
         /**
          * {@inheritDoc}
          */
+        @Override
         public Icon getIcon ( File f )
         {
             return FileUtils.getFileIcon ( f );

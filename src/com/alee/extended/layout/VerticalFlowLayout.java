@@ -108,6 +108,7 @@ public class VerticalFlowLayout extends FlowLayout
     /**
      * Sets the horizontal gap between components.
      */
+    @Override
     public void setHgap ( int hgap )
     {
         super.setHgap ( hgap );
@@ -118,6 +119,7 @@ public class VerticalFlowLayout extends FlowLayout
     /**
      * Sets the vertical gap between components.
      */
+    @Override
     public void setVgap ( int vgap )
     {
         super.setVgap ( vgap );
@@ -146,6 +148,7 @@ public class VerticalFlowLayout extends FlowLayout
     /**
      * Gets the horizontal gap between components.
      */
+    @Override
     public int getHgap ()
     {
         return hgap;
@@ -155,6 +158,7 @@ public class VerticalFlowLayout extends FlowLayout
     /**
      * Gets the vertical gap between components.
      */
+    @Override
     public int getVgap ()
     {
         return vgap;
@@ -182,6 +186,7 @@ public class VerticalFlowLayout extends FlowLayout
     /**
      * Returns the preferred dimensions given the components in the target container.
      */
+    @Override
     public Dimension preferredLayoutSize ( Container target )
     {
         Dimension tarsiz = new Dimension ( 0, 0 );
@@ -210,6 +215,7 @@ public class VerticalFlowLayout extends FlowLayout
     /**
      * Returns the minimum size needed to layout the target container
      */
+    @Override
     public Dimension minimumLayoutSize ( Container target )
     {
         Dimension tarsiz = new Dimension ( 0, 0 );
@@ -237,6 +243,7 @@ public class VerticalFlowLayout extends FlowLayout
     /**
      * Lays out the container.
      */
+    @Override
     public void layoutContainer ( Container target )
     {
         Insets insets = target.getInsets ();

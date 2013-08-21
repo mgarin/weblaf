@@ -92,16 +92,19 @@ public class WebGradientColorChooser extends JComponent
         addMouseMotionListener ( this );
     }
 
+    @Override
     public void focusGained ( FocusEvent e )
     {
         repaint ();
     }
 
+    @Override
     public void focusLost ( FocusEvent e )
     {
         repaint ();
     }
 
+    @Override
     public void mouseClicked ( MouseEvent e )
     {
         if ( !isEnabled () )
@@ -128,6 +131,7 @@ public class WebGradientColorChooser extends JComponent
         }
     }
 
+    @Override
     public void mousePressed ( MouseEvent e )
     {
         if ( !isEnabled () )
@@ -208,6 +212,7 @@ public class WebGradientColorChooser extends JComponent
         return colorData;
     }
 
+    @Override
     public void mouseDragged ( MouseEvent e )
     {
         if ( !isEnabled () )
@@ -249,6 +254,7 @@ public class WebGradientColorChooser extends JComponent
         }
     }
 
+    @Override
     public void mouseReleased ( MouseEvent e )
     {
         if ( !isEnabled () )
@@ -262,16 +268,19 @@ public class WebGradientColorChooser extends JComponent
         }
     }
 
+    @Override
     public void mouseEntered ( MouseEvent e )
     {
         //
     }
 
+    @Override
     public void mouseExited ( MouseEvent e )
     {
         //
     }
 
+    @Override
     public void mouseMoved ( MouseEvent e )
     {
         //
@@ -419,6 +428,7 @@ public class WebGradientColorChooser extends JComponent
         this.paintLabels = paintLabels;
     }
 
+    @Override
     protected void paintComponent ( Graphics g )
     {
         super.paintComponent ( g );
@@ -578,6 +588,7 @@ public class WebGradientColorChooser extends JComponent
     /**
      * {@inheritDoc}
      */
+    @Override
     public void registerSettings ( String key )
     {
         SettingsManager.registerComponent ( this, key );
@@ -586,6 +597,7 @@ public class WebGradientColorChooser extends JComponent
     /**
      * {@inheritDoc}
      */
+    @Override
     public <T extends DefaultValue> void registerSettings ( String key, Class<T> defaultValueClass )
     {
         SettingsManager.registerComponent ( this, key, defaultValueClass );
@@ -594,6 +606,7 @@ public class WebGradientColorChooser extends JComponent
     /**
      * {@inheritDoc}
      */
+    @Override
     public void registerSettings ( String key, Object defaultValue )
     {
         SettingsManager.registerComponent ( this, key, defaultValue );
@@ -602,6 +615,7 @@ public class WebGradientColorChooser extends JComponent
     /**
      * {@inheritDoc}
      */
+    @Override
     public void registerSettings ( String group, String key )
     {
         SettingsManager.registerComponent ( this, group, key );
@@ -610,6 +624,7 @@ public class WebGradientColorChooser extends JComponent
     /**
      * {@inheritDoc}
      */
+    @Override
     public <T extends DefaultValue> void registerSettings ( String group, String key, Class<T> defaultValueClass )
     {
         SettingsManager.registerComponent ( this, group, key, defaultValueClass );
@@ -618,6 +633,7 @@ public class WebGradientColorChooser extends JComponent
     /**
      * {@inheritDoc}
      */
+    @Override
     public void registerSettings ( String group, String key, Object defaultValue )
     {
         SettingsManager.registerComponent ( this, group, key, defaultValue );
@@ -626,6 +642,7 @@ public class WebGradientColorChooser extends JComponent
     /**
      * {@inheritDoc}
      */
+    @Override
     public void registerSettings ( String key, boolean loadInitialSettings, boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, key, loadInitialSettings, applySettingsChanges );
@@ -634,6 +651,7 @@ public class WebGradientColorChooser extends JComponent
     /**
      * {@inheritDoc}
      */
+    @Override
     public <T extends DefaultValue> void registerSettings ( String key, Class<T> defaultValueClass, boolean loadInitialSettings,
                                                             boolean applySettingsChanges )
     {
@@ -643,6 +661,7 @@ public class WebGradientColorChooser extends JComponent
     /**
      * {@inheritDoc}
      */
+    @Override
     public void registerSettings ( String key, Object defaultValue, boolean loadInitialSettings, boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, key, defaultValue, loadInitialSettings, applySettingsChanges );
@@ -651,6 +670,7 @@ public class WebGradientColorChooser extends JComponent
     /**
      * {@inheritDoc}
      */
+    @Override
     public <T extends DefaultValue> void registerSettings ( String group, String key, Class<T> defaultValueClass,
                                                             boolean loadInitialSettings, boolean applySettingsChanges )
     {
@@ -660,6 +680,7 @@ public class WebGradientColorChooser extends JComponent
     /**
      * {@inheritDoc}
      */
+    @Override
     public void registerSettings ( String group, String key, Object defaultValue, boolean loadInitialSettings,
                                    boolean applySettingsChanges )
     {
@@ -669,6 +690,7 @@ public class WebGradientColorChooser extends JComponent
     /**
      * {@inheritDoc}
      */
+    @Override
     public void registerSettings ( SettingsProcessor settingsProcessor )
     {
         SettingsManager.registerComponent ( this, settingsProcessor );
@@ -677,6 +699,7 @@ public class WebGradientColorChooser extends JComponent
     /**
      * {@inheritDoc}
      */
+    @Override
     public void unregisterSettings ()
     {
         SettingsManager.unregisterComponent ( this );
@@ -685,6 +708,7 @@ public class WebGradientColorChooser extends JComponent
     /**
      * {@inheritDoc}
      */
+    @Override
     public void loadSettings ()
     {
         SettingsManager.loadComponentSettings ( this );
@@ -693,6 +717,7 @@ public class WebGradientColorChooser extends JComponent
     /**
      * {@inheritDoc}
      */
+    @Override
     public void saveSettings ()
     {
         SettingsManager.saveComponentSettings ( this );
@@ -705,6 +730,7 @@ public class WebGradientColorChooser extends JComponent
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getPreferredWidth ()
     {
         return SizeUtils.getPreferredWidth ( this );
@@ -713,6 +739,7 @@ public class WebGradientColorChooser extends JComponent
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebGradientColorChooser setPreferredWidth ( int preferredWidth )
     {
         return SizeUtils.setPreferredWidth ( this, preferredWidth );
@@ -721,6 +748,7 @@ public class WebGradientColorChooser extends JComponent
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getPreferredHeight ()
     {
         return SizeUtils.getPreferredHeight ( this );
@@ -729,6 +757,7 @@ public class WebGradientColorChooser extends JComponent
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebGradientColorChooser setPreferredHeight ( int preferredHeight )
     {
         return SizeUtils.setPreferredHeight ( this, preferredHeight );
@@ -737,6 +766,7 @@ public class WebGradientColorChooser extends JComponent
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getMinimumWidth ()
     {
         return SizeUtils.getMinimumWidth ( this );
@@ -745,6 +775,7 @@ public class WebGradientColorChooser extends JComponent
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebGradientColorChooser setMinimumWidth ( int minimumWidth )
     {
         return SizeUtils.setMinimumWidth ( this, minimumWidth );
@@ -753,6 +784,7 @@ public class WebGradientColorChooser extends JComponent
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getMinimumHeight ()
     {
         return SizeUtils.getMinimumHeight ( this );
@@ -761,6 +793,7 @@ public class WebGradientColorChooser extends JComponent
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebGradientColorChooser setMinimumHeight ( int minimumHeight )
     {
         return SizeUtils.setMinimumHeight ( this, minimumHeight );
@@ -769,6 +802,7 @@ public class WebGradientColorChooser extends JComponent
     /**
      * {@inheritDoc}
      */
+    @Override
     public Dimension getPreferredSize ()
     {
         // todo Move to custom UI

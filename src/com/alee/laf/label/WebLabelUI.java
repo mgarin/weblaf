@@ -75,6 +75,7 @@ public class WebLabelUI extends BasicLabelUI
      *
      * @param c component for this UI
      */
+    @Override
     public void installUI ( final JComponent c )
     {
         super.installUI ( c );
@@ -92,6 +93,7 @@ public class WebLabelUI extends BasicLabelUI
         // Orientation change listener
         propertyChangeListener = new PropertyChangeListener ()
         {
+            @Override
             public void propertyChange ( PropertyChangeEvent evt )
             {
                 updateBorder ();
@@ -105,6 +107,7 @@ public class WebLabelUI extends BasicLabelUI
      *
      * @param c component with this UI
      */
+    @Override
     public void uninstallUI ( JComponent c )
     {
         label.removePropertyChangeListener ( WebLookAndFeel.COMPONENT_ORIENTATION_PROPERTY, propertyChangeListener );
@@ -252,6 +255,7 @@ public class WebLabelUI extends BasicLabelUI
      * @param g graphics
      * @param c component
      */
+    @Override
     public void paint ( Graphics g, JComponent c )
     {
         final Graphics2D g2d = ( Graphics2D ) g;
@@ -274,6 +278,7 @@ public class WebLabelUI extends BasicLabelUI
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void paintEnabledText ( JLabel l, Graphics g, String s, int textX, int textY )
     {
         if ( drawShade )
@@ -290,6 +295,7 @@ public class WebLabelUI extends BasicLabelUI
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void paintDisabledText ( JLabel l, Graphics g, String s, int textX, int textY )
     {
         if ( l.isEnabled () && drawShade )
@@ -321,6 +327,7 @@ public class WebLabelUI extends BasicLabelUI
     /**
      * {@inheritDoc}
      */
+    @Override
     public Dimension getPreferredSize ( JComponent c )
     {
         Dimension ps = super.getPreferredSize ( c );

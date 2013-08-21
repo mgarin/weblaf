@@ -66,6 +66,7 @@ public class WebTableUI extends BasicTableUI
      *
      * @param c component for this UI
      */
+    @Override
     public void installUI ( final JComponent c )
     {
         super.installUI ( c );
@@ -115,6 +116,7 @@ public class WebTableUI extends BasicTableUI
         configureEnclosingScrollPaneUI ( table );
         ancestorAdapter = new AncestorAdapter ()
         {
+            @Override
             public void ancestorAdded ( AncestorEvent event )
             {
                 configureEnclosingScrollPaneUI ( table );
@@ -128,6 +130,7 @@ public class WebTableUI extends BasicTableUI
      *
      * @param c component with this UI
      */
+    @Override
     public void uninstallUI ( JComponent c )
     {
         table.removeAncestorListener ( ancestorAdapter );

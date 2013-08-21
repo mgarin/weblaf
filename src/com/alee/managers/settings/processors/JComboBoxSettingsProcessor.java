@@ -51,6 +51,7 @@ public class JComboBoxSettingsProcessor extends SettingsProcessor<JComboBox, Int
     /**
      * {@inheritDoc}
      */
+    @Override
     public Integer getDefaultValue ()
     {
         Integer defaultValue = super.getDefaultValue ();
@@ -64,10 +65,12 @@ public class JComboBoxSettingsProcessor extends SettingsProcessor<JComboBox, Int
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void doInit ( JComboBox comboBox )
     {
         actionListener = new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 if ( SettingsManager.isSaveOnChange () )
@@ -82,6 +85,7 @@ public class JComboBoxSettingsProcessor extends SettingsProcessor<JComboBox, Int
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void doDestroy ( JComboBox comboBox )
     {
         comboBox.removeActionListener ( actionListener );
@@ -91,6 +95,7 @@ public class JComboBoxSettingsProcessor extends SettingsProcessor<JComboBox, Int
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void doLoad ( JComboBox comboBox )
     {
         Integer index = loadValue ();
@@ -103,6 +108,7 @@ public class JComboBoxSettingsProcessor extends SettingsProcessor<JComboBox, Int
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void doSave ( JComboBox comboBox )
     {
         saveValue ( comboBox.getSelectedIndex () );

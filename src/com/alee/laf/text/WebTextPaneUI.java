@@ -36,6 +36,7 @@ public class WebTextPaneUI extends WebEditorPaneUI
         return new WebTextPaneUI ();
     }
 
+    @Override
     public void installUI ( JComponent c )
     {
         super.installUI ( c );

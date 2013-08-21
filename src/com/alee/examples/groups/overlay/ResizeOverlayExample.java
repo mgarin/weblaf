@@ -40,16 +40,19 @@ import java.beans.PropertyChangeListener;
 
 public class ResizeOverlayExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Resize overlay";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Overlay with resize component";
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         WebOverlay overlayPanel = new WebOverlay ();
@@ -67,6 +70,7 @@ public class ResizeOverlayExample extends DefaultExample
         // Resize corner displayed as overlay
         final JComponent resizer = new JComponent ()
         {
+            @Override
             protected void paintComponent ( Graphics g )
             {
                 Graphics2D g2d = ( Graphics2D ) g;
@@ -87,6 +91,7 @@ public class ResizeOverlayExample extends DefaultExample
                 }
             }
 
+            @Override
             public Dimension getPreferredSize ()
             {
                 return new Dimension ( 12, 12 );
@@ -95,6 +100,7 @@ public class ResizeOverlayExample extends DefaultExample
         resizer.setCursor ( Cursor.getPredefinedCursor ( Cursor.SE_RESIZE_CURSOR ) );
         resizer.addPropertyChangeListener ( WebLookAndFeel.COMPONENT_ORIENTATION_PROPERTY, new PropertyChangeListener ()
         {
+            @Override
             public void propertyChange ( PropertyChangeEvent evt )
             {
                 resizer.setCursor ( Cursor.getPredefinedCursor (
@@ -108,6 +114,7 @@ public class ResizeOverlayExample extends DefaultExample
             private Dimension startDim = null;
             private Point start = null;
 
+            @Override
             public void mousePressed ( MouseEvent e )
             {
                 if ( resizer.isEnabled () && SwingUtilities.isLeftMouseButton ( e ) )
@@ -117,6 +124,7 @@ public class ResizeOverlayExample extends DefaultExample
                 }
             }
 
+            @Override
             public void mouseDragged ( MouseEvent e )
             {
                 if ( start != null )
@@ -134,6 +142,7 @@ public class ResizeOverlayExample extends DefaultExample
                 }
             }
 
+            @Override
             public void mouseReleased ( MouseEvent e )
             {
                 if ( start != null )

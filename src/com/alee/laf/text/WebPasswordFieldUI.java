@@ -88,6 +88,7 @@ public class WebPasswordFieldUI extends BasicPasswordFieldUI implements ShapePro
         this.passwordField = passwordField;
     }
 
+    @Override
     public void installUI ( JComponent c )
     {
         super.installUI ( c );
@@ -110,11 +111,13 @@ public class WebPasswordFieldUI extends BasicPasswordFieldUI implements ShapePro
 
         focusListener = new FocusListener ()
         {
+            @Override
             public void focusLost ( FocusEvent e )
             {
                 passwordField.repaint ();
             }
 
+            @Override
             public void focusGained ( FocusEvent e )
             {
                 passwordField.repaint ();
@@ -124,6 +127,7 @@ public class WebPasswordFieldUI extends BasicPasswordFieldUI implements ShapePro
 
         accessibleChangeListener = new PropertyChangeListener ()
         {
+            @Override
             public void propertyChange ( PropertyChangeEvent evt )
             {
                 updateInnerComponents ();
@@ -133,6 +137,7 @@ public class WebPasswordFieldUI extends BasicPasswordFieldUI implements ShapePro
 
         orientationChangeListener = new PropertyChangeListener ()
         {
+            @Override
             public void propertyChange ( PropertyChangeEvent evt )
             {
                 updateBorder ();
@@ -142,6 +147,7 @@ public class WebPasswordFieldUI extends BasicPasswordFieldUI implements ShapePro
 
         marginChangeListener = new PropertyChangeListener ()
         {
+            @Override
             public void propertyChange ( PropertyChangeEvent evt )
             {
                 updateBorder ();
@@ -151,6 +157,7 @@ public class WebPasswordFieldUI extends BasicPasswordFieldUI implements ShapePro
 
         componentResizeListener = new ComponentAdapter ()
         {
+            @Override
             public void componentResized ( ComponentEvent e )
             {
                 updateBorder ();
@@ -158,6 +165,7 @@ public class WebPasswordFieldUI extends BasicPasswordFieldUI implements ShapePro
         };
     }
 
+    @Override
     public void uninstallUI ( JComponent c )
     {
         passwordField.putClientProperty ( SwingUtils.HANDLES_ENABLE_STATE, null );
@@ -174,6 +182,7 @@ public class WebPasswordFieldUI extends BasicPasswordFieldUI implements ShapePro
         super.uninstallUI ( c );
     }
 
+    @Override
     public Shape provideShape ()
     {
         if ( drawBorder )
@@ -517,6 +526,7 @@ public class WebPasswordFieldUI extends BasicPasswordFieldUI implements ShapePro
         }
     }
 
+    @Override
     protected void paintSafely ( Graphics g )
     {
         JTextComponent c = getComponent ();
@@ -585,11 +595,13 @@ public class WebPasswordFieldUI extends BasicPasswordFieldUI implements ShapePro
         SwingUtils.restoreTextAntialias ( g2d, hints );
     }
 
+    @Override
     protected void paintBackground ( Graphics g )
     {
         //
     }
 
+    @Override
     public Dimension getPreferredSize ( JComponent c )
     {
         Dimension ps = super.getPreferredSize ( c );

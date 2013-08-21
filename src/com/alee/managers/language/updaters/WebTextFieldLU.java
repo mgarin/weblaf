@@ -31,6 +31,7 @@ public class WebTextFieldLU extends DefaultLanguageUpdater<WebTextField>
     /**
      * {@inheritDoc}
      */
+    @Override
     public void update ( WebTextField c, String key, Value value, Object... data )
     {
         c.setText ( getDefaultText ( value, data ) );

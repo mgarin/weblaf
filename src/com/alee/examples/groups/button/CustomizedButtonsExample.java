@@ -32,16 +32,19 @@ import java.awt.*;
 
 public class CustomizedButtonsExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Customized buttons";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Buttons with customized UI";
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         // Buttons panel

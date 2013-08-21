@@ -34,22 +34,26 @@ import java.awt.event.ActionListener;
 
 public class CustomOneTimeTooltipExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "One-time tooltip";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Custom Web-styled one-tme tooltip";
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         // One-time tooltip that could be shown once anywhere you want
         final WebButton tip = new WebButton ( "One-time tooltip", loadIcon ( "web.png" ) );
         tip.addActionListener ( new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 // If we don't want to change tooltip's default positioning we just pass "null" as point

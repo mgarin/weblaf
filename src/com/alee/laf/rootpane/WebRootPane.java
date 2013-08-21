@@ -38,6 +38,7 @@ public class WebRootPane extends JRootPane
         return ( WebRootPaneUI ) getUI ();
     }
 
+    @Override
     public void updateUI ()
     {
         if ( getUI () == null || !( getUI () instanceof WebRootPaneUI ) )

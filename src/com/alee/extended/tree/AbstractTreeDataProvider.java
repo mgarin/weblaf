@@ -42,6 +42,7 @@ public abstract class AbstractTreeDataProvider<E extends AsyncUniqueNode> implem
     /**
      * {@inheritDoc}
      */
+    @Override
     public Comparator<E> getChildsComparator ( E node )
     {
         return comparator;
@@ -61,6 +62,7 @@ public abstract class AbstractTreeDataProvider<E extends AsyncUniqueNode> implem
     /**
      * {@inheritDoc}
      */
+    @Override
     public Filter<E> getChildsFilter ( E node )
     {
         return filter;

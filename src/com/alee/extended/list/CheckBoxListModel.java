@@ -136,6 +136,7 @@ public class CheckBoxListModel extends DefaultListModel
      * @param element element to be stored at the specified position
      * @return the element previously at the specified position
      */
+    @Override
     public CheckBoxCellData set ( int index, Object element )
     {
         return ( CheckBoxCellData ) super.set ( index, element );
@@ -149,6 +150,7 @@ public class CheckBoxListModel extends DefaultListModel
      *
      * @param index index of element to return
      */
+    @Override
     public CheckBoxCellData get ( int index )
     {
         return ( CheckBoxCellData ) super.get ( index );
@@ -167,6 +169,7 @@ public class CheckBoxListModel extends DefaultListModel
      * @see #get(int)
      * @see java.util.Vector#elementAt(int)
      */
+    @Override
     public CheckBoxCellData elementAt ( int index )
     {
         return ( CheckBoxCellData ) super.elementAt ( index );
@@ -179,6 +182,7 @@ public class CheckBoxListModel extends DefaultListModel
      * @return the first component of this list
      * @see java.util.Vector#firstElement()
      */
+    @Override
     public CheckBoxCellData firstElement ()
     {
         return ( CheckBoxCellData ) super.firstElement ();
@@ -191,6 +195,7 @@ public class CheckBoxListModel extends DefaultListModel
      * @return the last component of the list
      * @see java.util.Vector#lastElement()
      */
+    @Override
     public CheckBoxCellData lastElement ()
     {
         return ( CheckBoxCellData ) super.lastElement ();
@@ -208,6 +213,7 @@ public class CheckBoxListModel extends DefaultListModel
      * @throws ArrayIndexOutOfBoundsException if the <code>index</code> is negative or greater than the current size of this list
      * @see #get(int)
      */
+    @Override
     public CheckBoxCellData getElementAt ( int index )
     {
         return ( CheckBoxCellData ) super.getElementAt ( index );
@@ -222,6 +228,7 @@ public class CheckBoxListModel extends DefaultListModel
      *
      * @param index the index of the element to removed
      */
+    @Override
     public CheckBoxCellData remove ( int index )
     {
         return ( CheckBoxCellData ) super.remove ( index );

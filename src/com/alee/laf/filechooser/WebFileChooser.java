@@ -209,6 +209,7 @@ public class WebFileChooser extends JFileChooser implements LanguageMethods, Lan
     /**
      * Installs a Web-UI into this component.
      */
+    @Override
     public void updateUI ()
     {
         if ( getUI () == null || !( getUI () instanceof WebFileChooserUI ) )
@@ -236,6 +237,7 @@ public class WebFileChooser extends JFileChooser implements LanguageMethods, Lan
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setLanguage ( String key, Object... data )
     {
         LanguageManager.registerComponent ( this, key, data );
@@ -244,6 +246,7 @@ public class WebFileChooser extends JFileChooser implements LanguageMethods, Lan
     /**
      * {@inheritDoc}
      */
+    @Override
     public void updateLanguage ( Object... data )
     {
         LanguageManager.updateComponent ( this, data );
@@ -252,6 +255,7 @@ public class WebFileChooser extends JFileChooser implements LanguageMethods, Lan
     /**
      * {@inheritDoc}
      */
+    @Override
     public void updateLanguage ( String key, Object... data )
     {
         LanguageManager.updateComponent ( this, key, data );
@@ -260,6 +264,7 @@ public class WebFileChooser extends JFileChooser implements LanguageMethods, Lan
     /**
      * {@inheritDoc}
      */
+    @Override
     public void removeLanguage ()
     {
         LanguageManager.unregisterComponent ( this );
@@ -268,6 +273,7 @@ public class WebFileChooser extends JFileChooser implements LanguageMethods, Lan
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isLanguageSet ()
     {
         return LanguageManager.isRegisteredComponent ( this );
@@ -276,6 +282,7 @@ public class WebFileChooser extends JFileChooser implements LanguageMethods, Lan
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setLanguageUpdater ( LanguageUpdater updater )
     {
         LanguageManager.registerLanguageUpdater ( this, updater );
@@ -284,6 +291,7 @@ public class WebFileChooser extends JFileChooser implements LanguageMethods, Lan
     /**
      * {@inheritDoc}
      */
+    @Override
     public void removeLanguageUpdater ()
     {
         LanguageManager.unregisterLanguageUpdater ( this );
@@ -296,6 +304,7 @@ public class WebFileChooser extends JFileChooser implements LanguageMethods, Lan
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setLanguageContainerKey ( String key )
     {
         LanguageManager.registerLanguageContainer ( this, key );
@@ -304,6 +313,7 @@ public class WebFileChooser extends JFileChooser implements LanguageMethods, Lan
     /**
      * {@inheritDoc}
      */
+    @Override
     public void removeLanguageContainerKey ()
     {
         LanguageManager.unregisterLanguageContainer ( this );
@@ -312,6 +322,7 @@ public class WebFileChooser extends JFileChooser implements LanguageMethods, Lan
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getLanguageContainerKey ()
     {
         return LanguageManager.getLanguageContainerKey ( this );

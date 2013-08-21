@@ -149,6 +149,7 @@ public class TexturePainter<E extends JComponent> extends DefaultPainter<E>
      * @param bounds bounds for painter visual data
      * @param c      component to process
      */
+    @Override
     public void paint ( Graphics2D g2d, Rectangle bounds, E c )
     {
         // Do not paint anything if texture paint is not set

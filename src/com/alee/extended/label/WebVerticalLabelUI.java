@@ -60,18 +60,21 @@ public class WebVerticalLabelUI extends WebLabelUI
         this.clockwise = clockwise;
     }
 
+    @Override
     public int getBaseline ( JComponent c, int width, int height )
     {
         super.getBaseline ( c, width, height );
         return -1;
     }
 
+    @Override
     public Component.BaselineResizeBehavior getBaselineResizeBehavior ( JComponent c )
     {
         super.getBaselineResizeBehavior ( c );
         return Component.BaselineResizeBehavior.OTHER;
     }
 
+    @Override
     protected String layoutCL ( JLabel label, FontMetrics fontMetrics, String text, Icon icon, Rectangle viewR, Rectangle iconR,
                                 Rectangle textR )
     {
@@ -88,6 +91,7 @@ public class WebVerticalLabelUI extends WebLabelUI
         return text;
     }
 
+    @Override
     public void paint ( Graphics g, JComponent c )
     {
         Graphics2D g2 = ( Graphics2D ) g.create ();
@@ -102,16 +106,19 @@ public class WebVerticalLabelUI extends WebLabelUI
         super.paint ( g2, c );
     }
 
+    @Override
     public Dimension getPreferredSize ( JComponent c )
     {
         return transposeDimension ( super.getPreferredSize ( c ) );
     }
 
+    @Override
     public Dimension getMaximumSize ( JComponent c )
     {
         return transposeDimension ( super.getMaximumSize ( c ) );
     }
 
+    @Override
     public Dimension getMinimumSize ( JComponent c )
     {
         return transposeDimension ( super.getMinimumSize ( c ) );

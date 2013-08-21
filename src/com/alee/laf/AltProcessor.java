@@ -43,6 +43,7 @@ public class AltProcessor implements KeyEventPostProcessor
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean postProcessKeyEvent ( KeyEvent ev )
     {
         if ( ev.isConsumed () )

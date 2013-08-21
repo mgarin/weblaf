@@ -34,6 +34,7 @@ public class CompositeStroke implements Stroke
         this.stroke2 = stroke2;
     }
 
+    @Override
     public Shape createStrokedShape ( Shape shape )
     {
         return stroke2.createStrokedShape ( stroke1.createStrokedShape ( shape ) );

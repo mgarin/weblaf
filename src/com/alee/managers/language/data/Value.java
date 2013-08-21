@@ -288,6 +288,7 @@ public final class Value implements Serializable, Cloneable
         }
     }
 
+    @Override
     public Value clone ()
     {
         final Value value = new Value ();

@@ -47,6 +47,7 @@ public class WebToolTip extends JToolTip implements ShapeProvider, FontMethods<W
      *
      * @return component shape
      */
+    @Override
     public Shape provideShape ()
     {
         return getWebUI ().provideShape ();
@@ -65,6 +66,7 @@ public class WebToolTip extends JToolTip implements ShapeProvider, FontMethods<W
     /**
      * Installs a Web-UI into this component.
      */
+    @Override
     public void updateUI ()
     {
         if ( getUI () == null || !( getUI () instanceof WebToolTipUI ) )
@@ -88,6 +90,7 @@ public class WebToolTip extends JToolTip implements ShapeProvider, FontMethods<W
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebToolTip setPlainFont ()
     {
         return SwingUtils.setPlainFont ( this );
@@ -96,6 +99,7 @@ public class WebToolTip extends JToolTip implements ShapeProvider, FontMethods<W
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebToolTip setPlainFont ( boolean apply )
     {
         return SwingUtils.setPlainFont ( this, apply );
@@ -104,6 +108,7 @@ public class WebToolTip extends JToolTip implements ShapeProvider, FontMethods<W
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isPlainFont ()
     {
         return SwingUtils.isPlainFont ( this );
@@ -112,6 +117,7 @@ public class WebToolTip extends JToolTip implements ShapeProvider, FontMethods<W
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebToolTip setBoldFont ()
     {
         return SwingUtils.setBoldFont ( this );
@@ -120,6 +126,7 @@ public class WebToolTip extends JToolTip implements ShapeProvider, FontMethods<W
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebToolTip setBoldFont ( boolean apply )
     {
         return SwingUtils.setBoldFont ( this, apply );
@@ -128,6 +135,7 @@ public class WebToolTip extends JToolTip implements ShapeProvider, FontMethods<W
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isBoldFont ()
     {
         return SwingUtils.isBoldFont ( this );
@@ -136,6 +144,7 @@ public class WebToolTip extends JToolTip implements ShapeProvider, FontMethods<W
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebToolTip setItalicFont ()
     {
         return SwingUtils.setItalicFont ( this );
@@ -144,6 +153,7 @@ public class WebToolTip extends JToolTip implements ShapeProvider, FontMethods<W
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebToolTip setItalicFont ( boolean apply )
     {
         return SwingUtils.setItalicFont ( this, apply );
@@ -152,6 +162,7 @@ public class WebToolTip extends JToolTip implements ShapeProvider, FontMethods<W
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isItalicFont ()
     {
         return SwingUtils.isItalicFont ( this );
@@ -160,6 +171,7 @@ public class WebToolTip extends JToolTip implements ShapeProvider, FontMethods<W
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebToolTip setFontStyle ( boolean bold, boolean italic )
     {
         return SwingUtils.setFontStyle ( this, bold, italic );
@@ -168,6 +180,7 @@ public class WebToolTip extends JToolTip implements ShapeProvider, FontMethods<W
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebToolTip setFontStyle ( int style )
     {
         return SwingUtils.setFontStyle ( this, style );
@@ -176,6 +189,7 @@ public class WebToolTip extends JToolTip implements ShapeProvider, FontMethods<W
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebToolTip setFontSize ( int fontSize )
     {
         return SwingUtils.setFontSize ( this, fontSize );
@@ -184,6 +198,7 @@ public class WebToolTip extends JToolTip implements ShapeProvider, FontMethods<W
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebToolTip changeFontSize ( int change )
     {
         return SwingUtils.changeFontSize ( this, change );
@@ -192,6 +207,7 @@ public class WebToolTip extends JToolTip implements ShapeProvider, FontMethods<W
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getFontSize ()
     {
         return SwingUtils.getFontSize ( this );
@@ -200,6 +216,7 @@ public class WebToolTip extends JToolTip implements ShapeProvider, FontMethods<W
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebToolTip setFontSizeAndStyle ( int fontSize, boolean bold, boolean italic )
     {
         return SwingUtils.setFontSizeAndStyle ( this, fontSize, bold, italic );
@@ -208,6 +225,7 @@ public class WebToolTip extends JToolTip implements ShapeProvider, FontMethods<W
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebToolTip setFontSizeAndStyle ( int fontSize, int style )
     {
         return SwingUtils.setFontSizeAndStyle ( this, fontSize, style );
@@ -216,6 +234,7 @@ public class WebToolTip extends JToolTip implements ShapeProvider, FontMethods<W
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebToolTip setFontName ( String fontName )
     {
         return SwingUtils.setFontName ( this, fontName );
@@ -224,6 +243,7 @@ public class WebToolTip extends JToolTip implements ShapeProvider, FontMethods<W
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getFontName ()
     {
         return SwingUtils.getFontName ( this );

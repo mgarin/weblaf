@@ -77,6 +77,7 @@ public class FileTreeNodeFilter implements Filter<FileTreeNode>
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean accept ( FileTreeNode object )
     {
         return filter.accept ( object.getFile () );

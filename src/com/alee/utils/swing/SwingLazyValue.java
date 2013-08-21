@@ -60,6 +60,7 @@ public class SwingLazyValue implements UIDefaults.LazyValue
         }
     }
 
+    @Override
     public Object createValue ( final UIDefaults table )
     {
         try
@@ -97,6 +98,7 @@ public class SwingLazyValue implements UIDefaults.LazyValue
     {
         AccessController.doPrivileged ( new PrivilegedAction<Void> ()
         {
+            @Override
             public Void run ()
             {
                 object.setAccessible ( true );

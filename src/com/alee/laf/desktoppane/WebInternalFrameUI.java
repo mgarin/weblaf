@@ -48,6 +48,7 @@ public class WebInternalFrameUI extends BasicInternalFrameUI implements FocusTra
         return new WebInternalFrameUI ( ( JInternalFrame ) c );
     }
 
+    @Override
     public void installUI ( JComponent c )
     {
         super.installUI ( c );
@@ -61,6 +62,7 @@ public class WebInternalFrameUI extends BasicInternalFrameUI implements FocusTra
         FocusManager.registerFocusTracker ( WebInternalFrameUI.this );
     }
 
+    @Override
     public void uninstallUI ( JComponent c )
     {
         FocusManager.unregisterFocusTracker ( WebInternalFrameUI.this );
@@ -68,38 +70,45 @@ public class WebInternalFrameUI extends BasicInternalFrameUI implements FocusTra
         super.uninstallUI ( c );
     }
 
+    @Override
     public boolean isTrackingEnabled ()
     {
         return frame.isShowing ();
     }
 
+    @Override
     public Component getTrackedComponent ()
     {
         return frame;
     }
 
+    @Override
     public boolean isUniteWithChilds ()
     {
         return true;
     }
 
+    @Override
     public boolean isListenGlobalChange ()
     {
         return false;
     }
 
+    @Override
     public void focusChanged ( boolean focused )
     {
         this.focused = focused;
         frame.repaint ();
     }
 
+    @Override
     protected JComponent createNorthPane ( JInternalFrame w )
     {
         titlePane = new WebInternalFrameTitlePane ( w );
         return titlePane;
     }
 
+    @Override
     protected JComponent createWestPane ( JInternalFrame w )
     {
         return new JComponent ()
@@ -108,6 +117,7 @@ public class WebInternalFrameUI extends BasicInternalFrameUI implements FocusTra
                 setOpaque ( false );
             }
 
+            @Override
             public Dimension getPreferredSize ()
             {
                 return new Dimension ( 4 + sideSpacing, 0 );
@@ -115,6 +125,7 @@ public class WebInternalFrameUI extends BasicInternalFrameUI implements FocusTra
         };
     }
 
+    @Override
     protected JComponent createEastPane ( JInternalFrame w )
     {
         return new JComponent ()
@@ -123,6 +134,7 @@ public class WebInternalFrameUI extends BasicInternalFrameUI implements FocusTra
                 setOpaque ( false );
             }
 
+            @Override
             public Dimension getPreferredSize ()
             {
                 return new Dimension ( 4 + sideSpacing, 0 );
@@ -130,6 +142,7 @@ public class WebInternalFrameUI extends BasicInternalFrameUI implements FocusTra
         };
     }
 
+    @Override
     protected JComponent createSouthPane ( JInternalFrame w )
     {
         return new JComponent ()
@@ -138,6 +151,7 @@ public class WebInternalFrameUI extends BasicInternalFrameUI implements FocusTra
                 setOpaque ( false );
             }
 
+            @Override
             public Dimension getPreferredSize ()
             {
                 return new Dimension ( 0, 4 + sideSpacing );
@@ -145,6 +159,7 @@ public class WebInternalFrameUI extends BasicInternalFrameUI implements FocusTra
         };
     }
 
+    @Override
     public void paint ( Graphics g, JComponent c )
     {
         Graphics2D g2d = ( Graphics2D ) g;

@@ -64,6 +64,7 @@ public class WebProgressOverlay extends WebOverlay
         addOverlay ( progressLayer );
     }
 
+    @Override
     public void setComponent ( Component component )
     {
         super.setComponent ( component );
@@ -149,6 +150,7 @@ public class WebProgressOverlay extends WebOverlay
             EmptyMouseAdapter.install ( this );
         }
 
+        @Override
         public boolean contains ( int x, int y )
         {
             return consumeEvents && super.contains ( x, y );
@@ -179,6 +181,7 @@ public class WebProgressOverlay extends WebOverlay
                 stopOpacityAnimator ();
                 opacityAnimator = new WebTimer ( "WebProgressOverlay.opacityAnimator", StyleConstants.animationDelay, new ActionListener ()
                 {
+                    @Override
                     public void actionPerformed ( ActionEvent e )
                     {
                         if ( opacity < 128 )
@@ -197,6 +200,7 @@ public class WebProgressOverlay extends WebOverlay
                 stopAnimator ();
                 animator = new WebTimer ( "WebProgressOverlay.animator", StyleConstants.avgAnimationDelay, new ActionListener ()
                 {
+                    @Override
                     public void actionPerformed ( ActionEvent e )
                     {
                         if ( loadProgress < getProgressWidth () * 2 )
@@ -218,25 +222,27 @@ public class WebProgressOverlay extends WebOverlay
             else
             {
                 stopOpacityAnimator ();
-                opacityAnimator = new WebTimer ( "WebProgressOverlay.opacityAnimator", StyleConstants.avgAnimationDelay, new ActionListener ()
-                {
-                    public void actionPerformed ( ActionEvent e )
-                    {
-                        if ( opacity > 0 )
+                opacityAnimator =
+                        new WebTimer ( "WebProgressOverlay.opacityAnimator", StyleConstants.avgAnimationDelay, new ActionListener ()
                         {
-                            opacity -= 8;
-                        }
-                        else
-                        {
-                            opacity = 0;
-                            opacityAnimator.stop ();
+                            @Override
+                            public void actionPerformed ( ActionEvent e )
+                            {
+                                if ( opacity > 0 )
+                                {
+                                    opacity -= 8;
+                                }
+                                else
+                                {
+                                    opacity = 0;
+                                    opacityAnimator.stop ();
 
-                            stopAnimator ();
+                                    stopAnimator ();
 
-                            ProgressLayer.this.setVisible ( false );
-                        }
-                    }
-                } );
+                                    ProgressLayer.this.setVisible ( false );
+                                }
+                            }
+                        } );
                 opacityAnimator.start ();
             }
         }
@@ -258,6 +264,7 @@ public class WebProgressOverlay extends WebOverlay
             }
         }
 
+        @Override
         protected void paintComponent ( Graphics g )
         {
             super.paintComponent ( g );

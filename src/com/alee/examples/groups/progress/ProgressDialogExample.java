@@ -35,27 +35,32 @@ import java.awt.event.ActionListener;
 
 public class ProgressDialogExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Progress dialog";
     }
 
+    @Override
     public String getDescription ()
     {
         return "WebProgressDialog usage example";
     }
 
+    @Override
     public FeatureState getFeatureState ()
     {
         return FeatureState.alpha;
     }
 
+    @Override
     public Component getPreview ( final WebLookAndFeelDemo owner )
     {
         // Progress dialog display button
         WebButton showModalLoad = new WebButton ( "Show dialog", loadIcon ( "dialog.png" ) );
         showModalLoad.addActionListener ( new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 // Load dialog
@@ -65,6 +70,7 @@ public class ProgressDialogExample extends DefaultExample
                 // Starting updater thread
                 new Thread ( new Runnable ()
                 {
+                    @Override
                     public void run ()
                     {
                         for ( int i = 0; i <= 100; i++ )

@@ -30,16 +30,19 @@ import java.awt.*;
 
 public class VerticalSlidersExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Vertical sliders";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Vertical Web-styled sliders";
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         WebSlider slider1 = new WebSlider ( WebSlider.VERTICAL );

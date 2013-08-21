@@ -48,6 +48,7 @@ public class WebViewportUI extends BasicViewportUI
      *
      * @param c component for this UI
      */
+    @Override
     public void installUI ( JComponent c )
     {
         super.installUI ( c );

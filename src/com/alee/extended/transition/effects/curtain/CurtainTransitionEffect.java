@@ -116,6 +116,7 @@ public class CurtainTransitionEffect extends DefaultTransitionEffect
         put ( CURTAIN_SLIDE_DIRECTION, direction );
     }
 
+    @Override
     public void prepareAnimation ( ImageTransition imageTransition )
     {
         // Updating settings
@@ -152,6 +153,7 @@ public class CurtainTransitionEffect extends DefaultTransitionEffect
         imageTransition.repaint ();
     }
 
+    @Override
     public boolean performAnimation ( ImageTransition imageTransition )
     {
         int max = getMaxProgress ( imageTransition );
@@ -265,6 +267,7 @@ public class CurtainTransitionEffect extends DefaultTransitionEffect
         return gp;
     }
 
+    @Override
     public void paint ( Graphics2D g2d, ImageTransition imageTransition )
     {
         // Variables

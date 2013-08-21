@@ -78,6 +78,7 @@ public final class TooltipManager
             // Tooltips hide listener
             Toolkit.getDefaultToolkit ().addAWTEventListener ( new AWTEventListener ()
             {
+                @Override
                 public void eventDispatched ( AWTEvent event )
                 {
                     if ( event instanceof MouseWheelEvent )
@@ -259,6 +260,7 @@ public final class TooltipManager
             final WebTimer showTips = new WebTimer ( "TooltipManager.displayTimer", delay );
             showTips.addActionListener ( new ActionListener ()
             {
+                @Override
                 public void actionPerformed ( ActionEvent e )
                 {
                     Window wa = SwingUtils.getWindowAncestor ( component );
@@ -274,6 +276,7 @@ public final class TooltipManager
             // Show/hide listener
             MouseAdapter mouseAdapter = new MouseAdapter ()
             {
+                @Override
                 public void mouseEntered ( MouseEvent e )
                 {
                     // Component ancestor window
@@ -286,16 +289,19 @@ public final class TooltipManager
                     }
                 }
 
+                @Override
                 public void mouseExited ( MouseEvent e )
                 {
                     cancelTooltips ();
                 }
 
+                @Override
                 public void mousePressed ( MouseEvent e )
                 {
                     cancelTooltips ();
                 }
 
+                @Override
                 public void mouseReleased ( MouseEvent e )
                 {
                     cancelTooltips ();
@@ -456,6 +462,7 @@ public final class TooltipManager
     {
         HotkeyManager.registerHotkey ( topComponent, hotkeyData, new HotkeyRunnable ()
         {
+            @Override
             public void run ( KeyEvent e )
             {
                 showAllTooltips ( topComponent );
@@ -580,6 +587,7 @@ public final class TooltipManager
         // Adding relocate listener
         final ComponentAdapter componentAdapter = new ComponentAdapter ()
         {
+            @Override
             public void componentResized ( ComponentEvent e )
             {
                 customTooltip.updateLocation ();
@@ -590,6 +598,7 @@ public final class TooltipManager
         // Global mouse listener
         final AWTEventListener closeListener = customTooltip.isDefaultCloseBehavior () ? new AWTEventListener ()
         {
+            @Override
             public void eventDispatched ( AWTEvent event )
             {
                 if ( event instanceof MouseEvent && event.getID () == MouseEvent.MOUSE_PRESSED )
@@ -602,6 +611,7 @@ public final class TooltipManager
         // Adding destroy sequence
         customTooltip.addTooltipListener ( new TooltipAdapter ()
         {
+            @Override
             public void tooltipShowing ()
             {
                 if ( customTooltip.isDefaultCloseBehavior () )
@@ -611,6 +621,7 @@ public final class TooltipManager
                 }
             }
 
+            @Override
             public void tooltipHidden ()
             {
                 // Removing tooltip listener

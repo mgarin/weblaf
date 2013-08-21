@@ -42,6 +42,7 @@ public class WebCursorTracker extends WebStatusLabel
 
         listener = new AWTEventListener ()
         {
+            @Override
             public void eventDispatched ( AWTEvent event )
             {
                 if ( event instanceof MouseEvent )
@@ -72,6 +73,7 @@ public class WebCursorTracker extends WebStatusLabel
     {
         SwingUtils.invokeLater ( new Runnable ()
         {
+            @Override
             public void run ()
             {
                 if ( e != null && e.getComponent () != null &&

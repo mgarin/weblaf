@@ -112,6 +112,7 @@ public class AlignLayout implements LayoutManager, SwingConstants
      * Standard LayoutManager methods
      */
 
+    @Override
     public void addLayoutComponent ( String name, Component comp )
     {
         if ( name != null && !name.trim ().equals ( "" ) )
@@ -160,11 +161,13 @@ public class AlignLayout implements LayoutManager, SwingConstants
         return name == null ? CENTER : Integer.parseInt ( name.substring ( name.indexOf ( SEPARATOR ) + SEPARATOR.length () ) );
     }
 
+    @Override
     public void removeLayoutComponent ( Component comp )
     {
         constraints.remove ( comp );
     }
 
+    @Override
     public Dimension preferredLayoutSize ( Container parent )
     {
         Dimension ps;
@@ -253,11 +256,13 @@ public class AlignLayout implements LayoutManager, SwingConstants
         return size.width > 0 || size.height > 0 ? size : null;
     }
 
+    @Override
     public Dimension minimumLayoutSize ( Container parent )
     {
         return preferredLayoutSize ( parent );
     }
 
+    @Override
     public void layoutContainer ( Container parent )
     {
         Insets insets = parent.getInsets ();

@@ -156,6 +156,7 @@ public class ExamplesManager
         {
             private int totalSize = 0;
 
+            @Override
             public void sizeDetermined ( int totalSize )
             {
                 // Download started
@@ -163,12 +164,14 @@ public class ExamplesManager
                 updateProgress ( 0 );
             }
 
+            @Override
             public void partDownloaded ( int totalBytesDownloaded )
             {
                 // Some part loaded
                 updateProgress ( totalBytesDownloaded );
             }
 
+            @Override
             public boolean shouldStopDownload ()
             {
                 return false;
@@ -182,12 +185,14 @@ public class ExamplesManager
                         FileUtils.getFileSizeString ( totalSize, 1 ) + "</b> done</html>" );
             }
 
+            @Override
             public void fileDownloaded ( File file )
             {
                 // Updating progress text
                 progress.setText ( "Creating source files structure..." );
             }
 
+            @Override
             public void fileDownloadFailed ( Throwable e )
             {
                 // Updating progress text
@@ -271,6 +276,7 @@ public class ExamplesManager
 
             final WebPanel groupPanel = new WebPanel ()
             {
+                @Override
                 public void setEnabled ( boolean enabled )
                 {
                     for ( Component previewComponent : preview )
@@ -361,6 +367,7 @@ public class ExamplesManager
 
             linkImage.addMouseListener ( new MouseAdapter ()
             {
+                @Override
                 public void mousePressed ( MouseEvent e )
                 {
                     WebUtils.browseSiteSafely ( WebLookAndFeelDemo.WEBLAF_SITE );
@@ -430,6 +437,7 @@ public class ExamplesManager
         TooltipManager.setTooltip ( featureState, fsIcon, fs.getDescription (), TooltipWay.up );
         featureState.addMouseListener ( new MouseAdapter ()
         {
+            @Override
             public void mousePressed ( MouseEvent e )
             {
                 owner.showLegend ( featureState, fs );
@@ -449,6 +457,7 @@ public class ExamplesManager
 
         sourceButton.addActionListener ( new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 owner.showSource ( classType );
@@ -473,6 +482,7 @@ public class ExamplesManager
         {
             presentation.addActionListener ( new ActionListener ()
             {
+                @Override
                 public void actionPerformed ( ActionEvent e )
                 {
                     if ( presentation.isSelected () )
@@ -490,6 +500,7 @@ public class ExamplesManager
 
             example.doWhenPresentationFinished ( new Runnable ()
             {
+                @Override
                 public void run ()
                 {
                     presentation.setSelected ( false );
@@ -501,6 +512,7 @@ public class ExamplesManager
                             TooltipManager.showOneTimeTooltip ( presentation, null, "Presentation has ended", TooltipWay.up );
                     WebTimer.delay ( 1500, new ActionListener ()
                     {
+                        @Override
                         public void actionPerformed ( ActionEvent e )
                         {
                             end.closeTooltip ();

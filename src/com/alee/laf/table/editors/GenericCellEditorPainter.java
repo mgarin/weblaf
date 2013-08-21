@@ -34,6 +34,7 @@ public class GenericCellEditorPainter extends DefaultPainter<GenericCellEditor>
         setMargin ( 0, 1, 0, 1 );
     }
 
+    @Override
     public void paint ( Graphics2D g2d, Rectangle bounds, GenericCellEditor c )
     {
         g2d.setPaint ( Color.WHITE );

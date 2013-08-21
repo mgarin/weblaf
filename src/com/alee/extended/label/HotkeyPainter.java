@@ -37,11 +37,13 @@ public class HotkeyPainter extends DefaultPainter<JComponent>
         margin = new Insets ( 2, 6, 3, 6 );
     }
 
+    @Override
     public Dimension getPreferredSize ( JComponent c )
     {
         return new Dimension ( 6, 7 );
     }
 
+    @Override
     public void paint ( Graphics2D g2d, Rectangle bounds, JComponent c )
     {
         // White spacer

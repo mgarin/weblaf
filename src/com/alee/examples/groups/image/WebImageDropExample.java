@@ -38,16 +38,19 @@ import java.awt.event.MouseEvent;
 
 public class WebImageDropExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Images drop";
     }
 
+    @Override
     public String getDescription ()
     {
         return "WebImageDrop example";
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         ImageIcon i1 = loadIcon ( "1.jpg" );
@@ -72,6 +75,7 @@ public class WebImageDropExample extends DefaultExample
 
         MouseAdapter ma = new MouseAdapter ()
         {
+            @Override
             public void mouseClicked ( MouseEvent e )
             {
                 if ( e.getClickCount () == 2 )

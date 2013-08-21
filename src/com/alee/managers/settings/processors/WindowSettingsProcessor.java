@@ -53,10 +53,12 @@ public class WindowSettingsProcessor extends SettingsProcessor<Window, Rectangle
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void doInit ( Window window )
     {
         componentAdapter = new ComponentAdapter ()
         {
+            @Override
             public void componentResized ( ComponentEvent e )
             {
                 if ( SettingsManager.isSaveOnChange () )
@@ -65,6 +67,7 @@ public class WindowSettingsProcessor extends SettingsProcessor<Window, Rectangle
                 }
             }
 
+            @Override
             public void componentMoved ( ComponentEvent e )
             {
                 if ( SettingsManager.isSaveOnChange () )
@@ -79,6 +82,7 @@ public class WindowSettingsProcessor extends SettingsProcessor<Window, Rectangle
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void doDestroy ( Window window )
     {
         window.removeComponentListener ( componentAdapter );
@@ -88,6 +92,7 @@ public class WindowSettingsProcessor extends SettingsProcessor<Window, Rectangle
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void doLoad ( Window window )
     {
         Rectangle bounds = loadValue ();
@@ -123,6 +128,7 @@ public class WindowSettingsProcessor extends SettingsProcessor<Window, Rectangle
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void doSave ( Window window )
     {
         saveValue ( window.getBounds () );

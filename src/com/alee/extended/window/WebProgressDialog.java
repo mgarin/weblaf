@@ -61,6 +61,7 @@ public class WebProgressDialog extends WebDialog
         // Creating label with single space to hold label height on pack
         titleText = new WebLabel ( " ", WebLabel.CENTER )
         {
+            @Override
             public Dimension getPreferredSize ()
             {
                 Dimension ps = super.getPreferredSize ();
@@ -74,6 +75,7 @@ public class WebProgressDialog extends WebDialog
         // Default progress bar
         progressBar = new WebProgressBar ( WebProgressBar.HORIZONTAL, 0, 100 )
         {
+            @Override
             public Dimension getPreferredSize ()
             {
                 Dimension ps = super.getPreferredSize ();
@@ -99,6 +101,7 @@ public class WebProgressDialog extends WebDialog
     {
         SwingUtils.invokeLater ( new Runnable ()
         {
+            @Override
             public void run ()
             {
                 titleText.setText ( text );
@@ -115,6 +118,7 @@ public class WebProgressDialog extends WebDialog
     {
         SwingUtils.invokeLater ( new Runnable ()
         {
+            @Override
             public void run ()
             {
                 progressBar.setString ( progressText );
@@ -131,6 +135,7 @@ public class WebProgressDialog extends WebDialog
     {
         SwingUtils.invokeLater ( new Runnable ()
         {
+            @Override
             public void run ()
             {
                 progressBar.setStringPainted ( showProgressText );
@@ -148,6 +153,7 @@ public class WebProgressDialog extends WebDialog
     {
         SwingUtils.invokeLater ( new Runnable ()
         {
+            @Override
             public void run ()
             {
                 progressBar.setIndeterminate ( indeterminate );
@@ -164,6 +170,7 @@ public class WebProgressDialog extends WebDialog
     {
         SwingUtils.invokeLater ( new Runnable ()
         {
+            @Override
             public void run ()
             {
                 progressBar.setMinimum ( minimum );
@@ -180,6 +187,7 @@ public class WebProgressDialog extends WebDialog
     {
         SwingUtils.invokeLater ( new Runnable ()
         {
+            @Override
             public void run ()
             {
                 progressBar.setMaximum ( maximum );
@@ -196,6 +204,7 @@ public class WebProgressDialog extends WebDialog
     {
         SwingUtils.invokeLater ( new Runnable ()
         {
+            @Override
             public void run ()
             {
                 progressBar.setValue ( progress );
@@ -277,6 +286,7 @@ public class WebProgressDialog extends WebDialog
         }
     }
 
+    @Override
     public void setVisible ( boolean b )
     {
         if ( b )

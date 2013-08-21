@@ -36,21 +36,25 @@ import java.awt.*;
 
 public class AccordionExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Accordion";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Web-styled accordion";
     }
 
+    @Override
     public FeatureState getFeatureState ()
     {
         return FeatureState.beta;
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         // Title icon

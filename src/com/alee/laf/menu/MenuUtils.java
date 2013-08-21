@@ -54,6 +54,7 @@ public class MenuUtils implements SwingConstants
     {
         setupPopupMenu ( component, menu, new DataProvider<Point> ()
         {
+            @Override
             public Point provide ()
             {
                 Dimension ps = menu.getPreferredSize ();
@@ -123,6 +124,7 @@ public class MenuUtils implements SwingConstants
             AbstractButton button = ( AbstractButton ) component;
             button.addActionListener ( new ActionListener ()
             {
+                @Override
                 public void actionPerformed ( ActionEvent e )
                 {
                     Point point = pointProvider.provide ();
@@ -134,11 +136,13 @@ public class MenuUtils implements SwingConstants
         {
             component.addMouseListener ( new MouseAdapter ()
             {
+                @Override
                 public void mousePressed ( MouseEvent e )
                 {
                     showMenu ( e );
                 }
 
+                @Override
                 public void mouseReleased ( MouseEvent e )
                 {
                     showMenu ( e );

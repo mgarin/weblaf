@@ -41,16 +41,19 @@ import java.awt.event.MouseEvent;
 
 public class TextAreaOverlayExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Overlayed text area";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Text area overlayed with a progress bar";
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         // Overlay
@@ -78,6 +81,7 @@ public class TextAreaOverlayExample extends DefaultExample
             private String toAdd = "";
             private int step = 5;
 
+            @Override
             public void mousePressed ( MouseEvent e )
             {
                 // Block action on disabled state
@@ -109,6 +113,7 @@ public class TextAreaOverlayExample extends DefaultExample
                 // Starting update thread
                 new Thread ( new Runnable ()
                 {
+                    @Override
                     public void run ()
                     {
                         while ( toAdd.length () > 0 )
@@ -116,6 +121,7 @@ public class TextAreaOverlayExample extends DefaultExample
                             final int left = Math.min ( step, toAdd.length () );
                             SwingUtils.invokeAndWaitSafely ( new Runnable ()
                             {
+                                @Override
                                 public void run ()
                                 {
                                     component.append ( toAdd.substring ( 0, left ) );
@@ -127,6 +133,7 @@ public class TextAreaOverlayExample extends DefaultExample
                         }
                         SwingUtilities.invokeLater ( new Runnable ()
                         {
+                            @Override
                             public void run ()
                             {
                                 // Hiding overlay

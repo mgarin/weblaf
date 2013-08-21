@@ -33,6 +33,7 @@ public class WebLookAndFeelApplet extends JApplet
     /**
      * Initializes demo applet.
      */
+    @Override
     public void init ()
     {
         // Exampler settings location

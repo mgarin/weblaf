@@ -136,6 +136,7 @@ public class SourceViewer extends WebPanel
         viewTabbedPane.setTabbedPaneStyle ( TabbedPaneStyle.attached );
         viewChangeListener = new ChangeListener ()
         {
+            @Override
             public void stateChanged ( ChangeEvent e )
             {
                 updateClassPath ( viewTabbedPane.getSelectedEntry (), false );
@@ -144,11 +145,13 @@ public class SourceViewer extends WebPanel
         viewTabbedPane.addChangeListener ( viewChangeListener );
         viewTabbedPane.addViewListener ( new ViewListener ()
         {
+            @Override
             public void viewOpened ( JarEntry entry )
             {
                 //
             }
 
+            @Override
             public void viewClosed ( JarEntry entry )
             {
                 synchronized ( activeEditorsLock )
@@ -161,6 +164,7 @@ public class SourceViewer extends WebPanel
         } );
         HotkeyManager.registerHotkey ( viewTabbedPane, Hotkey.ALT_LEFT, new HotkeyRunnable ()
         {
+            @Override
             public void run ( KeyEvent e )
             {
                 final int tabCount = viewTabbedPane.getTabCount ();
@@ -173,6 +177,7 @@ public class SourceViewer extends WebPanel
         } );
         HotkeyManager.registerHotkey ( viewTabbedPane, Hotkey.ALT_RIGHT, new HotkeyRunnable ()
         {
+            @Override
             public void run ( KeyEvent e )
             {
                 final int tabCount = viewTabbedPane.getTabCount ();
@@ -196,6 +201,7 @@ public class SourceViewer extends WebPanel
         classSearch.addHotkey ( Hotkey.CTRL_N );
         classSearch.addActionListener ( new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 showClassSearchPopup ();
@@ -208,6 +214,7 @@ public class SourceViewer extends WebPanel
         classSearchField.setInputPrompt ( "Enter class name here..." );
         HotkeyManager.registerHotkey ( classSearchField, Hotkey.ESCAPE, new HotkeyRunnable ()
         {
+            @Override
             public void run ( KeyEvent e )
             {
                 hideClassSearchPopup ();
@@ -225,6 +232,7 @@ public class SourceViewer extends WebPanel
 
         classSearchHintsPopup = new WebWindow ( classSearchPopup )
         {
+            @Override
             public Dimension getPreferredSize ()
             {
                 final Dimension ps = super.getPreferredSize ();
@@ -242,6 +250,7 @@ public class SourceViewer extends WebPanel
         classSearchHintsList.setSelectionMode ( ListSelectionModel.SINGLE_SELECTION );
         classSearchHintsList.setCellRenderer ( new WebListCellRenderer ()
         {
+            @Override
             public Component getListCellRendererComponent ( JList list, Object value, int index, boolean isSelected, boolean cellHasFocus )
             {
                 JarEntry entry = ( JarEntry ) value;
@@ -254,6 +263,7 @@ public class SourceViewer extends WebPanel
         } );
         classSearchHintsList.addMouseListener ( new MouseAdapter ()
         {
+            @Override
             public void mousePressed ( MouseEvent e )
             {
                 if ( SwingUtils.isLeftMouseButton ( e ) )
@@ -265,6 +275,7 @@ public class SourceViewer extends WebPanel
 
         HotkeyManager.registerHotkey ( classSearchField, Hotkey.HOME, new HotkeyRunnable ()
         {
+            @Override
             public void run ( KeyEvent e )
             {
                 if ( classSearchHintsList.getModelSize () > 0 )
@@ -275,6 +286,7 @@ public class SourceViewer extends WebPanel
         } );
         HotkeyManager.registerHotkey ( classSearchField, Hotkey.UP, new HotkeyRunnable ()
         {
+            @Override
             public void run ( KeyEvent e )
             {
                 if ( classSearchHintsList.getModelSize () > 0 )
@@ -293,6 +305,7 @@ public class SourceViewer extends WebPanel
         } );
         HotkeyManager.registerHotkey ( classSearchField, Hotkey.DOWN, new HotkeyRunnable ()
         {
+            @Override
             public void run ( KeyEvent e )
             {
                 if ( classSearchHintsList.getModelSize () > 0 )
@@ -311,6 +324,7 @@ public class SourceViewer extends WebPanel
         } );
         HotkeyManager.registerHotkey ( classSearchField, Hotkey.END, new HotkeyRunnable ()
         {
+            @Override
             public void run ( KeyEvent e )
             {
                 if ( classSearchHintsList.getModelSize () > 0 )
@@ -321,6 +335,7 @@ public class SourceViewer extends WebPanel
         } );
         HotkeyManager.registerHotkey ( classSearchField, Hotkey.ENTER, new HotkeyRunnable ()
         {
+            @Override
             public void run ( KeyEvent e )
             {
                 openSelectedHint ();
@@ -334,11 +349,13 @@ public class SourceViewer extends WebPanel
 
         classSearchPopup.addComponentListener ( new ComponentAdapter ()
         {
+            @Override
             public void componentMoved ( ComponentEvent e )
             {
                 updateHintsLocation ();
             }
 
+            @Override
             public void componentResized ( ComponentEvent e )
             {
                 updateHintsLocation ();
@@ -347,17 +364,20 @@ public class SourceViewer extends WebPanel
 
         classSearchPopup.addPopupListener ( new PopupAdapter ()
         {
+            @Override
             public void popupWillBeOpened ()
             {
                 lastSearchedText = null;
                 lastFocusBeforeSearch = FocusManager.getFocusOwner ();
             }
 
+            @Override
             public void popupOpened ()
             {
                 updateHints ();
             }
 
+            @Override
             public void popupClosed ()
             {
                 hideHints ();
@@ -370,12 +390,14 @@ public class SourceViewer extends WebPanel
 
         classSearchField.addCaretListener ( new CaretListener ()
         {
+            @Override
             public void caretUpdate ( CaretEvent e )
             {
                 if ( classSearchHintsDelay == null )
                 {
                     classSearchHintsDelay = new WebTimer ( 500, new ActionListener ()
                     {
+                        @Override
                         public void actionPerformed ( ActionEvent e )
                         {
                             updateHints ();
@@ -432,6 +454,7 @@ public class SourceViewer extends WebPanel
             // Look for classes
             List<JarEntry> found = jarStructure.findSimilarEntries ( text, new Filter<JarEntry> ()
             {
+                @Override
                 public boolean accept ( JarEntry object )
                 {
                     return object.getType ().equals ( JarEntryType.javaEntry );
@@ -528,6 +551,7 @@ public class SourceViewer extends WebPanel
         theme.registerSettings ( SETTINGS_PREFIX + "theme", 0 );
         theme.setRenderer ( new WebComboBoxCellRenderer ( theme )
         {
+            @Override
             public Component getListCellRendererComponent ( JList list, Object value, int index, boolean isSelected, boolean cellHasFocus )
             {
                 EditorTheme editorTheme = ( EditorTheme ) value;
@@ -540,6 +564,7 @@ public class SourceViewer extends WebPanel
         } );
         theme.addActionListener ( new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 synchronized ( activeEditorsLock )
@@ -558,6 +583,7 @@ public class SourceViewer extends WebPanel
         allowCodeFolding.registerSettings ( SETTINGS_PREFIX + "allowCodeFolding", false );
         allowCodeFolding.addItemListener ( new ItemListener ()
         {
+            @Override
             public void itemStateChanged ( ItemEvent e )
             {
                 synchronized ( activeEditorsLock )
@@ -573,6 +599,7 @@ public class SourceViewer extends WebPanel
         allowCodeFoldingLabel.setDrawShade ( true );
         allowCodeFoldingLabel.addMouseListener ( new MouseAdapter ()
         {
+            @Override
             public void mousePressed ( MouseEvent e )
             {
                 if ( SwingUtils.isLeftMouseButton ( e ) )
@@ -588,6 +615,7 @@ public class SourceViewer extends WebPanel
         paintTabLines.registerSettings ( SETTINGS_PREFIX + "paintTabLines", false );
         paintTabLines.addItemListener ( new ItemListener ()
         {
+            @Override
             public void itemStateChanged ( ItemEvent e )
             {
                 synchronized ( activeEditorsLock )
@@ -603,6 +631,7 @@ public class SourceViewer extends WebPanel
         paintTabLinesLabel.setDrawShade ( true );
         paintTabLinesLabel.addMouseListener ( new MouseAdapter ()
         {
+            @Override
             public void mousePressed ( MouseEvent e )
             {
                 if ( SwingUtils.isLeftMouseButton ( e ) )
@@ -618,6 +647,7 @@ public class SourceViewer extends WebPanel
         showWhitespaces.registerSettings ( SETTINGS_PREFIX + "showWhitespaces", false );
         showWhitespaces.addItemListener ( new ItemListener ()
         {
+            @Override
             public void itemStateChanged ( ItemEvent e )
             {
                 synchronized ( activeEditorsLock )
@@ -633,6 +663,7 @@ public class SourceViewer extends WebPanel
         showWhitespacesLabel.setDrawShade ( true );
         showWhitespacesLabel.addMouseListener ( new MouseAdapter ()
         {
+            @Override
             public void mousePressed ( MouseEvent e )
             {
                 if ( SwingUtils.isLeftMouseButton ( e ) )
@@ -648,6 +679,7 @@ public class SourceViewer extends WebPanel
         showEol.registerSettings ( SETTINGS_PREFIX + "showEol", false );
         showEol.addItemListener ( new ItemListener ()
         {
+            @Override
             public void itemStateChanged ( ItemEvent e )
             {
                 synchronized ( activeEditorsLock )
@@ -663,6 +695,7 @@ public class SourceViewer extends WebPanel
         showEolLabel.setDrawShade ( true );
         showEolLabel.addMouseListener ( new MouseAdapter ()
         {
+            @Override
             public void mousePressed ( MouseEvent e )
             {
                 if ( SwingUtils.isLeftMouseButton ( e ) )
@@ -703,6 +736,7 @@ public class SourceViewer extends WebPanel
         TooltipManager.setTooltip ( rootElement, root.getIcon (), jarStructure.getJarLocation () );
         rootElement.addActionListener ( new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 final WebPopupMenu rootMenu = new WebPopupMenu ();
@@ -710,6 +744,7 @@ public class SourceViewer extends WebPanel
                 WebMenuItem showInFS = new WebMenuItem ( "Show in folder", browseIcon );
                 showInFS.addActionListener ( new ActionListener ()
                 {
+                    @Override
                     public void actionPerformed ( ActionEvent e )
                     {
                         try
@@ -755,6 +790,7 @@ public class SourceViewer extends WebPanel
                     element.setText ( entry.getName () );
                     element.addActionListener ( new ActionListener ()
                     {
+                        @Override
                         public void actionPerformed ( ActionEvent e )
                         {
                             List<JarEntry> entries = jarStructure.getChildEntries ( entry );
@@ -794,6 +830,7 @@ public class SourceViewer extends WebPanel
                 // Queueing last element menu to let breadcrumb update element locations first
                 SwingUtilities.invokeLater ( new Runnable ()
                 {
+                    @Override
                     public void run ()
                     {
                         // Opening last element menu if it is a package
@@ -904,6 +941,7 @@ public class SourceViewer extends WebPanel
                 source.setEOLMarkersVisible ( showEol.isSelected () );
                 source.addHyperlinkListener ( new HyperlinkListener ()
                 {
+                    @Override
                     public void hyperlinkUpdate ( HyperlinkEvent e )
                     {
                         WebUtils.browseSiteSafely ( e.getURL ().toExternalForm () );
@@ -918,6 +956,7 @@ public class SourceViewer extends WebPanel
                 // "Jump to source"-like action
                 source.addMouseListener ( new MouseAdapter ()
                 {
+                    @Override
                     public void mousePressed ( MouseEvent e )
                     {
                         // todo Fix when clicked in class "MyName" on string "MyName"
@@ -1030,6 +1069,7 @@ public class SourceViewer extends WebPanel
         WebMenuItem entryItem = new WebMenuItem ( entry.getName (), entry.getIcon () );
         entryItem.addActionListener ( new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 updateClassPath ( entry, true );

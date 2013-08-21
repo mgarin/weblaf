@@ -69,6 +69,7 @@ public class WebImageDrop extends JComponent
         // Image drop handler
         setTransferHandler ( new ImageDropHandler ()
         {
+            @Override
             protected boolean imagesImported ( List<ImageIcon> images )
             {
                 for ( ImageIcon image : images )
@@ -163,6 +164,7 @@ public class WebImageDrop extends JComponent
         }
     }
 
+    @Override
     protected void paintComponent ( Graphics g )
     {
         super.paintComponent ( g );
@@ -190,6 +192,7 @@ public class WebImageDrop extends JComponent
         }
     }
 
+    @Override
     public Dimension getPreferredSize ()
     {
         return new Dimension ( width + 2, height + 2 );

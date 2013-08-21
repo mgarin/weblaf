@@ -35,16 +35,19 @@ import java.awt.*;
 
 public class FocusTrackingPanelsExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Focus-tracking panel";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Web-styled focus-tracking panel";
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         // Panel with focusable field

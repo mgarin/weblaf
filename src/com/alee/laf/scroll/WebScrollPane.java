@@ -56,11 +56,13 @@ public class WebScrollPane extends JScrollPane implements ShapeProvider, SizeMet
         }
     }
 
+    @Override
     public WebScrollBar createVerticalScrollBar ()
     {
         return new WebScrollBar ( WebScrollBar.VERTICAL );
     }
 
+    @Override
     public WebScrollBar createHorizontalScrollBar ()
     {
         return new WebScrollBar ( WebScrollBar.HORIZONTAL );
@@ -182,6 +184,7 @@ public class WebScrollPane extends JScrollPane implements ShapeProvider, SizeMet
         return this;
     }
 
+    @Override
     public Shape provideShape ()
     {
         return getWebUI ().provideShape ();
@@ -192,6 +195,7 @@ public class WebScrollPane extends JScrollPane implements ShapeProvider, SizeMet
         return ( WebScrollPaneUI ) getUI ();
     }
 
+    @Override
     public void updateUI ()
     {
         if ( getUI () == null || !( getUI () instanceof WebScrollPaneUI ) )
@@ -219,6 +223,7 @@ public class WebScrollPane extends JScrollPane implements ShapeProvider, SizeMet
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getPreferredWidth ()
     {
         return SizeUtils.getPreferredWidth ( this );
@@ -227,6 +232,7 @@ public class WebScrollPane extends JScrollPane implements ShapeProvider, SizeMet
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebScrollPane setPreferredWidth ( int preferredWidth )
     {
         return SizeUtils.setPreferredWidth ( this, preferredWidth );
@@ -235,6 +241,7 @@ public class WebScrollPane extends JScrollPane implements ShapeProvider, SizeMet
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getPreferredHeight ()
     {
         return SizeUtils.getPreferredHeight ( this );
@@ -243,6 +250,7 @@ public class WebScrollPane extends JScrollPane implements ShapeProvider, SizeMet
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebScrollPane setPreferredHeight ( int preferredHeight )
     {
         return SizeUtils.setPreferredHeight ( this, preferredHeight );
@@ -251,6 +259,7 @@ public class WebScrollPane extends JScrollPane implements ShapeProvider, SizeMet
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getMinimumWidth ()
     {
         return SizeUtils.getMinimumWidth ( this );
@@ -259,6 +268,7 @@ public class WebScrollPane extends JScrollPane implements ShapeProvider, SizeMet
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebScrollPane setMinimumWidth ( int minimumWidth )
     {
         return SizeUtils.setMinimumWidth ( this, minimumWidth );
@@ -267,6 +277,7 @@ public class WebScrollPane extends JScrollPane implements ShapeProvider, SizeMet
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getMinimumHeight ()
     {
         return SizeUtils.getMinimumHeight ( this );
@@ -275,6 +286,7 @@ public class WebScrollPane extends JScrollPane implements ShapeProvider, SizeMet
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebScrollPane setMinimumHeight ( int minimumHeight )
     {
         return SizeUtils.setMinimumHeight ( this, minimumHeight );
@@ -283,6 +295,7 @@ public class WebScrollPane extends JScrollPane implements ShapeProvider, SizeMet
     /**
      * {@inheritDoc}
      */
+    @Override
     public Dimension getPreferredSize ()
     {
         return SizeUtils.getPreferredSize ( this, super.getPreferredSize () );
@@ -295,6 +308,7 @@ public class WebScrollPane extends JScrollPane implements ShapeProvider, SizeMet
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setLanguageContainerKey ( String key )
     {
         LanguageManager.registerLanguageContainer ( this, key );
@@ -303,6 +317,7 @@ public class WebScrollPane extends JScrollPane implements ShapeProvider, SizeMet
     /**
      * {@inheritDoc}
      */
+    @Override
     public void removeLanguageContainerKey ()
     {
         LanguageManager.unregisterLanguageContainer ( this );
@@ -311,6 +326,7 @@ public class WebScrollPane extends JScrollPane implements ShapeProvider, SizeMet
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getLanguageContainerKey ()
     {
         return LanguageManager.getLanguageContainerKey ( this );

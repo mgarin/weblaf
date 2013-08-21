@@ -128,6 +128,7 @@ public class WebStepLabel extends WebLabel implements ShapeProvider, LanguageMet
         this.repaint ();
     }
 
+    @Override
     public Shape provideShape ()
     {
         int width = getWidth ();
@@ -137,6 +138,7 @@ public class WebStepLabel extends WebLabel implements ShapeProvider, LanguageMet
                 getWidth () - 4, getHeight () - 4 );
     }
 
+    @Override
     protected void paintComponent ( Graphics g )
     {
         Graphics2D g2d = ( Graphics2D ) g;
@@ -175,6 +177,7 @@ public class WebStepLabel extends WebLabel implements ShapeProvider, LanguageMet
         super.paintComponent ( g );
     }
 
+    @Override
     public Dimension getPreferredSize ()
     {
         Dimension ps = super.getPreferredSize ();

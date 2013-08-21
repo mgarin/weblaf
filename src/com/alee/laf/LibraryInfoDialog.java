@@ -107,6 +107,7 @@ public class LibraryInfoDialog extends WebFrame
         tab.addTab ( LM.get ( "weblaf.info.properties.title" ), createTabSeparator ( createPropertiesTab () ) );
         LanguageManager.addLanguageListener ( new LanguageAdapter ()
         {
+            @Override
             public void languageUpdated ()
             {
                 tab.setTitleAt ( 0, LM.get ( "weblaf.info.general.title" ) );
@@ -147,6 +148,7 @@ public class LibraryInfoDialog extends WebFrame
          *
          * @param g graphics
          */
+        @Override
         protected void paintComponent ( Graphics g )
         {
             g.setColor ( StyleConstants.backgroundColor );
@@ -160,6 +162,7 @@ public class LibraryInfoDialog extends WebFrame
          *
          * @return custom component preferred size
          */
+        @Override
         public Dimension getPreferredSize ()
         {
             return new Dimension ( 0, 4 );
@@ -287,6 +290,7 @@ public class LibraryInfoDialog extends WebFrame
                     final WebLinkLabel fileLink = new WebLinkLabel ( child.getName () );
                     fileLink.setLink ( new Runnable ()
                     {
+                        @Override
                         public void run ()
                         {
                             try
@@ -299,6 +303,7 @@ public class LibraryInfoDialog extends WebFrame
                                 licensePopup.showPopupAsModal ( fileLink, true, true );
                                 HotkeyManager.registerHotkey ( textArea, Hotkey.ESCAPE, new HotkeyRunnable ()
                                 {
+                                    @Override
                                     public void run ( KeyEvent e )
                                     {
                                         licensePopup.hidePopup ();
@@ -388,6 +393,7 @@ public class LibraryInfoDialog extends WebFrame
         propertiesTable.setEditable ( false );
         LanguageManager.addLanguageListener ( new LanguageAdapter ()
         {
+            @Override
             public void languageUpdated ()
             {
                 int[] selection = propertiesTable.getSelectedRows ();
@@ -431,6 +437,7 @@ public class LibraryInfoDialog extends WebFrame
         }
         Arrays.sort ( data, new Comparator<Object[]> ()
         {
+            @Override
             public int compare ( Object[] o1, Object[] o2 )
             {
                 return ( ( String ) o1[ 0 ] ).compareTo ( ( String ) o2[ 0 ] );
@@ -452,6 +459,7 @@ public class LibraryInfoDialog extends WebFrame
         // Orientation change listener
         HotkeyManager.registerHotkey ( Hotkey.ALT_R, new HotkeyRunnable ()
         {
+            @Override
             public void run ( KeyEvent e )
             {
                 WebLookAndFeel.changeOrientation ();
@@ -461,6 +469,7 @@ public class LibraryInfoDialog extends WebFrame
         // Language change listener
         HotkeyManager.registerHotkey ( Hotkey.ALT_L, new HotkeyRunnable ()
         {
+            @Override
             public void run ( KeyEvent e )
             {
                 final String current = LanguageManager.getLanguage ();

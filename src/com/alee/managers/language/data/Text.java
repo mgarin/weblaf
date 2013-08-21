@@ -28,8 +28,8 @@ import java.io.Serializable;
  * User: mgarin Date: 16.05.12 Time: 17:17
  */
 
-@XStreamAlias ( "text" )
-@XStreamConverter ( TextConverter.class )
+@XStreamAlias ("text")
+@XStreamConverter (TextConverter.class)
 public final class Text implements Serializable, Cloneable
 {
     private String text;
@@ -72,6 +72,7 @@ public final class Text implements Serializable, Cloneable
         this.state = state;
     }
 
+    @Override
     public Text clone ()
     {
         return new Text ( text, state );

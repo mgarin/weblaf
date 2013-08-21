@@ -58,6 +58,7 @@ public class ViewTabbedPane extends WebTabbedPane
 
         addMouseListener ( new MouseAdapter ()
         {
+            @Override
             public void mousePressed ( MouseEvent e )
             {
                 if ( SwingUtilities.isMiddleMouseButton ( e ) )
@@ -116,6 +117,7 @@ public class ViewTabbedPane extends WebTabbedPane
 
     private class TabAreaSeparator extends JComponent
     {
+        @Override
         protected void paintComponent ( Graphics g )
         {
             g.setColor ( new Color ( 237, 237, 237 ) );
@@ -124,6 +126,7 @@ public class ViewTabbedPane extends WebTabbedPane
             g.drawLine ( 0, getHeight () - 1, getWidth () - 1, getHeight () - 1 );
         }
 
+        @Override
         public Dimension getPreferredSize ()
         {
             return new Dimension ( 0, 4 );
@@ -166,6 +169,7 @@ public class ViewTabbedPane extends WebTabbedPane
         remove.setFocusable ( false );
         remove.addActionListener ( new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 removeTabAt ( ids.indexOf ( id ) );
@@ -179,6 +183,7 @@ public class ViewTabbedPane extends WebTabbedPane
         return removableTitle;
     }
 
+    @Override
     public void removeTabAt ( int index )
     {
         super.removeTabAt ( index );

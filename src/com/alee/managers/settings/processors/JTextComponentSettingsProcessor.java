@@ -59,6 +59,7 @@ public class JTextComponentSettingsProcessor extends SettingsProcessor<JTextComp
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getDefaultValue ()
     {
         String defaultValue = super.getDefaultValue ();
@@ -72,10 +73,12 @@ public class JTextComponentSettingsProcessor extends SettingsProcessor<JTextComp
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void doInit ( JTextComponent textComponent )
     {
         focusAdapter = new FocusAdapter ()
         {
+            @Override
             public void focusLost ( FocusEvent e )
             {
                 if ( SettingsManager.isSaveOnChange () )
@@ -91,6 +94,7 @@ public class JTextComponentSettingsProcessor extends SettingsProcessor<JTextComp
             JTextField textField = ( JTextField ) textComponent;
             actionListener = new ActionListener ()
             {
+                @Override
                 public void actionPerformed ( ActionEvent e )
                 {
                     if ( SettingsManager.isSaveOnChange () )
@@ -106,6 +110,7 @@ public class JTextComponentSettingsProcessor extends SettingsProcessor<JTextComp
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void doLoad ( JTextComponent textComponent )
     {
         textComponent.setText ( loadValue () );
@@ -114,6 +119,7 @@ public class JTextComponentSettingsProcessor extends SettingsProcessor<JTextComp
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void doSave ( JTextComponent textComponent )
     {
         saveValue ( textComponent.getText () );
@@ -122,6 +128,7 @@ public class JTextComponentSettingsProcessor extends SettingsProcessor<JTextComp
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void doDestroy ( JTextComponent textComponent )
     {
         textComponent.removeFocusListener ( focusAdapter );

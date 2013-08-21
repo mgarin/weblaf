@@ -30,21 +30,25 @@ import java.util.List;
 
 public class ProgressBarsGroup extends DefaultExampleGroup
 {
+    @Override
     public Icon getGroupIcon ()
     {
         return loadGroupIcon ( "progressbar.png" );
     }
 
+    @Override
     public String getGroupName ()
     {
         return "Progress bars";
     }
 
+    @Override
     public String getGroupDescription ()
     {
         return "Various examples of progress bars usage";
     }
 
+    @Override
     public List<Example> getGroupExamples ()
     {
         List<Example> examples = new ArrayList<Example> ();

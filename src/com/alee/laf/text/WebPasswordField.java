@@ -262,6 +262,7 @@ public class WebPasswordField extends JPasswordField
         getWebUI ().setHideInputPromptOnFocus ( hideInputPromptOnFocus );
     }
 
+    @Override
     public Shape provideShape ()
     {
         return getWebUI ().provideShape ();
@@ -272,6 +273,7 @@ public class WebPasswordField extends JPasswordField
         return ( WebPasswordFieldUI ) getUI ();
     }
 
+    @Override
     public void updateUI ()
     {
         if ( !echoCharIsSet () )
@@ -304,6 +306,7 @@ public class WebPasswordField extends JPasswordField
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setLanguage ( String key, Object... data )
     {
         LanguageManager.registerComponent ( this, key, data );
@@ -312,6 +315,7 @@ public class WebPasswordField extends JPasswordField
     /**
      * {@inheritDoc}
      */
+    @Override
     public void updateLanguage ( Object... data )
     {
         LanguageManager.updateComponent ( this, data );
@@ -320,6 +324,7 @@ public class WebPasswordField extends JPasswordField
     /**
      * {@inheritDoc}
      */
+    @Override
     public void updateLanguage ( String key, Object... data )
     {
         LanguageManager.updateComponent ( this, key, data );
@@ -328,6 +333,7 @@ public class WebPasswordField extends JPasswordField
     /**
      * {@inheritDoc}
      */
+    @Override
     public void removeLanguage ()
     {
         LanguageManager.unregisterComponent ( this );
@@ -336,6 +342,7 @@ public class WebPasswordField extends JPasswordField
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isLanguageSet ()
     {
         return LanguageManager.isRegisteredComponent ( this );
@@ -344,6 +351,7 @@ public class WebPasswordField extends JPasswordField
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setLanguageUpdater ( LanguageUpdater updater )
     {
         LanguageManager.registerLanguageUpdater ( this, updater );
@@ -352,6 +360,7 @@ public class WebPasswordField extends JPasswordField
     /**
      * {@inheritDoc}
      */
+    @Override
     public void removeLanguageUpdater ()
     {
         LanguageManager.unregisterLanguageUpdater ( this );
@@ -364,6 +373,7 @@ public class WebPasswordField extends JPasswordField
     /**
      * {@inheritDoc}
      */
+    @Override
     public void registerSettings ( String key )
     {
         SettingsManager.registerComponent ( this, key );
@@ -372,6 +382,7 @@ public class WebPasswordField extends JPasswordField
     /**
      * {@inheritDoc}
      */
+    @Override
     public <T extends DefaultValue> void registerSettings ( String key, Class<T> defaultValueClass )
     {
         SettingsManager.registerComponent ( this, key, defaultValueClass );
@@ -380,6 +391,7 @@ public class WebPasswordField extends JPasswordField
     /**
      * {@inheritDoc}
      */
+    @Override
     public void registerSettings ( String key, Object defaultValue )
     {
         SettingsManager.registerComponent ( this, key, defaultValue );
@@ -388,6 +400,7 @@ public class WebPasswordField extends JPasswordField
     /**
      * {@inheritDoc}
      */
+    @Override
     public void registerSettings ( String group, String key )
     {
         SettingsManager.registerComponent ( this, group, key );
@@ -396,6 +409,7 @@ public class WebPasswordField extends JPasswordField
     /**
      * {@inheritDoc}
      */
+    @Override
     public <T extends DefaultValue> void registerSettings ( String group, String key, Class<T> defaultValueClass )
     {
         SettingsManager.registerComponent ( this, group, key, defaultValueClass );
@@ -404,6 +418,7 @@ public class WebPasswordField extends JPasswordField
     /**
      * {@inheritDoc}
      */
+    @Override
     public void registerSettings ( String group, String key, Object defaultValue )
     {
         SettingsManager.registerComponent ( this, group, key, defaultValue );
@@ -412,6 +427,7 @@ public class WebPasswordField extends JPasswordField
     /**
      * {@inheritDoc}
      */
+    @Override
     public void registerSettings ( String key, boolean loadInitialSettings, boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, key, loadInitialSettings, applySettingsChanges );
@@ -420,6 +436,7 @@ public class WebPasswordField extends JPasswordField
     /**
      * {@inheritDoc}
      */
+    @Override
     public <T extends DefaultValue> void registerSettings ( String key, Class<T> defaultValueClass, boolean loadInitialSettings,
                                                             boolean applySettingsChanges )
     {
@@ -429,6 +446,7 @@ public class WebPasswordField extends JPasswordField
     /**
      * {@inheritDoc}
      */
+    @Override
     public void registerSettings ( String key, Object defaultValue, boolean loadInitialSettings, boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, key, defaultValue, loadInitialSettings, applySettingsChanges );
@@ -437,6 +455,7 @@ public class WebPasswordField extends JPasswordField
     /**
      * {@inheritDoc}
      */
+    @Override
     public <T extends DefaultValue> void registerSettings ( String group, String key, Class<T> defaultValueClass,
                                                             boolean loadInitialSettings, boolean applySettingsChanges )
     {
@@ -446,6 +465,7 @@ public class WebPasswordField extends JPasswordField
     /**
      * {@inheritDoc}
      */
+    @Override
     public void registerSettings ( String group, String key, Object defaultValue, boolean loadInitialSettings,
                                    boolean applySettingsChanges )
     {
@@ -455,6 +475,7 @@ public class WebPasswordField extends JPasswordField
     /**
      * {@inheritDoc}
      */
+    @Override
     public void registerSettings ( SettingsProcessor settingsProcessor )
     {
         SettingsManager.registerComponent ( this, settingsProcessor );
@@ -463,6 +484,7 @@ public class WebPasswordField extends JPasswordField
     /**
      * {@inheritDoc}
      */
+    @Override
     public void unregisterSettings ()
     {
         SettingsManager.unregisterComponent ( this );
@@ -471,6 +493,7 @@ public class WebPasswordField extends JPasswordField
     /**
      * {@inheritDoc}
      */
+    @Override
     public void loadSettings ()
     {
         SettingsManager.loadComponentSettings ( this );
@@ -479,6 +502,7 @@ public class WebPasswordField extends JPasswordField
     /**
      * {@inheritDoc}
      */
+    @Override
     public void saveSettings ()
     {
         SettingsManager.saveComponentSettings ( this );
@@ -491,6 +515,7 @@ public class WebPasswordField extends JPasswordField
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebPasswordField setPlainFont ()
     {
         return SwingUtils.setPlainFont ( this );
@@ -499,6 +524,7 @@ public class WebPasswordField extends JPasswordField
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebPasswordField setPlainFont ( boolean apply )
     {
         return SwingUtils.setPlainFont ( this, apply );
@@ -507,6 +533,7 @@ public class WebPasswordField extends JPasswordField
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isPlainFont ()
     {
         return SwingUtils.isPlainFont ( this );
@@ -515,6 +542,7 @@ public class WebPasswordField extends JPasswordField
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebPasswordField setBoldFont ()
     {
         return SwingUtils.setBoldFont ( this );
@@ -523,6 +551,7 @@ public class WebPasswordField extends JPasswordField
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebPasswordField setBoldFont ( boolean apply )
     {
         return SwingUtils.setBoldFont ( this, apply );
@@ -531,6 +560,7 @@ public class WebPasswordField extends JPasswordField
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isBoldFont ()
     {
         return SwingUtils.isBoldFont ( this );
@@ -539,6 +569,7 @@ public class WebPasswordField extends JPasswordField
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebPasswordField setItalicFont ()
     {
         return SwingUtils.setItalicFont ( this );
@@ -547,6 +578,7 @@ public class WebPasswordField extends JPasswordField
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebPasswordField setItalicFont ( boolean apply )
     {
         return SwingUtils.setItalicFont ( this, apply );
@@ -555,6 +587,7 @@ public class WebPasswordField extends JPasswordField
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isItalicFont ()
     {
         return SwingUtils.isItalicFont ( this );
@@ -563,6 +596,7 @@ public class WebPasswordField extends JPasswordField
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebPasswordField setFontStyle ( boolean bold, boolean italic )
     {
         return SwingUtils.setFontStyle ( this, bold, italic );
@@ -571,6 +605,7 @@ public class WebPasswordField extends JPasswordField
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebPasswordField setFontStyle ( int style )
     {
         return SwingUtils.setFontStyle ( this, style );
@@ -579,6 +614,7 @@ public class WebPasswordField extends JPasswordField
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebPasswordField setFontSize ( int fontSize )
     {
         return SwingUtils.setFontSize ( this, fontSize );
@@ -587,6 +623,7 @@ public class WebPasswordField extends JPasswordField
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebPasswordField changeFontSize ( int change )
     {
         return SwingUtils.changeFontSize ( this, change );
@@ -595,6 +632,7 @@ public class WebPasswordField extends JPasswordField
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getFontSize ()
     {
         return SwingUtils.getFontSize ( this );
@@ -603,6 +641,7 @@ public class WebPasswordField extends JPasswordField
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebPasswordField setFontSizeAndStyle ( int fontSize, boolean bold, boolean italic )
     {
         return SwingUtils.setFontSizeAndStyle ( this, fontSize, bold, italic );
@@ -611,6 +650,7 @@ public class WebPasswordField extends JPasswordField
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebPasswordField setFontSizeAndStyle ( int fontSize, int style )
     {
         return SwingUtils.setFontSizeAndStyle ( this, fontSize, style );
@@ -619,6 +659,7 @@ public class WebPasswordField extends JPasswordField
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebPasswordField setFontName ( String fontName )
     {
         return SwingUtils.setFontName ( this, fontName );
@@ -627,6 +668,7 @@ public class WebPasswordField extends JPasswordField
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getFontName ()
     {
         return SwingUtils.getFontName ( this );
@@ -639,6 +681,7 @@ public class WebPasswordField extends JPasswordField
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getPreferredWidth ()
     {
         return SizeUtils.getPreferredWidth ( this );
@@ -647,6 +690,7 @@ public class WebPasswordField extends JPasswordField
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebPasswordField setPreferredWidth ( int preferredWidth )
     {
         return SizeUtils.setPreferredWidth ( this, preferredWidth );
@@ -655,6 +699,7 @@ public class WebPasswordField extends JPasswordField
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getPreferredHeight ()
     {
         return SizeUtils.getPreferredHeight ( this );
@@ -663,6 +708,7 @@ public class WebPasswordField extends JPasswordField
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebPasswordField setPreferredHeight ( int preferredHeight )
     {
         return SizeUtils.setPreferredHeight ( this, preferredHeight );
@@ -671,6 +717,7 @@ public class WebPasswordField extends JPasswordField
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getMinimumWidth ()
     {
         return SizeUtils.getMinimumWidth ( this );
@@ -679,6 +726,7 @@ public class WebPasswordField extends JPasswordField
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebPasswordField setMinimumWidth ( int minimumWidth )
     {
         return SizeUtils.setMinimumWidth ( this, minimumWidth );
@@ -687,6 +735,7 @@ public class WebPasswordField extends JPasswordField
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getMinimumHeight ()
     {
         return SizeUtils.getMinimumHeight ( this );
@@ -695,6 +744,7 @@ public class WebPasswordField extends JPasswordField
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebPasswordField setMinimumHeight ( int minimumHeight )
     {
         return SizeUtils.setMinimumHeight ( this, minimumHeight );
@@ -703,6 +753,7 @@ public class WebPasswordField extends JPasswordField
     /**
      * {@inheritDoc}
      */
+    @Override
     public Dimension getPreferredSize ()
     {
         return SizeUtils.getPreferredSize ( this, super.getPreferredSize () );

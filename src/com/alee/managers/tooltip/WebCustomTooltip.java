@@ -188,6 +188,7 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
         fadeTimer = new WebTimer ( "WebCustomTooltip.fade", 1000 / fadeFps );
         fadeTimer.addActionListener ( new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 float roundsCount = fadeTime / ( 1000f / fadeFps );
@@ -228,6 +229,7 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
         } );
         addAncestorListener ( new AncestorListener ()
         {
+            @Override
             public void ancestorAdded ( AncestorEvent event )
             {
                 // Updating tooltip hotkey
@@ -246,12 +248,14 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
                 fireTooltipShown ();
             }
 
+            @Override
             public void ancestorRemoved ( AncestorEvent event )
             {
                 // Informing listeners that tooltip was hidden
                 fireTooltipHidden ();
             }
 
+            @Override
             public void ancestorMoved ( AncestorEvent event )
             {
                 // Updating location of the tooltip
@@ -265,12 +269,14 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
         {
             ancestorListener = new AncestorAdapter ()
             {
+                @Override
                 public void ancestorRemoved ( AncestorEvent event )
                 {
                     // Closing tooltip
                     closeTooltip ();
                 }
 
+                @Override
                 public void ancestorMoved ( AncestorEvent event )
                 {
                     // Closing tooltip
@@ -484,6 +490,7 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
      * Close tooltip on orientation change to avoid location problems
      */
 
+    @Override
     public void applyComponentOrientation ( ComponentOrientation o )
     {
         super.applyComponentOrientation ( o );
@@ -864,6 +871,7 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
      * Shape provider
      */
 
+    @Override
     public Shape provideShape ()
     {
         return getTooltipShape ( getActualDisplayWay (), true );
@@ -873,6 +881,7 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
      * Tooltip background painting
      */
 
+    @Override
     protected void paintComponent ( Graphics g )
     {
         super.paintComponent ( g );

@@ -48,6 +48,7 @@ public abstract class DefaultPainter<E extends Component> implements Painter<E>
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isOpaque ( E c )
     {
         return opaque;
@@ -66,6 +67,7 @@ public abstract class DefaultPainter<E extends Component> implements Painter<E>
     /**
      * {@inheritDoc}
      */
+    @Override
     public Dimension getPreferredSize ( E c )
     {
         return preferredSize;
@@ -84,6 +86,7 @@ public abstract class DefaultPainter<E extends Component> implements Painter<E>
     /**
      * {@inheritDoc}
      */
+    @Override
     public Insets getMargin ( E c )
     {
         return margin;

@@ -30,16 +30,19 @@ import java.awt.*;
 
 public class HorizontalSlidersExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Horizontal sliders";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Horizontal Web-styled sliders";
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         WebSlider slider1 = new WebSlider ( WebSlider.HORIZONTAL );

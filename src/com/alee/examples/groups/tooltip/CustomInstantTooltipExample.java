@@ -32,16 +32,19 @@ import java.awt.*;
 
 public class CustomInstantTooltipExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Instant tooltip";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Custom Web-styled instant tooltip";
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         // You can easily remove tooltip delay for certain component

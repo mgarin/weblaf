@@ -184,6 +184,7 @@ public final class MiscComposite implements Composite
         return new MiscComposite ( rule, alpha );
     }
 
+    @Override
     public CompositeContext createContext ( ColorModel srcColorModel, ColorModel dstColorModel, RenderingHints hints )
     {
         return new MiscCompositeContext ( rule, extraAlpha, srcColorModel, dstColorModel );

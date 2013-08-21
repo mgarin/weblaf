@@ -30,21 +30,25 @@ import java.awt.*;
 
 public class AndroidLabelExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Android label";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Android-styled label";
     }
 
+    @Override
     public boolean isFillWidth ()
     {
         return true;
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         // Label styled with nine-patch icon painter

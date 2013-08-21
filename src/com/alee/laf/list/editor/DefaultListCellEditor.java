@@ -41,6 +41,7 @@ public class DefaultListCellEditor extends AbstractListCellEditor
      * @param value cell value
      * @return list cell editor created for the cell under specified index
      */
+    @Override
     protected Component createCellEditor ( JList list, int index, Object value )
     {
         WebTextField field = WebTextField.createWebTextField ( true, WebListStyle.selectionRound, WebListStyle.selectionShadeWidth );
@@ -58,6 +59,7 @@ public class DefaultListCellEditor extends AbstractListCellEditor
      * @param oldValue old cell value
      * @return editor value
      */
+    @Override
     public Object getCellEditorValue ( JList list, int index, Object oldValue )
     {
         return ( ( WebTextField ) editor ).getText ();

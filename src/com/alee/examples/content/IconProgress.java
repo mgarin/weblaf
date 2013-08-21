@@ -58,6 +58,7 @@ public class IconProgress extends WebPanel
             setTransparency ( 0f );
             addAncestorListener ( new AncestorAdapter ()
             {
+                @Override
                 public void ancestorAdded ( AncestorEvent event )
                 {
                     fadeIn ();
@@ -69,6 +70,7 @@ public class IconProgress extends WebPanel
         {
             WebTimer.repeat ( "FadeInImage.updater", StyleConstants.avgAnimationDelay, new ActionListener ()
             {
+                @Override
                 public void actionPerformed ( ActionEvent e )
                 {
                     float t = getTransparency ();

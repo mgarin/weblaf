@@ -30,16 +30,19 @@ import java.awt.*;
 
 public class ShadedLabelsExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Shaded labels";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Web-styled shaded labels";
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         // Label with default shade

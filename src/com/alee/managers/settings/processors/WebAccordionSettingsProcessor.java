@@ -53,10 +53,12 @@ public class WebAccordionSettingsProcessor extends SettingsProcessor<WebAccordio
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void doInit ( WebAccordion accordion )
     {
         accordionListener = new AccordionListener ()
         {
+            @Override
             public void selectionChanged ()
             {
                 save ();
@@ -68,6 +70,7 @@ public class WebAccordionSettingsProcessor extends SettingsProcessor<WebAccordio
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void doDestroy ( WebAccordion accordion )
     {
         accordion.removeAccordionListener ( accordionListener );
@@ -77,6 +80,7 @@ public class WebAccordionSettingsProcessor extends SettingsProcessor<WebAccordio
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void doLoad ( WebAccordion accordion )
     {
         // Empty string identifies empty selection
@@ -88,6 +92,7 @@ public class WebAccordionSettingsProcessor extends SettingsProcessor<WebAccordio
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void doSave ( WebAccordion accordion )
     {
         // For empty selection empty string is used to avoid having null as value as this will call for default value on load

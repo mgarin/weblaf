@@ -36,6 +36,7 @@ public class AbstractButtonLU extends DefaultLanguageUpdater<AbstractButton>
     /**
      * {@inheritDoc}
      */
+    @Override
     public void update ( AbstractButton c, String key, Value value, Object... data )
     {
         // Updating text and mnemonic

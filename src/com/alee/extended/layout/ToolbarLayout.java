@@ -161,6 +161,7 @@ public class ToolbarLayout implements LayoutManager, SwingConstants
      * Standard LayoutManager methods
      */
 
+    @Override
     public void addLayoutComponent ( String name, Component comp )
     {
         if ( name != null && !name.trim ().equals ( "" ) && !name.equals ( START ) &&
@@ -172,11 +173,13 @@ public class ToolbarLayout implements LayoutManager, SwingConstants
         constraints.put ( comp, name == null || name.trim ().equals ( "" ) ? START : name );
     }
 
+    @Override
     public void removeLayoutComponent ( Component comp )
     {
         constraints.remove ( comp );
     }
 
+    @Override
     public void layoutContainer ( Container parent )
     {
         Insets insets = getActualInsets ( parent );
@@ -352,11 +355,13 @@ public class ToolbarLayout implements LayoutManager, SwingConstants
         }
     }
 
+    @Override
     public Dimension minimumLayoutSize ( Container parent )
     {
         return preferredLayoutSize ( parent );
     }
 
+    @Override
     public Dimension preferredLayoutSize ( Container parent )
     {
         Insets insets = getActualInsets ( parent );

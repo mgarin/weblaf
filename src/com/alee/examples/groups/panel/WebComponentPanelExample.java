@@ -35,16 +35,19 @@ import java.awt.*;
 
 public class WebComponentPanelExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Components panel";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Web-styled components panel";
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         // Creating WebComponentPanel to place some components into it

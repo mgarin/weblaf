@@ -37,6 +37,7 @@ public class WebBooleanEditor extends WebDefaultCellEditor
         setClickCountToStart ( 1 );
     }
 
+    @Override
     public Component getTableCellEditorComponent ( JTable table, Object value, boolean isSelected, int row, int column )
     {
         final Component editor = super.getTableCellEditorComponent ( table, value, isSelected, row, column );

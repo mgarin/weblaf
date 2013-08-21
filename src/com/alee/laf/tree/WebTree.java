@@ -661,6 +661,7 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
     /**
      * Installs a Web-UI into this component.
      */
+    @Override
     public void updateUI ()
     {
         if ( getUI () == null || !( getUI () instanceof WebTreeUI ) )
@@ -705,6 +706,7 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebTree<E> setPlainFont ()
     {
         return SwingUtils.setPlainFont ( this );
@@ -713,6 +715,7 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebTree<E> setPlainFont ( boolean apply )
     {
         return SwingUtils.setPlainFont ( this, apply );
@@ -721,6 +724,7 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isPlainFont ()
     {
         return SwingUtils.isPlainFont ( this );
@@ -729,6 +733,7 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebTree<E> setBoldFont ()
     {
         return SwingUtils.setBoldFont ( this );
@@ -737,6 +742,7 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebTree<E> setBoldFont ( boolean apply )
     {
         return SwingUtils.setBoldFont ( this, apply );
@@ -745,6 +751,7 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isBoldFont ()
     {
         return SwingUtils.isBoldFont ( this );
@@ -753,6 +760,7 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebTree<E> setItalicFont ()
     {
         return SwingUtils.setItalicFont ( this );
@@ -761,6 +769,7 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebTree<E> setItalicFont ( boolean apply )
     {
         return SwingUtils.setItalicFont ( this, apply );
@@ -769,6 +778,7 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isItalicFont ()
     {
         return SwingUtils.isItalicFont ( this );
@@ -777,6 +787,7 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebTree<E> setFontStyle ( boolean bold, boolean italic )
     {
         return SwingUtils.setFontStyle ( this, bold, italic );
@@ -785,6 +796,7 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebTree<E> setFontStyle ( int style )
     {
         return SwingUtils.setFontStyle ( this, style );
@@ -793,6 +805,7 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebTree<E> setFontSize ( int fontSize )
     {
         return SwingUtils.setFontSize ( this, fontSize );
@@ -801,6 +814,7 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebTree<E> changeFontSize ( int change )
     {
         return SwingUtils.changeFontSize ( this, change );
@@ -809,6 +823,7 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getFontSize ()
     {
         return SwingUtils.getFontSize ( this );
@@ -817,6 +832,7 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebTree<E> setFontSizeAndStyle ( int fontSize, boolean bold, boolean italic )
     {
         return SwingUtils.setFontSizeAndStyle ( this, fontSize, bold, italic );
@@ -825,6 +841,7 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebTree<E> setFontSizeAndStyle ( int fontSize, int style )
     {
         return SwingUtils.setFontSizeAndStyle ( this, fontSize, style );
@@ -833,6 +850,7 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebTree<E> setFontName ( String fontName )
     {
         return SwingUtils.setFontName ( this, fontName );
@@ -841,6 +859,7 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getFontName ()
     {
         return SwingUtils.getFontName ( this );

@@ -35,16 +35,19 @@ import static javax.swing.JSplitPane.HORIZONTAL_SPLIT;
 
 public class HorizontalSplitPaneExample extends DefaultExample implements SwingConstants
 {
+    @Override
     public String getTitle ()
     {
         return "Horizontal split pane";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Web-styled horizontal split pane with direct drag";
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         // Left part content

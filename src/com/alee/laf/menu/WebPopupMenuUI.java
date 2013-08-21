@@ -39,6 +39,7 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements ShapeProvider
         return new WebPopupMenuUI ();
     }
 
+    @Override
     public void installUI ( JComponent c )
     {
         super.installUI ( c );
@@ -53,11 +54,13 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements ShapeProvider
                 BorderFactory.createEmptyBorder ( 0, 0, 0, 0 ) );
     }
 
+    @Override
     public Shape provideShape ()
     {
         return LafUtils.getWebBorderShape ( popupMenu, 0, StyleConstants.smallRound );
     }
 
+    @Override
     public void paint ( Graphics g, JComponent c )
     {
         super.paint ( g, c );

@@ -38,6 +38,7 @@ public class WebEditorPaneUI extends BasicEditorPaneUI
         return new WebEditorPaneUI ();
     }
 
+    @Override
     public void installUI ( JComponent c )
     {
         super.installUI ( c );
@@ -56,6 +57,7 @@ public class WebEditorPaneUI extends BasicEditorPaneUI
         textComponent.setCaretColor ( Color.GRAY );
     }
 
+    @Override
     protected void paintSafely ( Graphics g )
     {
         Graphics2D g2d = ( Graphics2D ) g;

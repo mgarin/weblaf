@@ -38,6 +38,7 @@ public class WebDesktopPane extends JDesktopPane
         return ( WebDesktopPaneUI ) getUI ();
     }
 
+    @Override
     public void updateUI ()
     {
         if ( getUI () == null || !( getUI () instanceof WebDesktopPaneUI ) )

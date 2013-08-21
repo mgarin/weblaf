@@ -194,6 +194,7 @@ public class WebFileTableModel extends AbstractTableModel implements WebFileTabl
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getColumnName ( int column )
     {
         return LanguageManager.get ( columns.get ( column ) );
@@ -202,6 +203,7 @@ public class WebFileTableModel extends AbstractTableModel implements WebFileTabl
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getRowCount ()
     {
         return files.size ();
@@ -210,6 +212,7 @@ public class WebFileTableModel extends AbstractTableModel implements WebFileTabl
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getColumnCount ()
     {
         return columns.size ();
@@ -218,6 +221,7 @@ public class WebFileTableModel extends AbstractTableModel implements WebFileTabl
     /**
      * {@inheritDoc}
      */
+    @Override
     public Object getValueAt ( int rowIndex, int columnIndex )
     {
         return files.get ( rowIndex );
@@ -226,6 +230,7 @@ public class WebFileTableModel extends AbstractTableModel implements WebFileTabl
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setValueAt ( Object aValue, int rowIndex, int columnIndex )
     {
         files.set ( rowIndex, ( File ) aValue );
@@ -234,6 +239,7 @@ public class WebFileTableModel extends AbstractTableModel implements WebFileTabl
     /**
      * {@inheritDoc}
      */
+    @Override
     public Class<?> getColumnClass ( int columnIndex )
     {
         return File.class;
@@ -242,6 +248,7 @@ public class WebFileTableModel extends AbstractTableModel implements WebFileTabl
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isCellEditable ( int rowIndex, int columnIndex )
     {
         return getColumnId ( columnIndex ).equals ( NAME_COLUMN ) && FileUtils.isNameEditable ( getFileAtRow ( rowIndex ) );

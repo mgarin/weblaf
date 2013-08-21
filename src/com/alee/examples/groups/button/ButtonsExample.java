@@ -30,16 +30,19 @@ import java.awt.*;
 
 public class ButtonsExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Buttons";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Web-styled buttons";
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         // Simple button

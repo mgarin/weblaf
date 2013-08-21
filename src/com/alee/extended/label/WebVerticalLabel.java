@@ -105,11 +105,13 @@ public class WebVerticalLabel extends WebLabel
         getWebUI ().setClockwise ( clockwise );
     }
 
+    @Override
     public WebVerticalLabelUI getWebUI ()
     {
         return ( WebVerticalLabelUI ) getUI ();
     }
 
+    @Override
     public void updateUI ()
     {
         if ( getUI () == null || !( getUI () instanceof WebVerticalLabelUI ) )

@@ -106,16 +106,19 @@ public class ComponentUpdater extends WebTimer implements AncestorListener
         return component;
     }
 
+    @Override
     public void ancestorAdded ( AncestorEvent event )
     {
         start ();
     }
 
+    @Override
     public void ancestorRemoved ( AncestorEvent event )
     {
         stop ();
     }
 
+    @Override
     public void ancestorMoved ( AncestorEvent event )
     {
         //

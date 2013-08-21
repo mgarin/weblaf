@@ -48,16 +48,19 @@ public class BreadcrumbLayout implements LayoutManager
         this.overlap = overlap;
     }
 
+    @Override
     public void addLayoutComponent ( String name, Component comp )
     {
 
     }
 
+    @Override
     public void removeLayoutComponent ( Component comp )
     {
 
     }
 
+    @Override
     public Dimension preferredLayoutSize ( Container parent )
     {
         Insets insets = parent.getInsets ();
@@ -71,11 +74,13 @@ public class BreadcrumbLayout implements LayoutManager
         return maxSize;
     }
 
+    @Override
     public Dimension minimumLayoutSize ( Container parent )
     {
         return preferredLayoutSize ( parent );
     }
 
+    @Override
     public void layoutContainer ( Container parent )
     {
         Insets insets = parent.getInsets ();

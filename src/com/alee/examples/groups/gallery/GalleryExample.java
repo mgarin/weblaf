@@ -44,21 +44,25 @@ import java.io.File;
 
 public class GalleryExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Image gallery";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Web-styled image gallery";
     }
 
+    @Override
     public FeatureState getFeatureState ()
     {
         return FeatureState.beta;
     }
 
+    @Override
     public Component getPreview ( final WebLookAndFeelDemo owner )
     {
         WebPanel imagegalleryPanel = new WebPanel ();
@@ -85,6 +89,7 @@ public class GalleryExample extends DefaultExample
         {
             private WebFileChooser fileChooser = null;
 
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 if ( fileChooser == null )
@@ -111,6 +116,7 @@ public class GalleryExample extends DefaultExample
         remove.setRound ( StyleConstants.smallRound );
         remove.addActionListener ( new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 wig.removeImage ( wig.getSelectedIndex () );

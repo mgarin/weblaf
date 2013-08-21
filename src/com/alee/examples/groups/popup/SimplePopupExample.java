@@ -40,16 +40,19 @@ import java.awt.event.ActionListener;
 
 public class SimplePopupExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Simple popup";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Web-styled simple popup";
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         // Popup
@@ -68,6 +71,7 @@ public class SimplePopupExample extends DefaultExample
         popupStyle.setSelectedItem ( PopupManager.getDefaultPopupStyle () );
         popupStyle.setRenderer ( new WebComboBoxCellRenderer ( popupStyle )
         {
+            @Override
             public Component getListCellRendererComponent ( JList list, Object value, int index, boolean isSelected, boolean cellHasFocus )
             {
                 return super.getListCellRendererComponent ( list, "Style: " + value, index, isSelected, cellHasFocus );
@@ -75,6 +79,7 @@ public class SimplePopupExample extends DefaultExample
         } );
         popupStyle.addActionListener ( new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 popup.setPopupStyle ( ( PopupStyle ) popupStyle.getSelectedItem () );
@@ -85,6 +90,7 @@ public class SimplePopupExample extends DefaultExample
         // Popup show/hide action
         showPopup.addActionListener ( new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 if ( popup.isShowing () )

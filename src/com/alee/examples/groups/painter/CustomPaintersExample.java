@@ -33,16 +33,19 @@ import java.awt.*;
 
 public class CustomPaintersExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Custom painters";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Various custom painters";
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         // AlphaLayerPainter

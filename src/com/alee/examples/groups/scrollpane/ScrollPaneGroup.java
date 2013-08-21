@@ -32,31 +32,37 @@ import java.util.List;
 
 public class ScrollPaneGroup extends DefaultExampleGroup
 {
+    @Override
     public Icon getGroupIcon ()
     {
         return loadGroupIcon ( "scrollpane.png" );
     }
 
+    @Override
     public String getGroupName ()
     {
         return "Scroll pane";
     }
 
+    @Override
     public String getGroupDescription ()
     {
         return "Scroll pane usage example";
     }
 
+    @Override
     public boolean isSingleExample ()
     {
         return true;
     }
 
+    @Override
     public List<Example> getGroupExamples ()
     {
         return CollectionUtils.copy ( ( Example ) new SimpleScrollPaneExample () );
     }
 
+    @Override
     public void modifyExampleTab ( int tabIndex, WebTabbedPane tabbedPane )
     {
         tabbedPane.setBackgroundAt ( tabIndex, Color.WHITE );

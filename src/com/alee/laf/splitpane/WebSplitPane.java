@@ -102,6 +102,7 @@ public class WebSplitPane extends JSplitPane
         return ( WebSplitPaneUI ) getUI ();
     }
 
+    @Override
     public void updateUI ()
     {
         if ( getUI () == null || !( getUI () instanceof WebSplitPaneUI ) )

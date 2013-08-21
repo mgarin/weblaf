@@ -58,6 +58,7 @@ public class WebPopupMenu extends JPopupMenu implements ShapeProvider
     //                /*+ ( ignoreBorderOnShow ? 0 : StyleConstants.shadeWidth )*/ );
     //    }
 
+    @Override
     public Shape provideShape ()
     {
         return getWebUI ().provideShape ();
@@ -68,6 +69,7 @@ public class WebPopupMenu extends JPopupMenu implements ShapeProvider
         return ( WebPopupMenuUI ) getUI ();
     }
 
+    @Override
     public void updateUI ()
     {
         if ( getUI () == null || !( getUI () instanceof WebPopupMenuUI ) )

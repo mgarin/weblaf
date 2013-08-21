@@ -99,6 +99,7 @@ public class WebCheckBoxUI extends BasicCheckBoxUI implements ShapeProvider
         return new WebCheckBoxUI ();
     }
 
+    @Override
     public void installUI ( final JComponent c )
     {
         super.installUI ( c );
@@ -126,6 +127,7 @@ public class WebCheckBoxUI extends BasicCheckBoxUI implements ShapeProvider
         // Background fade animation
         bgTimer = new WebTimer ( "WebCheckBoxUI.bgUpdater", updateDelay, new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 if ( rollover && bgDarkness < MAX_DARKNESS )
@@ -146,6 +148,7 @@ public class WebCheckBoxUI extends BasicCheckBoxUI implements ShapeProvider
         } );
         mouseAdapter = new MouseAdapter ()
         {
+            @Override
             public void mouseEntered ( MouseEvent e )
             {
                 rollover = true;
@@ -160,6 +163,7 @@ public class WebCheckBoxUI extends BasicCheckBoxUI implements ShapeProvider
                 }
             }
 
+            @Override
             public void mouseExited ( MouseEvent e )
             {
                 rollover = false;
@@ -179,6 +183,7 @@ public class WebCheckBoxUI extends BasicCheckBoxUI implements ShapeProvider
         // Selection changes animation
         checkTimer = new WebTimer ( "WebCheckBoxUI.iconUpdater", updateDelay, new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 if ( checking && checkIcon < CHECK_STATES.size () - 1 )
@@ -199,6 +204,7 @@ public class WebCheckBoxUI extends BasicCheckBoxUI implements ShapeProvider
         } );
         itemListener = new ItemListener ()
         {
+            @Override
             public void itemStateChanged ( ItemEvent e )
             {
                 if ( isAnimationAllowed () && isAnimated () && c.isEnabled () )
@@ -240,6 +246,7 @@ public class WebCheckBoxUI extends BasicCheckBoxUI implements ShapeProvider
         }
     }
 
+    @Override
     public void uninstallUI ( JComponent c )
     {
         checkBox.removeMouseListener ( mouseAdapter );
@@ -248,6 +255,7 @@ public class WebCheckBoxUI extends BasicCheckBoxUI implements ShapeProvider
         super.uninstallUI ( c );
     }
 
+    @Override
     public Shape provideShape ()
     {
         return LafUtils.getWebBorderShape ( checkBox, getShadeWidth (), getRound () );
@@ -417,6 +425,7 @@ public class WebCheckBoxUI extends BasicCheckBoxUI implements ShapeProvider
             private int iconWidth = 16;
             private int iconHeight = 16;
 
+            @Override
             public void paintIcon ( Component c, Graphics g, int x, int y )
             {
                 JCheckBox checkBox = ( JCheckBox ) c;
@@ -468,11 +477,13 @@ public class WebCheckBoxUI extends BasicCheckBoxUI implements ShapeProvider
                 LafUtils.restoreAntialias ( g2d, aa );
             }
 
+            @Override
             public int getIconWidth ()
             {
                 return iconWidth;
             }
 
+            @Override
             public int getIconHeight ()
             {
                 return iconHeight;
@@ -516,6 +527,7 @@ public class WebCheckBoxUI extends BasicCheckBoxUI implements ShapeProvider
         this.iconRect = iconRect;
     }
 
+    @Override
     public synchronized void paint ( Graphics g, JComponent c )
     {
         Map hints = SwingUtils.setupTextAntialias ( g, c );
@@ -523,6 +535,7 @@ public class WebCheckBoxUI extends BasicCheckBoxUI implements ShapeProvider
         SwingUtils.restoreTextAntialias ( g, hints );
     }
 
+    @Override
     protected void paintText ( Graphics g, JComponent c, Rectangle textRect, String text )
     {
         AbstractButton b = ( AbstractButton ) c;

@@ -114,6 +114,7 @@ public class ConvolveFilter extends AbstractBufferedImageOp
         return edgeAction;
     }
 
+    @Override
     public BufferedImage filter ( BufferedImage src, BufferedImage dst )
     {
         int width = src.getWidth ();
@@ -134,6 +135,7 @@ public class ConvolveFilter extends AbstractBufferedImageOp
         return dst;
     }
 
+    @Override
     public BufferedImage createCompatibleDestImage ( BufferedImage src, ColorModel dstCM )
     {
         if ( dstCM == null )
@@ -144,11 +146,13 @@ public class ConvolveFilter extends AbstractBufferedImageOp
                 dstCM.isAlphaPremultiplied (), null );
     }
 
+    @Override
     public Rectangle2D getBounds2D ( BufferedImage src )
     {
         return new Rectangle ( 0, 0, src.getWidth (), src.getHeight () );
     }
 
+    @Override
     public Point2D getPoint2D ( Point2D srcPt, Point2D dstPt )
     {
         if ( dstPt == null )
@@ -159,6 +163,7 @@ public class ConvolveFilter extends AbstractBufferedImageOp
         return dstPt;
     }
 
+    @Override
     public RenderingHints getRenderingHints ()
     {
         return null;

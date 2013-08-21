@@ -30,21 +30,25 @@ import java.util.List;
 
 public class ButtonsGroup extends DefaultExampleGroup
 {
+    @Override
     public Icon getGroupIcon ()
     {
         return loadGroupIcon ( "button.png" );
     }
 
+    @Override
     public String getGroupName ()
     {
         return "Buttons";
     }
 
+    @Override
     public String getGroupDescription ()
     {
         return "Various examples of button usage";
     }
 
+    @Override
     public List<Example> getGroupExamples ()
     {
         List<Example> examples = new ArrayList<Example> ();

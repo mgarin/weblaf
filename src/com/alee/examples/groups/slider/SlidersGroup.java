@@ -30,21 +30,25 @@ import java.util.List;
 
 public class SlidersGroup extends DefaultExampleGroup
 {
+    @Override
     public Icon getGroupIcon ()
     {
         return loadGroupIcon ( "slider.png" );
     }
 
+    @Override
     public String getGroupName ()
     {
         return "Sliders";
     }
 
+    @Override
     public String getGroupDescription ()
     {
         return "Various examples of sliders usage";
     }
 
+    @Override
     public List<Example> getGroupExamples ()
     {
         List<Example> examples = new ArrayList<Example> ();

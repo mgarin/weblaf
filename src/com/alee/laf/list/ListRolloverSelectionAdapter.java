@@ -50,6 +50,7 @@ public class ListRolloverSelectionAdapter implements MouseMotionListener
      *
      * @param e mouse event
      */
+    @Override
     public void mouseMoved ( MouseEvent e )
     {
         // Disabled lists aren't affected
@@ -70,6 +71,7 @@ public class ListRolloverSelectionAdapter implements MouseMotionListener
      *
      * @param e mouse event
      */
+    @Override
     public void mouseDragged ( MouseEvent e )
     {
         //

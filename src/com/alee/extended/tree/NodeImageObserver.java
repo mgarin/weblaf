@@ -61,6 +61,7 @@ public class NodeImageObserver implements ImageObserver
      * @param h     height
      * @return false if the infoflags indicate that the image is completely loaded, true otherwise
      */
+    @Override
     public boolean imageUpdate ( Image img, int flags, int x, int y, int w, int h )
     {
         if ( node.isBusy () && ( flags & ( FRAMEBITS | ALLBITS ) ) != 0 )

@@ -78,6 +78,7 @@ public class WebDockableFrame extends WebPanel
 
         titlePanel = new WebPanel ( true )
         {
+            @Override
             protected void paintComponent ( Graphics g )
             {
                 super.paintComponent ( g );

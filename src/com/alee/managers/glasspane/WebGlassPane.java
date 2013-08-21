@@ -125,6 +125,7 @@ public class WebGlassPane extends WebPanel
      *
      * @return JRootPane to which this WebGlassPane is attached
      */
+    @Override
     public JRootPane getRootPane ()
     {
         return rootPane;
@@ -152,6 +153,7 @@ public class WebGlassPane extends WebPanel
      * @param y mouse Y coordinate
      * @return true if WebGlassPane should absorb mouse event from the specified point, false otherwise
      */
+    @Override
     public boolean contains ( int x, int y )
     {
         return hitShape != null && hitShape.contains ( x, y );
@@ -249,6 +251,7 @@ public class WebGlassPane extends WebPanel
         final Rectangle finalRepaintRect = repaintRect != null ? repaintRect : oldRect;
         SwingUtilities.invokeLater ( new Runnable ()
         {
+            @Override
             public void run ()
             {
                 if ( finalRepaintRect != null )
@@ -278,6 +281,7 @@ public class WebGlassPane extends WebPanel
         {
             SwingUtilities.invokeLater ( new Runnable ()
             {
+                @Override
                 public void run ()
                 {
                     repaint ( oldRect );
@@ -426,6 +430,7 @@ public class WebGlassPane extends WebPanel
      *
      * @param g graphics context.
      */
+    @Override
     protected void paintComponent ( Graphics g )
     {
         super.paintComponent ( g );

@@ -30,16 +30,19 @@ import java.awt.*;
 
 public class CalendarExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Calendar";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Web-styled calendar";
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         // Simple unconfigured calendar

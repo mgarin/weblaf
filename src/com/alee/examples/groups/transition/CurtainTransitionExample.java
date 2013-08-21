@@ -41,16 +41,19 @@ import java.awt.event.ActionListener;
 
 public class CurtainTransitionExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Curtain transition";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Curtain transition effect";
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         // Transition panel
@@ -90,6 +93,7 @@ public class CurtainTransitionExample extends DefaultExample
         switchView.setDrawFocus ( false );
         switchView.addActionListener ( new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 if ( componentTransition.getContent () == toolBar1 )
@@ -106,11 +110,13 @@ public class CurtainTransitionExample extends DefaultExample
         } );
         componentTransition.addTransitionListener ( new TransitionListener ()
         {
+            @Override
             public void transitionStarted ()
             {
                 switchView.setEnabled ( false );
             }
 
+            @Override
             public void transitionFinished ()
             {
                 switchView.setEnabled ( true );

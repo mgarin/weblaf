@@ -57,6 +57,7 @@ public class ImageDragHandler extends TransferHandler
 
         component.addMouseListener ( new MouseAdapter ()
         {
+            @Override
             public void mousePressed ( MouseEvent e )
             {
                 if ( isDefaultBehavior () && SwingUtilities.isLeftMouseButton ( e ) &&
@@ -88,25 +89,30 @@ public class ImageDragHandler extends TransferHandler
         this.defaultBehavior = defaultBehavior;
     }
 
+    @Override
     public int getSourceActions ( JComponent c )
     {
         return COPY;
     }
 
+    @Override
     protected Transferable createTransferable ( JComponent c )
     {
         return new Transferable ()
         {
+            @Override
             public DataFlavor[] getTransferDataFlavors ()
             {
                 return imageFlavor;
             }
 
+            @Override
             public boolean isDataFlavorSupported ( DataFlavor flavor )
             {
                 return flavor.equals ( DataFlavor.imageFlavor );
             }
 
+            @Override
             public Object getTransferData ( DataFlavor flavor ) throws UnsupportedFlavorException, IOException
             {
                 if ( isDataFlavorSupported ( flavor ) )

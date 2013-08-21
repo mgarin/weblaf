@@ -155,11 +155,13 @@ public class WebCheckBox extends JCheckBox
      * UI methods
      */
 
+    @Override
     public Insets getMargin ()
     {
         return getWebUI ().getMargin ();
     }
 
+    @Override
     public void setMargin ( Insets margin )
     {
         getWebUI ().setMargin ( margin );
@@ -305,6 +307,7 @@ public class WebCheckBox extends JCheckBox
         getWebUI ().setIconHeight ( iconHeight );
     }
 
+    @Override
     public void setSelected ( boolean b )
     {
         setSelected ( b, isShowing () );
@@ -324,6 +327,7 @@ public class WebCheckBox extends JCheckBox
         }
     }
 
+    @Override
     public Shape provideShape ()
     {
         return getWebUI ().provideShape ();
@@ -334,6 +338,7 @@ public class WebCheckBox extends JCheckBox
         return ( WebCheckBoxUI ) getUI ();
     }
 
+    @Override
     public void updateUI ()
     {
         if ( getUI () == null || !( getUI () instanceof WebCheckBoxUI ) )
@@ -361,6 +366,7 @@ public class WebCheckBox extends JCheckBox
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setLanguage ( String key, Object... data )
     {
         LanguageManager.registerComponent ( this, key, data );
@@ -369,6 +375,7 @@ public class WebCheckBox extends JCheckBox
     /**
      * {@inheritDoc}
      */
+    @Override
     public void updateLanguage ( Object... data )
     {
         LanguageManager.updateComponent ( this, data );
@@ -377,6 +384,7 @@ public class WebCheckBox extends JCheckBox
     /**
      * {@inheritDoc}
      */
+    @Override
     public void updateLanguage ( String key, Object... data )
     {
         LanguageManager.updateComponent ( this, key, data );
@@ -385,6 +393,7 @@ public class WebCheckBox extends JCheckBox
     /**
      * {@inheritDoc}
      */
+    @Override
     public void removeLanguage ()
     {
         LanguageManager.unregisterComponent ( this );
@@ -393,6 +402,7 @@ public class WebCheckBox extends JCheckBox
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isLanguageSet ()
     {
         return LanguageManager.isRegisteredComponent ( this );
@@ -401,6 +411,7 @@ public class WebCheckBox extends JCheckBox
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setLanguageUpdater ( LanguageUpdater updater )
     {
         LanguageManager.registerLanguageUpdater ( this, updater );
@@ -409,6 +420,7 @@ public class WebCheckBox extends JCheckBox
     /**
      * {@inheritDoc}
      */
+    @Override
     public void removeLanguageUpdater ()
     {
         LanguageManager.unregisterLanguageUpdater ( this );
@@ -421,6 +433,7 @@ public class WebCheckBox extends JCheckBox
     /**
      * {@inheritDoc}
      */
+    @Override
     public void registerSettings ( String key )
     {
         SettingsManager.registerComponent ( this, key );
@@ -429,6 +442,7 @@ public class WebCheckBox extends JCheckBox
     /**
      * {@inheritDoc}
      */
+    @Override
     public <T extends DefaultValue> void registerSettings ( String key, Class<T> defaultValueClass )
     {
         SettingsManager.registerComponent ( this, key, defaultValueClass );
@@ -437,6 +451,7 @@ public class WebCheckBox extends JCheckBox
     /**
      * {@inheritDoc}
      */
+    @Override
     public void registerSettings ( String key, Object defaultValue )
     {
         SettingsManager.registerComponent ( this, key, defaultValue );
@@ -445,6 +460,7 @@ public class WebCheckBox extends JCheckBox
     /**
      * {@inheritDoc}
      */
+    @Override
     public void registerSettings ( String group, String key )
     {
         SettingsManager.registerComponent ( this, group, key );
@@ -453,6 +469,7 @@ public class WebCheckBox extends JCheckBox
     /**
      * {@inheritDoc}
      */
+    @Override
     public <T extends DefaultValue> void registerSettings ( String group, String key, Class<T> defaultValueClass )
     {
         SettingsManager.registerComponent ( this, group, key, defaultValueClass );
@@ -461,6 +478,7 @@ public class WebCheckBox extends JCheckBox
     /**
      * {@inheritDoc}
      */
+    @Override
     public void registerSettings ( String group, String key, Object defaultValue )
     {
         SettingsManager.registerComponent ( this, group, key, defaultValue );
@@ -469,6 +487,7 @@ public class WebCheckBox extends JCheckBox
     /**
      * {@inheritDoc}
      */
+    @Override
     public void registerSettings ( String key, boolean loadInitialSettings, boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, key, loadInitialSettings, applySettingsChanges );
@@ -477,6 +496,7 @@ public class WebCheckBox extends JCheckBox
     /**
      * {@inheritDoc}
      */
+    @Override
     public <T extends DefaultValue> void registerSettings ( String key, Class<T> defaultValueClass, boolean loadInitialSettings,
                                                             boolean applySettingsChanges )
     {
@@ -486,6 +506,7 @@ public class WebCheckBox extends JCheckBox
     /**
      * {@inheritDoc}
      */
+    @Override
     public void registerSettings ( String key, Object defaultValue, boolean loadInitialSettings, boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, key, defaultValue, loadInitialSettings, applySettingsChanges );
@@ -494,6 +515,7 @@ public class WebCheckBox extends JCheckBox
     /**
      * {@inheritDoc}
      */
+    @Override
     public <T extends DefaultValue> void registerSettings ( String group, String key, Class<T> defaultValueClass,
                                                             boolean loadInitialSettings, boolean applySettingsChanges )
     {
@@ -503,6 +525,7 @@ public class WebCheckBox extends JCheckBox
     /**
      * {@inheritDoc}
      */
+    @Override
     public void registerSettings ( String group, String key, Object defaultValue, boolean loadInitialSettings,
                                    boolean applySettingsChanges )
     {
@@ -512,6 +535,7 @@ public class WebCheckBox extends JCheckBox
     /**
      * {@inheritDoc}
      */
+    @Override
     public void registerSettings ( SettingsProcessor settingsProcessor )
     {
         SettingsManager.registerComponent ( this, settingsProcessor );
@@ -520,6 +544,7 @@ public class WebCheckBox extends JCheckBox
     /**
      * {@inheritDoc}
      */
+    @Override
     public void unregisterSettings ()
     {
         SettingsManager.unregisterComponent ( this );
@@ -528,6 +553,7 @@ public class WebCheckBox extends JCheckBox
     /**
      * {@inheritDoc}
      */
+    @Override
     public void loadSettings ()
     {
         SettingsManager.loadComponentSettings ( this );
@@ -536,6 +562,7 @@ public class WebCheckBox extends JCheckBox
     /**
      * {@inheritDoc}
      */
+    @Override
     public void saveSettings ()
     {
         SettingsManager.saveComponentSettings ( this );
@@ -548,6 +575,7 @@ public class WebCheckBox extends JCheckBox
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebCheckBox setPlainFont ()
     {
         return SwingUtils.setPlainFont ( this );
@@ -556,6 +584,7 @@ public class WebCheckBox extends JCheckBox
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebCheckBox setPlainFont ( boolean apply )
     {
         return SwingUtils.setPlainFont ( this, apply );
@@ -564,6 +593,7 @@ public class WebCheckBox extends JCheckBox
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isPlainFont ()
     {
         return SwingUtils.isPlainFont ( this );
@@ -572,6 +602,7 @@ public class WebCheckBox extends JCheckBox
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebCheckBox setBoldFont ()
     {
         return SwingUtils.setBoldFont ( this );
@@ -580,6 +611,7 @@ public class WebCheckBox extends JCheckBox
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebCheckBox setBoldFont ( boolean apply )
     {
         return SwingUtils.setBoldFont ( this, apply );
@@ -588,6 +620,7 @@ public class WebCheckBox extends JCheckBox
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isBoldFont ()
     {
         return SwingUtils.isBoldFont ( this );
@@ -596,6 +629,7 @@ public class WebCheckBox extends JCheckBox
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebCheckBox setItalicFont ()
     {
         return SwingUtils.setItalicFont ( this );
@@ -604,6 +638,7 @@ public class WebCheckBox extends JCheckBox
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebCheckBox setItalicFont ( boolean apply )
     {
         return SwingUtils.setItalicFont ( this, apply );
@@ -612,6 +647,7 @@ public class WebCheckBox extends JCheckBox
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isItalicFont ()
     {
         return SwingUtils.isItalicFont ( this );
@@ -620,6 +656,7 @@ public class WebCheckBox extends JCheckBox
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebCheckBox setFontStyle ( boolean bold, boolean italic )
     {
         return SwingUtils.setFontStyle ( this, bold, italic );
@@ -628,6 +665,7 @@ public class WebCheckBox extends JCheckBox
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebCheckBox setFontStyle ( int style )
     {
         return SwingUtils.setFontStyle ( this, style );
@@ -636,6 +674,7 @@ public class WebCheckBox extends JCheckBox
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebCheckBox setFontSize ( int fontSize )
     {
         return SwingUtils.setFontSize ( this, fontSize );
@@ -644,6 +683,7 @@ public class WebCheckBox extends JCheckBox
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebCheckBox changeFontSize ( int change )
     {
         return SwingUtils.changeFontSize ( this, change );
@@ -652,6 +692,7 @@ public class WebCheckBox extends JCheckBox
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getFontSize ()
     {
         return SwingUtils.getFontSize ( this );
@@ -660,6 +701,7 @@ public class WebCheckBox extends JCheckBox
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebCheckBox setFontSizeAndStyle ( int fontSize, boolean bold, boolean italic )
     {
         return SwingUtils.setFontSizeAndStyle ( this, fontSize, bold, italic );
@@ -668,6 +710,7 @@ public class WebCheckBox extends JCheckBox
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebCheckBox setFontSizeAndStyle ( int fontSize, int style )
     {
         return SwingUtils.setFontSizeAndStyle ( this, fontSize, style );
@@ -676,6 +719,7 @@ public class WebCheckBox extends JCheckBox
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebCheckBox setFontName ( String fontName )
     {
         return SwingUtils.setFontName ( this, fontName );
@@ -684,6 +728,7 @@ public class WebCheckBox extends JCheckBox
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getFontName ()
     {
         return SwingUtils.getFontName ( this );
@@ -696,6 +741,7 @@ public class WebCheckBox extends JCheckBox
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getPreferredWidth ()
     {
         return SizeUtils.getPreferredWidth ( this );
@@ -704,6 +750,7 @@ public class WebCheckBox extends JCheckBox
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebCheckBox setPreferredWidth ( int preferredWidth )
     {
         return SizeUtils.setPreferredWidth ( this, preferredWidth );
@@ -712,6 +759,7 @@ public class WebCheckBox extends JCheckBox
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getPreferredHeight ()
     {
         return SizeUtils.getPreferredHeight ( this );
@@ -720,6 +768,7 @@ public class WebCheckBox extends JCheckBox
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebCheckBox setPreferredHeight ( int preferredHeight )
     {
         return SizeUtils.setPreferredHeight ( this, preferredHeight );
@@ -728,6 +777,7 @@ public class WebCheckBox extends JCheckBox
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getMinimumWidth ()
     {
         return SizeUtils.getMinimumWidth ( this );
@@ -736,6 +786,7 @@ public class WebCheckBox extends JCheckBox
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebCheckBox setMinimumWidth ( int minimumWidth )
     {
         return SizeUtils.setMinimumWidth ( this, minimumWidth );
@@ -744,6 +795,7 @@ public class WebCheckBox extends JCheckBox
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getMinimumHeight ()
     {
         return SizeUtils.getMinimumHeight ( this );
@@ -752,6 +804,7 @@ public class WebCheckBox extends JCheckBox
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebCheckBox setMinimumHeight ( int minimumHeight )
     {
         return SizeUtils.setMinimumHeight ( this, minimumHeight );
@@ -760,6 +813,7 @@ public class WebCheckBox extends JCheckBox
     /**
      * {@inheritDoc}
      */
+    @Override
     public Dimension getPreferredSize ()
     {
         return SizeUtils.getPreferredSize ( this, super.getPreferredSize () );

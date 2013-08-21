@@ -32,11 +32,13 @@ import java.util.List;
 
 public class ImageDropHandler extends TransferHandler
 {
+    @Override
     public boolean canImport ( TransferHandler.TransferSupport info )
     {
         return isDropEnabled ();
     }
 
+    @Override
     public boolean importData ( TransferHandler.TransferSupport info )
     {
         return info.isDrop () && importData ( info.getTransferable () );

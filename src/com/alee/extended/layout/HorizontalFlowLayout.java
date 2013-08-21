@@ -49,19 +49,23 @@ public class HorizontalFlowLayout implements LayoutManager
         return horizGap;
     }
 
+    @Override
     public void addLayoutComponent ( String name, Component comp )
     {
     }
 
+    @Override
     public void removeLayoutComponent ( Component comp )
     {
     }
 
+    @Override
     public Dimension preferredLayoutSize ( Container parent )
     {
         return getLayoutSize ( parent, false );
     }
 
+    @Override
     public Dimension minimumLayoutSize ( Container parent )
     {
         return getLayoutSize ( parent, true );
@@ -89,6 +93,7 @@ public class HorizontalFlowLayout implements LayoutManager
         return size;
     }
 
+    @Override
     public void layoutContainer ( Container parent )
     {
         // Required size

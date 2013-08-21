@@ -96,6 +96,7 @@ public class WebFilePlate extends WebPanel
         // Adding appear listener
         addAncestorListener ( new AncestorAdapter ()
         {
+            @Override
             public void ancestorAdded ( AncestorEvent event )
             {
                 if ( animator != null && animator.isRunning () )
@@ -106,6 +107,7 @@ public class WebFilePlate extends WebPanel
                 {
                     animator = new WebTimer ( "WebFilePlate.fadeInTimer", StyleConstants.animationDelay, new ActionListener ()
                     {
+                        @Override
                         public void actionPerformed ( ActionEvent e )
                         {
                             opacity += 0.1f;
@@ -146,6 +148,7 @@ public class WebFilePlate extends WebPanel
             remove.setFocusable ( false );
             remove.addActionListener ( new ActionListener ()
             {
+                @Override
                 public void actionPerformed ( final ActionEvent ae )
                 {
                     if ( animator != null && animator.isRunning () )
@@ -156,6 +159,7 @@ public class WebFilePlate extends WebPanel
                     {
                         animator = new WebTimer ( "WebFilePlate.fadeOutTimer", StyleConstants.animationDelay, new ActionListener ()
                         {
+                            @Override
                             public void actionPerformed ( ActionEvent e )
                             {
                                 opacity -= 0.1f;
@@ -248,6 +252,7 @@ public class WebFilePlate extends WebPanel
         this.showFileExtensions = showFileExtensions;
     }
 
+    @Override
     protected void paintComponent ( Graphics g )
     {
         LafUtils.setupAlphaComposite ( ( Graphics2D ) g, opacity, opacity < 1f );

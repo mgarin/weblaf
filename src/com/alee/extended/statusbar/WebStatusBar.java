@@ -145,6 +145,7 @@ public class WebStatusBar extends JComponent implements LanguageContainerMethods
         return ( ToolbarLayout ) getLayout ();
     }
 
+    @Override
     protected void paintComponent ( Graphics g )
     {
         super.paintComponent ( g );
@@ -173,6 +174,7 @@ public class WebStatusBar extends JComponent implements LanguageContainerMethods
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setLanguageContainerKey ( String key )
     {
         LanguageManager.registerLanguageContainer ( this, key );
@@ -181,6 +183,7 @@ public class WebStatusBar extends JComponent implements LanguageContainerMethods
     /**
      * {@inheritDoc}
      */
+    @Override
     public void removeLanguageContainerKey ()
     {
         LanguageManager.unregisterLanguageContainer ( this );
@@ -189,6 +192,7 @@ public class WebStatusBar extends JComponent implements LanguageContainerMethods
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getLanguageContainerKey ()
     {
         return LanguageManager.getLanguageContainerKey ( this );

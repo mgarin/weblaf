@@ -49,6 +49,7 @@ public class WebCollapsiblePaneSettingsProcessor extends SettingsProcessor<WebCo
     /**
      * {@inheritDoc}
      */
+    @Override
     public Boolean getDefaultValue ()
     {
         Boolean defaultValue = super.getDefaultValue ();
@@ -62,10 +63,12 @@ public class WebCollapsiblePaneSettingsProcessor extends SettingsProcessor<WebCo
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void doInit ( WebCollapsiblePane collapsiblePane )
     {
         collapsiblePaneAdapter = new CollapsiblePaneAdapter ()
         {
+            @Override
             public void expanding ( WebCollapsiblePane pane )
             {
                 if ( SettingsManager.isSaveOnChange () )
@@ -74,6 +77,7 @@ public class WebCollapsiblePaneSettingsProcessor extends SettingsProcessor<WebCo
                 }
             }
 
+            @Override
             public void collapsing ( WebCollapsiblePane pane )
             {
                 if ( SettingsManager.isSaveOnChange () )
@@ -88,6 +92,7 @@ public class WebCollapsiblePaneSettingsProcessor extends SettingsProcessor<WebCo
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void doDestroy ( WebCollapsiblePane collapsiblePane )
     {
         collapsiblePane.removeCollapsiblePaneListener ( collapsiblePaneAdapter );
@@ -97,6 +102,7 @@ public class WebCollapsiblePaneSettingsProcessor extends SettingsProcessor<WebCo
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void doLoad ( WebCollapsiblePane collapsiblePane )
     {
         collapsiblePane.setExpanded ( loadValue () );
@@ -105,6 +111,7 @@ public class WebCollapsiblePaneSettingsProcessor extends SettingsProcessor<WebCo
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void doSave ( WebCollapsiblePane collapsiblePane )
     {
         saveValue ( collapsiblePane.isExpanded () );

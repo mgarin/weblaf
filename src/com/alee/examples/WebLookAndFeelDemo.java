@@ -126,6 +126,7 @@ public class WebLookAndFeelDemo extends WebFrame
         final WebProgressDialog progress = createProgressDialog ();
         progress.addWindowListener ( new WindowAdapter ()
         {
+            @Override
             public void windowClosed ( WindowEvent e )
             {
                 // Stop loading demo on dialog close
@@ -152,6 +153,7 @@ public class WebLookAndFeelDemo extends WebFrame
         containerTransition.setTransitionEffect ( new FadeTransitionEffect () );
         containerTransition.addTransitionListener ( new TransitionAdapter ()
         {
+            @Override
             public void transitionFinished ()
             {
                 // To show back tooltip once
@@ -176,6 +178,7 @@ public class WebLookAndFeelDemo extends WebFrame
         // Base content
         appearanceTransition = new ComponentTransition ( createBackgroundPanel () )
         {
+            @Override
             public Dimension getPreferredSize ()
             {
                 return contentPane.getPreferredSize ();
@@ -187,6 +190,7 @@ public class WebLookAndFeelDemo extends WebFrame
         appearanceTransition.setTransitionEffect ( effect );
         appearanceTransition.addAncestorListener ( new AncestorAdapter ()
         {
+            @Override
             public void ancestorAdded ( AncestorEvent event )
             {
                 appearanceTransition.delayTransition ( 1000, contentPane );
@@ -194,6 +198,7 @@ public class WebLookAndFeelDemo extends WebFrame
         } );
         appearanceTransition.addTransitionListener ( new TransitionAdapter ()
         {
+            @Override
             public void transitionFinished ()
             {
                 // Search tip
@@ -208,6 +213,7 @@ public class WebLookAndFeelDemo extends WebFrame
 
                     final HotkeyInfo searchTipHide = HotkeyManager.registerHotkey ( Hotkey.CTRL_F, new HotkeyRunnable ()
                     {
+                        @Override
                         public void run ( KeyEvent e )
                         {
                             searchTip.closeTooltip ();
@@ -215,6 +221,7 @@ public class WebLookAndFeelDemo extends WebFrame
                     } );
                     searchTip.addTooltipListener ( new TooltipAdapter ()
                     {
+                        @Override
                         public void tooltipDestroyed ()
                         {
                             HotkeyManager.unregisterHotkey ( searchTipHide );
@@ -247,6 +254,7 @@ public class WebLookAndFeelDemo extends WebFrame
     {
         final WebImage wi = new WebImage ( WebLookAndFeelDemo.class, "icons/text.png" )
         {
+            @Override
             protected void paintComponent ( Graphics g )
             {
                 Graphics2D g2d = ( Graphics2D ) g;
@@ -267,6 +275,7 @@ public class WebLookAndFeelDemo extends WebFrame
     {
         SwingUtilities.invokeLater ( new Runnable ()
         {
+            @Override
             public void run ()
             {
                 setVisible ( true );
@@ -344,6 +353,7 @@ public class WebLookAndFeelDemo extends WebFrame
         featureState.setIcon ( fgs.getIcon () );
         featureState.addMouseListener ( new MouseAdapter ()
         {
+            @Override
             public void mousePressed ( MouseEvent e )
             {
                 showLegend ( featureState, getSelectedGroup ().getFeatureGroupState () );
@@ -359,6 +369,7 @@ public class WebLookAndFeelDemo extends WebFrame
 
         exampleTabs.addChangeListener ( new ChangeListener ()
         {
+            @Override
             public void stateChanged ( ChangeEvent e )
             {
                 ExampleGroup sg = getSelectedGroup ();
@@ -375,6 +386,7 @@ public class WebLookAndFeelDemo extends WebFrame
         update.setVisible ( false );
         update.addActionListener ( new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 WebUtils.browseSiteSafely ( WEBLAF_SITE + "download/" );
@@ -387,6 +399,7 @@ public class WebLookAndFeelDemo extends WebFrame
         {
             private VersionInfo lastVersion = null;
 
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 VersionInfo lv = getLastVersion ();
@@ -402,6 +415,7 @@ public class WebLookAndFeelDemo extends WebFrame
                             .showOneTimeTooltip ( update, null, updateIcon, "New library version available: " + lv.toString () );
                     update.addMouseListener ( new MouseAdapter ()
                     {
+                        @Override
                         public void mouseEntered ( MouseEvent e )
                         {
                             versionTip.closeTooltip ();
@@ -465,6 +479,7 @@ public class WebLookAndFeelDemo extends WebFrame
         enabled.setSelected ( true );
         final Runnable enabledUpdater = new Runnable ()
         {
+            @Override
             public void run ()
             {
                 boolean e = enabled.isSelected ();
@@ -478,6 +493,7 @@ public class WebLookAndFeelDemo extends WebFrame
         enabledUpdater.run ();
         enabled.addActionListener ( new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 // Updating button
@@ -510,6 +526,7 @@ public class WebLookAndFeelDemo extends WebFrame
         {
             private List<TransitionEffect> oldEffects;
 
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 if ( animate.isSelected () )
@@ -531,6 +548,7 @@ public class WebLookAndFeelDemo extends WebFrame
         displayTabTitles.setSelected ( true );
         displayTabTitles.addActionListener ( new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 if ( displayTabTitles.isSelected () )
@@ -557,6 +575,7 @@ public class WebLookAndFeelDemo extends WebFrame
         ltrOrientation.setSelected ( LanguageManager.isLeftToRight () );
         ltrOrientation.addActionListener ( new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 LanguageManager.changeOrientation ();
@@ -566,6 +585,7 @@ public class WebLookAndFeelDemo extends WebFrame
         // Special application-wide (global) hotkey
         HotkeyManager.registerHotkey ( Hotkey.ALT_R, new HotkeyRunnable ()
         {
+            @Override
             public void run ( KeyEvent e )
             {
                 ltrOrientation.doClick ();
@@ -673,6 +693,7 @@ public class WebLookAndFeelDemo extends WebFrame
         demosButton.setSelected ( true );
         demosButton.addActionListener ( new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 containerTransition.performTransition ( exampleTabs );
@@ -686,6 +707,7 @@ public class WebLookAndFeelDemo extends WebFrame
         sourcesButton.setText ( "Source code" );
         sourcesButton.addActionListener ( new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 sourceViewer.updateClassPath ( getSelectedGroup ().getClass () );
@@ -698,6 +720,7 @@ public class WebLookAndFeelDemo extends WebFrame
         updateCurrentDemo ();
         exampleTabs.addChangeListener ( new ChangeListener ()
         {
+            @Override
             public void stateChanged ( ChangeEvent e )
             {
                 updateCurrentDemo ();
@@ -763,6 +786,7 @@ public class WebLookAndFeelDemo extends WebFrame
         // Installing sliding out search component for demo window layered pane
         slidingSearch = new SlidingSearch ( getLayeredPane () )
         {
+            @Override
             protected boolean isSearchEnabled ()
             {
                 return exampleTabs.isShowing ();
@@ -772,6 +796,7 @@ public class WebLookAndFeelDemo extends WebFrame
         // Search action
         slidingSearch.getSearchField ().addCaretListener ( new CaretListener ()
         {
+            @Override
             public void caretUpdate ( CaretEvent e )
             {
                 final List<Component> found =

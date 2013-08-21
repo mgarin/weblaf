@@ -198,6 +198,7 @@ public class TitledBorderPainter<E extends JComponent> extends BorderPainter<E> 
         this.titleText = titleText;
     }
 
+    @Override
     public Insets getMargin ( E c )
     {
         Insets m = super.getMargin ( c );
@@ -230,6 +231,7 @@ public class TitledBorderPainter<E extends JComponent> extends BorderPainter<E> 
         return m;
     }
 
+    @Override
     public Dimension getPreferredSize ( E c )
     {
         if ( isEmptyTitle () )
@@ -261,6 +263,7 @@ public class TitledBorderPainter<E extends JComponent> extends BorderPainter<E> 
         }
     }
 
+    @Override
     public void paint ( Graphics2D g2d, Rectangle bounds, E c )
     {
         // Initializing values

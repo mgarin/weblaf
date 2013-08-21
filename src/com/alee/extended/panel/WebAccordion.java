@@ -461,6 +461,7 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
         // State change enabler
         pane.setStateChangeHandler ( new DataProvider<Boolean> ()
         {
+            @Override
             public Boolean provide ()
             {
                 return !fillSpace || !pane.isExpanded () || getSelectionCount () > 1;
@@ -470,12 +471,14 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
         // Adding new listener
         CollapsiblePaneListener cpl = new CollapsiblePaneAdapter ()
         {
+            @Override
             public void expanding ( WebCollapsiblePane pane )
             {
                 // Update selected panes
                 updateSelections ( panes.indexOf ( pane ), true );
             }
 
+            @Override
             public void collapsing ( WebCollapsiblePane pane )
             {
                 // This hold additional events from firing when panes collapse due to panes selection mode
@@ -909,6 +912,7 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
     /**
      * {@inheritDoc}
      */
+    @Override
     public void registerSettings ( String key )
     {
         SettingsManager.registerComponent ( this, key );
@@ -917,6 +921,7 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
     /**
      * {@inheritDoc}
      */
+    @Override
     public <T extends DefaultValue> void registerSettings ( String key, Class<T> defaultValueClass )
     {
         SettingsManager.registerComponent ( this, key, defaultValueClass );
@@ -925,6 +930,7 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
     /**
      * {@inheritDoc}
      */
+    @Override
     public void registerSettings ( String key, Object defaultValue )
     {
         SettingsManager.registerComponent ( this, key, defaultValue );
@@ -933,6 +939,7 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
     /**
      * {@inheritDoc}
      */
+    @Override
     public void registerSettings ( String group, String key )
     {
         SettingsManager.registerComponent ( this, group, key );
@@ -941,6 +948,7 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
     /**
      * {@inheritDoc}
      */
+    @Override
     public <T extends DefaultValue> void registerSettings ( String group, String key, Class<T> defaultValueClass )
     {
         SettingsManager.registerComponent ( this, group, key, defaultValueClass );
@@ -949,6 +957,7 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
     /**
      * {@inheritDoc}
      */
+    @Override
     public void registerSettings ( String group, String key, Object defaultValue )
     {
         SettingsManager.registerComponent ( this, group, key, defaultValue );
@@ -957,6 +966,7 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
     /**
      * {@inheritDoc}
      */
+    @Override
     public void registerSettings ( String key, boolean loadInitialSettings, boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, key, loadInitialSettings, applySettingsChanges );
@@ -965,6 +975,7 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
     /**
      * {@inheritDoc}
      */
+    @Override
     public <T extends DefaultValue> void registerSettings ( String key, Class<T> defaultValueClass, boolean loadInitialSettings,
                                                             boolean applySettingsChanges )
     {
@@ -974,6 +985,7 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
     /**
      * {@inheritDoc}
      */
+    @Override
     public void registerSettings ( String key, Object defaultValue, boolean loadInitialSettings, boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, key, defaultValue, loadInitialSettings, applySettingsChanges );
@@ -982,6 +994,7 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
     /**
      * {@inheritDoc}
      */
+    @Override
     public <T extends DefaultValue> void registerSettings ( String group, String key, Class<T> defaultValueClass,
                                                             boolean loadInitialSettings, boolean applySettingsChanges )
     {
@@ -991,6 +1004,7 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
     /**
      * {@inheritDoc}
      */
+    @Override
     public void registerSettings ( String group, String key, Object defaultValue, boolean loadInitialSettings,
                                    boolean applySettingsChanges )
     {
@@ -1000,6 +1014,7 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
     /**
      * {@inheritDoc}
      */
+    @Override
     public void registerSettings ( SettingsProcessor settingsProcessor )
     {
         SettingsManager.registerComponent ( this, settingsProcessor );
@@ -1008,6 +1023,7 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
     /**
      * {@inheritDoc}
      */
+    @Override
     public void unregisterSettings ()
     {
         SettingsManager.unregisterComponent ( this );
@@ -1016,6 +1032,7 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
     /**
      * {@inheritDoc}
      */
+    @Override
     public void loadSettings ()
     {
         SettingsManager.loadComponentSettings ( this );
@@ -1024,6 +1041,7 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
     /**
      * {@inheritDoc}
      */
+    @Override
     public void saveSettings ()
     {
         SettingsManager.saveComponentSettings ( this );

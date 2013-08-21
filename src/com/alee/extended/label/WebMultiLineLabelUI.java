@@ -87,6 +87,7 @@ public class WebMultiLineLabelUI extends BasicLabelUI implements ComponentListen
     private boolean drawShade = WebLabelStyle.drawShade;
     private Color shadeColor = WebLabelStyle.shadeColor;
 
+    @Override
     public void installUI ( JComponent c )
     {
         super.installUI ( c );
@@ -109,6 +110,7 @@ public class WebMultiLineLabelUI extends BasicLabelUI implements ComponentListen
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void uninstallDefaults ( JLabel c )
     {
         super.uninstallDefaults ( c );
@@ -118,6 +120,7 @@ public class WebMultiLineLabelUI extends BasicLabelUI implements ComponentListen
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void installListeners ( JLabel c )
     {
         super.installListeners ( c );
@@ -127,6 +130,7 @@ public class WebMultiLineLabelUI extends BasicLabelUI implements ComponentListen
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void uninstallListeners ( JLabel c )
     {
         super.uninstallListeners ( c );
@@ -170,6 +174,7 @@ public class WebMultiLineLabelUI extends BasicLabelUI implements ComponentListen
     /**
      * {@inheritDoc}
      */
+    @Override
     public void propertyChange ( PropertyChangeEvent e )
     {
         super.propertyChange ( e );
@@ -214,6 +219,7 @@ public class WebMultiLineLabelUI extends BasicLabelUI implements ComponentListen
     /**
      * {@inheritDoc}
      */
+    @Override
     public void paint ( Graphics g, JComponent c )
     {
         Map hints = SwingUtils.setupTextAntialias ( g, c );
@@ -308,6 +314,7 @@ public class WebMultiLineLabelUI extends BasicLabelUI implements ComponentListen
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void paintEnabledText ( JLabel l, Graphics g, String s, int textX, int textY )
     {
         if ( drawShade )
@@ -326,6 +333,7 @@ public class WebMultiLineLabelUI extends BasicLabelUI implements ComponentListen
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void paintDisabledText ( JLabel l, Graphics g, String s, int textX, int textY )
     {
         if ( drawShade )
@@ -473,6 +481,7 @@ public class WebMultiLineLabelUI extends BasicLabelUI implements ComponentListen
     /**
      * {@inheritDoc}
      */
+    @Override
     public Dimension getPreferredSize ( JComponent c )
     {
         Dimension d = super.getPreferredSize ( c );
@@ -529,7 +538,7 @@ public class WebMultiLineLabelUI extends BasicLabelUI implements ComponentListen
      * @param l the label
      * @return the text lines of the label.
      */
-    @SuppressWarnings ( "unchecked" )
+    @SuppressWarnings ("unchecked")
     protected List<String> getTextLines ( JLabel l )
     {
         List<String> lines = ( List<String> ) l.getClientProperty ( PROPERTY_KEY );
@@ -544,6 +553,7 @@ public class WebMultiLineLabelUI extends BasicLabelUI implements ComponentListen
     /**
      * {@inheritDoc}
      */
+    @Override
     public void componentHidden ( ComponentEvent e )
     {
         // Don't care
@@ -552,6 +562,7 @@ public class WebMultiLineLabelUI extends BasicLabelUI implements ComponentListen
     /**
      * {@inheritDoc}
      */
+    @Override
     public void componentMoved ( ComponentEvent e )
     {
         // Don't care
@@ -560,6 +571,7 @@ public class WebMultiLineLabelUI extends BasicLabelUI implements ComponentListen
     /**
      * {@inheritDoc}
      */
+    @Override
     public void componentResized ( ComponentEvent e )
     {
         clearCache ( ( JLabel ) e.getSource () );
@@ -568,6 +580,7 @@ public class WebMultiLineLabelUI extends BasicLabelUI implements ComponentListen
     /**
      * {@inheritDoc}
      */
+    @Override
     public void componentShown ( ComponentEvent e )
     {
         // Don't care

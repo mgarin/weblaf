@@ -31,36 +31,43 @@ import java.util.List;
 
 public class NinePatchEditorGroup extends DefaultExampleGroup
 {
+    @Override
     public Icon getGroupIcon ()
     {
         return loadGroupIcon ( "ninepatch.png" );
     }
 
+    @Override
     public String getGroupName ()
     {
         return "Nine-patch editor";
     }
 
+    @Override
     public String getGroupDescription ()
     {
         return "Example of nine-patch editor usage";
     }
 
+    @Override
     public boolean isSingleExample ()
     {
         return true;
     }
 
+    @Override
     public FeatureState getFeatureGroupState ()
     {
         return FeatureState.beta;
     }
 
+    @Override
     public boolean isShowWatermark ()
     {
         return false;
     }
 
+    @Override
     public List<Example> getGroupExamples ()
     {
         return CollectionUtils.copy ( ( Example ) new NinePatchEditorExample () );

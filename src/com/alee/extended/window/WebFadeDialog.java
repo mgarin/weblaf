@@ -77,6 +77,7 @@ public class WebFadeDialog extends WebDialog implements ActionListener, WindowFo
         this.minimumOpacityDistance = minimumOpacityDistance;
     }
 
+    @Override
     public void windowGainedFocus ( WindowEvent e )
     {
         updater.stop ();
@@ -84,6 +85,7 @@ public class WebFadeDialog extends WebDialog implements ActionListener, WindowFo
         updateOpacity ();
     }
 
+    @Override
     public void windowLostFocus ( WindowEvent e )
     {
         if ( isShowing () )
@@ -92,41 +94,49 @@ public class WebFadeDialog extends WebDialog implements ActionListener, WindowFo
         }
     }
 
+    @Override
     public void windowOpened ( WindowEvent e )
     {
         //
     }
 
+    @Override
     public void windowClosed ( WindowEvent e )
     {
         updater.stop ();
     }
 
+    @Override
     public void windowClosing ( WindowEvent e )
     {
 
     }
 
+    @Override
     public void windowIconified ( WindowEvent e )
     {
 
     }
 
+    @Override
     public void windowDeiconified ( WindowEvent e )
     {
 
     }
 
+    @Override
     public void windowActivated ( WindowEvent e )
     {
 
     }
 
+    @Override
     public void windowDeactivated ( WindowEvent e )
     {
 
     }
 
+    @Override
     public void actionPerformed ( ActionEvent e )
     {
         float newOpacity;

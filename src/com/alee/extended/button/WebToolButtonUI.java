@@ -41,6 +41,7 @@ public class WebToolButtonUI extends BasicButtonUI
 
     private WebTimer animator;
 
+    @Override
     public void installUI ( JComponent c )
     {
         super.installUI ( c );
@@ -50,6 +51,7 @@ public class WebToolButtonUI extends BasicButtonUI
             final JToggleButton toggleButton = ( JToggleButton ) c;
             toggleButton.addItemListener ( new ItemListener ()
             {
+                @Override
                 public void itemStateChanged ( ItemEvent e )
                 {
                     if ( animator != null && animator.isRunning () )
@@ -64,6 +66,7 @@ public class WebToolButtonUI extends BasicButtonUI
                         {
                             private int timeLeft = 0;
 
+                            @Override
                             public void actionPerformed ( ActionEvent e )
                             {
                                 timeLeft += StyleConstants.animationDelay;
@@ -139,6 +142,7 @@ public class WebToolButtonUI extends BasicButtonUI
         }
     }
 
+    @Override
     public void paint ( Graphics g, JComponent c )
     {
         AbstractButton b = ( AbstractButton ) c;
@@ -155,6 +159,7 @@ public class WebToolButtonUI extends BasicButtonUI
         super.paint ( g, c );
     }
 
+    @Override
     protected void paintIcon ( Graphics g, JComponent c, Rectangle iconRect )
     {
         AbstractButton b = ( AbstractButton ) c;

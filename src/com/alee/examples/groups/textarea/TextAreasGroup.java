@@ -30,21 +30,25 @@ import java.util.List;
 
 public class TextAreasGroup extends DefaultExampleGroup
 {
+    @Override
     public Icon getGroupIcon ()
     {
         return loadGroupIcon ( "textarea.png" );
     }
 
+    @Override
     public String getGroupName ()
     {
         return "Text areas";
     }
 
+    @Override
     public String getGroupDescription ()
     {
         return "Various examples of text areas usage";
     }
 
+    @Override
     public List<Example> getGroupExamples ()
     {
         List<Example> examples = new ArrayList<Example> ();

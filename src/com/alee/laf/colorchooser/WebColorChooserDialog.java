@@ -87,6 +87,7 @@ public class WebColorChooserDialog extends WebDialog implements DialogOptions
 
         addWindowListener ( new WindowAdapter ()
         {
+            @Override
             public void windowClosed ( WindowEvent e )
             {
                 colorChooser.setResult ( CLOSE_OPTION );
@@ -95,16 +96,19 @@ public class WebColorChooserDialog extends WebDialog implements DialogOptions
 
         colorChooser.addColorChooserListener ( new ColorChooserListener ()
         {
+            @Override
             public void okPressed ( ActionEvent e )
             {
                 WebColorChooserDialog.this.dispose ();
             }
 
+            @Override
             public void resetPressed ( ActionEvent e )
             {
                 //
             }
 
+            @Override
             public void cancelPressed ( ActionEvent e )
             {
                 WebColorChooserDialog.this.dispose ();
@@ -151,6 +155,7 @@ public class WebColorChooserDialog extends WebDialog implements DialogOptions
         colorChooser.setColor ( color );
     }
 
+    @Override
     public void setVisible ( boolean b )
     {
         if ( b )

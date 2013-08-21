@@ -68,11 +68,13 @@ public abstract class AbstractListCellEditor<E extends Component, T> implements 
     /**
      * {@inheritDoc}
      */
+    @Override
     public void install ( final JList list )
     {
         // Installing edit bounds updater
         editorPositionUpdater = new ComponentAdapter ()
         {
+            @Override
             public void componentResized ( ComponentEvent e )
             {
                 checkEditorBounds ();
@@ -107,6 +109,7 @@ public abstract class AbstractListCellEditor<E extends Component, T> implements 
     {
         mouseAdapter = new MouseAdapter ()
         {
+            @Override
             public void mouseClicked ( MouseEvent e )
             {
                 if ( e.getClickCount () == 2 && SwingUtilities.isLeftMouseButton ( e ) )
@@ -125,6 +128,7 @@ public abstract class AbstractListCellEditor<E extends Component, T> implements 
 
         keyAdapter = new KeyAdapter ()
         {
+            @Override
             public void keyReleased ( KeyEvent e )
             {
                 if ( Hotkey.F2.isTriggered ( e ) )
@@ -139,6 +143,7 @@ public abstract class AbstractListCellEditor<E extends Component, T> implements 
     /**
      * {@inheritDoc}
      */
+    @Override
     public void uninstall ( JList list )
     {
         // Uninstalling edit bounds updater
@@ -168,6 +173,7 @@ public abstract class AbstractListCellEditor<E extends Component, T> implements 
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isCellEditable ( JList list, int index, T value )
     {
         if ( list instanceof WebList )
@@ -183,6 +189,7 @@ public abstract class AbstractListCellEditor<E extends Component, T> implements 
     /**
      * {@inheritDoc}
      */
+    @Override
     public E getCellEditor ( final JList list, int index, T value )
     {
         // Creating editor component
@@ -211,6 +218,7 @@ public abstract class AbstractListCellEditor<E extends Component, T> implements 
         // Editing stop on focus loss event
         final FocusAdapter focusAdapter = new FocusAdapter ()
         {
+            @Override
             public void focusLost ( FocusEvent e )
             {
                 stopEdit ( list );
@@ -221,6 +229,7 @@ public abstract class AbstractListCellEditor<E extends Component, T> implements 
         // Editing stop and cancel on key events
         editor.addKeyListener ( new KeyAdapter ()
         {
+            @Override
             public void keyReleased ( KeyEvent e )
             {
                 if ( Hotkey.ENTER.isTriggered ( e ) )
@@ -246,6 +255,7 @@ public abstract class AbstractListCellEditor<E extends Component, T> implements 
     /**
      * {@inheritDoc}
      */
+    @Override
     public void startEdit ( final JList list, int index )
     {
         // Checking that selection is not empty
@@ -284,6 +294,7 @@ public abstract class AbstractListCellEditor<E extends Component, T> implements 
     /**
      * {@inheritDoc}
      */
+    @Override
     public void cancelEdit ( final JList list )
     {
         // Removing cell editor from the list
@@ -296,6 +307,7 @@ public abstract class AbstractListCellEditor<E extends Component, T> implements 
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean stopEdit ( final JList list )
     {
         if ( !isEditing () )
@@ -393,6 +405,7 @@ public abstract class AbstractListCellEditor<E extends Component, T> implements 
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean updateListModel ( JList list, int index, T oldValue, T newValue, boolean updateSelection )
     {
         // Checking if value has changed
@@ -425,11 +438,13 @@ public abstract class AbstractListCellEditor<E extends Component, T> implements 
             }
             list.setModel ( new AbstractListModel ()
             {
+                @Override
                 public int getSize ()
                 {
                     return values.length;
                 }
 
+                @Override
                 public Object getElementAt ( int index )
                 {
                     return values[ index ];
@@ -446,6 +461,7 @@ public abstract class AbstractListCellEditor<E extends Component, T> implements 
     /**
      * {@inheritDoc}
      */
+    @Override
     public void editStarted ( JList list, int index )
     {
         editedCell = index;
@@ -458,6 +474,7 @@ public abstract class AbstractListCellEditor<E extends Component, T> implements 
     /**
      * {@inheritDoc}
      */
+    @Override
     public void editStopped ( JList list, int index, T oldValue, T newValue )
     {
         editedCell = -1;
@@ -470,6 +487,7 @@ public abstract class AbstractListCellEditor<E extends Component, T> implements 
     /**
      * {@inheritDoc}
      */
+    @Override
     public void editCancelled ( JList list, int index )
     {
         editedCell = -1;
@@ -482,6 +500,7 @@ public abstract class AbstractListCellEditor<E extends Component, T> implements 
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isEditing ()
     {
         return editedCell != -1;

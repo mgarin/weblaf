@@ -31,26 +31,31 @@ import java.util.List;
 
 public class ProgressGroup extends DefaultExampleGroup
 {
+    @Override
     public Icon getGroupIcon ()
     {
         return loadGroupIcon ( "progress.png" );
     }
 
+    @Override
     public String getGroupName ()
     {
         return "Custom progress";
     }
 
+    @Override
     public String getGroupDescription ()
     {
         return "Various examples of progress components usage";
     }
 
+    @Override
     public FeatureState getFeatureGroupState ()
     {
         return FeatureState.beta;
     }
 
+    @Override
     public List<Example> getGroupExamples ()
     {
         List<Example> examples = new ArrayList<Example> ();

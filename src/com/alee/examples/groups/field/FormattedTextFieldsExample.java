@@ -31,16 +31,19 @@ import java.util.Date;
 
 public class FormattedTextFieldsExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Formatted text fields";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Web-styled formatted text fields";
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         // Date formatted text field

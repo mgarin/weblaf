@@ -35,21 +35,25 @@ import java.awt.*;
 
 public class CollapsiblePanesExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Collapsible panes";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Web-styled collapsible panes";
     }
 
+    @Override
     public FeatureState getFeatureState ()
     {
         return FeatureState.beta;
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         // Title icon

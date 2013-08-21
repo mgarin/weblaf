@@ -62,6 +62,7 @@ public class FadeTransitionEffect extends DefaultTransitionEffect
         put ( FADE_SPEED, speed );
     }
 
+    @Override
     public void prepareAnimation ( ImageTransition imageTransition )
     {
         // Updating settings
@@ -75,6 +76,7 @@ public class FadeTransitionEffect extends DefaultTransitionEffect
         imageTransition.repaint ();
     }
 
+    @Override
     public boolean performAnimation ( ImageTransition imageTransition )
     {
         if ( opacity < 1f )
@@ -94,6 +96,7 @@ public class FadeTransitionEffect extends DefaultTransitionEffect
         return Math.max ( minimumSpeed, speed * ( float ) Math.sqrt ( ( 1f - opacity ) / 1f ) );
     }
 
+    @Override
     public void paint ( Graphics2D g2d, ImageTransition imageTransition )
     {
         // Fading out old image

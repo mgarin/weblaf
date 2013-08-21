@@ -32,7 +32,7 @@ import java.util.List;
  * User: mgarin Date: 20.04.12 Time: 13:57
  */
 
-@XStreamAlias ( "record" )
+@XStreamAlias ("record")
 public final class Record implements Serializable, Cloneable
 {
     @XStreamAsAttribute
@@ -183,6 +183,7 @@ public final class Record implements Serializable, Cloneable
         return null;
     }
 
+    @Override
     public Record clone ()
     {
         return new Record ( key, hotkey, CollectionUtils.clone ( values ) );

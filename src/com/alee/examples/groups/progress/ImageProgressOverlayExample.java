@@ -35,16 +35,19 @@ import java.awt.event.MouseEvent;
 
 public class ImageProgressOverlayExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Image progress";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Web-styled image progress overlay";
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         final WebProgressOverlay progressOverlay1 = new WebProgressOverlay ();
@@ -61,6 +64,7 @@ public class ImageProgressOverlayExample extends DefaultExample
         ava1.setShadeWidth ( 5 );
         ava1.addMouseListener ( new MouseAdapter ()
         {
+            @Override
             public void mousePressed ( MouseEvent e )
             {
                 progressOverlay1.setShowLoad ( !progressOverlay1.isShowLoad () );
@@ -78,6 +82,7 @@ public class ImageProgressOverlayExample extends DefaultExample
         ava2.setShadeWidth ( 5 );
         ava2.addMouseListener ( new MouseAdapter ()
         {
+            @Override
             public void mousePressed ( MouseEvent e )
             {
                 progressOverlay2.setShowLoad ( !progressOverlay2.isShowLoad () );
@@ -95,6 +100,7 @@ public class ImageProgressOverlayExample extends DefaultExample
         ava3.setShadeWidth ( 5 );
         ava3.addMouseListener ( new MouseAdapter ()
         {
+            @Override
             public void mousePressed ( MouseEvent e )
             {
                 progressOverlay3.setShowLoad ( !progressOverlay3.isShowLoad () );
@@ -112,6 +118,7 @@ public class ImageProgressOverlayExample extends DefaultExample
         ava4.setShadeWidth ( 5 );
         ava4.addMouseListener ( new MouseAdapter ()
         {
+            @Override
             public void mousePressed ( MouseEvent e )
             {
                 progressOverlay4.setShowLoad ( !progressOverlay4.isShowLoad () );

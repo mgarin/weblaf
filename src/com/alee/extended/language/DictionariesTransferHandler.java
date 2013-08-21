@@ -54,6 +54,7 @@ public class DictionariesTransferHandler extends TransferHandler
 
         tree.addMouseMotionListener ( new MouseAdapter ()
         {
+            @Override
             public void mouseDragged ( MouseEvent e )
             {
                 if ( SwingUtilities.isLeftMouseButton ( e ) )
@@ -70,11 +71,13 @@ public class DictionariesTransferHandler extends TransferHandler
         return tree;
     }
 
+    @Override
     public int getSourceActions ( JComponent c )
     {
         return TransferHandler.COPY_OR_MOVE;
     }
 
+    @Override
     protected Transferable createTransferable ( JComponent c )
     {
         Object object = tree.getSelectedValue ();
@@ -87,16 +90,19 @@ public class DictionariesTransferHandler extends TransferHandler
         return new Transferable ()
         {
 
+            @Override
             public DataFlavor[] getTransferDataFlavors ()
             {
                 return flavors;
             }
 
+            @Override
             public boolean isDataFlavorSupported ( DataFlavor flavor )
             {
                 return flavor.equals ( DataFlavor.stringFlavor );
             }
 
+            @Override
             public Object getTransferData ( DataFlavor flavor ) throws UnsupportedFlavorException, IOException
             {
                 if ( isDataFlavorSupported ( flavor ) )
@@ -111,6 +117,7 @@ public class DictionariesTransferHandler extends TransferHandler
         };
     }
 
+    @Override
     public boolean canImport ( TransferHandler.TransferSupport info )
     {
         try
@@ -157,6 +164,7 @@ public class DictionariesTransferHandler extends TransferHandler
         }
     }
 
+    @Override
     public boolean importData ( TransferHandler.TransferSupport info )
     {
         try

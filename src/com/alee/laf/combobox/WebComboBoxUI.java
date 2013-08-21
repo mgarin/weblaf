@@ -68,6 +68,7 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider
         return new WebComboBoxUI ();
     }
 
+    @Override
     public void installUI ( JComponent c )
     {
         super.installUI ( c );
@@ -91,6 +92,7 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider
         // Rollover scrolling listener
         mwl = new MouseWheelListener ()
         {
+            @Override
             public void mouseWheelMoved ( MouseWheelEvent e )
             {
                 if ( mouseWheelScrollingEnabled && comboBox.isEnabled () )
@@ -108,6 +110,7 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider
         comboBox.addMouseWheelListener ( mwl );
     }
 
+    @Override
     public void uninstallUI ( JComponent c )
     {
         c.removeMouseWheelListener ( mwl );
@@ -136,6 +139,7 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider
         }
     }
 
+    @Override
     protected void installComponents ()
     {
         comboBox.setLayout ( createLayoutManager () );
@@ -155,17 +159,20 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider
         comboBox.add ( currentValuePane, "0,0" );
     }
 
+    @Override
     protected ComboBoxEditor createEditor ()
     {
         final ComboBoxEditor editor = super.createEditor ();
         Component e = editor.getEditorComponent ();
         e.addFocusListener ( new FocusAdapter ()
         {
+            @Override
             public void focusGained ( FocusEvent e )
             {
                 comboBox.repaint ();
             }
 
+            @Override
             public void focusLost ( FocusEvent e )
             {
                 comboBox.repaint ();
@@ -184,6 +191,7 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider
         return editor;
     }
 
+    @Override
     protected JButton createArrowButton ()
     {
         arrow = new WebButton ();
@@ -196,6 +204,7 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider
         return arrow;
     }
 
+    @Override
     public void configureArrowButton ()
     {
         super.configureArrowButton ();
@@ -205,10 +214,12 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider
         }
     }
 
+    @Override
     protected ComboPopup createPopup ()
     {
         return new BasicComboPopup ( comboBox )
         {
+            @Override
             protected JScrollPane createScroller ()
             {
                 JScrollPane scroll = super.createScroller ();
@@ -235,6 +246,7 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider
                 return scroll;
             }
 
+            @Override
             protected JList createList ()
             {
                 JList list = super.createList ();
@@ -249,6 +261,7 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider
                 return list;
             }
 
+            @Override
             protected void configurePopup ()
             {
                 super.configurePopup ();
@@ -256,6 +269,7 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider
                 // Button updater
                 addPopupMenuListener ( new PopupMenuListener ()
                 {
+                    @Override
                     public void popupMenuWillBecomeVisible ( PopupMenuEvent e )
                     {
                         arrow.setIcon ( collapseIcon );
@@ -264,11 +278,13 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider
                         comboBox.repaint ();
                     }
 
+                    @Override
                     public void popupMenuWillBecomeInvisible ( PopupMenuEvent e )
                     {
                         arrow.setIcon ( expandIcon );
                     }
 
+                    @Override
                     public void popupMenuCanceled ( PopupMenuEvent e )
                     {
                         arrow.setIcon ( expandIcon );
@@ -276,6 +292,7 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider
                 } );
             }
 
+            @Override
             public void show ()
             {
                 // informing listeners
@@ -350,6 +367,7 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider
         }
     }
 
+    @Override
     public Shape provideShape ()
     {
         if ( drawBorder )
@@ -456,6 +474,7 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider
         this.mouseWheelScrollingEnabled = enabled;
     }
 
+    @Override
     public void paint ( Graphics g, JComponent c )
     {
         hasFocus = comboBox.hasFocus ();
@@ -471,6 +490,7 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider
         }
     }
 
+    @Override
     public void paintCurrentValueBackground ( Graphics g, Rectangle bounds, boolean hasFocus )
     {
         Graphics2D g2d = ( Graphics2D ) g;
@@ -505,6 +525,7 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider
         }
     }
 
+    @Override
     public void paintCurrentValue ( Graphics g, Rectangle bounds, boolean hasFocus )
     {
         ListCellRenderer renderer = comboBox.getRenderer ();
@@ -546,6 +567,7 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider
         currentValuePane.paintComponent ( g, c, comboBox, x, y, w, h, shouldValidate );
     }
 
+    @Override
     protected LayoutManager createLayoutManager ()
     {
         return new WebComboBoxLayout ();
@@ -553,26 +575,31 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider
 
     private class WebComboBoxLayout implements LayoutManager
     {
+        @Override
         public void addLayoutComponent ( String name, Component comp )
         {
             //
         }
 
+        @Override
         public void removeLayoutComponent ( Component comp )
         {
             //
         }
 
+        @Override
         public Dimension preferredLayoutSize ( Container parent )
         {
             return parent.getPreferredSize ();
         }
 
+        @Override
         public Dimension minimumLayoutSize ( Container parent )
         {
             return parent.getMinimumSize ();
         }
 
+        @Override
         public void layoutContainer ( Container parent )
         {
             JComboBox cb = ( JComboBox ) parent;

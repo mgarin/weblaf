@@ -38,21 +38,25 @@ public class FuturicoFieldsExample extends DefaultExample
     public static final ImageIcon searchIcon = new ImageIcon ( FuturicoFieldsExample.class.getResource ( "icons/field/search.png" ) );
     public static final ImageIcon pSearchIcon = new ImageIcon ( FuturicoFieldsExample.class.getResource ( "icons/field/psearch.png" ) );
 
+    @Override
     public String getTitle ()
     {
         return "Futurico text fields";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Futurico-styled text fields";
     }
 
+    @Override
     public boolean isFillWidth ()
     {
         return true;
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         // Painters used for example fields

@@ -30,6 +30,7 @@ public class WebInternalFrameIconPane extends WebInternalFrameTitlePane
         super ( f );
     }
 
+    @Override
     protected boolean isFrameTitle ()
     {
         return false;

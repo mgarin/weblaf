@@ -77,6 +77,7 @@ public class OrientedIcon extends ImageIcon
         super ( icon.getImage () );
     }
 
+    @Override
     public void paintIcon ( Component c, Graphics g, int x, int y )
     {
         int w = getIconWidth ();

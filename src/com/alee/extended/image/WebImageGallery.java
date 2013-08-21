@@ -79,6 +79,7 @@ public class WebImageGallery extends JComponent
 
         MouseAdapter mouseAdapter = new MouseAdapter ()
         {
+            @Override
             public void mousePressed ( MouseEvent e )
             {
                 if ( SwingUtilities.isLeftMouseButton ( e ) )
@@ -95,6 +96,7 @@ public class WebImageGallery extends JComponent
                 }
             }
 
+            @Override
             public void mouseWheelMoved ( MouseWheelEvent e )
             {
                 int index = getSelectedIndex ();
@@ -125,6 +127,7 @@ public class WebImageGallery extends JComponent
 
         addKeyListener ( new KeyAdapter ()
         {
+            @Override
             public void keyPressed ( KeyEvent e )
             {
                 if ( images.size () > 0 )
@@ -177,6 +180,7 @@ public class WebImageGallery extends JComponent
         {
             view = new WebScrollPane ( WebImageGallery.this, withBorder )
             {
+                @Override
                 public Dimension getPreferredSize ()
                 {
                     int columns = Math.min ( images.size (), preferredColumnCount );
@@ -249,6 +253,7 @@ public class WebImageGallery extends JComponent
         progress = 0f;
         reflectionMover = new WebTimer ( "WebImageGallery.reflectionMoveTimer", StyleConstants.fastAnimationDelay, new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 if ( progress < 1f )
@@ -358,6 +363,7 @@ public class WebImageGallery extends JComponent
         }
     }
 
+    @Override
     protected void paintComponent ( final Graphics g )
     {
         super.paintComponent ( g );
@@ -444,6 +450,7 @@ public class WebImageGallery extends JComponent
         }
     }
 
+    @Override
     public Dimension getPreferredSize ()
     {
         return new Dimension ( spacing * ( images.size () + 1 ) + maxWidth * images.size (), spacing * 3 + maxHeight * 2 );

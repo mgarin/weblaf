@@ -31,26 +31,31 @@ import java.awt.*;
 
 public class FuturicoTextAreaExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Futurico text area";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Futurico-styled text area";
     }
 
+    @Override
     public FeatureState getFeatureState ()
     {
         return FeatureState.beta;
     }
 
+    @Override
     public boolean isFillWidth ()
     {
         return true;
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         // Text area styled with nine-patch state painter

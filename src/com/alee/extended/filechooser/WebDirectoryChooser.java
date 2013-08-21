@@ -104,6 +104,7 @@ public class WebDirectoryChooser extends WebDialog implements DialogOptions
         // Hotkeys condition
         HotkeyManager.addContainerHotkeyCondition ( this, new HotkeyCondition ()
         {
+            @Override
             public boolean checkCondition ( Component component )
             {
                 return directoryChooserPanel.allowHotkeys ();
@@ -123,6 +124,7 @@ public class WebDirectoryChooser extends WebDialog implements DialogOptions
         approveButton.setEnabled ( false );
         approveButton.addActionListener ( new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 result = OK_OPTION;
@@ -137,6 +139,7 @@ public class WebDirectoryChooser extends WebDialog implements DialogOptions
         cancelButton.setShineColor ( StyleConstants.redHighlight );
         cancelButton.addActionListener ( new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 result = CANCEL_OPTION;
@@ -150,6 +153,7 @@ public class WebDirectoryChooser extends WebDialog implements DialogOptions
         SwingUtils.equalizeComponentsSize ( approveButton, cancelButton );
         final PropertyChangeListener pcl = new PropertyChangeListener ()
         {
+            @Override
             public void propertyChange ( PropertyChangeEvent evt )
             {
                 approveButton.setPreferredSize ( null );
@@ -164,6 +168,7 @@ public class WebDirectoryChooser extends WebDialog implements DialogOptions
         // Buttons updater
         directoryChooserPanel.addDirectoryChooserListener ( new DirectoryChooserListener ()
         {
+            @Override
             public void selectionChanged ( File file )
             {
                 updateButtonsState ( file );
@@ -174,6 +179,7 @@ public class WebDirectoryChooser extends WebDialog implements DialogOptions
         // Result saver
         addWindowListener ( new WindowAdapter ()
         {
+            @Override
             public void windowClosed ( WindowEvent e )
             {
                 result = CLOSE_OPTION;
@@ -259,6 +265,7 @@ public class WebDirectoryChooser extends WebDialog implements DialogOptions
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setVisible ( boolean b )
     {
         if ( b )

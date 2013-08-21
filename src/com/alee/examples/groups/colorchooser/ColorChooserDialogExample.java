@@ -37,21 +37,25 @@ import java.awt.event.ActionListener;
 
 public class ColorChooserDialogExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Color chooser dialog";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Web-styled color chooser dialog";
     }
 
+    @Override
     public FeatureState getFeatureState ()
     {
         return FeatureState.beta;
     }
 
+    @Override
     public Component getPreview ( final WebLookAndFeelDemo owner )
     {
         // Initial color
@@ -66,6 +70,7 @@ public class ColorChooserDialogExample extends DefaultExample
             private WebColorChooserDialog colorChooser = null;
             private Color lastColor = initialColor;
 
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 if ( colorChooser == null )

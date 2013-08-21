@@ -33,21 +33,25 @@ import java.awt.event.ActionListener;
 
 public class ConfirmOptionPaneExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Yes-no confirm optionpane";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Web-styled yes-no confirm optionpane";
     }
 
+    @Override
     public Component getPreview ( final WebLookAndFeelDemo owner )
     {
         WebButton message = new WebButton ( "Show confirm", loadIcon ( "confirm.png" ) );
         message.addActionListener ( new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 WebOptionPane.showConfirmDialog ( owner, "Did You see this dialog before?", "Confirm", WebOptionPane.YES_NO_OPTION,

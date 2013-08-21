@@ -30,21 +30,25 @@ import java.util.List;
 
 public class SplitPanesGroup extends DefaultExampleGroup
 {
+    @Override
     public Icon getGroupIcon ()
     {
         return loadGroupIcon ( "splitpane.png" );
     }
 
+    @Override
     public String getGroupName ()
     {
         return "Split panes";
     }
 
+    @Override
     public String getGroupDescription ()
     {
         return "Various examples of split panes usage";
     }
 
+    @Override
     public List<Example> getGroupExamples ()
     {
         List<Example> examples = new ArrayList<Example> ();

@@ -34,16 +34,19 @@ import java.awt.*;
 
 public class NinePatchPaintersExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Nine-patch painters";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Nine-patch based painters";
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         // Simple nine-patch styling

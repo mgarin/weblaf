@@ -103,11 +103,13 @@ public class WebFileChooserField extends WebPanel
         // Files TransferHandler
         setTransferHandler ( new FileDropHandler ()
         {
+            @Override
             protected boolean isDropEnabled ()
             {
                 return filesDropEnabled;
             }
 
+            @Override
             protected boolean filesImported ( List<File> files )
             {
                 // Setting dragged files
@@ -119,6 +121,7 @@ public class WebFileChooserField extends WebPanel
         // For wide content scrolling
         contentPanel.addMouseWheelListener ( new MouseWheelListener ()
         {
+            @Override
             public void mouseWheelMoved ( MouseWheelEvent e )
             {
                 Rectangle vr = contentPanel.getVisibleRect ();
@@ -128,6 +131,7 @@ public class WebFileChooserField extends WebPanel
 
         scroll = new WebScrollPane ( contentPanel, false )
         {
+            @Override
             public Dimension getPreferredSize ()
             {
                 Dimension ps = super.getPreferredSize ();
@@ -148,6 +152,7 @@ public class WebFileChooserField extends WebPanel
             webFileChooser.setMultiSelectionEnabled ( multiSelectionEnabled );
             webFileChooser.addActionListener ( new ActionListener ()
             {
+                @Override
                 public void actionPerformed ( ActionEvent e )
                 {
                     if ( e.getActionCommand ().equals ( WebFileChooser.APPROVE_SELECTION ) )
@@ -168,6 +173,7 @@ public class WebFileChooserField extends WebPanel
             chooseButton.setShadeWidth ( 0 );
             chooseButton.addActionListener ( new ActionListener ()
             {
+                @Override
                 public void actionPerformed ( ActionEvent e )
                 {
                     // Files selection
@@ -179,6 +185,7 @@ public class WebFileChooserField extends WebPanel
             } );
             contentPanel.addMouseListener ( new MouseAdapter ()
             {
+                @Override
                 public void mousePressed ( MouseEvent e )
                 {
                     // For easier files choose
@@ -391,6 +398,7 @@ public class WebFileChooserField extends WebPanel
             {
                 private boolean showShortName = showFileShortName;
 
+                @Override
                 public void mousePressed ( MouseEvent e )
                 {
                     FilePlate.this.requestFocusInWindow ();
@@ -412,6 +420,7 @@ public class WebFileChooserField extends WebPanel
 
             addFocusListener ( new FocusAdapter ()
             {
+                @Override
                 public void focusGained ( FocusEvent e )
                 {
                     scrollToPlate ();
@@ -430,6 +439,7 @@ public class WebFileChooserField extends WebPanel
                 remove.setRolloverDecoratedOnly ( true );
                 remove.addActionListener ( new ActionListener ()
                 {
+                    @Override
                     public void actionPerformed ( ActionEvent e )
                     {
                         // Remove file

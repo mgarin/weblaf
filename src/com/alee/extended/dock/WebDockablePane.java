@@ -56,6 +56,7 @@ public class WebDockablePane extends WebPanel
 
     }
 
+    @Override
     protected void paintComponent ( Graphics g )
     {
         super.paintComponent ( g );
@@ -158,6 +159,7 @@ public class WebDockablePane extends WebPanel
             {
                 c.addMouseListener ( new MouseAdapter ()
                 {
+                    @Override
                     public void mousePressed ( MouseEvent e )
                     {
                         if ( SwingUtilities.isMiddleMouseButton ( e ) )

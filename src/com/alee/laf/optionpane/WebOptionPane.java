@@ -68,6 +68,7 @@ public class WebOptionPane extends JOptionPane
         return ( WebOptionPaneUI ) getUI ();
     }
 
+    @Override
     public void updateUI ()
     {
         if ( getUI () == null || !( getUI () instanceof WebOptionPaneUI ) )

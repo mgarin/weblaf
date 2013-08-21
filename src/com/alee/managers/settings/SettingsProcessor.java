@@ -109,6 +109,7 @@ public abstract class SettingsProcessor<C extends Component, V extends Serializa
         {
             SettingsManager.addSettingsListener ( getGroup (), getKey (), new SettingsListener ()
             {
+                @Override
                 public void settingsChanged ( String group, String key, Object newValue )
                 {
                     load ();

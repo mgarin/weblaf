@@ -30,6 +30,7 @@ public abstract class ListEditAdapter implements ListEditListener
      *
      * @param index edited cell index
      */
+    @Override
     public void editStarted ( int index )
     {
         //
@@ -42,6 +43,7 @@ public abstract class ListEditAdapter implements ListEditListener
      * @param oldValue old cell value
      * @param newValue new cell value
      */
+    @Override
     public void editFinished ( int index, Object oldValue, Object newValue )
     {
         //
@@ -52,6 +54,7 @@ public abstract class ListEditAdapter implements ListEditListener
      *
      * @param index edited cell index
      */
+    @Override
     public void editCancelled ( int index )
     {
         //

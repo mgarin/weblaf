@@ -126,6 +126,7 @@ public class WebExtendedOptionPane extends WebDialog
             yes = createControlButton ( "weblaf.optionpane.yes" );
             yes.addActionListener ( new ActionListener ()
             {
+                @Override
                 public void actionPerformed ( ActionEvent e )
                 {
                     closeDialog ( YES_OPTION );
@@ -140,6 +141,7 @@ public class WebExtendedOptionPane extends WebDialog
             no = createControlButton ( "weblaf.optionpane.no" );
             no.addActionListener ( new ActionListener ()
             {
+                @Override
                 public void actionPerformed ( ActionEvent e )
                 {
                     closeDialog ( NO_OPTION );
@@ -154,6 +156,7 @@ public class WebExtendedOptionPane extends WebDialog
             ok = createControlButton ( "weblaf.optionpane.ok" );
             ok.addActionListener ( new ActionListener ()
             {
+                @Override
                 public void actionPerformed ( ActionEvent e )
                 {
                     closeDialog ( OK_OPTION );
@@ -168,6 +171,7 @@ public class WebExtendedOptionPane extends WebDialog
             cancel = createControlButton ( "weblaf.optionpane.cancel" );
             cancel.addActionListener ( new ActionListener ()
             {
+                @Override
                 public void actionPerformed ( ActionEvent e )
                 {
                     closeDialog ( CANCEL_OPTION );
@@ -333,6 +337,7 @@ public class WebExtendedOptionPane extends WebDialog
         return result;
     }
 
+    @Override
     public void setVisible ( boolean b )
     {
         if ( b )

@@ -61,6 +61,7 @@ public class WebHotkeyField extends WebTextField
 
         addKeyListener ( new KeyAdapter ()
         {
+            @Override
             public void keyPressed ( KeyEvent e )
             {
                 if ( keys.size () == 0 )
@@ -73,6 +74,7 @@ public class WebHotkeyField extends WebTextField
                 updateFieldText ();
             }
 
+            @Override
             public void keyReleased ( KeyEvent e )
             {
                 keys.remove ( ( Object ) e.getKeyCode () );
@@ -93,6 +95,7 @@ public class WebHotkeyField extends WebTextField
 
         addMouseListener ( new MouseAdapter ()
         {
+            @Override
             public void mouseClicked ( MouseEvent e )
             {
                 if ( e.getClickCount () == 2 && isEnabled () )
@@ -105,6 +108,7 @@ public class WebHotkeyField extends WebTextField
 
         LanguageManager.addLanguageKeyListener ( EMPTY_HOTKEY_TEXT_KEY, new LanguageKeyListener ()
         {
+            @Override
             public void languageKeyUpdated ( String key, Value value )
             {
                 if ( isEmpty () )

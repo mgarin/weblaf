@@ -33,16 +33,19 @@ import java.awt.*;
 
 public class WebImageExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Images";
     }
 
+    @Override
     public String getDescription ()
     {
         return "WebImage examples";
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         // Simple image

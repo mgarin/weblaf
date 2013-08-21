@@ -45,6 +45,7 @@ public class WebSwitchLayout implements LayoutManager
         this.gripperLocation = gripperLocation;
     }
 
+    @Override
     public void addLayoutComponent ( String name, Component comp )
     {
         if ( name == null || !name.equals ( LEFT ) &&
@@ -55,11 +56,13 @@ public class WebSwitchLayout implements LayoutManager
         constraints.put ( comp, name );
     }
 
+    @Override
     public void removeLayoutComponent ( Component comp )
     {
         constraints.remove ( comp );
     }
 
+    @Override
     public void layoutContainer ( Container parent )
     {
         boolean ltr = parent.getComponentOrientation ().isLeftToRight ();
@@ -89,6 +92,7 @@ public class WebSwitchLayout implements LayoutManager
         }
     }
 
+    @Override
     public Dimension preferredLayoutSize ( Container parent )
     {
         int maxWidth = 0;
@@ -103,6 +107,7 @@ public class WebSwitchLayout implements LayoutManager
         return new Dimension ( insets.left + maxWidth * 2 + insets.right, insets.top + maxHeight + insets.bottom );
     }
 
+    @Override
     public Dimension minimumLayoutSize ( Container parent )
     {
         return preferredLayoutSize ( parent );

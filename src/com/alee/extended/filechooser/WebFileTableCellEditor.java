@@ -53,6 +53,7 @@ public class WebFileTableCellEditor extends WebDefaultCellEditor<WebTextField>
         /**
          * {@inheritDoc}
          */
+        @Override
         public void setValue ( File file )
         {
             editorComponent.setLeadingComponent ( new WebImage ( FileUtils.getFileIcon ( file ) ) );
@@ -63,6 +64,7 @@ public class WebFileTableCellEditor extends WebDefaultCellEditor<WebTextField>
         /**
          * {@inheritDoc}
          */
+        @Override
         public boolean stopCellEditing ()
         {
             final String newName = editorComponent.getText ();

@@ -34,6 +34,7 @@ public class WebShapeProducer extends ShapeProducer
         super ( component );
     }
 
+    @Override
     public void setProduceFor ( Component produceFor )
     {
         super.setProduceFor ( produceFor );
@@ -41,6 +42,7 @@ public class WebShapeProducer extends ShapeProducer
         this.shapeProvider = SwingUtils.getShapeProvider ( produceFor );
     }
 
+    @Override
     public Shape produce ()
     {
         if ( shapeProvider != null )

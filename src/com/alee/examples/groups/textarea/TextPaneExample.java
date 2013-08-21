@@ -31,16 +31,19 @@ import java.awt.*;
 
 public class TextPaneExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Text pane";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Web-styled text pane";
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         WebTextPane textPane = new WebTextPane ();

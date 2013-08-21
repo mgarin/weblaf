@@ -30,21 +30,25 @@ import java.util.List;
 
 public class TooltipsGroup extends DefaultExampleGroup
 {
+    @Override
     public Icon getGroupIcon ()
     {
         return loadGroupIcon ( "tooltip.png" );
     }
 
+    @Override
     public String getGroupName ()
     {
         return "Tooltips";
     }
 
+    @Override
     public String getGroupDescription ()
     {
         return "Various examples of tooltips usage";
     }
 
+    @Override
     public List<Example> getGroupExamples ()
     {
         List<Example> examples = new ArrayList<Example> ();

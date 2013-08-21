@@ -45,6 +45,7 @@ public class WebTableHeaderUI extends BasicTableHeaderUI
         return new WebTableHeaderUI ();
     }
 
+    @Override
     public void installUI ( JComponent c )
     {
         super.installUI ( c );
@@ -56,6 +57,7 @@ public class WebTableHeaderUI extends BasicTableHeaderUI
         // Default renderer
         header.setDefaultRenderer ( new WebTableHeaderCellRenderer ()
         {
+            @Override
             public Component getTableCellRendererComponent ( JTable table, Object value, boolean isSelected, boolean hasFocus, int row,
                                                              int column )
             {
@@ -66,6 +68,7 @@ public class WebTableHeaderUI extends BasicTableHeaderUI
         } );
     }
 
+    @Override
     public void paint ( Graphics g, JComponent c )
     {
         Graphics2D g2d = ( Graphics2D ) g;
@@ -212,6 +215,7 @@ public class WebTableHeaderUI extends BasicTableHeaderUI
         return -1;
     }
 
+    @Override
     public Dimension getPreferredSize ( JComponent c )
     {
         Dimension ps = super.getPreferredSize ( c );

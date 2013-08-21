@@ -37,16 +37,19 @@ import java.awt.*;
 
 public class ButtonPopupExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Button popup";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Web-styled button popup";
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         // Grid-layouted container

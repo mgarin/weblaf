@@ -50,6 +50,7 @@ public class WebMenuUI extends BasicMenuUI
         return new WebMenuUI ();
     }
 
+    @Override
     public void installUI ( JComponent c )
     {
         super.installUI ( c );
@@ -63,12 +64,14 @@ public class WebMenuUI extends BasicMenuUI
         // Rollover listener
         mouseAdapter = new MouseAdapter ()
         {
+            @Override
             public void mouseEntered ( MouseEvent e )
             {
                 mouseover = true;
                 menuItem.repaint ();
             }
 
+            @Override
             public void mouseExited ( MouseEvent e )
             {
                 mouseover = false;
@@ -78,6 +81,7 @@ public class WebMenuUI extends BasicMenuUI
         menuItem.addMouseListener ( mouseAdapter );
     }
 
+    @Override
     public void uninstallUI ( JComponent c )
     {
         menuItem.removeMouseListener ( mouseAdapter );
@@ -85,6 +89,7 @@ public class WebMenuUI extends BasicMenuUI
         super.uninstallUI ( c );
     }
 
+    @Override
     protected Dimension getPreferredMenuItemSize ( JComponent c, Icon checkIcon, Icon arrowIcon, int defaultTextIconGap )
     {
         JMenuItem mi = ( JMenuItem ) c;
@@ -124,6 +129,7 @@ public class WebMenuUI extends BasicMenuUI
         return result;
     }
 
+    @Override
     protected void paintMenuItem ( Graphics g, JComponent c, Icon checkIcon, Icon arrowIcon, Color background, Color foreground,
                                    int defaultTextIconGap )
     {
@@ -292,6 +298,7 @@ public class WebMenuUI extends BasicMenuUI
         }
     }
 
+    @Override
     protected void paintText ( Graphics g, JMenuItem menuItem, Rectangle rect, String text )
     {
         // todo Proper placement with RTL orientation

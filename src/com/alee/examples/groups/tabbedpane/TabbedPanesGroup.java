@@ -30,21 +30,25 @@ import java.util.List;
 
 public class TabbedPanesGroup extends DefaultExampleGroup
 {
+    @Override
     public Icon getGroupIcon ()
     {
         return loadGroupIcon ( "tabbedpane.png" );
     }
 
+    @Override
     public String getGroupName ()
     {
         return "Tabbed panes";
     }
 
+    @Override
     public String getGroupDescription ()
     {
         return "Various examples of tabbed panes usage";
     }
 
+    @Override
     public List<Example> getGroupExamples ()
     {
         List<Example> examples = new ArrayList<Example> ();

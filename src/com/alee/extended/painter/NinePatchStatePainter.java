@@ -83,6 +83,7 @@ public class NinePatchStatePainter<E extends JComponent> extends DefaultPainter<
      * Paints background according to component state
      */
 
+    @Override
     public void paint ( Graphics2D g2d, Rectangle bounds, E c )
     {
         if ( hasStateIcons () && c != null )
@@ -263,6 +264,7 @@ public class NinePatchStatePainter<E extends JComponent> extends DefaultPainter<
      * Returns maximum preferred size according to space needed for rach state icon
      */
 
+    @Override
     public Dimension getPreferredSize ( E c )
     {
         if ( hasStateIcons () )
@@ -285,6 +287,7 @@ public class NinePatchStatePainter<E extends JComponent> extends DefaultPainter<
      * Returns maximum margin according to space needed for rach state icon
      */
 
+    @Override
     public Insets getMargin ( E c )
     {
         Insets margin = super.getMargin ( c );

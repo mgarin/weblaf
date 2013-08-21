@@ -76,6 +76,7 @@ public class WebToolBar extends JToolBar implements ShapeProvider, LanguageConta
         add ( component, ToolbarLayout.END );
     }
 
+    @Override
     public void addSeparator ()
     {
         addSeparator ( ToolbarLayout.START );
@@ -274,11 +275,13 @@ public class WebToolBar extends JToolBar implements ShapeProvider, LanguageConta
         getWebUI ().setShadeWidth ( shadeWidth );
     }
 
+    @Override
     public Insets getMargin ()
     {
         return getWebUI ().getMargin ();
     }
 
+    @Override
     public void setMargin ( Insets margin )
     {
         getWebUI ().setMargin ( margin );
@@ -354,6 +357,7 @@ public class WebToolBar extends JToolBar implements ShapeProvider, LanguageConta
         return getWebUI ().isFloating ();
     }
 
+    @Override
     public Shape provideShape ()
     {
         return getWebUI ().provideShape ();
@@ -364,6 +368,7 @@ public class WebToolBar extends JToolBar implements ShapeProvider, LanguageConta
         return ( WebToolBarUI ) getUI ();
     }
 
+    @Override
     public void updateUI ()
     {
         if ( getUI () == null || !( getUI () instanceof WebToolBarUI ) )
@@ -391,6 +396,7 @@ public class WebToolBar extends JToolBar implements ShapeProvider, LanguageConta
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setLanguageContainerKey ( String key )
     {
         LanguageManager.registerLanguageContainer ( this, key );
@@ -399,6 +405,7 @@ public class WebToolBar extends JToolBar implements ShapeProvider, LanguageConta
     /**
      * {@inheritDoc}
      */
+    @Override
     public void removeLanguageContainerKey ()
     {
         LanguageManager.unregisterLanguageContainer ( this );
@@ -407,6 +414,7 @@ public class WebToolBar extends JToolBar implements ShapeProvider, LanguageConta
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getLanguageContainerKey ()
     {
         return LanguageManager.getLanguageContainerKey ( this );

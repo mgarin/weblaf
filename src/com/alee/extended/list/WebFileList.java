@@ -171,6 +171,7 @@ public class WebFileList extends WebList
      *
      * @return default list cell editor for this list
      */
+    @Override
     protected ListCellEditor createDefaultCellEditor ()
     {
         return new WebFileListCellEditor ();
@@ -423,6 +424,7 @@ public class WebFileList extends WebList
     {
         return new WebScrollPane ( WebFileList.this )
         {
+            @Override
             public Dimension getPreferredSize ()
             {
                 Dimension ps = super.getPreferredSize ();
@@ -456,6 +458,7 @@ public class WebFileList extends WebList
      *
      * @return preferred size for this list
      */
+    @Override
     public Dimension getPreferredSize ()
     {
         Dimension ps = super.getPreferredSize ();

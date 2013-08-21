@@ -32,6 +32,7 @@ public class JInternalFrameLU extends DefaultLanguageUpdater<JInternalFrame>
     /**
      * {@inheritDoc}
      */
+    @Override
     public void update ( JInternalFrame c, String key, Value value, Object... data )
     {
         c.setTitle ( getDefaultText ( value, data ) );

@@ -95,6 +95,7 @@ public class FileTreeDataProvider extends AbstractTreeDataProvider<FileTreeNode>
     /**
      * {@inheritDoc}
      */
+    @Override
     public FileTreeNode getRoot ()
     {
         return new FileTreeNode ( null );
@@ -103,6 +104,7 @@ public class FileTreeDataProvider extends AbstractTreeDataProvider<FileTreeNode>
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<FileTreeNode> getChilds ( FileTreeNode node )
     {
         return node.getFile () == null ? getRootChilds () : getFileChilds ( node );
@@ -150,6 +152,7 @@ public class FileTreeDataProvider extends AbstractTreeDataProvider<FileTreeNode>
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isLeaf ( FileTreeNode node )
     {
         return node.getFile () != null && !FileUtils.isDirectory ( node.getFile () );

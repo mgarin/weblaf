@@ -73,6 +73,7 @@ public class WebListModel<T> extends AbstractListModel
      * @return the number of components in this list
      * @see #size()
      */
+    @Override
     public int getSize ()
     {
         return delegate.size ();
@@ -88,6 +89,7 @@ public class WebListModel<T> extends AbstractListModel
      * @throws ArrayIndexOutOfBoundsException if the <code>index</code> is negative or greater than the current size of this list
      * @see #get(int)
      */
+    @Override
     public T getElementAt ( int index )
     {
         return delegate.elementAt ( index );

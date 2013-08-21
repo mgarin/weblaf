@@ -32,6 +32,7 @@ public class JFileChooserLU extends DefaultLanguageUpdater<JFileChooser>
     /**
      * {@inheritDoc}
      */
+    @Override
     public void update ( JFileChooser c, String key, Value value, Object... data )
     {
         c.setDialogTitle ( getDefaultText ( value, data ) );

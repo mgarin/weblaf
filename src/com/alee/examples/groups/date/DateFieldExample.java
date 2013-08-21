@@ -32,16 +32,19 @@ import java.util.Date;
 
 public class DateFieldExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Date field";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Web-styled date field";
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         // Simple date field

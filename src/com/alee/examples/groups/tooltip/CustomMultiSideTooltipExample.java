@@ -32,16 +32,19 @@ import java.awt.*;
 
 public class CustomMultiSideTooltipExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Instant tooltip";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Custom Web-styled instant tooltip";
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         // Double tooltip for single component

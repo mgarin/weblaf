@@ -31,6 +31,7 @@ public abstract class FileChooserAdapter implements FileChooserListener
     /**
      * {@inheritDoc}
      */
+    @Override
     public void directoryChanged ( File newDirectory )
     {
         //
@@ -39,6 +40,7 @@ public abstract class FileChooserAdapter implements FileChooserListener
     /**
      * {@inheritDoc}
      */
+    @Override
     public void selectionChanged ( List<File> selectedFiles )
     {
         //

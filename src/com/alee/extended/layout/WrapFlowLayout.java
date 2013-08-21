@@ -149,16 +149,19 @@ public class WrapFlowLayout implements LayoutManager, SwingConstants
         return rowsData;
     }
 
+    @Override
     public void addLayoutComponent ( String name, Component comp )
     {
         //
     }
 
+    @Override
     public void removeLayoutComponent ( Component comp )
     {
         //
     }
 
+    @Override
     public void layoutContainer ( Container parent )
     {
         // Ignore if no childs
@@ -284,12 +287,14 @@ public class WrapFlowLayout implements LayoutManager, SwingConstants
         return y;
     }
 
+    @Override
     public Dimension minimumLayoutSize ( Container parent )
     {
         layoutContainer ( parent );
         return new Dimension ( 0, maxHeight );
     }
 
+    @Override
     public Dimension preferredLayoutSize ( Container parent )
     {
         layoutContainer ( parent );

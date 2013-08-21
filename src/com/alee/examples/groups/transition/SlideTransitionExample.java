@@ -45,16 +45,19 @@ import java.util.List;
 
 public class SlideTransitionExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Slide transition";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Slide transition effect";
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         // Images list
@@ -68,6 +71,7 @@ public class SlideTransitionExample extends DefaultExample
         final WebButton slideLeft = new WebButton ( loadIcon ( "left.png" ) );
         slideLeft.addActionListener ( new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 // Changing image positions in lsit
@@ -81,6 +85,7 @@ public class SlideTransitionExample extends DefaultExample
         final WebButton slideRight = new WebButton ( loadIcon ( "right.png" ) );
         slideRight.addActionListener ( new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 // Changing image positions in lsit
@@ -106,12 +111,14 @@ public class SlideTransitionExample extends DefaultExample
                 first = false;
                 transition.addTransitionListener ( new TransitionListener ()
                 {
+                    @Override
                     public void transitionStarted ()
                     {
                         slideLeft.setEnabled ( false );
                         slideRight.setEnabled ( false );
                     }
 
+                    @Override
                     public void transitionFinished ()
                     {
                         slideLeft.setEnabled ( true );

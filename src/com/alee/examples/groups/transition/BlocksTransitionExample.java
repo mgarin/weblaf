@@ -40,16 +40,19 @@ import java.awt.event.ActionListener;
 
 public class BlocksTransitionExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Blocks transition";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Blocks transition effect";
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         // Transition panel
@@ -78,6 +81,7 @@ public class BlocksTransitionExample extends DefaultExample
         switchView.setDrawFocus ( false );
         switchView.addActionListener ( new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 if ( componentTransition.getContent () == image1 )
@@ -96,11 +100,13 @@ public class BlocksTransitionExample extends DefaultExample
         } );
         componentTransition.addTransitionListener ( new TransitionListener ()
         {
+            @Override
             public void transitionStarted ()
             {
                 switchView.setEnabled ( false );
             }
 
+            @Override
             public void transitionFinished ()
             {
                 switchView.setEnabled ( true );

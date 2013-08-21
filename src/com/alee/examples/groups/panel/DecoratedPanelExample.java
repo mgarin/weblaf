@@ -32,16 +32,19 @@ import java.awt.*;
 
 public class DecoratedPanelExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Decorated panel";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Web-styled panel";
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         // Decorated panel

@@ -30,11 +30,13 @@ public class VersionDateConverter implements SingleValueConverter
 {
     private static final SimpleDateFormat sdf = new SimpleDateFormat ( "dd.MM.yyyy" );
 
+    @Override
     public boolean canConvert ( Class aClass )
     {
         return Long.class.getCanonicalName ().equals ( aClass.getCanonicalName () );
     }
 
+    @Override
     public String toString ( Object o )
     {
         if ( o == null )
@@ -47,6 +49,7 @@ public class VersionDateConverter implements SingleValueConverter
         }
     }
 
+    @Override
     public Object fromString ( String s )
     {
         try

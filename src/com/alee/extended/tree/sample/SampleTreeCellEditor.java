@@ -55,6 +55,7 @@ public class SampleTreeCellEditor extends WebTreeCellEditor
      * @param row        cell row index
      * @return cell editor component
      */
+    @Override
     public Component getTreeCellEditorComponent ( JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row )
     {
         // todo Use delegate instead of direct access!
@@ -69,6 +70,7 @@ public class SampleTreeCellEditor extends WebTreeCellEditor
      *
      * @return current editor's value
      */
+    @Override
     public Object getCellEditorValue ()
     {
         sampleNode.setName ( super.getCellEditorValue ().toString () );

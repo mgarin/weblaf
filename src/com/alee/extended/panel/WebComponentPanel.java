@@ -84,6 +84,7 @@ public class WebComponentPanel extends WebPanel
         // Previous action hotkeys
         HotkeyRunnable prevAction = new HotkeyRunnable ()
         {
+            @Override
             public void run ( KeyEvent e )
             {
                 if ( upDownHotkeysAllowed && Hotkey.UP.isTriggered ( e ) || leftRightHotkeysAllowed && Hotkey.LEFT.isTriggered ( e ) )
@@ -106,6 +107,7 @@ public class WebComponentPanel extends WebPanel
         // Next action hotkeys
         HotkeyRunnable nextAction = new HotkeyRunnable ()
         {
+            @Override
             public void run ( KeyEvent e )
             {
                 if ( upDownHotkeysAllowed && Hotkey.DOWN.isTriggered ( e ) || leftRightHotkeysAllowed && Hotkey.RIGHT.isTriggered ( e ) )
@@ -126,6 +128,7 @@ public class WebComponentPanel extends WebPanel
         HotkeyManager.registerHotkey ( this, this, Hotkey.RIGHT, nextAction );
     }
 
+    @Override
     public void applyComponentOrientation ( ComponentOrientation o )
     {
         super.applyComponentOrientation ( o );
@@ -320,6 +323,7 @@ public class WebComponentPanel extends WebPanel
             {
                 private int startY;
 
+                @Override
                 public void mousePressed ( MouseEvent e )
                 {
                     if ( !SwingUtils.hasFocusOwner ( WebSelectablePanel.this ) )
@@ -334,6 +338,7 @@ public class WebComponentPanel extends WebPanel
                     }
                 }
 
+                @Override
                 public void mouseDragged ( MouseEvent e )
                 {
                     if ( dragged )
@@ -343,6 +348,7 @@ public class WebComponentPanel extends WebPanel
                     }
                 }
 
+                @Override
                 public void mouseReleased ( MouseEvent e )
                 {
                     WebSelectablePanel wsp = WebSelectablePanel.this;
@@ -418,6 +424,7 @@ public class WebComponentPanel extends WebPanel
             // Panel focus tracking
             FocusManager.registerFocusTracker ( new DefaultFocusTracker ( WebSelectablePanel.this, true, true )
             {
+                @Override
                 public void focusChanged ( boolean focused )
                 {
                     WebSelectablePanel wsp = WebSelectablePanel.this;
@@ -476,11 +483,13 @@ public class WebComponentPanel extends WebPanel
         private Color[] lightColors = { StyleConstants.transparent, Color.WHITE, Color.WHITE, StyleConstants.transparent };
         private Color[] darkColors = { StyleConstants.transparent, Color.GRAY, Color.GRAY, StyleConstants.transparent };
 
+        @Override
         public boolean isOpaque ( WebSelectablePanel c )
         {
             return true;
         }
 
+        @Override
         public void paint ( Graphics2D g2d, Rectangle bounds, WebSelectablePanel panel )
         {
             boolean notFirst = panel.getIndex () > 0;

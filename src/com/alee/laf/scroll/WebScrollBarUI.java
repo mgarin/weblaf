@@ -54,6 +54,7 @@ public class WebScrollBarUI extends BasicScrollBarUI
         return new WebScrollBarUI ();
     }
 
+    @Override
     public void installUI ( JComponent c )
     {
         super.installUI ( c );
@@ -65,6 +66,7 @@ public class WebScrollBarUI extends BasicScrollBarUI
 
         mouseAdapter = new MouseAdapter ()
         {
+            @Override
             public void mousePressed ( MouseEvent e )
             {
                 scrollbar.repaint ();
@@ -73,6 +75,7 @@ public class WebScrollBarUI extends BasicScrollBarUI
         scrollbar.addMouseListener ( mouseAdapter );
     }
 
+    @Override
     public void uninstallUI ( JComponent c )
     {
         scrollbar.removeMouseListener ( mouseAdapter );
@@ -171,6 +174,7 @@ public class WebScrollBarUI extends BasicScrollBarUI
         this.scrollSelGradientRight = scrollSelGradientRight;
     }
 
+    @Override
     public void paint ( Graphics g, JComponent c )
     {
         Object aa = LafUtils.disableAntialias ( g );
@@ -178,6 +182,7 @@ public class WebScrollBarUI extends BasicScrollBarUI
         LafUtils.restoreAntialias ( g, aa );
     }
 
+    @Override
     protected void paintTrack ( Graphics g, JComponent c, Rectangle trackBounds )
     {
         if ( drawBorder )
@@ -201,6 +206,7 @@ public class WebScrollBarUI extends BasicScrollBarUI
         }
     }
 
+    @Override
     protected void paintThumb ( Graphics g, JComponent c, Rectangle thumbBounds )
     {
         Graphics2D g2d = ( Graphics2D ) g;
@@ -231,6 +237,7 @@ public class WebScrollBarUI extends BasicScrollBarUI
         }
     }
 
+    @Override
     protected void installComponents ()
     {
         incrButton = new JButton ();
@@ -239,6 +246,7 @@ public class WebScrollBarUI extends BasicScrollBarUI
         decrButton.setPreferredSize ( new Dimension ( 0, 0 ) );
     }
 
+    @Override
     public Dimension getPreferredSize ( JComponent c )
     {
         Dimension preferredSize = super.getPreferredSize ( c );

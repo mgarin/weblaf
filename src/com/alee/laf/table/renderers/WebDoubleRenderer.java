@@ -32,6 +32,7 @@ public class WebDoubleRenderer extends WebNumberRenderer
         super ();
     }
 
+    @Override
     public void setValue ( Object value )
     {
         if ( formatter == null )

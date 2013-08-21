@@ -37,16 +37,19 @@ import java.awt.geom.RoundRectangle2D;
 
 public class ButtonPaintersExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Button painter";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Custom Sea-glass button painter";
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         // Custom button painter
@@ -110,11 +113,13 @@ public class ButtonPaintersExample extends DefaultExample
             super ();
         }
 
+        @Override
         public Insets getMargin ( AbstractButton c )
         {
             return margin;
         }
 
+        @Override
         public void paint ( Graphics2D g2d, Rectangle bounds, AbstractButton c )
         {
             ButtonModel buttonModel = c.getModel ();

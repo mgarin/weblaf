@@ -30,16 +30,19 @@ import java.awt.*;
 
 public class EditableComboBoxExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Editable combobox";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Editable Web-styled combobox";
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         String[] items = { "Edit me 1", "Edit me 2", "Edit me 3", "Edit me 4", "Edit me 5" };

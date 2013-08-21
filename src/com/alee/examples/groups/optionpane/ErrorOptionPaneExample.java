@@ -33,21 +33,25 @@ import java.awt.event.ActionListener;
 
 public class ErrorOptionPaneExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Error optionpane";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Web-styled error optionpane";
     }
 
+    @Override
     public Component getPreview ( final WebLookAndFeelDemo owner )
     {
         WebButton message = new WebButton ( "Show error", loadIcon ( "error.png" ) );
         message.addActionListener ( new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 WebOptionPane.showMessageDialog ( owner, "Sample error goes here", "Error", WebOptionPane.ERROR_MESSAGE );

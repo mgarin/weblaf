@@ -57,6 +57,7 @@ public abstract class DefaultExample implements Example
      *
      * @return null
      */
+    @Override
     public List<Object> getResources ()
     {
         return null;
@@ -67,6 +68,7 @@ public abstract class DefaultExample implements Example
      *
      * @return false
      */
+    @Override
     public boolean isPresentationAvailable ()
     {
         return false;
@@ -86,6 +88,7 @@ public abstract class DefaultExample implements Example
      * Starts live presentation in a separate thread.
      * This call will retrieve presentation steps and guide user through.
      */
+    @Override
     public void startPresentation ()
     {
         // Ignore if there are no available steps
@@ -98,6 +101,7 @@ public abstract class DefaultExample implements Example
         // Start live presentation in a separate thread
         presentation = new Thread ( new Runnable ()
         {
+            @Override
             public void run ()
             {
                 for ( PresentationStep step : presentationSteps )
@@ -138,6 +142,7 @@ public abstract class DefaultExample implements Example
     /**
      * Forces live presentation to proceed to next step.
      */
+    @Override
     public void nextPresentationStep ()
     {
         if ( presentation.isAlive () )
@@ -149,6 +154,7 @@ public abstract class DefaultExample implements Example
     /**
      * Stops live presentation.
      */
+    @Override
     public void stopPresentation ()
     {
         if ( presentation.isAlive () )
@@ -164,6 +170,7 @@ public abstract class DefaultExample implements Example
      *
      * @param runnable runnable
      */
+    @Override
     public void doWhenPresentationFinished ( Runnable runnable )
     {
         this.onPresentationEnd = runnable;
@@ -174,6 +181,7 @@ public abstract class DefaultExample implements Example
      *
      * @return FeatureState.release
      */
+    @Override
     public FeatureState getFeatureState ()
     {
         return FeatureState.release;
@@ -184,6 +192,7 @@ public abstract class DefaultExample implements Example
      *
      * @return false
      */
+    @Override
     public boolean isFillWidth ()
     {
         return false;

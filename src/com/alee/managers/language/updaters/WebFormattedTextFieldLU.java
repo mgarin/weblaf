@@ -31,6 +31,7 @@ public class WebFormattedTextFieldLU extends DefaultLanguageUpdater<WebFormatted
     /**
      * {@inheritDoc}
      */
+    @Override
     public void update ( WebFormattedTextField c, String key, Value value, Object... data )
     {
         c.setText ( getDefaultText ( value, data ) );

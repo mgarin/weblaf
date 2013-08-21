@@ -41,12 +41,14 @@ public class WebResizeCorner extends JComponent
         WindowResizeAdapter.install ( this, WindowResizeAdapter.SOUTH_EAST );
     }
 
+    @Override
     protected void paintComponent ( Graphics g )
     {
         super.paintComponent ( g );
         g.drawImage ( cornerIcon.getImage (), getWidth () - cornerIcon.getIconWidth (), getHeight () - cornerIcon.getIconHeight (), null );
     }
 
+    @Override
     public Dimension getPreferredSize ()
     {
         return preferredSize;

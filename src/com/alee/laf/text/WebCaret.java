@@ -26,6 +26,7 @@ import java.awt.*;
 
 public class WebCaret extends DefaultCaret
 {
+    @Override
     public void paint ( Graphics g )
     {
         super.paint ( g );

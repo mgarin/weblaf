@@ -50,6 +50,7 @@ public class WebSpinnerUI extends BasicSpinnerUI implements ShapeProvider
         return new WebSpinnerUI ();
     }
 
+    @Override
     public void installUI ( JComponent c )
     {
         super.installUI ( c );
@@ -63,11 +64,13 @@ public class WebSpinnerUI extends BasicSpinnerUI implements ShapeProvider
         updateBorder ( drawBorder );
     }
 
+    @Override
     public void uninstallUI ( JComponent c )
     {
         super.uninstallUI ( c );
     }
 
+    @Override
     public Shape provideShape ()
     {
         return LafUtils.getWebBorderShape ( spinner, getShadeWidth (), getRound () );
@@ -131,6 +134,7 @@ public class WebSpinnerUI extends BasicSpinnerUI implements ShapeProvider
         this.drawFocus = drawFocus;
     }
 
+    @Override
     public void paint ( Graphics g, JComponent c )
     {
         // Border, background and shade
@@ -141,6 +145,7 @@ public class WebSpinnerUI extends BasicSpinnerUI implements ShapeProvider
         super.paint ( g, c );
     }
 
+    @Override
     protected Component createNextButton ()
     {
         WebButton nextButton = WebButton.createIconWebButton ( UP_ICON, StyleConstants.smallRound, 1, 2 );
@@ -154,6 +159,7 @@ public class WebSpinnerUI extends BasicSpinnerUI implements ShapeProvider
         return nextButton;
     }
 
+    @Override
     protected Component createPreviousButton ()
     {
         WebButton previousButton = WebButton.createIconWebButton ( DOWN_ICON, StyleConstants.smallRound, 1, 2 );
@@ -167,6 +173,7 @@ public class WebSpinnerUI extends BasicSpinnerUI implements ShapeProvider
         return previousButton;
     }
 
+    @Override
     protected JComponent createEditor ()
     {
         JComponent editor = super.createEditor ();
@@ -183,11 +190,13 @@ public class WebSpinnerUI extends BasicSpinnerUI implements ShapeProvider
         field.setBackground ( Color.WHITE );
         field.addFocusListener ( new FocusAdapter ()
         {
+            @Override
             public void focusGained ( FocusEvent e )
             {
                 spinner.repaint ();
             }
 
+            @Override
             public void focusLost ( FocusEvent e )
             {
                 spinner.repaint ();

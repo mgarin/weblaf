@@ -60,26 +60,31 @@ import java.awt.event.ItemListener;
 
 public class WebFrameExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Frame";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Web-styled frame decoration";
     }
 
+    @Override
     public FeatureState getFeatureState ()
     {
         return FeatureState.beta;
     }
 
+    @Override
     public Component getPreview ( final WebLookAndFeelDemo owner )
     {
         WebButton showFrame = new WebButton ( "Show frame", loadIcon ( "frame.png" ) );
         showFrame.addActionListener ( new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 // Enabling frame decoration
@@ -164,6 +169,7 @@ public class WebFrameExample extends DefaultExample
                             setSelected ( ExampleFrame.this.isShowTitleComponent () );
                             addItemListener ( new ItemListener ()
                             {
+                                @Override
                                 public void itemStateChanged ( ItemEvent e )
                                 {
                                     ExampleFrame.this.setShowTitleComponent ( isSelected () );
@@ -179,6 +185,7 @@ public class WebFrameExample extends DefaultExample
                             setEnabled ( showTitle.isSelected () );
                             showTitle.addItemListener ( new ItemListener ()
                             {
+                                @Override
                                 public void itemStateChanged ( ItemEvent e )
                                 {
                                     setEnabled ( showTitle.isSelected () );
@@ -186,6 +193,7 @@ public class WebFrameExample extends DefaultExample
                             } );
                             addCaretListener ( new CaretListener ()
                             {
+                                @Override
                                 public void caretUpdate ( CaretEvent e )
                                 {
                                     if ( !ExampleFrame.this.getTitle ().equals ( getText () ) )
@@ -206,6 +214,7 @@ public class WebFrameExample extends DefaultExample
                             setSelected ( ExampleFrame.this.isShowWindowButtons () );
                             addItemListener ( new ItemListener ()
                             {
+                                @Override
                                 public void itemStateChanged ( ItemEvent e )
                                 {
                                     ExampleFrame.this.setShowWindowButtons ( isSelected () );
@@ -220,6 +229,7 @@ public class WebFrameExample extends DefaultExample
                             setSelected ( ExampleFrame.this.isShowMinimizeButton () );
                             addItemListener ( new ItemListener ()
                             {
+                                @Override
                                 public void itemStateChanged ( ItemEvent e )
                                 {
                                     ExampleFrame.this.setShowMinimizeButton ( isSelected () );
@@ -232,6 +242,7 @@ public class WebFrameExample extends DefaultExample
                             setSelected ( ExampleFrame.this.isShowMaximizeButton () );
                             addItemListener ( new ItemListener ()
                             {
+                                @Override
                                 public void itemStateChanged ( ItemEvent e )
                                 {
                                     ExampleFrame.this.setShowMaximizeButton ( isSelected () );
@@ -244,6 +255,7 @@ public class WebFrameExample extends DefaultExample
                             setSelected ( ExampleFrame.this.isShowCloseButton () );
                             addItemListener ( new ItemListener ()
                             {
+                                @Override
                                 public void itemStateChanged ( ItemEvent e )
                                 {
                                     ExampleFrame.this.setShowCloseButton ( isSelected () );
@@ -259,6 +271,7 @@ public class WebFrameExample extends DefaultExample
                             setEnabled ( showWindowButtons.isSelected () );
                             showWindowButtons.addItemListener ( new ItemListener ()
                             {
+                                @Override
                                 public void itemStateChanged ( ItemEvent e )
                                 {
                                     setEnabled ( showWindowButtons.isSelected () );
@@ -273,6 +286,7 @@ public class WebFrameExample extends DefaultExample
                             setSelected ( ExampleFrame.this.isAttachButtons () );
                             addItemListener ( new ItemListener ()
                             {
+                                @Override
                                 public void itemStateChanged ( ItemEvent e )
                                 {
                                     ExampleFrame.this.setAttachButtons ( isSelected () );
@@ -288,6 +302,7 @@ public class WebFrameExample extends DefaultExample
                             setSelected ( ExampleFrame.this.isGroupButtons () );
                             addItemListener ( new ItemListener ()
                             {
+                                @Override
                                 public void itemStateChanged ( ItemEvent e )
                                 {
                                     ExampleFrame.this.setGroupButtons ( isSelected () );
@@ -305,6 +320,7 @@ public class WebFrameExample extends DefaultExample
                             setSelected ( ExampleFrame.this.isShowMenuBar () );
                             addItemListener ( new ItemListener ()
                             {
+                                @Override
                                 public void itemStateChanged ( ItemEvent e )
                                 {
                                     ExampleFrame.this.setShowMenuBar ( isSelected () );
@@ -318,6 +334,7 @@ public class WebFrameExample extends DefaultExample
                         {
                             addActionListener ( new ActionListener ()
                             {
+                                @Override
                                 public void actionPerformed ( ActionEvent e )
                                 {
                                     int i = getSelectedIndex ();
@@ -336,6 +353,7 @@ public class WebFrameExample extends DefaultExample
                             setEnabled ( showMenuBar.isSelected () );
                             showMenuBar.addItemListener ( new ItemListener ()
                             {
+                                @Override
                                 public void itemStateChanged ( ItemEvent e )
                                 {
                                     setEnabled ( showMenuBar.isSelected () );
@@ -352,6 +370,7 @@ public class WebFrameExample extends DefaultExample
                             setSelected ( ExampleFrame.this.isShowResizeCorner () );
                             addItemListener ( new ItemListener ()
                             {
+                                @Override
                                 public void itemStateChanged ( ItemEvent e )
                                 {
                                     ExampleFrame.this.setShowResizeCorner ( isSelected () );
@@ -375,6 +394,7 @@ public class WebFrameExample extends DefaultExample
                                     putClientProperty ( GroupPanel.FILL_CELL, true );
                                     addChangeListener ( new ChangeListener ()
                                     {
+                                        @Override
                                         public void stateChanged ( ChangeEvent e )
                                         {
                                             menuBar.setRound ( Math.max ( 0, ExampleFrame.this.getRound () - 2 ) );
@@ -398,6 +418,7 @@ public class WebFrameExample extends DefaultExample
                                     putClientProperty ( GroupPanel.FILL_CELL, true );
                                     addChangeListener ( new ChangeListener ()
                                     {
+                                        @Override
                                         public void stateChanged ( ChangeEvent e )
                                         {
                                             ExampleFrame.this.setShadeWidth ( getValue () );

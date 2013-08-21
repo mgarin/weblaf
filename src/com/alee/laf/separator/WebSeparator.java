@@ -188,6 +188,7 @@ public class WebSeparator extends JSeparator
         return ( WebSeparatorUI ) getUI ();
     }
 
+    @Override
     public void updateUI ()
     {
         if ( getUI () == null || !( getUI () instanceof WebSeparatorUI ) )

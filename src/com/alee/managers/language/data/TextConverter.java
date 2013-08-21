@@ -29,11 +29,13 @@ import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 
 public class TextConverter implements Converter
 {
+    @Override
     public boolean canConvert ( Class type )
     {
         return Text.class.getCanonicalName ().equals ( type.getCanonicalName () );
     }
 
+    @Override
     public void marshal ( Object source, HierarchicalStreamWriter writer, MarshallingContext context )
     {
         Text value = ( Text ) source;
@@ -48,6 +50,7 @@ public class TextConverter implements Converter
         writer.setValue ( value.getText () );
     }
 
+    @Override
     public Object unmarshal ( HierarchicalStreamReader reader, UnmarshallingContext context )
     {
         // Reading state

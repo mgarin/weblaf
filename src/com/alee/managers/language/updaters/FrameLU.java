@@ -32,6 +32,7 @@ public class FrameLU extends DefaultLanguageUpdater<Frame>
     /**
      * {@inheritDoc}
      */
+    @Override
     public void update ( Frame c, String key, Value value, Object... data )
     {
         c.setTitle ( getDefaultText ( value, data ) );

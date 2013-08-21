@@ -87,6 +87,7 @@ public class GaussianFilter extends ConvolveFilter
         return radius;
     }
 
+    @Override
     public BufferedImage filter ( BufferedImage src, BufferedImage dst )
     {
         int width = src.getWidth ();

@@ -39,6 +39,7 @@ public class TreesExample extends DefaultExample
      *
      * @return example title
      */
+    @Override
     public String getTitle ()
     {
         return "Trees";
@@ -49,6 +50,7 @@ public class TreesExample extends DefaultExample
      *
      * @return short example description
      */
+    @Override
     public String getDescription ()
     {
         return "Web-styled trees with multiselection";
@@ -60,6 +62,7 @@ public class TreesExample extends DefaultExample
      * @param owner demo application main frame
      * @return preview component
      */
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         // Editable tree

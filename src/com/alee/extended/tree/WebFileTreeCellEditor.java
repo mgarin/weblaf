@@ -46,6 +46,7 @@ public class WebFileTreeCellEditor extends WebTreeCellEditor<WebTextField>
         /**
          * {@inheritDoc}
          */
+        @Override
         public void setValue ( FileTreeNode value )
         {
             final File file = value.getFile ();
@@ -57,6 +58,7 @@ public class WebFileTreeCellEditor extends WebTreeCellEditor<WebTextField>
         /**
          * {@inheritDoc}
          */
+        @Override
         public boolean stopCellEditing ()
         {
             final File file = value.getFile ();

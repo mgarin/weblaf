@@ -113,6 +113,7 @@ public class ComponentTransition extends WebPanel
     {
         SwingUtils.invokeLater ( new Runnable ()
         {
+            @Override
             public void run ()
             {
                 performThreadedTransition ( content );
@@ -128,6 +129,7 @@ public class ComponentTransition extends WebPanel
     {
         SwingUtils.delayInvokeLater ( delay, new Runnable ()
         {
+            @Override
             public void run ()
             {
                 performThreadedTransition ( content );
@@ -201,6 +203,7 @@ public class ComponentTransition extends WebPanel
             // Focus handler required to wait for focus change
             FocusAdapter focusHandle = new FocusAdapter ()
             {
+                @Override
                 public void focusGained ( FocusEvent e )
                 {
                     removeFocusListener ( this );
@@ -246,11 +249,13 @@ public class ComponentTransition extends WebPanel
         // After-transition actions
         transition.addTransitionListener ( new TransitionListener ()
         {
+            @Override
             public void transitionStarted ()
             {
                 fireTransitionStarted ();
             }
 
+            @Override
             public void transitionFinished ()
             {
                 finishTransition ( content );

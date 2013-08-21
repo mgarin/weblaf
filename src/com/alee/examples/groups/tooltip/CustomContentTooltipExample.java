@@ -39,16 +39,19 @@ import java.awt.event.ActionListener;
 
 public class CustomContentTooltipExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Custom content tooltip";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Custom Web-styled tooltip with custom content";
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         // You can show any kind of content inside the tooltip
@@ -81,6 +84,7 @@ public class CustomContentTooltipExample extends DefaultExample
             // Wheel rotation updater
             ComponentUpdater.install ( this, "WheelImage.animator", StyleConstants.animationDelay, new ActionListener ()
             {
+                @Override
                 public void actionPerformed ( ActionEvent e )
                 {
                     angle += 1;
@@ -89,6 +93,7 @@ public class CustomContentTooltipExample extends DefaultExample
             } );
         }
 
+        @Override
         protected void paintComponent ( Graphics g )
         {
             super.paintComponent ( g );
@@ -105,6 +110,7 @@ public class CustomContentTooltipExample extends DefaultExample
                     wheelIcon.getImageObserver () );
         }
 
+        @Override
         public Dimension getPreferredSize ()
         {
             return new Dimension ( wheelIcon.getIconWidth (), wheelIcon.getIconHeight () );

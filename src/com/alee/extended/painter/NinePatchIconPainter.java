@@ -80,6 +80,7 @@ public class NinePatchIconPainter<E extends JComponent> extends DefaultPainter<E
         this.ninePatchIcon = ninePatchIcon;
     }
 
+    @Override
     public void paint ( Graphics2D g2d, Rectangle bounds, E c )
     {
         if ( ninePatchIcon != null )
@@ -89,6 +90,7 @@ public class NinePatchIconPainter<E extends JComponent> extends DefaultPainter<E
         }
     }
 
+    @Override
     public Dimension getPreferredSize ( E c )
     {
         if ( ninePatchIcon != null )
@@ -102,6 +104,7 @@ public class NinePatchIconPainter<E extends JComponent> extends DefaultPainter<E
         }
     }
 
+    @Override
     public Insets getMargin ( E c )
     {
         Insets margin = super.getMargin ( c );

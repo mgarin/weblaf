@@ -94,6 +94,7 @@ public class WebMemoryBar extends WebLabel implements ShapeProvider, SizeMethods
 
         addKeyListener ( new KeyAdapter ()
         {
+            @Override
             public void keyPressed ( KeyEvent e )
             {
                 if ( isEnabled () )
@@ -106,6 +107,7 @@ public class WebMemoryBar extends WebLabel implements ShapeProvider, SizeMethods
                 }
             }
 
+            @Override
             public void keyReleased ( KeyEvent e )
             {
                 if ( Hotkey.SPACE.isTriggered ( e ) || Hotkey.ENTER.isTriggered ( e ) )
@@ -124,6 +126,7 @@ public class WebMemoryBar extends WebLabel implements ShapeProvider, SizeMethods
         } );
         addMouseListener ( new MouseAdapter ()
         {
+            @Override
             public void mousePressed ( MouseEvent e )
             {
                 if ( allowGcAction && isEnabled () && SwingUtilities.isLeftMouseButton ( e ) )
@@ -134,6 +137,7 @@ public class WebMemoryBar extends WebLabel implements ShapeProvider, SizeMethods
                 }
             }
 
+            @Override
             public void mouseReleased ( MouseEvent e )
             {
                 if ( pressed && SwingUtilities.isLeftMouseButton ( e ) )
@@ -146,11 +150,13 @@ public class WebMemoryBar extends WebLabel implements ShapeProvider, SizeMethods
 
         addFocusListener ( new FocusAdapter ()
         {
+            @Override
             public void focusGained ( FocusEvent e )
             {
                 repaint ();
             }
 
+            @Override
             public void focusLost ( FocusEvent e )
             {
                 repaint ();
@@ -160,6 +166,7 @@ public class WebMemoryBar extends WebLabel implements ShapeProvider, SizeMethods
         // Values updater
         updater = ComponentUpdater.install ( this, THREAD_NAME, refreshRate, new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 updateMemory ();
@@ -429,11 +436,13 @@ public class WebMemoryBar extends WebLabel implements ShapeProvider, SizeMethods
         this.showMaximumMemory = showMaximumMemory;
     }
 
+    @Override
     public Shape provideShape ()
     {
         return LafUtils.getWebBorderShape ( WebMemoryBar.this, getShadeWidth (), getRound () );
     }
 
+    @Override
     protected void paintComponent ( Graphics g )
     {
         Graphics2D g2d = ( Graphics2D ) g;
@@ -507,6 +516,7 @@ public class WebMemoryBar extends WebLabel implements ShapeProvider, SizeMethods
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getPreferredWidth ()
     {
         return SizeUtils.getPreferredWidth ( this );
@@ -515,6 +525,7 @@ public class WebMemoryBar extends WebLabel implements ShapeProvider, SizeMethods
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebMemoryBar setPreferredWidth ( int preferredWidth )
     {
         return SizeUtils.setPreferredWidth ( this, preferredWidth );
@@ -523,6 +534,7 @@ public class WebMemoryBar extends WebLabel implements ShapeProvider, SizeMethods
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getPreferredHeight ()
     {
         return SizeUtils.getPreferredHeight ( this );
@@ -531,6 +543,7 @@ public class WebMemoryBar extends WebLabel implements ShapeProvider, SizeMethods
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebMemoryBar setPreferredHeight ( int preferredHeight )
     {
         return SizeUtils.setPreferredHeight ( this, preferredHeight );
@@ -539,6 +552,7 @@ public class WebMemoryBar extends WebLabel implements ShapeProvider, SizeMethods
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getMinimumWidth ()
     {
         return SizeUtils.getMinimumWidth ( this );
@@ -547,6 +561,7 @@ public class WebMemoryBar extends WebLabel implements ShapeProvider, SizeMethods
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebMemoryBar setMinimumWidth ( int minimumWidth )
     {
         return SizeUtils.setMinimumWidth ( this, minimumWidth );
@@ -555,6 +570,7 @@ public class WebMemoryBar extends WebLabel implements ShapeProvider, SizeMethods
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getMinimumHeight ()
     {
         return SizeUtils.getMinimumHeight ( this );
@@ -563,6 +579,7 @@ public class WebMemoryBar extends WebLabel implements ShapeProvider, SizeMethods
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebMemoryBar setMinimumHeight ( int minimumHeight )
     {
         return SizeUtils.setMinimumHeight ( this, minimumHeight );
@@ -571,6 +588,7 @@ public class WebMemoryBar extends WebLabel implements ShapeProvider, SizeMethods
     /**
      * {@inheritDoc}
      */
+    @Override
     public Dimension getPreferredSize ()
     {
         return SizeUtils.getPreferredSize ( this, super.getPreferredSize () );

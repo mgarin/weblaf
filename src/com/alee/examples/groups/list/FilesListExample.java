@@ -43,6 +43,7 @@ public class FilesListExample extends DefaultExample
      *
      * @return example title
      */
+    @Override
     public String getTitle ()
     {
         return "Files list";
@@ -53,6 +54,7 @@ public class FilesListExample extends DefaultExample
      *
      * @return short example description
      */
+    @Override
     public String getDescription ()
     {
         return "Web-styled files list";
@@ -64,6 +66,7 @@ public class FilesListExample extends DefaultExample
      * @param owner demo application main frame
      * @return preview component
      */
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         // Files list

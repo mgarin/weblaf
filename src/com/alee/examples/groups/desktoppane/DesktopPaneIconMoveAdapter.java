@@ -34,6 +34,7 @@ public class DesktopPaneIconMoveAdapter extends MouseAdapter
     private Point startPoint = null;
     private Rectangle startBounds = null;
 
+    @Override
     public void mousePressed ( MouseEvent e )
     {
         if ( SwingUtilities.isLeftMouseButton ( e ) )
@@ -44,6 +45,7 @@ public class DesktopPaneIconMoveAdapter extends MouseAdapter
         }
     }
 
+    @Override
     public void mouseDragged ( MouseEvent e )
     {
         if ( dragging )
@@ -57,6 +59,7 @@ public class DesktopPaneIconMoveAdapter extends MouseAdapter
         }
     }
 
+    @Override
     public void mouseReleased ( MouseEvent e )
     {
         if ( SwingUtilities.isLeftMouseButton ( e ) && dragging )

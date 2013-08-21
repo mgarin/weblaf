@@ -122,11 +122,13 @@ public class WebTipLabel extends JComponent implements SwingConstants, ActionLis
         }
     }
 
+    @Override
     public void actionPerformed ( ActionEvent e )
     {
         hideButton.setEnabled ( false );
         timer = new WebTimer ( "WebTipLabel.animator", StyleConstants.animationDelay, new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 if ( opacity > 0 )
@@ -159,6 +161,7 @@ public class WebTipLabel extends JComponent implements SwingConstants, ActionLis
         timer.start ();
     }
 
+    @Override
     public void paint ( Graphics g )
     {
         Graphics2D g2d = ( Graphics2D ) g;

@@ -30,16 +30,19 @@ public class NonHiddenFilter extends DefaultFileFilter
 {
     private static final ImageIcon ICON = new ImageIcon ( DirectoriesFilter.class.getResource ( "icons/nonhidden.png" ) );
 
+    @Override
     public ImageIcon getIcon ()
     {
         return ICON;
     }
 
+    @Override
     public String getDescription ()
     {
         return LanguageManager.get ( "weblaf.file.filter.nonhidden" );
     }
 
+    @Override
     public boolean accept ( File file )
     {
         return !file.isHidden ();

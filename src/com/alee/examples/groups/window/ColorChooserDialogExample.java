@@ -35,26 +35,31 @@ import java.awt.event.ActionListener;
 
 public class ColorChooserDialogExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Color chooser dialog";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Web-styled color chooser dialog decoration";
     }
 
+    @Override
     public FeatureState getFeatureState ()
     {
         return FeatureState.beta;
     }
 
+    @Override
     public Component getPreview ( final WebLookAndFeelDemo owner )
     {
         WebButton showFrame = new WebButton ( "Show color chooser", loadIcon ( "color.png" ) );
         showFrame.addActionListener ( new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 // Enabling dialog decoration

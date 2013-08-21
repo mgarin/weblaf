@@ -31,6 +31,7 @@ public abstract class CellEditorAdapter implements CellEditorListener
     /**
      * {@inheritDoc}
      */
+    @Override
     public void editingStopped ( ChangeEvent e )
     {
         // Do nothing
@@ -39,6 +40,7 @@ public abstract class CellEditorAdapter implements CellEditorListener
     /**
      * {@inheritDoc}
      */
+    @Override
     public void editingCanceled ( ChangeEvent e )
     {
         // Do nothing

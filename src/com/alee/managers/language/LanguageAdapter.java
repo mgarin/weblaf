@@ -25,21 +25,25 @@ import com.alee.managers.language.data.Dictionary;
 
 public abstract class LanguageAdapter implements LanguageListener
 {
+    @Override
     public void languageChanged ( String oldLang, String newLang )
     {
         languageUpdated ();
     }
 
+    @Override
     public void dictionaryAdded ( Dictionary dictionary )
     {
         languageUpdated ();
     }
 
+    @Override
     public void dictionaryRemoved ( Dictionary dictionary )
     {
         languageUpdated ();
     }
 
+    @Override
     public void dictionariesCleared ()
     {
         languageUpdated ();

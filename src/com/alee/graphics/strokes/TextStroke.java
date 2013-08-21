@@ -49,6 +49,7 @@ public class TextStroke implements Stroke
         this.repeat = repeat;
     }
 
+    @Override
     public Shape createStrokedShape ( Shape shape )
     {
         FontRenderContext frc = new FontRenderContext ( null, true, true );

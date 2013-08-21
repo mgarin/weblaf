@@ -32,21 +32,25 @@ import java.awt.*;
 
 public class FileBreadcrumbsExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "File breadcrumbs";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Web-styled file breadcrumbs";
     }
 
+    @Override
     public FeatureState getFeatureState ()
     {
         return FeatureState.beta;
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         // Simple decorated file breadcrumb (by default file system root is used)

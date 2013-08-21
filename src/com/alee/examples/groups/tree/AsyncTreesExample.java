@@ -44,6 +44,7 @@ public class AsyncTreesExample extends DefaultExample
      *
      * @return example title
      */
+    @Override
     public String getTitle ()
     {
         return "Asynchronous trees";
@@ -54,6 +55,7 @@ public class AsyncTreesExample extends DefaultExample
      *
      * @return short example description
      */
+    @Override
     public String getDescription ()
     {
         return "Web-styled asynchronous trees with multiselection";
@@ -65,6 +67,7 @@ public class AsyncTreesExample extends DefaultExample
      * @param owner demo application main frame
      * @return preview component
      */
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         // Editable asynchronous tree
@@ -98,6 +101,7 @@ public class AsyncTreesExample extends DefaultExample
     {
         tree.addMouseListener ( new MouseAdapter ()
         {
+            @Override
             public void mouseReleased ( MouseEvent e )
             {
                 if ( SwingUtils.isRightMouseButton ( e ) )

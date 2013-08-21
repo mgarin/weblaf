@@ -70,6 +70,7 @@ public class MiscCompositeContext implements CompositeContext
         this.dstColorModel = dstColorModel;
     }
 
+    @Override
     public void dispose ()
     {
     }
@@ -86,6 +87,7 @@ public class MiscCompositeContext implements CompositeContext
         return a < 0 ? 0 : a > 255 ? 255 : a;
     }
 
+    @Override
     public void compose ( Raster src, Raster dstIn, WritableRaster dstOut )
     {
         float a = 0, ac = 0;

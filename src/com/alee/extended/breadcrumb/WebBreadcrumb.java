@@ -50,6 +50,7 @@ public class WebBreadcrumb extends WebPanel
 
         addContainerListener ( new ContainerListener ()
         {
+            @Override
             public void componentAdded ( ContainerEvent e )
             {
                 if ( autoUpdate )
@@ -59,6 +60,7 @@ public class WebBreadcrumb extends WebPanel
                 }
             }
 
+            @Override
             public void componentRemoved ( ContainerEvent e )
             {
                 if ( autoUpdate )

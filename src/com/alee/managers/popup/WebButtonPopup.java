@@ -68,6 +68,7 @@ public class WebButtonPopup extends WebPopup
         copiedButton = copy ( button );
         copiedButton.addActionListener ( new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 hidePopup ( true );
@@ -77,6 +78,7 @@ public class WebButtonPopup extends WebPopup
         // Button listeners
         button.addActionListener ( new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 // Displaying popup when button is pressed
@@ -85,6 +87,7 @@ public class WebButtonPopup extends WebPopup
         } );
         button.addPropertyChangeListener ( new PropertyChangeListener ()
         {
+            @Override
             public void propertyChange ( PropertyChangeEvent evt )
             {
                 // Updating button copy on property changes
@@ -96,6 +99,7 @@ public class WebButtonPopup extends WebPopup
         } );
         button.addHierarchyListener ( new HierarchyListener ()
         {
+            @Override
             public void hierarchyChanged ( HierarchyEvent e )
             {
                 // Hiding popup properly when popup button parent has changed
@@ -107,12 +111,14 @@ public class WebButtonPopup extends WebPopup
         } );
         button.addAncestorListener ( new AncestorAdapter ()
         {
+            @Override
             public void ancestorRemoved ( AncestorEvent event )
             {
                 // Hiding popup properly when button is removed from visible container somehow
                 hidePopup ( false );
             }
 
+            @Override
             public void ancestorMoved ( AncestorEvent event )
             {
                 // Placing popup properly when button has moved
@@ -121,17 +127,20 @@ public class WebButtonPopup extends WebPopup
         } );
         button.addComponentListener ( new ComponentAdapter ()
         {
+            @Override
             public void componentHidden ( ComponentEvent e )
             {
                 // Hiding popup properly when button is hidden
                 hidePopup ( false );
             }
 
+            @Override
             public void componentResized ( ComponentEvent e )
             {
                 updateBounds ();
             }
 
+            @Override
             public void componentMoved ( ComponentEvent e )
             {
                 updateBounds ();
@@ -148,11 +157,13 @@ public class WebButtonPopup extends WebPopup
         // Bounds update listeners
         addAncestorListener ( new AncestorAdapter ()
         {
+            @Override
             public void ancestorAdded ( AncestorEvent event )
             {
                 updateBounds ();
             }
 
+            @Override
             public void ancestorMoved ( AncestorEvent event )
             {
                 updateBounds ();
@@ -274,6 +285,7 @@ public class WebButtonPopup extends WebPopup
         revalidate ();
     }
 
+    @Override
     public void focusChanged ( boolean focused )
     {
         super.focusChanged ( focused );
@@ -303,6 +315,7 @@ public class WebButtonPopup extends WebPopup
     {
         WebButton copy = new WebButton ()
         {
+            @Override
             public Dimension getPreferredSize ()
             {
                 return button.getSize ();
@@ -400,6 +413,7 @@ public class WebButtonPopup extends WebPopup
         }
     }
 
+    @Override
     public boolean contains ( Point p )
     {
         return getPopupShape ( this ).contains ( p );
@@ -550,11 +564,13 @@ public class WebButtonPopup extends WebPopup
         return new Point ( x, y );
     }
 
+    @Override
     public Shape provideShape ()
     {
         return getPopupShape ( this );
     }
 
+    @Override
     public void hidePopup ()
     {
         hidePopup ( false );
@@ -579,6 +595,7 @@ public class WebButtonPopup extends WebPopup
 
     private class WebButtonPopupPainter extends DefaultPainter<WebButtonPopup>
     {
+        @Override
         public void paint ( Graphics2D g2d, Rectangle bounds, WebButtonPopup c )
         {
             LafUtils.drawCustomWebBorder ( g2d, c, getPopupShape ( c ),

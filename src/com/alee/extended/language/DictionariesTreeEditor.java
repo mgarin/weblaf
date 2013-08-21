@@ -66,6 +66,7 @@ public class DictionariesTreeEditor extends WebTreeCellEditor
      * @param row        cell row index
      * @return cell editor component
      */
+    @Override
     public Component getTreeCellEditorComponent ( JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row )
     {
         WebTextField editor = ( WebTextField ) super.getTreeCellEditorComponent ( tree, value, isSelected, expanded, leaf, row );
@@ -101,6 +102,7 @@ public class DictionariesTreeEditor extends WebTreeCellEditor
      *
      * @return current editor's value
      */
+    @Override
     public Object getCellEditorValue ()
     {
         String editorValue = ( String ) super.getCellEditorValue ();
@@ -134,6 +136,7 @@ public class DictionariesTreeEditor extends WebTreeCellEditor
      * @param event event that editor should use to consider whether to begin editing or no
      * @return true if cell is editable, false otherwise
      */
+    @Override
     public boolean isCellEditable ( EventObject event )
     {
         Object value = tree.getSelectedValue ();

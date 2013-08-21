@@ -64,6 +64,7 @@ public class WebProxyAuthenticator extends Authenticator
      *
      * @return custom password authentication
      */
+    @Override
     protected PasswordAuthentication getPasswordAuthentication ()
     {
         return getProxyAuthentification ();
@@ -212,6 +213,7 @@ public class WebProxyAuthenticator extends Authenticator
             loginField = new WebTextField ( 12 );
             loginField.addAncestorListener ( new AncestorAdapter ()
             {
+                @Override
                 public void ancestorAdded ( AncestorEvent event )
                 {
                     loginField.requestFocusInWindow ();
@@ -231,6 +233,7 @@ public class WebProxyAuthenticator extends Authenticator
 
             HotkeyManager.registerHotkey ( authPanel, authPanel, Hotkey.ENTER, new HotkeyRunnable ()
             {
+                @Override
                 public void run ( KeyEvent e )
                 {
                     clickOk ();
@@ -238,6 +241,7 @@ public class WebProxyAuthenticator extends Authenticator
             } );
             HotkeyManager.registerHotkey ( authPanel, authPanel, Hotkey.ESCAPE, new HotkeyRunnable ()
             {
+                @Override
                 public void run ( KeyEvent e )
                 {
                     clickCancel ();
@@ -290,6 +294,7 @@ public class WebProxyAuthenticator extends Authenticator
          * @param messageType dialog message type
          * @return large dialog icon
          */
+        @Override
         protected ImageIcon getLargeIcon ( int messageType )
         {
             return AUTH_ICON;

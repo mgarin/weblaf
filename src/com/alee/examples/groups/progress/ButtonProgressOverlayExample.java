@@ -34,16 +34,19 @@ import java.awt.event.ActionListener;
 
 public class ButtonProgressOverlayExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Button progress";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Web-styled button progress overlay";
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         final ImageIcon start = loadIcon ( "start.png" );
@@ -61,6 +64,7 @@ public class ButtonProgressOverlayExample extends DefaultExample
         // Progress switch
         button.addActionListener ( new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 boolean showLoad = !progressOverlay.isShowLoad ();

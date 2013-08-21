@@ -31,21 +31,25 @@ import java.awt.*;
 
 public class ColorChooserFieldExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Color chooser field";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Web-styled color chooser field";
     }
 
+    @Override
     public FeatureState getFeatureState ()
     {
         return FeatureState.beta;
     }
 
+    @Override
     public Component getPreview ( final WebLookAndFeelDemo owner )
     {
         // Default color chooser field

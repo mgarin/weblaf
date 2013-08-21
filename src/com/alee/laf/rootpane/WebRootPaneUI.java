@@ -399,6 +399,7 @@ public class WebRootPaneUI extends BasicRootPaneUI implements SwingConstants
      * UI installation and deinstallation
      */
 
+    @Override
     public void installUI ( JComponent c )
     {
         super.installUI ( c );
@@ -413,6 +414,7 @@ public class WebRootPaneUI extends BasicRootPaneUI implements SwingConstants
         installWindowDecorations ();
     }
 
+    @Override
     public void uninstallUI ( JComponent c )
     {
         super.uninstallUI ( c );
@@ -429,6 +431,7 @@ public class WebRootPaneUI extends BasicRootPaneUI implements SwingConstants
      * Listening to decoration changes
      */
 
+    @Override
     public void propertyChange ( PropertyChangeEvent e )
     {
         super.propertyChange ( e );
@@ -525,11 +528,13 @@ public class WebRootPaneUI extends BasicRootPaneUI implements SwingConstants
     {
         windowFocusListener = new WindowFocusListener ()
         {
+            @Override
             public void windowGainedFocus ( WindowEvent e )
             {
                 root.repaint ();
             }
 
+            @Override
             public void windowLostFocus ( WindowEvent e )
             {
                 root.repaint ();
@@ -539,6 +544,7 @@ public class WebRootPaneUI extends BasicRootPaneUI implements SwingConstants
 
         titleChangeListener = new PropertyChangeListener ()
         {
+            @Override
             public void propertyChange ( PropertyChangeEvent evt )
             {
                 titleComponent.revalidate ();
@@ -552,6 +558,7 @@ public class WebRootPaneUI extends BasicRootPaneUI implements SwingConstants
             state = frame.getState ();
             windowStateListener = new WindowStateListener ()
             {
+                @Override
                 public void windowStateChanged ( WindowEvent e )
                 {
                     state = e.getNewState ();
@@ -658,6 +665,7 @@ public class WebRootPaneUI extends BasicRootPaneUI implements SwingConstants
     {
         final WebLabel titleIcon = new WebLabel ()
         {
+            @Override
             public Icon getIcon ()
             {
                 return getWindowIcon ();
@@ -669,6 +677,7 @@ public class WebRootPaneUI extends BasicRootPaneUI implements SwingConstants
         titleLabel.setHorizontalAlignment ( WebLabel.CENTER );
         titleLabel.addComponentListener ( new ComponentAdapter ()
         {
+            @Override
             public void componentResized ( ComponentEvent e )
             {
                 titleLabel.setHorizontalAlignment ( titleLabel.getRequiredSize ().width > titleLabel.getWidth () ? LEADING : CENTER );
@@ -679,6 +688,7 @@ public class WebRootPaneUI extends BasicRootPaneUI implements SwingConstants
         // Window move and max/restore listener
         ComponentMoveAdapter cma = new ComponentMoveAdapter ()
         {
+            @Override
             public void mouseClicked ( MouseEvent e )
             {
                 if ( isFrame () && SwingUtils.isLeftMouseButton ( e ) && e.getClickCount () == 2 )
@@ -694,6 +704,7 @@ public class WebRootPaneUI extends BasicRootPaneUI implements SwingConstants
                 }
             }
 
+            @Override
             public void mouseDragged ( MouseEvent e )
             {
                 if ( dragging && isFrameMaximized () )
@@ -717,11 +728,13 @@ public class WebRootPaneUI extends BasicRootPaneUI implements SwingConstants
 
     private class TitleLabel extends WebLabel
     {
+        @Override
         public String getText ()
         {
             return getWindowTitle ();
         }
 
+        @Override
         public Dimension getPreferredSize ()
         {
             Dimension ps = super.getPreferredSize ();
@@ -753,6 +766,7 @@ public class WebRootPaneUI extends BasicRootPaneUI implements SwingConstants
             minimize.setRolloverIcon ( minimizeActiveIcon );
             minimize.addActionListener ( new ActionListener ()
             {
+                @Override
                 public void actionPerformed ( ActionEvent e )
                 {
                     iconify ();
@@ -764,11 +778,13 @@ public class WebRootPaneUI extends BasicRootPaneUI implements SwingConstants
         {
             WebButton maximize = new WebButton ( maximizeIcon )
             {
+                @Override
                 public Icon getIcon ()
                 {
                     return isFrameMaximized () ? restoreIcon : maximizeIcon;
                 }
 
+                @Override
                 public Icon getRolloverIcon ()
                 {
                     return isFrameMaximized () ? restoreActiveIcon : maximizeActiveIcon;
@@ -778,6 +794,7 @@ public class WebRootPaneUI extends BasicRootPaneUI implements SwingConstants
             maximize.setRolloverIcon ( maximizeActiveIcon );
             maximize.addActionListener ( new ActionListener ()
             {
+                @Override
                 public void actionPerformed ( ActionEvent e )
                 {
                     if ( isFrame () )
@@ -802,6 +819,7 @@ public class WebRootPaneUI extends BasicRootPaneUI implements SwingConstants
             close.setRolloverIcon ( closeActiveIcon );
             close.addActionListener ( new ActionListener ()
             {
+                @Override
                 public void actionPerformed ( ActionEvent e )
                 {
                     close ();
@@ -812,6 +830,7 @@ public class WebRootPaneUI extends BasicRootPaneUI implements SwingConstants
 
         windowButtons = new WebButtonGroup ( buttons )
         {
+            @Override
             public void updateButtons ()
             {
                 if ( groupButtons )
@@ -1033,6 +1052,7 @@ public class WebRootPaneUI extends BasicRootPaneUI implements SwingConstants
      * Custom window decoration
      */
 
+    @Override
     public void paint ( Graphics g, JComponent c )
     {
         if ( styled )

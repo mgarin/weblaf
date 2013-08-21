@@ -35,6 +35,7 @@ public class DefaultLayoutStyle extends LayoutStyle
         return INSTANCE;
     }
 
+    @Override
     public int getPreferredGap ( JComponent component1, JComponent component2, ComponentPlacement type, int position, Container parent )
     {
 
@@ -53,6 +54,7 @@ public class DefaultLayoutStyle extends LayoutStyle
         return ( type == ComponentPlacement.UNRELATED ) ? 12 : 6;
     }
 
+    @Override
     public int getContainerGap ( JComponent component, int position, Container parent )
     {
         if ( component == null )

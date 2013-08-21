@@ -82,6 +82,7 @@ public class WebSpinner extends JSpinner implements ShapeProvider, FontMethods<W
         getWebUI ().setDrawFocus ( drawFocus );
     }
 
+    @Override
     protected JComponent createEditor ( SpinnerModel model )
     {
         if ( model instanceof SpinnerDateModel )
@@ -110,6 +111,7 @@ public class WebSpinner extends JSpinner implements ShapeProvider, FontMethods<W
         }
     }
 
+    @Override
     public Shape provideShape ()
     {
         return getWebUI ().provideShape ();
@@ -120,6 +122,7 @@ public class WebSpinner extends JSpinner implements ShapeProvider, FontMethods<W
         return ( WebSpinnerUI ) getUI ();
     }
 
+    @Override
     public void updateUI ()
     {
         if ( getUI () == null || !( getUI () instanceof WebSpinnerUI ) )
@@ -148,6 +151,7 @@ public class WebSpinner extends JSpinner implements ShapeProvider, FontMethods<W
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebSpinner setPlainFont ()
     {
         return SwingUtils.setPlainFont ( this );
@@ -156,6 +160,7 @@ public class WebSpinner extends JSpinner implements ShapeProvider, FontMethods<W
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebSpinner setPlainFont ( boolean apply )
     {
         return SwingUtils.setPlainFont ( this, apply );
@@ -164,6 +169,7 @@ public class WebSpinner extends JSpinner implements ShapeProvider, FontMethods<W
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isPlainFont ()
     {
         return SwingUtils.isPlainFont ( this );
@@ -172,6 +178,7 @@ public class WebSpinner extends JSpinner implements ShapeProvider, FontMethods<W
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebSpinner setBoldFont ()
     {
         return SwingUtils.setBoldFont ( this );
@@ -180,6 +187,7 @@ public class WebSpinner extends JSpinner implements ShapeProvider, FontMethods<W
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebSpinner setBoldFont ( boolean apply )
     {
         return SwingUtils.setBoldFont ( this, apply );
@@ -188,6 +196,7 @@ public class WebSpinner extends JSpinner implements ShapeProvider, FontMethods<W
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isBoldFont ()
     {
         return SwingUtils.isBoldFont ( this );
@@ -196,6 +205,7 @@ public class WebSpinner extends JSpinner implements ShapeProvider, FontMethods<W
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebSpinner setItalicFont ()
     {
         return SwingUtils.setItalicFont ( this );
@@ -204,6 +214,7 @@ public class WebSpinner extends JSpinner implements ShapeProvider, FontMethods<W
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebSpinner setItalicFont ( boolean apply )
     {
         return SwingUtils.setItalicFont ( this, apply );
@@ -212,6 +223,7 @@ public class WebSpinner extends JSpinner implements ShapeProvider, FontMethods<W
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isItalicFont ()
     {
         return SwingUtils.isItalicFont ( this );
@@ -220,6 +232,7 @@ public class WebSpinner extends JSpinner implements ShapeProvider, FontMethods<W
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebSpinner setFontStyle ( boolean bold, boolean italic )
     {
         return SwingUtils.setFontStyle ( this, bold, italic );
@@ -228,6 +241,7 @@ public class WebSpinner extends JSpinner implements ShapeProvider, FontMethods<W
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebSpinner setFontStyle ( int style )
     {
         return SwingUtils.setFontStyle ( this, style );
@@ -236,6 +250,7 @@ public class WebSpinner extends JSpinner implements ShapeProvider, FontMethods<W
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebSpinner setFontSize ( int fontSize )
     {
         return SwingUtils.setFontSize ( this, fontSize );
@@ -244,6 +259,7 @@ public class WebSpinner extends JSpinner implements ShapeProvider, FontMethods<W
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebSpinner changeFontSize ( int change )
     {
         return SwingUtils.changeFontSize ( this, change );
@@ -252,6 +268,7 @@ public class WebSpinner extends JSpinner implements ShapeProvider, FontMethods<W
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getFontSize ()
     {
         return SwingUtils.getFontSize ( this );
@@ -260,6 +277,7 @@ public class WebSpinner extends JSpinner implements ShapeProvider, FontMethods<W
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebSpinner setFontSizeAndStyle ( int fontSize, boolean bold, boolean italic )
     {
         return SwingUtils.setFontSizeAndStyle ( this, fontSize, bold, italic );
@@ -268,6 +286,7 @@ public class WebSpinner extends JSpinner implements ShapeProvider, FontMethods<W
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebSpinner setFontSizeAndStyle ( int fontSize, int style )
     {
         return SwingUtils.setFontSizeAndStyle ( this, fontSize, style );
@@ -276,6 +295,7 @@ public class WebSpinner extends JSpinner implements ShapeProvider, FontMethods<W
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebSpinner setFontName ( String fontName )
     {
         return SwingUtils.setFontName ( this, fontName );
@@ -284,6 +304,7 @@ public class WebSpinner extends JSpinner implements ShapeProvider, FontMethods<W
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getFontName ()
     {
         return SwingUtils.getFontName ( this );

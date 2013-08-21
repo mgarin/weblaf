@@ -30,21 +30,25 @@ import java.util.List;
 
 public class ComboBoxesGroup extends DefaultExampleGroup
 {
+    @Override
     public Icon getGroupIcon ()
     {
         return loadGroupIcon ( "combobox.png" );
     }
 
+    @Override
     public String getGroupName ()
     {
         return "Comboboxes";
     }
 
+    @Override
     public String getGroupDescription ()
     {
         return "Various examples of comboboxes usage";
     }
 
+    @Override
     public List<Example> getGroupExamples ()
     {
         List<Example> examples = new ArrayList<Example> ();

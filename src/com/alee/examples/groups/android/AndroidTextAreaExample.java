@@ -31,26 +31,31 @@ import java.awt.*;
 
 public class AndroidTextAreaExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Android text area";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Android-styled text area";
     }
 
+    @Override
     public FeatureState getFeatureState ()
     {
         return FeatureState.beta;
     }
 
+    @Override
     public boolean isFillWidth ()
     {
         return true;
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         // Text area styled with nine-patch state painter

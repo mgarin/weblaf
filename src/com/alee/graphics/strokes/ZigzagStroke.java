@@ -45,6 +45,7 @@ public class ZigzagStroke implements Stroke
         this.wavelength = wavelength;
     }
 
+    @Override
     public Shape createStrokedShape ( Shape shape )
     {
         GeneralPath result = new GeneralPath ();

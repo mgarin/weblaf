@@ -35,21 +35,25 @@ import java.awt.event.ActionListener;
 
 public class FileChooserDialogExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "File chooser dialog";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Web-styled file chooser dialog decoration";
     }
 
+    @Override
     public FeatureState getFeatureState ()
     {
         return FeatureState.beta;
     }
 
+    @Override
     public Component getPreview ( final WebLookAndFeelDemo owner )
     {
         WebButton showFrame = new WebButton ( "Show file chooser", loadIcon ( "file.png" ) );
@@ -66,6 +70,7 @@ public class FileChooserDialogExample extends DefaultExample
                 return fileChooser;
             }
 
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 // Enabling dialog decoration

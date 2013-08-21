@@ -38,11 +38,13 @@ public abstract class DefaultTransitionEffect implements TransitionEffect
      * Default methods
      */
 
+    @Override
     public long getAnimationDelay ()
     {
         return StyleConstants.avgAnimationDelay;
     }
 
+    @Override
     public boolean isAnimating ()
     {
         return animating;
@@ -103,6 +105,7 @@ public abstract class DefaultTransitionEffect implements TransitionEffect
      * Default animation methods
      */
 
+    @Override
     public boolean performAnimationTick ( ImageTransition imageTransition )
     {
         if ( !animating )

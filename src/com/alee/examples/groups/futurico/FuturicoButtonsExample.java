@@ -33,16 +33,19 @@ import java.awt.*;
 
 public class FuturicoButtonsExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Futurico buttons";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Futurico-styled buttons";
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         // Single painter used for all example buttons

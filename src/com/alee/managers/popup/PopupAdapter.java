@@ -23,21 +23,25 @@ package com.alee.managers.popup;
 
 public abstract class PopupAdapter implements PopupListener
 {
+    @Override
     public void popupWillBeOpened ()
     {
         // Do nothing
     }
 
+    @Override
     public void popupOpened ()
     {
         // Do nothing
     }
 
+    @Override
     public void popupWillBeClosed ()
     {
         // Do nothing
     }
 
+    @Override
     public void popupClosed ()
     {
         // Do nothing

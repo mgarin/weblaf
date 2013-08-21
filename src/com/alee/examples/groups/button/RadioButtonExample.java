@@ -31,16 +31,19 @@ import java.awt.*;
 
 public class RadioButtonExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Radiobuttons";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Web-styled radiobuttons";
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         // Selected radio button

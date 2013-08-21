@@ -32,16 +32,19 @@ import java.awt.*;
 
 public class StyledTabbedPanesExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Styled tabbed pane";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Tabbed pane with styled tabs background";
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         // Tab background painters

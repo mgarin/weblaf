@@ -45,10 +45,12 @@ public class WebFileListCellEditor extends AbstractListCellEditor<WebTextField, 
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void installStartEditActions ( final JList list )
     {
         keyAdapter = new KeyAdapter ()
         {
+            @Override
             public void keyReleased ( KeyEvent e )
             {
                 if ( Hotkey.F2.isTriggered ( e ) )
@@ -63,6 +65,7 @@ public class WebFileListCellEditor extends AbstractListCellEditor<WebTextField, 
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void uninstallStartEditActions ( JList list )
     {
         list.removeKeyListener ( keyAdapter );
@@ -71,6 +74,7 @@ public class WebFileListCellEditor extends AbstractListCellEditor<WebTextField, 
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isCellEditable ( JList list, int index, FileElement value )
     {
         File file = value != null ? value.getFile () : null;
@@ -80,6 +84,7 @@ public class WebFileListCellEditor extends AbstractListCellEditor<WebTextField, 
     /**
      * {@inheritDoc}
      */
+    @Override
     protected WebTextField createCellEditor ( JList list, int index, FileElement value )
     {
         WebTextField editor = WebTextField.createWebTextField ( true, WebListStyle.selectionRound, WebListStyle.selectionShadeWidth );
@@ -98,6 +103,7 @@ public class WebFileListCellEditor extends AbstractListCellEditor<WebTextField, 
     /**
      * {@inheritDoc}
      */
+    @Override
     protected Rectangle getEditorBounds ( JList list, int index, FileElement value, Rectangle cellBounds )
     {
         if ( list instanceof WebFileList )
@@ -116,6 +122,7 @@ public class WebFileListCellEditor extends AbstractListCellEditor<WebTextField, 
     /**
      * {@inheritDoc}
      */
+    @Override
     public FileElement getCellEditorValue ( JList list, int index, FileElement oldValue )
     {
         // Saving initial selection
@@ -140,6 +147,7 @@ public class WebFileListCellEditor extends AbstractListCellEditor<WebTextField, 
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean updateListModel ( JList list, int index, FileElement oldValue, FileElement newValue, boolean updateSelection )
     {
         // Updating model

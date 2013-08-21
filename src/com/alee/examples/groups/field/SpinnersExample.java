@@ -33,16 +33,19 @@ import java.util.Date;
 
 public class SpinnersExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Spinners";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Web-styled spinners";
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         // Integer value spinner

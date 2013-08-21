@@ -46,11 +46,13 @@ public class ValueConverter implements Converter
     // Special key that is used to determine tooltips
     public static final String TOOLTIP_KEY = "tooltip";
 
+    @Override
     public boolean canConvert ( Class type )
     {
         return Value.class.getCanonicalName ().equals ( type.getCanonicalName () );
     }
 
+    @Override
     public void marshal ( Object source, HierarchicalStreamWriter writer, MarshallingContext context )
     {
         Value value = ( Value ) source;
@@ -133,6 +135,7 @@ public class ValueConverter implements Converter
         }
     }
 
+    @Override
     public Object unmarshal ( HierarchicalStreamReader reader, UnmarshallingContext context )
     {
         Value value = new Value ();

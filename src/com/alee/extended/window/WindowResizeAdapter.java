@@ -49,6 +49,7 @@ public class WindowResizeAdapter extends MouseAdapter implements SwingConstants
         this.resizeSide = resizeSide;
     }
 
+    @Override
     public void mousePressed ( MouseEvent e )
     {
         if ( SwingUtilities.isLeftMouseButton ( e ) )
@@ -59,6 +60,7 @@ public class WindowResizeAdapter extends MouseAdapter implements SwingConstants
         prevY = e.getYOnScreen ();
     }
 
+    @Override
     public void mouseDragged ( MouseEvent e )
     {
         if ( prevX != -1 && prevY != -1 && resizing )
@@ -176,6 +178,7 @@ public class WindowResizeAdapter extends MouseAdapter implements SwingConstants
         }
     }
 
+    @Override
     public void mouseReleased ( MouseEvent e )
     {
         resizing = false;

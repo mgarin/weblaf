@@ -62,6 +62,7 @@ public class WebTreeCellEditor<C extends JComponent> extends WebDefaultCellEdito
         // Focus listener to stop editing on focus loss event
         textField.addFocusListener ( new FocusAdapter ()
         {
+            @Override
             public void focusLost ( FocusEvent e )
             {
                 stopCellEditing ();
@@ -81,6 +82,7 @@ public class WebTreeCellEditor<C extends JComponent> extends WebDefaultCellEdito
         // Focus listener to stop editing on focus loss event
         checkBox.addFocusListener ( new FocusAdapter ()
         {
+            @Override
             public void focusLost ( FocusEvent e )
             {
                 stopCellEditing ();
@@ -100,6 +102,7 @@ public class WebTreeCellEditor<C extends JComponent> extends WebDefaultCellEdito
         // Focus listener to stop editing on focus loss event
         comboBox.addFocusListener ( new FocusAdapter ()
         {
+            @Override
             public void focusLost ( FocusEvent e )
             {
                 stopCellEditing ();
@@ -118,6 +121,7 @@ public class WebTreeCellEditor<C extends JComponent> extends WebDefaultCellEdito
      * @param row        cell row index
      * @return cell editor component
      */
+    @Override
     public Component getTreeCellEditorComponent ( JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row )
     {
         final Component cellEditor = super.getTreeCellEditorComponent ( tree, value, isSelected, expanded, leaf, row );

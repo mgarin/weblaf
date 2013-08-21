@@ -32,16 +32,19 @@ import java.awt.*;
 
 public class ToggleButtonBreadcrumbsExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Toggle button breadcrumbs";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Web-styled toggle button breadcrumbs";
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         // Decorated breadcrumb

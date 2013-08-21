@@ -85,6 +85,7 @@ public class WebMenuBar extends JMenuBar implements ShapeProvider
         getWebUI ().setShadeWidth ( shadeWidth );
     }
 
+    @Override
     public Shape provideShape ()
     {
         return getWebUI ().provideShape ();
@@ -95,6 +96,7 @@ public class WebMenuBar extends JMenuBar implements ShapeProvider
         return ( WebMenuBarUI ) getUI ();
     }
 
+    @Override
     public void updateUI ()
     {
         if ( getUI () == null || !( getUI () instanceof WebMenuBarUI ) )

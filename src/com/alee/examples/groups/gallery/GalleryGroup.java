@@ -31,31 +31,37 @@ import java.util.List;
 
 public class GalleryGroup extends DefaultExampleGroup
 {
+    @Override
     public Icon getGroupIcon ()
     {
         return loadGroupIcon ( "gallery.png" );
     }
 
+    @Override
     public String getGroupName ()
     {
         return "Image galery";
     }
 
+    @Override
     public String getGroupDescription ()
     {
         return "Image gallery usage example";
     }
 
+    @Override
     public boolean isSingleExample ()
     {
         return true;
     }
 
+    @Override
     public FeatureState getFeatureGroupState ()
     {
         return FeatureState.beta;
     }
 
+    @Override
     public List<Example> getGroupExamples ()
     {
         return CollectionUtils.copy ( ( Example ) new GalleryExample () );

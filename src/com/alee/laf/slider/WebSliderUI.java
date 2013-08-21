@@ -85,6 +85,7 @@ public class WebSliderUI extends BasicSliderUI
         return new WebSliderUI ( ( JSlider ) c );
     }
 
+    @Override
     public void installUI ( final JComponent c )
     {
         super.installUI ( c );
@@ -96,6 +97,7 @@ public class WebSliderUI extends BasicSliderUI
         // Rollover mouse wheel scroll
         mouseWheelListener = new MouseWheelListener ()
         {
+            @Override
             public void mouseWheelMoved ( MouseWheelEvent e )
             {
                 slider.setValue (
@@ -108,6 +110,7 @@ public class WebSliderUI extends BasicSliderUI
         // Fixed value change repaint
         changeListener = new ChangeListener ()
         {
+            @Override
             public void stateChanged ( ChangeEvent e )
             {
                 slider.repaint ();
@@ -119,6 +122,7 @@ public class WebSliderUI extends BasicSliderUI
         // Rollover animator
         rolloverTimer = new WebTimer ( "WebProgressBarUI.animator", 40, new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 if ( rollover && rolloverDarkness < MAX_DARKNESS )
@@ -139,21 +143,25 @@ public class WebSliderUI extends BasicSliderUI
         } );
         mouseAdapter = new MouseAdapter ()
         {
+            @Override
             public void mousePressed ( MouseEvent e )
             {
                 slider.repaint ();
             }
 
+            @Override
             public void mouseReleased ( MouseEvent e )
             {
                 slider.repaint ();
             }
 
+            @Override
             public void mouseDragged ( MouseEvent e )
             {
                 slider.repaint ();
             }
 
+            @Override
             public void mouseEntered ( MouseEvent e )
             {
                 rollover = true;
@@ -168,6 +176,7 @@ public class WebSliderUI extends BasicSliderUI
                 }
             }
 
+            @Override
             public void mouseExited ( MouseEvent e )
             {
                 rollover = false;
@@ -186,6 +195,7 @@ public class WebSliderUI extends BasicSliderUI
         slider.addMouseMotionListener ( mouseAdapter );
     }
 
+    @Override
     public void uninstallUI ( JComponent c )
     {
         slider.removeMouseWheelListener ( mouseWheelListener );
@@ -396,6 +406,7 @@ public class WebSliderUI extends BasicSliderUI
         this.thumbAngleLength = thumbAngleLength;
     }
 
+    @Override
     protected Dimension getThumbSize ()
     {
         if ( slider.getOrientation () == JSlider.HORIZONTAL )
@@ -408,11 +419,13 @@ public class WebSliderUI extends BasicSliderUI
         }
     }
 
+    @Override
     public void paintFocus ( Graphics g )
     {
         // Do not paint default focus
     }
 
+    @Override
     public void paintThumb ( Graphics g )
     {
         if ( drawThumb )
@@ -543,6 +556,7 @@ public class WebSliderUI extends BasicSliderUI
         }
     }
 
+    @Override
     public void paintTrack ( Graphics g )
     {
         Graphics2D g2d = ( Graphics2D ) g;

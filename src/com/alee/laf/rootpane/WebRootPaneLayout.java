@@ -40,6 +40,7 @@ public class WebRootPaneLayout implements LayoutManager
      * @param parent layout container
      * @return preferred layout size
      */
+    @Override
     public Dimension preferredLayoutSize ( Container parent )
     {
         return calculateSize ( parent, true );
@@ -51,6 +52,7 @@ public class WebRootPaneLayout implements LayoutManager
      * @param parent layout container
      * @return minimum layout size
      */
+    @Override
     public Dimension minimumLayoutSize ( Container parent )
     {
         return calculateSize ( parent, false );
@@ -256,6 +258,7 @@ public class WebRootPaneLayout implements LayoutManager
      *
      * @param parent container to process
      */
+    @Override
     public void layoutContainer ( Container parent )
     {
         JRootPane root = ( JRootPane ) parent;
@@ -377,6 +380,7 @@ public class WebRootPaneLayout implements LayoutManager
      * @param name component constraint
      * @param comp component to add
      */
+    @Override
     public void addLayoutComponent ( String name, Component comp )
     {
         //
@@ -387,6 +391,7 @@ public class WebRootPaneLayout implements LayoutManager
      *
      * @param comp component to remove
      */
+    @Override
     public void removeLayoutComponent ( Component comp )
     {
         //

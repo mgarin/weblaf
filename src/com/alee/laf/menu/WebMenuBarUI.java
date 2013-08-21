@@ -46,6 +46,7 @@ public class WebMenuBarUI extends BasicMenuBarUI implements ShapeProvider
         return new WebMenuBarUI ();
     }
 
+    @Override
     public void installUI ( JComponent c )
     {
         super.installUI ( c );
@@ -59,6 +60,7 @@ public class WebMenuBarUI extends BasicMenuBarUI implements ShapeProvider
         updateBorder ( menuBar );
     }
 
+    @Override
     public Shape provideShape ()
     {
         return LafUtils.getWebBorderShape ( menuBar, getShadeWidth (), getRound () );
@@ -136,6 +138,7 @@ public class WebMenuBarUI extends BasicMenuBarUI implements ShapeProvider
         updateBorder ( menuBar );
     }
 
+    @Override
     public void paint ( Graphics g, JComponent c )
     {
         if ( !undecorated )

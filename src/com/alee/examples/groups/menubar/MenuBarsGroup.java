@@ -30,21 +30,25 @@ import java.util.List;
 
 public class MenuBarsGroup extends DefaultExampleGroup
 {
+    @Override
     public Icon getGroupIcon ()
     {
         return loadGroupIcon ( "menubar.png" );
     }
 
+    @Override
     public String getGroupName ()
     {
         return "Menubars";
     }
 
+    @Override
     public String getGroupDescription ()
     {
         return "Various examples of menubars usage";
     }
 
+    @Override
     public List<Example> getGroupExamples ()
     {
         List<Example> examples = new ArrayList<Example> ();

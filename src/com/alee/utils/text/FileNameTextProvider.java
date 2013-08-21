@@ -30,6 +30,7 @@ public class FileNameTextProvider implements TextProvider<File>
     /**
      * {@inheritDoc}
      */
+    @Override
     public String provide ( File object )
     {
         return object.getName ();

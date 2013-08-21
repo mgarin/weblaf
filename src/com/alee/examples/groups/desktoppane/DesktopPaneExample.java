@@ -40,21 +40,25 @@ import java.awt.event.KeyEvent;
 
 public class DesktopPaneExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Desktop pane";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Web-styled desktop pane";
     }
 
+    @Override
     public FeatureState getFeatureState ()
     {
         return FeatureState.beta;
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         // Desktop pane
@@ -85,6 +89,7 @@ public class DesktopPaneExample extends DefaultExample
         internalFrameIcon.setVerticalTextPosition ( WebButton.BOTTOM );
         internalFrameIcon.addActionListener ( new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 if ( internalFrameIcon.getClientProperty ( DesktopPaneIconMoveAdapter.DRAGGED_MARK ) != null )
@@ -123,6 +128,7 @@ public class DesktopPaneExample extends DefaultExample
 
         final WebInternalFrame tetrisFrame = new WebInternalFrame ( "Tetris frame", false, true, false, true )
         {
+            @Override
             public void setVisible ( boolean aFlag )
             {
                 if ( !aFlag )
@@ -145,6 +151,7 @@ public class DesktopPaneExample extends DefaultExample
                         setAccelerator ( KeyStroke.getKeyStroke ( KeyEvent.VK_F2, 0 ) );
                         addActionListener ( new ActionListener ()
                         {
+                            @Override
                             public void actionPerformed ( ActionEvent e )
                             {
                                 tetris.newGame ();
@@ -157,6 +164,7 @@ public class DesktopPaneExample extends DefaultExample
                     {
                         tetris.addTetrisListener ( new TetrisListener ()
                         {
+                            @Override
                             public void newGameStarted ()
                             {
                                 setEnabled ( true );
@@ -164,18 +172,21 @@ public class DesktopPaneExample extends DefaultExample
                                 setText ( "Pause game" );
                             }
 
+                            @Override
                             public void gamePaused ()
                             {
                                 setIcon ( loadIcon ( "tetris/unpause.png" ) );
                                 setText ( "Unpause game" );
                             }
 
+                            @Override
                             public void gameUnpaused ()
                             {
                                 setIcon ( loadIcon ( "tetris/pause.png" ) );
                                 setText ( "Pause game" );
                             }
 
+                            @Override
                             public void gameOver ()
                             {
                                 setEnabled ( false );
@@ -186,6 +197,7 @@ public class DesktopPaneExample extends DefaultExample
                         setAccelerator ( KeyStroke.getKeyStroke ( KeyEvent.VK_P, 0 ) );
                         addActionListener ( new ActionListener ()
                         {
+                            @Override
                             public void actionPerformed ( ActionEvent e )
                             {
                                 if ( tetris.isPaused () )
@@ -207,6 +219,7 @@ public class DesktopPaneExample extends DefaultExample
                         setAccelerator ( KeyStroke.getKeyStroke ( KeyEvent.VK_F4, KeyEvent.SHIFT_MASK ) );
                         addActionListener ( new ActionListener ()
                         {
+                            @Override
                             public void actionPerformed ( ActionEvent e )
                             {
                                 tetris.pauseGame ();
@@ -229,6 +242,7 @@ public class DesktopPaneExample extends DefaultExample
             private boolean loading = false;
             private boolean firstLoad = true;
 
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 if ( loading || tetrisFrameIcon.getClientProperty ( DesktopPaneIconMoveAdapter.DRAGGED_MARK ) != null )
@@ -241,6 +255,7 @@ public class DesktopPaneExample extends DefaultExample
 
                 new Thread ( new Runnable ()
                 {
+                    @Override
                     public void run ()
                     {
                         if ( firstLoad )
@@ -250,6 +265,7 @@ public class DesktopPaneExample extends DefaultExample
                         }
                         SwingUtilities.invokeLater ( new Runnable ()
                         {
+                            @Override
                             public void run ()
                             {
                                 if ( tetrisFrame.isClosed () )

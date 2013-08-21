@@ -31,16 +31,19 @@ import java.awt.*;
 
 public class EditorPaneExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Editor pane";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Web-styled editor pane";
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         WebEditorPane editorPane = new WebEditorPane ( "text/html", "<html><b>Some HTML content</b><br>" + "<i>next line</i><br>" +

@@ -30,16 +30,19 @@ import java.awt.*;
 
 public class StepLabelsExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Step labels";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Step-styled labels";
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         // First step

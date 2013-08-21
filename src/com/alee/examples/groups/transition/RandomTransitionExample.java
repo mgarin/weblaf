@@ -44,16 +44,19 @@ import java.awt.event.ActionListener;
 
 public class RandomTransitionExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Random transition";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Random transition effect";
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         // Transition panel
@@ -85,6 +88,7 @@ public class RandomTransitionExample extends DefaultExample
         switchView.setDrawFocus ( false );
         switchView.addActionListener ( new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 if ( componentTransition.getContent () == image1 )
@@ -103,11 +107,13 @@ public class RandomTransitionExample extends DefaultExample
         } );
         componentTransition.addTransitionListener ( new TransitionListener ()
         {
+            @Override
             public void transitionStarted ()
             {
                 switchView.setEnabled ( false );
             }
 
+            @Override
             public void transitionFinished ()
             {
                 switchView.setEnabled ( true );

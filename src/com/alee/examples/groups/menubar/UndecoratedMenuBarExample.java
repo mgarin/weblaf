@@ -28,16 +28,19 @@ import java.awt.*;
 
 public class UndecoratedMenuBarExample extends DefaultMenuBarExample
 {
+    @Override
     public String getTitle ()
     {
         return "Undecorated menu bar";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Menu bar without any styling";
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         WebMenuBar menuBar = new WebMenuBar ();

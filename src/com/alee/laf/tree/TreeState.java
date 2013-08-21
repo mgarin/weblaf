@@ -125,6 +125,7 @@ public class TreeState implements Serializable, Cloneable
      *
      * @return cloned states object
      */
+    @Override
     public TreeState clone ()
     {
         return new TreeState ( MapUtils.cloneLinkedHashMap ( ( LinkedHashMap<String, NodeState> ) states ) );

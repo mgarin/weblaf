@@ -45,6 +45,7 @@ public class WebOptionPaneUI extends BasicOptionPaneUI
         return new WebOptionPaneUI ();
     }
 
+    @Override
     public void installUI ( JComponent c )
     {
         super.installUI ( c );
@@ -58,6 +59,7 @@ public class WebOptionPaneUI extends BasicOptionPaneUI
         optionPane.setBorder ( BorderFactory.createEmptyBorder ( 15, 15, 15, 15 ) );
     }
 
+    @Override
     protected Container createMessageArea ()
     {
         Container messageArea = super.createMessageArea ();
@@ -72,6 +74,7 @@ public class WebOptionPaneUI extends BasicOptionPaneUI
      * Modified buttons creation method
      */
 
+    @Override
     protected void addButtonComponents ( Container container, Object[] buttons, int initialIndex )
     {
         if ( container instanceof JComponent )
@@ -143,6 +146,7 @@ public class WebOptionPaneUI extends BasicOptionPaneUI
                         JButton defaultB = ( JButton ) initialFocusComponent;
                         defaultB.addHierarchyListener ( new HierarchyListener ()
                         {
+                            @Override
                             public void hierarchyChanged ( HierarchyEvent e )
                             {
                                 if ( ( e.getChangeFlags () & HierarchyEvent.PARENT_CHANGED ) != 0 )
@@ -167,6 +171,7 @@ public class WebOptionPaneUI extends BasicOptionPaneUI
      * Modified dialog buttons
      */
 
+    @Override
     protected Object[] getButtons ()
     {
         if ( optionPane != null )
@@ -263,6 +268,7 @@ public class WebOptionPaneUI extends BasicOptionPaneUI
      * Modified dialogs side icons
      */
 
+    @Override
     protected Icon getIconForType ( int messageType )
     {
         return getTypeIcon ( messageType );

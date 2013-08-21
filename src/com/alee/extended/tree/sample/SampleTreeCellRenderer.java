@@ -43,6 +43,7 @@ public class SampleTreeCellRenderer extends WebAsyncTreeCellRenderer
      * @param hasFocus   whether cell has focusor not
      * @return renderer component
      */
+    @Override
     public WebTreeElement getTreeCellRendererComponent ( JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf,
                                                          int row, boolean hasFocus )
     {

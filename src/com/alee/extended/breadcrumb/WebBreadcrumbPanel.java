@@ -92,6 +92,7 @@ public class WebBreadcrumbPanel extends WebPanel implements BreadcrumbElement<We
         setPainter ( painter );
     }
 
+    @Override
     public void setType ( BreadcrumbElementType type )
     {
         painter.setType ( type );
@@ -99,29 +100,34 @@ public class WebBreadcrumbPanel extends WebPanel implements BreadcrumbElement<We
         revalidate ();
     }
 
+    @Override
     public void setOverlap ( int overlap )
     {
         painter.setOverlap ( overlap );
         setPainter ( painter );
     }
 
+    @Override
     public void setShowProgress ( boolean showProgress )
     {
         painter.setShowProgress ( showProgress );
         repaint ();
     }
 
+    @Override
     public void setProgress ( float progress )
     {
         painter.setProgress ( progress );
         repaint ();
     }
 
+    @Override
     public BreadcrumbElementPainter getPainter ()
     {
         return painter;
     }
 
+    @Override
     public boolean contains ( int x, int y )
     {
         return BreadcrumbUtils.contains ( x, y, this );

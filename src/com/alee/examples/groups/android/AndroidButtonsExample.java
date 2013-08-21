@@ -33,16 +33,19 @@ import java.awt.*;
 
 public class AndroidButtonsExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Android buttons";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Android-styled buttons";
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         // Single painter used for all example buttons

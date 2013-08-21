@@ -31,21 +31,25 @@ import java.awt.*;
 
 public class ColorChooserPanelExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Color chooser panel";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Web-styled color chooser panel";
     }
 
+    @Override
     public FeatureState getFeatureState ()
     {
         return FeatureState.beta;
     }
 
+    @Override
     public Component getPreview ( final WebLookAndFeelDemo owner )
     {
         // Simple color chooser panel

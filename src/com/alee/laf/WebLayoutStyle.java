@@ -37,6 +37,7 @@ public class WebLayoutStyle extends DefaultLayoutStyle
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getPreferredGap ( JComponent component1, JComponent component2, ComponentPlacement type, int position, Container parent )
     {
         super.getPreferredGap ( component1, component2, type, position, parent );
@@ -86,6 +87,7 @@ public class WebLayoutStyle extends DefaultLayoutStyle
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getContainerGap ( JComponent component, int position, Container parent )
     {
         super.getContainerGap ( component, position, parent );
@@ -95,6 +97,7 @@ public class WebLayoutStyle extends DefaultLayoutStyle
     /**
      * {@inheritDoc}
      */
+    @Override
     protected int getButtonGap ( JComponent source, JComponent target, int position, int offset )
     {
         offset = super.getButtonGap ( source, target, position, offset );

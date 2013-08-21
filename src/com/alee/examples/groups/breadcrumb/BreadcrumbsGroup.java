@@ -31,26 +31,31 @@ import java.util.List;
 
 public class BreadcrumbsGroup extends DefaultExampleGroup
 {
+    @Override
     public Icon getGroupIcon ()
     {
         return loadGroupIcon ( "breadcrumb.png" );
     }
 
+    @Override
     public String getGroupName ()
     {
         return "Breadcrumbs";
     }
 
+    @Override
     public String getGroupDescription ()
     {
         return "Various examples of breadcrumbs usage";
     }
 
+    @Override
     public FeatureState getFeatureGroupState ()
     {
         return FeatureState.beta;
     }
 
+    @Override
     public List<Example> getGroupExamples ()
     {
         List<Example> examples = new ArrayList<Example> ();

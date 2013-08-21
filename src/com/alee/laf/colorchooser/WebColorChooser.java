@@ -106,6 +106,7 @@ public class WebColorChooser extends JColorChooser implements DialogOptions
         return ( WebColorChooserUI ) getUI ();
     }
 
+    @Override
     public void updateUI ()
     {
         if ( getUI () == null || !( getUI () instanceof WebColorChooserUI ) )

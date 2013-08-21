@@ -31,26 +31,31 @@ import java.util.List;
 
 public class FileChoosersGroup extends DefaultExampleGroup
 {
+    @Override
     public Icon getGroupIcon ()
     {
         return loadGroupIcon ( "filechooser.png" );
     }
 
+    @Override
     public String getGroupName ()
     {
         return "File choosers";
     }
 
+    @Override
     public String getGroupDescription ()
     {
         return "Various examples of file choosers usage";
     }
 
+    @Override
     public FeatureState getFeatureGroupState ()
     {
         return FeatureState.beta;
     }
 
+    @Override
     public List<Example> getGroupExamples ()
     {
         List<Example> examples = new ArrayList<Example> ();

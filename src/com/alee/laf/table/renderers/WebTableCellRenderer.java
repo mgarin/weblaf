@@ -40,18 +40,21 @@ public class WebTableCellRenderer extends WebLabel implements TableCellRenderer
         setName ( "Table.cellRenderer" );
     }
 
+    @Override
     public void setForeground ( Color c )
     {
         super.setForeground ( c );
         unselectedForeground = c;
     }
 
+    @Override
     public void setBackground ( Color c )
     {
         super.setBackground ( c );
         unselectedBackground = c;
     }
 
+    @Override
     public void updateUI ()
     {
         super.updateUI ();
@@ -62,6 +65,7 @@ public class WebTableCellRenderer extends WebLabel implements TableCellRenderer
     /**
      * {@inheritDoc}
      */
+    @Override
     public Component getTableCellRendererComponent ( JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column )
     {
         Color fg = null;
@@ -105,6 +109,7 @@ public class WebTableCellRenderer extends WebLabel implements TableCellRenderer
         return this;
     }
 
+    @Override
     public boolean isOpaque ()
     {
         Color back = getBackground ();

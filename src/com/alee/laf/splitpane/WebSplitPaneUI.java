@@ -67,6 +67,7 @@ public class WebSplitPaneUI extends BasicSplitPaneUI
      *
      * @param c component for this UI
      */
+    @Override
     public void installUI ( JComponent c )
     {
         super.installUI ( c );
@@ -83,6 +84,7 @@ public class WebSplitPaneUI extends BasicSplitPaneUI
         // Orientation change listener
         propertyChangeListener = new PropertyChangeListener ()
         {
+            @Override
             public void propertyChange ( PropertyChangeEvent evt )
             {
                 updateBorder ();
@@ -96,6 +98,7 @@ public class WebSplitPaneUI extends BasicSplitPaneUI
      *
      * @param c component with this UI
      */
+    @Override
     public void uninstallUI ( JComponent c )
     {
         splitPane.removePropertyChangeListener ( WebLookAndFeel.COMPONENT_ORIENTATION_PROPERTY, propertyChangeListener );
@@ -163,17 +166,20 @@ public class WebSplitPaneUI extends BasicSplitPaneUI
     /**
      * {@inheritDoc}
      */
+    @Override
     public BasicSplitPaneDivider createDefaultDivider ()
     {
         return new BasicSplitPaneDivider ( this )
         {
             private final Border border = BorderFactory.createEmptyBorder ( 0, 0, 0, 0 );
 
+            @Override
             public Border getBorder ()
             {
                 return border;
             }
 
+            @Override
             protected JButton createLeftOneTouchButton ()
             {
                 WebButton iconWebButton = WebButton.createIconWebButton ( new ImageIcon ( WebSplitPaneUI.class
@@ -186,6 +192,7 @@ public class WebSplitPaneUI extends BasicSplitPaneUI
                 return iconWebButton;
             }
 
+            @Override
             protected JButton createRightOneTouchButton ()
             {
                 JButton iconWebButton = WebButton.createIconWebButton ( new ImageIcon ( WebSplitPaneUI.class
@@ -202,6 +209,7 @@ public class WebSplitPaneUI extends BasicSplitPaneUI
             private Color transparent = new Color ( 0, 0, 0, 0 );
             private Color[] gradient = new Color[]{ transparent, color, color, transparent };
 
+            @Override
             public void paint ( Graphics g )
             {
                 Graphics2D g2d = ( Graphics2D ) g;
@@ -238,10 +246,12 @@ public class WebSplitPaneUI extends BasicSplitPaneUI
     /**
      * {@inheritDoc}
      */
+    @Override
     protected Component createDefaultNonContinuousLayoutDivider ()
     {
         return new Canvas ()
         {
+            @Override
             public void paint ( Graphics g )
             {
                 if ( !isContinuousLayout () && getLastDragLocation () != -1 )
@@ -264,6 +274,7 @@ public class WebSplitPaneUI extends BasicSplitPaneUI
     /**
      * {@inheritDoc}
      */
+    @Override
     public void finishedPaintingChildren ( JSplitPane jc, Graphics g )
     {
         if ( jc == splitPane && getLastDragLocation () != -1 && !isContinuousLayout () &&

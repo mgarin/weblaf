@@ -37,21 +37,25 @@ import java.io.File;
 
 public class FileChoosersExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "File choosers";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Web-styled file choosers";
     }
 
+    @Override
     public FeatureState getFeatureState ()
     {
         return FeatureState.beta;
     }
 
+    @Override
     public Component getPreview ( final WebLookAndFeelDemo owner )
     {
         // Simple file chooser example
@@ -61,6 +65,7 @@ public class FileChoosersExample extends DefaultExample
             private WebFileChooser fileChooser = null;
             private File file = null;
 
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 if ( fileChooser == null )
@@ -88,6 +93,7 @@ public class FileChoosersExample extends DefaultExample
             private WebFileChooser imageChooser = null;
             private File file = null;
 
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 if ( imageChooser == null )

@@ -122,6 +122,7 @@ public class DashedBorderPainter<E extends JComponent> extends BorderPainter<E>
     /**
      * Updates border stroke depending on painter settings.
      */
+    @Override
     protected void updateStroke ()
     {
         stroke = new BasicStroke ( getWidth (), BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 0f, getDash (), getDashPhase () );

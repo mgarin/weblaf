@@ -140,6 +140,7 @@ public class NinePatchEditorPanel extends WebPanel
         fileTree.setFileFilter ( GlobalConstants.IMAGES_AND_FOLDERS_FILTER );
         fileTree.addTreeSelectionListener ( new TreeSelectionListener ()
         {
+            @Override
             public void valueChanged ( TreeSelectionEvent e )
             {
                 if ( openFromTreeEnabled && fileTree.getSelectionCount () > 0 )
@@ -150,6 +151,7 @@ public class NinePatchEditorPanel extends WebPanel
         } );
         fileTree.addMouseListener ( new MouseAdapter ()
         {
+            @Override
             public void mouseClicked ( MouseEvent e )
             {
                 if ( e.getClickCount () == 2 && openFromTreeEnabled &&
@@ -161,11 +163,13 @@ public class NinePatchEditorPanel extends WebPanel
         } );
         fileTree.setTransferHandler ( new TransferHandler ()
         {
+            @Override
             public int getSourceActions ( JComponent c )
             {
                 return TransferHandler.COPY;
             }
 
+            @Override
             protected Transferable createTransferable ( JComponent c )
             {
                 return fileTree.getSelectionCount () > 0 ? new StringSelection ( fileTree.getSelectedFile ().getAbsolutePath () ) : null;
@@ -196,6 +200,7 @@ public class NinePatchEditorPanel extends WebPanel
         filesSplit.setDividerLocation ( fsl != null ? fsl : 230 );
         filesSplit.addPropertyChangeListener ( WebSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener ()
         {
+            @Override
             public void propertyChange ( PropertyChangeEvent pce )
             {
                 SettingsManager.set ( "NinePatchEditor", "filesSplitLocation", filesSplit.getDividerLocation () );
@@ -209,6 +214,7 @@ public class NinePatchEditorPanel extends WebPanel
         }
         previewSplit.addPropertyChangeListener ( WebSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener ()
         {
+            @Override
             public void propertyChange ( PropertyChangeEvent pce )
             {
                 SettingsManager.set ( "NinePatchEditor", "splitLocation", previewSplit.getDividerLocation () );
@@ -237,6 +243,7 @@ public class NinePatchEditorPanel extends WebPanel
         {
             private WebFileChooser wfc = null;
 
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 if ( wfc == null )
@@ -268,6 +275,7 @@ public class NinePatchEditorPanel extends WebPanel
         save.setEnabled ( false );
         save.addActionListener ( new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 if ( imageSrc != null )
@@ -293,6 +301,7 @@ public class NinePatchEditorPanel extends WebPanel
         {
             private WebFileChooser wfc = null;
 
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 if ( wfc == null )
@@ -329,6 +338,7 @@ public class NinePatchEditorPanel extends WebPanel
         copy.setRolloverDecoratedOnly ( true );
         copy.addActionListener ( new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 if ( !ninePatchEditor.isSomeDragged () )
@@ -345,6 +355,7 @@ public class NinePatchEditorPanel extends WebPanel
         paste.setRolloverDecoratedOnly ( true );
         paste.addActionListener ( new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 if ( !ninePatchEditor.isSomeDragged () )
@@ -371,6 +382,7 @@ public class NinePatchEditorPanel extends WebPanel
         undo.setRolloverDecoratedOnly ( true );
         undo.addActionListener ( new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 ninePatchEditor.undo ();
@@ -385,6 +397,7 @@ public class NinePatchEditorPanel extends WebPanel
         redo.setRolloverDecoratedOnly ( true );
         redo.addActionListener ( new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 ninePatchEditor.redo ();
@@ -397,6 +410,7 @@ public class NinePatchEditorPanel extends WebPanel
         ninePatchEditor = new NinePatchEditor ();
         ninePatchEditor.setTransferHandler ( new FileDropHandler ()
         {
+            @Override
             protected boolean filesImported ( List<File> files )
             {
                 if ( files != null )
@@ -428,6 +442,7 @@ public class NinePatchEditorPanel extends WebPanel
         ninePatchEditor.setShowGuideSpacing ( sgs );
         showGuidesSpacing.addActionListener ( new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 boolean sgs = showGuidesSpacing.isSelected ();
@@ -444,6 +459,7 @@ public class NinePatchEditorPanel extends WebPanel
         ninePatchEditor.setShowRuler ( sr );
         showRuler.addActionListener ( new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 boolean sr = showRuler.isSelected ();
@@ -460,6 +476,7 @@ public class NinePatchEditorPanel extends WebPanel
         ninePatchEditor.setFillContentArea ( fc );
         fillContent.addActionListener ( new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 boolean fc = fillContent.isSelected ();
@@ -476,6 +493,7 @@ public class NinePatchEditorPanel extends WebPanel
         ninePatchEditor.setFillStretchAreas ( fs );
         fillStretch.addActionListener ( new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 boolean fs = fillStretch.isSelected ();
@@ -492,6 +510,7 @@ public class NinePatchEditorPanel extends WebPanel
         ninePatchEditor.setShowRulerCursorPosition ( rc );
         rulerCursor.addActionListener ( new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 boolean rc = rulerCursor.isSelected ();
@@ -508,6 +527,7 @@ public class NinePatchEditorPanel extends WebPanel
         ninePatchEditor.setShowAreaCursorPosition ( ac );
         areaCursor.addActionListener ( new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 boolean ac = areaCursor.isSelected ();
@@ -518,6 +538,7 @@ public class NinePatchEditorPanel extends WebPanel
 
         final WebSlider zoomSlider = new WebSlider ( NinePatchEditor.MIN_ZOOM, NinePatchEditor.MAX_ZOOM, ninePatchEditor.getZoom () )
         {
+            @Override
             public Dimension getPreferredSize ()
             {
                 Dimension ps = super.getPreferredSize ();
@@ -530,6 +551,7 @@ public class NinePatchEditorPanel extends WebPanel
         zoomSlider.setPaintLabels ( false );
         changeListener = new ChangeListener ()
         {
+            @Override
             public void stateChanged ( ChangeEvent e )
             {
                 ninePatchEditor.removeZoomChangeListener ( zoomChangeListener );
@@ -540,6 +562,7 @@ public class NinePatchEditorPanel extends WebPanel
         zoomSlider.addChangeListener ( changeListener );
         zoomChangeListener = new ZoomChangeListener ()
         {
+            @Override
             public void zoomChanged ()
             {
                 zoomSlider.removeChangeListener ( changeListener );
@@ -553,6 +576,7 @@ public class NinePatchEditorPanel extends WebPanel
         minZoom.setRolloverDecoratedOnly ( true );
         minZoom.addActionListener ( new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 zoomSlider.setValue ( NinePatchEditor.MIN_ZOOM );
@@ -563,6 +587,7 @@ public class NinePatchEditorPanel extends WebPanel
         maxZoom.setRolloverDecoratedOnly ( true );
         maxZoom.addActionListener ( new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 zoomSlider.setValue ( NinePatchEditor.MAX_ZOOM );
@@ -639,6 +664,7 @@ public class NinePatchEditorPanel extends WebPanel
             fileTree.setSelectedFile ( file );
             fileTree.expandToFile ( file, true, false, new Runnable ()
             {
+                @Override
                 public void run ()
                 {
                     openFromTreeEnabled = true;
@@ -695,6 +721,7 @@ public class NinePatchEditorPanel extends WebPanel
     {
         previewPanel = new WebPanel ()
         {
+            @Override
             public Dimension getPreferredSize ()
             {
                 final Dimension ps = super.getPreferredSize ();
@@ -713,6 +740,7 @@ public class NinePatchEditorPanel extends WebPanel
         updatePreviews ();
         getNinePatchEditor ().addChangeListener ( new ChangeListener ()
         {
+            @Override
             public void stateChanged ( ChangeEvent e )
             {
                 updatePreviews ();
@@ -735,6 +763,7 @@ public class NinePatchEditorPanel extends WebPanel
         showIcon.setSelected ( si );
         showIcon.addActionListener ( new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 boolean show = showIcon.isSelected ();
@@ -768,6 +797,7 @@ public class NinePatchEditorPanel extends WebPanel
         textField.setMargin ( -1 );
         textField.addCaretListener ( new CaretListener ()
         {
+            @Override
             public void caretUpdate ( CaretEvent e )
             {
                 SettingsManager.set ( "NinePatchEditor", "preview.text", textField.getText () );
@@ -776,6 +806,7 @@ public class NinePatchEditorPanel extends WebPanel
         } );
         showText.addActionListener ( new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 boolean show = showText.isSelected ();
@@ -802,6 +833,7 @@ public class NinePatchEditorPanel extends WebPanel
         {
             private WebColorChooserDialog webColorChooser = null;
 
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 if ( webColorChooser == null )
@@ -827,6 +859,7 @@ public class NinePatchEditorPanel extends WebPanel
         drawAlphaBackground.setSelected ( da );
         drawAlphaBackground.addActionListener ( new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 SettingsManager.set ( "NinePatchEditor", "preview.transparentBackground", true );
@@ -843,6 +876,7 @@ public class NinePatchEditorPanel extends WebPanel
         {
             private WebColorChooserDialog webColorChooser = null;
 
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 SettingsManager.set ( "NinePatchEditor", "preview.transparentBackground", false );

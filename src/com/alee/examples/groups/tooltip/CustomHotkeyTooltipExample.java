@@ -37,16 +37,19 @@ import java.awt.event.ActionListener;
 
 public class CustomHotkeyTooltipExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Tooltip with hotkey";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Custom Web-styled tooltip with hotkey";
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         // Hotkey and Tooltip managers integration
@@ -57,6 +60,7 @@ public class CustomHotkeyTooltipExample extends DefaultExample
         {
             private int count = 0;
 
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 count++;

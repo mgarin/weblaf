@@ -154,6 +154,7 @@ public class ShadowFilter extends AbstractBufferedImageOp
         }
     }
 
+    @Override
     public BufferedImage filter ( BufferedImage src, BufferedImage dst )
     {
         int width = src.getWidth ();

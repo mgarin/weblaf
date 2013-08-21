@@ -30,21 +30,25 @@ import java.util.List;
 
 public class AndroidStylingGroup extends DefaultExampleGroup
 {
+    @Override
     public Icon getGroupIcon ()
     {
         return loadGroupIcon ( "android.png" );
     }
 
+    @Override
     public String getGroupName ()
     {
         return "Android styling";
     }
 
+    @Override
     public String getGroupDescription ()
     {
         return "Various examples of Android components styling";
     }
 
+    @Override
     public List<Example> getGroupExamples ()
     {
         // todo Add styled list

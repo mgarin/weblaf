@@ -89,6 +89,7 @@ public class SlideTransitionEffect extends DefaultTransitionEffect
         put ( SLIDE_TYPE, type );
     }
 
+    @Override
     public void prepareAnimation ( ImageTransition imageTransition )
     {
         // Updating settings
@@ -105,6 +106,7 @@ public class SlideTransitionEffect extends DefaultTransitionEffect
         imageTransition.repaint ();
     }
 
+    @Override
     public boolean performAnimation ( ImageTransition imageTransition )
     {
         // Determining max progress
@@ -129,6 +131,7 @@ public class SlideTransitionEffect extends DefaultTransitionEffect
         }
     }
 
+    @Override
     public void paint ( Graphics2D g2d, ImageTransition imageTransition )
     {
         // Variables

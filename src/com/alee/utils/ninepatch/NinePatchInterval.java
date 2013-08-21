@@ -125,6 +125,7 @@ public final class NinePatchInterval implements Serializable, Cloneable
                 .intersects ( new Rectangle ( npi.getStart (), 0, npi.getEnd () - npi.getStart (), 1 ) );
     }
 
+    @Override
     public NinePatchInterval clone ()
     {
         NinePatchInterval npi = new NinePatchInterval ();

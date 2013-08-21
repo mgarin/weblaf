@@ -130,6 +130,7 @@ public class WebFileListCellRenderer extends WebListCellRenderer
 
         fileList.addPropertyChangeListener ( WebLookAndFeel.COMPONENT_ENABLED_PROPERTY, new PropertyChangeListener ()
         {
+            @Override
             public void propertyChange ( PropertyChangeEvent evt )
             {
                 updateEnabledState ();
@@ -261,6 +262,7 @@ public class WebFileListCellRenderer extends WebListCellRenderer
      * @param cellHasFocus whether cell has focus or not
      * @return cell renderer component
      */
+    @Override
     public Component getListCellRendererComponent ( JList list, Object value, final int index, boolean isSelected, boolean cellHasFocus )
     {
         super.getListCellRendererComponent ( list, "", index, isSelected, cellHasFocus );
@@ -343,6 +345,7 @@ public class WebFileListCellRenderer extends WebListCellRenderer
         {
             thumbnailsThread = new Thread ( new Runnable ()
             {
+                @Override
                 public void run ()
                 {
                     // Check whether we have more elements in queue or not

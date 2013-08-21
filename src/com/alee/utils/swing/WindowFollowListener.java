@@ -84,11 +84,13 @@ public class WindowFollowListener extends ComponentAdapter
         this.parentWindow = parentWindow;
     }
 
+    @Override
     public void componentResized ( ComponentEvent e )
     {
         this.ll = parentWindow.getLocation ();
     }
 
+    @Override
     public void componentMoved ( ComponentEvent e )
     {
         if ( enabled && followingWindow != null && parentWindow != null )

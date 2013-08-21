@@ -59,6 +59,7 @@ public class JPasswordFieldSettingsProcessor extends SettingsProcessor<JPassword
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getDefaultValue ()
     {
         String defaultValue = super.getDefaultValue ();
@@ -72,10 +73,12 @@ public class JPasswordFieldSettingsProcessor extends SettingsProcessor<JPassword
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void doInit ( JPasswordField passwordField )
     {
         actionListener = new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 if ( SettingsManager.isSaveOnChange () )
@@ -88,6 +91,7 @@ public class JPasswordFieldSettingsProcessor extends SettingsProcessor<JPassword
 
         focusAdapter = new FocusAdapter ()
         {
+            @Override
             public void focusLost ( FocusEvent e )
             {
                 if ( SettingsManager.isSaveOnChange () )
@@ -102,6 +106,7 @@ public class JPasswordFieldSettingsProcessor extends SettingsProcessor<JPassword
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void doDestroy ( JPasswordField passwordField )
     {
         passwordField.removeActionListener ( actionListener );
@@ -114,6 +119,7 @@ public class JPasswordFieldSettingsProcessor extends SettingsProcessor<JPassword
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void doLoad ( JPasswordField passwordField )
     {
         passwordField.setText ( EncryptionUtils.decrypt ( loadValue () ) );
@@ -122,6 +128,7 @@ public class JPasswordFieldSettingsProcessor extends SettingsProcessor<JPassword
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void doSave ( JPasswordField passwordField )
     {
         saveValue ( EncryptionUtils.encrypt ( new String ( passwordField.getPassword () ) ) );

@@ -265,6 +265,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
      *
      * @return WebLookAndFeel name
      */
+    @Override
     public String getName ()
     {
         return "WebLookAndFeel";
@@ -275,6 +276,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
      *
      * @return unique WebLookAndFeel ID
      */
+    @Override
     public String getID ()
     {
         return "WebLookAndFeel";
@@ -285,6 +287,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
      *
      * @return short WebLookAndFeel description
      */
+    @Override
     public String getDescription ()
     {
         return "Cross-platform stylish Look and Feel";
@@ -295,6 +298,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
      *
      * @return false
      */
+    @Override
     public boolean isNativeLookAndFeel ()
     {
         return false;
@@ -305,6 +309,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
      *
      * @return true
      */
+    @Override
     public boolean isSupportedLookAndFeel ()
     {
         return true;
@@ -315,6 +320,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
      *
      * @return true if window decorations are supported for undelying system, false otherwise
      */
+    @Override
     public boolean getSupportsWindowDecorations ()
     {
         // Only win and mac systems properly support window transparency states
@@ -326,6 +332,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
      *
      * @param table UIDefaults table
      */
+    @Override
     protected void initClassDefaults ( UIDefaults table )
     {
         // Label
@@ -404,6 +411,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
      *
      * @param table UI defaults table
      */
+    @Override
     protected void initComponentDefaults ( UIDefaults table )
     {
         super.initComponentDefaults ( table );
@@ -476,6 +484,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
         // Default list renderer
         table.put ( "List.cellRenderer", new UIDefaults.ActiveValue ()
         {
+            @Override
             public Object createValue ( UIDefaults table )
             {
                 return new WebListCellRenderer.UIResource ();
@@ -675,6 +684,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
     /**
      * Initializes custom WebLookAndFeel features.
      */
+    @Override
     public void initialize ()
     {
         super.initialize ();
@@ -682,10 +692,12 @@ public class WebLookAndFeel extends BasicLookAndFeel
         // Installs a tricky thread exception handler that will output any uncaught error that occurs in Event Dispatch Thread
         SwingUtils.invokeAndWaitSafely ( new Runnable ()
         {
+            @Override
             public void run ()
             {
                 Thread.setDefaultUncaughtExceptionHandler ( new Thread.UncaughtExceptionHandler ()
                 {
+                    @Override
                     public void uncaughtException ( Thread t, Throwable e )
                     {
                         e.printStackTrace ();
@@ -700,6 +712,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
         // Initialize managers only when L&F was changed
         UIManager.addPropertyChangeListener ( new PropertyChangeListener ()
         {
+            @Override
             public void propertyChange ( PropertyChangeEvent evt )
             {
                 if ( evt.getPropertyName ().equals ( "lookAndFeel" ) )
@@ -727,6 +740,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
     /**
      * Uninitializes custom WebLookAndFeel features.
      */
+    @Override
     public void uninitialize ()
     {
         super.uninitialize ();
@@ -898,6 +912,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
      * @param icon      normal icon
      * @return disabled icon
      */
+    @Override
     public Icon getDisabledIcon ( JComponent component, Icon icon )
     {
         if ( icon instanceof ImageIcon )
@@ -923,6 +938,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
      *
      * @return custom WebLookAndFeel layout style
      */
+    @Override
     public LayoutStyle getLayoutStyle ()
     {
         return WebLayoutStyle.INSTANCE;

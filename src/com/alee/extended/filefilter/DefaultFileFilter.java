@@ -44,6 +44,7 @@ public abstract class DefaultFileFilter extends javax.swing.filechooser.FileFilt
      *
      * @return short file filter description
      */
+    @Override
     public abstract String getDescription ();
 
     /**
@@ -52,5 +53,6 @@ public abstract class DefaultFileFilter extends javax.swing.filechooser.FileFilt
      * @param file file to process
      * @return true if the given file is accepted by this filter, false otherwise
      */
+    @Override
     public abstract boolean accept ( File file );
 }

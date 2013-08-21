@@ -60,6 +60,7 @@ public class UnselectableButtonGroup extends ButtonGroup
         this.unselectable = unselectable;
     }
 
+    @Override
     public void setSelected ( ButtonModel model, boolean selected )
     {
         if ( selected || !unselectable )

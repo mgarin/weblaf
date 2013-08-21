@@ -289,6 +289,7 @@ public class WebFileBreadcrumb extends WebBreadcrumb
             }
             fileButton.addActionListener ( new ActionListener ()
             {
+                @Override
                 public void actionPerformed ( ActionEvent e )
                 {
                     File[] files = file.listFiles ();
@@ -340,6 +341,7 @@ public class WebFileBreadcrumb extends WebBreadcrumb
         list.setVisibleRowCount ( Math.min ( maxVisibleListFiles, files.length ) );
         list.setCellRenderer ( new WebListCellRenderer ()
         {
+            @Override
             public Component getListCellRendererComponent ( JList list, Object value, int index, boolean isSelected, boolean cellHasFocus )
             {
                 WebListElement element =
@@ -358,6 +360,7 @@ public class WebFileBreadcrumb extends WebBreadcrumb
 
         MouseAdapter mouseAdapter = new MouseAdapter ()
         {
+            @Override
             public void mousePressed ( MouseEvent e )
             {
                 if ( list.getSelectedIndex () != -1 )
@@ -379,6 +382,7 @@ public class WebFileBreadcrumb extends WebBreadcrumb
 
         list.addKeyListener ( new KeyAdapter ()
         {
+            @Override
             public void keyReleased ( KeyEvent e )
             {
                 if ( Hotkey.ESCAPE.isTriggered ( e ) )
@@ -444,6 +448,7 @@ public class WebFileBreadcrumb extends WebBreadcrumb
         // Removing tooltip when component is removed
         component.addAncestorListener ( new AncestorAdapter ()
         {
+            @Override
             public void ancestorRemoved ( AncestorEvent event )
             {
                 TooltipManager.removeTooltips ( component );

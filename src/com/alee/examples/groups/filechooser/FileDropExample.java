@@ -32,21 +32,25 @@ import java.awt.*;
 
 public class FileDropExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "File drop area";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Web-styled file drop area";
     }
 
+    @Override
     public FeatureState getFeatureState ()
     {
         return FeatureState.beta;
     }
 
+    @Override
     public Component getPreview ( final WebLookAndFeelDemo owner )
     {
         // Simple file drop area

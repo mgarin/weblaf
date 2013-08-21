@@ -55,6 +55,7 @@ public class ShapeStroke implements Stroke
         }
     }
 
+    @Override
     public Shape createStrokedShape ( Shape shape )
     {
         GeneralPath result = new GeneralPath ();

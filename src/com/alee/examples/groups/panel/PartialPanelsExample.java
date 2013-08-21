@@ -35,16 +35,19 @@ import java.awt.*;
 
 public class PartialPanelsExample extends DefaultExample implements SwingConstants
 {
+    @Override
     public String getTitle ()
     {
         return "Partially decorated panels";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Web-styled panels with missing sides";
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         return new GroupPanel ( createFirstPanel (), createSecondPanel () );

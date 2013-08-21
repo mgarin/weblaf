@@ -75,6 +75,7 @@ public class WebPopup extends WebPanel implements FocusTracker
         // Listener to determine popup appearance and disappearance
         addAncestorListener ( new AncestorAdapter ()
         {
+            @Override
             public void ancestorAdded ( AncestorEvent event )
             {
                 if ( requestFocusOnShow )
@@ -91,6 +92,7 @@ public class WebPopup extends WebPanel implements FocusTracker
                 firePopupOpened ();
             }
 
+            @Override
             public void ancestorRemoved ( AncestorEvent event )
             {
                 firePopupClosed ();
@@ -154,26 +156,31 @@ public class WebPopup extends WebPanel implements FocusTracker
      * Focus tracker methods
      */
 
+    @Override
     public boolean isTrackingEnabled ()
     {
         return WebPopup.this.isShowing ();
     }
 
+    @Override
     public Component getTrackedComponent ()
     {
         return WebPopup.this;
     }
 
+    @Override
     public boolean isUniteWithChilds ()
     {
         return true;
     }
 
+    @Override
     public boolean isListenGlobalChange ()
     {
         return true;
     }
 
+    @Override
     public void focusChanged ( boolean focused )
     {
         this.focused = focused;
@@ -304,6 +311,7 @@ public class WebPopup extends WebPanel implements FocusTracker
         {
             lastListener = new AncestorAdapter ()
             {
+                @Override
                 public void ancestorMoved ( AncestorEvent event )
                 {
                     updatePopupBounds ( component, x, y, width, height );
@@ -353,6 +361,7 @@ public class WebPopup extends WebPanel implements FocusTracker
      * Shape-based point check
      */
 
+    @Override
     public boolean contains ( int x, int y )
     {
         return provideShape ().contains ( x, y );

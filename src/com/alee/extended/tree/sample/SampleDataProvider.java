@@ -37,6 +37,7 @@ public class SampleDataProvider extends AbstractTreeDataProvider<SampleNode>
      *
      * @return root node
      */
+    @Override
     public SampleNode getRoot ()
     {
         // Custom root node
@@ -49,6 +50,7 @@ public class SampleDataProvider extends AbstractTreeDataProvider<SampleNode>
      * @param parent childs parent node
      * @return list of child nodes
      */
+    @Override
     public List<SampleNode> getChilds ( SampleNode parent )
     {
         // Sample loading delay to see the loader in progress
@@ -88,6 +90,7 @@ public class SampleDataProvider extends AbstractTreeDataProvider<SampleNode>
      * @param node node
      * @return true if the specified node is leaf, false otherwise
      */
+    @Override
     public boolean isLeaf ( SampleNode node )
     {
         // Simply check the node type to determine if it is leaf or not

@@ -31,16 +31,19 @@ import java.awt.*;
 
 public class ListsExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Editable list";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Web-styled editable list";
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         // Editable list

@@ -59,6 +59,7 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeProvider,
         return new WebScrollPaneUI ();
     }
 
+    @Override
     public void installUI ( JComponent c )
     {
         super.installUI ( c );
@@ -75,6 +76,7 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeProvider,
         scrollpane.setCorner ( JScrollPane.LOWER_TRAILING_CORNER, getCornerComponent () );
         propertyChangeListener = new PropertyChangeListener ()
         {
+            @Override
             public void propertyChange ( PropertyChangeEvent evt )
             {
                 scrollpane.setCorner ( JScrollPane.LOWER_TRAILING_CORNER, getCornerComponent () );
@@ -86,6 +88,7 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeProvider,
         FocusManager.registerFocusTracker ( WebScrollPaneUI.this );
     }
 
+    @Override
     public void uninstallUI ( JComponent c )
     {
         scrollpane.removePropertyChangeListener ( WebLookAndFeel.COMPONENT_ORIENTATION_PROPERTY, propertyChangeListener );
@@ -105,6 +108,7 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeProvider,
         return corner;
     }
 
+    @Override
     public Shape provideShape ()
     {
         return LafUtils.getWebBorderShape ( scrollpane, getShadeWidth (), getRound () );
@@ -127,26 +131,31 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeProvider,
         }
     }
 
+    @Override
     public boolean isTrackingEnabled ()
     {
         return drawBorder && drawFocus;
     }
 
+    @Override
     public Component getTrackedComponent ()
     {
         return scrollpane;
     }
 
+    @Override
     public boolean isUniteWithChilds ()
     {
         return true;
     }
 
+    @Override
     public boolean isListenGlobalChange ()
     {
         return false;
     }
 
+    @Override
     public void focusChanged ( boolean focused )
     {
         focusOwner = focused;
@@ -239,6 +248,7 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeProvider,
         this.darkBorder = darkBorder;
     }
 
+    @Override
     public void paint ( Graphics g, JComponent c )
     {
         if ( drawBorder )

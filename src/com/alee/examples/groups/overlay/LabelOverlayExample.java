@@ -35,16 +35,19 @@ import java.awt.*;
 
 public class LabelOverlayExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Overlayed label";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Label overlayed with an icon";
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         // Overlay

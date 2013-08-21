@@ -253,6 +253,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
         headerPanel.setLayout ( new BorderLayout () );
         headerPanel.addMouseListener ( new MouseAdapter ()
         {
+            @Override
             public void mousePressed ( MouseEvent e )
             {
                 if ( isAllowAction ( e ) )
@@ -261,6 +262,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
                 }
             }
 
+            @Override
             public void mouseReleased ( MouseEvent e )
             {
                 if ( isAllowAction ( e ) )
@@ -285,6 +287,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
         expandButton.setMoveIconOnPress ( false );
         expandButton.addActionListener ( new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 invertExpandState ();
@@ -299,6 +302,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
 
         contentPanel = new WebPanel ()
         {
+            @Override
             public Dimension getPreferredSize ()
             {
                 Dimension ps = super.getPreferredSize ();
@@ -341,6 +345,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
 
         addPropertyChangeListener ( WebLookAndFeel.COMPONENT_ORIENTATION_PROPERTY, new PropertyChangeListener ()
         {
+            @Override
             public void propertyChange ( PropertyChangeEvent evt )
             {
                 updateStateIcons ();
@@ -647,6 +652,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
         {
             animator = new WebTimer ( "WebCollapsiblePane.collapseTimer", StyleConstants.fastAnimationDelay, new ActionListener ()
             {
+                @Override
                 public void actionPerformed ( ActionEvent e )
                 {
                     if ( transitionProgress > 0f )
@@ -738,6 +744,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
         {
             animator = new WebTimer ( "WebCollapsiblePane.expandTimer", StyleConstants.fastAnimationDelay, new ActionListener ()
             {
+                @Override
                 public void actionPerformed ( ActionEvent e )
                 {
                     if ( transitionProgress < 1f )
@@ -1382,6 +1389,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
      *
      * @param focusable indicates whether this Component is focusable
      */
+    @Override
     public void setFocusable ( boolean focusable )
     {
         expandButton.setFocusable ( focusable );
@@ -1392,6 +1400,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
      *
      * @return true if this Component is focusable, false otherwise
      */
+    @Override
     public boolean isFocusable ()
     {
         return expandButton.isFocusable ();
@@ -1400,6 +1409,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
     /**
      * {@inheritDoc}
      */
+    @Override
     public void registerSettings ( String key )
     {
         SettingsManager.registerComponent ( this, key );
@@ -1408,6 +1418,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
     /**
      * {@inheritDoc}
      */
+    @Override
     public <T extends DefaultValue> void registerSettings ( String key, Class<T> defaultValueClass )
     {
         SettingsManager.registerComponent ( this, key, defaultValueClass );
@@ -1416,6 +1427,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
     /**
      * {@inheritDoc}
      */
+    @Override
     public void registerSettings ( String key, Object defaultValue )
     {
         SettingsManager.registerComponent ( this, key, defaultValue );
@@ -1424,6 +1436,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
     /**
      * {@inheritDoc}
      */
+    @Override
     public void registerSettings ( String group, String key )
     {
         SettingsManager.registerComponent ( this, group, key );
@@ -1432,6 +1445,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
     /**
      * {@inheritDoc}
      */
+    @Override
     public <T extends DefaultValue> void registerSettings ( String group, String key, Class<T> defaultValueClass )
     {
         SettingsManager.registerComponent ( this, group, key, defaultValueClass );
@@ -1440,6 +1454,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
     /**
      * {@inheritDoc}
      */
+    @Override
     public void registerSettings ( String group, String key, Object defaultValue )
     {
         SettingsManager.registerComponent ( this, group, key, defaultValue );
@@ -1448,6 +1463,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
     /**
      * {@inheritDoc}
      */
+    @Override
     public void registerSettings ( String key, boolean loadInitialSettings, boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, key, loadInitialSettings, applySettingsChanges );
@@ -1456,6 +1472,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
     /**
      * {@inheritDoc}
      */
+    @Override
     public <T extends DefaultValue> void registerSettings ( String key, Class<T> defaultValueClass, boolean loadInitialSettings,
                                                             boolean applySettingsChanges )
     {
@@ -1465,6 +1482,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
     /**
      * {@inheritDoc}
      */
+    @Override
     public void registerSettings ( String key, Object defaultValue, boolean loadInitialSettings, boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, key, defaultValue, loadInitialSettings, applySettingsChanges );
@@ -1473,6 +1491,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
     /**
      * {@inheritDoc}
      */
+    @Override
     public <T extends DefaultValue> void registerSettings ( String group, String key, Class<T> defaultValueClass,
                                                             boolean loadInitialSettings, boolean applySettingsChanges )
     {
@@ -1482,6 +1501,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
     /**
      * {@inheritDoc}
      */
+    @Override
     public void registerSettings ( String group, String key, Object defaultValue, boolean loadInitialSettings,
                                    boolean applySettingsChanges )
     {
@@ -1491,6 +1511,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
     /**
      * {@inheritDoc}
      */
+    @Override
     public void registerSettings ( SettingsProcessor settingsProcessor )
     {
         SettingsManager.registerComponent ( this, settingsProcessor );
@@ -1499,6 +1520,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
     /**
      * {@inheritDoc}
      */
+    @Override
     public void unregisterSettings ()
     {
         SettingsManager.unregisterComponent ( this );
@@ -1507,6 +1529,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
     /**
      * {@inheritDoc}
      */
+    @Override
     public void loadSettings ()
     {
         SettingsManager.loadComponentSettings ( this );
@@ -1515,6 +1538,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
     /**
      * {@inheritDoc}
      */
+    @Override
     public void saveSettings ()
     {
         SettingsManager.saveComponentSettings ( this );

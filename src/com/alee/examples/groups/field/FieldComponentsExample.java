@@ -35,16 +35,19 @@ import java.awt.*;
 
 public class FieldComponentsExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Field components";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Fields with leading/trailing components";
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         // Text field with checkbox as leading component

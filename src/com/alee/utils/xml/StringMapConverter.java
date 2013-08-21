@@ -53,6 +53,7 @@ public class StringMapConverter extends ReflectionConverter
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean canConvert ( Class type )
     {
         // return type.isAssignableFrom ( Map.class );
@@ -63,6 +64,7 @@ public class StringMapConverter extends ReflectionConverter
     /**
      * {@inheritDoc}
      */
+    @Override
     public void marshal ( Object source, HierarchicalStreamWriter writer, MarshallingContext context )
     {
         Map<String, Object> map = ( Map<String, Object> ) source;
@@ -95,6 +97,7 @@ public class StringMapConverter extends ReflectionConverter
     /**
      * {@inheritDoc}
      */
+    @Override
     public Object unmarshal ( HierarchicalStreamReader reader, UnmarshallingContext context )
     {
         Map<String, Object> map = new HashMap<String, Object> ();

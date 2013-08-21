@@ -68,6 +68,7 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeProvider
         return new WebToolBarUI ();
     }
 
+    @Override
     public void installUI ( final JComponent c )
     {
         super.installUI ( c );
@@ -83,6 +84,7 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeProvider
         // Border and layout update listeners
         ancestorListener = new AncestorAdapter ()
         {
+            @Override
             public void ancestorAdded ( AncestorEvent event )
             {
                 updateBorder ( toolBar );
@@ -92,6 +94,7 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeProvider
         toolBar.addAncestorListener ( ancestorListener );
         propertyChangeListener = new PropertyChangeListener ()
         {
+            @Override
             public void propertyChange ( PropertyChangeEvent evt )
             {
                 updateBorder ( toolBar );
@@ -101,6 +104,7 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeProvider
         toolBar.addPropertyChangeListener ( WebLookAndFeel.TOOLBAR_FLOATABLE_PROPERTY, propertyChangeListener );
         componentOrientationListener = new PropertyChangeListener ()
         {
+            @Override
             public void propertyChange ( PropertyChangeEvent evt )
             {
                 updateBorder ( toolBar );
@@ -109,6 +113,7 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeProvider
         toolBar.addPropertyChangeListener ( WebLookAndFeel.COMPONENT_ORIENTATION_PROPERTY, componentOrientationListener );
     }
 
+    @Override
     public void uninstallUI ( JComponent c )
     {
         c.removeAncestorListener ( ancestorListener );
@@ -118,6 +123,7 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeProvider
         super.uninstallUI ( c );
     }
 
+    @Override
     public Shape provideShape ()
     {
         if ( painter != null || undecorated )
@@ -341,6 +347,7 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeProvider
     private Color[] gradient = new Color[]{ transparent, color, color, transparent };
     private float[] fractions = { 0f, 0.33f, 0.66f, 1f };
 
+    @Override
     public void paint ( Graphics g, JComponent c )
     {
         if ( painter != null )
@@ -484,6 +491,7 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeProvider
         }
     }
 
+    @Override
     public Dimension getPreferredSize ( JComponent c )
     {
         Dimension ps = c.getLayout () != null ? c.getLayout ().preferredLayoutSize ( c ) : null;
@@ -494,6 +502,7 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeProvider
         return ps;
     }
 
+    @Override
     protected RootPaneContainer createFloatingWindow ( JToolBar toolbar )
     {
         class ToolBarDialog extends WebDialog
@@ -510,12 +519,14 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeProvider
 
             // Override createRootPane() to automatically resize
             // the frame when contents change
+            @Override
             protected JRootPane createRootPane ()
             {
                 JRootPane rootPane = new JRootPane ()
                 {
                     private boolean packing = false;
 
+                    @Override
                     public void validate ()
                     {
                         super.validate ();
@@ -566,6 +577,7 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeProvider
     //        toolBar.printAll ( g );
     //    }
 
+    @Override
     protected DragWindow createDragWindow ( JToolBar toolbar )
     {
         DragWindow dragWindow = super.createDragWindow ( toolbar );

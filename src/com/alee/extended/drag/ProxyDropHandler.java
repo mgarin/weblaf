@@ -36,12 +36,14 @@ public class ProxyDropHandler extends TransferHandler
         this.component = component;
     }
 
+    @Override
     public boolean canImport ( TransferHandler.TransferSupport info )
     {
         TransferHandler th = component.getTransferHandler ();
         return th != null && th.canImport ( info );
     }
 
+    @Override
     public boolean importData ( TransferHandler.TransferSupport info )
     {
         TransferHandler th = component.getTransferHandler ();

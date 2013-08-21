@@ -463,6 +463,7 @@ public class NinePatchIcon implements Icon
      * @param x location X coordinate
      * @param y location Y coordinate
      */
+    @Override
     public void paintIcon ( Component c, Graphics g, int x, int y )
     {
         // todo Modify this behavior so that icon is properly painted in Swing components
@@ -672,6 +673,7 @@ public class NinePatchIcon implements Icon
      *
      * @return icon width
      */
+    @Override
     public int getIconWidth ()
     {
         return Math.max ( component != null ? component.getWidth () : 0, getFixedPixelsWidth ( true ) );
@@ -682,6 +684,7 @@ public class NinePatchIcon implements Icon
      *
      * @return icon height
      */
+    @Override
     public int getIconHeight ()
     {
         return Math.max ( component != null ? component.getHeight () : 0, getFixedPixelsHeight ( true ) );

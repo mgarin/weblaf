@@ -426,36 +426,43 @@ public class NinePatchEditor extends JComponent
         private NinePatchInterval changedInterval = null;
         private NinePatchInterval removedInterval = null;
 
+        @Override
         public void mouseWheelMoved ( MouseWheelEvent e )
         {
             mouseEvent ( e, MouseEventType.mouseWheelMoved );
         }
 
+        @Override
         public void mousePressed ( MouseEvent e )
         {
             mouseEvent ( e, MouseEventType.mousePressed );
         }
 
+        @Override
         public void mouseDragged ( MouseEvent e )
         {
             mouseEvent ( e, MouseEventType.mouseDragged );
         }
 
+        @Override
         public void mouseReleased ( MouseEvent e )
         {
             mouseEvent ( e, MouseEventType.mouseReleased );
         }
 
+        @Override
         public void mouseEntered ( MouseEvent e )
         {
             mouseEvent ( e, MouseEventType.mouseEntered );
         }
 
+        @Override
         public void mouseExited ( MouseEvent e )
         {
             mouseEvent ( e, MouseEventType.mouseExited );
         }
 
+        @Override
         public void mouseMoved ( MouseEvent e )
         {
             mouseEvent ( e, MouseEventType.mouseMoved );
@@ -1474,6 +1481,7 @@ public class NinePatchEditor extends JComponent
         }
     }
 
+    @Override
     protected void paintComponent ( Graphics g )
     {
         super.paintComponent ( g );
@@ -1858,6 +1866,7 @@ public class NinePatchEditor extends JComponent
         return imageStartY + ih - margin.bottom * zoom;
     }
 
+    @Override
     public Dimension getPreferredSize ()
     {
         return new Dimension ( RULER_LENGTH +

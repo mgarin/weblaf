@@ -60,6 +60,7 @@ public class FileTreeNodeSearchFilter extends FileTreeNodeFilter
         // todo Cache results for sub-nodes search till filter update called (?)
         this.searchFilter = new Filter<FileTreeNode> ()
         {
+            @Override
             public boolean accept ( FileTreeNode object )
             {
                 return searchForText ( object, phrase );
@@ -86,6 +87,7 @@ public class FileTreeNodeSearchFilter extends FileTreeNodeFilter
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean accept ( FileTreeNode object )
     {
         return super.accept ( object ) && ( searchFilter == null || searchFilter.accept ( object ) );

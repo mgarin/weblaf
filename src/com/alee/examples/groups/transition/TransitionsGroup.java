@@ -30,21 +30,25 @@ import java.util.List;
 
 public class TransitionsGroup extends DefaultExampleGroup
 {
+    @Override
     public Icon getGroupIcon ()
     {
         return loadGroupIcon ( "transition.png" );
     }
 
+    @Override
     public String getGroupName ()
     {
         return "Transition effects";
     }
 
+    @Override
     public String getGroupDescription ()
     {
         return "Example of transition effects usage";
     }
 
+    @Override
     public List<Example> getGroupExamples ()
     {
         List<Example> examples = new ArrayList<Example> ();
@@ -56,6 +60,7 @@ public class TransitionsGroup extends DefaultExampleGroup
         return examples;
     }
 
+    @Override
     public double getContentPartSize ()
     {
         return 0.7;

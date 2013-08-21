@@ -94,16 +94,19 @@ public class GroupedFileFilter extends DefaultFileFilter
         }
     }
 
+    @Override
     public ImageIcon getIcon ()
     {
         return defaultFilter != null ? defaultFilter.getIcon () : null;
     }
 
+    @Override
     public String getDescription ()
     {
         return defaultFilter != null ? defaultFilter.getDescription () : null;
     }
 
+    @Override
     public boolean accept ( File file )
     {
         if ( filterGroupType.equals ( FilterGroupType.AND ) )

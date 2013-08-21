@@ -31,16 +31,19 @@ import java.awt.*;
 
 public class VerticalToolbarsExample extends DefaultToolbarExample
 {
+    @Override
     public String getTitle ()
     {
         return "Vertical toolbars";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Web-styled vertical toolbars";
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         WebToolBar ft = new WebToolBar ( WebToolBar.VERTICAL );

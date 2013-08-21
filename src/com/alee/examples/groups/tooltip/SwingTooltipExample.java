@@ -31,16 +31,19 @@ import java.awt.*;
 
 public class SwingTooltipExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Swing tooltip";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Web-styled swing tooltip";
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         // Simple Swing tooltip

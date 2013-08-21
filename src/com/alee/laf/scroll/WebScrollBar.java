@@ -139,6 +139,7 @@ public class WebScrollBar extends JScrollBar
         return ( WebScrollBarUI ) getUI ();
     }
 
+    @Override
     public void updateUI ()
     {
         if ( getUI () == null || !( getUI () instanceof WebScrollBarUI ) )

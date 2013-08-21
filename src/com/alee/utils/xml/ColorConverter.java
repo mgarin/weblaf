@@ -50,11 +50,13 @@ public class ColorConverter extends AbstractSingleValueConverter
         defaultColors.put ( "cyan", Color.CYAN );
     }
 
+    @Override
     public boolean canConvert ( Class type )
     {
         return type.equals ( Color.class );
     }
 
+    @Override
     public Object fromString ( String color )
     {
         if ( defaultColors.containsKey ( color ) )
@@ -91,6 +93,7 @@ public class ColorConverter extends AbstractSingleValueConverter
         }
     }
 
+    @Override
     public String toString ( Object obj )
     {
         Color color = ( Color ) obj;

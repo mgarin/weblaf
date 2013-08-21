@@ -103,6 +103,7 @@ public class WebColorChooserPanel extends WebPanel implements DialogOptions
         palette.setWebOnlyColors ( isWebOnlyColors () );
         final ChangeListener paletteListener = new ChangeListener ()
         {
+            @Override
             public void stateChanged ( ChangeEvent e )
             {
                 color = palette.getColor ();
@@ -117,6 +118,7 @@ public class WebColorChooserPanel extends WebPanel implements DialogOptions
         lineColorChooser.setWebOnlyColors ( isWebOnlyColors () );
         lineColorChooser.addChangeListener ( new ChangeListener ()
         {
+            @Override
             public void stateChanged ( ChangeEvent e )
             {
                 palette.setSideColor ( lineColorChooser.getColor () );
@@ -136,11 +138,13 @@ public class WebColorChooserPanel extends WebPanel implements DialogOptions
         doubleColorField = new DoubleColorField ();
         doubleColorField.addDoubleColorFieldListener ( new DoubleColorFieldListener ()
         {
+            @Override
             public void newColorPressed ( Color newColor )
             {
                 //
             }
 
+            @Override
             public void oldColorPressed ( Color currentColor )
             {
                 setColor ( doubleColorField.getOldColor () );
@@ -193,6 +197,7 @@ public class WebColorChooserPanel extends WebPanel implements DialogOptions
 
         final CaretListener hsbListener = new CaretListener ()
         {
+            @Override
             public void caretUpdate ( CaretEvent e )
             {
                 if ( !adjustingText )
@@ -247,6 +252,7 @@ public class WebColorChooserPanel extends WebPanel implements DialogOptions
 
         final CaretListener rgbListener = new CaretListener ()
         {
+            @Override
             public void caretUpdate ( CaretEvent e )
             {
                 if ( !adjustingText )
@@ -285,6 +291,7 @@ public class WebColorChooserPanel extends WebPanel implements DialogOptions
         updateHexField ( color );
         final CaretListener hexListener = new CaretListener ()
         {
+            @Override
             public void caretUpdate ( CaretEvent e )
             {
                 if ( !adjustingText )
@@ -348,6 +355,7 @@ public class WebColorChooserPanel extends WebPanel implements DialogOptions
         webOnly.setMargin ( 0, 5, 0, 5 );
         webOnly.addActionListener ( new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 setWebOnlyColors ( webOnly.isSelected () );
@@ -364,6 +372,7 @@ public class WebColorChooserPanel extends WebPanel implements DialogOptions
         }
         ok.addActionListener ( new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 result = OK_OPTION;
@@ -372,6 +381,7 @@ public class WebColorChooserPanel extends WebPanel implements DialogOptions
         } );
         palette.getColorChooser ().addMouseListener ( new MouseAdapter ()
         {
+            @Override
             public void mouseClicked ( MouseEvent e )
             {
                 if ( e.getClickCount () == 2 )
@@ -391,6 +401,7 @@ public class WebColorChooserPanel extends WebPanel implements DialogOptions
         }
         reset.addActionListener ( new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 setColor ( getOldColor () );
@@ -408,6 +419,7 @@ public class WebColorChooserPanel extends WebPanel implements DialogOptions
         }
         cancel.addActionListener ( new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 result = CANCEL_OPTION;

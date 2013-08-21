@@ -32,16 +32,19 @@ public class ImageFilesFilter extends DefaultFileFilter
 {
     private static final ImageIcon ICON = new ImageIcon ( ImageFilesFilter.class.getResource ( "icons/image.png" ) );
 
+    @Override
     public ImageIcon getIcon ()
     {
         return ICON;
     }
 
+    @Override
     public String getDescription ()
     {
         return LanguageManager.get ( "weblaf.file.filter.images" );
     }
 
+    @Override
     public boolean accept ( File file )
     {
         return GlobalConstants.IMAGE_FORMATS.contains ( FileUtils.getFileExtPart ( file.getName ().toLowerCase (), false ) );

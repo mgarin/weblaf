@@ -154,6 +154,7 @@ public class MotionBlurOp extends AbstractBufferedImageOp
         return log2n;
     }
 
+    @Override
     public BufferedImage filter ( BufferedImage src, BufferedImage dst )
     {
         if ( dst == null )

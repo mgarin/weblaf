@@ -31,26 +31,31 @@ import java.util.List;
 
 public class ColorChoosersGroup extends DefaultExampleGroup
 {
+    @Override
     public Icon getGroupIcon ()
     {
         return loadGroupIcon ( "colorchooser.png" );
     }
 
+    @Override
     public String getGroupName ()
     {
         return "Color choosers";
     }
 
+    @Override
     public String getGroupDescription ()
     {
         return "Various examples of color choosers usage";
     }
 
+    @Override
     public FeatureState getFeatureGroupState ()
     {
         return FeatureState.beta;
     }
 
+    @Override
     public List<Example> getGroupExamples ()
     {
         List<Example> examples = new ArrayList<Example> ();
@@ -61,6 +66,7 @@ public class ColorChoosersGroup extends DefaultExampleGroup
         return examples;
     }
 
+    @Override
     public double getContentPartSize ()
     {
         return 0.7f;

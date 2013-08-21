@@ -139,6 +139,7 @@ public class AsyncTreeModel<E extends AsyncUniqueNode> extends WebTreeModel<E>
      *
      * @return root node
      */
+    @Override
     public E getRoot ()
     {
         if ( rootNode == null )
@@ -158,6 +159,7 @@ public class AsyncTreeModel<E extends AsyncUniqueNode> extends WebTreeModel<E>
      * @param node node
      * @return true if node is leaf, false otherwise
      */
+    @Override
     public boolean isLeaf ( Object node )
     {
         return dataProvider.isLeaf ( ( E ) node );
@@ -169,6 +171,7 @@ public class AsyncTreeModel<E extends AsyncUniqueNode> extends WebTreeModel<E>
      * @param parent parent node
      * @return childs count
      */
+    @Override
     public int getChildCount ( Object parent )
     {
         final E node = ( E ) parent;
@@ -189,6 +192,7 @@ public class AsyncTreeModel<E extends AsyncUniqueNode> extends WebTreeModel<E>
      * @param index  child node index
      * @return child node
      */
+    @Override
     public E getChild ( Object parent, int index )
     {
         final E node = ( E ) parent;
@@ -207,6 +211,7 @@ public class AsyncTreeModel<E extends AsyncUniqueNode> extends WebTreeModel<E>
      *
      * @param node node
      */
+    @Override
     public void reload ( TreeNode node )
     {
         // Cleaning up node cache
@@ -263,6 +268,7 @@ public class AsyncTreeModel<E extends AsyncUniqueNode> extends WebTreeModel<E>
             // This queue will also take care of amount of threads to execute async trees requests
             AsyncTreeQueue.execute ( tree, new Runnable ()
             {
+                @Override
                 public void run ()
                 {
                     // Loading raw childs
@@ -286,6 +292,7 @@ public class AsyncTreeModel<E extends AsyncUniqueNode> extends WebTreeModel<E>
                     // Performing UI updates in EDT
                     SwingUtils.invokeLater ( new Runnable ()
                     {
+                        @Override
                         public void run ()
                         {
                             // Checking if any nodes loaded
@@ -383,6 +390,7 @@ public class AsyncTreeModel<E extends AsyncUniqueNode> extends WebTreeModel<E>
         // Performing UI updates in EDT
         SwingUtils.invokeLater ( new Runnable ()
         {
+            @Override
             public void run ()
             {
                 // Checking if any nodes loaded
@@ -437,6 +445,7 @@ public class AsyncTreeModel<E extends AsyncUniqueNode> extends WebTreeModel<E>
      *
      * @param node node to remove
      */
+    @Override
     public void removeNodeFromParent ( MutableTreeNode node )
     {
         // Removing raw childs
@@ -461,6 +470,7 @@ public class AsyncTreeModel<E extends AsyncUniqueNode> extends WebTreeModel<E>
      * @param parent   parent node
      * @param index    insert index
      */
+    @Override
     public void insertNodeInto ( MutableTreeNode newChild, MutableTreeNode parent, int index )
     {
         super.insertNodeInto ( newChild, parent, index );
@@ -476,6 +486,7 @@ public class AsyncTreeModel<E extends AsyncUniqueNode> extends WebTreeModel<E>
      * @param parent   parent node
      * @param index    insert index
      */
+    @Override
     public void insertNodesInto ( List<E> children, E parent, int index )
     {
         super.insertNodesInto ( children, parent, index );

@@ -115,6 +115,7 @@ public class BreadcrumbElementPainter<E extends JComponent> extends DefaultPaint
         this.progress = Math.min ( 1f, progress );
     }
 
+    @Override
     public Insets getMargin ( E c )
     {
         int left;
@@ -138,6 +139,7 @@ public class BreadcrumbElementPainter<E extends JComponent> extends DefaultPaint
         return new Insets ( 0, left, 0, right );
     }
 
+    @Override
     public void paint ( Graphics2D g2d, Rectangle bounds, E c )
     {
         final int br = BreadcrumbUtils.getRound ( c );

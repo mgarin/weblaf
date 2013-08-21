@@ -34,6 +34,7 @@ public class WebComboBoxElementPainter extends DefaultPainter<WebComboBoxElement
         super ();
     }
 
+    @Override
     public Insets getMargin ( WebComboBoxElement element )
     {
         return element.getIndex () != -1 ?
@@ -41,6 +42,7 @@ public class WebComboBoxElementPainter extends DefaultPainter<WebComboBoxElement
                 new Insets ( 2, 2, 2, 2 );
     }
 
+    @Override
     public void paint ( Graphics2D g2d, Rectangle bounds, WebComboBoxElement element )
     {
         if ( element.getIndex () == -1 )

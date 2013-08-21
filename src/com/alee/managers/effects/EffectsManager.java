@@ -64,6 +64,7 @@ public final class EffectsManager
         {
             private int opacity = 100;
 
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 if ( opacity > 0 )
@@ -89,6 +90,7 @@ public final class EffectsManager
         final WebButton b1 = new WebButton ( "1" );
         b1.addActionListener ( new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 EffectsManager.fadeOut ( b1 );
@@ -98,6 +100,7 @@ public final class EffectsManager
         final WebButton b2 = new WebButton ( "2" );
         b2.addActionListener ( new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 EffectsManager.fadeOut ( b2 );
@@ -107,6 +110,7 @@ public final class EffectsManager
         final WebButton b3 = new WebButton ( "3" );
         b3.addActionListener ( new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 EffectsManager.fadeOut ( b3 );

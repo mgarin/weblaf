@@ -34,21 +34,25 @@ import java.awt.event.ActionListener;
 
 public class ExtendedConfirmOptionPaneExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Yes-no-cancel confirm optionpane";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Web-styled yes-no-cancel confirm optionpane";
     }
 
+    @Override
     public Component getPreview ( final WebLookAndFeelDemo owner )
     {
         WebButton message = new WebButton ( "Show confirm", loadIcon ( "econfirm.png" ) );
         message.addActionListener ( new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 WebOptionPane.showConfirmDialog ( owner, "Save some virtual settings?", "Confirm", JOptionPane.YES_NO_CANCEL_OPTION,

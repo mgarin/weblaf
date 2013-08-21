@@ -32,6 +32,7 @@ public class FileTreeNodeComparator implements Comparator<FileTreeNode>
     /**
      * {@inheritDoc}
      */
+    @Override
     public int compare ( FileTreeNode o1, FileTreeNode o2 )
     {
         return GlobalConstants.FILE_COMPARATOR.compare ( o1.getFile (), o2.getFile () );

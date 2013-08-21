@@ -121,11 +121,13 @@ public class WebPathField extends WebPanel
         // Files TransferHandler
         setTransferHandler ( new FileDropHandler ()
         {
+            @Override
             protected boolean isDropEnabled ()
             {
                 return filesDropEnabled;
             }
 
+            @Override
             protected boolean filesImported ( List<File> files )
             {
                 // Setting dragged files
@@ -166,6 +168,7 @@ public class WebPathField extends WebPanel
         pathField.setMargin ( 2 );
         pathField.addActionListener ( new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 if ( autocompleteDialog == null || !autocompleteDialog.isVisible () )
@@ -192,6 +195,7 @@ public class WebPathField extends WebPanel
         } );
         pathField.addKeyListener ( new KeyAdapter ()
         {
+            @Override
             public void keyPressed ( KeyEvent e )
             {
                 if ( autocompleteDialog == null || !autocompleteDialog.isVisible () )
@@ -215,6 +219,7 @@ public class WebPathField extends WebPanel
 
         pathFocusListener = new FocusAdapter ()
         {
+            @Override
             public void focusLost ( FocusEvent e )
             {
                 if ( selectedPath == null && pathField.getText ().trim ().equals ( "" ) ||
@@ -231,6 +236,7 @@ public class WebPathField extends WebPanel
             private WebList list = null;
             private WebScrollPane listScroll;
 
+            @Override
             public void caretUpdate ( CaretEvent e )
             {
                 if ( !autocompleteEnabled || !pathField.isVisible () || !pathField.isShowing () )
@@ -250,11 +256,13 @@ public class WebPathField extends WebPanel
 
                     SwingUtils.getWindowAncestor ( WebPathField.this ).addComponentListener ( new ComponentAdapter ()
                     {
+                        @Override
                         public void componentMoved ( ComponentEvent e )
                         {
                             hideDialog ();
                         }
 
+                        @Override
                         public void componentResized ( ComponentEvent e )
                         {
                             hideDialog ();
@@ -267,6 +275,7 @@ public class WebPathField extends WebPanel
                     list.setRolloverSelectionEnabled ( true );
                     list.setCellRenderer ( new WebListCellRenderer ()
                     {
+                        @Override
                         public Component getListCellRendererComponent ( JList list, Object value, int index, boolean isSelected,
                                                                         boolean cellHasFocus )
                         {
@@ -279,6 +288,7 @@ public class WebPathField extends WebPanel
                     } );
                     list.addMouseListener ( new MouseAdapter ()
                     {
+                        @Override
                         public void mousePressed ( MouseEvent e )
                         {
                             final int index = list.getUI ().locationToIndex ( list, e.getPoint () );
@@ -290,6 +300,7 @@ public class WebPathField extends WebPanel
                     } );
                     list.addKeyListener ( new KeyAdapter ()
                     {
+                        @Override
                         public void keyPressed ( KeyEvent e )
                         {
                             if ( Hotkey.ENTER.isTriggered ( e ) )
@@ -306,6 +317,7 @@ public class WebPathField extends WebPanel
 
                     pathField.addKeyListener ( new KeyAdapter ()
                     {
+                        @Override
                         public void keyPressed ( KeyEvent e )
                         {
                             if ( autocompleteDialog.isShowing () && list.getModel ().getSize () > 0 )
@@ -365,6 +377,7 @@ public class WebPathField extends WebPanel
 
                     pathField.addFocusListener ( new FocusAdapter ()
                     {
+                        @Override
                         public void focusLost ( FocusEvent e )
                         {
                             hideDialog ();
@@ -411,15 +424,18 @@ public class WebPathField extends WebPanel
             {
                 SwingUtils.invokeLater ( new Runnable ()
                 {
+                    @Override
                     public void run ()
                     {
                         list.setModel ( new AbstractListModel ()
                         {
+                            @Override
                             public int getSize ()
                             {
                                 return similar.size ();
                             }
 
+                            @Override
                             public Object getElementAt ( int i )
                             {
                                 return similar.get ( i );
@@ -452,6 +468,7 @@ public class WebPathField extends WebPanel
             {
                 SwingUtils.invokeLater ( new Runnable ()
                 {
+                    @Override
                     public void run ()
                     {
                         autocompleteDialog.setVisible ( false );
@@ -471,6 +488,7 @@ public class WebPathField extends WebPanel
         // Edit start listeners
         contentPanel.addMouseListener ( new MouseAdapter ()
         {
+            @Override
             public void mousePressed ( MouseEvent e )
             {
                 if ( SwingUtilities.isLeftMouseButton ( e ) )
@@ -481,6 +499,7 @@ public class WebPathField extends WebPanel
         } );
         HotkeyManager.registerHotkey ( WebPathField.this, WebPathField.this, Hotkey.F2, new HotkeyRunnable ()
         {
+            @Override
             public void run ( KeyEvent e )
             {
                 startEditing ();
@@ -490,6 +509,7 @@ public class WebPathField extends WebPanel
         // Resize listener
         addComponentListener ( new ComponentAdapter ()
         {
+            @Override
             public void componentResized ( ComponentEvent e )
             {
                 if ( !pathField.isShowing () )
@@ -502,6 +522,7 @@ public class WebPathField extends WebPanel
         // Focus listener
         FocusManager.registerFocusTracker ( new DefaultFocusTracker ( WebPathField.this )
         {
+            @Override
             public void focusChanged ( boolean focused )
             {
                 focusOwner = focused;
@@ -678,6 +699,7 @@ public class WebPathField extends WebPanel
                 }
                 wb.addActionListener ( new ActionListener ()
                 {
+                    @Override
                     public void actionPerformed ( ActionEvent e )
                     {
                         folderSelected ( ff );
@@ -698,6 +720,7 @@ public class WebPathField extends WebPanel
                             menuItem.setIcon ( FileUtils.getFileIcon ( root, false ) );
                             menuItem.addActionListener ( new ActionListener ()
                             {
+                                @Override
                                 public void actionPerformed ( ActionEvent e )
                                 {
                                     folderSelected ( root );
@@ -728,6 +751,7 @@ public class WebPathField extends WebPanel
                 childs.setEnabled ( childsCount > 0 );
                 childs.addActionListener ( new ActionListener ()
                 {
+                    @Override
                     public void actionPerformed ( ActionEvent e )
                     {
                         // todo Apply orientation globally on change, not here
@@ -741,16 +765,19 @@ public class WebPathField extends WebPanel
 
                 menu.addPopupMenuListener ( new PopupMenuListener ()
                 {
+                    @Override
                     public void popupMenuWillBecomeVisible ( PopupMenuEvent e )
                     {
                         //
                     }
 
+                    @Override
                     public void popupMenuWillBecomeInvisible ( PopupMenuEvent e )
                     {
                         childs.setSelected ( false );
                     }
 
+                    @Override
                     public void popupMenuCanceled ( PopupMenuEvent e )
                     {
                         childs.setSelected ( false );
@@ -839,6 +866,7 @@ public class WebPathField extends WebPanel
             myComputer.setDrawRightLine ( true );
             myComputer.addActionListener ( new ActionListener ()
             {
+                @Override
                 public void actionPerformed ( ActionEvent e )
                 {
                     folderSelected ( null );
@@ -877,6 +905,7 @@ public class WebPathField extends WebPanel
                 menuItem.setIcon ( FileUtils.getFileIcon ( root, false ) );
                 menuItem.addActionListener ( new ActionListener ()
                 {
+                    @Override
                     public void actionPerformed ( ActionEvent e )
                     {
                         folderSelected ( root );
@@ -900,6 +929,7 @@ public class WebPathField extends WebPanel
             rootsArrowButton.setComponentPopupMenu ( rootsMenu );
             rootsArrowButton.addActionListener ( new ActionListener ()
             {
+                @Override
                 public void actionPerformed ( ActionEvent e )
                 {
                     WebPathField.this.transferFocus ();
@@ -911,16 +941,19 @@ public class WebPathField extends WebPanel
 
             rootsMenu.addPopupMenuListener ( new PopupMenuListener ()
             {
+                @Override
                 public void popupMenuWillBecomeVisible ( PopupMenuEvent e )
                 {
 
                 }
 
+                @Override
                 public void popupMenuWillBecomeInvisible ( PopupMenuEvent e )
                 {
                     rootsArrowButton.setSelected ( false );
                 }
 
+                @Override
                 public void popupMenuCanceled ( PopupMenuEvent e )
                 {
                     rootsArrowButton.setSelected ( false );
@@ -971,6 +1004,7 @@ public class WebPathField extends WebPanel
         }
     }
 
+    @Override
     public void applyComponentOrientation ( ComponentOrientation o )
     {
         super.applyComponentOrientation ( o );

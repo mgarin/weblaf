@@ -99,6 +99,7 @@ public class Tetris extends JComponent
 
         keyTimer = new WebTimer ( "Tetris.keyTimer", 60, new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 if ( gameRunning )
@@ -115,12 +116,14 @@ public class Tetris extends JComponent
 
         pusher = new WebTimer ( "Tetris.gameTimer", getTickTime (), null )
         {
+            @Override
             public void start ()
             {
                 gameRunning = true;
                 super.start ();
             }
 
+            @Override
             public void stop ()
             {
                 gameRunning = false;
@@ -130,6 +133,7 @@ public class Tetris extends JComponent
         pusher.setInitialDelay ( 0 );
         pusher.addActionListener ( new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 if ( keyTimer.isRunning () )
@@ -142,6 +146,7 @@ public class Tetris extends JComponent
 
         addKeyListener ( new KeyAdapter ()
         {
+            @Override
             public void keyPressed ( KeyEvent e )
             {
                 if ( gameRunning && currentFigure != null && !keyTimer.isRunning () )
@@ -169,6 +174,7 @@ public class Tetris extends JComponent
                 }
             }
 
+            @Override
             public void keyReleased ( KeyEvent e )
             {
                 if ( useInternalHotkeys && Hotkey.P.isTriggered ( e ) )
@@ -202,6 +208,7 @@ public class Tetris extends JComponent
 
         addMouseListener ( new MouseAdapter ()
         {
+            @Override
             public void mousePressed ( MouseEvent e )
             {
                 requestFocusInWindow ();
@@ -214,6 +221,7 @@ public class Tetris extends JComponent
                 setPreferredSize ( new Dimension ( 5 * BLOCK_SIDE + 5, 4 * BLOCK_SIDE + 4 ) );
                 addTickListener ( new TickListener ()
                 {
+                    @Override
                     public void tick ()
                     {
                         repaint ();
@@ -221,6 +229,7 @@ public class Tetris extends JComponent
                 } );
             }
 
+            @Override
             protected void paintComponent ( Graphics g )
             {
                 Graphics2D g2d = ( Graphics2D ) g;
@@ -369,6 +378,7 @@ public class Tetris extends JComponent
                         // Moving upper blocks
                         Collections.sort ( toMove, new Comparator ()
                         {
+                            @Override
                             public int compare ( Object o1, Object o2 )
                             {
                                 Integer int1 = ( ( Point ) o1 ).y;
@@ -449,6 +459,7 @@ public class Tetris extends JComponent
         return figure;
     }
 
+    @Override
     public Dimension getPreferredSize ()
     {
         return PREFERRED_SIZE;
@@ -494,6 +505,7 @@ public class Tetris extends JComponent
 
     public static Stroke borderStroke = new BasicStroke ( 0.5f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 1f, new float[]{ 4, 4 }, 0f );
 
+    @Override
     protected void paintComponent ( Graphics g )
     {
         super.paintComponent ( g );

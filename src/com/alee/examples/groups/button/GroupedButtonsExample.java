@@ -31,16 +31,19 @@ import java.awt.*;
 
 public class GroupedButtonsExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Grouped buttons";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Example of WebButtonGroup usage";
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         // Text buttons group

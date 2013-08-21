@@ -50,6 +50,7 @@ public class TextDragHandler extends TransferHandler
 
         component.addMouseMotionListener ( new MouseAdapter ()
         {
+            @Override
             public void mouseDragged ( MouseEvent e )
             {
                 if ( isDefaultBehavior () && SwingUtilities.isLeftMouseButton ( e ) &&
@@ -81,11 +82,13 @@ public class TextDragHandler extends TransferHandler
         this.defaultBehavior = defaultBehavior;
     }
 
+    @Override
     public int getSourceActions ( JComponent c )
     {
         return COPY;
     }
 
+    @Override
     protected Transferable createTransferable ( JComponent c )
     {
         return new StringSelection ( getText () );

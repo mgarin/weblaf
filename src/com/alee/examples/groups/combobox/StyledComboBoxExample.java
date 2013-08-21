@@ -34,22 +34,26 @@ import java.awt.*;
 
 public class StyledComboBoxExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Styled combobox";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Styled combobox renderer";
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         WebComboBox styled = new WebComboBox ( GlobalConstants.DEFAULT_FILTERS.toArray () );
         styled.setSelectedIndex ( 0 );
         styled.setRenderer ( new WebComboBoxCellRenderer ( styled )
         {
+            @Override
             public Component getListCellRendererComponent ( JList list, Object value, int index, boolean isSelected, boolean cellHasFocus )
             {
                 JLabel renderer = ( JLabel ) super.getListCellRendererComponent ( list, value, index, isSelected, cellHasFocus );

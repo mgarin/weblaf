@@ -35,16 +35,19 @@ import java.awt.*;
 
 public class BorderPaintersExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Border painters";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Web-styled border painters";
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         // Simple BorderPainter

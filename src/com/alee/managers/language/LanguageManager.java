@@ -161,21 +161,25 @@ public final class LanguageManager implements LanguageConstants
             // Language listener for components update
             addLanguageListener ( new LanguageListener ()
             {
+                @Override
                 public void languageChanged ( String oldLang, String newLang )
                 {
                     updateAll ();
                 }
 
+                @Override
                 public void dictionaryAdded ( Dictionary dictionary )
                 {
                     updateSmart ( dictionary );
                 }
 
+                @Override
                 public void dictionaryRemoved ( Dictionary dictionary )
                 {
                     updateSmart ( dictionary );
                 }
 
+                @Override
                 public void dictionariesCleared ()
                 {
                     updateAll ();
@@ -331,11 +335,13 @@ public final class LanguageManager implements LanguageConstants
                 final JComponent jComponent = ( JComponent ) component;
                 final AncestorAdapter listener = new AncestorAdapter ()
                 {
+                    @Override
                     public void ancestorAdded ( AncestorEvent event )
                     {
                         updateComponentKey ( component );
                     }
 
+                    @Override
                     public void ancestorMoved ( AncestorEvent event )
                     {
                         updateComponent ( component );

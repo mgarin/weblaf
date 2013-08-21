@@ -113,6 +113,7 @@ public class WebSwitch extends WebPanel
         // Selection switch listener
         MouseAdapter mouseAdapter = new MouseAdapter ()
         {
+            @Override
             public void mousePressed ( MouseEvent e )
             {
                 if ( SwingUtils.isLeftMouseButton ( e ) && isEnabled () )
@@ -136,6 +137,7 @@ public class WebSwitch extends WebPanel
     {
         animator = new WebTimer ( "WebSwitch.animator", StyleConstants.maxAnimationDelay, new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 // Updating gripper location
@@ -251,6 +253,7 @@ public class WebSwitch extends WebPanel
      *
      * @param enabled whether switch is enabled or not
      */
+    @Override
     public void setEnabled ( boolean enabled )
     {
         super.setEnabled ( enabled );
@@ -264,6 +267,7 @@ public class WebSwitch extends WebPanel
      *
      * @param round switch corners rounding
      */
+    @Override
     public WebPanel setRound ( int round )
     {
         if ( gripper != null )

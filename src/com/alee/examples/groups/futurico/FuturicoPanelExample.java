@@ -31,21 +31,25 @@ import java.awt.*;
 
 public class FuturicoPanelExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Futurico panel";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Futurico-styled panel";
     }
 
+    @Override
     public boolean isFillWidth ()
     {
         return true;
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         // Panel styled with nine-patch icon painter

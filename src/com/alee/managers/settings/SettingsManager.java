@@ -163,6 +163,7 @@ public final class SettingsManager
             // JVM shutdown hook for settings save
             Runtime.getRuntime ().addShutdownHook ( new Thread ( new Runnable ()
             {
+                @Override
                 public void run ()
                 {
                     saveSettings ();
@@ -1080,6 +1081,7 @@ public final class SettingsManager
                     {
                         groupSaveScheduler = new WebTimer ( "SettingsManager.groupSaveScheduler", saveOnChangeDelay, new ActionListener ()
                         {
+                            @Override
                             public void actionPerformed ( ActionEvent e )
                             {
                                 synchronized ( saveOnChangeLock )

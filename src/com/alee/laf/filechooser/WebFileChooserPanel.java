@@ -105,6 +105,7 @@ public class WebFileChooserPanel extends WebPanel
      */
     public static final FileNameTextProvider fileNameTextProvider = new FileNameTextProvider ()
     {
+        @Override
         public String provide ( File object )
         {
             return "\"" + super.provide ( object ) + "\"";
@@ -282,11 +283,13 @@ public class WebFileChooserPanel extends WebPanel
         toolBar.setFloatable ( false );
         toolBar.addAncestorListener ( new AncestorAdapter ()
         {
+            @Override
             public void ancestorAdded ( AncestorEvent event )
             {
                 updateToolbarStyle ();
             }
 
+            @Override
             public void ancestorMoved ( AncestorEvent event )
             {
                 updateToolbarStyle ();
@@ -306,6 +309,7 @@ public class WebFileChooserPanel extends WebPanel
         backward.setFocusable ( false );
         backward.addActionListener ( new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 updateHistoryState ( currentHistoryIndex - 1 );
@@ -319,6 +323,7 @@ public class WebFileChooserPanel extends WebPanel
         forward.setFocusable ( false );
         forward.addActionListener ( new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 updateHistoryState ( currentHistoryIndex + 1 );
@@ -331,6 +336,7 @@ public class WebFileChooserPanel extends WebPanel
         history.setFocusable ( false );
         history.addActionListener ( new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 final WebPopupMenu historyPopup = new WebPopupMenu ();
@@ -340,6 +346,7 @@ public class WebFileChooserPanel extends WebPanel
                 historyList.setRolloverSelectionEnabled ( true );
                 historyList.setCellRenderer ( new WebListCellRenderer ()
                 {
+                    @Override
                     public Component getListCellRendererComponent ( JList list, Object value, int index, boolean isSelected,
                                                                     boolean cellHasFocus )
                     {
@@ -363,6 +370,7 @@ public class WebFileChooserPanel extends WebPanel
                 } );
                 historyList.addMouseListener ( new MouseAdapter ()
                 {
+                    @Override
                     public void mouseReleased ( MouseEvent e )
                     {
                         updateHistoryState ( historyList.getSelectedIndex () );
@@ -390,6 +398,7 @@ public class WebFileChooserPanel extends WebPanel
         pathField = new WebPathField ();
         pathFieldListener = new PathFieldListener ()
         {
+            @Override
             public void directoryChanged ( File newDirectory )
             {
                 updateCurrentFolder ( newDirectory, UpdateSource.path );
@@ -404,6 +413,7 @@ public class WebFileChooserPanel extends WebPanel
         folderUp.setFocusable ( false );
         folderUp.addActionListener ( new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 if ( currentFolder != null )
@@ -420,6 +430,7 @@ public class WebFileChooserPanel extends WebPanel
         folderHome.setFocusable ( false );
         folderHome.addActionListener ( new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 updateCurrentFolder ( FileUtils.getUserHome (), UpdateSource.toolbar );
@@ -433,6 +444,7 @@ public class WebFileChooserPanel extends WebPanel
         refresh.setFocusable ( false );
         refresh.addActionListener ( new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 reloadCurrentFolder ();
@@ -446,6 +458,7 @@ public class WebFileChooserPanel extends WebPanel
         folderNew.setFocusable ( false );
         folderNew.addActionListener ( new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 if ( currentFolder != null )
@@ -481,6 +494,7 @@ public class WebFileChooserPanel extends WebPanel
         remove.setFocusable ( false );
         remove.addActionListener ( new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 deleteSelectedFiles ();
@@ -493,6 +507,7 @@ public class WebFileChooserPanel extends WebPanel
         view.setFocusable ( false );
         view.addActionListener ( new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 final WebPopupMenu viewChoose = new WebPopupMenu ();
@@ -502,6 +517,7 @@ public class WebFileChooserPanel extends WebPanel
                 icons.setSelected ( getViewType ().equals ( FileChooserViewType.icons ) );
                 icons.addActionListener ( new ActionListener ()
                 {
+                    @Override
                     public void actionPerformed ( ActionEvent e )
                     {
                         setViewType ( FileChooserViewType.icons );
@@ -514,6 +530,7 @@ public class WebFileChooserPanel extends WebPanel
                 tiles.setSelected ( getViewType ().equals ( FileChooserViewType.tiles ) );
                 tiles.addActionListener ( new ActionListener ()
                 {
+                    @Override
                     public void actionPerformed ( ActionEvent e )
                     {
                         setViewType ( FileChooserViewType.tiles );
@@ -526,6 +543,7 @@ public class WebFileChooserPanel extends WebPanel
                 table.setSelected ( getViewType ().equals ( FileChooserViewType.table ) );
                 table.addActionListener ( new ActionListener ()
                 {
+                    @Override
                     public void actionPerformed ( ActionEvent e )
                     {
                         setViewType ( FileChooserViewType.table );
@@ -625,6 +643,7 @@ public class WebFileChooserPanel extends WebPanel
 
         fileTreeListener = new TreeSelectionListener ()
         {
+            @Override
             public void valueChanged ( TreeSelectionEvent e )
             {
                 if ( fileTree.getSelectionCount () > 0 )
@@ -655,11 +674,13 @@ public class WebFileChooserPanel extends WebPanel
         fileList.getInputMap ().put ( KeyStroke.getKeyStroke ( KeyEvent.VK_ENTER, 0 ), "openFolder" );
         fileList.getActionMap ().put ( "openFolder", new AbstractAction ()
         {
+            @Override
             public boolean isEnabled ()
             {
                 return fileList.getSelectedIndex () != -1;
             }
 
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 File file = fileList.getSelectedFile ();
@@ -672,6 +693,7 @@ public class WebFileChooserPanel extends WebPanel
 
         fileList.addMouseListener ( new MouseAdapter ()
         {
+            @Override
             public void mouseClicked ( MouseEvent e )
             {
                 if ( SwingUtilities.isLeftMouseButton ( e ) && e.getClickCount () % 2 == 0 && fileList.getSelectedIndex () != -1 )
@@ -691,6 +713,7 @@ public class WebFileChooserPanel extends WebPanel
 
         fileList.addListSelectionListener ( new ListSelectionListener ()
         {
+            @Override
             public void valueChanged ( ListSelectionEvent e )
             {
                 updateSelectedFilesField ();
@@ -699,6 +722,7 @@ public class WebFileChooserPanel extends WebPanel
 
         fileList.addListEditListener ( new ListEditAdapter ()
         {
+            @Override
             public void editFinished ( int index, Object oldValue, Object newValue )
             {
                 // Saving for futher selection
@@ -730,11 +754,13 @@ public class WebFileChooserPanel extends WebPanel
         fileTable.getInputMap ().put ( KeyStroke.getKeyStroke ( KeyEvent.VK_ENTER, 0 ), "openFolder" );
         fileTable.getActionMap ().put ( "openFolder", new AbstractAction ()
         {
+            @Override
             public boolean isEnabled ()
             {
                 return fileTable.getSelectedRow () != -1;
             }
 
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 File file = fileTable.getSelectedFile ();
@@ -747,6 +773,7 @@ public class WebFileChooserPanel extends WebPanel
 
         fileTable.addMouseListener ( new MouseAdapter ()
         {
+            @Override
             public void mouseClicked ( MouseEvent e )
             {
                 if ( SwingUtilities.isLeftMouseButton ( e ) && e.getClickCount () % 2 == 0 && fileTable.getSelectedRow () != -1 )
@@ -766,6 +793,7 @@ public class WebFileChooserPanel extends WebPanel
 
         fileTable.getSelectionModel ().addListSelectionListener ( new ListSelectionListener ()
         {
+            @Override
             public void valueChanged ( ListSelectionEvent e )
             {
                 updateSelectedFilesField ();
@@ -774,6 +802,7 @@ public class WebFileChooserPanel extends WebPanel
 
         fileTable.getDefaultEditor ( File.class ).addCellEditorListener ( new CellEditorListener ()
         {
+            @Override
             public void editingStopped ( ChangeEvent e )
             {
                 // Saving for futher selection
@@ -787,6 +816,7 @@ public class WebFileChooserPanel extends WebPanel
                 fileTable.setSelectedFile ( file );
             }
 
+            @Override
             public void editingCanceled ( ChangeEvent e )
             {
                 // Do nothing
@@ -827,6 +857,7 @@ public class WebFileChooserPanel extends WebPanel
         selectedFilesTextField = new WebTextField ( 0, true );
         selectedFilesTextField.addCaretListener ( new CaretListener ()
         {
+            @Override
             public void caretUpdate ( CaretEvent e )
             {
                 // No need to specify files, they will be calculated when needed
@@ -835,6 +866,7 @@ public class WebFileChooserPanel extends WebPanel
         } );
         selectedFilesTextField.addActionListener ( new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 // Try to approve selection
@@ -849,6 +881,7 @@ public class WebFileChooserPanel extends WebPanel
         fileFilters.setRenderer ( new DefaultFileFilterListCellRenderer ( fileFilters ) );
         fileFilters.addActionListener ( new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 setActiveFileFilter ( ( DefaultFileFilter ) fileFilters.getSelectedItem (), false );
@@ -863,6 +896,7 @@ public class WebFileChooserPanel extends WebPanel
         approveButton.setEnabled ( false );
         approveButton.addActionListener ( new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 fireApproveAction ( e );
@@ -877,6 +911,7 @@ public class WebFileChooserPanel extends WebPanel
         cancelButton.putClientProperty ( GroupPanel.FILL_CELL, true );
         cancelButton.addActionListener ( new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 fireCancelAction ( e );
@@ -891,6 +926,7 @@ public class WebFileChooserPanel extends WebPanel
         SwingUtils.equalizeComponentsSize ( approveButton, cancelButton );
         final PropertyChangeListener pcl = new PropertyChangeListener ()
         {
+            @Override
             public void propertyChange ( PropertyChangeEvent evt )
             {
                 approveButton.setPreferredSize ( null );
@@ -1271,6 +1307,7 @@ public class WebFileChooserPanel extends WebPanel
         {
             fileTree.expandToFile ( file, false, false, new Runnable ()
             {
+                @Override
                 public void run ()
                 {
                     fileTree.removeTreeSelectionListener ( fileTreeListener );
@@ -1457,6 +1494,7 @@ public class WebFileChooserPanel extends WebPanel
         }
         WebScrollPane scroll = new WebScrollPane ( deleteFilesPanel )
         {
+            @Override
             public Dimension getPreferredSize ()
             {
                 Dimension ps = super.getPreferredSize ();
@@ -1978,6 +2016,7 @@ public class WebFileChooserPanel extends WebPanel
         /**
          * {@inheritDoc}
          */
+        @Override
         protected boolean filesImported ( List<File> files )
         {
             if ( files.size () > 0 )

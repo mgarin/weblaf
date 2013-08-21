@@ -57,6 +57,7 @@ public class AccordionLayout implements LayoutManager
      * @param name string to be associated with the component
      * @param comp component to be added
      */
+    @Override
     public void addLayoutComponent ( String name, Component comp )
     {
         //
@@ -67,6 +68,7 @@ public class AccordionLayout implements LayoutManager
      *
      * @param comp component to be removed
      */
+    @Override
     public void removeLayoutComponent ( Component comp )
     {
         //
@@ -77,6 +79,7 @@ public class AccordionLayout implements LayoutManager
      *
      * @param parent container to be laid out
      */
+    @Override
     public void layoutContainer ( Container parent )
     {
         final List<WebCollapsiblePane> panes = accordion.getActualPanesList ();
@@ -164,6 +167,7 @@ public class AccordionLayout implements LayoutManager
      * @param parent container to be laid out
      * @see #minimumLayoutSize
      */
+    @Override
     public Dimension preferredLayoutSize ( Container parent )
     {
         return getSize ( parent, true );
@@ -175,6 +179,7 @@ public class AccordionLayout implements LayoutManager
      * @param parent component to be laid out
      * @see #preferredLayoutSize
      */
+    @Override
     public Dimension minimumLayoutSize ( Container parent )
     {
         return getSize ( parent, false );

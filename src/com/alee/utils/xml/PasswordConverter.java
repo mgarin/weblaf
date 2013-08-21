@@ -26,11 +26,13 @@ import com.thoughtworks.xstream.converters.basic.StringConverter;
 
 public class PasswordConverter extends StringConverter
 {
+    @Override
     public Object fromString ( String str )
     {
         return EncryptionUtils.decrypt ( ( String ) super.fromString ( str ) );
     }
 
+    @Override
     public String toString ( Object obj )
     {
         return EncryptionUtils.encrypt ( super.toString ( obj ) );

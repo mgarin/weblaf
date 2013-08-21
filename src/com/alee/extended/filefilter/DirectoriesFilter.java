@@ -30,16 +30,19 @@ public class DirectoriesFilter extends DefaultFileFilter
 {
     private static final ImageIcon ICON = new ImageIcon ( DirectoriesFilter.class.getResource ( "icons/folder.png" ) );
 
+    @Override
     public ImageIcon getIcon ()
     {
         return ICON;
     }
 
+    @Override
     public String getDescription ()
     {
         return LanguageManager.get ( "weblaf.file.filter.folders" );
     }
 
+    @Override
     public boolean accept ( File file )
     {
         return file.isDirectory ();

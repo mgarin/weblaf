@@ -42,6 +42,7 @@ public class WebComboBoxElement extends WebLabel
         super.setPainter ( painter );
     }
 
+    @Override
     public WebComboBoxElementPainter getPainter ()
     {
         return painter;

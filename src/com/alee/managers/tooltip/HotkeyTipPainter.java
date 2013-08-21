@@ -38,6 +38,7 @@ public class HotkeyTipPainter extends DefaultPainter<HotkeyTipLabel>
         setMargin ( margin );
     }
 
+    @Override
     public void paint ( Graphics2D g2d, Rectangle bounds, HotkeyTipLabel c )
     {
         Object aa = LafUtils.setupAntialias ( g2d );

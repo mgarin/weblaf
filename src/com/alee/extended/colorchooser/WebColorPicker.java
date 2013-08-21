@@ -87,6 +87,7 @@ public class WebColorPicker extends JComponent
     {
         MouseAdapter adapter = new MouseAdapter ()
         {
+            @Override
             public void mousePressed ( MouseEvent e )
             {
                 if ( isSwitchUnderPoint ( e ) )
@@ -123,11 +124,13 @@ public class WebColorPicker extends JComponent
                 }
             }
 
+            @Override
             public void mouseMoved ( MouseEvent e )
             {
                 updateTT ( e );
             }
 
+            @Override
             public void mouseDragged ( MouseEvent e )
             {
                 updateTT ( e );
@@ -236,6 +239,7 @@ public class WebColorPicker extends JComponent
                 e.getY () <= 1 + SWITCH_ICON.getIconHeight ();
     }
 
+    @Override
     public void paint ( Graphics g )
     {
         super.paint ( g );
@@ -271,6 +275,7 @@ public class WebColorPicker extends JComponent
         g.drawImage ( DEFAULT_ICON.getImage (), 1, getHeight () - DEFAULT_ICON.getIconHeight () - 1, DEFAULT_ICON.getImageObserver () );
     }
 
+    @Override
     public void setEnabled ( boolean enabled )
     {
         super.setEnabled ( enabled );

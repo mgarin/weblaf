@@ -500,11 +500,13 @@ public final class SwingUtils
     {
         frame.addWindowListener ( new WindowAdapter ()
         {
+            @Override
             public void windowOpened ( WindowEvent e )
             {
                 owner.setEnabled ( false );
             }
 
+            @Override
             public void windowClosed ( WindowEvent e )
             {
                 owner.setEnabled ( true );
@@ -514,6 +516,7 @@ public final class SwingUtils
 
         owner.addWindowListener ( new WindowAdapter ()
         {
+            @Override
             public void windowActivated ( WindowEvent e )
             {
                 if ( frame.isShowing () )
@@ -2287,6 +2290,7 @@ public final class SwingUtils
     {
         new Thread ( new Runnable ()
         {
+            @Override
             public void run ()
             {
                 ThreadUtils.sleepSafely ( delay );
@@ -2328,6 +2332,7 @@ public final class SwingUtils
         {
             SwingUtilities.invokeLater ( new Runnable ()
             {
+                @Override
                 public void run ()
                 {
                     runnable.run ( e );
@@ -2424,6 +2429,7 @@ public final class SwingUtils
 
         new Thread ( new Runnable ()
         {
+            @Override
             public void run ()
             {
                 scrollThread1 = Thread.currentThread ();
@@ -2440,6 +2446,7 @@ public final class SwingUtils
                         lastValue = value;
                         SwingUtilities.invokeLater ( new Runnable ()
                         {
+                            @Override
                             public void run ()
                             {
                                 hor.setValue ( value );
@@ -2456,6 +2463,7 @@ public final class SwingUtils
         } ).start ();
         new Thread ( new Runnable ()
         {
+            @Override
             public void run ()
             {
                 scrollThread2 = Thread.currentThread ();
@@ -2472,6 +2480,7 @@ public final class SwingUtils
                         lastValue = value;
                         SwingUtilities.invokeLater ( new Runnable ()
                         {
+                            @Override
                             public void run ()
                             {
                                 ver.setValue ( value );
@@ -2536,6 +2545,7 @@ public final class SwingUtils
             {
                 int step = 1;
 
+                @Override
                 public void actionPerformed ( ActionEvent e )
                 {
                     if ( step <= steps )

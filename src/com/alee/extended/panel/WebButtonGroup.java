@@ -860,6 +860,7 @@ public class WebButtonGroup extends WebPanel implements SwingConstants
         }
     }
 
+    @Override
     public void setEnabled ( boolean enabled )
     {
         super.setEnabled ( enabled );

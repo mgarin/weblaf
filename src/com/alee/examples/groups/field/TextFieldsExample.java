@@ -30,16 +30,19 @@ import java.awt.*;
 
 public class TextFieldsExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Text fields";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Web-styled text fields";
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         // Simple text field

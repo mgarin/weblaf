@@ -28,6 +28,7 @@ public class SimpleTextProvider implements TextProvider<Object>
     /**
      * {@inheritDoc}
      */
+    @Override
     public String provide ( Object object )
     {
         return object != null ? object.toString () : "null";

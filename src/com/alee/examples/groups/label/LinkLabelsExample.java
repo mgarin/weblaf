@@ -31,16 +31,19 @@ import java.awt.*;
 
 public class LinkLabelsExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Link labels";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Labels with extended link functionality";
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         // Label with site link

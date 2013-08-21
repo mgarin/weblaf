@@ -92,6 +92,7 @@ public final class HotkeyManager
             // AWT hotkeys listener
             Toolkit.getDefaultToolkit ().addAWTEventListener ( new AWTEventListener ()
             {
+                @Override
                 public void eventDispatched ( AWTEvent event )
                 {
                     // Only if hotkeys enabled and we recieved a KeyEvent
@@ -530,6 +531,7 @@ public final class HotkeyManager
     {
         HotkeyManager.registerHotkey ( topComponent, topComponent, hotkeyData, new HotkeyRunnable ()
         {
+            @Override
             public void run ( KeyEvent e )
             {
                 HotkeyManager.showComponentHotkeys ( topComponent );

@@ -30,16 +30,19 @@ import java.awt.*;
 
 public class ToolbarsExample extends DefaultToolbarExample
 {
+    @Override
     public String getTitle ()
     {
         return "Toolbars";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Web-styled toolbars";
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         WebToolBar ft = new WebToolBar ( WebToolBar.HORIZONTAL );

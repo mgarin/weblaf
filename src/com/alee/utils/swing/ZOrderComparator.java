@@ -32,6 +32,7 @@ public class ZOrderComparator implements Comparator<Component>, Serializable
     /**
      * {@inheritDoc}
      */
+    @Override
     public int compare ( Component o1, Component o2 )
     {
         Container parent1 = o1.getParent ();

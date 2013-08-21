@@ -35,21 +35,25 @@ import java.awt.*;
 
 public class StepProgressExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Step progress";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Web-styled step progress";
     }
 
+    @Override
     public FeatureState getFeatureState ()
     {
         return FeatureState.beta;
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         final WebStepProgress wsp1 = new WebStepProgress ( 6 );

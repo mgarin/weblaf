@@ -58,6 +58,7 @@ public class WebCheckBoxListCellRenderer implements ListCellRenderer
      * @param cellHasFocus whether cell has focus or not
      * @return cell renderer component
      */
+    @Override
     public Component getListCellRendererComponent ( JList list, Object value, int index, boolean isSelected, boolean cellHasFocus )
     {
         // Cell data

@@ -66,6 +66,7 @@ public class LimitedDocument extends PlainDocument
     /**
      * {@inheritDoc}
      */
+    @Override
     public void insertString ( int offset, String str, AttributeSet attr ) throws BadLocationException
     {
         if ( str == null )

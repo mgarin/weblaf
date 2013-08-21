@@ -53,6 +53,7 @@ public class WebSeparatorUI extends BasicSeparatorUI
         return new WebSeparatorUI ();
     }
 
+    @Override
     public void installUI ( JComponent c )
     {
         super.installUI ( c );
@@ -161,6 +162,7 @@ public class WebSeparatorUI extends BasicSeparatorUI
         updateBorder ();
     }
 
+    @Override
     public void paint ( Graphics g, JComponent c )
     {
         Graphics2D g2d = ( Graphics2D ) g;
@@ -231,6 +233,7 @@ public class WebSeparatorUI extends BasicSeparatorUI
                 new Color[]{ separatorUpperColor, separatorColor, separatorUpperColor };
     }
 
+    @Override
     public Dimension getPreferredSize ( JComponent c )
     {
         Insets insets = c.getInsets ();

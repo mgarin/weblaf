@@ -32,16 +32,19 @@ import java.awt.*;
 
 public class TabbedPanesExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Tabbed panes";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Web-styled tabbed panes";
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         WebTabbedPane tabbedPane1 = new WebTabbedPane ();

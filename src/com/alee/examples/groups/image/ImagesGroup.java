@@ -30,21 +30,25 @@ import java.util.List;
 
 public class ImagesGroup extends DefaultExampleGroup
 {
+    @Override
     public Icon getGroupIcon ()
     {
         return loadGroupIcon ( "image.png" );
     }
 
+    @Override
     public String getGroupName ()
     {
         return "Image components";
     }
 
+    @Override
     public String getGroupDescription ()
     {
         return "Various examples of image components usage";
     }
 
+    @Override
     public List<Example> getGroupExamples ()
     {
         List<Example> examples = new ArrayList<Example> ();

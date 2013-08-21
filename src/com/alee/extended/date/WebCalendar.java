@@ -126,6 +126,7 @@ public class WebCalendar extends WebPanel
         previousSkip.setDrawFocus ( false );
         previousSkip.addActionListener ( new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 changeYear ( -1 );
@@ -136,6 +137,7 @@ public class WebCalendar extends WebPanel
         previous.setDrawFocus ( false );
         previous.addActionListener ( new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 changeMonth ( -1 );
@@ -153,6 +155,7 @@ public class WebCalendar extends WebPanel
         titlePanel.setTransitionEffect ( new FadeTransitionEffect () );
         titlePanel.addMouseListener ( new MouseAdapter ()
         {
+            @Override
             public void mousePressed ( MouseEvent e )
             {
                 if ( SwingUtilities.isLeftMouseButton ( e ) )
@@ -167,6 +170,7 @@ public class WebCalendar extends WebPanel
         next.setDrawFocus ( false );
         next.addActionListener ( new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 changeMonth ( 1 );
@@ -177,6 +181,7 @@ public class WebCalendar extends WebPanel
         nextSkip.setDrawFocus ( false );
         nextSkip.addActionListener ( new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 changeYear ( 1 );
@@ -217,6 +222,7 @@ public class WebCalendar extends WebPanel
         monthDaysTransition.setOpaque ( false );
         monthDaysTransition.addTransitionListener ( new TransitionAdapter ()
         {
+            @Override
             public void transitionFinished ()
             {
                 // Retrieve focus to selected date if it is visible
@@ -412,6 +418,7 @@ public class WebCalendar extends WebPanel
             day.setDrawFocus ( false );
             day.addItemListener ( new ItemListener ()
             {
+                @Override
                 public void itemStateChanged ( ItemEvent e )
                 {
                     // Breaks calendar size
@@ -458,6 +465,7 @@ public class WebCalendar extends WebPanel
             day.setDrawFocus ( false );
             day.addItemListener ( new ItemListener ()
             {
+                @Override
                 public void itemStateChanged ( ItemEvent e )
                 {
                     // Breaks calendar size
@@ -466,6 +474,7 @@ public class WebCalendar extends WebPanel
             } );
             day.addActionListener ( new ActionListener ()
             {
+                @Override
                 public void actionPerformed ( ActionEvent e )
                 {
                     lastSelectedDayButton = day;
@@ -510,6 +519,7 @@ public class WebCalendar extends WebPanel
             day.setDrawFocus ( false );
             day.addItemListener ( new ItemListener ()
             {
+                @Override
                 public void itemStateChanged ( ItemEvent e )
                 {
                     // Breaks calendar size
@@ -680,6 +690,7 @@ public class WebCalendar extends WebPanel
         updateMonthDays ( monthDays );
     }
 
+    @Override
     public void setEnabled ( boolean enabled )
     {
         SwingUtils.setEnabledRecursively ( this, enabled, true );

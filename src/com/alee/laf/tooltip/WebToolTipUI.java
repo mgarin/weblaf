@@ -58,6 +58,7 @@ public class WebToolTipUI extends BasicToolTipUI implements ShapeProvider
      *
      * @param c component for this UI
      */
+    @Override
     public void installUI ( JComponent c )
     {
         super.installUI ( c );
@@ -79,6 +80,7 @@ public class WebToolTipUI extends BasicToolTipUI implements ShapeProvider
      *
      * @param c component with this UI
      */
+    @Override
     public void uninstallUI ( JComponent c )
     {
         this.tooltip = null;
@@ -91,6 +93,7 @@ public class WebToolTipUI extends BasicToolTipUI implements ShapeProvider
      *
      * @return component shape
      */
+    @Override
     public Shape provideShape ()
     {
         return new RoundRectangle2D.Double ( 0, 0, tooltip.getWidth (), tooltip.getHeight (), WebTooltipStyle.round * 2,
@@ -113,6 +116,7 @@ public class WebToolTipUI extends BasicToolTipUI implements ShapeProvider
      * @param g graphics
      * @param c component
      */
+    @Override
     public void paint ( Graphics g, JComponent c )
     {
         Graphics2D g2d = ( Graphics2D ) g;

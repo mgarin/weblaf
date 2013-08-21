@@ -36,6 +36,7 @@ public class WebScrollPaneCorner extends JComponent
         SwingUtils.setOrientation ( this );
     }
 
+    @Override
     protected void paintComponent ( Graphics g )
     {
         super.paintComponent ( g );

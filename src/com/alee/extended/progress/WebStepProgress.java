@@ -119,6 +119,7 @@ public class WebStepProgress extends JComponent implements SwingConstants, Shape
         // Shapes cache updater
         addComponentListener ( new ComponentAdapter ()
         {
+            @Override
             public void componentResized ( ComponentEvent e )
             {
                 updateShapes ();
@@ -128,16 +129,19 @@ public class WebStepProgress extends JComponent implements SwingConstants, Shape
 
     private class ProgressLayout implements LayoutManager
     {
+        @Override
         public void addLayoutComponent ( String name, Component comp )
         {
             //
         }
 
+        @Override
         public void removeLayoutComponent ( Component comp )
         {
             //
         }
 
+        @Override
         public void layoutContainer ( Container parent )
         {
             boolean ltr = getComponentOrientation ().isLeftToRight ();
@@ -177,11 +181,13 @@ public class WebStepProgress extends JComponent implements SwingConstants, Shape
             }
         }
 
+        @Override
         public Dimension preferredLayoutSize ( Container parent )
         {
             return null;
         }
 
+        @Override
         public Dimension minimumLayoutSize ( Container parent )
         {
             return null;
@@ -190,6 +196,7 @@ public class WebStepProgress extends JComponent implements SwingConstants, Shape
 
     private class ProgressMouseAdapter extends MouseAdapter
     {
+        @Override
         public void mousePressed ( MouseEvent e )
         {
             if ( isEnabled () && isSelectionEnabled () && SwingUtils.isLeftMouseButton ( e ) )
@@ -199,6 +206,7 @@ public class WebStepProgress extends JComponent implements SwingConstants, Shape
             }
         }
 
+        @Override
         public void mouseDragged ( MouseEvent e )
         {
             if ( selecting && SwingUtils.isLeftMouseButton ( e ) )
@@ -221,6 +229,7 @@ public class WebStepProgress extends JComponent implements SwingConstants, Shape
             }
         }
 
+        @Override
         public void mouseReleased ( MouseEvent e )
         {
             if ( selecting && SwingUtils.isLeftMouseButton ( e ) )
@@ -739,6 +748,7 @@ public class WebStepProgress extends JComponent implements SwingConstants, Shape
      * Custom painting method
      */
 
+    @Override
     protected void paintComponent ( Graphics g )
     {
         super.paintComponent ( g );
@@ -760,6 +770,7 @@ public class WebStepProgress extends JComponent implements SwingConstants, Shape
      * Basic component shape
      */
 
+    @Override
     public Shape provideShape ()
     {
         return getBorderShape ();
@@ -999,6 +1010,7 @@ public class WebStepProgress extends JComponent implements SwingConstants, Shape
      * Custom preferred size
      */
 
+    @Override
     public Dimension getPreferredSize ()
     {
         if ( isPreferredSizeSet () )

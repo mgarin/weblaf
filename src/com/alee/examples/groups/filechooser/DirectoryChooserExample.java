@@ -37,21 +37,25 @@ import java.io.File;
 
 public class DirectoryChooserExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Directory chooser";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Web-styled directory chooser";
     }
 
+    @Override
     public FeatureState getFeatureState ()
     {
         return FeatureState.beta;
     }
 
+    @Override
     public Component getPreview ( final WebLookAndFeelDemo owner )
     {
         // Simple directory chooser
@@ -60,6 +64,7 @@ public class DirectoryChooserExample extends DefaultExample
         {
             private WebDirectoryChooser directoryChooser = null;
 
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 if ( directoryChooser == null )

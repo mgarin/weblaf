@@ -50,6 +50,7 @@ public class ValuesTableConverter extends ReflectionConverter
      * @param type the Class representing the object type to be converted
      * @return true if this class type can be converted using this converter, false otherwise
      */
+    @Override
     public boolean canConvert ( Class type )
     {
         return ValuesTable.class.getCanonicalName ().equals ( type.getCanonicalName () );
@@ -62,6 +63,7 @@ public class ValuesTableConverter extends ReflectionConverter
      * @param writer  stream to write to
      * @param context context that allows nested objects to be processed by XStream
      */
+    @Override
     public void marshal ( Object source, HierarchicalStreamWriter writer, MarshallingContext context )
     {
         ValuesTable valuesTable = ( ValuesTable ) source;
@@ -88,6 +90,7 @@ public class ValuesTableConverter extends ReflectionConverter
      * @param context unmarshalling context
      * @return resulting object
      */
+    @Override
     public Object unmarshal ( HierarchicalStreamReader reader, UnmarshallingContext context )
     {
         ValuesTable valuesTable = new ValuesTable ();

@@ -30,16 +30,19 @@ public class AllFilesFilter extends DefaultFileFilter
 {
     private static final ImageIcon ICON = new ImageIcon ( AllFilesFilter.class.getResource ( "icons/file.png" ) );
 
+    @Override
     public ImageIcon getIcon ()
     {
         return ICON;
     }
 
+    @Override
     public String getDescription ()
     {
         return LanguageManager.get ( "weblaf.file.filter.all" );
     }
 
+    @Override
     public boolean accept ( File file )
     {
         return true;

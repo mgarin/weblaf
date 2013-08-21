@@ -74,6 +74,7 @@ public class WebMenuItem extends JMenuItem implements LanguageMethods, FontMetho
         return ( WebMenuItemUI ) getUI ();
     }
 
+    @Override
     public void updateUI ()
     {
         if ( getUI () == null || !( getUI () instanceof WebMenuItemUI ) )
@@ -101,6 +102,7 @@ public class WebMenuItem extends JMenuItem implements LanguageMethods, FontMetho
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setLanguage ( String key, Object... data )
     {
         LanguageManager.registerComponent ( this, key, data );
@@ -109,6 +111,7 @@ public class WebMenuItem extends JMenuItem implements LanguageMethods, FontMetho
     /**
      * {@inheritDoc}
      */
+    @Override
     public void updateLanguage ( Object... data )
     {
         LanguageManager.updateComponent ( this, data );
@@ -117,6 +120,7 @@ public class WebMenuItem extends JMenuItem implements LanguageMethods, FontMetho
     /**
      * {@inheritDoc}
      */
+    @Override
     public void updateLanguage ( String key, Object... data )
     {
         LanguageManager.updateComponent ( this, key, data );
@@ -125,6 +129,7 @@ public class WebMenuItem extends JMenuItem implements LanguageMethods, FontMetho
     /**
      * {@inheritDoc}
      */
+    @Override
     public void removeLanguage ()
     {
         LanguageManager.unregisterComponent ( this );
@@ -133,6 +138,7 @@ public class WebMenuItem extends JMenuItem implements LanguageMethods, FontMetho
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isLanguageSet ()
     {
         return LanguageManager.isRegisteredComponent ( this );
@@ -141,6 +147,7 @@ public class WebMenuItem extends JMenuItem implements LanguageMethods, FontMetho
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setLanguageUpdater ( LanguageUpdater updater )
     {
         LanguageManager.registerLanguageUpdater ( this, updater );
@@ -149,6 +156,7 @@ public class WebMenuItem extends JMenuItem implements LanguageMethods, FontMetho
     /**
      * {@inheritDoc}
      */
+    @Override
     public void removeLanguageUpdater ()
     {
         LanguageManager.unregisterLanguageUpdater ( this );
@@ -161,6 +169,7 @@ public class WebMenuItem extends JMenuItem implements LanguageMethods, FontMetho
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebMenuItem setPlainFont ()
     {
         return SwingUtils.setPlainFont ( this );
@@ -169,6 +178,7 @@ public class WebMenuItem extends JMenuItem implements LanguageMethods, FontMetho
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebMenuItem setPlainFont ( boolean apply )
     {
         return SwingUtils.setPlainFont ( this, apply );
@@ -177,6 +187,7 @@ public class WebMenuItem extends JMenuItem implements LanguageMethods, FontMetho
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isPlainFont ()
     {
         return SwingUtils.isPlainFont ( this );
@@ -185,6 +196,7 @@ public class WebMenuItem extends JMenuItem implements LanguageMethods, FontMetho
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebMenuItem setBoldFont ()
     {
         return SwingUtils.setBoldFont ( this );
@@ -193,6 +205,7 @@ public class WebMenuItem extends JMenuItem implements LanguageMethods, FontMetho
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebMenuItem setBoldFont ( boolean apply )
     {
         return SwingUtils.setBoldFont ( this, apply );
@@ -201,6 +214,7 @@ public class WebMenuItem extends JMenuItem implements LanguageMethods, FontMetho
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isBoldFont ()
     {
         return SwingUtils.isBoldFont ( this );
@@ -209,6 +223,7 @@ public class WebMenuItem extends JMenuItem implements LanguageMethods, FontMetho
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebMenuItem setItalicFont ()
     {
         return SwingUtils.setItalicFont ( this );
@@ -217,6 +232,7 @@ public class WebMenuItem extends JMenuItem implements LanguageMethods, FontMetho
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebMenuItem setItalicFont ( boolean apply )
     {
         return SwingUtils.setItalicFont ( this, apply );
@@ -225,6 +241,7 @@ public class WebMenuItem extends JMenuItem implements LanguageMethods, FontMetho
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isItalicFont ()
     {
         return SwingUtils.isItalicFont ( this );
@@ -233,6 +250,7 @@ public class WebMenuItem extends JMenuItem implements LanguageMethods, FontMetho
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebMenuItem setFontStyle ( boolean bold, boolean italic )
     {
         return SwingUtils.setFontStyle ( this, bold, italic );
@@ -241,6 +259,7 @@ public class WebMenuItem extends JMenuItem implements LanguageMethods, FontMetho
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebMenuItem setFontStyle ( int style )
     {
         return SwingUtils.setFontStyle ( this, style );
@@ -249,6 +268,7 @@ public class WebMenuItem extends JMenuItem implements LanguageMethods, FontMetho
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebMenuItem setFontSize ( int fontSize )
     {
         return SwingUtils.setFontSize ( this, fontSize );
@@ -257,6 +277,7 @@ public class WebMenuItem extends JMenuItem implements LanguageMethods, FontMetho
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebMenuItem changeFontSize ( int change )
     {
         return SwingUtils.changeFontSize ( this, change );
@@ -265,6 +286,7 @@ public class WebMenuItem extends JMenuItem implements LanguageMethods, FontMetho
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getFontSize ()
     {
         return SwingUtils.getFontSize ( this );
@@ -273,6 +295,7 @@ public class WebMenuItem extends JMenuItem implements LanguageMethods, FontMetho
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebMenuItem setFontSizeAndStyle ( int fontSize, boolean bold, boolean italic )
     {
         return SwingUtils.setFontSizeAndStyle ( this, fontSize, bold, italic );
@@ -281,6 +304,7 @@ public class WebMenuItem extends JMenuItem implements LanguageMethods, FontMetho
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebMenuItem setFontSizeAndStyle ( int fontSize, int style )
     {
         return SwingUtils.setFontSizeAndStyle ( this, fontSize, style );
@@ -289,6 +313,7 @@ public class WebMenuItem extends JMenuItem implements LanguageMethods, FontMetho
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebMenuItem setFontName ( String fontName )
     {
         return SwingUtils.setFontName ( this, fontName );
@@ -297,6 +322,7 @@ public class WebMenuItem extends JMenuItem implements LanguageMethods, FontMetho
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getFontName ()
     {
         return SwingUtils.getFontName ( this );

@@ -34,16 +34,19 @@ import java.awt.*;
 
 public class TextFieldOverlayExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Overlayed text field";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Text field overlayed with a label";
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         // Overlay
@@ -56,6 +59,7 @@ public class TextFieldOverlayExample extends DefaultExample
         // Label displayed as overlay when component is not focused
         final WebLabel overlay = new WebLabel ( "Enter text here..." )
         {
+            @Override
             public boolean contains ( int x, int y )
             {
                 // Making label invisible for mouse events
@@ -65,6 +69,7 @@ public class TextFieldOverlayExample extends DefaultExample
         overlay.setForeground ( Color.GRAY );
         textField.addFocusListener ( new ConditionalVisibilityListener ( overlay, false, null )
         {
+            @Override
             public boolean isVisible ()
             {
                 return super.isVisible () && textField.getText ().equals ( "" );

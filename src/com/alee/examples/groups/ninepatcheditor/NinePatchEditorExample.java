@@ -30,21 +30,25 @@ import java.awt.*;
 
 public class NinePatchEditorExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Nine-patch editor";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Nine-patch editor example";
     }
 
+    @Override
     public FeatureState getFeatureState ()
     {
         return FeatureState.beta;
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         // Simple nine-patch editor panel

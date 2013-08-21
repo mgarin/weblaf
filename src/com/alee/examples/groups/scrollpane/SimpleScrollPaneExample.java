@@ -31,16 +31,19 @@ import java.awt.*;
 
 public class SimpleScrollPaneExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Simple scroll pane";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Simple Web-styled scroll pane";
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         WebTextArea scrollableArea = new WebTextArea ( ExamplesManager.createLongString () );

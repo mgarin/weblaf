@@ -33,41 +33,49 @@ import java.util.List;
 
 public class DesktopPaneGroup extends DefaultExampleGroup
 {
+    @Override
     public Icon getGroupIcon ()
     {
         return loadGroupIcon ( "desktoppane.png" );
     }
 
+    @Override
     public String getGroupName ()
     {
         return "Desktop pane";
     }
 
+    @Override
     public String getGroupDescription ()
     {
         return "Desktop pane usage example";
     }
 
+    @Override
     public boolean isSingleExample ()
     {
         return true;
     }
 
+    @Override
     public void modifyExampleTab ( int tabIndex, WebTabbedPane tabbedPane )
     {
         tabbedPane.setBackgroundPainterAt ( tabIndex, new TexturePainter ( loadIcon ( "bg.jpg" ) ) );
     }
 
+    @Override
     public FeatureState getFeatureGroupState ()
     {
         return FeatureState.beta;
     }
 
+    @Override
     public boolean isShowWatermark ()
     {
         return false;
     }
 
+    @Override
     public List<Example> getGroupExamples ()
     {
         return CollectionUtils.copy ( ( Example ) new DesktopPaneExample () );

@@ -50,10 +50,12 @@ public class JTabbedPaneSettingsProcessor extends SettingsProcessor<JTabbedPane,
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void doInit ( JTabbedPane component )
     {
         listener = new ChangeListener ()
         {
+            @Override
             public void stateChanged ( ChangeEvent e )
             {
                 save ();
@@ -65,6 +67,7 @@ public class JTabbedPaneSettingsProcessor extends SettingsProcessor<JTabbedPane,
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void doDestroy ( JTabbedPane component )
     {
         component.removeChangeListener ( listener );
@@ -74,6 +77,7 @@ public class JTabbedPaneSettingsProcessor extends SettingsProcessor<JTabbedPane,
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void doLoad ( JTabbedPane component )
     {
         final Integer index = loadValue ();
@@ -86,6 +90,7 @@ public class JTabbedPaneSettingsProcessor extends SettingsProcessor<JTabbedPane,
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void doSave ( JTabbedPane component )
     {
         saveValue ( component.getSelectedIndex () );

@@ -52,26 +52,31 @@ public class GradientColorChooserExample extends DefaultExample
 {
     private WebGradientColorChooser colorChooser;
 
+    @Override
     public String getTitle ()
     {
         return "Gradient color chooser";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Web-styled gradient color chooser";
     }
 
+    @Override
     public FeatureState getFeatureState ()
     {
         return FeatureState.beta;
     }
 
+    @Override
     public boolean isPresentationAvailable ()
     {
         return true;
     }
 
+    @Override
     public List<PresentationStep> getPresentationSteps ()
     {
         final List<PresentationStep> presentationSteps = new ArrayList<PresentationStep> ();
@@ -106,6 +111,7 @@ public class GradientColorChooserExample extends DefaultExample
 
         colorChooser.addChangeListener ( new ChangeListener ()
         {
+            @Override
             public void stateChanged ( ChangeEvent e )
             {
                 tip1.setDisplayLocation ( gripper1 () );
@@ -135,6 +141,7 @@ public class GradientColorChooserExample extends DefaultExample
                 GeometryUtils.middle ( colorChooser.getGripperBounds ( 1 ) ) );
     }
 
+    @Override
     public Component getPreview ( final WebLookAndFeelDemo owner )
     {
         // Default value
@@ -150,6 +157,7 @@ public class GradientColorChooserExample extends DefaultExample
         TooltipManager.setTooltip ( colored, "Various colors" );
         colored.addActionListener ( new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 // Simply apply default gradient values
@@ -162,6 +170,7 @@ public class GradientColorChooserExample extends DefaultExample
         TooltipManager.setTooltip ( blackAndWhite, "Black and white colors" );
         blackAndWhite.addActionListener ( new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 // Apply gradient values through SettingsManager

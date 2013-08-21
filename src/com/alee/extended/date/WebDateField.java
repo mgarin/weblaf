@@ -99,6 +99,7 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
         popupButton.setCursor ( Cursor.getDefaultCursor () );
         popupButton.addActionListener ( new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 showCalendarPopup ();
@@ -109,6 +110,7 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
         // Actions
         addActionListener ( new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 updateDateFromField ();
@@ -116,6 +118,7 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
         } );
         addMouseListener ( new MouseAdapter ()
         {
+            @Override
             public void mousePressed ( MouseEvent e )
             {
                 if ( isEnabled () && SwingUtilities.isRightMouseButton ( e ) )
@@ -126,6 +129,7 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
         } );
         addFocusListener ( new FocusAdapter ()
         {
+            @Override
             public void focusLost ( FocusEvent e )
             {
                 updateDateFromField ();
@@ -133,6 +137,7 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
         } );
         addKeyListener ( new KeyAdapter ()
         {
+            @Override
             public void keyReleased ( KeyEvent e )
             {
                 if ( isEnabled () )
@@ -150,16 +155,19 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
         } );
         addAncestorListener ( new AncestorListener ()
         {
+            @Override
             public void ancestorAdded ( AncestorEvent event )
             {
                 hideCalendarPopup ();
             }
 
+            @Override
             public void ancestorRemoved ( AncestorEvent event )
             {
                 hideCalendarPopup ();
             }
 
+            @Override
             public void ancestorMoved ( AncestorEvent event )
             {
                 hideCalendarPopup ();
@@ -167,6 +175,7 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
         } );
         addComponentListener ( new ComponentAdapter ()
         {
+            @Override
             public void componentHidden ( ComponentEvent e )
             {
                 hideCalendarPopup ();
@@ -182,12 +191,14 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
         setShadeWidth ( WebDateFieldStyle.shadeWidth );
     }
 
+    @Override
     public void setRound ( int round )
     {
         super.setRound ( round );
         popupButton.setRound ( round );
     }
 
+    @Override
     public void setDrawBorder ( boolean drawBorder )
     {
         super.setDrawBorder ( drawBorder );
@@ -237,6 +248,7 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
             updatePopupLocation ();
             ancestor.addPropertyChangeListener ( WebLookAndFeel.COMPONENT_ORIENTATION_PROPERTY, new PropertyChangeListener ()
             {
+                @Override
                 public void propertyChange ( PropertyChangeEvent evt )
                 {
                     if ( popup.isShowing () )
@@ -249,6 +261,7 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
             // Selection listener
             calendar.addDateSelectionListener ( new DateSelectionListener ()
             {
+                @Override
                 public void dateSelected ( Date date )
                 {
                     hideCalendarPopup ();
@@ -390,6 +403,7 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
         updateFieldFromDate ();
     }
 
+    @Override
     public void setEnabled ( boolean enabled )
     {
         super.setEnabled ( enabled );
@@ -426,6 +440,7 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getPreferredWidth ()
     {
         return SizeUtils.getPreferredWidth ( this );
@@ -434,6 +449,7 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebDateField setPreferredWidth ( int preferredWidth )
     {
         return SizeUtils.setPreferredWidth ( this, preferredWidth );
@@ -442,6 +458,7 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getPreferredHeight ()
     {
         return SizeUtils.getPreferredHeight ( this );
@@ -450,6 +467,7 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebDateField setPreferredHeight ( int preferredHeight )
     {
         return SizeUtils.setPreferredHeight ( this, preferredHeight );
@@ -458,6 +476,7 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getMinimumWidth ()
     {
         return SizeUtils.getMinimumWidth ( this );
@@ -466,6 +485,7 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebDateField setMinimumWidth ( int minimumWidth )
     {
         return SizeUtils.setMinimumWidth ( this, minimumWidth );
@@ -474,6 +494,7 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getMinimumHeight ()
     {
         return SizeUtils.getMinimumHeight ( this );
@@ -482,6 +503,7 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebDateField setMinimumHeight ( int minimumHeight )
     {
         return SizeUtils.setMinimumHeight ( this, minimumHeight );
@@ -490,6 +512,7 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
     /**
      * {@inheritDoc}
      */
+    @Override
     public Dimension getPreferredSize ()
     {
         return SizeUtils.getPreferredSize ( this, super.getPreferredSize () );

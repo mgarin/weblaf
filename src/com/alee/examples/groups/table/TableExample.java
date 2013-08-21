@@ -36,16 +36,19 @@ import java.awt.*;
 
 public class TableExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Editable table";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Web-styled editable table";
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         // Table
@@ -109,36 +112,43 @@ public class TableExample extends DefaultExample
 
         public final Object[] longValues = { "Jane", "None of the above", 20, Boolean.TRUE };
 
+        @Override
         public int getColumnCount ()
         {
             return columnNames.length;
         }
 
+        @Override
         public int getRowCount ()
         {
             return data.length;
         }
 
+        @Override
         public String getColumnName ( int col )
         {
             return columnNames[ col ];
         }
 
+        @Override
         public Object getValueAt ( int row, int col )
         {
             return data[ row ][ col ];
         }
 
+        @Override
         public Class getColumnClass ( int c )
         {
             return longValues[ c ].getClass ();
         }
 
+        @Override
         public boolean isCellEditable ( int row, int col )
         {
             return col >= 1;
         }
 
+        @Override
         public void setValueAt ( Object value, int row, int col )
         {
             data[ row ][ col ] = value;

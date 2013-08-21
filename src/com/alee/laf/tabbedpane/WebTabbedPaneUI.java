@@ -78,6 +78,7 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider
         return new WebTabbedPaneUI ();
     }
 
+    @Override
     public void installUI ( final JComponent c )
     {
         super.installUI ( c );
@@ -92,11 +93,13 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider
         // Focus updater
         focusAdapter = new FocusAdapter ()
         {
+            @Override
             public void focusGained ( FocusEvent e )
             {
                 tabPane.repaint ();
             }
 
+            @Override
             public void focusLost ( FocusEvent e )
             {
                 tabPane.repaint ();
@@ -130,6 +133,7 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider
         //        c.addMouseMotionListener ( mouseAdapter );
     }
 
+    @Override
     public void uninstallUI ( JComponent c )
     {
         super.uninstallUI ( c );
@@ -145,6 +149,7 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider
         //        }
     }
 
+    @Override
     public Shape provideShape ()
     {
         return LafUtils.getWebBorderShape ( tabPane, getShadeWidth (), getRound () );
@@ -336,28 +341,33 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider
         this.tabStretchType = tabStretchType;
     }
 
+    @Override
     protected int getTabRunIndent ( int tabPlacement, int run )
     {
         return tabRunIndent;
     }
 
+    @Override
     protected int getTabRunOverlay ( int tabPlacement )
     {
         return tabOverlay;
     }
 
+    @Override
     protected boolean shouldPadTabRun ( int tabPlacement, int run )
     {
         return !tabStretchType.equals ( TabStretchType.never ) &&
                 ( tabStretchType.equals ( TabStretchType.always ) || tabStretchType.equals ( TabStretchType.multiline ) && runCount > 1 );
     }
 
+    @Override
     protected boolean shouldRotateTabRuns ( int tabPlacement )
     {
         // todo Requires style changes
         return true;
     }
 
+    @Override
     protected Insets getContentBorderInsets ( int tabPlacement )
     {
         if ( tabbedPaneStyle.equals ( TabbedPaneStyle.standalone ) )
@@ -395,6 +405,7 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider
         }
     }
 
+    @Override
     protected Insets getTabAreaInsets ( int tabPlacement )
     {
         Insets targetInsets = new Insets ( 0, 0, 0, 0 );
@@ -403,6 +414,7 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider
         return targetInsets;
     }
 
+    @Override
     protected Insets getTabInsets ( int tabPlacement, int tabIndex )
     {
         Insets insets = SwingUtils.copy ( tabInsets );
@@ -424,6 +436,7 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider
         }
     }
 
+    @Override
     protected Insets getSelectedTabPadInsets ( int tabPlacement )
     {
         Insets targetInsets = new Insets ( 0, 0, 0, 0 );
@@ -432,6 +445,7 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider
         return targetInsets;
     }
 
+    @Override
     protected int getTabLabelShiftX ( int tabPlacement, int tabIndex, boolean isSelected )
     {
         if ( tabbedPaneStyle.equals ( TabbedPaneStyle.standalone ) )
@@ -444,6 +458,7 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider
         }
     }
 
+    @Override
     protected int getTabLabelShiftY ( int tabPlacement, int tabIndex, boolean isSelected )
     {
         if ( tabbedPaneStyle.equals ( TabbedPaneStyle.standalone ) )
@@ -456,11 +471,13 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider
         }
     }
 
+    @Override
     protected void paintTabBorder ( Graphics g, int tabPlacement, int tabIndex, int x, int y, int w, int h, boolean isSelected )
     {
         // We don't need this one
     }
 
+    @Override
     protected void paintTabBackground ( Graphics g, int tabPlacement, int tabIndex, int x, int y, int w, int h, boolean isSelected )
     {
         Graphics2D g2d = ( Graphics2D ) g;
@@ -524,6 +541,7 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider
         LafUtils.restoreAntialias ( g2d, aa );
     }
 
+    @Override
     protected void paintText ( Graphics g, int tabPlacement, Font font, FontMetrics metrics, int tabIndex, String title, Rectangle textRect,
                                boolean isSelected )
     {
@@ -696,6 +714,7 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider
         }
     }
 
+    @Override
     protected void paintContentBorder ( Graphics g, int tabPlacement, int selectedIndex )
     {
         Graphics2D g2d = ( Graphics2D ) g;
@@ -1047,12 +1066,14 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider
         return clip;
     }
 
+    @Override
     protected void paintFocusIndicator ( Graphics g, int tabPlacement, Rectangle[] rects, int tabIndex, Rectangle iconRect,
                                          Rectangle textRect, boolean isSelected )
     {
         // We don't need this one
     }
 
+    @Override
     public void paint ( Graphics g, JComponent c )
     {
         // Background painter

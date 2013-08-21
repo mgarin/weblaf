@@ -32,21 +32,25 @@ import java.io.File;
 
 public class FileChooserFieldsExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "File chooser fields";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Web-styled file chooser fields";
     }
 
+    @Override
     public FeatureState getFeatureState ()
     {
         return FeatureState.beta;
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         // Simple file chooser field

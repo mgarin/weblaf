@@ -39,6 +39,7 @@ public class WebGenericEditor extends WebDefaultCellEditor
         getComponent ().setName ( "Table.editor" );
     }
 
+    @Override
     public boolean stopCellEditing ()
     {
         Component component = getComponent ();
@@ -55,6 +56,7 @@ public class WebGenericEditor extends WebDefaultCellEditor
         }
     }
 
+    @Override
     public Component getTableCellEditorComponent ( JTable table, Object value, boolean isSelected, int row, int column )
     {
         this.value = null;
@@ -85,6 +87,7 @@ public class WebGenericEditor extends WebDefaultCellEditor
         }
     }
 
+    @Override
     public Object getCellEditorValue ()
     {
         return value;

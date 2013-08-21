@@ -118,6 +118,7 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
     /**
      * {@inheritDoc}
      */
+    @Override
     public FileTreeDataProvider getDataProvider ()
     {
         return ( FileTreeDataProvider ) super.getDataProvider ();
@@ -126,6 +127,7 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setModel ( TreeModel newModel )
     {
         // Disable asynchronous loading for the model installation time
@@ -148,11 +150,13 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
         {
             fileLookupDropHandler = new FileDropHandler ()
             {
+                @Override
                 protected boolean isDropEnabled ()
                 {
                     return filesDropSearchEnabled;
                 }
 
+                @Override
                 protected boolean filesImported ( List<File> files )
                 {
                     // Selecting dragged files in tree
@@ -364,6 +368,7 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
                     {
                         private FileTreeNode lastNode = node;
 
+                        @Override
                         public void childsLoadCompleted ( FileTreeNode parent, List<FileTreeNode> childs )
                         {
                             if ( parent == lastNode )
@@ -516,6 +521,7 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
      *
      * @return selected nodes
      */
+    @Override
     public List<FileTreeNode> getSelectedNodes ()
     {
         List<FileTreeNode> selectedNodes = new ArrayList<FileTreeNode> ();
@@ -685,6 +691,7 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
         {
             expandToFile ( file, false, false, new Runnable ()
             {
+                @Override
                 public void run ()
                 {
                     final FileTreeNode node = getNode ( file );

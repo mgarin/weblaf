@@ -203,6 +203,7 @@ public class WebProgressBarUI extends BasicProgressBarUI implements ShapeProvide
         this.highlightDarkWhite = highlightDarkWhite;
     }
 
+    @Override
     public void installUI ( JComponent c )
     {
         super.installUI ( c );
@@ -219,6 +220,7 @@ public class WebProgressBarUI extends BasicProgressBarUI implements ShapeProvide
         // Change listeners
         propertyChangeListener = new PropertyChangeListener ()
         {
+            @Override
             public void propertyChange ( PropertyChangeEvent evt )
             {
                 updateAnimator ( progressBar );
@@ -230,11 +232,13 @@ public class WebProgressBarUI extends BasicProgressBarUI implements ShapeProvide
         updateAnimator ( progressBar );
         c.addAncestorListener ( new AncestorAdapter ()
         {
+            @Override
             public void ancestorAdded ( AncestorEvent event )
             {
                 updateAnimator ( progressBar );
             }
 
+            @Override
             public void ancestorRemoved ( AncestorEvent event )
             {
                 updateAnimator ( progressBar );
@@ -250,6 +254,7 @@ public class WebProgressBarUI extends BasicProgressBarUI implements ShapeProvide
         }
     }
 
+    @Override
     public void uninstallUI ( JComponent c )
     {
         c.removePropertyChangeListener ( propertyChangeListener );
@@ -262,6 +267,7 @@ public class WebProgressBarUI extends BasicProgressBarUI implements ShapeProvide
         super.uninstallUI ( c );
     }
 
+    @Override
     public Shape provideShape ()
     {
         return LafUtils.getWebBorderShape ( progressBar, getShadeWidth (), getRound () );
@@ -282,6 +288,7 @@ public class WebProgressBarUI extends BasicProgressBarUI implements ShapeProvide
                     animationLocation = 0;
                     animator = new WebTimer ( "WebProgressBarUI.animator", StyleConstants.animationDelay, new ActionListener ()
                     {
+                        @Override
                         public void actionPerformed ( ActionEvent e )
                         {
                             if ( animationLocation < indeterminateStep * 2 - 1 )
@@ -294,6 +301,7 @@ public class WebProgressBarUI extends BasicProgressBarUI implements ShapeProvide
                             }
                             SwingUtilities.invokeLater ( new Runnable ()
                             {
+                                @Override
                                 public void run ()
                                 {
                                     progressBar.repaint ();
@@ -308,6 +316,7 @@ public class WebProgressBarUI extends BasicProgressBarUI implements ShapeProvide
                     animationLocation = -determinateAnimationWidth;
                     animator = new WebTimer ( "WebProgressBarUI.animator", StyleConstants.animationDelay, new ActionListener ()
                     {
+                        @Override
                         public void actionPerformed ( ActionEvent e )
                         {
                             if ( animationLocation < getProgressWidth () )
@@ -329,6 +338,7 @@ public class WebProgressBarUI extends BasicProgressBarUI implements ShapeProvide
                             {
                                 SwingUtilities.invokeLater ( new Runnable ()
                                 {
+                                    @Override
                                     public void run ()
                                     {
                                         progressBar.repaint ();
@@ -344,6 +354,7 @@ public class WebProgressBarUI extends BasicProgressBarUI implements ShapeProvide
         }
     }
 
+    @Override
     protected Dimension getPreferredInnerHorizontal ()
     {
         Dimension ph = super.getPreferredInnerHorizontal ();
@@ -351,6 +362,7 @@ public class WebProgressBarUI extends BasicProgressBarUI implements ShapeProvide
         return ph;
     }
 
+    @Override
     protected Dimension getPreferredInnerVertical ()
     {
         Dimension pv = super.getPreferredInnerVertical ();
@@ -358,6 +370,7 @@ public class WebProgressBarUI extends BasicProgressBarUI implements ShapeProvide
         return pv;
     }
 
+    @Override
     public void paint ( Graphics g, JComponent c )
     {
         Object aa = LafUtils.setupAntialias ( g );
@@ -365,6 +378,7 @@ public class WebProgressBarUI extends BasicProgressBarUI implements ShapeProvide
         LafUtils.restoreAntialias ( g, aa );
     }
 
+    @Override
     protected void paintIndeterminate ( Graphics g, JComponent c )
     {
         Graphics2D g2d = ( Graphics2D ) g;
@@ -429,6 +443,7 @@ public class WebProgressBarUI extends BasicProgressBarUI implements ShapeProvide
         drawProgressBarText ( g2d );
     }
 
+    @Override
     protected void paintDeterminate ( Graphics g, JComponent c )
     {
         final Graphics2D g2d = ( Graphics2D ) g;

@@ -30,21 +30,25 @@ import java.util.List;
 
 public class ListsGroup extends DefaultExampleGroup
 {
+    @Override
     public Icon getGroupIcon ()
     {
         return loadGroupIcon ( "list.png" );
     }
 
+    @Override
     public String getGroupName ()
     {
         return "Lists";
     }
 
+    @Override
     public String getGroupDescription ()
     {
         return "Various examples of lists usage";
     }
 
+    @Override
     public List<Example> getGroupExamples ()
     {
         List<Example> examples = new ArrayList<Example> ();
@@ -54,6 +58,7 @@ public class ListsGroup extends DefaultExampleGroup
         return examples;
     }
 
+    @Override
     public double getContentPartSize ()
     {
         return 0.7f;

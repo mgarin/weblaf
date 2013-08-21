@@ -41,16 +41,19 @@ import java.awt.event.KeyEvent;
 
 public class LanguageExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Translation";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Translation using xml language file";
     }
 
+    @Override
     public Component getPreview ( final WebLookAndFeelDemo owner )
     {
         // Loading example language dictionary
@@ -64,6 +67,7 @@ public class LanguageExample extends DefaultExample
         myButton.setLanguage ( "my.button" );
         myButton.addActionListener ( new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 WebDialog myDialog = new WebDialog ( owner );
@@ -92,6 +96,7 @@ public class LanguageExample extends DefaultExample
         /**
          * {@inheritDoc}
          */
+        @Override
         public void update ( MyLabel c, String key, Value value, Object... data )
         {
             c.setText ( value.getText ( c.isPressed () ? "pressed" : null ) );
@@ -118,6 +123,7 @@ public class LanguageExample extends DefaultExample
             // Our specific state change listener
             addKeyListener ( new KeyAdapter ()
             {
+                @Override
                 public void keyPressed ( KeyEvent e )
                 {
                     if ( Hotkey.TAB.isTriggered ( e ) )
@@ -127,6 +133,7 @@ public class LanguageExample extends DefaultExample
                     }
                 }
 
+                @Override
                 public void keyReleased ( KeyEvent e )
                 {
                     if ( Hotkey.TAB.isTriggered ( e ) )

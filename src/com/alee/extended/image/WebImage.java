@@ -180,6 +180,7 @@ public class WebImage extends JComponent implements SwingConstants
 
         addPropertyChangeListener ( WebLookAndFeel.COMPONENT_ENABLED_PROPERTY, new PropertyChangeListener ()
         {
+            @Override
             public void propertyChange ( PropertyChangeEvent evt )
             {
                 if ( !isEnabled () )
@@ -430,6 +431,7 @@ public class WebImage extends JComponent implements SwingConstants
      *
      * @param g graphics
      */
+    @Override
     protected void paintComponent ( Graphics g )
     {
         super.paintComponent ( g );
@@ -565,6 +567,7 @@ public class WebImage extends JComponent implements SwingConstants
      *
      * @return preferred size of image component
      */
+    @Override
     public Dimension getPreferredSize ()
     {
         if ( isPreferredSizeSet () )

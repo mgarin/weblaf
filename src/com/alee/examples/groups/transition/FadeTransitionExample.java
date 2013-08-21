@@ -44,16 +44,19 @@ import java.util.List;
 
 public class FadeTransitionExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Fade transition";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Fade transition effect";
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         // Image and loader lists
@@ -64,6 +67,7 @@ public class FadeTransitionExample extends DefaultExample
         final WebPanel imagesPanel = new WebPanel ( new HorizontalFlowLayout ( 5, false ) );
         imagesPanel.addAncestorListener ( new AncestorAdapter ()
         {
+            @Override
             public void ancestorAdded ( AncestorEvent event )
             {
                 // Initial transition on first panel appearance
@@ -83,6 +87,7 @@ public class FadeTransitionExample extends DefaultExample
         reloadView.setDrawFocus ( false );
         reloadView.addActionListener ( new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 reloadView.setEnabled ( false );
@@ -110,6 +115,7 @@ public class FadeTransitionExample extends DefaultExample
                 // Transition listener for reload button enabling
                 transition.addTransitionListener ( new TransitionAdapter ()
                 {
+                    @Override
                     public void transitionFinished ()
                     {
                         if ( transition.getContent () instanceof WebImage )

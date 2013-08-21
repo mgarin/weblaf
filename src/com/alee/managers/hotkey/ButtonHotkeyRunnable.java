@@ -41,6 +41,7 @@ public class ButtonHotkeyRunnable implements HotkeyRunnable
         this.pressTime = pressTime;
     }
 
+    @Override
     public void run ( KeyEvent e )
     {
         button.doClick ( pressTime );

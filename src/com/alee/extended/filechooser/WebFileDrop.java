@@ -90,11 +90,13 @@ public class WebFileDrop extends WebPanel implements LanguageMethods
         // Files TransferHandler
         setTransferHandler ( new FileDropHandler ()
         {
+            @Override
             protected boolean isDropEnabled ()
             {
                 return filesDropEnabled;
             }
 
+            @Override
             protected boolean filesImported ( List<File> files )
             {
                 // Adding dragged files
@@ -123,6 +125,7 @@ public class WebFileDrop extends WebPanel implements LanguageMethods
         // Focus "catcher"
         addMouseListener ( new MouseAdapter ()
         {
+            @Override
             public void mousePressed ( MouseEvent e )
             {
                 WebFileDrop.this.requestFocusInWindow ();
@@ -135,6 +138,7 @@ public class WebFileDrop extends WebPanel implements LanguageMethods
             private int filesCount = 0;
             private WebTimer animator = null;
 
+            @Override
             public void selectionChanged ( List<File> selectedFiles )
             {
                 if ( filesCount == 0 && selectedFiles.size () > 0 )
@@ -143,6 +147,7 @@ public class WebFileDrop extends WebPanel implements LanguageMethods
                     filesCount = selectedFiles.size ();
                     animator = new WebTimer ( "WebFileDrop.textFadeOutTimer", StyleConstants.animationDelay, new ActionListener ()
                     {
+                        @Override
                         public void actionPerformed ( ActionEvent e )
                         {
                             if ( dropTextOpacity > 0f )
@@ -165,6 +170,7 @@ public class WebFileDrop extends WebPanel implements LanguageMethods
                     filesCount = selectedFiles.size ();
                     animator = new WebTimer ( "WebFileDrop.textFadeInTimer", StyleConstants.animationDelay, new ActionListener ()
                     {
+                        @Override
                         public void actionPerformed ( ActionEvent e )
                         {
                             if ( dropTextOpacity < 1f )
@@ -357,6 +363,7 @@ public class WebFileDrop extends WebPanel implements LanguageMethods
         return dropText != null && showDropText && dropTextOpacity > 0f;
     }
 
+    @Override
     protected void paintComponent ( Graphics g )
     {
         super.paintComponent ( g );
@@ -413,6 +420,7 @@ public class WebFileDrop extends WebPanel implements LanguageMethods
         // To block parent container events
         addMouseListener ( new MouseAdapter ()
         {
+            @Override
             public void mousePressed ( MouseEvent e )
             {
                 requestFocusInWindow ();
@@ -422,6 +430,7 @@ public class WebFileDrop extends WebPanel implements LanguageMethods
         // Data change on removal
         filePlate.addCloseListener ( new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 // Removing file from added files list
@@ -460,6 +469,7 @@ public class WebFileDrop extends WebPanel implements LanguageMethods
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setLanguage ( String key, Object... data )
     {
         LanguageManager.registerComponent ( this, key, data );
@@ -468,6 +478,7 @@ public class WebFileDrop extends WebPanel implements LanguageMethods
     /**
      * {@inheritDoc}
      */
+    @Override
     public void updateLanguage ( Object... data )
     {
         LanguageManager.updateComponent ( this, data );
@@ -476,6 +487,7 @@ public class WebFileDrop extends WebPanel implements LanguageMethods
     /**
      * {@inheritDoc}
      */
+    @Override
     public void updateLanguage ( String key, Object... data )
     {
         LanguageManager.updateComponent ( this, key, data );
@@ -484,6 +496,7 @@ public class WebFileDrop extends WebPanel implements LanguageMethods
     /**
      * {@inheritDoc}
      */
+    @Override
     public void removeLanguage ()
     {
         LanguageManager.unregisterComponent ( this );
@@ -492,6 +505,7 @@ public class WebFileDrop extends WebPanel implements LanguageMethods
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isLanguageSet ()
     {
         return LanguageManager.isRegisteredComponent ( this );
@@ -500,6 +514,7 @@ public class WebFileDrop extends WebPanel implements LanguageMethods
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setLanguageUpdater ( LanguageUpdater updater )
     {
         LanguageManager.registerLanguageUpdater ( this, updater );
@@ -508,6 +523,7 @@ public class WebFileDrop extends WebPanel implements LanguageMethods
     /**
      * {@inheritDoc}
      */
+    @Override
     public void removeLanguageUpdater ()
     {
         LanguageManager.unregisterLanguageUpdater ( this );

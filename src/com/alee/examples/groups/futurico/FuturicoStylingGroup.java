@@ -34,21 +34,25 @@ import java.util.List;
 
 public class FuturicoStylingGroup extends DefaultExampleGroup
 {
+    @Override
     public Icon getGroupIcon ()
     {
         return loadGroupIcon ( "futurico.png" );
     }
 
+    @Override
     public String getGroupName ()
     {
         return "Futurico styling";
     }
 
+    @Override
     public String getGroupDescription ()
     {
         return "Various examples of Futurio components styling";
     }
 
+    @Override
     public List<Example> getGroupExamples ()
     {
         List<Example> examples = new ArrayList<Example> ();
@@ -61,12 +65,14 @@ public class FuturicoStylingGroup extends DefaultExampleGroup
         return examples;
     }
 
+    @Override
     public void modifyExampleTab ( int tabIndex, WebTabbedPane tabbedPane )
     {
         tabbedPane.getWebUI ().setSelectedForegroundAt ( tabIndex, Color.WHITE );
         tabbedPane.getWebUI ().setBackgroundPainterAt ( tabIndex, XmlUtils.loadTexturePainter ( getResource ( "bg.xml" ) ) );
     }
 
+    @Override
     public WebSeparator modifySeparator ( WebSeparator separator )
     {
         separator.setReversedColors ( true );
@@ -74,6 +80,7 @@ public class FuturicoStylingGroup extends DefaultExampleGroup
         return separator;
     }
 
+    @Override
     public Color getPreferredForeground ()
     {
         return Color.WHITE;

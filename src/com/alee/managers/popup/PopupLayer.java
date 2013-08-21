@@ -77,6 +77,7 @@ public class PopupLayer extends WebPanel
         }
     }
 
+    @Override
     public boolean contains ( int x, int y )
     {
         for ( Component child : getComponents () )

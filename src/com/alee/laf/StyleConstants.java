@@ -218,6 +218,7 @@ public class StyleConstants
         textRenderingHints = ( Map ) tk.getDesktopProperty ( "awt.font.desktophints" );
         tk.addPropertyChangeListener ( "awt.font.desktophints", new PropertyChangeListener ()
         {
+            @Override
             public void propertyChange ( PropertyChangeEvent evt )
             {
                 if ( evt.getNewValue () instanceof RenderingHints )

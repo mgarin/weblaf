@@ -369,6 +369,7 @@ public class WebPanel extends JPanel implements ShapeProvider, SizeMethods<WebPa
         return this;
     }
 
+    @Override
     public Shape provideShape ()
     {
         return getWebUI ().provideShape ();
@@ -379,6 +380,7 @@ public class WebPanel extends JPanel implements ShapeProvider, SizeMethods<WebPa
         return ( WebPanelUI ) getUI ();
     }
 
+    @Override
     public void updateUI ()
     {
         if ( getUI () == null || !( getUI () instanceof WebPanelUI ) )
@@ -406,6 +408,7 @@ public class WebPanel extends JPanel implements ShapeProvider, SizeMethods<WebPa
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getPreferredWidth ()
     {
         return SizeUtils.getPreferredWidth ( this );
@@ -414,6 +417,7 @@ public class WebPanel extends JPanel implements ShapeProvider, SizeMethods<WebPa
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebPanel setPreferredWidth ( int preferredWidth )
     {
         return SizeUtils.setPreferredWidth ( this, preferredWidth );
@@ -422,6 +426,7 @@ public class WebPanel extends JPanel implements ShapeProvider, SizeMethods<WebPa
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getPreferredHeight ()
     {
         return SizeUtils.getPreferredHeight ( this );
@@ -430,6 +435,7 @@ public class WebPanel extends JPanel implements ShapeProvider, SizeMethods<WebPa
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebPanel setPreferredHeight ( int preferredHeight )
     {
         return SizeUtils.setPreferredHeight ( this, preferredHeight );
@@ -438,6 +444,7 @@ public class WebPanel extends JPanel implements ShapeProvider, SizeMethods<WebPa
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getMinimumWidth ()
     {
         return SizeUtils.getMinimumWidth ( this );
@@ -446,6 +453,7 @@ public class WebPanel extends JPanel implements ShapeProvider, SizeMethods<WebPa
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebPanel setMinimumWidth ( int minimumWidth )
     {
         return SizeUtils.setMinimumWidth ( this, minimumWidth );
@@ -454,6 +462,7 @@ public class WebPanel extends JPanel implements ShapeProvider, SizeMethods<WebPa
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getMinimumHeight ()
     {
         return SizeUtils.getMinimumHeight ( this );
@@ -462,6 +471,7 @@ public class WebPanel extends JPanel implements ShapeProvider, SizeMethods<WebPa
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebPanel setMinimumHeight ( int minimumHeight )
     {
         return SizeUtils.setMinimumHeight ( this, minimumHeight );
@@ -470,6 +480,7 @@ public class WebPanel extends JPanel implements ShapeProvider, SizeMethods<WebPa
     /**
      * {@inheritDoc}
      */
+    @Override
     public Dimension getPreferredSize ()
     {
         return SizeUtils.getPreferredSize ( this, super.getPreferredSize () );
@@ -482,6 +493,7 @@ public class WebPanel extends JPanel implements ShapeProvider, SizeMethods<WebPa
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setLanguageContainerKey ( String key )
     {
         LanguageManager.registerLanguageContainer ( this, key );
@@ -490,6 +502,7 @@ public class WebPanel extends JPanel implements ShapeProvider, SizeMethods<WebPa
     /**
      * {@inheritDoc}
      */
+    @Override
     public void removeLanguageContainerKey ()
     {
         LanguageManager.unregisterLanguageContainer ( this );
@@ -498,6 +511,7 @@ public class WebPanel extends JPanel implements ShapeProvider, SizeMethods<WebPa
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getLanguageContainerKey ()
     {
         return LanguageManager.getLanguageContainerKey ( this );

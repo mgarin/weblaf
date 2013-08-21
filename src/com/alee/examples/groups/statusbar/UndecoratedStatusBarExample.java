@@ -32,16 +32,19 @@ import java.awt.*;
 
 public class UndecoratedStatusBarExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Undecorated status bar";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Status bar without any styling";
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         // Undecorated status bar

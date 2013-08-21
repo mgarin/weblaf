@@ -30,16 +30,19 @@ import java.awt.*;
 
 public class DoubleGroupedButtonsExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Double grouped buttons";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Example of double WebButtonGroup usage";
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         // 1st line buttons

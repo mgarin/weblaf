@@ -49,6 +49,7 @@ public class WebHighlighter extends LayeredHighlighter
      *
      * @param g the graphics context
      */
+    @Override
     public void paint ( Graphics g )
     {
         // PENDING(prinz) - should cull ranges not visible
@@ -85,6 +86,7 @@ public class WebHighlighter extends LayeredHighlighter
      * @param c the editor component
      * @see Highlighter
      */
+    @Override
     public void install ( JTextComponent c )
     {
         component = c;
@@ -97,6 +99,7 @@ public class WebHighlighter extends LayeredHighlighter
      * @param c the component
      * @see Highlighter
      */
+    @Override
     public void deinstall ( JTextComponent c )
     {
         component = null;
@@ -112,6 +115,7 @@ public class WebHighlighter extends LayeredHighlighter
      * @throws javax.swing.text.BadLocationException
      *          if the specified location is invalid
      */
+    @Override
     public Object addHighlight ( int p0, int p1, Highlighter.HighlightPainter p ) throws BadLocationException
     {
         Document doc = component.getDocument ();
@@ -131,6 +135,7 @@ public class WebHighlighter extends LayeredHighlighter
      *
      * @param tag the reference to the highlight
      */
+    @Override
     public void removeHighlight ( Object tag )
     {
         if ( tag instanceof LayeredHighlightInfo )
@@ -152,6 +157,7 @@ public class WebHighlighter extends LayeredHighlighter
     /**
      * Removes all highlights.
      */
+    @Override
     public void removeAllHighlights ()
     {
         TextUI mapper = component.getUI ();
@@ -244,6 +250,7 @@ public class WebHighlighter extends LayeredHighlighter
      * @param p1  the end of the range >= p0
      * @throws BadLocationException if the specified location is invalid
      */
+    @Override
     public void changeHighlight ( Object tag, int p0, int p1 ) throws BadLocationException
     {
         Document doc = component.getDocument ();
@@ -290,6 +297,7 @@ public class WebHighlighter extends LayeredHighlighter
      * @return the copy
      * @see Highlighter#getHighlights
      */
+    @Override
     public Highlighter.Highlight[] getHighlights ()
     {
         int size = highlights.size ();
@@ -314,6 +322,7 @@ public class WebHighlighter extends LayeredHighlighter
      * @param editor     JTextComponent
      * @param view       View instance being rendered
      */
+    @Override
     public void paintLayeredHighlights ( Graphics g, int p0, int p1, Shape viewBounds, JTextComponent editor, View view )
     {
         for ( int counter = highlights.size () - 1; counter >= 0; counter-- )
@@ -375,16 +384,19 @@ public class WebHighlighter extends LayeredHighlighter
     class HighlightInfo implements Highlighter.Highlight
     {
 
+        @Override
         public int getStartOffset ()
         {
             return p0.getOffset ();
         }
 
+        @Override
         public int getEndOffset ()
         {
             return p1.getOffset ();
         }
 
+        @Override
         public Highlighter.HighlightPainter getPainter ()
         {
             return painter;
@@ -516,6 +528,7 @@ public class WebHighlighter extends LayeredHighlighter
         /**
          * Executes range(s) damage and cleans range queue.
          */
+        @Override
         public synchronized void run ()
         {
             if ( component != null )

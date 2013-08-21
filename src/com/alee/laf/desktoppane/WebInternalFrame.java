@@ -67,6 +67,7 @@ public class WebInternalFrame extends JInternalFrame implements LanguageMethods
         return ( WebInternalFrameUI ) getUI ();
     }
 
+    @Override
     public void setIcon ( boolean b )
     {
         try
@@ -104,6 +105,7 @@ public class WebInternalFrame extends JInternalFrame implements LanguageMethods
         }
     }
 
+    @Override
     public void updateUI ()
     {
         if ( getUI () == null || !( getUI () instanceof WebInternalFrameUI ) )
@@ -129,36 +131,43 @@ public class WebInternalFrame extends JInternalFrame implements LanguageMethods
      * Language methods
      */
 
+    @Override
     public void setLanguage ( String key, Object... data )
     {
         LanguageManager.registerComponent ( this, key, data );
     }
 
+    @Override
     public void updateLanguage ( Object... data )
     {
         LanguageManager.updateComponent ( this, data );
     }
 
+    @Override
     public void updateLanguage ( String key, Object... data )
     {
         LanguageManager.updateComponent ( this, key, data );
     }
 
+    @Override
     public void removeLanguage ()
     {
         LanguageManager.unregisterComponent ( this );
     }
 
+    @Override
     public boolean isLanguageSet ()
     {
         return LanguageManager.isRegisteredComponent ( this );
     }
 
+    @Override
     public void setLanguageUpdater ( LanguageUpdater updater )
     {
         LanguageManager.registerLanguageUpdater ( this, updater );
     }
 
+    @Override
     public void removeLanguageUpdater ()
     {
         LanguageManager.unregisterLanguageUpdater ( this );

@@ -27,8 +27,8 @@ import java.io.Serializable;
  * User: mgarin Date: 27.04.12 Time: 16:15
  */
 
-@XStreamAlias ( "tooltip" )
-@XStreamConverter ( TooltipConverter.class )
+@XStreamAlias ("tooltip")
+@XStreamConverter (TooltipConverter.class)
 public final class Tooltip implements Serializable, Cloneable
 {
     private TooltipType type;
@@ -125,6 +125,7 @@ public final class Tooltip implements Serializable, Cloneable
         this.text = text;
     }
 
+    @Override
     public Tooltip clone ()
     {
         return new Tooltip ( type, way, delay, text );

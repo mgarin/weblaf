@@ -35,26 +35,31 @@ import java.awt.event.ActionListener;
 
 public class OptionPanesExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Option panes";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Web-styled option panes decoration";
     }
 
+    @Override
     public FeatureState getFeatureState ()
     {
         return FeatureState.beta;
     }
 
+    @Override
     public Component getPreview ( final WebLookAndFeelDemo owner )
     {
         WebButton showFrame = new WebButton ( "Show option pane", loadIcon ( "option.png" ) );
         showFrame.addActionListener ( new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 // Enabling dialog decoration

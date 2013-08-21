@@ -30,21 +30,25 @@ import java.util.List;
 
 public class FieldsGroup extends DefaultExampleGroup
 {
+    @Override
     public Icon getGroupIcon ()
     {
         return loadGroupIcon ( "field.png" );
     }
 
+    @Override
     public String getGroupName ()
     {
         return "Fields";
     }
 
+    @Override
     public String getGroupDescription ()
     {
         return "Various examples of field usage";
     }
 
+    @Override
     public List<Example> getGroupExamples ()
     {
         List<Example> examples = new ArrayList<Example> ();

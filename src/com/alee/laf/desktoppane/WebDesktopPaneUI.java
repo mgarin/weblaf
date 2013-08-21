@@ -35,6 +35,7 @@ public class WebDesktopPaneUI extends BasicDesktopPaneUI
         return new WebDesktopPaneUI ();
     }
 
+    @Override
     public void installUI ( JComponent c )
     {
         super.installUI ( c );

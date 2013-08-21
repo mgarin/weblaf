@@ -32,16 +32,19 @@ import java.awt.event.KeyEvent;
 
 public class HotkeyLabelsExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Hotkey labels";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Hotkey labels";
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         // Text-based hotkeys

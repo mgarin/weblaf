@@ -39,6 +39,7 @@ public class CheckBoxListExample extends DefaultExample
      *
      * @return example title
      */
+    @Override
     public String getTitle ()
     {
         return "Checkbox list";
@@ -49,6 +50,7 @@ public class CheckBoxListExample extends DefaultExample
      *
      * @return short example description
      */
+    @Override
     public String getDescription ()
     {
         return "Web-styled checkbox list";
@@ -60,6 +62,7 @@ public class CheckBoxListExample extends DefaultExample
      * @param owner demo application main frame
      * @return preview component
      */
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         // Checkbox list

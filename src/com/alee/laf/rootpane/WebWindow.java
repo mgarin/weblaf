@@ -85,11 +85,13 @@ public class WebWindow extends JWindow implements FocusTracker, LanguageContaine
         SwingUtils.setOrientation ( this );
         addComponentListener ( new ComponentAdapter ()
         {
+            @Override
             public void componentShown ( ComponentEvent e )
             {
                 updateFocusTracker ();
             }
 
+            @Override
             public void componentHidden ( ComponentEvent e )
             {
                 updateFocusTracker ();
@@ -116,26 +118,31 @@ public class WebWindow extends JWindow implements FocusTracker, LanguageContaine
      * Focus tracker implemented methods
      */
 
+    @Override
     public boolean isTrackingEnabled ()
     {
         return isShowing ();
     }
 
+    @Override
     public Component getTrackedComponent ()
     {
         return this;
     }
 
+    @Override
     public boolean isUniteWithChilds ()
     {
         return true;
     }
 
+    @Override
     public boolean isListenGlobalChange ()
     {
         return false;
     }
 
+    @Override
     public void focusChanged ( boolean focused )
     {
         this.focused = focused;
@@ -224,6 +231,7 @@ public class WebWindow extends JWindow implements FocusTracker, LanguageContaine
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setLanguageContainerKey ( String key )
     {
         LanguageManager.registerLanguageContainer ( this, key );
@@ -232,6 +240,7 @@ public class WebWindow extends JWindow implements FocusTracker, LanguageContaine
     /**
      * {@inheritDoc}
      */
+    @Override
     public void removeLanguageContainerKey ()
     {
         LanguageManager.unregisterLanguageContainer ( this );
@@ -240,6 +249,7 @@ public class WebWindow extends JWindow implements FocusTracker, LanguageContaine
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getLanguageContainerKey ()
     {
         return LanguageManager.getLanguageContainerKey ( this );
@@ -252,6 +262,7 @@ public class WebWindow extends JWindow implements FocusTracker, LanguageContaine
     /**
      * {@inheritDoc}
      */
+    @Override
     public void registerSettings ( String key )
     {
         SettingsManager.registerComponent ( this, key );
@@ -260,6 +271,7 @@ public class WebWindow extends JWindow implements FocusTracker, LanguageContaine
     /**
      * {@inheritDoc}
      */
+    @Override
     public <T extends DefaultValue> void registerSettings ( String key, Class<T> defaultValueClass )
     {
         SettingsManager.registerComponent ( this, key, defaultValueClass );
@@ -268,6 +280,7 @@ public class WebWindow extends JWindow implements FocusTracker, LanguageContaine
     /**
      * {@inheritDoc}
      */
+    @Override
     public void registerSettings ( String key, Object defaultValue )
     {
         SettingsManager.registerComponent ( this, key, defaultValue );
@@ -276,6 +289,7 @@ public class WebWindow extends JWindow implements FocusTracker, LanguageContaine
     /**
      * {@inheritDoc}
      */
+    @Override
     public void registerSettings ( String group, String key )
     {
         SettingsManager.registerComponent ( this, group, key );
@@ -284,6 +298,7 @@ public class WebWindow extends JWindow implements FocusTracker, LanguageContaine
     /**
      * {@inheritDoc}
      */
+    @Override
     public <T extends DefaultValue> void registerSettings ( String group, String key, Class<T> defaultValueClass )
     {
         SettingsManager.registerComponent ( this, group, key, defaultValueClass );
@@ -292,6 +307,7 @@ public class WebWindow extends JWindow implements FocusTracker, LanguageContaine
     /**
      * {@inheritDoc}
      */
+    @Override
     public void registerSettings ( String group, String key, Object defaultValue )
     {
         SettingsManager.registerComponent ( this, group, key, defaultValue );
@@ -300,6 +316,7 @@ public class WebWindow extends JWindow implements FocusTracker, LanguageContaine
     /**
      * {@inheritDoc}
      */
+    @Override
     public void registerSettings ( String key, boolean loadInitialSettings, boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, key, loadInitialSettings, applySettingsChanges );
@@ -308,6 +325,7 @@ public class WebWindow extends JWindow implements FocusTracker, LanguageContaine
     /**
      * {@inheritDoc}
      */
+    @Override
     public <T extends DefaultValue> void registerSettings ( String key, Class<T> defaultValueClass, boolean loadInitialSettings,
                                                             boolean applySettingsChanges )
     {
@@ -317,6 +335,7 @@ public class WebWindow extends JWindow implements FocusTracker, LanguageContaine
     /**
      * {@inheritDoc}
      */
+    @Override
     public void registerSettings ( String key, Object defaultValue, boolean loadInitialSettings, boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, key, defaultValue, loadInitialSettings, applySettingsChanges );
@@ -325,6 +344,7 @@ public class WebWindow extends JWindow implements FocusTracker, LanguageContaine
     /**
      * {@inheritDoc}
      */
+    @Override
     public <T extends DefaultValue> void registerSettings ( String group, String key, Class<T> defaultValueClass,
                                                             boolean loadInitialSettings, boolean applySettingsChanges )
     {
@@ -334,6 +354,7 @@ public class WebWindow extends JWindow implements FocusTracker, LanguageContaine
     /**
      * {@inheritDoc}
      */
+    @Override
     public void registerSettings ( String group, String key, Object defaultValue, boolean loadInitialSettings,
                                    boolean applySettingsChanges )
     {
@@ -343,6 +364,7 @@ public class WebWindow extends JWindow implements FocusTracker, LanguageContaine
     /**
      * {@inheritDoc}
      */
+    @Override
     public void registerSettings ( SettingsProcessor settingsProcessor )
     {
         SettingsManager.registerComponent ( this, settingsProcessor );
@@ -351,6 +373,7 @@ public class WebWindow extends JWindow implements FocusTracker, LanguageContaine
     /**
      * {@inheritDoc}
      */
+    @Override
     public void unregisterSettings ()
     {
         SettingsManager.unregisterComponent ( this );
@@ -359,6 +382,7 @@ public class WebWindow extends JWindow implements FocusTracker, LanguageContaine
     /**
      * {@inheritDoc}
      */
+    @Override
     public void loadSettings ()
     {
         SettingsManager.loadComponentSettings ( this );
@@ -367,6 +391,7 @@ public class WebWindow extends JWindow implements FocusTracker, LanguageContaine
     /**
      * {@inheritDoc}
      */
+    @Override
     public void saveSettings ()
     {
         SettingsManager.saveComponentSettings ( this );

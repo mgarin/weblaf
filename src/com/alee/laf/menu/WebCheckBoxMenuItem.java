@@ -83,6 +83,7 @@ public class WebCheckBoxMenuItem extends JCheckBoxMenuItem implements LanguageMe
         return ( WebCheckBoxMenuItemUI ) getUI ();
     }
 
+    @Override
     public void updateUI ()
     {
         if ( getUI () == null || !( getUI () instanceof WebCheckBoxMenuItemUI ) )
@@ -110,6 +111,7 @@ public class WebCheckBoxMenuItem extends JCheckBoxMenuItem implements LanguageMe
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setLanguage ( String key, Object... data )
     {
         LanguageManager.registerComponent ( this, key, data );
@@ -118,6 +120,7 @@ public class WebCheckBoxMenuItem extends JCheckBoxMenuItem implements LanguageMe
     /**
      * {@inheritDoc}
      */
+    @Override
     public void updateLanguage ( Object... data )
     {
         LanguageManager.updateComponent ( this, data );
@@ -126,6 +129,7 @@ public class WebCheckBoxMenuItem extends JCheckBoxMenuItem implements LanguageMe
     /**
      * {@inheritDoc}
      */
+    @Override
     public void updateLanguage ( String key, Object... data )
     {
         LanguageManager.updateComponent ( this, key, data );
@@ -134,6 +138,7 @@ public class WebCheckBoxMenuItem extends JCheckBoxMenuItem implements LanguageMe
     /**
      * {@inheritDoc}
      */
+    @Override
     public void removeLanguage ()
     {
         LanguageManager.unregisterComponent ( this );
@@ -142,6 +147,7 @@ public class WebCheckBoxMenuItem extends JCheckBoxMenuItem implements LanguageMe
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isLanguageSet ()
     {
         return LanguageManager.isRegisteredComponent ( this );
@@ -150,6 +156,7 @@ public class WebCheckBoxMenuItem extends JCheckBoxMenuItem implements LanguageMe
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setLanguageUpdater ( LanguageUpdater updater )
     {
         LanguageManager.registerLanguageUpdater ( this, updater );
@@ -158,6 +165,7 @@ public class WebCheckBoxMenuItem extends JCheckBoxMenuItem implements LanguageMe
     /**
      * {@inheritDoc}
      */
+    @Override
     public void removeLanguageUpdater ()
     {
         LanguageManager.unregisterLanguageUpdater ( this );
@@ -170,6 +178,7 @@ public class WebCheckBoxMenuItem extends JCheckBoxMenuItem implements LanguageMe
     /**
      * {@inheritDoc}
      */
+    @Override
     public void registerSettings ( String key )
     {
         SettingsManager.registerComponent ( this, key );
@@ -178,6 +187,7 @@ public class WebCheckBoxMenuItem extends JCheckBoxMenuItem implements LanguageMe
     /**
      * {@inheritDoc}
      */
+    @Override
     public <T extends DefaultValue> void registerSettings ( String key, Class<T> defaultValueClass )
     {
         SettingsManager.registerComponent ( this, key, defaultValueClass );
@@ -186,6 +196,7 @@ public class WebCheckBoxMenuItem extends JCheckBoxMenuItem implements LanguageMe
     /**
      * {@inheritDoc}
      */
+    @Override
     public void registerSettings ( String key, Object defaultValue )
     {
         SettingsManager.registerComponent ( this, key, defaultValue );
@@ -194,6 +205,7 @@ public class WebCheckBoxMenuItem extends JCheckBoxMenuItem implements LanguageMe
     /**
      * {@inheritDoc}
      */
+    @Override
     public void registerSettings ( String group, String key )
     {
         SettingsManager.registerComponent ( this, group, key );
@@ -202,6 +214,7 @@ public class WebCheckBoxMenuItem extends JCheckBoxMenuItem implements LanguageMe
     /**
      * {@inheritDoc}
      */
+    @Override
     public <T extends DefaultValue> void registerSettings ( String group, String key, Class<T> defaultValueClass )
     {
         SettingsManager.registerComponent ( this, group, key, defaultValueClass );
@@ -210,6 +223,7 @@ public class WebCheckBoxMenuItem extends JCheckBoxMenuItem implements LanguageMe
     /**
      * {@inheritDoc}
      */
+    @Override
     public void registerSettings ( String group, String key, Object defaultValue )
     {
         SettingsManager.registerComponent ( this, group, key, defaultValue );
@@ -218,6 +232,7 @@ public class WebCheckBoxMenuItem extends JCheckBoxMenuItem implements LanguageMe
     /**
      * {@inheritDoc}
      */
+    @Override
     public void registerSettings ( String key, boolean loadInitialSettings, boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, key, loadInitialSettings, applySettingsChanges );
@@ -226,6 +241,7 @@ public class WebCheckBoxMenuItem extends JCheckBoxMenuItem implements LanguageMe
     /**
      * {@inheritDoc}
      */
+    @Override
     public <T extends DefaultValue> void registerSettings ( String key, Class<T> defaultValueClass, boolean loadInitialSettings,
                                                             boolean applySettingsChanges )
     {
@@ -235,6 +251,7 @@ public class WebCheckBoxMenuItem extends JCheckBoxMenuItem implements LanguageMe
     /**
      * {@inheritDoc}
      */
+    @Override
     public void registerSettings ( String key, Object defaultValue, boolean loadInitialSettings, boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, key, defaultValue, loadInitialSettings, applySettingsChanges );
@@ -243,6 +260,7 @@ public class WebCheckBoxMenuItem extends JCheckBoxMenuItem implements LanguageMe
     /**
      * {@inheritDoc}
      */
+    @Override
     public <T extends DefaultValue> void registerSettings ( String group, String key, Class<T> defaultValueClass,
                                                             boolean loadInitialSettings, boolean applySettingsChanges )
     {
@@ -252,6 +270,7 @@ public class WebCheckBoxMenuItem extends JCheckBoxMenuItem implements LanguageMe
     /**
      * {@inheritDoc}
      */
+    @Override
     public void registerSettings ( String group, String key, Object defaultValue, boolean loadInitialSettings,
                                    boolean applySettingsChanges )
     {
@@ -261,6 +280,7 @@ public class WebCheckBoxMenuItem extends JCheckBoxMenuItem implements LanguageMe
     /**
      * {@inheritDoc}
      */
+    @Override
     public void registerSettings ( SettingsProcessor settingsProcessor )
     {
         SettingsManager.registerComponent ( this, settingsProcessor );
@@ -269,6 +289,7 @@ public class WebCheckBoxMenuItem extends JCheckBoxMenuItem implements LanguageMe
     /**
      * {@inheritDoc}
      */
+    @Override
     public void unregisterSettings ()
     {
         SettingsManager.unregisterComponent ( this );
@@ -277,6 +298,7 @@ public class WebCheckBoxMenuItem extends JCheckBoxMenuItem implements LanguageMe
     /**
      * {@inheritDoc}
      */
+    @Override
     public void loadSettings ()
     {
         SettingsManager.loadComponentSettings ( this );
@@ -285,6 +307,7 @@ public class WebCheckBoxMenuItem extends JCheckBoxMenuItem implements LanguageMe
     /**
      * {@inheritDoc}
      */
+    @Override
     public void saveSettings ()
     {
         SettingsManager.saveComponentSettings ( this );
@@ -297,6 +320,7 @@ public class WebCheckBoxMenuItem extends JCheckBoxMenuItem implements LanguageMe
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebCheckBoxMenuItem setPlainFont ()
     {
         return SwingUtils.setPlainFont ( this );
@@ -305,6 +329,7 @@ public class WebCheckBoxMenuItem extends JCheckBoxMenuItem implements LanguageMe
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebCheckBoxMenuItem setPlainFont ( boolean apply )
     {
         return SwingUtils.setPlainFont ( this, apply );
@@ -313,6 +338,7 @@ public class WebCheckBoxMenuItem extends JCheckBoxMenuItem implements LanguageMe
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isPlainFont ()
     {
         return SwingUtils.isPlainFont ( this );
@@ -321,6 +347,7 @@ public class WebCheckBoxMenuItem extends JCheckBoxMenuItem implements LanguageMe
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebCheckBoxMenuItem setBoldFont ()
     {
         return SwingUtils.setBoldFont ( this );
@@ -329,6 +356,7 @@ public class WebCheckBoxMenuItem extends JCheckBoxMenuItem implements LanguageMe
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebCheckBoxMenuItem setBoldFont ( boolean apply )
     {
         return SwingUtils.setBoldFont ( this, apply );
@@ -337,6 +365,7 @@ public class WebCheckBoxMenuItem extends JCheckBoxMenuItem implements LanguageMe
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isBoldFont ()
     {
         return SwingUtils.isBoldFont ( this );
@@ -345,6 +374,7 @@ public class WebCheckBoxMenuItem extends JCheckBoxMenuItem implements LanguageMe
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebCheckBoxMenuItem setItalicFont ()
     {
         return SwingUtils.setItalicFont ( this );
@@ -353,6 +383,7 @@ public class WebCheckBoxMenuItem extends JCheckBoxMenuItem implements LanguageMe
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebCheckBoxMenuItem setItalicFont ( boolean apply )
     {
         return SwingUtils.setItalicFont ( this, apply );
@@ -361,6 +392,7 @@ public class WebCheckBoxMenuItem extends JCheckBoxMenuItem implements LanguageMe
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isItalicFont ()
     {
         return SwingUtils.isItalicFont ( this );
@@ -369,6 +401,7 @@ public class WebCheckBoxMenuItem extends JCheckBoxMenuItem implements LanguageMe
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebCheckBoxMenuItem setFontStyle ( boolean bold, boolean italic )
     {
         return SwingUtils.setFontStyle ( this, bold, italic );
@@ -377,6 +410,7 @@ public class WebCheckBoxMenuItem extends JCheckBoxMenuItem implements LanguageMe
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebCheckBoxMenuItem setFontStyle ( int style )
     {
         return SwingUtils.setFontStyle ( this, style );
@@ -385,6 +419,7 @@ public class WebCheckBoxMenuItem extends JCheckBoxMenuItem implements LanguageMe
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebCheckBoxMenuItem setFontSize ( int fontSize )
     {
         return SwingUtils.setFontSize ( this, fontSize );
@@ -393,6 +428,7 @@ public class WebCheckBoxMenuItem extends JCheckBoxMenuItem implements LanguageMe
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebCheckBoxMenuItem changeFontSize ( int change )
     {
         return SwingUtils.changeFontSize ( this, change );
@@ -401,6 +437,7 @@ public class WebCheckBoxMenuItem extends JCheckBoxMenuItem implements LanguageMe
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getFontSize ()
     {
         return SwingUtils.getFontSize ( this );
@@ -409,6 +446,7 @@ public class WebCheckBoxMenuItem extends JCheckBoxMenuItem implements LanguageMe
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebCheckBoxMenuItem setFontSizeAndStyle ( int fontSize, boolean bold, boolean italic )
     {
         return SwingUtils.setFontSizeAndStyle ( this, fontSize, bold, italic );
@@ -417,6 +455,7 @@ public class WebCheckBoxMenuItem extends JCheckBoxMenuItem implements LanguageMe
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebCheckBoxMenuItem setFontSizeAndStyle ( int fontSize, int style )
     {
         return SwingUtils.setFontSizeAndStyle ( this, fontSize, style );
@@ -425,6 +464,7 @@ public class WebCheckBoxMenuItem extends JCheckBoxMenuItem implements LanguageMe
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebCheckBoxMenuItem setFontName ( String fontName )
     {
         return SwingUtils.setFontName ( this, fontName );
@@ -433,6 +473,7 @@ public class WebCheckBoxMenuItem extends JCheckBoxMenuItem implements LanguageMe
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getFontName ()
     {
         return SwingUtils.getFontName ( this );

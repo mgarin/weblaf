@@ -75,6 +75,7 @@ public class WebListUI extends BasicListUI
      *
      * @param c component for this UI
      */
+    @Override
     public void installUI ( JComponent c )
     {
         super.installUI ( c );
@@ -88,21 +89,25 @@ public class WebListUI extends BasicListUI
         // Rollover listener
         mouseoverAdapter = new MouseAdapter ()
         {
+            @Override
             public void mouseEntered ( MouseEvent e )
             {
                 updateMouseover ( e );
             }
 
+            @Override
             public void mouseExited ( MouseEvent e )
             {
                 updateMouseover ( e );
             }
 
+            @Override
             public void mouseMoved ( MouseEvent e )
             {
                 updateMouseover ( e );
             }
 
+            @Override
             public void mouseDragged ( MouseEvent e )
             {
                 updateMouseover ( e );
@@ -162,6 +167,7 @@ public class WebListUI extends BasicListUI
         // Selection listener
         selectionListener = new ListSelectionListener ()
         {
+            @Override
             public void valueChanged ( ListSelectionEvent e )
             {
                 if ( autoScrollToSelection )
@@ -186,6 +192,7 @@ public class WebListUI extends BasicListUI
      *
      * @param c component with this UI
      */
+    @Override
     public void uninstallUI ( JComponent c )
     {
         list.removeMouseListener ( mouseoverAdapter );
@@ -281,6 +288,7 @@ public class WebListUI extends BasicListUI
      * @param g graphics context
      * @param c painted component
      */
+    @Override
     public void paint ( Graphics g, JComponent c )
     {
         super.paint ( g, c );
@@ -310,6 +318,7 @@ public class WebListUI extends BasicListUI
      * @param leadIndex    lead cell index
      * @see #paint
      */
+    @Override
     protected void paintCell ( Graphics g, int index, Rectangle rowBounds, ListCellRenderer cellRenderer, ListModel dataModel,
                                ListSelectionModel selModel, int leadIndex )
     {

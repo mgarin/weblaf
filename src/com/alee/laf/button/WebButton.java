@@ -476,11 +476,13 @@ public class WebButton extends JButton implements ShapeProvider, LanguageMethods
         return this;
     }
 
+    @Override
     public Insets getMargin ()
     {
         return getWebUI ().getMargin ();
     }
 
+    @Override
     public void setMargin ( Insets margin )
     {
         getWebUI ().setMargin ( margin );
@@ -497,6 +499,7 @@ public class WebButton extends JButton implements ShapeProvider, LanguageMethods
         return setMargin ( spacing, spacing, spacing, spacing );
     }
 
+    @Override
     public Shape provideShape ()
     {
         return getWebUI ().provideShape ();
@@ -507,6 +510,7 @@ public class WebButton extends JButton implements ShapeProvider, LanguageMethods
         return ( WebButtonUI ) getUI ();
     }
 
+    @Override
     public void updateUI ()
     {
         if ( getUI () == null || !( getUI () instanceof WebButtonUI ) )
@@ -534,6 +538,7 @@ public class WebButton extends JButton implements ShapeProvider, LanguageMethods
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setLanguage ( String key, Object... data )
     {
         LanguageManager.registerComponent ( this, key, data );
@@ -542,6 +547,7 @@ public class WebButton extends JButton implements ShapeProvider, LanguageMethods
     /**
      * {@inheritDoc}
      */
+    @Override
     public void updateLanguage ( Object... data )
     {
         LanguageManager.updateComponent ( this, data );
@@ -550,6 +556,7 @@ public class WebButton extends JButton implements ShapeProvider, LanguageMethods
     /**
      * {@inheritDoc}
      */
+    @Override
     public void updateLanguage ( String key, Object... data )
     {
         LanguageManager.updateComponent ( this, key, data );
@@ -558,6 +565,7 @@ public class WebButton extends JButton implements ShapeProvider, LanguageMethods
     /**
      * {@inheritDoc}
      */
+    @Override
     public void removeLanguage ()
     {
         LanguageManager.unregisterComponent ( this );
@@ -566,6 +574,7 @@ public class WebButton extends JButton implements ShapeProvider, LanguageMethods
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isLanguageSet ()
     {
         return LanguageManager.isRegisteredComponent ( this );
@@ -574,6 +583,7 @@ public class WebButton extends JButton implements ShapeProvider, LanguageMethods
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setLanguageUpdater ( LanguageUpdater updater )
     {
         LanguageManager.registerLanguageUpdater ( this, updater );
@@ -582,6 +592,7 @@ public class WebButton extends JButton implements ShapeProvider, LanguageMethods
     /**
      * {@inheritDoc}
      */
+    @Override
     public void removeLanguageUpdater ()
     {
         LanguageManager.unregisterLanguageUpdater ( this );
@@ -594,6 +605,7 @@ public class WebButton extends JButton implements ShapeProvider, LanguageMethods
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebButton setPlainFont ()
     {
         return SwingUtils.setPlainFont ( this );
@@ -602,6 +614,7 @@ public class WebButton extends JButton implements ShapeProvider, LanguageMethods
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebButton setPlainFont ( boolean apply )
     {
         return SwingUtils.setPlainFont ( this, apply );
@@ -610,6 +623,7 @@ public class WebButton extends JButton implements ShapeProvider, LanguageMethods
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isPlainFont ()
     {
         return SwingUtils.isPlainFont ( this );
@@ -618,6 +632,7 @@ public class WebButton extends JButton implements ShapeProvider, LanguageMethods
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebButton setBoldFont ()
     {
         return SwingUtils.setBoldFont ( this );
@@ -626,6 +641,7 @@ public class WebButton extends JButton implements ShapeProvider, LanguageMethods
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebButton setBoldFont ( boolean apply )
     {
         return SwingUtils.setBoldFont ( this, apply );
@@ -634,6 +650,7 @@ public class WebButton extends JButton implements ShapeProvider, LanguageMethods
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isBoldFont ()
     {
         return SwingUtils.isBoldFont ( this );
@@ -642,6 +659,7 @@ public class WebButton extends JButton implements ShapeProvider, LanguageMethods
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebButton setItalicFont ()
     {
         return SwingUtils.setItalicFont ( this );
@@ -650,6 +668,7 @@ public class WebButton extends JButton implements ShapeProvider, LanguageMethods
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebButton setItalicFont ( boolean apply )
     {
         return SwingUtils.setItalicFont ( this, apply );
@@ -658,6 +677,7 @@ public class WebButton extends JButton implements ShapeProvider, LanguageMethods
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isItalicFont ()
     {
         return SwingUtils.isItalicFont ( this );
@@ -666,6 +686,7 @@ public class WebButton extends JButton implements ShapeProvider, LanguageMethods
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebButton setFontStyle ( boolean bold, boolean italic )
     {
         return SwingUtils.setFontStyle ( this, bold, italic );
@@ -674,6 +695,7 @@ public class WebButton extends JButton implements ShapeProvider, LanguageMethods
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebButton setFontStyle ( int style )
     {
         return SwingUtils.setFontStyle ( this, style );
@@ -682,6 +704,7 @@ public class WebButton extends JButton implements ShapeProvider, LanguageMethods
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebButton setFontSize ( int fontSize )
     {
         return SwingUtils.setFontSize ( this, fontSize );
@@ -690,6 +713,7 @@ public class WebButton extends JButton implements ShapeProvider, LanguageMethods
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebButton changeFontSize ( int change )
     {
         return SwingUtils.changeFontSize ( this, change );
@@ -698,6 +722,7 @@ public class WebButton extends JButton implements ShapeProvider, LanguageMethods
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getFontSize ()
     {
         return SwingUtils.getFontSize ( this );
@@ -706,6 +731,7 @@ public class WebButton extends JButton implements ShapeProvider, LanguageMethods
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebButton setFontSizeAndStyle ( int fontSize, boolean bold, boolean italic )
     {
         return SwingUtils.setFontSizeAndStyle ( this, fontSize, bold, italic );
@@ -714,6 +740,7 @@ public class WebButton extends JButton implements ShapeProvider, LanguageMethods
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebButton setFontSizeAndStyle ( int fontSize, int style )
     {
         return SwingUtils.setFontSizeAndStyle ( this, fontSize, style );
@@ -722,6 +749,7 @@ public class WebButton extends JButton implements ShapeProvider, LanguageMethods
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebButton setFontName ( String fontName )
     {
         return SwingUtils.setFontName ( this, fontName );
@@ -730,6 +758,7 @@ public class WebButton extends JButton implements ShapeProvider, LanguageMethods
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getFontName ()
     {
         return SwingUtils.getFontName ( this );
@@ -742,6 +771,7 @@ public class WebButton extends JButton implements ShapeProvider, LanguageMethods
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getPreferredWidth ()
     {
         return SizeUtils.getPreferredWidth ( this );
@@ -750,6 +780,7 @@ public class WebButton extends JButton implements ShapeProvider, LanguageMethods
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebButton setPreferredWidth ( int preferredWidth )
     {
         return SizeUtils.setPreferredWidth ( this, preferredWidth );
@@ -758,6 +789,7 @@ public class WebButton extends JButton implements ShapeProvider, LanguageMethods
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getPreferredHeight ()
     {
         return SizeUtils.getPreferredHeight ( this );
@@ -766,6 +798,7 @@ public class WebButton extends JButton implements ShapeProvider, LanguageMethods
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebButton setPreferredHeight ( int preferredHeight )
     {
         return SizeUtils.setPreferredHeight ( this, preferredHeight );
@@ -774,6 +807,7 @@ public class WebButton extends JButton implements ShapeProvider, LanguageMethods
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getMinimumWidth ()
     {
         return SizeUtils.getMinimumWidth ( this );
@@ -782,6 +816,7 @@ public class WebButton extends JButton implements ShapeProvider, LanguageMethods
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebButton setMinimumWidth ( int minimumWidth )
     {
         return SizeUtils.setMinimumWidth ( this, minimumWidth );
@@ -790,6 +825,7 @@ public class WebButton extends JButton implements ShapeProvider, LanguageMethods
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getMinimumHeight ()
     {
         return SizeUtils.getMinimumHeight ( this );
@@ -798,6 +834,7 @@ public class WebButton extends JButton implements ShapeProvider, LanguageMethods
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebButton setMinimumHeight ( int minimumHeight )
     {
         return SizeUtils.setMinimumHeight ( this, minimumHeight );
@@ -806,6 +843,7 @@ public class WebButton extends JButton implements ShapeProvider, LanguageMethods
     /**
      * {@inheritDoc}
      */
+    @Override
     public Dimension getPreferredSize ()
     {
         return SizeUtils.getPreferredSize ( this, super.getPreferredSize () );

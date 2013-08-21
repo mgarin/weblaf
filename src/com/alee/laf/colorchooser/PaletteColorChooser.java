@@ -70,6 +70,7 @@ public class PaletteColorChooser extends WebPanel
 
         colorChooser = new JComponent ()
         {
+            @Override
             protected void paintComponent ( Graphics g )
             {
                 super.paintComponent ( g );
@@ -119,6 +120,7 @@ public class PaletteColorChooser extends WebPanel
     {
         private boolean dragging = false;
 
+        @Override
         public void mousePressed ( MouseEvent e )
         {
             dragging = true;
@@ -126,11 +128,13 @@ public class PaletteColorChooser extends WebPanel
             updateCoordinate ( e.getPoint () );
         }
 
+        @Override
         public void mouseDragged ( MouseEvent e )
         {
             updateCoordinate ( e.getPoint () );
         }
 
+        @Override
         public void mouseReleased ( MouseEvent e )
         {
             dragging = false;
@@ -163,11 +167,13 @@ public class PaletteColorChooser extends WebPanel
             setColor ( paletteColorChooserPaint.getColor ( coordinate.x, coordinate.y ) );
         }
 
+        @Override
         public void mouseEntered ( MouseEvent e )
         {
             setCursor ( createLoopCursor () );
         }
 
+        @Override
         public void mouseExited ( MouseEvent e )
         {
             if ( !dragging )

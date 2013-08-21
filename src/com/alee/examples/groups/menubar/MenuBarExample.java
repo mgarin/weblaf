@@ -28,16 +28,19 @@ import java.awt.*;
 
 public class MenuBarExample extends DefaultMenuBarExample
 {
+    @Override
     public String getTitle ()
     {
         return "Menu bar";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Web-styled menu bar";
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         WebMenuBar menuBar = new WebMenuBar ();

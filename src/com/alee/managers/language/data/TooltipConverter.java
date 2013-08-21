@@ -31,11 +31,13 @@ import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 
 public class TooltipConverter implements Converter
 {
+    @Override
     public boolean canConvert ( Class type )
     {
         return Tooltip.class.getCanonicalName ().equals ( type.getCanonicalName () );
     }
 
+    @Override
     public void marshal ( Object source, HierarchicalStreamWriter writer, MarshallingContext context )
     {
         Tooltip value = ( Tooltip ) source;
@@ -77,6 +79,7 @@ public class TooltipConverter implements Converter
         return value.getType () != null && value.getType () != LanguageManager.getDefaultTooltipType ();
     }
 
+    @Override
     public Object unmarshal ( HierarchicalStreamReader reader, UnmarshallingContext context )
     {
         // Reading type

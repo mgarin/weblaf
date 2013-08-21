@@ -30,26 +30,31 @@ import java.util.List;
 
 public class ComplexGroup extends DefaultExampleGroup
 {
+    @Override
     public Icon getGroupIcon ()
     {
         return loadGroupIcon ( "complex.png" );
     }
 
+    @Override
     public String getGroupName ()
     {
         return "Custom";
     }
 
+    @Override
     public String getGroupDescription ()
     {
         return "Custom styling examples";
     }
 
+    @Override
     public boolean isSingleExample ()
     {
         return true;
     }
 
+    @Override
     public List<Example> getGroupExamples ()
     {
         return Arrays.asList ( ( Example ) new ComplexExample () );

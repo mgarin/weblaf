@@ -39,6 +39,7 @@ public class StackLayout implements LayoutManager
         super ();
     }
 
+    @Override
     public void addLayoutComponent ( String name, Component comp )
     {
         if ( name != null && !name.trim ().equals ( "" ) && !name.equals ( CONTENT ) &&
@@ -50,11 +51,13 @@ public class StackLayout implements LayoutManager
         content.put ( comp, name == null || name.trim ().equals ( "" ) ? CONTENT : name );
     }
 
+    @Override
     public void removeLayoutComponent ( Component comp )
     {
         content.remove ( comp );
     }
 
+    @Override
     public Dimension preferredLayoutSize ( Container parent )
     {
         Insets insets = parent.getInsets ();
@@ -71,11 +74,13 @@ public class StackLayout implements LayoutManager
         return new Dimension ( insets.left + ps.width + insets.right, insets.top + ps.height + insets.bottom );
     }
 
+    @Override
     public Dimension minimumLayoutSize ( Container parent )
     {
         return preferredLayoutSize ( parent );
     }
 
+    @Override
     public void layoutContainer ( Container parent )
     {
         Insets insets = parent.getInsets ();

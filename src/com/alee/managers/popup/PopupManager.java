@@ -149,6 +149,7 @@ public final class PopupManager
                 dialog.getLayeredPane ().add ( shadeLayer, JLayeredPane.PALETTE_LAYER );
                 dialog.getLayeredPane ().addComponentListener ( new ComponentAdapter ()
                 {
+                    @Override
                     public void componentResized ( ComponentEvent e )
                     {
                         shadeLayer.setBounds ( 0, 0, dialog.getLayeredPane ().getWidth (), dialog.getLayeredPane ().getHeight () );
@@ -161,6 +162,7 @@ public final class PopupManager
                 frame.getLayeredPane ().add ( shadeLayer, JLayeredPane.PALETTE_LAYER );
                 frame.getLayeredPane ().addComponentListener ( new ComponentAdapter ()
                 {
+                    @Override
                     public void componentResized ( ComponentEvent e )
                     {
                         shadeLayer.setBounds ( 0, 0, frame.getLayeredPane ().getWidth (), frame.getLayeredPane ().getHeight () );
@@ -220,6 +222,7 @@ public final class PopupManager
                 dialog.getLayeredPane ().add ( popupLayer, JLayeredPane.PALETTE_LAYER );
                 dialog.getLayeredPane ().addComponentListener ( new ComponentAdapter ()
                 {
+                    @Override
                     public void componentResized ( ComponentEvent e )
                     {
                         popupLayer.setBounds ( 0, 0, dialog.getLayeredPane ().getWidth (), dialog.getLayeredPane ().getHeight () );
@@ -232,6 +235,7 @@ public final class PopupManager
                 frame.getLayeredPane ().add ( popupLayer, JLayeredPane.PALETTE_LAYER );
                 frame.getLayeredPane ().addComponentListener ( new ComponentAdapter ()
                 {
+                    @Override
                     public void componentResized ( ComponentEvent e )
                     {
                         popupLayer.setBounds ( 0, 0, frame.getLayeredPane ().getWidth (), frame.getLayeredPane ().getHeight () );
@@ -244,6 +248,7 @@ public final class PopupManager
                 jwindow.getLayeredPane ().add ( popupLayer, JLayeredPane.PALETTE_LAYER );
                 jwindow.getLayeredPane ().addComponentListener ( new ComponentAdapter ()
                 {
+                    @Override
                     public void componentResized ( ComponentEvent e )
                     {
                         popupLayer.setBounds ( 0, 0, jwindow.getLayeredPane ().getWidth (), jwindow.getLayeredPane ().getHeight () );

@@ -584,6 +584,7 @@ public class WebTimer
         final int currentId = lastId;
         exec = new Thread ( new Runnable ()
         {
+            @Override
             public void run ()
             {
                 // Adding a live thread into map
@@ -766,6 +767,7 @@ public class WebTimer
                     // Merge all events into single call to event dispatch thread
                     SwingUtils.invokeAndWaitSafely ( new Runnable ()
                     {
+                        @Override
                         public void run ()
                         {
                             for ( ActionListener listener : listenerList )
@@ -782,6 +784,7 @@ public class WebTimer
                     {
                         SwingUtils.invokeAndWaitSafely ( new Runnable ()
                         {
+                            @Override
                             public void run ()
                             {
                                 listener.actionPerformed ( actionEvent );

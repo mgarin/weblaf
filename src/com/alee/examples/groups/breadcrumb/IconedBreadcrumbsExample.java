@@ -32,16 +32,19 @@ import java.awt.*;
 
 public class IconedBreadcrumbsExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Iconed breadcrumbs";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Web-styled iconed breadcrumbs";
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         // Decorated breadcrumb

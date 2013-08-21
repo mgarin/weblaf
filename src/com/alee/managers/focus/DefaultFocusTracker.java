@@ -54,6 +54,7 @@ public abstract class DefaultFocusTracker implements FocusTracker
         this.trackingEnabled = trackingEnabled;
     }
 
+    @Override
     public boolean isTrackingEnabled ()
     {
         return trackingEnabled;
@@ -64,6 +65,7 @@ public abstract class DefaultFocusTracker implements FocusTracker
         this.component = component;
     }
 
+    @Override
     public Component getTrackedComponent ()
     {
         return component;
@@ -74,11 +76,13 @@ public abstract class DefaultFocusTracker implements FocusTracker
         this.uniteWithChilds = uniteWithChilds;
     }
 
+    @Override
     public boolean isUniteWithChilds ()
     {
         return uniteWithChilds;
     }
 
+    @Override
     public boolean isListenGlobalChange ()
     {
         return listenGlobalChange;

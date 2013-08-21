@@ -116,6 +116,7 @@ public class WebTreeUI extends BasicTreeUI
      *
      * @param c component for this UI
      */
+    @Override
     public void installUI ( JComponent c )
     {
         super.installUI ( c );
@@ -130,6 +131,7 @@ public class WebTreeUI extends BasicTreeUI
         // Orientation change listener
         propertyChangeListener = new PropertyChangeListener ()
         {
+            @Override
             public void propertyChange ( PropertyChangeEvent evt )
             {
                 ltr = tree.getComponentOrientation ().isLeftToRight ();
@@ -140,6 +142,7 @@ public class WebTreeUI extends BasicTreeUI
         // Selection listener
         treeSelectionListener = new TreeSelectionListener ()
         {
+            @Override
             public void valueChanged ( TreeSelectionEvent e )
             {
                 // Optimized selection repaint
@@ -157,11 +160,13 @@ public class WebTreeUI extends BasicTreeUI
         // Expansion listener
         treeExpansionListener = new TreeExpansionListener ()
         {
+            @Override
             public void treeExpanded ( TreeExpansionEvent event )
             {
                 repaintSelection ();
             }
 
+            @Override
             public void treeCollapsed ( TreeExpansionEvent event )
             {
                 repaintSelection ();
@@ -172,6 +177,7 @@ public class WebTreeUI extends BasicTreeUI
         // Mouse events adapter
         mouseAdapter = new MouseAdapter ()
         {
+            @Override
             public void mousePressed ( MouseEvent e )
             {
                 // Only left mouse button events
@@ -218,6 +224,7 @@ public class WebTreeUI extends BasicTreeUI
                 }
             }
 
+            @Override
             public void mouseDragged ( MouseEvent e )
             {
                 if ( isSelectorAvailable () && selectionStart != null )
@@ -239,6 +246,7 @@ public class WebTreeUI extends BasicTreeUI
                 }
             }
 
+            @Override
             public void mouseReleased ( MouseEvent e )
             {
                 if ( isSelectorAvailable () && selectionStart != null )
@@ -372,16 +380,19 @@ public class WebTreeUI extends BasicTreeUI
                 tree.repaint ();
             }
 
+            @Override
             public void mouseEntered ( MouseEvent e )
             {
                 updateMouseover ( e );
             }
 
+            @Override
             public void mouseExited ( MouseEvent e )
             {
                 clearMouseover ();
             }
 
+            @Override
             public void mouseMoved ( MouseEvent e )
             {
                 updateMouseover ( e );
@@ -434,6 +445,7 @@ public class WebTreeUI extends BasicTreeUI
      *
      * @param c component with this UI
      */
+    @Override
     public void uninstallUI ( JComponent c )
     {
         tree.removePropertyChangeListener ( WebLookAndFeel.COMPONENT_ORIENTATION_PROPERTY, propertyChangeListener );
@@ -787,6 +799,7 @@ public class WebTreeUI extends BasicTreeUI
      *
      * @return default tree cell editor
      */
+    @Override
     protected TreeCellEditor createDefaultCellEditor ()
     {
         return new WebTreeCellEditor ();
@@ -797,6 +810,7 @@ public class WebTreeUI extends BasicTreeUI
      *
      * @return default tree cell renderer
      */
+    @Override
     protected TreeCellRenderer createDefaultCellRenderer ()
     {
         return new WebTreeCellRenderer ();
@@ -815,6 +829,7 @@ public class WebTreeUI extends BasicTreeUI
      * @param hasBeenExpanded whether node was expanded atleast once or not
      * @param isLeaf          whether node is leaf or not
      */
+    @Override
     protected void paintHorizontalPartOfLeg ( Graphics g, Rectangle clipBounds, Insets insets, Rectangle bounds, TreePath path, int row,
                                               boolean isExpanded, boolean hasBeenExpanded, boolean isLeaf )
     {
@@ -873,6 +888,7 @@ public class WebTreeUI extends BasicTreeUI
      * @param left  left side of the line
      * @param right right side of the line
      */
+    @Override
     protected void paintHorizontalLine ( Graphics g, JComponent c, int y, int left, int right )
     {
         left = ltr ? left + 4 : left - 4;
@@ -893,6 +909,7 @@ public class WebTreeUI extends BasicTreeUI
      * @param insets     insets
      * @param path       path
      */
+    @Override
     protected void paintVerticalPartOfLeg ( Graphics g, Rectangle clipBounds, Insets insets, TreePath path )
     {
         if ( !paintLines )
@@ -988,6 +1005,7 @@ public class WebTreeUI extends BasicTreeUI
      * @param top    top side of the line
      * @param bottom bottom side of the line
      */
+    @Override
     protected void paintVerticalLine ( Graphics g, JComponent c, int x, int top, int bottom )
     {
         x = ltr ? x + 4 : x - 4;
@@ -1003,6 +1021,7 @@ public class WebTreeUI extends BasicTreeUI
      *
      * @return tree structure lines color
      */
+    @Override
     protected Color getHashColor ()
     {
         return linesColor;
@@ -1013,6 +1032,7 @@ public class WebTreeUI extends BasicTreeUI
      *
      * @return tree structure expanded node icon
      */
+    @Override
     public Icon getExpandedIcon ()
     {
         return tree.isEnabled () ? COLLAPSE_ICON : DISABLED_COLLAPSE_ICON;
@@ -1023,6 +1043,7 @@ public class WebTreeUI extends BasicTreeUI
      *
      * @return tree structure collapsed node icon
      */
+    @Override
     public Icon getCollapsedIcon ()
     {
         return tree.isEnabled () ? EXPAND_ICON : DISABLED_EXPAND_ICON;
@@ -1037,6 +1058,7 @@ public class WebTreeUI extends BasicTreeUI
      * @param x    x coordinate
      * @param y    y coordinate
      */
+    @Override
     protected void drawCentered ( Component c, Graphics g, Icon icon, int x, int y )
     {
         icon.paintIcon ( c, g, findCenteredX ( x, icon.getIconWidth () ), y - icon.getIconHeight () / 2 );
@@ -1141,6 +1163,7 @@ public class WebTreeUI extends BasicTreeUI
      * @param g graphics
      * @param c component
      */
+    @Override
     public void paint ( Graphics g, JComponent c )
     {
         // Cells selection

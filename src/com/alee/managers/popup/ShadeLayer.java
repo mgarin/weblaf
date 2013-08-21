@@ -54,6 +54,7 @@ public class ShadeLayer extends PopupLayer
 
         MouseAdapter mouseAdapter = new MouseAdapter ()
         {
+            @Override
             public void mousePressed ( MouseEvent e )
             {
                 if ( !blockClose )
@@ -66,6 +67,7 @@ public class ShadeLayer extends PopupLayer
         addMouseMotionListener ( mouseAdapter );
     }
 
+    @Override
     public void showPopup ( WebPopup popup )
     {
         showPopup ( popup, false, false );
@@ -106,12 +108,14 @@ public class ShadeLayer extends PopupLayer
         this.blockClose = blockClose;
     }
 
+    @Override
     public void paint ( Graphics g )
     {
         LafUtils.setupAlphaComposite ( ( Graphics2D ) g, ( float ) opacity / 100, opacity < 100 );
         super.paint ( g );
     }
 
+    @Override
     protected void paintComponent ( Graphics g )
     {
         super.paintComponent ( g );
@@ -127,6 +131,7 @@ public class ShadeLayer extends PopupLayer
         LafUtils.restoreAntialias ( g2d, old );
     }
 
+    @Override
     public void setVisible ( boolean visible )
     {
         super.setVisible ( visible );
@@ -138,6 +143,7 @@ public class ShadeLayer extends PopupLayer
                 opacity = 0;
                 animator = new WebTimer ( "ShadeLayer.fadeIn", StyleConstants.animationDelay, new ActionListener ()
                 {
+                    @Override
                     public void actionPerformed ( ActionEvent e )
                     {
                         if ( opacity < 100 )
@@ -169,6 +175,7 @@ public class ShadeLayer extends PopupLayer
         }
     }
 
+    @Override
     public boolean contains ( int x, int y )
     {
         return normalContains ( x, y );

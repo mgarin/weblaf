@@ -32,6 +32,7 @@ public class JLabelLU extends DefaultLanguageUpdater<JLabel>
     /**
      * {@inheritDoc}
      */
+    @Override
     public void update ( JLabel c, String key, Value value, Object... data )
     {
         c.setText ( getDefaultText ( value, data ) );

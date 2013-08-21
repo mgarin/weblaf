@@ -204,6 +204,7 @@ public class BorderPainter<E extends JComponent> extends DefaultPainter<E>
      * @param c component to process
      * @return preferred size required for proper painting of visual data provided by this painter
      */
+    @Override
     public Dimension getPreferredSize ( E c )
     {
         return new Dimension ( Math.max ( width * 2, round * 2 ), Math.max ( width * 2, round * 2 ) );
@@ -216,6 +217,7 @@ public class BorderPainter<E extends JComponent> extends DefaultPainter<E>
      * @param c component to process
      * @return margin required for visual data provided by this painter
      */
+    @Override
     public Insets getMargin ( E c )
     {
         Insets m = super.getMargin ( c );
@@ -231,6 +233,7 @@ public class BorderPainter<E extends JComponent> extends DefaultPainter<E>
      * @param bounds bounds for painter visual data
      * @param c      component to process
      */
+    @Override
     public void paint ( Graphics2D g2d, Rectangle bounds, E c )
     {
         Object aa = LafUtils.setupAntialias ( g2d );

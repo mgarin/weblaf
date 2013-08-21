@@ -530,6 +530,7 @@ public class WebDecoratedImage extends JComponent implements SwingConstants, Sha
         }
     }
 
+    @Override
     protected void paintComponent ( Graphics g )
     {
         super.paintComponent ( g );
@@ -575,6 +576,7 @@ public class WebDecoratedImage extends JComponent implements SwingConstants, Sha
         return new Point ( x, y );
     }
 
+    @Override
     public Dimension getPreferredSize ()
     {
         if ( icon != null )
@@ -587,6 +589,7 @@ public class WebDecoratedImage extends JComponent implements SwingConstants, Sha
         }
     }
 
+    @Override
     public Shape provideShape ()
     {
         Point location = getPreviewLocation ();

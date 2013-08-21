@@ -34,21 +34,25 @@ import java.awt.*;
 
 public class AndroidFieldsExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Android text fields";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Android-styled text fields";
     }
 
+    @Override
     public boolean isFillWidth ()
     {
         return true;
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         // Single painter used for all example fields

@@ -30,21 +30,25 @@ import java.util.List;
 
 public class PaintersGroup extends DefaultExampleGroup
 {
+    @Override
     public Icon getGroupIcon ()
     {
         return loadGroupIcon ( "painter.png" );
     }
 
+    @Override
     public String getGroupName ()
     {
         return "Painters";
     }
 
+    @Override
     public String getGroupDescription ()
     {
         return "Various examples of painters usage";
     }
 
+    @Override
     public List<Example> getGroupExamples ()
     {
         List<Example> examples = new ArrayList<Example> ();

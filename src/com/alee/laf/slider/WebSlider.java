@@ -270,6 +270,7 @@ public class WebSlider extends JSlider implements SettingsMethods, FontMethods<W
         return ( WebSliderUI ) getUI ();
     }
 
+    @Override
     public void updateUI ()
     {
         if ( getUI () == null || !( getUI () instanceof WebSliderUI ) )
@@ -297,6 +298,7 @@ public class WebSlider extends JSlider implements SettingsMethods, FontMethods<W
     /**
      * {@inheritDoc}
      */
+    @Override
     public void registerSettings ( String key )
     {
         SettingsManager.registerComponent ( this, key );
@@ -305,6 +307,7 @@ public class WebSlider extends JSlider implements SettingsMethods, FontMethods<W
     /**
      * {@inheritDoc}
      */
+    @Override
     public <T extends DefaultValue> void registerSettings ( String key, Class<T> defaultValueClass )
     {
         SettingsManager.registerComponent ( this, key, defaultValueClass );
@@ -313,6 +316,7 @@ public class WebSlider extends JSlider implements SettingsMethods, FontMethods<W
     /**
      * {@inheritDoc}
      */
+    @Override
     public void registerSettings ( String key, Object defaultValue )
     {
         SettingsManager.registerComponent ( this, key, defaultValue );
@@ -321,6 +325,7 @@ public class WebSlider extends JSlider implements SettingsMethods, FontMethods<W
     /**
      * {@inheritDoc}
      */
+    @Override
     public void registerSettings ( String group, String key )
     {
         SettingsManager.registerComponent ( this, group, key );
@@ -329,6 +334,7 @@ public class WebSlider extends JSlider implements SettingsMethods, FontMethods<W
     /**
      * {@inheritDoc}
      */
+    @Override
     public <T extends DefaultValue> void registerSettings ( String group, String key, Class<T> defaultValueClass )
     {
         SettingsManager.registerComponent ( this, group, key, defaultValueClass );
@@ -337,6 +343,7 @@ public class WebSlider extends JSlider implements SettingsMethods, FontMethods<W
     /**
      * {@inheritDoc}
      */
+    @Override
     public void registerSettings ( String group, String key, Object defaultValue )
     {
         SettingsManager.registerComponent ( this, group, key, defaultValue );
@@ -345,6 +352,7 @@ public class WebSlider extends JSlider implements SettingsMethods, FontMethods<W
     /**
      * {@inheritDoc}
      */
+    @Override
     public void registerSettings ( String key, boolean loadInitialSettings, boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, key, loadInitialSettings, applySettingsChanges );
@@ -353,6 +361,7 @@ public class WebSlider extends JSlider implements SettingsMethods, FontMethods<W
     /**
      * {@inheritDoc}
      */
+    @Override
     public <T extends DefaultValue> void registerSettings ( String key, Class<T> defaultValueClass, boolean loadInitialSettings,
                                                             boolean applySettingsChanges )
     {
@@ -362,6 +371,7 @@ public class WebSlider extends JSlider implements SettingsMethods, FontMethods<W
     /**
      * {@inheritDoc}
      */
+    @Override
     public void registerSettings ( String key, Object defaultValue, boolean loadInitialSettings, boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, key, defaultValue, loadInitialSettings, applySettingsChanges );
@@ -370,6 +380,7 @@ public class WebSlider extends JSlider implements SettingsMethods, FontMethods<W
     /**
      * {@inheritDoc}
      */
+    @Override
     public <T extends DefaultValue> void registerSettings ( String group, String key, Class<T> defaultValueClass,
                                                             boolean loadInitialSettings, boolean applySettingsChanges )
     {
@@ -379,6 +390,7 @@ public class WebSlider extends JSlider implements SettingsMethods, FontMethods<W
     /**
      * {@inheritDoc}
      */
+    @Override
     public void registerSettings ( String group, String key, Object defaultValue, boolean loadInitialSettings,
                                    boolean applySettingsChanges )
     {
@@ -388,6 +400,7 @@ public class WebSlider extends JSlider implements SettingsMethods, FontMethods<W
     /**
      * {@inheritDoc}
      */
+    @Override
     public void registerSettings ( SettingsProcessor settingsProcessor )
     {
         SettingsManager.registerComponent ( this, settingsProcessor );
@@ -396,6 +409,7 @@ public class WebSlider extends JSlider implements SettingsMethods, FontMethods<W
     /**
      * {@inheritDoc}
      */
+    @Override
     public void unregisterSettings ()
     {
         SettingsManager.unregisterComponent ( this );
@@ -404,6 +418,7 @@ public class WebSlider extends JSlider implements SettingsMethods, FontMethods<W
     /**
      * {@inheritDoc}
      */
+    @Override
     public void loadSettings ()
     {
         SettingsManager.loadComponentSettings ( this );
@@ -412,6 +427,7 @@ public class WebSlider extends JSlider implements SettingsMethods, FontMethods<W
     /**
      * {@inheritDoc}
      */
+    @Override
     public void saveSettings ()
     {
         SettingsManager.saveComponentSettings ( this );
@@ -424,6 +440,7 @@ public class WebSlider extends JSlider implements SettingsMethods, FontMethods<W
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebSlider setPlainFont ()
     {
         return SwingUtils.setPlainFont ( this );
@@ -432,6 +449,7 @@ public class WebSlider extends JSlider implements SettingsMethods, FontMethods<W
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebSlider setPlainFont ( boolean apply )
     {
         return SwingUtils.setPlainFont ( this, apply );
@@ -440,6 +458,7 @@ public class WebSlider extends JSlider implements SettingsMethods, FontMethods<W
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isPlainFont ()
     {
         return SwingUtils.isPlainFont ( this );
@@ -448,6 +467,7 @@ public class WebSlider extends JSlider implements SettingsMethods, FontMethods<W
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebSlider setBoldFont ()
     {
         return SwingUtils.setBoldFont ( this );
@@ -456,6 +476,7 @@ public class WebSlider extends JSlider implements SettingsMethods, FontMethods<W
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebSlider setBoldFont ( boolean apply )
     {
         return SwingUtils.setBoldFont ( this, apply );
@@ -464,6 +485,7 @@ public class WebSlider extends JSlider implements SettingsMethods, FontMethods<W
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isBoldFont ()
     {
         return SwingUtils.isBoldFont ( this );
@@ -472,6 +494,7 @@ public class WebSlider extends JSlider implements SettingsMethods, FontMethods<W
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebSlider setItalicFont ()
     {
         return SwingUtils.setItalicFont ( this );
@@ -480,6 +503,7 @@ public class WebSlider extends JSlider implements SettingsMethods, FontMethods<W
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebSlider setItalicFont ( boolean apply )
     {
         return SwingUtils.setItalicFont ( this, apply );
@@ -488,6 +512,7 @@ public class WebSlider extends JSlider implements SettingsMethods, FontMethods<W
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isItalicFont ()
     {
         return SwingUtils.isItalicFont ( this );
@@ -496,6 +521,7 @@ public class WebSlider extends JSlider implements SettingsMethods, FontMethods<W
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebSlider setFontStyle ( boolean bold, boolean italic )
     {
         return SwingUtils.setFontStyle ( this, bold, italic );
@@ -504,6 +530,7 @@ public class WebSlider extends JSlider implements SettingsMethods, FontMethods<W
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebSlider setFontStyle ( int style )
     {
         return SwingUtils.setFontStyle ( this, style );
@@ -512,6 +539,7 @@ public class WebSlider extends JSlider implements SettingsMethods, FontMethods<W
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebSlider setFontSize ( int fontSize )
     {
         return SwingUtils.setFontSize ( this, fontSize );
@@ -520,6 +548,7 @@ public class WebSlider extends JSlider implements SettingsMethods, FontMethods<W
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebSlider changeFontSize ( int change )
     {
         return SwingUtils.changeFontSize ( this, change );
@@ -528,6 +557,7 @@ public class WebSlider extends JSlider implements SettingsMethods, FontMethods<W
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getFontSize ()
     {
         return SwingUtils.getFontSize ( this );
@@ -536,6 +566,7 @@ public class WebSlider extends JSlider implements SettingsMethods, FontMethods<W
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebSlider setFontSizeAndStyle ( int fontSize, boolean bold, boolean italic )
     {
         return SwingUtils.setFontSizeAndStyle ( this, fontSize, bold, italic );
@@ -544,6 +575,7 @@ public class WebSlider extends JSlider implements SettingsMethods, FontMethods<W
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebSlider setFontSizeAndStyle ( int fontSize, int style )
     {
         return SwingUtils.setFontSizeAndStyle ( this, fontSize, style );
@@ -552,6 +584,7 @@ public class WebSlider extends JSlider implements SettingsMethods, FontMethods<W
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebSlider setFontName ( String fontName )
     {
         return SwingUtils.setFontName ( this, fontName );
@@ -560,6 +593,7 @@ public class WebSlider extends JSlider implements SettingsMethods, FontMethods<W
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getFontName ()
     {
         return SwingUtils.getFontName ( this );

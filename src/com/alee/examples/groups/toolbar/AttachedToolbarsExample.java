@@ -31,16 +31,19 @@ import java.awt.*;
 
 public class AttachedToolbarsExample extends DefaultToolbarExample
 {
+    @Override
     public String getTitle ()
     {
         return "Attached toolbars";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Attach-styled toolbars";
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         WebToolBar aft = new WebToolBar ( WebToolBar.HORIZONTAL );

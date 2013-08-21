@@ -171,6 +171,7 @@ public class WebTable extends JTable implements FontMethods<WebTable>
         scrollRectToVisible ( rect );
     }
 
+    @Override
     public boolean editCellAt ( int row, int column, EventObject e )
     {
         final boolean editingStarted = super.editCellAt ( row, column, e );
@@ -195,6 +196,7 @@ public class WebTable extends JTable implements FontMethods<WebTable>
         return cellEditor != null && cellEditor.stopCellEditing ();
     }
 
+    @Override
     public boolean isCellEditable ( int row, int column )
     {
         return editable && super.isCellEditable ( row, column );
@@ -230,6 +232,7 @@ public class WebTable extends JTable implements FontMethods<WebTable>
         return visibleRowCount;
     }
 
+    @Override
     public Dimension getPreferredScrollableViewportSize ()
     {
         if ( preferredViewportSize != null )
@@ -255,6 +258,7 @@ public class WebTable extends JTable implements FontMethods<WebTable>
         return ps;
     }
 
+    @Override
     protected void initializeLocalVars ()
     {
         super.initializeLocalVars ();
@@ -266,6 +270,7 @@ public class WebTable extends JTable implements FontMethods<WebTable>
         return ( WebTableUI ) getUI ();
     }
 
+    @Override
     public void updateUI ()
     {
         // Update table header UI
@@ -353,6 +358,7 @@ public class WebTable extends JTable implements FontMethods<WebTable>
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebTable setPlainFont ()
     {
         return SwingUtils.setPlainFont ( this );
@@ -361,6 +367,7 @@ public class WebTable extends JTable implements FontMethods<WebTable>
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebTable setPlainFont ( boolean apply )
     {
         return SwingUtils.setPlainFont ( this, apply );
@@ -369,6 +376,7 @@ public class WebTable extends JTable implements FontMethods<WebTable>
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isPlainFont ()
     {
         return SwingUtils.isPlainFont ( this );
@@ -377,6 +385,7 @@ public class WebTable extends JTable implements FontMethods<WebTable>
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebTable setBoldFont ()
     {
         return SwingUtils.setBoldFont ( this );
@@ -385,6 +394,7 @@ public class WebTable extends JTable implements FontMethods<WebTable>
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebTable setBoldFont ( boolean apply )
     {
         return SwingUtils.setBoldFont ( this, apply );
@@ -393,6 +403,7 @@ public class WebTable extends JTable implements FontMethods<WebTable>
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isBoldFont ()
     {
         return SwingUtils.isBoldFont ( this );
@@ -401,6 +412,7 @@ public class WebTable extends JTable implements FontMethods<WebTable>
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebTable setItalicFont ()
     {
         return SwingUtils.setItalicFont ( this );
@@ -409,6 +421,7 @@ public class WebTable extends JTable implements FontMethods<WebTable>
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebTable setItalicFont ( boolean apply )
     {
         return SwingUtils.setItalicFont ( this, apply );
@@ -417,6 +430,7 @@ public class WebTable extends JTable implements FontMethods<WebTable>
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isItalicFont ()
     {
         return SwingUtils.isItalicFont ( this );
@@ -425,6 +439,7 @@ public class WebTable extends JTable implements FontMethods<WebTable>
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebTable setFontStyle ( boolean bold, boolean italic )
     {
         return SwingUtils.setFontStyle ( this, bold, italic );
@@ -433,6 +448,7 @@ public class WebTable extends JTable implements FontMethods<WebTable>
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebTable setFontStyle ( int style )
     {
         return SwingUtils.setFontStyle ( this, style );
@@ -441,6 +457,7 @@ public class WebTable extends JTable implements FontMethods<WebTable>
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebTable setFontSize ( int fontSize )
     {
         return SwingUtils.setFontSize ( this, fontSize );
@@ -449,6 +466,7 @@ public class WebTable extends JTable implements FontMethods<WebTable>
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebTable changeFontSize ( int change )
     {
         return SwingUtils.changeFontSize ( this, change );
@@ -457,6 +475,7 @@ public class WebTable extends JTable implements FontMethods<WebTable>
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getFontSize ()
     {
         return SwingUtils.getFontSize ( this );
@@ -465,6 +484,7 @@ public class WebTable extends JTable implements FontMethods<WebTable>
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebTable setFontSizeAndStyle ( int fontSize, boolean bold, boolean italic )
     {
         return SwingUtils.setFontSizeAndStyle ( this, fontSize, bold, italic );
@@ -473,6 +493,7 @@ public class WebTable extends JTable implements FontMethods<WebTable>
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebTable setFontSizeAndStyle ( int fontSize, int style )
     {
         return SwingUtils.setFontSizeAndStyle ( this, fontSize, style );
@@ -481,6 +502,7 @@ public class WebTable extends JTable implements FontMethods<WebTable>
     /**
      * {@inheritDoc}
      */
+    @Override
     public WebTable setFontName ( String fontName )
     {
         return SwingUtils.setFontName ( this, fontName );
@@ -489,6 +511,7 @@ public class WebTable extends JTable implements FontMethods<WebTable>
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getFontName ()
     {
         return SwingUtils.getFontName ( this );

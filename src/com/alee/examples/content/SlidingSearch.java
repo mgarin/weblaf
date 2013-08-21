@@ -76,6 +76,7 @@ public class SlidingSearch
 
         searchPanel = new WebPanel ()
         {
+            @Override
             public boolean contains ( int x, int y )
             {
                 return topPanel.getBounds ().contains ( x, y ) && super.contains ( x, y );
@@ -92,6 +93,7 @@ public class SlidingSearch
             private BufferedImage bi = ImageUtils.getBufferedImage ( SlidingSearch.class.getResource ( "icons/searchBg.png" ) );
             private Paint bg = new TexturePaint ( bi, new Rectangle ( 0, 0, bi.getWidth (), bi.getHeight () ) );
 
+            @Override
             protected void paintComponent ( Graphics g )
             {
                 super.paintComponent ( g );
@@ -153,6 +155,7 @@ public class SlidingSearch
         searchField.setHorizontalAlignment ( WebTextField.CENTER );
         searchField.addKeyListener ( new KeyAdapter ()
         {
+            @Override
             public void keyPressed ( KeyEvent e )
             {
                 if ( Hotkey.ENTER.isTriggered ( e ) )
@@ -166,6 +169,7 @@ public class SlidingSearch
 
         HotkeyManager.registerHotkey ( layeredPane, Hotkey.CTRL_F, new HotkeyRunnable ()
         {
+            @Override
             public void run ( KeyEvent e )
             {
                 toggleSearch ();
@@ -173,6 +177,7 @@ public class SlidingSearch
         } );
         HotkeyManager.registerHotkey ( layeredPane, Hotkey.ESCAPE, new HotkeyRunnable ()
         {
+            @Override
             public void run ( KeyEvent e )
             {
                 if ( searchField.getText ().length () > 0 )
@@ -187,6 +192,7 @@ public class SlidingSearch
         } );
         searchField.addFocusListener ( new FocusAdapter ()
         {
+            @Override
             public void focusLost ( FocusEvent e )
             {
                 hideSearch ();
@@ -196,6 +202,7 @@ public class SlidingSearch
         layeredPane.add ( searchPanel, JLayeredPane.DRAG_LAYER );
         layeredPane.addComponentListener ( new ComponentAdapter ()
         {
+            @Override
             public void componentResized ( ComponentEvent e )
             {
                 searchPanel.setBounds ( 0, 0, layeredPane.getWidth (), layeredPane.getHeight () );
@@ -262,6 +269,7 @@ public class SlidingSearch
             SwingUtils.setOrientation ( this );
         }
 
+        @Override
         protected void paintComponent ( Graphics g )
         {
             Graphics2D g2d = ( Graphics2D ) g;

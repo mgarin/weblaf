@@ -30,16 +30,19 @@ import java.awt.*;
 
 public class StaticTableExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Static table";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Web-styled table without auto-resize";
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         // Table data

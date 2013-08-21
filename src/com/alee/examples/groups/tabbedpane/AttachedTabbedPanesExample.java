@@ -34,20 +34,24 @@ import java.awt.*;
 
 public class AttachedTabbedPanesExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Attached tabbed pane";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Attach-styled tabbed pane";
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         WebTabbedPane tabbedPane1 = new WebTabbedPane ()
         {
+            @Override
             public Dimension getPreferredSize ()
             {
                 Dimension ps = super.getPreferredSize ();
@@ -60,6 +64,7 @@ public class AttachedTabbedPanesExample extends DefaultExample
 
         WebTabbedPane tabbedPane2 = new WebTabbedPane ()
         {
+            @Override
             public Dimension getPreferredSize ()
             {
                 Dimension ps = super.getPreferredSize ();

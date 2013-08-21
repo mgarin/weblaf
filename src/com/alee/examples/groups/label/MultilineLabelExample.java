@@ -29,16 +29,19 @@ import java.awt.*;
 
 public class MultilineLabelExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Multiline label";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Web-styled multiline label";
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         // Text with line breaks

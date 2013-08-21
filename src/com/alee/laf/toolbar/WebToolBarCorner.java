@@ -98,6 +98,7 @@ public class WebToolBarCorner extends WebPanel implements SwingConstants
         /**
          * {@inheritDoc}
          */
+        @Override
         public void paint ( Graphics2D g2d, Rectangle b, WebToolBarCorner c )
         {
             boolean ltr = c.getComponentOrientation ().isLeftToRight ();

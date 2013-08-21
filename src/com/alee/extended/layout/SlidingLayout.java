@@ -55,6 +55,7 @@ public class SlidingLayout implements LayoutManager
         slideY = 0;
         animator = new WebTimer ( "SlidingLayout.slideInTimer", StyleConstants.avgAnimationDelay, new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 if ( slideY < height )
@@ -92,6 +93,7 @@ public class SlidingLayout implements LayoutManager
         slideY = height;
         animator = new WebTimer ( "SlidingLayout.slideOutTimer", StyleConstants.avgAnimationDelay, new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 if ( slideY > 0 )
@@ -109,16 +111,19 @@ public class SlidingLayout implements LayoutManager
         animator.start ();
     }
 
+    @Override
     public void addLayoutComponent ( String name, Component comp )
     {
         //
     }
 
+    @Override
     public void removeLayoutComponent ( Component comp )
     {
         //
     }
 
+    @Override
     public Dimension preferredLayoutSize ( Container parent )
     {
         Dimension ps = new Dimension ( 0, 0 );
@@ -130,11 +135,13 @@ public class SlidingLayout implements LayoutManager
         return ps;
     }
 
+    @Override
     public Dimension minimumLayoutSize ( Container parent )
     {
         return preferredLayoutSize ( parent );
     }
 
+    @Override
     public void layoutContainer ( Container parent )
     {
         for ( Component c : parent.getComponents () )

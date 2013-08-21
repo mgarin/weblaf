@@ -74,6 +74,7 @@ public class LineColorChooser extends WebPanel
             SwingUtils.setOrientation ( this );
         }
 
+        @Override
         public void paint ( Graphics g )
         {
             super.paint ( g );
@@ -89,6 +90,7 @@ public class LineColorChooser extends WebPanel
             g2d.fillRect ( 2, 2, getWidth () - 4, getHeight () - 4 );
         }
 
+        @Override
         public Dimension getPreferredSize ()
         {
             return new Dimension ( 22, 260 );
@@ -97,11 +99,13 @@ public class LineColorChooser extends WebPanel
 
     private class ColorLineMouseAdapter extends MouseAdapter
     {
+        @Override
         public void mousePressed ( MouseEvent e )
         {
             updateHue ( e.getY () );
         }
 
+        @Override
         public void mouseDragged ( MouseEvent e )
         {
             updateHue ( e.getY () );
@@ -156,6 +160,7 @@ public class LineColorChooser extends WebPanel
         return lineColorChooserPaint.getColor ( Math.round ( ( float ) ( colorLine.getHeight () - 4 ) * ( float ) hue / 360 ) );
     }
 
+    @Override
     public void paint ( Graphics g )
     {
         super.paint ( g );

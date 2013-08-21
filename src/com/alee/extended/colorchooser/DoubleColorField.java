@@ -56,6 +56,7 @@ public class DoubleColorField extends WebPanel
 
         addMouseListener ( new MouseAdapter ()
         {
+            @Override
             public void mousePressed ( MouseEvent e )
             {
                 if ( SwingUtilities.isLeftMouseButton ( e ) )
@@ -74,6 +75,7 @@ public class DoubleColorField extends WebPanel
 
         LanguageManager.addLanguageListener ( new LanguageAdapter ()
         {
+            @Override
             public void languageUpdated ()
             {
                 repaint ();
@@ -82,6 +84,7 @@ public class DoubleColorField extends WebPanel
         } );
     }
 
+    @Override
     public void paint ( Graphics g )
     {
         super.paint ( g );

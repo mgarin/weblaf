@@ -30,21 +30,25 @@ import java.util.List;
 
 public class LanguageGroup extends DefaultExampleGroup
 {
+    @Override
     public Icon getGroupIcon ()
     {
         return loadGroupIcon ( "language.png" );
     }
 
+    @Override
     public String getGroupName ()
     {
         return "Language";
     }
 
+    @Override
     public String getGroupDescription ()
     {
         return "Various examples of multi-language usage";
     }
 
+    @Override
     public List<Example> getGroupExamples ()
     {
         List<Example> examples = new ArrayList<Example> ();

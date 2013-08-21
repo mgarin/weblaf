@@ -30,21 +30,25 @@ import java.util.List;
 
 public class LabelsGroup extends DefaultExampleGroup
 {
+    @Override
     public Icon getGroupIcon ()
     {
         return loadGroupIcon ( "label.png" );
     }
 
+    @Override
     public String getGroupName ()
     {
         return "Labels";
     }
 
+    @Override
     public String getGroupDescription ()
     {
         return "Various examples of labels usage";
     }
 
+    @Override
     public List<Example> getGroupExamples ()
     {
         List<Example> examples = new ArrayList<Example> ();

@@ -57,11 +57,13 @@ public class ComponentPanelLayout implements LayoutManager
         return components.get ( index );
     }
 
+    @Override
     public void addLayoutComponent ( String name, Component comp )
     {
         components.add ( comp );
     }
 
+    @Override
     public void removeLayoutComponent ( Component comp )
     {
         components.remove ( comp );
@@ -72,6 +74,7 @@ public class ComponentPanelLayout implements LayoutManager
         components.add ( index, comp );
     }
 
+    @Override
     public void layoutContainer ( Container parent )
     {
         Insets insets = parent.getInsets ();
@@ -87,6 +90,7 @@ public class ComponentPanelLayout implements LayoutManager
         }
     }
 
+    @Override
     public Dimension preferredLayoutSize ( Container parent )
     {
         Insets insets = parent.getInsets ();
@@ -101,6 +105,7 @@ public class ComponentPanelLayout implements LayoutManager
         return new Dimension ( width, height );
     }
 
+    @Override
     public Dimension minimumLayoutSize ( Container parent )
     {
         return preferredLayoutSize ( parent );

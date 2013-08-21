@@ -27,6 +27,7 @@ import java.util.Comparator;
 
 public class LanguageUpdaterComparator implements Comparator<LanguageUpdater>
 {
+    @Override
     public int compare ( LanguageUpdater lu1, LanguageUpdater lu2 )
     {
         Class cc1 = lu1.getComponentClass ();

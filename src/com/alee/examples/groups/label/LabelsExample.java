@@ -30,16 +30,19 @@ import java.awt.*;
 
 public class LabelsExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Labels";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Web-styled labels";
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         // Simple label

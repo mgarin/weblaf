@@ -51,10 +51,12 @@ public class WebDateFieldSettingsProcessor extends SettingsProcessor<WebDateFiel
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void doInit ( WebDateField dateField )
     {
         selectionListener = new DateSelectionListener ()
         {
+            @Override
             public void dateSelected ( Date date )
             {
                 if ( SettingsManager.isSaveOnChange () )
@@ -69,6 +71,7 @@ public class WebDateFieldSettingsProcessor extends SettingsProcessor<WebDateFiel
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void doDestroy ( WebDateField dateField )
     {
         dateField.removeDateSelectionListener ( selectionListener );
@@ -78,6 +81,7 @@ public class WebDateFieldSettingsProcessor extends SettingsProcessor<WebDateFiel
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void doLoad ( WebDateField dateField )
     {
         final Long date = loadValue ();
@@ -88,6 +92,7 @@ public class WebDateFieldSettingsProcessor extends SettingsProcessor<WebDateFiel
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void doSave ( WebDateField dateField )
     {
         final Date date = dateField.getDate ();

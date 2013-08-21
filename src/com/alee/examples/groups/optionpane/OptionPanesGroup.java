@@ -30,21 +30,25 @@ import java.util.List;
 
 public class OptionPanesGroup extends DefaultExampleGroup
 {
+    @Override
     public Icon getGroupIcon ()
     {
         return loadGroupIcon ( "optionpane.png" );
     }
 
+    @Override
     public String getGroupName ()
     {
         return "Option panes";
     }
 
+    @Override
     public String getGroupDescription ()
     {
         return "Various examples of optionpanes usage";
     }
 
+    @Override
     public List<Example> getGroupExamples ()
     {
         List<Example> examples = new ArrayList<Example> ();

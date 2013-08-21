@@ -46,6 +46,7 @@ import java.awt.image.ColorModel;
 
 public abstract class AbstractBufferedImageOp implements BufferedImageOp
 {
+    @Override
     public BufferedImage createCompatibleDestImage ( BufferedImage src, ColorModel dstCM )
     {
         if ( dstCM == null )
@@ -56,11 +57,13 @@ public abstract class AbstractBufferedImageOp implements BufferedImageOp
                 dstCM.isAlphaPremultiplied (), null );
     }
 
+    @Override
     public Rectangle2D getBounds2D ( BufferedImage src )
     {
         return new Rectangle ( 0, 0, src.getWidth (), src.getHeight () );
     }
 
+    @Override
     public Point2D getPoint2D ( Point2D srcPt, Point2D dstPt )
     {
         if ( dstPt == null )
@@ -71,6 +74,7 @@ public abstract class AbstractBufferedImageOp implements BufferedImageOp
         return dstPt;
     }
 
+    @Override
     public RenderingHints getRenderingHints ()
     {
         return null;

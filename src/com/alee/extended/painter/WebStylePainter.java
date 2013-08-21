@@ -102,16 +102,19 @@ public class WebStylePainter<E extends JComponent> extends DefaultPainter<E>
         this.webColored = webColored;
     }
 
+    @Override
     public boolean isOpaque ( E c )
     {
         return false;
     }
 
+    @Override
     public Insets getMargin ( E c )
     {
         return new Insets ( shadeWidth + 1, shadeWidth + 1, shadeWidth + 1, shadeWidth + 1 );
     }
 
+    @Override
     public void paint ( Graphics2D g2d, Rectangle bounds, E c )
     {
         if ( drawBackground )

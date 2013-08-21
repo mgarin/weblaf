@@ -32,16 +32,19 @@ import java.awt.*;
 
 public class SwitchExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Switches";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Web-styled switches";
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         // Simple switch

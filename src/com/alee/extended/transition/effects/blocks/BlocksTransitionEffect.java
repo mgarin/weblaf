@@ -111,6 +111,7 @@ public class BlocksTransitionEffect extends DefaultTransitionEffect
         put ( BLOCK_AMOUNT, blocksAmount );
     }
 
+    @Override
     public void prepareAnimation ( final ImageTransition imageTransition )
     {
         // Updating settings
@@ -168,6 +169,7 @@ public class BlocksTransitionEffect extends DefaultTransitionEffect
             randomizer = new WebTimer ( "BlocksTransitionEffect.randomizer", 50 );
             randomizer.addActionListener ( new ActionListener ()
             {
+                @Override
                 public void actionPerformed ( ActionEvent e )
                 {
                     for ( int i = 0; i < blocksAmount; i++ )
@@ -193,6 +195,7 @@ public class BlocksTransitionEffect extends DefaultTransitionEffect
         imageTransition.repaint ();
     }
 
+    @Override
     public boolean performAnimation ( ImageTransition imageTransition )
     {
         // Incrementing grow states
@@ -306,6 +309,7 @@ public class BlocksTransitionEffect extends DefaultTransitionEffect
         }
     }
 
+    @Override
     public void paint ( Graphics2D g2d, ImageTransition imageTransition )
     {
         // Variables

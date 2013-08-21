@@ -62,6 +62,7 @@ public class DictionariesTree extends WebTree
         // Full record expansion
         addTreeExpansionListener ( new TreeExpansionListener ()
         {
+            @Override
             public void treeExpanded ( TreeExpansionEvent event )
             {
                 final Object object = event.getPath ().getLastPathComponent ();
@@ -77,6 +78,7 @@ public class DictionariesTree extends WebTree
                 }
             }
 
+            @Override
             public void treeCollapsed ( TreeExpansionEvent event )
             {
                 //
@@ -86,6 +88,7 @@ public class DictionariesTree extends WebTree
         // Hotkeys listener
         addKeyListener ( new KeyAdapter ()
         {
+            @Override
             public void keyPressed ( KeyEvent e )
             {
                 if ( Hotkey.DELETE.isTriggered ( e ) )
@@ -158,6 +161,7 @@ public class DictionariesTree extends WebTree
         scrollPathToVisible ( path );
     }
 
+    @Override
     public DefaultMutableTreeNode getSelectedNode ()
     {
         final TreePath path = getSelectionPath ();

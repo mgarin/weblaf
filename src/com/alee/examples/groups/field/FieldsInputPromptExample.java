@@ -33,16 +33,19 @@ import java.awt.*;
 
 public class FieldsInputPromptExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Input prompt";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Input prompt for various fields";
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         // Text field input prompt

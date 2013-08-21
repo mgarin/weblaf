@@ -34,21 +34,25 @@ import java.awt.event.ActionListener;
 
 public class InputOptionPaneExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Input optionpane";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Web-styled input optionpane";
     }
 
+    @Override
     public Component getPreview ( final WebLookAndFeelDemo owner )
     {
         WebButton message = new WebButton ( "Show input", loadIcon ( "input.png" ) );
         message.addActionListener ( new ActionListener ()
         {
+            @Override
             public void actionPerformed ( ActionEvent e )
             {
                 WebOptionPane.showInputDialog ( owner, "Write something here:", "Input", JOptionPane.QUESTION_MESSAGE, null, null,

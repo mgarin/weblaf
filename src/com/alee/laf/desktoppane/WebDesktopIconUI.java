@@ -35,6 +35,7 @@ public class WebDesktopIconUI extends BasicDesktopIconUI
         return new WebDesktopIconUI ();
     }
 
+    @Override
     public void installUI ( JComponent c )
     {
         super.installUI ( c );
@@ -45,6 +46,7 @@ public class WebDesktopIconUI extends BasicDesktopIconUI
         c.setOpaque ( false );
     }
 
+    @Override
     protected void installComponents ()
     {
         iconPane = new WebInternalFrameIconPane ( frame );

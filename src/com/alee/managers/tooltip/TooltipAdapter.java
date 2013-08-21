@@ -23,21 +23,25 @@ package com.alee.managers.tooltip;
 
 public abstract class TooltipAdapter implements TooltipListener
 {
+    @Override
     public void tooltipShowing ()
     {
         //
     }
 
+    @Override
     public void tooltipShown ()
     {
         //
     }
 
+    @Override
     public void tooltipHidden ()
     {
         //
     }
 
+    @Override
     public void tooltipDestroyed ()
     {
         //

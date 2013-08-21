@@ -31,6 +31,7 @@ public class WebIconRenderer extends WebTableCellRenderer.UIResource
         setHorizontalAlignment ( JLabel.CENTER );
     }
 
+    @Override
     public void setValue ( Object value )
     {
         setIcon ( ( value instanceof Icon ) ? ( Icon ) value : null );

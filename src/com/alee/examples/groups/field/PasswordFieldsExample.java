@@ -30,16 +30,19 @@ import java.awt.*;
 
 public class PasswordFieldsExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Password fields";
     }
 
+    @Override
     public String getDescription ()
     {
         return "Web-styled password fields";
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         // Simple password field

@@ -31,16 +31,19 @@ import java.awt.*;
 
 public class WebDecoratedImageExample extends DefaultExample
 {
+    @Override
     public String getTitle ()
     {
         return "Decorated images";
     }
 
+    @Override
     public String getDescription ()
     {
         return "WebDecoratedImage examples";
     }
 
+    @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         ImageIcon i1 = loadIcon ( "dec1.jpg" );
