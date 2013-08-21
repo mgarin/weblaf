@@ -34,10 +34,6 @@ public class DialogLU extends DefaultLanguageUpdater<Dialog>
      */
     public void update ( Dialog c, String key, Value value, Object... data )
     {
-        String title = getDefaultText ( value, data );
-        if ( title != null )
-        {
-            c.setTitle ( title );
-        }
+        c.setTitle ( getDefaultText ( value, data ) );
     }
 }

@@ -34,10 +34,6 @@ public class JProgressBarLU extends DefaultLanguageUpdater<JProgressBar>
      */
     public void update ( JProgressBar c, String key, Value value, Object... data )
     {
-        String text = getDefaultText ( value, data );
-        if ( text != null )
-        {
-            c.setString ( text );
-        }
+        c.setString ( getDefaultText ( value, data ) );
     }
 }

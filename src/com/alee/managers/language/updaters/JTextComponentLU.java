@@ -34,10 +34,6 @@ public class JTextComponentLU extends DefaultLanguageUpdater<JTextComponent>
      */
     public void update ( JTextComponent c, String key, Value value, Object... data )
     {
-        String text = getDefaultText ( value, data );
-        if ( text != null )
-        {
-            c.setText ( text );
-        }
+        c.setText ( getDefaultText ( value, data ) );
     }
 }

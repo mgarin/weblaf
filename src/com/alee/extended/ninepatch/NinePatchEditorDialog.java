@@ -33,13 +33,20 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 
 /**
- * User: mgarin Date: 20.12.11 Time: 13:43
+ * Custom dialog that contains nine-patch editor.
+ *
+ * @author Mikle Garin
+ * @see NinePatchEditorPanel
  */
 
 public class NinePatchEditorDialog extends WebFrame
 {
+    /**
+     * Dialog title language key.
+     */
     private static final String DIALOG_TITLE_KEY = "weblaf.ex.npeditor.title";
 
     private NinePatchEditorPanel ninePatchEditorPanel = null;
@@ -140,10 +147,15 @@ public class NinePatchEditorDialog extends WebFrame
         return ninePatchEditorPanel.getNinePatchImage ();
     }
 
-    public static void main ( String[] args )
+    public static void main ( String[] args ) throws IOException
     {
-        WebLookAndFeel.install ();
-        NinePatchEditorDialog nped = new NinePatchEditorDialog ();
-        nped.setVisible ( true );
+        SwingUtilities.invokeLater ( new Runnable ()
+        {
+            public void run ()
+            {
+                WebLookAndFeel.install ();
+                new NinePatchEditorDialog ().setVisible ( true );
+            }
+        } );
     }
 }

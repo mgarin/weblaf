@@ -38,18 +38,10 @@ public class AbstractButtonLU extends DefaultLanguageUpdater<AbstractButton>
      */
     public void update ( AbstractButton c, String key, Value value, Object... data )
     {
-        // Updating text
+        // Updating text and mnemonic
         String text = getDefaultText ( value, data );
-        if ( text != null )
-        {
-            c.setText ( text );
-
-            // Updating mnemonic
-            if ( value.getMnemonic () != null )
-            {
-                c.setMnemonic ( value.getMnemonic () );
-            }
-        }
+        c.setText ( text != null ? text : null );
+        c.setMnemonic ( text != null && value.getMnemonic () != null ? value.getMnemonic () : 0 );
 
         // Removing old cached hotkey and adding new one if needed
         if ( isHotkeyCached ( c ) )

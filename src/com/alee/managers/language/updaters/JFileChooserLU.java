@@ -34,10 +34,6 @@ public class JFileChooserLU extends DefaultLanguageUpdater<JFileChooser>
      */
     public void update ( JFileChooser c, String key, Value value, Object... data )
     {
-        String title = getDefaultText ( value, data );
-        if ( title != null )
-        {
-            c.setDialogTitle ( title );
-        }
+        c.setDialogTitle ( getDefaultText ( value, data ) );
     }
 }

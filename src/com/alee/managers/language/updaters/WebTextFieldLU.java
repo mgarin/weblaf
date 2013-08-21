@@ -33,18 +33,7 @@ public class WebTextFieldLU extends DefaultLanguageUpdater<WebTextField>
      */
     public void update ( WebTextField c, String key, Value value, Object... data )
     {
-        // Field text
-        String text = getDefaultText ( value, data );
-        if ( text != null )
-        {
-            c.setText ( text );
-        }
-
-        // Field input prompt
-        String inputPrompt = getDefaultText ( INPUT_PROMPT, value, data );
-        if ( inputPrompt != null )
-        {
-            c.setInputPrompt ( inputPrompt );
-        }
+        c.setText ( getDefaultText ( value, data ) );
+        c.setInputPrompt ( getDefaultText ( INPUT_PROMPT, value, data ) );
     }
 }

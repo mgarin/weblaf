@@ -1187,16 +1187,6 @@
                 <value lang="pt" state="tooltip">Mostrar fundo colorido</value>
                 <value lang="de" state="tooltip">Farbigen Hintergrund anzeigen</value>
             </record>
-            <record key="preview.backgroundColor.title">
-                <value lang="en">Choose background color</value>
-                <value lang="ru">Выберите цвет фона</value>
-                <value lang="pl">Wybierz kolor tła</value>
-                <value lang="ar">اختر لون الخلفية</value>
-                <value lang="es">Elije el color de fondo</value>
-                <value lang="fr">Choisisser la couleur du fond</value>
-                <value lang="pt">Escolha uma cor de fundo</value>
-                <value lang="de">Hintergrundfarbe auswählen</value>
-            </record>
             <record key="preview.foregroundColor">
                 <value lang="en" state="tooltip">Text color</value>
                 <value lang="ru" state="tooltip">Цвет текста</value>

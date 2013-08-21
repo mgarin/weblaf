@@ -33,10 +33,6 @@ public class WebFileDropLU extends DefaultLanguageUpdater<WebFileDrop>
      */
     public void update ( WebFileDrop c, String key, Value value, Object... data )
     {
-        String text = getDefaultText ( DROP_TEXT, true, value, data );
-        if ( text != null )
-        {
-            c.setDropText ( text );
-        }
+        c.setDropText ( getDefaultText ( DROP_TEXT, true, value, data ) );
     }
 }

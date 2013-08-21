@@ -87,16 +87,14 @@ public class LanguageExample extends DefaultExample
      * Custom language updater for state support
      */
 
-    public static class MyLabelUpdater extends DefaultLanguageUpdater
+    public static class MyLabelUpdater extends DefaultLanguageUpdater<MyLabel>
     {
         /**
          * {@inheritDoc}
          */
-        public void update ( Component c, String key, Value value, Object... data )
+        public void update ( MyLabel c, String key, Value value, Object... data )
         {
-            MyLabel myLabel = ( MyLabel ) c;
-            String text = value.getText ( myLabel.isPressed () ? "pressed" : null );
-            myLabel.setText ( text != null ? text : key );
+            c.setText ( value.getText ( c.isPressed () ? "pressed" : null ) );
         }
     }
 

@@ -39,7 +39,6 @@ import com.alee.laf.splitpane.WebSplitPane;
 import com.alee.laf.text.WebTextField;
 import com.alee.laf.toolbar.ToolbarStyle;
 import com.alee.laf.toolbar.WebToolBar;
-import com.alee.laf.toolbar.WebToolBarStyle;
 import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.settings.SettingsManager;
@@ -69,7 +68,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * User: mgarin Date: 22.12.11 Time: 13:31
+ * This is a simple panel that contains fully-functional nine-patch image format editor.
+ *
+ * @author Mikle Garin
+ * @see NinePatchEditor
+ * @see NinePatchEditorDialog
  */
 
 public class NinePatchEditorPanel extends WebPanel
@@ -115,7 +118,7 @@ public class NinePatchEditorPanel extends WebPanel
     private ZoomChangeListener zoomChangeListener;
 
     private AlphaLayerPainter abp;
-    private ColorPainter cbp;
+    private ColorPainter colorPainter;
 
     private WebPanel previewPanel;
     private WebLabel preview;
@@ -129,26 +132,6 @@ public class NinePatchEditorPanel extends WebPanel
         initializeAliases ();
 
         setLayout ( new BorderLayout () );
-
-        ninePatchEditor = new NinePatchEditor ();
-        ninePatchEditor.setTransferHandler ( new FileDropHandler ()
-        {
-            protected boolean filesImported ( List<File> files )
-            {
-                if ( files != null )
-                {
-                    for ( File file : files )
-                    {
-                        if ( ImageUtils.isImageLoadable ( file.getName () ) )
-                        {
-                            openImage ( file );
-                            return true;
-                        }
-                    }
-                }
-                return false;
-            }
-        } );
 
         fileTree = new WebFileTree ();
         fileTree.setSelectionMode ( TreeSelectionModel.SINGLE_TREE_SELECTION );
@@ -187,20 +170,14 @@ public class NinePatchEditorPanel extends WebPanel
             }
         } );
 
-        WebScrollPane filesView = new WebScrollPane ( fileTree, false );
+        final WebScrollPane filesView = new WebScrollPane ( fileTree, false );
         filesView.setMinimumWidth ( 200 );
         filesView.setPreferredHeight ( 0 );
-        filesView.setBorder ( BorderFactory.createMatteBorder ( 0, 0, 0, 1, WebToolBarStyle.borderColor ) );
-
-        WebScrollPane editorView = ninePatchEditor.getView ();
-        editorView.setBorder ( BorderFactory.createMatteBorder ( 0, 1, 0, 1, WebToolBarStyle.borderColor ) );
-
-        WebPanel previewView = createPreviewPanel ();
-        previewView.setBorder ( BorderFactory.createMatteBorder ( 0, 1, 0, 0, WebToolBarStyle.borderColor ) );
+        //        filesView.setBorder ( BorderFactory.createMatteBorder ( 0, 0, 0, 1, WebToolBarStyle.borderColor ) );
 
         final WebSplitPane previewSplit = new WebSplitPane ( WebSplitPane.HORIZONTAL_SPLIT );
-        previewSplit.setLeftComponent ( editorView );
-        previewSplit.setRightComponent ( previewView );
+        previewSplit.setLeftComponent ( createEditorPanel () );
+        previewSplit.setRightComponent ( createPreviewPanel () );
         previewSplit.setOneTouchExpandable ( true );
         previewSplit.setContinuousLayout ( true );
         previewSplit.setResizeWeight ( 1 );
@@ -213,15 +190,8 @@ public class NinePatchEditorPanel extends WebPanel
         filesSplit.setResizeWeight ( 0 );
         add ( filesSplit, BorderLayout.CENTER );
 
-        Integer fsl = SettingsManager.get ( "NinePatchEditor", "filesSplitLocation", ( Integer ) null );
-        if ( fsl != null )
-        {
-            filesSplit.setDividerLocation ( fsl );
-        }
-        else
-        {
-            filesSplit.setDividerLocation ( 230 );
-        }
+        final Integer fsl = SettingsManager.get ( "NinePatchEditor", "filesSplitLocation", ( Integer ) null );
+        filesSplit.setDividerLocation ( fsl != null ? fsl : 230 );
         filesSplit.addPropertyChangeListener ( WebSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener ()
         {
             public void propertyChange ( PropertyChangeEvent pce )
@@ -230,7 +200,7 @@ public class NinePatchEditorPanel extends WebPanel
             }
         } );
 
-        Integer psl = SettingsManager.get ( "NinePatchEditor", "splitLocation", ( Integer ) null );
+        final Integer psl = SettingsManager.get ( "NinePatchEditor", "splitLocation", ( Integer ) null );
         if ( psl != null )
         {
             previewSplit.setDividerLocation ( psl );
@@ -243,14 +213,21 @@ public class NinePatchEditorPanel extends WebPanel
             }
         } );
 
-        ///////////////////////////////////////////////////////////////////////////////////
+        LanguageManager.updateComponentsTree ( NinePatchEditorPanel.this );
+    }
+
+    private Component createEditorPanel ()
+    {
+        final WebPanel editorPanel = new WebPanel ();
+
+        //
 
         toolBar = new WebToolBar ( WebToolBar.HORIZONTAL );
         toolBar.setToolbarStyle ( ToolbarStyle.attached );
         toolBar.setFloatable ( false );
-        add ( toolBar, BorderLayout.NORTH );
+        editorPanel.add ( toolBar, BorderLayout.NORTH );
 
-        WebButton open = new WebButton ( OPEN_ICON );
+        final WebButton open = new WebButton ( OPEN_ICON );
         open.setLanguage ( "weblaf.ex.npeditor.openImage" );
         open.addHotkey ( NinePatchEditorPanel.this, Hotkey.CTRL_O );
         open.setRolloverDecoratedOnly ( true );
@@ -344,7 +321,7 @@ public class NinePatchEditorPanel extends WebPanel
 
         toolBar.addSeparator ();
 
-        WebButton copy = new WebButton ( COPY_ICON );
+        final WebButton copy = new WebButton ( COPY_ICON );
         copy.setLanguage ( "weblaf.ex.npeditor.copyInfo" );
         copy.addHotkey ( NinePatchEditorPanel.this, Hotkey.CTRL_C );
         copy.setRolloverDecoratedOnly ( true );
@@ -360,7 +337,7 @@ public class NinePatchEditorPanel extends WebPanel
         } );
         toolBar.add ( copy );
 
-        WebButton paste = new WebButton ( PASTE_ICON );
+        final WebButton paste = new WebButton ( PASTE_ICON );
         paste.setLanguage ( "weblaf.ex.npeditor.pasteInfo" );
         paste.addHotkey ( NinePatchEditorPanel.this, Hotkey.CTRL_V );
         paste.setRolloverDecoratedOnly ( true );
@@ -386,7 +363,7 @@ public class NinePatchEditorPanel extends WebPanel
 
         toolBar.addSeparator ();
 
-        WebButton undo = new WebButton ( UNDO_ICON );
+        final WebButton undo = new WebButton ( UNDO_ICON );
         undo.setLanguage ( "weblaf.ex.npeditor.undo" );
         undo.addHotkey ( NinePatchEditorPanel.this, Hotkey.CTRL_Z );
         undo.setRolloverDecoratedOnly ( true );
@@ -399,9 +376,9 @@ public class NinePatchEditorPanel extends WebPanel
         } );
         toolBar.add ( undo );
 
-        WebButton redo = new WebButton ( REDO_ICON );
+        final WebButton redo = new WebButton ( REDO_ICON );
         redo.setLanguage ( "weblaf.ex.npeditor.redo" );
-        redo.addHotkey ( NinePatchEditorPanel.this, Hotkey.CTRL_R );
+        redo.addHotkey ( NinePatchEditorPanel.this, Hotkey.CTRL_R ).setHidden ( true );
         redo.addHotkey ( NinePatchEditorPanel.this, Hotkey.CTRL_SHIFT_Z );
         redo.setRolloverDecoratedOnly ( true );
         redo.addActionListener ( new ActionListener ()
@@ -413,157 +390,35 @@ public class NinePatchEditorPanel extends WebPanel
         } );
         toolBar.add ( redo );
 
+        //
 
-        boolean si = SettingsManager.get ( "NinePatchEditor", "preview.showIcon", false );
-        preview.setIcon ( si ? ICON : null );
-
-        final WebToggleButton showIcon = new WebToggleButton ( SHOW_ICON_ICON );
-        showIcon.setLanguage ( "weblaf.ex.npeditor.preview.showIcon" );
-        showIcon.setRolloverDecoratedOnly ( true );
-        showIcon.setSelected ( si );
-        showIcon.addActionListener ( new ActionListener ()
+        ninePatchEditor = new NinePatchEditor ();
+        ninePatchEditor.setTransferHandler ( new FileDropHandler ()
         {
-            public void actionPerformed ( ActionEvent e )
+            protected boolean filesImported ( List<File> files )
             {
-                boolean show = showIcon.isSelected ();
-                SettingsManager.set ( "NinePatchEditor", "preview.showIcon", show );
-                preview.setIcon ( show ? ICON : null );
-            }
-        } );
-        toolBar.addToEnd ( showIcon );
-
-        boolean st = SettingsManager.get ( "NinePatchEditor", "preview.showText", true );
-        final WebToggleButton showText = new WebToggleButton ( SHOW_TEXT_ICON );
-        showText.setLanguage ( "weblaf.ex.npeditor.preview.showText" );
-        showText.setCursor ( Cursor.getDefaultCursor () );
-        showText.setDrawFocus ( false );
-        showText.setRolloverDecoratedOnly ( true );
-        showText.setRolloverDarkBorderOnly ( false );
-        showText.setDrawRight ( false );
-        showText.setDrawRightLine ( true );
-        showText.setShadeWidth ( 0 );
-        showText.setSelected ( st );
-
-        String pText = SettingsManager.get ( "NinePatchEditor", "preview.text", LanguageManager.get ( "weblaf.ex.npeditor.preview.text" ) );
-        preview.setText ( st ? parseToMultilineHtml ( pText ) : "" );
-
-        final WebTextField textField = new WebTextField ( 8 );
-        textField.setText ( pText );
-        textField.setHorizontalAlignment ( WebTextField.CENTER );
-        textField.setDrawFocus ( false );
-        textField.setEditable ( st );
-        textField.setMargin ( -1 );
-        textField.addCaretListener ( new CaretListener ()
-        {
-            public void caretUpdate ( CaretEvent e )
-            {
-                SettingsManager.set ( "NinePatchEditor", "preview.text", textField.getText () );
-                preview.setText ( showText.isSelected () ? parseToMultilineHtml ( textField.getText () ) : "" );
-            }
-        } );
-        showText.addActionListener ( new ActionListener ()
-        {
-            public void actionPerformed ( ActionEvent e )
-            {
-                boolean show = showText.isSelected ();
-                SettingsManager.set ( "NinePatchEditor", "preview.showText", show );
-                textField.setEditable ( show );
-                preview.setText ( show ? parseToMultilineHtml ( textField.getText () ) : "" );
-            }
-        } );
-        textField.setLeadingComponent ( showText );
-        toolBar.addToEnd ( textField );
-
-
-        final WebButton chooseColor = new WebButton ( FOREGROUND_COLOR_ICON );
-        chooseColor.setLanguage ( "weblaf.ex.npeditor.preview.foregroundColor" );
-        preview.setForeground ( SettingsManager.get ( "NinePatchEditor", "preview.foregroundColor", Color.WHITE ) );
-        chooseColor.setCursor ( Cursor.getDefaultCursor () );
-        chooseColor.setDrawFocus ( false );
-        chooseColor.setRolloverDecoratedOnly ( true );
-        chooseColor.setRolloverDarkBorderOnly ( false );
-        chooseColor.setDrawLeft ( false );
-        chooseColor.setDrawLeftLine ( true );
-        chooseColor.setShadeWidth ( 0 );
-        chooseColor.addActionListener ( new ActionListener ()
-        {
-            private WebColorChooserDialog webColorChooser = null;
-
-            public void actionPerformed ( ActionEvent e )
-            {
-                if ( webColorChooser == null )
+                if ( files != null )
                 {
-                    webColorChooser = new WebColorChooserDialog ( SwingUtils.getWindowAncestor ( previewPanel ) );
-                    webColorChooser.setColor ( preview.getForeground () );
+                    for ( File file : files )
+                    {
+                        if ( ImageUtils.isImageLoadable ( file.getName () ) )
+                        {
+                            openImage ( file );
+                            return true;
+                        }
+                    }
                 }
-                if ( webColorChooser.showDialog () == DialogOptions.OK_OPTION )
-                {
-                    Color nfg = webColorChooser.getColor ();
-                    SettingsManager.set ( "NinePatchEditor", "preview.foregroundColor", nfg );
-                    preview.setForeground ( nfg );
-                }
+                return false;
             }
         } );
-        textField.setTrailingComponent ( chooseColor );
+        editorPanel.add ( ninePatchEditor.getView (), BorderLayout.CENTER );
 
-        abp = new AlphaLayerPainter ();
+        //
 
-        boolean da = SettingsManager.get ( "NinePatchEditor", "preview.transparentBackground", true );
-        final WebToggleButton drawAlphaBackground = new WebToggleButton ( TRANSPARENT_ICON );
-        drawAlphaBackground.setLanguage ( "weblaf.ex.npeditor.preview.transparentBackground" );
-        drawAlphaBackground.setSelected ( da );
-        drawAlphaBackground.addActionListener ( new ActionListener ()
-        {
-            public void actionPerformed ( ActionEvent e )
-            {
-                SettingsManager.set ( "NinePatchEditor", "preview.transparentBackground", true );
-                previewPanel.setPainter ( abp );
-            }
-        } );
+        final WebStatusBar bottomToolBar = new WebStatusBar ();
+        editorPanel.add ( bottomToolBar, BorderLayout.SOUTH );
 
-        cbp = new ColorPainter ( SettingsManager.get ( "NinePatchEditor", "preview.backgroundColor", Color.WHITE ) );
-
-        final WebToggleButton drawColoredBackground = new WebToggleButton ( ImageUtils.createColorIcon ( cbp.getColor () ) );
-        drawColoredBackground.setLanguage ( "weblaf.ex.npeditor.preview.coloredBackground" );
-        drawColoredBackground.setSelected ( !da );
-        drawColoredBackground.addActionListener ( new ActionListener ()
-        {
-            private WebColorChooserDialog wcc = null;
-
-            public void actionPerformed ( ActionEvent e )
-            {
-                SettingsManager.set ( "NinePatchEditor", "preview.transparentBackground", false );
-
-                if ( wcc == null )
-                {
-                    wcc = new WebColorChooserDialog ( SwingUtils.getWindowAncestor ( previewPanel ), "" );
-                    wcc.setLanguage ( "preview.backgroundColor.title" );
-                    wcc.setColor ( cbp.getColor () );
-                }
-                wcc.setVisible ( true );
-                if ( wcc.getResult () == DialogOptions.OK_OPTION )
-                {
-                    Color color = wcc.getColor ();
-                    SettingsManager.set ( "NinePatchEditor", "preview.backgroundColor", color );
-                    drawColoredBackground.setIcon ( ImageUtils.createColorIcon ( color ) );
-                    cbp.setColor ( color );
-                }
-                previewPanel.setPainter ( cbp );
-            }
-        } );
-
-        previewPanel.setPainter ( da ? abp : cbp );
-
-        WebButtonGroup settings = new WebButtonGroup ( true, drawAlphaBackground, drawColoredBackground );
-        //        settings.setButtonsDrawFocus ( false );
-        toolBar.addToEnd ( settings );
-
-        ///////////////////////////////////////////////////////////////////////////////////
-
-        WebStatusBar bottomToolBar = new WebStatusBar ();
-        add ( bottomToolBar, BorderLayout.SOUTH );
-
-        boolean sgs = SettingsManager.get ( "NinePatchEditor", "showSpacing", true );
+        final boolean sgs = SettingsManager.get ( "NinePatchEditor", "showSpacing", true );
         final WebToggleButton showGuidesSpacing = new WebToggleButton ( GUIDES_ICON );
         showGuidesSpacing.setLanguage ( "weblaf.ex.npeditor.showSpacing" );
         showGuidesSpacing.setRolloverDecoratedOnly ( true );
@@ -579,7 +434,7 @@ public class NinePatchEditorPanel extends WebPanel
             }
         } );
 
-        boolean sr = SettingsManager.get ( "NinePatchEditor", "showRuler", true );
+        final boolean sr = SettingsManager.get ( "NinePatchEditor", "showRuler", true );
         final WebToggleButton showRuler = new WebToggleButton ( RULER_ICON );
         showRuler.setLanguage ( "weblaf.ex.npeditor.showRuler" );
         showRuler.setRolloverDecoratedOnly ( true );
@@ -659,17 +514,6 @@ public class NinePatchEditorPanel extends WebPanel
             }
         } );
 
-        bottomToolBar.add ( showGuidesSpacing );
-        bottomToolBar.add ( showRuler );
-        bottomToolBar.addSeparator ();
-        bottomToolBar.add ( fillContent );
-        bottomToolBar.add ( fillStretch );
-        bottomToolBar.addSeparator ();
-        bottomToolBar.add ( rulerCursor );
-        bottomToolBar.add ( areaCursor );
-
-        //
-
         final WebSlider zoomSlider = new WebSlider ( NinePatchEditor.MIN_ZOOM, NinePatchEditor.MAX_ZOOM, ninePatchEditor.getZoom () )
         {
             public Dimension getPreferredSize ()
@@ -703,7 +547,7 @@ public class NinePatchEditorPanel extends WebPanel
         };
         ninePatchEditor.addZoomChangeListener ( zoomChangeListener );
 
-        WebButton minZoom = new WebButton ( MIN_ICON );
+        final WebButton minZoom = new WebButton ( MIN_ICON );
         minZoom.setRolloverDecoratedOnly ( true );
         minZoom.addActionListener ( new ActionListener ()
         {
@@ -713,7 +557,7 @@ public class NinePatchEditorPanel extends WebPanel
             }
         } );
 
-        WebButton maxZoom = new WebButton ( MAX_ICON );
+        final WebButton maxZoom = new WebButton ( MAX_ICON );
         maxZoom.setRolloverDecoratedOnly ( true );
         maxZoom.addActionListener ( new ActionListener ()
         {
@@ -723,9 +567,19 @@ public class NinePatchEditorPanel extends WebPanel
             }
         } );
 
+        bottomToolBar.add ( showGuidesSpacing );
+        bottomToolBar.add ( showRuler );
+        bottomToolBar.addSeparator ();
+        bottomToolBar.add ( fillContent );
+        bottomToolBar.add ( fillStretch );
+        bottomToolBar.addSeparator ();
+        bottomToolBar.add ( rulerCursor );
+        bottomToolBar.add ( areaCursor );
         bottomToolBar.addToEnd ( minZoom );
         bottomToolBar.addToEnd ( zoomSlider );
         bottomToolBar.addToEnd ( maxZoom );
+
+        return editorPanel;
     }
 
     private static boolean aliasesInitialized = false;
@@ -758,7 +612,7 @@ public class NinePatchEditorPanel extends WebPanel
             }
 
             // Load image (avoiding Toolkit cache)
-            Image image = Toolkit.getDefaultToolkit ().createImage ( file.getAbsolutePath () );
+            final Image image = Toolkit.getDefaultToolkit ().createImage ( file.getAbsolutePath () );
             if ( image == null )
             {
                 return;
@@ -771,7 +625,7 @@ public class NinePatchEditorPanel extends WebPanel
             }
 
             // Loading image fully through ImageIcon MediaTracker
-            BufferedImage bi = ImageUtils.getBufferedImage ( new ImageIcon ( image ) );
+            final BufferedImage bi = ImageUtils.getBufferedImage ( new ImageIcon ( image ) );
 
             // Open image file
             ninePatchEditor.setNinePatchImage ( bi );
@@ -781,7 +635,13 @@ public class NinePatchEditorPanel extends WebPanel
             // Show location in tree
             openFromTreeEnabled = false;
             fileTree.setSelectedFile ( file );
-            openFromTreeEnabled = true;
+            fileTree.expandToFile ( file, true, false, new Runnable ()
+            {
+                public void run ()
+                {
+                    openFromTreeEnabled = true;
+                }
+            } );
 
             // Inform about changes
             fireStateChanged ();
@@ -798,8 +658,9 @@ public class NinePatchEditorPanel extends WebPanel
         {
             final String message = LanguageManager.get ( "weblaf.ex.npeditor.saveChanges.text" );
             final String title = LanguageManager.get ( "weblaf.ex.npeditor.saveChanges.title" );
-            int confirm = WebOptionPane.showConfirmDialog ( NinePatchEditorPanel.this, message, title, WebOptionPane.YES_NO_CANCEL_OPTION,
-                    WebOptionPane.QUESTION_MESSAGE );
+            final int option = WebOptionPane.YES_NO_CANCEL_OPTION;
+            final int messageType = WebOptionPane.QUESTION_MESSAGE;
+            final int confirm = WebOptionPane.showConfirmDialog ( this, message, title, option, messageType );
 
             if ( confirm == WebOptionPane.YES_OPTION )
             {
@@ -834,19 +695,18 @@ public class NinePatchEditorPanel extends WebPanel
         {
             public Dimension getPreferredSize ()
             {
-                Dimension ps = super.getPreferredSize ();
+                final Dimension ps = super.getPreferredSize ();
                 ps.width = Math.max ( 230, ps.width );
                 ps.height = 400;
                 return ps;
             }
         };
         previewPanel.setLayout ( new TableLayout ( new double[][]{ { TableLayout.FILL, TableLayout.PREFERRED, TableLayout.FILL },
-                { TableLayout.FILL, TableLayout.PREFERRED, TableLayout.FILL } } ) );
+                { TableLayout.PREFERRED, TableLayout.FILL, TableLayout.PREFERRED, TableLayout.FILL } } ) );
         previewPanel.setPainter ( abp );
 
         preview = new WebLabel ( "", WebLabel.CENTER );
-        final ResizablePanel resizablePanel = new ResizablePanel ( preview );
-        previewPanel.add ( resizablePanel, "1,1" );
+        previewPanel.add ( new ResizablePanel ( preview ), "1,2" );
 
         updatePreviews ();
         getNinePatchEditor ().addChangeListener ( new ChangeListener ()
@@ -856,6 +716,153 @@ public class NinePatchEditorPanel extends WebPanel
                 updatePreviews ();
             }
         } );
+
+        //
+
+        final WebToolBar toolBar = new WebToolBar ( WebToolBar.HORIZONTAL );
+        toolBar.setToolbarStyle ( ToolbarStyle.attached );
+        toolBar.setFloatable ( false );
+        previewPanel.add ( toolBar, "0,0,2,0" );
+
+        final boolean si = SettingsManager.get ( "NinePatchEditor", "preview.showIcon", false );
+        preview.setIcon ( si ? ICON : null );
+
+        final WebToggleButton showIcon = new WebToggleButton ( SHOW_ICON_ICON );
+        showIcon.setLanguage ( "weblaf.ex.npeditor.preview.showIcon" );
+        showIcon.setRolloverDecoratedOnly ( true );
+        showIcon.setSelected ( si );
+        showIcon.addActionListener ( new ActionListener ()
+        {
+            public void actionPerformed ( ActionEvent e )
+            {
+                boolean show = showIcon.isSelected ();
+                SettingsManager.set ( "NinePatchEditor", "preview.showIcon", show );
+                preview.setIcon ( show ? ICON : null );
+            }
+        } );
+        toolBar.add ( showIcon );
+
+        final boolean st = SettingsManager.get ( "NinePatchEditor", "preview.showText", true );
+        final WebToggleButton showText = new WebToggleButton ( SHOW_TEXT_ICON );
+        showText.setLanguage ( "weblaf.ex.npeditor.preview.showText" );
+        showText.setCursor ( Cursor.getDefaultCursor () );
+        showText.setDrawFocus ( false );
+        showText.setRolloverDecoratedOnly ( true );
+        showText.setRolloverDarkBorderOnly ( false );
+        showText.setDrawRight ( false );
+        showText.setDrawRightLine ( true );
+        showText.setShadeWidth ( 0 );
+        showText.setSelected ( st );
+
+        final String defaultPreviewText = LanguageManager.get ( "weblaf.ex.npeditor.preview.text" );
+        final String previewText = SettingsManager.get ( "NinePatchEditor", "preview.text", defaultPreviewText );
+        preview.setText ( st ? parseToMultilineHtml ( previewText ) : "" );
+
+        final WebTextField textField = new WebTextField ( 8 );
+        textField.setText ( previewText );
+        textField.setHorizontalAlignment ( WebTextField.CENTER );
+        textField.setDrawFocus ( false );
+        textField.setEditable ( st );
+        textField.setMargin ( -1 );
+        textField.addCaretListener ( new CaretListener ()
+        {
+            public void caretUpdate ( CaretEvent e )
+            {
+                SettingsManager.set ( "NinePatchEditor", "preview.text", textField.getText () );
+                preview.setText ( showText.isSelected () ? parseToMultilineHtml ( textField.getText () ) : "" );
+            }
+        } );
+        showText.addActionListener ( new ActionListener ()
+        {
+            public void actionPerformed ( ActionEvent e )
+            {
+                boolean show = showText.isSelected ();
+                SettingsManager.set ( "NinePatchEditor", "preview.showText", show );
+                textField.setEditable ( show );
+                preview.setText ( show ? parseToMultilineHtml ( textField.getText () ) : "" );
+            }
+        } );
+        textField.setLeadingComponent ( showText );
+        toolBar.addFill ( textField );
+
+
+        final WebButton chooseColor = new WebButton ( FOREGROUND_COLOR_ICON );
+        chooseColor.setLanguage ( "weblaf.ex.npeditor.preview.foregroundColor" );
+        preview.setForeground ( SettingsManager.get ( "NinePatchEditor", "preview.foregroundColor", Color.WHITE ) );
+        chooseColor.setCursor ( Cursor.getDefaultCursor () );
+        chooseColor.setDrawFocus ( false );
+        chooseColor.setRolloverDecoratedOnly ( true );
+        chooseColor.setRolloverDarkBorderOnly ( false );
+        chooseColor.setDrawLeft ( false );
+        chooseColor.setDrawLeftLine ( true );
+        chooseColor.setShadeWidth ( 0 );
+        chooseColor.addActionListener ( new ActionListener ()
+        {
+            private WebColorChooserDialog webColorChooser = null;
+
+            public void actionPerformed ( ActionEvent e )
+            {
+                if ( webColorChooser == null )
+                {
+                    webColorChooser = new WebColorChooserDialog ( SwingUtils.getWindowAncestor ( previewPanel ) );
+                }
+                webColorChooser.setColor ( preview.getForeground () );
+                if ( webColorChooser.showDialog () == DialogOptions.OK_OPTION )
+                {
+                    Color color = webColorChooser.getColor ();
+                    SettingsManager.set ( "NinePatchEditor", "preview.foregroundColor", color );
+                    preview.setForeground ( color );
+                }
+            }
+        } );
+        textField.setTrailingComponent ( chooseColor );
+
+        abp = new AlphaLayerPainter ();
+
+        final boolean da = SettingsManager.get ( "NinePatchEditor", "preview.transparentBackground", true );
+        final WebToggleButton drawAlphaBackground = new WebToggleButton ( TRANSPARENT_ICON );
+        drawAlphaBackground.setLanguage ( "weblaf.ex.npeditor.preview.transparentBackground" );
+        drawAlphaBackground.setSelected ( da );
+        drawAlphaBackground.addActionListener ( new ActionListener ()
+        {
+            public void actionPerformed ( ActionEvent e )
+            {
+                SettingsManager.set ( "NinePatchEditor", "preview.transparentBackground", true );
+                previewPanel.setPainter ( abp );
+            }
+        } );
+
+        colorPainter = new ColorPainter ( SettingsManager.get ( "NinePatchEditor", "preview.backgroundColor", Color.WHITE ) );
+
+        final WebToggleButton drawColoredBackground = new WebToggleButton ( ImageUtils.createColorIcon ( colorPainter.getColor () ) );
+        drawColoredBackground.setLanguage ( "weblaf.ex.npeditor.preview.coloredBackground" );
+        drawColoredBackground.setSelected ( !da );
+        drawColoredBackground.addActionListener ( new ActionListener ()
+        {
+            private WebColorChooserDialog webColorChooser = null;
+
+            public void actionPerformed ( ActionEvent e )
+            {
+                SettingsManager.set ( "NinePatchEditor", "preview.transparentBackground", false );
+                if ( webColorChooser == null )
+                {
+                    webColorChooser = new WebColorChooserDialog ( SwingUtils.getWindowAncestor ( previewPanel ) );
+                }
+                webColorChooser.setColor ( colorPainter.getColor () );
+                if ( webColorChooser.showDialog () == DialogOptions.OK_OPTION )
+                {
+                    Color color = webColorChooser.getColor ();
+                    SettingsManager.set ( "NinePatchEditor", "preview.backgroundColor", color );
+                    drawColoredBackground.setIcon ( ImageUtils.createColorIcon ( color ) );
+                    colorPainter.setColor ( color );
+                }
+                previewPanel.setPainter ( colorPainter );
+            }
+        } );
+
+        previewPanel.setPainter ( da ? abp : colorPainter );
+
+        toolBar.addToEnd ( new WebButtonGroup ( true, drawAlphaBackground, drawColoredBackground ) );
 
         return new WebPanel ( previewPanel );
     }
@@ -868,7 +875,7 @@ public class NinePatchEditorPanel extends WebPanel
 
     private void updatePreviews ()
     {
-        NinePatchIconPainter bp = new NinePatchIconPainter ( getNinePatchEditor ().getNinePatchIcon () );
+        final NinePatchIconPainter bp = new NinePatchIconPainter ( getNinePatchEditor ().getNinePatchIcon () );
         preview.setPainter ( bp );
         previewPanel.revalidate ();
     }
@@ -876,12 +883,12 @@ public class NinePatchEditorPanel extends WebPanel
     private void saveImage ( File imageFile ) throws IOException
     {
         // Checking file name
-        String fullName = getSaveFileName ( imageFile );
+        final String fullName = getSaveFileName ( imageFile );
         imageFile = new File ( imageFile.getParent (), fullName );
         imageSrc = imageFile.getAbsolutePath ();
 
         // Saving image
-        BufferedImage image = ninePatchEditor.getNinePatchImage ();
+        final BufferedImage image = ninePatchEditor.getNinePatchImage ();
         ImageIO.write ( image, "png", imageFile );
 
         // Nullify changes
@@ -894,12 +901,12 @@ public class NinePatchEditorPanel extends WebPanel
     private String getSaveFileName ( File imageFile )
     {
         // Adding .9 to file name if it doesn't exist
-        String format = ".png";
-        String subFormat = ".9";
+        final String format = ".png";
+        final String subFormat = ".9";
         String fullName = imageFile.getName ();
         if ( fullName.endsWith ( format ) )
         {
-            String name = fullName.substring ( 0, fullName.lastIndexOf ( format ) );
+            final String name = fullName.substring ( 0, fullName.lastIndexOf ( format ) );
             if ( !name.endsWith ( subFormat ) )
             {
                 fullName = name + subFormat + format;
@@ -911,7 +918,7 @@ public class NinePatchEditorPanel extends WebPanel
         }
         else
         {
-            int dot = fullName.lastIndexOf ( "." );
+            final int dot = fullName.lastIndexOf ( "." );
             if ( dot != -1 )
             {
                 fullName = fullName.substring ( 0, dot );
@@ -980,7 +987,7 @@ public class NinePatchEditorPanel extends WebPanel
 
     private void fireStateChanged ()
     {
-        ChangeEvent changeEvent = new ChangeEvent ( NinePatchEditorPanel.this );
+        final ChangeEvent changeEvent = new ChangeEvent ( NinePatchEditorPanel.this );
         for ( ChangeListener listener : CollectionUtils.copy ( changeListeners ) )
         {
             listener.stateChanged ( changeEvent );
