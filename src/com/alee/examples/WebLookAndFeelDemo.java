@@ -87,8 +87,6 @@ public class WebLookAndFeelDemo extends WebFrame
     public static final String WEBLAF_SITE = "http://weblookandfeel.com/";
     public static final String WEBLAF_EMAIL = "mgarin@alee.com";
 
-    public static final String VERSION_FILE_URL = "https://raw.github.com/mgarin/weblaf/master/artifacts/version.xml";
-
     private ComponentTransition appearanceTransition;
 
     private SlidingSearch slidingSearch;
@@ -424,7 +422,8 @@ public class WebLookAndFeelDemo extends WebFrame
                 {
                     try
                     {
-                        lastVersion = XmlUtils.fromXML ( new URL ( VERSION_FILE_URL ) );
+                        final String versionUrl = WebLookAndFeelDemo.WEBLAF_SITE + "downloads/version.xml";
+                        lastVersion = XmlUtils.fromXML ( new URL ( versionUrl ) );
                     }
                     catch ( Throwable e )
                     {
