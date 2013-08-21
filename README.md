@@ -17,15 +17,22 @@ http://weblookandfeel.com
 
 Artifacts
 ----------
-All library artifacts could be found in ["artifacts" folder](https://github.com/mgarin/weblaf/tree/master/artifacts) within the project.
+You can always find all WebLaF releases in the "releases" section:
+https://github.com/mgarin/weblaf/releases
 
-Here are direct links:
+Here are the direct links for the latest release (v1.17):
 
-1. [**weblaf-1.17.jar**](https://github.com/mgarin/weblaf/raw/master/artifacts/weblaf-1.17.jar) - library jar
-2. [**weblaf-src-1.17.zip**](https://github.com/mgarin/weblaf/raw/master/artifacts/weblaf-src-1.17.zip) - project sources zip
-3. [**weblaf-demo-1.17.jar**](https://github.com/mgarin/weblaf/raw/master/artifacts/weblaf-demo-1.17.jar) - executable demo jar
-4. [**weblaf-javadoc-1.17.zip**](https://github.com/mgarin/weblaf/raw/master/artifacts/weblaf-javadoc-1.17.zip) - JavaDoc zip
-5. [**ninepatch-editor-1.17.jar**](https://github.com/mgarin/weblaf/raw/master/artifacts/ninepatch-editor-1.17.jar) - executable 9patch editor jar
+1. [**weblaf-1.17.jar**](https://github.com/mgarin/weblaf/releases/download/v1.17/weblaf-1.17.jar) - library jar
+2. [**weblaf-src-1.17.zip**](https://github.com/mgarin/weblaf/releases/download/v1.17/weblaf-src-1.17.zip) - project sources zip
+3. [**weblaf-demo-1.17.jar**](https://github.com/mgarin/weblaf/releases/download/v1.17/weblaf-demo-1.17.jar) - executable demo jar
+4. [**weblaf-javadoc-1.17.zip**](https://github.com/mgarin/weblaf/releases/download/v1.17/weblaf-javadoc-1.17.zip) - JavaDoc zip
+5. [**ninepatch-editor-1.17.jar**](https://github.com/mgarin/weblaf/releases/download/v1.17/ninepatch-editor-1.17.jar) - executable 9-patch editor jar
+
+
+Roadmap
+----------
+You can always check what fixes, features and improvements are coming by checking the milestones page:
+https://github.com/mgarin/weblaf/issues/milestones
 
 
 Building
@@ -46,27 +53,34 @@ Here is a full list of usable ANT targets in WebLaF build script:
 9. **run.weblaf.demo** - build and run WebLookAndFeel_demo.jar (library demo application)
 
 
-L&F usage
+Example Usage
 ----------
-To install Web L&F you can simply use this line of code:
+To install WebLaF you can simply use this line of code:
+```java
+public class WebLafUsage
+{
+    public static void main ( String[] args )
+    {
+        // You should work with UI (including installing L&F) only inside EDT
+        SwingUtilities.invokeLater ( new Runnable ()
+        {
+            public void run ()
+            {
+                // Install WebLaF as application L&F
+                WebLookAndFeel.install ();
 
-    WebLookAndFeel.install ();
-    
-You can also use one of the old ways to set L&F:
+                // You can also do that using standard Swing methods:
+                // UIManager.setLookAndFeel ( new WebLookAndFeel () );
+                // UIManager.setLookAndFeel ( "com.alee.laf.WebLookAndFeel" );
+                // UIManager.setLookAndFeel ( WebLookAndFeel.class.getCanonicalName () );
 
-    UIManager.setLookAndFeel ( new WebLookAndFeel () );
-    // or 
-    UIManager.setLookAndFeel ( "com.alee.laf.WebLookAndFeel" );
-    // or 
-    UIManager.setLookAndFeel ( WebLookAndFeel.class.getCanonicalName () );
-
-It will also work as intended.
-
-
-Roadmap
-----------
-You can always check what fixes, features and improvements are coming by checking the milestones page:
-https://github.com/mgarin/weblaf/issues/milestones
+                // Create you Swing application here
+                // JFrame frame = ...
+            }
+        } );
+    }
+}
+```
 
 
 Feedback
