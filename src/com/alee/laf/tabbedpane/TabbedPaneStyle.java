@@ -18,11 +18,22 @@
 package com.alee.laf.tabbedpane;
 
 /**
- * User: mgarin Date: 06.02.12 Time: 14:35
+ * This enumeration represents predefined tabbed pane styles.
+ *
+ * @author Mikle Garin
  */
 
 public enum TabbedPaneStyle
 {
+    /**
+     * Standalone tabbed pane style.
+     * It has its own borders around the component and looks complete.
+     */
     standalone,
+
+    /**
+     * Attached tabbed pane style.
+     * It doesn't have its own borders around the component and might be attached to some other styled container.
+     */
     attached
 }
