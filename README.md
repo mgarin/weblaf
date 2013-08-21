@@ -21,11 +21,11 @@ All library artifacts could be found in ["artifacts" folder](https://github.com/
 
 Here are direct links:
 
-1. [**weblaf-1.16.jar**](https://github.com/mgarin/weblaf/raw/master/artifacts/weblaf-1.16.jar) - library jar
-2. [**weblaf-src-1.16.zip**](https://github.com/mgarin/weblaf/raw/master/artifacts/weblaf-src-1.16.zip) - project sources zip
-3. [**weblaf-demo-1.16.jar**](https://github.com/mgarin/weblaf/raw/master/artifacts/weblaf-demo-1.16.jar) - executable demo jar
-4. [**weblaf-javadoc-1.16.zip**](https://github.com/mgarin/weblaf/raw/master/artifacts/weblaf-javadoc-1.16.zip) - JavaDoc zip
-5. [**ninepatch-editor-1.16.jar**](https://github.com/mgarin/weblaf/raw/master/artifacts/ninepatch-editor-1.16.jar) - executable 9patch editor jar
+1. [**weblaf-1.17.jar**](https://github.com/mgarin/weblaf/raw/master/artifacts/weblaf-1.17.jar) - library jar
+2. [**weblaf-src-1.17.zip**](https://github.com/mgarin/weblaf/raw/master/artifacts/weblaf-src-1.17.zip) - project sources zip
+3. [**weblaf-demo-1.17.jar**](https://github.com/mgarin/weblaf/raw/master/artifacts/weblaf-demo-1.17.jar) - executable demo jar
+4. [**weblaf-javadoc-1.17.zip**](https://github.com/mgarin/weblaf/raw/master/artifacts/weblaf-javadoc-1.17.zip) - JavaDoc zip
+5. [**ninepatch-editor-1.17.jar**](https://github.com/mgarin/weblaf/raw/master/artifacts/ninepatch-editor-1.17.jar) - executable 9patch editor jar
 
 
 Building
