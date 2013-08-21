@@ -11,13 +11,13 @@ Its main advantages are:
 5. Various utility classes which simplify Swing components usage
 6. Various Swing extensions that allows animated transitions, effects and other features
 
-You can find more information about the library on official site:
+You can find more information about the library on official site:<br>
 http://weblookandfeel.com
 
 
 Artifacts
 ----------
-You can always find all WebLaF releases in the "releases" section:
+You can always find all WebLaF releases in the "releases" section:<br>
 https://github.com/mgarin/weblaf/releases
 
 Here are the direct links for the latest release (v1.17):
@@ -31,7 +31,7 @@ Here are the direct links for the latest release (v1.17):
 
 Roadmap
 ----------
-You can always check what fixes, features and improvements are coming by checking the milestones page:
+You can always check what fixes, features and improvements are coming by checking the milestones page:<br>
 https://github.com/mgarin/weblaf/issues/milestones
 
 
@@ -61,7 +61,7 @@ public class WebLafUsage
 {
     public static void main ( String[] args )
     {
-        // You should work with UI (including installing L&F) only inside EDT
+        // You should work with UI (including installing L&F) inside EDT
         SwingUtilities.invokeLater ( new Runnable ()
         {
             public void run ()
