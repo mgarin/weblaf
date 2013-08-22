@@ -29,7 +29,7 @@ import java.io.Serializable;
  * @see SettingsGroup
  */
 
-@XStreamAlias ( "SettingsGroupState" )
+@XStreamAlias ("SettingsGroupState")
 public class SettingsGroupState implements Serializable
 {
     /**

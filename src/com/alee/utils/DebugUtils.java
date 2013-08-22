@@ -47,13 +47,12 @@ public final class DebugUtils
      * Call this when you want to paint time debug information.
      *
      * @param g graphics
-     * @param c component
      */
-    public static void paintTimeDebugInfo ( Graphics g, JComponent c )
+    public static void paintTimeDebugInfo ( Graphics g )
     {
         if ( StyleConstants.DEBUG )
         {
-            paintDebugInfoImpl ( ( Graphics2D ) g, c );
+            paintDebugInfoImpl ( ( Graphics2D ) g );
         }
     }
 
@@ -62,13 +61,12 @@ public final class DebugUtils
      * Call this when you want to paint time debug information.
      *
      * @param g2d graphics
-     * @param c   component
      */
-    public static void paintTimeDebugInfo ( Graphics2D g2d, JComponent c )
+    public static void paintTimeDebugInfo ( Graphics2D g2d )
     {
         if ( StyleConstants.DEBUG )
         {
-            paintDebugInfoImpl ( g2d, c );
+            paintDebugInfoImpl ( g2d );
         }
     }
 
@@ -76,9 +74,8 @@ public final class DebugUtils
      * Debug information painting method.
      *
      * @param g2d graphics
-     * @param c   component
      */
-    private static void paintDebugInfoImpl ( Graphics2D g2d, JComponent c )
+    private static void paintDebugInfoImpl ( Graphics2D g2d )
     {
         double ms = TimeUtils.getPassedNanoTime () / 1000000f;
         String micro = "" + StyleConstants.DEBUG_FORMAT.format ( ms );

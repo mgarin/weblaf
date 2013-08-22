@@ -1178,23 +1178,11 @@ public final class LafUtils
     public static void drawWebIconedSelection ( Graphics2D g2d, Rectangle selection, boolean resizableLR, boolean resizableUD,
                                                 boolean drawConnectors )
     {
-        drawWebIconedSelection ( g2d, selection, resizableLR, resizableUD, drawConnectors, 0 );
+        drawWebIconedSelection ( g2d, selection, resizableLR, resizableUD, drawConnectors, true );
     }
 
     public static void drawWebIconedSelection ( Graphics2D g2d, Rectangle selection, boolean resizableLR, boolean resizableUD,
                                                 boolean drawConnectors, boolean drawSideControls )
-    {
-        drawWebIconedSelection ( g2d, selection, resizableLR, resizableUD, drawConnectors, drawSideControls, 0 );
-    }
-
-    public static void drawWebIconedSelection ( Graphics2D g2d, Rectangle selection, boolean resizableLR, boolean resizableUD,
-                                                boolean drawConnectors, int diff )
-    {
-        drawWebIconedSelection ( g2d, selection, resizableLR, resizableUD, drawConnectors, true, diff );
-    }
-
-    public static void drawWebIconedSelection ( Graphics2D g2d, Rectangle selection, boolean resizableLR, boolean resizableUD,
-                                                boolean drawConnectors, boolean drawSideControls, int diff )
     {
         selection = GeometryUtils.validateRect ( selection );
 

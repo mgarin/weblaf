@@ -41,7 +41,7 @@ public class AlignLayout implements LayoutManager, SwingConstants
     public static final List<Integer> verticals = Arrays.asList ( TOP, CENTER, BOTTOM );
 
     // Saved layout constraints
-    private Map<Component, String> constraints = new HashMap<Component, String> ();
+    private final Map<Component, String> constraints = new HashMap<Component, String> ();
 
     // Gaps betwen components
     private int hgap = 0;
@@ -120,14 +120,14 @@ public class AlignLayout implements LayoutManager, SwingConstants
             try
             {
                 // Checking halign for validity
-                int halign = getHalign ( name );
+                final int halign = getHalign ( name );
                 if ( !horizontals.contains ( halign ) )
                 {
                     illegalArgument ();
                 }
 
                 // Checking valign for validity
-                int valign = getValign ( name );
+                final int valign = getValign ( name );
                 if ( !verticals.contains ( valign ) )
                 {
                     illegalArgument ();
@@ -170,12 +170,12 @@ public class AlignLayout implements LayoutManager, SwingConstants
     @Override
     public Dimension preferredLayoutSize ( Container parent )
     {
-        Dimension ps;
+        final Dimension ps;
         if ( parent.getComponentCount () > 1 )
         {
             // Counting size for each block
-            Map<Integer, Integer> widths = new HashMap<Integer, Integer> ();
-            Map<Integer, Integer> heights = new HashMap<Integer, Integer> ();
+            final Map<Integer, Integer> widths = new HashMap<Integer, Integer> ();
+            final Map<Integer, Integer> heights = new HashMap<Integer, Integer> ();
             for ( int halign : horizontals )
             {
                 for ( int valign : verticals )
@@ -234,7 +234,7 @@ public class AlignLayout implements LayoutManager, SwingConstants
         }
 
         // Adding insets
-        Insets insets = parent.getInsets ();
+        final Insets insets = parent.getInsets ();
         ps.width += insets.left + insets.right;
         ps.height += insets.top + insets.bottom;
 
@@ -247,7 +247,7 @@ public class AlignLayout implements LayoutManager, SwingConstants
         for ( Component component : parent.getComponents () )
         {
             // Component constraints and size
-            String align = constraints.get ( component );
+            final String align = constraints.get ( component );
             if ( getHalign ( align ) == halign && getValign ( align ) == valign )
             {
                 size = SwingUtils.max ( size, component.getPreferredSize () );
@@ -265,14 +265,13 @@ public class AlignLayout implements LayoutManager, SwingConstants
     @Override
     public void layoutContainer ( Container parent )
     {
-        Insets insets = parent.getInsets ();
+        final Insets insets = parent.getInsets ();
         for ( Component component : parent.getComponents () )
         {
             // Component constraints and size
-            String align = constraints.get ( component );
-            int halign = getHalign ( align );
-            int valign = getValign ( align );
-            Dimension ps = component.getPreferredSize ();
+            final String align = constraints.get ( component );
+            final int halign = getHalign ( align );
+            final Dimension ps = component.getPreferredSize ();
 
             // Determining x coordinate
             int x = 0;

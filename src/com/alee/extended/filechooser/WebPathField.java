@@ -47,7 +47,6 @@ import javax.swing.event.CaretListener;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 import javax.swing.filechooser.FileSystemView;
-import javax.swing.text.BadLocationException;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
@@ -400,27 +399,20 @@ public class WebPathField extends WebPanel
                 String parentPath = t.substring ( 0, beginIndex );
                 File parent = parentPath.trim ().equals ( "" ) ? null : new File ( parentPath );
 
-                try
+                List<File> similar = getSimilarFileChilds ( parent, t.substring ( beginIndex ) );
+                if ( similar != null && similar.size () > 0 )
                 {
-                    List<File> similar = getSimilarFileChilds ( parent, t.substring ( beginIndex ) );
-                    if ( similar != null && similar.size () > 0 )
-                    {
-                        updateList ( similar, pathField.getUI ().modelToView ( pathField, beginIndex ).x );
-                    }
-                    else
-                    {
-                        hideDialog ();
-                    }
+                    updateList ( similar );
                 }
-                catch ( BadLocationException e1 )
+                else
                 {
-                    e1.printStackTrace ();
+                    hideDialog ();
                 }
                 //                    }
                 //                } ).start ();
             }
 
-            private void updateList ( final List<File> similar, final int x )
+            private void updateList ( final List<File> similar )
             {
                 SwingUtils.invokeLater ( new Runnable ()
                 {
@@ -641,8 +633,9 @@ public class WebPathField extends WebPanel
     {
         // todo check if path is proper (filter/hidden)
 
+        // todo Save focused state properly
         // Saving focus state
-        boolean hadFocus = focusOwner;
+        // boolean hadFocus = focusOwner;
 
         // Saving new path
         selectedPath = path;

@@ -28,8 +28,8 @@ import java.io.Serializable;
  * User: mgarin Date: 12.10.11 Time: 17:49
  */
 
-@XStreamAlias ( "ProxySettings" )
-public class ProxySettings implements Serializable
+@XStreamAlias ("ProxySettings")
+public class ProxySettings implements Serializable, Cloneable
 {
     @XStreamAsAttribute
     private boolean useProxy = false;
@@ -50,7 +50,7 @@ public class ProxySettings implements Serializable
     private String proxyLogin = null;
 
     @XStreamAsAttribute
-    @XStreamConverter ( PasswordConverter.class )
+    @XStreamConverter (PasswordConverter.class)
     private String proxyPassword = null;
 
     public ProxySettings ()

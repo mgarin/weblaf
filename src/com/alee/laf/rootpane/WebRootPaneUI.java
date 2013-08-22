@@ -475,7 +475,6 @@ public class WebRootPaneUI extends BasicRootPaneUI implements SwingConstants
             installBorder ();
             installLayout ();
             installDecorationComponents ();
-            installSystemSpecificSettings ();
             styled = true;
         }
     }
@@ -490,7 +489,6 @@ public class WebRootPaneUI extends BasicRootPaneUI implements SwingConstants
             uninstallBorder ();
             uninstallLayout ();
             uninstallDecorationComponents ();
-            uninstallSystemSpecificSettings ();
             window = null;
             frame = null;
             dialog = null;
@@ -875,24 +873,6 @@ public class WebRootPaneUI extends BasicRootPaneUI implements SwingConstants
             root.remove ( resizeCorner );
             resizeCorner = null;
         }
-    }
-
-    /**
-     * Specific system settings installation
-     */
-
-    private void installSystemSpecificSettings ()
-    {
-        //        if ( !SystemUtils.isWindowTransparencyAllowed () )
-        //        {
-        //            setShadeWidth ( 0 );
-        //            setRound ( 0 );
-        //        }
-    }
-
-    private void uninstallSystemSpecificSettings ()
-    {
-        //
     }
 
     /**

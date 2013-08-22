@@ -83,8 +83,8 @@ public class WebExtendedOptionPane extends WebDialog
 
     private Component specialComponent = null;
 
-    public WebExtendedOptionPane ( DialogType dialogType, Component parentComponent, Object message, Object special, String title,
-                                   int optionType, int messageType )
+    public WebExtendedOptionPane ( Component parentComponent, Object message, Object special, String title, int optionType,
+                                   int messageType )
     {
         super ( SwingUtils.getWindowAncestor ( parentComponent ), title );
         setIconImages ( getDialogIcons ( messageType ) );
@@ -376,7 +376,7 @@ public class WebExtendedOptionPane extends WebDialog
                                                             int optionType, int messageType )
     {
         WebExtendedOptionPane confirmDialog =
-                new WebExtendedOptionPane ( DialogType.confirm, parentComponent, message, special, title, optionType, messageType );
+                new WebExtendedOptionPane ( parentComponent, message, special, title, optionType, messageType );
         confirmDialog.setVisible ( true );
         return confirmDialog;
     }

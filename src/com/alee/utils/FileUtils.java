@@ -408,7 +408,7 @@ public final class FileUtils
     {
         try
         {
-            return computeMD5 ( new FileInputStream ( file ) );
+            return computeMD5 ( new FileInputStream ( file ), bufferLength );
         }
         catch ( FileNotFoundException e )
         {

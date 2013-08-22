@@ -295,10 +295,10 @@ public class WebMultiLineLabelUI extends BasicLabelUI implements ComponentListen
             if ( it.hasNext () && !paintTextR.contains ( textX, textY + fm.getHeight () + getAscent ( fm ) ) )
             {
                 // The last visible row, add a clip indication.
-                text = clip ( text, fm, paintTextR );
+                text = clip ( text, fm );
             }
 
-            int x = alignmentX ( label, fm, text, paintTextR );
+            int x = alignmentX ( label, fm, text );
 
             if ( label.isEnabled () )
             {
@@ -326,7 +326,7 @@ public class WebMultiLineLabelUI extends BasicLabelUI implements ComponentListen
         {
             int mnemIndex = l.getDisplayedMnemonicIndex ();
             g.setColor ( l.getForeground () );
-            SwingUtils.drawStringUnderlineCharAt ( l, g, s, mnemIndex, textX, textY );
+            SwingUtils.drawStringUnderlineCharAt ( g, s, mnemIndex, textX, textY );
         }
     }
 
@@ -345,7 +345,7 @@ public class WebMultiLineLabelUI extends BasicLabelUI implements ComponentListen
         {
             int mnemIndex = l.getDisplayedMnemonicIndex ();
             g.setColor ( l.getForeground () );
-            SwingUtils.drawStringUnderlineCharAt ( l, g, s, mnemIndex, textX, textY );
+            SwingUtils.drawStringUnderlineCharAt ( g, s, mnemIndex, textX, textY );
         }
     }
 
@@ -379,12 +379,11 @@ public class WebMultiLineLabelUI extends BasicLabelUI implements ComponentListen
     /**
      * Add a clip indication to the string. It is important that the string length does not exceed the length or the original string.
      *
-     * @param text   the to be painted
-     * @param fm     font metrics
-     * @param bounds the text bounds
+     * @param text the to be painted
+     * @param fm   font metrics
      * @return the clipped string
      */
-    protected String clip ( String text, FontMetrics fm, Rectangle bounds )
+    protected String clip ( String text, FontMetrics fm )
     {
         // Fast and lazy way to insert a clip indication is to simply replace
         // the last characters in the string with the clip indication.
@@ -433,13 +432,12 @@ public class WebMultiLineLabelUI extends BasicLabelUI implements ComponentListen
     /**
      * Establish the horizontal text alignment. The default alignment is left aligned text.
      *
-     * @param label  the label to paint
-     * @param fm     font metrics
-     * @param s      the string to paint
-     * @param bounds the text bounds rectangle
+     * @param label the label to paint
+     * @param fm    font metrics
+     * @param s     the string to paint
      * @return the x-coordinate to use when painting for proper alignment
      */
-    protected int alignmentX ( JLabel label, FontMetrics fm, String s, Rectangle bounds )
+    protected int alignmentX ( JLabel label, FontMetrics fm, String s )
     {
         boolean ltr = label.getComponentOrientation ().isLeftToRight ();
         int align = label.getHorizontalAlignment ();
@@ -538,7 +536,7 @@ public class WebMultiLineLabelUI extends BasicLabelUI implements ComponentListen
      * @param l the label
      * @return the text lines of the label.
      */
-    @SuppressWarnings ("unchecked")
+    @SuppressWarnings ( "unchecked" )
     protected List<String> getTextLines ( JLabel l )
     {
         List<String> lines = ( List<String> ) l.getClientProperty ( PROPERTY_KEY );

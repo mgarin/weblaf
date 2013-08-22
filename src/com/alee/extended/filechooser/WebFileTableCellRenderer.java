@@ -41,7 +41,6 @@ public class WebFileTableCellRenderer extends WebTableCellRenderer
         super.getTableCellRendererComponent ( table, value, isSelected, hasFocus, row, column );
 
         final File file = ( File ) value;
-        final WebFileTableModel model = ( WebFileTableModel ) table.getModel ();
         final String columnId = ( String ) table.getColumnModel ().getColumn ( column ).getIdentifier ();
         final boolean isFile = FileUtils.isFile ( file );
         if ( columnId.equals ( WebFileTableModel.NUMBER_COLUMN ) )

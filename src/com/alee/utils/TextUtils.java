@@ -69,7 +69,6 @@ public final class TextUtils
      */
     public static Integer findFirstNumber ( String text )
     {
-        int start = -1;
         StringBuilder sb = new StringBuilder ( "" );
         for ( int j = 0; j < text.length (); j++ )
         {

@@ -326,7 +326,7 @@ public class ExamplesManager
             for ( Example example : examples )
             {
                 // Title & description
-                groupPanel.add ( createDescription ( owner, example, group ), "1," + row );
+                groupPanel.add ( createDescription ( example, group ), "1," + row );
 
                 // Marks
                 Component mark = createMark ( owner, example );
@@ -337,7 +337,7 @@ public class ExamplesManager
                 groupPanel.add ( source, "5," + row );
 
                 // More usage examples
-                Component usage = createPresentationButton ( owner, example );
+                Component usage = createPresentationButton ( example );
                 groupPanel.add ( usage, "7," + row );
 
                 SwingUtils.equalizeComponentsSize ( mark, source, usage );
@@ -398,7 +398,7 @@ public class ExamplesManager
         return separator;
     }
 
-    private static Component createDescription ( final WebLookAndFeelDemo owner, Example example, ExampleGroup group )
+    private static Component createDescription ( Example example, ExampleGroup group )
     {
         Color foreground = group.getPreferredForeground ();
 
@@ -467,7 +467,7 @@ public class ExamplesManager
         return new CenterPanel ( sourceButton, false, true );
     }
 
-    private static Component createPresentationButton ( WebLookAndFeelDemo owner, final Example example )
+    private static Component createPresentationButton ( final Example example )
     {
         final WebToggleButton presentation = new WebToggleButton ( presentationIcon );
         presentation.setRolloverDecoratedOnly ( true );

@@ -292,6 +292,7 @@ public class WebLinkLabel extends WebLabel implements LanguageMethods
     public void setLink ( String text, Runnable link )
     {
         this.link = link;
+        setText ( text );
     }
 
     public void setLink ( String address )
@@ -344,7 +345,7 @@ public class WebLinkLabel extends WebLabel implements LanguageMethods
         if ( setupView )
         {
             setIcon ( EMAIL_ICON );
-            setText ( email );
+            setText ( text );
         }
         this.link = createEmailLink ( email );
     }

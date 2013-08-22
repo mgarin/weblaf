@@ -356,11 +356,6 @@ public class WebRadioButtonUI extends BasicRadioButtonUI implements ShapeProvide
         return 6;
     }
 
-    public void setRound ( int round )
-    {
-        //
-    }
-
     public int getShadeWidth ()
     {
         return shadeWidth;
@@ -508,16 +503,16 @@ public class WebRadioButtonUI extends BasicRadioButtonUI implements ShapeProvide
         {
             // Normal text
             g.setColor ( b.getForeground () );
-            SwingUtils.drawStringUnderlineCharAt ( c, g, text, mnemonicIndex, textRect.x + getTextShiftOffset (),
+            SwingUtils.drawStringUnderlineCharAt ( g, text, mnemonicIndex, textRect.x + getTextShiftOffset (),
                     textRect.y + fm.getAscent () + getTextShiftOffset () );
         }
         else
         {
             // Disabled text
             g.setColor ( b.getBackground ().brighter () );
-            SwingUtils.drawStringUnderlineCharAt ( c, g, text, mnemonicIndex, textRect.x, textRect.y + fm.getAscent () );
+            SwingUtils.drawStringUnderlineCharAt ( g, text, mnemonicIndex, textRect.x, textRect.y + fm.getAscent () );
             g.setColor ( b.getBackground ().darker () );
-            SwingUtils.drawStringUnderlineCharAt ( c, g, text, mnemonicIndex, textRect.x - 1, textRect.y + fm.getAscent () - 1 );
+            SwingUtils.drawStringUnderlineCharAt ( g, text, mnemonicIndex, textRect.x - 1, textRect.y + fm.getAscent () - 1 );
         }
     }
 }

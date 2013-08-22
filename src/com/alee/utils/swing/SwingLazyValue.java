@@ -65,9 +65,7 @@ public class SwingLazyValue implements UIDefaults.LazyValue
     {
         try
         {
-            Class c;
-            Object cl;
-            c = Class.forName ( className, true, null );
+            Class c = Class.forName ( className, true, null );
             if ( methodName != null )
             {
                 Class[] types = getClassArray ( args );

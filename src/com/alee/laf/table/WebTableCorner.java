@@ -43,7 +43,9 @@ public class WebTableCorner extends JComponent
         super.paintComponent ( g );
 
         Graphics2D g2d = ( Graphics2D ) g;
-        boolean ltr = getComponentOrientation ().isLeftToRight ();
+
+        // todo Proper painting for RTL
+        // boolean ltr = getComponentOrientation ().isLeftToRight ();
 
         // Highlight
         g2d.setPaint ( WebTableHeaderUI.topLineColor );

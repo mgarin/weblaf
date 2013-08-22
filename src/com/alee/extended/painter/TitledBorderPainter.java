@@ -277,7 +277,7 @@ public class TitledBorderPainter<E extends JComponent> extends BorderPainter<E> 
         titleY = getTitleY ( c );
         borderCenter = ( double ) width / 2;
         borderPosition = getBorderPosition ();
-        borderShape = getBorderShape ( c );
+        borderShape = getBorderShape ();
         doClip = clipTitleBackground && !emptyTitle && titlePosition.equals ( TitlePosition.onLine );
 
         // Drawing border and background
@@ -320,7 +320,7 @@ public class TitledBorderPainter<E extends JComponent> extends BorderPainter<E> 
                 case TOP:
                 case BOTTOM:
                 {
-                    Map hints = SwingUtils.setupTextAntialias ( g2d, c );
+                    Map hints = SwingUtils.setupTextAntialias ( g2d );
                     g2d.drawString ( titleText, titleX, titleY );
                     SwingUtils.restoreTextAntialias ( g2d, hints );
                     break;
@@ -424,7 +424,7 @@ public class TitledBorderPainter<E extends JComponent> extends BorderPainter<E> 
         return titleText == null;
     }
 
-    public Shape getBorderShape ( E c )
+    public Shape getBorderShape ()
     {
         Rectangle2D rect = null;
         switch ( titleSide )

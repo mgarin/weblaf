@@ -43,7 +43,7 @@ public class TwoSidesPanel extends WebPanel implements SwingConstants
         super ();
 
         setOpaque ( false );
-        setLayout ( new BorderLayout ( 0, 0 ) );
+        setLayout ( new BorderLayout ( spacing, spacing ) );
 
         if ( orientation == HORIZONTAL )
         {

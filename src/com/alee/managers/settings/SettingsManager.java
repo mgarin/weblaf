@@ -765,7 +765,7 @@ public final class SettingsManager
      */
     public static <T extends DefaultValue> T get ( String group, String key, Class<T> defaultValueClass )
     {
-        return get ( defaultSettingsGroup, key, getDefaultValue ( defaultValueClass ) );
+        return get ( group, key, getDefaultValue ( defaultValueClass ) );
     }
 
     /**

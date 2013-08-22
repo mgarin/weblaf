@@ -27,7 +27,7 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * @see SettingsGroup
  */
 
-@XStreamAlias ( "ReadState" )
+@XStreamAlias ("ReadState")
 public enum ReadState
 {
     /**

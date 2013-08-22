@@ -268,7 +268,7 @@ public class WebLabelUI extends BasicLabelUI
         }
 
         final Map textHints = drawShade ? StyleConstants.defaultTextRenderingHints : StyleConstants.textRenderingHints;
-        final Map oldHints = SwingUtils.setupTextAntialias ( g2d, c, textHints );
+        final Map oldHints = SwingUtils.setupTextAntialias ( g2d, textHints );
         super.paint ( g, c );
         SwingUtils.restoreTextAntialias ( g2d, oldHints );
 

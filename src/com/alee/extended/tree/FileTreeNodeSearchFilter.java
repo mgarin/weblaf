@@ -74,7 +74,7 @@ public class FileTreeNodeSearchFilter extends FileTreeNodeFilter
                 }
                 for ( int i = 0; i < object.getChildCount (); i++ )
                 {
-                    if ( searchForText ( ( FileTreeNode ) object.getChildAt ( i ), phrase ) )
+                    if ( searchForText ( object.getChildAt ( i ), phrase ) )
                     {
                         return true;
                     }

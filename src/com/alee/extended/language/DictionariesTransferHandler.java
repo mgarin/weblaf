@@ -153,10 +153,7 @@ public class DictionariesTransferHandler extends TransferHandler
                 // Drop Text or Tooltip into Value
                 return true;
             }
-            else
-            {
-                return false;
-            }
+            return false;
         }
         catch ( Throwable e )
         {

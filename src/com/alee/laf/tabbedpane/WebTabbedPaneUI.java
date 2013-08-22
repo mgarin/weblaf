@@ -576,17 +576,16 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider
                     }
                 }
                 g.setColor ( fg );
-                SwingUtils.drawStringUnderlineCharAt ( tabPane, g, title, mnemIndex, textRect.x, textRect.y + metrics.getAscent () );
+                SwingUtils.drawStringUnderlineCharAt ( g, title, mnemIndex, textRect.x, textRect.y + metrics.getAscent () );
 
             }
             else
             {
                 // tab disabled
                 g.setColor ( tabPane.getBackgroundAt ( tabIndex ).brighter () );
-                SwingUtils.drawStringUnderlineCharAt ( tabPane, g, title, mnemIndex, textRect.x, textRect.y + metrics.getAscent () );
+                SwingUtils.drawStringUnderlineCharAt ( g, title, mnemIndex, textRect.x, textRect.y + metrics.getAscent () );
                 g.setColor ( tabPane.getBackgroundAt ( tabIndex ).darker () );
-                SwingUtils
-                        .drawStringUnderlineCharAt ( tabPane, g, title, mnemIndex, textRect.x - 1, textRect.y + metrics.getAscent () - 1 );
+                SwingUtils.drawStringUnderlineCharAt ( g, title, mnemIndex, textRect.x - 1, textRect.y + metrics.getAscent () - 1 );
             }
         }
     }
@@ -830,18 +829,18 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider
                     g2d.drawLine ( bi.left, bi.top + tabAreaSize, tabPane.getWidth () - bi.right, bi.top + tabAreaSize );
                 }
             }
-            else if ( tabPlacement == JTabbedPane.BOTTOM )
-            {
-                //
-            }
-            else if ( tabPlacement == JTabbedPane.LEFT )
-            {
-                //
-            }
-            else if ( tabPlacement == JTabbedPane.RIGHT )
-            {
-                //
-            }
+            //            else if ( tabPlacement == JTabbedPane.BOTTOM )
+            //            {
+            //                //
+            //            }
+            //            else if ( tabPlacement == JTabbedPane.LEFT )
+            //            {
+            //                //
+            //            }
+            //            else if ( tabPlacement == JTabbedPane.RIGHT )
+            //            {
+            //                //
+            //            }
         }
 
         LafUtils.restoreAntialias ( g2d, aa );

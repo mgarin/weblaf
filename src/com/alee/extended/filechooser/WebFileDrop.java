@@ -392,7 +392,7 @@ public class WebFileDrop extends WebPanel implements LanguageMethods
             final FontMetrics fm = g2d.getFontMetrics ();
             if ( dashWidth >= fm.stringWidth ( dropText ) && dashHeight > fm.getHeight () )
             {
-                final Map hints = SwingUtils.setupTextAntialias ( g2d, this );
+                final Map hints = SwingUtils.setupTextAntialias ( g2d );
                 final Point ts = LafUtils.getTextCenterShear ( fm, dropText );
                 g2d.drawString ( dropText, getWidth () / 2 + ts.x, getHeight () / 2 + ts.y );
                 SwingUtils.restoreTextAntialias ( g2d, hints );

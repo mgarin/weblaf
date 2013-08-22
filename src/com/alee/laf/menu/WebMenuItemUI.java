@@ -146,12 +146,6 @@ public class WebMenuItemUI extends BasicMenuItemUI
     }
 
     @Override
-    public void paint ( Graphics g, JComponent c )
-    {
-        super.paint ( g, c );
-    }
-
-    @Override
     protected void paintMenuItem ( Graphics g, JComponent c, Icon checkIcon, Icon arrowIcon, Color background, Color foreground,
                                    int defaultTextIconGap )
     {
@@ -332,7 +326,7 @@ public class WebMenuItemUI extends BasicMenuItemUI
         // todo Proper placement with RTL orientation
         final int mnemIndex = WebLookAndFeel.isMnemonicHidden () ? -1 : menuItem.getDisplayedMnemonicIndex ();
         g.setColor ( menuItem.isEnabled () ? menuItem.getForeground () : UIManager.getColor ( "MenuItem.disabledForeground" ) );
-        SwingUtils.drawStringUnderlineCharAt ( menuItem, g, text, mnemIndex, 32,
+        SwingUtils.drawStringUnderlineCharAt ( g, text, mnemIndex, 32,
                 menuItem.getHeight () / 2 + LafUtils.getTextCenterShearY ( SwingUtils.getFontMetrics ( menuItem, g ) ) );
     }
 
@@ -347,7 +341,7 @@ public class WebMenuItemUI extends BasicMenuItemUI
 
             final Rectangle rect = lr.getAccRect ();
             rect.x = lh.getMenuItem ().getWidth () - 7 - lh.getAccFontMetrics ().stringWidth ( lh.getAccText () );
-            SwingUtils.drawString ( lh.getMenuItem (), g, lh.getAccText (), rect.x,
+            SwingUtils.drawString ( g, lh.getAccText (), rect.x,
                     lh.getMenuItem ().getHeight () / 2 + LafUtils.getTextCenterShearY ( lh.getAccFontMetrics () ) );
         }
     }

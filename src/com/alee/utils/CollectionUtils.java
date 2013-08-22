@@ -239,7 +239,8 @@ public final class CollectionUtils
         for ( int i = 0; i < array.length; i++ )
         {
             String txt = array[ i ];
-            if ( txt == null && text == null || txt != null && text != null && txt.equalsIgnoreCase ( text ) )
+            if ( txt == null && text == null ||
+                    txt != null && text != null && ( ignoreCase ? txt.equalsIgnoreCase ( text ) : txt.equals ( text ) ) )
             {
                 return i;
             }

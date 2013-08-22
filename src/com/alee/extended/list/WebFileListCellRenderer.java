@@ -269,7 +269,6 @@ public class WebFileListCellRenderer extends WebListCellRenderer
 
         final FileElement element = ( FileElement ) value;
         final File file = element.getFile ();
-        final String absolutePath = file.getAbsolutePath ();
 
         // Renderer icon
         String imageSize = null;

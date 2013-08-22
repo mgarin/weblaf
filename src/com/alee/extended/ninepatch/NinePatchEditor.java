@@ -495,10 +495,10 @@ public class NinePatchEditor extends JComponent
             final int imageStartY = ( ch + ( showRuler ? RULER_LENGTH : 0 ) ) / 2 - ih / 2;
 
             // Content area coordinates
-            final int contentStartX = getContentStartX ( imageStartX, cw, iw, margin );
-            final int contentEndX = getContentEndX ( imageStartX, cw, iw, margin );
-            final int contentStartY = getContentStartY ( imageStartY, ch, ih, margin );
-            final int contentEndY = getContentEndY ( imageStartY, ch, ih, margin );
+            final int contentStartX = getContentStartX ( imageStartX, margin );
+            final int contentEndX = getContentEndX ( imageStartX, iw, margin );
+            final int contentStartY = getContentStartY ( imageStartY, margin );
+            final int contentEndY = getContentEndY ( imageStartY, ih, margin );
 
             // Request focus on any action inside
             if ( mouseEventType.equals ( MouseEventType.mousePressed ) )
@@ -1563,10 +1563,10 @@ public class NinePatchEditor extends JComponent
             }
 
             // Editor content area
-            int csx = getContentStartX ( imageStartX, cw, iw, margin );
-            int cex = getContentEndX ( imageStartX, cw, iw, margin );
-            int csy = getContentStartY ( imageStartY, ch, ih, margin );
-            int cey = getContentEndY ( imageStartY, ch, ih, margin );
+            int csx = getContentStartX ( imageStartX, margin );
+            int cex = getContentEndX ( imageStartX, iw, margin );
+            int csy = getContentStartY ( imageStartY, margin );
+            int cey = getContentEndY ( imageStartY, ih, margin );
             if ( fillContentArea )
             {
                 g2d.setPaint ( CONTENT_COLOR );
@@ -1628,12 +1628,12 @@ public class NinePatchEditor extends JComponent
             // Ruler
             if ( showRuler )
             {
-                drawRuler ( g2d, new Point ( imageStartX - 1, imageStartY - 1 ), imageStartX, imageStartY, iw, ih );
+                drawRuler ( g2d, new Point ( imageStartX - 1, imageStartY - 1 ), imageStartX, imageStartY );
             }
         }
     }
 
-    private void drawRuler ( Graphics2D g2d, Point zp, int imageStartX, int imageStartY, int iw, int ih )
+    private void drawRuler ( Graphics2D g2d, Point zp, int imageStartX, int imageStartY )
     {
         // Variables
         final Rectangle vr = NinePatchEditor.this.getVisibleRect ();
@@ -1846,22 +1846,22 @@ public class NinePatchEditor extends JComponent
         return verticalGuides;
     }
 
-    private int getContentStartX ( int imageStartX, int cw, int iw, Insets margin )
+    private int getContentStartX ( int imageStartX, Insets margin )
     {
         return imageStartX + margin.left * zoom;
     }
 
-    private int getContentEndX ( int imageStartX, int cw, int iw, Insets margin )
+    private int getContentEndX ( int imageStartX, int iw, Insets margin )
     {
         return imageStartX + iw - margin.right * zoom;
     }
 
-    private int getContentStartY ( int imageStartY, int ch, int ih, Insets margin )
+    private int getContentStartY ( int imageStartY, Insets margin )
     {
         return imageStartY + margin.top * zoom;
     }
 
-    private int getContentEndY ( int imageStartY, int ch, int ih, Insets margin )
+    private int getContentEndY ( int imageStartY, int ih, Insets margin )
     {
         return imageStartY + ih - margin.bottom * zoom;
     }

@@ -33,7 +33,6 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
 
 /**
  * Custom dialog that contains nine-patch editor.
@@ -150,7 +149,7 @@ public class NinePatchEditorDialog extends WebFrame
         return ninePatchEditorPanel.getNinePatchImage ();
     }
 
-    public static void main ( String[] args ) throws IOException
+    public static void main ( String[] args )
     {
         SwingUtilities.invokeLater ( new Runnable ()
         {

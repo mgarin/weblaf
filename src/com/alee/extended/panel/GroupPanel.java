@@ -201,7 +201,7 @@ public class GroupPanel extends WebPanel
      */
     public void setOrientation ( int orientation )
     {
-        getActualLayout ().setOrientation ( getOrientation () );
+        getActualLayout ().setOrientation ( orientation );
         revalidate ();
     }
 

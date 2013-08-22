@@ -171,7 +171,7 @@ public class WebTextAreaUI extends BasicTextAreaUI
             painter.paint ( g2d, SwingUtils.size ( c ), c );
         }
 
-        Map hints = SwingUtils.setupTextAntialias ( g2d, c );
+        Map hints = SwingUtils.setupTextAntialias ( g2d );
         super.paintSafely ( g );
         SwingUtils.restoreTextAntialias ( g2d, hints );
     }

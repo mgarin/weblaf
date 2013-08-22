@@ -564,7 +564,7 @@ public class WebPasswordFieldUI extends BasicPasswordFieldUI implements ShapePro
             LafUtils.restoreAntialias ( g2d, aa );
         }
 
-        Map hints = SwingUtils.setupTextAntialias ( g2d, passwordField );
+        Map hints = SwingUtils.setupTextAntialias ( g2d );
         super.paintSafely ( g );
         if ( isInputPromptVisible ( c ) )
         {

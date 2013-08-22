@@ -304,7 +304,7 @@ public class WebMenuUI extends BasicMenuUI
         // todo Proper placement with RTL orientation
         final int mnemIndex = WebLookAndFeel.isMnemonicHidden () ? -1 : menuItem.getDisplayedMnemonicIndex ();
         g.setColor ( menuItem.isEnabled () ? menuItem.getForeground () : UIManager.getColor ( "MenuItem.disabledForeground" ) );
-        SwingUtils.drawStringUnderlineCharAt ( menuItem, g, text, mnemIndex, rect.x, rect.y + rect.height );
+        SwingUtils.drawStringUnderlineCharAt ( g, text, mnemIndex, rect.x, rect.y + rect.height );
     }
 
     protected void paintAccText ( Graphics g, MenuItemLayoutHelper lh, MenuItemLayoutHelper.LayoutResult lr )
@@ -318,7 +318,7 @@ public class WebMenuUI extends BasicMenuUI
 
             final Rectangle rect = lr.getAccRect ();
             rect.x = lh.getMenuItem ().getWidth () - 7 - lh.getAccFontMetrics ().stringWidth ( lh.getAccText () );
-            SwingUtils.drawString ( lh.getMenuItem (), g, lh.getAccText (), rect.x,
+            SwingUtils.drawString ( g, lh.getAccText (), rect.x,
                     lh.getMenuItem ().getHeight () / 2 + LafUtils.getTextCenterShearY ( lh.getAccFontMetrics () ) );
         }
     }

@@ -449,7 +449,6 @@ public class WebGradientColorChooser extends JComponent
     private void paintControls ( Graphics2D g2d, Rectangle lineBounds )
     {
         int x = lineBounds.x + 2;
-        int x2 = lineBounds.x + lineBounds.width - 2;
         int w = lineBounds.width - 4;
         int y = lineBounds.y + lineBounds.height - gripperSize.height / 2;
         int textY = y + gripperSize.height;

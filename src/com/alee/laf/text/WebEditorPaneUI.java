@@ -63,7 +63,7 @@ public class WebEditorPaneUI extends BasicEditorPaneUI
         Graphics2D g2d = ( Graphics2D ) g;
         JTextComponent c = getComponent ();
 
-        Map hints = SwingUtils.setupTextAntialias ( g2d, c );
+        Map hints = SwingUtils.setupTextAntialias ( g2d );
         super.paintSafely ( g );
         SwingUtils.restoreTextAntialias ( g2d, hints );
     }

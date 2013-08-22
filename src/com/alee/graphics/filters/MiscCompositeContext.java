@@ -90,7 +90,8 @@ public class MiscCompositeContext implements CompositeContext
     @Override
     public void compose ( Raster src, Raster dstIn, WritableRaster dstOut )
     {
-        float a = 0, ac = 0;
+        float a;
+        float ac;
         float alpha = this.alpha;
         int t;
 
@@ -133,7 +134,9 @@ public class MiscCompositeContext implements CompositeContext
                 int dib = dstPix[ i + 2 ];
                 int sa = srcPix[ i + 3 ];
                 int dia = dstPix[ i + 3 ];
-                int dor, dog, dob, doa;
+                int dor;
+                int dog;
+                int dob;
 
                 switch ( rule )
                 {
@@ -301,7 +304,7 @@ public class MiscCompositeContext implements CompositeContext
                     case MiscComposite.BURN:
                         if ( dir != 255 )
                         {
-                            dor = clamp ( 255 - ( ( ( int ) ( 255 - sr ) << 8 ) / ( dir + 1 ) ) );
+                            dor = clamp ( 255 - ( ( 255 - sr << 8 ) / ( dir + 1 ) ) );
                         }
                         else
                         {
@@ -309,7 +312,7 @@ public class MiscCompositeContext implements CompositeContext
                         }
                         if ( dig != 255 )
                         {
-                            dog = clamp ( 255 - ( ( ( int ) ( 255 - sg ) << 8 ) / ( dig + 1 ) ) );
+                            dog = clamp ( 255 - ( ( 255 - sg << 8 ) / ( dig + 1 ) ) );
                         }
                         else
                         {
@@ -317,7 +320,7 @@ public class MiscCompositeContext implements CompositeContext
                         }
                         if ( dib != 255 )
                         {
-                            dob = clamp ( 255 - ( ( ( int ) ( 255 - sb ) << 8 ) / ( dib + 1 ) ) );
+                            dob = clamp ( 255 - ( ( 255 - sb << 8 ) / ( dib + 1 ) ) );
                         }
                         else
                         {
@@ -328,7 +331,7 @@ public class MiscCompositeContext implements CompositeContext
                     case MiscComposite.COLOR_BURN:
                         if ( sr != 0 )
                         {
-                            dor = Math.max ( 255 - ( ( ( int ) ( 255 - dir ) << 8 ) / sr ), 0 );
+                            dor = Math.max ( 255 - ( ( 255 - dir << 8 ) / sr ), 0 );
                         }
                         else
                         {
@@ -336,7 +339,7 @@ public class MiscCompositeContext implements CompositeContext
                         }
                         if ( sg != 0 )
                         {
-                            dog = Math.max ( 255 - ( ( ( int ) ( 255 - dig ) << 8 ) / sg ), 0 );
+                            dog = Math.max ( 255 - ( ( 255 - dig << 8 ) / sg ), 0 );
                         }
                         else
                         {
@@ -344,7 +347,7 @@ public class MiscCompositeContext implements CompositeContext
                         }
                         if ( sb != 0 )
                         {
-                            dob = Math.max ( 255 - ( ( ( int ) ( 255 - dib ) << 8 ) / sb ), 0 );
+                            dob = Math.max ( 255 - ( ( 255 - dib << 8 ) / sb ), 0 );
                         }
                         else
                         {

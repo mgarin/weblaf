@@ -929,6 +929,7 @@ public class WebTimer
     {
         WebTimer once = new WebTimer ( name, delay, listener );
         once.setRepeats ( false );
+        once.setUseEventDispatchThread ( useEventDispatchThread );
         once.start ();
         return once;
     }
@@ -1096,6 +1097,7 @@ public class WebTimer
     {
         WebTimer repeat = new WebTimer ( name, delay, initialDelay, listener );
         repeat.setRepeats ( true );
+        repeat.setUseEventDispatchThread ( useEventDispatchThread );
         repeat.start ();
         return repeat;
     }

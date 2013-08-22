@@ -212,15 +212,6 @@ public final class MiscComposite implements Composite
             return false;
         }
         MiscComposite c = ( MiscComposite ) o;
-
-        if ( rule != c.rule )
-        {
-            return false;
-        }
-        if ( extraAlpha != c.extraAlpha )
-        {
-            return false;
-        }
-        return true;
+        return rule == c.rule && extraAlpha == c.extraAlpha;
     }
 }

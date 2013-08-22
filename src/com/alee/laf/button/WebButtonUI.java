@@ -844,7 +844,7 @@ public class WebButtonUI extends BasicButtonUI implements ShapeProvider, SwingCo
         LafUtils.restoreAntialias ( g2d, aa );
 
         // Default text and icon drawing
-        Map hints = SwingUtils.setupTextAntialias ( g2d, c );
+        Map hints = SwingUtils.setupTextAntialias ( g2d );
         super.paint ( g, c );
         SwingUtils.restoreTextAntialias ( g2d, hints );
     }
@@ -879,16 +879,16 @@ public class WebButtonUI extends BasicButtonUI implements ShapeProvider, SwingCo
         {
             // Drawing normal text
             g.setColor ( model.isPressed () || model.isSelected () ? selectedForeground : b.getForeground () );
-            SwingUtils.drawStringUnderlineCharAt ( c, g, text, mnemonicIndex, textRect.x + getTextShiftOffset (),
+            SwingUtils.drawStringUnderlineCharAt ( g, text, mnemonicIndex, textRect.x + getTextShiftOffset (),
                     textRect.y + fm.getAscent () + getTextShiftOffset () );
         }
         else
         {
             // Drawing disabled text
             g.setColor ( b.getBackground ().brighter () );
-            SwingUtils.drawStringUnderlineCharAt ( c, g, text, mnemonicIndex, textRect.x, textRect.y + fm.getAscent () );
+            SwingUtils.drawStringUnderlineCharAt ( g, text, mnemonicIndex, textRect.x, textRect.y + fm.getAscent () );
             g.setColor ( b.getBackground ().darker () );
-            SwingUtils.drawStringUnderlineCharAt ( c, g, text, mnemonicIndex, textRect.x - 1, textRect.y + fm.getAscent () - 1 );
+            SwingUtils.drawStringUnderlineCharAt ( g, text, mnemonicIndex, textRect.x - 1, textRect.y + fm.getAscent () - 1 );
         }
     }
 

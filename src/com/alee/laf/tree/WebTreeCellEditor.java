@@ -134,7 +134,9 @@ public class WebTreeCellEditor<C extends JComponent> extends WebDefaultCellEdito
         if ( component instanceof JLabel && ( ( JLabel ) component ).getIcon () != null )
         {
             JLabel label = ( JLabel ) component;
-            boolean ltr = tree.getComponentOrientation ().isLeftToRight ();
+
+            // todo Proper editor for RTL
+            // boolean ltr = tree.getComponentOrientation ().isLeftToRight ();
 
             if ( cellEditor instanceof WebTextField )
             {

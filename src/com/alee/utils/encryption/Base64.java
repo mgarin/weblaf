@@ -304,7 +304,7 @@ public final class Base64
      * @param encoded Base64 data
      * @return Array containind decoded data.
      */
-    @SuppressWarnings ( "UnusedAssignment" )
+    @SuppressWarnings ("UnusedAssignment")
     public static byte[] decode ( String encoded )
     {
         if ( encoded == null )

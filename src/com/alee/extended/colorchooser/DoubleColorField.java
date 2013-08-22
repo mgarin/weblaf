@@ -92,7 +92,7 @@ public class DoubleColorField extends WebPanel
         Graphics2D g2d = ( Graphics2D ) g;
         FontMetrics fm = g2d.getFontMetrics ();
 
-        Map hints = SwingUtils.setupTextAntialias ( g2d, this );
+        Map hints = SwingUtils.setupTextAntialias ( g2d );
 
         g2d.setPaint ( Color.GRAY );
         g2d.drawRect ( 0, 0, getWidth () - 1, getHeight () - 1 );

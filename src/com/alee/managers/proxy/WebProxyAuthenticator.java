@@ -17,7 +17,6 @@
 
 package com.alee.managers.proxy;
 
-import com.alee.extended.optionpane.DialogType;
 import com.alee.extended.optionpane.WebExtendedOptionPane;
 import com.alee.extended.panel.GroupPanel;
 import com.alee.laf.checkbox.WebCheckBox;
@@ -168,7 +167,7 @@ public class WebProxyAuthenticator extends Authenticator
          */
         public AuthDialog ( ProxySettings proxySettings )
         {
-            super ( DialogType.confirm, SwingUtils.getActiveWindow (), null, null, LanguageManager.get ( "weblaf.proxy.auth.title" ),
+            super ( SwingUtils.getActiveWindow (), null, null, LanguageManager.get ( "weblaf.proxy.auth.title" ),
                     WebOptionPane.OK_CANCEL_OPTION, WebOptionPane.PLAIN_MESSAGE );
 
 

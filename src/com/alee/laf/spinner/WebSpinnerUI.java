@@ -65,12 +65,6 @@ public class WebSpinnerUI extends BasicSpinnerUI implements ShapeProvider
     }
 
     @Override
-    public void uninstallUI ( JComponent c )
-    {
-        super.uninstallUI ( c );
-    }
-
-    @Override
     public Shape provideShape ()
     {
         return LafUtils.getWebBorderShape ( spinner, getShadeWidth (), getRound () );

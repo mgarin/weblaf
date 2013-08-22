@@ -28,7 +28,7 @@ import java.io.Serializable;
  * @author Mikle Garin
  */
 
-@XStreamAlias ("NodeState")
+@XStreamAlias ( "NodeState" )
 public class NodeState implements Serializable, Cloneable
 {
     /**

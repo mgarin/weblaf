@@ -130,7 +130,7 @@ public class WebToolTipUI extends BasicToolTipUI implements ShapeProvider
         LafUtils.restoreComposite ( g2d, oc );
         LafUtils.restoreAntialias ( g2d, aa );
 
-        Map taa = SwingUtils.setupTextAntialias ( g2d, c );
+        Map taa = SwingUtils.setupTextAntialias ( g2d );
         super.paint ( g, c );
         SwingUtils.restoreTextAntialias ( g2d, taa );
     }

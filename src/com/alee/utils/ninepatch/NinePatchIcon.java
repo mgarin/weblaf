@@ -500,12 +500,8 @@ public class NinePatchIcon implements Icon
         final int unfixedY = componentHeight - fixedPixelsY;
 
         int currentY = y;
-        for ( int j = 0; j < verticalStretch.size (); j++ )
+        for ( NinePatchInterval intervalY : verticalStretch )
         {
-            // Current Y interval
-            NinePatchInterval intervalY = verticalStretch.get ( j );
-            NinePatchInterval beforeY = j > 0 ? verticalStretch.get ( j - 1 ) : null;
-
             // Percent part height
             int intervalHeight = intervalY.getEnd () - intervalY.getStart () + 1;
             int finalHeight;
@@ -520,12 +516,8 @@ public class NinePatchIcon implements Icon
             }
 
             int currentX = x;
-            for ( int i = 0; i < horizontalStretch.size (); i++ )
+            for ( NinePatchInterval intervalX : horizontalStretch )
             {
-                // Current X interval
-                NinePatchInterval intervalX = horizontalStretch.get ( i );
-                NinePatchInterval beforeX = i > 0 ? horizontalStretch.get ( i - 1 ) : null;
-
                 // Percent part width
                 int intervalWidth = intervalX.getEnd () - intervalX.getStart () + 1;
                 int finalWidth;

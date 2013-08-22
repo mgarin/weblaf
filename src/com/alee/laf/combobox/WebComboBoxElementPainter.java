@@ -59,6 +59,7 @@ public class WebComboBoxElementPainter extends DefaultPainter<WebComboBoxElement
         }
     }
 
+    @SuppressWarnings ("UnusedParameters")
     protected void paintBoxBackground ( Graphics2D g2d, WebComboBoxElement element )
     {
         //
@@ -82,6 +83,7 @@ public class WebComboBoxElementPainter extends DefaultPainter<WebComboBoxElement
         }
     }
 
+    @SuppressWarnings ("UnusedParameters")
     protected void paintDeselectedBackground ( Graphics2D g2d, WebComboBoxElement element )
     {
         //

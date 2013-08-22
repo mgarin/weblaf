@@ -194,7 +194,7 @@ public final class ImageUtils
             images[ i ] = icon != null ? icon.getImage () : null;
             i++;
         }
-        return new ImageIcon ( combineIcons ( images ) );
+        return new ImageIcon ( combineIcons ( spacing, images ) );
     }
 
     public static ImageIcon combineIcons ( ImageIcon... icons )
@@ -217,7 +217,7 @@ public final class ImageUtils
             images[ i ] = icon != null ? icon.getImage () : null;
             i++;
         }
-        return new ImageIcon ( combineIcons ( images ) );
+        return new ImageIcon ( combineIcons ( spacing, images ) );
     }
 
     public static BufferedImage combineIcons ( Image... images )
@@ -1308,6 +1308,7 @@ public final class ImageUtils
 
     public static BufferedImage createImageShade ( int w, int h, Shape shape, int shadeWidth, float shadeOpacity, Color clearColor )
     {
+        // todo Properly use height
         int width = shadeWidth * 2 + w;
         int height = shadeWidth * 2 + h;
 

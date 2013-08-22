@@ -248,11 +248,6 @@ public class WebDefaultCellEditor<C extends JComponent> extends AbstractCellEdit
             return true;
         }
 
-        public boolean startCellEditing ( EventObject anEvent )
-        {
-            return true;
-        }
-
         public boolean stopCellEditing ()
         {
             fireEditingStopped ();

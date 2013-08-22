@@ -237,7 +237,7 @@ public class MenuItemLayoutHelper
         // accRect
         if ( !accText.equals ( "" ) )
         {
-            accSize.width = SwingUtils.stringWidth ( mi, accFm, accText );
+            accSize.width = SwingUtils.stringWidth ( accFm, accText );
             accSize.height = accFm.getHeight ();
         }
 
@@ -257,7 +257,7 @@ public class MenuItemLayoutHelper
             else
             {
                 // Text isn't HTML
-                textSize.width = SwingUtils.stringWidth ( mi, fm, text );
+                textSize.width = SwingUtils.stringWidth ( fm, text );
                 textSize.height = fm.getHeight ();
             }
         }

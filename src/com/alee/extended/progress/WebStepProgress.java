@@ -636,11 +636,6 @@ public class WebStepProgress extends JComponent implements SwingConstants, Shape
         return progress;
     }
 
-    private float getProgressAt ( Point point )
-    {
-        return 0;
-    }
-
     public void setProgress ( float progress )
     {
         // Check progress correctness
@@ -688,7 +683,6 @@ public class WebStepProgress extends JComponent implements SwingConstants, Shape
         float pw = getPathWidth ();
         if ( hor )
         {
-            float tp;
             if ( getComponentOrientation ().isLeftToRight () )
             {
                 if ( point.x < p1.x )
@@ -855,7 +849,6 @@ public class WebStepProgress extends JComponent implements SwingConstants, Shape
     private LinearGradientPaint createFillPaint ()
     {
         Point p1 = getPathStart ();
-        Point p2 = getPathEnd ();
         float tss = selectedStep + progress;
         int sw = getPathWidth () / ( steps.size () - 1 );
         float pw = stepControlFillSize * 1.5f + sw * tss;

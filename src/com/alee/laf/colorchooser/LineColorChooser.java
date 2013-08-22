@@ -140,7 +140,10 @@ public class LineColorChooser extends WebPanel
         LineColorChooser.this.repaint ();
 
         // Informing about new value
-        firePropertyChanged ();
+        if ( fireEvent )
+        {
+            firePropertyChanged ();
+        }
     }
 
     public int getHue ()

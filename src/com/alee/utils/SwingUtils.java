@@ -2574,17 +2574,16 @@ public final class SwingUtils
     /**
      * Paints string with underlined character at the specified index.
      *
-     * @param c               JComponent on which text is being painted
      * @param g               graphics context
      * @param text            painted text
      * @param underlinedIndex underlined character index
      * @param x               text X coordinate
      * @param y               text Y coordinate
      */
-    public static void drawStringUnderlineCharAt ( JComponent c, Graphics g, String text, int underlinedIndex, int x, int y )
+    public static void drawStringUnderlineCharAt ( Graphics g, String text, int underlinedIndex, int x, int y )
     {
         // Painting string
-        drawString ( c, g, text, x, y );
+        drawString ( g, text, x, y );
 
         // Painting character underline
         if ( underlinedIndex >= 0 && underlinedIndex < text.length () )
@@ -2598,13 +2597,12 @@ public final class SwingUtils
     /**
      * Paints string.
      *
-     * @param c    JComponent on which text is being painted
      * @param g    graphics context
      * @param text painted text
      * @param x    text X coordinate
      * @param y    text Y coordinate
      */
-    public static void drawString ( JComponent c, Graphics g, String text, int x, int y )
+    public static void drawString ( Graphics g, String text, int x, int y )
     {
         g.drawString ( text, x, y );
     }
@@ -2618,43 +2616,40 @@ public final class SwingUtils
      */
     public static Map setupTextAntialias ( final Graphics g, final Component c )
     {
-        return setupTextAntialias ( ( Graphics2D ) g, c );
+        return setupTextAntialias ( ( Graphics2D ) g );
     }
 
     /**
      * Installs text antialiasing hints into specified graphics context.
      *
      * @param g2d graphics context
-     * @param c   component
      * @return old text antialiasing hints
      */
-    public static Map setupTextAntialias ( final Graphics2D g2d, final Component c )
+    public static Map setupTextAntialias ( final Graphics2D g2d )
     {
-        return setupTextAntialias ( g2d, c, StyleConstants.textRenderingHints );
+        return setupTextAntialias ( g2d, StyleConstants.textRenderingHints );
     }
 
     /**
      * Installs text antialiasing hints into specified graphics context.
      *
      * @param g     graphics context
-     * @param c     component
      * @param hints text antialiasing hints
      * @return old text antialiasing hints
      */
-    public static Map setupTextAntialias ( final Graphics g, final Component c, Map hints )
+    public static Map setupTextAntialias ( final Graphics g, Map hints )
     {
-        return setupTextAntialias ( ( Graphics2D ) g, c, hints );
+        return setupTextAntialias ( ( Graphics2D ) g, hints );
     }
 
     /**
      * Installs text antialiasing hints into specified graphics context.
      *
      * @param g2d   graphics context
-     * @param c     component
      * @param hints text antialiasing hints
      * @return old text antialiasing hints
      */
-    public static Map setupTextAntialias ( final Graphics2D g2d, final Component c, Map hints )
+    public static Map setupTextAntialias ( final Graphics2D g2d, Map hints )
     {
         if ( hints != null )
         {
@@ -2770,11 +2765,10 @@ public final class SwingUtils
      * Returns the width of the passed in String.
      * If the passed String is null, returns zero.
      *
-     * @param c      JComponent that will display the string, may be null
      * @param fm     FontMetrics used to measure the String width
      * @param string String to get the width of
      */
-    public static int stringWidth ( JComponent c, FontMetrics fm, String string )
+    public static int stringWidth ( FontMetrics fm, String string )
     {
         if ( string == null || string.equals ( "" ) )
         {

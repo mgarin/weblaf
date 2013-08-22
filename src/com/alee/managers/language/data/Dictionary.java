@@ -59,7 +59,7 @@ public final class Dictionary implements Serializable
     @XStreamImplicit (itemFieldName = "Dictionary")
     private List<Dictionary> subdictionaries;
 
-    @XStreamAlias ( "LanguageInfo" )
+    @XStreamAlias ("LanguageInfo")
     private List<LanguageInfo> languageInfos;
 
     public Dictionary ()

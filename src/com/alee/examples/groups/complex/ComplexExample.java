@@ -101,26 +101,11 @@ public class ComplexExample extends DefaultExample
         WebPanel ppp = new WebPanel ( new ToolbarLayout ( 0, 0, ToolbarLayout.VERTICAL ) );
         ppp.setPainter ( new ShadeBackgroundPainter ( null ) );
         ppp.setShadeWidth ( 20 );
-        ppp.add ( new WebLabel ( "123" )
-        {
-            @Override
-            protected void paintComponent ( Graphics g )
-            {
-                super.paintComponent ( g );
-                //                DebugUtils.paintBorderDebugInfo ( g, this );
-            }
-        } );
+        ppp.add ( new WebLabel ( "123" ) );
         ppp.add ( new WebLabel ( "345" )
         {
             {
                 setPainter ( new ShadeBackgroundPainter ( null ) );
-            }
-
-            @Override
-            protected void paintComponent ( Graphics g )
-            {
-                super.paintComponent ( g );
-                //                DebugUtils.paintBorderDebugInfo ( g, this );
             }
         }, ToolbarLayout.END );
         return ppp;

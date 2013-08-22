@@ -398,8 +398,10 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
     {
         if ( titleComponent != null && !customTitle )
         {
+            // todo Proper updates for RTL
+            // boolean ltr = getComponentOrientation ().isLeftToRight ();
+
             // Updating title margin according to title pane position
-            boolean ltr = getComponentOrientation ().isLeftToRight ();
             Insets margin = getIcon () != null || titlePanePostion != LEFT || titlePanePostion == RIGHT ? new Insets ( 2, 2, 2, 2 ) :
                     new Insets ( 2, 4, 2, 2 );
             if ( titlePanePostion == LEFT )
@@ -1104,7 +1106,8 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
     {
         if ( cachedCollapseIcon == null )
         {
-            boolean ltr = getComponentOrientation ().isLeftToRight ();
+            // todo Proper icon for RTL
+            // boolean ltr = getComponentOrientation ().isLeftToRight ();
             if ( !rotateStateIcon || titlePanePostion == TOP || titlePanePostion == BOTTOM )
             {
                 cachedCollapseIcon = new OrientedIcon ( collapseIcon );

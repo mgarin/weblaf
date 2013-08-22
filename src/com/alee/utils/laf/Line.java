@@ -28,7 +28,7 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-@XStreamAlias ( "Line" )
+@XStreamAlias ("Line")
 public class Line
 {
     /**

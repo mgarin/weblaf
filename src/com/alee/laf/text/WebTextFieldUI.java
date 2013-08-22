@@ -564,7 +564,7 @@ public class WebTextFieldUI extends BasicTextFieldUI implements ShapeProvider, S
             LafUtils.restoreAntialias ( g2d, aa );
         }
 
-        Map hints = SwingUtils.setupTextAntialias ( g2d, textField );
+        Map hints = SwingUtils.setupTextAntialias ( g2d );
         super.paintSafely ( g );
         if ( isInputPromptVisible ( c ) )
         {

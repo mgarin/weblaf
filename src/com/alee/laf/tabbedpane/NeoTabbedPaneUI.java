@@ -159,17 +159,16 @@ public class NeoTabbedPaneUI extends BasicTabbedPaneUI
                     }
                 }
                 g.setColor ( fg );
-                SwingUtils.drawStringUnderlineCharAt ( tabPane, g, title, mnemIndex, textRect.x, textRect.y + metrics.getAscent () );
+                SwingUtils.drawStringUnderlineCharAt ( g, title, mnemIndex, textRect.x, textRect.y + metrics.getAscent () );
 
             }
             else
             {
                 // tab disabled
                 g.setColor ( tabPane.getBackgroundAt ( tabIndex ).brighter () );
-                SwingUtils.drawStringUnderlineCharAt ( tabPane, g, title, mnemIndex, textRect.x, textRect.y + metrics.getAscent () );
+                SwingUtils.drawStringUnderlineCharAt ( g, title, mnemIndex, textRect.x, textRect.y + metrics.getAscent () );
                 g.setColor ( tabPane.getBackgroundAt ( tabIndex ).darker () );
-                SwingUtils
-                        .drawStringUnderlineCharAt ( tabPane, g, title, mnemIndex, textRect.x - 1, textRect.y + metrics.getAscent () - 1 );
+                SwingUtils.drawStringUnderlineCharAt ( g, title, mnemIndex, textRect.x - 1, textRect.y + metrics.getAscent () - 1 );
             }
         }
         SwingUtils.restoreTextAntialias ( g, aa );
@@ -294,7 +293,6 @@ public class NeoTabbedPaneUI extends BasicTabbedPaneUI
         int width = tabPane.getWidth ();
         int height = tabPane.getHeight ();
         Insets insets = tabPane.getInsets ();
-        Insets tabAreaInsets = getTabAreaInsets ( tabPlacement );
 
         int x = insets.left;
         int y = insets.top;

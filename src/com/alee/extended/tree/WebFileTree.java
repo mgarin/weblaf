@@ -328,9 +328,7 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
             }
 
             // Expanding whole path
-            final AsyncTreeModel model = getAsyncModel ();
             final FileTreeNode node = getClosestNode ( file );
-            FileTreeNode parent = null;
             if ( node != null )
             {
                 if ( FileUtils.equals ( node.getFile (), file ) )
@@ -835,7 +833,7 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
         FileTreeNode node = getNode ( folder );
         if ( node != null )
         {
-            reloadNodeSync ( node );
+            reloadNodeSync ( node, select );
         }
     }
 
@@ -860,7 +858,7 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
         FileTreeNode node = getNode ( folder );
         if ( node != null )
         {
-            reloadNode ( node );
+            reloadNode ( node, select );
         }
     }
 }

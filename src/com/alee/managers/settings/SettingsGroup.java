@@ -32,7 +32,7 @@ import java.util.Map;
  * @author Mikle Garin
  */
 
-@XStreamAlias ( "SettingsGroup" )
+@XStreamAlias ("SettingsGroup")
 public class SettingsGroup implements Serializable
 {
     /**
