@@ -55,7 +55,7 @@ Here is a full list of usable ANT targets in WebLaF build script:
 
 Example Usage
 ----------
-To install WebLaF you can simply use this line of code:
+To install WebLaF you can simply call `install()` or use one of standard Swing L&F set methods:
 ```java
 public class WebLafUsage
 {
