@@ -23,6 +23,7 @@ import com.thoughtworks.xstream.annotations.XStreamConverter;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -37,11 +38,25 @@ import java.util.Map;
 @XStreamConverter (ValuesTableConverter.class)
 public class ValuesTable<K, V> implements Serializable
 {
-    // Keys list
-    private List<K> keys;
+    /**
+     * Keys list.
+     */
+    protected List<K> keys;
 
-    // Values list
-    private List<V> values;
+    /**
+     * Values list.
+     */
+    protected List<V> values;
+
+    /**
+     * Values by keys map.
+     */
+    protected Map<K, V> valuesByKeys;
+
+    /**
+     * Keys by values map.
+     */
+    protected Map<V, K> keysByValues;
 
     /**
      * Constructs an empty ValuesTable with initial capacity of ten.
@@ -59,6 +74,8 @@ public class ValuesTable<K, V> implements Serializable
         super ();
         keys = new ArrayList<K> ( initialCapacity );
         values = new ArrayList<V> ( initialCapacity );
+        valuesByKeys = new HashMap<K, V> ( initialCapacity );
+        keysByValues = new HashMap<V, K> ( initialCapacity );
     }
 
     /**
@@ -146,7 +163,7 @@ public class ValuesTable<K, V> implements Serializable
      */
     public void put ( K key, V value )
     {
-        put ( keys.size (), key, value );
+        put ( size (), key, value );
     }
 
     /**
@@ -172,52 +189,47 @@ public class ValuesTable<K, V> implements Serializable
     {
         // Searching for existing key
         int existingKeyIndex = -1;
-        if ( keys.contains ( key ) )
+        if ( containsKey ( key ) )
         {
             existingKeyIndex = indexOfKey ( key );
         }
 
         // Searching for existing value
         int existingValueIndex = -1;
-        if ( values.contains ( value ) )
+        if ( containsValue ( value ) )
         {
             existingValueIndex = indexOfValue ( value );
         }
 
-        // Removing existing records
+        // Removing existing entries
         if ( existingKeyIndex != -1 || existingValueIndex != -1 )
         {
             if ( existingKeyIndex > existingValueIndex )
             {
                 if ( existingKeyIndex != -1 )
                 {
-                    keys.remove ( existingKeyIndex );
-                    values.remove ( existingKeyIndex );
+                    removeExistingEntry ( existingKeyIndex );
                 }
                 if ( existingValueIndex != -1 )
                 {
-                    keys.remove ( existingValueIndex );
-                    values.remove ( existingValueIndex );
+                    removeExistingEntry ( existingValueIndex );
                 }
             }
             else
             {
                 if ( existingValueIndex != -1 )
                 {
-                    keys.remove ( existingValueIndex );
-                    values.remove ( existingValueIndex );
+                    removeExistingEntry ( existingValueIndex );
                 }
                 if ( existingKeyIndex != -1 )
                 {
-                    keys.remove ( existingKeyIndex );
-                    values.remove ( existingKeyIndex );
+                    removeExistingEntry ( existingKeyIndex );
                 }
             }
         }
 
         // Changing insert index
-        if ( existingKeyIndex != -1 && existingKeyIndex < index && existingValueIndex != -1 &&
-                existingValueIndex < index )
+        if ( existingKeyIndex != -1 && existingKeyIndex < index && existingValueIndex != -1 && existingValueIndex < index )
         {
             index -= 2;
         }
@@ -227,8 +239,7 @@ public class ValuesTable<K, V> implements Serializable
         }
 
         // Adding new key-value pair
-        keys.add ( index, key );
-        values.add ( index, value );
+        addEntry ( index, key, value );
     }
 
     /**
@@ -270,13 +281,40 @@ public class ValuesTable<K, V> implements Serializable
     {
         if ( index >= 0 && index < keys.size () )
         {
-            keys.remove ( index );
-            values.remove ( index );
+            removeExistingEntry ( index );
         }
         else
         {
             throw new IndexOutOfBoundsException ( outOfBoundsMsg ( index ) );
         }
+    }
+
+    /**
+     * Adds new entry at the specified index.
+     *
+     * @param index new entry index
+     * @param key   entry key
+     * @param value entry value
+     */
+    private void addEntry ( int index, K key, V value )
+    {
+        keys.add ( index, key );
+        values.add ( index, value );
+        valuesByKeys.put ( key, value );
+        keysByValues.put ( value, key );
+    }
+
+    /**
+     * Removes entry at the specified index.
+     *
+     * @param index entry index
+     */
+    protected void removeExistingEntry ( int index )
+    {
+        K rk = keys.remove ( index );
+        V rv = values.remove ( index );
+        valuesByKeys.remove ( rk );
+        keysByValues.remove ( rv );
     }
 
     /**
@@ -332,8 +370,7 @@ public class ValuesTable<K, V> implements Serializable
      */
     public V getValue ( K key )
     {
-        int index = indexOfKey ( key );
-        return index != -1 ? values.get ( index ) : null;
+        return valuesByKeys.get ( key );
     }
 
     /**
@@ -344,8 +381,7 @@ public class ValuesTable<K, V> implements Serializable
      */
     public K getKey ( V value )
     {
-        int index = indexOfValue ( value );
-        return index != -1 ? keys.get ( index ) : null;
+        return keysByValues.get ( value );
     }
 
     /**
@@ -356,7 +392,7 @@ public class ValuesTable<K, V> implements Serializable
      */
     public boolean contains ( K key )
     {
-        return keys.contains ( key );
+        return valuesByKeys.containsKey ( key );
     }
 
     /**
@@ -367,7 +403,7 @@ public class ValuesTable<K, V> implements Serializable
      */
     public boolean containsKey ( K key )
     {
-        return keys.contains ( key );
+        return valuesByKeys.containsKey ( key );
     }
 
     /**
@@ -378,7 +414,7 @@ public class ValuesTable<K, V> implements Serializable
      */
     public boolean containsValue ( V value )
     {
-        return values.contains ( value );
+        return keysByValues.containsKey ( value );
     }
 
     /**
@@ -430,7 +466,7 @@ public class ValuesTable<K, V> implements Serializable
      * @param index index that is out of bounds
      * @return message text
      */
-    private String outOfBoundsMsg ( int index )
+    protected String outOfBoundsMsg ( int index )
     {
         return "Index: " + index + ", Size: " + size ();
     }
