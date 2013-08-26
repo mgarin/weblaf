@@ -23,21 +23,34 @@ import com.alee.utils.ReflectUtils;
 import javax.swing.*;
 
 /**
- * User: mgarin Date: 01.11.11 Time: 13:26
+ * This JViewport extension class provides a direct access to WebViewportUI methods.
+ *
+ * @author Mikle Garin
  */
 
 public class WebViewport extends JViewport
 {
+    /**
+     * Constructs new viewport component.
+     */
     public WebViewport ()
     {
         super ();
     }
 
+    /**
+     * Returns Web-UI applied to this class.
+     *
+     * @return Web-UI applied to this class
+     */
     public WebViewportUI getWebUI ()
     {
         return ( WebViewportUI ) getUI ();
     }
 
+    /**
+     * Installs a Web-UI into this component.
+     */
     @Override
     public void updateUI ()
     {

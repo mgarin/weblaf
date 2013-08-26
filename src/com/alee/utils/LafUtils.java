@@ -1445,6 +1445,25 @@ public final class LafUtils
     }
 
     /**
+     * Returns custom rounded rectangle shape
+     */
+
+    public static GeneralPath createRoundedRectShape ( int x, int y, int w, int h, int arcW, int arcH )
+    {
+        GeneralPath gp = new GeneralPath ( GeneralPath.WIND_EVEN_ODD );
+        gp.moveTo ( x, y + arcH );
+        gp.quadTo ( x, y, x + arcW, y );
+        gp.lineTo ( x + w - arcW, y );
+        gp.quadTo ( x + w, y, x + w, y + arcH );
+        gp.lineTo ( x + w, y + h - arcH );
+        gp.quadTo ( x + w, y + h, x + w - arcW, y + h );
+        gp.lineTo ( x + arcW, y + h );
+        gp.quadTo ( x, y + h, x, y + h - arcH );
+        gp.closePath ();
+        return gp;
+    }
+
+    /**
      * Returns shear to center text
      */
 

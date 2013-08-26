@@ -33,7 +33,7 @@ import java.text.NumberFormat;
 import java.util.Map;
 
 /**
- * Global style class.
+ * Global styles class.
  * Most of the styles listed here are used within other style classes.
  *
  * @author Mikle Garin

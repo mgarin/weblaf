@@ -32,7 +32,21 @@ public class WebLayoutStyle extends DefaultLayoutStyle
     /**
      * Layout style instance.
      */
-    public static WebLayoutStyle INSTANCE = new WebLayoutStyle ();
+    private static WebLayoutStyle instance;
+
+    /**
+     * Returns instance of this layout style.
+     *
+     * @return instance of this layout style
+     */
+    public static WebLayoutStyle getInstance ()
+    {
+        if ( instance == null )
+        {
+            instance = new WebLayoutStyle ();
+        }
+        return instance;
+    }
 
     /**
      * {@inheritDoc}

@@ -24,6 +24,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 
 /**
+ * Custom mouse motion listener that provides select-on-rollover behavior for any JTree.
+ *
  * @author Mikle Garin
  */
 

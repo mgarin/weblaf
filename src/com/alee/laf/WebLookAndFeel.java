@@ -941,7 +941,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
     @Override
     public LayoutStyle getLayoutStyle ()
     {
-        return WebLayoutStyle.INSTANCE;
+        return WebLayoutStyle.getInstance ();
     }
 
     /**

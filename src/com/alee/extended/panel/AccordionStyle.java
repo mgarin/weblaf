@@ -18,12 +18,25 @@
 package com.alee.extended.panel;
 
 /**
- * User: mgarin Date: 31.01.13 Time: 14:31
+ * This enumeration represents list of predefined accordion styles.
+ *
+ * @author Mikle Garin
  */
 
 public enum AccordionStyle
 {
+    /**
+     * Undecorated accordion.
+     */
     none,
+
+    /**
+     * Accordion with united collapsible panes.
+     */
     united,
+
+    /**
+     * Accordion with separated collapsible panes.
+     */
     separated
 }

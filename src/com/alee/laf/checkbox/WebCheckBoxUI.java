@@ -469,6 +469,12 @@ public class WebCheckBoxUI extends BasicCheckBoxUI implements ShapeProvider
                 // Check icon
                 if ( ui.checkIcon > 0 )
                 {
+                    // todo For tristate checkbox
+                    // Composite oc = LafUtils.setupAlphaComposite ( g2d, ( float ) ui.checkIcon / 4 );
+                    // g2d.setPaint ( new Color ( 31, 67, 97 ) );
+                    // g2d.fill ( LafUtils.createRoundedRectShape ( iconRect.x + 3, iconRect.y + 3, iconRect.width - 5, iconRect.height - 5, 2, 2 ) );
+                    // LafUtils.restoreComposite ( g2d, oc );
+
                     ImageIcon icon = checkBox.isEnabled () ? CHECK_STATES.get ( ui.checkIcon ) : DISABLED_CHECK;
                     g2d.drawImage ( icon.getImage (), x + ui.iconWidth / 2 - icon.getIconWidth () / 2,
                             y + ui.iconHeight / 2 - icon.getIconHeight () / 2, checkBox );
