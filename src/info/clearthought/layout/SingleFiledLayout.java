@@ -45,7 +45,7 @@ import java.io.Serializable;
  * @version 1.1 April 4, 2002
  */
 
-@SuppressWarnings( { "ALL" } )
+@SuppressWarnings ({ "ALL" })
 public class SingleFiledLayout implements LayoutManager, Serializable
 {
     /**
@@ -109,12 +109,10 @@ public class SingleFiledLayout implements LayoutManager, Serializable
      */
     protected int gap;
 
-
     /**
      * Constructs an instance of SingleFiledLayout that will align components in a column using the
      * default gap and LEFT justification.
      */
-
     public SingleFiledLayout ()
     {
         this ( COLUMN, LEFT, DEFAULT_GAP );
@@ -126,7 +124,6 @@ public class SingleFiledLayout implements LayoutManager, Serializable
      *
      * @param orientation ROW or COLUMN -- should the components be aligned in a row or column
      */
-
     public SingleFiledLayout ( int orientation )
     {
         this ( orientation, LEFT, DEFAULT_GAP );
@@ -140,7 +137,6 @@ public class SingleFiledLayout implements LayoutManager, Serializable
      *                      different sizes be aligned
      * @param gap           space between components in pixels
      */
-
     public SingleFiledLayout ( int orientation, int justification, int gap )
     {
         // Validate parameters
@@ -166,10 +162,6 @@ public class SingleFiledLayout implements LayoutManager, Serializable
         this.gap = gap;
     }
 
-    //******************************************************************************
-    //** java.awt.event.LayoutManager methods                                    ***
-    //******************************************************************************
-
     /**
      * To lay out the specified container using this layout.  This method repositions the components
      * in the specified target container. <p/> <p>User code should not have to call this method
@@ -177,7 +169,6 @@ public class SingleFiledLayout implements LayoutManager, Serializable
      *
      * @param container container being served by this layout manager
      */
-
     public void layoutContainer ( Container container )
     {
         // Use preferred size to get maximum width or height
@@ -277,7 +268,6 @@ public class SingleFiledLayout implements LayoutManager, Serializable
      * @param container container being served by this layout manager
      * @return a dimension indicating the container's preferred size
      */
-
     public Dimension preferredLayoutSize ( Container container )
     {
         int totalWidth = 0;  // Width of all components
@@ -341,7 +331,6 @@ public class SingleFiledLayout implements LayoutManager, Serializable
      * @param container container being served by this layout manager
      * @return a dimension indicating the container's minimum size
      */
-
     public Dimension minimumLayoutSize ( Container container )
     {
         int totalWidth = 0;  // Width of all components
@@ -403,9 +392,9 @@ public class SingleFiledLayout implements LayoutManager, Serializable
      * @param name      dummy parameter
      * @param component component to add
      */
-
     public void addLayoutComponent ( String name, Component component )
     {
+        //
     }
 
     /**
@@ -413,8 +402,8 @@ public class SingleFiledLayout implements LayoutManager, Serializable
      *
      * @param component component being removed
      */
-
     public void removeLayoutComponent ( Component component )
     {
+        //
     }
 }

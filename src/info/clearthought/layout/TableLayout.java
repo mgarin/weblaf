@@ -37,6 +37,7 @@ package info.clearthought.layout;
 import java.awt.*;
 import java.lang.reflect.Method;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.ListIterator;
 
 /**
@@ -200,18 +201,18 @@ import java.util.ListIterator;
  * @version 4.0 September 14, 2005
  */
 
-@SuppressWarnings ( { "ALL" } )
+@SuppressWarnings ({ "ALL" })
 public class TableLayout implements java.awt.LayoutManager2, java.io.Serializable, info.clearthought.layout.TableLayoutConstants
 {
     /*
-    Note: In this file, a cr refers to either a column or a row.  cr[C] always
-    means column and cr[R] always means row.  A cr size is either a column
-    width or a row Height.  TableLayout views columns and rows as being
-    conceptually symmetric.  Therefore, much of the code applies to both
-    columns and rows, and the use of the cr terminology eliminates redundancy.
-    Also, for ease of reading, z always indicates a parameter whose value is
-    either C or R.
-*/
+     Note: In this file, a cr refers to either a column or a row.  cr[C] always
+     means column and cr[R] always means row.  A cr size is either a column
+     width or a row Height.  TableLayout views columns and rows as being
+     conceptually symmetric.  Therefore, much of the code applies to both
+     columns and rows, and the use of the cr terminology eliminates redundancy.
+     Also, for ease of reading, z always indicates a parameter whose value is
+     either C or R.
+    */
 
     /**
      * Default row/column size
@@ -289,16 +290,11 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      */
     protected int vGap;
 
-    //******************************************************************************
-    //** Constructors                                                            ***
-    //******************************************************************************
-
     /**
      * Constructs an instance of TableLayout.  This TableLayout will have no columns or rows.  This
      * constructor is most useful for bean-oriented programming and dynamically adding columns and
      * rows.
      */
-
     public TableLayout ()
     {
         init ( defaultSize[ C ], defaultSize[ R ] );
@@ -311,7 +307,6 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      *             colN}, {row0, row1, row2, ..., rowM}} If this parameter is invalid, the
      *             TableLayout will have exactly one row and one column.
      */
-
     public TableLayout ( double[][] size )
     {
         // Make sure columns and rows and nothing else is specified
@@ -333,7 +328,6 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      * @param col widths of columns in the format, {{col0, col1, col2, ..., colN}
      * @param row heights of rows in the format, {{row0, row1, row2, ..., rowN}
      */
-
     public TableLayout ( double[] col, double[] row )
     {
         init ( col, row );
@@ -345,7 +339,6 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      * @param col widths of columns in the format, {{col0, col1, col2, ..., colN}
      * @param row heights of rows in the format, {{row0, row1, row2, ..., rowN}
      */
-
     protected void init ( double[] col, double[] row )
     {
         // Check parameters
@@ -395,10 +388,6 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
         dirty = true;
     }
 
-    //******************************************************************************
-    //** Get/Set methods                                                         ***
-    //******************************************************************************
-
     /**
      * Gets the constraints of a given component.
      *
@@ -406,11 +395,9 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      * @return If the given component is found, the constraints associated with that component.  If
      *         the given component is null or is not found, null is returned.
      */
-
     public TableLayoutConstraints getConstraints ( Component component )
     {
         ListIterator iterator = list.listIterator ( 0 );
-
         while ( iterator.hasNext () )
         {
             Entry entry = ( Entry ) iterator.next ();
@@ -421,7 +408,6 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
                         entry.alignment[ R ] );
             }
         }
-
         return null;
     }
 
@@ -431,7 +417,6 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      * @param component  desired component.  This parameter cannot be null.
      * @param constraint new set of constraints.  This parameter cannot be null.
      */
-
     public void setConstraints ( Component component, TableLayoutConstraints constraint )
     {
         // Check parameters
@@ -480,7 +465,6 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      * @param column widths of each of the columns
      * @see #getColumn
      */
-
     public void setColumn ( double column[] )
     {
         setCr ( C, column );
@@ -505,7 +489,6 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      * @param row heights of each of the rows.  This parameter cannot be null.
      * @see #getRow
      */
-
     public void setRow ( double row[] )
     {
         setCr ( R, row );
@@ -517,7 +500,6 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      * @param z    indicates row or column
      * @param size new cr size
      */
-
     protected void setCr ( int z, double size[] )
     {
         // Copy crs
@@ -560,7 +542,6 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      * @param size width of the column.  This parameter cannot be null.
      * @see #getColumn
      */
-
     public void setColumn ( int i, double size )
     {
         setCr ( C, i, size );
@@ -587,7 +568,6 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      * @param size height of the row.  This parameter cannot be null.
      * @see #getRow
      */
-
     public void setRow ( int i, double size )
     {
         setCr ( R, i, size );
@@ -600,8 +580,6 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      * @param i    indicates which cr to resize
      * @param size new cr size
      */
-
-
     protected void setCr ( int z, int i, double size )
     {
         // Make sure size is valid
@@ -623,7 +601,6 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      * @return widths of each of the columns
      * @see #setColumn
      */
-
     public double[] getColumn ()
     {
         // Copy columns
@@ -639,7 +616,6 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      * @return height of the requested row
      * @see #setRow
      */
-
     public double[] getRow ()
     {
         // Copy rows
@@ -657,7 +633,6 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      * @return width of the requested column
      * @see #setRow
      */
-
     public double getColumn ( int i )
     {
         return crSpec[ C ][ i ];
@@ -671,7 +646,6 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      * @return height of each of the requested row
      * @see #setRow
      */
-
     public double getRow ( int i )
     {
         return crSpec[ R ][ i ];
@@ -682,7 +656,6 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      *
      * @return the number of columns
      */
-
     public int getNumColumn ()
     {
         return crSpec[ C ].length;
@@ -693,7 +666,6 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      *
      * @return the number of rows
      */
-
     public int getNumRow ()
     {
         return crSpec[ R ].length;
@@ -704,7 +676,6 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      *
      * @return the horizontal gap in pixels
      */
-
     public int getHGap ()
     {
         return hGap;
@@ -715,7 +686,6 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      *
      * @return the vertical gap in pixels
      */
-
     public int getVGap ()
     {
         return vGap;
@@ -726,7 +696,6 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      *
      * @param hGap the horizontal gap in pixels
      */
-
     public void setHGap ( int hGap )
     {
         if ( hGap >= 0 )
@@ -744,7 +713,6 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      *
      * @param vGap the horizontal gap in pixels
      */
-
     public void setVGap ( int vGap )
     {
         if ( vGap >= 0 )
@@ -757,10 +725,6 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
         }
     }
 
-    //******************************************************************************
-    //** Insertion/Deletion methods                                              ***
-    //******************************************************************************
-
     /**
      * Inserts a column in this layout.  All components to the right of the insertion point are
      * moved right one column.  The container will need to be laid out after this method returns.
@@ -771,7 +735,6 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      * @see #setColumn
      * @see #deleteColumn
      */
-
     public void insertColumn ( int i, double size )
     {
         insertCr ( C, i, size );
@@ -787,7 +750,6 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      * @see #setRow
      * @see #deleteRow
      */
-
     public void insertRow ( int i, double size )
     {
         insertCr ( R, i, size );
@@ -800,7 +762,6 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      * @param i    zero-based index at which to insert the cr
      * @param size size of cr being inserted
      */
-
     public void insertCr ( int z, int i, double size )
     {
         // Make sure position is valid
@@ -861,7 +822,6 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      * @see #setColumn
      * @see #deleteColumn
      */
-
     public void deleteColumn ( int i )
     {
         deleteCr ( C, i );
@@ -876,7 +836,6 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      * @see #setRow
      * @see #deleteRow
      */
-
     public void deleteRow ( int i )
     {
         deleteCr ( R, i );
@@ -888,7 +847,6 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      * @param z indicates row or column
      * @param i zero-based index of cr to delete
      */
-
     protected void deleteCr ( int z, int i )
     {
         // Make sure position is valid
@@ -933,17 +891,12 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
         dirty = true;
     }
 
-    //******************************************************************************
-    //** Misc methods                                                            ***
-    //******************************************************************************
-
     /**
      * Converts this TableLayout to a string.
      *
      * @return a string representing the columns and row sizes in the form "{{col0, col1, col2, ...,
      *         colN}, {row0, row1, row2, ..., rowM}}"
      */
-
     public String toString ()
     {
         int counter;
@@ -991,8 +944,7 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      *         corresponding components
      * @see #getOverlappingEntry
      */
-
-    public java.util.List getInvalidEntry ()
+    public List getInvalidEntry ()
     {
         LinkedList listInvalid = new LinkedList ();
 
@@ -1027,8 +979,7 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      * @return a list of zero or more TableLayout.Entry instances
      * @see #getInvalidEntry
      */
-
-    public java.util.List getOverlappingEntry ()
+    public List getOverlappingEntry ()
     {
         LinkedList listOverlapping = new LinkedList ();
 
@@ -1073,10 +1024,6 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
         return listOverlapping;
     }
 
-    //******************************************************************************
-    //** Calculation methods                                                     ***
-    //******************************************************************************
-
     /**
      * Calculates the sizes of the rows and columns based on the absolute and relative sizes
      * specified in <code>crSpec[R]</code> and <code>crSpec[C]</code> and the size of the container.
@@ -1084,7 +1031,6 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      *
      * @param container container using this TableLayout
      */
-
     protected void calculateSize ( Container container )
     {
         // Get the container's insets
@@ -1146,7 +1092,6 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      * @param availableSize amount of space available in the container
      * @return the amount of space available after absolute crs have been assigned sizes
      */
-
     protected int assignAbsoluteSize ( int z, int availableSize )
     {
         int numCr = crSpec[ z ].length;
@@ -1170,7 +1115,6 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      * @param availableSize amount of space available in the container
      * @return the amount of space available after relative crs have been assigned sizes
      */
-
     protected int assignRelativeSize ( int z, int availableSize )
     {
         int relativeSize = ( availableSize < 0 ) ? 0 : availableSize;
@@ -1195,7 +1139,6 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      * @param z             indicates row or column
      * @param availableSize amount of space available in the container
      */
-
     protected void assignFillSize ( int z, int availableSize )
     {
         // Skip if there is no more space to allocate
@@ -1250,7 +1193,6 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      *
      * @param z indicates row or column
      */
-
     protected void calculateOffset ( int z, Insets inset )
     {
         int numCr = crSpec[ z ].length;
@@ -1276,7 +1218,6 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      * @param typeOfSize    indicates preferred or minimum
      * @return the amount of space available after absolute crs have been assigned sizes
      */
-
     protected int assignPrefMinSize ( int z, int availableSize, double typeOfSize )
     {
         // Get variables referring to columns or rows (crs)
@@ -1391,10 +1332,6 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
         return availableSize;
     }
 
-    //******************************************************************************
-    //** java.awt.event.LayoutManager methods                                    ***
-    //******************************************************************************
-
     /**
      * To lay out the specified container using this layout.  This method reshapes the components in
      * the specified target container in order to satisfy the constraints of all components. <p/>
@@ -1402,7 +1339,6 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      *
      * @param container container being served by this layout manager
      */
-
     public void layoutContainer ( Container container )
     {
         // Calculate sizes if container has changed size or components were added
@@ -1504,7 +1440,6 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      * @param container Container whose orientation is being queried
      * @return the container's orientation or null if no orientation is supported
      */
-
     protected ComponentOrientation getComponentOrientation ( Container container )
     {
         // This method is implemented to only get the class and method objects
@@ -1544,7 +1479,6 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      *                      column.  if false,... of a row.
      * @return an array, a, of two integers such that a[0] is the offset and a[1] is the size
      */
-
     protected int[] calculateSizeAndOffset ( Entry entry, int preferredSize, boolean isColumn )
     {
         // Get references to cr properties
@@ -1665,7 +1599,6 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      * @param container container being served by this layout manager
      * @return a dimension indicating the container's preferred size
      */
-
     public Dimension preferredLayoutSize ( Container container )
     {
         return calculateLayoutSize ( container, PREFERRED );
@@ -1684,7 +1617,6 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      * @param container container being served by this layout manager
      * @return a dimension indicating the container's minimum size
      */
-
     public Dimension minimumLayoutSize ( Container container )
     {
         return calculateLayoutSize ( container, MINIMUM );
@@ -1698,7 +1630,6 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      * @param typeOfSize indicates preferred or minimum
      * @return a dimension indicating the container's preferred or minimum size
      */
-
     protected Dimension calculateLayoutSize ( Container container, double typeOfSize )
     {
         //  Get preferred/minimum sizes
@@ -1738,7 +1669,6 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      * @param prefMinSize list of preferred or minimum sizes
      * @return a dimension indicating the container's preferred or minimum size
      */
-
     protected int calculateLayoutSize ( Container container, int z, double typeOfSize, Entry entryList[], Dimension prefMinSize[] )
     {
         Dimension size;      // Preferred/minimum size of current component
@@ -1914,15 +1844,10 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      * @param name      indicates entry's position and anchor
      * @param component component to add
      */
-
     public void addLayoutComponent ( String name, Component component )
     {
         addLayoutComponent ( component, name );
     }
-
-    //******************************************************************************
-    //** java.awt.event.LayoutManager2 methods                                   ***
-    //******************************************************************************
 
     /**
      * Adds the specified component with the specified name to the layout.
@@ -1930,7 +1855,6 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      * @param component  component to add
      * @param constraint indicates entry's position and alignment
      */
-
     public void addLayoutComponent ( Component component, Object constraint )
     {
         if ( constraint instanceof String )
@@ -1967,7 +1891,6 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      *
      * @param component component being removed
      */
-
     public void removeLayoutComponent ( Component component )
     {
         // Remove the component
@@ -1995,7 +1918,6 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      * @return unconditionally, a Dimension of Integer.MAX_VALUE by Integer.MAX_VALUE since
      *         TableLayout does not limit the maximum size of a container
      */
-
     public Dimension maximumLayoutSize ( Container target )
     {
         return new Dimension ( Integer.MAX_VALUE, Integer.MAX_VALUE );
@@ -2009,7 +1931,6 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      *
      * @return unconditionally, 0.5
      */
-
     public float getLayoutAlignmentX ( Container parent )
     {
         return 0.5f;
@@ -2023,7 +1944,6 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      *
      * @return unconditionally, 0.5
      */
-
     public float getLayoutAlignmentY ( Container parent )
     {
         return 0.5f;
@@ -2033,17 +1953,14 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      * Invalidates the layout, indicating that if the layout manager has cached information it
      * should be discarded.
      */
-
     public void invalidateLayout ( Container target )
     {
         dirty = true;
     }
 
-    //******************************************************************************
-    //*** Inner Class                                                            ***
-    //******************************************************************************
-
-    // The following inner class is used to bind components to their constraints
+    /**
+     * The following inner class is used to bind components to their constraints.
+     */
     public static class Entry implements Cloneable
     {
         /**
@@ -2072,7 +1989,6 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
          * @param component  component being bound
          * @param constraint constraints being applied
          */
-
         public Entry ( Component component, TableLayoutConstraints constraint )
         {
             int cr1[] = { constraint.col1, constraint.row1 };
@@ -2088,7 +2004,6 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
         /**
          * Copies this Entry.
          */
-
         public Object copy () throws CloneNotSupportedException
         {
             return clone ();
@@ -2099,7 +2014,6 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
          *
          * @return a string in the form "(col1, row1, col2, row2, vAlign, hAlign) component"
          */
-
         public String toString ()
         {
             TableLayoutConstraints c =
