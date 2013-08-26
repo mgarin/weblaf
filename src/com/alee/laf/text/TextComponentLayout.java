@@ -37,6 +37,7 @@ public class TextComponentLayout implements LayoutManager
     // Empty insets
     private static final Insets emptyInsets = new Insets ( 0, 0, 0, 0 );
 
+    // todo Make weak references
     // Saved layout constraints
     private ValuesTable<Component, String> constraints = new ValuesTable<Component, String> ();
 

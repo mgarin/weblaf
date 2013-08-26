@@ -588,7 +588,7 @@ public class WebTextFieldUI extends BasicTextFieldUI implements ShapeProvider, S
             {
                 x = b.x + b.width - fm.stringWidth ( inputPrompt );
             }
-            g2d.drawString ( inputPrompt, x, b.y + b.height / 2 + LafUtils.getTextCenterShearY ( fm ) );
+            g2d.drawString ( inputPrompt, x, getBaseline ( c, c.getWidth (), c.getHeight () ) );
 
             g2d.setClip ( oc );
         }
@@ -598,7 +598,7 @@ public class WebTextFieldUI extends BasicTextFieldUI implements ShapeProvider, S
     @Override
     protected void paintBackground ( Graphics g )
     {
-        //
+        // Do not paint anything here
     }
 
 
