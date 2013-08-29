@@ -40,6 +40,7 @@ public class WebTableHeaderUI extends BasicTableHeaderUI
     public static final Color bottomBgColor = new Color ( 201, 201, 201 );
     public static final Color bottomLineColor = new Color ( 104, 104, 104 );
 
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( JComponent c )
     {
         return new WebTableHeaderUI ();

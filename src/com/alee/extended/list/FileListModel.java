@@ -34,6 +34,11 @@ import java.util.Map;
 public class FileListModel extends WebListModel<FileElement>
 {
     /**
+     * File elements cache lock.
+     */
+    private final Object elementsCacheLock = new Object ();
+
+    /**
      * File elements cache.
      */
     private Map<String, FileElement> elementsCache = new HashMap<String, FileElement> ();
@@ -95,7 +100,14 @@ public class FileListModel extends WebListModel<FileElement>
      */
     private void clearCache ()
     {
-        elementsCache.clear ();
+        synchronized ( elementsCacheLock )
+        {
+            for ( Map.Entry<String, FileElement> entry : elementsCache.entrySet () )
+            {
+                entry.getValue ().setFile ( null );
+            }
+            elementsCache.clear ();
+        }
     }
 
     /**
@@ -117,7 +129,10 @@ public class FileListModel extends WebListModel<FileElement>
      */
     public FileElement getElement ( String path )
     {
-        return elementsCache.get ( path );
+        synchronized ( elementsCacheLock )
+        {
+            return elementsCache.get ( path );
+        }
     }
 
     /**
@@ -197,7 +212,10 @@ public class FileListModel extends WebListModel<FileElement>
             {
                 final FileElement element = new FileElement ( file );
                 elements.add ( element );
-                elementsCache.put ( file.getAbsolutePath (), element );
+                synchronized ( elementsCacheLock )
+                {
+                    elementsCache.put ( file.getAbsolutePath (), element );
+                }
             }
         }
         return elements;
@@ -218,7 +236,10 @@ public class FileListModel extends WebListModel<FileElement>
             {
                 final FileElement element = new FileElement ( file );
                 elements.add ( element );
-                elementsCache.put ( file.getAbsolutePath (), element );
+                synchronized ( elementsCacheLock )
+                {
+                    elementsCache.put ( file.getAbsolutePath (), element );
+                }
             }
         }
         return elements;

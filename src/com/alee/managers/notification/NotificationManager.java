@@ -15,24 +15,33 @@
 * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.utils.text;
-
-import java.io.File;
+package com.alee.managers.notification;
 
 /**
- * Text provider for File objects.
+ * This manager allows you to display custom notification popups within the application.
+ * You can also add custom actions, set their duration, modify popup styling and use some other advanced features.
  *
  * @author Mikle Garin
  */
 
-public class FileNameTextProvider implements TextProvider<File>
+public final class NotificationManager
 {
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String provide ( File object )
-    {
-        return object.getName ();
-    }
+    // todo
+
+    //    /**
+    //     * Whether manager is initialized or not.
+    //     */
+    //    private static boolean initialized = false;
+    //
+    //    /**
+    //     * Initializes manager if it wasn't already initialized.
+    //     */
+    //    public static void initialize ()
+    //    {
+    //        // To avoid more than one initialization
+    //        if ( !initialized )
+    //        {
+    //            //
+    //        }
+    //    }
 }

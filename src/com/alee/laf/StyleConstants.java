@@ -271,7 +271,6 @@ public class StyleConstants
     /**
      * Debug option.
      */
-    public static boolean DEBUG = false;
     public static Font DEBUG_FONT = new Font ( "Dialog", Font.BOLD, 8 );
     public static NumberFormat DEBUG_FORMAT = new DecimalFormat ( "#0.00" );
 }

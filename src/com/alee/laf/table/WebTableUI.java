@@ -28,7 +28,6 @@ import javax.swing.*;
 import javax.swing.event.AncestorEvent;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicTableUI;
-import java.awt.*;
 import java.util.Date;
 
 /**
@@ -39,11 +38,6 @@ import java.util.Date;
 
 public class WebTableUI extends BasicTableUI
 {
-    /**
-     * Style settings.
-     */
-    private Color selectionBackground = WebTableStyle.selectionBackground;
-
     /**
      * Table listeners.
      */
@@ -56,6 +50,7 @@ public class WebTableUI extends BasicTableUI
      * @param c component that will use UI instance
      * @return instance of the WebTreeUI
      */
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( JComponent c )
     {
         return new WebTableUI ();

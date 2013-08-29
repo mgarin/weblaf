@@ -36,9 +36,7 @@ import java.awt.*;
 public class FileTreesExample extends DefaultExample
 {
     /**
-     * Returns example title.
-     *
-     * @return example title
+     * {@inheritDoc}
      */
     @Override
     public String getTitle ()
@@ -47,9 +45,7 @@ public class FileTreesExample extends DefaultExample
     }
 
     /**
-     * Returns short example description.
-     *
-     * @return short example description
+     * {@inheritDoc}
      */
     @Override
     public String getDescription ()
@@ -58,10 +54,7 @@ public class FileTreesExample extends DefaultExample
     }
 
     /**
-     * Returns preview component for this example.
-     *
-     * @param owner demo application main frame
-     * @return preview component
+     * {@inheritDoc}
      */
     @Override
     public Component getPreview ( WebLookAndFeelDemo owner )

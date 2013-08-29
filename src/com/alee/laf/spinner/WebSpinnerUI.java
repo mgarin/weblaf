@@ -45,6 +45,7 @@ public class WebSpinnerUI extends BasicSpinnerUI implements ShapeProvider
     private int round = StyleConstants.smallRound;
     private int shadeWidth = StyleConstants.shadeWidth;
 
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( JComponent c )
     {
         return new WebSpinnerUI ();

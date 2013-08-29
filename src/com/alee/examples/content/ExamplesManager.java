@@ -28,6 +28,7 @@ import com.alee.examples.groups.date.DateChoosersGroup;
 import com.alee.examples.groups.desktoppane.DesktopPaneGroup;
 import com.alee.examples.groups.field.FieldsGroup;
 import com.alee.examples.groups.filechooser.FileChoosersGroup;
+import com.alee.examples.groups.focus.FocusTrackingGroup;
 import com.alee.examples.groups.futurico.FuturicoStylingGroup;
 import com.alee.examples.groups.gallery.GalleryGroup;
 import com.alee.examples.groups.image.ImagesGroup;
@@ -127,6 +128,7 @@ public class ExamplesManager
             exampleGroups.add ( new TablesGroup () );
             exampleGroups.add ( new TreesGroup () );
             exampleGroups.add ( new PanelsGroup () );
+            exampleGroups.add ( new FocusTrackingGroup () );
             exampleGroups.add ( new PaintersGroup () );
             exampleGroups.add ( new OverlayGroup () );
             exampleGroups.add ( new SplitPanesGroup () );

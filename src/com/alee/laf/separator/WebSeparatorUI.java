@@ -48,6 +48,7 @@ public class WebSeparatorUI extends BasicSeparatorUI
 
     private JSeparator separator;
 
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( JComponent c )
     {
         return new WebSeparatorUI ();

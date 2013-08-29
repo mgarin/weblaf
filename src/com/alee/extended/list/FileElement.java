@@ -29,9 +29,24 @@ import java.io.File;
 public class FileElement
 {
     /**
+     * Element operations lock.
+     */
+    private final Object lock = new Object ();
+
+    /**
+     * Element file.
+     */
+    private File file;
+
+    /**
      * Whether thumbnail load is queued for this element or not.
      */
     private boolean thumbnailQueued = false;
+
+    /**
+     * Whether disabled thumbnail load is queued for this element or not.
+     */
+    private boolean disabledThumbnailQueued = false;
 
     /**
      * Cached element thumbnail icon for enabled state.
@@ -42,11 +57,6 @@ public class FileElement
      * Cached element thumbnail icon for disabled state.
      */
     private ImageIcon disabledThumbnail = null;
-
-    /**
-     * Element file.
-     */
-    private File file;
 
     /**
      * Constructs element without file.
@@ -66,66 +76,6 @@ public class FileElement
     }
 
     /**
-     * Returns whether thumbnail load is queued or not.
-     *
-     * @return true if thumbnail load is queued, false otherwise
-     */
-    public boolean isThumbnailQueued ()
-    {
-        return thumbnailQueued;
-    }
-
-    /**
-     * Sets whether thumbnail load is queued or not.
-     *
-     * @param thumbnailQueued whether thumbnail load is queued or not
-     */
-    public void setThumbnailQueued ( boolean thumbnailQueued )
-    {
-        this.thumbnailQueued = thumbnailQueued;
-    }
-
-    /**
-     * Returns cached element thumbnail icon for enabled state.
-     *
-     * @return cached element thumbnail icon for enabled state
-     */
-    public ImageIcon getEnabledThumbnail ()
-    {
-        return enabledThumbnail;
-    }
-
-    /**
-     * Sets cached element thumbnail icon for enabled state.
-     *
-     * @param enabledThumbnail new cached element thumbnail icon for enabled state
-     */
-    public void setEnabledThumbnail ( ImageIcon enabledThumbnail )
-    {
-        this.enabledThumbnail = enabledThumbnail;
-    }
-
-    /**
-     * Returns cached element thumbnail icon for disabled state.
-     *
-     * @return cached element thumbnail icon for disabled state
-     */
-    public ImageIcon getDisabledThumbnail ()
-    {
-        return disabledThumbnail;
-    }
-
-    /**
-     * Sets cached element thumbnail icon for disabled state.
-     *
-     * @param disabledThumbnail new cached element thumbnail icon for disabled state
-     */
-    public void setDisabledThumbnail ( ImageIcon disabledThumbnail )
-    {
-        this.disabledThumbnail = disabledThumbnail;
-    }
-
-    /**
      * Returns element file.
      *
      * @return element file
@@ -142,6 +92,126 @@ public class FileElement
      */
     public void setFile ( File file )
     {
-        this.file = file;
+        synchronized ( lock )
+        {
+            this.file = file;
+            if ( file == null )
+            {
+                thumbnailQueued = false;
+                disabledThumbnailQueued = false;
+                enabledThumbnail = null;
+                disabledThumbnail = null;
+            }
+        }
+    }
+
+    /**
+     * Returns whether thumbnail load is queued or not.
+     *
+     * @return true if thumbnail load is queued, false otherwise
+     */
+    public boolean isThumbnailQueued ()
+    {
+        synchronized ( lock )
+        {
+            return thumbnailQueued;
+        }
+    }
+
+    /**
+     * Sets whether thumbnail load is queued or not.
+     *
+     * @param thumbnailQueued whether thumbnail load is queued or not
+     */
+    public void setThumbnailQueued ( boolean thumbnailQueued )
+    {
+        synchronized ( lock )
+        {
+            if ( file != null )
+            {
+                this.thumbnailQueued = thumbnailQueued;
+            }
+        }
+    }
+
+    /**
+     * Returns whether disabled thumbnail load is queued or not.
+     *
+     * @return true if disabled thumbnail load is queued, false otherwise
+     */
+    public boolean isDisabledThumbnailQueued ()
+    {
+        synchronized ( lock )
+        {
+            return disabledThumbnailQueued;
+        }
+    }
+
+    /**
+     * Sets whether disabled thumbnail load is queued or not.
+     *
+     * @param thumbnailQueued whether disabled thumbnail load is queued or not
+     */
+    public void setDisabledThumbnailQueued ( boolean disabledThumbnailQueued )
+    {
+        synchronized ( lock )
+        {
+            if ( file != null )
+            {
+                this.disabledThumbnailQueued = disabledThumbnailQueued;
+            }
+        }
+    }
+
+    /**
+     * Returns cached element thumbnail icon for enabled state.
+     *
+     * @return cached element thumbnail icon for enabled state
+     */
+    public ImageIcon getEnabledThumbnail ()
+    {
+        synchronized ( lock )
+        {
+            return enabledThumbnail;
+        }
+    }
+
+    /**
+     * Sets cached element thumbnail icon for enabled state.
+     *
+     * @param enabledThumbnail new cached element thumbnail icon for enabled state
+     */
+    public void setEnabledThumbnail ( ImageIcon enabledThumbnail )
+    {
+        synchronized ( lock )
+        {
+            this.enabledThumbnail = enabledThumbnail;
+        }
+    }
+
+    /**
+     * Returns cached element thumbnail icon for disabled state.
+     *
+     * @return cached element thumbnail icon for disabled state
+     */
+    public ImageIcon getDisabledThumbnail ()
+    {
+        synchronized ( lock )
+        {
+            return disabledThumbnail;
+        }
+    }
+
+    /**
+     * Sets cached element thumbnail icon for disabled state.
+     *
+     * @param disabledThumbnail new cached element thumbnail icon for disabled state
+     */
+    public void setDisabledThumbnail ( ImageIcon disabledThumbnail )
+    {
+        synchronized ( lock )
+        {
+            this.disabledThumbnail = disabledThumbnail;
+        }
     }
 }

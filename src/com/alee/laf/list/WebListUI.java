@@ -65,6 +65,7 @@ public class WebListUI extends BasicListUI
      * @param c component that will use UI instance
      * @return instance of the WebListUI
      */
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( JComponent c )
     {
         return new WebListUI ();

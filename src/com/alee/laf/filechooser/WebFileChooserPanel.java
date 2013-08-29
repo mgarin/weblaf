@@ -55,8 +55,9 @@ import com.alee.managers.language.LanguageManager;
 import com.alee.managers.tooltip.TooltipWay;
 import com.alee.utils.*;
 import com.alee.utils.swing.AncestorAdapter;
+import com.alee.utils.swing.DataProvider;
 import com.alee.utils.swing.DefaultFileFilterListCellRenderer;
-import com.alee.utils.text.FileNameTextProvider;
+import com.alee.utils.text.FileNameProvider;
 
 import javax.swing.*;
 import javax.swing.event.*;
@@ -103,7 +104,7 @@ public class WebFileChooserPanel extends WebPanel
     /**
      * File name provider.
      */
-    public static final FileNameTextProvider fileNameTextProvider = new FileNameTextProvider ()
+    public static final FileNameProvider quotedFileNameProvider = new FileNameProvider ()
     {
         @Override
         public String provide ( File object )
@@ -213,6 +214,18 @@ public class WebFileChooserPanel extends WebPanel
     protected WebButton cancelButton;
 
     /**
+     * Editing state provider.
+     * todo This is a temporary workaround for HotkeysManager actions
+     */
+    protected DataProvider<Boolean> hotkeysAllowed = new DataProvider<Boolean> ()
+    {
+        public Boolean provide ()
+        {
+            return !fileTree.isEditing () && !fileList.isEditing () && !fileTable.isEditing ();
+        }
+    };
+
+    /**
      * Constructs new file chooser panel without contol buttons.
      */
     public WebFileChooserPanel ()
@@ -312,7 +325,10 @@ public class WebFileChooserPanel extends WebPanel
             @Override
             public void actionPerformed ( ActionEvent e )
             {
-                updateHistoryState ( currentHistoryIndex - 1 );
+                if ( hotkeysAllowed.provide () )
+                {
+                    updateHistoryState ( currentHistoryIndex - 1 );
+                }
             }
         } );
 
@@ -326,7 +342,10 @@ public class WebFileChooserPanel extends WebPanel
             @Override
             public void actionPerformed ( ActionEvent e )
             {
-                updateHistoryState ( currentHistoryIndex + 1 );
+                if ( hotkeysAllowed.provide () )
+                {
+                    updateHistoryState ( currentHistoryIndex + 1 );
+                }
             }
         } );
 
@@ -416,7 +435,7 @@ public class WebFileChooserPanel extends WebPanel
             @Override
             public void actionPerformed ( ActionEvent e )
             {
-                if ( currentFolder != null )
+                if ( hotkeysAllowed.provide () && currentFolder != null )
                 {
                     updateCurrentFolder ( currentFolder.getParentFile (), UpdateSource.toolbar );
                 }
@@ -433,7 +452,10 @@ public class WebFileChooserPanel extends WebPanel
             @Override
             public void actionPerformed ( ActionEvent e )
             {
-                updateCurrentFolder ( FileUtils.getUserHome (), UpdateSource.toolbar );
+                if ( hotkeysAllowed.provide () )
+                {
+                    updateCurrentFolder ( FileUtils.getUserHome (), UpdateSource.toolbar );
+                }
             }
         } );
 
@@ -447,7 +469,10 @@ public class WebFileChooserPanel extends WebPanel
             @Override
             public void actionPerformed ( ActionEvent e )
             {
-                reloadCurrentFolder ();
+                if ( hotkeysAllowed.provide () )
+                {
+                    reloadCurrentFolder ();
+                }
             }
         } );
 
@@ -461,7 +486,7 @@ public class WebFileChooserPanel extends WebPanel
             @Override
             public void actionPerformed ( ActionEvent e )
             {
-                if ( currentFolder != null )
+                if ( hotkeysAllowed.provide () && currentFolder != null )
                 {
                     final String defaultName = LanguageManager.get ( "weblaf.filechooser.newfolder.name" );
                     final String freeName = FileUtils.getAvailableName ( currentFolder, defaultName );
@@ -497,7 +522,10 @@ public class WebFileChooserPanel extends WebPanel
             @Override
             public void actionPerformed ( ActionEvent e )
             {
-                deleteSelectedFiles ();
+                if ( hotkeysAllowed.provide () )
+                {
+                    deleteSelectedFiles ();
+                }
             }
         } );
 
@@ -1241,7 +1269,7 @@ public class WebFileChooserPanel extends WebPanel
         else
         {
             selectedFilesViewField.setSelectedFiles ( files );
-            selectedFilesTextField.setText ( TextUtils.listToString ( files, ", ", fileNameTextProvider ) );
+            selectedFilesTextField.setText ( TextUtils.listToString ( files, ", ", quotedFileNameProvider ) );
         }
 
         // When choose action allowed

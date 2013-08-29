@@ -45,6 +45,7 @@ public class WebTextAreaUI extends BasicTextAreaUI
     private FocusListener focusListener;
     private PropertyChangeListener marginChangeListener;
 
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( JComponent c )
     {
         return new WebTextAreaUI ();

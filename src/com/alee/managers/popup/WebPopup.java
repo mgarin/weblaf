@@ -157,13 +157,13 @@ public class WebPopup extends WebPanel implements FocusTracker
      */
 
     @Override
-    public boolean isTrackingEnabled ()
+    public boolean isEnabled ()
     {
         return WebPopup.this.isShowing ();
     }
 
     @Override
-    public Component getTrackedComponent ()
+    public Component getComponent ()
     {
         return WebPopup.this;
     }
@@ -175,15 +175,11 @@ public class WebPopup extends WebPanel implements FocusTracker
     }
 
     @Override
-    public boolean isListenGlobalChange ()
-    {
-        return true;
-    }
-
-    @Override
     public void focusChanged ( boolean focused )
     {
         this.focused = focused;
+
+        // todo Replace with MultiFocusTracker (for multiply components)
         if ( WebPopup.this.isShowing () && !focused && !isChildFocused () && closeOnFocusLoss )
         {
             hidePopup ();

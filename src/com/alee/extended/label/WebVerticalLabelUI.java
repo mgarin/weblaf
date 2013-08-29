@@ -35,6 +35,7 @@ public class WebVerticalLabelUI extends WebLabelUI
     private Rectangle verticalIconR = new Rectangle ();
     private Rectangle verticalTextR = new Rectangle ();
 
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( JComponent c )
     {
         return new WebVerticalLabelUI ();

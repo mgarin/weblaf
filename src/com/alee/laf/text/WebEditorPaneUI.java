@@ -33,6 +33,7 @@ import java.util.Map;
 
 public class WebEditorPaneUI extends BasicEditorPaneUI
 {
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( JComponent c )
     {
         return new WebEditorPaneUI ();
@@ -61,8 +62,6 @@ public class WebEditorPaneUI extends BasicEditorPaneUI
     protected void paintSafely ( Graphics g )
     {
         Graphics2D g2d = ( Graphics2D ) g;
-        JTextComponent c = getComponent ();
-
         Map hints = SwingUtils.setupTextAntialias ( g2d );
         super.paintSafely ( g );
         SwingUtils.restoreTextAntialias ( g2d, hints );

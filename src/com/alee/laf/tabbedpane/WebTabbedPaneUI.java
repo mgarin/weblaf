@@ -73,6 +73,7 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider
     //    private MouseAdapter mouseAdapter;
     //    private int rolloverTab = -1;
 
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( JComponent c )
     {
         return new WebTabbedPaneUI ();
@@ -1082,7 +1083,7 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider
         }
 
         // Basic paintings
-        Map hints = SwingUtils.setupTextAntialias ( g, c );
+        Map hints = SwingUtils.setupTextAntialias ( g );
         super.paint ( g, c );
         SwingUtils.restoreTextAntialias ( g, hints );
     }

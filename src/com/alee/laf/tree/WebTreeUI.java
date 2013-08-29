@@ -93,9 +93,7 @@ public class WebTreeUI extends BasicTreeUI
      */
     private int rolloverRow = -1;
     private List<Integer> initialSelection = new ArrayList<Integer> ();
-    private List<Integer> lastSelection = null;
     private Point selectionStart = null;
-    private Point selectionPrevEnd = null;
     private Point selectionEnd = null;
     private boolean ltr = true;
 
@@ -106,6 +104,7 @@ public class WebTreeUI extends BasicTreeUI
      * @param c component that will use UI instance
      * @return instance of the WebTreeUI
      */
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( JComponent c )
     {
         return new WebTreeUI ();
@@ -194,7 +193,6 @@ public class WebTreeUI extends BasicTreeUI
                             {
                                 // Selection
                                 selectionStart = e.getPoint ();
-                                selectionPrevEnd = selectionStart;
                                 selectionEnd = selectionStart;
 
                                 // Initial tree selection
@@ -230,7 +228,6 @@ public class WebTreeUI extends BasicTreeUI
                 if ( isSelectorAvailable () && selectionStart != null )
                 {
                     // Selection
-                    selectionPrevEnd = selectionEnd;
                     selectionEnd = e.getPoint ();
 
                     // Updating selection
@@ -252,15 +249,14 @@ public class WebTreeUI extends BasicTreeUI
                 if ( isSelectorAvailable () && selectionStart != null )
                 {
                     // Saving selection rect to repaint
-                    Rectangle fr = GeometryUtils.getContainingRect ( selectionStart, selectionEnd );
+                    // Rectangle fr = GeometryUtils.getContainingRect ( selectionStart, selectionEnd );
 
                     // Selection
                     selectionStart = null;
-                    selectionPrevEnd = null;
                     selectionEnd = null;
 
                     // Repainting selection on the tree
-                    repaintSelector ( fr );
+                    repaintSelector ( /*fr*/ );
                 }
             }
 
@@ -365,20 +361,20 @@ public class WebTreeUI extends BasicTreeUI
                 tree.repaint ();
             }
 
-            private void repaintSelector ( Rectangle fr )
-            {
-                //                // Expanding width and height to fully cover the selector
-                //                fr.x -= 1;
-                //                fr.y -= 1;
-                //                fr.width += 2;
-                //                fr.height += 2;
-                //
-                //                // Repainting selector area
-                //                tree.repaint ( fr );
-
-                // Replaced with full repaint due to strange tree lines painting bug
-                tree.repaint ();
-            }
+            //            private void repaintSelector ( Rectangle fr )
+            //            {
+            //                //                // Expanding width and height to fully cover the selector
+            //                //                fr.x -= 1;
+            //                //                fr.y -= 1;
+            //                //                fr.width += 2;
+            //                //                fr.height += 2;
+            //                //
+            //                //                // Repainting selector area
+            //                //                tree.repaint ( fr );
+            //
+            //                // Replaced with full repaint due to strange tree lines painting bug
+            //                tree.repaint ();
+            //            }
 
             @Override
             public void mouseEntered ( MouseEvent e )

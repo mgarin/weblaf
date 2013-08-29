@@ -26,6 +26,7 @@ import javax.swing.plaf.ComponentUI;
 
 public class WebToggleButtonUI extends WebButtonUI
 {
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( JComponent c )
     {
         return new WebToggleButtonUI ();

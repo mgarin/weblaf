@@ -45,6 +45,7 @@ public class WebMenuUI extends BasicMenuUI
 
     private MouseAdapter mouseAdapter = null;
 
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( JComponent c )
     {
         return new WebMenuUI ();
@@ -157,7 +158,7 @@ public class WebMenuUI extends BasicMenuUI
         paintArrowIcon ( g, lh, lr );
 
         // Painting text parts
-        Map hints = SwingUtils.setupTextAntialias ( g, c );
+        Map hints = SwingUtils.setupTextAntialias ( g );
         paintText ( g, lh, lr );
         paintAccText ( g, lh, lr );
         SwingUtils.restoreTextAntialias ( g, hints );

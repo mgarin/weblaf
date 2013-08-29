@@ -17,41 +17,68 @@
 
 package com.alee.managers.focus;
 
-import com.alee.laf.StyleConstants;
-import com.alee.utils.CollectionUtils;
+import com.alee.laf.GlobalConstants;
 import com.alee.utils.SwingUtils;
 
 import java.awt.*;
 import java.awt.event.AWTEventListener;
 import java.awt.event.FocusEvent;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.lang.ref.WeakReference;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 
 /**
- * User: mgarin Date: 21.08.11 Time: 18:12
- * <p/>
- * This manager allows you to track certain component (and its subcomponents if stated so) focus state by implementing either FocusTracker
- * interface or adding global focus listeners
+ * This manager allows you to track certain component their childs focus state by adding your custom FocusTracker or global focus
+ * listeners to track component focus state.
+ *
+ * @author Mikle Garin
  */
 
 public final class FocusManager
 {
-    private static boolean initialized = false;
-
-    private static List<FocusTracker> trackedList = new ArrayList<FocusTracker> ();
-    private static Map<Component, Boolean> focusCache = new HashMap<Component, Boolean> ();
-
-    private static List<GlobalFocusListener> globalFocusListeners = new ArrayList<GlobalFocusListener> ();
-
-    private static Component oldFocusOwner;
-    private static Component focusOwner;
+    /**
+     * Tracker list and cache lock.
+     */
+    private static final Object trackersLock = new Object ();
 
     /**
-     * FocusManager initialization
+     * Focus trackers list.
      */
+    private static List<FocusTracker> trackers = new ArrayList<FocusTracker> ();
 
+    /**
+     * Focus trackers state cache.
+     */
+    private static Map<Component, Boolean> trackersCache = new WeakHashMap<Component, Boolean> ();
+
+    /**
+     * Global focus listeners lock.
+     */
+    private static final Object listenersLock = new Object ();
+
+    /**
+     * Global focus listeners list.
+     */
+    private static List<GlobalFocusListener> globalFocusListeners = new ArrayList<GlobalFocusListener> ();
+
+    /**
+     * Reference to previously focused component.
+     */
+    private static WeakReference<Component> oldFocusOwner;
+
+    /**
+     * Reference to currently focused component.
+     */
+    private static WeakReference<Component> focusOwner;
+
+    /**
+     * Whether manager is initialized or not.
+     */
+    private static boolean initialized = false;
+
+    /**
+     * Initializes manager if it wasn't already initialized.
+     */
     public static void initialize ()
     {
         // To avoid more than one initialization
@@ -70,15 +97,16 @@ public final class FocusManager
                     {
                         if ( globalFocusListeners.size () > 0 )
                         {
-                            FocusEvent focusEvent = ( FocusEvent ) event;
+                            // Filtering unnecessary events (each focus change within application generates 2 events - lost/gained)
+                            final FocusEvent focusEvent = ( FocusEvent ) event;
                             if ( focusEvent.getID () == FocusEvent.FOCUS_LOST && focusEvent.getOppositeComponent () == null )
                             {
-                                // Focus now outside the window
+                                // Focus moved outside the application
                                 fireGlobalFocusChanged ( focusEvent.getComponent (), null );
                             }
                             else if ( focusEvent.getID () == FocusEvent.FOCUS_GAINED )
                             {
-                                // Focus now in window (might have just entered)
+                                // Focus changed within the application (or might have just entered the window)
                                 fireGlobalFocusChanged ( focusEvent.getOppositeComponent (), focusEvent.getComponent () );
                             }
                         }
@@ -86,164 +114,159 @@ public final class FocusManager
                 }
             }, AWTEvent.FOCUS_EVENT_MASK );
 
-            // Adding global focus tracker
+            // Adding global focus tracker for trackers
             registerGlobalFocusListener ( new GlobalFocusListener ()
             {
                 @Override
                 public void focusChanged ( Component oldFocus, Component newFocus )
                 {
-                    oldFocusOwner = oldFocus;
-                    focusOwner = newFocus;
+                    oldFocusOwner = new WeakReference<Component> ( oldFocus );
+                    focusOwner = new WeakReference<Component> ( newFocus );
 
                     // Debug info
-                    if ( StyleConstants.DEBUG )
+                    if ( GlobalConstants.DEBUG )
                     {
-                        String oldName = oldFocus != null ? oldFocus.getClass ().getName () : null;
-                        String newName = newFocus != null ? newFocus.getClass ().getName () : null;
+                        final String oldName = oldFocus != null ? oldFocus.getClass ().getName () : null;
+                        final String newName = newFocus != null ? newFocus.getClass ().getName () : null;
                         System.out.println ( "Focus changed: " + oldName + " --> " + newName );
                     }
 
                     // Checking all added trackers
-                    for ( FocusTracker focusTracker : CollectionUtils.copy ( trackedList ) )
+                    synchronized ( trackersLock )
                     {
-                        // Skip if tracker is disabled
-                        if ( focusTracker.isTrackingEnabled () )
+                        final Iterator<FocusTracker> iterator = trackers.iterator ();
+                        while ( iterator.hasNext () )
                         {
-                            // Determining focus owner
-                            Component tracked = focusTracker.getTrackedComponent ();
-                            boolean focusOwner = focusTracker.isUniteWithChilds () ? SwingUtils.isEqualOrChild ( tracked, newFocus ) :
-                                    tracked == newFocus;
-
-                            // Inform type
-                            if ( focusTracker.isListenGlobalChange () )
+                            final FocusTracker focusTracker = iterator.next ();
+                            final Component tracked = focusTracker.getComponent ();
+                            if ( tracked != null )
                             {
-                                // Firing tracker even if focus hasn't changed for component
-                                focusTracker.focusChanged ( focusOwner );
+                                // Skip if tracker is disabled
+                                if ( focusTracker.isEnabled () )
+                                {
+                                    // Determining component is focused or not
+                                    final boolean unite = focusTracker.isUniteWithChilds ();
+                                    final boolean focused = unite ? SwingUtils.isEqualOrChild ( tracked, newFocus ) : tracked == newFocus;
+
+                                    // Informing about focus changes if needed
+                                    if ( getCachedFocusOwnerState ( tracked ) != focused )
+                                    {
+                                        focusTracker.focusChanged ( focused );
+                                    }
+
+                                    // Caching focus state
+                                    trackersCache.put ( tracked, focused );
+                                }
                             }
                             else
                             {
-                                // Firing tracker if focus has actually changed
-                                if ( getCachedFocusOwnerState ( tracked ) != focusOwner )
-                                {
-                                    focusTracker.focusChanged ( focusOwner );
-                                }
+                                // Remove tracker because tracked component was removed by GC
+                                iterator.remove ();
                             }
-
-                            // Caching focus state
-                            focusCache.put ( tracked, focusOwner );
                         }
                     }
                 }
             } );
-
-            //            KeyboardFocusManager focusManager =
-            //                    KeyboardFocusManager.getCurrentKeyboardFocusManager ();
-            //            focusManager.addPropertyChangeListener ( new PropertyChangeListener ()
-            //            {
-            //                public void propertyChange ( PropertyChangeEvent e )
-            //                {
-            //                    // Check only if there is anything to track
-            //                    if ( trackedList.size () > 0 )
-            //                    {
-            //                        // Listening only to focus changes
-            //                        String prop = e.getPropertyName ();
-            //                        if ( ( "focusOwner".equals ( prop ) ) )
-            //                        {
-            //                            // New focus owner
-            //                            Component comp = ( Component ) e.getNewValue ();
-            //
-            //                            // Checking all added trackers
-            //                            List<FocusTracker> clonedTrackedList = new ArrayList<FocusTracker> ();
-            //                            clonedTrackedList.addAll ( trackedList );
-            //                            for ( FocusTracker focusTracker : clonedTrackedList )
-            //                            {
-            //                                // Determining focus owner
-            //                                Component tracked = focusTracker.getTrackedComponent ();
-            //                                boolean focusOwner = focusTracker.isUniteWithChilds () ?
-            //                                        SwingUtils.isEqualOrChild ( tracked, comp ) :
-            //                                        tracked == comp;
-            //
-            //                                // Firing tracker if focus has actually changed
-            //                                if ( focusTracker.isFocusOwner () != focusOwner )
-            //                                {
-            //                                    focusTracker.focusChanged ( focusOwner );
-            //                                }
-            //                            }
-            //                        }
-            //                    }
-            //                }
-            //            } );
         }
     }
 
-    private static Boolean getCachedFocusOwnerState ( Component tracked )
+    /**
+     * Returns whether component was focused or not.
+     *
+     * @param component tracked component
+     * @return true if component was focused, false otherwise
+     */
+    private static Boolean getCachedFocusOwnerState ( Component component )
     {
-        return focusCache.containsKey ( tracked ) ? focusCache.get ( tracked ) : false;
+        return trackersCache.containsKey ( component ) ? trackersCache.get ( component ) : false;
     }
 
     /**
-     * Application focus owner component
+     * Returns currently focused component.
+     *
+     * @return currently focused component
      */
-
     public static Component getFocusOwner ()
     {
-        return focusOwner;
+        return focusOwner.get ();
     }
 
     /**
-     * Application previous focus owner component
+     * Returns previously focused component.
+     *
+     * @return previously focused component
      */
-
     public static Component getOldFocusOwner ()
     {
-        return oldFocusOwner;
+        return oldFocusOwner.get ();
     }
 
     /**
-     * New GlobalFocusListener registration
+     * Registers global focus listener.
+     *
+     * @param listener new global focus listener
      */
-
     public static void registerGlobalFocusListener ( GlobalFocusListener listener )
     {
-        globalFocusListeners.add ( listener );
-    }
-
-    /**
-     * GlobalFocusListener removal
-     */
-
-    public static void unregisterGlobalFocusListener ( GlobalFocusListener listener )
-    {
-        globalFocusListeners.remove ( listener );
-    }
-
-    /**
-     * Global focus change notify
-     */
-
-    private static void fireGlobalFocusChanged ( Component oldComponent, Component newComponent )
-    {
-        for ( GlobalFocusListener gfl : CollectionUtils.copy ( globalFocusListeners ) )
+        synchronized ( listenersLock )
         {
-            gfl.focusChanged ( oldComponent, newComponent );
+            globalFocusListeners.add ( listener );
         }
     }
 
     /**
-     * New FocusTracker registration
+     * Unregisters global focus listener.
+     *
+     * @param listener global focus listener to unregister
      */
-
-    public static void registerFocusTracker ( FocusTracker focusTracker )
+    public static void unregisterGlobalFocusListener ( GlobalFocusListener listener )
     {
-        trackedList.add ( focusTracker );
+        synchronized ( listenersLock )
+        {
+            globalFocusListeners.remove ( listener );
+        }
     }
 
     /**
-     * FocusTracker removal method
+     * Fires about global focus change.
+     *
+     * @param oldComponent previously focused component
+     * @param newComponent currently focused component
      */
+    private static void fireGlobalFocusChanged ( Component oldComponent, Component newComponent )
+    {
+        synchronized ( listenersLock )
+        {
+            for ( GlobalFocusListener listener : globalFocusListeners )
+            {
+                listener.focusChanged ( oldComponent, newComponent );
+            }
+        }
+    }
 
+    /**
+     * Registers focus tracker.
+     *
+     * @param focusTracker new focus tracker
+     */
+    public static void registerFocusTracker ( FocusTracker focusTracker )
+    {
+        synchronized ( trackersLock )
+        {
+            trackers.add ( focusTracker );
+        }
+    }
+
+    /**
+     * Unregisters focus tracker.
+     *
+     * @param focusTracker focus tracker to unregister
+     */
     public static void unregisterFocusTracker ( FocusTracker focusTracker )
     {
-        trackedList.remove ( focusTracker );
+        synchronized ( trackersLock )
+        {
+            trackers.remove ( focusTracker );
+        }
     }
 }

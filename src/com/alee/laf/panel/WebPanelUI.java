@@ -62,6 +62,7 @@ public class WebPanelUI extends BasicPanelUI implements ShapeProvider, FocusTrac
 
     private boolean focused = false;
 
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( JComponent c )
     {
         return new WebPanelUI ();
@@ -95,7 +96,7 @@ public class WebPanelUI extends BasicPanelUI implements ShapeProvider, FocusTrac
         panel.addPropertyChangeListener ( WebLookAndFeel.COMPONENT_ORIENTATION_PROPERTY, propertyChangeListener );
 
         // Focus tracker
-        FocusManager.registerFocusTracker ( WebPanelUI.this );
+        updateFocusTracker ();
     }
 
     @Override
@@ -106,6 +107,18 @@ public class WebPanelUI extends BasicPanelUI implements ShapeProvider, FocusTrac
         FocusManager.unregisterFocusTracker ( WebPanelUI.this );
 
         super.uninstallUI ( c );
+    }
+
+    private void updateFocusTracker ()
+    {
+        if ( !undecorated && drawFocus )
+        {
+            FocusManager.registerFocusTracker ( WebPanelUI.this );
+        }
+        else
+        {
+            FocusManager.unregisterFocusTracker ( WebPanelUI.this );
+        }
     }
 
     @Override
@@ -122,13 +135,13 @@ public class WebPanelUI extends BasicPanelUI implements ShapeProvider, FocusTrac
     }
 
     @Override
-    public boolean isTrackingEnabled ()
+    public boolean isEnabled ()
     {
-        return !undecorated && drawFocus;
+        return true;
     }
 
     @Override
-    public Component getTrackedComponent ()
+    public Component getComponent ()
     {
         return panel;
     }
@@ -137,12 +150,6 @@ public class WebPanelUI extends BasicPanelUI implements ShapeProvider, FocusTrac
     public boolean isUniteWithChilds ()
     {
         return true;
-    }
-
-    @Override
-    public boolean isListenGlobalChange ()
-    {
-        return false;
     }
 
     @Override
@@ -202,11 +209,11 @@ public class WebPanelUI extends BasicPanelUI implements ShapeProvider, FocusTrac
     public void setUndecorated ( boolean undecorated )
     {
         this.undecorated = undecorated;
-
-        // Updating border
+        updateFocusTracker ();
         updateBorder ();
 
-        // Updating opaque value
+        // todo Bad workaround
+        // Makes panel non-opaque when it becomes decorated
         if ( painter == null && !undecorated )
         {
             panel.setOpaque ( false );
@@ -221,6 +228,7 @@ public class WebPanelUI extends BasicPanelUI implements ShapeProvider, FocusTrac
     public void setDrawFocus ( boolean drawFocus )
     {
         this.drawFocus = drawFocus;
+        updateFocusTracker ();
     }
 
     public Painter getPainter ()

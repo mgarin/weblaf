@@ -18,73 +18,109 @@
 package com.alee.managers.focus;
 
 import java.awt.*;
+import java.lang.ref.WeakReference;
 
 /**
- * User: mgarin Date: 25.08.11 Time: 17:40
+ * Small extension class for FocusTracker that simplifies its creation.
+ *
+ * @author Mikle Garin
  */
 
 public abstract class DefaultFocusTracker implements FocusTracker
 {
-    private boolean trackingEnabled;
-    private Component component;
-    private boolean uniteWithChilds;
-    private boolean listenGlobalChange;
+    /**
+     * Whether tracking is currently enabled or not.
+     */
+    private boolean enabled;
 
+    /**
+     * Tracked component.
+     */
+    private WeakReference<Component> component;
+
+    /**
+     * Whether component and its childs in components tree should be counted as a single component or not.
+     */
+    private boolean uniteWithChilds;
+
+    /**
+     * Constructs new tracker with the specified tracked component.
+     *
+     * @param component tracked component
+     */
     public DefaultFocusTracker ( Component component )
     {
         this ( component, true );
     }
 
+    /**
+     * Constructs new tracker with the specified tracked component.
+     *
+     * @param component       tracked component
+     * @param uniteWithChilds whether component and its childs in components tree should be counted as a single component or not
+     */
     public DefaultFocusTracker ( Component component, boolean uniteWithChilds )
     {
-        this ( component, uniteWithChilds, false );
-    }
-
-    public DefaultFocusTracker ( Component component, boolean uniteWithChilds, boolean listenGlobalChange )
-    {
         super ();
-        this.trackingEnabled = true;
-        this.component = component;
+        this.enabled = true;
+        this.component = new WeakReference<Component> ( component );
         this.uniteWithChilds = uniteWithChilds;
-        this.listenGlobalChange = listenGlobalChange;
     }
 
-    public void setTrackingEnabled ( boolean trackingEnabled )
-    {
-        this.trackingEnabled = trackingEnabled;
-    }
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public boolean isTrackingEnabled ()
+    public boolean isEnabled ()
     {
-        return trackingEnabled;
+        return enabled;
     }
 
+    /**
+     * Sets whether tracking is currently enabled or not.
+     *
+     * @param enabled whether tracking is currently enabled or not
+     */
+    public void setEnabled ( boolean enabled )
+    {
+        this.enabled = enabled;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Component getComponent ()
+    {
+        return component.get ();
+    }
+
+    /**
+     * Sets tracked component.
+     *
+     * @param component tracked component
+     */
     public void setComponent ( Component component )
     {
-        this.component = component;
+        this.component = new WeakReference<Component> ( component );
     }
 
-    @Override
-    public Component getTrackedComponent ()
-    {
-        return component;
-    }
-
-    public void setUniteWithChilds ( boolean uniteWithChilds )
-    {
-        this.uniteWithChilds = uniteWithChilds;
-    }
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isUniteWithChilds ()
     {
         return uniteWithChilds;
     }
 
-    @Override
-    public boolean isListenGlobalChange ()
+    /**
+     * Sets whether component and its childs in components tree should be counted as a single component or not.
+     *
+     * @param uniteWithChilds whether component and its childs in components tree should be counted as a single component or not
+     */
+    public void setUniteWithChilds ( boolean uniteWithChilds )
     {
-        return listenGlobalChange;
+        this.uniteWithChilds = uniteWithChilds;
     }
 }

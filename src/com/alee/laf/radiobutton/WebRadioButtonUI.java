@@ -94,6 +94,7 @@ public class WebRadioButtonUI extends BasicRadioButtonUI implements ShapeProvide
     private MouseAdapter mouseAdapter;
     private ItemListener itemListener;
 
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( JComponent c )
     {
         return new WebRadioButtonUI ();
@@ -485,7 +486,7 @@ public class WebRadioButtonUI extends BasicRadioButtonUI implements ShapeProvide
     @Override
     public synchronized void paint ( Graphics g, JComponent c )
     {
-        Map hints = SwingUtils.setupTextAntialias ( g, c );
+        Map hints = SwingUtils.setupTextAntialias ( g );
         super.paint ( g, c );
         SwingUtils.restoreTextAntialias ( g, hints );
     }

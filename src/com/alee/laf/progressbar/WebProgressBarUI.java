@@ -77,6 +77,7 @@ public class WebProgressBarUI extends BasicProgressBarUI implements ShapeProvide
 
     private PropertyChangeListener propertyChangeListener;
 
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( JComponent c )
     {
         return new WebProgressBarUI ();

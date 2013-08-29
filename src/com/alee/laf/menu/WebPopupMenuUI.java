@@ -34,6 +34,7 @@ import java.awt.*;
 
 public class WebPopupMenuUI extends BasicPopupMenuUI implements ShapeProvider
 {
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( JComponent c )
     {
         return new WebPopupMenuUI ();

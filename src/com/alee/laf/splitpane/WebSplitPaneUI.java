@@ -57,6 +57,7 @@ public class WebSplitPaneUI extends BasicSplitPaneUI
      * @param c component that will use UI instance
      * @return instance of the WebSplitPaneUI
      */
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( JComponent c )
     {
         return new WebSplitPaneUI ();

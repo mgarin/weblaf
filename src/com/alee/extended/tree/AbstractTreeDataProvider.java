@@ -55,7 +55,6 @@ public abstract class AbstractTreeDataProvider<E extends AsyncUniqueNode> implem
      */
     public void setChildsComparator ( Comparator<E> comparator )
     {
-        // todo Should be applied to model
         this.comparator = comparator;
     }
 
@@ -75,7 +74,6 @@ public abstract class AbstractTreeDataProvider<E extends AsyncUniqueNode> implem
      */
     public void setChildsFilter ( Filter<E> filter )
     {
-        // todo Should be applied to model
         this.filter = filter;
     }
 }

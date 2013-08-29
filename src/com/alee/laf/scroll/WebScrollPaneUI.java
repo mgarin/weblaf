@@ -54,6 +54,7 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeProvider,
     private WebScrollPaneCorner corner;
     private PropertyChangeListener propertyChangeListener;
 
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( JComponent c )
     {
         return new WebScrollPaneUI ();
@@ -85,7 +86,7 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeProvider,
         scrollpane.addPropertyChangeListener ( WebLookAndFeel.COMPONENT_ORIENTATION_PROPERTY, propertyChangeListener );
 
         // Focus tracker for the scroll pane content
-        FocusManager.registerFocusTracker ( WebScrollPaneUI.this );
+        updateFocusTracker ();
     }
 
     @Override
@@ -97,6 +98,18 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeProvider,
         FocusManager.unregisterFocusTracker ( WebScrollPaneUI.this );
 
         super.uninstallUI ( c );
+    }
+
+    private void updateFocusTracker ()
+    {
+        if ( drawBorder && drawFocus )
+        {
+            FocusManager.registerFocusTracker ( WebScrollPaneUI.this );
+        }
+        else
+        {
+            FocusManager.unregisterFocusTracker ( WebScrollPaneUI.this );
+        }
     }
 
     private WebScrollPaneCorner getCornerComponent ()
@@ -132,13 +145,13 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeProvider,
     }
 
     @Override
-    public boolean isTrackingEnabled ()
+    public boolean isEnabled ()
     {
-        return drawBorder && drawFocus;
+        return true;
     }
 
     @Override
-    public Component getTrackedComponent ()
+    public Component getComponent ()
     {
         return scrollpane;
     }
@@ -150,19 +163,10 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeProvider,
     }
 
     @Override
-    public boolean isListenGlobalChange ()
-    {
-        return false;
-    }
-
-    @Override
     public void focusChanged ( boolean focused )
     {
         focusOwner = focused;
-        if ( scrollpane != null )
-        {
-            scrollpane.repaint ();
-        }
+        scrollpane.repaint ();
     }
 
     public boolean isDrawBorder ()
@@ -173,6 +177,7 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeProvider,
     public void setDrawBorder ( boolean drawBorder )
     {
         this.drawBorder = drawBorder;
+        updateFocusTracker ();
         updateBorder ( scrollpane );
     }
 
@@ -216,6 +221,7 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeProvider,
     public void setDrawFocus ( boolean drawFocus )
     {
         this.drawFocus = drawFocus;
+        updateFocusTracker ();
     }
 
     public boolean isDrawBackground ()

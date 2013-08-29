@@ -65,6 +65,7 @@ public class WebLabelUI extends BasicLabelUI
      * @param c component that will use UI instance
      * @return instance of the WebLabelUI
      */
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( JComponent c )
     {
         return new WebLabelUI ();

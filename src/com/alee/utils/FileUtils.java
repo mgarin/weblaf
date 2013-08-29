@@ -159,6 +159,11 @@ public final class FileUtils
     private static Map<String, String> displayFileModificationDateCache = new HashMap<String, String> ();
 
     /**
+     * File extension icons cache lock.
+     */
+    private static final Object extensionIconsCacheLock = new Object ();
+
+    /**
      * File extension icons cache.
      */
     private static Map<String, ImageIcon> extensionIconsCache = new HashMap<String, ImageIcon> ();
@@ -2534,6 +2539,8 @@ public final class FileUtils
             return null;
         }
 
+        // todo Properly lock operations for all cached file methods
+
         // Retrieving required icon extension or type
         String extension;
         if ( !isDirectory ( file ) )
@@ -2566,9 +2573,17 @@ public final class FileUtils
         String key = getStandartFileIconCacheKey ( extension, large, transparency, enabled );
 
         // Retrieving icon
-        if ( extensionIconsCache.containsKey ( key ) )
+        final boolean contains;
+        synchronized ( extensionIconsCacheLock )
         {
-            return extensionIconsCache.get ( key );
+            contains = extensionIconsCache.containsKey ( key );
+        }
+        if ( contains )
+        {
+            synchronized ( extensionIconsCacheLock )
+            {
+                return extensionIconsCache.get ( key );
+            }
         }
         else
         {
@@ -2584,16 +2599,25 @@ public final class FileUtils
             if ( enabled )
             {
                 // Cache enabled icon
-                extensionIconsCache.put ( key, icon );
+                synchronized ( extensionIconsCacheLock )
+                {
+                    extensionIconsCache.put ( key, icon );
+                }
             }
             else
             {
                 // Cache enabled icon
-                extensionIconsCache.put ( getStandartFileIconCacheKey ( extension, large, transparency, true ), icon );
+                synchronized ( extensionIconsCacheLock )
+                {
+                    extensionIconsCache.put ( getStandartFileIconCacheKey ( extension, large, transparency, true ), icon );
+                }
 
                 // Cache disabled icon
                 icon = ImageUtils.createDisabledCopy ( icon );
-                extensionIconsCache.put ( key, icon );
+                synchronized ( extensionIconsCacheLock )
+                {
+                    extensionIconsCache.put ( key, icon );
+                }
             }
 
             return icon;

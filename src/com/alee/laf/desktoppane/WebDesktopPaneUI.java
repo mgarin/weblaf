@@ -30,6 +30,7 @@ import javax.swing.plaf.basic.BasicDesktopPaneUI;
 
 public class WebDesktopPaneUI extends BasicDesktopPaneUI
 {
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( JComponent c )
     {
         return new WebDesktopPaneUI ();
@@ -45,34 +46,4 @@ public class WebDesktopPaneUI extends BasicDesktopPaneUI
         c.setOpaque ( true );
         c.setBackground ( StyleConstants.backgroundColor );
     }
-
-    //    public Dimension getPreferredSize ( JComponent c )
-    //    {
-    //        Rectangle viewP = desktop.getBounds ();
-    //        int maxX = viewP.width + viewP.x, maxY = viewP.height + viewP.y;
-    //        int minX = viewP.x, minY = viewP.y;
-    //        JInternalFrame f = null;
-    //        JInternalFrame[] frames = desktop.getAllFrames ();
-    //        for ( JInternalFrame frame : frames )
-    //        {
-    //            f = frame;
-    //            if ( f.getX () < minX )
-    //            { // get min X
-    //                minX = f.getX ();
-    //            }
-    //            if ( ( f.getX () + f.getWidth () ) > maxX )
-    //            { // get max X
-    //                maxX = f.getX () + f.getWidth ();
-    //            }
-    //            if ( f.getY () < minY )
-    //            { // get min Y
-    //                minY = f.getY ();
-    //            }
-    //            if ( ( f.getY () + f.getHeight () ) > maxY )
-    //            { // get max Y
-    //                maxY = f.getY () + f.getHeight ();
-    //            }
-    //        }
-    //        return new Dimension ( maxX, maxY );
-    //    }
 }

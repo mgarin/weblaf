@@ -71,11 +71,6 @@ public class WebTextFieldUI extends BasicTextFieldUI implements ShapeProvider, S
     private PropertyChangeListener marginChangeListener;
     private ComponentAdapter componentResizeListener;
 
-    public static ComponentUI createUI ( JComponent c )
-    {
-        return new WebTextFieldUI ( ( JTextField ) c );
-    }
-
     public WebTextFieldUI ( final JTextField textField )
     {
         this ( textField, true );
@@ -86,6 +81,11 @@ public class WebTextFieldUI extends BasicTextFieldUI implements ShapeProvider, S
         super ();
         this.drawBorder = drawBorder;
         this.textField = textField;
+    }
+
+    public static ComponentUI createUI ( JComponent c )
+    {
+        return new WebTextFieldUI ( ( JTextField ) c );
     }
 
     @Override

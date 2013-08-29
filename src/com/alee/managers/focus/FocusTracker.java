@@ -20,38 +20,39 @@ package com.alee.managers.focus;
 import java.awt.*;
 
 /**
- * User: mgarin Date: 21.08.11 Time: 18:10
+ * Advanced interface that allows you to track focus behavior within component and its childs.
+ *
+ * @author Mikle Garin
  */
 
 public interface FocusTracker
 {
     /**
-     * Should tack the provided component or not (can be used to switch off focus tracking when its not needed to optimize overall
-     * performance)
+     * Returns whether tracking is currently enabled or not.
+     *
+     * @return true if tracking is currently enabled, false otherwise
      */
-    public boolean isTrackingEnabled ();
+    public boolean isEnabled ();
 
     /**
-     * Tracked component
+     * Returns tracked component.
+     *
+     * @return tracked component
      */
-    public Component getTrackedComponent ();
+    public Component getComponent ();
 
     /**
-     * Should count component and its childs as a single focus owner (in case this returns true - any focus change between component and
-     * any
-     * of its childs will be ignored)
+     * Returns whether component and its childs in components tree should be counted as a single component or not.
+     * In case component and its childs are counted as one focus changes within them will be ignored by tracker.
+     *
+     * @return true if component and its childs in components tree should be counted as a single component, false otherwise
      */
     public boolean isUniteWithChilds ();
 
     /**
-     * Listen to any focus change that happens, not only this component focus changes
-     */
-    public boolean isListenGlobalChange ();
-
-    /**
-     * This method will inform about focus changes (only actual focus changes will be fired in case "isListenGlobalChange" returns false
-     * and
-     * all focus changes otherwise)
+     * Informs about component(s) focus changes depending on tracker settings.
+     *
+     * @param focused whether tracked component(s) is focused or not
      */
     public void focusChanged ( boolean focused );
 }

@@ -21,10 +21,19 @@ import java.awt.*;
 import java.util.EventListener;
 
 /**
- * User: mgarin Date: 06.10.11 Time: 17:05
+ * Global focus tracking listener.
+ *
+ * @author Mikle Garin
  */
 
 public interface GlobalFocusListener extends EventListener
 {
+    /**
+     * Informs about global focus changes within the application.
+     * In case focus goes outside the application or comes from other application one of components might be null.
+     *
+     * @param oldFocus previously focused component
+     * @param newFocus currently focused component
+     */
     public void focusChanged ( Component oldFocus, Component newFocus );
 }

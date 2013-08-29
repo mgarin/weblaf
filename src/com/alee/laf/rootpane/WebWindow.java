@@ -32,7 +32,6 @@ import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
-
 /**
  * User: mgarin Date: 26.06.12 Time: 16:48
  */
@@ -119,13 +118,13 @@ public class WebWindow extends JWindow implements FocusTracker, LanguageContaine
      */
 
     @Override
-    public boolean isTrackingEnabled ()
+    public boolean isEnabled ()
     {
         return isShowing ();
     }
 
     @Override
-    public Component getTrackedComponent ()
+    public Component getComponent ()
     {
         return this;
     }
@@ -134,12 +133,6 @@ public class WebWindow extends JWindow implements FocusTracker, LanguageContaine
     public boolean isUniteWithChilds ()
     {
         return true;
-    }
-
-    @Override
-    public boolean isListenGlobalChange ()
-    {
-        return false;
     }
 
     @Override

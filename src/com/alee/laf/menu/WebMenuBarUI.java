@@ -41,6 +41,7 @@ public class WebMenuBarUI extends BasicMenuBarUI implements ShapeProvider
     private MenubarStyle menubarStyle = WebMenuBarStyle.menubarStyle;
     private Color borderColor = WebMenuBarStyle.borderColor;
 
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( JComponent c )
     {
         return new WebMenuBarUI ();

@@ -34,8 +34,8 @@ import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * Custom list cell renderer for WebFileList component.
@@ -49,52 +49,47 @@ public class WebFileListCellRenderer extends WebListCellRenderer
     /**
      * Image thumbnails size.
      */
-    private static final int THUMBNAIL_SIZE = 50;
+    protected static final int THUMBNAIL_SIZE = 50;
 
     /**
      * File list in which this list cell renderer is used.
      */
-    private WebFileList fileList;
+    protected WebFileList fileList;
 
     /**
      * Thumbnail icon label.
      */
-    private WebLabel iconLabel;
+    protected WebLabel iconLabel;
 
     /**
      * File description panel.
      */
-    private WebPanel descriptionPanel;
+    protected WebPanel descriptionPanel;
 
     /**
      * File name label.
      */
-    private WebLabel nameLabel;
+    protected WebLabel nameLabel;
 
     /**
      * File size label.
      */
-    private WebLabel sizeLabel;
+    protected WebLabel sizeLabel;
 
     /**
      * File description label.
      */
-    private WebLabel descriptionLabel;
+    protected WebLabel descriptionLabel;
 
     /**
      * Thumbnails queue lock object.
      */
-    private static final Object thumbnailsQueueLock = new Object ();
+    protected static final Object thumbnailsLock = new Object ();
 
     /**
-     * Thumbnails generation queue.
+     * Executor service for thumbnails generation.
      */
-    private static List<FileElement> thumbnailsQueue = new ArrayList<FileElement> ();
-
-    /**
-     * Thumbnails generation thread.
-     */
-    private static Thread thumbnailsThread = null;
+    protected static ExecutorService executorService = Executors.newSingleThreadExecutor ();
 
     /**
      * Constructs cell renderer for the specified file list.
@@ -273,26 +268,40 @@ public class WebFileListCellRenderer extends WebListCellRenderer
         // Renderer icon
         String imageSize = null;
 
-        if ( element.isThumbnailQueued () )
+        if ( iconLabel.isEnabled () )
         {
-            if ( element.getEnabledThumbnail () != null )
+            // Thumbnail loading
+            synchronized ( thumbnailsLock )
             {
-                // Image thumbnail
-                iconLabel.setIcon ( element.getEnabledThumbnail () );
-                iconLabel.setDisabledIcon ( element.getDisabledThumbnail () );
-                imageSize = element.getEnabledThumbnail ().getDescription ();
+                if ( !element.isThumbnailQueued () && !element.isDisabledThumbnailQueued () )
+                {
+                    queueThumbnailLoad ( element, false );
+                }
             }
-            else
+
+            // Image thumbnail
+            final ImageIcon thumbnail = element.getEnabledThumbnail ();
+            iconLabel.setIcon ( thumbnail );
+
+            // Image description
+            if ( thumbnail != null )
             {
-                iconLabel.setIcon ( null );
-                iconLabel.setDisabledIcon ( null );
+                imageSize = thumbnail.getDescription ();
             }
         }
         else
         {
-            queueThumbnailLoad ( element );
-            iconLabel.setIcon ( null );
-            iconLabel.setDisabledIcon ( null );
+            // Disabled thumbnail loading
+            synchronized ( thumbnailsLock )
+            {
+                if ( !element.isDisabledThumbnailQueued () )
+                {
+                    queueThumbnailLoad ( element, true );
+                }
+            }
+
+            // Image disabled thumbnail
+            iconLabel.setDisabledIcon ( element.getDisabledThumbnail () );
         }
 
         // Settings description
@@ -325,81 +334,52 @@ public class WebFileListCellRenderer extends WebListCellRenderer
      *
      * @param element element to add
      */
-    private void queueThumbnailLoad ( FileElement element )
+    private void queueThumbnailLoad ( final FileElement element, final boolean disabled )
     {
-        synchronized ( thumbnailsQueueLock )
-        {
-            element.setThumbnailQueued ( true );
-            thumbnailsQueue.add ( element );
-        }
-        pushQueue ();
-    }
+        element.setThumbnailQueued ( true );
+        element.setDisabledThumbnailQueued ( disabled );
 
-    /**
-     * Forces thumbnails generation thread to start in case it is not running yet.
-     */
-    private void pushQueue ()
-    {
-        if ( thumbnailsThread == null || !thumbnailsThread.isAlive () )
+        executorService.submit ( new Runnable ()
         {
-            thumbnailsThread = new Thread ( new Runnable ()
+            @Override
+            public void run ()
             {
-                @Override
-                public void run ()
+                final String absolutePath = element.getFile ().getAbsolutePath ();
+                final String ext = FileUtils.getFileExtPart ( element.getFile ().getName (), false ).toLowerCase ();
+                if ( fileList.isGenerateThumbnails () && GlobalConstants.IMAGE_FORMATS.contains ( ext ) )
                 {
-                    // Check whether we have more elements in queue or not
-                    boolean available;
-                    synchronized ( thumbnailsQueueLock )
+                    final ImageIcon thumb = element.getEnabledThumbnail () != null ? element.getEnabledThumbnail () :
+                            ImageUtils.createThumbnailIcon ( absolutePath, THUMBNAIL_SIZE );
+                    if ( thumb != null )
                     {
-                        available = thumbnailsQueue.size () > 0;
+                        element.setEnabledThumbnail ( thumb );
+                        if ( disabled )
+                        {
+                            element.setDisabledThumbnail ( ImageUtils.createDisabledCopy ( thumb ) );
+                        }
                     }
-
-                    // Start processing the queue
-                    FileElement element;
-                    while ( available )
+                    else
                     {
-                        // Removing element from queue
-                        synchronized ( thumbnailsQueueLock )
+                        element.setEnabledThumbnail ( FileUtils.getStandartFileIcon ( element.getFile (), true, true ) );
+                        if ( disabled )
                         {
-                            element = thumbnailsQueue.remove ( 0 );
-                        }
-
-                        // Retrieving image
-                        final String absolutePath = element.getFile ().getAbsolutePath ();
-                        final String ext = FileUtils.getFileExtPart ( element.getFile ().getName (), false ).toLowerCase ();
-                        if ( fileList.isGenerateThumbnails () && GlobalConstants.IMAGE_FORMATS.contains ( ext ) )
-                        {
-                            final ImageIcon thumb = ImageUtils.createThumbnailIcon ( absolutePath, THUMBNAIL_SIZE );
-                            if ( thumb != null )
-                            {
-                                element.setEnabledThumbnail ( thumb );
-                                element.setDisabledThumbnail ( ImageUtils.createDisabledCopy ( thumb ) );
-                            }
-                            else
-                            {
-                                element.setEnabledThumbnail ( FileUtils.getStandartFileIcon ( element.getFile (), true, true ) );
-                                element.setDisabledThumbnail ( FileUtils.getStandartFileIcon ( element.getFile (), true, false ) );
-                            }
-                        }
-                        else
-                        {
-                            element.setEnabledThumbnail ( FileUtils.getStandartFileIcon ( element.getFile (), true, true ) );
                             element.setDisabledThumbnail ( FileUtils.getStandartFileIcon ( element.getFile (), true, false ) );
-                        }
-
-                        // todo Sometimes seems to call repaint when list is not visible (for now fixed inside method)
-                        // Repainting cell with image
-                        fileList.repaint ( element );
-
-                        // Check whether we have more elements in queue or not
-                        synchronized ( thumbnailsQueueLock )
-                        {
-                            available = thumbnailsQueue.size () > 0;
                         }
                     }
                 }
-            } );
-            thumbnailsThread.start ();
-        }
+                else
+                {
+                    element.setEnabledThumbnail ( FileUtils.getStandartFileIcon ( element.getFile (), true, true ) );
+                    if ( disabled )
+                    {
+                        element.setDisabledThumbnail ( FileUtils.getStandartFileIcon ( element.getFile (), true, false ) );
+                    }
+                }
+                if ( disabled != fileList.isEnabled () )
+                {
+                    fileList.repaint ( element );
+                }
+            }
+        } );
     }
 }

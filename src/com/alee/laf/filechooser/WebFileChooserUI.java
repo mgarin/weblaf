@@ -62,7 +62,6 @@ public class WebFileChooserUI extends FileChooserUI
      * FilChooser listeners.
      */
     private PropertyChangeListener propertyChangeListener;
-    private FileChooserType chooserType;
 
     /**
      * Mark to ignore file selection property events.
@@ -76,6 +75,7 @@ public class WebFileChooserUI extends FileChooserUI
      * @param c component that will use UI instance
      * @return instance of the WebFileChooserUI
      */
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( JComponent c )
     {
         return new WebFileChooserUI ();

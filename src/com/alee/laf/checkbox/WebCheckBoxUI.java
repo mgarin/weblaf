@@ -94,6 +94,7 @@ public class WebCheckBoxUI extends BasicCheckBoxUI implements ShapeProvider
     private MouseAdapter mouseAdapter;
     private ItemListener itemListener;
 
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( JComponent c )
     {
         return new WebCheckBoxUI ();
@@ -536,7 +537,7 @@ public class WebCheckBoxUI extends BasicCheckBoxUI implements ShapeProvider
     @Override
     public synchronized void paint ( Graphics g, JComponent c )
     {
-        Map hints = SwingUtils.setupTextAntialias ( g, c );
+        Map hints = SwingUtils.setupTextAntialias ( g );
         super.paint ( g, c );
         SwingUtils.restoreTextAntialias ( g, hints );
     }

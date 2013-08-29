@@ -17,6 +17,7 @@
 
 package com.alee.utils;
 
+import com.alee.laf.GlobalConstants;
 import com.alee.laf.StyleConstants;
 
 import javax.swing.*;
@@ -36,7 +37,7 @@ public final class DebugUtils
      */
     public static void initTimeDebugInfo ()
     {
-        if ( StyleConstants.DEBUG )
+        if ( GlobalConstants.DEBUG )
         {
             TimeUtils.pinNanoTime ();
         }
@@ -50,7 +51,7 @@ public final class DebugUtils
      */
     public static void paintTimeDebugInfo ( Graphics g )
     {
-        if ( StyleConstants.DEBUG )
+        if ( GlobalConstants.DEBUG )
         {
             paintDebugInfoImpl ( ( Graphics2D ) g );
         }
@@ -64,7 +65,7 @@ public final class DebugUtils
      */
     public static void paintTimeDebugInfo ( Graphics2D g2d )
     {
-        if ( StyleConstants.DEBUG )
+        if ( GlobalConstants.DEBUG )
         {
             paintDebugInfoImpl ( g2d );
         }

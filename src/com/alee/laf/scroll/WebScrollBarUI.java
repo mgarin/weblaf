@@ -49,6 +49,7 @@ public class WebScrollBarUI extends BasicScrollBarUI
 
     private MouseAdapter mouseAdapter;
 
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( JComponent c )
     {
         return new WebScrollBarUI ();

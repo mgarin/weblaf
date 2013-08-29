@@ -87,6 +87,18 @@ public class WebMultiLineLabelUI extends BasicLabelUI implements ComponentListen
     private boolean drawShade = WebLabelStyle.drawShade;
     private Color shadeColor = WebLabelStyle.shadeColor;
 
+    /**
+     * UI instance creation.
+     *
+     * @param c the component about to be installed
+     * @return the shared UI delegate instance
+     */
+    @SuppressWarnings ("UnusedParameters")
+    public static ComponentUI createUI ( JComponent c )
+    {
+        return new WebMultiLineLabelUI ();
+    }
+
     @Override
     public void installUI ( JComponent c )
     {
@@ -94,17 +106,6 @@ public class WebMultiLineLabelUI extends BasicLabelUI implements ComponentListen
 
         // Default settings
         SwingUtils.setOrientation ( c );
-    }
-
-    /**
-     * UI instance creation.
-     *
-     * @param c the component about to be installed
-     * @return the shared UI delegate instance
-     */
-    public static ComponentUI createUI ( JComponent c )
-    {
-        return new WebMultiLineLabelUI ();
     }
 
     /**
@@ -222,7 +223,7 @@ public class WebMultiLineLabelUI extends BasicLabelUI implements ComponentListen
     @Override
     public void paint ( Graphics g, JComponent c )
     {
-        Map hints = SwingUtils.setupTextAntialias ( g, c );
+        Map hints = SwingUtils.setupTextAntialias ( g );
 
         JLabel label = ( JLabel ) c;
         String text = label.getText ();
@@ -536,7 +537,7 @@ public class WebMultiLineLabelUI extends BasicLabelUI implements ComponentListen
      * @param l the label
      * @return the text lines of the label.
      */
-    @SuppressWarnings ( "unchecked" )
+    @SuppressWarnings ("unchecked")
     protected List<String> getTextLines ( JLabel l )
     {
         List<String> lines = ( List<String> ) l.getClientProperty ( PROPERTY_KEY );

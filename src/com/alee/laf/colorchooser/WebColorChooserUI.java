@@ -36,6 +36,7 @@ public class WebColorChooserUI extends BasicColorChooserUI
     private ChangeListener modelChangeListener;
     private boolean modifying = false;
 
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( JComponent c )
     {
         return new WebColorChooserUI ();

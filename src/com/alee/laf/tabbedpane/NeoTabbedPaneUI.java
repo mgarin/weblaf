@@ -36,6 +36,7 @@ public class NeoTabbedPaneUI extends BasicTabbedPaneUI
     private Color borderColor = new Color ( 165, 165, 165 );
     private Color innerBorderColor = new Color ( 248, 248, 248 );
 
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( JComponent c )
     {
         return new NeoTabbedPaneUI ();
@@ -134,7 +135,7 @@ public class NeoTabbedPaneUI extends BasicTabbedPaneUI
     protected void paintText ( Graphics g, int tabPlacement, Font font, FontMetrics metrics, int tabIndex, String title, Rectangle textRect,
                                boolean isSelected )
     {
-        Map aa = SwingUtils.setupTextAntialias ( g, tabPane );
+        Map aa = SwingUtils.setupTextAntialias ( g );
         g.setFont ( font );
         View v = getTextViewForTab ( tabIndex );
         if ( v != null )
@@ -214,6 +215,7 @@ public class NeoTabbedPaneUI extends BasicTabbedPaneUI
     //        }
     //    }
 
+    @SuppressWarnings ("UnusedParameters")
     protected void paintTabBackground ( Graphics2D g2d, int tabPlacement, int row, int col, int colsInRow, int tabIndex, int x, int y,
                                         int w, int h, boolean isSelected )
     {
@@ -291,13 +293,13 @@ public class NeoTabbedPaneUI extends BasicTabbedPaneUI
     protected void paintContentBorder ( Graphics g, int tabPlacement, int selectedIndex )
     {
         int width = tabPane.getWidth ();
-        int height = tabPane.getHeight ();
+        // int height = tabPane.getHeight ();
         Insets insets = tabPane.getInsets ();
 
         int x = insets.left;
         int y = insets.top;
         int w = width - insets.right - insets.left;
-        int h = height - insets.top - insets.bottom;
+        // int h = height - insets.top - insets.bottom;
 
         switch ( tabPlacement )
         {
@@ -309,12 +311,12 @@ public class NeoTabbedPaneUI extends BasicTabbedPaneUI
                 w -= calculateTabAreaWidth ( tabPlacement, runCount, maxTabWidth );
                 break;
             case BOTTOM:
-                h -= calculateTabAreaHeight ( tabPlacement, runCount, maxTabHeight );
+                // h -= calculateTabAreaHeight ( tabPlacement, runCount, maxTabHeight );
                 break;
             case TOP:
             default:
                 y += calculateTabAreaHeight ( tabPlacement, runCount, maxTabHeight );
-                h -= ( y - insets.top );
+                // h -= ( y - insets.top );
                 break;
         }
 

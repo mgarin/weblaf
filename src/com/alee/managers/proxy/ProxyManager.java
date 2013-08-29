@@ -78,7 +78,7 @@ public final class ProxyManager
     private static boolean proxySet = false;
 
     /**
-     * Initialization mark.
+     * Whether manager is initialized or not.
      */
     private static boolean initialized = false;
 

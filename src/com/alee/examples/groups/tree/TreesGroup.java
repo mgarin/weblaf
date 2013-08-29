@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Trees example group.
+ * Tree examples group.
  *
  * @author Mikle Garin
  */
@@ -33,9 +33,7 @@ import java.util.List;
 public class TreesGroup extends DefaultExampleGroup
 {
     /**
-     * Returns example group icon.
-     *
-     * @return example group icon
+     * {@inheritDoc}
      */
     @Override
     public Icon getGroupIcon ()
@@ -44,9 +42,7 @@ public class TreesGroup extends DefaultExampleGroup
     }
 
     /**
-     * Returns example group name.
-     *
-     * @return example group name
+     * {@inheritDoc}
      */
     @Override
     public String getGroupName ()
@@ -55,9 +51,7 @@ public class TreesGroup extends DefaultExampleGroup
     }
 
     /**
-     * Returns short example group description.
-     *
-     * @return short example group description
+     * {@inheritDoc}
      */
     @Override
     public String getGroupDescription ()
@@ -66,9 +60,7 @@ public class TreesGroup extends DefaultExampleGroup
     }
 
     /**
-     * Returns a list of examples for this example group.
-     *
-     * @return list of examples
+     * {@inheritDoc}
      */
     @Override
     public List<Example> getGroupExamples ()
@@ -81,9 +73,7 @@ public class TreesGroup extends DefaultExampleGroup
     }
 
     /**
-     * Returns examples content side width relative to the whole available to example group width.
-     *
-     * @return examples content side width relative to the whole available to example group width
+     * {@inheritDoc}
      */
     @Override
     public double getContentPartSize ()

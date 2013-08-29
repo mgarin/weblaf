@@ -63,6 +63,7 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider
     private MouseWheelListener mwl = null;
     private WebButton arrow = null;
 
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( JComponent c )
     {
         return new WebComboBoxUI ();

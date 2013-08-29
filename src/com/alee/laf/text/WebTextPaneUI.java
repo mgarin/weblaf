@@ -31,6 +31,7 @@ import java.awt.*;
 
 public class WebTextPaneUI extends WebEditorPaneUI
 {
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( JComponent c )
     {
         return new WebTextPaneUI ();

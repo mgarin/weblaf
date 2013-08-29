@@ -26,6 +26,7 @@ import javax.swing.plaf.ComponentUI;
 
 public class WebRadioButtonMenuItemUI extends WebMenuItemUI
 {
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( JComponent c )
     {
         return new WebRadioButtonMenuItemUI ();

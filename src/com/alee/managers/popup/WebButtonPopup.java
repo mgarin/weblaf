@@ -62,6 +62,7 @@ public class WebButtonPopup extends WebPopup
 
         // Initial popup settings
         setCloseOnFocusLoss ( true );
+        setFocusCycleRoot ( false );
         setPainter ( new WebButtonPopupPainter () );
 
         // Button copy for popup
@@ -82,7 +83,7 @@ public class WebButtonPopup extends WebPopup
             public void actionPerformed ( ActionEvent e )
             {
                 // Displaying popup when button is pressed
-                PopupManager.showPopup ( button, WebButtonPopup.this, false );
+                showPopup ();
             }
         } );
         button.addPropertyChangeListener ( new PropertyChangeListener ()
@@ -150,6 +151,7 @@ public class WebButtonPopup extends WebPopup
         // Popup content panel
         container = new WebPanel ();
         container.setOpaque ( false );
+        container.setFocusCycleRoot ( true );
 
         // Initial components composition
         updateContent ();
@@ -568,6 +570,17 @@ public class WebButtonPopup extends WebPopup
     public Shape provideShape ()
     {
         return getPopupShape ( this );
+    }
+
+    public void showPopup ()
+    {
+        PopupManager.showPopup ( button, this, false );
+
+        // todo Some problems with focus transfer
+        //        if ( SwingUtils.hasFocusableComponent ( container ) )
+        //        {
+        //            container.transferFocus ();
+        //        }
     }
 
     @Override

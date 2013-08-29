@@ -34,28 +34,36 @@ import java.util.Map;
 
 public abstract class DefaultExample implements Example
 {
-    // Mouse buttons icons
+    /**
+     * Mouse buttons icons.
+     */
     public static final ImageIcon lmb = new ImageIcon ( DefaultExample.class.getResource ( "icons/mouse/lmb.png" ) );
     public static final ImageIcon mmb = new ImageIcon ( DefaultExample.class.getResource ( "icons/mouse/mmb.png" ) );
     public static final ImageIcon rmb = new ImageIcon ( DefaultExample.class.getResource ( "icons/mouse/rmb.png" ) );
     public static final ImageIcon cursor = new ImageIcon ( DefaultExample.class.getResource ( "icons/mouse/cursor.png" ) );
 
-    // Example icons cache
+    /**
+     * Example icons cache.
+     */
     private static final Map<String, ImageIcon> iconsCache = new HashMap<String, ImageIcon> ();
 
-    // Presentation end runnable
+    /**
+     * Presentation end runnable.
+     */
     private Runnable onPresentationEnd;
 
-    // Should stop presentation immediately
+    /**
+     * Should stop presentation immediately.
+     */
     private boolean shouldStop = false;
 
-    // Presentation thread
+    /**
+     * Presentation thread.
+     */
     private Thread presentation;
 
     /**
-     * Retuns null list of resources by default.
-     *
-     * @return null
+     * {@inheritDoc}
      */
     @Override
     public List<Object> getResources ()
@@ -64,9 +72,7 @@ public abstract class DefaultExample implements Example
     }
 
     /**
-     * Returns false because live presentation is disabled by default.
-     *
-     * @return false
+     * {@inheritDoc}
      */
     @Override
     public boolean isPresentationAvailable ()
@@ -85,8 +91,7 @@ public abstract class DefaultExample implements Example
     }
 
     /**
-     * Starts live presentation in a separate thread.
-     * This call will retrieve presentation steps and guide user through.
+     * {@inheritDoc}
      */
     @Override
     public void startPresentation ()
@@ -140,7 +145,7 @@ public abstract class DefaultExample implements Example
     }
 
     /**
-     * Forces live presentation to proceed to next step.
+     * {@inheritDoc}
      */
     @Override
     public void nextPresentationStep ()
@@ -152,7 +157,7 @@ public abstract class DefaultExample implements Example
     }
 
     /**
-     * Stops live presentation.
+     * {@inheritDoc}
      */
     @Override
     public void stopPresentation ()
@@ -165,10 +170,7 @@ public abstract class DefaultExample implements Example
     }
 
     /**
-     * Sets a runnable that should be executed at the end of the presentation.
-     * You might want to cleanup some variables or components here.
-     *
-     * @param runnable runnable
+     * {@inheritDoc}
      */
     @Override
     public void doWhenPresentationFinished ( Runnable runnable )
@@ -177,9 +179,7 @@ public abstract class DefaultExample implements Example
     }
 
     /**
-     * Returns FeatureState.release state by default.
-     *
-     * @return FeatureState.release
+     * {@inheritDoc}
      */
     @Override
     public FeatureState getFeatureState ()
@@ -188,9 +188,7 @@ public abstract class DefaultExample implements Example
     }
 
     /**
-     * Returns false to disable space filling by the example by default.
-     *
-     * @return false
+     * {@inheritDoc}
      */
     @Override
     public boolean isFillWidth ()

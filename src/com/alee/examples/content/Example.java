@@ -51,7 +51,7 @@ public interface Example
      * There might be anything - images, files, urls, classes or something else.
      * ExampleManager might provide preview components for some of their types.
      *
-     * @return
+     * @return list of resources used in example
      */
     public List<Object> getResources ();
 

@@ -63,6 +63,7 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeProvider
     private PropertyChangeListener propertyChangeListener;
     private PropertyChangeListener componentOrientationListener;
 
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( JComponent c )
     {
         return new WebToolBarUI ();

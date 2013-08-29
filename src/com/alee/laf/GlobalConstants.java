@@ -91,4 +91,9 @@ public final class GlobalConstants
         moveY.translate ( 0, 1 );
         moveXY.translate ( 1, 1 );
     }
+
+    /**
+     * Debugging mode mark.
+     */
+    public static boolean DEBUG = false;
 }

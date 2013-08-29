@@ -30,6 +30,7 @@ import java.awt.*;
 
 public class WebDesktopIconUI extends BasicDesktopIconUI
 {
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( JComponent c )
     {
         return new WebDesktopIconUI ();

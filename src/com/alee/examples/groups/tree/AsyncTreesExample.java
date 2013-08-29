@@ -40,9 +40,7 @@ import java.awt.event.MouseEvent;
 public class AsyncTreesExample extends DefaultExample
 {
     /**
-     * Returns example title.
-     *
-     * @return example title
+     * {@inheritDoc}
      */
     @Override
     public String getTitle ()
@@ -51,9 +49,7 @@ public class AsyncTreesExample extends DefaultExample
     }
 
     /**
-     * Returns short example description.
-     *
-     * @return short example description
+     * {@inheritDoc}
      */
     @Override
     public String getDescription ()
@@ -62,10 +58,7 @@ public class AsyncTreesExample extends DefaultExample
     }
 
     /**
-     * Returns preview component for this example.
-     *
-     * @param owner demo application main frame
-     * @return preview component
+     * {@inheritDoc}
      */
     @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
@@ -101,6 +94,9 @@ public class AsyncTreesExample extends DefaultExample
     {
         tree.addMouseListener ( new MouseAdapter ()
         {
+            /**
+             * {@inheritDoc}
+             */
             @Override
             public void mouseReleased ( MouseEvent e )
             {

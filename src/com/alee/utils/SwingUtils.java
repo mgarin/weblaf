@@ -2233,6 +2233,31 @@ public final class SwingUtils
     }
 
     /**
+     * Returns whether atleast one of child components within the specified container is focusable or not.
+     *
+     * @param container container to process
+     * @return true if atleast one of child components within the specified container is focusable, false otherwise
+     */
+    public static boolean hasFocusableComponent ( Container container )
+    {
+        for ( Component component : container.getComponents () )
+        {
+            if ( component.isFocusable () )
+            {
+                return true;
+            }
+            else if ( component instanceof Container )
+            {
+                if ( hasFocusableComponent ( ( Container ) component ) )
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
      * Returns system font names array.
      *
      * @return system font names array
@@ -2611,10 +2636,9 @@ public final class SwingUtils
      * Installs text antialiasing hints into specified graphics context.
      *
      * @param g graphics context
-     * @param c component
      * @return old text antialiasing hints
      */
-    public static Map setupTextAntialias ( final Graphics g, final Component c )
+    public static Map setupTextAntialias ( final Graphics g )
     {
         return setupTextAntialias ( ( Graphics2D ) g );
     }

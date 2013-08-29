@@ -43,8 +43,6 @@ import java.util.Map;
 
 public class WebPasswordFieldUI extends BasicPasswordFieldUI implements ShapeProvider, SwingConstants
 {
-    private JPasswordField passwordField;
-
     private boolean drawBorder = WebPasswordFieldStyle.drawBorder;
     private boolean drawFocus = WebPasswordFieldStyle.drawFocus;
     private int round = WebPasswordFieldStyle.round;
@@ -60,6 +58,7 @@ public class WebPasswordFieldUI extends BasicPasswordFieldUI implements ShapePro
     private int inputPromptPosition = WebTextFieldStyle.inputPromptPosition;
     private boolean hideInputPromptOnFocus = WebTextFieldStyle.hideInputPromptOnFocus;
 
+    private JPasswordField passwordField;
     private JComponent leadingComponent = null;
     private JComponent trailingComponent = null;
 

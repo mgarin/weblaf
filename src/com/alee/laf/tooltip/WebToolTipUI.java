@@ -48,6 +48,7 @@ public class WebToolTipUI extends BasicToolTipUI implements ShapeProvider
      * @param c component that will use UI instance
      * @return instance of the WebToolTipUI
      */
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( JComponent c )
     {
         return new WebToolTipUI ();
