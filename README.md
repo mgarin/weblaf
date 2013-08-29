@@ -20,13 +20,13 @@ Artifacts
 You can always find all WebLaF releases in the "releases" section:<br>
 https://github.com/mgarin/weblaf/releases
 
-Here are the direct links for the latest release (v1.17):
+Here are the direct links for the latest release (v1.18):
 
-1. [**weblaf-1.17.jar**](https://github.com/mgarin/weblaf/releases/download/v1.17/weblaf-1.17.jar) - library jar
-2. [**weblaf-src-1.17.zip**](https://github.com/mgarin/weblaf/releases/download/v1.17/weblaf-src-1.17.zip) - project sources zip
-3. [**weblaf-demo-1.17.jar**](https://github.com/mgarin/weblaf/releases/download/v1.17/weblaf-demo-1.17.jar) - executable demo jar
-4. [**weblaf-javadoc-1.17.zip**](https://github.com/mgarin/weblaf/releases/download/v1.17/weblaf-javadoc-1.17.zip) - JavaDoc zip
-5. [**ninepatch-editor-1.17.jar**](https://github.com/mgarin/weblaf/releases/download/v1.17/ninepatch-editor-1.17.jar) - executable 9-patch editor jar
+1. [**weblaf-1.18.jar**](https://github.com/mgarin/weblaf/releases/download/v1.18/weblaf-1.18.jar) - library jar
+2. [**weblaf-src-1.18.zip**](https://github.com/mgarin/weblaf/releases/download/v1.18/weblaf-src-1.18.zip) - project sources zip
+3. [**weblaf-demo-1.18.jar**](https://github.com/mgarin/weblaf/releases/download/v1.18/weblaf-demo-1.18.jar) - executable demo jar
+4. [**weblaf-javadoc-1.18.zip**](https://github.com/mgarin/weblaf/releases/download/v1.18/weblaf-javadoc-1.18.zip) - JavaDoc zip
+5. [**ninepatch-editor-1.18.jar**](https://github.com/mgarin/weblaf/releases/download/v1.18/ninepatch-editor-1.18.jar) - executable 9-patch editor jar
 
 
 Roadmap
