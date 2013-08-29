@@ -21,6 +21,7 @@ import java.awt.*;
 
 /**
  * Advanced interface that allows you to track focus behavior within component and its childs.
+ * Note that method names are made longer to avoid clashing with other component methods in case you implement tracker interface.
  *
  * @author Mikle Garin
  */
