@@ -87,12 +87,12 @@ public class DefaultLayoutStyle extends LayoutStyle
     }
 
     /**
-     * Returns true if the classes identify a JLabel and a non-JLabel along the horizontal axis.
+     * Returns true if the classes identify a JLabel and a non-JLabel along the horizontal axis, false otherwise.
      *
      * @param c1       first component
      * @param c2       second component
      * @param position position doing layout along
-     * @return
+     * @return true if the classes identify a JLabel and a non-JLabel along the horizontal axis, false otherwise
      */
     protected boolean isLabelAndNonlabel ( JComponent c1, JComponent c2, int position )
     {

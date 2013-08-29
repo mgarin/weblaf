@@ -135,13 +135,13 @@ public class WebPanelUI extends BasicPanelUI implements ShapeProvider, FocusTrac
     }
 
     @Override
-    public boolean isEnabled ()
+    public boolean isTrackingEnabled ()
     {
         return true;
     }
 
     @Override
-    public Component getComponent ()
+    public Component getTrackedComponent ()
     {
         return panel;
     }

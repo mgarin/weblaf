@@ -118,13 +118,13 @@ public class WebWindow extends JWindow implements FocusTracker, LanguageContaine
      */
 
     @Override
-    public boolean isEnabled ()
+    public boolean isTrackingEnabled ()
     {
         return isShowing ();
     }
 
     @Override
-    public Component getComponent ()
+    public Component getTrackedComponent ()
     {
         return this;
     }

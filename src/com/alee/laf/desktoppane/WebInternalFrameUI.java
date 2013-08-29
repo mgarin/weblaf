@@ -71,13 +71,13 @@ public class WebInternalFrameUI extends BasicInternalFrameUI implements FocusTra
     }
 
     @Override
-    public boolean isEnabled ()
+    public boolean isTrackingEnabled ()
     {
         return frame.isShowing ();
     }
 
     @Override
-    public Component getComponent ()
+    public Component getTrackedComponent ()
     {
         return frame;
     }

@@ -629,12 +629,6 @@ public class WebColorChooserField extends WebTextField
             FocusManager.registerFocusTracker ( new DefaultFocusTracker ( colorChooserPanel )
             {
                 @Override
-                public boolean isEnabled ()
-                {
-                    return true;
-                }
-
-                @Override
                 public void focusChanged ( boolean focused )
                 {
                     if ( !focused )

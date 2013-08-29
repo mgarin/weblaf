@@ -157,13 +157,13 @@ public class WebPopup extends WebPanel implements FocusTracker
      */
 
     @Override
-    public boolean isEnabled ()
+    public boolean isTrackingEnabled ()
     {
         return WebPopup.this.isShowing ();
     }
 
     @Override
-    public Component getComponent ()
+    public Component getTrackedComponent ()
     {
         return WebPopup.this;
     }

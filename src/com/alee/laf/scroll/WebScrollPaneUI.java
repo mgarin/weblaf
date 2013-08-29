@@ -54,7 +54,7 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeProvider,
     private WebScrollPaneCorner corner;
     private PropertyChangeListener propertyChangeListener;
 
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( JComponent c )
     {
         return new WebScrollPaneUI ();
@@ -145,13 +145,13 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeProvider,
     }
 
     @Override
-    public boolean isEnabled ()
+    public boolean isTrackingEnabled ()
     {
         return true;
     }
 
     @Override
-    public Component getComponent ()
+    public Component getTrackedComponent ()
     {
         return scrollpane;
     }

@@ -71,7 +71,7 @@ public abstract class DefaultFocusTracker implements FocusTracker
      * {@inheritDoc}
      */
     @Override
-    public boolean isEnabled ()
+    public boolean isTrackingEnabled ()
     {
         return enabled;
     }
@@ -90,7 +90,7 @@ public abstract class DefaultFocusTracker implements FocusTracker
      * {@inheritDoc}
      */
     @Override
-    public Component getComponent ()
+    public Component getTrackedComponent ()
     {
         return component.get ();
     }

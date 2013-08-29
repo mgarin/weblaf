@@ -138,11 +138,11 @@ public final class FocusManager
                         while ( iterator.hasNext () )
                         {
                             final FocusTracker focusTracker = iterator.next ();
-                            final Component tracked = focusTracker.getComponent ();
+                            final Component tracked = focusTracker.getTrackedComponent ();
                             if ( tracked != null )
                             {
                                 // Skip if tracker is disabled
-                                if ( focusTracker.isEnabled () )
+                                if ( focusTracker.isTrackingEnabled () )
                                 {
                                     // Determining component is focused or not
                                     final boolean unite = focusTracker.isUniteWithChilds ();

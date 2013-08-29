@@ -32,14 +32,14 @@ public interface FocusTracker
      *
      * @return true if tracking is currently enabled, false otherwise
      */
-    public boolean isEnabled ();
+    public boolean isTrackingEnabled ();
 
     /**
      * Returns tracked component.
      *
      * @return tracked component
      */
-    public Component getComponent ();
+    public Component getTrackedComponent ();
 
     /**
      * Returns whether component and its childs in components tree should be counted as a single component or not.

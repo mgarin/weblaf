@@ -150,7 +150,7 @@ public class FileElement
     /**
      * Sets whether disabled thumbnail load is queued or not.
      *
-     * @param thumbnailQueued whether disabled thumbnail load is queued or not
+     * @param disabledThumbnailQueued whether disabled thumbnail load is queued or not
      */
     public void setDisabledThumbnailQueued ( boolean disabledThumbnailQueued )
     {
