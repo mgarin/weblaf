@@ -219,9 +219,14 @@ public class WebFileChooserPanel extends WebPanel
      */
     protected DataProvider<Boolean> hotkeysAllowed = new DataProvider<Boolean> ()
     {
+        /**
+         * {@inheritDoc}
+         */
+        @Override
         public Boolean provide ()
         {
-            return !fileTree.isEditing () && !fileList.isEditing () && !fileTable.isEditing ();
+            return !fileTree.isEditing () && !fileList.isEditing () && !fileTable.isEditing () && !pathField.isEditing () &&
+                    !selectedFilesTextField.isFocusOwner ();
         }
     };
 
