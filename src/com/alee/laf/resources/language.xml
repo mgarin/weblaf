@@ -89,7 +89,7 @@
                 <value lang="pl">Biblioteki dane są niedostępne</value>
                 <value lang="ar">المكتبات البيانات غير متوفرة</value>
                 <value lang="es">Bibliotecas datos no está disponible</value>
-                <value lang="fr">Données des bibliothèques n'est pas disponible</value>
+                <value lang="fr">Les bibliothèques de données ne sont pas disponibles</value>
                 <value lang="pt">Bibliotecas de dados está indisponível</value>
                 <value lang="de">Bibliotheksinformationen sind nicht verfügbar</value>
             </record>
@@ -436,7 +436,7 @@
             <value lang="pl" way="down" state="tooltip">Historia</value>
             <value lang="ar" way="down" state="tooltip">تاريخ</value>
             <value lang="es" way="down" state="tooltip">Historia</value>
-            <value lang="fr" way="down" state="tooltip">Histoire</value>
+            <value lang="fr" way="down" state="tooltip">Historique</value>
             <value lang="pt" way="down" state="tooltip">História</value>
             <value lang="de" way="down" state="tooltip">Geschichte</value>
         </record>
@@ -556,7 +556,7 @@
             <value lang="pl">Szczegóły</value>
             <value lang="ar">التفاصيل</value>
             <value lang="es">Detalles</value>
-            <value lang="fr">détails</value>
+            <value lang="fr">Détails</value>
             <value lang="pt">Detalhes</value>
             <value lang="de">Details</value>
         </record>
@@ -667,7 +667,7 @@
                 <value lang="pl">Rozbudowa</value>
                 <value lang="ar">تمديد</value>
                 <value lang="es">Extensión</value>
-                <value lang="fr">Prolongement</value>
+                <value lang="fr">Extension</value>
                 <value lang="pt">Extensão</value>
                 <value lang="de">Erweiterung</value>
             </record>
@@ -833,7 +833,7 @@
                 <value lang="pl">Błąd</value>
                 <value lang="ar">خطأ</value>
                 <value lang="es">Error</value>
-                <value lang="fr">Error</value>
+                <value lang="fr">Erreur</value>
                 <value lang="pt">Erro</value>
                 <value lang="de">Fehler</value>
             </record>
