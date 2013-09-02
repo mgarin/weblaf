@@ -579,23 +579,4 @@ public class WebPanelUI extends BasicPanelUI implements ShapeProvider, FocusTrac
     {
         return new Point ( x, y );
     }
-
-    @Override
-    public Dimension getPreferredSize ( JComponent c )
-    {
-        //        Dimension ps = c.getLayout () != null ? c.getLayout ().preferredLayoutSize ( c ) : null;
-        //        if ( painter != null )
-        //        {
-        //            ps = SwingUtils.max ( ps, painter.getPreferredSize ( c ) );
-        //        }
-        //        return ps;
-        return null;
-    }
-
-    @Override
-    public Dimension getMaximumSize ( JComponent c )
-    {
-        // Fix for some of the Swing layouts
-        return null;
-    }
 }

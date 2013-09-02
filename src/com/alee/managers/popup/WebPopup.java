@@ -22,41 +22,58 @@ import com.alee.laf.panel.WebPanel;
 import com.alee.managers.focus.FocusManager;
 import com.alee.managers.focus.FocusTracker;
 import com.alee.utils.CollectionUtils;
+import com.alee.utils.LafUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.AncestorAdapter;
 import com.alee.utils.swing.EmptyMouseAdapter;
+import com.alee.utils.swing.FadeStateType;
+import com.alee.utils.swing.WebTimer;
 
 import javax.swing.*;
 import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * User: mgarin Date: 26.03.12 Time: 17:06
- * <p/>
  * This is base popup class which offers basic popups functionality and contains all features needed to create great-looking popups within
  * the window root pane bounds.
+ *
+ * @author Mikle Garin
+ * @see PopupManager
+ * @see PopupLayer
  */
 
 public class WebPopup extends WebPanel implements FocusTracker
 {
-    private List<PopupListener> popupListeners = new ArrayList<PopupListener> ();
+    protected List<PopupListener> popupListeners = new ArrayList<PopupListener> ( 2 );
 
-    private boolean closeOnFocusLoss = false;
-    private boolean requestFocusOnShow = true;
-    private Component defaultFocusComponent = null;
-    private List<Component> focusableChilds = new ArrayList<Component> ();
+    // Popup constants
+    protected static final int fadeFps = 24;
+    protected static final long fadeTime = 400;
 
-    private Component lastComponent = null;
-    private AncestorListener lastListener = null;
+    protected boolean animated = false;
+    protected boolean closeOnFocusLoss = false;
+    protected boolean requestFocusOnShow = true;
+    protected Component defaultFocusComponent = null;
+    protected List<Component> focusableChilds = new ArrayList<Component> ();
+
+    protected Component lastComponent = null;
+    protected AncestorListener lastListener = null;
 
     protected boolean focused = false;
 
+    // Animation variables
+    protected FadeStateType fadeStateType;
+    protected float fade = 0;
+    protected WebTimer fadeTimer;
+
     public WebPopup ()
     {
-        this ( PopupManager.getPopupPainter () );
+        this ( PopupManager.getDefaultPopupPainter () );
     }
 
     public WebPopup ( PopupStyle popupStyle )
@@ -64,13 +81,55 @@ public class WebPopup extends WebPanel implements FocusTracker
         this ( PopupManager.getPopupPainter ( popupStyle ) );
     }
 
-    public WebPopup ( Painter style )
+    public WebPopup ( Painter stylePainter )
     {
-        super ();
+        super ( stylePainter );
+        initializePopup ();
+    }
+
+    /**
+     * Initializes various popup settings.
+     */
+    protected void initializePopup ()
+    {
         setOpaque ( false );
 
-        // Default popup style
-        setPainter ( style );
+        // Fade in-out timer
+        fadeTimer = new WebTimer ( "WebPopup.fade", 1000 / fadeFps );
+        fadeTimer.addActionListener ( new ActionListener ()
+        {
+            @Override
+            public void actionPerformed ( ActionEvent e )
+            {
+                final float roundsCount = fadeTime / ( 1000f / fadeFps );
+                final float fadeSpeed = 1f / roundsCount;
+                if ( fadeStateType.equals ( FadeStateType.fadeIn ) )
+                {
+                    if ( fade < 1f )
+                    {
+                        fade = Math.min ( fade + fadeSpeed, 1f );
+                        WebPopup.this.repaint ();
+                    }
+                    else
+                    {
+                        fadeTimer.stop ();
+                    }
+                }
+                else if ( fadeStateType.equals ( FadeStateType.fadeOut ) )
+                {
+                    if ( fade > 0 )
+                    {
+                        fade = Math.max ( fade - fadeSpeed, 0f );
+                        WebPopup.this.repaint ();
+                    }
+                    else
+                    {
+                        hidePopupImpl ();
+                        fadeTimer.stop ();
+                    }
+                }
+            }
+        } );
 
         // Listener to determine popup appearance and disappearance
         addAncestorListener ( new AncestorAdapter ()
@@ -89,12 +148,27 @@ public class WebPopup extends WebPanel implements FocusTracker
                         WebPopup.this.transferFocus ();
                     }
                 }
+
+                // Starting fade-in animation
+                if ( animated )
+                {
+                    fade = 0;
+                    fadeStateType = FadeStateType.fadeIn;
+                    fadeTimer.start ();
+                }
+                else
+                {
+                    fade = 1;
+                }
+
+                // Informing about popup state change
                 firePopupOpened ();
             }
 
             @Override
             public void ancestorRemoved ( AncestorEvent event )
             {
+                // Informing about popup state change
                 firePopupClosed ();
             }
         } );
@@ -121,6 +195,16 @@ public class WebPopup extends WebPanel implements FocusTracker
     /**
      * Popup settings
      */
+
+    public boolean isAnimated ()
+    {
+        return animated;
+    }
+
+    public void setAnimated ( boolean animated )
+    {
+        this.animated = animated;
+    }
 
     public boolean isCloseOnFocusLoss ()
     {
@@ -156,24 +240,36 @@ public class WebPopup extends WebPanel implements FocusTracker
      * Focus tracker methods
      */
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isTrackingEnabled ()
     {
         return WebPopup.this.isShowing ();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Component getTrackedComponent ()
     {
         return WebPopup.this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isUniteWithChilds ()
     {
         return true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void focusChanged ( boolean focused )
     {
@@ -221,17 +317,17 @@ public class WebPopup extends WebPanel implements FocusTracker
      * Popup display methods
      */
 
-    public void showPopup ( final Component component )
+    public void showAsPopupMenu ( final Component component )
     {
         // Detrmining component position inside window
-        Rectangle cb = SwingUtils.getBoundsInWindow ( component );
-        Dimension rps = SwingUtils.getRootPaneAncestor ( component ).getSize ();
-        Dimension ps = WebPopup.this.getPreferredSize ();
+        final Rectangle cb = SwingUtils.getBoundsInWindow ( component );
+        final Dimension rps = SwingUtils.getRootPaneAncestor ( component ).getSize ();
+        final Dimension ps = WebPopup.this.getPreferredSize ();
         //        Painter bp = getPainter ();
         //        Insets bm = bp != null ? bp.getMargin ( this ) : new Insets ( 0, 0, 0, 0 );
 
         // Choosing display way
-        int x;
+        final int x;
         if ( cb.x + ps.width < rps.width || rps.width - cb.x - ps.width > cb.x )
         {
             // Expanding popup to the right side
@@ -242,7 +338,7 @@ public class WebPopup extends WebPanel implements FocusTracker
             // Expanding popup to the left side
             x = cb.width - ps.width;
         }
-        int y;
+        final int y;
         if ( cb.y + cb.height + ps.height < rps.height || rps.height - cb.y - cb.height - ps.height > cb.y )
         {
             // Displaying popup below the component
@@ -257,6 +353,12 @@ public class WebPopup extends WebPanel implements FocusTracker
         showPopup ( component, x, y );
     }
 
+    public void showPopup ( Component component )
+    {
+        PopupManager.showPopup ( component, this, requestFocusOnShow );
+        clearComponentAncestorListener ();
+    }
+
     public void showPopup ( Component component, Point location )
     {
         showPopup ( component, location.x, location.y );
@@ -264,7 +366,7 @@ public class WebPopup extends WebPanel implements FocusTracker
 
     public void showPopup ( Component component, int x, int y )
     {
-        Dimension ps = WebPopup.this.getPreferredSize ();
+        final Dimension ps = WebPopup.this.getPreferredSize ();
         showPopup ( component, x, y, ps.width, ps.height );
     }
 
@@ -275,32 +377,25 @@ public class WebPopup extends WebPanel implements FocusTracker
 
     public void showPopup ( Component component, int x, int y, int width, int height )
     {
-        // Updating popup location
         updatePopupBounds ( component, x, y, width, height );
-
-        // Displaying popup
         PopupManager.showPopup ( component, this, requestFocusOnShow );
-
-        // Updating component "follow" listener
         updateComponentAncestorListener ( component, x, y, width, height );
     }
 
-    private void updatePopupBounds ( Component component, int x, int y, int width, int height )
+    protected void updatePopupBounds ( Component component, int x, int y, int width, int height )
     {
         // Updating popup bounds with component-relative values
         if ( component.isShowing () )
         {
-            Rectangle cb = SwingUtils.getBoundsInWindow ( component );
+            final Rectangle cb = SwingUtils.getBoundsInWindow ( component );
             setBounds ( cb.x + x, cb.y + y, width, height );
         }
     }
 
-    private void updateComponentAncestorListener ( final Component component, final int x, final int y, final int width, final int height )
+    protected void updateComponentAncestorListener ( final Component component, final int x, final int y, final int width,
+                                                     final int height )
     {
-        if ( lastComponent != null && lastListener != null && lastComponent instanceof JComponent )
-        {
-            ( ( JComponent ) lastComponent ).removeAncestorListener ( lastListener );
-        }
+        clearComponentAncestorListener ();
 
         lastComponent = component;
         if ( component instanceof JComponent )
@@ -314,6 +409,14 @@ public class WebPopup extends WebPanel implements FocusTracker
                 }
             };
             ( ( JComponent ) lastComponent ).addAncestorListener ( lastListener );
+        }
+    }
+
+    protected void clearComponentAncestorListener ()
+    {
+        if ( lastComponent != null && lastListener != null && lastComponent instanceof JComponent )
+        {
+            ( ( JComponent ) lastComponent ).removeAncestorListener ( lastListener );
         }
     }
 
@@ -337,10 +440,28 @@ public class WebPopup extends WebPanel implements FocusTracker
 
     public void hidePopup ()
     {
-        PopupLayer layer = ( PopupLayer ) getParent ();
+        if ( animated )
+        {
+            fadeStateType = FadeStateType.fadeOut;
+            if ( !fadeTimer.isRunning () )
+            {
+                fadeTimer.start ();
+            }
+        }
+        else
+        {
+            hidePopupImpl ();
+        }
+    }
+
+    protected void hidePopupImpl ()
+    {
+        clearComponentAncestorListener ();
+
+        final PopupLayer layer = ( PopupLayer ) this.getParent ();
         if ( layer != null )
         {
-            layer.hidePopup ( WebPopup.this );
+            layer.hidePopup ( this );
         }
     }
 
@@ -357,10 +478,13 @@ public class WebPopup extends WebPanel implements FocusTracker
      * Shape-based point check
      */
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean contains ( int x, int y )
     {
-        return provideShape ().contains ( x, y );
+        return provideShape ().contains ( x, y ) && fadeStateType != FadeStateType.fadeOut;
     }
 
     /**
@@ -407,5 +531,19 @@ public class WebPopup extends WebPanel implements FocusTracker
         {
             listener.popupClosed ();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void paintComponent ( Graphics g )
+    {
+        // Fade animation and transparency
+        if ( fade < 1f )
+        {
+            LafUtils.setupAlphaComposite ( ( Graphics2D ) g, fade );
+        }
+        super.paintComponent ( g );
     }
 }

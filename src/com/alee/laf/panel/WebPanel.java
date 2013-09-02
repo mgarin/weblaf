@@ -23,6 +23,7 @@ import com.alee.managers.language.LanguageContainerMethods;
 import com.alee.managers.language.LanguageManager;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SizeUtils;
+import com.alee.utils.SwingUtils;
 import com.alee.utils.laf.ShapeProvider;
 import com.alee.utils.swing.SizeMethods;
 
@@ -483,7 +484,16 @@ public class WebPanel extends JPanel implements ShapeProvider, SizeMethods<WebPa
     @Override
     public Dimension getPreferredSize ()
     {
-        return SizeUtils.getPreferredSize ( this, super.getPreferredSize () );
+        Dimension ps = SizeUtils.getPreferredSize ( this, super.getPreferredSize () );
+
+        // Fix to take painter preferres size into account
+        Painter painter = getPainter ();
+        if ( painter != null )
+        {
+            ps = SwingUtils.max ( ps, painter.getPreferredSize ( this ) );
+        }
+
+        return ps;
     }
 
     /**

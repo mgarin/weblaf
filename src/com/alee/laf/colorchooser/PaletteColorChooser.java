@@ -42,7 +42,7 @@ public class PaletteColorChooser extends WebPanel
 {
     public static final ImageIcon LOOP_ICON = new ImageIcon ( PaletteColorChooser.class.getResource ( "icons/loop.png" ) );
 
-    private List<ChangeListener> changeListeners = new ArrayList<ChangeListener> ();
+    private List<ChangeListener> changeListeners = new ArrayList<ChangeListener> ( 1 );
 
     private boolean adjusting = false;
 

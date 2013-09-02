@@ -15,15 +15,29 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.managers.tooltip;
+package com.alee.utils.swing;
 
 /**
- * User: mgarin Date: 09.02.11 Time: 18:51
+ * This enumeration represents possible fade animation states.
+ * It might be used by various components to perform fade animation.
+ *
+ * @author Mikle Garin
  */
 
-public enum FadeType
+public enum FadeStateType
 {
+    /**
+     * Not animating.
+     */
     none,
+
+    /**
+     * Fading-in.
+     */
     fadeIn,
+
+    /**
+     * Fading-out.
+     */
     fadeOut
 }

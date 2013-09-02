@@ -48,7 +48,7 @@ public class WebComponentPanel extends WebPanel
     public static final int GRIPPER_SIZE = 7;
     public static final int SINGLE_GRIPPER_STEP = 4;
 
-    private List<ComponentReorderListener> listeners = new ArrayList<ComponentReorderListener> ();
+    private List<ComponentReorderListener> listeners = new ArrayList<ComponentReorderListener> ( 1 );
 
     private WebPanel container;
     private Map<Component, WebSelectablePanel> components = new LinkedHashMap<Component, WebSelectablePanel> ();

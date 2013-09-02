@@ -26,15 +26,15 @@ import java.util.Map;
  * User: mgarin Date: 23.01.13 Time: 15:32
  */
 
-public class GroupLayout implements LayoutManager, SwingConstants
+public class GroupLayout extends AbstractLayoutManager implements SwingConstants
 {
     public static final String PREFERRED = "PREFERRED";
     public static final String FILL = "FILL";
 
-    private int orientation;
-    private int gap;
+    protected int orientation;
+    protected int gap;
 
-    private Map<Component, String> constraints = new HashMap<Component, String> ();
+    protected Map<Component, String> constraints = new HashMap<Component, String> ();
 
     public GroupLayout ()
     {
@@ -73,18 +73,45 @@ public class GroupLayout implements LayoutManager, SwingConstants
         this.gap = gap;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public void addLayoutComponent ( String name, Component comp )
+    public void addComponent ( Component component, Object constraints )
     {
-        constraints.put ( comp, name );
+        this.constraints.put ( component, ( String ) constraints );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public void removeLayoutComponent ( Component comp )
+    public void removeComponent ( Component component )
     {
-        constraints.remove ( comp );
+        this.constraints.remove ( component );
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Dimension preferredLayoutSize ( Container parent )
+    {
+        return getLayoutSize ( parent, false );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Dimension minimumLayoutSize ( Container parent )
+    {
+        return getLayoutSize ( parent, true );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void layoutContainer ( Container parent )
     {
@@ -143,19 +170,7 @@ public class GroupLayout implements LayoutManager, SwingConstants
         }
     }
 
-    @Override
-    public Dimension preferredLayoutSize ( Container parent )
-    {
-        return calculateSize ( parent, false );
-    }
-
-    @Override
-    public Dimension minimumLayoutSize ( Container parent )
-    {
-        return calculateSize ( parent, true );
-    }
-
-    private Dimension calculateSize ( Container parent, boolean minimum )
+    protected Dimension getLayoutSize ( Container parent, boolean minimum )
     {
         Insets insets = parent.getInsets ();
         Dimension ps = new Dimension ();
@@ -190,7 +205,7 @@ public class GroupLayout implements LayoutManager, SwingConstants
         return ps;
     }
 
-    private boolean isFill ( Component component )
+    protected boolean isFill ( Component component )
     {
         if ( constraints.containsKey ( component ) )
         {

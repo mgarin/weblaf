@@ -45,10 +45,9 @@ public class WebFileChooserField extends WebPanel
 {
     public static final ImageIcon CROSS_ICON = new ImageIcon ( WebFileChooserField.class.getResource ( "icons/cross.png" ) );
 
-    private List<FilesSelectionListener> listeners = new ArrayList<FilesSelectionListener> ();
+    private List<FilesSelectionListener> listeners = new ArrayList<FilesSelectionListener> ( 1 );
 
     private List<File> selectedFiles = new ArrayList<File> ();
-
 
     /**
      * Whether multiply files selection allowed or not.

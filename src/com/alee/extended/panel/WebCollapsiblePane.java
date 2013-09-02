@@ -103,7 +103,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
     /**
      * Collapsible pane listeners.
      */
-    private List<CollapsiblePaneListener> listeners = new ArrayList<CollapsiblePaneListener> ();
+    private List<CollapsiblePaneListener> listeners = new ArrayList<CollapsiblePaneListener> ( 1 );
 
     /**
      * Cached collapsed state icon.

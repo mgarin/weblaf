@@ -39,7 +39,7 @@ public class PopupsGroup extends DefaultExampleGroup
     @Override
     public String getGroupName ()
     {
-        return "Popup";
+        return "Popups";
     }
 
     @Override

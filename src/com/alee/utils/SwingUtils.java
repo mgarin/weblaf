@@ -807,6 +807,10 @@ public final class SwingUtils
      */
     public static JRootPane getRootPaneAncestor ( Component component )
     {
+        if ( component instanceof JRootPane )
+        {
+            return ( JRootPane ) component;
+        }
         for ( Container p = component.getParent (); p != null; p = p.getParent () )
         {
             if ( p instanceof JRootPane )
@@ -825,17 +829,40 @@ public final class SwingUtils
      */
     public static JRootPane getRootPane ( Window window )
     {
-        if ( window instanceof JWindow )
+        if ( window instanceof JFrame )
         {
-            return ( ( JWindow ) window ).getRootPane ();
+            return ( ( JFrame ) window ).getRootPane ();
         }
         if ( window instanceof JDialog )
         {
             return ( ( JDialog ) window ).getRootPane ();
         }
+        if ( window instanceof JWindow )
+        {
+            return ( ( JWindow ) window ).getRootPane ();
+        }
+        return null;
+    }
+
+    /**
+     * Returns layered pane for the specified window or null if it doesn't have one.
+     *
+     * @param window window to process
+     * @return layered pane for the specified window or null if it doesn't have one
+     */
+    public static JLayeredPane getLayeredPane ( Window window )
+    {
         if ( window instanceof JFrame )
         {
-            return ( ( JFrame ) window ).getRootPane ();
+            return ( ( JFrame ) window ).getLayeredPane ();
+        }
+        if ( window instanceof JDialog )
+        {
+            return ( ( JDialog ) window ).getLayeredPane ();
+        }
+        if ( window instanceof JWindow )
+        {
+            return ( ( JWindow ) window ).getLayeredPane ();
         }
         return null;
     }
@@ -2072,7 +2099,14 @@ public final class SwingUtils
      */
     public static Rectangle getBoundsInWindow ( Component component )
     {
-        return getRelativeBounds ( component, getRootPaneAncestor ( component ) );
+        if ( component instanceof Window )
+        {
+            return getRootPane ( ( Window ) component ).getBounds ();
+        }
+        else
+        {
+            return getRelativeBounds ( component, getRootPaneAncestor ( component ) );
+        }
     }
 
     /**
@@ -2437,7 +2471,7 @@ public final class SwingUtils
     {
         // todo 1. Use single thread to scroll through
         // todo 2. Make this method multiply usage possible
-        // todo 3. Maybe use timer instead of thread?
+        // todo 3. Use timer instead of thread
 
         final JScrollBar hor = scrollPane.getHorizontalScrollBar ();
         final JScrollBar ver = scrollPane.getVerticalScrollBar ();

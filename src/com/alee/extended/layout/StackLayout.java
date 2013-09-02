@@ -22,41 +22,64 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * User: mgarin Date: 26.10.11 Time: 13:38
+ * This layout manager allows you to stack components atop of each other.
+ * It also allows to hide some of components.
+ *
+ * @author Mikle Garin
  */
 
-public class StackLayout implements LayoutManager
+public class StackLayout extends AbstractLayoutManager
 {
-    // StackLayout constraints constants
+    /**
+     * Visible component constraint.
+     */
     public static final String CONTENT = "CONTENT";
+
+    /**
+     * Hidden component constraint.
+     */
     public static final String HIDDEN = "HIDDEN";
 
-    // Saved layout constraints
-    private Map<Component, String> content = new HashMap<Component, String> ();
+    /**
+     * Saved layout constraints.
+     */
+    protected Map<Component, String> constraints;
 
+    /**
+     * Constructs new StackLayout.
+     */
     public StackLayout ()
     {
         super ();
+        constraints = new HashMap<Component, String> ();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public void addLayoutComponent ( String name, Component comp )
+    public void addComponent ( Component component, Object constraints )
     {
-        if ( name != null && !name.trim ().equals ( "" ) && !name.equals ( CONTENT ) &&
-                !name.equals ( HIDDEN ) )
+        String value = ( String ) constraints;
+        if ( value != null && !value.trim ().equals ( "" ) && !value.equals ( CONTENT ) && !value.equals ( HIDDEN ) )
         {
             throw new IllegalArgumentException ( "Cannot add to layout: constraint must be null or an empty/'CONTENT'/'HIDDEN' string" );
         }
-
-        content.put ( comp, name == null || name.trim ().equals ( "" ) ? CONTENT : name );
+        this.constraints.put ( component, value == null || value.trim ().equals ( "" ) ? CONTENT : value );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public void removeLayoutComponent ( Component comp )
+    public void removeComponent ( Component component )
     {
-        content.remove ( comp );
+        this.constraints.remove ( component );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Dimension preferredLayoutSize ( Container parent )
     {
@@ -64,7 +87,7 @@ public class StackLayout implements LayoutManager
         Dimension ps = new Dimension ( 0, 0 );
         for ( Component component : parent.getComponents () )
         {
-            if ( content.get ( component ) == null || !content.get ( component ).equals ( HIDDEN ) )
+            if ( constraints.get ( component ) == null || !constraints.get ( component ).equals ( HIDDEN ) )
             {
                 Dimension cps = component.getPreferredSize ();
                 ps.width = Math.max ( ps.width, cps.width );
@@ -74,19 +97,16 @@ public class StackLayout implements LayoutManager
         return new Dimension ( insets.left + ps.width + insets.right, insets.top + ps.height + insets.bottom );
     }
 
-    @Override
-    public Dimension minimumLayoutSize ( Container parent )
-    {
-        return preferredLayoutSize ( parent );
-    }
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void layoutContainer ( Container parent )
     {
         Insets insets = parent.getInsets ();
         for ( Component component : parent.getComponents () )
         {
-            if ( content.get ( component ) == null || !content.get ( component ).equals ( HIDDEN ) )
+            if ( constraints.get ( component ) == null || !constraints.get ( component ).equals ( HIDDEN ) )
             {
                 component.setBounds ( insets.left, insets.top, parent.getWidth () - insets.left - insets.right,
                         parent.getHeight () - insets.top - insets.bottom );

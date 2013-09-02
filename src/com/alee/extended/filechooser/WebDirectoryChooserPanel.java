@@ -75,7 +75,7 @@ public class WebDirectoryChooserPanel extends WebPanel
     /**
      * Directory chooser listeners.
      */
-    protected List<DirectoryChooserListener> listeners = new ArrayList<DirectoryChooserListener> ();
+    protected List<DirectoryChooserListener> listeners = new ArrayList<DirectoryChooserListener> ( 1 );
 
     /**
      * Currently selected directory.

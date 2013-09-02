@@ -43,7 +43,7 @@ public class WebSwitch extends WebPanel
     /**
      * Switch action listeners.
      */
-    private List<ActionListener> actionListeners = new ArrayList<ActionListener> ();
+    private List<ActionListener> actionListeners = new ArrayList<ActionListener> ( 1 );
 
     /**
      * Style settings.

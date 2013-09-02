@@ -17,29 +17,85 @@
 
 package com.alee.managers.popup;
 
+import com.alee.extended.layout.MultiLayout;
 import com.alee.laf.panel.WebPanel;
 import com.alee.utils.laf.ShapeProvider;
 
 import java.awt.*;
 
 /**
- * User: mgarin Date: 26.03.12 Time: 14:49
+ * This special container is used to place various custom WebLaF popups on it.
+ * These lightweight popups are visible only within the window's root pane bounds.
+ *
+ * @author Mikle Garin
+ * @see PopupManager
+ * @see WebPopup
  */
 
 public class PopupLayer extends WebPanel
 {
+    /**
+     * Constructs new popup layer.
+     */
     public PopupLayer ()
     {
-        super ( ( LayoutManager ) null );
+        this ( new MultiLayout () );
+    }
+
+    /**
+     * Constructs new popup layer with the specified layout
+     */
+    public PopupLayer ( LayoutManager layoutManager )
+    {
+        super ( layoutManager );
         setOpaque ( false );
     }
 
+    /**
+     * Returns popup layer actual layout.
+     *
+     * @return popup layer actual layout
+     */
+    public MultiLayout getMultiLayout ()
+    {
+        return ( MultiLayout ) getLayout ();
+    }
+
+    /**
+     * Adds layout manager to this popup layer.
+     *
+     * @param layoutManager layout manager to add
+     */
+    public void addLayoutManager ( LayoutManager layoutManager )
+    {
+        getMultiLayout ().addLayoutManager ( layoutManager );
+    }
+
+    /**
+     * Removes layout manager from this glass pane.
+     *
+     * @param layoutManager layout manager to remove
+     */
+    public void removeLayoutManager ( LayoutManager layoutManager )
+    {
+        getMultiLayout ().removeLayoutManager ( layoutManager );
+    }
+
+    /**
+     * Hides all popups visible on this popup layer.
+     */
     public void hideAllPopups ()
     {
+        // todo Call hidePopup on popup instead
         removeAll ();
         setVisible ( false );
     }
 
+    /**
+     * Displays the specified popup on this popup layer.
+     *
+     * @param popup popup to display
+     */
     public void showPopup ( WebPopup popup )
     {
         // Informing that popup will now become visible
@@ -53,6 +109,11 @@ public class PopupLayer extends WebPanel
         repaint ();
     }
 
+    /**
+     * Hides specified popup displayed on this popup layer.
+     *
+     * @param popup popup to hide
+     */
     public void hidePopup ( WebPopup popup )
     {
         // Ignore hide
@@ -77,6 +138,14 @@ public class PopupLayer extends WebPanel
         }
     }
 
+    /**
+     * Unlike default "contains" method this one returns true only if some of popups displayed on this layer contains the specified point.
+     * Popup layer itself is not taken into account and doesn't absorb any mouse events because of that.
+     *
+     * @param x X coordinate
+     * @param y Y coordinate
+     * @return true if some of popups displayed on this popup later contains the specified point, false otherwise
+     */
     @Override
     public boolean contains ( int x, int y )
     {
@@ -102,6 +171,14 @@ public class PopupLayer extends WebPanel
         return false;
     }
 
+    /**
+     * Returns whether the specified point is within bounds of this popup layer or not.
+     * This method returns default "contains" method result and might be used by some classes that would like to change layer's behavior.
+     *
+     * @param x X coordinate
+     * @param y Y coordinate
+     * @return true if the specified point is within bounds of this popup layer, false otherwise
+     */
     public boolean normalContains ( int x, int y )
     {
         return super.contains ( x, y );

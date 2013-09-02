@@ -56,8 +56,8 @@ public class Tetris extends JComponent
     private static Color bgTop = Color.WHITE;
     private static Color bgBottom = new Color ( 223, 223, 223 );
 
-    private static List<TickListener> tickListeners = new ArrayList<TickListener> ();
-    private static List<TetrisListener> tetrisListeners = new ArrayList<TetrisListener> ();
+    private static List<TickListener> tickListeners = new ArrayList<TickListener> ( 1 );
+    private static List<TetrisListener> tetrisListeners = new ArrayList<TetrisListener> ( 1 );
 
     // Game state variables
     private boolean gameRunning = false;

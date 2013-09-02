@@ -21,10 +21,19 @@ import java.io.File;
 import java.util.EventListener;
 
 /**
- * User: mgarin Date: 17.10.11 Time: 12:02
+ * Special listener for WebDirectoryChooserPanel component.
+ *
+ * @author Mikle Garin
+ * @see WebDirectoryChooserPanel
+ * @see WebDirectoryChooser
  */
 
 public interface DirectoryChooserListener extends EventListener
 {
+    /**
+     * Notifies about directory selection changes.
+     *
+     * @param file newly selected directory or null if none selected
+     */
     public void selectionChanged ( File file );
 }

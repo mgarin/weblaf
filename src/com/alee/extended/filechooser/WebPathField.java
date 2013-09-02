@@ -69,7 +69,7 @@ public class WebPathField extends WebPanel
 
     protected static final String FILE_ICON = "fileIcon";
 
-    protected List<PathFieldListener> listeners = new ArrayList<PathFieldListener> ();
+    protected List<PathFieldListener> listeners = new ArrayList<PathFieldListener> ( 1 );
 
     protected boolean focusOwner = false;
 

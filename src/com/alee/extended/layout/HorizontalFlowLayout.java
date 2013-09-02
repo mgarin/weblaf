@@ -23,10 +23,11 @@ import java.awt.*;
  * User: mgarin Date: 06.05.11 Time: 15:17
  */
 
-public class HorizontalFlowLayout implements LayoutManager
+// todo Alignment
+public class HorizontalFlowLayout extends AbstractLayoutManager
 {
-    private int horizGap;
-    private boolean fillLast;
+    protected int horizGap;
+    protected boolean fillLast;
 
     public HorizontalFlowLayout ()
     {
@@ -49,50 +50,27 @@ public class HorizontalFlowLayout implements LayoutManager
         return horizGap;
     }
 
-    @Override
-    public void addLayoutComponent ( String name, Component comp )
-    {
-    }
-
-    @Override
-    public void removeLayoutComponent ( Component comp )
-    {
-    }
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Dimension preferredLayoutSize ( Container parent )
     {
         return getLayoutSize ( parent, false );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Dimension minimumLayoutSize ( Container parent )
     {
         return getLayoutSize ( parent, true );
     }
 
-    private Dimension getLayoutSize ( Container parent, boolean min )
-    {
-        int count = parent.getComponentCount ();
-        Dimension size = new Dimension ( 0, 0 );
-        for ( int i = 0; i < count; i++ )
-        {
-            Component c = parent.getComponent ( i );
-            Dimension tmp = ( min ) ? c.getMinimumSize () : c.getPreferredSize ();
-            size.height = Math.max ( tmp.height, size.height );
-            size.width += tmp.width;
-
-            if ( i != 0 )
-            {
-                size.width += getHorizontalGap ();
-            }
-        }
-        Insets border = parent.getInsets ();
-        size.width += border.left + border.right;
-        size.height += border.top + border.bottom;
-        return size;
-    }
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void layoutContainer ( Container parent )
     {
@@ -139,5 +117,27 @@ public class HorizontalFlowLayout implements LayoutManager
                 x += ( w + getHorizontalGap () );
             }
         }
+    }
+
+    protected Dimension getLayoutSize ( Container parent, boolean min )
+    {
+        int count = parent.getComponentCount ();
+        Dimension size = new Dimension ( 0, 0 );
+        for ( int i = 0; i < count; i++ )
+        {
+            Component c = parent.getComponent ( i );
+            Dimension tmp = ( min ) ? c.getMinimumSize () : c.getPreferredSize ();
+            size.height = Math.max ( tmp.height, size.height );
+            size.width += tmp.width;
+
+            if ( i != 0 )
+            {
+                size.width += getHorizontalGap ();
+            }
+        }
+        Insets border = parent.getInsets ();
+        size.width += border.left + border.right;
+        size.height += border.top + border.bottom;
+        return size;
     }
 }

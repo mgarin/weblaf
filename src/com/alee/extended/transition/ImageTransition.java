@@ -38,7 +38,7 @@ import java.util.List;
 public class ImageTransition extends JComponent implements ActionListener
 {
     // Transition listeners
-    private List<TransitionListener> transitionListeners = new ArrayList<TransitionListener> ();
+    private List<TransitionListener> transitionListeners = new ArrayList<TransitionListener> ( 1 );
 
     // Images
     private BufferedImage currentImage = null;

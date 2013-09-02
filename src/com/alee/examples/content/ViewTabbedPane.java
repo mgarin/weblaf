@@ -46,7 +46,7 @@ public class ViewTabbedPane extends WebTabbedPane
 
     public static final String ID_PREFIX = "VTP";
 
-    private List<ViewListener> viewListeners = new ArrayList<ViewListener> ();
+    private List<ViewListener> viewListeners = new ArrayList<ViewListener> ( 1 );
 
     private List<String> ids = new ArrayList<String> ();
     private List<JarEntry> data = new ArrayList<JarEntry> ();

@@ -30,27 +30,42 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 /**
- * User: mgarin Date: 25.05.11 Time: 16:02
+ * This special popup layer is used to place modal-like popups atop of it.
+ * It basically provides a semi-transparent layer that covers the whole window and leaves only modal popup in focus.
+ *
+ * @author Mikle Garin
+ * @see PopupManager
  */
 
 public class ShadeLayer extends PopupLayer
 {
-    private boolean animate = ShadeLayerStyle.animate;
+    /**
+     * Whether modal shade should be animated or not.
+     * It might cause serious lags in case it is used in a large window with lots of UI elements.
+     */
+    protected boolean animate = ShadeLayerStyle.animate;
 
-    private int opacity = 0;
-    private WebTimer animator;
-    private boolean blockClose = false;
+    /**
+     * Layer current opacity.
+     */
+    protected int opacity = 0;
 
-    private AlignLayout layout;
+    /**
+     * Layer opacity animator.
+     */
+    protected WebTimer animator;
 
+    /**
+     * Whether popup close attemps should be blocked or not.
+     */
+    protected boolean blockClose = false;
+
+    /**
+     * Constructs new shade layer.
+     */
     public ShadeLayer ()
     {
-        super ();
-
-        setOpaque ( false );
-
-        layout = new AlignLayout ();
-        setLayout ( layout );
+        super ( new AlignLayout () );
 
         MouseAdapter mouseAdapter = new MouseAdapter ()
         {
@@ -67,17 +82,32 @@ public class ShadeLayer extends PopupLayer
         addMouseMotionListener ( mouseAdapter );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void showPopup ( WebPopup popup )
     {
         showPopup ( popup, false, false );
     }
 
+    /**
+     * Displays the specified popup on this popup layer.
+     *
+     * @param popup popup to display
+     * @param hfill whether popup should fill the whole available window width or not
+     * @param vfill whether popup should fill the whole available window height or not
+     */
     public void showPopup ( WebPopup popup, boolean hfill, boolean vfill )
     {
         // Updating layout settings
-        layout.setHfill ( hfill );
-        layout.setVfill ( vfill );
+        LayoutManager layoutManager = getLayout ();
+        if ( layoutManager instanceof AlignLayout )
+        {
+            AlignLayout layout = ( AlignLayout ) layoutManager;
+            layout.setHfill ( hfill );
+            layout.setVfill ( vfill );
+        }
 
         // Adding popup
         removeAll ();
@@ -88,33 +118,60 @@ public class ShadeLayer extends PopupLayer
         repaint ();
     }
 
+    /**
+     * Returns whether modal shade should be animated or not.
+     *
+     * @return true if modal shade should be animated, false otherwise
+     */
     public boolean isAnimate ()
     {
         return animate;
     }
 
+    /**
+     * Sets whether modal shade should be animated or not.
+     *
+     * @param animate whether modal shade should be animated or not
+     */
     public void setAnimate ( boolean animate )
     {
         this.animate = animate;
     }
 
+    /**
+     * Returns whether popup close attemps should be blocked or not.
+     *
+     * @return true if popup close attemps should be blocked, false otherwise
+     */
     public boolean isBlockClose ()
     {
         return blockClose;
     }
 
+    /**
+     * Sets whether popup close attemps should be blocked or not.
+     *
+     * @param blockClose whether popup close attemps should be blocked or not
+     */
     public void setBlockClose ( boolean blockClose )
     {
         this.blockClose = blockClose;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void paint ( Graphics g )
     {
+        // todo Really bad workaround
         LafUtils.setupAlphaComposite ( ( Graphics2D ) g, ( float ) opacity / 100, opacity < 100 );
         super.paint ( g );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void paintComponent ( Graphics g )
     {
@@ -131,13 +188,19 @@ public class ShadeLayer extends PopupLayer
         LafUtils.restoreAntialias ( g2d, old );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setVisible ( boolean visible )
     {
         super.setVisible ( visible );
         if ( visible )
         {
-            stopAnimator ();
+            if ( animator != null )
+            {
+                animator.stop ();
+            }
             if ( animate )
             {
                 opacity = 0;
@@ -167,14 +230,13 @@ public class ShadeLayer extends PopupLayer
         }
     }
 
-    private void stopAnimator ()
-    {
-        if ( animator != null )
-        {
-            animator.stop ();
-        }
-    }
-
+    /**
+     * Returns whether the specified point is within bounds of this popup layer or not.
+     *
+     * @param x X coordinate
+     * @param y Y coordinate
+     * @return true if the specified point is within bounds of this popup layer, false otherwise
+     */
     @Override
     public boolean contains ( int x, int y )
     {

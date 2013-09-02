@@ -29,7 +29,7 @@ import java.util.List;
 
 public class UnselectableButtonGroup extends ButtonGroup
 {
-    private List<ButtonGroupListener> listeners = new ArrayList<ButtonGroupListener> ();
+    private List<ButtonGroupListener> listeners = new ArrayList<ButtonGroupListener> ( 1 );
 
     private boolean unselectable = true;
 

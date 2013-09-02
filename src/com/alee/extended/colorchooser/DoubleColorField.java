@@ -39,7 +39,7 @@ import java.util.Map;
 
 public class DoubleColorField extends WebPanel
 {
-    private List<DoubleColorFieldListener> listeners = new ArrayList<DoubleColorFieldListener> ();
+    private List<DoubleColorFieldListener> listeners = new ArrayList<DoubleColorFieldListener> ( 1 );
 
     private Color newColor;
     private Color oldColor;

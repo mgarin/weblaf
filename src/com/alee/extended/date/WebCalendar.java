@@ -55,7 +55,7 @@ public class WebCalendar extends WebPanel
     public static final ImageIcon nextIcon = new ImageIcon ( WebCalendar.class.getResource ( "icons/next.png" ) );
     public static final ImageIcon nextSkipIcon = new ImageIcon ( WebCalendar.class.getResource ( "icons/next_skip.png" ) );
 
-    private List<DateSelectionListener> dateSelectionListeners = new ArrayList<DateSelectionListener> ();
+    private List<DateSelectionListener> dateSelectionListeners = new ArrayList<DateSelectionListener> ( 1 );
 
     private SimpleDateFormat titleFormat = new SimpleDateFormat ( "MMMM yyyy" );
     private Date date = new Date ( System.currentTimeMillis () );

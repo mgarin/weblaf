@@ -17,6 +17,7 @@
 
 package com.alee.laf.rootpane;
 
+import com.alee.extended.layout.AbstractLayoutManager;
 import com.alee.extended.panel.WebButtonGroup;
 import com.alee.laf.button.WebButtonStyle;
 import com.alee.utils.MathUtils;
@@ -32,13 +33,10 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public class WebRootPaneLayout implements LayoutManager
+public class WebRootPaneLayout extends AbstractLayoutManager
 {
     /**
-     * Returns preferred layout size.
-     *
-     * @param parent layout container
-     * @return preferred layout size
+     * {@inheritDoc}
      */
     @Override
     public Dimension preferredLayoutSize ( Container parent )
@@ -47,15 +45,119 @@ public class WebRootPaneLayout implements LayoutManager
     }
 
     /**
-     * Returns minimum layout size.
-     *
-     * @param parent layout container
-     * @return minimum layout size
+     * {@inheritDoc}
      */
     @Override
     public Dimension minimumLayoutSize ( Container parent )
     {
         return calculateSize ( parent, false );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void layoutContainer ( Container parent )
+    {
+        final JRootPane root = ( JRootPane ) parent;
+        final WebRootPaneUI rootUI = ( WebRootPaneUI ) root.getUI ();
+        final Insets m = parent.getInsets ();
+        final Dimension s = parent.getSize ();
+        final int w = s.width - m.right - m.left;
+        final int h = s.height - m.top - m.bottom;
+        final boolean ltr = root.getComponentOrientation ().isLeftToRight ();
+
+        final WebButtonGroup windowButtons = rootUI.getWindowButtons ();
+        final JComponent titleComponent = rootUI.getTitleComponent ();
+        final JMenuBar menuBar = root.getJMenuBar ();
+        final JComponent resizeCorner = rootUI.getResizeCorner ();
+        final boolean showWindowButtons = windowButtons != null && rootUI.isShowWindowButtons () &&
+                ( rootUI.isShowMinimizeButton () || rootUI.isShowMaximizeButton () || rootUI.isShowCloseButton () );
+        final boolean showTitleComponent = titleComponent != null && rootUI.isShowTitleComponent ();
+        final boolean showMenuBar = menuBar != null && rootUI.isShowMenuBar ();
+        final boolean showResizeCorner =
+                resizeCorner != null && rootUI.isResizable () && rootUI.isShowResizeCorner () && !rootUI.isFrameMaximized ();
+
+        int nextY = 0;
+
+        // Placing window buttons
+        int buttonsWidth = 0;
+        if ( showWindowButtons )
+        {
+            // Moving buttons to top layer
+            parent.setComponentZOrder ( windowButtons, 0 );
+
+            // Placing buttons properly
+            final Dimension ps = windowButtons.getPreferredSize ();
+            final int buttonsShear = getButtonsShear ( rootUI );
+            final int x = ltr ? s.width - m.right - buttonsShear - ps.width : m.left + buttonsShear;
+            windowButtons.setVisible ( true );
+            windowButtons.setBounds ( x, m.top, ps.width, ps.height );
+            buttonsWidth = ps.width;
+        }
+        else if ( windowButtons != null )
+        {
+            windowButtons.setVisible ( false );
+        }
+
+        // Placing window title component
+        if ( showTitleComponent )
+        {
+            final Dimension ps = titleComponent.getPreferredSize ();
+            titleComponent.setVisible ( true );
+            titleComponent.setBounds ( ltr ? m.left : m.left + buttonsWidth, m.top, w - buttonsWidth, ps.height );
+            nextY += ps.height;
+        }
+        else if ( titleComponent != null )
+        {
+            titleComponent.setVisible ( false );
+        }
+
+        // Placing menu bar
+        if ( showMenuBar )
+        {
+            final Dimension mbd = menuBar.getPreferredSize ();
+            menuBar.setVisible ( true );
+            menuBar.setBounds ( 0, nextY, w, mbd.height );
+            nextY += mbd.height;
+        }
+        else if ( menuBar != null )
+        {
+            menuBar.setVisible ( false );
+        }
+
+        // Placing layered pane
+        final JLayeredPane layeredPane = root.getLayeredPane ();
+        if ( layeredPane != null )
+        {
+            layeredPane.setBounds ( m.left, m.top, w, h );
+        }
+
+        // Placing glass pane
+        final Component glassPane = root.getGlassPane ();
+        if ( glassPane != null )
+        {
+            glassPane.setBounds ( m.left, m.top, w, h );
+        }
+
+        final Container contentPane = root.getContentPane ();
+        if ( contentPane != null )
+        {
+            contentPane.setBounds ( 0, nextY, w, h < nextY ? 0 : h - nextY );
+        }
+
+        // Placing window resize corner
+        if ( showResizeCorner )
+        {
+            parent.setComponentZOrder ( resizeCorner, 0 );
+            final Dimension ps = resizeCorner.getPreferredSize ();
+            resizeCorner.setVisible ( true );
+            resizeCorner.setBounds ( s.width - m.right - ps.width - 2, s.height - m.bottom - ps.height - 2, ps.width, ps.height );
+        }
+        else if ( resizeCorner != null )
+        {
+            resizeCorner.setVisible ( false );
+        }
     }
 
     /**
@@ -253,115 +355,6 @@ public class WebRootPaneLayout implements LayoutManager
     }
 
     /**
-     * Layout container components.
-     *
-     * @param parent container to process
-     */
-    @Override
-    public void layoutContainer ( Container parent )
-    {
-        final JRootPane root = ( JRootPane ) parent;
-        final WebRootPaneUI rootUI = ( WebRootPaneUI ) root.getUI ();
-        final Insets m = parent.getInsets ();
-        final Dimension s = parent.getSize ();
-        final int w = s.width - m.right - m.left;
-        final int h = s.height - m.top - m.bottom;
-        final boolean ltr = root.getComponentOrientation ().isLeftToRight ();
-
-        final WebButtonGroup windowButtons = rootUI.getWindowButtons ();
-        final JComponent titleComponent = rootUI.getTitleComponent ();
-        final JMenuBar menuBar = root.getJMenuBar ();
-        final JComponent resizeCorner = rootUI.getResizeCorner ();
-        final boolean showWindowButtons = windowButtons != null && rootUI.isShowWindowButtons () &&
-                ( rootUI.isShowMinimizeButton () || rootUI.isShowMaximizeButton () || rootUI.isShowCloseButton () );
-        final boolean showTitleComponent = titleComponent != null && rootUI.isShowTitleComponent ();
-        final boolean showMenuBar = menuBar != null && rootUI.isShowMenuBar ();
-        final boolean showResizeCorner =
-                resizeCorner != null && rootUI.isResizable () && rootUI.isShowResizeCorner () && !rootUI.isFrameMaximized ();
-
-        int nextY = 0;
-
-        // Placing window buttons
-        int buttonsWidth = 0;
-        if ( showWindowButtons )
-        {
-            // Moving buttons to top layer
-            parent.setComponentZOrder ( windowButtons, 0 );
-
-            // Placing buttons properly
-            final Dimension ps = windowButtons.getPreferredSize ();
-            final int buttonsShear = getButtonsShear ( rootUI );
-            final int x = ltr ? s.width - m.right - buttonsShear - ps.width : m.left + buttonsShear;
-            windowButtons.setVisible ( true );
-            windowButtons.setBounds ( x, m.top, ps.width, ps.height );
-            buttonsWidth = ps.width;
-        }
-        else if ( windowButtons != null )
-        {
-            windowButtons.setVisible ( false );
-        }
-
-        // Placing window title component
-        if ( showTitleComponent )
-        {
-            final Dimension ps = titleComponent.getPreferredSize ();
-            titleComponent.setVisible ( true );
-            titleComponent.setBounds ( ltr ? m.left : m.left + buttonsWidth, m.top, w - buttonsWidth, ps.height );
-            nextY += ps.height;
-        }
-        else if ( titleComponent != null )
-        {
-            titleComponent.setVisible ( false );
-        }
-
-        // Placing menu bar
-        if ( showMenuBar )
-        {
-            final Dimension mbd = menuBar.getPreferredSize ();
-            menuBar.setVisible ( true );
-            menuBar.setBounds ( 0, nextY, w, mbd.height );
-            nextY += mbd.height;
-        }
-        else if ( menuBar != null )
-        {
-            menuBar.setVisible ( false );
-        }
-
-        // Placing layered pane
-        final JLayeredPane layeredPane = root.getLayeredPane ();
-        if ( layeredPane != null )
-        {
-            layeredPane.setBounds ( m.left, m.top, w, h );
-        }
-
-        // Placing glass pane
-        final Component glassPane = root.getGlassPane ();
-        if ( glassPane != null )
-        {
-            glassPane.setBounds ( m.left, m.top, w, h );
-        }
-
-        final Container contentPane = root.getContentPane ();
-        if ( contentPane != null )
-        {
-            contentPane.setBounds ( 0, nextY, w, h < nextY ? 0 : h - nextY );
-        }
-
-        // Placing window resize corner
-        if ( showResizeCorner )
-        {
-            parent.setComponentZOrder ( resizeCorner, 0 );
-            final Dimension ps = resizeCorner.getPreferredSize ();
-            resizeCorner.setVisible ( true );
-            resizeCorner.setBounds ( s.width - m.right - ps.width - 2, s.height - m.bottom - ps.height - 2, ps.width, ps.height );
-        }
-        else if ( resizeCorner != null )
-        {
-            resizeCorner.setVisible ( false );
-        }
-    }
-
-    /**
      * Returns button side shear depending on root pane UI settings.
      *
      * @param webRootPaneUI root pane UI
@@ -371,28 +364,5 @@ public class WebRootPaneLayout implements LayoutManager
     {
         final int round = webRootPaneUI.getRound ();
         return webRootPaneUI.isAttachButtons () && round > 0 ? round - WebButtonStyle.shadeWidth : 0;
-    }
-
-    /**
-     * Adds component into layout.
-     *
-     * @param name component constraint
-     * @param comp component to add
-     */
-    @Override
-    public void addLayoutComponent ( String name, Component comp )
-    {
-        //
-    }
-
-    /**
-     * Removes component from layout.
-     *
-     * @param comp component to remove
-     */
-    @Override
-    public void removeLayoutComponent ( Component comp )
-    {
-        //
     }
 }

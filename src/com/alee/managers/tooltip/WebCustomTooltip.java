@@ -26,6 +26,7 @@ import com.alee.utils.SwingUtils;
 import com.alee.utils.TextUtils;
 import com.alee.utils.laf.ShapeProvider;
 import com.alee.utils.swing.AncestorAdapter;
+import com.alee.utils.swing.FadeStateType;
 import com.alee.utils.swing.WebTimer;
 
 import javax.swing.*;
@@ -78,14 +79,14 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
     private float trasparency = WebCustomTooltipStyle.trasparency;
 
     // Tooltip listeners
-    private List<TooltipListener> listeners = new ArrayList<TooltipListener> ();
+    private List<TooltipListener> listeners = new ArrayList<TooltipListener> ( 2 );
 
     // Tooltip variables
     private HotkeyTipLabel hotkey;
     private int cornerPeak = 0;
 
     // Animation variables
-    private FadeType fadeType;
+    private FadeStateType fadeStateType;
     private float fade = 0;
     private WebTimer fadeTimer;
 
@@ -193,7 +194,7 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
             {
                 float roundsCount = fadeTime / ( 1000f / fadeFps );
                 float fadeSpeed = 1f / roundsCount;
-                if ( fadeType.equals ( FadeType.fadeIn ) )
+                if ( fadeStateType.equals ( FadeStateType.fadeIn ) )
                 {
                     if ( fade < 1f )
                     {
@@ -206,7 +207,7 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
                         fadeTimer.stop ();
                     }
                 }
-                else if ( fadeType.equals ( FadeType.fadeOut ) )
+                else if ( fadeStateType.equals ( FadeStateType.fadeOut ) )
                 {
                     if ( fade > 0 )
                     {
@@ -241,7 +242,7 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
 
                 // Starting fade-in animation
                 fade = 0;
-                fadeType = FadeType.fadeIn;
+                fadeStateType = FadeStateType.fadeIn;
                 fadeTimer.start ();
 
                 // Informing listeners that tooltip was shown
@@ -341,7 +342,7 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
             return;
         }
 
-        fadeType = FadeType.fadeOut;
+        fadeStateType = FadeStateType.fadeOut;
         if ( !fadeTimer.isRunning () )
         {
             fadeTimer.start ();

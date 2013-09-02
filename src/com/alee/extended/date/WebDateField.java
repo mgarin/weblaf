@@ -51,7 +51,7 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
 {
     public static final ImageIcon selectDateIcon = new ImageIcon ( WebDateField.class.getResource ( "icons/date.png" ) );
 
-    private List<DateSelectionListener> dateSelectionListeners = new ArrayList<DateSelectionListener> ();
+    private List<DateSelectionListener> dateSelectionListeners = new ArrayList<DateSelectionListener> ( 1 );
 
     private SimpleDateFormat dateFormat = new SimpleDateFormat ( "dd.MM.yyyy" );
     private Date date = null;

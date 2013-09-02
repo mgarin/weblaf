@@ -25,13 +25,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * User: mgarin Date: 14.10.11 Time: 13:01
- * <p/>
  * This layout allows you to quickly and easily place components in a toolbar-like components without overloading interface with lots of
- * panels and different layouts
+ * panels and different layouts.
+ *
+ * @author Mikle Garin
  */
 
-public class ToolbarLayout implements LayoutManager, SwingConstants
+public class ToolbarLayout extends AbstractLayoutManager implements SwingConstants
 {
     // Positions component at the leading side of the container
     public static final String START = "START";
@@ -43,19 +43,19 @@ public class ToolbarLayout implements LayoutManager, SwingConstants
     public static final String END = "END";
 
     // Saved layout constraints
-    private Map<Component, String> constraints = new HashMap<Component, String> ();
+    protected Map<Component, String> constraints = new HashMap<Component, String> ();
 
     // Spacing between components
-    private int spacing = StyleConstants.contentSpacing;
+    protected int spacing = StyleConstants.contentSpacing;
 
     // Spacing between left and right (top and bottom) layout parts
-    private int partsSpacing = StyleConstants.largeContentSpacing;
+    protected int partsSpacing = StyleConstants.largeContentSpacing;
 
     // Layout orientation
-    private int orientation = HORIZONTAL;
+    protected int orientation = HORIZONTAL;
 
     // Layout margin
-    private Insets margin = null;
+    protected Insets margin = null;
 
     /**
      * Some extended constructors
@@ -161,24 +161,80 @@ public class ToolbarLayout implements LayoutManager, SwingConstants
      * Standard LayoutManager methods
      */
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public void addLayoutComponent ( String name, Component comp )
+    public void addComponent ( Component component, Object constraints )
     {
-        if ( name != null && !name.trim ().equals ( "" ) && !name.equals ( START ) &&
-                !name.equals ( MIDDLE ) && !name.equals ( FILL ) && !name.equals ( END ) )
+        String value = ( String ) constraints;
+        if ( value != null && !value.trim ().equals ( "" ) && !value.equals ( START ) &&
+                !value.equals ( MIDDLE ) && !value.equals ( FILL ) && !value.equals ( END ) )
         {
             throw new IllegalArgumentException (
                     "Cannot add to layout: constraint must be null or an empty/'START'/'MIDDLE'/'FILL'/'END' string" );
         }
-        constraints.put ( comp, name == null || name.trim ().equals ( "" ) ? START : name );
+        this.constraints.put ( component, value == null || value.trim ().equals ( "" ) ? START : value );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public void removeLayoutComponent ( Component comp )
+    public void removeComponent ( Component component )
     {
-        constraints.remove ( comp );
+        constraints.remove ( component );
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Dimension preferredLayoutSize ( Container parent )
+    {
+        Insets insets = getActualInsets ( parent );
+        Dimension ps = new Dimension ( insets.left + insets.right, insets.top + insets.bottom );
+        int componentCount = parent.getComponentCount ();
+        for ( int i = 0; i < componentCount; i++ )
+        {
+            Component component = parent.getComponent ( i );
+            Dimension cps = component.getPreferredSize ();
+            if ( orientation == HORIZONTAL )
+            {
+                ps.width += cps.width + ( i < componentCount - 1 ? spacing : 0 );
+                ps.height = Math.max ( ps.height, cps.height + insets.top + insets.bottom );
+            }
+            else
+            {
+                ps.width = Math.max ( ps.width, cps.width + insets.left + insets.right );
+                ps.height += cps.height + ( i < componentCount - 1 ? spacing : 0 );
+            }
+        }
+
+        // Additional spacing between start and end parts
+        boolean addPartsSpacing = hasElement ( START ) && hasElement ( END ) && !hasElement ( MIDDLE ) && !hasElement ( FILL );
+        if ( orientation == HORIZONTAL )
+        {
+            // ps.height = insets.top + ps.height + insets.bottom;
+            if ( addPartsSpacing )
+            {
+                ps.width += partsSpacing;
+            }
+        }
+        else
+        {
+            // ps.width = insets.left + ps.width + insets.right;
+            if ( addPartsSpacing )
+            {
+                ps.height += partsSpacing;
+            }
+        }
+        return ps;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void layoutContainer ( Container parent )
     {
@@ -355,61 +411,12 @@ public class ToolbarLayout implements LayoutManager, SwingConstants
         }
     }
 
-    @Override
-    public Dimension minimumLayoutSize ( Container parent )
-    {
-        return preferredLayoutSize ( parent );
-    }
-
-    @Override
-    public Dimension preferredLayoutSize ( Container parent )
-    {
-        Insets insets = getActualInsets ( parent );
-        Dimension ps = new Dimension ( insets.left + insets.right, insets.top + insets.bottom );
-        int componentCount = parent.getComponentCount ();
-        for ( int i = 0; i < componentCount; i++ )
-        {
-            Component component = parent.getComponent ( i );
-            Dimension cps = component.getPreferredSize ();
-            if ( orientation == HORIZONTAL )
-            {
-                ps.width += cps.width + ( i < componentCount - 1 ? spacing : 0 );
-                ps.height = Math.max ( ps.height, cps.height + insets.top + insets.bottom );
-            }
-            else
-            {
-                ps.width = Math.max ( ps.width, cps.width + insets.left + insets.right );
-                ps.height += cps.height + ( i < componentCount - 1 ? spacing : 0 );
-            }
-        }
-
-        // Additional spacing between start and end parts
-        boolean addPartsSpacing = hasElement ( START ) && hasElement ( END ) && !hasElement ( MIDDLE ) && !hasElement ( FILL );
-        if ( orientation == HORIZONTAL )
-        {
-            // ps.height = insets.top + ps.height + insets.bottom;
-            if ( addPartsSpacing )
-            {
-                ps.width += partsSpacing;
-            }
-        }
-        else
-        {
-            // ps.width = insets.left + ps.width + insets.right;
-            if ( addPartsSpacing )
-            {
-                ps.height += partsSpacing;
-            }
-        }
-        return ps;
-    }
-
-    private boolean hasElement ( String element )
+    protected boolean hasElement ( String element )
     {
         return constraints.containsValue ( element );
     }
 
-    private Insets getActualInsets ( Container container )
+    protected Insets getActualInsets ( Container container )
     {
         if ( margin != null )
         {

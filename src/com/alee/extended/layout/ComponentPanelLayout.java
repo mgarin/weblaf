@@ -27,10 +27,10 @@ import java.util.Map;
  * User: mgarin Date: 30.05.12 Time: 17:54
  */
 
-public class ComponentPanelLayout implements LayoutManager
+public class ComponentPanelLayout extends AbstractLayoutManager
 {
-    private List<Component> components = new ArrayList<Component> ();
-    private Map<Component, Integer> yShift = new HashMap<Component, Integer> ();
+    protected List<Component> components = new ArrayList<Component> ();
+    protected Map<Component, Integer> yShift = new HashMap<Component, Integer> ();
 
     public List<Component> getComponents ()
     {
@@ -58,15 +58,15 @@ public class ComponentPanelLayout implements LayoutManager
     }
 
     @Override
-    public void addLayoutComponent ( String name, Component comp )
+    public void addComponent ( Component component, Object constraints )
     {
-        components.add ( comp );
+        components.add ( component );
     }
 
     @Override
-    public void removeLayoutComponent ( Component comp )
+    public void removeComponent ( Component component )
     {
-        components.remove ( comp );
+        components.remove ( component );
     }
 
     public void insertLayoutComponent ( int index, Component comp )
@@ -74,22 +74,9 @@ public class ComponentPanelLayout implements LayoutManager
         components.add ( index, comp );
     }
 
-    @Override
-    public void layoutContainer ( Container parent )
-    {
-        Insets insets = parent.getInsets ();
-        int y = insets.top;
-        for ( Component component : components )
-        {
-            Dimension ps = component.getPreferredSize ();
-
-            Integer shift = yShift.get ( component );
-            component.setBounds ( insets.left, shift == null ? y : y + shift, parent.getWidth () - insets.left - insets.right, ps.height );
-
-            y += ps.height;
-        }
-    }
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Dimension preferredLayoutSize ( Container parent )
     {
@@ -105,9 +92,22 @@ public class ComponentPanelLayout implements LayoutManager
         return new Dimension ( width, height );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public Dimension minimumLayoutSize ( Container parent )
+    public void layoutContainer ( Container parent )
     {
-        return preferredLayoutSize ( parent );
+        Insets insets = parent.getInsets ();
+        int y = insets.top;
+        for ( Component component : components )
+        {
+            Dimension ps = component.getPreferredSize ();
+
+            Integer shift = yShift.get ( component );
+            component.setBounds ( insets.left, shift == null ? y : y + shift, parent.getWidth () - insets.left - insets.right, ps.height );
+
+            y += ps.height;
+        }
     }
 }

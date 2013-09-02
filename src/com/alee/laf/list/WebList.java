@@ -48,7 +48,7 @@ public class WebList extends JList implements FontMethods<WebList>
     /**
      * List edit lsiteners.
      */
-    protected List<ListEditListener> editListeners = new ArrayList<ListEditListener> ();
+    protected List<ListEditListener> editListeners = new ArrayList<ListEditListener> ( 1 );
 
     /**
      * Whether this list is editable or not.

@@ -18,20 +18,67 @@
 package com.alee.managers.popup;
 
 /**
- * User: mgarin Date: 23.03.12 Time: 16:23
+ * This enumeration represents predefined available popup styles.
+ *
+ * @author Mikle Garin
+ * @see PopupManager
+ * @see WebPopup
  */
 
 public enum PopupStyle
 {
+    /**
+     * Undecorated popup.
+     */
     none,
-    light,
-    lightSmall,
-    greenLarge,
-    bevel,
+
+    /**
+     * Simple bordered popup.
+     */
     bordered,
+
+    /**
+     * Light-colored popup.
+     */
+    light,
+
+    /**
+     * Light-colored popup with small border.
+     */
+    lightSmall,
+
+    /**
+     * Green-colored popup with large border.
+     */
+    greenLarge,
+
+    /**
+     * Popup with bevel border.
+     */
+    bevel,
+
+    /**
+     * Gray-colored popup.
+     */
     gray,
+
+    /**
+     * Gray-colored popup with small border.
+     */
     graySmall,
+
+    /**
+     * Gray-colored popup with etched border.
+     */
     grayEtched,
+
+    /**
+     * Gray-colored tooltip-styled popup.
+     */
     grayDownTip,
+
+    /**
+     * Dark-colored popup.
+     */
     dark
 }

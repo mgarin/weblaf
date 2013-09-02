@@ -23,7 +23,7 @@ import java.awt.*;
  * User: mgarin Date: 01.03.12 Time: 18:50
  */
 
-public class BreadcrumbLayout implements LayoutManager
+public class BreadcrumbLayout extends AbstractLayoutManager
 {
     private int overlap;
 
@@ -48,18 +48,9 @@ public class BreadcrumbLayout implements LayoutManager
         this.overlap = overlap;
     }
 
-    @Override
-    public void addLayoutComponent ( String name, Component comp )
-    {
-
-    }
-
-    @Override
-    public void removeLayoutComponent ( Component comp )
-    {
-
-    }
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Dimension preferredLayoutSize ( Container parent )
     {
@@ -74,12 +65,9 @@ public class BreadcrumbLayout implements LayoutManager
         return maxSize;
     }
 
-    @Override
-    public Dimension minimumLayoutSize ( Container parent )
-    {
-        return preferredLayoutSize ( parent );
-    }
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void layoutContainer ( Container parent )
     {

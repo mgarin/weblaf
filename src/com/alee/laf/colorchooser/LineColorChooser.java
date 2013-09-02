@@ -37,10 +37,10 @@ import java.util.List;
 
 public class LineColorChooser extends WebPanel
 {
-    private List<ChangeListener> changeListeners = new ArrayList<ChangeListener> ();
-
     public static final ImageIcon LEFT_ICON = new ImageIcon ( LineColorChooser.class.getResource ( "icons/left.png" ) );
     public static final ImageIcon RIGHT_ICON = new ImageIcon ( LineColorChooser.class.getResource ( "icons/right.png" ) );
+
+    private List<ChangeListener> changeListeners = new ArrayList<ChangeListener> ( 1 );
 
     // Hue (H -> HSB) (0 to 360)
     private int hue = 0;

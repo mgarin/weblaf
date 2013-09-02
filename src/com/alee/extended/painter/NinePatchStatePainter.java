@@ -27,19 +27,34 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * User: mgarin Date: 14.12.11 Time: 16:19
+ * This painter class allows you to specify multiply 9-patch images for different component states.
+ * By default there is support for some standard Swing component states like buttons.
+ *
+ * @author Mikle Garin
+ * @see ComponentState
+ * @see NinePatchIcon
+ * @see com.alee.extended.painter.NinePatchIconPainter
  */
 
 public class NinePatchStatePainter<E extends JComponent> extends DefaultPainter<E>
 {
-    private Map<String, NinePatchIcon> stateIcons;
+    /**
+     * Map containing separate 9-patch icons for different component states.
+     */
+    protected Map<String, NinePatchIcon> stateIcons;
 
+    /**
+     * Constructs new 9-patch state painter with empty states.
+     */
     public NinePatchStatePainter ()
     {
         super ();
         this.stateIcons = new HashMap<String, NinePatchIcon> ();
     }
 
+    /**
+     * Constructs new 9-patch state painter with specified states map.
+     */
     public NinePatchStatePainter ( Map<String, NinePatchIcon> stateIcons )
     {
         super ();
@@ -47,47 +62,65 @@ public class NinePatchStatePainter<E extends JComponent> extends DefaultPainter<
     }
 
     /**
-     * State icons methods
+     * Returns states map.
+     *
+     * @return states map
      */
-
     public Map<String, NinePatchIcon> getStateIcons ()
     {
         return stateIcons;
     }
 
+    /**
+     * Sets states map.
+     *
+     * @param stateIcons states map
+     */
     public void setStateIcons ( Map<String, NinePatchIcon> stateIcons )
     {
         this.stateIcons = stateIcons;
     }
 
-    public void addStateIcon ( String componentState, NinePatchIcon ninePatchIcon )
+    /**
+     * Adds painter state.
+     *
+     * @param state         state to add
+     * @param ninePatchIcon 9-patch icon
+     */
+    public void addStateIcon ( String state, NinePatchIcon ninePatchIcon )
     {
-        stateIcons.put ( componentState, ninePatchIcon );
-    }
-
-    public void removeStateIcon ( ComponentState componentState )
-    {
-        stateIcons.remove ( componentState );
+        stateIcons.put ( state, ninePatchIcon );
     }
 
     /**
-     * Returns true if there is atleast one state icon available
+     * Removes painter state.
+     *
+     * @param state state to remove
      */
+    public void removeStateIcon ( String state )
+    {
+        stateIcons.remove ( state );
+    }
 
+    /**
+     * Returns whether atleast one state icon is available or not.
+     *
+     * @return true if atleast one state icon is available, false otherwise
+     */
     public boolean hasStateIcons ()
     {
         return stateIcons != null && stateIcons.size () > 0;
     }
 
     /**
-     * Paints background according to component state
+     * {@inheritDoc}
      */
-
     @Override
     public void paint ( Graphics2D g2d, Rectangle bounds, E c )
     {
         if ( hasStateIcons () && c != null )
         {
+            // todo Move each component support to outer classes
             // Current state icon retrieval
             NinePatchIcon stateIcon;
             if ( c instanceof AbstractButton )
@@ -127,30 +160,36 @@ public class NinePatchStatePainter<E extends JComponent> extends DefaultPainter<
     }
 
     /**
-     * Returns true on focused component state
+     * Returns whether component is in focused state or not.
+     *
+     * @param component component to process
+     * @return true if component is in focused state, false otherwise
      */
-
-    private boolean isFocused ( E c )
+    protected boolean isFocused ( E component )
     {
-        return c.isFocusOwner ();
+        return component.isFocusOwner ();
     }
 
     /**
-     * State icons support for any component
+     * Returns current state icon for the specified component.
+     *
+     * @param component component to process
+     * @return current state icon
      */
-
-    private NinePatchIcon getComponentBackground ( E c )
+    protected NinePatchIcon getComponentBackground ( E component )
     {
-        return getStateIcon ( c.isEnabled () ? ComponentState.normal : ComponentState.disabled );
+        return getStateIcon ( component.isEnabled () ? ComponentState.normal : ComponentState.disabled );
     }
 
     /**
-     * State icons support for buttons
+     * Returns current state icon for the specified button.
+     *
+     * @param button button to process
+     * @return current state icon
      */
-
-    private NinePatchIcon getButtonBackground ( AbstractButton c )
+    protected NinePatchIcon getButtonBackground ( AbstractButton button )
     {
-        ButtonModel bm = c.getModel ();
+        ButtonModel bm = button.getModel ();
         if ( bm.isPressed () )
         {
             return getStateIcon ( bm.isSelected () ? ComponentState.selectedPressed : ComponentState.pressed );
@@ -180,79 +219,85 @@ public class NinePatchStatePainter<E extends JComponent> extends DefaultPainter<
     }
 
     /**
-     * State icons support for toolbars
+     * Returns current state icon for the specified toolbar.
+     *
+     * @param button toolbar to process
+     * @return current state icon
      */
-
-    private NinePatchIcon getToolBarBackground ( JToolBar c )
+    protected NinePatchIcon getToolBarBackground ( JToolBar toolbar )
     {
-        if ( c instanceof WebToolBar && ( ( WebToolBar ) c ).isFloating () )
+        if ( toolbar instanceof WebToolBar && ( ( WebToolBar ) toolbar ).isFloating () )
         {
-            return getStateIcon ( c.isEnabled () ? ComponentState.floating : ComponentState.floatingDisabled );
+            return getStateIcon ( toolbar.isEnabled () ? ComponentState.floating : ComponentState.floatingDisabled );
         }
         else
         {
-            return getStateIcon ( c.isEnabled () ? ComponentState.normal : ComponentState.disabled );
+            return getStateIcon ( toolbar.isEnabled () ? ComponentState.normal : ComponentState.disabled );
         }
     }
 
     /**
-     * Returns exact state icon even if it is null
+     * Returns exact state icon or null if it is not specified.
+     *
+     * @param state component state
+     * @return exact state icon or null if it is not specified
      */
-
-    public NinePatchIcon getExactStateIcon ( String componentState )
+    public NinePatchIcon getExactStateIcon ( String state )
     {
-        return stateIcons.get ( componentState );
+        return stateIcons.get ( state );
     }
 
     /**
-     * Returns state icon or possible replacement for it
+     * Returns state icon or possible replacement for it.
+     *
+     * @param state component state
+     * @return state icon or possible replacement for it
      */
-
-    public NinePatchIcon getStateIcon ( String componentState )
+    public NinePatchIcon getStateIcon ( String state )
     {
-        if ( componentState.equals ( ComponentState.normal ) )
+        if ( state.equals ( ComponentState.normal ) )
         {
-            return stateIcons.containsKey ( componentState ) ? stateIcons.get ( componentState ) : null;
+            return stateIcons.containsKey ( state ) ? stateIcons.get ( state ) : null;
         }
-        else if ( componentState.equals ( ComponentState.rollover ) )
+        else if ( state.equals ( ComponentState.rollover ) )
         {
-            return stateIcons.containsKey ( componentState ) ? stateIcons.get ( componentState ) : getStateIcon ( ComponentState.normal );
+            return stateIcons.containsKey ( state ) ? stateIcons.get ( state ) : getStateIcon ( ComponentState.normal );
         }
-        else if ( componentState.equals ( ComponentState.disabled ) )
+        else if ( state.equals ( ComponentState.disabled ) )
         {
-            return stateIcons.containsKey ( componentState ) ? stateIcons.get ( componentState ) : getStateIcon ( ComponentState.normal );
+            return stateIcons.containsKey ( state ) ? stateIcons.get ( state ) : getStateIcon ( ComponentState.normal );
         }
-        else if ( componentState.equals ( ComponentState.pressed ) )
+        else if ( state.equals ( ComponentState.pressed ) )
         {
-            return stateIcons.containsKey ( componentState ) ? stateIcons.get ( componentState ) : getStateIcon ( ComponentState.selected );
+            return stateIcons.containsKey ( state ) ? stateIcons.get ( state ) : getStateIcon ( ComponentState.selected );
         }
-        else if ( componentState.equals ( ComponentState.selected ) )
+        else if ( state.equals ( ComponentState.selected ) )
         {
-            return stateIcons.containsKey ( componentState ) ? stateIcons.get ( componentState ) : getStateIcon ( ComponentState.normal );
+            return stateIcons.containsKey ( state ) ? stateIcons.get ( state ) : getStateIcon ( ComponentState.normal );
         }
-        else if ( componentState.equals ( ComponentState.selectedRollover ) )
+        else if ( state.equals ( ComponentState.selectedRollover ) )
         {
-            return stateIcons.containsKey ( componentState ) ? stateIcons.get ( componentState ) : getStateIcon ( ComponentState.selected );
+            return stateIcons.containsKey ( state ) ? stateIcons.get ( state ) : getStateIcon ( ComponentState.selected );
         }
-        else if ( componentState.equals ( ComponentState.selectedDisabled ) )
+        else if ( state.equals ( ComponentState.selectedDisabled ) )
         {
-            return stateIcons.containsKey ( componentState ) ? stateIcons.get ( componentState ) : getStateIcon ( ComponentState.selected );
+            return stateIcons.containsKey ( state ) ? stateIcons.get ( state ) : getStateIcon ( ComponentState.selected );
         }
-        else if ( componentState.equals ( ComponentState.selectedPressed ) )
+        else if ( state.equals ( ComponentState.selectedPressed ) )
         {
-            return stateIcons.containsKey ( componentState ) ? stateIcons.get ( componentState ) : getStateIcon ( ComponentState.pressed );
+            return stateIcons.containsKey ( state ) ? stateIcons.get ( state ) : getStateIcon ( ComponentState.pressed );
         }
-        else if ( componentState.equals ( ComponentState.focused ) )
+        else if ( state.equals ( ComponentState.focused ) )
         {
-            return stateIcons.containsKey ( componentState ) ? stateIcons.get ( componentState ) : null;
+            return stateIcons.containsKey ( state ) ? stateIcons.get ( state ) : null;
         }
-        else if ( componentState.equals ( ComponentState.floating ) )
+        else if ( state.equals ( ComponentState.floating ) )
         {
-            return stateIcons.containsKey ( componentState ) ? stateIcons.get ( componentState ) : getStateIcon ( ComponentState.normal );
+            return stateIcons.containsKey ( state ) ? stateIcons.get ( state ) : getStateIcon ( ComponentState.normal );
         }
-        else if ( componentState.equals ( ComponentState.floatingDisabled ) )
+        else if ( state.equals ( ComponentState.floatingDisabled ) )
         {
-            return stateIcons.containsKey ( componentState ) ? stateIcons.get ( componentState ) : getStateIcon ( ComponentState.floating );
+            return stateIcons.containsKey ( state ) ? stateIcons.get ( state ) : getStateIcon ( ComponentState.floating );
         }
         else
         {
@@ -261,9 +306,8 @@ public class NinePatchStatePainter<E extends JComponent> extends DefaultPainter<
     }
 
     /**
-     * Returns maximum preferred size according to space needed for rach state icon
+     * {@inheritDoc}
      */
-
     @Override
     public Dimension getPreferredSize ( E c )
     {
@@ -284,9 +328,8 @@ public class NinePatchStatePainter<E extends JComponent> extends DefaultPainter<
     }
 
     /**
-     * Returns maximum margin according to space needed for rach state icon
+     * {@inheritDoc}
      */
-
     @Override
     public Insets getMargin ( E c )
     {

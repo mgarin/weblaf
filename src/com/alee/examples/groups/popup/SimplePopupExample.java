@@ -99,7 +99,7 @@ public class SimplePopupExample extends DefaultExample
                 }
                 else
                 {
-                    popup.showPopup ( showPopup );
+                    popup.showAsPopupMenu ( showPopup );
                 }
             }
         } );

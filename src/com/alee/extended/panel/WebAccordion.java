@@ -84,12 +84,7 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
     /**
      * Accordion collapsible pane listeners.
      */
-    private List<AccordionListener> listeners = new ArrayList<AccordionListener> ();
-
-    /**
-     * Accordion layout that positions all of the components.
-     */
-    private AccordionLayout accordionLayout;
+    private List<AccordionListener> listeners = new ArrayList<AccordionListener> ( 1 );
 
     /**
      * Accordion collapsible panes.

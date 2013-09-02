@@ -173,7 +173,7 @@ public class WebFileChooserPanel extends WebPanel
     /**
      * File chooser listeners.
      */
-    protected List<FileChooserListener> chooserListeners = new ArrayList<FileChooserListener> ();
+    protected List<FileChooserListener> chooserListeners = new ArrayList<FileChooserListener> ( 1 );
 
     /**
      * North panel components.

@@ -47,7 +47,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
     /**
      * Asynchronous tree listeners.
      */
-    protected List<AsyncTreeListener> asyncTreeListeners = new ArrayList<AsyncTreeListener> ();
+    protected List<AsyncTreeListener> asyncTreeListeners = new ArrayList<AsyncTreeListener> ( 1 );
 
     /**
      * Asynchronous tree listeners lock object.

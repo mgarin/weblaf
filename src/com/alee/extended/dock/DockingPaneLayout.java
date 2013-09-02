@@ -17,6 +17,8 @@
 
 package com.alee.extended.dock;
 
+import com.alee.extended.layout.AbstractLayoutManager;
+
 import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
@@ -25,7 +27,7 @@ import java.util.Map;
  * User: mgarin Date: 28.06.12 Time: 14:46
  */
 
-public class DockingPaneLayout implements LayoutManager, DockingPaneConstants
+public class DockingPaneLayout extends AbstractLayoutManager implements DockingPaneConstants
 {
     // Layout settings
     private boolean buttonPanesVisible = true;
@@ -145,18 +147,54 @@ public class DockingPaneLayout implements LayoutManager, DockingPaneConstants
      * Standard layout methods
      */
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public void addLayoutComponent ( String name, Component comp )
+    public void addComponent ( Component component, Object constraints )
     {
-        constraints.put ( comp, name );
+        this.constraints.put ( component, ( String ) constraints );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public void removeLayoutComponent ( Component comp )
+    public void removeComponent ( Component component )
     {
-        constraints.remove ( comp );
+        this.constraints.remove ( component );
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Dimension preferredLayoutSize ( Container parent )
+    {
+        // Collecting components positioning info
+        info = new DockingPaneInfo ( DockingPaneLayout.this, parent );
+
+        Dimension top = new Dimension ( buttonsMargin.left + info.topButtonsSize.width + buttonsMargin.right,
+                buttonsMargin.top + info.topButtonsSize.height + buttonsMargin.bottom );
+        Dimension left = new Dimension ( buttonsMargin.left + info.leftButtonsSize.width + buttonsMargin.right,
+                buttonsMargin.top + info.leftButtonsSize.height + buttonsMargin.bottom );
+        Dimension right = new Dimension ( buttonsMargin.left + info.rightButtonsSize.width + buttonsMargin.right,
+                buttonsMargin.top + info.rightButtonsSize.height + buttonsMargin.bottom );
+        Dimension bottom = new Dimension ( buttonsMargin.left + info.bottomButtonsSize.width + buttonsMargin.right,
+                buttonsMargin.top + info.bottomButtonsSize.height + buttonsMargin.bottom );
+
+        int width = info.margin.left + left.width + Math.max ( top.width, bottom.width ) +
+                right.width + info.margin.right;
+        int height = info.margin.top + top.height + Math.max ( left.height, right.height ) +
+                bottom.height + info.margin.bottom;
+
+        // Frames and content is not counted for preferred size to allow area to be reduced
+        return new Dimension ( width, height );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void layoutContainer ( Container parent )
     {
@@ -290,35 +328,5 @@ public class DockingPaneLayout implements LayoutManager, DockingPaneConstants
         {
             info.content.setBounds ( info.contentBounds );
         }
-    }
-
-    @Override
-    public Dimension preferredLayoutSize ( Container parent )
-    {
-        // Collecting components positioning info
-        info = new DockingPaneInfo ( DockingPaneLayout.this, parent );
-
-        Dimension top = new Dimension ( buttonsMargin.left + info.topButtonsSize.width + buttonsMargin.right,
-                buttonsMargin.top + info.topButtonsSize.height + buttonsMargin.bottom );
-        Dimension left = new Dimension ( buttonsMargin.left + info.leftButtonsSize.width + buttonsMargin.right,
-                buttonsMargin.top + info.leftButtonsSize.height + buttonsMargin.bottom );
-        Dimension right = new Dimension ( buttonsMargin.left + info.rightButtonsSize.width + buttonsMargin.right,
-                buttonsMargin.top + info.rightButtonsSize.height + buttonsMargin.bottom );
-        Dimension bottom = new Dimension ( buttonsMargin.left + info.bottomButtonsSize.width + buttonsMargin.right,
-                buttonsMargin.top + info.bottomButtonsSize.height + buttonsMargin.bottom );
-
-        int width = info.margin.left + left.width + Math.max ( top.width, bottom.width ) +
-                right.width + info.margin.right;
-        int height = info.margin.top + top.height + Math.max ( left.height, right.height ) +
-                bottom.height + info.margin.bottom;
-
-        // Frames and content is not counted for preferred size to allow area to be reduced
-        return new Dimension ( width, height );
-    }
-
-    @Override
-    public Dimension minimumLayoutSize ( Container parent )
-    {
-        return preferredLayoutSize ( parent );
     }
 }

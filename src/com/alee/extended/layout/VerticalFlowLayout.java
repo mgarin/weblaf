@@ -25,11 +25,6 @@ import java.awt.*;
 
 public class VerticalFlowLayout extends FlowLayout
 {
-    int hgap;
-    int vgap;
-    boolean hfill;
-    boolean vfill;
-
     /**
      * Description of the Field
      */
@@ -37,6 +32,10 @@ public class VerticalFlowLayout extends FlowLayout
     public final static int MIDDLE = 1;
     public final static int BOTTOM = 2;
 
+    protected int hgap;
+    protected int vgap;
+    protected boolean hfill;
+    protected boolean vfill;
 
     /**
      * Construct a new VerticalFlowLayout with a middle alignemnt, and the fill to edge flag set.
@@ -46,7 +45,6 @@ public class VerticalFlowLayout extends FlowLayout
         this ( TOP, 0, 0, true, false );
     }
 
-
     /**
      * Construct a new VerticalFlowLayout with a middle alignemnt.
      */
@@ -54,7 +52,6 @@ public class VerticalFlowLayout extends FlowLayout
     {
         this ( TOP, 0, 0, hfill, vfill );
     }
-
 
     /**
      * Construct a new VerticalFlowLayout with a middle alignemnt.
@@ -64,7 +61,6 @@ public class VerticalFlowLayout extends FlowLayout
         this ( TOP, hgap, vgap, true, false );
     }
 
-
     /**
      * Construct a new VerticalFlowLayout with a middle alignemnt.
      */
@@ -72,7 +68,6 @@ public class VerticalFlowLayout extends FlowLayout
     {
         this ( align, hgap, vgap, true, false );
     }
-
 
     /**
      * Construct a new VerticalFlowLayout with a middle alignemnt.
@@ -82,7 +77,6 @@ public class VerticalFlowLayout extends FlowLayout
         this ( align, 0, 0, true, false );
     }
 
-
     /**
      * Construct a new VerticalFlowLayout.
      */
@@ -90,7 +84,6 @@ public class VerticalFlowLayout extends FlowLayout
     {
         this ( align, 0, 0, hfill, vfill );
     }
-
 
     /**
      * Construct a new VerticalFlowLayout.
@@ -104,9 +97,8 @@ public class VerticalFlowLayout extends FlowLayout
         this.vfill = vfill;
     }
 
-
     /**
-     * Sets the horizontal gap between components.
+     * {@inheritDoc}
      */
     @Override
     public void setHgap ( int hgap )
@@ -115,9 +107,8 @@ public class VerticalFlowLayout extends FlowLayout
         this.hgap = hgap;
     }
 
-
     /**
-     * Sets the vertical gap between components.
+     * {@inheritDoc}
      */
     @Override
     public void setVgap ( int vgap )
@@ -125,7 +116,6 @@ public class VerticalFlowLayout extends FlowLayout
         super.setVgap ( vgap );
         this.vgap = vgap;
     }
-
 
     /**
      * Sets the VerticalFill attribute of the VerticalLayout object
@@ -135,7 +125,6 @@ public class VerticalFlowLayout extends FlowLayout
         this.vfill = vfill;
     }
 
-
     /**
      * Sets the HorizontalFill attribute of the VerticalLayout object
      */
@@ -144,9 +133,8 @@ public class VerticalFlowLayout extends FlowLayout
         this.hfill = hfill;
     }
 
-
     /**
-     * Gets the horizontal gap between components.
+     * {@inheritDoc}
      */
     @Override
     public int getHgap ()
@@ -154,16 +142,14 @@ public class VerticalFlowLayout extends FlowLayout
         return hgap;
     }
 
-
     /**
-     * Gets the vertical gap between components.
+     * {@inheritDoc}
      */
     @Override
     public int getVgap ()
     {
         return vgap;
     }
-
 
     /**
      * Gets the VerticalFill attribute of the VerticalLayout object
@@ -173,7 +159,6 @@ public class VerticalFlowLayout extends FlowLayout
         return vfill;
     }
 
-
     /**
      * Gets the HorizontalFill attribute of the VerticalLayout object
      */
@@ -182,9 +167,8 @@ public class VerticalFlowLayout extends FlowLayout
         return hfill;
     }
 
-
     /**
-     * Returns the preferred dimensions given the components in the target container.
+     * {@inheritDoc}
      */
     @Override
     public Dimension preferredLayoutSize ( Container target )
@@ -211,9 +195,8 @@ public class VerticalFlowLayout extends FlowLayout
         return tarsiz;
     }
 
-
     /**
-     * Returns the minimum size needed to layout the target container
+     * {@inheritDoc}
      */
     @Override
     public Dimension minimumLayoutSize ( Container target )
@@ -241,7 +224,7 @@ public class VerticalFlowLayout extends FlowLayout
     }
 
     /**
-     * Lays out the container.
+     * {@inheritDoc}
      */
     @Override
     public void layoutContainer ( Container target )
@@ -280,7 +263,7 @@ public class VerticalFlowLayout extends FlowLayout
 
                 if ( y + d.height > maxheight )
                 {
-                    placethem ( target, x, insets.top, colw, maxheight - y, start, i );
+                    placeThem ( target, x, insets.top, colw, maxheight - y, start, i );
                     y = d.height;
                     x += hgap + colw;
                     colw = d.width;
@@ -297,14 +280,13 @@ public class VerticalFlowLayout extends FlowLayout
                 }
             }
         }
-        placethem ( target, x, insets.top, colw, maxheight - y, start, numcomp );
+        placeThem ( target, x, insets.top, colw, maxheight - y, start, numcomp );
     }
-
 
     /**
      * places the components defined by first to last within the target container using the bounds box defined
      */
-    private void placethem ( Container target, int x, int y, int width, int height, int first, int last )
+    protected void placeThem ( Container target, int x, int y, int width, int height, int first, int last )
     {
         int align = getAlignment ();
         //if ( align == this.TOP )

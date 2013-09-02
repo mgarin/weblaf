@@ -27,6 +27,9 @@ import java.net.URL;
 
 /**
  * User: mgarin Date: 14.12.11 Time: 15:20
+ *
+ * @see NinePatchIcon
+ * @see com.alee.extended.painter.NinePatchStatePainter
  */
 
 public class NinePatchIconPainter<E extends JComponent> extends DefaultPainter<E>

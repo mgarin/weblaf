@@ -21,10 +21,18 @@ import java.io.File;
 import java.util.EventListener;
 
 /**
- * User: mgarin Date: 17.10.11 Time: 18:19
+ * Special listener for WebPathField component.
+ *
+ * @author Mikle Garin
+ * @see WebPathField
  */
 
 public interface PathFieldListener extends EventListener
 {
+    /**
+     * Notifies about directory selection changes.
+     *
+     * @param file newly selected directory or null if none selected
+     */
     public void directoryChanged ( File newDirectory );
 }

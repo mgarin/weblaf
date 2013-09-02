@@ -30,14 +30,14 @@ import java.awt.event.ActionListener;
  * User: mgarin Date: 11.04.12 Time: 17:30
  */
 
-public class SlidingLayout implements LayoutManager
+public class SlidingLayout extends AbstractLayoutManager
 {
-    private int slideY = 0;
-    private WebTimer animator = null;
-    private int height = 0;
-    private int slideSpeed = 5;
+    protected int slideY = 0;
+    protected WebTimer animator = null;
+    protected int height = 0;
+    protected int slideSpeed = 5;
 
-    private JComponent container;
+    protected JComponent container;
 
     public SlidingLayout ( JComponent container )
     {
@@ -111,18 +111,9 @@ public class SlidingLayout implements LayoutManager
         animator.start ();
     }
 
-    @Override
-    public void addLayoutComponent ( String name, Component comp )
-    {
-        //
-    }
-
-    @Override
-    public void removeLayoutComponent ( Component comp )
-    {
-        //
-    }
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Dimension preferredLayoutSize ( Container parent )
     {
@@ -135,18 +126,15 @@ public class SlidingLayout implements LayoutManager
         return ps;
     }
 
-    @Override
-    public Dimension minimumLayoutSize ( Container parent )
-    {
-        return preferredLayoutSize ( parent );
-    }
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void layoutContainer ( Container parent )
     {
         for ( Component c : parent.getComponents () )
         {
-            Dimension ps = c.getPreferredSize ();
+            final Dimension ps = c.getPreferredSize ();
             c.setBounds ( 0, slideY < ps.height ? slideY - ps.height : 0, parent.getWidth (), ps.height );
             height = Math.max ( height, ps.height );
         }

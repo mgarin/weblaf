@@ -64,8 +64,8 @@ public class NinePatchEditor extends JComponent
     public static final int MIN_ZOOM = 1;
     public static final int MAX_ZOOM = 32;
 
-    private List<ChangeListener> changeListeners = new ArrayList<ChangeListener> ();
-    private List<ZoomChangeListener> zoomChangeListeners = new ArrayList<ZoomChangeListener> ();
+    private List<ChangeListener> changeListeners = new ArrayList<ChangeListener> ( 1 );
+    private List<ZoomChangeListener> zoomChangeListeners = new ArrayList<ZoomChangeListener> ( 1 );
 
     private List<NinePatchInfo> history = new ArrayList<NinePatchInfo> ();
     private int historyState = -1;

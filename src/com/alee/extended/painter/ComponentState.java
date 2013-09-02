@@ -18,33 +18,68 @@
 package com.alee.extended.painter;
 
 /**
- * User: mgarin Date: 14.12.11 Time: 16:20
+ * This class contains default state constants supported by NinePatchStatePainter.
+ *
+ * @author Mikle Garin
+ * @see NinePatchStatePainter
  */
 
 public class ComponentState
 {
     /**
-     * ************************* Shared states ***************************
+     * Normal state.
      */
-
-    // Basic
     public static String normal = "normal";
+
+    /**
+     * Disabled state.
+     */
     public static String disabled = "disabled";
 
-    // Extended states
+    /**
+     * Rollover state.
+     */
     public static String rollover = "rollover";
+
+    /**
+     * Pressed state.
+     */
     public static String pressed = "pressed";
+
+    /**
+     * Selected state.
+     */
     public static String selected = "selected";
+
+    /**
+     * Selected and rollover state.
+     */
     public static String selectedRollover = "selectedRollover";
+
+    /**
+     * Selected and disabled state.
+     */
     public static String selectedDisabled = "selectedDisabled";
+
+    /**
+     * Selected and pressed state.
+     */
     public static String selectedPressed = "selectedPressed";
+
+    /**
+     * Floating toolbar state.
+     */
     public static String floating = "floating";
+
+    /**
+     * Floating and disabled toolbar state.
+     */
     public static String floatingDisabled = "floatingDisabled";
 
     /**
-     * *********************** Additional states *************************
+     * Focused component state.
+     * This state is rendered differently and not shared with other states.
+     * 9-patch icon for this state will be painted atop of other state icons.
      */
-
-    // Basic
     public static String focused = "focused";
 }

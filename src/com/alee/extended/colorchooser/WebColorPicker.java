@@ -38,7 +38,7 @@ public class WebColorPicker extends JComponent
     public static final ImageIcon DEFAULT_ICON = new ImageIcon ( WebColorPicker.class.getResource ( "icons/default.png" ) );
     public static final ImageIcon SWITCH_ICON = new ImageIcon ( WebColorPicker.class.getResource ( "icons/switch.png" ) );
 
-    private List<ActionListener> actionListeners = new ArrayList<ActionListener> ();
+    private List<ActionListener> actionListeners = new ArrayList<ActionListener> ( 1 );
 
     private static final int RECT_LENGTH = 28;
 

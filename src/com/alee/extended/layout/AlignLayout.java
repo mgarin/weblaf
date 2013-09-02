@@ -27,13 +27,12 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * User: mgarin Date: 26.03.12 Time: 15:08
- * <p/>
- * This layout allows you to align components inside the container using the standart Swing constants - left/center/right and
- * top/center/bottom
+ * This layout allows you to align components inside the container using the standart Swing constants.
+ *
+ * @author Mikle Garin
  */
 
-public class AlignLayout implements LayoutManager, SwingConstants
+public class AlignLayout extends AbstractLayoutManager implements SwingConstants
 {
     // Default separator
     public static final String SEPARATOR = ",";
@@ -112,9 +111,13 @@ public class AlignLayout implements LayoutManager, SwingConstants
      * Standard LayoutManager methods
      */
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public void addLayoutComponent ( String name, Component comp )
+    public void addComponent ( Component component, Object constraints )
     {
+        String name = ( String ) constraints;
         if ( name != null && !name.trim ().equals ( "" ) )
         {
             try
@@ -143,7 +146,7 @@ public class AlignLayout implements LayoutManager, SwingConstants
             // Default position
             name = CENTER + SEPARATOR + CENTER;
         }
-        constraints.put ( comp, name );
+        this.constraints.put ( component, name );
     }
 
     private void illegalArgument ()
@@ -161,12 +164,18 @@ public class AlignLayout implements LayoutManager, SwingConstants
         return name == null ? CENTER : Integer.parseInt ( name.substring ( name.indexOf ( SEPARATOR ) + SEPARATOR.length () ) );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public void removeLayoutComponent ( Component comp )
+    public void removeComponent ( Component component )
     {
-        constraints.remove ( comp );
+        constraints.remove ( component );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Dimension preferredLayoutSize ( Container parent )
     {
@@ -256,12 +265,9 @@ public class AlignLayout implements LayoutManager, SwingConstants
         return size.width > 0 || size.height > 0 ? size : null;
     }
 
-    @Override
-    public Dimension minimumLayoutSize ( Container parent )
-    {
-        return preferredLayoutSize ( parent );
-    }
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void layoutContainer ( Container parent )
     {

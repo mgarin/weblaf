@@ -17,6 +17,7 @@
 
 package com.alee.laf.text;
 
+import com.alee.extended.layout.AbstractLayoutManager;
 import com.alee.utils.collection.ValuesTable;
 
 import javax.swing.plaf.TextUI;
@@ -27,7 +28,7 @@ import java.awt.*;
  * User: mgarin Date: 14.12.12 Time: 16:56
  */
 
-public class TextComponentLayout implements LayoutManager
+public class TextComponentLayout extends AbstractLayoutManager
 {
     // Positions component at the leading side of the field
     public static final String LEADING = "LEADING";
@@ -54,22 +55,32 @@ public class TextComponentLayout implements LayoutManager
      * Standard LayoutManager methods
      */
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public void addLayoutComponent ( String name, Component comp )
+    public void addComponent ( Component component, Object constraints )
     {
-        if ( name == null || !name.equals ( LEADING ) && !name.equals ( TRAILING ) )
+        String value = ( String ) constraints;
+        if ( value == null || !value.equals ( LEADING ) && !value.equals ( TRAILING ) )
         {
             throw new IllegalArgumentException ( "Cannot add to layout: constraint must be 'LEADING' or 'TRAILING' string" );
         }
-        constraints.put ( comp, name );
+        this.constraints.put ( component, value );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public void removeLayoutComponent ( Component comp )
+    public void removeComponent ( Component component )
     {
-        constraints.remove ( comp );
+        this.constraints.remove ( component );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Dimension preferredLayoutSize ( Container parent )
     {
@@ -79,12 +90,9 @@ public class TextComponentLayout implements LayoutManager
         return new Dimension ( b.left + l.width + t.width + b.right, b.top + Math.max ( l.height, t.height ) + b.bottom );
     }
 
-    @Override
-    public Dimension minimumLayoutSize ( Container parent )
-    {
-        return preferredLayoutSize ( parent );
-    }
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void layoutContainer ( Container parent )
     {

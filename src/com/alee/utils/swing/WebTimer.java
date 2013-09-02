@@ -57,7 +57,7 @@ public class WebTimer
     /**
      * Timer event listeners list.
      */
-    private List<ActionListener> listeners = new ArrayList<ActionListener> ();
+    private List<ActionListener> listeners = new ArrayList<ActionListener> ( 1 );
 
     /**
      * Unique (within one timer instance) ID of currently running thread.

@@ -59,7 +59,7 @@ public final class FocusManager
     /**
      * Global focus listeners list.
      */
-    private static List<GlobalFocusListener> globalFocusListeners = new ArrayList<GlobalFocusListener> ();
+    private static List<GlobalFocusListener> globalFocusListeners = new ArrayList<GlobalFocusListener> ( 2 );
 
     /**
      * Reference to previously focused component.

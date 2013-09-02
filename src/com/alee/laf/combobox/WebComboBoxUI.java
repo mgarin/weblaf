@@ -17,6 +17,7 @@
 
 package com.alee.laf.combobox;
 
+import com.alee.extended.layout.AbstractLayoutManager;
 import com.alee.laf.StyleConstants;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
@@ -69,6 +70,9 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider
         return new WebComboBoxUI ();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void installUI ( JComponent c )
     {
@@ -111,6 +115,9 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider
         comboBox.addMouseWheelListener ( mwl );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void uninstallUI ( JComponent c )
     {
@@ -140,6 +147,9 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void installComponents ()
     {
@@ -160,6 +170,9 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider
         comboBox.add ( currentValuePane, "0,0" );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected ComboBoxEditor createEditor ()
     {
@@ -192,6 +205,9 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider
         return editor;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected JButton createArrowButton ()
     {
@@ -205,6 +221,9 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider
         return arrow;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void configureArrowButton ()
     {
@@ -215,6 +234,9 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected ComboPopup createPopup ()
     {
@@ -270,6 +292,9 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider
                 // Button updater
                 addPopupMenuListener ( new PopupMenuListener ()
                 {
+                    /**
+                     * {@inheritDoc}
+                     */
                     @Override
                     public void popupMenuWillBecomeVisible ( PopupMenuEvent e )
                     {
@@ -279,12 +304,18 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider
                         comboBox.repaint ();
                     }
 
+                    /**
+                     * {@inheritDoc}
+                     */
                     @Override
                     public void popupMenuWillBecomeInvisible ( PopupMenuEvent e )
                     {
                         arrow.setIcon ( expandIcon );
                     }
 
+                    /**
+                     * {@inheritDoc}
+                     */
                     @Override
                     public void popupMenuCanceled ( PopupMenuEvent e )
                     {
@@ -368,6 +399,9 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Shape provideShape ()
     {
@@ -475,6 +509,9 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider
         this.mouseWheelScrollingEnabled = enabled;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void paint ( Graphics g, JComponent c )
     {
@@ -491,6 +528,9 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void paintCurrentValueBackground ( Graphics g, Rectangle bounds, boolean hasFocus )
     {
@@ -526,6 +566,9 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void paintCurrentValue ( Graphics g, Rectangle bounds, boolean hasFocus )
     {
@@ -568,38 +611,41 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider
         currentValuePane.paintComponent ( g, c, comboBox, x, y, w, h, shouldValidate );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected LayoutManager createLayoutManager ()
     {
         return new WebComboBoxLayout ();
     }
 
-    private class WebComboBoxLayout implements LayoutManager
+    /**
+     * Custom layout manager for WebComboBoxUI.
+     */
+    private class WebComboBoxLayout extends AbstractLayoutManager
     {
-        @Override
-        public void addLayoutComponent ( String name, Component comp )
-        {
-            //
-        }
-
-        @Override
-        public void removeLayoutComponent ( Component comp )
-        {
-            //
-        }
-
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public Dimension preferredLayoutSize ( Container parent )
         {
             return parent.getPreferredSize ();
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public Dimension minimumLayoutSize ( Container parent )
         {
             return parent.getMinimumSize ();
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public void layoutContainer ( Container parent )
         {

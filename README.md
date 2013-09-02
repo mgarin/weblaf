@@ -20,7 +20,7 @@ Artifacts
 You can always find all WebLaF releases in the "releases" section:<br>
 https://github.com/mgarin/weblaf/releases
 
-Here are the direct links for the latest release (v1.18):
+Here are the direct links for the latest release:
 
 1. [**weblaf-1.18.jar**](https://github.com/mgarin/weblaf/releases/download/v1.18/weblaf-1.18.jar) - library jar
 2. [**weblaf-src-1.18.zip**](https://github.com/mgarin/weblaf/releases/download/v1.18/weblaf-src-1.18.zip) - project sources zip

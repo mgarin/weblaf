@@ -17,6 +17,7 @@
 
 package com.alee.managers.glasspane;
 
+import com.alee.extended.layout.MultiLayout;
 import com.alee.laf.panel.WebPanel;
 import com.alee.utils.LafUtils;
 import com.alee.utils.SwingUtils;
@@ -43,52 +44,52 @@ public class WebGlassPane extends WebPanel
     /**
      * ID prefix.
      */
-    private static final String ID_PREFIX = "WGP";
+    protected static final String ID_PREFIX = "WGP";
 
     /**
      * WebGlassPane ID.
      */
-    private String id = null;
+    protected String id = null;
 
     /**
      * JRootPane to which WebGlassPane is attached.
      */
-    private JRootPane rootPane = null;
+    protected JRootPane rootPane = null;
 
     /**
      * WebGlassPane mouse hit shape.
      */
-    private Shape hitShape = null;
+    protected Shape hitShape = null;
 
     /**
      * Custom painted image.
      */
-    private BufferedImage paintedImage = null;
+    protected BufferedImage paintedImage = null;
 
     /**
      * Custom painted image location.
      */
-    private Point imageLocation = null;
+    protected Point imageLocation = null;
 
     /**
      * Custom painted image opacity.
      */
-    private int imageOpacity = 0;
+    protected int imageOpacity = 0;
 
     /**
      * Highlighted components.
      */
-    private List<Component> highlightedComponents = new ArrayList<Component> ();
+    protected List<Component> highlightedComponents = new ArrayList<Component> ();
 
     /**
      * Highlight painting base.
      */
-    private Component highlightBase = WebGlassPane.this;
+    protected Component highlightBase = WebGlassPane.this;
 
     /**
      * Highlight spacing between the component bounds and highlight gray area.
      */
-    private int highlightSpacing = 3;
+    protected int highlightSpacing = 3;
 
     /**
      * Constructs WebGlassPane for the specified JRootPane.
@@ -98,12 +99,41 @@ public class WebGlassPane extends WebPanel
     public WebGlassPane ( JRootPane rootPane )
     {
         super ();
-
         this.rootPane = rootPane;
 
         setOpaque ( false );
         setFocusable ( false );
-        setLayout ( null );
+        setLayout ( new MultiLayout () );
+    }
+
+    /**
+     * Returns glass pane actual layout.
+     *
+     * @return glass pane actual layout
+     */
+    public MultiLayout getMultiLayout ()
+    {
+        return ( MultiLayout ) getLayout ();
+    }
+
+    /**
+     * Adds layout manager to this glass pane.
+     *
+     * @param layoutManager layout manager to add
+     */
+    public void addLayoutManager ( LayoutManager layoutManager )
+    {
+        getMultiLayout ().addLayoutManager ( layoutManager );
+    }
+
+    /**
+     * Removes layout manager to this glass pane.
+     *
+     * @param layoutManager layout manager to remove
+     */
+    public void removeLayoutManager ( LayoutManager layoutManager )
+    {
+        getMultiLayout ().removeLayoutManager ( layoutManager );
     }
 
     /**
@@ -132,9 +162,10 @@ public class WebGlassPane extends WebPanel
     }
 
     /**
-     * Displays single component on WebGlassPane
+     * Displays single component on glass pane.
+     *
+     * @param component component to display
      */
-
     public void showComponent ( JComponent component )
     {
         // Updating added component and its childs orientation

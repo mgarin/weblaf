@@ -94,9 +94,6 @@ public class AsyncTreesExample extends DefaultExample
     {
         tree.addMouseListener ( new MouseAdapter ()
         {
-            /**
-             * {@inheritDoc}
-             */
             @Override
             public void mouseReleased ( MouseEvent e )
             {

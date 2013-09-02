@@ -26,13 +26,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * User: mgarin Date: 05.06.12 Time: 19:54
- * <p/>
- * This is a specific layout for WebOverlay component, that allows you to add one or more custom overlaying components atop of other
- * component
+ * This is a specific layout for WebOverlay component that allows you to add overlaying components atop of single main component.
+ *
+ * @author Mikle Garin
  */
 
-public class OverlayLayout implements LayoutManager, SwingConstants
+public class OverlayLayout extends AbstractLayoutManager implements SwingConstants
 {
     // Positions component on the whole container area
     public static final String COMPONENT = "COMPONENT";
@@ -40,13 +39,13 @@ public class OverlayLayout implements LayoutManager, SwingConstants
     public static final String OVERLAY = "OVERLAY";
 
     // Saved layout constraints
-    private Map<Component, String> constraints = new HashMap<Component, String> ();
+    protected Map<Component, String> constraints = new HashMap<Component, String> ();
 
     // Component side margins (this one is additional to the container margins)
-    private Insets componentMargin = null;
+    protected Insets componentMargin = null;
 
     // Overlay side margins (this one is additional to the container margins)
-    private Insets overlayMargin = null;
+    protected Insets overlayMargin = null;
 
     public OverlayLayout ()
     {
@@ -93,22 +92,61 @@ public class OverlayLayout implements LayoutManager, SwingConstants
         this.overlayMargin = overlayMargin;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public void addLayoutComponent ( String name, Component comp )
+    public void addComponent ( Component component, Object constraints )
     {
-        if ( name == null || !name.equals ( COMPONENT ) && !name.equals ( OVERLAY ) )
+        String value = ( String ) constraints;
+        if ( value == null || !value.equals ( COMPONENT ) && !value.equals ( OVERLAY ) )
         {
             throw new IllegalArgumentException ( "Cannot add to layout: constraint must be 'COMPONENT' or 'OVERLAY' string" );
         }
-        constraints.put ( comp, name );
+        this.constraints.put ( component, value );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public void removeLayoutComponent ( Component comp )
+    public void removeComponent ( Component component )
     {
-        constraints.remove ( comp );
+        this.constraints.remove ( component );
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Dimension preferredLayoutSize ( Container parent )
+    {
+        Insets bi = parent.getInsets ();
+        Insets ci = getActualComponentInsets ( parent );
+        Dimension ps = new Dimension ();
+        for ( Component component : parent.getComponents () )
+        {
+            String constraint = constraints.get ( component );
+            if ( constraint != null && constraint.equals ( COMPONENT ) )
+            {
+                Dimension cps = component.getPreferredSize ();
+                ps = SwingUtils.max ( ps, new Dimension ( bi.left + ci.left + cps.width + ci.right + bi.right,
+                        bi.top + ci.top + cps.height + ci.bottom + bi.bottom ) );
+            }
+        }
+        return ps;
+    }
+
+    protected Insets getActualComponentInsets ( Container parent )
+    {
+        return componentMargin != null ?
+                ( parent.getComponentOrientation ().isLeftToRight () ? componentMargin : SwingUtils.toRTL ( componentMargin ) ) :
+                new Insets ( 0, 0, 0, 0 );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void layoutContainer ( Container parent )
     {
@@ -179,7 +217,7 @@ public class OverlayLayout implements LayoutManager, SwingConstants
         }
     }
 
-    private int getActualHalign ( Component component, OverlayData data )
+    protected int getActualHalign ( Component component, OverlayData data )
     {
         boolean ltr = component.getComponentOrientation ().isLeftToRight ();
         if ( data.getHalign () == LEADING )
@@ -194,37 +232,5 @@ public class OverlayLayout implements LayoutManager, SwingConstants
         {
             return data.getHalign ();
         }
-    }
-
-    @Override
-    public Dimension preferredLayoutSize ( Container parent )
-    {
-        Insets bi = parent.getInsets ();
-        Insets ci = getActualComponentInsets ( parent );
-        Dimension ps = new Dimension ();
-        for ( Component component : parent.getComponents () )
-        {
-            String constraint = constraints.get ( component );
-            if ( constraint != null && constraint.equals ( COMPONENT ) )
-            {
-                Dimension cps = component.getPreferredSize ();
-                ps = SwingUtils.max ( ps, new Dimension ( bi.left + ci.left + cps.width + ci.right + bi.right,
-                        bi.top + ci.top + cps.height + ci.bottom + bi.bottom ) );
-            }
-        }
-        return ps;
-    }
-
-    private Insets getActualComponentInsets ( Container parent )
-    {
-        return componentMargin != null ?
-                ( parent.getComponentOrientation ().isLeftToRight () ? componentMargin : SwingUtils.toRTL ( componentMargin ) ) :
-                new Insets ( 0, 0, 0, 0 );
-    }
-
-    @Override
-    public Dimension minimumLayoutSize ( Container parent )
-    {
-        return preferredLayoutSize ( parent );
     }
 }

@@ -20,16 +20,31 @@ package com.alee.managers.popup;
 import java.util.EventListener;
 
 /**
- * User: mgarin Date: 22.06.11 Time: 17:33
+ * Special listener for WebPopup component.
+ *
+ * @author Mikle Garin
+ * @see WebPopup
  */
 
 public interface PopupListener extends EventListener
 {
+    /**
+     * Notifies that popup will now be opened.
+     */
     public void popupWillBeOpened ();
 
+    /**
+     * Notifies that popup was opened.
+     */
     public void popupOpened ();
 
+    /**
+     * Notifies that popup will now be closed.
+     */
     public void popupWillBeClosed ();
 
+    /**
+     * Notifies that popup was closed.
+     */
     public void popupClosed ();
 }

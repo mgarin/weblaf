@@ -104,7 +104,7 @@ public class NinePatchEditorPanel extends WebPanel
     public static final ImageIcon BACKGROUND_COLOR_ICON =
             new ImageIcon ( NinePatchEditorPanel.class.getResource ( "icons/background_color.png" ) );
 
-    private List<ChangeListener> changeListeners = new ArrayList<ChangeListener> ();
+    private List<ChangeListener> changeListeners = new ArrayList<ChangeListener> ( 1 );
 
     private String imageSrc = null;
 

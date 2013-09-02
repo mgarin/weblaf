@@ -59,7 +59,7 @@ public class WebFileDrop extends WebPanel implements LanguageMethods
     private Color dropBackground = new Color ( 242, 242, 242 );
     private Color dropBorder = new Color ( 192, 192, 192 );
 
-    private List<FilesSelectionListener> listeners = new ArrayList<FilesSelectionListener> ();
+    private List<FilesSelectionListener> listeners = new ArrayList<FilesSelectionListener> ( 1 );
 
     private boolean showRemoveButton = true;
     private boolean showFileExtensions = false;

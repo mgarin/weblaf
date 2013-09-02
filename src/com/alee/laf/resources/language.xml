@@ -766,6 +766,138 @@
         </record>
     </Dictionary>
     <Dictionary name="Extended components language" prefix="ex">
+        <Dictionary name="Notification popup language" prefix="notification">
+            <record key="yes">
+                <value lang="en">Yes</value>
+                <value lang="ru">Да</value>
+                <value lang="pl">Tak</value>
+                <value lang="ar">نعم</value>
+                <value lang="es">Si</value>
+                <value lang="fr">Oui</value>
+                <value lang="pt">Sim</value>
+                <value lang="de">Ja</value>
+            </record>
+            <record key="no">
+                <value lang="en">No</value>
+                <value lang="ru">Нет</value>
+                <value lang="pl">Nie</value>
+                <value lang="ar">لا</value>
+                <value lang="es">No</value>
+                <value lang="fr">Non</value>
+                <value lang="pt">Não</value>
+                <value lang="de">Nein</value>
+            </record>
+            <record key="cancel">
+                <value lang="en">Cancel</value>
+                <value lang="ru">Отмена</value>
+                <value lang="pl">Anuluj</value>
+                <value lang="ar">إلغاء</value>
+                <value lang="es">Cancelar</value>
+                <value lang="fr">Annuler</value>
+                <value lang="pt">Cancelar</value>
+                <value lang="de">Abbrechen</value>
+            </record>
+            <record key="choose">
+                <value lang="en">Choose</value>
+                <value lang="ru">Выбрать</value>
+                <value lang="pl">Wybierz</value>
+                <value lang="ar">اختر</value>
+                <value lang="es">Elegir</value>
+                <value lang="fr">Choisir</value>
+                <value lang="pt">Escolher</value>
+                <value lang="de">Auswählen</value>
+            </record>
+            <record key="accept">
+                <value lang="en">Accept</value>
+                <value lang="ru">Принять</value>
+                <value lang="pl">Akceptować</value>
+                <value lang="ar">قبول</value>
+                <value lang="es">Aceptar</value>
+                <value lang="fr">Accepter</value>
+                <value lang="pt">Aceitar</value>
+                <value lang="de">Akzeptieren</value>
+            </record>
+            <record key="decline">
+                <value lang="en">Decline</value>
+                <value lang="ru">Отказать</value>
+                <value lang="pl">Odrzuć</value>
+                <value lang="ar">الانخفاض</value>
+                <value lang="es">Disminución</value>
+                <value lang="fr">Refuser</value>
+                <value lang="pt">Recusar</value>
+                <value lang="de">Ablehnen</value>
+            </record>
+            <record key="apply">
+                <value lang="en">Apply</value>
+                <value lang="ru">Применить</value>
+                <value lang="pl">Zastosować</value>
+                <value lang="ar">تطبق</value>
+                <value lang="es">Aplicar</value>
+                <value lang="fr">Appliquer</value>
+                <value lang="pt">Aplicar</value>
+                <value lang="de">Anwenden</value>
+            </record>
+            <record key="commit">
+                <value lang="en">Commit</value>
+                <value lang="ru">Фиксировать</value>
+                <value lang="pl">Popełnić</value>
+                <value lang="ar">ارتكب</value>
+                <value lang="es">Cometer</value>
+                <value lang="fr">Commettre</value>
+                <value lang="pt">Cometer</value>
+                <value lang="de">Verpflichten</value>
+            </record>
+            <record key="discard">
+                <value lang="en">Discard</value>
+                <value lang="ru">Сбросить</value>
+                <value lang="pl">Odrzucać</value>
+                <value lang="ar">نبذ</value>
+                <value lang="es">Descartar</value>
+                <value lang="fr">Jeter</value>
+                <value lang="pt">Descartar</value>
+                <value lang="de">Verwerfen</value>
+            </record>
+            <record key="reset">
+                <value lang="en">Reset</value>
+                <value lang="ru">Сбросить</value>
+                <value lang="pl">Reset</value>
+                <value lang="ar">إعادة تعيين</value>
+                <value lang="es">Reinicializar</value>
+                <value lang="fr">Réinitialiser</value>
+                <value lang="pt">Repor</value>
+                <value lang="de">Zurücksetzen</value>
+            </record>
+            <record key="retry">
+                <value lang="en">Retry</value>
+                <value lang="ru">Повторить</value>
+                <value lang="pl">Spróbować ponownie</value>
+                <value lang="ar">إعادة المحاولة</value>
+                <value lang="es">Reintentar</value>
+                <value lang="fr">Réessayez</value>
+                <value lang="pt">Tentar novamente</value>
+                <value lang="de">Wiederholen</value>
+            </record>
+            <record key="save">
+                <value lang="en">Save</value>
+                <value lang="ru">Сохранить</value>
+                <value lang="pl">Wybierz</value>
+                <value lang="ar">حفظ</value>
+                <value lang="es">Guardar</value>
+                <value lang="fr">Sauvegarder</value>
+                <value lang="pt">Salvar</value>
+                <value lang="de">Speichern</value>
+            </record>
+            <record key="open">
+                <value lang="en">Open</value>
+                <value lang="ru">Открыть</value>
+                <value lang="pl">Otwarte</value>
+                <value lang="ar">فتح</value>
+                <value lang="es">Abierto</value>
+                <value lang="fr">Ouvrir</value>
+                <value lang="pt">Abrir</value>
+                <value lang="de">Öffnen</value>
+            </record>
+        </Dictionary>
         <Dictionary name="WebDirectoryChooser language" prefix="dirchooser">
             <record key="title">
                 <value lang="en">Choose directory</value>

@@ -49,6 +49,7 @@ import com.alee.managers.hotkey.HotkeyInfo;
 import com.alee.managers.hotkey.HotkeyManager;
 import com.alee.managers.hotkey.HotkeyRunnable;
 import com.alee.managers.language.LanguageManager;
+import com.alee.managers.notification.NotificationManager;
 import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.tooltip.TooltipAdapter;
 import com.alee.managers.tooltip.TooltipManager;
@@ -96,11 +97,11 @@ public class WebLookAndFeelDemo extends WebFrame
     private SourceViewer sourceViewer;
 
     private WebBreadcrumb locationBreadcrumb;
-    private WebBreadcrumbToggleButton aboutButton;
     private WebBreadcrumbToggleButton demosButton;
     private WebBreadcrumbToggleButton sourcesButton;
     private WebMemoryBar memoryBar;
 
+    @SuppressWarnings ( "UnusedDeclaration" )
     private WebButton featureStateLegend;
 
     private static WebLookAndFeelDemo instance = null;
@@ -605,6 +606,7 @@ public class WebLookAndFeelDemo extends WebFrame
         memoryBar.setPreferredWidth ( memoryBar.getPreferredSize ().width + 20 );
         statusBar.addToEnd ( memoryBar );
 
+        NotificationManager.setMargin ( 0, 0, statusBar.getPreferredSize ().height, 0 );
         return statusBar;
     }
 

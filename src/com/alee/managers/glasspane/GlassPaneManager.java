@@ -21,8 +21,8 @@ import com.alee.utils.SwingUtils;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.WeakHashMap;
 
 /**
  * This manager provides an instance of WebGlassPane for specified JRootPane instance.
@@ -36,7 +36,7 @@ public final class GlassPaneManager
     /**
      * Registered glass panes per JRootPane.
      */
-    private static Map<JRootPane, WebGlassPane> registeredWindows = new HashMap<JRootPane, WebGlassPane> ();
+    private static Map<JRootPane, WebGlassPane> registeredWindows = new WeakHashMap<JRootPane, WebGlassPane> ();
 
     /**
      * Returns registered WebGlassPane for JRootPane under the specified component.

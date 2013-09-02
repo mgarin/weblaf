@@ -68,7 +68,7 @@ public final class LanguageManager implements LanguageConstants
     // private static String country;
 
     // Forced orientation
-    private static ComponentOrientation orientation = null;
+    private static ComponentOrientation orientation;
 
     // Default tooltip type
     private static TooltipType defaultTooltipType = TooltipType.weblaf;
@@ -82,32 +82,32 @@ public final class LanguageManager implements LanguageConstants
     private static Map<String, List<LanguageKeyListener>> languageKeyListeners;
 
     // Global dictionary that contains all of the entries and its cache
-    private static Dictionary globalDictionary = new Dictionary ();
-    private static Map<String, Value> globalCache = new HashMap<String, Value> ();
+    private static Dictionary globalDictionary;
+    private static Map<String, Value> globalCache;
 
     // Global dictionary that contains all of the entries
-    private static List<Dictionary> dictionaries = new ArrayList<Dictionary> ();
+    private static List<Dictionary> dictionaries;
 
     // Registered components
     private static final Object componentsLock = new Object ();
-    private static Map<Component, String> components = new WeakHashMap<Component, String> ();
-    private static Map<Component, Object[]> componentsData = new WeakHashMap<Component, Object[]> ();
-    private static Map<Component, String> componentKeysCache = new WeakHashMap<Component, String> ();
-    private static Map<Component, AncestorListener> componentsListeners = new WeakHashMap<Component, AncestorListener> ();
+    private static Map<Component, String> components;
+    private static Map<Component, Object[]> componentsData;
+    private static Map<Component, String> componentKeysCache;
+    private static Map<Component, AncestorListener> componentsListeners;
 
     // Registered language containers
     private static final Object languageContainersLock = new Object ();
-    private static Map<Container, String> languageContainers = new WeakHashMap<Container, String> ();
+    private static Map<Container, String> languageContainers;
 
     // Registered updaters
     private static final Object updatersLock = new Object ();
-    private static List<LanguageUpdater> updaters = new ArrayList<LanguageUpdater> ();
-    private static Map<Component, LanguageUpdater> customUpdaters = new WeakHashMap<Component, LanguageUpdater> ();
-    private static Map<Class, LanguageUpdater> updatersCache = new HashMap<Class, LanguageUpdater> ();
-    private static LanguageUpdaterComparator languageUpdaterComparator = new LanguageUpdaterComparator ();
+    private static List<LanguageUpdater> updaters;
+    private static Map<Component, LanguageUpdater> customUpdaters;
+    private static Map<Class, LanguageUpdater> updatersCache;
+    private static LanguageUpdaterComparator languageUpdaterComparator;
 
     // Tooltips cache
-    private static Map<Component, List<WebCustomTooltip>> tooltipsCache = new HashMap<Component, List<WebCustomTooltip>> ();
+    private static Map<Component, List<WebCustomTooltip>> tooltipsCache;
 
     // Initialization mark
     private static boolean initialized = false;
@@ -126,7 +126,7 @@ public final class LanguageManager implements LanguageConstants
             language = supportedLanguages.contains ( DEFAULT ) ? DEFAULT : ENGLISH;
             updateLocale ();
 
-            // Listeners list
+            // Listeners
             languageListeners = new ArrayList<LanguageListener> ();
             languageKeyListeners = new HashMap<String, List<LanguageKeyListener>> ();
 
@@ -134,6 +134,16 @@ public final class LanguageManager implements LanguageConstants
             globalDictionary = new Dictionary ();
             globalCache = new HashMap<String, Value> ();
             dictionaries = new ArrayList<Dictionary> ();
+            components = new WeakHashMap<Component, String> ();
+            componentsData = new WeakHashMap<Component, Object[]> ();
+            componentKeysCache = new WeakHashMap<Component, String> ();
+            componentsListeners = new WeakHashMap<Component, AncestorListener> ();
+            languageContainers = new WeakHashMap<Container, String> ();
+            updaters = new ArrayList<LanguageUpdater> ();
+            customUpdaters = new WeakHashMap<Component, LanguageUpdater> ();
+            updatersCache = new HashMap<Class, LanguageUpdater> ();
+            languageUpdaterComparator = new LanguageUpdaterComparator ();
+            tooltipsCache = new HashMap<Component, List<WebCustomTooltip>> ();
 
             // Class aliases
             XmlUtils.processAnnotations ( Dictionary.class );
@@ -973,6 +983,7 @@ public final class LanguageManager implements LanguageConstants
         globalDictionary.clear ();
         dictionaries.clear ();
         clearCache ();
+        fireDictionariesCleared ();
     }
 
     /**

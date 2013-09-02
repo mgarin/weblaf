@@ -54,7 +54,7 @@ public class WebLinkLabel extends WebLabel implements LanguageMethods
     /**
      * Link activation listeners.
      */
-    private List<ActionListener> actionListeners = new ArrayList<ActionListener> ();
+    private List<ActionListener> actionListeners = new ArrayList<ActionListener> ( 1 );
 
     // Style settings
     private boolean highlight = WebLinkLabelStyle.highlight;

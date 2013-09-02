@@ -32,7 +32,7 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public class AccordionLayout implements LayoutManager
+public class AccordionLayout extends AbstractLayoutManager
 {
     /**
      * Accordion to which this layout is attached.
@@ -51,33 +51,71 @@ public class AccordionLayout implements LayoutManager
     }
 
     /**
-     * If the layout manager uses a per-component string, adds the component <code>comp</code> to the layout, associating it with the
-     * string specified by <code>name</code>.
-     *
-     * @param name string to be associated with the component
-     * @param comp component to be added
+     * {@inheritDoc}
      */
     @Override
-    public void addLayoutComponent ( String name, Component comp )
+    public Dimension preferredLayoutSize ( Container parent )
     {
-        //
+        return getLayoutSize ( parent, true );
     }
 
     /**
-     * Removes the specified component from the layout.
-     *
-     * @param comp component to be removed
+     * {@inheritDoc}
      */
     @Override
-    public void removeLayoutComponent ( Component comp )
+    public Dimension minimumLayoutSize ( Container parent )
     {
-        //
+        return getLayoutSize ( parent, false );
     }
 
     /**
-     * Lays out the specified container.
+     * Returns either minimum or preferred container size.
      *
-     * @param parent container to be laid out
+     * @param parent    container
+     * @param preferred whether preferred size should be returned or not
+     * @return either minimum or preferred container size
+     */
+    private Dimension getLayoutSize ( Container parent, boolean preferred )
+    {
+        final List<WebCollapsiblePane> panes = accordion.getActualPanesList ();
+        final int gap = accordion.getAccordionStyle () == AccordionStyle.separated ? accordion.getGap () : 0;
+        final Dimension ps = new Dimension ();
+        final boolean hor = accordion.getOrientation () == SwingConstants.HORIZONTAL;
+
+        for ( final WebCollapsiblePane pane : panes )
+        {
+            final Dimension cps = preferred || !accordion.isFillSpace () ? pane.getPreferredSize () : pane.getBasePreferredSize ();
+            if ( hor )
+            {
+                ps.width += cps.width;
+                ps.height = Math.max ( ps.height, cps.height );
+            }
+            else
+            {
+                ps.width = Math.max ( ps.width, cps.width );
+                ps.height += cps.height;
+            }
+        }
+        if ( panes.size () > 0 )
+        {
+            if ( hor )
+            {
+                ps.width += gap * ( panes.size () - 1 );
+            }
+            else
+            {
+                ps.height += gap * ( panes.size () - 1 );
+            }
+        }
+
+        final Insets insets = parent.getInsets ();
+        ps.width += insets.left + insets.right;
+        ps.height += insets.top + insets.bottom;
+        return ps;
+    }
+
+    /**
+     * {@inheritDoc}
      */
     @Override
     public void layoutContainer ( Container parent )
@@ -159,75 +197,5 @@ public class AccordionLayout implements LayoutManager
                 }
             }
         }
-    }
-
-    /**
-     * Calculates the preferred size dimensions for the specified container, given the components it contains.
-     *
-     * @param parent container to be laid out
-     * @see #minimumLayoutSize
-     */
-    @Override
-    public Dimension preferredLayoutSize ( Container parent )
-    {
-        return getSize ( parent, true );
-    }
-
-    /**
-     * Calculates the minimum size dimensions for the specified container, given the components it contains.
-     *
-     * @param parent component to be laid out
-     * @see #preferredLayoutSize
-     */
-    @Override
-    public Dimension minimumLayoutSize ( Container parent )
-    {
-        return getSize ( parent, false );
-    }
-
-    /**
-     * Returns either minimum or preferred container size.
-     *
-     * @param parent    container
-     * @param preferred whether preferred size should be returned or not
-     * @return either minimum or preferred container size
-     */
-    private Dimension getSize ( Container parent, boolean preferred )
-    {
-        final List<WebCollapsiblePane> panes = accordion.getActualPanesList ();
-        final int gap = accordion.getAccordionStyle () == AccordionStyle.separated ? accordion.getGap () : 0;
-        final Dimension ps = new Dimension ();
-        final boolean hor = accordion.getOrientation () == SwingConstants.HORIZONTAL;
-
-        for ( final WebCollapsiblePane pane : panes )
-        {
-            final Dimension cps = preferred || !accordion.isFillSpace () ? pane.getPreferredSize () : pane.getBasePreferredSize ();
-            if ( hor )
-            {
-                ps.width += cps.width;
-                ps.height = Math.max ( ps.height, cps.height );
-            }
-            else
-            {
-                ps.width = Math.max ( ps.width, cps.width );
-                ps.height += cps.height;
-            }
-        }
-        if ( panes.size () > 0 )
-        {
-            if ( hor )
-            {
-                ps.width += gap * ( panes.size () - 1 );
-            }
-            else
-            {
-                ps.height += gap * ( panes.size () - 1 );
-            }
-        }
-
-        final Insets insets = parent.getInsets ();
-        ps.width += insets.left + insets.right;
-        ps.height += insets.top + insets.bottom;
-        return ps;
     }
 }

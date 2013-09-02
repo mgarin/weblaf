@@ -49,14 +49,50 @@ public class WebComboBox extends JComboBox implements ShapeProvider, SettingsMet
         super ( items );
     }
 
+    public WebComboBox ( Vector<?> items, int selected )
+    {
+        super ( items );
+        setSelectedIndex ( selected );
+    }
+
+    public WebComboBox ( Vector<?> items, Object selected )
+    {
+        super ( items );
+        setSelectedItem ( selected );
+    }
+
     public WebComboBox ( Object[] items )
     {
         super ( items );
     }
 
+    public WebComboBox ( Object[] items, int selected )
+    {
+        super ( items );
+        setSelectedIndex ( selected );
+    }
+
+    public WebComboBox ( Object[] items, Object selected )
+    {
+        super ( items );
+        setSelectedItem ( selected );
+    }
+
     public WebComboBox ( ComboBoxModel aModel )
     {
         super ( aModel );
+    }
+
+    public WebComboBox ( ComboBoxModel aModel, int selected )
+    {
+        super ( aModel );
+        setSelectedIndex ( selected );
+    }
+
+    public WebComboBox ( ComboBoxModel aModel, Object selected )
+    {
+        super ( aModel );
+        setSelectedItem ( selected );
     }
 
     public void setEditorColumns ( int columns )

@@ -17,6 +17,8 @@
 
 package com.alee.extended.button;
 
+import com.alee.extended.layout.AbstractLayoutManager;
+
 import java.awt.*;
 import java.util.Map;
 import java.util.WeakHashMap;
@@ -25,7 +27,7 @@ import java.util.WeakHashMap;
  * User: mgarin Date: 02.11.12 Time: 14:18
  */
 
-public class WebSwitchLayout implements LayoutManager
+public class WebSwitchLayout extends AbstractLayoutManager
 {
     public static final String LEFT = "LEFT";
     public static final String RIGHT = "RIGHT";
@@ -45,23 +47,50 @@ public class WebSwitchLayout implements LayoutManager
         this.gripperLocation = gripperLocation;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public void addLayoutComponent ( String name, Component comp )
+    public void addComponent ( Component component, Object constraints )
     {
-        if ( name == null || !name.equals ( LEFT ) &&
-                !name.equals ( RIGHT ) && !name.equals ( GRIPPER ) )
+        String value = ( String ) constraints;
+        if ( value == null || !value.equals ( LEFT ) && !value.equals ( RIGHT ) && !value.equals ( GRIPPER ) )
         {
             throw new IllegalArgumentException ( "Cannot add to layout: constraint must be 'LEFT'/'RIGHT'/'GRIPPER' string" );
         }
-        constraints.put ( comp, name );
+        this.constraints.put ( component, value );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public void removeLayoutComponent ( Component comp )
+    public void removeComponent ( Component component )
     {
-        constraints.remove ( comp );
+        this.constraints.remove ( component );
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Dimension preferredLayoutSize ( Container parent )
+    {
+        int maxWidth = 0;
+        int maxHeight = 0;
+        for ( Map.Entry<Component, String> constraint : constraints.entrySet () )
+        {
+            Dimension ps = constraint.getKey ().getPreferredSize ();
+            maxWidth = Math.max ( ps.width, maxWidth );
+            maxHeight = Math.max ( ps.height, maxHeight );
+        }
+        Insets insets = parent.getInsets ();
+        return new Dimension ( insets.left + maxWidth * 2 + insets.right, insets.top + maxHeight + insets.bottom );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void layoutContainer ( Container parent )
     {
@@ -90,26 +119,5 @@ public class WebSwitchLayout implements LayoutManager
                 entry.getKey ().setBounds ( rightX, y, partWidth, height );
             }
         }
-    }
-
-    @Override
-    public Dimension preferredLayoutSize ( Container parent )
-    {
-        int maxWidth = 0;
-        int maxHeight = 0;
-        for ( Map.Entry<Component, String> constraint : constraints.entrySet () )
-        {
-            Dimension ps = constraint.getKey ().getPreferredSize ();
-            maxWidth = Math.max ( ps.width, maxWidth );
-            maxHeight = Math.max ( ps.height, maxHeight );
-        }
-        Insets insets = parent.getInsets ();
-        return new Dimension ( insets.left + maxWidth * 2 + insets.right, insets.top + maxHeight + insets.bottom );
-    }
-
-    @Override
-    public Dimension minimumLayoutSize ( Container parent )
-    {
-        return preferredLayoutSize ( parent );
     }
 }

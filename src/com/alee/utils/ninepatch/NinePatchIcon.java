@@ -41,6 +41,8 @@ import java.util.List;
  * </code>
  *
  * @author Mikle Garin
+ * @see com.alee.extended.painter.NinePatchIconPainter
+ * @see com.alee.extended.painter.NinePatchStatePainter
  */
 
 public class NinePatchIcon implements Icon
@@ -661,9 +663,7 @@ public class NinePatchIcon implements Icon
     }
 
     /**
-     * Returns icon width.
-     *
-     * @return icon width
+     * {@inheritDoc}
      */
     @Override
     public int getIconWidth ()
@@ -672,9 +672,7 @@ public class NinePatchIcon implements Icon
     }
 
     /**
-     * Returns icon height.
-     *
-     * @return icon height
+     * {@inheritDoc}
      */
     @Override
     public int getIconHeight ()

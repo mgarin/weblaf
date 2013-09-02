@@ -45,7 +45,7 @@ public class WebFilePlate extends WebPanel
 {
     public static final ImageIcon CROSS_ICON = new ImageIcon ( WebFilePlate.class.getResource ( "icons/cross.png" ) );
 
-    private List<ActionListener> closeListeners = new ArrayList<ActionListener> ();
+    private List<ActionListener> closeListeners = new ArrayList<ActionListener> ( 1 );
 
     private boolean showRemoveButton = true;
     private boolean showFileExtensions = false;

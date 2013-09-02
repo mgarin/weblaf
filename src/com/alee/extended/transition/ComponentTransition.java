@@ -37,7 +37,7 @@ import java.util.List;
 public class ComponentTransition extends WebPanel
 {
     // Transition listeners
-    private List<TransitionListener> transitionListeners = new ArrayList<TransitionListener> ();
+    private List<TransitionListener> transitionListeners = new ArrayList<TransitionListener> ( 1 );
 
     // Variables
     private boolean animating = false;

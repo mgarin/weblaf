@@ -36,6 +36,7 @@ import com.alee.examples.groups.label.LabelsGroup;
 import com.alee.examples.groups.list.ListsGroup;
 import com.alee.examples.groups.menubar.MenuBarsGroup;
 import com.alee.examples.groups.ninepatcheditor.NinePatchEditorGroup;
+import com.alee.examples.groups.notification.NotificationsGroup;
 import com.alee.examples.groups.optionpane.OptionPanesGroup;
 import com.alee.examples.groups.overlay.OverlayGroup;
 import com.alee.examples.groups.painter.PaintersGroup;
@@ -139,6 +140,7 @@ public class ExamplesManager
             exampleGroups.add ( new WindowsGroup () );
             exampleGroups.add ( new OptionPanesGroup () );
             exampleGroups.add ( new PopupsGroup () );
+            exampleGroups.add ( new NotificationsGroup () );
             exampleGroups.add ( new GalleryGroup () );
             exampleGroups.add ( new TransitionsGroup () );
             exampleGroups.add ( new ImagesGroup () );

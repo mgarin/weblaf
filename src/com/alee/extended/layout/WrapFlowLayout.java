@@ -25,21 +25,21 @@ import java.util.ArrayList;
  * User: mgarin Date: 07.10.11 Time: 15:14
  */
 
-public class WrapFlowLayout implements LayoutManager, SwingConstants
+public class WrapFlowLayout extends AbstractLayoutManager implements SwingConstants
 {
     // todo support RTL + LEADING/TRAILING support
 
-    private boolean fitWidth = true;
-    private boolean fillWidth = true;
-    private int hgap = 0;
-    private int vgap = 0;
-    private int halign = LEFT;
-    private int valign = TOP;
-    private boolean wrapEachComponent = false;
+    protected boolean fitWidth = true;
+    protected boolean fillWidth = true;
+    protected int hgap = 0;
+    protected int vgap = 0;
+    protected int halign = LEFT;
+    protected int valign = TOP;
+    protected boolean wrapEachComponent = false;
 
-    private int maxWidth = 0;
-    private int maxHeight = 0;
-    private ArrayList<RowData> rowsData;
+    protected int maxWidth = 0;
+    protected int maxHeight = 0;
+    protected ArrayList<RowData> rowsData;
 
     public WrapFlowLayout ()
     {
@@ -149,18 +149,29 @@ public class WrapFlowLayout implements LayoutManager, SwingConstants
         return rowsData;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public void addLayoutComponent ( String name, Component comp )
+    public Dimension preferredLayoutSize ( Container parent )
     {
-        //
+        layoutContainer ( parent );
+        return new Dimension ( maxWidth, maxHeight );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public void removeLayoutComponent ( Component comp )
+    public Dimension minimumLayoutSize ( Container parent )
     {
-        //
+        layoutContainer ( parent );
+        return new Dimension ( 0, maxHeight );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void layoutContainer ( Container parent )
     {
@@ -251,7 +262,7 @@ public class WrapFlowLayout implements LayoutManager, SwingConstants
         }
     }
 
-    private int getStartX ( Container parent, Insets insets, RowData row )
+    protected int getStartX ( Container parent, Insets insets, RowData row )
     {
         int x;
         if ( fillWidth || halign == LEFT )
@@ -269,7 +280,7 @@ public class WrapFlowLayout implements LayoutManager, SwingConstants
         return x;
     }
 
-    private int getStartY ( Container parent, Insets insets )
+    protected int getStartY ( Container parent, Insets insets )
     {
         int y;
         if ( valign == TOP )
@@ -285,19 +296,5 @@ public class WrapFlowLayout implements LayoutManager, SwingConstants
             y = insets.top + parent.getHeight () / 2 - maxHeight / 2;
         }
         return y;
-    }
-
-    @Override
-    public Dimension minimumLayoutSize ( Container parent )
-    {
-        layoutContainer ( parent );
-        return new Dimension ( 0, maxHeight );
-    }
-
-    @Override
-    public Dimension preferredLayoutSize ( Container parent )
-    {
-        layoutContainer ( parent );
-        return new Dimension ( maxWidth, maxHeight );
     }
 }

@@ -58,7 +58,7 @@ public class WebGradientColorChooser extends JComponent
     private static final float closestPoint = 0.001f;
 
     // Runtime data
-    private List<ChangeListener> changeListeners = new ArrayList<ChangeListener> ();
+    private List<ChangeListener> changeListeners = new ArrayList<ChangeListener> ( 1 );
     private GradientData gradientData;
 
     // Settings
