@@ -843,7 +843,7 @@
                 <value lang="pl">Popełnić</value>
                 <value lang="ar">ارتكب</value>
                 <value lang="es">Cometer</value>
-                <value lang="fr">Commettre</value>
+                <value lang="fr">Commit</value>
                 <value lang="pt">Cometer</value>
                 <value lang="de">Verpflichten</value>
             </record>
@@ -853,7 +853,7 @@
                 <value lang="pl">Odrzucać</value>
                 <value lang="ar">نبذ</value>
                 <value lang="es">Descartar</value>
-                <value lang="fr">Jeter</value>
+                <value lang="fr">Abandonner</value>
                 <value lang="pt">Descartar</value>
                 <value lang="de">Verwerfen</value>
             </record>

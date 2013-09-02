@@ -221,7 +221,7 @@ public class NinePatchStatePainter<E extends JComponent> extends DefaultPainter<
     /**
      * Returns current state icon for the specified toolbar.
      *
-     * @param button toolbar to process
+     * @param toolbar toolbar to process
      * @return current state icon
      */
     protected NinePatchIcon getToolBarBackground ( JToolBar toolbar )

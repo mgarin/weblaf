@@ -32,7 +32,7 @@ public interface PathFieldListener extends EventListener
     /**
      * Notifies about directory selection changes.
      *
-     * @param file newly selected directory or null if none selected
+     * @param newDirectory newly selected directory or null if none selected
      */
     public void directoryChanged ( File newDirectory );
 }
