@@ -40,7 +40,7 @@ public class WebOptionPaneUI extends BasicOptionPaneUI
     public static final ImageIcon ERROR_ICON = new ImageIcon ( WebOptionPaneUI.class.getResource ( "icons/error.png" ) );
     public static final ImageIcon QUESTION_ICON = new ImageIcon ( WebOptionPaneUI.class.getResource ( "icons/question.png" ) );
 
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( JComponent c )
     {
         return new WebOptionPaneUI ();
@@ -64,10 +64,7 @@ public class WebOptionPaneUI extends BasicOptionPaneUI
     protected Container createMessageArea ()
     {
         Container messageArea = super.createMessageArea ();
-        if ( !( getMessage () instanceof Component ) )
-        {
-            SwingUtils.setOpaqueRecursively ( messageArea, false );
-        }
+        SwingUtils.setOpaqueRecursively ( messageArea, false );
         return messageArea;
     }
 
@@ -133,8 +130,7 @@ public class WebOptionPaneUI extends BasicOptionPaneUI
                     }
                     newComponent = aButton;
                 }
-                if ( sizeButtonsToSame && createdAll &&
-                        ( newComponent instanceof JButton ) )
+                if ( sizeButtonsToSame && createdAll && newComponent instanceof JButton )
                 {
                     createdButtons[ counter ] = ( JButton ) newComponent;
                     maxWidth = Math.max ( maxWidth, newComponent.getMinimumSize ().width );
