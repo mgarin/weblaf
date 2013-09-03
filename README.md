@@ -42,15 +42,15 @@ Simply run `ant` command within the "build" library folder to build all artifact
 
 Here is a full list of usable ANT targets in WebLaF build script:
 
-1. **build.artifacts** - default target, builds all artifacts at once
-2. **build.sources.zip** - builds Sources.zip and saves it into artifacts folder
-3. **build.weblaf.jar** - builds WebLookAndFeel.jar and saves it into artifacts folder
-4. **build.npe.jar** - builds NinePatchEditor.jar and saves it into artifacts folder
-5. **build.weblaf.demo.jar** - builds WebLookAndFeel_demo.jar and saves it into artifacts folder
-6. **build.javadoc** - creates library zipped and unzipped JavaDoc versions inside artifacts folder
-7. **run.npe** - build and run NinePatchEditor.jar (Nine-Patch Editor application)
-8. **run.weblaf** - build and run WebLookAndFeel.jar (library information dialog)
-9. **run.weblaf.demo** - build and run WebLookAndFeel_demo.jar (library demo application)
+1. **build.artifacts** -> default target, builds all artifacts at once
+2. **build.sources.zip** -> builds Sources.zip and saves it into artifacts folder
+3. **build.weblaf.jar** -> builds WebLookAndFeel.jar and saves it into artifacts folder
+4. **build.npe.jar** -> builds NinePatchEditor.jar and saves it into artifacts folder
+5. **build.weblaf.demo.jar** -> builds WebLookAndFeel_demo.jar and saves it into artifacts folder
+6. **build.javadoc** -> creates library zipped and unzipped JavaDoc versions inside artifacts folder
+7. **run.npe** -> build and run NinePatchEditor.jar (Nine-Patch Editor application)
+8. **run.weblaf** -> build and run WebLookAndFeel.jar (library information dialog)
+9. **run.weblaf.demo** -> build and run WebLookAndFeel_demo.jar (library demo application)
 
 
 Example Usage

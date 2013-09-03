@@ -21,7 +21,7 @@ package com.alee.managers.task;
  * @author Mikle Garin
  */
 
-public class TaskManager
+public final class TaskManager
 {
     // todo
 }
