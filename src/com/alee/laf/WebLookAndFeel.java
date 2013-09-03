@@ -417,7 +417,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
         super.initComponentDefaults ( table );
 
         // Global text antialiasing
-        ProprietariUtils.setupDefaults ( table );
+        ProprietaryUtils.setupDefaults ( table );
 
         // Fonts
         initializeFonts ( table );

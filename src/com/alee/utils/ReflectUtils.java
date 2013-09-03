@@ -51,7 +51,7 @@ public final class ReflectUtils
      * @param canonicalName class canonical name
      * @return class for the specified canonical name
      */
-    public static Class getClass ( String canonicalName )
+    public static Class getClassSafely ( String canonicalName )
     {
         try
         {
@@ -61,6 +61,18 @@ public final class ReflectUtils
         {
             return null;
         }
+    }
+
+    /**
+     * Returns class for the specified canonical name.
+     *
+     * @param canonicalName class canonical name
+     * @return class for the specified canonical name
+     * @throws ClassNotFoundException
+     */
+    public static Class getClass ( String canonicalName ) throws ClassNotFoundException
+    {
+        return Class.forName ( canonicalName );
     }
 
     /**
@@ -386,6 +398,62 @@ public final class ReflectUtils
     public static String[] getPackages ( String packageName )
     {
         return packageName.split ( "\\." );
+    }
+
+    /**
+     * Returns static field value from the specified class.
+     *
+     * @param classType class type
+     * @param fieldName class field name
+     * @return static field value from the specified class
+     */
+    public static Object getStaticFieldValueSafely ( Class classType, String fieldName )
+    {
+        try
+        {
+            return classType.getField ( fieldName ).get ( null );
+        }
+        catch ( IllegalAccessException e )
+        {
+            return null;
+        }
+        catch ( NoSuchFieldException e )
+        {
+            return null;
+        }
+    }
+
+    /**
+     * Returns static field value from the specified class.
+     *
+     * @param classType class type
+     * @param fieldName class field name
+     * @return static field value from the specified class
+     * @throws NoSuchFieldException
+     * @throws IllegalAccessException
+     */
+    public static Object getStaticFieldValue ( Class classType, String fieldName ) throws NoSuchFieldException, IllegalAccessException
+    {
+        return classType.getField ( fieldName ).get ( null );
+    }
+
+    /**
+     * Returns inner class with the specified name.
+     *
+     * @param fromClass      class to look for the inner class
+     * @param innerClassName inner class name
+     * @return inner class with the specified name
+     */
+    public static Class getInnerClass ( Class fromClass, String innerClassName )
+    {
+        for ( Class innerClass : fromClass.getDeclaredClasses () )
+        {
+            if ( getClassName ( innerClass ).equals ( innerClassName ) )
+            {
+                return innerClass;
+            }
+        }
+        return null;
     }
 
     /**

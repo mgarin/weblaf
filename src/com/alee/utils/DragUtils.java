@@ -25,8 +25,10 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.StringTokenizer;
 
 /**
  * This class provides a set of utilities to simplify work with swing drag and drop.
@@ -120,7 +122,7 @@ public final class DragUtils
         try
         {
             // Getting files list
-            return ( AbstractList ) t.getTransferData ( DataFlavor.javaFileListFlavor );
+            return ( List<File> ) t.getTransferData ( DataFlavor.javaFileListFlavor );
         }
         catch ( Throwable e )
         {

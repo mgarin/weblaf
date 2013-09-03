@@ -376,13 +376,13 @@ public class Tetris extends JComponent
                         }
 
                         // Moving upper blocks
-                        Collections.sort ( toMove, new Comparator ()
+                        Collections.sort ( toMove, new Comparator<Point> ()
                         {
                             @Override
-                            public int compare ( Object o1, Object o2 )
+                            public int compare ( Point o1, Point o2 )
                             {
-                                Integer int1 = ( ( Point ) o1 ).y;
-                                Integer int2 = ( ( Point ) o2 ).y;
+                                Integer int1 = o1.y;
+                                Integer int2 = o2.y;
                                 return -int1.compareTo ( int2 );
                             }
                         } );

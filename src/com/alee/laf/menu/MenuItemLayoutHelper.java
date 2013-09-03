@@ -112,7 +112,7 @@ public class MenuItemLayoutHelper
         this.isColumnLayout = isColumnLayout ( isLeftToRight, horizontalAlignment, horizontalTextPosition, verticalTextPosition );
         this.isTopLevelMenu = this.miParent == null;
         this.checkIcon = checkIcon;
-        this.icon = getIcon ( propertyPrefix );
+        this.icon = mi.getIcon ();
         this.arrowIcon = arrowIcon;
         this.text = mi.getText ();
         this.gap = gap;
@@ -167,11 +167,6 @@ public class MenuItemLayoutHelper
             }
         }
         return accText;
-    }
-
-    private Icon getIcon ( String propertyPrefix )
-    {
-        return mi.getIcon ();
     }
 
     private int getMinTextOffset ( String propertyPrefix )
@@ -1335,7 +1330,7 @@ public class MenuItemLayoutHelper
 
         public Map getAllRects ()
         {
-            Map result = new HashMap ();
+            Map<String, Rectangle> result = new HashMap<String, Rectangle> ();
             result.put ( "checkRect", checkRect );
             result.put ( "iconRect", iconRect );
             result.put ( "textRect", textRect );
