@@ -37,21 +37,21 @@ https://github.com/mgarin/weblaf/issues/milestones
 
 Building
 ----------
-To build various WebLaF artifacts you will need [Java 1.6 update 30 (or later)](http://www.oracle.com/technetwork/java/javase/downloads/index.html) and [Apache ANT] (http://ant.apache.org/).<br>
+To build various WebLaF artifacts you will need [Java 1.6 (update 30 or later) or Java 1.7](http://www.oracle.com/technetwork/java/javase/downloads/index.html) and [Apache ANT] (http://ant.apache.org/).<br>
 Simply run `ant` command within the "build" library folder to build all artifacts at once.
 
 Here is a full list of usable ANT targets in WebLaF build script:
 
-1. **build.artifacts** -> default target, build all artifacts at once
-2. **build.sources.zip** -> build WebLaF sources zip archive (weblaf-src-x.xx.zip)
-3. **build.weblaf.jar** -> build WebLaF binary (weblaf-x.xx.jar)
-3. **build.weblaf.simple.jar** -> build WebLaF binary without dependencies (weblaf-simple-x.xx.jar)
-4. **build.npe.jar** -> build 9-patch editor application (ninepatch-editor-x.xx.jar)
-5. **build.weblaf.demo.jar** -> build WebLaF demo application (weblaf-demo-x.xx.jar)
-6. **build.javadoc** -> create zipped and unzipped library JavaDoc (weblaf-javadoc-x.xx.zip & javadoc)
-7. **run.npe** -> build and run ninepatch-editor-x.xx.jar (9-patch editor application)
-8. **run.weblaf** -> build and run weblaf-x.xx.jar (library information dialog)
-9. **run.weblaf.demo** -> build and run weblaf-demo-x.xx.jar (demo application)
+1. `build.artifacts` - default target, build all artifacts at once
+2. `build.sources.zip` -> **weblaf-src-x.xx.zip** - build WebLaF sources zip archive
+3. `build.weblaf.jar` -> **weblaf-x.xx.jar** - build WebLaF binary
+3. `build.weblaf.simple.jar` -> **weblaf-simple-x.xx.jar** - build WebLaF binary without dependencies
+4. `build.npe.jar` -> **ninepatch-editor-x.xx.jar** - build 9-patch editor application
+5. `build.weblaf.demo.jar` -> **weblaf-demo-x.xx.jar** - build WebLaF demo application
+6. `build.javadoc` -> **weblaf-javadoc-x.xx.zip** & **javadoc** - create zipped and unzipped library JavaDoc
+7. `run.npe` -> build and run ninepatch-editor-x.xx.jar - 9-patch editor application
+8. `run.weblaf` -> build and run weblaf-x.xx.jar - library information dialog
+9. `run.weblaf.demo` -> build and run weblaf-demo-x.xx.jar - demo application
 
 
 Example Usage
