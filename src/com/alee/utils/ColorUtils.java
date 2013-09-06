@@ -18,6 +18,7 @@
 package com.alee.utils;
 
 import java.awt.*;
+import java.util.Random;
 import java.util.StringTokenizer;
 
 /**
@@ -224,5 +225,26 @@ public final class ColorUtils
     public static Color white ( int alpha )
     {
         return new Color ( 255, 255, 255, alpha );
+    }
+
+    /**
+     * Returns randomly generated soft color based on the specified color.
+     *
+     * @param base color base
+     * @return randomly generated soft color based on the specified color
+     */
+    public static Color getRandomSoftColor ( Color base )
+    {
+        Random random = new Random ();
+        int red = random.nextInt ( 256 );
+        int green = random.nextInt ( 256 );
+        int blue = random.nextInt ( 256 );
+        if ( base != null )
+        {
+            red = ( red + base.getRed () ) / 2;
+            green = ( green + base.getGreen () ) / 2;
+            blue = ( blue + base.getBlue () ) / 2;
+        }
+        return new Color ( red, green, blue );
     }
 }
