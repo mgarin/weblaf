@@ -86,11 +86,11 @@
     <target name="build.weblaf.jar" depends="compile,copy.res,copy.lic,create.artifacts">
         <jar destfile="${library.jar}">
             <!-- Base libraries -->
-            <zipfileset src="${lib.dir}/java-image-scaling-0.8.5.jar" />
-            <zipfileset src="${lib.dir}/jericho-html-3.3.jar" />
-            <zipfileset src="${lib.dir}/xmlpull-1.1.3.1.jar" />
-            <zipfileset src="${lib.dir}/xpp3_min-1.1.4c.jar" />
-            <zipfileset src="${lib.dir}/xstream-1.4.4.jar" />
+            <zipfileset src="${lib.dir}/${imagescaling.jar}" />
+            <zipfileset src="${lib.dir}/${jericho.jar}" />
+            <zipfileset src="${lib.dir}/${xmlpull.jar}" />
+            <zipfileset src="${lib.dir}/${xpp3.jar}" />
+            <zipfileset src="${lib.dir}/${xstream.jar}" />
             <!-- Excluded classes -->
             <fileset dir="${dist.dir}">
                 <exclude name="com/test/**" />
@@ -107,17 +107,42 @@
         </jar>
     </target>
 
+    <!-- Assemble simple library jar -->
+    <target name="build.weblaf.simple.jar" depends="compile,copy.res,copy.lic,create.artifacts">
+        <!-- Copying libraries -->
+        <copy todir="${artifacts.dir}">
+            <fileset dir="${lib.dir}" />
+        </copy>
+        <!-- Building jar -->
+        <jar destfile="${library.simple.jar}">
+            <!-- Excluded classes -->
+            <fileset dir="${dist.dir}">
+                <exclude name="com/test/**" />
+                <exclude name="com/alee/examples/**" />
+            </fileset>
+            <!-- WebLaF library manifest -->
+            <manifest>
+                <attribute name="Package-Vendor" value="${dev}" />
+                <attribute name="Product-Name" value="${library.simple.title}" />
+                <attribute name="Package-Title" value="${package}" />
+                <attribute name="Package-Version" value="${version.info}" />
+                <attribute name="Main-Class" value="${library.simple.main}" />
+                <attribute name="Class-Path" value="${imagescaling.jar} ${jericho.jar} ${xmlpull.jar} ${xpp3.jar} ${xstream.jar}" />
+            </manifest>
+        </jar>
+    </target>
+
     <!-- Assemble library demo jar -->
     <target name="build.weblaf.demo.jar" depends="compile,copy.src,copy.lic,create.artifacts">
         <jar destfile="${demo.jar}">
             <!-- Demo libraries -->
-            <zipfileset src="${lib.dir}/rsyntaxtextarea.jar" />
+            <zipfileset src="${lib.dir}/${rsyntaxtextarea.jar}" />
             <!-- Base libraries -->
-            <zipfileset src="${lib.dir}/java-image-scaling-0.8.5.jar" />
-            <zipfileset src="${lib.dir}/jericho-html-3.3.jar" />
-            <zipfileset src="${lib.dir}/xmlpull-1.1.3.1.jar" />
-            <zipfileset src="${lib.dir}/xpp3_min-1.1.4c.jar" />
-            <zipfileset src="${lib.dir}/xstream-1.4.4.jar" />
+            <zipfileset src="${lib.dir}/${imagescaling.jar}" />
+            <zipfileset src="${lib.dir}/${jericho.jar}" />
+            <zipfileset src="${lib.dir}/${xmlpull.jar}" />
+            <zipfileset src="${lib.dir}/${xpp3.jar}" />
+            <zipfileset src="${lib.dir}/${xstream.jar}" />
             <!-- Excluded classes -->
             <fileset dir="${dist.dir}">
                 <exclude name="com/test/**" />
@@ -137,11 +162,11 @@
     <target name="build.npe.jar" depends="compile,copy.res,copy.lic,create.artifacts">
         <jar destfile="${npe.jar}">
             <!-- Base libraries -->
-            <zipfileset src="${lib.dir}/java-image-scaling-0.8.5.jar" />
-            <zipfileset src="${lib.dir}/jericho-html-3.3.jar" />
-            <zipfileset src="${lib.dir}/xmlpull-1.1.3.1.jar" />
-            <zipfileset src="${lib.dir}/xpp3_min-1.1.4c.jar" />
-            <zipfileset src="${lib.dir}/xstream-1.4.4.jar" />
+            <zipfileset src="${lib.dir}/${imagescaling.jar}" />
+            <zipfileset src="${lib.dir}/${jericho.jar}" />
+            <zipfileset src="${lib.dir}/${xmlpull.jar}" />
+            <zipfileset src="${lib.dir}/${xpp3.jar}" />
+            <zipfileset src="${lib.dir}/${xstream.jar}" />
             <!-- Excluded classes -->
             <fileset dir="${dist.dir}">
                 <exclude name="com/test/**" />
@@ -178,11 +203,11 @@
     <target name="update.library.build" depends="compile,copy.res,copy.lic,create.artifacts">
         <jar destfile="${vupdater.jar}">
             <!-- Base libraries -->
-            <zipfileset src="${lib.dir}/java-image-scaling-0.8.5.jar" />
-            <zipfileset src="${lib.dir}/jericho-html-3.3.jar" />
-            <zipfileset src="${lib.dir}/xmlpull-1.1.3.1.jar" />
-            <zipfileset src="${lib.dir}/xpp3_min-1.1.4c.jar" />
-            <zipfileset src="${lib.dir}/xstream-1.4.4.jar" />
+            <zipfileset src="${lib.dir}/${imagescaling.jar}" />
+            <zipfileset src="${lib.dir}/${jericho.jar}" />
+            <zipfileset src="${lib.dir}/${xmlpull.jar}" />
+            <zipfileset src="${lib.dir}/${xpp3.jar}" />
+            <zipfileset src="${lib.dir}/${xstream.jar}" />
             <!-- Excluded classes -->
             <fileset dir="${dist.dir}">
                 <exclude name="com/test/**" />
@@ -211,6 +236,7 @@
         <antcall description="Cleanup artifacts" target="clean.artifacts" />
         <antcall description="Build ${sources.zip.name}" target="build.sources.zip" />
         <antcall description="Build ${library.jar.name}" target="build.weblaf.jar" />
+        <antcall description="Build ${library.simple.jar.name}" target="build.weblaf.simple.jar" />
         <antcall description="Build ${demo.jar.name}" target="build.weblaf.demo.jar" />
         <antcall description="Build ${npe.jar.name}" target="build.npe.jar" />
         <antcall description="Build ${javadoc.name}" target="build.javadoc" />
