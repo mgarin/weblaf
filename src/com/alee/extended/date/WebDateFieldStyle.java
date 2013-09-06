@@ -23,59 +23,66 @@ import com.alee.laf.StyleConstants;
 import java.awt.*;
 
 /**
- * User: mgarin Date: 15.10.12 Time: 20:43
+ * WebDateField style class.
+ *
+ * @author Mikle Garin
  */
 
 public final class WebDateFieldStyle
 {
     /**
-     * Default field margin
+     * Field margin.
      */
     public static Insets fieldMargin = new Insets ( 0, 0, 0, 0 );
 
     /**
-     * Decorate date field
+     * Whether date field should be decorated with default border or not.
      */
     public static boolean drawBorder = StyleConstants.drawBorder;
 
     /**
-     * Draw date field focus
+     * Whether should draw date field focus or not.
      */
     public static boolean drawFocus = StyleConstants.drawFocus;
 
     /**
-     * Decoration rounding
+     * Decoration rounding.
      */
     public static int round = StyleConstants.smallRound;
 
     /**
-     * Decoration shade width
+     * Decoration shade width.
      */
     public static int shadeWidth = StyleConstants.shadeWidth;
 
     /**
-     * Default border margins
+     * Decorated date field margin.
      */
     public static Insets margin = new Insets ( -1, 0, -1, -1 );
+
+    /**
+     * Undecorated date field margin.
+     */
     public static Insets undecoratedMargin = new Insets ( 0, 0, 0, 0 );
 
     /**
-     * Fill decoration background
+     * Whether should fill decoration background or not.
      */
     public static boolean drawBackground = true;
 
     /**
-     * Web-styled background
+     * Whether should draw web-styled decoration background or not.
      */
     public static boolean webColored = false;
 
     /**
-     * Default-styled background color
+     * Background color.
      */
     public static Color backgroundColor = Color.WHITE;
 
     /**
-     * Default panel background painter
+     * Custom panel decoration painter.
+     * Set to null to enable default decoration painting behavior.
      */
     public static Painter painter = StyleConstants.painter;
 }

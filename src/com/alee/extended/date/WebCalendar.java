@@ -58,8 +58,8 @@ public class WebCalendar extends WebPanel
     private List<DateSelectionListener> dateSelectionListeners = new ArrayList<DateSelectionListener> ( 1 );
 
     private SimpleDateFormat titleFormat = new SimpleDateFormat ( "MMMM yyyy" );
-    private Date date = new Date ( System.currentTimeMillis () );
-    private Date shownDate = new Date ( date.getTime () );
+    private Date date = new Date ();
+    private Date shownDate = new Date ();
     private Date oldShownDate = new Date ( System.currentTimeMillis () );
 
     private boolean startWeekFromSunday = false;
@@ -94,32 +94,23 @@ public class WebCalendar extends WebPanel
     {
         super ( true );
 
+        this.date = date != null ? new Date ( date.getTime () ) : null;
+        this.shownDate = date != null ? new Date ( date.getTime () ) : new Date ();
+
         setDrawFocus ( true );
         setRound ( StyleConstants.smallRound );
-
+        setLayout ( new BorderLayout ( 0, 0 ) );
         putClientProperty ( SwingUtils.HANDLES_ENABLE_STATE, true );
 
-        if ( date != null )
-        {
-            this.date = date;
-            this.shownDate = date;
-        }
-
         // Main layout
-
-        setLayout ( new BorderLayout ( 0, 0 ) );
-
-        JPanel centerPanel = new JPanel ();
+        WebPanel centerPanel = new WebPanel ();
         centerPanel.setOpaque ( false );
-        centerPanel.setLayout ( new BorderLayout ( 0, 0 ) );
         add ( centerPanel, BorderLayout.CENTER );
 
 
         // Header panel
-
-        JPanel header = new JPanel ();
+        WebPanel header = new WebPanel ();
         header.setOpaque ( false );
-        header.setLayout ( new BorderLayout () );
         add ( header, BorderLayout.NORTH );
 
         previousSkip = WebButton.createIconWebButton ( previousSkipIcon, StyleConstants.smallRound, true );
@@ -160,7 +151,7 @@ public class WebCalendar extends WebPanel
             {
                 if ( SwingUtilities.isLeftMouseButton ( e ) )
                 {
-                    setDate ( new Date () );
+                    setShownDate ( new Date (), true );
                 }
             }
         } );
@@ -196,7 +187,6 @@ public class WebCalendar extends WebPanel
 
 
         // Week days
-
         weekHeaders = new WebPanel ();
         weekHeaders.setUndecorated ( false );
         weekHeaders.setDrawSides ( true, false, true, false );
@@ -209,15 +199,11 @@ public class WebCalendar extends WebPanel
                         TableLayout.FILL, TableLayout.PREFERRED, TableLayout.FILL, TableLayout.PREFERRED, TableLayout.FILL,
                         TableLayout.PREFERRED, TableLayout.FILL }, { TableLayout.PREFERRED } } ) );
         centerPanel.add ( weekHeaders, BorderLayout.NORTH );
-
         updateWeekHeaders ();
 
-
         // Month days
-
         monthDays = createMonthDaysPanel ();
         updateMonthDays ( monthDays );
-
         monthDaysTransition = new ComponentTransition ( monthDays );
         monthDaysTransition.setOpaque ( false );
         monthDaysTransition.addTransitionListener ( new TransitionAdapter ()
@@ -230,6 +216,17 @@ public class WebCalendar extends WebPanel
             }
         } );
         centerPanel.add ( monthDaysTransition, BorderLayout.CENTER );
+
+        // todo Enter hotkey
+        // Date selection by enter
+        //        HotkeyManager.registerHotkey ( Hotkey.ENTER, new HotkeyRunnable ()
+        //        {
+        //            @Override
+        //            public void run ( KeyEvent e )
+        //            {
+        //                fireDateSelected ( WebCalendar.this.date );
+        //            }
+        //        } );
     }
 
     private WebLabel createTitleLabel ()
@@ -297,7 +294,7 @@ public class WebCalendar extends WebPanel
         if ( this.animate && animate )
         {
             // Creating new dates panel
-            JPanel newMonthDays = createMonthDaysPanel ();
+            WebPanel newMonthDays = createMonthDaysPanel ();
             updateMonthDays ( newMonthDays );
 
             // Setting collapse transition effects
@@ -421,8 +418,6 @@ public class WebCalendar extends WebPanel
                 @Override
                 public void itemStateChanged ( ItemEvent e )
                 {
-                    // Breaks calendar size
-                    // day.setFont ( day.isSelected () ? day.getFont ().deriveFont ( Font.BOLD ) : day.getFont ().deriveFont ( Font.PLAIN ) );
                     if ( day.isSelected () )
                     {
                         setDateImpl ( thisDate, animate );
@@ -450,12 +445,10 @@ public class WebCalendar extends WebPanel
         do
         {
             final boolean weekend = calendar.get ( Calendar.DAY_OF_WEEK ) == 1 || calendar.get ( Calendar.DAY_OF_WEEK ) == 7;
-            final boolean selected = TimeUtils.isSameDay ( calendar, date.getTime () );
+            final boolean selected = date != null && TimeUtils.isSameDay ( calendar, date.getTime () );
 
             final Date thisDate = calendar.getTime ();
             final WebToggleButton day = new WebToggleButton ();
-            // Breaks calendar size
-            // day.setFont ( selected ? day.getFont ().deriveFont ( Font.BOLD ) : day.getFont ().deriveFont ( Font.PLAIN ) );
             day.setForeground ( weekend ? weekendsColor : Color.BLACK );
             day.setText ( "" + calendar.get ( Calendar.DAY_OF_MONTH ) );
             day.setSelected ( selected );
@@ -463,15 +456,6 @@ public class WebCalendar extends WebPanel
             day.setHorizontalAlignment ( WebButton.RIGHT );
             day.setRound ( StyleConstants.smallRound );
             day.setDrawFocus ( false );
-            day.addItemListener ( new ItemListener ()
-            {
-                @Override
-                public void itemStateChanged ( ItemEvent e )
-                {
-                    // Breaks calendar size
-                    // day.setFont ( day.isSelected () ? day.getFont ().deriveFont ( Font.BOLD ) : day.getFont ().deriveFont ( Font.PLAIN ) );
-                }
-            } );
             day.addActionListener ( new ActionListener ()
             {
                 @Override
@@ -522,8 +506,6 @@ public class WebCalendar extends WebPanel
                 @Override
                 public void itemStateChanged ( ItemEvent e )
                 {
-                    // Breaks calendar size
-                    // day.setFont ( day.isSelected () ? day.getFont ().deriveFont ( Font.BOLD ) : day.getFont ().deriveFont ( Font.PLAIN ) );
                     if ( day.isSelected () )
                     {
                         setDateImpl ( thisDate, animate );
@@ -707,7 +689,7 @@ public class WebCalendar extends WebPanel
         dateSelectionListeners.remove ( listener );
     }
 
-    private void fireDateSelected ( Date date )
+    public void fireDateSelected ( Date date )
     {
         for ( DateSelectionListener listener : CollectionUtils.copy ( dateSelectionListeners ) )
         {
