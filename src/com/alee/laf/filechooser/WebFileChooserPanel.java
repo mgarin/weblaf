@@ -315,7 +315,7 @@ public class WebFileChooserPanel extends WebPanel
 
             private void updateToolbarStyle ()
             {
-                toolBar.setUndecorated ( SwingUtils.isLafDecorated ( SwingUtils.getWindowAncestor ( WebFileChooserPanel.this ) ) );
+                toolBar.setUndecorated ( SwingUtils.isLafDecorated ( WebFileChooserPanel.this ) );
             }
         } );
         add ( toolBar, BorderLayout.NORTH );

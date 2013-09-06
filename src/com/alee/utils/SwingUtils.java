@@ -115,13 +115,14 @@ public final class SwingUtils
     private static Set<SoftReference<BearingCacheEntry>> softBearingCache = new HashSet<SoftReference<BearingCacheEntry>> ();
 
     /**
-     * Returns whether window is laf-decorated or not.
+     * Returns whether window in which specified component located is decorated by L&F or not.
      *
-     * @return true if window is laf-decorated, false otherwise
+     * @param component component used to determine window decoration state
+     * @return true if window in which specified component located is decorated by L&F, false otherwise
      */
-    public static boolean isLafDecorated ( Window window )
+    public static boolean isLafDecorated ( Component component )
     {
-        JRootPane rootPane = getRootPane ( window );
+        JRootPane rootPane = getRootPane ( component );
         if ( rootPane != null )
         {
             RootPaneUI ui = rootPane.getUI ();
@@ -686,6 +687,7 @@ public final class SwingUtils
             }
             else
             {
+                window.invalidate ();
                 window.repaint ();
             }
         }
@@ -774,10 +776,10 @@ public final class SwingUtils
     }
 
     /**
-     * Returns window ancestor for specified component or null if this component doesn't have window ancestor.
+     * Returns window ancestor for specified component or null if it doesn't exist.
      *
      * @param component component to process
-     * @return window ancestor for specified component or null if this component doesn't have window ancestor
+     * @return window ancestor for specified component or null if it doesn't exist
      */
     public static Window getWindowAncestor ( Component component )
     {
@@ -800,71 +802,68 @@ public final class SwingUtils
     }
 
     /**
-     * Returns root pane ancestor for the specified component or null if this component doesn't have root pane ancestor.
+     * Returns root pane for the specified component or null if it doesn't exist.
      *
-     * @param component component to process
-     * @return root pane ancestor for the specified component or null if this component doesn't have root pane ancestor
+     * @param component component to look under
+     * @return root pane for the specified component or null if it doesn't exist
      */
-    public static JRootPane getRootPaneAncestor ( Component component )
+    public static JRootPane getRootPane ( Component component )
     {
-        if ( component instanceof JRootPane )
+        if ( component instanceof JFrame )
+        {
+            return ( ( JFrame ) component ).getRootPane ();
+        }
+        else if ( component instanceof JDialog )
+        {
+            return ( ( JDialog ) component ).getRootPane ();
+        }
+        else if ( component instanceof JWindow )
+        {
+            return ( ( JWindow ) component ).getRootPane ();
+        }
+        else if ( component instanceof JApplet )
+        {
+            return ( ( JApplet ) component ).getRootPane ();
+        }
+        else if ( component instanceof JRootPane )
         {
             return ( JRootPane ) component;
         }
-        for ( Container p = component.getParent (); p != null; p = p.getParent () )
+        else
         {
-            if ( p instanceof JRootPane )
+            for ( Container p = component.getParent (); p != null; p = p.getParent () )
             {
-                return ( JRootPane ) p;
+                if ( p instanceof JRootPane )
+                {
+                    return ( JRootPane ) p;
+                }
             }
         }
         return null;
     }
 
     /**
-     * Returns root pane for the specified window or null if it doesn't have one.
+     * Returns layered pane for the specified component or null if it doesn't exist.
      *
-     * @param window window to process
-     * @return root pane for the specified window or null if it doesn't have one
+     * @param component component to look under
+     * @return layered pane for the specified component or null if it doesn't exist
      */
-    public static JRootPane getRootPane ( Window window )
+    public static JLayeredPane getLayeredPane ( Component component )
     {
-        if ( window instanceof JFrame )
-        {
-            return ( ( JFrame ) window ).getRootPane ();
-        }
-        if ( window instanceof JDialog )
-        {
-            return ( ( JDialog ) window ).getRootPane ();
-        }
-        if ( window instanceof JWindow )
-        {
-            return ( ( JWindow ) window ).getRootPane ();
-        }
-        return null;
+        JRootPane rootPane = getRootPane ( component );
+        return rootPane != null ? rootPane.getLayeredPane () : null;
     }
 
     /**
-     * Returns layered pane for the specified window or null if it doesn't have one.
+     * Returns glass pane for the specified component or null if it doesn't exist.
      *
-     * @param window window to process
-     * @return layered pane for the specified window or null if it doesn't have one
+     * @param component component to look under
+     * @return glass pane for the specified component or null if it doesn't exist
      */
-    public static JLayeredPane getLayeredPane ( Window window )
+    public static Component getGlassPane ( Component component )
     {
-        if ( window instanceof JFrame )
-        {
-            return ( ( JFrame ) window ).getLayeredPane ();
-        }
-        if ( window instanceof JDialog )
-        {
-            return ( ( JDialog ) window ).getLayeredPane ();
-        }
-        if ( window instanceof JWindow )
-        {
-            return ( ( JWindow ) window ).getLayeredPane ();
-        }
-        return null;
+        JRootPane rootPane = getRootPane ( component );
+        return rootPane != null ? rootPane.getGlassPane () : null;
     }
 
     /**
@@ -2099,14 +2098,8 @@ public final class SwingUtils
      */
     public static Rectangle getBoundsInWindow ( Component component )
     {
-        if ( component instanceof Window )
-        {
-            return getRootPane ( ( Window ) component ).getBounds ();
-        }
-        else
-        {
-            return getRelativeBounds ( component, getRootPaneAncestor ( component ) );
-        }
+        return component instanceof Window || component instanceof JApplet ? getRootPane ( component ).getBounds () :
+                getRelativeBounds ( component, getRootPane ( component ) );
     }
 
     /**

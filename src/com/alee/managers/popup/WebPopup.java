@@ -321,7 +321,7 @@ public class WebPopup extends WebPanel implements FocusTracker
     {
         // Detrmining component position inside window
         final Rectangle cb = SwingUtils.getBoundsInWindow ( component );
-        final Dimension rps = SwingUtils.getRootPaneAncestor ( component ).getSize ();
+        final Dimension rps = SwingUtils.getRootPane ( component ).getSize ();
         final Dimension ps = WebPopup.this.getPreferredSize ();
         //        Painter bp = getPainter ();
         //        Insets bm = bp != null ? bp.getMargin ( this ) : new Insets ( 0, 0, 0, 0 );

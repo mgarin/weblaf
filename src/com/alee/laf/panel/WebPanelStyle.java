@@ -32,12 +32,12 @@ import java.awt.*;
 public final class WebPanelStyle
 {
     /**
-     * Decorate panel with Web-styled background or not.
+     * Whether should decorate panel or not.
      */
     public static boolean undecorated = true;
 
     /**
-     * Draw panel focus.
+     * Whether should draw panel focus or not.
      * This variable doesn't affect anything if panel is undecorated.
      */
     public static boolean drawFocus = false;
@@ -66,12 +66,12 @@ public final class WebPanelStyle
     public static Stroke borderStroke = null;
 
     /**
-     * Fill decoration background.
+     * Whether should draw background or not.
      */
     public static boolean drawBackground = true;
 
     /**
-     * Web-styled background.
+     * Whether should draw web-colored background or not.
      */
     public static boolean webColored = true;
 
@@ -91,25 +91,25 @@ public final class WebPanelStyle
     public static ShapeProvider clipProvider = StyleConstants.clipProvider;
 
     /**
-     * Whether to draw top panel side or not.
+     * Whether should draw top panel side or not.
      * This variable doesn't affect anything if panel is undecorated.
      */
     public static boolean drawTop = true;
 
     /**
-     * Whether to draw left panel side or not.
+     * Whether should draw left panel side or not.
      * This variable doesn't affect anything if panel is undecorated.
      */
     public static boolean drawLeft = true;
 
     /**
-     * Whether to draw bottom panel side or not.
+     * Whether should draw bottom panel side or not.
      * This variable doesn't affect anything if panel is undecorated.
      */
     public static boolean drawBottom = true;
 
     /**
-     * Whether to draw right panel side or not.
+     * Whether should draw right panel side or not.
      * This variable doesn't affect anything if panel is undecorated.
      */
     public static boolean drawRight = true;

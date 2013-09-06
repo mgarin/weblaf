@@ -48,34 +48,7 @@ public final class GlassPaneManager
      */
     public static WebGlassPane getGlassPane ( Component component )
     {
-        return getGlassPane ( getRootPane ( component ) );
-    }
-
-    /**
-     * Returns root pane for the component's window.
-     *
-     * @param component component to process
-     * @return root pane for the component's window
-     */
-    private static JRootPane getRootPane ( Component component )
-    {
-        if ( component instanceof JRootPane )
-        {
-            return ( JRootPane ) component;
-        }
-        else if ( component instanceof JWindow )
-        {
-            return ( ( JWindow ) component ).getRootPane ();
-        }
-        else if ( component instanceof JDialog )
-        {
-            return ( ( JDialog ) component ).getRootPane ();
-        }
-        else if ( component instanceof JFrame )
-        {
-            return ( ( JFrame ) component ).getRootPane ();
-        }
-        return SwingUtils.getRootPaneAncestor ( component );
+        return getGlassPane ( SwingUtils.getRootPane ( component ) );
     }
 
     /**

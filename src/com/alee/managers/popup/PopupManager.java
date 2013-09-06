@@ -31,12 +31,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * This manager allows you to add your own popups within the frame bounds (within the window root pane bounds to be exact). These popups
- * could be either modal or not and could be also bound to component. Also there are few specific popup types that are created for buttons
- * and other Swing components and act differently than standart popups.
+ * This manager allows you to add your own popups within the window/applet root pane bounds.
  *
  * @author Mikle Garin
  * @see PopupLayer
+ * @see WebPopup
+ * @see WebButtonPopup
+ * @see com.alee.managers.notification.WebNotificationPopup
  */
 
 public final class PopupManager
@@ -44,12 +45,12 @@ public final class PopupManager
     /**
      * Shade layers cache.
      */
-    private static Map<Window, ShadeLayer> shadeLayers = new HashMap<Window, ShadeLayer> ();
+    private static Map<JRootPane, ShadeLayer> shadeLayers = new HashMap<JRootPane, ShadeLayer> ();
 
     /**
      * Popup layers cache.
      */
-    private static Map<Window, PopupLayer> popupLayers = new HashMap<Window, PopupLayer> ();
+    private static Map<JRootPane, PopupLayer> popupLayers = new HashMap<JRootPane, PopupLayer> ();
 
     /**
      * Default style used for popups.
@@ -77,19 +78,29 @@ public final class PopupManager
     }
 
     /**
-     * Hides all visible popups on the specified window.
+     * Hides all visible popups for the root pane under the specified component.
      *
-     * @param window window to process
+     * @param component component to process
      */
-    public static void hideAllPopups ( final Window window )
+    public static void hideAllPopups ( final JComponent component )
     {
-        if ( shadeLayers.containsKey ( window ) )
+        hideAllPopups ( SwingUtils.getRootPane ( component ) );
+    }
+
+    /**
+     * Hides all visible popups for the specified root pane.
+     *
+     * @param rootPane root pane to process
+     */
+    public static void hideAllPopups ( final JRootPane rootPane )
+    {
+        if ( shadeLayers.containsKey ( rootPane ) )
         {
-            shadeLayers.get ( window ).hideAllPopups ();
+            shadeLayers.get ( rootPane ).hideAllPopups ();
         }
-        if ( popupLayers.containsKey ( window ) )
+        if ( popupLayers.containsKey ( rootPane ) )
         {
-            popupLayers.get ( window ).hideAllPopups ();
+            popupLayers.get ( rootPane ).hideAllPopups ();
         }
     }
 
@@ -142,9 +153,9 @@ public final class PopupManager
     }
 
     /**
-     * Displays popup on the window containing specified component.
+     * Displays popup for the root pane containing specified component.
      *
-     * @param component component used to determine window on which modal popup will be displayed
+     * @param component component used to determine root pane for which modal popup will be displayed
      * @param popup     popup to display
      */
     public static void showPopup ( final Component component, final WebPopup popup )
@@ -153,35 +164,32 @@ public final class PopupManager
     }
 
     /**
-     * Displays popup on the window containing specified component.
+     * Displays popup for the root pane containing specified component.
      *
-     * @param component     component used to determine window on which modal popup will be displayed
+     * @param component     component used to determine root pane for which modal popup will be displayed
      * @param popup         popup to display
      * @param transferFocus whether to transfer focus to content of the displayed popup or not
      */
     public static void showPopup ( final Component component, final WebPopup popup, final boolean transferFocus )
     {
-        Window window = SwingUtils.getWindowAncestor ( component );
-        if ( window != null )
+        JRootPane rootPane = SwingUtils.getRootPane ( component );
+        if ( rootPane != null )
         {
-            showPopup ( window, popup, transferFocus );
+            showPopup ( rootPane, popup, transferFocus );
         }
     }
 
     /**
-     * Displays popup on the specified window.
+     * Displays popup for the specified root pane.
      *
-     * @param window        window used to display popup
+     * @param rootPane      root pane used to display popup
      * @param popup         popup to display
      * @param transferFocus whether to transfer focus to content of the displayed popup or not
      */
-    public static void showPopup ( final Window window, final WebPopup popup, final boolean transferFocus )
+    public static void showPopup ( final JRootPane rootPane, final WebPopup popup, final boolean transferFocus )
     {
-        // Hiding all modal and simple popups inside window
-        // hideAllPopups ( window );
-
         // Displaying new modal popup
-        getPopupLayer ( window ).showPopup ( popup );
+        getPopupLayer ( rootPane ).showPopup ( popup );
 
         // Transfering focus to first focusable component in the popup
         if ( transferFocus )
@@ -191,117 +199,117 @@ public final class PopupManager
     }
 
     /**
-     * Returns cached popup layer for window containing specified component.
+     * Returns cached popup layer for root pane containing specified component.
      *
-     * @param component component used to determine window for popup layer
-     * @return cached popup layer for window containing specified component
+     * @param component component used to determine root pane for popup layer
+     * @return cached popup layer for root pane containing specified component
      */
     public static PopupLayer getPopupLayer ( final Component component )
     {
-        return getPopupLayer ( SwingUtils.getWindowAncestor ( component ) );
+        return getPopupLayer ( SwingUtils.getRootPane ( component ) );
     }
 
     /**
-     * Returns cached popup layer for the specified window.
+     * Returns cached popup layer for the specified root pane.
      *
-     * @param window window for popup layer
-     * @return cached popup layer for the specified window
+     * @param rootPane root pane for popup layer
+     * @return cached popup layer for the specified root pane
      */
-    public static PopupLayer getPopupLayer ( final Window window )
+    public static PopupLayer getPopupLayer ( final JRootPane rootPane )
     {
-        if ( popupLayers.containsKey ( window ) )
+        if ( popupLayers.containsKey ( rootPane ) )
         {
-            return popupLayers.get ( window );
+            return popupLayers.get ( rootPane );
         }
         else
         {
-            final JLayeredPane layeredPane = SwingUtils.getLayeredPane ( window );
+            final JLayeredPane layeredPane = rootPane.getLayeredPane ();
             if ( layeredPane == null )
             {
-                throw new IllegalArgumentException ( "Popup layer can be installed only into window containing JLayeredPane" );
+                throw new IllegalArgumentException ( "Popup layer can be installed only into window or applet with JLayeredPane" );
             }
 
             final PopupLayer popupLayer = new PopupLayer ();
-            installPopupLayer ( popupLayer, window, layeredPane );
-            popupLayers.put ( window, popupLayer );
+            installPopupLayer ( popupLayer, rootPane, layeredPane );
+            popupLayers.put ( rootPane, popupLayer );
 
             return popupLayer;
         }
     }
 
     /**
-     * Displays popup as modal on the window containing specified component.
+     * Displays popup as modal for the root pane containing specified component.
      *
-     * @param component component used to determine window on which modal popup will be displayed
+     * @param component component used to determine root pane for which modal popup will be displayed
      * @param popup     popup to display
-     * @param hfill     whether popup should fill the whole available window width or not
-     * @param vfill     whether popup should fill the whole available window height or not
+     * @param hfill     whether popup should fill the whole available width or not
+     * @param vfill     whether popup should fill the whole available height or not
      */
     public static void showModalPopup ( final Component component, final WebPopup popup, final boolean hfill, final boolean vfill )
     {
-        Window window = SwingUtils.getWindowAncestor ( component );
-        if ( window != null )
+        JRootPane rootPane = SwingUtils.getRootPane ( component );
+        if ( rootPane != null )
         {
-            showModalPopup ( window, popup, hfill, vfill );
+            showModalPopup ( rootPane, popup, hfill, vfill );
         }
     }
 
     /**
-     * Displays popup as modal on the specified window.
+     * Displays popup as modal for the specified root pane.
      *
-     * @param window window used to display modal popup
-     * @param popup  popup to display
-     * @param hfill  whether popup should fill the whole available window width or not
-     * @param vfill  whether popup should fill the whole available window height or not
+     * @param rootPane root pane used to display modal popup
+     * @param popup    popup to display
+     * @param hfill    whether popup should fill the whole available width or not
+     * @param vfill    whether popup should fill the whole available height or not
      */
-    public static void showModalPopup ( final Window window, final WebPopup popup, final boolean hfill, final boolean vfill )
+    public static void showModalPopup ( final JRootPane rootPane, final WebPopup popup, final boolean hfill, final boolean vfill )
     {
-        // Hiding all modal and simple popups inside window
-        hideAllPopups ( window );
+        // Hiding all modal and simple popups inside root pane
+        hideAllPopups ( rootPane );
 
         // Displaying new modal popup
-        getShadeLayer ( window ).showPopup ( popup, hfill, vfill );
+        getShadeLayer ( rootPane ).showPopup ( popup, hfill, vfill );
 
         // Transfering focus to first focusable component in the popup
         popup.transferFocus ();
     }
 
     /**
-     * Returns cached shade layer for the specified window.
+     * Returns cached shade layer for the specified root pane.
      *
-     * @param window window for the shade layer
-     * @return cached shade layer for the specified window
+     * @param rootPane root pane for the shade layer
+     * @return cached shade layer for the specified root pane
      */
-    private static ShadeLayer getShadeLayer ( final Window window )
+    private static ShadeLayer getShadeLayer ( final JRootPane rootPane )
     {
-        if ( shadeLayers.containsKey ( window ) )
+        if ( shadeLayers.containsKey ( rootPane ) )
         {
-            return shadeLayers.get ( window );
+            return shadeLayers.get ( rootPane );
         }
         else
         {
-            final JLayeredPane layeredPane = SwingUtils.getLayeredPane ( window );
+            final JLayeredPane layeredPane = rootPane.getLayeredPane ();
             if ( layeredPane == null )
             {
-                throw new IllegalArgumentException ( "Popup layer can be installed only into window containing JLayeredPane" );
+                throw new IllegalArgumentException ( "Popup layer can be installed only into window or applet with JLayeredPane" );
             }
 
             final ShadeLayer shadeLayer = new ShadeLayer ();
-            installPopupLayer ( shadeLayer, window, layeredPane );
-            shadeLayers.put ( window, shadeLayer );
+            installPopupLayer ( shadeLayer, rootPane, layeredPane );
+            shadeLayers.put ( rootPane, shadeLayer );
 
             return shadeLayer;
         }
     }
 
     /**
-     * Installs popup layer into the specified window.
+     * Installs popup layer for the specified root pane.
      *
      * @param popupLayer  popup layer to install
-     * @param window      window into which popup layer should be installed
+     * @param rootPane    root pane for which popup layer should be installed
      * @param layeredPane window's layered pane
      */
-    private static void installPopupLayer ( final PopupLayer popupLayer, final Window window, final JLayeredPane layeredPane )
+    private static void installPopupLayer ( final PopupLayer popupLayer, final JRootPane rootPane, final JLayeredPane layeredPane )
     {
         layeredPane.add ( popupLayer, JLayeredPane.PALETTE_LAYER );
         layeredPane.addComponentListener ( new ComponentAdapter ()
@@ -313,14 +321,19 @@ public final class PopupManager
                 popupLayer.revalidate ();
             }
         } );
-        window.addWindowStateListener ( new WindowStateListener ()
+
+        Window window = SwingUtils.getWindowAncestor ( rootPane );
+        if ( window != null )
         {
-            @Override
-            public void windowStateChanged ( WindowEvent e )
+            window.addWindowStateListener ( new WindowStateListener ()
             {
-                popupLayer.setBounds ( 0, 0, layeredPane.getWidth (), layeredPane.getHeight () );
-                popupLayer.revalidate ();
-            }
-        } );
+                @Override
+                public void windowStateChanged ( WindowEvent e )
+                {
+                    popupLayer.setBounds ( 0, 0, layeredPane.getWidth (), layeredPane.getHeight () );
+                    popupLayer.revalidate ();
+                }
+            } );
+        }
     }
 }
