@@ -42,15 +42,16 @@ Simply run `ant` command within the "build" library folder to build all artifact
 
 Here is a full list of usable ANT targets in WebLaF build script:
 
-1. **build.artifacts** -> default target, builds all artifacts at once
-2. **build.sources.zip** -> builds Sources.zip and saves it into artifacts folder
-3. **build.weblaf.jar** -> builds WebLookAndFeel.jar and saves it into artifacts folder
-4. **build.npe.jar** -> builds NinePatchEditor.jar and saves it into artifacts folder
-5. **build.weblaf.demo.jar** -> builds WebLookAndFeel_demo.jar and saves it into artifacts folder
-6. **build.javadoc** -> creates library zipped and unzipped JavaDoc versions inside artifacts folder
-7. **run.npe** -> build and run NinePatchEditor.jar (Nine-Patch Editor application)
-8. **run.weblaf** -> build and run WebLookAndFeel.jar (library information dialog)
-9. **run.weblaf.demo** -> build and run WebLookAndFeel_demo.jar (library demo application)
+1. **build.artifacts** -> default target, build all artifacts at once
+2. **build.sources.zip** -> build WebLaF sources zip archive (weblaf-src-x.xx.zip)
+3. **build.weblaf.jar** -> build WebLaF binary (weblaf-x.xx.jar)
+3. **build.weblaf.simple.jar** -> build WebLaF binary without dependencies (weblaf-simple-x.xx.jar)
+4. **build.npe.jar** -> build 9-patch editor application (ninepatch-editor-x.xx.jar)
+5. **build.weblaf.demo.jar** -> build WebLaF demo application (weblaf-demo-x.xx.jar)
+6. **build.javadoc** -> create zipped and unzipped library JavaDoc (weblaf-javadoc-x.xx.zip & javadoc)
+7. **run.npe** -> build and run ninepatch-editor-x.xx.jar (9-patch editor application)
+8. **run.weblaf** -> build and run weblaf-x.xx.jar (library information dialog)
+9. **run.weblaf.demo** -> build and run weblaf-demo-x.xx.jar (demo application)
 
 
 Example Usage
