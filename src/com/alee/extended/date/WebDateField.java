@@ -47,6 +47,7 @@ import java.util.List;
  * This is a custom component that allows date selection.
  *
  * @author Mikle Garin
+ * @see WebCalendar
  */
 
 public class WebDateField extends WebFormattedTextField implements ShapeProvider, SettingsMethods, SizeMethods<WebFormattedTextField>

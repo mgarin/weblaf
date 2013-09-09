@@ -48,6 +48,7 @@ import java.util.List;
  * This is a custom calendar component.
  *
  * @author Mikle Garin
+ * @see WebDateField
  */
 
 public class WebCalendar extends WebPanel

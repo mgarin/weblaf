@@ -22,11 +22,12 @@ https://github.com/mgarin/weblaf/releases
 
 Here are the direct links for the latest release:
 
-1. [**weblaf-1.19.jar**](https://github.com/mgarin/weblaf/releases/download/v1.19/weblaf-1.19.jar) - library jar
-2. [**weblaf-src-1.19.zip**](https://github.com/mgarin/weblaf/releases/download/v1.19/weblaf-src-1.19.zip) - project sources zip
-3. [**weblaf-demo-1.19.jar**](https://github.com/mgarin/weblaf/releases/download/v1.19/weblaf-demo-1.19.jar) - executable demo jar
-4. [**weblaf-javadoc-1.19.zip**](https://github.com/mgarin/weblaf/releases/download/v1.19/weblaf-javadoc-1.19.zip) - JavaDoc zip
-5. [**ninepatch-editor-1.19.jar**](https://github.com/mgarin/weblaf/releases/download/v1.19/ninepatch-editor-1.19.jar) - executable 9-patch editor jar
+1. [**weblaf-1.20.jar**](https://github.com/mgarin/weblaf/releases/download/v1.20/weblaf-1.20.jar) - library jar
+2. [**weblaf-simple-1.20.jar**](https://github.com/mgarin/weblaf/releases/download/v1.20/weblaf-simple-1.20.jar) - library jar without dependencies
+3. [**weblaf-src-1.20.zip**](https://github.com/mgarin/weblaf/releases/download/v1.20/weblaf-src-1.20.zip) - project sources zip
+4. [**weblaf-demo-1.20.jar**](https://github.com/mgarin/weblaf/releases/download/v1.20/weblaf-demo-1.20.jar) - executable demo jar
+5. [**weblaf-javadoc-1.20.zip**](https://github.com/mgarin/weblaf/releases/download/v1.20/weblaf-javadoc-1.20.zip) - JavaDoc zip
+6. [**ninepatch-editor-1.20.jar**](https://github.com/mgarin/weblaf/releases/download/v1.20/ninepatch-editor-1.20.jar) - executable 9-patch editor jar
 
 
 Roadmap
@@ -43,15 +44,15 @@ Simply run `ant` command within the "build" library folder to build all artifact
 Here is a full list of usable ANT targets in WebLaF build script:
 
 1. `build.artifacts` - default target, build all artifacts at once
-2. `build.sources.zip` -> **weblaf-src-x.xx.zip** - build WebLaF sources zip archive
-3. `build.weblaf.jar` -> **weblaf-x.xx.jar** - build WebLaF binary
+2. `build.weblaf.jar` -> **weblaf-x.xx.jar** - build WebLaF binary
 3. `build.weblaf.simple.jar` -> **weblaf-simple-x.xx.jar** - build WebLaF binary without dependencies
-4. `build.npe.jar` -> **ninepatch-editor-x.xx.jar** - build 9-patch editor application
-5. `build.weblaf.demo.jar` -> **weblaf-demo-x.xx.jar** - build WebLaF demo application
-6. `build.javadoc` -> **weblaf-javadoc-x.xx.zip** & **javadoc** - create zipped and unzipped library JavaDoc
-7. `run.npe` -> build and run ninepatch-editor-x.xx.jar - 9-patch editor application
-8. `run.weblaf` -> build and run weblaf-x.xx.jar - library information dialog
-9. `run.weblaf.demo` -> build and run weblaf-demo-x.xx.jar - demo application
+4. `build.sources.zip` -> **weblaf-src-x.xx.zip** - build WebLaF sources zip archive
+5. `build.npe.jar` -> **ninepatch-editor-x.xx.jar** - build 9-patch editor application
+6. `build.weblaf.demo.jar` -> **weblaf-demo-x.xx.jar** - build WebLaF demo application
+7. `build.javadoc` -> **weblaf-javadoc-x.xx.zip** & **javadoc** - create zipped and unzipped library JavaDoc
+8. `run.npe` -> build and run ninepatch-editor-x.xx.jar - 9-patch editor application
+9. `run.weblaf` -> build and run weblaf-x.xx.jar - library information dialog
+10. `run.weblaf.demo` -> build and run weblaf-demo-x.xx.jar - demo application
 
 
 Example Usage
