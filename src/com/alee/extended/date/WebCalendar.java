@@ -45,51 +45,111 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * User: mgarin Date: 01.11.11 Time: 14:56
+ * This is a custom calendar component.
+ *
+ * @author Mikle Garin
  */
 
 public class WebCalendar extends WebPanel
 {
+    /**
+     * Used icons.
+     */
     public static final ImageIcon previousSkipIcon = new ImageIcon ( WebCalendar.class.getResource ( "icons/previous_skip.png" ) );
     public static final ImageIcon previousIcon = new ImageIcon ( WebCalendar.class.getResource ( "icons/previous.png" ) );
     public static final ImageIcon nextIcon = new ImageIcon ( WebCalendar.class.getResource ( "icons/next.png" ) );
     public static final ImageIcon nextSkipIcon = new ImageIcon ( WebCalendar.class.getResource ( "icons/next_skip.png" ) );
 
-    private List<DateSelectionListener> dateSelectionListeners = new ArrayList<DateSelectionListener> ( 1 );
+    /**
+     * Date selection listeners.
+     */
+    protected List<DateSelectionListener> dateSelectionListeners = new ArrayList<DateSelectionListener> ( 1 );
 
-    private SimpleDateFormat titleFormat = new SimpleDateFormat ( "MMMM yyyy" );
-    private Date date = new Date ();
-    private Date shownDate = new Date ();
-    private Date oldShownDate = new Date ( System.currentTimeMillis () );
+    /**
+     * Calendar title format.
+     * Usually displays currently visible month and year.
+     */
+    protected SimpleDateFormat titleFormat = new SimpleDateFormat ( "MMMM yyyy" );
 
-    private boolean startWeekFromSunday = false;
+    /**
+     * Whether sunday should be the first day of week or not.
+     */
+    protected boolean startWeekFromSunday = false;
 
-    private boolean animate = true;
-    private boolean horizontalSlide = true;
+    /**
+     * Whether should animate month transitions or not.
+     */
+    protected boolean animate = true;
 
-    private DateCustomizer dateCustomizer = null;
+    /**
+     * Whether should perform horizontal slide animation or not.
+     * todo Replace with transition panel customizer
+     */
+    protected boolean horizontalSlide = true;
 
-    private Color otherMonthColor = new Color ( 90, 90, 90 );
-    private Color weekendsColor = new Color ( 160, 0, 0 );
+    /**
+     * Other month date buttons foreground.
+     */
+    protected Color otherMonthForeground = new Color ( 90, 90, 90 );
 
-    private WebButton previousSkip;
-    private WebButton previous;
-    private ComponentTransition titlePanel;
-    private WebButton next;
-    private WebButton nextSkip;
+    /**
+     * Current month date buttons foreground.
+     */
+    protected Color currentMonthForeground = Color.BLACK;
 
-    private WebPanel weekHeaders;
+    /**
+     * Weekends date buttons foreground.
+     */
+    protected Color weekendsForeground = new Color ( 160, 0, 0 );
 
-    private WebPanel monthDays;
-    private ComponentTransition monthDaysTransition;
+    /**
+     * Date buttons customizer.
+     */
+    protected DateCustomizer dateCustomizer = null;
 
-    private WebToggleButton lastSelectedDayButton;
+    /**
+     * Currently selected date.
+     */
+    protected Date date = new Date ();
 
+    /**
+     * Displayed month date.
+     */
+    protected Date shownDate = new Date ();
+
+    /**
+     * Previously displayed month date.
+     * Used to perform animation in a specific direction.
+     */
+    protected Date oldShownDate = new Date ();
+
+    /**
+     * UI components.
+     */
+    protected WebButton previousSkip;
+    protected WebButton previous;
+    protected ComponentTransition titlePanel;
+    protected WebLabel titleLabel;
+    protected WebButton next;
+    protected WebButton nextSkip;
+    protected WebPanel weekHeaders;
+    protected WebPanel monthDays;
+    protected ComponentTransition monthDaysTransition;
+    protected WebToggleButton lastSelectedDayButton;
+
+    /**
+     * Constructs new calendar without selected date.
+     */
     public WebCalendar ()
     {
         this ( null );
     }
 
+    /**
+     * Constructs new calendar with the specified selected date.
+     *
+     * @param date selected date
+     */
     public WebCalendar ( Date date )
     {
         super ( true );
@@ -106,7 +166,6 @@ public class WebCalendar extends WebPanel
         WebPanel centerPanel = new WebPanel ();
         centerPanel.setOpaque ( false );
         add ( centerPanel, BorderLayout.CENTER );
-
 
         // Header panel
         WebPanel header = new WebPanel ();
@@ -151,7 +210,7 @@ public class WebCalendar extends WebPanel
             {
                 if ( SwingUtilities.isLeftMouseButton ( e ) )
                 {
-                    setShownDate ( new Date (), true );
+                    setShownDate ( new Date () );
                 }
             }
         } );
@@ -185,7 +244,6 @@ public class WebCalendar extends WebPanel
         rightHeader.add ( nextSkip, BorderLayout.EAST );
         header.add ( rightHeader, BorderLayout.EAST );
 
-
         // Week days
         weekHeaders = new WebPanel ();
         weekHeaders.setUndecorated ( false );
@@ -202,8 +260,8 @@ public class WebCalendar extends WebPanel
         updateWeekHeaders ();
 
         // Month days
-        monthDays = createMonthDaysPanel ();
-        updateMonthDays ( monthDays );
+        monthDays = createMonthPanel ();
+        updateMonth ( monthDays );
         monthDaysTransition = new ComponentTransition ( monthDays );
         monthDaysTransition.setOpaque ( false );
         monthDaysTransition.addTransitionListener ( new TransitionAdapter ()
@@ -211,32 +269,20 @@ public class WebCalendar extends WebPanel
             @Override
             public void transitionFinished ()
             {
-                // Retrieve focus to selected date if it is visible
                 requestFocusToSelected ();
             }
         } );
         centerPanel.add ( monthDaysTransition, BorderLayout.CENTER );
-
-        // todo Enter hotkey
-        // Date selection by enter
-        //        HotkeyManager.registerHotkey ( Hotkey.ENTER, new HotkeyRunnable ()
-        //        {
-        //            @Override
-        //            public void run ( KeyEvent e )
-        //            {
-        //                fireDateSelected ( WebCalendar.this.date );
-        //            }
-        //        } );
     }
 
-    private WebLabel createTitleLabel ()
+    /**
+     * Creates and returns title label.
+     *
+     * @return created title label
+     */
+    protected WebLabel createTitleLabel ()
     {
-        return createTitleLabel ( titleFormat.format ( shownDate ) );
-    }
-
-    private WebLabel createTitleLabel ( String title )
-    {
-        WebLabel titleLabel = new WebLabel ( title );
+        titleLabel = new WebLabel ( titleFormat.format ( shownDate ) );
         titleLabel.setBoldFont ();
         titleLabel.setDrawShade ( true );
         titleLabel.setHorizontalAlignment ( WebLabel.CENTER );
@@ -244,7 +290,36 @@ public class WebCalendar extends WebPanel
         return titleLabel;
     }
 
-    private void changeMonth ( int change )
+    /**
+     * Switches to new title label.
+     * In case animation is disabled simply changes title text.
+     */
+    protected void switchTitleLabel ()
+    {
+        if ( animate )
+        {
+            titlePanel.performTransition ( createTitleLabel () );
+        }
+        else
+        {
+            updateTitleLabel ();
+        }
+    }
+
+    /**
+     * Updates title label text.
+     */
+    protected void updateTitleLabel ()
+    {
+        titleLabel.setText ( titleFormat.format ( shownDate ) );
+    }
+
+    /**
+     * Changes displayed month.
+     *
+     * @param change months change amount
+     */
+    protected void changeMonth ( int change )
     {
         // Reverese date change due to reversed orientation
         if ( !WebCalendar.this.getComponentOrientation ().isLeftToRight () )
@@ -255,10 +330,15 @@ public class WebCalendar extends WebPanel
         Calendar calendar = Calendar.getInstance ();
         calendar.setTime ( shownDate );
         calendar.set ( Calendar.MONTH, calendar.get ( Calendar.MONTH ) + change );
-        setShownDate ( calendar.getTime (), true );
+        setShownDate ( calendar.getTime () );
     }
 
-    private void changeYear ( int change )
+    /**
+     * Changes displayed year.
+     *
+     * @param change years change amount
+     */
+    protected void changeYear ( int change )
     {
         // Reverese date change due to reversed orientation
         if ( !WebCalendar.this.getComponentOrientation ().isLeftToRight () )
@@ -269,10 +349,15 @@ public class WebCalendar extends WebPanel
         Calendar calendar = Calendar.getInstance ();
         calendar.setTime ( shownDate );
         calendar.set ( Calendar.YEAR, calendar.get ( Calendar.YEAR ) + change );
-        setShownDate ( calendar.getTime (), true );
+        setShownDate ( calendar.getTime () );
     }
 
-    private WebPanel createMonthDaysPanel ()
+    /**
+     * Creates and returns month panel.
+     *
+     * @return created month panel
+     */
+    protected WebPanel createMonthPanel ()
     {
         WebPanel monthDays = new WebPanel ();
         monthDays.setOpaque ( false );
@@ -289,13 +374,18 @@ public class WebCalendar extends WebPanel
         return monthDays;
     }
 
-    private void switchMonthDays ( boolean animate )
+    /**
+     * Switches view to new displayed month.
+     *
+     * @param animate whether should animate transition or not
+     */
+    protected void switchMonth ( boolean animate )
     {
-        if ( this.animate && animate )
+        if ( animate )
         {
             // Creating new dates panel
-            WebPanel newMonthDays = createMonthDaysPanel ();
-            updateMonthDays ( newMonthDays );
+            WebPanel newMonthDays = createMonthPanel ();
+            updateMonth ( newMonthDays );
 
             // Setting collapse transition effects
             boolean ltr = WebCalendar.this.getComponentOrientation ().isLeftToRight ();
@@ -313,12 +403,15 @@ public class WebCalendar extends WebPanel
         else
         {
             // Simply updating current dates panel
-            updateMonthDays ( monthDays );
+            updateMonth ( monthDays );
             requestFocusToSelected ();
         }
     }
 
-    private void requestFocusToSelected ()
+    /**
+     * Requests focus to last selected date button.
+     */
+    protected void requestFocusToSelected ()
     {
         if ( lastSelectedDayButton != null )
         {
@@ -326,31 +419,59 @@ public class WebCalendar extends WebPanel
         }
     }
 
-    private Direction getNextDirection ( boolean ltr )
+    /**
+     * Returns next month transition direction.
+     *
+     * @param ltr whether LTR orientation or not
+     * @return next month transition direction
+     */
+    protected Direction getNextDirection ( boolean ltr )
     {
-        if ( horizontalSlide )
-        {
-            return ltr ? Direction.right : Direction.left;
-        }
-        else
-        {
-            return Direction.up;
-        }
+        return horizontalSlide ? ltr ? Direction.right : Direction.left : Direction.up;
     }
 
-    private Direction getPrevDirection ( boolean ltr )
+    /**
+     * Returns previous month transition direction.
+     *
+     * @param ltr whether LTR orientation or not
+     * @return previous month transition direction
+     */
+    protected Direction getPrevDirection ( boolean ltr )
     {
-        if ( horizontalSlide )
-        {
-            return ltr ? Direction.left : Direction.right;
-        }
-        else
-        {
-            return Direction.down;
-        }
+        return horizontalSlide ? ltr ? Direction.left : Direction.right : Direction.down;
     }
 
-    private void updateMonthDays ( JPanel monthDays )
+    /**
+     * Updates week headers.
+     */
+    protected void updateWeekHeaders ()
+    {
+        weekHeaders.removeAll ();
+        for ( int i = 1; i <= 7; i++ )
+        {
+            int day = startWeekFromSunday ? ( i == 1 ? 7 : i - 1 ) : i;
+
+            WebLabel dayOfWeekLabel = new WebLabel ();
+            dayOfWeekLabel.setLanguage ( "weblaf.ex.calendar.dayOfWeek." + day );
+            dayOfWeekLabel.setDrawShade ( true );
+            dayOfWeekLabel.setHorizontalAlignment ( WebLabel.CENTER );
+            dayOfWeekLabel.setFontSizeAndStyle ( 10, Font.BOLD );
+            weekHeaders.add ( dayOfWeekLabel, ( i - 1 ) * 2 + ",0" );
+
+            if ( i < 7 )
+            {
+                weekHeaders.add ( new WebSeparator ( WebSeparator.VERTICAL ), ( ( i - 1 ) * 2 + 1 ) + ",0" );
+            }
+        }
+        weekHeaders.revalidate ();
+    }
+
+    /**
+     * Updates displayed month date buttons.
+     *
+     * @param monthDays panel to update
+     */
+    protected void updateMonth ( JPanel monthDays )
     {
         monthDays.removeAll ();
         lastSelectedDayButton = null;
@@ -406,8 +527,7 @@ public class WebCalendar extends WebPanel
         {
             final Date thisDate = calendar.getTime ();
             final WebToggleButton day = new WebToggleButton ();
-            day.setFont ( day.getFont ().deriveFont ( Font.PLAIN ) );
-            day.setForeground ( otherMonthColor );
+            day.setForeground ( otherMonthForeground );
             day.setText ( "" + calendar.get ( Calendar.DAY_OF_MONTH ) );
             day.setRolloverDecoratedOnly ( true );
             day.setHorizontalAlignment ( WebButton.RIGHT );
@@ -420,7 +540,7 @@ public class WebCalendar extends WebPanel
                 {
                     if ( day.isSelected () )
                     {
-                        setDateImpl ( thisDate, animate );
+                        setDateImpl ( thisDate );
                     }
                 }
             } );
@@ -449,7 +569,7 @@ public class WebCalendar extends WebPanel
 
             final Date thisDate = calendar.getTime ();
             final WebToggleButton day = new WebToggleButton ();
-            day.setForeground ( weekend ? weekendsColor : Color.BLACK );
+            day.setForeground ( weekend ? weekendsForeground : currentMonthForeground );
             day.setText ( "" + calendar.get ( Calendar.DAY_OF_MONTH ) );
             day.setSelected ( selected );
             day.setRolloverDecoratedOnly ( true );
@@ -462,7 +582,7 @@ public class WebCalendar extends WebPanel
                 public void actionPerformed ( ActionEvent e )
                 {
                     lastSelectedDayButton = day;
-                    setDateImpl ( thisDate, animate );
+                    setDateImpl ( thisDate );
                 }
             } );
             if ( dateCustomizer != null )
@@ -494,8 +614,7 @@ public class WebCalendar extends WebPanel
         {
             final Date thisDate = calendar.getTime ();
             final WebToggleButton day = new WebToggleButton ();
-            day.setFont ( day.getFont ().deriveFont ( Font.PLAIN ) );
-            day.setForeground ( otherMonthColor );
+            day.setForeground ( otherMonthForeground );
             day.setText ( "" + calendar.get ( Calendar.DAY_OF_MONTH ) );
             day.setRolloverDecoratedOnly ( true );
             day.setHorizontalAlignment ( WebButton.RIGHT );
@@ -508,7 +627,7 @@ public class WebCalendar extends WebPanel
                 {
                     if ( day.isSelected () )
                     {
-                        setDateImpl ( thisDate, animate );
+                        setDateImpl ( thisDate );
                     }
                 }
             } );
@@ -532,42 +651,53 @@ public class WebCalendar extends WebPanel
         monthDays.revalidate ();
     }
 
-    private void updateWeekHeaders ()
+    /**
+     * Returns title format.
+     *
+     * @return title format
+     */
+    public SimpleDateFormat getTitleFormat ()
     {
-        weekHeaders.removeAll ();
-        for ( int i = 1; i <= 7; i++ )
-        {
-            int day = startWeekFromSunday ? ( i == 1 ? 7 : i - 1 ) : i;
-            WebLabel dayOfWeekLabel = new WebLabel ();
-            dayOfWeekLabel.setLanguage ( "weblaf.ex.calendar.dayOfWeek." + day );
-            dayOfWeekLabel.setDrawShade ( true );
-            dayOfWeekLabel.setHorizontalAlignment ( WebLabel.CENTER );
-            dayOfWeekLabel.setFont ( dayOfWeekLabel.getFont ().deriveFont ( 10f ).deriveFont ( Font.BOLD ) );
-            weekHeaders.add ( dayOfWeekLabel, ( i - 1 ) * 2 + ",0" );
-
-            if ( i < 7 )
-            {
-                weekHeaders.add ( new WebSeparator ( WebSeparator.VERTICAL ), ( ( i - 1 ) * 2 + 1 ) + ",0" );
-            }
-        }
-        weekHeaders.revalidate ();
+        return titleFormat;
     }
 
-    private void updateTitleLabel ()
+    /**
+     * Sets title format.
+     *
+     * @param titleFormat title format
+     */
+    public void setTitleFormat ( SimpleDateFormat titleFormat )
     {
-        titlePanel.performTransition ( createTitleLabel () );
+        this.titleFormat = titleFormat;
+        updateTitleLabel ();
     }
 
+    /**
+     * Returns currently selected date.
+     *
+     * @return currently selected date
+     */
     public Date getDate ()
     {
         return date;
     }
 
+    /**
+     * Sets currently selected and displayed date.
+     *
+     * @param date date to select and display
+     */
     public void setDate ( Date date )
     {
         setDate ( date, animate );
     }
 
+    /**
+     * Sets currently selected and displayed date.
+     *
+     * @param date    date to select and display
+     * @param animate whether should animate month transition or not
+     */
     public void setDate ( Date date, boolean animate )
     {
         if ( !CompareUtils.equals ( this.date, date ) )
@@ -576,119 +706,255 @@ public class WebCalendar extends WebPanel
         }
     }
 
-    private void setDateImpl ( Date date, boolean animate )
+    /**
+     * Sets currently selected and displayed date.
+     *
+     * @param date date to select and display
+     */
+    protected void setDateImpl ( Date date )
+    {
+        setDateImpl ( date, animate );
+    }
+
+    /**
+     * Sets currently selected and displayed date.
+     *
+     * @param date    date to select and display
+     * @param animate whether should animate month transition or not
+     */
+    protected void setDateImpl ( Date date, boolean animate )
     {
         this.date = date;
         setShownDate ( date, animate );
         fireDateSelected ( date );
     }
 
+    /**
+     * Returns displayed month date.
+     *
+     * @return displayed month date
+     */
     public Date getShownDate ()
     {
         return shownDate;
     }
 
-    public void setShownDate ( Date shownDate, boolean animate )
+    /**
+     * Sets displayed month date.
+     *
+     * @param date displayed month date
+     */
+    public void setShownDate ( Date date )
+    {
+        setShownDate ( date, animate );
+    }
+
+    /**
+     * Sets displayed month date.
+     *
+     * @param date    displayed month date
+     * @param animate whether should animate month transition or not
+     */
+    public void setShownDate ( Date date, boolean animate )
     {
         this.oldShownDate = this.shownDate;
-        this.shownDate = shownDate;
+        this.shownDate = date;
 
         Calendar calendar = Calendar.getInstance ();
         calendar.setTime ( oldShownDate );
         int oldMonth = calendar.get ( Calendar.MONTH );
         int oldYear = calendar.get ( Calendar.YEAR );
-        calendar.setTime ( shownDate );
+        calendar.setTime ( date );
         int newMonth = calendar.get ( Calendar.MONTH );
         int newYear = calendar.get ( Calendar.YEAR );
         if ( oldMonth != newMonth || oldYear != newYear )
         {
-            updateTitleLabel ();
-            switchMonthDays ( animate );
+            switchTitleLabel ();
+            switchMonth ( animate );
         }
     }
 
+    /**
+     * Returns whether sunday should be the first day of week or not.
+     *
+     * @return true if sunday should be the first day of week, false otherwise
+     */
     public boolean isStartWeekFromSunday ()
     {
         return startWeekFromSunday;
     }
 
+    /**
+     * Sets whether sunday should be the first day of week or not.
+     *
+     * @param startWeekFromSunday whether sunday should be the first day of week or not
+     */
     public void setStartWeekFromSunday ( boolean startWeekFromSunday )
     {
         this.startWeekFromSunday = startWeekFromSunday;
         updateWeekHeaders ();
-        updateMonthDays ( monthDays );
+        updateMonth ( monthDays );
     }
 
+    /**
+     * Returns whether should animate month transitions or not.
+     *
+     * @return true if should animate month transitions, false otherwise
+     */
     public boolean isAnimate ()
     {
         return animate;
     }
 
+    /**
+     * Sets whether should animate month transitions or not.
+     *
+     * @param animate whether should animate month transitions or not
+     */
     public void setAnimate ( boolean animate )
     {
         this.animate = animate;
     }
 
+    /**
+     * Returns whether should perform horizontal slide animation or not.
+     *
+     * @return true if should perform horizontal slide animation, false otherwise
+     */
     public boolean isHorizontalSlide ()
     {
         return horizontalSlide;
     }
 
+    /**
+     * Sets whether should perform horizontal slide animation or not.
+     *
+     * @param horizontalSlide whether should perform horizontal slide animation or not
+     */
     public void setHorizontalSlide ( boolean horizontalSlide )
     {
         this.horizontalSlide = horizontalSlide;
     }
 
-    public Color getOtherMonthColor ()
+    /**
+     * Returns other month date buttons foreground.
+     *
+     * @return other month date buttons foreground
+     */
+    public Color getOtherMonthForeground ()
     {
-        return otherMonthColor;
+        return otherMonthForeground;
     }
 
-    public void setOtherMonthColor ( Color otherMonthColor )
+    /**
+     * Sets other month date buttons foreground.
+     *
+     * @param color other month date buttons foreground
+     */
+    public void setOtherMonthForeground ( Color color )
     {
-        this.otherMonthColor = otherMonthColor;
-        updateMonthDays ( monthDays );
+        this.otherMonthForeground = color;
+        updateMonth ( monthDays );
     }
 
-    public Color getWeekendsColor ()
+    /**
+     * Returns current month date buttons foreground.
+     *
+     * @return current month date buttons foreground
+     */
+    public Color getCurrentMonthForeground ()
     {
-        return weekendsColor;
+        return currentMonthForeground;
     }
 
-    public void setWeekendsColor ( Color weekendsColor )
+    /**
+     * Sets current month date buttons foreground.
+     *
+     * @param color current month date buttons foreground
+     */
+    public void setCurrentMonthForeground ( Color color )
     {
-        this.weekendsColor = weekendsColor;
-        updateMonthDays ( monthDays );
+        this.currentMonthForeground = color;
+        updateMonth ( monthDays );
     }
 
+    /**
+     * Returns weekends date buttons foreground.
+     *
+     * @return weekends date buttons foreground
+     */
+    public Color getWeekendsForeground ()
+    {
+        return weekendsForeground;
+    }
+
+    /**
+     * Sets weekends date buttons foreground.
+     *
+     * @param color weekends date buttons foreground
+     */
+    public void setWeekendsForeground ( Color color )
+    {
+        this.weekendsForeground = color;
+        updateMonth ( monthDays );
+    }
+
+    /**
+     * Returns date buttons customizer.
+     *
+     * @return date buttons customizer
+     */
     public DateCustomizer getDateCustomizer ()
     {
         return dateCustomizer;
     }
 
+    /**
+     * Sets date buttons customizer.
+     *
+     * @param dateCustomizer date buttons customizer
+     */
     public void setDateCustomizer ( DateCustomizer dateCustomizer )
     {
         this.dateCustomizer = dateCustomizer;
-        updateMonthDays ( monthDays );
+        updateMonth ( monthDays );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setEnabled ( boolean enabled )
     {
-        SwingUtils.setEnabledRecursively ( this, enabled, true );
         super.setEnabled ( enabled );
+        SwingUtils.setEnabledRecursively ( this, enabled, true );
     }
 
+    /**
+     * Adds date selection listener.
+     *
+     * @param listener date selection listener
+     */
     public void addDateSelectionListener ( DateSelectionListener listener )
     {
         dateSelectionListeners.add ( listener );
     }
 
+    /**
+     * Removes date selection listener.
+     *
+     * @param listener date selection listener
+     */
     public void removeDateSelectionListener ( DateSelectionListener listener )
     {
         dateSelectionListeners.remove ( listener );
     }
 
+    /**
+     * Informs about date selection change.
+     *
+     * @param date new selected date
+     */
     public void fireDateSelected ( Date date )
     {
         for ( DateSelectionListener listener : CollectionUtils.copy ( dateSelectionListeners ) )

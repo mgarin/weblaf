@@ -116,7 +116,7 @@ public class ComponentTransition extends WebPanel
             @Override
             public void run ()
             {
-                performThreadedTransition ( content );
+                performTransitionImpl ( content );
             }
         } );
     }
@@ -132,7 +132,7 @@ public class ComponentTransition extends WebPanel
             @Override
             public void run ()
             {
-                performThreadedTransition ( content );
+                performTransitionImpl ( content );
             }
         } );
     }
@@ -141,7 +141,7 @@ public class ComponentTransition extends WebPanel
      * Transition call
      */
 
-    private void performThreadedTransition ( final Component content )
+    private void performTransitionImpl ( final Component content )
     {
         // Ignore repeated change or change to same content
         if ( lastContent == content )
@@ -152,7 +152,7 @@ public class ComponentTransition extends WebPanel
         // When animation disabled or component is not shown performing transition instantly
         if ( !isShowing () )
         {
-            finishTransition ( content );
+            finishTransitionImpl ( content );
             return;
         }
 
@@ -207,7 +207,7 @@ public class ComponentTransition extends WebPanel
                 public void focusGained ( FocusEvent e )
                 {
                     removeFocusListener ( this );
-                    continueThreadedTransition ( content, width, height, currentSnapshot );
+                    continueTransitionImpl ( content, width, height, currentSnapshot );
                 }
             };
             addFocusListener ( focusHandle );
@@ -217,16 +217,16 @@ public class ComponentTransition extends WebPanel
             {
                 // Request focus failed, continue without changing focus
                 removeFocusListener ( focusHandle );
-                continueThreadedTransition ( content, width, height, currentSnapshot );
+                continueTransitionImpl ( content, width, height, currentSnapshot );
             }
         }
         else
         {
-            continueThreadedTransition ( content, width, height, currentSnapshot );
+            continueTransitionImpl ( content, width, height, currentSnapshot );
         }
     }
 
-    private void continueThreadedTransition ( final Component content, int width, int height, BufferedImage currentSnapshot )
+    private void continueTransitionImpl ( final Component content, int width, int height, BufferedImage currentSnapshot )
     {
         // New content image
         removeAll ();
@@ -258,7 +258,7 @@ public class ComponentTransition extends WebPanel
             @Override
             public void transitionFinished ()
             {
-                finishTransition ( content );
+                finishTransitionImpl ( content );
             }
         } );
 
@@ -266,7 +266,7 @@ public class ComponentTransition extends WebPanel
         transition.performTransition ();
     }
 
-    private void finishTransition ( Component content )
+    private void finishTransitionImpl ( Component content )
     {
         // Destroying all image links
         this.removeAll ();

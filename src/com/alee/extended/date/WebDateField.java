@@ -17,7 +17,6 @@
 
 package com.alee.extended.date;
 
-import com.alee.extended.window.TestFrame;
 import com.alee.laf.StyleConstants;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
@@ -330,13 +329,6 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
         // Showing popup and changing focus
         popup.setVisible ( true );
         calendar.requestFocusInWindow ();
-    }
-
-    public static void main ( String[] args )
-    {
-        // todo TMP
-        WebLookAndFeel.install ();
-        TestFrame.show ( new WebDateField ( new Date () ), 300 );
     }
 
     /**
