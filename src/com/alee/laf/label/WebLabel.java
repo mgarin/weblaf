@@ -535,4 +535,120 @@ public class WebLabel extends JLabel implements LanguageMethods, FontMethods<Web
     {
         return SizeUtils.getPreferredSize ( this, super.getPreferredSize () );
     }
+
+    /**
+     * Creates and returns new label with the specified preferences.
+     *
+     * @param key label language key
+     * @return created label
+     */
+    public static WebLabel createTranslatedLabel ( String key )
+    {
+        WebLabel label = new WebLabel ();
+        label.setLanguage ( key );
+        return label;
+    }
+
+    /**
+     * Creates and returns new label with the specified preferences.
+     *
+     * @param key  label language key
+     * @param data label language data
+     * @return created label
+     */
+    public static WebLabel createTranslatedLabel ( String key, Object... data )
+    {
+        WebLabel label = new WebLabel ();
+        label.setLanguage ( key, data );
+        return label;
+    }
+
+    /**
+     * Creates and returns new label with the specified preferences.
+     *
+     * @param halign horizontal alignment
+     * @param key    label language key
+     * @return created label
+     */
+    public static WebLabel createTranslatedLabel ( int halign, String key )
+    {
+        WebLabel label = new WebLabel ( halign );
+        label.setLanguage ( key );
+        return label;
+    }
+
+    /**
+     * Creates and returns new label with the specified preferences.
+     *
+     * @param halign horizontal alignment
+     * @param key    label language key
+     * @param data   label language data
+     * @return created label
+     */
+    public static WebLabel createTranslatedLabel ( int halign, String key, Object... data )
+    {
+        WebLabel label = new WebLabel ( halign );
+        label.setLanguage ( key, data );
+        return label;
+    }
+
+    /**
+     * Creates and returns new label with the specified preferences.
+     *
+     * @param icon label icon
+     * @param key  label language key
+     * @return created label
+     */
+    public static WebLabel createTranslatedLabel ( Icon icon, String key )
+    {
+        WebLabel label = new WebLabel ( icon );
+        label.setLanguage ( key );
+        return label;
+    }
+
+    /**
+     * Creates and returns new label with the specified preferences.
+     *
+     * @param icon label icon
+     * @param key  label language key
+     * @param data label language data
+     * @return created label
+     */
+    public static WebLabel createTranslatedLabel ( Icon icon, String key, Object... data )
+    {
+        WebLabel label = new WebLabel ( icon );
+        label.setLanguage ( key, data );
+        return label;
+    }
+
+    /**
+     * Creates and returns new label with the specified preferences.
+     *
+     * @param halign horizontal alignment
+     * @param icon   label icon
+     * @param key    label language key
+     * @return created label
+     */
+    public static WebLabel createTranslatedLabel ( int halign, Icon icon, String key )
+    {
+        WebLabel label = new WebLabel ( icon, halign );
+        label.setLanguage ( key );
+        return label;
+    }
+
+    /**
+     * Creates and returns new label with the specified preferences.
+     *
+     * @param halign horizontal alignment
+     * @param icon   label icon
+     * @param key    label language key
+     * @param data   label language data
+     * @return created label
+     */
+    public static WebLabel createTranslatedLabel ( int halign, Icon icon, String key, Object... data )
+    {
+        WebLabel label = new WebLabel ( icon, halign );
+        label.setLanguage ( key, data );
+        return label;
+    }
 }
