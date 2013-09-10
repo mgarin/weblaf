@@ -18,10 +18,7 @@
 package com.alee.laf.list;
 
 import javax.swing.*;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.Vector;
+import java.util.*;
 
 /**
  * Modified and optimized Swing DefaultListModel.
@@ -93,6 +90,16 @@ public class WebListModel<T> extends AbstractListModel
     public T getElementAt ( int index )
     {
         return delegate.elementAt ( index );
+    }
+
+    /**
+     * Returns list of all elements.
+     *
+     * @return list of all elements
+     */
+    public List<T> getElements ()
+    {
+        return new ArrayList<T> ( delegate );
     }
 
     /**
