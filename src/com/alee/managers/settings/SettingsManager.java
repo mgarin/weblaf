@@ -723,9 +723,9 @@ public final class SettingsManager
      * @param key settings key
      * @return Object value
      */
-    public static Object get ( String key )
+    public static <T> T get ( String key )
     {
-        return get ( key, ( Object ) null );
+        return get ( key, ( T ) null );
     }
 
     /**
