@@ -62,7 +62,7 @@ public final class LanguageManager implements LanguageConstants
     public static String DEFAULT = getDefaultLanguageKey ();
 
     // Current language
-    private static String language;
+    private static String language = DEFAULT;
 
     // todo Current country
     // private static String country;
@@ -75,39 +75,39 @@ public final class LanguageManager implements LanguageConstants
 
     // Language listeners
     private static final Object languageListenersLock = new Object ();
-    private static List<LanguageListener> languageListeners;
+    private static List<LanguageListener> languageListeners = new ArrayList<LanguageListener> ();
 
     // Language listeners
     private static final Object languageKeyListenersLock = new Object ();
-    private static Map<String, List<LanguageKeyListener>> languageKeyListeners;
+    private static Map<String, List<LanguageKeyListener>> languageKeyListeners = new HashMap<String, List<LanguageKeyListener>> ();
 
     // Global dictionary that contains all of the entries and its cache
     private static Dictionary globalDictionary;
-    private static Map<String, Value> globalCache;
+    private static Map<String, Value> globalCache = new HashMap<String, Value> ();
 
     // Global dictionary that contains all of the entries
-    private static List<Dictionary> dictionaries;
+    private static List<Dictionary> dictionaries = new ArrayList<Dictionary> ();
 
     // Registered components
     private static final Object componentsLock = new Object ();
-    private static Map<Component, String> components;
-    private static Map<Component, Object[]> componentsData;
-    private static Map<Component, String> componentKeysCache;
-    private static Map<Component, AncestorListener> componentsListeners;
+    private static Map<Component, String> components = new WeakHashMap<Component, String> ();
+    private static Map<Component, Object[]> componentsData = new WeakHashMap<Component, Object[]> ();
+    private static Map<Component, String> componentKeysCache = new WeakHashMap<Component, String> ();
+    private static Map<Component, AncestorListener> componentsListeners = new WeakHashMap<Component, AncestorListener> ();
 
     // Registered language containers
     private static final Object languageContainersLock = new Object ();
-    private static Map<Container, String> languageContainers;
+    private static Map<Container, String> languageContainers = new WeakHashMap<Container, String> ();
 
     // Registered updaters
+    private static final LanguageUpdaterComparator languageUpdaterComparator = new LanguageUpdaterComparator ();
     private static final Object updatersLock = new Object ();
-    private static List<LanguageUpdater> updaters;
-    private static Map<Component, LanguageUpdater> customUpdaters;
-    private static Map<Class, LanguageUpdater> updatersCache;
-    private static LanguageUpdaterComparator languageUpdaterComparator;
+    private static List<LanguageUpdater> updaters = new ArrayList<LanguageUpdater> ();
+    private static Map<Component, LanguageUpdater> customUpdaters = new WeakHashMap<Component, LanguageUpdater> ();
+    private static Map<Class, LanguageUpdater> updatersCache = new HashMap<Class, LanguageUpdater> ();
 
     // Tooltips cache
-    private static Map<Component, List<WebCustomTooltip>> tooltipsCache;
+    private static Map<Component, List<WebCustomTooltip>> tooltipsCache = new WeakHashMap<Component, List<WebCustomTooltip>> ();
 
     // Initialization mark
     private static boolean initialized = false;
@@ -126,24 +126,8 @@ public final class LanguageManager implements LanguageConstants
             language = supportedLanguages.contains ( DEFAULT ) ? DEFAULT : ENGLISH;
             updateLocale ();
 
-            // Listeners
-            languageListeners = new ArrayList<LanguageListener> ();
-            languageKeyListeners = new HashMap<String, List<LanguageKeyListener>> ();
-
             // Default data
             globalDictionary = new Dictionary ();
-            globalCache = new HashMap<String, Value> ();
-            dictionaries = new ArrayList<Dictionary> ();
-            components = new WeakHashMap<Component, String> ();
-            componentsData = new WeakHashMap<Component, Object[]> ();
-            componentKeysCache = new WeakHashMap<Component, String> ();
-            componentsListeners = new WeakHashMap<Component, AncestorListener> ();
-            languageContainers = new WeakHashMap<Container, String> ();
-            updaters = new ArrayList<LanguageUpdater> ();
-            customUpdaters = new WeakHashMap<Component, LanguageUpdater> ();
-            updatersCache = new HashMap<Class, LanguageUpdater> ();
-            languageUpdaterComparator = new LanguageUpdaterComparator ();
-            tooltipsCache = new HashMap<Component, List<WebCustomTooltip>> ();
 
             // Class aliases
             XmlUtils.processAnnotations ( Dictionary.class );
