@@ -251,7 +251,7 @@ public class WebProgressBarUI extends BasicProgressBarUI implements ShapeProvide
     {
         if ( c != null )
         {
-            c.setBorder ( BorderFactory.createEmptyBorder ( shadeWidth, shadeWidth, shadeWidth, shadeWidth ) );
+            c.setBorder ( LafUtils.createWebBorder ( shadeWidth + 1, shadeWidth + 1, shadeWidth + 1, shadeWidth + 1 ) );
         }
     }
 
