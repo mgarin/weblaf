@@ -422,7 +422,7 @@ public class WebComponentPanel extends WebPanel
             addMouseMotionListener ( mouseAdapter );
 
             // Panel focus tracking
-            FocusManager.registerFocusTracker ( new DefaultFocusTracker ( WebSelectablePanel.this, true )
+            FocusManager.addFocusTracker ( WebSelectablePanel.this, new DefaultFocusTracker ( true )
             {
                 @Override
                 public void focusChanged ( boolean focused )

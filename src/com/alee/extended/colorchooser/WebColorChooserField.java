@@ -27,9 +27,8 @@ import com.alee.laf.colorchooser.WebColorChooserPanel;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
 import com.alee.laf.rootpane.WebDialog;
+import com.alee.laf.rootpane.WebWindow;
 import com.alee.laf.text.WebTextField;
-import com.alee.managers.focus.DefaultFocusTracker;
-import com.alee.managers.focus.FocusManager;
 import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.hotkey.HotkeyManager;
 import com.alee.managers.hotkey.HotkeyRunnable;
@@ -63,7 +62,7 @@ public class WebColorChooserField extends WebTextField
     private Robot robot;
     private WebImage pipettePicker;
     private WebButton colorButton;
-    private JWindow popup;
+    private WebWindow popup;
     private WebColorChooserPanel colorChooserPanel;
 
     // todo Make possible color's alpha channel selection
@@ -581,14 +580,11 @@ public class WebColorChooserField extends WebTextField
             colorChooserPanel.setShadeWidth ( 0 );
 
             // Popup window
-            popup = new JWindow ( ancestor );
+            popup = new WebWindow ( ancestor );
             popup.setLayout ( new BorderLayout () );
+            popup.setCloseOnFocusLoss ( true );
+            popup.setWindowOpaque ( false );
             popup.add ( colorChooserPanel );
-
-            // Make popup background transparent
-            SwingUtils.setWindowOpaque ( popup, false );
-
-            // Correct popup size
             popup.pack ();
 
             // Correct popup positioning
@@ -621,19 +617,6 @@ public class WebColorChooserField extends WebTextField
                     if ( popup.isShowing () )
                     {
                         updatePopupLocation ();
-                    }
-                }
-            } );
-
-            // Focus loss listener
-            FocusManager.registerFocusTracker ( new DefaultFocusTracker ( colorChooserPanel )
-            {
-                @Override
-                public void focusChanged ( boolean focused )
-                {
-                    if ( !focused )
-                    {
-                        popup.setVisible ( false );
                     }
                 }
             } );

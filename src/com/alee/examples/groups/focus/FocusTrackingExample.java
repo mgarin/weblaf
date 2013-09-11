@@ -84,7 +84,7 @@ public class FocusTrackingExample extends DefaultExample
 
         // Form #1 focus tracker
         // It tracks only focus loss/gain by form overall and doesn't inform about focus changes within the form
-        FocusManager.registerFocusTracker ( new DefaultFocusTracker ( form1, true )
+        FocusManager.addFocusTracker ( form1, new DefaultFocusTracker ( true )
         {
             @Override
             public void focusChanged ( boolean focused )
@@ -95,7 +95,7 @@ public class FocusTrackingExample extends DefaultExample
 
         // Form #2 focus tracker
         // It tracks only focus loss/gain by form overall and doesn't inform about focus changes within the form
-        FocusManager.registerFocusTracker ( new DefaultFocusTracker ( form2, true )
+        FocusManager.addFocusTracker ( form2, new DefaultFocusTracker ( true )
         {
             @Override
             public void focusChanged ( boolean focused )

@@ -17,9 +17,6 @@
 
 package com.alee.managers.focus;
 
-import java.awt.*;
-import java.lang.ref.WeakReference;
-
 /**
  * Small extension class for FocusTracker that simplifies its creation.
  *
@@ -34,36 +31,27 @@ public abstract class DefaultFocusTracker implements FocusTracker
     private boolean enabled;
 
     /**
-     * Tracked component.
-     */
-    private WeakReference<Component> component;
-
-    /**
      * Whether component and its childs in components tree should be counted as a single component or not.
      */
     private boolean uniteWithChilds;
 
     /**
      * Constructs new tracker with the specified tracked component.
-     *
-     * @param component tracked component
      */
-    public DefaultFocusTracker ( Component component )
+    public DefaultFocusTracker ()
     {
-        this ( component, true );
+        this ( true );
     }
 
     /**
      * Constructs new tracker with the specified tracked component.
      *
-     * @param component       tracked component
      * @param uniteWithChilds whether component and its childs in components tree should be counted as a single component or not
      */
-    public DefaultFocusTracker ( Component component, boolean uniteWithChilds )
+    public DefaultFocusTracker ( boolean uniteWithChilds )
     {
         super ();
         this.enabled = true;
-        this.component = new WeakReference<Component> ( component );
         this.uniteWithChilds = uniteWithChilds;
     }
 
@@ -81,28 +69,9 @@ public abstract class DefaultFocusTracker implements FocusTracker
      *
      * @param enabled whether tracking is currently enabled or not
      */
-    public void setEnabled ( boolean enabled )
+    public void setTrackingEnabled ( boolean enabled )
     {
         this.enabled = enabled;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Component getTrackedComponent ()
-    {
-        return component.get ();
-    }
-
-    /**
-     * Sets tracked component.
-     *
-     * @param component tracked component
-     */
-    public void setComponent ( Component component )
-    {
-        this.component = new WeakReference<Component> ( component );
     }
 
     /**

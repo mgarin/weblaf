@@ -95,7 +95,7 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeProvider,
         scrollpane.removePropertyChangeListener ( WebLookAndFeel.COMPONENT_ORIENTATION_PROPERTY, propertyChangeListener );
         scrollpane.remove ( getCornerComponent () );
 
-        FocusManager.unregisterFocusTracker ( WebScrollPaneUI.this );
+        removeFocusTracker ();
 
         super.uninstallUI ( c );
     }
@@ -104,12 +104,17 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeProvider,
     {
         if ( drawBorder && drawFocus )
         {
-            FocusManager.registerFocusTracker ( WebScrollPaneUI.this );
+            FocusManager.addFocusTracker ( scrollpane, WebScrollPaneUI.this );
         }
         else
         {
-            FocusManager.unregisterFocusTracker ( WebScrollPaneUI.this );
+            removeFocusTracker ();
         }
+    }
+
+    private void removeFocusTracker ()
+    {
+        FocusManager.removeFocusTracker ( WebScrollPaneUI.this );
     }
 
     private WebScrollPaneCorner getCornerComponent ()
@@ -148,12 +153,6 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeProvider,
     public boolean isTrackingEnabled ()
     {
         return true;
-    }
-
-    @Override
-    public Component getTrackedComponent ()
-    {
-        return scrollpane;
     }
 
     @Override

@@ -44,12 +44,7 @@ public final class FocusManager
     /**
      * Focus trackers list.
      */
-    private static List<FocusTracker> trackers = new ArrayList<FocusTracker> ();
-
-    /**
-     * Focus trackers state cache.
-     */
-    private static Map<Component, Boolean> trackersCache = new WeakHashMap<Component, Boolean> ();
+    private static Map<Component, Map<FocusTracker, Boolean>> trackers = new WeakHashMap<Component, Map<FocusTracker, Boolean>> ();
 
     /**
      * Global focus listeners lock.
@@ -134,33 +129,46 @@ public final class FocusManager
                     // Checking all added trackers
                     synchronized ( trackersLock )
                     {
-                        final Iterator<FocusTracker> iterator = trackers.iterator ();
+                        final Iterator<Map.Entry<Component, Map<FocusTracker, Boolean>>> iterator = trackers.entrySet ().iterator ();
                         while ( iterator.hasNext () )
                         {
-                            final FocusTracker focusTracker = iterator.next ();
-                            final Component tracked = focusTracker.getTrackedComponent ();
-                            if ( tracked != null )
+                            final Map.Entry<Component, Map<FocusTracker, Boolean>> entry = iterator.next ();
+                            final Component tracked = entry.getKey ();
+                            final Map<FocusTracker, Boolean> componentTrackers = entry.getValue ();
+                            final Iterator<Map.Entry<FocusTracker, Boolean>> innerIterator = componentTrackers.entrySet ().iterator ();
+                            while ( innerIterator.hasNext () )
                             {
-                                // Skip if tracker is disabled
-                                if ( focusTracker.isTrackingEnabled () )
+                                final Map.Entry<FocusTracker, Boolean> innerEntry = innerIterator.next ();
+                                final FocusTracker focusTracker = innerEntry.getKey ();
+                                final Boolean trackerStateCache = innerEntry.getValue ();
+                                if ( tracked != null )
                                 {
-                                    // Determining component is focused or not
-                                    final boolean unite = focusTracker.isUniteWithChilds ();
-                                    final boolean focused = unite ? SwingUtils.isEqualOrChild ( tracked, newFocus ) : tracked == newFocus;
-
-                                    // Informing about focus changes if needed
-                                    if ( getCachedFocusOwnerState ( tracked ) != focused )
+                                    // Skip if tracker is disabled
+                                    if ( focusTracker.isTrackingEnabled () )
                                     {
-                                        focusTracker.focusChanged ( focused );
-                                    }
+                                        // Determining component is focused or not
+                                        final boolean unite = focusTracker.isUniteWithChilds ();
+                                        final boolean focused =
+                                                unite ? SwingUtils.isEqualOrChild ( tracked, newFocus ) : tracked == newFocus;
 
-                                    // Caching focus state
-                                    trackersCache.put ( tracked, focused );
+                                        // Informing about focus changes if needed
+                                        if ( trackerStateCache != focused )
+                                        {
+                                            focusTracker.focusChanged ( focused );
+                                        }
+
+                                        // Caching focus state
+                                        innerEntry.setValue ( focused );
+                                    }
+                                }
+                                else
+                                {
+                                    // Remove tracker because tracked component was removed by GC
+                                    innerIterator.remove ();
                                 }
                             }
-                            else
+                            if ( componentTrackers == null || componentTrackers.size () == 0 )
                             {
-                                // Remove tracker because tracked component was removed by GC
                                 iterator.remove ();
                             }
                         }
@@ -168,17 +176,6 @@ public final class FocusManager
                 }
             } );
         }
-    }
-
-    /**
-     * Returns whether component was focused or not.
-     *
-     * @param component tracked component
-     * @return true if component was focused, false otherwise
-     */
-    private static Boolean getCachedFocusOwnerState ( Component component )
-    {
-        return trackersCache.containsKey ( component ) ? trackersCache.get ( component ) : false;
     }
 
     /**
@@ -249,11 +246,17 @@ public final class FocusManager
      *
      * @param focusTracker new focus tracker
      */
-    public static void registerFocusTracker ( FocusTracker focusTracker )
+    public static void addFocusTracker ( Component component, FocusTracker focusTracker )
     {
         synchronized ( trackersLock )
         {
-            trackers.add ( focusTracker );
+            Map<FocusTracker, Boolean> componentTrackers = trackers.get ( component );
+            if ( componentTrackers == null )
+            {
+                componentTrackers = new HashMap<FocusTracker, Boolean> ();
+                trackers.put ( component, componentTrackers );
+            }
+            componentTrackers.put ( focusTracker, false );
         }
     }
 
@@ -262,11 +265,21 @@ public final class FocusManager
      *
      * @param focusTracker focus tracker to unregister
      */
-    public static void unregisterFocusTracker ( FocusTracker focusTracker )
+    public static void removeFocusTracker ( FocusTracker focusTracker )
     {
         synchronized ( trackersLock )
         {
-            trackers.remove ( focusTracker );
+            final Iterator<Map.Entry<Component, Map<FocusTracker, Boolean>>> iterator = trackers.entrySet ().iterator ();
+            while ( iterator.hasNext () )
+            {
+                final Map.Entry<Component, Map<FocusTracker, Boolean>> entry = iterator.next ();
+                final Map<FocusTracker, Boolean> componentTrackers = entry.getValue ();
+                componentTrackers.remove ( focusTracker );
+                if ( componentTrackers.size () == 0 )
+                {
+                    iterator.remove ();
+                }
+            }
         }
     }
 }

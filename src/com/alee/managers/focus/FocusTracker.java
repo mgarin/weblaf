@@ -17,8 +17,6 @@
 
 package com.alee.managers.focus;
 
-import java.awt.*;
-
 /**
  * Advanced interface that allows you to track focus behavior within component and its childs.
  * Note that method names are made longer to avoid clashing with other component methods in case you implement tracker interface.
@@ -34,13 +32,6 @@ public interface FocusTracker
      * @return true if tracking is currently enabled, false otherwise
      */
     public boolean isTrackingEnabled ();
-
-    /**
-     * Returns tracked component.
-     *
-     * @return tracked component
-     */
-    public Component getTrackedComponent ();
 
     /**
      * Returns whether component and its childs in components tree should be counted as a single component or not.

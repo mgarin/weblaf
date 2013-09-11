@@ -29,19 +29,28 @@ import com.alee.utils.SwingUtils;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 
 /**
- * User: mgarin Date: 26.06.12 Time: 16:48
+ * This JWindow extenstion class provides some additional methods and options to manipulate window behavior.
+ *
+ * @author Mikle Garin
  */
 
 public class WebWindow extends JWindow implements FocusTracker, LanguageContainerMethods, SettingsMethods
 {
-    private boolean closeOnFocusLoss = false;
+    /**
+     * Whether should close window on focus loss.
+     */
+    protected boolean closeOnFocusLoss = false;
 
+    /**
+     * Whether window is focused or not.
+     */
     protected boolean focused;
 
+    /**
+     *
+     */
     public WebWindow ()
     {
         super ();
@@ -78,24 +87,10 @@ public class WebWindow extends JWindow implements FocusTracker, LanguageContaine
         initialize ();
     }
 
-    private void initialize ()
+    protected void initialize ()
     {
         setFocusable ( true );
         SwingUtils.setOrientation ( this );
-        addComponentListener ( new ComponentAdapter ()
-        {
-            @Override
-            public void componentShown ( ComponentEvent e )
-            {
-                updateFocusTracker ();
-            }
-
-            @Override
-            public void componentHidden ( ComponentEvent e )
-            {
-                updateFocusTracker ();
-            }
-        } );
     }
 
     /**
@@ -120,13 +115,7 @@ public class WebWindow extends JWindow implements FocusTracker, LanguageContaine
     @Override
     public boolean isTrackingEnabled ()
     {
-        return isShowing ();
-    }
-
-    @Override
-    public Component getTrackedComponent ()
-    {
-        return this;
+        return true;
     }
 
     @Override
@@ -145,15 +134,15 @@ public class WebWindow extends JWindow implements FocusTracker, LanguageContaine
         }
     }
 
-    private void updateFocusTracker ()
+    protected void updateFocusTracker ()
     {
-        if ( isShowing () && closeOnFocusLoss )
+        if ( closeOnFocusLoss )
         {
-            FocusManager.registerFocusTracker ( this );
+            FocusManager.addFocusTracker ( this, this );
         }
         else
         {
-            FocusManager.unregisterFocusTracker ( this );
+            FocusManager.removeFocusTracker ( this );
         }
     }
 
@@ -218,10 +207,6 @@ public class WebWindow extends JWindow implements FocusTracker, LanguageContaine
     }
 
     /**
-     * Language container methods
-     */
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -247,10 +232,6 @@ public class WebWindow extends JWindow implements FocusTracker, LanguageContaine
     {
         return LanguageManager.getLanguageContainerKey ( this );
     }
-
-    /**
-     * Settings methods
-     */
 
     /**
      * {@inheritDoc}

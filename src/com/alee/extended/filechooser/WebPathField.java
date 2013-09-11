@@ -512,7 +512,7 @@ public class WebPathField extends WebPanel
         } );
 
         // Focus listener
-        FocusManager.registerFocusTracker ( new DefaultFocusTracker ( WebPathField.this )
+        FocusManager.addFocusTracker ( WebPathField.this, new DefaultFocusTracker ()
         {
             @Override
             public void focusChanged ( boolean focused )

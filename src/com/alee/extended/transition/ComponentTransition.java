@@ -201,6 +201,8 @@ public class ComponentTransition extends WebPanel
         if ( SwingUtils.hasFocusOwner ( ComponentTransition.this ) )
         {
             // Focus handler required to wait for focus change
+            // This is required to handle focus properly and have atleast one component focused withing window of calendar
+            // Otherwise focus will be lost and window may become "bugged" and may require additiona user actions in some cases
             FocusAdapter focusHandle = new FocusAdapter ()
             {
                 @Override

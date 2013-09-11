@@ -151,7 +151,7 @@ public class WebCalendar extends WebPanel
      *
      * @param date selected date
      */
-    public WebCalendar ( Date date )
+    public WebCalendar ( final Date date )
     {
         super ( true );
 
@@ -380,7 +380,7 @@ public class WebCalendar extends WebPanel
      *
      * @param animate whether should animate transition or not
      */
-    protected void switchMonth ( boolean animate )
+    protected void switchMonth ( final boolean animate )
     {
         if ( animate )
         {
@@ -426,7 +426,7 @@ public class WebCalendar extends WebPanel
      * @param ltr whether LTR orientation or not
      * @return next month transition direction
      */
-    protected Direction getNextDirection ( boolean ltr )
+    protected Direction getNextDirection ( final boolean ltr )
     {
         return horizontalSlide ? ltr ? Direction.right : Direction.left : Direction.up;
     }
@@ -437,7 +437,7 @@ public class WebCalendar extends WebPanel
      * @param ltr whether LTR orientation or not
      * @return previous month transition direction
      */
-    protected Direction getPrevDirection ( boolean ltr )
+    protected Direction getPrevDirection ( final boolean ltr )
     {
         return horizontalSlide ? ltr ? Direction.left : Direction.right : Direction.down;
     }
@@ -472,7 +472,7 @@ public class WebCalendar extends WebPanel
      *
      * @param monthDays panel to update
      */
-    protected void updateMonth ( JPanel monthDays )
+    protected void updateMonth ( final JPanel monthDays )
     {
         monthDays.removeAll ();
         lastSelectedDayButton = null;
@@ -533,7 +533,7 @@ public class WebCalendar extends WebPanel
             day.setRolloverDecoratedOnly ( true );
             day.setHorizontalAlignment ( WebButton.RIGHT );
             day.setRound ( StyleConstants.smallRound );
-            day.setDrawFocus ( false );
+            day.setFocusable ( false );
             day.addItemListener ( new ItemListener ()
             {
                 @Override
@@ -576,7 +576,7 @@ public class WebCalendar extends WebPanel
             day.setRolloverDecoratedOnly ( true );
             day.setHorizontalAlignment ( WebButton.RIGHT );
             day.setRound ( StyleConstants.smallRound );
-            day.setDrawFocus ( false );
+            day.setFocusable ( false );
             day.addActionListener ( new ActionListener ()
             {
                 @Override
@@ -620,7 +620,7 @@ public class WebCalendar extends WebPanel
             day.setRolloverDecoratedOnly ( true );
             day.setHorizontalAlignment ( WebButton.RIGHT );
             day.setRound ( StyleConstants.smallRound );
-            day.setDrawFocus ( false );
+            day.setFocusable ( false );
             day.addItemListener ( new ItemListener ()
             {
                 @Override
@@ -667,7 +667,7 @@ public class WebCalendar extends WebPanel
      *
      * @param titleFormat title format
      */
-    public void setTitleFormat ( SimpleDateFormat titleFormat )
+    public void setTitleFormat ( final SimpleDateFormat titleFormat )
     {
         this.titleFormat = titleFormat;
         updateTitleLabel ();
@@ -688,7 +688,7 @@ public class WebCalendar extends WebPanel
      *
      * @param date date to select and display
      */
-    public void setDate ( Date date )
+    public void setDate ( final Date date )
     {
         setDate ( date, animate );
     }
@@ -699,7 +699,7 @@ public class WebCalendar extends WebPanel
      * @param date    date to select and display
      * @param animate whether should animate month transition or not
      */
-    public void setDate ( Date date, boolean animate )
+    public void setDate ( final Date date, final boolean animate )
     {
         if ( !CompareUtils.equals ( this.date, date ) )
         {
@@ -712,7 +712,7 @@ public class WebCalendar extends WebPanel
      *
      * @param date date to select and display
      */
-    protected void setDateImpl ( Date date )
+    protected void setDateImpl ( final Date date )
     {
         setDateImpl ( date, animate );
     }
@@ -723,7 +723,7 @@ public class WebCalendar extends WebPanel
      * @param date    date to select and display
      * @param animate whether should animate month transition or not
      */
-    protected void setDateImpl ( Date date, boolean animate )
+    protected void setDateImpl ( final Date date, final boolean animate )
     {
         this.date = date;
         setShownDate ( date, animate );
@@ -745,7 +745,7 @@ public class WebCalendar extends WebPanel
      *
      * @param date displayed month date
      */
-    public void setShownDate ( Date date )
+    public void setShownDate ( final Date date )
     {
         setShownDate ( date, animate );
     }
@@ -756,12 +756,12 @@ public class WebCalendar extends WebPanel
      * @param date    displayed month date
      * @param animate whether should animate month transition or not
      */
-    public void setShownDate ( Date date, boolean animate )
+    public void setShownDate ( final Date date, final boolean animate )
     {
         this.oldShownDate = this.shownDate;
         this.shownDate = date;
 
-        Calendar calendar = Calendar.getInstance ();
+        final Calendar calendar = Calendar.getInstance ();
         calendar.setTime ( oldShownDate );
         int oldMonth = calendar.get ( Calendar.MONTH );
         int oldYear = calendar.get ( Calendar.YEAR );
@@ -770,7 +770,7 @@ public class WebCalendar extends WebPanel
         int newYear = calendar.get ( Calendar.YEAR );
         if ( oldMonth != newMonth || oldYear != newYear )
         {
-            switchTitleLabel ();
+            updateTitleLabel ();
             switchMonth ( animate );
         }
     }
@@ -790,7 +790,7 @@ public class WebCalendar extends WebPanel
      *
      * @param startWeekFromSunday whether sunday should be the first day of week or not
      */
-    public void setStartWeekFromSunday ( boolean startWeekFromSunday )
+    public void setStartWeekFromSunday ( final boolean startWeekFromSunday )
     {
         this.startWeekFromSunday = startWeekFromSunday;
         updateWeekHeaders ();
@@ -812,7 +812,7 @@ public class WebCalendar extends WebPanel
      *
      * @param animate whether should animate month transitions or not
      */
-    public void setAnimate ( boolean animate )
+    public void setAnimate ( final boolean animate )
     {
         this.animate = animate;
     }
@@ -832,7 +832,7 @@ public class WebCalendar extends WebPanel
      *
      * @param horizontalSlide whether should perform horizontal slide animation or not
      */
-    public void setHorizontalSlide ( boolean horizontalSlide )
+    public void setHorizontalSlide ( final boolean horizontalSlide )
     {
         this.horizontalSlide = horizontalSlide;
     }
@@ -852,7 +852,7 @@ public class WebCalendar extends WebPanel
      *
      * @param color other month date buttons foreground
      */
-    public void setOtherMonthForeground ( Color color )
+    public void setOtherMonthForeground ( final Color color )
     {
         this.otherMonthForeground = color;
         updateMonth ( monthDays );
@@ -873,7 +873,7 @@ public class WebCalendar extends WebPanel
      *
      * @param color current month date buttons foreground
      */
-    public void setCurrentMonthForeground ( Color color )
+    public void setCurrentMonthForeground ( final Color color )
     {
         this.currentMonthForeground = color;
         updateMonth ( monthDays );
@@ -894,7 +894,7 @@ public class WebCalendar extends WebPanel
      *
      * @param color weekends date buttons foreground
      */
-    public void setWeekendsForeground ( Color color )
+    public void setWeekendsForeground ( final Color color )
     {
         this.weekendsForeground = color;
         updateMonth ( monthDays );
@@ -915,7 +915,7 @@ public class WebCalendar extends WebPanel
      *
      * @param dateCustomizer date buttons customizer
      */
-    public void setDateCustomizer ( DateCustomizer dateCustomizer )
+    public void setDateCustomizer ( final DateCustomizer dateCustomizer )
     {
         this.dateCustomizer = dateCustomizer;
         updateMonth ( monthDays );
@@ -925,7 +925,7 @@ public class WebCalendar extends WebPanel
      * {@inheritDoc}
      */
     @Override
-    public void setEnabled ( boolean enabled )
+    public void setEnabled ( final boolean enabled )
     {
         super.setEnabled ( enabled );
         SwingUtils.setEnabledRecursively ( this, enabled, true );
@@ -936,7 +936,7 @@ public class WebCalendar extends WebPanel
      *
      * @param listener date selection listener
      */
-    public void addDateSelectionListener ( DateSelectionListener listener )
+    public void addDateSelectionListener ( final DateSelectionListener listener )
     {
         dateSelectionListeners.add ( listener );
     }
@@ -946,7 +946,7 @@ public class WebCalendar extends WebPanel
      *
      * @param listener date selection listener
      */
-    public void removeDateSelectionListener ( DateSelectionListener listener )
+    public void removeDateSelectionListener ( final DateSelectionListener listener )
     {
         dateSelectionListeners.remove ( listener );
     }
@@ -956,7 +956,7 @@ public class WebCalendar extends WebPanel
      *
      * @param date new selected date
      */
-    public void fireDateSelected ( Date date )
+    public void fireDateSelected ( final Date date )
     {
         for ( DateSelectionListener listener : CollectionUtils.copy ( dateSelectionListeners ) )
         {

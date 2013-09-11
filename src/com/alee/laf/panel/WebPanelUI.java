@@ -104,7 +104,7 @@ public class WebPanelUI extends BasicPanelUI implements ShapeProvider, FocusTrac
     {
         panel.removePropertyChangeListener ( WebLookAndFeel.COMPONENT_ORIENTATION_PROPERTY, propertyChangeListener );
 
-        FocusManager.unregisterFocusTracker ( WebPanelUI.this );
+        removeFocusTracker ();
 
         super.uninstallUI ( c );
     }
@@ -113,12 +113,17 @@ public class WebPanelUI extends BasicPanelUI implements ShapeProvider, FocusTrac
     {
         if ( !undecorated && drawFocus )
         {
-            FocusManager.registerFocusTracker ( WebPanelUI.this );
+            FocusManager.addFocusTracker ( panel, WebPanelUI.this );
         }
         else
         {
-            FocusManager.unregisterFocusTracker ( WebPanelUI.this );
+            removeFocusTracker ();
         }
+    }
+
+    private void removeFocusTracker ()
+    {
+        FocusManager.removeFocusTracker ( WebPanelUI.this );
     }
 
     @Override
@@ -138,12 +143,6 @@ public class WebPanelUI extends BasicPanelUI implements ShapeProvider, FocusTrac
     public boolean isTrackingEnabled ()
     {
         return true;
-    }
-
-    @Override
-    public Component getTrackedComponent ()
-    {
-        return panel;
     }
 
     @Override

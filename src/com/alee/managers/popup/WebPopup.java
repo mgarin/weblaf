@@ -177,7 +177,7 @@ public class WebPopup extends WebPanel implements FocusTracker
         EmptyMouseAdapter.install ( this );
 
         // Focus manager
-        FocusManager.registerFocusTracker ( this );
+        FocusManager.addFocusTracker ( this, this );
 
         // Focus traversal policy
         setFocusCycleRoot ( true );
@@ -247,15 +247,6 @@ public class WebPopup extends WebPanel implements FocusTracker
     public boolean isTrackingEnabled ()
     {
         return WebPopup.this.isShowing ();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Component getTrackedComponent ()
-    {
-        return WebPopup.this;
     }
 
     /**
