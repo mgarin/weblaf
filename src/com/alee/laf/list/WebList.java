@@ -29,6 +29,7 @@ import com.alee.utils.swing.FontMethods;
 import com.alee.utils.swing.SizeMethods;
 
 import javax.swing.*;
+import javax.swing.event.ListDataListener;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -330,6 +331,38 @@ public class WebList extends JList implements FontMethods<WebList>, SizeMethods<
     }
 
     /**
+     * Returns model value at the specified cell index.
+     *
+     * @param index cell index
+     * @param <T>   value type
+     * @return model value at the specified cell index
+     */
+    public <T> T getValueAt ( int index )
+    {
+        return ( T ) getModel ().getElementAt ( index );
+    }
+
+    /**
+     * Adds a listener to the list that's notified each time a change to the data model occurs.
+     *
+     * @param listener the ListDataListener to be added
+     */
+    public void addListDataListener ( ListDataListener listener )
+    {
+        getModel ().addListDataListener ( listener );
+    }
+
+    /**
+     * Removes a listener from the list that's notified each time a change to the data model occurs.
+     *
+     * @param listener the ListDataListener to be removed
+     */
+    public void removeListDataListener ( ListDataListener listener )
+    {
+        getModel ().removeListDataListener ( listener );
+    }
+
+    /**
      * Scrolls list to specified cell.
      *
      * @param index cell index
@@ -461,21 +494,42 @@ public class WebList extends JList implements FontMethods<WebList>, SizeMethods<
     }
 
     /**
-     * Repaints cell under specified index.
+     * Repaints list cell for the specified value.
+     *
+     * @param value cell value
+     */
+    public void repaint ( Object value )
+    {
+        ListModel model = getModel ();
+        if ( model instanceof WebListModel )
+        {
+            repaint ( ( ( WebListModel ) model ).indexOf ( value ) );
+        }
+        else
+        {
+            for ( int i = 0; i < model.getSize (); i++ )
+            {
+                if ( model.getElementAt ( i ) == value )
+                {
+                    repaint ( i );
+                    break;
+                }
+            }
+        }
+    }
+
+    /**
+     * Repaints list cell under the specified index.
      *
      * @param index cell index
      */
     public void repaint ( int index )
     {
-        final Rectangle cellBounds = getCellBounds ( index, index );
-        if ( cellBounds != null )
-        {
-            repaint ( cellBounds );
-        }
+        repaint ( index, index );
     }
 
     /**
-     * Repaints all cells between specified indices.
+     * Repaints all list cells between the specified indices.
      *
      * @param from first cell index
      * @param to   last cell index
