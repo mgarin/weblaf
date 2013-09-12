@@ -28,7 +28,7 @@ import java.lang.reflect.InvocationTargetException;
  * @author Mikle Garin
  */
 
-public class ProprietaryUtils
+public final class ProprietaryUtils
 {
     /**
      * Installs some proprietary L&F defaults for proper text rendering.

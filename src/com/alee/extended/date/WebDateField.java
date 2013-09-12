@@ -17,8 +17,6 @@
 
 package com.alee.extended.date;
 
-import com.alee.extended.window.TestFrame;
-import com.alee.laf.GlobalConstants;
 import com.alee.laf.StyleConstants;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
@@ -54,13 +52,6 @@ import java.util.List;
 
 public class WebDateField extends WebFormattedTextField implements ShapeProvider, SettingsMethods, SizeMethods<WebFormattedTextField>
 {
-    public static void main ( String[] args )
-    {
-        GlobalConstants.DEBUG = true;
-        WebLookAndFeel.install ();
-        TestFrame.show ( new WebDateField ( new Date () ), 50 );
-    }
-
     /**
      * Used icons.
      */
