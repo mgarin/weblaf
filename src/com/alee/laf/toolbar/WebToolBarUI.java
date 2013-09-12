@@ -23,6 +23,7 @@ import com.alee.laf.StyleConstants;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.rootpane.WebDialog;
 import com.alee.utils.LafUtils;
+import com.alee.utils.ProprietaryUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.laf.ShapeProvider;
 import com.alee.utils.swing.AncestorAdapter;
@@ -63,7 +64,7 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeProvider
     private PropertyChangeListener propertyChangeListener;
     private PropertyChangeListener componentOrientationListener;
 
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( JComponent c )
     {
         return new WebToolBarUI ();
@@ -582,7 +583,7 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeProvider
     protected DragWindow createDragWindow ( JToolBar toolbar )
     {
         DragWindow dragWindow = super.createDragWindow ( toolbar );
-        SwingUtils.setWindowOpacity ( dragWindow, 0.5f );
+        ProprietaryUtils.setWindowOpacity ( dragWindow, 0.5f );
         return dragWindow;
     }
 }

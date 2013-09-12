@@ -18,6 +18,7 @@
 package com.alee.utils;
 
 import javax.swing.*;
+import java.awt.*;
 import java.lang.reflect.InvocationTargetException;
 
 /**
@@ -69,6 +70,123 @@ public class ProprietaryUtils
         catch ( InvocationTargetException e )
         {
             e.printStackTrace ();
+        }
+    }
+
+    /**
+     * Sets window opaque if that option is supported by the underlying system.
+     *
+     * @param window window to process
+     * @param opaque whether should make window opaque or not
+     */
+    public static void setWindowOpaque ( Window window, boolean opaque )
+    {
+        if ( window != null && isWindowTransparencyAllowed () )
+        {
+            try
+            {
+                // Workaround to allow this method usage on all possible Java versions
+                ReflectUtils.callStaticMethod ( "com.sun.awt.AWTUtilities", "setWindowOpaque", window, opaque );
+            }
+            catch ( Throwable e )
+            {
+                // Ignore any exceptions this native feature might cause
+                // Still, should inform that such actions cause an exception on the underlying system
+                e.printStackTrace ();
+            }
+        }
+    }
+
+    /**
+     * Returns whether window is opaque or not.
+     *
+     * @param window window to process
+     * @return whether window background is opaque or not
+     */
+    public static boolean isWindowOpaque ( Window window )
+    {
+        if ( window != null && isWindowTransparencyAllowed () )
+        {
+            try
+            {
+                // Workaround to allow this method usage on all possible Java versions
+                return ( Boolean ) ReflectUtils.callStaticMethod ( "com.sun.awt.AWTUtilities", "isWindowOpaque", window );
+            }
+            catch ( Throwable e )
+            {
+                // Ignore any exceptions this native feature might cause
+                // Still, should inform that such actions cause an exception on the underlying system
+                e.printStackTrace ();
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Sets window opacity if that option is supported by the underlying system.
+     *
+     * @param window  window to process
+     * @param opacity new window opacity
+     */
+    public static void setWindowOpacity ( Window window, float opacity )
+    {
+        if ( window != null && isWindowTransparencyAllowed () )
+        {
+            try
+            {
+                // Workaround to allow this method usage on all possible Java versions
+                ReflectUtils.callStaticMethod ( "com.sun.awt.AWTUtilities", "setWindowOpacity", window, opacity );
+            }
+            catch ( Throwable e )
+            {
+                // Ignore any exceptions this native feature might cause
+                // Still, should inform that such actions cause an exception on the underlying system
+                e.printStackTrace ();
+            }
+        }
+    }
+
+    /**
+     * Returns window opacity.
+     *
+     * @param window window to process
+     * @return window opacity
+     */
+    public static float getWindowOpacity ( Window window )
+    {
+        if ( window != null && isWindowTransparencyAllowed () )
+        {
+            try
+            {
+                // Workaround to allow this method usage on all possible Java versions
+                return ( Float ) ReflectUtils.callStaticMethod ( "com.sun.awt.AWTUtilities", "getWindowOpacity", window );
+            }
+            catch ( Throwable e )
+            {
+                // Ignore any exceptions this native feature might cause
+                // Still, should inform that such actions cause an exception on the underlying system
+                e.printStackTrace ();
+            }
+        }
+        return 1f;
+    }
+
+    /**
+     * Returns whether window transparency is supported on current OS or not.
+     *
+     * @return true if window transparency is supported on current OS; false otherwise
+     */
+    public static boolean isWindowTransparencyAllowed ()
+    {
+        try
+        {
+            // todo Replace when Linux will have proper support for transparency
+            // com.sun.awt.AWTUtilities.isTranslucencySupported ( com.sun.awt.AWTUtilities.Translucency.PERPIXEL_TRANSPARENT )
+            return SystemUtils.isWindows () || SystemUtils.isMac () || SystemUtils.isSolaris ();
+        }
+        catch ( Throwable e )
+        {
+            return false;
         }
     }
 }

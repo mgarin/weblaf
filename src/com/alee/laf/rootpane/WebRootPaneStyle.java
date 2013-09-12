@@ -20,7 +20,7 @@ package com.alee.laf.rootpane;
 import com.alee.extended.painter.Painter;
 import com.alee.laf.StyleConstants;
 import com.alee.laf.button.WebButtonStyle;
-import com.alee.utils.SwingUtils;
+import com.alee.utils.ProprietaryUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -56,17 +56,17 @@ public final class WebRootPaneStyle
     /**
      * Active window shade width.
      */
-    public static int shadeWidth = SwingUtils.isWindowTransparencyAllowed () ? 25 : 0;
+    public static int shadeWidth = ProprietaryUtils.isWindowTransparencyAllowed () ? 25 : 0;
 
     /**
      * Inactive window shade width.
      */
-    public static int inactiveShadeWidth = SwingUtils.isWindowTransparencyAllowed () ? 15 : 0;
+    public static int inactiveShadeWidth = ProprietaryUtils.isWindowTransparencyAllowed () ? 15 : 0;
 
     /**
      * Window shape rounding.
      */
-    public static int round = SwingUtils.isWindowTransparencyAllowed () ? 5 : 0;
+    public static int round = ProprietaryUtils.isWindowTransparencyAllowed () ? 5 : 0;
 
     /**
      * Window content margin.

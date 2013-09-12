@@ -129,18 +129,25 @@ public final class FocusManager
                     // Checking all added trackers
                     synchronized ( trackersLock )
                     {
+                        // Iterating through registered components
                         final Iterator<Map.Entry<Component, Map<FocusTracker, Boolean>>> iterator = trackers.entrySet ().iterator ();
                         while ( iterator.hasNext () )
                         {
+                            // Retrieving tracked component and its trackers
                             final Map.Entry<Component, Map<FocusTracker, Boolean>> entry = iterator.next ();
                             final Component tracked = entry.getKey ();
                             final Map<FocusTracker, Boolean> componentTrackers = entry.getValue ();
                             final Iterator<Map.Entry<FocusTracker, Boolean>> innerIterator = componentTrackers.entrySet ().iterator ();
+
+                            // Iterating through registered component trackers
                             while ( innerIterator.hasNext () )
                             {
+                                // Retrieving tracker and its last state
                                 final Map.Entry<FocusTracker, Boolean> innerEntry = innerIterator.next ();
                                 final FocusTracker focusTracker = innerEntry.getKey ();
                                 final Boolean trackerStateCache = innerEntry.getValue ();
+
+                                // Checking state change
                                 if ( tracked != null )
                                 {
                                     // Skip if tracker is disabled

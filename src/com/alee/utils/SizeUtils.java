@@ -27,7 +27,7 @@ import java.util.WeakHashMap;
  * @author Mikle Garin
  */
 
-public class SizeUtils
+public final class SizeUtils
 {
     /**
      * Weak hash map for keeping components preferred sizes.

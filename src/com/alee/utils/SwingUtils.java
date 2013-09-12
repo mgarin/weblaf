@@ -29,7 +29,6 @@ import com.alee.managers.hotkey.HotkeyRunnable;
 import com.alee.managers.language.LanguageManager;
 import com.alee.utils.laf.ShapeProvider;
 import com.alee.utils.swing.EventPump;
-import com.alee.utils.swing.WebTimer;
 
 import javax.swing.*;
 import javax.swing.FocusManager;
@@ -88,11 +87,6 @@ public final class SwingUtils
      */
     private static Thread scrollThread1;
     private static Thread scrollThread2;
-
-    /**
-     * Window pack timers map.
-     */
-    private static Map<Window, WebTimer> windowPackTimers = new HashMap<Window, WebTimer> ();
 
     /**
      * Most of applications use 10 or less fonts simultaneously.
@@ -263,116 +257,6 @@ public final class SwingUtils
         // Final values
         column.setPreferredWidth ( width );
         column.setWidth ( width );
-    }
-
-    /**
-     * Changes window opacity.
-     *
-     * @param window  window to modify
-     * @param opacity window opacity
-     */
-    public static void setWindowOpacity ( Window window, float opacity )
-    {
-        if ( window != null && isWindowTransparencyAllowed () )
-        {
-            try
-            {
-                // Workaround to allow this method usage on all possible Java versions
-                ReflectUtils.callStaticMethod ( "com.sun.awt.AWTUtilities", "setWindowOpacity", window, opacity );
-            }
-            catch ( Throwable e )
-            {
-                e.printStackTrace ();
-                // Ignore any exceptions this native feature might cause
-            }
-        }
-    }
-
-    /**
-     * Returns window opacity.
-     *
-     * @param window window to process
-     * @return window opacity
-     */
-    public static float getWindowOpacity ( Window window )
-    {
-        if ( window != null && isWindowTransparencyAllowed () )
-        {
-            try
-            {
-                // Workaround to allow this method usage on all possible Java versions
-                return ( Float ) ReflectUtils.callStaticMethod ( "com.sun.awt.AWTUtilities", "getWindowOpacity", window );
-            }
-            catch ( Throwable e )
-            {
-                // Ignore any exceptions this native feature might cause
-            }
-        }
-        return 1f;
-    }
-
-    /**
-     * Makes window background either opaque or transparent.
-     *
-     * @param window window to modify
-     * @param opaque whether make window opaque or not
-     */
-    public static void setWindowOpaque ( Window window, boolean opaque )
-    {
-        if ( window != null && isWindowTransparencyAllowed () )
-        {
-            try
-            {
-                // Workaround to allow this method usage on all possible Java versions
-                ReflectUtils.callStaticMethod ( "com.sun.awt.AWTUtilities", "setWindowOpaque", window, opaque );
-            }
-            catch ( Throwable e )
-            {
-                // Ignore any exceptions this native feature might cause
-            }
-        }
-    }
-
-    /**
-     * Returns whether window background is opaque or not.
-     *
-     * @param window window to process
-     * @return whether window background is opaque or not
-     */
-    public static boolean isWindowOpaque ( Window window )
-    {
-        if ( window != null && isWindowTransparencyAllowed () )
-        {
-            try
-            {
-                // Workaround to allow this method usage on all possible Java versions
-                return ( Boolean ) ReflectUtils.callStaticMethod ( "com.sun.awt.AWTUtilities", "isWindowOpaque", window );
-            }
-            catch ( Throwable e )
-            {
-                // Ignore any exceptions this native feature might cause
-            }
-        }
-        return true;
-    }
-
-    /**
-     * Returns whether window transparency is supported on current OS or not.
-     *
-     * @return true if window transparency is supported on current OS; false otherwise
-     */
-    public static boolean isWindowTransparencyAllowed ()
-    {
-        try
-        {
-            // todo Replace when Linux will have proper support for transparency
-            // com.sun.awt.AWTUtilities.isTranslucencySupported ( com.sun.awt.AWTUtilities.Translucency.PERPIXEL_TRANSPARENT )
-            return ( SystemUtils.isWindows () || SystemUtils.isMac () || SystemUtils.isSolaris () );
-        }
-        catch ( Throwable e )
-        {
-            return false;
-        }
     }
 
     /**
@@ -2547,80 +2431,6 @@ public final class SwingUtils
                 }
             }
         } ).start ();
-    }
-
-    /**
-     * Packs and centers specified window relative to old position.
-     * Bounds transition might also be animated, depending on StyleConstants.animate variable.
-     *
-     * @param window window to process
-     * @see StyleConstants#animate
-     */
-    public static void packAndCenter ( final Window window )
-    {
-        packAndCenter ( window, StyleConstants.animate );
-    }
-
-    /**
-     * Packs and centers specified window relative to old position.
-     * Bounds transition will be animated if requested.
-     *
-     * @param window  window to process
-     * @param animate whether to animate bounds transition or not
-     */
-    public static void packAndCenter ( final Window window, final boolean animate )
-    {
-        if ( window == null )
-        {
-            return;
-        }
-
-        final Rectangle b = window.getBounds ();
-        final Dimension s = window.getPreferredSize ();
-        final Rectangle newBounds = new Rectangle ( b.x + b.width / 2 - s.width / 2, b.y + b.height / 2 - s.height / 2, s.width, s.height );
-
-        if ( windowPackTimers.containsKey ( window ) )
-        {
-            if ( windowPackTimers.get ( window ) != null && windowPackTimers.get ( window ).isRunning () )
-            {
-                windowPackTimers.get ( window ).stop ();
-            }
-        }
-
-        if ( window.isShowing () && animate )
-        {
-            final int time = 100;
-            final int steps = 10;
-            final int xDiff = newBounds.width - b.width;
-            final int yDiff = newBounds.height - b.height;
-            final WebTimer t = new WebTimer ( time / steps, new ActionListener ()
-            {
-                int step = 1;
-
-                @Override
-                public void actionPerformed ( ActionEvent e )
-                {
-                    if ( step <= steps )
-                    {
-                        int w = b.width + xDiff * step / steps;
-                        int h = b.height + yDiff * step / steps;
-                        Rectangle changed = new Rectangle ( b.x + b.width / 2 - w / 2, b.y + b.height / 2 - h / 2, w, h );
-                        window.setBounds ( changed );
-                    }
-                    else
-                    {
-                        windowPackTimers.get ( window ).stop ();
-                    }
-                    step++;
-                }
-            } );
-            windowPackTimers.put ( window, t );
-            t.start ();
-        }
-        else
-        {
-            window.setBounds ( newBounds );
-        }
     }
 
     /**

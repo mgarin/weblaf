@@ -29,14 +29,16 @@ package com.alee.utils.swing;
  * @see com.alee.managers.hotkey.ButtonHotkeyMethods
  * @see SizeMethods
  * @see FontMethods
+ * @see WindowMethods
  */
 
 public interface SwingMethods
 {
-    // todo HotkeyMethods, ButtonHotkeyMethods - and replace all workarounds
-    // todo TooltipMethods
+    // todo To add:
+    // todo HotkeyMethods, ButtonHotkeyMethods - add and replace all workarounds
+    // todo TooltipMethods - add
 
+    // todo To modify:
     // todo SizeMethods - add into all available components
-
     // todo Move font methods from SwingUtils to FontUtils
 }

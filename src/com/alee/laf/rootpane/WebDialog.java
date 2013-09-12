@@ -27,6 +27,8 @@ import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.settings.SettingsMethods;
 import com.alee.managers.settings.SettingsProcessor;
 import com.alee.utils.SwingUtils;
+import com.alee.utils.WindowUtils;
+import com.alee.utils.swing.WindowMethods;
 
 import javax.swing.*;
 import java.awt.*;
@@ -35,7 +37,7 @@ import java.awt.*;
  * User: mgarin Date: 11.12.12 Time: 14:51
  */
 
-public class WebDialog extends JDialog implements LanguageMethods, LanguageContainerMethods, SettingsMethods
+public class WebDialog extends JDialog implements LanguageMethods, LanguageContainerMethods, SettingsMethods, WindowMethods<WebDialog>
 {
     public WebDialog ()
     {
@@ -308,66 +310,6 @@ public class WebDialog extends JDialog implements LanguageMethods, LanguageConta
     }
 
     /**
-     * Additional methods
-     */
-
-    public void setWindowOpaque ( boolean opaque )
-    {
-        SwingUtils.setWindowOpaque ( this, opaque );
-    }
-
-    public boolean isWindowOpaque ()
-    {
-        return SwingUtils.isWindowOpaque ( this );
-    }
-
-    public void setWindowOpacity ( float opacity )
-    {
-        SwingUtils.setWindowOpacity ( this, opacity );
-    }
-
-    public float getWindowOpacity ()
-    {
-        return SwingUtils.getWindowOpacity ( this );
-    }
-
-    public void packAndCenter ()
-    {
-        SwingUtils.packAndCenter ( this );
-    }
-
-    public void packAndCenter ( boolean animate )
-    {
-        SwingUtils.packAndCenter ( this, animate );
-    }
-
-    public void center ()
-    {
-        setLocationRelativeTo ( null );
-    }
-
-    public void center ( Component relativeTo )
-    {
-        setLocationRelativeTo ( relativeTo );
-    }
-
-    public void center ( int width, int height )
-    {
-        setSize ( width, height );
-        center ();
-    }
-
-    public void packToWidth ( int width )
-    {
-        setSize ( width, getPreferredSize ().height );
-    }
-
-    public void packToHeight ( int height )
-    {
-        setSize ( getPreferredSize ().width, height );
-    }
-
-    /**
      * Language methods
      */
 
@@ -605,5 +547,117 @@ public class WebDialog extends JDialog implements LanguageMethods, LanguageConta
     public void saveSettings ()
     {
         SettingsManager.saveComponentSettings ( this );
+    }
+
+    /**
+     * Window methods.
+     */
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebDialog setWindowOpaque ( boolean opaque )
+    {
+        return WindowUtils.setWindowOpaque ( this, opaque );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isWindowOpaque ()
+    {
+        return WindowUtils.isWindowOpaque ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebDialog setWindowOpacity ( float opacity )
+    {
+        return WindowUtils.setWindowOpacity ( this, opacity );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public float getWindowOpacity ()
+    {
+        return WindowUtils.getWindowOpacity ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebDialog center ()
+    {
+        return WindowUtils.center ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebDialog center ( Component relativeTo )
+    {
+        return WindowUtils.center ( this, relativeTo );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebDialog center ( int width, int height )
+    {
+        return WindowUtils.center ( this, width, height );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebDialog center ( Component relativeTo, int width, int height )
+    {
+        return WindowUtils.center ( this, relativeTo, width, height );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebDialog packToWidth ( int width )
+    {
+        return WindowUtils.packToWidth ( this, width );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebDialog packToHeight ( int height )
+    {
+        return WindowUtils.packToHeight ( this, height );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebDialog packAndCenter ()
+    {
+        return WindowUtils.packAndCenter ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebDialog packAndCenter ( boolean animate )
+    {
+        return WindowUtils.packAndCenter ( this, animate );
     }
 }

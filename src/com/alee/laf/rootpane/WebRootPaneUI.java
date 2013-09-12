@@ -24,10 +24,7 @@ import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
-import com.alee.utils.ImageUtils;
-import com.alee.utils.LafUtils;
-import com.alee.utils.NinePatchUtils;
-import com.alee.utils.SwingUtils;
+import com.alee.utils.*;
 import com.alee.utils.ninepatch.NinePatchIcon;
 
 import javax.swing.*;
@@ -580,19 +577,19 @@ public class WebRootPaneUI extends BasicRootPaneUI implements SwingConstants
 
     protected void installTransparency ()
     {
-        if ( SwingUtils.isWindowTransparencyAllowed () )
+        if ( ProprietaryUtils.isWindowTransparencyAllowed () )
         {
             root.setOpaque ( false );
-            SwingUtils.setWindowOpaque ( window, false );
+            ProprietaryUtils.setWindowOpaque ( window, false );
         }
     }
 
     protected void uninstallTransparency ()
     {
-        if ( SwingUtils.isWindowTransparencyAllowed () )
+        if ( ProprietaryUtils.isWindowTransparencyAllowed () )
         {
             root.setOpaque ( true );
-            SwingUtils.setWindowOpaque ( window, true );
+            ProprietaryUtils.setWindowOpaque ( window, true );
         }
     }
 

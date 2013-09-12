@@ -17,6 +17,7 @@
 
 package com.alee.laf.rootpane;
 
+import com.alee.managers.focus.DefaultFocusTracker;
 import com.alee.managers.focus.FocusManager;
 import com.alee.managers.focus.FocusTracker;
 import com.alee.managers.language.LanguageContainerMethods;
@@ -26,6 +27,8 @@ import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.settings.SettingsMethods;
 import com.alee.managers.settings.SettingsProcessor;
 import com.alee.utils.SwingUtils;
+import com.alee.utils.WindowUtils;
+import com.alee.utils.swing.WindowMethods;
 
 import javax.swing.*;
 import java.awt.*;
@@ -36,10 +39,10 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public class WebWindow extends JWindow implements FocusTracker, LanguageContainerMethods, SettingsMethods
+public class WebWindow extends JWindow implements LanguageContainerMethods, SettingsMethods, WindowMethods<WebWindow>
 {
     /**
-     * Whether should close window on focus loss.
+     * Whether should close window on focus loss or not.
      */
     protected boolean closeOnFocusLoss = false;
 
@@ -49,7 +52,14 @@ public class WebWindow extends JWindow implements FocusTracker, LanguageContaine
     protected boolean focused;
 
     /**
-     *
+     * Default window focus tracker.
+     */
+    protected FocusTracker focusTracker;
+
+    /**
+     * Creates a window with no specified owner. This window will not be focusable.
+     * <p/>
+     * This constructor sets the component's locale property to the value returned by <code>JComponent.getDefaultLocale</code>.
      */
     public WebWindow ()
     {
@@ -57,51 +67,118 @@ public class WebWindow extends JWindow implements FocusTracker, LanguageContaine
         initialize ();
     }
 
+    /**
+     * Creates a window with the specified <code>GraphicsConfiguration</code> of a screen device. This window will not be focusable.
+     * <p/>
+     * This constructor sets the component's locale property to the value returned by <code>JComponent.getDefaultLocale</code>.
+     *
+     * @param gc the <code>GraphicsConfiguration</code> that is used to construct the new window with; if gc is <code>null</code>,
+     *           the system default <code>GraphicsConfiguration</code> is assumed
+     */
     public WebWindow ( GraphicsConfiguration gc )
     {
         super ( gc );
         initialize ();
     }
 
+    /**
+     * Creates a window with the specified owner frame.
+     * If <code>owner</code> is <code>null</code>, the shared owner will be used and this window will not be focusable.
+     * Also, this window will not be focusable unless its owner is showing on the screen.
+     * <p/>
+     * This constructor sets the component's locale property to the value returned by <code>JComponent.getDefaultLocale</code>.
+     *
+     * @param owner the frame from which the window is displayed
+     */
     public WebWindow ( Frame owner )
     {
         super ( owner );
         initialize ();
     }
 
+    /**
+     * Creates a window with the owner window from the specified component.
+     * This window will not be focusable unless its owner is showing on the screen.
+     * If <code>owner</code> is <code>null</code>, the shared owner will be used and this window will not be focusable.
+     * <p/>
+     * This constructor sets the component's locale property to the value returned by <code>JComponent.getDefaultLocale</code>.
+     *
+     * @param owner the componnt from which parent window this window is displayed
+     */
     public WebWindow ( Component owner )
     {
         super ( SwingUtils.getWindowAncestor ( owner ) );
         initialize ();
     }
 
+    /**
+     * Creates a window with the specified owner window. This window will not be focusable unless its owner is showing on the screen.
+     * If <code>owner</code> is <code>null</code>, the shared owner will be used and this window will not be focusable.
+     * <p/>
+     * This constructor sets the component's locale property to the value returned by <code>JComponent.getDefaultLocale</code>.
+     *
+     * @param owner the window from which the window is displayed
+     */
     public WebWindow ( Window owner )
     {
         super ( owner );
         initialize ();
     }
 
+    /**
+     * Creates a window with the specified owner window and <code>GraphicsConfiguration</code> of a screen device.
+     * If <code>owner</code> is <code>null</code>, the shared owner will be used and this window will not be focusable.
+     * <p/>
+     * This constructor sets the component's locale property to the value returned by <code>JComponent.getDefaultLocale</code>.
+     *
+     * @param owner the window from which the window is displayed
+     * @param gc    the <code>GraphicsConfiguration</code> that is used to construct the new window with; if gc is <code>null</code>,
+     *              the system default <code>GraphicsConfiguration</code> is assumed, unless <code>owner</code> is also null, in which
+     *              case the <code>GraphicsConfiguration</code> from the shared owner frame will be used
+     */
     public WebWindow ( Window owner, GraphicsConfiguration gc )
     {
         super ( owner, gc );
         initialize ();
     }
 
+    /**
+     * Additional initializtion of WebWindow settings.
+     */
     protected void initialize ()
     {
         setFocusable ( true );
         SwingUtils.setOrientation ( this );
+
+        focusTracker = new DefaultFocusTracker ( true )
+        {
+            @Override
+            public void focusChanged ( boolean focused )
+            {
+                WebWindow.this.focused = focused;
+                if ( WebWindow.this.isShowing () && !focused && closeOnFocusLoss )
+                {
+                    setVisible ( false );
+                }
+            }
+        };
     }
 
     /**
-     * Should this window close on focus loss or not
+     * Returns whether should close window on focus loss or not.
+     *
+     * @return true if should close window on focus loss, false otherwise
      */
-
     public boolean isCloseOnFocusLoss ()
     {
         return closeOnFocusLoss;
     }
 
+    /**
+     * Sets whether should close window on focus loss or not.
+     *
+     * @param closeOnFocusLoss whether should close window on focus loss or not
+     */
     public void setCloseOnFocusLoss ( boolean closeOnFocusLoss )
     {
         this.closeOnFocusLoss = closeOnFocusLoss;
@@ -109,101 +186,18 @@ public class WebWindow extends JWindow implements FocusTracker, LanguageContaine
     }
 
     /**
-     * Focus tracker implemented methods
+     * Updates registered window focus tracker.
      */
-
-    @Override
-    public boolean isTrackingEnabled ()
-    {
-        return true;
-    }
-
-    @Override
-    public boolean isUniteWithChilds ()
-    {
-        return true;
-    }
-
-    @Override
-    public void focusChanged ( boolean focused )
-    {
-        this.focused = focused;
-        if ( WebWindow.this.isShowing () && !focused && closeOnFocusLoss )
-        {
-            setVisible ( false );
-        }
-    }
-
     protected void updateFocusTracker ()
     {
         if ( closeOnFocusLoss )
         {
-            FocusManager.addFocusTracker ( this, this );
+            FocusManager.addFocusTracker ( this, focusTracker );
         }
         else
         {
-            FocusManager.removeFocusTracker ( this );
+            FocusManager.removeFocusTracker ( focusTracker );
         }
-    }
-
-    /**
-     * Additional methods
-     */
-
-    public void setWindowOpaque ( boolean opaque )
-    {
-        SwingUtils.setWindowOpaque ( this, opaque );
-    }
-
-    public boolean isWindowOpaque ()
-    {
-        return SwingUtils.isWindowOpaque ( this );
-    }
-
-    public void setWindowOpacity ( float opacity )
-    {
-        SwingUtils.setWindowOpacity ( this, opacity );
-    }
-
-    public float getWindowOpacity ()
-    {
-        return SwingUtils.getWindowOpacity ( this );
-    }
-
-    public void packAndCenter ()
-    {
-        SwingUtils.packAndCenter ( this );
-    }
-
-    public void packAndCenter ( boolean animate )
-    {
-        SwingUtils.packAndCenter ( this, animate );
-    }
-
-    public void center ()
-    {
-        setLocationRelativeTo ( null );
-    }
-
-    public void center ( Component relativeTo )
-    {
-        setLocationRelativeTo ( relativeTo );
-    }
-
-    public void center ( int width, int height )
-    {
-        setSize ( width, height );
-        center ();
-    }
-
-    public void packToWidth ( int width )
-    {
-        setSize ( width, getPreferredSize ().height );
-    }
-
-    public void packToHeight ( int height )
-    {
-        setSize ( getPreferredSize ().width, height );
     }
 
     /**
@@ -369,5 +363,113 @@ public class WebWindow extends JWindow implements FocusTracker, LanguageContaine
     public void saveSettings ()
     {
         SettingsManager.saveComponentSettings ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebWindow setWindowOpaque ( boolean opaque )
+    {
+        return WindowUtils.setWindowOpaque ( this, opaque );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isWindowOpaque ()
+    {
+        return WindowUtils.isWindowOpaque ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebWindow setWindowOpacity ( float opacity )
+    {
+        return WindowUtils.setWindowOpacity ( this, opacity );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public float getWindowOpacity ()
+    {
+        return WindowUtils.getWindowOpacity ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebWindow center ()
+    {
+        return WindowUtils.center ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebWindow center ( Component relativeTo )
+    {
+        return WindowUtils.center ( this, relativeTo );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebWindow center ( int width, int height )
+    {
+        return WindowUtils.center ( this, width, height );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebWindow center ( Component relativeTo, int width, int height )
+    {
+        return WindowUtils.center ( this, relativeTo, width, height );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebWindow packToWidth ( int width )
+    {
+        return WindowUtils.packToWidth ( this, width );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebWindow packToHeight ( int height )
+    {
+        return WindowUtils.packToHeight ( this, height );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebWindow packAndCenter ()
+    {
+        return WindowUtils.packAndCenter ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebWindow packAndCenter ( boolean animate )
+    {
+        return WindowUtils.packAndCenter ( this, animate );
     }
 }
