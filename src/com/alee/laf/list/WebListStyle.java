@@ -30,7 +30,12 @@ import java.awt.*;
 public final class WebListStyle
 {
     /**
-     * Whether to highlight rollover cell or not.
+     * Whether should decorate selected and rollover cells or not.
+     */
+    public static boolean decorateSelection = true;
+
+    /**
+     * Whether should highlight rollover cell or not.
      */
     public static boolean highlightRolloverCell = true;
 
@@ -45,7 +50,7 @@ public final class WebListStyle
     public static int selectionShadeWidth = StyleConstants.shadeWidth;
 
     /**
-     * Whether to scroll list down to selection automatically or not.
+     * Whether should scroll list down to selection automatically or not.
      */
     public static boolean autoScrollToSelection = true;
 

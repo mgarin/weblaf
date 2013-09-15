@@ -42,6 +42,7 @@ public class WebListUI extends BasicListUI
     /**
      * Style settings.
      */
+    private boolean decorateSelection = WebListStyle.decorateSelection;
     private boolean highlightRolloverCell = WebListStyle.highlightRolloverCell;
     private int selectionRound = WebListStyle.selectionRound;
     private int selectionShadeWidth = WebListStyle.selectionShadeWidth;
@@ -65,7 +66,7 @@ public class WebListUI extends BasicListUI
      * @param c component that will use UI instance
      * @return instance of the WebListUI
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( JComponent c )
     {
         return new WebListUI ();
@@ -117,7 +118,7 @@ public class WebListUI extends BasicListUI
             private void updateMouseover ( MouseEvent e )
             {
                 // Ignore events if rollover highlight is disabled
-                if ( !highlightRolloverCell )
+                if ( !decorateSelection || !highlightRolloverCell )
                 {
                     return;
                 }
@@ -204,7 +205,27 @@ public class WebListUI extends BasicListUI
     }
 
     /**
-     * Returns whether to highlight rollover cell or not.
+     * Returns whether should decorate selected and rollover cells or not.
+     *
+     * @return true if should decorate selected and rollover cells, false otherwise
+     */
+    public boolean isDecorateSelection ()
+    {
+        return decorateSelection;
+    }
+
+    /**
+     * Sets whether should decorate selected and rollover cells or not.
+     *
+     * @param decorateSelection whether should decorate selected and rollover cells or not
+     */
+    public void setDecorateSelection ( boolean decorateSelection )
+    {
+        this.decorateSelection = decorateSelection;
+    }
+
+    /**
+     * Returns whether should highlight rollover cell or not.
      *
      * @return true if rollover cell is being highlighted, false otherwise
      */
@@ -214,9 +235,9 @@ public class WebListUI extends BasicListUI
     }
 
     /**
-     * Sets whether to highlight rollover cell or not.
+     * Sets whether should highlight rollover cell or not.
      *
-     * @param highlightRolloverCell whether to highlight rollover cell or not
+     * @param highlightRolloverCell whether should highlight rollover cell or not
      */
     public void setHighlightRolloverCell ( boolean highlightRolloverCell )
     {
@@ -339,10 +360,9 @@ public class WebListUI extends BasicListUI
         //        }
 
         final Object value = dataModel.getElementAt ( index );
-        final boolean cellHasFocus = list.hasFocus () && ( index == leadIndex );
         final boolean isSelected = selModel.isSelectedIndex ( index );
 
-        if ( isSelected || index == rolloverIndex )
+        if ( decorateSelection && ( isSelected || index == rolloverIndex ) )
         {
             final Graphics2D g2d = ( Graphics2D ) g;
             final Composite oc = LafUtils.setupAlphaComposite ( g2d, 0.35f, !isSelected );
@@ -355,12 +375,8 @@ public class WebListUI extends BasicListUI
             LafUtils.restoreComposite ( g2d, oc, !isSelected );
         }
 
+        final boolean cellHasFocus = list.hasFocus () && ( index == leadIndex );
         final Component rendererComponent = cellRenderer.getListCellRendererComponent ( list, value, index, isSelected, cellHasFocus );
-
-        final int cx = rowBounds.x;
-        final int cy = rowBounds.y;
-        final int cw = rowBounds.width;
-        final int ch = rowBounds.height;
-        rendererPane.paintComponent ( g, rendererComponent, list, cx, cy, cw, ch, true );
+        rendererPane.paintComponent ( g, rendererComponent, list, rowBounds.x, rowBounds.y, rowBounds.width, rowBounds.height, true );
     }
 }

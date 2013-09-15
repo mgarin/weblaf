@@ -413,7 +413,27 @@ public class WebList extends JList implements FontMethods<WebList>, SizeMethods<
     }
 
     /**
-     * Returns whether to highlight rollover cell or not.
+     * Returns whether should decorate selected and rollover cells or not.
+     *
+     * @return true if should decorate selected and rollover cells, false otherwise
+     */
+    public boolean isDecorateSelection ()
+    {
+        return getWebUI ().isDecorateSelection ();
+    }
+
+    /**
+     * Sets whether should decorate selected and rollover cells or not.
+     *
+     * @param decorateSelection whether should decorate selected and rollover cells or not
+     */
+    public void setDecorateSelection ( boolean decorateSelection )
+    {
+        getWebUI ().setDecorateSelection ( decorateSelection );
+    }
+
+    /**
+     * Returns whether should highlight rollover cell or not.
      *
      * @return true if rollover cell is being highlighted, false otherwise
      */
@@ -423,9 +443,9 @@ public class WebList extends JList implements FontMethods<WebList>, SizeMethods<
     }
 
     /**
-     * Sets whether to highlight rollover cell or not.
+     * Sets whether should highlight rollover cell or not.
      *
-     * @param highlightRolloverCell whether to highlight rollover cell or not
+     * @param highlightRolloverCell whether should highlight rollover cell or not
      */
     public void setHighlightRolloverCell ( boolean highlightRolloverCell )
     {
