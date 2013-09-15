@@ -69,6 +69,12 @@ public class WebList extends JList implements FontMethods<WebList>, SizeMethods<
     protected int editedCell = -1;
 
     /**
+     * Whether list allows an empty selection or not.
+     * This setting doesn't force initial selection though.
+     */
+    protected boolean unselectable = true;
+
+    /**
      * Constructs empty list.
      */
     public WebList ()
@@ -318,6 +324,33 @@ public class WebList extends JList implements FontMethods<WebList>, SizeMethods<
     {
         final ListCellEditor cellEditor = getCellEditor ();
         return cellEditor != null && cellEditor.isEditing ();
+    }
+
+    /**
+     * Returns whether list allows an empty selection or not.
+     *
+     * @return true if list allows an empty selection, false otherwise
+     */
+    public boolean isUnselectable ()
+    {
+        return unselectable;
+    }
+
+    /**
+     * Sets whether list allows an empty selection or not.
+     *
+     * @param unselectable whether list allows an empty selection or not
+     */
+    public void setUnselectable ( boolean unselectable )
+    {
+        this.unselectable = unselectable;
+
+        // Updating selection model
+        int lead = getLeadSelectionIndex ();
+        int[] selected = getSelectedIndices ();
+        setSelectionModel ( unselectable ? new DefaultListSelectionModel () : new UnselectableListModel () );
+        setSelectedIndices ( selected );
+        getSelectionModel ().setLeadSelectionIndex ( lead );
     }
 
     /**
