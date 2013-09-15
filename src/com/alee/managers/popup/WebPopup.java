@@ -19,8 +19,8 @@ package com.alee.managers.popup;
 
 import com.alee.extended.painter.Painter;
 import com.alee.laf.panel.WebPanel;
+import com.alee.managers.focus.DefaultFocusTracker;
 import com.alee.managers.focus.FocusManager;
-import com.alee.managers.focus.FocusTracker;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.LafUtils;
 import com.alee.utils.SwingUtils;
@@ -47,7 +47,7 @@ import java.util.List;
  * @see PopupLayer
  */
 
-public class WebPopup extends WebPanel implements FocusTracker
+public class WebPopup extends WebPanel
 {
     protected List<PopupListener> popupListeners = new ArrayList<PopupListener> ( 2 );
 
@@ -93,6 +93,12 @@ public class WebPopup extends WebPanel implements FocusTracker
     protected void initializePopup ()
     {
         setOpaque ( false );
+
+        // Popup doesn't allow focus to move outside of it
+        setFocusCycleRoot ( true );
+
+        // Listeners to block events passing to underlying components
+        EmptyMouseAdapter.install ( this );
 
         // Fade in-out timer
         fadeTimer = new WebTimer ( "WebPopup.fade", 1000 / fadeFps );
@@ -173,14 +179,36 @@ public class WebPopup extends WebPanel implements FocusTracker
             }
         } );
 
-        // Listeners to block events passing to underlying components
-        EmptyMouseAdapter.install ( this );
+        // Focus tracking
+        FocusManager.addFocusTracker ( this, new DefaultFocusTracker ( true )
+        {
+            @Override
+            public boolean isTrackingEnabled ()
+            {
+                return WebPopup.this.isShowing ();
+            }
 
-        // Focus manager
-        FocusManager.addFocusTracker ( this, this );
+            @Override
+            public void focusChanged ( boolean focused )
+            {
+                WebPopup.this.focusChanged ( focused );
+            }
+        } );
+    }
 
-        // Focus traversal policy
-        setFocusCycleRoot ( true );
+    /**
+     * Called when this popup recieve or lose focus.
+     * You can your own behavior for focus change by overriding this method.
+     *
+     * @param focused whether popup has focus or not
+     */
+    protected void focusChanged ( boolean focused )
+    {
+        // todo Replace with MultiFocusTracker (for multiply components)
+        if ( WebPopup.this.isShowing () && !focused && !isChildFocused () && closeOnFocusLoss )
+        {
+            hidePopup ();
+        }
     }
 
     /**
@@ -234,43 +262,6 @@ public class WebPopup extends WebPanel implements FocusTracker
     public void setDefaultFocusComponent ( Component defaultFocusComponent )
     {
         this.defaultFocusComponent = defaultFocusComponent;
-    }
-
-    /**
-     * Focus tracker methods
-     */
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean isTrackingEnabled ()
-    {
-        return WebPopup.this.isShowing ();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean isUniteWithChilds ()
-    {
-        return true;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void focusChanged ( boolean focused )
-    {
-        this.focused = focused;
-
-        // todo Replace with MultiFocusTracker (for multiply components)
-        if ( WebPopup.this.isShowing () && !focused && !isChildFocused () && closeOnFocusLoss )
-        {
-            hidePopup ();
-        }
     }
 
     /**

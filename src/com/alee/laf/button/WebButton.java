@@ -36,6 +36,7 @@ import com.alee.utils.swing.SizeMethods;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.util.List;
 
 /**
@@ -61,14 +62,40 @@ public class WebButton extends JButton implements ShapeProvider, LanguageMethods
         super ( text );
     }
 
-    public WebButton ( Action a )
-    {
-        super ( a );
-    }
-
     public WebButton ( String text, Icon icon )
     {
         super ( text, icon );
+    }
+
+    public WebButton ( ActionListener listener )
+    {
+        super ();
+        addActionListener ( listener );
+    }
+
+    public WebButton ( Icon icon, ActionListener listener )
+    {
+        super ( icon );
+        setRound ( WebButtonStyle.iconRound );
+        setLeftRightSpacing ( WebButtonStyle.iconLeftRightSpacing );
+        addActionListener ( listener );
+    }
+
+    public WebButton ( String text, ActionListener listener )
+    {
+        super ( text );
+        addActionListener ( listener );
+    }
+
+    public WebButton ( String text, Icon icon, ActionListener listener )
+    {
+        super ( text, icon );
+        addActionListener ( listener );
+    }
+
+    public WebButton ( Action a )
+    {
+        super ( a );
     }
 
     /**

@@ -20,6 +20,7 @@ package com.alee.laf.panel;
 import com.alee.extended.painter.Painter;
 import com.alee.laf.StyleConstants;
 import com.alee.laf.WebLookAndFeel;
+import com.alee.managers.focus.DefaultFocusTracker;
 import com.alee.managers.focus.FocusManager;
 import com.alee.managers.focus.FocusTracker;
 import com.alee.utils.LafUtils;
@@ -35,11 +36,16 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 /**
- * User: mgarin Date: 26.07.11 Time: 13:11
+ * Custom UI for JPanel component.
+ *
+ * @author Mikle Garin
  */
 
-public class WebPanelUI extends BasicPanelUI implements ShapeProvider, FocusTracker
+public class WebPanelUI extends BasicPanelUI implements ShapeProvider
 {
+    /**
+     * Style settings.
+     */
     private boolean undecorated = WebPanelStyle.undecorated;
     private boolean drawFocus = WebPanelStyle.drawFocus;
     private int round = WebPanelStyle.round;
@@ -49,25 +55,49 @@ public class WebPanelUI extends BasicPanelUI implements ShapeProvider, FocusTrac
     private boolean drawBackground = WebPanelStyle.drawBackground;
     private boolean webColored = WebPanelStyle.webColored;
     private Painter painter = WebPanelStyle.painter;
-    private ShapeProvider clipProvider = WebPanelStyle.clipProvider;
-
     private boolean drawTop = WebPanelStyle.drawTop;
     private boolean drawLeft = WebPanelStyle.drawLeft;
     private boolean drawBottom = WebPanelStyle.drawBottom;
     private boolean drawRight = WebPanelStyle.drawRight;
 
-    private JPanel panel = null;
+    /**
+     * Panel to which this UI is applied.
+     */
+    private JPanel panel;
 
+    /**
+     * Panel listeners.
+     */
     private PropertyChangeListener propertyChangeListener;
 
-    private boolean focused = false;
+    /**
+     * Panel focus tracker.
+     */
+    protected FocusTracker focusTracker;
 
+    /**
+     * Whether panel is focused or owns focused component or not.
+     */
+    protected boolean focused = false;
+
+    /**
+     * Returns an instance of the WebPanelUI for the specified component.
+     * This tricky method is used by UIManager to create component UIs when needed.
+     *
+     * @param c component that will use UI instance
+     * @return instance of the WebPanelUI
+     */
     @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( JComponent c )
     {
         return new WebPanelUI ();
     }
 
+    /**
+     * Installs UI in the specified component.
+     *
+     * @param c component for this UI
+     */
     @Override
     public void installUI ( JComponent c )
     {
@@ -95,37 +125,43 @@ public class WebPanelUI extends BasicPanelUI implements ShapeProvider, FocusTrac
         };
         panel.addPropertyChangeListener ( WebLookAndFeel.COMPONENT_ORIENTATION_PROPERTY, propertyChangeListener );
 
-        // Focus tracker
-        updateFocusTracker ();
+        // Focus tracker for the panel content
+        focusTracker = new DefaultFocusTracker ()
+        {
+            @Override
+            public boolean isTrackingEnabled ()
+            {
+                return !undecorated && drawFocus;
+            }
+
+            @Override
+            public void focusChanged ( boolean focused )
+            {
+                WebPanelUI.this.focused = focused;
+                panel.repaint ();
+            }
+        };
+        FocusManager.addFocusTracker ( panel, focusTracker );
     }
 
+    /**
+     * Uninstalls UI from the specified component.
+     *
+     * @param c component with this UI
+     */
     @Override
     public void uninstallUI ( JComponent c )
     {
         panel.removePropertyChangeListener ( WebLookAndFeel.COMPONENT_ORIENTATION_PROPERTY, propertyChangeListener );
 
-        removeFocusTracker ();
+        FocusManager.removeFocusTracker ( focusTracker );
 
         super.uninstallUI ( c );
     }
 
-    private void updateFocusTracker ()
-    {
-        if ( !undecorated && drawFocus )
-        {
-            FocusManager.addFocusTracker ( panel, WebPanelUI.this );
-        }
-        else
-        {
-            removeFocusTracker ();
-        }
-    }
-
-    private void removeFocusTracker ()
-    {
-        FocusManager.removeFocusTracker ( WebPanelUI.this );
-    }
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Shape provideShape ()
     {
@@ -139,25 +175,9 @@ public class WebPanelUI extends BasicPanelUI implements ShapeProvider, FocusTrac
         }
     }
 
-    @Override
-    public boolean isTrackingEnabled ()
-    {
-        return true;
-    }
-
-    @Override
-    public boolean isUniteWithChilds ()
-    {
-        return true;
-    }
-
-    @Override
-    public void focusChanged ( boolean focused )
-    {
-        this.focused = focused;
-        panel.repaint ();
-    }
-
+    /**
+     * Updates custom UI border.
+     */
     private void updateBorder ()
     {
         if ( panel != null )
@@ -192,23 +212,24 @@ public class WebPanelUI extends BasicPanelUI implements ShapeProvider, FocusTrac
         }
     }
 
-    private void updateOpacity ()
-    {
-        if ( painter != null )
-        {
-            panel.setOpaque ( painter.isOpaque ( panel ) );
-        }
-    }
-
+    /**
+     * Returns whether panel is undecorated or not.
+     *
+     * @return true if panel is undecorated, false otherwise
+     */
     public boolean isUndecorated ()
     {
         return undecorated;
     }
 
+    /**
+     * Sets whether panel should be undecorated or not.
+     *
+     * @param undecorated whether panel should be undecorated or not
+     */
     public void setUndecorated ( boolean undecorated )
     {
         this.undecorated = undecorated;
-        updateFocusTracker ();
         updateBorder ();
 
         // todo Bad workaround
@@ -219,39 +240,58 @@ public class WebPanelUI extends BasicPanelUI implements ShapeProvider, FocusTrac
         }
     }
 
+    /**
+     * Returns whether panel should display when it owns focus or not.
+     *
+     * @return true if panel should display when it owns focus, false otherwise
+     */
     public boolean isDrawFocus ()
     {
         return drawFocus;
     }
 
+    /**
+     * Sets whether panel should display when it owns focus or not.
+     *
+     * @param drawFocus whether panel should display when it owns focus or not
+     */
     public void setDrawFocus ( boolean drawFocus )
     {
         this.drawFocus = drawFocus;
-        updateFocusTracker ();
     }
 
+    /**
+     * Returns panel background painter.
+     *
+     * @return panel background painter
+     */
     public Painter getPainter ()
     {
         return painter;
     }
 
+    /**
+     * Sets panel background painter.
+     *
+     * @param painter new panel background painter
+     */
     public void setPainter ( Painter painter )
     {
         this.painter = painter;
         updateBorder ();
-        updateOpacity ();
+
+        // Changes panel opacity according to specified painter
+        if ( painter != null )
+        {
+            panel.setOpaque ( painter.isOpaque ( panel ) );
+        }
     }
 
-    public ShapeProvider getClipProvider ()
-    {
-        return clipProvider;
-    }
-
-    public void setClipProvider ( ShapeProvider clipProvider )
-    {
-        this.clipProvider = clipProvider;
-    }
-
+    /**
+     * Returns decoration rounding.
+     *
+     * @return decoration rounding
+     */
     public int getRound ()
     {
         if ( undecorated )
@@ -264,11 +304,21 @@ public class WebPanelUI extends BasicPanelUI implements ShapeProvider, FocusTrac
         }
     }
 
+    /**
+     * Sets decoration rounding.
+     *
+     * @param round new decoration rounding
+     */
     public void setRound ( int round )
     {
         this.round = round;
     }
 
+    /**
+     * Returns decoration shade width.
+     *
+     * @return decoration shade width
+     */
     public int getShadeWidth ()
     {
         if ( undecorated )
@@ -281,97 +331,190 @@ public class WebPanelUI extends BasicPanelUI implements ShapeProvider, FocusTrac
         }
     }
 
+    /**
+     * Sets decoration shade width.
+     *
+     * @param shadeWidth new decoration shade width
+     */
     public void setShadeWidth ( int shadeWidth )
     {
         this.shadeWidth = shadeWidth;
         updateBorder ();
     }
 
+    /**
+     * Returns panel margin.
+     *
+     * @return panel margin
+     */
     public Insets getMargin ()
     {
         return margin;
     }
 
+    /**
+     * Sets panel margin.
+     *
+     * @param margin new panel margin
+     */
     public void setMargin ( Insets margin )
     {
         this.margin = margin;
         updateBorder ();
     }
 
+    /**
+     * Returns decoration border stroke.
+     *
+     * @return decoration border stroke
+     */
     public Stroke getBorderStroke ()
     {
         return borderStroke;
     }
 
+    /**
+     * Sets decoration border stroke.
+     *
+     * @param stroke new decoration border stroke
+     */
     public void setBorderStroke ( Stroke stroke )
     {
         this.borderStroke = stroke;
     }
 
+    /**
+     * Returns whether should draw background or not.
+     *
+     * @return true if should draw background, false otherwise
+     */
     public boolean isDrawBackground ()
     {
         return drawBackground;
     }
 
+    /**
+     * Sets whether should draw background or not.
+     *
+     * @param drawBackground whether should draw background or not
+     */
     public void setDrawBackground ( boolean drawBackground )
     {
         this.drawBackground = drawBackground;
     }
 
+    /**
+     * Returns whether should draw web-colored background or not.
+     *
+     * @return true if should draw web-colored background, false otherwise
+     */
     public boolean isWebColored ()
     {
         return webColored;
     }
 
+    /**
+     * Sets whether should draw web-colored background or not.
+     *
+     * @param webColored whether should draw web-colored background or not
+     */
     public void setWebColored ( boolean webColored )
     {
         this.webColored = webColored;
     }
 
-    public boolean isDrawBottom ()
-    {
-        return drawBottom;
-    }
-
-    public void setDrawBottom ( boolean drawBottom )
-    {
-        this.drawBottom = drawBottom;
-        updateBorder ();
-    }
-
-    public boolean isDrawLeft ()
-    {
-        return drawLeft;
-    }
-
-    public void setDrawLeft ( boolean drawLeft )
-    {
-        this.drawLeft = drawLeft;
-        updateBorder ();
-    }
-
-    public boolean isDrawRight ()
-    {
-        return drawRight;
-    }
-
-    public void setDrawRight ( boolean drawRight )
-    {
-        this.drawRight = drawRight;
-        updateBorder ();
-    }
-
+    /**
+     * Returns whether should draw top panel side or not.
+     *
+     * @return true if should draw top panel side, false otherwise
+     */
     public boolean isDrawTop ()
     {
         return drawTop;
     }
 
+    /**
+     * Sets whether should draw top panel side or not.
+     *
+     * @param drawTop whether should draw top panel side or not
+     */
     public void setDrawTop ( boolean drawTop )
     {
         this.drawTop = drawTop;
         updateBorder ();
     }
 
+    /**
+     * Returns whether should draw left panel side or not.
+     *
+     * @return true if should draw left panel side, false otherwise
+     */
+    public boolean isDrawLeft ()
+    {
+        return drawLeft;
+    }
+
+    /**
+     * Sets whether should draw left panel side or not.
+     *
+     * @param drawTop whether should draw left panel side or not
+     */
+    public void setDrawLeft ( boolean drawLeft )
+    {
+        this.drawLeft = drawLeft;
+        updateBorder ();
+    }
+
+    /**
+     * Returns whether should draw bottom panel side or not.
+     *
+     * @return true if should draw bottom panel side, false otherwise
+     */
+    public boolean isDrawBottom ()
+    {
+        return drawBottom;
+    }
+
+    /**
+     * Sets whether should draw bottom panel side or not.
+     *
+     * @param drawTop whether should draw bottom panel side or not
+     */
+    public void setDrawBottom ( boolean drawBottom )
+    {
+        this.drawBottom = drawBottom;
+        updateBorder ();
+    }
+
+    /**
+     * Returns whether should draw right panel side or not.
+     *
+     * @return true if should draw right panel side, false otherwise
+     */
+    public boolean isDrawRight ()
+    {
+        return drawRight;
+    }
+
+    /**
+     * Sets whether should draw right panel side or not.
+     *
+     * @param drawTop whether should draw right panel side or not
+     */
+    public void setDrawRight ( boolean drawRight )
+    {
+        this.drawRight = drawRight;
+        updateBorder ();
+    }
+
+    /**
+     * Sets whether should draw specific panel sides or not.
+     *
+     * @param top    whether should draw top panel side or not
+     * @param left   whether should draw left panel side or not
+     * @param bottom whether should draw bottom panel side or not
+     * @param right  whether should draw right panel side or not
+     */
     public void setDrawSides ( boolean top, boolean left, boolean bottom, boolean right )
     {
         this.drawTop = top;
@@ -381,18 +524,18 @@ public class WebPanelUI extends BasicPanelUI implements ShapeProvider, FocusTrac
         updateBorder ();
     }
 
+    /**
+     * Paints panel.
+     *
+     * @param g graphics
+     * @param c component
+     */
     @Override
     public void paint ( Graphics g, JComponent c )
     {
         // To be applied for all childs painting
         LafUtils.setupSystemTextHints ( g );
 
-        Shape clip = clipProvider != null ? clipProvider.provideShape () : null;
-        Shape oldClip = null;
-        if ( clip != null )
-        {
-            oldClip = LafUtils.intersectClip ( ( Graphics2D ) g, clip );
-        }
         if ( painter != null )
         {
             // Use background painter instead of default UI graphics
@@ -450,13 +593,16 @@ public class WebPanelUI extends BasicPanelUI implements ShapeProvider, FocusTrac
                 LafUtils.restoreAntialias ( g2d, aa );
             }
         }
-        if ( clip != null )
-        {
-            LafUtils.restoreClip ( g, oldClip );
-        }
     }
 
-    private Shape getPanelShape ( JComponent c, boolean bg )
+    /**
+     * Returns panel shape.
+     *
+     * @param c          component
+     * @param background whether should return background shape or not
+     * @return panel shape
+     */
+    private Shape getPanelShape ( JComponent c, boolean background )
     {
         // Changing draw marks in case of RTL orientation
         boolean ltr = c.getComponentOrientation ().isLeftToRight ();
@@ -467,7 +613,7 @@ public class WebPanelUI extends BasicPanelUI implements ShapeProvider, FocusTrac
         int w = c.getWidth ();
         int h = c.getHeight ();
 
-        if ( bg )
+        if ( background )
         {
             Point[] corners = new Point[ 4 ];
             boolean[] rounded = new boolean[ 4 ];
@@ -574,6 +720,13 @@ public class WebPanelUI extends BasicPanelUI implements ShapeProvider, FocusTrac
         }
     }
 
+    /**
+     * Returns point for the specified coordinates.
+     *
+     * @param x X coordinate
+     * @param y Y coordinate
+     * @return point for the specified coordinates
+     */
     private Point p ( int x, int y )
     {
         return new Point ( x, y );

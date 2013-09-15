@@ -67,35 +67,35 @@ public class WebTreeUI extends BasicTreeUI
     /**
      * Style settings.
      */
-    private boolean autoExpandSelectedNode = WebTreeStyle.autoExpandSelectedPath;
-    private boolean highlightRolloverNode = WebTreeStyle.highlightRolloverNode;
-    private boolean paintLines = WebTreeStyle.paintLines;
-    private Color linesColor = WebTreeStyle.linesColor;
-    private TreeSelectionStyle selectionStyle = WebTreeStyle.selectionStyle;
-    private int selectionRound = WebTreeStyle.selectionRound;
-    private int selectionShadeWidth = WebTreeStyle.selectionShadeWidth;
-    private boolean selectorEnabled = WebTreeStyle.selectorEnabled;
-    private Color selectorColor = WebTreeStyle.selectorColor;
-    private Color selectorBorderColor = WebTreeStyle.selectorBorderColor;
-    private int selectorRound = WebTreeStyle.selectorRound;
-    private BasicStroke selectorStroke = WebTreeStyle.selectorStroke;
+    protected boolean autoExpandSelectedNode = WebTreeStyle.autoExpandSelectedPath;
+    protected boolean highlightRolloverNode = WebTreeStyle.highlightRolloverNode;
+    protected boolean paintLines = WebTreeStyle.paintLines;
+    protected Color linesColor = WebTreeStyle.linesColor;
+    protected TreeSelectionStyle selectionStyle = WebTreeStyle.selectionStyle;
+    protected int selectionRound = WebTreeStyle.selectionRound;
+    protected int selectionShadeWidth = WebTreeStyle.selectionShadeWidth;
+    protected boolean selectorEnabled = WebTreeStyle.selectorEnabled;
+    protected Color selectorColor = WebTreeStyle.selectorColor;
+    protected Color selectorBorderColor = WebTreeStyle.selectorBorderColor;
+    protected int selectorRound = WebTreeStyle.selectorRound;
+    protected BasicStroke selectorStroke = WebTreeStyle.selectorStroke;
 
     /**
      * Tree listeners.
      */
-    private PropertyChangeListener propertyChangeListener;
-    private TreeSelectionListener treeSelectionListener;
-    private TreeExpansionListener treeExpansionListener;
-    private MouseAdapter mouseAdapter;
+    protected PropertyChangeListener propertyChangeListener;
+    protected TreeSelectionListener treeSelectionListener;
+    protected TreeExpansionListener treeExpansionListener;
+    protected MouseAdapter mouseAdapter;
 
     /**
      * Runtime variables.
      */
-    private int rolloverRow = -1;
-    private List<Integer> initialSelection = new ArrayList<Integer> ();
-    private Point selectionStart = null;
-    private Point selectionEnd = null;
-    private boolean ltr = true;
+    protected int rolloverRow = -1;
+    protected List<Integer> initialSelection = new ArrayList<Integer> ();
+    protected Point selectionStart = null;
+    protected Point selectionEnd = null;
+    protected boolean ltr = true;
 
     /**
      * Returns an instance of the WebTreeUI for the specified component.
@@ -1067,7 +1067,7 @@ public class WebTreeUI extends BasicTreeUI
      * @param iconWidth icon width
      * @return centered x coordinate
      */
-    private int findCenteredX ( int x, int iconWidth )
+    protected int findCenteredX ( int x, int iconWidth )
     {
         return ltr ? x + 2 - ( int ) Math.ceil ( iconWidth / 2.0 ) : x - 2 - ( int ) Math.floor ( iconWidth / 2.0 ) - 3;
     }
@@ -1076,7 +1076,7 @@ public class WebTreeUI extends BasicTreeUI
      * Repaints all rectangles containing tree selections.
      * This method is optimized to repaint only those area which are actually has selection in them.
      */
-    private void repaintSelection ()
+    protected void repaintSelection ()
     {
         if ( tree.getSelectionCount () > 0 )
         {
@@ -1093,7 +1093,7 @@ public class WebTreeUI extends BasicTreeUI
      *
      * @return list of tree selections bounds
      */
-    private List<Rectangle> getSelectionRects ()
+    protected List<Rectangle> getSelectionRects ()
     {
         List<Rectangle> selections = new ArrayList<Rectangle> ();
 
@@ -1225,7 +1225,7 @@ public class WebTreeUI extends BasicTreeUI
      * @param fill should fill the whole cell
      * @return selection shape for specified selection bounds
      */
-    private Shape getSelectionShape ( Rectangle sb, boolean fill )
+    protected Shape getSelectionShape ( Rectangle sb, boolean fill )
     {
         int shear = fill ? 1 : 0;
         if ( selectorRound > 0 )

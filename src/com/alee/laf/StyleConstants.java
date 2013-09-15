@@ -21,7 +21,6 @@ import com.alee.extended.painter.Painter;
 import com.alee.utils.ColorUtils;
 import com.alee.utils.laf.FocusType;
 import com.alee.utils.laf.ShadeType;
-import com.alee.utils.laf.ShapeProvider;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -141,7 +140,6 @@ public class StyleConstants
     public static boolean rolloverDecoratedOnly = false;
     public static boolean undecorated = false;
     public static Painter painter = null;
-    public static ShapeProvider clipProvider = null;
 
     /**
      * Components corners rounding settings.

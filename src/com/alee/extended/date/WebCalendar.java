@@ -164,12 +164,12 @@ public class WebCalendar extends WebPanel
         putClientProperty ( SwingUtils.HANDLES_ENABLE_STATE, true );
 
         // Main layout
-        WebPanel centerPanel = new WebPanel ();
+        final WebPanel centerPanel = new WebPanel ();
         centerPanel.setOpaque ( false );
         add ( centerPanel, BorderLayout.CENTER );
 
         // Header panel
-        WebPanel header = new WebPanel ();
+        final WebPanel header = new WebPanel ();
         header.setOpaque ( false );
         add ( header, BorderLayout.NORTH );
 
@@ -195,7 +195,7 @@ public class WebCalendar extends WebPanel
             }
         } );
 
-        WebPanel leftHeader = new WebPanel ( new BorderLayout () );
+        final WebPanel leftHeader = new WebPanel ( new BorderLayout () );
         leftHeader.setOpaque ( false );
         leftHeader.add ( previousSkip, BorderLayout.WEST );
         leftHeader.add ( previous, BorderLayout.EAST );
@@ -239,7 +239,7 @@ public class WebCalendar extends WebPanel
             }
         } );
 
-        WebPanel rightHeader = new WebPanel ( new BorderLayout () );
+        final WebPanel rightHeader = new WebPanel ( new BorderLayout () );
         rightHeader.setOpaque ( false );
         rightHeader.add ( next, BorderLayout.WEST );
         rightHeader.add ( nextSkip, BorderLayout.EAST );
@@ -323,12 +323,12 @@ public class WebCalendar extends WebPanel
     protected void changeMonth ( int change )
     {
         // Reverese date change due to reversed orientation
-        if ( !WebCalendar.this.getComponentOrientation ().isLeftToRight () )
+        if ( !getComponentOrientation ().isLeftToRight () )
         {
             change = -change;
         }
 
-        Calendar calendar = Calendar.getInstance ();
+        final Calendar calendar = Calendar.getInstance ();
         calendar.setTime ( shownDate );
         calendar.set ( Calendar.MONTH, calendar.get ( Calendar.MONTH ) + change );
         setShownDate ( calendar.getTime () );
@@ -342,12 +342,12 @@ public class WebCalendar extends WebPanel
     protected void changeYear ( int change )
     {
         // Reverese date change due to reversed orientation
-        if ( !WebCalendar.this.getComponentOrientation ().isLeftToRight () )
+        if ( !getComponentOrientation ().isLeftToRight () )
         {
             change = -change;
         }
 
-        Calendar calendar = Calendar.getInstance ();
+        final Calendar calendar = Calendar.getInstance ();
         calendar.setTime ( shownDate );
         calendar.set ( Calendar.YEAR, calendar.get ( Calendar.YEAR ) + change );
         setShownDate ( calendar.getTime () );
@@ -360,7 +360,7 @@ public class WebCalendar extends WebPanel
      */
     protected WebPanel createMonthPanel ()
     {
-        WebPanel monthDays = new WebPanel ();
+        final WebPanel monthDays = new WebPanel ();
         monthDays.setOpaque ( false );
         monthDays.setMargin ( StyleConstants.shadeWidth - 1, StyleConstants.shadeWidth - 1, StyleConstants.shadeWidth - 1,
                 StyleConstants.shadeWidth - 1 );
@@ -385,14 +385,14 @@ public class WebCalendar extends WebPanel
         if ( animate )
         {
             // Creating new dates panel
-            WebPanel newMonthDays = createMonthPanel ();
+            final WebPanel newMonthDays = createMonthPanel ();
             updateMonth ( newMonthDays );
 
             // Setting collapse transition effects
-            boolean ltr = WebCalendar.this.getComponentOrientation ().isLeftToRight ();
+            final boolean ltr = getComponentOrientation ().isLeftToRight ();
 
             // Transition effect
-            SlideTransitionEffect effect = new SlideTransitionEffect ();
+            final SlideTransitionEffect effect = new SlideTransitionEffect ();
             effect.setType ( SlideType.moveBoth );
             effect.setDirection ( oldShownDate.getTime () > shownDate.getTime () ? getNextDirection ( ltr ) : getPrevDirection ( ltr ) );
             effect.setSpeed ( 20 );
@@ -452,7 +452,7 @@ public class WebCalendar extends WebPanel
         {
             int day = startWeekFromSunday ? ( i == 1 ? 7 : i - 1 ) : i;
 
-            WebLabel dayOfWeekLabel = new WebLabel ();
+            final WebLabel dayOfWeekLabel = new WebLabel ();
             dayOfWeekLabel.setLanguage ( "weblaf.ex.calendar.dayOfWeek." + day );
             dayOfWeekLabel.setDrawShade ( true );
             dayOfWeekLabel.setHorizontalAlignment ( WebLabel.CENTER );
@@ -484,7 +484,7 @@ public class WebCalendar extends WebPanel
         monthDays.add ( new WebSeparator ( WebSeparator.VERTICAL ), "9,0,9,5" );
         monthDays.add ( new WebSeparator ( WebSeparator.VERTICAL ), "11,0,11,5" );
 
-        ButtonGroup dates = new ButtonGroup ();
+        final ButtonGroup dates = new ButtonGroup ();
 
         Calendar calendar = Calendar.getInstance ();
         calendar.setTime ( shownDate );
@@ -494,8 +494,8 @@ public class WebCalendar extends WebPanel
         int row = 0;
 
         // Month before
-        int dayOfWeek = calendar.get ( Calendar.DAY_OF_WEEK );
-        int shift;
+        final int dayOfWeek = calendar.get ( Calendar.DAY_OF_WEEK );
+        final int shift;
         switch ( dayOfWeek )
         {
             case Calendar.MONDAY:
@@ -539,7 +539,8 @@ public class WebCalendar extends WebPanel
                 @Override
                 public void itemStateChanged ( ItemEvent e )
                 {
-                    if ( day.isSelected () )
+                    WebToggleButton dayButton = ( WebToggleButton ) e.getSource ();
+                    if ( dayButton.isSelected () )
                     {
                         setDateImpl ( thisDate );
                     }
@@ -582,7 +583,7 @@ public class WebCalendar extends WebPanel
                 @Override
                 public void actionPerformed ( ActionEvent e )
                 {
-                    lastSelectedDayButton = day;
+                    lastSelectedDayButton = ( WebToggleButton ) e.getSource ();
                     setDateImpl ( thisDate );
                 }
             } );
@@ -610,7 +611,7 @@ public class WebCalendar extends WebPanel
         while ( calendar.get ( Calendar.DAY_OF_MONTH ) > 1 );
 
         // Month after
-        int left = 6 * 7 - ( monthDays.getComponentCount () - 6 );
+        final int left = 6 * 7 - ( monthDays.getComponentCount () - 6 );
         for ( int i = 1; i <= left; i++ )
         {
             final Date thisDate = calendar.getTime ();
@@ -626,7 +627,8 @@ public class WebCalendar extends WebPanel
                 @Override
                 public void itemStateChanged ( ItemEvent e )
                 {
-                    if ( day.isSelected () )
+                    WebToggleButton dayButton = ( WebToggleButton ) e.getSource ();
+                    if ( dayButton.isSelected () )
                     {
                         setDateImpl ( thisDate );
                     }
@@ -762,12 +764,15 @@ public class WebCalendar extends WebPanel
         this.shownDate = date;
 
         final Calendar calendar = Calendar.getInstance ();
+
         calendar.setTime ( oldShownDate );
-        int oldMonth = calendar.get ( Calendar.MONTH );
-        int oldYear = calendar.get ( Calendar.YEAR );
+        final int oldMonth = calendar.get ( Calendar.MONTH );
+        final int oldYear = calendar.get ( Calendar.YEAR );
+
         calendar.setTime ( date );
-        int newMonth = calendar.get ( Calendar.MONTH );
-        int newYear = calendar.get ( Calendar.YEAR );
+        final int newMonth = calendar.get ( Calendar.MONTH );
+        final int newYear = calendar.get ( Calendar.YEAR );
+
         if ( oldMonth != newMonth || oldYear != newYear )
         {
             updateTitleLabel ();
@@ -958,7 +963,7 @@ public class WebCalendar extends WebPanel
      */
     public void fireDateSelected ( final Date date )
     {
-        for ( DateSelectionListener listener : CollectionUtils.copy ( dateSelectionListeners ) )
+        for ( final DateSelectionListener listener : CollectionUtils.copy ( dateSelectionListeners ) )
         {
             listener.dateSelected ( date );
         }

@@ -233,17 +233,6 @@ public class WebPanel extends JPanel implements ShapeProvider, SizeMethods<WebPa
         return this;
     }
 
-    public ShapeProvider getClipProvider ()
-    {
-        return getWebUI ().getClipProvider ();
-    }
-
-    public WebPanel setClipProvider ( ShapeProvider clipProvider )
-    {
-        getWebUI ().setClipProvider ( clipProvider );
-        return this;
-    }
-
     public int getRound ()
     {
         return getWebUI ().getRound ();

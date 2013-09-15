@@ -32,8 +32,8 @@ public final class SizeUtils
     /**
      * Weak hash map for keeping components preferred sizes.
      */
-    private static Map<Component, Dimension> preferredSizeCache = new WeakHashMap<Component, Dimension> ();
-    private static Map<Component, Dimension> minimumSizeCache = new WeakHashMap<Component, Dimension> ();
+    private static final Map<Component, Dimension> preferredSizeCache = new WeakHashMap<Component, Dimension> ();
+    private static final Map<Component, Dimension> minimumSizeCache = new WeakHashMap<Component, Dimension> ();
 
     /**
      * Returns component preferred width.
@@ -42,9 +42,9 @@ public final class SizeUtils
      * @param <C>       component type
      * @return component preferred width
      */
-    public static <C extends Component> int getPreferredWidth ( C component )
+    public static <C extends Component> int getPreferredWidth ( final C component )
     {
-        Dimension ps = preferredSizeCache.get ( component );
+        final Dimension ps = preferredSizeCache.get ( component );
         return ps != null ? ps.width : -1;
     }
 
@@ -57,7 +57,7 @@ public final class SizeUtils
      * @param <C>            component type
      * @return modified component
      */
-    public static <C extends Component> C setPreferredWidth ( C component, int preferredWidth )
+    public static <C extends Component> C setPreferredWidth ( final C component, final int preferredWidth )
     {
         Dimension ps = preferredSizeCache.get ( component );
         if ( ps == null )
@@ -79,9 +79,9 @@ public final class SizeUtils
      * @param <C>       component type
      * @return component preferred height
      */
-    public static <C extends Component> int getPreferredHeight ( C component )
+    public static <C extends Component> int getPreferredHeight ( final C component )
     {
-        Dimension ps = preferredSizeCache.get ( component );
+        final Dimension ps = preferredSizeCache.get ( component );
         return ps != null ? ps.height : -1;
     }
 
@@ -94,7 +94,7 @@ public final class SizeUtils
      * @param <C>             component type
      * @return modified component
      */
-    public static <C extends Component> C setPreferredHeight ( C component, int preferredHeight )
+    public static <C extends Component> C setPreferredHeight ( final C component, final int preferredHeight )
     {
         Dimension ps = preferredSizeCache.get ( component );
         if ( ps == null )
@@ -116,9 +116,9 @@ public final class SizeUtils
      * @param <C>       component type
      * @return component minimum width
      */
-    public static <C extends Component> int getMinimumWidth ( C component )
+    public static <C extends Component> int getMinimumWidth ( final C component )
     {
-        Dimension ms = minimumSizeCache.get ( component );
+        final Dimension ms = minimumSizeCache.get ( component );
         return ms != null ? ms.width : -1;
     }
 
@@ -131,7 +131,7 @@ public final class SizeUtils
      * @param <C>          component type
      * @return modified component
      */
-    public static <C extends Component> C setMinimumWidth ( C component, int minimumWidth )
+    public static <C extends Component> C setMinimumWidth ( final C component, final int minimumWidth )
     {
         Dimension ms = minimumSizeCache.get ( component );
         if ( ms == null )
@@ -153,9 +153,9 @@ public final class SizeUtils
      * @param <C>       component type
      * @return component minimum height
      */
-    public static <C extends Component> int getMinimumHeight ( C component )
+    public static <C extends Component> int getMinimumHeight ( final C component )
     {
-        Dimension ms = minimumSizeCache.get ( component );
+        final Dimension ms = minimumSizeCache.get ( component );
         return ms != null ? ms.height : -1;
     }
 
@@ -168,7 +168,7 @@ public final class SizeUtils
      * @param <C>           component type
      * @return modified component
      */
-    public static <C extends Component> C setMinimumHeight ( C component, int minimumHeight )
+    public static <C extends Component> C setMinimumHeight ( final C component, final int minimumHeight )
     {
         Dimension ms = minimumSizeCache.get ( component );
         if ( ms == null )
@@ -191,11 +191,11 @@ public final class SizeUtils
      * @param <C>                 component type
      * @return component preferred size
      */
-    public static <C extends Component> Dimension getPreferredSize ( C component, Dimension actualPreferredSize )
+    public static <C extends Component> Dimension getPreferredSize ( final C component, final Dimension actualPreferredSize )
     {
-        Dimension ps = preferredSizeCache.get ( component );
-        Dimension ms = minimumSizeCache.get ( component );
-        Dimension preferredSize = new Dimension ( actualPreferredSize );
+        final Dimension ps = preferredSizeCache.get ( component );
+        final Dimension ms = minimumSizeCache.get ( component );
+        final Dimension preferredSize = new Dimension ( actualPreferredSize );
         if ( ps != null && ps.width != -1 )
         {
             preferredSize.width = ps.width;

@@ -40,6 +40,7 @@ import com.alee.utils.swing.SizeMethods;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.util.List;
 
 /**
@@ -76,11 +77,6 @@ public class WebToggleButton extends JToggleButton
         super ( text, selected );
     }
 
-    public WebToggleButton ( Action a )
-    {
-        super ( a );
-    }
-
     public WebToggleButton ( String text, Icon icon )
     {
         super ( text, icon );
@@ -89,6 +85,55 @@ public class WebToggleButton extends JToggleButton
     public WebToggleButton ( String text, Icon icon, boolean selected )
     {
         super ( text, icon, selected );
+    }
+
+    public WebToggleButton ( ActionListener listener )
+    {
+        super ();
+        addActionListener ( listener );
+    }
+
+    public WebToggleButton ( Icon icon, ActionListener listener )
+    {
+        super ( icon );
+        setRound ( WebButtonStyle.iconRound );
+        setLeftRightSpacing ( WebButtonStyle.iconLeftRightSpacing );
+        addActionListener ( listener );
+    }
+
+    public WebToggleButton ( Icon icon, boolean selected, ActionListener listener )
+    {
+        super ( icon, selected );
+        addActionListener ( listener );
+    }
+
+    public WebToggleButton ( String text, ActionListener listener )
+    {
+        super ( text );
+        addActionListener ( listener );
+    }
+
+    public WebToggleButton ( String text, boolean selected, ActionListener listener )
+    {
+        super ( text, selected );
+        addActionListener ( listener );
+    }
+
+    public WebToggleButton ( String text, Icon icon, ActionListener listener )
+    {
+        super ( text, icon );
+        addActionListener ( listener );
+    }
+
+    public WebToggleButton ( String text, Icon icon, boolean selected, ActionListener listener )
+    {
+        super ( text, icon, selected );
+        addActionListener ( listener );
+    }
+
+    public WebToggleButton ( Action a )
+    {
+        super ( a );
     }
 
     /**

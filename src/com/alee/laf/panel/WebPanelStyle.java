@@ -19,7 +19,6 @@ package com.alee.laf.panel;
 
 import com.alee.extended.painter.Painter;
 import com.alee.laf.StyleConstants;
-import com.alee.utils.laf.ShapeProvider;
 
 import java.awt.*;
 
@@ -84,11 +83,6 @@ public final class WebPanelStyle
      * Default panel background painter.
      */
     public static Painter painter = StyleConstants.painter;
-
-    /**
-     * Default panel clip shape provider.
-     */
-    public static ShapeProvider clipProvider = StyleConstants.clipProvider;
 
     /**
      * Whether should draw top panel side or not.

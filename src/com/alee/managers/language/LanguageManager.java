@@ -748,7 +748,7 @@ public final class LanguageManager implements LanguageConstants
         }
         Locale.setDefault ( new Locale ( language ) );
 
-        // In future, with JDK7+
+        // todo In future, with JDK7+
         // Locale.setDefault ( Locale.forLanguageTag ( language ) );
     }
 

@@ -287,6 +287,9 @@ public class WebButtonPopup extends WebPopup
         revalidate ();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void focusChanged ( boolean focused )
     {

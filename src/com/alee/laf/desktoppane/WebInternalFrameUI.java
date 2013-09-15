@@ -18,6 +18,7 @@
 package com.alee.laf.desktoppane;
 
 import com.alee.laf.StyleConstants;
+import com.alee.managers.focus.DefaultFocusTracker;
 import com.alee.managers.focus.FocusManager;
 import com.alee.managers.focus.FocusTracker;
 import com.alee.utils.LafUtils;
@@ -30,24 +31,55 @@ import java.awt.*;
 import java.awt.geom.RoundRectangle2D;
 
 /**
- * User: mgarin Date: 17.08.11 Time: 23:15
+ * Custom UI for JInternalFrame component.
+ *
+ * @author Mikle Garin
  */
 
-public class WebInternalFrameUI extends BasicInternalFrameUI implements FocusTracker
+public class WebInternalFrameUI extends BasicInternalFrameUI
 {
-    private int sideSpacing = 1;
-    private boolean focused = false;
+    /**
+     * Style settings.
+     */
+    protected int sideSpacing = 1;
 
+    /**
+     * Panel focus tracker.
+     */
+    protected FocusTracker focusTracker;
+
+    /**
+     * Whether internal frame is focused or owns focused component or not.
+     */
+    protected boolean focused = false;
+
+    /**
+     * Constructs new internal frame UI.
+     *
+     * @param b internal frame to which this UI will be applied
+     */
     public WebInternalFrameUI ( JInternalFrame b )
     {
         super ( b );
     }
 
+    /**
+     * Returns an instance of the WebInternalFrameUI for the specified component.
+     * This tricky method is used by UIManager to create component UIs when needed.
+     *
+     * @param c component that will use UI instance
+     * @return instance of the WebInternalFrameUI
+     */
     public static ComponentUI createUI ( JComponent c )
     {
         return new WebInternalFrameUI ( ( JInternalFrame ) c );
     }
 
+    /**
+     * Installs UI in the specified component.
+     *
+     * @param c component for this UI
+     */
     @Override
     public void installUI ( JComponent c )
     {
@@ -59,36 +91,38 @@ public class WebInternalFrameUI extends BasicInternalFrameUI implements FocusTra
         c.setBackground ( new Color ( 90, 90, 90, 220 ) );
         c.setBorder ( BorderFactory.createEmptyBorder () );
 
-        FocusManager.addFocusTracker ( frame, WebInternalFrameUI.this );
+        // Focus tracker for the panel content
+        focusTracker = new DefaultFocusTracker ()
+        {
+            @Override
+            public void focusChanged ( boolean focused )
+            {
+                WebInternalFrameUI.this.focused = focused;
+                frame.repaint ();
+            }
+        };
+        FocusManager.addFocusTracker ( frame, focusTracker );
     }
 
+    /**
+     * Uninstalls UI from the specified component.
+     *
+     * @param c component with this UI
+     */
     @Override
     public void uninstallUI ( JComponent c )
     {
-        FocusManager.removeFocusTracker ( WebInternalFrameUI.this );
+        FocusManager.removeFocusTracker ( focusTracker );
 
         super.uninstallUI ( c );
     }
 
-    @Override
-    public boolean isTrackingEnabled ()
-    {
-        return frame.isShowing ();
-    }
-
-    @Override
-    public boolean isUniteWithChilds ()
-    {
-        return true;
-    }
-
-    @Override
-    public void focusChanged ( boolean focused )
-    {
-        this.focused = focused;
-        frame.repaint ();
-    }
-
+    /**
+     * Creates and returns internal pane north panel.
+     *
+     * @param w internal pane to process
+     * @return north panel for specified internal frame
+     */
     @Override
     protected JComponent createNorthPane ( JInternalFrame w )
     {
@@ -96,9 +130,16 @@ public class WebInternalFrameUI extends BasicInternalFrameUI implements FocusTra
         return titlePane;
     }
 
+    /**
+     * Creates and returns internal pane west panel.
+     *
+     * @param w internal pane to process
+     * @return west panel for specified internal frame
+     */
     @Override
     protected JComponent createWestPane ( JInternalFrame w )
     {
+        // todo Proper internal frame resize
         return new JComponent ()
         {
             {
@@ -113,9 +154,16 @@ public class WebInternalFrameUI extends BasicInternalFrameUI implements FocusTra
         };
     }
 
+    /**
+     * Creates and returns internal pane east panel.
+     *
+     * @param w internal pane to process
+     * @return east panel for specified internal frame
+     */
     @Override
     protected JComponent createEastPane ( JInternalFrame w )
     {
+        // todo Proper internal frame resize
         return new JComponent ()
         {
             {
@@ -130,9 +178,16 @@ public class WebInternalFrameUI extends BasicInternalFrameUI implements FocusTra
         };
     }
 
+    /**
+     * Creates and returns internal pane south panel.
+     *
+     * @param w internal pane to process
+     * @return south panel for specified internal frame
+     */
     @Override
     protected JComponent createSouthPane ( JInternalFrame w )
     {
+        // todo Proper internal frame resize
         return new JComponent ()
         {
             {
@@ -147,6 +202,12 @@ public class WebInternalFrameUI extends BasicInternalFrameUI implements FocusTra
         };
     }
 
+    /**
+     * Paints internal frame.
+     *
+     * @param g graphics
+     * @param c component
+     */
     @Override
     public void paint ( Graphics g, JComponent c )
     {

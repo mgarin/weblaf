@@ -36,7 +36,7 @@ public interface SwingMethods
 {
     // todo To add:
     // todo HotkeyMethods, ButtonHotkeyMethods - add and replace all workarounds
-    // todo TooltipMethods - add
+    // todo TooltipMethods, OrientationMethods - add
 
     // todo To modify:
     // todo SizeMethods - add into all available components

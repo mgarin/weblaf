@@ -19,7 +19,6 @@ package com.alee.laf.rootpane;
 
 import com.alee.managers.focus.DefaultFocusTracker;
 import com.alee.managers.focus.FocusManager;
-import com.alee.managers.focus.FocusTracker;
 import com.alee.managers.language.LanguageContainerMethods;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.settings.DefaultValue;
@@ -45,16 +44,6 @@ public class WebWindow extends JWindow implements LanguageContainerMethods, Sett
      * Whether should close window on focus loss or not.
      */
     protected boolean closeOnFocusLoss = false;
-
-    /**
-     * Whether window is focused or not.
-     */
-    protected boolean focused;
-
-    /**
-     * Default window focus tracker.
-     */
-    protected FocusTracker focusTracker;
 
     /**
      * Creates a window with no specified owner. This window will not be focusable.
@@ -149,19 +138,23 @@ public class WebWindow extends JWindow implements LanguageContainerMethods, Sett
     {
         setFocusable ( true );
         SwingUtils.setOrientation ( this );
-
-        focusTracker = new DefaultFocusTracker ( true )
+        FocusManager.addFocusTracker ( this, new DefaultFocusTracker ( true )
         {
+            @Override
+            public boolean isTrackingEnabled ()
+            {
+                return closeOnFocusLoss;
+            }
+
             @Override
             public void focusChanged ( boolean focused )
             {
-                WebWindow.this.focused = focused;
-                if ( WebWindow.this.isShowing () && !focused && closeOnFocusLoss )
+                if ( closeOnFocusLoss && WebWindow.this.isShowing () && !focused )
                 {
                     setVisible ( false );
                 }
             }
-        };
+        } );
     }
 
     /**
@@ -182,22 +175,6 @@ public class WebWindow extends JWindow implements LanguageContainerMethods, Sett
     public void setCloseOnFocusLoss ( boolean closeOnFocusLoss )
     {
         this.closeOnFocusLoss = closeOnFocusLoss;
-        updateFocusTracker ();
-    }
-
-    /**
-     * Updates registered window focus tracker.
-     */
-    protected void updateFocusTracker ()
-    {
-        if ( closeOnFocusLoss )
-        {
-            FocusManager.addFocusTracker ( this, focusTracker );
-        }
-        else
-        {
-            FocusManager.removeFocusTracker ( focusTracker );
-        }
     }
 
     /**
