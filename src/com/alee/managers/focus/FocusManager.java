@@ -263,7 +263,8 @@ public final class FocusManager
                 componentTrackers = new HashMap<FocusTracker, Boolean> ();
                 trackers.put ( component, componentTrackers );
             }
-            componentTrackers.put ( focusTracker, false );
+            componentTrackers.put ( focusTracker,
+                    focusTracker.isUniteWithChilds () ? SwingUtils.hasFocusOwner ( component ) : component.isFocusOwner () );
         }
     }
 
