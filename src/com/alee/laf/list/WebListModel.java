@@ -630,4 +630,18 @@ public class WebListModel<T> extends AbstractListModel
         }
         fireIntervalRemoved ( this, fromIndex, toIndex );
     }
+
+    /**
+     * Updates cell for the specified element.
+     *
+     * @param element element to update
+     */
+    public void update ( T element )
+    {
+        int index = indexOf ( element );
+        if ( index != -1 )
+        {
+            fireContentsChanged ( this, index, index );
+        }
+    }
 }
