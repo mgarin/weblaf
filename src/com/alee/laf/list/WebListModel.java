@@ -32,7 +32,7 @@ public class WebListModel<T> extends AbstractListModel
     /**
      * List data vector.
      */
-    private Vector<T> delegate = new Vector<T> ();
+    protected Vector<T> delegate = new Vector<T> ();
 
     /**
      * Constructs empty model.
