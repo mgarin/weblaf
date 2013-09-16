@@ -90,7 +90,7 @@ public final class WebCustomTooltipStyle
      * Minimal spacing between window edge and tooltip.
      * Used to avoid tooltips falling behind the window edge when shown close to it.
      */
-    public static int windowSideSpacing = StyleConstants.contentSpacing;
+    public static int windowSideSpacing = 5;
 
     /**
      * Tooltip corners rounding.
