@@ -19,8 +19,7 @@ package com.alee.managers.settings;
 
 import com.alee.utils.TextUtils;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
-import com.thoughtworks.xstream.annotations.XStreamImplicit;
+import com.thoughtworks.xstream.annotations.XStreamConverter;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -32,7 +31,8 @@ import java.util.Map;
  * @author Mikle Garin
  */
 
-@XStreamAlias ("SettingsGroup")
+@XStreamAlias ( "SettingsGroup" )
+@XStreamConverter ( SettingsConverter.class )
 public class SettingsGroup implements Serializable
 {
     /**
@@ -43,20 +43,16 @@ public class SettingsGroup implements Serializable
     /**
      * Unique ID.
      */
-    @XStreamAsAttribute
     private String id;
 
     /**
      * Unique name.
      */
-    @XStreamAsAttribute
     private String name;
 
     /**
      * Settings map.
      */
-    @XStreamImplicit
-    // todo @XStreamConverter ( StringMapConverter.class )
     private Map<String, Object> settings;
 
     /**
@@ -76,6 +72,19 @@ public class SettingsGroup implements Serializable
     {
         super ();
         this.id = TextUtils.generateId ( ID_PREFIX );
+        this.name = name;
+    }
+
+    /**
+     * Constructs SettingsGroup with the specified name.
+     *
+     * @param id   SettingsGroup ID
+     * @param name SettingsGroup name
+     */
+    public SettingsGroup ( String id, String name )
+    {
+        super ();
+        this.id = id;
         this.name = name;
     }
 

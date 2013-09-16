@@ -39,6 +39,11 @@ import java.io.Serializable;
 public abstract class SettingsProcessor<C extends Component, V extends Serializable>
 {
     /**
+     * Error output prefix.
+     */
+    private static final String ERROR_PREFIX = "[SettingsProcessor] ";
+
+    /**
      * Whether this settings processor is currently loading settings or not.
      */
     protected boolean loading = false;
@@ -90,7 +95,12 @@ public abstract class SettingsProcessor<C extends Component, V extends Serializa
             }
             catch ( Throwable e )
             {
-                e.printStackTrace ();
+                if ( SettingsManager.isDisplayExceptions () )
+                {
+                    System.err.println ( ERROR_PREFIX + "Unable to load initial component settings for group \"" + data.getGroup () +
+                            "\" and key \"" + data.getKey () + "\" due to unexpected exception:" );
+                    e.printStackTrace ();
+                }
             }
         }
 
@@ -101,7 +111,12 @@ public abstract class SettingsProcessor<C extends Component, V extends Serializa
         }
         catch ( Throwable e )
         {
-            e.printStackTrace ();
+            if ( SettingsManager.isDisplayExceptions () )
+            {
+                System.err.println ( ERROR_PREFIX + "Unable to initialize specific processor settings for component with group \"" +
+                        data.getGroup () + "\" and key \"" + data.getKey () + "\" due to unexpected exception:" );
+                e.printStackTrace ();
+            }
         }
 
         // Apply settings changes to the component

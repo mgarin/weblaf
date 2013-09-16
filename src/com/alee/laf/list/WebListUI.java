@@ -344,6 +344,7 @@ public class WebListUI extends BasicListUI
     protected void paintCell ( Graphics g, int index, Rectangle rowBounds, ListCellRenderer cellRenderer, ListModel dataModel,
                                ListSelectionModel selModel, int leadIndex )
     {
+        // todo Even-odd cells highlight
         //        if ( list.getLayoutOrientation () == WebList.VERTICAL && ( evenLineColor != null || oddLineColor != null ) )
         //        {
         //            boolean even = index % 2 == 0;

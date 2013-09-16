@@ -51,6 +51,11 @@ import java.util.Map;
 public final class SettingsManager
 {
     /**
+     * Error output prefix.
+     */
+    private static final String ERROR_PREFIX = "[SettingsManager] ";
+
+    /**
      * Settings change listeners.
      */
     private static Map<String, Map<String, List<SettingsListener>>> settingsListeners =
@@ -107,6 +112,11 @@ public final class SettingsManager
     private static boolean saveOnChange = true;
 
     /**
+     * Whether should save provided default value in "get" calls or not.
+     */
+    private static boolean saveDefaultValues = true;
+
+    /**
      * Save-on-change scheduler lock object.
      */
     private static final Object saveOnChangeLock = new Object ();
@@ -115,7 +125,7 @@ public final class SettingsManager
      * Save-on-change save delay in milliseconds.
      * If larger than 0 then settings will be accumulated and saved all at once as soon as no new changes came within the delay time.
      */
-    private static long saveOnChangeDelay = 1000;
+    private static long saveOnChangeDelay = 500;
 
     /**
      * Save-on-change scheduler timer.
@@ -128,13 +138,14 @@ public final class SettingsManager
     private static List<String> groupsToSaveOnChange = new ArrayList<String> ();
 
     /**
-     * Whether should display settings load and save error messages or not.
-     * They might occur for example if settings cannot be read due to corrupted files or modified object stucture.
+     * Whether should display settings load and save exceptions or not.
+     * They might occur for example if settings cannot be read due to corrupted file or modified object stucture.
      */
-    private static boolean displayErrors = true;
+    private static boolean displayExceptions = true;
 
     /**
      * Whether should allow saving settings into files or not.
+     * If set to false settings will be available only in runtime and will be lost after application finishes working.
      */
     private static boolean allowSave = true;
 
@@ -788,17 +799,39 @@ public final class SettingsManager
         // Get value
         Object value = settingsGroup.get ( key );
 
+        // Applying default value if needed
+        if ( value == null && defaultValue != null )
+        {
+            value = defaultValue;
+
+            // Saving default value if needed
+            if ( saveDefaultValues )
+            {
+                set ( group, key, value );
+            }
+        }
+
         // Returning default value if no actual found
         try
         {
-            return ( T ) ( value == null && defaultValue != null ? defaultValue : value );
+            return ( T ) value;
         }
-        catch ( ClassCastException ex )
+        catch ( ClassCastException e )
         {
-            if ( displayErrors )
+            // Displaying what caused the problem if needed
+            if ( displayExceptions )
             {
-                ex.printStackTrace ();
+                System.err.println ( ERROR_PREFIX + "Unable to load settings value for group \"" + group + "\" and key \"" + key +
+                        "\" because it has inappropriate class type:" );
+                e.printStackTrace ();
             }
+
+            // Saving default value if needed
+            if ( saveDefaultValues )
+            {
+                set ( group, key, defaultValue );
+            }
+
             return defaultValue;
         }
     }
@@ -935,8 +968,10 @@ public final class SettingsManager
                     catch ( Throwable e )
                     {
                         // Display errors
-                        if ( displayErrors )
+                        if ( displayExceptions )
                         {
+                            System.err.println ( ERROR_PREFIX + "Unable to load settings group \"" + group +
+                                    "\" due to unexpected exception:" );
                             e.printStackTrace ();
                         }
 
@@ -1046,9 +1081,10 @@ public final class SettingsManager
             }
             catch ( Throwable e )
             {
-                // Display errors
-                if ( displayErrors )
+                if ( displayExceptions )
                 {
+                    System.err.println ( ERROR_PREFIX + "Unable to save settings group \"" + settingsGroup.getName () +
+                            "\" due to unexpected exception:" );
                     e.printStackTrace ();
                 }
             }
@@ -1376,10 +1412,24 @@ public final class SettingsManager
     }
 
     /**
-     * Save-on-change schedulers delay. Used to avoid performance issues when massive save operations thrown and saveOnChange value is
-     * true.
-     * All incoming changes will be coalesced and saved after the specified delay time. Timer is NOT restarted
+     * Sets whether should save provided default value in "get" calls or not.
+     *
+     * @return true if should save provided default value in "get" calls, false otherwise
      */
+    public static boolean isSaveDefaultValues ()
+    {
+        return saveDefaultValues;
+    }
+
+    /**
+     * Sets whether should save provided default value in "get" calls or not.
+     *
+     * @param saveDefaultValues whether should save provided default value in "get" calls or not
+     */
+    public static void setSaveDefaultValues ( boolean saveDefaultValues )
+    {
+        SettingsManager.saveDefaultValues = saveDefaultValues;
+    }
 
     /**
      * Returns save-on-change delay in milliseconds.
@@ -1407,19 +1457,19 @@ public final class SettingsManager
      *
      * @return true if should display settings load and save error messages, false otherwise
      */
-    public static boolean isDisplayErrors ()
+    public static boolean isDisplayExceptions ()
     {
-        return displayErrors;
+        return displayExceptions;
     }
 
     /**
      * Sets whether should display settings load and save error messages or not.
      *
-     * @param displayErrors whether should display settings load and save error messages or not
+     * @param displayExceptions whether should display settings load and save error messages or not
      */
-    public static void setDisplayErrors ( boolean displayErrors )
+    public static void setDisplayExceptions ( boolean displayExceptions )
     {
-        SettingsManager.displayErrors = displayErrors;
+        SettingsManager.displayExceptions = displayExceptions;
     }
 
     /**

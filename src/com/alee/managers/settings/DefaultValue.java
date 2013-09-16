@@ -27,7 +27,7 @@ package com.alee.managers.settings;
 public interface DefaultValue
 {
     /**
-     * Define similar method in implementing class to provide its default value for other classes usage.
+     * Define similar method in implementing class to provide its default value for other classes usage:
+     * <code>public static T getDefaultValue ();</code>
      */
-    // public static T getDefaultValue ();
 }
