@@ -134,6 +134,16 @@ public class WebList extends JList implements FontMethods<WebList>, SizeMethods<
     }
 
     /**
+     * Sets selected value and scrolls view to its cell.
+     *
+     * @param element element to select
+     */
+    public void setSelectedValue ( Object element )
+    {
+        setSelectedValue ( element, true );
+    }
+
+    /**
      * Selects all specified values.
      * Values which are not in the list are simply ignored.
      * This method might be slow in case model cannot provide all separate values quickly.
