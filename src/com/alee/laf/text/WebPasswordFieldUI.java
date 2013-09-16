@@ -236,6 +236,9 @@ public class WebPasswordFieldUI extends BasicPasswordFieldUI implements ShapePro
             updateInnerComponents ();
         }
 
+        // Updating layout
+        passwordField.revalidate ();
+
         // Updating border
         updateBorder ();
     }
@@ -279,6 +282,9 @@ public class WebPasswordFieldUI extends BasicPasswordFieldUI implements ShapePro
             // Updating components state
             updateInnerComponents ();
         }
+
+        // Updating layout
+        passwordField.revalidate ();
 
         // Updating border
         updateBorder ();

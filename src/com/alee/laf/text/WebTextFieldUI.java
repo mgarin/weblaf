@@ -237,6 +237,9 @@ public class WebTextFieldUI extends BasicTextFieldUI implements ShapeProvider, S
             updateInnerComponents ();
         }
 
+        // Updating layout
+        textField.revalidate ();
+
         // Updating border
         updateBorder ();
     }
@@ -280,6 +283,9 @@ public class WebTextFieldUI extends BasicTextFieldUI implements ShapeProvider, S
             // Updating components state
             updateInnerComponents ();
         }
+
+        // Updating layout
+        textField.revalidate ();
 
         // Updating border
         updateBorder ();
