@@ -87,7 +87,7 @@ public class WebPanelUI extends BasicPanelUI implements ShapeProvider
      * @param c component that will use UI instance
      * @return instance of the WebPanelUI
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( JComponent c )
     {
         return new WebPanelUI ();
@@ -457,7 +457,7 @@ public class WebPanelUI extends BasicPanelUI implements ShapeProvider
     /**
      * Sets whether should draw left panel side or not.
      *
-     * @param drawTop whether should draw left panel side or not
+     * @param drawLeft whether should draw left panel side or not
      */
     public void setDrawLeft ( boolean drawLeft )
     {
@@ -478,7 +478,7 @@ public class WebPanelUI extends BasicPanelUI implements ShapeProvider
     /**
      * Sets whether should draw bottom panel side or not.
      *
-     * @param drawTop whether should draw bottom panel side or not
+     * @param drawBottom whether should draw bottom panel side or not
      */
     public void setDrawBottom ( boolean drawBottom )
     {
@@ -499,7 +499,7 @@ public class WebPanelUI extends BasicPanelUI implements ShapeProvider
     /**
      * Sets whether should draw right panel side or not.
      *
-     * @param drawTop whether should draw right panel side or not
+     * @param drawRight whether should draw right panel side or not
      */
     public void setDrawRight ( boolean drawRight )
     {
