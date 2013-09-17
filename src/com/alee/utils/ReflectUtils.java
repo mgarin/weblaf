@@ -51,7 +51,7 @@ public final class ReflectUtils
      * @param canonicalName class canonical name
      * @return class for the specified canonical name
      */
-    public static Class getClassSafely ( String canonicalName )
+    public static Class getClassSafely ( final String canonicalName )
     {
         try
         {
@@ -70,7 +70,7 @@ public final class ReflectUtils
      * @return class for the specified canonical name
      * @throws ClassNotFoundException
      */
-    public static Class getClass ( String canonicalName ) throws ClassNotFoundException
+    public static Class getClass ( final String canonicalName ) throws ClassNotFoundException
     {
         return Class.forName ( canonicalName );
     }
@@ -81,7 +81,7 @@ public final class ReflectUtils
      * @param jarClass any class within the JAR
      * @return JAR archive structure
      */
-    public static JarStructure getJarStructure ( Class jarClass )
+    public static JarStructure getJarStructure ( final Class jarClass )
     {
         return getJarStructure ( jarClass, null, null );
     }
@@ -94,7 +94,8 @@ public final class ReflectUtils
      * @param allowedPackgages  list of allowed packages
      * @return JAR archive structure
      */
-    public static JarStructure getJarStructure ( Class jarClass, List<String> allowedExtensions, List<String> allowedPackgages )
+    public static JarStructure getJarStructure ( final Class jarClass, final List<String> allowedExtensions,
+                                                 final List<String> allowedPackgages )
     {
         return getJarStructure ( jarClass, allowedExtensions, allowedPackgages, null );
     }
@@ -108,23 +109,23 @@ public final class ReflectUtils
      * @param listener          jar download listener
      * @return JAR archive structure
      */
-    public static JarStructure getJarStructure ( Class jarClass, List<String> allowedExtensions, List<String> allowedPackgages,
-                                                 FileDownloadListener listener )
+    public static JarStructure getJarStructure ( final Class jarClass, final List<String> allowedExtensions,
+                                                 final List<String> allowedPackgages, final FileDownloadListener listener )
     {
         try
         {
-            CodeSource src = jarClass.getProtectionDomain ().getCodeSource ();
+            final CodeSource src = jarClass.getProtectionDomain ().getCodeSource ();
             if ( src != null )
             {
                 // Creating structure
 
                 // Source url
-                URL jarUrl = src.getLocation ();
-                URI uri = jarUrl.toURI ();
+                final URL jarUrl = src.getLocation ();
+                final URI uri = jarUrl.toURI ();
 
                 // Source file
-                File jarFile;
-                String scheme = uri.getScheme ();
+                final File jarFile;
+                final String scheme = uri.getScheme ();
                 if ( scheme != null && scheme.equalsIgnoreCase ( "file" ) )
                 {
                     // Local jar-file
@@ -137,16 +138,16 @@ public final class ReflectUtils
                 }
 
                 // Creating
-                JarEntry jarEntry = new JarEntry ( JarEntryType.jarEntry, jarFile.getName () );
-                JarStructure jarStructure = new JarStructure ( jarEntry );
+                final JarEntry jarEntry = new JarEntry ( JarEntryType.jarEntry, jarFile.getName () );
+                final JarStructure jarStructure = new JarStructure ( jarEntry );
                 jarStructure.setJarLocation ( jarFile.getAbsolutePath () );
 
                 // Reading all entries and parsing them into structure
-                ZipInputStream zip = new ZipInputStream ( jarUrl.openStream () );
+                final ZipInputStream zip = new ZipInputStream ( jarUrl.openStream () );
                 ZipEntry zipEntry;
                 while ( ( zipEntry = zip.getNextEntry () ) != null )
                 {
-                    String entryName = zipEntry.getName ();
+                    final String entryName = zipEntry.getName ();
                     if ( isAllowedPackage ( entryName, allowedPackgages ) &&
                             ( zipEntry.isDirectory () || isAllowedExtension ( entryName, allowedExtensions ) ) )
                     {
@@ -158,11 +159,52 @@ public final class ReflectUtils
                 return jarStructure;
             }
         }
-        catch ( IOException e )
+        catch ( final IOException e )
         {
             e.printStackTrace ();
         }
-        catch ( URISyntaxException e )
+        catch ( final URISyntaxException e )
+        {
+            e.printStackTrace ();
+        }
+        return null;
+    }
+
+    /**
+     * Returns JAR location URL for the specified class.
+     *
+     * @param jarClass any class from that JAR
+     * @return JAR location URL
+     */
+    public static URL getJarLocationURL ( final Class jarClass )
+    {
+        final CodeSource src = jarClass.getProtectionDomain ().getCodeSource ();
+        return src != null ? src.getLocation () : null;
+    }
+
+    /**
+     * Returns JAR location File for the specified class.
+     *
+     * @param jarClass any class from that JAR
+     * @return JAR location File
+     */
+    public static File getJarLocationFile ( final Class jarClass )
+    {
+        try
+        {
+            final CodeSource src = jarClass.getProtectionDomain ().getCodeSource ();
+            if ( src != null )
+            {
+                final URL jarUrl = src.getLocation ();
+                final URI uri = jarUrl.toURI ();
+                final String scheme = uri.getScheme ();
+                if ( scheme != null && scheme.equalsIgnoreCase ( "file" ) )
+                {
+                    return new File ( uri );
+                }
+            }
+        }
+        catch ( final URISyntaxException e )
         {
             e.printStackTrace ();
         }
@@ -176,7 +218,7 @@ public final class ReflectUtils
      * @param allowedExtensions list of allowed extensions
      * @return true if JAR entry with the specified name is allowed by the extensions list, false otherwise
      */
-    private static boolean isAllowedExtension ( String entryName, List<String> allowedExtensions )
+    private static boolean isAllowedExtension ( final String entryName, final List<String> allowedExtensions )
     {
         if ( allowedExtensions == null || allowedExtensions.size () == 0 )
         {
@@ -184,7 +226,7 @@ public final class ReflectUtils
         }
         else
         {
-            String entryExt = FileUtils.getFileExtPart ( entryName, true ).toLowerCase ();
+            final String entryExt = FileUtils.getFileExtPart ( entryName, true ).toLowerCase ();
             return allowedExtensions.contains ( entryExt );
         }
     }
@@ -196,7 +238,7 @@ public final class ReflectUtils
      * @param allowedPackgages list of allowed packages
      * @return true if JAR entry with the specified name is allowed by the packages list, false otherwise
      */
-    private static boolean isAllowedPackage ( String entryName, List<String> allowedPackgages )
+    private static boolean isAllowedPackage ( final String entryName, final List<String> allowedPackgages )
     {
         if ( allowedPackgages == null || allowedPackgages.size () == 0 )
         {
@@ -204,7 +246,7 @@ public final class ReflectUtils
         }
         else
         {
-            for ( String packageStart : allowedPackgages )
+            for ( final String packageStart : allowedPackgages )
             {
                 if ( entryName.startsWith ( packageStart ) )
                 {
@@ -222,9 +264,9 @@ public final class ReflectUtils
      * @param entryName JAR entry name
      * @param zipEntry  ZIP entry
      */
-    private static void parseElement ( JarEntry jarEntry, String entryName, ZipEntry zipEntry )
+    private static void parseElement ( final JarEntry jarEntry, final String entryName, final ZipEntry zipEntry )
     {
-        String[] path = entryName.split ( "/" );
+        final String[] path = entryName.split ( "/" );
         JarEntry currentLevel = jarEntry;
         for ( int i = 0; i < path.length; i++ )
         {
@@ -243,7 +285,7 @@ public final class ReflectUtils
             else
             {
                 // We reached last element
-                JarEntry newEntry = new JarEntry ( getJarEntryType ( path[ i ] ), path[ i ], currentLevel );
+                final JarEntry newEntry = new JarEntry ( getJarEntryType ( path[ i ] ), path[ i ], currentLevel );
                 newEntry.setZipEntry ( zipEntry );
                 currentLevel.addChild ( newEntry );
             }
@@ -256,9 +298,9 @@ public final class ReflectUtils
      * @param file file to process
      * @return JAR entry type
      */
-    private static JarEntryType getJarEntryType ( String file )
+    private static JarEntryType getJarEntryType ( final String file )
     {
-        String ext = FileUtils.getFileExtPart ( file, false );
+        final String ext = FileUtils.getFileExtPart ( file, false );
         if ( ext.equals ( "java" ) )
         {
             return JarEntryType.javaEntry;
@@ -292,7 +334,7 @@ public final class ReflectUtils
             // 2 - caller's class caller
             return Class.forName ( new Throwable ().getStackTrace ()[ 2 ].getClassName () );
         }
-        catch ( Throwable e )
+        catch ( final Throwable e )
         {
             return null;
         }
@@ -304,7 +346,7 @@ public final class ReflectUtils
      * @param classObject object of class type
      * @return class name with ".java" extension in the end
      */
-    public static String getJavaClassName ( Object classObject )
+    public static String getJavaClassName ( final Object classObject )
     {
         return getJavaClassName ( classObject.getClass () );
     }
@@ -315,7 +357,7 @@ public final class ReflectUtils
      * @param classType class type
      * @return class name with ".java" extension in the end
      */
-    public static String getJavaClassName ( Class classType )
+    public static String getJavaClassName ( final Class classType )
     {
         return getClassName ( classType ) + ".java";
     }
@@ -326,7 +368,7 @@ public final class ReflectUtils
      * @param classObject object of class type
      * @return class name with ".class" extension in the end
      */
-    public static String getClassFileName ( Object classObject )
+    public static String getClassFileName ( final Object classObject )
     {
         return getClassFileName ( classObject.getClass () );
     }
@@ -337,7 +379,7 @@ public final class ReflectUtils
      * @param classType class type
      * @return class name with ".class" extension in the end
      */
-    public static String getClassFileName ( Class classType )
+    public static String getClassFileName ( final Class classType )
     {
         return ReflectUtils.getClassName ( classType ) + ".class";
     }
@@ -348,7 +390,7 @@ public final class ReflectUtils
      * @param classObject object of class type
      * @return class name
      */
-    public static String getClassName ( Object classObject )
+    public static String getClassName ( final Object classObject )
     {
         return getClassName ( classObject.getClass () );
     }
@@ -359,7 +401,7 @@ public final class ReflectUtils
      * @param classType class type
      * @return class name
      */
-    public static String getClassName ( Class classType )
+    public static String getClassName ( final Class classType )
     {
         final String canonicalName = classType.getCanonicalName ();
         final String fullName = canonicalName != null ? canonicalName : classType.toString ();
@@ -373,7 +415,7 @@ public final class ReflectUtils
      * @param classObject object of class type
      * @return class packages
      */
-    public static String[] getClassPackages ( Object classObject )
+    public static String[] getClassPackages ( final Object classObject )
     {
         return getClassPackages ( classObject.getClass () );
     }
@@ -384,7 +426,7 @@ public final class ReflectUtils
      * @param classType class type
      * @return class packages
      */
-    public static String[] getClassPackages ( Class classType )
+    public static String[] getClassPackages ( final Class classType )
     {
         return getPackages ( classType.getPackage ().getName () );
     }
@@ -395,7 +437,7 @@ public final class ReflectUtils
      * @param packageName package name
      * @return packages names
      */
-    public static String[] getPackages ( String packageName )
+    public static String[] getPackages ( final String packageName )
     {
         return packageName.split ( "\\." );
     }
@@ -407,17 +449,17 @@ public final class ReflectUtils
      * @param fieldName class field name
      * @return static field value from the specified class
      */
-    public static Object getStaticFieldValueSafely ( Class classType, String fieldName )
+    public static <T> T getStaticFieldValueSafely ( final Class classType, final String fieldName )
     {
         try
         {
-            return classType.getField ( fieldName ).get ( null );
+            return getStaticFieldValue ( classType, fieldName );
         }
-        catch ( IllegalAccessException e )
+        catch ( final IllegalAccessException e )
         {
             return null;
         }
-        catch ( NoSuchFieldException e )
+        catch ( final NoSuchFieldException e )
         {
             return null;
         }
@@ -432,9 +474,10 @@ public final class ReflectUtils
      * @throws NoSuchFieldException
      * @throws IllegalAccessException
      */
-    public static Object getStaticFieldValue ( Class classType, String fieldName ) throws NoSuchFieldException, IllegalAccessException
+    public static <T> T getStaticFieldValue ( final Class classType, final String fieldName )
+            throws NoSuchFieldException, IllegalAccessException
     {
-        return classType.getField ( fieldName ).get ( null );
+        return ( T ) classType.getField ( fieldName ).get ( null );
     }
 
     /**
@@ -444,9 +487,9 @@ public final class ReflectUtils
      * @param innerClassName inner class name
      * @return inner class with the specified name
      */
-    public static Class getInnerClass ( Class fromClass, String innerClassName )
+    public static Class getInnerClass ( final Class fromClass, final String innerClassName )
     {
-        for ( Class innerClass : fromClass.getDeclaredClasses () )
+        for ( final Class innerClass : fromClass.getDeclaredClasses () )
         {
             if ( getClassName ( innerClass ).equals ( innerClassName ) )
             {
@@ -463,13 +506,13 @@ public final class ReflectUtils
      * @param arguments          class constructor arguments
      * @return newly created class instance
      */
-    public static Object createInstanceSafely ( String canonicalClassName, Object... arguments )
+    public static <T> T createInstanceSafely ( final String canonicalClassName, final Object... arguments )
     {
         try
         {
             return createInstance ( canonicalClassName, arguments );
         }
-        catch ( Throwable e )
+        catch ( final Throwable e )
         {
             return null;
         }
@@ -487,7 +530,7 @@ public final class ReflectUtils
      * @throws InstantiationException
      * @throws NoSuchMethodException
      */
-    public static Object createInstance ( String canonicalClassName, Object... arguments )
+    public static <T> T createInstance ( final String canonicalClassName, final Object... arguments )
             throws ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException
     {
         return createInstance ( loadClass ( canonicalClassName ), arguments );
@@ -500,13 +543,13 @@ public final class ReflectUtils
      * @param arguments class constructor arguments
      * @return newly created class instance
      */
-    public static Object createInstanceSafely ( Class theClass, Object... arguments )
+    public static <T> T createInstanceSafely ( final Class theClass, final Object... arguments )
     {
         try
         {
             return createInstance ( theClass, arguments );
         }
-        catch ( Throwable e )
+        catch ( final Throwable e )
         {
             return null;
         }
@@ -523,18 +566,18 @@ public final class ReflectUtils
      * @throws InvocationTargetException
      * @throws NoSuchMethodException
      */
-    public static Object createInstance ( Class theClass, Object... arguments )
+    public static <T> T createInstance ( final Class theClass, final Object... arguments )
             throws InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException
     {
         // Retrieving argument types
-        Class[] parameterTypes = getClassTypes ( arguments );
+        final Class[] parameterTypes = getClassTypes ( arguments );
 
         // Retrieving constructor
-        Constructor constructor = getConstructor ( theClass, parameterTypes );
+        final Constructor constructor = getConstructor ( theClass, parameterTypes );
         //        Constructor constructor = theClass.getConstructor ( parameterTypes );
 
         // Creating new instance
-        return constructor.newInstance ( arguments );
+        return ( T ) constructor.newInstance ( arguments );
     }
 
     /**
@@ -545,7 +588,7 @@ public final class ReflectUtils
      * @return class constructor for the specified argument types
      * @throws NoSuchMethodException
      */
-    public static Constructor getConstructor ( Class theClass, Class... parameterTypes ) throws NoSuchMethodException
+    public static Constructor getConstructor ( final Class theClass, final Class... parameterTypes ) throws NoSuchMethodException
     {
         // todo Constructors priority check (by super types)
         // todo For now some constructor with [Object] arg might be used instead of constructor with [String]
@@ -555,7 +598,7 @@ public final class ReflectUtils
         }
         else
         {
-            for ( Constructor constructor : theClass.getConstructors () )
+            for ( final Constructor constructor : theClass.getConstructors () )
             {
                 final Class[] types = constructor.getParameterTypes ();
 
@@ -599,13 +642,13 @@ public final class ReflectUtils
      * @param arguments          method arguments
      * @return result of called static method
      */
-    public static Object callStaticMethodSafely ( String canonicalClassName, String methodName, Object... arguments )
+    public static <T> T callStaticMethodSafely ( final String canonicalClassName, final String methodName, final Object... arguments )
     {
         try
         {
-            return callStaticMethod ( loadClass ( canonicalClassName ), methodName, arguments );
+            return callStaticMethod ( canonicalClassName, methodName, arguments );
         }
-        catch ( Throwable e )
+        catch ( final Throwable e )
         {
             return null;
         }
@@ -624,10 +667,10 @@ public final class ReflectUtils
      * @throws NoSuchMethodException
      * @throws IllegalAccessException
      */
-    public static Object callStaticMethod ( String canonicalClassName, String methodName, Object... arguments )
+    public static <T> T callStaticMethod ( final String canonicalClassName, final String methodName, final Object... arguments )
             throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, IllegalAccessException
     {
-        return callStaticMethod ( loadClass ( canonicalClassName ), methodName, arguments );
+        return callStaticMethod ( getClass ( canonicalClassName ), methodName, arguments );
     }
 
     /**
@@ -639,13 +682,13 @@ public final class ReflectUtils
      * @param arguments  method arguments
      * @return result of called static method
      */
-    public static Object callStaticMethodSafely ( Class theClass, String methodName, Object... arguments )
+    public static <T> T callStaticMethodSafely ( final Class theClass, final String methodName, final Object... arguments )
     {
         try
         {
             return callStaticMethod ( theClass, methodName, arguments );
         }
-        catch ( Throwable e )
+        catch ( final Throwable e )
         {
             return null;
         }
@@ -663,7 +706,7 @@ public final class ReflectUtils
      * @throws InvocationTargetException
      * @throws IllegalAccessException
      */
-    public static Object callStaticMethod ( Class theClass, String methodName, Object... arguments )
+    public static <T> T callStaticMethod ( final Class theClass, final String methodName, final Object... arguments )
             throws NoSuchMethodException, InvocationTargetException, IllegalAccessException
     {
         // todo Methods priority check (by super types)
@@ -671,20 +714,19 @@ public final class ReflectUtils
         if ( arguments.length == 0 )
         {
             // Calling simple method w/o arguments
-            return theClass.getMethod ( methodName ).invoke ( null );
+            return ( T ) theClass.getMethod ( methodName ).invoke ( null );
         }
         else
         {
             // Searching for more complex method
-            Class[] types = getClassTypes ( arguments );
-            Method[] methods = theClass.getMethods ();
-            for ( Method method : methods )
+            final Class[] types = getClassTypes ( arguments );
+            for ( final Method method : theClass.getMethods () )
             {
                 // Checking method name
                 if ( method.getName ().equals ( methodName ) )
                 {
                     // Checking method arguments count
-                    Class<?>[] mt = method.getParameterTypes ();
+                    final Class<?>[] mt = method.getParameterTypes ();
                     if ( mt.length == types.length )
                     {
                         // Checking that arguments fit
@@ -699,7 +741,7 @@ public final class ReflectUtils
                         }
                         if ( fits )
                         {
-                            return method.invoke ( null, arguments );
+                            return ( T ) method.invoke ( null, arguments );
                         }
                     }
                 }
@@ -716,13 +758,13 @@ public final class ReflectUtils
      * @param arguments  method arguments
      * @return list of results returned by called methods
      */
-    public static List callMethodsSafely ( List objects, String methodName, Object... arguments )
+    public static <T> List<T> callMethodsSafely ( final List objects, final String methodName, final Object... arguments )
     {
         try
         {
             return callMethods ( objects, methodName, arguments );
         }
-        catch ( Throwable e )
+        catch ( final Throwable e )
         {
             return null;
         }
@@ -739,13 +781,13 @@ public final class ReflectUtils
      * @throws InvocationTargetException
      * @throws IllegalAccessException
      */
-    public static List callMethods ( List objects, String methodName, Object... arguments )
+    public static <T> List<T> callMethods ( final List objects, final String methodName, final Object... arguments )
             throws NoSuchMethodException, InvocationTargetException, IllegalAccessException
     {
-        List results = new ArrayList ();
-        for ( Object object : objects )
+        final List<T> results = new ArrayList<T> ();
+        for ( final Object object : objects )
         {
-            results.add ( callMethod ( object, methodName, arguments ) );
+            results.add ( ( T ) callMethod ( object, methodName, arguments ) );
         }
         return results;
     }
@@ -758,13 +800,13 @@ public final class ReflectUtils
      * @param arguments  method arguments
      * @return an array of results returned by called methods
      */
-    public static Object[] callMethodsSafely ( Object[] objects, String methodName, Object... arguments )
+    public static Object[] callMethodsSafely ( final Object[] objects, final String methodName, final Object... arguments )
     {
         try
         {
             return callMethods ( objects, methodName, arguments );
         }
-        catch ( Throwable e )
+        catch ( final Throwable e )
         {
             return null;
         }
@@ -781,10 +823,10 @@ public final class ReflectUtils
      * @throws InvocationTargetException
      * @throws IllegalAccessException
      */
-    public static Object[] callMethods ( Object[] objects, String methodName, Object... arguments )
+    public static Object[] callMethods ( final Object[] objects, final String methodName, final Object... arguments )
             throws NoSuchMethodException, InvocationTargetException, IllegalAccessException
     {
-        Object[] results = new Object[ objects.length ];
+        final Object[] results = new Object[ objects.length ];
         for ( int i = 0; i < objects.length; i++ )
         {
             results[ i ] = callMethod ( objects[ i ], methodName, arguments );
@@ -800,13 +842,13 @@ public final class ReflectUtils
      * @param arguments  method arguments
      * @return result given by called method
      */
-    public static Object callMethodSafely ( Object object, String methodName, Object... arguments )
+    public static <T> T callMethodSafely ( final Object object, final String methodName, final Object... arguments )
     {
         try
         {
             return callMethod ( object, methodName, arguments );
         }
-        catch ( Throwable e )
+        catch ( final Throwable e )
         {
             return null;
         }
@@ -823,7 +865,7 @@ public final class ReflectUtils
      * @throws InvocationTargetException
      * @throws IllegalAccessException
      */
-    public static Object callMethod ( Object object, String methodName, Object... arguments )
+    public static <T> T callMethod ( final Object object, final String methodName, final Object... arguments )
             throws NoSuchMethodException, InvocationTargetException, IllegalAccessException
     {
         // todo Methods priority check (by super types)
@@ -831,20 +873,19 @@ public final class ReflectUtils
         if ( arguments.length == 0 )
         {
             // Calling simple method w/o arguments
-            return object.getClass ().getMethod ( methodName ).invoke ( object );
+            return ( T ) object.getClass ().getMethod ( methodName ).invoke ( object );
         }
         else
         {
             // Searching for more complex method
-            Class[] types = getClassTypes ( arguments );
-            Method[] methods = object.getClass ().getMethods ();
-            for ( Method method : methods )
+            final Class[] types = getClassTypes ( arguments );
+            for ( final Method method : object.getClass ().getMethods () )
             {
                 // Checking method name
                 if ( method.getName ().equals ( methodName ) )
                 {
                     // Checking method arguments count
-                    Class<?>[] mt = method.getParameterTypes ();
+                    final Class<?>[] mt = method.getParameterTypes ();
                     if ( mt.length == types.length )
                     {
                         // Checking that arguments fit
@@ -859,7 +900,7 @@ public final class ReflectUtils
                         }
                         if ( fits )
                         {
-                            return method.invoke ( object, arguments );
+                            return ( T ) method.invoke ( object, arguments );
                         }
                     }
                 }
@@ -874,10 +915,9 @@ public final class ReflectUtils
      * @param argTypes argument types
      * @return text representation for array of argument types
      */
-    private static String argumentTypesToString ( Class[] argTypes )
+    private static String argumentTypesToString ( final Class[] argTypes )
     {
-        StringBuilder buf = new StringBuilder ();
-        buf.append ( "(" );
+        final StringBuilder buf = new StringBuilder ( "(" );
         if ( argTypes != null )
         {
             for ( int i = 0; i < argTypes.length; i++ )
@@ -886,12 +926,11 @@ public final class ReflectUtils
                 {
                     buf.append ( ", " );
                 }
-                Class c = argTypes[ i ];
+                final Class c = argTypes[ i ];
                 buf.append ( ( c == null ) ? "null" : c.getName () );
             }
         }
-        buf.append ( ")" );
-        return buf.toString ();
+        return buf.append ( ")" ).toString ();
     }
 
     /**
@@ -904,9 +943,10 @@ public final class ReflectUtils
      * @throws IllegalAccessException
      * @throws InvocationTargetException
      */
-    public static <T extends Cloneable> T clone ( T object ) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException
+    public static <T extends Cloneable> T clone ( final T object )
+            throws NoSuchMethodException, IllegalAccessException, InvocationTargetException
     {
-        return ( T ) ReflectUtils.callMethod ( object, "clone" );
+        return ReflectUtils.callMethod ( object, "clone" );
     }
 
     /**
@@ -916,9 +956,9 @@ public final class ReflectUtils
      * @param <T>    cloned object type
      * @return cloned object
      */
-    public static <T extends Cloneable> T cloneSafely ( T object )
+    public static <T extends Cloneable> T cloneSafely ( final T object )
     {
-        return ( T ) ReflectUtils.callMethodSafely ( object, "clone" );
+        return ReflectUtils.callMethodSafely ( object, "clone" );
     }
 
     /**
@@ -928,7 +968,7 @@ public final class ReflectUtils
      * @return class loaded for the specified canonical class name
      * @throws ClassNotFoundException
      */
-    public static Class loadClass ( String canonicalClassName ) throws ClassNotFoundException
+    public static Class loadClass ( final String canonicalClassName ) throws ClassNotFoundException
     {
         return ReflectUtils.class.getClassLoader ().loadClass ( canonicalClassName );
     }
@@ -939,9 +979,9 @@ public final class ReflectUtils
      * @param arguments arguments to process
      * @return an array of argument class types
      */
-    public static Class[] getClassTypes ( Object[] arguments )
+    public static Class[] getClassTypes ( final Object[] arguments )
     {
-        Class[] parameterTypes = new Class[ arguments.length ];
+        final Class[] parameterTypes = new Class[ arguments.length ];
         for ( int i = 0; i < arguments.length; i++ )
         {
             parameterTypes[ i ] = arguments[ i ].getClass ();
@@ -956,7 +996,7 @@ public final class ReflectUtils
      * @param from second type
      * @return true if first type is assignable from second one, false otherwise
      */
-    public static boolean isAssignable ( Class type, Class from )
+    public static boolean isAssignable ( final Class type, final Class from )
     {
         if ( type.isAssignableFrom ( from ) )
         {
@@ -1014,7 +1054,7 @@ public final class ReflectUtils
      * @param text     text to search for
      * @return true if one of superclasses contains specified text in its name, false otherwise
      */
-    public static boolean containsInClassOrSuperclassName ( Class theClass, String text )
+    public static boolean containsInClassOrSuperclassName ( final Class theClass, final String text )
     {
         if ( theClass == null )
         {
