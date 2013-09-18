@@ -40,7 +40,7 @@ public final class ZipUtils
      * @param dst     destination directory path
      * @return true if archive was extracted successfully
      */
-    public static boolean unzip ( String archive, String dst )
+    public static boolean unzip ( final String archive, final String dst )
     {
         return unzip ( archive, dst, null );
     }
@@ -54,7 +54,7 @@ public final class ZipUtils
      * @param listener extraction process listener
      * @return true if archive was extracted successfully
      */
-    public static boolean unzip ( String archive, String dst, UnzipListener listener )
+    public static boolean unzip ( final String archive, final String dst, final UnzipListener listener )
     {
         return unzip ( new File ( archive ), new File ( dst ), listener );
     }
@@ -67,7 +67,7 @@ public final class ZipUtils
      * @param dst     destination directory
      * @return true if archive was extracted successfully
      */
-    public static boolean unzip ( File archive, File dst )
+    public static boolean unzip ( final File archive, final File dst )
     {
         return unzip ( archive, dst, null );
     }
@@ -81,11 +81,11 @@ public final class ZipUtils
      * @param listener extraction process listener
      * @return true if archive was extracted successfully
      */
-    public static boolean unzip ( File archive, File dst, UnzipListener listener )
+    public static boolean unzip ( final File archive, final File dst, final UnzipListener listener )
     {
         try
         {
-            ZipFile zipFile = new ZipFile ( archive );
+            final ZipFile zipFile = new ZipFile ( archive );
 
             // Informing listener about zip entries amount
             if ( listener != null )
@@ -94,13 +94,13 @@ public final class ZipUtils
             }
 
             // Starting zip extraction
-            Enumeration entries = zipFile.entries ();
+            final Enumeration entries = zipFile.entries ();
             int index = 0;
             while ( entries.hasMoreElements () )
             {
                 // Single zip entry
-                ZipEntry entry = ( ZipEntry ) entries.nextElement ();
-                File extractToFile;
+                final ZipEntry entry = ( ZipEntry ) entries.nextElement ();
+                final File extractToFile;
                 if ( entry.isDirectory () )
                 {
                     // Creating directories path
@@ -129,11 +129,35 @@ public final class ZipUtils
             zipFile.close ();
             return true;
         }
-        catch ( Throwable e )
+        catch ( final Throwable e )
         {
             e.printStackTrace ();
             return false;
         }
+    }
+
+    /**
+     * Returns file name for the specified zip entry.
+     *
+     * @param zipEntry zip entry to process
+     * @return file name for the specified zip entry
+     */
+    public static String getZipEntryFileName ( final ZipEntry zipEntry )
+    {
+        final String name = zipEntry.getName ();
+        return name.substring ( name.lastIndexOf ( "/" ) + 1 );
+    }
+
+    /**
+     * Returns file location for the specified zip entry.
+     *
+     * @param zipEntry zip entry to process
+     * @return file location for the specified zip entry
+     */
+    public static String getZipEntryFileLocation ( final ZipEntry zipEntry )
+    {
+        final String name = zipEntry.getName ();
+        return name.substring ( 0, name.lastIndexOf ( "/" ) + 1 );
     }
 
     /**
@@ -143,9 +167,9 @@ public final class ZipUtils
      * @param out data output stream
      * @throws IOException
      */
-    private static void copyInputStream ( InputStream in, OutputStream out ) throws IOException
+    private static void copyInputStream ( final InputStream in, final OutputStream out ) throws IOException
     {
-        byte[] buffer = new byte[ 1024 ];
+        final byte[] buffer = new byte[ 1024 ];
         int len;
         while ( ( len = in.read ( buffer ) ) >= 0 )
         {
