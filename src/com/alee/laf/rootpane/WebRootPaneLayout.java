@@ -61,10 +61,11 @@ public class WebRootPaneLayout extends AbstractLayoutManager
     {
         final JRootPane root = ( JRootPane ) parent;
         final WebRootPaneUI rootUI = ( WebRootPaneUI ) root.getUI ();
-        final Insets m = parent.getInsets ();
+        final Insets i = parent.getInsets ();
+        final Insets ci = new Insets ( 1, 1, 1, 1 );
         final Dimension s = parent.getSize ();
-        final int w = s.width - m.right - m.left;
-        final int h = s.height - m.top - m.bottom;
+        final int w = s.width - i.right - i.left;
+        final int h = s.height - i.top - i.bottom;
         final boolean ltr = root.getComponentOrientation ().isLeftToRight ();
 
         final WebButtonGroup windowButtons = rootUI.getWindowButtons ();
@@ -90,9 +91,9 @@ public class WebRootPaneLayout extends AbstractLayoutManager
             // Placing buttons properly
             final Dimension ps = windowButtons.getPreferredSize ();
             final int buttonsShear = getButtonsShear ( rootUI );
-            final int x = ltr ? s.width - m.right - buttonsShear - ps.width : m.left + buttonsShear;
+            final int x = ltr ? s.width - i.right - buttonsShear - ps.width : i.left + buttonsShear;
             windowButtons.setVisible ( true );
-            windowButtons.setBounds ( x, m.top, ps.width, ps.height );
+            windowButtons.setBounds ( x, i.top, ps.width, ps.height );
             buttonsWidth = ps.width;
         }
         else if ( windowButtons != null )
@@ -105,7 +106,7 @@ public class WebRootPaneLayout extends AbstractLayoutManager
         {
             final Dimension ps = titleComponent.getPreferredSize ();
             titleComponent.setVisible ( true );
-            titleComponent.setBounds ( ltr ? m.left : m.left + buttonsWidth, m.top, w - buttonsWidth, ps.height );
+            titleComponent.setBounds ( ltr ? i.left : i.left + buttonsWidth, i.top, w - buttonsWidth, ps.height );
             nextY += ps.height;
         }
         else if ( titleComponent != null )
@@ -113,12 +114,19 @@ public class WebRootPaneLayout extends AbstractLayoutManager
             titleComponent.setVisible ( false );
         }
 
+        // Placing layered pane
+        final JLayeredPane layeredPane = root.getLayeredPane ();
+        if ( layeredPane != null )
+        {
+            layeredPane.setBounds ( i.left + ci.left, i.top + ci.top, w - ci.left - ci.right, h - ci.top - ci.bottom );
+        }
+
         // Placing menu bar
         if ( showMenuBar )
         {
             final Dimension mbd = menuBar.getPreferredSize ();
             menuBar.setVisible ( true );
-            menuBar.setBounds ( 0, nextY, w, mbd.height );
+            menuBar.setBounds ( 0, nextY, w - ci.left - ci.right, mbd.height );
             nextY += mbd.height;
         }
         else if ( menuBar != null )
@@ -126,24 +134,17 @@ public class WebRootPaneLayout extends AbstractLayoutManager
             menuBar.setVisible ( false );
         }
 
-        // Placing layered pane
-        final JLayeredPane layeredPane = root.getLayeredPane ();
-        if ( layeredPane != null )
-        {
-            layeredPane.setBounds ( m.left, m.top, w, h );
-        }
-
         // Placing glass pane
         final Component glassPane = root.getGlassPane ();
         if ( glassPane != null )
         {
-            glassPane.setBounds ( m.left, m.top, w, h );
+            glassPane.setBounds ( i.left, i.top, w, h );
         }
 
         final Container contentPane = root.getContentPane ();
         if ( contentPane != null )
         {
-            contentPane.setBounds ( 0, nextY, w, h < nextY ? 0 : h - nextY );
+            contentPane.setBounds ( 0, nextY, w - ci.left - ci.right, h < nextY ? 0 : h - nextY - ci.top - ci.bottom );
         }
 
         // Placing window resize corner
@@ -152,7 +153,7 @@ public class WebRootPaneLayout extends AbstractLayoutManager
             parent.setComponentZOrder ( resizeCorner, 0 );
             final Dimension ps = resizeCorner.getPreferredSize ();
             resizeCorner.setVisible ( true );
-            resizeCorner.setBounds ( s.width - m.right - ps.width - 2, s.height - m.bottom - ps.height - 2, ps.width, ps.height );
+            resizeCorner.setBounds ( s.width - i.right - ps.width - 2, s.height - i.bottom - ps.height - 2, ps.width, ps.height );
         }
         else if ( resizeCorner != null )
         {
@@ -170,6 +171,7 @@ public class WebRootPaneLayout extends AbstractLayoutManager
     private Dimension calculateSize ( Container parent, boolean preferred )
     {
         final Insets i = parent.getInsets ();
+        final Insets ci = new Insets ( 1, 1, 1, 1 );
         final JRootPane root = ( JRootPane ) parent;
         final WebRootPaneUI rootUI = ( WebRootPaneUI ) root.getUI ();
 
@@ -345,6 +347,8 @@ public class WebRootPaneLayout extends AbstractLayoutManager
                 cpHeight = Math.max ( cpHeight, rcd.height );
             }
         }
+        cpWidth += ci.left + ci.right;
+        cpHeight += ci.top + ci.bottom;
 
         // Computing final size
         final int width = i.left + MathUtils.max ( tpWidth, cpWidth ) + i.right;

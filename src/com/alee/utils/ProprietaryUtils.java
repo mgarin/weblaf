@@ -17,6 +17,8 @@
 
 package com.alee.utils;
 
+import com.alee.laf.StyleConstants;
+
 import javax.swing.*;
 import java.awt.*;
 import java.lang.reflect.InvocationTargetException;
@@ -41,7 +43,7 @@ public final class ProprietaryUtils
      *
      * @param table defaults table
      */
-    public static void setupDefaults ( UIDefaults table )
+    public static void setupUIDefaults ( UIDefaults table )
     {
         try
         {
@@ -85,8 +87,17 @@ public final class ProprietaryUtils
         {
             try
             {
-                // Workaround to allow this method usage on all possible Java versions
-                ReflectUtils.callStaticMethod ( "com.sun.awt.AWTUtilities", "setWindowOpaque", window, opaque );
+                if ( SystemUtils.isJava7orAbove () )
+                {
+                    // For Java 7 and later this will work just fine
+                    final Color bg = opaque ? StyleConstants.backgroundColor : StyleConstants.transparent;
+                    ReflectUtils.callMethod ( window, "setBackground", bg );
+                }
+                else
+                {
+                    // Workaround to allow this method usage on all possible Java versions
+                    ReflectUtils.callStaticMethod ( "com.sun.awt.AWTUtilities", "setWindowOpaque", window, opaque );
+                }
             }
             catch ( Throwable e )
             {
@@ -109,8 +120,19 @@ public final class ProprietaryUtils
         {
             try
             {
-                // Workaround to allow this method usage on all possible Java versions
-                return ( Boolean ) ReflectUtils.callStaticMethod ( "com.sun.awt.AWTUtilities", "isWindowOpaque", window );
+                Boolean isOpaque;
+                if ( SystemUtils.isJava7orAbove () )
+                {
+                    // For Java 7 and later this will work just fine
+                    final Color bg = ReflectUtils.callMethod ( window, "getBackground" );
+                    isOpaque = bg.getAlpha () == 255;
+                }
+                else
+                {
+                    // Workaround to allow this method usage on all possible Java versions
+                    isOpaque = ReflectUtils.callStaticMethod ( "com.sun.awt.AWTUtilities", "isWindowOpaque", window );
+                }
+                return isOpaque != null ? isOpaque : true;
             }
             catch ( Throwable e )
             {
@@ -134,8 +156,16 @@ public final class ProprietaryUtils
         {
             try
             {
-                // Workaround to allow this method usage on all possible Java versions
-                ReflectUtils.callStaticMethod ( "com.sun.awt.AWTUtilities", "setWindowOpacity", window, opacity );
+                if ( SystemUtils.isJava7orAbove () )
+                {
+                    // For Java 7 and later this will work just fine
+                    ReflectUtils.callMethod ( window, "setOpacity", opacity );
+                }
+                else
+                {
+                    // Workaround to allow this method usage on all possible Java versions
+                    ReflectUtils.callStaticMethod ( "com.sun.awt.AWTUtilities", "setWindowOpacity", window, opacity );
+                }
             }
             catch ( Throwable e )
             {
@@ -158,8 +188,18 @@ public final class ProprietaryUtils
         {
             try
             {
-                // Workaround to allow this method usage on all possible Java versions
-                return ( Float ) ReflectUtils.callStaticMethod ( "com.sun.awt.AWTUtilities", "getWindowOpacity", window );
+                Float opacity;
+                if ( SystemUtils.isJava7orAbove () )
+                {
+                    // For Java 7 and later this will work just fine
+                    opacity = ReflectUtils.callMethod ( window, "getOpacity" );
+                }
+                else
+                {
+                    // Workaround to allow this method usage on all possible Java versions
+                    opacity = ReflectUtils.callStaticMethod ( "com.sun.awt.AWTUtilities", "getWindowOpacity", window );
+                }
+                return opacity != null ? opacity : 1f;
             }
             catch ( Throwable e )
             {
@@ -180,7 +220,7 @@ public final class ProprietaryUtils
     {
         try
         {
-            // todo Replace when Linux will have proper support for transparency
+            // Replace when Unix-systems will have proper support for transparency
             // com.sun.awt.AWTUtilities.isTranslucencySupported ( com.sun.awt.AWTUtilities.Translucency.PERPIXEL_TRANSPARENT )
             return SystemUtils.isWindows () || SystemUtils.isMac () || SystemUtils.isSolaris ();
         }

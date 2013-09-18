@@ -90,6 +90,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
     public static final String COMPONENT_ENABLED_PROPERTY = "enabled";
     public static final String TOOLBAR_FLOATABLE_PROPERTY = "floatable";
     public static final String WINDOW_DECORATION_STYLE_PROPERTY = "windowDecorationStyle";
+    public static final String VISIBLE_PROPERTY = "visible";
 
     /**
      * List of WebLookAndFeel icons.
@@ -417,7 +418,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
         super.initComponentDefaults ( table );
 
         // Global text antialiasing
-        ProprietaryUtils.setupDefaults ( table );
+        ProprietaryUtils.setupUIDefaults ( table );
 
         // Fonts
         initializeFonts ( table );
