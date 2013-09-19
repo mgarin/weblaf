@@ -58,129 +58,129 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
     /**
      * Whether animate transition between states or not.
      */
-    private boolean animate = WebCollapsiblePaneStyle.animate;
+    protected boolean animate = WebCollapsiblePaneStyle.animate;
 
     /**
      * Collapsed state icon.
      */
-    private ImageIcon expandIcon = WebCollapsiblePaneStyle.expandIcon;
+    protected ImageIcon expandIcon = WebCollapsiblePaneStyle.expandIcon;
 
     /**
      * Expanded state icon.
      */
-    private ImageIcon collapseIcon = WebCollapsiblePaneStyle.collapseIcon;
+    protected ImageIcon collapseIcon = WebCollapsiblePaneStyle.collapseIcon;
 
     /**
      * State icon margin.
      */
-    private Insets stateIconMargin = WebCollapsiblePaneStyle.stateIconMargin;
+    protected Insets stateIconMargin = WebCollapsiblePaneStyle.stateIconMargin;
 
     /**
      * Whether rotate state icon according to title pane position or not.
      */
-    private boolean rotateStateIcon = WebCollapsiblePaneStyle.rotateStateIcon;
+    protected boolean rotateStateIcon = WebCollapsiblePaneStyle.rotateStateIcon;
 
     /**
      * Whether display state icon in title pane or not.
      */
-    private boolean showStateIcon = WebCollapsiblePaneStyle.showStateIcon;
+    protected boolean showStateIcon = WebCollapsiblePaneStyle.showStateIcon;
 
     /**
      * State icon position in title pane.
      */
-    private int stateIconPostion = WebCollapsiblePaneStyle.stateIconPostion;
+    protected int stateIconPostion = WebCollapsiblePaneStyle.stateIconPostion;
 
     /**
      * Title pane position in collapsible pane.
      */
-    private int titlePanePostion = WebCollapsiblePaneStyle.titlePanePostion;
+    protected int titlePanePostion = WebCollapsiblePaneStyle.titlePanePostion;
 
     /**
      * Content margin.
      */
-    private Insets contentMargin = WebCollapsiblePaneStyle.contentMargin;
+    protected Insets contentMargin = WebCollapsiblePaneStyle.contentMargin;
 
     /**
      * Collapsible pane listeners.
      */
-    private List<CollapsiblePaneListener> listeners = new ArrayList<CollapsiblePaneListener> ( 1 );
+    protected List<CollapsiblePaneListener> listeners = new ArrayList<CollapsiblePaneListener> ( 1 );
 
     /**
      * Cached collapsed state icon.
      */
-    private ImageIcon cachedExpandIcon = null;
+    protected ImageIcon cachedExpandIcon = null;
 
     /**
      * Cached disabled collapsed state icon.
      */
-    private ImageIcon cachedDisabledExpandIcon = null;
+    protected ImageIcon cachedDisabledExpandIcon = null;
 
     /**
      * Cached expanded state icon.
      */
-    private ImageIcon cachedCollapseIcon = null;
+    protected ImageIcon cachedCollapseIcon = null;
 
     /**
      * Cached disabled expanded state icon.
      */
-    private ImageIcon cachedDisabledCollapseIcon = null;
+    protected ImageIcon cachedDisabledCollapseIcon = null;
 
     /**
      * Handler that dynamically enable and disable collapsible pane state changes by providing according boolean value.
      */
-    private DataProvider<Boolean> stateChangeHandler = null;
+    protected DataProvider<Boolean> stateChangeHandler = null;
 
     /**
      * Whether collapsible pane is expanded or not.
      */
-    private boolean expanded = true;
+    protected boolean expanded = true;
 
     /**
      * Current collapsible pane transition progress.
      * When pane is fully expanded this variable becomes 1f.
      * When pane is fully collapsed this variable becomes 0f.
      */
-    private float transitionProgress = 1f;
+    protected float transitionProgress = 1f;
 
     /**
      * Collapsible pane expand and collapse speed.
      */
-    private float expandSpeed = 0.1f;
+    protected float expandSpeed = 0.1f;
 
     /**
      * State change animation timer.
      */
-    private WebTimer animator = null;
+    protected WebTimer animator = null;
 
     /**
      * Whether custom title component is set or not.
      */
-    private boolean customTitle = false;
+    protected boolean customTitle = false;
 
     /**
      * Header panel.
      */
-    private WebPanel headerPanel;
+    protected WebPanel headerPanel;
 
     /**
      * Title component.
      */
-    private Component titleComponent;
+    protected Component titleComponent;
 
     /**
      * State change button.
      */
-    private WebButton expandButton;
+    protected WebButton expandButton;
 
     /**
      * Content panel.
      */
-    private WebPanel contentPanel;
+    protected WebPanel contentPanel;
 
     /**
      * Collapsible pane content.
      */
-    private Component content = null;
+    protected Component content = null;
 
     /**
      * Constructs empty collapsible pane.
@@ -195,7 +195,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
      *
      * @param title collapsible pane title text
      */
-    public WebCollapsiblePane ( String title )
+    public WebCollapsiblePane ( final String title )
     {
         this ( null, title );
     }
@@ -206,7 +206,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
      * @param icon  collapsible pane title icon
      * @param title collapsible pane title text
      */
-    public WebCollapsiblePane ( ImageIcon icon, String title )
+    public WebCollapsiblePane ( final ImageIcon icon, final String title )
     {
         this ( icon, title, null );
     }
@@ -217,7 +217,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
      * @param title   collapsible pane title text
      * @param content collapsible pane content
      */
-    public WebCollapsiblePane ( String title, Component content )
+    public WebCollapsiblePane ( final String title, final Component content )
     {
         this ( null, title, content );
     }
@@ -229,7 +229,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
      * @param title   collapsible pane title text
      * @param content collapsible pane content
      */
-    public WebCollapsiblePane ( Icon icon, String title, Component content )
+    public WebCollapsiblePane ( final Icon icon, final String title, final Component content )
     {
         super ();
 
@@ -254,7 +254,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
         headerPanel.addMouseListener ( new MouseAdapter ()
         {
             @Override
-            public void mousePressed ( MouseEvent e )
+            public void mousePressed ( final MouseEvent e )
             {
                 if ( isAllowAction ( e ) )
                 {
@@ -263,7 +263,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
             }
 
             @Override
-            public void mouseReleased ( MouseEvent e )
+            public void mouseReleased ( final MouseEvent e )
             {
                 if ( isAllowAction ( e ) )
                 {
@@ -271,7 +271,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
                 }
             }
 
-            private boolean isAllowAction ( MouseEvent e )
+            private boolean isAllowAction ( final MouseEvent e )
             {
                 return SwingUtilities.isLeftMouseButton ( e ) && SwingUtils.size ( WebCollapsiblePane.this ).contains ( e.getPoint () );
             }
@@ -288,7 +288,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
         expandButton.addActionListener ( new ActionListener ()
         {
             @Override
-            public void actionPerformed ( ActionEvent e )
+            public void actionPerformed ( final ActionEvent e )
             {
                 invertExpandState ();
                 takeFocus ();
@@ -346,7 +346,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
         addPropertyChangeListener ( WebLookAndFeel.COMPONENT_ORIENTATION_PROPERTY, new PropertyChangeListener ()
         {
             @Override
-            public void propertyChange ( PropertyChangeEvent evt )
+            public void propertyChange ( final PropertyChangeEvent evt )
             {
                 updateStateIcons ();
             }
@@ -356,7 +356,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
     /**
      * Transfers application focus to this collapsible pane.
      */
-    private void takeFocus ()
+    protected void takeFocus ()
     {
         if ( isShowing () && isEnabled () )
         {
@@ -367,7 +367,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
     /**
      * Updates default title component.
      */
-    private void updateDefaultTitleComponent ()
+    protected void updateDefaultTitleComponent ()
     {
         updateDefaultTitleComponent ( getIcon (), getTitle () );
     }
@@ -378,7 +378,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
      * @param icon  collapsible pane title icon
      * @param title collapsible pane title text
      */
-    private void updateDefaultTitleComponent ( Icon icon, String title )
+    protected void updateDefaultTitleComponent ( final Icon icon, final String title )
     {
         if ( !customTitle )
         {
@@ -394,7 +394,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
     /**
      * Updates default title component border.
      */
-    private void updateDefaultTitleBorder ()
+    protected void updateDefaultTitleBorder ()
     {
         if ( titleComponent != null && !customTitle )
         {
@@ -419,7 +419,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
     /**
      * Updates header panel position.
      */
-    private void updateHeaderPosition ()
+    protected void updateHeaderPosition ()
     {
         updateHeaderSides ();
         if ( titlePanePostion == TOP )
@@ -444,7 +444,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
     /**
      * Updates header panel sides style.
      */
-    private void updateHeaderSides ()
+    protected void updateHeaderSides ()
     {
         headerPanel.setDrawSides ( expanded && titlePanePostion == BOTTOM, expanded && titlePanePostion == RIGHT,
                 expanded && titlePanePostion == TOP, expanded && titlePanePostion == LEFT );
@@ -453,7 +453,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
     /**
      * Updates state icon position.
      */
-    private void updateStateIconPosition ()
+    protected void updateStateIconPosition ()
     {
         if ( showStateIcon )
         {
@@ -480,7 +480,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
     /**
      * Updates state icon margin.
      */
-    private void updateStateIconMargin ()
+    protected void updateStateIconMargin ()
     {
         expandButton.setMargin ( stateIconMargin );
     }
@@ -492,10 +492,10 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
      * @param icon  collapsible pane title icon
      * @return new default title component with specified icon and text
      */
-    private JComponent createDefaultTitleComponent ( Icon icon, String title )
+    protected JComponent createDefaultTitleComponent ( final Icon icon, final String title )
     {
         // todo RTL orientation support
-        WebLabel defaultTitle;
+        final WebLabel defaultTitle;
         if ( titlePanePostion == LEFT )
         {
             defaultTitle = new WebVerticalLabel ( title, icon, WebLabel.LEADING, false );
@@ -523,11 +523,11 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
     }
 
     /**
-     * Sets handler that dynamically enable and disable collapsible pane state changes by providing according boolean value
+     * Sets handler that dynamically enable and disable collapsible pane state changes by providing according boolean value.
      *
      * @param stateChangeHandler new state change handler
      */
-    public void setStateChangeHandler ( DataProvider<Boolean> stateChangeHandler )
+    public void setStateChangeHandler ( final DataProvider<Boolean> stateChangeHandler )
     {
         this.stateChangeHandler = stateChangeHandler;
     }
@@ -570,7 +570,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
      * @param animate whether animate state change transition or not
      * @return true if operation succeed, false otherwise
      */
-    public boolean invertExpandState ( boolean animate )
+    public boolean invertExpandState ( final boolean animate )
     {
         return setExpanded ( !isExpanded (), animate );
     }
@@ -591,7 +591,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
      *
      * @return true if operation succeed, false otherwise
      */
-    public boolean setExpanded ( boolean expanded )
+    public boolean setExpanded ( final boolean expanded )
     {
         return setExpanded ( expanded, isShowing () && animate );
     }
@@ -603,7 +603,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
      * @param animate whether animate state change transition or not
      * @return true if operation succeed, false otherwise
      */
-    public boolean setExpanded ( boolean expanded, boolean animate )
+    public boolean setExpanded ( final boolean expanded, final boolean animate )
     {
         if ( isEnabled () )
         {
@@ -637,7 +637,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
      * @param animate whether animate state change transition or not
      * @return true if operation succeed, false otherwise
      */
-    public boolean collapse ( boolean animate )
+    public boolean collapse ( final boolean animate )
     {
         if ( !expanded || !isStateChangeEnabled () )
         {
@@ -655,7 +655,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
             animator = new WebTimer ( "WebCollapsiblePane.collapseTimer", StyleConstants.fastAnimationDelay, new ActionListener ()
             {
                 @Override
-                public void actionPerformed ( ActionEvent e )
+                public void actionPerformed ( final ActionEvent e )
                 {
                     if ( transitionProgress > 0f )
                     {
@@ -683,7 +683,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
     /**
      * Finishes collapse action.
      */
-    private void finishCollapseAction ()
+    protected void finishCollapseAction ()
     {
         // Hide title border
         updateHeaderSides ();
@@ -720,7 +720,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
      * @param animate whether animate state change transition or not
      * @return true if operation succeed, false otherwise
      */
-    public boolean expand ( boolean animate )
+    public boolean expand ( final boolean animate )
     {
         if ( expanded || !isStateChangeEnabled () )
         {
@@ -747,7 +747,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
             animator = new WebTimer ( "WebCollapsiblePane.expandTimer", StyleConstants.fastAnimationDelay, new ActionListener ()
             {
                 @Override
-                public void actionPerformed ( ActionEvent e )
+                public void actionPerformed ( final ActionEvent e )
                 {
                     if ( transitionProgress < 1f )
                     {
@@ -775,7 +775,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
     /**
      * Finishes expand action.
      */
-    private void finishExpandAction ()
+    protected void finishExpandAction ()
     {
         // Update collapsible pane
         revalidate ();
@@ -788,7 +788,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
     /**
      * Stops state transition animation.
      */
-    private void stopAnimation ()
+    protected void stopAnimation ()
     {
         if ( animator != null && animator.isRunning () )
         {
@@ -811,7 +811,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
      *
      * @param titlePanePostion new title pane position in collapsible pane
      */
-    public void setTitlePanePostion ( int titlePanePostion )
+    public void setTitlePanePostion ( final int titlePanePostion )
     {
         this.titlePanePostion = titlePanePostion;
         updateDefaultTitleComponent ();
@@ -836,7 +836,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
      *
      * @param margin content margin
      */
-    public void setContentMargin ( Insets margin )
+    public void setContentMargin ( final Insets margin )
     {
         this.contentMargin = margin;
         contentPanel.setMargin ( margin );
@@ -851,7 +851,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
      * @param bottom bottom content margin
      * @param right  right content margin
      */
-    public void setContentMargin ( int top, int left, int bottom, int right )
+    public void setContentMargin ( final int top, final int left, final int bottom, final int right )
     {
         setContentMargin ( new Insets ( top, left, bottom, right ) );
     }
@@ -861,7 +861,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
      *
      * @param margin content margin
      */
-    public void setContentMargin ( int margin )
+    public void setContentMargin ( final int margin )
     {
         setContentMargin ( margin, margin, margin, margin );
     }
@@ -881,7 +881,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
      *
      * @param animate whether animate transition between states or not
      */
-    public void setAnimate ( boolean animate )
+    public void setAnimate ( final boolean animate )
     {
         this.animate = animate;
     }
@@ -901,7 +901,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
      *
      * @param icon new default title component icon
      */
-    public void setIcon ( Icon icon )
+    public void setIcon ( final Icon icon )
     {
         if ( !customTitle )
         {
@@ -925,7 +925,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
      *
      * @param title new default title component text
      */
-    public void setTitle ( String title )
+    public void setTitle ( final String title )
     {
         if ( !customTitle )
         {
@@ -948,7 +948,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
      *
      * @param collapseIcon new expanded state icon
      */
-    public void setCollapseIcon ( ImageIcon collapseIcon )
+    public void setCollapseIcon ( final ImageIcon collapseIcon )
     {
         this.collapseIcon = collapseIcon;
         clearCachedCollapseIcons ();
@@ -970,7 +970,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
      *
      * @param expandIcon new collapsed state icon
      */
-    public void setExpandIcon ( ImageIcon expandIcon )
+    public void setExpandIcon ( final ImageIcon expandIcon )
     {
         this.expandIcon = expandIcon;
         clearCachedExpandIcons ();
@@ -992,7 +992,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
      *
      * @param margin new state icon margin
      */
-    public void setStateIconMargin ( Insets margin )
+    public void setStateIconMargin ( final Insets margin )
     {
         this.stateIconMargin = margin;
         updateStateIconMargin ();
@@ -1013,7 +1013,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
      *
      * @param rotateStateIcon whether rotate state icon according to title pane position or not
      */
-    public void setRotateStateIcon ( boolean rotateStateIcon )
+    public void setRotateStateIcon ( final boolean rotateStateIcon )
     {
         this.rotateStateIcon = rotateStateIcon;
         updateStateIcons ();
@@ -1034,7 +1034,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
      *
      * @param showStateIcon whether display state icon in title pane or not
      */
-    public void setShowStateIcon ( boolean showStateIcon )
+    public void setShowStateIcon ( final boolean showStateIcon )
     {
         this.showStateIcon = showStateIcon;
         updateStateIconPosition ();
@@ -1055,7 +1055,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
      *
      * @param stateIconPostion new state icon position in title pane
      */
-    public void setStateIconPostion ( int stateIconPostion )
+    public void setStateIconPostion ( final int stateIconPostion )
     {
         this.stateIconPostion = stateIconPostion;
         updateStateIconPosition ();
@@ -1064,7 +1064,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
     /**
      * Updates state icons.
      */
-    private void updateStateIcons ()
+    protected void updateStateIcons ()
     {
         clearCachedCollapseIcons ();
         clearCachedExpandIcons ();
@@ -1074,7 +1074,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
     /**
      * Installs state icons into state change button.
      */
-    private void setStateIcons ()
+    protected void setStateIcons ()
     {
         if ( expanded )
         {
@@ -1091,7 +1091,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
     /**
      * Clears cached expanded state icons.
      */
-    private void clearCachedCollapseIcons ()
+    protected void clearCachedCollapseIcons ()
     {
         cachedCollapseIcon = null;
         cachedDisabledCollapseIcon = null;
@@ -1102,7 +1102,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
      *
      * @return cached expanded state icon
      */
-    private ImageIcon getCachedCollapseIcon ()
+    protected ImageIcon getCachedCollapseIcon ()
     {
         if ( cachedCollapseIcon == null )
         {
@@ -1129,7 +1129,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
      *
      * @return cached disabled expanded state icon
      */
-    private ImageIcon getCachedDisabledCollapseIcon ()
+    protected ImageIcon getCachedDisabledCollapseIcon ()
     {
         if ( cachedDisabledCollapseIcon == null )
         {
@@ -1141,7 +1141,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
     /**
      * Clears cached collapsed state icons.
      */
-    private void clearCachedExpandIcons ()
+    protected void clearCachedExpandIcons ()
     {
         cachedExpandIcon = null;
         cachedDisabledExpandIcon = null;
@@ -1152,7 +1152,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
      *
      * @return cached collapsed state icon
      */
-    private ImageIcon getCachedExpandIcon ()
+    protected ImageIcon getCachedExpandIcon ()
     {
         if ( cachedExpandIcon == null )
         {
@@ -1178,7 +1178,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
      *
      * @return cached disabled collapsed state icon
      */
-    private ImageIcon getCachedDisabledExpandIcon ()
+    protected ImageIcon getCachedDisabledExpandIcon ()
     {
         if ( cachedDisabledExpandIcon == null )
         {
@@ -1222,7 +1222,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
      *
      * @param titleComponent new custom title component
      */
-    public void setTitleComponent ( Component titleComponent )
+    public void setTitleComponent ( final Component titleComponent )
     {
         if ( this.titleComponent != null )
         {
@@ -1251,7 +1251,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
      *
      * @param content new collapsible pane content
      */
-    public void setContent ( Component content )
+    public void setContent ( final Component content )
     {
         if ( this.content != null )
         {
@@ -1280,7 +1280,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
      *
      * @param listeners new collapsible pane listeners
      */
-    public void setCollapsiblePaneListeners ( List<CollapsiblePaneListener> listeners )
+    public void setCollapsiblePaneListeners ( final List<CollapsiblePaneListener> listeners )
     {
         this.listeners = listeners;
     }
@@ -1290,7 +1290,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
      *
      * @param listener collapsible pane listener to add
      */
-    public void addCollapsiblePaneListener ( CollapsiblePaneListener listener )
+    public void addCollapsiblePaneListener ( final CollapsiblePaneListener listener )
     {
         listeners.add ( listener );
     }
@@ -1300,7 +1300,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
      *
      * @param listener collapsible pane listener to remove
      */
-    public void removeCollapsiblePaneListener ( CollapsiblePaneListener listener )
+    public void removeCollapsiblePaneListener ( final CollapsiblePaneListener listener )
     {
         listeners.remove ( listener );
     }
@@ -1308,9 +1308,9 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
     /**
      * Notifies when collapsible pane starts to expand.
      */
-    private void fireExpanding ()
+    public void fireExpanding ()
     {
-        for ( CollapsiblePaneListener listener : CollectionUtils.copy ( listeners ) )
+        for ( final CollapsiblePaneListener listener : CollectionUtils.copy ( listeners ) )
         {
             listener.expanding ( this );
         }
@@ -1319,9 +1319,9 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
     /**
      * Notifies when collapsible pane finished expanding.
      */
-    private void fireExpanded ()
+    public void fireExpanded ()
     {
-        for ( CollapsiblePaneListener listener : CollectionUtils.copy ( listeners ) )
+        for ( final CollapsiblePaneListener listener : CollectionUtils.copy ( listeners ) )
         {
             listener.expanded ( this );
         }
@@ -1330,9 +1330,9 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
     /**
      * Notifies when collapsible pane starts to collapse.
      */
-    private void fireCollapsing ()
+    public void fireCollapsing ()
     {
-        for ( CollapsiblePaneListener listener : CollectionUtils.copy ( listeners ) )
+        for ( final CollapsiblePaneListener listener : CollectionUtils.copy ( listeners ) )
         {
             listener.collapsing ( this );
         }
@@ -1341,9 +1341,9 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
     /**
      * Notifies when collapsible pane finished collapsing.
      */
-    private void fireCollapsed ()
+    public void fireCollapsed ()
     {
-        for ( CollapsiblePaneListener listener : CollectionUtils.copy ( listeners ) )
+        for ( final CollapsiblePaneListener listener : CollectionUtils.copy ( listeners ) )
         {
             listener.collapsed ( this );
         }
@@ -1367,14 +1367,14 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
      */
     public Dimension getBasePreferredSize ()
     {
-        Dimension ps = getPreferredSize ();
+        final Dimension ps = getPreferredSize ();
         if ( content == null || transitionProgress <= 0 )
         {
             return ps;
         }
         else
         {
-            Dimension cps = content.getPreferredSize ();
+            final Dimension cps = content.getPreferredSize ();
             if ( titlePanePostion == TOP || titlePanePostion == BOTTOM )
             {
                 return new Dimension ( ps.width, ps.height - Math.round ( cps.height * transitionProgress ) );
@@ -1393,7 +1393,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
      * @param focusable indicates whether this Component is focusable
      */
     @Override
-    public void setFocusable ( boolean focusable )
+    public void setFocusable ( final boolean focusable )
     {
         expandButton.setFocusable ( focusable );
     }
@@ -1413,7 +1413,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String key )
+    public void registerSettings ( final String key )
     {
         SettingsManager.registerComponent ( this, key );
     }
@@ -1422,7 +1422,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
      * {@inheritDoc}
      */
     @Override
-    public <T extends DefaultValue> void registerSettings ( String key, Class<T> defaultValueClass )
+    public <T extends DefaultValue> void registerSettings ( final String key, final Class<T> defaultValueClass )
     {
         SettingsManager.registerComponent ( this, key, defaultValueClass );
     }
@@ -1431,7 +1431,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String key, Object defaultValue )
+    public void registerSettings ( final String key, final Object defaultValue )
     {
         SettingsManager.registerComponent ( this, key, defaultValue );
     }
@@ -1440,7 +1440,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String group, String key )
+    public void registerSettings ( final String group, final String key )
     {
         SettingsManager.registerComponent ( this, group, key );
     }
@@ -1449,7 +1449,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
      * {@inheritDoc}
      */
     @Override
-    public <T extends DefaultValue> void registerSettings ( String group, String key, Class<T> defaultValueClass )
+    public <T extends DefaultValue> void registerSettings ( final String group, final String key, final Class<T> defaultValueClass )
     {
         SettingsManager.registerComponent ( this, group, key, defaultValueClass );
     }
@@ -1458,7 +1458,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String group, String key, Object defaultValue )
+    public void registerSettings ( final String group, final String key, final Object defaultValue )
     {
         SettingsManager.registerComponent ( this, group, key, defaultValue );
     }
@@ -1467,7 +1467,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String key, boolean loadInitialSettings, boolean applySettingsChanges )
+    public void registerSettings ( final String key, final boolean loadInitialSettings, final boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, key, loadInitialSettings, applySettingsChanges );
     }
@@ -1476,8 +1476,8 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
      * {@inheritDoc}
      */
     @Override
-    public <T extends DefaultValue> void registerSettings ( String key, Class<T> defaultValueClass, boolean loadInitialSettings,
-                                                            boolean applySettingsChanges )
+    public <T extends DefaultValue> void registerSettings ( final String key, final Class<T> defaultValueClass,
+                                                            final boolean loadInitialSettings, final boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, key, defaultValueClass, loadInitialSettings, applySettingsChanges );
     }
@@ -1486,7 +1486,8 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String key, Object defaultValue, boolean loadInitialSettings, boolean applySettingsChanges )
+    public void registerSettings ( final String key, final Object defaultValue, final boolean loadInitialSettings,
+                                   final boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, key, defaultValue, loadInitialSettings, applySettingsChanges );
     }
@@ -1495,8 +1496,8 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
      * {@inheritDoc}
      */
     @Override
-    public <T extends DefaultValue> void registerSettings ( String group, String key, Class<T> defaultValueClass,
-                                                            boolean loadInitialSettings, boolean applySettingsChanges )
+    public <T extends DefaultValue> void registerSettings ( final String group, final String key, final Class<T> defaultValueClass,
+                                                            final boolean loadInitialSettings, final boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, group, key, defaultValueClass, loadInitialSettings, applySettingsChanges );
     }
@@ -1505,8 +1506,8 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String group, String key, Object defaultValue, boolean loadInitialSettings,
-                                   boolean applySettingsChanges )
+    public void registerSettings ( final String group, final String key, final Object defaultValue, final boolean loadInitialSettings,
+                                   final boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, group, key, defaultValue, loadInitialSettings, applySettingsChanges );
     }
@@ -1515,7 +1516,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( SettingsProcessor settingsProcessor )
+    public void registerSettings ( final SettingsProcessor settingsProcessor )
     {
         SettingsManager.registerComponent ( this, settingsProcessor );
     }

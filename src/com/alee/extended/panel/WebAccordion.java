@@ -44,58 +44,63 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
     /**
      * Whether animate transition between states or not.
      */
-    private boolean animate = WebAccordionStyle.animate;
+    protected boolean animate = WebAccordionStyle.animate;
 
     /**
      * Accordion style.
      */
-    private AccordionStyle accordionStyle = WebAccordionStyle.accordionStyle;
+    protected AccordionStyle accordionStyle = WebAccordionStyle.accordionStyle;
 
     /**
      * Accordion orientation.
      */
-    private int orientation = WebAccordionStyle.orientation;
+    protected int orientation = WebAccordionStyle.orientation;
 
     /**
      * Collapsed state icon.
      */
-    private ImageIcon expandIcon = WebAccordionStyle.expandIcon;
+    protected ImageIcon expandIcon = WebAccordionStyle.expandIcon;
 
     /**
      * Expanded state icon.
      */
-    private ImageIcon collapseIcon = WebAccordionStyle.collapseIcon;
+    protected ImageIcon collapseIcon = WebAccordionStyle.collapseIcon;
 
     /**
      * Whether accordion must fill all available space with expanded panes or not.
      */
-    private boolean fillSpace = WebAccordionStyle.fillSpace;
+    protected boolean fillSpace = WebAccordionStyle.fillSpace;
 
     /**
      * Whether multiply expanded panes are allowed or not.
      */
-    private boolean multiplySelectionAllowed = WebAccordionStyle.multiplySelectionAllowed;
+    protected boolean multiplySelectionAllowed = WebAccordionStyle.multiplySelectionAllowed;
 
     /**
      * Gap between panes for separated accordion style.
      */
-    private int gap = WebAccordionStyle.gap;
+    protected int gap = WebAccordionStyle.gap;
 
     /**
      * Accordion collapsible pane listeners.
      */
-    private List<AccordionListener> listeners = new ArrayList<AccordionListener> ( 1 );
+    protected List<AccordionListener> listeners = new ArrayList<AccordionListener> ( 1 );
 
     /**
      * Accordion collapsible panes.
      */
-    private List<WebCollapsiblePane> panes = new ArrayList<WebCollapsiblePane> ();
+    protected List<WebCollapsiblePane> panes = new ArrayList<WebCollapsiblePane> ();
 
     /**
      * Accordion collapsible pane state listeners.
-     * These are private listeners required for some of accordion features.
+     * These listeners required for some of accordion features.
      */
-    private List<CollapsiblePaneListener> stateListeners = new ArrayList<CollapsiblePaneListener> ();
+    protected List<CollapsiblePaneListener> stateListeners = new ArrayList<CollapsiblePaneListener> ();
+
+    /**
+     * Index of last expanded collapsible pane.
+     */
+    protected WebCollapsiblePane lastExpanded = null;
 
     /**
      * Constructs empty accordion with default style.
@@ -111,7 +116,7 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
      *
      * @param accordionStyle
      */
-    public WebAccordion ( AccordionStyle accordionStyle )
+    public WebAccordion ( final AccordionStyle accordionStyle )
     {
         super ();
         initializeDefaultSettings ( accordionStyle );
@@ -120,7 +125,7 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
     /**
      * Initializes default accordion settings.
      */
-    protected void initializeDefaultSettings ( AccordionStyle accordionStyle )
+    protected void initializeDefaultSettings ( final AccordionStyle accordionStyle )
     {
         setDrawFocus ( true );
         setWebColored ( false );
@@ -143,7 +148,7 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
      *
      * @param animate whether animate transition between states or not
      */
-    public void setAnimate ( boolean animate )
+    public void setAnimate ( final boolean animate )
     {
         this.animate = animate;
         updatePanesAnimation ();
@@ -152,9 +157,9 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
     /**
      * Updates collapsible panes animation property.
      */
-    private void updatePanesAnimation ()
+    protected void updatePanesAnimation ()
     {
-        for ( WebCollapsiblePane pane : panes )
+        for ( final WebCollapsiblePane pane : panes )
         {
             pane.setAnimate ( animate );
         }
@@ -175,7 +180,7 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
      *
      * @param orientation new accordion orientation
      */
-    public void setOrientation ( int orientation )
+    public void setOrientation ( final int orientation )
     {
         this.orientation = orientation;
         updatePanesBorderStyling ();
@@ -196,7 +201,7 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
      *
      * @param expandIcon new collapsed state icon
      */
-    public void setExpandIcon ( ImageIcon expandIcon )
+    public void setExpandIcon ( final ImageIcon expandIcon )
     {
         this.expandIcon = expandIcon;
         updatePaneIcons ();
@@ -217,7 +222,7 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
      *
      * @param collapseIcon new expanded state icon
      */
-    public void setCollapseIcon ( ImageIcon collapseIcon )
+    public void setCollapseIcon ( final ImageIcon collapseIcon )
     {
         this.collapseIcon = collapseIcon;
         updatePaneIcons ();
@@ -226,9 +231,9 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
     /**
      * Updates collapsible pane icons.
      */
-    private void updatePaneIcons ()
+    protected void updatePaneIcons ()
     {
-        for ( WebCollapsiblePane pane : panes )
+        for ( final WebCollapsiblePane pane : panes )
         {
             pane.setExpandIcon ( expandIcon );
             pane.setCollapseIcon ( collapseIcon );
@@ -250,7 +255,7 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
      *
      * @param accordionStyle new accordion style
      */
-    public void setAccordionStyle ( AccordionStyle accordionStyle )
+    public void setAccordionStyle ( final AccordionStyle accordionStyle )
     {
         this.accordionStyle = accordionStyle;
         updatePanesBorderStyling ();
@@ -271,7 +276,7 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
      *
      * @param fillSpace whether accordion must fill all available space with expanded panes or not
      */
-    public void setFillSpace ( boolean fillSpace )
+    public void setFillSpace ( final boolean fillSpace )
     {
         this.fillSpace = fillSpace;
         revalidate ();
@@ -292,7 +297,7 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
      *
      * @param multiplySelectionAllowed whether multiply expanded panes are allowed or not
      */
-    public void setMultiplySelectionAllowed ( boolean multiplySelectionAllowed )
+    public void setMultiplySelectionAllowed ( final boolean multiplySelectionAllowed )
     {
         this.multiplySelectionAllowed = multiplySelectionAllowed;
         updateSelections ( -1, true );
@@ -304,23 +309,33 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
      * @param index    index of the pane that will be left expanded in case multiply expanded panes are not allowed
      * @param collapse whether allow to collapse panes or not
      */
-    private void updateSelections ( int index, boolean collapse )
+    protected void updateSelections ( int index, final boolean collapse )
     {
         boolean changed = false;
-        if ( collapse && !multiplySelectionAllowed )
+        if ( collapse )
         {
-            for ( int i = 0; i < panes.size (); i++ )
+            if ( !multiplySelectionAllowed )
             {
-                WebCollapsiblePane pane = panes.get ( i );
-                if ( index == -1 && pane.isExpanded () )
+                for ( int i = 0; i < panes.size (); i++ )
                 {
-                    index = i;
+                    final WebCollapsiblePane pane = panes.get ( i );
+                    if ( index == -1 && pane.isExpanded () )
+                    {
+                        index = i;
+                    }
+                    if ( index != -1 && i != index && pane.isExpanded () )
+                    {
+                        changed = true;
+                        pane.setExpanded ( false );
+                    }
                 }
-                if ( index != -1 && i != index && pane.isExpanded () )
-                {
-                    changed = true;
-                    pane.setExpanded ( false );
-                }
+            }
+        }
+        else
+        {
+            if ( getSelectionCount () == 0 )
+            {
+                lastExpanded.setExpanded ( true );
             }
         }
 
@@ -346,7 +361,7 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
      *
      * @param gap new gap between panes for separated accordion style
      */
-    public void setGap ( int gap )
+    public void setGap ( final int gap )
     {
         this.gap = gap;
         revalidate ();
@@ -359,7 +374,7 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
      * @param content collapsible pane content
      * @return new collapsible pane
      */
-    public WebCollapsiblePane addPane ( String title, Component content )
+    public WebCollapsiblePane addPane ( final String title, final Component content )
     {
         return addPane ( panes.size (), title, content );
     }
@@ -372,7 +387,7 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
      * @param content collapsible pane content
      * @return new collapsible pane
      */
-    public WebCollapsiblePane addPane ( int index, String title, Component content )
+    public WebCollapsiblePane addPane ( final int index, final String title, final Component content )
     {
         return addPane ( index, new WebCollapsiblePane ( title, content ) );
     }
@@ -385,7 +400,7 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
      * @param content collapsible pane content
      * @return new collapsible pane
      */
-    public WebCollapsiblePane addPane ( Icon icon, String title, Component content )
+    public WebCollapsiblePane addPane ( final Icon icon, final String title, Component content )
     {
         return addPane ( panes.size (), icon, title, content );
     }
@@ -399,7 +414,7 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
      * @param content collapsible pane content
      * @return new collapsible pane
      */
-    public WebCollapsiblePane addPane ( int index, Icon icon, String title, Component content )
+    public WebCollapsiblePane addPane ( final int index, final Icon icon, final String title, final Component content )
     {
         return addPane ( index, new WebCollapsiblePane ( icon, title, content ) );
     }
@@ -411,7 +426,7 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
      * @param content collapsible pane content
      * @return new collapsible pane
      */
-    public WebCollapsiblePane addPane ( Component title, Component content )
+    public WebCollapsiblePane addPane ( final Component title, final Component content )
     {
         return addPane ( panes.size (), title, content );
     }
@@ -424,7 +439,7 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
      * @param content collapsible pane content
      * @return new collapsible pane
      */
-    public WebCollapsiblePane addPane ( int index, Component title, Component content )
+    public WebCollapsiblePane addPane ( final int index, final Component title, final Component content )
     {
         WebCollapsiblePane pane = new WebCollapsiblePane ( "", content );
         pane.setTitleComponent ( title );
@@ -438,7 +453,7 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
      * @param pane  collapsible pane to add
      * @return added collapsible pane
      */
-    private WebCollapsiblePane addPane ( int index, final WebCollapsiblePane pane )
+    protected WebCollapsiblePane addPane ( final int index, final WebCollapsiblePane pane )
     {
         // Animation
         pane.setAnimate ( animate );
@@ -459,22 +474,42 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
             @Override
             public Boolean provide ()
             {
-                return !fillSpace || !pane.isExpanded () || getSelectionCount () > 1;
+                // Allow action if we are expanding pane
+                if ( !pane.isExpanded () )
+                {
+                    return true;
+                }
+
+                // Allow collapse action if accordion does not fill space
+                if ( !fillSpace )
+                {
+                    return true;
+                }
+
+                // Allow collapse action if there are other available expanded panes
+                final int selectionCount = getSelectionCount ();
+                if ( selectionCount > 1 )
+                {
+                    return true;
+                }
+
+                // Allow collapse action if we can expand previously collapsed pane instead of this one
+                return selectionCount == 1 && lastExpanded != null && lastExpanded != pane;
             }
         } );
 
         // Adding new listener
-        CollapsiblePaneListener cpl = new CollapsiblePaneAdapter ()
+        final CollapsiblePaneListener cpl = new CollapsiblePaneAdapter ()
         {
             @Override
-            public void expanding ( WebCollapsiblePane pane )
+            public void expanding ( final WebCollapsiblePane pane )
             {
                 // Update selected panes
                 updateSelections ( panes.indexOf ( pane ), true );
             }
 
             @Override
-            public void collapsing ( WebCollapsiblePane pane )
+            public void collapsing ( final WebCollapsiblePane pane )
             {
                 // This hold additional events from firing when panes collapse due to panes selection mode
                 if ( multiplySelectionAllowed || getSelectionCount () == 0 )
@@ -482,6 +517,9 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
                     // Update selected panes
                     updateSelections ( panes.indexOf ( pane ), false );
                 }
+
+                // Update last selected
+                lastExpanded = pane;
             }
         };
         pane.addCollapsiblePaneListener ( cpl );
@@ -505,7 +543,7 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
      *
      * @param index collapsible pane index
      */
-    public void removePane ( int index )
+    public void removePane ( final int index )
     {
         removePane ( panes.get ( index ) );
     }
@@ -515,9 +553,9 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
      *
      * @param pane collapsible pane to remove
      */
-    private void removePane ( WebCollapsiblePane pane )
+    protected void removePane ( final WebCollapsiblePane pane )
     {
-        int index = panes.indexOf ( pane );
+        final int index = panes.indexOf ( pane );
         if ( index == -1 )
         {
             return;
@@ -533,6 +571,12 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
         // Removing pane
         remove ( pane );
         panes.remove ( index );
+
+        // Updating last expanded pane
+        if ( pane == lastExpanded )
+        {
+            lastExpanded = null;
+        }
 
         // Updating accordion
         updatePanesBorderStyling ();
@@ -565,7 +609,7 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
      * @param index collapsible pane index
      * @return collapsible pane at the specified index
      */
-    public WebCollapsiblePane getPane ( int index )
+    public WebCollapsiblePane getPane ( final int index )
     {
         return panes.get ( index );
     }
@@ -573,11 +617,11 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
     /**
      * Updates panes styling according to accordion settings.
      */
-    private void updatePanesBorderStyling ()
+    protected void updatePanesBorderStyling ()
     {
-        boolean united = accordionStyle.equals ( AccordionStyle.united );
-        boolean separated = accordionStyle.equals ( AccordionStyle.separated );
-        boolean hor = orientation == HORIZONTAL;
+        final boolean united = accordionStyle.equals ( AccordionStyle.united );
+        final boolean separated = accordionStyle.equals ( AccordionStyle.separated );
+        final boolean hor = orientation == HORIZONTAL;
 
         // Accordion decoration
         setUndecorated ( !united );
@@ -585,7 +629,7 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
         // Panes decoration
         for ( int i = 0; i < panes.size (); i++ )
         {
-            WebCollapsiblePane pane = panes.get ( i );
+            final WebCollapsiblePane pane = panes.get ( i );
             pane.setTitlePanePostion ( hor ? LEFT : TOP );
             if ( separated )
             {
@@ -611,7 +655,7 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
      */
     public boolean isAnySelected ()
     {
-        for ( WebCollapsiblePane pane : panes )
+        for ( final WebCollapsiblePane pane : panes )
         {
             if ( pane.isExpanded () )
             {
@@ -628,7 +672,7 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
      */
     public int getFirstSelectedIndex ()
     {
-        for ( WebCollapsiblePane pane : panes )
+        for ( final WebCollapsiblePane pane : panes )
         {
             if ( pane.isExpanded () )
             {
@@ -646,7 +690,7 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
     public int getSelectionCount ()
     {
         int count = 0;
-        for ( WebCollapsiblePane pane : panes )
+        for ( final WebCollapsiblePane pane : panes )
         {
             if ( pane.isExpanded () )
             {
@@ -662,7 +706,7 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
      * @param index collapsible pane index
      * @return collapsible pane icon at the specified index
      */
-    public Icon getIconAt ( int index )
+    public Icon getIconAt ( final int index )
     {
         return panes.get ( index ).getIcon ();
     }
@@ -673,7 +717,7 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
      * @param index collapsible pane index
      * @param icon  new collapsible pane icon
      */
-    public void setIconAt ( int index, Icon icon )
+    public void setIconAt ( final int index, final Icon icon )
     {
         panes.get ( index ).setIcon ( icon );
     }
@@ -684,7 +728,7 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
      * @param index collapsible pane index
      * @return collapsible pane title at the specified index
      */
-    public String getTitleAt ( int index )
+    public String getTitleAt ( final int index )
     {
         return panes.get ( index ).getTitle ();
     }
@@ -695,7 +739,7 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
      * @param index collapsible pane index
      * @param title new collapsible pane title
      */
-    public void setTitleAt ( int index, String title )
+    public void setTitleAt ( final int index, final String title )
     {
         panes.get ( index ).setTitle ( title );
     }
@@ -706,7 +750,7 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
      * @param index collapsible pane index
      * @return collapsible pane title component at the specified index
      */
-    public Component getTitleComponentAt ( int index )
+    public Component getTitleComponentAt ( final int index )
     {
         return panes.get ( index ).getTitleComponent ();
     }
@@ -717,7 +761,7 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
      * @param index          collapsible pane index
      * @param titleComponent new collapsible pane title component
      */
-    public void setTitleComponentAt ( int index, Component titleComponent )
+    public void setTitleComponentAt ( final int index, final Component titleComponent )
     {
         panes.get ( index ).setTitleComponent ( titleComponent );
     }
@@ -728,7 +772,7 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
      * @param index collapsible pane index
      * @return collapsible pane content at the specified index
      */
-    public Component getContentAt ( int index )
+    public Component getContentAt ( final int index )
     {
         return panes.get ( index ).getContent ();
     }
@@ -739,7 +783,7 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
      * @param index   collapsible pane index
      * @param content new collapsible pane content
      */
-    public void setContentAt ( int index, Component content )
+    public void setContentAt ( final int index, final Component content )
     {
         panes.get ( index ).setContent ( content );
     }
@@ -750,7 +794,7 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
      * @param index collapsible pane index
      * @return collapsible pane margin at the specified index
      */
-    public Insets getContentMarginAt ( int index )
+    public Insets getContentMarginAt ( final int index )
     {
         return panes.get ( index ).getContentMargin ();
     }
@@ -761,7 +805,7 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
      * @param index  collapsible pane index
      * @param margin new collapsible pane margin
      */
-    public void setContentMarginAt ( int index, Insets margin )
+    public void setContentMarginAt ( final int index, final Insets margin )
     {
         panes.get ( index ).setContentMargin ( margin );
     }
@@ -775,7 +819,7 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
      * @param bottom new collapsible pane bottom margin
      * @param right  new collapsible pane right margin
      */
-    public void setContentMarginAt ( int index, int top, int left, int bottom, int right )
+    public void setContentMarginAt ( final int index, final int top, final int left, final int bottom, final int right )
     {
         setContentMarginAt ( index, new Insets ( top, left, bottom, right ) );
     }
@@ -786,7 +830,7 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
      * @param index  collapsible pane index
      * @param margin new collapsible pane margin
      */
-    public void setContentMarginAt ( int index, int margin )
+    public void setContentMarginAt ( final int index, final int margin )
     {
         setContentMarginAt ( index, margin, margin, margin, margin );
     }
@@ -798,8 +842,8 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
      */
     public List<WebCollapsiblePane> getSelectedPanes ()
     {
-        List<WebCollapsiblePane> selectedPanes = new ArrayList<WebCollapsiblePane> ();
-        for ( WebCollapsiblePane pane : panes )
+        final List<WebCollapsiblePane> selectedPanes = new ArrayList<WebCollapsiblePane> ();
+        for ( final WebCollapsiblePane pane : panes )
         {
             if ( pane.isExpanded () )
             {
@@ -814,9 +858,9 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
      *
      * @param selectedPanes selected collapsible panes
      */
-    public void setSelectedPanes ( List<WebCollapsiblePane> selectedPanes )
+    public void setSelectedPanes ( final List<WebCollapsiblePane> selectedPanes )
     {
-        for ( WebCollapsiblePane pane : panes )
+        for ( final WebCollapsiblePane pane : panes )
         {
             pane.setExpanded ( selectedPanes != null && selectedPanes.contains ( pane ) );
         }
@@ -829,7 +873,7 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
      */
     public List<Integer> getSelectedIndices ()
     {
-        List<Integer> selectedPanes = new ArrayList<Integer> ();
+        final List<Integer> selectedPanes = new ArrayList<Integer> ();
         for ( int i = 0; i < panes.size (); i++ )
         {
             if ( panes.get ( i ).isExpanded () )
@@ -845,7 +889,7 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
      *
      * @param indices selected collapsible pane indices
      */
-    public void setSelectedIndices ( List<Integer> indices )
+    public void setSelectedIndices ( final List<Integer> indices )
     {
         for ( int i = 0; i < panes.size (); i++ )
         {
@@ -868,7 +912,7 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
      *
      * @param listeners accordion listeners
      */
-    public void setAccordionListeners ( List<AccordionListener> listeners )
+    public void setAccordionListeners ( final List<AccordionListener> listeners )
     {
         this.listeners = listeners;
     }
@@ -878,7 +922,7 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
      *
      * @param listener accordion listener to add
      */
-    public void addAccordionListener ( AccordionListener listener )
+    public void addAccordionListener ( final AccordionListener listener )
     {
         listeners.add ( listener );
     }
@@ -888,7 +932,7 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
      *
      * @param listener collapsible pane listener to remove
      */
-    public void removeAccordionListener ( AccordionListener listener )
+    public void removeAccordionListener ( final AccordionListener listener )
     {
         listeners.remove ( listener );
     }
@@ -896,9 +940,9 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
     /**
      * Notifies when collapsible pane starts to expand.
      */
-    private void fireSelectionChanged ()
+    protected void fireSelectionChanged ()
     {
-        for ( AccordionListener listener : CollectionUtils.copy ( listeners ) )
+        for ( final AccordionListener listener : CollectionUtils.copy ( listeners ) )
         {
             listener.selectionChanged ();
         }
@@ -917,7 +961,7 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
      * {@inheritDoc}
      */
     @Override
-    public <T extends DefaultValue> void registerSettings ( String key, Class<T> defaultValueClass )
+    public <T extends DefaultValue> void registerSettings ( final String key, final Class<T> defaultValueClass )
     {
         SettingsManager.registerComponent ( this, key, defaultValueClass );
     }
@@ -926,7 +970,7 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String key, Object defaultValue )
+    public void registerSettings ( final String key, final Object defaultValue )
     {
         SettingsManager.registerComponent ( this, key, defaultValue );
     }
@@ -935,7 +979,7 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String group, String key )
+    public void registerSettings ( final String group, final String key )
     {
         SettingsManager.registerComponent ( this, group, key );
     }
@@ -944,7 +988,7 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
      * {@inheritDoc}
      */
     @Override
-    public <T extends DefaultValue> void registerSettings ( String group, String key, Class<T> defaultValueClass )
+    public <T extends DefaultValue> void registerSettings ( final String group, final String key, final Class<T> defaultValueClass )
     {
         SettingsManager.registerComponent ( this, group, key, defaultValueClass );
     }
@@ -953,7 +997,7 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String group, String key, Object defaultValue )
+    public void registerSettings ( final String group, final String key, final Object defaultValue )
     {
         SettingsManager.registerComponent ( this, group, key, defaultValue );
     }
@@ -962,7 +1006,7 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String key, boolean loadInitialSettings, boolean applySettingsChanges )
+    public void registerSettings ( final String key, final boolean loadInitialSettings, final boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, key, loadInitialSettings, applySettingsChanges );
     }
@@ -971,8 +1015,8 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
      * {@inheritDoc}
      */
     @Override
-    public <T extends DefaultValue> void registerSettings ( String key, Class<T> defaultValueClass, boolean loadInitialSettings,
-                                                            boolean applySettingsChanges )
+    public <T extends DefaultValue> void registerSettings ( final String key, final Class<T> defaultValueClass,
+                                                            final boolean loadInitialSettings, final boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, key, defaultValueClass, loadInitialSettings, applySettingsChanges );
     }
@@ -981,7 +1025,8 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String key, Object defaultValue, boolean loadInitialSettings, boolean applySettingsChanges )
+    public void registerSettings ( final String key, final Object defaultValue, final boolean loadInitialSettings,
+                                   final boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, key, defaultValue, loadInitialSettings, applySettingsChanges );
     }
@@ -990,8 +1035,8 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
      * {@inheritDoc}
      */
     @Override
-    public <T extends DefaultValue> void registerSettings ( String group, String key, Class<T> defaultValueClass,
-                                                            boolean loadInitialSettings, boolean applySettingsChanges )
+    public <T extends DefaultValue> void registerSettings ( final String group, final String key, final Class<T> defaultValueClass,
+                                                            final boolean loadInitialSettings, final boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, group, key, defaultValueClass, loadInitialSettings, applySettingsChanges );
     }
@@ -1000,8 +1045,8 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String group, String key, Object defaultValue, boolean loadInitialSettings,
-                                   boolean applySettingsChanges )
+    public void registerSettings ( final String group, final String key, final Object defaultValue, final boolean loadInitialSettings,
+                                   final boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, group, key, defaultValue, loadInitialSettings, applySettingsChanges );
     }
@@ -1010,7 +1055,7 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( SettingsProcessor settingsProcessor )
+    public void registerSettings ( final SettingsProcessor settingsProcessor )
     {
         SettingsManager.registerComponent ( this, settingsProcessor );
     }
