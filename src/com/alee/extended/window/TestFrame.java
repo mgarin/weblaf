@@ -17,8 +17,11 @@
 
 package com.alee.extended.window;
 
+import com.alee.extended.layout.HorizontalFlowLayout;
+import com.alee.extended.layout.VerticalFlowLayout;
 import com.alee.extended.panel.BorderPanel;
 import com.alee.laf.WebLookAndFeel;
+import com.alee.laf.panel.WebPanel;
 import com.alee.laf.rootpane.WebFrame;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SystemUtils;
@@ -41,9 +44,9 @@ public class TestFrame extends WebFrame
      * @param component component to display
      * @return displayed test frame
      */
-    public static TestFrame show ( Component component )
+    public static TestFrame show ( final Component component )
     {
-        return new TestFrame ( component ).display ();
+        return new TestFrame ( component ).displayFrame ();
     }
 
     /**
@@ -51,7 +54,7 @@ public class TestFrame extends WebFrame
      *
      * @param component component to display
      */
-    public TestFrame ( Component component )
+    public TestFrame ( final Component component )
     {
         this ( new BorderLayout (), component );
     }
@@ -63,9 +66,9 @@ public class TestFrame extends WebFrame
      * @param margin    container margin
      * @return displayed test frame
      */
-    public static TestFrame show ( Component component, int margin )
+    public static TestFrame show ( final Component component, final int margin )
     {
-        return new TestFrame ( component, margin ).display ();
+        return new TestFrame ( component, margin ).displayFrame ();
     }
 
     /**
@@ -74,7 +77,7 @@ public class TestFrame extends WebFrame
      * @param component component to display
      * @param margin    container margin
      */
-    public TestFrame ( Component component, int margin )
+    public TestFrame ( final Component component, final int margin )
     {
         this ( component, margin, margin, margin, margin );
     }
@@ -89,9 +92,9 @@ public class TestFrame extends WebFrame
      * @param right     container right margin
      * @return displayed test frame
      */
-    public static TestFrame show ( Component component, int top, int left, int bottom, int right )
+    public static TestFrame show ( final Component component, final int top, final int left, final int bottom, final int right )
     {
-        return new TestFrame ( component, top, left, bottom, right ).display ();
+        return new TestFrame ( component, top, left, bottom, right ).displayFrame ();
     }
 
     /**
@@ -103,7 +106,7 @@ public class TestFrame extends WebFrame
      * @param bottom    container bottom margin
      * @param right     container right margin
      */
-    public TestFrame ( Component component, int top, int left, int bottom, int right )
+    public TestFrame ( final Component component, final int top, final int left, final int bottom, final int right )
     {
         this ( component, new Insets ( top, left, bottom, right ) );
     }
@@ -115,9 +118,9 @@ public class TestFrame extends WebFrame
      * @param margin    container margin
      * @return displayed test frame
      */
-    public static TestFrame show ( Component component, Insets margin )
+    public static TestFrame show ( final Component component, final Insets margin )
     {
-        return new TestFrame ( component, margin ).display ();
+        return new TestFrame ( component, margin ).displayFrame ();
     }
 
     /**
@@ -126,7 +129,7 @@ public class TestFrame extends WebFrame
      * @param component component to display
      * @param margin    container margin
      */
-    public TestFrame ( Component component, Insets margin )
+    public TestFrame ( final Component component, final Insets margin )
     {
         this ( new BorderLayout (), component, BorderLayout.CENTER, margin );
     }
@@ -138,9 +141,9 @@ public class TestFrame extends WebFrame
      * @param component component to display
      * @return displayed test frame
      */
-    public static TestFrame show ( LayoutManager layout, Component component )
+    public static TestFrame show ( final LayoutManager layout, final Component component )
     {
-        return new TestFrame ( layout, component ).display ();
+        return new TestFrame ( layout, component ).displayFrame ();
     }
 
     /**
@@ -149,7 +152,7 @@ public class TestFrame extends WebFrame
      * @param layout    container layout
      * @param component component to display
      */
-    public TestFrame ( LayoutManager layout, Component component )
+    public TestFrame ( final LayoutManager layout, final Component component )
     {
         this ( layout, component, null, null );
     }
@@ -162,9 +165,9 @@ public class TestFrame extends WebFrame
      * @param margin    container margin
      * @return displayed test frame
      */
-    public static TestFrame show ( LayoutManager layout, Component component, int margin )
+    public static TestFrame show ( final LayoutManager layout, final Component component, final int margin )
     {
-        return new TestFrame ( layout, component, margin ).display ();
+        return new TestFrame ( layout, component, margin ).displayFrame ();
     }
 
     /**
@@ -174,7 +177,7 @@ public class TestFrame extends WebFrame
      * @param component component to display
      * @param margin    container margin
      */
-    public TestFrame ( LayoutManager layout, Component component, int margin )
+    public TestFrame ( final LayoutManager layout, final Component component, final int margin )
     {
         this ( layout, component, new Insets ( margin, margin, margin, margin ) );
     }
@@ -190,9 +193,10 @@ public class TestFrame extends WebFrame
      * @param right     container right margin
      * @return displayed test frame
      */
-    public static TestFrame show ( LayoutManager layout, Component component, int top, int left, int bottom, int right )
+    public static TestFrame show ( final LayoutManager layout, final Component component, final int top, final int left, final int bottom,
+                                   final int right )
     {
-        return new TestFrame ( layout, component, top, left, bottom, right ).display ();
+        return new TestFrame ( layout, component, top, left, bottom, right ).displayFrame ();
     }
 
     /**
@@ -205,7 +209,8 @@ public class TestFrame extends WebFrame
      * @param bottom    container bottom margin
      * @param right     container right margin
      */
-    public TestFrame ( LayoutManager layout, Component component, int top, int left, int bottom, int right )
+    public TestFrame ( final LayoutManager layout, final Component component, final int top, final int left, final int bottom,
+                       final int right )
     {
         this ( layout, component, new Insets ( top, left, bottom, right ) );
     }
@@ -218,9 +223,9 @@ public class TestFrame extends WebFrame
      * @param margin    container margin
      * @return displayed test frame
      */
-    public static TestFrame show ( LayoutManager layout, Component component, Insets margin )
+    public static TestFrame show ( final LayoutManager layout, final Component component, final Insets margin )
     {
-        return new TestFrame ( layout, component, margin ).display ();
+        return new TestFrame ( layout, component, margin ).displayFrame ();
     }
 
     /**
@@ -230,7 +235,7 @@ public class TestFrame extends WebFrame
      * @param component component to display
      * @param margin    container margin
      */
-    public TestFrame ( LayoutManager layout, Component component, Insets margin )
+    public TestFrame ( final LayoutManager layout, final Component component, final Insets margin )
     {
         this ( layout, component, null, margin );
     }
@@ -244,9 +249,9 @@ public class TestFrame extends WebFrame
      * @param margin      container margin
      * @return displayed test frame
      */
-    public static TestFrame show ( LayoutManager layout, Component component, Object constraints, Insets margin )
+    public static TestFrame show ( final LayoutManager layout, final Component component, final Object constraints, final Insets margin )
     {
-        return new TestFrame ( layout, component, constraints, margin ).display ();
+        return new TestFrame ( layout, component, constraints, margin ).displayFrame ();
     }
 
     /**
@@ -257,38 +262,385 @@ public class TestFrame extends WebFrame
      * @param constraints component layout constraints
      * @param margin      container margin
      */
-    public TestFrame ( LayoutManager layout, Component component, Object constraints, Insets margin )
+    public TestFrame ( final LayoutManager layout, final Component component, final Object constraints, final Insets margin )
     {
-        super ( ReflectUtils.getClassName ( component.getClass () ) + " (" + SystemUtils.getOsName () + " " + SystemUtils.getOsArch () +
-                ", JRE " + SystemUtils.getJavaVersionString () + " " + SystemUtils.getJreArch () + "-bit)" );
-
-        setIconImages ( WebLookAndFeel.getImages () );
-
-        getContentPane ().setLayout ( layout );
+        super ( getFrameTitle ( component ) );
+        setLayout ( layout );
 
         if ( margin != null )
         {
             if ( constraints != null )
             {
-                getContentPane ().add ( new BorderPanel ( component, margin ), constraints );
+                add ( new BorderPanel ( component, margin ), constraints );
             }
             else
             {
-                getContentPane ().add ( new BorderPanel ( component, margin ) );
+                add ( new BorderPanel ( component, margin ) );
             }
         }
         else
         {
             if ( constraints != null )
             {
-                getContentPane ().add ( component, constraints );
+                add ( component, constraints );
             }
             else
             {
-                getContentPane ().add ( component );
+                add ( component );
             }
         }
 
+        configureFrame ();
+    }
+
+    /**
+     * Displays and returns test frame with the specified content and settings.
+     *
+     * @param horizontal whether should place components horizontally or not
+     * @param components components to display
+     * @return displayed test frame
+     */
+    public static TestFrame show ( final boolean horizontal, final Component... components )
+    {
+        return new TestFrame ( horizontal, components ).displayFrame ();
+    }
+
+    /**
+     * Constructs test frame with the specified content and settings.
+     *
+     * @param horizontal whether should place components horizontally or not
+     * @param components components to display
+     */
+    public TestFrame ( final boolean horizontal, final Component... components )
+    {
+        this ( 0, horizontal, components );
+    }
+
+    /**
+     * Displays and returns test frame with the specified content and settings.
+     *
+     * @param gap        gap between components
+     * @param horizontal whether should place components horizontally or not
+     * @param components components to display
+     * @return displayed test frame
+     */
+    public static TestFrame show ( final int gap, final boolean horizontal, final Component... components )
+    {
+        return new TestFrame ( gap, horizontal, components ).displayFrame ();
+    }
+
+    /**
+     * Constructs test frame with the specified content and settings.
+     *
+     * @param gap        gap between components
+     * @param horizontal whether should place components horizontally or not
+     * @param components components to display
+     */
+    public TestFrame ( final int gap, final boolean horizontal, final Component... components )
+    {
+        this ( horizontal ? new HorizontalFlowLayout ( gap, false ) :
+                new VerticalFlowLayout ( VerticalFlowLayout.TOP, 0, gap, true, false ), components );
+    }
+
+    /**
+     * Displays and returns test frame with the specified content and settings.
+     *
+     * @param layout     container layout
+     * @param components components to display
+     * @return displayed test frame
+     */
+    public static TestFrame show ( final LayoutManager layout, final Component... components )
+    {
+        return new TestFrame ( layout, components ).displayFrame ();
+    }
+
+    /**
+     * Constructs test frame with the specified content and settings.
+     *
+     * @param layout     container layout
+     * @param components components to display
+     */
+    public TestFrame ( final LayoutManager layout, final Component... components )
+    {
+        this ( layout, null, components );
+    }
+
+    /**
+     * Displays and returns test frame with the specified content and settings.
+     *
+     * @param horizontal whether should place components horizontally or not
+     * @param margin     container margin
+     * @param components components to display
+     * @return displayed test frame
+     */
+    public static TestFrame show ( final boolean horizontal, final int margin, final Component... components )
+    {
+        return new TestFrame ( horizontal, margin, components ).displayFrame ();
+    }
+
+    /**
+     * Constructs test frame with the specified content and settings.
+     *
+     * @param horizontal whether should place components horizontally or not
+     * @param margin     container margin
+     * @param components components to display
+     */
+    public TestFrame ( final boolean horizontal, final int margin, final Component... components )
+    {
+        this ( horizontal, margin, margin, margin, margin, components );
+    }
+
+    /**
+     * Displays and returns test frame with the specified content and settings.
+     *
+     * @param horizontal whether should place components horizontally or not
+     * @param top        top container margin
+     * @param left       left container margin
+     * @param bottom     bottom container margin
+     * @param right      right container margin
+     * @param components components to display
+     * @return displayed test frame
+     */
+    public static TestFrame show ( final boolean horizontal, final int top, final int left, final int bottom, final int right,
+                                   final Component... components )
+    {
+        return new TestFrame ( horizontal, top, left, bottom, right, components ).displayFrame ();
+    }
+
+    /**
+     * Constructs test frame with the specified content and settings.
+     *
+     * @param horizontal whether should place components horizontally or not
+     * @param top        top container margin
+     * @param left       left container margin
+     * @param bottom     bottom container margin
+     * @param right      right container margin
+     * @param components components to display
+     */
+    public TestFrame ( final boolean horizontal, final int top, final int left, final int bottom, final int right,
+                       final Component... components )
+    {
+        this ( horizontal, new Insets ( top, left, bottom, right ), components );
+    }
+
+    /**
+     * Displays and returns test frame with the specified content and settings.
+     *
+     * @param horizontal whether should place components horizontally or not
+     * @param margin     container margin
+     * @param components components to display
+     * @return displayed test frame
+     */
+    public static TestFrame show ( final boolean horizontal, final Insets margin, final Component... components )
+    {
+        return new TestFrame ( horizontal, margin, components ).displayFrame ();
+    }
+
+    /**
+     * Constructs test frame with the specified content and settings.
+     *
+     * @param horizontal whether should place components horizontally or not
+     * @param margin     container margin
+     * @param components components to display
+     */
+    public TestFrame ( final boolean horizontal, final Insets margin, final Component... components )
+    {
+        this ( 0, horizontal, margin, components );
+    }
+
+    /**
+     * Displays and returns test frame with the specified content and settings.
+     *
+     * @param gap        gap between components
+     * @param horizontal whether should place components horizontally or not
+     * @param margin     container margin
+     * @param components components to display
+     * @return displayed test frame
+     */
+    public static TestFrame show ( final int gap, final boolean horizontal, final int margin, final Component... components )
+    {
+        return new TestFrame ( gap, horizontal, margin, components ).displayFrame ();
+    }
+
+    /**
+     * Constructs test frame with the specified content and settings.
+     *
+     * @param gap        gap between components
+     * @param horizontal whether should place components horizontally or not
+     * @param margin     container margin
+     * @param components components to display
+     */
+    public TestFrame ( final int gap, final boolean horizontal, final int margin, final Component... components )
+    {
+        this ( gap, horizontal, margin, margin, margin, margin, components );
+    }
+
+    /**
+     * Displays and returns test frame with the specified content and settings.
+     *
+     * @param gap        gap between components
+     * @param horizontal whether should place components horizontally or not
+     * @param top        top container margin
+     * @param left       left container margin
+     * @param bottom     bottom container margin
+     * @param right      right container margin
+     * @param components components to display
+     * @return displayed test frame
+     */
+    public static TestFrame show ( final int gap, final boolean horizontal, final int top, final int left, final int bottom,
+                                   final int right, final Component... components )
+    {
+        return new TestFrame ( gap, horizontal, top, left, bottom, right, components ).displayFrame ();
+    }
+
+    /**
+     * Constructs test frame with the specified content and settings.
+     *
+     * @param gap        gap between components
+     * @param horizontal whether should place components horizontally or not
+     * @param top        top container margin
+     * @param left       left container margin
+     * @param bottom     bottom container margin
+     * @param right      right container margin
+     * @param components components to display
+     */
+    public TestFrame ( final int gap, final boolean horizontal, final int top, final int left, final int bottom, final int right,
+                       final Component... components )
+    {
+        this ( gap, horizontal, new Insets ( top, left, bottom, right ), components );
+    }
+
+    /**
+     * Displays and returns test frame with the specified content and settings.
+     *
+     * @param gap        gap between components
+     * @param horizontal whether should place components horizontally or not
+     * @param margin     container margin
+     * @param components components to display
+     * @return displayed test frame
+     */
+    public static TestFrame show ( final int gap, final boolean horizontal, final Insets margin, final Component... components )
+    {
+        return new TestFrame ( gap, horizontal, margin, components ).displayFrame ();
+    }
+
+    /**
+     * Constructs test frame with the specified content and settings.
+     *
+     * @param gap        gap between components
+     * @param horizontal whether should place components horizontally or not
+     * @param margin     container margin
+     * @param components components to display
+     */
+    public TestFrame ( final int gap, final boolean horizontal, final Insets margin, final Component... components )
+    {
+        this ( horizontal ? new HorizontalFlowLayout ( gap, false ) :
+                new VerticalFlowLayout ( VerticalFlowLayout.TOP, 0, gap, true, false ), margin, components );
+    }
+
+    /**
+     * Displays and returns test frame with the specified content and settings.
+     *
+     * @param layout     container layout
+     * @param margin     container margin
+     * @param components components to display
+     * @return displayed test frame
+     */
+    public static TestFrame show ( final LayoutManager layout, final int margin, final Component... components )
+    {
+        return new TestFrame ( layout, margin, components ).displayFrame ();
+    }
+
+    /**
+     * Constructs test frame with the specified content and settings.
+     *
+     * @param layout     container layout
+     * @param margin     container margin
+     * @param components components to display
+     */
+    public TestFrame ( final LayoutManager layout, final int margin, final Component... components )
+    {
+        this ( layout, margin, margin, margin, margin, components );
+    }
+
+    /**
+     * Displays and returns test frame with the specified content and settings.
+     *
+     * @param layout     container layout
+     * @param top        top container margin
+     * @param left       left container margin
+     * @param bottom     bottom container margin
+     * @param right      right container margin
+     * @param components components to display
+     * @return displayed test frame
+     */
+    public static TestFrame show ( final LayoutManager layout, final int top, final int left, final int bottom, final int right,
+                                   final Component... components )
+    {
+        return new TestFrame ( layout, top, left, bottom, right, components ).displayFrame ();
+    }
+
+    /**
+     * Constructs test frame with the specified content and settings.
+     *
+     * @param layout     container layout
+     * @param top        top container margin
+     * @param left       left container margin
+     * @param bottom     bottom container margin
+     * @param right      right container margin
+     * @param components components to display
+     */
+    public TestFrame ( final LayoutManager layout, final int top, final int left, final int bottom, final int right,
+                       final Component... components )
+    {
+        this ( layout, new Insets ( top, left, bottom, right ), components );
+    }
+
+    /**
+     * Displays and returns test frame with the specified content and settings.
+     *
+     * @param layout     container layout
+     * @param margin     container margin
+     * @param components components to display
+     * @return displayed test frame
+     */
+    public static TestFrame show ( final LayoutManager layout, final Insets margin, final Component... components )
+    {
+        return new TestFrame ( layout, margin, components ).displayFrame ();
+    }
+
+    /**
+     * Constructs test frame with the specified content and settings.
+     *
+     * @param layout     container layout
+     * @param margin     container margin
+     * @param components components to display
+     */
+    public TestFrame ( final LayoutManager layout, final Insets margin, final Component... components )
+    {
+        super ( getFrameTitle ( null ) );
+        setLayout ( new BorderLayout () );
+
+        final WebPanel container = new WebPanel ( layout );
+        container.add ( components );
+        if ( margin != null )
+        {
+            add ( new BorderPanel ( container, margin ), BorderLayout.CENTER );
+        }
+        else
+        {
+            add ( container, BorderLayout.CENTER );
+        }
+
+        configureFrame ();
+    }
+
+    /**
+     * Configures test frame.
+     */
+    public void configureFrame ()
+    {
+        setIconImages ( WebLookAndFeel.getImages () );
         setDefaultCloseOperation ( JFrame.EXIT_ON_CLOSE );
         setResizable ( true );
         pack ();
@@ -300,9 +652,22 @@ public class TestFrame extends WebFrame
      *
      * @return test frame
      */
-    public TestFrame display ()
+    public TestFrame displayFrame ()
     {
         setVisible ( true );
         return this;
+    }
+
+    /**
+     * Returns test frame title.
+     *
+     * @param component component to process
+     * @return test frame title
+     */
+    public static String getFrameTitle ( final Component component )
+    {
+        final String className = component != null ? ReflectUtils.getClassName ( component.getClass () ) : "TestFrame";
+        return className + " (" + SystemUtils.getOsName () + " " + SystemUtils.getOsArch () +
+                ", JRE " + SystemUtils.getJavaVersionString () + " " + SystemUtils.getJreArch () + "-bit)";
     }
 }
