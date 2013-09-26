@@ -101,7 +101,7 @@ public class WebLookAndFeelDemo extends WebFrame
     private WebBreadcrumbToggleButton sourcesButton;
     private WebMemoryBar memoryBar;
 
-    @SuppressWarnings ( "UnusedDeclaration" )
+    @SuppressWarnings ("UnusedDeclaration")
     private WebButton featureStateLegend;
 
     private static WebLookAndFeelDemo instance = null;
@@ -856,23 +856,29 @@ public class WebLookAndFeelDemo extends WebFrame
         // -Dsun.java2d.d3d=true
         // -Dsun.java2d.opengl=true
 
-        // Custom fonts
+        // Custom fonts:
         // WebLookAndFeel.globalControlFont = new Font ( "Comic Sans MS", Font.PLAIN, 13 );
         // WebLookAndFeel.globalAcceleratorFont = new Font ( "Comic Sans MS", Font.PLAIN, 12 );
         // WebLookAndFeel.globalTitleFont = new Font ( "Comic Sans MS", Font.BOLD, 13 );
         // WebLookAndFeel.globalTextFont = new Font ( "Comic Sans MS", Font.PLAIN, 13 );
 
-        // Custom styles
+        // Custom styles:
         // StyleConstants.smallRound = 0;
         // StyleConstants.mediumRound = 0;
         // StyleConstants.bigRound = 0;
         // StyleConstants.largeRound = 0;
         // StyleConstants.decorationRound = 0;
 
-        // Google-styled tooltips
+        // Styled tooltips:
         // WebCustomTooltipStyle.round = 0;
         // WebCustomTooltipStyle.shadeWidth = 0;
         // WebCustomTooltipStyle.trasparency = 1f;
+
+        // Frame/dialog decoration:
+        // WebLookAndFeel.setDecorateAllWindows ( true );
+        // Separate decoration:
+        // WebLookAndFeel.setDecorateDialogs ( true );
+        // WebLookAndFeel.setDecorateFrames ( true );
 
         // Running demo application
         runDemo ();

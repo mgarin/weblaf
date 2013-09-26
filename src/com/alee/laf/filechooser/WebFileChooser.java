@@ -24,13 +24,16 @@ import com.alee.managers.language.LanguageManager;
 import com.alee.managers.language.LanguageMethods;
 import com.alee.managers.language.updaters.LanguageUpdater;
 import com.alee.utils.CollectionUtils;
+import com.alee.utils.ImageUtils;
 import com.alee.utils.ReflectUtils;
-import com.alee.utils.swing.Configurator;
+import com.alee.utils.SwingUtils;
+import com.alee.utils.swing.Customizer;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileSystemView;
 import java.awt.*;
 import java.io.File;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -42,6 +45,11 @@ import java.util.List;
 
 public class WebFileChooser extends JFileChooser implements LanguageMethods, LanguageContainerMethods
 {
+    /**
+     * Custom icons for file chooser dialog.
+     */
+    protected List<? extends Image> customIcons = null;
+
     /**
      * Constructs a WebFileChooser pointing to the user's default directory.
      */
@@ -56,7 +64,7 @@ public class WebFileChooser extends JFileChooser implements LanguageMethods, Lan
      *
      * @param currentDirectoryPath a String giving the path to a file or directory
      */
-    public WebFileChooser ( String currentDirectoryPath )
+    public WebFileChooser ( final String currentDirectoryPath )
     {
         super ( currentDirectoryPath );
     }
@@ -67,7 +75,7 @@ public class WebFileChooser extends JFileChooser implements LanguageMethods, Lan
      *
      * @param currentDirectory a File object specifying the path to a file or directory
      */
-    public WebFileChooser ( File currentDirectory )
+    public WebFileChooser ( final File currentDirectory )
     {
         super ( currentDirectory );
     }
@@ -75,7 +83,7 @@ public class WebFileChooser extends JFileChooser implements LanguageMethods, Lan
     /**
      * Constructs a WebFileChooser using the given FileSystemView.
      */
-    public WebFileChooser ( FileSystemView fsv )
+    public WebFileChooser ( final FileSystemView fsv )
     {
         super ( fsv );
     }
@@ -83,7 +91,7 @@ public class WebFileChooser extends JFileChooser implements LanguageMethods, Lan
     /**
      * Constructs a WebFileChooser using the given current directory and FileSystemView.
      */
-    public WebFileChooser ( File currentDirectory, FileSystemView fsv )
+    public WebFileChooser ( final File currentDirectory, final FileSystemView fsv )
     {
         super ( currentDirectory, fsv );
     }
@@ -91,9 +99,90 @@ public class WebFileChooser extends JFileChooser implements LanguageMethods, Lan
     /**
      * Constructs a WebFileChooser using the given current directory path and FileSystemView.
      */
-    public WebFileChooser ( String currentDirectoryPath, FileSystemView fsv )
+    public WebFileChooser ( final String currentDirectoryPath, final FileSystemView fsv )
     {
         super ( currentDirectoryPath, fsv );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected JDialog createDialog ( final Component parent ) throws HeadlessException
+    {
+        final JDialog dialog = super.createDialog ( parent );
+        if ( customIcons != null )
+        {
+            dialog.setIconImages ( customIcons );
+        }
+        return dialog;
+    }
+
+    /**
+     * Returns custom dialog icon.
+     *
+     * @return custom dialog icon
+     */
+    public Image getDialogIcon ()
+    {
+        return customIcons != null && customIcons.size () > 0 ? customIcons.get ( 0 ) : null;
+    }
+
+    /**
+     * Returns custom dialog icons.
+     *
+     * @return custom dialog icons
+     */
+    public List<? extends Image> getDialogIcons ()
+    {
+        return customIcons;
+    }
+
+    /**
+     * Sets custom dialog icon.
+     *
+     * @param icon new custom dialog icon
+     */
+    public void setDialogIcon ( final ImageIcon icon )
+    {
+        setDialogImage ( icon.getImage () );
+    }
+
+    /**
+     * Sets custom dialog icon.
+     *
+     * @param icon new custom dialog icon
+     */
+    public void setDialogImage ( final Image icon )
+    {
+        setDialogImages ( Arrays.asList ( icon ) );
+    }
+
+    /**
+     * Sets custom dialog icons.
+     *
+     * @param customIcons new custom dialog icons
+     */
+    public void setDialogIcons ( final List<? extends ImageIcon> customIcons )
+    {
+        setDialogImages ( ImageUtils.toImagesList ( customIcons ) );
+    }
+
+    /**
+     * Sets custom dialog icons.
+     *
+     * @param customIcons new custom dialog icons
+     */
+    public void setDialogImages ( final List<? extends Image> customIcons )
+    {
+        this.customIcons = customIcons;
+
+        // Updating icon on displayed dialog
+        final Window window = SwingUtils.getWindowAncestor ( this );
+        if ( window != null && window instanceof JDialog )
+        {
+            window.setIconImages ( customIcons );
+        }
     }
 
     /**
@@ -101,7 +190,7 @@ public class WebFileChooser extends JFileChooser implements LanguageMethods, Lan
      *
      * @param dialogTitle title language key
      */
-    public void setDialogTitleKey ( String dialogTitle )
+    public void setDialogTitleKey ( final String dialogTitle )
     {
         setLanguage ( dialogTitle );
     }
@@ -111,7 +200,7 @@ public class WebFileChooser extends JFileChooser implements LanguageMethods, Lan
      *
      * @param directoryPath directory to display
      */
-    public void setCurrentDirectory ( String directoryPath )
+    public void setCurrentDirectory ( final String directoryPath )
     {
         setCurrentDirectory ( new File ( directoryPath ) );
     }
@@ -121,7 +210,7 @@ public class WebFileChooser extends JFileChooser implements LanguageMethods, Lan
      *
      * @param filePath file to select
      */
-    public void setSelectedFile ( String filePath )
+    public void setSelectedFile ( final String filePath )
     {
         setSelectedFile ( new File ( filePath ) );
     }
@@ -171,7 +260,7 @@ public class WebFileChooser extends JFileChooser implements LanguageMethods, Lan
      *
      * @param generate whether file thumbnails should be generated or not
      */
-    public void setGenerateThumbnails ( boolean generate )
+    public void setGenerateThumbnails ( final boolean generate )
     {
         getWebUI ().setGenerateThumbnails ( generate );
     }
@@ -181,7 +270,7 @@ public class WebFileChooser extends JFileChooser implements LanguageMethods, Lan
      *
      * @param approveText approve button text type
      */
-    public void setApproveButtonText ( FileApproveText approveText )
+    public void setApproveButtonText ( final FileApproveText approveText )
     {
         getWebUI ().setApproveButtonText ( approveText );
     }
@@ -191,7 +280,7 @@ public class WebFileChooser extends JFileChooser implements LanguageMethods, Lan
      *
      * @param key approve button language key
      */
-    public void setApproveButtonLanguage ( String key )
+    public void setApproveButtonLanguage ( final String key )
     {
         getWebUI ().setApproveButtonLanguage ( key );
     }
@@ -218,7 +307,7 @@ public class WebFileChooser extends JFileChooser implements LanguageMethods, Lan
             {
                 setUI ( ( WebFileChooserUI ) ReflectUtils.createInstance ( WebLookAndFeel.fileChooserUI ) );
             }
-            catch ( Throwable e )
+            catch ( final Throwable e )
             {
                 e.printStackTrace ();
                 setUI ( new WebFileChooserUI () );
@@ -238,7 +327,7 @@ public class WebFileChooser extends JFileChooser implements LanguageMethods, Lan
      * {@inheritDoc}
      */
     @Override
-    public void setLanguage ( String key, Object... data )
+    public void setLanguage ( final String key, final Object... data )
     {
         LanguageManager.registerComponent ( this, key, data );
     }
@@ -247,7 +336,7 @@ public class WebFileChooser extends JFileChooser implements LanguageMethods, Lan
      * {@inheritDoc}
      */
     @Override
-    public void updateLanguage ( Object... data )
+    public void updateLanguage ( final Object... data )
     {
         LanguageManager.updateComponent ( this, data );
     }
@@ -256,7 +345,7 @@ public class WebFileChooser extends JFileChooser implements LanguageMethods, Lan
      * {@inheritDoc}
      */
     @Override
-    public void updateLanguage ( String key, Object... data )
+    public void updateLanguage ( final String key, final Object... data )
     {
         LanguageManager.updateComponent ( this, key, data );
     }
@@ -283,7 +372,7 @@ public class WebFileChooser extends JFileChooser implements LanguageMethods, Lan
      * {@inheritDoc}
      */
     @Override
-    public void setLanguageUpdater ( LanguageUpdater updater )
+    public void setLanguageUpdater ( final LanguageUpdater updater )
     {
         LanguageManager.registerLanguageUpdater ( this, updater );
     }
@@ -305,7 +394,7 @@ public class WebFileChooser extends JFileChooser implements LanguageMethods, Lan
      * {@inheritDoc}
      */
     @Override
-    public void setLanguageContainerKey ( String key )
+    public void setLanguageContainerKey ( final String key )
     {
         LanguageManager.registerLanguageContainer ( this, key );
     }
@@ -341,36 +430,36 @@ public class WebFileChooser extends JFileChooser implements LanguageMethods, Lan
     /**
      * Constructs and displays file open dialog and returns selected file as a result.
      *
-     * @param configurator file chooser configurator
+     * @param customizer file chooser customizer
      * @return selected file
      */
-    public static File showOpenDialog ( Configurator<WebFileChooser> configurator )
+    public static File showOpenDialog ( final Customizer<WebFileChooser> customizer )
     {
-        return showOpenDialog ( null, null, configurator );
+        return showOpenDialog ( null, null, customizer );
     }
 
     /**
      * Constructs and displays file open dialog and returns selected file as a result.
      *
-     * @param parent       parent component
-     * @param configurator file chooser configurator
+     * @param parent     parent component
+     * @param customizer file chooser customizer
      * @return selected file
      */
-    public static File showOpenDialog ( Component parent, Configurator<WebFileChooser> configurator )
+    public static File showOpenDialog ( final Component parent, final Customizer<WebFileChooser> customizer )
     {
-        return showOpenDialog ( parent, null, configurator );
+        return showOpenDialog ( parent, null, customizer );
     }
 
     /**
      * Constructs and displays file open dialog and returns selected file as a result.
      *
      * @param currentDirectory current file chooser directory
-     * @param configurator     file chooser configurator
+     * @param customizer       file chooser customizer
      * @return selected file
      */
-    public static File showOpenDialog ( String currentDirectory, Configurator<WebFileChooser> configurator )
+    public static File showOpenDialog ( final String currentDirectory, final Customizer<WebFileChooser> customizer )
     {
-        return showOpenDialog ( null, currentDirectory, configurator );
+        return showOpenDialog ( null, currentDirectory, customizer );
     }
 
     /**
@@ -380,7 +469,7 @@ public class WebFileChooser extends JFileChooser implements LanguageMethods, Lan
      * @param currentDirectory current file chooser directory
      * @return selected file
      */
-    public static File showOpenDialog ( Component parent, String currentDirectory )
+    public static File showOpenDialog ( final Component parent, final String currentDirectory )
     {
         return showOpenDialog ( parent, currentDirectory, null );
     }
@@ -390,16 +479,16 @@ public class WebFileChooser extends JFileChooser implements LanguageMethods, Lan
      *
      * @param parent           parent component
      * @param currentDirectory current file chooser directory
-     * @param configurator     file chooser configurator
+     * @param customizer       file chooser customizer
      * @return selected file
      */
-    public static File showOpenDialog ( Component parent, String currentDirectory, Configurator<WebFileChooser> configurator )
+    public static File showOpenDialog ( final Component parent, final String currentDirectory, final Customizer<WebFileChooser> customizer )
     {
-        WebFileChooser fileChooser = new WebFileChooser ( currentDirectory );
+        final WebFileChooser fileChooser = new WebFileChooser ( currentDirectory );
         fileChooser.setMultiSelectionEnabled ( false );
-        if ( configurator != null )
+        if ( customizer != null )
         {
-            configurator.configure ( fileChooser );
+            customizer.configure ( fileChooser );
         }
         if ( fileChooser.showOpenDialog ( parent ) == APPROVE_OPTION )
         {
@@ -424,36 +513,36 @@ public class WebFileChooser extends JFileChooser implements LanguageMethods, Lan
     /**
      * Constructs and displays multiply files open dialog and returns selected files list as a result.
      *
-     * @param configurator file chooser configurator
+     * @param customizer file chooser customizer
      * @return selected files list
      */
-    public static List<File> showMultiOpenDialog ( Configurator<WebFileChooser> configurator )
+    public static List<File> showMultiOpenDialog ( final Customizer<WebFileChooser> customizer )
     {
-        return showMultiOpenDialog ( null, null, configurator );
+        return showMultiOpenDialog ( null, null, customizer );
     }
 
     /**
      * Constructs and displays multiply files open dialog and returns selected files list as a result.
      *
-     * @param parent       parent component
-     * @param configurator file chooser configurator
+     * @param parent     parent component
+     * @param customizer file chooser customizer
      * @return selected files list
      */
-    public static List<File> showMultiOpenDialog ( Component parent, Configurator<WebFileChooser> configurator )
+    public static List<File> showMultiOpenDialog ( final Component parent, final Customizer<WebFileChooser> customizer )
     {
-        return showMultiOpenDialog ( parent, null, configurator );
+        return showMultiOpenDialog ( parent, null, customizer );
     }
 
     /**
      * Constructs and displays multiply files open dialog and returns selected files list as a result.
      *
      * @param currentDirectory current file chooser directory
-     * @param configurator     file chooser configurator
+     * @param customizer       file chooser customizer
      * @return selected files list
      */
-    public static List<File> showMultiOpenDialog ( String currentDirectory, Configurator<WebFileChooser> configurator )
+    public static List<File> showMultiOpenDialog ( final String currentDirectory, final Customizer<WebFileChooser> customizer )
     {
-        return showMultiOpenDialog ( null, currentDirectory, configurator );
+        return showMultiOpenDialog ( null, currentDirectory, customizer );
     }
 
     /**
@@ -463,7 +552,7 @@ public class WebFileChooser extends JFileChooser implements LanguageMethods, Lan
      * @param currentDirectory current file chooser directory
      * @return selected files list
      */
-    public static List<File> showMultiOpenDialog ( Component parent, String currentDirectory )
+    public static List<File> showMultiOpenDialog ( final Component parent, final String currentDirectory )
     {
         return showMultiOpenDialog ( parent, currentDirectory, null );
     }
@@ -473,16 +562,17 @@ public class WebFileChooser extends JFileChooser implements LanguageMethods, Lan
      *
      * @param parent           parent component
      * @param currentDirectory current file chooser directory
-     * @param configurator     file chooser configurator
+     * @param customizer       file chooser customizer
      * @return selected files list
      */
-    public static List<File> showMultiOpenDialog ( Component parent, String currentDirectory, Configurator<WebFileChooser> configurator )
+    public static List<File> showMultiOpenDialog ( final Component parent, final String currentDirectory,
+                                                   final Customizer<WebFileChooser> customizer )
     {
-        WebFileChooser fileChooser = new WebFileChooser ( currentDirectory );
+        final WebFileChooser fileChooser = new WebFileChooser ( currentDirectory );
         fileChooser.setMultiSelectionEnabled ( true );
-        if ( configurator != null )
+        if ( customizer != null )
         {
-            configurator.configure ( fileChooser );
+            customizer.configure ( fileChooser );
         }
         if ( fileChooser.showOpenDialog ( parent ) == APPROVE_OPTION )
         {
@@ -507,36 +597,36 @@ public class WebFileChooser extends JFileChooser implements LanguageMethods, Lan
     /**
      * Constructs and displays file save dialog and returns selected file as a result.
      *
-     * @param configurator file chooser configurator
+     * @param customizer file chooser customizer
      * @return selected file
      */
-    public static File showSaveDialog ( Configurator<WebFileChooser> configurator )
+    public static File showSaveDialog ( final Customizer<WebFileChooser> customizer )
     {
-        return showSaveDialog ( null, null, configurator );
+        return showSaveDialog ( null, null, customizer );
     }
 
     /**
      * Constructs and displays file save dialog and returns selected file as a result.
      *
-     * @param parent       parent component
-     * @param configurator file chooser configurator
+     * @param parent     parent component
+     * @param customizer file chooser customizer
      * @return selected file
      */
-    public static File showSaveDialog ( Component parent, Configurator<WebFileChooser> configurator )
+    public static File showSaveDialog ( final Component parent, final Customizer<WebFileChooser> customizer )
     {
-        return showSaveDialog ( parent, null, configurator );
+        return showSaveDialog ( parent, null, customizer );
     }
 
     /**
      * Constructs and displays file save dialog and returns selected file as a result.
      *
      * @param currentDirectory current file chooser directory
-     * @param configurator     file chooser configurator
+     * @param customizer       file chooser customizer
      * @return selected file
      */
-    public static File showSaveDialog ( String currentDirectory, Configurator<WebFileChooser> configurator )
+    public static File showSaveDialog ( final String currentDirectory, final Customizer<WebFileChooser> customizer )
     {
-        return showSaveDialog ( null, currentDirectory, configurator );
+        return showSaveDialog ( null, currentDirectory, customizer );
     }
 
     /**
@@ -546,7 +636,7 @@ public class WebFileChooser extends JFileChooser implements LanguageMethods, Lan
      * @param currentDirectory current file chooser directory
      * @return selected file
      */
-    public static File showSaveDialog ( Component parent, String currentDirectory )
+    public static File showSaveDialog ( final Component parent, final String currentDirectory )
     {
         return showSaveDialog ( parent, currentDirectory, null );
     }
@@ -556,16 +646,16 @@ public class WebFileChooser extends JFileChooser implements LanguageMethods, Lan
      *
      * @param parent           parent component
      * @param currentDirectory current file chooser directory
-     * @param configurator     file chooser configurator
+     * @param customizer       file chooser customizer
      * @return selected file
      */
-    public static File showSaveDialog ( Component parent, String currentDirectory, Configurator<WebFileChooser> configurator )
+    public static File showSaveDialog ( final Component parent, final String currentDirectory, final Customizer<WebFileChooser> customizer )
     {
-        WebFileChooser fileChooser = new WebFileChooser ( currentDirectory );
+        final WebFileChooser fileChooser = new WebFileChooser ( currentDirectory );
         fileChooser.setMultiSelectionEnabled ( true );
-        if ( configurator != null )
+        if ( customizer != null )
         {
-            configurator.configure ( fileChooser );
+            customizer.configure ( fileChooser );
         }
         if ( fileChooser.showSaveDialog ( parent ) == APPROVE_OPTION )
         {
