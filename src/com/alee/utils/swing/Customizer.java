@@ -18,13 +18,13 @@
 package com.alee.utils.swing;
 
 /**
- * This interface allows you to create custom configurator objects.
- * They can be easily passed into any method to configure complex component or data.
+ * This interface allows you to create customization objects.
+ * They can be easily passed into any method to customize or modify any component or data.
  *
  * @author Mikle Garin
  */
 
-public interface Configurator<T>
+public interface Customizer<T>
 {
     /**
      * Configures the specified object.

@@ -160,12 +160,12 @@ public final class ImageUtils
      * Returns Images list instead of ImageIcons list
      */
 
-    public static List<Image> toImagesList ( List<ImageIcon> icons )
+    public static List<Image> toImagesList ( final List<? extends ImageIcon> imageIcons )
     {
-        List<Image> images = new ArrayList<Image> ();
-        for ( ImageIcon icon : icons )
+        final List<Image> images = new ArrayList<Image> ( imageIcons.size () );
+        for ( ImageIcon imageIcon : imageIcons )
         {
-            images.add ( icon.getImage () );
+            images.add ( imageIcon.getImage () );
         }
         return images;
     }
@@ -1310,7 +1310,7 @@ public final class ImageUtils
     {
         // todo Properly use height
         int width = shadeWidth * 2 + w;
-        int height = shadeWidth * 2 + h;
+        @SuppressWarnings ( "UnusedDeclaration" ) int height = shadeWidth * 2 + h;
 
         // Creating template image
         BufferedImage bi = createCompatibleImage ( width, width, Transparency.TRANSLUCENT );
