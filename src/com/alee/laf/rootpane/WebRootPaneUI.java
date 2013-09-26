@@ -547,6 +547,7 @@ public class WebRootPaneUI extends BasicRootPaneUI implements SwingConstants
                 titleComponent.repaint ();
             }
         };
+        window.addPropertyChangeListener ( "iconImage", titleChangeListener );
         window.addPropertyChangeListener ( "title", titleChangeListener );
 
         if ( isFrame () )
@@ -568,7 +569,12 @@ public class WebRootPaneUI extends BasicRootPaneUI implements SwingConstants
     protected void uninstallListeners ()
     {
         window.removeWindowFocusListener ( windowFocusListener );
-        window.removePropertyChangeListener ( titleChangeListener );
+        window.removePropertyChangeListener ( "iconImage", titleChangeListener );
+        window.removePropertyChangeListener ( "title", titleChangeListener );
+        if ( isFrame () )
+        {
+            window.removeWindowStateListener ( windowStateListener );
+        }
     }
 
     /**
