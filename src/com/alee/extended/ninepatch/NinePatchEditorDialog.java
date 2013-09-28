@@ -52,6 +52,11 @@ public class NinePatchEditorDialog extends WebFrame
 
     public NinePatchEditorDialog ()
     {
+        this ( SettingsManager.get ( "NinePatchEditorDialog", "lastFile", ( String ) null ) );
+    }
+
+    public NinePatchEditorDialog ( final String path )
+    {
         super ();
         setIconImages ( WebLookAndFeel.getImages () );
 
@@ -79,14 +84,20 @@ public class NinePatchEditorDialog extends WebFrame
         } );
         getContentPane ().add ( ninePatchEditorPanel );
 
-        // Loading first image
-        String lastFile = SettingsManager.get ( "NinePatchEditorDialog", "lastFile", ( String ) null );
-        if ( lastFile != null )
+        // Using provided image/directory or loading default image
+        if ( path != null )
         {
-            File file = new File ( lastFile );
-            if ( file.exists () && file.isFile () )
+            final File file = new File ( path );
+            if ( file.exists () )
             {
-                ninePatchEditorPanel.openImage ( new File ( lastFile ) );
+                if ( file.isFile () )
+                {
+                    ninePatchEditorPanel.openImage ( file );
+                }
+                else
+                {
+                    ninePatchEditorPanel.setSelectedDirectory ( file );
+                }
             }
             else
             {
@@ -99,7 +110,7 @@ public class NinePatchEditorDialog extends WebFrame
         }
 
         // Setting proper dialog size
-        Rectangle bounds = SettingsManager.get ( "NinePatchEditorDialog", "bounds", ( Rectangle ) null );
+        final Rectangle bounds = SettingsManager.get ( "NinePatchEditorDialog", "bounds", ( Rectangle ) null );
         if ( bounds == null )
         {
             pack ();
@@ -135,7 +146,7 @@ public class NinePatchEditorDialog extends WebFrame
 
     private void updateTitle ()
     {
-        String imageSrc = ninePatchEditorPanel != null ? ninePatchEditorPanel.getImageSrc () : null;
+        final String imageSrc = ninePatchEditorPanel != null ? ninePatchEditorPanel.getImageSrc () : null;
         setTitle ( LanguageManager.get ( DIALOG_TITLE_KEY ) + ( imageSrc != null ? " - [" + imageSrc + "]" : "" ) );
     }
 
@@ -149,15 +160,27 @@ public class NinePatchEditorDialog extends WebFrame
         return ninePatchEditorPanel.getNinePatchImage ();
     }
 
-    public static void main ( String[] args )
+    public static void main ( final String[] args )
     {
         SwingUtilities.invokeLater ( new Runnable ()
         {
             @Override
             public void run ()
             {
+                // Installing WebLaF
                 WebLookAndFeel.install ();
-                new NinePatchEditorDialog ().setVisible ( true );
+
+                // Initializing editor dialog
+                final NinePatchEditorDialog npe;
+                if ( args != null && args.length > 0 )
+                {
+                    npe = new NinePatchEditorDialog ( args[ 0 ] );
+                }
+                else
+                {
+                    npe = new NinePatchEditorDialog ();
+                }
+                npe.setVisible ( true );
             }
         } );
     }

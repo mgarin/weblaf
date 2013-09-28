@@ -78,6 +78,9 @@ import java.util.List;
 
 public class NinePatchEditorPanel extends WebPanel
 {
+    // todo Should make proper toolbar elements enable/disable
+    // todo Multi-image editing
+
     public static final ImageIcon OPEN_ICON = new ImageIcon ( NinePatchEditorPanel.class.getResource ( "icons/open.png" ) );
     public static final ImageIcon SAVE_ICON = new ImageIcon ( NinePatchEditorPanel.class.getResource ( "icons/save.png" ) );
     public static final ImageIcon SAVE_AS_ICON = new ImageIcon ( NinePatchEditorPanel.class.getResource ( "icons/saveas.png" ) );
@@ -536,16 +539,8 @@ public class NinePatchEditorPanel extends WebPanel
             }
         } );
 
-        final WebSlider zoomSlider = new WebSlider ( NinePatchEditor.MIN_ZOOM, NinePatchEditor.MAX_ZOOM, ninePatchEditor.getZoom () )
-        {
-            @Override
-            public Dimension getPreferredSize ()
-            {
-                Dimension ps = super.getPreferredSize ();
-                ps.width = 170;
-                return ps;
-            }
-        };
+        final WebSlider zoomSlider = new WebSlider ( NinePatchEditor.MIN_ZOOM, NinePatchEditor.MAX_ZOOM, ninePatchEditor.getZoom () );
+        zoomSlider.setPreferredWidth ( 170 );
         zoomSlider.setAngledThumb ( false );
         zoomSlider.setPaintTicks ( false );
         zoomSlider.setPaintLabels ( false );
@@ -1004,6 +999,11 @@ public class NinePatchEditorPanel extends WebPanel
     public BufferedImage getNinePatchImage ()
     {
         return ninePatchEditor.getNinePatchImage ();
+    }
+
+    public void setSelectedDirectory ( final File file )
+    {
+        fileTree.setSelectedFile ( file, true );
     }
 
     public List<ChangeListener> getChangeListeners ()

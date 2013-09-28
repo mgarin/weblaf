@@ -19,11 +19,11 @@ package com.alee.extended.ninepatch;
 
 import com.alee.laf.StyleConstants;
 import com.alee.laf.scroll.WebScrollPane;
-import com.alee.managers.hotkey.HotkeyRunnable;
 import com.alee.utils.*;
 import com.alee.utils.ninepatch.NinePatchIcon;
 import com.alee.utils.ninepatch.NinePatchInterval;
 import com.alee.utils.swing.MouseEventType;
+import com.alee.utils.swing.SizeMethods;
 import info.clearthought.layout.TableLayout;
 
 import javax.swing.*;
@@ -49,7 +49,7 @@ import java.util.List;
  * @see NinePatchEditorPanel
  */
 
-public class NinePatchEditor extends JComponent
+public class NinePatchEditor extends JComponent implements SizeMethods<NinePatchEditor>
 {
     public static final Color STRETCH_GUIDELINES_COLOR = new Color ( 60, 150, 0 );
     public static final Color STRETCH_COLOR = new Color ( 80, 150, 0, 100 );
@@ -85,9 +85,6 @@ public class NinePatchEditor extends JComponent
 
     private boolean changed = false;
     private boolean someDragged = false;
-
-    private HotkeyRunnable undoRunnable;
-    private HotkeyRunnable redoRunnable;
 
     public NinePatchEditor ()
     {
@@ -212,15 +209,20 @@ public class NinePatchEditor extends JComponent
 
     public BufferedImage getRawImage ()
     {
-        // Returns parsed raw image
-        return ninePatchIcon.getRawImage ();
+        return ninePatchIcon != null ? ninePatchIcon.getRawImage () : null;
     }
 
     public BufferedImage getNinePatchImage ()
     {
-        // Returns edited image
-        assembleImage ();
-        return ninePatchImage;
+        if ( ninePatchIcon != null )
+        {
+            assembleImage ();
+            return ninePatchImage;
+        }
+        else
+        {
+            return null;
+        }
     }
 
     public void setNinePatchImage ( BufferedImage ninePatchImage )
@@ -478,14 +480,18 @@ public class NinePatchEditor extends JComponent
 
         private boolean processMouseEvent ( MouseEvent e, MouseEventType mouseEventType )
         {
-            boolean repaintRequired = false;
+            // Checking whether image is set into the editor or not
+            final BufferedImage image = getRawImage ();
+            if ( image == null )
+            {
+                return false;
+            }
 
             // Current cursor position
             final int x = e.getX ();
             final int y = e.getY ();
 
-            // Variables
-            final BufferedImage image = getRawImage ();
+            // Constants
             final int cw = NinePatchEditor.this.getWidth ();
             final int ch = NinePatchEditor.this.getHeight ();
             final int iw = image.getWidth () * zoom;
@@ -493,6 +499,9 @@ public class NinePatchEditor extends JComponent
             final Insets margin = ninePatchIcon.getMargin ();
             final int imageStartX = ( cw + ( showRuler ? RULER_LENGTH : 0 ) ) / 2 - iw / 2;
             final int imageStartY = ( ch + ( showRuler ? RULER_LENGTH : 0 ) ) / 2 - ih / 2;
+
+            // Variables
+            boolean repaintRequired = false;
 
             // Content area coordinates
             final int contentStartX = getContentStartX ( imageStartX, margin );
@@ -1320,17 +1329,17 @@ public class NinePatchEditor extends JComponent
         // todo
     }
 
-    private boolean hasHorizontalStretch ()
-    {
-        for ( NinePatchInterval npi : ninePatchIcon.getHorizontalStretch () )
-        {
-            if ( !npi.isPixel () )
-            {
-                return true;
-            }
-        }
-        return false;
-    }
+    //    private boolean hasHorizontalStretch ()
+    //    {
+    //        for ( NinePatchInterval npi : ninePatchIcon.getHorizontalStretch () )
+    //        {
+    //            if ( !npi.isPixel () )
+    //            {
+    //                return true;
+    //            }
+    //        }
+    //        return false;
+    //    }
 
     private int getSnap ()
     {
@@ -1435,15 +1444,17 @@ public class NinePatchEditor extends JComponent
         }
     }
 
+    /**
+     * Assembles editor data into valid Nine-patch image.
+     */
     private void assembleImage ()
     {
-        // Assembles editor data into valid Nine-patch image
+        final BufferedImage rawImage = getRawImage ();
 
         // New image template
-        ninePatchImage = ImageUtils
-                .createCompatibleImage ( getRawImage ().getWidth () + 2, getRawImage ().getHeight () + 2, Transparency.TRANSLUCENT );
+        ninePatchImage = ImageUtils.createCompatibleImage ( rawImage.getWidth () + 2, rawImage.getHeight () + 2, Transparency.TRANSLUCENT );
         Graphics2D g2d = ninePatchImage.createGraphics ();
-        g2d.drawImage ( getRawImage (), 1, 1, null );
+        g2d.drawImage ( rawImage, 1, 1, null );
         g2d.dispose ();
 
         // Color to fill with marks
@@ -1453,7 +1464,7 @@ public class NinePatchEditor extends JComponent
 
         // Stretch
         boolean[] hf = getHorizontalFilledPixels ();
-        for ( int i = 0; i < getRawImage ().getWidth (); i++ )
+        for ( int i = 0; i < rawImage.getWidth (); i++ )
         {
             if ( hf[ i ] )
             {
@@ -1461,7 +1472,7 @@ public class NinePatchEditor extends JComponent
             }
         }
         boolean[] vf = getVerticalFilledPixels ();
-        for ( int i = 0; i < getRawImage ().getHeight (); i++ )
+        for ( int i = 0; i < rawImage.getHeight (); i++ )
         {
             if ( vf[ i ] )
             {
@@ -1471,11 +1482,11 @@ public class NinePatchEditor extends JComponent
 
         // Content
         Insets margin = ninePatchIcon.getMargin ();
-        for ( int i = margin.left; i < getRawImage ().getWidth () - margin.right; i++ )
+        for ( int i = margin.left; i < rawImage.getWidth () - margin.right; i++ )
         {
             ninePatchImage.setRGB ( i + 1, ninePatchImage.getHeight () - 1, rgb );
         }
-        for ( int i = margin.top; i < getRawImage ().getHeight () - margin.bottom; i++ )
+        for ( int i = margin.top; i < rawImage.getHeight () - margin.bottom; i++ )
         {
             ninePatchImage.setRGB ( ninePatchImage.getWidth () - 1, i + 1, rgb );
         }
@@ -1866,16 +1877,6 @@ public class NinePatchEditor extends JComponent
         return imageStartY + ih - margin.bottom * zoom;
     }
 
-    @Override
-    public Dimension getPreferredSize ()
-    {
-        return new Dimension ( RULER_LENGTH +
-                ( ( ninePatchImage != null ? ninePatchImage.getWidth () : 0 ) + 2 ) * zoom +
-                ADDITIONAL_SPACE, RULER_LENGTH +
-                ( ( ninePatchImage != null ? ninePatchImage.getHeight () : 0 ) + 2 ) * zoom +
-                ADDITIONAL_SPACE );
-    }
-
     public List<ChangeListener> getChangeListeners ()
     {
         return changeListeners;
@@ -1921,5 +1922,98 @@ public class NinePatchEditor extends JComponent
         {
             listener.zoomChanged ();
         }
+    }
+
+    /**
+     * Size methods.
+     */
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int getPreferredWidth ()
+    {
+        return SizeUtils.getPreferredWidth ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public NinePatchEditor setPreferredWidth ( int preferredWidth )
+    {
+        return SizeUtils.setPreferredWidth ( this, preferredWidth );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int getPreferredHeight ()
+    {
+        return SizeUtils.getPreferredHeight ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public NinePatchEditor setPreferredHeight ( int preferredHeight )
+    {
+        return SizeUtils.setPreferredHeight ( this, preferredHeight );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int getMinimumWidth ()
+    {
+        return SizeUtils.getMinimumWidth ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public NinePatchEditor setMinimumWidth ( int minimumWidth )
+    {
+        return SizeUtils.setMinimumWidth ( this, minimumWidth );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int getMinimumHeight ()
+    {
+        return SizeUtils.getMinimumHeight ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public NinePatchEditor setMinimumHeight ( int minimumHeight )
+    {
+        return SizeUtils.setMinimumHeight ( this, minimumHeight );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Dimension getPreferredSize ()
+    {
+        return SizeUtils.getPreferredSize ( this, getActualPreferredSize () );
+    }
+
+    public Dimension getActualPreferredSize ()
+    {
+        final boolean imageExists = ninePatchImage != null;
+        final int iw = imageExists ? ( ninePatchImage.getWidth () + 2 ) * zoom : 400;
+        final int ih = imageExists ? ( ninePatchImage.getHeight () + 2 ) * zoom : 400;
+        return new Dimension ( RULER_LENGTH + iw + ADDITIONAL_SPACE, RULER_LENGTH + ih + ADDITIONAL_SPACE );
     }
 }
