@@ -43,6 +43,11 @@ public class SettingsConverter extends ReflectionConverter
     private static final String ERROR_PREFIX = "[SettingsConverter] ";
 
     /**
+     * Special value type for null values.
+     */
+    private static final String NULL_TYPE = "null";
+
+    /**
      * Constructs SettingsConverter with the specified mapper and reflection provider.
      *
      * @param mapper             mapper
@@ -77,10 +82,11 @@ public class SettingsConverter extends ReflectionConverter
         // Converting settings
         for ( final Map.Entry<String, Object> entry : settingsGroup.getSettings ().entrySet () )
         {
-            // Starting entry node
             // If key text is proper for node name it will be used, otherwise it will be separated
             final String key = entry.getKey ();
             final Object value = entry.getValue ();
+
+            // Starting entry node
             final String nodeName;
             if ( XMLChar.isValidName ( key ) )
             {
@@ -94,16 +100,24 @@ public class SettingsConverter extends ReflectionConverter
                 writer.addAttribute ( "key", key );
             }
 
-            // Adding type reference if it is not the same as node name
-            // This condition added to remove redundant type duplications
-            final String serializedType = mapper.serializedClass ( value.getClass () );
-            if ( !nodeName.equals ( serializedType ) )
+            if ( value == null )
             {
-                writer.addAttribute ( "type", serializedType );
+                // Adding special null value type
+                writer.addAttribute ( "type", NULL_TYPE );
             }
+            else
+            {
+                // Adding type reference if it is not the same as node name
+                // This condition added to remove redundant type duplications
+                final String serializedType = mapper.serializedClass ( value.getClass () );
+                if ( !nodeName.equals ( serializedType ) )
+                {
+                    writer.addAttribute ( "type", serializedType );
+                }
 
-            // Converting value
-            context.convertAnother ( value );
+                // Converting value
+                context.convertAnother ( value );
+            }
 
             // Closing entry node
             writer.endNode ();
@@ -150,9 +164,20 @@ public class SettingsConverter extends ReflectionConverter
                 final String key = keyAttribue != null ? keyAttribue : nodeName;
                 try
                 {
+                    // Determining data type
                     final String typeAttribute = reader.getAttribute ( "type" );
-                    final Class type = mapper.realClass ( typeAttribute != null ? typeAttribute : nodeName );
-                    settings.put ( key, context.convertAnother ( settings, type ) );
+                    final String actualType = typeAttribute != null ? typeAttribute : nodeName;
+                    if ( actualType.equals ( NULL_TYPE ) )
+                    {
+                        // Adding null value
+                        settings.put ( key, null );
+                    }
+                    else
+                    {
+                        // Parsing data for the specified type
+                        final Class type = mapper.realClass ( actualType );
+                        settings.put ( key, context.convertAnother ( settings, type ) );
+                    }
                 }
                 catch ( final Throwable e )
                 {
