@@ -266,64 +266,64 @@
     <Dictionary name="Files language" prefix="file">
         <Dictionary name="File filters language" prefix="size">
             <record key="b">
-                <value lang="en">b</value>
-                <value lang="ru">б</value>
-                <value lang="pl">b</value>
+                <value lang="en">B</value>
+                <value lang="ru">Б</value>
+                <value lang="pl">B</value>
                 <value lang="ar">بايت</value>
-                <value lang="es">b</value>
-                <value lang="fr">o</value>
-                <value lang="pt">b</value>
-                <value lang="de">b</value>
+                <value lang="es">B</value>
+                <value lang="fr">O</value>
+                <value lang="pt">B</value>
+                <value lang="de">B</value>
             </record>
             <record key="kb">
-                <value lang="en">Kb</value>
-                <value lang="ru">Кб</value>
-                <value lang="pl">Kb</value>
+                <value lang="en">KB</value>
+                <value lang="ru">КБ</value>
+                <value lang="pl">KB</value>
                 <value lang="ar">كيلوبايت</value>
-                <value lang="es">Kb</value>
-                <value lang="fr">Ko</value>
-                <value lang="pt">Kb</value>
-                <value lang="de">Kb</value>
+                <value lang="es">KB</value>
+                <value lang="fr">KO</value>
+                <value lang="pt">KB</value>
+                <value lang="de">KB</value>
             </record>
             <record key="mb">
-                <value lang="en">Mb</value>
-                <value lang="ru">Мб</value>
-                <value lang="pl">Mb</value>
+                <value lang="en">MB</value>
+                <value lang="ru">МБ</value>
+                <value lang="pl">MB</value>
                 <value lang="ar">ميجابايت</value>
-                <value lang="es">Mb</value>
-                <value lang="fr">Mo</value>
-                <value lang="pt">Mb</value>
-                <value lang="de">Mb</value>
+                <value lang="es">MB</value>
+                <value lang="fr">MO</value>
+                <value lang="pt">MB</value>
+                <value lang="de">MB</value>
             </record>
             <record key="gb">
-                <value lang="en">Gb</value>
-                <value lang="ru">Гб</value>
-                <value lang="pl">Gb</value>
+                <value lang="en">GB</value>
+                <value lang="ru">ГБ</value>
+                <value lang="pl">GB</value>
                 <value lang="ar">جيجابايت</value>
-                <value lang="es">Gb</value>
-                <value lang="fr">Go</value>
-                <value lang="pt">Gb</value>
-                <value lang="de">Gb</value>
+                <value lang="es">GB</value>
+                <value lang="fr">GO</value>
+                <value lang="pt">GB</value>
+                <value lang="de">GB</value>
             </record>
             <record key="tb">
-                <value lang="en">Tb</value>
-                <value lang="ru">Тб</value>
-                <value lang="pl">Tb</value>
+                <value lang="en">TB</value>
+                <value lang="ru">ТБ</value>
+                <value lang="pl">TB</value>
                 <value lang="ar">تيرابايت</value>
-                <value lang="es">Tb</value>
-                <value lang="fr">To</value>
-                <value lang="pt">Tb</value>
-                <value lang="de">Tb</value>
+                <value lang="es">TB</value>
+                <value lang="fr">TO</value>
+                <value lang="pt">TB</value>
+                <value lang="de">TB</value>
             </record>
             <record key="pb">
-                <value lang="en">Pb</value>
-                <value lang="ru">Тб</value>
-                <value lang="pl">Pb</value>
+                <value lang="en">PB</value>
+                <value lang="ru">ТБ</value>
+                <value lang="pl">PB</value>
                 <value lang="ar">بيتابايت</value>
-                <value lang="es">Pb</value>
-                <value lang="fr">Po</value>
-                <value lang="pt">Pb</value>
-                <value lang="de">Pb</value>
+                <value lang="es">PB</value>
+                <value lang="fr">PO</value>
+                <value lang="pt">PB</value>
+                <value lang="de">PB</value>
             </record>
         </Dictionary>
         <Dictionary name="File filters language" prefix="filter">
