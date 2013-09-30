@@ -1042,14 +1042,14 @@
                 <value lang="de">von</value>
             </record>
             <record key="alloc">
-                <value lang="en">Allocated heap size:</value>
+                <value lang="en">Allocated memory:</value>
                 <value lang="ru">Выделенная память:</value>
-                <value lang="pl">Zaalokowany rozmiar pamięci:</value>
-                <value lang="ar">حجم الذاكرة المخصصة:</value>
-                <value lang="es">Tamaño asignado de la pila:</value>
-                <value lang="fr">Taille alloué de la pile:</value>
-                <value lang="pt">Tamanho alocado para a pilha:</value>
-                <value lang="de">Größe des reservierten Heaps</value>
+                <value lang="pl">Przydzielonej pamięci:</value>
+                <value lang="ar">تخصيص الذاكرة:</value>
+                <value lang="es">Memoria asignada:</value>
+                <value lang="fr">Mémoire allouée:</value>
+                <value lang="pt">Memória alocada:</value>
+                <value lang="de">Zugewiesenen Speicher:</value>
             </record>
             <record key="used">
                 <value lang="en">Used:</value>
