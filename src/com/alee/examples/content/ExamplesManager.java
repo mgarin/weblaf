@@ -21,6 +21,7 @@ import com.alee.examples.WebLookAndFeelDemo;
 import com.alee.examples.groups.android.AndroidStylingGroup;
 import com.alee.examples.groups.breadcrumb.BreadcrumbsGroup;
 import com.alee.examples.groups.button.ButtonsGroup;
+import com.alee.examples.groups.checkbox.CheckBoxesGroup;
 import com.alee.examples.groups.collapsible.CollapsiblePanesGroup;
 import com.alee.examples.groups.colorchooser.ColorChoosersGroup;
 import com.alee.examples.groups.combobox.ComboBoxesGroup;
@@ -115,6 +116,7 @@ public class ExamplesManager
             exampleGroups.add ( new FieldsGroup () );
             exampleGroups.add ( new TextAreasGroup () );
             exampleGroups.add ( new ComboBoxesGroup () );
+            exampleGroups.add ( new CheckBoxesGroup () );
             exampleGroups.add ( new BreadcrumbsGroup () );
             exampleGroups.add ( new DateChoosersGroup () );
             exampleGroups.add ( new FileChoosersGroup () );

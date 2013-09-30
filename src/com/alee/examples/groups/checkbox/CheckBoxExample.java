@@ -15,7 +15,7 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.examples.groups.button;
+package com.alee.examples.groups.checkbox;
 
 import com.alee.examples.WebLookAndFeelDemo;
 import com.alee.examples.content.DefaultExample;
@@ -25,33 +25,43 @@ import com.alee.laf.checkbox.WebCheckBox;
 import java.awt.*;
 
 /**
- * User: mgarin Date: 23.01.12 Time: 16:39
+ * Checkbox example.
+ *
+ * @author Mikle Garin
  */
 
 public class CheckBoxExample extends DefaultExample
 {
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getTitle ()
     {
         return "Checkboxes";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getDescription ()
     {
         return "Web-styled checkboxes";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public Component getPreview ( WebLookAndFeelDemo owner )
+    public Component getPreview ( final WebLookAndFeelDemo owner )
     {
-        // Selected check box
-        WebCheckBox cb1 = new WebCheckBox ( "Checkbox 1" );
-        cb1.setSelected ( true );
+        // Animated check box
+        final WebCheckBox checkBoxA = new WebCheckBox ( "Animated checkbox" );
 
-        // Simple check box
-        WebCheckBox cb2 = new WebCheckBox ( "Checkbox 2" );
+        // Static check box
+        final WebCheckBox checkBoxS = new WebCheckBox ( "Static checkbox" );
 
-        return new GroupPanel ( 4, false, cb1, cb2 );
+        return new GroupPanel ( 4, false, checkBoxA, checkBoxS );
     }
 }

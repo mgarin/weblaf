@@ -15,7 +15,7 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.examples.groups.list;
+package com.alee.examples.groups.checkbox;
 
 import com.alee.examples.WebLookAndFeelDemo;
 import com.alee.examples.content.DefaultExample;
@@ -35,9 +35,7 @@ import java.awt.*;
 public class CheckBoxListExample extends DefaultExample
 {
     /**
-     * Returns example title.
-     *
-     * @return example title
+     * {@inheritDoc}
      */
     @Override
     public String getTitle ()
@@ -46,9 +44,7 @@ public class CheckBoxListExample extends DefaultExample
     }
 
     /**
-     * Returns short example description.
-     *
-     * @return short example description
+     * {@inheritDoc}
      */
     @Override
     public String getDescription ()
@@ -57,16 +53,13 @@ public class CheckBoxListExample extends DefaultExample
     }
 
     /**
-     * Returns preview component for this example.
-     *
-     * @param owner demo application main frame
-     * @return preview component
+     * {@inheritDoc}
      */
     @Override
-    public Component getPreview ( WebLookAndFeelDemo owner )
+    public Component getPreview ( final WebLookAndFeelDemo owner )
     {
         // Checkbox list
-        WebCheckBoxList webCheckBoxList = new WebCheckBoxList ( createCheckBoxListModel () );
+        final WebCheckBoxList webCheckBoxList = new WebCheckBoxList ( createCheckBoxListModel () );
         webCheckBoxList.setVisibleRowCount ( 4 );
         webCheckBoxList.setSelectedIndex ( 0 );
         webCheckBoxList.setEditable ( true );
@@ -80,7 +73,7 @@ public class CheckBoxListExample extends DefaultExample
      */
     private CheckBoxListModel createCheckBoxListModel ()
     {
-        CheckBoxListModel model = new CheckBoxListModel ();
+        final CheckBoxListModel model = new CheckBoxListModel ();
         model.addCheckBoxElement ( "Element 1", true );
         model.addCheckBoxElement ( "Element 2" );
         model.addCheckBoxElement ( "Element 3" );

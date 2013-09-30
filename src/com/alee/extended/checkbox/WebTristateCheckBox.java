@@ -268,6 +268,14 @@ public class WebTristateCheckBox extends WebCheckBox
     }
 
     /**
+     * Forces checked state.
+     */
+    public void setChecked ()
+    {
+        setState ( CheckState.checked );
+    }
+
+    /**
      * Returns whether checkbox is in mixed state or not.
      *
      * @return true if checkbox is in mixed state, false otherwise
@@ -278,6 +286,14 @@ public class WebTristateCheckBox extends WebCheckBox
     }
 
     /**
+     * Forces mixed state.
+     */
+    public void setMixed ()
+    {
+        setState ( CheckState.mixed );
+    }
+
+    /**
      * Returns whether checkbox is unchecked or not.
      *
      * @return true if checkbox is unchecked, false otherwise
@@ -285,6 +301,14 @@ public class WebTristateCheckBox extends WebCheckBox
     public boolean isUnchecked ()
     {
         return !isChecked () && !isMixed ();
+    }
+
+    /**
+     * Forces unchecked state.
+     */
+    public void setUnchecked ()
+    {
+        setState ( CheckState.unchecked );
     }
 
     /**

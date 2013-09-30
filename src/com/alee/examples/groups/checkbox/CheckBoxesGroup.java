@@ -15,7 +15,7 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.examples.groups.list;
+package com.alee.examples.groups.checkbox;
 
 import com.alee.examples.content.DefaultExampleGroup;
 import com.alee.examples.content.Example;
@@ -25,41 +25,52 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * User: mgarin Date: 17.02.12 Time: 13:04
+ * Checkbox and radio buttons examples group.
+ *
+ * @author Mikle Garin
  */
 
-public class ListsGroup extends DefaultExampleGroup
+public class CheckBoxesGroup extends DefaultExampleGroup
 {
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Icon getGroupIcon ()
     {
-        return loadGroupIcon ( "list.png" );
+        return loadGroupIcon ( "checkbox.png" );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getGroupName ()
     {
-        return "Lists";
+        return "Check & Radio";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getGroupDescription ()
     {
-        return "Various examples of lists usage";
+        return "Various examples of checkbox and radiobuttons usage";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Example> getGroupExamples ()
     {
-        List<Example> examples = new ArrayList<Example> ();
-        examples.add ( new ListsExample () );
-        examples.add ( new FilesListExample () );
+        final List<Example> examples = new ArrayList<Example> ();
+        examples.add ( new CheckBoxExample () );
+        examples.add ( new TristateCheckBoxExample () );
+        examples.add ( new RadioButtonExample () );
+        examples.add ( new CheckBoxListExample () );
+        examples.add ( new CheckBoxTreeExample () );
         return examples;
-    }
-
-    @Override
-    public double getContentPartSize ()
-    {
-        return 0.7f;
     }
 }

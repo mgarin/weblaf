@@ -58,8 +58,6 @@ public class ButtonsGroup extends DefaultExampleGroup
         examples.add ( new DoubleGroupedButtonsExample () );
         examples.add ( new CustomizedButtonsExample () );
         examples.add ( new ButtonPaintersExample () );
-        examples.add ( new CheckBoxExample () );
-        examples.add ( new RadioButtonExample () );
         examples.add ( new SwitchExample () );
         return examples;
     }

@@ -15,7 +15,7 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.examples.groups.button;
+package com.alee.examples.groups.checkbox;
 
 import com.alee.examples.WebLookAndFeelDemo;
 import com.alee.examples.content.DefaultExample;
@@ -26,36 +26,48 @@ import com.alee.utils.swing.UnselectableButtonGroup;
 import java.awt.*;
 
 /**
- * User: mgarin Date: 23.01.12 Time: 16:45
+ * Radio button example.
+ *
+ * @author Mikle Garin
  */
 
 public class RadioButtonExample extends DefaultExample
 {
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getTitle ()
     {
-        return "Radiobuttons";
+        return "Radio buttons";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getDescription ()
     {
-        return "Web-styled radiobuttons";
+        return "Web-styled radio buttons";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public Component getPreview ( WebLookAndFeelDemo owner )
+    public Component getPreview ( final WebLookAndFeelDemo owner )
     {
-        // Selected radio button
-        WebRadioButton rb1 = new WebRadioButton ( "Radiobutton 1" );
-        rb1.setSelected ( true );
+        // Animated radio button
+        final WebRadioButton radioButtonA = new WebRadioButton ( "Animated radio button" );
+        radioButtonA.setSelected ( true );
 
-        // Simple radio button
-        WebRadioButton rb2 = new WebRadioButton ( "Radiobutton 2" );
+        // Static radio button
+        final WebRadioButton radioButtonS = new WebRadioButton ( "Static radio button" );
+        radioButtonS.setAnimated ( false );
 
         // Grouping buttons with custom button group that allows deselection
-        UnselectableButtonGroup.group ( rb1, rb2 );
+        UnselectableButtonGroup.group ( radioButtonA, radioButtonS );
 
-        return new GroupPanel ( 4, false, rb1, rb2 );
+        return new GroupPanel ( 4, false, radioButtonA, radioButtonS );
     }
 }

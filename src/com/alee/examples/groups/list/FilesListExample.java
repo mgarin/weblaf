@@ -73,7 +73,7 @@ public class FilesListExample extends DefaultExample
         WebFileList webFileList = new WebFileList ();
         webFileList.setFileListViewType ( FileListViewType.icons );
         webFileList.setPreferredColumnCount ( 4 );
-        webFileList.setPreferredRowCount ( 3 );
+        webFileList.setPreferredRowCount ( 5 );
 
         // Custome files list model
         File[] files = FileUtils.getDiskRoots ()[ 0 ].listFiles ();
