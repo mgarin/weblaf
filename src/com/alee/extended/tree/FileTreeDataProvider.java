@@ -43,7 +43,7 @@ public class FileTreeDataProvider extends AbstractTreeDataProvider<FileTreeNode>
      *
      * @param rootFiles tree root files
      */
-    public FileTreeDataProvider ( File... rootFiles )
+    public FileTreeDataProvider ( final File... rootFiles )
     {
         super ();
         this.rootFiles = CollectionUtils.copy ( rootFiles );
@@ -56,7 +56,7 @@ public class FileTreeDataProvider extends AbstractTreeDataProvider<FileTreeNode>
      *
      * @param rootFiles tree root files
      */
-    public FileTreeDataProvider ( List<File> rootFiles )
+    public FileTreeDataProvider ( final List<File> rootFiles )
     {
         super ();
         this.rootFiles = rootFiles;
@@ -70,7 +70,7 @@ public class FileTreeDataProvider extends AbstractTreeDataProvider<FileTreeNode>
      * @param filter    tree nodes filter
      * @param rootFiles tree root files
      */
-    public FileTreeDataProvider ( Filter<FileTreeNode> filter, File... rootFiles )
+    public FileTreeDataProvider ( final Filter<FileTreeNode> filter, final File... rootFiles )
     {
         super ();
         this.rootFiles = CollectionUtils.copy ( rootFiles );
@@ -84,7 +84,7 @@ public class FileTreeDataProvider extends AbstractTreeDataProvider<FileTreeNode>
      * @param filter    tree nodes filter
      * @param rootFiles tree root files
      */
-    public FileTreeDataProvider ( Filter<FileTreeNode> filter, List<File> rootFiles )
+    public FileTreeDataProvider ( final Filter<FileTreeNode> filter, final List<File> rootFiles )
     {
         super ();
         this.rootFiles = rootFiles;
@@ -105,7 +105,7 @@ public class FileTreeDataProvider extends AbstractTreeDataProvider<FileTreeNode>
      * {@inheritDoc}
      */
     @Override
-    public List<FileTreeNode> getChilds ( FileTreeNode node )
+    public List<FileTreeNode> getChilds ( final FileTreeNode node )
     {
         return node.getFile () == null ? getRootChilds () : getFileChilds ( node );
     }
@@ -118,7 +118,7 @@ public class FileTreeDataProvider extends AbstractTreeDataProvider<FileTreeNode>
     private List<FileTreeNode> getRootChilds ()
     {
         List<FileTreeNode> childs = new ArrayList<FileTreeNode> ( rootFiles.size () );
-        for ( File rootFile : rootFiles )
+        for ( final File rootFile : rootFiles )
         {
             childs.add ( new FileTreeNode ( rootFile ) );
         }
@@ -131,7 +131,7 @@ public class FileTreeDataProvider extends AbstractTreeDataProvider<FileTreeNode>
      * @param node parent node
      * @return child nodes
      */
-    public List<FileTreeNode> getFileChilds ( FileTreeNode node )
+    public List<FileTreeNode> getFileChilds ( final FileTreeNode node )
     {
         final File[] childsList = node.getFile ().listFiles ();
         if ( childsList == null || childsList.length == 0 )
@@ -140,8 +140,8 @@ public class FileTreeDataProvider extends AbstractTreeDataProvider<FileTreeNode>
         }
         else
         {
-            List<FileTreeNode> childs = new ArrayList<FileTreeNode> ( childsList.length );
-            for ( File f : childsList )
+            final List<FileTreeNode> childs = new ArrayList<FileTreeNode> ( childsList.length );
+            for ( final File f : childsList )
             {
                 childs.add ( new FileTreeNode ( f ) );
             }
@@ -153,7 +153,7 @@ public class FileTreeDataProvider extends AbstractTreeDataProvider<FileTreeNode>
      * {@inheritDoc}
      */
     @Override
-    public boolean isLeaf ( FileTreeNode node )
+    public boolean isLeaf ( final FileTreeNode node )
     {
         return node.getFile () != null && !FileUtils.isDirectory ( node.getFile () );
     }

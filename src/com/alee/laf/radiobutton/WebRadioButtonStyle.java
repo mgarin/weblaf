@@ -22,63 +22,65 @@ import com.alee.laf.StyleConstants;
 import java.awt.*;
 
 /**
- * User: mgarin Date: 11/15/11 Time: 7:05 PM
+ * WebRadioButton style class.
+ *
+ * @author Mikle Garin
  */
 
 public final class WebRadioButtonStyle
 {
     /**
-     * Border color
+     * Border color.
      */
     public static Color borderColor = StyleConstants.borderColor;
 
     /**
-     * Dark border color
+     * Dark border color.
      */
     public static Color darkBorderColor = StyleConstants.darkBorderColor;
 
     /**
-     * Disabled border color
+     * Disabled border color.
      */
     public static Color disabledBorderColor = StyleConstants.disabledBorderColor;
 
     /**
-     * Top background gradient color
+     * Top background gradient color.
      */
     public static Color topBgColor = StyleConstants.topBgColor;
 
     /**
-     * Bottom background gradient color
+     * Bottom background gradient color.
      */
     public static Color bottomBgColor = StyleConstants.bottomBgColor;
 
     /**
-     * Top background gradient color on selection
+     * Top background gradient color on selection.
      */
     public static Color topSelectedBgColor = StyleConstants.topSelectedBgColor;
 
     /**
-     * Bottom background gradient color on selection
+     * Bottom background gradient color on selection.
      */
     public static Color bottomSelectedBgColor = StyleConstants.bottomSelectedBgColor;
 
     /**
-     * Decoration shade width
+     * Decoration shade width.
      */
     public static int shadeWidth = StyleConstants.shadeWidth;
 
     /**
-     * Default radiobutton margin
+     * Default checkbox margin.
      */
     public static Insets margin = StyleConstants.margin;
 
     /**
-     * Animate component
+     * Whether should animate selection changes or not.
      */
     public static boolean animated = StyleConstants.animate;
 
     /**
-     * Show dark border only on mouseover
+     * Whether should display dark border only on rollover or not.
      */
     public static boolean rolloverDarkBorderOnly = StyleConstants.rolloverDarkBorderOnly;
 }

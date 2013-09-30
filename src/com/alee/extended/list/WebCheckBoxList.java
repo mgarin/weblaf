@@ -41,7 +41,7 @@ public class WebCheckBoxList extends WebList
     /**
      * Whether checkbox selection should be performed only when user clicks exactly on the check icon or not.
      */
-    private boolean checkOnIconOnly = WebCheckBoxListStyle.checkOnIconOnly;
+    protected boolean checkOnIconOnly = WebCheckBoxListStyle.checkOnIconOnly;
 
     /**
      * Constructs empty checkbox list.
@@ -54,7 +54,7 @@ public class WebCheckBoxList extends WebList
     /**
      * Constructs checkbox list with a specified model.
      */
-    public WebCheckBoxList ( CheckBoxListModel model )
+    public WebCheckBoxList ( final CheckBoxListModel model )
     {
         super ();
 
@@ -107,7 +107,7 @@ public class WebCheckBoxList extends WebList
      * @param index cell index
      * @return true if checkbox at the specified cell index is selected, false otherwise
      */
-    public boolean isCheckBoxSelected ( int index )
+    public boolean isCheckBoxSelected ( final int index )
     {
         return getCheckBoxListModel ().isCheckBoxSelected ( index );
     }
@@ -117,7 +117,7 @@ public class WebCheckBoxList extends WebList
      *
      * @param index cell index
      */
-    public void invertCheckBoxSelection ( int index )
+    public void invertCheckBoxSelection ( final int index )
     {
         getCheckBoxListModel ().invertCheckBoxSelection ( index );
         performAnimation ( index );
@@ -129,7 +129,7 @@ public class WebCheckBoxList extends WebList
      * @param index    cell index
      * @param selected whether checkbox is selected or not
      */
-    public void setCheckBoxSelected ( int index, boolean selected )
+    public void setCheckBoxSelected ( final int index, final boolean selected )
     {
         if ( getCheckBoxListModel ().setCheckBoxSelected ( index, selected ) )
         {
@@ -142,18 +142,18 @@ public class WebCheckBoxList extends WebList
      *
      * @param index cell index
      */
-    private void performAnimation ( final int index )
+    protected void performAnimation ( final int index )
     {
         // todo Replace with icon change listener in renderer component
         if ( WebCheckBoxStyle.animated )
         {
             // For checkbox proper animation
-            WebTimer.repeat ( "WebCheckBoxList.animator", WebCheckBoxUI.updateDelay, new ActionListener ()
+            WebTimer.repeat ( "WebCheckBoxList.animator", WebCheckBoxUI.UPDATE_DELAY, new ActionListener ()
             {
                 private int left = WebCheckBoxUI.MAX_DARKNESS + 1;
 
                 @Override
-                public void actionPerformed ( ActionEvent e )
+                public void actionPerformed ( final ActionEvent e )
                 {
                     if ( left > 0 )
                     {
@@ -188,7 +188,7 @@ public class WebCheckBoxList extends WebList
      *
      * @param checkOnIconOnly whether checkbox selection should be performed only when user clicks exactly on the check icon or not
      */
-    public void setCheckOnIconOnly ( boolean checkOnIconOnly )
+    public void setCheckOnIconOnly ( final boolean checkOnIconOnly )
     {
         this.checkOnIconOnly = checkOnIconOnly;
     }
@@ -196,20 +196,20 @@ public class WebCheckBoxList extends WebList
     /**
      * Custom checkbox list mouse adapter that handles checkbox selection changes.
      */
-    private class CheckBoxListMouseAdapter extends MouseAdapter
+    protected class CheckBoxListMouseAdapter extends MouseAdapter
     {
         @Override
-        public void mousePressed ( MouseEvent e )
+        public void mousePressed ( final MouseEvent e )
         {
-            int index = getUI ().locationToIndex ( WebCheckBoxList.this, e.getPoint () );
+            final int index = getUI ().locationToIndex ( WebCheckBoxList.this, e.getPoint () );
             if ( index != -1 && WebCheckBoxList.this.isEnabled () )
             {
                 if ( checkOnIconOnly )
                 {
-                    WebCheckBoxListCellRenderer renderer = getWebCheckBoxListCellRenderer ();
-                    WebCheckBoxListElement element = renderer.getElement ( getCheckBoxListModel ().get ( index ) );
-                    Rectangle cellRect = getWebUI ().getCellBounds ( WebCheckBoxList.this, index, index );
-                    Rectangle iconRect = element.getWebUI ().getIconRect ();
+                    final WebCheckBoxListCellRenderer renderer = getWebCheckBoxListCellRenderer ();
+                    final WebCheckBoxListElement element = renderer.getElement ( getCheckBoxListModel ().get ( index ) );
+                    final Rectangle cellRect = getWebUI ().getCellBounds ( WebCheckBoxList.this, index, index );
+                    final Rectangle iconRect = element.getWebUI ().getIconRect ();
                     iconRect.x += cellRect.x;
                     iconRect.y += cellRect.y;
                     if ( iconRect.contains ( e.getPoint () ) )
@@ -228,14 +228,14 @@ public class WebCheckBoxList extends WebList
     /**
      * Custom checkbox list key adapter that handles checkbox selection changes.
      */
-    private class CheckBoxListKeyAdapter extends KeyAdapter
+    protected class CheckBoxListKeyAdapter extends KeyAdapter
     {
         @Override
-        public void keyReleased ( KeyEvent e )
+        public void keyReleased ( final KeyEvent e )
         {
             if ( Hotkey.SPACE.isTriggered ( e ) && getSelectedIndex () != -1 && isEnabled () )
             {
-                for ( int index : getSelectedIndices () )
+                for ( final int index : getSelectedIndices () )
                 {
                     invertCheckBoxSelection ( index );
                 }

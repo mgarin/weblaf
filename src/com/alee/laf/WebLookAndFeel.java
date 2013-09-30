@@ -17,6 +17,7 @@
 
 package com.alee.laf;
 
+import com.alee.extended.checkbox.WebTristateCheckBoxUI;
 import com.alee.extended.label.WebMultiLineLabelUI;
 import com.alee.extended.label.WebVerticalLabelUI;
 import com.alee.laf.button.WebButtonUI;
@@ -129,6 +130,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
     public static String buttonUI = WebButtonUI.class.getCanonicalName ();
     public static String toggleButtonUI = WebToggleButtonUI.class.getCanonicalName ();
     public static String checkBoxUI = WebCheckBoxUI.class.getCanonicalName ();
+    public static String tristateCheckBoxUI = WebTristateCheckBoxUI.class.getCanonicalName ();
     public static String radioButtonUI = WebRadioButtonUI.class.getCanonicalName ();
 
     // Menu
@@ -344,6 +346,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
         table.put ( "ButtonUI", buttonUI );
         table.put ( "ToggleButtonUI", toggleButtonUI );
         table.put ( "CheckBoxUI", checkBoxUI );
+        table.put ( "TristateCheckBoxUI", tristateCheckBoxUI );
         table.put ( "RadioButtonUI", radioButtonUI );
 
         // Menu
@@ -452,10 +455,6 @@ public class WebLookAndFeel extends BasicLookAndFeel
         table.put ( "Tree.rendererFillBackground", Boolean.FALSE );
         table.put ( "Tree.drawsFocusBorderAroundIcon", Boolean.FALSE );
         table.put ( "Tree.drawDashedFocusIndicator", Boolean.FALSE );
-
-        // Jide tristate checkbox
-        table.put ( "CheckBox.icon", WebCheckBoxUI.createIcon () );
-        table.put ( "TristateCheckBox.icon", WebCheckBoxUI.createIcon () );
 
         // Disabled foreground color
         table.put ( "MenuItem.disabledForeground", StyleConstants.disabledTextColor );

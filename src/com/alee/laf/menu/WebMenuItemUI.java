@@ -19,7 +19,7 @@ package com.alee.laf.menu;
 
 import com.alee.laf.StyleConstants;
 import com.alee.laf.WebLookAndFeel;
-import com.alee.laf.checkbox.WebCheckBoxUI;
+import com.alee.laf.checkbox.SimpleCheckIcon;
 import com.alee.laf.radiobutton.WebRadioButtonUI;
 import com.alee.utils.LafUtils;
 import com.alee.utils.SwingUtils;
@@ -33,6 +33,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -49,7 +50,7 @@ public class WebMenuItemUI extends BasicMenuItemUI
     private ActionListener actionListener = null;
 
     @SuppressWarnings ("UnusedParameters")
-    public static ComponentUI createUI ( JComponent c )
+    public static ComponentUI createUI ( final JComponent c )
     {
         return new WebMenuItemUI ();
     }
@@ -68,14 +69,14 @@ public class WebMenuItemUI extends BasicMenuItemUI
         mouseAdapter = new MouseAdapter ()
         {
             @Override
-            public void mouseEntered ( MouseEvent e )
+            public void mouseEntered ( final MouseEvent e )
             {
                 mouseover = true;
                 menuItem.repaint ();
             }
 
             @Override
-            public void mouseExited ( MouseEvent e )
+            public void mouseExited ( final MouseEvent e )
             {
                 mouseover = false;
                 menuItem.repaint ();
@@ -85,7 +86,7 @@ public class WebMenuItemUI extends BasicMenuItemUI
         actionListener = new ActionListener ()
         {
             @Override
-            public void actionPerformed ( ActionEvent e )
+            public void actionPerformed ( final ActionEvent e )
             {
                 mouseover = false;
                 if ( menuItem != null )
@@ -98,7 +99,7 @@ public class WebMenuItemUI extends BasicMenuItemUI
     }
 
     @Override
-    public void uninstallUI ( JComponent c )
+    public void uninstallUI ( final JComponent c )
     {
         menuItem.removeMouseListener ( mouseAdapter );
         menuItem.removeActionListener ( actionListener );
@@ -107,15 +108,16 @@ public class WebMenuItemUI extends BasicMenuItemUI
     }
 
     @Override
-    protected Dimension getPreferredMenuItemSize ( JComponent c, Icon checkIcon, Icon arrowIcon, int defaultTextIconGap )
+    protected Dimension getPreferredMenuItemSize ( final JComponent c, final Icon checkIcon, final Icon arrowIcon,
+                                                   final int defaultTextIconGap )
     {
-        JMenuItem mi = ( JMenuItem ) c;
-        MenuItemLayoutHelper lh =
+        final JMenuItem mi = ( JMenuItem ) c;
+        final MenuItemLayoutHelper lh =
                 new MenuItemLayoutHelper ( mi, checkIcon, arrowIcon, MenuItemLayoutHelper.createMaxRect (), defaultTextIconGap,
                         getAccelerationDelimeter (), mi.getComponentOrientation ().isLeftToRight (), mi.getFont (), acceleratorFont,
                         MenuItemLayoutHelper.useCheckAndArrow ( menuItem ), getPropertyPrefix () );
 
-        Dimension result = new Dimension ();
+        final Dimension result = new Dimension ();
 
         // Calculate the result width
         result.width = lh.getLeadingGap ();
@@ -136,7 +138,7 @@ public class WebMenuItemUI extends BasicMenuItemUI
                         lh.getArrowSize ().getHeight () );
 
         // Take into account menu item insets
-        Insets insets = lh.getMenuItem ().getInsets ();
+        final Insets insets = lh.getMenuItem ().getInsets ();
         if ( insets != null )
         {
             result.width += insets.left + insets.right;
@@ -147,25 +149,25 @@ public class WebMenuItemUI extends BasicMenuItemUI
     }
 
     @Override
-    protected void paintMenuItem ( Graphics g, JComponent c, Icon checkIcon, Icon arrowIcon, Color background, Color foreground,
-                                   int defaultTextIconGap )
+    protected void paintMenuItem ( final Graphics g, final JComponent c, final Icon checkIcon, final Icon arrowIcon, final Color background,
+                                   final Color foreground, final int defaultTextIconGap )
     {
         // Saving original settings
-        Font holdf = g.getFont ();
-        Color holdc = g.getColor ();
+        final Font holdf = g.getFont ();
+        final Color holdc = g.getColor ();
 
         // Setting font
-        JMenuItem mi = ( JMenuItem ) c;
+        final JMenuItem mi = ( JMenuItem ) c;
         g.setFont ( mi.getFont () );
 
         // creating helper class
-        Rectangle viewRect = new Rectangle ( 0, 0, mi.getWidth (), mi.getHeight () );
+        final Rectangle viewRect = new Rectangle ( 0, 0, mi.getWidth (), mi.getHeight () );
         applyInsets ( viewRect, mi.getInsets () );
-        MenuItemLayoutHelper lh =
+        final MenuItemLayoutHelper lh =
                 new MenuItemLayoutHelper ( mi, checkIcon, arrowIcon, viewRect, defaultTextIconGap, getAccelerationDelimeter (),
                         mi.getComponentOrientation ().isLeftToRight (), mi.getFont (), acceleratorFont,
                         MenuItemLayoutHelper.useCheckAndArrow ( menuItem ), getPropertyPrefix () );
-        MenuItemLayoutHelper.LayoutResult lr = lh.layoutMenuItem ();
+        final MenuItemLayoutHelper.LayoutResult lr = lh.layoutMenuItem ();
 
         // Painting all parts
         paintBackground ( g, mi );
@@ -174,7 +176,7 @@ public class WebMenuItemUI extends BasicMenuItemUI
         paintArrowIcon ( g, lh, lr );
 
         // Painting text parts
-        Map hints = SwingUtils.setupTextAntialias ( g );
+        final Map hints = SwingUtils.setupTextAntialias ( g );
         paintText ( g, lh, lr );
         paintAccText ( g, lh, lr );
         SwingUtils.restoreTextAntialias ( g, hints );
@@ -184,11 +186,11 @@ public class WebMenuItemUI extends BasicMenuItemUI
         g.setFont ( holdf );
     }
 
-    protected void paintBackground ( Graphics g, JMenuItem menuItem )
+    protected void paintBackground ( final Graphics g, final JMenuItem menuItem )
     {
         if ( menuItem.isEnabled () )
         {
-            ButtonModel model = menuItem.getModel ();
+            final ButtonModel model = menuItem.getModel ();
             if ( mouseover || model.isArmed () ||
                     ( menuItem instanceof JMenu && model.isSelected () ) )
             {
@@ -210,7 +212,7 @@ public class WebMenuItemUI extends BasicMenuItemUI
         }
     }
 
-    protected void applyInsets ( Rectangle rect, Insets insets )
+    protected void applyInsets ( final Rectangle rect, final Insets insets )
     {
         if ( insets != null )
         {
@@ -223,25 +225,28 @@ public class WebMenuItemUI extends BasicMenuItemUI
 
     protected String getAccelerationDelimeter ()
     {
-        String delim = UIManager.getString ( "MenuItem.acceleratorDelimiter" );
+        final String delim = UIManager.getString ( "MenuItem.acceleratorDelimiter" );
         return delim != null ? delim : "+";
     }
 
-    protected void paintIcon ( Graphics g, MenuItemLayoutHelper lh )
+    protected void paintIcon ( final Graphics g, final MenuItemLayoutHelper lh )
     {
         final boolean checkOrRadio = lh.getMenuItem () instanceof JCheckBoxMenuItem || lh.getMenuItem () instanceof JRadioButtonMenuItem;
-        boolean selected = checkOrRadio && lh.getMenuItem ().getModel ().isSelected ();
+        final boolean selected = checkOrRadio && lh.getMenuItem ().getModel ().isSelected ();
         if ( lh.getMenuItem () instanceof JCheckBoxMenuItem && selected )
         {
-            ImageIcon check = lh.getMenuItem ().isEnabled () ? WebCheckBoxUI.CHECK_STATES.get ( WebCheckBoxUI.CHECK_STATES.size () - 1 ) :
-                    WebCheckBoxUI.DISABLED_CHECK;
+            final List<ImageIcon> checkStates = SimpleCheckIcon.CHECK_STATES;
+            final ImageIcon enabled = checkStates.get ( checkStates.size () - 1 );
+            final ImageIcon disabled = SimpleCheckIcon.DISABLED_CHECK_STATES.get ( 3 );
+            final ImageIcon check = lh.getMenuItem ().isEnabled () ? enabled : disabled;
             check.paintIcon ( lh.getMenuItem (), g, iconLocation.x, iconLocation.y );
         }
         else if ( lh.getMenuItem () instanceof JRadioButtonMenuItem && selected )
         {
-            ImageIcon check =
-                    lh.getMenuItem ().isEnabled () ? WebRadioButtonUI.CHECK_STATES.get ( WebRadioButtonUI.CHECK_STATES.size () - 1 ) :
-                            WebRadioButtonUI.DISABLED_CHECK;
+            final List<ImageIcon> checkStates = WebRadioButtonUI.CHECK_STATES;
+            final ImageIcon enabled = checkStates.get ( checkStates.size () - 1 );
+            final ImageIcon disabled = WebRadioButtonUI.DISABLED_CHECK;
+            final ImageIcon check = lh.getMenuItem ().isEnabled () ? enabled : disabled;
             check.paintIcon ( lh.getMenuItem (), g, iconLocation.x, iconLocation.y );
         }
         else if ( lh.getIcon () != null && !checkOrRadio )
@@ -261,7 +266,7 @@ public class WebMenuItemUI extends BasicMenuItemUI
             //            }
 
             Icon icon;
-            ButtonModel model = lh.getMenuItem ().getModel ();
+            final ButtonModel model = lh.getMenuItem ().getModel ();
             if ( !model.isEnabled () )
             {
                 icon = lh.getMenuItem ().getDisabledIcon ();
@@ -271,7 +276,6 @@ public class WebMenuItemUI extends BasicMenuItemUI
                 icon = lh.getMenuItem ().getPressedIcon ();
                 if ( icon == null )
                 {
-                    // Use default icon
                     icon = lh.getMenuItem ().getIcon ();
                 }
             }
@@ -286,7 +290,7 @@ public class WebMenuItemUI extends BasicMenuItemUI
         }
     }
 
-    protected void paintCheckIcon ( Graphics g, MenuItemLayoutHelper lh )
+    protected void paintCheckIcon ( final Graphics g, final MenuItemLayoutHelper lh )
     {
         if ( lh.useCheckAndArrow () && lh.getCheckIcon () != null )
         {
@@ -294,7 +298,7 @@ public class WebMenuItemUI extends BasicMenuItemUI
         }
     }
 
-    protected void paintArrowIcon ( Graphics g, MenuItemLayoutHelper lh, MenuItemLayoutHelper.LayoutResult lr )
+    protected void paintArrowIcon ( final Graphics g, final MenuItemLayoutHelper lh, final MenuItemLayoutHelper.LayoutResult lr )
     {
         if ( lh.useCheckAndArrow () && lh.getArrowIcon () != null )
         {
@@ -302,11 +306,11 @@ public class WebMenuItemUI extends BasicMenuItemUI
         }
     }
 
-    protected void paintText ( Graphics g, MenuItemLayoutHelper lh, MenuItemLayoutHelper.LayoutResult lr )
+    protected void paintText ( final Graphics g, final MenuItemLayoutHelper lh, final MenuItemLayoutHelper.LayoutResult lr )
     {
         if ( !lh.getText ().equals ( "" ) )
         {
-            Rectangle rect = lr.getTextRect ();
+            final Rectangle rect = lr.getTextRect ();
             if ( lh.getHtmlView () != null )
             {
                 // Text is HTML
@@ -322,7 +326,7 @@ public class WebMenuItemUI extends BasicMenuItemUI
 
 
     @Override
-    protected void paintText ( Graphics g, JMenuItem menuItem, Rectangle textRect, String text )
+    protected void paintText ( final Graphics g, final JMenuItem menuItem, final Rectangle textRect, final String text )
     {
         // todo Proper placement with RTL orientation
         final int mnemIndex = WebLookAndFeel.isMnemonicHidden () ? -1 : menuItem.getDisplayedMnemonicIndex ();
@@ -331,7 +335,7 @@ public class WebMenuItemUI extends BasicMenuItemUI
                 menuItem.getHeight () / 2 + LafUtils.getTextCenterShearY ( SwingUtils.getFontMetrics ( menuItem, g ) ) );
     }
 
-    protected void paintAccText ( Graphics g, MenuItemLayoutHelper lh, MenuItemLayoutHelper.LayoutResult lr )
+    protected void paintAccText ( final Graphics g, final MenuItemLayoutHelper lh, final MenuItemLayoutHelper.LayoutResult lr )
     {
         if ( !lh.getAccText ().equals ( "" ) )
         {

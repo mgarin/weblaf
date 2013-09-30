@@ -43,7 +43,7 @@ public abstract class AbstractTreeDataProvider<E extends AsyncUniqueNode> implem
      * {@inheritDoc}
      */
     @Override
-    public Comparator<E> getChildsComparator ( E node )
+    public Comparator<E> getChildsComparator ( final E node )
     {
         return comparator;
     }
@@ -53,7 +53,7 @@ public abstract class AbstractTreeDataProvider<E extends AsyncUniqueNode> implem
      *
      * @param comparator childs comparator for all nodes
      */
-    public void setChildsComparator ( Comparator<E> comparator )
+    public void setChildsComparator ( final Comparator<E> comparator )
     {
         this.comparator = comparator;
     }
@@ -62,7 +62,7 @@ public abstract class AbstractTreeDataProvider<E extends AsyncUniqueNode> implem
      * {@inheritDoc}
      */
     @Override
-    public Filter<E> getChildsFilter ( E node )
+    public Filter<E> getChildsFilter ( final E node )
     {
         return filter;
     }
@@ -72,7 +72,7 @@ public abstract class AbstractTreeDataProvider<E extends AsyncUniqueNode> implem
      *
      * @param filter childs filter for all nodes
      */
-    public void setChildsFilter ( Filter<E> filter )
+    public void setChildsFilter ( final Filter<E> filter )
     {
         this.filter = filter;
     }

@@ -23,8 +23,10 @@ import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.settings.SettingsMethods;
 import com.alee.managers.settings.SettingsProcessor;
 import com.alee.utils.ReflectUtils;
+import com.alee.utils.SizeUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.FontMethods;
+import com.alee.utils.swing.SizeMethods;
 
 import javax.swing.*;
 import java.awt.*;
@@ -33,7 +35,7 @@ import java.awt.*;
  * User: mgarin Date: 28.06.11 Time: 1:08
  */
 
-public class WebSlider extends JSlider implements SettingsMethods, FontMethods<WebSlider>
+public class WebSlider extends JSlider implements SettingsMethods, FontMethods<WebSlider>, SizeMethods<WebSlider>
 {
     public WebSlider ()
     {
@@ -597,5 +599,90 @@ public class WebSlider extends JSlider implements SettingsMethods, FontMethods<W
     public String getFontName ()
     {
         return SwingUtils.getFontName ( this );
+    }
+
+    /**
+     * Size methods.
+     */
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int getPreferredWidth ()
+    {
+        return SizeUtils.getPreferredWidth ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebSlider setPreferredWidth ( int preferredWidth )
+    {
+        return SizeUtils.setPreferredWidth ( this, preferredWidth );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int getPreferredHeight ()
+    {
+        return SizeUtils.getPreferredHeight ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebSlider setPreferredHeight ( int preferredHeight )
+    {
+        return SizeUtils.setPreferredHeight ( this, preferredHeight );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int getMinimumWidth ()
+    {
+        return SizeUtils.getMinimumWidth ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebSlider setMinimumWidth ( int minimumWidth )
+    {
+        return SizeUtils.setMinimumWidth ( this, minimumWidth );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int getMinimumHeight ()
+    {
+        return SizeUtils.getMinimumHeight ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebSlider setMinimumHeight ( int minimumHeight )
+    {
+        return SizeUtils.setMinimumHeight ( this, minimumHeight );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Dimension getPreferredSize ()
+    {
+        return SizeUtils.getPreferredSize ( this, super.getPreferredSize () );
     }
 }

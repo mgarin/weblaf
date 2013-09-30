@@ -17,9 +17,14 @@
 
 package com.alee.laf.checkbox;
 
+import com.alee.extended.checkbox.CheckState;
 import com.alee.laf.StyleConstants;
+import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.list.WebListElement;
-import com.alee.utils.*;
+import com.alee.utils.ColorUtils;
+import com.alee.utils.LafUtils;
+import com.alee.utils.ReflectUtils;
+import com.alee.utils.SwingUtils;
 import com.alee.utils.laf.ShapeProvider;
 import com.alee.utils.swing.WebTimer;
 
@@ -30,116 +35,200 @@ import javax.swing.tree.TreeCellRenderer;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.RoundRectangle2D;
-import java.util.ArrayList;
-import java.util.List;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.Map;
 
 /**
- * User: mgarin Date: 28.04.11 Time: 14:47
+ * Custom UI for JCheckBox component.
+ *
+ * @author Mikle Garin
  */
 
 public class WebCheckBoxUI extends BasicCheckBoxUI implements ShapeProvider
 {
+    /**
+     * Maximum border/background darkness.
+     */
     public static final int MAX_DARKNESS = 5;
 
-    public static List<ImageIcon> CHECK_STATES = new ArrayList<ImageIcon> ();
-    public static ImageIcon DISABLED_CHECK = null;
+    /**
+     * Animation updates delay in milliseconds.
+     */
+    public static final int UPDATE_DELAY = 40;
 
-    public static int updateDelay = 40;
+    /**
+     * Background gradient fractions.
+     */
+    protected static final float[] fractions = { 0f, 1f };
 
-    static
-    {
-        CHECK_STATES.add ( StyleConstants.EMPTY_ICON );
-        for ( int i = 1; i <= 4; i++ )
-        {
-            CHECK_STATES.add ( new ImageIcon ( WebCheckBoxUI.class.getResource ( "icons/c" + i + ".png" ) ) );
-        }
+    /**
+     * Style settings.
+     */
+    protected Color borderColor = WebCheckBoxStyle.borderColor;
+    protected Color darkBorderColor = WebCheckBoxStyle.darkBorderColor;
+    protected Color disabledBorderColor = WebCheckBoxStyle.disabledBorderColor;
+    protected Color topBgColor = WebCheckBoxStyle.topBgColor;
+    protected Color bottomBgColor = WebCheckBoxStyle.bottomBgColor;
+    protected Color topSelectedBgColor = WebCheckBoxStyle.topSelectedBgColor;
+    protected Color bottomSelectedBgColor = WebCheckBoxStyle.bottomSelectedBgColor;
+    protected int round = WebCheckBoxStyle.round;
+    protected int shadeWidth = WebCheckBoxStyle.shadeWidth;
+    protected Insets margin = WebCheckBoxStyle.margin;
+    protected boolean animated = WebCheckBoxStyle.animated;
+    protected boolean rolloverDarkBorderOnly = WebCheckBoxStyle.rolloverDarkBorderOnly;
+    protected Stroke borderStroke = WebCheckBoxStyle.borderStroke;
+    protected int iconWidth = WebCheckBoxStyle.iconWidth;
+    protected int iconHeight = WebCheckBoxStyle.iconHeight;
 
-        DISABLED_CHECK = ImageUtils.getDisabledCopy ( "WebCheckBox.disabled.check", CHECK_STATES.get ( CHECK_STATES.size () - 1 ) );
-    }
+    /**
+     * Icon background painting variables.
+     */
+    protected int bgDarkness = 0;
+    protected boolean rollover;
+    protected WebTimer bgTimer;
 
-    private Color borderColor = WebCheckBoxStyle.borderColor;
-    private Color darkBorderColor = WebCheckBoxStyle.darkBorderColor;
-    private Color disabledBorderColor = WebCheckBoxStyle.disabledBorderColor;
+    /**
+     * Check icon painting variables.
+     */
+    protected CheckIcon checkIcon;
+    protected boolean checking;
+    protected WebTimer checkTimer;
 
-    private Color topBgColor = WebCheckBoxStyle.topBgColor;
-    private Color bottomBgColor = WebCheckBoxStyle.bottomBgColor;
-    private Color topSelectedBgColor = WebCheckBoxStyle.topSelectedBgColor;
-    private Color bottomSelectedBgColor = WebCheckBoxStyle.bottomSelectedBgColor;
+    /**
+     * Last displayed icon rect.
+     */
+    protected Rectangle iconRect;
 
-    private int round = WebCheckBoxStyle.round;
-    private int shadeWidth = WebCheckBoxStyle.shadeWidth;
-    private Insets margin = WebCheckBoxStyle.margin;
+    /**
+     * Checkbox to which this UI is applied.
+     */
+    protected JCheckBox checkBox = null;
 
-    private boolean animated = WebCheckBoxStyle.animated;
-    private boolean rolloverDarkBorderOnly = WebCheckBoxStyle.rolloverDarkBorderOnly;
+    /**
+     * Checkbox listeners.
+     */
+    protected PropertyChangeListener enabledStateListener;
+    protected MouseAdapter mouseAdapter;
+    protected ItemListener itemListener;
 
-    public Stroke borderStroke = new BasicStroke ( 1.5f );
-
-    private int iconWidth = 16;
-    private int iconHeight = 16;
-
-    private int bgDarkness = 0;
-    private boolean rollover;
-    private WebTimer bgTimer;
-
-    private int checkIcon;
-    private boolean checking;
-    private WebTimer checkTimer;
-
-    private Rectangle iconRect;
-
-    private JCheckBox checkBox = null;
-
-    private MouseAdapter mouseAdapter;
-    private ItemListener itemListener;
-
-    @SuppressWarnings ("UnusedParameters")
-    public static ComponentUI createUI ( JComponent c )
+    /**
+     * Returns an instance of the WebCheckBoxUI for the specified component.
+     * This tricky method is used by UIManager to create component UIs when needed.
+     *
+     * @param c component that will use UI instance
+     * @return instance of the WebCheckBoxUI
+     */
+    @SuppressWarnings ( "UnusedParameters" )
+    public static ComponentUI createUI ( final JComponent c )
     {
         return new WebCheckBoxUI ();
     }
 
+    /**
+     * Installs UI in the specified component.
+     *
+     * @param c component for this UI
+     */
     @Override
     public void installUI ( final JComponent c )
     {
         super.installUI ( c );
 
-        // Saving checkBox to local variable
+        // Saving checkbox to local variable
         checkBox = ( JCheckBox ) c;
+
+        // Initial check state
+        checkIcon = createCheckStateIcon ();
+        checkIcon.setEnabled ( checkBox.isEnabled () );
+        checkIcon.setState ( checkBox.isSelected () ? CheckState.checked : CheckState.unchecked );
 
         // Default settings
         SwingUtils.setOrientation ( checkBox );
         checkBox.setOpaque ( false );
-
-        // Initial check state
-        checkIcon = checkBox.isSelected () ? CHECK_STATES.size () - 1 : 0;
-
-        // Workaround for Jide TriState checkbox
-        if ( ReflectUtils.containsInClassOrSuperclassName ( c.getClass (), "TristateCheckBox" ) )
-        {
-            setAnimated ( false );
-        }
-
-        // Updating border and icon
+        checkBox.setIcon ( createIcon () );
+        setAnimated ( isAnimatedByDefault () );
         updateBorder ();
-        updateIcon ( checkBox );
 
-        // Background fade animation
-        bgTimer = new WebTimer ( "WebCheckBoxUI.bgUpdater", updateDelay, new ActionListener ()
+        // Checkbox state change listeners
+        installEnabledStateListeners ();
+        installRolloverListeners ();
+        installStateChangeListeners ();
+    }
+
+    /**
+     * Uninstalls UI from the specified component.
+     *
+     * @param c component with this UI
+     */
+    @Override
+    public void uninstallUI ( final JComponent c )
+    {
+        uninstallEnabledStateListeners ();
+        uninstallRolloverListeners ();
+        uninstallStateChangeListeners ();
+
+        checkBox.setIcon ( null );
+        checkIcon = null;
+        checkBox = null;
+
+        super.uninstallUI ( c );
+    }
+
+    /**
+     * Creates check state icon.
+     *
+     * @return check state icon
+     */
+    protected CheckIcon createCheckStateIcon ()
+    {
+        return new SimpleCheckIcon ();
+    }
+
+    /**
+     * Installs enabled state listeners.
+     */
+    protected void installEnabledStateListeners ()
+    {
+        enabledStateListener = new PropertyChangeListener ()
         {
             @Override
-            public void actionPerformed ( ActionEvent e )
+            public void propertyChange ( final PropertyChangeEvent evt )
+            {
+                checkIcon.setEnabled ( checkBox.isEnabled () );
+            }
+        };
+        checkBox.addPropertyChangeListener ( WebLookAndFeel.COMPONENT_ENABLED_PROPERTY, enabledStateListener );
+    }
+
+    /**
+     * Uninstalls enabled state listeners.
+     */
+    protected void uninstallEnabledStateListeners ()
+    {
+        checkBox.removePropertyChangeListener ( WebLookAndFeel.COMPONENT_ENABLED_PROPERTY, enabledStateListener );
+    }
+
+    /**
+     * Installs rollover listeners.
+     */
+    protected void installRolloverListeners ()
+    {
+        // Background fade animation
+        bgTimer = new WebTimer ( "WebCheckBoxUI.bgUpdater", UPDATE_DELAY, new ActionListener ()
+        {
+            @Override
+            public void actionPerformed ( final ActionEvent e )
             {
                 if ( rollover && bgDarkness < MAX_DARKNESS )
                 {
                     bgDarkness++;
-                    c.repaint ();
+                    checkBox.repaint ();
                 }
                 else if ( !rollover && bgDarkness > 0 )
                 {
                     bgDarkness--;
-                    c.repaint ();
+                    checkBox.repaint ();
                 }
                 else
                 {
@@ -150,89 +239,133 @@ public class WebCheckBoxUI extends BasicCheckBoxUI implements ShapeProvider
         mouseAdapter = new MouseAdapter ()
         {
             @Override
-            public void mouseEntered ( MouseEvent e )
+            public void mouseEntered ( final MouseEvent e )
             {
                 rollover = true;
-                if ( isAnimated () && c.isEnabled () )
+                if ( isAnimated () && checkBox.isEnabled () )
                 {
                     bgTimer.start ();
                 }
                 else
                 {
                     bgDarkness = MAX_DARKNESS;
-                    c.repaint ();
+                    checkBox.repaint ();
                 }
             }
 
             @Override
-            public void mouseExited ( MouseEvent e )
+            public void mouseExited ( final MouseEvent e )
             {
                 rollover = false;
-                if ( isAnimated () && c.isEnabled () )
+                if ( isAnimated () && checkBox.isEnabled () )
                 {
                     bgTimer.start ();
                 }
                 else
                 {
                     bgDarkness = 0;
-                    c.repaint ();
+                    checkBox.repaint ();
                 }
             }
         };
         checkBox.addMouseListener ( mouseAdapter );
+    }
 
+    /**
+     * Uninstalls rollover listeners.
+     */
+    protected void uninstallRolloverListeners ()
+    {
+        checkBox.removeMouseListener ( mouseAdapter );
+    }
+
+    /**
+     * Installs state change listeners.
+     */
+    protected void installStateChangeListeners ()
+    {
         // Selection changes animation
-        checkTimer = new WebTimer ( "WebCheckBoxUI.iconUpdater", updateDelay, new ActionListener ()
+        checkTimer = new WebTimer ( "WebCheckBoxUI.iconUpdater", UPDATE_DELAY, new ActionListener ()
         {
             @Override
-            public void actionPerformed ( ActionEvent e )
+            public void actionPerformed ( final ActionEvent e )
             {
-                if ( checking && checkIcon < CHECK_STATES.size () - 1 )
+                if ( checkIcon.isTransitionCompleted () )
                 {
-                    checkIcon++;
-                    c.repaint ();
-                }
-                else if ( !checking && checkIcon > 0 )
-                {
-                    checkIcon--;
-                    c.repaint ();
+                    checkIcon.finishTransition ();
+                    checkTimer.stop ();
                 }
                 else
                 {
-                    checkTimer.stop ();
+                    checkIcon.doStep ();
+                    checkBox.repaint ();
                 }
             }
         } );
         itemListener = new ItemListener ()
         {
             @Override
-            public void itemStateChanged ( ItemEvent e )
+            public void itemStateChanged ( final ItemEvent e )
             {
-                if ( isAnimationAllowed () && isAnimated () && c.isEnabled () )
-                {
-                    if ( checkBox.isSelected () )
-                    {
-                        checking = true;
-                        checkTimer.start ();
-                    }
-                    else
-                    {
-                        checking = false;
-                        checkTimer.start ();
-                    }
-                }
-                else
-                {
-                    checkTimer.stop ();
-                    checkIcon = checkBox.isSelected () ? CHECK_STATES.size () - 1 : 0;
-                    c.repaint ();
-                }
+                performStateChanged ();
             }
         };
         checkBox.addItemListener ( itemListener );
     }
 
-    private boolean isAnimationAllowed ()
+    /**
+     * Performs visual state change.
+     * In case animation is possible and enabled state change will be animated.
+     */
+    protected void performStateChanged ()
+    {
+        if ( isAnimationAllowed () && isAnimated () && checkBox.isEnabled () )
+        {
+            checkIcon.setNextState ( checkBox.isSelected () ? CheckState.checked : CheckState.unchecked );
+            checkTimer.start ();
+        }
+        else
+        {
+            checkTimer.stop ();
+            checkIcon.setState ( checkBox.isSelected () ? CheckState.checked : CheckState.unchecked );
+            checkBox.repaint ();
+        }
+    }
+
+    /**
+     * Uninstalls state change listeners.
+     */
+    protected void uninstallStateChangeListeners ()
+    {
+        checkBox.removeItemListener ( itemListener );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Shape provideShape ()
+    {
+        return LafUtils.getWebBorderShape ( checkBox, getShadeWidth (), getRound () );
+    }
+
+    /**
+     * Returns whether checkbox should be animated by default or not.
+     *
+     * @return true if checkbox should be animated by default, false otherwise
+     */
+    protected boolean isAnimatedByDefault ()
+    {
+        // Workaround for Jide tristate checkbox
+        return !ReflectUtils.containsInClassOrSuperclassName ( checkBox.getClass (), "com.jidesoft.swing.TristateCheckBox" );
+    }
+
+    /**
+     * Returns whether checkbox can be animated or not.
+     *
+     * @return true if checkbox can be animated, false otherwise
+     */
+    protected boolean isAnimationAllowed ()
     {
         final Container parent = checkBox.getParent ();
         if ( parent == null )
@@ -241,272 +374,332 @@ public class WebCheckBoxUI extends BasicCheckBoxUI implements ShapeProvider
         }
         else
         {
-            final String parentClass = parent.getClass ().toString ();
-            return !parentClass.contains ( "com.jidesoft.swing.CheckBoxList" ) &&
-                    !parentClass.contains ( "com.jidesoft.swing.CheckBoxTreeCellRenderer" );
+            // Workaround for Jide checkbox list and tree
+            final Class parentClass = parent.getClass ();
+            return !ReflectUtils.containsInClassOrSuperclassName ( parentClass, "com.jidesoft.swing.CheckBoxList" ) &&
+                    !ReflectUtils.containsInClassOrSuperclassName ( parentClass, "com.jidesoft.swing.CheckBoxTreeCellRenderer" );
         }
     }
 
-    @Override
-    public void uninstallUI ( JComponent c )
-    {
-        checkBox.removeMouseListener ( mouseAdapter );
-        checkBox.removeItemListener ( itemListener );
-
-        super.uninstallUI ( c );
-    }
-
-    @Override
-    public Shape provideShape ()
-    {
-        return LafUtils.getWebBorderShape ( checkBox, getShadeWidth (), getRound () );
-    }
-
-    private void updateBorder ()
+    /**
+     * Updates custom UI border.
+     */
+    protected void updateBorder ()
     {
         // Actual margin
-        boolean ltr = checkBox.getComponentOrientation ().isLeftToRight ();
-        Insets m = new Insets ( margin.top, ltr ? margin.left : margin.right, margin.bottom, ltr ? margin.right : margin.left );
+        final boolean ltr = checkBox.getComponentOrientation ().isLeftToRight ();
+        final Insets m = new Insets ( margin.top, ltr ? margin.left : margin.right, margin.bottom, ltr ? margin.right : margin.left );
 
         // Installing border
         checkBox.setBorder ( LafUtils.createWebBorder ( m ) );
     }
 
+    /**
+     * Returns component margin.
+     *
+     * @return component margin
+     */
     public Insets getMargin ()
     {
         return margin;
     }
 
-    public void setMargin ( Insets margin )
+    /**
+     * Sets component margin.
+     *
+     * @param margin component margin
+     */
+    public void setMargin ( final Insets margin )
     {
         this.margin = margin;
         updateBorder ();
     }
 
+    /**
+     * Returns whether checkbox is animated or not.
+     *
+     * @return true if checkbox is animated, false otherwise
+     */
     public boolean isAnimated ()
     {
         return animated && ( checkBox == null || checkBox.getParent () == null ||
                 !( checkBox.getParent () instanceof WebListElement || checkBox.getParent () instanceof TreeCellRenderer ) );
     }
 
+    /**
+     * Sets whether checkbox is animated or not.
+     *
+     * @param animated whether checkbox is animated or not
+     */
     public void setAnimated ( boolean animated )
     {
         this.animated = animated;
     }
 
+    /**
+     * Returns whether should draw dark border only on rollover or not.
+     *
+     * @return true if should draw dark border only on rollover, false otherwise
+     */
     public boolean isRolloverDarkBorderOnly ()
     {
         return rolloverDarkBorderOnly;
     }
 
-    public void setRolloverDarkBorderOnly ( boolean rolloverDarkBorderOnly )
+    /**
+     * Sets whether should draw dark border only on rollover or not.
+     *
+     * @param rolloverDarkBorderOnly whether should draw dark border only on rollover or not
+     */
+    public void setRolloverDarkBorderOnly ( final boolean rolloverDarkBorderOnly )
     {
         this.rolloverDarkBorderOnly = rolloverDarkBorderOnly;
     }
 
+    /**
+     * Returns border color.
+     *
+     * @return border color
+     */
     public Color getBorderColor ()
     {
         return borderColor;
     }
 
-    public void setBorderColor ( Color borderColor )
+    /**
+     * Sets border color.
+     *
+     * @param borderColor border color
+     */
+    public void setBorderColor ( final Color borderColor )
     {
         this.borderColor = borderColor;
     }
 
+    /**
+     * Returns dark border color.
+     *
+     * @return dark border color
+     */
     public Color getDarkBorderColor ()
     {
         return darkBorderColor;
     }
 
-    public void setDarkBorderColor ( Color darkBorderColor )
+    /**
+     * Sets dark border color.
+     *
+     * @param darkBorderColor dark border color
+     */
+    public void setDarkBorderColor ( final Color darkBorderColor )
     {
         this.darkBorderColor = darkBorderColor;
     }
 
+    /**
+     * Returns disabled border color.
+     *
+     * @return disabled border color
+     */
     public Color getDisabledBorderColor ()
     {
         return disabledBorderColor;
     }
 
-    public void setDisabledBorderColor ( Color disabledBorderColor )
+    /**
+     * Sets disabled border color.
+     *
+     * @param disabledBorderColor disabled border color
+     */
+    public void setDisabledBorderColor ( final Color disabledBorderColor )
     {
         this.disabledBorderColor = disabledBorderColor;
     }
 
+    /**
+     * Returns top background color.
+     *
+     * @return top background color
+     */
     public Color getTopBgColor ()
     {
         return topBgColor;
     }
 
-    public void setTopBgColor ( Color topBgColor )
+    /**
+     * Sets top background color.
+     *
+     * @param topBgColor top background color
+     */
+    public void setTopBgColor ( final Color topBgColor )
     {
         this.topBgColor = topBgColor;
     }
 
+    /**
+     * Returns bottom background color.
+     *
+     * @return bottom background color
+     */
     public Color getBottomBgColor ()
     {
         return bottomBgColor;
     }
 
-    public void setBottomBgColor ( Color bottomBgColor )
+    /**
+     * Sets bottom background color.
+     *
+     * @param bottomBgColor bottom background color
+     */
+    public void setBottomBgColor ( final Color bottomBgColor )
     {
         this.bottomBgColor = bottomBgColor;
     }
 
+    /**
+     * Returns top selected background color.
+     *
+     * @return top selected background color
+     */
     public Color getTopSelectedBgColor ()
     {
         return topSelectedBgColor;
     }
 
-    public void setTopSelectedBgColor ( Color topSelectedBgColor )
+    /**
+     * Sets top selected background color.
+     *
+     * @param topSelectedBgColor top selected background color
+     */
+    public void setTopSelectedBgColor ( final Color topSelectedBgColor )
     {
         this.topSelectedBgColor = topSelectedBgColor;
     }
 
+    /**
+     * Returns bottom selected background color.
+     *
+     * @return bottom selected background color
+     */
     public Color getBottomSelectedBgColor ()
     {
         return bottomSelectedBgColor;
     }
 
-    public void setBottomSelectedBgColor ( Color bottomSelectedBgColor )
+    /**
+     * Sets bottom selected background color.
+     *
+     * @param bottomSelectedBgColor bottom selected background color
+     */
+    public void setBottomSelectedBgColor ( final Color bottomSelectedBgColor )
     {
         this.bottomSelectedBgColor = bottomSelectedBgColor;
     }
 
+    /**
+     * Returns border rounding.
+     *
+     * @return border rounding
+     */
     public int getRound ()
     {
         return round;
     }
 
-    public void setRound ( int round )
+    /**
+     * Sets border rounding.
+     *
+     * @param round border rounding
+     */
+    public void setRound ( final int round )
     {
         this.round = round;
     }
 
+    /**
+     * Returns border shade width.
+     *
+     * @return border shade width
+     */
     public int getShadeWidth ()
     {
         return shadeWidth;
     }
 
-    public void setShadeWidth ( int shadeWidth )
+    /**
+     * Sets border shade width.
+     *
+     * @param shadeWidth border shade width
+     */
+    public void setShadeWidth ( final int shadeWidth )
     {
         this.shadeWidth = shadeWidth;
     }
 
+    /**
+     * Returns icon width.
+     *
+     * @return icon width
+     */
     public int getIconWidth ()
     {
         return iconWidth;
     }
 
-    public void setIconWidth ( int iconWidth )
+    /**
+     * Sets icon width.
+     *
+     * @param iconWidth icon width
+     */
+    public void setIconWidth ( final int iconWidth )
     {
         this.iconWidth = iconWidth;
     }
 
+    /**
+     * Returns icon height.
+     *
+     * @return icon height
+     */
     public int getIconHeight ()
     {
         return iconHeight;
     }
 
-    public void setIconHeight ( int iconHeight )
+    /**
+     * Sets icon height.
+     *
+     * @param iconHeight icon height
+     */
+    public void setIconHeight ( final int iconHeight )
     {
         this.iconHeight = iconHeight;
     }
 
-    private void updateIcon ( final JCheckBox checkBox )
+    /**
+     * Creates and returns checkbox icon.
+     *
+     * @return checkbox icon
+     */
+    protected Icon createIcon ()
     {
-        checkBox.setIcon ( createIcon () );
+        return new CheckBoxIcon ();
     }
 
-    public static Icon createIcon ()
-    {
-        return new Icon ()
-        {
-            private int iconWidth = 16;
-            private int iconHeight = 16;
-
-            @Override
-            public void paintIcon ( Component c, Graphics g, int x, int y )
-            {
-                JCheckBox checkBox = ( JCheckBox ) c;
-                WebCheckBoxUI ui = ( WebCheckBoxUI ) checkBox.getUI ();
-                iconWidth = ui.iconWidth;
-                iconHeight = ui.iconHeight;
-
-                ui.setIconRect ( new Rectangle ( x, y, ui.iconWidth, ui.iconHeight ) );
-
-                Graphics2D g2d = ( Graphics2D ) g;
-                Object aa = LafUtils.setupAntialias ( g2d );
-
-                // Button size and shape
-                Rectangle iconRect = new Rectangle ( x + ui.shadeWidth, y + ui.shadeWidth, ui.iconWidth - ui.shadeWidth * 2 - 1,
-                        ui.iconHeight - ui.shadeWidth * 2 - 1 );
-                RoundRectangle2D shape =
-                        new RoundRectangle2D.Double ( iconRect.x, iconRect.y, iconRect.width, iconRect.height, ui.round * 2, ui.round * 2 );
-
-                // Shade
-                if ( c.isEnabled () )
-                {
-                    LafUtils.drawShade ( g2d, shape,
-                            c.isEnabled () && c.isFocusOwner () ? StyleConstants.fieldFocusColor : StyleConstants.shadeColor,
-                            ui.shadeWidth );
-                }
-
-                // Background
-                int radius = Math.round ( ( float ) Math.sqrt ( iconRect.width * iconRect.width / 2 ) );
-                g2d.setPaint ( new RadialGradientPaint ( iconRect.x + iconRect.width / 2, iconRect.y + iconRect.height / 2, radius,
-                        new float[]{ 0f, 1f }, ui.getBgColors ( checkBox ) ) );
-                g2d.fill ( shape );
-
-                // Border
-                Stroke os = LafUtils.setupStroke ( g2d, ui.borderStroke );
-                g2d.setPaint ( c.isEnabled () ? ( ui.rolloverDarkBorderOnly ?
-                        ColorUtils.getIntermediateColor ( ui.borderColor, ui.darkBorderColor, ui.getProgress () ) : ui.darkBorderColor ) :
-                        ui.disabledBorderColor );
-                g2d.draw ( shape );
-                LafUtils.restoreStroke ( g2d, os );
-
-                // Check icon
-                if ( ui.checkIcon > 0 )
-                {
-                    // todo For tristate checkbox
-                    // Composite oc = LafUtils.setupAlphaComposite ( g2d, ( float ) ui.checkIcon / 4 );
-                    // g2d.setPaint ( new Color ( 31, 67, 97 ) );
-                    // g2d.fill ( LafUtils.createRoundedRectShape ( iconRect.x + 3, iconRect.y + 3, iconRect.width - 5, iconRect.height - 5, 2, 2 ) );
-                    // LafUtils.restoreComposite ( g2d, oc );
-
-                    ImageIcon icon = checkBox.isEnabled () ? CHECK_STATES.get ( ui.checkIcon ) : DISABLED_CHECK;
-                    g2d.drawImage ( icon.getImage (), x + ui.iconWidth / 2 - icon.getIconWidth () / 2,
-                            y + ui.iconHeight / 2 - icon.getIconHeight () / 2, checkBox );
-                }
-
-                LafUtils.restoreAntialias ( g2d, aa );
-            }
-
-            @Override
-            public int getIconWidth ()
-            {
-                return iconWidth;
-            }
-
-            @Override
-            public int getIconHeight ()
-            {
-                return iconHeight;
-            }
-        };
-    }
-
-    private Color[] getBgColors ( JCheckBox checkBox )
+    /**
+     * Returns background colors.
+     *
+     * @return background colors
+     */
+    protected Color[] getBgColors ()
     {
         if ( checkBox.isEnabled () )
         {
-            float progress = getProgress ();
-            if ( progress < 1f )
+            float darkness = getBgDarkness ();
+            if ( darkness < 1f )
             {
-                return new Color[]{ ColorUtils.getIntermediateColor ( topBgColor, topSelectedBgColor, progress ),
-                        ColorUtils.getIntermediateColor ( bottomBgColor, bottomSelectedBgColor, progress ) };
+                return new Color[]{ ColorUtils.getIntermediateColor ( topBgColor, topSelectedBgColor, darkness ),
+                        ColorUtils.getIntermediateColor ( bottomBgColor, bottomSelectedBgColor, darkness ) };
             }
             else
             {
@@ -519,36 +712,122 @@ public class WebCheckBoxUI extends BasicCheckBoxUI implements ShapeProvider
         }
     }
 
-    private float getProgress ()
+    /**
+     * Returns background darkness.
+     *
+     * @return background darkness
+     */
+    protected float getBgDarkness ()
     {
         return ( float ) bgDarkness / MAX_DARKNESS;
     }
 
+    /**
+     * Returns icon bounds.
+     *
+     * @return icon bounds
+     */
     public Rectangle getIconRect ()
     {
         return iconRect != null ? new Rectangle ( iconRect ) : new Rectangle ();
     }
 
-    public void setIconRect ( Rectangle iconRect )
-    {
-        this.iconRect = iconRect;
-    }
-
+    /**
+     * Paints checkbox.
+     *
+     * @param g graphics context
+     * @param c painted component
+     */
     @Override
-    public synchronized void paint ( Graphics g, JComponent c )
+    public synchronized void paint ( final Graphics g, final JComponent c )
     {
-        Map hints = SwingUtils.setupTextAntialias ( g );
+        final Map hints = SwingUtils.setupTextAntialias ( g );
         super.paint ( g, c );
         SwingUtils.restoreTextAntialias ( g, hints );
     }
 
-    @Override
-    protected void paintText ( Graphics g, JComponent c, Rectangle textRect, String text )
+    /**
+     * Paints checkbox icon.
+     *
+     * @param g2d 2D graphics context
+     * @param x   icon location X coordinate
+     * @param y   icon location Y coordinate
+     */
+    protected void paintIcon ( final Graphics2D g2d, final int x, final int y )
     {
-        AbstractButton b = ( AbstractButton ) c;
-        ButtonModel model = b.getModel ();
-        FontMetrics fm = SwingUtils.getFontMetrics ( c, g );
-        int mnemonicIndex = b.getDisplayedMnemonicIndex ();
+        // Icon background
+        paintIconBackground ( g2d, x, y );
+
+        // Check icon
+        paintCheckIcon ( g2d, x, y );
+    }
+
+    /**
+     * Paints checkbox icon background.
+     *
+     * @param g2d 2D graphics context
+     * @param x   icon location X coordinate
+     * @param y   icon location Y coordinate
+     */
+    protected void paintIconBackground ( final Graphics2D g2d, final int x, final int y )
+    {
+        final boolean enabled = checkBox.isEnabled ();
+
+        // Button size and shape
+        final Rectangle iconRect =
+                new Rectangle ( x + shadeWidth, y + shadeWidth, iconWidth - shadeWidth * 2 - 1, iconHeight - shadeWidth * 2 - 1 );
+        final RoundRectangle2D shape =
+                new RoundRectangle2D.Double ( iconRect.x, iconRect.y, iconRect.width, iconRect.height, round * 2, round * 2 );
+
+        // Shade
+        if ( enabled )
+        {
+            final Color shadeColor = checkBox.isFocusOwner () ? StyleConstants.fieldFocusColor : StyleConstants.shadeColor;
+            LafUtils.drawShade ( g2d, shape, shadeColor, shadeWidth );
+        }
+
+        // Background
+        final int radius = Math.round ( ( float ) Math.sqrt ( iconRect.width * iconRect.width / 2 ) );
+        final int cx = iconRect.x + iconRect.width / 2;
+        final int cy = iconRect.y + iconRect.height / 2;
+        g2d.setPaint ( new RadialGradientPaint ( cx, cy, radius, fractions, getBgColors () ) );
+        g2d.fill ( shape );
+
+        // Border
+        final Stroke os = LafUtils.setupStroke ( g2d, borderStroke );
+        g2d.setPaint ( enabled ?
+                ( rolloverDarkBorderOnly ? ColorUtils.getIntermediateColor ( borderColor, darkBorderColor, getBgDarkness () ) :
+                        darkBorderColor ) : disabledBorderColor );
+        g2d.draw ( shape );
+        LafUtils.restoreStroke ( g2d, os );
+    }
+
+    /**
+     * Paints checkbox check icon.
+     *
+     * @param g2d 2D graphics context
+     * @param x   icon location X coordinate
+     * @param y   icon location Y coordinate
+     */
+    protected void paintCheckIcon ( final Graphics2D g2d, final int x, final int y )
+    {
+        checkIcon.paintIcon ( checkBox, g2d, x, y, iconWidth, iconHeight );
+    }
+
+    /**
+     * Paints checkbox text.
+     *
+     * @param g        graphics context
+     * @param b        abstract button
+     * @param textRect text bounds
+     * @param text     text to be painted
+     */
+    @Override
+    protected void paintText ( final Graphics g, final AbstractButton b, final Rectangle textRect, final String text )
+    {
+        final ButtonModel model = b.getModel ();
+        final FontMetrics fm = SwingUtils.getFontMetrics ( b, g );
+        final int mnemonicIndex = b.getDisplayedMnemonicIndex ();
 
         // Drawing text
         if ( model.isEnabled () )
@@ -565,6 +844,46 @@ public class WebCheckBoxUI extends BasicCheckBoxUI implements ShapeProvider
             SwingUtils.drawStringUnderlineCharAt ( g, text, mnemonicIndex, textRect.x, textRect.y + fm.getAscent () );
             g.setColor ( b.getBackground ().darker () );
             SwingUtils.drawStringUnderlineCharAt ( g, text, mnemonicIndex, textRect.x - 1, textRect.y + fm.getAscent () - 1 );
+        }
+    }
+
+    /**
+     * Custom icon for tristate checkbox.
+     */
+    protected class CheckBoxIcon implements Icon
+    {
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void paintIcon ( final Component c, final Graphics g, final int x, final int y )
+        {
+            // Updating actual icon rect
+            iconRect = new Rectangle ( x, y, iconWidth, iconHeight );
+
+            // Painting checkbox icon
+            final Graphics2D g2d = ( Graphics2D ) g;
+            final Object aa = LafUtils.setupAntialias ( g2d );
+            WebCheckBoxUI.this.paintIcon ( g2d, x, y );
+            LafUtils.restoreAntialias ( g2d, aa );
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public int getIconWidth ()
+        {
+            return WebCheckBoxUI.this.getIconWidth ();
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public int getIconHeight ()
+        {
+            return WebCheckBoxUI.this.getIconHeight ();
         }
     }
 }

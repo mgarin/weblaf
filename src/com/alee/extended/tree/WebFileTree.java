@@ -71,7 +71,7 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
      *
      * @param rootType file tree root type
      */
-    public WebFileTree ( FileTreeRootType rootType )
+    public WebFileTree ( final FileTreeRootType rootType )
     {
         this ( rootType.getRoots () );
     }
@@ -81,7 +81,7 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
      *
      * @param rootPath path to root file
      */
-    public WebFileTree ( String rootPath )
+    public WebFileTree ( final String rootPath )
     {
         this ( new File ( rootPath ) );
     }
@@ -91,7 +91,7 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
      *
      * @param rootFiles root files
      */
-    public WebFileTree ( File... rootFiles )
+    public WebFileTree ( final File... rootFiles )
     {
         this ( CollectionUtils.copy ( rootFiles ) );
     }
@@ -101,7 +101,7 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
      *
      * @param rootFiles root files
      */
-    public WebFileTree ( List<File> rootFiles )
+    public WebFileTree ( final List<File> rootFiles )
     {
         super ( new FileTreeDataProvider ( rootFiles ) );
 
@@ -128,12 +128,12 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
      * {@inheritDoc}
      */
     @Override
-    public void setModel ( TreeModel newModel )
+    public void setModel ( final TreeModel newModel )
     {
         // Disable asynchronous loading for the model installation time
         // This made to load initial data without delay using EDT
         // This is some kind of workaround for file chooser to allow it proper file expansion on first load
-        boolean async = isAsyncLoading ();
+        final boolean async = isAsyncLoading ();
         setAsyncLoading ( false );
         super.setModel ( newModel );
         setAsyncLoading ( async );
@@ -157,7 +157,7 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
                 }
 
                 @Override
-                protected boolean filesImported ( List<File> files )
+                protected boolean filesImported ( final List<File> files )
                 {
                     // Selecting dragged files in tree
                     if ( files.size () > 0 )
@@ -187,7 +187,7 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
      *
      * @param filesDropSearchEnabled whether files search by dropping system files on the tree enabled or not
      */
-    public void setFilesDropSearchEnabled ( boolean filesDropSearchEnabled )
+    public void setFilesDropSearchEnabled ( final boolean filesDropSearchEnabled )
     {
         this.filesDropSearchEnabled = filesDropSearchEnabled;
 
@@ -218,7 +218,7 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
      *
      * @param filter new files filter
      */
-    public void setFileFilter ( Filter<File> filter )
+    public void setFileFilter ( final Filter<File> filter )
     {
         // We don't update old FileTreeNodeFilter with new file filter as this will force us to manually update tree
         // So we simply create and set new FileTreeNodeFilter so that model can handle filter change and upate the tree
@@ -230,7 +230,7 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
      *
      * @param rootName new root name
      */
-    public void setRootName ( String rootName )
+    public void setRootName ( final String rootName )
     {
         final FileTreeNode rootNode = getRootNode ();
         rootNode.setName ( rootName );
@@ -243,7 +243,7 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
      *
      * @param file file to select
      */
-    public void setSelectedFile ( File file )
+    public void setSelectedFile ( final File file )
     {
         setSelectedFile ( file, false );
     }
@@ -255,7 +255,7 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
      * @param file   file to select
      * @param expand whether to expand selected file or not
      */
-    public void setSelectedFile ( File file, final boolean expand )
+    public void setSelectedFile ( final File file, final boolean expand )
     {
         expandToFile ( file, true, expand );
     }
@@ -266,7 +266,7 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
      *
      * @param file file to expand
      */
-    public void expandFile ( File file )
+    public void expandFile ( final File file )
     {
         expandToFile ( file, false, true );
     }
@@ -277,7 +277,7 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
      *
      * @param file file to expand tree sctructure to
      */
-    public void expandToFile ( File file )
+    public void expandToFile ( final File file )
     {
         expandToFile ( file, false, false );
     }
@@ -289,7 +289,7 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
      * @param file   file to expand tree sctructure to
      * @param select whether to select file or not
      */
-    public void expandToFile ( File file, final boolean select )
+    public void expandToFile ( final File file, final boolean select )
     {
         expandToFile ( file, select, false );
     }
@@ -302,7 +302,7 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
      * @param select whether to select file or not
      * @param expand whether to expand file or not
      */
-    public void expandToFile ( File file, final boolean select, final boolean expand )
+    public void expandToFile ( final File file, final boolean select, final boolean expand )
     {
         expandToFile ( file, select, expand, null );
     }
@@ -316,7 +316,7 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
      * @param expand whether to expand file or not
      */
     // todo Replace Runnable with listener (nodeExpanded, beforeSelection, afterSelection, completed)
-    public void expandToFile ( File file, final boolean select, final boolean expand, final Runnable finalAction )
+    public void expandToFile ( final File file, final boolean select, final boolean expand, final Runnable finalAction )
     {
         if ( file != null )
         {
@@ -367,7 +367,7 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
                         private FileTreeNode lastNode = node;
 
                         @Override
-                        public void childsLoadCompleted ( FileTreeNode parent, List<FileTreeNode> childs )
+                        public void childsLoadCompleted ( final FileTreeNode parent, final List<FileTreeNode> childs )
                         {
                             if ( parent == lastNode )
                             {
@@ -445,12 +445,12 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
      * @param node   node to select
      * @param expand should expand the node
      */
-    protected void performFileSelection ( FileTreeNode node, boolean expand )
+    protected void performFileSelection ( final FileTreeNode node, final boolean expand )
     {
         try
         {
             // Selecting node
-            TreePath path = node.getTreePath ();
+            final TreePath path = node.getTreePath ();
             setSelectionPath ( path );
 
             // Expanding if requested
@@ -464,11 +464,11 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
 
                 // todo Use a better view rect?
                 // Scrolling view to node childs
-                Rectangle pathBounds = getPathBounds ( path );
+                final Rectangle pathBounds = getPathBounds ( path );
                 if ( pathBounds != null )
                 {
-                    Rectangle vr = getVisibleRect ();
-                    Rectangle rect = new Rectangle ( vr.x, pathBounds.y, vr.width, vr.height );
+                    final Rectangle vr = getVisibleRect ();
+                    final Rectangle rect = new Rectangle ( vr.x, pathBounds.y, vr.width, vr.height );
                     scrollRectToVisible ( rect );
                 }
             }
@@ -479,7 +479,7 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
                 scrollPathToVisible ( path );
             }
         }
-        catch ( Throwable e )
+        catch ( final Throwable e )
         {
             e.printStackTrace ();
         }
@@ -503,10 +503,10 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
      */
     public List<File> getSelectedFiles ()
     {
-        List<File> selectedFiles = new ArrayList<File> ();
+        final List<File> selectedFiles = new ArrayList<File> ();
         if ( getSelectionPaths () != null )
         {
-            for ( TreePath path : getSelectionPaths () )
+            for ( final TreePath path : getSelectionPaths () )
             {
                 selectedFiles.add ( getNodeForPath ( path ).getFile () );
             }
@@ -522,10 +522,10 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
     @Override
     public List<FileTreeNode> getSelectedNodes ()
     {
-        List<FileTreeNode> selectedNodes = new ArrayList<FileTreeNode> ();
+        final List<FileTreeNode> selectedNodes = new ArrayList<FileTreeNode> ();
         if ( getSelectionPaths () != null )
         {
-            for ( TreePath path : getSelectionPaths () )
+            for ( final TreePath path : getSelectionPaths () )
             {
                 selectedNodes.add ( getNodeForPath ( path ) );
             }
@@ -541,7 +541,7 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
      * @param file   added file
      * @return true if tree structure was changed by the operation, false otherwise
      */
-    public boolean addFile ( File parent, File file )
+    public boolean addFile ( final File parent, final File file )
     {
         return addFiles ( parent, file );
     }
@@ -554,7 +554,7 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
      * @param file       added file
      * @return true if tree structure was changed by the operation, false otherwise
      */
-    public boolean addFile ( FileTreeNode parentNode, File file )
+    public boolean addFile ( final FileTreeNode parentNode, final File file )
     {
         return addFiles ( parentNode, file );
     }
@@ -567,7 +567,7 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
      * @param files  added files
      * @return true if tree structure was changed by the operation, false otherwise
      */
-    public boolean addFiles ( File parent, File... files )
+    public boolean addFiles ( final File parent, final File... files )
     {
         return addFiles ( parent, CollectionUtils.copy ( files ) );
     }
@@ -580,7 +580,7 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
      * @param files      added files
      * @return true if tree structure was changed by the operation, false otherwise
      */
-    public boolean addFiles ( FileTreeNode parentNode, File... files )
+    public boolean addFiles ( final FileTreeNode parentNode, final File... files )
     {
         return addFiles ( parentNode, CollectionUtils.copy ( files ) );
     }
@@ -593,10 +593,10 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
      * @param files  added files
      * @return true if tree structure was changed by the operation, false otherwise
      */
-    public boolean addFiles ( File parent, List<File> files )
+    public boolean addFiles ( final File parent, final List<File> files )
     {
         // Checking that node for the file exists
-        FileTreeNode parentNode = getNode ( parent );
+        final FileTreeNode parentNode = getNode ( parent );
         return parentNode != null && addFiles ( parentNode, files );
     }
 
@@ -608,12 +608,12 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
      * @param files      added files
      * @return true if tree structure was changed by the operation, false otherwise
      */
-    public boolean addFiles ( FileTreeNode parentNode, List<File> files )
+    public boolean addFiles ( final FileTreeNode parentNode, final List<File> files )
     {
         if ( hasBeenExpanded ( getPathForNode ( parentNode ) ) )
         {
-            List<FileTreeNode> childNodes = new ArrayList<FileTreeNode> ( files.size () );
-            for ( File file : files )
+            final List<FileTreeNode> childNodes = new ArrayList<FileTreeNode> ( files.size () );
+            for ( final File file : files )
             {
                 childNodes.add ( new FileTreeNode ( file ) );
             }
@@ -633,7 +633,7 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
      * @param file removed file
      * @return true if tree structure was changed by the operation, false otherwise
      */
-    public boolean removeFile ( File file )
+    public boolean removeFile ( final File file )
     {
         return removeNode ( getNode ( file ) );
     }
@@ -645,11 +645,11 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
      * @param files removed files
      * @return true if tree structure was changed by the operation, false otherwise
      */
-    public boolean removeFiles ( File... files )
+    public boolean removeFiles ( final File... files )
     {
         // todo Optimize (multi-node delete method in model)
         boolean changed = false;
-        for ( File file : files )
+        for ( final File file : files )
         {
             changed |= removeFile ( file );
         }
@@ -663,10 +663,10 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
      * @param files removed files
      * @return true if tree structure was changed by the operation, false otherwise
      */
-    public boolean removeFiles ( List<File> files )
+    public boolean removeFiles ( final List<File> files )
     {
         boolean changed = false;
-        for ( File file : files )
+        for ( final File file : files )
         {
             changed |= removeFile ( file );
         }
@@ -709,9 +709,9 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
      * @param node node
      * @return files from node childs
      */
-    public List<File> getFileChilds ( FileTreeNode node )
+    public List<File> getFileChilds ( final FileTreeNode node )
     {
-        List<File> files = new ArrayList<File> ();
+        final List<File> files = new ArrayList<File> ();
         for ( int i = 0; i < node.getChildCount (); i++ )
         {
             files.add ( node.getChildAt ( i ).getFile () );
@@ -726,9 +726,9 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
      * @param file file to search for
      * @return file node
      */
-    public FileTreeNode getNode ( File file )
+    public FileTreeNode getNode ( final File file )
     {
-        FileTreeNode node = getClosestNode ( file );
+        final FileTreeNode node = getClosestNode ( file );
         return node != null && FileUtils.equals ( file, node.getFile () ) ? node : null;
     }
 
@@ -739,7 +739,7 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
      * @param file file to look for
      * @return closest to file node
      */
-    public FileTreeNode getClosestNode ( File file )
+    public FileTreeNode getClosestNode ( final File file )
     {
         return getClosestNode ( ( FileTreeNode ) getModel ().getRoot (), FileUtils.getFilePath ( file ) );
     }
@@ -752,7 +752,7 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
      * @param path path of the file to look for
      * @return closest to file node
      */
-    protected FileTreeNode getClosestNode ( FileTreeNode node, List<File> path )
+    protected FileTreeNode getClosestNode ( final FileTreeNode node, final List<File> path )
     {
         // Check if this file is part of the file path
         final File file = node.getFile ();
@@ -761,7 +761,7 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
             if ( path.contains ( file ) )
             {
                 // Filter out upper levels of path
-                int index = path.indexOf ( file );
+                final int index = path.indexOf ( file );
                 for ( int i = index; i >= 0; i-- )
                 {
                     path.remove ( i );
@@ -775,7 +775,7 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
         // Check child nodes
         for ( int i = 0; i < node.getChildCount (); i++ )
         {
-            FileTreeNode found = getClosestNode ( node.getChildAt ( i ), path );
+            final FileTreeNode found = getClosestNode ( node.getChildAt ( i ), path );
             if ( found != null )
             {
                 return found;
@@ -793,13 +793,13 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
      * @param path     files path
      * @return deepest path node available
      */
-    protected FileTreeNode getDeepestPathNode ( FileTreeNode pathNode, List<File> path )
+    protected FileTreeNode getDeepestPathNode ( final FileTreeNode pathNode, final List<File> path )
     {
         if ( path.size () > 0 )
         {
             for ( int i = 0; i < pathNode.getChildCount (); i++ )
             {
-                FileTreeNode child = pathNode.getChildAt ( i );
+                final FileTreeNode child = pathNode.getChildAt ( i );
                 if ( child.getFile ().equals ( path.get ( 0 ) ) )
                 {
                     path.remove ( 0 );
@@ -816,7 +816,7 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
      *
      * @param folder folder to reload childs for
      */
-    public void reloadChildsSync ( File folder )
+    public void reloadChildsSync ( final File folder )
     {
         reloadChildsSync ( folder, false );
     }
@@ -828,9 +828,9 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
      * @param folder folder to reload childs for
      * @param select whether select folder node or not
      */
-    public void reloadChildsSync ( File folder, boolean select )
+    public void reloadChildsSync ( final File folder, final boolean select )
     {
-        FileTreeNode node = getNode ( folder );
+        final FileTreeNode node = getNode ( folder );
         if ( node != null )
         {
             reloadNodeSync ( node, select );
@@ -842,7 +842,7 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
      *
      * @param folder folder to reload childs for
      */
-    public void reloadChilds ( File folder )
+    public void reloadChilds ( final File folder )
     {
         reloadChilds ( folder, false );
     }
@@ -853,9 +853,9 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
      * @param folder folder to reload childs for
      * @param select whether select folder node or not
      */
-    public void reloadChilds ( File folder, boolean select )
+    public void reloadChilds ( final File folder, final boolean select )
     {
-        FileTreeNode node = getNode ( folder );
+        final FileTreeNode node = getNode ( folder );
         if ( node != null )
         {
             reloadNode ( node, select );

@@ -44,7 +44,7 @@ public class NodeImageObserver implements ImageObserver
      * @param tree asynchronous tree
      * @param node observed node
      */
-    public NodeImageObserver ( WebAsyncTree tree, AsyncUniqueNode node )
+    public NodeImageObserver ( final WebAsyncTree tree, final AsyncUniqueNode node )
     {
         this.tree = tree;
         this.node = node;
@@ -62,7 +62,7 @@ public class NodeImageObserver implements ImageObserver
      * @return false if the infoflags indicate that the image is completely loaded, true otherwise
      */
     @Override
-    public boolean imageUpdate ( Image img, int flags, int x, int y, int w, int h )
+    public boolean imageUpdate ( final Image img, final int flags, final int x, final int y, final int w, final int h )
     {
         if ( node.isBusy () && ( flags & ( FRAMEBITS | ALLBITS ) ) != 0 )
         {

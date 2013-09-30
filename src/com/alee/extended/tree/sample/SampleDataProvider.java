@@ -40,7 +40,6 @@ public class SampleDataProvider extends AbstractTreeDataProvider<SampleNode>
     @Override
     public SampleNode getRoot ()
     {
-        // Custom root node
         return new SampleNode ( "Root", SampleNodeType.root );
     }
 
@@ -51,7 +50,7 @@ public class SampleDataProvider extends AbstractTreeDataProvider<SampleNode>
      * @return list of child nodes
      */
     @Override
-    public List<SampleNode> getChilds ( SampleNode parent )
+    public List<SampleNode> getChilds ( final SampleNode parent )
     {
         // Sample loading delay to see the loader in progress
         parent.setTime ( 0 );
@@ -86,14 +85,14 @@ public class SampleDataProvider extends AbstractTreeDataProvider<SampleNode>
 
     /**
      * Returns whether the specified sample node is leaf or not.
+     * Simply checks the node type to determine if it is leaf or not.
      *
      * @param node node
      * @return true if the specified node is leaf, false otherwise
      */
     @Override
-    public boolean isLeaf ( SampleNode node )
+    public boolean isLeaf ( final SampleNode node )
     {
-        // Simply check the node type to determine if it is leaf or not
         return node.getType ().equals ( SampleNodeType.leaf );
     }
 }

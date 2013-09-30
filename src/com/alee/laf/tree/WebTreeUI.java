@@ -17,6 +17,7 @@
 
 package com.alee.laf.tree;
 
+import com.alee.extended.tree.WebCheckBoxTree;
 import com.alee.laf.StyleConstants;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.utils.*;
@@ -104,8 +105,8 @@ public class WebTreeUI extends BasicTreeUI
      * @param c component that will use UI instance
      * @return instance of the WebTreeUI
      */
-    @SuppressWarnings ("UnusedParameters")
-    public static ComponentUI createUI ( JComponent c )
+    @SuppressWarnings ( "UnusedParameters" )
+    public static ComponentUI createUI ( final JComponent c )
     {
         return new WebTreeUI ();
     }
@@ -116,7 +117,7 @@ public class WebTreeUI extends BasicTreeUI
      * @param c component for this UI
      */
     @Override
-    public void installUI ( JComponent c )
+    public void installUI ( final JComponent c )
     {
         super.installUI ( c );
 
@@ -131,7 +132,7 @@ public class WebTreeUI extends BasicTreeUI
         propertyChangeListener = new PropertyChangeListener ()
         {
             @Override
-            public void propertyChange ( PropertyChangeEvent evt )
+            public void propertyChange ( final PropertyChangeEvent evt )
             {
                 ltr = tree.getComponentOrientation ().isLeftToRight ();
             }
@@ -142,7 +143,7 @@ public class WebTreeUI extends BasicTreeUI
         treeSelectionListener = new TreeSelectionListener ()
         {
             @Override
-            public void valueChanged ( TreeSelectionEvent e )
+            public void valueChanged ( final TreeSelectionEvent e )
             {
                 // Optimized selection repaint
                 repaintSelection ();
@@ -160,13 +161,13 @@ public class WebTreeUI extends BasicTreeUI
         treeExpansionListener = new TreeExpansionListener ()
         {
             @Override
-            public void treeExpanded ( TreeExpansionEvent event )
+            public void treeExpanded ( final TreeExpansionEvent event )
             {
                 repaintSelection ();
             }
 
             @Override
-            public void treeCollapsed ( TreeExpansionEvent event )
+            public void treeCollapsed ( final TreeExpansionEvent event )
             {
                 repaintSelection ();
             }
@@ -177,7 +178,7 @@ public class WebTreeUI extends BasicTreeUI
         mouseAdapter = new MouseAdapter ()
         {
             @Override
-            public void mousePressed ( MouseEvent e )
+            public void mousePressed ( final MouseEvent e )
             {
                 // Only left mouse button events
                 if ( SwingUtilities.isLeftMouseButton ( e ) )
@@ -188,8 +189,9 @@ public class WebTreeUI extends BasicTreeUI
                         if ( isSelectorAvailable () )
                         {
                             // Avoiding selection start when pressed on tree expand handle
-                            TreePath path = getClosestPathForLocation ( tree, e.getX (), e.getY () );
-                            if ( !isLocationInExpandControl ( path, e.getX (), e.getY () ) )
+                            final TreePath path = getClosestPathForLocation ( tree, e.getX (), e.getY () );
+                            if ( !isLocationInExpandControl ( path, e.getX (), e.getY () ) &&
+                                    !isLocationInCheckBoxControl ( path, e.getX (), e.getY () ) )
                             {
                                 // Selection
                                 selectionStart = e.getPoint ();
@@ -208,8 +210,9 @@ public class WebTreeUI extends BasicTreeUI
                         else if ( isFullLineSelection () )
                         {
                             // Avoiding selection start when pressed on tree expand handle
-                            TreePath path = getClosestPathForLocation ( tree, e.getX (), e.getY () );
-                            if ( !isLocationInExpandControl ( path, e.getX (), e.getY () ) )
+                            final TreePath path = getClosestPathForLocation ( tree, e.getX (), e.getY () );
+                            if ( !isLocationInExpandControl ( path, e.getX (), e.getY () ) &&
+                                    !isLocationInCheckBoxControl ( path, e.getX (), e.getY () ) )
                             {
                                 if ( tree.getSelectionModel ().getSelectionMode () == TreeSelectionModel.SINGLE_TREE_SELECTION )
                                 {
@@ -223,7 +226,7 @@ public class WebTreeUI extends BasicTreeUI
             }
 
             @Override
-            public void mouseDragged ( MouseEvent e )
+            public void mouseDragged ( final MouseEvent e )
             {
                 if ( isSelectorAvailable () && selectionStart != null )
                 {
@@ -244,7 +247,7 @@ public class WebTreeUI extends BasicTreeUI
             }
 
             @Override
-            public void mouseReleased ( MouseEvent e )
+            public void mouseReleased ( final MouseEvent e )
             {
                 if ( isSelectorAvailable () && selectionStart != null )
                 {
@@ -260,18 +263,17 @@ public class WebTreeUI extends BasicTreeUI
                 }
             }
 
-            private void validateSelection ( MouseEvent e )
+            private void validateSelection ( final MouseEvent e )
             {
                 // todo Possibly optimize selection? - modify it instead of overwriting each time
 
                 // Selection rect
-                Rectangle selection = GeometryUtils.getContainingRect ( selectionStart, selectionEnd );
+                final Rectangle selection = GeometryUtils.getContainingRect ( selectionStart, selectionEnd );
 
                 // Compute new selection
-                List<Integer> newSelection = new ArrayList<Integer> ();
+                final List<Integer> newSelection = new ArrayList<Integer> ();
                 if ( SwingUtils.isShift ( e ) )
                 {
-
                     for ( int row = 0; row < tree.getRowCount (); row++ )
                     {
                         if ( getRowBounds ( row ).intersects ( selection ) && !initialSelection.contains ( row ) )
@@ -279,14 +281,14 @@ public class WebTreeUI extends BasicTreeUI
                             newSelection.add ( row );
                         }
                     }
-                    for ( int row : initialSelection )
+                    for ( final int row : initialSelection )
                     {
                         newSelection.add ( row );
                     }
                 }
                 else if ( SwingUtils.isCtrl ( e ) )
                 {
-                    List<Integer> excludedRows = new ArrayList<Integer> ();
+                    final List<Integer> excludedRows = new ArrayList<Integer> ();
                     for ( int row = 0; row < tree.getRowCount (); row++ )
                     {
                         if ( getRowBounds ( row ).intersects ( selection ) )
@@ -301,7 +303,7 @@ public class WebTreeUI extends BasicTreeUI
                             }
                         }
                     }
-                    for ( int row : initialSelection )
+                    for ( final int row : initialSelection )
                     {
                         if ( !excludedRows.contains ( row ) )
                         {
@@ -336,11 +338,11 @@ public class WebTreeUI extends BasicTreeUI
 
             private List<Integer> getSelectionRowsList ()
             {
-                List<Integer> selection = new ArrayList<Integer> ();
+                final List<Integer> selection = new ArrayList<Integer> ();
                 final int[] selectionRows = tree.getSelectionRows ();
                 if ( selectionRows != null )
                 {
-                    for ( int row : selectionRows )
+                    for ( final int row : selectionRows )
                     {
                         selection.add ( row );
                     }
@@ -358,7 +360,7 @@ public class WebTreeUI extends BasicTreeUI
                 //                repaintSelector ( GeometryUtils.getContainingRect ( sb1, sb2 ) );
 
                 // Replaced with full repaint due to strange tree lines painting bug
-                tree.repaint ();
+                tree.repaint ( tree.getVisibleRect () );
             }
 
             //            private void repaintSelector ( Rectangle fr )
@@ -377,19 +379,19 @@ public class WebTreeUI extends BasicTreeUI
             //            }
 
             @Override
-            public void mouseEntered ( MouseEvent e )
+            public void mouseEntered ( final MouseEvent e )
             {
                 updateMouseover ( e );
             }
 
             @Override
-            public void mouseExited ( MouseEvent e )
+            public void mouseExited ( final MouseEvent e )
             {
                 clearMouseover ();
             }
 
             @Override
-            public void mouseMoved ( MouseEvent e )
+            public void mouseMoved ( final MouseEvent e )
             {
                 updateMouseover ( e );
             }
@@ -398,10 +400,10 @@ public class WebTreeUI extends BasicTreeUI
             {
                 if ( tree.isEnabled () && highlightRolloverNode )
                 {
-                    int index = getRowForPoint ( e.getPoint () );
+                    final int index = getRowForPoint ( e.getPoint () );
                     if ( rolloverRow != index )
                     {
-                        int oldRollover = rolloverRow;
+                        final int oldRollover = rolloverRow;
                         rolloverRow = index;
                         updateRow ( index );
                         updateRow ( oldRollover );
@@ -415,16 +417,16 @@ public class WebTreeUI extends BasicTreeUI
 
             private void clearMouseover ()
             {
-                int oldRollover = rolloverRow;
+                final int oldRollover = rolloverRow;
                 rolloverRow = -1;
                 updateRow ( oldRollover );
             }
 
-            private void updateRow ( int row )
+            private void updateRow ( final int row )
             {
                 if ( row != -1 )
                 {
-                    Rectangle rowBounds = getFullRowBounds ( row );
+                    final Rectangle rowBounds = getFullRowBounds ( row );
                     if ( rowBounds != null )
                     {
                         tree.repaint ( rowBounds );
@@ -442,7 +444,7 @@ public class WebTreeUI extends BasicTreeUI
      * @param c component with this UI
      */
     @Override
-    public void uninstallUI ( JComponent c )
+    public void uninstallUI ( final JComponent c )
     {
         tree.removePropertyChangeListener ( WebLookAndFeel.COMPONENT_ORIENTATION_PROPERTY, propertyChangeListener );
         tree.removeTreeSelectionListener ( treeSelectionListener );
@@ -468,7 +470,7 @@ public class WebTreeUI extends BasicTreeUI
      *
      * @param autoExpandSelectedNode whether tree should expand nodes on selection or not
      */
-    public void setAutoExpandSelectedNode ( boolean autoExpandSelectedNode )
+    public void setAutoExpandSelectedNode ( final boolean autoExpandSelectedNode )
     {
         this.autoExpandSelectedNode = autoExpandSelectedNode;
     }
@@ -488,7 +490,7 @@ public class WebTreeUI extends BasicTreeUI
      *
      * @param highlight whether tree should highlight rollover node or not
      */
-    public void setHighlightRolloverNode ( boolean highlight )
+    public void setHighlightRolloverNode ( final boolean highlight )
     {
         this.highlightRolloverNode = highlight;
     }
@@ -508,7 +510,7 @@ public class WebTreeUI extends BasicTreeUI
      *
      * @param paint whether tree should paint structure lines or not
      */
-    public void setPaintLines ( boolean paint )
+    public void setPaintLines ( final boolean paint )
     {
         this.paintLines = paint;
     }
@@ -528,7 +530,7 @@ public class WebTreeUI extends BasicTreeUI
      *
      * @param color tree structure lines color
      */
-    public void setLinesColor ( Color color )
+    public void setLinesColor ( final Color color )
     {
         this.linesColor = color;
     }
@@ -548,7 +550,7 @@ public class WebTreeUI extends BasicTreeUI
      *
      * @param style tree selection style
      */
-    public void setSelectionStyle ( TreeSelectionStyle style )
+    public void setSelectionStyle ( final TreeSelectionStyle style )
     {
         this.selectionStyle = style;
     }
@@ -568,7 +570,7 @@ public class WebTreeUI extends BasicTreeUI
      *
      * @param round tree selection rounding
      */
-    public void setSelectionRound ( int round )
+    public void setSelectionRound ( final int round )
     {
         this.selectionRound = round;
     }
@@ -588,7 +590,7 @@ public class WebTreeUI extends BasicTreeUI
      *
      * @param shadeWidth tree selection shade width
      */
-    public void setSelectionShadeWidth ( int shadeWidth )
+    public void setSelectionShadeWidth ( final int shadeWidth )
     {
         this.selectionShadeWidth = shadeWidth;
     }
@@ -608,7 +610,7 @@ public class WebTreeUI extends BasicTreeUI
      *
      * @param enabled whether selector is enabled or not
      */
-    public void setSelectorEnabled ( boolean enabled )
+    public void setSelectorEnabled ( final boolean enabled )
     {
         this.selectorEnabled = enabled;
     }
@@ -628,7 +630,7 @@ public class WebTreeUI extends BasicTreeUI
      *
      * @param color selector color
      */
-    public void setSelectorColor ( Color color )
+    public void setSelectorColor ( final Color color )
     {
         this.selectorColor = color;
     }
@@ -648,7 +650,7 @@ public class WebTreeUI extends BasicTreeUI
      *
      * @param color selector border color
      */
-    public void setSelectorBorderColor ( Color color )
+    public void setSelectorBorderColor ( final Color color )
     {
         this.selectorBorderColor = color;
     }
@@ -668,7 +670,7 @@ public class WebTreeUI extends BasicTreeUI
      *
      * @param round selector rounding
      */
-    public void setSelectorRound ( int round )
+    public void setSelectorRound ( final int round )
     {
         this.selectorRound = round;
     }
@@ -688,7 +690,7 @@ public class WebTreeUI extends BasicTreeUI
      *
      * @param stroke selector border stroke
      */
-    public void setSelectorStroke ( BasicStroke stroke )
+    public void setSelectorStroke ( final BasicStroke stroke )
     {
         this.selectorStroke = stroke;
     }
@@ -721,7 +723,7 @@ public class WebTreeUI extends BasicTreeUI
      * @param point point on the tree
      * @return row index for specified point on the tree
      */
-    public int getRowForPoint ( Point point )
+    public int getRowForPoint ( final Point point )
     {
         return getRowForPoint ( point, isFullLineSelection () );
     }
@@ -733,13 +735,13 @@ public class WebTreeUI extends BasicTreeUI
      * @param countFullRow whether take the whole row into account or just node renderer rect
      * @return row index for specified point on the tree
      */
-    public int getRowForPoint ( Point point, boolean countFullRow )
+    public int getRowForPoint ( final Point point, final boolean countFullRow )
     {
         if ( tree != null )
         {
             for ( int row = 0; row < tree.getRowCount (); row++ )
             {
-                Rectangle bounds = getRowBounds ( row, countFullRow );
+                final Rectangle bounds = getRowBounds ( row, countFullRow );
                 if ( bounds.contains ( point ) )
                 {
                     return row;
@@ -756,7 +758,7 @@ public class WebTreeUI extends BasicTreeUI
      * @param row row index
      * @return row bounds by its index
      */
-    public Rectangle getRowBounds ( int row )
+    public Rectangle getRowBounds ( final int row )
     {
         return getRowBounds ( row, isFullLineSelection () );
     }
@@ -768,7 +770,7 @@ public class WebTreeUI extends BasicTreeUI
      * @param countFullRow whether take the whole row into account or just node renderer rect
      * @return row bounds by its index
      */
-    public Rectangle getRowBounds ( int row, boolean countFullRow )
+    public Rectangle getRowBounds ( final int row, final boolean countFullRow )
     {
         return countFullRow ? getFullRowBounds ( row ) : tree.getRowBounds ( row );
     }
@@ -779,9 +781,9 @@ public class WebTreeUI extends BasicTreeUI
      * @param row row index
      * @return full row bounds by its index
      */
-    public Rectangle getFullRowBounds ( int row )
+    public Rectangle getFullRowBounds ( final int row )
     {
-        Rectangle b = tree.getRowBounds ( row );
+        final Rectangle b = tree.getRowBounds ( row );
         if ( b != null )
         {
             b.x = 0;
@@ -813,6 +815,42 @@ public class WebTreeUI extends BasicTreeUI
     }
 
     /**
+     * Selects tree path for the specified event.
+     *
+     * @param path tree path to select
+     * @param e    event to process
+     */
+    @Override
+    protected void selectPathForEvent ( final TreePath path, final MouseEvent e )
+    {
+        if ( !isLocationInCheckBoxControl ( path, e.getX (), e.getY () ) )
+        {
+            super.selectPathForEvent ( path, e );
+        }
+    }
+
+    /**
+     * Returns whether location is in the checkbox tree checkbox control or not.
+     *
+     * @param path tree path
+     * @param x    location X coordinate
+     * @param y    location Y coordinate
+     * @return true if location is in the checkbox tree checkbox control, false otherwise
+     */
+    protected boolean isLocationInCheckBoxControl ( final TreePath path, final int x, final int y )
+    {
+        if ( tree instanceof WebCheckBoxTree )
+        {
+            final Rectangle checkBoxBounds = ( ( WebCheckBoxTree ) tree ).getCheckBoxBounds ( path );
+            return checkBoxBounds != null && checkBoxBounds.contains ( x, y );
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    /**
      * Paints horizontal part of tree structure lines.
      *
      * @param g               graphics
@@ -826,8 +864,9 @@ public class WebTreeUI extends BasicTreeUI
      * @param isLeaf          whether node is leaf or not
      */
     @Override
-    protected void paintHorizontalPartOfLeg ( Graphics g, Rectangle clipBounds, Insets insets, Rectangle bounds, TreePath path, int row,
-                                              boolean isExpanded, boolean hasBeenExpanded, boolean isLeaf )
+    protected void paintHorizontalPartOfLeg ( final Graphics g, final Rectangle clipBounds, final Insets insets, final Rectangle bounds,
+                                              final TreePath path, final int row, final boolean isExpanded, final boolean hasBeenExpanded,
+                                              final boolean isLeaf )
     {
         if ( !paintLines )
         {
@@ -835,40 +874,34 @@ public class WebTreeUI extends BasicTreeUI
         }
 
         // Don't paint the legs for the root'ish node if the
-        int depth = path.getPathCount () - 1;
+        final int depth = path.getPathCount () - 1;
         if ( ( depth == 0 || ( depth == 1 && !isRootVisible () ) ) && !getShowsRootHandles () )
         {
             return;
         }
 
-        int clipLeft = clipBounds.x;
-        int clipRight = clipBounds.x + clipBounds.width;
-        int clipTop = clipBounds.y;
-        int clipBottom = clipBounds.y + clipBounds.height;
-        int lineY = bounds.y + bounds.height / 2;
+        final int clipLeft = clipBounds.x;
+        final int clipRight = clipBounds.x + clipBounds.width;
+        final int clipTop = clipBounds.y;
+        final int clipBottom = clipBounds.y + clipBounds.height;
+        final int lineY = bounds.y + bounds.height / 2;
 
         if ( ltr )
         {
-            int leftX = bounds.x - getRightChildIndent ();
-            int nodeX = bounds.x - getHorizontalLegBuffer ();
-
-            if ( lineY >= clipTop && lineY < clipBottom && nodeX >= clipLeft && leftX < clipRight &&
-                    leftX < nodeX )
+            final int leftX = bounds.x - getRightChildIndent ();
+            final int nodeX = bounds.x - getHorizontalLegBuffer ();
+            if ( lineY >= clipTop && lineY < clipBottom && nodeX >= clipLeft && leftX < clipRight && leftX < nodeX )
             {
-
                 g.setColor ( getHashColor () );
                 paintHorizontalLine ( g, tree, lineY, leftX, nodeX - 1 );
             }
         }
         else
         {
-            int nodeX = bounds.x + bounds.width + getHorizontalLegBuffer ();
-            int rightX = bounds.x + bounds.width + getRightChildIndent ();
-
-            if ( lineY >= clipTop && lineY < clipBottom && rightX >= clipLeft &&
-                    nodeX < clipRight && nodeX < rightX )
+            final int nodeX = bounds.x + bounds.width + getHorizontalLegBuffer ();
+            final int rightX = bounds.x + bounds.width + getRightChildIndent ();
+            if ( lineY >= clipTop && lineY < clipBottom && rightX >= clipLeft && nodeX < clipRight && nodeX < rightX )
             {
-
                 g.setColor ( getHashColor () );
                 paintHorizontalLine ( g, tree, lineY, nodeX, rightX - 1 );
             }
@@ -885,11 +918,11 @@ public class WebTreeUI extends BasicTreeUI
      * @param right right side of the line
      */
     @Override
-    protected void paintHorizontalLine ( Graphics g, JComponent c, int y, int left, int right )
+    protected void paintHorizontalLine ( final Graphics g, final JComponent c, final int y, int left, int right )
     {
+        // todo Causes incorrect line repaints
         left = ltr ? left + 4 : left - 4;
         right = ltr ? right + 4 : right - 4;
-
         left += ( left % 2 );
         for ( int x = left; x <= right; x += 2 )
         {
@@ -906,7 +939,7 @@ public class WebTreeUI extends BasicTreeUI
      * @param path       path
      */
     @Override
-    protected void paintVerticalPartOfLeg ( Graphics g, Rectangle clipBounds, Insets insets, TreePath path )
+    protected void paintVerticalPartOfLeg ( final Graphics g, final Rectangle clipBounds, final Insets insets, final TreePath path )
     {
         if ( !paintLines )
         {
@@ -918,7 +951,7 @@ public class WebTreeUI extends BasicTreeUI
             return;
         }
 
-        int depth = path.getPathCount () - 1;
+        final int depth = path.getPathCount () - 1;
         if ( depth == 0 && !getShowsRootHandles () && !isRootVisible () )
         {
             return;
@@ -932,48 +965,43 @@ public class WebTreeUI extends BasicTreeUI
         {
             lineX = tree.getWidth () - lineX - insets.right + getRightChildIndent () - 1;
         }
-        int clipLeft = clipBounds.x;
-        int clipRight = clipBounds.x + ( clipBounds.width - 1 );
+
+        final int clipLeft = clipBounds.x;
+        final int clipRight = clipBounds.x + ( clipBounds.width - 1 );
 
         if ( lineX >= clipLeft && lineX <= clipRight )
         {
-            int clipTop = clipBounds.y;
-            int clipBottom = clipBounds.y + clipBounds.height;
+            final int clipTop = clipBounds.y;
+            final int clipBottom = clipBounds.y + clipBounds.height;
+            final Rectangle lastChildBounds = getPathBounds ( tree, getLastChildPath ( path ) );
             Rectangle parentBounds = getPathBounds ( tree, path );
-            Rectangle lastChildBounds = getPathBounds ( tree, getLastChildPath ( path ) );
 
+            // This shouldn't happen, but if the model is modified in another thread it is possible for this to happen.
+            // Swing isn't multithreaded, but better to check this anyway.
             if ( lastChildBounds == null )
-            // This shouldn't happen, but if the model is modified
-            // in another thread it is possible for this to happen.
-            // Swing isn't multithreaded, but I'll add this check in
-            // anyway.
             {
                 return;
             }
 
             int top;
-
             if ( parentBounds == null )
             {
                 top = Math.max ( insets.top + getVerticalLegBuffer (), clipTop );
             }
             else
             {
-                top = Math.max ( parentBounds.y + parentBounds.height +
-                        getVerticalLegBuffer (), clipTop );
+                top = Math.max ( parentBounds.y + parentBounds.height + getVerticalLegBuffer (), clipTop );
             }
+
             if ( depth == 0 && !isRootVisible () )
             {
-                TreeModel model = getModel ();
-
+                final TreeModel model = getModel ();
                 if ( model != null )
                 {
-                    Object root = model.getRoot ();
-
+                    final Object root = model.getRoot ();
                     if ( model.getChildCount ( root ) > 0 )
                     {
-                        parentBounds = getPathBounds ( tree, path.
-                                pathByAddingChild ( model.getChild ( root, 0 ) ) );
+                        parentBounds = getPathBounds ( tree, path.pathByAddingChild ( model.getChild ( root, 0 ) ) );
                         if ( parentBounds != null )
                         {
                             top = Math.max ( insets.top + getVerticalLegBuffer (), parentBounds.y + parentBounds.height / 2 );
@@ -982,8 +1010,7 @@ public class WebTreeUI extends BasicTreeUI
                 }
             }
 
-            int bottom = Math.min ( lastChildBounds.y + ( lastChildBounds.height / 2 ), clipBottom );
-
+            final int bottom = Math.min ( lastChildBounds.y + ( lastChildBounds.height / 2 ), clipBottom );
             if ( top <= bottom )
             {
                 g.setColor ( getHashColor () );
@@ -1002,8 +1029,9 @@ public class WebTreeUI extends BasicTreeUI
      * @param bottom bottom side of the line
      */
     @Override
-    protected void paintVerticalLine ( Graphics g, JComponent c, int x, int top, int bottom )
+    protected void paintVerticalLine ( final Graphics g, final JComponent c, int x, int top, final int bottom )
     {
+        // todo Causes incorrect line repaints
         x = ltr ? x + 4 : x - 4;
         top += ( top % 2 );
         for ( int y = top; y <= bottom; y += 2 )
@@ -1055,7 +1083,7 @@ public class WebTreeUI extends BasicTreeUI
      * @param y    y coordinate
      */
     @Override
-    protected void drawCentered ( Component c, Graphics g, Icon icon, int x, int y )
+    protected void drawCentered ( final Component c, final Graphics g, final Icon icon, final int x, final int y )
     {
         icon.paintIcon ( c, g, findCenteredX ( x, icon.getIconWidth () ), y - icon.getIconHeight () / 2 );
     }
@@ -1067,7 +1095,7 @@ public class WebTreeUI extends BasicTreeUI
      * @param iconWidth icon width
      * @return centered x coordinate
      */
-    protected int findCenteredX ( int x, int iconWidth )
+    protected int findCenteredX ( final int x, final int iconWidth )
     {
         return ltr ? x + 2 - ( int ) Math.ceil ( iconWidth / 2.0 ) : x - 2 - ( int ) Math.floor ( iconWidth / 2.0 ) - 3;
     }
@@ -1080,7 +1108,7 @@ public class WebTreeUI extends BasicTreeUI
     {
         if ( tree.getSelectionCount () > 0 )
         {
-            for ( Rectangle rect : getSelectionRects () )
+            for ( final Rectangle rect : getSelectionRects () )
             {
                 tree.repaint ( rect );
             }
@@ -1095,10 +1123,10 @@ public class WebTreeUI extends BasicTreeUI
      */
     protected List<Rectangle> getSelectionRects ()
     {
-        List<Rectangle> selections = new ArrayList<Rectangle> ();
+        final List<Rectangle> selections = new ArrayList<Rectangle> ();
 
         // Checking that selection exists
-        int[] rows = tree.getSelectionRows ();
+        final int[] rows = tree.getSelectionRows ();
         if ( rows == null )
         {
             return selections;
@@ -1110,7 +1138,7 @@ public class WebTreeUI extends BasicTreeUI
         // Calculating selection rects
         Rectangle maxRect = null;
         int lastRow = -1;
-        for ( int row : rows )
+        for ( final int row : rows )
         {
             if ( selectionStyle.equals ( TreeSelectionStyle.single ) )
             {
@@ -1131,7 +1159,7 @@ public class WebTreeUI extends BasicTreeUI
                 if ( lastRow == -1 || lastRow + 1 == row )
                 {
                     // Required bounds
-                    Rectangle b = tree.getRowBounds ( row );
+                    final Rectangle b = tree.getRowBounds ( row );
                     if ( isFullLineSelection () )
                     {
                         b.x = 0;
@@ -1160,14 +1188,14 @@ public class WebTreeUI extends BasicTreeUI
      * @param c component
      */
     @Override
-    public void paint ( Graphics g, JComponent c )
+    public void paint ( final Graphics g, final JComponent c )
     {
         // Cells selection
         if ( tree.getSelectionCount () > 0 )
         {
             // Draw final selections
-            List<Rectangle> selections = getSelectionRects ();
-            for ( Rectangle rect : selections )
+            final List<Rectangle> selections = getSelectionRects ();
+            for ( final Rectangle rect : selections )
             {
                 LafUtils.drawCustomWebBorder ( ( Graphics2D ) g, tree,
                         new RoundRectangle2D.Double ( rect.x + selectionShadeWidth, rect.y + selectionShadeWidth,
@@ -1179,7 +1207,7 @@ public class WebTreeUI extends BasicTreeUI
         // Rollover cell
         if ( tree.isEnabled () && highlightRolloverNode && rolloverRow != -1 && !tree.isRowSelected ( rolloverRow ) )
         {
-            Rectangle rect = isFullLineSelection () ? getFullRowBounds ( rolloverRow ) : tree.getRowBounds ( rolloverRow );
+            final Rectangle rect = isFullLineSelection () ? getFullRowBounds ( rolloverRow ) : tree.getRowBounds ( rolloverRow );
             if ( rect != null )
             {
                 rect.x += selectionShadeWidth;
@@ -1187,7 +1215,7 @@ public class WebTreeUI extends BasicTreeUI
                 rect.width -= selectionShadeWidth * 2 + 1;
                 rect.height -= selectionShadeWidth * 2 + 1;
 
-                Composite old = LafUtils.setupAlphaComposite ( ( Graphics2D ) g, 0.35f );
+                final Composite old = LafUtils.setupAlphaComposite ( ( Graphics2D ) g, 0.35f );
                 LafUtils.drawCustomWebBorder ( ( Graphics2D ) g, tree,
                         new RoundRectangle2D.Double ( rect.x, rect.y, rect.width, rect.height, selectionRound * 2, selectionRound * 2 ),
                         StyleConstants.shadeColor, selectionShadeWidth, true, true );
@@ -1200,12 +1228,11 @@ public class WebTreeUI extends BasicTreeUI
         // Multiselector
         if ( isSelectorAvailable () && selectionStart != null && selectionEnd != null )
         {
-            Graphics2D g2d = ( Graphics2D ) g;
-            LafUtils.setupAntialias ( g2d );
-            Object aa = LafUtils.setupAntialias ( g2d );
-            Stroke os = LafUtils.setupStroke ( g2d, selectorStroke );
+            final Graphics2D g2d = ( Graphics2D ) g;
+            final Object aa = LafUtils.setupAntialias ( g2d );
+            final Stroke os = LafUtils.setupStroke ( g2d, selectorStroke );
 
-            Rectangle sb = GeometryUtils.getContainingRect ( selectionStart, selectionEnd );
+            final Rectangle sb = GeometryUtils.getContainingRect ( selectionStart, selectionEnd );
 
             g2d.setPaint ( selectorColor );
             g2d.fill ( getSelectionShape ( sb, true ) );
@@ -1225,9 +1252,9 @@ public class WebTreeUI extends BasicTreeUI
      * @param fill should fill the whole cell
      * @return selection shape for specified selection bounds
      */
-    protected Shape getSelectionShape ( Rectangle sb, boolean fill )
+    protected Shape getSelectionShape ( final Rectangle sb, final boolean fill )
     {
-        int shear = fill ? 1 : 0;
+        final int shear = fill ? 1 : 0;
         if ( selectorRound > 0 )
         {
             return new RoundRectangle2D.Double ( sb.x + shear, sb.y + shear, sb.width - shear, sb.height - shear, selectorRound * 2,

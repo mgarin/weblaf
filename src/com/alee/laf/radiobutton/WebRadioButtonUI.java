@@ -231,6 +231,9 @@ public class WebRadioButtonUI extends BasicRadioButtonUI implements ShapeProvide
         radioButton.removeMouseListener ( mouseAdapter );
         radioButton.removeItemListener ( itemListener );
 
+        radioButton.setIcon ( null );
+        radioButton = null;
+
         super.uninstallUI ( c );
     }
 

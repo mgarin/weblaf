@@ -42,21 +42,21 @@ public class WebLabelUI extends BasicLabelUI
     /**
      * Style settings.
      */
-    private Insets margin = WebLabelStyle.margin;
-    private Painter painter = WebLabelStyle.painter;
-    private boolean drawShade = WebLabelStyle.drawShade;
-    private Color shadeColor = WebLabelStyle.shadeColor;
-    private Float transparency = WebLabelStyle.transparency;
+    protected Insets margin = WebLabelStyle.margin;
+    protected Painter painter = WebLabelStyle.painter;
+    protected boolean drawShade = WebLabelStyle.drawShade;
+    protected Color shadeColor = WebLabelStyle.shadeColor;
+    protected Float transparency = WebLabelStyle.transparency;
 
     /**
      * JLabel instance to which this UI is applied.
      */
-    private JLabel label;
+    protected JLabel label;
 
     /**
      * Label listeners.
      */
-    private PropertyChangeListener propertyChangeListener;
+    protected PropertyChangeListener propertyChangeListener;
 
     /**
      * Returns an instance of the WebLabelUI for the specified component.
@@ -66,7 +66,7 @@ public class WebLabelUI extends BasicLabelUI
      * @return instance of the WebLabelUI
      */
     @SuppressWarnings ("UnusedParameters")
-    public static ComponentUI createUI ( JComponent c )
+    public static ComponentUI createUI ( final JComponent c )
     {
         return new WebLabelUI ();
     }
@@ -109,7 +109,7 @@ public class WebLabelUI extends BasicLabelUI
      * @param c component with this UI
      */
     @Override
-    public void uninstallUI ( JComponent c )
+    public void uninstallUI ( final JComponent c )
     {
         label.removePropertyChangeListener ( WebLookAndFeel.COMPONENT_ORIENTATION_PROPERTY, propertyChangeListener );
 
@@ -121,7 +121,7 @@ public class WebLabelUI extends BasicLabelUI
     /**
      * Updates custom UI border.
      */
-    private void updateBorder ()
+    protected void updateBorder ()
     {
         if ( label != null )
         {
@@ -160,7 +160,7 @@ public class WebLabelUI extends BasicLabelUI
      *
      * @param margin component margin
      */
-    public void setMargin ( Insets margin )
+    public void setMargin ( final Insets margin )
     {
         this.margin = margin;
         updateBorder ();
@@ -181,7 +181,7 @@ public class WebLabelUI extends BasicLabelUI
      *
      * @param painter component painter
      */
-    public void setPainter ( Painter painter )
+    public void setPainter ( final Painter painter )
     {
         this.painter = painter;
         updateBorder ();
@@ -202,7 +202,7 @@ public class WebLabelUI extends BasicLabelUI
      *
      * @param drawShade whether text shade should be displayed or not
      */
-    public void setDrawShade ( boolean drawShade )
+    public void setDrawShade ( final boolean drawShade )
     {
         this.drawShade = drawShade;
         label.repaint ();
@@ -223,7 +223,7 @@ public class WebLabelUI extends BasicLabelUI
      *
      * @param shadeColor text shade color
      */
-    public void setShadeColor ( Color shadeColor )
+    public void setShadeColor ( final Color shadeColor )
     {
         this.shadeColor = shadeColor;
         label.repaint ();
@@ -244,7 +244,7 @@ public class WebLabelUI extends BasicLabelUI
      *
      * @param transparency label transparency
      */
-    public void setTransparency ( Float transparency )
+    public void setTransparency ( final Float transparency )
     {
         this.transparency = transparency;
         label.repaint ();
@@ -257,7 +257,7 @@ public class WebLabelUI extends BasicLabelUI
      * @param c component
      */
     @Override
-    public void paint ( Graphics g, JComponent c )
+    public void paint ( final Graphics g, final JComponent c )
     {
         final Graphics2D g2d = ( Graphics2D ) g;
         final Composite oc = LafUtils.setupAlphaComposite ( g2d, transparency, transparency != null );
@@ -280,7 +280,7 @@ public class WebLabelUI extends BasicLabelUI
      * {@inheritDoc}
      */
     @Override
-    protected void paintEnabledText ( JLabel l, Graphics g, String s, int textX, int textY )
+    protected void paintEnabledText ( final JLabel l, final Graphics g, final String s, final int textX, final int textY )
     {
         if ( drawShade )
         {
@@ -297,7 +297,7 @@ public class WebLabelUI extends BasicLabelUI
      * {@inheritDoc}
      */
     @Override
-    protected void paintDisabledText ( JLabel l, Graphics g, String s, int textX, int textY )
+    protected void paintDisabledText ( final JLabel l, final Graphics g, final String s, final int textX, final int textY )
     {
         if ( l.isEnabled () && drawShade )
         {
@@ -318,7 +318,7 @@ public class WebLabelUI extends BasicLabelUI
      * @param textX text X coordinate
      * @param textY text Y coordinate
      */
-    private void paintShadowText ( Graphics g, String s, int textX, int textY )
+    protected void paintShadowText ( final Graphics g, final String s, final int textX, final int textY )
     {
         g.translate ( textX, textY );
         LafUtils.paintTextShadow ( ( Graphics2D ) g, s, shadeColor );
@@ -329,7 +329,7 @@ public class WebLabelUI extends BasicLabelUI
      * {@inheritDoc}
      */
     @Override
-    public Dimension getPreferredSize ( JComponent c )
+    public Dimension getPreferredSize ( final JComponent c )
     {
         Dimension ps = super.getPreferredSize ( c );
         if ( painter != null )
