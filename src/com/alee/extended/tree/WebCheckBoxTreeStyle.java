@@ -29,4 +29,19 @@ public final class WebCheckBoxTreeStyle
      * Gap between checkbox and actual tree renderer.
      */
     public static int checkBoxRendererGap = 0;
+
+    /**
+     * Whether checkboxes are visible in the tree or not.
+     */
+    public static boolean checkBoxVisible = true;
+
+    /**
+     * Whether user can interact with checkboxes to change their check state or not.
+     */
+    public static boolean checkingEnabled = true;
+
+    /**
+     * Whether partially checked node should be checked or unchecked on toggle.
+     */
+    public static boolean checkMixedOnToggle = true;
 }

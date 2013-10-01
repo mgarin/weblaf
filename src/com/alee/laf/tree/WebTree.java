@@ -200,6 +200,17 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
     }
 
     /**
+     * Returns tree node for the specified row.
+     *
+     * @param row row to process
+     * @return tree node for the specified row
+     */
+    public E getNodeForRow ( final int row )
+    {
+        return getNodeForPath ( getPathForRow ( row ) );
+    }
+
+    /**
      * Returns tree path for specified node.
      *
      * @param node node to process
@@ -455,6 +466,16 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
         {
             startEditingAtPath ( path );
         }
+    }
+
+    /**
+     * Updates all visible nodes.
+     * This might be used to update node sizes if renderer has changed.
+     */
+    public void updateAllVisibleNodes ()
+    {
+        revalidate ();
+        repaint ();
     }
 
     /**
@@ -848,7 +869,7 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
     /**
      * Repaints specified node.
      *
-     * @param node nodes to repaint
+     * @param nodes nodes to repaint
      */
     public void repaint ( final List<E> nodes )
     {

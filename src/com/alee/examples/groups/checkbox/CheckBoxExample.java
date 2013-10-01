@@ -61,6 +61,7 @@ public class CheckBoxExample extends DefaultExample
 
         // Static check box
         final WebCheckBox checkBoxS = new WebCheckBox ( "Static checkbox" );
+        checkBoxS.setAnimated ( false );
 
         return new GroupPanel ( 4, false, checkBoxA, checkBoxS );
     }

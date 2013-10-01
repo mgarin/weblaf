@@ -149,15 +149,15 @@ public class ComponentTransition extends WebPanel
             return;
         }
 
+        // Remember new content to which area is switched
+        lastContent = content;
+
         // When animation disabled or component is not shown performing transition instantly
-        if ( !isShowing () )
+        if ( getTransitionEffect () == null || !isShowing () )
         {
             finishTransitionImpl ( content );
             return;
         }
-
-        // Remember new content to which area is switched
-        lastContent = content;
 
         // Check for old transition
         if ( transition != null )

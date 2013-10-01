@@ -105,7 +105,7 @@ public class WebTreeUI extends BasicTreeUI
      * @param c component that will use UI instance
      * @return instance of the WebTreeUI
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebTreeUI ();
@@ -841,8 +841,16 @@ public class WebTreeUI extends BasicTreeUI
     {
         if ( tree instanceof WebCheckBoxTree )
         {
-            final Rectangle checkBoxBounds = ( ( WebCheckBoxTree ) tree ).getCheckBoxBounds ( path );
-            return checkBoxBounds != null && checkBoxBounds.contains ( x, y );
+            final WebCheckBoxTree checkBoxTree = ( WebCheckBoxTree ) tree;
+            if ( checkBoxTree.isCheckingByUserEnabled () )
+            {
+                final Rectangle checkBoxBounds = checkBoxTree.getCheckBoxBounds ( path );
+                return checkBoxBounds != null && checkBoxBounds.contains ( x, y );
+            }
+            else
+            {
+                return false;
+            }
         }
         else
         {

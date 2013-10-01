@@ -37,10 +37,9 @@ public class TristateCheckIcon extends SimpleCheckIcon
     /**
      * Painting constants.
      */
-    protected static final Color side = new Color ( 55, 84, 108 );
-    protected static final Color middle = new Color ( 28, 66, 97 );
     protected static final float[] fractions = { 0f, 1f };
-    protected static final Color[] colors = { middle, side };
+    protected static final Color[] colors = { new Color ( 28, 66, 97 ), new Color ( 55, 84, 108 ) };
+    protected static final Color[] disabledColors = { new Color ( 112, 112, 112 ), new Color ( 150, 150, 150 ) };
 
     /**
      * Tristate checkbox which uses this icon.
@@ -323,7 +322,7 @@ public class TristateCheckIcon extends SimpleCheckIcon
                 final RoundRectangle2D shape = new RoundRectangle2D.Double ( b.x + r, b.y + r, b.width - r * 2, b.height - r * 2, 3, 3 );
                 final Point center = GeometryUtils.middle ( b );
                 final int radius = Math.max ( b.width / 2, b.height / 2 );
-                g2d.setPaint ( new RadialGradientPaint ( center, radius, fractions, colors ) );
+                g2d.setPaint ( new RadialGradientPaint ( center, radius, fractions, cb.isEnabled () ? colors : disabledColors ) );
                 g2d.fill ( shape );
             }
 

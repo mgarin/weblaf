@@ -44,20 +44,6 @@ public interface CheckBoxTreeCellRenderer extends TreeCellRenderer
     public void setCheckBoxRendererGap ( int checkBoxRendererGap );
 
     /**
-     * Returns actual cell renderer used to render cell content.
-     *
-     * @return actual cell renderer used to render cell content
-     */
-    public TreeCellRenderer getActualRenderer ();
-
-    /**
-     * Sets actual cell renderer used to render cell content.
-     *
-     * @param actualRenderer actual cell renderer used to render cell content
-     */
-    public void setActualRenderer ( TreeCellRenderer actualRenderer );
-
-    /**
      * Returns checkbox part width in this cell renderer.
      *
      * @return checkbox part width in this cell renderer

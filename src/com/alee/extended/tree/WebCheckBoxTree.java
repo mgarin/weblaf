@@ -47,17 +47,10 @@ public class WebCheckBoxTree<E extends DefaultMutableTreeNode> extends WebTree<E
     /**
      * Style settings.
      */
-    protected int checkBoxRendererGap = WebCheckBoxTreeStyle.checkBoxRendererGap;
-
-    /**
-     * Whether user can interact with checkboxes to change their check state or not.
-     */
-    protected boolean checkingEnabled = true;
-
-    /**
-     * Whether partially checked node should be checked or unchecked on toggle.
-     */
-    protected boolean checkMixedOnToggle = true;
+    protected Integer checkBoxRendererGap = WebCheckBoxTreeStyle.checkBoxRendererGap;
+    protected Boolean checkBoxVisible = WebCheckBoxTreeStyle.checkBoxVisible;
+    protected Boolean checkingEnabled = WebCheckBoxTreeStyle.checkingEnabled;
+    protected Boolean checkMixedOnToggle = WebCheckBoxTreeStyle.checkMixedOnToggle;
 
     /**
      * Cusstom checking model.
@@ -189,30 +182,55 @@ public class WebCheckBoxTree<E extends DefaultMutableTreeNode> extends WebTree<E
     @Override
     public void setCellRenderer ( final TreeCellRenderer renderer )
     {
-        if ( renderer instanceof CheckBoxTreeCellRenderer )
+        actualCellRenderer = renderer;
+        if ( checkBoxCellRenderer == null )
         {
-            checkBoxCellRenderer = ( CheckBoxTreeCellRenderer ) renderer;
-            actualCellRenderer = checkBoxCellRenderer.getActualRenderer ();
+            checkBoxCellRenderer = createCheckBoxTreeCellRenderer ();
+            checkBoxCellRenderer.setCheckBoxRendererGap ( getCheckBoxRendererGap () );
         }
-        else
-        {
-            checkBoxCellRenderer = createCheckBoxTreeCellRenderer ( renderer );
-            actualCellRenderer = renderer;
-        }
-        checkBoxCellRenderer.setCheckBoxRendererGap ( checkBoxRendererGap );
+        super.setCellRenderer ( checkBoxCellRenderer );
+    }
 
+    /**
+     * Sets special checkbox tree cell renderer.
+     *
+     * @param renderer checkbox tree cell renderer
+     */
+    public void setCheckBoxTreeCellRenderer ( CheckBoxTreeCellRenderer renderer )
+    {
+        checkBoxCellRenderer = renderer;
+        checkBoxCellRenderer.setCheckBoxRendererGap ( getCheckBoxRendererGap () );
         super.setCellRenderer ( checkBoxCellRenderer );
     }
 
     /**
      * Creates and returns checkbox tree cell renderer.
      *
-     * @param renderer actual cell renderer
      * @return checkbox tree cell renderer
      */
-    protected WebCheckBoxTreeCellRenderer createCheckBoxTreeCellRenderer ( TreeCellRenderer renderer )
+    protected WebCheckBoxTreeCellRenderer createCheckBoxTreeCellRenderer ()
     {
-        return new WebCheckBoxTreeCellRenderer ( renderer );
+        return new WebCheckBoxTreeCellRenderer ( WebCheckBoxTree.this );
+    }
+
+    /**
+     * Returns gap between checkbox and actual tree renderer.
+     *
+     * @return gap between checkbox and actual tree renderer
+     */
+    public int getCheckBoxRendererGap ()
+    {
+        return checkBoxRendererGap != null ? checkBoxRendererGap : WebCheckBoxTreeStyle.checkBoxRendererGap;
+    }
+
+    /**
+     * Sets gap between checkbox and actual tree renderer.
+     *
+     * @param gap gap between checkbox and actual tree renderer
+     */
+    public void setCheckBoxRendererGap ( int gap )
+    {
+        this.checkBoxRendererGap = gap;
     }
 
     /**
@@ -321,7 +339,7 @@ public class WebCheckBoxTree<E extends DefaultMutableTreeNode> extends WebTree<E
      * @param node tree node to process
      * @return true if checkbox for the specified node should be enabled, false otherwise
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     public boolean isCheckBoxEnabled ( final E node )
     {
         return true;
@@ -333,7 +351,7 @@ public class WebCheckBoxTree<E extends DefaultMutableTreeNode> extends WebTree<E
      * @param node tree node to process
      * @return true if checkbox for the specified node should be visible, false otherwise
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     public boolean isCheckBoxVisible ( final E node )
     {
         return true;
@@ -344,10 +362,31 @@ public class WebCheckBoxTree<E extends DefaultMutableTreeNode> extends WebTree<E
      *
      * @return true if checked or unchecked node childs should be checked or unchecked recursively, false otherwise
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     public boolean isRecursiveCheckingEnabled ()
     {
         return true;
+    }
+
+    /**
+     * Returns whether checkboxes are visible in the tree or not.
+     *
+     * @return true if checkboxes are visible in the tree, false otherwise
+     */
+    public boolean getCheckBoxVisible ()
+    {
+        return checkBoxVisible != null ? checkBoxVisible : WebCheckBoxTreeStyle.checkBoxVisible;
+    }
+
+    /**
+     * Sets whether checkboxes are visible in the tree or not.
+     *
+     * @param visible whether checkboxes are visible in the tree or not
+     */
+    public void setCheckBoxVisible ( final boolean visible )
+    {
+        this.checkBoxVisible = visible;
+        updateAllVisibleNodes ();
     }
 
     /**
@@ -357,17 +396,18 @@ public class WebCheckBoxTree<E extends DefaultMutableTreeNode> extends WebTree<E
      */
     public boolean isCheckingEnabled ()
     {
-        return checkingEnabled;
+        return checkingEnabled != null ? checkingEnabled : WebCheckBoxTreeStyle.checkingEnabled;
     }
 
     /**
      * Sets whether user can interact with checkboxes to change their check state or not.
      *
-     * @param checkingEnabled whether user can interact with checkboxes to change their check state or not
+     * @param enabled whether user can interact with checkboxes to change their check state or not
      */
-    public void setCheckingEnabled ( final boolean checkingEnabled )
+    public void setCheckingEnabled ( final boolean enabled )
     {
-        this.checkingEnabled = checkingEnabled;
+        this.checkingEnabled = enabled;
+        repaint ();
     }
 
     /**
@@ -377,7 +417,7 @@ public class WebCheckBoxTree<E extends DefaultMutableTreeNode> extends WebTree<E
      */
     public boolean isCheckMixedOnToggle ()
     {
-        return checkMixedOnToggle;
+        return checkMixedOnToggle != null ? checkMixedOnToggle : WebCheckBoxTreeStyle.checkMixedOnToggle;
     }
 
     /**
@@ -431,6 +471,16 @@ public class WebCheckBoxTree<E extends DefaultMutableTreeNode> extends WebTree<E
     }
 
     /**
+     * Returns whether user can change checkbox states or not.
+     *
+     * @return true if user can change checkbox states, false otherwise
+     */
+    public boolean isCheckingByUserEnabled ()
+    {
+        return isEnabled () && getCheckBoxVisible () && isCheckingEnabled ();
+    }
+
+    /**
      * WebCheckBoxTree mouse and key actions handler.
      */
     protected class Handler implements MouseListener, KeyListener
@@ -441,7 +491,7 @@ public class WebCheckBoxTree<E extends DefaultMutableTreeNode> extends WebTree<E
         @Override
         public void keyPressed ( final KeyEvent e )
         {
-            if ( Hotkey.SPACE.isTriggered ( e ) )
+            if ( isCheckingByUserEnabled () && Hotkey.SPACE.isTriggered ( e ) )
             {
                 final List<E> nodes = getSelectedNodes ();
                 if ( nodes.size () > 0 )
@@ -457,7 +507,7 @@ public class WebCheckBoxTree<E extends DefaultMutableTreeNode> extends WebTree<E
         @Override
         public void mousePressed ( final MouseEvent e )
         {
-            if ( SwingUtils.isLeftMouseButton ( e ) )
+            if ( isCheckingByUserEnabled () && SwingUtils.isLeftMouseButton ( e ) )
             {
                 final E node = getNodeForLocation ( e.getPoint () );
                 if ( node != null )

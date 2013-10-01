@@ -34,9 +34,9 @@ import java.awt.*;
 public class WebCheckBoxTreeCellRenderer extends WebPanel implements CheckBoxTreeCellRenderer
 {
     /**
-     * Actual content renderer.
+     * Checkbox tree.
      */
-    protected TreeCellRenderer actualRenderer;
+    protected WebCheckBoxTree checkBoxTree;
 
     /**
      * Checkbox component used to renderer checkbox on the tree.
@@ -46,12 +46,12 @@ public class WebCheckBoxTreeCellRenderer extends WebPanel implements CheckBoxTre
     /**
      * Constructs new checkbox tree cell renderer.
      *
-     * @param actualRenderer actual content renderer
+     * @param checkBoxTree checkbox tree to process
      */
-    public WebCheckBoxTreeCellRenderer ( final TreeCellRenderer actualRenderer )
+    public WebCheckBoxTreeCellRenderer ( final WebCheckBoxTree checkBoxTree )
     {
         super ();
-        this.actualRenderer = actualRenderer;
+        this.checkBoxTree = checkBoxTree;
 
         setOpaque ( false );
 
@@ -77,24 +77,6 @@ public class WebCheckBoxTreeCellRenderer extends WebPanel implements CheckBoxTre
     public void setCheckBoxRendererGap ( final int checkBoxRendererGap )
     {
         checkBox.getMargin ().right = checkBoxRendererGap;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public TreeCellRenderer getActualRenderer ()
-    {
-        return actualRenderer;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setActualRenderer ( final TreeCellRenderer actualRenderer )
-    {
-        this.actualRenderer = actualRenderer;
     }
 
     /**
@@ -131,12 +113,23 @@ public class WebCheckBoxTreeCellRenderer extends WebPanel implements CheckBoxTre
     public Component getTreeCellRendererComponent ( final JTree tree, final Object value, final boolean selected, final boolean expanded,
                                                     final boolean leaf, final int row, final boolean hasFocus )
     {
-        // Updating check state
-        checkBox.setState ( ( ( WebCheckBoxTree ) tree ).getCheckState ( ( DefaultMutableTreeNode ) value ) );
+        if ( checkBoxTree.getCheckBoxVisible () )
+        {
+            // Updating check state
+            checkBox.setEnabled ( checkBoxTree.isCheckingByUserEnabled () );
+            checkBox.setState ( checkBoxTree.getCheckState ( ( DefaultMutableTreeNode ) value ) );
 
-        // Updating actual cell renderer
-        add ( actualRenderer.getTreeCellRendererComponent ( tree, value, selected, expanded, leaf, row, hasFocus ), BorderLayout.CENTER );
+            // Updating actual cell renderer
+            final TreeCellRenderer renderer = checkBoxTree.getActualRenderer ();
+            add ( renderer.getTreeCellRendererComponent ( tree, value, selected, expanded, leaf, row, hasFocus ), BorderLayout.CENTER );
 
-        return this;
+            return this;
+        }
+        else
+        {
+            // Returning actual cell renderer
+            final TreeCellRenderer renderer = checkBoxTree.getActualRenderer ();
+            return renderer.getTreeCellRendererComponent ( tree, value, selected, expanded, leaf, row, hasFocus );
+        }
     }
 }
