@@ -26,16 +26,25 @@ import com.alee.extended.transition.effects.zoom.ZoomType;
 import com.alee.utils.MathUtils;
 
 /**
- * User: mgarin Date: 19.11.12 Time: 17:06
+ * This class provides a set of utilities for transition components.
+ * This is a library utility class and its not intended for use outside of transition components.
+ *
+ * @author Mikle Garin
  */
 
-public class TransitionUtils
+public final class TransitionUtils
 {
-    public static Direction getActualValue ( Direction direction )
+    /**
+     * Returns actual direction for the specified direction type.
+     *
+     * @param direction direction to process
+     * @return actual direction for the specified direction type
+     */
+    public static Direction getActualValue ( final Direction direction )
     {
         if ( direction.equals ( Direction.random ) )
         {
-            Direction[] directions = Direction.values ();
+            final Direction[] directions = Direction.values ();
             return directions[ MathUtils.random ( directions.length - 3 ) + 3 ];
         }
         else if ( direction.equals ( Direction.horizontal ) )
@@ -52,11 +61,17 @@ public class TransitionUtils
         }
     }
 
-    public static CurtainSlideDirection getActualValue ( CurtainSlideDirection slideDirection )
+    /**
+     * Returns actual slide direction for the specified slide direction type.
+     *
+     * @param slideDirection slide direction to process
+     * @return actual slide direction for the specified slide direction type
+     */
+    public static CurtainSlideDirection getActualValue ( final CurtainSlideDirection slideDirection )
     {
         if ( slideDirection.equals ( CurtainSlideDirection.random ) )
         {
-            CurtainSlideDirection[] slideDirections = CurtainSlideDirection.values ();
+            final CurtainSlideDirection[] slideDirections = CurtainSlideDirection.values ();
             return slideDirections[ MathUtils.random ( slideDirections.length - 1 ) + 1 ];
         }
         else
@@ -65,11 +80,17 @@ public class TransitionUtils
         }
     }
 
-    public static BlockType getActualValue ( BlockType blockType )
+    /**
+     * Returns actual block type for the specified block type.
+     *
+     * @param blockType block type to process
+     * @return actual block type for the specified block type
+     */
+    public static BlockType getActualValue ( final BlockType blockType )
     {
         if ( blockType.equals ( BlockType.random ) )
         {
-            BlockType[] blockTypes = BlockType.values ();
+            final BlockType[] blockTypes = BlockType.values ();
             return blockTypes[ MathUtils.random ( blockTypes.length - 1 ) + 1 ];
         }
         else
@@ -78,11 +99,17 @@ public class TransitionUtils
         }
     }
 
-    public static CurtainType getActualValue ( CurtainType curtainType )
+    /**
+     * Returns actual curtain type for the specified curtain type.
+     *
+     * @param blockType curtain type to process
+     * @return actual curtain type for the specified curtain type
+     */
+    public static CurtainType getActualValue ( final CurtainType curtainType )
     {
         if ( curtainType.equals ( CurtainType.random ) )
         {
-            CurtainType[] curtainTypes = CurtainType.values ();
+            final CurtainType[] curtainTypes = CurtainType.values ();
             return curtainTypes[ MathUtils.random ( curtainTypes.length - 1 ) + 1 ];
         }
         else
@@ -91,11 +118,17 @@ public class TransitionUtils
         }
     }
 
-    public static SlideType getActualValue ( SlideType slideType )
+    /**
+     * Returns actual slide type for the specified slide type.
+     *
+     * @param blockType slide type to process
+     * @return actual slide type for the specified slide type
+     */
+    public static SlideType getActualValue ( final SlideType slideType )
     {
         if ( slideType.equals ( SlideType.random ) )
         {
-            SlideType[] slideTypes = SlideType.values ();
+            final SlideType[] slideTypes = SlideType.values ();
             return slideTypes[ MathUtils.random ( slideTypes.length - 1 ) + 1 ];
         }
         else
@@ -104,11 +137,17 @@ public class TransitionUtils
         }
     }
 
-    public static ZoomType getActualValue ( ZoomType zoomType )
+    /**
+     * Returns actual zoom type for the specified zoom type.
+     *
+     * @param blockType zoom type to process
+     * @return actual zoom type for the specified zoom type
+     */
+    public static ZoomType getActualValue ( final ZoomType zoomType )
     {
         if ( zoomType.equals ( ZoomType.random ) )
         {
-            ZoomType[] zoomTypes = ZoomType.values ();
+            final ZoomType[] zoomTypes = ZoomType.values ();
             return zoomTypes[ MathUtils.random ( zoomTypes.length - 1 ) + 1 ];
         }
         else

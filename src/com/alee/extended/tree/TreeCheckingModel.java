@@ -20,6 +20,7 @@ package com.alee.extended.tree;
 import com.alee.extended.checkbox.CheckState;
 
 import javax.swing.tree.DefaultMutableTreeNode;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -31,20 +32,32 @@ import java.util.List;
 public interface TreeCheckingModel<E extends DefaultMutableTreeNode>
 {
     /**
-     * Returns whether the specified tree node is checked or not.
+     * Returns list of checked nodes.
      *
-     * @param node tree node to process
-     * @return true if the specified tree node is checked, false otherwise
+     * @return list of checked nodes
      */
-    public boolean isChecked ( E node );
+    public List<E> getCheckedNodes ();
 
     /**
-     * Returns whether the specified tree node is partially checked or not.
+     * Returns list of nodes in mixed state.
      *
-     * @param node tree node to process
-     * @return true if the specified tree node is partially checked, false otherwise
+     * @return list of nodes in mixed state
      */
-    public boolean isPartiallyChecked ( E node );
+    public List<E> getMixedNodes ();
+
+    /**
+     * Sets specified nodes state to checked.
+     *
+     * @param nodes nodes to check
+     */
+    public void setChecked ( Collection<E> nodes );
+
+    /**
+     * Sets specified nodes state to unchecked.
+     *
+     * @param nodes nodes to uncheck
+     */
+    public void setUnchecked ( Collection<E> nodes );
 
     /**
      * Returns specified tree node check state.

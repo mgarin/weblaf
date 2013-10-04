@@ -31,17 +31,18 @@ import java.awt.*;
 public final class WebLabelStyle
 {
     /**
-     * Default label margin.
+     * Label margin.
      */
-    public static Insets margin = StyleConstants.margin;
+    public static Insets margin = StyleConstants.emptyMargin;
 
     /**
-     * Default label background painter.
+     * Label background painter.
+     * If set it will override WebLaF styling.
      */
-    public static Painter painter = StyleConstants.painter;
+    public static Painter painter = null;
 
     /**
-     * Default label background color.
+     * Label background color.
      */
     public static Color backgroundColor = StyleConstants.backgroundColor;
 

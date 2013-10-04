@@ -15,39 +15,36 @@
 * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.extended.tree;
+package com.alee.laf.menu;
 
-import java.util.List;
+import java.awt.*;
 
 /**
- * This listener class provide various asynchronous tree events.
+ * WebPopupMenuSeparator style class.
  *
- * @param <E> custom node type
  * @author Mikle Garin
  */
 
-public abstract class AsyncTreeAdapter<E extends AsyncUniqueNode> implements AsyncTreeListener<E>
+public final class WebPopupMenuSeparatorStyle
 {
     /**
-     * Invoked when childs load operation starts.
-     *
-     * @param parent node which childs are being loaded
+     * Separator color.
      */
-    @Override
-    public void childsLoadStarted ( final E parent )
-    {
-        // Do nothing by default
-    }
+    public static Color color = new Color ( 220, 220, 220 );
 
     /**
-     * Invoked when childs load operation finishes.
-     *
-     * @param parent node which childs were loaded
-     * @param childs loaded child nodes
+     * Separator stroke.
+     * Set to null to use default stroke.
      */
-    @Override
-    public void childsLoadCompleted ( final E parent, final List<E> childs )
-    {
-        // Do nothing by default
-    }
+    public static Stroke stroke = null;
+
+    /**
+     * Spacing between separator and menu items.
+     */
+    public static int spacing = 5;
+
+    /**
+     * Spacing between separator and popup menu border.
+     */
+    public static int sideSpacing = 4;
 }

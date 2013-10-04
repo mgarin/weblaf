@@ -26,23 +26,34 @@ import com.alee.laf.text.WebTextArea;
 import java.awt.*;
 
 /**
- * User: mgarin Date: 14.02.12 Time: 13:36
+ * ScrollPane example.
+ *
+ * @author Mikle Garin
  */
 
 public class SimpleScrollPaneExample extends DefaultExample
 {
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getTitle ()
     {
         return "Simple scroll pane";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getDescription ()
     {
         return "Simple Web-styled scroll pane";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
@@ -51,7 +62,7 @@ public class SimpleScrollPaneExample extends DefaultExample
         scrollableArea.setWrapStyleWord ( true );
         scrollableArea.setMargin ( 5 );
 
-        WebScrollPane webScrollPane = new WebScrollPane ( scrollableArea, false );
+        WebScrollPane webScrollPane = new WebScrollPane ( scrollableArea, false, false );
         webScrollPane.setPreferredSize ( new Dimension ( 0, 0 ) );
         return webScrollPane;
     }

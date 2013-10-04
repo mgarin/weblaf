@@ -46,7 +46,7 @@ public final class WebGradientColorChooserStyle
     /**
      * Default chooser margin
      */
-    public static Insets margin = StyleConstants.margin;
+    public static Insets margin = StyleConstants.emptyMargin;
 
     /**
      * Should draw labels by default

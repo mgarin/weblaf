@@ -55,7 +55,7 @@ public final class WebScrollPaneStyle
     /**
      * Default scroll pane margin
      */
-    public static Insets margin = StyleConstants.margin;
+    public static Insets margin = StyleConstants.emptyMargin;
 
     /**
      * Draw focus when ancestor of focused component

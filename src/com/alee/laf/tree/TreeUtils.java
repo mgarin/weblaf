@@ -23,12 +23,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This class provides a set of utilities to work with trees.
+ * This class provides a set of utilities for trees.
+ * This is a library utility class and its not intended for use outside of the trees.
  *
  * @author Mikle Garin
  */
 
-public class TreeUtils
+public final class TreeUtils
 {
     /**
      * Returns tree expansion and selection states.
@@ -37,7 +38,7 @@ public class TreeUtils
      * @param tree tree to process
      * @return tree expansion and selection states
      */
-    public static TreeState getTreeState ( JTree tree )
+    public static TreeState getTreeState ( final JTree tree )
     {
         return getTreeState ( tree, true );
     }
@@ -50,17 +51,21 @@ public class TreeUtils
      * @param saveSelection whether to save selection states or not
      * @return tree expansion and selection states
      */
-    public static TreeState getTreeState ( JTree tree, boolean saveSelection )
+    public static TreeState getTreeState ( final JTree tree, final boolean saveSelection )
     {
-        TreeState treeState = new TreeState ();
+        final Object root = tree.getModel ().getRoot ();
+        if ( !( root instanceof UniqueNode ) )
+        {
+            throw new RuntimeException ( "To get tree state you must use UniqueNode or any class that extends it as tree elements!" );
+        }
 
-        List<UniqueNode> elements = new ArrayList<UniqueNode> ();
-        elements.add ( ( UniqueNode ) tree.getModel ().getRoot () );
+        final TreeState treeState = new TreeState ();
+        final List<UniqueNode> elements = new ArrayList<UniqueNode> ();
+        elements.add ( ( UniqueNode ) root );
         while ( elements.size () > 0 )
         {
-            UniqueNode element = elements.get ( 0 );
-
-            TreePath path = new TreePath ( element.getPath () );
+            final UniqueNode element = elements.get ( 0 );
+            final TreePath path = new TreePath ( element.getPath () );
             treeState.addState ( element.getId (), tree.isExpanded ( path ), saveSelection && tree.isPathSelected ( path ) );
 
             for ( int i = 0; i < element.getChildCount (); i++ )
@@ -70,7 +75,6 @@ public class TreeUtils
 
             elements.remove ( element );
         }
-
         return treeState;
     }
 
@@ -81,7 +85,7 @@ public class TreeUtils
      * @param tree      tree to process
      * @param treeState tree expansion and selection states
      */
-    public static void setTreeState ( JTree tree, TreeState treeState )
+    public static void setTreeState ( final JTree tree, final TreeState treeState )
     {
         setTreeState ( tree, treeState, true );
     }
@@ -94,8 +98,14 @@ public class TreeUtils
      * @param treeState        tree expansion and selection states
      * @param restoreSelection whether to restore selection states or not
      */
-    public static void setTreeState ( JTree tree, TreeState treeState, boolean restoreSelection )
+    public static void setTreeState ( final JTree tree, final TreeState treeState, final boolean restoreSelection )
     {
+        final Object root = tree.getModel ().getRoot ();
+        if ( !( root instanceof UniqueNode ) )
+        {
+            throw new RuntimeException ( "To set tree state you must use UniqueNode or any class that extends it as tree elements!" );
+        }
+
         if ( treeState == null )
         {
             return;
@@ -103,12 +113,12 @@ public class TreeUtils
 
         tree.clearSelection ();
 
-        List<UniqueNode> elements = new ArrayList<UniqueNode> ();
-        elements.add ( ( UniqueNode ) tree.getModel ().getRoot () );
+        final List<UniqueNode> elements = new ArrayList<UniqueNode> ();
+        elements.add ( ( UniqueNode ) root );
         while ( elements.size () > 0 )
         {
-            UniqueNode element = elements.get ( 0 );
-            TreePath path = new TreePath ( element.getPath () );
+            final UniqueNode element = elements.get ( 0 );
+            final TreePath path = new TreePath ( element.getPath () );
 
             // todo Create workaround for async trees
             // Restoring expansion states

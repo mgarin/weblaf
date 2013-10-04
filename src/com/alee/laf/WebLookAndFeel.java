@@ -92,6 +92,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
     public static final String TOOLBAR_FLOATABLE_PROPERTY = "floatable";
     public static final String WINDOW_DECORATION_STYLE_PROPERTY = "windowDecorationStyle";
     public static final String VISIBLE_PROPERTY = "visible";
+    public static final String DOCUMENT_PROPERTY = "document";
 
     /**
      * List of WebLookAndFeel icons.
@@ -326,8 +327,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
     @Override
     public boolean getSupportsWindowDecorations ()
     {
-        // Only win and mac systems properly support window transparency states
-        return SystemUtils.isWindows () || SystemUtils.isMac ();
+        return true;
     }
 
     /**
@@ -336,7 +336,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
      * @param table UIDefaults table
      */
     @Override
-    protected void initClassDefaults ( UIDefaults table )
+    protected void initClassDefaults ( final UIDefaults table )
     {
         // Label
         table.put ( "LabelUI", labelUI );
@@ -416,7 +416,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
      * @param table UI defaults table
      */
     @Override
-    protected void initComponentDefaults ( UIDefaults table )
+    protected void initComponentDefaults ( final UIDefaults table )
     {
         super.initComponentDefaults ( table );
 
@@ -461,13 +461,13 @@ public class WebLookAndFeel extends BasicLookAndFeel
         // We don't need uneven heights
         table.put ( "MenuItem.evenHeight", Boolean.TRUE );
 
-        // JMenu expand spacing
-        // Up-down menu expand
-        table.put ( "Menu.menuPopupOffsetX", StyleConstants.shadeWidth );
-        table.put ( "Menu.menuPopupOffsetY", -StyleConstants.shadeWidth / 2 );
-        // Left-right menu expand
-        table.put ( "Menu.submenuPopupOffsetX", StyleConstants.shadeWidth / 2 );
-        table.put ( "Menu.submenuPopupOffsetY", 0 );
+        //        // JMenu expand spacing
+        //        // Up-down menu expand
+        //        table.put ( "Menu.menuPopupOffsetX", StyleConstants.shadeWidth );
+        //        table.put ( "Menu.menuPopupOffsetY", -StyleConstants.shadeWidth / 2 );
+        //        // Left-right menu expand
+        //        table.put ( "Menu.submenuPopupOffsetX", StyleConstants.shadeWidth / 2 );
+        //        table.put ( "Menu.submenuPopupOffsetY", 0 );
 
         // Table defaults
         table.put ( "Table.cellNoFocusBorder", LafUtils.createWebBorder ( 1, 1, 1, 1 ) );
@@ -613,7 +613,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
      *
      * @param table UIDefaults table
      */
-    private static void initializeFonts ( UIDefaults table )
+    private static void initializeFonts ( final UIDefaults table )
     {
         initializeFont ( table, "Button.font", buttonFont, globalControlFont );
         initializeFont ( table, "ToggleButton.font", toggleButtonFont, globalControlFont );
@@ -664,7 +664,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
      * @param font       custom font
      * @param globalFont global font
      */
-    private static void initializeFont ( UIDefaults table, String key, Font font, Font globalFont )
+    protected static void initializeFont ( final UIDefaults table, final String key, final Font font, final Font globalFont )
     {
         table.put ( key, createLazyFont ( font != null ? font : globalFont ) );
     }
@@ -675,7 +675,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
      * @param font font
      * @return SwingLazyValue for specified font
      */
-    private static SwingLazyValue createLazyFont ( Font font )
+    protected static SwingLazyValue createLazyFont ( final Font font )
     {
         return new SwingLazyValue ( "javax.swing.plaf.FontUIResource", null,
                 new Object[]{ font.getName (), font.getStyle (), font.getSize () } );
@@ -754,7 +754,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
      *
      * @param hide whether hide button mnemonics or not
      */
-    public static void setMnemonicHidden ( boolean hide )
+    public static void setMnemonicHidden ( final boolean hide )
     {
         isMnemonicHidden = !UIManager.getBoolean ( "Button.showMnemonics" ) && hide;
     }
@@ -789,7 +789,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
      * @param updateExistingComponents whether update all existing components or not
      * @return true if WebLookAndFeel was successfuly installed, false otherwise
      */
-    public static boolean install ( boolean updateExistingComponents )
+    public static boolean install ( final boolean updateExistingComponents )
     {
         try
         {
@@ -868,7 +868,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
      * @param size square WebLookAndFeel image size
      * @return square WebLookAndFeel image
      */
-    public static Image getImage ( int size )
+    public static Image getImage ( final int size )
     {
         return getIcon ( size ).getImage ();
     }
@@ -879,7 +879,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
      * @param size square WebLookAndFeel icon size
      * @return square WebLookAndFeel icon
      */
-    public static ImageIcon getIcon ( int size )
+    public static ImageIcon getIcon ( final int size )
     {
         loadIcons ();
         for ( ImageIcon icon : icons )
@@ -896,7 +896,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
      * Loads square WebLookAndFeel icons listed in icons.xml file in resources folder.
      * Loaded icons will have the same order they have in that xml file.
      */
-    private static void loadIcons ()
+    protected static void loadIcons ()
     {
         if ( icons == null )
         {
@@ -913,7 +913,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
      * @return disabled icon
      */
     @Override
-    public Icon getDisabledIcon ( JComponent component, Icon icon )
+    public Icon getDisabledIcon ( final JComponent component, final Icon icon )
     {
         if ( icon instanceof ImageIcon )
         {
@@ -959,7 +959,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
      *
      * @param decorateFrames whether look and feel should use custom decoration for newly created frames or not
      */
-    public static void setDecorateFrames ( boolean decorateFrames )
+    public static void setDecorateFrames ( final boolean decorateFrames )
     {
         WebLookAndFeel.decorateFrames = decorateFrames;
         JFrame.setDefaultLookAndFeelDecorated ( decorateFrames );
@@ -980,7 +980,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
      *
      * @param decorateDialogs whether look and feel should use custom decoration for newly created dialogs or not
      */
-    public static void setDecorateDialogs ( boolean decorateDialogs )
+    public static void setDecorateDialogs ( final boolean decorateDialogs )
     {
         WebLookAndFeel.decorateDialogs = decorateDialogs;
         JDialog.setDefaultLookAndFeelDecorated ( decorateDialogs );
@@ -991,7 +991,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
      *
      * @param decorateAllWindows whether look and feel should use custom decoration for newly created frames and dialogs or not
      */
-    public static void setDecorateAllWindows ( boolean decorateAllWindows )
+    public static void setDecorateAllWindows ( final boolean decorateAllWindows )
     {
         setDecorateFrames ( decorateAllWindows );
         setDecorateDialogs ( decorateAllWindows );
@@ -1022,7 +1022,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
      *
      * @param orientation new global component orientation
      */
-    public static void setOrientation ( ComponentOrientation orientation )
+    public static void setOrientation ( final ComponentOrientation orientation )
     {
         LanguageManager.setOrientation ( orientation );
     }

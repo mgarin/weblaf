@@ -390,6 +390,32 @@ public final class LafUtils
     }
 
     /**
+     * Setting font
+     */
+
+    public static Font setupFont ( Graphics g, Font font )
+    {
+        if ( font != null )
+        {
+            final Font oldFont = g.getFont ();
+            g.setFont ( font );
+            return oldFont;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    public static void restoreFont ( Graphics g, Font font )
+    {
+        if ( font != null )
+        {
+            g.setFont ( font );
+        }
+    }
+
+    /**
      * Setting antialias on
      */
 

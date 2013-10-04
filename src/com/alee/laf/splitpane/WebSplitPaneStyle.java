@@ -32,7 +32,7 @@ public final class WebSplitPaneStyle
     /**
      * Default split pane margin.
      */
-    public static Insets margin = StyleConstants.margin;
+    public static Insets margin = StyleConstants.emptyMargin;
 
     /**
      * Split pane divider color when dragged.

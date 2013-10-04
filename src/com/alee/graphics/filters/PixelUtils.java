@@ -41,7 +41,7 @@ import java.awt.*;
  * Some more useful math functions for image processing. These are becoming obsolete as we move to Java2D. Use MiscComposite instead.
  */
 
-public class PixelUtils
+public final class PixelUtils
 {
     public final static int REPLACE = 0;
     public final static int NORMAL = 1;

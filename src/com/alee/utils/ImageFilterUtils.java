@@ -15,9 +15,12 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.graphics.filters;
+package com.alee.utils;
 
-import com.alee.utils.ImageUtils;
+import com.alee.graphics.filters.BoxBlurFilter;
+import com.alee.graphics.filters.GaussianFilter;
+import com.alee.graphics.filters.MotionBlurOp;
+import com.alee.graphics.filters.OpacityFilter;
 
 import java.awt.*;
 import java.awt.color.ColorSpace;
@@ -25,10 +28,12 @@ import java.awt.image.BufferedImage;
 import java.awt.image.ColorConvertOp;
 
 /**
- * User: mgarin Date: 02.06.11 Time: 15:49
+ * This class provides a set of utilities to perform image filtering.
+ *
+ * @author Mikle Garin
  */
 
-public class ImageFilterUtils
+public final class ImageFilterUtils
 {
     /**
      * Applies box blur filter to image

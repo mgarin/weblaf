@@ -62,11 +62,21 @@ public class WebSeparatorUI extends BasicSeparatorUI
         this.separator = ( JSeparator ) c;
 
         // Default settings
-        SwingUtils.setOrientation ( c );
-        c.setOpaque ( false );
+        SwingUtils.setOrientation ( separator );
+        separator.setOpaque ( false );
 
         // Updating border
         updateBorder ();
+    }
+
+    @Override
+    public void uninstallUI ( JComponent c )
+    {
+        separator.setOpaque ( true );
+
+        this.separator = null;
+
+        super.uninstallUI ( c );
     }
 
     private void updateBorder ()

@@ -30,17 +30,17 @@ public class SampleNode extends AsyncUniqueNode
     /**
      * Node name to display.
      */
-    private String name;
+    protected String name;
 
     /**
      * Node type.
      */
-    private SampleNodeType type;
+    protected SampleNodeType type;
 
     /**
      * Time spent to load node childs.
      */
-    private long time;
+    protected long time;
 
     /**
      * Constructs sample node.
@@ -48,7 +48,7 @@ public class SampleNode extends AsyncUniqueNode
      * @param name node name
      * @param type node type
      */
-    public SampleNode ( String name, SampleNodeType type )
+    public SampleNode ( final String name, final SampleNodeType type )
     {
         super ();
         this.name = name;
@@ -71,7 +71,7 @@ public class SampleNode extends AsyncUniqueNode
      *
      * @param name new node name
      */
-    public void setName ( String name )
+    public void setName ( final String name )
     {
         this.name = name;
     }
@@ -91,7 +91,7 @@ public class SampleNode extends AsyncUniqueNode
      *
      * @param type new node type
      */
-    public void setType ( SampleNodeType type )
+    public void setType ( final SampleNodeType type )
     {
         this.type = type;
     }
@@ -111,7 +111,7 @@ public class SampleNode extends AsyncUniqueNode
      *
      * @param time new time spent to load node childs
      */
-    public void setTime ( long time )
+    public void setTime ( final long time )
     {
         this.time = time;
     }

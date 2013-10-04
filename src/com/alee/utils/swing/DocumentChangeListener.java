@@ -15,39 +15,50 @@
 * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.extended.tree;
+package com.alee.utils.swing;
 
-import java.util.List;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 /**
- * This listener class provide various asynchronous tree events.
+ * Special document listener that only notifies about occured changes.
  *
- * @param <E> custom node type
  * @author Mikle Garin
  */
 
-public abstract class AsyncTreeAdapter<E extends AsyncUniqueNode> implements AsyncTreeListener<E>
+public abstract class DocumentChangeListener implements DocumentListener
 {
     /**
-     * Invoked when childs load operation starts.
-     *
-     * @param parent node which childs are being loaded
+     * {@inheritDoc}
      */
     @Override
-    public void childsLoadStarted ( final E parent )
+    public void insertUpdate ( DocumentEvent e )
     {
-        // Do nothing by default
+        documentChanged ( e );
     }
 
     /**
-     * Invoked when childs load operation finishes.
-     *
-     * @param parent node which childs were loaded
-     * @param childs loaded child nodes
+     * {@inheritDoc}
      */
     @Override
-    public void childsLoadCompleted ( final E parent, final List<E> childs )
+    public void removeUpdate ( DocumentEvent e )
     {
-        // Do nothing by default
+        documentChanged ( e );
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void changedUpdate ( DocumentEvent e )
+    {
+        documentChanged ( e );
+    }
+
+    /**
+     * Document has changed in some way.
+     *
+     * @param e document event
+     */
+    public abstract void documentChanged ( DocumentEvent e );
 }

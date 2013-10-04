@@ -20,10 +20,7 @@ package com.alee.extended.tree;
 import com.alee.extended.checkbox.CheckState;
 
 import javax.swing.tree.DefaultMutableTreeNode;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.WeakHashMap;
+import java.util.*;
 
 /**
  * Default checking model for WebCheckBoxTree.
@@ -41,7 +38,7 @@ public class DefaultTreeCheckingModel<E extends DefaultMutableTreeNode> implemen
     /**
      * Node check states cache.
      */
-    protected Map<DefaultMutableTreeNode, CheckState> nodeCheckStates = new WeakHashMap<DefaultMutableTreeNode, CheckState> ();
+    protected Map<E, CheckState> nodeCheckStates = new WeakHashMap<E, CheckState> ();
 
     /**
      * @param checkBoxTree
@@ -78,18 +75,66 @@ public class DefaultTreeCheckingModel<E extends DefaultMutableTreeNode> implemen
      * {@inheritDoc}
      */
     @Override
-    public boolean isChecked ( final E node )
+    public List<E> getCheckedNodes ()
     {
-        return getCheckState ( node ) == CheckState.checked;
+        return getAllNodesForState ( CheckState.checked );
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public boolean isPartiallyChecked ( final E node )
+    public List<E> getMixedNodes ()
     {
-        return getCheckState ( node ) == CheckState.mixed;
+        return getAllNodesForState ( CheckState.mixed );
+    }
+
+    /**
+     * Returns list of nodes for the specified state.
+     * For a reasonable cause this will not work for unchecked state.
+     *
+     * @param state check state
+     * @return list of nodes for the specified state
+     */
+    protected List<E> getAllNodesForState ( final CheckState state )
+    {
+        final List<E> checkedNodes = new ArrayList<E> ( nodeCheckStates.size () );
+        for ( final Map.Entry<E, CheckState> entry : nodeCheckStates.entrySet () )
+        {
+            if ( entry.getValue () == state )
+            {
+                checkedNodes.add ( entry.getKey () );
+            }
+        }
+        return checkedNodes;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setChecked ( final Collection<E> nodes )
+    {
+        final List<E> toUpdate = new ArrayList<E> ();
+        for ( final E node : nodes )
+        {
+            setCheckedImpl ( node, true, toUpdate );
+        }
+        checkBoxTree.repaint ( toUpdate );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setUnchecked ( final Collection<E> nodes )
+    {
+        final List<E> toUpdate = new ArrayList<E> ();
+        for ( final E node : nodes )
+        {
+            setCheckedImpl ( node, false, toUpdate );
+        }
+        checkBoxTree.repaint ( toUpdate );
     }
 
     /**
@@ -108,13 +153,27 @@ public class DefaultTreeCheckingModel<E extends DefaultMutableTreeNode> implemen
     @Override
     public void setChecked ( final E node, final boolean checked )
     {
+        final List<E> toUpdate = new ArrayList<E> ();
+        setCheckedImpl ( node, checked, toUpdate );
+        checkBoxTree.repaint ( toUpdate );
+    }
+
+    /**
+     * Sets whether the specified tree node is checked or not.
+     *
+     * @param node     tree node to process
+     * @param checked  whether the specified tree node is checked or not
+     * @param toUpdate list of nodes for later update
+     */
+    protected void setCheckedImpl ( final E node, final boolean checked, final List<E> toUpdate )
+    {
+        // Remembering old and new states
         final CheckState oldState = getCheckState ( node );
         final CheckState newState = checked ? CheckState.checked : CheckState.unchecked;
 
         // Updating node if check state has actually changed
         if ( oldState != newState )
         {
-            final List<E> toUpdate = new ArrayList<E> ();
 
             // Changing node check state
             updateNodeState ( node, newState, toUpdate );
@@ -130,8 +189,6 @@ public class DefaultTreeCheckingModel<E extends DefaultMutableTreeNode> implemen
                 // Changing node parents check state
                 updateParentStates ( node, toUpdate );
             }
-
-            checkBoxTree.repaint ( toUpdate );
         }
     }
 

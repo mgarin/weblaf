@@ -17,7 +17,6 @@
 
 package com.alee.laf;
 
-import com.alee.extended.painter.Painter;
 import com.alee.utils.ColorUtils;
 import com.alee.utils.laf.FocusType;
 import com.alee.utils.laf.ShadeType;
@@ -139,7 +138,6 @@ public class StyleConstants
      */
     public static boolean rolloverDecoratedOnly = false;
     public static boolean undecorated = false;
-    public static Painter painter = null;
 
     /**
      * Components corners rounding settings.
@@ -175,7 +173,7 @@ public class StyleConstants
     public static int smallLeftRightSpacing = 2;
     public static int leftRightSpacing = 4;
     public static int largeLeftRightSpacing = 8;
-    public static Insets margin = new Insets ( 0, 0, 0, 0 );
+    public static Insets emptyMargin = new Insets ( 0, 0, 0, 0 );
 
     /**
      * Container components settings.

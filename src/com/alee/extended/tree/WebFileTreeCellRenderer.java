@@ -45,8 +45,8 @@ public class WebFileTreeCellRenderer extends WebTreeCellRenderer
      * @return cell renderer component
      */
     @Override
-    public WebTreeElement getTreeCellRendererComponent ( JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf,
-                                                         int row, boolean hasFocus )
+    public WebTreeElement getTreeCellRendererComponent ( final JTree tree, final Object value, final boolean isSelected,
+                                                         final boolean expanded, final boolean leaf, final int row, final boolean hasFocus )
     {
         super.getTreeCellRendererComponent ( tree, value, isSelected, expanded, leaf, row, hasFocus );
 

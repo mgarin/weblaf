@@ -23,148 +23,151 @@ import com.alee.laf.StyleConstants;
 import java.awt.*;
 
 /**
- * User: mgarin Date: 11/21/11 Time: 4:53 PM
+ * WebButton style class.
+ *
+ * @author Mikle Garin
  */
 
 public final class WebButtonStyle
 {
     /**
-     * Top background color
+     * Top background color.
      */
     public static Color topBgColor = StyleConstants.topBgColor;
 
     /**
-     * Bottom background color
+     * Bottom background color.
      */
     public static Color bottomBgColor = StyleConstants.bottomBgColor;
 
     /**
-     * Top selected background color
+     * Top selected background color.
      */
     public static Color topSelectedBgColor = StyleConstants.selectedBgColor;
 
     /**
-     * Bottom selected background color
+     * Bottom selected background color.
      */
     public static Color bottomSelectedBgColor = new Color ( 210, 210, 210 );
 
     /**
-     * Selected button foreground
+     * Selected button foreground.
      */
     public static Color selectedForeground = StyleConstants.selectedTextColor;
 
     /**
-     * Draw rollover shine
+     * Whether should draw rollover shine or not.
      */
     public static boolean rolloverShine = false;
 
     /**
-     * Rollover shine color
+     * Rollover shine color.
      */
     public static Color shineColor = StyleConstants.shineColor;
 
     /**
-     * Draw dark border only on rollover
+     * Whether should draw dark border on rollover only or not.
      */
     public static boolean rolloverDarkBorderOnly = StyleConstants.rolloverDarkBorderOnly;
 
     /**
-     * Should draw shade
+     * Whether should draw shade or not.
      */
     public static boolean drawShade = StyleConstants.drawShade;
 
     /**
-     * Draw shade only on rollover
+     * Whether should draw shade on rollover only or not.
      */
     public static boolean rolloverShadeOnly = StyleConstants.rolloverShadeOnly;
 
     /**
-     * Draw shade when button is disabled
+     * Whether should draw shade when button is disabled or not.
      */
     public static boolean showDisabledShade = StyleConstants.showDisabledShade;
 
     /**
-     * Decoration rounding
+     * Button corners rounding.
      */
     public static int round = StyleConstants.mediumRound;
 
     /**
-     * Icon button decoration rounding
+     * Icon button corners rounding.
      */
     public static int iconRound = StyleConstants.smallRound;
 
     /**
-     * Decoration shade width
+     * Button shade width.
      */
     public static int shadeWidth = StyleConstants.shadeWidth;
 
     /**
-     * Default button margin
+     * Button margin.
      */
-    public static Insets margin = StyleConstants.margin;
+    public static Insets margin = StyleConstants.emptyMargin;
 
     /**
-     * Shade color
+     * Shade color.
      */
     public static Color shadeColor = StyleConstants.shadeColor;
 
     /**
-     * Inner shade width
+     * Inner shade width.
      */
     public static int innerShadeWidth = StyleConstants.innerShadeWidth;
 
     /**
-     * Inner shade color
+     * Inner shade color.
      */
     public static Color innerShadeColor = StyleConstants.innerShadeColor;
 
     /**
-     * Left and right spacing
+     * Left and right button content spacing.
      */
     public static int leftRightSpacing = StyleConstants.leftRightSpacing;
 
     /**
-     * Left and right spacing
+     * Left and right icon button content spacing.
      */
     public static int iconLeftRightSpacing = 0;
 
     /**
-     * Make unselected toggle button icon transparent
+     * Whether should make unselected toggle button icon semi-transparent or not.
      */
     public static boolean shadeToggleIcon = StyleConstants.shadeToggleIcon;
 
     /**
-     * Unselected toggle button icon transparency
+     * Unselected toggle button icon transparency.
      */
     public static float shadeToggleIconTransparency = StyleConstants.shadeToggleIconTransparency;
 
     /**
-     * Draw button focus
+     * Whether should draw button focus or not.
      */
     public static boolean drawFocus = StyleConstants.drawFocus;
 
     /**
-     * Draw button decoration on rollover only
+     * Whether should draw button decoration on rollover only or not.
      */
     public static boolean rolloverDecoratedOnly = StyleConstants.rolloverDecoratedOnly;
 
     /**
-     * Animate component
+     * Whether should animate button transitions.
      */
     public static boolean animate = StyleConstants.animate;
 
     /**
-     * Undecorated button
+     * Whether should undecorate button or not.
      */
     public static boolean undecorated = StyleConstants.undecorated;
 
     /**
-     * Default button background painter
+     * Button painter.
+     * If set it will override WebLaF styling.
      */
-    public static Painter painter = StyleConstants.painter;
+    public static Painter painter = null;
 
     /**
-     * Animate component
+     * Whether should move button icon a bit when button is pressed or not.
      */
     public static boolean moveIconOnPress = true;
 }

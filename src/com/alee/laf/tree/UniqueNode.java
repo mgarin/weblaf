@@ -36,7 +36,7 @@ public class UniqueNode extends DefaultMutableTreeNode implements Serializable
     /**
      * Prefix for node ID.
      */
-    private static final String ID_PREFIX = "UN";
+    protected static final String ID_PREFIX = "UN";
 
     /**
      * Unique node ID.
@@ -57,7 +57,7 @@ public class UniqueNode extends DefaultMutableTreeNode implements Serializable
      *
      * @param userObject custom user object
      */
-    public UniqueNode ( Object userObject )
+    public UniqueNode ( final Object userObject )
     {
         super ( userObject );
         setId ();
@@ -82,7 +82,7 @@ public class UniqueNode extends DefaultMutableTreeNode implements Serializable
      *
      * @param id new node ID
      */
-    public void setId ( String id )
+    public void setId ( final String id )
     {
         this.id = id;
     }
@@ -90,7 +90,7 @@ public class UniqueNode extends DefaultMutableTreeNode implements Serializable
     /**
      * Changes node ID to new random ID.
      */
-    private void setId ()
+    protected void setId ()
     {
         this.id = TextUtils.generateId ( ID_PREFIX );
     }

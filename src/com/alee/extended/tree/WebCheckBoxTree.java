@@ -31,9 +31,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.Hashtable;
+import java.util.*;
 import java.util.List;
-import java.util.Vector;
 
 /**
  * This WebTree extension class provides additional checkbox tree functionality.
@@ -196,7 +195,7 @@ public class WebCheckBoxTree<E extends DefaultMutableTreeNode> extends WebTree<E
      *
      * @param renderer checkbox tree cell renderer
      */
-    public void setCheckBoxTreeCellRenderer ( CheckBoxTreeCellRenderer renderer )
+    public void setCheckBoxTreeCellRenderer ( final CheckBoxTreeCellRenderer renderer )
     {
         checkBoxCellRenderer = renderer;
         checkBoxCellRenderer.setCheckBoxRendererGap ( getCheckBoxRendererGap () );
@@ -228,7 +227,7 @@ public class WebCheckBoxTree<E extends DefaultMutableTreeNode> extends WebTree<E
      *
      * @param gap gap between checkbox and actual tree renderer
      */
-    public void setCheckBoxRendererGap ( int gap )
+    public void setCheckBoxRendererGap ( final int gap )
     {
         this.checkBoxRendererGap = gap;
     }
@@ -245,6 +244,17 @@ public class WebCheckBoxTree<E extends DefaultMutableTreeNode> extends WebTree<E
     }
 
     /**
+     * Returns whether the specified tree nod is unchecked or not.
+     *
+     * @param node tree node to process
+     * @return true if the specified tree nod is unchecked, false otherwise
+     */
+    public boolean isUnchecked ( final E node )
+    {
+        return checkingModel != null && checkingModel.getCheckState ( node ) == CheckState.unchecked;
+    }
+
+    /**
      * Returns whether the specified tree node is checked or not.
      *
      * @param node tree node to process
@@ -252,7 +262,64 @@ public class WebCheckBoxTree<E extends DefaultMutableTreeNode> extends WebTree<E
      */
     public boolean isChecked ( final E node )
     {
-        return checkingModel != null && checkingModel.isChecked ( node );
+        return checkingModel != null && checkingModel.getCheckState ( node ) == CheckState.checked;
+    }
+
+    /**
+     * Returns whether the specified tree node is partially checked or not.
+     *
+     * @param node tree node to process
+     * @return true if the specified tree node is partially checked, false otherwise
+     */
+    public boolean isMixed ( final E node )
+    {
+        return checkingModel != null && checkingModel.getCheckState ( node ) == CheckState.mixed;
+    }
+
+    /**
+     * Returns list of checked nodes.
+     *
+     * @return list of checked nodes
+     */
+    public List<E> getCheckedNodes ()
+    {
+        return checkingModel != null ? checkingModel.getCheckedNodes () : new ArrayList<E> ( 0 );
+    }
+
+    /**
+     * Returns list of nodes in mixed state.
+     *
+     * @return list of nodes in mixed state
+     */
+    public List<E> getMixedNodes ()
+    {
+        return checkingModel != null ? checkingModel.getMixedNodes () : new ArrayList<E> ( 0 );
+    }
+
+    /**
+     * Sets specified nodes state to checked.
+     *
+     * @param nodes nodes to check
+     */
+    public void setChecked ( final Collection<E> nodes )
+    {
+        if ( checkingModel != null )
+        {
+            checkingModel.setChecked ( nodes );
+        }
+    }
+
+    /**
+     * Sets specified nodes state to unchecked.
+     *
+     * @param nodes nodes to uncheck
+     */
+    public void setUnchecked ( final Collection<E> nodes )
+    {
+        if ( checkingModel != null )
+        {
+            checkingModel.setUnchecked ( nodes );
+        }
     }
 
     /**

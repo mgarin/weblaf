@@ -34,7 +34,7 @@ public class SampleTreeCellEditor extends WebTreeCellEditor
     /**
      * Last edited node.
      */
-    private SampleNode sampleNode;
+    protected SampleNode sampleNode;
 
     /**
      * Constructs sample tree cell editor.
@@ -56,11 +56,12 @@ public class SampleTreeCellEditor extends WebTreeCellEditor
      * @return cell editor component
      */
     @Override
-    public Component getTreeCellEditorComponent ( JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row )
+    public Component getTreeCellEditorComponent ( final JTree tree, final Object value, final boolean isSelected, final boolean expanded,
+                                                  final boolean leaf, final int row )
     {
         // todo Use delegate instead of direct access!
         this.sampleNode = ( SampleNode ) value;
-        WebTextField editor = ( WebTextField ) super.getTreeCellEditorComponent ( tree, value, isSelected, expanded, leaf, row );
+        final WebTextField editor = ( WebTextField ) super.getTreeCellEditorComponent ( tree, value, isSelected, expanded, leaf, row );
         editor.setText ( sampleNode.getName () );
         return editor;
     }

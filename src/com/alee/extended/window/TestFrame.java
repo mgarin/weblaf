@@ -23,6 +23,7 @@ import com.alee.extended.panel.BorderPanel;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.panel.WebPanel;
 import com.alee.laf.rootpane.WebFrame;
+import com.alee.managers.version.VersionManager;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SystemUtils;
 
@@ -666,8 +667,10 @@ public class TestFrame extends WebFrame
      */
     public static String getFrameTitle ( final Component component )
     {
-        final String className = component != null ? ReflectUtils.getClassName ( component.getClass () ) : "TestFrame";
-        return className + " (" + SystemUtils.getOsName () + " " + SystemUtils.getOsArch () +
-                ", JRE " + SystemUtils.getJavaVersionString () + " " + SystemUtils.getJreArch () + "-bit)";
+        final String className = ( component != null ? ReflectUtils.getClassName ( component.getClass () ) : "TestFrame" ) + " ";
+        final String libVersion = "[ " + VersionManager.getLibraryVersion ().toString () + " ] ";
+        final String osVersion = "[ " + SystemUtils.getOsName () + " " + SystemUtils.getOsArch () + " ] ";
+        final String jreVersion = "[ JRE " + SystemUtils.getJavaVersionString () + " " + SystemUtils.getJreArch () + "-bit ]";
+        return className + libVersion + osVersion + jreVersion;
     }
 }

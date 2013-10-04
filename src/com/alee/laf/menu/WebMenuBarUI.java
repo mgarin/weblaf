@@ -38,7 +38,7 @@ public class WebMenuBarUI extends BasicMenuBarUI implements ShapeProvider
     private boolean undecorated = WebMenuBarStyle.undecorated;
     private int round = WebMenuBarStyle.round;
     private int shadeWidth = WebMenuBarStyle.shadeWidth;
-    private MenubarStyle menubarStyle = WebMenuBarStyle.menubarStyle;
+    private MenuBarStyle menuBarStyle = WebMenuBarStyle.menuBarStyle;
     private Color borderColor = WebMenuBarStyle.borderColor;
 
     @SuppressWarnings ("UnusedParameters")
@@ -67,23 +67,25 @@ public class WebMenuBarUI extends BasicMenuBarUI implements ShapeProvider
         return LafUtils.getWebBorderShape ( menuBar, getShadeWidth (), getRound () );
     }
 
-    private void updateBorder ( JComponent c )
+    private void updateBorder ( final JComponent c )
     {
+        final Insets insets;
         if ( !undecorated )
         {
-            if ( menubarStyle.equals ( MenubarStyle.attached ) )
+            if ( menuBarStyle.equals ( MenuBarStyle.attached ) )
             {
-                c.setBorder ( BorderFactory.createEmptyBorder ( 0, 0, 1 + shadeWidth, 0 ) );
+                insets = new Insets ( 0, 0, 1 + shadeWidth, 0 );
             }
             else
             {
-                c.setBorder ( BorderFactory.createEmptyBorder ( 1 + shadeWidth, 1 + shadeWidth, 1 + shadeWidth, 1 + shadeWidth ) );
+                insets = new Insets ( 1 + shadeWidth, 1 + shadeWidth, 1 + shadeWidth, 1 + shadeWidth );
             }
         }
         else
         {
-            c.setBorder ( BorderFactory.createEmptyBorder ( 0, 0, 0, 0 ) );
+            insets = new Insets ( 0, 0, 0, 0 );
         }
+        c.setBorder ( LafUtils.createWebBorder ( insets ) );
     }
 
     public boolean isUndecorated ()
@@ -97,14 +99,14 @@ public class WebMenuBarUI extends BasicMenuBarUI implements ShapeProvider
         updateBorder ( menuBar );
     }
 
-    public MenubarStyle getMenubarStyle ()
+    public MenuBarStyle getMenuBarStyle ()
     {
-        return menubarStyle;
+        return menuBarStyle;
     }
 
-    public void setMenubarStyle ( MenubarStyle menubarStyle )
+    public void setMenuBarStyle ( MenuBarStyle menuBarStyle )
     {
-        this.menubarStyle = menubarStyle;
+        this.menuBarStyle = menuBarStyle;
         updateBorder ( menuBar );
     }
 
@@ -146,7 +148,7 @@ public class WebMenuBarUI extends BasicMenuBarUI implements ShapeProvider
         {
             Graphics2D g2d = ( Graphics2D ) g;
 
-            if ( menubarStyle.equals ( MenubarStyle.attached ) )
+            if ( menuBarStyle == MenuBarStyle.attached )
             {
                 Shape border = new Line2D.Double ( 0, c.getHeight () - 1 - shadeWidth, c.getWidth () - 1, c.getHeight () - 1 - shadeWidth );
 

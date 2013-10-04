@@ -18,11 +18,22 @@
 package com.alee.laf.menu;
 
 /**
- * User: mgarin Date: 22.12.11 Time: 13:42
+ * This enumeration represents possible menubar styles.
+ *
+ * @author Mikle Garin
  */
 
-public enum MenubarStyle
+public enum MenuBarStyle
 {
+    /**
+     * Standalone menubar.
+     * May be used to display menubar separately from frame borders or elements.
+     */
     standalone,
+
+    /**
+     * Attached menubar.
+     * Usually used as the default style for window menubar.
+     */
     attached
 }

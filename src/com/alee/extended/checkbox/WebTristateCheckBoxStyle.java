@@ -23,7 +23,7 @@ package com.alee.extended.checkbox;
  * @author Mikle Garin
  */
 
-public class WebTristateCheckBoxStyle
+public final class WebTristateCheckBoxStyle
 {
     /**
      * Whether partially checked tristate checkbox should be checked or unchecked on toggle.

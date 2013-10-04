@@ -25,50 +25,79 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * User: mgarin Date: 15.08.11 Time: 16:37
+ * This JPopupMenu extension class provides a direct access to WebPopupMenuUI methods.
+ * It also has a few additional methods for easy popup positioning on display.
+ *
+ * @author Mikle Garin
  */
 
 public class WebPopupMenu extends JPopupMenu implements ShapeProvider
 {
-    private boolean ignoreBorderOnShow = false;
-
+    /**
+     * Constructs new popup menu.
+     */
     public WebPopupMenu ()
     {
         super ();
     }
 
-    public WebPopupMenu ( String label )
+    /**
+     * Constructs new popup menu with the specified label.
+     *
+     * @param label popup menu label
+     */
+    public WebPopupMenu ( final String label )
     {
         super ( label );
     }
 
-    //    public boolean isIgnoreBorderOnShow ()
-    //    {
-    //        return ignoreBorderOnShow;
-    //    }
-    //
-    //    public void setIgnoreBorderOnShow ( boolean ignoreBorderOnShow )
-    //    {
-    //        this.ignoreBorderOnShow = ignoreBorderOnShow;
-    //    }
-    //
-    //    public void show ( Component invoker, int x, int y )
-    //    {
-    //        super.show ( invoker, x + ( ignoreBorderOnShow ? 0 : StyleConstants.shadeWidth ), y
-    //                /*+ ( ignoreBorderOnShow ? 0 : StyleConstants.shadeWidth )*/ );
-    //    }
+    /**
+     * Displays popup menu under the invoker component.
+     * This method also takes into account component orientation.
+     *
+     * @param invoker invoker component
+     */
+    public void showUnder ( final Component invoker )
+    {
+        final boolean ltr = invoker.getComponentOrientation ().isLeftToRight ();
+        show ( invoker, ltr ? 0 : invoker.getWidth () - getPreferredSize ().width, invoker.getHeight () );
+    }
 
+    /**
+     * Displays popup menu above the invoker component.
+     * This method also takes into account component orientation.
+     *
+     * @param invoker invoker component
+     */
+    public void showAbove ( final Component invoker )
+    {
+        final boolean ltr = invoker.getComponentOrientation ().isLeftToRight ();
+        final Dimension ps = getPreferredSize ();
+        show ( invoker, ltr ? 0 : invoker.getWidth () - ps.width, -ps.height );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Shape provideShape ()
     {
         return getWebUI ().provideShape ();
     }
 
+    /**
+     * Returns Web-UI applied to this class.
+     *
+     * @return Web-UI applied to this class
+     */
     public WebPopupMenuUI getWebUI ()
     {
         return ( WebPopupMenuUI ) getUI ();
     }
 
+    /**
+     * Installs a Web-UI into this component.
+     */
     @Override
     public void updateUI ()
     {

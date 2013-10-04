@@ -17,20 +17,93 @@
 
 package com.alee.laf.menu;
 
-import com.alee.laf.separator.WebSeparatorUI;
+import com.alee.utils.LafUtils;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
+import javax.swing.plaf.basic.BasicPopupMenuSeparatorUI;
+import java.awt.*;
 
 /**
- * User: mgarin Date: 16.08.11 Time: 16:39
+ * Custom UI for JPopupMenu.Separator component.
+ *
+ * @author Mikle Garin
  */
 
-public class WebPopupMenuSeparatorUI extends WebSeparatorUI
+public class WebPopupMenuSeparatorUI extends BasicPopupMenuSeparatorUI
 {
-    @SuppressWarnings ("UnusedParameters")
-    public static ComponentUI createUI ( JComponent c )
+    /**
+     * Style settings.
+     */
+    protected Color color = WebPopupMenuSeparatorStyle.color;
+    protected Stroke stroke = WebPopupMenuSeparatorStyle.stroke;
+    protected int spacing = WebPopupMenuSeparatorStyle.spacing;
+    protected int sideSpacing = WebPopupMenuSeparatorStyle.sideSpacing;
+
+    /**
+     * Returns an instance of the WebPopupMenuSeparatorUI for the specified component.
+     * This tricky method is used by UIManager to create component UIs when needed.
+     *
+     * @param c component that will use UI instance
+     * @return instance of the WebPopupMenuSeparatorUI
+     */
+    @SuppressWarnings ( "UnusedParameters" )
+    public static ComponentUI createUI ( final JComponent c )
     {
         return new WebPopupMenuSeparatorUI ();
+    }
+
+    /**
+     * Installs UI in the specified component.
+     *
+     * @param c component for this UI
+     */
+    @Override
+    public void installUI ( final JComponent c )
+    {
+        super.installUI ( c );
+        c.setOpaque ( false );
+    }
+
+    /**
+     * Uninstalls UI from the specified component.
+     *
+     * @param c component with this UI
+     */
+    @Override
+    public void uninstallUI ( final JComponent c )
+    {
+        c.setOpaque ( true );
+        super.uninstallUI ( c );
+    }
+
+    /**
+     * Paints popup menu separator.
+     *
+     * @param g graphics context
+     * @param c separator component
+     */
+    @Override
+    public void paint ( final Graphics g, final JComponent c )
+    {
+        final Graphics2D g2d = ( Graphics2D ) g;
+        final Object aa = LafUtils.setupAntialias ( g2d );
+        final Stroke stroke = LafUtils.setupStroke ( g2d, this.stroke );
+        g.setColor ( color );
+        g.drawLine ( sideSpacing, c.getHeight () / 2, c.getWidth () - sideSpacing - 1, c.getHeight () / 2 );
+        LafUtils.restoreStroke ( g2d, stroke );
+        LafUtils.restoreAntialias ( g2d, aa );
+    }
+
+    /**
+     * Returns preferred separator size.
+     *
+     * @param c separator component
+     * @return preferred separator size
+     */
+    @Override
+    public Dimension getPreferredSize ( final JComponent c )
+    {
+        return new Dimension ( 0, spacing * 2 + 1 );
     }
 }

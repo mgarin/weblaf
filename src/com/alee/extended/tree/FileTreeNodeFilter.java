@@ -48,7 +48,7 @@ public class FileTreeNodeFilter implements Filter<FileTreeNode>
      *
      * @param filter file filter
      */
-    public FileTreeNodeFilter ( Filter<File> filter )
+    public FileTreeNodeFilter ( final Filter<File> filter )
     {
         super ();
         this.filter = filter;
@@ -69,7 +69,7 @@ public class FileTreeNodeFilter implements Filter<FileTreeNode>
      *
      * @param filter used file filter
      */
-    public void setFilter ( Filter<File> filter )
+    public void setFilter ( final Filter<File> filter )
     {
         this.filter = filter;
     }
@@ -78,7 +78,7 @@ public class FileTreeNodeFilter implements Filter<FileTreeNode>
      * {@inheritDoc}
      */
     @Override
-    public boolean accept ( FileTreeNode object )
+    public boolean accept ( final FileTreeNode object )
     {
         return filter.accept ( object.getFile () );
     }

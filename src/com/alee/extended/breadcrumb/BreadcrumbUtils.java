@@ -26,26 +26,39 @@ import java.awt.*;
  * User: mgarin Date: 25.06.12 Time: 17:09
  */
 
-public class BreadcrumbUtils
+/**
+ * This class provides a set of utilities for breadcrumbs.
+ * This is a library utility class and its not intended for use outside of the breadcrumbs.
+ *
+ * @author Mikle Garin
+ */
+
+public final class BreadcrumbUtils
 {
     /**
-     * Returns true if BreadcrumbElement contains specified point
+     * Returns whether breadcrumb element contains specified point or not.
+     *
+     * @param x       point X coordinate
+     * @param y       point Y coordinate
+     * @param element breadcrumb element
+     * @return true if breadcrumb element contains specified point, false otherwise
      */
-
-    public static boolean contains ( int x, int y, BreadcrumbElement element )
+    public static boolean contains ( final int x, final int y, final BreadcrumbElement element )
     {
-        JComponent ec = ( JComponent ) element;
-        boolean ltr = ec.getComponentOrientation ().isLeftToRight ();
+        final JComponent ec = ( JComponent ) element;
+        final boolean ltr = ec.getComponentOrientation ().isLeftToRight ();
         return element.getPainter ().getFillShape ( ec, ltr, getRound ( ec ) ).contains ( x, y );
     }
 
     /**
-     * Returns BreadcrumbElement corners rounding
+     * Returns breadcrumb element corners rounding.
+     *
+     * @param element breadcrumb element
+     * @return breadcrumb element corners rounding
      */
-
-    public static int getRound ( JComponent element )
+    public static int getRound ( final JComponent element )
     {
-        Container bc = element.getParent ();
+        final Container bc = element.getParent ();
         if ( bc != null && bc instanceof WebBreadcrumb )
         {
             return ( ( WebBreadcrumb ) bc ).getRound ();
@@ -57,9 +70,10 @@ public class BreadcrumbUtils
     }
 
     /**
-     * Creates default breadcrumb layout
+     * Creates and returns default breadcrumb layout.
+     *
+     * @return default breadcrumb layout
      */
-
     public static BreadcrumbLayout createDefaultLayout ()
     {
         return new BreadcrumbLayout ( WebBreadcrumbStyle.elementOverlap + WebBreadcrumbStyle.shadeWidth );

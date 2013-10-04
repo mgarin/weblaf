@@ -76,6 +76,25 @@ public final class ProprietaryUtils
     }
 
     /**
+     * Returns whether window transparency is supported on current OS or not.
+     *
+     * @return true if window transparency is supported on current OS; false otherwise
+     */
+    public static boolean isWindowTransparencyAllowed ()
+    {
+        try
+        {
+            // Replace when Unix-systems will have proper support for transparency
+            // com.sun.awt.AWTUtilities.isTranslucencySupported ( com.sun.awt.AWTUtilities.Translucency.PERPIXEL_TRANSPARENT )
+            return SystemUtils.isWindows () || SystemUtils.isMac () || SystemUtils.isSolaris ();
+        }
+        catch ( Throwable e )
+        {
+            return false;
+        }
+    }
+
+    /**
      * Sets window opaque if that option is supported by the underlying system.
      *
      * @param window window to process
@@ -209,24 +228,5 @@ public final class ProprietaryUtils
             }
         }
         return 1f;
-    }
-
-    /**
-     * Returns whether window transparency is supported on current OS or not.
-     *
-     * @return true if window transparency is supported on current OS; false otherwise
-     */
-    public static boolean isWindowTransparencyAllowed ()
-    {
-        try
-        {
-            // Replace when Unix-systems will have proper support for transparency
-            // com.sun.awt.AWTUtilities.isTranslucencySupported ( com.sun.awt.AWTUtilities.Translucency.PERPIXEL_TRANSPARENT )
-            return SystemUtils.isWindows () || SystemUtils.isMac () || SystemUtils.isSolaris ();
-        }
-        catch ( Throwable e )
-        {
-            return false;
-        }
     }
 }

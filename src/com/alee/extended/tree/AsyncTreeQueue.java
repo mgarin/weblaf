@@ -28,7 +28,7 @@ import java.util.concurrent.Executors;
  * @author Mikle Garin
  */
 
-public class AsyncTreeQueue
+public final class AsyncTreeQueue
 {
     /**
      * Maximum threads amount to run all asynchronous trees requests in.
@@ -62,7 +62,7 @@ public class AsyncTreeQueue
      * @param asyncTree asynchronous tree to process
      * @param amount    new maximum threads amount
      */
-    public static void setMaximumThreadsAmount ( WebAsyncTree asyncTree, int amount )
+    public static void setMaximumThreadsAmount ( final WebAsyncTree asyncTree, final int amount )
     {
         getInstance ( asyncTree ).setMaximumThreadsAmount ( amount );
     }
@@ -73,7 +73,7 @@ public class AsyncTreeQueue
      * @param asyncTree asynchronous tree to process
      * @param runnable  runnable to execute
      */
-    public static void execute ( WebAsyncTree asyncTree, Runnable runnable )
+    public static void execute ( final WebAsyncTree asyncTree, final Runnable runnable )
     {
         getInstance ( asyncTree ).execute ( runnable );
     }
@@ -85,7 +85,7 @@ public class AsyncTreeQueue
      * @param asyncTree asynchronous tree to process
      * @return an instance of queue for the specified asynchronous tree
      */
-    public static AsyncTreeQueue getInstance ( WebAsyncTree asyncTree )
+    public static AsyncTreeQueue getInstance ( final WebAsyncTree asyncTree )
     {
         if ( separateLimitForEachTree )
         {
@@ -103,7 +103,7 @@ public class AsyncTreeQueue
      * @param asyncTree asynchronous tree to process
      * @return an instance of queue for the specified asynchronous tree
      */
-    private static AsyncTreeQueue getInstanceImpl ( WebAsyncTree asyncTree )
+    private static AsyncTreeQueue getInstanceImpl ( final WebAsyncTree asyncTree )
     {
         AsyncTreeQueue queue = queues.get ( asyncTree );
         if ( queue == null )
@@ -126,7 +126,7 @@ public class AsyncTreeQueue
      */
     private static void shutdownAllQueues ()
     {
-        for ( Map.Entry<WebAsyncTree, AsyncTreeQueue> queueEntry : queues.entrySet () )
+        for ( final Map.Entry<WebAsyncTree, AsyncTreeQueue> queueEntry : queues.entrySet () )
         {
             queueEntry.getValue ().shutdown ();
         }
@@ -145,7 +145,7 @@ public class AsyncTreeQueue
      *
      * @param amount maximum threads amount for this queue
      */
-    public void setMaximumThreadsAmount ( int amount )
+    public void setMaximumThreadsAmount ( final int amount )
     {
         synchronized ( lock )
         {
@@ -183,7 +183,7 @@ public class AsyncTreeQueue
      *
      * @param runnable runnable to execute
      */
-    public void execute ( Runnable runnable )
+    public void execute ( final Runnable runnable )
     {
         synchronized ( lock )
         {

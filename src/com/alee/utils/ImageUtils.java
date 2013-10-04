@@ -17,7 +17,6 @@
 
 package com.alee.utils;
 
-import com.alee.graphics.filters.ImageFilterUtils;
 import com.alee.graphics.filters.ShadowFilter;
 import com.alee.laf.GlobalConstants;
 import com.alee.laf.StyleConstants;
@@ -1310,7 +1309,7 @@ public final class ImageUtils
     {
         // todo Properly use height
         int width = shadeWidth * 2 + w;
-        @SuppressWarnings ( "UnusedDeclaration" ) int height = shadeWidth * 2 + h;
+        @SuppressWarnings ("UnusedDeclaration") int height = shadeWidth * 2 + h;
 
         // Creating template image
         BufferedImage bi = createCompatibleImage ( width, width, Transparency.TRANSLUCENT );

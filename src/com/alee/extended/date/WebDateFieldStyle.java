@@ -82,7 +82,7 @@ public final class WebDateFieldStyle
 
     /**
      * Custom panel decoration painter.
-     * Set to null to enable default decoration painting behavior.
+     * If set it will override WebLaF styling.
      */
-    public static Painter painter = StyleConstants.painter;
+    public static Painter painter = null;
 }

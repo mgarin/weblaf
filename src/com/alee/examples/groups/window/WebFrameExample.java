@@ -32,7 +32,7 @@ import com.alee.laf.button.WebToggleButton;
 import com.alee.laf.checkbox.WebCheckBox;
 import com.alee.laf.combobox.WebComboBox;
 import com.alee.laf.label.WebLabel;
-import com.alee.laf.menu.MenubarStyle;
+import com.alee.laf.menu.MenuBarStyle;
 import com.alee.laf.menu.WebMenu;
 import com.alee.laf.menu.WebMenuBar;
 import com.alee.laf.menu.WebMenuItem;
@@ -345,7 +345,7 @@ public class WebFrameExample extends DefaultExample
                                     else
                                     {
                                         menuBar.setUndecorated ( false );
-                                        menuBar.setMenubarStyle ( i == 1 ? MenubarStyle.attached : MenubarStyle.standalone );
+                                        menuBar.setMenuBarStyle ( i == 1 ? MenuBarStyle.attached : MenuBarStyle.standalone );
                                     }
                                     ExampleFrame.this.pack ();
                                 }

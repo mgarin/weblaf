@@ -18,23 +18,25 @@
 package com.alee.laf.text;
 
 import com.alee.extended.painter.Painter;
-import com.alee.laf.StyleConstants;
 
 import java.awt.*;
 
 /**
- * User: mgarin Date: 24.01.12 Time: 15:31
+ * WebTextArea style class.
+ *
+ * @author Mikle Garin
  */
 
 public final class WebTextAreaStyle
 {
     /**
-     * Default label background painter
+     * Text area margin.
      */
     public static Insets margin = new Insets ( 2, 2, 2, 2 );
 
     /**
-     * Default label background painter
+     * Text area painter.
+     * If set it will override WebLaF styling.
      */
-    public static Painter painter = StyleConstants.painter;
+    public static Painter painter = null;
 }

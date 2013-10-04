@@ -45,14 +45,14 @@ public class WebMenuBar extends JMenuBar implements ShapeProvider
         getWebUI ().setUndecorated ( undecorated );
     }
 
-    public MenubarStyle getMenubarStyle ()
+    public MenuBarStyle getMenuBarStyle ()
     {
-        return getWebUI ().getMenubarStyle ();
+        return getWebUI ().getMenuBarStyle ();
     }
 
-    public void setMenubarStyle ( MenubarStyle menubarStyle )
+    public void setMenuBarStyle ( MenuBarStyle menuBarStyle )
     {
-        getWebUI ().setMenubarStyle ( menubarStyle );
+        getWebUI ().setMenuBarStyle ( menuBarStyle );
     }
 
     public Color getBorderColor ()

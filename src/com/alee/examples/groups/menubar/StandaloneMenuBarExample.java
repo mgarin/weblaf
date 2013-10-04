@@ -18,7 +18,7 @@
 package com.alee.examples.groups.menubar;
 
 import com.alee.examples.WebLookAndFeelDemo;
-import com.alee.laf.menu.MenubarStyle;
+import com.alee.laf.menu.MenuBarStyle;
 import com.alee.laf.menu.WebMenuBar;
 
 import java.awt.*;
@@ -45,7 +45,7 @@ public class StandaloneMenuBarExample extends DefaultMenuBarExample
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         WebMenuBar menuBar = new WebMenuBar ();
-        menuBar.setMenubarStyle ( MenubarStyle.standalone );
+        menuBar.setMenuBarStyle ( MenuBarStyle.standalone );
         setupMenuBar ( menuBar );
         return menuBar;
     }

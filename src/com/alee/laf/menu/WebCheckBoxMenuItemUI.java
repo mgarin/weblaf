@@ -21,14 +21,34 @@ import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
 
 /**
- * User: mgarin Date: 17.08.11 Time: 22:54
+ * Custom UI for JCheckBoxMenuItem component.
+ *
+ * @author Mikle Garin
  */
 
 public class WebCheckBoxMenuItemUI extends WebMenuItemUI
 {
+    /**
+     * Returns an instance of the WebCheckBoxMenuItemUI for the specified component.
+     * This tricky method is used by UIManager to create component UIs when needed.
+     *
+     * @param c component that will use UI instance
+     * @return instance of the WebCheckBoxMenuItemUI
+     */
     @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( JComponent c )
     {
         return new WebCheckBoxMenuItemUI ();
+    }
+
+    /**
+     * Returns property prefix for this specific UI.
+     *
+     * @return property prefix for this specific UI
+     */
+    @Override
+    protected String getPropertyPrefix ()
+    {
+        return "CheckBoxMenuItem";
     }
 }

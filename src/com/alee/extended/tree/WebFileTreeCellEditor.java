@@ -25,11 +25,16 @@ import com.alee.utils.FileUtils;
 import java.io.File;
 
 /**
+ * Custom cell editor for WebFileTree.
+ *
  * @author Mikle Garin
  */
 
 public class WebFileTreeCellEditor extends WebTreeCellEditor<WebTextField>
 {
+    /**
+     * Constructs new file tree cell editor.
+     */
     public WebFileTreeCellEditor ()
     {
         super ();
@@ -47,7 +52,7 @@ public class WebFileTreeCellEditor extends WebTreeCellEditor<WebTextField>
          * {@inheritDoc}
          */
         @Override
-        public void setValue ( FileTreeNode value )
+        public void setValue ( final FileTreeNode value )
         {
             final File file = value.getFile ();
             editorComponent.setLeadingComponent ( new WebImage ( FileUtils.getFileIcon ( file ) ) );

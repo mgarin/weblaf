@@ -26,7 +26,6 @@ import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.FontMethods;
 
 import javax.swing.*;
-import java.awt.*;
 
 /**
  * User: mgarin Date: 15.08.11 Time: 19:47
@@ -34,8 +33,6 @@ import java.awt.*;
 
 public class WebMenu extends JMenu implements LanguageMethods, FontMethods<WebMenu>
 {
-    private Point customMenuLocation = null;
-
     public WebMenu ()
     {
         super ();
@@ -60,44 +57,6 @@ public class WebMenu extends JMenu implements LanguageMethods, FontMethods<WebMe
     {
         super ( s );
         setIcon ( icon );
-    }
-
-    @Override
-    public void setMenuLocation ( int x, int y )
-    {
-        customMenuLocation = new Point ( x, y );
-        if ( getPopupMenu ().isVisible () )
-        {
-            getPopupMenu ().setLocation ( x, y );
-        }
-    }
-
-    public Point getCustomMenuLocation ()
-    {
-        return customMenuLocation;
-    }
-
-    @Override
-    public void setPopupMenuVisible ( boolean b )
-    {
-        boolean isVisible = isPopupMenuVisible ();
-        if ( b != isVisible && ( isEnabled () || !b ) )
-        {
-            if ( b && isShowing () )
-            {
-                Point p = getCustomMenuLocation ();
-                if ( p == null )
-                {
-                    p = getPopupMenuOrigin ();
-                }
-                getPopupMenu ().show ( this, p.x, p.y );
-                //                getPopupMenu ().show ( this, WebMenu.this.getWidth (), 0 );
-            }
-            else
-            {
-                getPopupMenu ().setVisible ( false );
-            }
-        }
     }
 
     public WebMenuUI getWebUI ()

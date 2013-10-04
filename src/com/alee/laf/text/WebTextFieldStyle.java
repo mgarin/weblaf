@@ -24,88 +24,94 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * User: mgarin Date: 20.03.12 Time: 15:59
+ * WebTextField style class.
+ *
+ * @author Mikle Garin
  */
 
 public final class WebTextFieldStyle
 {
     /**
-     * Should draw border
+     * Whether should draw border or not.
      */
     public static boolean drawBorder = StyleConstants.drawBorder;
 
     /**
-     * Should draw focus
+     * Whether should draw focus or not.
      */
     public static boolean drawFocus = StyleConstants.drawFocus;
 
     /**
-     * Default corners rounding
+     * Field corners rounding.
      */
     public static int round = StyleConstants.smallRound;
 
     /**
-     * Should draw shade
+     * Whether should draw shade or not.
      */
     public static boolean drawShade = StyleConstants.drawShade;
 
     /**
-     * Default shade width
+     * Field shade width.
      */
     public static int shadeWidth = StyleConstants.shadeWidth;
 
     /**
-     * Fill decoration background
+     * Whether should draw background or not.
      */
     public static boolean drawBackground = true;
 
     /**
-     * Web-styled background
+     * Whether should draw web-styled background or not.
      */
     public static boolean webColored = false;
 
     /**
-     * Default label background painter
+     * Text field painter.
+     * If set it will override WebLaF styling.
      */
-    public static Painter painter = StyleConstants.painter;
+    public static Painter painter = null;
 
     /**
-     * Default content spacing
+     * Field content spacing.
      */
     public static int componentSpacing = StyleConstants.contentSpacing;
 
     /**
-     * Default margin
+     * Field margin.
      */
     public static Insets margin = new Insets ( 0, 0, 0, 0 );
 
     /**
-     * Default field margin
+     * Inner field margin.
      */
     public static Insets fieldMargin = new Insets ( 2, 2, 2, 2 );
 
     /**
-     * Input prompt text (null = none)
+     * Input prompt text.
+     * Set to null to disable input prompt.
      */
     public static String inputPrompt = null;
 
     /**
-     * Input prompt text font (null = same as the text component font)
+     * Input prompt text font.
+     * Set to null to use the same font field uses.
      */
     public static Font inputPromptFont = null;
 
     /**
-     * Input prompt text foreground (null = same as the text component)
+     * Input prompt text foreground.
+     * Set to null to use the same foreground field uses.
      */
     public static Color inputPromptForeground = new Color ( 160, 160, 160 );
 
     /**
-     * Input prompt text position
+     * Input prompt text position.
      */
     public static int inputPromptPosition = SwingConstants.LEADING;
 
     /**
-     * Hide input prompt text on focus
+     * Whether should hide input prompt when field is focused or not.
      */
     public static boolean hideInputPromptOnFocus = true;
 }

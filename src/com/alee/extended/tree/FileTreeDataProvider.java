@@ -36,7 +36,7 @@ public class FileTreeDataProvider extends AbstractTreeDataProvider<FileTreeNode>
     /**
      * Tree root files.
      */
-    private List<File> rootFiles;
+    protected List<File> rootFiles;
 
     /**
      * Constructs file tree data provider with the specified files as root.
@@ -115,9 +115,9 @@ public class FileTreeDataProvider extends AbstractTreeDataProvider<FileTreeNode>
      *
      * @return root child nodes
      */
-    private List<FileTreeNode> getRootChilds ()
+    protected List<FileTreeNode> getRootChilds ()
     {
-        List<FileTreeNode> childs = new ArrayList<FileTreeNode> ( rootFiles.size () );
+        final List<FileTreeNode> childs = new ArrayList<FileTreeNode> ( rootFiles.size () );
         for ( final File rootFile : rootFiles )
         {
             childs.add ( new FileTreeNode ( rootFile ) );

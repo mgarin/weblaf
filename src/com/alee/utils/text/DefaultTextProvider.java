@@ -15,39 +15,22 @@
 * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.extended.tree;
-
-import java.util.List;
+package com.alee.utils.text;
 
 /**
- * This listener class provide various asynchronous tree events.
+ * Default simple text provider for any object type
  *
- * @param <E> custom node type
  * @author Mikle Garin
  */
 
-public abstract class AsyncTreeAdapter<E extends AsyncUniqueNode> implements AsyncTreeListener<E>
+public class DefaultTextProvider implements TextProvider
 {
     /**
-     * Invoked when childs load operation starts.
-     *
-     * @param parent node which childs are being loaded
+     * {@inheritDoc}
      */
     @Override
-    public void childsLoadStarted ( final E parent )
+    public String provide ( Object object )
     {
-        // Do nothing by default
-    }
-
-    /**
-     * Invoked when childs load operation finishes.
-     *
-     * @param parent node which childs were loaded
-     * @param childs loaded child nodes
-     */
-    @Override
-    public void childsLoadCompleted ( final E parent, final List<E> childs )
-    {
-        // Do nothing by default
+        return object != null ? object.toString () : "";
     }
 }

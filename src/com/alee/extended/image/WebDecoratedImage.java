@@ -17,7 +17,7 @@
 
 package com.alee.extended.image;
 
-import com.alee.graphics.filters.ImageFilterUtils;
+import com.alee.utils.ImageFilterUtils;
 import com.alee.utils.ImageUtils;
 import com.alee.utils.LafUtils;
 import com.alee.utils.SwingUtils;

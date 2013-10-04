@@ -42,24 +42,24 @@ public final class WebPanelStyle
     public static boolean drawFocus = false;
 
     /**
-     * Decoration rounding.
+     * Panel corners rounding.
      * This variable doesn't affect anything if panel is undecorated.
      */
     public static int round = StyleConstants.smallRound;
 
     /**
-     * Decoration shade width.
+     * Panel shade width.
      * This variable doesn't affect anything if panel is undecorated.
      */
     public static int shadeWidth = StyleConstants.shadeWidth;
 
     /**
-     * Default panel margin.
+     * Panel margin.
      */
-    public static Insets margin = StyleConstants.margin;
+    public static Insets margin = StyleConstants.emptyMargin;
 
     /**
-     * Default panel border stroke.
+     * Panel border stroke.
      * This variable doesn't affect anything if panel is undecorated.
      */
     public static Stroke borderStroke = null;
@@ -70,19 +70,20 @@ public final class WebPanelStyle
     public static boolean drawBackground = true;
 
     /**
-     * Whether should draw web-colored background or not.
+     * Whether should draw web-styled background or not.
      */
     public static boolean webColored = true;
 
     /**
-     * Default-styled background color.
+     * Panel background color.
      */
     public static Color backgroundColor = StyleConstants.backgroundColor;
 
     /**
-     * Default panel background painter.
+     * Panel decoration painter.
+     * If set it will override WebLaF styling.
      */
-    public static Painter painter = StyleConstants.painter;
+    public static Painter painter = null;
 
     /**
      * Whether should draw top panel side or not.

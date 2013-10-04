@@ -35,13 +35,13 @@ public abstract class AsyncUniqueNode extends UniqueNode implements Serializable
      * Special separate loader icon for each tree node.
      * This is required to provide separate image observers to optimize tree repaints around the animated icon.
      */
-    private transient ImageIcon loaderIcon = createLoaderIcon ();
+    protected transient ImageIcon loaderIcon = createLoaderIcon ();
 
     /**
      * Represents busy state of the node.
      * Node is busy when its childs are in process of loading from some kind of source.
      */
-    private boolean busy = false;
+    protected boolean busy = false;
 
     /**
      * Costructs default node.
@@ -56,7 +56,7 @@ public abstract class AsyncUniqueNode extends UniqueNode implements Serializable
      *
      * @param userObject custom user object
      */
-    public AsyncUniqueNode ( Object userObject )
+    public AsyncUniqueNode ( final Object userObject )
     {
         super ( userObject );
     }
@@ -77,7 +77,7 @@ public abstract class AsyncUniqueNode extends UniqueNode implements Serializable
      *
      * @param busy new node busy state
      */
-    public void setBusy ( boolean busy )
+    public void setBusy ( final boolean busy )
     {
         this.busy = busy;
     }
@@ -97,7 +97,7 @@ public abstract class AsyncUniqueNode extends UniqueNode implements Serializable
      *
      * @return loader icon
      */
-    private ImageIcon createLoaderIcon ()
+    protected ImageIcon createLoaderIcon ()
     {
         return WebAsyncTreeStyle.loaderIconType.equals ( LoaderIconType.none ) ? null :
                 new ImageIcon ( AsyncUniqueNode.class.getResource ( "icons/" + WebAsyncTreeStyle.loaderIconType + ".gif" ) );

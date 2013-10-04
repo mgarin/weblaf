@@ -15,39 +15,24 @@
 * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.extended.tree;
-
-import java.util.List;
+package com.alee.laf.menu;
 
 /**
- * This listener class provide various asynchronous tree events.
+ * This enumeration represents possible popup menu styles.
  *
- * @param <E> custom node type
  * @author Mikle Garin
  */
 
-public abstract class AsyncTreeAdapter<E extends AsyncUniqueNode> implements AsyncTreeListener<E>
+public enum PopupMenuStyle
 {
     /**
-     * Invoked when childs load operation starts.
-     *
-     * @param parent node which childs are being loaded
+     * Simple popup menu style.
      */
-    @Override
-    public void childsLoadStarted ( final E parent )
-    {
-        // Do nothing by default
-    }
+    simple,
 
     /**
-     * Invoked when childs load operation finishes.
-     *
-     * @param parent node which childs were loaded
-     * @param childs loaded child nodes
+     * Dropdown popup menu style.
+     * Menu will paint an additional styled corner faced to the side it is invoked from.
      */
-    @Override
-    public void childsLoadCompleted ( final E parent, final List<E> childs )
-    {
-        // Do nothing by default
-    }
+    dropdown
 }

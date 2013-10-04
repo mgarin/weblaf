@@ -1620,6 +1620,18 @@ public final class SwingUtils
     }
 
     /**
+     * Returns readable form of specified key stroke.
+     *
+     * @param keyStroke key stroke to process
+     * @return readable form of specified key stroke
+     */
+    public static String hotkeyToString ( KeyStroke keyStroke )
+    {
+        return hotkeyToString ( isCtrl ( keyStroke.getModifiers () ), isAlt ( keyStroke.getModifiers () ),
+                isShift ( keyStroke.getModifiers () ), keyStroke.getKeyCode () );
+    }
+
+    /**
      * Returns readable form for specified hotkey.
      *
      * @param isCtrl  whether hotkey requires CTRL modifier or not
@@ -1971,6 +1983,17 @@ public final class SwingUtils
         {
             findComponentsWithText ( text, child, components );
         }
+    }
+
+    /**
+     * Returns component bounds on screen.
+     *
+     * @param component component to process
+     * @return component bounds on screen
+     */
+    public static Rectangle getBoundsOnScreen ( Component component )
+    {
+        return new Rectangle ( component.getLocationOnScreen (), component.getSize () );
     }
 
     /**

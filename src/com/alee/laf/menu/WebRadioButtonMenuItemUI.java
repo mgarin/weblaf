@@ -21,43 +21,34 @@ import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
 
 /**
- * User: mgarin Date: 17.08.11 Time: 22:55
+ * Custom UI for JRadioButtonMenuItem component.
+ *
+ * @author Mikle Garin
  */
 
 public class WebRadioButtonMenuItemUI extends WebMenuItemUI
 {
-    @SuppressWarnings ("UnusedParameters")
+    /**
+     * Returns an instance of the WebRadioButtonMenuItemUI for the specified component.
+     * This tricky method is used by UIManager to create component UIs when needed.
+     *
+     * @param c component that will use UI instance
+     * @return instance of the WebRadioButtonMenuItemUI
+     */
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( JComponent c )
     {
         return new WebRadioButtonMenuItemUI ();
     }
 
-    //    public void processMouseEvent ( JMenuItem item, MouseEvent e, MenuElement path[],
-    //                                    MenuSelectionManager manager )
-    //    {
-    //        Point p = e.getPoint ();
-    //        if ( p.x >= 0 && p.x < item.getWidth () && p.y >= 0 && p.y < item.getHeight () )
-    //        {
-    //            if ( e.getID () == MouseEvent.MOUSE_RELEASED )
-    //            {
-    //                manager.clearSelectedPath ();
-    //                item.doClick ( 0 );
-    //                item.setArmed ( false );
-    //            }
-    //            else
-    //            {
-    //                manager.setSelectedPath ( path );
-    //            }
-    //        }
-    //        else if ( item.getModel ().isArmed () )
-    //        {
-    //            MenuElement newPath[] = new MenuElement[ path.length - 1 ];
-    //            int i, c;
-    //            for ( i = 0, c = path.length - 1; i < c; i++ )
-    //            {
-    //                newPath[ i ] = path[ i ];
-    //            }
-    //            manager.setSelectedPath ( newPath );
-    //        }
-    //    }
+    /**
+     * Returns property prefix for this specific UI.
+     *
+     * @return property prefix for this specific UI
+     */
+    @Override
+    protected String getPropertyPrefix ()
+    {
+        return "RadioButtonMenuItem";
+    }
 }

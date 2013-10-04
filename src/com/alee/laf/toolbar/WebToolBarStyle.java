@@ -23,63 +23,66 @@ import com.alee.laf.StyleConstants;
 import java.awt.*;
 
 /**
- * User: mgarin Date: 11/15/11 Time: 1:03 PM
+ * WebToolBar style class.
+ *
+ * @author Mikle Garin
  */
 
 public final class WebToolBarStyle
 {
     /**
-     * Top or left toolbar background color
+     * Top toolbar background color.
      */
     public static Color topBgColor = Color.WHITE;
 
     /**
-     * Bottom or right toolbar background color
+     * Bottom toolbar background color.
      */
     public static Color bottomBgColor = new Color ( 229, 233, 238 );
 
     /**
-     * Toolbar border color
+     * Toolbar border color.
      */
     public static Color borderColor = new Color ( 139, 144, 151 );
 
     /**
-     * Toolbar disabled border color
+     * Toolbar disabled border color.
      */
     public static Color disabledBorderColor = StyleConstants.disabledBorderColor;
 
     /**
-     * Decorate toolbar with Web-styled background or not
+     * Whether should decorate toolbar with web-styled background or not.
      */
     public static boolean undecorated = false;
 
     /**
-     * Decoration rounding
+     * Toolbar corners rounding.
      */
     public static int round = StyleConstants.largeRound;
 
     /**
-     * Decoration shade width
+     * Toolbar shade width.
      */
     public static int shadeWidth = StyleConstants.shadeWidth;
 
     /**
-     * Default panel margin
+     * Toolbar margin.
      */
     public static Insets margin = new Insets ( 1, 1, 1, 1 );
 
     /**
-     * Spacing between toolbar components
+     * Spacing between toolbar components.
      */
     public static int spacing = StyleConstants.spacing;
 
     /**
-     * Toolbar style
+     * Toolbar style.
      */
     public static ToolbarStyle toolbarStyle = ToolbarStyle.standalone;
 
     /**
-     * Default toolbar background painter
+     * Toolbar painter.
+     * If set it will override WebLaF styling.
      */
-    public static Painter painter = StyleConstants.painter;
+    public static Painter painter = null;
 }

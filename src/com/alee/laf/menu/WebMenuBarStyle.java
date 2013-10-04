@@ -45,7 +45,7 @@ public final class WebMenuBarStyle
     /**
      * Decoration shade width
      */
-    public static MenubarStyle menubarStyle = MenubarStyle.attached;
+    public static MenuBarStyle menuBarStyle = MenuBarStyle.attached;
 
     /**
      * Decoration shade width

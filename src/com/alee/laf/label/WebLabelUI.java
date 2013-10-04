@@ -87,8 +87,6 @@ public class WebLabelUI extends BasicLabelUI
         // Default settings
         SwingUtils.setOrientation ( label );
         label.setBackground ( WebLabelStyle.backgroundColor );
-
-        // Updating border
         updateBorder ();
 
         // Orientation change listener

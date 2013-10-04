@@ -32,19 +32,19 @@ public class FileTreeNode extends AsyncUniqueNode
     /**
      * File for this node.
      */
-    private File file;
+    protected File file;
 
     /**
      * Custom node name.
      */
-    private String name = null;
+    protected String name = null;
 
     /**
      * Constructs file node for the specified file.
      *
      * @param file node file
      */
-    public FileTreeNode ( File file )
+    public FileTreeNode ( final File file )
     {
         super ();
         this.file = file;
@@ -56,7 +56,7 @@ public class FileTreeNode extends AsyncUniqueNode
      * @param file node file
      * @param name custom node name
      */
-    public FileTreeNode ( File file, String name )
+    public FileTreeNode ( final File file, final String name )
     {
         super ();
         this.file = file;
@@ -78,7 +78,7 @@ public class FileTreeNode extends AsyncUniqueNode
      *
      * @param file file for this node
      */
-    public void setFile ( File file )
+    public void setFile ( final File file )
     {
         this.file = file;
     }
@@ -98,7 +98,7 @@ public class FileTreeNode extends AsyncUniqueNode
      *
      * @param name custom name for this node
      */
-    public void setName ( String name )
+    public void setName ( final String name )
     {
         this.name = name;
 
@@ -117,7 +117,7 @@ public class FileTreeNode extends AsyncUniqueNode
      * {@inheritDoc}
      */
     @Override
-    public FileTreeNode getChildAt ( int index )
+    public FileTreeNode getChildAt ( final int index )
     {
         return ( FileTreeNode ) super.getChildAt ( index );
     }
@@ -128,7 +128,7 @@ public class FileTreeNode extends AsyncUniqueNode
      * @param file file to search for in child nodes
      * @return index of child node with the specified file
      */
-    public int indexOfFileChild ( File file )
+    public int indexOfFileChild ( final File file )
     {
         for ( int i = 0; i < getChildCount (); i++ )
         {

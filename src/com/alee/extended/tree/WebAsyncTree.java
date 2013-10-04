@@ -80,6 +80,12 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
     protected Filter<E> filter;
 
     /**
+     * Special cell editor listener.
+     * It updates filtering and sorting after editing has finished.
+     */
+    protected CellEditorAdapter cellEditorAdapter;
+
+    /**
      * Constructs sample asynchronous tree.
      */
     public WebAsyncTree ()
@@ -208,6 +214,14 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
     }
 
     /**
+     * Removes any applied tree nodes comparator.
+     */
+    public void clearComparator ()
+    {
+        setComparator ( null );
+    }
+
+    /**
      * Returns tree nodes filter.
      *
      * @return tree nodes filter
@@ -233,6 +247,14 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
             ( ( AbstractTreeDataProvider ) dataProvider ).setChildsFilter ( filter );
             updateSortingAndFiltering ();
         }
+    }
+
+    /**
+     * Removes any applied tree nodes filter.
+     */
+    public void clearFilter ()
+    {
+        setFilter ( null );
     }
 
     /**
@@ -289,17 +311,29 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
     @Override
     public void setCellEditor ( final TreeCellEditor cellEditor )
     {
+        // Removing cell editor listener from old cell editor
+        if ( this.cellEditor != null )
+        {
+            this.cellEditor.removeCellEditorListener ( cellEditorAdapter );
+        }
+
+        // Adding cell editor to the tree
         super.setCellEditor ( cellEditor );
 
-        cellEditor.addCellEditorListener ( new CellEditorAdapter ()
+        // Adding cell editor listener to new cell editor
+        if ( cellEditor != null )
         {
-            @Override
-            public void editingStopped ( final ChangeEvent e )
+            cellEditorAdapter = new CellEditorAdapter ()
             {
-                final E node = ( E ) cellEditor.getCellEditorValue ();
-                updateSortingAndFiltering ( ( E ) node.getParent () );
-            }
-        } );
+                @Override
+                public void editingStopped ( final ChangeEvent e )
+                {
+                    final E node = ( E ) cellEditor.getCellEditorValue ();
+                    updateSortingAndFiltering ( ( E ) node.getParent () );
+                }
+            };
+            cellEditor.addCellEditorListener ( cellEditorAdapter );
+        }
     }
 
     /**
@@ -677,11 +711,9 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
 
     /**
      * Expands all visible tree rows in a single call.
-     * It is not recommended to expand large trees this way since that might cause huge interface lags.
      * <p/>
-     * This method provides similar functionality to WebTree expandAll method and will actually expand all tree elements.
-     * Even those which are not yet loaded from some custom data provider.
-     * So make sure you know what you are doing before calling this method.
+     * This method provides similar functionality to WebTree expandAll method and will actually expand all tree elements - even those which
+     * are not yet loaded from data provider. Make sure you know what you are doing before calling this method.
      */
     @Override
     public final void expandAll ()

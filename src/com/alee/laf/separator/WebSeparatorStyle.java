@@ -67,5 +67,5 @@ public final class WebSeparatorStyle
     /**
      * Default separator margin.
      */
-    public static Insets margin = StyleConstants.margin;
+    public static Insets margin = StyleConstants.emptyMargin;
 }

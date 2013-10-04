@@ -55,18 +55,21 @@ public final class WebRootPaneStyle
 
     /**
      * Active window shade width.
+     * This value might vary depending on available underlying system features.
      */
     public static int shadeWidth = ProprietaryUtils.isWindowTransparencyAllowed () ? 25 : 0;
 
     /**
      * Inactive window shade width.
+     * This value might vary depending on available underlying system features.
      */
     public static int inactiveShadeWidth = ProprietaryUtils.isWindowTransparencyAllowed () ? 15 : 0;
 
     /**
      * Window shape rounding.
+     * This value might vary depending on available underlying system features.
      */
-    public static int round = ProprietaryUtils.isWindowTransparencyAllowed () ? 5 : 0;
+    public static int round = ProprietaryUtils.isWindowTransparencyAllowed () ? StyleConstants.largeRound : 0;
 
     /**
      * Window content margin.

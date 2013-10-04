@@ -1172,6 +1172,10 @@ public class WebTreeUI extends BasicTreeUI
                     {
                         b.x = 0;
                         b.width = tree.getWidth ();
+
+                        // todo Full line painting case
+                        // b.x = 0 - selectionShadeWidth - selectionRound - 1;
+                        // b.width = tree.getWidth () + selectionShadeWidth * 2 + selectionRound + 2;
                     }
 
                     // Increase rect

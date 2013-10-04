@@ -72,7 +72,7 @@ public final class WebRadioButtonStyle
     /**
      * Default checkbox margin.
      */
-    public static Insets margin = StyleConstants.margin;
+    public static Insets margin = StyleConstants.emptyMargin;
 
     /**
      * Whether should animate selection changes or not.

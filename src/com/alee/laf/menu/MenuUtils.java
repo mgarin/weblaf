@@ -18,149 +18,67 @@
 package com.alee.laf.menu;
 
 import com.alee.utils.SwingUtils;
-import com.alee.utils.laf.ShapeProvider;
-import com.alee.utils.swing.DataProvider;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 /**
- * User: mgarin Date: 23.04.12 Time: 16:58
+ * This class provides a set of utilities for menu elements.
+ * This is a library utility class and its not intended for use outside of the menu elements.
+ *
+ * @author Mikle Garin
  */
 
-public class MenuUtils implements SwingConstants
+public final class MenuUtils implements SwingConstants
 {
-    public static void setupPopupMenu ( final JComponent component, final JPopupMenu menu )
+    /**
+     * Returns maximum icon width for this menu item.
+     * It might take into account other menu items within popup menu.
+     *
+     * @param menuItem             menu item to process
+     * @param alignTextToMenuIcons whether menu item text should be aligned to icons or not
+     * @return maximum icon width for this menu item
+     */
+    public static int getIconPlaceholderWidth ( final JMenuItem menuItem, final boolean alignTextToMenuIcons )
     {
-        setupPopupMenu ( component, menu, 0 );
-    }
-
-    public static void setupPopupMenu ( final JComponent component, final JPopupMenu menu, int spacing )
-    {
-        setupPopupMenu ( component, menu, spacing, RIGHT );
-    }
-
-    public static void setupPopupMenu ( final JComponent component, final JPopupMenu menu, int spacing, int hway )
-    {
-        setupPopupMenu ( component, menu, spacing, hway, SOUTH );
-    }
-
-    public static void setupPopupMenu ( final JComponent component, final JPopupMenu menu, final int spacing, final int hway,
-                                        final int vway )
-    {
-        setupPopupMenu ( component, menu, new DataProvider<Point> ()
+        if ( alignTextToMenuIcons && menuItem.getParent () instanceof JPopupMenu )
         {
-            @Override
-            public Point provide ()
+            int max = 0;
+            final JPopupMenu popupMenu = ( JPopupMenu ) menuItem.getParent ();
+            for ( int i = 0; i < popupMenu.getComponentCount (); i++ )
             {
-                Dimension ps = menu.getPreferredSize ();
-                int x;
-                int y;
-                ShapeProvider shapeProvider = SwingUtils.getShapeProvider ( component );
-                if ( shapeProvider != null )
+                final Component component = popupMenu.getComponent ( i );
+                if ( component instanceof JMenuItem )
                 {
-                    // Placing menu according to shape
-                    Shape shape = shapeProvider.provideShape ();
-                    Rectangle bounds = shape.getBounds ();
-                    if ( hway == RIGHT )
+                    final JMenuItem otherItem = ( JMenuItem ) component;
+                    if ( otherItem.getIcon () != null )
                     {
-                        x = bounds.x;
+                        max = Math.max ( max, otherItem.getIcon ().getIconWidth () );
                     }
-                    else if ( hway == LEFT )
+                    else if ( component instanceof JCheckBoxMenuItem || component instanceof JRadioButtonMenuItem )
                     {
-                        x = bounds.x + bounds.width - ps.width;
-                    }
-                    else
-                    {
-                        x = bounds.x + bounds.width / 2 - ps.width / 2;
-                    }
-                    if ( vway == TOP )
-                    {
-                        y = bounds.y - ps.height - spacing;
-                    }
-                    else
-                    {
-                        y = bounds.y + bounds.height + spacing;
+                        max = Math.max ( max, 16 );
                     }
                 }
-                else
-                {
-                    // Placing menu according to size
-                    Dimension cs = component.getSize ();
-                    if ( hway == RIGHT )
-                    {
-                        x = 0;
-                    }
-                    else if ( hway == LEFT )
-                    {
-                        x = cs.width - ps.width;
-                    }
-                    else
-                    {
-                        x = cs.width / 2 - ps.width / 2;
-                    }
-                    if ( vway == TOP )
-                    {
-                        y = -ps.height - spacing;
-                    }
-                    else
-                    {
-                        y = cs.height + spacing;
-                    }
-                }
-                return new Point ( x, y );
             }
-        } );
-    }
-
-    public static void setupPopupMenu ( final JComponent component, final JPopupMenu menu, final DataProvider<Point> pointProvider )
-    {
-        if ( component instanceof AbstractButton )
-        {
-            AbstractButton button = ( AbstractButton ) component;
-            button.addActionListener ( new ActionListener ()
-            {
-                @Override
-                public void actionPerformed ( ActionEvent e )
-                {
-                    Point point = pointProvider.provide ();
-                    menu.show ( component, point.x, point.y );
-                }
-            } );
+            return max;
         }
         else
         {
-            component.addMouseListener ( new MouseAdapter ()
-            {
-                @Override
-                public void mousePressed ( MouseEvent e )
-                {
-                    showMenu ( e );
-                }
-
-                @Override
-                public void mouseReleased ( MouseEvent e )
-                {
-                    showMenu ( e );
-                }
-
-                private void showMenu ( MouseEvent e )
-                {
-                    if ( e.isPopupTrigger () )
-                    {
-                        if ( !component.isFocusOwner () )
-                        {
-                            component.requestFocusInWindow ();
-                        }
-                        Point point = pointProvider.provide ();
-                        menu.show ( component, point.x, point.y );
-                    }
-                }
-            } );
+            final Icon icon = menuItem.getIcon ();
+            return icon != null ? icon.getIconWidth () : 0;
         }
+    }
+
+    /**
+     * Returns menu item accelerator text.
+     *
+     * @param menuItem menu item to process
+     * @return menu item accelerator text
+     */
+    public static String getAcceleratorText ( final JMenuItem menuItem )
+    {
+        final KeyStroke accelerator = menuItem.getAccelerator ();
+        return accelerator != null ? SwingUtils.hotkeyToString ( accelerator ) : null;
     }
 }

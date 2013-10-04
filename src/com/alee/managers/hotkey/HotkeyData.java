@@ -21,6 +21,7 @@ import com.alee.utils.SwingUtils;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
+import javax.swing.*;
 import java.awt.event.KeyEvent;
 import java.io.Serializable;
 
@@ -120,6 +121,19 @@ public class HotkeyData implements Serializable
         this.isAlt = isAlt;
         this.isShift = isShift;
         this.keyCode = keyCode;
+        this.hashCode = null;
+    }
+
+    /**
+     * Constructs hotkey using the specified key stroke.
+     *
+     * @param keyStroke key stroke
+     */
+    public HotkeyData ( KeyStroke keyStroke )
+    {
+        super ();
+        setModifiers ( keyStroke.getModifiers () );
+        this.keyCode = keyStroke.getKeyCode ();
         this.hashCode = null;
     }
 
@@ -249,6 +263,39 @@ public class HotkeyData implements Serializable
     {
         // todo Fix for other command keys (like cmd on Mac OS X)
         return event.getKeyCode () == keyCode;
+    }
+
+    /**
+     * Returns key stroke for this hotkey.
+     *
+     * @return key stroke for this hotkey
+     */
+    public KeyStroke getKeyStroke ()
+    {
+        return KeyStroke.getKeyStroke ( keyCode, getModifiers () );
+    }
+
+    /**
+     * Returns hotkey modifiers.
+     *
+     * @return hotkey modifiers
+     */
+    public int getModifiers ()
+    {
+        return ( isCtrl ? SwingUtils.getSystemShortcutModifier () : 0 ) |
+                ( isAlt ? KeyEvent.ALT_MASK : 0 ) | ( isShift ? KeyEvent.SHIFT_MASK : 0 );
+    }
+
+    /**
+     * Sets hotkey modifiers.
+     *
+     * @param modifiers
+     */
+    public void setModifiers ( int modifiers )
+    {
+        isCtrl = SwingUtils.isCtrl ( modifiers );
+        isAlt = SwingUtils.isAlt ( modifiers );
+        isShift = SwingUtils.isShift ( modifiers );
     }
 
     /**
