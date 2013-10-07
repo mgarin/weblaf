@@ -44,7 +44,7 @@ public final class WebCustomTooltipStyle
     /**
      * Tooltip "corner" element length.
      */
-    public static int cornerLength = 10;
+    public static int cornerLength = 8;
 
     /**
      * Tooltip "corner" element side width.

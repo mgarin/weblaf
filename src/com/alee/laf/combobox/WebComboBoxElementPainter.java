@@ -18,8 +18,7 @@
 package com.alee.laf.combobox;
 
 import com.alee.extended.painter.DefaultPainter;
-import com.alee.laf.StyleConstants;
-import com.alee.utils.LafUtils;
+import com.alee.laf.menu.WebMenuItemStyle;
 
 import java.awt.*;
 
@@ -37,9 +36,7 @@ public class WebComboBoxElementPainter extends DefaultPainter<WebComboBoxElement
     @Override
     public Insets getMargin ( WebComboBoxElement element )
     {
-        return element.getIndex () != -1 ?
-                new Insets ( element.getIndex () == 0 ? 2 : 3, 2, element.getIndex () + 1 == element.getTotalElements () ? 2 : 3, 2 ) :
-                new Insets ( 2, 2, 2, 2 );
+        return element.getIndex () != -1 ? new Insets ( 3, 5, 3, 5 ) : new Insets ( 2, 2, 2, 2 );
     }
 
     @Override
@@ -68,19 +65,9 @@ public class WebComboBoxElementPainter extends DefaultPainter<WebComboBoxElement
     protected void paintSelectedBackground ( Graphics2D g2d, WebComboBoxElement element )
     {
         // Background
-        g2d.setPaint ( LafUtils.getWebGradientPaint ( 0, 0, 0, element.getHeight () ) );
+        g2d.setPaint (
+                new GradientPaint ( 0, 0, WebMenuItemStyle.selectedTopBg, 0, element.getHeight (), WebMenuItemStyle.selectedBottomBg ) );
         g2d.fillRect ( 0, 0, element.getWidth (), element.getHeight () );
-
-        // Border
-        g2d.setPaint ( element.isEnabled () ? StyleConstants.darkBorderColor : StyleConstants.disabledBorderColor );
-        if ( element.getIndex () != 0 )
-        {
-            g2d.drawLine ( 0, 0, element.getWidth () - 1, 0 );
-        }
-        if ( element.getIndex () < element.getTotalElements () - 1 )
-        {
-            g2d.drawLine ( 0, element.getHeight () - 1, element.getWidth () - 1, element.getHeight () - 1 );
-        }
     }
 
     @SuppressWarnings ("UnusedParameters")

@@ -18,12 +18,12 @@
 package com.alee.examples.groups.menubar;
 
 import com.alee.examples.content.DefaultExample;
-import com.alee.laf.menu.WebMenu;
-import com.alee.laf.menu.WebMenuBar;
-import com.alee.laf.menu.WebMenuItem;
+import com.alee.laf.menu.*;
 import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.tooltip.TooltipManager;
 import com.alee.managers.tooltip.TooltipWay;
+
+import javax.swing.*;
 
 /**
  * User: mgarin Date: 07.11.12 Time: 18:21
@@ -42,7 +42,7 @@ public abstract class DefaultMenuBarExample extends DefaultExample
                         add ( new WebMenuItem ( "New image", loadIcon ( "menubar/file_image.png" ) )
                         {
                             {
-                                setHotkey ( Hotkey.CTRL_N );
+                                setAccelerator ( Hotkey.CTRL_N );
                             }
                         } );
                         add ( new WebMenuItem ( "New music", loadIcon ( "menubar/file_music.png" ) ) );
@@ -58,7 +58,7 @@ public abstract class DefaultMenuBarExample extends DefaultExample
                 add ( new WebMenuItem ( "Exit", loadIcon ( "menubar/file_exit.png" ) )
                 {
                     {
-                        setHotkey ( Hotkey.ALT_F4 );
+                        setAccelerator ( Hotkey.ALT_F4 );
                     }
                 } );
             }
@@ -69,20 +69,62 @@ public abstract class DefaultMenuBarExample extends DefaultExample
                 add ( new WebMenuItem ( "Cut", loadIcon ( "menubar/edit_cut.png" ) )
                 {
                     {
-                        setHotkey ( Hotkey.CTRL_X );
+                        setAccelerator ( Hotkey.CTRL_X );
                     }
                 } );
                 add ( new WebMenuItem ( "Copy", loadIcon ( "menubar/edit_copy.png" ) )
                 {
                     {
-                        setHotkey ( Hotkey.CTRL_C );
+                        setAccelerator ( Hotkey.CTRL_C );
                     }
                 } );
                 add ( new WebMenuItem ( "Paste", loadIcon ( "menubar/edit_paste.png" ) )
                 {
                     {
-                        setHotkey ( Hotkey.CTRL_V );
+                        setAccelerator ( Hotkey.CTRL_V );
                         setEnabled ( false );
+                    }
+                } );
+            }
+        } );
+        menuBar.add ( new WebMenu ( "States", loadIcon ( "menubar/states.png" ) )
+        {
+            {
+                add ( new WebCheckBoxMenuItem ( "Checkbox item 1", loadIcon ( "menubar/check1.png" ) )
+                {
+                    {
+                        setAccelerator ( Hotkey.NUMBER_1 );
+                        setSelected ( true );
+                    }
+                } );
+                add ( new WebCheckBoxMenuItem ( "Checkbox item 2", loadIcon ( "menubar/check2.png" ) )
+                {
+                    {
+                        setAccelerator ( Hotkey.NUMBER_2 );
+                    }
+                } );
+                addSeparator ();
+                final ButtonGroup buttonGroup = new ButtonGroup ();
+                add ( new WebRadioButtonMenuItem ( "Radio item 1", loadIcon ( "menubar/radio1.png" ) )
+                {
+                    {
+                        setAccelerator ( Hotkey.A );
+                        setSelected ( true );
+                        buttonGroup.add ( this );
+                    }
+                } );
+                add ( new WebRadioButtonMenuItem ( "Radio item 2", loadIcon ( "menubar/radio2.png" ) )
+                {
+                    {
+                        setAccelerator ( Hotkey.B );
+                        buttonGroup.add ( this );
+                    }
+                } );
+                add ( new WebRadioButtonMenuItem ( "Radio item 3", loadIcon ( "menubar/radio3.png" ) )
+                {
+                    {
+                        setAccelerator ( Hotkey.C );
+                        buttonGroup.add ( this );
                     }
                 } );
             }
@@ -91,10 +133,16 @@ public abstract class DefaultMenuBarExample extends DefaultExample
         {
             {
                 TooltipManager.setTooltip ( this, "Menu tooltip" );
-                add ( new WebMenuItem ( "Menu item tooltip", loadIcon ( "menubar/tooltip.png" ) )
+                add ( new WebMenuItem ( "Trailing tooltip", loadIcon ( "menubar/tooltip.png" ) )
                 {
                     {
-                        TooltipManager.setTooltip ( this, "Menu item tooltip", TooltipWay.trailing );
+                        TooltipManager.setTooltip ( this, "Tip", TooltipWay.trailing );
+                    }
+                } );
+                add ( new WebMenuItem ( "Bottom tooltip", loadIcon ( "menubar/tooltip.png" ) )
+                {
+                    {
+                        TooltipManager.setTooltip ( this, "Tip", TooltipWay.down );
                     }
                 } );
             }

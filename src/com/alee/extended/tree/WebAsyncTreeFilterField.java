@@ -27,6 +27,7 @@ import com.alee.utils.compare.Filter;
 import com.alee.utils.swing.DocumentChangeListener;
 import com.alee.utils.text.TextProvider;
 
+import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.Document;
@@ -44,6 +45,18 @@ import java.lang.ref.WeakReference;
 
 public class WebAsyncTreeFilterField<E extends AsyncUniqueNode> extends WebTextField
 {
+    /**
+     * Used icons.
+     */
+    public static final ImageIcon settingsIcon =
+            new ImageIcon ( WebAsyncTreeFilterField.class.getResource ( "icons/filter/settings.png" ) );
+    public static final ImageIcon matchCaseIcon =
+            new ImageIcon ( WebAsyncTreeFilterField.class.getResource ( "icons/filter/matchCase.png" ) );
+    public static final ImageIcon useSpaceAsSeparatorIcon =
+            new ImageIcon ( WebAsyncTreeFilterField.class.getResource ( "icons/filter/useSpaceAsSeparator.png" ) );
+    public static final ImageIcon searchFromStartIcon =
+            new ImageIcon ( WebAsyncTreeFilterField.class.getResource ( "icons/filter/searchFromStart.png" ) );
+
     /**
      * Async tree to which this field should apply filtering.
      */
@@ -107,7 +120,7 @@ public class WebAsyncTreeFilterField<E extends AsyncUniqueNode> extends WebTextF
 
     protected void initFilterIcon ()
     {
-        filterIcon = new WebImage ( WebAsyncTreeFilterField.class, "icons/filter.png" );
+        filterIcon = new WebImage ( WebAsyncTreeFilterField.class, "icons/filter/settings.png" );
         filterIcon.setMargin ( 0, 2, 0, 2 );
         filterIcon.setCursor ( Cursor.getDefaultCursor () );
         filterIcon.addMouseListener ( new MouseAdapter ()
@@ -115,7 +128,7 @@ public class WebAsyncTreeFilterField<E extends AsyncUniqueNode> extends WebTextF
             @Override
             public void mousePressed ( final MouseEvent e )
             {
-                settingsMenu.showUnder ( WebAsyncTreeFilterField.this );
+                settingsMenu.showBelowMiddle ( filterIcon );
             }
         } );
         setLeadingComponent ( filterIcon );
@@ -125,7 +138,7 @@ public class WebAsyncTreeFilterField<E extends AsyncUniqueNode> extends WebTextF
     {
         settingsMenu = new WebPopupMenu ();
 
-        matchCaseItem = new WebCheckBoxMenuItem ( "Match case" );
+        matchCaseItem = new WebCheckBoxMenuItem ( "Match case", matchCaseIcon );
         matchCaseItem.addActionListener ( new ActionListener ()
         {
             @Override
@@ -137,7 +150,7 @@ public class WebAsyncTreeFilterField<E extends AsyncUniqueNode> extends WebTextF
         } );
         settingsMenu.add ( matchCaseItem );
 
-        useSpaceAsSeparatorItem = new WebCheckBoxMenuItem ( "Use space as separator" );
+        useSpaceAsSeparatorItem = new WebCheckBoxMenuItem ( "Use space as separator", useSpaceAsSeparatorIcon );
         useSpaceAsSeparatorItem.addActionListener ( new ActionListener ()
         {
             @Override
@@ -149,7 +162,7 @@ public class WebAsyncTreeFilterField<E extends AsyncUniqueNode> extends WebTextF
         } );
         settingsMenu.add ( useSpaceAsSeparatorItem );
 
-        searchFromStartItem = new WebCheckBoxMenuItem ( "Search from beginning" );
+        searchFromStartItem = new WebCheckBoxMenuItem ( "Search from beginning", searchFromStartIcon );
         searchFromStartItem.addActionListener ( new ActionListener ()
         {
             @Override

@@ -19,6 +19,7 @@ package com.alee.laf.menu;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
+import java.awt.*;
 
 /**
  * Custom UI for JCheckBoxMenuItem component.
@@ -29,6 +30,11 @@ import javax.swing.plaf.ComponentUI;
 public class WebCheckBoxMenuItemUI extends WebMenuItemUI
 {
     /**
+     * Style settings.
+     */
+    protected Color checkColor = WebMenuItemStyle.checkColor;
+
+    /**
      * Returns an instance of the WebCheckBoxMenuItemUI for the specified component.
      * This tricky method is used by UIManager to create component UIs when needed.
      *
@@ -36,7 +42,7 @@ public class WebCheckBoxMenuItemUI extends WebMenuItemUI
      * @return instance of the WebCheckBoxMenuItemUI
      */
     @SuppressWarnings ("UnusedParameters")
-    public static ComponentUI createUI ( JComponent c )
+    public static ComponentUI createUI ( final JComponent c )
     {
         return new WebCheckBoxMenuItemUI ();
     }
@@ -50,5 +56,42 @@ public class WebCheckBoxMenuItemUI extends WebMenuItemUI
     protected String getPropertyPrefix ()
     {
         return "CheckBoxMenuItem";
+    }
+
+    /**
+     * Returns checkbox menu item check color.
+     *
+     * @return checkbox menu item check color
+     */
+    public Color getCheckColor ()
+    {
+        return checkColor;
+    }
+
+    /**
+     * Sets checkbox menu item check color.
+     *
+     * @param color checkbox menu item check color
+     */
+    public void setCheckColor ( final Color color )
+    {
+        this.checkColor = color;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void paintBackground ( final Graphics2D g2d, final JMenuItem menuItem, final int x, final int y, final int w, final int h,
+                                     final boolean selected, final boolean ltr )
+    {
+        super.paintBackground ( g2d, menuItem, x, y, w, h, selected, ltr );
+
+        // Painting check selection
+        if ( painter == null && !selected && menuItem.isSelected () )
+        {
+            g2d.setPaint ( checkColor );
+            g2d.fillRect ( 0, 0, menuItem.getWidth (), menuItem.getHeight () );
+        }
     }
 }

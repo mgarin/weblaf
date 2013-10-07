@@ -18,32 +18,43 @@
 package com.alee.managers.tooltip;
 
 import com.alee.extended.painter.DefaultPainter;
+import com.alee.laf.StyleConstants;
 import com.alee.utils.LafUtils;
 
 import java.awt.*;
 
 /**
- * User: mgarin Date: 24.09.12 Time: 16:02
+ * Custom painter for HotkeyTipLabel component.
+ *
+ * @author Mikle Garin
  */
 
 public class HotkeyTipPainter extends DefaultPainter<HotkeyTipLabel>
 {
-    private static Color bg = new Color ( 255, 255, 255, 178 );
-    private static int round = 4;
-    private static Insets margin = new Insets ( 0, 3, 1, 3 );
+    /**
+     * Style constants.
+     */
+    protected static Color bg = new Color ( 255, 255, 255, 178 );
+    protected static int round = StyleConstants.smallRound;
 
+    /**
+     * Constructs new hotkey tip painter.
+     */
     public HotkeyTipPainter ()
     {
         super ();
-        setMargin ( margin );
+        setMargin ( new Insets ( 0, 3, 1, 3 ) );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void paint ( Graphics2D g2d, Rectangle bounds, HotkeyTipLabel c )
     {
         Object aa = LafUtils.setupAntialias ( g2d );
         g2d.setColor ( bg );
-        g2d.fillRoundRect ( bounds.x, bounds.y, bounds.width, bounds.height, round, round );
+        g2d.fillRoundRect ( bounds.x, bounds.y, bounds.width, bounds.height, round * 2, round * 2 );
         LafUtils.restoreAntialias ( g2d, aa );
     }
 }

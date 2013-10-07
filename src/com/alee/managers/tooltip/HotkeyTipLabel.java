@@ -21,11 +21,16 @@ import com.alee.laf.label.WebLabel;
 import com.alee.utils.SwingUtils;
 
 /**
- * User: mgarin Date: 24.09.12 Time: 16:11
+ * Custom label used to display hotkey within WebCustomTooltip component.
+ *
+ * @author Mikle Garin
  */
 
 public class HotkeyTipLabel extends WebLabel
 {
+    /**
+     * Constructs new hotkey tip label.
+     */
     public HotkeyTipLabel ()
     {
         super ();

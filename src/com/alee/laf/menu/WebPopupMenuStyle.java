@@ -59,14 +59,15 @@ public final class WebPopupMenuStyle
 
     /**
      * Popup menu shade width.
+     * Be aware that this value should always be greater or equal to cornerWidth due to Swing menu processing limitations.
      * This value might vary depending on available underlying system features.
      */
-    public static int shadeWidth = ProprietaryUtils.isWindowTransparencyAllowed () ? 14 : 0;
+    public static int shadeWidth = ProprietaryUtils.isWindowTransparencyAllowed () ? 12 : 0;
 
     /**
      * Popup menu shade opacity.
      */
-    public static float shadeOpacity = 0.7f;
+    public static float shadeOpacity = 0.75f;
 
     /**
      * Popup menu dropdown style corner width

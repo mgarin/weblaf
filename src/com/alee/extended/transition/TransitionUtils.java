@@ -102,7 +102,7 @@ public final class TransitionUtils
     /**
      * Returns actual curtain type for the specified curtain type.
      *
-     * @param blockType curtain type to process
+     * @param curtainType curtain type to process
      * @return actual curtain type for the specified curtain type
      */
     public static CurtainType getActualValue ( final CurtainType curtainType )
@@ -121,7 +121,7 @@ public final class TransitionUtils
     /**
      * Returns actual slide type for the specified slide type.
      *
-     * @param blockType slide type to process
+     * @param slideType slide type to process
      * @return actual slide type for the specified slide type
      */
     public static SlideType getActualValue ( final SlideType slideType )
@@ -140,7 +140,7 @@ public final class TransitionUtils
     /**
      * Returns actual zoom type for the specified zoom type.
      *
-     * @param blockType zoom type to process
+     * @param zoomType zoom type to process
      * @return actual zoom type for the specified zoom type
      */
     public static ZoomType getActualValue ( final ZoomType zoomType )

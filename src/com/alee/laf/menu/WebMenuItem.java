@@ -17,6 +17,7 @@
 
 package com.alee.laf.menu;
 
+import com.alee.extended.painter.Painter;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.language.LanguageManager;
@@ -27,53 +28,321 @@ import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.FontMethods;
 
 import javax.swing.*;
+import java.awt.*;
 
 /**
- * User: mgarin Date: 15.08.11 Time: 15:57
+ * This JMenuItem extension class provides a direct access to WebMenuItemUI methods.
+ *
+ * @author Mikle Garin
  */
 
 public class WebMenuItem extends JMenuItem implements LanguageMethods, FontMethods<WebMenuItem>
 {
+    /**
+     * Constructs new menu item.
+     */
     public WebMenuItem ()
     {
         super ();
     }
 
-    public WebMenuItem ( Icon icon )
+    /**
+     * Constructs new menu item using the specified settings.
+     *
+     * @param icon menu item icon
+     */
+    public WebMenuItem ( final Icon icon )
     {
         super ( icon );
     }
 
-    public WebMenuItem ( String text )
+    /**
+     * Constructs new menu item using the specified settings.
+     *
+     * @param text menu item text
+     */
+    public WebMenuItem ( final String text )
     {
         super ( text );
     }
 
-    public WebMenuItem ( Action a )
+    /**
+     * Constructs new menu item using the specified settings.
+     *
+     * @param a menu item action
+     */
+    public WebMenuItem ( final Action a )
     {
         super ( a );
     }
 
-    public WebMenuItem ( String text, Icon icon )
+    /**
+     * Constructs new menu item using the specified settings.
+     *
+     * @param text menu item text
+     * @param icon menu item icon
+     */
+    public WebMenuItem ( final String text, final Icon icon )
     {
         super ( text, icon );
     }
 
-    public WebMenuItem ( String text, int mnemonic )
+    /**
+     * Constructs new menu item using the specified settings.
+     *
+     * @param text     menu item text
+     * @param mnemonic menu item mnemonic
+     */
+    public WebMenuItem ( final String text, final int mnemonic )
     {
         super ( text, mnemonic );
     }
 
-    public void setHotkey ( HotkeyData hotkey )
+    /**
+     * Sets the key combination which invokes the menu item's action listeners without navigating the menu hierarchy.
+     *
+     * @param hotkey hotkey data
+     */
+    public void setAccelerator ( final HotkeyData hotkey )
     {
         SwingUtils.setAccelerator ( this, hotkey );
     }
 
+    /**
+     * Returns menu item margin.
+     *
+     * @return menu item margin
+     */
+    @Override
+    public Insets getMargin ()
+    {
+        return getWebUI ().getMargin ();
+    }
+
+    /**
+     * Sets menu item margin.
+     *
+     * @param margin new menu item margin
+     */
+    @Override
+    public void setMargin ( final Insets margin )
+    {
+        getWebUI ().setMargin ( margin );
+    }
+
+    /**
+     * Returns disabled menu item foreground.
+     *
+     * @return disabled menu item foreground
+     */
+    public Color getDisabledFg ()
+    {
+        return getWebUI ().getDisabledFg ();
+    }
+
+    /**
+     * Sets disabled menu item foreground.
+     *
+     * @param foreground new disabled menu item foreground
+     */
+    public void setDisabledFg ( final Color foreground )
+    {
+        getWebUI ().setDisabledFg ( foreground );
+    }
+
+    /**
+     * Returns top background color for selected item.
+     *
+     * @return top background color for selected item
+     */
+    public Color getSelectedTopBg ()
+    {
+        return getWebUI ().getSelectedTopBg ();
+    }
+
+    /**
+     * Sets top background color for selected item.
+     *
+     * @param background new top background color for selected item
+     */
+    public void setSelectedTopBg ( final Color background )
+    {
+        getWebUI ().setSelectedTopBg ( background );
+    }
+
+    /**
+     * Returns bottom background color for selected item.
+     *
+     * @return bottom background color for selected item
+     */
+    public Color getSelectedBottomBg ()
+    {
+        return getWebUI ().getSelectedBottomBg ();
+    }
+
+    /**
+     * Sets bottom background color for selected item.
+     *
+     * @param background new bottom background color for selected item
+     */
+    public void setSelectedBottomBg ( final Color background )
+    {
+        getWebUI ().setSelectedBottomBg ( background );
+    }
+
+    /**
+     * Returns accelerator text background.
+     *
+     * @return accelerator text background
+     */
+    public Color getAcceleratorBg ()
+    {
+        return getWebUI ().getAcceleratorBg ();
+    }
+
+    /**
+     * Sets accelerator text background.
+     *
+     * @param background new accelerator text background
+     */
+    public void setAcceleratorBg ( final Color background )
+    {
+        getWebUI ().setAcceleratorBg ( background );
+    }
+
+    /**
+     * Returns accelerator foreground.
+     *
+     * @return accelerator foreground
+     */
+    public Color getAcceleratorFg ()
+    {
+        return getWebUI ().getAcceleratorFg ();
+    }
+
+    /**
+     * Sets accelerator foreground.
+     *
+     * @param foreground new accelerator foreground
+     */
+    public void setAcceleratorFg ( final Color foreground )
+    {
+        getWebUI ().setAcceleratorFg ( foreground );
+    }
+
+    /**
+     * Returns disabled accelerator foreground.
+     *
+     * @return disabled accelerator foreground
+     */
+    public Color getAcceleratorDisabledFg ()
+    {
+        return getWebUI ().getAcceleratorDisabledFg ();
+    }
+
+    /**
+     * Sets disabled accelerator foreground.
+     *
+     * @param foreground new disabled accelerator foreground
+     */
+    public void setAcceleratorDisabledFg ( final Color foreground )
+    {
+        getWebUI ().setAcceleratorDisabledFg ( foreground );
+    }
+
+    /**
+     * Returns gap between menu item icon/text and accelerator.
+     *
+     * @return gap between menu item icon/text and accelerator
+     */
+    public int getAcceleratorGap ()
+    {
+        return getWebUI ().getAcceleratorGap ();
+    }
+
+    /**
+     * Sets gap between menu icon/text and accelerator.
+     *
+     * @param gap new gap between menu icon/text and accelerator
+     */
+    public void setAcceleratorGap ( final int gap )
+    {
+        getWebUI ().setAcceleratorGap ( gap );
+    }
+
+    /**
+     * Returns whether should align all item texts to a single vertical line within single popup menu or not.
+     *
+     * @return true if should align all item texts to a single vertical line within single popup menu, false otherwise
+     */
+    public boolean isAlignTextToMenuIcons ()
+    {
+        return getWebUI ().isAlignTextToMenuIcons ();
+    }
+
+    /**
+     * Sets whether should align all item texts to a single vertical line within single popup menu or not.
+     *
+     * @param align whether should align all item texts to a single vertical line within single popup menu or not
+     */
+    public void setAlignTextToMenuIcons ( final boolean align )
+    {
+        getWebUI ().setAlignTextToMenuIcons ( align );
+    }
+
+    /**
+     * Returns icon alignment.
+     *
+     * @return icon alignment
+     */
+    public int getIconAlignment ()
+    {
+        return getWebUI ().getIconAlignment ();
+    }
+
+    /**
+     * Sets icon alignment
+     *
+     * @param alignment new icon alignment
+     */
+    public void setIconAlignment ( final int alignment )
+    {
+        getWebUI ().setIconAlignment ( alignment );
+    }
+
+    /**
+     * Returns menu item painter.
+     *
+     * @return menu item painter
+     */
+    public Painter getPainter ()
+    {
+        return getWebUI ().getPainter ();
+    }
+
+    /**
+     * Sets menu item painter.
+     *
+     * @param painter new menu item painter
+     */
+    public void setPainter ( final Painter painter )
+    {
+        getWebUI ().setPainter ( painter );
+    }
+
+    /**
+     * Returns Web-UI applied to this class.
+     *
+     * @return Web-UI applied to this class
+     */
     public WebMenuItemUI getWebUI ()
     {
         return ( WebMenuItemUI ) getUI ();
     }
 
+    /**
+     * Installs a Web-UI into this component.
+     */
     @Override
     public void updateUI ()
     {
@@ -94,10 +363,6 @@ public class WebMenuItem extends JMenuItem implements LanguageMethods, FontMetho
             setUI ( getUI () );
         }
     }
-
-    /**
-     * Language methods
-     */
 
     /**
      * {@inheritDoc}
@@ -161,10 +426,6 @@ public class WebMenuItem extends JMenuItem implements LanguageMethods, FontMetho
     {
         LanguageManager.unregisterLanguageUpdater ( this );
     }
-
-    /**
-     * Font methods
-     */
 
     /**
      * {@inheritDoc}

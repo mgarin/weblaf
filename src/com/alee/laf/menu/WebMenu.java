@@ -17,6 +17,7 @@
 
 package com.alee.laf.menu;
 
+import com.alee.extended.painter.Painter;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.language.LanguageMethods;
@@ -26,44 +27,282 @@ import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.FontMethods;
 
 import javax.swing.*;
+import java.awt.*;
 
 /**
- * User: mgarin Date: 15.08.11 Time: 19:47
+ * This JMenu extension class provides a direct access to WebMenuUI methods.
+ *
+ * @author Mikle Garin
  */
 
 public class WebMenu extends JMenu implements LanguageMethods, FontMethods<WebMenu>
 {
+    /**
+     * Constructs new menu.
+     */
     public WebMenu ()
     {
         super ();
     }
 
-    public WebMenu ( String s )
+    /**
+     * Constructs new menu using the specified settings.
+     *
+     * @param icon menu icon
+     */
+    public WebMenu ( final Icon icon )
+    {
+        super ();
+        setIcon ( icon );
+    }
+
+    /**
+     * Constructs new menu using the specified settings.
+     *
+     * @param s menu text
+     */
+    public WebMenu ( final String s )
     {
         super ( s );
     }
 
-    public WebMenu ( Action a )
+    /**
+     * Constructs new menu using the specified settings.
+     *
+     * @param a menu action
+     */
+    public WebMenu ( final Action a )
     {
         super ( a );
     }
 
-    public WebMenu ( String s, boolean b )
-    {
-        super ( s, b );
-    }
-
-    public WebMenu ( String s, Icon icon )
+    /**
+     * Constructs new menu using the specified settings.
+     *
+     * @param s    menu text
+     * @param icon menu item icon
+     */
+    public WebMenu ( final String s, final Icon icon )
     {
         super ( s );
         setIcon ( icon );
     }
 
+    /**
+     * Returns top-level menu border rounding.
+     *
+     * @return top-level menu border rounding
+     */
+    public int getRound ()
+    {
+        return getWebUI ().getRound ();
+    }
+
+    /**
+     * Sets top-level menu border rounding.
+     *
+     * @param round new top-level menu border rounding
+     */
+    public void setRound ( final int round )
+    {
+        getWebUI ().setRound ( round );
+    }
+
+    /**
+     * Returns top-level menu shade width.
+     *
+     * @return top-level menu shade width
+     */
+    public int getShadeWidth ()
+    {
+        return getWebUI ().getShadeWidth ();
+    }
+
+    /**
+     * Sets top-level menu shade width.
+     *
+     * @param shadeWidth new top-level menu shade width
+     */
+    public void setShadeWidth ( final int shadeWidth )
+    {
+        getWebUI ().setShadeWidth ( shadeWidth );
+    }
+
+    /**
+     * Returns menu item margin.
+     *
+     * @return menu item margin
+     */
+    @Override
+    public Insets getMargin ()
+    {
+        return getWebUI ().getMargin ();
+    }
+
+    /**
+     * Sets menu item margin.
+     *
+     * @param margin new menu item margin
+     */
+    @Override
+    public void setMargin ( final Insets margin )
+    {
+        getWebUI ().setMargin ( margin );
+    }
+
+    /**
+     * Returns disabled menu item foreground.
+     *
+     * @return disabled menu item foreground
+     */
+    public Color getDisabledFg ()
+    {
+        return getWebUI ().getDisabledFg ();
+    }
+
+    /**
+     * Sets disabled menu item foreground.
+     *
+     * @param foreground new disabled menu item foreground
+     */
+    public void setDisabledFg ( final Color foreground )
+    {
+        getWebUI ().setDisabledFg ( foreground );
+    }
+
+    /**
+     * Returns top background color for selected item.
+     *
+     * @return top background color for selected item
+     */
+    public Color getSelectedTopBg ()
+    {
+        return getWebUI ().getSelectedTopBg ();
+    }
+
+    /**
+     * Sets top background color for selected item.
+     *
+     * @param background new top background color for selected item
+     */
+    public void setSelectedTopBg ( final Color background )
+    {
+        getWebUI ().setSelectedTopBg ( background );
+    }
+
+    /**
+     * Returns bottom background color for selected item.
+     *
+     * @return bottom background color for selected item
+     */
+    public Color getSelectedBottomBg ()
+    {
+        return getWebUI ().getSelectedBottomBg ();
+    }
+
+    /**
+     * Sets bottom background color for selected item.
+     *
+     * @param background new bottom background color for selected item
+     */
+    public void setSelectedBottomBg ( final Color background )
+    {
+        getWebUI ().setSelectedBottomBg ( background );
+    }
+
+    /**
+     * Returns gap between menu icon/text and submenu arrow.
+     *
+     * @return gap between menu icon/text and submenu arrow
+     */
+    public int getArrowGap ()
+    {
+        return getWebUI ().getArrowGap ();
+    }
+
+    /**
+     * Sets gap between menu icon/text and submenu arrow.
+     *
+     * @param gap new gap between menu icon/text and submenu arrow
+     */
+    public void setArrowGap ( final int gap )
+    {
+        getWebUI ().setArrowGap ( gap );
+    }
+
+    /**
+     * Returns whether should align all item texts to a single vertical line within single popup menu or not.
+     *
+     * @return true if should align all item texts to a single vertical line within single popup menu, false otherwise
+     */
+    public boolean isAlignTextToMenuIcons ()
+    {
+        return getWebUI ().isAlignTextToMenuIcons ();
+    }
+
+    /**
+     * Sets whether should align all item texts to a single vertical line within single popup menu or not.
+     *
+     * @param align whether should align all item texts to a single vertical line within single popup menu or not
+     */
+    public void setAlignTextToMenuIcons ( final boolean align )
+    {
+        getWebUI ().setAlignTextToMenuIcons ( align );
+    }
+
+    /**
+     * Returns icon alignment.
+     *
+     * @return icon alignment
+     */
+    public int getIconAlignment ()
+    {
+        return getWebUI ().getIconAlignment ();
+    }
+
+    /**
+     * Sets icon alignment
+     *
+     * @param alignment new icon alignment
+     */
+    public void setIconAlignment ( final int alignment )
+    {
+        getWebUI ().setIconAlignment ( alignment );
+    }
+
+    /**
+     * Returns menu item painter.
+     *
+     * @return menu item painter
+     */
+    public Painter getPainter ()
+    {
+        return getWebUI ().getPainter ();
+    }
+
+    /**
+     * Sets menu item painter.
+     *
+     * @param painter new menu item painter
+     */
+    public void setPainter ( final Painter painter )
+    {
+        getWebUI ().setPainter ( painter );
+    }
+
+    /**
+     * Returns Web-UI applied to this class.
+     *
+     * @return Web-UI applied to this class
+     */
     public WebMenuUI getWebUI ()
     {
         return ( WebMenuUI ) getUI ();
     }
 
+    /**
+     * Installs a Web-UI into this component.
+     */
     @Override
     public void updateUI ()
     {
@@ -90,14 +329,10 @@ public class WebMenu extends JMenu implements LanguageMethods, FontMethods<WebMe
     }
 
     /**
-     * Language methods
-     */
-
-    /**
      * {@inheritDoc}
      */
     @Override
-    public void setLanguage ( String key, Object... data )
+    public void setLanguage ( final String key, final Object... data )
     {
         LanguageManager.registerComponent ( this, key, data );
     }
@@ -106,7 +341,7 @@ public class WebMenu extends JMenu implements LanguageMethods, FontMethods<WebMe
      * {@inheritDoc}
      */
     @Override
-    public void updateLanguage ( Object... data )
+    public void updateLanguage ( final Object... data )
     {
         LanguageManager.updateComponent ( this, data );
     }
@@ -115,7 +350,7 @@ public class WebMenu extends JMenu implements LanguageMethods, FontMethods<WebMe
      * {@inheritDoc}
      */
     @Override
-    public void updateLanguage ( String key, Object... data )
+    public void updateLanguage ( final String key, final Object... data )
     {
         LanguageManager.updateComponent ( this, key, data );
     }
@@ -142,7 +377,7 @@ public class WebMenu extends JMenu implements LanguageMethods, FontMethods<WebMe
      * {@inheritDoc}
      */
     @Override
-    public void setLanguageUpdater ( LanguageUpdater updater )
+    public void setLanguageUpdater ( final LanguageUpdater updater )
     {
         LanguageManager.registerLanguageUpdater ( this, updater );
     }
@@ -157,10 +392,6 @@ public class WebMenu extends JMenu implements LanguageMethods, FontMethods<WebMe
     }
 
     /**
-     * Font methods
-     */
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -173,7 +404,7 @@ public class WebMenu extends JMenu implements LanguageMethods, FontMethods<WebMe
      * {@inheritDoc}
      */
     @Override
-    public WebMenu setPlainFont ( boolean apply )
+    public WebMenu setPlainFont ( final boolean apply )
     {
         return SwingUtils.setPlainFont ( this, apply );
     }
@@ -200,7 +431,7 @@ public class WebMenu extends JMenu implements LanguageMethods, FontMethods<WebMe
      * {@inheritDoc}
      */
     @Override
-    public WebMenu setBoldFont ( boolean apply )
+    public WebMenu setBoldFont ( final boolean apply )
     {
         return SwingUtils.setBoldFont ( this, apply );
     }
@@ -227,7 +458,7 @@ public class WebMenu extends JMenu implements LanguageMethods, FontMethods<WebMe
      * {@inheritDoc}
      */
     @Override
-    public WebMenu setItalicFont ( boolean apply )
+    public WebMenu setItalicFont ( final boolean apply )
     {
         return SwingUtils.setItalicFont ( this, apply );
     }
@@ -245,7 +476,7 @@ public class WebMenu extends JMenu implements LanguageMethods, FontMethods<WebMe
      * {@inheritDoc}
      */
     @Override
-    public WebMenu setFontStyle ( boolean bold, boolean italic )
+    public WebMenu setFontStyle ( final boolean bold, final boolean italic )
     {
         return SwingUtils.setFontStyle ( this, bold, italic );
     }
@@ -254,7 +485,7 @@ public class WebMenu extends JMenu implements LanguageMethods, FontMethods<WebMe
      * {@inheritDoc}
      */
     @Override
-    public WebMenu setFontStyle ( int style )
+    public WebMenu setFontStyle ( final int style )
     {
         return SwingUtils.setFontStyle ( this, style );
     }
@@ -263,7 +494,7 @@ public class WebMenu extends JMenu implements LanguageMethods, FontMethods<WebMe
      * {@inheritDoc}
      */
     @Override
-    public WebMenu setFontSize ( int fontSize )
+    public WebMenu setFontSize ( final int fontSize )
     {
         return SwingUtils.setFontSize ( this, fontSize );
     }
@@ -272,7 +503,7 @@ public class WebMenu extends JMenu implements LanguageMethods, FontMethods<WebMe
      * {@inheritDoc}
      */
     @Override
-    public WebMenu changeFontSize ( int change )
+    public WebMenu changeFontSize ( final int change )
     {
         return SwingUtils.changeFontSize ( this, change );
     }
@@ -290,7 +521,7 @@ public class WebMenu extends JMenu implements LanguageMethods, FontMethods<WebMe
      * {@inheritDoc}
      */
     @Override
-    public WebMenu setFontSizeAndStyle ( int fontSize, boolean bold, boolean italic )
+    public WebMenu setFontSizeAndStyle ( final int fontSize, final boolean bold, final boolean italic )
     {
         return SwingUtils.setFontSizeAndStyle ( this, fontSize, bold, italic );
     }
@@ -299,7 +530,7 @@ public class WebMenu extends JMenu implements LanguageMethods, FontMethods<WebMe
      * {@inheritDoc}
      */
     @Override
-    public WebMenu setFontSizeAndStyle ( int fontSize, int style )
+    public WebMenu setFontSizeAndStyle ( final int fontSize, final int style )
     {
         return SwingUtils.setFontSizeAndStyle ( this, fontSize, style );
     }
@@ -308,7 +539,7 @@ public class WebMenu extends JMenu implements LanguageMethods, FontMethods<WebMe
      * {@inheritDoc}
      */
     @Override
-    public WebMenu setFontName ( String fontName )
+    public WebMenu setFontName ( final String fontName )
     {
         return SwingUtils.setFontName ( this, fontName );
     }

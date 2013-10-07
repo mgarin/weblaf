@@ -18,15 +18,8 @@
 package com.alee.laf.menu;
 
 import com.alee.extended.painter.Painter;
-import com.alee.extended.window.TestFrame;
 import com.alee.laf.StyleConstants;
 import com.alee.laf.WebLookAndFeel;
-import com.alee.laf.button.WebButton;
-import com.alee.laf.colorchooser.WebColorChooserPanel;
-import com.alee.managers.hotkey.Hotkey;
-import com.alee.managers.hotkey.HotkeyManager;
-import com.alee.managers.hotkey.HotkeyRunnable;
-import com.alee.managers.language.LanguageManager;
 import com.alee.utils.*;
 import com.alee.utils.laf.ShapeProvider;
 import com.alee.utils.ninepatch.NinePatchIcon;
@@ -36,9 +29,6 @@ import javax.swing.plaf.ButtonUI;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicPopupMenuUI;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
 import java.awt.geom.GeneralPath;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -49,13 +39,18 @@ import java.beans.PropertyChangeListener;
  * @author Mikle Garin
  */
 
-public class WebPopupMenuUI extends BasicPopupMenuUI implements ShapeProvider
+public class WebPopupMenuUI extends BasicPopupMenuUI implements SwingConstants, ShapeProvider
 {
+    /**
+     * todo 1. Left/Right corner
+     * todo 2. Proper painter styling
+     * todo 3. When using popupMenuWay take invoker shade into account (if its UI has one -> add new ~Shadeable interface)
+     */
+
     /**
      * Style settings.
      */
     protected PopupMenuStyle popupMenuStyle = WebPopupMenuStyle.popupMenuStyle;
-    protected Color backgroundColor = WebPopupMenuStyle.backgroundColor;
     protected Color borderColor = WebPopupMenuStyle.borderColor;
     protected int round = WebPopupMenuStyle.round;
     protected int shadeWidth = WebPopupMenuStyle.shadeWidth;
@@ -69,6 +64,7 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements ShapeProvider
     /**
      * Menu listeners.
      */
+    protected PropertyChangeListener orientationChangeListener;
     protected PropertyChangeListener visibilityChangeListener;
     protected PropertyChangeListener jdkSevenFixListener;
 
@@ -77,7 +73,8 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements ShapeProvider
      */
     protected boolean transparent = false;
     protected int relativeCorner = 0;
-    protected int cornerSide = SwingConstants.NORTH;
+    protected int cornerSide = NORTH;
+    protected PopupMenuWay popupMenuWay = null;
 
     /**
      * Returns an instance of the WebPopupMenuUI for the specified component.
@@ -107,9 +104,21 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements ShapeProvider
         // Default settings
         SwingUtils.setOrientation ( popupMenu );
         popupMenu.setOpaque ( false );
-        popupMenu.setBackground ( Color.WHITE );
+        popupMenu.setBackground ( WebPopupMenuStyle.backgroundColor );
         updateBorder ();
 
+        // Popup orientation change listener
+        orientationChangeListener = new PropertyChangeListener ()
+        {
+            @Override
+            public void propertyChange ( PropertyChangeEvent evt )
+            {
+                popupMenu.setVisible ( false );
+            }
+        };
+        popupMenu.addPropertyChangeListener ( WebLookAndFeel.COMPONENT_ORIENTATION_PROPERTY, orientationChangeListener );
+
+        // Special listeners which set proper popup window opacity when needed
         if ( transparent )
         {
             visibilityChangeListener = new PropertyChangeListener ()
@@ -128,18 +137,23 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements ShapeProvider
                             setPopupMenuStyle ( PopupMenuStyle.simple );
                         }
 
-                        // Update menu opacity state
                         ancestor = SwingUtils.getWindowAncestor ( popupMenu );
+                        if ( ancestor instanceof JWindow )
+                        {
+                            // Workaround to remove Mac OS X shade around the menu window
+                            ( ( JWindow ) ancestor ).getRootPane ().putClientProperty ( "Window.shadow", Boolean.FALSE );
+                        }
                         if ( ancestor != null && ancestor.getClass ().getCanonicalName ().endsWith ( "HeavyWeightWindow" ) )
                         {
+                            // Updating menu opacity state
                             ProprietaryUtils.setWindowOpaque ( ancestor, false );
                         }
                     }
                     else
                     {
-                        // Update menu opacity state
                         if ( ancestor != null && ancestor.getClass ().getCanonicalName ().endsWith ( "HeavyWeightWindow" ) )
                         {
+                            // Restoring menu opacity state
                             ProprietaryUtils.setWindowOpaque ( ancestor, true );
                         }
                     }
@@ -184,9 +198,12 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements ShapeProvider
     @Override
     public void uninstallUI ( final JComponent c )
     {
+        // Removing listeners
+        popupMenu.removePropertyChangeListener ( WebLookAndFeel.COMPONENT_ORIENTATION_PROPERTY, orientationChangeListener );
         if ( transparent )
         {
             popupMenu.removePropertyChangeListener ( WebLookAndFeel.VISIBLE_PROPERTY, visibilityChangeListener );
+            visibilityChangeListener = null;
         }
         else
         {
@@ -194,6 +211,7 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements ShapeProvider
             if ( SystemUtils.isJava7orAbove () )
             {
                 popupMenu.removePropertyChangeListener ( WebLookAndFeel.VISIBLE_PROPERTY, jdkSevenFixListener );
+                jdkSevenFixListener = null;
             }
         }
 
@@ -225,21 +243,10 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements ShapeProvider
             {
                 if ( transparent )
                 {
-                    if ( popupMenuStyle == PopupMenuStyle.simple )
-                    {
-                        m.top += shadeWidth + 1 + round;
-                        m.left += shadeWidth + 1;
-                        m.bottom += shadeWidth + 1 + round;
-                        m.right += shadeWidth + 1;
-                    }
-                    else
-                    {
-                        // todo left/bottom/right corner
-                        m.top += ( cornerSide == SwingConstants.NORTH ? cornerWidth : shadeWidth ) + 1 + round;
-                        m.left += shadeWidth + 1;
-                        m.bottom += ( cornerSide == SwingConstants.SOUTH ? cornerWidth : shadeWidth ) + 1 + round;
-                        m.right += shadeWidth + 1;
-                    }
+                    m.top += shadeWidth + 1 + round;
+                    m.left += shadeWidth + 1;
+                    m.bottom += shadeWidth + 1 + round;
+                    m.right += shadeWidth + 1;
                 }
                 else
                 {
@@ -252,10 +259,6 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements ShapeProvider
 
             // Installing border
             popupMenu.setBorder ( LafUtils.createWebBorder ( m ) );
-
-            // Old
-            // popupMenu.setBorder ( popupMenu instanceof BasicComboPopup ? BorderFactory.createEmptyBorder ( 1, 1, 1, 1 ) :
-            //         BorderFactory.createEmptyBorder ( 0, 0, 0, 0 ) );
         }
     }
 
@@ -283,36 +286,230 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements ShapeProvider
      *
      * @param style new popup menu style
      */
-    public void setPopupMenuStyle ( PopupMenuStyle style )
+    public void setPopupMenuStyle ( final PopupMenuStyle style )
     {
         this.popupMenuStyle = style;
         updateBorder ();
     }
 
+    /**
+     * Returns popup menu border color.
+     *
+     * @return popup menu border color
+     */
+    public Color getBorderColor ()
+    {
+        return borderColor;
+    }
+
+    /**
+     * Sets popup menu border color.
+     *
+     * @param color new popup menu border color
+     */
+    public void setBorderColor ( final Color color )
+    {
+        this.borderColor = color;
+    }
+
+    /**
+     * Returns popup menu border corners rounding.
+     *
+     * @return popup menu border corners rounding
+     */
     public int getRound ()
     {
         return round;
     }
 
-    public void setRound ( int round )
+    /**
+     * Sets popup menu border corners rounding.
+     *
+     * @param round new popup menu border corners rounding
+     */
+    public void setRound ( final int round )
     {
-        // todo
         this.round = round;
+        updateBorder ();
+    }
+
+    /**
+     * Returns popup menu shade width.
+     *
+     * @return popup menu shade width
+     */
+    public int getShadeWidth ()
+    {
+        return shadeWidth;
+    }
+
+    /**
+     * Sets popup menu shade width.
+     *
+     * @param width new popup menu shade width
+     */
+    public void setShadeWidth ( final int width )
+    {
+        this.shadeWidth = width;
+        updateBorder ();
+    }
+
+    /**
+     * Returns popup menu shade opacity.
+     *
+     * @return popup menu shade opacity
+     */
+    public float getShadeOpacity ()
+    {
+        return shadeOpacity;
+    }
+
+    /**
+     * Sets popup menu shade opacity.
+     *
+     * @param opacity new popup menu shade opacity
+     */
+    public void setShadeOpacity ( final float opacity )
+    {
+        this.shadeOpacity = opacity;
+    }
+
+    /**
+     * Returns popup menu dropdown style corner width.
+     *
+     * @return popup menu dropdown style corner width
+     */
+    public int getCornerWidth ()
+    {
+        return cornerWidth;
+    }
+
+    /**
+     * Sets popup menu dropdown style corner width.
+     *
+     * @param width popup menu dropdown style corner width
+     */
+    public void setCornerWidth ( final int width )
+    {
+        this.cornerWidth = width;
+    }
+
+    /**
+     * Returns popup menu content margin.
+     *
+     * @return popup menu content margin
+     */
+    public Insets getMargin ()
+    {
+        return margin;
+    }
+
+    /**
+     * Sets popup menu content margin.
+     *
+     * @param margin new popup menu content margin
+     */
+    public void setMargin ( final Insets margin )
+    {
+        this.margin = margin;
+    }
+
+    /**
+     * Returns popup menu painter.
+     *
+     * @return popup menu painter
+     */
+    public Painter getPainter ()
+    {
+        return painter;
+    }
+
+    /**
+     * Sets popup menu painter.
+     *
+     * @param painter new popup menu painter
+     */
+    public void setPainter ( final Painter painter )
+    {
+        this.painter = painter;
+    }
+
+    /**
+     * Returns spacing between menubar popup menus.
+     *
+     * @return spacing between menubar popup menus
+     */
+    public int getMenuSpacing ()
+    {
+        return menuSpacing;
+    }
+
+    /**
+     * Sets spacing between menubar popup menus.
+     *
+     * @param spacing new spacing between menubar popup menus
+     */
+    public void setMenuSpacing ( final int spacing )
+    {
+        this.menuSpacing = spacing;
+    }
+
+    /**
+     * Returns whether popup menu should try to fix its initial location when displayed or not.
+     *
+     * @return true if popup menu should try to fix its initial location when displayed, false otherwise
+     */
+    public boolean isFixLocation ()
+    {
+        return fixLocation;
+    }
+
+    /**
+     * Sets whether popup menu should try to fix its initial location when displayed or not.
+     *
+     * @param fixLocation whether popup menu should try to fix its initial location when displayed or not
+     */
+    public void setFixLocation ( final boolean fixLocation )
+    {
+        this.fixLocation = fixLocation;
+    }
+
+    /**
+     * Assists popup menu to allow it choose the best position relative to invoker.
+     * Its value nullified right after first usage to avoid popup menu display issues in future.
+     *
+     * @param way approximate popup menu display way
+     */
+    public void setPopupMenuWay ( final PopupMenuWay way )
+    {
+        this.popupMenuWay = way;
+    }
+
+    /**
+     * Returns side where corner is currently displayed.
+     *
+     * @return side where corner is currently displayed
+     */
+    public int getCornerSide ()
+    {
+        return cornerSide;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Popup getPopup ( JPopupMenu popup, int x, int y )
+    public Popup getPopup ( final JPopupMenu popup, int x, int y )
     {
         // Updating menu elements
+        // Be aware because at this point menu size changes
+        // todo Use static style so that i don't need to update menu elements from here
         for ( int i = 0; i < popup.getComponentCount (); i++ )
         {
-            Component component = popup.getComponent ( i );
+            final Component component = popup.getComponent ( i );
             if ( component instanceof JMenu )
             {
-                ButtonUI ui = ( ( JMenu ) component ).getUI ();
+                final ButtonUI ui = ( ( JMenu ) component ).getUI ();
                 if ( ui instanceof WebMenuUI )
                 {
                     ( ( WebMenuUI ) ui ).updateBorder ();
@@ -320,7 +517,7 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements ShapeProvider
             }
             else if ( component instanceof JMenuItem )
             {
-                ButtonUI ui = ( ( JMenuItem ) component ).getUI ();
+                final ButtonUI ui = ( ( JMenuItem ) component ).getUI ();
                 if ( ui instanceof WebMenuItemUI )
                 {
                     ( ( WebMenuItemUI ) ui ).updateBorder ();
@@ -328,51 +525,140 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements ShapeProvider
             }
         }
 
+        // Updating popup location according to popup menu UI settings
         final Component invoker = popup.getInvoker ();
-        final Point los = invoker.getLocationOnScreen ();
-        if ( invoker instanceof JMenu )
+        final Point los = invoker.isShowing () ? invoker.getLocationOnScreen () : null;
+        final boolean fixLocation = this.fixLocation && invoker.isShowing ();
+        final boolean ltr = invoker.getComponentOrientation ().isLeftToRight ();
+        if ( invoker != null )
         {
-            if ( invoker.getParent () instanceof JPopupMenu )
+            if ( invoker instanceof JMenu )
             {
-                // Displaying simple-styled sub-menu
-                setPopupMenuStyle ( PopupMenuStyle.simple );
-                if ( fixLocation )
+                if ( invoker.getParent () instanceof JPopupMenu )
                 {
-                    x += ( los.getX () < x ? -1 : 1 ) * ( transparent ? shadeWidth - menuSpacing : 0 );
-                    y -= transparent ? shadeWidth + round + 1 : round;
+                    // Displaying simple-styled sub-menu
+                    // It is displayed to left or right of the menu item
+                    setPopupMenuStyle ( PopupMenuStyle.simple );
+                    if ( fixLocation )
+                    {
+                        // Invoker X-location on screen also works as orientation indicator, so we don't need to check it here
+                        x += ( los.x <= x ? -1 : 1 ) * ( transparent ? shadeWidth - menuSpacing : -menuSpacing );
+                        y += ( los.y <= y ? -1 : 1 ) * ( transparent ? shadeWidth + 1 + round : round );
+                    }
                 }
-            }
-            else if ( !WebPopupMenuStyle.dropdownStyleForMenuBar )
-            {
-                // Displaying simple-styled top-level menu
-                setPopupMenuStyle ( PopupMenuStyle.simple );
-                if ( fixLocation )
+                else if ( !WebPopupMenuStyle.dropdownStyleForMenuBar )
                 {
-                    x += ( los.getX () <= x ? -1 : 1 ) * ( transparent ? shadeWidth - menuSpacing : 0 );
-                    y -= transparent ? shadeWidth + round + 1 : round;
+                    // Displaying simple-styled top-level menu
+                    // It is displayed below or above the menu bar
+                    setPopupMenuStyle ( PopupMenuStyle.simple );
+                    if ( fixLocation )
+                    {
+                        // Invoker X-location on screen also works as orientation indicator, so we don't need to check it here
+                        x += ( los.x <= x ? -1 : 1 ) * ( transparent ? shadeWidth - menuSpacing : -menuSpacing );
+                        y -= transparent ? shadeWidth + round + 1 : round;
+                    }
+                }
+                else
+                {
+                    // Displaying dropdown-styled top-level menu
+                    // It is displayed below or above the menu bar
+                    setPopupMenuStyle ( PopupMenuStyle.dropdown );
+                    cornerSide = los.y <= y ? NORTH : SOUTH;
+                    if ( fixLocation )
+                    {
+                        // Invoker X-location on screen also works as orientation indicator, so we don't need to check it here
+                        x += ( los.x <= x ? -1 : 1 ) * ( transparent ? shadeWidth : 0 );
+                        y += ( los.y <= y ? -1 : 1 ) * ( transparent ? shadeWidth - cornerWidth : 0 );
+                    }
+                    relativeCorner = los.x + invoker.getWidth () / 2 - x;
                 }
             }
             else
             {
-                // Displaying dropdown-styled top-level menu
-                setPopupMenuStyle ( PopupMenuStyle.dropdown );
-                if ( fixLocation )
+                final boolean dropdown = popupMenuStyle == PopupMenuStyle.dropdown;
+                if ( invoker instanceof JComboBox && popup.getName ().equals ( "ComboPopup.popup" ) )
                 {
-                    x += ( los.getX () <= x ? -1 : 1 ) * ( transparent ? shadeWidth : 0 );
+                    cornerSide = los.y <= y ? NORTH : SOUTH;
+                    if ( fixLocation )
+                    {
+                        x += transparent ? -shadeWidth : 0;
+                        if ( cornerSide == NORTH )
+                        {
+                            y -= transparent ? ( shadeWidth - ( dropdown ? cornerWidth : 0 ) ) : 0;
+                        }
+                        else
+                        {
+                            y -= invoker.getHeight () + ( transparent ? ( shadeWidth - ( dropdown ? cornerWidth : 0 ) ) : 0 );
+                        }
+                    }
+                    relativeCorner = los.x + invoker.getWidth () / 2 - x;
                 }
-                relativeCorner = los.x + invoker.getWidth () / 2 - x;
-                cornerSide = los.y <= y ? SwingConstants.NORTH : SwingConstants.SOUTH;
+                else
+                {
+                    if ( fixLocation )
+                    {
+                        // Applying new location according to specified popup menu way
+                        if ( popupMenuWay != null )
+                        {
+                            final Dimension ps = popupMenu.getPreferredSize ();
+                            final Dimension is = invoker.getSize ();
+                            final int cornerShear = dropdown ? shadeWidth - cornerWidth : 0;
+                            switch ( popupMenuWay )
+                            {
+                                case aboveStart:
+                                {
+                                    x = ( ltr ? los.x : los.x + is.width - ps.width ) +
+                                            ( transparent ? ( ltr ? -shadeWidth : shadeWidth ) : 0 );
+                                    y = los.y - ps.height + cornerShear;
+                                    relativeCorner = ltr ? 0 : Integer.MAX_VALUE;
+                                    break;
+                                }
+                                case aboveMiddle:
+                                {
+                                    x = los.x + is.width / 2 - ps.width / 2;
+                                    y = los.y - ps.height + cornerShear;
+                                    relativeCorner = los.x + invoker.getWidth () / 2 - x;
+                                    break;
+                                }
+                                case aboveEnd:
+                                {
+                                    x = ( ltr ? los.x + is.width - ps.width : los.x ) +
+                                            ( transparent ? ( ltr ? shadeWidth : -shadeWidth ) : 0 );
+                                    y = los.y - ps.height + cornerShear;
+                                    relativeCorner = ltr ? Integer.MAX_VALUE : 0;
+                                    break;
+                                }
+                                case belowStart:
+                                {
+                                    x = ( ltr ? los.x : los.x + is.width - ps.width ) +
+                                            ( transparent ? ( ltr ? -shadeWidth : shadeWidth ) : 0 );
+                                    y = los.y + is.height - cornerShear;
+                                    relativeCorner = ltr ? 0 : Integer.MAX_VALUE;
+                                    break;
+                                }
+                                case belowMiddle:
+                                {
+                                    x = los.x + is.width / 2 - ps.width / 2;
+                                    y = los.y + is.height - cornerShear;
+                                    relativeCorner = los.x + invoker.getWidth () / 2 - x;
+                                    break;
+                                }
+                                case belowEnd:
+                                {
+                                    x = ( ltr ? los.x + is.width - ps.width : los.x ) +
+                                            ( transparent ? ( ltr ? shadeWidth : -shadeWidth ) : 0 );
+                                    y = los.y + is.height - cornerShear;
+                                    relativeCorner = ltr ? Integer.MAX_VALUE : 0;
+                                    break;
+                                }
+                            }
+                            cornerSide = popupMenuWay.getCornerSide ();
+                            popupMenuWay = null;
+                        }
+                    }
+                }
             }
         }
-        else
-        {
-            // todo Update corner location
-            // todo Update corner side
-            // relativeCorner = ...
-            relativeCorner = los.x + invoker.getWidth () / 2 - x;
-        }
-
-        updateBorder ();
 
         return super.getPopup ( popup, x, y );
     }
@@ -399,27 +685,15 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements ShapeProvider
             shade.paintIcon ( g2d, getShadeBounds ( mb ) );
 
             // Menu direction from component: -> down -> right
-            final Shape border = getComplexShape ( mb, false );
-            final Shape fill = getComplexShape ( mb, true );
+            final Shape border = getBorderShape ( mb, false );
+            final Shape fill = getBorderShape ( mb, true );
 
             // Background
-            g2d.setColor ( backgroundColor );
+            g2d.setColor ( popupMenu.getBackground () );
             g2d.fill ( fill );
 
-            if ( popupMenuStyle == PopupMenuStyle.dropdown && round == 0 )
-            {
-                Component component = popupMenu.getComponent ( 0 );
-                if ( component instanceof JMenuItem )
-                {
-                    JMenuItem menuItem = ( JMenuItem ) component;
-                    if ( menuItem.getModel ().isArmed () )
-                    {
-                        final Shape dropdown = createDropdownCornerShape ( mb, true );
-                        g2d.setColor ( WebMenuItemStyle.topBg );
-                        g2d.fill ( dropdown );
-                    }
-                }
-            }
+            // Corner fill
+            fillDropdownCorner ( g2d, mb );
 
             // Border
             g2d.setPaint ( borderColor );
@@ -428,30 +702,69 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements ShapeProvider
         else
         {
             // Background
-            g2d.setColor ( backgroundColor );
-            g2d.fillRoundRect ( 1, 1, c.getWidth () - 2, c.getHeight () - 2, round * 2, round * 2 );
+            g2d.setColor ( popupMenu.getBackground () );
+            g2d.fillRoundRect ( 1, 1, popupMenu.getWidth () - 2, popupMenu.getHeight () - 2, round * 2, round * 2 );
 
             // Border
             g2d.setColor ( borderColor );
-            g2d.drawRoundRect ( 0, 0, c.getWidth () - 1, c.getHeight () - 1, round * 2, round * 2 );
+            g2d.drawRoundRect ( 0, 0, popupMenu.getWidth () - 1, popupMenu.getHeight () - 1, round * 2, round * 2 );
         }
 
         LafUtils.restoreAntialias ( g2d, aa );
     }
 
+    /**
+     * Fills dropdown-styled popup menu corner if menu item near it is selected.
+     *
+     * @param g2d graphics context
+     * @param mb  menu bounds on screen
+     */
+    protected void fillDropdownCorner ( Graphics2D g2d, Rectangle mb )
+    {
+        if ( popupMenuStyle == PopupMenuStyle.dropdown && round == 0 )
+        {
+            // Checking whether corner should be filled or not
+            final boolean north = cornerSide == NORTH;
+            final int zIndex = north ? 0 : popupMenu.getComponentCount () - 1;
+            final Component component = popupMenu.getComponent ( zIndex );
+            if ( component instanceof JMenuItem )
+            {
+                final JMenuItem menuItem = ( JMenuItem ) component;
+                final ButtonModel model = menuItem.getModel ();
+                if ( model.isArmed () || model.isSelected () )
+                {
+                    // Filling corner properly
+                    if ( menuItem.getUI () instanceof WebMenuUI )
+                    {
+                        final WebMenuUI ui = ( WebMenuUI ) menuItem.getUI ();
+                        g2d.setPaint ( north ? ui.getNorthCornerFill () : ui.getSouthCornerFill () );
+                        g2d.fill ( createDropdownCornerShape ( mb, true ) );
+                    }
+                    else if ( menuItem.getUI () instanceof WebMenuItemUI )
+                    {
+                        final WebMenuItemUI ui = ( WebMenuItemUI ) menuItem.getUI ();
+                        g2d.setPaint ( north ? ui.getNorthCornerFill () : ui.getSouthCornerFill () );
+                        g2d.fill ( createDropdownCornerShape ( mb, true ) );
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Returns popup menu shade bounds.
+     *
+     * @param mb menu bounds on screen
+     * @return popup menu shade bounds
+     */
     protected Rectangle getShadeBounds ( final Rectangle mb )
     {
         switch ( popupMenuStyle )
         {
             case simple:
-            {
-                return new Rectangle ( 0, 0, mb.width, mb.height );
-            }
             case dropdown:
             {
-                // todo Change depending on popup menu position
-                final int shear = Math.max ( 0, cornerWidth - shadeWidth );
-                return new Rectangle ( 0, shear, mb.width, mb.height - shear );
+                return new Rectangle ( 0, 0, mb.width, mb.height );
             }
             default:
             {
@@ -460,7 +773,14 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements ShapeProvider
         }
     }
 
-    protected Shape getComplexShape ( final Rectangle mb, final boolean fill )
+    /**
+     * Returns popup menu border shape.
+     *
+     * @param mb   menu bounds on screen
+     * @param fill whether it is a fill shape or not
+     * @return popup menu border shape
+     */
+    protected Shape getBorderShape ( final Rectangle mb, final boolean fill )
     {
         switch ( popupMenuStyle )
         {
@@ -470,7 +790,6 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements ShapeProvider
             }
             case dropdown:
             {
-                // todo Change depending on popup menu position
                 return createDropdownShape ( mb, fill );
             }
             default:
@@ -480,6 +799,13 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements ShapeProvider
         }
     }
 
+    /**
+     * Creates and returns simple menu shape.
+     *
+     * @param mb   menu bounds on screen
+     * @param fill whether it is a fill shape or not
+     * @return simple menu shape
+     */
     protected GeneralPath createSimpleShape ( final Rectangle mb, final boolean fill )
     {
         final int shear = fill ? 1 : 0;
@@ -500,50 +826,17 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements ShapeProvider
         return shape;
     }
 
-    protected GeneralPath createDropdownCornerShape ( final Rectangle mb, final boolean fill )
-    {
-        final boolean north = cornerSide == SwingConstants.NORTH;
-        final boolean south = cornerSide == SwingConstants.SOUTH;
-
-        // Painting shear
-        final int shear = fill ? 1 : 0;
-
-        // Corner left spacing
-        final int ds = shadeWidth + shear + round + cornerWidth * 2;
-        final int spacing = relativeCorner < shadeWidth + round + cornerWidth ? 0 : Math.min ( relativeCorner - ds, mb.width - ds * 2 );
-
-        // Side spacings
-        final int top = north ? cornerWidth + shear : shadeWidth + shear;
-        final int botom = south ? mb.height - 1 - cornerWidth : mb.height - 1 - shadeWidth;
-        final int left = shadeWidth + shear;
-        //        final int right = mb.width - 1 - shadeWidth;
-
-        final GeneralPath shape = new GeneralPath ( GeneralPath.WIND_EVEN_ODD );
-        if ( north )
-        {
-            // Top corner
-            shape.moveTo ( left + round + spacing + cornerWidth, top );
-            shape.lineTo ( left + round + spacing + cornerWidth * 2, top - cornerWidth );
-            shape.lineTo ( left + round + spacing + cornerWidth * 2 + 1, top - cornerWidth );
-            shape.lineTo ( left + round + spacing + cornerWidth * 3 + 1, top );
-            shape.closePath ();
-        }
-        if ( south )
-        {
-            // Bottom corner
-            shape.moveTo ( left + round + spacing + cornerWidth * 3 + 1, botom );
-            shape.lineTo ( left + round + spacing + cornerWidth * 2 + 1, botom + cornerWidth );
-            shape.lineTo ( left + round + spacing + cornerWidth * 2, botom + cornerWidth );
-            shape.lineTo ( left + round + spacing + cornerWidth, botom );
-            shape.closePath ();
-        }
-        return shape;
-    }
-
+    /**
+     * Creates and returns dropdown style shape.
+     *
+     * @param mb   menu bounds on screen
+     * @param fill whether it is a fill shape or not
+     * @return dropdown style shape
+     */
     protected GeneralPath createDropdownShape ( final Rectangle mb, final boolean fill )
     {
-        final boolean north = cornerSide == SwingConstants.NORTH;
-        final boolean south = cornerSide == SwingConstants.SOUTH;
+        final boolean north = cornerSide == NORTH;
+        final boolean south = cornerSide == SOUTH;
 
         // Painting shear
         final int shear = fill ? 1 : 0;
@@ -553,9 +846,9 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements ShapeProvider
         final int spacing = relativeCorner < shadeWidth + round + cornerWidth ? 0 : Math.min ( relativeCorner - ds, mb.width - ds * 2 );
 
         // Side spacings
-        final int top = north ? cornerWidth + shear : shadeWidth + shear;
-        final int botom = south ? mb.height - 1 - cornerWidth : mb.height - 1 - shadeWidth;
+        final int top = shadeWidth + shear;
         final int left = shadeWidth + shear;
+        final int botom = mb.height - 1 - shadeWidth;
         final int right = mb.width - 1 - shadeWidth;
 
         final GeneralPath shape = new GeneralPath ( GeneralPath.WIND_EVEN_ODD );
@@ -587,107 +880,50 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements ShapeProvider
         return shape;
     }
 
-    public static void main ( String[] args )
+    /**
+     * Creates and returns dropdown style corner shape.
+     * It is used to paint corner fill when menu item at the same as corner side of popup menu is selected.
+     *
+     * @param mb   menu bounds on screen
+     * @param fill whether it is a fill shape or not
+     * @return dropdown style corner shape
+     */
+    protected GeneralPath createDropdownCornerShape ( final Rectangle mb, final boolean fill )
     {
-        WebLookAndFeel.install ();
-        //        WebLookAndFeel.setDecorateAllWindows ( true );
+        final boolean north = cornerSide == NORTH;
+        final boolean south = cornerSide == SOUTH;
 
-        //        StyleConstants.smallRound = 0;
-        //        StyleConstants.mediumRound = 0;
-        //        StyleConstants.bigRound = 0;
-        //        StyleConstants.largeRound = 0;
+        // Painting shear
+        final int shear = fill ? 1 : 0;
 
-        final WebPopupMenu menu = new WebPopupMenu ();
-        menu.add ( new WebColorChooserPanel ( false ).setMargin ( 0, 7, 0, 7 ) );
+        // Corner left spacing
+        final int ds = shadeWidth + shear + round + cornerWidth * 2;
+        final int spacing = relativeCorner < shadeWidth + round + cornerWidth ? 0 : Math.min ( relativeCorner - ds, mb.width - ds * 2 );
 
-        TestFrame tf = new TestFrame ( new WebButton ( "Simple menu", WebLookAndFeel.getIcon ( 16 ), new ActionListener ()
-        {
-            @Override
-            public void actionPerformed ( ActionEvent e )
-            {
-                menu.showUnder ( ( Component ) e.getSource () );
-            }
-        } ), 250 );
+        // Side spacings
+        final int top = shadeWidth + shear;
+        final int left = shadeWidth + shear;
+        final int botom = mb.height - 1 - shadeWidth;
 
-        WebMenuBar menuBar = new WebMenuBar ();
-        menuBar.setUndecorated ( true );
-        menuBar.add ( fillMenu ( new WebMenu ( "File" ) ) );
-        menuBar.add ( fillMenu ( new WebMenu ( "Edit" ) ) );
-        menuBar.add ( fillMenu ( new WebMenu ( "Help" ) ) );
-        menuBar.add ( fillMenu ( new WebMenu ( "About" ) ) );
-        tf.setJMenuBar ( menuBar );
-
-        tf.packAndCenter ();
-        tf.displayFrame ();
-
-        HotkeyManager.registerHotkey ( Hotkey.ALT_R, new HotkeyRunnable ()
+        final GeneralPath shape = new GeneralPath ( GeneralPath.WIND_EVEN_ODD );
+        if ( north )
         {
-            @Override
-            public void run ( KeyEvent e )
-            {
-                LanguageManager.changeOrientation ();
-            }
-        } );
-    }
-
-    private static WebMenu fillMenu ( WebMenu menu )
-    {
-        final ImageIcon icon = WebLookAndFeel.getIcon ( 16 );
-        //  ImageUtils.combineIcons ( icon, icon )
-
-        menu.add ( new WebMenuItem ( "Test item", icon )
+            // Top corner
+            shape.moveTo ( left + round + spacing + cornerWidth, top );
+            shape.lineTo ( left + round + spacing + cornerWidth * 2, top - cornerWidth );
+            shape.lineTo ( left + round + spacing + cornerWidth * 2 + 1, top - cornerWidth );
+            shape.lineTo ( left + round + spacing + cornerWidth * 3 + 1, top );
+            shape.closePath ();
+        }
+        if ( south )
         {
-            {
-                setAccelerator ( Hotkey.CTRL_X.getKeyStroke () );
-            }
-        } );
-        menu.add ( new WebMenuItem ( "<html>Some <b>html</b> <u>content</u></html>", icon ) );
-        menu.addSeparator ();
-        menu.add ( new WebMenuItem ( "1234567890", icon )
-        {
-            {
-                setAccelerator ( Hotkey.SPACE.getKeyStroke () );
-            }
-        } );
-        menu.add ( new WebMenu ( "Sub menu", icon )
-        {
-            {
-                add ( new WebMenuItem ( "Sub 1" ) );
-                add ( new WebMenuItem ( "Sub 2" ) );
-                add ( new WebMenuItem ( "Sub 3" ) );
-                add ( new WebMenu ( "Sub menu" )
-                {
-                    {
-                        add ( new WebMenuItem ( "Sub 1" ) );
-                        add ( new WebMenuItem ( "Sub 2" ) );
-                        add ( new WebMenuItem ( "Sub 3" ) );
-                    }
-                } );
-            }
-        } );
-        menu.add ( new WebMenuItem ( "!@%#$^%*^%#", icon ) );
-        menu.add ( new WebMenuItem ( "Something else", icon )
-        {
-            {
-                setEnabled ( false );
-            }
-        } );
-        menu.add ( new WebMenu ( "Disabled menu", icon )
-        {
-            {
-                setEnabled ( false );
-                add ( new WebMenuItem ( "Sub 1" ) );
-            }
-        } );
-        menu.addSeparator ();
-        menu.add ( new WebMenuItem ( "QWERTYSDASZXO", icon )
-        {
-            {
-                setEnabled ( false );
-                setAccelerator ( Hotkey.ALT_F4.getKeyStroke () );
-            }
-        } );
-        menu.add ( new WebMenuItem ( "Last element", icon ) );
-        return menu;
+            // Bottom corner
+            shape.moveTo ( left + round + spacing + cornerWidth * 3 + 1, botom );
+            shape.lineTo ( left + round + spacing + cornerWidth * 2 + 1, botom + cornerWidth );
+            shape.lineTo ( left + round + spacing + cornerWidth * 2, botom + cornerWidth );
+            shape.lineTo ( left + round + spacing + cornerWidth, botom );
+            shape.closePath ();
+        }
+        return shape;
     }
 }

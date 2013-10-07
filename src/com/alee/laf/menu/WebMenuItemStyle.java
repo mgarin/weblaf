@@ -37,19 +37,36 @@ public final class WebMenuItemStyle
     public static Insets margin = StyleConstants.emptyMargin;
 
     /**
+     * Separate menu item corners rounding.
+     * This will be applied to menu items that are placed outside popup menu.
+     */
+    public static int round = StyleConstants.smallRound;
+
+    /**
+     * Separate menu item shade width.
+     * This will be applied to menu items that are placed outside popup menu.
+     */
+    public static int shadeWidth = StyleConstants.shadeWidth;
+
+    /**
      * Disabled menu item foreground.
      */
     public static Color disabledFg = Color.LIGHT_GRAY;
 
     /**
+     * Checkbox and radiobutton menu items check color.
+     */
+    public static Color checkColor = new Color ( 230, 230, 220 );
+
+    /**
      * Top background color for selected item.
      */
-    public static Color topBg = new Color ( 208, 208, 198 );
+    public static Color selectedTopBg = new Color ( 208, 208, 198 );
 
     /**
      * Bottom background color for selected item.
      */
-    public static Color bottomBg = new Color ( 196, 196, 186 );
+    public static Color selectedBottomBg = new Color ( 196, 196, 186 );
 
     /**
      * Accelerator text foreground.

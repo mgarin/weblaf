@@ -24,6 +24,7 @@ import com.alee.utils.MathUtils;
 import com.alee.utils.SwingUtils;
 
 import javax.swing.*;
+import javax.swing.event.ChangeListener;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.PopupMenuUI;
 import javax.swing.plaf.basic.BasicHTML;
@@ -47,12 +48,11 @@ public class WebMenuItemUI extends BasicMenuItemUI
      */
     protected Insets margin = WebMenuItemStyle.margin;
     protected Color disabledFg = WebMenuItemStyle.disabledFg;
-    protected Color topBg = WebMenuItemStyle.topBg;
-    protected Color bottomBg = WebMenuItemStyle.bottomBg;
+    protected Color selectedTopBg = WebMenuItemStyle.selectedTopBg;
+    protected Color selectedBottomBg = WebMenuItemStyle.selectedBottomBg;
     protected Color acceleratorBg = WebMenuItemStyle.acceleratorBg;
     protected Color acceleratorFg = WebMenuItemStyle.acceleratorFg;
     protected Color acceleratorDisabledFg = WebMenuItemStyle.acceleratorDisabledFg;
-    protected int iconTextGap = WebMenuItemStyle.iconTextGap;
     protected int acceleratorGap = WebMenuItemStyle.itemSidesGap;
     protected boolean alignTextToMenuIcons = WebMenuItemStyle.alignTextToMenuIcons;
     protected int iconAlignment = WebMenuItemStyle.iconAlignment;
@@ -62,6 +62,7 @@ public class WebMenuItemUI extends BasicMenuItemUI
      * Menu item listeners.
      */
     protected PropertyChangeListener propertyChangeListener;
+    protected ChangeListener buttonModelChangeListener;
 
     /**
      * Returns an instance of the WebMenuItemUI for the specified component.
@@ -89,19 +90,23 @@ public class WebMenuItemUI extends BasicMenuItemUI
         // Default settings
         SwingUtils.setOrientation ( menuItem );
         menuItem.setOpaque ( false );
-        menuItem.setIconTextGap ( iconTextGap );
+        menuItem.setIconTextGap ( WebMenuItemStyle.iconTextGap );
         updateBorder ();
 
         // Orientation change listener
         propertyChangeListener = new PropertyChangeListener ()
         {
             @Override
-            public void propertyChange ( PropertyChangeEvent evt )
+            public void propertyChange ( final PropertyChangeEvent evt )
             {
                 updateBorder ();
             }
         };
         menuItem.addPropertyChangeListener ( WebLookAndFeel.COMPONENT_ORIENTATION_PROPERTY, propertyChangeListener );
+
+        // Button model change listener
+        buttonModelChangeListener = new MenuItemChangeListener ( menuItem );
+        menuItem.getModel ().addChangeListener ( buttonModelChangeListener );
     }
 
     /**
@@ -114,6 +119,9 @@ public class WebMenuItemUI extends BasicMenuItemUI
     {
         // Removing listeners
         menuItem.removePropertyChangeListener ( WebLookAndFeel.COMPONENT_ORIENTATION_PROPERTY, propertyChangeListener );
+        propertyChangeListener = null;
+        menuItem.getModel ().removeChangeListener ( buttonModelChangeListener );
+        buttonModelChangeListener = null;
 
         // Restoring basic settings
         menuItem.setOpaque ( true );
@@ -169,6 +177,247 @@ public class WebMenuItemUI extends BasicMenuItemUI
     }
 
     /**
+     * Returns menu item margin.
+     *
+     * @return menu item margin
+     */
+    public Insets getMargin ()
+    {
+        return margin;
+    }
+
+    /**
+     * Sets menu item margin.
+     *
+     * @param margin new menu item margin
+     */
+    public void setMargin ( final Insets margin )
+    {
+        this.margin = margin;
+        updateBorder ();
+    }
+
+    /**
+     * Returns disabled menu item foreground.
+     *
+     * @return disabled menu item foreground
+     */
+    public Color getDisabledFg ()
+    {
+        return disabledFg;
+    }
+
+    /**
+     * Sets disabled menu item foreground.
+     *
+     * @param foreground new disabled menu item foreground
+     */
+    public void setDisabledFg ( final Color foreground )
+    {
+        this.disabledFg = foreground;
+    }
+
+    /**
+     * Returns top background color for selected item.
+     *
+     * @return top background color for selected item
+     */
+    public Color getSelectedTopBg ()
+    {
+        return selectedTopBg;
+    }
+
+    /**
+     * Sets top background color for selected item.
+     *
+     * @param background new top background color for selected item
+     */
+    public void setSelectedTopBg ( final Color background )
+    {
+        this.selectedTopBg = background;
+    }
+
+    /**
+     * Returns bottom background color for selected item.
+     *
+     * @return bottom background color for selected item
+     */
+    public Color getSelectedBottomBg ()
+    {
+        return selectedBottomBg;
+    }
+
+    /**
+     * Sets bottom background color for selected item.
+     *
+     * @param background new bottom background color for selected item
+     */
+    public void setSelectedBottomBg ( final Color background )
+    {
+        this.selectedBottomBg = background;
+    }
+
+    /**
+     * Returns accelerator text background.
+     *
+     * @return accelerator text background
+     */
+    public Color getAcceleratorBg ()
+    {
+        return acceleratorBg;
+    }
+
+    /**
+     * Sets accelerator text background.
+     *
+     * @param background new accelerator text background
+     */
+    public void setAcceleratorBg ( final Color background )
+    {
+        this.acceleratorBg = background;
+    }
+
+    /**
+     * Returns accelerator foreground.
+     *
+     * @return accelerator foreground
+     */
+    public Color getAcceleratorFg ()
+    {
+        return acceleratorFg;
+    }
+
+    /**
+     * Sets accelerator foreground.
+     *
+     * @param foreground new accelerator foreground
+     */
+    public void setAcceleratorFg ( final Color foreground )
+    {
+        this.acceleratorFg = foreground;
+    }
+
+    /**
+     * Returns disabled accelerator foreground.
+     *
+     * @return disabled accelerator foreground
+     */
+    public Color getAcceleratorDisabledFg ()
+    {
+        return acceleratorDisabledFg;
+    }
+
+    /**
+     * Sets disabled accelerator foreground.
+     *
+     * @param foreground new disabled accelerator foreground
+     */
+    public void setAcceleratorDisabledFg ( final Color foreground )
+    {
+        this.acceleratorDisabledFg = foreground;
+    }
+
+    /**
+     * Returns gap between menu item icon/text and accelerator.
+     *
+     * @return gap between menu item icon/text and accelerator
+     */
+    public int getAcceleratorGap ()
+    {
+        return acceleratorGap;
+    }
+
+    /**
+     * Sets gap between menu icon/text and accelerator.
+     *
+     * @param gap new gap between menu icon/text and accelerator
+     */
+    public void setAcceleratorGap ( final int gap )
+    {
+        this.acceleratorGap = gap;
+    }
+
+    /**
+     * Returns whether should align all item texts to a single vertical line within single popup menu or not.
+     *
+     * @return true if should align all item texts to a single vertical line within single popup menu, false otherwise
+     */
+    public boolean isAlignTextToMenuIcons ()
+    {
+        return alignTextToMenuIcons;
+    }
+
+    /**
+     * Sets whether should align all item texts to a single vertical line within single popup menu or not.
+     *
+     * @param align whether should align all item texts to a single vertical line within single popup menu or not
+     */
+    public void setAlignTextToMenuIcons ( final boolean align )
+    {
+        this.alignTextToMenuIcons = align;
+    }
+
+    /**
+     * Returns icon alignment.
+     *
+     * @return icon alignment
+     */
+    public int getIconAlignment ()
+    {
+        return iconAlignment;
+    }
+
+    /**
+     * Sets icon alignment
+     *
+     * @param alignment new icon alignment
+     */
+    public void setIconAlignment ( final int alignment )
+    {
+        this.iconAlignment = alignment;
+    }
+
+    /**
+     * Returns menu item painter.
+     *
+     * @return menu item painter
+     */
+    public Painter getPainter ()
+    {
+        return painter;
+    }
+
+    /**
+     * Sets menu item painter.
+     *
+     * @param painter new menu item painter
+     */
+    public void setPainter ( final Painter painter )
+    {
+        this.painter = painter;
+    }
+
+    /**
+     * Returns paint used to fill north popup menu corner when this component is first in the menu.
+     *
+     * @return paint used to fill north popup menu corner when this component is first in the menu
+     */
+    public Paint getNorthCornerFill ()
+    {
+        return selectedTopBg;
+    }
+
+    /**
+     * Returns paint used to fill south popup menu corner when this component is last in the menu.
+     *
+     * @return paint used to fill south popup menu corner when this component is last in the menu
+     */
+    public Paint getSouthCornerFill ()
+    {
+        return selectedTopBg;
+    }
+
+    /**
      * Paints menu item decoration.
      *
      * @param g graphics context
@@ -180,8 +429,6 @@ public class WebMenuItemUI extends BasicMenuItemUI
         final Graphics2D g2d = ( Graphics2D ) g;
         final Object aa = LafUtils.setupAntialias ( g2d );
 
-        // todo RTL painting
-
         final JMenuItem menuItem = ( JMenuItem ) c;
         final boolean ltr = menuItem.getComponentOrientation ().isLeftToRight ();
         final int w = menuItem.getWidth ();
@@ -189,16 +436,14 @@ public class WebMenuItemUI extends BasicMenuItemUI
         final Insets bi = menuItem.getInsets ();
         final int y = bi.top;
         final int ih = h - bi.top - bi.bottom;
-
-        // Painting background
         final ButtonModel model = menuItem.getModel ();
-        final boolean selected = menuItem.isEnabled () && ( model.isArmed () || ( menuItem instanceof JMenu && model.isSelected () ) );
-        paintBackground ( g2d, menuItem, selected, ltr );
+        final boolean selected = menuItem.isEnabled () && model.isArmed ();
 
-        // Painting icon
+        // Painting background and icon
         final int iconPlaceholderWidth = MenuUtils.getIconPlaceholderWidth ( menuItem, alignTextToMenuIcons );
         final int gap = iconPlaceholderWidth > 0 ? menuItem.getIconTextGap () : 0;
         int x = ltr ? bi.left : w - bi.right - iconPlaceholderWidth;
+        paintBackground ( g2d, menuItem, x, y, iconPlaceholderWidth, ih, selected, ltr );
         paintIcon ( g2d, menuItem, x, y, iconPlaceholderWidth, ih, selected, ltr );
         x += ltr ? ( iconPlaceholderWidth + gap ) : -gap;
 
@@ -245,11 +490,16 @@ public class WebMenuItemUI extends BasicMenuItemUI
      *
      * @param g2d      graphics context
      * @param menuItem menu item
+     * @param x        icon placeholder X coordinate
+     * @param y        icon placeholder Y coordinate
+     * @param w        icon placeholder width
+     * @param h        icon placeholder height
      * @param selected whether menu item is selected or not
      * @param ltr      whether menu item has left-to-right orientation or not
      */
     @SuppressWarnings ( "UnusedParameters" )
-    protected void paintBackground ( final Graphics2D g2d, final JMenuItem menuItem, final boolean selected, final boolean ltr )
+    protected void paintBackground ( final Graphics2D g2d, final JMenuItem menuItem, final int x, final int y, final int w, final int h,
+                                     final boolean selected, final boolean ltr )
     {
         if ( painter != null )
         {
@@ -259,7 +509,7 @@ public class WebMenuItemUI extends BasicMenuItemUI
         {
             if ( selected )
             {
-                g2d.setPaint ( new GradientPaint ( 0, 0, topBg, 0, menuItem.getHeight (), bottomBg ) );
+                g2d.setPaint ( new GradientPaint ( 0, 0, selectedTopBg, 0, menuItem.getHeight (), selectedBottomBg ) );
                 g2d.fillRect ( 0, 0, menuItem.getWidth (), menuItem.getHeight () );
             }
         }
@@ -400,240 +650,4 @@ public class WebMenuItemUI extends BasicMenuItemUI
 
         return new Dimension ( bi.left + iconPlaceholderWidth + gap + textWidth + accWidth + bi.right, bi.top + contentHeight + bi.bottom );
     }
-
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    //    @Override
-    //    protected Dimension getPreferredMenuItemSize ( final JComponent c, final Icon checkIcon, final Icon arrowIcon,
-    //                                                   final int defaultTextIconGap )
-    //    {
-    //        final JMenuItem mi = ( JMenuItem ) c;
-    //        final MenuItemLayoutHelper lh =
-    //                new MenuItemLayoutHelper ( mi, checkIcon, arrowIcon, MenuItemLayoutHelper.createMaxRect (), defaultTextIconGap,
-    //                        getAccelerationDelimeter (), mi.getComponentOrientation ().isLeftToRight (), mi.getFont (), acceleratorFont,
-    //                        MenuItemLayoutHelper.useCheckAndArrow ( menuItem ), getPropertyPrefix () );
-    //
-    //        final Dimension result = new Dimension ();
-    //
-    //        // Calculate the result width
-    //        result.width = lh.getLeadingGap ();
-    //        MenuItemLayoutHelper.addMaxWidth ( lh.getCheckSize (), lh.getAfterCheckIconGap (), result );
-    //        // Take into account mimimal text offset.
-    //        if ( ( !lh.isTopLevelMenu () ) && ( lh.getMinTextOffset () > 0 ) &&
-    //                ( result.width < lh.getMinTextOffset () ) )
-    //        {
-    //            result.width = lh.getMinTextOffset ();
-    //        }
-    //        MenuItemLayoutHelper.addMaxWidth ( lh.getLabelSize (), lh.getGap (), result );
-    //        MenuItemLayoutHelper.addMaxWidth ( lh.getAccSize (), lh.getGap (), result );
-    //        MenuItemLayoutHelper.addMaxWidth ( lh.getArrowSize (), lh.getGap (), result );
-    //
-    //        // Calculate the result height
-    //        result.height = MenuItemLayoutHelper
-    //                .max ( lh.getCheckSize ().getHeight (), lh.getLabelSize ().getHeight (), lh.getAccSize ().getHeight (),
-    //                        lh.getArrowSize ().getHeight () );
-    //
-    //        // Take into account menu item insets
-    //        final Insets insets = lh.getMenuItem ().getInsets ();
-    //        if ( insets != null )
-    //        {
-    //            result.width += insets.left + insets.right;
-    //            result.height += insets.top + insets.bottom;
-    //        }
-    //
-    //        return result;
-    //    }
-    //
-    //    @Override
-    //    protected void paintMenuItem ( final Graphics g, final JComponent c, final Icon checkIcon, final Icon arrowIcon, final Color background,
-    //                                   final Color foreground, final int defaultTextIconGap )
-    //    {
-    //        // Saving original settings
-    //        final Font holdf = g.getFont ();
-    //        final Color holdc = g.getColor ();
-    //
-    //        // Setting font
-    //        final JMenuItem mi = ( JMenuItem ) c;
-    //        g.setFont ( mi.getFont () );
-    //
-    //        // creating helper class
-    //        final Rectangle viewRect = new Rectangle ( 0, 0, mi.getWidth (), mi.getHeight () );
-    //        applyInsets ( viewRect, mi.getInsets () );
-    //        final MenuItemLayoutHelper lh =
-    //                new MenuItemLayoutHelper ( mi, checkIcon, arrowIcon, viewRect, defaultTextIconGap, getAccelerationDelimeter (),
-    //                        mi.getComponentOrientation ().isLeftToRight (), mi.getFont (), acceleratorFont,
-    //                        MenuItemLayoutHelper.useCheckAndArrow ( menuItem ), getPropertyPrefix () );
-    //        final MenuItemLayoutHelper.LayoutResult lr = lh.layoutMenuItem ();
-    //
-    //        // Painting all parts
-    //        paintBackground ( g, mi );
-    //        paintCheckIcon ( g, lh );
-    //        paintIcon ( g, lh );
-    //        paintArrowIcon ( g, lh, lr );
-    //
-    //        // Painting text parts
-    //        final Map hints = SwingUtils.setupTextAntialias ( g );
-    //        paintText ( g, lh, lr );
-    //        paintAccText ( g, lh, lr );
-    //        SwingUtils.restoreTextAntialias ( g, hints );
-    //
-    //        // Restoring original settings
-    //        g.setColor ( holdc );
-    //        g.setFont ( holdf );
-    //    }
-    //
-    //    protected void paintBackground ( final Graphics g, final JMenuItem menuItem )
-    //    {
-    //        if ( menuItem.isEnabled () )
-    //        {
-    //            final ButtonModel model = menuItem.getModel ();
-    //            if ( mouseover || model.isArmed () ||
-    //                    ( menuItem instanceof JMenu && model.isSelected () ) )
-    //            {
-    //                Graphics2D g2d = ( Graphics2D ) g;
-    //                g2d.setPaint ( new GradientPaint ( 0, 0, topBg, 0, menuItem.getHeight (), bottomBg ) );
-    //                g2d.fillRect ( 0, 0, menuItem.getWidth (), menuItem.getHeight () );
-    //            }
-    //        }
-    //    }
-    //
-    //    protected void applyInsets ( final Rectangle rect, final Insets insets )
-    //    {
-    //        if ( insets != null )
-    //        {
-    //            rect.x += insets.left;
-    //            rect.y += insets.top;
-    //            rect.width -= ( insets.right + rect.x );
-    //            rect.height -= ( insets.bottom + rect.y );
-    //        }
-    //    }
-    //
-    //    protected void paintIcon ( final Graphics g, final MenuItemLayoutHelper lh )
-    //    {
-    //        final boolean checkOrRadio = lh.getMenuItem () instanceof JCheckBoxMenuItem || lh.getMenuItem () instanceof JRadioButtonMenuItem;
-    //        final boolean selected = checkOrRadio && lh.getMenuItem ().getModel ().isSelected ();
-    //        if ( lh.getMenuItem () instanceof JCheckBoxMenuItem && selected )
-    //        {
-    //            final List<ImageIcon> checkStates = SimpleCheckIcon.CHECK_STATES;
-    //            final ImageIcon enabled = checkStates.get ( checkStates.size () - 1 );
-    //            final ImageIcon disabled = SimpleCheckIcon.DISABLED_CHECK_STATES.get ( 3 );
-    //            final ImageIcon check = lh.getMenuItem ().isEnabled () ? enabled : disabled;
-    //            check.paintIcon ( lh.getMenuItem (), g, iconLocation.x, iconLocation.y );
-    //        }
-    //        else if ( lh.getMenuItem () instanceof JRadioButtonMenuItem && selected )
-    //        {
-    //            final List<ImageIcon> checkStates = WebRadioButtonUI.CHECK_STATES;
-    //            final ImageIcon enabled = checkStates.get ( checkStates.size () - 1 );
-    //            final ImageIcon disabled = WebRadioButtonUI.DISABLED_CHECK;
-    //            final ImageIcon check = lh.getMenuItem ().isEnabled () ? enabled : disabled;
-    //            check.paintIcon ( lh.getMenuItem (), g, iconLocation.x, iconLocation.y );
-    //        }
-    //        else if ( lh.getIcon () != null && !checkOrRadio )
-    //        {
-    //            //            if ( selected )
-    //            //            {
-    //            //                Graphics2D g2d = ( Graphics2D ) g;
-    //            //                Object aa = g2d.getRenderingHint ( RenderingHints.KEY_ANTIALIASING );
-    //            //                g2d.setRenderingHint ( RenderingHints.KEY_ANTIALIASING,
-    //            //                        RenderingHints.VALUE_ANTIALIAS_ON );
-    //            //
-    //            //                g2d.setPaint ( new GradientPaint ( 0, 2, StyleConstants.topBgColor, 0, 24,
-    //            //                        StyleConstants.bottomBgColor ) );
-    //            //                g.fillRoundRect ( 2, 2, 21, 21, 4, 4 );
-    //            //                g.setColor ( StyleConstants.darkBorderColor );
-    //            //                g.drawRoundRect ( 2, 2, 21, 21, 4, 4 );
-    //            //            }
-    //
-    //            Icon icon;
-    //            final ButtonModel model = lh.getMenuItem ().getModel ();
-    //            if ( !model.isEnabled () )
-    //            {
-    //                icon = lh.getMenuItem ().getDisabledIcon ();
-    //            }
-    //            else if ( model.isPressed () && model.isArmed () )
-    //            {
-    //                icon = lh.getMenuItem ().getPressedIcon ();
-    //                if ( icon == null )
-    //                {
-    //                    icon = lh.getMenuItem ().getIcon ();
-    //                }
-    //            }
-    //            else
-    //            {
-    //                icon = lh.getMenuItem ().getIcon ();
-    //            }
-    //            if ( icon != null && icon != StyleConstants.EMPTY_ICON )
-    //            {
-    //                icon.paintIcon ( lh.getMenuItem (), g, iconLocation.x, iconLocation.y );
-    //            }
-    //        }
-    //    }
-    //
-    //    protected void paintCheckIcon ( final Graphics g, final MenuItemLayoutHelper lh )
-    //    {
-    //        if ( lh.useCheckAndArrow () && lh.getCheckIcon () != null )
-    //        {
-    //            lh.getCheckIcon ().paintIcon ( lh.getMenuItem (), g, iconLocation.x, iconLocation.y );
-    //        }
-    //    }
-    //
-    //    protected void paintArrowIcon ( final Graphics g, final MenuItemLayoutHelper lh, final MenuItemLayoutHelper.LayoutResult lr )
-    //    {
-    //        if ( lh.useCheckAndArrow () && lh.getArrowIcon () != null )
-    //        {
-    //            lh.getArrowIcon ().paintIcon ( lh.getMenuItem (), g, lr.getArrowRect ().x, lr.getArrowRect ().y );
-    //        }
-    //    }
-    //
-    //    protected void paintText ( final Graphics g, final MenuItemLayoutHelper lh, final MenuItemLayoutHelper.LayoutResult lr )
-    //    {
-    //        if ( !lh.getText ().equals ( "" ) )
-    //        {
-    //            final Rectangle rect = lr.getTextRect ();
-    //            if ( lh.getHtmlView () != null )
-    //            {
-    //                // Text is HTML
-    //                lh.getHtmlView ().paint ( g, rect );
-    //            }
-    //            else
-    //            {
-    //                // Text isn't HTML
-    //                paintText ( g, lh.getMenuItem (), rect, lh.getText () );
-    //            }
-    //        }
-    //    }
-    //
-    //
-    //    @Override
-    //    protected void paintText ( final Graphics g, final JMenuItem menuItem, final Rectangle textRect, final String text )
-    //    {
-    //        final int mnemIndex = WebLookAndFeel.isMnemonicHidden () ? -1 : menuItem.getDisplayedMnemonicIndex ();
-    //        g.setColor ( menuItem.isEnabled () ? menuItem.getForeground () : UIManager.getColor ( "MenuItem.disabledForeground" ) );
-    //        SwingUtils.drawStringUnderlineCharAt ( g, text, mnemIndex, 32,
-    //                menuItem.getHeight () / 2 + LafUtils.getTextCenterShearY ( SwingUtils.getFontMetrics ( menuItem, g ) ) );
-    //    }
-    //
-    //    protected void paintAccText ( final Graphics g, final MenuItemLayoutHelper lh, final MenuItemLayoutHelper.LayoutResult lr )
-    //    {
-    //        if ( !lh.getAccText ().equals ( "" ) )
-    //        {
-    //            final ButtonModel model = lh.getMenuItem ().getModel ();
-    //
-    //            g.setFont ( lh.getAccFontMetrics ().getFont () );
-    //            g.setColor ( model.isEnabled () ? StyleConstants.infoTextColor : StyleConstants.disabledInfoTextColor );
-    //
-    //            final Rectangle rect = lr.getAccRect ();
-    //            rect.x = lh.getMenuItem ().getWidth () - 7 - lh.getAccFontMetrics ().stringWidth ( lh.getAccText () );
-    //            SwingUtils.drawString ( g, lh.getAccText (), rect.x,
-    //                    lh.getMenuItem ().getHeight () / 2 + LafUtils.getTextCenterShearY ( lh.getAccFontMetrics () ) );
-    //        }
-    //    }
 }

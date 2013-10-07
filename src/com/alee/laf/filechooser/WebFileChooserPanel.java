@@ -36,9 +36,9 @@ import com.alee.laf.GlobalConstants;
 import com.alee.laf.StyleConstants;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.combobox.WebComboBox;
+import com.alee.laf.combobox.WebComboBoxCellRenderer;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.list.WebList;
-import com.alee.laf.list.WebListCellRenderer;
 import com.alee.laf.list.editor.ListEditAdapter;
 import com.alee.laf.menu.WebPopupMenu;
 import com.alee.laf.menu.WebRadioButtonMenuItem;
@@ -368,7 +368,7 @@ public class WebFileChooserPanel extends WebPanel
                 final WebList historyList = new WebList ( navigationHistory );
                 historyList.setVisibleRowCount ( Math.min ( 10, navigationHistory.size () ) );
                 historyList.setRolloverSelectionEnabled ( true );
-                historyList.setCellRenderer ( new WebListCellRenderer ()
+                historyList.setCellRenderer ( new WebComboBoxCellRenderer ( historyList )
                 {
                     @Override
                     public Component getListCellRendererComponent ( JList list, Object value, int index, boolean isSelected,
@@ -379,17 +379,17 @@ public class WebFileChooserPanel extends WebPanel
                         final File file = ( File ) value;
                         if ( file == null )
                         {
-                            setIcon ( FileUtils.getMyComputerIcon () );
-                            setText ( LanguageManager.get ( "weblaf.filechooser.root" ) );
+                            renderer.setIcon ( FileUtils.getMyComputerIcon () );
+                            renderer.setText ( LanguageManager.get ( "weblaf.filechooser.root" ) );
                         }
                         else
                         {
-                            setIcon ( FileUtils.getFileIcon ( file ) );
-                            setText ( FileUtils.getDisplayFileName ( file ) );
+                            renderer.setIcon ( FileUtils.getFileIcon ( file ) );
+                            renderer.setText ( FileUtils.getDisplayFileName ( file ) );
                         }
-                        setBoldFont ( index == currentHistoryIndex );
+                        renderer.setBoldFont ( index == currentHistoryIndex );
 
-                        return this;
+                        return renderer;
                     }
                 } );
                 historyList.addMouseListener ( new MouseAdapter ()
@@ -401,18 +401,11 @@ public class WebFileChooserPanel extends WebPanel
                         historyPopup.setVisible ( false );
                     }
                 } );
-                final WebScrollPane scrollPane = new WebScrollPane ( historyList );
+                final WebScrollPane scrollPane = new WebScrollPane ( historyList, false, false );
                 scrollPane.setShadeWidth ( 0 );
                 historyPopup.add ( scrollPane );
 
-                if ( history.getComponentOrientation ().isLeftToRight () )
-                {
-                    historyPopup.show ( history, 0, history.getHeight () );
-                }
-                else
-                {
-                    historyPopup.show ( history, history.getWidth () - historyPopup.getPreferredSize ().width, history.getHeight () );
-                }
+                historyPopup.showBelowMiddle ( history );
 
                 historyList.setSelectedIndex ( currentHistoryIndex );
                 historyList.scrollToCell ( currentHistoryIndex );
@@ -589,14 +582,7 @@ public class WebFileChooserPanel extends WebPanel
                 viewGroup.add ( tiles );
                 viewGroup.add ( table );
 
-                if ( view.getComponentOrientation ().isLeftToRight () )
-                {
-                    viewChoose.show ( view, view.getWidth () - viewChoose.getPreferredSize ().width, view.getHeight () );
-                }
-                else
-                {
-                    viewChoose.show ( view, 0, view.getHeight () );
-                }
+                viewChoose.showBelowMiddle ( view );
             }
         } );
 

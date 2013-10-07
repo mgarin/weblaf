@@ -667,10 +667,26 @@ public class TestFrame extends WebFrame
      */
     public static String getFrameTitle ( final Component component )
     {
+        // Tested class name
         final String className = ( component != null ? ReflectUtils.getClassName ( component.getClass () ) : "TestFrame" ) + " ";
-        final String libVersion = "[ " + VersionManager.getLibraryVersion ().toString () + " ] ";
+
+        // WebLaF version
+        String libVersion = "";
+        try
+        {
+            libVersion = "[ " + VersionManager.getLibraryVersion ().toString () + " ] ";
+        }
+        catch ( Throwable e )
+        {
+            // Cannot load version now
+        }
+
+        // Undelying OS name and version
         final String osVersion = "[ " + SystemUtils.getOsName () + " " + SystemUtils.getOsArch () + " ] ";
+
+        // JRE version
         final String jreVersion = "[ JRE " + SystemUtils.getJavaVersionString () + " " + SystemUtils.getJreArch () + "-bit ]";
+
         return className + libVersion + osVersion + jreVersion;
     }
 }

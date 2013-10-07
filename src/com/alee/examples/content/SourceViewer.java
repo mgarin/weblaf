@@ -770,9 +770,7 @@ public class SourceViewer extends WebPanel
                     }
                 }
 
-                boolean ltr = rootElement.getComponentOrientation ().isLeftToRight ();
-                rootMenu.show ( rootElement, ltr ? 1 : rootElement.getWidth () - 1 - rootMenu.getPreferredSize ().width,
-                        rootElement.getHeight () + 2 );
+                rootMenu.showBelowMiddle ( rootElement );
             }
         } );
         classPath.add ( rootElement );
@@ -801,11 +799,7 @@ public class SourceViewer extends WebPanel
                                 {
                                     packageMenu.add ( createEntryMenuItem ( menuEntry ) );
                                 }
-
-                                boolean ltr = rootElement.getComponentOrientation ().isLeftToRight ();
-                                packageMenu.show ( element,
-                                        ltr ? classPath.getElementOverlap () : element.getWidth () - classPath.getElementOverlap () -
-                                                packageMenu.getPreferredSize ().width, element.getHeight () + 2 );
+                                packageMenu.showBelowMiddle ( element );
                             }
                         }
                     } );
@@ -1034,7 +1028,7 @@ public class SourceViewer extends WebPanel
         String source = loadString ( lastEntry );
 
         // Removing space-eating license notice
-        if ( source.startsWith ( "/*" ) )
+        if ( source.startsWith ( commentStart ) )
         {
             int index = source.indexOf ( commentEnd );
             if ( index != -1 )

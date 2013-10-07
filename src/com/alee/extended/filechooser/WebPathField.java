@@ -750,8 +750,7 @@ public class WebPathField extends WebPanel
                         // todo Apply orientation globally on change, not here
                         WebPathField.this.transferFocus ();
                         SwingUtils.applyOrientation ( menu );
-                        menu.show ( childs, childs.getComponentOrientation ().isLeftToRight () ? 0 :
-                                childs.getWidth () - menu.getPreferredSize ().width, childs.getHeight () );
+                        menu.showBelowMiddle ( childs );
                     }
                 } );
                 contentPanel.add ( childs );
@@ -794,7 +793,7 @@ public class WebPathField extends WebPanel
         }
         if ( canShortenPath () )
         {
-            getRootsMenu ().add ( new JPopupMenu.Separator (), 0 );
+            getRootsMenu ().addSeparator ( 0 );
         }
         while ( canShortenPath () )
         {
@@ -927,8 +926,7 @@ public class WebPathField extends WebPanel
                 {
                     WebPathField.this.transferFocus ();
                     SwingUtils.applyOrientation ( rootsMenu );
-                    rootsMenu.show ( rootsArrowButton, rootsArrowButton.getComponentOrientation ().isLeftToRight () ? 0 :
-                            rootsArrowButton.getWidth () - rootsMenu.getPreferredSize ().width, rootsArrowButton.getHeight () );
+                    rootsMenu.showBelowMiddle ( rootsArrowButton );
                 }
             } );
 

@@ -26,13 +26,13 @@ import java.awt.*;
 
 public class WebComboBoxCellRenderer extends DefaultListCellRenderer
 {
-    private JComboBox comboBox;
-    private WebComboBoxElement renderer;
+    protected Component component;
+    protected WebComboBoxElement renderer;
 
-    public WebComboBoxCellRenderer ( JComboBox comboBox )
+    public WebComboBoxCellRenderer ( Component component )
     {
         super ();
-        this.comboBox = comboBox;
+        this.component = component;
         this.renderer = new WebComboBoxElement ();
     }
 
@@ -49,8 +49,8 @@ public class WebComboBoxCellRenderer extends DefaultListCellRenderer
         renderer.setSelected ( isSelected );
         renderer.updatePainter ();
 
-        renderer.setEnabled ( comboBox.isEnabled () );
-        renderer.setFont ( comboBox.getFont () );
+        renderer.setEnabled ( component.isEnabled () );
+        renderer.setFont ( component.getFont () );
         renderer.setForeground ( isSelected ? list.getSelectionForeground () : list.getForeground () );
         renderer.setComponentOrientation ( list.getComponentOrientation () );
 

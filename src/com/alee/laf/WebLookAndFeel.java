@@ -456,18 +456,13 @@ public class WebLookAndFeel extends BasicLookAndFeel
         table.put ( "Tree.drawsFocusBorderAroundIcon", Boolean.FALSE );
         table.put ( "Tree.drawDashedFocusIndicator", Boolean.FALSE );
 
-        // Disabled foreground color
-        table.put ( "MenuItem.disabledForeground", StyleConstants.disabledTextColor );
-        // We don't need uneven heights
-        table.put ( "MenuItem.evenHeight", Boolean.TRUE );
-
-        //        // JMenu expand spacing
-        //        // Up-down menu expand
-        //        table.put ( "Menu.menuPopupOffsetX", StyleConstants.shadeWidth );
-        //        table.put ( "Menu.menuPopupOffsetY", -StyleConstants.shadeWidth / 2 );
-        //        // Left-right menu expand
-        //        table.put ( "Menu.submenuPopupOffsetX", StyleConstants.shadeWidth / 2 );
-        //        table.put ( "Menu.submenuPopupOffsetY", 0 );
+        // JMenu expand spacing
+        // Up-down menu expand
+        table.put ( "Menu.menuPopupOffsetX", 0 );
+        table.put ( "Menu.menuPopupOffsetY", 0 );
+        // Left-right menu expand
+        table.put ( "Menu.submenuPopupOffsetX", 0 );
+        table.put ( "Menu.submenuPopupOffsetY", 0 );
 
         // Table defaults
         table.put ( "Table.cellNoFocusBorder", LafUtils.createWebBorder ( 1, 1, 1, 1 ) );

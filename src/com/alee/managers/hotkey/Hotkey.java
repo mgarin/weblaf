@@ -83,6 +83,20 @@ public final class Hotkey
     public static final HotkeyData Z = new HotkeyData ( KeyEvent.VK_Z );
 
     /**
+     * Number hotkeys.
+     */
+    public static final HotkeyData NUMBER_0 = new HotkeyData ( KeyEvent.VK_0 );
+    public static final HotkeyData NUMBER_1 = new HotkeyData ( KeyEvent.VK_1 );
+    public static final HotkeyData NUMBER_2 = new HotkeyData ( KeyEvent.VK_2 );
+    public static final HotkeyData NUMBER_3 = new HotkeyData ( KeyEvent.VK_3 );
+    public static final HotkeyData NUMBER_4 = new HotkeyData ( KeyEvent.VK_4 );
+    public static final HotkeyData NUMBER_5 = new HotkeyData ( KeyEvent.VK_5 );
+    public static final HotkeyData NUMBER_6 = new HotkeyData ( KeyEvent.VK_6 );
+    public static final HotkeyData NUMBER_7 = new HotkeyData ( KeyEvent.VK_7 );
+    public static final HotkeyData NUMBER_8 = new HotkeyData ( KeyEvent.VK_8 );
+    public static final HotkeyData NUMBER_9 = new HotkeyData ( KeyEvent.VK_9 );
+
+    /**
      * Specific hotkeys.
      */
     public static final HotkeyData UP = new HotkeyData ( KeyEvent.VK_UP );
