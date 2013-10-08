@@ -3,14 +3,13 @@ WebLaF
 **WebLaf** is a Java Swing Look and Feel and extended components library for cross-platform applications.<br>
 ![Preview](http://s5.hostingkartinok.com/uploads/images/2013/10/92f65b6b3262493a5f386dc6808efbba.png)
 
-Its main advantages are:
+Main advantages of WebLaF library:
 
-1. Simple and yet stylish default theme applied to all components
-2. Stylable through painters and nine-patch resources UIs
-3. Various extended components - collapsible panes, checkbox lists and others
-4. Various managers to simply control application settings, language, tooltips, hotkeys and other aspects
-5. Various utility classes which simplify Swing components usage
-6. Various Swing extensions that allows animated transitions, effects and other features
+1. Simple and stylish cross-platform default theme
+2. Lots of additional custom Swing components
+3. UIs and components stylable through painters and 9-patch images
+4. Settings, language, hotkey, tooltip and other custom managers
+5. Various Swing and Java utilities
 
 You can find more information about the library on official site:<br>
 http://weblookandfeel.com
@@ -18,7 +17,7 @@ http://weblookandfeel.com
 
 Artifacts
 ----------
-You can always find all WebLaF releases in the "releases" section:<br>
+You can always find all WebLaF artifacts in the "releases" section:<br>
 https://github.com/mgarin/weblaf/releases
 
 Here are the direct links for the latest release:
