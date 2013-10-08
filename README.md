@@ -1,6 +1,7 @@
-Web Look and Feel
+WebLaF
 ==========
-**WebLaf** is a Java Look and Feel library for cross-platform Swing applications.<br>
+**WebLaf** is a Java Swing Look and Feel and extended components library for cross-platform applications.<br>
+![Preview](http://s5.hostingkartinok.com/uploads/images/2013/10/92f65b6b3262493a5f386dc6808efbba.png)
 
 Its main advantages are:
 

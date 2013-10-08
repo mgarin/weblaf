@@ -115,6 +115,60 @@ public class WebCheckBoxMenuItem extends JCheckBoxMenuItem implements LanguageMe
     }
 
     /**
+     * Constructs new checkbox menu item using the specified settings.
+     *
+     * @param text        menu item text
+     * @param icon        menu item icon
+     * @param accelerator menu item accelerator
+     */
+    public WebCheckBoxMenuItem ( final String text, final Icon icon, final KeyStroke accelerator )
+    {
+        super ( text, icon );
+        setAccelerator ( accelerator );
+    }
+
+    /**
+     * Constructs new checkbox menu item using the specified settings.
+     *
+     * @param text        menu item text
+     * @param icon        menu item icon
+     * @param b           whether this checkbox item is selected or not
+     * @param accelerator menu item accelerator
+     */
+    public WebCheckBoxMenuItem ( final String text, final Icon icon, final boolean b, final KeyStroke accelerator )
+    {
+        super ( text, icon, b );
+        setAccelerator ( accelerator );
+    }
+
+    /**
+     * Constructs new checkbox menu item using the specified settings.
+     *
+     * @param text        menu item text
+     * @param icon        menu item icon
+     * @param accelerator menu item accelerator
+     */
+    public WebCheckBoxMenuItem ( final String text, final Icon icon, final HotkeyData accelerator )
+    {
+        super ( text, icon );
+        setAccelerator ( accelerator );
+    }
+
+    /**
+     * Constructs new checkbox menu item using the specified settings.
+     *
+     * @param text        menu item text
+     * @param icon        menu item icon
+     * @param b           whether this checkbox item is selected or not
+     * @param accelerator menu item accelerator
+     */
+    public WebCheckBoxMenuItem ( final String text, final Icon icon, final boolean b, final HotkeyData accelerator )
+    {
+        super ( text, icon, b );
+        setAccelerator ( accelerator );
+    }
+
+    /**
      * Sets the key combination which invokes the menu item's action listeners without navigating the menu hierarchy.
      *
      * @param hotkey hotkey data

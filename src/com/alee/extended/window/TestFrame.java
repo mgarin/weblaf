@@ -40,6 +40,11 @@ import java.awt.*;
 public class TestFrame extends WebFrame
 {
     /**
+     * Main components container.
+     */
+    protected final WebPanel container;
+
+    /**
      * Displays and returns test frame with the specified content and settings.
      *
      * @param component component to display
@@ -266,30 +271,32 @@ public class TestFrame extends WebFrame
     public TestFrame ( final LayoutManager layout, final Component component, final Object constraints, final Insets margin )
     {
         super ( getFrameTitle ( component ) );
-        setLayout ( layout );
+        setLayout ( new BorderLayout () );
 
+        container = new WebPanel ( layout );
         if ( margin != null )
         {
             if ( constraints != null )
             {
-                add ( new BorderPanel ( component, margin ), constraints );
+                container.add ( new BorderPanel ( component, margin ), constraints );
             }
             else
             {
-                add ( new BorderPanel ( component, margin ) );
+                container.add ( new BorderPanel ( component, margin ) );
             }
         }
         else
         {
             if ( constraints != null )
             {
-                add ( component, constraints );
+                container.add ( component, constraints );
             }
             else
             {
-                add ( component );
+                container.add ( component );
             }
         }
+        add ( container, BorderLayout.CENTER );
 
         configureFrame ();
     }
@@ -622,16 +629,10 @@ public class TestFrame extends WebFrame
         super ( getFrameTitle ( null ) );
         setLayout ( new BorderLayout () );
 
-        final WebPanel container = new WebPanel ( layout );
+        container = new WebPanel ( layout );
+        container.setMargin ( margin != null ? margin : new Insets ( 0, 0, 0, 0 ) );
         container.add ( components );
-        if ( margin != null )
-        {
-            add ( new BorderPanel ( container, margin ), BorderLayout.CENTER );
-        }
-        else
-        {
-            add ( container, BorderLayout.CENTER );
-        }
+        add ( container, BorderLayout.CENTER );
 
         configureFrame ();
     }
@@ -646,6 +647,24 @@ public class TestFrame extends WebFrame
         setResizable ( true );
         pack ();
         center ();
+    }
+
+    /**
+     * Sets test frame background.
+     *
+     * @param c background color
+     */
+    @Override
+    public void setBackground ( final Color c )
+    {
+        if ( container != null )
+        {
+            container.setBackground ( c );
+        }
+        else
+        {
+            super.setBackground ( c );
+        }
     }
 
     /**
