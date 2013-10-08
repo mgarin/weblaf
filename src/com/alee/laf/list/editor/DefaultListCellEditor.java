@@ -42,9 +42,9 @@ public class DefaultListCellEditor extends AbstractListCellEditor
      * @return list cell editor created for the cell under specified index
      */
     @Override
-    protected Component createCellEditor ( JList list, int index, Object value )
+    protected Component createCellEditor ( final JList list, final int index, final Object value )
     {
-        WebTextField field = WebTextField.createWebTextField ( true, WebListStyle.selectionRound, WebListStyle.selectionShadeWidth );
+        final WebTextField field = WebTextField.createWebTextField ( true, WebListStyle.selectionRound, WebListStyle.selectionShadeWidth );
         field.setDrawFocus ( false );
         field.setText ( value != null ? value.toString () : "" );
         field.selectAll ();
@@ -60,7 +60,7 @@ public class DefaultListCellEditor extends AbstractListCellEditor
      * @return editor value
      */
     @Override
-    public Object getCellEditorValue ( JList list, int index, Object oldValue )
+    public Object getCellEditorValue ( final JList list, final int index, final Object oldValue )
     {
         return ( ( WebTextField ) editor ).getText ();
     }

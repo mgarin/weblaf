@@ -41,7 +41,7 @@ public class WebCheckBoxListCellEditor extends AbstractListCellEditor<WebTextFie
      * @return list cell editor created for the cell under specified index
      */
     @Override
-    protected WebTextField createCellEditor ( JList list, int index, CheckBoxCellData value )
+    protected WebTextField createCellEditor ( final JList list, final int index, final CheckBoxCellData value )
     {
         final WebTextField field = WebTextField.createWebTextField ( true, WebListStyle.selectionRound, WebListStyle.selectionShadeWidth );
         field.setDrawFocus ( false );
@@ -60,7 +60,7 @@ public class WebCheckBoxListCellEditor extends AbstractListCellEditor<WebTextFie
      * @return list cell editor bounds within the list
      */
     @Override
-    protected Rectangle getEditorBounds ( JList list, int index, CheckBoxCellData value, Rectangle cellBounds )
+    protected Rectangle getEditorBounds ( final JList list, final int index, final CheckBoxCellData value, final Rectangle cellBounds )
     {
         final WebCheckBoxListElement element = ( ( WebCheckBoxList ) list ).getWebCheckBoxListCellRenderer ().getElement ( value );
         final Rectangle ir = element.getWebUI ().getIconRect ();
@@ -77,7 +77,7 @@ public class WebCheckBoxListCellEditor extends AbstractListCellEditor<WebTextFie
      * @return editor value
      */
     @Override
-    public CheckBoxCellData getCellEditorValue ( JList list, int index, CheckBoxCellData oldValue )
+    public CheckBoxCellData getCellEditorValue ( final JList list, final int index, final CheckBoxCellData oldValue )
     {
         oldValue.setUserObject ( editor.getText () );
         return oldValue;

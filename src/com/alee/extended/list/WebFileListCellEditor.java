@@ -40,7 +40,7 @@ public class WebFileListCellEditor extends AbstractListCellEditor<WebTextField, 
     /**
      * Last saved selection.
      */
-    private Object savedSelection = null;
+    protected Object savedSelection = null;
 
     /**
      * {@inheritDoc}
@@ -51,7 +51,7 @@ public class WebFileListCellEditor extends AbstractListCellEditor<WebTextField, 
         keyAdapter = new KeyAdapter ()
         {
             @Override
-            public void keyReleased ( KeyEvent e )
+            public void keyReleased ( final KeyEvent e )
             {
                 if ( Hotkey.F2.isTriggered ( e ) )
                 {
@@ -66,7 +66,7 @@ public class WebFileListCellEditor extends AbstractListCellEditor<WebTextField, 
      * {@inheritDoc}
      */
     @Override
-    protected void uninstallStartEditActions ( JList list )
+    protected void uninstallStartEditActions ( final JList list )
     {
         list.removeKeyListener ( keyAdapter );
     }
@@ -75,9 +75,9 @@ public class WebFileListCellEditor extends AbstractListCellEditor<WebTextField, 
      * {@inheritDoc}
      */
     @Override
-    public boolean isCellEditable ( JList list, int index, FileElement value )
+    public boolean isCellEditable ( final JList list, final int index, final FileElement value )
     {
-        File file = value != null ? value.getFile () : null;
+        final File file = value != null ? value.getFile () : null;
         return file != null && FileUtils.isNameEditable ( file ) && super.isCellEditable ( list, index, value );
     }
 
@@ -85,9 +85,9 @@ public class WebFileListCellEditor extends AbstractListCellEditor<WebTextField, 
      * {@inheritDoc}
      */
     @Override
-    protected WebTextField createCellEditor ( JList list, int index, FileElement value )
+    protected WebTextField createCellEditor ( final JList list, final int index, final FileElement value )
     {
-        WebTextField editor = WebTextField.createWebTextField ( true, WebListStyle.selectionRound, WebListStyle.selectionShadeWidth );
+        final WebTextField editor = WebTextField.createWebTextField ( true, WebListStyle.selectionRound, WebListStyle.selectionShadeWidth );
         editor.setDrawFocus ( false );
         FileUtils.displayFileName ( editor, value.getFile () );
 
@@ -104,13 +104,13 @@ public class WebFileListCellEditor extends AbstractListCellEditor<WebTextField, 
      * {@inheritDoc}
      */
     @Override
-    protected Rectangle getEditorBounds ( JList list, int index, FileElement value, Rectangle cellBounds )
+    protected Rectangle getEditorBounds ( final JList list, final int index, final FileElement value, final Rectangle cellBounds )
     {
         if ( list instanceof WebFileList )
         {
-            WebFileListCellRenderer cellRenderer = ( ( WebFileList ) list ).getWebFileListCellRenderer ();
-            Rectangle dpBounds = cellRenderer.getDescriptionPanel ().getBounds ();
-            Dimension size = editor.getPreferredSize ();
+            final WebFileListCellRenderer cellRenderer = ( ( WebFileList ) list ).getWebFileListCellRenderer ();
+            final Rectangle dpBounds = cellRenderer.getDescriptionBounds ();
+            final Dimension size = editor.getPreferredSize ();
             return new Rectangle ( dpBounds.x, dpBounds.y + dpBounds.height / 2 - size.height / 2, dpBounds.width, size.height );
         }
         else
@@ -123,13 +123,13 @@ public class WebFileListCellEditor extends AbstractListCellEditor<WebTextField, 
      * {@inheritDoc}
      */
     @Override
-    public FileElement getCellEditorValue ( JList list, int index, FileElement oldValue )
+    public FileElement getCellEditorValue ( final JList list, final int index, final FileElement oldValue )
     {
         // Saving initial selection
         savedSelection = list.getSelectedValue ();
 
         // Finishing edit
-        File renamed = new File ( oldValue.getFile ().getParent (), editor.getText () );
+        final File renamed = new File ( oldValue.getFile ().getParent (), editor.getText () );
         if ( oldValue.getFile ().renameTo ( renamed ) )
         {
             if ( savedSelection == oldValue )
@@ -148,12 +148,13 @@ public class WebFileListCellEditor extends AbstractListCellEditor<WebTextField, 
      * {@inheritDoc}
      */
     @Override
-    public boolean updateListModel ( JList list, int index, FileElement oldValue, FileElement newValue, boolean updateSelection )
+    public boolean updateListModel ( final JList list, final int index, final FileElement oldValue, final FileElement newValue,
+                                     final boolean updateSelection )
     {
         // Updating model
         if ( list.getModel () instanceof FileListModel )
         {
-            FileListModel model = ( FileListModel ) list.getModel ();
+            final FileListModel model = ( FileListModel ) list.getModel ();
 
             // If name was actually changed
             if ( !oldValue.getFile ().getAbsolutePath ().equals ( newValue.getFile ().getAbsolutePath () ) )

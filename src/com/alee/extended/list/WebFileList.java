@@ -89,7 +89,7 @@ public class WebFileList extends WebList
      *
      * @param directoryPath directory path
      */
-    public WebFileList ( String directoryPath )
+    public WebFileList ( final String directoryPath )
     {
         super ( new FileListModel ( directoryPath ) );
         initializeDefaultSettings ();
@@ -100,7 +100,7 @@ public class WebFileList extends WebList
      *
      * @param directory directory
      */
-    public WebFileList ( File directory )
+    public WebFileList ( final File directory )
     {
         super ( new FileListModel ( directory ) );
         initializeDefaultSettings ();
@@ -111,7 +111,7 @@ public class WebFileList extends WebList
      *
      * @param data files array
      */
-    public WebFileList ( File[] data )
+    public WebFileList ( final File[] data )
     {
         super ( new FileListModel ( data ) );
         initializeDefaultSettings ();
@@ -122,7 +122,7 @@ public class WebFileList extends WebList
      *
      * @param data files list
      */
-    public WebFileList ( List<File> data )
+    public WebFileList ( final List<File> data )
     {
         super ( new FileListModel ( data ) );
         initializeDefaultSettings ();
@@ -182,7 +182,7 @@ public class WebFileList extends WebList
      *
      * @param preferredColumnCount new preferred visible column count
      */
-    public void setPreferredColumnCount ( int preferredColumnCount )
+    public void setPreferredColumnCount ( final int preferredColumnCount )
     {
         this.preferredColumnCount = preferredColumnCount;
     }
@@ -212,7 +212,7 @@ public class WebFileList extends WebList
      *
      * @param preferredRowCount new preferred visible row count
      */
-    public void setPreferredRowCount ( int preferredRowCount )
+    public void setPreferredRowCount ( final int preferredRowCount )
     {
         this.preferredRowCount = preferredRowCount;
     }
@@ -232,7 +232,7 @@ public class WebFileList extends WebList
      *
      * @param generateThumbnails whether to generate image file thumbnails or not
      */
-    public void setGenerateThumbnails ( boolean generateThumbnails )
+    public void setGenerateThumbnails ( final boolean generateThumbnails )
     {
         this.generateThumbnails = generateThumbnails;
     }
@@ -252,7 +252,7 @@ public class WebFileList extends WebList
      *
      * @param fileListViewType new file view mode
      */
-    public void setFileListViewType ( FileListViewType fileListViewType )
+    public void setFileListViewType ( final FileListViewType fileListViewType )
     {
         this.fileListViewType = fileListViewType;
         getWebFileListCellRenderer ().updateFilesView ();
@@ -273,7 +273,7 @@ public class WebFileList extends WebList
      *
      * @param fileFilter new file filter
      */
-    public void setFileFilter ( FileFilter fileFilter )
+    public void setFileFilter ( final FileFilter fileFilter )
     {
         this.fileFilter = fileFilter;
         reloadFiles ();
@@ -304,7 +304,7 @@ public class WebFileList extends WebList
      *
      * @param file new displayed directory
      */
-    public void setDisplayedDirectory ( File file )
+    public void setDisplayedDirectory ( final File file )
     {
         // Stop cell editing
         stopCellEditing ();
@@ -358,7 +358,7 @@ public class WebFileList extends WebList
      *
      * @param file file to select
      */
-    public void setSelectedFile ( File file )
+    public void setSelectedFile ( final File file )
     {
         setSelectedFile ( file, true );
     }
@@ -369,7 +369,7 @@ public class WebFileList extends WebList
      * @param file         file to select
      * @param shouldScroll whether to scroll to selected file or not
      */
-    public void setSelectedFile ( File file, boolean shouldScroll )
+    public void setSelectedFile ( final File file, final boolean shouldScroll )
     {
         final FileElement element = getFileListModel ().getElement ( file );
         if ( element != null )
@@ -387,7 +387,7 @@ public class WebFileList extends WebList
      *
      * @param files files to select
      */
-    public void setSelectedFiles ( Collection<File> files )
+    public void setSelectedFiles ( final Collection<File> files )
     {
         final List<FileElement> elements = new ArrayList<FileElement> ( files.size () );
         for ( File file : files )
@@ -427,15 +427,15 @@ public class WebFileList extends WebList
             @Override
             public Dimension getPreferredSize ()
             {
-                Dimension ps = super.getPreferredSize ();
-                Dimension oneCell;
+                final Dimension ps = super.getPreferredSize ();
+                final Dimension oneCell;
                 if ( getModel ().getSize () > 0 )
                 {
                     oneCell = getCellBounds ( 0, 0 ).getSize ();
                 }
                 else
                 {
-                    WebFileListCellRenderer fileListCellRenderer = getWebFileListCellRenderer ();
+                    final WebFileListCellRenderer fileListCellRenderer = getWebFileListCellRenderer ();
                     if ( fileListCellRenderer != null )
                     {
                         oneCell = fileListCellRenderer.getPreferredSize ();
@@ -445,7 +445,7 @@ public class WebFileList extends WebList
                         oneCell = new Dimension ( 400, 300 );
                     }
                 }
-                Insets bi = getInsets ();
+                final Insets bi = getInsets ();
                 ps.width = oneCell.width * preferredColumnCount + bi.left + bi.right + WebScrollBarUI.LENGTH + 1;
                 ps.height = oneCell.height * preferredRowCount + bi.top + bi.bottom + 1;
                 return ps;
@@ -461,10 +461,10 @@ public class WebFileList extends WebList
     @Override
     public Dimension getPreferredSize ()
     {
-        Dimension ps = super.getPreferredSize ();
+        final Dimension ps = super.getPreferredSize ();
         if ( getModel ().getSize () > 0 )
         {
-            Dimension oneCell = getCellBounds ( 0, 0 ).getSize ();
+            final Dimension oneCell = getCellBounds ( 0, 0 ).getSize ();
             ps.width = oneCell.width * preferredColumnCount;
         }
         return ps;
@@ -475,7 +475,7 @@ public class WebFileList extends WebList
      *
      * @param element element to process
      */
-    public void repaint ( FileElement element )
+    public void repaint ( final FileElement element )
     {
         repaint ( getFileListModel ().indexOf ( element ) );
     }

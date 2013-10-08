@@ -266,14 +266,14 @@
     <Dictionary name="Files language" prefix="file">
         <Dictionary name="File filters language" prefix="size">
             <record key="b">
-                <value lang="en">B</value>
-                <value lang="ru">Б</value>
-                <value lang="pl">B</value>
+                <value lang="en">b</value>
+                <value lang="ru">б</value>
+                <value lang="pl">b</value>
                 <value lang="ar">بايت</value>
-                <value lang="es">B</value>
-                <value lang="fr">O</value>
-                <value lang="pt">B</value>
-                <value lang="de">B</value>
+                <value lang="es">b</value>
+                <value lang="fr">o</value>
+                <value lang="pt">b</value>
+                <value lang="de">b</value>
             </record>
             <record key="kb">
                 <value lang="en">KB</value>

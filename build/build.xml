@@ -30,7 +30,7 @@
 
     <!-- Compile classes -->
     <target name="compile" depends="create.dist">
-        <javac includeantruntime="false" destdir="${dist.dir}" encoding="utf-8" source="1.6" target="1.6">
+        <javac debug="true" includeantruntime="false" destdir="${dist.dir}" encoding="utf-8" source="1.6" target="1.6">
             <src path="${src.dir}" />
             <classpath refid="java" />
         </javac>
@@ -233,6 +233,19 @@
 
     <!-- Assemble all artifacts -->
     <target name="build.artifacts">
+        <antcall description="Cleanup artifacts" target="clean.artifacts" />
+        <antcall description="Build ${sources.zip.name}" target="build.sources.zip" />
+        <antcall description="Build ${library.jar.name}" target="build.weblaf.jar" />
+        <antcall description="Build ${library.simple.jar.name}" target="build.weblaf.simple.jar" />
+        <antcall description="Build ${demo.jar.name}" target="build.weblaf.demo.jar" />
+        <antcall description="Build ${npe.jar.name}" target="build.npe.jar" />
+        <antcall description="Build ${javadoc.name}" target="build.javadoc" />
+        <antcall description="Copy library version XML file" target="copy.version" />
+        <antcall description="Cleanup dist" target="clean.dist" />
+    </target>
+
+    <!-- Assemble release artifacts -->
+    <target name="build.release.artifacts">
         <antcall description="Cleanup artifacts" target="clean.artifacts" />
         <antcall description="Build ${sources.zip.name}" target="build.sources.zip" />
         <antcall description="Build ${library.jar.name}" target="build.weblaf.jar" />

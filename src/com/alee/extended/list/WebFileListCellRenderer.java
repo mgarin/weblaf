@@ -17,17 +17,14 @@
 
 package com.alee.extended.list;
 
-import com.alee.extended.layout.VerticalFlowLayout;
+import com.alee.extended.layout.AbstractLayoutManager;
 import com.alee.laf.GlobalConstants;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.list.WebListCellRenderer;
-import com.alee.laf.panel.WebPanel;
 import com.alee.utils.FileUtils;
 import com.alee.utils.ImageUtils;
-import com.alee.utils.SwingUtils;
 import com.alee.utils.file.FileDescription;
-import info.clearthought.layout.TableLayout;
 
 import javax.swing.*;
 import java.awt.*;
@@ -47,9 +44,31 @@ import java.util.concurrent.Executors;
 public class WebFileListCellRenderer extends WebListCellRenderer
 {
     /**
+     * Constant cell sizes.
+     */
+    protected static final Dimension tileCellSize = new Dimension ( 220, 65 );
+    protected static final Dimension iconCellSize = new Dimension ( 90, 90 );
+
+    /**
+     * Constant cell margins.
+     */
+    protected static final Insets tileCellMargin = new Insets ( 6, 6, 5, 8 );
+    protected static final Insets iconCellMargin = new Insets ( 5, 5, 8, 5 );
+
+    /**
      * Image thumbnails size.
      */
-    protected static final int THUMBNAIL_SIZE = 50;
+    protected static final int thumbSize = 50;
+
+    /**
+     * Image side length.
+     */
+    protected static final int imageSide = 54;
+
+    /**
+     * Gap between renderer elements.
+     */
+    protected static final int gap = 4;
 
     /**
      * File list in which this list cell renderer is used.
@@ -60,11 +79,6 @@ public class WebFileListCellRenderer extends WebListCellRenderer
      * Thumbnail icon label.
      */
     protected WebLabel iconLabel;
-
-    /**
-     * File description panel.
-     */
-    protected WebPanel descriptionPanel;
 
     /**
      * File name label.
@@ -84,19 +98,19 @@ public class WebFileListCellRenderer extends WebListCellRenderer
     /**
      * Thumbnails queue lock object.
      */
-    protected static final Object thumbnailsLock = new Object ();
+    protected final Object thumbnailsLock = new Object ();
 
     /**
      * Executor service for thumbnails generation.
      */
-    protected static ExecutorService executorService = Executors.newSingleThreadExecutor ();
+    protected ExecutorService executorService = Executors.newSingleThreadExecutor ();
 
     /**
      * Constructs cell renderer for the specified file list.
      *
      * @param fileList file list in which this cell renderer is used
      */
-    public WebFileListCellRenderer ( WebFileList fileList )
+    public WebFileListCellRenderer ( final WebFileList fileList )
     {
         super ();
 
@@ -104,13 +118,9 @@ public class WebFileListCellRenderer extends WebListCellRenderer
 
         iconLabel = new WebLabel ();
         iconLabel.setHorizontalAlignment ( JLabel.CENTER );
-        iconLabel.setPreferredSize ( new Dimension ( 54, 54 ) );
+        iconLabel.setPreferredSize ( new Dimension ( imageSide, imageSide ) );
 
-        descriptionPanel = new WebPanel ();
-        descriptionPanel.setLayout ( new VerticalFlowLayout ( VerticalFlowLayout.MIDDLE, 0, 0, true, false ) );
-        descriptionPanel.setOpaque ( false );
-
-        nameLabel = new WebLabel ( WebLabel.LEADING );
+        nameLabel = new WebLabel ();
         nameLabel.setFont ( nameLabel.getFont ().deriveFont ( Font.PLAIN ) );
         nameLabel.setForeground ( Color.BLACK );
         nameLabel.setVerticalAlignment ( JLabel.CENTER );
@@ -123,12 +133,34 @@ public class WebFileListCellRenderer extends WebListCellRenderer
         sizeLabel.setFont ( sizeLabel.getFont ().deriveFont ( Font.PLAIN ) );
         sizeLabel.setForeground ( new Color ( 49, 77, 179 ) );
 
+        setLayout ( new FileCellLayout () );
+        add ( iconLabel );
+        add ( nameLabel );
+        add ( descriptionLabel );
+        add ( sizeLabel );
+
         fileList.addPropertyChangeListener ( WebLookAndFeel.COMPONENT_ENABLED_PROPERTY, new PropertyChangeListener ()
         {
             @Override
-            public void propertyChange ( PropertyChangeEvent evt )
+            public void propertyChange ( final PropertyChangeEvent evt )
             {
-                updateEnabledState ();
+                final boolean enabled = fileList.isEnabled ();
+                iconLabel.setEnabled ( enabled );
+                nameLabel.setEnabled ( enabled );
+                descriptionLabel.setEnabled ( enabled );
+                sizeLabel.setEnabled ( enabled );
+            }
+        } );
+
+        fileList.addPropertyChangeListener ( WebLookAndFeel.COMPONENT_ORIENTATION_PROPERTY, new PropertyChangeListener ()
+        {
+            @Override
+            public void propertyChange ( final PropertyChangeEvent evt )
+            {
+                final ComponentOrientation orientation = fileList.getComponentOrientation ();
+                nameLabel.setComponentOrientation ( orientation );
+                descriptionLabel.setComponentOrientation ( orientation );
+                sizeLabel.setComponentOrientation ( orientation );
             }
         } );
 
@@ -136,65 +168,32 @@ public class WebFileListCellRenderer extends WebListCellRenderer
     }
 
     /**
-     * Updates renderer components structure.
+     * Returns description bounds for list cell.
+     *
+     * @return description bounds for list cell
+     */
+    public Rectangle getDescriptionBounds ()
+    {
+        return ( ( FileCellLayout ) getLayout () ).getDescriptionBounds ();
+    }
+
+    /**
+     * Updates renderer elements view.
      */
     public void updateFilesView ()
     {
-        if ( fileList.getFileListViewType ().equals ( FileListViewType.tiles ) )
+        if ( isTilesView () )
         {
-            removeAll ();
-            setBorder ( BorderFactory.createEmptyBorder ( 6, 6, 5, 7 ) );
-            TableLayout layout = new TableLayout ( new double[][]{ { 54, TableLayout.FILL }, { TableLayout.PREFERRED } } );
-            layout.setHGap ( 4 );
-            setLayout ( layout );
-            add ( iconLabel, "0,0" );
-            add ( descriptionPanel, "1,0" );
-            setPreferredSize ( new Dimension ( 220, 65 ) );
             nameLabel.setHorizontalAlignment ( JLabel.LEADING );
-            nameLabel.setMargin ( 0 );
+            fileList.setFixedCellWidth ( tileCellSize.width );
+            fileList.setFixedCellHeight ( tileCellSize.height );
         }
         else
         {
-            removeAll ();
-            setBorder ( BorderFactory.createEmptyBorder ( 5, 5, 5, 5 ) );
-            TableLayout layout = new TableLayout ( new double[][]{ { TableLayout.FILL, 54, TableLayout.FILL }, { 54, TableLayout.FILL } } );
-            layout.setHGap ( 0 );
-            layout.setVGap ( 4 );
-            setLayout ( layout );
-            add ( iconLabel, "1,0" );
-            add ( descriptionPanel, "0,1,2,1" );
-            setPreferredSize ( new Dimension ( 90, 90 ) );
             nameLabel.setHorizontalAlignment ( JLabel.CENTER );
-            nameLabel.setMargin ( 0, 2, 0, 2 );
+            fileList.setFixedCellWidth ( iconCellSize.width );
+            fileList.setFixedCellHeight ( iconCellSize.height );
         }
-        updateFixedCellSize ();
-        updateEnabledState ();
-    }
-
-    /**
-     * Updates fixed renderer sizes.
-     * Simple optimization that is required to disable full list rendering at its first appearance.
-     */
-    public void updateFixedCellSize ()
-    {
-        if ( fileList.getFileListViewType ().equals ( FileListViewType.tiles ) )
-        {
-            fileList.setFixedCellWidth ( 220 );
-            fileList.setFixedCellHeight ( 65 );
-        }
-        else
-        {
-            fileList.setFixedCellWidth ( 90 );
-            fileList.setFixedCellHeight ( 90 );
-        }
-    }
-
-    /**
-     * Updates renderer components enabled state.
-     */
-    private void updateEnabledState ()
-    {
-        SwingUtils.setEnabledRecursively ( this, fileList.isEnabled () );
     }
 
     /**
@@ -205,16 +204,6 @@ public class WebFileListCellRenderer extends WebListCellRenderer
     public JLabel getIconLabel ()
     {
         return iconLabel;
-    }
-
-    /**
-     * Returns file description panel.
-     *
-     * @return file description panel
-     */
-    public JPanel getDescriptionPanel ()
-    {
-        return descriptionPanel;
     }
 
     /**
@@ -258,16 +247,19 @@ public class WebFileListCellRenderer extends WebListCellRenderer
      * @return cell renderer component
      */
     @Override
-    public Component getListCellRendererComponent ( JList list, Object value, final int index, boolean isSelected, boolean cellHasFocus )
+    public Component getListCellRendererComponent ( final JList list, final Object value, final int index, final boolean isSelected,
+                                                    final boolean cellHasFocus )
     {
         super.getListCellRendererComponent ( list, "", index, isSelected, cellHasFocus );
 
         final FileElement element = ( FileElement ) value;
         final File file = element.getFile ();
 
+        // Proper margin
+        setMargin ( isTilesView () ? tileCellMargin : iconCellMargin );
+
         // Renderer icon
         String imageSize = null;
-
         if ( iconLabel.isEnabled () )
         {
             // Thumbnail loading
@@ -304,29 +296,52 @@ public class WebFileListCellRenderer extends WebListCellRenderer
             iconLabel.setDisabledIcon ( element.getDisabledThumbnail () );
         }
 
-        // Settings description
-        FileDescription fileDescription = FileUtils.getFileDescription ( file, imageSize );
-        descriptionPanel.removeAll ();
-
+        // Updating file description elements
         if ( fileList.getEditedCell () != index )
         {
+            // Settings description
+            final FileDescription fileDescription = FileUtils.getFileDescription ( file, imageSize );
             nameLabel.setText ( fileDescription.getName () );
-            descriptionPanel.add ( nameLabel );
 
-            if ( fileList.getFileListViewType ().equals ( FileListViewType.tiles ) )
+            // Updating tile view additional description
+            if ( isTilesView () )
             {
                 descriptionLabel.setText ( fileDescription.getDescription () );
-                descriptionPanel.add ( descriptionLabel );
 
+                // Updating size label
                 if ( fileDescription.getSize () != null )
                 {
                     sizeLabel.setText ( fileDescription.getSize () );
-                    descriptionPanel.add ( sizeLabel );
+                }
+                else
+                {
+                    sizeLabel.setText ( null );
                 }
             }
+            else
+            {
+                descriptionLabel.setText ( null );
+                sizeLabel.setText ( null );
+            }
+        }
+        else
+        {
+            nameLabel.setText ( null );
+            descriptionLabel.setText ( null );
+            sizeLabel.setText ( null );
         }
 
         return this;
+    }
+
+    /**
+     * Returns whether list is currently displaying tiles or not.
+     *
+     * @return true if list is currently displaying tiles, false otherwise
+     */
+    protected boolean isTilesView ()
+    {
+        return fileList.getFileListViewType ().equals ( FileListViewType.tiles );
     }
 
     /**
@@ -334,7 +349,7 @@ public class WebFileListCellRenderer extends WebListCellRenderer
      *
      * @param element element to add
      */
-    private void queueThumbnailLoad ( final FileElement element, final boolean disabled )
+    protected void queueThumbnailLoad ( final FileElement element, final boolean disabled )
     {
         element.setThumbnailQueued ( true );
         element.setDisabledThumbnailQueued ( disabled );
@@ -349,7 +364,7 @@ public class WebFileListCellRenderer extends WebListCellRenderer
                 if ( fileList.isGenerateThumbnails () && GlobalConstants.IMAGE_FORMATS.contains ( ext ) )
                 {
                     final ImageIcon thumb = element.getEnabledThumbnail () != null ? element.getEnabledThumbnail () :
-                            ImageUtils.createThumbnailIcon ( absolutePath, THUMBNAIL_SIZE );
+                            ImageUtils.createThumbnailIcon ( absolutePath, thumbSize );
                     if ( thumb != null )
                     {
                         element.setEnabledThumbnail ( thumb );
@@ -381,5 +396,127 @@ public class WebFileListCellRenderer extends WebListCellRenderer
                 }
             }
         } );
+    }
+
+    /**
+     * Custom layout for file list cell element.
+     */
+    protected class FileCellLayout extends AbstractLayoutManager
+    {
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public Dimension preferredLayoutSize ( final Container parent )
+        {
+            return isTilesView () ? tileCellSize : iconCellSize;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void layoutContainer ( final Container parent )
+        {
+            // Constants for futher layout calculations
+            final boolean ltr = fileList.getComponentOrientation ().isLeftToRight ();
+            final Insets i = getInsets ();
+            final boolean tilesView = isTilesView ();
+            final boolean hasName = nameLabel.getText () != null;
+            final boolean hasDescription = tilesView && descriptionLabel.getText () != null;
+            final boolean hasFileSize = tilesView && sizeLabel.getText () != null;
+
+            // Updating elements visibility
+            nameLabel.setVisible ( hasName );
+            descriptionLabel.setVisible ( hasDescription );
+            sizeLabel.setVisible ( hasFileSize );
+
+            // Updating elements bounds
+            if ( tilesView )
+            {
+                // Left-middle icon
+                iconLabel.setBounds ( ltr ? i.left : tileCellSize.width - i.right - imageSide, i.top, imageSide, imageSide );
+
+                // Description elements
+                if ( hasName )
+                {
+                    // Constants for futher description positioning calculations
+                    final Dimension nps = nameLabel.getPreferredSize ();
+                    final Dimension dps = hasDescription ? descriptionLabel.getPreferredSize () : new Dimension ( 0, 0 );
+                    final Dimension sps = hasFileSize ? sizeLabel.getPreferredSize () : new Dimension ( 0, 0 );
+                    final int dh = nps.height + ( hasDescription ? gap + dps.height : 0 ) + ( hasFileSize ? gap + sps.height : 0 );
+                    final int dx = ltr ? i.left + imageSide + gap : i.left;
+                    final int dw = tileCellSize.width - i.left - i.right - imageSide - gap;
+
+                    // Name element
+                    int dy = i.top + ( tileCellSize.height - i.top - i.bottom ) / 2 - dh / 2;
+                    nameLabel.setBounds ( dx, dy, dw, nps.height );
+                    dy += nps.height + gap;
+
+                    // Description element
+                    if ( hasDescription )
+                    {
+                        descriptionLabel.setBounds ( dx, dy, dw, dps.height );
+                        dy += dps.height + gap;
+                    }
+
+                    // File size element
+                    if ( hasFileSize )
+                    {
+                        sizeLabel.setBounds ( dx, dy, dw, sps.height );
+                    }
+                }
+            }
+            else
+            {
+                // Top-middle icon
+                final int cw = iconCellSize.width - i.left - i.right;
+                iconLabel.setBounds ( i.left + cw / 2 - 27, i.top, imageSide, imageSide );
+
+                // Name element
+                if ( hasName )
+                {
+                    final int ny = i.top + imageSide + gap;
+                    nameLabel.setBounds ( i.left, ny, cw, iconCellSize.height - ny - i.bottom );
+                }
+            }
+        }
+
+        /**
+         * Returns description bounds for list cell.
+         *
+         * @return description bounds for list cell
+         */
+        public Rectangle getDescriptionBounds ()
+        {
+            // Constants for futher size calculations
+            final boolean ltr = fileList.getComponentOrientation ().isLeftToRight ();
+            final Insets i = getInsets ();
+            final boolean tilesView = isTilesView ();
+
+            // Determining
+            if ( tilesView )
+            {
+                // Tile view
+                if ( ltr )
+                {
+                    // Icon at the left side, description at the right side
+                    final int x = i.left + imageSide + gap;
+                    return new Rectangle ( x, i.top, tileCellSize.width - x - i.right, tileCellSize.height - i.top - i.bottom );
+                }
+                else
+                {
+                    // Icon at the right side, description at the left side
+                    return new Rectangle ( i.left, i.top, tileCellSize.width - gap - imageSide - i.right,
+                            tileCellSize.height - i.top - i.bottom );
+                }
+            }
+            else
+            {
+                // Icon view
+                final int ny = i.top + imageSide + gap;
+                return new Rectangle ( i.left, ny, iconCellSize.width - i.left - i.right, iconCellSize.height - ny - i.bottom );
+            }
+        }
     }
 }
