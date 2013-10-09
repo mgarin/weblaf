@@ -81,7 +81,6 @@ public final class Base64
     static private final int TWENTYFOURBITGROUP = 24;
     static private final int EIGHTBIT = 8;
     static private final int SIXTEENBIT = 16;
-    static private final int SIXBIT = 6;
     static private final int FOURBYTE = 4;
     static private final int SIGN = -128;
     static private final char PAD = '=';
@@ -304,7 +303,7 @@ public final class Base64
      * @param encoded Base64 data
      * @return Array containind decoded data.
      */
-    @SuppressWarnings ("UnusedAssignment")
+    @SuppressWarnings ( "UnusedAssignment" )
     public static byte[] decode ( String encoded )
     {
         if ( encoded == null )
@@ -333,8 +332,6 @@ public final class Base64
         byte b2;
         byte b3;
         byte b4;
-        byte marker0 = 0;
-        byte marker1 = 0;
         char d1;
         char d2;
         char d3;

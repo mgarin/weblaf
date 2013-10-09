@@ -201,7 +201,7 @@ import java.util.ListIterator;
  * @version 4.0 September 14, 2005
  */
 
-@SuppressWarnings ({ "ALL" })
+@SuppressWarnings ( { "ALL" } )
 public class TableLayout implements java.awt.LayoutManager2, java.io.Serializable, info.clearthought.layout.TableLayoutConstants
 {
     /*

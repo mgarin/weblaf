@@ -7,9 +7,10 @@ Main advantages of WebLaF library:
 
 1. Simple and stylish cross-platform default theme
 2. Lots of additional custom Swing components
-3. UIs and components stylable through painters and 9-patch images
+3. UIs and components easily stylable through painters
 4. Settings, language, hotkey, tooltip and other custom managers
-5. Various Swing and Java utilities
+5. Various Swing and Java utilities for specific cases
+6. Both LTR and RTL component orientations supported
 
 You can find more information about the library on official site:<br>
 http://weblookandfeel.com

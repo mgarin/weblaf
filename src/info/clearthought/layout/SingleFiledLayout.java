@@ -45,7 +45,7 @@ import java.io.Serializable;
  * @version 1.1 April 4, 2002
  */
 
-@SuppressWarnings ({ "ALL" })
+@SuppressWarnings ( { "ALL" } )
 public class SingleFiledLayout implements LayoutManager, Serializable
 {
     /**
