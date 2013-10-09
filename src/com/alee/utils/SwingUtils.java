@@ -958,7 +958,7 @@ public final class SwingUtils
     {
         if ( component != null && component.getFont () != null )
         {
-            component.getFont ().getSize ();
+            return component.getFont ().getSize ();
         }
         return -1;
     }
