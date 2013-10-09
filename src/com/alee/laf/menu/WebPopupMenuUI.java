@@ -525,11 +525,16 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements SwingConstants, 
             }
         }
 
-        // Updating popup location according to popup menu UI settings
+        // Position calculations constants
         final Component invoker = popup.getInvoker ();
         final Point los = invoker.isShowing () ? invoker.getLocationOnScreen () : null;
         final boolean fixLocation = this.fixLocation && invoker.isShowing ();
         final boolean ltr = invoker.getComponentOrientation ().isLeftToRight ();
+
+        // Default corner position
+        relativeCorner = ltr ? 0 : Integer.MAX_VALUE;
+
+        // Updating popup location according to popup menu UI settings
         if ( invoker != null )
         {
             if ( invoker instanceof JMenu )
