@@ -773,6 +773,11 @@ public final class LanguageManager implements LanguageConstants
         }
     }
 
+    public static void setOrientation ( boolean leftToRight )
+    {
+        setOrientation ( leftToRight ? ComponentOrientation.LEFT_TO_RIGHT : ComponentOrientation.RIGHT_TO_LEFT );
+    }
+
     public static void setOrientation ( ComponentOrientation orientation )
     {
         LanguageManager.orientation = orientation;
@@ -781,7 +786,7 @@ public final class LanguageManager implements LanguageConstants
 
     public static void changeOrientation ()
     {
-        setOrientation ( getOrientation ().isLeftToRight () ? ComponentOrientation.RIGHT_TO_LEFT : ComponentOrientation.LEFT_TO_RIGHT );
+        setOrientation ( !getOrientation ().isLeftToRight () );
     }
 
     /**

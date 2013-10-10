@@ -124,7 +124,6 @@ public class WebTreeUI extends BasicTreeUI
         this.ltr = tree.getComponentOrientation ().isLeftToRight ();
 
         // Default settings
-        SwingUtils.setOrientation ( tree );
         tree.setRowHeight ( -1 );
         tree.setVisibleRowCount ( 10 );
 
@@ -138,6 +137,7 @@ public class WebTreeUI extends BasicTreeUI
             }
         };
         tree.addPropertyChangeListener ( WebLookAndFeel.COMPONENT_ORIENTATION_PROPERTY, propertyChangeListener );
+        SwingUtils.setOrientation ( tree );
 
         // Selection listener
         treeSelectionListener = new TreeSelectionListener ()
