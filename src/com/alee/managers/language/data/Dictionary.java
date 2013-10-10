@@ -192,6 +192,26 @@ public final class Dictionary implements Serializable
         this.records = records;
     }
 
+    public List<Dictionary> getSubdictionaries ()
+    {
+        return subdictionaries;
+    }
+
+    public void setSubdictionaries ( List<Dictionary> subdictionaries )
+    {
+        this.subdictionaries = subdictionaries;
+    }
+
+    public List<LanguageInfo> getLanguageInfos ()
+    {
+        return languageInfos;
+    }
+
+    public void setLanguageInfos ( List<LanguageInfo> languageInfos )
+    {
+        this.languageInfos = languageInfos;
+    }
+
     private void checkRecords ()
     {
         if ( records == null )
@@ -297,16 +317,6 @@ public final class Dictionary implements Serializable
     public int size ()
     {
         return records != null ? records.size () : 0;
-    }
-
-    public List<Dictionary> getSubdictionaries ()
-    {
-        return subdictionaries;
-    }
-
-    public void setSubdictionaries ( List<Dictionary> subdictionaries )
-    {
-        this.subdictionaries = subdictionaries;
     }
 
     public void addSubdictionary ( Dictionary dictionary )
