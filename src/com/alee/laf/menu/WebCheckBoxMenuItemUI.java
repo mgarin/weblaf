@@ -30,6 +30,12 @@ import java.awt.*;
 public class WebCheckBoxMenuItemUI extends WebMenuItemUI
 {
     /**
+     * Used icons.
+     */
+    protected static final ImageIcon boxIcon = new ImageIcon ( WebCheckBoxMenuItemUI.class.getResource ( "icons/box.png" ) );
+    protected static final ImageIcon boxCheckIcon = new ImageIcon ( WebCheckBoxMenuItemUI.class.getResource ( "icons/boxCheck.png" ) );
+
+    /**
      * Style settings.
      */
     protected Color checkColor = WebMenuItemStyle.checkColor;
@@ -92,6 +98,24 @@ public class WebCheckBoxMenuItemUI extends WebMenuItemUI
         {
             g2d.setPaint ( checkColor );
             g2d.fillRect ( 0, 0, menuItem.getWidth (), menuItem.getHeight () );
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void paintIcon ( final Graphics2D g2d, final JMenuItem menuItem, final int x, final int y, final int w, final int h,
+                               final boolean selected, final boolean ltr )
+    {
+        super.paintIcon ( g2d, menuItem, x, y, w, h, selected, ltr );
+
+        // Painting check icon
+        if ( menuItem.getIcon () == null )
+        {
+            final int ix = x + w / 2 - boxIcon.getIconWidth () / 2;
+            final int iy = y + h / 2 - boxIcon.getIconHeight () / 2;
+            g2d.drawImage ( menuItem.isSelected () ? boxCheckIcon.getImage () : boxIcon.getImage (), ix, iy, null );
         }
     }
 }

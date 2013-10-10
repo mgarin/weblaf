@@ -30,6 +30,13 @@ import java.awt.*;
 public class WebRadioButtonMenuItemUI extends WebMenuItemUI
 {
     /**
+     * Used icons.
+     */
+    protected static final ImageIcon radioIcon = new ImageIcon ( WebRadioButtonMenuItemUI.class.getResource ( "icons/radio.png" ) );
+    protected static final ImageIcon radioCheckIcon =
+            new ImageIcon ( WebRadioButtonMenuItemUI.class.getResource ( "icons/radioCheck.png" ) );
+
+    /**
      * Style settings.
      */
     protected Color checkColor = WebMenuItemStyle.checkColor;
@@ -92,6 +99,24 @@ public class WebRadioButtonMenuItemUI extends WebMenuItemUI
         {
             g2d.setPaint ( checkColor );
             g2d.fillRect ( 0, 0, menuItem.getWidth (), menuItem.getHeight () );
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void paintIcon ( final Graphics2D g2d, final JMenuItem menuItem, final int x, final int y, final int w, final int h,
+                               final boolean selected, final boolean ltr )
+    {
+        super.paintIcon ( g2d, menuItem, x, y, w, h, selected, ltr );
+
+        // Painting check icon
+        if ( menuItem.getIcon () == null )
+        {
+            final int ix = x + w / 2 - radioIcon.getIconWidth () / 2;
+            final int iy = y + h / 2 - radioIcon.getIconHeight () / 2;
+            g2d.drawImage ( menuItem.isSelected () ? radioCheckIcon.getImage () : radioIcon.getImage (), ix, iy, null );
         }
     }
 }

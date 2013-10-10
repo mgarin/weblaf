@@ -44,7 +44,7 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements SwingConstants, 
     /**
      * todo 1. Left/Right corner
      * todo 2. Proper painter styling
-     * todo 3. When using popupMenuWay take invoker shade into account (if its UI has one -> add new ~Shadeable interface)
+     * todo 3. When using popupMenuWay take invoker shade into account (if its UI has one -> ShadeProvider interface)
      */
 
     /**
