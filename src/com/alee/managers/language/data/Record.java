@@ -174,13 +174,18 @@ public final class Record implements Serializable, Cloneable
     {
         for ( Value value : values )
         {
-            String valueLang = value.getLang ();
+            final String valueLang = value.getLang ();
             if ( valueLang == null || CompareUtils.equals ( valueLang, lang ) )
             {
                 return value;
             }
         }
         return null;
+    }
+
+    public boolean hasValue ( String lang )
+    {
+        return getValue ( lang ) != null;
     }
 
     @Override

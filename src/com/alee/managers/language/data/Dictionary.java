@@ -224,18 +224,25 @@ public final class Dictionary implements Serializable
     {
         checkRecords ();
 
-        //        for ( Record e : records )
-        //        {
-        //            if ( e.getKey ().equals ( record.getKey () ) )
-        //            {
-        //                e.setHotkey ( record.getHotkey () );
-        //                for ( Value value : record.getValues () )
-        //                {
-        //                    e.addValue ( value );
-        //                }
-        //                return e;
-        //            }
-        //        }
+        // Records merge used within global dictionary
+        for ( Record r : records )
+        {
+            if ( r.getKey ().equals ( record.getKey () ) )
+            {
+                if ( record.getHotkey () == null )
+                {
+                    record.setHotkey ( r.getHotkey () );
+                }
+                for ( Value value : r.getValues () )
+                {
+                    if ( !record.hasValue ( value.getLang () ) )
+                    {
+                        record.addValue ( value );
+                    }
+                }
+                return r;
+            }
+        }
 
         this.records.add ( record );
         return record;
