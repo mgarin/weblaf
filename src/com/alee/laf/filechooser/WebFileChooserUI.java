@@ -19,6 +19,7 @@ package com.alee.laf.filechooser;
 
 import com.alee.extended.filefilter.DefaultFileFilter;
 import com.alee.laf.GlobalConstants;
+import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.language.LanguageManager;
 import com.alee.utils.FileUtils;
 
@@ -315,6 +316,10 @@ public class WebFileChooserUI extends FileChooserUI
             fileChooserPanel.setChooserType ( getFileChooserType () );
         }
         // todo FILE_SELECTION_MODE_CHANGED_PROPERTY (should work atop of filters)
+        else if ( prop.equals ( WebLookAndFeel.COMPONENT_ORIENTATION_PROPERTY ) )
+        {
+            fileChooserPanel.applyComponentOrientation ( fileChooser.getComponentOrientation () );
+        }
     }
 
     /**
