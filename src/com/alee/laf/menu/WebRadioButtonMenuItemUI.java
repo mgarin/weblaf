@@ -95,7 +95,7 @@ public class WebRadioButtonMenuItemUI extends WebMenuItemUI
         super.paintBackground ( g2d, menuItem, x, y, w, h, selected, ltr );
 
         // Painting check selection
-        if ( painter == null && !selected && menuItem.isSelected () )
+        if ( painter == null && !selected && menuItem.isSelected () && checkColor != null )
         {
             g2d.setPaint ( checkColor );
             g2d.fillRect ( 0, 0, menuItem.getWidth (), menuItem.getHeight () );
