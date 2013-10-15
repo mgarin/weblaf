@@ -17,6 +17,7 @@
 
 package com.alee.laf.slider;
 
+import com.alee.extended.painter.Painter;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.settings.DefaultValue;
 import com.alee.managers.settings.SettingsManager;
@@ -265,6 +266,38 @@ public class WebSlider extends JSlider implements SettingsMethods, FontMethods<W
     public void setThumbAngleLength ( int thumbAngleLength )
     {
         getWebUI ().setThumbAngleLength ( thumbAngleLength );
+    }
+
+    public Insets getMargin ()
+    {
+        return getWebUI ().getMargin ();
+    }
+
+    public void setMargin ( Insets margin )
+    {
+        getWebUI ().setMargin ( margin );
+    }
+
+    public WebSlider setMargin ( int top, int left, int bottom, int right )
+    {
+        setMargin ( new Insets ( top, left, bottom, right ) );
+        return this;
+    }
+
+    public WebSlider setMargin ( int spacing )
+    {
+        return setMargin ( spacing, spacing, spacing, spacing );
+    }
+
+    public Painter getPainter ()
+    {
+        return getWebUI ().getPainter ();
+    }
+
+    public WebSlider setPainter ( Painter painter )
+    {
+        getWebUI ().setPainter ( painter );
+        return this;
     }
 
     public WebSliderUI getWebUI ()

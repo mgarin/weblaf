@@ -269,19 +269,18 @@ public class WebLabelUI extends BasicLabelUI implements BorderMethods
     public void paint ( final Graphics g, final JComponent c )
     {
         final Graphics2D g2d = ( Graphics2D ) g;
-        final Composite oc = LafUtils.setupAlphaComposite ( g2d, transparency, transparency != null );
 
-        // Use background painter instead of default UI graphics
+        // Force painter to draw background
         if ( painter != null )
         {
-            painter.paint ( ( Graphics2D ) g, SwingUtils.size ( c ), c );
+            painter.paint ( g2d, SwingUtils.size ( c ), c );
         }
 
+        final Composite oc = LafUtils.setupAlphaComposite ( g2d, transparency, transparency != null );
         final Map textHints = drawShade ? StyleConstants.defaultTextRenderingHints : StyleConstants.textRenderingHints;
         final Map oldHints = SwingUtils.setupTextAntialias ( g2d, textHints );
         super.paint ( g, c );
         SwingUtils.restoreTextAntialias ( g2d, oldHints );
-
         LafUtils.restoreComposite ( g2d, oc, transparency != null );
     }
 

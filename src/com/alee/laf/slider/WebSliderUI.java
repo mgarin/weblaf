@@ -17,10 +17,15 @@
 
 package com.alee.laf.slider;
 
+import com.alee.extended.painter.Painter;
+import com.alee.extended.painter.PainterSupport;
 import com.alee.laf.StyleConstants;
+import com.alee.laf.WebLookAndFeel;
+import com.alee.laf.label.WebLabelStyle;
 import com.alee.utils.ColorUtils;
 import com.alee.utils.LafUtils;
 import com.alee.utils.SwingUtils;
+import com.alee.utils.swing.BorderMethods;
 import com.alee.utils.swing.WebTimer;
 
 import javax.swing.*;
@@ -33,47 +38,59 @@ import java.awt.event.*;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 /**
  * User: mgarin Date: 26.05.11 Time: 18:03
  */
 
-public class WebSliderUI extends BasicSliderUI
+public class WebSliderUI extends BasicSliderUI implements BorderMethods
 {
     public static final int MAX_DARKNESS = 5;
 
-    private Color trackBgTop = WebSliderStyle.trackBgTop;
-    private Color trackBgBottom = WebSliderStyle.trackBgBottom;
-    private int trackHeight = WebSliderStyle.trackHeight;
-    private int trackRound = WebSliderStyle.trackRound;
-    private int trackShadeWidth = WebSliderStyle.trackShadeWidth;
+    protected Color trackBgTop = WebSliderStyle.trackBgTop;
+    protected Color trackBgBottom = WebSliderStyle.trackBgBottom;
+    protected int trackHeight = WebSliderStyle.trackHeight;
+    protected int trackRound = WebSliderStyle.trackRound;
+    protected int trackShadeWidth = WebSliderStyle.trackShadeWidth;
 
-    private boolean drawProgress = WebSliderStyle.drawProgress;
-    private int progressRound = WebSliderStyle.progressRound;
-    private int progressShadeWidth = WebSliderStyle.progressShadeWidth;
+    protected boolean drawProgress = WebSliderStyle.drawProgress;
+    protected int progressRound = WebSliderStyle.progressRound;
+    protected int progressShadeWidth = WebSliderStyle.progressShadeWidth;
 
-    private boolean drawThumb = WebSliderStyle.drawThumb;
-    private Color thumbBgTop = WebSliderStyle.thumbBgTop;
-    private Color thumbBgBottom = WebSliderStyle.thumbBgBottom;
-    private int thumbWidth = WebSliderStyle.thumbWidth;
-    private int thumbHeight = WebSliderStyle.thumbHeight;
-    private int thumbRound = WebSliderStyle.thumbRound;
-    private int thumbShadeWidth = WebSliderStyle.thumbShadeWidth;
-    private boolean angledThumb = WebSliderStyle.angledThumb;
-    private boolean sharpThumbAngle = WebSliderStyle.sharpThumbAngle;
-    private int thumbAngleLength = WebSliderStyle.thumbAngleLength;
+    protected boolean drawThumb = WebSliderStyle.drawThumb;
+    protected Color thumbBgTop = WebSliderStyle.thumbBgTop;
+    protected Color thumbBgBottom = WebSliderStyle.thumbBgBottom;
+    protected int thumbWidth = WebSliderStyle.thumbWidth;
+    protected int thumbHeight = WebSliderStyle.thumbHeight;
+    protected int thumbRound = WebSliderStyle.thumbRound;
+    protected int thumbShadeWidth = WebSliderStyle.thumbShadeWidth;
+    protected boolean angledThumb = WebSliderStyle.angledThumb;
+    protected boolean sharpThumbAngle = WebSliderStyle.sharpThumbAngle;
+    protected int thumbAngleLength = WebSliderStyle.thumbAngleLength;
 
-    private boolean animated = WebSliderStyle.animated;
+    protected boolean animated = WebSliderStyle.animated;
 
-    private boolean rolloverDarkBorderOnly = WebSliderStyle.rolloverDarkBorderOnly;
+    protected boolean rolloverDarkBorderOnly = WebSliderStyle.rolloverDarkBorderOnly;
 
-    private MouseWheelListener mouseWheelListener;
-    private ChangeListener changeListener;
-    private MouseAdapter mouseAdapter;
+    protected Insets margin = WebLabelStyle.margin;
+    protected Painter painter = WebLabelStyle.painter;
 
-    private boolean rollover = false;
-    private int rolloverDarkness = 0;
-    private WebTimer rolloverTimer;
+    /**
+     * Slider listeners.
+     */
+    protected PropertyChangeListener propertyChangeListener;
+    protected MouseWheelListener mouseWheelListener;
+    protected ChangeListener changeListener;
+    protected MouseAdapter mouseAdapter;
+
+    /**
+     * Runtime variables.
+     */
+    protected boolean rollover = false;
+    protected int rolloverDarkness = 0;
+    protected WebTimer rolloverTimer;
 
     public WebSliderUI ( JSlider b )
     {
@@ -93,6 +110,20 @@ public class WebSliderUI extends BasicSliderUI
         // Default settings
         SwingUtils.setOrientation ( slider );
         slider.setOpaque ( false );
+        slider.setForeground ( StyleConstants.textColor );
+        PainterSupport.installPainter ( slider, this.painter );
+        updateBorder ();
+
+        // Orientation change listener
+        propertyChangeListener = new PropertyChangeListener ()
+        {
+            @Override
+            public void propertyChange ( PropertyChangeEvent evt )
+            {
+                updateBorder ();
+            }
+        };
+        slider.addPropertyChangeListener ( WebLookAndFeel.COMPONENT_ORIENTATION_PROPERTY, propertyChangeListener );
 
         // Rollover mouse wheel scroll
         mouseWheelListener = new MouseWheelListener ()
@@ -198,12 +229,40 @@ public class WebSliderUI extends BasicSliderUI
     @Override
     public void uninstallUI ( JComponent c )
     {
+        PainterSupport.uninstallPainter ( slider, this.painter );
+
+        slider.removePropertyChangeListener ( WebLookAndFeel.COMPONENT_ORIENTATION_PROPERTY, propertyChangeListener );
         slider.removeMouseWheelListener ( mouseWheelListener );
         slider.removeChangeListener ( changeListener );
         slider.removeMouseListener ( mouseAdapter );
         slider.removeMouseMotionListener ( mouseAdapter );
 
         super.uninstallUI ( c );
+    }
+
+    @Override
+    public void updateBorder ()
+    {
+        if ( slider != null )
+        {
+            // Actual margin
+            final boolean ltr = slider.getComponentOrientation ().isLeftToRight ();
+            final Insets m = new Insets ( margin.top, ltr ? margin.left : margin.right, margin.bottom, ltr ? margin.right : margin.left );
+
+            // Calculating additional borders
+            if ( painter != null )
+            {
+                // Painter borders
+                final Insets pi = painter.getMargin ( slider );
+                m.top += pi.top;
+                m.bottom += pi.bottom;
+                m.left += ltr ? pi.left : pi.right;
+                m.right += ltr ? pi.right : pi.left;
+            }
+
+            // Installing border
+            slider.setBorder ( LafUtils.createWebBorder ( m ) );
+        }
     }
 
     public boolean isAnimated ()
@@ -406,6 +465,30 @@ public class WebSliderUI extends BasicSliderUI
         this.thumbAngleLength = thumbAngleLength;
     }
 
+    public Insets getMargin ()
+    {
+        return margin;
+    }
+
+    public void setMargin ( Insets margin )
+    {
+        this.margin = margin;
+        updateBorder ();
+    }
+
+    public Painter getPainter ()
+    {
+        return painter;
+    }
+
+    public void setPainter ( Painter painter )
+    {
+        PainterSupport.uninstallPainter ( slider, this.painter );
+        this.painter = painter;
+        PainterSupport.installPainter ( slider, this.painter );
+        updateBorder ();
+    }
+
     @Override
     protected Dimension getThumbSize ()
     {
@@ -417,6 +500,18 @@ public class WebSliderUI extends BasicSliderUI
         {
             return new Dimension ( thumbHeight, thumbWidth );
         }
+    }
+
+    @Override
+    public void paint ( Graphics g, JComponent c )
+    {
+        // Force painter to draw background
+        if ( painter != null )
+        {
+            painter.paint ( ( Graphics2D ) g, SwingUtils.size ( c ), c );
+        }
+
+        super.paint ( g, c );
     }
 
     @Override
@@ -465,17 +560,17 @@ public class WebSliderUI extends BasicSliderUI
     }
 
 
-    private Color getBorderColor ()
+    protected Color getBorderColor ()
     {
         return ColorUtils.getIntermediateColor ( StyleConstants.borderColor, StyleConstants.darkBorderColor, getProgress () );
     }
 
-    private float getProgress ()
+    protected float getProgress ()
     {
         return ( float ) rolloverDarkness / MAX_DARKNESS;
     }
 
-    private Shape getThumbShape ()
+    protected Shape getThumbShape ()
     {
         if ( angledThumb && ( slider.getPaintLabels () || slider.getPaintTicks () ) )
         {
@@ -631,7 +726,7 @@ public class WebSliderUI extends BasicSliderUI
         LafUtils.restoreAntialias ( g2d, aa );
     }
 
-    private Shape getTrackShape ()
+    protected Shape getTrackShape ()
     {
         if ( trackRound > 0 )
         {
@@ -661,7 +756,7 @@ public class WebSliderUI extends BasicSliderUI
         }
     }
 
-    private Shape getProgressShape ()
+    protected Shape getProgressShape ()
     {
         if ( trackRound > 0 )
         {
