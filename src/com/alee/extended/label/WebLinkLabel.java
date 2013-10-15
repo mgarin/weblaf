@@ -30,6 +30,8 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * This custom component provides a link functionality together with default label options.
@@ -42,34 +44,41 @@ import java.util.List;
 public class WebLinkLabel extends WebLabel implements LanguageMethods
 {
     /**
-     * Internet address link icon.
+     * Used icons.
      */
     public static final ImageIcon LINK_ICON = new ImageIcon ( WebLinkLabel.class.getResource ( "icons/link.png" ) );
+    public static final ImageIcon EMAIL_ICON = new ImageIcon ( WebLinkLabel.class.getResource ( "icons/email.png" ) );
 
     /**
-     * E-mail link icon.
+     * ExecutorService to limit simultaneously running threads.
      */
-    public static final ImageIcon EMAIL_ICON = new ImageIcon ( WebLinkLabel.class.getResource ( "icons/email.png" ) );
+    protected ExecutorService executorService = Executors.newSingleThreadExecutor ();
 
     /**
      * Link activation listeners.
      */
-    private List<ActionListener> actionListeners = new ArrayList<ActionListener> ( 1 );
+    protected List<ActionListener> actionListeners = new ArrayList<ActionListener> ( 1 );
 
-    // Style settings
-    private boolean highlight = WebLinkLabelStyle.highlight;
-    private boolean onPressAction = WebLinkLabelStyle.onPressAction;
-    private boolean colorVisited = WebLinkLabelStyle.colorVisited;
-    private Color foreground = WebLinkLabelStyle.foreground;
-    private Color visitedForeground = WebLinkLabelStyle.visitedForeground;
+    /**
+     * Style settings.
+     */
+    protected boolean highlight = WebLinkLabelStyle.highlight;
+    protected boolean onPressAction = WebLinkLabelStyle.onPressAction;
+    protected boolean colorVisited = WebLinkLabelStyle.colorVisited;
+    protected Color foreground = WebLinkLabelStyle.foreground;
+    protected Color visitedForeground = WebLinkLabelStyle.visitedForeground;
 
-    // Link settings
-    private Runnable link = null;
-    private String actualText = "";
+    /**
+     * Link settings.
+     */
+    protected Runnable link = null;
+    protected String actualText = "";
 
-    // Runtime variables
-    private boolean mouseover = false;
-    private boolean visitedOnce = false;
+    /**
+     * Runtime variables.
+     */
+    protected boolean mouseover = false;
+    protected boolean visitedOnce = false;
 
     public WebLinkLabel ()
     {
@@ -77,33 +86,33 @@ public class WebLinkLabel extends WebLabel implements LanguageMethods
         initializeSettings ();
     }
 
-    public WebLinkLabel ( Icon image )
+    public WebLinkLabel ( final Icon image )
     {
         super ( image );
         initializeSettings ();
     }
 
-    public WebLinkLabel ( Icon image, int horizontalAlignment )
+    public WebLinkLabel ( final Icon image, final int horizontalAlignment )
     {
         super ( image, horizontalAlignment );
         initializeSettings ();
     }
 
-    public WebLinkLabel ( String text )
+    public WebLinkLabel ( final String text )
     {
         super ( text );
         setText ( text );
         initializeSettings ();
     }
 
-    public WebLinkLabel ( String text, int horizontalAlignment )
+    public WebLinkLabel ( final String text, final int horizontalAlignment )
     {
         super ( text, horizontalAlignment );
         setText ( text );
         initializeSettings ();
     }
 
-    public WebLinkLabel ( String text, Icon icon, int horizontalAlignment )
+    public WebLinkLabel ( final String text, final Icon icon, final int horizontalAlignment )
     {
         super ( text, icon, horizontalAlignment );
         setText ( text );
@@ -114,7 +123,7 @@ public class WebLinkLabel extends WebLabel implements LanguageMethods
      * Link label settings initialization
      */
 
-    private void initializeSettings ()
+    protected void initializeSettings ()
     {
         setCursor ( Cursor.getPredefinedCursor ( Cursor.HAND_CURSOR ) );
         updateForeground ();
@@ -131,7 +140,7 @@ public class WebLinkLabel extends WebLabel implements LanguageMethods
             }
 
             @Override
-            public void mouseReleased ( MouseEvent e )
+            public void mouseReleased ( final MouseEvent e )
             {
                 if ( !onPressAction && SwingUtils.size ( WebLinkLabel.this ).contains ( e.getPoint () ) )
                 {
@@ -139,7 +148,7 @@ public class WebLinkLabel extends WebLabel implements LanguageMethods
                 }
             }
 
-            private void performAction ( MouseEvent e )
+            private void performAction ( final MouseEvent e )
             {
                 if ( isEnabled () && SwingUtilities.isLeftMouseButton ( e ) )
                 {
@@ -156,7 +165,7 @@ public class WebLinkLabel extends WebLabel implements LanguageMethods
             }
 
             @Override
-            public void mouseEntered ( MouseEvent e )
+            public void mouseEntered ( final MouseEvent e )
             {
                 if ( isEnabled () )
                 {
@@ -166,7 +175,7 @@ public class WebLinkLabel extends WebLabel implements LanguageMethods
             }
 
             @Override
-            public void mouseExited ( MouseEvent e )
+            public void mouseExited ( final MouseEvent e )
             {
                 if ( highlight )
                 {
@@ -176,7 +185,7 @@ public class WebLinkLabel extends WebLabel implements LanguageMethods
             }
 
             @Override
-            public void mouseDragged ( MouseEvent e )
+            public void mouseDragged ( final MouseEvent e )
             {
                 if ( highlight )
                 {
@@ -198,13 +207,13 @@ public class WebLinkLabel extends WebLabel implements LanguageMethods
         return foreground;
     }
 
-    public void setUnvisitedForeground ( Color foreground )
+    public void setUnvisitedForeground ( final Color foreground )
     {
         setForeground ( foreground );
     }
 
     @Override
-    public void setForeground ( Color foreground )
+    public void setForeground ( final Color foreground )
     {
         this.foreground = foreground;
         updateForeground ();
@@ -215,13 +224,13 @@ public class WebLinkLabel extends WebLabel implements LanguageMethods
         return visitedForeground;
     }
 
-    public void setVisitedForeground ( Color visitedForeground )
+    public void setVisitedForeground ( final Color visitedForeground )
     {
         this.visitedForeground = visitedForeground;
         updateForeground ();
     }
 
-    private void updateForeground ()
+    protected void updateForeground ()
     {
         WebLinkLabel.super.setForeground ( colorVisited && visitedOnce ? visitedForeground : foreground );
     }
@@ -236,13 +245,13 @@ public class WebLinkLabel extends WebLabel implements LanguageMethods
     }
 
     @Override
-    public void setText ( String text )
+    public void setText ( final String text )
     {
         this.actualText = text;
         updateText ();
     }
 
-    private void updateText ()
+    protected void updateText ()
     {
         if ( mouseover && highlight )
         {
@@ -284,38 +293,38 @@ public class WebLinkLabel extends WebLabel implements LanguageMethods
         return link;
     }
 
-    public void setLink ( Runnable link )
+    public void setLink ( final Runnable link )
     {
         this.link = link;
     }
 
-    public void setLink ( String text, Runnable link )
+    public void setLink ( final String text, final Runnable link )
     {
         this.link = link;
         setText ( text );
     }
 
-    public void setLink ( String address )
+    public void setLink ( final String address )
     {
         setLink ( address, true );
     }
 
-    public void setLink ( String address, boolean setupView )
+    public void setLink ( final String address, final boolean setupView )
     {
         setLink ( address, address, setupView );
     }
 
-    public void setLink ( String text, String address )
+    public void setLink ( final String text, final String address )
     {
         setLink ( text, address, true );
     }
 
-    public void setLink ( String text, String address, boolean setupView )
+    public void setLink ( final String text, final String address, final boolean setupView )
     {
         setLink ( text, createAddressLink ( address ), setupView );
     }
 
-    public void setLink ( String text, Runnable link, boolean setupView )
+    public void setLink ( final String text, final Runnable link, final boolean setupView )
     {
         if ( setupView )
         {
@@ -325,22 +334,22 @@ public class WebLinkLabel extends WebLabel implements LanguageMethods
         this.link = link;
     }
 
-    public void setEmailLink ( String email )
+    public void setEmailLink ( final String email )
     {
         setEmailLink ( email, true );
     }
 
-    public void setEmailLink ( String email, boolean setupView )
+    public void setEmailLink ( final String email, final boolean setupView )
     {
         setEmailLink ( email, email, setupView );
     }
 
-    public void setEmailLink ( String text, String email )
+    public void setEmailLink ( final String text, final String email )
     {
         setEmailLink ( text, email, true );
     }
 
-    public void setEmailLink ( String text, String email, boolean setupView )
+    public void setEmailLink ( final String text, final String email, final boolean setupView )
     {
         if ( setupView )
         {
@@ -350,22 +359,22 @@ public class WebLinkLabel extends WebLabel implements LanguageMethods
         this.link = createEmailLink ( email );
     }
 
-    public void setFileLink ( File file )
+    public void setFileLink ( final File file )
     {
         setFileLink ( file, true );
     }
 
-    public void setFileLink ( File file, boolean setupView )
+    public void setFileLink ( final File file, final boolean setupView )
     {
         setFileLink ( FileUtils.getDisplayFileName ( file ), file, setupView );
     }
 
-    public void setFileLink ( String text, File file )
+    public void setFileLink ( final String text, final File file )
     {
         setFileLink ( text, file, true );
     }
 
-    public void setFileLink ( String text, File file, boolean setupView )
+    public void setFileLink ( final String text, final File file, final boolean setupView )
     {
         if ( setupView )
         {
@@ -380,7 +389,7 @@ public class WebLinkLabel extends WebLabel implements LanguageMethods
         return highlight;
     }
 
-    public void setHighlight ( boolean highlight )
+    public void setHighlight ( final boolean highlight )
     {
         this.highlight = highlight;
         updateText ();
@@ -391,7 +400,7 @@ public class WebLinkLabel extends WebLabel implements LanguageMethods
         return onPressAction;
     }
 
-    public void setOnPressAction ( boolean onPressAction )
+    public void setOnPressAction ( final boolean onPressAction )
     {
         this.onPressAction = onPressAction;
     }
@@ -410,16 +419,16 @@ public class WebLinkLabel extends WebLabel implements LanguageMethods
         actionListeners.remove ( actionListener );
     }
 
-    private void fireActionPerformed ()
+    protected void fireActionPerformed ()
     {
-        ActionEvent event = new ActionEvent ( this, 0, "Link opened" );
+        final ActionEvent event = new ActionEvent ( this, 0, "Link opened" );
         for ( ActionListener actionListener : CollectionUtils.copy ( actionListeners ) )
         {
             actionListener.actionPerformed ( event );
         }
     }
 
-    private static Runnable createAddressLink ( final String address )
+    protected Runnable createAddressLink ( final String address )
     {
         if ( address != null )
         {
@@ -428,19 +437,12 @@ public class WebLinkLabel extends WebLabel implements LanguageMethods
                 @Override
                 public void run ()
                 {
-                    new Thread ( new Runnable ()
+                    executorService.execute ( new Runnable ()
                     {
                         @Override
                         public void run ()
                         {
-                            try
-                            {
-                                WebUtils.browseSite ( address );
-                            }
-                            catch ( Throwable e )
-                            {
-                                //
-                            }
+                            WebUtils.browseSiteSafely ( address );
                         }
                     } );
                 }
@@ -452,7 +454,7 @@ public class WebLinkLabel extends WebLabel implements LanguageMethods
         }
     }
 
-    private static Runnable createEmailLink ( final String email )
+    protected Runnable createEmailLink ( final String email )
     {
         if ( email != null )
         {
@@ -461,19 +463,12 @@ public class WebLinkLabel extends WebLabel implements LanguageMethods
                 @Override
                 public void run ()
                 {
-                    new Thread ( new Runnable ()
+                    executorService.execute ( new Runnable ()
                     {
                         @Override
                         public void run ()
                         {
-                            try
-                            {
-                                WebUtils.writeEmail ( email );
-                            }
-                            catch ( Throwable e )
-                            {
-                                //
-                            }
+                            WebUtils.writeEmailSafely ( email );
                         }
                     } );
                 }
@@ -485,7 +480,7 @@ public class WebLinkLabel extends WebLabel implements LanguageMethods
         }
     }
 
-    private static Runnable createFileLink ( final File file )
+    protected Runnable createFileLink ( final File file )
     {
         if ( file != null )
         {
@@ -494,19 +489,12 @@ public class WebLinkLabel extends WebLabel implements LanguageMethods
                 @Override
                 public void run ()
                 {
-                    new Thread ( new Runnable ()
+                    executorService.execute ( new Runnable ()
                     {
                         @Override
                         public void run ()
                         {
-                            try
-                            {
-                                WebUtils.openFile ( file );
-                            }
-                            catch ( Throwable e )
-                            {
-                                //
-                            }
+                            WebUtils.openFileSafely ( file );
                         }
                     } );
                 }

@@ -25,7 +25,6 @@ import java.awt.*;
 /**
  * Custom painter to provide visual feedback for invalid editor cells.
  *
- * @param <E> component type
  * @author Mikle Garin
  * @see AbstractPainter
  * @see com.alee.extended.painter.Painter

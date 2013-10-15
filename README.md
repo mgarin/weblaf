@@ -23,12 +23,12 @@ https://github.com/mgarin/weblaf/releases
 
 Here are the direct links for the latest release:
 
-1. [**weblaf-1.23.jar**](https://github.com/mgarin/weblaf/releases/download/v1.23/weblaf-1.23.jar) - library jar
-2. [**weblaf-simple-1.23.jar**](https://github.com/mgarin/weblaf/releases/download/v1.23/weblaf-simple-1.23.jar) - library jar without dependencies
-3. [**weblaf-src-1.23.zip**](https://github.com/mgarin/weblaf/releases/download/v1.23/weblaf-src-1.23.zip) - project sources zip
-4. [**weblaf-demo-1.23.jar**](https://github.com/mgarin/weblaf/releases/download/v1.23/weblaf-demo-1.23.jar) - executable demo jar
-5. [**weblaf-javadoc-1.23.zip**](https://github.com/mgarin/weblaf/releases/download/v1.23/weblaf-javadoc-1.23.zip) - JavaDoc zip
-6. [**ninepatch-editor-1.23.jar**](https://github.com/mgarin/weblaf/releases/download/v1.23/ninepatch-editor-1.23.jar) - executable 9-patch editor jar
+1. [**weblaf-1.24.jar**](https://github.com/mgarin/weblaf/releases/download/v1.24/weblaf-1.24.jar) - library jar
+2. [**weblaf-simple-1.24.jar**](https://github.com/mgarin/weblaf/releases/download/v1.24/weblaf-simple-1.24.jar) - library jar without dependencies
+3. [**weblaf-src-1.24.zip**](https://github.com/mgarin/weblaf/releases/download/v1.24/weblaf-src-1.24.zip) - project sources zip
+4. [**weblaf-demo-1.24.jar**](https://github.com/mgarin/weblaf/releases/download/v1.24/weblaf-demo-1.24.jar) - executable demo jar
+5. [**weblaf-javadoc-1.24.zip**](https://github.com/mgarin/weblaf/releases/download/v1.24/weblaf-javadoc-1.24.zip) - JavaDoc zip
+6. [**ninepatch-editor-1.24.jar**](https://github.com/mgarin/weblaf/releases/download/v1.24/ninepatch-editor-1.24.jar) - executable 9-patch editor jar
 
 
 Roadmap

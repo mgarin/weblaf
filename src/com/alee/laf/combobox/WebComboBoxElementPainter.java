@@ -27,7 +27,7 @@ import java.awt.*;
  *
  * @author Mikle Garin
  * @see AbstractPainter
- * @see Painter
+ * @see com.alee.extended.painter.Painter
  */
 
 public class WebComboBoxElementPainter extends AbstractPainter<WebComboBoxElement>

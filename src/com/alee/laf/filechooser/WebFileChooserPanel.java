@@ -1431,8 +1431,6 @@ public class WebFileChooserPanel extends WebPanel
 
     /**
      * Updates files selection components filters.
-     *
-     * @param fileFilter
      */
     protected void updateFileComponentFilters ()
     {
