@@ -23,6 +23,7 @@ import java.awt.*;
  * This interface provides a set of methods that should be added into components that support font and uses that font to render.
  * Basically all these methods are already implemented in SwingUtils but it is much easier to call them directly from component.
  *
+ * @param <C> component type
  * @author Mikle Garin
  * @see SwingMethods
  * @see com.alee.utils.SwingUtils

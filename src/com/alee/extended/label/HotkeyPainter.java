@@ -17,34 +17,60 @@
 
 package com.alee.extended.label;
 
-import com.alee.extended.painter.DefaultPainter;
+import com.alee.extended.painter.AbstractPainter;
 
 import javax.swing.*;
 import java.awt.*;
 
 /**
- * User: mgarin Date: 16.05.12 Time: 12:07
+ * Custom painter for WebHotkeyLabel component.
+ *
+ * @author Mikle Garin
+ * @see AbstractPainter
+ * @see com.alee.extended.painter.Painter
  */
 
-public class HotkeyPainter extends DefaultPainter<JComponent>
+public class HotkeyPainter extends AbstractPainter<JComponent>
 {
-    public static final Color border = new Color ( 204, 204, 204 );
-    public static final Color bg = new Color ( 247, 247, 247 );
+    /**
+     * Used colors.
+     */
+    public static Color border = new Color ( 204, 204, 204 );
+    public static Color bg = new Color ( 247, 247, 247 );
+    public static Dimension size = new Dimension ( 6, 7 );
+    public static Insets margin = new Insets ( 2, 6, 3, 6 );
 
+    /**
+     * Constructs new hotkey painter.
+     */
     public HotkeyPainter ()
     {
         super ();
-        margin = new Insets ( 2, 6, 3, 6 );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public Dimension getPreferredSize ( JComponent c )
+    public Dimension getPreferredSize ( final JComponent c )
     {
-        return new Dimension ( 6, 7 );
+        return size;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public void paint ( Graphics2D g2d, Rectangle bounds, JComponent c )
+    public Insets getMargin ( final JComponent c )
+    {
+        return margin;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void paint ( final Graphics2D g2d, final Rectangle bounds, final JComponent c )
     {
         // White spacer
         g2d.setPaint ( Color.WHITE );

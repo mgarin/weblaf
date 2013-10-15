@@ -70,7 +70,7 @@ public final class GlobalConstants
     /**
      * Default file filters.
      */
-    public static final List<DefaultFileFilter> DEFAULT_FILTERS =
+    public static final List<AbstractFileFilter> DEFAULT_FILTERS =
             Arrays.asList ( ALL_FILES_FILTER, IMAGES_AND_FOLDERS_FILTER, DIRECTORIES_FILTER );
 
     /**

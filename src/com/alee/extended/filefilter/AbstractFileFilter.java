@@ -30,7 +30,7 @@ import java.io.FileFilter;
  * @author Mikle Garin
  */
 
-public abstract class DefaultFileFilter extends javax.swing.filechooser.FileFilter implements FileFilter, Filter<File>
+public abstract class AbstractFileFilter extends javax.swing.filechooser.FileFilter implements FileFilter, Filter<File>
 {
     /**
      * Returns file filter icon.

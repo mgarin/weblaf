@@ -26,11 +26,11 @@ import java.awt.*;
  *
  * @param <E> component type
  * @author Mikle Garin
- * @see DefaultPainter
+ * @see AbstractPainter
  * @see Painter
  */
 
-public class ColorPainter<E extends JComponent> extends DefaultPainter<E>
+public class ColorPainter<E extends JComponent> extends AbstractPainter<E>
 {
     /**
      * Color to fill component with.
@@ -42,7 +42,7 @@ public class ColorPainter<E extends JComponent> extends DefaultPainter<E>
      *
      * @param color color to fill component with
      */
-    public ColorPainter ( Color color )
+    public ColorPainter ( final Color color )
     {
         super ();
         this.color = color;
@@ -63,35 +63,26 @@ public class ColorPainter<E extends JComponent> extends DefaultPainter<E>
      *
      * @param color new color to fill component with
      */
-    public void setColor ( Color color )
+    public void setColor ( final Color color )
     {
         this.color = color;
+        fireRepaint ();
     }
 
     /**
-     * Returns whether visual data provided by this painter is opaque or not.
-     * Returned value might affect component opacity depending on painter support inside that component UI.
-     *
-     * @param c component to process
-     * @return true if visual data provided by this painter is opaque, false otherwise
+     * {@inheritDoc}
      */
     @Override
-    public boolean isOpaque ( E c )
+    public boolean isOpaque ( final E c )
     {
         return color != null && color.getAlpha () == 255;
     }
 
     /**
-     * Paints visual data onto the component graphics.
-     * Provided graphics and component are taken directly from component UI paint method.
-     * Provided bounds are usually fake (zero location, component size) but in some cases it might be specified by componentUI.
-     *
-     * @param g2d    component graphics
-     * @param bounds bounds for painter visual data
-     * @param c      component to process
+     * {@inheritDoc}
      */
     @Override
-    public void paint ( Graphics2D g2d, Rectangle bounds, E c )
+    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c )
     {
         // Do not paint anything if color is not set
         if ( color != null )

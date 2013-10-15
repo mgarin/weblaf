@@ -30,29 +30,29 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public class GroupedFileFilter extends DefaultFileFilter
+public class GroupedFileFilter extends AbstractFileFilter
 {
     /**
      * The way file filters will be grouped.
      */
-    private FilterGroupType filterGroupType;
+    protected FilterGroupType filterGroupType;
 
     /**
      * Default file filter used to display icon and description.
      */
-    private DefaultFileFilter defaultFilter;
+    protected AbstractFileFilter defaultFilter;
 
     /**
      * List of grouped file filters.
      */
-    private List<FileFilter> filters;
+    protected List<FileFilter> filters;
 
     /**
      * Constructs grouped file filter with the specified parameters.
      *
      * @param filters list of file filters to be grouped
      */
-    public GroupedFileFilter ( FileFilter... filters )
+    public GroupedFileFilter ( final FileFilter... filters )
     {
         this ( FilterGroupType.AND, filters );
     }
@@ -63,9 +63,9 @@ public class GroupedFileFilter extends DefaultFileFilter
      * @param filterGroupType the way file filters will be grouped
      * @param filters         list of file filters to be grouped
      */
-    public GroupedFileFilter ( FilterGroupType filterGroupType, FileFilter... filters )
+    public GroupedFileFilter ( final FilterGroupType filterGroupType, final FileFilter... filters )
     {
-        this ( filters != null && filters.length > 0 && filters[ 0 ] instanceof DefaultFileFilter ? ( DefaultFileFilter ) filters[ 0 ] :
+        this ( filters != null && filters.length > 0 && filters[ 0 ] instanceof AbstractFileFilter ? ( AbstractFileFilter ) filters[ 0 ] :
                 null, filterGroupType, filters );
     }
 
@@ -76,7 +76,7 @@ public class GroupedFileFilter extends DefaultFileFilter
      * @param filterGroupType the way file filters will be grouped
      * @param filters         list of file filters to be grouped
      */
-    public GroupedFileFilter ( DefaultFileFilter defaultFilter, FilterGroupType filterGroupType, FileFilter... filters )
+    public GroupedFileFilter ( final AbstractFileFilter defaultFilter, final FilterGroupType filterGroupType, final FileFilter... filters )
     {
         super ();
 
@@ -94,24 +94,33 @@ public class GroupedFileFilter extends DefaultFileFilter
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ImageIcon getIcon ()
     {
         return defaultFilter != null ? defaultFilter.getIcon () : null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getDescription ()
     {
         return defaultFilter != null ? defaultFilter.getDescription () : null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public boolean accept ( File file )
+    public boolean accept ( final File file )
     {
         if ( filterGroupType.equals ( FilterGroupType.AND ) )
         {
-            for ( FileFilter filter : filters )
+            for ( final FileFilter filter : filters )
             {
                 if ( filter != null && !filter.accept ( file ) )
                 {
@@ -122,7 +131,7 @@ public class GroupedFileFilter extends DefaultFileFilter
         }
         else
         {
-            for ( FileFilter filter : filters )
+            for ( final FileFilter filter : filters )
             {
                 if ( filter == null || filter.accept ( file ) )
                 {

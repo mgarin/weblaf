@@ -17,7 +17,7 @@
 
 package com.alee.extended.list;
 
-import com.alee.extended.filefilter.DefaultFileFilter;
+import com.alee.extended.filefilter.AbstractFileFilter;
 import com.alee.laf.GlobalConstants;
 
 /**
@@ -52,5 +52,5 @@ public final class WebFileListStyle
     /**
      * File filter.
      */
-    public static DefaultFileFilter fileFilter = GlobalConstants.NON_HIDDEN_ONLY_FILTER;
+    public static AbstractFileFilter fileFilter = GlobalConstants.NON_HIDDEN_ONLY_FILTER;
 }

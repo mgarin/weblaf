@@ -22,9 +22,10 @@ import com.alee.extended.filechooser.PathFieldListener;
 import com.alee.extended.filechooser.WebFileChooserField;
 import com.alee.extended.filechooser.WebFileTable;
 import com.alee.extended.filechooser.WebPathField;
-import com.alee.extended.filefilter.DefaultFileFilter;
+import com.alee.extended.filefilter.AbstractFileFilter;
 import com.alee.extended.filefilter.FilterGroupType;
 import com.alee.extended.filefilter.GroupedFileFilter;
+import com.alee.extended.filefilter.NonHiddenFilter;
 import com.alee.extended.layout.ToolbarLayout;
 import com.alee.extended.layout.VerticalFlowLayout;
 import com.alee.extended.list.FileElement;
@@ -83,6 +84,12 @@ import java.util.List;
 public class WebFileChooserPanel extends WebPanel
 {
     /**
+     * todo 1. When setting "show hidden files" to false - move out from hidden directories
+     * todo 2. Proper hotkeys usage within window
+     * todo 3. Context menu for file selection components
+     */
+
+    /**
      * Used icons.
      */
     public static final ImageIcon BACKWARD_ICON = new ImageIcon ( WebFileChooserPanel.class.getResource ( "icons/backward.png" ) );
@@ -124,14 +131,19 @@ public class WebFileChooserPanel extends WebPanel
     protected FileChooserType chooserType;
 
     /**
+     * Whether should display hidden files or not.
+     */
+    protected boolean showHiddenFiles = false;
+
+    /**
      * Default file filter for this file chooser panel.
      */
-    protected DefaultFileFilter fileFilter;
+    protected AbstractFileFilter fileFilter;
 
     /**
      * All available file filters for this file chooser panel.
      */
-    protected List<DefaultFileFilter> availableFilters;
+    protected List<AbstractFileFilter> availableFilters;
 
     /**
      * Directory files view type.
@@ -231,6 +243,11 @@ public class WebFileChooserPanel extends WebPanel
     };
 
     /**
+     * Hidden files filter attached to this panel.
+     */
+    protected HiddenFilesFilter hiddenFilesFilter = new HiddenFilesFilter ();
+
+    /**
      * Constructs new file chooser panel without contol buttons.
      */
     public WebFileChooserPanel ()
@@ -283,7 +300,7 @@ public class WebFileChooserPanel extends WebPanel
 
         // Updating view data
         updateSelectionMode ();
-        updateDirectoryFilters ();
+        updateDirectoryComponentFilters ();
         setFileFilter ( GlobalConstants.ALL_FILES_FILTER );
         restoreButtonText ();
     }
@@ -903,7 +920,7 @@ public class WebFileChooserPanel extends WebPanel
             @Override
             public void actionPerformed ( final ActionEvent e )
             {
-                setActiveFileFilter ( ( DefaultFileFilter ) fileFilters.getSelectedItem (), false );
+                setActiveFileFilter ( ( AbstractFileFilter ) fileFilters.getSelectedItem (), false );
             }
         } );
 
@@ -1379,7 +1396,7 @@ public class WebFileChooserPanel extends WebPanel
      *
      * @param fileFilter file filter to make active
      */
-    public void setActiveFileFilter ( final DefaultFileFilter fileFilter )
+    public void setActiveFileFilter ( final AbstractFileFilter fileFilter )
     {
         setActiveFileFilter ( fileFilter, true );
     }
@@ -1391,7 +1408,7 @@ public class WebFileChooserPanel extends WebPanel
      * @param fileFilter file filter to make active
      * @param select     whether to select active file filter in combobox or not
      */
-    protected void setActiveFileFilter ( DefaultFileFilter fileFilter, final boolean select )
+    protected void setActiveFileFilter ( AbstractFileFilter fileFilter, final boolean select )
     {
         // Simply take the first available filter if the specified one is not available
         if ( !availableFilters.contains ( fileFilter ) )
@@ -1408,44 +1425,28 @@ public class WebFileChooserPanel extends WebPanel
             fileFilters.setSelectedItem ( fileFilter );
         }
 
-        // todo Hidden/nonhidden setting
         // Updating filters
-        fileList.setFileFilter ( applyOrDirectoriesFilter ( applyAndNonHiddenFilter ( fileFilter ) ) );
-        fileTable.setFileFilter ( applyOrDirectoriesFilter ( applyAndNonHiddenFilter ( fileFilter ) ) );
+        updateFileComponentFilters ();
+    }
+
+    /**
+     * Updates files selection components filters.
+     *
+     * @param fileFilter
+     */
+    protected void updateFileComponentFilters ()
+    {
+        fileList.setFileFilter ( applyHiddenFilesFilter ( applyOrDirectoriesFilter ( fileFilter ) ) );
+        fileTable.setFileFilter ( applyHiddenFilesFilter ( applyOrDirectoriesFilter ( fileFilter ) ) );
     }
 
     /**
      * Updates directory selection components filters.
      */
-    protected void updateDirectoryFilters ()
+    protected void updateDirectoryComponentFilters ()
     {
-        // todo Hidden/nonhidden setting
-        pathField.setFileFilter ( GlobalConstants.NON_HIDDEN_DIRECTORIES_FILTER );
-        fileTree.setFileFilter ( GlobalConstants.NON_HIDDEN_DIRECTORIES_FILTER );
-    }
-
-    /**
-     * Adds "nonHidden" as one of filter AND conditions.
-     *
-     * @param fileFilter filter to process
-     * @return new file filter with additional condition
-     */
-    protected GroupedFileFilter applyAndNonHiddenFilter ( final DefaultFileFilter fileFilter )
-    {
-        // todo Hidden/nonhidden setting
-        return new GroupedFileFilter ( FilterGroupType.AND, fileFilter, GlobalConstants.NON_HIDDEN_ONLY_FILTER );
-    }
-
-    /**
-     * Adds "isDirectory" as one of filter AND conditions.
-     *
-     * @param fileFilter filter to process
-     * @return new file filter with additional condition
-     */
-    protected GroupedFileFilter applyAndDirectoriesFilter ( final DefaultFileFilter fileFilter )
-    {
-        // todo Hidden/nonhidden setting
-        return new GroupedFileFilter ( FilterGroupType.AND, fileFilter, GlobalConstants.NON_HIDDEN_DIRECTORIES_FILTER );
+        pathField.setFileFilter ( applyHiddenFilesFilter ( GlobalConstants.DIRECTORIES_FILTER ) );
+        fileTree.setFileFilter ( applyHiddenFilesFilter ( GlobalConstants.DIRECTORIES_FILTER ) );
     }
 
     /**
@@ -1454,10 +1455,20 @@ public class WebFileChooserPanel extends WebPanel
      * @param fileFilter filter to process
      * @return new file filter with additional condition
      */
-    protected GroupedFileFilter applyOrDirectoriesFilter ( final DefaultFileFilter fileFilter )
+    protected GroupedFileFilter applyOrDirectoriesFilter ( final AbstractFileFilter fileFilter )
     {
-        // todo Hidden/nonhidden setting
-        return new GroupedFileFilter ( FilterGroupType.OR, fileFilter, GlobalConstants.NON_HIDDEN_DIRECTORIES_FILTER );
+        return new GroupedFileFilter ( FilterGroupType.OR, fileFilter, GlobalConstants.DIRECTORIES_FILTER );
+    }
+
+    /**
+     * Adds hidden files filter condition to the specified files filter.
+     *
+     * @param fileFilter filter to process
+     * @return new file filter with additional condition
+     */
+    protected GroupedFileFilter applyHiddenFilesFilter ( final AbstractFileFilter fileFilter )
+    {
+        return new GroupedFileFilter ( FilterGroupType.AND, fileFilter, hiddenFilesFilter );
     }
 
     /**
@@ -1609,7 +1620,7 @@ public class WebFileChooserPanel extends WebPanel
      *
      * @return list of available file filters
      */
-    public List<DefaultFileFilter> getAvailableFilters ()
+    public List<AbstractFileFilter> getAvailableFilters ()
     {
         return availableFilters;
     }
@@ -1619,7 +1630,7 @@ public class WebFileChooserPanel extends WebPanel
      *
      * @return currenly active file filter
      */
-    public DefaultFileFilter getActiveFileFilter ()
+    public AbstractFileFilter getActiveFileFilter ()
     {
         return fileFilter;
     }
@@ -1649,7 +1660,7 @@ public class WebFileChooserPanel extends WebPanel
      *
      * @param fileFilter file filter to set
      */
-    public void setFileFilter ( final DefaultFileFilter fileFilter )
+    public void setFileFilter ( final AbstractFileFilter fileFilter )
     {
         this.availableFilters = Arrays.asList ( fileFilter );
         updateFiltersComboBox ();
@@ -1675,8 +1686,8 @@ public class WebFileChooserPanel extends WebPanel
      */
     public void setFileFilters ( final int index, final FileFilter[] fileFilters )
     {
-        availableFilters = new ArrayList<DefaultFileFilter> ( fileFilters.length );
-        for ( FileFilter fileFilter : fileFilters )
+        availableFilters = new ArrayList<AbstractFileFilter> ( fileFilters.length );
+        for ( final FileFilter fileFilter : fileFilters )
         {
             availableFilters.add ( FileUtils.transformFileFilter ( fileFilter ) );
         }
@@ -1703,7 +1714,7 @@ public class WebFileChooserPanel extends WebPanel
      */
     public void setFileFilters ( final int index, final javax.swing.filechooser.FileFilter[] fileFilters )
     {
-        availableFilters = new ArrayList<DefaultFileFilter> ( fileFilters.length );
+        availableFilters = new ArrayList<AbstractFileFilter> ( fileFilters.length );
         for ( javax.swing.filechooser.FileFilter filtfileFilter : fileFilters )
         {
             availableFilters.add ( FileUtils.transformFileFilter ( filtfileFilter ) );
@@ -1718,7 +1729,7 @@ public class WebFileChooserPanel extends WebPanel
      *
      * @param fileFilters available file filters
      */
-    public void setFileFilters ( final DefaultFileFilter[] fileFilters )
+    public void setFileFilters ( final AbstractFileFilter[] fileFilters )
     {
         setFileFilters ( 0, fileFilters );
     }
@@ -1729,7 +1740,7 @@ public class WebFileChooserPanel extends WebPanel
      * @param index       default filter index
      * @param fileFilters available file filters
      */
-    public void setFileFilters ( final int index, final DefaultFileFilter[] fileFilters )
+    public void setFileFilters ( final int index, final AbstractFileFilter[] fileFilters )
     {
         this.availableFilters = Arrays.asList ( fileFilters );
         updateFiltersComboBox ();
@@ -1742,7 +1753,7 @@ public class WebFileChooserPanel extends WebPanel
      *
      * @param fileFilters available file filters
      */
-    public void setFileFilters ( final List<DefaultFileFilter> fileFilters )
+    public void setFileFilters ( final List<AbstractFileFilter> fileFilters )
     {
         setFileFilters ( 0, fileFilters );
     }
@@ -1753,7 +1764,7 @@ public class WebFileChooserPanel extends WebPanel
      * @param index       default filter index
      * @param fileFilters available file filters
      */
-    public void setFileFilters ( final int index, final List<DefaultFileFilter> fileFilters )
+    public void setFileFilters ( final int index, final List<AbstractFileFilter> fileFilters )
     {
         this.availableFilters = CollectionUtils.copy ( fileFilters );
         updateFiltersComboBox ();
@@ -1870,6 +1881,28 @@ public class WebFileChooserPanel extends WebPanel
         updateSelectedFilesFieldPanel ();
         updateSelectedFilesField ();
         restoreButtonText ();
+    }
+
+    /**
+     * Sets whether should display hidden files or not.
+     *
+     * @return true if should display hidden files, false otherwise
+     */
+    public boolean isShowHiddenFiles ()
+    {
+        return showHiddenFiles;
+    }
+
+    /**
+     * Sets whether should display hidden files or not.
+     *
+     * @param showHiddenFiles whether should display hidden files or not
+     */
+    public void setShowHiddenFiles ( boolean showHiddenFiles )
+    {
+        this.showHiddenFiles = showHiddenFiles;
+        updateDirectoryComponentFilters ();
+        updateFileComponentFilters ();
     }
 
     /**
@@ -2059,6 +2092,39 @@ public class WebFileChooserPanel extends WebPanel
             {
                 return false;
             }
+        }
+    }
+
+    /**
+     * Custom hidden/non-hidden files filter.
+     */
+    protected class HiddenFilesFilter extends NonHiddenFilter
+    {
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public ImageIcon getIcon ()
+        {
+            return null;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public String getDescription ()
+        {
+            return null;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public boolean accept ( File file )
+        {
+            return showHiddenFiles || !file.isHidden ();
         }
     }
 }

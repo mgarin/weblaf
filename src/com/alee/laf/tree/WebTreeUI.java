@@ -844,8 +844,16 @@ public class WebTreeUI extends BasicTreeUI
             final WebCheckBoxTree checkBoxTree = ( WebCheckBoxTree ) tree;
             if ( checkBoxTree.isCheckingByUserEnabled () )
             {
-                final Rectangle checkBoxBounds = checkBoxTree.getCheckBoxBounds ( path );
-                return checkBoxBounds != null && checkBoxBounds.contains ( x, y );
+                final DefaultMutableTreeNode node = ( DefaultMutableTreeNode ) path.getLastPathComponent ();
+                if ( checkBoxTree.isCheckBoxVisible ( node ) && checkBoxTree.isCheckBoxEnabled ( node ) )
+                {
+                    final Rectangle checkBoxBounds = checkBoxTree.getCheckBoxBounds ( path );
+                    return checkBoxBounds != null && checkBoxBounds.contains ( x, y );
+                }
+                else
+                {
+                    return false;
+                }
             }
             else
             {

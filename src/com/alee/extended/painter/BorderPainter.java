@@ -31,11 +31,11 @@ import java.awt.geom.RoundRectangle2D;
  *
  * @param <E> component type
  * @author Mikle Garin
- * @see DefaultPainter
+ * @see AbstractPainter
  * @see Painter
  */
 
-public class BorderPainter<E extends JComponent> extends DefaultPainter<E>
+public class BorderPainter<E extends JComponent> extends AbstractPainter<E>
 {
     /**
      * Border width.
@@ -71,10 +71,10 @@ public class BorderPainter<E extends JComponent> extends DefaultPainter<E>
      *
      * @param width border width
      */
-    public BorderPainter ( int width )
+    public BorderPainter ( final int width )
     {
         super ();
-        setWidth ( width );
+        this.width = width;
     }
 
     /**
@@ -82,10 +82,10 @@ public class BorderPainter<E extends JComponent> extends DefaultPainter<E>
      *
      * @param color border color
      */
-    public BorderPainter ( Color color )
+    public BorderPainter ( final Color color )
     {
         super ();
-        setColor ( color );
+        this.color = color;
         updateStroke ();
     }
 
@@ -95,11 +95,11 @@ public class BorderPainter<E extends JComponent> extends DefaultPainter<E>
      * @param width border width
      * @param color border color
      */
-    public BorderPainter ( int width, Color color )
+    public BorderPainter ( final int width, final Color color )
     {
         super ();
-        setWidth ( width );
-        setColor ( color );
+        this.width = width;
+        this.color = color;
     }
 
     /**
@@ -118,10 +118,11 @@ public class BorderPainter<E extends JComponent> extends DefaultPainter<E>
      *
      * @param width new border width
      */
-    public void setWidth ( int width )
+    public void setWidth ( final int width )
     {
         this.width = width;
         updateStroke ();
+        fireUpdate ();
     }
 
     /**
@@ -140,10 +141,11 @@ public class BorderPainter<E extends JComponent> extends DefaultPainter<E>
      *
      * @param round new border round
      */
-    public void setRound ( int round )
+    public void setRound ( final int round )
     {
         this.round = round;
         updateStroke ();
+        fireRepaint ();
     }
 
     /**
@@ -161,9 +163,10 @@ public class BorderPainter<E extends JComponent> extends DefaultPainter<E>
      *
      * @param color new border color
      */
-    public void setColor ( Color color )
+    public void setColor ( final Color color )
     {
         this.color = color;
+        fireRepaint ();
     }
 
     /**
@@ -184,9 +187,10 @@ public class BorderPainter<E extends JComponent> extends DefaultPainter<E>
      * @see #setWidth(int)
      * @see #setRound(int)
      */
-    public void setStroke ( Stroke stroke )
+    public void setStroke ( final Stroke stroke )
     {
         this.stroke = stroke;
+        fireRepaint ();
     }
 
     /**
@@ -205,7 +209,7 @@ public class BorderPainter<E extends JComponent> extends DefaultPainter<E>
      * @return preferred size required for proper painting of visual data provided by this painter
      */
     @Override
-    public Dimension getPreferredSize ( E c )
+    public Dimension getPreferredSize ( final E c )
     {
         return new Dimension ( Math.max ( width * 2, round * 2 ), Math.max ( width * 2, round * 2 ) );
     }
@@ -218,7 +222,7 @@ public class BorderPainter<E extends JComponent> extends DefaultPainter<E>
      * @return margin required for visual data provided by this painter
      */
     @Override
-    public Insets getMargin ( E c )
+    public Insets getMargin ( final E c )
     {
         Insets m = super.getMargin ( c );
         return new Insets ( m.top + width, m.left + width, m.bottom + width, m.right + width );
@@ -234,10 +238,10 @@ public class BorderPainter<E extends JComponent> extends DefaultPainter<E>
      * @param c      component to process
      */
     @Override
-    public void paint ( Graphics2D g2d, Rectangle bounds, E c )
+    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c )
     {
-        Object aa = LafUtils.setupAntialias ( g2d );
-        Stroke os = LafUtils.setupStroke ( g2d, stroke, stroke != null );
+        final Object aa = LafUtils.setupAntialias ( g2d );
+        final Stroke os = LafUtils.setupStroke ( g2d, stroke, stroke != null );
 
         g2d.setPaint ( color );
         g2d.draw ( getBorderShape ( bounds ) );
@@ -252,9 +256,9 @@ public class BorderPainter<E extends JComponent> extends DefaultPainter<E>
      * @param bounds limiting bounds
      * @return border shape for the specified limiting bounds
      */
-    protected RectangularShape getBorderShape ( Rectangle bounds )
+    protected RectangularShape getBorderShape ( final Rectangle bounds )
     {
-        double shear = width == 1 ? 0 : ( double ) width / 2;
+        final double shear = width == 1 ? 0 : ( double ) width / 2;
         if ( round > 0 )
         {
             return new RoundRectangle2D.Double ( bounds.x + shear, bounds.y + shear, bounds.width - shear * 2 - 1,

@@ -18,7 +18,7 @@
 package com.alee.extended.filechooser;
 
 import com.alee.extended.drag.FileDropHandler;
-import com.alee.extended.filefilter.DefaultFileFilter;
+import com.alee.extended.filefilter.AbstractFileFilter;
 import com.alee.extended.layout.HorizontalFlowLayout;
 import com.alee.laf.GlobalConstants;
 import com.alee.laf.StyleConstants;
@@ -75,7 +75,7 @@ public class WebPathField extends WebPanel
 
     protected static FileSystemView fsv = FileSystemView.getFileSystemView ();
 
-    protected DefaultFileFilter fileFilter = GlobalConstants.DIRECTORIES_FILTER;
+    protected AbstractFileFilter fileFilter = GlobalConstants.DIRECTORIES_FILTER;
 
     protected int preferredWidth = -1;
     protected boolean filesDropEnabled = true;
@@ -580,17 +580,17 @@ public class WebPathField extends WebPanel
         this.autocompleteEnabled = autocompleteEnabled;
     }
 
-    public DefaultFileFilter getFileFilter ()
+    public AbstractFileFilter getFileFilter ()
     {
         return fileFilter;
     }
 
-    public void setFileFilter ( DefaultFileFilter fileFilter )
+    public void setFileFilter ( AbstractFileFilter fileFilter )
     {
         setFileFilter ( fileFilter, true );
     }
 
-    public void setFileFilter ( DefaultFileFilter fileFilter, boolean updatePath )
+    public void setFileFilter ( AbstractFileFilter fileFilter, boolean updatePath )
     {
         this.fileFilter = fileFilter;
         if ( updatePath )

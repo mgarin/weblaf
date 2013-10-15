@@ -18,10 +18,12 @@
 package com.alee.laf.text;
 
 import com.alee.extended.painter.Painter;
+import com.alee.extended.painter.PainterSupport;
 import com.alee.laf.StyleConstants;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.utils.LafUtils;
 import com.alee.utils.SwingUtils;
+import com.alee.utils.swing.BorderMethods;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
@@ -38,7 +40,7 @@ import java.util.Map;
  * User: mgarin Date: 17.08.11 Time: 23:01
  */
 
-public class WebTextAreaUI extends BasicTextAreaUI
+public class WebTextAreaUI extends BasicTextAreaUI implements BorderMethods
 {
     private Painter painter = WebTextAreaStyle.painter;
 
@@ -67,6 +69,7 @@ public class WebTextAreaUI extends BasicTextAreaUI
         textComponent.setSelectedTextColor ( Color.BLACK );
         textComponent.setCaretColor ( Color.GRAY );
         textComponent.setMargin ( WebTextAreaStyle.margin );
+        PainterSupport.installPainter ( textComponent, this.painter );
 
         // Updating border
         updateBorder ();
@@ -101,7 +104,10 @@ public class WebTextAreaUI extends BasicTextAreaUI
     @Override
     public void uninstallUI ( JComponent c )
     {
-        JTextComponent component = getComponent ();
+        final JTextComponent component = getComponent ();
+
+        PainterSupport.uninstallPainter ( component, this.painter );
+
         component.removeFocusListener ( focusListener );
         component.removePropertyChangeListener ( WebLookAndFeel.COMPONENT_MARGIN_PROPERTY, marginChangeListener );
 
@@ -115,12 +121,20 @@ public class WebTextAreaUI extends BasicTextAreaUI
 
     public void setPainter ( Painter painter )
     {
+        final JTextComponent textComponent = getComponent ();
+        PainterSupport.uninstallPainter ( textComponent, this.painter );
+
         this.painter = painter;
-        getComponent ().setOpaque ( painter == null || painter.isOpaque ( getComponent () ) );
+        textComponent.setOpaque ( painter == null || painter.isOpaque ( textComponent ) );
+        PainterSupport.installPainter ( textComponent, this.painter );
         updateBorder ();
     }
 
-    private void updateBorder ()
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void updateBorder ()
     {
         JTextComponent component = getComponent ();
         if ( component != null )

@@ -21,6 +21,7 @@ import com.alee.laf.StyleConstants;
 import com.alee.utils.laf.FocusType;
 import com.alee.utils.laf.ShadeType;
 import com.alee.utils.ninepatch.NinePatchIcon;
+import com.alee.utils.swing.BorderMethods;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -1506,5 +1507,28 @@ public final class LafUtils
     public static int getTextCenterShearY ( FontMetrics fm )
     {
         return ( fm.getAscent () - fm.getLeading () - fm.getDescent () ) / 2;
+    }
+
+    /**
+     * Returns border methods for the specified component or null if custom WebLaF border is not supported.
+     *
+     * @param component component to process
+     * @return border methods
+     */
+    public static BorderMethods getBorderMethods ( final Component component )
+    {
+        if ( component instanceof BorderMethods )
+        {
+            return ( BorderMethods ) component;
+        }
+        else
+        {
+            final Object ui = ReflectUtils.callMethodSafely ( component, "getUI" );
+            if ( ui instanceof BorderMethods )
+            {
+                return ( BorderMethods ) ui;
+            }
+        }
+        return null;
     }
 }

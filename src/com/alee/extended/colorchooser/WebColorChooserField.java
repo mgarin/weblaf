@@ -18,7 +18,7 @@
 package com.alee.extended.colorchooser;
 
 import com.alee.extended.image.WebImage;
-import com.alee.extended.painter.DefaultPainter;
+import com.alee.extended.painter.AbstractPainter;
 import com.alee.laf.StyleConstants;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
@@ -268,7 +268,6 @@ public class WebColorChooserField extends WebTextField
      * Pipette chooser
      */
 
-
     private void updatePipette ()
     {
         if ( pipetteEnabled )
@@ -424,10 +423,13 @@ public class WebColorChooserField extends WebTextField
                             }
                         } );
 
-                        DefaultPainter<WebPanel> screenPainter = new DefaultPainter<WebPanel> ()
+                        final AbstractPainter<WebPanel> screenPainter = new AbstractPainter<WebPanel> ()
                         {
+                            /**
+                             * {@inheritDoc}
+                             */
                             @Override
-                            public void paint ( Graphics2D g2d, Rectangle bounds, WebPanel c )
+                            public void paint ( final Graphics2D g2d, final Rectangle bounds, final WebPanel c )
                             {
                                 if ( window.isShowing () && robot != null )
                                 {
@@ -491,16 +493,22 @@ public class WebColorChooserField extends WebTextField
                                 return 16;
                             }
                         } );
-                        info.setPainter ( new DefaultPainter<WebLabel> ()
+                        info.setPainter ( new AbstractPainter<WebLabel> ()
                         {
+                            /**
+                             * {@inheritDoc}
+                             */
                             @Override
-                            public Insets getMargin ( WebLabel c )
+                            public Insets getMargin ( final WebLabel c )
                             {
                                 return new Insets ( 0, 2, 2, 2 );
                             }
 
+                            /**
+                             * {@inheritDoc}
+                             */
                             @Override
-                            public void paint ( Graphics2D g2d, Rectangle bounds, WebLabel c )
+                            public void paint ( final Graphics2D g2d, final Rectangle bounds, final WebLabel c )
                             {
                                 g2d.setPaint ( Color.BLACK );
                                 g2d.drawRect ( bounds.x, bounds.y - 1, bounds.width - 1, bounds.height );

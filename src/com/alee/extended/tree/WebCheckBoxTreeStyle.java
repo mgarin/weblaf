@@ -26,6 +26,11 @@ package com.alee.extended.tree;
 public final class WebCheckBoxTreeStyle
 {
     /**
+     * Retu
+     */
+    public static boolean recursiveChecking = true;
+
+    /**
      * Gap between checkbox and actual tree renderer.
      */
     public static int checkBoxRendererGap = 0;

@@ -18,11 +18,13 @@
 package com.alee.laf.text;
 
 import com.alee.extended.painter.Painter;
+import com.alee.extended.painter.PainterSupport;
 import com.alee.laf.StyleConstants;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.utils.LafUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.laf.ShapeProvider;
+import com.alee.utils.swing.BorderMethods;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
@@ -41,7 +43,7 @@ import java.util.Map;
  * User: mgarin Date: 16.05.11 Time: 16:39
  */
 
-public class WebTextFieldUI extends BasicTextFieldUI implements ShapeProvider, SwingConstants
+public class WebTextFieldUI extends BasicTextFieldUI implements ShapeProvider, SwingConstants, BorderMethods
 {
     private JTextField textField = null;
 
@@ -105,6 +107,7 @@ public class WebTextFieldUI extends BasicTextFieldUI implements ShapeProvider, S
         textField.setSelectedTextColor ( Color.BLACK );
         textField.setCaretColor ( Color.GRAY );
         textField.setLayout ( new TextComponentLayout ( textField ) );
+        PainterSupport.installPainter ( textField, this.painter );
 
         // Updating border
         updateBorder ();
@@ -168,6 +171,8 @@ public class WebTextFieldUI extends BasicTextFieldUI implements ShapeProvider, S
     @Override
     public void uninstallUI ( JComponent c )
     {
+        PainterSupport.uninstallPainter ( textField, this.painter );
+
         textField.putClientProperty ( SwingUtils.HANDLES_ENABLE_STATE, null );
 
         textField.removeFocusListener ( focusListener );
@@ -451,8 +456,11 @@ public class WebTextFieldUI extends BasicTextFieldUI implements ShapeProvider, S
 
     public void setPainter ( Painter painter )
     {
+        PainterSupport.uninstallPainter ( textField, this.painter );
+
         this.painter = painter;
         getComponent ().setOpaque ( painter == null || painter.isOpaque ( textField ) );
+        PainterSupport.installPainter ( textField, this.painter );
         updateBorder ();
     }
 
@@ -478,7 +486,11 @@ public class WebTextFieldUI extends BasicTextFieldUI implements ShapeProvider, S
         }
     }
 
-    private void updateBorder ()
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void updateBorder ()
     {
         if ( textField != null )
         {

@@ -17,7 +17,7 @@
 
 package com.alee.extended.breadcrumb;
 
-import com.alee.extended.painter.DefaultPainter;
+import com.alee.extended.painter.AbstractPainter;
 import com.alee.laf.StyleConstants;
 import com.alee.utils.ColorUtils;
 import com.alee.utils.LafUtils;
@@ -32,41 +32,44 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * User: mgarin Date: 01.03.12 Time: 19:57
+ * @param <E> breadcrumb element type
+ * @author Mikle Garin
+ * @see AbstractPainter
+ * @see com.alee.extended.painter.Painter
  */
 
-public class BreadcrumbElementPainter<E extends JComponent> extends DefaultPainter<E>
+public class BreadcrumbElementPainter<E extends JComponent> extends AbstractPainter<E>
 {
-    private static final float[] progressFractions = new float[]{ 0f, 0.5f, 1f };
-    private static final Color progressSideColor = new Color ( 255, 255, 255, 0 );
-    private static final Color[] progressFillColors = new Color[]{ progressSideColor, new Color ( 0, 255, 0, 100 ), progressSideColor };
-    private static final Color[] selectedProgressFillColors =
+    protected static final float[] progressFractions = new float[]{ 0f, 0.5f, 1f };
+    protected static final Color progressSideColor = new Color ( 255, 255, 255, 0 );
+    protected static final Color[] progressFillColors = new Color[]{ progressSideColor, new Color ( 0, 255, 0, 100 ), progressSideColor };
+    protected static final Color[] selectedProgressFillColors =
             new Color[]{ progressSideColor, new Color ( 0, 255, 0, 100 ), progressSideColor };
-    //    private static final Color[] selectedProgressFillColors =
+    //    protected static final Color[] selectedProgressFillColors =
     //            new Color[]{ StyleConstants.transparent, Color.WHITE, StyleConstants.transparent };
-    private static final Color[] progressLineColors = new Color[]{ progressSideColor, Color.GRAY, progressSideColor };
+    protected static final Color[] progressLineColors = new Color[]{ progressSideColor, Color.GRAY, progressSideColor };
 
-    private static final float[] shadeFractions = new float[]{ 0f, 0.25f, 0.75f, 1f };
-    private static final Color[] shadeColors =
+    protected static final float[] shadeFractions = new float[]{ 0f, 0.25f, 0.75f, 1f };
+    protected static final Color[] shadeColors =
             new Color[]{ StyleConstants.transparent, StyleConstants.shadeColor, StyleConstants.shadeColor, StyleConstants.transparent };
 
-    private Map<String, GeneralPath> borderShapeCache = new HashMap<String, GeneralPath> ();
-    private Map<String, Shape> fillShapeCache = new HashMap<String, Shape> ();
+    protected Map<String, GeneralPath> borderShapeCache = new HashMap<String, GeneralPath> ();
+    protected Map<String, Shape> fillShapeCache = new HashMap<String, Shape> ();
 
-    private int overlap = WebBreadcrumbStyle.elementOverlap;
+    protected int overlap = WebBreadcrumbStyle.elementOverlap;
 
-    private int shadeWidth = WebBreadcrumbStyle.shadeWidth;
-    private Color borderColor = WebBreadcrumbStyle.borderColor;
-    private Color disabledBorderColor = WebBreadcrumbStyle.disabledBorderColor;
+    protected int shadeWidth = WebBreadcrumbStyle.shadeWidth;
+    protected Color borderColor = WebBreadcrumbStyle.borderColor;
+    protected Color disabledBorderColor = WebBreadcrumbStyle.disabledBorderColor;
 
-    private Color bgTop = WebBreadcrumbStyle.bgTop;
-    private Color bgBottom = WebBreadcrumbStyle.bgBottom;
-    private Color selectedBgColor = WebBreadcrumbStyle.selectedBgColor;
+    protected Color bgTop = WebBreadcrumbStyle.bgTop;
+    protected Color bgBottom = WebBreadcrumbStyle.bgBottom;
+    protected Color selectedBgColor = WebBreadcrumbStyle.selectedBgColor;
 
-    private BreadcrumbElementType type = BreadcrumbElementType.middle;
+    protected BreadcrumbElementType type = BreadcrumbElementType.middle;
 
-    private boolean showProgress = false;
-    private float progress = 0f;
+    protected boolean showProgress = false;
+    protected float progress = 0f;
 
     public BreadcrumbElementPainter ()
     {
@@ -82,6 +85,7 @@ public class BreadcrumbElementPainter<E extends JComponent> extends DefaultPaint
     {
         this.overlap = overlap;
         borderShapeCache.clear ();
+        fireUpdate ();
     }
 
     public BreadcrumbElementType getType ()
@@ -93,6 +97,7 @@ public class BreadcrumbElementPainter<E extends JComponent> extends DefaultPaint
     {
         this.type = type;
         borderShapeCache.clear ();
+        fireUpdate ();
     }
 
     public boolean isShowProgress ()
@@ -103,6 +108,7 @@ public class BreadcrumbElementPainter<E extends JComponent> extends DefaultPaint
     public void setShowProgress ( boolean showProgress )
     {
         this.showProgress = showProgress;
+        fireRepaint ();
     }
 
     public float getProgress ()
@@ -113,8 +119,12 @@ public class BreadcrumbElementPainter<E extends JComponent> extends DefaultPaint
     public void setProgress ( float progress )
     {
         this.progress = Math.min ( 1f, progress );
+        fireRepaint ();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Insets getMargin ( E c )
     {
@@ -139,6 +149,9 @@ public class BreadcrumbElementPainter<E extends JComponent> extends DefaultPaint
         return new Insets ( 0, left, 0, right );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void paint ( Graphics2D g2d, Rectangle bounds, E c )
     {
@@ -197,14 +210,6 @@ public class BreadcrumbElementPainter<E extends JComponent> extends DefaultPaint
             // Background
             g2d.setPaint ( selected ? selectedBgColor : new GradientPaint ( 0, 0, bgTop, 0, c.getHeight (), bgBottom ) );
             g2d.fill ( fs );
-            //            if ( br > 0 )
-            //            {
-            //                g2d.fillRoundRect ( ltr ? -br : 0, 0, c.getWidth () + br, c.getHeight (), br * 2, br * 2 );
-            //            }
-            //            else
-            //            {
-            //                g2d.fillRect ( 0, 0, c.getWidth (), c.getHeight () );
-            //            }
         }
 
         // Progress background
@@ -228,7 +233,7 @@ public class BreadcrumbElementPainter<E extends JComponent> extends DefaultPaint
         LafUtils.restoreAntialias ( g2d, old );
     }
 
-    private LinearGradientPaint getProgressPaint ( E c )
+    protected LinearGradientPaint getProgressPaint ( E c )
     {
         boolean pressed = false;
         if ( c instanceof AbstractButton )
@@ -240,7 +245,7 @@ public class BreadcrumbElementPainter<E extends JComponent> extends DefaultPaint
                 pressed ? selectedProgressFillColors : progressFillColors );
     }
 
-    private LinearGradientPaint getProgressLinePaint ( E c )
+    protected LinearGradientPaint getProgressLinePaint ( E c )
     {
         return new LinearGradientPaint ( 0, 0, 0, c.getHeight (), progressFractions, progressLineColors );
     }
@@ -258,7 +263,7 @@ public class BreadcrumbElementPainter<E extends JComponent> extends DefaultPaint
         return bs;
     }
 
-    private GeneralPath getBorderShapeImpl ( E c, boolean ltr )
+    protected GeneralPath getBorderShapeImpl ( E c, boolean ltr )
     {
         GeneralPath gp = new GeneralPath ( GeneralPath.WIND_EVEN_ODD );
         if ( ltr )
@@ -289,7 +294,7 @@ public class BreadcrumbElementPainter<E extends JComponent> extends DefaultPaint
         return fs;
     }
 
-    private Shape getFillShapeImpl ( E c, boolean ltr, int round )
+    protected Shape getFillShapeImpl ( E c, boolean ltr, int round )
     {
         final int width = c.getWidth ();
         final int height = c.getHeight ();
@@ -381,7 +386,7 @@ public class BreadcrumbElementPainter<E extends JComponent> extends DefaultPaint
         }
     }
 
-    private boolean isEncloseLastElement ( E c )
+    protected boolean isEncloseLastElement ( E c )
     {
         return c.getParent () != null && c.getParent () instanceof WebBreadcrumb &&
                 ( ( WebBreadcrumb ) c.getParent () ).isEncloseLastElement ();

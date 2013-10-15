@@ -17,7 +17,7 @@
 
 package com.alee.utils.swing;
 
-import com.alee.extended.filefilter.DefaultFileFilter;
+import com.alee.extended.filefilter.AbstractFileFilter;
 import com.alee.laf.combobox.WebComboBoxCellRenderer;
 import com.alee.laf.label.WebLabel;
 
@@ -48,10 +48,10 @@ public class DefaultFileFilterListCellRenderer extends WebComboBoxCellRenderer
     @Override
     public Component getListCellRendererComponent ( JList list, Object value, int index, boolean isSelected, boolean cellHasFocus )
     {
-        final DefaultFileFilter defaultFileFilter = ( DefaultFileFilter ) value;
+        final AbstractFileFilter abstractFileFilter = ( AbstractFileFilter ) value;
         final WebLabel renderer = ( WebLabel ) super.getListCellRendererComponent ( list, "", index, isSelected, cellHasFocus );
-        renderer.setIcon ( defaultFileFilter.getIcon () );
-        renderer.setText ( defaultFileFilter.getDescription () );
+        renderer.setIcon ( abstractFileFilter.getIcon () );
+        renderer.setText ( abstractFileFilter.getDescription () );
         return renderer;
     }
 }

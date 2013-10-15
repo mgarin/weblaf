@@ -20,6 +20,7 @@ package com.alee.extended.tree;
 import com.alee.extended.checkbox.CheckState;
 
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreeNode;
 import java.util.*;
 
 /**
@@ -75,7 +76,7 @@ public class DefaultTreeCheckingModel<E extends DefaultMutableTreeNode> implemen
      * {@inheritDoc}
      */
     @Override
-    public List<E> getCheckedNodes ()
+    public List<E> getCheckedNodes ( final boolean optimize )
     {
         return getAllNodesForState ( CheckState.checked );
     }
@@ -120,7 +121,7 @@ public class DefaultTreeCheckingModel<E extends DefaultMutableTreeNode> implemen
         {
             setCheckedImpl ( node, true, toUpdate );
         }
-        checkBoxTree.repaint ( toUpdate );
+        repaintTreeNodes ( toUpdate );
     }
 
     /**
@@ -134,7 +135,7 @@ public class DefaultTreeCheckingModel<E extends DefaultMutableTreeNode> implemen
         {
             setCheckedImpl ( node, false, toUpdate );
         }
-        checkBoxTree.repaint ( toUpdate );
+        repaintTreeNodes ( toUpdate );
     }
 
     /**
@@ -155,7 +156,7 @@ public class DefaultTreeCheckingModel<E extends DefaultMutableTreeNode> implemen
     {
         final List<E> toUpdate = new ArrayList<E> ();
         setCheckedImpl ( node, checked, toUpdate );
-        checkBoxTree.repaint ( toUpdate );
+        repaintVisibleTreeRect ();
     }
 
     /**
@@ -174,19 +175,13 @@ public class DefaultTreeCheckingModel<E extends DefaultMutableTreeNode> implemen
         // Updating node if check state has actually changed
         if ( oldState != newState )
         {
-
             // Changing node check state
             updateNodeState ( node, newState, toUpdate );
 
+            // Updating parent and child node states
             if ( checkBoxTree.isRecursiveCheckingEnabled () )
             {
-                // Changing node childs check state
-                if ( node.getChildCount () > 0 )
-                {
-                    updateChildNodesState ( node, newState, toUpdate );
-                }
-
-                // Changing node parents check state
+                updateChildNodesState ( node, newState, toUpdate );
                 updateParentStates ( node, toUpdate );
             }
         }
@@ -200,45 +195,54 @@ public class DefaultTreeCheckingModel<E extends DefaultMutableTreeNode> implemen
      */
     protected void updateParentStates ( final E node, final List<E> toUpdate )
     {
-        final E parent = ( E ) node.getParent ();
-        if ( parent == null )
+        // Updating all parent node states
+        E parent = ( E ) node.getParent ();
+        while ( parent != null )
         {
-            return;
-        }
-
-        boolean partially = false;
-        boolean checked = true;
-        for ( int i = 0; i < parent.getChildCount (); i++ )
-        {
-            final E child = ( E ) parent.getChildAt ( i );
-            switch ( getCheckState ( child ) )
+            // Updating parent state
+            CheckState state = CheckState.unchecked;
+            boolean hasChecked = false;
+            boolean hasUnchecked = false;
+            for ( int i = 0; i < parent.getChildCount (); i++ )
             {
-                case unchecked:
-                    checked = false;
+                final CheckState checkState = getCheckState ( ( E ) parent.getChildAt ( i ) );
+                if ( checkState == CheckState.mixed )
+                {
+                    state = CheckState.mixed;
                     break;
-                case checked:
-                    partially = true;
-                    break;
-                case mixed:
-                    checked = false;
-                    partially = true;
-                    break;
+                }
+                else if ( checkState == CheckState.checked )
+                {
+                    hasChecked = true;
+                    if ( hasUnchecked )
+                    {
+                        state = CheckState.mixed;
+                        break;
+                    }
+                    else
+                    {
+                        state = CheckState.checked;
+                    }
+                }
+                else if ( checkState == CheckState.unchecked )
+                {
+                    hasUnchecked = true;
+                    if ( hasChecked )
+                    {
+                        state = CheckState.mixed;
+                        break;
+                    }
+                    else
+                    {
+                        state = CheckState.unchecked;
+                    }
+                }
             }
-        }
-        if ( checked )
-        {
-            updateNodeState ( parent, CheckState.checked, toUpdate );
-        }
-        else if ( partially )
-        {
-            updateNodeState ( parent, CheckState.mixed, toUpdate );
-        }
-        else
-        {
-            updateNodeState ( parent, CheckState.unchecked, toUpdate );
-        }
+            updateNodeState ( parent, state, toUpdate );
 
-        updateParentStates ( parent, toUpdate );
+            // Moving upstairs
+            parent = ( E ) parent.getParent ();
+        }
     }
 
     /**
@@ -254,10 +258,7 @@ public class DefaultTreeCheckingModel<E extends DefaultMutableTreeNode> implemen
         {
             final E childNode = ( E ) node.getChildAt ( i );
             updateNodeState ( childNode, newState, toUpdate );
-            if ( childNode.getChildCount () > 0 )
-            {
-                updateChildNodesState ( childNode, newState, toUpdate );
-            }
+            updateChildNodesState ( childNode, newState, toUpdate );
         }
     }
 
@@ -318,7 +319,7 @@ public class DefaultTreeCheckingModel<E extends DefaultMutableTreeNode> implemen
     public void uncheckAll ()
     {
         nodeCheckStates.clear ();
-        checkBoxTree.repaint ();
+        repaintVisibleTreeRect ();
     }
 
     /**
@@ -332,7 +333,7 @@ public class DefaultTreeCheckingModel<E extends DefaultMutableTreeNode> implemen
         {
             nodeCheckStates.put ( node, CheckState.checked );
         }
-        checkBoxTree.repaint ();
+        repaintVisibleTreeRect ();
     }
 
     /**
@@ -354,5 +355,123 @@ public class DefaultTreeCheckingModel<E extends DefaultMutableTreeNode> implemen
             default:
                 return CheckState.unchecked;
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void checkingModeChanged ( final boolean recursive )
+    {
+        final List<E> toUpdate = new ArrayList<E> ();
+        if ( recursive )
+        {
+            // Retrieving all checked nodes
+            final List<E> checked = new ArrayList<E> ( nodeCheckStates.size () );
+            for ( final Map.Entry<E, CheckState> entry : nodeCheckStates.entrySet () )
+            {
+                if ( entry.getValue () == CheckState.checked )
+                {
+                    checked.add ( entry.getKey () );
+                }
+            }
+
+            // Filtering out child nodes under other checked nodes
+            // We don't need to update them because they will get checked in the process
+            filterOutChildNodes ( checked );
+
+            // Updating node states
+            for ( final E node : checked )
+            {
+                updateParentStates ( node, toUpdate );
+                updateChildNodesState ( node, CheckState.checked, toUpdate );
+            }
+        }
+        else
+        {
+            final Iterator<Map.Entry<E, CheckState>> iterator = nodeCheckStates.entrySet ().iterator ();
+            while ( iterator.hasNext () )
+            {
+                final Map.Entry<E, CheckState> entry = iterator.next ();
+                if ( entry.getValue () == CheckState.mixed )
+                {
+                    toUpdate.add ( entry.getKey () );
+                    iterator.remove ();
+                }
+            }
+        }
+        repaintTreeNodes ( toUpdate );
+    }
+
+    /**
+     * Filters out all nodes which are childs of other nodes presented in the list.
+     *
+     * @param nodes list of nodes to filter
+     */
+    protected void filterOutChildNodes ( final List<E> nodes )
+    {
+        final Iterator<E> checkedIterator = nodes.iterator ();
+        while ( checkedIterator.hasNext () )
+        {
+            final E node = checkedIterator.next ();
+            for ( final E otherNode : nodes )
+            {
+                if ( isChildNode ( node, otherNode ) )
+                {
+                    checkedIterator.remove ();
+                    break;
+                }
+            }
+        }
+    }
+
+    /**
+     * Returns whether the specified node is a child of another node or some of its child nodes or not.
+     *
+     * @param node    node to process
+     * @param childOf node to compare parent nodes with
+     * @return true if the specified node is a child of another node or some of its child nodes, false otherwise
+     */
+    protected boolean isChildNode ( final E node, final E childOf )
+    {
+        if ( node == childOf )
+        {
+            return false;
+        }
+        else if ( childOf == null )
+        {
+            return true;
+        }
+        else
+        {
+            TreeNode parent = node.getParent ();
+            while ( parent != null )
+            {
+                if ( parent == childOf )
+                {
+                    return true;
+                }
+                parent = parent.getParent ();
+            }
+            return false;
+        }
+    }
+
+    /**
+     * Repaints visible tree rect.
+     */
+    protected void repaintVisibleTreeRect ()
+    {
+        checkBoxTree.repaint ( checkBoxTree.getVisibleRect () );
+    }
+
+    /**
+     * Repaints specified tree nodes.
+     *
+     * @param nodes tree nodes to repaint
+     */
+    protected void repaintTreeNodes ( final List<E> nodes )
+    {
+        checkBoxTree.repaint ( nodes );
     }
 }

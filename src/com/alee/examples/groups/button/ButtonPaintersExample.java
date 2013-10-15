@@ -20,7 +20,7 @@ package com.alee.examples.groups.button;
 import com.alee.examples.WebLookAndFeelDemo;
 import com.alee.examples.content.DefaultExample;
 import com.alee.extended.label.WebLinkLabel;
-import com.alee.extended.painter.DefaultPainter;
+import com.alee.extended.painter.AbstractPainter;
 import com.alee.extended.painter.Painter;
 import com.alee.extended.panel.GroupPanel;
 import com.alee.laf.button.WebButton;
@@ -32,23 +32,34 @@ import java.awt.*;
 import java.awt.geom.RoundRectangle2D;
 
 /**
- * User: mgarin Date: 06.06.12 Time: 17:59
+ * Button painters example.
+ *
+ * @author Mikle Garin
  */
 
 public class ButtonPaintersExample extends DefaultExample
 {
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getTitle ()
     {
         return "Button painter";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getDescription ()
     {
         return "Custom Sea-glass button painter";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
@@ -80,49 +91,56 @@ public class ButtonPaintersExample extends DefaultExample
         return new GroupPanel ( false, new GroupPanel ( 4, button1, button2, button3 ), seaGlassLink );
     }
 
-    public static class SeaGlassButtonPainter extends DefaultPainter<AbstractButton>
+    /**
+     * Custom SeaGlass button painter.
+     */
+    public static class SeaGlassButtonPainter extends AbstractPainter<AbstractButton>
     {
-        // Border colors
-        private Color topBorder = new Color ( 140, 176, 220 );
-        private Color bottomBorder = new Color ( 94, 138, 188 );
-        private Color topPressedBorder = new Color ( 83, 129, 186 );
-        private Color bottomPressedBorder = new Color ( 69, 124, 186 );
-        private Color topDisabledBorder = new Color ( 190, 207, 230 );
-        private Color bottomDisabledBorder = new Color ( 171, 192, 217 );
-        private float[] borderFractions = { 0f, 1f };
+        /**
+         * Border colors.
+         */
+        protected Color topBorder = new Color ( 140, 176, 220 );
+        protected Color bottomBorder = new Color ( 94, 138, 188 );
+        protected Color topPressedBorder = new Color ( 83, 129, 186 );
+        protected Color bottomPressedBorder = new Color ( 69, 124, 186 );
+        protected Color topDisabledBorder = new Color ( 190, 207, 230 );
+        protected Color bottomDisabledBorder = new Color ( 171, 192, 217 );
+        protected float[] borderFractions = { 0f, 1f };
 
-        // Background colors
-        private Color sideBg = Color.WHITE;
-        private Color middleBg = new Color ( 216, 233, 247 );
-        private Color sidePressedBg = new Color ( 174, 190, 206 );
-        private Color middlePressedBg = new Color ( 112, 146, 180 );
-        private Color sideSelectedBg = new Color ( 190, 206, 221 );
-        private Color middleSelectedBg = new Color ( 135, 174, 207 );
-        private Color sideDisabledBg = Color.WHITE;
-        private Color middleDisabledBg = new Color ( 242, 248, 252 );
-        private float[] bgFractions = { 0f, 0.55f, 1f };
+        /**
+         * Background colors.
+         */
+        protected Color sideBg = Color.WHITE;
+        protected Color middleBg = new Color ( 216, 233, 247 );
+        protected Color sidePressedBg = new Color ( 174, 190, 206 );
+        protected Color middlePressedBg = new Color ( 112, 146, 180 );
+        protected Color sideSelectedBg = new Color ( 190, 206, 221 );
+        protected Color middleSelectedBg = new Color ( 135, 174, 207 );
+        protected Color sideDisabledBg = Color.WHITE;
+        protected Color middleDisabledBg = new Color ( 242, 248, 252 );
+        protected float[] bgFractions = { 0f, 0.55f, 1f };
 
-        // Focus color
-        private Color focus = new Color ( 122, 166, 205, 200 );
+        /**
+         * Focus color.
+         */
+        protected Color focus = new Color ( 122, 166, 205, 200 );
 
-        // Margin
-        private Insets margin = new Insets ( 5, 5, 5, 5 );
-
+        /**
+         * Constructs new SeaGlass button painter.
+         */
         public SeaGlassButtonPainter ()
         {
             super ();
+            margin = new Insets ( 5, 5, 5, 5 );
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
-        public Insets getMargin ( AbstractButton c )
+        public void paint ( final Graphics2D g2d, final Rectangle bounds, final AbstractButton c )
         {
-            return margin;
-        }
-
-        @Override
-        public void paint ( Graphics2D g2d, Rectangle bounds, AbstractButton c )
-        {
-            ButtonModel buttonModel = c.getModel ();
+            final ButtonModel buttonModel = c.getModel ();
 
             // Focus
             if ( c.isFocusOwner () )
@@ -139,18 +157,25 @@ public class ButtonPaintersExample extends DefaultExample
             g2d.drawRoundRect ( 2, 2, c.getWidth () - 5, c.getHeight () - 5, 6, 6 );
         }
 
-        private Paint getBackgroundPaint ( AbstractButton c, ButtonModel buttonModel )
+        /**
+         * Returns background paint.
+         *
+         * @param button button
+         * @param model  button model
+         * @return background paint
+         */
+        protected Paint getBackgroundPaint ( final AbstractButton button, final ButtonModel model )
         {
-            Color[] colors;
-            if ( !c.isEnabled () )
+            final Color[] colors;
+            if ( !button.isEnabled () )
             {
                 colors = new Color[]{ sideDisabledBg, middleDisabledBg, sideDisabledBg };
             }
-            else if ( buttonModel.isPressed () )
+            else if ( model.isPressed () )
             {
                 colors = new Color[]{ sidePressedBg, middlePressedBg, sidePressedBg };
             }
-            else if ( buttonModel.isSelected () )
+            else if ( model.isSelected () )
             {
                 colors = new Color[]{ sideSelectedBg, middleSelectedBg, sideSelectedBg };
             }
@@ -158,17 +183,24 @@ public class ButtonPaintersExample extends DefaultExample
             {
                 colors = new Color[]{ sideBg, middleBg, sideBg };
             }
-            return new LinearGradientPaint ( 0, 2, 0, c.getHeight () - 2, bgFractions, colors );
+            return new LinearGradientPaint ( 0, 2, 0, button.getHeight () - 2, bgFractions, colors );
         }
 
-        private Paint getBorderPaint ( AbstractButton c, ButtonModel buttonModel )
+        /**
+         * Returns border paint.
+         *
+         * @param button button
+         * @param model  button model
+         * @return border paint
+         */
+        protected Paint getBorderPaint ( final AbstractButton button, final ButtonModel model )
         {
-            Color[] colors;
-            if ( !c.isEnabled () )
+            final Color[] colors;
+            if ( !button.isEnabled () )
             {
                 colors = new Color[]{ topDisabledBorder, bottomDisabledBorder };
             }
-            else if ( buttonModel.isPressed () || buttonModel.isSelected () )
+            else if ( model.isPressed () || model.isSelected () )
             {
                 colors = new Color[]{ topPressedBorder, bottomPressedBorder };
             }
@@ -176,7 +208,7 @@ public class ButtonPaintersExample extends DefaultExample
             {
                 colors = new Color[]{ topBorder, bottomBorder };
             }
-            return new LinearGradientPaint ( 0, 2, 0, c.getHeight () - 2, borderFractions, colors );
+            return new LinearGradientPaint ( 0, 2, 0, button.getHeight () - 2, borderFractions, colors );
         }
     }
 }

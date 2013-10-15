@@ -18,7 +18,7 @@
 package com.alee.extended.panel;
 
 import com.alee.extended.layout.ComponentPanelLayout;
-import com.alee.extended.painter.DefaultPainter;
+import com.alee.extended.painter.AbstractPainter;
 import com.alee.laf.StyleConstants;
 import com.alee.laf.panel.WebPanel;
 import com.alee.managers.focus.DefaultFocusTracker;
@@ -477,18 +477,30 @@ public class WebComponentPanel extends WebPanel
         }
     }
 
-    public class WebSelectablePanelPainter extends DefaultPainter<WebSelectablePanel>
+    /**
+     * Custom painter for selectable panels.
+     */
+    public class WebSelectablePanelPainter extends AbstractPainter<WebSelectablePanel>
     {
-        private float[] fractions = { 0f, 0.25f, 0.75f, 1f };
-        private Color[] lightColors = { StyleConstants.transparent, Color.WHITE, Color.WHITE, StyleConstants.transparent };
-        private Color[] darkColors = { StyleConstants.transparent, Color.GRAY, Color.GRAY, StyleConstants.transparent };
+        /**
+         * Style settings.
+         */
+        protected float[] fractions = { 0f, 0.25f, 0.75f, 1f };
+        protected Color[] lightColors = { StyleConstants.transparent, Color.WHITE, Color.WHITE, StyleConstants.transparent };
+        protected Color[] darkColors = { StyleConstants.transparent, Color.GRAY, Color.GRAY, StyleConstants.transparent };
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public boolean isOpaque ( WebSelectablePanel c )
         {
             return true;
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public void paint ( Graphics2D g2d, Rectangle bounds, WebSelectablePanel panel )
         {

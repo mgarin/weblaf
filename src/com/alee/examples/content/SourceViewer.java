@@ -58,10 +58,7 @@ import com.alee.utils.reflection.JarEntry;
 import com.alee.utils.reflection.JarEntryType;
 import com.alee.utils.reflection.JarStructure;
 import com.alee.utils.swing.WebTimer;
-import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
-import org.fife.ui.rsyntaxtextarea.RSyntaxTextAreaHighlighter;
-import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
-import org.fife.ui.rsyntaxtextarea.Theme;
+import org.fife.ui.rsyntaxtextarea.*;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
 import javax.swing.*;
@@ -157,7 +154,13 @@ public class SourceViewer extends WebPanel
                 synchronized ( activeEditorsLock )
                 {
                     // Removing opened editor
-                    activeEditors.remove ( entry );
+                    final RSyntaxTextArea removed = activeEditors.remove ( entry );
+
+                    // If it was code editor - cleanup its resources
+                    if ( removed != null )
+                    {
+                        ( ( CodeLinkGenerator ) removed.getLinkGenerator () ).destroy ();
+                    }
                 }
                 updateClassPath ( viewTabbedPane.getSelectedEntry (), false );
             }
@@ -927,20 +930,10 @@ public class SourceViewer extends WebPanel
                 source.setAntiAliasingEnabled ( true );
                 source.setUseFocusableTips ( true );
                 source.setTabSize ( 4 );
-                // source.setLineWrap ( true );
-                // source.setWrapStyleWord ( true );
                 source.setCodeFoldingEnabled ( allowCodeFolding.isSelected () );
                 source.setPaintTabLines ( paintTabLines.isSelected () );
                 source.setWhitespaceVisible ( showWhitespaces.isSelected () );
                 source.setEOLMarkersVisible ( showEol.isSelected () );
-                source.addHyperlinkListener ( new HyperlinkListener ()
-                {
-                    @Override
-                    public void hyperlinkUpdate ( HyperlinkEvent e )
-                    {
-                        WebUtils.browseSiteSafely ( e.getURL ().toExternalForm () );
-                    }
-                } );
                 ( ( RSyntaxTextAreaHighlighter ) source.getHighlighter () ).setDrawsLayeredHighlights ( false );
 
                 // Source code
@@ -948,29 +941,8 @@ public class SourceViewer extends WebPanel
                 source.setCaretPosition ( 0 );
 
                 // "Jump to source"-like action
-                source.addMouseListener ( new MouseAdapter ()
-                {
-                    @Override
-                    public void mousePressed ( MouseEvent e )
-                    {
-                        // todo Fix when clicked in class "MyName" on string "MyName"
-                        // Additional feature to dive into related classes
-                        if ( SwingUtilities.isMiddleMouseButton ( e ) || SwingUtils.isCtrl ( e ) && SwingUtilities.isLeftMouseButton ( e ) )
-                        {
-                            int pos = source.getUI ().viewToModel ( source, e.getPoint () );
-                            String word = TextUtils.getWord ( source.getText (), pos );
-                            if ( word != null )
-                            {
-                                JarEntry classByName = jarStructure.findEntryByName ( word );
-                                if ( classByName != null && ( classByName.getType ().equals ( JarEntryType.classEntry ) ||
-                                        classByName.getType ().equals ( JarEntryType.javaEntry ) ) )
-                                {
-                                    updateClassPath ( classByName, true );
-                                }
-                            }
-                        }
-                    }
-                } );
+                source.setHyperlinksEnabled ( true );
+                source.setLinkGenerator ( new CodeLinkGenerator ( entry ) );
 
                 // Saving opened editor
                 synchronized ( activeEditorsLock )
@@ -1080,5 +1052,95 @@ public class SourceViewer extends WebPanel
     public void removeViewListener ( ViewListener listener )
     {
         this.viewTabbedPane.removeViewListener ( listener );
+    }
+
+    protected class CodeLinkGenerator implements LinkGenerator
+    {
+        /**
+         * Cached link generation results.
+         */
+        protected Map<Dimension, LinkGeneratorResult> results = new HashMap<Dimension, LinkGeneratorResult> ();
+
+        /**
+         * Entry displayed in the editor to which this link generator is attached.
+         */
+        protected JarEntry entry;
+
+        /**
+         * Constructs new code link generator for the specified jar entry.
+         *
+         * @param entry jar entry
+         */
+        public CodeLinkGenerator ( final JarEntry entry )
+        {
+            super ();
+            this.entry = entry;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public LinkGeneratorResult isLinkAtOffset ( final RSyntaxTextArea source, final int pos )
+        {
+            final String code = source.getText ();
+            final int wordStart = TextUtils.getWordStart ( code, pos );
+            final int wordEnd = TextUtils.getWordEnd ( code, pos );
+            final String word = code.substring ( wordStart, wordEnd );
+            final Dimension key = new Dimension ( wordStart, wordEnd );
+
+            final LinkGeneratorResult value;
+            if ( results.containsKey ( key ) )
+            {
+                value = results.get ( key );
+            }
+            else
+            {
+                if ( word != null )
+                {
+                    final JarEntry classByName = jarStructure.findEntryByName ( word );
+                    if ( classByName != null && ( classByName.getType ().equals ( JarEntryType.classEntry ) ||
+                            classByName.getType ().equals ( JarEntryType.javaEntry ) ) && classByName != entry )
+                    {
+                        System.out.println ( "Generated" );
+                        value = new LinkGeneratorResult ()
+                        {
+                            @Override
+                            public HyperlinkEvent execute ()
+                            {
+                                System.out.println ( "Executed" );
+                                updateClassPath ( classByName, true );
+                                return new HyperlinkEvent ( this, HyperlinkEvent.EventType.EXITED, null );
+                            }
+
+                            @Override
+                            public int getSourceOffset ()
+                            {
+                                return wordStart;
+                            }
+                        };
+                    }
+                    else
+                    {
+                        value = null;
+                    }
+                }
+                else
+                {
+                    value = null;
+                }
+                results.put ( key, value );
+            }
+            return value;
+        }
+
+        /**
+         * Clears link search cache.
+         */
+        public void destroy ()
+        {
+            entry = null;
+            results.clear ();
+        }
     }
 }

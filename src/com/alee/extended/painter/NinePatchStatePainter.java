@@ -30,14 +30,21 @@ import java.util.Map;
  * This painter class allows you to specify multiply 9-patch images for different component states.
  * By default there is support for some standard Swing component states like buttons.
  *
+ * @param <E> component type
  * @author Mikle Garin
  * @see ComponentState
  * @see NinePatchIcon
  * @see com.alee.extended.painter.NinePatchIconPainter
+ * @see AbstractPainter
+ * @see Painter
  */
 
-public class NinePatchStatePainter<E extends JComponent> extends DefaultPainter<E>
+public class NinePatchStatePainter<E extends JComponent> extends AbstractPainter<E>
 {
+    /**
+     * todo 1. Move each component support to separate classes
+     */
+
     /**
      * Map containing separate 9-patch icons for different component states.
      */
@@ -55,7 +62,7 @@ public class NinePatchStatePainter<E extends JComponent> extends DefaultPainter<
     /**
      * Constructs new 9-patch state painter with specified states map.
      */
-    public NinePatchStatePainter ( Map<String, NinePatchIcon> stateIcons )
+    public NinePatchStatePainter ( final Map<String, NinePatchIcon> stateIcons )
     {
         super ();
         this.stateIcons = stateIcons;
@@ -76,9 +83,10 @@ public class NinePatchStatePainter<E extends JComponent> extends DefaultPainter<
      *
      * @param stateIcons states map
      */
-    public void setStateIcons ( Map<String, NinePatchIcon> stateIcons )
+    public void setStateIcons ( final Map<String, NinePatchIcon> stateIcons )
     {
         this.stateIcons = stateIcons;
+        fireUpdate ();
     }
 
     /**
@@ -87,9 +95,10 @@ public class NinePatchStatePainter<E extends JComponent> extends DefaultPainter<
      * @param state         state to add
      * @param ninePatchIcon 9-patch icon
      */
-    public void addStateIcon ( String state, NinePatchIcon ninePatchIcon )
+    public void addStateIcon ( final String state, final NinePatchIcon ninePatchIcon )
     {
         stateIcons.put ( state, ninePatchIcon );
+        fireUpdate ();
     }
 
     /**
@@ -97,9 +106,10 @@ public class NinePatchStatePainter<E extends JComponent> extends DefaultPainter<
      *
      * @param state state to remove
      */
-    public void removeStateIcon ( String state )
+    public void removeStateIcon ( final String state )
     {
         stateIcons.remove ( state );
+        fireUpdate ();
     }
 
     /**
@@ -116,13 +126,12 @@ public class NinePatchStatePainter<E extends JComponent> extends DefaultPainter<
      * {@inheritDoc}
      */
     @Override
-    public void paint ( Graphics2D g2d, Rectangle bounds, E c )
+    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c )
     {
         if ( hasStateIcons () && c != null )
         {
-            // todo Move each component support to outer classes
             // Current state icon retrieval
-            NinePatchIcon stateIcon;
+            final NinePatchIcon stateIcon;
             if ( c instanceof AbstractButton )
             {
                 // Button component
@@ -149,7 +158,7 @@ public class NinePatchStatePainter<E extends JComponent> extends DefaultPainter<
             // Draw focus
             if ( isFocused ( c ) )
             {
-                NinePatchIcon focusIcon = getExactStateIcon ( ComponentState.focused );
+                final NinePatchIcon focusIcon = getExactStateIcon ( ComponentState.focused );
                 if ( focusIcon != null )
                 {
                     focusIcon.setComponent ( c );
@@ -165,7 +174,7 @@ public class NinePatchStatePainter<E extends JComponent> extends DefaultPainter<
      * @param component component to process
      * @return true if component is in focused state, false otherwise
      */
-    protected boolean isFocused ( E component )
+    protected boolean isFocused ( final E component )
     {
         return component.isFocusOwner ();
     }
@@ -176,7 +185,7 @@ public class NinePatchStatePainter<E extends JComponent> extends DefaultPainter<
      * @param component component to process
      * @return current state icon
      */
-    protected NinePatchIcon getComponentBackground ( E component )
+    protected NinePatchIcon getComponentBackground ( final E component )
     {
         return getStateIcon ( component.isEnabled () ? ComponentState.normal : ComponentState.disabled );
     }
@@ -187,9 +196,9 @@ public class NinePatchStatePainter<E extends JComponent> extends DefaultPainter<
      * @param button button to process
      * @return current state icon
      */
-    protected NinePatchIcon getButtonBackground ( AbstractButton button )
+    protected NinePatchIcon getButtonBackground ( final AbstractButton button )
     {
-        ButtonModel bm = button.getModel ();
+        final ButtonModel bm = button.getModel ();
         if ( bm.isPressed () )
         {
             return getStateIcon ( bm.isSelected () ? ComponentState.selectedPressed : ComponentState.pressed );
@@ -224,7 +233,7 @@ public class NinePatchStatePainter<E extends JComponent> extends DefaultPainter<
      * @param toolbar toolbar to process
      * @return current state icon
      */
-    protected NinePatchIcon getToolBarBackground ( JToolBar toolbar )
+    protected NinePatchIcon getToolBarBackground ( final JToolBar toolbar )
     {
         if ( toolbar instanceof WebToolBar && ( ( WebToolBar ) toolbar ).isFloating () )
         {
@@ -242,7 +251,7 @@ public class NinePatchStatePainter<E extends JComponent> extends DefaultPainter<
      * @param state component state
      * @return exact state icon or null if it is not specified
      */
-    public NinePatchIcon getExactStateIcon ( String state )
+    public NinePatchIcon getExactStateIcon ( final String state )
     {
         return stateIcons.get ( state );
     }
@@ -253,7 +262,7 @@ public class NinePatchStatePainter<E extends JComponent> extends DefaultPainter<
      * @param state component state
      * @return state icon or possible replacement for it
      */
-    public NinePatchIcon getStateIcon ( String state )
+    public NinePatchIcon getStateIcon ( final String state )
     {
         if ( state.equals ( ComponentState.normal ) )
         {
@@ -309,7 +318,7 @@ public class NinePatchStatePainter<E extends JComponent> extends DefaultPainter<
      * {@inheritDoc}
      */
     @Override
-    public Dimension getPreferredSize ( E c )
+    public Dimension getPreferredSize ( final E c )
     {
         if ( hasStateIcons () )
         {
@@ -331,13 +340,13 @@ public class NinePatchStatePainter<E extends JComponent> extends DefaultPainter<
      * {@inheritDoc}
      */
     @Override
-    public Insets getMargin ( E c )
+    public Insets getMargin ( final E c )
     {
-        Insets margin = super.getMargin ( c );
+        final Insets margin = super.getMargin ( c );
         if ( hasStateIcons () )
         {
             Insets maxInsets = new Insets ( 0, 0, 0, 0 );
-            for ( NinePatchIcon npi : stateIcons.values () )
+            for ( final NinePatchIcon npi : stateIcons.values () )
             {
                 npi.setComponent ( c );
                 maxInsets = SwingUtils.max ( maxInsets, npi.getMargin () );

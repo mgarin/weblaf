@@ -765,6 +765,38 @@
             <value lang="de">Abbrechen</value>
         </record>
     </Dictionary>
+    <Dictionary name="Filter settings language" prefix="filter">
+        <record key="matchcase">
+            <value lang="en">Match case</value>
+            <value lang="ru">Учитывать регистр</value>
+            <value lang="pl">Wielkość liter</value>
+            <value lang="ar">تتناسب مع الحالة</value>
+            <value lang="es">Coincidir mayúsculas y minúsculas</value>
+            <value lang="fr">Respecter la casse</value>
+            <value lang="pt">Combinar caso</value>
+            <value lang="de">Groß-/Kleinschreibung</value>
+        </record>
+        <record key="spaceseparator">
+            <value lang="en">Use space as separator</value>
+            <value lang="ru">Считать пробел за разделитель</value>
+            <value lang="pl">Użyj miejsca jako separator</value>
+            <value lang="ar">استخدام الفضاء كفاصل</value>
+            <value lang="es">Usar el espacio como separador</value>
+            <value lang="fr">Utiliser l'espace comme séparateur</value>
+            <value lang="pt">Use o espaço como separador</value>
+            <value lang="de">Verwenden Sie Leerzeichen als Trennzeichen</value>
+        </record>
+        <record key="frombeginning">
+            <value lang="en">Search from beginning</value>
+            <value lang="ru">Искать с начала строки</value>
+            <value lang="pl">Szukaj z początku linii</value>
+            <value lang="ar">بحث مع بداية السطر</value>
+            <value lang="es">Buscar en el principio de la línea</value>
+            <value lang="fr">La recherche avec le début de la ligne</value>
+            <value lang="pt">Pesquisa com o início da linha</value>
+            <value lang="de">Suchen mit dem Anfang der Zeile</value>
+        </record>
+    </Dictionary>
     <Dictionary name="Extended components language" prefix="ex">
         <Dictionary name="Notification popup language" prefix="notification">
             <record key="yes">
@@ -1410,12 +1442,24 @@
                 <value lang="de">Wollen Sie das bearbeitete Bild speichern?</value>
             </record>
         </Dictionary>
+        <Dictionary name="WebAsyncTreeFilterField language" prefix="asynctreefilter">
+            <record key="inputprompt">
+                <value lang="en" state="inputPropmt">Search...</value>
+                <value lang="ru" state="inputPropmt">Искать...</value>
+                <value lang="pl" state="inputPropmt">Szukaj...</value>
+                <value lang="ar" state="inputPropmt">بحث ...</value>
+                <value lang="es" state="inputPropmt">Buscar...</value>
+                <value lang="fr" state="inputPropmt">Rechercher...</value>
+                <value lang="pt" state="inputPropmt">Pesquisar...</value>
+                <value lang="de" state="inputPropmt">Suchen...</value>
+            </record>
+        </Dictionary>
     </Dictionary>
     <LanguageInfo>
         <langInfo lang="en" author="mgarin" info="English" />
         <langInfo lang="ru" author="mgarin" info="Russian" />
         <langInfo lang="pl" author="sciepa" info="Polish" />
-        <langInfo lang="ar" author="Abdullah" info="Arabic" />
+        <langInfo lang="ar" author="Abu Abdullah" info="Arabic" />
         <langInfo lang="es" author="pablovilas" info="Spanish" />
         <langInfo lang="fr" author="movierenamer" info="French" />
         <langInfo lang="pt" author="esimoes" info="Portuguese" />

@@ -18,7 +18,8 @@
 package com.alee.utils;
 
 import com.alee.extended.filechooser.WebPathField;
-import com.alee.extended.filefilter.DefaultFileFilter;
+import com.alee.extended.filefilter.AbstractFileFilter;
+import com.alee.extended.filefilter.CustomFileFilter;
 import com.alee.laf.GlobalConstants;
 import com.alee.laf.StyleConstants;
 import com.alee.managers.language.LanguageManager;
@@ -590,7 +591,7 @@ public final class FileUtils
      * @param filters file filters list
      * @return true if any of the specified file filters accept the file, false otherwise
      */
-    public static boolean isFileAccepted ( File file, List<DefaultFileFilter> filters )
+    public static boolean isFileAccepted ( File file, List<AbstractFileFilter> filters )
     {
         if ( filters == null || filters.size () == 0 )
         {
@@ -1011,31 +1012,20 @@ public final class FileUtils
      * @param fileFilter IO file filter
      * @return transformed file filter
      */
-    public static DefaultFileFilter transformFileFilter ( final FileFilter fileFilter )
+    public static AbstractFileFilter transformFileFilter ( final FileFilter fileFilter )
     {
-        DefaultFileFilter filter;
-        if ( fileFilter instanceof DefaultFileFilter )
+        final AbstractFileFilter filter;
+        if ( fileFilter instanceof AbstractFileFilter )
         {
-            filter = ( DefaultFileFilter ) fileFilter;
+            filter = ( AbstractFileFilter ) fileFilter;
         }
         else
         {
-            filter = new DefaultFileFilter ()
+            filter = new CustomFileFilter ( GlobalConstants.ALL_FILES_FILTER.getIcon (),
+                    LanguageManager.get ( "weblaf.file.filter.custom" ) )
             {
                 @Override
-                public ImageIcon getIcon ()
-                {
-                    return GlobalConstants.ALL_FILES_FILTER.getIcon ();
-                }
-
-                @Override
-                public String getDescription ()
-                {
-                    return LanguageManager.get ( "weblaf.file.filter.custom" );
-                }
-
-                @Override
-                public boolean accept ( File file )
+                public boolean accept ( final File file )
                 {
                     return fileFilter == null || fileFilter.accept ( file );
                 }
@@ -1050,31 +1040,19 @@ public final class FileUtils
      * @param fileFilter Swing file filter
      * @return transformed file filter.
      */
-    public static DefaultFileFilter transformFileFilter ( final javax.swing.filechooser.FileFilter fileFilter )
+    public static AbstractFileFilter transformFileFilter ( final javax.swing.filechooser.FileFilter fileFilter )
     {
-        DefaultFileFilter filter;
-        if ( fileFilter instanceof DefaultFileFilter )
+        final AbstractFileFilter filter;
+        if ( fileFilter instanceof AbstractFileFilter )
         {
-            filter = ( DefaultFileFilter ) fileFilter;
+            filter = ( AbstractFileFilter ) fileFilter;
         }
         else
         {
-            filter = new DefaultFileFilter ()
+            filter = new CustomFileFilter ( GlobalConstants.ALL_FILES_FILTER.getIcon (), fileFilter.getDescription () )
             {
                 @Override
-                public ImageIcon getIcon ()
-                {
-                    return GlobalConstants.ALL_FILES_FILTER.getIcon ();
-                }
-
-                @Override
-                public String getDescription ()
-                {
-                    return LanguageManager.get ( "weblaf.file.filter.custom" );
-                }
-
-                @Override
-                public boolean accept ( File file )
+                public boolean accept ( final File file )
                 {
                     return fileFilter == null || fileFilter.accept ( file );
                 }
@@ -1090,7 +1068,7 @@ public final class FileUtils
      * @param fileFilter file filter
      * @return filtered files list
      */
-    public static List<File> filterFiles ( Collection<File> files, DefaultFileFilter fileFilter )
+    public static List<File> filterFiles ( Collection<File> files, AbstractFileFilter fileFilter )
     {
         List<File> filteredFiles = new ArrayList<File> ( files.size () );
         for ( File file : files )

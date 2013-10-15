@@ -17,7 +17,7 @@
 
 package com.alee.laf.toolbar;
 
-import com.alee.extended.painter.DefaultPainter;
+import com.alee.extended.painter.AbstractPainter;
 import com.alee.extended.painter.Painter;
 import com.alee.laf.panel.WebPanel;
 
@@ -83,7 +83,7 @@ public class WebToolBarCorner extends WebPanel implements SwingConstants
     /**
      * Painter class for toolbar corners.
      */
-    private static class WebToolBarCornerPainter extends DefaultPainter<WebToolBarCorner>
+    private static class WebToolBarCornerPainter extends AbstractPainter<WebToolBarCorner>
     {
         /**
          * Constant fractions.
@@ -99,11 +99,11 @@ public class WebToolBarCorner extends WebPanel implements SwingConstants
          * {@inheritDoc}
          */
         @Override
-        public void paint ( Graphics2D g2d, Rectangle b, WebToolBarCorner c )
+        public void paint ( final Graphics2D g2d, final Rectangle b, final WebToolBarCorner c )
         {
-            boolean ltr = c.getComponentOrientation ().isLeftToRight ();
-            boolean top = c.getPosition () == NORTH_WEST || c.getPosition () == NORTH_EAST;
-            boolean left = ltr ? ( c.getPosition () == NORTH_WEST || c.getPosition () == SOUTH_WEST ) :
+            final boolean ltr = c.getComponentOrientation ().isLeftToRight ();
+            final boolean top = c.getPosition () == NORTH_WEST || c.getPosition () == NORTH_EAST;
+            final boolean left = ltr ? ( c.getPosition () == NORTH_WEST || c.getPosition () == SOUTH_WEST ) :
                     ( c.getPosition () == NORTH_EAST || c.getPosition () == SOUTH_EAST );
             if ( top )
             {

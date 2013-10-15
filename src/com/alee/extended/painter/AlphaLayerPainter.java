@@ -28,11 +28,11 @@ import java.awt.*;
  *
  * @param <E> component type
  * @author Mikle Garin
- * @see DefaultPainter
+ * @see AbstractPainter
  * @see Painter
  */
 
-public class AlphaLayerPainter<E extends JComponent> extends DefaultPainter<E>
+public class AlphaLayerPainter<E extends JComponent> extends AbstractPainter<E>
 {
     /**
      * Square size.
@@ -60,31 +60,31 @@ public class AlphaLayerPainter<E extends JComponent> extends DefaultPainter<E>
     /**
      * Constructs alpha layer painter with a specified square size.
      */
-    public AlphaLayerPainter ( int squareSize )
+    public AlphaLayerPainter ( final int squareSize )
     {
         super ();
-        setSquareSize ( squareSize );
+        this.squareSize = squareSize;
     }
 
     /**
      * Constructs alpha layer painter with a specified square colors.
      */
-    public AlphaLayerPainter ( Color lightSquareColor, Color darkSquareColor )
+    public AlphaLayerPainter ( final Color lightSquareColor, final Color darkSquareColor )
     {
         super ();
-        setLightSquareColor ( lightSquareColor );
-        setDarkSquareColor ( darkSquareColor );
+        this.lightSquareColor = lightSquareColor;
+        this.darkSquareColor = darkSquareColor;
     }
 
     /**
      * Constructs alpha layer painter with a specified square size and colors.
      */
-    public AlphaLayerPainter ( int squareSize, Color lightSquareColor, Color darkSquareColor )
+    public AlphaLayerPainter ( final int squareSize, final Color lightSquareColor, final Color darkSquareColor )
     {
         super ();
-        setSquareSize ( squareSize );
-        setLightSquareColor ( lightSquareColor );
-        setDarkSquareColor ( darkSquareColor );
+        this.squareSize = squareSize;
+        this.lightSquareColor = lightSquareColor;
+        this.darkSquareColor = darkSquareColor;
     }
 
     /**
@@ -102,9 +102,10 @@ public class AlphaLayerPainter<E extends JComponent> extends DefaultPainter<E>
      *
      * @param squareSize new square size
      */
-    public void setSquareSize ( int squareSize )
+    public void setSquareSize ( final int squareSize )
     {
         this.squareSize = squareSize;
+        fireRepaint ();
     }
 
     /**
@@ -122,9 +123,10 @@ public class AlphaLayerPainter<E extends JComponent> extends DefaultPainter<E>
      *
      * @param lightSquareColor new light square color
      */
-    public void setLightSquareColor ( Color lightSquareColor )
+    public void setLightSquareColor ( final Color lightSquareColor )
     {
         this.lightSquareColor = lightSquareColor;
+        fireRepaint ();
     }
 
     /**
@@ -142,9 +144,10 @@ public class AlphaLayerPainter<E extends JComponent> extends DefaultPainter<E>
      *
      * @param darkSquareColor new dark square color
      */
-    public void setDarkSquareColor ( Color darkSquareColor )
+    public void setDarkSquareColor ( final Color darkSquareColor )
     {
         this.darkSquareColor = darkSquareColor;
+        fireRepaint ();
     }
 
     /**
@@ -155,9 +158,9 @@ public class AlphaLayerPainter<E extends JComponent> extends DefaultPainter<E>
      * @return true if visual data provided by this painter is opaque, false otherwise
      */
     @Override
-    public boolean isOpaque ( E c )
+    public boolean isOpaque ( final E c )
     {
-        return true;
+        return lightSquareColor.getAlpha () == 255 && darkSquareColor.getAlpha () == 255;
     }
 
     /**
@@ -170,7 +173,7 @@ public class AlphaLayerPainter<E extends JComponent> extends DefaultPainter<E>
      * @param c      component to process
      */
     @Override
-    public void paint ( Graphics2D g2d, Rectangle bounds, E c )
+    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c )
     {
         // todo Optimize paint by using generated texture image
         LafUtils.drawAlphaLayer ( g2d, bounds.x, bounds.y, bounds.width, bounds.height, squareSize, lightSquareColor, darkSquareColor );

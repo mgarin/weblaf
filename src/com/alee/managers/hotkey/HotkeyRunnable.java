@@ -20,13 +20,18 @@ package com.alee.managers.hotkey;
 import java.awt.event.KeyEvent;
 
 /**
- * User: mgarin Date: 25.08.11 Time: 12:41
- * <p/>
  * This interface allows you to create action for hotkey events which can be used together with HotkeyManager methods. Unlike Runnable this
  * interface provides KeyEvent as action source.
+ *
+ * @author Mikle Garin
  */
 
 public interface HotkeyRunnable
 {
+    /**
+     * Performs hotkey action.
+     *
+     * @param e occured key event
+     */
     public void run ( KeyEvent e );
 }

@@ -92,41 +92,54 @@ public class WebBreadcrumbPanel extends WebPanel implements BreadcrumbElement<We
         setPainter ( painter );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setType ( BreadcrumbElementType type )
     {
         painter.setType ( type );
-        setPainter ( painter );
-        revalidate ();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setOverlap ( int overlap )
     {
         painter.setOverlap ( overlap );
-        setPainter ( painter );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setShowProgress ( boolean showProgress )
     {
         painter.setShowProgress ( showProgress );
-        repaint ();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setProgress ( float progress )
     {
         painter.setProgress ( progress );
-        repaint ();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BreadcrumbElementPainter getPainter ()
     {
         return painter;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean contains ( int x, int y )
     {

@@ -17,7 +17,7 @@
 
 package com.alee.extended.filechooser;
 
-import com.alee.extended.filefilter.DefaultFileFilter;
+import com.alee.extended.filefilter.AbstractFileFilter;
 import com.alee.laf.table.WebTable;
 import com.alee.utils.FileUtils;
 
@@ -41,7 +41,7 @@ public class WebFileTable extends WebTable implements WebFileTableColumns
     /**
      * File filter.
      */
-    private DefaultFileFilter fileFilter = WebFileTableStyle.fileFilter;
+    private AbstractFileFilter fileFilter = WebFileTableStyle.fileFilter;
 
     /**
      * Displayed directory.
@@ -115,7 +115,7 @@ public class WebFileTable extends WebTable implements WebFileTableColumns
      *
      * @return file filter
      */
-    public DefaultFileFilter getFileFilter ()
+    public AbstractFileFilter getFileFilter ()
     {
         return fileFilter;
     }
@@ -125,7 +125,7 @@ public class WebFileTable extends WebTable implements WebFileTableColumns
      *
      * @param fileFilter new file filter
      */
-    public void setFileFilter ( DefaultFileFilter fileFilter )
+    public void setFileFilter ( AbstractFileFilter fileFilter )
     {
         this.fileFilter = fileFilter;
         reloadFiles ();

@@ -67,9 +67,9 @@ public final class TextUtils
      * @param text text to search through
      * @return first found number
      */
-    public static Integer findFirstNumber ( String text )
+    public static Integer findFirstNumber ( final String text )
     {
-        StringBuilder sb = new StringBuilder ( "" );
+        final StringBuilder sb = new StringBuilder ( "" );
         for ( int j = 0; j < text.length (); j++ )
         {
             final char ch = text.charAt ( j );
@@ -92,7 +92,7 @@ public final class TextUtils
      * @param location word location
      * @return word
      */
-    public static String getWord ( String text, int location )
+    public static String getWord ( final String text, final int location )
     {
         int wordStart = location;
         int wordEnd = location;
@@ -113,13 +113,47 @@ public final class TextUtils
     }
 
     /**
+     * Returns a word start index at the specified location.
+     *
+     * @param text     text to retrieve the word start index from
+     * @param location word location
+     * @return word start index
+     */
+    public static int getWordStart ( final String text, final int location )
+    {
+        int wordStart = location;
+        while ( wordStart > 0 && !textSeparators.contains ( text.substring ( wordStart - 1, wordStart ) ) )
+        {
+            wordStart--;
+        }
+        return wordStart;
+    }
+
+    /**
+     * Returns a word end index at the specified location.
+     *
+     * @param text     text to retrieve the word end index from
+     * @param location word location
+     * @return word end index
+     */
+    public static int getWordEnd ( final String text, final int location )
+    {
+        int wordEnd = location;
+        while ( wordEnd < text.length () - 1 && !textSeparators.contains ( text.substring ( wordEnd, wordEnd + 1 ) ) )
+        {
+            wordEnd++;
+        }
+        return wordEnd;
+    }
+
+    /**
      * Returns text with first lines removed.
      *
      * @param text  text to crop
      * @param count lines count to crop
      * @return cropped text
      */
-    public static String removeFirstLines ( String text, int count )
+    public static String removeFirstLines ( final String text, final int count )
     {
         int found = 0;
         int index = 0;
@@ -146,7 +180,7 @@ public final class TextUtils
      * @param separator text parts separator
      * @return list of splitted parts
      */
-    public static List<String> split ( String text, String separator )
+    public static List<String> split ( final String text, final String separator )
     {
         return Arrays.asList ( text.split ( separator ) );
     }
@@ -157,7 +191,7 @@ public final class TextUtils
      * @param text text to extract point from
      * @return extracted point
      */
-    public static Point parsePoint ( String text )
+    public static Point parsePoint ( final String text )
     {
         return parsePoint ( text, "," );
     }
@@ -169,9 +203,9 @@ public final class TextUtils
      * @param separator point values separator
      * @return extracted point
      */
-    public static Point parsePoint ( String text, String separator )
+    public static Point parsePoint ( final String text, final String separator )
     {
-        String[] parts = text.split ( separator );
+        final String[] parts = text.split ( separator );
         return parts.length == 2 ? new Point ( Integer.parseInt ( parts[ 0 ].trim () ), Integer.parseInt ( parts[ 1 ].trim () ) ) : null;
     }
 
@@ -182,10 +216,10 @@ public final class TextUtils
      * @param text text to modify
      * @return text without conytol symbols
      */
-    public static String removeControlSymbols ( String text )
+    public static String removeControlSymbols ( final String text )
     {
-        int length = text.length ();
-        char[] oldChars = new char[ length ];
+        final int length = text.length ();
+        final char[] oldChars = new char[ length ];
         text.getChars ( 0, length, oldChars, 0 );
         int newLen = 0;
         for ( int j = 0; j < length; j++ )
@@ -208,16 +242,10 @@ public final class TextUtils
      * @param addDots   add dots at the end of the text when shortened
      * @return shortened text
      */
-    public static String shortenText ( String text, int maxLength, boolean addDots )
+    public static String shortenText ( final String text, final int maxLength, final boolean addDots )
     {
-        if ( text.length () <= maxLength )
-        {
-            return text;
-        }
-        else
-        {
-            return text.substring ( 0, maxLength > 3 && addDots ? maxLength - 3 : maxLength ) + ( addDots ? "..." : "" );
-        }
+        return text.length () <= maxLength ? text :
+                text.substring ( 0, maxLength > 3 && addDots ? maxLength - 3 : maxLength ) + ( addDots ? "..." : "" );
     }
 
     /**
@@ -227,7 +255,7 @@ public final class TextUtils
      * @param separator text parts separator
      * @return list of splitted parts
      */
-    public static List<String> stringToList ( String string, String separator )
+    public static List<String> stringToList ( final String string, final String separator )
     {
         final List<String> imageTags = new ArrayList<String> ();
         if ( string != null )
@@ -248,7 +276,7 @@ public final class TextUtils
      * @param separator text parts separator
      * @return list of splitted parts
      */
-    public static List<Integer> stringToIntList ( String string, String separator )
+    public static List<Integer> stringToIntList ( final String string, final String separator )
     {
         final List<String> stringList = stringToList ( string, separator );
         if ( stringList != null )
@@ -273,7 +301,7 @@ public final class TextUtils
      * @param separator text parts separator
      * @return single text
      */
-    public static String listToString ( List list, String separator )
+    public static String listToString ( final List list, final String separator )
     {
         return listToString ( list, separator, simpleTextProvider );
     }
@@ -285,7 +313,7 @@ public final class TextUtils
      * @param separator text parts separator
      * @return single text
      */
-    public static <T> String listToString ( List<T> list, String separator, TextProvider<T> textProvider )
+    public static <T> String listToString ( final List<T> list, final String separator, final TextProvider<T> textProvider )
     {
         if ( list.size () > 0 )
         {
@@ -323,7 +351,7 @@ public final class TextUtils
      * @param prefix id prefix
      * @return ID
      */
-    public static String generateId ( String prefix )
+    public static String generateId ( final String prefix )
     {
         return generateId ( prefix, null );
     }
@@ -335,7 +363,7 @@ public final class TextUtils
      * @param suffix id suffix
      * @return ID
      */
-    public static String generateId ( String prefix, String suffix )
+    public static String generateId ( final String prefix, final String suffix )
     {
         final StringBuilder idBuilder = new StringBuilder ();
         idBuilder.append ( prefix == null ? defaultIdPrefix : prefix );
@@ -358,9 +386,9 @@ public final class TextUtils
      * @param length part length in symbols
      * @return ID part
      */
-    private static String generateId ( int length )
+    private static String generateId ( final int length )
     {
-        StringBuilder stringBuilder = new StringBuilder ( length );
+        final StringBuilder stringBuilder = new StringBuilder ( length );
         for ( int i = 0; i < length; i++ )
         {
             char next = 0;

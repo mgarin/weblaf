@@ -17,10 +17,15 @@
 
 package com.alee.extended.painter;
 
+import com.alee.utils.ImageUtils;
+
+import java.awt.image.BufferedImage;
+
 /**
  * This enumeration contains list of exising predefined textures for TexturePainter class.
  *
  * @author Mikle Garin
+ * @see TexturePainter
  */
 
 public enum TextureType
@@ -96,5 +101,15 @@ public enum TextureType
      * Pattern source: http://subtlepatterns.com/
      * Made by Gluszczenko: http://www.gluszczenko.com/
      */
-    alpha
+    alpha;
+
+    /**
+     * Returns texture image.
+     *
+     * @return texture image
+     */
+    public BufferedImage getTexture ()
+    {
+        return ImageUtils.getBufferedImage ( TextureType.class.getResource ( "icons/textures/" + this + ".png" ) );
+    }
 }

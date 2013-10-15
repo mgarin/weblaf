@@ -23,7 +23,6 @@ import com.alee.laf.menu.WebCheckBoxMenuItem;
 import com.alee.laf.menu.WebPopupMenu;
 import com.alee.laf.text.WebTextField;
 import com.alee.managers.hotkey.Hotkey;
-import com.alee.utils.compare.Filter;
 import com.alee.utils.swing.DocumentChangeListener;
 import com.alee.utils.text.TextProvider;
 
@@ -40,6 +39,7 @@ import java.lang.ref.WeakReference;
 /**
  * Special filter field that can be attached to any WebAsyncTree.
  *
+ * @param <E> filtered node type
  * @author Mikle Garin
  */
 
@@ -86,21 +86,40 @@ public class WebAsyncTreeFilterField<E extends AsyncUniqueNode> extends WebTextF
     protected WebCheckBoxMenuItem useSpaceAsSeparatorItem;
     protected WebCheckBoxMenuItem searchFromStartItem;
 
+    /**
+     * Constructs new async tree filter field.
+     */
     public WebAsyncTreeFilterField ()
     {
         this ( null, null );
     }
 
+    /**
+     * Constructs new async tree filter field.
+     *
+     * @param asyncTree async tree to which this field applies filtering
+     */
     public WebAsyncTreeFilterField ( final WebAsyncTree<E> asyncTree )
     {
         this ( asyncTree, null );
     }
 
+    /**
+     * Constructs new async tree filter field.
+     *
+     * @param textProvider node text provider
+     */
     public WebAsyncTreeFilterField ( final TextProvider<E> textProvider )
     {
         this ( null, textProvider );
     }
 
+    /**
+     * Constructs new async tree filter field.
+     *
+     * @param asyncTree    async tree to which this field applies filtering
+     * @param textProvider node text provider
+     */
     public WebAsyncTreeFilterField ( final WebAsyncTree<E> asyncTree, final TextProvider<E> textProvider )
     {
         super ();
@@ -110,14 +129,22 @@ public class WebAsyncTreeFilterField<E extends AsyncUniqueNode> extends WebTextF
         init ();
     }
 
+    /**
+     * Initializes filter field.
+     */
     protected void init ()
     {
-        setInputPrompt ( "Search for..." );
+        setLanguage ( "weblaf.ex.asynctreefilter.inputprompt" );
+        setHideInputPromptOnFocus ( false );
+
         initFilterIcon ();
         initSettingsMenu ();
         initFieldListeners ();
     }
 
+    /**
+     * Initializes filter icon.
+     */
     protected void initFilterIcon ()
     {
         filterIcon = new WebImage ( WebAsyncTreeFilterField.class, "icons/filter/settings.png" );
@@ -134,11 +161,15 @@ public class WebAsyncTreeFilterField<E extends AsyncUniqueNode> extends WebTextF
         setLeadingComponent ( filterIcon );
     }
 
+    /**
+     * Initializes settings menu.
+     */
     protected void initSettingsMenu ()
     {
         settingsMenu = new WebPopupMenu ();
 
-        matchCaseItem = new WebCheckBoxMenuItem ( "Match case", matchCaseIcon );
+        matchCaseItem = new WebCheckBoxMenuItem ( matchCaseIcon );
+        matchCaseItem.setLanguage ( "weblaf.filter.matchcase" );
         matchCaseItem.addActionListener ( new ActionListener ()
         {
             @Override
@@ -150,7 +181,8 @@ public class WebAsyncTreeFilterField<E extends AsyncUniqueNode> extends WebTextF
         } );
         settingsMenu.add ( matchCaseItem );
 
-        useSpaceAsSeparatorItem = new WebCheckBoxMenuItem ( "Use space as separator", useSpaceAsSeparatorIcon );
+        useSpaceAsSeparatorItem = new WebCheckBoxMenuItem ( useSpaceAsSeparatorIcon );
+        useSpaceAsSeparatorItem.setLanguage ( "weblaf.filter.spaceseparator" );
         useSpaceAsSeparatorItem.addActionListener ( new ActionListener ()
         {
             @Override
@@ -162,7 +194,8 @@ public class WebAsyncTreeFilterField<E extends AsyncUniqueNode> extends WebTextF
         } );
         settingsMenu.add ( useSpaceAsSeparatorItem );
 
-        searchFromStartItem = new WebCheckBoxMenuItem ( "Search from beginning", searchFromStartIcon );
+        searchFromStartItem = new WebCheckBoxMenuItem ( searchFromStartIcon );
+        searchFromStartItem.setLanguage ( "weblaf.filter.frombeginning" );
         searchFromStartItem.addActionListener ( new ActionListener ()
         {
             @Override
@@ -175,6 +208,9 @@ public class WebAsyncTreeFilterField<E extends AsyncUniqueNode> extends WebTextF
         settingsMenu.add ( searchFromStartItem );
     }
 
+    /**
+     * Initializes field listeners.
+     */
     protected void initFieldListeners ()
     {
         // Field changes listener
@@ -213,6 +249,9 @@ public class WebAsyncTreeFilterField<E extends AsyncUniqueNode> extends WebTextF
         } );
     }
 
+    /**
+     * Updates field document listener.
+     */
     protected void updateDocumentListener ()
     {
         // Removing listener from old document
@@ -226,29 +265,52 @@ public class WebAsyncTreeFilterField<E extends AsyncUniqueNode> extends WebTextF
         document.addDocumentListener ( documentListener );
     }
 
+    /**
+     * Returns async tree to which this field applies filtering.
+     *
+     * @return async tree to which this field applies filtering
+     */
     public WebAsyncTree<E> getAsyncTree ()
     {
         return asyncTree != null ? asyncTree.get () : null;
     }
 
+    /**
+     * Sets async tree to which this field applies filtering.
+     *
+     * @param asyncTree async tree to which this field applies filtering
+     */
     public void setAsyncTree ( final WebAsyncTree<E> asyncTree )
     {
-        removeFilter ();
+        clearFilter ();
         this.asyncTree = new WeakReference<WebAsyncTree<E>> ( asyncTree );
         applyFilter ();
     }
 
-    public Filter<E> getFilter ()
+    /**
+     * Returns nodes filter.
+     *
+     * @return nodes filter
+     */
+    public AsyncTreeNodesFilter<E> getFilter ()
     {
         return filter;
     }
 
+    /**
+     * Sets nodes filter.
+     *
+     * @param filter new nodes filter
+     */
     public void setFilter ( final AsyncTreeNodesFilter<E> filter )
     {
         this.filter = filter;
         applyFilter ();
     }
 
+    /**
+     * Applies tree filter.
+     */
     protected void applyFilter ()
     {
         if ( asyncTree != null && asyncTree.get () != null )
@@ -257,7 +319,10 @@ public class WebAsyncTreeFilterField<E extends AsyncUniqueNode> extends WebTextF
         }
     }
 
-    protected void removeFilter ()
+    /**
+     * Clears tree filter.
+     */
+    protected void clearFilter ()
     {
         if ( asyncTree != null && asyncTree.get () != null )
         {
@@ -265,17 +330,30 @@ public class WebAsyncTreeFilterField<E extends AsyncUniqueNode> extends WebTextF
         }
     }
 
+    /**
+     * Returns node text provider.
+     *
+     * @return node text provider
+     */
     public TextProvider<E> getTextProvider ()
     {
         return filter.getTextProvider ();
     }
 
+    /**
+     * Sets node text provider.
+     *
+     * @param textProvider new node text provider
+     */
     public void setTextProvider ( final TextProvider<E> textProvider )
     {
         filter.setTextProvider ( textProvider );
         updateFiltering ();
     }
 
+    /**
+     * Updates tree filtering.
+     */
     protected void updateFiltering ()
     {
         // Cleaning up filter cache

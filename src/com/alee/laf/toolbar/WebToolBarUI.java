@@ -19,6 +19,7 @@ package com.alee.laf.toolbar;
 
 import com.alee.extended.layout.ToolbarLayout;
 import com.alee.extended.painter.Painter;
+import com.alee.extended.painter.PainterSupport;
 import com.alee.laf.StyleConstants;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.rootpane.WebDialog;
@@ -27,6 +28,7 @@ import com.alee.utils.ProprietaryUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.laf.ShapeProvider;
 import com.alee.utils.swing.AncestorAdapter;
+import com.alee.utils.swing.BorderMethods;
 
 import javax.swing.*;
 import javax.swing.event.AncestorEvent;
@@ -43,7 +45,7 @@ import java.beans.PropertyChangeListener;
  * User: mgarin Date: 17.08.11 Time: 23:06
  */
 
-public class WebToolBarUI extends BasicToolBarUI implements ShapeProvider
+public class WebToolBarUI extends BasicToolBarUI implements ShapeProvider, BorderMethods
 {
     public static final int gripperSpace = 5;
 
@@ -78,9 +80,10 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeProvider
         // Default settings
         SwingUtils.setOrientation ( toolBar );
         toolBar.setOpaque ( false );
+        PainterSupport.installPainter ( toolBar, this.painter );
 
         // Updating border and layout
-        updateBorder ( toolBar );
+        updateBorder ();
         updateLayout ( toolBar );
 
         // Border and layout update listeners
@@ -89,7 +92,7 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeProvider
             @Override
             public void ancestorAdded ( AncestorEvent event )
             {
-                updateBorder ( toolBar );
+                updateBorder ();
                 updateLayout ( toolBar );
             }
         };
@@ -99,7 +102,7 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeProvider
             @Override
             public void propertyChange ( PropertyChangeEvent evt )
             {
-                updateBorder ( toolBar );
+                updateBorder ();
                 updateLayout ( toolBar );
             }
         };
@@ -109,7 +112,7 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeProvider
             @Override
             public void propertyChange ( PropertyChangeEvent evt )
             {
-                updateBorder ( toolBar );
+                updateBorder ();
             }
         };
         toolBar.addPropertyChangeListener ( WebLookAndFeel.COMPONENT_ORIENTATION_PROPERTY, componentOrientationListener );
@@ -118,6 +121,8 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeProvider
     @Override
     public void uninstallUI ( JComponent c )
     {
+        PainterSupport.uninstallPainter ( toolBar, this.painter );
+
         c.removeAncestorListener ( ancestorListener );
         c.removePropertyChangeListener ( WebLookAndFeel.TOOLBAR_FLOATABLE_PROPERTY, propertyChangeListener );
         c.removePropertyChangeListener ( WebLookAndFeel.COMPONENT_ORIENTATION_PROPERTY, componentOrientationListener );
@@ -148,7 +153,7 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeProvider
         this.undecorated = undecorated;
 
         // Updating border
-        updateBorder ( toolBar );
+        updateBorder ();
 
         // Updating opaque value
         if ( painter != null && !undecorated )
@@ -164,8 +169,11 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeProvider
 
     public void setPainter ( Painter painter )
     {
+        PainterSupport.uninstallPainter ( toolBar, this.painter );
+
         this.painter = painter;
-        updateBorder ( toolBar );
+        PainterSupport.installPainter ( toolBar, this.painter );
+        updateBorder ();
     }
 
     public int getRound ()
@@ -240,7 +248,7 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeProvider
     public void setShadeWidth ( int shadeWidth )
     {
         this.shadeWidth = shadeWidth;
-        updateBorder ( toolBar );
+        updateBorder ();
     }
 
     public Insets getMargin ()
@@ -251,7 +259,7 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeProvider
     public void setMargin ( Insets margin )
     {
         this.margin = margin;
-        updateBorder ( toolBar );
+        updateBorder ();
     }
 
     public ToolbarStyle getToolbarStyle ()
@@ -262,7 +270,7 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeProvider
     public void setToolbarStyle ( ToolbarStyle toolbarStyle )
     {
         this.toolbarStyle = toolbarStyle;
-        updateBorder ( toolBar );
+        updateBorder ();
     }
 
     public int getSpacing ()
@@ -276,60 +284,67 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeProvider
         updateLayout ( toolBar );
     }
 
-    private void updateBorder ( JComponent c )
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void updateBorder ()
     {
-        if ( painter != null )
+        if ( toolBar != null )
         {
-            // Background insets
-            Insets bi = painter.getMargin ( c );
-            c.setBorder ( BorderFactory
-                    .createEmptyBorder ( margin.top + bi.top, margin.left + bi.left, margin.bottom + bi.bottom, margin.right + bi.right ) );
-        }
-        else if ( !undecorated )
-        {
-            // Web-style insets
-            int gripperSpacing = toolBar.isFloatable () ? gripperSpace : 0;
-            boolean horizontal = toolBar.getOrientation () == WebToolBar.HORIZONTAL;
-            boolean ltr = c.getComponentOrientation ().isLeftToRight ();
-            if ( toolbarStyle.equals ( ToolbarStyle.standalone ) )
+            if ( painter != null )
             {
-                if ( isFloating () )
+                // Background insets
+                final Insets bi = painter.getMargin ( toolBar );
+                toolBar.setBorder ( LafUtils.createWebBorder ( margin.top + bi.top, margin.left + bi.left, margin.bottom + bi.bottom,
+                        margin.right + bi.right ) );
+            }
+            else if ( !undecorated )
+            {
+                // Web-style insets
+                int gripperSpacing = toolBar.isFloatable () ? gripperSpace : 0;
+                boolean horizontal = toolBar.getOrientation () == WebToolBar.HORIZONTAL;
+                boolean ltr = toolBar.getComponentOrientation ().isLeftToRight ();
+                if ( toolbarStyle.equals ( ToolbarStyle.standalone ) )
                 {
-                    c.setBorder ( BorderFactory.createEmptyBorder ( margin.top + ( !horizontal ? gripperSpacing : 0 ),
-                            margin.left + ( horizontal && ltr ? gripperSpacing : 0 ), margin.bottom,
-                            margin.right + ( horizontal && !ltr ? gripperSpacing : 0 ) ) );
+                    if ( isFloating () )
+                    {
+                        toolBar.setBorder ( LafUtils.createWebBorder ( margin.top + ( !horizontal ? gripperSpacing : 0 ),
+                                margin.left + ( horizontal && ltr ? gripperSpacing : 0 ), margin.bottom,
+                                margin.right + ( horizontal && !ltr ? gripperSpacing : 0 ) ) );
+                    }
+                    else
+                    {
+                        toolBar.setBorder ( LafUtils.createWebBorder ( margin.top + 1 + shadeWidth + ( !horizontal ? gripperSpacing : 0 ),
+                                margin.left + 1 + shadeWidth +
+                                        ( horizontal && ltr ? gripperSpacing : 0 ), margin.bottom + 1 + shadeWidth,
+                                margin.right + 1 + shadeWidth +
+                                        ( horizontal && !ltr ? gripperSpacing : 0 ) ) );
+                    }
                 }
                 else
                 {
-                    c.setBorder ( BorderFactory.createEmptyBorder ( margin.top + 1 + shadeWidth + ( !horizontal ? gripperSpacing : 0 ),
-                            margin.left + 1 + shadeWidth +
-                                    ( horizontal && ltr ? gripperSpacing : 0 ), margin.bottom + 1 + shadeWidth,
-                            margin.right + 1 + shadeWidth +
-                                    ( horizontal && !ltr ? gripperSpacing : 0 ) ) );
+                    if ( isFloating () )
+                    {
+                        toolBar.setBorder ( LafUtils.createWebBorder ( margin.top + ( !horizontal ? gripperSpacing : 0 ),
+                                margin.left + ( horizontal && ltr ? gripperSpacing : 0 ), margin.bottom,
+                                margin.right + ( horizontal && !ltr ? gripperSpacing : 0 ) ) );
+                    }
+                    else
+                    {
+                        toolBar.setBorder ( LafUtils.createWebBorder ( margin.top + ( !horizontal ? gripperSpacing : 0 ),
+                                margin.left + ( horizontal && ltr ? gripperSpacing : 0 ) +
+                                        ( !horizontal && !ltr ? 1 : 0 ), margin.bottom + ( horizontal ? 1 : 0 ),
+                                margin.right + ( horizontal && !ltr ? gripperSpacing : 0 ) +
+                                        ( !horizontal && ltr ? 1 : 0 ) ) );
+                    }
                 }
             }
             else
             {
-                if ( isFloating () )
-                {
-                    c.setBorder ( BorderFactory.createEmptyBorder ( margin.top + ( !horizontal ? gripperSpacing : 0 ),
-                            margin.left + ( horizontal && ltr ? gripperSpacing : 0 ), margin.bottom,
-                            margin.right + ( horizontal && !ltr ? gripperSpacing : 0 ) ) );
-                }
-                else
-                {
-                    c.setBorder ( BorderFactory.createEmptyBorder ( margin.top + ( !horizontal ? gripperSpacing : 0 ),
-                            margin.left + ( horizontal && ltr ? gripperSpacing : 0 ) +
-                                    ( !horizontal && !ltr ? 1 : 0 ), margin.bottom + ( horizontal ? 1 : 0 ),
-                            margin.right + ( horizontal && !ltr ? gripperSpacing : 0 ) +
-                                    ( !horizontal && ltr ? 1 : 0 ) ) );
-                }
+                // Empty insets
+                toolBar.setBorder ( LafUtils.createWebBorder ( margin.top, margin.left, margin.bottom, margin.right ) );
             }
-        }
-        else
-        {
-            // Empty insets
-            c.setBorder ( BorderFactory.createEmptyBorder ( margin.top, margin.left, margin.bottom, margin.right ) );
         }
     }
 

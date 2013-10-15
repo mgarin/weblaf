@@ -66,6 +66,17 @@ public final class MathUtils
     }
 
     /**
+     * Returns random integer number from one the specified integers.
+     *
+     * @param numbers number to choose random one from
+     * @return random integer number from one the specified integers
+     */
+    public static int random ( int... numbers )
+    {
+        return numbers[ random ( 0, numbers.length - 1 ) ];
+    }
+
+    /**
      * Returns square for specified integer number.
      *
      * @param i integer number to process

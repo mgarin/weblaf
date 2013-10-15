@@ -18,10 +18,12 @@
 package com.alee.laf.label;
 
 import com.alee.extended.painter.Painter;
+import com.alee.extended.painter.PainterSupport;
 import com.alee.laf.StyleConstants;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.utils.LafUtils;
 import com.alee.utils.SwingUtils;
+import com.alee.utils.swing.BorderMethods;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
@@ -37,7 +39,7 @@ import java.util.Map;
  * @author Mikle Garin
  */
 
-public class WebLabelUI extends BasicLabelUI
+public class WebLabelUI extends BasicLabelUI implements BorderMethods
 {
     /**
      * Style settings.
@@ -65,7 +67,7 @@ public class WebLabelUI extends BasicLabelUI
      * @param c component that will use UI instance
      * @return instance of the WebLabelUI
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebLabelUI ();
@@ -87,6 +89,7 @@ public class WebLabelUI extends BasicLabelUI
         // Default settings
         SwingUtils.setOrientation ( label );
         label.setBackground ( WebLabelStyle.backgroundColor );
+        PainterSupport.installPainter ( label, this.painter );
         updateBorder ();
 
         // Orientation change listener
@@ -109,17 +112,23 @@ public class WebLabelUI extends BasicLabelUI
     @Override
     public void uninstallUI ( final JComponent c )
     {
+        // Uninstalling painter
+        PainterSupport.uninstallPainter ( label, this.painter );
+
+        // Removing label listeners
         label.removePropertyChangeListener ( WebLookAndFeel.COMPONENT_ORIENTATION_PROPERTY, propertyChangeListener );
 
+        // Clearing link to label component
         label = null;
 
         super.uninstallUI ( c );
     }
 
     /**
-     * Updates custom UI border.
+     * {@inheritDoc}
      */
-    protected void updateBorder ()
+    @Override
+    public void updateBorder ()
     {
         if ( label != null )
         {
@@ -181,7 +190,9 @@ public class WebLabelUI extends BasicLabelUI
      */
     public void setPainter ( final Painter painter )
     {
+        PainterSupport.uninstallPainter ( label, this.painter );
         this.painter = painter;
+        PainterSupport.installPainter ( label, this.painter );
         updateBorder ();
     }
 

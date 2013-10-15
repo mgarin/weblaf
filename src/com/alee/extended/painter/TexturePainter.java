@@ -30,28 +30,29 @@ import java.awt.image.BufferedImage;
  *
  * @param <E> component type
  * @author Mikle Garin
- * @see DefaultPainter
+ * @see TextureType
+ * @see AbstractPainter
  * @see Painter
  */
 
-public class TexturePainter<E extends JComponent> extends DefaultPainter<E>
+public class TexturePainter<E extends JComponent> extends AbstractPainter<E>
 {
     /**
      * Cached texture paint.
      */
-    private TexturePaint paint = null;
+    protected TexturePaint paint = null;
 
     /**
      * Texture type.
      */
-    private TextureType textureType = null;
+    protected TextureType textureType = null;
 
     /**
      * Constructs texture paint with the specified icon as a texture.
      *
      * @param icon texture icon
      */
-    public TexturePainter ( ImageIcon icon )
+    public TexturePainter ( final ImageIcon icon )
     {
         this ( icon.getImage () );
     }
@@ -61,7 +62,7 @@ public class TexturePainter<E extends JComponent> extends DefaultPainter<E>
      *
      * @param image texture image
      */
-    public TexturePainter ( Image image )
+    public TexturePainter ( final Image image )
     {
         this ( ImageUtils.getBufferedImage ( image ) );
     }
@@ -71,7 +72,7 @@ public class TexturePainter<E extends JComponent> extends DefaultPainter<E>
      *
      * @param image texture image
      */
-    public TexturePainter ( BufferedImage image )
+    public TexturePainter ( final BufferedImage image )
     {
         super ();
         updatePainter ( image );
@@ -82,7 +83,7 @@ public class TexturePainter<E extends JComponent> extends DefaultPainter<E>
      *
      * @param textureType predefined texture type
      */
-    public TexturePainter ( TextureType textureType )
+    public TexturePainter ( final TextureType textureType )
     {
         super ();
         setTextureType ( textureType );
@@ -92,6 +93,7 @@ public class TexturePainter<E extends JComponent> extends DefaultPainter<E>
      * Returns texture type.
      *
      * @return texture type
+     * @see TextureType
      */
     public TextureType getTextureType ()
     {
@@ -102,12 +104,12 @@ public class TexturePainter<E extends JComponent> extends DefaultPainter<E>
      * Sets texture type.
      *
      * @param textureType new texture type
+     * @see TextureType
      */
-    public void setTextureType ( TextureType textureType )
+    public void setTextureType ( final TextureType textureType )
     {
         this.textureType = textureType;
-        updatePainter ( textureType == null ? null :
-                ImageUtils.getBufferedImage ( TexturePainter.class.getResource ( "icons/textures/" + textureType + ".png" ) ) );
+        updatePainter ( textureType == null ? null : textureType.getTexture () );
     }
 
     /**
@@ -125,7 +127,7 @@ public class TexturePainter<E extends JComponent> extends DefaultPainter<E>
      *
      * @param image new texture image
      */
-    public void setImage ( BufferedImage image )
+    public void setImage ( final BufferedImage image )
     {
         updatePainter ( image );
     }
@@ -135,9 +137,10 @@ public class TexturePainter<E extends JComponent> extends DefaultPainter<E>
      *
      * @param image texture image
      */
-    private void updatePainter ( BufferedImage image )
+    protected void updatePainter ( final BufferedImage image )
     {
         this.paint = image != null ? new TexturePaint ( image, new Rectangle ( 0, 0, image.getWidth (), image.getHeight () ) ) : null;
+        fireRepaint ();
     }
 
     /**
@@ -150,18 +153,18 @@ public class TexturePainter<E extends JComponent> extends DefaultPainter<E>
      * @param c      component to process
      */
     @Override
-    public void paint ( Graphics2D g2d, Rectangle bounds, E c )
+    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c )
     {
         // Do not paint anything if texture paint is not set
         if ( paint != null )
         {
             // Determining actual rect to be filled (we don't need to fill invisible area)
-            Rectangle r = c.getVisibleRect ().intersection ( bounds );
+            final Rectangle r = c.getVisibleRect ().intersection ( bounds );
 
             // If there is anything to fill we do it
             if ( r.width > 0 && r.height > 0 )
             {
-                Object old = LafUtils.setupImageQuality ( g2d );
+                final Object old = LafUtils.setupImageQuality ( g2d );
                 g2d.setPaint ( paint );
                 g2d.fillRect ( r.x, r.y, r.width, r.height );
                 LafUtils.restoreImageQuality ( g2d, old );

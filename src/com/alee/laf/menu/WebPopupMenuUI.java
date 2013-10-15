@@ -18,11 +18,13 @@
 package com.alee.laf.menu;
 
 import com.alee.extended.painter.Painter;
+import com.alee.extended.painter.PainterSupport;
 import com.alee.laf.StyleConstants;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.utils.*;
 import com.alee.utils.laf.ShapeProvider;
 import com.alee.utils.ninepatch.NinePatchIcon;
+import com.alee.utils.swing.BorderMethods;
 
 import javax.swing.*;
 import javax.swing.plaf.ButtonUI;
@@ -39,7 +41,7 @@ import java.beans.PropertyChangeListener;
  * @author Mikle Garin
  */
 
-public class WebPopupMenuUI extends BasicPopupMenuUI implements SwingConstants, ShapeProvider
+public class WebPopupMenuUI extends BasicPopupMenuUI implements SwingConstants, ShapeProvider, BorderMethods
 {
     /**
      * todo 1. Left/Right corner
@@ -83,7 +85,7 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements SwingConstants, 
      * @param c component that will use UI instance
      * @return instance of the WebPopupMenuUI
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebPopupMenuUI ();
@@ -105,6 +107,7 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements SwingConstants, 
         SwingUtils.setOrientation ( popupMenu );
         popupMenu.setOpaque ( false );
         popupMenu.setBackground ( WebPopupMenuStyle.backgroundColor );
+        PainterSupport.installPainter ( popupMenu, this.painter );
         updateBorder ();
 
         // Popup orientation change listener
@@ -198,6 +201,9 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements SwingConstants, 
     @Override
     public void uninstallUI ( final JComponent c )
     {
+        // Uninstalling painter
+        PainterSupport.uninstallPainter ( popupMenu, this.painter );
+
         // Removing listeners
         popupMenu.removePropertyChangeListener ( WebLookAndFeel.COMPONENT_ORIENTATION_PROPERTY, orientationChangeListener );
         if ( transparent )
@@ -219,9 +225,10 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements SwingConstants, 
     }
 
     /**
-     * Updates custom UI border.
+     * {@inheritDoc}
      */
-    protected void updateBorder ()
+    @Override
+    public void updateBorder ()
     {
         if ( popupMenu != null )
         {
@@ -431,7 +438,10 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements SwingConstants, 
      */
     public void setPainter ( final Painter painter )
     {
+        PainterSupport.uninstallPainter ( popupMenu, this.painter );
         this.painter = painter;
+        PainterSupport.installPainter ( popupMenu, this.painter );
+        updateBorder ();
     }
 
     /**

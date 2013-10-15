@@ -26,80 +26,123 @@ import java.awt.image.BufferedImage;
 import java.net.URL;
 
 /**
- * User: mgarin Date: 14.12.11 Time: 15:20
+ * Custom painter for 9-patch icon.
  *
+ * @param <E> component type
+ * @author Mikle Garin
  * @see NinePatchIcon
  * @see com.alee.extended.painter.NinePatchStatePainter
+ * @see AbstractPainter
+ * @see Painter
  */
 
-public class NinePatchIconPainter<E extends JComponent> extends DefaultPainter<E>
+public class NinePatchIconPainter<E extends JComponent> extends AbstractPainter<E>
 {
-    private NinePatchIcon ninePatchIcon;
+    /**
+     * 9-patch icon to paint.
+     */
+    protected NinePatchIcon icon;
 
+    /**
+     * Constructs new 9-patch icon painter.
+     */
     public NinePatchIconPainter ()
     {
         this ( ( NinePatchIcon ) null );
     }
 
-    public NinePatchIconPainter ( URL url )
+    /**
+     * Constructs new 9-patch icon painter.
+     *
+     * @param url 9-patch image URL
+     */
+    public NinePatchIconPainter ( final URL url )
     {
         this ( new NinePatchIcon ( url ) );
     }
 
-    public NinePatchIconPainter ( String iconSrc )
+    /**
+     * Constructs new 9-patch icon painter.
+     *
+     * @param iconSrc 9-patch image source
+     */
+    public NinePatchIconPainter ( final String iconSrc )
     {
         this ( new NinePatchIcon ( iconSrc ) );
     }
 
-    public NinePatchIconPainter ( ImageIcon imageIcon )
+    /**
+     * Constructs new 9-patch icon painter.
+     *
+     * @param imageIcon 9-patch image
+     */
+    public NinePatchIconPainter ( final ImageIcon imageIcon )
     {
         this ( new NinePatchIcon ( imageIcon ) );
     }
 
-    public NinePatchIconPainter ( Image image )
+    /**
+     * Constructs new 9-patch icon painter.
+     *
+     * @param image 9-patch image
+     */
+    public NinePatchIconPainter ( final Image image )
     {
         this ( new NinePatchIcon ( image ) );
     }
 
-    public NinePatchIconPainter ( BufferedImage bufferedImage )
+    /**
+     * Constructs new 9-patch icon painter.
+     *
+     * @param bufferedImage 9-patch image
+     */
+    public NinePatchIconPainter ( final BufferedImage bufferedImage )
     {
         this ( new NinePatchIcon ( bufferedImage ) );
     }
 
-
-    public NinePatchIconPainter ( NinePatchIcon ninePatchIcon )
+    /**
+     * Constructs new 9-patch icon painter.
+     *
+     * @param icon 9-patch icon
+     */
+    public NinePatchIconPainter ( final NinePatchIcon icon )
     {
         super ();
-        this.ninePatchIcon = ninePatchIcon;
+        this.icon = icon;
     }
 
+    /**
+     * Returns painted 9-patch icon.
+     *
+     * @return painted 9-patch icon
+     */
     public NinePatchIcon getNinePatchIcon ()
     {
-        return ninePatchIcon;
+        return icon;
     }
 
-    public void setNinePatchIcon ( NinePatchIcon ninePatchIcon )
+    /**
+     * Sets painted 9-patch icon.
+     *
+     * @param icon painted 9-patch icon
+     */
+    public void setNinePatchIcon ( final NinePatchIcon icon )
     {
-        this.ninePatchIcon = ninePatchIcon;
+        this.icon = icon;
+        fireUpdate ();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public void paint ( Graphics2D g2d, Rectangle bounds, E c )
+    public Dimension getPreferredSize ( final E c )
     {
-        if ( ninePatchIcon != null )
+        if ( icon != null )
         {
-            ninePatchIcon.setComponent ( c );
-            ninePatchIcon.paintIcon ( c, g2d );
-        }
-    }
-
-    @Override
-    public Dimension getPreferredSize ( E c )
-    {
-        if ( ninePatchIcon != null )
-        {
-            ninePatchIcon.setComponent ( c );
-            return ninePatchIcon.getPreferredSize ();
+            icon.setComponent ( c );
+            return icon.getPreferredSize ();
         }
         else
         {
@@ -107,18 +150,34 @@ public class NinePatchIconPainter<E extends JComponent> extends DefaultPainter<E
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public Insets getMargin ( E c )
+    public Insets getMargin ( final E c )
     {
-        Insets margin = super.getMargin ( c );
-        if ( ninePatchIcon != null )
+        final Insets margin = super.getMargin ( c );
+        if ( icon != null )
         {
-            ninePatchIcon.setComponent ( c );
-            return SwingUtils.max ( margin, ninePatchIcon.getMargin () );
+            icon.setComponent ( c );
+            return SwingUtils.max ( margin, icon.getMargin () );
         }
         else
         {
             return margin;
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c )
+    {
+        if ( icon != null )
+        {
+            icon.setComponent ( c );
+            icon.paintIcon ( c, g2d );
         }
     }
 }

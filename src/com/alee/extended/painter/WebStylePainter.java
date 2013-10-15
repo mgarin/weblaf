@@ -24,18 +24,26 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * User: mgarin Date: 15.03.12 Time: 18:09
+ * Custom web-style painter for basic elements like panels, buttons e.t.c.
+ *
+ * @param <E> component type
+ * @author Mikle Garin
+ * @see AbstractPainter
+ * @see Painter
  */
 
-// todo Requires a lot of additions (hideable sides, switchable background etc)
-public class WebStylePainter<E extends JComponent> extends DefaultPainter<E>
+public class WebStylePainter<E extends JComponent> extends AbstractPainter<E>
 {
-    private boolean drawBackground = true;
-    private int round = StyleConstants.smallRound;
-    private boolean drawFocus = false;
-    private int shadeWidth = StyleConstants.shadeWidth;
-    private boolean fillBackground = true;
-    private boolean webColored = true;
+    /**
+     * todo 1. Implement all required methods (for e.g. - side hiding)
+     */
+
+    protected boolean drawBackground = true;
+    protected int round = StyleConstants.smallRound;
+    protected boolean drawFocus = false;
+    protected int shadeWidth = StyleConstants.shadeWidth;
+    protected boolean fillBackground = true;
+    protected boolean webColored = true;
 
     public WebStylePainter ()
     {
@@ -50,6 +58,7 @@ public class WebStylePainter<E extends JComponent> extends DefaultPainter<E>
     public void setDrawBackground ( boolean drawBackground )
     {
         this.drawBackground = drawBackground;
+        fireRepaint ();
     }
 
     public int getRound ()
@@ -60,6 +69,7 @@ public class WebStylePainter<E extends JComponent> extends DefaultPainter<E>
     public void setRound ( int round )
     {
         this.round = round;
+        fireRepaint ();
     }
 
     public boolean isDrawFocus ()
@@ -70,6 +80,7 @@ public class WebStylePainter<E extends JComponent> extends DefaultPainter<E>
     public void setDrawFocus ( boolean drawFocus )
     {
         this.drawFocus = drawFocus;
+        fireRepaint ();
     }
 
     public int getShadeWidth ()
@@ -80,6 +91,7 @@ public class WebStylePainter<E extends JComponent> extends DefaultPainter<E>
     public void setShadeWidth ( int shadeWidth )
     {
         this.shadeWidth = shadeWidth;
+        fireUpdate ();
     }
 
     public boolean isFillBackground ()
@@ -90,6 +102,7 @@ public class WebStylePainter<E extends JComponent> extends DefaultPainter<E>
     public void setFillBackground ( boolean fillBackground )
     {
         this.fillBackground = fillBackground;
+        fireRepaint ();
     }
 
     public boolean isWebColored ()
@@ -100,20 +113,30 @@ public class WebStylePainter<E extends JComponent> extends DefaultPainter<E>
     public void setWebColored ( boolean webColored )
     {
         this.webColored = webColored;
+        fireRepaint ();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isOpaque ( E c )
     {
         return false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Insets getMargin ( E c )
     {
         return new Insets ( shadeWidth + 1, shadeWidth + 1, shadeWidth + 1, shadeWidth + 1 );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void paint ( Graphics2D g2d, Rectangle bounds, E c )
     {

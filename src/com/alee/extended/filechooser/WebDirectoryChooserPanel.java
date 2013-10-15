@@ -17,7 +17,7 @@
 
 package com.alee.extended.filechooser;
 
-import com.alee.extended.filefilter.DefaultFileFilter;
+import com.alee.extended.filefilter.AbstractFileFilter;
 import com.alee.extended.layout.ToolbarLayout;
 import com.alee.extended.tree.FileTreeNode;
 import com.alee.extended.tree.WebFileTree;
@@ -70,7 +70,7 @@ public class WebDirectoryChooserPanel extends WebPanel
     /**
      * Default file filter for directory chooser.
      */
-    public static DefaultFileFilter defaultFileFilter = GlobalConstants.NON_HIDDEN_DIRECTORIES_FILTER;
+    public static AbstractFileFilter abstractFileFilter = GlobalConstants.NON_HIDDEN_DIRECTORIES_FILTER;
 
     /**
      * Directory chooser listeners.
@@ -264,7 +264,7 @@ public class WebDirectoryChooserPanel extends WebPanel
 
         // Path field
         webPathField = new WebPathField ( selectedDirectory );
-        webPathField.setFileFilter ( defaultFileFilter );
+        webPathField.setFileFilter ( abstractFileFilter );
         webPathField.addPathFieldListener ( new PathFieldListener ()
         {
             @Override
@@ -277,7 +277,7 @@ public class WebDirectoryChooserPanel extends WebPanel
         // Files tree
         fileTree = new WebFileTree ();
         fileTree.setVisibleRowCount ( 15 );
-        fileTree.setFileFilter ( defaultFileFilter );
+        fileTree.setFileFilter ( abstractFileFilter );
         fileTree.setSelectedFile ( selectedDirectory, true );
         fileTree.setSelectionMode ( TreeSelectionModel.SINGLE_TREE_SELECTION );
         fileTree.setEditable ( true );

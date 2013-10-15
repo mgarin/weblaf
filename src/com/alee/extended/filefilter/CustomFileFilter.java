@@ -17,25 +17,38 @@
 
 package com.alee.extended.filefilter;
 
-import com.alee.laf.GlobalConstants;
-import com.alee.managers.language.LanguageManager;
-import com.alee.utils.FileUtils;
-
 import javax.swing.*;
-import java.io.File;
 
 /**
- * Custom file filter that accepts only image files.
+ * Custom file filter class.
  *
  * @author Mikle Garin
  */
 
-public class ImageFilesFilter extends AbstractFileFilter
+public abstract class CustomFileFilter extends AbstractFileFilter
 {
     /**
-     * Filter icon.
+     * File filter icon.
      */
-    public static final ImageIcon ICON = new ImageIcon ( ImageFilesFilter.class.getResource ( "icons/image.png" ) );
+    protected ImageIcon icon;
+
+    /**
+     * File filter description.
+     */
+    protected String description;
+
+    /**
+     * Constructs new custom file filter.
+     *
+     * @param icon        file filter icon
+     * @param description file filter description
+     */
+    public CustomFileFilter ( ImageIcon icon, String description )
+    {
+        super ();
+        this.icon = icon;
+        this.description = description;
+    }
 
     /**
      * {@inheritDoc}
@@ -43,7 +56,17 @@ public class ImageFilesFilter extends AbstractFileFilter
     @Override
     public ImageIcon getIcon ()
     {
-        return ICON;
+        return icon;
+    }
+
+    /**
+     * Sets file filter icon.
+     *
+     * @param icon new file filter icon
+     */
+    public void setIcon ( ImageIcon icon )
+    {
+        this.icon = icon;
     }
 
     /**
@@ -52,15 +75,16 @@ public class ImageFilesFilter extends AbstractFileFilter
     @Override
     public String getDescription ()
     {
-        return LanguageManager.get ( "weblaf.file.filter.images" );
+        return description;
     }
 
     /**
-     * {@inheritDoc}
+     * Sets short file filter description.
+     *
+     * @param description new short file filter description
      */
-    @Override
-    public boolean accept ( final File file )
+    public void setDescription ( String description )
     {
-        return GlobalConstants.IMAGE_FORMATS.contains ( FileUtils.getFileExtPart ( file.getName ().toLowerCase (), false ) );
+        this.description = description;
     }
 }

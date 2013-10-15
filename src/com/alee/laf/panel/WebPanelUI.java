@@ -18,6 +18,7 @@
 package com.alee.laf.panel;
 
 import com.alee.extended.painter.Painter;
+import com.alee.extended.painter.PainterSupport;
 import com.alee.laf.StyleConstants;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.focus.DefaultFocusTracker;
@@ -26,6 +27,7 @@ import com.alee.managers.focus.FocusTracker;
 import com.alee.utils.LafUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.laf.ShapeProvider;
+import com.alee.utils.swing.BorderMethods;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
@@ -41,7 +43,7 @@ import java.beans.PropertyChangeListener;
  * @author Mikle Garin
  */
 
-public class WebPanelUI extends BasicPanelUI implements ShapeProvider
+public class WebPanelUI extends BasicPanelUI implements ShapeProvider, BorderMethods
 {
     /**
      * Style settings.
@@ -87,7 +89,7 @@ public class WebPanelUI extends BasicPanelUI implements ShapeProvider
      * @param c component that will use UI instance
      * @return instance of the WebPanelUI
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( JComponent c )
     {
         return new WebPanelUI ();
@@ -110,6 +112,7 @@ public class WebPanelUI extends BasicPanelUI implements ShapeProvider
         SwingUtils.setOrientation ( panel );
         panel.setOpaque ( true );
         panel.setBackground ( WebPanelStyle.backgroundColor );
+        PainterSupport.installPainter ( panel, this.painter );
 
         // Updating border
         updateBorder ();
@@ -152,6 +155,8 @@ public class WebPanelUI extends BasicPanelUI implements ShapeProvider
     @Override
     public void uninstallUI ( JComponent c )
     {
+        PainterSupport.uninstallPainter ( panel, this.painter );
+
         panel.removePropertyChangeListener ( WebLookAndFeel.COMPONENT_ORIENTATION_PROPERTY, propertyChangeListener );
 
         FocusManager.removeFocusTracker ( focusTracker );
@@ -176,9 +181,10 @@ public class WebPanelUI extends BasicPanelUI implements ShapeProvider
     }
 
     /**
-     * Updates custom UI border.
+     * {@inheritDoc}
      */
-    private void updateBorder ()
+    @Override
+    public void updateBorder ()
     {
         if ( panel != null )
         {
@@ -277,7 +283,10 @@ public class WebPanelUI extends BasicPanelUI implements ShapeProvider
      */
     public void setPainter ( Painter painter )
     {
+        PainterSupport.uninstallPainter ( panel, this.painter );
+
         this.painter = painter;
+        PainterSupport.installPainter ( panel, this.painter );
         updateBorder ();
 
         // Changes panel opacity according to specified painter

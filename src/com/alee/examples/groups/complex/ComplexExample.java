@@ -21,7 +21,7 @@ import com.alee.examples.WebLookAndFeelDemo;
 import com.alee.examples.content.DefaultExample;
 import com.alee.extended.layout.ToolbarLayout;
 import com.alee.extended.layout.VerticalFlowLayout;
-import com.alee.extended.painter.DefaultPainter;
+import com.alee.extended.painter.AbstractPainter;
 import com.alee.extended.painter.TexturePainter;
 import com.alee.extended.window.TestFrame;
 import com.alee.laf.WebLookAndFeel;
@@ -125,10 +125,21 @@ public class ComplexExample extends DefaultExample
         } );
     }
 
-    public class ShadeBackgroundPainter extends DefaultPainter<JComponent>
+    /**
+     * Custom shade background painter.
+     */
+    public class ShadeBackgroundPainter extends AbstractPainter<JComponent>
     {
-        private BufferedImage bg;
+        /**
+         * Background image.
+         */
+        protected BufferedImage bg;
 
+        /**
+         * Constructs new shade background painter.
+         *
+         * @param bg background image
+         */
         public ShadeBackgroundPainter ( BufferedImage bg )
         {
             super ();
@@ -136,12 +147,18 @@ public class ComplexExample extends DefaultExample
             setMargin ( 25 );
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public Dimension getPreferredSize ( JComponent c )
         {
             return getShadeIcon ().getPreferredSize ();
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public void paint ( Graphics2D g2d, Rectangle bounds, JComponent c )
         {
@@ -154,7 +171,12 @@ public class ComplexExample extends DefaultExample
             g2d.fillRoundRect ( bounds.x + 20, bounds.y + 20, bounds.width - 40, bounds.height - 40, 20, 20 );
         }
 
-        private NinePatchIcon getShadeIcon ()
+        /**
+         * Returns shade icon.
+         *
+         * @return shade icon
+         */
+        protected NinePatchIcon getShadeIcon ()
         {
             return NinePatchUtils.getShadeIcon ( 20, 20, 1f );
         }

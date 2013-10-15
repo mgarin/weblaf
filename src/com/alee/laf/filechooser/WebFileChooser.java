@@ -17,7 +17,7 @@
 
 package com.alee.laf.filechooser;
 
-import com.alee.extended.filefilter.DefaultFileFilter;
+import com.alee.extended.filefilter.AbstractFileFilter;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.language.LanguageContainerMethods;
 import com.alee.managers.language.LanguageManager;
@@ -230,7 +230,7 @@ public class WebFileChooser extends JFileChooser implements LanguageMethods, Lan
      *
      * @return list of available file filters
      */
-    public List<DefaultFileFilter> getAvailableFilters ()
+    public List<AbstractFileFilter> getAvailableFilters ()
     {
         return getWebUI ().getAvailableFilters ();
     }
@@ -240,7 +240,7 @@ public class WebFileChooser extends JFileChooser implements LanguageMethods, Lan
      *
      * @return currenly active file filter
      */
-    public DefaultFileFilter getActiveFileFilter ()
+    public AbstractFileFilter getActiveFileFilter ()
     {
         return getWebUI ().getActiveFileFilter ();
     }

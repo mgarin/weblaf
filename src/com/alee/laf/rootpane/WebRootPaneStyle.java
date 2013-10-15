@@ -17,7 +17,6 @@
 
 package com.alee.laf.rootpane;
 
-import com.alee.extended.painter.Painter;
 import com.alee.laf.StyleConstants;
 import com.alee.laf.button.WebButtonStyle;
 import com.alee.utils.ProprietaryUtils;
@@ -135,11 +134,6 @@ public final class WebRootPaneStyle
      * Buttons margin.
      */
     public static Insets buttonsMargin = new Insets ( 1, 4, 1, 4 );
-
-    /**
-     * Buttons painter.
-     */
-    public static Painter buttonsPainter = null;
 
     /**
      * Display window buttons by default.

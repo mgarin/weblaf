@@ -17,30 +17,49 @@
 
 package com.alee.laf.combobox;
 
-import com.alee.extended.painter.DefaultPainter;
+import com.alee.extended.painter.AbstractPainter;
 import com.alee.laf.menu.WebMenuItemStyle;
 
 import java.awt.*;
 
 /**
- * User: mgarin Date: 27.07.12 Time: 19:29
+ * Custom painter for ComboBox elements.
+ *
+ * @author Mikle Garin
+ * @see AbstractPainter
+ * @see Painter
  */
 
-public class WebComboBoxElementPainter extends DefaultPainter<WebComboBoxElement>
+public class WebComboBoxElementPainter extends AbstractPainter<WebComboBoxElement>
 {
+    /**
+     * Style settings.
+     */
+    protected static Insets boxMargin = new Insets ( 2, 2, 2, 2 );
+    protected static Insets elementMargin = new Insets ( 4, 6, 4, 6 );
+
+    /**
+     * Constructs new combobox element painter.
+     */
     public WebComboBoxElementPainter ()
     {
         super ();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public Insets getMargin ( WebComboBoxElement element )
+    public Insets getMargin ( final WebComboBoxElement element )
     {
-        return element.getIndex () != -1 ? new Insets ( 3, 5, 3, 5 ) : new Insets ( 2, 2, 2, 2 );
+        return element.getIndex () != -1 ? elementMargin : boxMargin;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public void paint ( Graphics2D g2d, Rectangle bounds, WebComboBoxElement element )
+    public void paint ( final Graphics2D g2d, final Rectangle bounds, final WebComboBoxElement element )
     {
         if ( element.getIndex () == -1 )
         {
@@ -56,22 +75,40 @@ public class WebComboBoxElementPainter extends DefaultPainter<WebComboBoxElement
         }
     }
 
-    @SuppressWarnings ("UnusedParameters")
-    protected void paintBoxBackground ( Graphics2D g2d, WebComboBoxElement element )
+    /**
+     * Paints combobox box element background.
+     *
+     * @param g2d     graphics context
+     * @param element combobox element
+     */
+    @SuppressWarnings ( "UnusedParameters" )
+    protected void paintBoxBackground ( final Graphics2D g2d, final WebComboBoxElement element )
     {
         //
     }
 
-    protected void paintSelectedBackground ( Graphics2D g2d, WebComboBoxElement element )
+    /**
+     * Paints selected combobox popup list element background.
+     *
+     * @param g2d     graphics context
+     * @param element combobox element
+     */
+    protected void paintSelectedBackground ( final Graphics2D g2d, final WebComboBoxElement element )
     {
-        // Background
-        g2d.setPaint (
-                new GradientPaint ( 0, 0, WebMenuItemStyle.selectedTopBg, 0, element.getHeight (), WebMenuItemStyle.selectedBottomBg ) );
+        final Color topBg = WebMenuItemStyle.selectedTopBg;
+        final Color bottomBg = WebMenuItemStyle.selectedBottomBg;
+        g2d.setPaint ( new GradientPaint ( 0, 0, topBg, 0, element.getHeight (), bottomBg ) );
         g2d.fillRect ( 0, 0, element.getWidth (), element.getHeight () );
     }
 
-    @SuppressWarnings ("UnusedParameters")
-    protected void paintDeselectedBackground ( Graphics2D g2d, WebComboBoxElement element )
+    /**
+     * Paints deselected combobox popup list element background.
+     *
+     * @param g2d     graphics context
+     * @param element combobox element
+     */
+    @SuppressWarnings ( "UnusedParameters" )
+    protected void paintDeselectedBackground ( final Graphics2D g2d, final WebComboBoxElement element )
     {
         //
     }

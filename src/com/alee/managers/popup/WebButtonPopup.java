@@ -17,7 +17,7 @@
 
 package com.alee.managers.popup;
 
-import com.alee.extended.painter.DefaultPainter;
+import com.alee.extended.painter.AbstractPainter;
 import com.alee.laf.StyleConstants;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.panel.WebPanel;
@@ -609,8 +609,14 @@ public class WebButtonPopup extends WebPopup
         }
     }
 
-    private class WebButtonPopupPainter extends DefaultPainter<WebButtonPopup>
+    /**
+     * Custom button popup painter.
+     */
+    protected class WebButtonPopupPainter extends AbstractPainter<WebButtonPopup>
     {
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public void paint ( Graphics2D g2d, Rectangle bounds, WebButtonPopup c )
         {

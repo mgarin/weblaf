@@ -113,11 +113,12 @@ public class WebCheckBoxTreeCellRenderer extends WebPanel implements CheckBoxTre
     public Component getTreeCellRendererComponent ( final JTree tree, final Object value, final boolean selected, final boolean expanded,
                                                     final boolean leaf, final int row, final boolean hasFocus )
     {
-        if ( checkBoxTree.getCheckBoxVisible () )
+        final DefaultMutableTreeNode node = ( DefaultMutableTreeNode ) value;
+        if ( checkBoxTree.isCheckBoxVisible () && checkBoxTree.isCheckBoxVisible ( node ) )
         {
             // Updating check state
-            checkBox.setEnabled ( checkBoxTree.isCheckingByUserEnabled () );
-            checkBox.setState ( checkBoxTree.getCheckState ( ( DefaultMutableTreeNode ) value ) );
+            checkBox.setEnabled ( checkBoxTree.isCheckingByUserEnabled () && checkBoxTree.isCheckBoxEnabled ( node ) );
+            checkBox.setState ( checkBoxTree.getCheckState ( node ) );
 
             // Updating actual cell renderer
             final TreeCellRenderer renderer = checkBoxTree.getActualRenderer ();

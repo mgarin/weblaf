@@ -15,21 +15,24 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.extended.filechooser;
-
-import com.alee.extended.filefilter.AbstractFileFilter;
-import com.alee.laf.GlobalConstants;
+package com.alee.extended.painter;
 
 /**
- * WebFileTable style class.
+ * Painter listener interface.
  *
  * @author Mikle Garin
  */
 
-public final class WebFileTableStyle
+public interface PainterListener
 {
     /**
-     * File filter.
+     * Called when painter visual representation changes.
      */
-    public static AbstractFileFilter fileFilter = GlobalConstants.NON_HIDDEN_ONLY_FILTER;
+    public void repaint ();
+
+    /**
+     * Called when painter preferred size or margin changes.
+     * This call will usually cause component border update.
+     */
+    public void revalidate ();
 }

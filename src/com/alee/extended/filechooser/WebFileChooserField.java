@@ -18,7 +18,7 @@
 package com.alee.extended.filechooser;
 
 import com.alee.extended.drag.FileDropHandler;
-import com.alee.extended.filefilter.DefaultFileFilter;
+import com.alee.extended.filefilter.AbstractFileFilter;
 import com.alee.extended.layout.HorizontalFlowLayout;
 import com.alee.extended.panel.CenterPanel;
 import com.alee.laf.StyleConstants;
@@ -54,7 +54,6 @@ public class WebFileChooserField extends WebPanel
      */
     protected boolean multiSelectionEnabled = false;
 
-    private int preferredWidth = -1;
     private boolean showFileShortName = true;
     private boolean showFileIcon = true;
     private boolean showRemoveButton = true;
@@ -366,7 +365,7 @@ public class WebFileChooserField extends WebPanel
         WebFileChooserField.this.repaint ();
     }
 
-    private List<DefaultFileFilter> getAvailableFilters ()
+    private List<AbstractFileFilter> getAvailableFilters ()
     {
         return webFileChooser == null ? null : webFileChooser.getAvailableFilters ();
     }

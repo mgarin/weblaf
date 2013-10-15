@@ -19,7 +19,7 @@ package com.alee.examples.groups.combobox;
 
 import com.alee.examples.WebLookAndFeelDemo;
 import com.alee.examples.content.DefaultExample;
-import com.alee.extended.filefilter.DefaultFileFilter;
+import com.alee.extended.filefilter.AbstractFileFilter;
 import com.alee.extended.panel.GroupPanel;
 import com.alee.laf.GlobalConstants;
 import com.alee.laf.combobox.WebComboBox;
@@ -57,9 +57,9 @@ public class StyledComboBoxExample extends DefaultExample
             public Component getListCellRendererComponent ( JList list, Object value, int index, boolean isSelected, boolean cellHasFocus )
             {
                 JLabel renderer = ( JLabel ) super.getListCellRendererComponent ( list, value, index, isSelected, cellHasFocus );
-                DefaultFileFilter defaultFileFilter = ( DefaultFileFilter ) value;
-                renderer.setIcon ( defaultFileFilter.getIcon () );
-                renderer.setText ( defaultFileFilter.getDescription () );
+                AbstractFileFilter abstractFileFilter = ( AbstractFileFilter ) value;
+                renderer.setIcon ( abstractFileFilter.getIcon () );
+                renderer.setText ( abstractFileFilter.getDescription () );
                 return renderer;
             }
         } );

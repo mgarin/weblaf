@@ -26,6 +26,7 @@ package com.alee.utils.swing;
  * - Providing specific component state value
  * and there are many others.
  *
+ * @param <T> provided data type
  * @author Mikle Garin
  */
 

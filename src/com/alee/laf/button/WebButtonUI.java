@@ -18,6 +18,7 @@
 package com.alee.laf.button;
 
 import com.alee.extended.painter.Painter;
+import com.alee.extended.painter.PainterSupport;
 import com.alee.laf.StyleConstants;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.utils.ColorUtils;
@@ -25,6 +26,7 @@ import com.alee.utils.LafUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.laf.ShapeProvider;
 import com.alee.utils.swing.AncestorAdapter;
+import com.alee.utils.swing.BorderMethods;
 import com.alee.utils.swing.WebTimer;
 
 import javax.swing.*;
@@ -47,7 +49,7 @@ import java.util.Map;
  * User: mgarin Date: 27.04.11 Time: 17:41
  */
 
-public class WebButtonUI extends BasicButtonUI implements ShapeProvider, SwingConstants
+public class WebButtonUI extends BasicButtonUI implements ShapeProvider, SwingConstants, BorderMethods
 {
     private Color topBgColor = WebButtonStyle.topBgColor;
     private Color bottomBgColor = WebButtonStyle.bottomBgColor;
@@ -120,6 +122,7 @@ public class WebButtonUI extends BasicButtonUI implements ShapeProvider, SwingCo
         button.setBorderPainted ( false );
         button.setFocusable ( true );
         button.setOpaque ( false );
+        PainterSupport.installPainter ( button, this.painter );
 
         // Updating border
         updateBorder ();
@@ -303,11 +306,11 @@ public class WebButtonUI extends BasicButtonUI implements ShapeProvider, SwingCo
     @Override
     public void uninstallUI ( JComponent c )
     {
+        PainterSupport.uninstallPainter ( button, this.painter );
+
         c.removeMouseListener ( mouseAdapter );
         c.removeMouseMotionListener ( mouseAdapter );
-
         c.removeAncestorListener ( ancestorListener );
-
         c.removePropertyChangeListener ( WebLookAndFeel.COMPONENT_ORIENTATION_PROPERTY, propertyChangeListener );
 
         super.uninstallUI ( c );
@@ -413,7 +416,11 @@ public class WebButtonUI extends BasicButtonUI implements ShapeProvider, SwingCo
                 Math.round ( transparency * shineColor.getAlpha () ) );
     }
 
-    private void updateBorder ()
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void updateBorder ()
     {
         if ( button != null )
         {
@@ -592,7 +599,10 @@ public class WebButtonUI extends BasicButtonUI implements ShapeProvider, SwingCo
 
     public void setPainter ( Painter painter )
     {
+        PainterSupport.uninstallPainter ( button, this.painter );
+
         this.painter = painter;
+        PainterSupport.installPainter ( button, this.painter );
         updateBorder ();
     }
 

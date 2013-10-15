@@ -25,11 +25,16 @@ import java.awt.*;
  *
  * @param <E> component type
  * @author Mikle Garin
- * @see DefaultPainter
+ * @see AbstractPainter
  */
 
 public interface Painter<E extends Component>
 {
+    /**
+     * todo 1. Opacity change fired in listener
+     * todo 2. Additional "quick" methods for painting (setAA/setFont/setComposite/...)
+     */
+
     /**
      * Returns whether visual data provided by this painter is opaque or not.
      * Returned value might affect component opacity depending on painter support inside that component UI.
@@ -67,4 +72,18 @@ public interface Painter<E extends Component>
      * @param c      component to process
      */
     public void paint ( Graphics2D g2d, Rectangle bounds, E c );
+
+    /**
+     * Adds new painter listener.
+     *
+     * @param listener painter listener to add
+     */
+    public void addPainterListener ( PainterListener listener );
+
+    /**
+     * Removes painter listener.
+     *
+     * @param listener painter listener to remove
+     */
+    public void removePainterListener ( PainterListener listener );
 }

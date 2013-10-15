@@ -34,9 +34,10 @@ public interface TreeCheckingModel<E extends DefaultMutableTreeNode>
     /**
      * Returns list of checked nodes.
      *
+     * @param optimize whether should optimize the resulting list by removing checked node childs or not
      * @return list of checked nodes
      */
-    public List<E> getCheckedNodes ();
+    public List<E> getCheckedNodes ( boolean optimize );
 
     /**
      * Returns list of nodes in mixed state.
@@ -98,4 +99,11 @@ public interface TreeCheckingModel<E extends DefaultMutableTreeNode>
      * Checks all tree nodes.
      */
     public void checkAll ();
+
+    /**
+     * Notifies model about checking mode change.
+     *
+     * @param recursive whether checked or unchecked node childs should be checked or unchecked recursively or not
+     */
+    public void checkingModeChanged ( boolean recursive );
 }

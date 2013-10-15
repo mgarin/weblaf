@@ -18,13 +18,14 @@
 package com.alee.laf.tabbedpane;
 
 import com.alee.extended.painter.Painter;
+import com.alee.extended.painter.PainterSupport;
 import com.alee.laf.StyleConstants;
 import com.alee.utils.LafUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.laf.ShapeProvider;
+import com.alee.utils.swing.BorderMethods;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.UIResource;
 import javax.swing.plaf.basic.BasicTabbedPaneUI;
@@ -42,7 +43,7 @@ import java.util.Map;
  * User: mgarin Date: 27.04.11 Time: 18:39
  */
 
-public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider
+public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider, BorderMethods
 {
     private TabbedPaneStyle tabbedPaneStyle = WebTabbedPaneStyle.tabbedPaneStyle;
 
@@ -87,9 +88,10 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider
         // Default settings
         SwingUtils.setOrientation ( tabPane );
         tabPane.setBackground ( StyleConstants.backgroundColor );
+        PainterSupport.installPainter ( tabPane, this.painter );
 
         // Updating border
-        updateBorder ( tabPane );
+        updateBorder ();
 
         // Focus updater
         focusAdapter = new FocusAdapter ()
@@ -137,7 +139,7 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider
     @Override
     public void uninstallUI ( JComponent c )
     {
-        super.uninstallUI ( c );
+        PainterSupport.uninstallPainter ( tabPane, this.painter );
 
         if ( focusAdapter != null )
         {
@@ -148,6 +150,8 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider
         //            c.removeMouseListener ( mouseAdapter );
         //            c.removeMouseMotionListener ( mouseAdapter );
         //        }
+
+        super.uninstallUI ( c );
     }
 
     @Override
@@ -156,18 +160,26 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider
         return LafUtils.getWebBorderShape ( tabPane, getShadeWidth (), getRound () );
     }
 
-    private void updateBorder ( JComponent c )
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void updateBorder ()
     {
-        Insets bgInsets = getBackgroundInsets ( c );
-        if ( tabbedPaneStyle.equals ( TabbedPaneStyle.standalone ) )
+        if ( tabPane != null )
         {
-            // Standalone style border
-            c.setBorder ( new EmptyBorder ( SwingUtils.max ( bgInsets, new Insets ( shadeWidth, shadeWidth, shadeWidth, shadeWidth ) ) ) );
-        }
-        else
-        {
-            // Attached style border
-            c.setBorder ( new EmptyBorder ( bgInsets ) );
+            Insets bgInsets = getBackgroundInsets ( tabPane );
+            if ( tabbedPaneStyle.equals ( TabbedPaneStyle.standalone ) )
+            {
+                // Standalone style border
+                tabPane.setBorder ( LafUtils.createWebBorder (
+                        SwingUtils.max ( bgInsets, new Insets ( shadeWidth, shadeWidth, shadeWidth, shadeWidth ) ) ) );
+            }
+            else
+            {
+                // Attached style border
+                tabPane.setBorder ( LafUtils.createWebBorder ( bgInsets ) );
+            }
         }
     }
 
@@ -184,7 +196,7 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider
     public void setShadeWidth ( int shadeWidth )
     {
         this.shadeWidth = shadeWidth;
-        updateBorder ( tabPane );
+        updateBorder ();
     }
 
     public int getRound ()
@@ -285,7 +297,7 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider
     public void setTabbedPaneStyle ( TabbedPaneStyle tabbedPaneStyle )
     {
         this.tabbedPaneStyle = tabbedPaneStyle;
-        updateBorder ( tabPane );
+        updateBorder ();
     }
 
     //    private void updateRolloverTab ( MouseEvent e )
@@ -308,8 +320,11 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider
 
     public void setPainter ( Painter painter )
     {
+        PainterSupport.uninstallPainter ( tabPane, this.painter );
+
         this.painter = painter;
-        updateBorder ( tabPane );
+        PainterSupport.installPainter ( tabPane, this.painter );
+        updateBorder ();
     }
 
     public int getTabRunIndent ()

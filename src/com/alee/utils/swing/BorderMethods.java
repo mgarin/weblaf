@@ -15,21 +15,20 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.extended.filechooser;
-
-import com.alee.extended.filefilter.AbstractFileFilter;
-import com.alee.laf.GlobalConstants;
+package com.alee.utils.swing;
 
 /**
- * WebFileTable style class.
+ * This interface provides a set of methods that should be added into components or UIs that support custom WebLaF borders.
  *
  * @author Mikle Garin
+ * @see SwingMethods
+ * @see com.alee.utils.SwingUtils
  */
 
-public final class WebFileTableStyle
+public interface BorderMethods extends SwingMethods
 {
     /**
-     * File filter.
+     * Updates custom WebLaF border.
      */
-    public static AbstractFileFilter fileFilter = GlobalConstants.NON_HIDDEN_ONLY_FILTER;
+    public void updateBorder ();
 }

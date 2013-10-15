@@ -23,27 +23,41 @@ import javax.swing.*;
 import java.io.File;
 
 /**
- * User: mgarin Date: 11.01.11 Time: 4:00
+ * Custom file filter that accepts only non-hidden files.
+ *
+ * @author Mikle Garin
  */
 
-public class NonHiddenFilter extends DefaultFileFilter
+public class NonHiddenFilter extends AbstractFileFilter
 {
-    private static final ImageIcon ICON = new ImageIcon ( DirectoriesFilter.class.getResource ( "icons/nonhidden.png" ) );
+    /**
+     * Filter icon.
+     */
+    public static final ImageIcon ICON = new ImageIcon ( DirectoriesFilter.class.getResource ( "icons/nonhidden.png" ) );
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ImageIcon getIcon ()
     {
         return ICON;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getDescription ()
     {
         return LanguageManager.get ( "weblaf.file.filter.nonhidden" );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public boolean accept ( File file )
+    public boolean accept ( final File file )
     {
         return !file.isHidden ();
     }

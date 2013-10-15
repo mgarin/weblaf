@@ -17,18 +17,22 @@
 
 package com.alee.extended.painter;
 
+import com.alee.utils.CollectionUtils;
+
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Default painter implementation that provides a few additional features.
- * Usually this class and not Painter interface is extended by various painters since it already has basic method implementations.
+ * This abstract painter provides a few additional features.
+ * Usually this class is extended by various painters instead of Painter interface.
  *
  * @param <E> component type
  * @author Mikle Garin
- * @see DefaultPainter
+ * @see Painter
  */
 
-public abstract class DefaultPainter<E extends Component> implements Painter<E>
+public abstract class AbstractPainter<E extends Component> implements Painter<E>
 {
     /**
      * Whether visual data is opaque or not.
@@ -46,10 +50,15 @@ public abstract class DefaultPainter<E extends Component> implements Painter<E>
     protected Insets margin = new Insets ( 0, 0, 0, 0 );
 
     /**
+     * Painter listeners.
+     */
+    protected List<PainterListener> listeners = new ArrayList<PainterListener> ( 1 );
+
+    /**
      * {@inheritDoc}
      */
     @Override
-    public boolean isOpaque ( E c )
+    public boolean isOpaque ( final E c )
     {
         return opaque;
     }
@@ -59,16 +68,17 @@ public abstract class DefaultPainter<E extends Component> implements Painter<E>
      *
      * @param opaque whether visual data provided by this painter is opaque or not
      */
-    public void setOpaque ( boolean opaque )
+    public void setOpaque ( final boolean opaque )
     {
         this.opaque = opaque;
+        fireRepaint ();
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Dimension getPreferredSize ( E c )
+    public Dimension getPreferredSize ( final E c )
     {
         return preferredSize;
     }
@@ -78,16 +88,17 @@ public abstract class DefaultPainter<E extends Component> implements Painter<E>
      *
      * @param preferredSize preferred size for visual data provided by this painter
      */
-    public void setPreferredSize ( Dimension preferredSize )
+    public void setPreferredSize ( final Dimension preferredSize )
     {
         this.preferredSize = preferredSize;
+        fireRevalidate ();
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Insets getMargin ( E c )
+    public Insets getMargin ( final E c )
     {
         return margin;
     }
@@ -97,9 +108,10 @@ public abstract class DefaultPainter<E extends Component> implements Painter<E>
      *
      * @param margin margin required for visual data provided by this painter
      */
-    public void setMargin ( Insets margin )
+    public void setMargin ( final Insets margin )
     {
         this.margin = margin;
+        fireRevalidate ();
     }
 
     /**
@@ -110,7 +122,7 @@ public abstract class DefaultPainter<E extends Component> implements Painter<E>
      * @param bottom bottom margin required for visual data provided by this painter
      * @param right  right margin required for visual data provided by this painter
      */
-    public void setMargin ( int top, int left, int bottom, int right )
+    public void setMargin ( final int top, final int left, final int bottom, final int right )
     {
         setMargin ( new Insets ( top, left, bottom, right ) );
     }
@@ -120,8 +132,61 @@ public abstract class DefaultPainter<E extends Component> implements Painter<E>
      *
      * @param margin margin required for visual data provided by this painter
      */
-    public void setMargin ( int margin )
+    public void setMargin ( final int margin )
     {
         setMargin ( margin, margin, margin, margin );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void addPainterListener ( final PainterListener listener )
+    {
+        listeners.add ( listener );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void removePainterListener ( final PainterListener listener )
+    {
+        listeners.remove ( listener );
+    }
+
+    /**
+     * Fired when painter size and visual representation changes.
+     * Calls both revalidate and update listener methods.
+     */
+    public void fireUpdate ()
+    {
+        for ( final PainterListener listener : CollectionUtils.copy ( listeners ) )
+        {
+            listener.revalidate ();
+            listener.repaint ();
+        }
+    }
+
+    /**
+     * Fired when painter visual representation changes.
+     */
+    public void fireRepaint ()
+    {
+        for ( final PainterListener listener : CollectionUtils.copy ( listeners ) )
+        {
+            listener.repaint ();
+        }
+    }
+
+    /**
+     * Fired when painter size changes.
+     */
+    public void fireRevalidate ()
+    {
+        for ( final PainterListener listener : CollectionUtils.copy ( listeners ) )
+        {
+            listener.revalidate ();
+        }
     }
 }

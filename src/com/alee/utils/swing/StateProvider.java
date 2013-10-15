@@ -15,21 +15,22 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.extended.filechooser;
-
-import com.alee.extended.filefilter.AbstractFileFilter;
-import com.alee.laf.GlobalConstants;
+package com.alee.utils.swing;
 
 /**
- * WebFileTable style class.
+ * This interface provides a single method for boolean state request for data of any type.
  *
+ * @param <T> type of value used to provide state
  * @author Mikle Garin
  */
 
-public final class WebFileTableStyle
+public interface StateProvider<T>
 {
     /**
-     * File filter.
+     * Returns state for the specified value.
+     *
+     * @param value value to process
+     * @return state for the specified value
      */
-    public static AbstractFileFilter fileFilter = GlobalConstants.NON_HIDDEN_ONLY_FILTER;
+    public boolean provide ( T value );
 }

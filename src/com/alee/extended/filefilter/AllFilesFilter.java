@@ -23,27 +23,41 @@ import javax.swing.*;
 import java.io.File;
 
 /**
- * User: mgarin Date: 11.07.11 Time: 19:31
+ * Custom file filter that accepts all files.
+ *
+ * @author Mikle Garin
  */
 
-public class AllFilesFilter extends DefaultFileFilter
+public class AllFilesFilter extends AbstractFileFilter
 {
-    private static final ImageIcon ICON = new ImageIcon ( AllFilesFilter.class.getResource ( "icons/file.png" ) );
+    /**
+     * Filter icon.
+     */
+    public static final ImageIcon ICON = new ImageIcon ( AllFilesFilter.class.getResource ( "icons/file.png" ) );
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ImageIcon getIcon ()
     {
         return ICON;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getDescription ()
     {
         return LanguageManager.get ( "weblaf.file.filter.all" );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public boolean accept ( File file )
+    public boolean accept ( final File file )
     {
         return true;
     }

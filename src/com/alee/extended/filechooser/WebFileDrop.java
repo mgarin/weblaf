@@ -18,7 +18,7 @@
 package com.alee.extended.filechooser;
 
 import com.alee.extended.drag.FileDropHandler;
-import com.alee.extended.filefilter.DefaultFileFilter;
+import com.alee.extended.filefilter.AbstractFileFilter;
 import com.alee.extended.layout.WrapFlowLayout;
 import com.alee.laf.StyleConstants;
 import com.alee.laf.panel.WebPanel;
@@ -66,7 +66,7 @@ public class WebFileDrop extends WebPanel implements LanguageMethods
     private boolean filesDropEnabled = true;
 
     private boolean allowSameFiles = false;
-    private DefaultFileFilter fileFilter = null;
+    private AbstractFileFilter fileFilter = null;
 
     private boolean showDropText = true;
     private float dropTextOpacity = 1f;
@@ -257,12 +257,12 @@ public class WebFileDrop extends WebPanel implements LanguageMethods
         setSelectedFiles ( selectedFiles );
     }
 
-    public DefaultFileFilter getFileFilter ()
+    public AbstractFileFilter getFileFilter ()
     {
         return fileFilter;
     }
 
-    public void setFileFilter ( DefaultFileFilter fileFilter )
+    public void setFileFilter ( AbstractFileFilter fileFilter )
     {
         this.fileFilter = fileFilter;
         setSelectedFiles ( selectedFiles );

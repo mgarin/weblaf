@@ -17,7 +17,7 @@
 
 package com.alee.laf.filechooser;
 
-import com.alee.extended.filefilter.DefaultFileFilter;
+import com.alee.extended.filefilter.AbstractFileFilter;
 import com.alee.laf.GlobalConstants;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.language.LanguageManager;
@@ -34,6 +34,7 @@ import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -106,6 +107,7 @@ public class WebFileChooserUI extends FileChooserUI
 
         fileChooserPanel = new WebFileChooserPanel ( getFileChooserType (), fileChooser.getControlButtonsAreShown () );
         fileChooserPanel.setMultiSelectionEnabled ( fileChooser.isMultiSelectionEnabled () );
+        fileChooserPanel.setShowHiddenFiles ( !fileChooser.isFileHidingEnabled () );
         fileChooserPanel.setApproveListener ( new ActionListener ()
         {
             @Override
@@ -185,7 +187,7 @@ public class WebFileChooserUI extends FileChooserUI
      *
      * @return list of available file filters
      */
-    public List<DefaultFileFilter> getAvailableFilters ()
+    public List<AbstractFileFilter> getAvailableFilters ()
     {
         return fileChooserPanel.getAvailableFilters ();
     }
@@ -195,7 +197,7 @@ public class WebFileChooserUI extends FileChooserUI
      *
      * @return currenly active file filter
      */
-    public DefaultFileFilter getActiveFileFilter ()
+    public AbstractFileFilter getActiveFileFilter ()
     {
         return fileChooserPanel.getActiveFileFilter ();
     }
@@ -250,38 +252,53 @@ public class WebFileChooserUI extends FileChooserUI
         String prop = event.getPropertyName ();
         if ( prop.equals ( JFileChooser.APPROVE_BUTTON_TEXT_CHANGED_PROPERTY ) )
         {
-            // System.out.println ( "APPROVE_BUTTON_TEXT_CHANGED_PROPERTY " + fileChooser.getApproveButtonText () );
             fileChooserPanel.setApproveButtonText ( fileChooser.getApproveButtonText () );
         }
         else if ( prop.equals ( JFileChooser.CONTROL_BUTTONS_ARE_SHOWN_CHANGED_PROPERTY ) )
         {
-            // System.out.println ( "CONTROL_BUTTONS_ARE_SHOWN_CHANGED_PROPERTY " + fileChooser.getControlButtonsAreShown () );
             fileChooserPanel.setShowControlButtons ( fileChooser.getControlButtonsAreShown () );
         }
         else if ( prop.equals ( JFileChooser.MULTI_SELECTION_ENABLED_CHANGED_PROPERTY ) )
         {
-            // System.out.println ( "MULTI_SELECTION_ENABLED_CHANGED_PROPERTY " + fileChooser.isMultiSelectionEnabled () );
             fileChooserPanel.setMultiSelectionEnabled ( fileChooser.isMultiSelectionEnabled () );
         }
         else if ( prop.equals ( JFileChooser.FILE_FILTER_CHANGED_PROPERTY ) ||
                 prop.equals ( JFileChooser.CHOOSABLE_FILE_FILTER_CHANGED_PROPERTY ) ||
                 prop.equals ( JFileChooser.ACCEPT_ALL_FILE_FILTER_USED_CHANGED_PROPERTY ) )
         {
+            final FileFilter filter = fileChooser.getFileFilter ();
             final FileFilter[] filters = fileChooser.getChoosableFileFilters ();
-            // System.out.println ( "FILE_FILTER_CHANGED_PROPERTY... " + filters.length );
-            if ( filters.length == 0 )
+
+            // Collecting all filters
+            final int initialCapacity = ( filters != null ? filters.length : 0 ) + ( filter != null ? 1 : 0 );
+            final List<FileFilter> collected = new ArrayList<FileFilter> ( initialCapacity );
+            if ( filter != null )
             {
-                fileChooserPanel.setFileFilter ( GlobalConstants.ALL_FILES_FILTER );
+                collected.add ( filter );
+            }
+            if ( filters != null && filters.length > 0 )
+            {
+                for ( FileFilter fileFilter : filters )
+                {
+                    if ( !collected.contains ( fileFilter ) )
+                    {
+                        collected.add ( fileFilter );
+                    }
+                }
+            }
+
+            // Applying filters
+            if ( collected.size () > 0 )
+            {
+                fileChooserPanel.setFileFilters ( collected.toArray ( new FileFilter[ collected.size () ] ) );
             }
             else
             {
-                fileChooserPanel.setFileFilters ( filters );
+                fileChooserPanel.setFileFilter ( GlobalConstants.ALL_FILES_FILTER );
             }
         }
         else if ( prop.equals ( JFileChooser.DIRECTORY_CHANGED_PROPERTY ) )
         {
-            // System.out.println ( "DIRECTORY_CHANGED_PROPERTY " + fileChooser.getCurrentDirectory () +
-            //         ( ignoreFileSelectionChanges ? "(ignored)" : "" ) );
             if ( !ignoreFileSelectionChanges )
             {
                 fileChooserPanel.setCurrentFolder ( fileChooser.getCurrentDirectory () );
@@ -289,8 +306,6 @@ public class WebFileChooserUI extends FileChooserUI
         }
         else if ( prop.equals ( JFileChooser.SELECTED_FILE_CHANGED_PROPERTY ) )
         {
-            // System.out.println ( "SELECTED_FILE_CHANGED_PROPERTY " + fileChooser.getSelectedFiles ().length +
-            //         ( ignoreFileSelectionChanges ? "(ignored)" : "" ) );
             if ( !ignoreFileSelectionChanges )
             {
                 final File[] selectedFiles = fileChooser.getSelectedFiles ();
@@ -312,10 +327,16 @@ public class WebFileChooserUI extends FileChooserUI
         }
         else if ( prop.equals ( JFileChooser.DIALOG_TYPE_CHANGED_PROPERTY ) )
         {
-            // System.out.println ( "DIALOG_TYPE_CHANGED_PROPERTY " + getFileChooserType () );
             fileChooserPanel.setChooserType ( getFileChooserType () );
         }
-        // todo FILE_SELECTION_MODE_CHANGED_PROPERTY (should work atop of filters)
+        else if ( prop.equals ( JFileChooser.FILE_HIDING_CHANGED_PROPERTY ) )
+        {
+            fileChooserPanel.setShowHiddenFiles ( !fileChooser.isFileHidingEnabled () );
+        }
+        else if ( prop.equals ( JFileChooser.FILE_SELECTION_MODE_CHANGED_PROPERTY ) )
+        {
+            fileChooserPanel.setMultiSelectionEnabled ( fileChooser.isMultiSelectionEnabled () );
+        }
         else if ( prop.equals ( WebLookAndFeel.COMPONENT_ORIENTATION_PROPERTY ) )
         {
             fileChooserPanel.applyComponentOrientation ( fileChooser.getComponentOrientation () );

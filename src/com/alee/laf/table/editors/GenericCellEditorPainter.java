@@ -17,32 +17,51 @@
 
 package com.alee.laf.table.editors;
 
-import com.alee.extended.painter.DefaultPainter;
+import com.alee.extended.painter.AbstractPainter;
 import com.alee.utils.LafUtils;
 
 import java.awt.*;
 
 /**
- * User: mgarin Date: 28.11.12 Time: 14:34
+ * Custom painter to provide visual feedback for invalid editor cells.
+ *
+ * @param <E> component type
+ * @author Mikle Garin
+ * @see AbstractPainter
+ * @see com.alee.extended.painter.Painter
  */
 
-public class GenericCellEditorPainter extends DefaultPainter<GenericCellEditor>
+public class GenericCellEditorPainter extends AbstractPainter<GenericCellEditor>
 {
+    /**
+     * Constructs new generic cell editor painter.
+     */
     public GenericCellEditorPainter ()
     {
         super ();
-        setMargin ( 0, 1, 0, 1 );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public void paint ( Graphics2D g2d, Rectangle bounds, GenericCellEditor c )
+    public Insets getMargin ( GenericCellEditor c )
+    {
+        return new Insets ( 0, 1, 0, 1 );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void paint ( final Graphics2D g2d, final Rectangle bounds, final GenericCellEditor c )
     {
         g2d.setPaint ( Color.WHITE );
         g2d.fillRect ( bounds.x, bounds.y, bounds.width, bounds.height );
 
         if ( c.isInvalidValue () )
         {
-            Composite old = LafUtils.setupAlphaComposite ( g2d, 0.25f );
+            final Composite old = LafUtils.setupAlphaComposite ( g2d, 0.25f );
             g2d.setPaint ( Color.RED );
             g2d.fillRect ( bounds.x, bounds.y, bounds.width, bounds.height );
             LafUtils.restoreComposite ( g2d, old );

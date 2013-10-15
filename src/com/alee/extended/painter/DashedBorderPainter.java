@@ -26,7 +26,7 @@ import java.awt.*;
  * @param <E> component type
  * @author Mikle Garin
  * @see BorderPainter
- * @see DefaultPainter
+ * @see AbstractPainter
  * @see Painter
  */
 
@@ -95,6 +95,7 @@ public class DashedBorderPainter<E extends JComponent> extends BorderPainter<E>
     {
         this.dash = dash;
         updateStroke ();
+        fireRepaint ();
     }
 
     /**
@@ -117,6 +118,7 @@ public class DashedBorderPainter<E extends JComponent> extends BorderPainter<E>
     {
         this.dashPhase = dashPhase;
         updateStroke ();
+        fireRepaint ();
     }
 
     /**

@@ -18,12 +18,14 @@
 package com.alee.laf.menu;
 
 import com.alee.extended.painter.Painter;
+import com.alee.extended.painter.PainterSupport;
 import com.alee.laf.StyleConstants;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.utils.ImageUtils;
 import com.alee.utils.LafUtils;
 import com.alee.utils.MathUtils;
 import com.alee.utils.SwingUtils;
+import com.alee.utils.swing.BorderMethods;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
@@ -44,7 +46,7 @@ import java.util.Map;
  * @author Mikle Garin
  */
 
-public class WebMenuUI extends BasicMenuUI
+public class WebMenuUI extends BasicMenuUI implements BorderMethods
 {
     /**
      * Used icons.
@@ -85,7 +87,7 @@ public class WebMenuUI extends BasicMenuUI
      * @param c component that will use UI instance
      * @return instance of the WebMenuUI
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebMenuUI ();
@@ -106,6 +108,7 @@ public class WebMenuUI extends BasicMenuUI
         menuItem.setOpaque ( false );
         menuItem.setBackground ( selectedBottomBg );
         menuItem.setIconTextGap ( WebMenuItemStyle.iconTextGap );
+        PainterSupport.installPainter ( menuItem, this.painter );
         updateBorder ();
 
         // Orientation change listener
@@ -151,6 +154,9 @@ public class WebMenuUI extends BasicMenuUI
     @Override
     public void uninstallUI ( final JComponent c )
     {
+        // Uninstalling painter
+        PainterSupport.uninstallPainter ( menuItem, this.painter );
+
         // Removing listeners
         menuItem.removePropertyChangeListener ( WebLookAndFeel.COMPONENT_ORIENTATION_PROPERTY, propertyChangeListener );
         propertyChangeListener = null;
@@ -166,9 +172,10 @@ public class WebMenuUI extends BasicMenuUI
     }
 
     /**
-     * Updates custom UI border.
+     * {@inheritDoc}
      */
-    protected void updateBorder ()
+    @Override
+    public void updateBorder ()
     {
         if ( menuItem != null )
         {
@@ -418,7 +425,11 @@ public class WebMenuUI extends BasicMenuUI
      */
     public void setPainter ( final Painter painter )
     {
+        PainterSupport.uninstallPainter ( menuItem, this.painter );
+
         this.painter = painter;
+        PainterSupport.installPainter ( menuItem, this.painter );
+        updateBorder ();
     }
 
     /**
@@ -512,7 +523,7 @@ public class WebMenuUI extends BasicMenuUI
      * @param selected whether menu item is selected or not
      * @param ltr      whether menu item has left-to-right orientation or not
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     protected void paintBackground ( final Graphics2D g2d, final JMenu menu, final boolean selected, final boolean ltr )
     {
         if ( painter != null )
@@ -552,7 +563,7 @@ public class WebMenuUI extends BasicMenuUI
      * @param selected whether menu item is selected or not
      * @param ltr      whether menu item has left-to-right orientation or not
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     protected void paintIcon ( final Graphics2D g2d, final JMenu menu, final int x, final int y, final int w, final int h,
                                final boolean selected, final boolean ltr )
     {
@@ -580,7 +591,7 @@ public class WebMenuUI extends BasicMenuUI
      * @param selected whether menu item is selected or not
      * @param ltr      whether menu item has left-to-right orientation or not
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     protected void paintText ( final Graphics2D g2d, final JMenu menu, final FontMetrics fm, final int x, final int y, final int w,
                                final int h, final boolean selected, final boolean ltr )
     {

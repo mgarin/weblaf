@@ -18,11 +18,13 @@
 package com.alee.laf.text;
 
 import com.alee.extended.painter.Painter;
+import com.alee.extended.painter.PainterSupport;
 import com.alee.laf.StyleConstants;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.utils.LafUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.laf.ShapeProvider;
+import com.alee.utils.swing.BorderMethods;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
@@ -41,7 +43,7 @@ import java.util.Map;
  * User: mgarin Date: 16.05.11 Time: 20:37
  */
 
-public class WebPasswordFieldUI extends BasicPasswordFieldUI implements ShapeProvider, SwingConstants
+public class WebPasswordFieldUI extends BasicPasswordFieldUI implements ShapeProvider, SwingConstants, BorderMethods
 {
     private boolean drawBorder = WebPasswordFieldStyle.drawBorder;
     private boolean drawFocus = WebPasswordFieldStyle.drawFocus;
@@ -104,6 +106,7 @@ public class WebPasswordFieldUI extends BasicPasswordFieldUI implements ShapePro
         passwordField.setSelectedTextColor ( Color.BLACK );
         passwordField.setCaretColor ( Color.GRAY );
         passwordField.setLayout ( new TextComponentLayout ( passwordField ) );
+        PainterSupport.installPainter ( passwordField, this.painter );
 
         // Updating border
         updateBorder ();
@@ -167,6 +170,8 @@ public class WebPasswordFieldUI extends BasicPasswordFieldUI implements ShapePro
     @Override
     public void uninstallUI ( JComponent c )
     {
+        PainterSupport.uninstallPainter ( passwordField, this.painter );
+
         passwordField.putClientProperty ( SwingUtils.HANDLES_ENABLE_STATE, null );
 
         passwordField.removeFocusListener ( focusListener );
@@ -450,8 +455,11 @@ public class WebPasswordFieldUI extends BasicPasswordFieldUI implements ShapePro
 
     public void setPainter ( Painter painter )
     {
+        PainterSupport.uninstallPainter ( passwordField, this.painter );
+
         this.painter = painter;
         getComponent ().setOpaque ( painter == null || painter.isOpaque ( passwordField ) );
+        PainterSupport.installPainter ( passwordField, this.painter );
         updateBorder ();
     }
 
@@ -477,7 +485,11 @@ public class WebPasswordFieldUI extends BasicPasswordFieldUI implements ShapePro
         }
     }
 
-    private void updateBorder ()
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void updateBorder ()
     {
         if ( passwordField != null )
         {
