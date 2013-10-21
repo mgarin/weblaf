@@ -20,6 +20,7 @@ package com.alee.extended.tree;
 import com.alee.extended.checkbox.CheckState;
 import com.alee.laf.tree.WebTree;
 import com.alee.managers.hotkey.Hotkey;
+import com.alee.utils.CollectionUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.StateProvider;
 
@@ -82,6 +83,11 @@ public class WebCheckBoxTree<E extends DefaultMutableTreeNode> extends WebTree<E
      * Tree actions handler.
      */
     protected Handler handler;
+
+    /**
+     * Checkbox tree check state change listeners.
+     */
+    protected List<CheckStateChangeListener<E>> checkStateChangeListeners = new ArrayList<CheckStateChangeListener<E>> ( 1 );
 
     /**
      * Constructs tree with default sample model.
@@ -322,26 +328,14 @@ public class WebCheckBoxTree<E extends DefaultMutableTreeNode> extends WebTree<E
     /**
      * Sets specified nodes state to checked.
      *
-     * @param nodes nodes to check
+     * @param nodes   nodes to check
+     * @param checked whether the specified tree nodes should be checked or not
      */
-    public void setChecked ( final Collection<E> nodes )
+    public void setChecked ( final Collection<E> nodes, final boolean checked )
     {
         if ( checkingModel != null )
         {
-            checkingModel.setChecked ( nodes );
-        }
-    }
-
-    /**
-     * Sets specified nodes state to unchecked.
-     *
-     * @param nodes nodes to uncheck
-     */
-    public void setUnchecked ( final Collection<E> nodes )
-    {
-        if ( checkingModel != null )
-        {
-            checkingModel.setUnchecked ( nodes );
+            checkingModel.setChecked ( nodes, checked );
         }
     }
 
@@ -422,10 +416,24 @@ public class WebCheckBoxTree<E extends DefaultMutableTreeNode> extends WebTree<E
      *
      * @param checkingModel tree checking model
      */
-    public void setCheckingModel ( final TreeCheckingModel checkingModel )
+    public void setCheckingModel ( final TreeCheckingModel<E> checkingModel )
     {
+        // Removing check state change listeners from old model
+        for ( final CheckStateChangeListener<E> listener : checkStateChangeListeners )
+        {
+            this.checkingModel.removeCheckStateChangeListener ( listener );
+        }
+
         this.checkingModel = checkingModel;
+
+        // Updating nodes view due to possible check state changes
         updateAllVisibleNodes ();
+
+        // Restoring check state change listeners
+        for ( final CheckStateChangeListener<E> listener : checkStateChangeListeners )
+        {
+            checkingModel.addCheckStateChangeListener ( listener );
+        }
     }
 
     /**
@@ -434,7 +442,7 @@ public class WebCheckBoxTree<E extends DefaultMutableTreeNode> extends WebTree<E
      * @param checkBoxTree checkbox tree to process
      * @return new default checking model for the specified checkbox tree
      */
-    protected TreeCheckingModel createDefaultCheckingModel ( final WebCheckBoxTree checkBoxTree )
+    protected TreeCheckingModel createDefaultCheckingModel ( final WebCheckBoxTree<E> checkBoxTree )
     {
         return new DefaultTreeCheckingModel ( checkBoxTree );
     }
@@ -618,6 +626,43 @@ public class WebCheckBoxTree<E extends DefaultMutableTreeNode> extends WebTree<E
     public boolean isCheckingByUserEnabled ()
     {
         return isEnabled () && isCheckBoxVisible () && isCheckingEnabled ();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void addCheckStateChangeListener ( final CheckStateChangeListener listener )
+    {
+        checkStateChangeListeners.add ( listener );
+        if ( checkingModel != null )
+        {
+            checkingModel.addCheckStateChangeListener ( listener );
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void removeCheckStateChangeListener ( final CheckStateChangeListener listener )
+    {
+        checkStateChangeListeners.remove ( listener );
+        if ( checkingModel != null )
+        {
+            checkingModel.removeCheckStateChangeListener ( listener );
+        }
+    }
+
+    /**
+     * Informs about single or multiply check state changes.
+     *
+     * @param stateChanges check state changes list
+     */
+    public void fireCheckStateChanged ( final List<CheckStateChange<E>> stateChanges )
+    {
+        for ( final CheckStateChangeListener<E> listener : CollectionUtils.copy ( checkStateChangeListeners ) )
+        {
+            listener.checkStateChanged ( stateChanges );
+        }
     }
 
     /**

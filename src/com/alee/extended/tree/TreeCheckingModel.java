@@ -49,16 +49,10 @@ public interface TreeCheckingModel<E extends DefaultMutableTreeNode>
     /**
      * Sets specified nodes state to checked.
      *
-     * @param nodes nodes to check
+     * @param nodes   nodes to check
+     * @param checked whether the specified tree nodes should be checked or not
      */
-    public void setChecked ( Collection<E> nodes );
-
-    /**
-     * Sets specified nodes state to unchecked.
-     *
-     * @param nodes nodes to uncheck
-     */
-    public void setUnchecked ( Collection<E> nodes );
+    public void setChecked ( Collection<E> nodes, boolean checked );
 
     /**
      * Returns specified tree node check state.
@@ -72,7 +66,7 @@ public interface TreeCheckingModel<E extends DefaultMutableTreeNode>
      * Sets whether the specified tree node is checked or not.
      *
      * @param node    tree node to process
-     * @param checked whether the specified tree node is checked or not
+     * @param checked whether the specified tree node should be checked or not
      */
     public void setChecked ( E node, boolean checked );
 
@@ -88,7 +82,7 @@ public interface TreeCheckingModel<E extends DefaultMutableTreeNode>
      *
      * @param nodes list of tree nodes to process
      */
-    public void invertCheck ( List<E> nodes );
+    public void invertCheck ( Collection<E> nodes );
 
     /**
      * Unchecks all tree nodes.
@@ -106,4 +100,18 @@ public interface TreeCheckingModel<E extends DefaultMutableTreeNode>
      * @param recursive whether checked or unchecked node childs should be checked or unchecked recursively or not
      */
     public void checkingModeChanged ( boolean recursive );
+
+    /**
+     * Adds check state change listener.
+     *
+     * @param listener check state change listener to add
+     */
+    public void addCheckStateChangeListener ( CheckStateChangeListener listener );
+
+    /**
+     * Removes check state change listener.
+     *
+     * @param listener check state change listener to remove
+     */
+    public void removeCheckStateChangeListener ( CheckStateChangeListener listener );
 }

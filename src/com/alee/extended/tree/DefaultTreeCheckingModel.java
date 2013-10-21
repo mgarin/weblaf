@@ -18,6 +18,7 @@
 package com.alee.extended.tree;
 
 import com.alee.extended.checkbox.CheckState;
+import com.alee.utils.CollectionUtils;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
@@ -40,6 +41,11 @@ public class DefaultTreeCheckingModel<E extends DefaultMutableTreeNode> implemen
      * Node check states cache.
      */
     protected Map<E, CheckState> nodeCheckStates = new WeakHashMap<E, CheckState> ();
+
+    /**
+     * Checkbox tree check state change listeners.
+     */
+    protected List<CheckStateChangeListener<E>> checkStateChangeListeners = new ArrayList<CheckStateChangeListener<E>> ( 1 );
 
     /**
      * @param checkBoxTree
@@ -114,28 +120,26 @@ public class DefaultTreeCheckingModel<E extends DefaultMutableTreeNode> implemen
      * {@inheritDoc}
      */
     @Override
-    public void setChecked ( final Collection<E> nodes )
+    public void setChecked ( final Collection<E> nodes, final boolean checked )
     {
-        final List<E> toUpdate = new ArrayList<E> ();
-        for ( final E node : nodes )
+        // Collecting state changes
+        final boolean collectChanges = checkStateChangeListeners.size () > 0;
+        List<CheckStateChange<E>> changes = null;
+        if ( collectChanges )
         {
-            setCheckedImpl ( node, true, toUpdate );
+            changes = new ArrayList<CheckStateChange<E>> ( nodes.size () );
         }
-        repaintTreeNodes ( toUpdate );
-    }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setUnchecked ( final Collection<E> nodes )
-    {
+        // Updating states
         final List<E> toUpdate = new ArrayList<E> ();
         for ( final E node : nodes )
         {
-            setCheckedImpl ( node, false, toUpdate );
+            setCheckedImpl ( node, checked, toUpdate, changes );
         }
         repaintTreeNodes ( toUpdate );
+
+        // Informing about state changes
+        fireCheckStateChanged ( changes );
     }
 
     /**
@@ -154,9 +158,21 @@ public class DefaultTreeCheckingModel<E extends DefaultMutableTreeNode> implemen
     @Override
     public void setChecked ( final E node, final boolean checked )
     {
+        // Collecting state changes
+        final boolean collectChanges = checkStateChangeListeners.size () > 0;
+        List<CheckStateChange<E>> changes = null;
+        if ( collectChanges )
+        {
+            changes = new ArrayList<CheckStateChange<E>> ( 1 );
+        }
+
+        // Updating states
         final List<E> toUpdate = new ArrayList<E> ();
-        setCheckedImpl ( node, checked, toUpdate );
-        repaintVisibleTreeRect ();
+        setCheckedImpl ( node, checked, toUpdate, changes );
+        repaintTreeNodes ( toUpdate );
+
+        // Informing about state changes
+        fireCheckStateChanged ( changes );
     }
 
     /**
@@ -165,8 +181,9 @@ public class DefaultTreeCheckingModel<E extends DefaultMutableTreeNode> implemen
      * @param node     tree node to process
      * @param checked  whether the specified tree node is checked or not
      * @param toUpdate list of nodes for later update
+     * @param changes
      */
-    protected void setCheckedImpl ( final E node, final boolean checked, final List<E> toUpdate )
+    protected void setCheckedImpl ( final E node, final boolean checked, final List<E> toUpdate, List<CheckStateChange<E>> changes )
     {
         // Remembering old and new states
         final CheckState oldState = getCheckState ( node );
@@ -178,11 +195,17 @@ public class DefaultTreeCheckingModel<E extends DefaultMutableTreeNode> implemen
             // Changing node check state
             updateNodeState ( node, newState, toUpdate );
 
+            // Saving changes
+            if ( changes != null )
+            {
+                changes.add ( new CheckStateChange<E> ( node, oldState, newState ) );
+            }
+
             // Updating parent and child node states
             if ( checkBoxTree.isRecursiveCheckingEnabled () )
             {
-                updateChildNodesState ( node, newState, toUpdate );
-                updateParentStates ( node, toUpdate );
+                updateChildNodesState ( node, newState, toUpdate, changes );
+                updateParentStates ( node, toUpdate, changes );
             }
         }
     }
@@ -192,14 +215,15 @@ public class DefaultTreeCheckingModel<E extends DefaultMutableTreeNode> implemen
      *
      * @param node     node to start checking parents from
      * @param toUpdate list of nodes for later update
+     * @param changes
      */
-    protected void updateParentStates ( final E node, final List<E> toUpdate )
+    protected void updateParentStates ( final E node, final List<E> toUpdate, List<CheckStateChange<E>> changes )
     {
         // Updating all parent node states
         E parent = ( E ) node.getParent ();
         while ( parent != null )
         {
-            // Updating parent state
+            // Calculating parent state
             CheckState state = CheckState.unchecked;
             boolean hasChecked = false;
             boolean hasUnchecked = false;
@@ -238,7 +262,19 @@ public class DefaultTreeCheckingModel<E extends DefaultMutableTreeNode> implemen
                     }
                 }
             }
-            updateNodeState ( parent, state, toUpdate );
+
+            final CheckState oldState = getCheckState ( parent );
+            if ( oldState != state )
+            {
+                // Saving changes
+                if ( changes != null )
+                {
+                    changes.add ( new CheckStateChange<E> ( parent, oldState, state ) );
+                }
+
+                // Updating state
+                updateNodeState ( parent, state, toUpdate );
+            }
 
             // Moving upstairs
             parent = ( E ) parent.getParent ();
@@ -251,14 +287,26 @@ public class DefaultTreeCheckingModel<E extends DefaultMutableTreeNode> implemen
      * @param node     parent node
      * @param newState new check state
      * @param toUpdate list of nodes for later update
+     * @param changes
      */
-    protected void updateChildNodesState ( final E node, final CheckState newState, final List<E> toUpdate )
+    protected void updateChildNodesState ( final E node, final CheckState newState, final List<E> toUpdate,
+                                           List<CheckStateChange<E>> changes )
     {
         for ( int i = 0; i < node.getChildCount (); i++ )
         {
             final E childNode = ( E ) node.getChildAt ( i );
+
+            // Saving changes
+            if ( changes != null )
+            {
+                changes.add ( new CheckStateChange<E> ( childNode, getCheckState ( childNode ), newState ) );
+            }
+
+            // Updating state
             updateNodeState ( childNode, newState, toUpdate );
-            updateChildNodesState ( childNode, newState, toUpdate );
+
+            // Updating child nodes state
+            updateChildNodesState ( childNode, newState, toUpdate, changes );
         }
     }
 
@@ -288,15 +336,39 @@ public class DefaultTreeCheckingModel<E extends DefaultMutableTreeNode> implemen
     @Override
     public void invertCheck ( final E node )
     {
-        setChecked ( node, getNextState ( getCheckState ( node ) ) == CheckState.checked );
+        // Collecting state changes
+        final boolean collectChanges = checkStateChangeListeners.size () > 0;
+        List<CheckStateChange<E>> changes = null;
+        if ( collectChanges )
+        {
+            changes = new ArrayList<CheckStateChange<E>> ( 1 );
+        }
+
+        // Updating states
+        final List<E> toUpdate = new ArrayList<E> ();
+        setCheckedImpl ( node, getNextState ( getCheckState ( node ) ) == CheckState.checked, toUpdate, changes );
+        repaintTreeNodes ( toUpdate );
+
+        // Informing about state changes
+        fireCheckStateChanged ( changes );
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void invertCheck ( final List<E> nodes )
+    public void invertCheck ( final Collection<E> nodes )
     {
+        // Collecting state changes
+        final boolean collectChanges = checkStateChangeListeners.size () > 0;
+        List<CheckStateChange<E>> changes = null;
+        if ( collectChanges )
+        {
+            changes = new ArrayList<CheckStateChange<E>> ( nodes.size () );
+        }
+
+        // Updating states
+        final List<E> toUpdate = new ArrayList<E> ();
         boolean check = false;
         for ( final E node : nodes )
         {
@@ -308,8 +380,12 @@ public class DefaultTreeCheckingModel<E extends DefaultMutableTreeNode> implemen
         }
         for ( final E node : nodes )
         {
-            setChecked ( node, check );
+            setCheckedImpl ( node, check, toUpdate, changes );
         }
+        repaintTreeNodes ( toUpdate );
+
+        // Informing about state changes
+        fireCheckStateChanged ( changes );
     }
 
     /**
@@ -318,8 +394,27 @@ public class DefaultTreeCheckingModel<E extends DefaultMutableTreeNode> implemen
     @Override
     public void uncheckAll ()
     {
+        // Collecting state changes
+        List<CheckStateChange<E>> changes = null;
+        if ( checkStateChangeListeners.size () > 0 )
+        {
+            changes = new ArrayList<CheckStateChange<E>> ( nodeCheckStates.size () );
+            for ( final Map.Entry<E, CheckState> entry : nodeCheckStates.entrySet () )
+            {
+                final CheckState state = entry.getValue ();
+                if ( state == CheckState.mixed || state == CheckState.checked )
+                {
+                    changes.add ( new CheckStateChange<E> ( entry.getKey (), state, CheckState.unchecked ) );
+                }
+            }
+        }
+
+        // Updating states
         nodeCheckStates.clear ();
         repaintVisibleTreeRect ();
+
+        // Informing about state changes
+        fireCheckStateChanged ( changes );
     }
 
     /**
@@ -329,11 +424,31 @@ public class DefaultTreeCheckingModel<E extends DefaultMutableTreeNode> implemen
     public void checkAll ()
     {
         final List<E> allNodes = checkBoxTree.getAllNodes ();
+
+        // Collecting state changes
+        List<CheckStateChange<E>> changes = null;
+        if ( checkStateChangeListeners.size () > 0 )
+        {
+            changes = new ArrayList<CheckStateChange<E>> ( allNodes.size () );
+            for ( final E node : allNodes )
+            {
+                final CheckState state = getCheckState ( node );
+                if ( state != CheckState.checked )
+                {
+                    changes.add ( new CheckStateChange<E> ( node, state, CheckState.checked ) );
+                }
+            }
+        }
+
+        // Updating states
         for ( final E node : allNodes )
         {
             nodeCheckStates.put ( node, CheckState.checked );
         }
         repaintVisibleTreeRect ();
+
+        // Informing about state changes
+        fireCheckStateChanged ( changes );
     }
 
     /**
@@ -363,6 +478,15 @@ public class DefaultTreeCheckingModel<E extends DefaultMutableTreeNode> implemen
     @Override
     public void checkingModeChanged ( final boolean recursive )
     {
+        // Collecting state changes
+        final boolean collectChanges = checkStateChangeListeners.size () > 0;
+        List<CheckStateChange<E>> changes = null;
+        if ( collectChanges )
+        {
+            changes = new ArrayList<CheckStateChange<E>> ();
+        }
+
+        // Updating states
         final List<E> toUpdate = new ArrayList<E> ();
         if ( recursive )
         {
@@ -383,24 +507,36 @@ public class DefaultTreeCheckingModel<E extends DefaultMutableTreeNode> implemen
             // Updating node states
             for ( final E node : checked )
             {
-                updateParentStates ( node, toUpdate );
-                updateChildNodesState ( node, CheckState.checked, toUpdate );
+                updateParentStates ( node, toUpdate, changes );
+                updateChildNodesState ( node, CheckState.checked, toUpdate, changes );
             }
         }
         else
         {
+            // Removing existing mixed states
             final Iterator<Map.Entry<E, CheckState>> iterator = nodeCheckStates.entrySet ().iterator ();
             while ( iterator.hasNext () )
             {
                 final Map.Entry<E, CheckState> entry = iterator.next ();
                 if ( entry.getValue () == CheckState.mixed )
                 {
-                    toUpdate.add ( entry.getKey () );
+                    // Updating node state
+                    final E node = entry.getKey ();
+                    toUpdate.add ( node );
                     iterator.remove ();
+
+                    // Saving changes
+                    if ( changes != null )
+                    {
+                        changes.add ( new CheckStateChange<E> ( node, CheckState.mixed, CheckState.unchecked ) );
+                    }
                 }
             }
         }
         repaintTreeNodes ( toUpdate );
+
+        // Informing about state changes
+        fireCheckStateChanged ( changes );
     }
 
     /**
@@ -473,5 +609,39 @@ public class DefaultTreeCheckingModel<E extends DefaultMutableTreeNode> implemen
     protected void repaintTreeNodes ( final List<E> nodes )
     {
         checkBoxTree.repaint ( nodes );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void addCheckStateChangeListener ( final CheckStateChangeListener listener )
+    {
+        checkStateChangeListeners.add ( listener );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void removeCheckStateChangeListener ( final CheckStateChangeListener listener )
+    {
+        checkStateChangeListeners.remove ( listener );
+    }
+
+    /**
+     * Informs about single or multiply check state changes.
+     *
+     * @param stateChanges check state changes list
+     */
+    public void fireCheckStateChanged ( final List<CheckStateChange<E>> stateChanges )
+    {
+        if ( stateChanges != null )
+        {
+            for ( final CheckStateChangeListener<E> listener : CollectionUtils.copy ( checkStateChangeListeners ) )
+            {
+                listener.checkStateChanged ( stateChanges );
+            }
+        }
     }
 }
