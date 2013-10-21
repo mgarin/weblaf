@@ -18,6 +18,8 @@
 package com.alee.utils;
 
 import com.alee.laf.StyleConstants;
+import com.alee.laf.label.WebLabel;
+import com.alee.laf.text.WebTextField;
 import com.alee.utils.laf.FocusType;
 import com.alee.utils.laf.ShadeType;
 import com.alee.utils.ninepatch.NinePatchIcon;
@@ -1530,5 +1532,37 @@ public final class LafUtils
             }
         }
         return null;
+    }
+
+    /**
+     * Returns bounds for editor display atop of the label.
+     *
+     * @param label  edited label
+     * @param editor label editor field
+     * @return bounds for editor display atop of the label
+     */
+    public static Rectangle getLabelEditorBounds ( final WebLabel label, final WebTextField editor )
+    {
+        editor.setFieldMargin ( 0, label.getIconTextGap (), 0, 0 );
+
+        // Bounds
+        final Rectangle bounds = new Rectangle ( 0, 0, label.getWidth (), label.getHeight () );
+
+        // Label settings
+        final Insets lm = label.getInsets ();
+        bounds.x += lm.left;
+        bounds.y += lm.top;
+        bounds.width -= lm.left + lm.right;
+        bounds.height -= lm.top + lm.bottom;
+
+        // Field settings
+        final Insets fm = editor.getMargin ();
+        final int dm = 1 + editor.getShadeWidth ();
+        bounds.x -= fm.left + dm;
+        bounds.y -= fm.top + dm;
+        bounds.width += fm.left + fm.right + dm * 2;
+        bounds.height += fm.top + fm.bottom + dm * 2;
+
+        return bounds;
     }
 }
