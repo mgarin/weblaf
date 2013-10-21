@@ -281,7 +281,7 @@
                 <value lang="pl">KB</value>
                 <value lang="ar">كيلوبايت</value>
                 <value lang="es">KB</value>
-                <value lang="fr">KO</value>
+                <value lang="fr">Ko</value>
                 <value lang="pt">KB</value>
                 <value lang="de">KB</value>
             </record>
@@ -291,7 +291,7 @@
                 <value lang="pl">MB</value>
                 <value lang="ar">ميجابايت</value>
                 <value lang="es">MB</value>
-                <value lang="fr">MO</value>
+                <value lang="fr">Mo</value>
                 <value lang="pt">MB</value>
                 <value lang="de">MB</value>
             </record>
@@ -301,7 +301,7 @@
                 <value lang="pl">GB</value>
                 <value lang="ar">جيجابايت</value>
                 <value lang="es">GB</value>
-                <value lang="fr">GO</value>
+                <value lang="fr">Go</value>
                 <value lang="pt">GB</value>
                 <value lang="de">GB</value>
             </record>
@@ -311,7 +311,7 @@
                 <value lang="pl">TB</value>
                 <value lang="ar">تيرابايت</value>
                 <value lang="es">TB</value>
-                <value lang="fr">TO</value>
+                <value lang="fr">To</value>
                 <value lang="pt">TB</value>
                 <value lang="de">TB</value>
             </record>
@@ -321,7 +321,7 @@
                 <value lang="pl">PB</value>
                 <value lang="ar">بيتابايت</value>
                 <value lang="es">PB</value>
-                <value lang="fr">PO</value>
+                <value lang="fr">Po</value>
                 <value lang="pt">PB</value>
                 <value lang="de">PB</value>
             </record>
