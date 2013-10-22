@@ -720,9 +720,6 @@ public class WebLookAndFeel extends BasicLookAndFeel
                     if ( evt.getNewValue () instanceof WebLookAndFeel )
                     {
                         initializeManagers ();
-
-                        // Basic language file
-                        LanguageManager.addDictionary ( WebLookAndFeel.class, "resources/language.xml" );
                     }
 
                     // Remove listener in any case a

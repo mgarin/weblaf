@@ -17,6 +17,7 @@
 
 package com.alee.managers.language;
 
+import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.language.data.Dictionary;
 import com.alee.managers.language.data.*;
 import com.alee.managers.language.updaters.*;
@@ -234,6 +235,9 @@ public final class LanguageManager implements LanguageConstants
                     }
                 }
             } );
+
+            // Basic language file
+            LanguageManager.addDictionary ( WebLookAndFeel.class, "resources/language.xml" );
         }
     }
 
