@@ -24,10 +24,8 @@ import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.FontMethods;
 
 import javax.swing.*;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreeModel;
-import javax.swing.tree.TreePath;
-import javax.swing.tree.TreeSelectionModel;
+import javax.swing.event.CellEditorListener;
+import javax.swing.tree.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -64,6 +62,12 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
      * Any amount of nodes can be selected anywhere.
      */
     public static final int DISCONTIGUOUS_TREE_SELECTION = TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION;
+
+    /**
+     * Tree cell editor listeners.
+     * These listeners act separately from the cell editor and will be moved to new tree cell editor automatically on set.
+     */
+    protected List<CellEditorListener> cellEditorListeners = new ArrayList<CellEditorListener> ( 1 );
 
     /**
      * Constructs tree with default sample model.
@@ -150,6 +154,56 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
     protected void init ()
     {
         // You can add your own initialize implementation here
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setCellEditor ( final TreeCellEditor cellEditor )
+    {
+        // Removing cell editor listeners from old cell editor
+        for ( CellEditorListener listener : cellEditorListeners )
+        {
+            this.cellEditor.removeCellEditorListener ( listener );
+        }
+
+        super.setCellEditor ( cellEditor );
+
+        // Adding cell editor listeners to new cell editor
+        for ( CellEditorListener listener : cellEditorListeners )
+        {
+            this.cellEditor.addCellEditorListener ( listener );
+        }
+    }
+
+    /**
+     * Adds tree cell editor listener.
+     * These listeners act separately from the cell editor and will be moved to new tree cell editor automatically on set.
+     *
+     * @param listener cell editor listener to add
+     */
+    public void addCellEditorListener ( final CellEditorListener listener )
+    {
+        cellEditorListeners.add ( listener );
+        if ( cellEditor != null )
+        {
+            cellEditor.addCellEditorListener ( listener );
+        }
+    }
+
+    /**
+     * Removes tree cell editor listener.
+     *
+     * @param listener cell editor listener to remove
+     */
+    public void removeCellEditorListener ( final CellEditorListener listener )
+    {
+        cellEditorListeners.remove ( listener );
+        if ( cellEditor != null )
+        {
+            cellEditor.removeCellEditorListener ( listener );
+        }
     }
 
     /**
