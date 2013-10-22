@@ -268,18 +268,18 @@ public class CurtainTransitionEffect extends DefaultTransitionEffect
     }
 
     @Override
-    public void paint ( Graphics2D g2d, ImageTransition imageTransition )
+    public void paint ( Graphics2D g2d, ImageTransition transition )
     {
         // Variables
-        int width = imageTransition.getWidth ();
-        int height = imageTransition.getHeight ();
-        int max = getMaxProgress ( imageTransition );
+        int width = transition.getWidth ();
+        int height = transition.getHeight ();
+        int max = getMaxProgress ( transition );
 
         // Old image as background
-        g2d.drawImage ( imageTransition.getCurrentImage (), 0, 0, width, height, null );
+        g2d.drawImage ( transition.getCurrentImage (), 0, 0, width, height, null );
 
         // Separately drawn transparent curtains
-        BufferedImage otherImage = imageTransition.getOtherImage ();
+        BufferedImage otherImage = transition.getOtherImage ();
         if ( type.equals ( CurtainType.fade ) || type.equals ( CurtainType.fill ) && fade )
         {
             int rows = progress.length;

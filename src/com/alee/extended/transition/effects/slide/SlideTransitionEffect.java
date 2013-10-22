@@ -132,11 +132,11 @@ public class SlideTransitionEffect extends DefaultTransitionEffect
     }
 
     @Override
-    public void paint ( Graphics2D g2d, ImageTransition imageTransition )
+    public void paint ( Graphics2D g2d, ImageTransition transition )
     {
         // Variables
-        final int width = imageTransition.getWidth ();
-        final int height = imageTransition.getHeight ();
+        final int width = transition.getWidth ();
+        final int height = transition.getHeight ();
         final float floatProgress = ( float ) slideProgress / ( direction.isHorizontal () ? width : height );
 
         // Painting depending on transition type
@@ -161,11 +161,11 @@ public class SlideTransitionEffect extends DefaultTransitionEffect
             }
 
             // Old image as background
-            g2d.drawImage ( imageTransition.getCurrentImage (), 0, 0, width, height, null );
+            g2d.drawImage ( transition.getCurrentImage (), 0, 0, width, height, null );
 
             // New image sliding in
             Composite old = LafUtils.setupAlphaComposite ( g2d, floatProgress, fade );
-            g2d.drawImage ( imageTransition.getOtherImage (), np.x, np.y, width, height, null );
+            g2d.drawImage ( transition.getOtherImage (), np.x, np.y, width, height, null );
             LafUtils.restoreComposite ( g2d, old, fade );
         }
         else if ( type.equals ( SlideType.moveOld ) )
@@ -189,11 +189,11 @@ public class SlideTransitionEffect extends DefaultTransitionEffect
             }
 
             // New image as background
-            g2d.drawImage ( imageTransition.getOtherImage (), 0, 0, width, height, null );
+            g2d.drawImage ( transition.getOtherImage (), 0, 0, width, height, null );
 
             // Old image sliding out
             Composite old = LafUtils.setupAlphaComposite ( g2d, 1f - floatProgress, fade );
-            g2d.drawImage ( imageTransition.getCurrentImage (), cp.x, cp.y, width, height, null );
+            g2d.drawImage ( transition.getCurrentImage (), cp.x, cp.y, width, height, null );
             LafUtils.restoreComposite ( g2d, old, fade );
         }
         else if ( type.equals ( SlideType.moveBoth ) )
@@ -222,10 +222,10 @@ public class SlideTransitionEffect extends DefaultTransitionEffect
             }
 
             // Old image sliding out
-            g2d.drawImage ( imageTransition.getCurrentImage (), cp.x, cp.y, width, height, null );
+            g2d.drawImage ( transition.getCurrentImage (), cp.x, cp.y, width, height, null );
 
             // New image sliding in
-            g2d.drawImage ( imageTransition.getOtherImage (), np.x, np.y, width, height, null );
+            g2d.drawImage ( transition.getOtherImage (), np.x, np.y, width, height, null );
         }
     }
 }

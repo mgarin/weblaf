@@ -106,17 +106,17 @@ public abstract class DefaultTransitionEffect implements TransitionEffect
      */
 
     @Override
-    public boolean performAnimationTick ( ImageTransition imageTransition )
+    public boolean performAnimationTick ( ImageTransition transition )
     {
         if ( !animating )
         {
             animating = true;
-            prepareAnimation ( imageTransition );
+            prepareAnimation ( transition );
             return false;
         }
         else
         {
-            boolean finished = performAnimation ( imageTransition );
+            boolean finished = performAnimation ( transition );
             if ( finished )
             {
                 animating = false;

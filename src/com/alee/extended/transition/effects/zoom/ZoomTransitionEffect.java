@@ -122,32 +122,32 @@ public class ZoomTransitionEffect extends DefaultTransitionEffect
     }
 
     @Override
-    public void paint ( Graphics2D g2d, ImageTransition imageTransition )
+    public void paint ( Graphics2D g2d, ImageTransition transition )
     {
-        int tw = imageTransition.getWidth ();
-        int th = imageTransition.getHeight ();
+        int tw = transition.getWidth ();
+        int th = transition.getHeight ();
         if ( type.equals ( ZoomType.zoomIn ) )
         {
             // Painting old image behind the new one
-            g2d.drawImage ( imageTransition.getCurrentImage (), 0, 0, tw, th, null );
+            g2d.drawImage ( transition.getCurrentImage (), 0, 0, tw, th, null );
 
             // Fading in new image
             Composite old = LafUtils.setupAlphaComposite ( g2d, size, isFade () );
             int w = Math.round ( tw * size );
             int h = Math.round ( th * size );
-            g2d.drawImage ( imageTransition.getOtherImage (), tw / 2 - w / 2, th / 2 - h / 2, w, h, null );
+            g2d.drawImage ( transition.getOtherImage (), tw / 2 - w / 2, th / 2 - h / 2, w, h, null );
             LafUtils.restoreComposite ( g2d, old, isFade () );
         }
         else
         {
             // Painting new image behind the old one
-            g2d.drawImage ( imageTransition.getOtherImage (), 0, 0, tw, th, null );
+            g2d.drawImage ( transition.getOtherImage (), 0, 0, tw, th, null );
 
             // Fading in new image
             Composite old = LafUtils.setupAlphaComposite ( g2d, 1f - size, isFade () );
             int w = Math.round ( tw * ( 1f - size ) );
             int h = Math.round ( th * ( 1f - size ) );
-            g2d.drawImage ( imageTransition.getCurrentImage (), tw / 2 - w / 2, th / 2 - h / 2, w, h, null );
+            g2d.drawImage ( transition.getCurrentImage (), tw / 2 - w / 2, th / 2 - h / 2, w, h, null );
             LafUtils.restoreComposite ( g2d, old, isFade () );
         }
     }

@@ -97,16 +97,16 @@ public class FadeTransitionEffect extends DefaultTransitionEffect
     }
 
     @Override
-    public void paint ( Graphics2D g2d, ImageTransition imageTransition )
+    public void paint ( Graphics2D g2d, ImageTransition transition )
     {
         // Fading out old image
         Composite old = LafUtils.setupAlphaComposite ( g2d, 1f - opacity );
-        g2d.drawImage ( imageTransition.getCurrentImage (), 0, 0, imageTransition.getWidth (), imageTransition.getHeight (), null );
+        g2d.drawImage ( transition.getCurrentImage (), 0, 0, transition.getWidth (), transition.getHeight (), null );
         LafUtils.restoreComposite ( g2d, old );
 
         // Fading in new image
         LafUtils.setupAlphaComposite ( g2d, opacity );
-        g2d.drawImage ( imageTransition.getOtherImage (), 0, 0, imageTransition.getWidth (), imageTransition.getHeight (), null );
+        g2d.drawImage ( transition.getOtherImage (), 0, 0, transition.getWidth (), transition.getHeight (), null );
         LafUtils.restoreComposite ( g2d, old );
     }
 }

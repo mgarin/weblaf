@@ -22,31 +22,42 @@ import com.alee.extended.transition.ImageTransition;
 import java.awt.*;
 
 /**
- * User: mgarin Date: 09.11.12 Time: 14:11
- * <p/>
  * This interface provides basic methods for transition effect creation. TransitionEffect can be used to perform transitions between images
  * and components using ImageTransiton, ComponentTransition and MultiComponentTransition components.
+ *
+ * @author Mikle Garin
  */
 
 public interface TransitionEffect
 {
     /**
-     * Animation timer delay
+     * Animation timer delay.
+     *
+     * @return animation timer delay
      */
     public long getAnimationDelay ();
 
     /**
-     * Returns true if transition is on the way
+     * Returns whether transition is performed or not.
+     *
+     * @return true if transition is performed, false otherwise
      */
     public boolean isAnimating ();
 
     /**
-     * Single animation tick actions, should return true when last transition tick performed
+     * Called for each animation tick performed.
+     * Returns whether this was the last transition tick or not.
+     *
+     * @param transition image transition component
+     * @return true if this was the last transition tick, false otherwise
      */
-    public boolean performAnimationTick ( ImageTransition imageTransition );
+    public boolean performAnimationTick ( ImageTransition transition );
 
     /**
-     * Current animation state painting
+     * Paints current transition state.
+     *
+     * @param g2d        graphics context
+     * @param transition image transition component
      */
-    public void paint ( Graphics2D g2d, ImageTransition imageTransition );
+    public void paint ( Graphics2D g2d, ImageTransition transition );
 }

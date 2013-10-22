@@ -310,14 +310,14 @@ public class BlocksTransitionEffect extends DefaultTransitionEffect
     }
 
     @Override
-    public void paint ( Graphics2D g2d, ImageTransition imageTransition )
+    public void paint ( Graphics2D g2d, ImageTransition transition )
     {
         // Variables
-        final int width = imageTransition.getWidth ();
-        final int height = imageTransition.getHeight ();
+        final int width = transition.getWidth ();
+        final int height = transition.getHeight ();
 
         // Old image as background
-        g2d.drawImage ( imageTransition.getCurrentImage (), 0, 0, width, height, null );
+        g2d.drawImage ( transition.getCurrentImage (), 0, 0, width, height, null );
 
         // Appearance type
         if ( fade )
@@ -342,7 +342,7 @@ public class BlocksTransitionEffect extends DefaultTransitionEffect
 
                         // Single image block with custom transparency
                         Composite old = LafUtils.setupAlphaComposite ( g2d, ( float ) block / size, block < size );
-                        g2d.drawImage ( imageTransition.getOtherImage (), dx1, dy1, dx2, dy2, dx1, dy1, dx2, dy2, null );
+                        g2d.drawImage ( transition.getOtherImage (), dx1, dy1, dx2, dy2, dx1, dy1, dx2, dy2, null );
                         LafUtils.restoreComposite ( g2d, old, block < size );
                     }
                 }
@@ -352,7 +352,7 @@ public class BlocksTransitionEffect extends DefaultTransitionEffect
         {
             // New image with decreasing clipped area
             Shape old = LafUtils.intersectClip ( g2d, clip );
-            g2d.drawImage ( imageTransition.getOtherImage (), 0, 0, width, height, null );
+            g2d.drawImage ( transition.getOtherImage (), 0, 0, width, height, null );
             LafUtils.restoreClip ( g2d, old );
         }
     }

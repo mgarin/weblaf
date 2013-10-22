@@ -37,19 +37,19 @@ import java.util.List;
 public class ComponentTransition extends WebPanel
 {
     // Transition listeners
-    private List<TransitionListener> transitionListeners = new ArrayList<TransitionListener> ( 1 );
+    protected List<TransitionListener> transitionListeners = new ArrayList<TransitionListener> ( 1 );
 
     // Variables
-    private boolean animating = false;
+    protected boolean animating = false;
 
     // Current transition
-    private ImageTransition transition = null;
+    protected ImageTransition transition = null;
 
     // Added effects
-    private List<TransitionEffect> transitionEffects = null;
+    protected List<TransitionEffect> transitionEffects = null;
 
     // Last component
-    private Component lastContent;
+    protected Component lastContent;
 
     public ComponentTransition ()
     {
@@ -141,7 +141,7 @@ public class ComponentTransition extends WebPanel
      * Transition call
      */
 
-    private void performTransitionImpl ( final Component content )
+    protected void performTransitionImpl ( final Component content )
     {
         // Ignore repeated change or change to same content
         if ( lastContent == content )
@@ -153,7 +153,7 @@ public class ComponentTransition extends WebPanel
         lastContent = content;
 
         // When animation disabled or component is not shown performing transition instantly
-        if ( getTransitionEffect () == null || !isShowing () )
+        if ( !canAnimate () )
         {
             finishTransitionImpl ( content );
             return;
@@ -228,7 +228,12 @@ public class ComponentTransition extends WebPanel
         }
     }
 
-    private void continueTransitionImpl ( final Component content, int width, int height, BufferedImage currentSnapshot )
+    protected boolean canAnimate ()
+    {
+        return getTransitionEffect () != null && isShowing ();
+    }
+
+    protected void continueTransitionImpl ( final Component content, int width, int height, BufferedImage currentSnapshot )
     {
         // New content image
         removeAll ();
@@ -268,7 +273,7 @@ public class ComponentTransition extends WebPanel
         transition.performTransition ();
     }
 
-    private void finishTransitionImpl ( Component content )
+    protected void finishTransitionImpl ( Component content )
     {
         // Destroying all image links
         this.removeAll ();
@@ -300,7 +305,7 @@ public class ComponentTransition extends WebPanel
         fireTransitionFinished ();
     }
 
-    private boolean isAnimating ()
+    protected boolean isAnimating ()
     {
         return animating;
     }
@@ -366,7 +371,7 @@ public class ComponentTransition extends WebPanel
         transitionListeners.remove ( listener );
     }
 
-    private void fireTransitionStarted ()
+    public void fireTransitionStarted ()
     {
         for ( TransitionListener listener : CollectionUtils.copy ( transitionListeners ) )
         {
@@ -374,7 +379,7 @@ public class ComponentTransition extends WebPanel
         }
     }
 
-    private void fireTransitionFinished ()
+    public void fireTransitionFinished ()
     {
         for ( TransitionListener listener : CollectionUtils.copy ( transitionListeners ) )
         {

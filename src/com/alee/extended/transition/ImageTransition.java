@@ -38,22 +38,22 @@ import java.util.List;
 public class ImageTransition extends JComponent implements ActionListener
 {
     // Transition listeners
-    private List<TransitionListener> transitionListeners = new ArrayList<TransitionListener> ( 1 );
+    protected List<TransitionListener> transitionListeners = new ArrayList<TransitionListener> ( 1 );
 
     // Images
-    private BufferedImage currentImage = null;
-    private BufferedImage otherImage = null;
+    protected BufferedImage currentImage = null;
+    protected BufferedImage otherImage = null;
 
     // Added effects
-    private List<TransitionEffect> transitionEffects = new ArrayList<TransitionEffect> ();
+    protected List<TransitionEffect> transitionEffects = new ArrayList<TransitionEffect> ();
 
     // Variables
-    private WebTimer animator = null;
-    private boolean animating = false;
-    private boolean blocked = false;
+    protected WebTimer animator = null;
+    protected boolean animating = false;
+    protected boolean blocked = false;
 
     // Current transition effect
-    private TransitionEffect actualTransitionEffect = null;
+    protected TransitionEffect actualTransitionEffect = null;
 
     public ImageTransition ()
     {
@@ -90,7 +90,7 @@ public class ImageTransition extends JComponent implements ActionListener
         this.blocked = blocked;
     }
 
-    public Image getCurrentImage ()
+    public BufferedImage getCurrentImage ()
     {
         return currentImage;
     }
@@ -216,6 +216,12 @@ public class ImageTransition extends JComponent implements ActionListener
             actualTransitionEffect = transitionEffects.get ( MathUtils.random ( transitionEffects.size () ) );
         }
 
+        // Informing about missing effect
+        if ( actualTransitionEffect == null )
+        {
+            throw new RuntimeException ( "You should specify atleast one transition effect before strating the transition!" );
+        }
+
         // Starting new transition
         animator = new WebTimer ( "ImageTransition.animator", actualTransitionEffect.getAnimationDelay (), this );
 
@@ -236,10 +242,13 @@ public class ImageTransition extends JComponent implements ActionListener
 
     public void cancelTransition ()
     {
-        animator.stop ();
+        if ( animator != null )
+        {
+            animator.stop ();
+        }
     }
 
-    private void finishTransition ()
+    protected void finishTransition ()
     {
         // Switching images
         BufferedImage oldCurrent = this.currentImage;
@@ -301,7 +310,7 @@ public class ImageTransition extends JComponent implements ActionListener
         transitionListeners.remove ( listener );
     }
 
-    private void fireTransitionStarted ()
+    public void fireTransitionStarted ()
     {
         for ( TransitionListener listener : CollectionUtils.copy ( transitionListeners ) )
         {
@@ -309,7 +318,7 @@ public class ImageTransition extends JComponent implements ActionListener
         }
     }
 
-    private void fireTransitionFinished ()
+    public void fireTransitionFinished ()
     {
         for ( TransitionListener listener : CollectionUtils.copy ( transitionListeners ) )
         {
