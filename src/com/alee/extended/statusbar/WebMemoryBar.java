@@ -22,7 +22,6 @@ import com.alee.laf.label.WebLabel;
 import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.tooltip.TooltipManager;
-import com.alee.managers.tooltip.TooltipWay;
 import com.alee.managers.tooltip.WebCustomTooltip;
 import com.alee.utils.FileUtils;
 import com.alee.utils.LafUtils;
@@ -383,7 +382,7 @@ public class WebMemoryBar extends WebLabel implements ShapeProvider, SizeMethods
     {
         if ( showTooltip )
         {
-            tooltip = TooltipManager.setTooltip ( this, tooltipLabel, TooltipWay.up, tooltipDelay );
+            tooltip = TooltipManager.setTooltip ( this, tooltipLabel, tooltipDelay );
         }
         else
         {
