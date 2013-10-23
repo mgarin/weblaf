@@ -1563,6 +1563,9 @@ public final class LafUtils
         bounds.width += fm.left + fm.right + dm * 2;
         bounds.height += fm.top + fm.bottom + dm * 2;
 
+        // Additional pixel for field size
+        bounds.width += 1;
+
         return bounds;
     }
 }
