@@ -32,8 +32,6 @@ import java.util.*;
 import java.util.List;
 
 /**
- * User: mgarin Date: 11.07.11 Time: 12:54
- * <p/>
  * This manager allows you to quickly register global hotkeys (like accelerators on menu items in menubar menus) for any Swing component.
  * Additionally you can specify a component which will limit hotkey events to its area (meaning that hotkey event will occur only if this
  * component or any of its childs is focused when hotkey pressed).
@@ -43,6 +41,8 @@ import java.util.List;
  * <p/>
  * All hotkeys are stored into WeakHashMap so hotkeys will be removed as soon as the component for which hotkey is registered gets
  * finalized. HotkeyInfo also keeps a weak reference to both top and hotkey components.
+ *
+ * @author Mikle Garin
  */
 
 public final class HotkeyManager
@@ -93,12 +93,12 @@ public final class HotkeyManager
             Toolkit.getDefaultToolkit ().addAWTEventListener ( new AWTEventListener ()
             {
                 @Override
-                public void eventDispatched ( AWTEvent event )
+                public void eventDispatched ( final AWTEvent event )
                 {
                     // Only if hotkeys enabled and we recieved a KeyEvent
                     if ( hotkeysEnabled && event instanceof KeyEvent )
                     {
-                        KeyEvent e = ( KeyEvent ) event;
+                        final KeyEvent e = ( KeyEvent ) event;
 
                         // Ignore consumed and non-press events
                         if ( e.isConsumed () || e.getID () != KeyEvent.KEY_PRESSED )
@@ -120,79 +120,86 @@ public final class HotkeyManager
         }
     }
 
+    protected static Map<Component, List<HotkeyInfo>> copyHotkeys ()
+    {
+        synchronized ( sync )
+        {
+            final Map<Component, List<HotkeyInfo>> copy = new HashMap<Component, List<HotkeyInfo>> ( hotkeys.size () );
+            for ( final Map.Entry<Component, List<HotkeyInfo>> entry : hotkeys.entrySet () )
+            {
+                copy.put ( entry.getKey (), CollectionUtils.copy ( entry.getValue () ) );
+            }
+            return copy;
+        }
+    }
+
     /**
      * Returns whether at least one hotkey for the specified key event exists or not.
      *
      * @param keyEvent key event to search hotkeys for
      * @return true if at least one hotkey for the specified key event exists, false otherwise
      */
-    protected static boolean hotkeyForEventExists ( KeyEvent keyEvent )
+    protected static boolean hotkeyForEventExists ( final KeyEvent keyEvent )
     {
-        synchronized ( sync )
+        final int hotkeyHash = SwingUtils.hotkeyToString ( keyEvent ).hashCode ();
+        for ( final Map.Entry<Component, List<HotkeyInfo>> entry : copyHotkeys ().entrySet () )
         {
-            int hotkeyHash = SwingUtils.hotkeyToString ( keyEvent ).hashCode ();
-            for ( Map.Entry<Component, List<HotkeyInfo>> entry : hotkeys.entrySet () )
+            for ( final HotkeyInfo hotkeyInfo : entry.getValue () )
             {
-                for ( HotkeyInfo hotkeyInfo : entry.getValue () )
+                if ( hotkeyInfo.getHotkeyData ().hashCode () == hotkeyHash )
                 {
-                    if ( hotkeyInfo.getHotkeyData ().hashCode () == hotkeyHash )
-                    {
-                        return true;
-                    }
+                    return true;
                 }
             }
-            return false;
         }
+        return false;
     }
 
     /**
      * @param e
      */
-    protected static void processHotkeys ( KeyEvent e )
+    protected static void processHotkeys ( final KeyEvent e )
     {
-        synchronized ( sync )
+        for ( final Map.Entry<Component, List<HotkeyInfo>> entry : copyHotkeys ().entrySet () )
         {
-            for ( Map.Entry<Component, List<HotkeyInfo>> entry : hotkeys.entrySet () )
+            for ( final HotkeyInfo hotkeyInfo : entry.getValue () )
             {
-                for ( HotkeyInfo hotkeyInfo : entry.getValue () )
-                {
-                    // Specified components
-                    Component topComponent = hotkeyInfo.getTopComponent ();
-                    Component forComponent = hotkeyInfo.getForComponent ();
+                // Specified components
+                final Component forComponent = hotkeyInfo.getForComponent ();
 
-                    // If there is no pointed components - hotkey will be global
-                    if ( forComponent == null )
+                // If there is no pointed components - hotkey will be global
+                if ( forComponent == null )
+                {
+                    // Checking hotkey
+                    if ( hotkeyInfo.getHotkeyData ().isTriggered ( e ) && hotkeyInfo.getAction () != null )
+                    {
+                        // Performing hotkey action
+                        SwingUtils.invokeLater ( hotkeyInfo.getAction (), e );
+                    }
+                }
+                else
+                {
+                    // Finding top component
+                    Component topComponent = hotkeyInfo.getTopComponent ();
+                    topComponent = topComponent != null ? topComponent : SwingUtils.getWindowAncestor ( forComponent );
+
+                    // Checking if componen or one of its childs has focus
+                    if ( SwingUtils.hasFocusOwner ( topComponent ) )
                     {
                         // Checking hotkey
                         if ( hotkeyInfo.getHotkeyData ().isTriggered ( e ) && hotkeyInfo.getAction () != null )
                         {
-                            // Performing hotkey action
-                            SwingUtils.invokeLater ( hotkeyInfo.getAction (), e );
-                        }
-                    }
-                    else
-                    {
-                        // Finding top component
-                        topComponent = topComponent != null ? topComponent : SwingUtils.getWindowAncestor ( forComponent );
-
-                        // Checking if componen or one of its childs has focus
-                        if ( SwingUtils.hasFocusOwner ( topComponent ) )
-                        {
-                            // Checking hotkey
-                            if ( hotkeyInfo.getHotkeyData ().isTriggered ( e ) && hotkeyInfo.getAction () != null )
+                            // Checking that hotkey meets parent containers conditions
+                            if ( meetsParentConditions ( forComponent ) )
                             {
-                                // Checking that hotkey meets parent containers conditions
-                                if ( meetsParentConditions ( forComponent ) )
+                                // Transferring focus to hotkey component
+                                if ( transferFocus )
                                 {
-                                    // Transferring focus to hotkey component
-                                    if ( transferFocus )
-                                    {
-                                        forComponent.requestFocusInWindow ();
-                                    }
-
-                                    // Performing hotkey action
-                                    SwingUtils.invokeLater ( hotkeyInfo.getAction (), e );
+                                    forComponent.requestFocusInWindow ();
                                 }
+
+                                // Performing hotkey action
+                                SwingUtils.invokeLater ( hotkeyInfo.getAction (), e );
                             }
                         }
                     }
@@ -201,15 +208,15 @@ public final class HotkeyManager
         }
     }
 
-    protected static boolean meetsParentConditions ( Component forComponent )
+    protected static boolean meetsParentConditions ( final Component forComponent )
     {
         synchronized ( sync )
         {
-            for ( Map.Entry<Container, List<HotkeyCondition>> entry : topComponentConditions.entrySet () )
+            for ( final Map.Entry<Container, List<HotkeyCondition>> entry : topComponentConditions.entrySet () )
             {
                 if ( entry.getKey ().isAncestorOf ( forComponent ) )
                 {
-                    for ( HotkeyCondition condition : entry.getValue () )
+                    for ( final HotkeyCondition condition : entry.getValue () )
                     {
                         if ( !condition.checkCondition ( forComponent ) )
                         {
@@ -226,9 +233,9 @@ public final class HotkeyManager
      * Hotkey register methods
      */
 
-    public static HotkeyInfo registerHotkey ( HotkeyData hotkeyData, HotkeyRunnable action )
+    public static HotkeyInfo registerHotkey ( final HotkeyData hotkeyData, final HotkeyRunnable action )
     {
-        HotkeyInfo hotkeyInfo = new HotkeyInfo ();
+        final HotkeyInfo hotkeyInfo = new HotkeyInfo ();
         hotkeyInfo.setHidden ( true );
         hotkeyInfo.setHotkeyData ( hotkeyData );
         hotkeyInfo.setAction ( action );
@@ -236,37 +243,39 @@ public final class HotkeyManager
         return hotkeyInfo;
     }
 
-    public static HotkeyInfo registerHotkey ( Component forComponent, HotkeyData hotkeyData, HotkeyRunnable action )
+    public static HotkeyInfo registerHotkey ( final Component forComponent, final HotkeyData hotkeyData, final HotkeyRunnable action )
     {
         return registerHotkey ( null, forComponent, hotkeyData, action );
     }
 
-    public static HotkeyInfo registerHotkey ( Component forComponent, HotkeyData hotkeyData, HotkeyRunnable action, boolean hidden )
+    public static HotkeyInfo registerHotkey ( final Component forComponent, final HotkeyData hotkeyData, final HotkeyRunnable action,
+                                              final boolean hidden )
     {
         return registerHotkey ( null, forComponent, hotkeyData, action, hidden );
     }
 
-    public static HotkeyInfo registerHotkey ( Component topComponent, Component forComponent, HotkeyData hotkeyData, HotkeyRunnable action )
+    public static HotkeyInfo registerHotkey ( final Component topComponent, final Component forComponent, final HotkeyData hotkeyData,
+                                              final HotkeyRunnable action )
     {
         return registerHotkey ( topComponent, forComponent, hotkeyData, action, false );
     }
 
-    public static HotkeyInfo registerHotkey ( Component topComponent, Component forComponent, HotkeyData hotkeyData, HotkeyRunnable action,
-                                              TooltipWay tooltipWay )
+    public static HotkeyInfo registerHotkey ( final Component topComponent, final Component forComponent, final HotkeyData hotkeyData,
+                                              final HotkeyRunnable action, final TooltipWay tooltipWay )
     {
         return registerHotkey ( topComponent, forComponent, hotkeyData, action, false, tooltipWay );
     }
 
-    public static HotkeyInfo registerHotkey ( Component topComponent, Component forComponent, HotkeyData hotkeyData, HotkeyRunnable action,
-                                              boolean hidden )
+    public static HotkeyInfo registerHotkey ( final Component topComponent, final Component forComponent, final HotkeyData hotkeyData,
+                                              final HotkeyRunnable action, final boolean hidden )
     {
         return registerHotkey ( topComponent, forComponent, hotkeyData, action, hidden, null );
     }
 
-    public static HotkeyInfo registerHotkey ( Component topComponent, Component forComponent, HotkeyData hotkeyData, HotkeyRunnable action,
-                                              boolean hidden, TooltipWay tooltipWay )
+    public static HotkeyInfo registerHotkey ( final Component topComponent, final Component forComponent, final HotkeyData hotkeyData,
+                                              final HotkeyRunnable action, final boolean hidden, final TooltipWay tooltipWay )
     {
-        HotkeyInfo hotkeyInfo = new HotkeyInfo ();
+        final HotkeyInfo hotkeyInfo = new HotkeyInfo ();
         hotkeyInfo.setHidden ( hidden );
         hotkeyInfo.setTopComponent ( topComponent );
         hotkeyInfo.setForComponent ( forComponent );
@@ -281,34 +290,34 @@ public final class HotkeyManager
      * Button-specific hotkey register methods
      */
 
-    public static HotkeyInfo registerHotkey ( AbstractButton forComponent, HotkeyData hotkeyData )
+    public static HotkeyInfo registerHotkey ( final AbstractButton forComponent, final HotkeyData hotkeyData )
     {
         return registerHotkey ( null, forComponent, hotkeyData );
     }
 
-    public static HotkeyInfo registerHotkey ( AbstractButton forComponent, HotkeyData hotkeyData, boolean hidden )
+    public static HotkeyInfo registerHotkey ( final AbstractButton forComponent, final HotkeyData hotkeyData, final boolean hidden )
     {
         return registerHotkey ( null, forComponent, hotkeyData, hidden );
     }
 
-    public static HotkeyInfo registerHotkey ( AbstractButton forComponent, HotkeyData hotkeyData, TooltipWay tooltipWay )
+    public static HotkeyInfo registerHotkey ( final AbstractButton forComponent, final HotkeyData hotkeyData, final TooltipWay tooltipWay )
     {
         return registerHotkey ( null, forComponent, hotkeyData, tooltipWay );
     }
 
-    public static HotkeyInfo registerHotkey ( Component topComponent, AbstractButton forComponent, HotkeyData hotkeyData )
+    public static HotkeyInfo registerHotkey ( final Component topComponent, final AbstractButton forComponent, final HotkeyData hotkeyData )
     {
         return registerHotkey ( topComponent, forComponent, hotkeyData, false );
     }
 
-    public static HotkeyInfo registerHotkey ( Component topComponent, final AbstractButton forComponent, HotkeyData hotkeyData,
-                                              TooltipWay tooltipWay )
+    public static HotkeyInfo registerHotkey ( final Component topComponent, final AbstractButton forComponent, final HotkeyData hotkeyData,
+                                              final TooltipWay tooltipWay )
     {
         return registerHotkey ( topComponent, forComponent, hotkeyData, createAction ( forComponent ), false, tooltipWay );
     }
 
-    public static HotkeyInfo registerHotkey ( Component topComponent, final AbstractButton forComponent, HotkeyData hotkeyData,
-                                              boolean hidden )
+    public static HotkeyInfo registerHotkey ( final Component topComponent, final AbstractButton forComponent, final HotkeyData hotkeyData,
+                                              final boolean hidden )
     {
         return registerHotkey ( topComponent, forComponent, hotkeyData, createAction ( forComponent ), hidden, null );
     }
@@ -322,11 +331,11 @@ public final class HotkeyManager
      * Sets component hotkey tip way
      */
 
-    public static void setComponentHotkeyDisplayWay ( Component component, TooltipWay tooltipWay )
+    public static void setComponentHotkeyDisplayWay ( final Component component, final TooltipWay tooltipWay )
     {
         synchronized ( sync )
         {
-            for ( HotkeyInfo hotkeyInfo : getComponentHotkeysCache ( component ) )
+            for ( final HotkeyInfo hotkeyInfo : getComponentHotkeysCache ( component ) )
             {
                 hotkeyInfo.setHotkeyDisplayWay ( tooltipWay );
             }
@@ -337,26 +346,26 @@ public final class HotkeyManager
      * Sets top component additional hotkey trigger condition
      */
 
-    public static void addContainerHotkeyCondition ( Container container, HotkeyCondition hotkeyCondition )
+    public static void addContainerHotkeyCondition ( final Container container, final HotkeyCondition hotkeyCondition )
     {
         synchronized ( sync )
         {
-            List<HotkeyCondition> clist = getContainerHotkeyConditionsCache ( container );
+            final List<HotkeyCondition> clist = getContainerHotkeyConditionsCache ( container );
             clist.add ( hotkeyCondition );
             topComponentConditions.put ( container, clist );
         }
     }
 
-    public static void removeContainerHotkeyCondition ( Container container, HotkeyCondition hotkeyCondition )
+    public static void removeContainerHotkeyCondition ( final Container container, final HotkeyCondition hotkeyCondition )
     {
         synchronized ( sync )
         {
-            List<HotkeyCondition> clist = getContainerHotkeyConditionsCache ( container );
+            final List<HotkeyCondition> clist = getContainerHotkeyConditionsCache ( container );
             clist.remove ( hotkeyCondition );
         }
     }
 
-    public static void removeContainerHotkeyConditions ( Container container )
+    public static void removeContainerHotkeyConditions ( final Container container )
     {
         synchronized ( sync )
         {
@@ -364,20 +373,20 @@ public final class HotkeyManager
         }
     }
 
-    public static List<HotkeyCondition> getContainerHotkeyConditions ( Container container )
+    public static List<HotkeyCondition> getContainerHotkeyConditions ( final Container container )
     {
         synchronized ( sync )
         {
-            List<HotkeyCondition> list = topComponentConditions.get ( container );
+            final List<HotkeyCondition> list = topComponentConditions.get ( container );
             return list != null ? CollectionUtils.copy ( list ) : new ArrayList<HotkeyCondition> ();
         }
     }
 
-    protected static List<HotkeyCondition> getContainerHotkeyConditionsCache ( Container container )
+    protected static List<HotkeyCondition> getContainerHotkeyConditionsCache ( final Container container )
     {
         synchronized ( sync )
         {
-            List<HotkeyCondition> list = topComponentConditions.get ( container );
+            final List<HotkeyCondition> list = topComponentConditions.get ( container );
             return list != null ? list : new ArrayList<HotkeyCondition> ();
         }
     }
@@ -386,12 +395,12 @@ public final class HotkeyManager
      * Hotkey removal methods
      */
 
-    public static void unregisterHotkey ( HotkeyInfo hotkeyInfo )
+    public static void unregisterHotkey ( final HotkeyInfo hotkeyInfo )
     {
         clearHotkeyCache ( hotkeyInfo );
     }
 
-    public static void unregisterHotkeys ( Component component )
+    public static void unregisterHotkeys ( final Component component )
     {
         clearHotkeysCache ( component );
     }
@@ -400,11 +409,11 @@ public final class HotkeyManager
      * Hotkeys retrieval methods
      */
 
-    public static List<HotkeyInfo> getComponentHotkeys ( Component component )
+    public static List<HotkeyInfo> getComponentHotkeys ( final Component component )
     {
         synchronized ( sync )
         {
-            List<HotkeyInfo> list = hotkeys.get ( component );
+            final List<HotkeyInfo> list = hotkeys.get ( component );
             return list != null ? CollectionUtils.copy ( list ) : new ArrayList<HotkeyInfo> ();
         }
     }
@@ -423,34 +432,34 @@ public final class HotkeyManager
      * Hotkeys cache methods
      */
 
-    protected static void cacheHotkey ( HotkeyInfo hotkeyInfo )
+    protected static void cacheHotkey ( final HotkeyInfo hotkeyInfo )
     {
         synchronized ( sync )
         {
-            List<HotkeyInfo> hlist = getComponentHotkeysCache ( hotkeyInfo.getForComponent () );
+            final List<HotkeyInfo> hlist = getComponentHotkeysCache ( hotkeyInfo.getForComponent () );
             hlist.add ( hotkeyInfo );
             hotkeys.put ( hotkeyInfo.getForComponent (), hlist );
         }
     }
 
-    protected static void clearHotkeyCache ( HotkeyInfo hotkeyInfo )
+    protected static void clearHotkeyCache ( final HotkeyInfo hotkeyInfo )
     {
         synchronized ( sync )
         {
-            List<HotkeyInfo> hlist = getComponentHotkeysCache ( hotkeyInfo.getForComponent () );
+            final List<HotkeyInfo> hlist = getComponentHotkeysCache ( hotkeyInfo.getForComponent () );
             hlist.remove ( hotkeyInfo );
         }
     }
 
-    protected static void clearHotkeysCache ( List<HotkeyInfo> hotkeys )
+    protected static void clearHotkeysCache ( final List<HotkeyInfo> hotkeys )
     {
-        for ( HotkeyInfo hotkeyInfo : hotkeys )
+        for ( final HotkeyInfo hotkeyInfo : hotkeys )
         {
             clearHotkeyCache ( hotkeyInfo );
         }
     }
 
-    protected static void clearHotkeysCache ( Component component )
+    protected static void clearHotkeysCache ( final Component component )
     {
         synchronized ( sync )
         {
@@ -458,11 +467,11 @@ public final class HotkeyManager
         }
     }
 
-    protected static List<HotkeyInfo> getComponentHotkeysCache ( Component component )
+    protected static List<HotkeyInfo> getComponentHotkeysCache ( final Component component )
     {
         synchronized ( sync )
         {
-            List<HotkeyInfo> list = hotkeys.get ( component );
+            final List<HotkeyInfo> list = hotkeys.get ( component );
             return list != null ? list : new ArrayList<HotkeyInfo> ();
         }
     }
@@ -477,13 +486,13 @@ public final class HotkeyManager
         TooltipManager.hideAllTooltips ();
 
         // Displaying one-time tips with hotkeys
-        for ( Window window : Window.getWindows () )
+        for ( final Window window : Window.getWindows () )
         {
             showComponentHotkeys ( window );
         }
     }
 
-    public static void showComponentHotkeys ( Component component )
+    public static void showComponentHotkeys ( final Component component )
     {
         // Hiding all tooltips
         TooltipManager.hideAllTooltips ();
@@ -492,26 +501,23 @@ public final class HotkeyManager
         showComponentHotkeys ( SwingUtils.getWindowAncestor ( component ) );
     }
 
-    protected static void showComponentHotkeys ( Window window )
+    protected static void showComponentHotkeys ( final Window window )
     {
-        synchronized ( sync )
+        final LinkedHashSet<Component> shown = new LinkedHashSet<Component> ();
+        for ( final Map.Entry<Component, List<HotkeyInfo>> entry : copyHotkeys ().entrySet () )
         {
-            LinkedHashSet<Component> shown = new LinkedHashSet<Component> ();
-            for ( Map.Entry<Component, List<HotkeyInfo>> entry : hotkeys.entrySet () )
+            for ( final HotkeyInfo hotkeyInfo : entry.getValue () )
             {
-                for ( HotkeyInfo hotkeyInfo : entry.getValue () )
+                if ( !hotkeyInfo.isHidden () )
                 {
-                    if ( !hotkeyInfo.isHidden () )
+                    final Component forComponent = hotkeyInfo.getForComponent ();
+                    if ( forComponent != null && !shown.contains ( forComponent ) && forComponent.isVisible () &&
+                            forComponent.isShowing () && SwingUtils.getWindowAncestor ( forComponent ) == window )
                     {
-                        Component forComponent = hotkeyInfo.getForComponent ();
-                        if ( forComponent != null && !shown.contains ( forComponent ) && forComponent.isVisible () &&
-                                forComponent.isShowing () && SwingUtils.getWindowAncestor ( forComponent ) == window )
-                        {
-                            WebLabel tip = new WebLabel ( HotkeyManager.getComponentHotkeysString ( forComponent ) );
-                            SwingUtils.setBoldFont ( tip );
-                            TooltipManager.showOneTimeTooltip ( forComponent, null, tip, hotkeyInfo.getHotkeyDisplayWay () );
-                            shown.add ( forComponent );
-                        }
+                        final WebLabel tip = new WebLabel ( HotkeyManager.getComponentHotkeysString ( forComponent ) );
+                        SwingUtils.setBoldFont ( tip );
+                        TooltipManager.showOneTimeTooltip ( forComponent, null, tip, hotkeyInfo.getHotkeyDisplayWay () );
+                        shown.add ( forComponent );
                     }
                 }
             }
@@ -527,12 +533,12 @@ public final class HotkeyManager
         installShowAllHotkeysAction ( topComponent, Hotkey.F1 );
     }
 
-    public static void installShowAllHotkeysAction ( final Component topComponent, HotkeyData hotkeyData )
+    public static void installShowAllHotkeysAction ( final Component topComponent, final HotkeyData hotkeyData )
     {
         HotkeyManager.registerHotkey ( topComponent, topComponent, hotkeyData, new HotkeyRunnable ()
         {
             @Override
-            public void run ( KeyEvent e )
+            public void run ( final KeyEvent e )
             {
                 HotkeyManager.showComponentHotkeys ( topComponent );
             }
@@ -543,7 +549,7 @@ public final class HotkeyManager
      * All component hotkeys list
      */
 
-    public static String getComponentHotkeysString ( Component component )
+    public static String getComponentHotkeysString ( final Component component )
     {
         synchronized ( sync )
         {
@@ -551,12 +557,12 @@ public final class HotkeyManager
         }
     }
 
-    protected static String getComponentHotkeysString ( List<HotkeyInfo> infoList )
+    protected static String getComponentHotkeysString ( final List<HotkeyInfo> infoList )
     {
-        StringBuilder hotkeys = new StringBuilder ( "" );
+        final StringBuilder hotkeys = new StringBuilder ( "" );
         if ( infoList != null )
         {
-            for ( HotkeyInfo hotkeyInfo : infoList )
+            for ( final HotkeyInfo hotkeyInfo : infoList )
             {
                 if ( !hotkeyInfo.isHidden () )
                 {
@@ -603,7 +609,7 @@ public final class HotkeyManager
         }
     }
 
-    public static void setTransferFocus ( boolean transferFocus )
+    public static void setTransferFocus ( final boolean transferFocus )
     {
         synchronized ( sync )
         {
