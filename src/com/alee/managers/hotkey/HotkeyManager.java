@@ -70,7 +70,7 @@ public final class HotkeyManager
     /**
      * Conditions for top components which might.
      */
-    protected static Map<Container, List<HotkeyCondition>> topComponentConditions = new WeakHashMap<Container, List<HotkeyCondition>> ();
+    protected static Map<Container, List<HotkeyCondition>> containerConditions = new WeakHashMap<Container, List<HotkeyCondition>> ();
 
     /**
      * Initialization mark.
@@ -120,12 +120,32 @@ public final class HotkeyManager
         }
     }
 
+    /**
+     * Returns a full copy of hotkeys map.
+     * Returned map is a HashMap instead of WeakHashMap used in manager and will keep stong references to hotkey components.
+     *
+     * @return full copy of hotkeys map
+     */
     protected static Map<Component, List<HotkeyInfo>> copyHotkeys ()
     {
         synchronized ( sync )
         {
             final Map<Component, List<HotkeyInfo>> copy = new HashMap<Component, List<HotkeyInfo>> ( hotkeys.size () );
             for ( final Map.Entry<Component, List<HotkeyInfo>> entry : hotkeys.entrySet () )
+            {
+                copy.put ( entry.getKey (), CollectionUtils.copy ( entry.getValue () ) );
+            }
+            return copy;
+        }
+    }
+
+    protected static Map<Container, List<HotkeyCondition>> copyContainerConditions ()
+    {
+        synchronized ( sync )
+        {
+            final Map<Container, List<HotkeyCondition>> copy =
+                    new HashMap<Container, List<HotkeyCondition>> ( containerConditions.size () );
+            for ( final Map.Entry<Container, List<HotkeyCondition>> entry : containerConditions.entrySet () )
             {
                 copy.put ( entry.getKey (), CollectionUtils.copy ( entry.getValue () ) );
             }
@@ -210,23 +230,20 @@ public final class HotkeyManager
 
     protected static boolean meetsParentConditions ( final Component forComponent )
     {
-        synchronized ( sync )
+        for ( final Map.Entry<Container, List<HotkeyCondition>> entry : copyContainerConditions ().entrySet () )
         {
-            for ( final Map.Entry<Container, List<HotkeyCondition>> entry : topComponentConditions.entrySet () )
+            if ( entry.getKey ().isAncestorOf ( forComponent ) )
             {
-                if ( entry.getKey ().isAncestorOf ( forComponent ) )
+                for ( final HotkeyCondition condition : entry.getValue () )
                 {
-                    for ( final HotkeyCondition condition : entry.getValue () )
+                    if ( !condition.checkCondition ( forComponent ) )
                     {
-                        if ( !condition.checkCondition ( forComponent ) )
-                        {
-                            return false;
-                        }
+                        return false;
                     }
                 }
             }
-            return true;
         }
+        return true;
     }
 
     /**
@@ -352,7 +369,7 @@ public final class HotkeyManager
         {
             final List<HotkeyCondition> clist = getContainerHotkeyConditionsCache ( container );
             clist.add ( hotkeyCondition );
-            topComponentConditions.put ( container, clist );
+            containerConditions.put ( container, clist );
         }
     }
 
@@ -369,7 +386,7 @@ public final class HotkeyManager
     {
         synchronized ( sync )
         {
-            topComponentConditions.remove ( container );
+            containerConditions.remove ( container );
         }
     }
 
@@ -377,7 +394,7 @@ public final class HotkeyManager
     {
         synchronized ( sync )
         {
-            final List<HotkeyCondition> list = topComponentConditions.get ( container );
+            final List<HotkeyCondition> list = containerConditions.get ( container );
             return list != null ? CollectionUtils.copy ( list ) : new ArrayList<HotkeyCondition> ();
         }
     }
@@ -386,7 +403,7 @@ public final class HotkeyManager
     {
         synchronized ( sync )
         {
-            final List<HotkeyCondition> list = topComponentConditions.get ( container );
+            final List<HotkeyCondition> list = containerConditions.get ( container );
             return list != null ? list : new ArrayList<HotkeyCondition> ();
         }
     }
