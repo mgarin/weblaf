@@ -216,8 +216,10 @@ public class ImageTransition extends JComponent implements ActionListener
             actualTransitionEffect = transitionEffects.get ( MathUtils.random ( transitionEffects.size () ) );
         }
 
+        long animationDelay = actualTransitionEffect != null ? actualTransitionEffect.getAnimationDelay () : 0;
+
         // Starting new transition
-        animator = new WebTimer ( "ImageTransition.animator", actualTransitionEffect.getAnimationDelay (), this );
+        animator = new WebTimer ( "ImageTransition.animator", animationDelay, this );
 
         // Starting transition
         fireTransitionStarted ();
