@@ -41,17 +41,17 @@ public class AlignLayout extends AbstractLayoutManager implements SwingConstants
     /**
      * Layout constraints separator.
      */
-    protected static final String SEPARATOR = ",";
+    public static final String SEPARATOR = ",";
 
     /**
      * Horizontal alignment constraints.
      */
-    protected static final List<Integer> horizontals = Arrays.asList ( LEFT, CENTER, RIGHT );
+    public static final List<Integer> horizontals = Arrays.asList ( LEFT, CENTER, RIGHT );
 
     /**
      * Vertical alignment constraints.
      */
-    protected static final List<Integer> verticals = Arrays.asList ( TOP, CENTER, BOTTOM );
+    public static final List<Integer> verticals = Arrays.asList ( TOP, CENTER, BOTTOM );
 
     /**
      * Constraints cache for added components.
