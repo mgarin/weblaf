@@ -84,7 +84,7 @@ public class DefaultTreeCheckingModel<E extends DefaultMutableTreeNode> implemen
     @Override
     public List<E> getCheckedNodes ( final boolean optimize )
     {
-        return getAllNodesForState ( CheckState.checked );
+        return getAllNodesForState ( CheckState.checked, optimize );
     }
 
     /**
@@ -93,17 +93,18 @@ public class DefaultTreeCheckingModel<E extends DefaultMutableTreeNode> implemen
     @Override
     public List<E> getMixedNodes ()
     {
-        return getAllNodesForState ( CheckState.mixed );
+        return getAllNodesForState ( CheckState.mixed, false );
     }
 
     /**
      * Returns list of nodes for the specified state.
      * For a reasonable cause this will not work for unchecked state.
      *
-     * @param state check state
+     * @param state    check state
+     * @param optimize
      * @return list of nodes for the specified state
      */
-    protected List<E> getAllNodesForState ( final CheckState state )
+    protected List<E> getAllNodesForState ( final CheckState state, boolean optimize )
     {
         final List<E> checkedNodes = new ArrayList<E> ( nodeCheckStates.size () );
         for ( final Map.Entry<E, CheckState> entry : nodeCheckStates.entrySet () )
@@ -111,6 +112,21 @@ public class DefaultTreeCheckingModel<E extends DefaultMutableTreeNode> implemen
             if ( entry.getValue () == state )
             {
                 checkedNodes.add ( entry.getKey () );
+            }
+        }
+        if ( optimize )
+        {
+            for ( int i = checkedNodes.size () - 1; i >= 0; i-- )
+            {
+                final E node = checkedNodes.get ( i );
+                for ( final E other : checkedNodes )
+                {
+                    if ( other != node && node.isNodeAncestor ( other ) )
+                    {
+                        checkedNodes.remove ( i );
+                        break;
+                    }
+                }
             }
         }
         return checkedNodes;
