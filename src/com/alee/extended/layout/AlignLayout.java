@@ -34,88 +34,143 @@ import java.util.Map;
 
 public class AlignLayout extends AbstractLayoutManager implements SwingConstants
 {
-    // Default separator
-    public static final String SEPARATOR = ",";
-    public static final List<Integer> horizontals = Arrays.asList ( LEFT, CENTER, RIGHT );
-    public static final List<Integer> verticals = Arrays.asList ( TOP, CENTER, BOTTOM );
-
-    // Saved layout constraints
-    private final Map<Component, String> constraints = new HashMap<Component, String> ();
-
-    // Gaps betwen components
-    private int hgap = 0;
-    private int vgap = 0;
-
-    // Should fill horizontal or vertical container space
-    private boolean hfill = false;
-    private boolean vfill = false;
-
     /**
-     * Some extended constructors
+     * todo 1. Take orientation into account
      */
 
+    /**
+     * Layout constraints separator.
+     */
+    protected static final String SEPARATOR = ",";
+
+    /**
+     * Horizontal alignment constraints.
+     */
+    protected static final List<Integer> horizontals = Arrays.asList ( LEFT, CENTER, RIGHT );
+
+    /**
+     * Vertical alignment constraints.
+     */
+    protected static final List<Integer> verticals = Arrays.asList ( TOP, CENTER, BOTTOM );
+
+    /**
+     * Constraints cache for added components.
+     */
+    protected final Map<Component, String> constraints = new HashMap<Component, String> ();
+
+    /**
+     * Horizontal gap between components.
+     */
+    protected int hgap = 0;
+
+    /**
+     * Vertical gap between components.
+     */
+    protected int vgap = 0;
+
+    /**
+     * Whether components should fill all available horizontal space or not.
+     */
+    protected boolean hfill = false;
+
+    /**
+     * Whether components should fill all available vertical space or not.
+     */
+    protected boolean vfill = false;
+
+    /**
+     * Constructs new align layout.
+     */
     public AlignLayout ()
     {
         super ();
     }
 
     /**
-     * Gap between components
+     * Returns horizontal gap between components.
+     *
+     * @return horizontal gap between components
      */
-
     public int getHgap ()
     {
         return hgap;
     }
 
-    public void setHgap ( int hgap )
+    /**
+     * Sets horizontal gap between components.
+     *
+     * @param hgap new horizontal gap between components
+     */
+    public void setHgap ( final int hgap )
     {
         this.hgap = hgap;
     }
 
+    /**
+     * Returns vertical gap between components.
+     *
+     * @return vertical gap between components
+     */
     public int getVgap ()
     {
         return vgap;
     }
 
-    public void setVgap ( int vgap )
+    /**
+     * Sets vertical gap between components.
+     *
+     * @param vgap new vertical gap between components
+     */
+    public void setVgap ( final int vgap )
     {
         this.vgap = vgap;
     }
 
     /**
-     * Should fill horizontal or vertical container space
+     * Returns whether components should fill all available horizontal space or not.
+     *
+     * @return true if components should fill all available horizontal space, false otherwise
      */
-
     public boolean isHfill ()
     {
         return hfill;
     }
 
-    public void setHfill ( boolean hfill )
+    /**
+     * Sets whether components should fill all available horizontal space or not.
+     *
+     * @param hfill whether components should fill all available horizontal space or not
+     */
+    public void setHfill ( final boolean hfill )
     {
         this.hfill = hfill;
     }
 
+    /**
+     * Returns whether components should fill all available vertical space or not.
+     *
+     * @return true if components should fill all available vertical space, false otherwise
+     */
     public boolean isVfill ()
     {
         return vfill;
     }
 
-    public void setVfill ( boolean vfill )
+    /**
+     * Sets whether components should fill all available vertical space or not.
+     *
+     * @param vfill whether components should fill all available vertical space or not
+     */
+    public void setVfill ( final boolean vfill )
     {
         this.vfill = vfill;
     }
 
     /**
-     * Standard LayoutManager methods
-     */
-
-    /**
      * {@inheritDoc}
      */
     @Override
-    public void addComponent ( Component component, Object constraints )
+    public void addComponent ( final Component component, final Object constraints )
     {
         String name = ( String ) constraints;
         if ( name != null && !name.trim ().equals ( "" ) )
@@ -149,17 +204,32 @@ public class AlignLayout extends AbstractLayoutManager implements SwingConstants
         this.constraints.put ( component, name );
     }
 
-    private void illegalArgument ()
+    /**
+     * Throws illegal argument (constraint) exception.
+     */
+    protected void illegalArgument ()
     {
         throw new IllegalArgumentException ( "Cannot add to layout: please specify proper alignment constraints" );
     }
 
-    private int getHalign ( String name )
+    /**
+     * Returns horizontal alignment for the specified constraint.
+     *
+     * @param name constraint
+     * @return horizontal alignment
+     */
+    protected int getHalign ( final String name )
     {
         return name == null ? CENTER : Integer.parseInt ( name.substring ( 0, name.indexOf ( SEPARATOR ) ) );
     }
 
-    private int getValign ( String name )
+    /**
+     * Returns vertical alignment for the specified constraint.
+     *
+     * @param name constraint
+     * @return vertical alignment
+     */
+    protected int getValign ( final String name )
     {
         return name == null ? CENTER : Integer.parseInt ( name.substring ( name.indexOf ( SEPARATOR ) + SEPARATOR.length () ) );
     }
@@ -168,7 +238,7 @@ public class AlignLayout extends AbstractLayoutManager implements SwingConstants
      * {@inheritDoc}
      */
     @Override
-    public void removeComponent ( Component component )
+    public void removeComponent ( final Component component )
     {
         constraints.remove ( component );
     }
@@ -177,7 +247,7 @@ public class AlignLayout extends AbstractLayoutManager implements SwingConstants
      * {@inheritDoc}
      */
     @Override
-    public Dimension preferredLayoutSize ( Container parent )
+    public Dimension preferredLayoutSize ( final Container parent )
     {
         final Dimension ps;
         if ( parent.getComponentCount () > 1 )
@@ -250,10 +320,18 @@ public class AlignLayout extends AbstractLayoutManager implements SwingConstants
         return ps;
     }
 
-    private Dimension getSideSize ( Container parent, int halign, int valign )
+    /**
+     * Returns size for the side specified by horizontal and vertical alignments.
+     *
+     * @param parent container
+     * @param halign horizontal alignment
+     * @param valign vertical alignment
+     * @return size for the side specified by horizontal and vertical alignments
+     */
+    protected Dimension getSideSize ( final Container parent, final int halign, final int valign )
     {
         Dimension size = new Dimension ( 0, 0 );
-        for ( Component component : parent.getComponents () )
+        for ( final Component component : parent.getComponents () )
         {
             // Component constraints and size
             final String align = constraints.get ( component );
@@ -269,14 +347,17 @@ public class AlignLayout extends AbstractLayoutManager implements SwingConstants
      * {@inheritDoc}
      */
     @Override
-    public void layoutContainer ( Container parent )
+    public void layoutContainer ( final Container parent )
     {
         final Insets insets = parent.getInsets ();
-        for ( Component component : parent.getComponents () )
+        final int cw = parent.getWidth () - insets.left - insets.right;
+        final int ch = parent.getHeight () - insets.top - insets.bottom;
+        for ( final Component component : parent.getComponents () )
         {
             // Component constraints and size
             final String align = constraints.get ( component );
             final int halign = getHalign ( align );
+            final int valign = getValign ( align );
             final Dimension ps = component.getPreferredSize ();
 
             // Determining x coordinate
@@ -315,7 +396,7 @@ public class AlignLayout extends AbstractLayoutManager implements SwingConstants
             }
             else
             {
-                switch ( halign )
+                switch ( valign )
                 {
                     case TOP:
                     {
@@ -336,8 +417,7 @@ public class AlignLayout extends AbstractLayoutManager implements SwingConstants
             }
 
             // Placing component
-            component.setBounds ( x, y, hfill ? parent.getWidth () - insets.left - insets.right : ps.width,
-                    vfill ? parent.getHeight () - insets.top - insets.bottom : ps.height );
+            component.setBounds ( x, y, hfill ? cw : ps.width, vfill ? ch : ps.height );
         }
     }
 }
