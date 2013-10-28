@@ -333,6 +333,13 @@ public class AsyncTreeModel<E extends AsyncUniqueNode> extends WebTreeModel<E>
                         @Override
                         public void childsLoadFailed ( final Throwable cause )
                         {
+                            // Caching childs
+                            synchronized ( cacheLock )
+                            {
+                                rawNodeChildsCache.put ( parent.getId (), new ArrayList<E> ( 0 ) );
+                                nodeCached.put ( parent.getId (), true );
+                            }
+
                             // Releasing node busy state
                             synchronized ( busyLock )
                             {
@@ -384,6 +391,13 @@ public class AsyncTreeModel<E extends AsyncUniqueNode> extends WebTreeModel<E>
                 @Override
                 public void childsLoadFailed ( final Throwable cause )
                 {
+                    // Caching childs
+                    synchronized ( cacheLock )
+                    {
+                        rawNodeChildsCache.put ( parent.getId (), new ArrayList<E> ( 0 ) );
+                        nodeCached.put ( parent.getId (), true );
+                    }
+
                     // Releasing node busy state
                     synchronized ( busyLock )
                     {

@@ -54,7 +54,7 @@ public class WebDefaultCellEditor<C extends JComponent> extends AbstractCellEdit
         delegate = new EditorDelegate ()
         {
             @Override
-            public void setValue ( Object value )
+            public void setValue ( final Object value )
             {
                 textField.setText ( ( value != null ) ? value.toString () : "" );
             }
@@ -75,7 +75,7 @@ public class WebDefaultCellEditor<C extends JComponent> extends AbstractCellEdit
         delegate = new EditorDelegate ()
         {
             @Override
-            public void setValue ( Object value )
+            public void setValue ( final Object value )
             {
                 boolean selected = false;
                 if ( value instanceof Boolean )
@@ -105,14 +105,14 @@ public class WebDefaultCellEditor<C extends JComponent> extends AbstractCellEdit
         editorComponent = ( C ) comboBox;
         if ( comboBox.getUI () instanceof WebComboBoxUI )
         {
-            WebComboBoxUI webComboBoxUI = ( WebComboBoxUI ) comboBox.getUI ();
+            final WebComboBoxUI webComboBoxUI = ( WebComboBoxUI ) comboBox.getUI ();
             webComboBoxUI.setDrawBorder ( false );
         }
         comboBox.putClientProperty ( COMBOBOX_CELL_EDITOR, Boolean.TRUE );
         delegate = new EditorDelegate ()
         {
             @Override
-            public void setValue ( Object value )
+            public void setValue ( final Object value )
             {
                 comboBox.setSelectedItem ( value );
             }
@@ -124,11 +124,11 @@ public class WebDefaultCellEditor<C extends JComponent> extends AbstractCellEdit
             }
 
             @Override
-            public boolean shouldSelectCell ( EventObject anEvent )
+            public boolean shouldSelectCell ( final EventObject anEvent )
             {
                 if ( anEvent instanceof MouseEvent )
                 {
-                    MouseEvent e = ( MouseEvent ) anEvent;
+                    final MouseEvent e = ( MouseEvent ) anEvent;
                     return e.getID () != MouseEvent.MOUSE_DRAGGED;
                 }
                 return true;
@@ -152,7 +152,7 @@ public class WebDefaultCellEditor<C extends JComponent> extends AbstractCellEdit
         return editorComponent;
     }
 
-    public void setClickCountToStart ( int count )
+    public void setClickCountToStart ( final int count )
     {
         clickCountToStart = count;
     }
@@ -169,13 +169,13 @@ public class WebDefaultCellEditor<C extends JComponent> extends AbstractCellEdit
     }
 
     @Override
-    public boolean isCellEditable ( EventObject anEvent )
+    public boolean isCellEditable ( final EventObject anEvent )
     {
         return delegate.isCellEditable ( anEvent );
     }
 
     @Override
-    public boolean shouldSelectCell ( EventObject anEvent )
+    public boolean shouldSelectCell ( final EventObject anEvent )
     {
         return delegate.shouldSelectCell ( anEvent );
     }
@@ -193,7 +193,8 @@ public class WebDefaultCellEditor<C extends JComponent> extends AbstractCellEdit
     }
 
     @Override
-    public Component getTreeCellEditorComponent ( JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row )
+    public Component getTreeCellEditorComponent ( final JTree tree, final Object value, final boolean isSelected, final boolean expanded,
+                                                  final boolean leaf, final int row )
     {
         //String stringValue = tree.convertValueToText ( value, isSelected, expanded, leaf, row, false );
         delegate.setValue ( value );
@@ -201,7 +202,8 @@ public class WebDefaultCellEditor<C extends JComponent> extends AbstractCellEdit
     }
 
     @Override
-    public Component getTableCellEditorComponent ( JTable table, Object value, boolean isSelected, int row, int column )
+    public Component getTableCellEditorComponent ( final JTable table, final Object value, final boolean isSelected, final int row,
+                                                   final int column )
     {
         delegate.setValue ( value );
         return editorComponent;
@@ -216,12 +218,12 @@ public class WebDefaultCellEditor<C extends JComponent> extends AbstractCellEdit
             return value;
         }
 
-        public void setValue ( T value )
+        public void setValue ( final T value )
         {
             this.value = value;
         }
 
-        public boolean isCellEditable ( EventObject anEvent )
+        public boolean isCellEditable ( final EventObject anEvent )
         {
             if ( anEvent == null || anEvent instanceof ActionEvent )
             {
@@ -243,7 +245,7 @@ public class WebDefaultCellEditor<C extends JComponent> extends AbstractCellEdit
             }
         }
 
-        public boolean shouldSelectCell ( EventObject anEvent )
+        public boolean shouldSelectCell ( final EventObject anEvent )
         {
             return true;
         }
@@ -260,13 +262,13 @@ public class WebDefaultCellEditor<C extends JComponent> extends AbstractCellEdit
         }
 
         @Override
-        public void actionPerformed ( ActionEvent e )
+        public void actionPerformed ( final ActionEvent e )
         {
             WebDefaultCellEditor.this.stopCellEditing ();
         }
 
         @Override
-        public void itemStateChanged ( ItemEvent e )
+        public void itemStateChanged ( final ItemEvent e )
         {
             WebDefaultCellEditor.this.stopCellEditing ();
         }

@@ -74,7 +74,7 @@ public class SampleTreeCellEditor extends WebTreeCellEditor
     @Override
     public Object getCellEditorValue ()
     {
-        sampleNode.setName ( super.getCellEditorValue ().toString () );
-        return sampleNode.getName ();
+        sampleNode.setName ( delegate.getCellEditorValue ().toString () );
+        return sampleNode;
     }
 }

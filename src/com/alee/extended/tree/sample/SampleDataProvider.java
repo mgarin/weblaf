@@ -57,29 +57,37 @@ public class SampleDataProvider extends AbstractTreeDataProvider<SampleNode>
         ThreadUtils.sleepSafely ( time );
         parent.setTime ( time );
 
-        // Sample childs
-        switch ( parent.getType () )
+        if ( parent.getName ().toLowerCase ().contains ( "fail" ) )
         {
-            case root:
+            // Sample load fail
+            listener.childsLoadFailed ( new RuntimeException ( "Sample exception cause" ) );
+        }
+        else
+        {
+            // Sample childs
+            switch ( parent.getType () )
             {
-                // Folder type childs
-                final SampleNode folder1 = new SampleNode ( "Folder 1", SampleNodeType.folder );
-                final SampleNode folder2 = new SampleNode ( "Folder 2", SampleNodeType.folder );
-                final SampleNode folder3 = new SampleNode ( "Folder 3", SampleNodeType.folder );
-                listener.childsLoadCompleted ( CollectionUtils.copy ( folder1, folder2, folder3 ) );
-            }
-            case folder:
-            {
-                // Leaf type childs
-                final SampleNode leaf1 = new SampleNode ( "Leaf 1", SampleNodeType.leaf );
-                final SampleNode leaf2 = new SampleNode ( "Leaf 2", SampleNodeType.leaf );
-                final SampleNode leaf3 = new SampleNode ( "Leaf 3", SampleNodeType.leaf );
-                listener.childsLoadCompleted ( CollectionUtils.copy ( leaf1, leaf2, leaf3 ) );
+                case root:
+                {
+                    // Folder type childs
+                    final SampleNode folder1 = new SampleNode ( "Folder 1", SampleNodeType.folder );
+                    final SampleNode folder2 = new SampleNode ( "Folder 2", SampleNodeType.folder );
+                    final SampleNode folder3 = new SampleNode ( "Folder 3", SampleNodeType.folder );
+                    final SampleNode folder4 = new SampleNode ( "Fail folder", SampleNodeType.folder );
+                    listener.childsLoadCompleted ( CollectionUtils.copy ( folder1, folder2, folder3, folder4 ) );
+                    break;
+                }
+                case folder:
+                {
+                    // Leaf type childs
+                    final SampleNode leaf1 = new SampleNode ( "Leaf 1", SampleNodeType.leaf );
+                    final SampleNode leaf2 = new SampleNode ( "Leaf 2", SampleNodeType.leaf );
+                    final SampleNode leaf3 = new SampleNode ( "Leaf 3", SampleNodeType.leaf );
+                    listener.childsLoadCompleted ( CollectionUtils.copy ( leaf1, leaf2, leaf3 ) );
+                    break;
+                }
             }
         }
-
-        // You can return either null or empty list if there are no childs
-        listener.childsLoadCompleted ( null );
     }
 
     /**

@@ -55,7 +55,7 @@ public class WebTreeCellEditor<C extends JComponent> extends WebDefaultCellEdito
      *
      * @param textField editor textfield
      */
-    public WebTreeCellEditor ( WebTextField textField )
+    public WebTreeCellEditor ( final WebTextField textField )
     {
         super ( textField );
 
@@ -63,7 +63,7 @@ public class WebTreeCellEditor<C extends JComponent> extends WebDefaultCellEdito
         textField.addFocusListener ( new FocusAdapter ()
         {
             @Override
-            public void focusLost ( FocusEvent e )
+            public void focusLost ( final FocusEvent e )
             {
                 stopCellEditing ();
             }
@@ -75,7 +75,7 @@ public class WebTreeCellEditor<C extends JComponent> extends WebDefaultCellEdito
      *
      * @param checkBox editor checkbox
      */
-    public WebTreeCellEditor ( WebCheckBox checkBox )
+    public WebTreeCellEditor ( final WebCheckBox checkBox )
     {
         super ( checkBox );
 
@@ -83,7 +83,7 @@ public class WebTreeCellEditor<C extends JComponent> extends WebDefaultCellEdito
         checkBox.addFocusListener ( new FocusAdapter ()
         {
             @Override
-            public void focusLost ( FocusEvent e )
+            public void focusLost ( final FocusEvent e )
             {
                 stopCellEditing ();
             }
@@ -95,7 +95,7 @@ public class WebTreeCellEditor<C extends JComponent> extends WebDefaultCellEdito
      *
      * @param comboBox editor combobox
      */
-    public WebTreeCellEditor ( WebComboBox comboBox )
+    public WebTreeCellEditor ( final WebComboBox comboBox )
     {
         super ( comboBox );
 
@@ -103,7 +103,7 @@ public class WebTreeCellEditor<C extends JComponent> extends WebDefaultCellEdito
         comboBox.addFocusListener ( new FocusAdapter ()
         {
             @Override
-            public void focusLost ( FocusEvent e )
+            public void focusLost ( final FocusEvent e )
             {
                 stopCellEditing ();
             }
@@ -122,29 +122,32 @@ public class WebTreeCellEditor<C extends JComponent> extends WebDefaultCellEdito
      * @return cell editor component
      */
     @Override
-    public Component getTreeCellEditorComponent ( JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row )
+    public Component getTreeCellEditorComponent ( final JTree tree, final Object value, final boolean isSelected, final boolean expanded,
+                                                  final boolean leaf, final int row )
     {
         final Component cellEditor = super.getTreeCellEditorComponent ( tree, value, isSelected, expanded, leaf, row );
 
         // Copying editor size from cell renderer size
-        Component component = tree.getCellRenderer ().getTreeCellRendererComponent ( tree, value, isSelected, expanded, leaf, row, true );
+        final Component component =
+                tree.getCellRenderer ().getTreeCellRendererComponent ( tree, value, isSelected, expanded, leaf, row, true );
         cellEditor.setPreferredSize ( component.getPreferredSize () );
 
         // Updating editor styling
         if ( component instanceof JLabel && ( ( JLabel ) component ).getIcon () != null )
         {
-            JLabel label = ( JLabel ) component;
+            final JLabel label = ( JLabel ) component;
 
             // todo Proper editor for RTL
             // boolean ltr = tree.getComponentOrientation ().isLeftToRight ();
 
             if ( cellEditor instanceof WebTextField )
             {
-                TreeUI tui = tree.getUI ();
-                int sw = tui instanceof WebTreeUI ? ( ( WebTreeUI ) tui ).getSelectionShadeWidth () : WebTreeStyle.selectionShadeWidth;
+                final TreeUI tui = tree.getUI ();
+                final int sw =
+                        tui instanceof WebTreeUI ? ( ( WebTreeUI ) tui ).getSelectionShadeWidth () : WebTreeStyle.selectionShadeWidth;
 
                 // Field styling
-                WebTextField editor = ( WebTextField ) cellEditor;
+                final WebTextField editor = ( WebTextField ) cellEditor;
                 editor.setDrawFocus ( false );
                 editor.setShadeWidth ( sw );
                 editor.setDrawShade ( false );
@@ -156,8 +159,8 @@ public class WebTreeCellEditor<C extends JComponent> extends WebDefaultCellEdito
                 }
 
                 // Field side margin
-                int sm = sw + 1;
-                Insets margin = label.getInsets ();
+                final int sm = sw + 1;
+                final Insets margin = label.getInsets ();
                 editor.setMargin ( margin.top - sm, margin.left - sm, margin.bottom - sm, margin.right - sm - 2 );
 
                 // Gap between leading icon and text
