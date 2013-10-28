@@ -335,7 +335,7 @@ public class WebFileList extends WebList
     {
         final Object[] selectedValues = getSelectedValues ();
         final List<File> selectedFiles = new ArrayList<File> ( selectedValues.length );
-        for ( Object value : selectedValues )
+        for ( final Object value : selectedValues )
         {
             selectedFiles.add ( ( ( FileElement ) value ).getFile () );
         }
@@ -390,7 +390,7 @@ public class WebFileList extends WebList
     public void setSelectedFiles ( final Collection<File> files )
     {
         final List<FileElement> elements = new ArrayList<FileElement> ( files.size () );
-        for ( File file : files )
+        for ( final File file : files )
         {
             final FileElement element = getFileListModel ().getElement ( file );
             if ( element != null )
@@ -428,21 +428,38 @@ public class WebFileList extends WebList
             public Dimension getPreferredSize ()
             {
                 final Dimension ps = super.getPreferredSize ();
+                final int fcw = getFixedCellWidth ();
+                final int fch = getFixedCellHeight ();
                 final Dimension oneCell;
-                if ( getModel ().getSize () > 0 )
+                if ( fcw != -1 && fch != -1 )
                 {
-                    oneCell = getCellBounds ( 0, 0 ).getSize ();
+                    oneCell = new Dimension ( fcw, fch );
                 }
                 else
                 {
-                    final WebFileListCellRenderer fileListCellRenderer = getWebFileListCellRenderer ();
-                    if ( fileListCellRenderer != null )
+                    if ( getModel ().getSize () > 0 )
                     {
-                        oneCell = fileListCellRenderer.getPreferredSize ();
+                        oneCell = getCellBounds ( 0, 0 ).getSize ();
                     }
                     else
                     {
-                        oneCell = new Dimension ( 400, 300 );
+                        final WebFileListCellRenderer fileListCellRenderer = getWebFileListCellRenderer ();
+                        if ( fileListCellRenderer != null )
+                        {
+                            oneCell = fileListCellRenderer.getPreferredSize ();
+                        }
+                        else
+                        {
+                            oneCell = new Dimension ( 90, 90 );
+                        }
+                    }
+                    if ( fcw != -1 )
+                    {
+                        oneCell.width = fcw;
+                    }
+                    else if ( fch != -1 )
+                    {
+                        oneCell.width = fcw;
                     }
                 }
                 final Insets bi = getInsets ();

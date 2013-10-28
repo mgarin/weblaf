@@ -32,12 +32,12 @@ public interface ChildsListener<E extends AsyncUniqueNode>
      *
      * @param childs list of loaded childs
      */
-    public void childsLoadCompleted ( final List<E> childs );
+    public void childsLoadCompleted ( List<E> childs );
 
     /**
      * Informs model that childs load failed due to the specified exception.
      *
      * @param cause exception
      */
-    public void childsLoadFailed ( final Throwable cause );
+    public void childsLoadFailed ( Throwable cause );
 }

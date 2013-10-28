@@ -42,86 +42,86 @@ public class WebLabel extends JLabel implements LanguageMethods, FontMethods<Web
         super ();
     }
 
-    public WebLabel ( Insets margin )
+    public WebLabel ( final Insets margin )
     {
         super ();
         setMargin ( margin );
     }
 
-    public WebLabel ( Icon image )
+    public WebLabel ( final Icon image )
     {
         super ( image );
     }
 
-    public WebLabel ( Icon image, Insets margin )
+    public WebLabel ( final Icon image, final Insets margin )
     {
         super ( image );
         setMargin ( margin );
     }
 
-    public WebLabel ( int horizontalAlignment )
+    public WebLabel ( final int horizontalAlignment )
     {
         super ();
         setHorizontalAlignment ( horizontalAlignment );
     }
 
-    public WebLabel ( int horizontalAlignment, Insets margin )
+    public WebLabel ( final int horizontalAlignment, final Insets margin )
     {
         super ();
         setHorizontalAlignment ( horizontalAlignment );
         setMargin ( margin );
     }
 
-    public WebLabel ( Icon image, int horizontalAlignment )
+    public WebLabel ( final Icon image, final int horizontalAlignment )
     {
         super ( image, horizontalAlignment );
     }
 
-    public WebLabel ( Icon image, int horizontalAlignment, Insets margin )
+    public WebLabel ( final Icon image, final int horizontalAlignment, final Insets margin )
     {
         super ( image, horizontalAlignment );
         setMargin ( margin );
     }
 
-    public WebLabel ( String text )
+    public WebLabel ( final String text )
     {
         super ( text );
     }
 
-    public WebLabel ( String text, Insets margin )
+    public WebLabel ( final String text, final Insets margin )
     {
         super ( text );
         setMargin ( margin );
     }
 
-    public WebLabel ( String text, int horizontalAlignment )
+    public WebLabel ( final String text, final int horizontalAlignment )
     {
         super ( text, horizontalAlignment );
     }
 
-    public WebLabel ( String text, int horizontalAlignment, Insets margin )
+    public WebLabel ( final String text, final int horizontalAlignment, final Insets margin )
     {
         super ( text, horizontalAlignment );
         setMargin ( margin );
     }
 
-    public WebLabel ( String text, Icon icon )
+    public WebLabel ( final String text, final Icon icon )
     {
         super ( text, icon, LEADING );
     }
 
-    public WebLabel ( String text, Icon icon, Insets margin )
+    public WebLabel ( final String text, final Icon icon, final Insets margin )
     {
         super ( text, icon, LEADING );
         setMargin ( margin );
     }
 
-    public WebLabel ( String text, Icon icon, int horizontalAlignment )
+    public WebLabel ( final String text, final Icon icon, final int horizontalAlignment )
     {
         super ( text, icon, horizontalAlignment );
     }
 
-    public WebLabel ( String text, Icon icon, int horizontalAlignment, Insets margin )
+    public WebLabel ( final String text, final Icon icon, final int horizontalAlignment, final Insets margin )
     {
         super ( text, icon, horizontalAlignment );
         setMargin ( margin );
@@ -132,18 +132,18 @@ public class WebLabel extends JLabel implements LanguageMethods, FontMethods<Web
         return getWebUI ().getMargin ();
     }
 
-    public void setMargin ( Insets margin )
+    public void setMargin ( final Insets margin )
     {
         getWebUI ().setMargin ( margin );
     }
 
-    public WebLabel setMargin ( int top, int left, int bottom, int right )
+    public WebLabel setMargin ( final int top, final int left, final int bottom, final int right )
     {
         setMargin ( new Insets ( top, left, bottom, right ) );
         return this;
     }
 
-    public WebLabel setMargin ( int spacing )
+    public WebLabel setMargin ( final int spacing )
     {
         return setMargin ( spacing, spacing, spacing, spacing );
     }
@@ -153,7 +153,7 @@ public class WebLabel extends JLabel implements LanguageMethods, FontMethods<Web
         return getWebUI ().getPainter ();
     }
 
-    public WebLabel setPainter ( Painter painter )
+    public WebLabel setPainter ( final Painter painter )
     {
         getWebUI ().setPainter ( painter );
         return this;
@@ -164,7 +164,7 @@ public class WebLabel extends JLabel implements LanguageMethods, FontMethods<Web
         return getWebUI ().isDrawShade ();
     }
 
-    public WebLabel setDrawShade ( boolean drawShade )
+    public WebLabel setDrawShade ( final boolean drawShade )
     {
         getWebUI ().setDrawShade ( drawShade );
         return this;
@@ -175,7 +175,7 @@ public class WebLabel extends JLabel implements LanguageMethods, FontMethods<Web
         return getWebUI ().getShadeColor ();
     }
 
-    public WebLabel setShadeColor ( Color shadeColor )
+    public WebLabel setShadeColor ( final Color shadeColor )
     {
         getWebUI ().setShadeColor ( shadeColor );
         return this;
@@ -186,7 +186,7 @@ public class WebLabel extends JLabel implements LanguageMethods, FontMethods<Web
         return getWebUI ().getTransparency ();
     }
 
-    public WebLabel setTransparency ( Float transparency )
+    public WebLabel setTransparency ( final Float transparency )
     {
         getWebUI ().setTransparency ( transparency );
         return this;
@@ -226,7 +226,7 @@ public class WebLabel extends JLabel implements LanguageMethods, FontMethods<Web
      * {@inheritDoc}
      */
     @Override
-    public void setLanguage ( String key, Object... data )
+    public void setLanguage ( final String key, final Object... data )
     {
         LanguageManager.registerComponent ( this, key, data );
     }
@@ -235,7 +235,7 @@ public class WebLabel extends JLabel implements LanguageMethods, FontMethods<Web
      * {@inheritDoc}
      */
     @Override
-    public void updateLanguage ( Object... data )
+    public void updateLanguage ( final Object... data )
     {
         LanguageManager.updateComponent ( this, data );
     }
@@ -244,7 +244,7 @@ public class WebLabel extends JLabel implements LanguageMethods, FontMethods<Web
      * {@inheritDoc}
      */
     @Override
-    public void updateLanguage ( String key, Object... data )
+    public void updateLanguage ( final String key, final Object... data )
     {
         LanguageManager.updateComponent ( this, key, data );
     }
@@ -271,7 +271,7 @@ public class WebLabel extends JLabel implements LanguageMethods, FontMethods<Web
      * {@inheritDoc}
      */
     @Override
-    public void setLanguageUpdater ( LanguageUpdater updater )
+    public void setLanguageUpdater ( final LanguageUpdater updater )
     {
         LanguageManager.registerLanguageUpdater ( this, updater );
     }
@@ -302,7 +302,7 @@ public class WebLabel extends JLabel implements LanguageMethods, FontMethods<Web
      * {@inheritDoc}
      */
     @Override
-    public WebLabel setPlainFont ( boolean apply )
+    public WebLabel setPlainFont ( final boolean apply )
     {
         return SwingUtils.setPlainFont ( this, apply );
     }
@@ -329,7 +329,7 @@ public class WebLabel extends JLabel implements LanguageMethods, FontMethods<Web
      * {@inheritDoc}
      */
     @Override
-    public WebLabel setBoldFont ( boolean apply )
+    public WebLabel setBoldFont ( final boolean apply )
     {
         return SwingUtils.setBoldFont ( this, apply );
     }
@@ -356,7 +356,7 @@ public class WebLabel extends JLabel implements LanguageMethods, FontMethods<Web
      * {@inheritDoc}
      */
     @Override
-    public WebLabel setItalicFont ( boolean apply )
+    public WebLabel setItalicFont ( final boolean apply )
     {
         return SwingUtils.setItalicFont ( this, apply );
     }
@@ -374,7 +374,7 @@ public class WebLabel extends JLabel implements LanguageMethods, FontMethods<Web
      * {@inheritDoc}
      */
     @Override
-    public WebLabel setFontStyle ( boolean bold, boolean italic )
+    public WebLabel setFontStyle ( final boolean bold, final boolean italic )
     {
         return SwingUtils.setFontStyle ( this, bold, italic );
     }
@@ -383,7 +383,7 @@ public class WebLabel extends JLabel implements LanguageMethods, FontMethods<Web
      * {@inheritDoc}
      */
     @Override
-    public WebLabel setFontStyle ( int style )
+    public WebLabel setFontStyle ( final int style )
     {
         return SwingUtils.setFontStyle ( this, style );
     }
@@ -392,7 +392,7 @@ public class WebLabel extends JLabel implements LanguageMethods, FontMethods<Web
      * {@inheritDoc}
      */
     @Override
-    public WebLabel setFontSize ( int fontSize )
+    public WebLabel setFontSize ( final int fontSize )
     {
         return SwingUtils.setFontSize ( this, fontSize );
     }
@@ -401,7 +401,7 @@ public class WebLabel extends JLabel implements LanguageMethods, FontMethods<Web
      * {@inheritDoc}
      */
     @Override
-    public WebLabel changeFontSize ( int change )
+    public WebLabel changeFontSize ( final int change )
     {
         return SwingUtils.changeFontSize ( this, change );
     }
@@ -419,7 +419,7 @@ public class WebLabel extends JLabel implements LanguageMethods, FontMethods<Web
      * {@inheritDoc}
      */
     @Override
-    public WebLabel setFontSizeAndStyle ( int fontSize, boolean bold, boolean italic )
+    public WebLabel setFontSizeAndStyle ( final int fontSize, final boolean bold, final boolean italic )
     {
         return SwingUtils.setFontSizeAndStyle ( this, fontSize, bold, italic );
     }
@@ -428,7 +428,7 @@ public class WebLabel extends JLabel implements LanguageMethods, FontMethods<Web
      * {@inheritDoc}
      */
     @Override
-    public WebLabel setFontSizeAndStyle ( int fontSize, int style )
+    public WebLabel setFontSizeAndStyle ( final int fontSize, final int style )
     {
         return SwingUtils.setFontSizeAndStyle ( this, fontSize, style );
     }
@@ -437,7 +437,7 @@ public class WebLabel extends JLabel implements LanguageMethods, FontMethods<Web
      * {@inheritDoc}
      */
     @Override
-    public WebLabel setFontName ( String fontName )
+    public WebLabel setFontName ( final String fontName )
     {
         return SwingUtils.setFontName ( this, fontName );
     }
@@ -468,7 +468,7 @@ public class WebLabel extends JLabel implements LanguageMethods, FontMethods<Web
      * {@inheritDoc}
      */
     @Override
-    public WebLabel setPreferredWidth ( int preferredWidth )
+    public WebLabel setPreferredWidth ( final int preferredWidth )
     {
         return SizeUtils.setPreferredWidth ( this, preferredWidth );
     }
@@ -486,7 +486,7 @@ public class WebLabel extends JLabel implements LanguageMethods, FontMethods<Web
      * {@inheritDoc}
      */
     @Override
-    public WebLabel setPreferredHeight ( int preferredHeight )
+    public WebLabel setPreferredHeight ( final int preferredHeight )
     {
         return SizeUtils.setPreferredHeight ( this, preferredHeight );
     }
@@ -504,7 +504,7 @@ public class WebLabel extends JLabel implements LanguageMethods, FontMethods<Web
      * {@inheritDoc}
      */
     @Override
-    public WebLabel setMinimumWidth ( int minimumWidth )
+    public WebLabel setMinimumWidth ( final int minimumWidth )
     {
         return SizeUtils.setMinimumWidth ( this, minimumWidth );
     }
@@ -522,7 +522,7 @@ public class WebLabel extends JLabel implements LanguageMethods, FontMethods<Web
      * {@inheritDoc}
      */
     @Override
-    public WebLabel setMinimumHeight ( int minimumHeight )
+    public WebLabel setMinimumHeight ( final int minimumHeight )
     {
         return SizeUtils.setMinimumHeight ( this, minimumHeight );
     }
@@ -542,9 +542,9 @@ public class WebLabel extends JLabel implements LanguageMethods, FontMethods<Web
      * @param key label language key
      * @return created label
      */
-    public static WebLabel createTranslatedLabel ( String key )
+    public static WebLabel createTranslatedLabel ( final String key )
     {
-        WebLabel label = new WebLabel ();
+        final WebLabel label = new WebLabel ();
         label.setLanguage ( key );
         return label;
     }
@@ -556,9 +556,9 @@ public class WebLabel extends JLabel implements LanguageMethods, FontMethods<Web
      * @param data label language data
      * @return created label
      */
-    public static WebLabel createTranslatedLabel ( String key, Object... data )
+    public static WebLabel createTranslatedLabel ( final String key, final Object... data )
     {
-        WebLabel label = new WebLabel ();
+        final WebLabel label = new WebLabel ();
         label.setLanguage ( key, data );
         return label;
     }
@@ -570,9 +570,9 @@ public class WebLabel extends JLabel implements LanguageMethods, FontMethods<Web
      * @param key    label language key
      * @return created label
      */
-    public static WebLabel createTranslatedLabel ( int halign, String key )
+    public static WebLabel createTranslatedLabel ( final int halign, final String key )
     {
-        WebLabel label = new WebLabel ( halign );
+        final WebLabel label = new WebLabel ( halign );
         label.setLanguage ( key );
         return label;
     }
@@ -585,9 +585,9 @@ public class WebLabel extends JLabel implements LanguageMethods, FontMethods<Web
      * @param data   label language data
      * @return created label
      */
-    public static WebLabel createTranslatedLabel ( int halign, String key, Object... data )
+    public static WebLabel createTranslatedLabel ( final int halign, final String key, final Object... data )
     {
-        WebLabel label = new WebLabel ( halign );
+        final WebLabel label = new WebLabel ( halign );
         label.setLanguage ( key, data );
         return label;
     }
@@ -599,9 +599,9 @@ public class WebLabel extends JLabel implements LanguageMethods, FontMethods<Web
      * @param key  label language key
      * @return created label
      */
-    public static WebLabel createTranslatedLabel ( Icon icon, String key )
+    public static WebLabel createTranslatedLabel ( final Icon icon, final String key )
     {
-        WebLabel label = new WebLabel ( icon );
+        final WebLabel label = new WebLabel ( icon );
         label.setLanguage ( key );
         return label;
     }
@@ -614,9 +614,9 @@ public class WebLabel extends JLabel implements LanguageMethods, FontMethods<Web
      * @param data label language data
      * @return created label
      */
-    public static WebLabel createTranslatedLabel ( Icon icon, String key, Object... data )
+    public static WebLabel createTranslatedLabel ( final Icon icon, final String key, final Object... data )
     {
-        WebLabel label = new WebLabel ( icon );
+        final WebLabel label = new WebLabel ( icon );
         label.setLanguage ( key, data );
         return label;
     }
@@ -629,9 +629,9 @@ public class WebLabel extends JLabel implements LanguageMethods, FontMethods<Web
      * @param key    label language key
      * @return created label
      */
-    public static WebLabel createTranslatedLabel ( int halign, Icon icon, String key )
+    public static WebLabel createTranslatedLabel ( final int halign, final Icon icon, final String key )
     {
-        WebLabel label = new WebLabel ( icon, halign );
+        final WebLabel label = new WebLabel ( icon, halign );
         label.setLanguage ( key );
         return label;
     }
@@ -645,9 +645,9 @@ public class WebLabel extends JLabel implements LanguageMethods, FontMethods<Web
      * @param data   label language data
      * @return created label
      */
-    public static WebLabel createTranslatedLabel ( int halign, Icon icon, String key, Object... data )
+    public static WebLabel createTranslatedLabel ( final int halign, final Icon icon, final String key, final Object... data )
     {
-        WebLabel label = new WebLabel ( icon, halign );
+        final WebLabel label = new WebLabel ( icon, halign );
         label.setLanguage ( key, data );
         return label;
     }
