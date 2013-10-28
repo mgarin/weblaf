@@ -43,8 +43,8 @@ public interface AsyncTreeDataProvider<E extends AsyncUniqueNode>
      * When you finish loading childs for the specified node or you failed to load them, simply inform the listener about that.
      * This request uses a separate thread and might take a lot of time to process without having any UI issues.
      *
-     * @param node parent node
-     * @return list of child nodes
+     * @param node     parent node
+     * @param listener childs loading progress listener
      */
     public void loadChilds ( E node, ChildsListener<E> listener );
 

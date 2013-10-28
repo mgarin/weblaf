@@ -45,8 +45,8 @@ public class SampleDataProvider extends AbstractTreeDataProvider<SampleNode>
     /**
      * Returns sample child nodes for specified asynchronous tree node.
      *
-     * @param parent childs parent node
-     * @return list of child nodes
+     * @param parent   childs parent node
+     * @param listener childs loading progress listener
      */
     @Override
     public void loadChilds ( final SampleNode parent, final ChildsListener<SampleNode> listener )

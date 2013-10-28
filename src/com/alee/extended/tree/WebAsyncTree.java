@@ -710,10 +710,10 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
     }
 
     /**
-     * Invoked when childs load operation finishes.
+     * Invoked when childs load operation fails.
      *
      * @param parent node which childs were loaded
-     * @param childs loaded child nodes
+     * @param cause  childs load failure cause
      */
     @Override
     public void childsLoadFailed ( final E parent, final Throwable cause )
@@ -725,7 +725,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
      * Fires childs load complete event.
      *
      * @param parent node which childs were loaded
-     * @param childs loaded child nodes
+     * @param cause  childs load failure cause
      */
     protected void fireChildsLoadFailed ( final E parent, final Throwable cause )
     {
