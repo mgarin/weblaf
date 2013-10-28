@@ -26,12 +26,12 @@ import java.awt.*;
 /**
  * This panel allows you to quickly place a small group of components into a row or a column.
  * You can specify grouping type, orientation and gap between components.
- * <p/>
+ * <p>
  * If specified grouping type is not "none" then components will be placed according to that grouping type.
  * Otherwise whether component should fill all the space left or not is determined by its FILL_CELL client property.
- * <p/>
+ * <p>
  * Orientation determines whether components should be placed horizontally or vertically.
- * <p/>
+ * <p>
  * Gap determines the spacing between the components in pixels.
  *
  * @author Mikle Garin

@@ -35,7 +35,7 @@ import java.awt.image.BufferedImage;
 
 /**
  * User: mgarin Date: 10.08.12 Time: 15:08
- * <p/>
+ * <p>
  * This manager provides easy-to-use effects (like "fade in" and "fade out"), applyable to any Swing component without additional efforts.
  * Some of methods relies on other WebLaF managers and requires that they are properly initialized (through installing WebLaF or manually
  * initializing them, one by one).

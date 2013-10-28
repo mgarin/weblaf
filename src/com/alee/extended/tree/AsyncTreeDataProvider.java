@@ -33,7 +33,7 @@ public interface AsyncTreeDataProvider<E extends AsyncUniqueNode>
 {
     /**
      * Returns asynchronous tree root node.
-     * <p/>
+     * <p>
      * This request uses the EDT and should be processed quickly.
      *
      * @return root node
@@ -42,7 +42,7 @@ public interface AsyncTreeDataProvider<E extends AsyncUniqueNode>
 
     /**
      * Returns child nodes for the specified asynchronous tree node.
-     * <p/>
+     * <p>
      * This request uses a separate thread and might take a lot of time to process.
      *
      * @param node parent node
@@ -70,7 +70,7 @@ public interface AsyncTreeDataProvider<E extends AsyncUniqueNode>
 
     /**
      * Returns whether the specified node is leaf (doesn't have any childs) or not.
-     * <p/>
+     * <p>
      * This request uses the EDT and should be processed quickly.
      * If you cannot be sure if the node is leaf or not - simply return false - this will allow the tree to expand this node on request.
      *

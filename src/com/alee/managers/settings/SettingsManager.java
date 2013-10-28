@@ -34,12 +34,12 @@ import java.util.Map;
 
 /**
  * This manager allows you to quickly and easily save any serializable data into settings files using simple XML format.
- * <p/>
+ * <p>
  * You can define settings group file name (they are equal to the SettingsGroup name and should be unique), its location on local or
  * remote drive and each separate property key. Any amount of properties could be stored in each group. Also there are some additional
  * manager settings that allows you to configure SettingsManager to work the way you want it to. The rest of the work is done by the
  * SettingsManager - it decides where, when and how to save the settings files.
- * <p/>
+ * <p>
  * Settings data aliasing (see XStream documentation and XmlUtils class) or SettingsGroup file location changes should be done before
  * requesting any of the settings, preferably right at the application startup. Otherwise data might not be properly read and settings will
  * appear empty.
@@ -47,7 +47,6 @@ import java.util.Map;
  * @author Mikle Garin
  * @see XmlUtils
  */
-
 public final class SettingsManager
 {
     /**
@@ -205,7 +204,7 @@ public final class SettingsManager
 
     /**
      * Registers component for settings auto-save.
-     * <p/>
+     * <p>
      * Also registered component will be:
      * - listened for settings changes to save them when requested
      * - automatically updated with any loaded settings for that key if requested
@@ -221,7 +220,7 @@ public final class SettingsManager
 
     /**
      * Registers component for settings auto-save.
-     * <p/>
+     * <p>
      * Also registered component will be:
      * - listened for settings changes to save them when requested
      * - automatically updated with any loaded settings for that key if requested
@@ -240,7 +239,7 @@ public final class SettingsManager
 
     /**
      * Registers component for settings auto-save.
-     * <p/>
+     * <p>
      * Also registered component will be:
      * - listened for settings changes to save them when requested
      * - automatically updated with any loaded settings for that key if requested
@@ -257,7 +256,7 @@ public final class SettingsManager
 
     /**
      * Registers component for settings auto-save.
-     * <p/>
+     * <p>
      * Also registered component will be:
      * - listened for settings changes to save them when requested
      * - automatically updated with any loaded settings for that key if requested
@@ -274,7 +273,7 @@ public final class SettingsManager
 
     /**
      * Registers component for settings auto-save.
-     * <p/>
+     * <p>
      * Also registered component will be:
      * - listened for settings changes to save them when requested
      * - automatically updated with any loaded settings for that key if requested
@@ -295,7 +294,7 @@ public final class SettingsManager
 
     /**
      * Registers component for settings auto-save.
-     * <p/>
+     * <p>
      * Also registered component will be:
      * - listened for settings changes to save them when requested
      * - automatically updated with any loaded settings for that key if requested
@@ -313,7 +312,7 @@ public final class SettingsManager
 
     /**
      * Registers component for settings auto-save.
-     * <p/>
+     * <p>
      * Also registered component will be:
      * - listened for settings changes to save them when requested
      * - automatically updated with any loaded settings for that key if requested
@@ -331,7 +330,7 @@ public final class SettingsManager
 
     /**
      * Registers component for settings auto-save.
-     * <p/>
+     * <p>
      * Also registered component will be:
      * - listened for settings changes to save them when requested
      * - automatically updated with any loaded settings for that key if requested
@@ -353,7 +352,7 @@ public final class SettingsManager
 
     /**
      * Registers component for settings auto-save.
-     * <p/>
+     * <p>
      * Also registered component will be:
      * - listened for settings changes to save them when requested
      * - automatically updated with any loaded settings for that key if requested
@@ -373,7 +372,7 @@ public final class SettingsManager
 
     /**
      * Registers component for settings auto-save.
-     * <p/>
+     * <p>
      * Also registered component will be:
      * - listened for settings changes to save them when requested
      * - automatically updated with any loaded settings for that key if requested
@@ -397,7 +396,7 @@ public final class SettingsManager
 
     /**
      * Registers component for settings auto-save.
-     * <p/>
+     * <p>
      * Also registered component will be:
      * - listened for settings changes to save them when requested
      * - automatically updated with any loaded settings for that key if requested
@@ -419,7 +418,7 @@ public final class SettingsManager
 
     /**
      * Registers component for settings auto-save.
-     * <p/>
+     * <p>
      * Also registered component will be:
      * - listened for settings changes to save them when requested
      * - automatically updated with any loaded settings for that key if requested

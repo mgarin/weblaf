@@ -34,7 +34,7 @@ import java.util.WeakHashMap;
 /**
  * This SettingsManager sub-manager registers and processes component settings auto-save/restore them on any changes within or outside of
  * that component.
- * <p/>
+ * <p>
  * This manager should never be called directly (except the case when you register new SettingsProcessor or if you know what you are doing)
  * to avoid any unexpected component behavior.
  *

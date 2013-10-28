@@ -24,7 +24,7 @@ import java.awt.event.KeyEvent;
 
 /**
  * User: mgarin Date: 16.05.12 Time: 12:05
- * <p/>
+ * <p>
  * This class provides a quick access to hotkey-styled label with additional costructors for quick hotkey text initialization. This label
  * is
  * only a hotkey visualization and have nothing to do with real hotkeys. To modify actual hotkeys use HotkeyManager or key listeners.

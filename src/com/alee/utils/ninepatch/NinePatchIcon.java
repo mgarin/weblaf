@@ -29,10 +29,10 @@ import java.util.List;
 
 /**
  * This class allows you to create and use nine-patch icons within Swing applications.
- * <p/>
+ * <p>
  * Basically it parses nine-patch image data (patches at the side of .9.png image) into understandable values and uses them to stretch the
  * image properly when it is painted anywhere.
- * <p/>
+ * <p>
  * Here is a simple example how NinePatchIcon can be used as a stretchable panel background:
  * <code>
  * NinePatchIcon icon = new NinePatchIcon ( "icon.9.png" );
@@ -44,7 +44,6 @@ import java.util.List;
  * @see com.alee.extended.painter.NinePatchIconPainter
  * @see com.alee.extended.painter.NinePatchStatePainter
  */
-
 public class NinePatchIcon implements Icon
 {
     /**

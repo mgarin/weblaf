@@ -54,7 +54,6 @@ import java.util.List;
  *
  * @author Mikle Garin
  */
-
 public final class SwingUtils
 {
     /**
@@ -109,10 +108,10 @@ public final class SwingUtils
     private static Set<SoftReference<BearingCacheEntry>> softBearingCache = new HashSet<SoftReference<BearingCacheEntry>> ();
 
     /**
-     * Returns whether window in which specified component located is decorated by L&F or not.
+     * Returns whether window in which specified component located is decorated by L&amp;F or not.
      *
      * @param component component used to determine window decoration state
-     * @return true if window in which specified component located is decorated by L&F, false otherwise
+     * @return true if window in which specified component located is decorated by L&amp;F, false otherwise
      */
     public static boolean isLafDecorated ( final Component component )
     {
@@ -373,7 +372,7 @@ public final class SwingUtils
     /**
      * Displays the specified frame as modal to the owner frame.
      * Note that this method returns only after the modal frame is closed.
-     * <p/>
+     * <p>
      * This method is a Swing hack and not recommended for real use.
      * Still it might be useful for some specific cases.
      *
@@ -1731,7 +1730,7 @@ public final class SwingUtils
 
     /**
      * Returns default label font.
-     * This method might be used as a hack with other L&Fs to retrieve system default font for simple text.
+     * This method might be used as a hack with other L&amp;Fs to retrieve system default font for simple text.
      *
      * @return default label font
      */
@@ -2612,7 +2611,7 @@ public final class SwingUtils
      * Returns the FontMetrics for the current Font of the passed in Graphics.
      * This method is used when a Graphics is available, typically when painting.
      * If a Graphics is not available the JComponent method of the same name should be used.
-     * <p/>
+     * <p>
      * This does not necessarily return the FontMetrics from the Graphics.
      *
      * @param c JComponent requesting FontMetrics, may be null
@@ -2627,7 +2626,7 @@ public final class SwingUtils
      * Returns the FontMetrics for the specified Font.
      * This method is used when a Graphics is available, typically when painting.
      * If a Graphics is not available the JComponent method of the same name should be used.
-     * <p/>
+     * <p>
      * This does not necessarily return the FontMetrics from the Graphics.
      *
      * @param c    JComponent requesting FontMetrics, may be null

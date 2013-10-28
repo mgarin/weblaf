@@ -41,7 +41,7 @@ public class TitledBorderPainter<E extends JComponent> extends BorderPainter<E> 
     /**
      * todo 1. Left/Right title position
      * todo 2. Icon for title text
-     * todo 3. Take title position into account when calculating preferred size & border
+     * todo 3. Take title position into account when calculating preferred size &amp; border
      */
 
     /**

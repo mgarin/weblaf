@@ -39,7 +39,7 @@ import java.util.List;
 
 /**
  * User: mgarin Date: 17.05.12 Time: 13:02
- * <p/>
+ * <p>
  * This class extends WebOptionPane functionality with some additional features like special components positioning inside of the message
  * dialog, access to the dialog and more.
  */

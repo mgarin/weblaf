@@ -26,12 +26,9 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 
 /**
- * User: mgarin Date: 13.09.12 Time: 20:20
- * <p/>
  * This class allows you to install (and uninstallcif needed) component updater to any JComponent quickly without any additional coding,
  * which allows you to add optimized rolling updates for the component from the added ActionListeners.
  */
-
 public class ComponentUpdater extends WebTimer implements AncestorListener
 {
     private JComponent component;

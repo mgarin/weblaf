@@ -64,16 +64,15 @@ package com.alee.utils.encryption;
  * Part One: Format of Internet Message Bodies. Reference
  * 1996 Available at: http://www.ietf.org/rfc/rfc2045.txt
  * This class is used by XML Schema binary format validation
- * <p/>
+ * <p>
  * This implementation does not encode/decode streaming
  * data. You need the data that you will encode/decode
- * already on a byte arrray.
+ * already on a byte array.
  *
  * @author Jeffrey Rodriguez
  * @author Sandy Gao
  * @version $Id: Base64.java,v 1.7 2002/11/18 23:10:10 sandygao Exp $
  */
-
 public final class Base64
 {
     static private final int BASELENGTH = 255;

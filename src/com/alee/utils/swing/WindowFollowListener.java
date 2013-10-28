@@ -22,18 +22,15 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
 /**
- * User: mgarin Date: 20.01.12 Time: 21:33
- * <p/>
  * This listener allows you to quickly attach one window to another window. This means that this window will always follow the other one
  * when it moves on the screen. Though the other window in this link will not follow this window as it moves.
- * <p/>
+ * <p>
  * Example usage:
- * <p/>
+ * <p>
  * <code>new WindowFollowListener ( dialog, mainWindow );</code>
- * <p/>
+ * <p>
  * This is enough to link the child dialog movement with the mainWindow movement.
  */
-
 public class WindowFollowListener extends ComponentAdapter
 {
     private boolean enabled = true;

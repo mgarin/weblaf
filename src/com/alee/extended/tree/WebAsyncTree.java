@@ -711,7 +711,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
 
     /**
      * Expands all visible tree rows in a single call.
-     * <p/>
+     * <p>
      * This method provides similar functionality to WebTree expandAll method and will actually expand all tree elements - even those which
      * are not yet loaded from data provider. Make sure you know what you are doing before calling this method.
      */

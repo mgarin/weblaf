@@ -191,7 +191,7 @@ public final class Hotkey
     public static final HotkeyData SHIFT_TAB = new HotkeyData ( false, false, true, KeyEvent.VK_TAB );
 
     /**
-     * Frequently used hotkeys with CTRL & SHIFT modifier.
+     * Frequently used hotkeys with CTRL &amp; SHIFT modifier.
      */
     public static final HotkeyData CTRL_SHIFT_S = new HotkeyData ( true, false, true, KeyEvent.VK_S );
     public static final HotkeyData CTRL_SHIFT_Z = new HotkeyData ( true, false, true, KeyEvent.VK_Z );
