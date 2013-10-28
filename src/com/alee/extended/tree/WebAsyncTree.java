@@ -448,7 +448,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
             {
                 // Checking if node is not null and not busy yet
                 final E node = getNodeForPath ( path );
-                if ( node != null && !node.isBusy () )
+                if ( node != null && !node.isLoading () )
                 {
                     // Reloading node childs
                     performReload ( node, path, false );
@@ -513,7 +513,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
     public void reloadNode ( final E node, final boolean select )
     {
         // Checking that node is not null
-        if ( node != null && !node.isBusy () )
+        if ( node != null && !node.isLoading () )
         {
             // Reloading node childs
             performReload ( node, getPathForNode ( node ), select );
@@ -572,7 +572,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
         {
             // Checking if node is not null and not busy yet
             final E node = getNodeForPath ( path );
-            if ( node != null && !node.isBusy () )
+            if ( node != null && !node.isLoading () )
             {
                 // Reloading node childs
                 performReload ( node, path, select );
@@ -604,7 +604,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
 
         // Reload selected node childs
         // This won't be called if node was not loaded yet since expand would call load before
-        if ( node != null && !node.isBusy () )
+        if ( node != null && !node.isLoading () )
         {
             getAsyncModel ().reload ( node );
         }
@@ -710,6 +710,37 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
     }
 
     /**
+     * Invoked when childs load operation finishes.
+     *
+     * @param parent node which childs were loaded
+     * @param childs loaded child nodes
+     */
+    @Override
+    public void childsLoadFailed ( final E parent, final Throwable cause )
+    {
+        fireChildsLoadFailed ( parent, cause );
+    }
+
+    /**
+     * Fires childs load complete event.
+     *
+     * @param parent node which childs were loaded
+     * @param childs loaded child nodes
+     */
+    protected void fireChildsLoadFailed ( final E parent, final Throwable cause )
+    {
+        final List<AsyncTreeListener> listeners;
+        synchronized ( listenersLock )
+        {
+            listeners = CollectionUtils.copy ( asyncTreeListeners );
+        }
+        for ( final AsyncTreeListener listener : listeners )
+        {
+            listener.childsLoadFailed ( parent, cause );
+        }
+    }
+
+    /**
      * Expands all visible tree rows in a single call.
      * <p/>
      * This method provides similar functionality to WebTree expandAll method and will actually expand all tree elements - even those which
@@ -770,6 +801,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
      */
     protected void performAsyncPathExpand ( final TreePath path )
     {
+        // todo Remove listener when finished
         // Add path expand listener first to get notified when this path will be expanded
         addAsyncTreeListener ( new AsyncTreeAdapter<E> ()
         {

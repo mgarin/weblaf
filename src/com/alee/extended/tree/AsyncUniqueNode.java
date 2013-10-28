@@ -35,13 +35,17 @@ public abstract class AsyncUniqueNode extends UniqueNode implements Serializable
      * Special separate loader icon for each tree node.
      * This is required to provide separate image observers to optimize tree repaints around the animated icon.
      */
-    protected transient ImageIcon loaderIcon = createLoaderIcon ();
+    protected transient ImageIcon loaderIcon = null;
 
     /**
-     * Represents busy state of the node.
-     * Node is busy when its childs are in process of loading from some kind of source.
+     * Current async node state.
      */
-    protected boolean busy = false;
+    protected AsyncNodeState state = AsyncNodeState.waiting;
+
+    /**
+     * Childs load failure cause.
+     */
+    protected Throwable failureCause = null;
 
     /**
      * Costructs default node.
@@ -62,24 +66,84 @@ public abstract class AsyncUniqueNode extends UniqueNode implements Serializable
     }
 
     /**
-     * Returns whether node is busy or not.
+     * Returns async node state.
      *
-     * @return true if node is busy, false otherwise
+     * @return async node state
      */
-    public boolean isBusy ()
+    public AsyncNodeState getState ()
     {
-        return busy;
+        return state;
     }
 
     /**
-     * Changes node busy state.
+     * Returns whether node is in waiting state.
+     *
+     * @return true if node is in waiting state, false otherwise
+     */
+    public boolean isWaiting ()
+    {
+        return state == AsyncNodeState.waiting;
+    }
+
+    /**
+     * Returns whether node childs are being loaded or not.
+     *
+     * @return true if node childs are being loaded, false otherwise
+     */
+    public boolean isLoading ()
+    {
+        return state == AsyncNodeState.loading;
+    }
+
+    /**
+     * Returns whether node childs are loaded or not.
+     *
+     * @return true if node childs are loaded, false otherwise
+     */
+    public boolean isLoaded ()
+    {
+        return state == AsyncNodeState.loaded;
+    }
+
+    /**
+     * Returns whether node childs load failed or not.
+     *
+     * @return true if node childs load failed, false otherwise
+     */
+    public boolean isFailed ()
+    {
+        return state == AsyncNodeState.failed;
+    }
+
+    /**
+     * Sets async node state.
      * Do not change this value on your own since that might break the tree.
      *
-     * @param busy new node busy state
+     * @param state new async node state
      */
-    public void setBusy ( final boolean busy )
+    public void setState ( final AsyncNodeState state )
     {
-        this.busy = busy;
+        this.state = state;
+    }
+
+    /**
+     * Returns childs load failure cause.
+     *
+     * @return childs load failure cause
+     */
+    public Throwable getFailureCause ()
+    {
+        return failureCause;
+    }
+
+    /**
+     * Sets childs load failure cause.
+     *
+     * @param failureCause childs load failure cause
+     */
+    public void setFailureCause ( final Throwable failureCause )
+    {
+        this.failureCause = failureCause;
     }
 
     /**
@@ -89,6 +153,10 @@ public abstract class AsyncUniqueNode extends UniqueNode implements Serializable
      */
     public ImageIcon getLoaderIcon ()
     {
+        if ( loaderIcon == null )
+        {
+            loaderIcon = createLoaderIcon ();
+        }
         return loaderIcon;
     }
 
@@ -116,7 +184,7 @@ public abstract class AsyncUniqueNode extends UniqueNode implements Serializable
      * {@inheritDoc}
      */
     @Override
-    public AsyncUniqueNode getChildAt ( int index )
+    public AsyncUniqueNode getChildAt ( final int index )
     {
         return ( AsyncUniqueNode ) super.getChildAt ( index );
     }

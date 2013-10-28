@@ -52,7 +52,7 @@ public class WebAsyncTreeCellRenderer extends WebTreeCellRenderer
         if ( value instanceof AsyncUniqueNode )
         {
             final AsyncUniqueNode node = ( AsyncUniqueNode ) value;
-            if ( node.isBusy () )
+            if ( node.isLoading () )
             {
                 setIcon ( node.getLoaderIcon () );
             }

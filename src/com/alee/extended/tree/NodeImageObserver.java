@@ -64,7 +64,7 @@ public class NodeImageObserver implements ImageObserver
     @Override
     public boolean imageUpdate ( final Image img, final int flags, final int x, final int y, final int w, final int h )
     {
-        if ( node.isBusy () && ( flags & ( FRAMEBITS | ALLBITS ) ) != 0 )
+        if ( node.isLoading () && ( flags & ( FRAMEBITS | ALLBITS ) ) != 0 )
         {
             final Rectangle rect = tree.getPathBounds ( node.getTreePath () );
             if ( rect != null )

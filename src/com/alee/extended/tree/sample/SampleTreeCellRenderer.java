@@ -54,7 +54,7 @@ public class SampleTreeCellRenderer extends WebAsyncTreeCellRenderer
             final SampleNode node = ( SampleNode ) value;
 
             // Node icon
-            if ( !node.isBusy () )
+            if ( !node.isLoading () )
             {
                 // Type icon
                 switch ( node.getType () )

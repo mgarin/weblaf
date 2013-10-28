@@ -18,11 +18,10 @@
 package com.alee.extended.tree.sample;
 
 import com.alee.extended.tree.AbstractTreeDataProvider;
+import com.alee.extended.tree.ChildsListener;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.MathUtils;
 import com.alee.utils.ThreadUtils;
-
-import java.util.List;
 
 /**
  * Sample asynchronous tree data provider.
@@ -50,7 +49,7 @@ public class SampleDataProvider extends AbstractTreeDataProvider<SampleNode>
      * @return list of child nodes
      */
     @Override
-    public List<SampleNode> getChilds ( final SampleNode parent )
+    public void loadChilds ( final SampleNode parent, final ChildsListener<SampleNode> listener )
     {
         // Sample loading delay to see the loader in progress
         parent.setTime ( 0 );
@@ -67,7 +66,7 @@ public class SampleDataProvider extends AbstractTreeDataProvider<SampleNode>
                 final SampleNode folder1 = new SampleNode ( "Folder 1", SampleNodeType.folder );
                 final SampleNode folder2 = new SampleNode ( "Folder 2", SampleNodeType.folder );
                 final SampleNode folder3 = new SampleNode ( "Folder 3", SampleNodeType.folder );
-                return CollectionUtils.copy ( folder1, folder2, folder3 );
+                listener.childsLoadCompleted ( CollectionUtils.copy ( folder1, folder2, folder3 ) );
             }
             case folder:
             {
@@ -75,12 +74,12 @@ public class SampleDataProvider extends AbstractTreeDataProvider<SampleNode>
                 final SampleNode leaf1 = new SampleNode ( "Leaf 1", SampleNodeType.leaf );
                 final SampleNode leaf2 = new SampleNode ( "Leaf 2", SampleNodeType.leaf );
                 final SampleNode leaf3 = new SampleNode ( "Leaf 3", SampleNodeType.leaf );
-                return CollectionUtils.copy ( leaf1, leaf2, leaf3 );
+                listener.childsLoadCompleted ( CollectionUtils.copy ( leaf1, leaf2, leaf3 ) );
             }
         }
 
         // You can return either null or empty list if there are no childs
-        return null;
+        listener.childsLoadCompleted ( null );
     }
 
     /**

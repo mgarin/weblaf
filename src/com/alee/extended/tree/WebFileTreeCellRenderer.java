@@ -55,7 +55,7 @@ public class WebFileTreeCellRenderer extends WebTreeCellRenderer
         final File file = node.getFile ();
 
         // File icon
-        setIcon ( node.isBusy () ? node.getLoaderIcon () : ( file != null ? FileUtils.getFileIcon ( file, false ) : null ) );
+        setIcon ( node.isLoading () ? node.getLoaderIcon () : ( file != null ? FileUtils.getFileIcon ( file, false ) : null ) );
 
         // File name
         if ( node.getName () != null )
