@@ -156,7 +156,7 @@ public class WebTreeCellRenderer extends WebTreeElement implements TreeCellRende
      */
     public void setRootIcon ( Icon rootIcon )
     {
-        this.rootIcon = ImageUtils.getImageIcon ( rootIcon );
+        this.rootIcon = rootIcon != null ? ImageUtils.getImageIcon ( rootIcon ) : null;
         ImageUtils.clearDisabledCopyCache ( getIconTypeKey ( "root" ) );
     }
 
@@ -177,7 +177,7 @@ public class WebTreeCellRenderer extends WebTreeElement implements TreeCellRende
      */
     public void setOpenIcon ( Icon openIcon )
     {
-        this.openIcon = ImageUtils.getImageIcon ( openIcon );
+        this.openIcon = openIcon != null ? ImageUtils.getImageIcon ( openIcon ) : null;
         ImageUtils.clearDisabledCopyCache ( getIconTypeKey ( "open" ) );
     }
 
@@ -198,7 +198,7 @@ public class WebTreeCellRenderer extends WebTreeElement implements TreeCellRende
      */
     public void setClosedIcon ( Icon closedIcon )
     {
-        this.closedIcon = ImageUtils.getImageIcon ( closedIcon );
+        this.closedIcon = closedIcon != null ? ImageUtils.getImageIcon ( closedIcon ) : null;
         ImageUtils.clearDisabledCopyCache ( getIconTypeKey ( "closed" ) );
     }
 
@@ -219,7 +219,7 @@ public class WebTreeCellRenderer extends WebTreeElement implements TreeCellRende
      */
     public void setLeafIcon ( Icon leafIcon )
     {
-        this.leafIcon = ImageUtils.getImageIcon ( leafIcon );
+        this.leafIcon = leafIcon != null ? ImageUtils.getImageIcon ( leafIcon ) : null;
         ImageUtils.clearDisabledCopyCache ( getIconTypeKey ( "leaf" ) );
     }
 }
