@@ -32,6 +32,14 @@ import javax.swing.*;
 public class SampleTreeCellRenderer extends WebAsyncTreeCellRenderer
 {
     /**
+     * Icon key constants.
+     */
+    private static final String ROOT_KEY = "root";
+    private static final String OPEN_KEY = "open";
+    private static final String CLOSED_KEY = "closed";
+    private static final String LEAF_KEY = "leaf";
+
+    /**
      * Returns custom tree cell renderer component
      *
      * @param tree       tree
@@ -54,24 +62,26 @@ public class SampleTreeCellRenderer extends WebAsyncTreeCellRenderer
             final SampleNode node = ( SampleNode ) value;
 
             // Node icon
-            if ( !node.isBusy () )
+            if ( !node.isLoading () )
             {
                 // Type icon
+                final boolean failed = node.isFailed ();
                 switch ( node.getType () )
                 {
                     case root:
                     {
-                        setIcon ( WebTreeUI.ROOT_ICON );
+                        setIcon ( failed ? getFailedStateIcon ( ROOT_KEY, WebTreeUI.ROOT_ICON ) : WebTreeUI.ROOT_ICON );
                         break;
                     }
                     case folder:
                     {
-                        setIcon ( expanded ? WebTreeUI.OPEN_ICON : WebTreeUI.CLOSED_ICON );
+                        setIcon ( expanded ? ( failed ? getFailedStateIcon ( OPEN_KEY, WebTreeUI.OPEN_ICON ) : WebTreeUI.OPEN_ICON ) :
+                                ( failed ? getFailedStateIcon ( CLOSED_KEY, WebTreeUI.CLOSED_ICON ) : WebTreeUI.CLOSED_ICON ) );
                         break;
                     }
                     case leaf:
                     {
-                        setIcon ( WebTreeUI.LEAF_ICON );
+                        setIcon ( failed ? getFailedStateIcon ( LEAF_KEY, WebTreeUI.LEAF_ICON ) : WebTreeUI.LEAF_ICON );
                         break;
                     }
                 }

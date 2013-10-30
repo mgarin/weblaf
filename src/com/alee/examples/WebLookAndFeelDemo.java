@@ -88,20 +88,20 @@ public class WebLookAndFeelDemo extends WebFrame
     public static final String WEBLAF_SITE = "http://weblookandfeel.com/";
     public static final String WEBLAF_EMAIL = "mgarin@alee.com";
 
-    private ComponentTransition appearanceTransition;
+    private final ComponentTransition appearanceTransition;
 
     private SlidingSearch slidingSearch;
 
-    private ComponentTransition containerTransition;
-    private WebTabbedPane exampleTabs;
-    private SourceViewer sourceViewer;
+    private final ComponentTransition containerTransition;
+    private final WebTabbedPane exampleTabs;
+    private final SourceViewer sourceViewer;
 
     private WebBreadcrumb locationBreadcrumb;
     private WebBreadcrumbToggleButton demosButton;
     private WebBreadcrumbToggleButton sourcesButton;
     private WebMemoryBar memoryBar;
 
-    @SuppressWarnings ("UnusedDeclaration")
+    @SuppressWarnings ( "UnusedDeclaration" )
     private WebButton featureStateLegend;
 
     private static WebLookAndFeelDemo instance = null;
@@ -128,7 +128,7 @@ public class WebLookAndFeelDemo extends WebFrame
         progress.addWindowListener ( new WindowAdapter ()
         {
             @Override
-            public void windowClosed ( WindowEvent e )
+            public void windowClosed ( final WindowEvent e )
             {
                 // Stop loading demo on dialog close
                 System.exit ( 0 );
@@ -185,14 +185,14 @@ public class WebLookAndFeelDemo extends WebFrame
                 return contentPane.getPreferredSize ();
             }
         };
-        CurtainTransitionEffect effect = new CurtainTransitionEffect ();
+        final CurtainTransitionEffect effect = new CurtainTransitionEffect ();
         effect.setDirection ( Direction.down );
         effect.setType ( CurtainType.fade );
         appearanceTransition.setTransitionEffect ( effect );
         appearanceTransition.addAncestorListener ( new AncestorAdapter ()
         {
             @Override
-            public void ancestorAdded ( AncestorEvent event )
+            public void ancestorAdded ( final AncestorEvent event )
             {
                 appearanceTransition.delayTransition ( 1000, contentPane );
             }
@@ -207,7 +207,7 @@ public class WebLookAndFeelDemo extends WebFrame
                 {
                     setSearchTipShownOnce ();
 
-                    JRootPane rootPane = WebLookAndFeelDemo.this.getRootPane ();
+                    final JRootPane rootPane = WebLookAndFeelDemo.this.getRootPane ();
                     final WebCustomTooltip searchTip = TooltipManager
                             .showOneTimeTooltip ( rootPane, new Point ( rootPane.getWidth () / 2, 0 ), SlidingSearch.searchIcon,
                                     "You can quickly navigate through components using search (Ctrl+F)", TooltipWay.down );
@@ -215,7 +215,7 @@ public class WebLookAndFeelDemo extends WebFrame
                     final HotkeyInfo searchTipHide = HotkeyManager.registerHotkey ( Hotkey.CTRL_F, new HotkeyRunnable ()
                     {
                         @Override
-                        public void run ( KeyEvent e )
+                        public void run ( final KeyEvent e )
                         {
                             searchTip.closeTooltip ();
                         }
@@ -256,9 +256,9 @@ public class WebLookAndFeelDemo extends WebFrame
         final WebImage wi = new WebImage ( WebLookAndFeelDemo.class, "icons/text.png" )
         {
             @Override
-            protected void paintComponent ( Graphics g )
+            protected void paintComponent ( final Graphics g )
             {
-                Graphics2D g2d = ( Graphics2D ) g;
+                final Graphics2D g2d = ( Graphics2D ) g;
                 g2d.setPaint ( new LinearGradientPaint ( 0, 0, 0, getHeight (), new float[]{ 0f, 0.4f, 0.6f, 1f },
                         new Color[]{ StyleConstants.bottomBgColor, Color.WHITE, Color.WHITE, StyleConstants.bottomBgColor } ) );
                 g2d.fill ( g2d.getClip () != null ? g2d.getClip () : getVisibleRect () );
@@ -355,7 +355,7 @@ public class WebLookAndFeelDemo extends WebFrame
         featureState.addMouseListener ( new MouseAdapter ()
         {
             @Override
-            public void mousePressed ( MouseEvent e )
+            public void mousePressed ( final MouseEvent e )
             {
                 showLegend ( featureState, getSelectedGroup ().getFeatureGroupState () );
             }
@@ -371,10 +371,10 @@ public class WebLookAndFeelDemo extends WebFrame
         exampleTabs.addChangeListener ( new ChangeListener ()
         {
             @Override
-            public void stateChanged ( ChangeEvent e )
+            public void stateChanged ( final ChangeEvent e )
             {
-                ExampleGroup sg = getSelectedGroup ();
-                FeatureState fgs = sg.getFeatureGroupState ();
+                final ExampleGroup sg = getSelectedGroup ();
+                final FeatureState fgs = sg.getFeatureGroupState ();
                 TooltipManager.removeTooltips ( featureState );
                 TooltipManager.setTooltip ( featureState, fgs.getIcon (), fgs.getDescription () );
                 featureState.setIcon ( fgs.getIcon () );
@@ -388,7 +388,7 @@ public class WebLookAndFeelDemo extends WebFrame
         update.addActionListener ( new ActionListener ()
         {
             @Override
-            public void actionPerformed ( ActionEvent e )
+            public void actionPerformed ( final ActionEvent e )
             {
                 WebUtils.browseSiteSafely ( WEBLAF_SITE + "download/" );
             }
@@ -401,33 +401,40 @@ public class WebLookAndFeelDemo extends WebFrame
             private VersionInfo lastVersion = null;
 
             @Override
-            public void actionPerformed ( ActionEvent e )
+            public void actionPerformed ( final ActionEvent e )
             {
-                VersionInfo lv = getLastVersion ();
-                if ( lv != null && lv.compareTo ( VersionManager.getLibraryVersion () ) > 0 )
+                try
                 {
-                    // Displaying update icon
-                    update.setVisible ( true );
-
-                    // Updating tips
-                    ImageIcon updateIcon = getUpdateIcon ();
-
-                    final WebCustomTooltip versionTip = TooltipManager
-                            .showOneTimeTooltip ( update, null, updateIcon, "New library version available: " + lv.toString () );
-                    update.addMouseListener ( new MouseAdapter ()
+                    final VersionInfo lv = getLastVersion ();
+                    if ( lv != null && lv.compareTo ( VersionManager.getLibraryVersion () ) > 0 )
                     {
-                        @Override
-                        public void mouseEntered ( MouseEvent e )
+                        // Displaying update icon
+                        update.setVisible ( true );
+
+                        // Updating tips
+                        final ImageIcon updateIcon = getUpdateIcon ();
+
+                        final WebCustomTooltip versionTip = TooltipManager
+                                .showOneTimeTooltip ( update, null, updateIcon, "New library version available: " + lv.toString () );
+                        update.addMouseListener ( new MouseAdapter ()
                         {
-                            versionTip.closeTooltip ();
-                            update.removeMouseListener ( this );
-                        }
-                    } );
+                            @Override
+                            public void mouseEntered ( final MouseEvent e )
+                            {
+                                versionTip.closeTooltip ();
+                                update.removeMouseListener ( this );
+                            }
+                        } );
 
-                    TooltipManager.setTooltip ( update, updateIcon, "Download new version: " + lv.toString () );
+                        TooltipManager.setTooltip ( update, updateIcon, "Download new version: " + lv.toString () );
 
-                    // Finishing updater thread
-                    ( ( WebTimer ) e.getSource () ).stop ();
+                        // Finishing updater thread
+                        ( ( WebTimer ) e.getSource () ).stop ();
+                    }
+                }
+                catch ( Throwable ex )
+                {
+                    // Ignore version check exceptions
                 }
             }
 
@@ -440,9 +447,9 @@ public class WebLookAndFeelDemo extends WebFrame
                         final String versionUrl = WebLookAndFeelDemo.WEBLAF_SITE + "downloads/version.xml";
                         lastVersion = XmlUtils.fromXML ( new URL ( versionUrl ) );
                     }
-                    catch ( Throwable e )
+                    catch ( Throwable ex )
                     {
-                        System.err.println ( e.getMessage () );
+                        // Ignore version check exceptions
                     }
                 }
                 return lastVersion;
@@ -483,7 +490,7 @@ public class WebLookAndFeelDemo extends WebFrame
             @Override
             public void run ()
             {
-                boolean e = enabled.isSelected ();
+                final boolean e = enabled.isSelected ();
                 enabled.setIcon ( e ? enabledIcon : disabledIcon );
 
                 TooltipManager.removeTooltips ( enabled );
@@ -495,16 +502,16 @@ public class WebLookAndFeelDemo extends WebFrame
         enabled.addActionListener ( new ActionListener ()
         {
             @Override
-            public void actionPerformed ( ActionEvent e )
+            public void actionPerformed ( final ActionEvent e )
             {
                 // Updating button
                 enabledUpdater.run ();
 
                 // Updating examples
-                boolean enable = enabled.isSelected ();
+                final boolean enable = enabled.isSelected ();
                 for ( int i = 0; i < exampleTabs.getTabCount (); i++ )
                 {
-                    Component tabContent = exampleTabs.getComponentAt ( i );
+                    final Component tabContent = exampleTabs.getComponentAt ( i );
 
                     // Workaround to keep focus in window
                     if ( SwingUtils.hasFocusOwner ( tabContent ) )
@@ -528,7 +535,7 @@ public class WebLookAndFeelDemo extends WebFrame
             private List<TransitionEffect> oldEffects;
 
             @Override
-            public void actionPerformed ( ActionEvent e )
+            public void actionPerformed ( final ActionEvent e )
             {
                 if ( animate.isSelected () )
                 {
@@ -550,11 +557,11 @@ public class WebLookAndFeelDemo extends WebFrame
         displayTabTitles.addActionListener ( new ActionListener ()
         {
             @Override
-            public void actionPerformed ( ActionEvent e )
+            public void actionPerformed ( final ActionEvent e )
             {
                 if ( displayTabTitles.isSelected () )
                 {
-                    List<ExampleGroup> groups = ExamplesManager.getExampleGroups ();
+                    final List<ExampleGroup> groups = ExamplesManager.getExampleGroups ();
                     for ( int i = 0; i < exampleTabs.getTabCount (); i++ )
                     {
                         exampleTabs.setTitleAt ( i, groups.get ( i ).getGroupName () );
@@ -577,7 +584,7 @@ public class WebLookAndFeelDemo extends WebFrame
         ltrOrientation.addActionListener ( new ActionListener ()
         {
             @Override
-            public void actionPerformed ( ActionEvent e )
+            public void actionPerformed ( final ActionEvent e )
             {
                 LanguageManager.changeOrientation ();
             }
@@ -587,7 +594,7 @@ public class WebLookAndFeelDemo extends WebFrame
         HotkeyManager.registerHotkey ( Hotkey.ALT_R, new HotkeyRunnable ()
         {
             @Override
-            public void run ( KeyEvent e )
+            public void run ( final KeyEvent e )
             {
                 ltrOrientation.doClick ();
             }
@@ -633,8 +640,8 @@ public class WebLookAndFeelDemo extends WebFrame
                     "Each leaf color reflects feature development state.</center></html>", WebLabel.CENTER ) );
             legendPanel.add ( createLegendSeparator () );
 
-            FeatureState[] values = FeatureState.values ();
-            for ( FeatureState fs : values )
+            final FeatureState[] values = FeatureState.values ();
+            for ( final FeatureState fs : values )
             {
                 legendPanel.add ( new WebLabel ( fs.getDescription (), fs.getIcon (), WebLabel.CENTER ).setBoldFont () );
                 legendPanel.add ( new WebLabel ( fs.getFullDescription (), WebLabel.CENTER ) );
@@ -656,9 +663,9 @@ public class WebLookAndFeelDemo extends WebFrame
         return SwingUtils.setBorder ( s, 4, 0, 4, 0 );
     }
 
-    private Map<FeatureState, WebPanel> legendCache = new HashMap<FeatureState, WebPanel> ();
+    private final Map<FeatureState, WebPanel> legendCache = new HashMap<FeatureState, WebPanel> ();
 
-    public void showLegend ( JComponent component, FeatureState featureState )
+    public void showLegend ( final JComponent component, final FeatureState featureState )
     {
         if ( lastTip != null && lastTip.isShowing () )
         {
@@ -696,7 +703,7 @@ public class WebLookAndFeelDemo extends WebFrame
         demosButton.addActionListener ( new ActionListener ()
         {
             @Override
-            public void actionPerformed ( ActionEvent e )
+            public void actionPerformed ( final ActionEvent e )
             {
                 containerTransition.performTransition ( exampleTabs );
             }
@@ -710,7 +717,7 @@ public class WebLookAndFeelDemo extends WebFrame
         sourcesButton.addActionListener ( new ActionListener ()
         {
             @Override
-            public void actionPerformed ( ActionEvent e )
+            public void actionPerformed ( final ActionEvent e )
             {
                 sourceViewer.updateClassPath ( getSelectedGroup ().getClass () );
                 containerTransition.performTransition ( sourceViewer );
@@ -723,7 +730,7 @@ public class WebLookAndFeelDemo extends WebFrame
         exampleTabs.addChangeListener ( new ChangeListener ()
         {
             @Override
-            public void stateChanged ( ChangeEvent e )
+            public void stateChanged ( final ChangeEvent e )
             {
                 updateCurrentDemo ();
             }
@@ -751,17 +758,17 @@ public class WebLookAndFeelDemo extends WebFrame
         return sourceViewer;
     }
 
-    public void addViewListener ( ViewListener listener )
+    public void addViewListener ( final ViewListener listener )
     {
         this.sourceViewer.addViewListener ( listener );
     }
 
-    public void removeViewListener ( ViewListener listener )
+    public void removeViewListener ( final ViewListener listener )
     {
         this.sourceViewer.removeViewListener ( listener );
     }
 
-    public void showSource ( Class showFor )
+    public void showSource ( final Class showFor )
     {
         slidingSearch.hideSearch ();
         sourcesButton.setSelected ( true );
@@ -769,14 +776,14 @@ public class WebLookAndFeelDemo extends WebFrame
         containerTransition.performTransition ( sourceViewer );
     }
 
-    public void closeSource ( Class closeFor )
+    public void closeSource ( final Class closeFor )
     {
         sourceViewer.closeEntryView ( sourceViewer.getJarStructure ().getClassEntry ( closeFor ) );
     }
 
     private ExampleGroup getSelectedGroup ()
     {
-        int index = exampleTabs.getSelectedIndex ();
+        final int index = exampleTabs.getSelectedIndex ();
         return ExamplesManager.getExampleGroups ().get ( index );
     }
 
@@ -799,7 +806,7 @@ public class WebLookAndFeelDemo extends WebFrame
         slidingSearch.getSearchField ().addCaretListener ( new CaretListener ()
         {
             @Override
-            public void caretUpdate ( CaretEvent e )
+            public void caretUpdate ( final CaretEvent e )
             {
                 final List<Component> found =
                         HighlightManager.highlightComponentsWithText ( slidingSearch.getSearchField ().getText (), getContentPane () );
@@ -807,7 +814,7 @@ public class WebLookAndFeelDemo extends WebFrame
                 if ( found.size () > 0 )
                 {
                     boolean anyShown = false;
-                    for ( Component c : found )
+                    for ( final Component c : found )
                     {
                         if ( c.isVisible () && c.isShowing () )
                         {
@@ -850,7 +857,7 @@ public class WebLookAndFeelDemo extends WebFrame
         WebLookAndFeelDemo.getInstance ().displayDemo ();
     }
 
-    public static void main ( String[] args )
+    public static void main ( final String[] args )
     {
         // To enable accelerated rendering pipelines:
         // -Dsun.java2d.d3d=true

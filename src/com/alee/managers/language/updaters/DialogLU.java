@@ -33,7 +33,7 @@ public class DialogLU extends DefaultLanguageUpdater<Dialog>
      * {@inheritDoc}
      */
     @Override
-    public void update ( Dialog c, String key, Value value, Object... data )
+    public void update ( final Dialog c, final String key, final Value value, final Object... data )
     {
         c.setTitle ( getDefaultText ( value, data ) );
     }

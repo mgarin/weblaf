@@ -18,11 +18,10 @@
 package com.alee.extended.tree.sample;
 
 import com.alee.extended.tree.AbstractTreeDataProvider;
+import com.alee.extended.tree.ChildsListener;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.MathUtils;
 import com.alee.utils.ThreadUtils;
-
-import java.util.List;
 
 /**
  * Sample asynchronous tree data provider.
@@ -46,11 +45,11 @@ public class SampleDataProvider extends AbstractTreeDataProvider<SampleNode>
     /**
      * Returns sample child nodes for specified asynchronous tree node.
      *
-     * @param parent childs parent node
-     * @return list of child nodes
+     * @param parent   childs parent node
+     * @param listener childs loading progress listener
      */
     @Override
-    public List<SampleNode> getChilds ( final SampleNode parent )
+    public void loadChilds ( final SampleNode parent, final ChildsListener<SampleNode> listener )
     {
         // Sample loading delay to see the loader in progress
         parent.setTime ( 0 );
@@ -58,29 +57,37 @@ public class SampleDataProvider extends AbstractTreeDataProvider<SampleNode>
         ThreadUtils.sleepSafely ( time );
         parent.setTime ( time );
 
-        // Sample childs
-        switch ( parent.getType () )
+        if ( parent.getName ().toLowerCase ().contains ( "fail" ) )
         {
-            case root:
+            // Sample load fail
+            listener.childsLoadFailed ( new RuntimeException ( "Sample exception cause" ) );
+        }
+        else
+        {
+            // Sample childs
+            switch ( parent.getType () )
             {
-                // Folder type childs
-                final SampleNode folder1 = new SampleNode ( "Folder 1", SampleNodeType.folder );
-                final SampleNode folder2 = new SampleNode ( "Folder 2", SampleNodeType.folder );
-                final SampleNode folder3 = new SampleNode ( "Folder 3", SampleNodeType.folder );
-                return CollectionUtils.copy ( folder1, folder2, folder3 );
-            }
-            case folder:
-            {
-                // Leaf type childs
-                final SampleNode leaf1 = new SampleNode ( "Leaf 1", SampleNodeType.leaf );
-                final SampleNode leaf2 = new SampleNode ( "Leaf 2", SampleNodeType.leaf );
-                final SampleNode leaf3 = new SampleNode ( "Leaf 3", SampleNodeType.leaf );
-                return CollectionUtils.copy ( leaf1, leaf2, leaf3 );
+                case root:
+                {
+                    // Folder type childs
+                    final SampleNode folder1 = new SampleNode ( "Folder 1", SampleNodeType.folder );
+                    final SampleNode folder2 = new SampleNode ( "Folder 2", SampleNodeType.folder );
+                    final SampleNode folder3 = new SampleNode ( "Folder 3", SampleNodeType.folder );
+                    final SampleNode folder4 = new SampleNode ( "Fail folder", SampleNodeType.folder );
+                    listener.childsLoadCompleted ( CollectionUtils.copy ( folder1, folder2, folder3, folder4 ) );
+                    break;
+                }
+                case folder:
+                {
+                    // Leaf type childs
+                    final SampleNode leaf1 = new SampleNode ( "Leaf 1", SampleNodeType.leaf );
+                    final SampleNode leaf2 = new SampleNode ( "Leaf 2", SampleNodeType.leaf );
+                    final SampleNode leaf3 = new SampleNode ( "Leaf 3", SampleNodeType.leaf );
+                    listener.childsLoadCompleted ( CollectionUtils.copy ( leaf1, leaf2, leaf3 ) );
+                    break;
+                }
             }
         }
-
-        // You can return either null or empty list if there are no childs
-        return null;
     }
 
     /**

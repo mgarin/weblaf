@@ -17,41 +17,37 @@
 
 package com.alee.extended.tree;
 
-import java.util.List;
-
 /**
- * This listener class provide various asynchronous tree events.
+ * This enumeration represents possible async tree node states.
+ * <p/>
+ * Usually node might change in one of these directions:
+ * 1. waiting -> (2)
+ * 2. loading -> (3) or (4)
+ * 3. loaded -> when reload called (2)
+ * 4. failed -> when reload called (2)
  *
- * @param <E> custom node type
  * @author Mikle Garin
  */
 
-public abstract class AsyncTreeAdapter<E extends AsyncUniqueNode> implements AsyncTreeListener<E>
+public enum AsyncNodeState
 {
     /**
-     * {@inheritDoc}
+     * Waiting for node expansion to load childs.
      */
-    @Override
-    public void childsLoadStarted ( final E parent )
-    {
-        // Do nothing by default
-    }
+    waiting,
 
     /**
-     * {@inheritDoc}
+     * Loading childs.
      */
-    @Override
-    public void childsLoadCompleted ( final E parent, final List<E> childs )
-    {
-        // Do nothing by default
-    }
+    loading,
 
     /**
-     * {@inheritDoc}
+     * Childs loaded.
      */
-    @Override
-    public void childsLoadFailed ( final E parent, final Throwable cause )
-    {
-        // Do nothing by default
-    }
+    loaded,
+
+    /**
+     * Childs load failed.
+     */
+    failed
 }

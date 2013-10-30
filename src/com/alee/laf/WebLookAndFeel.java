@@ -480,7 +480,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
         table.put ( "List.cellRenderer", new UIDefaults.ActiveValue ()
         {
             @Override
-            public Object createValue ( UIDefaults table )
+            public Object createValue ( final UIDefaults table )
             {
                 return new WebListCellRenderer.UIResource ();
             }
@@ -560,7 +560,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
                         "increment", "DOWN", "decrement", "KP_DOWN", "decrement", } ) );
 
         // Multiline areas actions
-        Object multilineInputMap = new UIDefaults.LazyInputMap (
+        final Object multilineInputMap = new UIDefaults.LazyInputMap (
                 new Object[]{ "control C", DefaultEditorKit.copyAction, "control V", DefaultEditorKit.pasteAction, "control X",
                         DefaultEditorKit.cutAction, "COPY", DefaultEditorKit.copyAction, "PASTE", DefaultEditorKit.pasteAction, "CUT",
                         DefaultEditorKit.cutAction, "control INSERT", DefaultEditorKit.copyAction, "shift INSERT",
@@ -685,21 +685,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
         super.initialize ();
 
         // Installs a tricky thread exception handler that will output any uncaught error that occurs in Event Dispatch Thread
-        SwingUtils.invokeAndWaitSafely ( new Runnable ()
-        {
-            @Override
-            public void run ()
-            {
-                Thread.setDefaultUncaughtExceptionHandler ( new Thread.UncaughtExceptionHandler ()
-                {
-                    @Override
-                    public void uncaughtException ( Thread t, Throwable e )
-                    {
-                        e.printStackTrace ();
-                    }
-                } );
-            }
-        } );
+        System.setProperty ( "sun.awt.exception.handler", ExceptionHandler.class.getName () );
 
         // Listening to ALT key for menubar quick focusing
         KeyboardFocusManager.getCurrentKeyboardFocusManager ().addKeyEventPostProcessor ( altProcessor );
@@ -708,7 +694,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
         UIManager.addPropertyChangeListener ( new PropertyChangeListener ()
         {
             @Override
-            public void propertyChange ( PropertyChangeEvent evt )
+            public void propertyChange ( final PropertyChangeEvent evt )
             {
                 if ( evt.getPropertyName ().equals ( "lookAndFeel" ) )
                 {
@@ -874,7 +860,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
     public static ImageIcon getIcon ( final int size )
     {
         loadIcons ();
-        for ( ImageIcon icon : icons )
+        for ( final ImageIcon icon : icons )
         {
             if ( icon.getIconWidth () == size )
             {
@@ -919,7 +905,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
      */
     public static void updateAllComponentUIs ()
     {
-        for ( Window window : Window.getWindows () )
+        for ( final Window window : Window.getWindows () )
         {
             SwingUtilities.updateComponentTreeUI ( window );
         }
@@ -1025,5 +1011,30 @@ public class WebLookAndFeel extends BasicLookAndFeel
     public static void changeOrientation ()
     {
         LanguageManager.changeOrientation ();
+    }
+
+    /**
+     * Custom exceptions handler for EDT.
+     */
+    public static class ExceptionHandler implements Thread.UncaughtExceptionHandler
+    {
+        public void handle ( final Throwable thrown )
+        {
+            // for EDT exceptions
+            handleException ( Thread.currentThread ().getName (), thrown );
+        }
+
+        @Override
+        public void uncaughtException ( final Thread thread, final Throwable thrown )
+        {
+            // for other uncaught exceptions
+            handleException ( thread.getName (), thrown );
+        }
+
+        protected void handleException ( final String tname, final Throwable thrown )
+        {
+            System.err.print ( "Exception in thread " + tname + ": " );
+            thrown.printStackTrace ();
+        }
     }
 }

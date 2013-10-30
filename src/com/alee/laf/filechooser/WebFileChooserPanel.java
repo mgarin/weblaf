@@ -114,7 +114,7 @@ public class WebFileChooserPanel extends WebPanel
     public static final FileNameProvider quotedFileNameProvider = new FileNameProvider ()
     {
         @Override
-        public String provide ( File object )
+        public String provide ( final File object )
         {
             return "\"" + super.provide ( object ) + "\"";
         }
@@ -719,7 +719,7 @@ public class WebFileChooserPanel extends WebPanel
             @Override
             public void actionPerformed ( final ActionEvent e )
             {
-                File file = fileList.getSelectedFile ();
+                final File file = fileList.getSelectedFile ();
                 if ( file.isDirectory () )
                 {
                     updateCurrentFolder ( file, UpdateSource.list );
@@ -799,7 +799,7 @@ public class WebFileChooserPanel extends WebPanel
             @Override
             public void actionPerformed ( final ActionEvent e )
             {
-                File file = fileTable.getSelectedFile ();
+                final File file = fileTable.getSelectedFile ();
                 if ( file.isDirectory () )
                 {
                     updateCurrentFolder ( file, UpdateSource.table );
@@ -1061,8 +1061,6 @@ public class WebFileChooserPanel extends WebPanel
      */
     protected void updateCurrentFolder ( File file, final UpdateSource updateSource )
     {
-        // System.out.println ( "updateCurrentFolder: " + ( file != null ? file.getAbsolutePath () : null ) );
-
         // Open parent directory instead of file
         File toSelect = null;
         if ( file != null && !FileUtils.isDirectory ( file ) )
@@ -1209,7 +1207,6 @@ public class WebFileChooserPanel extends WebPanel
      */
     public void setSelectedFile ( final File file )
     {
-        // System.out.println ( "setSelectedFile: " + ( file != null ? file.getAbsolutePath () : null ) );
         if ( viewType.getComponentIndex () == 0 )
         {
             fileList.setSelectedFile ( file );
@@ -1237,7 +1234,6 @@ public class WebFileChooserPanel extends WebPanel
      */
     public void setSelectedFiles ( final Collection<File> files )
     {
-        // System.out.println ( "setSelectedFiles: " + ( files != null ? files.size () : null ) );
         if ( viewType.getComponentIndex () == 0 )
         {
             fileList.setSelectedFiles ( files );
@@ -1519,7 +1515,7 @@ public class WebFileChooserPanel extends WebPanel
         final WebPanel deleteFilesPanel = new WebPanel ( new VerticalFlowLayout ( VerticalFlowLayout.TOP, 0, 5, true, false ) );
         deleteFilesPanel.setMargin ( 3 );
         deleteFilesPanel.setBackground ( Color.WHITE );
-        for ( File file : files )
+        for ( final File file : files )
         {
             deleteFilesPanel.add ( new WebLabel ( file.getName (), FileUtils.getFileIcon ( file ), WebLabel.LEFT ) );
         }
@@ -1528,7 +1524,7 @@ public class WebFileChooserPanel extends WebPanel
             @Override
             public Dimension getPreferredSize ()
             {
-                Dimension ps = super.getPreferredSize ();
+                final Dimension ps = super.getPreferredSize ();
                 ps.width = ps.width + WebScrollBarUI.LENGTH;
                 ps.height = Math.min ( ps.height, 100 );
                 return ps;
@@ -1713,7 +1709,7 @@ public class WebFileChooserPanel extends WebPanel
     public void setFileFilters ( final int index, final javax.swing.filechooser.FileFilter[] fileFilters )
     {
         availableFilters = new ArrayList<AbstractFileFilter> ( fileFilters.length );
-        for ( javax.swing.filechooser.FileFilter filtfileFilter : fileFilters )
+        for ( final javax.swing.filechooser.FileFilter filtfileFilter : fileFilters )
         {
             availableFilters.add ( FileUtils.transformFileFilter ( filtfileFilter ) );
         }
@@ -1896,7 +1892,7 @@ public class WebFileChooserPanel extends WebPanel
      *
      * @param showHiddenFiles whether should display hidden files or not
      */
-    public void setShowHiddenFiles ( boolean showHiddenFiles )
+    public void setShowHiddenFiles ( final boolean showHiddenFiles )
     {
         this.showHiddenFiles = showHiddenFiles;
         updateDirectoryComponentFilters ();
@@ -2120,7 +2116,7 @@ public class WebFileChooserPanel extends WebPanel
          * {@inheritDoc}
          */
         @Override
-        public boolean accept ( File file )
+        public boolean accept ( final File file )
         {
             return showHiddenFiles || !file.isHidden ();
         }

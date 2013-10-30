@@ -20,38 +20,24 @@ package com.alee.extended.tree;
 import java.util.List;
 
 /**
- * This listener class provide various asynchronous tree events.
+ * Special listener used within AsyncTreeModel to receive childs when loaded.
  *
- * @param <E> custom node type
  * @author Mikle Garin
  */
 
-public abstract class AsyncTreeAdapter<E extends AsyncUniqueNode> implements AsyncTreeListener<E>
+public interface ChildsListener<E extends AsyncUniqueNode>
 {
     /**
-     * {@inheritDoc}
+     * Informs model that childs were loaded successfully.
+     *
+     * @param childs list of loaded childs
      */
-    @Override
-    public void childsLoadStarted ( final E parent )
-    {
-        // Do nothing by default
-    }
+    public void childsLoadCompleted ( List<E> childs );
 
     /**
-     * {@inheritDoc}
+     * Informs model that childs load failed due to the specified exception.
+     *
+     * @param cause exception
      */
-    @Override
-    public void childsLoadCompleted ( final E parent, final List<E> childs )
-    {
-        // Do nothing by default
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void childsLoadFailed ( final E parent, final Throwable cause )
-    {
-        // Do nothing by default
-    }
+    public void childsLoadFailed ( Throwable cause );
 }

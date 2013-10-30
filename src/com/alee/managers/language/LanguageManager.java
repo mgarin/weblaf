@@ -56,7 +56,7 @@ public final class LanguageManager implements LanguageConstants
 
     // Supported languages list
     private static final Object supportedLanguagesLock = new Object ();
-    private static List<String> supportedLanguages =
+    private static final List<String> supportedLanguages =
             CollectionUtils.copy ( ENGLISH, RUSSIAN, POLISH, ARABIC, SPANISH, FRENCH, PORTUGUESE, GERMAN );
 
     // Default language
@@ -76,39 +76,39 @@ public final class LanguageManager implements LanguageConstants
 
     // Language listeners
     private static final Object languageListenersLock = new Object ();
-    private static List<LanguageListener> languageListeners = new ArrayList<LanguageListener> ();
+    private static final List<LanguageListener> languageListeners = new ArrayList<LanguageListener> ();
 
     // Language listeners
     private static final Object languageKeyListenersLock = new Object ();
-    private static Map<String, List<LanguageKeyListener>> languageKeyListeners = new HashMap<String, List<LanguageKeyListener>> ();
+    private static final Map<String, List<LanguageKeyListener>> languageKeyListeners = new HashMap<String, List<LanguageKeyListener>> ();
 
     // Global dictionary that contains all of the entries and its cache
     private static Dictionary globalDictionary;
-    private static Map<String, Value> globalCache = new HashMap<String, Value> ();
+    private static final Map<String, Value> globalCache = new HashMap<String, Value> ();
 
     // Global dictionary that contains all of the entries
-    private static List<Dictionary> dictionaries = new ArrayList<Dictionary> ();
+    private static final List<Dictionary> dictionaries = new ArrayList<Dictionary> ();
 
     // Registered components
     private static final Object componentsLock = new Object ();
-    private static Map<Component, String> components = new WeakHashMap<Component, String> ();
-    private static Map<Component, Object[]> componentsData = new WeakHashMap<Component, Object[]> ();
-    private static Map<Component, String> componentKeysCache = new WeakHashMap<Component, String> ();
-    private static Map<Component, AncestorListener> componentsListeners = new WeakHashMap<Component, AncestorListener> ();
+    private static final Map<Component, String> components = new WeakHashMap<Component, String> ();
+    private static final Map<Component, Object[]> componentsData = new WeakHashMap<Component, Object[]> ();
+    private static final Map<Component, String> componentKeysCache = new WeakHashMap<Component, String> ();
+    private static final Map<Component, AncestorListener> componentsListeners = new WeakHashMap<Component, AncestorListener> ();
 
     // Registered language containers
     private static final Object languageContainersLock = new Object ();
-    private static Map<Container, String> languageContainers = new WeakHashMap<Container, String> ();
+    private static final Map<Container, String> languageContainers = new WeakHashMap<Container, String> ();
 
     // Registered updaters
     private static final LanguageUpdaterComparator languageUpdaterComparator = new LanguageUpdaterComparator ();
     private static final Object updatersLock = new Object ();
-    private static List<LanguageUpdater> updaters = new ArrayList<LanguageUpdater> ();
-    private static Map<Component, LanguageUpdater> customUpdaters = new WeakHashMap<Component, LanguageUpdater> ();
-    private static Map<Class, LanguageUpdater> updatersCache = new HashMap<Class, LanguageUpdater> ();
+    private static final List<LanguageUpdater> updaters = new ArrayList<LanguageUpdater> ();
+    private static final Map<Component, LanguageUpdater> customUpdaters = new WeakHashMap<Component, LanguageUpdater> ();
+    private static final Map<Class, LanguageUpdater> updatersCache = new HashMap<Class, LanguageUpdater> ();
 
     // Tooltips cache
-    private static Map<Component, List<WebCustomTooltip>> tooltipsCache = new WeakHashMap<Component, List<WebCustomTooltip>> ();
+    private static final Map<Component, List<WebCustomTooltip>> tooltipsCache = new WeakHashMap<Component, List<WebCustomTooltip>> ();
 
     // Initialization mark
     private static boolean initialized = false;
@@ -157,19 +157,19 @@ public final class LanguageManager implements LanguageConstants
             addLanguageListener ( new LanguageListener ()
             {
                 @Override
-                public void languageChanged ( String oldLang, String newLang )
+                public void languageChanged ( final String oldLang, final String newLang )
                 {
                     updateAll ();
                 }
 
                 @Override
-                public void dictionaryAdded ( Dictionary dictionary )
+                public void dictionaryAdded ( final Dictionary dictionary )
                 {
                     updateSmart ( dictionary );
                 }
 
                 @Override
-                public void dictionaryRemoved ( Dictionary dictionary )
+                public void dictionaryRemoved ( final Dictionary dictionary )
                 {
                     updateSmart ( dictionary );
                 }
@@ -192,7 +192,7 @@ public final class LanguageManager implements LanguageConstants
                     updateAllComponents ();
                 }
 
-                private void updateSmart ( Dictionary dictionary )
+                private void updateSmart ( final Dictionary dictionary )
                 {
                     // Gathering all changed keys
                     final List<String> relevantKeys = gatherKeys ( dictionary );
@@ -200,7 +200,7 @@ public final class LanguageManager implements LanguageConstants
                     // Notifying registered key listeners
                     if ( languageKeyListeners.size () > 0 )
                     {
-                        for ( String key : relevantKeys )
+                        for ( final String key : relevantKeys )
                         {
                             fireLanguageKeyUpdated ( key );
                         }
@@ -210,25 +210,25 @@ public final class LanguageManager implements LanguageConstants
                     updateAllComponents ( relevantKeys );
                 }
 
-                private List<String> gatherKeys ( Dictionary dictionary )
+                private List<String> gatherKeys ( final Dictionary dictionary )
                 {
                     final List<String> relevantKeys = new ArrayList<String> ();
                     gatherKeys ( dictionary, relevantKeys );
                     return relevantKeys;
                 }
 
-                private void gatherKeys ( Dictionary dictionary, List<String> relevantKeys )
+                private void gatherKeys ( final Dictionary dictionary, final List<String> relevantKeys )
                 {
                     if ( dictionary.getRecords () != null )
                     {
-                        for ( Record record : dictionary.getRecords () )
+                        for ( final Record record : dictionary.getRecords () )
                         {
                             relevantKeys.add ( record.getKey () );
                         }
                     }
                     if ( dictionary.getSubdictionaries () != null )
                     {
-                        for ( Dictionary subDictionary : dictionary.getSubdictionaries () )
+                        for ( final Dictionary subDictionary : dictionary.getSubdictionaries () )
                         {
                             gatherKeys ( subDictionary, relevantKeys );
                         }
@@ -253,7 +253,7 @@ public final class LanguageManager implements LanguageConstants
         }
     }
 
-    public static void setSupportedLanguages ( Collection<String> supportedLanguages )
+    public static void setSupportedLanguages ( final Collection<String> supportedLanguages )
     {
         synchronized ( supportedLanguagesLock )
         {
@@ -262,7 +262,7 @@ public final class LanguageManager implements LanguageConstants
         }
     }
 
-    public static void setSupportedLanguages ( String... supportedLanguages )
+    public static void setSupportedLanguages ( final String... supportedLanguages )
     {
         synchronized ( supportedLanguagesLock )
         {
@@ -271,7 +271,7 @@ public final class LanguageManager implements LanguageConstants
         }
     }
 
-    public static void addSupportedLanguage ( String language )
+    public static void addSupportedLanguage ( final String language )
     {
         synchronized ( supportedLanguagesLock )
         {
@@ -279,7 +279,7 @@ public final class LanguageManager implements LanguageConstants
         }
     }
 
-    public static void addSupportedLanguage ( String language, Dictionary dictionary )
+    public static void addSupportedLanguage ( final String language, final Dictionary dictionary )
     {
         synchronized ( supportedLanguagesLock )
         {
@@ -288,7 +288,7 @@ public final class LanguageManager implements LanguageConstants
         }
     }
 
-    public static void removeSupportedLanguage ( String language )
+    public static void removeSupportedLanguage ( final String language )
     {
         synchronized ( supportedLanguagesLock )
         {
@@ -334,13 +334,13 @@ public final class LanguageManager implements LanguageConstants
                 final AncestorAdapter listener = new AncestorAdapter ()
                 {
                     @Override
-                    public void ancestorAdded ( AncestorEvent event )
+                    public void ancestorAdded ( final AncestorEvent event )
                     {
                         updateComponentKey ( component );
                     }
 
                     @Override
-                    public void ancestorMoved ( AncestorEvent event )
+                    public void ancestorMoved ( final AncestorEvent event )
                     {
                         updateComponent ( component );
                     }
@@ -351,19 +351,19 @@ public final class LanguageManager implements LanguageConstants
         }
     }
 
-    public static void updateComponentsTree ( Component component )
+    public static void updateComponentsTree ( final Component component )
     {
         updateComponentKey ( component );
         if ( component instanceof Container )
         {
-            for ( Component child : ( ( Container ) component ).getComponents () )
+            for ( final Component child : ( ( Container ) component ).getComponents () )
             {
                 updateComponentsTree ( child );
             }
         }
     }
 
-    private static void updateComponentKey ( Component component )
+    private static void updateComponentKey ( final Component component )
     {
         final String key = getComponentKey ( component );
         if ( key != null )
@@ -377,7 +377,7 @@ public final class LanguageManager implements LanguageConstants
         }
     }
 
-    public static void unregisterComponent ( Component component )
+    public static void unregisterComponent ( final Component component )
     {
         synchronized ( componentsLock )
         {
@@ -393,7 +393,7 @@ public final class LanguageManager implements LanguageConstants
         }
     }
 
-    public static boolean isRegisteredComponent ( Component component )
+    public static boolean isRegisteredComponent ( final Component component )
     {
         synchronized ( componentsLock )
         {
@@ -401,7 +401,7 @@ public final class LanguageManager implements LanguageConstants
         }
     }
 
-    public static String getComponentKey ( Component component )
+    public static String getComponentKey ( final Component component )
     {
         synchronized ( componentsLock )
         {
@@ -413,7 +413,7 @@ public final class LanguageManager implements LanguageConstants
      * Components language updaters registration
      */
 
-    public static void registerLanguageUpdater ( LanguageUpdater updater )
+    public static void registerLanguageUpdater ( final LanguageUpdater updater )
     {
         synchronized ( updatersLock )
         {
@@ -422,7 +422,7 @@ public final class LanguageManager implements LanguageConstants
         }
     }
 
-    public static void unregisterLanguageUpdater ( LanguageUpdater updater )
+    public static void unregisterLanguageUpdater ( final LanguageUpdater updater )
     {
         synchronized ( updatersLock )
         {
@@ -431,7 +431,7 @@ public final class LanguageManager implements LanguageConstants
         }
     }
 
-    public static void registerLanguageUpdater ( Component component, LanguageUpdater updater )
+    public static void registerLanguageUpdater ( final Component component, final LanguageUpdater updater )
     {
         synchronized ( updatersLock )
         {
@@ -439,7 +439,7 @@ public final class LanguageManager implements LanguageConstants
         }
     }
 
-    public static void unregisterLanguageUpdater ( Component component )
+    public static void unregisterLanguageUpdater ( final Component component )
     {
         synchronized ( updatersLock )
         {
@@ -447,12 +447,12 @@ public final class LanguageManager implements LanguageConstants
         }
     }
 
-    public static LanguageUpdater getLanguageUpdater ( Component component )
+    public static LanguageUpdater getLanguageUpdater ( final Component component )
     {
         synchronized ( updatersLock )
         {
             // Checking custom updaters first
-            LanguageUpdater customUpdater = customUpdaters.get ( component );
+            final LanguageUpdater customUpdater = customUpdaters.get ( component );
             if ( customUpdater != null )
             {
                 return customUpdater;
@@ -471,7 +471,7 @@ public final class LanguageManager implements LanguageConstants
             {
                 // Searching for a suitable component updater if none cached yet
                 final List<LanguageUpdater> foundUpdaters = new ArrayList<LanguageUpdater> ();
-                for ( LanguageUpdater lu : updaters )
+                for ( final LanguageUpdater lu : updaters )
                 {
                     if ( lu.getComponentClass ().isInstance ( component ) )
                     {
@@ -508,18 +508,18 @@ public final class LanguageManager implements LanguageConstants
     {
         synchronized ( componentsLock )
         {
-            for ( Map.Entry<Component, String> entry : components.entrySet () )
+            for ( final Map.Entry<Component, String> entry : components.entrySet () )
             {
                 updateComponent ( entry.getKey (), entry.getValue () );
             }
         }
     }
 
-    public static void updateAllComponents ( List<String> keys )
+    public static void updateAllComponents ( final List<String> keys )
     {
         synchronized ( componentsLock )
         {
-            for ( Map.Entry<Component, String> entry : components.entrySet () )
+            for ( final Map.Entry<Component, String> entry : components.entrySet () )
             {
                 if ( keys.contains ( entry.getValue () ) )
                 {
@@ -529,7 +529,7 @@ public final class LanguageManager implements LanguageConstants
         }
     }
 
-    public static void updateComponent ( Component component, Object... data )
+    public static void updateComponent ( final Component component, final Object... data )
     {
         final String key = components.get ( component );
         if ( key != null )
@@ -538,7 +538,7 @@ public final class LanguageManager implements LanguageConstants
         }
     }
 
-    public static void updateComponent ( Component component, String key, Object... data )
+    public static void updateComponent ( final Component component, final String key, Object... data )
     {
         // Nullifying data if it has no values
         if ( data != null && data.length == 0 )
@@ -588,7 +588,7 @@ public final class LanguageManager implements LanguageConstants
         // Adding new tooltips
         if ( value != null && value.getTooltips () != null && value.getTooltips ().size () > 0 )
         {
-            for ( Tooltip tooltip : value.getTooltips () )
+            for ( final Tooltip tooltip : value.getTooltips () )
             {
                 if ( tooltip.getType ().equals ( TooltipType.swing ) )
                 {
@@ -612,7 +612,7 @@ public final class LanguageManager implements LanguageConstants
         }
     }
 
-    private static Object[] parseData ( Object... data )
+    private static Object[] parseData ( final Object... data )
     {
         if ( data != null )
         {
@@ -637,7 +637,7 @@ public final class LanguageManager implements LanguageConstants
         }
     }
 
-    private static void cacheTip ( WebCustomTooltip tooltip )
+    private static void cacheTip ( final WebCustomTooltip tooltip )
     {
         final Component component = tooltip.getComponent ();
 
@@ -655,9 +655,9 @@ public final class LanguageManager implements LanguageConstants
      * Language icon
      */
 
-    private static Map<String, ImageIcon> languageIcons = new HashMap<String, ImageIcon> ();
+    private static final Map<String, ImageIcon> languageIcons = new HashMap<String, ImageIcon> ();
 
-    public static ImageIcon getLanguageIcon ( String lang )
+    public static ImageIcon getLanguageIcon ( final String lang )
     {
         if ( languageIcons.containsKey ( lang ) )
         {
@@ -668,7 +668,7 @@ public final class LanguageManager implements LanguageConstants
             ImageIcon icon;
             try
             {
-                URL res = LanguageManager.class.getResource ( "icons/lang/" + lang + ".png" );
+                final URL res = LanguageManager.class.getResource ( "icons/lang/" + lang + ".png" );
                 icon = new ImageIcon ( res );
             }
             catch ( Throwable e )
@@ -689,7 +689,7 @@ public final class LanguageManager implements LanguageConstants
         return defaultTooltipType;
     }
 
-    public static void setDefaultTooltipType ( TooltipType defaultTooltipType )
+    public static void setDefaultTooltipType ( final TooltipType defaultTooltipType )
     {
         LanguageManager.defaultTooltipType = defaultTooltipType;
     }
@@ -703,46 +703,54 @@ public final class LanguageManager implements LanguageConstants
         return language;
     }
 
-    public static boolean isCurrentLanguage ( String language )
+    public static boolean isCurrentLanguage ( final String language )
     {
         return LanguageManager.language.equals ( language );
     }
 
-    public static void setLanguage ( String language )
+    public static void setLanguage ( final String language )
     {
-        // Ignore incorrect and pointless changes
-        if ( language == null || getLanguage ().trim ().toLowerCase ().equals ( language.trim ().toLowerCase () ) )
+        if ( initialized )
         {
-            return;
+            // Ignore incorrect and pointless changes
+            if ( language == null || getLanguage ().trim ().toLowerCase ().equals ( language.trim ().toLowerCase () ) )
+            {
+                return;
+            }
+
+            // Saving old orientation for update optimizations
+            final ComponentOrientation oldComponentOrientation = getOrientation ();
+
+            // Changing language
+            final String oldLanguage = LanguageManager.language;
+            LanguageManager.language = language;
+
+            // Updating locale
+            updateLocale ();
+
+            // Updating global cache
+            rebuildCache ();
+
+            // Updating orientation
+            if ( oldComponentOrientation.isLeftToRight () != getOrientation ().isLeftToRight () )
+            {
+                SwingUtils.updateGlobalOrientations ();
+            }
+
+            // Firing language change event
+            fireLanguageChanged ( oldLanguage, language );
         }
-
-        // Saving old orientation for update optimizations
-        final ComponentOrientation oldComponentOrientation = getOrientation ();
-
-        // Changing language
-        final String oldLanguage = LanguageManager.language;
-        LanguageManager.language = language;
-
-        // Updating locale
-        updateLocale ();
-
-        // Updating global cache
-        rebuildCache ();
-
-        // Updating orientation
-        if ( oldComponentOrientation.isLeftToRight () != getOrientation ().isLeftToRight () )
+        else
         {
-            SwingUtils.updateGlobalOrientations ();
+            // Simply applying default language
+            DEFAULT = language;
         }
-
-        // Firing language change event
-        fireLanguageChanged ( oldLanguage, language );
     }
 
     private static void updateLocale ()
     {
         // Proper locale for language
-        for ( Locale locale : Locale.getAvailableLocales () )
+        for ( final Locale locale : Locale.getAvailableLocales () )
         {
             if ( locale.getLanguage ().equals ( language ) )
             {
@@ -777,12 +785,12 @@ public final class LanguageManager implements LanguageConstants
         }
     }
 
-    public static void setOrientation ( boolean leftToRight )
+    public static void setOrientation ( final boolean leftToRight )
     {
         setOrientation ( leftToRight ? ComponentOrientation.LEFT_TO_RIGHT : ComponentOrientation.RIGHT_TO_LEFT );
     }
 
-    public static void setOrientation ( ComponentOrientation orientation )
+    public static void setOrientation ( final ComponentOrientation orientation )
     {
         LanguageManager.orientation = orientation;
         SwingUtils.updateGlobalOrientations ();
@@ -815,22 +823,22 @@ public final class LanguageManager implements LanguageConstants
      * Loads dictionary from xml
      */
 
-    public static Dictionary loadDictionary ( Class nearClass, String resource )
+    public static Dictionary loadDictionary ( final Class nearClass, final String resource )
     {
         return loadDictionary ( nearClass.getResource ( resource ) );
     }
 
-    public static Dictionary loadDictionary ( URL url )
+    public static Dictionary loadDictionary ( final URL url )
     {
         return XmlUtils.fromXML ( url );
     }
 
-    public static Dictionary loadDictionary ( String path )
+    public static Dictionary loadDictionary ( final String path )
     {
         return loadDictionary ( new File ( path ) );
     }
 
-    public static Dictionary loadDictionary ( File file )
+    public static Dictionary loadDictionary ( final File file )
     {
         return XmlUtils.fromXML ( file );
     }
@@ -839,27 +847,27 @@ public final class LanguageManager implements LanguageConstants
      * Dictionary change methods
      */
 
-    public static void addDictionary ( Class nearClass, String resource )
+    public static void addDictionary ( final Class nearClass, final String resource )
     {
         addDictionary ( loadDictionary ( nearClass, resource ) );
     }
 
-    public static void addDictionary ( URL url )
+    public static void addDictionary ( final URL url )
     {
         addDictionary ( loadDictionary ( url ) );
     }
 
-    public static void addDictionary ( String path )
+    public static void addDictionary ( final String path )
     {
         addDictionary ( loadDictionary ( path ) );
     }
 
-    public static void addDictionary ( File file )
+    public static void addDictionary ( final File file )
     {
         addDictionary ( loadDictionary ( file ) );
     }
 
-    public static void addDictionary ( Dictionary dictionary )
+    public static void addDictionary ( final Dictionary dictionary )
     {
         // Removing dictionary with the same ID first
         if ( isDictionaryAdded ( dictionary ) )
@@ -880,12 +888,12 @@ public final class LanguageManager implements LanguageConstants
         fireDictionaryAdded ( dictionary );
     }
 
-    public static void removeDictionary ( Dictionary dictionary )
+    public static void removeDictionary ( final Dictionary dictionary )
     {
         removeDictionary ( dictionary.getId () );
     }
 
-    public static void removeDictionary ( String id )
+    public static void removeDictionary ( final String id )
     {
         if ( isDictionaryAdded ( id ) )
         {
@@ -896,7 +904,7 @@ public final class LanguageManager implements LanguageConstants
 
             // Updating dictionaries
             dictionaries.remove ( dictionary );
-            for ( Dictionary d : dictionaries )
+            for ( final Dictionary d : dictionaries )
             {
                 mergeDictionary ( d );
             }
@@ -909,14 +917,14 @@ public final class LanguageManager implements LanguageConstants
         }
     }
 
-    public static boolean isDictionaryAdded ( Dictionary dictionary )
+    public static boolean isDictionaryAdded ( final Dictionary dictionary )
     {
         return isDictionaryAdded ( dictionary.getId () );
     }
 
-    public static boolean isDictionaryAdded ( String id )
+    public static boolean isDictionaryAdded ( final String id )
     {
-        for ( Dictionary dictionary : dictionaries )
+        for ( final Dictionary dictionary : dictionaries )
         {
             if ( dictionary.getId ().equals ( id ) )
             {
@@ -926,9 +934,9 @@ public final class LanguageManager implements LanguageConstants
         return false;
     }
 
-    public static Dictionary getDictionary ( String id )
+    public static Dictionary getDictionary ( final String id )
     {
-        for ( Dictionary dictionary : dictionaries )
+        for ( final Dictionary dictionary : dictionaries )
         {
             if ( dictionary.getId ().equals ( id ) )
             {
@@ -938,12 +946,12 @@ public final class LanguageManager implements LanguageConstants
         return null;
     }
 
-    private static void mergeDictionary ( Dictionary dictionary )
+    private static void mergeDictionary ( final Dictionary dictionary )
     {
         mergeDictionary ( dictionary.getPrefix (), dictionary );
     }
 
-    private static void mergeDictionary ( String prefix, Dictionary dictionary )
+    private static void mergeDictionary ( String prefix, final Dictionary dictionary )
     {
         // Determining prefix
         prefix = prefix != null && !prefix.equals ( "" ) ? prefix + "." : "";
@@ -951,7 +959,7 @@ public final class LanguageManager implements LanguageConstants
         // Parsing current level records
         if ( dictionary.getRecords () != null )
         {
-            for ( Record record : dictionary.getRecords () )
+            for ( final Record record : dictionary.getRecords () )
             {
                 final Record clone = record.clone ();
                 clone.setKey ( prefix + clone.getKey () );
@@ -962,10 +970,10 @@ public final class LanguageManager implements LanguageConstants
         // Parsing subdictionaries
         if ( dictionary.getSubdictionaries () != null )
         {
-            for ( Dictionary subDictionary : dictionary.getSubdictionaries () )
+            for ( final Dictionary subDictionary : dictionary.getSubdictionaries () )
             {
                 final String sp = subDictionary.getPrefix ();
-                String subPrefix = prefix + ( sp != null && !sp.equals ( "" ) ? sp : "" );
+                final String subPrefix = prefix + ( sp != null && !sp.equals ( "" ) ? sp : "" );
                 mergeDictionary ( subPrefix, subDictionary );
             }
         }
@@ -983,25 +991,25 @@ public final class LanguageManager implements LanguageConstants
      * Value request methods
      */
 
-    public static String get ( String key )
+    public static String get ( final String key )
     {
         final Value value = getValue ( key );
         return value != null ? value.getText () : key;
     }
 
-    public static Character getMnemonic ( String key )
+    public static Character getMnemonic ( final String key )
     {
         final Value value = getValue ( key );
         return value != null ? value.getMnemonic () : null;
     }
 
-    public static Value getValue ( String key )
+    public static Value getValue ( final String key )
     {
         // Global cache might be null when LanguageManager is not initialized
         return globalCache != null ? globalCache.get ( key ) : null;
     }
 
-    public static Value getNotNullValue ( String key )
+    public static Value getNotNullValue ( final String key )
     {
         // Not-null value returned in any case
         final Value value = getValue ( key );
@@ -1021,22 +1029,22 @@ public final class LanguageManager implements LanguageConstants
      * Component value request methods
      */
 
-    public static String get ( Component component, String key )
+    public static String get ( final Component component, final String key )
     {
         return get ( combineWithContainerKeys ( component, key ) );
     }
 
-    public static Character getMnemonic ( Component component, String key )
+    public static Character getMnemonic ( final Component component, final String key )
     {
         return getMnemonic ( combineWithContainerKeys ( component, key ) );
     }
 
-    public static Value getValue ( Component component, String key )
+    public static Value getValue ( final Component component, final String key )
     {
         return getValue ( combineWithContainerKeys ( component, key ) );
     }
 
-    public static Value getNotNullValue ( Component component, String key )
+    public static Value getNotNullValue ( final Component component, final String key )
     {
         return getNotNullValue ( combineWithContainerKeys ( component, key ) );
     }
@@ -1051,7 +1059,7 @@ public final class LanguageManager implements LanguageConstants
         return cachedKey != null ? cachedKey : combineWithContainerKeysImpl ( component, key );
     }
 
-    private static String combineWithContainerKeysImpl ( Component component, String key )
+    private static String combineWithContainerKeysImpl ( final Component component, final String key )
     {
         final String cachedKey;
         //        if ( key != null )
@@ -1080,7 +1088,7 @@ public final class LanguageManager implements LanguageConstants
         return cachedKey;
     }
 
-    public static void registerLanguageContainer ( Container container, String key )
+    public static void registerLanguageContainer ( final Container container, final String key )
     {
         synchronized ( languageContainersLock )
         {
@@ -1088,7 +1096,7 @@ public final class LanguageManager implements LanguageConstants
         }
     }
 
-    public static void unregisterLanguageContainer ( Container container )
+    public static void unregisterLanguageContainer ( final Container container )
     {
         synchronized ( languageContainersLock )
         {
@@ -1096,7 +1104,7 @@ public final class LanguageManager implements LanguageConstants
         }
     }
 
-    public static String getLanguageContainerKey ( Container container )
+    public static String getLanguageContainerKey ( final Container container )
     {
         synchronized ( languageContainersLock )
         {
@@ -1119,12 +1127,12 @@ public final class LanguageManager implements LanguageConstants
         globalCache.clear ();
     }
 
-    private static void updateCache ( Dictionary dictionary )
+    private static void updateCache ( final Dictionary dictionary )
     {
         updateCache ( dictionary.getPrefix (), dictionary );
     }
 
-    private static void updateCache ( String prefix, Dictionary dictionary )
+    private static void updateCache ( String prefix, final Dictionary dictionary )
     {
         // Determining prefix
         prefix = prefix != null && !prefix.equals ( "" ) ? prefix + "." : "";
@@ -1132,7 +1140,7 @@ public final class LanguageManager implements LanguageConstants
         // Parsing current level records
         if ( dictionary.getRecords () != null )
         {
-            for ( Record record : dictionary.getRecords () )
+            for ( final Record record : dictionary.getRecords () )
             {
                 final Value value = record.getValue ( language );
                 if ( value != null && value.getHotkey () == null && record.getHotkey () != null )
@@ -1146,7 +1154,7 @@ public final class LanguageManager implements LanguageConstants
         // Parsing subdictionaries
         if ( dictionary.getSubdictionaries () != null )
         {
-            for ( Dictionary subDictionary : dictionary.getSubdictionaries () )
+            for ( final Dictionary subDictionary : dictionary.getSubdictionaries () )
             {
                 final String sp = subDictionary.getPrefix ();
                 final String subPrefix = prefix + ( sp != null && !sp.equals ( "" ) ? sp : "" );
@@ -1182,7 +1190,7 @@ public final class LanguageManager implements LanguageConstants
         }
     }
 
-    public static void addLanguageListener ( LanguageListener listener )
+    public static void addLanguageListener ( final LanguageListener listener )
     {
         synchronized ( languageListenersLock )
         {
@@ -1190,7 +1198,7 @@ public final class LanguageManager implements LanguageConstants
         }
     }
 
-    public static void removeLanguageListener ( LanguageListener listener )
+    public static void removeLanguageListener ( final LanguageListener listener )
     {
         synchronized ( languageListenersLock )
         {
@@ -1198,33 +1206,33 @@ public final class LanguageManager implements LanguageConstants
         }
     }
 
-    private static void fireLanguageChanged ( String oldLang, String newLang )
+    private static void fireLanguageChanged ( final String oldLang, final String newLang )
     {
         synchronized ( languageListenersLock )
         {
-            for ( LanguageListener listener : languageListeners )
+            for ( final LanguageListener listener : languageListeners )
             {
                 listener.languageChanged ( oldLang, newLang );
             }
         }
     }
 
-    private static void fireDictionaryAdded ( Dictionary dictionary )
+    private static void fireDictionaryAdded ( final Dictionary dictionary )
     {
         synchronized ( languageListenersLock )
         {
-            for ( LanguageListener listener : languageListeners )
+            for ( final LanguageListener listener : languageListeners )
             {
                 listener.dictionaryAdded ( dictionary );
             }
         }
     }
 
-    private static void fireDictionaryRemoved ( Dictionary dictionary )
+    private static void fireDictionaryRemoved ( final Dictionary dictionary )
     {
         synchronized ( languageListenersLock )
         {
-            for ( LanguageListener listener : languageListeners )
+            for ( final LanguageListener listener : languageListeners )
             {
                 listener.dictionaryRemoved ( dictionary );
             }
@@ -1235,7 +1243,7 @@ public final class LanguageManager implements LanguageConstants
     {
         synchronized ( languageListenersLock )
         {
-            for ( LanguageListener listener : languageListeners )
+            for ( final LanguageListener listener : languageListeners )
             {
                 listener.dictionariesCleared ();
             }
@@ -1251,7 +1259,7 @@ public final class LanguageManager implements LanguageConstants
         return languageKeyListeners;
     }
 
-    public static void addLanguageKeyListener ( String key, LanguageKeyListener listener )
+    public static void addLanguageKeyListener ( final String key, final LanguageKeyListener listener )
     {
         synchronized ( languageKeyListenersLock )
         {
@@ -1265,18 +1273,18 @@ public final class LanguageManager implements LanguageConstants
         }
     }
 
-    public static void removeLanguageKeyListener ( LanguageKeyListener listener )
+    public static void removeLanguageKeyListener ( final LanguageKeyListener listener )
     {
         synchronized ( languageKeyListenersLock )
         {
-            for ( Map.Entry<String, List<LanguageKeyListener>> entry : languageKeyListeners.entrySet () )
+            for ( final Map.Entry<String, List<LanguageKeyListener>> entry : languageKeyListeners.entrySet () )
             {
                 entry.getValue ().remove ( listener );
             }
         }
     }
 
-    public static void removeLanguageKeyListeners ( String key )
+    public static void removeLanguageKeyListeners ( final String key )
     {
         synchronized ( languageKeyListenersLock )
         {
@@ -1284,7 +1292,7 @@ public final class LanguageManager implements LanguageConstants
         }
     }
 
-    private static void fireLanguageKeyUpdated ( String key )
+    private static void fireLanguageKeyUpdated ( final String key )
     {
         synchronized ( languageKeyListenersLock )
         {
@@ -1292,7 +1300,7 @@ public final class LanguageManager implements LanguageConstants
             if ( listeners != null )
             {
                 final Value value = getValue ( key );
-                for ( LanguageKeyListener listener : CollectionUtils.copy ( listeners ) )
+                for ( final LanguageKeyListener listener : CollectionUtils.copy ( listeners ) )
                 {
                     listener.languageKeyUpdated ( key, value );
                 }
@@ -1304,10 +1312,10 @@ public final class LanguageManager implements LanguageConstants
     {
         synchronized ( languageKeyListenersLock )
         {
-            for ( Map.Entry<String, List<LanguageKeyListener>> entry : languageKeyListeners.entrySet () )
+            for ( final Map.Entry<String, List<LanguageKeyListener>> entry : languageKeyListeners.entrySet () )
             {
                 final Value value = getValue ( entry.getKey () );
-                for ( LanguageKeyListener listener : CollectionUtils.copy ( entry.getValue () ) )
+                for ( final LanguageKeyListener listener : CollectionUtils.copy ( entry.getValue () ) )
                 {
                     listener.languageKeyUpdated ( entry.getKey (), value );
                 }

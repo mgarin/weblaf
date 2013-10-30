@@ -19,8 +19,11 @@ package com.alee.extended.tree;
 
 import com.alee.laf.tree.WebTreeCellRenderer;
 import com.alee.laf.tree.WebTreeElement;
+import com.alee.utils.ImageUtils;
 
 import javax.swing.*;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Custom default tree cell renderer for WebAsyncTree.
@@ -30,6 +33,34 @@ import javax.swing.*;
 
 public class WebAsyncTreeCellRenderer extends WebTreeCellRenderer
 {
+    /**
+     * Special failed state icon.
+     */
+    public static final ImageIcon failedStateIcon = new ImageIcon ( AsyncUniqueNode.class.getResource ( "icons/failed.png" ) );
+
+    /**
+     * User failed icons cache.
+     */
+    public static final Map<String, ImageIcon> failedStateIcons = new HashMap<String, ImageIcon> ( 0 );
+
+    /**
+     * Returns user failed state icon.
+     *
+     * @param key  icon key
+     * @param icon base icon
+     * @return user failed state icon
+     */
+    public static ImageIcon getFailedStateIcon ( final String key, final ImageIcon icon )
+    {
+        ImageIcon failedIcon = failedStateIcons.get ( key );
+        if ( failedIcon == null )
+        {
+            failedIcon = ImageUtils.mergeIcons ( icon, failedStateIcon );
+            failedStateIcons.put ( key, failedIcon );
+        }
+        return failedIcon;
+    }
+
     /**
      * Returns tree cell renderer component.
      *
@@ -52,7 +83,7 @@ public class WebAsyncTreeCellRenderer extends WebTreeCellRenderer
         if ( value instanceof AsyncUniqueNode )
         {
             final AsyncUniqueNode node = ( AsyncUniqueNode ) value;
-            if ( node.isBusy () )
+            if ( node.isLoading () )
             {
                 setIcon ( node.getLoaderIcon () );
             }

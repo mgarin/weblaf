@@ -43,4 +43,12 @@ public interface AsyncTreeListener<E extends AsyncUniqueNode> extends EventListe
      * @param childs loaded child nodes
      */
     public void childsLoadCompleted ( E parent, List<E> childs );
+
+    /**
+     * Invoked when childs load operation failed.
+     *
+     * @param parent node which childs were loaded
+     * @param cause  childs load failure cause
+     */
+    public void childsLoadFailed ( E parent, Throwable cause );
 }

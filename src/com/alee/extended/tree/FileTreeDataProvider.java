@@ -105,9 +105,16 @@ public class FileTreeDataProvider extends AbstractTreeDataProvider<FileTreeNode>
      * {@inheritDoc}
      */
     @Override
-    public List<FileTreeNode> getChilds ( final FileTreeNode node )
+    public void loadChilds ( final FileTreeNode parent, final ChildsListener<FileTreeNode> listener )
     {
-        return node.getFile () == null ? getRootChilds () : getFileChilds ( node );
+        try
+        {
+            listener.childsLoadCompleted ( parent.getFile () == null ? getRootChilds () : getFileChilds ( parent ) );
+        }
+        catch ( Throwable cause )
+        {
+            listener.childsLoadFailed ( cause );
+        }
     }
 
     /**

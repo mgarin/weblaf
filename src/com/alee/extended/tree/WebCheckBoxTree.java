@@ -629,7 +629,9 @@ public class WebCheckBoxTree<E extends DefaultMutableTreeNode> extends WebTree<E
     }
 
     /**
-     * {@inheritDoc}
+     * Adds check state change listener.
+     *
+     * @param listener check state change listener to add
      */
     public void addCheckStateChangeListener ( final CheckStateChangeListener listener )
     {
@@ -641,7 +643,9 @@ public class WebCheckBoxTree<E extends DefaultMutableTreeNode> extends WebTree<E
     }
 
     /**
-     * {@inheritDoc}
+     * Removes check state change listener.
+     *
+     * @param listener check state change listener to remove
      */
     public void removeCheckStateChangeListener ( final CheckStateChangeListener listener )
     {
