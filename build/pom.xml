@@ -15,11 +15,11 @@
   </properties>
 
   <build>
-    <sourceDirectory>${basedir}/src</sourceDirectory>
+    <sourceDirectory>${basedir}/../src</sourceDirectory>
     <resources>
       <resource>
         <filtering>false</filtering>
-        <directory>${basedir}/src</directory>
+        <directory>${basedir}/../src</directory>
         <excludes>
             <exclude>**/examples/**</exclude>
           <exclude>**/*.java</exclude>
