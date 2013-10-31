@@ -47,17 +47,17 @@ public final class LafUtils
      * Creates border for web components.
      */
 
-    public static Border createWebBorder ( Insets insets )
+    public static Border createWebBorder ( final Insets insets )
     {
         return new EmptyBorder ( insets.top, insets.left, insets.bottom, insets.right );
     }
 
-    public static Border createWebBorder ( int top, int left, int bottom, int right )
+    public static Border createWebBorder ( final int top, final int left, final int bottom, final int right )
     {
         return new EmptyBorder ( top, left, bottom, right );
     }
 
-    public static Border createWebBorder ( int margin )
+    public static Border createWebBorder ( final int margin )
     {
         return new EmptyBorder ( margin, margin, margin, margin );
     }
@@ -66,7 +66,7 @@ public final class LafUtils
      * Fills either clipped or visible rect with component background color if its opaque
      */
 
-    public static void fillVisibleBackground ( Graphics g, JComponent c )
+    public static void fillVisibleBackground ( final Graphics g, final JComponent c )
     {
         if ( c.isOpaque () )
         {
@@ -79,10 +79,10 @@ public final class LafUtils
      * Fills either clipped or visible rect
      */
 
-    public static void fillVisible ( Graphics g, JComponent c )
+    public static void fillVisible ( final Graphics g, final JComponent c )
     {
-        Shape clip = g.getClip ();
-        Rectangle rect = clip != null ? clip.getBounds () : c.getVisibleRect ();
+        final Shape clip = g.getClip ();
+        final Rectangle rect = clip != null ? clip.getBounds () : c.getVisibleRect ();
         g.fillRect ( rect.x, rect.y, rect.width, rect.height );
     }
 
@@ -90,7 +90,7 @@ public final class LafUtils
      * Nullifies button styles
      */
 
-    public static void nullifyButtonUI ( JButton button )
+    public static void nullifyButtonUI ( final JButton button )
     {
         button.setUI ( new BasicButtonUI () );
         button.setMargin ( new Insets ( 0, 0, 0, 0 ) );
@@ -105,13 +105,13 @@ public final class LafUtils
      * Creates rounded shape based on its corner points
      */
 
-    public static Shape createRoundedShape ( int round, int... points )
+    public static Shape createRoundedShape ( final int round, final int... points )
     {
         if ( points == null || points.length % 2 != 0 )
         {
             throw new RuntimeException ( "Incorrect x,y combinations amount" );
         }
-        Point[] fp = new Point[ points.length / 2 ];
+        final Point[] fp = new Point[ points.length / 2 ];
         for ( int i = 0; i < points.length; i += 2 )
         {
             fp[ i / 2 ] = new Point ( points[ i ], points[ i + 1 ] );
@@ -119,12 +119,12 @@ public final class LafUtils
         return createRoundedShape ( round, fp );
     }
 
-    public static Shape createRoundedShape ( int round, Point... points )
+    public static Shape createRoundedShape ( final int round, final Point... points )
     {
         return createRoundedShape ( round, points, null );
     }
 
-    public static Shape createRoundedShape ( int round, Point[] points, boolean[] rounded )
+    public static Shape createRoundedShape ( final int round, final Point[] points, final boolean[] rounded )
     {
         if ( points == null || points.length < 3 )
         {
@@ -135,21 +135,21 @@ public final class LafUtils
             throw new RuntimeException ( "Rouned marks array size should fit points array size" );
         }
 
-        GeneralPath gp = new GeneralPath ( GeneralPath.WIND_EVEN_ODD );
+        final GeneralPath gp = new GeneralPath ( GeneralPath.WIND_EVEN_ODD );
         for ( int i = 0; i < points.length; i++ )
         {
-            Point p = points[ i ];
+            final Point p = points[ i ];
             if ( i == 0 )
             {
                 // Start part
-                Point beforePoint = points[ points.length - 1 ];
+                final Point beforePoint = points[ points.length - 1 ];
                 if ( round == 0 || rounded != null && !rounded[ points.length - 1 ] )
                 {
                     gp.moveTo ( beforePoint.x, beforePoint.y );
                 }
                 else
                 {
-                    Point actualBeforePoint = getRoundSidePoint ( round, beforePoint, p );
+                    final Point actualBeforePoint = getRoundSidePoint ( round, beforePoint, p );
                     gp.moveTo ( actualBeforePoint.x, actualBeforePoint.y );
                 }
                 if ( round == 0 || rounded != null && !rounded[ i ] )
@@ -158,8 +158,8 @@ public final class LafUtils
                 }
                 else
                 {
-                    Point before = getRoundSidePoint ( round, p, beforePoint );
-                    Point after = getRoundSidePoint ( round, p, points[ i + 1 ] );
+                    final Point before = getRoundSidePoint ( round, p, beforePoint );
+                    final Point after = getRoundSidePoint ( round, p, points[ i + 1 ] );
                     gp.lineTo ( before.x, before.y );
                     gp.quadTo ( p.x, p.y, after.x, after.y );
                 }
@@ -173,8 +173,8 @@ public final class LafUtils
                 }
                 else
                 {
-                    Point before = getRoundSidePoint ( round, p, points[ i - 1 ] );
-                    Point after = getRoundSidePoint ( round, p, points[ i < points.length - 1 ? i + 1 : 0 ] );
+                    final Point before = getRoundSidePoint ( round, p, points[ i - 1 ] );
+                    final Point after = getRoundSidePoint ( round, p, points[ i < points.length - 1 ? i + 1 : 0 ] );
                     gp.lineTo ( before.x, before.y );
                     gp.quadTo ( p.x, p.y, after.x, after.y );
                 }
@@ -183,7 +183,7 @@ public final class LafUtils
         return gp;
     }
 
-    private static Point getRoundSidePoint ( int round, Point from, Point to )
+    private static Point getRoundSidePoint ( final int round, final Point from, final Point to )
     {
         if ( from.y == to.y )
         {
@@ -218,48 +218,50 @@ public final class LafUtils
      * Draws alpha-background
      */
 
-    public static void drawAlphaLayer ( Graphics2D g2d, Rectangle rectangle )
+    public static void drawAlphaLayer ( final Graphics2D g2d, final Rectangle rectangle )
     {
         drawAlphaLayer ( g2d, rectangle.x, rectangle.y, rectangle.width, rectangle.height );
     }
 
-    public static void drawAlphaLayer ( Graphics2D g2d, int x, int y, int width, int height )
+    public static void drawAlphaLayer ( final Graphics2D g2d, final int x, final int y, final int width, final int height )
     {
         drawAlphaLayer ( g2d, x, y, width, height, StyleConstants.ALPHA_RECT_SIZE );
     }
 
-    public static void drawAlphaLayer ( Graphics2D g2d, Rectangle rectangle, int size )
+    public static void drawAlphaLayer ( final Graphics2D g2d, final Rectangle rectangle, final int size )
     {
         drawAlphaLayer ( g2d, rectangle.x, rectangle.y, rectangle.width, rectangle.height, size );
     }
 
-    public static void drawAlphaLayer ( Graphics2D g2d, int x, int y, int width, int height, int size )
+    public static void drawAlphaLayer ( final Graphics2D g2d, final int x, final int y, final int width, final int height, final int size )
     {
         drawAlphaLayer ( g2d, x, y, width, height, size, StyleConstants.LIGHT_ALPHA, StyleConstants.DARK_ALPHA );
     }
 
-    public static void drawAlphaLayer ( Graphics2D g2d, Rectangle rectangle, int size, Color light, Color dark )
+    public static void drawAlphaLayer ( final Graphics2D g2d, final Rectangle rectangle, final int size, final Color light,
+                                        final Color dark )
     {
         drawAlphaLayer ( g2d, rectangle.x, rectangle.y, rectangle.width, rectangle.height, size, light, dark );
     }
 
-    public static void drawAlphaLayer ( Graphics2D g2d, int x, int y, int width, int height, int size, Color light, Color dark )
+    public static void drawAlphaLayer ( final Graphics2D g2d, final int x, final int y, final int width, final int height, final int size,
+                                        final Color light, final Color dark )
     {
         // todo Optimize paint by using generated texture image
-        int xAmount = width / size + 1;
-        int yAmount = height / size + 1;
+        final int xAmount = width / size + 1;
+        final int yAmount = height / size + 1;
         boolean lightColor;
         for ( int i = 0; i < xAmount; i++ )
         {
             for ( int j = 0; j < yAmount; j++ )
             {
                 lightColor = ( i + j ) % 2 == 0;
-                Color color = lightColor ? light : dark;
+                final Color color = lightColor ? light : dark;
                 if ( color != null )
                 {
                     g2d.setPaint ( color );
-                    int w = ( x + i * size + size > x + width ) ? ( width - i * size ) : size;
-                    int h = ( y + j * size + size > y + height ) ? ( height - j * size ) : size;
+                    final int w = ( x + i * size + size > x + width ) ? ( width - i * size ) : size;
+                    final int h = ( y + j * size + size > y + height ) ? ( height - j * size ) : size;
                     g2d.fillRect ( x + i * size, y + j * size, w, h );
                 }
             }
@@ -270,16 +272,16 @@ public final class LafUtils
      * Setting clip Shape by taking old clip Shape into account
      */
 
-    public static Shape intersectClip ( Graphics2D g2d, Shape clip )
+    public static Shape intersectClip ( final Graphics2D g2d, final Shape clip )
     {
         return intersectClip ( g2d, clip, true );
     }
 
-    public static Shape intersectClip ( Graphics2D g2d, Shape clip, boolean shouldSetup )
+    public static Shape intersectClip ( final Graphics2D g2d, final Shape clip, final boolean shouldSetup )
     {
         if ( shouldSetup && clip != null )
         {
-            Shape oldClip = g2d.getClip ();
+            final Shape oldClip = g2d.getClip ();
 
             // Optimized by Graphics2D clip intersection
             g2d.clip ( clip );
@@ -292,20 +294,20 @@ public final class LafUtils
         }
     }
 
-    public static Shape subtractClip ( Graphics g, Shape clip )
+    public static Shape subtractClip ( final Graphics g, final Shape clip )
     {
         return subtractClip ( g, clip, true );
     }
 
-    public static Shape subtractClip ( Graphics g, Shape clip, boolean shouldSetup )
+    public static Shape subtractClip ( final Graphics g, final Shape clip, final boolean shouldSetup )
     {
         if ( shouldSetup && clip != null )
         {
-            Shape oldClip = g.getClip ();
+            final Shape oldClip = g.getClip ();
             if ( oldClip != null )
             {
                 // Area-based substraction
-                Area finalClip = new Area ( oldClip );
+                final Area finalClip = new Area ( oldClip );
                 finalClip.subtract ( new Area ( clip ) );
                 g.setClip ( finalClip );
             }
@@ -317,12 +319,12 @@ public final class LafUtils
         }
     }
 
-    public static void restoreClip ( Graphics g, Shape clip )
+    public static void restoreClip ( final Graphics g, final Shape clip )
     {
         restoreClip ( g, clip, true );
     }
 
-    public static void restoreClip ( Graphics g, Shape clip, boolean shouldRestore )
+    public static void restoreClip ( final Graphics g, final Shape clip, final boolean shouldRestore )
     {
         if ( shouldRestore && clip != null )
         {
@@ -334,16 +336,16 @@ public final class LafUtils
      * Setting new stroke
      */
 
-    public static Stroke setupStroke ( Graphics2D g2d, Stroke stroke )
+    public static Stroke setupStroke ( final Graphics2D g2d, final Stroke stroke )
     {
         return setupStroke ( g2d, stroke, true );
     }
 
-    public static Stroke setupStroke ( Graphics2D g2d, Stroke stroke, boolean shouldSetup )
+    public static Stroke setupStroke ( final Graphics2D g2d, final Stroke stroke, final boolean shouldSetup )
     {
         if ( shouldSetup && stroke != null )
         {
-            Stroke old = g2d.getStroke ();
+            final Stroke old = g2d.getStroke ();
             g2d.setStroke ( stroke );
             return old;
         }
@@ -353,12 +355,12 @@ public final class LafUtils
         }
     }
 
-    public static void restoreStroke ( Graphics2D g2d, Stroke stroke )
+    public static void restoreStroke ( final Graphics2D g2d, final Stroke stroke )
     {
         restoreStroke ( g2d, stroke, true );
     }
 
-    public static void restoreStroke ( Graphics2D g2d, Stroke stroke, boolean shouldRestore )
+    public static void restoreStroke ( final Graphics2D g2d, final Stroke stroke, final boolean shouldRestore )
     {
         if ( shouldRestore && stroke != null )
         {
@@ -370,24 +372,24 @@ public final class LafUtils
      * Setting image quality on
      */
 
-    public static Object setupImageQuality ( Graphics g )
+    public static Object setupImageQuality ( final Graphics g )
     {
         return setupImageQuality ( ( Graphics2D ) g );
     }
 
-    public static Object setupImageQuality ( Graphics2D g2d )
+    public static Object setupImageQuality ( final Graphics2D g2d )
     {
-        Object old = g2d.getRenderingHint ( RenderingHints.KEY_INTERPOLATION );
+        final Object old = g2d.getRenderingHint ( RenderingHints.KEY_INTERPOLATION );
         g2d.setRenderingHint ( RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR );
         return old;
     }
 
-    public static void restoreImageQuality ( Graphics g, Object old )
+    public static void restoreImageQuality ( final Graphics g, final Object old )
     {
         restoreImageQuality ( ( Graphics2D ) g, old );
     }
 
-    public static void restoreImageQuality ( Graphics2D g2d, Object old )
+    public static void restoreImageQuality ( final Graphics2D g2d, final Object old )
     {
         g2d.setRenderingHint ( RenderingHints.KEY_INTERPOLATION, old != null ? old : RenderingHints.VALUE_INTERPOLATION_BILINEAR );
     }
@@ -396,7 +398,7 @@ public final class LafUtils
      * Setting font
      */
 
-    public static Font setupFont ( Graphics g, Font font )
+    public static Font setupFont ( final Graphics g, final Font font )
     {
         if ( font != null )
         {
@@ -410,7 +412,7 @@ public final class LafUtils
         }
     }
 
-    public static void restoreFont ( Graphics g, Font font )
+    public static void restoreFont ( final Graphics g, final Font font )
     {
         if ( font != null )
         {
@@ -422,39 +424,39 @@ public final class LafUtils
      * Setting antialias on
      */
 
-    public static Object setupAntialias ( Graphics g )
+    public static Object setupAntialias ( final Graphics g )
     {
         return setupAntialias ( ( Graphics2D ) g, RenderingHints.VALUE_ANTIALIAS_ON );
     }
 
-    public static Object setupAntialias ( Graphics2D g2d )
+    public static Object setupAntialias ( final Graphics2D g2d )
     {
         return setupAntialias ( g2d, RenderingHints.VALUE_ANTIALIAS_ON );
     }
 
-    public static Object disableAntialias ( Graphics g )
+    public static Object disableAntialias ( final Graphics g )
     {
         return setupAntialias ( ( Graphics2D ) g, RenderingHints.VALUE_ANTIALIAS_OFF );
     }
 
-    public static Object disableAntialias ( Graphics2D g2d )
+    public static Object disableAntialias ( final Graphics2D g2d )
     {
         return setupAntialias ( g2d, RenderingHints.VALUE_ANTIALIAS_OFF );
     }
 
-    private static Object setupAntialias ( Graphics2D g2d, Object aa )
+    private static Object setupAntialias ( final Graphics2D g2d, final Object aa )
     {
-        Object old = g2d.getRenderingHint ( RenderingHints.KEY_ANTIALIASING );
+        final Object old = g2d.getRenderingHint ( RenderingHints.KEY_ANTIALIASING );
         g2d.setRenderingHint ( RenderingHints.KEY_ANTIALIASING, aa );
         return old;
     }
 
-    public static void restoreAntialias ( Graphics g, Object old )
+    public static void restoreAntialias ( final Graphics g, final Object old )
     {
         restoreAntialias ( ( Graphics2D ) g, old );
     }
 
-    public static void restoreAntialias ( Graphics2D g2d, Object old )
+    public static void restoreAntialias ( final Graphics2D g2d, final Object old )
     {
         g2d.setRenderingHint ( RenderingHints.KEY_ANTIALIASING, old );
     }
@@ -476,14 +478,14 @@ public final class LafUtils
         return systemTextHints;
     }
 
-    public static void setupSystemTextHints ( Graphics g )
+    public static void setupSystemTextHints ( final Graphics g )
     {
         setupSystemTextHints ( ( Graphics2D ) g );
     }
 
-    public static void setupSystemTextHints ( Graphics2D g2d )
+    public static void setupSystemTextHints ( final Graphics2D g2d )
     {
-        Map systemTextHints = getSystemTextHints ();
+        final Map systemTextHints = getSystemTextHints ();
         if ( systemTextHints != null )
         {
             g2d.addRenderingHints ( systemTextHints );
@@ -494,24 +496,25 @@ public final class LafUtils
      * Setting AlphaComposite by taking old AlphaComposite settings into account
      */
 
-    public static Composite setupAlphaComposite ( Graphics2D g2d, Float alpha )
+    public static Composite setupAlphaComposite ( final Graphics2D g2d, final Float alpha )
     {
         return setupAlphaComposite ( g2d, alpha, true );
     }
 
-    public static Composite setupAlphaComposite ( Graphics2D g2d, Float alpha, boolean shouldSetup )
+    public static Composite setupAlphaComposite ( final Graphics2D g2d, final Float alpha, final boolean shouldSetup )
     {
         return setupAlphaComposite ( g2d, g2d.getComposite (), alpha, shouldSetup );
     }
 
-    public static Composite setupAlphaComposite ( Graphics2D g2d, Composite composeWith, Float alpha )
+    public static Composite setupAlphaComposite ( final Graphics2D g2d, final Composite composeWith, final Float alpha )
     {
         return setupAlphaComposite ( g2d, composeWith, alpha, true );
     }
 
-    public static Composite setupAlphaComposite ( Graphics2D g2d, Composite composeWith, Float alpha, boolean shouldSetup )
+    public static Composite setupAlphaComposite ( final Graphics2D g2d, final Composite composeWith, final Float alpha,
+                                                  final boolean shouldSetup )
     {
-        Composite comp = g2d.getComposite ();
+        final Composite comp = g2d.getComposite ();
         if ( !shouldSetup || alpha == null )
         {
             return comp;
@@ -525,18 +528,18 @@ public final class LafUtils
         }
 
         // Creating new composite
-        AlphaComposite newComposite = AlphaComposite.getInstance ( AlphaComposite.SRC_OVER, currentComposite * alpha );
+        final AlphaComposite newComposite = AlphaComposite.getInstance ( AlphaComposite.SRC_OVER, currentComposite * alpha );
         g2d.setComposite ( newComposite );
 
         return comp;
     }
 
-    public static void restoreComposite ( Graphics2D g2d, Composite composite )
+    public static void restoreComposite ( final Graphics2D g2d, final Composite composite )
     {
         g2d.setComposite ( composite );
     }
 
-    public static void restoreComposite ( Graphics2D g2d, Composite composite, boolean shouldRestore )
+    public static void restoreComposite ( final Graphics2D g2d, final Composite composite, final boolean shouldRestore )
     {
         if ( shouldRestore )
         {
@@ -548,15 +551,15 @@ public final class LafUtils
      * Determines real text size
      */
 
-    public static Rectangle getTextBounds ( String text, Graphics g, Font font )
+    public static Rectangle getTextBounds ( final String text, final Graphics g, final Font font )
     {
         return getTextBounds ( text, ( Graphics2D ) g, font );
     }
 
-    public static Rectangle getTextBounds ( String text, Graphics2D g2d, Font font )
+    public static Rectangle getTextBounds ( final String text, final Graphics2D g2d, final Font font )
     {
-        FontRenderContext renderContext = g2d.getFontRenderContext ();
-        GlyphVector glyphVector = font.createGlyphVector ( renderContext, text );
+        final FontRenderContext renderContext = g2d.getFontRenderContext ();
+        final GlyphVector glyphVector = font.createGlyphVector ( renderContext, text );
         return glyphVector.getVisualBounds ().getBounds ();
     }
 
@@ -564,50 +567,53 @@ public final class LafUtils
      * Paints web styled border within the component with shadow and background if needed
      */
 
-    public static Shape drawWebStyle ( Graphics2D g2d, JComponent component )
+    public static Shape drawWebStyle ( final Graphics2D g2d, final JComponent component )
     {
         return drawWebStyle ( g2d, component, StyleConstants.shadeColor, StyleConstants.shadeWidth, StyleConstants.smallRound );
     }
 
-    public static Shape drawWebStyle ( Graphics2D g2d, JComponent component, Color shadeColor, int shadeWidth, int round )
+    public static Shape drawWebStyle ( final Graphics2D g2d, final JComponent component, final Color shadeColor, final int shadeWidth,
+                                       final int round )
     {
         return drawWebStyle ( g2d, component, shadeColor, shadeWidth, round, true );
     }
 
-    public static Shape drawWebStyle ( Graphics2D g2d, JComponent component, Color shadeColor, int shadeWidth, int round,
-                                       boolean fillBackground )
+    public static Shape drawWebStyle ( final Graphics2D g2d, final JComponent component, final Color shadeColor, final int shadeWidth,
+                                       final int round, final boolean fillBackground )
     {
         return drawWebStyle ( g2d, component, shadeColor, shadeWidth, round, fillBackground, false );
     }
 
-    public static Shape drawWebStyle ( Graphics2D g2d, JComponent component, Color shadeColor, int shadeWidth, int round,
-                                       boolean fillBackground, boolean webColored )
+    public static Shape drawWebStyle ( final Graphics2D g2d, final JComponent component, final Color shadeColor, final int shadeWidth,
+                                       final int round, final boolean fillBackground, final boolean webColored )
     {
         return drawWebStyle ( g2d, component, shadeColor, shadeWidth, round, fillBackground, webColored, StyleConstants.darkBorderColor,
                 StyleConstants.disabledBorderColor );
     }
 
-    public static Shape drawWebStyle ( Graphics2D g2d, JComponent component, Color shadeColor, int shadeWidth, int round,
-                                       boolean fillBackground, boolean webColored, float opacity )
+    public static Shape drawWebStyle ( final Graphics2D g2d, final JComponent component, final Color shadeColor, final int shadeWidth,
+                                       final int round, final boolean fillBackground, final boolean webColored, final float opacity )
     {
         return drawWebStyle ( g2d, component, shadeColor, shadeWidth, round, fillBackground, webColored, StyleConstants.darkBorderColor,
                 StyleConstants.disabledBorderColor, opacity );
     }
 
-    public static Shape drawWebStyle ( Graphics2D g2d, JComponent component, Color shadeColor, int shadeWidth, int round,
-                                       boolean fillBackground, boolean webColored, Color border )
+    public static Shape drawWebStyle ( final Graphics2D g2d, final JComponent component, final Color shadeColor, final int shadeWidth,
+                                       final int round, final boolean fillBackground, final boolean webColored, final Color border )
     {
         return drawWebStyle ( g2d, component, shadeColor, shadeWidth, round, fillBackground, webColored, border, border );
     }
 
-    public static Shape drawWebStyle ( Graphics2D g2d, JComponent component, Color shadeColor, int shadeWidth, int round,
-                                       boolean fillBackground, boolean webColored, Color border, Color disabledBorder )
+    public static Shape drawWebStyle ( final Graphics2D g2d, final JComponent component, final Color shadeColor, final int shadeWidth,
+                                       final int round, final boolean fillBackground, final boolean webColored, final Color border,
+                                       final Color disabledBorder )
     {
         return drawWebStyle ( g2d, component, shadeColor, shadeWidth, round, fillBackground, webColored, border, disabledBorder, 1f );
     }
 
-    public static Shape drawWebStyle ( Graphics2D g2d, JComponent component, Color shadeColor, int shadeWidth, int round,
-                                       boolean fillBackground, boolean webColored, Color border, Color disabledBorder, float opacity )
+    public static Shape drawWebStyle ( final Graphics2D g2d, final JComponent component, final Color shadeColor, final int shadeWidth,
+                                       final int round, final boolean fillBackground, final boolean webColored, final Color border,
+                                       final Color disabledBorder, final float opacity )
     {
         // todo Use simple drawRoundRect e.t.c. methods
         // todo Add new class "ShapeInfo" that will contain a shape data and pass it instead of shapes
@@ -619,11 +625,11 @@ public final class LafUtils
         }
 
         // State settings
-        Object aa = setupAntialias ( g2d );
-        Composite oc = setupAlphaComposite ( g2d, opacity, opacity < 1f );
+        final Object aa = setupAntialias ( g2d );
+        final Composite oc = setupAlphaComposite ( g2d, opacity, opacity < 1f );
 
         // Shapes
-        Shape borderShape = getWebBorderShape ( component, shadeWidth, round );
+        final Shape borderShape = getWebBorderShape ( component, shadeWidth, round );
 
         // Outer shadow
         if ( component.isEnabled () && shadeColor != null )
@@ -663,29 +669,29 @@ public final class LafUtils
         return borderShape;
     }
 
-    private static Map<String, GradientPaint> gradientCache = new HashMap<String, GradientPaint> ();
+    private static final Map<String, GradientPaint> gradientCache = new HashMap<String, GradientPaint> ();
 
-    public static GradientPaint getWebGradientPaint ( Rectangle bounds )
+    public static GradientPaint getWebGradientPaint ( final Rectangle bounds )
     {
         return getWebGradientPaint ( bounds.x, bounds.y, bounds.x, bounds.y + bounds.height );
     }
 
-    public static GradientPaint getWebGradientPaint ( int x1, int y1, int x2, int y2 )
+    public static GradientPaint getWebGradientPaint ( final int x1, final int y1, final int x2, final int y2 )
     {
-        String key = x1 + ";" + y1 + ";" + x2 + ";" + y2;
+        final String key = x1 + ";" + y1 + ";" + x2 + ";" + y2;
         if ( gradientCache.containsKey ( key ) )
         {
             return gradientCache.get ( key );
         }
         else
         {
-            GradientPaint gp = new GradientPaint ( x1, y1, StyleConstants.topBgColor, x2, y2, StyleConstants.bottomBgColor );
+            final GradientPaint gp = new GradientPaint ( x1, y1, StyleConstants.topBgColor, x2, y2, StyleConstants.bottomBgColor );
             gradientCache.put ( key, gp );
             return gp;
         }
     }
 
-    public static Shape getWebBorderShape ( JComponent component, int shadeWidth, int round )
+    public static Shape getWebBorderShape ( final JComponent component, final int shadeWidth, final int round )
     {
         if ( round > 0 )
         {
@@ -703,17 +709,19 @@ public final class LafUtils
      * Paints custom shaped web styled border within the component with shadow and background
      */
 
-    public static void drawCustomWebBorder ( Graphics2D g2d, JComponent component, Shape borderShape, Color shadeColor, int shadeWidth,
-                                             boolean fillBackground, boolean webColored )
+    public static void drawCustomWebBorder ( final Graphics2D g2d, final JComponent component, final Shape borderShape,
+                                             final Color shadeColor, final int shadeWidth, final boolean fillBackground,
+                                             final boolean webColored )
     {
         drawCustomWebBorder ( g2d, component, borderShape, shadeColor, shadeWidth, fillBackground, webColored, Color.GRAY,
                 Color.LIGHT_GRAY );
     }
 
-    public static void drawCustomWebBorder ( Graphics2D g2d, JComponent component, Shape borderShape, Color shadeColor, int shadeWidth,
-                                             boolean fillBackground, boolean webColored, Color border, Color disabledBorder )
+    public static void drawCustomWebBorder ( final Graphics2D g2d, final JComponent component, final Shape borderShape,
+                                             final Color shadeColor, final int shadeWidth, final boolean fillBackground,
+                                             final boolean webColored, final Color border, final Color disabledBorder )
     {
-        Object aa = setupAntialias ( g2d );
+        final Object aa = setupAntialias ( g2d );
 
         // Outer shadow
         if ( component.isEnabled () )
@@ -726,7 +734,7 @@ public final class LafUtils
         {
             if ( webColored )
             {
-                Rectangle shapeBounds = borderShape.getBounds ();
+                final Rectangle shapeBounds = borderShape.getBounds ();
                 g2d.setPaint ( new GradientPaint ( 0, shapeBounds.y, StyleConstants.topBgColor, 0, shapeBounds.y + shapeBounds.height,
                         StyleConstants.bottomBgColor ) );
                 g2d.fill ( borderShape );
@@ -752,39 +760,41 @@ public final class LafUtils
      * Paints web styled focus within the component
      */
 
-    public static boolean drawWebFocus ( Graphics2D g2d, JComponent component, FocusType focusType, int shadeWidth, int round )
+    public static boolean drawWebFocus ( final Graphics2D g2d, final JComponent component, final FocusType focusType, final int shadeWidth,
+                                         final int round )
     {
         return drawWebFocus ( g2d, component, focusType, shadeWidth, round, null );
     }
 
-    public static boolean drawWebFocus ( Graphics2D g2d, JComponent component, FocusType focusType, int shadeWidth, int round,
-                                         Boolean mouseover )
+    public static boolean drawWebFocus ( final Graphics2D g2d, final JComponent component, final FocusType focusType, final int shadeWidth,
+                                         final int round, final Boolean mouseover )
     {
         return drawWebFocus ( g2d, component, focusType, shadeWidth, round, mouseover, null );
     }
 
-    public static boolean drawWebFocus ( Graphics2D g2d, JComponent component, FocusType focusType, int shadeWidth, int round,
-                                         Boolean mouseover, Boolean hasFocus )
+    public static boolean drawWebFocus ( final Graphics2D g2d, final JComponent component, final FocusType focusType, final int shadeWidth,
+                                         final int round, final Boolean mouseover, final Boolean hasFocus )
     {
         return drawWebFocus ( g2d, component, focusType, shadeWidth, round, mouseover, hasFocus,
                 focusType.equals ( FocusType.componentFocus ) ? StyleConstants.focusColor : StyleConstants.fieldFocusColor );
     }
 
-    public static boolean drawWebFocus ( Graphics2D g2d, JComponent component, FocusType focusType, int shadeWidth, int round,
-                                         Boolean mouseover, Boolean hasFocus, Color color )
+    public static boolean drawWebFocus ( final Graphics2D g2d, final JComponent component, final FocusType focusType, final int shadeWidth,
+                                         final int round, final Boolean mouseover, final Boolean hasFocus, final Color color )
     {
         return drawWebFocus ( g2d, component, focusType, shadeWidth, round, mouseover, hasFocus, color,
                 focusType.equals ( FocusType.componentFocus ) ? StyleConstants.focusStroke : StyleConstants.fieldFocusStroke );
     }
 
-    public static boolean drawWebFocus ( Graphics2D g2d, JComponent component, FocusType focusType, int shadeWidth, int round,
-                                         Boolean mouseover, Boolean hasFocus, Color color, Stroke stroke )
+    public static boolean drawWebFocus ( final Graphics2D g2d, final JComponent component, final FocusType focusType, final int shadeWidth,
+                                         final int round, final Boolean mouseover, Boolean hasFocus, final Color color,
+                                         final Stroke stroke )
     {
         hasFocus = hasFocus != null ? hasFocus : component.hasFocus () && component.isEnabled ();
         if ( hasFocus && focusType.equals ( FocusType.componentFocus ) )
         {
-            Object aa = setupAntialias ( g2d );
-            Stroke os = setupStroke ( g2d, stroke );
+            final Object aa = setupAntialias ( g2d );
+            final Stroke os = setupStroke ( g2d, stroke );
 
             g2d.setPaint ( color );
             g2d.draw ( getWebFocusShape ( component, focusType, shadeWidth, round ) );
@@ -796,8 +806,8 @@ public final class LafUtils
         }
         else if ( focusType.equals ( FocusType.fieldFocus ) && ( hasFocus || mouseover != null && mouseover ) )
         {
-            Object aa = setupAntialias ( g2d );
-            Stroke os = setupStroke ( g2d, stroke );
+            final Object aa = setupAntialias ( g2d );
+            final Stroke os = setupStroke ( g2d, stroke );
 
             //            g2d.setPaint ( hasFocus ? StyleConstants.fieldFocusColor :
             //                    StyleConstants.transparentFieldFocusColor );
@@ -815,10 +825,10 @@ public final class LafUtils
         }
     }
 
-    public static Shape getWebFocusShape ( JComponent component, FocusType focusType, int shadeWidth, int round )
+    public static Shape getWebFocusShape ( final JComponent component, final FocusType focusType, final int shadeWidth, int round )
     {
         // Focus side spacing
-        int spacing = focusType.equals ( FocusType.componentFocus ) ? 2 : 0;
+        final int spacing = focusType.equals ( FocusType.componentFocus ) ? 2 : 0;
 
         // Corners rounding
         round = focusType.equals ( FocusType.componentFocus ) ? Math.max ( 0, round - 2 ) : round;
@@ -841,24 +851,25 @@ public final class LafUtils
      * Draws custom shaped web styled focus within the component
      */
 
-    public static void drawCustomWebFocus ( Graphics2D g2d, JComponent component, FocusType focusType, Shape shape )
+    public static void drawCustomWebFocus ( final Graphics2D g2d, final JComponent component, final FocusType focusType, final Shape shape )
     {
         drawCustomWebFocus ( g2d, component, focusType, shape, null );
     }
 
-    public static void drawCustomWebFocus ( Graphics2D g2d, JComponent component, FocusType focusType, Shape shape, Boolean mouseover )
+    public static void drawCustomWebFocus ( final Graphics2D g2d, final JComponent component, final FocusType focusType, final Shape shape,
+                                            final Boolean mouseover )
     {
         drawCustomWebFocus ( g2d, component, focusType, shape, mouseover, null );
     }
 
-    public static void drawCustomWebFocus ( Graphics2D g2d, JComponent component, FocusType focusType, Shape shape, Boolean mouseover,
-                                            Boolean hasFocus )
+    public static void drawCustomWebFocus ( final Graphics2D g2d, final JComponent component, final FocusType focusType, final Shape shape,
+                                            final Boolean mouseover, Boolean hasFocus )
     {
         hasFocus = hasFocus != null ? hasFocus : component.hasFocus () && component.isEnabled ();
         if ( hasFocus && focusType.equals ( FocusType.componentFocus ) )
         {
-            Object aa = setupAntialias ( g2d );
-            Stroke os = setupStroke ( g2d, StyleConstants.focusStroke );
+            final Object aa = setupAntialias ( g2d );
+            final Stroke os = setupStroke ( g2d, StyleConstants.focusStroke );
 
             g2d.setPaint ( StyleConstants.focusColor );
             g2d.draw ( shape );
@@ -868,8 +879,8 @@ public final class LafUtils
         }
         else if ( focusType.equals ( FocusType.fieldFocus ) && ( hasFocus || mouseover != null && mouseover ) )
         {
-            Object aa = setupAntialias ( g2d );
-            Stroke os = setupStroke ( g2d, StyleConstants.fieldFocusStroke );
+            final Object aa = setupAntialias ( g2d );
+            final Stroke os = setupStroke ( g2d, StyleConstants.fieldFocusStroke );
 
             g2d.setPaint ( hasFocus ? StyleConstants.fieldFocusColor : StyleConstants.transparentFieldFocusColor );
             g2d.draw ( shape );
@@ -883,43 +894,47 @@ public final class LafUtils
      * Draws web styled shade using specified shape
      */
 
-    public static void drawShade ( Graphics2D g2d, Shape shape, Color shadeColor, int width )
+    public static void drawShade ( final Graphics2D g2d, final Shape shape, final Color shadeColor, final int width )
     {
         drawShade ( g2d, shape, StyleConstants.shadeType, shadeColor, width );
     }
 
-    public static void drawShade ( Graphics2D g2d, Shape shape, ShadeType shadeType, Color shadeColor, int width )
+    public static void drawShade ( final Graphics2D g2d, final Shape shape, final ShadeType shadeType, final Color shadeColor,
+                                   final int width )
     {
         drawShade ( g2d, shape, shadeType, shadeColor, width, null, true );
     }
 
-    public static void drawShade ( Graphics2D g2d, Shape shape, Color shadeColor, int width, Shape clip )
+    public static void drawShade ( final Graphics2D g2d, final Shape shape, final Color shadeColor, final int width, final Shape clip )
     {
         drawShade ( g2d, shape, StyleConstants.shadeType, shadeColor, width, clip, true );
     }
 
-    public static void drawShade ( Graphics2D g2d, Shape shape, ShadeType shadeType, Color shadeColor, int width, Shape clip )
+    public static void drawShade ( final Graphics2D g2d, final Shape shape, final ShadeType shadeType, final Color shadeColor,
+                                   final int width, final Shape clip )
     {
         drawShade ( g2d, shape, shadeType, shadeColor, width, clip, true );
     }
 
-    public static void drawShade ( Graphics2D g2d, Shape shape, Color shadeColor, int width, boolean round )
+    public static void drawShade ( final Graphics2D g2d, final Shape shape, final Color shadeColor, final int width, final boolean round )
     {
         drawShade ( g2d, shape, StyleConstants.shadeType, shadeColor, width, null, round );
     }
 
-    public static void drawShade ( Graphics2D g2d, Shape shape, ShadeType shadeType, Color shadeColor, int width, boolean round )
+    public static void drawShade ( final Graphics2D g2d, final Shape shape, final ShadeType shadeType, final Color shadeColor,
+                                   final int width, final boolean round )
     {
         drawShade ( g2d, shape, shadeType, shadeColor, width, null, round );
     }
 
-    public static void drawShade ( Graphics2D g2d, Shape shape, Color shadeColor, int width, Shape clip, boolean round )
+    public static void drawShade ( final Graphics2D g2d, final Shape shape, final Color shadeColor, final int width, final Shape clip,
+                                   final boolean round )
     {
         drawShade ( g2d, shape, StyleConstants.shadeType, shadeColor, width, clip, round );
     }
 
-    public static void drawShade ( Graphics2D g2d, Shape shape, ShadeType shadeType, Color shadeColor, int width, Shape clip,
-                                   boolean round )
+    public static void drawShade ( final Graphics2D g2d, final Shape shape, final ShadeType shadeType, final Color shadeColor, int width,
+                                   final Shape clip, final boolean round )
     {
         // Ignoring shade with width less than 2 
         if ( width <= 1 )
@@ -928,10 +943,10 @@ public final class LafUtils
         }
 
         // Applying clip
-        Shape oldClip = clip != null ? intersectClip ( g2d, clip ) : subtractClip ( g2d, shape );
+        final Shape oldClip = clip != null ? intersectClip ( g2d, clip ) : subtractClip ( g2d, shape );
 
         // Saving composite
-        Composite oldComposite = g2d.getComposite ();
+        final Composite oldComposite = g2d.getComposite ();
         float currentComposite = 1f;
         if ( oldComposite instanceof AlphaComposite )
         {
@@ -939,7 +954,7 @@ public final class LafUtils
         }
 
         // Saving stroke
-        Stroke oldStroke = g2d.getStroke ();
+        final Stroke oldStroke = g2d.getStroke ();
 
         // Drawing shade
         if ( shadeColor != null )
@@ -966,7 +981,7 @@ public final class LafUtils
                 // float minTransp = 0.2f;
                 // float maxTransp = 0.6f;
                 // float opacity = minTransp + ( maxTransp - minTransp ) * ( 1 - ( i - 2 ) / ( width - 2 ) );
-                float opacity = ( float ) ( width - i ) / ( width - 1 );
+                final float opacity = ( float ) ( width - i ) / ( width - 1 );
                 g2d.setComposite ( AlphaComposite.getInstance ( AlphaComposite.SRC_OVER, opacity * currentComposite ) );
                 g2d.setStroke ( getStroke ( i, round ? BasicStroke.CAP_ROUND : BasicStroke.CAP_BUTT ) );
                 g2d.draw ( shape );
@@ -983,21 +998,21 @@ public final class LafUtils
      * Strokes caching
      */
 
-    private static Map<String, Stroke> cachedStrokes = new HashMap<String, Stroke> ();
+    private static final Map<String, Stroke> cachedStrokes = new HashMap<String, Stroke> ();
 
-    public static Stroke getStroke ( int width )
+    public static Stroke getStroke ( final int width )
     {
         return getStroke ( width, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND );
     }
 
-    public static Stroke getStroke ( int width, int cap )
+    public static Stroke getStroke ( final int width, final int cap )
     {
         return getStroke ( width, cap, BasicStroke.JOIN_ROUND );
     }
 
-    public static Stroke getStroke ( int width, int cap, int join )
+    public static Stroke getStroke ( final int width, final int cap, final int join )
     {
-        String key = width + "," + cap + "," + join;
+        final String key = width + "," + cap + "," + join;
         Stroke stroke = cachedStrokes.get ( key );
         if ( stroke == null )
         {
@@ -1017,32 +1032,34 @@ public final class LafUtils
     public static int halfLine = 1;
     public static int shadeWidth = 2;
 
-    public static void drawWebSelection ( Graphics2D g2d, Color color, int x, int y, int width, int height, boolean resizableLR,
-                                          boolean resizableUD, boolean drawConnectors )
+    public static void drawWebSelection ( final Graphics2D g2d, final Color color, final int x, final int y, final int width,
+                                          final int height, final boolean resizableLR, final boolean resizableUD,
+                                          final boolean drawConnectors )
     {
         drawWebSelection ( g2d, color, new Rectangle ( x, y, width, height ), resizableLR, resizableUD, drawConnectors );
     }
 
-    public static void drawWebSelection ( Graphics2D g2d, Color color, int x, int y, int width, int height, boolean resizableLR,
-                                          boolean resizableUD, boolean drawConnectors, boolean drawSideControls )
+    public static void drawWebSelection ( final Graphics2D g2d, final Color color, final int x, final int y, final int width,
+                                          final int height, final boolean resizableLR, final boolean resizableUD,
+                                          final boolean drawConnectors, final boolean drawSideControls )
     {
         drawWebSelection ( g2d, color, new Rectangle ( x, y, width, height ), resizableLR, resizableUD, drawConnectors, drawSideControls );
     }
 
-    public static void drawWebSelection ( Graphics2D g2d, Color color, Rectangle selection, boolean resizableLR, boolean resizableUD,
-                                          boolean drawConnectors )
+    public static void drawWebSelection ( final Graphics2D g2d, final Color color, final Rectangle selection, final boolean resizableLR,
+                                          final boolean resizableUD, final boolean drawConnectors )
     {
         drawWebSelection ( g2d, color, selection, resizableLR, resizableUD, drawConnectors, true );
     }
 
-    public static void drawWebSelection ( Graphics2D g2d, Color color, Rectangle selection, boolean resizableLR, boolean resizableUD,
-                                          boolean drawConnectors, boolean drawSideControls )
+    public static void drawWebSelection ( final Graphics2D g2d, final Color color, Rectangle selection, final boolean resizableLR,
+                                          final boolean resizableUD, final boolean drawConnectors, final boolean drawSideControls )
     {
         selection = GeometryUtils.validateRect ( selection );
 
-        Object aa = setupAntialias ( g2d );
+        final Object aa = setupAntialias ( g2d );
 
-        Area buttonsShape = new Area ();
+        final Area buttonsShape = new Area ();
 
         // Top
         if ( resizableUD )
@@ -1097,7 +1114,7 @@ public final class LafUtils
         // Button connectors
         if ( drawConnectors )
         {
-            Area selectionShape = new Area (
+            final Area selectionShape = new Area (
                     new RoundRectangle2D.Double ( selection.x - halfLine, selection.y - halfLine, selection.width + halfLine * 2,
                             selection.height + halfLine * 2, 5, 5 ) );
             selectionShape.subtract ( new Area (
@@ -1120,13 +1137,13 @@ public final class LafUtils
         restoreAntialias ( g2d, aa );
     }
 
-    public static void drawWebSelector ( Graphics2D g2d, Color color, Rectangle selection, int selector )
+    public static void drawWebSelector ( final Graphics2D g2d, final Color color, Rectangle selection, final int selector )
     {
         selection = GeometryUtils.validateRect ( selection );
 
-        Object aa = setupAntialias ( g2d );
+        final Object aa = setupAntialias ( g2d );
 
-        Ellipse2D buttonsShape;
+        final Ellipse2D buttonsShape;
         if ( selector == SwingConstants.NORTH_WEST )
         {
             buttonsShape =
@@ -1204,19 +1221,19 @@ public final class LafUtils
 
     private static final ImageIcon gripper = new ImageIcon ( LafUtils.class.getResource ( "icons/selection/gripper.png" ) );
 
-    public static void drawWebIconedSelection ( Graphics2D g2d, Rectangle selection, boolean resizableLR, boolean resizableUD,
-                                                boolean drawConnectors )
+    public static void drawWebIconedSelection ( final Graphics2D g2d, final Rectangle selection, final boolean resizableLR,
+                                                final boolean resizableUD, final boolean drawConnectors )
     {
         drawWebIconedSelection ( g2d, selection, resizableLR, resizableUD, drawConnectors, true );
     }
 
-    public static void drawWebIconedSelection ( Graphics2D g2d, Rectangle selection, boolean resizableLR, boolean resizableUD,
-                                                boolean drawConnectors, boolean drawSideControls )
+    public static void drawWebIconedSelection ( final Graphics2D g2d, Rectangle selection, final boolean resizableLR,
+                                                final boolean resizableUD, final boolean drawConnectors, final boolean drawSideControls )
     {
         selection = GeometryUtils.validateRect ( selection );
 
         // Calculating selection rect
-        Rectangle rect = calculateIconedRect ( selection );
+        final Rectangle rect = calculateIconedRect ( selection );
 
         // Drawing selection
         if ( drawConnectors )
@@ -1269,37 +1286,37 @@ public final class LafUtils
         }
     }
 
-    public static void drawWebIconedSelector ( Graphics2D g2d, Rectangle selection, int selector )
+    public static void drawWebIconedSelector ( final Graphics2D g2d, Rectangle selection, final int selector )
     {
         selection = GeometryUtils.validateRect ( selection );
 
         // Calculating selector rect
-        Rectangle rect = calculateIconedRect ( selection );
+        final Rectangle rect = calculateIconedRect ( selection );
 
         // Drawing selector
         getSelectorIcon ( selector ).paintIcon ( g2d, rect );
     }
 
-    public static void drawWebIconedGripper ( Graphics2D g2d, Point point )
+    public static void drawWebIconedGripper ( final Graphics2D g2d, final Point point )
     {
         drawWebIconedGripper ( g2d, point.x, point.y );
     }
 
-    public static void drawWebIconedGripper ( Graphics2D g2d, int x, int y )
+    public static void drawWebIconedGripper ( final Graphics2D g2d, final int x, final int y )
     {
         g2d.drawImage ( gripper.getImage (), x - gripper.getIconWidth () / 2, y - gripper.getIconHeight () / 2, null );
     }
 
-    private static Rectangle calculateIconedRect ( Rectangle selection )
+    private static Rectangle calculateIconedRect ( final Rectangle selection )
     {
         // Recalculating coordinates to iconed view
         return new Rectangle ( selection.x - halfButton - shadeWidth, selection.y - halfButton - shadeWidth,
                 selection.width + halfButton * 2 + shadeWidth * 2, selection.height + halfButton * 2 + shadeWidth * 2 );
     }
 
-    private static Map<Integer, NinePatchIcon> selectorCache = new HashMap<Integer, NinePatchIcon> ();
+    private static final Map<Integer, NinePatchIcon> selectorCache = new HashMap<Integer, NinePatchIcon> ();
 
-    private static NinePatchIcon getSelectorIcon ( int selector )
+    private static NinePatchIcon getSelectorIcon ( final int selector )
     {
         if ( selectorCache.containsKey ( selector ) )
         {
@@ -1307,7 +1324,7 @@ public final class LafUtils
         }
         else
         {
-            NinePatchIcon npi = new NinePatchIcon ( LafUtils.class.getResource ( "icons/selection/selector" + selector + ".9.png" ) );
+            final NinePatchIcon npi = new NinePatchIcon ( LafUtils.class.getResource ( "icons/selection/selector" + selector + ".9.png" ) );
             selectorCache.put ( selector, npi );
             return npi;
         }
@@ -1317,18 +1334,19 @@ public final class LafUtils
      * Draws etched shape with specified background colors
      */
 
-    public static void drawEtchedShape ( Graphics2D g2d, BufferedImage topBg, BufferedImage bottomBg, Shape fullShape, Shape bevelShape )
+    public static void drawEtchedShape ( final Graphics2D g2d, final BufferedImage topBg, final BufferedImage bottomBg,
+                                         final Shape fullShape, final Shape bevelShape )
     {
-        Object aa = setupAntialias ( g2d );
+        final Object aa = setupAntialias ( g2d );
 
-        Rectangle bounds = fullShape.getBounds ();
+        final Rectangle bounds = fullShape.getBounds ();
 
         g2d.setPaint ( new TexturePaint ( topBg,
                 new Rectangle ( bounds.getLocation (), new Dimension ( topBg.getWidth (), topBg.getHeight () ) ) ) );
         g2d.fill ( fullShape );
 
-        Shape oldClip = g2d.getClip ();
-        Area newClip = new Area ( oldClip );
+        final Shape oldClip = g2d.getClip ();
+        final Area newClip = new Area ( oldClip );
         newClip.intersect ( new Area ( bevelShape ) );
 
         g2d.setClip ( newClip );
@@ -1354,7 +1372,7 @@ public final class LafUtils
      * be painted elsewhere, a transform should be applied to the graphics before passing it.
      */
 
-    public static void paintTextShadow ( Graphics2D g2d, String s )
+    public static void paintTextShadow ( final Graphics2D g2d, final String s )
     {
         paintTextShadow ( g2d, s, Color.LIGHT_GRAY );
     }
@@ -1367,7 +1385,7 @@ public final class LafUtils
      * be painted elsewhere, a transform should be applied to the graphics before passing it.
      */
 
-    public static void paintTextShadow ( Graphics2D g2d, String s, Color c )
+    public static void paintTextShadow ( final Graphics2D g2d, final String s, final Color c )
     {
         paintTextEffect ( g2d, s, ColorUtils.removeAlpha ( c ), TEXT_SHADOW_SIZE, -TEXT_SHADOW_SIZE, 1 - TEXT_SHADOW_SIZE, true );
     }
@@ -1377,7 +1395,7 @@ public final class LafUtils
      * "lighting conditions").
      */
 
-    public static void paintTextGlow ( Graphics2D g2d, String s, Color glow )
+    public static void paintTextGlow ( final Graphics2D g2d, final String s, final Color glow )
     {
         paintTextEffect ( g2d, s, ColorUtils.removeAlpha ( glow ), TEXT_SHADOW_SIZE, -TEXT_SHADOW_SIZE, -TEXT_SHADOW_SIZE, false );
     }
@@ -1391,7 +1409,8 @@ public final class LafUtils
 
     private static final int TEXT_SHADOW_SIZE = 2;
 
-    public static void paintTextEffect ( Graphics2D g2d, String s, Color c, int size, double tx, double ty, boolean isShadow )
+    public static void paintTextEffect ( final Graphics2D g2d, final String s, final Color c, final int size, final double tx,
+                                         final double ty, final boolean isShadow )
     {
         // Effect "darkness"
         final float opacity = 0.8f;
@@ -1410,13 +1429,13 @@ public final class LafUtils
         g2d.translate ( tx, ty );
 
         // If the effect is a shadow it looks better to stop painting a bit earlier - shadow will look softer
-        int maxSize = isShadow ? size - 1 : size;
+        final int maxSize = isShadow ? size - 1 : size;
 
         for ( int i = -size; i <= maxSize; i++ )
         {
             for ( int j = -size; j <= maxSize; j++ )
             {
-                double distance = i * i + j * j;
+                final double distance = i * i + j * j;
                 float alpha = opacity;
                 if ( distance > 0.0d )
                 {
@@ -1451,13 +1470,14 @@ public final class LafUtils
      * Draws dashed rectangle
      */
 
-    public static void drawDashedRect ( Graphics2D g2d, int x1, int y1, int x2, int y2, int stripeLength, int spaceLength )
+    public static void drawDashedRect ( final Graphics2D g2d, final int x1, final int y1, final int x2, final int y2,
+                                        final int stripeLength, final int spaceLength )
     {
         drawDashedRect ( g2d, x1, y1, x2, y2, stripeLength, spaceLength, 0.0f );
     }
 
-    public static void drawDashedRect ( Graphics2D g2d, int x1, int y1, int x2, int y2, int stripeLength, int spaceLength,
-                                        float stripeStart )
+    public static void drawDashedRect ( final Graphics2D g2d, final int x1, final int y1, final int x2, final int y2,
+                                        final int stripeLength, final int spaceLength, final float stripeStart )
     {
         if ( x2 < x1 || y2 < y1 )
         {
@@ -1468,7 +1488,7 @@ public final class LafUtils
         final BasicStroke stroke = new BasicStroke ( 1.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 10.0f, dash, stripeStart );
 
 
-        Stroke oldStroke = setupStroke ( g2d, stroke );
+        final Stroke oldStroke = setupStroke ( g2d, stroke );
         g2d.drawRect ( x1, y1, x2 - x1, y2 - y1 );
         restoreStroke ( g2d, oldStroke );
     }
@@ -1477,9 +1497,9 @@ public final class LafUtils
      * Returns custom rounded rectangle shape
      */
 
-    public static GeneralPath createRoundedRectShape ( int x, int y, int w, int h, int arcW, int arcH )
+    public static GeneralPath createRoundedRectShape ( final int x, final int y, final int w, final int h, final int arcW, final int arcH )
     {
-        GeneralPath gp = new GeneralPath ( GeneralPath.WIND_EVEN_ODD );
+        final GeneralPath gp = new GeneralPath ( GeneralPath.WIND_EVEN_ODD );
         gp.moveTo ( x, y + arcH );
         gp.quadTo ( x, y, x + arcW, y );
         gp.lineTo ( x + w - arcW, y );
@@ -1496,17 +1516,17 @@ public final class LafUtils
      * Returns shear to center text
      */
 
-    public static Point getTextCenterShear ( FontMetrics fm, String text )
+    public static Point getTextCenterShear ( final FontMetrics fm, final String text )
     {
         return new Point ( getTextCenterShearX ( fm, text ), getTextCenterShearY ( fm ) );
     }
 
-    public static int getTextCenterShearX ( FontMetrics fm, String text )
+    public static int getTextCenterShearX ( final FontMetrics fm, final String text )
     {
         return -fm.stringWidth ( text ) / 2;
     }
 
-    public static int getTextCenterShearY ( FontMetrics fm )
+    public static int getTextCenterShearY ( final FontMetrics fm )
     {
         return ( fm.getAscent () - fm.getLeading () - fm.getDescent () ) / 2;
     }
@@ -1543,7 +1563,7 @@ public final class LafUtils
      */
     public static Rectangle getLabelEditorBounds ( final WebLabel label, final WebTextField editor )
     {
-        editor.setFieldMargin ( 0, label.getIconTextGap (), 0, 0 );
+        editor.setFieldMargin ( 0, label.getIcon () != null ? label.getIconTextGap () : 0, 0, 0 );
 
         // Bounds
         final Rectangle bounds = new Rectangle ( 0, 0, label.getWidth (), label.getHeight () );

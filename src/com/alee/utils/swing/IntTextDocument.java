@@ -33,7 +33,7 @@ public class IntTextDocument extends PlainDocument
      * {@inheritDoc}
      */
     @Override
-    public void insertString ( int offs, String str, AttributeSet a ) throws BadLocationException
+    public void insertString ( final int offs, final String str, final AttributeSet a ) throws BadLocationException
     {
         if ( str == null )
         {
@@ -41,16 +41,30 @@ public class IntTextDocument extends PlainDocument
         }
         if ( getLength () + str.length () <= 5 )
         {
-            String oldString = getText ( 0, getLength () );
-            String newString = oldString.substring ( 0, offs ) + str + oldString.substring ( offs );
+            final String oldString = getText ( 0, getLength () );
+            final String newString = oldString.substring ( 0, offs ) + str + oldString.substring ( offs );
             try
             {
-                Integer.parseInt ( newString + "0" );
-                super.insertString ( offs, str, a );
+                if ( accept ( Integer.parseInt ( newString + "0" ) ) )
+                {
+                    super.insertString ( offs, str, a );
+                }
             }
             catch ( NumberFormatException ignored )
             {
             }
         }
+    }
+
+    /**
+     * Returns whether entered integer number is accepted or not.
+     *
+     * @param integer entered integer number
+     * @return true if entered integer number is accepted, false otherwise
+     */
+    @SuppressWarnings ( "UnusedParameters" )
+    protected boolean accept ( final int integer )
+    {
+        return true;
     }
 }

@@ -88,7 +88,7 @@ public class ColorPainter<E extends JComponent> extends AbstractPainter<E>
         if ( color != null )
         {
             // Determining actual rect to be filled (we don't need to fill invisible area)
-            Rectangle r = c.getVisibleRect ().intersection ( bounds );
+            final Rectangle r = c.getVisibleRect ().intersection ( bounds );
 
             // If there is anything to fill we do it
             if ( r.width > 0 && r.height > 0 )

@@ -18,6 +18,7 @@
 package com.alee.managers.focus;
 
 import com.alee.laf.GlobalConstants;
+import com.alee.utils.CollectionUtils;
 import com.alee.utils.SwingUtils;
 
 import java.awt.*;
@@ -44,7 +45,7 @@ public final class FocusManager
     /**
      * Focus trackers list.
      */
-    private static Map<Component, Map<FocusTracker, Boolean>> trackers = new WeakHashMap<Component, Map<FocusTracker, Boolean>> ();
+    private static final Map<Component, Map<FocusTracker, Boolean>> trackers = new WeakHashMap<Component, Map<FocusTracker, Boolean>> ();
 
     /**
      * Global focus listeners lock.
@@ -54,7 +55,7 @@ public final class FocusManager
     /**
      * Global focus listeners list.
      */
-    private static List<GlobalFocusListener> globalFocusListeners = new ArrayList<GlobalFocusListener> ( 2 );
+    private static final List<GlobalFocusListener> globalFocusListeners = new ArrayList<GlobalFocusListener> ( 2 );
 
     /**
      * Reference to previously focused component.
@@ -86,7 +87,7 @@ public final class FocusManager
             Toolkit.getDefaultToolkit ().addAWTEventListener ( new AWTEventListener ()
             {
                 @Override
-                public void eventDispatched ( AWTEvent event )
+                public void eventDispatched ( final AWTEvent event )
                 {
                     if ( event instanceof FocusEvent )
                     {
@@ -113,7 +114,7 @@ public final class FocusManager
             registerGlobalFocusListener ( new GlobalFocusListener ()
             {
                 @Override
-                public void focusChanged ( Component oldFocus, Component newFocus )
+                public void focusChanged ( final Component oldFocus, final Component newFocus )
                 {
                     oldFocusOwner = new WeakReference<Component> ( oldFocus );
                     focusOwner = new WeakReference<Component> ( newFocus );
@@ -130,20 +131,16 @@ public final class FocusManager
                     synchronized ( trackersLock )
                     {
                         // Iterating through registered components
-                        final Iterator<Map.Entry<Component, Map<FocusTracker, Boolean>>> iterator = trackers.entrySet ().iterator ();
-                        while ( iterator.hasNext () )
+                        for ( final Map.Entry<Component, Map<FocusTracker, Boolean>> entry : getTrackersCopy ().entrySet () )
                         {
                             // Retrieving tracked component and its trackers
-                            final Map.Entry<Component, Map<FocusTracker, Boolean>> entry = iterator.next ();
                             final Component tracked = entry.getKey ();
                             final Map<FocusTracker, Boolean> componentTrackers = entry.getValue ();
-                            final Iterator<Map.Entry<FocusTracker, Boolean>> innerIterator = componentTrackers.entrySet ().iterator ();
 
                             // Iterating through registered component trackers
-                            while ( innerIterator.hasNext () )
+                            for ( final Map.Entry<FocusTracker, Boolean> innerEntry : componentTrackers.entrySet () )
                             {
                                 // Retrieving tracker and its last state
-                                final Map.Entry<FocusTracker, Boolean> innerEntry = innerIterator.next ();
                                 final FocusTracker focusTracker = innerEntry.getKey ();
                                 final Boolean trackerStateCache = innerEntry.getValue ();
 
@@ -168,20 +165,32 @@ public final class FocusManager
                                         innerEntry.setValue ( focused );
                                     }
                                 }
-                                else
-                                {
-                                    // Remove tracker because tracked component was removed by GC
-                                    innerIterator.remove ();
-                                }
-                            }
-                            if ( componentTrackers == null || componentTrackers.size () == 0 )
-                            {
-                                iterator.remove ();
                             }
                         }
                     }
                 }
             } );
+        }
+    }
+
+    /**
+     * Returns trackers map copy.
+     *
+     * @return trackers map copy
+     */
+    private static Map<Component, Map<FocusTracker, Boolean>> getTrackersCopy ()
+    {
+        // Checking all added trackers
+        synchronized ( trackersLock )
+        {
+            final Map<Component, Map<FocusTracker, Boolean>> copy = new HashMap<Component, Map<FocusTracker, Boolean>> ( trackers.size () );
+            for ( final Map.Entry<Component, Map<FocusTracker, Boolean>> entry : trackers.entrySet () )
+            {
+                final Map<FocusTracker, Boolean> trackersCopy = new HashMap<FocusTracker, Boolean> ( trackers.size () );
+                trackersCopy.putAll ( entry.getValue () );
+                copy.put ( entry.getKey (), trackersCopy );
+            }
+            return copy;
         }
     }
 
@@ -210,7 +219,7 @@ public final class FocusManager
      *
      * @param listener new global focus listener
      */
-    public static void registerGlobalFocusListener ( GlobalFocusListener listener )
+    public static void registerGlobalFocusListener ( final GlobalFocusListener listener )
     {
         synchronized ( listenersLock )
         {
@@ -223,7 +232,7 @@ public final class FocusManager
      *
      * @param listener global focus listener to unregister
      */
-    public static void unregisterGlobalFocusListener ( GlobalFocusListener listener )
+    public static void unregisterGlobalFocusListener ( final GlobalFocusListener listener )
     {
         synchronized ( listenersLock )
         {
@@ -237,14 +246,16 @@ public final class FocusManager
      * @param oldComponent previously focused component
      * @param newComponent currently focused component
      */
-    private static void fireGlobalFocusChanged ( Component oldComponent, Component newComponent )
+    private static void fireGlobalFocusChanged ( final Component oldComponent, final Component newComponent )
     {
+        final List<GlobalFocusListener> listeners;
         synchronized ( listenersLock )
         {
-            for ( GlobalFocusListener listener : globalFocusListeners )
-            {
-                listener.focusChanged ( oldComponent, newComponent );
-            }
+            listeners = CollectionUtils.copy ( globalFocusListeners );
+        }
+        for ( final GlobalFocusListener listener : listeners )
+        {
+            listener.focusChanged ( oldComponent, newComponent );
         }
     }
 
@@ -253,7 +264,7 @@ public final class FocusManager
      *
      * @param focusTracker new focus tracker
      */
-    public static void addFocusTracker ( Component component, FocusTracker focusTracker )
+    public static void addFocusTracker ( final Component component, final FocusTracker focusTracker )
     {
         synchronized ( trackersLock )
         {
@@ -273,7 +284,7 @@ public final class FocusManager
      *
      * @param focusTracker focus tracker to unregister
      */
-    public static void removeFocusTracker ( FocusTracker focusTracker )
+    public static void removeFocusTracker ( final FocusTracker focusTracker )
     {
         synchronized ( trackersLock )
         {

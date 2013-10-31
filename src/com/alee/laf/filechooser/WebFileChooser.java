@@ -488,7 +488,7 @@ public class WebFileChooser extends JFileChooser implements LanguageMethods, Lan
         fileChooser.setMultiSelectionEnabled ( false );
         if ( customizer != null )
         {
-            customizer.configure ( fileChooser );
+            customizer.customize ( fileChooser );
         }
         if ( fileChooser.showOpenDialog ( parent ) == APPROVE_OPTION )
         {
@@ -572,7 +572,7 @@ public class WebFileChooser extends JFileChooser implements LanguageMethods, Lan
         fileChooser.setMultiSelectionEnabled ( true );
         if ( customizer != null )
         {
-            customizer.configure ( fileChooser );
+            customizer.customize ( fileChooser );
         }
         if ( fileChooser.showOpenDialog ( parent ) == APPROVE_OPTION )
         {
@@ -655,7 +655,7 @@ public class WebFileChooser extends JFileChooser implements LanguageMethods, Lan
         fileChooser.setMultiSelectionEnabled ( true );
         if ( customizer != null )
         {
-            customizer.configure ( fileChooser );
+            customizer.customize ( fileChooser );
         }
         if ( fileChooser.showSaveDialog ( parent ) == APPROVE_OPTION )
         {

@@ -18,8 +18,8 @@
 package com.alee.utils.swing;
 
 /**
- * This interface allows you to create customization objects.
- * They can be easily passed into any method to customize or modify any component or data.
+ * This interface allows you to create customizer for objects of any type.
+ * They can be easily passed into any method to customize or modify any component or data when requested.
  *
  * @author Mikle Garin
  */
@@ -27,9 +27,9 @@ package com.alee.utils.swing;
 public interface Customizer<T>
 {
     /**
-     * Configures the specified object.
+     * Customizes the specified object.
      *
-     * @param object object to configure
+     * @param object object to customize
      */
-    public void configure ( T object );
+    public void customize ( T object );
 }

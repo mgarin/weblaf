@@ -237,7 +237,7 @@ public class WebDefaultCellEditor<C extends JComponent> extends AbstractCellEdit
             else if ( anEvent instanceof MouseEvent )
             {
                 final MouseEvent mouseEvent = ( MouseEvent ) anEvent;
-                return mouseEvent.getClickCount () >= clickCountToStart;
+                return clickCountToStart >= 0 && mouseEvent.getClickCount () >= clickCountToStart;
             }
             else
             {

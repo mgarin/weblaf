@@ -67,7 +67,7 @@ public class WebLabelUI extends BasicLabelUI implements BorderMethods
      * @param c component that will use UI instance
      * @return instance of the WebLabelUI
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebLabelUI ();
@@ -96,7 +96,7 @@ public class WebLabelUI extends BasicLabelUI implements BorderMethods
         propertyChangeListener = new PropertyChangeListener ()
         {
             @Override
-            public void propertyChange ( PropertyChangeEvent evt )
+            public void propertyChange ( final PropertyChangeEvent evt )
             {
                 updateBorder ();
             }

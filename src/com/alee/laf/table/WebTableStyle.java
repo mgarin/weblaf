@@ -84,6 +84,7 @@ public final class WebTableStyle
 
     /**
      * Clicks required to start table cell editing.
+     * Set to -1 to disable editing caused by mouse events.
      */
     public static int clickCountToStartEdit = 2;
 }
