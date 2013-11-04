@@ -57,7 +57,6 @@
           <failOnError>false</failOnError>
           <quiet>true</quiet>
           <excludePackageNames>com.alee.examples</excludePackageNames>
-          <additionalparam>-Xdoclint:none</additionalparam>
         </configuration>
         <executions>
           <execution>
