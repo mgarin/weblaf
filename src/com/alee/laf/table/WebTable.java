@@ -30,6 +30,7 @@ import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 import java.awt.*;
+import java.lang.reflect.InvocationTargetException;
 import java.util.EventObject;
 import java.util.Vector;
 
@@ -172,19 +173,20 @@ public class WebTable extends JTable implements FontMethods<WebTable>
     }
 
     @Override
-    public boolean editCellAt ( int row, int column, EventObject e )
+    public boolean editCellAt ( int row, int column, EventObject event )
     {
-        final boolean editingStarted = super.editCellAt ( row, column, e );
+        final boolean editingStarted = super.editCellAt ( row, column, event );
         if ( editingStarted )
         {
             CellEditor cellEditor = getCellEditor ();
-            if ( cellEditor instanceof DefaultCellEditor )
-            {
-                ( ( DefaultCellEditor ) cellEditor ).getComponent ().requestFocusInWindow ();
-            }
-            if ( cellEditor instanceof WebDefaultCellEditor )
-            {
-                ( ( WebDefaultCellEditor ) cellEditor ).getComponent ().requestFocusInWindow ();
+            try {
+                Object o = cellEditor.getClass().getMethod("getComponent").invoke(cellEditor);
+                if ( o instanceof Component )
+                {
+                    ( ( Component ) o ).requestFocusInWindow ();
+                }
+            } catch (Exception e) {
+                // ignore
             }
         }
         return editingStarted;
