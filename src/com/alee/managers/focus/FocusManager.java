@@ -128,41 +128,44 @@ public final class FocusManager
                     }
 
                     // Checking all added trackers
-                    synchronized ( trackersLock )
+                    // Iterating through registered components
+                    for ( final Map.Entry<Component, Map<FocusTracker, Boolean>> entry : getTrackersCopy ().entrySet () )
                     {
-                        // Iterating through registered components
-                        for ( final Map.Entry<Component, Map<FocusTracker, Boolean>> entry : getTrackersCopy ().entrySet () )
+                        // Retrieving tracked component and its trackers
+                        final Component tracked = entry.getKey ();
+                        final Map<FocusTracker, Boolean> componentTrackers = entry.getValue ();
+
+                        // Iterating through registered component trackers
+                        for ( final Map.Entry<FocusTracker, Boolean> innerEntry : componentTrackers.entrySet () )
                         {
-                            // Retrieving tracked component and its trackers
-                            final Component tracked = entry.getKey ();
-                            final Map<FocusTracker, Boolean> componentTrackers = entry.getValue ();
+                            // Retrieving tracker and its last state
+                            final FocusTracker focusTracker = innerEntry.getKey ();
+                            final Boolean trackerStateCache = innerEntry.getValue ();
 
-                            // Iterating through registered component trackers
-                            for ( final Map.Entry<FocusTracker, Boolean> innerEntry : componentTrackers.entrySet () )
+                            // Checking state change
+                            if ( tracked != null )
                             {
-                                // Retrieving tracker and its last state
-                                final FocusTracker focusTracker = innerEntry.getKey ();
-                                final Boolean trackerStateCache = innerEntry.getValue ();
-
-                                // Checking state change
-                                if ( tracked != null )
+                                // Skip if tracker is disabled
+                                if ( focusTracker.isTrackingEnabled () )
                                 {
-                                    // Skip if tracker is disabled
-                                    if ( focusTracker.isTrackingEnabled () )
+                                    // Determining component is focused or not
+                                    final boolean unite = focusTracker.isUniteWithChilds ();
+                                    final boolean focused = unite ? SwingUtils.isEqualOrChild ( tracked, newFocus ) : tracked == newFocus;
+
+                                    // Informing about focus changes if needed
+                                    if ( trackerStateCache != focused )
                                     {
-                                        // Determining component is focused or not
-                                        final boolean unite = focusTracker.isUniteWithChilds ();
-                                        final boolean focused =
-                                                unite ? SwingUtils.isEqualOrChild ( tracked, newFocus ) : tracked == newFocus;
+                                        focusTracker.focusChanged ( focused );
+                                    }
 
-                                        // Informing about focus changes if needed
-                                        if ( trackerStateCache != focused )
+                                    // Caching focus state
+                                    synchronized ( trackersLock )
+                                    {
+                                        final Map<FocusTracker, Boolean> ct = trackers.get ( tracked );
+                                        if ( ct != null && ct.containsKey ( focusTracker ) )
                                         {
-                                            focusTracker.focusChanged ( focused );
+                                            ct.put ( focusTracker, focused );
                                         }
-
-                                        // Caching focus state
-                                        innerEntry.setValue ( focused );
                                     }
                                 }
                             }
@@ -186,8 +189,12 @@ public final class FocusManager
             final Map<Component, Map<FocusTracker, Boolean>> copy = new HashMap<Component, Map<FocusTracker, Boolean>> ( trackers.size () );
             for ( final Map.Entry<Component, Map<FocusTracker, Boolean>> entry : trackers.entrySet () )
             {
+                final Map<FocusTracker, Boolean> trackers = entry.getValue ();
                 final Map<FocusTracker, Boolean> trackersCopy = new HashMap<FocusTracker, Boolean> ( trackers.size () );
-                trackersCopy.putAll ( entry.getValue () );
+                for ( final Map.Entry<FocusTracker, Boolean> innerEntry : trackers.entrySet () )
+                {
+                    trackersCopy.put ( innerEntry.getKey (), innerEntry.getValue () );
+                }
                 copy.put ( entry.getKey (), trackersCopy );
             }
             return copy;

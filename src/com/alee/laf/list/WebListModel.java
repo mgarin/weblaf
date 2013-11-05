@@ -45,7 +45,7 @@ public class WebListModel<T> extends AbstractListModel
     /**
      * Constructs model with the specified elements.
      */
-    public WebListModel ( T... data )
+    public WebListModel ( final T... data )
     {
         super ();
         Collections.addAll ( delegate, data );
@@ -54,7 +54,7 @@ public class WebListModel<T> extends AbstractListModel
     /**
      * Constructs model with the specified elements.
      */
-    public WebListModel ( Collection<T> data )
+    public WebListModel ( final Collection<T> data )
     {
         super ();
         delegate.addAll ( data );
@@ -87,7 +87,7 @@ public class WebListModel<T> extends AbstractListModel
      * @see #get(int)
      */
     @Override
-    public T getElementAt ( int index )
+    public T getElementAt ( final int index )
     {
         return delegate.elementAt ( index );
     }
@@ -108,7 +108,7 @@ public class WebListModel<T> extends AbstractListModel
      *
      * @param array the array into which the components get copied
      */
-    public void copyInto ( T[] array )
+    public void copyInto ( final T[] array )
     {
         delegate.copyInto ( array );
     }
@@ -130,7 +130,7 @@ public class WebListModel<T> extends AbstractListModel
      * @param minCapacity the desired minimum capacity
      * @see Vector#ensureCapacity(int)
      */
-    public void ensureCapacity ( int minCapacity )
+    public void ensureCapacity ( final int minCapacity )
     {
         delegate.ensureCapacity ( minCapacity );
     }
@@ -141,9 +141,9 @@ public class WebListModel<T> extends AbstractListModel
      * @param newSize the new size of this list
      * @see Vector#setSize(int)
      */
-    public void setSize ( int newSize )
+    public void setSize ( final int newSize )
     {
-        int oldSize = delegate.size ();
+        final int oldSize = delegate.size ();
         delegate.setSize ( newSize );
         if ( oldSize > newSize )
         {
@@ -206,7 +206,7 @@ public class WebListModel<T> extends AbstractListModel
      * @return <code>true</code> if the specified object is the same as a component in this list
      * @see Vector#contains(Object)
      */
-    public boolean contains ( T elem )
+    public boolean contains ( final T elem )
     {
         return delegate.contains ( elem );
     }
@@ -218,7 +218,7 @@ public class WebListModel<T> extends AbstractListModel
      * @return the index of the first occurrence of the argument in this list; returns <code>-1</code> if the object is not found
      * @see Vector#indexOf(Object)
      */
-    public int indexOf ( T elem )
+    public int indexOf ( final T elem )
     {
         return delegate.indexOf ( elem );
     }
@@ -232,7 +232,7 @@ public class WebListModel<T> extends AbstractListModel
      *         <code>elem</code> is not found in the list
      * @see Vector#indexOf(Object, int)
      */
-    public int indexOf ( T elem, int index )
+    public int indexOf ( final T elem, final int index )
     {
         return delegate.indexOf ( elem, index );
     }
@@ -244,7 +244,7 @@ public class WebListModel<T> extends AbstractListModel
      * @return the index of the last occurrence of <code>elem</code> in the list; returns <code>-1</code> if the object is not found
      * @see Vector#lastIndexOf(Object)
      */
-    public int lastIndexOf ( T elem )
+    public int lastIndexOf ( final T elem )
     {
         return delegate.lastIndexOf ( elem );
     }
@@ -258,7 +258,7 @@ public class WebListModel<T> extends AbstractListModel
      *         <code>-1</code> if the object is not found
      * @see Vector#lastIndexOf(Object, int)
      */
-    public int lastIndexOf ( T elem, int index )
+    public int lastIndexOf ( final T elem, final int index )
     {
         return delegate.lastIndexOf ( elem, index );
     }
@@ -273,7 +273,7 @@ public class WebListModel<T> extends AbstractListModel
      * @see #get(int)
      * @see Vector#elementAt(int)
      */
-    public Object elementAt ( int index )
+    public Object elementAt ( final int index )
     {
         return delegate.elementAt ( index );
     }
@@ -313,7 +313,7 @@ public class WebListModel<T> extends AbstractListModel
      * @see #set(int, Object)
      * @see Vector#setElementAt(Object, int)
      */
-    public void setElementAt ( T obj, int index )
+    public void setElementAt ( final T obj, final int index )
     {
         delegate.setElementAt ( obj, index );
         fireContentsChanged ( this, index, index );
@@ -330,7 +330,7 @@ public class WebListModel<T> extends AbstractListModel
      * @see #remove(int)
      * @see Vector#removeElementAt(int)
      */
-    public void removeElementAt ( int index )
+    public void removeElementAt ( final int index )
     {
         delegate.removeElementAt ( index );
         fireIntervalRemoved ( this, index, index );
@@ -349,7 +349,7 @@ public class WebListModel<T> extends AbstractListModel
      * @see #add(int, Object)
      * @see Vector#insertElementAt(Object, int)
      */
-    public void insertElementAt ( T obj, int index )
+    public void insertElementAt ( final T obj, final int index )
     {
         delegate.insertElementAt ( obj, index );
         fireIntervalAdded ( this, index, index );
@@ -361,9 +361,9 @@ public class WebListModel<T> extends AbstractListModel
      * @param obj the component to be added
      * @see Vector#addElement(Object)
      */
-    public void addElement ( T obj )
+    public void addElement ( final T obj )
     {
-        int index = delegate.size ();
+        final int index = delegate.size ();
         delegate.addElement ( obj );
         fireIntervalAdded ( this, index, index );
     }
@@ -373,11 +373,11 @@ public class WebListModel<T> extends AbstractListModel
      *
      * @param objects the components to be added
      */
-    public void addElements ( T... objects )
+    public void addElements ( final T... objects )
     {
         if ( objects.length > 0 )
         {
-            int index = delegate.size ();
+            final int index = delegate.size ();
             Collections.addAll ( delegate, objects );
             fireIntervalAdded ( this, index, delegate.size () - 1 );
         }
@@ -388,11 +388,11 @@ public class WebListModel<T> extends AbstractListModel
      *
      * @param objects the components to be added
      */
-    public void addElements ( Collection<T> objects )
+    public void addElements ( final Collection<T> objects )
     {
         if ( objects.size () > 0 )
         {
-            int index = delegate.size ();
+            final int index = delegate.size ();
             delegate.addAll ( objects );
             fireIntervalAdded ( this, index, delegate.size () - 1 );
         }
@@ -403,7 +403,7 @@ public class WebListModel<T> extends AbstractListModel
      *
      * @param objects the components to be added
      */
-    public void setElements ( Collection<T> objects )
+    public void setElements ( final Collection<T> objects )
     {
         clear ();
         if ( objects.size () > 0 )
@@ -420,10 +420,10 @@ public class WebListModel<T> extends AbstractListModel
      * @return <code>true</code> if the argument was a component of this list; <code>false</code> otherwise
      * @see Vector#removeElement(Object)
      */
-    public boolean removeElement ( T object )
+    public boolean removeElement ( final T object )
     {
-        int index = indexOf ( object );
-        boolean rv = delegate.removeElement ( object );
+        final int index = indexOf ( object );
+        final boolean rv = delegate.removeElement ( object );
         if ( index >= 0 )
         {
             fireIntervalRemoved ( this, index, index );
@@ -436,9 +436,9 @@ public class WebListModel<T> extends AbstractListModel
      *
      * @param objects the components to be removed
      */
-    public void removeElements ( T... objects )
+    public void removeElements ( final T... objects )
     {
-        for ( T object : objects )
+        for ( final T object : objects )
         {
             removeElement ( object );
         }
@@ -449,9 +449,9 @@ public class WebListModel<T> extends AbstractListModel
      *
      * @param objects the components to be removed
      */
-    public void removeElements ( Collection<T> objects )
+    public void removeElements ( final Collection<T> objects )
     {
-        for ( T object : objects )
+        for ( final T object : objects )
         {
             removeElement ( object );
         }
@@ -467,7 +467,7 @@ public class WebListModel<T> extends AbstractListModel
      */
     public void removeAllElements ()
     {
-        int index1 = delegate.size () - 1;
+        final int index1 = delegate.size () - 1;
         delegate.removeAllElements ();
         if ( index1 >= 0 )
         {
@@ -480,7 +480,7 @@ public class WebListModel<T> extends AbstractListModel
      *
      * @param index index to process
      */
-    public void removeAllBefore ( int index )
+    public void removeAllBefore ( final int index )
     {
         for ( int i = 0; i < index; i++ )
         {
@@ -497,7 +497,7 @@ public class WebListModel<T> extends AbstractListModel
      *
      * @param index index to process
      */
-    public void removeAllAfter ( int index )
+    public void removeAllAfter ( final int index )
     {
         final int lastIndex = size () - 1;
         for ( int i = lastIndex; i > index; i-- )
@@ -528,7 +528,7 @@ public class WebListModel<T> extends AbstractListModel
      */
     public Object[] toArray ()
     {
-        Object[] rv = new Object[ delegate.size () ];
+        final Object[] rv = new Object[ delegate.size () ];
         delegate.copyInto ( rv );
         return rv;
     }
@@ -541,7 +541,7 @@ public class WebListModel<T> extends AbstractListModel
      *
      * @param index index of element to return
      */
-    public T get ( int index )
+    public T get ( final int index )
     {
         return delegate.elementAt ( index );
     }
@@ -556,9 +556,9 @@ public class WebListModel<T> extends AbstractListModel
      * @param element element to be stored at the specified position
      * @return the element previously at the specified position
      */
-    public T set ( int index, T element )
+    public T set ( final int index, final T element )
     {
-        T rv = delegate.elementAt ( index );
+        final T rv = delegate.elementAt ( index );
         delegate.setElementAt ( element, index );
         fireContentsChanged ( this, index, index );
         return rv;
@@ -572,7 +572,7 @@ public class WebListModel<T> extends AbstractListModel
      * @param index   index at which the specified element is to be inserted
      * @param element element to be inserted
      */
-    public void add ( int index, T element )
+    public void add ( final int index, final T element )
     {
         delegate.insertElementAt ( element, index );
         fireIntervalAdded ( this, index, index );
@@ -586,9 +586,9 @@ public class WebListModel<T> extends AbstractListModel
      *
      * @param index the index of the element to removed
      */
-    public T remove ( int index )
+    public T remove ( final int index )
     {
-        T rv = delegate.elementAt ( index );
+        final T rv = delegate.elementAt ( index );
         delegate.removeElementAt ( index );
         fireIntervalRemoved ( this, index, index );
         return rv;
@@ -599,7 +599,7 @@ public class WebListModel<T> extends AbstractListModel
      */
     public void clear ()
     {
-        int index1 = delegate.size () - 1;
+        final int index1 = delegate.size () - 1;
         delegate.removeAllElements ();
         if ( index1 >= 0 )
         {
@@ -618,7 +618,7 @@ public class WebListModel<T> extends AbstractListModel
      * @param toIndex   the index of the upper end of the range
      * @see #remove(int)
      */
-    public void removeRange ( int fromIndex, int toIndex )
+    public void removeRange ( final int fromIndex, final int toIndex )
     {
         if ( fromIndex > toIndex )
         {
@@ -636,9 +636,9 @@ public class WebListModel<T> extends AbstractListModel
      *
      * @param element element to update
      */
-    public void update ( T element )
+    public void update ( final T element )
     {
-        int index = indexOf ( element );
+        final int index = indexOf ( element );
         if ( index != -1 )
         {
             fireContentsChanged ( this, index, index );

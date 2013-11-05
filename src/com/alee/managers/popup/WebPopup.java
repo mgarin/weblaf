@@ -76,12 +76,12 @@ public class WebPopup extends WebPanel
         this ( PopupManager.getDefaultPopupPainter () );
     }
 
-    public WebPopup ( PopupStyle popupStyle )
+    public WebPopup ( final PopupStyle popupStyle )
     {
         this ( PopupManager.getPopupPainter ( popupStyle ) );
     }
 
-    public WebPopup ( Painter stylePainter )
+    public WebPopup ( final Painter stylePainter )
     {
         super ( stylePainter );
         initializePopup ();
@@ -105,7 +105,7 @@ public class WebPopup extends WebPanel
         fadeTimer.addActionListener ( new ActionListener ()
         {
             @Override
-            public void actionPerformed ( ActionEvent e )
+            public void actionPerformed ( final ActionEvent e )
             {
                 final float roundsCount = fadeTime / ( 1000f / fadeFps );
                 final float fadeSpeed = 1f / roundsCount;
@@ -141,7 +141,7 @@ public class WebPopup extends WebPanel
         addAncestorListener ( new AncestorAdapter ()
         {
             @Override
-            public void ancestorAdded ( AncestorEvent event )
+            public void ancestorAdded ( final AncestorEvent event )
             {
                 if ( requestFocusOnShow )
                 {
@@ -172,7 +172,7 @@ public class WebPopup extends WebPanel
             }
 
             @Override
-            public void ancestorRemoved ( AncestorEvent event )
+            public void ancestorRemoved ( final AncestorEvent event )
             {
                 // Informing about popup state change
                 firePopupClosed ();
@@ -189,7 +189,7 @@ public class WebPopup extends WebPanel
             }
 
             @Override
-            public void focusChanged ( boolean focused )
+            public void focusChanged ( final boolean focused )
             {
                 WebPopup.this.focusChanged ( focused );
             }
@@ -202,7 +202,7 @@ public class WebPopup extends WebPanel
      *
      * @param focused whether popup has focus or not
      */
-    protected void focusChanged ( boolean focused )
+    protected void focusChanged ( final boolean focused )
     {
         // todo Replace with MultiFocusTracker (for multiply components)
         if ( WebPopup.this.isShowing () && !focused && !isChildFocused () && closeOnFocusLoss )
@@ -215,7 +215,7 @@ public class WebPopup extends WebPanel
      * Popup styling
      */
 
-    public void setPopupStyle ( PopupStyle popupStyle )
+    public void setPopupStyle ( final PopupStyle popupStyle )
     {
         setPainter ( PopupManager.getPopupPainter ( popupStyle ) );
     }
@@ -229,7 +229,7 @@ public class WebPopup extends WebPanel
         return animated;
     }
 
-    public void setAnimated ( boolean animated )
+    public void setAnimated ( final boolean animated )
     {
         this.animated = animated;
     }
@@ -239,7 +239,7 @@ public class WebPopup extends WebPanel
         return closeOnFocusLoss;
     }
 
-    public void setCloseOnFocusLoss ( boolean closeOnFocusLoss )
+    public void setCloseOnFocusLoss ( final boolean closeOnFocusLoss )
     {
         this.closeOnFocusLoss = closeOnFocusLoss;
     }
@@ -249,7 +249,7 @@ public class WebPopup extends WebPanel
         return requestFocusOnShow;
     }
 
-    public void setRequestFocusOnShow ( boolean requestFocusOnShow )
+    public void setRequestFocusOnShow ( final boolean requestFocusOnShow )
     {
         this.requestFocusOnShow = requestFocusOnShow;
     }
@@ -259,7 +259,7 @@ public class WebPopup extends WebPanel
         return defaultFocusComponent;
     }
 
-    public void setDefaultFocusComponent ( Component defaultFocusComponent )
+    public void setDefaultFocusComponent ( final Component defaultFocusComponent )
     {
         this.defaultFocusComponent = defaultFocusComponent;
     }
@@ -273,19 +273,19 @@ public class WebPopup extends WebPanel
         return focusableChilds;
     }
 
-    public void addFocusableChild ( Component child )
+    public void addFocusableChild ( final Component child )
     {
         focusableChilds.add ( child );
     }
 
-    public void removeFocusableChild ( Component child )
+    public void removeFocusableChild ( final Component child )
     {
         focusableChilds.remove ( child );
     }
 
     public boolean isChildFocused ()
     {
-        for ( Component child : focusableChilds )
+        for ( final Component child : focusableChilds )
         {
             if ( SwingUtils.hasFocusOwner ( child ) )
             {
@@ -335,36 +335,36 @@ public class WebPopup extends WebPanel
         showPopup ( component, x, y );
     }
 
-    public void showPopup ( Component component )
+    public void showPopup ( final Component component )
     {
         PopupManager.showPopup ( component, this, requestFocusOnShow );
         clearComponentAncestorListener ();
     }
 
-    public void showPopup ( Component component, Point location )
+    public void showPopup ( final Component component, final Point location )
     {
         showPopup ( component, location.x, location.y );
     }
 
-    public void showPopup ( Component component, int x, int y )
+    public void showPopup ( final Component component, final int x, final int y )
     {
         final Dimension ps = WebPopup.this.getPreferredSize ();
         showPopup ( component, x, y, ps.width, ps.height );
     }
 
-    public void showPopup ( Component component, Rectangle bounds )
+    public void showPopup ( final Component component, final Rectangle bounds )
     {
         showPopup ( component, bounds.x, bounds.y, bounds.width, bounds.height );
     }
 
-    public void showPopup ( Component component, int x, int y, int width, int height )
+    public void showPopup ( final Component component, final int x, final int y, final int width, final int height )
     {
         updatePopupBounds ( component, x, y, width, height );
         PopupManager.showPopup ( component, this, requestFocusOnShow );
         updateComponentAncestorListener ( component, x, y, width, height );
     }
 
-    protected void updatePopupBounds ( Component component, int x, int y, int width, int height )
+    protected void updatePopupBounds ( final Component component, final int x, final int y, final int width, final int height )
     {
         // Updating popup bounds with component-relative values
         if ( component.isShowing () )
@@ -385,7 +385,7 @@ public class WebPopup extends WebPanel
             lastListener = new AncestorAdapter ()
             {
                 @Override
-                public void ancestorMoved ( AncestorEvent event )
+                public void ancestorMoved ( final AncestorEvent event )
                 {
                     updatePopupBounds ( component, x, y, width, height );
                 }
@@ -406,12 +406,12 @@ public class WebPopup extends WebPanel
      * Modal popup display methods
      */
 
-    public void showPopupAsModal ( Component component )
+    public void showPopupAsModal ( final Component component )
     {
         showPopupAsModal ( component, false, false );
     }
 
-    public void showPopupAsModal ( Component component, boolean hfill, boolean vfill )
+    public void showPopupAsModal ( final Component component, final boolean hfill, final boolean vfill )
     {
         PopupManager.showModalPopup ( component, this, hfill, vfill );
     }
@@ -464,7 +464,7 @@ public class WebPopup extends WebPanel
      * {@inheritDoc}
      */
     @Override
-    public boolean contains ( int x, int y )
+    public boolean contains ( final int x, final int y )
     {
         return provideShape ().contains ( x, y ) && fadeStateType != FadeStateType.fadeOut;
     }
@@ -473,19 +473,19 @@ public class WebPopup extends WebPanel
      * Popup listeners
      */
 
-    public void addPopupListener ( PopupListener listener )
+    public void addPopupListener ( final PopupListener listener )
     {
         popupListeners.add ( listener );
     }
 
-    public void removePopupListener ( PopupListener listener )
+    public void removePopupListener ( final PopupListener listener )
     {
         popupListeners.remove ( listener );
     }
 
     public void firePopupWillBeOpened ()
     {
-        for ( PopupListener listener : CollectionUtils.copy ( popupListeners ) )
+        for ( final PopupListener listener : CollectionUtils.copy ( popupListeners ) )
         {
             listener.popupWillBeOpened ();
         }
@@ -493,7 +493,7 @@ public class WebPopup extends WebPanel
 
     public void firePopupOpened ()
     {
-        for ( PopupListener listener : CollectionUtils.copy ( popupListeners ) )
+        for ( final PopupListener listener : CollectionUtils.copy ( popupListeners ) )
         {
             listener.popupOpened ();
         }
@@ -501,7 +501,7 @@ public class WebPopup extends WebPanel
 
     public void firePopupWillBeClosed ()
     {
-        for ( PopupListener listener : CollectionUtils.copy ( popupListeners ) )
+        for ( final PopupListener listener : CollectionUtils.copy ( popupListeners ) )
         {
             listener.popupWillBeClosed ();
         }
@@ -509,7 +509,7 @@ public class WebPopup extends WebPanel
 
     public void firePopupClosed ()
     {
-        for ( PopupListener listener : CollectionUtils.copy ( popupListeners ) )
+        for ( final PopupListener listener : CollectionUtils.copy ( popupListeners ) )
         {
             listener.popupClosed ();
         }
@@ -519,7 +519,7 @@ public class WebPopup extends WebPanel
      * {@inheritDoc}
      */
     @Override
-    protected void paintComponent ( Graphics g )
+    protected void paintComponent ( final Graphics g )
     {
         // Fade animation and transparency
         if ( fade < 1f )
