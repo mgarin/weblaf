@@ -19,6 +19,7 @@ package com.alee.examples.groups.focus;
 
 import com.alee.examples.WebLookAndFeelDemo;
 import com.alee.examples.content.DefaultExample;
+import com.alee.extended.layout.TableLayout;
 import com.alee.extended.painter.TitledBorderPainter;
 import com.alee.extended.panel.GroupPanel;
 import com.alee.laf.checkbox.WebCheckBox;
@@ -29,7 +30,6 @@ import com.alee.laf.text.WebTextArea;
 import com.alee.laf.text.WebTextField;
 import com.alee.managers.focus.DefaultFocusTracker;
 import com.alee.managers.focus.FocusManager;
-import info.clearthought.layout.TableLayout;
 
 import javax.swing.*;
 import java.awt.*;

@@ -19,6 +19,7 @@ package com.alee.laf.colorchooser;
 
 import com.alee.extended.colorchooser.DoubleColorField;
 import com.alee.extended.colorchooser.DoubleColorFieldListener;
+import com.alee.extended.layout.TableLayout;
 import com.alee.extended.layout.ToolbarLayout;
 import com.alee.laf.StyleConstants;
 import com.alee.laf.button.WebButton;
@@ -32,7 +33,6 @@ import com.alee.utils.CollectionUtils;
 import com.alee.utils.ColorUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.DialogOptions;
-import info.clearthought.layout.TableLayout;
 
 import javax.swing.*;
 import javax.swing.event.CaretEvent;

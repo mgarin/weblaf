@@ -18,6 +18,7 @@
 package com.alee.extended.ninepatch;
 
 import com.alee.extended.drag.FileDropHandler;
+import com.alee.extended.layout.TableLayout;
 import com.alee.extended.painter.AlphaLayerPainter;
 import com.alee.extended.painter.ColorPainter;
 import com.alee.extended.painter.NinePatchIconPainter;
@@ -47,7 +48,6 @@ import com.alee.utils.*;
 import com.alee.utils.ninepatch.NinePatchInterval;
 import com.alee.utils.ninepatch.NinePatchIntervalType;
 import com.alee.utils.swing.DialogOptions;
-import info.clearthought.layout.TableLayout;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;

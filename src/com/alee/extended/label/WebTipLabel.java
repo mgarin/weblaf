@@ -17,6 +17,7 @@
 
 package com.alee.extended.label;
 
+import com.alee.extended.layout.TableLayout;
 import com.alee.laf.StyleConstants;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.label.WebLabel;
@@ -24,7 +25,6 @@ import com.alee.managers.settings.SettingsManager;
 import com.alee.utils.LafUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.WebTimer;
-import info.clearthought.layout.TableLayout;
 
 import javax.swing.*;
 import java.awt.*;

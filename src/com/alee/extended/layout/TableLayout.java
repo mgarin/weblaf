@@ -49,7 +49,7 @@
  * ====================================================================
  */
 
-package info.clearthought.layout;
+package com.alee.extended.layout;
 
 import java.awt.*;
 import java.lang.reflect.Method;
@@ -138,7 +138,7 @@ import java.util.ListIterator;
  * <pre>
  * import java.awt.*;
  * import javax.swing.*;
- * import info.clearthought.layout.TableLayout;
+ * import com.alee.extended.layout.TableLayout;
  * <spc>
  * public class Preferred extends JFrame
  * {
@@ -219,7 +219,7 @@ import java.util.ListIterator;
  */
 
 @SuppressWarnings ({ "ALL" })
-public class TableLayout implements java.awt.LayoutManager2, java.io.Serializable, info.clearthought.layout.TableLayoutConstants
+public class TableLayout implements java.awt.LayoutManager2, java.io.Serializable, TableLayoutConstants
 {
     /*
      Note: In this file, a cr refers to either a column or a row.  cr[C] always

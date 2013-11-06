@@ -19,6 +19,7 @@ package com.alee.examples.groups.popup;
 
 import com.alee.examples.WebLookAndFeelDemo;
 import com.alee.examples.content.DefaultExample;
+import com.alee.extended.layout.TableLayout;
 import com.alee.extended.panel.GroupPanel;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.label.WebLabel;
@@ -26,7 +27,6 @@ import com.alee.laf.panel.WebPanel;
 import com.alee.laf.text.WebTextField;
 import com.alee.managers.popup.PopupWay;
 import com.alee.managers.popup.WebButtonPopup;
-import info.clearthought.layout.TableLayout;
 
 import javax.swing.*;
 import java.awt.*;

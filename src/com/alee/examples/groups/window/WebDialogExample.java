@@ -20,6 +20,7 @@ package com.alee.examples.groups.window;
 import com.alee.examples.WebLookAndFeelDemo;
 import com.alee.examples.content.DefaultExample;
 import com.alee.examples.content.FeatureState;
+import com.alee.extended.layout.TableLayout;
 import com.alee.extended.panel.CenterPanel;
 import com.alee.extended.panel.GroupPanel;
 import com.alee.laf.WebLookAndFeel;
@@ -32,7 +33,6 @@ import com.alee.laf.text.WebTextField;
 import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.hotkey.HotkeyManager;
 import com.alee.utils.SwingUtils;
-import info.clearthought.layout.TableLayout;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;

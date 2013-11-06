@@ -17,8 +17,8 @@
 
 package com.alee.extended.panel;
 
+import com.alee.extended.layout.TableLayout;
 import com.alee.laf.panel.WebPanel;
-import info.clearthought.layout.TableLayout;
 
 import java.awt.*;
 

@@ -20,11 +20,11 @@ package com.alee.examples.groups.panel;
 import com.alee.examples.WebLookAndFeelDemo;
 import com.alee.examples.content.DefaultExample;
 import com.alee.extended.label.WebVerticalLabel;
+import com.alee.extended.layout.TableLayout;
 import com.alee.extended.panel.GroupPanel;
 import com.alee.laf.StyleConstants;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
-import info.clearthought.layout.TableLayout;
 
 import javax.swing.*;
 import java.awt.*;

@@ -18,6 +18,7 @@
 package com.alee.examples.content;
 
 import com.alee.extended.layout.SlidingLayout;
+import com.alee.extended.layout.TableLayout;
 import com.alee.extended.painter.NinePatchIconPainter;
 import com.alee.laf.panel.WebPanel;
 import com.alee.laf.text.WebTextField;
@@ -30,7 +31,6 @@ import com.alee.managers.tooltip.WebCustomTooltipStyle;
 import com.alee.utils.ImageUtils;
 import com.alee.utils.LafUtils;
 import com.alee.utils.SwingUtils;
-import info.clearthought.layout.TableLayout;
 
 import javax.swing.*;
 import java.awt.*;

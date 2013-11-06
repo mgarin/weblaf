@@ -58,6 +58,7 @@ import com.alee.examples.groups.transition.TransitionsGroup;
 import com.alee.examples.groups.tree.TreesGroup;
 import com.alee.examples.groups.window.WindowsGroup;
 import com.alee.extended.image.WebImage;
+import com.alee.extended.layout.TableLayout;
 import com.alee.extended.layout.VerticalFlowLayout;
 import com.alee.extended.panel.CenterPanel;
 import com.alee.extended.panel.WebOverlay;
@@ -78,7 +79,6 @@ import com.alee.utils.file.FileDownloadListener;
 import com.alee.utils.reflection.JarEntry;
 import com.alee.utils.reflection.JarStructure;
 import com.alee.utils.swing.WebTimer;
-import info.clearthought.layout.TableLayout;
 
 import javax.swing.*;
 import java.awt.*;

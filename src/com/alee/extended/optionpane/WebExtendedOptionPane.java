@@ -19,6 +19,7 @@ package com.alee.extended.optionpane;
 
 import com.alee.extended.image.WebImage;
 import com.alee.extended.layout.HorizontalFlowLayout;
+import com.alee.extended.layout.TableLayout;
 import com.alee.extended.panel.CenterPanel;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.label.WebLabel;
@@ -29,7 +30,6 @@ import com.alee.laf.rootpane.WebDialog;
 import com.alee.managers.language.LanguageManager;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.SwingUtils;
-import info.clearthought.layout.TableLayout;
 
 import javax.swing.*;
 import java.awt.*;

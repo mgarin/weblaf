@@ -17,10 +17,10 @@
 
 package com.alee.laf.colorchooser;
 
+import com.alee.extended.layout.TableLayout;
 import com.alee.laf.panel.WebPanel;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.ImageUtils;
-import info.clearthought.layout.TableLayout;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;

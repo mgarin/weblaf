@@ -22,10 +22,10 @@ import com.alee.examples.content.DefaultExample;
 import com.alee.examples.content.FeatureState;
 import com.alee.extended.image.DisplayType;
 import com.alee.extended.image.WebImage;
+import com.alee.extended.layout.TableLayout;
 import com.alee.extended.panel.GroupPanel;
 import com.alee.extended.progress.WebStepProgress;
 import com.alee.laf.panel.WebPanel;
-import info.clearthought.layout.TableLayout;
 
 import java.awt.*;
 

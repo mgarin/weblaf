@@ -17,6 +17,7 @@
 
 package com.alee.managers.proxy;
 
+import com.alee.extended.layout.TableLayout;
 import com.alee.extended.optionpane.WebExtendedOptionPane;
 import com.alee.extended.panel.GroupPanel;
 import com.alee.laf.checkbox.WebCheckBox;
@@ -31,7 +32,6 @@ import com.alee.managers.hotkey.HotkeyRunnable;
 import com.alee.managers.language.LanguageManager;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.AncestorAdapter;
-import info.clearthought.layout.TableLayout;
 
 import javax.swing.*;
 import javax.swing.event.AncestorEvent;

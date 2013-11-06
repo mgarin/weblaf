@@ -17,6 +17,7 @@
 
 package com.alee.extended.date;
 
+import com.alee.extended.layout.TableLayout;
 import com.alee.extended.transition.ComponentTransition;
 import com.alee.extended.transition.TransitionAdapter;
 import com.alee.extended.transition.effects.Direction;
@@ -33,7 +34,6 @@ import com.alee.utils.CollectionUtils;
 import com.alee.utils.CompareUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.TimeUtils;
-import info.clearthought.layout.TableLayout;
 
 import javax.swing.*;
 import java.awt.*;

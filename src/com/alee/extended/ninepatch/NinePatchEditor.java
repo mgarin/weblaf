@@ -17,6 +17,7 @@
 
 package com.alee.extended.ninepatch;
 
+import com.alee.extended.layout.TableLayout;
 import com.alee.laf.StyleConstants;
 import com.alee.laf.scroll.WebScrollPane;
 import com.alee.utils.*;
@@ -24,7 +25,6 @@ import com.alee.utils.ninepatch.NinePatchIcon;
 import com.alee.utils.ninepatch.NinePatchInterval;
 import com.alee.utils.swing.MouseEventType;
 import com.alee.utils.swing.SizeMethods;
-import info.clearthought.layout.TableLayout;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
