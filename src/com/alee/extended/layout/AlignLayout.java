@@ -255,21 +255,21 @@ public class AlignLayout extends AbstractLayoutManager implements SwingConstants
             // Counting size for each block
             final Map<Integer, Integer> widths = new HashMap<Integer, Integer> ();
             final Map<Integer, Integer> heights = new HashMap<Integer, Integer> ();
-            for ( int halign : horizontals )
+            for ( final int halign : horizontals )
             {
-                for ( int valign : verticals )
+                for ( final int valign : verticals )
                 {
-                    Dimension size = getSideSize ( parent, halign, valign );
+                    final Dimension size = getSideSize ( parent, halign, valign );
                     if ( size != null )
                     {
                         if ( !hfill )
                         {
-                            int width = widths.containsKey ( halign ) ? widths.get ( halign ) : 0;
+                            final int width = widths.containsKey ( halign ) ? widths.get ( halign ) : 0;
                             widths.put ( halign, Math.max ( width, size.width ) );
                         }
                         if ( !vfill )
                         {
-                            int height = widths.containsKey ( valign ) ? widths.get ( valign ) : 0;
+                            final int height = widths.containsKey ( valign ) ? widths.get ( valign ) : 0;
                             heights.put ( valign, Math.max ( height, size.height ) );
                         }
                     }
@@ -284,7 +284,7 @@ public class AlignLayout extends AbstractLayoutManager implements SwingConstants
             }
             else
             {
-                for ( Integer width : widths.values () )
+                for ( final Integer width : widths.values () )
                 {
                     ps.width += ps.width > 0 ? hgap + width : width;
                 }
@@ -295,7 +295,7 @@ public class AlignLayout extends AbstractLayoutManager implements SwingConstants
             }
             else
             {
-                for ( Integer height : heights.values () )
+                for ( final Integer height : heights.values () )
                 {
                     ps.height += ps.height > 0 ? vgap + height : height;
                 }

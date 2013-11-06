@@ -45,9 +45,9 @@ public class WebFileChooserField extends WebPanel
 {
     public static final ImageIcon CROSS_ICON = new ImageIcon ( WebFileChooserField.class.getResource ( "icons/cross.png" ) );
 
-    private List<FilesSelectionListener> listeners = new ArrayList<FilesSelectionListener> ( 1 );
+    private final List<FilesSelectionListener> listeners = new ArrayList<FilesSelectionListener> ( 1 );
 
-    private List<File> selectedFiles = new ArrayList<File> ();
+    private final List<File> selectedFiles = new ArrayList<File> ();
 
     /**
      * Whether multiply files selection allowed or not.
@@ -63,8 +63,8 @@ public class WebFileChooserField extends WebPanel
 
     private WebFileChooser webFileChooser = null;
 
-    private WebPanel contentPanel;
-    private WebScrollPane scroll;
+    private final WebPanel contentPanel;
+    private final WebScrollPane scroll;
     private WebButton chooseButton;
 
     public WebFileChooserField ()
@@ -72,17 +72,17 @@ public class WebFileChooserField extends WebPanel
         this ( null );
     }
 
-    public WebFileChooserField ( Window parent )
+    public WebFileChooserField ( final Window parent )
     {
         this ( parent, true );
     }
 
-    public WebFileChooserField ( boolean showChooseButton )
+    public WebFileChooserField ( final boolean showChooseButton )
     {
         this ( null, showChooseButton );
     }
 
-    public WebFileChooserField ( final Window owner, boolean showChooseButton )
+    public WebFileChooserField ( final Window owner, final boolean showChooseButton )
     {
         super ( true );
 
@@ -108,7 +108,7 @@ public class WebFileChooserField extends WebPanel
             }
 
             @Override
-            protected boolean filesImported ( List<File> files )
+            protected boolean filesImported ( final List<File> files )
             {
                 // Setting dragged files
                 setSelectedFiles ( files );
@@ -120,9 +120,9 @@ public class WebFileChooserField extends WebPanel
         contentPanel.addMouseWheelListener ( new MouseWheelListener ()
         {
             @Override
-            public void mouseWheelMoved ( MouseWheelEvent e )
+            public void mouseWheelMoved ( final MouseWheelEvent e )
             {
-                Rectangle vr = contentPanel.getVisibleRect ();
+                final Rectangle vr = contentPanel.getVisibleRect ();
                 contentPanel.scrollRectToVisible ( new Rectangle ( vr.x + e.getWheelRotation () * 25, vr.y, vr.width, vr.height ) );
             }
         } );
@@ -132,7 +132,7 @@ public class WebFileChooserField extends WebPanel
             @Override
             public Dimension getPreferredSize ()
             {
-                Dimension ps = super.getPreferredSize ();
+                final Dimension ps = super.getPreferredSize ();
                 ps.height = contentPanel.getPreferredSize ().height;
                 return ps;
             }
@@ -151,7 +151,7 @@ public class WebFileChooserField extends WebPanel
             webFileChooser.addActionListener ( new ActionListener ()
             {
                 @Override
-                public void actionPerformed ( ActionEvent e )
+                public void actionPerformed ( final ActionEvent e )
                 {
                     if ( e.getActionCommand ().equals ( WebFileChooser.APPROVE_SELECTION ) )
                     {
@@ -172,7 +172,7 @@ public class WebFileChooserField extends WebPanel
             chooseButton.addActionListener ( new ActionListener ()
             {
                 @Override
-                public void actionPerformed ( ActionEvent e )
+                public void actionPerformed ( final ActionEvent e )
                 {
                     // Files selection
                     webFileChooser.showOpenDialog ( owner );
@@ -184,7 +184,7 @@ public class WebFileChooserField extends WebPanel
             contentPanel.addMouseListener ( new MouseAdapter ()
             {
                 @Override
-                public void mousePressed ( MouseEvent e )
+                public void mousePressed ( final MouseEvent e )
                 {
                     // For easier files choose
                     if ( SwingUtilities.isLeftMouseButton ( e ) )
@@ -232,7 +232,7 @@ public class WebFileChooserField extends WebPanel
         return multiSelectionEnabled;
     }
 
-    public void setMultiSelectionEnabled ( boolean multiSelectionEnabled )
+    public void setMultiSelectionEnabled ( final boolean multiSelectionEnabled )
     {
         this.multiSelectionEnabled = multiSelectionEnabled;
         if ( webFileChooser != null )
@@ -247,7 +247,7 @@ public class WebFileChooserField extends WebPanel
         return filesDropEnabled;
     }
 
-    public void setFilesDropEnabled ( boolean filesDropEnabled )
+    public void setFilesDropEnabled ( final boolean filesDropEnabled )
     {
         this.filesDropEnabled = filesDropEnabled;
     }
@@ -257,7 +257,7 @@ public class WebFileChooserField extends WebPanel
         return showFileShortName;
     }
 
-    public void setShowFileShortName ( boolean showFileShortName )
+    public void setShowFileShortName ( final boolean showFileShortName )
     {
         this.showFileShortName = showFileShortName;
         updateSelectedFiles ();
@@ -268,7 +268,7 @@ public class WebFileChooserField extends WebPanel
         return showFileIcon;
     }
 
-    public void setShowFileIcon ( boolean showFileIcon )
+    public void setShowFileIcon ( final boolean showFileIcon )
     {
         this.showFileIcon = showFileIcon;
         updateSelectedFiles ();
@@ -279,7 +279,7 @@ public class WebFileChooserField extends WebPanel
         return showRemoveButton;
     }
 
-    public void setShowRemoveButton ( boolean showRemoveButton )
+    public void setShowRemoveButton ( final boolean showRemoveButton )
     {
         this.showRemoveButton = showRemoveButton;
         updateSelectedFiles ();
@@ -290,7 +290,7 @@ public class WebFileChooserField extends WebPanel
         return showFileExtensions;
     }
 
-    public void setShowFileExtensions ( boolean showFileExtensions )
+    public void setShowFileExtensions ( final boolean showFileExtensions )
     {
         this.showFileExtensions = showFileExtensions;
         updateSelectedFiles ();
@@ -301,7 +301,7 @@ public class WebFileChooserField extends WebPanel
         return selectedFiles;
     }
 
-    public void setSelectedFile ( File selectedFile )
+    public void setSelectedFile ( final File selectedFile )
     {
         this.selectedFiles.clear ();
         if ( selectedFile != null && FileUtils.isFileAccepted ( selectedFile, getAvailableFilters () ) )
@@ -314,14 +314,14 @@ public class WebFileChooserField extends WebPanel
         fireSelectionChanged ( this.selectedFiles );
     }
 
-    public void setSelectedFiles ( List<File> selectedFiles )
+    public void setSelectedFiles ( final List<File> selectedFiles )
     {
         this.selectedFiles.clear ();
         if ( selectedFiles != null && selectedFiles.size () > 0 )
         {
             if ( multiSelectionEnabled )
             {
-                for ( File file : selectedFiles )
+                for ( final File file : selectedFiles )
                 {
                     if ( FileUtils.isFileAccepted ( file, getAvailableFilters () ) )
                     {
@@ -331,7 +331,7 @@ public class WebFileChooserField extends WebPanel
             }
             else
             {
-                for ( File file : selectedFiles )
+                for ( final File file : selectedFiles )
                 {
                     if ( FileUtils.isFileAccepted ( file, getAvailableFilters () ) )
                     {
@@ -355,9 +355,9 @@ public class WebFileChooserField extends WebPanel
     private void updateSelectedFiles ()
     {
         contentPanel.removeAll ();
-        for ( File file : selectedFiles )
+        for ( final File file : selectedFiles )
         {
-            FilePlate filePlate = new FilePlate ( file );
+            final FilePlate filePlate = new FilePlate ( file );
             filePlate.applyComponentOrientation ( WebFileChooserField.this.getComponentOrientation () );
             contentPanel.add ( filePlate );
         }
@@ -383,7 +383,7 @@ public class WebFileChooserField extends WebPanel
             setFocusable ( true );
 
             // File name label
-            String actualFileName = FileUtils.getDisplayFileName ( file );
+            final String actualFileName = FileUtils.getDisplayFileName ( file );
             final String displayFileName =
                     showFileExtensions || file.isDirectory () ? actualFileName : FileUtils.getFileNamePart ( actualFileName );
             final String absolutePath = file.getAbsolutePath ();
@@ -397,7 +397,7 @@ public class WebFileChooserField extends WebPanel
                 private boolean showShortName = showFileShortName;
 
                 @Override
-                public void mousePressed ( MouseEvent e )
+                public void mousePressed ( final MouseEvent e )
                 {
                     FilePlate.this.requestFocusInWindow ();
                     if ( SwingUtilities.isRightMouseButton ( e ) )
@@ -419,7 +419,7 @@ public class WebFileChooserField extends WebPanel
             addFocusListener ( new FocusAdapter ()
             {
                 @Override
-                public void focusGained ( FocusEvent e )
+                public void focusGained ( final FocusEvent e )
                 {
                     scrollToPlate ();
                 }
@@ -428,7 +428,7 @@ public class WebFileChooserField extends WebPanel
             // Remove button
             if ( showRemoveButton )
             {
-                WebButton remove = new WebButton ( CROSS_ICON );
+                final WebButton remove = new WebButton ( CROSS_ICON );
                 remove.setLeftRightSpacing ( 0 );
                 remove.setInnerShadeWidth ( 2 );
                 remove.setRound ( StyleConstants.smallRound );
@@ -438,7 +438,7 @@ public class WebFileChooserField extends WebPanel
                 remove.addActionListener ( new ActionListener ()
                 {
                     @Override
-                    public void actionPerformed ( ActionEvent e )
+                    public void actionPerformed ( final ActionEvent e )
                     {
                         // Remove file
                         selectedFiles.remove ( file );
@@ -456,26 +456,26 @@ public class WebFileChooserField extends WebPanel
 
         private void scrollToPlate ()
         {
-            Rectangle b = FilePlate.this.getBounds ();
-            int w = scroll.getWidth () - 2;
+            final Rectangle b = FilePlate.this.getBounds ();
+            final int w = scroll.getWidth () - 2;
             b.width = w < b.width ? w : b.width;
             contentPanel.scrollRectToVisible ( b );
         }
     }
 
-    public void addSelectedFilesListener ( FilesSelectionListener listener )
+    public void addSelectedFilesListener ( final FilesSelectionListener listener )
     {
         listeners.add ( listener );
     }
 
-    public void removeSelectedFilesListener ( FilesSelectionListener listener )
+    public void removeSelectedFilesListener ( final FilesSelectionListener listener )
     {
         listeners.remove ( listener );
     }
 
-    private void fireSelectionChanged ( List<File> selectedFiles )
+    private void fireSelectionChanged ( final List<File> selectedFiles )
     {
-        for ( FilesSelectionListener listener : CollectionUtils.copy ( listeners ) )
+        for ( final FilesSelectionListener listener : CollectionUtils.copy ( listeners ) )
         {
             listener.selectionChanged ( selectedFiles );
         }

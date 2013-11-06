@@ -29,7 +29,7 @@ public class WebComboBoxCellRenderer extends DefaultListCellRenderer
     protected Component component;
     protected WebComboBoxElement renderer;
 
-    public WebComboBoxCellRenderer ( Component component )
+    public WebComboBoxCellRenderer ( final Component component )
     {
         super ();
         this.component = component;
@@ -42,7 +42,8 @@ public class WebComboBoxCellRenderer extends DefaultListCellRenderer
     }
 
     @Override
-    public Component getListCellRendererComponent ( JList list, Object value, int index, boolean isSelected, boolean cellHasFocus )
+    public Component getListCellRendererComponent ( final JList list, final Object value, final int index, final boolean isSelected,
+                                                    final boolean cellHasFocus )
     {
         renderer.setIndex ( index );
         renderer.setTotalElements ( list.getModel ().getSize () );

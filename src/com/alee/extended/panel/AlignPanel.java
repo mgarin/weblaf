@@ -29,7 +29,7 @@ import java.awt.*;
 
 public class AlignPanel extends WebPanel implements SwingConstants
 {
-    public AlignPanel ( Component component, int halign, int valign )
+    public AlignPanel ( final Component component, final int halign, final int valign )
     {
         super ( new AlignLayout () );
         setOpaque ( false );

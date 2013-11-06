@@ -31,7 +31,7 @@ public abstract class AbstractLayoutManager implements LayoutManager2
      * {@inheritDoc}
      */
     @Override
-    public void addLayoutComponent ( Component comp, Object constraints )
+    public void addLayoutComponent ( final Component comp, final Object constraints )
     {
         addComponent ( comp, constraints );
     }
@@ -40,7 +40,7 @@ public abstract class AbstractLayoutManager implements LayoutManager2
      * {@inheritDoc}
      */
     @Override
-    public void addLayoutComponent ( String name, Component comp )
+    public void addLayoutComponent ( final String name, final Component comp )
     {
         addComponent ( comp, name );
     }
@@ -49,7 +49,7 @@ public abstract class AbstractLayoutManager implements LayoutManager2
      * {@inheritDoc}
      */
     @Override
-    public void removeLayoutComponent ( Component comp )
+    public void removeLayoutComponent ( final Component comp )
     {
         removeComponent ( comp );
     }
@@ -60,7 +60,7 @@ public abstract class AbstractLayoutManager implements LayoutManager2
      * @param component   added component
      * @param constraints component constraints
      */
-    public void addComponent ( Component component, Object constraints )
+    public void addComponent ( final Component component, final Object constraints )
     {
         // Do nothing
     }
@@ -70,7 +70,7 @@ public abstract class AbstractLayoutManager implements LayoutManager2
      *
      * @param component removed component
      */
-    public void removeComponent ( Component component )
+    public void removeComponent ( final Component component )
     {
         // Do nothing
     }
@@ -79,7 +79,7 @@ public abstract class AbstractLayoutManager implements LayoutManager2
      * {@inheritDoc}
      */
     @Override
-    public Dimension minimumLayoutSize ( Container parent )
+    public Dimension minimumLayoutSize ( final Container parent )
     {
         return preferredLayoutSize ( parent );
     }
@@ -88,7 +88,7 @@ public abstract class AbstractLayoutManager implements LayoutManager2
      * {@inheritDoc}
      */
     @Override
-    public Dimension maximumLayoutSize ( Container target )
+    public Dimension maximumLayoutSize ( final Container target )
     {
         return new Dimension ( Integer.MAX_VALUE, Integer.MAX_VALUE );
     }
@@ -97,7 +97,7 @@ public abstract class AbstractLayoutManager implements LayoutManager2
      * {@inheritDoc}
      */
     @Override
-    public float getLayoutAlignmentX ( Container target )
+    public float getLayoutAlignmentX ( final Container target )
     {
         return 0.5f;
     }
@@ -106,7 +106,7 @@ public abstract class AbstractLayoutManager implements LayoutManager2
      * {@inheritDoc}
      */
     @Override
-    public float getLayoutAlignmentY ( Container target )
+    public float getLayoutAlignmentY ( final Container target )
     {
         return 0.5f;
     }
@@ -115,8 +115,8 @@ public abstract class AbstractLayoutManager implements LayoutManager2
      * {@inheritDoc}
      */
     @Override
-    public void invalidateLayout ( Container target )
+    public void invalidateLayout ( final Container target )
     {
-        // Do nothing
+        layoutContainer ( target );
     }
 }

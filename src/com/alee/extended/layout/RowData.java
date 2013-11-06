@@ -41,7 +41,7 @@ public class RowData
         return width;
     }
 
-    public void setWidth ( int width )
+    public void setWidth ( final int width )
     {
         this.width = width;
     }
@@ -51,7 +51,7 @@ public class RowData
         return height;
     }
 
-    public void setHeight ( int height )
+    public void setHeight ( final int height )
     {
         this.height = height;
     }
@@ -61,12 +61,12 @@ public class RowData
         return components;
     }
 
-    public void setComponents ( List<Component> components )
+    public void setComponents ( final List<Component> components )
     {
         this.components = components;
     }
 
-    public void addComponent ( Component component )
+    public void addComponent ( final Component component )
     {
         this.components.add ( component );
     }

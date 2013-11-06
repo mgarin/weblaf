@@ -46,17 +46,17 @@ public class WrapFlowLayout extends AbstractLayoutManager implements SwingConsta
         this ( false );
     }
 
-    public WrapFlowLayout ( boolean fillWidth )
+    public WrapFlowLayout ( final boolean fillWidth )
     {
         this ( fillWidth, 0, 0 );
     }
 
-    public WrapFlowLayout ( int hgap, int vgap )
+    public WrapFlowLayout ( final int hgap, final int vgap )
     {
         this ( false, hgap, vgap );
     }
 
-    public WrapFlowLayout ( boolean fillWidth, int hgap, int vgap )
+    public WrapFlowLayout ( final boolean fillWidth, final int hgap, final int vgap )
     {
         super ();
         this.fillWidth = fillWidth;
@@ -69,7 +69,7 @@ public class WrapFlowLayout extends AbstractLayoutManager implements SwingConsta
         return fitWidth;
     }
 
-    public void setFitWidth ( boolean fitWidth )
+    public void setFitWidth ( final boolean fitWidth )
     {
         this.fitWidth = fitWidth;
     }
@@ -79,7 +79,7 @@ public class WrapFlowLayout extends AbstractLayoutManager implements SwingConsta
         return fillWidth;
     }
 
-    public void setFillWidth ( boolean fillWidth )
+    public void setFillWidth ( final boolean fillWidth )
     {
         this.fillWidth = fillWidth;
     }
@@ -89,7 +89,7 @@ public class WrapFlowLayout extends AbstractLayoutManager implements SwingConsta
         return hgap;
     }
 
-    public void setHgap ( int hgap )
+    public void setHgap ( final int hgap )
     {
         this.hgap = hgap;
     }
@@ -99,7 +99,7 @@ public class WrapFlowLayout extends AbstractLayoutManager implements SwingConsta
         return vgap;
     }
 
-    public void setVgap ( int vgap )
+    public void setVgap ( final int vgap )
     {
         this.vgap = vgap;
     }
@@ -109,7 +109,7 @@ public class WrapFlowLayout extends AbstractLayoutManager implements SwingConsta
         return halign;
     }
 
-    public void setHalign ( int halign )
+    public void setHalign ( final int halign )
     {
         this.halign = halign;
     }
@@ -119,7 +119,7 @@ public class WrapFlowLayout extends AbstractLayoutManager implements SwingConsta
         return valign;
     }
 
-    public void setValign ( int valign )
+    public void setValign ( final int valign )
     {
         this.valign = valign;
     }
@@ -129,7 +129,7 @@ public class WrapFlowLayout extends AbstractLayoutManager implements SwingConsta
         return wrapEachComponent;
     }
 
-    public void setWrapEachComponent ( boolean wrapEachComponent )
+    public void setWrapEachComponent ( final boolean wrapEachComponent )
     {
         this.wrapEachComponent = wrapEachComponent;
     }
@@ -153,7 +153,7 @@ public class WrapFlowLayout extends AbstractLayoutManager implements SwingConsta
      * {@inheritDoc}
      */
     @Override
-    public Dimension preferredLayoutSize ( Container parent )
+    public Dimension preferredLayoutSize ( final Container parent )
     {
         layoutContainer ( parent );
         return new Dimension ( maxWidth, maxHeight );
@@ -163,7 +163,7 @@ public class WrapFlowLayout extends AbstractLayoutManager implements SwingConsta
      * {@inheritDoc}
      */
     @Override
-    public Dimension minimumLayoutSize ( Container parent )
+    public Dimension minimumLayoutSize ( final Container parent )
     {
         layoutContainer ( parent );
         return new Dimension ( 0, maxHeight );
@@ -173,17 +173,20 @@ public class WrapFlowLayout extends AbstractLayoutManager implements SwingConsta
      * {@inheritDoc}
      */
     @Override
-    public void layoutContainer ( Container parent )
+    public void layoutContainer ( final Container parent )
     {
         // Ignore if no childs
         if ( parent.getComponentCount () == 0 )
         {
+            maxWidth = 0;
+            maxHeight = 0;
+            rowsData = new ArrayList<RowData> ( 0 );
             return;
         }
 
         // Parent properties
-        Insets insets = parent.getInsets ();
-        int parentWidth = parent.getWidth () - insets.left - insets.right;
+        final Insets insets = parent.getInsets ();
+        final int parentWidth = parent.getWidth () - insets.left - insets.right;
 
         // Current row
         int currentRow = 0;
@@ -203,8 +206,8 @@ public class WrapFlowLayout extends AbstractLayoutManager implements SwingConsta
         rowsData = new ArrayList<RowData> ();
         for ( int i = 0; i < parent.getComponentCount (); i++ )
         {
-            Component component = parent.getComponent ( i );
-            Dimension ps = component.getPreferredSize ();
+            final Component component = parent.getComponent ( i );
+            final Dimension ps = component.getPreferredSize ();
             if ( componentInRow > 0 && ( isWrapEachComponent () || currentRowWidth + hgap + ps.width > parentWidth ) )
             {
                 // Saving row settings
@@ -221,7 +224,7 @@ public class WrapFlowLayout extends AbstractLayoutManager implements SwingConsta
                 currentRow++;
             }
 
-            int componentWidth = fitWidth ? Math.min ( ps.width, parentWidth ) : ps.width;
+            final int componentWidth = fitWidth ? Math.min ( ps.width, parentWidth ) : ps.width;
             currentRowWidth += ( componentInRow > 0 ? hgap : 0 ) + componentWidth;
             currentRowMaxHeight = Math.max ( currentRowMaxHeight, ps.height );
             componentInRow++;
@@ -240,13 +243,13 @@ public class WrapFlowLayout extends AbstractLayoutManager implements SwingConsta
         // Layouting components
         int x;
         int y = getStartY ( parent, insets );
-        for ( RowData row : rowsData )
+        for ( final RowData row : rowsData )
         {
             x = getStartX ( parent, insets, row );
             int i = 0;
-            for ( Component component : row.getComponents () )
+            for ( final Component component : row.getComponents () )
             {
-                Dimension ps = component.getPreferredSize ();
+                final Dimension ps = component.getPreferredSize ();
 
                 int componentWidth = fitWidth ? Math.min ( ps.width, parentWidth ) : ps.width;
                 if ( fillWidth && i + 1 == row.getComponents ().size () && halign == LEFT )
@@ -262,9 +265,9 @@ public class WrapFlowLayout extends AbstractLayoutManager implements SwingConsta
         }
     }
 
-    protected int getStartX ( Container parent, Insets insets, RowData row )
+    protected int getStartX ( final Container parent, final Insets insets, final RowData row )
     {
-        int x;
+        final int x;
         if ( fillWidth || halign == LEFT )
         {
             x = insets.left;
@@ -280,9 +283,9 @@ public class WrapFlowLayout extends AbstractLayoutManager implements SwingConsta
         return x;
     }
 
-    protected int getStartY ( Container parent, Insets insets )
+    protected int getStartY ( final Container parent, final Insets insets )
     {
-        int y;
+        final int y;
         if ( valign == TOP )
         {
             y = insets.top;
