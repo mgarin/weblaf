@@ -1,4 +1,21 @@
 /*
+ * This file is part of WebLookAndFeel library.
+ *
+ * WebLookAndFeel library is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * WebLookAndFeel library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/*
  * ====================================================================
  *
  * The Clearthought Software License, Version 1.0
@@ -201,7 +218,7 @@ import java.util.ListIterator;
  * @version 4.0 September 14, 2005
  */
 
-@SuppressWarnings ( { "ALL" } )
+@SuppressWarnings ({ "ALL" })
 public class TableLayout implements java.awt.LayoutManager2, java.io.Serializable, info.clearthought.layout.TableLayoutConstants
 {
     /*
@@ -291,13 +308,27 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
     protected int vGap;
 
     /**
-     * Constructs an instance of TableLayout.  This TableLayout will have no columns or rows.  This
-     * constructor is most useful for bean-oriented programming and dynamically adding columns and
-     * rows.
+     * Constructs an instance of TableLayout. This TableLayout will have no columns or rows.
+     * This constructor is most useful for bean-oriented programming and dynamically adding columns and rows.
      */
     public TableLayout ()
     {
+        super ();
         init ( defaultSize[ C ], defaultSize[ R ] );
+    }
+
+    /**
+     * Constructs an instance of TableLayout with the specified horizontal and vertical gaps.
+     * This TableLayout will have no columns or rows.
+     *
+     * @param hGap the horizontal gap in pixels
+     * @param vGap the vertical gap in pixels
+     */
+    public TableLayout ( int hGap, int vGap )
+    {
+        super ();
+        init ( defaultSize[ C ], defaultSize[ R ] );
+        setGaps ( hGap, vGap );
     }
 
     /**
@@ -309,6 +340,7 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      */
     public TableLayout ( double[][] size )
     {
+        super ();
         // Make sure columns and rows and nothing else is specified
         if ( ( size != null ) && ( size.length == 2 ) )
         {
@@ -323,6 +355,21 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
     }
 
     /**
+     * Constructs an instance of TableLayout with the specified horizontal and vertical gaps.
+     *
+     * @param size widths of columns and heights of rows in the format, {{col0, col1, col2, ...,
+     *             colN}, {row0, row1, row2, ..., rowM}} If this parameter is invalid, the
+     *             TableLayout will have exactly one row and one column.
+     * @param hGap the horizontal gap in pixels
+     * @param vGap the vertical gap in pixels
+     */
+    public TableLayout ( double[][] size, int hGap, int vGap )
+    {
+        this ( size );
+        setGaps ( hGap, vGap );
+    }
+
+    /**
      * Constructs an instance of TableLayout.
      *
      * @param col widths of columns in the format, {{col0, col1, col2, ..., colN}
@@ -330,7 +377,22 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      */
     public TableLayout ( double[] col, double[] row )
     {
+        super ();
         init ( col, row );
+    }
+
+    /**
+     * Constructs an instance of TableLayout with the specified horizontal and vertical gaps.
+     *
+     * @param col  widths of columns in the format, {{col0, col1, col2, ..., colN}
+     * @param row  heights of rows in the format, {{row0, row1, row2, ..., rowN}
+     * @param hGap the horizontal gap in pixels
+     * @param vGap the vertical gap in pixels
+     */
+    public TableLayout ( double[] col, double[] row, int hGap, int vGap )
+    {
+        this ( col, row );
+        setGaps ( hGap, vGap );
     }
 
     /**
@@ -370,7 +432,6 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
                 crSpec[ C ][ counter ] = 0.0;
             }
         }
-
         for ( int counter = 0; counter < crSpec[ R ].length; counter++ )
         {
             if ( ( crSpec[ R ][ counter ] < 0.0 ) && ( crSpec[ R ][ counter ] != FILL ) &&
@@ -711,7 +772,7 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
     /**
      * Sets the vertical gap between rows.
      *
-     * @param vGap the horizontal gap in pixels
+     * @param vGap the vertical gap in pixels
      */
     public void setVGap ( int vGap )
     {
@@ -723,6 +784,18 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
         {
             throw new IllegalArgumentException ( "Parameter vGap must be non-negative." );
         }
+    }
+
+    /**
+     * Sets horizontal gap between columns and vertical gap between rows.
+     *
+     * @param hGap the horizontal gap in pixels
+     * @param vGap the vertical gap in pixels
+     */
+    public void setGaps ( int hGap, int vGap )
+    {
+        setHGap ( hGap );
+        setVGap ( vGap );
     }
 
     /**
