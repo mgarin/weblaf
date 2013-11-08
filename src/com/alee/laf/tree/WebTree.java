@@ -163,7 +163,7 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
     public void setCellEditor ( final TreeCellEditor cellEditor )
     {
         // Removing cell editor listeners from old cell editor
-        for ( CellEditorListener listener : cellEditorListeners )
+        for ( final CellEditorListener listener : cellEditorListeners )
         {
             this.cellEditor.removeCellEditorListener ( listener );
         }
@@ -171,7 +171,7 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
         super.setCellEditor ( cellEditor );
 
         // Adding cell editor listeners to new cell editor
-        for ( CellEditorListener listener : cellEditorListeners )
+        for ( final CellEditorListener listener : cellEditorListeners )
         {
             this.cellEditor.addCellEditorListener ( listener );
         }
@@ -460,6 +460,17 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
     public void setSelectionMode ( final int mode )
     {
         getSelectionModel ().setSelectionMode ( mode );
+    }
+
+    /**
+     * Sets whether multiply nodes selection allowed or not.
+     * This call simply changes selection mode according to provided value.
+     *
+     * @param allowed whether multiply nodes selection allowed or not
+     */
+    public void setMultiplySelectionAllowed ( final boolean allowed )
+    {
+        setSelectionMode ( allowed ? DISCONTIGUOUS_TREE_SELECTION : SINGLE_TREE_SELECTION );
     }
 
     /**
