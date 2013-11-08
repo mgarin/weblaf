@@ -409,6 +409,20 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
     }
 
     /**
+     * Removes nodes from tree structure.
+     * This method will have effect only if nodes exist.
+     *
+     * @param nodes list of nodes to remove
+     */
+    public void removeNodes ( final List<E> nodes )
+    {
+        for ( final E node : nodes )
+        {
+            removeNode ( node );
+        }
+    }
+
+    /**
      * Returns whether childs for the specified node are already loaded or not.
      *
      * @param parent node to process
