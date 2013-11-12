@@ -332,7 +332,7 @@ public class AsyncTreeModel<E extends AsyncUniqueNode> extends WebTreeModel<E>
                                 nodeCached.put ( parent.getId (), true );
                             }
 
-                            // Performing UI updates in EDT
+                            // Performing UI updates and event notification in EDT
                             SwingUtils.invokeLater ( new Runnable ()
                             {
                                 @Override
@@ -368,16 +368,24 @@ public class AsyncTreeModel<E extends AsyncUniqueNode> extends WebTreeModel<E>
                                 nodeCached.put ( parent.getId (), true );
                             }
 
-                            // Releasing node busy state
-                            synchronized ( busyLock )
+                            // Performing event notification in EDT
+                            SwingUtils.invokeLater ( new Runnable ()
                             {
-                                parent.setState ( AsyncNodeState.failed );
-                                parent.setFailureCause ( cause );
-                                nodeChanged ( parent );
-                            }
+                                @Override
+                                public void run ()
+                                {
+                                    // Releasing node busy state
+                                    synchronized ( busyLock )
+                                    {
+                                        parent.setState ( AsyncNodeState.failed );
+                                        parent.setFailureCause ( cause );
+                                        nodeChanged ( parent );
+                                    }
 
-                            // Firing load failed event
-                            fireChildsLoadFailed ( parent, cause );
+                                    // Firing load failed event
+                                    fireChildsLoadFailed ( parent, cause );
+                                }
+                            } );
                         }
                     } );
                 }
@@ -407,30 +415,22 @@ public class AsyncTreeModel<E extends AsyncUniqueNode> extends WebTreeModel<E>
                         nodeCached.put ( parent.getId (), true );
                     }
 
-                    // Performing UI updates in EDT
-                    SwingUtils.invokeLater ( new Runnable ()
+                    // Checking if any nodes loaded
+                    if ( realChilds != null && realChilds.size () > 0 )
                     {
-                        @Override
-                        public void run ()
-                        {
-                            // Checking if any nodes loaded
-                            if ( realChilds != null && realChilds.size () > 0 )
-                            {
-                                // Inserting loaded nodes
-                                insertNodesInto ( realChilds, parent, 0 );
-                            }
+                        // Inserting loaded nodes
+                        insertNodesInto ( realChilds, parent, 0 );
+                    }
 
-                            // Releasing node busy state
-                            synchronized ( busyLock )
-                            {
-                                parent.setState ( AsyncNodeState.loaded );
-                                nodeChanged ( parent );
-                            }
+                    // Releasing node busy state
+                    synchronized ( busyLock )
+                    {
+                        parent.setState ( AsyncNodeState.loaded );
+                        nodeChanged ( parent );
+                    }
 
-                            // Firing load completed event
-                            fireChildsLoadCompleted ( parent, realChilds );
-                        }
-                    } );
+                    // Firing load completed event
+                    fireChildsLoadCompleted ( parent, realChilds );
                 }
 
                 @Override
