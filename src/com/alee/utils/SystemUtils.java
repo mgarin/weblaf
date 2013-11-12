@@ -25,8 +25,11 @@ import java.awt.datatransfer.*;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.lang.management.ManagementFactory;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * This class provides a set of utilities to retrieve various operating system information.
@@ -61,6 +64,30 @@ public final class SystemUtils
      * Java version application is running on.
      */
     private static JavaVersion javaVersion;
+
+    private static final String osName;
+    private static final String shortOsName;
+
+    static {
+        osName = AccessController.doPrivileged(new PrivilegedAction<String>() {
+            @Override
+            public String run() {
+                return System.getProperty("os.name");
+            }
+        });
+        String lc = osName.toLowerCase(Locale.ENGLISH);
+        if (lc.contains("win")) {
+            shortOsName = WINDOWS;
+        } else if (lc.contains("mac") || lc.contains("darwin")) {
+            shortOsName = MAC;
+        } else if (lc.contains("nix") || lc.contains("nux")) {
+            shortOsName = UNIX;
+        } else if (lc.contains("sunos")) {
+            shortOsName = SOLARIS;
+        } else {
+            shortOsName = null;
+        }
+    }
 
     /**
      * Copies text to system clipboard.
@@ -207,26 +234,7 @@ public final class SystemUtils
      */
     public static String getShortOsName ()
     {
-        if ( isWindows () )
-        {
-            return WINDOWS;
-        }
-        else if ( isMac () )
-        {
-            return MAC;
-        }
-        else if ( isUnix () )
-        {
-            return UNIX;
-        }
-        else if ( isSolaris () )
-        {
-            return SOLARIS;
-        }
-        else
-        {
-            return null;
-        }
+        return shortOsName;
     }
 
     /**
@@ -284,9 +292,10 @@ public final class SystemUtils
      *
      * @return true if current OS is windows, false otherwise
      */
+    @SuppressWarnings("StringEquality")
     public static boolean isWindows ()
     {
-        return getOsName ().toLowerCase ().contains ( "win" );
+        return shortOsName == WINDOWS;
     }
 
     /**
@@ -294,10 +303,10 @@ public final class SystemUtils
      *
      * @return true if current OS is mac, false otherwise
      */
+    @SuppressWarnings("StringEquality")
     public static boolean isMac ()
     {
-        String os = getOsName ().toLowerCase ();
-        return os.contains ( "mac" ) || os.contains ( "darwin" );
+        return shortOsName == MAC;
     }
 
     /**
@@ -305,10 +314,10 @@ public final class SystemUtils
      *
      * @return true if current OS is unix, false otherwise
      */
+    @SuppressWarnings("StringEquality")
     public static boolean isUnix ()
     {
-        String os = getOsName ().toLowerCase ();
-        return os.contains ( "nix" ) || os.contains ( "nux" );
+        return shortOsName == UNIX;
     }
 
     /**
@@ -316,9 +325,10 @@ public final class SystemUtils
      *
      * @return true if current OS is solaris, false otherwise
      */
+    @SuppressWarnings("StringEquality")
     public static boolean isSolaris ()
     {
-        return getOsName ().toLowerCase ().contains ( "sunos" );
+        return shortOsName == SOLARIS;
     }
 
     /**
@@ -338,7 +348,7 @@ public final class SystemUtils
      */
     public static String getOsName ()
     {
-        return ManagementFactory.getOperatingSystemMXBean ().getName ();
+        return osName;
     }
 
     public static String getOsSite ()

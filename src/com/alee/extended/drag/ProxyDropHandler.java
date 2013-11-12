@@ -21,7 +21,7 @@ import javax.swing.*;
 
 /**
  * User: mgarin Date: 19.04.12 Time: 12:36
- * <p/>
+ * <p>
  * This TransferHandler allows you to proxify drop event to another JComponent
  */
 

@@ -30,7 +30,7 @@ import java.awt.geom.RoundRectangle2D;
 
 /**
  * User: mgarin Date: 15.08.11 Time: 13:49
- * <p/>
+ * <p>
  * This class provides a quick access to step-styled label which can be used to visualize some process steps.
  */
 

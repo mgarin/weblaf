@@ -27,7 +27,7 @@ import java.util.Map;
 /**
  * This class returns base fonts for all component types on various OS.
  * This is some kind of workaround since there is no good way to retrieve native component fonts from OS itself.
- * Usually it is native L&F who setup system fonts but inside it simply has hardcoded fonts, which is not really different from my way.
+ * Usually it is native L&amp;F who setup system fonts but inside it simply has hardcoded fonts, which is not really different from my way.
  *
  * @author Mikle Garin
  */

@@ -43,7 +43,7 @@ import java.util.List;
  * This manager allows you to quickly setup changeable lanugage onto different components and to listen to application-wide language change
  * events. Language could be either loaded from structured xml files or added directly from the application by adding Dictionary type
  * objects into this manager.
- * <p/>
+ * <p>
  * Be aware of the fact that all equal key-language pairs will be merged and collected into a single data map.
  *
  * @author Mikle Garin

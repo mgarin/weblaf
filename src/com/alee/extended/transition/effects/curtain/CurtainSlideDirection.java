@@ -19,7 +19,7 @@ package com.alee.extended.transition.effects.curtain;
 
 /**
  * User: mgarin Date: 20.11.12 Time: 17:34
- * <p/>
+ * <p>
  * Slide curtain blocks to specific side relative to curtain appearance direction
  */
 

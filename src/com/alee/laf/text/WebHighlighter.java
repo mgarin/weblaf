@@ -108,8 +108,8 @@ public class WebHighlighter extends LayeredHighlighter
     /**
      * Adds a highlight to the view.  Returns a tag that can be used to refer to the highlight.
      *
-     * @param p0 the start offset of the range to highlight >= 0
-     * @param p1 the end offset of the range to highlight >= p0
+     * @param p0 the start offset of the range to highlight &gt;= 0
+     * @param p1 the end offset of the range to highlight &gt;= p0
      * @param p  the painter to use to actually render the highlight
      * @return an object that can be used as a tag to refer to the highlight
      * @throws javax.swing.text.BadLocationException
@@ -246,8 +246,8 @@ public class WebHighlighter extends LayeredHighlighter
      * Changes a highlight.
      *
      * @param tag the highlight tag
-     * @param p0  the beginning of the range >= 0
-     * @param p1  the end of the range >= p0
+     * @param p0  the beginning of the range &gt;= 0
+     * @param p1  the end of the range &gt;= p0
      * @throws BadLocationException if the specified location is invalid
      */
     @Override
@@ -557,7 +557,7 @@ public class WebHighlighter extends LayeredHighlighter
          * Adds the range to be damaged into the range queue. If the range queue is empty (the first call or run() was already invoked)
          * then
          * adds this class instance into EventDispatch queue.
-         * <p/>
+         * <p>
          * The method also tracks if the current document changed or component is null. In this case it removes all ranges added before
          * from
          * range queue.

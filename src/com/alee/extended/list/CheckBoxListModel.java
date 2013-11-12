@@ -128,7 +128,7 @@ public class CheckBoxListModel extends DefaultListModel
 
     /**
      * Replaces the element at the specified position in this list with the specified element.
-     * <p/>
+     * <p>
      * Throws an <code>ArrayIndexOutOfBoundsException</code> if the index is out of range (<code>index &lt; 0 || index &gt;=
      * size()</code>).
      *
@@ -144,7 +144,7 @@ public class CheckBoxListModel extends DefaultListModel
 
     /**
      * Returns the element at the specified position in this list.
-     * <p/>
+     * <p>
      * Throws an <code>ArrayIndexOutOfBoundsException</code> if the index is out of range (<code>index &lt; 0 || index &gt;=
      * size()</code>).
      *
@@ -222,7 +222,7 @@ public class CheckBoxListModel extends DefaultListModel
     /**
      * Removes the element at the specified position in this list.
      * Returns the element that was removed from the list.
-     * <p/>
+     * <p>
      * Throws an <code>ArrayIndexOutOfBoundsException</code> if the index is out of range (<code>index &lt; 0 || index &gt;=
      * size()</code>).
      *

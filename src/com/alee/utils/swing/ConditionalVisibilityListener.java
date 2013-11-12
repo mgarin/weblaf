@@ -24,12 +24,9 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 /**
- * User: mgarin Date: 28.09.12 Time: 15:41
- * <p/>
  * This listener allows a quick creation of component visibility change action on any focus changes. You can also invert the way visibility
  * changes on focus change.
  */
-
 public class ConditionalVisibilityListener implements FocusListener, MouseListener
 {
     private Boolean focusedVisible;

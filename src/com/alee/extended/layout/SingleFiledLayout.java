@@ -181,7 +181,7 @@ public class SingleFiledLayout implements LayoutManager, Serializable
 
     /**
      * To lay out the specified container using this layout.  This method repositions the components
-     * in the specified target container. <p/> <p>User code should not have to call this method
+     * in the specified target container. <p> User code should not have to call this method
      * directly.</p>
      *
      * @param container container being served by this layout manager

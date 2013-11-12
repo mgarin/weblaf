@@ -21,7 +21,7 @@ import javax.swing.border.Border;
 import javax.swing.plaf.BorderUIResource;
 
 /**
- * Factory object that can vend Borders appropriate for the Web L&F.
+ * Factory object that can vend Borders appropriate for the Web L&amp;F.
  *
  * @author Mikle Garin
  */

@@ -28,7 +28,7 @@ import java.awt.*;
 
 /**
  * User: mgarin Date: 14.02.12 Time: 12:08
- * <p/>
+ * <p>
  * This class provides a quick way to display a progress dialog anywhere you need it and change the progress values without any additional
  * efforts like working with Swing thread to update progress
  */
