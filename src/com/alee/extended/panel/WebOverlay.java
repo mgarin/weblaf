@@ -29,7 +29,7 @@ import java.util.Map;
 
 /**
  * User: mgarin Date: 05.06.12 Time: 19:53
- * <p/>
+ * <p>
  * This component allows you to add one or more custom overlaying components atop of other component. This will work with any kind of Swing
  * components - you can overlay anyhting with something like loader, progress bar, custom text, image or anything else.
  */

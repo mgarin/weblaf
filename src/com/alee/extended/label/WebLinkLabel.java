@@ -36,7 +36,7 @@ import java.util.concurrent.Executors;
 /**
  * This custom component provides a link functionality together with default label options.
  * Link could be an internet address, e-mail or some file. You can also specify a custom link action by passing a runnable.
- * Link can also be styled by default using custom L&F icons and default naming.
+ * Link can also be styled by default using custom L&amp;F icons and default naming.
  *
  * @author Mikle Garin
  */

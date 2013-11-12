@@ -32,7 +32,7 @@ public interface SettingsMethods extends SwingMethods
 {
     /**
      * Registers component for settings auto-save.
-     * <p/>
+     * <p>
      * Also registered component will be:
      * - listened for settings changes to save them when requested
      * - automatically updated with any loaded settings for that key if requested
@@ -44,7 +44,7 @@ public interface SettingsMethods extends SwingMethods
 
     /**
      * Registers component for settings auto-save.
-     * <p/>
+     * <p>
      * Also registered component will be:
      * - listened for settings changes to save them when requested
      * - automatically updated with any loaded settings for that key if requested
@@ -59,7 +59,7 @@ public interface SettingsMethods extends SwingMethods
 
     /**
      * Registers component for settings auto-save.
-     * <p/>
+     * <p>
      * Also registered component will be:
      * - listened for settings changes to save them when requested
      * - automatically updated with any loaded settings for that key if requested
@@ -72,7 +72,7 @@ public interface SettingsMethods extends SwingMethods
 
     /**
      * Registers component for settings auto-save.
-     * <p/>
+     * <p>
      * Also registered component will be:
      * - listened for settings changes to save them when requested
      * - automatically updated with any loaded settings for that key if requested
@@ -88,7 +88,7 @@ public interface SettingsMethods extends SwingMethods
 
     /**
      * Registers component for settings auto-save.
-     * <p/>
+     * <p>
      * Also registered component will be:
      * - listened for settings changes to save them when requested
      * - automatically updated with any loaded settings for that key if requested
@@ -102,7 +102,7 @@ public interface SettingsMethods extends SwingMethods
 
     /**
      * Registers component for settings auto-save.
-     * <p/>
+     * <p>
      * Also registered component will be:
      * - listened for settings changes to save them when requested
      * - automatically updated with any loaded settings for that key if requested
@@ -115,7 +115,7 @@ public interface SettingsMethods extends SwingMethods
 
     /**
      * Registers component for settings auto-save.
-     * <p/>
+     * <p>
      * Also registered component will be:
      * - listened for settings changes to save them when requested
      * - automatically updated with any loaded settings for that key if requested
@@ -129,7 +129,7 @@ public interface SettingsMethods extends SwingMethods
 
     /**
      * Registers component for settings auto-save.
-     * <p/>
+     * <p>
      * Also registered component will be:
      * - listened for settings changes to save them when requested
      * - automatically updated with any loaded settings for that key if requested
@@ -147,7 +147,7 @@ public interface SettingsMethods extends SwingMethods
 
     /**
      * Registers component for settings auto-save.
-     * <p/>
+     * <p>
      * Also registered component will be:
      * - listened for settings changes to save them when requested
      * - automatically updated with any loaded settings for that key if requested
@@ -162,7 +162,7 @@ public interface SettingsMethods extends SwingMethods
 
     /**
      * Registers component for settings auto-save.
-     * <p/>
+     * <p>
      * Also registered component will be:
      * - listened for settings changes to save them when requested
      * - automatically updated with any loaded settings for that key if requested
@@ -181,7 +181,7 @@ public interface SettingsMethods extends SwingMethods
 
     /**
      * Registers component for settings auto-save.
-     * <p/>
+     * <p>
      * Also registered component will be:
      * - listened for settings changes to save them when requested
      * - automatically updated with any loaded settings for that key if requested
@@ -198,7 +198,7 @@ public interface SettingsMethods extends SwingMethods
 
     /**
      * Registers component for settings auto-save.
-     * <p/>
+     * <p>
      * Also registered component will be:
      * - listened for settings changes to save them when requested
      * - automatically updated with any loaded settings for that key if requested

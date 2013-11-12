@@ -32,13 +32,12 @@ import java.util.Map;
  * This timer is a small extension for standart javax.swing.Timer. Instead of running in a single queue it creates separate Threads for
  * each timer and does not affect event-dispatching thread, until events are dispatched. This basically means that you can use any number
  * of Timer instances and you can run them alltogether without having any issues.
- * <p/>
+ * <p>
  * Also this Timer implementation offers a variety of additional features and improvements which standard timer doesn't have (for example
  * you can dispatch events in a separate non-EDT thread and as a result avoid using EDT at all where it is not necessary).
  *
  * @author Mikle Garin
  */
-
 public class WebTimer
 {
     /**

@@ -27,7 +27,7 @@ import java.util.List;
 
 /**
  * User: mgarin Date: 05.10.11 Time: 19:50
- * <p/>
+ * <p>
  * This manager allows you to quickly highlight multiply visual Swing components in any window
  */
 

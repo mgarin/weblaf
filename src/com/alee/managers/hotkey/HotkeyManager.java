@@ -35,10 +35,10 @@ import java.util.List;
  * This manager allows you to quickly register global hotkeys (like accelerators on menu items in menubar menus) for any Swing component.
  * Additionally you can specify a component which will limit hotkey events to its area (meaning that hotkey event will occur only if this
  * component or any of its childs is focused when hotkey pressed).
- * <p/>
+ * <p>
  * TooltipManager is integrated with this manager to automatically show component hotkeys in its tooltip if needed/allowed by tooltip and
  * hotkey settings.
- * <p/>
+ * <p>
  * All hotkeys are stored into WeakHashMap so hotkeys will be removed as soon as the component for which hotkey is registered gets
  * finalized. HotkeyInfo also keeps a weak reference to both top and hotkey components.
  *

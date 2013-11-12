@@ -29,12 +29,11 @@ import java.lang.reflect.InvocationTargetException;
  *
  * @author Mikle Garin
  */
-
 public final class ProprietaryUtils
 {
     /**
-     * Installs some proprietary L&F defaults for proper text rendering.
-     * <p/>
+     * Installs some proprietary L&amp;F defaults for proper text rendering.
+     * <p>
      * Basically this method is a workaround for this simple call:
      * <code>
      * table.put ( sun.swing.SwingUtilities2.AA_TEXT_PROPERTY_KEY, sun.swing.SwingUtilities2.AATextInfo.getAATextInfo ( true ) );

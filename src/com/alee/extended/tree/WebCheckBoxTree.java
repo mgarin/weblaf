@@ -57,7 +57,7 @@ public class WebCheckBoxTree<E extends DefaultMutableTreeNode> extends WebTree<E
     /**
      * Cusstom checking model.
      */
-    protected TreeCheckingModel checkingModel;
+    protected TreeCheckingModel<E> checkingModel;
 
     /**
      * Checkbox cell renderer.
@@ -406,7 +406,7 @@ public class WebCheckBoxTree<E extends DefaultMutableTreeNode> extends WebTree<E
      *
      * @return tree checking model
      */
-    public TreeCheckingModel getCheckingModel ()
+    public TreeCheckingModel<E> getCheckingModel ()
     {
         return checkingModel;
     }
@@ -442,9 +442,9 @@ public class WebCheckBoxTree<E extends DefaultMutableTreeNode> extends WebTree<E
      * @param checkBoxTree checkbox tree to process
      * @return new default checking model for the specified checkbox tree
      */
-    protected TreeCheckingModel createDefaultCheckingModel ( final WebCheckBoxTree<E> checkBoxTree )
+    protected TreeCheckingModel<E> createDefaultCheckingModel ( final WebCheckBoxTree<E> checkBoxTree )
     {
-        return new DefaultTreeCheckingModel ( checkBoxTree );
+        return new DefaultTreeCheckingModel<E> ( checkBoxTree );
     }
 
     /**
@@ -633,7 +633,7 @@ public class WebCheckBoxTree<E extends DefaultMutableTreeNode> extends WebTree<E
      *
      * @param listener check state change listener to add
      */
-    public void addCheckStateChangeListener ( final CheckStateChangeListener listener )
+    public void addCheckStateChangeListener ( final CheckStateChangeListener<E> listener )
     {
         checkStateChangeListeners.add ( listener );
         if ( checkingModel != null )

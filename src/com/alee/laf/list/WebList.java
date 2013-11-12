@@ -39,9 +39,9 @@ import java.util.Vector;
 /**
  * This JList extension class provides a direct access to WebListUI methods.
  * There is also a set of additional methods to simplify some operations with list.
- * <p/>
+ * <p>
  * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
- * You could stil use that component even if WebLaF is not your application L&F as this component will use Web-UI in any case.
+ * You could stil use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
  *
  * @author Mikle Garin
  */

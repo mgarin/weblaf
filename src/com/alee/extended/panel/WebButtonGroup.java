@@ -31,7 +31,7 @@ import java.awt.*;
 
 /**
  * User: mgarin Date: 11/28/11 Time: 5:07 PM
- * <p/>
+ * <p>
  * This component allows quick visual web-styled buttons grouping. It also contains all UI methods from the buttons. Those methods apply
  * specific value to all sub-buttons and sub-groups when called. Also this component groups buttons by default.
  */
