@@ -32,14 +32,6 @@ import javax.swing.*;
 public class SampleTreeCellRenderer extends WebAsyncTreeCellRenderer
 {
     /**
-     * Icon key constants.
-     */
-    private static final String ROOT_KEY = "root";
-    private static final String OPEN_KEY = "open";
-    private static final String CLOSED_KEY = "closed";
-    private static final String LEAF_KEY = "leaf";
-
-    /**
      * Returns custom tree cell renderer component
      *
      * @param tree       tree
@@ -65,26 +57,31 @@ public class SampleTreeCellRenderer extends WebAsyncTreeCellRenderer
             if ( !node.isLoading () )
             {
                 // Type icon
-                final boolean failed = node.isFailed ();
+                final ImageIcon icon;
                 switch ( node.getType () )
                 {
                     case root:
                     {
-                        setIcon ( failed ? getFailedStateIcon ( ROOT_KEY, WebTreeUI.ROOT_ICON ) : WebTreeUI.ROOT_ICON );
+                        icon = WebTreeUI.ROOT_ICON;
                         break;
                     }
                     case folder:
                     {
-                        setIcon ( expanded ? ( failed ? getFailedStateIcon ( OPEN_KEY, WebTreeUI.OPEN_ICON ) : WebTreeUI.OPEN_ICON ) :
-                                ( failed ? getFailedStateIcon ( CLOSED_KEY, WebTreeUI.CLOSED_ICON ) : WebTreeUI.CLOSED_ICON ) );
+                        icon = expanded ? WebTreeUI.OPEN_ICON : WebTreeUI.CLOSED_ICON;
                         break;
                     }
                     case leaf:
                     {
-                        setIcon ( failed ? getFailedStateIcon ( LEAF_KEY, WebTreeUI.LEAF_ICON ) : WebTreeUI.LEAF_ICON );
+                        icon = WebTreeUI.LEAF_ICON;
+                        break;
+                    }
+                    default:
+                    {
+                        icon = null;
                         break;
                     }
                 }
+                setIcon ( node.isFailed () ? getFailedStateIcon ( icon ) : icon );
             }
 
             // Node text

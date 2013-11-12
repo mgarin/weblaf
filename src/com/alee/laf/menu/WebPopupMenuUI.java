@@ -74,8 +74,8 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements SwingConstants, 
      * Runtime variables.
      */
     protected boolean transparent = false;
-    protected int relativeCorner = 0;
     protected int cornerSide = NORTH;
+    protected int relativeCorner = 0;
     protected PopupMenuWay popupMenuWay = null;
 
     /**
@@ -85,7 +85,7 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements SwingConstants, 
      * @param c component that will use UI instance
      * @return instance of the WebPopupMenuUI
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebPopupMenuUI ();
@@ -114,7 +114,7 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements SwingConstants, 
         orientationChangeListener = new PropertyChangeListener ()
         {
             @Override
-            public void propertyChange ( PropertyChangeEvent evt )
+            public void propertyChange ( final PropertyChangeEvent evt )
             {
                 popupMenu.setVisible ( false );
             }
@@ -734,7 +734,7 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements SwingConstants, 
      * @param g2d graphics context
      * @param mb  menu bounds on screen
      */
-    protected void fillDropdownCorner ( Graphics2D g2d, Rectangle mb )
+    protected void fillDropdownCorner ( final Graphics2D g2d, final Rectangle mb )
     {
         if ( popupMenuStyle == PopupMenuStyle.dropdown && round == 0 )
         {

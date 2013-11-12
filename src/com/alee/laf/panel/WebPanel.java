@@ -42,61 +42,61 @@ public class WebPanel extends JPanel implements ShapeProvider, SizeMethods<WebPa
         super ( new BorderLayout () );
     }
 
-    public WebPanel ( boolean decorated )
+    public WebPanel ( final boolean decorated )
     {
         super ( new BorderLayout () );
         setUndecorated ( !decorated );
     }
 
-    public WebPanel ( boolean decorated, LayoutManager layout )
+    public WebPanel ( final boolean decorated, final LayoutManager layout )
     {
         super ( layout );
         setUndecorated ( !decorated );
     }
 
-    public WebPanel ( boolean decorated, Component component )
+    public WebPanel ( final boolean decorated, final Component component )
     {
         super ( new BorderLayout () );
         setUndecorated ( !decorated );
         add ( component, BorderLayout.CENTER );
     }
 
-    public WebPanel ( Component component )
+    public WebPanel ( final Component component )
     {
         super ( new BorderLayout () );
         add ( component, BorderLayout.CENTER );
     }
 
-    public WebPanel ( Painter painter )
+    public WebPanel ( final Painter painter )
     {
         super ( new BorderLayout () );
         setPainter ( painter );
     }
 
-    public WebPanel ( LayoutManager layout, Painter painter )
+    public WebPanel ( final LayoutManager layout, final Painter painter )
     {
         super ( layout );
         setPainter ( painter );
     }
 
-    public WebPanel ( Painter painter, Component component )
+    public WebPanel ( final Painter painter, final Component component )
     {
         super ( new BorderLayout () );
         setPainter ( painter );
         add ( component, BorderLayout.CENTER );
     }
 
-    public WebPanel ( LayoutManager layout )
+    public WebPanel ( final LayoutManager layout )
     {
         super ( layout );
     }
 
-    public WebPanel ( LayoutManager layout, boolean isDoubleBuffered )
+    public WebPanel ( final LayoutManager layout, final boolean isDoubleBuffered )
     {
         super ( layout, isDoubleBuffered );
     }
 
-    public WebPanel ( LayoutManager layout, Component... components )
+    public WebPanel ( final LayoutManager layout, final Component... components )
     {
         super ( layout );
         add ( components );
@@ -106,7 +106,7 @@ public class WebPanel extends JPanel implements ShapeProvider, SizeMethods<WebPa
      * Additional childs interaction methods
      */
 
-    public void add ( List<? extends Component> components, int index )
+    public void add ( final List<? extends Component> components, final int index )
     {
         if ( components != null )
         {
@@ -117,29 +117,29 @@ public class WebPanel extends JPanel implements ShapeProvider, SizeMethods<WebPa
         }
     }
 
-    public void add ( List<? extends Component> components, String constraints )
+    public void add ( final List<? extends Component> components, final String constraints )
     {
         if ( components != null )
         {
-            for ( Component component : components )
+            for ( final Component component : components )
             {
                 add ( component, constraints );
             }
         }
     }
 
-    public void add ( List<? extends Component> components )
+    public void add ( final List<? extends Component> components )
     {
         if ( components != null )
         {
-            for ( Component component : components )
+            for ( final Component component : components )
             {
                 add ( component );
             }
         }
     }
 
-    public void add ( int index, Component... components )
+    public void add ( final int index, final Component... components )
     {
         if ( components != null && components.length > 0 )
         {
@@ -150,22 +150,22 @@ public class WebPanel extends JPanel implements ShapeProvider, SizeMethods<WebPa
         }
     }
 
-    public void add ( String constraints, Component... components )
+    public void add ( final String constraints, final Component... components )
     {
         if ( components != null && components.length > 0 )
         {
-            for ( Component component : components )
+            for ( final Component component : components )
             {
                 add ( component, constraints );
             }
         }
     }
 
-    public void add ( Component... components )
+    public void add ( final Component... components )
     {
         if ( components != null && components.length > 0 )
         {
-            for ( Component component : components )
+            for ( final Component component : components )
             {
                 add ( component );
             }
@@ -205,7 +205,7 @@ public class WebPanel extends JPanel implements ShapeProvider, SizeMethods<WebPa
         return getWebUI ().isUndecorated ();
     }
 
-    public WebPanel setUndecorated ( boolean undecorated )
+    public WebPanel setUndecorated ( final boolean undecorated )
     {
         getWebUI ().setUndecorated ( undecorated );
         return this;
@@ -216,7 +216,7 @@ public class WebPanel extends JPanel implements ShapeProvider, SizeMethods<WebPa
         return getWebUI ().isDrawFocus ();
     }
 
-    public WebPanel setDrawFocus ( boolean drawFocus )
+    public WebPanel setDrawFocus ( final boolean drawFocus )
     {
         getWebUI ().setDrawFocus ( drawFocus );
         return this;
@@ -227,7 +227,7 @@ public class WebPanel extends JPanel implements ShapeProvider, SizeMethods<WebPa
         return getWebUI ().getPainter ();
     }
 
-    public WebPanel setPainter ( Painter painter )
+    public WebPanel setPainter ( final Painter painter )
     {
         getWebUI ().setPainter ( painter );
         return this;
@@ -238,7 +238,7 @@ public class WebPanel extends JPanel implements ShapeProvider, SizeMethods<WebPa
         return getWebUI ().getRound ();
     }
 
-    public WebPanel setRound ( int round )
+    public WebPanel setRound ( final int round )
     {
         getWebUI ().setRound ( round );
         return this;
@@ -249,7 +249,7 @@ public class WebPanel extends JPanel implements ShapeProvider, SizeMethods<WebPa
         return getWebUI ().getShadeWidth ();
     }
 
-    public WebPanel setShadeWidth ( int shadeWidth )
+    public WebPanel setShadeWidth ( final int shadeWidth )
     {
         getWebUI ().setShadeWidth ( shadeWidth );
         return this;
@@ -260,18 +260,18 @@ public class WebPanel extends JPanel implements ShapeProvider, SizeMethods<WebPa
         return getWebUI ().getMargin ();
     }
 
-    public void setMargin ( Insets margin )
+    public void setMargin ( final Insets margin )
     {
         getWebUI ().setMargin ( margin );
     }
 
-    public WebPanel setMargin ( int top, int left, int bottom, int right )
+    public WebPanel setMargin ( final int top, final int left, final int bottom, final int right )
     {
         setMargin ( new Insets ( top, left, bottom, right ) );
         return this;
     }
 
-    public WebPanel setMargin ( int spacing )
+    public WebPanel setMargin ( final int spacing )
     {
         return setMargin ( spacing, spacing, spacing, spacing );
     }
@@ -281,7 +281,7 @@ public class WebPanel extends JPanel implements ShapeProvider, SizeMethods<WebPa
         return getWebUI ().getBorderStroke ();
     }
 
-    public WebPanel setBorderStroke ( Stroke stroke )
+    public WebPanel setBorderStroke ( final Stroke stroke )
     {
         getWebUI ().setBorderStroke ( stroke );
         return this;
@@ -292,7 +292,7 @@ public class WebPanel extends JPanel implements ShapeProvider, SizeMethods<WebPa
         return getWebUI ().isDrawBackground ();
     }
 
-    public WebPanel setDrawBackground ( boolean drawBackground )
+    public WebPanel setDrawBackground ( final boolean drawBackground )
     {
         getWebUI ().setDrawBackground ( drawBackground );
         return this;
@@ -303,7 +303,7 @@ public class WebPanel extends JPanel implements ShapeProvider, SizeMethods<WebPa
         return getWebUI ().isWebColored ();
     }
 
-    public WebPanel setWebColored ( boolean webColored )
+    public WebPanel setWebColored ( final boolean webColored )
     {
         getWebUI ().setWebColored ( webColored );
         return this;
@@ -314,7 +314,7 @@ public class WebPanel extends JPanel implements ShapeProvider, SizeMethods<WebPa
         return getWebUI ().isDrawBottom ();
     }
 
-    public WebPanel setDrawBottom ( boolean drawBottom )
+    public WebPanel setDrawBottom ( final boolean drawBottom )
     {
         getWebUI ().setDrawBottom ( drawBottom );
         return this;
@@ -325,7 +325,7 @@ public class WebPanel extends JPanel implements ShapeProvider, SizeMethods<WebPa
         return getWebUI ().isDrawLeft ();
     }
 
-    public WebPanel setDrawLeft ( boolean drawLeft )
+    public WebPanel setDrawLeft ( final boolean drawLeft )
     {
         getWebUI ().setDrawLeft ( drawLeft );
         return this;
@@ -336,7 +336,7 @@ public class WebPanel extends JPanel implements ShapeProvider, SizeMethods<WebPa
         return getWebUI ().isDrawRight ();
     }
 
-    public WebPanel setDrawRight ( boolean drawRight )
+    public WebPanel setDrawRight ( final boolean drawRight )
     {
         getWebUI ().setDrawRight ( drawRight );
         return this;
@@ -347,13 +347,13 @@ public class WebPanel extends JPanel implements ShapeProvider, SizeMethods<WebPa
         return getWebUI ().isDrawTop ();
     }
 
-    public WebPanel setDrawTop ( boolean drawTop )
+    public WebPanel setDrawTop ( final boolean drawTop )
     {
         getWebUI ().setDrawTop ( drawTop );
         return this;
     }
 
-    public WebPanel setDrawSides ( boolean top, boolean left, boolean bottom, boolean right )
+    public WebPanel setDrawSides ( final boolean top, final boolean left, final boolean bottom, final boolean right )
     {
         getWebUI ().setDrawSides ( top, left, bottom, right );
         return this;
@@ -408,7 +408,7 @@ public class WebPanel extends JPanel implements ShapeProvider, SizeMethods<WebPa
      * {@inheritDoc}
      */
     @Override
-    public WebPanel setPreferredWidth ( int preferredWidth )
+    public WebPanel setPreferredWidth ( final int preferredWidth )
     {
         return SizeUtils.setPreferredWidth ( this, preferredWidth );
     }
@@ -426,7 +426,7 @@ public class WebPanel extends JPanel implements ShapeProvider, SizeMethods<WebPa
      * {@inheritDoc}
      */
     @Override
-    public WebPanel setPreferredHeight ( int preferredHeight )
+    public WebPanel setPreferredHeight ( final int preferredHeight )
     {
         return SizeUtils.setPreferredHeight ( this, preferredHeight );
     }
@@ -444,7 +444,7 @@ public class WebPanel extends JPanel implements ShapeProvider, SizeMethods<WebPa
      * {@inheritDoc}
      */
     @Override
-    public WebPanel setMinimumWidth ( int minimumWidth )
+    public WebPanel setMinimumWidth ( final int minimumWidth )
     {
         return SizeUtils.setMinimumWidth ( this, minimumWidth );
     }
@@ -462,7 +462,7 @@ public class WebPanel extends JPanel implements ShapeProvider, SizeMethods<WebPa
      * {@inheritDoc}
      */
     @Override
-    public WebPanel setMinimumHeight ( int minimumHeight )
+    public WebPanel setMinimumHeight ( final int minimumHeight )
     {
         return SizeUtils.setMinimumHeight ( this, minimumHeight );
     }
@@ -476,7 +476,7 @@ public class WebPanel extends JPanel implements ShapeProvider, SizeMethods<WebPa
         Dimension ps = SizeUtils.getPreferredSize ( this, super.getPreferredSize () );
 
         // Fix to take painter preferres size into account
-        Painter painter = getPainter ();
+        final Painter painter = getPainter ();
         if ( painter != null )
         {
             ps = SwingUtils.max ( ps, painter.getPreferredSize ( this ) );
@@ -493,7 +493,7 @@ public class WebPanel extends JPanel implements ShapeProvider, SizeMethods<WebPa
      * {@inheritDoc}
      */
     @Override
-    public void setLanguageContainerKey ( String key )
+    public void setLanguageContainerKey ( final String key )
     {
         LanguageManager.registerLanguageContainer ( this, key );
     }

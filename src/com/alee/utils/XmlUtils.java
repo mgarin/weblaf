@@ -50,6 +50,11 @@ import java.util.List;
 public final class XmlUtils
 {
     /**
+     * Whether should offer better aliases for standard Java classes like Point and Rectangle or not.
+     */
+    public static boolean aliasJdkClasses = true;
+
+    /**
      * Custom color converter.
      */
     public static final ColorConverter colorConverter = new ColorConverter ();
@@ -89,25 +94,28 @@ public final class XmlUtils
             xStream = new XStream ();
 
             // Standart Java-classes aliases
-            xStream.alias ( "Point", Point.class );
-            xStream.useAttributeFor ( Point.class, "x" );
-            xStream.useAttributeFor ( Point.class, "y" );
-            xStream.alias ( "Dimension", Dimension.class );
-            xStream.useAttributeFor ( Dimension.class, "width" );
-            xStream.useAttributeFor ( Dimension.class, "height" );
-            xStream.alias ( "Rectangle", Rectangle.class );
-            xStream.useAttributeFor ( Rectangle.class, "x" );
-            xStream.useAttributeFor ( Rectangle.class, "y" );
-            xStream.useAttributeFor ( Rectangle.class, "width" );
-            xStream.useAttributeFor ( Rectangle.class, "height" );
-            xStream.alias ( "Insets", Insets.class );
-            xStream.useAttributeFor ( Insets.class, "top" );
-            xStream.useAttributeFor ( Insets.class, "left" );
-            xStream.useAttributeFor ( Insets.class, "bottom" );
-            xStream.useAttributeFor ( Insets.class, "right" );
-            xStream.alias ( "Font", Font.class );
-            xStream.alias ( "Color", Color.class );
-            xStream.registerConverter ( colorConverter );
+            if ( aliasJdkClasses )
+            {
+                xStream.alias ( "Point", Point.class );
+                xStream.useAttributeFor ( Point.class, "x" );
+                xStream.useAttributeFor ( Point.class, "y" );
+                xStream.alias ( "Dimension", Dimension.class );
+                xStream.useAttributeFor ( Dimension.class, "width" );
+                xStream.useAttributeFor ( Dimension.class, "height" );
+                xStream.alias ( "Rectangle", Rectangle.class );
+                xStream.useAttributeFor ( Rectangle.class, "x" );
+                xStream.useAttributeFor ( Rectangle.class, "y" );
+                xStream.useAttributeFor ( Rectangle.class, "width" );
+                xStream.useAttributeFor ( Rectangle.class, "height" );
+                xStream.alias ( "Insets", Insets.class );
+                xStream.useAttributeFor ( Insets.class, "top" );
+                xStream.useAttributeFor ( Insets.class, "left" );
+                xStream.useAttributeFor ( Insets.class, "bottom" );
+                xStream.useAttributeFor ( Insets.class, "right" );
+                xStream.alias ( "Font", Font.class );
+                xStream.alias ( "Color", Color.class );
+                xStream.registerConverter ( colorConverter );
+            }
 
             // XML resources aliases
             xStream.processAnnotations ( ResourceLocation.class );
@@ -135,7 +143,7 @@ public final class XmlUtils
      *
      * @param type the type with XStream annotations
      */
-    public static void processAnnotations ( Class type )
+    public static void processAnnotations ( final Class type )
     {
         getXStream ().processAnnotations ( type );
     }
@@ -145,7 +153,7 @@ public final class XmlUtils
      *
      * @param types the types with XStream annotations
      */
-    public static void processAnnotations ( Class[] types )
+    public static void processAnnotations ( final Class[] types )
     {
         getXStream ().processAnnotations ( types );
     }
@@ -156,7 +164,7 @@ public final class XmlUtils
      * @param name Short name
      * @param type Type to be aliased
      */
-    public static void alias ( String name, Class type )
+    public static void alias ( final String name, final Class type )
     {
         getXStream ().alias ( name, type );
     }
@@ -167,7 +175,7 @@ public final class XmlUtils
      * @param type  the name of the field
      * @param field the Class containing such field
      */
-    public static void useAttributeFor ( Class type, String field )
+    public static void useAttributeFor ( final Class type, final String field )
     {
         getXStream ().useAttributeFor ( type, field );
     }
@@ -178,7 +186,7 @@ public final class XmlUtils
      * @param type  class owning the implicit array
      * @param field name of the array field
      */
-    public static void addImplicitArray ( Class type, String field )
+    public static void addImplicitArray ( final Class type, final String field )
     {
         getXStream ().addImplicitArray ( type, field );
     }
@@ -190,7 +198,7 @@ public final class XmlUtils
      * @param field    name of the array field in the ownerType
      * @param itemName alias name of the items
      */
-    public static void addImplicitArray ( Class type, String field, String itemName )
+    public static void addImplicitArray ( final Class type, final String field, final String itemName )
     {
         getXStream ().addImplicitArray ( type, field, itemName );
     }
@@ -200,7 +208,7 @@ public final class XmlUtils
      *
      * @param converter the new converter
      */
-    public static void registerConverter ( Converter converter )
+    public static void registerConverter ( final Converter converter )
     {
         getXStream ().registerConverter ( converter );
     }
@@ -210,7 +218,7 @@ public final class XmlUtils
      *
      * @param converter the new converter
      */
-    public static void registerConverter ( SingleValueConverter converter )
+    public static void registerConverter ( final SingleValueConverter converter )
     {
         getXStream ().registerConverter ( converter );
     }
@@ -222,7 +230,7 @@ public final class XmlUtils
      * @param aliasProvider AliasProvider ancestor class
      * @param <T>           specific class type
      */
-    public static <T extends AliasProvider> void alias ( Class<T> aliasProvider )
+    public static <T extends AliasProvider> void alias ( final Class<T> aliasProvider )
     {
         ReflectUtils.callStaticMethodSafely ( aliasProvider, AliasProvider.methodName, getXStream () );
     }
@@ -233,7 +241,7 @@ public final class XmlUtils
      * @param obj  object to serialize
      * @param file output file
      */
-    public static void toXML ( Object obj, String file )
+    public static void toXML ( final Object obj, final String file )
     {
         toXML ( obj, new File ( file ) );
     }
@@ -244,12 +252,12 @@ public final class XmlUtils
      * @param obj  object to serialize
      * @param file output file
      */
-    public static void toXML ( Object obj, File file )
+    public static void toXML ( final Object obj, final File file )
     {
         try
         {
-            FileOutputStream fos = new FileOutputStream ( file );
-            OutputStreamWriter osw = new OutputStreamWriter ( fos, "UTF-8" );
+            final FileOutputStream fos = new FileOutputStream ( file );
+            final OutputStreamWriter osw = new OutputStreamWriter ( fos, "UTF-8" );
             toXML ( obj, osw );
             osw.close ();
             fos.close ();
@@ -266,7 +274,7 @@ public final class XmlUtils
      * @param obj object to serialize
      * @return serialized into XML object representation
      */
-    public static String toXML ( Object obj )
+    public static String toXML ( final Object obj )
     {
         return getXStream ().toXML ( obj );
     }
@@ -277,7 +285,7 @@ public final class XmlUtils
      * @param obj object to serialize
      * @param out output writer
      */
-    public static void toXML ( Object obj, Writer out )
+    public static void toXML ( final Object obj, final Writer out )
     {
         getXStream ().toXML ( obj, out );
     }
@@ -288,7 +296,7 @@ public final class XmlUtils
      * @param obj object to serialize
      * @param out output stream
      */
-    public static void toXML ( Object obj, OutputStream out )
+    public static void toXML ( final Object obj, final OutputStream out )
     {
         getXStream ().toXML ( obj, out );
     }
@@ -300,7 +308,7 @@ public final class XmlUtils
      * @param <T>    read object type
      * @return deserialized object
      */
-    public static <T> T fromXML ( Reader reader )
+    public static <T> T fromXML ( final Reader reader )
     {
         return ( T ) getXStream ().fromXML ( reader );
     }
@@ -312,7 +320,7 @@ public final class XmlUtils
      * @param <T>   read object type
      * @return deserialized object
      */
-    public static <T> T fromXML ( InputStream input )
+    public static <T> T fromXML ( final InputStream input )
     {
         return ( T ) getXStream ().fromXML ( input );
     }
@@ -324,7 +332,7 @@ public final class XmlUtils
      * @param <T> read object type
      * @return deserialized object
      */
-    public static <T> T fromXML ( URL url )
+    public static <T> T fromXML ( final URL url )
     {
         return ( T ) getXStream ().fromXML ( url );
     }
@@ -336,7 +344,7 @@ public final class XmlUtils
      * @param <T>  read object type
      * @return deserialized object
      */
-    public static <T> T fromXML ( File file )
+    public static <T> T fromXML ( final File file )
     {
         return ( T ) getXStream ().fromXML ( file );
     }
@@ -348,7 +356,7 @@ public final class XmlUtils
      * @param <T> read object type
      * @return deserialized object
      */
-    public static <T> T fromXML ( String xml )
+    public static <T> T fromXML ( final String xml )
     {
         return ( T ) getXStream ().fromXML ( xml );
     }
@@ -360,7 +368,7 @@ public final class XmlUtils
      * @param <T>    read object type
      * @return deserialized object
      */
-    public static <T> T fromXML ( Object source )
+    public static <T> T fromXML ( final Object source )
     {
         if ( source instanceof URL )
         {
@@ -395,7 +403,7 @@ public final class XmlUtils
      * @param <T>      read object type
      * @return deserialized object
      */
-    public static <T> T fromXML ( ResourceFile resource )
+    public static <T> T fromXML ( final ResourceFile resource )
     {
         switch ( resource.getLocation () )
         {
@@ -453,7 +461,7 @@ public final class XmlUtils
      * @param source one of possible sources: URL, String, File, Reader, InputStream
      * @return text as String
      */
-    public static String loadString ( Object source )
+    public static String loadString ( final Object source )
     {
         return loadString ( loadResourceFile ( source ) );
     }
@@ -464,7 +472,7 @@ public final class XmlUtils
      * @param resource file description
      * @return text as String
      */
-    public static String loadString ( ResourceFile resource )
+    public static String loadString ( final ResourceFile resource )
     {
         if ( resource.getLocation ().equals ( ResourceLocation.url ) )
         {
@@ -507,7 +515,7 @@ public final class XmlUtils
      * @param source one of possible sources: URL, String, File, Reader, InputStream
      * @return ImageIcon
      */
-    public static ImageIcon loadImageIcon ( Object source )
+    public static ImageIcon loadImageIcon ( final Object source )
     {
         return loadImageIcon ( loadResourceFile ( source ) );
     }
@@ -518,7 +526,7 @@ public final class XmlUtils
      * @param resource file description
      * @return ImageIcon
      */
-    public static ImageIcon loadImageIcon ( ResourceFile resource )
+    public static ImageIcon loadImageIcon ( final ResourceFile resource )
     {
         if ( resource.getLocation ().equals ( ResourceLocation.url ) )
         {
@@ -568,7 +576,7 @@ public final class XmlUtils
      * @param source one of possible sources: URL, String, File, Reader, InputStream
      * @return ImageIcon list
      */
-    public static List<ImageIcon> loadImagesList ( Object source )
+    public static List<ImageIcon> loadImagesList ( final Object source )
     {
         return loadImagesList ( loadResourceList ( source ) );
     }
@@ -579,12 +587,12 @@ public final class XmlUtils
      * @param resourceList ResourceFile list
      * @return ImageIcon list
      */
-    public static List<ImageIcon> loadImagesList ( ResourceList resourceList )
+    public static List<ImageIcon> loadImagesList ( final ResourceList resourceList )
     {
-        List<ImageIcon> icons = new ArrayList<ImageIcon> ();
-        for ( ResourceFile resource : resourceList.getResources () )
+        final List<ImageIcon> icons = new ArrayList<ImageIcon> ();
+        for ( final ResourceFile resource : resourceList.getResources () )
         {
-            ImageIcon imageIcon = loadImageIcon ( resource );
+            final ImageIcon imageIcon = loadImageIcon ( resource );
             if ( imageIcon != null )
             {
                 icons.add ( imageIcon );
@@ -599,7 +607,7 @@ public final class XmlUtils
      * @param source one of possible sources: URL, String, File, Reader, InputStream
      * @return NinePatchIcon
      */
-    public static NinePatchIcon loadNinePatchIcon ( Object source )
+    public static NinePatchIcon loadNinePatchIcon ( final Object source )
     {
         return loadNinePatchIcon ( loadResourceFile ( source ) );
     }
@@ -610,7 +618,7 @@ public final class XmlUtils
      * @param resource file description
      * @return NinePatchIcon
      */
-    public static NinePatchIcon loadNinePatchIcon ( ResourceFile resource )
+    public static NinePatchIcon loadNinePatchIcon ( final ResourceFile resource )
     {
         return new NinePatchIcon ( loadImageIcon ( resource ) );
     }
@@ -621,7 +629,7 @@ public final class XmlUtils
      * @param source one of possible sources: URL, String, File, Reader, InputStream
      * @return NinePatchStatePainter
      */
-    public static NinePatchStatePainter loadNinePatchStatePainter ( Object source )
+    public static NinePatchStatePainter loadNinePatchStatePainter ( final Object source )
     {
         return loadNinePatchStatePainter ( loadResourceMap ( source ) );
     }
@@ -632,10 +640,10 @@ public final class XmlUtils
      * @param resourceMap ResourceFile map
      * @return NinePatchStatePainter
      */
-    public static NinePatchStatePainter loadNinePatchStatePainter ( ResourceMap resourceMap )
+    public static NinePatchStatePainter loadNinePatchStatePainter ( final ResourceMap resourceMap )
     {
-        NinePatchStatePainter sbp = new NinePatchStatePainter ();
-        for ( String key : resourceMap.getStates ().keySet () )
+        final NinePatchStatePainter sbp = new NinePatchStatePainter ();
+        for ( final String key : resourceMap.getStates ().keySet () )
         {
             sbp.addStateIcon ( key, loadNinePatchIcon ( resourceMap.getState ( key ) ) );
         }
@@ -648,7 +656,7 @@ public final class XmlUtils
      * @param source one of possible sources: URL, String, File, Reader, InputStream
      * @return NinePatchIconPainter
      */
-    public static NinePatchIconPainter loadNinePatchIconPainter ( Object source )
+    public static NinePatchIconPainter loadNinePatchIconPainter ( final Object source )
     {
         return loadNinePatchIconPainter ( loadResourceFile ( source ) );
     }
@@ -659,7 +667,7 @@ public final class XmlUtils
      * @param resource file description
      * @return NinePatchIconPainter
      */
-    public static NinePatchIconPainter loadNinePatchIconPainter ( ResourceFile resource )
+    public static NinePatchIconPainter loadNinePatchIconPainter ( final ResourceFile resource )
     {
         return new NinePatchIconPainter ( loadNinePatchIcon ( resource ) );
     }
@@ -670,7 +678,7 @@ public final class XmlUtils
      * @param source one of possible sources: URL, String, File, Reader, InputStream
      * @return TexturePainter
      */
-    public static TexturePainter loadTexturePainter ( Object source )
+    public static TexturePainter loadTexturePainter ( final Object source )
     {
         return loadTexturePainter ( loadResourceFile ( source ) );
     }
@@ -681,7 +689,7 @@ public final class XmlUtils
      * @param resource file description
      * @return TexturePainter
      */
-    public static TexturePainter loadTexturePainter ( ResourceFile resource )
+    public static TexturePainter loadTexturePainter ( final ResourceFile resource )
     {
         return new TexturePainter ( loadImageIcon ( resource ) );
     }
@@ -692,7 +700,7 @@ public final class XmlUtils
      * @param source one of possible sources: URL, String, File, Reader, InputStream
      * @return ResourceMap
      */
-    public static ResourceMap loadResourceMap ( Object source )
+    public static ResourceMap loadResourceMap ( final Object source )
     {
         return fromXML ( source );
     }
@@ -703,7 +711,7 @@ public final class XmlUtils
      * @param source one of possible sources: URL, String, File, Reader, InputStream
      * @return ResourceList
      */
-    public static ResourceList loadResourceList ( Object source )
+    public static ResourceList loadResourceList ( final Object source )
     {
         return fromXML ( source );
     }
@@ -714,7 +722,7 @@ public final class XmlUtils
      * @param source one of possible sources: URL, String, File, Reader, InputStream
      * @return ResourceFile
      */
-    public static ResourceFile loadResourceFile ( Object source )
+    public static ResourceFile loadResourceFile ( final Object source )
     {
         return fromXML ( source );
     }

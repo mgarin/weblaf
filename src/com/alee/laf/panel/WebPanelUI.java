@@ -89,8 +89,8 @@ public class WebPanelUI extends BasicPanelUI implements ShapeProvider, BorderMet
      * @param c component that will use UI instance
      * @return instance of the WebPanelUI
      */
-    @SuppressWarnings ("UnusedParameters")
-    public static ComponentUI createUI ( JComponent c )
+    @SuppressWarnings ( "UnusedParameters" )
+    public static ComponentUI createUI ( final JComponent c )
     {
         return new WebPanelUI ();
     }
@@ -101,7 +101,7 @@ public class WebPanelUI extends BasicPanelUI implements ShapeProvider, BorderMet
      * @param c component for this UI
      */
     @Override
-    public void installUI ( JComponent c )
+    public void installUI ( final JComponent c )
     {
         super.installUI ( c );
 
@@ -121,7 +121,7 @@ public class WebPanelUI extends BasicPanelUI implements ShapeProvider, BorderMet
         propertyChangeListener = new PropertyChangeListener ()
         {
             @Override
-            public void propertyChange ( PropertyChangeEvent evt )
+            public void propertyChange ( final PropertyChangeEvent evt )
             {
                 updateBorder ();
             }
@@ -138,7 +138,7 @@ public class WebPanelUI extends BasicPanelUI implements ShapeProvider, BorderMet
             }
 
             @Override
-            public void focusChanged ( boolean focused )
+            public void focusChanged ( final boolean focused )
             {
                 WebPanelUI.this.focused = focused;
                 panel.repaint ();
@@ -153,7 +153,7 @@ public class WebPanelUI extends BasicPanelUI implements ShapeProvider, BorderMet
      * @param c component with this UI
      */
     @Override
-    public void uninstallUI ( JComponent c )
+    public void uninstallUI ( final JComponent c )
     {
         PainterSupport.uninstallPainter ( panel, this.painter );
 
@@ -189,14 +189,14 @@ public class WebPanelUI extends BasicPanelUI implements ShapeProvider, BorderMet
         if ( panel != null )
         {
             // Actual margin
-            boolean ltr = panel.getComponentOrientation ().isLeftToRight ();
-            Insets m = new Insets ( margin.top, ltr ? margin.left : margin.right, margin.bottom, ltr ? margin.right : margin.left );
+            final boolean ltr = panel.getComponentOrientation ().isLeftToRight ();
+            final Insets m = new Insets ( margin.top, ltr ? margin.left : margin.right, margin.bottom, ltr ? margin.right : margin.left );
 
             // Calculating additional borders
             if ( painter != null )
             {
                 // Painter borders
-                Insets pi = painter.getMargin ( panel );
+                final Insets pi = painter.getMargin ( panel );
                 m.top += pi.top;
                 m.bottom += pi.bottom;
                 m.left += ltr ? pi.left : pi.right;
@@ -205,8 +205,8 @@ public class WebPanelUI extends BasicPanelUI implements ShapeProvider, BorderMet
             else if ( !undecorated )
             {
                 // Styling borders
-                boolean actualDrawLeft = ltr ? drawLeft : drawRight;
-                boolean actualDrawRight = ltr ? drawRight : drawLeft;
+                final boolean actualDrawLeft = ltr ? drawLeft : drawRight;
+                final boolean actualDrawRight = ltr ? drawRight : drawLeft;
                 m.top += drawTop ? shadeWidth + 1 : 0;
                 m.left += actualDrawLeft ? shadeWidth + 1 : 0;
                 m.bottom += drawBottom ? shadeWidth + 1 : 0;
@@ -233,7 +233,7 @@ public class WebPanelUI extends BasicPanelUI implements ShapeProvider, BorderMet
      *
      * @param undecorated whether panel should be undecorated or not
      */
-    public void setUndecorated ( boolean undecorated )
+    public void setUndecorated ( final boolean undecorated )
     {
         this.undecorated = undecorated;
         updateBorder ();
@@ -261,7 +261,7 @@ public class WebPanelUI extends BasicPanelUI implements ShapeProvider, BorderMet
      *
      * @param drawFocus whether panel should display when it owns focus or not
      */
-    public void setDrawFocus ( boolean drawFocus )
+    public void setDrawFocus ( final boolean drawFocus )
     {
         this.drawFocus = drawFocus;
     }
@@ -281,7 +281,7 @@ public class WebPanelUI extends BasicPanelUI implements ShapeProvider, BorderMet
      *
      * @param painter new panel background painter
      */
-    public void setPainter ( Painter painter )
+    public void setPainter ( final Painter painter )
     {
         PainterSupport.uninstallPainter ( panel, this.painter );
 
@@ -318,7 +318,7 @@ public class WebPanelUI extends BasicPanelUI implements ShapeProvider, BorderMet
      *
      * @param round new decoration rounding
      */
-    public void setRound ( int round )
+    public void setRound ( final int round )
     {
         this.round = round;
     }
@@ -345,7 +345,7 @@ public class WebPanelUI extends BasicPanelUI implements ShapeProvider, BorderMet
      *
      * @param shadeWidth new decoration shade width
      */
-    public void setShadeWidth ( int shadeWidth )
+    public void setShadeWidth ( final int shadeWidth )
     {
         this.shadeWidth = shadeWidth;
         updateBorder ();
@@ -366,7 +366,7 @@ public class WebPanelUI extends BasicPanelUI implements ShapeProvider, BorderMet
      *
      * @param margin new panel margin
      */
-    public void setMargin ( Insets margin )
+    public void setMargin ( final Insets margin )
     {
         this.margin = margin;
         updateBorder ();
@@ -387,7 +387,7 @@ public class WebPanelUI extends BasicPanelUI implements ShapeProvider, BorderMet
      *
      * @param stroke new decoration border stroke
      */
-    public void setBorderStroke ( Stroke stroke )
+    public void setBorderStroke ( final Stroke stroke )
     {
         this.borderStroke = stroke;
     }
@@ -407,7 +407,7 @@ public class WebPanelUI extends BasicPanelUI implements ShapeProvider, BorderMet
      *
      * @param drawBackground whether should draw background or not
      */
-    public void setDrawBackground ( boolean drawBackground )
+    public void setDrawBackground ( final boolean drawBackground )
     {
         this.drawBackground = drawBackground;
     }
@@ -427,7 +427,7 @@ public class WebPanelUI extends BasicPanelUI implements ShapeProvider, BorderMet
      *
      * @param webColored whether should draw web-colored background or not
      */
-    public void setWebColored ( boolean webColored )
+    public void setWebColored ( final boolean webColored )
     {
         this.webColored = webColored;
     }
@@ -447,7 +447,7 @@ public class WebPanelUI extends BasicPanelUI implements ShapeProvider, BorderMet
      *
      * @param drawTop whether should draw top panel side or not
      */
-    public void setDrawTop ( boolean drawTop )
+    public void setDrawTop ( final boolean drawTop )
     {
         this.drawTop = drawTop;
         updateBorder ();
@@ -468,7 +468,7 @@ public class WebPanelUI extends BasicPanelUI implements ShapeProvider, BorderMet
      *
      * @param drawLeft whether should draw left panel side or not
      */
-    public void setDrawLeft ( boolean drawLeft )
+    public void setDrawLeft ( final boolean drawLeft )
     {
         this.drawLeft = drawLeft;
         updateBorder ();
@@ -489,7 +489,7 @@ public class WebPanelUI extends BasicPanelUI implements ShapeProvider, BorderMet
      *
      * @param drawBottom whether should draw bottom panel side or not
      */
-    public void setDrawBottom ( boolean drawBottom )
+    public void setDrawBottom ( final boolean drawBottom )
     {
         this.drawBottom = drawBottom;
         updateBorder ();
@@ -510,7 +510,7 @@ public class WebPanelUI extends BasicPanelUI implements ShapeProvider, BorderMet
      *
      * @param drawRight whether should draw right panel side or not
      */
-    public void setDrawRight ( boolean drawRight )
+    public void setDrawRight ( final boolean drawRight )
     {
         this.drawRight = drawRight;
         updateBorder ();
@@ -524,7 +524,7 @@ public class WebPanelUI extends BasicPanelUI implements ShapeProvider, BorderMet
      * @param bottom whether should draw bottom panel side or not
      * @param right  whether should draw right panel side or not
      */
-    public void setDrawSides ( boolean top, boolean left, boolean bottom, boolean right )
+    public void setDrawSides ( final boolean top, final boolean left, final boolean bottom, final boolean right )
     {
         this.drawTop = top;
         this.drawLeft = left;
@@ -540,7 +540,7 @@ public class WebPanelUI extends BasicPanelUI implements ShapeProvider, BorderMet
      * @param c component
      */
     @Override
-    public void paint ( Graphics g, JComponent c )
+    public void paint ( final Graphics g, final JComponent c )
     {
         // To be applied for all childs painting
         LafUtils.setupSystemTextHints ( g );
@@ -553,14 +553,14 @@ public class WebPanelUI extends BasicPanelUI implements ShapeProvider, BorderMet
         else if ( !undecorated )
         {
             // Checking need of painting
-            boolean anyBorder = drawTop || drawRight || drawBottom || drawLeft;
+            final boolean anyBorder = drawTop || drawRight || drawBottom || drawLeft;
             if ( anyBorder || drawBackground )
             {
-                Graphics2D g2d = ( Graphics2D ) g;
-                Object aa = LafUtils.setupAntialias ( g2d );
+                final Graphics2D g2d = ( Graphics2D ) g;
+                final Object aa = LafUtils.setupAntialias ( g2d );
 
                 // Border shape
-                Shape borderShape = getPanelShape ( c, false );
+                final Shape borderShape = getPanelShape ( c, false );
 
                 // Outer shadow
                 if ( anyBorder && c.isEnabled () )
@@ -573,13 +573,13 @@ public class WebPanelUI extends BasicPanelUI implements ShapeProvider, BorderMet
                 if ( drawBackground )
                 {
                     // Bg shape
-                    Shape bgShape = getPanelShape ( c, true );
+                    final Shape bgShape = getPanelShape ( c, true );
 
                     // Draw bg
                     if ( webColored )
                     {
                         // Setup cached gradient paint
-                        Rectangle bgBounds = bgShape.getBounds ();
+                        final Rectangle bgBounds = bgShape.getBounds ();
                         g2d.setPaint ( LafUtils.getWebGradientPaint ( 0, bgBounds.y, 0, bgBounds.y + bgBounds.height ) );
                     }
                     else
@@ -593,7 +593,7 @@ public class WebPanelUI extends BasicPanelUI implements ShapeProvider, BorderMet
                 // Border
                 if ( anyBorder )
                 {
-                    Stroke os = LafUtils.setupStroke ( g2d, borderStroke, borderStroke != null );
+                    final Stroke os = LafUtils.setupStroke ( g2d, borderStroke, borderStroke != null );
                     g2d.setPaint ( c.isEnabled () ? StyleConstants.darkBorderColor : StyleConstants.disabledBorderColor );
                     g2d.draw ( borderShape );
                     LafUtils.restoreStroke ( g2d, os, borderStroke != null );
@@ -611,21 +611,21 @@ public class WebPanelUI extends BasicPanelUI implements ShapeProvider, BorderMet
      * @param background whether should return background shape or not
      * @return panel shape
      */
-    private Shape getPanelShape ( JComponent c, boolean background )
+    private Shape getPanelShape ( final JComponent c, final boolean background )
     {
         // Changing draw marks in case of RTL orientation
-        boolean ltr = c.getComponentOrientation ().isLeftToRight ();
-        boolean actualDrawLeft = ltr ? drawLeft : drawRight;
-        boolean actualDrawRight = ltr ? drawRight : drawLeft;
+        final boolean ltr = c.getComponentOrientation ().isLeftToRight ();
+        final boolean actualDrawLeft = ltr ? drawLeft : drawRight;
+        final boolean actualDrawRight = ltr ? drawRight : drawLeft;
 
         // Width and height
-        int w = c.getWidth ();
-        int h = c.getHeight ();
+        final int w = c.getWidth ();
+        final int h = c.getHeight ();
 
         if ( background )
         {
-            Point[] corners = new Point[ 4 ];
-            boolean[] rounded = new boolean[ 4 ];
+            final Point[] corners = new Point[ 4 ];
+            final boolean[] rounded = new boolean[ 4 ];
 
             corners[ 0 ] = p ( actualDrawLeft ? shadeWidth : 0, drawTop ? shadeWidth : 0 );
             rounded[ 0 ] = actualDrawLeft && drawTop;
@@ -643,7 +643,7 @@ public class WebPanelUI extends BasicPanelUI implements ShapeProvider, BorderMet
         }
         else
         {
-            GeneralPath shape = new GeneralPath ( GeneralPath.WIND_EVEN_ODD );
+            final GeneralPath shape = new GeneralPath ( GeneralPath.WIND_EVEN_ODD );
             boolean connect = false;
             boolean moved = false;
             if ( drawTop )
@@ -736,7 +736,7 @@ public class WebPanelUI extends BasicPanelUI implements ShapeProvider, BorderMet
      * @param y Y coordinate
      * @return point for the specified coordinates
      */
-    private Point p ( int x, int y )
+    private Point p ( final int x, final int y )
     {
         return new Point ( x, y );
     }

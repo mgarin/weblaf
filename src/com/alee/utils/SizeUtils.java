@@ -30,6 +30,10 @@ import java.util.WeakHashMap;
 public final class SizeUtils
 {
     /**
+     * todo 1. Add maximum size options
+     */
+
+    /**
      * Weak hash map for keeping components preferred sizes.
      */
     private static final Map<Component, Dimension> preferredSizeCache = new WeakHashMap<Component, Dimension> ();

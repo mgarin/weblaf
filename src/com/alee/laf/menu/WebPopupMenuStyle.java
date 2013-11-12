@@ -34,7 +34,7 @@ public final class WebPopupMenuStyle
     /**
      * Popup menu style.
      */
-    public static PopupMenuStyle popupMenuStyle = PopupMenuStyle.dropdown;
+    public static PopupMenuStyle popupMenuStyle = PopupMenuPainterStyle.popupMenuStyle;
 
     /**
      * Whether should apply dropdown popup menu style to popup menues within menubar.
@@ -49,30 +49,30 @@ public final class WebPopupMenuStyle
     /**
      * Popup menu border color.
      */
-    public static Color borderColor = new Color ( 128, 128, 128, 128 );
+    public static Color borderColor = PopupMenuPainterStyle.borderColor;
 
     /**
      * Popup menu corners rounding.
      * This value might vary depending on available underlying system features.
      */
-    public static int round = ProprietaryUtils.isWindowTransparencyAllowed () ? StyleConstants.bigRound : StyleConstants.smallRound;
+    public static int round = ProprietaryUtils.isWindowTransparencyAllowed () ? PopupMenuPainterStyle.round : StyleConstants.smallRound;
 
     /**
      * Popup menu shade width.
      * Be aware that this value should always be greater or equal to cornerWidth due to Swing menu processing limitations.
      * This value might vary depending on available underlying system features.
      */
-    public static int shadeWidth = ProprietaryUtils.isWindowTransparencyAllowed () ? 12 : 0;
+    public static int shadeWidth = ProprietaryUtils.isWindowTransparencyAllowed () ? PopupMenuPainterStyle.shadeWidth : 0;
 
     /**
      * Popup menu shade opacity.
      */
-    public static float shadeOpacity = 0.75f;
+    public static float shadeOpacity = PopupMenuPainterStyle.shadeOpacity;
 
     /**
      * Popup menu dropdown style corner width
      */
-    public static int cornerWidth = 6;
+    public static int cornerWidth = PopupMenuPainterStyle.cornerWidth;
 
     /**
      * Popup menu margin.
@@ -93,7 +93,7 @@ public final class WebPopupMenuStyle
     /**
      * Whether should fix initial popup menu location or not.
      * If set to true popup menu will try to use best possible location to show up.
-     * <p>
+     * <p/>
      * This is set to true by default to place menubar and menu popups correctly.
      * You might want to set this to false for some specific popup menu, not all of them at once.
      */

@@ -355,7 +355,7 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
                     final List<File> path = FileUtils.getFilePath ( file );
 
                     // Removing already opened nodes
-                    int index = path.indexOf ( node.getFile () );
+                    final int index = path.indexOf ( node.getFile () );
                     for ( int i = index; i >= 0; i-- )
                     {
                         path.remove ( i );
@@ -373,7 +373,7 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
                             {
                                 // Searching for path part in childs
                                 boolean found = false;
-                                for ( FileTreeNode child : childs )
+                                for ( final FileTreeNode child : childs )
                                 {
                                     if ( child.getFile ().equals ( path.get ( 0 ) ) )
                                     {

@@ -78,6 +78,86 @@ public class WebPopupMenuSeparatorUI extends BasicPopupMenuSeparatorUI
     }
 
     /**
+     * Returns separator color.
+     *
+     * @return separator color
+     */
+    public Color getColor ()
+    {
+        return color;
+    }
+
+    /**
+     * Sets separator color.
+     *
+     * @param color new separator color
+     */
+    public void setColor ( final Color color )
+    {
+        this.color = color;
+    }
+
+    /**
+     * Returns separator stroke.
+     *
+     * @return separator stroke
+     */
+    public Stroke getStroke ()
+    {
+        return stroke;
+    }
+
+    /**
+     * Sets separator stroke.
+     *
+     * @param stroke new separator stroke
+     */
+    public void setStroke ( final Stroke stroke )
+    {
+        this.stroke = stroke;
+    }
+
+    /**
+     * Returns separator upper and lower spacing.
+     *
+     * @return separator upper and lower spacing
+     */
+    public int getSpacing ()
+    {
+        return spacing;
+    }
+
+    /**
+     * Sets separator upper and lower spacing.
+     *
+     * @param spacing new separator upper and lower spacing
+     */
+    public void setSpacing ( final int spacing )
+    {
+        this.spacing = spacing;
+    }
+
+    /**
+     * Returns separator side spacing.
+     *
+     * @return separator side spacing
+     */
+    public int getSideSpacing ()
+    {
+        return sideSpacing;
+    }
+
+    /**
+     * Sets separator side spacing.
+     *
+     * @param sideSpacing new separator side spacing
+     */
+    public void setSideSpacing ( final int sideSpacing )
+    {
+        this.sideSpacing = sideSpacing;
+    }
+
+    /**
      * Paints popup menu separator.
      *
      * @param g graphics context

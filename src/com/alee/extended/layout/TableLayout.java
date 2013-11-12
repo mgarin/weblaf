@@ -1,4 +1,21 @@
 /*
+ * This file is part of WebLookAndFeel library.
+ *
+ * WebLookAndFeel library is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * WebLookAndFeel library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/*
  * ====================================================================
  *
  * The Clearthought Software License, Version 1.0
@@ -67,22 +84,22 @@ import java.util.ListIterator;
  * components that are using <code>ComponentOrientation.UNKNOWN</code> and for Java runtime
  * environments that do not support component orientation, left-to-right orientation is assumed for
  * backwards compatibility.
- * <p>
+ * <p/>
  * <b>Gaps</b>
- * <p>
+ * <p/>
  * Horizontal and vertical gaps can be placed
  * between rows and columns in two ways.  If uniformed gaps are desired, the <code>setHGap</code>
  * and <code> setVGap</code> methods may be used.  To vary the size of gaps, simply use empty rows
  * and columns with absolute sizes.  Similiarly, to make a border around a container that does not
  * have insets, use empty rows and columns along the edges of the container.
- * <p>
+ * <p/>
  * <b>Constraints</b>
- * <p>
+ * <p/>
  * Using TableLayout is a simple two step process.  First, create a grid
  * for your container by specifying row and column sizes using either a TableLayout constructor or
  * the <code>insertRow</code> and <code>insertColumn</code> methods.  Second, add components to the
  * cells formed by the rows and columns.
- * <p>
+ * <p/>
  * When adding a component to a container that
  * uses TableLayout, you specify the component's constraints that state which cells the component
  * will occupy and how the component will be aligned.  The constraints can be specified into two
@@ -98,28 +115,28 @@ import java.util.ListIterator;
  * constants. Second, some fonts use the same glyphs for representing a lowercase L and the number
  * one.  Ex., "l" vs. "1".  Even fonts that do not will often use similar glyphs so using uppercase
  * avoids confusion.
- * <p>
+ * <p/>
  * <b>Dynamically altering the layout</b>
- * <p>
+ * <p/>
  * Rows and columns can be
  * dynamically created, resized, and removed at any time, even if the container is visible.
  * Components will be shifted appropriately as rows and columns are inserted or removed, just as
  * cells are shifted in a spreadsheet.
- * <p>
+ * <p/>
  * Rows and columns can be made "hidden" or
  * effectively invisible by setting their size to zero. They can be shown again by setting their
  * size back to a non-zero value.  This is very useful for toggle form elements without having to
  * remove individual components.
- * <p>
+ * <p/>
  * <b>Preferred sizes</b>
- * <p>
+ * <p/>
  * Often it is desireable to
  * make a row or column just large enough to ensure that all components contained partially or
  * wholly in that row or column are their preferred size.  To make this easy, there is a constant
  * called <code>PREFERRED</code> that can be used to specify row or column sizes. There is another
  * constant called <code>MINIMUM</code> that does a similar task using components' minimum sizes
  * instead of their preferred sizes.
- * <p>
+ * <p/>
  * There is no corresponding <code>MAXIMUM</code>
  * constant for several reasons.  First, it is mathematically impossible to honor both the minimum
  * and maximum sizes of more than one component when conflicts arise.  For example, say components a
@@ -133,72 +150,72 @@ import java.util.ListIterator;
  * of specifying absolute sizes, the existence and constraints of one component does not affect any
  * other components when using TableLayout.  This is accomplished because rows and columns are
  * explicit in TableLayout.
- * <p>
+ * <p/>
  * Third, the ability to constrain a component to its maximum
  * size is subsumed by the ability to constrain it to its preferred size, which is precisely what
  * happens when a component is aligned using anything but full justification.  In the case of full
  * justification, the component's maximum size is by definition unbounded.
- * <p>
+ * <p/>
  * <b>Example</b>
- * <p>
+ * <p/>
  * <pre>
  * import java.awt.*;
  * import javax.swing.*;
  * import com.alee.extended.layout.TableLayout;
- * 
+ *
  * public class Preferred extends JFrame
  * {
  *     public static void main (String args[])
  *     {
  *         new Preferred();
  *     }
- * 
+ *
  *     public Preferred ()
  *     {
  *         super("The Power of Preferred Sizes");
  *         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
  *         Container pane = getContentPane();
- * 
+ *
  *         // b - border
  *         // f - FILL
  *         // p - PREFERRED
  *         // vs - vertical space between labels and text fields
  *         // vg - vertical gap between form elements
  *         // hg - horizontal gap between form elements
- * 
+ *
  *         double b = 10;
  *         double f = TableLayout.FILL;
  *         double p = TableLayout.PREFERRED;
  *         double vs = 5;
  *         double vg = 10;
  *         double hg = 10;
- * 
+ *
  *         double size[][] =
  *             {{b, f, hg, p, hg, p, b},
  *              {b, p, vs, p, vg, p, vs, p, vg, p, vs, p, vg, p, b}};
- * 
+ *
  *         TableLayout layout = new TableLayout(size);
  *         pane.setLayout (layout);
- * 
+ *
  *         // Create all controls
  *         JLabel labelName    = new JLabel("Name");
  *         JLabel labelAddress = new JLabel("Address");
  *         JLabel labelCity    = new JLabel("City");
  *         JLabel labelState   = new JLabel("State");
  *         JLabel labelZip     = new JLabel("Zip");
- * 
+ *
  *         JTextField textfieldName    = new JTextField(10);
  *         JTextField textfieldAddress = new JTextField(20);
  *         JTextField textfieldCity    = new JTextField(10);
  *         JTextField textfieldState   = new JTextField(2);
  *         JTextField textfieldZip     = new JTextField(5);
- * 
+ *
  *         JButton buttonOk = new JButton("OK");
  *         JButton buttonCancel = new JButton("Cancel");
  *         JPanel panelButton = new JPanel();
  *         panelButton.add(buttonOk);
  *         panelButton.add(buttonCancel);
- * 
+ *
  *         // Add all controls
  *         pane.add(labelName,        "1,  1, 5, 1");
  *         pane.add(textfieldName,    "1,  3, 5, 3");
@@ -211,7 +228,7 @@ import java.util.ListIterator;
  *         pane.add(labelZip,         "5,  9");
  *         pane.add(textfieldZip,     "5, 11");
  *         pane.add(panelButton,      "1, 13, 5, 13");
- * 
+ *
  *         pack();
  *         setResizable(false);
  *         show();
@@ -223,7 +240,7 @@ import java.util.ListIterator;
  * @version 4.0 September 14, 2005
  */
 
-@SuppressWarnings ({ "ALL" })
+@SuppressWarnings ( { "ALL" } )
 public class TableLayout implements java.awt.LayoutManager2, java.io.Serializable, TableLayoutConstants
 {
     /*
@@ -513,18 +530,18 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      * Adjusts the number and sizes of rows in this layout.  After calling this method, the caller
      * should request this layout manager to perform the layout.  This can be done with the
      * following code:
-     * <p>
+     * <p/>
      * <pre>
      *     layout.layoutContainer(container);
      *     container.repaint();
      * </pre>
-     * <p>
+     * <p/>
      * or
-     * <p>
+     * <p/>
      * <pre>
      *     window.pack()
      * </pre>
-     * <p>
+     * <p/>
      * If this is not done, the changes in the layout will not be seen until the container is
      * resized.
      *
@@ -540,15 +557,15 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      * Adjusts the number and sizes of rows in this layout.  After calling this method, the caller
      * should request this layout manager to perform the layout.  This can be done with the
      * following code:
-     * <p>
+     * <p/>
      * <code> layout.layoutContainer(container); container.repaint(); </code>
-     * <p>
+     * <p/>
      * or
-     * <p>
+     * <p/>
      * <pre>
      *     window.pack()
      * </pre>
-     * <p>
+     * <p/>
      * If this is not done, the changes in the layout will not be seen until the container is
      * resized.
      *
@@ -591,15 +608,15 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      * Adjusts the width of a single column in this layout.  After calling this method, the caller
      * should request this layout manager to perform the layout.  This can be done with the
      * following code:
-     * <p>
+     * <p/>
      * <code> layout.layoutContainer(container); container.repaint(); </code>
-     * <p>
+     * <p/>
      * or
-     * <p>
+     * <p/>
      * <pre>
      *     window.pack()
      * </pre>
-     * <p>
+     * <p/>
      * If this is not done, the changes in the layout will not be seen until the container is
      * resized.
      *
@@ -617,15 +634,15 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
      * Adjusts the height of a single row in this layout.  After calling this method, the caller
      * should request this layout manager to perform the layout.  This can be done with the
      * following code:
-     * <p>
+     * <p/>
      * <code> layout.layoutContainer(container); container.repaint(); </code>
-     * <p>
+     * <p/>
      * or
-     * <p>
+     * <p/>
      * <pre>
      *     window.pack()
      * </pre>
-     * <p>
+     * <p/>
      * If this is not done, the changes in the layout will not be seen until the container is
      * resized.
      *
@@ -1413,7 +1430,7 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
     /**
      * To lay out the specified container using this layout.  This method reshapes the components in
      * the specified target container in order to satisfy the constraints of all components.
-     * <p>
+     * <p/>
      * User code should not have to call this method directly.
      *
      * @param container container being served by this layout manager

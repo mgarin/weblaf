@@ -22,8 +22,8 @@ import com.alee.laf.tree.WebTreeElement;
 import com.alee.utils.ImageUtils;
 
 import javax.swing.*;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.WeakHashMap;
 
 /**
  * Custom default tree cell renderer for WebAsyncTree.
@@ -34,6 +34,10 @@ import java.util.Map;
 public class WebAsyncTreeCellRenderer extends WebTreeCellRenderer
 {
     /**
+     * todo 1. Create getIcon & getText methods to simplify rendererers usage
+     */
+
+    /**
      * Special failed state icon.
      */
     public static final ImageIcon failedStateIcon = new ImageIcon ( AsyncUniqueNode.class.getResource ( "icons/failed.png" ) );
@@ -41,7 +45,7 @@ public class WebAsyncTreeCellRenderer extends WebTreeCellRenderer
     /**
      * User failed icons cache.
      */
-    public static final Map<String, ImageIcon> failedStateIcons = new HashMap<String, ImageIcon> ( 0 );
+    public static final Map<ImageIcon, ImageIcon> failedStateIcons = new WeakHashMap<ImageIcon, ImageIcon> ( 5 );
 
     /**
      * Returns user failed state icon.
@@ -50,13 +54,13 @@ public class WebAsyncTreeCellRenderer extends WebTreeCellRenderer
      * @param icon base icon
      * @return user failed state icon
      */
-    public static ImageIcon getFailedStateIcon ( final String key, final ImageIcon icon )
+    public static ImageIcon getFailedStateIcon ( final ImageIcon icon )
     {
-        ImageIcon failedIcon = failedStateIcons.get ( key );
+        ImageIcon failedIcon = failedStateIcons.get ( icon );
         if ( failedIcon == null )
         {
             failedIcon = ImageUtils.mergeIcons ( icon, failedStateIcon );
-            failedStateIcons.put ( key, failedIcon );
+            failedStateIcons.put ( icon, failedIcon );
         }
         return failedIcon;
     }

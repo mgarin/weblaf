@@ -17,7 +17,6 @@
 
 package com.alee.extended.tree;
 
-import com.alee.laf.tree.WebTreeCellRenderer;
 import com.alee.laf.tree.WebTreeElement;
 import com.alee.utils.FileUtils;
 
@@ -30,7 +29,7 @@ import java.io.File;
  * @author Mikle Garin
  */
 
-public class WebFileTreeCellRenderer extends WebTreeCellRenderer
+public class WebFileTreeCellRenderer extends WebAsyncTreeCellRenderer
 {
     /**
      * Returns custom tree cell renderer component.
@@ -55,7 +54,11 @@ public class WebFileTreeCellRenderer extends WebTreeCellRenderer
         final File file = node.getFile ();
 
         // File icon
-        setIcon ( node.isLoading () ? node.getLoaderIcon () : ( file != null ? FileUtils.getFileIcon ( file, false ) : null ) );
+        if ( !node.isLoading () )
+        {
+            final ImageIcon icon = file != null ? FileUtils.getFileIcon ( file, false ) : null;
+            setIcon ( node.isFailed () ? getFailedStateIcon ( icon ) : icon );
+        }
 
         // File name
         if ( node.getName () != null )

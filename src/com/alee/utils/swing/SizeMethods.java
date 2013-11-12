@@ -31,6 +31,10 @@ import java.awt.*;
 public interface SizeMethods<C extends Component> extends SwingMethods
 {
     /**
+     * todo 1. Add maximum size methods
+     */
+
+    /**
      * Returns component preferred width.
      *
      * @return component preferred width

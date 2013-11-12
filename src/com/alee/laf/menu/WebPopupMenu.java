@@ -66,7 +66,7 @@ public class WebPopupMenu extends JPopupMenu implements ShapeProvider
      *
      * @param index separator Z-index
      */
-    public void addSeparator ( int index )
+    public void addSeparator ( final int index )
     {
         add ( new WebPopupMenu.Separator (), index );
     }
@@ -88,7 +88,7 @@ public class WebPopupMenu extends JPopupMenu implements ShapeProvider
      *
      * @param invoker invoker component
      */
-    public void showAboveStart ( Component invoker )
+    public void showAboveStart ( final Component invoker )
     {
         setPopupMenuWay ( PopupMenuWay.aboveStart );
         show ( invoker, 0, 0 );
@@ -99,7 +99,7 @@ public class WebPopupMenu extends JPopupMenu implements ShapeProvider
      *
      * @param invoker invoker component
      */
-    public void showAboveMiddle ( Component invoker )
+    public void showAboveMiddle ( final Component invoker )
     {
         setPopupMenuWay ( PopupMenuWay.aboveMiddle );
         show ( invoker, 0, 0 );
@@ -111,7 +111,7 @@ public class WebPopupMenu extends JPopupMenu implements ShapeProvider
      *
      * @param invoker invoker component
      */
-    public void showAboveEnd ( Component invoker )
+    public void showAboveEnd ( final Component invoker )
     {
         setPopupMenuWay ( PopupMenuWay.aboveEnd );
         show ( invoker, 0, 0 );

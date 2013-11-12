@@ -93,8 +93,8 @@ public class WebTreeCellRenderer extends WebTreeElement implements TreeCellRende
      * @return cell renderer component
      */
     @Override
-    public WebTreeElement getTreeCellRendererComponent ( JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf,
-                                                         int row, boolean hasFocus )
+    public WebTreeElement getTreeCellRendererComponent ( final JTree tree, final Object value, final boolean isSelected,
+                                                         final boolean expanded, final boolean leaf, final int row, final boolean hasFocus )
     {
         final boolean enabled = tree.isEnabled ();
 
@@ -103,14 +103,14 @@ public class WebTreeCellRenderer extends WebTreeElement implements TreeCellRende
         setEnabled ( enabled );
 
         // Icon
-        ImageIcon icon = leaf ? leafIcon : ( tree.getModel ().getRoot () == value ? rootIcon : ( expanded ? openIcon : closedIcon ) );
+        final ImageIcon icon = leaf ? leafIcon : ( tree.getModel ().getRoot () == value ? rootIcon : ( expanded ? openIcon : closedIcon ) );
         if ( enabled )
         {
             setIcon ( icon );
         }
         else
         {
-            String type = leaf ? "leaf" : ( tree.getModel ().getRoot () == value ? "root" : ( expanded ? "open" : "closed" ) );
+            final String type = leaf ? "leaf" : ( tree.getModel ().getRoot () == value ? "root" : ( expanded ? "open" : "closed" ) );
             setIcon ( ImageUtils.getDisabledCopy ( getIconTypeKey ( type ), icon ) );
         }
 
@@ -118,8 +118,8 @@ public class WebTreeCellRenderer extends WebTreeElement implements TreeCellRende
         setText ( tree.convertValueToText ( value, isSelected, expanded, leaf, row, hasFocus ) );
 
         // Border
-        TreeUI tui = tree.getUI ();
-        int sw = tui instanceof WebTreeUI ? ( ( WebTreeUI ) tui ).getSelectionShadeWidth () : WebTreeStyle.selectionShadeWidth;
+        final TreeUI tui = tree.getUI ();
+        final int sw = tui instanceof WebTreeUI ? ( ( WebTreeUI ) tui ).getSelectionShadeWidth () : WebTreeStyle.selectionShadeWidth;
         setMargin ( sw + 2, sw + 2, sw + 2, sw + 4 );
 
         // Orientation
@@ -134,7 +134,7 @@ public class WebTreeCellRenderer extends WebTreeElement implements TreeCellRende
      * @param type icon type
      * @return icon type key for this cell renderer
      */
-    private String getIconTypeKey ( String type )
+    private String getIconTypeKey ( final String type )
     {
         return "WebTreeCellRenderer." + id + "." + type;
     }
@@ -154,7 +154,7 @@ public class WebTreeCellRenderer extends WebTreeElement implements TreeCellRende
      *
      * @param rootIcon icon used to present root node
      */
-    public void setRootIcon ( Icon rootIcon )
+    public void setRootIcon ( final Icon rootIcon )
     {
         this.rootIcon = rootIcon != null ? ImageUtils.getImageIcon ( rootIcon ) : null;
         ImageUtils.clearDisabledCopyCache ( getIconTypeKey ( "root" ) );
@@ -175,7 +175,7 @@ public class WebTreeCellRenderer extends WebTreeElement implements TreeCellRende
      *
      * @param openIcon icon used to represent non-leaf nodes that are expanded
      */
-    public void setOpenIcon ( Icon openIcon )
+    public void setOpenIcon ( final Icon openIcon )
     {
         this.openIcon = openIcon != null ? ImageUtils.getImageIcon ( openIcon ) : null;
         ImageUtils.clearDisabledCopyCache ( getIconTypeKey ( "open" ) );
@@ -196,7 +196,7 @@ public class WebTreeCellRenderer extends WebTreeElement implements TreeCellRende
      *
      * @param closedIcon icon used to represent non-leaf nodes that are not expanded
      */
-    public void setClosedIcon ( Icon closedIcon )
+    public void setClosedIcon ( final Icon closedIcon )
     {
         this.closedIcon = closedIcon != null ? ImageUtils.getImageIcon ( closedIcon ) : null;
         ImageUtils.clearDisabledCopyCache ( getIconTypeKey ( "closed" ) );
@@ -217,7 +217,7 @@ public class WebTreeCellRenderer extends WebTreeElement implements TreeCellRende
      *
      * @param leafIcon icon used to represent leaf nodes
      */
-    public void setLeafIcon ( Icon leafIcon )
+    public void setLeafIcon ( final Icon leafIcon )
     {
         this.leafIcon = leafIcon != null ? ImageUtils.getImageIcon ( leafIcon ) : null;
         ImageUtils.clearDisabledCopyCache ( getIconTypeKey ( "leaf" ) );

@@ -49,11 +49,11 @@ public class WebButtonPopup extends WebPopup
 
     private PopupWay popupWay;
 
-    private WebButton button;
-    private WebButton copiedButton;
-    private WebPanel container;
+    private final WebButton button;
+    private final WebButton copiedButton;
+    private final WebPanel container;
 
-    public WebButtonPopup ( final WebButton button, PopupWay popupWay )
+    public WebButtonPopup ( final WebButton button, final PopupWay popupWay )
     {
         super ();
 
@@ -70,7 +70,7 @@ public class WebButtonPopup extends WebPopup
         copiedButton.addActionListener ( new ActionListener ()
         {
             @Override
-            public void actionPerformed ( ActionEvent e )
+            public void actionPerformed ( final ActionEvent e )
             {
                 hidePopup ( true );
             }
@@ -80,7 +80,7 @@ public class WebButtonPopup extends WebPopup
         button.addActionListener ( new ActionListener ()
         {
             @Override
-            public void actionPerformed ( ActionEvent e )
+            public void actionPerformed ( final ActionEvent e )
             {
                 // Displaying popup when button is pressed
                 showPopup ();
@@ -89,7 +89,7 @@ public class WebButtonPopup extends WebPopup
         button.addPropertyChangeListener ( new PropertyChangeListener ()
         {
             @Override
-            public void propertyChange ( PropertyChangeEvent evt )
+            public void propertyChange ( final PropertyChangeEvent evt )
             {
                 // Updating button copy on property changes
                 if ( BUTTON_PROPERTIES.contains ( evt.getPropertyName () ) )
@@ -101,7 +101,7 @@ public class WebButtonPopup extends WebPopup
         button.addHierarchyListener ( new HierarchyListener ()
         {
             @Override
-            public void hierarchyChanged ( HierarchyEvent e )
+            public void hierarchyChanged ( final HierarchyEvent e )
             {
                 // Hiding popup properly when popup button parent has changed
                 if ( e.getID () == HierarchyEvent.PARENT_CHANGED )
@@ -113,14 +113,14 @@ public class WebButtonPopup extends WebPopup
         button.addAncestorListener ( new AncestorAdapter ()
         {
             @Override
-            public void ancestorRemoved ( AncestorEvent event )
+            public void ancestorRemoved ( final AncestorEvent event )
             {
                 // Hiding popup properly when button is removed from visible container somehow
                 hidePopup ( false );
             }
 
             @Override
-            public void ancestorMoved ( AncestorEvent event )
+            public void ancestorMoved ( final AncestorEvent event )
             {
                 // Placing popup properly when button has moved
                 updateBounds ();
@@ -129,20 +129,20 @@ public class WebButtonPopup extends WebPopup
         button.addComponentListener ( new ComponentAdapter ()
         {
             @Override
-            public void componentHidden ( ComponentEvent e )
+            public void componentHidden ( final ComponentEvent e )
             {
                 // Hiding popup properly when button is hidden
                 hidePopup ( false );
             }
 
             @Override
-            public void componentResized ( ComponentEvent e )
+            public void componentResized ( final ComponentEvent e )
             {
                 updateBounds ();
             }
 
             @Override
-            public void componentMoved ( ComponentEvent e )
+            public void componentMoved ( final ComponentEvent e )
             {
                 updateBounds ();
             }
@@ -160,13 +160,13 @@ public class WebButtonPopup extends WebPopup
         addAncestorListener ( new AncestorAdapter ()
         {
             @Override
-            public void ancestorAdded ( AncestorEvent event )
+            public void ancestorAdded ( final AncestorEvent event )
             {
                 updateBounds ();
             }
 
             @Override
-            public void ancestorMoved ( AncestorEvent event )
+            public void ancestorMoved ( final AncestorEvent event )
             {
                 updateBounds ();
             }
@@ -266,7 +266,7 @@ public class WebButtonPopup extends WebPopup
             add ( container, "1,0,1,1" );
         }
 
-        int margin = button.getShadeWidth () + 1;
+        final int margin = button.getShadeWidth () + 1;
         if ( isDown () )
         {
             container.setMargin ( new Insets ( 0, margin, margin, margin ) );
@@ -291,13 +291,13 @@ public class WebButtonPopup extends WebPopup
      * {@inheritDoc}
      */
     @Override
-    public void focusChanged ( boolean focused )
+    public void focusChanged ( final boolean focused )
     {
         super.focusChanged ( focused );
         WebButtonPopup.this.repaint ();
     }
 
-    public void setContent ( Component component )
+    public void setContent ( final Component component )
     {
         container.removeAll ();
         container.add ( component );
@@ -309,7 +309,7 @@ public class WebButtonPopup extends WebPopup
         return popupWay;
     }
 
-    public void setPopupWay ( PopupWay popupWay )
+    public void setPopupWay ( final PopupWay popupWay )
     {
         this.popupWay = popupWay;
         updateContent ();
@@ -318,7 +318,7 @@ public class WebButtonPopup extends WebPopup
 
     private WebButton copy ( final WebButton button )
     {
-        WebButton copy = new WebButton ()
+        final WebButton copy = new WebButton ()
         {
             @Override
             public Dimension getPreferredSize ()
@@ -336,7 +336,7 @@ public class WebButtonPopup extends WebPopup
         return copy;
     }
 
-    private void copySettings ( WebButton button, WebButton copy )
+    private void copySettings ( final WebButton button, final WebButton copy )
     {
         copy.setIcon ( button.getIcon () );
         copy.setText ( button.getText () );
@@ -348,12 +348,13 @@ public class WebButtonPopup extends WebPopup
         copy.setBorder ( button.getBorder () );
     }
 
-    private void updateBounds ()
+    @Override
+    public void updateBounds ()
     {
         if ( isShowing () && button.isShowing () )
         {
-            Point rl = SwingUtils.getRelativeLocation ( button, getParent () );
-            Dimension ps = getPreferredSize ();
+            final Point rl = SwingUtils.getRelativeLocation ( button, getParent () );
+            final Dimension ps = getPreferredSize ();
 
             // Bottom popup
             if ( popupWay.equals ( PopupWay.downLeft ) )
@@ -419,20 +420,20 @@ public class WebButtonPopup extends WebPopup
     }
 
     @Override
-    public boolean contains ( Point p )
+    public boolean contains ( final Point p )
     {
         return getPopupShape ( this ).contains ( p );
     }
 
-    public Shape getPopupShape ( WebButtonPopup c )
+    public Shape getPopupShape ( final WebButtonPopup c )
     {
-        int shadeWidth = button.getShadeWidth ();
-        int round = button.getRound ();
+        final int shadeWidth = button.getShadeWidth ();
+        final int round = button.getRound ();
 
-        int bh = button.getHeight () - 1;
-        int bw = button.getWidth () - 1;
-        int cw = c.getWidth () - 1;
-        int ch = c.getHeight () - 1;
+        final int bh = button.getHeight () - 1;
+        final int bw = button.getWidth () - 1;
+        final int cw = c.getWidth () - 1;
+        final int ch = c.getHeight () - 1;
 
         Shape shape = null;
 
@@ -451,7 +452,7 @@ public class WebButtonPopup extends WebPopup
         }
         else if ( popupWay.equals ( PopupWay.downCenter ) )
         {
-            int shear = bw % 2;
+            final int shear = bw % 2;
             shape = LafUtils.createRoundedShape ( round, p ( cw / 2 - bw / 2 - shear + shadeWidth, shadeWidth ),
                     p ( cw / 2 + bw / 2 - shadeWidth, shadeWidth ), p ( cw / 2 + bw / 2 - shadeWidth, bh ), p ( cw - shadeWidth, bh ),
                     p ( cw - shadeWidth, ch - shadeWidth ), p ( shadeWidth, ch - shadeWidth ), p ( shadeWidth, bh ),
@@ -472,7 +473,7 @@ public class WebButtonPopup extends WebPopup
         }
         else if ( popupWay.equals ( PopupWay.upCenter ) )
         {
-            int shear = bw % 2;
+            final int shear = bw % 2;
             shape = LafUtils.createRoundedShape ( round, p ( shadeWidth, shadeWidth ), p ( cw - shadeWidth, shadeWidth ),
                     p ( cw - shadeWidth, ch - bh ), p ( cw / 2 + bw / 2 - shadeWidth, ch - bh ),
                     p ( cw / 2 + bw / 2 - shadeWidth, ch - shadeWidth ), p ( cw / 2 - bw / 2 - shear + shadeWidth, ch - shadeWidth ),
@@ -493,7 +494,7 @@ public class WebButtonPopup extends WebPopup
         }
         else if ( popupWay.equals ( PopupWay.leftCenter ) )
         {
-            int shear = bh % 2;
+            final int shear = bh % 2;
             shape = LafUtils.createRoundedShape ( round, p ( shadeWidth, shadeWidth ), p ( cw - bw, shadeWidth ),
                     p ( cw - bw, ch / 2 - bh / 2 + shadeWidth ), p ( cw - shadeWidth, ch / 2 - bh / 2 + shadeWidth ),
                     p ( cw - shadeWidth, ch / 2 + bh / 2 + shear - shadeWidth ), p ( cw - bw, ch / 2 + bh / 2 + shear - shadeWidth ),
@@ -514,7 +515,7 @@ public class WebButtonPopup extends WebPopup
         }
         else if ( popupWay.equals ( PopupWay.rightCenter ) )
         {
-            int shear = bh % 2;
+            final int shear = bh % 2;
             shape = LafUtils.createRoundedShape ( round, p ( shadeWidth, ch / 2 - bh / 2 + shadeWidth ),
                     p ( bw, ch / 2 - bh / 2 + shadeWidth ), p ( bw, shadeWidth ), p ( cw - shadeWidth, shadeWidth ),
                     p ( cw - shadeWidth, ch - shadeWidth ), p ( bw, ch - shadeWidth ), p ( bw, ch / 2 + bh / 2 + shear - shadeWidth ),
@@ -564,7 +565,7 @@ public class WebButtonPopup extends WebPopup
                 popupWay.equals ( PopupWay.leftDown );
     }
 
-    private Point p ( int x, int y )
+    private Point p ( final int x, final int y )
     {
         return new Point ( x, y );
     }
@@ -592,7 +593,7 @@ public class WebButtonPopup extends WebPopup
         hidePopup ( false );
     }
 
-    public void hidePopup ( boolean requestFocus )
+    public void hidePopup ( final boolean requestFocus )
     {
         if ( isCloseOnFocusLoss () && button.isFocusable () && requestFocus )
         {
@@ -618,7 +619,7 @@ public class WebButtonPopup extends WebPopup
          * {@inheritDoc}
          */
         @Override
-        public void paint ( Graphics2D g2d, Rectangle bounds, WebButtonPopup c )
+        public void paint ( final Graphics2D g2d, final Rectangle bounds, final WebButtonPopup c )
         {
             LafUtils.drawCustomWebBorder ( g2d, c, getPopupShape ( c ),
                     button.isFocusable () && button.isDrawFocus () && focused ? StyleConstants.fieldFocusColor : StyleConstants.shadeColor,

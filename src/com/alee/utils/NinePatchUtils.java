@@ -53,16 +53,16 @@ public final class NinePatchUtils
      * @param shadeOpacity shade opacity
      * @return cached shade nine-patch icon
      */
-    public static NinePatchIcon getShadeIcon ( int shadeWidth, int round, float shadeOpacity )
+    public static NinePatchIcon getShadeIcon ( final int shadeWidth, final int round, final float shadeOpacity )
     {
-        String key = "outer;" + shadeWidth + ";" + round + ";" + shadeOpacity;
+        final String key = "outer;" + shadeWidth + ";" + round + ";" + shadeOpacity;
         if ( shadeIconCache.containsKey ( key ) )
         {
             return shadeIconCache.get ( key );
         }
         else
         {
-            NinePatchIcon ninePatchIcon = createShadeIcon ( shadeWidth, round, shadeOpacity );
+            final NinePatchIcon ninePatchIcon = createShadeIcon ( shadeWidth, round, shadeOpacity );
             shadeIconCache.put ( key, ninePatchIcon );
             return ninePatchIcon;
         }
@@ -76,26 +76,26 @@ public final class NinePatchUtils
      * @param shadeOpacity shade opacity
      * @return shade nine-patch icon
      */
-    public static NinePatchIcon createShadeIcon ( int shadeWidth, int round, float shadeOpacity )
+    public static NinePatchIcon createShadeIcon ( final int shadeWidth, final int round, final float shadeOpacity )
     {
         // Calculating width for temprorary image
-        int inner = Math.max ( shadeWidth, round ) / 2;
-        int width = shadeWidth * 2 + inner * 2;
+        final int inner = Math.max ( shadeWidth, round ) / 2;
+        final int width = shadeWidth * 2 + inner * 2;
 
         // Creating template image
-        BufferedImage bi = new BufferedImage ( width, width, BufferedImage.TYPE_INT_ARGB );
-        Graphics2D ig = bi.createGraphics ();
+        final BufferedImage bi = new BufferedImage ( width, width, BufferedImage.TYPE_INT_ARGB );
+        final Graphics2D ig = bi.createGraphics ();
         LafUtils.setupAntialias ( ig );
         ig.setPaint ( Color.BLACK );
         ig.fillRoundRect ( shadeWidth, shadeWidth, width - shadeWidth * 2, width - shadeWidth * 2, round * 2, round * 2 );
         ig.dispose ();
 
         // Creating shade image
-        ShadowFilter sf = new ShadowFilter ( shadeWidth, 0, 0, shadeOpacity );
-        BufferedImage shade = sf.filter ( bi, null );
+        final ShadowFilter sf = new ShadowFilter ( shadeWidth, 0, 0, shadeOpacity );
+        final BufferedImage shade = sf.filter ( bi, null );
 
         // Clipping shade image
-        Graphics2D g2d = shade.createGraphics ();
+        final Graphics2D g2d = shade.createGraphics ();
         LafUtils.setupAntialias ( g2d );
         g2d.setComposite ( AlphaComposite.getInstance ( AlphaComposite.SRC_IN ) );
         g2d.setPaint ( StyleConstants.transparent );
@@ -103,7 +103,7 @@ public final class NinePatchUtils
         g2d.dispose ();
 
         // Creating nine-patch icon
-        NinePatchIcon ninePatchIcon = NinePatchIcon.create ( shade );
+        final NinePatchIcon ninePatchIcon = NinePatchIcon.create ( shade );
         ninePatchIcon.addHorizontalStretch ( 0, shadeWidth + inner, true );
         ninePatchIcon.addHorizontalStretch ( shadeWidth + inner + 1, width - shadeWidth - inner - 1, false );
         ninePatchIcon.addHorizontalStretch ( width - shadeWidth - inner, width, true );
@@ -122,16 +122,16 @@ public final class NinePatchUtils
      * @param shadeOpacity shade opacity
      * @return cached inner shade nine-patch icon
      */
-    public static NinePatchIcon getInnerShadeIcon ( int shadeWidth, int round, float shadeOpacity )
+    public static NinePatchIcon getInnerShadeIcon ( final int shadeWidth, final int round, final float shadeOpacity )
     {
-        String key = "inner;" + shadeWidth + ";" + round + ";" + shadeOpacity;
+        final String key = "inner;" + shadeWidth + ";" + round + ";" + shadeOpacity;
         if ( shadeIconCache.containsKey ( key ) )
         {
             return shadeIconCache.get ( key );
         }
         else
         {
-            NinePatchIcon ninePatchIcon = createInnerShadeIcon ( shadeWidth, round, shadeOpacity );
+            final NinePatchIcon ninePatchIcon = createInnerShadeIcon ( shadeWidth, round, shadeOpacity );
             shadeIconCache.put ( key, ninePatchIcon );
             return ninePatchIcon;
         }
@@ -145,17 +145,17 @@ public final class NinePatchUtils
      * @param shadeOpacity shade opacity
      * @return inner shade nine-patch icon
      */
-    public static NinePatchIcon createInnerShadeIcon ( int shadeWidth, int round, float shadeOpacity )
+    public static NinePatchIcon createInnerShadeIcon ( final int shadeWidth, final int round, final float shadeOpacity )
     {
         // Calculating width for temprorary image
-        int inner = Math.max ( shadeWidth, round );
+        final int inner = Math.max ( shadeWidth, round );
         int width = shadeWidth * 2 + inner * 2;
 
         // Creating template image
-        BufferedImage bi = new BufferedImage ( width, width, BufferedImage.TYPE_INT_ARGB );
-        Graphics2D ig = bi.createGraphics ();
+        final BufferedImage bi = new BufferedImage ( width, width, BufferedImage.TYPE_INT_ARGB );
+        final Graphics2D ig = bi.createGraphics ();
         LafUtils.setupAntialias ( ig );
-        Area area = new Area ( new Rectangle ( 0, 0, width, width ) );
+        final Area area = new Area ( new Rectangle ( 0, 0, width, width ) );
         area.exclusiveOr ( new Area (
                 new RoundRectangle2D.Double ( shadeWidth, shadeWidth, width - shadeWidth * 2, width - shadeWidth * 2, round * 2,
                         round * 2 ) ) );
@@ -164,22 +164,22 @@ public final class NinePatchUtils
         ig.dispose ();
 
         // Creating shade image
-        ShadowFilter sf = new ShadowFilter ( shadeWidth, 0, 0, shadeOpacity );
-        BufferedImage shade = sf.filter ( bi, null );
+        final ShadowFilter sf = new ShadowFilter ( shadeWidth, 0, 0, shadeOpacity );
+        final BufferedImage shade = sf.filter ( bi, null );
 
         // Clipping shade image
-        Graphics2D g2d = shade.createGraphics ();
+        final Graphics2D g2d = shade.createGraphics ();
         LafUtils.setupAntialias ( g2d );
         g2d.setComposite ( AlphaComposite.getInstance ( AlphaComposite.SRC_IN ) );
         g2d.setPaint ( StyleConstants.transparent );
         g2d.fill ( area );
         g2d.dispose ();
 
-        BufferedImage croppedShade = shade.getSubimage ( shadeWidth, shadeWidth, width - shadeWidth * 2, width - shadeWidth * 2 );
+        final BufferedImage croppedShade = shade.getSubimage ( shadeWidth, shadeWidth, width - shadeWidth * 2, width - shadeWidth * 2 );
         width = croppedShade.getWidth ();
 
         // Creating nine-patch icon
-        NinePatchIcon ninePatchIcon = NinePatchIcon.create ( croppedShade );
+        final NinePatchIcon ninePatchIcon = NinePatchIcon.create ( croppedShade );
         ninePatchIcon.addHorizontalStretch ( 0, inner, true );
         ninePatchIcon.addHorizontalStretch ( inner + 1, width - inner - 1, false );
         ninePatchIcon.addHorizontalStretch ( width - inner, width, true );
@@ -197,7 +197,7 @@ public final class NinePatchUtils
      * @param intervalType intervals type
      * @return list of nine-patch data intervals from the specified image
      */
-    public static List<NinePatchInterval> parseIntervals ( BufferedImage image, NinePatchIntervalType intervalType )
+    public static List<NinePatchInterval> parseIntervals ( final BufferedImage image, final NinePatchIntervalType intervalType )
     {
         final boolean hv = intervalType.equals ( NinePatchIntervalType.horizontalStretch ) ||
                 intervalType.equals ( NinePatchIntervalType.verticalStretch );
@@ -209,7 +209,7 @@ public final class NinePatchUtils
         boolean pixelPart;
         for ( int i = 1; i < l; i++ )
         {
-            int rgb;
+            final int rgb;
             switch ( intervalType )
             {
                 case horizontalStretch:
@@ -268,9 +268,9 @@ public final class NinePatchUtils
      * @param filled pixels fill data
      * @return nine-patch stretch intervals
      */
-    public static List<NinePatchInterval> parseStretchIntervals ( boolean[] filled )
+    public static List<NinePatchInterval> parseStretchIntervals ( final boolean[] filled )
     {
-        List<NinePatchInterval> intervals = new ArrayList<NinePatchInterval> ();
+        final List<NinePatchInterval> intervals = new ArrayList<NinePatchInterval> ();
         NinePatchInterval interval = null;
         boolean pixelPart;
         for ( int i = 0; i < filled.length; i++ )

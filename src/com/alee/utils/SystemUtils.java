@@ -68,23 +68,35 @@ public final class SystemUtils
     private static final String osName;
     private static final String shortOsName;
 
-    static {
-        osName = AccessController.doPrivileged(new PrivilegedAction<String>() {
+    static
+    {
+        osName = AccessController.doPrivileged ( new PrivilegedAction<String> ()
+        {
             @Override
-            public String run() {
-                return System.getProperty("os.name");
+            public String run ()
+            {
+                return System.getProperty ( "os.name" );
             }
-        });
-        String lc = osName.toLowerCase(Locale.ENGLISH);
-        if (lc.contains("win")) {
+        } );
+        final String lc = osName.toLowerCase ( Locale.ENGLISH );
+        if ( lc.contains ( "win" ) )
+        {
             shortOsName = WINDOWS;
-        } else if (lc.contains("mac") || lc.contains("darwin")) {
+        }
+        else if ( lc.contains ( "mac" ) || lc.contains ( "darwin" ) )
+        {
             shortOsName = MAC;
-        } else if (lc.contains("nix") || lc.contains("nux")) {
+        }
+        else if ( lc.contains ( "nix" ) || lc.contains ( "nux" ) )
+        {
             shortOsName = UNIX;
-        } else if (lc.contains("sunos")) {
+        }
+        else if ( lc.contains ( "sunos" ) )
+        {
             shortOsName = SOLARIS;
-        } else {
+        }
+        else
+        {
             shortOsName = null;
         }
     }
@@ -94,11 +106,11 @@ public final class SystemUtils
      *
      * @param text text to copy into clipboard
      */
-    public static void copyToClipboard ( String text )
+    public static void copyToClipboard ( final String text )
     {
         try
         {
-            Clipboard clipboard = Toolkit.getDefaultToolkit ().getSystemClipboard ();
+            final Clipboard clipboard = Toolkit.getDefaultToolkit ().getSystemClipboard ();
             clipboard.setContents ( new StringSelection ( text ), null );
         }
         catch ( Throwable e )
@@ -114,7 +126,7 @@ public final class SystemUtils
      */
     public static String getStringFromClipboard ()
     {
-        Transferable t = Toolkit.getDefaultToolkit ().getSystemClipboard ().getContents ( null );
+        final Transferable t = Toolkit.getDefaultToolkit ().getSystemClipboard ().getContents ( null );
         if ( t != null && t.isDataFlavorSupported ( DataFlavor.stringFlavor ) )
         {
             try
@@ -162,7 +174,7 @@ public final class SystemUtils
      *
      * @return true if the application is running on the specified java version and above, false otherwise
      */
-    public static boolean isJavaVersion ( double version, int update )
+    public static boolean isJavaVersion ( final double version, final int update )
     {
         return getJavaVersion ().compareVersion ( version, 0, update ) >= 0;
     }
@@ -172,7 +184,7 @@ public final class SystemUtils
      *
      * @return true if the application is running on the specified java version and above, false otherwise
      */
-    public static boolean isJavaVersion ( double major, int minor, int update )
+    public static boolean isJavaVersion ( final double major, final int minor, final int update )
     {
         return getJavaVersion ().compareVersion ( major, minor, update ) >= 0;
     }
@@ -253,7 +265,7 @@ public final class SystemUtils
      * @param color whether return colored icon or not
      * @return OS icon
      */
-    public static ImageIcon getOsIcon ( boolean color )
+    public static ImageIcon getOsIcon ( final boolean color )
     {
         return getOsIcon ( 16, color );
     }
@@ -264,7 +276,7 @@ public final class SystemUtils
      * @param size preferred icon size
      * @return OS icon
      */
-    public static ImageIcon getOsIcon ( int size )
+    public static ImageIcon getOsIcon ( final int size )
     {
         return getOsIcon ( size, true );
     }
@@ -276,7 +288,7 @@ public final class SystemUtils
      * @param color whether return colored icon or not
      * @return OS icon
      */
-    public static ImageIcon getOsIcon ( int size, boolean color )
+    public static ImageIcon getOsIcon ( int size, final boolean color )
     {
         if ( size != 16 && size != 32 )
         {
@@ -292,7 +304,7 @@ public final class SystemUtils
      *
      * @return true if current OS is windows, false otherwise
      */
-    @SuppressWarnings("StringEquality")
+    @SuppressWarnings ( "StringEquality" )
     public static boolean isWindows ()
     {
         return shortOsName == WINDOWS;
@@ -303,7 +315,7 @@ public final class SystemUtils
      *
      * @return true if current OS is mac, false otherwise
      */
-    @SuppressWarnings("StringEquality")
+    @SuppressWarnings ( "StringEquality" )
     public static boolean isMac ()
     {
         return shortOsName == MAC;
@@ -314,7 +326,7 @@ public final class SystemUtils
      *
      * @return true if current OS is unix, false otherwise
      */
-    @SuppressWarnings("StringEquality")
+    @SuppressWarnings ( "StringEquality" )
     public static boolean isUnix ()
     {
         return shortOsName == UNIX;
@@ -325,7 +337,7 @@ public final class SystemUtils
      *
      * @return true if current OS is solaris, false otherwise
      */
-    @SuppressWarnings("StringEquality")
+    @SuppressWarnings ( "StringEquality" )
     public static boolean isSolaris ()
     {
         return shortOsName == SOLARIS;
@@ -473,13 +485,13 @@ public final class SystemUtils
     public static List<GraphicsDevice> getGraphicsDevices ()
     {
         // Retrieving system devices
-        GraphicsEnvironment graphicsEnvironment = getGraphicsEnvironment ();
-        GraphicsDevice[] screenDevices = graphicsEnvironment.getScreenDevices ();
-        GraphicsDevice defaultScreenDevice = graphicsEnvironment.getDefaultScreenDevice ();
+        final GraphicsEnvironment graphicsEnvironment = getGraphicsEnvironment ();
+        final GraphicsDevice[] screenDevices = graphicsEnvironment.getScreenDevices ();
+        final GraphicsDevice defaultScreenDevice = graphicsEnvironment.getDefaultScreenDevice ();
 
         // Collecting devices into list
-        List<GraphicsDevice> devices = new ArrayList<GraphicsDevice> ();
-        for ( GraphicsDevice gd : screenDevices )
+        final List<GraphicsDevice> devices = new ArrayList<GraphicsDevice> ();
+        for ( final GraphicsDevice gd : screenDevices )
         {
             if ( gd.getType () == GraphicsDevice.TYPE_RASTER_SCREEN )
             {
