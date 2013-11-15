@@ -150,7 +150,7 @@ public class WebRootPaneLayout extends AbstractLayoutManager
         // Placing window resize corner
         if ( showResizeCorner )
         {
-            parent.setComponentZOrder ( resizeCorner, 0 );
+            //parent.setComponentZOrder ( resizeCorner, 0 );
             final Dimension ps = resizeCorner.getPreferredSize ();
             resizeCorner.setVisible ( true );
             resizeCorner.setBounds ( s.width - i.right - ps.width - 2, s.height - i.bottom - ps.height - 2, ps.width, ps.height );

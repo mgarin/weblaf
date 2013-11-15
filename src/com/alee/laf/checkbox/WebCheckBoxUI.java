@@ -29,6 +29,8 @@ import com.alee.utils.laf.ShapeProvider;
 import com.alee.utils.swing.WebTimer;
 
 import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.plaf.BorderUIResource;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicCheckBoxUI;
 import javax.swing.tree.TreeCellRenderer;
@@ -386,6 +388,15 @@ public class WebCheckBoxUI extends BasicCheckBoxUI implements ShapeProvider
      */
     protected void updateBorder ()
     {
+        if ( SwingUtils.getHonorUserBorders(checkBox) )
+        {
+            Border oldBorder = checkBox.getBorder();
+            if (!(oldBorder instanceof BorderUIResource))
+            {
+                return;
+            }
+        }
+        
         // Actual margin
         final boolean ltr = checkBox.getComponentOrientation ().isLeftToRight ();
         final Insets m = new Insets ( margin.top, ltr ? margin.left : margin.right, margin.bottom, ltr ? margin.right : margin.left );

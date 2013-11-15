@@ -23,6 +23,7 @@ import com.alee.extended.filechooser.WebFileChooserField;
 import com.alee.extended.filechooser.WebPathField;
 import com.alee.extended.panel.WebCollapsiblePane;
 import com.alee.laf.StyleConstants;
+import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.rootpane.WebRootPaneUI;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.hotkey.HotkeyRunnable;
@@ -107,6 +108,21 @@ public final class SwingUtils
      */
     private static Set<SoftReference<BearingCacheEntry>> softBearingCache = new HashSet<SoftReference<BearingCacheEntry>> ();
 
+    /**
+     * Returns whether UI delegates should honor a user-specified border on this
+     * component.
+     */
+    public static boolean getHonorUserBorders(JComponent component)
+    {
+        if (Boolean.getBoolean(WebLookAndFeel.PROPERTY_HONOR_USER_BORDERS))
+        {
+            return true;
+        }
+        Object prop = component
+                .getClientProperty(WebLookAndFeel.PROPERTY_HONOR_USER_BORDER);
+        return Boolean.TRUE.equals(prop);
+    }
+    
     /**
      * Returns whether window in which specified component located is decorated by L&amp;F or not.
      *

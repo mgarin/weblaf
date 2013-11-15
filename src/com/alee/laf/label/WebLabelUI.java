@@ -26,6 +26,8 @@ import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.BorderMethods;
 
 import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.plaf.BorderUIResource;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicLabelUI;
 import java.awt.*;
@@ -132,6 +134,15 @@ public class WebLabelUI extends BasicLabelUI implements BorderMethods
     {
         if ( label != null )
         {
+            if ( SwingUtils.getHonorUserBorders(label) )
+            {
+                Border oldBorder = label.getBorder();
+                if (!(oldBorder instanceof BorderUIResource))
+                {
+                    return;
+                }
+            }
+            
             // Actual margin
             final boolean ltr = label.getComponentOrientation ().isLeftToRight ();
             final Insets m = new Insets ( margin.top, ltr ? margin.left : margin.right, margin.bottom, ltr ? margin.right : margin.left );
