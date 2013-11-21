@@ -83,6 +83,21 @@ import java.util.List;
 
 public class WebLookAndFeel extends BasicLookAndFeel
 {
+   
+   /**
+    * If this client property is set to {@link Boolean#TRUE} on a component,
+    * UI delegates should follow the typical Swing behavior of not overriding
+    * a user-defined border on it.
+    */
+   public static final String PROPERTY_HONOR_USER_BORDER = "WebLookAndFeel.honorUserBorder";
+   
+   /**
+    * If this system property is set to <code>true</code>,  UI delegates should
+    * follow the typical Swing behavior of not overriding a user-defined border
+    * if one is installed on components.
+    */
+   public static final String PROPERTY_HONOR_USER_BORDERS = "WebLookAndFeel.honorUserBorders";
+   
     /**
      * Some known UI constants.
      */
@@ -408,6 +423,31 @@ public class WebLookAndFeel extends BasicLookAndFeel
         // Option pane
         table.put ( "OptionPaneUI", optionPaneUI );
     }
+    
+    /**
+     * Adds some default colors to the <code>UIDefaults</code> that are not
+     * used by WebLookAndFeel directly, but will help custom components that
+     * assume BasicLookAndFeel conventions.
+     */
+    @Override
+    protected void initSystemColorDefaults( UIDefaults table )
+    {
+        super.initSystemColorDefaults( table );
+        
+        String textColor = "#"+ColorUtils.getHexColor( StyleConstants.textColor );
+        
+        String[] defaultSystemColors =
+        {
+            "menu", "#ffffff",
+            "menuText", textColor,
+            "textHighlight", "#" + ColorUtils.getHexColor( StyleConstants.textSelectionColor ),
+            "textHighlightText", textColor,
+            "textInactiveText", "#" + ColorUtils.getHexColor( StyleConstants.disabledTextColor ),
+            "controlText", textColor,
+        };
+
+        loadSystemColors( table, defaultSystemColors, isNativeLookAndFeel() );
+    }
 
     /**
      * Initializes WebLookAndFeel defaults (like default renderers, component borders and such).
@@ -425,7 +465,21 @@ public class WebLookAndFeel extends BasicLookAndFeel
 
         // Fonts
         initializeFonts ( table );
-
+        
+        // JTextFields
+        Object textComponentBorder =
+                new SwingLazyValue ( "javax.swing.plaf.BorderUIResource.LineBorderUIResource", new Object[] { StyleConstants.shadeColor });
+        table.put( "TextField.border", textComponentBorder );
+        
+        // JTextAreas
+        table.put( "TextArea.border", textComponentBorder );
+        
+        // JEditorPanes
+        table.put( "EditorPane.border", textComponentBorder );
+        
+        // JTextPanes
+        table.put( "TextPane.border", textComponentBorder );
+        
         // Option pane
         table.put ( "OptionPane.messageAreaBorder",
                 new SwingLazyValue ( "javax.swing.plaf.BorderUIResource$EmptyBorderUIResource", new Object[]{ 0, 0, 5, 0 } ) );
@@ -436,7 +490,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
 
         // Scroll bars minimum size
         table.put ( "ScrollBar.minimumThumbSize", new Dimension ( WebScrollBarStyle.minThumbWidth, WebScrollBarStyle.minThumbHeight ) );
-
+        
         // Tree icons
         table.put ( "Tree.openIcon", WebTreeUI.OPEN_ICON );
         table.put ( "Tree.closedIcon", WebTreeUI.CLOSED_ICON );

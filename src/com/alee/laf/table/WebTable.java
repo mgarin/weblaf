@@ -22,7 +22,6 @@ import com.alee.utils.GeometryUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.FontMethods;
-import com.alee.utils.swing.WebDefaultCellEditor;
 
 import javax.swing.*;
 import javax.swing.plaf.UIResource;
@@ -30,7 +29,6 @@ import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 import java.awt.*;
-import java.lang.reflect.InvocationTargetException;
 import java.util.EventObject;
 import java.util.Vector;
 
