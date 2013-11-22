@@ -87,7 +87,7 @@ public final class WebPopupMenuStyle
      * Popup menu painter.
      * If set it will override WebLaF styling.
      */
-    public static WebPopupMenuPainter painter = null;
+    public static PopupMenuPainter painter = null;
 
     /**
      * Whether should fix initial popup menu location or not.

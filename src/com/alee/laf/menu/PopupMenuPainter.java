@@ -30,7 +30,7 @@ import java.awt.geom.GeneralPath;
  * @author Mikle Garin
  */
 
-public class WebPopupMenuPainter<E extends JPopupMenu> extends WebPopupPainter<E>
+public class PopupMenuPainter<E extends JPopupMenu> extends WebPopupPainter<E>
 {
     /**
      * {@inheritDoc}
@@ -48,7 +48,7 @@ public class WebPopupMenuPainter<E extends JPopupMenu> extends WebPopupPainter<E
      * {@inheritDoc}
      */
     @Override
-    protected void paintTransparentMenu ( final Graphics2D g2d, final E popupMenu )
+    protected void paintTransparentPopup ( final Graphics2D g2d, final E popupMenu )
     {
         final Dimension menuSize = popupMenu.getSize ();
 
@@ -122,7 +122,7 @@ public class WebPopupMenuPainter<E extends JPopupMenu> extends WebPopupPainter<E
             {
                 return createDropdownCornerShape ( popupMenu, menuSize, fill );
             }
-        }, getCachedShapeSettings () );
+        }, getCachedShapeSettings ( popupMenu ) );
     }
 
     /**

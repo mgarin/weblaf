@@ -61,7 +61,7 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements SwingConstants, 
      * Component style settings.
      */
     protected Insets margin = WebPopupMenuStyle.margin;
-    protected WebPopupMenuPainter painter = WebPopupMenuStyle.painter;
+    protected PopupMenuPainter painter = WebPopupMenuStyle.painter;
     protected int menuSpacing = WebPopupMenuStyle.menuSpacing;
     protected boolean fixLocation = WebPopupMenuStyle.fixLocation;
 
@@ -111,7 +111,7 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements SwingConstants, 
         popupMenu.setBackground ( WebPopupMenuStyle.backgroundColor );
 
         // Initializing default painer
-        setPainter ( new WebPopupMenuPainter () );
+        setPainter ( new PopupMenuPainter () );
 
         // Popup orientation change listener
         orientationChangeListener = new PropertyChangeListener ()
@@ -232,7 +232,7 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements SwingConstants, 
      *
      * @param painter popup menu painter
      */
-    protected void applyPainterSettings ( final WebPopupMenuPainter painter )
+    protected void applyPainterSettings ( final PopupMenuPainter painter )
     {
         if ( painter != null )
         {
@@ -466,7 +466,7 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements SwingConstants, 
      *
      * @return popup menu painter
      */
-    public WebPopupMenuPainter getPainter ()
+    public PopupMenuPainter getPainter ()
     {
         return painter;
     }
@@ -477,7 +477,7 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements SwingConstants, 
      *
      * @param painter new popup menu painter
      */
-    public void setPainter ( final WebPopupMenuPainter painter )
+    public void setPainter ( final PopupMenuPainter painter )
     {
         PainterSupport.uninstallPainter ( popupMenu, this.painter );
         this.painter = painter;

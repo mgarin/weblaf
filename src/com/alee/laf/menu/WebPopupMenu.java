@@ -308,7 +308,7 @@ public class WebPopupMenu extends JPopupMenu implements ShapeProvider
      *
      * @return popup menu painter
      */
-    public WebPopupMenuPainter getPainter ()
+    public PopupMenuPainter getPainter ()
     {
         return getWebUI ().getPainter ();
     }
@@ -318,7 +318,7 @@ public class WebPopupMenu extends JPopupMenu implements ShapeProvider
      *
      * @param painter new popup menu painter
      */
-    public void setPainter ( final WebPopupMenuPainter painter )
+    public void setPainter ( final PopupMenuPainter painter )
     {
         getWebUI ().setPainter ( painter );
     }

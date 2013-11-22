@@ -30,7 +30,7 @@ import java.awt.*;
 import java.awt.geom.GeneralPath;
 
 /**
- * Base painter for popupmenu-like components.
+ * Web-styled popup painter for any type of components.
  * It is generally used for WebPopupMenuUI default styling but might also be used in other cases.
  * Be aware that you will have to manually setup this painter if used outside of the WebPopupMenuUI.
  *
@@ -59,9 +59,9 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
     protected int cornerAlignment = -1;
 
     /**
-     * Returns popup menu style.
+     * Returns popup style.
      *
-     * @return popup menu style
+     * @return popup style
      */
     public PopupPainterStyle getPopupPainterStyle ()
     {
@@ -69,9 +69,9 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
     }
 
     /**
-     * Sets popup menu style.
+     * Sets popup  style.
      *
-     * @param style new popup menu style
+     * @param style new popup style
      */
     public void setPopupPainterStyle ( final PopupPainterStyle style )
     {
@@ -79,9 +79,9 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
     }
 
     /**
-     * Returns popup menu border color.
+     * Returns popup border color.
      *
-     * @return popup menu border color
+     * @return popup border color
      */
     public Color getBorderColor ()
     {
@@ -89,9 +89,9 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
     }
 
     /**
-     * Sets popup menu border color.
+     * Sets popup border color.
      *
-     * @param color new popup menu border color
+     * @param color new popup border color
      */
     public void setBorderColor ( final Color color )
     {
@@ -99,9 +99,9 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
     }
 
     /**
-     * Returns popup menu border corners rounding.
+     * Returns popup border corners rounding.
      *
-     * @return popup menu border corners rounding
+     * @return popup border corners rounding
      */
     public int getRound ()
     {
@@ -109,9 +109,9 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
     }
 
     /**
-     * Sets popup menu border corners rounding.
+     * Sets popup border corners rounding.
      *
-     * @param round new popup menu border corners rounding
+     * @param round new popup border corners rounding
      */
     public void setRound ( final int round )
     {
@@ -119,9 +119,9 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
     }
 
     /**
-     * Returns popup menu shade width.
+     * Returns popup shade width.
      *
-     * @return popup menu shade width
+     * @return popup shade width
      */
     public int getShadeWidth ()
     {
@@ -129,9 +129,9 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
     }
 
     /**
-     * Sets popup menu shade width.
+     * Sets popup shade width.
      *
-     * @param width new popup menu shade width
+     * @param width new popup shade width
      */
     public void setShadeWidth ( final int width )
     {
@@ -139,9 +139,9 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
     }
 
     /**
-     * Returns popup menu shade opacity.
+     * Returns popup shade opacity.
      *
-     * @return popup menu shade opacity
+     * @return popup shade opacity
      */
     public float getShadeOpacity ()
     {
@@ -149,9 +149,9 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
     }
 
     /**
-     * Sets popup menu shade opacity.
+     * Sets popup shade opacity.
      *
-     * @param opacity new popup menu shade opacity
+     * @param opacity new popup shade opacity
      */
     public void setShadeOpacity ( final float opacity )
     {
@@ -159,9 +159,9 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
     }
 
     /**
-     * Returns popup menu dropdown style corner width.
+     * Returns popup dropdown style corner width.
      *
-     * @return popup menu dropdown style corner width
+     * @return popup dropdown style corner width
      */
     public int getCornerWidth ()
     {
@@ -169,9 +169,9 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
     }
 
     /**
-     * Sets popup menu dropdown style corner width.
+     * Sets popup dropdown style corner width.
      *
-     * @param width popup menu dropdown style corner width
+     * @param width popup dropdown style corner width
      */
     public void setCornerWidth ( final int width )
     {
@@ -179,9 +179,9 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
     }
 
     /**
-     * Returns whether popup menu is transparent or not.
+     * Returns whether popup is transparent or not.
      *
-     * @return true if popup menu is transparent, false otherwise
+     * @return true if popup is transparent, false otherwise
      */
     public boolean isTransparent ()
     {
@@ -189,9 +189,9 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
     }
 
     /**
-     * Sets whether popup menu is transparent or not.
+     * Sets whether popup is transparent or not.
      *
-     * @param transparent whether popup menu is transparent or not
+     * @param transparent whether popup is transparent or not
      */
     public void setTransparent ( final boolean transparent )
     {
@@ -309,113 +309,113 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
      * {@inheritDoc}
      */
     @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E popupMenu )
+    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E popup )
     {
         final Object aa = LafUtils.setupAntialias ( g2d );
         if ( transparent )
         {
-            paintTransparentMenu ( g2d, popupMenu );
+            paintTransparentPopup ( g2d, popup );
         }
         else
         {
-            paintSimpleMenu ( g2d, popupMenu );
+            paintSimplePopup ( g2d, popup );
         }
         LafUtils.restoreAntialias ( g2d, aa );
     }
 
     /**
-     * Paints transparent menu version.
-     * This one is used when popup component can be transparent, otherwise a simple menu version is painted.
+     * Paints transparent popup version.
+     * This one is used when popup component can be transparent, otherwise a simple popup version is painted.
      *
-     * @param g2d       graphics context
-     * @param popupMenu popup menu
+     * @param g2d   graphics context
+     * @param popup popup component
      */
-    protected void paintTransparentMenu ( final Graphics2D g2d, final E popupMenu )
+    protected void paintTransparentPopup ( final Graphics2D g2d, final E popup )
     {
-        final Dimension menuSize = popupMenu.getSize ();
+        final Dimension popupSize = popup.getSize ();
 
         // Painting shade
-        paintShade ( g2d, popupMenu, menuSize );
+        paintShade ( g2d, popup, popupSize );
 
         // Painting background
-        paintBackground ( g2d, popupMenu, menuSize );
+        paintBackground ( g2d, popup, popupSize );
 
         // Painting border
-        paintBorder ( g2d, popupMenu, menuSize );
+        paintBorder ( g2d, popup, popupSize );
     }
 
     /**
-     * Paints simple menu version.
+     * Paints simple popup version.
      * This one is used when popup component is opaque.
      *
-     * @param g2d       graphics context
-     * @param popupMenu popup menu
+     * @param g2d   graphics context
+     * @param popup popup component
      */
-    protected void paintSimpleMenu ( final Graphics2D g2d, final E popupMenu )
+    protected void paintSimplePopup ( final Graphics2D g2d, final E popup )
     {
         // Background
-        g2d.setColor ( popupMenu.getBackground () );
-        g2d.fillRoundRect ( 1, 1, popupMenu.getWidth () - 2, popupMenu.getHeight () - 2, round * 2, round * 2 );
+        g2d.setColor ( popup.getBackground () );
+        g2d.fillRoundRect ( 1, 1, popup.getWidth () - 2, popup.getHeight () - 2, round * 2, round * 2 );
 
         // Border
         g2d.setColor ( borderColor );
-        g2d.drawRoundRect ( 0, 0, popupMenu.getWidth () - 1, popupMenu.getHeight () - 1, round * 2, round * 2 );
+        g2d.drawRoundRect ( 0, 0, popup.getWidth () - 1, popup.getHeight () - 1, round * 2, round * 2 );
     }
 
     /**
-     * Paints menu shade.
+     * Paints popup shade.
      *
      * @param g2d       graphics context
-     * @param popupMenu popup menu
-     * @param menuSize  menu size
+     * @param popup     popup component
+     * @param popupSize popup size
      */
-    protected void paintShade ( final Graphics2D g2d, final E popupMenu, final Dimension menuSize )
+    protected void paintShade ( final Graphics2D g2d, final E popup, final Dimension popupSize )
     {
         final NinePatchIcon shade = NinePatchUtils.getShadeIcon ( shadeWidth, round * 2, shadeOpacity );
-        shade.setComponent ( popupMenu );
-        shade.paintIcon ( g2d, getShadeBounds ( menuSize ) );
+        shade.setComponent ( popup );
+        shade.paintIcon ( g2d, getShadeBounds ( popupSize ) );
     }
 
     /**
-     * Paints menu background fill.
+     * Paints popup background fill.
      *
      * @param g2d       graphics context
-     * @param popupMenu popup menu
-     * @param menuSize  menu size
+     * @param popup     popup component
+     * @param popupSize popup size
      */
-    protected void paintBackground ( final Graphics2D g2d, final E popupMenu, final Dimension menuSize )
+    protected void paintBackground ( final Graphics2D g2d, final E popup, final Dimension popupSize )
     {
-        g2d.setColor ( popupMenu.getBackground () );
-        g2d.fill ( getBorderShape ( popupMenu, menuSize, true ) );
+        g2d.setColor ( popup.getBackground () );
+        g2d.fill ( getBorderShape ( popup, popupSize, true ) );
     }
 
     /**
-     * Paints menu border.
+     * Paints popup border.
      *
      * @param g2d       graphics context
-     * @param popupMenu popup menu
-     * @param menuSize  menu size
+     * @param popup     popup component
+     * @param popupSize popup size
      */
-    protected void paintBorder ( final Graphics2D g2d, final E popupMenu, final Dimension menuSize )
+    protected void paintBorder ( final Graphics2D g2d, final E popup, final Dimension popupSize )
     {
         g2d.setPaint ( borderColor );
-        g2d.draw ( getBorderShape ( popupMenu, menuSize, false ) );
+        g2d.draw ( getBorderShape ( popup, popupSize, false ) );
     }
 
     /**
-     * Returns popup menu shade bounds.
+     * Returns popup shade bounds.
      *
-     * @param menuSize menu size
-     * @return popup menu shade bounds
+     * @param popupSize popup size
+     * @return popup shade bounds
      */
-    protected Rectangle getShadeBounds ( final Dimension menuSize )
+    protected Rectangle getShadeBounds ( final Dimension popupSize )
     {
         switch ( popupPainterStyle )
         {
             case simple:
             case dropdown:
             {
-                return new Rectangle ( 0, 0, menuSize.width, menuSize.height );
+                return new Rectangle ( 0, 0, popupSize.width, popupSize.height );
             }
             default:
             {
@@ -425,37 +425,38 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
     }
 
     /**
-     * Returns popup menu border shape.
+     * Returns popup border shape.
      *
-     * @param menuSize menu size
-     * @param fill     whether it is a fill shape or not
-     * @return popup menu border shape
+     * @param popup     popup component
+     * @param popupSize popup size
+     * @param fill      whether it is a fill shape or not
+     * @return popup border shape
      */
-    protected Shape getBorderShape ( final E popupMenu, final Dimension menuSize, final boolean fill )
+    protected Shape getBorderShape ( final E popup, final Dimension popupSize, final boolean fill )
     {
         switch ( popupPainterStyle )
         {
             case simple:
             {
-                return ShapeCache.getShape ( popupMenu, fill ? "simple-fill" : "simple-border", new DataProvider<Shape> ()
+                return ShapeCache.getShape ( popup, fill ? "simple-fill" : "simple-border", new DataProvider<Shape> ()
                 {
                     @Override
                     public Shape provide ()
                     {
-                        return createSimpleShape ( popupMenu, menuSize, fill );
+                        return createSimpleShape ( popup, popupSize, fill );
                     }
-                }, getCachedShapeSettings () );
+                }, getCachedShapeSettings ( popup ) );
             }
             case dropdown:
             {
-                return ShapeCache.getShape ( popupMenu, fill ? "dropdown-fill" : "dropdown-border", new DataProvider<Shape> ()
+                return ShapeCache.getShape ( popup, fill ? "dropdown-fill" : "dropdown-border", new DataProvider<Shape> ()
                 {
                     @Override
                     public Shape provide ()
                     {
-                        return createDropdownShape ( popupMenu, menuSize, fill );
+                        return createDropdownShape ( popup, popupSize, fill );
                     }
-                }, getCachedShapeSettings () );
+                }, getCachedShapeSettings ( popup ) );
             }
             default:
             {
@@ -467,28 +468,30 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
     /**
      * Returns an array of shape settings cached along with the shape.
      *
+     * @param popup popup component
      * @return an array of shape settings cached along with the shape
      */
-    protected Object[] getCachedShapeSettings ()
+    protected Object[] getCachedShapeSettings ( final E popup )
     {
-        return new Object[]{ round, shadeWidth, cornerWidth, cornerSide, relativeCorner, cornerAlignment };
+        return new Object[]{ round, shadeWidth, cornerWidth, cornerSide, relativeCorner, cornerAlignment, popup.getSize () };
     }
 
     /**
-     * Creates and returns simple menu shape.
+     * Creates and returns simple popup shape.
      *
-     * @param menuSize menu size
-     * @param fill     whether it is a fill shape or not
-     * @return simple menu shape
+     * @param popup     popup component
+     * @param popupSize popup size
+     * @param fill      whether it is a fill shape or not
+     * @return simple popup shape
      */
-    protected GeneralPath createSimpleShape ( final E popupMenu, final Dimension menuSize, final boolean fill )
+    protected GeneralPath createSimpleShape ( final E popup, final Dimension popupSize, final boolean fill )
     {
         final int shear = fill ? 1 : 0;
         final GeneralPath shape = new GeneralPath ( GeneralPath.WIND_EVEN_ODD );
         final int top = shadeWidth + shear;
         final int left = shadeWidth + shear;
-        final int bottom = menuSize.height - 1 - shadeWidth;
-        final int right = menuSize.width - 1 - shadeWidth;
+        final int bottom = popupSize.height - 1 - shadeWidth;
+        final int right = popupSize.width - 1 - shadeWidth;
         shape.moveTo ( left, top + round );
         shape.quadTo ( left, top, left + round, top );
         shape.lineTo ( right - round, top );
@@ -504,11 +507,12 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
     /**
      * Creates and returns dropdown style shape.
      *
-     * @param menuSize menu size
-     * @param fill     whether it is a fill shape or not
+     * @param popup     popup component
+     * @param popupSize popup size
+     * @param fill      whether it is a fill shape or not
      * @return dropdown style shape
      */
-    protected GeneralPath createDropdownShape ( final E popupMenu, final Dimension menuSize, final boolean fill )
+    protected GeneralPath createDropdownShape ( final E popup, final Dimension popupSize, final boolean fill )
     {
         final boolean north = cornerSide == NORTH || cornerSide == TOP;
         final boolean south = cornerSide == SOUTH || cornerSide == BOTTOM;
@@ -517,12 +521,12 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
         final int shear = fill ? 1 : 0;
 
         // Corner left spacing
-        final boolean ltr = popupMenu.getComponentOrientation ().isLeftToRight ();
+        final boolean ltr = popup.getComponentOrientation ().isLeftToRight ();
         final int ds = shadeWidth + shear + round + cornerWidth * 2;
         final int spacing;
         if ( cornerAlignment == CENTER )
         {
-            spacing = menuSize.width / 2 - shadeWidth - round - cornerWidth * 2;
+            spacing = popupSize.width / 2 - shadeWidth - round - cornerWidth * 2;
         }
         else if ( cornerAlignment == LEFT || cornerAlignment == LEADING && ltr || cornerAlignment == TRAILING && !ltr )
         {
@@ -530,18 +534,18 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
         }
         else if ( cornerAlignment == RIGHT || cornerAlignment == TRAILING && ltr || cornerAlignment == LEADING && !ltr )
         {
-            spacing = menuSize.width - ds * 2;
+            spacing = popupSize.width - ds * 2;
         }
         else
         {
-            spacing = relativeCorner < shadeWidth + round + cornerWidth ? 0 : Math.min ( relativeCorner - ds, menuSize.width - ds * 2 );
+            spacing = relativeCorner < shadeWidth + round + cornerWidth ? 0 : Math.min ( relativeCorner - ds, popupSize.width - ds * 2 );
         }
 
         // Side spacings
         final int top = shadeWidth + shear;
         final int left = shadeWidth + shear;
-        final int botom = menuSize.height - 1 - shadeWidth;
-        final int right = menuSize.width - 1 - shadeWidth;
+        final int botom = popupSize.height - 1 - shadeWidth;
+        final int right = popupSize.width - 1 - shadeWidth;
 
         final GeneralPath shape = new GeneralPath ( GeneralPath.WIND_EVEN_ODD );
         shape.moveTo ( left, top + round );
