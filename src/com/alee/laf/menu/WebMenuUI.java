@@ -29,7 +29,6 @@ import com.alee.utils.swing.BorderMethods;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
-import javax.swing.plaf.PopupMenuUI;
 import javax.swing.plaf.basic.BasicHTML;
 import javax.swing.plaf.basic.BasicMenuUI;
 import javax.swing.text.View;
@@ -60,6 +59,7 @@ public class WebMenuUI extends BasicMenuUI implements BorderMethods
     protected int round = WebMenuItemStyle.round;
     protected int shadeWidth = WebMenuItemStyle.shadeWidth;
     protected Insets margin = WebMenuItemStyle.margin;
+    protected int sideSpacing = WebMenuItemStyle.sideSpacing;
     protected Color disabledFg = WebMenuItemStyle.disabledFg;
     protected Color selectedTopBg = WebMenuItemStyle.selectedTopBg;
     protected Color selectedBottomBg = WebMenuItemStyle.selectedBottomBg;
@@ -87,7 +87,7 @@ public class WebMenuUI extends BasicMenuUI implements BorderMethods
      * @param c component that will use UI instance
      * @return instance of the WebMenuUI
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebMenuUI ();
@@ -120,7 +120,7 @@ public class WebMenuUI extends BasicMenuUI implements BorderMethods
                 updateBorder ();
             }
         };
-        menuItem.addPropertyChangeListener ( WebLookAndFeel.COMPONENT_ORIENTATION_PROPERTY, propertyChangeListener );
+        menuItem.addPropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, propertyChangeListener );
 
         // Rollover listener
         mouseAdapter = new MouseAdapter ()
@@ -142,8 +142,7 @@ public class WebMenuUI extends BasicMenuUI implements BorderMethods
         menuItem.addMouseListener ( mouseAdapter );
 
         // Button model change listener
-        buttonModelChangeListener = new MenuItemChangeListener ( menuItem );
-        menuItem.getModel ().addChangeListener ( buttonModelChangeListener );
+        buttonModelChangeListener = MenuItemChangeListener.install ( menuItem );
     }
 
     /**
@@ -158,11 +157,11 @@ public class WebMenuUI extends BasicMenuUI implements BorderMethods
         PainterSupport.uninstallPainter ( menuItem, this.painter );
 
         // Removing listeners
-        menuItem.removePropertyChangeListener ( WebLookAndFeel.COMPONENT_ORIENTATION_PROPERTY, propertyChangeListener );
+        menuItem.removePropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, propertyChangeListener );
         propertyChangeListener = null;
         menuItem.removeMouseListener ( mouseAdapter );
         mouseAdapter = null;
-        menuItem.getModel ().removeChangeListener ( buttonModelChangeListener );
+        MenuItemChangeListener.uninstall ( buttonModelChangeListener, menuItem );
         buttonModelChangeListener = null;
 
         // Restoring basic settings
@@ -179,6 +178,12 @@ public class WebMenuUI extends BasicMenuUI implements BorderMethods
     {
         if ( menuItem != null )
         {
+            // Preserve old borders
+            if ( SwingUtils.isPreserveBorders ( menuItem ) )
+            {
+                return;
+            }
+
             // Actual margin
             final boolean ltr = menuItem.getComponentOrientation ().isLeftToRight ();
             final Insets m = new Insets ( margin.top, ltr ? margin.left : margin.right, margin.bottom, ltr ? margin.right : margin.left );
@@ -196,30 +201,10 @@ public class WebMenuUI extends BasicMenuUI implements BorderMethods
             else
             {
                 // Styling borders
-                final Container parent = menuItem.getParent ();
-                if ( parent != null && parent instanceof JPopupMenu )
-                {
-                    // Retrieving popup menu rounding
-                    int round = 0;
-                    final PopupMenuUI ui = ( ( JPopupMenu ) parent ).getUI ();
-                    if ( ui instanceof WebPopupMenuUI )
-                    {
-                        round = ( ( WebPopupMenuUI ) ui ).getRound ();
-                    }
-
-                    // Combining margin
-                    m.top += 5;
-                    m.left += ( ltr ? 4 : 7 ) + round;
-                    m.bottom += 5;
-                    m.right += ( ltr ? 7 : 4 ) + round;
-                }
-                else
-                {
-                    m.top += shadeWidth + 3;
-                    m.left += shadeWidth + 3 + StyleConstants.contentSpacing;
-                    m.bottom += shadeWidth + 3;
-                    m.right += shadeWidth + 3 + StyleConstants.contentSpacing;
-                }
+                m.top += 5;
+                m.left += ( ltr ? 4 : 7 ) + sideSpacing;
+                m.bottom += 5;
+                m.right += ( ltr ? 7 : 4 ) + sideSpacing;
             }
 
             // Installing border
@@ -285,6 +270,27 @@ public class WebMenuUI extends BasicMenuUI implements BorderMethods
     public void setMargin ( final Insets margin )
     {
         this.margin = margin;
+        updateBorder ();
+    }
+
+    /**
+     * Returns spacing between menu item content and its left/right borders.
+     *
+     * @return spacing between menu item content and its left/right borders
+     */
+    public int getSideSpacing ()
+    {
+        return sideSpacing;
+    }
+
+    /**
+     * Sets spacing between menu item content and its left/right borders
+     *
+     * @param sideSpacing spacing between menu item content and its left/right borders
+     */
+    public void setSideSpacing ( final int sideSpacing )
+    {
+        this.sideSpacing = sideSpacing;
         updateBorder ();
     }
 
@@ -449,7 +455,7 @@ public class WebMenuUI extends BasicMenuUI implements BorderMethods
      */
     public Paint getSouthCornerFill ()
     {
-        return selectedTopBg;
+        return selectedBottomBg;
     }
 
     /**

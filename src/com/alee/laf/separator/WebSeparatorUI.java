@@ -49,13 +49,13 @@ public class WebSeparatorUI extends BasicSeparatorUI
     private JSeparator separator;
 
     @SuppressWarnings ("UnusedParameters")
-    public static ComponentUI createUI ( JComponent c )
+    public static ComponentUI createUI ( final JComponent c )
     {
         return new WebSeparatorUI ();
     }
 
     @Override
-    public void installUI ( JComponent c )
+    public void installUI ( final JComponent c )
     {
         super.installUI ( c );
 
@@ -70,7 +70,7 @@ public class WebSeparatorUI extends BasicSeparatorUI
     }
 
     @Override
-    public void uninstallUI ( JComponent c )
+    public void uninstallUI ( final JComponent c )
     {
         separator.setOpaque ( true );
 
@@ -83,9 +83,15 @@ public class WebSeparatorUI extends BasicSeparatorUI
     {
         if ( separator != null )
         {
+            // Preserve old borders
+            if ( SwingUtils.isPreserveBorders ( separator ) )
+            {
+                return;
+            }
+
             // Actual margin
-            boolean ltr = separator.getComponentOrientation ().isLeftToRight ();
-            Insets m = new Insets ( margin.top, ltr ? margin.left : margin.right, margin.bottom, ltr ? margin.right : margin.left );
+            final boolean ltr = separator.getComponentOrientation ().isLeftToRight ();
+            final Insets m = new Insets ( margin.top, ltr ? margin.left : margin.right, margin.bottom, ltr ? margin.right : margin.left );
 
             // Installing border
             separator.setBorder ( LafUtils.createWebBorder ( m ) );
@@ -97,7 +103,7 @@ public class WebSeparatorUI extends BasicSeparatorUI
         return separatorColor;
     }
 
-    public void setSeparatorColor ( Color separatorColor )
+    public void setSeparatorColor ( final Color separatorColor )
     {
         this.separatorColor = separatorColor;
     }
@@ -107,7 +113,7 @@ public class WebSeparatorUI extends BasicSeparatorUI
         return separatorUpperColor;
     }
 
-    public void setSeparatorUpperColor ( Color separatorUpperColor )
+    public void setSeparatorUpperColor ( final Color separatorUpperColor )
     {
         this.separatorUpperColor = separatorUpperColor;
     }
@@ -117,7 +123,7 @@ public class WebSeparatorUI extends BasicSeparatorUI
         return separatorLightColor;
     }
 
-    public void setSeparatorLightColor ( Color separatorLightColor )
+    public void setSeparatorLightColor ( final Color separatorLightColor )
     {
         this.separatorLightColor = separatorLightColor;
     }
@@ -127,7 +133,7 @@ public class WebSeparatorUI extends BasicSeparatorUI
         return separatorLightUpperColor;
     }
 
-    public void setSeparatorLightUpperColor ( Color separatorLightUpperColor )
+    public void setSeparatorLightUpperColor ( final Color separatorLightUpperColor )
     {
         this.separatorLightUpperColor = separatorLightUpperColor;
     }
@@ -137,7 +143,7 @@ public class WebSeparatorUI extends BasicSeparatorUI
         return reversedColors;
     }
 
-    public void setReversedColors ( boolean reversedColors )
+    public void setReversedColors ( final boolean reversedColors )
     {
         this.reversedColors = reversedColors;
     }
@@ -147,7 +153,7 @@ public class WebSeparatorUI extends BasicSeparatorUI
         return drawLeadingLine;
     }
 
-    public void setDrawLeadingLine ( boolean drawLeadingLine )
+    public void setDrawLeadingLine ( final boolean drawLeadingLine )
     {
         this.drawLeadingLine = drawLeadingLine;
     }
@@ -157,7 +163,7 @@ public class WebSeparatorUI extends BasicSeparatorUI
         return drawTrailingLine;
     }
 
-    public void setDrawTrailingLine ( boolean drawTrailingLine )
+    public void setDrawTrailingLine ( final boolean drawTrailingLine )
     {
         this.drawTrailingLine = drawTrailingLine;
     }
@@ -167,27 +173,27 @@ public class WebSeparatorUI extends BasicSeparatorUI
         return margin;
     }
 
-    public void setMargin ( Insets margin )
+    public void setMargin ( final Insets margin )
     {
         this.margin = margin;
         updateBorder ();
     }
 
     @Override
-    public void paint ( Graphics g, JComponent c )
+    public void paint ( final Graphics g, final JComponent c )
     {
-        Graphics2D g2d = ( Graphics2D ) g;
+        final Graphics2D g2d = ( Graphics2D ) g;
         LafUtils.setupAntialias ( g2d );
 
-        JSeparator separator = ( JSeparator ) c;
+        final JSeparator separator = ( JSeparator ) c;
 
-        Insets insets = c.getInsets ();
-        int x = insets.left;
-        int y = insets.top;
-        int width = c.getWidth () - insets.left - insets.right;
-        int height = c.getHeight () - insets.top - insets.bottom;
+        final Insets insets = c.getInsets ();
+        final int x = insets.left;
+        final int y = insets.top;
+        final int width = c.getWidth () - insets.left - insets.right;
+        final int height = c.getHeight () - insets.top - insets.bottom;
 
-        boolean drawSideLines = drawLeadingLine || drawTrailingLine;
+        final boolean drawSideLines = drawLeadingLine || drawTrailingLine;
         if ( separator.getOrientation () == WebSeparator.VERTICAL )
         {
             if ( height > 0 )
@@ -245,10 +251,10 @@ public class WebSeparatorUI extends BasicSeparatorUI
     }
 
     @Override
-    public Dimension getPreferredSize ( JComponent c )
+    public Dimension getPreferredSize ( final JComponent c )
     {
-        Insets insets = c.getInsets ();
-        int bonus = 1 + ( drawLeadingLine ? 1 : 0 ) + ( drawTrailingLine ? 1 : 0 );
+        final Insets insets = c.getInsets ();
+        final int bonus = 1 + ( drawLeadingLine ? 1 : 0 ) + ( drawTrailingLine ? 1 : 0 );
         if ( ( ( JSeparator ) c ).getOrientation () == WebSeparator.VERTICAL )
         {
             return new Dimension ( insets.left + bonus + insets.right, insets.top + insets.bottom );

@@ -53,13 +53,13 @@ public class ResizeOverlayExample extends DefaultExample
     }
 
     @Override
-    public Component getPreview ( WebLookAndFeelDemo owner )
+    public Component getPreview ( final WebLookAndFeelDemo owner )
     {
-        WebOverlay overlayPanel = new WebOverlay ();
+        final WebOverlay overlayPanel = new WebOverlay ();
 
         // Overlayed area
-        String text = "Try resizing this area...";
-        WebTextArea textArea = new WebTextArea ( text, 3, 20 );
+        final String text = "Try resizing this area...";
+        final WebTextArea textArea = new WebTextArea ( text, 3, 20 );
         textArea.setLineWrap ( true );
         textArea.setWrapStyleWord ( true );
 
@@ -71,9 +71,9 @@ public class ResizeOverlayExample extends DefaultExample
         final JComponent resizer = new JComponent ()
         {
             @Override
-            protected void paintComponent ( Graphics g )
+            protected void paintComponent ( final Graphics g )
             {
-                Graphics2D g2d = ( Graphics2D ) g;
+                final Graphics2D g2d = ( Graphics2D ) g;
                 LafUtils.setupAntialias ( g2d );
 
                 g2d.setPaint ( isEnabled () ? Color.GRAY : Color.LIGHT_GRAY );
@@ -98,10 +98,10 @@ public class ResizeOverlayExample extends DefaultExample
             }
         };
         resizer.setCursor ( Cursor.getPredefinedCursor ( Cursor.SE_RESIZE_CURSOR ) );
-        resizer.addPropertyChangeListener ( WebLookAndFeel.COMPONENT_ORIENTATION_PROPERTY, new PropertyChangeListener ()
+        resizer.addPropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, new PropertyChangeListener ()
         {
             @Override
-            public void propertyChange ( PropertyChangeEvent evt )
+            public void propertyChange ( final PropertyChangeEvent evt )
             {
                 resizer.setCursor ( Cursor.getPredefinedCursor (
                         resizer.getComponentOrientation ().isLeftToRight () ? Cursor.SE_RESIZE_CURSOR : Cursor.SW_RESIZE_CURSOR ) );
@@ -109,13 +109,13 @@ public class ResizeOverlayExample extends DefaultExample
         } );
 
         // Resize adapter
-        MouseAdapter mouseAdapter = new MouseAdapter ()
+        final MouseAdapter mouseAdapter = new MouseAdapter ()
         {
             private Dimension startDim = null;
             private Point start = null;
 
             @Override
-            public void mousePressed ( MouseEvent e )
+            public void mousePressed ( final MouseEvent e )
             {
                 if ( resizer.isEnabled () && SwingUtilities.isLeftMouseButton ( e ) )
                 {
@@ -125,15 +125,15 @@ public class ResizeOverlayExample extends DefaultExample
             }
 
             @Override
-            public void mouseDragged ( MouseEvent e )
+            public void mouseDragged ( final MouseEvent e )
             {
                 if ( start != null )
                 {
-                    boolean ltr = resizer.getComponentOrientation ().isLeftToRight ();
+                    final boolean ltr = resizer.getComponentOrientation ().isLeftToRight ();
 
-                    Point p = MouseInfo.getPointerInfo ().getLocation ();
-                    Dimension ps = scrollPane.getLayout ().preferredLayoutSize ( scrollPane );
-                    Dimension newPs = new Dimension ( startDim.width + ( ltr ? p.x - start.x : start.x - p.x ),
+                    final Point p = MouseInfo.getPointerInfo ().getLocation ();
+                    final Dimension ps = scrollPane.getLayout ().preferredLayoutSize ( scrollPane );
+                    final Dimension newPs = new Dimension ( startDim.width + ( ltr ? p.x - start.x : start.x - p.x ),
                             startDim.height + ( p.y - start.y ) * 2 );
 
                     scrollPane.setPreferredSize ( SwingUtils.max ( ps, newPs ) );
@@ -143,7 +143,7 @@ public class ResizeOverlayExample extends DefaultExample
             }
 
             @Override
-            public void mouseReleased ( MouseEvent e )
+            public void mouseReleased ( final MouseEvent e )
             {
                 if ( start != null )
                 {

@@ -18,6 +18,7 @@
 package com.alee.extended.tree;
 
 import com.alee.extended.checkbox.CheckState;
+import com.alee.laf.tree.TreeUtils;
 import com.alee.utils.CollectionUtils;
 
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -104,7 +105,7 @@ public class DefaultTreeCheckingModel<E extends DefaultMutableTreeNode> implemen
      * @param optimize
      * @return list of nodes for the specified state
      */
-    protected List<E> getAllNodesForState ( final CheckState state, boolean optimize )
+    protected List<E> getAllNodesForState ( final CheckState state, final boolean optimize )
     {
         final List<E> checkedNodes = new ArrayList<E> ( nodeCheckStates.size () );
         for ( final Map.Entry<E, CheckState> entry : nodeCheckStates.entrySet () )
@@ -116,18 +117,7 @@ public class DefaultTreeCheckingModel<E extends DefaultMutableTreeNode> implemen
         }
         if ( optimize )
         {
-            for ( int i = checkedNodes.size () - 1; i >= 0; i-- )
-            {
-                final E node = checkedNodes.get ( i );
-                for ( final E other : checkedNodes )
-                {
-                    if ( other != node && node.isNodeAncestor ( other ) )
-                    {
-                        checkedNodes.remove ( i );
-                        break;
-                    }
-                }
-            }
+            TreeUtils.optimizeNodes ( checkedNodes );
         }
         return checkedNodes;
     }
@@ -199,7 +189,7 @@ public class DefaultTreeCheckingModel<E extends DefaultMutableTreeNode> implemen
      * @param toUpdate list of nodes for later update
      * @param changes
      */
-    protected void setCheckedImpl ( final E node, final boolean checked, final List<E> toUpdate, List<CheckStateChange<E>> changes )
+    protected void setCheckedImpl ( final E node, final boolean checked, final List<E> toUpdate, final List<CheckStateChange<E>> changes )
     {
         // Remembering old and new states
         final CheckState oldState = getCheckState ( node );
@@ -233,7 +223,7 @@ public class DefaultTreeCheckingModel<E extends DefaultMutableTreeNode> implemen
      * @param toUpdate list of nodes for later update
      * @param changes
      */
-    protected void updateParentStates ( final E node, final List<E> toUpdate, List<CheckStateChange<E>> changes )
+    protected void updateParentStates ( final E node, final List<E> toUpdate, final List<CheckStateChange<E>> changes )
     {
         // Updating all parent node states
         E parent = ( E ) node.getParent ();
@@ -306,7 +296,7 @@ public class DefaultTreeCheckingModel<E extends DefaultMutableTreeNode> implemen
      * @param changes
      */
     protected void updateChildNodesState ( final E node, final CheckState newState, final List<E> toUpdate,
-                                           List<CheckStateChange<E>> changes )
+                                           final List<CheckStateChange<E>> changes )
     {
         for ( int i = 0; i < node.getChildCount (); i++ )
         {

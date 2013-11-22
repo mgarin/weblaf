@@ -24,6 +24,7 @@ import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.text.JTextComponent;
 import java.awt.*;
+import java.util.Map;
 
 /**
  * User: mgarin Date: 17.08.11 Time: 23:02
@@ -32,17 +33,17 @@ import java.awt.*;
 public class WebTextPaneUI extends WebEditorPaneUI
 {
     @SuppressWarnings ("UnusedParameters")
-    public static ComponentUI createUI ( JComponent c )
+    public static ComponentUI createUI ( final JComponent c )
     {
         return new WebTextPaneUI ();
     }
 
     @Override
-    public void installUI ( JComponent c )
+    public void installUI ( final JComponent c )
     {
         super.installUI ( c );
 
-        JTextComponent textComponent = getComponent ();
+        final JTextComponent textComponent = getComponent ();
 
         // Default settings
         SwingUtils.setOrientation ( textComponent );
@@ -54,5 +55,14 @@ public class WebTextPaneUI extends WebEditorPaneUI
         textComponent.setForeground ( Color.BLACK );
         textComponent.setSelectedTextColor ( Color.BLACK );
         textComponent.setCaretColor ( Color.GRAY );
+    }
+
+    @Override
+    protected void paintSafely ( final Graphics g )
+    {
+        final Graphics2D g2d = ( Graphics2D ) g;
+        final Map hints = SwingUtils.setupTextAntialias ( g2d );
+        super.paintSafely ( g );
+        SwingUtils.restoreTextAntialias ( g2d, hints );
     }
 }

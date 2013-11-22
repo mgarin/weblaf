@@ -55,45 +55,45 @@ public class WebToggleButton extends JToggleButton
         super ();
     }
 
-    public WebToggleButton ( Icon icon )
+    public WebToggleButton ( final Icon icon )
     {
         super ( icon );
         setRound ( WebButtonStyle.iconRound );
         setLeftRightSpacing ( WebButtonStyle.iconLeftRightSpacing );
     }
 
-    public WebToggleButton ( Icon icon, boolean selected )
+    public WebToggleButton ( final Icon icon, final boolean selected )
     {
         super ( icon, selected );
     }
 
-    public WebToggleButton ( String text )
+    public WebToggleButton ( final String text )
     {
         super ( text );
     }
 
-    public WebToggleButton ( String text, boolean selected )
+    public WebToggleButton ( final String text, final boolean selected )
     {
         super ( text, selected );
     }
 
-    public WebToggleButton ( String text, Icon icon )
+    public WebToggleButton ( final String text, final Icon icon )
     {
         super ( text, icon );
     }
 
-    public WebToggleButton ( String text, Icon icon, boolean selected )
+    public WebToggleButton ( final String text, final Icon icon, final boolean selected )
     {
         super ( text, icon, selected );
     }
 
-    public WebToggleButton ( ActionListener listener )
+    public WebToggleButton ( final ActionListener listener )
     {
         super ();
         addActionListener ( listener );
     }
 
-    public WebToggleButton ( Icon icon, ActionListener listener )
+    public WebToggleButton ( final Icon icon, final ActionListener listener )
     {
         super ( icon );
         setRound ( WebButtonStyle.iconRound );
@@ -101,37 +101,37 @@ public class WebToggleButton extends JToggleButton
         addActionListener ( listener );
     }
 
-    public WebToggleButton ( Icon icon, boolean selected, ActionListener listener )
+    public WebToggleButton ( final Icon icon, final boolean selected, final ActionListener listener )
     {
         super ( icon, selected );
         addActionListener ( listener );
     }
 
-    public WebToggleButton ( String text, ActionListener listener )
+    public WebToggleButton ( final String text, final ActionListener listener )
     {
         super ( text );
         addActionListener ( listener );
     }
 
-    public WebToggleButton ( String text, boolean selected, ActionListener listener )
+    public WebToggleButton ( final String text, final boolean selected, final ActionListener listener )
     {
         super ( text, selected );
         addActionListener ( listener );
     }
 
-    public WebToggleButton ( String text, Icon icon, ActionListener listener )
+    public WebToggleButton ( final String text, final Icon icon, final ActionListener listener )
     {
         super ( text, icon );
         addActionListener ( listener );
     }
 
-    public WebToggleButton ( String text, Icon icon, boolean selected, ActionListener listener )
+    public WebToggleButton ( final String text, final Icon icon, final boolean selected, final ActionListener listener )
     {
         super ( text, icon, selected );
         addActionListener ( listener );
     }
 
-    public WebToggleButton ( Action a )
+    public WebToggleButton ( final Action a )
     {
         super ( a );
     }
@@ -140,42 +140,42 @@ public class WebToggleButton extends JToggleButton
      * Proxified kotkey manager methods
      */
 
-    public HotkeyInfo addHotkey ( Integer keyCode )
+    public HotkeyInfo addHotkey ( final Integer keyCode )
     {
         return addHotkey ( new HotkeyData ( keyCode ) );
     }
 
-    public HotkeyInfo addHotkey ( boolean isCtrl, boolean isAlt, boolean isShift, Integer keyCode )
+    public HotkeyInfo addHotkey ( final boolean isCtrl, final boolean isAlt, final boolean isShift, final Integer keyCode )
     {
         return addHotkey ( new HotkeyData ( isCtrl, isAlt, isShift, keyCode ) );
     }
 
-    public HotkeyInfo addHotkey ( HotkeyData hotkeyData )
+    public HotkeyInfo addHotkey ( final HotkeyData hotkeyData )
     {
         return HotkeyManager.registerHotkey ( this, hotkeyData );
     }
 
-    public HotkeyInfo addHotkey ( HotkeyData hotkeyData, boolean hidden )
+    public HotkeyInfo addHotkey ( final HotkeyData hotkeyData, final boolean hidden )
     {
         return HotkeyManager.registerHotkey ( this, hotkeyData, hidden );
     }
 
-    public HotkeyInfo addHotkey ( HotkeyData hotkeyData, TooltipWay tooltipWay )
+    public HotkeyInfo addHotkey ( final HotkeyData hotkeyData, final TooltipWay tooltipWay )
     {
         return HotkeyManager.registerHotkey ( this, hotkeyData, tooltipWay );
     }
 
-    public HotkeyInfo addHotkey ( Component topComponent, HotkeyData hotkeyData )
+    public HotkeyInfo addHotkey ( final Component topComponent, final HotkeyData hotkeyData )
     {
         return HotkeyManager.registerHotkey ( topComponent, this, hotkeyData );
     }
 
-    public HotkeyInfo addHotkey ( Component topComponent, HotkeyData hotkeyData, boolean hidden )
+    public HotkeyInfo addHotkey ( final Component topComponent, final HotkeyData hotkeyData, final boolean hidden )
     {
         return HotkeyManager.registerHotkey ( topComponent, this, hotkeyData, hidden );
     }
 
-    public HotkeyInfo addHotkey ( Component topComponent, HotkeyData hotkeyData, TooltipWay tooltipWay )
+    public HotkeyInfo addHotkey ( final Component topComponent, final HotkeyData hotkeyData, final TooltipWay tooltipWay )
     {
         return HotkeyManager.registerHotkey ( topComponent, this, hotkeyData, tooltipWay );
     }
@@ -185,7 +185,7 @@ public class WebToggleButton extends JToggleButton
         return HotkeyManager.getComponentHotkeys ( this );
     }
 
-    public void removeHotkey ( HotkeyInfo hotkeyInfo )
+    public void removeHotkey ( final HotkeyInfo hotkeyInfo )
     {
         HotkeyManager.unregisterHotkey ( hotkeyInfo );
     }
@@ -204,7 +204,7 @@ public class WebToggleButton extends JToggleButton
         return getWebUI ().getTopBgColor ();
     }
 
-    public WebToggleButton setTopBgColor ( Color topBgColor )
+    public WebToggleButton setTopBgColor ( final Color topBgColor )
     {
         getWebUI ().setTopBgColor ( topBgColor );
         return this;
@@ -215,7 +215,7 @@ public class WebToggleButton extends JToggleButton
         return getWebUI ().getBottomBgColor ();
     }
 
-    public WebToggleButton setBottomBgColor ( Color bottomBgColor )
+    public WebToggleButton setBottomBgColor ( final Color bottomBgColor )
     {
         getWebUI ().setBottomBgColor ( bottomBgColor );
         return this;
@@ -226,7 +226,7 @@ public class WebToggleButton extends JToggleButton
         return getWebUI ().getTopSelectedBgColor ();
     }
 
-    public WebToggleButton setTopSelectedBgColor ( Color topSelectedBgColor )
+    public WebToggleButton setTopSelectedBgColor ( final Color topSelectedBgColor )
     {
         getWebUI ().setTopSelectedBgColor ( topSelectedBgColor );
         return this;
@@ -237,7 +237,7 @@ public class WebToggleButton extends JToggleButton
         return getWebUI ().getBottomSelectedBgColor ();
     }
 
-    public WebToggleButton setBottomSelectedBgColor ( Color bottomSelectedBgColor )
+    public WebToggleButton setBottomSelectedBgColor ( final Color bottomSelectedBgColor )
     {
         getWebUI ().setBottomSelectedBgColor ( bottomSelectedBgColor );
         return this;
@@ -248,7 +248,7 @@ public class WebToggleButton extends JToggleButton
         return getWebUI ().getSelectedForeground ();
     }
 
-    public WebToggleButton setSelectedForeground ( Color selectedForeground )
+    public WebToggleButton setSelectedForeground ( final Color selectedForeground )
     {
         getWebUI ().setSelectedForeground ( selectedForeground );
         return this;
@@ -259,7 +259,7 @@ public class WebToggleButton extends JToggleButton
         return getWebUI ().isRolloverDarkBorderOnly ();
     }
 
-    public WebToggleButton setRolloverDarkBorderOnly ( boolean rolloverDarkBorderOnly )
+    public WebToggleButton setRolloverDarkBorderOnly ( final boolean rolloverDarkBorderOnly )
     {
         getWebUI ().setRolloverDarkBorderOnly ( rolloverDarkBorderOnly );
         return this;
@@ -270,7 +270,7 @@ public class WebToggleButton extends JToggleButton
         return getWebUI ().isRolloverShine ();
     }
 
-    public WebToggleButton setRolloverShine ( boolean rolloverShine )
+    public WebToggleButton setRolloverShine ( final boolean rolloverShine )
     {
         getWebUI ().setRolloverShine ( rolloverShine );
         return this;
@@ -281,7 +281,7 @@ public class WebToggleButton extends JToggleButton
         return getWebUI ().getShineColor ();
     }
 
-    public WebToggleButton setShineColor ( Color shineColor )
+    public WebToggleButton setShineColor ( final Color shineColor )
     {
         getWebUI ().setShineColor ( shineColor );
         return this;
@@ -292,7 +292,7 @@ public class WebToggleButton extends JToggleButton
         return getWebUI ().getRound ();
     }
 
-    public WebToggleButton setRound ( int round )
+    public WebToggleButton setRound ( final int round )
     {
         getWebUI ().setRound ( round );
         return this;
@@ -303,7 +303,7 @@ public class WebToggleButton extends JToggleButton
         return getWebUI ().isRolloverShadeOnly ();
     }
 
-    public WebToggleButton setRolloverShadeOnly ( boolean rolloverShadeOnly )
+    public WebToggleButton setRolloverShadeOnly ( final boolean rolloverShadeOnly )
     {
         getWebUI ().setRolloverShadeOnly ( rolloverShadeOnly );
         return this;
@@ -314,7 +314,7 @@ public class WebToggleButton extends JToggleButton
         return getWebUI ().isShowDisabledShade ();
     }
 
-    public WebToggleButton setShowDisabledShade ( boolean showDisabledShade )
+    public WebToggleButton setShowDisabledShade ( final boolean showDisabledShade )
     {
         getWebUI ().setShowDisabledShade ( showDisabledShade );
         return this;
@@ -325,7 +325,7 @@ public class WebToggleButton extends JToggleButton
         return getWebUI ().getShadeWidth ();
     }
 
-    public WebToggleButton setShadeWidth ( int shadeWidth )
+    public WebToggleButton setShadeWidth ( final int shadeWidth )
     {
         getWebUI ().setShadeWidth ( shadeWidth );
         return this;
@@ -336,7 +336,7 @@ public class WebToggleButton extends JToggleButton
         return getWebUI ().getShadeColor ();
     }
 
-    public WebToggleButton setShadeColor ( Color shadeColor )
+    public WebToggleButton setShadeColor ( final Color shadeColor )
     {
         getWebUI ().setShadeColor ( shadeColor );
         return this;
@@ -347,7 +347,7 @@ public class WebToggleButton extends JToggleButton
         return getWebUI ().getInnerShadeWidth ();
     }
 
-    public WebToggleButton setInnerShadeWidth ( int innerShadeWidth )
+    public WebToggleButton setInnerShadeWidth ( final int innerShadeWidth )
     {
         getWebUI ().setInnerShadeWidth ( innerShadeWidth );
         return this;
@@ -358,7 +358,7 @@ public class WebToggleButton extends JToggleButton
         return getWebUI ().getInnerShadeColor ();
     }
 
-    public WebToggleButton setInnerShadeColor ( Color innerShadeColor )
+    public WebToggleButton setInnerShadeColor ( final Color innerShadeColor )
     {
         getWebUI ().setInnerShadeColor ( innerShadeColor );
         return this;
@@ -369,7 +369,7 @@ public class WebToggleButton extends JToggleButton
         return getWebUI ().getLeftRightSpacing ();
     }
 
-    public WebToggleButton setLeftRightSpacing ( int leftRightSpacing )
+    public WebToggleButton setLeftRightSpacing ( final int leftRightSpacing )
     {
         getWebUI ().setLeftRightSpacing ( leftRightSpacing );
         return this;
@@ -380,9 +380,20 @@ public class WebToggleButton extends JToggleButton
         return getWebUI ().isRolloverDecoratedOnly ();
     }
 
-    public WebToggleButton setRolloverDecoratedOnly ( boolean rolloverDecoratedOnly )
+    public WebToggleButton setRolloverDecoratedOnly ( final boolean rolloverDecoratedOnly )
     {
         getWebUI ().setRolloverDecoratedOnly ( rolloverDecoratedOnly );
+        return this;
+    }
+
+    public boolean isAnimate ()
+    {
+        return getWebUI ().isAnimate ();
+    }
+
+    public WebToggleButton setAnimate ( final boolean animate )
+    {
+        getWebUI ().setAnimate ( animate );
         return this;
     }
 
@@ -391,7 +402,7 @@ public class WebToggleButton extends JToggleButton
         return getWebUI ().isUndecorated ();
     }
 
-    public WebToggleButton setUndecorated ( boolean undecorated )
+    public WebToggleButton setUndecorated ( final boolean undecorated )
     {
         getWebUI ().setUndecorated ( undecorated );
         return this;
@@ -402,7 +413,7 @@ public class WebToggleButton extends JToggleButton
         return getWebUI ().getPainter ();
     }
 
-    public WebToggleButton setPainter ( Painter painter )
+    public WebToggleButton setPainter ( final Painter painter )
     {
         getWebUI ().setPainter ( painter );
         return this;
@@ -413,7 +424,7 @@ public class WebToggleButton extends JToggleButton
         return getWebUI ().isMoveIconOnPress ();
     }
 
-    public WebToggleButton setMoveIconOnPress ( boolean moveIconOnPress )
+    public WebToggleButton setMoveIconOnPress ( final boolean moveIconOnPress )
     {
         getWebUI ().setMoveIconOnPress ( moveIconOnPress );
         return this;
@@ -424,7 +435,7 @@ public class WebToggleButton extends JToggleButton
         return getWebUI ().isDrawFocus ();
     }
 
-    public WebToggleButton setDrawFocus ( boolean drawFocus )
+    public WebToggleButton setDrawFocus ( final boolean drawFocus )
     {
         getWebUI ().setDrawFocus ( drawFocus );
         return this;
@@ -435,7 +446,7 @@ public class WebToggleButton extends JToggleButton
         return getWebUI ().isShadeToggleIcon ();
     }
 
-    public WebToggleButton setShadeToggleIcon ( boolean shadeToggleIcon )
+    public WebToggleButton setShadeToggleIcon ( final boolean shadeToggleIcon )
     {
         getWebUI ().setShadeToggleIcon ( shadeToggleIcon );
         return this;
@@ -446,7 +457,7 @@ public class WebToggleButton extends JToggleButton
         return getWebUI ().getShadeToggleIconTransparency ();
     }
 
-    public WebToggleButton setShadeToggleIconTransparency ( float shadeToggleIconTransparency )
+    public WebToggleButton setShadeToggleIconTransparency ( final float shadeToggleIconTransparency )
     {
         getWebUI ().setShadeToggleIconTransparency ( shadeToggleIconTransparency );
         return this;
@@ -457,7 +468,7 @@ public class WebToggleButton extends JToggleButton
         return getWebUI ().isDrawBottom ();
     }
 
-    public WebToggleButton setDrawBottom ( boolean drawBottom )
+    public WebToggleButton setDrawBottom ( final boolean drawBottom )
     {
         getWebUI ().setDrawBottom ( drawBottom );
         return this;
@@ -468,7 +479,7 @@ public class WebToggleButton extends JToggleButton
         return getWebUI ().isDrawLeft ();
     }
 
-    public WebToggleButton setDrawLeft ( boolean drawLeft )
+    public WebToggleButton setDrawLeft ( final boolean drawLeft )
     {
         getWebUI ().setDrawLeft ( drawLeft );
         return this;
@@ -479,7 +490,7 @@ public class WebToggleButton extends JToggleButton
         return getWebUI ().isDrawRight ();
     }
 
-    public WebToggleButton setDrawRight ( boolean drawRight )
+    public WebToggleButton setDrawRight ( final boolean drawRight )
     {
         getWebUI ().setDrawRight ( drawRight );
         return this;
@@ -490,13 +501,13 @@ public class WebToggleButton extends JToggleButton
         return getWebUI ().isDrawTop ();
     }
 
-    public WebToggleButton setDrawTop ( boolean drawTop )
+    public WebToggleButton setDrawTop ( final boolean drawTop )
     {
         getWebUI ().setDrawTop ( drawTop );
         return this;
     }
 
-    public WebToggleButton setDrawSides ( boolean top, boolean left, boolean bottom, boolean right )
+    public WebToggleButton setDrawSides ( final boolean top, final boolean left, final boolean bottom, final boolean right )
     {
         getWebUI ().setDrawSides ( top, left, bottom, right );
         return this;
@@ -507,7 +518,7 @@ public class WebToggleButton extends JToggleButton
         return getWebUI ().isDrawTopLine ();
     }
 
-    public WebToggleButton setDrawTopLine ( boolean drawTopLine )
+    public WebToggleButton setDrawTopLine ( final boolean drawTopLine )
     {
         getWebUI ().setDrawTopLine ( drawTopLine );
         return this;
@@ -518,7 +529,7 @@ public class WebToggleButton extends JToggleButton
         return getWebUI ().isDrawLeftLine ();
     }
 
-    public WebToggleButton setDrawLeftLine ( boolean drawLeftLine )
+    public WebToggleButton setDrawLeftLine ( final boolean drawLeftLine )
     {
         getWebUI ().setDrawLeftLine ( drawLeftLine );
         return this;
@@ -529,7 +540,7 @@ public class WebToggleButton extends JToggleButton
         return getWebUI ().isDrawBottomLine ();
     }
 
-    public WebToggleButton setDrawBottomLine ( boolean drawBottomLine )
+    public WebToggleButton setDrawBottomLine ( final boolean drawBottomLine )
     {
         getWebUI ().setDrawBottomLine ( drawBottomLine );
         return this;
@@ -540,13 +551,13 @@ public class WebToggleButton extends JToggleButton
         return getWebUI ().isDrawRightLine ();
     }
 
-    public WebToggleButton setDrawRightLine ( boolean drawRightLine )
+    public WebToggleButton setDrawRightLine ( final boolean drawRightLine )
     {
         getWebUI ().setDrawRightLine ( drawRightLine );
         return this;
     }
 
-    public WebToggleButton setDrawLines ( boolean top, boolean left, boolean bottom, boolean right )
+    public WebToggleButton setDrawLines ( final boolean top, final boolean left, final boolean bottom, final boolean right )
     {
         getWebUI ().setDrawLines ( top, left, bottom, right );
         return this;
@@ -559,18 +570,18 @@ public class WebToggleButton extends JToggleButton
     }
 
     @Override
-    public void setMargin ( Insets margin )
+    public void setMargin ( final Insets margin )
     {
         getWebUI ().setMargin ( margin );
     }
 
-    public WebToggleButton setMargin ( int top, int left, int bottom, int right )
+    public WebToggleButton setMargin ( final int top, final int left, final int bottom, final int right )
     {
         setMargin ( new Insets ( top, left, bottom, right ) );
         return this;
     }
 
-    public WebToggleButton setMargin ( int spacing )
+    public WebToggleButton setMargin ( final int spacing )
     {
         return setMargin ( spacing, spacing, spacing, spacing );
     }
@@ -615,7 +626,7 @@ public class WebToggleButton extends JToggleButton
      * {@inheritDoc}
      */
     @Override
-    public void setLanguage ( String key, Object... data )
+    public void setLanguage ( final String key, final Object... data )
     {
         LanguageManager.registerComponent ( this, key, data );
     }
@@ -624,7 +635,7 @@ public class WebToggleButton extends JToggleButton
      * {@inheritDoc}
      */
     @Override
-    public void updateLanguage ( Object... data )
+    public void updateLanguage ( final Object... data )
     {
         LanguageManager.updateComponent ( this, data );
     }
@@ -633,7 +644,7 @@ public class WebToggleButton extends JToggleButton
      * {@inheritDoc}
      */
     @Override
-    public void updateLanguage ( String key, Object... data )
+    public void updateLanguage ( final String key, final Object... data )
     {
         LanguageManager.updateComponent ( this, key, data );
     }
@@ -660,7 +671,7 @@ public class WebToggleButton extends JToggleButton
      * {@inheritDoc}
      */
     @Override
-    public void setLanguageUpdater ( LanguageUpdater updater )
+    public void setLanguageUpdater ( final LanguageUpdater updater )
     {
         LanguageManager.registerLanguageUpdater ( this, updater );
     }
@@ -682,7 +693,7 @@ public class WebToggleButton extends JToggleButton
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String key )
+    public void registerSettings ( final String key )
     {
         SettingsManager.registerComponent ( this, key );
     }
@@ -691,7 +702,7 @@ public class WebToggleButton extends JToggleButton
      * {@inheritDoc}
      */
     @Override
-    public <T extends DefaultValue> void registerSettings ( String key, Class<T> defaultValueClass )
+    public <T extends DefaultValue> void registerSettings ( final String key, final Class<T> defaultValueClass )
     {
         SettingsManager.registerComponent ( this, key, defaultValueClass );
     }
@@ -700,7 +711,7 @@ public class WebToggleButton extends JToggleButton
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String key, Object defaultValue )
+    public void registerSettings ( final String key, final Object defaultValue )
     {
         SettingsManager.registerComponent ( this, key, defaultValue );
     }
@@ -709,7 +720,7 @@ public class WebToggleButton extends JToggleButton
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String group, String key )
+    public void registerSettings ( final String group, final String key )
     {
         SettingsManager.registerComponent ( this, group, key );
     }
@@ -718,7 +729,7 @@ public class WebToggleButton extends JToggleButton
      * {@inheritDoc}
      */
     @Override
-    public <T extends DefaultValue> void registerSettings ( String group, String key, Class<T> defaultValueClass )
+    public <T extends DefaultValue> void registerSettings ( final String group, final String key, final Class<T> defaultValueClass )
     {
         SettingsManager.registerComponent ( this, group, key, defaultValueClass );
     }
@@ -727,7 +738,7 @@ public class WebToggleButton extends JToggleButton
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String group, String key, Object defaultValue )
+    public void registerSettings ( final String group, final String key, final Object defaultValue )
     {
         SettingsManager.registerComponent ( this, group, key, defaultValue );
     }
@@ -736,7 +747,7 @@ public class WebToggleButton extends JToggleButton
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String key, boolean loadInitialSettings, boolean applySettingsChanges )
+    public void registerSettings ( final String key, final boolean loadInitialSettings, final boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, key, loadInitialSettings, applySettingsChanges );
     }
@@ -745,8 +756,8 @@ public class WebToggleButton extends JToggleButton
      * {@inheritDoc}
      */
     @Override
-    public <T extends DefaultValue> void registerSettings ( String key, Class<T> defaultValueClass, boolean loadInitialSettings,
-                                                            boolean applySettingsChanges )
+    public <T extends DefaultValue> void registerSettings ( final String key, final Class<T> defaultValueClass,
+                                                            final boolean loadInitialSettings, final boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, key, defaultValueClass, loadInitialSettings, applySettingsChanges );
     }
@@ -755,7 +766,8 @@ public class WebToggleButton extends JToggleButton
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String key, Object defaultValue, boolean loadInitialSettings, boolean applySettingsChanges )
+    public void registerSettings ( final String key, final Object defaultValue, final boolean loadInitialSettings,
+                                   final boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, key, defaultValue, loadInitialSettings, applySettingsChanges );
     }
@@ -764,8 +776,8 @@ public class WebToggleButton extends JToggleButton
      * {@inheritDoc}
      */
     @Override
-    public <T extends DefaultValue> void registerSettings ( String group, String key, Class<T> defaultValueClass,
-                                                            boolean loadInitialSettings, boolean applySettingsChanges )
+    public <T extends DefaultValue> void registerSettings ( final String group, final String key, final Class<T> defaultValueClass,
+                                                            final boolean loadInitialSettings, final boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, group, key, defaultValueClass, loadInitialSettings, applySettingsChanges );
     }
@@ -774,8 +786,8 @@ public class WebToggleButton extends JToggleButton
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String group, String key, Object defaultValue, boolean loadInitialSettings,
-                                   boolean applySettingsChanges )
+    public void registerSettings ( final String group, final String key, final Object defaultValue, final boolean loadInitialSettings,
+                                   final boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, group, key, defaultValue, loadInitialSettings, applySettingsChanges );
     }
@@ -784,7 +796,7 @@ public class WebToggleButton extends JToggleButton
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( SettingsProcessor settingsProcessor )
+    public void registerSettings ( final SettingsProcessor settingsProcessor )
     {
         SettingsManager.registerComponent ( this, settingsProcessor );
     }
@@ -833,7 +845,7 @@ public class WebToggleButton extends JToggleButton
      * {@inheritDoc}
      */
     @Override
-    public WebToggleButton setPlainFont ( boolean apply )
+    public WebToggleButton setPlainFont ( final boolean apply )
     {
         return SwingUtils.setPlainFont ( this, apply );
     }
@@ -860,7 +872,7 @@ public class WebToggleButton extends JToggleButton
      * {@inheritDoc}
      */
     @Override
-    public WebToggleButton setBoldFont ( boolean apply )
+    public WebToggleButton setBoldFont ( final boolean apply )
     {
         return SwingUtils.setBoldFont ( this, apply );
     }
@@ -887,7 +899,7 @@ public class WebToggleButton extends JToggleButton
      * {@inheritDoc}
      */
     @Override
-    public WebToggleButton setItalicFont ( boolean apply )
+    public WebToggleButton setItalicFont ( final boolean apply )
     {
         return SwingUtils.setItalicFont ( this, apply );
     }
@@ -905,7 +917,7 @@ public class WebToggleButton extends JToggleButton
      * {@inheritDoc}
      */
     @Override
-    public WebToggleButton setFontStyle ( boolean bold, boolean italic )
+    public WebToggleButton setFontStyle ( final boolean bold, final boolean italic )
     {
         return SwingUtils.setFontStyle ( this, bold, italic );
     }
@@ -914,7 +926,7 @@ public class WebToggleButton extends JToggleButton
      * {@inheritDoc}
      */
     @Override
-    public WebToggleButton setFontStyle ( int style )
+    public WebToggleButton setFontStyle ( final int style )
     {
         return SwingUtils.setFontStyle ( this, style );
     }
@@ -923,7 +935,7 @@ public class WebToggleButton extends JToggleButton
      * {@inheritDoc}
      */
     @Override
-    public WebToggleButton setFontSize ( int fontSize )
+    public WebToggleButton setFontSize ( final int fontSize )
     {
         return SwingUtils.setFontSize ( this, fontSize );
     }
@@ -932,7 +944,7 @@ public class WebToggleButton extends JToggleButton
      * {@inheritDoc}
      */
     @Override
-    public WebToggleButton changeFontSize ( int change )
+    public WebToggleButton changeFontSize ( final int change )
     {
         return SwingUtils.changeFontSize ( this, change );
     }
@@ -950,7 +962,7 @@ public class WebToggleButton extends JToggleButton
      * {@inheritDoc}
      */
     @Override
-    public WebToggleButton setFontSizeAndStyle ( int fontSize, boolean bold, boolean italic )
+    public WebToggleButton setFontSizeAndStyle ( final int fontSize, final boolean bold, final boolean italic )
     {
         return SwingUtils.setFontSizeAndStyle ( this, fontSize, bold, italic );
     }
@@ -959,7 +971,7 @@ public class WebToggleButton extends JToggleButton
      * {@inheritDoc}
      */
     @Override
-    public WebToggleButton setFontSizeAndStyle ( int fontSize, int style )
+    public WebToggleButton setFontSizeAndStyle ( final int fontSize, final int style )
     {
         return SwingUtils.setFontSizeAndStyle ( this, fontSize, style );
     }
@@ -968,7 +980,7 @@ public class WebToggleButton extends JToggleButton
      * {@inheritDoc}
      */
     @Override
-    public WebToggleButton setFontName ( String fontName )
+    public WebToggleButton setFontName ( final String fontName )
     {
         return SwingUtils.setFontName ( this, fontName );
     }
@@ -999,7 +1011,7 @@ public class WebToggleButton extends JToggleButton
      * {@inheritDoc}
      */
     @Override
-    public WebToggleButton setPreferredWidth ( int preferredWidth )
+    public WebToggleButton setPreferredWidth ( final int preferredWidth )
     {
         return SizeUtils.setPreferredWidth ( this, preferredWidth );
     }
@@ -1017,7 +1029,7 @@ public class WebToggleButton extends JToggleButton
      * {@inheritDoc}
      */
     @Override
-    public WebToggleButton setPreferredHeight ( int preferredHeight )
+    public WebToggleButton setPreferredHeight ( final int preferredHeight )
     {
         return SizeUtils.setPreferredHeight ( this, preferredHeight );
     }
@@ -1035,7 +1047,7 @@ public class WebToggleButton extends JToggleButton
      * {@inheritDoc}
      */
     @Override
-    public WebToggleButton setMinimumWidth ( int minimumWidth )
+    public WebToggleButton setMinimumWidth ( final int minimumWidth )
     {
         return SizeUtils.setMinimumWidth ( this, minimumWidth );
     }
@@ -1053,7 +1065,7 @@ public class WebToggleButton extends JToggleButton
      * {@inheritDoc}
      */
     @Override
-    public WebToggleButton setMinimumHeight ( int minimumHeight )
+    public WebToggleButton setMinimumHeight ( final int minimumHeight )
     {
         return SizeUtils.setMinimumHeight ( this, minimumHeight );
     }
@@ -1071,51 +1083,55 @@ public class WebToggleButton extends JToggleButton
      * Styled toggle button short creation methods
      */
 
-    public static WebToggleButton createIconWebButton ( ImageIcon imageIcon )
+    public static WebToggleButton createIconWebButton ( final ImageIcon imageIcon )
     {
         return createIconWebButton ( imageIcon, StyleConstants.smallRound );
     }
 
-    public static WebToggleButton createIconWebButton ( ImageIcon imageIcon, int round )
+    public static WebToggleButton createIconWebButton ( final ImageIcon imageIcon, final int round )
     {
         return createIconWebButton ( imageIcon, round, StyleConstants.shadeWidth );
     }
 
-    public static WebToggleButton createIconWebButton ( ImageIcon imageIcon, int round, int shadeWidth )
+    public static WebToggleButton createIconWebButton ( final ImageIcon imageIcon, final int round, final int shadeWidth )
     {
         return createIconWebButton ( imageIcon, round, shadeWidth, StyleConstants.innerShadeWidth );
     }
 
-    public static WebToggleButton createIconWebButton ( ImageIcon imageIcon, int round, int shadeWidth, int innerShadeWidth )
+    public static WebToggleButton createIconWebButton ( final ImageIcon imageIcon, final int round, final int shadeWidth,
+                                                        final int innerShadeWidth )
     {
         return createIconWebButton ( imageIcon, round, shadeWidth, innerShadeWidth, StyleConstants.rolloverDecoratedOnly );
     }
 
-    public static WebToggleButton createIconWebButton ( ImageIcon imageIcon, int round, int shadeWidth, int innerShadeWidth,
-                                                        boolean rolloverDecoratedOnly )
+    public static WebToggleButton createIconWebButton ( final ImageIcon imageIcon, final int round, final int shadeWidth,
+                                                        final int innerShadeWidth, final boolean rolloverDecoratedOnly )
     {
         return createIconWebButton ( imageIcon, round, shadeWidth, innerShadeWidth, rolloverDecoratedOnly, StyleConstants.undecorated );
     }
 
-    public static WebToggleButton createIconWebButton ( ImageIcon imageIcon, int round, int shadeWidth, int innerShadeWidth,
-                                                        boolean rolloverDecoratedOnly, boolean undecorated )
+    public static WebToggleButton createIconWebButton ( final ImageIcon imageIcon, final int round, final int shadeWidth,
+                                                        final int innerShadeWidth, final boolean rolloverDecoratedOnly,
+                                                        final boolean undecorated )
     {
         return createIconWebButton ( imageIcon, round, shadeWidth, innerShadeWidth, rolloverDecoratedOnly, undecorated, true );
     }
 
-    public static WebToggleButton createIconWebButton ( ImageIcon imageIcon, int round, int shadeWidth, int innerShadeWidth,
-                                                        boolean rolloverDecoratedOnly, boolean undecorated, boolean drawFocus )
+    public static WebToggleButton createIconWebButton ( final ImageIcon imageIcon, final int round, final int shadeWidth,
+                                                        final int innerShadeWidth, final boolean rolloverDecoratedOnly,
+                                                        final boolean undecorated, final boolean drawFocus )
     {
-        WebToggleButton iconWebButton =
+        final WebToggleButton iconWebButton =
                 createWebButton ( round, shadeWidth, innerShadeWidth, 0, rolloverDecoratedOnly, undecorated, drawFocus );
         iconWebButton.setIcon ( imageIcon );
         return iconWebButton;
     }
 
-    public static WebToggleButton createWebButton ( int round, int shadeWidth, int innerShadeWidth, int leftRightSpacing,
-                                                    boolean rolloverDecoratedOnly, boolean undecorated, boolean drawFocus )
+    public static WebToggleButton createWebButton ( final int round, final int shadeWidth, final int innerShadeWidth,
+                                                    final int leftRightSpacing, final boolean rolloverDecoratedOnly,
+                                                    final boolean undecorated, final boolean drawFocus )
     {
-        WebToggleButton webButton = new WebToggleButton ();
+        final WebToggleButton webButton = new WebToggleButton ();
         webButton.setRound ( round );
         webButton.setShadeWidth ( shadeWidth );
         webButton.setInnerShadeWidth ( innerShadeWidth );

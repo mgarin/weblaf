@@ -38,7 +38,6 @@ public class WebScrollBarUI extends BasicScrollBarUI
     private Color scrollBg = WebScrollBarStyle.scrollBg;
     private Color scrollBorder = WebScrollBarStyle.scrollBorder;
     private Color scrollBarBorder = WebScrollBarStyle.scrollBarBorder;
-
     private Color scrollGradientLeft = WebScrollBarStyle.scrollGradientLeft;
     private Color scrollGradientRight = WebScrollBarStyle.scrollGradientRight;
     private Color scrollSelGradientLeft = WebScrollBarStyle.scrollSelGradientLeft;
@@ -50,13 +49,13 @@ public class WebScrollBarUI extends BasicScrollBarUI
     private MouseAdapter mouseAdapter;
 
     @SuppressWarnings ("UnusedParameters")
-    public static ComponentUI createUI ( JComponent c )
+    public static ComponentUI createUI ( final JComponent c )
     {
         return new WebScrollBarUI ();
     }
 
     @Override
-    public void installUI ( JComponent c )
+    public void installUI ( final JComponent c )
     {
         super.installUI ( c );
 
@@ -68,7 +67,7 @@ public class WebScrollBarUI extends BasicScrollBarUI
         mouseAdapter = new MouseAdapter ()
         {
             @Override
-            public void mousePressed ( MouseEvent e )
+            public void mousePressed ( final MouseEvent e )
             {
                 scrollbar.repaint ();
             }
@@ -77,7 +76,7 @@ public class WebScrollBarUI extends BasicScrollBarUI
     }
 
     @Override
-    public void uninstallUI ( JComponent c )
+    public void uninstallUI ( final JComponent c )
     {
         scrollbar.removeMouseListener ( mouseAdapter );
 
@@ -89,7 +88,7 @@ public class WebScrollBarUI extends BasicScrollBarUI
         return drawBorder;
     }
 
-    public void setDrawBorder ( boolean drawBorder )
+    public void setDrawBorder ( final boolean drawBorder )
     {
         this.drawBorder = drawBorder;
         scrollbar.setOpaque ( drawBorder );
@@ -100,7 +99,7 @@ public class WebScrollBarUI extends BasicScrollBarUI
         return round;
     }
 
-    public void setRound ( int round )
+    public void setRound ( final int round )
     {
         this.round = round;
     }
@@ -110,7 +109,7 @@ public class WebScrollBarUI extends BasicScrollBarUI
         return scrollBg;
     }
 
-    public void setScrollBg ( Color scrollBg )
+    public void setScrollBg ( final Color scrollBg )
     {
         this.scrollBg = scrollBg;
     }
@@ -120,7 +119,7 @@ public class WebScrollBarUI extends BasicScrollBarUI
         return scrollBorder;
     }
 
-    public void setScrollBorder ( Color scrollBorder )
+    public void setScrollBorder ( final Color scrollBorder )
     {
         this.scrollBorder = scrollBorder;
     }
@@ -130,7 +129,7 @@ public class WebScrollBarUI extends BasicScrollBarUI
         return scrollBarBorder;
     }
 
-    public void setScrollBarBorder ( Color scrollBarBorder )
+    public void setScrollBarBorder ( final Color scrollBarBorder )
     {
         this.scrollBarBorder = scrollBarBorder;
     }
@@ -140,7 +139,7 @@ public class WebScrollBarUI extends BasicScrollBarUI
         return scrollGradientLeft;
     }
 
-    public void setScrollGradientLeft ( Color scrollGradientLeft )
+    public void setScrollGradientLeft ( final Color scrollGradientLeft )
     {
         this.scrollGradientLeft = scrollGradientLeft;
     }
@@ -150,7 +149,7 @@ public class WebScrollBarUI extends BasicScrollBarUI
         return scrollGradientRight;
     }
 
-    public void setScrollGradientRight ( Color scrollGradientRight )
+    public void setScrollGradientRight ( final Color scrollGradientRight )
     {
         this.scrollGradientRight = scrollGradientRight;
     }
@@ -160,7 +159,7 @@ public class WebScrollBarUI extends BasicScrollBarUI
         return scrollSelGradientLeft;
     }
 
-    public void setScrollSelGradientLeft ( Color scrollSelGradientLeft )
+    public void setScrollSelGradientLeft ( final Color scrollSelGradientLeft )
     {
         this.scrollSelGradientLeft = scrollSelGradientLeft;
     }
@@ -170,32 +169,32 @@ public class WebScrollBarUI extends BasicScrollBarUI
         return scrollSelGradientRight;
     }
 
-    public void setScrollSelGradientRight ( Color scrollSelGradientRight )
+    public void setScrollSelGradientRight ( final Color scrollSelGradientRight )
     {
         this.scrollSelGradientRight = scrollSelGradientRight;
     }
 
     @Override
-    public void paint ( Graphics g, JComponent c )
+    public void paint ( final Graphics g, final JComponent c )
     {
-        Object aa = LafUtils.disableAntialias ( g );
+        final Object aa = LafUtils.disableAntialias ( g );
         super.paint ( g, c );
         LafUtils.restoreAntialias ( g, aa );
     }
 
     @Override
-    protected void paintTrack ( Graphics g, JComponent c, Rectangle trackBounds )
+    protected void paintTrack ( final Graphics g, final JComponent c, final Rectangle trackBounds )
     {
         if ( drawBorder )
         {
-            Graphics2D g2d = ( Graphics2D ) g;
+            final Graphics2D g2d = ( Graphics2D ) g;
 
             g2d.setPaint ( scrollBg );
             g2d.fillRect ( 0, 0, scrollbar.getWidth (), scrollbar.getHeight () );
 
             if ( scrollbar.getOrientation () == JScrollBar.VERTICAL )
             {
-                int vBorder = scrollbar.getComponentOrientation ().isLeftToRight () ? 0 : scrollbar.getWidth () - 1;
+                final int vBorder = scrollbar.getComponentOrientation ().isLeftToRight () ? 0 : scrollbar.getWidth () - 1;
                 g2d.setColor ( scrollBorder );
                 g2d.drawLine ( vBorder, 0, vBorder, scrollbar.getHeight () - 1 );
             }
@@ -208,19 +207,19 @@ public class WebScrollBarUI extends BasicScrollBarUI
     }
 
     @Override
-    protected void paintThumb ( Graphics g, JComponent c, Rectangle thumbBounds )
+    protected void paintThumb ( final Graphics g, final JComponent c, final Rectangle thumbBounds )
     {
-        Graphics2D g2d = ( Graphics2D ) g;
+        final Graphics2D g2d = ( Graphics2D ) g;
 
-        Color leftC = isDragging ? scrollSelGradientLeft : scrollGradientLeft;
-        Color rightC = isDragging ? scrollSelGradientRight : scrollGradientRight;
+        final Color leftC = isDragging ? scrollSelGradientLeft : scrollGradientLeft;
+        final Color rightC = isDragging ? scrollSelGradientRight : scrollGradientRight;
 
         if ( scrollbar.getOrientation () == JScrollBar.VERTICAL )
         {
-            boolean ltr = scrollbar.getComponentOrientation ().isLeftToRight ();
-            Color leftColor = ltr ? leftC : rightC;
-            Color rightColor = ltr ? rightC : leftC;
-            int x = ltr ? 2 : 1;
+            final boolean ltr = scrollbar.getComponentOrientation ().isLeftToRight ();
+            final Color leftColor = ltr ? leftC : rightC;
+            final Color rightColor = ltr ? rightC : leftC;
+            final int x = ltr ? 2 : 1;
 
             g2d.setPaint ( new GradientPaint ( 3, 0, leftColor, scrollbar.getWidth () - 4, 0, rightColor ) );
             g2d.fillRoundRect ( thumbRect.x + x, thumbRect.y + 1, thumbRect.width - 4, thumbRect.height - 3, round, round );
@@ -248,9 +247,9 @@ public class WebScrollBarUI extends BasicScrollBarUI
     }
 
     @Override
-    public Dimension getPreferredSize ( JComponent c )
+    public Dimension getPreferredSize ( final JComponent c )
     {
-        Dimension preferredSize = super.getPreferredSize ( c );
+        final Dimension preferredSize = super.getPreferredSize ( c );
         return ( scrollbar.getOrientation () == JScrollBar.VERTICAL ) ? new Dimension ( LENGTH, preferredSize.height ) :
                 new Dimension ( preferredSize.width, LENGTH );
     }

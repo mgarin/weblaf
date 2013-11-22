@@ -15,30 +15,45 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.utils;
+package com.alee.laf.menu;
+
+import com.alee.laf.StyleConstants;
+
+import java.awt.*;
 
 /**
- * This class provides a set of utilities to work with threads.
- *
  * @author Mikle Garin
  */
 
-public final class ThreadUtils
+public class WebPopupPainterStyle
 {
     /**
-     * Causes calling thread to sleep and ignores thrown InterruptedException.
-     *
-     * @param millis time to sleep
+     * Popup menu style.
      */
-    public static void sleepSafely ( final long millis )
-    {
-        try
-        {
-            Thread.sleep ( millis );
-        }
-        catch ( InterruptedException e )
-        {
-            //
-        }
-    }
+    public static PopupPainterStyle popupPainterStyle = PopupPainterStyle.dropdown;
+
+    /**
+     * Popup menu border color.
+     */
+    public static Color borderColor = new Color ( 128, 128, 128, 128 );
+
+    /**
+     * Popup menu corners rounding.
+     */
+    public static int round = StyleConstants.bigRound;
+
+    /**
+     * Popup menu shade width.
+     */
+    public static int shadeWidth = 12;
+
+    /**
+     * Popup menu shade opacity.
+     */
+    public static float shadeOpacity = 0.75f;
+
+    /**
+     * Popup menu dropdown style corner width
+     */
+    public static int cornerWidth = 6;
 }

@@ -31,19 +31,23 @@ import java.awt.*;
 
 public class WebColorChooserUI extends BasicColorChooserUI
 {
+    /**
+     * todo 1. Implement base JColorChooser features
+     */
+
     private WebColorChooserPanel colorChooserPanel;
     private ColorSelectionModel selectionModel;
     private ChangeListener modelChangeListener;
     private boolean modifying = false;
 
-    @SuppressWarnings ("UnusedParameters")
-    public static ComponentUI createUI ( JComponent c )
+    @SuppressWarnings ( "UnusedParameters" )
+    public static ComponentUI createUI ( final JComponent c )
     {
         return new WebColorChooserUI ();
     }
 
     @Override
-    public void installUI ( JComponent c )
+    public void installUI ( final JComponent c )
     {
         chooser = ( JColorChooser ) c;
         selectionModel = chooser.getSelectionModel ();
@@ -56,7 +60,7 @@ public class WebColorChooserUI extends BasicColorChooserUI
         colorChooserPanel.addChangeListener ( new ChangeListener ()
         {
             @Override
-            public void stateChanged ( ChangeEvent e )
+            public void stateChanged ( final ChangeEvent e )
             {
                 if ( !modifying )
                 {
@@ -71,7 +75,7 @@ public class WebColorChooserUI extends BasicColorChooserUI
         modelChangeListener = new ChangeListener ()
         {
             @Override
-            public void stateChanged ( ChangeEvent e )
+            public void stateChanged ( final ChangeEvent e )
             {
                 if ( !modifying )
                 {
@@ -85,7 +89,7 @@ public class WebColorChooserUI extends BasicColorChooserUI
     }
 
     @Override
-    public void uninstallUI ( JComponent c )
+    public void uninstallUI ( final JComponent c )
     {
         chooser.remove ( colorChooserPanel );
         chooser.setLayout ( null );
@@ -101,7 +105,7 @@ public class WebColorChooserUI extends BasicColorChooserUI
         return colorChooserPanel.isShowButtonsPanel ();
     }
 
-    public void setShowButtonsPanel ( boolean showButtonsPanel )
+    public void setShowButtonsPanel ( final boolean showButtonsPanel )
     {
         colorChooserPanel.setShowButtonsPanel ( showButtonsPanel );
     }
@@ -111,7 +115,7 @@ public class WebColorChooserUI extends BasicColorChooserUI
         return colorChooserPanel.isWebOnlyColors ();
     }
 
-    public void setWebOnlyColors ( boolean webOnlyColors )
+    public void setWebOnlyColors ( final boolean webOnlyColors )
     {
         colorChooserPanel.setWebOnlyColors ( webOnlyColors );
     }
@@ -121,7 +125,7 @@ public class WebColorChooserUI extends BasicColorChooserUI
         return colorChooserPanel.getOldColor ();
     }
 
-    public void setOldColor ( Color oldColor )
+    public void setOldColor ( final Color oldColor )
     {
         colorChooserPanel.setOldColor ( oldColor );
     }
@@ -131,7 +135,7 @@ public class WebColorChooserUI extends BasicColorChooserUI
         colorChooserPanel.resetResult ();
     }
 
-    public void setResult ( int result )
+    public void setResult ( final int result )
     {
         colorChooserPanel.setResult ( result );
     }
@@ -141,12 +145,12 @@ public class WebColorChooserUI extends BasicColorChooserUI
         return colorChooserPanel.getResult ();
     }
 
-    public void addColorChooserListener ( ColorChooserListener colorChooserListener )
+    public void addColorChooserListener ( final ColorChooserListener colorChooserListener )
     {
         colorChooserPanel.addColorChooserListener ( colorChooserListener );
     }
 
-    public void removeColorChooserListener ( ColorChooserListener colorChooserListener )
+    public void removeColorChooserListener ( final ColorChooserListener colorChooserListener )
     {
         colorChooserPanel.removeColorChooserListener ( colorChooserListener );
     }

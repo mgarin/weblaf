@@ -102,7 +102,7 @@ public class WebImage extends JComponent implements SwingConstants
      *
      * @param src path to image
      */
-    public WebImage ( String src )
+    public WebImage ( final String src )
     {
         this ( ImageUtils.loadImage ( src ) );
     }
@@ -113,7 +113,7 @@ public class WebImage extends JComponent implements SwingConstants
      * @param nearClass class near which image is located
      * @param src       image file location
      */
-    public WebImage ( Class nearClass, String src )
+    public WebImage ( final Class nearClass, final String src )
     {
         this ( ImageUtils.loadImage ( nearClass, src ) );
     }
@@ -123,7 +123,7 @@ public class WebImage extends JComponent implements SwingConstants
      *
      * @param url image url
      */
-    public WebImage ( URL url )
+    public WebImage ( final URL url )
     {
         this ( ImageUtils.loadImage ( url ) );
     }
@@ -133,7 +133,7 @@ public class WebImage extends JComponent implements SwingConstants
      *
      * @param icon icon to process
      */
-    public WebImage ( Icon icon )
+    public WebImage ( final Icon icon )
     {
         this ( ImageUtils.getBufferedImage ( icon ) );
     }
@@ -143,7 +143,7 @@ public class WebImage extends JComponent implements SwingConstants
      *
      * @param icon image icon to process
      */
-    public WebImage ( ImageIcon icon )
+    public WebImage ( final ImageIcon icon )
     {
         this ( icon.getImage () );
     }
@@ -153,7 +153,7 @@ public class WebImage extends JComponent implements SwingConstants
      *
      * @param image image
      */
-    public WebImage ( Image image )
+    public WebImage ( final Image image )
     {
         this ( ImageUtils.getBufferedImage ( image ) );
     }
@@ -163,7 +163,7 @@ public class WebImage extends JComponent implements SwingConstants
      *
      * @param image image
      */
-    public WebImage ( BufferedImage image )
+    public WebImage ( final BufferedImage image )
     {
         super ();
 
@@ -178,26 +178,45 @@ public class WebImage extends JComponent implements SwingConstants
         SwingUtils.setOrientation ( this );
         setOpaque ( false );
 
-        addPropertyChangeListener ( WebLookAndFeel.COMPONENT_ENABLED_PROPERTY, new PropertyChangeListener ()
+        addPropertyChangeListener ( WebLookAndFeel.ENABLED_PROPERTY, new PropertyChangeListener ()
         {
             @Override
-            public void propertyChange ( PropertyChangeEvent evt )
+            public void propertyChange ( final PropertyChangeEvent evt )
             {
                 if ( !isEnabled () )
                 {
-                    disabledImage = ImageUtils.createDisabledCopy ( WebImage.this.image );
-                    lastPreviewImage = null;
+                    calculateDisabledImage ();
                     repaint ();
                 }
-                else if ( disabledImage != null )
+                else
                 {
-                    disabledImage.flush ();
-                    disabledImage = null;
-                    lastPreviewImage = null;
+                    clearDisabledImage ();
                     repaint ();
                 }
             }
         } );
+    }
+
+    /**
+     * Updates cached disabled image.
+     */
+    protected void calculateDisabledImage ()
+    {
+        disabledImage = image != null ? ImageUtils.createDisabledCopy ( image ) : null;
+        lastPreviewImage = null;
+    }
+
+    /**
+     * Clears cached disabled image
+     */
+    private void clearDisabledImage ()
+    {
+        if ( disabledImage != null )
+        {
+            disabledImage.flush ();
+            disabledImage = null;
+        }
+        lastPreviewImage = null;
     }
 
     /**
@@ -235,7 +254,7 @@ public class WebImage extends JComponent implements SwingConstants
      *
      * @param icon icon to process
      */
-    public void setIcon ( Icon icon )
+    public void setIcon ( final Icon icon )
     {
         setImage ( ImageUtils.getBufferedImage ( icon ) );
     }
@@ -245,7 +264,7 @@ public class WebImage extends JComponent implements SwingConstants
      *
      * @param icon image icon to process
      */
-    public void setIcon ( ImageIcon icon )
+    public void setIcon ( final ImageIcon icon )
     {
         setImage ( icon.getImage () );
     }
@@ -255,7 +274,7 @@ public class WebImage extends JComponent implements SwingConstants
      *
      * @param image new image
      */
-    public void setImage ( Image image )
+    public void setImage ( final Image image )
     {
         setImage ( ImageUtils.getBufferedImage ( image ) );
     }
@@ -265,9 +284,13 @@ public class WebImage extends JComponent implements SwingConstants
      *
      * @param image new image
      */
-    public void setImage ( BufferedImage image )
+    public void setImage ( final BufferedImage image )
     {
         this.image = image;
+        if ( !isEnabled () )
+        {
+            calculateDisabledImage ();
+        }
         revalidate ();
         repaint ();
     }
@@ -287,7 +310,7 @@ public class WebImage extends JComponent implements SwingConstants
      *
      * @param displayType new image display type
      */
-    public void setDisplayType ( DisplayType displayType )
+    public void setDisplayType ( final DisplayType displayType )
     {
         this.displayType = displayType;
         updateView ();
@@ -308,7 +331,7 @@ public class WebImage extends JComponent implements SwingConstants
      *
      * @param horizontalAlignment new image horizontal alignment
      */
-    public void setHorizontalAlignment ( int horizontalAlignment )
+    public void setHorizontalAlignment ( final int horizontalAlignment )
     {
         this.horizontalAlignment = horizontalAlignment;
         updateView ();
@@ -329,7 +352,7 @@ public class WebImage extends JComponent implements SwingConstants
      *
      * @param verticalAlignment new image vertical alignment
      */
-    public void setVerticalAlignment ( int verticalAlignment )
+    public void setVerticalAlignment ( final int verticalAlignment )
     {
         this.verticalAlignment = verticalAlignment;
         updateView ();
@@ -350,7 +373,7 @@ public class WebImage extends JComponent implements SwingConstants
      *
      * @param transparency new image transparency
      */
-    public void setTransparency ( float transparency )
+    public void setTransparency ( final float transparency )
     {
         this.transparency = transparency;
         updateView ();
@@ -382,7 +405,7 @@ public class WebImage extends JComponent implements SwingConstants
      *
      * @param margin new image margin
      */
-    public void setMargin ( Insets margin )
+    public void setMargin ( final Insets margin )
     {
         this.margin = margin;
         updateBorder ();
@@ -396,7 +419,7 @@ public class WebImage extends JComponent implements SwingConstants
      * @param bottom bottom margin
      * @param right  right margin
      */
-    public void setMargin ( int top, int left, int bottom, int right )
+    public void setMargin ( final int top, final int left, final int bottom, final int right )
     {
         setMargin ( new Insets ( top, left, bottom, right ) );
     }
@@ -406,7 +429,7 @@ public class WebImage extends JComponent implements SwingConstants
      *
      * @param spacing side spacing
      */
-    public void setMargin ( int spacing )
+    public void setMargin ( final int spacing )
     {
         setMargin ( spacing, spacing, spacing, spacing );
     }
@@ -432,7 +455,7 @@ public class WebImage extends JComponent implements SwingConstants
      * @param g graphics
      */
     @Override
-    protected void paintComponent ( Graphics g )
+    protected void paintComponent ( final Graphics g )
     {
         super.paintComponent ( g );
 
@@ -441,14 +464,14 @@ public class WebImage extends JComponent implements SwingConstants
             return;
         }
 
-        Graphics2D g2d = ( Graphics2D ) g;
-        Composite oc = LafUtils.setupAlphaComposite ( g2d, transparency, transparency < 1f );
+        final Graphics2D g2d = ( Graphics2D ) g;
+        final Composite oc = LafUtils.setupAlphaComposite ( g2d, transparency, transparency < 1f );
 
         // todo Optimize for repaint (check if image is out of repainted/clipped bounds)
-        BufferedImage currentImage = getCurrentImage ();
+        final BufferedImage currentImage = getCurrentImage ();
         if ( currentImage != null )
         {
-            Insets insets = getInsets ();
+            final Insets insets = getInsets ();
             if ( getSize ().equals ( getRequiredSize () ) )
             {
                 // Drawing image when it is currently at preferred size
@@ -461,10 +484,10 @@ public class WebImage extends JComponent implements SwingConstants
                     case preferred:
                     {
                         // Drawing preferred sized image at specified side
-                        int x = horizontalAlignment == LEFT ? insets.left :
+                        final int x = horizontalAlignment == LEFT ? insets.left :
                                 ( horizontalAlignment == RIGHT ? getWidth () - currentImage.getWidth () - insets.right :
                                         getCenterX ( insets ) - currentImage.getWidth () / 2 );
-                        int y = verticalAlignment == TOP ? insets.top :
+                        final int y = verticalAlignment == TOP ? insets.top :
                                 ( verticalAlignment == BOTTOM ? getHeight () - currentImage.getHeight () - insets.bottom :
                                         getCenterY ( insets ) - currentImage.getHeight () / 2 );
                         g2d.drawImage ( currentImage, x, y, null );
@@ -473,7 +496,7 @@ public class WebImage extends JComponent implements SwingConstants
                     case fitComponent:
                     {
                         // Drawing sized to fit object image
-                        BufferedImage preview = getPreviewImage ( insets );
+                        final BufferedImage preview = getPreviewImage ( insets );
                         g2d.drawImage ( preview, getCenterX ( insets ) - preview.getWidth () / 2,
                                 getCenterY ( insets ) - preview.getHeight () / 2, null );
                         break;
@@ -481,10 +504,10 @@ public class WebImage extends JComponent implements SwingConstants
                     case repeat:
                     {
                         // Drawing repeated in background image
-                        int x = horizontalAlignment == LEFT ? insets.left :
+                        final int x = horizontalAlignment == LEFT ? insets.left :
                                 ( horizontalAlignment == RIGHT ? getWidth () - currentImage.getWidth () - insets.right :
                                         getCenterX ( insets ) - currentImage.getWidth () / 2 );
-                        int y = verticalAlignment == TOP ? insets.top :
+                        final int y = verticalAlignment == TOP ? insets.top :
                                 ( verticalAlignment == BOTTOM ? getHeight () - currentImage.getHeight () - insets.bottom :
                                         getCenterY ( insets ) - currentImage.getHeight () / 2 );
                         g2d.setPaint ( new TexturePaint ( currentImage,
@@ -506,7 +529,7 @@ public class WebImage extends JComponent implements SwingConstants
      * @param insets image component insets
      * @return image component center X coordinate
      */
-    private int getCenterX ( Insets insets )
+    private int getCenterX ( final Insets insets )
     {
         return insets.left + ( getWidth () - insets.left - insets.right ) / 2;
     }
@@ -517,7 +540,7 @@ public class WebImage extends JComponent implements SwingConstants
      * @param insets image component insets
      * @return image component center Y coordinate
      */
-    private int getCenterY ( Insets insets )
+    private int getCenterY ( final Insets insets )
     {
         return insets.top + ( getHeight () - insets.top - insets.bottom ) / 2;
     }
@@ -528,11 +551,11 @@ public class WebImage extends JComponent implements SwingConstants
      * @param insets image component insets
      * @return preview image
      */
-    private BufferedImage getPreviewImage ( Insets insets )
+    private BufferedImage getPreviewImage ( final Insets insets )
     {
         if ( image.getWidth () > getWidth () || image.getHeight () > getHeight () )
         {
-            Dimension size = getSize ();
+            final Dimension size = getSize ();
             size.setSize ( size.width - insets.left - insets.right, size.height - insets.top - insets.bottom );
             if ( lastPreviewImage == null || lastDimention != null && !lastDimention.equals ( size ) )
             {
@@ -587,7 +610,7 @@ public class WebImage extends JComponent implements SwingConstants
      */
     private Dimension getRequiredSize ()
     {
-        Insets insets = getInsets ();
+        final Insets insets = getInsets ();
         return new Dimension ( insets.left + ( image != null ? image.getWidth () : 0 ) + insets.right,
                 insets.top + ( image != null ? image.getHeight () : 0 ) + insets.bottom );
     }

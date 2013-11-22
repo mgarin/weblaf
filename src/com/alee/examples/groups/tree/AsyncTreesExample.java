@@ -61,7 +61,7 @@ public class AsyncTreesExample extends DefaultExample
      * {@inheritDoc}
      */
     @Override
-    public Component getPreview ( WebLookAndFeelDemo owner )
+    public Component getPreview ( final WebLookAndFeelDemo owner )
     {
         // Editable asynchronous tree
         final WebAsyncTree tree1 = new WebAsyncTree ();
@@ -95,7 +95,7 @@ public class AsyncTreesExample extends DefaultExample
         tree.addMouseListener ( new MouseAdapter ()
         {
             @Override
-            public void mouseReleased ( MouseEvent e )
+            public void mouseReleased ( final MouseEvent e )
             {
                 if ( SwingUtils.isRightMouseButton ( e ) )
                 {

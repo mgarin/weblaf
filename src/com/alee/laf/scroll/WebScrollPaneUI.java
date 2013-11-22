@@ -61,13 +61,13 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeProvider
     private boolean focused = false;
 
     @SuppressWarnings ("UnusedParameters")
-    public static ComponentUI createUI ( JComponent c )
+    public static ComponentUI createUI ( final JComponent c )
     {
         return new WebScrollPaneUI ();
     }
 
     @Override
-    public void installUI ( JComponent c )
+    public void installUI ( final JComponent c )
     {
         super.installUI ( c );
 
@@ -77,19 +77,19 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeProvider
         scrollpane.setBackground ( StyleConstants.backgroundColor );
 
         // Border
-        updateBorder ( scrollpane );
+        updateBorder ();
 
         // Styled scroll pane corner
         scrollpane.setCorner ( JScrollPane.LOWER_TRAILING_CORNER, getCornerComponent () );
         propertyChangeListener = new PropertyChangeListener ()
         {
             @Override
-            public void propertyChange ( PropertyChangeEvent evt )
+            public void propertyChange ( final PropertyChangeEvent evt )
             {
                 scrollpane.setCorner ( JScrollPane.LOWER_TRAILING_CORNER, getCornerComponent () );
             }
         };
-        scrollpane.addPropertyChangeListener ( WebLookAndFeel.COMPONENT_ORIENTATION_PROPERTY, propertyChangeListener );
+        scrollpane.addPropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, propertyChangeListener );
 
         // Focus tracker for the scroll pane content
         focusTracker = new DefaultFocusTracker ()
@@ -101,7 +101,7 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeProvider
             }
 
             @Override
-            public void focusChanged ( boolean focused )
+            public void focusChanged ( final boolean focused )
             {
                 WebScrollPaneUI.this.focused = focused;
                 scrollpane.repaint ();
@@ -111,9 +111,9 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeProvider
     }
 
     @Override
-    public void uninstallUI ( JComponent c )
+    public void uninstallUI ( final JComponent c )
     {
-        scrollpane.removePropertyChangeListener ( WebLookAndFeel.COMPONENT_ORIENTATION_PROPERTY, propertyChangeListener );
+        scrollpane.removePropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, propertyChangeListener );
         scrollpane.remove ( getCornerComponent () );
 
         FocusManager.removeFocusTracker ( focusTracker );
@@ -136,20 +136,27 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeProvider
         return LafUtils.getWebBorderShape ( scrollpane, getShadeWidth (), getRound () );
     }
 
-    private void updateBorder ( JComponent scrollPane )
+    private void updateBorder ()
     {
-        if ( scrollPane != null )
+        if ( scrollpane != null )
         {
+            // Preserve old borders
+            if ( SwingUtils.isPreserveBorders ( scrollpane ) )
+            {
+                return;
+            }
+
+            final Insets insets;
             if ( drawBorder )
             {
-                scrollPane.setBorder ( BorderFactory
-                        .createEmptyBorder ( shadeWidth + 1 + margin.top, shadeWidth + 1 + margin.left, shadeWidth + 1 + margin.bottom,
-                                shadeWidth + 1 + margin.right ) );
+                insets = new Insets ( shadeWidth + 1 + margin.top, shadeWidth + 1 + margin.left, shadeWidth + 1 + margin.bottom,
+                        shadeWidth + 1 + margin.right );
             }
             else
             {
-                scrollPane.setBorder ( BorderFactory.createEmptyBorder ( margin.top, margin.left, margin.bottom, margin.right ) );
+                insets = new Insets ( margin.top, margin.left, margin.bottom, margin.right );
             }
+            scrollpane.setBorder ( LafUtils.createWebBorder ( insets ) );
         }
     }
 
@@ -158,10 +165,10 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeProvider
         return drawBorder;
     }
 
-    public void setDrawBorder ( boolean drawBorder )
+    public void setDrawBorder ( final boolean drawBorder )
     {
         this.drawBorder = drawBorder;
-        updateBorder ( scrollpane );
+        updateBorder ();
     }
 
     public int getRound ()
@@ -169,7 +176,7 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeProvider
         return round;
     }
 
-    public void setRound ( int round )
+    public void setRound ( final int round )
     {
         this.round = round;
     }
@@ -179,10 +186,10 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeProvider
         return shadeWidth;
     }
 
-    public void setShadeWidth ( int shadeWidth )
+    public void setShadeWidth ( final int shadeWidth )
     {
         this.shadeWidth = shadeWidth;
-        updateBorder ( scrollpane );
+        updateBorder ();
     }
 
     public Insets getMargin ()
@@ -190,10 +197,10 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeProvider
         return margin;
     }
 
-    public void setMargin ( Insets margin )
+    public void setMargin ( final Insets margin )
     {
         this.margin = margin;
-        updateBorder ( scrollpane );
+        updateBorder ();
     }
 
     public boolean isDrawFocus ()
@@ -201,7 +208,7 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeProvider
         return drawFocus;
     }
 
-    public void setDrawFocus ( boolean drawFocus )
+    public void setDrawFocus ( final boolean drawFocus )
     {
         this.drawFocus = drawFocus;
     }
@@ -211,7 +218,7 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeProvider
         return drawBackground;
     }
 
-    public void setDrawBackground ( boolean drawBackground )
+    public void setDrawBackground ( final boolean drawBackground )
     {
         this.drawBackground = drawBackground;
     }
@@ -221,7 +228,7 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeProvider
         return borderColor;
     }
 
-    public void setBorderColor ( Color borderColor )
+    public void setBorderColor ( final Color borderColor )
     {
         this.borderColor = borderColor;
     }
@@ -231,13 +238,13 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeProvider
         return darkBorder;
     }
 
-    public void setDarkBorder ( Color darkBorder )
+    public void setDarkBorder ( final Color darkBorder )
     {
         this.darkBorder = darkBorder;
     }
 
     @Override
-    public void paint ( Graphics g, JComponent c )
+    public void paint ( final Graphics g, final JComponent c )
     {
         if ( drawBorder )
         {

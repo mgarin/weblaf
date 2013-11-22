@@ -45,7 +45,7 @@ public class PopupLayer extends WebPanel
     /**
      * Constructs new popup layer with the specified layout
      */
-    public PopupLayer ( LayoutManager layoutManager )
+    public PopupLayer ( final LayoutManager layoutManager )
     {
         super ( layoutManager );
         setOpaque ( false );
@@ -66,7 +66,7 @@ public class PopupLayer extends WebPanel
      *
      * @param layoutManager layout manager to add
      */
-    public void addLayoutManager ( LayoutManager layoutManager )
+    public void addLayoutManager ( final LayoutManager layoutManager )
     {
         getMultiLayout ().addLayoutManager ( layoutManager );
     }
@@ -76,7 +76,7 @@ public class PopupLayer extends WebPanel
      *
      * @param layoutManager layout manager to remove
      */
-    public void removeLayoutManager ( LayoutManager layoutManager )
+    public void removeLayoutManager ( final LayoutManager layoutManager )
     {
         getMultiLayout ().removeLayoutManager ( layoutManager );
     }
@@ -96,17 +96,20 @@ public class PopupLayer extends WebPanel
      *
      * @param popup popup to display
      */
-    public void showPopup ( WebPopup popup )
+    public void showPopup ( final WebPopup popup )
     {
         // Informing that popup will now become visible
         popup.firePopupWillBeOpened ();
 
+        // Updating popup layer
+        setBounds ( new Rectangle ( 0, 0, getParent ().getWidth (), getParent ().getHeight () ) );
+
         // Adding popup
         add ( popup, 0 );
-        setBounds ( new Rectangle ( 0, 0, getParent ().getWidth (), getParent ().getHeight () ) );
-        setVisible ( true );
-        revalidate ();
-        repaint ();
+
+        // Updating popup position and content
+        popup.revalidate ();
+        popup.repaint ();
     }
 
     /**
@@ -114,7 +117,7 @@ public class PopupLayer extends WebPanel
      *
      * @param popup popup to hide
      */
-    public void hidePopup ( WebPopup popup )
+    public void hidePopup ( final WebPopup popup )
     {
         // Ignore hide
         if ( !popup.isShowing () || popup.getParent () != PopupLayer.this )
@@ -126,16 +129,10 @@ public class PopupLayer extends WebPanel
         popup.firePopupWillBeClosed ();
 
         // Removing popup
-        Rectangle bounds = popup.getBounds ();
+        final Rectangle bounds = popup.getBounds ();
         remove ( popup );
         revalidate ();
         repaint ( bounds );
-
-        // Hiding layer if no popups left
-        if ( getComponentCount () == 0 )
-        {
-            setVisible ( false );
-        }
     }
 
     /**
@@ -147,14 +144,14 @@ public class PopupLayer extends WebPanel
      * @return true if some of popups displayed on this popup later contains the specified point, false otherwise
      */
     @Override
-    public boolean contains ( int x, int y )
+    public boolean contains ( final int x, final int y )
     {
-        for ( Component child : getComponents () )
+        for ( final Component child : getComponents () )
         {
-            Point l = child.getLocation ();
+            final Point l = child.getLocation ();
             if ( child instanceof ShapeProvider )
             {
-                Shape shape = ( ( ShapeProvider ) child ).provideShape ();
+                final Shape shape = ( ( ShapeProvider ) child ).provideShape ();
                 if ( shape != null && shape.contains ( x - l.x, y - l.y ) )
                 {
                     return true;
@@ -179,7 +176,7 @@ public class PopupLayer extends WebPanel
      * @param y Y coordinate
      * @return true if the specified point is within bounds of this popup layer, false otherwise
      */
-    public boolean normalContains ( int x, int y )
+    public boolean normalContains ( final int x, final int y )
     {
         return super.contains ( x, y );
     }

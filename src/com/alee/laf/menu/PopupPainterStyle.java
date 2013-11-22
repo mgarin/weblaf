@@ -17,43 +17,22 @@
 
 package com.alee.laf.menu;
 
-import com.alee.laf.StyleConstants;
-
-import java.awt.*;
-
 /**
+ * This enumeration represents possible popup painter styles.
+ *
  * @author Mikle Garin
  */
 
-public class PopupMenuPainterStyle
+public enum PopupPainterStyle
 {
     /**
-     * Popup menu style.
+     * Simple popup style.
      */
-    public static PopupMenuStyle popupMenuStyle = PopupMenuStyle.dropdown;
+    simple,
 
     /**
-     * Popup menu border color.
+     * Dropdown popup style.
+     * Painter will paint an additional styled corner.
      */
-    public static Color borderColor = new Color ( 128, 128, 128, 128 );
-
-    /**
-     * Popup menu corners rounding.
-     */
-    public static int round = StyleConstants.bigRound;
-
-    /**
-     * Popup menu shade width.
-     */
-    public static int shadeWidth = 12;
-
-    /**
-     * Popup menu shade opacity.
-     */
-    public static float shadeOpacity = 0.75f;
-
-    /**
-     * Popup menu dropdown style corner width
-     */
-    public static int cornerWidth = 6;
+    dropdown
 }

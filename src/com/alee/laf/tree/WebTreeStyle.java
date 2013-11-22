@@ -89,4 +89,14 @@ public final class WebTreeStyle
      */
     public static BasicStroke selectorStroke =
             new BasicStroke ( 1, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 0f, new float[]{ 3f, 3f }, 0f );
+
+    /**
+     * Drop cell highlight shade width.
+     */
+    public static int dropCellShadeWidth = 8;
+
+    /**
+     * Node line indent.
+     */
+    public static int nodeLineIndent = 12;
 }

@@ -26,12 +26,12 @@ import java.awt.*;
 /**
  * This panel allows you to quickly place a small group of components into a row or a column.
  * You can specify grouping type, orientation and gap between components.
- * <p>
+ * <p/>
  * If specified grouping type is not "none" then components will be placed according to that grouping type.
  * Otherwise whether component should fill all the space left or not is determined by its FILL_CELL client property.
- * <p>
+ * <p/>
  * Orientation determines whether components should be placed horizontally or vertically.
- * <p>
+ * <p/>
  * Gap determines the spacing between the components in pixels.
  *
  * @author Mikle Garin
@@ -47,7 +47,7 @@ public class GroupPanel extends WebPanel
      *
      * @param components components to place
      */
-    public GroupPanel ( Component... components )
+    public GroupPanel ( final Component... components )
     {
         this ( true, components );
     }
@@ -58,7 +58,7 @@ public class GroupPanel extends WebPanel
      * @param horizontal layout orientation
      * @param components components to place
      */
-    public GroupPanel ( boolean horizontal, Component... components )
+    public GroupPanel ( final boolean horizontal, final Component... components )
     {
         this ( 0, horizontal, components );
     }
@@ -69,7 +69,7 @@ public class GroupPanel extends WebPanel
      * @param gap        gap between components
      * @param components components to place
      */
-    public GroupPanel ( int gap, Component... components )
+    public GroupPanel ( final int gap, final Component... components )
     {
         this ( gap, true, components );
     }
@@ -81,7 +81,7 @@ public class GroupPanel extends WebPanel
      * @param horizontal layout orientation
      * @param components components to place
      */
-    public GroupPanel ( int gap, boolean horizontal, Component... components )
+    public GroupPanel ( final int gap, final boolean horizontal, final Component... components )
     {
         this ( GroupingType.none, gap, horizontal, components );
     }
@@ -92,7 +92,7 @@ public class GroupPanel extends WebPanel
      * @param groupingType special grouping type
      * @param components   components to place
      */
-    public GroupPanel ( GroupingType groupingType, Component... components )
+    public GroupPanel ( final GroupingType groupingType, final Component... components )
     {
         this ( groupingType, true, components );
     }
@@ -104,7 +104,7 @@ public class GroupPanel extends WebPanel
      * @param horizontal   layout orientation
      * @param components   components to place
      */
-    public GroupPanel ( GroupingType groupingType, boolean horizontal, Component... components )
+    public GroupPanel ( final GroupingType groupingType, final boolean horizontal, final Component... components )
     {
         this ( groupingType, 0, horizontal, components );
     }
@@ -116,7 +116,7 @@ public class GroupPanel extends WebPanel
      * @param gap          gap between components
      * @param components   components to place
      */
-    public GroupPanel ( GroupingType groupingType, int gap, Component... components )
+    public GroupPanel ( final GroupingType groupingType, final int gap, final Component... components )
     {
         this ( groupingType, gap, true, components );
     }
@@ -129,7 +129,7 @@ public class GroupPanel extends WebPanel
      * @param horizontal   layout orientation
      * @param components   components to place
      */
-    public GroupPanel ( GroupingType groupingType, int gap, boolean horizontal, Component... components )
+    public GroupPanel ( final GroupingType groupingType, final int gap, final boolean horizontal, final Component... components )
     {
         super ( new GroupLayout ( horizontal ? GroupLayout.HORIZONTAL : GroupLayout.VERTICAL, gap ) );
         setOpaque ( false );
@@ -137,7 +137,7 @@ public class GroupPanel extends WebPanel
         // Placing components
         for ( int i = 0; i < components.length; i++ )
         {
-            Component component = components[ i ];
+            final Component component = components[ i ];
             switch ( groupingType )
             {
                 case none:
@@ -162,6 +162,12 @@ public class GroupPanel extends WebPanel
                 {
                     // Last component fills all the space left
                     add ( component, i == components.length - 1 ? GroupLayout.FILL : GroupLayout.PREFERRED );
+                    break;
+                }
+                case fillFirstAndLast:
+                {
+                    // First and last components fill all the space left
+                    add ( component, i == 0 || i == components.length - 1 ? GroupLayout.FILL : GroupLayout.PREFERRED );
                     break;
                 }
                 case fillAll:
@@ -199,7 +205,7 @@ public class GroupPanel extends WebPanel
      *
      * @param orientation new layout orientation
      */
-    public void setOrientation ( int orientation )
+    public void setOrientation ( final int orientation )
     {
         getActualLayout ().setOrientation ( orientation );
         revalidate ();
@@ -220,7 +226,7 @@ public class GroupPanel extends WebPanel
      *
      * @param gap gap between components
      */
-    public void setGap ( int gap )
+    public void setGap ( final int gap )
     {
         getActualLayout ().setGap ( gap );
         revalidate ();
@@ -232,11 +238,11 @@ public class GroupPanel extends WebPanel
      * @param component component to analyze
      * @return true if the component should fill all the space left, false otherwise
      */
-    public static boolean isFill ( Component component )
+    public static boolean isFill ( final Component component )
     {
         if ( component instanceof JComponent )
         {
-            Boolean b = ( Boolean ) ( ( JComponent ) component ).getClientProperty ( FILL_CELL );
+            final Boolean b = ( Boolean ) ( ( JComponent ) component ).getClientProperty ( FILL_CELL );
             if ( b != null && b )
             {
                 return true;

@@ -15,24 +15,25 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.laf.menu;
+package com.alee.utils.laf;
+
+import java.awt.*;
 
 /**
- * This enumeration represents possible popup menu styles.
+ * This interface provides a single method for requesting painted component shape.
+ * This can be used by painters to provide their shape for various usage cases.
  *
  * @author Mikle Garin
  */
 
-public enum PopupMenuStyle
+public interface PainterShapeProvider<E extends Component>
 {
     /**
-     * Simple popup menu style.
+     * Returns painted component shape.
+     *
+     * @param component component to process
+     * @param bounds    bounds for painter visual data
+     * @return painted component shape
      */
-    simple,
-
-    /**
-     * Dropdown popup menu style.
-     * Menu will paint an additional styled corner faced to the side it is invoked from.
-     */
-    dropdown
+    public Shape provideShape ( final E component, final Rectangle bounds );
 }

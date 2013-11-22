@@ -49,27 +49,27 @@ public class WebFormattedTextField extends JFormattedTextField
         super ();
     }
 
-    public WebFormattedTextField ( AbstractFormatterFactory factory )
+    public WebFormattedTextField ( final AbstractFormatterFactory factory )
     {
         super ( factory );
     }
 
-    public WebFormattedTextField ( AbstractFormatterFactory factory, Object currentValue )
+    public WebFormattedTextField ( final AbstractFormatterFactory factory, final Object currentValue )
     {
         super ( factory, currentValue );
     }
 
-    public WebFormattedTextField ( Format format )
+    public WebFormattedTextField ( final Format format )
     {
         super ( format );
     }
 
-    public WebFormattedTextField ( AbstractFormatter formatter )
+    public WebFormattedTextField ( final AbstractFormatter formatter )
     {
         super ( formatter );
     }
 
-    public WebFormattedTextField ( Object value )
+    public WebFormattedTextField ( final Object value )
     {
         super ( value );
     }
@@ -92,7 +92,7 @@ public class WebFormattedTextField extends JFormattedTextField
         return getWebUI ().isDrawBorder ();
     }
 
-    public void setDrawBorder ( boolean drawBorder )
+    public void setDrawBorder ( final boolean drawBorder )
     {
         getWebUI ().setDrawBorder ( drawBorder );
     }
@@ -102,7 +102,7 @@ public class WebFormattedTextField extends JFormattedTextField
         return getWebUI ().isDrawFocus ();
     }
 
-    public void setDrawFocus ( boolean drawFocus )
+    public void setDrawFocus ( final boolean drawFocus )
     {
         getWebUI ().setDrawFocus ( drawFocus );
     }
@@ -112,7 +112,7 @@ public class WebFormattedTextField extends JFormattedTextField
         return getWebUI ().getLeadingComponent ();
     }
 
-    public void setLeadingComponent ( JComponent leadingComponent )
+    public void setLeadingComponent ( final JComponent leadingComponent )
     {
         getWebUI ().setLeadingComponent ( leadingComponent );
     }
@@ -122,32 +122,32 @@ public class WebFormattedTextField extends JFormattedTextField
         return getWebUI ().getTrailingComponent ();
     }
 
-    public void setTrailingComponent ( JComponent trailingComponent )
+    public void setTrailingComponent ( final JComponent trailingComponent )
     {
         getWebUI ().setTrailingComponent ( trailingComponent );
     }
 
-    public void setMargin ( int top, int left, int bottom, int right )
+    public void setMargin ( final int top, final int left, final int bottom, final int right )
     {
         setMargin ( new Insets ( top, left, bottom, right ) );
     }
 
-    public void setMargin ( int spacing )
+    public void setMargin ( final int spacing )
     {
         setMargin ( spacing, spacing, spacing, spacing );
     }
 
-    public void setFieldMargin ( Insets margin )
+    public void setFieldMargin ( final Insets margin )
     {
         getWebUI ().setFieldMargin ( margin );
     }
 
-    public void setFieldMargin ( int top, int left, int bottom, int right )
+    public void setFieldMargin ( final int top, final int left, final int bottom, final int right )
     {
         setFieldMargin ( new Insets ( top, left, bottom, right ) );
     }
 
-    public void setFieldMargin ( int spacing )
+    public void setFieldMargin ( final int spacing )
     {
         setFieldMargin ( spacing, spacing, spacing, spacing );
     }
@@ -162,7 +162,7 @@ public class WebFormattedTextField extends JFormattedTextField
         return getWebUI ().getRound ();
     }
 
-    public void setRound ( int round )
+    public void setRound ( final int round )
     {
         getWebUI ().setRound ( round );
     }
@@ -172,7 +172,7 @@ public class WebFormattedTextField extends JFormattedTextField
         return getWebUI ().isDrawShade ();
     }
 
-    public void setDrawShade ( boolean drawShade )
+    public void setDrawShade ( final boolean drawShade )
     {
         getWebUI ().setDrawShade ( drawShade );
     }
@@ -182,7 +182,7 @@ public class WebFormattedTextField extends JFormattedTextField
         return getWebUI ().getShadeWidth ();
     }
 
-    public void setShadeWidth ( int shadeWidth )
+    public void setShadeWidth ( final int shadeWidth )
     {
         getWebUI ().setShadeWidth ( shadeWidth );
     }
@@ -192,7 +192,7 @@ public class WebFormattedTextField extends JFormattedTextField
         return getWebUI ().isDrawBackground ();
     }
 
-    public void setDrawBackground ( boolean drawBackground )
+    public void setDrawBackground ( final boolean drawBackground )
     {
         getWebUI ().setDrawBackground ( drawBackground );
     }
@@ -202,7 +202,7 @@ public class WebFormattedTextField extends JFormattedTextField
         return getWebUI ().isWebColored ();
     }
 
-    public void setWebColored ( boolean webColored )
+    public void setWebColored ( final boolean webColored )
     {
         getWebUI ().setWebColored ( webColored );
     }
@@ -212,7 +212,7 @@ public class WebFormattedTextField extends JFormattedTextField
         return getWebUI ().getPainter ();
     }
 
-    public void setPainter ( Painter painter )
+    public void setPainter ( final Painter painter )
     {
         getWebUI ().setPainter ( painter );
     }
@@ -222,7 +222,7 @@ public class WebFormattedTextField extends JFormattedTextField
         return getWebUI ().getInputPrompt ();
     }
 
-    public void setInputPrompt ( String inputPrompt )
+    public void setInputPrompt ( final String inputPrompt )
     {
         getWebUI ().setInputPrompt ( inputPrompt );
     }
@@ -232,7 +232,7 @@ public class WebFormattedTextField extends JFormattedTextField
         return getWebUI ().getInputPromptFont ();
     }
 
-    public void setInputPromptFont ( Font inputPromptFont )
+    public void setInputPromptFont ( final Font inputPromptFont )
     {
         getWebUI ().setInputPromptFont ( inputPromptFont );
     }
@@ -242,7 +242,7 @@ public class WebFormattedTextField extends JFormattedTextField
         return getWebUI ().getInputPromptForeground ();
     }
 
-    public void setInputPromptForeground ( Color inputPromptForeground )
+    public void setInputPromptForeground ( final Color inputPromptForeground )
     {
         getWebUI ().setInputPromptForeground ( inputPromptForeground );
     }
@@ -252,7 +252,7 @@ public class WebFormattedTextField extends JFormattedTextField
         return getWebUI ().getInputPromptPosition ();
     }
 
-    public void setInputPromptPosition ( int inputPromptPosition )
+    public void setInputPromptPosition ( final int inputPromptPosition )
     {
         getWebUI ().setInputPromptPosition ( inputPromptPosition );
     }
@@ -262,7 +262,7 @@ public class WebFormattedTextField extends JFormattedTextField
         return getWebUI ().isHideInputPromptOnFocus ();
     }
 
-    public void setHideInputPromptOnFocus ( boolean hideInputPromptOnFocus )
+    public void setHideInputPromptOnFocus ( final boolean hideInputPromptOnFocus )
     {
         getWebUI ().setHideInputPromptOnFocus ( hideInputPromptOnFocus );
     }
@@ -285,12 +285,12 @@ public class WebFormattedTextField extends JFormattedTextField
         {
             try
             {
-                setUI ( ( WebFormattedTextFieldUI ) ReflectUtils.createInstance ( WebLookAndFeel.formattedTextFieldUI, this ) );
+                setUI ( ( WebFormattedTextFieldUI ) ReflectUtils.createInstance ( WebLookAndFeel.formattedTextFieldUI ) );
             }
             catch ( Throwable e )
             {
                 e.printStackTrace ();
-                setUI ( new WebFormattedTextFieldUI ( this ) );
+                setUI ( new WebFormattedTextFieldUI () );
             }
         }
         else
@@ -308,7 +308,7 @@ public class WebFormattedTextField extends JFormattedTextField
      * {@inheritDoc}
      */
     @Override
-    public void setLanguage ( String key, Object... data )
+    public void setLanguage ( final String key, final Object... data )
     {
         LanguageManager.registerComponent ( this, key, data );
     }
@@ -317,7 +317,7 @@ public class WebFormattedTextField extends JFormattedTextField
      * {@inheritDoc}
      */
     @Override
-    public void updateLanguage ( Object... data )
+    public void updateLanguage ( final Object... data )
     {
         LanguageManager.updateComponent ( this, data );
     }
@@ -326,7 +326,7 @@ public class WebFormattedTextField extends JFormattedTextField
      * {@inheritDoc}
      */
     @Override
-    public void updateLanguage ( String key, Object... data )
+    public void updateLanguage ( final String key, final Object... data )
     {
         LanguageManager.updateComponent ( this, key, data );
     }
@@ -353,7 +353,7 @@ public class WebFormattedTextField extends JFormattedTextField
      * {@inheritDoc}
      */
     @Override
-    public void setLanguageUpdater ( LanguageUpdater updater )
+    public void setLanguageUpdater ( final LanguageUpdater updater )
     {
         LanguageManager.registerLanguageUpdater ( this, updater );
     }
@@ -375,7 +375,7 @@ public class WebFormattedTextField extends JFormattedTextField
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String key )
+    public void registerSettings ( final String key )
     {
         SettingsManager.registerComponent ( this, key );
     }
@@ -384,7 +384,7 @@ public class WebFormattedTextField extends JFormattedTextField
      * {@inheritDoc}
      */
     @Override
-    public <T extends DefaultValue> void registerSettings ( String key, Class<T> defaultValueClass )
+    public <T extends DefaultValue> void registerSettings ( final String key, final Class<T> defaultValueClass )
     {
         SettingsManager.registerComponent ( this, key, defaultValueClass );
     }
@@ -393,7 +393,7 @@ public class WebFormattedTextField extends JFormattedTextField
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String key, Object defaultValue )
+    public void registerSettings ( final String key, final Object defaultValue )
     {
         SettingsManager.registerComponent ( this, key, defaultValue );
     }
@@ -402,7 +402,7 @@ public class WebFormattedTextField extends JFormattedTextField
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String group, String key )
+    public void registerSettings ( final String group, final String key )
     {
         SettingsManager.registerComponent ( this, group, key );
     }
@@ -411,7 +411,7 @@ public class WebFormattedTextField extends JFormattedTextField
      * {@inheritDoc}
      */
     @Override
-    public <T extends DefaultValue> void registerSettings ( String group, String key, Class<T> defaultValueClass )
+    public <T extends DefaultValue> void registerSettings ( final String group, final String key, final Class<T> defaultValueClass )
     {
         SettingsManager.registerComponent ( this, group, key, defaultValueClass );
     }
@@ -420,7 +420,7 @@ public class WebFormattedTextField extends JFormattedTextField
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String group, String key, Object defaultValue )
+    public void registerSettings ( final String group, final String key, final Object defaultValue )
     {
         SettingsManager.registerComponent ( this, group, key, defaultValue );
     }
@@ -429,7 +429,7 @@ public class WebFormattedTextField extends JFormattedTextField
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String key, boolean loadInitialSettings, boolean applySettingsChanges )
+    public void registerSettings ( final String key, final boolean loadInitialSettings, final boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, key, loadInitialSettings, applySettingsChanges );
     }
@@ -438,8 +438,8 @@ public class WebFormattedTextField extends JFormattedTextField
      * {@inheritDoc}
      */
     @Override
-    public <T extends DefaultValue> void registerSettings ( String key, Class<T> defaultValueClass, boolean loadInitialSettings,
-                                                            boolean applySettingsChanges )
+    public <T extends DefaultValue> void registerSettings ( final String key, final Class<T> defaultValueClass,
+                                                            final boolean loadInitialSettings, final boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, key, defaultValueClass, loadInitialSettings, applySettingsChanges );
     }
@@ -448,7 +448,8 @@ public class WebFormattedTextField extends JFormattedTextField
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String key, Object defaultValue, boolean loadInitialSettings, boolean applySettingsChanges )
+    public void registerSettings ( final String key, final Object defaultValue, final boolean loadInitialSettings,
+                                   final boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, key, defaultValue, loadInitialSettings, applySettingsChanges );
     }
@@ -457,8 +458,8 @@ public class WebFormattedTextField extends JFormattedTextField
      * {@inheritDoc}
      */
     @Override
-    public <T extends DefaultValue> void registerSettings ( String group, String key, Class<T> defaultValueClass,
-                                                            boolean loadInitialSettings, boolean applySettingsChanges )
+    public <T extends DefaultValue> void registerSettings ( final String group, final String key, final Class<T> defaultValueClass,
+                                                            final boolean loadInitialSettings, final boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, group, key, defaultValueClass, loadInitialSettings, applySettingsChanges );
     }
@@ -467,8 +468,8 @@ public class WebFormattedTextField extends JFormattedTextField
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String group, String key, Object defaultValue, boolean loadInitialSettings,
-                                   boolean applySettingsChanges )
+    public void registerSettings ( final String group, final String key, final Object defaultValue, final boolean loadInitialSettings,
+                                   final boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, group, key, defaultValue, loadInitialSettings, applySettingsChanges );
     }
@@ -477,7 +478,7 @@ public class WebFormattedTextField extends JFormattedTextField
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( SettingsProcessor settingsProcessor )
+    public void registerSettings ( final SettingsProcessor settingsProcessor )
     {
         SettingsManager.registerComponent ( this, settingsProcessor );
     }
@@ -526,7 +527,7 @@ public class WebFormattedTextField extends JFormattedTextField
      * {@inheritDoc}
      */
     @Override
-    public WebFormattedTextField setPlainFont ( boolean apply )
+    public WebFormattedTextField setPlainFont ( final boolean apply )
     {
         return SwingUtils.setPlainFont ( this, apply );
     }
@@ -553,7 +554,7 @@ public class WebFormattedTextField extends JFormattedTextField
      * {@inheritDoc}
      */
     @Override
-    public WebFormattedTextField setBoldFont ( boolean apply )
+    public WebFormattedTextField setBoldFont ( final boolean apply )
     {
         return SwingUtils.setBoldFont ( this, apply );
     }
@@ -580,7 +581,7 @@ public class WebFormattedTextField extends JFormattedTextField
      * {@inheritDoc}
      */
     @Override
-    public WebFormattedTextField setItalicFont ( boolean apply )
+    public WebFormattedTextField setItalicFont ( final boolean apply )
     {
         return SwingUtils.setItalicFont ( this, apply );
     }
@@ -598,7 +599,7 @@ public class WebFormattedTextField extends JFormattedTextField
      * {@inheritDoc}
      */
     @Override
-    public WebFormattedTextField setFontStyle ( boolean bold, boolean italic )
+    public WebFormattedTextField setFontStyle ( final boolean bold, final boolean italic )
     {
         return SwingUtils.setFontStyle ( this, bold, italic );
     }
@@ -607,7 +608,7 @@ public class WebFormattedTextField extends JFormattedTextField
      * {@inheritDoc}
      */
     @Override
-    public WebFormattedTextField setFontStyle ( int style )
+    public WebFormattedTextField setFontStyle ( final int style )
     {
         return SwingUtils.setFontStyle ( this, style );
     }
@@ -616,7 +617,7 @@ public class WebFormattedTextField extends JFormattedTextField
      * {@inheritDoc}
      */
     @Override
-    public WebFormattedTextField setFontSize ( int fontSize )
+    public WebFormattedTextField setFontSize ( final int fontSize )
     {
         return SwingUtils.setFontSize ( this, fontSize );
     }
@@ -625,7 +626,7 @@ public class WebFormattedTextField extends JFormattedTextField
      * {@inheritDoc}
      */
     @Override
-    public WebFormattedTextField changeFontSize ( int change )
+    public WebFormattedTextField changeFontSize ( final int change )
     {
         return SwingUtils.changeFontSize ( this, change );
     }
@@ -643,7 +644,7 @@ public class WebFormattedTextField extends JFormattedTextField
      * {@inheritDoc}
      */
     @Override
-    public WebFormattedTextField setFontSizeAndStyle ( int fontSize, boolean bold, boolean italic )
+    public WebFormattedTextField setFontSizeAndStyle ( final int fontSize, final boolean bold, final boolean italic )
     {
         return SwingUtils.setFontSizeAndStyle ( this, fontSize, bold, italic );
     }
@@ -652,7 +653,7 @@ public class WebFormattedTextField extends JFormattedTextField
      * {@inheritDoc}
      */
     @Override
-    public WebFormattedTextField setFontSizeAndStyle ( int fontSize, int style )
+    public WebFormattedTextField setFontSizeAndStyle ( final int fontSize, final int style )
     {
         return SwingUtils.setFontSizeAndStyle ( this, fontSize, style );
     }
@@ -661,7 +662,7 @@ public class WebFormattedTextField extends JFormattedTextField
      * {@inheritDoc}
      */
     @Override
-    public WebFormattedTextField setFontName ( String fontName )
+    public WebFormattedTextField setFontName ( final String fontName )
     {
         return SwingUtils.setFontName ( this, fontName );
     }
@@ -692,7 +693,7 @@ public class WebFormattedTextField extends JFormattedTextField
      * {@inheritDoc}
      */
     @Override
-    public WebFormattedTextField setPreferredWidth ( int preferredWidth )
+    public WebFormattedTextField setPreferredWidth ( final int preferredWidth )
     {
         return SizeUtils.setPreferredWidth ( this, preferredWidth );
     }
@@ -710,7 +711,7 @@ public class WebFormattedTextField extends JFormattedTextField
      * {@inheritDoc}
      */
     @Override
-    public WebFormattedTextField setPreferredHeight ( int preferredHeight )
+    public WebFormattedTextField setPreferredHeight ( final int preferredHeight )
     {
         return SizeUtils.setPreferredHeight ( this, preferredHeight );
     }
@@ -728,7 +729,7 @@ public class WebFormattedTextField extends JFormattedTextField
      * {@inheritDoc}
      */
     @Override
-    public WebFormattedTextField setMinimumWidth ( int minimumWidth )
+    public WebFormattedTextField setMinimumWidth ( final int minimumWidth )
     {
         return SizeUtils.setMinimumWidth ( this, minimumWidth );
     }
@@ -746,7 +747,7 @@ public class WebFormattedTextField extends JFormattedTextField
      * {@inheritDoc}
      */
     @Override
-    public WebFormattedTextField setMinimumHeight ( int minimumHeight )
+    public WebFormattedTextField setMinimumHeight ( final int minimumHeight )
     {
         return SizeUtils.setMinimumHeight ( this, minimumHeight );
     }

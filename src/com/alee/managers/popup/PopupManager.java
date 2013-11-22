@@ -45,12 +45,12 @@ public final class PopupManager
     /**
      * Shade layers cache.
      */
-    private static Map<JRootPane, ShadeLayer> shadeLayers = new HashMap<JRootPane, ShadeLayer> ();
+    private static final Map<JRootPane, ShadeLayer> shadeLayers = new HashMap<JRootPane, ShadeLayer> ();
 
     /**
      * Popup layers cache.
      */
-    private static Map<JRootPane, PopupLayer> popupLayers = new HashMap<JRootPane, PopupLayer> ();
+    private static final Map<JRootPane, PopupLayer> popupLayers = new HashMap<JRootPane, PopupLayer> ();
 
     /**
      * Default style used for popups.
@@ -60,18 +60,18 @@ public final class PopupManager
     /**
      * Style painters cache.
      */
-    private static Map<PopupStyle, Painter> stylePainters = new HashMap<PopupStyle, Painter> ();
+    private static final Map<PopupStyle, Painter> stylePainters = new HashMap<PopupStyle, Painter> ();
 
     /**
      * Hides all visible popups on all cached popup layers.
      */
     public static void hideAllPopups ()
     {
-        for ( ShadeLayer layer : shadeLayers.values () )
+        for ( final ShadeLayer layer : shadeLayers.values () )
         {
             layer.hideAllPopups ();
         }
-        for ( PopupLayer layer : popupLayers.values () )
+        for ( final PopupLayer layer : popupLayers.values () )
         {
             layer.hideAllPopups ();
         }
@@ -172,7 +172,7 @@ public final class PopupManager
      */
     public static void showPopup ( final Component component, final WebPopup popup, final boolean transferFocus )
     {
-        JRootPane rootPane = SwingUtils.getRootPane ( component );
+        final JRootPane rootPane = SwingUtils.getRootPane ( component );
         if ( rootPane != null )
         {
             showPopup ( rootPane, popup, transferFocus );
@@ -247,7 +247,7 @@ public final class PopupManager
      */
     public static void showModalPopup ( final Component component, final WebPopup popup, final boolean hfill, final boolean vfill )
     {
-        JRootPane rootPane = SwingUtils.getRootPane ( component );
+        final JRootPane rootPane = SwingUtils.getRootPane ( component );
         if ( rootPane != null )
         {
             showModalPopup ( rootPane, popup, hfill, vfill );
@@ -311,24 +311,28 @@ public final class PopupManager
      */
     private static void installPopupLayer ( final PopupLayer popupLayer, final JRootPane rootPane, final JLayeredPane layeredPane )
     {
+        popupLayer.setBounds ( 0, 0, layeredPane.getWidth (), layeredPane.getHeight () );
+        popupLayer.setVisible ( true );
         layeredPane.add ( popupLayer, JLayeredPane.PALETTE_LAYER );
+        layeredPane.revalidate ();
+
         layeredPane.addComponentListener ( new ComponentAdapter ()
         {
             @Override
-            public void componentResized ( ComponentEvent e )
+            public void componentResized ( final ComponentEvent e )
             {
                 popupLayer.setBounds ( 0, 0, layeredPane.getWidth (), layeredPane.getHeight () );
                 popupLayer.revalidate ();
             }
         } );
 
-        Window window = SwingUtils.getWindowAncestor ( rootPane );
+        final Window window = SwingUtils.getWindowAncestor ( rootPane );
         if ( window != null )
         {
             window.addWindowStateListener ( new WindowStateListener ()
             {
                 @Override
-                public void windowStateChanged ( WindowEvent e )
+                public void windowStateChanged ( final WindowEvent e )
                 {
                     popupLayer.setBounds ( 0, 0, layeredPane.getWidth (), layeredPane.getHeight () );
                     popupLayer.revalidate ();

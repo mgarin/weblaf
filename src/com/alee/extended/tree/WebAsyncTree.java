@@ -80,6 +80,11 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
     protected Filter<E> filter;
 
     /**
+     * Data updater for this asynchronous tree.
+     */
+    protected AsyncTreeDataUpdater<E> dataUpdater;
+
+    /**
      * Special cell editor listener.
      * It updates filtering and sorting after editing has finished.
      */
@@ -183,6 +188,26 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
         {
             setModel ( new AsyncTreeModel<E> ( this, dataProvider ) );
         }
+    }
+
+    /**
+     * Returns data updater for this asynchronous tree.
+     *
+     * @return data updater
+     */
+    public AsyncTreeDataUpdater<E> getDataUpdater ()
+    {
+        return dataUpdater;
+    }
+
+    /**
+     * Changes data updater for this asynchronous tree.
+     *
+     * @param dataUpdater new data updater
+     */
+    public void setDataUpdater ( final AsyncTreeDataUpdater<E> dataUpdater )
+    {
+        this.dataUpdater = dataUpdater;
     }
 
     /**
@@ -328,8 +353,29 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
                 @Override
                 public void editingStopped ( final ChangeEvent e )
                 {
+                    // Updating tree sorting and filtering for parent of the edited node
                     final E node = ( E ) cellEditor.getCellEditorValue ();
                     updateSortingAndFiltering ( ( E ) node.getParent () );
+
+                    // Performing data update in a proper separate thread as it might take some time
+                    if ( dataUpdater != null )
+                    {
+                        AsyncTreeQueue.execute ( WebAsyncTree.this, new Runnable ()
+                        {
+                            @Override
+                            public void run ()
+                            {
+                                dataUpdater.nodeRenamed ( node, new Runnable ()
+                                {
+                                    @Override
+                                    public void run ()
+                                    {
+                                        // todo
+                                    }
+                                } );
+                            }
+                        } );
+                    }
                 }
             };
             cellEditor.addCellEditorListener ( cellEditorAdapter );
@@ -359,6 +405,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
 
     /**
      * Sets maximum threads amount for this asynchronous tree.
+     * Separate threads are used for childs loading, data updates and other actions which should be performed asynchronously.
      *
      * @param amount new maximum threads amount
      */
@@ -370,6 +417,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
     /**
      * Sets child nodes for the specified node.
      * This method might be used to manually change tree node childs without causing any structure corruptions.
+     * It will also cause node to change its state to loaded and it will not retrieve childs from data provider unless reload is called.
      *
      * @param parent   node to process
      * @param children new node children
@@ -382,6 +430,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
     /**
      * Adds child nodes for the specified node.
      * This method might be used to manually change tree node childs without causing any structure corruptions.
+     * Be aware that added nodes will not be displayed if parent node is not yet loaded, this is a strict restriction for async tree.
      *
      * @param parent   node to process
      * @param children new node children
@@ -389,6 +438,34 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
     public void addChildNodes ( final E parent, final List<E> children )
     {
         getAsyncModel ().addChildNodes ( parent, children );
+    }
+
+    /**
+     * Inserts a list of child nodes into parent node.
+     * This method might be used to manually change tree node childs without causing any structure corruptions.
+     * Be aware that added nodes will not be displayed if parent node is not yet loaded, this is a strict restriction for async tree.
+     *
+     * @param children list of new child nodes
+     * @param parent   parent node
+     * @param index    insert index
+     */
+    public void insertChildNodes ( final List<E> children, final E parent, final int index )
+    {
+        getAsyncModel ().insertNodesInto ( children, parent, index );
+    }
+
+    /**
+     * Inserts an array of child nodes into parent node.
+     * This method might be used to manually change tree node childs without causing any structure corruptions.
+     * Be aware that added nodes will not be displayed if parent node is not yet loaded, this is a strict restriction for async tree.
+     *
+     * @param children array of new child nodes
+     * @param parent   parent node
+     * @param index    insert index
+     */
+    public void insertChildNodes ( final E[] children, final E parent, final int index )
+    {
+        getAsyncModel ().insertNodesInto ( children, parent, index );
     }
 
     /**
@@ -416,10 +493,18 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
      */
     public void removeNodes ( final List<E> nodes )
     {
-        for ( final E node : nodes )
-        {
-            removeNode ( node );
-        }
+        getAsyncModel ().removeNodesFromParent ( nodes );
+    }
+
+    /**
+     * Removes nodes from tree structure.
+     * This method will have effect only if nodes exist.
+     *
+     * @param nodes array of nodes to remove
+     */
+    public void removeNodes ( final E[] nodes )
+    {
+        getAsyncModel ().removeNodesFromParent ( nodes );
     }
 
     /**
@@ -659,7 +744,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
     {
         synchronized ( listenersLock )
         {
-            asyncTreeListeners.add ( listener );
+            asyncTreeListeners.remove ( listener );
         }
     }
 
@@ -756,7 +841,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
 
     /**
      * Expands all visible tree rows in a single call.
-     * <p>
+     * <p/>
      * This method provides similar functionality to WebTree expandAll method and will actually expand all tree elements - even those which
      * are not yet loaded from data provider. Make sure you know what you are doing before calling this method.
      */

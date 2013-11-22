@@ -108,7 +108,7 @@ public class SourceViewer extends WebPanel
     private WebToggleButton showWhitespaces;
     private WebToggleButton showEol;
 
-    public SourceViewer ( JarStructure jarStructure )
+    public SourceViewer ( final JarStructure jarStructure )
     {
         super ();
 
@@ -134,7 +134,7 @@ public class SourceViewer extends WebPanel
         viewChangeListener = new ChangeListener ()
         {
             @Override
-            public void stateChanged ( ChangeEvent e )
+            public void stateChanged ( final ChangeEvent e )
             {
                 updateClassPath ( viewTabbedPane.getSelectedEntry (), false );
             }
@@ -143,13 +143,13 @@ public class SourceViewer extends WebPanel
         viewTabbedPane.addViewListener ( new ViewListener ()
         {
             @Override
-            public void viewOpened ( JarEntry entry )
+            public void viewOpened ( final JarEntry entry )
             {
                 //
             }
 
             @Override
-            public void viewClosed ( JarEntry entry )
+            public void viewClosed ( final JarEntry entry )
             {
                 synchronized ( activeEditorsLock )
                 {
@@ -168,7 +168,7 @@ public class SourceViewer extends WebPanel
         HotkeyManager.registerHotkey ( viewTabbedPane, Hotkey.ALT_LEFT, new HotkeyRunnable ()
         {
             @Override
-            public void run ( KeyEvent e )
+            public void run ( final KeyEvent e )
             {
                 final int tabCount = viewTabbedPane.getTabCount ();
                 if ( tabCount > 0 )
@@ -181,7 +181,7 @@ public class SourceViewer extends WebPanel
         HotkeyManager.registerHotkey ( viewTabbedPane, Hotkey.ALT_RIGHT, new HotkeyRunnable ()
         {
             @Override
-            public void run ( KeyEvent e )
+            public void run ( final KeyEvent e )
             {
                 final int tabCount = viewTabbedPane.getTabCount ();
                 if ( tabCount > 0 )
@@ -198,14 +198,14 @@ public class SourceViewer extends WebPanel
 
     private WebButton createClassSearch ()
     {
-        WebButton classSearch = new WebButton ( classSearchIcon );
+        final WebButton classSearch = new WebButton ( classSearchIcon );
         classSearch.setDrawFocus ( false );
         classSearch.setRolloverDecoratedOnly ( true );
         classSearch.addHotkey ( Hotkey.CTRL_N );
         classSearch.addActionListener ( new ActionListener ()
         {
             @Override
-            public void actionPerformed ( ActionEvent e )
+            public void actionPerformed ( final ActionEvent e )
             {
                 showClassSearchPopup ();
             }
@@ -218,7 +218,7 @@ public class SourceViewer extends WebPanel
         HotkeyManager.registerHotkey ( classSearchField, Hotkey.ESCAPE, new HotkeyRunnable ()
         {
             @Override
-            public void run ( KeyEvent e )
+            public void run ( final KeyEvent e )
             {
                 hideClassSearchPopup ();
             }
@@ -254,10 +254,11 @@ public class SourceViewer extends WebPanel
         classSearchHintsList.setCellRenderer ( new WebListCellRenderer ()
         {
             @Override
-            public Component getListCellRendererComponent ( JList list, Object value, int index, boolean isSelected, boolean cellHasFocus )
+            public Component getListCellRendererComponent ( final JList list, final Object value, final int index, final boolean isSelected,
+                                                            final boolean cellHasFocus )
             {
-                JarEntry entry = ( JarEntry ) value;
-                WebListElement renderer =
+                final JarEntry entry = ( JarEntry ) value;
+                final WebListElement renderer =
                         ( WebListElement ) super.getListCellRendererComponent ( list, value, index, isSelected, cellHasFocus );
                 renderer.setIcon ( entry.getIcon () );
                 renderer.setText ( entry.getName () );
@@ -267,7 +268,7 @@ public class SourceViewer extends WebPanel
         classSearchHintsList.addMouseListener ( new MouseAdapter ()
         {
             @Override
-            public void mousePressed ( MouseEvent e )
+            public void mousePressed ( final MouseEvent e )
             {
                 if ( SwingUtils.isLeftMouseButton ( e ) )
                 {
@@ -279,7 +280,7 @@ public class SourceViewer extends WebPanel
         HotkeyManager.registerHotkey ( classSearchField, Hotkey.HOME, new HotkeyRunnable ()
         {
             @Override
-            public void run ( KeyEvent e )
+            public void run ( final KeyEvent e )
             {
                 if ( classSearchHintsList.getModelSize () > 0 )
                 {
@@ -290,11 +291,11 @@ public class SourceViewer extends WebPanel
         HotkeyManager.registerHotkey ( classSearchField, Hotkey.UP, new HotkeyRunnable ()
         {
             @Override
-            public void run ( KeyEvent e )
+            public void run ( final KeyEvent e )
             {
                 if ( classSearchHintsList.getModelSize () > 0 )
                 {
-                    int index = classSearchHintsList.getSelectedIndex ();
+                    final int index = classSearchHintsList.getSelectedIndex ();
                     if ( index > 0 )
                     {
                         classSearchHintsList.setSelectedIndex ( index - 1 );
@@ -309,11 +310,11 @@ public class SourceViewer extends WebPanel
         HotkeyManager.registerHotkey ( classSearchField, Hotkey.DOWN, new HotkeyRunnable ()
         {
             @Override
-            public void run ( KeyEvent e )
+            public void run ( final KeyEvent e )
             {
                 if ( classSearchHintsList.getModelSize () > 0 )
                 {
-                    int index = classSearchHintsList.getSelectedIndex ();
+                    final int index = classSearchHintsList.getSelectedIndex ();
                     if ( index < classSearchHintsList.getModelSize () - 1 )
                     {
                         classSearchHintsList.setSelectedIndex ( index + 1 );
@@ -328,7 +329,7 @@ public class SourceViewer extends WebPanel
         HotkeyManager.registerHotkey ( classSearchField, Hotkey.END, new HotkeyRunnable ()
         {
             @Override
-            public void run ( KeyEvent e )
+            public void run ( final KeyEvent e )
             {
                 if ( classSearchHintsList.getModelSize () > 0 )
                 {
@@ -339,13 +340,13 @@ public class SourceViewer extends WebPanel
         HotkeyManager.registerHotkey ( classSearchField, Hotkey.ENTER, new HotkeyRunnable ()
         {
             @Override
-            public void run ( KeyEvent e )
+            public void run ( final KeyEvent e )
             {
                 openSelectedHint ();
             }
         } );
 
-        WebScrollPane foundClassesScroll = new WebScrollPane ( classSearchHintsList );
+        final WebScrollPane foundClassesScroll = new WebScrollPane ( classSearchHintsList );
         foundClassesScroll.setShadeWidth ( 0 );
         foundClassesScroll.setRound ( 0 );
         classSearchHintsPopup.add ( foundClassesScroll );
@@ -353,13 +354,13 @@ public class SourceViewer extends WebPanel
         classSearchPopup.addComponentListener ( new ComponentAdapter ()
         {
             @Override
-            public void componentMoved ( ComponentEvent e )
+            public void componentMoved ( final ComponentEvent e )
             {
                 updateHintsLocation ();
             }
 
             @Override
-            public void componentResized ( ComponentEvent e )
+            public void componentResized ( final ComponentEvent e )
             {
                 updateHintsLocation ();
             }
@@ -394,14 +395,14 @@ public class SourceViewer extends WebPanel
         classSearchField.addCaretListener ( new CaretListener ()
         {
             @Override
-            public void caretUpdate ( CaretEvent e )
+            public void caretUpdate ( final CaretEvent e )
             {
                 if ( classSearchHintsDelay == null )
                 {
                     classSearchHintsDelay = new WebTimer ( 500, new ActionListener ()
                     {
                         @Override
-                        public void actionPerformed ( ActionEvent e )
+                        public void actionPerformed ( final ActionEvent e )
                         {
                             updateHints ();
                         }
@@ -435,7 +436,7 @@ public class SourceViewer extends WebPanel
 
     private void updateHints ()
     {
-        String text = classSearchField.getText ().trim ();
+        final String text = classSearchField.getText ().trim ();
 
         // Ignore empty text
         if ( text.trim ().length () == 0 )
@@ -448,17 +449,17 @@ public class SourceViewer extends WebPanel
         if ( !CompareUtils.equals ( lastSearchedText, text ) )
         {
             // Saving old selection
-            Object oldSelection = classSearchHintsList.getSelectedValue ();
+            final Object oldSelection = classSearchHintsList.getSelectedValue ();
 
             // Clearing list
-            DefaultListModel model = ( DefaultListModel ) classSearchHintsList.getModel ();
+            final DefaultListModel model = ( DefaultListModel ) classSearchHintsList.getModel ();
             model.clear ();
 
             // Look for classes
-            List<JarEntry> found = jarStructure.findSimilarEntries ( text, new Filter<JarEntry> ()
+            final List<JarEntry> found = jarStructure.findSimilarEntries ( text, new Filter<JarEntry> ()
             {
                 @Override
-                public boolean accept ( JarEntry object )
+                public boolean accept ( final JarEntry object )
                 {
                     return object.getType ().equals ( JarEntryType.javaEntry );
                 }
@@ -468,7 +469,7 @@ public class SourceViewer extends WebPanel
                 classSearchField.setForeground ( Color.BLACK );
 
                 // Filling list with results
-                for ( JarEntry entry : found )
+                for ( final JarEntry entry : found )
                 {
                     model.addElement ( entry );
                 }
@@ -477,7 +478,7 @@ public class SourceViewer extends WebPanel
                 classSearchHintsList.setVisibleRowCount ( Math.min ( model.size (), 10 ) );
 
                 // Restoring selection if possible
-                int index = oldSelection != null ? model.indexOf ( oldSelection ) : 0;
+                final int index = oldSelection != null ? model.indexOf ( oldSelection ) : 0;
                 classSearchHintsList.setSelectedIndex ( index != -1 ? index : 0 );
 
                 // Packing popup
@@ -506,7 +507,7 @@ public class SourceViewer extends WebPanel
 
     private void updateHintsLocation ()
     {
-        Point p = classSearchField.getLocationOnScreen ();
+        final Point p = classSearchField.getLocationOnScreen ();
         classSearchHintsPopup.setLocation ( p.x, p.y + classSearchField.getHeight () + 2 );
     }
 
@@ -522,8 +523,8 @@ public class SourceViewer extends WebPanel
     {
         if ( !classSearchPopup.isShowing () )
         {
-            Dimension size = getSize ();
-            Dimension ps = classSearchPopup.getPreferredSize ();
+            final Dimension size = getSize ();
+            final Dimension ps = classSearchPopup.getPreferredSize ();
             classSearchPopup.showPopup ( this, size.width / 2 - ps.width / 2, size.height / 3 - ps.height / 2, ps.width, ps.height );
             classSearchField.selectAll ();
         }
@@ -539,13 +540,13 @@ public class SourceViewer extends WebPanel
 
     private WebButton createSettings ()
     {
-        WebButton settings = new WebButton ( new ImageIcon ( SourceViewer.class.getResource ( "icons/settings.png" ) ) );
+        final WebButton settings = new WebButton ( new ImageIcon ( SourceViewer.class.getResource ( "icons/settings.png" ) ) );
         settings.setDrawFocus ( false );
         settings.setRolloverDecoratedOnly ( true );
 
-        WebButtonPopup wbp = new WebButtonPopup ( settings, PopupWay.downLeft );
+        final WebButtonPopup wbp = new WebButtonPopup ( settings, PopupWay.downLeft );
 
-        WebPanel popupContent = new WebPanel ( new VerticalFlowLayout ( 5, 5 ) );
+        final WebPanel popupContent = new WebPanel ( new VerticalFlowLayout ( 5, 5 ) );
         popupContent.setMargin ( 5 );
         popupContent.setOpaque ( false );
         wbp.setContent ( popupContent );
@@ -555,10 +556,11 @@ public class SourceViewer extends WebPanel
         theme.setRenderer ( new WebComboBoxCellRenderer ( theme )
         {
             @Override
-            public Component getListCellRendererComponent ( JList list, Object value, int index, boolean isSelected, boolean cellHasFocus )
+            public Component getListCellRendererComponent ( final JList list, final Object value, final int index, final boolean isSelected,
+                                                            final boolean cellHasFocus )
             {
-                EditorTheme editorTheme = ( EditorTheme ) value;
-                WebComboBoxElement renderer =
+                final EditorTheme editorTheme = ( EditorTheme ) value;
+                final WebComboBoxElement renderer =
                         ( WebComboBoxElement ) super.getListCellRendererComponent ( list, value, index, isSelected, cellHasFocus );
                 renderer.setIcon ( editorTheme.getIcon () );
                 renderer.setText ( editorTheme.getName () );
@@ -568,12 +570,12 @@ public class SourceViewer extends WebPanel
         theme.addActionListener ( new ActionListener ()
         {
             @Override
-            public void actionPerformed ( ActionEvent e )
+            public void actionPerformed ( final ActionEvent e )
             {
                 synchronized ( activeEditorsLock )
                 {
                     final String themeName = theme.getSelectedItem ().toString ().toLowerCase ();
-                    for ( Map.Entry<JarEntry, RSyntaxTextArea> entry : activeEditors.entrySet () )
+                    for ( final Map.Entry<JarEntry, RSyntaxTextArea> entry : activeEditors.entrySet () )
                     {
                         loadTheme ( themeName, entry.getValue () );
                     }
@@ -587,11 +589,11 @@ public class SourceViewer extends WebPanel
         allowCodeFolding.addItemListener ( new ItemListener ()
         {
             @Override
-            public void itemStateChanged ( ItemEvent e )
+            public void itemStateChanged ( final ItemEvent e )
             {
                 synchronized ( activeEditorsLock )
                 {
-                    for ( Map.Entry<JarEntry, RSyntaxTextArea> entry : activeEditors.entrySet () )
+                    for ( final Map.Entry<JarEntry, RSyntaxTextArea> entry : activeEditors.entrySet () )
                     {
                         entry.getValue ().setCodeFoldingEnabled ( allowCodeFolding.isSelected () );
                     }
@@ -603,7 +605,7 @@ public class SourceViewer extends WebPanel
         allowCodeFoldingLabel.addMouseListener ( new MouseAdapter ()
         {
             @Override
-            public void mousePressed ( MouseEvent e )
+            public void mousePressed ( final MouseEvent e )
             {
                 if ( SwingUtils.isLeftMouseButton ( e ) )
                 {
@@ -619,11 +621,11 @@ public class SourceViewer extends WebPanel
         paintTabLines.addItemListener ( new ItemListener ()
         {
             @Override
-            public void itemStateChanged ( ItemEvent e )
+            public void itemStateChanged ( final ItemEvent e )
             {
                 synchronized ( activeEditorsLock )
                 {
-                    for ( Map.Entry<JarEntry, RSyntaxTextArea> entry : activeEditors.entrySet () )
+                    for ( final Map.Entry<JarEntry, RSyntaxTextArea> entry : activeEditors.entrySet () )
                     {
                         entry.getValue ().setPaintTabLines ( paintTabLines.isSelected () );
                     }
@@ -635,7 +637,7 @@ public class SourceViewer extends WebPanel
         paintTabLinesLabel.addMouseListener ( new MouseAdapter ()
         {
             @Override
-            public void mousePressed ( MouseEvent e )
+            public void mousePressed ( final MouseEvent e )
             {
                 if ( SwingUtils.isLeftMouseButton ( e ) )
                 {
@@ -651,11 +653,11 @@ public class SourceViewer extends WebPanel
         showWhitespaces.addItemListener ( new ItemListener ()
         {
             @Override
-            public void itemStateChanged ( ItemEvent e )
+            public void itemStateChanged ( final ItemEvent e )
             {
                 synchronized ( activeEditorsLock )
                 {
-                    for ( Map.Entry<JarEntry, RSyntaxTextArea> entry : activeEditors.entrySet () )
+                    for ( final Map.Entry<JarEntry, RSyntaxTextArea> entry : activeEditors.entrySet () )
                     {
                         entry.getValue ().setWhitespaceVisible ( showWhitespaces.isSelected () );
                     }
@@ -667,7 +669,7 @@ public class SourceViewer extends WebPanel
         showWhitespacesLabel.addMouseListener ( new MouseAdapter ()
         {
             @Override
-            public void mousePressed ( MouseEvent e )
+            public void mousePressed ( final MouseEvent e )
             {
                 if ( SwingUtils.isLeftMouseButton ( e ) )
                 {
@@ -683,11 +685,11 @@ public class SourceViewer extends WebPanel
         showEol.addItemListener ( new ItemListener ()
         {
             @Override
-            public void itemStateChanged ( ItemEvent e )
+            public void itemStateChanged ( final ItemEvent e )
             {
                 synchronized ( activeEditorsLock )
                 {
-                    for ( Map.Entry<JarEntry, RSyntaxTextArea> entry : activeEditors.entrySet () )
+                    for ( final Map.Entry<JarEntry, RSyntaxTextArea> entry : activeEditors.entrySet () )
                     {
                         entry.getValue ().setEOLMarkersVisible ( showEol.isSelected () );
                     }
@@ -699,7 +701,7 @@ public class SourceViewer extends WebPanel
         showEolLabel.addMouseListener ( new MouseAdapter ()
         {
             @Override
-            public void mousePressed ( MouseEvent e )
+            public void mousePressed ( final MouseEvent e )
             {
                 if ( SwingUtils.isLeftMouseButton ( e ) )
                 {
@@ -713,7 +715,7 @@ public class SourceViewer extends WebPanel
         return settings;
     }
 
-    private ImageIcon loadEditorIcon ( String name )
+    private ImageIcon loadEditorIcon ( final String name )
     {
         return new ImageIcon ( SourceViewer.class.getResource ( "icons/editor/" + name + ".png" ) );
     }
@@ -723,12 +725,12 @@ public class SourceViewer extends WebPanel
         return jarStructure;
     }
 
-    public void updateClassPath ( Class classType )
+    public void updateClassPath ( final Class classType )
     {
         updateClassPath ( jarStructure.getClassEntry ( classType ), true );
     }
 
-    public void updateClassPath ( final JarEntry lastEntry, boolean openInEditor )
+    public void updateClassPath ( final JarEntry lastEntry, final boolean openInEditor )
     {
         classPath.removeAll ();
 
@@ -740,19 +742,19 @@ public class SourceViewer extends WebPanel
         rootElement.addActionListener ( new ActionListener ()
         {
             @Override
-            public void actionPerformed ( ActionEvent e )
+            public void actionPerformed ( final ActionEvent e )
             {
                 final WebPopupMenu rootMenu = new WebPopupMenu ();
 
-                WebMenuItem showInFS = new WebMenuItem ( "Show in folder", browseIcon );
+                final WebMenuItem showInFS = new WebMenuItem ( "Show in folder", browseIcon );
                 showInFS.addActionListener ( new ActionListener ()
                 {
                     @Override
-                    public void actionPerformed ( ActionEvent e )
+                    public void actionPerformed ( final ActionEvent e )
                     {
                         try
                         {
-                            File jarFile = new File ( jarStructure.getJarLocation () );
+                            final File jarFile = new File ( jarStructure.getJarLocation () );
                             Desktop.getDesktop ().browse ( jarFile.getParentFile ().toURI () );
                         }
                         catch ( Throwable ex )
@@ -763,11 +765,11 @@ public class SourceViewer extends WebPanel
                 } );
                 rootMenu.add ( showInFS );
 
-                List<JarEntry> entries = jarStructure.getChildEntries ( root );
+                final List<JarEntry> entries = jarStructure.getChildEntries ( root );
                 if ( entries.size () > 0 )
                 {
                     rootMenu.addSeparator ();
-                    for ( JarEntry entry : entries )
+                    for ( final JarEntry entry : entries )
                     {
                         rootMenu.add ( createEntryMenuItem ( entry ) );
                     }
@@ -781,7 +783,7 @@ public class SourceViewer extends WebPanel
         if ( lastEntry != null )
         {
             // All other elements
-            List<JarEntry> path = lastEntry.getPath ();
+            final List<JarEntry> path = lastEntry.getPath ();
             for ( final JarEntry entry : path )
             {
                 if ( entry.getType ().equals ( JarEntryType.packageEntry ) )
@@ -792,13 +794,13 @@ public class SourceViewer extends WebPanel
                     element.addActionListener ( new ActionListener ()
                     {
                         @Override
-                        public void actionPerformed ( ActionEvent e )
+                        public void actionPerformed ( final ActionEvent e )
                         {
-                            List<JarEntry> entries = jarStructure.getChildEntries ( entry );
+                            final List<JarEntry> entries = jarStructure.getChildEntries ( entry );
                             if ( entries.size () > 0 )
                             {
                                 final WebPopupMenu packageMenu = new WebPopupMenu ();
-                                for ( JarEntry menuEntry : entries )
+                                for ( final JarEntry menuEntry : entries )
                                 {
                                     packageMenu.add ( createEntryMenuItem ( menuEntry ) );
                                 }
@@ -810,7 +812,7 @@ public class SourceViewer extends WebPanel
                 }
                 else
                 {
-                    WebBreadcrumbLabel element = new WebBreadcrumbLabel ();
+                    final WebBreadcrumbLabel element = new WebBreadcrumbLabel ();
                     element.setIcon ( entry.getIcon () );
                     element.setText ( entry.getName () );
                     classPath.add ( element );
@@ -845,7 +847,7 @@ public class SourceViewer extends WebPanel
         }
     }
 
-    public void viewEntry ( JarEntry entry )
+    public void viewEntry ( final JarEntry entry )
     {
         if ( viewTabbedPane.isOpenedEntry ( entry ) )
         {
@@ -858,27 +860,27 @@ public class SourceViewer extends WebPanel
         viewTabbedPane.transferFocus ();
     }
 
-    public void closeEntryView ( JarEntry entry )
+    public void closeEntryView ( final JarEntry entry )
     {
         viewTabbedPane.closeEntry ( entry );
     }
 
-    private Component createEntryViewer ( JarEntry entry )
+    private Component createEntryViewer ( final JarEntry entry )
     {
         if ( entry.getType ().equals ( JarEntryType.classEntry ) || entry.getType ().equals ( JarEntryType.javaEntry ) ||
                 entry.getType ().equals ( JarEntryType.fileEntry ) )
         {
-            String ext = FileUtils.getFileExtPart ( entry.getName (), false ).toLowerCase ();
+            final String ext = FileUtils.getFileExtPart ( entry.getName (), false ).toLowerCase ();
             if ( GlobalConstants.IMAGE_FORMATS.contains ( ext ) )
             {
                 // todo A better image viewer (actually a new component - WebImageViewer)
 
                 // Image file viewer
-                WebImage image = new WebImage ();
+                final WebImage image = new WebImage ();
                 image.setIcon ( ImageUtils.loadImage ( getEntryInputStream ( entry ) ) );
 
                 // Image scroll
-                WebScrollPane imageScroll = new WebScrollPane ( image, false );
+                final WebScrollPane imageScroll = new WebScrollPane ( image, false );
                 imageScroll.setVerticalScrollBarPolicy ( WebScrollPane.VERTICAL_SCROLLBAR_ALWAYS );
                 imageScroll.setHorizontalScrollBarPolicy ( WebScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS );
                 return imageScroll;
@@ -951,7 +953,7 @@ public class SourceViewer extends WebPanel
                 }
 
                 // Special code viewer scroll pane
-                RTextScrollPane sourceScroll = new RTextScrollPane ( source );
+                final RTextScrollPane sourceScroll = new RTextScrollPane ( source );
                 sourceScroll.setVerticalScrollBarPolicy ( WebScrollPane.VERTICAL_SCROLLBAR_ALWAYS );
                 ( ( WebScrollPaneUI ) sourceScroll.getUI () ).setDrawBorder ( false );
 
@@ -966,11 +968,11 @@ public class SourceViewer extends WebPanel
 
     private static final Map<String, Theme> themesCache = new HashMap<String, Theme> ();
 
-    private void loadTheme ( String themeName, RSyntaxTextArea source )
+    private void loadTheme ( final String themeName, final RSyntaxTextArea source )
     {
         if ( themesCache.containsKey ( themeName ) )
         {
-            Theme theme = themesCache.get ( themeName );
+            final Theme theme = themesCache.get ( themeName );
             if ( theme != null )
             {
                 theme.apply ( source );
@@ -980,7 +982,7 @@ public class SourceViewer extends WebPanel
         {
             try
             {
-                Theme theme = Theme.load ( SourceViewer.class.getResourceAsStream ( "themes/" + themeName + ".xml" ) );
+                final Theme theme = Theme.load ( SourceViewer.class.getResourceAsStream ( "themes/" + themeName + ".xml" ) );
                 theme.apply ( source );
                 themesCache.put ( themeName, theme );
             }
@@ -995,14 +997,14 @@ public class SourceViewer extends WebPanel
     private static final String commentStart = "/*";
     private static final String commentEnd = "*/\n\n";
 
-    private String loadSource ( JarEntry lastEntry )
+    private String loadSource ( final JarEntry lastEntry )
     {
         String source = loadString ( lastEntry );
 
         // Removing space-eating license notice
         if ( source.startsWith ( commentStart ) )
         {
-            int index = source.indexOf ( commentEnd );
+            final int index = source.indexOf ( commentEnd );
             if ( index != -1 )
             {
                 source = source.substring ( index + commentEnd.length () );
@@ -1012,12 +1014,12 @@ public class SourceViewer extends WebPanel
         return source;
     }
 
-    private String loadString ( JarEntry lastEntry )
+    private String loadString ( final JarEntry lastEntry )
     {
         return FileUtils.readToString ( getEntryInputStream ( lastEntry ) );
     }
 
-    private InputStream getEntryInputStream ( JarEntry entry )
+    private InputStream getEntryInputStream ( final JarEntry entry )
     {
         try
         {
@@ -1032,11 +1034,11 @@ public class SourceViewer extends WebPanel
 
     private WebMenuItem createEntryMenuItem ( final JarEntry entry )
     {
-        WebMenuItem entryItem = new WebMenuItem ( entry.getName (), entry.getIcon () );
+        final WebMenuItem entryItem = new WebMenuItem ( entry.getName (), entry.getIcon () );
         entryItem.addActionListener ( new ActionListener ()
         {
             @Override
-            public void actionPerformed ( ActionEvent e )
+            public void actionPerformed ( final ActionEvent e )
             {
                 updateClassPath ( entry, true );
             }
@@ -1044,12 +1046,12 @@ public class SourceViewer extends WebPanel
         return entryItem;
     }
 
-    public void addViewListener ( ViewListener listener )
+    public void addViewListener ( final ViewListener listener )
     {
         this.viewTabbedPane.addViewListener ( listener );
     }
 
-    public void removeViewListener ( ViewListener listener )
+    public void removeViewListener ( final ViewListener listener )
     {
         this.viewTabbedPane.removeViewListener ( listener );
     }

@@ -92,12 +92,12 @@ public class WebSliderUI extends BasicSliderUI implements BorderMethods
     protected int rolloverDarkness = 0;
     protected WebTimer rolloverTimer;
 
-    public WebSliderUI ( JSlider b )
+    public WebSliderUI ( final JSlider b )
     {
         super ( b );
     }
 
-    public static ComponentUI createUI ( JComponent c )
+    public static ComponentUI createUI ( final JComponent c )
     {
         return new WebSliderUI ( ( JSlider ) c );
     }
@@ -118,18 +118,18 @@ public class WebSliderUI extends BasicSliderUI implements BorderMethods
         propertyChangeListener = new PropertyChangeListener ()
         {
             @Override
-            public void propertyChange ( PropertyChangeEvent evt )
+            public void propertyChange ( final PropertyChangeEvent evt )
             {
                 updateBorder ();
             }
         };
-        slider.addPropertyChangeListener ( WebLookAndFeel.COMPONENT_ORIENTATION_PROPERTY, propertyChangeListener );
+        slider.addPropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, propertyChangeListener );
 
         // Rollover mouse wheel scroll
         mouseWheelListener = new MouseWheelListener ()
         {
             @Override
-            public void mouseWheelMoved ( MouseWheelEvent e )
+            public void mouseWheelMoved ( final MouseWheelEvent e )
             {
                 slider.setValue (
                         Math.min ( Math.max ( slider.getMinimum (), slider.getValue () + e.getWheelRotation () ), slider.getMaximum () ) );
@@ -142,7 +142,7 @@ public class WebSliderUI extends BasicSliderUI implements BorderMethods
         changeListener = new ChangeListener ()
         {
             @Override
-            public void stateChanged ( ChangeEvent e )
+            public void stateChanged ( final ChangeEvent e )
             {
                 slider.repaint ();
             }
@@ -154,7 +154,7 @@ public class WebSliderUI extends BasicSliderUI implements BorderMethods
         rolloverTimer = new WebTimer ( "WebProgressBarUI.animator", 40, new ActionListener ()
         {
             @Override
-            public void actionPerformed ( ActionEvent e )
+            public void actionPerformed ( final ActionEvent e )
             {
                 if ( rollover && rolloverDarkness < MAX_DARKNESS )
                 {
@@ -175,25 +175,25 @@ public class WebSliderUI extends BasicSliderUI implements BorderMethods
         mouseAdapter = new MouseAdapter ()
         {
             @Override
-            public void mousePressed ( MouseEvent e )
+            public void mousePressed ( final MouseEvent e )
             {
                 slider.repaint ();
             }
 
             @Override
-            public void mouseReleased ( MouseEvent e )
+            public void mouseReleased ( final MouseEvent e )
             {
                 slider.repaint ();
             }
 
             @Override
-            public void mouseDragged ( MouseEvent e )
+            public void mouseDragged ( final MouseEvent e )
             {
                 slider.repaint ();
             }
 
             @Override
-            public void mouseEntered ( MouseEvent e )
+            public void mouseEntered ( final MouseEvent e )
             {
                 rollover = true;
                 if ( isAnimated () && c.isEnabled () )
@@ -208,7 +208,7 @@ public class WebSliderUI extends BasicSliderUI implements BorderMethods
             }
 
             @Override
-            public void mouseExited ( MouseEvent e )
+            public void mouseExited ( final MouseEvent e )
             {
                 rollover = false;
                 if ( isAnimated () && c.isEnabled () )
@@ -227,11 +227,11 @@ public class WebSliderUI extends BasicSliderUI implements BorderMethods
     }
 
     @Override
-    public void uninstallUI ( JComponent c )
+    public void uninstallUI ( final JComponent c )
     {
         PainterSupport.uninstallPainter ( slider, this.painter );
 
-        slider.removePropertyChangeListener ( WebLookAndFeel.COMPONENT_ORIENTATION_PROPERTY, propertyChangeListener );
+        slider.removePropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, propertyChangeListener );
         slider.removeMouseWheelListener ( mouseWheelListener );
         slider.removeChangeListener ( changeListener );
         slider.removeMouseListener ( mouseAdapter );
@@ -245,6 +245,12 @@ public class WebSliderUI extends BasicSliderUI implements BorderMethods
     {
         if ( slider != null )
         {
+            // Preserve old borders
+            if ( SwingUtils.isPreserveBorders ( slider ) )
+            {
+                return;
+            }
+
             // Actual margin
             final boolean ltr = slider.getComponentOrientation ().isLeftToRight ();
             final Insets m = new Insets ( margin.top, ltr ? margin.left : margin.right, margin.bottom, ltr ? margin.right : margin.left );
@@ -270,7 +276,7 @@ public class WebSliderUI extends BasicSliderUI implements BorderMethods
         return animated;
     }
 
-    public void setAnimated ( boolean animated )
+    public void setAnimated ( final boolean animated )
     {
         this.animated = animated;
     }
@@ -280,7 +286,7 @@ public class WebSliderUI extends BasicSliderUI implements BorderMethods
         return rolloverDarkBorderOnly;
     }
 
-    public void setRolloverDarkBorderOnly ( boolean rolloverDarkBorderOnly )
+    public void setRolloverDarkBorderOnly ( final boolean rolloverDarkBorderOnly )
     {
         this.rolloverDarkBorderOnly = rolloverDarkBorderOnly;
     }
@@ -290,7 +296,7 @@ public class WebSliderUI extends BasicSliderUI implements BorderMethods
         return trackBgTop;
     }
 
-    public void setTrackBgTop ( Color trackBgTop )
+    public void setTrackBgTop ( final Color trackBgTop )
     {
         this.trackBgTop = trackBgTop;
     }
@@ -300,7 +306,7 @@ public class WebSliderUI extends BasicSliderUI implements BorderMethods
         return trackBgBottom;
     }
 
-    public void setTrackBgBottom ( Color trackBgBottom )
+    public void setTrackBgBottom ( final Color trackBgBottom )
     {
         this.trackBgBottom = trackBgBottom;
     }
@@ -310,7 +316,7 @@ public class WebSliderUI extends BasicSliderUI implements BorderMethods
         return trackHeight;
     }
 
-    public void setTrackHeight ( int trackHeight )
+    public void setTrackHeight ( final int trackHeight )
     {
         this.trackHeight = trackHeight;
     }
@@ -320,7 +326,7 @@ public class WebSliderUI extends BasicSliderUI implements BorderMethods
         return trackRound;
     }
 
-    public void setTrackRound ( int trackRound )
+    public void setTrackRound ( final int trackRound )
     {
         this.trackRound = trackRound;
     }
@@ -330,7 +336,7 @@ public class WebSliderUI extends BasicSliderUI implements BorderMethods
         return trackShadeWidth;
     }
 
-    public void setTrackShadeWidth ( int trackShadeWidth )
+    public void setTrackShadeWidth ( final int trackShadeWidth )
     {
         this.trackShadeWidth = trackShadeWidth;
     }
@@ -340,7 +346,7 @@ public class WebSliderUI extends BasicSliderUI implements BorderMethods
         return drawProgress;
     }
 
-    public void setDrawProgress ( boolean drawProgress )
+    public void setDrawProgress ( final boolean drawProgress )
     {
         this.drawProgress = drawProgress;
     }
@@ -350,7 +356,7 @@ public class WebSliderUI extends BasicSliderUI implements BorderMethods
         return progressRound;
     }
 
-    public void setProgressRound ( int progressRound )
+    public void setProgressRound ( final int progressRound )
     {
         this.progressRound = progressRound;
     }
@@ -360,7 +366,7 @@ public class WebSliderUI extends BasicSliderUI implements BorderMethods
         return progressShadeWidth;
     }
 
-    public void setProgressShadeWidth ( int progressShadeWidth )
+    public void setProgressShadeWidth ( final int progressShadeWidth )
     {
         this.progressShadeWidth = progressShadeWidth;
     }
@@ -370,7 +376,7 @@ public class WebSliderUI extends BasicSliderUI implements BorderMethods
         return drawThumb;
     }
 
-    public void setDrawThumb ( boolean drawThumb )
+    public void setDrawThumb ( final boolean drawThumb )
     {
         this.drawThumb = drawThumb;
     }
@@ -380,7 +386,7 @@ public class WebSliderUI extends BasicSliderUI implements BorderMethods
         return thumbBgTop;
     }
 
-    public void setThumbBgTop ( Color thumbBgTop )
+    public void setThumbBgTop ( final Color thumbBgTop )
     {
         this.thumbBgTop = thumbBgTop;
     }
@@ -390,7 +396,7 @@ public class WebSliderUI extends BasicSliderUI implements BorderMethods
         return thumbBgBottom;
     }
 
-    public void setThumbBgBottom ( Color thumbBgBottom )
+    public void setThumbBgBottom ( final Color thumbBgBottom )
     {
         this.thumbBgBottom = thumbBgBottom;
     }
@@ -400,7 +406,7 @@ public class WebSliderUI extends BasicSliderUI implements BorderMethods
         return thumbWidth;
     }
 
-    public void setThumbWidth ( int thumbWidth )
+    public void setThumbWidth ( final int thumbWidth )
     {
         this.thumbWidth = thumbWidth;
     }
@@ -410,7 +416,7 @@ public class WebSliderUI extends BasicSliderUI implements BorderMethods
         return thumbHeight;
     }
 
-    public void setThumbHeight ( int thumbHeight )
+    public void setThumbHeight ( final int thumbHeight )
     {
         this.thumbHeight = thumbHeight;
     }
@@ -420,7 +426,7 @@ public class WebSliderUI extends BasicSliderUI implements BorderMethods
         return thumbRound;
     }
 
-    public void setThumbRound ( int thumbRound )
+    public void setThumbRound ( final int thumbRound )
     {
         this.thumbRound = thumbRound;
     }
@@ -430,7 +436,7 @@ public class WebSliderUI extends BasicSliderUI implements BorderMethods
         return thumbShadeWidth;
     }
 
-    public void setThumbShadeWidth ( int thumbShadeWidth )
+    public void setThumbShadeWidth ( final int thumbShadeWidth )
     {
         this.thumbShadeWidth = thumbShadeWidth;
     }
@@ -440,7 +446,7 @@ public class WebSliderUI extends BasicSliderUI implements BorderMethods
         return angledThumb;
     }
 
-    public void setAngledThumb ( boolean angledThumb )
+    public void setAngledThumb ( final boolean angledThumb )
     {
         this.angledThumb = angledThumb;
     }
@@ -450,7 +456,7 @@ public class WebSliderUI extends BasicSliderUI implements BorderMethods
         return sharpThumbAngle;
     }
 
-    public void setSharpThumbAngle ( boolean sharpThumbAngle )
+    public void setSharpThumbAngle ( final boolean sharpThumbAngle )
     {
         this.sharpThumbAngle = sharpThumbAngle;
     }
@@ -460,7 +466,7 @@ public class WebSliderUI extends BasicSliderUI implements BorderMethods
         return thumbAngleLength;
     }
 
-    public void setThumbAngleLength ( int thumbAngleLength )
+    public void setThumbAngleLength ( final int thumbAngleLength )
     {
         this.thumbAngleLength = thumbAngleLength;
     }
@@ -470,7 +476,7 @@ public class WebSliderUI extends BasicSliderUI implements BorderMethods
         return margin;
     }
 
-    public void setMargin ( Insets margin )
+    public void setMargin ( final Insets margin )
     {
         this.margin = margin;
         updateBorder ();
@@ -481,7 +487,7 @@ public class WebSliderUI extends BasicSliderUI implements BorderMethods
         return painter;
     }
 
-    public void setPainter ( Painter painter )
+    public void setPainter ( final Painter painter )
     {
         PainterSupport.uninstallPainter ( slider, this.painter );
         this.painter = painter;
@@ -503,7 +509,7 @@ public class WebSliderUI extends BasicSliderUI implements BorderMethods
     }
 
     @Override
-    public void paint ( Graphics g, JComponent c )
+    public void paint ( final Graphics g, final JComponent c )
     {
         // Force painter to draw background
         if ( painter != null )
@@ -515,21 +521,21 @@ public class WebSliderUI extends BasicSliderUI implements BorderMethods
     }
 
     @Override
-    public void paintFocus ( Graphics g )
+    public void paintFocus ( final Graphics g )
     {
         // Do not paint default focus
     }
 
     @Override
-    public void paintThumb ( Graphics g )
+    public void paintThumb ( final Graphics g )
     {
         if ( drawThumb )
         {
-            Graphics2D g2d = ( Graphics2D ) g;
-            Object aa = LafUtils.setupAntialias ( g2d );
+            final Graphics2D g2d = ( Graphics2D ) g;
+            final Object aa = LafUtils.setupAntialias ( g2d );
 
             // Thumb shape
-            Shape ts = getThumbShape ();
+            final Shape ts = getThumbShape ();
 
             // Thumb shade
             if ( slider.isEnabled () )
@@ -576,7 +582,7 @@ public class WebSliderUI extends BasicSliderUI implements BorderMethods
         {
             if ( slider.getOrientation () == JSlider.HORIZONTAL )
             {
-                GeneralPath gp = new GeneralPath ( GeneralPath.WIND_EVEN_ODD );
+                final GeneralPath gp = new GeneralPath ( GeneralPath.WIND_EVEN_ODD );
                 gp.moveTo ( thumbRect.x, thumbRect.y + thumbRound );
                 gp.quadTo ( thumbRect.x, thumbRect.y, thumbRect.x + thumbRound, thumbRect.y );
                 gp.lineTo ( thumbRect.x + thumbRect.width - thumbRound, thumbRect.y );
@@ -599,7 +605,7 @@ public class WebSliderUI extends BasicSliderUI implements BorderMethods
             }
             else
             {
-                GeneralPath gp = new GeneralPath ( GeneralPath.WIND_EVEN_ODD );
+                final GeneralPath gp = new GeneralPath ( GeneralPath.WIND_EVEN_ODD );
                 if ( slider.getComponentOrientation ().isLeftToRight () )
                 {
                     gp.moveTo ( thumbRect.x, thumbRect.y + thumbRound );
@@ -652,13 +658,13 @@ public class WebSliderUI extends BasicSliderUI implements BorderMethods
     }
 
     @Override
-    public void paintTrack ( Graphics g )
+    public void paintTrack ( final Graphics g )
     {
-        Graphics2D g2d = ( Graphics2D ) g;
-        Object aa = LafUtils.setupAntialias ( g2d );
+        final Graphics2D g2d = ( Graphics2D ) g;
+        final Object aa = LafUtils.setupAntialias ( g2d );
 
         // Track shape
-        Shape ss = getTrackShape ();
+        final Shape ss = getTrackShape ();
 
         // Track background & shade
         {
@@ -685,7 +691,7 @@ public class WebSliderUI extends BasicSliderUI implements BorderMethods
         if ( drawProgress )
         {
             // Progress shape
-            Shape ps = getProgressShape ();
+            final Shape ps = getProgressShape ();
 
             // Progress shade
             if ( slider.isEnabled () )
@@ -694,7 +700,7 @@ public class WebSliderUI extends BasicSliderUI implements BorderMethods
             }
 
             // Progress background
-            Rectangle bounds = ss.getBounds ();
+            final Rectangle bounds = ss.getBounds ();
             if ( slider.getOrientation () == JSlider.HORIZONTAL )
             {
                 g2d.setPaint (
@@ -762,8 +768,8 @@ public class WebSliderUI extends BasicSliderUI implements BorderMethods
         {
             if ( slider.getOrientation () == JSlider.HORIZONTAL )
             {
-                int x;
-                int w;
+                final int x;
+                final int w;
                 if ( slider.getComponentOrientation ().isLeftToRight () )
                 {
                     x = trackRect.x - trackRound + progressShadeWidth;
@@ -780,8 +786,8 @@ public class WebSliderUI extends BasicSliderUI implements BorderMethods
             }
             else
             {
-                int y = thumbRect.y + thumbRect.height / 2;
-                int h = trackRect.y + trackRect.height + trackRound - progressShadeWidth - y - 1;
+                final int y = thumbRect.y + thumbRect.height / 2;
+                final int h = trackRect.y + trackRect.height + trackRound - progressShadeWidth - y - 1;
                 return new RoundRectangle2D.Double ( trackRect.x + progressShadeWidth + trackRect.width / 2 - trackHeight / 2, y,
                         trackHeight - progressShadeWidth * 2, h, progressRound * 2, progressRound * 2 );
             }
@@ -790,8 +796,8 @@ public class WebSliderUI extends BasicSliderUI implements BorderMethods
         {
             if ( slider.getOrientation () == JSlider.HORIZONTAL )
             {
-                int x;
-                int w;
+                final int x;
+                final int w;
                 if ( slider.getComponentOrientation ().isLeftToRight () )
                 {
                     x = trackRect.x + progressShadeWidth;
@@ -807,8 +813,8 @@ public class WebSliderUI extends BasicSliderUI implements BorderMethods
             }
             else
             {
-                int y = trackRect.y + progressShadeWidth;
-                int h = thumbRect.y + thumbRect.height / 2 - y;
+                final int y = trackRect.y + progressShadeWidth;
+                final int h = thumbRect.y + thumbRect.height / 2 - y;
                 return new Rectangle2D.Double ( trackRect.x + progressShadeWidth + trackRect.width / 2 - trackHeight / 2, y,
                         trackHeight - progressShadeWidth * 2, h );
             }

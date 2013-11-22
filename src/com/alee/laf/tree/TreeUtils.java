@@ -18,6 +18,7 @@
 package com.alee.laf.tree;
 
 import javax.swing.*;
+import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 import java.util.ArrayList;
 import java.util.List;
@@ -151,6 +152,27 @@ public final class TreeUtils
             }
 
             elements.remove ( element );
+        }
+    }
+
+    /**
+     * Optimizes list of nodes by removing those which already have their parent node in the list.
+     *
+     * @param nodes nodes list to optimize
+     */
+    public static <E extends DefaultMutableTreeNode> void optimizeNodes ( final List<E> nodes )
+    {
+        for ( int i = nodes.size () - 1; i >= 0; i-- )
+        {
+            final E node = nodes.get ( i );
+            for ( final E other : nodes )
+            {
+                if ( other != node && node.isNodeAncestor ( other ) )
+                {
+                    nodes.remove ( i );
+                    break;
+                }
+            }
         }
     }
 }

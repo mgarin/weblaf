@@ -95,7 +95,7 @@ public class WebRadioButtonUI extends BasicRadioButtonUI implements ShapeProvide
     private ItemListener itemListener;
 
     @SuppressWarnings ("UnusedParameters")
-    public static ComponentUI createUI ( JComponent c )
+    public static ComponentUI createUI ( final JComponent c )
     {
         return new WebRadioButtonUI ();
     }
@@ -122,7 +122,7 @@ public class WebRadioButtonUI extends BasicRadioButtonUI implements ShapeProvide
         bgTimer = new WebTimer ( "WebRadioButtonUI.bgUpdater", 40, new ActionListener ()
         {
             @Override
-            public void actionPerformed ( ActionEvent e )
+            public void actionPerformed ( final ActionEvent e )
             {
                 if ( rollover && bgDarkness < MAX_DARKNESS )
                 {
@@ -143,7 +143,7 @@ public class WebRadioButtonUI extends BasicRadioButtonUI implements ShapeProvide
         mouseAdapter = new MouseAdapter ()
         {
             @Override
-            public void mouseEntered ( MouseEvent e )
+            public void mouseEntered ( final MouseEvent e )
             {
                 rollover = true;
                 if ( isAnimated () )
@@ -158,7 +158,7 @@ public class WebRadioButtonUI extends BasicRadioButtonUI implements ShapeProvide
             }
 
             @Override
-            public void mouseExited ( MouseEvent e )
+            public void mouseExited ( final MouseEvent e )
             {
                 rollover = false;
                 if ( isAnimated () )
@@ -178,7 +178,7 @@ public class WebRadioButtonUI extends BasicRadioButtonUI implements ShapeProvide
         checkTimer = new WebTimer ( "WebRadioButtonUI.iconUpdater", 40, new ActionListener ()
         {
             @Override
-            public void actionPerformed ( ActionEvent e )
+            public void actionPerformed ( final ActionEvent e )
             {
                 if ( checking && checkIcon < CHECK_STATES.size () - 1 )
                 {
@@ -199,7 +199,7 @@ public class WebRadioButtonUI extends BasicRadioButtonUI implements ShapeProvide
         itemListener = new ItemListener ()
         {
             @Override
-            public void itemStateChanged ( ItemEvent e )
+            public void itemStateChanged ( final ItemEvent e )
             {
                 if ( animated )
                 {
@@ -226,7 +226,7 @@ public class WebRadioButtonUI extends BasicRadioButtonUI implements ShapeProvide
     }
 
     @Override
-    public void uninstallUI ( JComponent c )
+    public void uninstallUI ( final JComponent c )
     {
         radioButton.removeMouseListener ( mouseAdapter );
         radioButton.removeItemListener ( itemListener );
@@ -245,9 +245,15 @@ public class WebRadioButtonUI extends BasicRadioButtonUI implements ShapeProvide
 
     private void updateBorder ()
     {
+        // Preserve old borders
+        if ( SwingUtils.isPreserveBorders ( radioButton ) )
+        {
+            return;
+        }
+
         // Actual margin
-        boolean ltr = radioButton.getComponentOrientation ().isLeftToRight ();
-        Insets m = new Insets ( margin.top, ltr ? margin.left : margin.right, margin.bottom, ltr ? margin.right : margin.left );
+        final boolean ltr = radioButton.getComponentOrientation ().isLeftToRight ();
+        final Insets m = new Insets ( margin.top, ltr ? margin.left : margin.right, margin.bottom, ltr ? margin.right : margin.left );
 
         // Installing border
         radioButton.setBorder ( LafUtils.createWebBorder ( m ) );
@@ -258,7 +264,7 @@ public class WebRadioButtonUI extends BasicRadioButtonUI implements ShapeProvide
         return margin;
     }
 
-    public void setMargin ( Insets margin )
+    public void setMargin ( final Insets margin )
     {
         this.margin = margin;
         updateBorder ();
@@ -270,7 +276,7 @@ public class WebRadioButtonUI extends BasicRadioButtonUI implements ShapeProvide
                 !( radioButton.getParent () instanceof WebListElement || radioButton.getParent () instanceof WebTreeElement ) );
     }
 
-    public void setAnimated ( boolean animated )
+    public void setAnimated ( final boolean animated )
     {
         this.animated = animated;
     }
@@ -280,7 +286,7 @@ public class WebRadioButtonUI extends BasicRadioButtonUI implements ShapeProvide
         return rolloverDarkBorderOnly;
     }
 
-    public void setRolloverDarkBorderOnly ( boolean rolloverDarkBorderOnly )
+    public void setRolloverDarkBorderOnly ( final boolean rolloverDarkBorderOnly )
     {
         this.rolloverDarkBorderOnly = rolloverDarkBorderOnly;
     }
@@ -290,7 +296,7 @@ public class WebRadioButtonUI extends BasicRadioButtonUI implements ShapeProvide
         return borderColor;
     }
 
-    public void setBorderColor ( Color borderColor )
+    public void setBorderColor ( final Color borderColor )
     {
         this.borderColor = borderColor;
     }
@@ -300,7 +306,7 @@ public class WebRadioButtonUI extends BasicRadioButtonUI implements ShapeProvide
         return darkBorderColor;
     }
 
-    public void setDarkBorderColor ( Color darkBorderColor )
+    public void setDarkBorderColor ( final Color darkBorderColor )
     {
         this.darkBorderColor = darkBorderColor;
     }
@@ -310,7 +316,7 @@ public class WebRadioButtonUI extends BasicRadioButtonUI implements ShapeProvide
         return disabledBorderColor;
     }
 
-    public void setDisabledBorderColor ( Color disabledBorderColor )
+    public void setDisabledBorderColor ( final Color disabledBorderColor )
     {
         this.disabledBorderColor = disabledBorderColor;
     }
@@ -320,7 +326,7 @@ public class WebRadioButtonUI extends BasicRadioButtonUI implements ShapeProvide
         return topBgColor;
     }
 
-    public void setTopBgColor ( Color topBgColor )
+    public void setTopBgColor ( final Color topBgColor )
     {
         this.topBgColor = topBgColor;
     }
@@ -330,7 +336,7 @@ public class WebRadioButtonUI extends BasicRadioButtonUI implements ShapeProvide
         return bottomBgColor;
     }
 
-    public void setBottomBgColor ( Color bottomBgColor )
+    public void setBottomBgColor ( final Color bottomBgColor )
     {
         this.bottomBgColor = bottomBgColor;
     }
@@ -340,7 +346,7 @@ public class WebRadioButtonUI extends BasicRadioButtonUI implements ShapeProvide
         return topSelectedBgColor;
     }
 
-    public void setTopSelectedBgColor ( Color topSelectedBgColor )
+    public void setTopSelectedBgColor ( final Color topSelectedBgColor )
     {
         this.topSelectedBgColor = topSelectedBgColor;
     }
@@ -350,7 +356,7 @@ public class WebRadioButtonUI extends BasicRadioButtonUI implements ShapeProvide
         return bottomSelectedBgColor;
     }
 
-    public void setBottomSelectedBgColor ( Color bottomSelectedBgColor )
+    public void setBottomSelectedBgColor ( final Color bottomSelectedBgColor )
     {
         this.bottomSelectedBgColor = bottomSelectedBgColor;
     }
@@ -365,7 +371,7 @@ public class WebRadioButtonUI extends BasicRadioButtonUI implements ShapeProvide
         return shadeWidth;
     }
 
-    public void setShadeWidth ( int shadeWidth )
+    public void setShadeWidth ( final int shadeWidth )
     {
         this.shadeWidth = shadeWidth;
     }
@@ -375,7 +381,7 @@ public class WebRadioButtonUI extends BasicRadioButtonUI implements ShapeProvide
         return iconWidth;
     }
 
-    public void setIconWidth ( int iconWidth )
+    public void setIconWidth ( final int iconWidth )
     {
         this.iconWidth = iconWidth;
     }
@@ -385,7 +391,7 @@ public class WebRadioButtonUI extends BasicRadioButtonUI implements ShapeProvide
         return iconHeight;
     }
 
-    public void setIconHeight ( int iconHeight )
+    public void setIconHeight ( final int iconHeight )
     {
         this.iconHeight = iconHeight;
     }
@@ -395,18 +401,18 @@ public class WebRadioButtonUI extends BasicRadioButtonUI implements ShapeProvide
         radioButton.setIcon ( new Icon ()
         {
             @Override
-            public void paintIcon ( Component c, Graphics g, int x, int y )
+            public void paintIcon ( final Component c, final Graphics g, final int x, final int y )
             {
                 iconRect = new Rectangle ( x, y, iconWidth, iconHeight );
 
-                Graphics2D g2d = ( Graphics2D ) g;
-                Object aa = LafUtils.setupAntialias ( g2d );
+                final Graphics2D g2d = ( Graphics2D ) g;
+                final Object aa = LafUtils.setupAntialias ( g2d );
 
                 // Button size and shape
-                int round = iconWidth - shadeWidth * 2 - 2;
-                Rectangle iconRect =
+                final int round = iconWidth - shadeWidth * 2 - 2;
+                final Rectangle iconRect =
                         new Rectangle ( x + shadeWidth, y + shadeWidth, iconWidth - shadeWidth * 2 - 1, iconHeight - shadeWidth * 2 - 1 );
-                RoundRectangle2D shape =
+                final RoundRectangle2D shape =
                         new RoundRectangle2D.Double ( iconRect.x, iconRect.y, iconRect.width, iconRect.height, round, round );
 
                 // Shade
@@ -417,13 +423,13 @@ public class WebRadioButtonUI extends BasicRadioButtonUI implements ShapeProvide
                 }
 
                 // Background
-                int radius = Math.round ( ( float ) Math.sqrt ( iconRect.width * iconRect.width / 2 ) );
+                final int radius = Math.round ( ( float ) Math.sqrt ( iconRect.width * iconRect.width / 2 ) );
                 g2d.setPaint ( new RadialGradientPaint ( iconRect.x + iconRect.width / 2, iconRect.y + iconRect.height / 2, radius,
                         new float[]{ 0f, 1f }, getBgColors ( radioButton ) ) );
                 g2d.fill ( shape );
 
                 // Border
-                Stroke os = LafUtils.setupStroke ( g2d, borderStroke );
+                final Stroke os = LafUtils.setupStroke ( g2d, borderStroke );
                 g2d.setPaint ( c.isEnabled () ?
                         ( rolloverDarkBorderOnly ? ColorUtils.getIntermediateColor ( borderColor, darkBorderColor, getProgress () ) :
                                 darkBorderColor ) : disabledBorderColor );
@@ -433,7 +439,7 @@ public class WebRadioButtonUI extends BasicRadioButtonUI implements ShapeProvide
                 // Check icon
                 if ( checkIcon > 0 )
                 {
-                    ImageIcon icon = radioButton.isEnabled () ? CHECK_STATES.get ( checkIcon ) : DISABLED_CHECK;
+                    final ImageIcon icon = radioButton.isEnabled () ? CHECK_STATES.get ( checkIcon ) : DISABLED_CHECK;
                     g2d.drawImage ( icon.getImage (), x + iconWidth / 2 - icon.getIconWidth () / 2,
                             y + iconHeight / 2 - icon.getIconHeight () / 2, radioButton );
                 }
@@ -455,11 +461,11 @@ public class WebRadioButtonUI extends BasicRadioButtonUI implements ShapeProvide
         } );
     }
 
-    private Color[] getBgColors ( JRadioButton radioButton )
+    private Color[] getBgColors ( final JRadioButton radioButton )
     {
         if ( radioButton.isEnabled () )
         {
-            float progress = getProgress ();
+            final float progress = getProgress ();
             if ( progress < 1f )
             {
                 return new Color[]{ ColorUtils.getIntermediateColor ( topBgColor, topSelectedBgColor, progress ),
@@ -487,20 +493,20 @@ public class WebRadioButtonUI extends BasicRadioButtonUI implements ShapeProvide
     }
 
     @Override
-    public synchronized void paint ( Graphics g, JComponent c )
+    public synchronized void paint ( final Graphics g, final JComponent c )
     {
-        Map hints = SwingUtils.setupTextAntialias ( g );
+        final Map hints = SwingUtils.setupTextAntialias ( g );
         super.paint ( g, c );
         SwingUtils.restoreTextAntialias ( g, hints );
     }
 
     @Override
-    protected void paintText ( Graphics g, JComponent c, Rectangle textRect, String text )
+    protected void paintText ( final Graphics g, final JComponent c, final Rectangle textRect, final String text )
     {
-        AbstractButton b = ( AbstractButton ) c;
-        ButtonModel model = b.getModel ();
-        FontMetrics fm = SwingUtils.getFontMetrics ( c, g );
-        int mnemonicIndex = b.getDisplayedMnemonicIndex ();
+        final AbstractButton b = ( AbstractButton ) c;
+        final ButtonModel model = b.getModel ();
+        final FontMetrics fm = SwingUtils.getFontMetrics ( c, g );
+        final int mnemonicIndex = b.getDisplayedMnemonicIndex ();
 
         // Drawing text
         if ( model.isEnabled () )

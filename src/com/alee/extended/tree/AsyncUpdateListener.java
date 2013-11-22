@@ -15,30 +15,23 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.utils;
+package com.alee.extended.tree;
 
 /**
- * This class provides a set of utilities to work with threads.
+ * Simple listener that can be used to track async tree data update actions.
  *
  * @author Mikle Garin
  */
 
-public final class ThreadUtils
+public interface AsyncUpdateListener
 {
     /**
-     * Causes calling thread to sleep and ignores thrown InterruptedException.
-     *
-     * @param millis time to sleep
+     * Called when update operation succeed.
      */
-    public static void sleepSafely ( final long millis )
-    {
-        try
-        {
-            Thread.sleep ( millis );
-        }
-        catch ( InterruptedException e )
-        {
-            //
-        }
-    }
+    public void succeed ();
+
+    /**
+     * Caled when update operation failed.
+     */
+    public void failed ();
 }

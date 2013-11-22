@@ -151,6 +151,26 @@ public class WebMenu extends JMenu implements LanguageMethods, FontMethods<WebMe
     }
 
     /**
+     * Returns spacing between menu item content and its left/right borders.
+     *
+     * @return spacing between menu item content and its left/right borders
+     */
+    public int getSideSpacing ()
+    {
+        return getWebUI ().getSideSpacing ();
+    }
+
+    /**
+     * Sets spacing between menu item content and its left/right borders
+     *
+     * @param sideSpacing spacing between menu item content and its left/right borders
+     */
+    public void setSideSpacing ( final int sideSpacing )
+    {
+        getWebUI ().setSideSpacing ( sideSpacing );
+    }
+
+    /**
      * Returns disabled menu item foreground.
      *
      * @return disabled menu item foreground

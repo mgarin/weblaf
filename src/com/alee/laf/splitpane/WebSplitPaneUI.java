@@ -17,10 +17,12 @@
 
 package com.alee.laf.splitpane;
 
+import com.alee.laf.StyleConstants;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
 import com.alee.utils.LafUtils;
 import com.alee.utils.SwingUtils;
+import com.alee.utils.swing.BorderMethods;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -37,7 +39,7 @@ import java.beans.PropertyChangeListener;
  * @author Mikle Garin
  */
 
-public class WebSplitPaneUI extends BasicSplitPaneUI
+public class WebSplitPaneUI extends BasicSplitPaneUI implements BorderMethods
 {
     /**
      * Style settings.
@@ -57,8 +59,8 @@ public class WebSplitPaneUI extends BasicSplitPaneUI
      * @param c component that will use UI instance
      * @return instance of the WebSplitPaneUI
      */
-    @SuppressWarnings ("UnusedParameters")
-    public static ComponentUI createUI ( JComponent c )
+    @SuppressWarnings ( "UnusedParameters" )
+    public static ComponentUI createUI ( final JComponent c )
     {
         return new WebSplitPaneUI ();
     }
@@ -69,7 +71,7 @@ public class WebSplitPaneUI extends BasicSplitPaneUI
      * @param c component for this UI
      */
     @Override
-    public void installUI ( JComponent c )
+    public void installUI ( final JComponent c )
     {
         super.installUI ( c );
 
@@ -86,12 +88,12 @@ public class WebSplitPaneUI extends BasicSplitPaneUI
         propertyChangeListener = new PropertyChangeListener ()
         {
             @Override
-            public void propertyChange ( PropertyChangeEvent evt )
+            public void propertyChange ( final PropertyChangeEvent evt )
             {
                 updateBorder ();
             }
         };
-        splitPane.addPropertyChangeListener ( WebLookAndFeel.COMPONENT_ORIENTATION_PROPERTY, propertyChangeListener );
+        splitPane.addPropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, propertyChangeListener );
     }
 
     /**
@@ -100,20 +102,27 @@ public class WebSplitPaneUI extends BasicSplitPaneUI
      * @param c component with this UI
      */
     @Override
-    public void uninstallUI ( JComponent c )
+    public void uninstallUI ( final JComponent c )
     {
-        splitPane.removePropertyChangeListener ( WebLookAndFeel.COMPONENT_ORIENTATION_PROPERTY, propertyChangeListener );
+        splitPane.removePropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, propertyChangeListener );
 
         super.uninstallUI ( c );
     }
 
     /**
-     * Updates custom UI border.
+     * {@inheritDoc}
      */
-    private void updateBorder ()
+    @Override
+    public void updateBorder ()
     {
         if ( splitPane != null )
         {
+            // Preserve old borders
+            if ( SwingUtils.isPreserveBorders ( splitPane ) )
+            {
+                return;
+            }
+
             // Actual margin
             final boolean ltr = splitPane.getComponentOrientation ().isLeftToRight ();
             final Insets m = new Insets ( margin.top, ltr ? margin.left : margin.right, margin.bottom, ltr ? margin.right : margin.left );
@@ -138,7 +147,7 @@ public class WebSplitPaneUI extends BasicSplitPaneUI
      *
      * @param margin component margin
      */
-    public void setMargin ( Insets margin )
+    public void setMargin ( final Insets margin )
     {
         this.margin = margin;
         updateBorder ();
@@ -159,7 +168,7 @@ public class WebSplitPaneUI extends BasicSplitPaneUI
      *
      * @param dragDividerColor dragged divider color
      */
-    public void setDragDividerColor ( Color dragDividerColor )
+    public void setDragDividerColor ( final Color dragDividerColor )
     {
         this.dragDividerColor = dragDividerColor;
     }
@@ -174,6 +183,9 @@ public class WebSplitPaneUI extends BasicSplitPaneUI
         {
             private final Border border = BorderFactory.createEmptyBorder ( 0, 0, 0, 0 );
 
+            private final Color color = new Color ( 158, 158, 158 );
+            private final Color[] gradient = new Color[]{ StyleConstants.transparent, color, color, StyleConstants.transparent };
+
             @Override
             public Border getBorder ()
             {
@@ -183,7 +195,7 @@ public class WebSplitPaneUI extends BasicSplitPaneUI
             @Override
             protected JButton createLeftOneTouchButton ()
             {
-                WebButton iconWebButton = WebButton.createIconWebButton ( new ImageIcon ( WebSplitPaneUI.class
+                final WebButton iconWebButton = WebButton.createIconWebButton ( new ImageIcon ( WebSplitPaneUI.class
                         .getResource ( orientation == JSplitPane.HORIZONTAL_SPLIT ? "icons/left.png" : "icons/up.png" ) ), 0, 0, 0, false,
                         true, false );
                 iconWebButton.setBorder ( BorderFactory.createEmptyBorder ( 0, 0, 0, 0 ) );
@@ -196,7 +208,7 @@ public class WebSplitPaneUI extends BasicSplitPaneUI
             @Override
             protected JButton createRightOneTouchButton ()
             {
-                JButton iconWebButton = WebButton.createIconWebButton ( new ImageIcon ( WebSplitPaneUI.class
+                final JButton iconWebButton = WebButton.createIconWebButton ( new ImageIcon ( WebSplitPaneUI.class
                         .getResource ( orientation == JSplitPane.HORIZONTAL_SPLIT ? "icons/right.png" : "icons/down.png" ) ), 0, 0, 0,
                         false, true, false );
                 iconWebButton.setBorder ( BorderFactory.createEmptyBorder ( 0, 0, 0, 0 ) );
@@ -206,20 +218,16 @@ public class WebSplitPaneUI extends BasicSplitPaneUI
                 return iconWebButton;
             }
 
-            private Color color = new Color ( 158, 158, 158 );
-            private Color transparent = new Color ( 0, 0, 0, 0 );
-            private Color[] gradient = new Color[]{ transparent, color, color, transparent };
-
             @Override
-            public void paint ( Graphics g )
+            public void paint ( final Graphics g )
             {
-                Graphics2D g2d = ( Graphics2D ) g;
-                Object aa = LafUtils.setupAntialias ( g2d );
+                final Graphics2D g2d = ( Graphics2D ) g;
+                final Object aa = LafUtils.setupAntialias ( g2d );
 
                 if ( orientation == JSplitPane.HORIZONTAL_SPLIT )
                 {
-                    int startY = getHeight () / 2 - 35;
-                    int endY = getHeight () / 2 + 35;
+                    final int startY = getHeight () / 2 - 35;
+                    final int endY = getHeight () / 2 + 35;
                     g2d.setPaint ( new LinearGradientPaint ( 0, startY, 0, endY, new float[]{ 0f, 0.25f, 0.75f, 1f }, gradient ) );
                     for ( int i = startY; i < endY; i += 5 )
                     {
@@ -228,8 +236,8 @@ public class WebSplitPaneUI extends BasicSplitPaneUI
                 }
                 else
                 {
-                    int startX = getWidth () / 2 - 35;
-                    int endX = getWidth () / 2 + 35;
+                    final int startX = getWidth () / 2 - 35;
+                    final int endX = getWidth () / 2 + 35;
                     g2d.setPaint ( new LinearGradientPaint ( startX, 0, endX, 0, new float[]{ 0f, 0.25f, 0.75f, 1f }, gradient ) );
                     for ( int i = startX; i < endX; i += 5 )
                     {
@@ -253,11 +261,11 @@ public class WebSplitPaneUI extends BasicSplitPaneUI
         return new Canvas ()
         {
             @Override
-            public void paint ( Graphics g )
+            public void paint ( final Graphics g )
             {
                 if ( !isContinuousLayout () && getLastDragLocation () != -1 )
                 {
-                    Dimension size = splitPane.getSize ();
+                    final Dimension size = splitPane.getSize ();
                     g.setColor ( dragDividerColor );
                     if ( getOrientation () == JSplitPane.HORIZONTAL_SPLIT )
                     {
@@ -276,12 +284,12 @@ public class WebSplitPaneUI extends BasicSplitPaneUI
      * {@inheritDoc}
      */
     @Override
-    public void finishedPaintingChildren ( JSplitPane jc, Graphics g )
+    public void finishedPaintingChildren ( final JSplitPane jc, final Graphics g )
     {
         if ( jc == splitPane && getLastDragLocation () != -1 && !isContinuousLayout () &&
                 !draggingHW )
         {
-            Dimension size = splitPane.getSize ();
+            final Dimension size = splitPane.getSize ();
 
             g.setColor ( dragDividerColor );
             if ( getOrientation () == JSplitPane.HORIZONTAL_SPLIT )

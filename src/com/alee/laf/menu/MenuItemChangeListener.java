@@ -21,6 +21,8 @@ import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 /**
  * Special menu item change listener required to update popup menu decoration properly.
@@ -34,6 +36,39 @@ public class MenuItemChangeListener implements ChangeListener
      * Listened menu item.
      */
     protected JMenuItem menuItem;
+
+    /**
+     * Installs menu item model change listener and returns it.
+     *
+     * @param menuItem menu item to install listener into
+     * @return installed model change listener
+     */
+    public static MenuItemChangeListener install ( final JMenuItem menuItem )
+    {
+        final MenuItemChangeListener listener = new MenuItemChangeListener ( menuItem );
+        menuItem.getModel ().addChangeListener ( listener );
+        menuItem.addPropertyChangeListener ( AbstractButton.MODEL_CHANGED_PROPERTY, new PropertyChangeListener ()
+        {
+            @Override
+            public void propertyChange ( final PropertyChangeEvent evt )
+            {
+                ( ( ButtonModel ) evt.getOldValue () ).removeChangeListener ( listener );
+                menuItem.getModel ().addChangeListener ( listener );
+            }
+        } );
+        return listener;
+    }
+
+    /**
+     * Uninstalls menu item model change listener from specified menu item.
+     *
+     * @param listener listener to uninstall
+     * @param menuItem menu item to uninstall listener from
+     */
+    public static void uninstall ( final MenuItemChangeListener listener, final JMenuItem menuItem )
+    {
+        menuItem.getModel ().removeChangeListener ( listener );
+    }
 
     /**
      * Constructs new menu item change listener.
@@ -59,7 +94,7 @@ public class MenuItemChangeListener implements ChangeListener
             if ( popupMenu.getUI () instanceof WebPopupMenuUI )
             {
                 final WebPopupMenuUI ui = ( WebPopupMenuUI ) popupMenu.getUI ();
-                if ( ui.getPopupMenuStyle () == PopupMenuStyle.dropdown )
+                if ( ui.getPopupPainterStyle () == PopupPainterStyle.dropdown )
                 {
                     // Checking whether this item state change affect the corner
                     final int zOrder = popupMenu.getComponentZOrder ( menuItem );

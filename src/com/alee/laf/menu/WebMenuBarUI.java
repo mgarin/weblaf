@@ -22,6 +22,7 @@ import com.alee.laf.StyleConstants;
 import com.alee.utils.LafUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.laf.ShapeProvider;
+import com.alee.utils.swing.BorderMethods;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
@@ -33,7 +34,7 @@ import java.awt.geom.Line2D;
  * User: mgarin Date: 15.08.11 Time: 20:24
  */
 
-public class WebMenuBarUI extends BasicMenuBarUI implements ShapeProvider
+public class WebMenuBarUI extends BasicMenuBarUI implements ShapeProvider, BorderMethods
 {
     private boolean undecorated = WebMenuBarStyle.undecorated;
     private int round = WebMenuBarStyle.round;
@@ -41,14 +42,14 @@ public class WebMenuBarUI extends BasicMenuBarUI implements ShapeProvider
     private MenuBarStyle menuBarStyle = WebMenuBarStyle.menuBarStyle;
     private Color borderColor = WebMenuBarStyle.borderColor;
 
-    @SuppressWarnings ("UnusedParameters")
-    public static ComponentUI createUI ( JComponent c )
+    @SuppressWarnings ( "UnusedParameters" )
+    public static ComponentUI createUI ( final JComponent c )
     {
         return new WebMenuBarUI ();
     }
 
     @Override
-    public void installUI ( JComponent c )
+    public void installUI ( final JComponent c )
     {
         super.installUI ( c );
 
@@ -58,7 +59,7 @@ public class WebMenuBarUI extends BasicMenuBarUI implements ShapeProvider
         menuBar.setOpaque ( false );
 
         // Updating border
-        updateBorder ( menuBar );
+        updateBorder ();
     }
 
     @Override
@@ -67,8 +68,18 @@ public class WebMenuBarUI extends BasicMenuBarUI implements ShapeProvider
         return LafUtils.getWebBorderShape ( menuBar, getShadeWidth (), getRound () );
     }
 
-    private void updateBorder ( final JComponent c )
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void updateBorder ()
     {
+        // Preserve old borders
+        if ( SwingUtils.isPreserveBorders ( menuBar ) )
+        {
+            return;
+        }
+
         final Insets insets;
         if ( !undecorated )
         {
@@ -85,7 +96,7 @@ public class WebMenuBarUI extends BasicMenuBarUI implements ShapeProvider
         {
             insets = new Insets ( 0, 0, 0, 0 );
         }
-        c.setBorder ( LafUtils.createWebBorder ( insets ) );
+        menuBar.setBorder ( LafUtils.createWebBorder ( insets ) );
     }
 
     public boolean isUndecorated ()
@@ -93,10 +104,10 @@ public class WebMenuBarUI extends BasicMenuBarUI implements ShapeProvider
         return undecorated;
     }
 
-    public void setUndecorated ( boolean undecorated )
+    public void setUndecorated ( final boolean undecorated )
     {
         this.undecorated = undecorated;
-        updateBorder ( menuBar );
+        updateBorder ();
     }
 
     public MenuBarStyle getMenuBarStyle ()
@@ -104,10 +115,10 @@ public class WebMenuBarUI extends BasicMenuBarUI implements ShapeProvider
         return menuBarStyle;
     }
 
-    public void setMenuBarStyle ( MenuBarStyle menuBarStyle )
+    public void setMenuBarStyle ( final MenuBarStyle menuBarStyle )
     {
         this.menuBarStyle = menuBarStyle;
-        updateBorder ( menuBar );
+        updateBorder ();
     }
 
     public Color getBorderColor ()
@@ -115,7 +126,7 @@ public class WebMenuBarUI extends BasicMenuBarUI implements ShapeProvider
         return borderColor;
     }
 
-    public void setBorderColor ( Color borderColor )
+    public void setBorderColor ( final Color borderColor )
     {
         this.borderColor = borderColor;
     }
@@ -125,7 +136,7 @@ public class WebMenuBarUI extends BasicMenuBarUI implements ShapeProvider
         return round;
     }
 
-    public void setRound ( int round )
+    public void setRound ( final int round )
     {
         this.round = round;
     }
@@ -135,22 +146,23 @@ public class WebMenuBarUI extends BasicMenuBarUI implements ShapeProvider
         return shadeWidth;
     }
 
-    public void setShadeWidth ( int shadeWidth )
+    public void setShadeWidth ( final int shadeWidth )
     {
         this.shadeWidth = shadeWidth;
-        updateBorder ( menuBar );
+        updateBorder ();
     }
 
     @Override
-    public void paint ( Graphics g, JComponent c )
+    public void paint ( final Graphics g, final JComponent c )
     {
         if ( !undecorated )
         {
-            Graphics2D g2d = ( Graphics2D ) g;
+            final Graphics2D g2d = ( Graphics2D ) g;
 
             if ( menuBarStyle == MenuBarStyle.attached )
             {
-                Shape border = new Line2D.Double ( 0, c.getHeight () - 1 - shadeWidth, c.getWidth () - 1, c.getHeight () - 1 - shadeWidth );
+                final Shape border =
+                        new Line2D.Double ( 0, c.getHeight () - 1 - shadeWidth, c.getWidth () - 1, c.getHeight () - 1 - shadeWidth );
 
                 LafUtils.drawShade ( g2d, border, StyleConstants.shadeColor, shadeWidth );
 

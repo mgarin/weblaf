@@ -72,27 +72,18 @@ public class WebPasswordFieldUI extends BasicPasswordFieldUI implements ShapePro
     private PropertyChangeListener marginChangeListener;
     private ComponentAdapter componentResizeListener;
 
-    public static ComponentUI createUI ( JComponent c )
+    @SuppressWarnings ( "UnusedParameters" )
+    public static ComponentUI createUI ( final JComponent c )
     {
-        return new WebPasswordFieldUI ( ( JPasswordField ) c );
-    }
-
-    public WebPasswordFieldUI ( final JPasswordField passwordField )
-    {
-        this ( passwordField, true );
-    }
-
-    public WebPasswordFieldUI ( final JPasswordField passwordField, boolean drawBorder )
-    {
-        super ();
-        this.drawBorder = drawBorder;
-        this.passwordField = passwordField;
+        return new WebPasswordFieldUI ();
     }
 
     @Override
-    public void installUI ( JComponent c )
+    public void installUI ( final JComponent c )
     {
         super.installUI ( c );
+
+        this.passwordField = ( JPasswordField ) c;
 
         // Default settings
         SwingUtils.setOrientation ( passwordField );
@@ -114,13 +105,13 @@ public class WebPasswordFieldUI extends BasicPasswordFieldUI implements ShapePro
         focusListener = new FocusListener ()
         {
             @Override
-            public void focusLost ( FocusEvent e )
+            public void focusLost ( final FocusEvent e )
             {
                 passwordField.repaint ();
             }
 
             @Override
-            public void focusGained ( FocusEvent e )
+            public void focusGained ( final FocusEvent e )
             {
                 passwordField.repaint ();
             }
@@ -130,37 +121,37 @@ public class WebPasswordFieldUI extends BasicPasswordFieldUI implements ShapePro
         accessibleChangeListener = new PropertyChangeListener ()
         {
             @Override
-            public void propertyChange ( PropertyChangeEvent evt )
+            public void propertyChange ( final PropertyChangeEvent evt )
             {
                 updateInnerComponents ();
             }
         };
-        passwordField.addPropertyChangeListener ( WebLookAndFeel.COMPONENT_ENABLED_PROPERTY, accessibleChangeListener );
+        passwordField.addPropertyChangeListener ( WebLookAndFeel.ENABLED_PROPERTY, accessibleChangeListener );
 
         orientationChangeListener = new PropertyChangeListener ()
         {
             @Override
-            public void propertyChange ( PropertyChangeEvent evt )
+            public void propertyChange ( final PropertyChangeEvent evt )
             {
                 updateBorder ();
             }
         };
-        passwordField.addPropertyChangeListener ( WebLookAndFeel.COMPONENT_ORIENTATION_PROPERTY, orientationChangeListener );
+        passwordField.addPropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, orientationChangeListener );
 
         marginChangeListener = new PropertyChangeListener ()
         {
             @Override
-            public void propertyChange ( PropertyChangeEvent evt )
+            public void propertyChange ( final PropertyChangeEvent evt )
             {
                 updateBorder ();
             }
         };
-        passwordField.addPropertyChangeListener ( WebLookAndFeel.COMPONENT_MARGIN_PROPERTY, marginChangeListener );
+        passwordField.addPropertyChangeListener ( WebLookAndFeel.MARGIN_PROPERTY, marginChangeListener );
 
         componentResizeListener = new ComponentAdapter ()
         {
             @Override
-            public void componentResized ( ComponentEvent e )
+            public void componentResized ( final ComponentEvent e )
             {
                 updateBorder ();
             }
@@ -168,20 +159,22 @@ public class WebPasswordFieldUI extends BasicPasswordFieldUI implements ShapePro
     }
 
     @Override
-    public void uninstallUI ( JComponent c )
+    public void uninstallUI ( final JComponent c )
     {
         PainterSupport.uninstallPainter ( passwordField, this.painter );
 
         passwordField.putClientProperty ( SwingUtils.HANDLES_ENABLE_STATE, null );
 
         passwordField.removeFocusListener ( focusListener );
-        passwordField.removePropertyChangeListener ( WebLookAndFeel.COMPONENT_ENABLED_PROPERTY, accessibleChangeListener );
-        passwordField.removePropertyChangeListener ( WebLookAndFeel.COMPONENT_ORIENTATION_PROPERTY, orientationChangeListener );
-        passwordField.removePropertyChangeListener ( WebLookAndFeel.COMPONENT_MARGIN_PROPERTY, marginChangeListener );
+        passwordField.removePropertyChangeListener ( WebLookAndFeel.ENABLED_PROPERTY, accessibleChangeListener );
+        passwordField.removePropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, orientationChangeListener );
+        passwordField.removePropertyChangeListener ( WebLookAndFeel.MARGIN_PROPERTY, marginChangeListener );
 
         cleanupLeadingComponent ();
         cleanupTrailingComponent ();
         passwordField.setLayout ( null );
+
+        this.passwordField = null;
 
         super.uninstallUI ( c );
     }
@@ -216,7 +209,7 @@ public class WebPasswordFieldUI extends BasicPasswordFieldUI implements ShapePro
         return leadingComponent;
     }
 
-    public void setLeadingComponent ( JComponent leadingComponent )
+    public void setLeadingComponent ( final JComponent leadingComponent )
     {
         if ( this.leadingComponent == leadingComponent )
         {
@@ -263,7 +256,7 @@ public class WebPasswordFieldUI extends BasicPasswordFieldUI implements ShapePro
         return trailingComponent;
     }
 
-    public void setTrailingComponent ( JComponent trailingComponent )
+    public void setTrailingComponent ( final JComponent trailingComponent )
     {
         if ( this.trailingComponent == trailingComponent )
         {
@@ -305,7 +298,7 @@ public class WebPasswordFieldUI extends BasicPasswordFieldUI implements ShapePro
         }
     }
 
-    public void setFieldMargin ( Insets margin )
+    public void setFieldMargin ( final Insets margin )
     {
         this.fieldMargin = margin;
         updateBorder ();
@@ -321,7 +314,7 @@ public class WebPasswordFieldUI extends BasicPasswordFieldUI implements ShapePro
         return inputPrompt;
     }
 
-    public void setInputPrompt ( String inputPrompt )
+    public void setInputPrompt ( final String inputPrompt )
     {
         this.inputPrompt = inputPrompt;
         this.inputPromptSet = inputPrompt != null && !inputPrompt.trim ().equals ( "" );
@@ -333,7 +326,7 @@ public class WebPasswordFieldUI extends BasicPasswordFieldUI implements ShapePro
         return inputPromptFont;
     }
 
-    public void setInputPromptFont ( Font inputPromptFont )
+    public void setInputPromptFont ( final Font inputPromptFont )
     {
         this.inputPromptFont = inputPromptFont;
         updateInputPromptView ();
@@ -344,7 +337,7 @@ public class WebPasswordFieldUI extends BasicPasswordFieldUI implements ShapePro
         return inputPromptForeground;
     }
 
-    public void setInputPromptForeground ( Color inputPromptForeground )
+    public void setInputPromptForeground ( final Color inputPromptForeground )
     {
         this.inputPromptForeground = inputPromptForeground;
         updateInputPromptView ();
@@ -355,7 +348,7 @@ public class WebPasswordFieldUI extends BasicPasswordFieldUI implements ShapePro
         return inputPromptPosition;
     }
 
-    public void setInputPromptPosition ( int inputPromptPosition )
+    public void setInputPromptPosition ( final int inputPromptPosition )
     {
         this.inputPromptPosition = inputPromptPosition;
         updateInputPromptView ();
@@ -366,7 +359,7 @@ public class WebPasswordFieldUI extends BasicPasswordFieldUI implements ShapePro
         return hideInputPromptOnFocus;
     }
 
-    public void setHideInputPromptOnFocus ( boolean hideInputPromptOnFocus )
+    public void setHideInputPromptOnFocus ( final boolean hideInputPromptOnFocus )
     {
         this.hideInputPromptOnFocus = hideInputPromptOnFocus;
         updateInputPromptView ();
@@ -377,7 +370,7 @@ public class WebPasswordFieldUI extends BasicPasswordFieldUI implements ShapePro
         return drawShade;
     }
 
-    public void setDrawShade ( boolean drawShade )
+    public void setDrawShade ( final boolean drawShade )
     {
         this.drawShade = drawShade;
     }
@@ -387,7 +380,7 @@ public class WebPasswordFieldUI extends BasicPasswordFieldUI implements ShapePro
         return shadeWidth;
     }
 
-    public void setShadeWidth ( int shadeWidth )
+    public void setShadeWidth ( final int shadeWidth )
     {
         this.shadeWidth = shadeWidth;
         updateBorder ();
@@ -398,7 +391,7 @@ public class WebPasswordFieldUI extends BasicPasswordFieldUI implements ShapePro
         return drawBackground;
     }
 
-    public void setDrawBackground ( boolean drawBackground )
+    public void setDrawBackground ( final boolean drawBackground )
     {
         this.drawBackground = drawBackground;
         updateView ();
@@ -409,7 +402,7 @@ public class WebPasswordFieldUI extends BasicPasswordFieldUI implements ShapePro
         return webColored;
     }
 
-    public void setWebColored ( boolean webColored )
+    public void setWebColored ( final boolean webColored )
     {
         this.webColored = webColored;
         updateView ();
@@ -420,7 +413,7 @@ public class WebPasswordFieldUI extends BasicPasswordFieldUI implements ShapePro
         return round;
     }
 
-    public void setRound ( int round )
+    public void setRound ( final int round )
     {
         this.round = round;
         updateView ();
@@ -431,7 +424,7 @@ public class WebPasswordFieldUI extends BasicPasswordFieldUI implements ShapePro
         return drawBorder;
     }
 
-    public void setDrawBorder ( boolean drawBorder )
+    public void setDrawBorder ( final boolean drawBorder )
     {
         this.drawBorder = drawBorder;
         updateBorder ();
@@ -442,7 +435,7 @@ public class WebPasswordFieldUI extends BasicPasswordFieldUI implements ShapePro
         return drawFocus;
     }
 
-    public void setDrawFocus ( boolean drawFocus )
+    public void setDrawFocus ( final boolean drawFocus )
     {
         this.drawFocus = drawFocus;
         updateView ();
@@ -453,7 +446,7 @@ public class WebPasswordFieldUI extends BasicPasswordFieldUI implements ShapePro
         return painter;
     }
 
-    public void setPainter ( Painter painter )
+    public void setPainter ( final Painter painter )
     {
         PainterSupport.uninstallPainter ( passwordField, this.painter );
 
@@ -471,7 +464,7 @@ public class WebPasswordFieldUI extends BasicPasswordFieldUI implements ShapePro
         }
     }
 
-    private boolean isInputPromptVisible ( JTextComponent c )
+    private boolean isInputPromptVisible ( final JTextComponent c )
     {
         return inputPromptSet && c.isEditable () && c.isEnabled () && ( !hideInputPromptOnFocus || !c.isFocusOwner () ) &&
                 c.getText ().equals ( "" );
@@ -493,8 +486,14 @@ public class WebPasswordFieldUI extends BasicPasswordFieldUI implements ShapePro
     {
         if ( passwordField != null )
         {
+            // Preserve old borders
+            if ( SwingUtils.isPreserveBorders ( passwordField ) )
+            {
+                return;
+            }
+
             // Style border
-            Insets m;
+            final Insets m;
             if ( painter != null )
             {
                 m = painter.getMargin ( getComponent () );
@@ -509,8 +508,8 @@ public class WebPasswordFieldUI extends BasicPasswordFieldUI implements ShapePro
             }
 
             // Taking margins into account
-            boolean ltr = passwordField.getComponentOrientation ().isLeftToRight ();
-            Insets margin = passwordField.getMargin ();
+            final boolean ltr = passwordField.getComponentOrientation ().isLeftToRight ();
+            final Insets margin = passwordField.getMargin ();
             if ( margin != null )
             {
                 m.top += margin.top;
@@ -527,8 +526,8 @@ public class WebPasswordFieldUI extends BasicPasswordFieldUI implements ShapePro
             }
 
             // Adding component sizes into border
-            Component lc = ltr ? leadingComponent : trailingComponent;
-            Component tc = ltr ? trailingComponent : leadingComponent;
+            final Component lc = ltr ? leadingComponent : trailingComponent;
+            final Component tc = ltr ? trailingComponent : leadingComponent;
             if ( lc != null )
             {
                 m.left += lc.getPreferredSize ().width;
@@ -544,10 +543,10 @@ public class WebPasswordFieldUI extends BasicPasswordFieldUI implements ShapePro
     }
 
     @Override
-    protected void paintSafely ( Graphics g )
+    protected void paintSafely ( final Graphics g )
     {
-        JTextComponent c = getComponent ();
-        Graphics2D g2d = ( Graphics2D ) g;
+        final JTextComponent c = getComponent ();
+        final Graphics2D g2d = ( Graphics2D ) g;
 
         if ( c.isOpaque () && ( painter == null || !painter.isOpaque ( passwordField ) ) )
         {
@@ -558,7 +557,7 @@ public class WebPasswordFieldUI extends BasicPasswordFieldUI implements ShapePro
 
         if ( painter != null || drawBorder )
         {
-            Object aa = LafUtils.setupAntialias ( g2d );
+            final Object aa = LafUtils.setupAntialias ( g2d );
             if ( painter != null )
             {
                 // Use background painter instead of default UI graphics
@@ -581,18 +580,18 @@ public class WebPasswordFieldUI extends BasicPasswordFieldUI implements ShapePro
             LafUtils.restoreAntialias ( g2d, aa );
         }
 
-        Map hints = SwingUtils.setupTextAntialias ( g2d );
+        final Map hints = SwingUtils.setupTextAntialias ( g2d );
         super.paintSafely ( g );
         if ( isInputPromptVisible ( c ) )
         {
-            boolean ltr = c.getComponentOrientation ().isLeftToRight ();
-            Rectangle b = getVisibleEditorRect ();
-            Shape oc = LafUtils.intersectClip ( g2d, b );
+            final boolean ltr = c.getComponentOrientation ().isLeftToRight ();
+            final Rectangle b = getVisibleEditorRect ();
+            final Shape oc = LafUtils.intersectClip ( g2d, b );
             g2d.setFont ( inputPromptFont != null ? inputPromptFont : c.getFont () );
             g2d.setPaint ( inputPromptForeground != null ? inputPromptForeground : c.getForeground () );
 
-            FontMetrics fm = g2d.getFontMetrics ();
-            int x;
+            final FontMetrics fm = g2d.getFontMetrics ();
+            final int x;
             if ( inputPromptPosition == CENTER )
             {
                 x = b.x + b.width / 2 - fm.stringWidth ( inputPrompt ) / 2;
@@ -613,13 +612,13 @@ public class WebPasswordFieldUI extends BasicPasswordFieldUI implements ShapePro
     }
 
     @Override
-    protected void paintBackground ( Graphics g )
+    protected void paintBackground ( final Graphics g )
     {
         // Do not paint anything here
     }
 
     @Override
-    public Dimension getPreferredSize ( JComponent c )
+    public Dimension getPreferredSize ( final JComponent c )
     {
         Dimension ps = super.getPreferredSize ( c );
 
@@ -629,7 +628,7 @@ public class WebPasswordFieldUI extends BasicPasswordFieldUI implements ShapePro
         // Height might be changed due to inner components
         if ( leadingComponent != null || trailingComponent != null )
         {
-            Dimension lps = c.getLayout ().preferredLayoutSize ( c );
+            final Dimension lps = c.getLayout ().preferredLayoutSize ( c );
             ps.height = Math.max ( ps.height, lps.height );
         }
 

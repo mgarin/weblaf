@@ -51,7 +51,7 @@ public class WebTableUI extends BasicTableUI
      * @return instance of the WebTreeUI
      */
     @SuppressWarnings ("UnusedParameters")
-    public static ComponentUI createUI ( JComponent c )
+    public static ComponentUI createUI ( final JComponent c )
     {
         return new WebTableUI ();
     }
@@ -112,7 +112,7 @@ public class WebTableUI extends BasicTableUI
         ancestorAdapter = new AncestorAdapter ()
         {
             @Override
-            public void ancestorAdded ( AncestorEvent event )
+            public void ancestorAdded ( final AncestorEvent event )
             {
                 configureEnclosingScrollPaneUI ( table );
             }
@@ -126,7 +126,7 @@ public class WebTableUI extends BasicTableUI
      * @param c component with this UI
      */
     @Override
-    public void uninstallUI ( JComponent c )
+    public void uninstallUI ( final JComponent c )
     {
         table.removeAncestorListener ( ancestorAdapter );
 
@@ -138,16 +138,16 @@ public class WebTableUI extends BasicTableUI
      *
      * @param table table to process
      */
-    protected void configureEnclosingScrollPaneUI ( JTable table )
+    protected void configureEnclosingScrollPaneUI ( final JTable table )
     {
         // Retrieving table scroll pane if it has one
-        JScrollPane scrollPane = SwingUtils.getScrollPane ( table );
+        final JScrollPane scrollPane = SwingUtils.getScrollPane ( table );
         if ( scrollPane != null )
         {
             // Make certain we are the viewPort's view and not, for
             // example, the rowHeaderView of the scrollPane -
             // an implementor of fixed columns might do this.
-            JViewport viewport = scrollPane.getViewport ();
+            final JViewport viewport = scrollPane.getViewport ();
             if ( viewport == null || viewport.getView () != table )
             {
                 return;

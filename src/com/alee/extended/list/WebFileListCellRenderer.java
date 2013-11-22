@@ -139,7 +139,7 @@ public class WebFileListCellRenderer extends WebListCellRenderer
         add ( descriptionLabel );
         add ( sizeLabel );
 
-        fileList.addPropertyChangeListener ( WebLookAndFeel.COMPONENT_ENABLED_PROPERTY, new PropertyChangeListener ()
+        fileList.addPropertyChangeListener ( WebLookAndFeel.ENABLED_PROPERTY, new PropertyChangeListener ()
         {
             @Override
             public void propertyChange ( final PropertyChangeEvent evt )
@@ -152,7 +152,7 @@ public class WebFileListCellRenderer extends WebListCellRenderer
             }
         } );
 
-        fileList.addPropertyChangeListener ( WebLookAndFeel.COMPONENT_ORIENTATION_PROPERTY, new PropertyChangeListener ()
+        fileList.addPropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, new PropertyChangeListener ()
         {
             @Override
             public void propertyChange ( final PropertyChangeEvent evt )

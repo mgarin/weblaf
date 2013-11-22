@@ -49,33 +49,27 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider,
 
     private Color selectedTopBg = WebTabbedPaneStyle.selectedTopBg;
     private Color selectedBottomBg = WebTabbedPaneStyle.selectedBottomBg;
-
     private Color topBg = WebTabbedPaneStyle.topBg;
     private Color bottomBg = WebTabbedPaneStyle.bottomBg;
-
-    private Map<Integer, Color> selectedForegroundAt = new HashMap<Integer, Color> ();
-    private Map<Integer, Painter> backgroundPainterAt = new HashMap<Integer, Painter> ();
-
     private int round = WebTabbedPaneStyle.round;
     private int shadeWidth = WebTabbedPaneStyle.shadeWidth;
-
     private boolean rotateTabInsets = WebTabbedPaneStyle.rotateTabInsets;
-
     private Insets contentInsets = WebTabbedPaneStyle.contentInsets;
     private Insets tabInsets = WebTabbedPaneStyle.tabInsets;
-
     private Painter painter = WebTabbedPaneStyle.painter;
-
     private int tabRunIndent = WebTabbedPaneStyle.tabRunIndent;
     private int tabOverlay = WebTabbedPaneStyle.tabOverlay;
     private TabStretchType tabStretchType = WebTabbedPaneStyle.tabStretchType;
+
+    private final Map<Integer, Color> selectedForegroundAt = new HashMap<Integer, Color> ();
+    private final Map<Integer, Painter> backgroundPainterAt = new HashMap<Integer, Painter> ();
 
     private FocusAdapter focusAdapter;
     //    private MouseAdapter mouseAdapter;
     //    private int rolloverTab = -1;
 
     @SuppressWarnings ("UnusedParameters")
-    public static ComponentUI createUI ( JComponent c )
+    public static ComponentUI createUI ( final JComponent c )
     {
         return new WebTabbedPaneUI ();
     }
@@ -97,13 +91,13 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider,
         focusAdapter = new FocusAdapter ()
         {
             @Override
-            public void focusGained ( FocusEvent e )
+            public void focusGained ( final FocusEvent e )
             {
                 tabPane.repaint ();
             }
 
             @Override
-            public void focusLost ( FocusEvent e )
+            public void focusLost ( final FocusEvent e )
             {
                 tabPane.repaint ();
             }
@@ -137,7 +131,7 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider,
     }
 
     @Override
-    public void uninstallUI ( JComponent c )
+    public void uninstallUI ( final JComponent c )
     {
         PainterSupport.uninstallPainter ( tabPane, this.painter );
 
@@ -168,7 +162,13 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider,
     {
         if ( tabPane != null )
         {
-            Insets bgInsets = getBackgroundInsets ( tabPane );
+            // Preserve old borders
+            if ( SwingUtils.isPreserveBorders ( tabPane ) )
+            {
+                return;
+            }
+
+            final Insets bgInsets = getBackgroundInsets ( tabPane );
             if ( tabbedPaneStyle.equals ( TabbedPaneStyle.standalone ) )
             {
                 // Standalone style border
@@ -183,7 +183,7 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider,
         }
     }
 
-    private Insets getBackgroundInsets ( JComponent c )
+    private Insets getBackgroundInsets ( final JComponent c )
     {
         return painter != null ? painter.getMargin ( c ) : new Insets ( 0, 0, 0, 0 );
     }
@@ -193,10 +193,20 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider,
         return shadeWidth;
     }
 
-    public void setShadeWidth ( int shadeWidth )
+    public void setShadeWidth ( final int shadeWidth )
     {
         this.shadeWidth = shadeWidth;
         updateBorder ();
+    }
+
+    public boolean isRotateTabInsets ()
+    {
+        return rotateTabInsets;
+    }
+
+    public void setRotateTabInsets ( final boolean rotateTabInsets )
+    {
+        this.rotateTabInsets = rotateTabInsets;
     }
 
     public int getRound ()
@@ -204,7 +214,7 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider,
         return round;
     }
 
-    public void setRound ( int round )
+    public void setRound ( final int round )
     {
         this.round = round;
     }
@@ -214,7 +224,7 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider,
         return contentInsets;
     }
 
-    public void setContentInsets ( Insets contentInsets )
+    public void setContentInsets ( final Insets contentInsets )
     {
         this.contentInsets = contentInsets;
     }
@@ -224,7 +234,7 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider,
         return tabInsets;
     }
 
-    public void setTabInsets ( Insets tabInsets )
+    public void setTabInsets ( final Insets tabInsets )
     {
         this.tabInsets = tabInsets;
     }
@@ -234,7 +244,7 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider,
         return selectedTopBg;
     }
 
-    public void setSelectedTopBg ( Color selectedTopBg )
+    public void setSelectedTopBg ( final Color selectedTopBg )
     {
         this.selectedTopBg = selectedTopBg;
     }
@@ -244,7 +254,7 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider,
         return selectedBottomBg;
     }
 
-    public void setSelectedBottomBg ( Color selectedBottomBg )
+    public void setSelectedBottomBg ( final Color selectedBottomBg )
     {
         this.selectedBottomBg = selectedBottomBg;
     }
@@ -254,7 +264,7 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider,
         return topBg;
     }
 
-    public void setTopBg ( Color topBg )
+    public void setTopBg ( final Color topBg )
     {
         this.topBg = topBg;
     }
@@ -264,27 +274,27 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider,
         return bottomBg;
     }
 
-    public void setBottomBg ( Color bottomBg )
+    public void setBottomBg ( final Color bottomBg )
     {
         this.bottomBg = bottomBg;
     }
 
-    public void setSelectedForegroundAt ( int tabIndex, Color foreground )
+    public void setSelectedForegroundAt ( final int tabIndex, final Color foreground )
     {
         selectedForegroundAt.put ( tabIndex, foreground );
     }
 
-    public Color getSelectedForegroundAt ( int tabIndex )
+    public Color getSelectedForegroundAt ( final int tabIndex )
     {
         return selectedForegroundAt.get ( tabIndex );
     }
 
-    public void setBackgroundPainterAt ( int tabIndex, Painter painter )
+    public void setBackgroundPainterAt ( final int tabIndex, final Painter painter )
     {
         backgroundPainterAt.put ( tabIndex, painter );
     }
 
-    public Painter getBackgroundPainterAt ( int tabIndex )
+    public Painter getBackgroundPainterAt ( final int tabIndex )
     {
         return backgroundPainterAt.get ( tabIndex );
     }
@@ -294,7 +304,7 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider,
         return tabbedPaneStyle;
     }
 
-    public void setTabbedPaneStyle ( TabbedPaneStyle tabbedPaneStyle )
+    public void setTabbedPaneStyle ( final TabbedPaneStyle tabbedPaneStyle )
     {
         this.tabbedPaneStyle = tabbedPaneStyle;
         updateBorder ();
@@ -318,7 +328,7 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider,
         return painter;
     }
 
-    public void setPainter ( Painter painter )
+    public void setPainter ( final Painter painter )
     {
         PainterSupport.uninstallPainter ( tabPane, this.painter );
 
@@ -332,7 +342,7 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider,
         return tabRunIndent;
     }
 
-    public void setTabRunIndent ( int tabRunIndent )
+    public void setTabRunIndent ( final int tabRunIndent )
     {
         this.tabRunIndent = tabRunIndent;
     }
@@ -342,7 +352,7 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider,
         return tabOverlay;
     }
 
-    public void setTabOverlay ( int tabOverlay )
+    public void setTabOverlay ( final int tabOverlay )
     {
         this.tabOverlay = tabOverlay;
     }
@@ -352,43 +362,43 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider,
         return tabStretchType;
     }
 
-    public void setTabStretchType ( TabStretchType tabStretchType )
+    public void setTabStretchType ( final TabStretchType tabStretchType )
     {
         this.tabStretchType = tabStretchType;
     }
 
     @Override
-    protected int getTabRunIndent ( int tabPlacement, int run )
+    protected int getTabRunIndent ( final int tabPlacement, final int run )
     {
         return tabRunIndent;
     }
 
     @Override
-    protected int getTabRunOverlay ( int tabPlacement )
+    protected int getTabRunOverlay ( final int tabPlacement )
     {
         return tabOverlay;
     }
 
     @Override
-    protected boolean shouldPadTabRun ( int tabPlacement, int run )
+    protected boolean shouldPadTabRun ( final int tabPlacement, final int run )
     {
         return !tabStretchType.equals ( TabStretchType.never ) &&
                 ( tabStretchType.equals ( TabStretchType.always ) || tabStretchType.equals ( TabStretchType.multiline ) && runCount > 1 );
     }
 
     @Override
-    protected boolean shouldRotateTabRuns ( int tabPlacement )
+    protected boolean shouldRotateTabRuns ( final int tabPlacement )
     {
         // todo Requires style changes
         return true;
     }
 
     @Override
-    protected Insets getContentBorderInsets ( int tabPlacement )
+    protected Insets getContentBorderInsets ( final int tabPlacement )
     {
         if ( tabbedPaneStyle.equals ( TabbedPaneStyle.standalone ) )
         {
-            Insets insets;
+            final Insets insets;
             if ( tabPlacement == JTabbedPane.TOP )
             {
                 insets = new Insets ( 1, 2, 1, 2 );
@@ -422,18 +432,18 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider,
     }
 
     @Override
-    protected Insets getTabAreaInsets ( int tabPlacement )
+    protected Insets getTabAreaInsets ( final int tabPlacement )
     {
-        Insets targetInsets = new Insets ( 0, 0, 0, 0 );
+        final Insets targetInsets = new Insets ( 0, 0, 0, 0 );
         rotateInsets ( tabbedPaneStyle.equals ( TabbedPaneStyle.standalone ) ? new Insets ( tabPlacement == RIGHT ? 1 : 0, 1, 0, 2 ) :
                 new Insets ( -1, -1, 0, 0 ), targetInsets, tabPlacement );
         return targetInsets;
     }
 
     @Override
-    protected Insets getTabInsets ( int tabPlacement, int tabIndex )
+    protected Insets getTabInsets ( final int tabPlacement, final int tabIndex )
     {
-        Insets insets = SwingUtils.copy ( tabInsets );
+        final Insets insets = SwingUtils.copy ( tabInsets );
         if ( tabIndex == 0 && tabPane.getSelectedIndex () == 0 )
         {
             // Fix for 1st element
@@ -442,7 +452,7 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider,
         }
         if ( rotateTabInsets )
         {
-            Insets targetInsets = new Insets ( 0, 0, 0, 0 );
+            final Insets targetInsets = new Insets ( 0, 0, 0, 0 );
             rotateInsets ( insets, targetInsets, tabPlacement );
             return targetInsets;
         }
@@ -453,16 +463,16 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider,
     }
 
     @Override
-    protected Insets getSelectedTabPadInsets ( int tabPlacement )
+    protected Insets getSelectedTabPadInsets ( final int tabPlacement )
     {
-        Insets targetInsets = new Insets ( 0, 0, 0, 0 );
+        final Insets targetInsets = new Insets ( 0, 0, 0, 0 );
         rotateInsets ( tabbedPaneStyle.equals ( TabbedPaneStyle.standalone ) ? new Insets ( 2, 2, 2, 1 ) : new Insets ( 0, 0, 0, 0 ),
                 targetInsets, tabPlacement );
         return targetInsets;
     }
 
     @Override
-    protected int getTabLabelShiftX ( int tabPlacement, int tabIndex, boolean isSelected )
+    protected int getTabLabelShiftX ( final int tabPlacement, final int tabIndex, final boolean isSelected )
     {
         if ( tabbedPaneStyle.equals ( TabbedPaneStyle.standalone ) )
         {
@@ -475,7 +485,7 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider,
     }
 
     @Override
-    protected int getTabLabelShiftY ( int tabPlacement, int tabIndex, boolean isSelected )
+    protected int getTabLabelShiftY ( final int tabPlacement, final int tabIndex, final boolean isSelected )
     {
         if ( tabbedPaneStyle.equals ( TabbedPaneStyle.standalone ) )
         {
@@ -488,41 +498,43 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider,
     }
 
     @Override
-    protected void paintTabBorder ( Graphics g, int tabPlacement, int tabIndex, int x, int y, int w, int h, boolean isSelected )
+    protected void paintTabBorder ( final Graphics g, final int tabPlacement, final int tabIndex, final int x, final int y, final int w,
+                                    final int h, final boolean isSelected )
     {
         // We don't need this one
     }
 
     @Override
-    protected void paintTabBackground ( Graphics g, int tabPlacement, int tabIndex, int x, int y, int w, int h, boolean isSelected )
+    protected void paintTabBackground ( final Graphics g, final int tabPlacement, final int tabIndex, final int x, final int y, final int w,
+                                        final int h, final boolean isSelected )
     {
-        Graphics2D g2d = ( Graphics2D ) g;
-        Object aa = LafUtils.setupAntialias ( g2d );
+        final Graphics2D g2d = ( Graphics2D ) g;
+        final Object aa = LafUtils.setupAntialias ( g2d );
 
         // Border shape
-        GeneralPath borderShape = createTabShape ( TabShapeType.border, tabPlacement, x, y, w, h, isSelected );
+        final GeneralPath borderShape = createTabShape ( TabShapeType.border, tabPlacement, x, y, w, h, isSelected );
 
         // Tab shade
         if ( tabbedPaneStyle.equals ( TabbedPaneStyle.standalone ) )
         {
-            GeneralPath shadeShape = createTabShape ( TabShapeType.shade, tabPlacement, x, y, w, h, isSelected );
+            final GeneralPath shadeShape = createTabShape ( TabShapeType.shade, tabPlacement, x, y, w, h, isSelected );
             LafUtils.drawShade ( g2d, shadeShape, StyleConstants.shadeColor, shadeWidth,
                     new Rectangle2D.Double ( 0, 0, tabPane.getWidth (), y + h ), round > 0 );
         }
 
         // Tab background
-        GeneralPath bgShape = createTabShape ( TabShapeType.background, tabPlacement, x, y, w, h, isSelected );
+        final GeneralPath bgShape = createTabShape ( TabShapeType.background, tabPlacement, x, y, w, h, isSelected );
         if ( backgroundPainterAt.containsKey ( tabIndex ) && isSelected )
         {
-            Shape old = LafUtils.intersectClip ( g2d, bgShape );
-            Painter bp = backgroundPainterAt.get ( tabIndex );
+            final Shape old = LafUtils.intersectClip ( g2d, bgShape );
+            final Painter bp = backgroundPainterAt.get ( tabIndex );
             bp.paint ( g2d, new Rectangle ( x, y, w, h ), tabPane );
             LafUtils.restoreClip ( g2d, old );
         }
         else
         {
-            Point topPoint = getTopTabBgPoint ( tabPlacement, x, y, w, h );
-            Point bottomPoint = getBottomTabBgPoint ( tabPlacement, x, y, w, h );
+            final Point topPoint = getTopTabBgPoint ( tabPlacement, x, y, w, h );
+            final Point bottomPoint = getBottomTabBgPoint ( tabPlacement, x, y, w, h );
             if ( isSelected )
             {
                 Color bg = tabPane.getBackgroundAt ( tabIndex );
@@ -541,7 +553,7 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider,
         g2d.draw ( borderShape );
 
         // Tab focus
-        boolean drawFocus = isSelected && tabPane.isFocusOwner ();
+        final boolean drawFocus = isSelected && tabPane.isFocusOwner ();
         if ( tabbedPaneStyle.equals ( TabbedPaneStyle.standalone ) )
         {
             LafUtils.drawCustomWebFocus ( g2d, null, StyleConstants.focusType, borderShape, null, drawFocus );
@@ -558,11 +570,11 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider,
     }
 
     @Override
-    protected void paintText ( Graphics g, int tabPlacement, Font font, FontMetrics metrics, int tabIndex, String title, Rectangle textRect,
-                               boolean isSelected )
+    protected void paintText ( final Graphics g, final int tabPlacement, final Font font, final FontMetrics metrics, final int tabIndex,
+                               final String title, final Rectangle textRect, final boolean isSelected )
     {
         g.setFont ( font );
-        View v = getTextViewForTab ( tabIndex );
+        final View v = getTextViewForTab ( tabIndex );
         if ( v != null )
         {
             // html
@@ -571,7 +583,7 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider,
         else
         {
             // plain text
-            int mnemIndex = tabPane.getDisplayedMnemonicIndexAt ( tabIndex );
+            final int mnemIndex = tabPane.getDisplayedMnemonicIndexAt ( tabIndex );
 
             if ( tabPane.isEnabled () && tabPane.isEnabledAt ( tabIndex ) )
             {
@@ -584,7 +596,7 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider,
                     }
                     else
                     {
-                        Color selectedFG = UIManager.getColor ( "TabbedPane.selectedForeground" );
+                        final Color selectedFG = UIManager.getColor ( "TabbedPane.selectedForeground" );
                         if ( selectedFG != null )
                         {
                             fg = selectedFG;
@@ -606,10 +618,11 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider,
         }
     }
 
-    private GeneralPath createTabShape ( TabShapeType tabShapeType, int tabPlacement, int x, int y, int w, int h, boolean isSelected )
+    private GeneralPath createTabShape ( final TabShapeType tabShapeType, final int tabPlacement, int x, final int y, int w, final int h,
+                                         final boolean isSelected )
     {
         // Fix for basic layouting of selected left-sided tab x coordinate
-        Insets insets = tabPane.getInsets ();
+        final Insets insets = tabPane.getInsets ();
         if ( tabbedPaneStyle.equals ( TabbedPaneStyle.attached ) && isSelected )
         {
             // todo fix for other tabPlacement values aswell
@@ -620,8 +633,8 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider,
             }
         }
 
-        int actualRound = tabbedPaneStyle.equals ( TabbedPaneStyle.standalone ) ? round : 0;
-        GeneralPath bgShape = new GeneralPath ( GeneralPath.WIND_EVEN_ODD );
+        final int actualRound = tabbedPaneStyle.equals ( TabbedPaneStyle.standalone ) ? round : 0;
+        final GeneralPath bgShape = new GeneralPath ( GeneralPath.WIND_EVEN_ODD );
         if ( tabPlacement == JTabbedPane.TOP )
         {
             bgShape.moveTo ( x, y + h + getChange ( tabShapeType ) );
@@ -661,7 +674,7 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider,
         return bgShape;
     }
 
-    private int getChange ( TabShapeType tabShapeType )
+    private int getChange ( final TabShapeType tabShapeType )
     {
         if ( tabShapeType.equals ( TabShapeType.shade ) )
         {
@@ -689,7 +702,7 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider,
         border
     }
 
-    private Point getTopTabBgPoint ( int tabPlacement, int x, int y, int w, int h )
+    private Point getTopTabBgPoint ( final int tabPlacement, final int x, final int y, final int w, final int h )
     {
         if ( tabPlacement == JTabbedPane.TOP )
         {
@@ -709,7 +722,7 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider,
         }
     }
 
-    private Point getBottomTabBgPoint ( int tabPlacement, int x, int y, int w, int h )
+    private Point getBottomTabBgPoint ( final int tabPlacement, final int x, final int y, final int w, final int h )
     {
         if ( tabPlacement == JTabbedPane.TOP )
         {
@@ -730,14 +743,14 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider,
     }
 
     @Override
-    protected void paintContentBorder ( Graphics g, int tabPlacement, int selectedIndex )
+    protected void paintContentBorder ( final Graphics g, final int tabPlacement, final int selectedIndex )
     {
-        Graphics2D g2d = ( Graphics2D ) g;
-        Object aa = LafUtils.setupAntialias ( g2d );
+        final Graphics2D g2d = ( Graphics2D ) g;
+        final Object aa = LafUtils.setupAntialias ( g2d );
 
-        int tabAreaSize = getTabAreaLength ( tabPlacement );
+        final int tabAreaSize = getTabAreaLength ( tabPlacement );
 
-        Insets bi = tabPane.getInsets ();
+        final Insets bi = tabPane.getInsets ();
         if ( tabPlacement == JTabbedPane.TOP || tabPlacement == JTabbedPane.BOTTOM )
         {
             bi.right += 1;
@@ -748,15 +761,15 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider,
         }
 
         // Selected tab bounds
-        Rectangle selected = selectedIndex != -1 ? getTabBounds ( tabPane, selectedIndex ) : null;
+        final Rectangle selected = selectedIndex != -1 ? getTabBounds ( tabPane, selectedIndex ) : null;
 
         // Background shape
-        Shape bs = createBackgroundShape ( tabPlacement, tabAreaSize, bi, selected );
+        final Shape bs = createBackgroundShape ( tabPlacement, tabAreaSize, bi, selected );
 
         if ( tabbedPaneStyle.equals ( TabbedPaneStyle.standalone ) )
         {
             // Proper clip
-            GeneralPath clip = new GeneralPath ( GeneralPath.WIND_EVEN_ODD );
+            final GeneralPath clip = new GeneralPath ( GeneralPath.WIND_EVEN_ODD );
             clip.append ( new Rectangle2D.Double ( 0, 0, tabPane.getWidth (), tabPane.getHeight () ), false );
             clip.append ( bs, false );
             LafUtils.drawShade ( g2d, bs, StyleConstants.shadeColor, shadeWidth, clip, round > 0 );
@@ -791,13 +804,13 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider,
             // Area background
             if ( backgroundPainterAt.containsKey ( selectedIndex ) )
             {
-                Shape old = LafUtils.intersectClip ( g2d, bs );
+                final Shape old = LafUtils.intersectClip ( g2d, bs );
                 backgroundPainterAt.get ( selectedIndex ).paint ( g2d, bs.getBounds (), tabPane );
                 LafUtils.restoreClip ( g2d, old );
             }
             else
             {
-                Color bg = selectedIndex != -1 ? tabPane.getBackgroundAt ( selectedIndex ) : null;
+                final Color bg = selectedIndex != -1 ? tabPane.getBackgroundAt ( selectedIndex ) : null;
                 g2d.setPaint ( bg != null ? bg : tabPane.getBackground () );
                 g2d.fill ( bs );
             }
@@ -818,7 +831,7 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider,
             }
             else
             {
-                Color bg = selectedIndex != -1 ? tabPane.getBackgroundAt ( selectedIndex ) : null;
+                final Color bg = selectedIndex != -1 ? tabPane.getBackgroundAt ( selectedIndex ) : null;
                 g2d.setPaint ( bg != null ? bg : tabPane.getBackground () );
                 g2d.fill ( bs );
             }
@@ -862,23 +875,23 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider,
         LafUtils.restoreAntialias ( g2d, aa );
     }
 
-    private int getTabAreaLength ( int tabPlacement )
+    private int getTabAreaLength ( final int tabPlacement )
     {
         return tabPlacement == JTabbedPane.TOP || tabPlacement == JTabbedPane.BOTTOM ?
                 calculateTabAreaHeight ( tabPlacement, runCount, maxTabHeight ) - 1 :
                 calculateTabAreaWidth ( tabPlacement, runCount, maxTabWidth ) - 1;
     }
 
-    private Shape createBackgroundShape ( int tabPlacement, int tabAreaSize, Insets bi, Rectangle selected )
+    private Shape createBackgroundShape ( final int tabPlacement, final int tabAreaSize, final Insets bi, final Rectangle selected )
     {
         if ( tabbedPaneStyle.equals ( TabbedPaneStyle.standalone ) )
         {
             if ( selected != null )
             {
-                GeneralPath gp = new GeneralPath ( GeneralPath.WIND_EVEN_ODD );
+                final GeneralPath gp = new GeneralPath ( GeneralPath.WIND_EVEN_ODD );
                 if ( tabPlacement == JTabbedPane.TOP )
                 {
-                    int topY = bi.top + tabAreaSize;
+                    final int topY = bi.top + tabAreaSize;
                     gp.moveTo ( selected.x, topY );
                     if ( selected.x > bi.left + round && round > 0 )
                     {
@@ -915,7 +928,7 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider,
                 }
                 else if ( tabPlacement == JTabbedPane.BOTTOM )
                 {
-                    int bottomY = tabPane.getHeight () - bi.bottom - tabAreaSize;
+                    final int bottomY = tabPane.getHeight () - bi.bottom - tabAreaSize;
                     gp.moveTo ( selected.x, bottomY );
                     if ( selected.x > bi.left + round && round > 0 )
                     {
@@ -951,7 +964,7 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider,
                 }
                 else if ( tabPlacement == JTabbedPane.LEFT )
                 {
-                    int leftX = bi.left + tabAreaSize;
+                    final int leftX = bi.left + tabAreaSize;
                     gp.moveTo ( leftX, selected.y );
                     if ( selected.y > bi.top + round && round > 0 )
                     {
@@ -988,7 +1001,7 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider,
                 }
                 else
                 {
-                    int rightX = tabPane.getWidth () - bi.right - tabAreaSize;
+                    final int rightX = tabPane.getWidth () - bi.right - tabAreaSize;
                     gp.moveTo ( rightX, selected.y );
                     if ( selected.y > bi.top + round && round > 0 )
                     {
@@ -1026,10 +1039,10 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider,
             }
             else
             {
-                boolean top = tabPlacement == JTabbedPane.TOP;
-                boolean bottom = tabPlacement == JTabbedPane.BOTTOM;
-                boolean left = tabPlacement == JTabbedPane.LEFT;
-                boolean right = tabPlacement == JTabbedPane.RIGHT;
+                final boolean top = tabPlacement == JTabbedPane.TOP;
+                final boolean bottom = tabPlacement == JTabbedPane.BOTTOM;
+                final boolean left = tabPlacement == JTabbedPane.LEFT;
+                final boolean right = tabPlacement == JTabbedPane.RIGHT;
                 return new RoundRectangle2D.Double ( bi.left + ( left ? tabAreaSize : 0 ), bi.top + ( top ? tabAreaSize : 0 ),
                         tabPane.getWidth () - bi.left - bi.right -
                                 ( left || right ? tabAreaSize : 0 ), tabPane.getHeight () - bi.top - bi.bottom -
@@ -1038,11 +1051,11 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider,
         }
         else
         {
-            int x = bi.left + ( tabPlacement == JTabbedPane.LEFT ? tabAreaSize : 0 );
-            int y = bi.top + ( tabPlacement == JTabbedPane.TOP ? tabAreaSize : 0 );
-            int width = tabPane.getWidth () - bi.left - bi.right -
+            final int x = bi.left + ( tabPlacement == JTabbedPane.LEFT ? tabAreaSize : 0 );
+            final int y = bi.top + ( tabPlacement == JTabbedPane.TOP ? tabAreaSize : 0 );
+            final int width = tabPane.getWidth () - bi.left - bi.right -
                     ( tabPlacement == JTabbedPane.LEFT || tabPlacement == JTabbedPane.RIGHT ? tabAreaSize : 0 );
-            int height = tabPane.getHeight () - bi.top - bi.bottom -
+            final int height = tabPane.getHeight () - bi.top - bi.bottom -
                     ( tabPlacement == JTabbedPane.TOP || tabPlacement == JTabbedPane.BOTTOM ? tabAreaSize : 0 );
             return new Rectangle ( x, y, width + 1, height );
         }
@@ -1052,9 +1065,9 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider,
     {
         Shape clip = null;
 
-        int tabPlacement = tabPane.getTabPlacement ();
-        int tabAreaLength = getTabAreaLength ( tabPlacement );
-        Insets insets = tabPane.getInsets ();
+        final int tabPlacement = tabPane.getTabPlacement ();
+        final int tabAreaLength = getTabAreaLength ( tabPlacement );
+        final Insets insets = tabPane.getInsets ();
 
         if ( tabPlacement == JTabbedPane.TOP )
         {
@@ -1082,14 +1095,14 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider,
     }
 
     @Override
-    protected void paintFocusIndicator ( Graphics g, int tabPlacement, Rectangle[] rects, int tabIndex, Rectangle iconRect,
-                                         Rectangle textRect, boolean isSelected )
+    protected void paintFocusIndicator ( final Graphics g, final int tabPlacement, final Rectangle[] rects, final int tabIndex,
+                                         final Rectangle iconRect, final Rectangle textRect, final boolean isSelected )
     {
         // We don't need this one
     }
 
     @Override
-    public void paint ( Graphics g, JComponent c )
+    public void paint ( final Graphics g, final JComponent c )
     {
         // Background painter
         if ( painter != null )
@@ -1098,7 +1111,7 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider,
         }
 
         // Basic paintings
-        Map hints = SwingUtils.setupTextAntialias ( g );
+        final Map hints = SwingUtils.setupTextAntialias ( g );
         super.paint ( g, c );
         SwingUtils.restoreTextAntialias ( g, hints );
     }

@@ -89,6 +89,26 @@ public class WebRadioButtonMenuItemUI extends WebMenuItemUI
      * {@inheritDoc}
      */
     @Override
+    public Paint getNorthCornerFill ()
+    {
+        final boolean selected = menuItem.isEnabled () && menuItem.getModel ().isArmed ();
+        return !selected && menuItem.isSelected () ? checkColor : super.getNorthCornerFill ();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Paint getSouthCornerFill ()
+    {
+        final boolean selected = menuItem.isEnabled () && menuItem.getModel ().isArmed ();
+        return !selected && menuItem.isSelected () ? checkColor : super.getSouthCornerFill ();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     protected void paintBackground ( final Graphics2D g2d, final JMenuItem menuItem, final int x, final int y, final int w, final int h,
                                      final boolean selected, final boolean ltr )
     {

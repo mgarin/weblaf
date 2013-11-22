@@ -22,12 +22,12 @@ import com.alee.laf.label.WebLabel;
 import com.alee.laf.text.WebTextField;
 import com.alee.utils.laf.FocusType;
 import com.alee.utils.laf.ShadeType;
+import com.alee.utils.laf.WeblafBorder;
 import com.alee.utils.ninepatch.NinePatchIcon;
 import com.alee.utils.swing.BorderMethods;
 
 import javax.swing.*;
 import javax.swing.border.Border;
-import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.basic.BasicButtonUI;
 import java.awt.*;
 import java.awt.font.FontRenderContext;
@@ -49,17 +49,17 @@ public final class LafUtils
 
     public static Border createWebBorder ( final Insets insets )
     {
-        return new EmptyBorder ( insets.top, insets.left, insets.bottom, insets.right );
+        return new WeblafBorder ( insets.top, insets.left, insets.bottom, insets.right );
     }
 
     public static Border createWebBorder ( final int top, final int left, final int bottom, final int right )
     {
-        return new EmptyBorder ( top, left, bottom, right );
+        return new WeblafBorder ( top, left, bottom, right );
     }
 
     public static Border createWebBorder ( final int margin )
     {
-        return new EmptyBorder ( margin, margin, margin, margin );
+        return new WeblafBorder ( margin, margin, margin, margin );
     }
 
     /**

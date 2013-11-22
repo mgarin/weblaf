@@ -305,12 +305,12 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
             @Override
             public Dimension getPreferredSize ()
             {
-                Dimension ps = super.getPreferredSize ();
+                final Dimension ps = super.getPreferredSize ();
                 if ( titlePanePostion == TOP || titlePanePostion == BOTTOM )
                 {
                     if ( WebCollapsiblePane.this.content != null )
                     {
-                        Insets insets = getInsets ();
+                        final Insets insets = getInsets ();
                         ps.width = insets.left + WebCollapsiblePane.this.content.getPreferredSize ().width + insets.right;
                     }
                     if ( transitionProgress < 1f )
@@ -322,7 +322,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
                 {
                     if ( WebCollapsiblePane.this.content != null )
                     {
-                        Insets insets = getInsets ();
+                        final Insets insets = getInsets ();
                         ps.height = insets.top + WebCollapsiblePane.this.content.getPreferredSize ().height + insets.bottom;
                     }
                     if ( transitionProgress < 1f )
@@ -343,7 +343,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
             contentPanel.add ( this.content, BorderLayout.CENTER );
         }
 
-        addPropertyChangeListener ( WebLookAndFeel.COMPONENT_ORIENTATION_PROPERTY, new PropertyChangeListener ()
+        addPropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, new PropertyChangeListener ()
         {
             @Override
             public void propertyChange ( final PropertyChangeEvent evt )
@@ -1156,7 +1156,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
     {
         if ( cachedExpandIcon == null )
         {
-            boolean ltr = getComponentOrientation ().isLeftToRight ();
+            final boolean ltr = getComponentOrientation ().isLeftToRight ();
             if ( !rotateStateIcon || titlePanePostion == TOP || titlePanePostion == BOTTOM )
             {
                 cachedExpandIcon = expandIcon;

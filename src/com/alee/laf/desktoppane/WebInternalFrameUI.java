@@ -58,7 +58,7 @@ public class WebInternalFrameUI extends BasicInternalFrameUI
      *
      * @param b internal frame to which this UI will be applied
      */
-    public WebInternalFrameUI ( JInternalFrame b )
+    public WebInternalFrameUI ( final JInternalFrame b )
     {
         super ( b );
     }
@@ -70,7 +70,7 @@ public class WebInternalFrameUI extends BasicInternalFrameUI
      * @param c component that will use UI instance
      * @return instance of the WebInternalFrameUI
      */
-    public static ComponentUI createUI ( JComponent c )
+    public static ComponentUI createUI ( final JComponent c )
     {
         return new WebInternalFrameUI ( ( JInternalFrame ) c );
     }
@@ -81,7 +81,7 @@ public class WebInternalFrameUI extends BasicInternalFrameUI
      * @param c component for this UI
      */
     @Override
-    public void installUI ( JComponent c )
+    public void installUI ( final JComponent c )
     {
         super.installUI ( c );
 
@@ -95,7 +95,7 @@ public class WebInternalFrameUI extends BasicInternalFrameUI
         focusTracker = new DefaultFocusTracker ()
         {
             @Override
-            public void focusChanged ( boolean focused )
+            public void focusChanged ( final boolean focused )
             {
                 WebInternalFrameUI.this.focused = focused;
                 frame.repaint ();
@@ -110,7 +110,7 @@ public class WebInternalFrameUI extends BasicInternalFrameUI
      * @param c component with this UI
      */
     @Override
-    public void uninstallUI ( JComponent c )
+    public void uninstallUI ( final JComponent c )
     {
         FocusManager.removeFocusTracker ( focusTracker );
 
@@ -124,7 +124,7 @@ public class WebInternalFrameUI extends BasicInternalFrameUI
      * @return north panel for specified internal frame
      */
     @Override
-    protected JComponent createNorthPane ( JInternalFrame w )
+    protected JComponent createNorthPane ( final JInternalFrame w )
     {
         titlePane = new WebInternalFrameTitlePane ( w );
         return titlePane;
@@ -137,7 +137,7 @@ public class WebInternalFrameUI extends BasicInternalFrameUI
      * @return west panel for specified internal frame
      */
     @Override
-    protected JComponent createWestPane ( JInternalFrame w )
+    protected JComponent createWestPane ( final JInternalFrame w )
     {
         // todo Proper internal frame resize
         return new JComponent ()
@@ -161,7 +161,7 @@ public class WebInternalFrameUI extends BasicInternalFrameUI
      * @return east panel for specified internal frame
      */
     @Override
-    protected JComponent createEastPane ( JInternalFrame w )
+    protected JComponent createEastPane ( final JInternalFrame w )
     {
         // todo Proper internal frame resize
         return new JComponent ()
@@ -185,7 +185,7 @@ public class WebInternalFrameUI extends BasicInternalFrameUI
      * @return south panel for specified internal frame
      */
     @Override
-    protected JComponent createSouthPane ( JInternalFrame w )
+    protected JComponent createSouthPane ( final JInternalFrame w )
     {
         // todo Proper internal frame resize
         return new JComponent ()
@@ -209,18 +209,19 @@ public class WebInternalFrameUI extends BasicInternalFrameUI
      * @param c component
      */
     @Override
-    public void paint ( Graphics g, JComponent c )
+    public void paint ( final Graphics g, final JComponent c )
     {
-        Graphics2D g2d = ( Graphics2D ) g;
-        Object aa = LafUtils.setupAntialias ( g2d );
+        final Graphics2D g2d = ( Graphics2D ) g;
+        final Object aa = LafUtils.setupAntialias ( g2d );
 
         // Shape border = LafUtils.getWebBorderShape ( c, StyleConstants.shadeWidth, StyleConstants.round );
 
-        Insets insets = c.getInsets ();
-        RoundRectangle2D innerBorder = new RoundRectangle2D.Double ( insets.left + 3 + sideSpacing, insets.top + titlePane.getHeight () - 1,
-                c.getWidth () - 1 - insets.left - 3 - sideSpacing - insets.right - 3 - sideSpacing,
-                c.getHeight () - 1 - insets.top - titlePane.getHeight () + 1 - insets.bottom - 3 -
-                        sideSpacing, ( StyleConstants.bigRound - 1 ) * 2, ( StyleConstants.bigRound - 1 ) * 2 );
+        final Insets insets = c.getInsets ();
+        final RoundRectangle2D innerBorder =
+                new RoundRectangle2D.Double ( insets.left + 3 + sideSpacing, insets.top + titlePane.getHeight () - 1,
+                        c.getWidth () - 1 - insets.left - 3 - sideSpacing - insets.right - 3 - sideSpacing,
+                        c.getHeight () - 1 - insets.top - titlePane.getHeight () + 1 - insets.bottom - 3 -
+                                sideSpacing, ( StyleConstants.bigRound - 1 ) * 2, ( StyleConstants.bigRound - 1 ) * 2 );
 
         // Border and background
         LafUtils.drawWebStyle ( g2d, c, c.isEnabled () && focused ? StyleConstants.fieldFocusColor : StyleConstants.shadeColor,

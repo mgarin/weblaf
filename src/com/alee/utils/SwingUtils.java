@@ -29,12 +29,14 @@ import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.hotkey.HotkeyRunnable;
 import com.alee.managers.language.LanguageManager;
 import com.alee.utils.laf.ShapeProvider;
+import com.alee.utils.laf.WeblafBorder;
 import com.alee.utils.swing.EventPump;
 
 import javax.swing.*;
 import javax.swing.FocusManager;
 import javax.swing.border.Border;
 import javax.swing.event.AncestorListener;
+import javax.swing.plaf.BorderUIResource;
 import javax.swing.plaf.RootPaneUI;
 import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.TableCellRenderer;
@@ -96,7 +98,7 @@ public final class SwingUtils
     /**
      * Strong cache for the left and right side bearings for STRONG_BEARING_CACHE_SIZE most recently used fonts.
      */
-    private static BearingCacheEntry[] strongBearingCache = new BearingCacheEntry[ STRONG_BEARING_CACHE_SIZE ];
+    private static final BearingCacheEntry[] strongBearingCache = new BearingCacheEntry[ STRONG_BEARING_CACHE_SIZE ];
 
     /**
      * Next index to insert an entry into the strong bearing cache.
@@ -106,23 +108,32 @@ public final class SwingUtils
     /**
      * Soft cache for the left and right side bearings.
      */
-    private static Set<SoftReference<BearingCacheEntry>> softBearingCache = new HashSet<SoftReference<BearingCacheEntry>> ();
+    private static final Set<SoftReference<BearingCacheEntry>> softBearingCache = new HashSet<SoftReference<BearingCacheEntry>> ();
 
     /**
-     * Returns whether UI delegates should honor a user-specified border on this
-     * component.
+     * Returns whether UI delegate should preserve current border on this component or not.
+     *
+     * @param component component to process
+     * @return true if UI delegate should preserve current border on this component, false otherwise
      */
-    public static boolean getHonorUserBorders(JComponent component)
+    public static boolean isPreserveBorders ( final JComponent component )
     {
-        if (Boolean.getBoolean(WebLookAndFeel.PROPERTY_HONOR_USER_BORDERS))
-        {
-            return true;
-        }
-        Object prop = component
-                .getClientProperty(WebLookAndFeel.PROPERTY_HONOR_USER_BORDER);
-        return Boolean.TRUE.equals(prop);
+        return getHonorUserBorders ( component ) && !( component.getBorder () instanceof BorderUIResource ) &&
+                !( component.getBorder () instanceof WeblafBorder );
     }
-    
+
+    /**
+     * Returns whether UI delegate should honor a user-specified border on this component or not.
+     *
+     * @param component component to process
+     * @return true if UI delegate should honor a user-specified border on this component, false otherwise
+     */
+    public static boolean getHonorUserBorders ( final JComponent component )
+    {
+        return Boolean.getBoolean ( WebLookAndFeel.PROPERTY_HONOR_USER_BORDERS ) ||
+                Boolean.TRUE.equals ( component.getClientProperty ( WebLookAndFeel.PROPERTY_HONOR_USER_BORDER ) );
+    }
+
     /**
      * Returns whether window in which specified component located is decorated by L&amp;F or not.
      *
@@ -388,7 +399,7 @@ public final class SwingUtils
     /**
      * Displays the specified frame as modal to the owner frame.
      * Note that this method returns only after the modal frame is closed.
-     * <p>
+     * <p/>
      * This method is a Swing hack and not recommended for real use.
      * Still it might be useful for some specific cases.
      *
@@ -1369,10 +1380,10 @@ public final class SwingUtils
         }
         if ( component instanceof Container )
         {
-            if ( component instanceof JComponent )
+            if ( component instanceof JComponent && !childsOnly )
             {
-                final Object co = ( ( JComponent ) component ).getClientProperty ( HANDLES_ENABLE_STATE );
-                if ( co != null && ( Boolean ) co && !childsOnly )
+                final Object handlesEnabledState = ( ( JComponent ) component ).getClientProperty ( HANDLES_ENABLE_STATE );
+                if ( handlesEnabledState != null && handlesEnabledState instanceof Boolean && ( Boolean ) handlesEnabledState )
                 {
                     return;
                 }
@@ -2255,7 +2266,7 @@ public final class SwingUtils
     }
 
     /**
-     * Delays an invoke later call.
+     * Will perform an "invokeLater" call when the specified delay time passes.
      *
      * @param delay    delay time in milliseconds
      * @param runnable runnable
@@ -2268,13 +2279,14 @@ public final class SwingUtils
             public void run ()
             {
                 ThreadUtils.sleepSafely ( delay );
-                SwingUtilities.invokeLater ( runnable );
+                invokeLater ( runnable );
             }
         } ).start ();
     }
 
     /**
-     * Improved invoke later call.
+     * Will invoke the specified action later in EDT in case it is called from non-EDT thread.
+     * Otherwise action will be performed immediately.
      *
      * @param runnable runnable
      */
@@ -2291,7 +2303,8 @@ public final class SwingUtils
     }
 
     /**
-     * Improved invoke later call for hotkey runnable.
+     * Will invoke the specified action later in EDT in case it is called from non-EDT thread.
+     * Otherwise action will be performed immediately.
      *
      * @param runnable hotkey runnable
      * @param e        key event
@@ -2316,7 +2329,7 @@ public final class SwingUtils
     }
 
     /**
-     * Improved invoke and wait call.
+     * Will invoke the specified action in EDT in case it is called from non-EDT thread.
      *
      * @param runnable runnable
      * @throws InterruptedException
@@ -2335,7 +2348,8 @@ public final class SwingUtils
     }
 
     /**
-     * Safe invoke and wait call that doesn't throw exceptions.
+     * Will invoke the specified action in EDT in case it is called from non-EDT thread.
+     * It will also block any exceptions thrown by "invokeAndWait" method.
      *
      * @param runnable runnable
      */
@@ -2611,7 +2625,7 @@ public final class SwingUtils
             return savedHints;
         }
         final Set objects = hintsToSave.keySet ();
-        for ( Object o : objects )
+        for ( final Object o : objects )
         {
             final RenderingHints.Key key = ( RenderingHints.Key ) o;
             final Object value = g2d.getRenderingHint ( key );
@@ -2627,7 +2641,7 @@ public final class SwingUtils
      * Returns the FontMetrics for the current Font of the passed in Graphics.
      * This method is used when a Graphics is available, typically when painting.
      * If a Graphics is not available the JComponent method of the same name should be used.
-     * <p>
+     * <p/>
      * This does not necessarily return the FontMetrics from the Graphics.
      *
      * @param c JComponent requesting FontMetrics, may be null
@@ -2642,7 +2656,7 @@ public final class SwingUtils
      * Returns the FontMetrics for the specified Font.
      * This method is used when a Graphics is available, typically when painting.
      * If a Graphics is not available the JComponent method of the same name should be used.
-     * <p>
+     * <p/>
      * This does not necessarily return the FontMetrics from the Graphics.
      *
      * @param c    JComponent requesting FontMetrics, may be null
@@ -2837,10 +2851,10 @@ public final class SwingUtils
      */
     private static class BearingCacheEntry
     {
-        private FontMetrics fontMetrics;
-        private Font font;
-        private FontRenderContext frc;
-        private Map<Character, Short> cache;
+        private final FontMetrics fontMetrics;
+        private final Font font;
+        private final FontRenderContext frc;
+        private final Map<Character, Short> cache;
         private static final char[] oneChar = new char[ 1 ];
 
         public BearingCacheEntry ( final FontMetrics fontMetrics )

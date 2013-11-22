@@ -73,27 +73,18 @@ public class WebTextFieldUI extends BasicTextFieldUI implements ShapeProvider, S
     private PropertyChangeListener marginChangeListener;
     private ComponentAdapter componentResizeListener;
 
-    public WebTextFieldUI ( final JTextField textField )
+    @SuppressWarnings ( "UnusedParameters" )
+    public static ComponentUI createUI ( final JComponent c )
     {
-        this ( textField, true );
-    }
-
-    public WebTextFieldUI ( final JTextField textField, boolean drawBorder )
-    {
-        super ();
-        this.drawBorder = drawBorder;
-        this.textField = textField;
-    }
-
-    public static ComponentUI createUI ( JComponent c )
-    {
-        return new WebTextFieldUI ( ( JTextField ) c );
+        return new WebTextFieldUI ();
     }
 
     @Override
-    public void installUI ( JComponent c )
+    public void installUI ( final JComponent c )
     {
         super.installUI ( c );
+
+        this.textField = ( JTextField ) c;
 
         // Default settings
         SwingUtils.setOrientation ( textField );
@@ -115,13 +106,13 @@ public class WebTextFieldUI extends BasicTextFieldUI implements ShapeProvider, S
         focusListener = new FocusListener ()
         {
             @Override
-            public void focusLost ( FocusEvent e )
+            public void focusLost ( final FocusEvent e )
             {
                 textField.repaint ();
             }
 
             @Override
-            public void focusGained ( FocusEvent e )
+            public void focusGained ( final FocusEvent e )
             {
                 textField.repaint ();
             }
@@ -131,37 +122,37 @@ public class WebTextFieldUI extends BasicTextFieldUI implements ShapeProvider, S
         accessibleChangeListener = new PropertyChangeListener ()
         {
             @Override
-            public void propertyChange ( PropertyChangeEvent evt )
+            public void propertyChange ( final PropertyChangeEvent evt )
             {
                 updateInnerComponents ();
             }
         };
-        textField.addPropertyChangeListener ( WebLookAndFeel.COMPONENT_ENABLED_PROPERTY, accessibleChangeListener );
+        textField.addPropertyChangeListener ( WebLookAndFeel.ENABLED_PROPERTY, accessibleChangeListener );
 
         orientationChangeListener = new PropertyChangeListener ()
         {
             @Override
-            public void propertyChange ( PropertyChangeEvent evt )
+            public void propertyChange ( final PropertyChangeEvent evt )
             {
                 updateBorder ();
             }
         };
-        textField.addPropertyChangeListener ( WebLookAndFeel.COMPONENT_ORIENTATION_PROPERTY, orientationChangeListener );
+        textField.addPropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, orientationChangeListener );
 
         marginChangeListener = new PropertyChangeListener ()
         {
             @Override
-            public void propertyChange ( PropertyChangeEvent evt )
+            public void propertyChange ( final PropertyChangeEvent evt )
             {
                 updateBorder ();
             }
         };
-        textField.addPropertyChangeListener ( WebLookAndFeel.COMPONENT_MARGIN_PROPERTY, marginChangeListener );
+        textField.addPropertyChangeListener ( WebLookAndFeel.MARGIN_PROPERTY, marginChangeListener );
 
         componentResizeListener = new ComponentAdapter ()
         {
             @Override
-            public void componentResized ( ComponentEvent e )
+            public void componentResized ( final ComponentEvent e )
             {
                 updateBorder ();
             }
@@ -169,20 +160,22 @@ public class WebTextFieldUI extends BasicTextFieldUI implements ShapeProvider, S
     }
 
     @Override
-    public void uninstallUI ( JComponent c )
+    public void uninstallUI ( final JComponent c )
     {
         PainterSupport.uninstallPainter ( textField, this.painter );
 
         textField.putClientProperty ( SwingUtils.HANDLES_ENABLE_STATE, null );
 
         textField.removeFocusListener ( focusListener );
-        textField.removePropertyChangeListener ( WebLookAndFeel.COMPONENT_ENABLED_PROPERTY, accessibleChangeListener );
-        textField.removePropertyChangeListener ( WebLookAndFeel.COMPONENT_ORIENTATION_PROPERTY, orientationChangeListener );
-        textField.removePropertyChangeListener ( WebLookAndFeel.COMPONENT_MARGIN_PROPERTY, marginChangeListener );
+        textField.removePropertyChangeListener ( WebLookAndFeel.ENABLED_PROPERTY, accessibleChangeListener );
+        textField.removePropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, orientationChangeListener );
+        textField.removePropertyChangeListener ( WebLookAndFeel.MARGIN_PROPERTY, marginChangeListener );
 
         cleanupLeadingComponent ();
         cleanupTrailingComponent ();
         textField.setLayout ( null );
+
+        this.textField = null;
 
         super.uninstallUI ( c );
     }
@@ -217,7 +210,7 @@ public class WebTextFieldUI extends BasicTextFieldUI implements ShapeProvider, S
         return leadingComponent;
     }
 
-    public void setLeadingComponent ( JComponent leadingComponent )
+    public void setLeadingComponent ( final JComponent leadingComponent )
     {
         if ( this.leadingComponent == leadingComponent )
         {
@@ -264,7 +257,7 @@ public class WebTextFieldUI extends BasicTextFieldUI implements ShapeProvider, S
         return trailingComponent;
     }
 
-    public void setTrailingComponent ( JComponent trailingComponent )
+    public void setTrailingComponent ( final JComponent trailingComponent )
     {
         if ( this.trailingComponent == trailingComponent )
         {
@@ -306,7 +299,7 @@ public class WebTextFieldUI extends BasicTextFieldUI implements ShapeProvider, S
         }
     }
 
-    public void setFieldMargin ( Insets margin )
+    public void setFieldMargin ( final Insets margin )
     {
         this.fieldMargin = margin;
         updateBorder ();
@@ -322,7 +315,7 @@ public class WebTextFieldUI extends BasicTextFieldUI implements ShapeProvider, S
         return inputPrompt;
     }
 
-    public void setInputPrompt ( String inputPrompt )
+    public void setInputPrompt ( final String inputPrompt )
     {
         this.inputPrompt = inputPrompt;
         this.inputPromptSet = inputPrompt != null && !inputPrompt.trim ().equals ( "" );
@@ -334,7 +327,7 @@ public class WebTextFieldUI extends BasicTextFieldUI implements ShapeProvider, S
         return inputPromptFont;
     }
 
-    public void setInputPromptFont ( Font inputPromptFont )
+    public void setInputPromptFont ( final Font inputPromptFont )
     {
         this.inputPromptFont = inputPromptFont;
         updateInputPromptView ();
@@ -345,7 +338,7 @@ public class WebTextFieldUI extends BasicTextFieldUI implements ShapeProvider, S
         return inputPromptForeground;
     }
 
-    public void setInputPromptForeground ( Color inputPromptForeground )
+    public void setInputPromptForeground ( final Color inputPromptForeground )
     {
         this.inputPromptForeground = inputPromptForeground;
         updateInputPromptView ();
@@ -356,7 +349,7 @@ public class WebTextFieldUI extends BasicTextFieldUI implements ShapeProvider, S
         return inputPromptPosition;
     }
 
-    public void setInputPromptPosition ( int inputPromptPosition )
+    public void setInputPromptPosition ( final int inputPromptPosition )
     {
         this.inputPromptPosition = inputPromptPosition;
         updateInputPromptView ();
@@ -367,7 +360,7 @@ public class WebTextFieldUI extends BasicTextFieldUI implements ShapeProvider, S
         return hideInputPromptOnFocus;
     }
 
-    public void setHideInputPromptOnFocus ( boolean hideInputPromptOnFocus )
+    public void setHideInputPromptOnFocus ( final boolean hideInputPromptOnFocus )
     {
         this.hideInputPromptOnFocus = hideInputPromptOnFocus;
         updateInputPromptView ();
@@ -378,7 +371,7 @@ public class WebTextFieldUI extends BasicTextFieldUI implements ShapeProvider, S
         return drawShade;
     }
 
-    public void setDrawShade ( boolean drawShade )
+    public void setDrawShade ( final boolean drawShade )
     {
         this.drawShade = drawShade;
     }
@@ -388,7 +381,7 @@ public class WebTextFieldUI extends BasicTextFieldUI implements ShapeProvider, S
         return shadeWidth;
     }
 
-    public void setShadeWidth ( int shadeWidth )
+    public void setShadeWidth ( final int shadeWidth )
     {
         this.shadeWidth = shadeWidth;
         updateBorder ();
@@ -399,7 +392,7 @@ public class WebTextFieldUI extends BasicTextFieldUI implements ShapeProvider, S
         return drawBackground;
     }
 
-    public void setDrawBackground ( boolean drawBackground )
+    public void setDrawBackground ( final boolean drawBackground )
     {
         this.drawBackground = drawBackground;
         updateView ();
@@ -410,7 +403,7 @@ public class WebTextFieldUI extends BasicTextFieldUI implements ShapeProvider, S
         return webColored;
     }
 
-    public void setWebColored ( boolean webColored )
+    public void setWebColored ( final boolean webColored )
     {
         this.webColored = webColored;
         updateView ();
@@ -421,7 +414,7 @@ public class WebTextFieldUI extends BasicTextFieldUI implements ShapeProvider, S
         return round;
     }
 
-    public void setRound ( int round )
+    public void setRound ( final int round )
     {
         this.round = round;
         updateView ();
@@ -432,7 +425,7 @@ public class WebTextFieldUI extends BasicTextFieldUI implements ShapeProvider, S
         return drawBorder;
     }
 
-    public void setDrawBorder ( boolean drawBorder )
+    public void setDrawBorder ( final boolean drawBorder )
     {
         this.drawBorder = drawBorder;
         updateBorder ();
@@ -443,7 +436,7 @@ public class WebTextFieldUI extends BasicTextFieldUI implements ShapeProvider, S
         return drawFocus;
     }
 
-    public void setDrawFocus ( boolean drawFocus )
+    public void setDrawFocus ( final boolean drawFocus )
     {
         this.drawFocus = drawFocus;
         updateView ();
@@ -454,7 +447,7 @@ public class WebTextFieldUI extends BasicTextFieldUI implements ShapeProvider, S
         return painter;
     }
 
-    public void setPainter ( Painter painter )
+    public void setPainter ( final Painter painter )
     {
         PainterSupport.uninstallPainter ( textField, this.painter );
 
@@ -472,7 +465,7 @@ public class WebTextFieldUI extends BasicTextFieldUI implements ShapeProvider, S
         }
     }
 
-    private boolean isInputPromptVisible ( JTextComponent c )
+    private boolean isInputPromptVisible ( final JTextComponent c )
     {
         return inputPromptSet && c.isEditable () && c.isEnabled () && ( !hideInputPromptOnFocus || !c.isFocusOwner () ) &&
                 c.getText ().equals ( "" );
@@ -494,8 +487,14 @@ public class WebTextFieldUI extends BasicTextFieldUI implements ShapeProvider, S
     {
         if ( textField != null )
         {
+            // Preserve old borders
+            if ( SwingUtils.isPreserveBorders ( textField ) )
+            {
+                return;
+            }
+
             // Style border
-            Insets m;
+            final Insets m;
             if ( painter != null )
             {
                 m = painter.getMargin ( getComponent () );
@@ -510,8 +509,8 @@ public class WebTextFieldUI extends BasicTextFieldUI implements ShapeProvider, S
             }
 
             // Taking margins into account
-            boolean ltr = textField.getComponentOrientation ().isLeftToRight ();
-            Insets margin = textField.getMargin ();
+            final boolean ltr = textField.getComponentOrientation ().isLeftToRight ();
+            final Insets margin = textField.getMargin ();
             if ( margin != null )
             {
                 m.top += margin.top;
@@ -528,8 +527,8 @@ public class WebTextFieldUI extends BasicTextFieldUI implements ShapeProvider, S
             }
 
             // Adding component sizes into border
-            Component lc = ltr ? leadingComponent : trailingComponent;
-            Component tc = ltr ? trailingComponent : leadingComponent;
+            final Component lc = ltr ? leadingComponent : trailingComponent;
+            final Component tc = ltr ? trailingComponent : leadingComponent;
             if ( lc != null )
             {
                 m.left += lc.getPreferredSize ().width;
@@ -545,10 +544,10 @@ public class WebTextFieldUI extends BasicTextFieldUI implements ShapeProvider, S
     }
 
     @Override
-    protected void paintSafely ( Graphics g )
+    protected void paintSafely ( final Graphics g )
     {
-        JTextComponent c = getComponent ();
-        Graphics2D g2d = ( Graphics2D ) g;
+        final JTextComponent c = getComponent ();
+        final Graphics2D g2d = ( Graphics2D ) g;
 
         if ( c.isOpaque () && ( painter == null || !painter.isOpaque ( textField ) ) )
         {
@@ -559,7 +558,7 @@ public class WebTextFieldUI extends BasicTextFieldUI implements ShapeProvider, S
 
         if ( painter != null || drawBorder )
         {
-            Object aa = LafUtils.setupAntialias ( g2d );
+            final Object aa = LafUtils.setupAntialias ( g2d );
             if ( painter != null )
             {
                 // Use background painter instead of default UI graphics
@@ -582,18 +581,18 @@ public class WebTextFieldUI extends BasicTextFieldUI implements ShapeProvider, S
             LafUtils.restoreAntialias ( g2d, aa );
         }
 
-        Map hints = SwingUtils.setupTextAntialias ( g2d );
+        final Map hints = SwingUtils.setupTextAntialias ( g2d );
         super.paintSafely ( g );
         if ( isInputPromptVisible ( c ) )
         {
-            boolean ltr = c.getComponentOrientation ().isLeftToRight ();
-            Rectangle b = getVisibleEditorRect ();
-            Shape oc = LafUtils.intersectClip ( g2d, b );
+            final boolean ltr = c.getComponentOrientation ().isLeftToRight ();
+            final Rectangle b = getVisibleEditorRect ();
+            final Shape oc = LafUtils.intersectClip ( g2d, b );
             g2d.setFont ( inputPromptFont != null ? inputPromptFont : c.getFont () );
             g2d.setPaint ( inputPromptForeground != null ? inputPromptForeground : c.getForeground () );
 
-            FontMetrics fm = g2d.getFontMetrics ();
-            int x;
+            final FontMetrics fm = g2d.getFontMetrics ();
+            final int x;
             if ( inputPromptPosition == CENTER )
             {
                 x = b.x + b.width / 2 - fm.stringWidth ( inputPrompt ) / 2;
@@ -614,14 +613,14 @@ public class WebTextFieldUI extends BasicTextFieldUI implements ShapeProvider, S
     }
 
     @Override
-    protected void paintBackground ( Graphics g )
+    protected void paintBackground ( final Graphics g )
     {
         // Do not paint anything here
     }
 
 
     @Override
-    public Dimension getPreferredSize ( JComponent c )
+    public Dimension getPreferredSize ( final JComponent c )
     {
         Dimension ps = super.getPreferredSize ( c );
 
@@ -631,7 +630,7 @@ public class WebTextFieldUI extends BasicTextFieldUI implements ShapeProvider, S
         // Height might be changed due to inner components
         if ( leadingComponent != null || trailingComponent != null )
         {
-            Dimension lps = c.getLayout ().preferredLayoutSize ( c );
+            final Dimension lps = c.getLayout ().preferredLayoutSize ( c );
             ps.height = Math.max ( ps.height, lps.height );
         }
 

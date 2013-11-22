@@ -94,13 +94,13 @@ public class WebMultiLineLabelUI extends BasicLabelUI implements ComponentListen
      * @return the shared UI delegate instance
      */
     @SuppressWarnings ("UnusedParameters")
-    public static ComponentUI createUI ( JComponent c )
+    public static ComponentUI createUI ( final JComponent c )
     {
         return new WebMultiLineLabelUI ();
     }
 
     @Override
-    public void installUI ( JComponent c )
+    public void installUI ( final JComponent c )
     {
         super.installUI ( c );
 
@@ -112,7 +112,7 @@ public class WebMultiLineLabelUI extends BasicLabelUI implements ComponentListen
      * {@inheritDoc}
      */
     @Override
-    protected void uninstallDefaults ( JLabel c )
+    protected void uninstallDefaults ( final JLabel c )
     {
         super.uninstallDefaults ( c );
         clearCache ( c );
@@ -122,7 +122,7 @@ public class WebMultiLineLabelUI extends BasicLabelUI implements ComponentListen
      * {@inheritDoc}
      */
     @Override
-    protected void installListeners ( JLabel c )
+    protected void installListeners ( final JLabel c )
     {
         super.installListeners ( c );
         c.addComponentListener ( this );
@@ -132,7 +132,7 @@ public class WebMultiLineLabelUI extends BasicLabelUI implements ComponentListen
      * {@inheritDoc}
      */
     @Override
-    protected void uninstallListeners ( JLabel c )
+    protected void uninstallListeners ( final JLabel c )
     {
         super.uninstallListeners ( c );
         c.removeComponentListener ( this );
@@ -147,7 +147,7 @@ public class WebMultiLineLabelUI extends BasicLabelUI implements ComponentListen
         return drawShade;
     }
 
-    public void setDrawShade ( boolean drawShade )
+    public void setDrawShade ( final boolean drawShade )
     {
         this.drawShade = drawShade;
     }
@@ -157,7 +157,7 @@ public class WebMultiLineLabelUI extends BasicLabelUI implements ComponentListen
         return shadeColor;
     }
 
-    public void setShadeColor ( Color shadeColor )
+    public void setShadeColor ( final Color shadeColor )
     {
         this.shadeColor = shadeColor;
     }
@@ -167,7 +167,7 @@ public class WebMultiLineLabelUI extends BasicLabelUI implements ComponentListen
      *
      * @param l the label containing a cached value
      */
-    protected void clearCache ( JLabel l )
+    protected void clearCache ( final JLabel l )
     {
         l.putClientProperty ( PROPERTY_KEY, null );
     }
@@ -176,7 +176,7 @@ public class WebMultiLineLabelUI extends BasicLabelUI implements ComponentListen
      * {@inheritDoc}
      */
     @Override
-    public void propertyChange ( PropertyChangeEvent e )
+    public void propertyChange ( final PropertyChangeEvent e )
     {
         super.propertyChange ( e );
         final String name = e.getPropertyName ();
@@ -194,7 +194,7 @@ public class WebMultiLineLabelUI extends BasicLabelUI implements ComponentListen
      * @param width  label width
      * @param height label height
      */
-    protected void updateLayout ( JLabel l, FontMetrics fm, int width, int height )
+    protected void updateLayout ( final JLabel l, FontMetrics fm, final int width, final int height )
     {
         if ( fm == null )
         {
@@ -202,9 +202,9 @@ public class WebMultiLineLabelUI extends BasicLabelUI implements ComponentListen
         }
         metrics = fm;
 
-        String text = l.getText ();
-        Icon icon = l.getIcon ();
-        Insets insets = l.getInsets ( paintViewInsets );
+        final String text = l.getText ();
+        final Icon icon = l.getIcon ();
+        final Insets insets = l.getInsets ( paintViewInsets );
 
         paintViewR.x = insets.left;
         paintViewR.y = insets.top;
@@ -221,20 +221,20 @@ public class WebMultiLineLabelUI extends BasicLabelUI implements ComponentListen
      * {@inheritDoc}
      */
     @Override
-    public void paint ( Graphics g, JComponent c )
+    public void paint ( final Graphics g, final JComponent c )
     {
-        Map hints = SwingUtils.setupTextAntialias ( g );
+        final Map hints = SwingUtils.setupTextAntialias ( g );
 
-        JLabel label = ( JLabel ) c;
-        String text = label.getText ();
-        Icon icon = ( label.isEnabled () ) ? label.getIcon () : label.getDisabledIcon ();
+        final JLabel label = ( JLabel ) c;
+        final String text = label.getText ();
+        final Icon icon = ( label.isEnabled () ) ? label.getIcon () : label.getDisabledIcon ();
 
         if ( ( icon == null ) && ( text == null ) )
         {
             return;
         }
 
-        FontMetrics fm = g.getFontMetrics ();
+        final FontMetrics fm = g.getFontMetrics ();
 
         updateLayout ( label, fm, c.getWidth (), c.getHeight () );
 
@@ -245,7 +245,7 @@ public class WebMultiLineLabelUI extends BasicLabelUI implements ComponentListen
 
         if ( text != null )
         {
-            View v = ( View ) c.getClientProperty ( "html" );
+            final View v = ( View ) c.getClientProperty ( "html" );
             if ( v != null )
             {
                 // HTML view disables multi-line painting.
@@ -268,12 +268,12 @@ public class WebMultiLineLabelUI extends BasicLabelUI implements ComponentListen
      * @param label the label being painted
      * @param fm    font metrics for current font
      */
-    protected void paintTextLines ( Graphics g, JLabel label, FontMetrics fm )
+    protected void paintTextLines ( final Graphics g, final JLabel label, final FontMetrics fm )
     {
-        List<String> lines = getTextLines ( label );
+        final List<String> lines = getTextLines ( label );
 
         // Available component height to paint on.
-        int height = getAvailableHeight ( label );
+        final int height = getAvailableHeight ( label );
 
         int textHeight = lines.size () * fm.getHeight ();
         while ( textHeight > height )
@@ -284,7 +284,7 @@ public class WebMultiLineLabelUI extends BasicLabelUI implements ComponentListen
         paintTextR.height = Math.min ( textHeight, height );
         paintTextR.y = alignmentY ( label, fm, paintTextR );
 
-        int textX = paintTextR.x;
+        final int textX = paintTextR.x;
         int textY = paintTextR.y;
 
         for ( Iterator<String> it = lines.iterator (); it.hasNext () && paintTextR.contains ( textX, textY + getAscent ( fm ) );
@@ -296,10 +296,10 @@ public class WebMultiLineLabelUI extends BasicLabelUI implements ComponentListen
             if ( it.hasNext () && !paintTextR.contains ( textX, textY + fm.getHeight () + getAscent ( fm ) ) )
             {
                 // The last visible row, add a clip indication.
-                text = clip ( text, fm );
+                text = clip ( text );
             }
 
-            int x = alignmentX ( label, fm, text );
+            final int x = alignmentX ( label, fm, text );
 
             if ( label.isEnabled () )
             {
@@ -316,7 +316,7 @@ public class WebMultiLineLabelUI extends BasicLabelUI implements ComponentListen
      * {@inheritDoc}
      */
     @Override
-    protected void paintEnabledText ( JLabel l, Graphics g, String s, int textX, int textY )
+    protected void paintEnabledText ( final JLabel l, final Graphics g, final String s, final int textX, final int textY )
     {
         if ( drawShade )
         {
@@ -325,7 +325,7 @@ public class WebMultiLineLabelUI extends BasicLabelUI implements ComponentListen
         }
         else
         {
-            int mnemIndex = l.getDisplayedMnemonicIndex ();
+            final int mnemIndex = l.getDisplayedMnemonicIndex ();
             g.setColor ( l.getForeground () );
             SwingUtils.drawStringUnderlineCharAt ( g, s, mnemIndex, textX, textY );
         }
@@ -335,7 +335,7 @@ public class WebMultiLineLabelUI extends BasicLabelUI implements ComponentListen
      * {@inheritDoc}
      */
     @Override
-    protected void paintDisabledText ( JLabel l, Graphics g, String s, int textX, int textY )
+    protected void paintDisabledText ( final JLabel l, final Graphics g, final String s, final int textX, final int textY )
     {
         if ( drawShade )
         {
@@ -344,7 +344,7 @@ public class WebMultiLineLabelUI extends BasicLabelUI implements ComponentListen
         }
         else
         {
-            int mnemIndex = l.getDisplayedMnemonicIndex ();
+            final int mnemIndex = l.getDisplayedMnemonicIndex ();
             g.setColor ( l.getForeground () );
             SwingUtils.drawStringUnderlineCharAt ( g, s, mnemIndex, textX, textY );
         }
@@ -358,7 +358,7 @@ public class WebMultiLineLabelUI extends BasicLabelUI implements ComponentListen
      * @param textX the x coordinate
      * @param textY the y coordinate
      */
-    private void paintShadowText ( Graphics g, String s, int textX, int textY )
+    private void paintShadowText ( final Graphics g, final String s, final int textX, final int textY )
     {
         g.translate ( textX, textY );
         LafUtils.paintTextShadow ( ( Graphics2D ) g, s, shadeColor );
@@ -371,7 +371,7 @@ public class WebMultiLineLabelUI extends BasicLabelUI implements ComponentListen
      * @param l a component
      * @return the available height
      */
-    protected int getAvailableHeight ( JLabel l )
+    protected int getAvailableHeight ( final JLabel l )
     {
         l.getInsets ( paintViewInsets );
         return l.getHeight () - paintViewInsets.top - paintViewInsets.bottom;
@@ -381,10 +381,9 @@ public class WebMultiLineLabelUI extends BasicLabelUI implements ComponentListen
      * Add a clip indication to the string. It is important that the string length does not exceed the length or the original string.
      *
      * @param text the to be painted
-     * @param fm   font metrics
      * @return the clipped string
      */
-    protected String clip ( String text, FontMetrics fm )
+    protected String clip ( final String text )
     {
         // Fast and lazy way to insert a clip indication is to simply replace
         // the last characters in the string with the clip indication.
@@ -405,12 +404,12 @@ public class WebMultiLineLabelUI extends BasicLabelUI implements ComponentListen
      * @param bounds the text bounds rectangle
      * @return the vertical text alignment, defaults to CENTER.
      */
-    protected int alignmentY ( JLabel label, FontMetrics fm, Rectangle bounds )
+    protected int alignmentY ( final JLabel label, final FontMetrics fm, final Rectangle bounds )
     {
         final int height = getAvailableHeight ( label );
-        int textHeight = bounds.height;
+        final int textHeight = bounds.height;
 
-        int align = label.getVerticalAlignment ();
+        final int align = label.getVerticalAlignment ();
         switch ( align )
         {
             case JLabel.TOP:
@@ -421,11 +420,11 @@ public class WebMultiLineLabelUI extends BasicLabelUI implements ComponentListen
         }
 
         // Center alignment
-        int textY = paintViewInsets.top + ( height - textHeight ) / 2 + getAscent ( fm );
+        final int textY = paintViewInsets.top + ( height - textHeight ) / 2 + getAscent ( fm );
         return Math.max ( textY, getAscent ( fm ) + paintViewInsets.top );
     }
 
-    private static int getAscent ( FontMetrics fm )
+    private static int getAscent ( final FontMetrics fm )
     {
         return fm.getAscent () + fm.getLeading ();
     }
@@ -438,10 +437,10 @@ public class WebMultiLineLabelUI extends BasicLabelUI implements ComponentListen
      * @param s     the string to paint
      * @return the x-coordinate to use when painting for proper alignment
      */
-    protected int alignmentX ( JLabel label, FontMetrics fm, String s )
+    protected int alignmentX ( final JLabel label, final FontMetrics fm, final String s )
     {
-        boolean ltr = label.getComponentOrientation ().isLeftToRight ();
-        int align = label.getHorizontalAlignment ();
+        final boolean ltr = label.getComponentOrientation ().isLeftToRight ();
+        final int align = label.getHorizontalAlignment ();
         if ( align == JLabel.RIGHT || align == JLabel.TRAILING && ltr ||
                 align == JLabel.LEADING && !ltr )
         {
@@ -464,13 +463,13 @@ public class WebMultiLineLabelUI extends BasicLabelUI implements ComponentListen
      * @param s the string
      * @return <code>true</code> if string is HTML, otherwise <code>false</code>
      */
-    private static boolean isHTMLString ( String s )
+    private static boolean isHTMLString ( final String s )
     {
         if ( s != null )
         {
             if ( ( s.length () >= 6 ) && ( s.charAt ( 0 ) == '<' ) && ( s.charAt ( 5 ) == '>' ) )
             {
-                String tag = s.substring ( 1, 5 );
+                final String tag = s.substring ( 1, 5 );
                 return tag.equalsIgnoreCase ( "html" );
             }
         }
@@ -481,10 +480,10 @@ public class WebMultiLineLabelUI extends BasicLabelUI implements ComponentListen
      * {@inheritDoc}
      */
     @Override
-    public Dimension getPreferredSize ( JComponent c )
+    public Dimension getPreferredSize ( final JComponent c )
     {
-        Dimension d = super.getPreferredSize ( c );
-        JLabel label = ( JLabel ) c;
+        final Dimension d = super.getPreferredSize ( c );
+        final JLabel label = ( JLabel ) c;
 
         if ( isHTMLString ( label.getText () ) )
         {
@@ -499,8 +498,8 @@ public class WebMultiLineLabelUI extends BasicLabelUI implements ComponentListen
         {
             // Ensure that preferred width never exceeds the available width
             // (including its border insets) of the parent container.
-            Insets insets = c.getParent ().getInsets ();
-            Dimension size = c.getParent ().getSize ();
+            final Insets insets = c.getParent ().getInsets ();
+            final Dimension size = c.getParent ().getSize ();
             if ( size.width > 0 )
             {
                 // If width isn't set component shouldn't adjust.
@@ -523,10 +522,10 @@ public class WebMultiLineLabelUI extends BasicLabelUI implements ComponentListen
      * @param label the label
      * @return the preferred height of the wrapped lines.
      */
-    protected int getPreferredHeight ( JLabel label )
+    protected int getPreferredHeight ( final JLabel label )
     {
-        int numOfLines = getTextLines ( label ).size ();
-        Insets insets = label.getInsets ( paintViewInsets );
+        final int numOfLines = getTextLines ( label ).size ();
+        final Insets insets = label.getInsets ( paintViewInsets );
         return numOfLines * metrics.getHeight () + insets.top + insets.bottom;
     }
 
@@ -538,7 +537,7 @@ public class WebMultiLineLabelUI extends BasicLabelUI implements ComponentListen
      * @return the text lines of the label.
      */
     @SuppressWarnings ("unchecked")
-    protected List<String> getTextLines ( JLabel l )
+    protected List<String> getTextLines ( final JLabel l )
     {
         List<String> lines = ( List<String> ) l.getClientProperty ( PROPERTY_KEY );
         if ( lines == null )
@@ -553,7 +552,7 @@ public class WebMultiLineLabelUI extends BasicLabelUI implements ComponentListen
      * {@inheritDoc}
      */
     @Override
-    public void componentHidden ( ComponentEvent e )
+    public void componentHidden ( final ComponentEvent e )
     {
         // Don't care
     }
@@ -562,7 +561,7 @@ public class WebMultiLineLabelUI extends BasicLabelUI implements ComponentListen
      * {@inheritDoc}
      */
     @Override
-    public void componentMoved ( ComponentEvent e )
+    public void componentMoved ( final ComponentEvent e )
     {
         // Don't care
     }
@@ -571,7 +570,7 @@ public class WebMultiLineLabelUI extends BasicLabelUI implements ComponentListen
      * {@inheritDoc}
      */
     @Override
-    public void componentResized ( ComponentEvent e )
+    public void componentResized ( final ComponentEvent e )
     {
         clearCache ( ( JLabel ) e.getSource () );
     }
@@ -580,7 +579,7 @@ public class WebMultiLineLabelUI extends BasicLabelUI implements ComponentListen
      * {@inheritDoc}
      */
     @Override
-    public void componentShown ( ComponentEvent e )
+    public void componentShown ( final ComponentEvent e )
     {
         // Don't care
     }
@@ -592,15 +591,15 @@ public class WebMultiLineLabelUI extends BasicLabelUI implements ComponentListen
      * @param l the label to render
      * @return a list of text lines to render
      */
-    protected List<String> prepareLines ( JLabel l )
+    protected List<String> prepareLines ( final JLabel l )
     {
-        List<String> lines = new ArrayList<String> ( defaultSize );
-        String text = l.getText ();
+        final List<String> lines = new ArrayList<String> ( defaultSize );
+        final String text = l.getText ();
         if ( text == null )
         {
             return null; // Null guard
         }
-        PlainDocument doc = new PlainDocument ();
+        final PlainDocument doc = new PlainDocument ();
         try
         {
             doc.insertString ( 0, text, null );
@@ -609,7 +608,7 @@ public class WebMultiLineLabelUI extends BasicLabelUI implements ComponentListen
         {
             return null;
         }
-        Element root = doc.getDefaultRootElement ();
+        final Element root = doc.getDefaultRootElement ();
         for ( int i = 0, j = root.getElementCount (); i < j; i++ )
         {
             wrap ( lines, root.getElement ( i ) );
@@ -623,13 +622,13 @@ public class WebMultiLineLabelUI extends BasicLabelUI implements ComponentListen
      * @param lines line array in which to store the wrapped lines
      * @param elem  the document element containing the text content
      */
-    protected void wrap ( List<String> lines, Element elem )
+    protected void wrap ( final List<String> lines, final Element elem )
     {
-        int p1 = elem.getEndOffset ();
-        Document doc = elem.getDocument ();
+        final int p1 = elem.getEndOffset ();
+        final Document doc = elem.getDocument ();
         for ( int p0 = elem.getStartOffset (); p0 < p1; )
         {
-            int p = calculateBreakPosition ( doc, p0, p1 );
+            final int p = calculateBreakPosition ( doc, p0, p1 );
             try
             {
                 lines.add ( doc.getText ( p0, p - p0 ) );
@@ -651,9 +650,9 @@ public class WebMultiLineLabelUI extends BasicLabelUI implements ComponentListen
      * @return the actual end position, will be <code>p1</code> if content does not need to wrap, otherwise it will be less than
      *         <code>p1</code>.
      */
-    protected int calculateBreakPosition ( Document doc, int p0, int p1 )
+    protected int calculateBreakPosition ( final Document doc, final int p0, final int p1 )
     {
-        Segment segment = SegmentCache.getSegment ();
+        final Segment segment = SegmentCache.getSegment ();
         try
         {
             doc.getText ( p0, p1 - p0, segment );
@@ -663,8 +662,8 @@ public class WebMultiLineLabelUI extends BasicLabelUI implements ComponentListen
             throw new Error ( "Can't get line text" );
         }
 
-        int width = paintTextR.width;
-        int p = p0 + Utilities.getBreakLocation ( segment, metrics, 0, width, null, p0 );
+        final int width = paintTextR.width;
+        final int p = p0 + Utilities.getBreakLocation ( segment, metrics, 0, width, null, p0 );
         SegmentCache.releaseSegment ( segment );
         return p;
     }
@@ -703,7 +702,7 @@ public class WebMultiLineLabelUI extends BasicLabelUI implements ComponentListen
          */
         public static Segment getSegment ()
         {
-            int size = cache.segments.size ();
+            final int size = cache.segments.size ();
             if ( size > 0 )
             {
                 return cache.segments.remove ( size - 1 );
@@ -715,7 +714,7 @@ public class WebMultiLineLabelUI extends BasicLabelUI implements ComponentListen
          * Releases a <code>Segment</code>. A segment should not be used after it is released, and a segment should never be released more
          * than once.
          */
-        public static void releaseSegment ( Segment segment )
+        public static void releaseSegment ( final Segment segment )
         {
             segment.array = null;
             segment.count = 0;

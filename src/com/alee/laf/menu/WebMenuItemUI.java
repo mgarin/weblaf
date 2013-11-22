@@ -26,9 +26,7 @@ import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.BorderMethods;
 
 import javax.swing.*;
-import javax.swing.event.ChangeListener;
 import javax.swing.plaf.ComponentUI;
-import javax.swing.plaf.PopupMenuUI;
 import javax.swing.plaf.basic.BasicHTML;
 import javax.swing.plaf.basic.BasicMenuItemUI;
 import javax.swing.text.View;
@@ -49,6 +47,7 @@ public class WebMenuItemUI extends BasicMenuItemUI implements BorderMethods
      * Style settings.
      */
     protected Insets margin = WebMenuItemStyle.margin;
+    protected int sideSpacing = WebMenuItemStyle.sideSpacing;
     protected Color disabledFg = WebMenuItemStyle.disabledFg;
     protected Color selectedTopBg = WebMenuItemStyle.selectedTopBg;
     protected Color selectedBottomBg = WebMenuItemStyle.selectedBottomBg;
@@ -64,7 +63,7 @@ public class WebMenuItemUI extends BasicMenuItemUI implements BorderMethods
      * Menu item listeners.
      */
     protected PropertyChangeListener propertyChangeListener;
-    protected ChangeListener buttonModelChangeListener;
+    protected MenuItemChangeListener buttonModelChangeListener;
 
     /**
      * Returns an instance of the WebMenuItemUI for the specified component.
@@ -105,11 +104,10 @@ public class WebMenuItemUI extends BasicMenuItemUI implements BorderMethods
                 updateBorder ();
             }
         };
-        menuItem.addPropertyChangeListener ( WebLookAndFeel.COMPONENT_ORIENTATION_PROPERTY, propertyChangeListener );
+        menuItem.addPropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, propertyChangeListener );
 
         // Button model change listener
-        buttonModelChangeListener = new MenuItemChangeListener ( menuItem );
-        menuItem.getModel ().addChangeListener ( buttonModelChangeListener );
+        buttonModelChangeListener = MenuItemChangeListener.install ( menuItem );
     }
 
     /**
@@ -124,9 +122,9 @@ public class WebMenuItemUI extends BasicMenuItemUI implements BorderMethods
         PainterSupport.uninstallPainter ( menuItem, this.painter );
 
         // Removing listeners
-        menuItem.removePropertyChangeListener ( WebLookAndFeel.COMPONENT_ORIENTATION_PROPERTY, propertyChangeListener );
+        menuItem.removePropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, propertyChangeListener );
         propertyChangeListener = null;
-        menuItem.getModel ().removeChangeListener ( buttonModelChangeListener );
+        MenuItemChangeListener.uninstall ( buttonModelChangeListener, menuItem );
         buttonModelChangeListener = null;
 
         // Restoring basic settings
@@ -143,6 +141,12 @@ public class WebMenuItemUI extends BasicMenuItemUI implements BorderMethods
     {
         if ( menuItem != null )
         {
+            // Preserve old borders
+            if ( SwingUtils.isPreserveBorders ( menuItem ) )
+            {
+                return;
+            }
+
             // Actual margin
             final boolean ltr = menuItem.getComponentOrientation ().isLeftToRight ();
             final Insets m = new Insets ( margin.top, ltr ? margin.left : margin.right, margin.bottom, ltr ? margin.right : margin.left );
@@ -159,23 +163,11 @@ public class WebMenuItemUI extends BasicMenuItemUI implements BorderMethods
             }
             else
             {
-                // Retrieving popup menu rounding
-                int round = 0;
-                final Container parent = menuItem.getParent ();
-                if ( parent != null && parent instanceof JPopupMenu )
-                {
-                    final PopupMenuUI ui = ( ( JPopupMenu ) parent ).getUI ();
-                    if ( ui instanceof WebPopupMenuUI )
-                    {
-                        round = ( ( WebPopupMenuUI ) ui ).getRound ();
-                    }
-                }
-
                 // Styling borders
                 m.top += 5;
-                m.left += ( ltr ? 4 : 7 ) + round;
+                m.left += ( ltr ? 4 : 7 ) + sideSpacing;
                 m.bottom += 5;
-                m.right += ( ltr ? 7 : 4 ) + round;
+                m.right += ( ltr ? 7 : 4 ) + sideSpacing;
             }
 
             // Installing border
@@ -201,6 +193,27 @@ public class WebMenuItemUI extends BasicMenuItemUI implements BorderMethods
     public void setMargin ( final Insets margin )
     {
         this.margin = margin;
+        updateBorder ();
+    }
+
+    /**
+     * Returns spacing between menu item content and its left/right borders.
+     *
+     * @return spacing between menu item content and its left/right borders
+     */
+    public int getSideSpacing ()
+    {
+        return sideSpacing;
+    }
+
+    /**
+     * Sets spacing between menu item content and its left/right borders
+     *
+     * @param sideSpacing spacing between menu item content and its left/right borders
+     */
+    public void setSideSpacing ( final int sideSpacing )
+    {
+        this.sideSpacing = sideSpacing;
         updateBorder ();
     }
 
@@ -424,7 +437,7 @@ public class WebMenuItemUI extends BasicMenuItemUI implements BorderMethods
      */
     public Paint getSouthCornerFill ()
     {
-        return selectedTopBg;
+        return selectedBottomBg;
     }
 
     /**

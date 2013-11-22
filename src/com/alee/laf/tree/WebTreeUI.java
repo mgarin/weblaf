@@ -21,6 +21,7 @@ import com.alee.extended.tree.WebCheckBoxTree;
 import com.alee.laf.StyleConstants;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.utils.*;
+import com.alee.utils.ninepatch.NinePatchIcon;
 
 import javax.swing.*;
 import javax.swing.event.TreeExpansionEvent;
@@ -39,6 +40,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Enumeration;
 import java.util.List;
 
 /**
@@ -66,6 +68,11 @@ public class WebTreeUI extends BasicTreeUI
     public static ImageIcon LEAF_ICON = new ImageIcon ( WebTreeUI.class.getResource ( "icons/leaf.png" ) );
 
     /**
+     * Default drop line gradient fractions.
+     */
+    protected static final float[] fractions = { 0, 0.25f, 0.75f, 1f };
+
+    /**
      * Style settings.
      */
     protected boolean autoExpandSelectedNode = WebTreeStyle.autoExpandSelectedPath;
@@ -80,11 +87,13 @@ public class WebTreeUI extends BasicTreeUI
     protected Color selectorBorderColor = WebTreeStyle.selectorBorderColor;
     protected int selectorRound = WebTreeStyle.selectorRound;
     protected BasicStroke selectorStroke = WebTreeStyle.selectorStroke;
+    protected int dropCellShadeWidth = WebTreeStyle.dropCellShadeWidth;
 
     /**
      * Tree listeners.
      */
-    protected PropertyChangeListener propertyChangeListener;
+    protected PropertyChangeListener orientationChangeListener;
+    protected PropertyChangeListener dropLocationChangeListener;
     protected TreeSelectionListener treeSelectionListener;
     protected TreeExpansionListener treeExpansionListener;
     protected MouseAdapter mouseAdapter;
@@ -96,7 +105,8 @@ public class WebTreeUI extends BasicTreeUI
     protected List<Integer> initialSelection = new ArrayList<Integer> ();
     protected Point selectionStart = null;
     protected Point selectionEnd = null;
-    protected boolean ltr = true;
+    protected boolean leftToRight = true;
+    protected TreePath draggablePath = null;
 
     /**
      * Returns an instance of the WebTreeUI for the specified component.
@@ -105,7 +115,7 @@ public class WebTreeUI extends BasicTreeUI
      * @param c component that will use UI instance
      * @return instance of the WebTreeUI
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebTreeUI ();
@@ -121,23 +131,56 @@ public class WebTreeUI extends BasicTreeUI
     {
         super.installUI ( c );
 
-        this.ltr = tree.getComponentOrientation ().isLeftToRight ();
+        this.leftToRight = tree.getComponentOrientation ().isLeftToRight ();
 
-        // Default settings
+        // Overwrite indent in case WebLookAndFeel is not installed as L&F
+        if ( !WebLookAndFeel.isInstalled () )
+        {
+            setRightChildIndent ( WebTreeStyle.nodeLineIndent );
+            setLeftChildIndent ( WebTreeStyle.nodeLineIndent );
+        }
+
+        // Allow each cell to choose its own preferred height
         tree.setRowHeight ( -1 );
+
+        // Use a moderate amount of visible rows by default
+        // BasicTreeUI uses 20 rows by default which is too much
         tree.setVisibleRowCount ( 10 );
 
         // Orientation change listener
-        propertyChangeListener = new PropertyChangeListener ()
+        orientationChangeListener = new PropertyChangeListener ()
         {
             @Override
             public void propertyChange ( final PropertyChangeEvent evt )
             {
-                ltr = tree.getComponentOrientation ().isLeftToRight ();
+                leftToRight = tree.getComponentOrientation ().isLeftToRight ();
             }
         };
-        tree.addPropertyChangeListener ( WebLookAndFeel.COMPONENT_ORIENTATION_PROPERTY, propertyChangeListener );
+        tree.addPropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, orientationChangeListener );
         SwingUtils.setOrientation ( tree );
+
+        // Drop location change listener
+        dropLocationChangeListener = new PropertyChangeListener ()
+        {
+            @Override
+            public void propertyChange ( final PropertyChangeEvent evt )
+            {
+                // Repainting previous drop location
+                final JTree.DropLocation oldLocation = ( JTree.DropLocation ) evt.getOldValue ();
+                if ( oldLocation != null )
+                {
+                    tree.repaint ( getNodeDropLocationBounds ( oldLocation.getPath () ) );
+                }
+
+                // Repainting current drop location
+                final JTree.DropLocation newLocation = ( JTree.DropLocation ) evt.getNewValue ();
+                if ( newLocation != null )
+                {
+                    tree.repaint ( getNodeDropLocationBounds ( newLocation.getPath () ) );
+                }
+            }
+        };
+        tree.addPropertyChangeListener ( WebLookAndFeel.DROP_LOCATION, dropLocationChangeListener );
 
         // Selection listener
         treeSelectionListener = new TreeSelectionListener ()
@@ -188,36 +231,57 @@ public class WebTreeUI extends BasicTreeUI
                     {
                         if ( isSelectorAvailable () )
                         {
+                            // todo Start DnD on selected row
                             // Avoiding selection start when pressed on tree expand handle
                             final TreePath path = getClosestPathForLocation ( tree, e.getX (), e.getY () );
-                            if ( !isLocationInExpandControl ( path, e.getX (), e.getY () ) &&
+                            if ( path == null || !isLocationInExpandControl ( path, e.getX (), e.getY () ) &&
                                     !isLocationInCheckBoxControl ( path, e.getX (), e.getY () ) )
                             {
-                                // Selection
-                                selectionStart = e.getPoint ();
-                                selectionEnd = selectionStart;
+                                // Avoid starting multiselection if row is selected and drag is possible
+                                final int rowForPath = getRowForPath ( tree, path );
+                                if ( isDragAvailable () && getRowBounds ( rowForPath ).contains ( e.getX (), e.getY () ) &&
+                                        tree.isRowSelected ( rowForPath ) )
+                                {
+                                    // Marking row to be dragged
+                                    draggablePath = path;
+                                }
+                                else
+                                {
+                                    // Selection
+                                    selectionStart = e.getPoint ();
+                                    selectionEnd = selectionStart;
 
-                                // Initial tree selection
-                                initialSelection = getSelectionRowsList ();
+                                    // Initial tree selection
+                                    initialSelection = getSelectionRowsList ();
 
-                                // Updating selection
-                                validateSelection ( e );
+                                    // Updating selection
+                                    validateSelection ( e );
 
-                                // Repainting selection on the tree
-                                repaintSelector ();
+                                    // Repainting selection on the tree
+                                    repaintSelector ();
+                                }
                             }
                         }
                         else if ( isFullLineSelection () )
                         {
+                            // todo Start DnD on selected row
                             // Avoiding selection start when pressed on tree expand handle
                             final TreePath path = getClosestPathForLocation ( tree, e.getX (), e.getY () );
-                            if ( !isLocationInExpandControl ( path, e.getX (), e.getY () ) &&
+                            if ( path != null && !isLocationInExpandControl ( path, e.getX (), e.getY () ) &&
                                     !isLocationInCheckBoxControl ( path, e.getX (), e.getY () ) )
                             {
+                                // Single row selection
                                 if ( tree.getSelectionModel ().getSelectionMode () == TreeSelectionModel.SINGLE_TREE_SELECTION )
                                 {
-                                    // Selection
                                     tree.setSelectionRow ( getRowForPoint ( e.getPoint (), true ) );
+                                }
+
+                                // Marking row to be dragged
+                                final int rowForPath = getRowForPath ( tree, path );
+                                if ( isDragAvailable () && getRowBounds ( rowForPath ).contains ( e.getX (), e.getY () ) &&
+                                        tree.isRowSelected ( rowForPath ) )
+                                {
+                                    draggablePath = path;
                                 }
                             }
                         }
@@ -228,6 +292,12 @@ public class WebTreeUI extends BasicTreeUI
             @Override
             public void mouseDragged ( final MouseEvent e )
             {
+                if ( draggablePath != null )
+                {
+                    final TransferHandler transferHandler = tree.getTransferHandler ();
+                    transferHandler.exportAsDrag ( tree, e, transferHandler.getSourceActions ( tree ) );
+                    draggablePath = null;
+                }
                 if ( isSelectorAvailable () && selectionStart != null )
                 {
                     // Selection
@@ -249,6 +319,10 @@ public class WebTreeUI extends BasicTreeUI
             @Override
             public void mouseReleased ( final MouseEvent e )
             {
+                if ( draggablePath != null )
+                {
+                    draggablePath = null;
+                }
                 if ( isSelectorAvailable () && selectionStart != null )
                 {
                     // Saving selection rect to repaint
@@ -396,7 +470,7 @@ public class WebTreeUI extends BasicTreeUI
                 updateMouseover ( e );
             }
 
-            private void updateMouseover ( MouseEvent e )
+            private void updateMouseover ( final MouseEvent e )
             {
                 if ( tree.isEnabled () && highlightRolloverNode )
                 {
@@ -446,13 +520,25 @@ public class WebTreeUI extends BasicTreeUI
     @Override
     public void uninstallUI ( final JComponent c )
     {
-        tree.removePropertyChangeListener ( WebLookAndFeel.COMPONENT_ORIENTATION_PROPERTY, propertyChangeListener );
+        tree.removePropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, orientationChangeListener );
+        tree.removePropertyChangeListener ( WebLookAndFeel.DROP_LOCATION, dropLocationChangeListener );
         tree.removeTreeSelectionListener ( treeSelectionListener );
         tree.removeTreeExpansionListener ( treeExpansionListener );
         tree.removeMouseListener ( mouseAdapter );
         tree.removeMouseMotionListener ( mouseAdapter );
 
         super.uninstallUI ( c );
+    }
+
+    /**
+     * Returns whether tree nodes drag available or not.
+     *
+     * @return true if tree nodes drag available, false otherwise
+     */
+    protected boolean isDragAvailable ()
+    {
+        return tree != null && tree.isEnabled () && tree.getDragEnabled () && tree.getTransferHandler () != null &&
+                tree.getTransferHandler ().getSourceActions ( tree ) > 0;
     }
 
     /**
@@ -696,6 +782,26 @@ public class WebTreeUI extends BasicTreeUI
     }
 
     /**
+     * Returns drop cell highlight shade width.
+     *
+     * @return drop cell highlight shade width
+     */
+    public int getDropCellShadeWidth ()
+    {
+        return dropCellShadeWidth;
+    }
+
+    /**
+     * Sets drop cell highlight shade width.
+     *
+     * @param dropCellShadeWidth new drop cell highlight shade width
+     */
+    public void setDropCellShadeWidth ( final int dropCellShadeWidth )
+    {
+        this.dropCellShadeWidth = dropCellShadeWidth;
+    }
+
+    /**
      * Returns whether selector is available for current tree or not.
      *
      * @return true if selector is available for current tree, false otherwise
@@ -713,7 +819,7 @@ public class WebTreeUI extends BasicTreeUI
      */
     public boolean isFullLineSelection ()
     {
-        return selectionStyle.equals ( TreeSelectionStyle.line );
+        return selectionStyle == TreeSelectionStyle.line;
     }
 
     /**
@@ -739,6 +845,7 @@ public class WebTreeUI extends BasicTreeUI
     {
         if ( tree != null )
         {
+            // todo Optimize
             for ( int row = 0; row < tree.getRowCount (); row++ )
             {
                 final Rectangle bounds = getRowBounds ( row, countFullRow );
@@ -786,8 +893,9 @@ public class WebTreeUI extends BasicTreeUI
         final Rectangle b = tree.getRowBounds ( row );
         if ( b != null )
         {
-            b.x = 0;
-            b.width = tree.getWidth ();
+            final Insets insets = tree.getInsets ();
+            b.x = insets.left;
+            b.width = tree.getWidth () - insets.left - insets.right;
         }
         return b;
     }
@@ -867,196 +975,6 @@ public class WebTreeUI extends BasicTreeUI
     }
 
     /**
-     * Paints horizontal part of tree structure lines.
-     *
-     * @param g               graphics
-     * @param clipBounds      clip bounds
-     * @param insets          insets
-     * @param bounds          bounds
-     * @param path            path
-     * @param row             row index
-     * @param isExpanded      whether node is expanded or not
-     * @param hasBeenExpanded whether node was expanded atleast once or not
-     * @param isLeaf          whether node is leaf or not
-     */
-    @Override
-    protected void paintHorizontalPartOfLeg ( final Graphics g, final Rectangle clipBounds, final Insets insets, final Rectangle bounds,
-                                              final TreePath path, final int row, final boolean isExpanded, final boolean hasBeenExpanded,
-                                              final boolean isLeaf )
-    {
-        if ( !paintLines )
-        {
-            return;
-        }
-
-        // Don't paint the legs for the root'ish node if the
-        final int depth = path.getPathCount () - 1;
-        if ( ( depth == 0 || ( depth == 1 && !isRootVisible () ) ) && !getShowsRootHandles () )
-        {
-            return;
-        }
-
-        final int clipLeft = clipBounds.x;
-        final int clipRight = clipBounds.x + clipBounds.width;
-        final int clipTop = clipBounds.y;
-        final int clipBottom = clipBounds.y + clipBounds.height;
-        final int lineY = bounds.y + bounds.height / 2;
-
-        if ( ltr )
-        {
-            final int leftX = bounds.x - getRightChildIndent ();
-            final int nodeX = bounds.x - getHorizontalLegBuffer ();
-            if ( lineY >= clipTop && lineY < clipBottom && nodeX >= clipLeft && leftX < clipRight && leftX < nodeX )
-            {
-                g.setColor ( getHashColor () );
-                paintHorizontalLine ( g, tree, lineY, leftX, nodeX - 1 );
-            }
-        }
-        else
-        {
-            final int nodeX = bounds.x + bounds.width + getHorizontalLegBuffer ();
-            final int rightX = bounds.x + bounds.width + getRightChildIndent ();
-            if ( lineY >= clipTop && lineY < clipBottom && rightX >= clipLeft && nodeX < clipRight && nodeX < rightX )
-            {
-                g.setColor ( getHashColor () );
-                paintHorizontalLine ( g, tree, lineY, nodeX, rightX - 1 );
-            }
-        }
-    }
-
-    /**
-     * Paints horizontal tree structure line.
-     *
-     * @param g     graphics
-     * @param c     component
-     * @param y     y coordinate
-     * @param left  left side of the line
-     * @param right right side of the line
-     */
-    @Override
-    protected void paintHorizontalLine ( final Graphics g, final JComponent c, final int y, int left, int right )
-    {
-        // todo Causes incorrect line repaints
-        left = ltr ? left + 4 : left - 4;
-        right = ltr ? right + 4 : right - 4;
-        left += ( left % 2 );
-        for ( int x = left; x <= right; x += 2 )
-        {
-            g.drawLine ( x, y, x, y );
-        }
-    }
-
-    /**
-     * Paints vertical part of tree structure lines.
-     *
-     * @param g          graphics
-     * @param clipBounds clip bounds
-     * @param insets     insets
-     * @param path       path
-     */
-    @Override
-    protected void paintVerticalPartOfLeg ( final Graphics g, final Rectangle clipBounds, final Insets insets, final TreePath path )
-    {
-        if ( !paintLines )
-        {
-            return;
-        }
-
-        if ( !paintLines )
-        {
-            return;
-        }
-
-        final int depth = path.getPathCount () - 1;
-        if ( depth == 0 && !getShowsRootHandles () && !isRootVisible () )
-        {
-            return;
-        }
-        int lineX = getRowX ( -1, depth + 1 );
-        if ( ltr )
-        {
-            lineX = lineX - getRightChildIndent () + insets.left;
-        }
-        else
-        {
-            lineX = tree.getWidth () - lineX - insets.right + getRightChildIndent () - 1;
-        }
-
-        final int clipLeft = clipBounds.x;
-        final int clipRight = clipBounds.x + ( clipBounds.width - 1 );
-
-        if ( lineX >= clipLeft && lineX <= clipRight )
-        {
-            final int clipTop = clipBounds.y;
-            final int clipBottom = clipBounds.y + clipBounds.height;
-            final Rectangle lastChildBounds = getPathBounds ( tree, getLastChildPath ( path ) );
-            Rectangle parentBounds = getPathBounds ( tree, path );
-
-            // This shouldn't happen, but if the model is modified in another thread it is possible for this to happen.
-            // Swing isn't multithreaded, but better to check this anyway.
-            if ( lastChildBounds == null )
-            {
-                return;
-            }
-
-            int top;
-            if ( parentBounds == null )
-            {
-                top = Math.max ( insets.top + getVerticalLegBuffer (), clipTop );
-            }
-            else
-            {
-                top = Math.max ( parentBounds.y + parentBounds.height + getVerticalLegBuffer (), clipTop );
-            }
-
-            if ( depth == 0 && !isRootVisible () )
-            {
-                final TreeModel model = getModel ();
-                if ( model != null )
-                {
-                    final Object root = model.getRoot ();
-                    if ( model.getChildCount ( root ) > 0 )
-                    {
-                        parentBounds = getPathBounds ( tree, path.pathByAddingChild ( model.getChild ( root, 0 ) ) );
-                        if ( parentBounds != null )
-                        {
-                            top = Math.max ( insets.top + getVerticalLegBuffer (), parentBounds.y + parentBounds.height / 2 );
-                        }
-                    }
-                }
-            }
-
-            final int bottom = Math.min ( lastChildBounds.y + ( lastChildBounds.height / 2 ), clipBottom );
-            if ( top <= bottom )
-            {
-                g.setColor ( getHashColor () );
-                paintVerticalLine ( g, tree, lineX, top, bottom );
-            }
-        }
-    }
-
-    /**
-     * Paints vertical tree structure line.
-     *
-     * @param g      graphics
-     * @param c      component
-     * @param x      x coordinate
-     * @param top    top side of the line
-     * @param bottom bottom side of the line
-     */
-    @Override
-    protected void paintVerticalLine ( final Graphics g, final JComponent c, int x, int top, final int bottom )
-    {
-        // todo Causes incorrect line repaints
-        x = ltr ? x + 4 : x - 4;
-        top += ( top % 2 );
-        for ( int y = top; y <= bottom; y += 2 )
-        {
-            g.drawLine ( x, y, x, y );
-        }
-    }
-
-    /**
      * Returns tree structure lines color.
      *
      * @return tree structure lines color
@@ -1100,7 +1018,7 @@ public class WebTreeUI extends BasicTreeUI
      */
     @Override
     protected void drawCentered ( final Component c, final Graphics g, final Icon icon, final int x, final int y )
-    {
+    {                                                                   //x-icon.getIconWidth ()/2-2
         icon.paintIcon ( c, g, findCenteredX ( x, icon.getIconWidth () ), y - icon.getIconHeight () / 2 );
     }
 
@@ -1113,7 +1031,7 @@ public class WebTreeUI extends BasicTreeUI
      */
     protected int findCenteredX ( final int x, final int iconWidth )
     {
-        return ltr ? x + 2 - ( int ) Math.ceil ( iconWidth / 2.0 ) : x - 2 - ( int ) Math.floor ( iconWidth / 2.0 ) - 3;
+        return leftToRight ? ( x - 2 - ( int ) Math.ceil ( iconWidth / 2.0 ) ) : ( x - 1 - ( int ) Math.floor ( iconWidth / 2.0 ) );
     }
 
     /**
@@ -1152,6 +1070,7 @@ public class WebTreeUI extends BasicTreeUI
         Arrays.sort ( rows );
 
         // Calculating selection rects
+        final Insets insets = tree.getInsets ();
         Rectangle maxRect = null;
         int lastRow = -1;
         for ( final int row : rows )
@@ -1178,12 +1097,8 @@ public class WebTreeUI extends BasicTreeUI
                     final Rectangle b = tree.getRowBounds ( row );
                     if ( isFullLineSelection () )
                     {
-                        b.x = 0;
-                        b.width = tree.getWidth ();
-
-                        // todo Full line painting case
-                        // b.x = 0 - selectionShadeWidth - selectionRound - 1;
-                        // b.width = tree.getWidth () + selectionShadeWidth * 2 + selectionRound + 2;
+                        b.x = insets.left;
+                        b.width = tree.getWidth () - insets.left - insets.right;
                     }
 
                     // Increase rect
@@ -1202,6 +1117,15 @@ public class WebTreeUI extends BasicTreeUI
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected int getHorizontalLegBuffer ()
+    {
+        return -2;
+    }
+
+    /**
      * Paints tree.
      *
      * @param g graphics
@@ -1210,21 +1134,63 @@ public class WebTreeUI extends BasicTreeUI
     @Override
     public void paint ( final Graphics g, final JComponent c )
     {
+        // Initial variables validation
+        if ( tree != c )
+        {
+            throw new InternalError ( "incorrect component" );
+        }
+        if ( treeState == null )
+        {
+            return;
+        }
+
+        final Graphics2D g2d = ( Graphics2D ) g;
+
         // Cells selection
+        paintSelection ( g2d );
+
+        // Rollover cell
+        paintRolloverNodeHighlight ( g2d );
+
+        // Painting tree
+        paintTree ( g2d );
+
+        // Drop cell
+        paintDropLocation ( g2d );
+
+        // Multiselector
+        paintMultiselector ( g2d );
+    }
+
+    /**
+     * Paints special WebLaF tree nodes selection.
+     * It is rendered separately from nodes allowing you to simplify your tree cell renderer component.
+     *
+     * @param g2d graphics context
+     */
+    protected void paintSelection ( final Graphics2D g2d )
+    {
         if ( tree.getSelectionCount () > 0 )
         {
             // Draw final selections
             final List<Rectangle> selections = getSelectionRects ();
             for ( final Rectangle rect : selections )
             {
-                LafUtils.drawCustomWebBorder ( ( Graphics2D ) g, tree,
+                LafUtils.drawCustomWebBorder ( g2d, tree,
                         new RoundRectangle2D.Double ( rect.x + selectionShadeWidth, rect.y + selectionShadeWidth,
                                 rect.width - selectionShadeWidth * 2 - 1, rect.height - selectionShadeWidth * 2 - 1, selectionRound * 2,
                                 selectionRound * 2 ), StyleConstants.shadeColor, selectionShadeWidth, true, true );
             }
         }
+    }
 
-        // Rollover cell
+    /**
+     * Paints rollover node highlight.
+     *
+     * @param g2d graphics context
+     */
+    protected void paintRolloverNodeHighlight ( final Graphics2D g2d )
+    {
         if ( tree.isEnabled () && highlightRolloverNode && rolloverRow != -1 && !tree.isRowSelected ( rolloverRow ) )
         {
             final Rectangle rect = isFullLineSelection () ? getFullRowBounds ( rolloverRow ) : tree.getRowBounds ( rolloverRow );
@@ -1235,20 +1201,175 @@ public class WebTreeUI extends BasicTreeUI
                 rect.width -= selectionShadeWidth * 2 + 1;
                 rect.height -= selectionShadeWidth * 2 + 1;
 
-                final Composite old = LafUtils.setupAlphaComposite ( ( Graphics2D ) g, 0.35f );
-                LafUtils.drawCustomWebBorder ( ( Graphics2D ) g, tree,
+                final Composite old = LafUtils.setupAlphaComposite ( g2d, 0.35f );
+                LafUtils.drawCustomWebBorder ( g2d, tree,
                         new RoundRectangle2D.Double ( rect.x, rect.y, rect.width, rect.height, selectionRound * 2, selectionRound * 2 ),
                         StyleConstants.shadeColor, selectionShadeWidth, true, true );
-                LafUtils.restoreComposite ( ( Graphics2D ) g, old );
+                LafUtils.restoreComposite ( g2d, old );
+            }
+        }
+    }
+
+    /**
+     * Paints all base tree elements.
+     * This is almost the same method as in BasicTreeUI but it doesn't paint drop line.
+     *
+     * @param g2d graphics context
+     */
+    protected void paintTree ( final Graphics2D g2d )
+    {
+        final Rectangle paintBounds = g2d.getClipBounds ();
+        final Insets insets = tree.getInsets ();
+        final TreePath initialPath = getClosestPathForLocation ( tree, 0, paintBounds.y );
+        final Enumeration paintingEnumerator = treeState.getVisiblePathsFrom ( initialPath );
+        final int endY = paintBounds.y + paintBounds.height;
+        int row = treeState.getRowForPath ( initialPath );
+
+        drawingCache.clear ();
+
+        if ( initialPath != null && paintingEnumerator != null )
+        {
+            TreePath parentPath = initialPath;
+
+            // Draw the lines, knobs, and rows
+
+            // Find each parent and have them draw a line to their last child
+            parentPath = parentPath.getParentPath ();
+            while ( parentPath != null )
+            {
+                paintVerticalPartOfLeg ( g2d, paintBounds, insets, parentPath );
+                drawingCache.put ( parentPath, Boolean.TRUE );
+                parentPath = parentPath.getParentPath ();
+            }
+
+
+            // Information for the node being rendered.
+            final Rectangle boundsBuffer = new Rectangle ();
+            final boolean rootVisible = isRootVisible ();
+            boolean isExpanded;
+            boolean hasBeenExpanded;
+            boolean isLeaf;
+            Rectangle bounds;
+            TreePath path;
+
+            boolean done = false;
+            while ( !done && paintingEnumerator.hasMoreElements () )
+            {
+                path = ( TreePath ) paintingEnumerator.nextElement ();
+                if ( path != null )
+                {
+                    isLeaf = treeModel.isLeaf ( path.getLastPathComponent () );
+                    if ( isLeaf )
+                    {
+                        isExpanded = hasBeenExpanded = false;
+                    }
+                    else
+                    {
+                        isExpanded = treeState.getExpandedState ( path );
+                        hasBeenExpanded = tree.hasBeenExpanded ( path );
+                    }
+                    bounds = getPathBounds ( path, insets, boundsBuffer );
+                    if ( bounds == null )
+                    {
+                        // This will only happen if the model changes out
+                        // from under us (usually in another thread).
+                        // Swing isn't multithreaded, but I'll put this
+                        // check in anyway.
+                        return;
+                    }
+                    // See if the vertical line to the parent has been drawn.
+                    parentPath = path.getParentPath ();
+                    if ( parentPath != null )
+                    {
+                        if ( drawingCache.get ( parentPath ) == null )
+                        {
+                            paintVerticalPartOfLeg ( g2d, paintBounds, insets, parentPath );
+                            drawingCache.put ( parentPath, Boolean.TRUE );
+                        }
+                        paintHorizontalPartOfLeg ( g2d, paintBounds, insets, bounds, path, row, isExpanded, hasBeenExpanded, isLeaf );
+                    }
+                    else if ( rootVisible && row == 0 )
+                    {
+                        paintHorizontalPartOfLeg ( g2d, paintBounds, insets, bounds, path, row, isExpanded, hasBeenExpanded, isLeaf );
+                    }
+                    if ( shouldPaintExpandControl ( path, row, isExpanded, hasBeenExpanded, isLeaf ) )
+                    {
+                        paintExpandControl ( g2d, paintBounds, insets, bounds, path, row, isExpanded, hasBeenExpanded, isLeaf );
+                    }
+                    paintRow ( g2d, paintBounds, insets, bounds, path, row, isExpanded, hasBeenExpanded, isLeaf );
+                    if ( ( bounds.y + bounds.height ) >= endY )
+                    {
+                        done = true;
+                    }
+                }
+                else
+                {
+                    done = true;
+                }
+                row++;
             }
         }
 
-        super.paint ( g, c );
+        // Empty out the renderer pane, allowing renderers to be gc'ed.
+        rendererPane.removeAll ();
+    }
 
-        // Multiselector
+    /**
+     * Paints drop location if it is available.
+     *
+     * @param g2d graphics context
+     */
+    protected void paintDropLocation ( final Graphics2D g2d )
+    {
+        final JTree.DropLocation dropLocation = tree.getDropLocation ();
+        if ( dropLocation != null )
+        {
+            final TreePath dropPath = dropLocation.getPath ();
+            if ( isDropLine ( dropLocation ) )
+            {
+                // Painting drop line (between nodes)
+                final Color background = tree.getBackground ();
+                final Color dropLineColor = UIManager.getColor ( "Tree.dropLineColor" );
+                final Color[] colors = { background, dropLineColor, dropLineColor, background };
+                final Rectangle rect = getDropLineRect ( dropLocation );
+                g2d.setPaint ( new LinearGradientPaint ( rect.x, rect.y, rect.x + rect.width, rect.y, fractions, colors ) );
+                g2d.fillRect ( rect.x, rect.y, rect.width, 1 );
+            }
+            else
+            {
+                // Painting drop bounds (onto node)
+                final Rectangle bounds = getNodeDropLocationBounds ( dropPath );
+                final NinePatchIcon dropShade = NinePatchUtils.getShadeIcon ( dropCellShadeWidth, selectionRound, 1f );
+                dropShade.paintIcon ( g2d, bounds );
+            }
+        }
+    }
+
+    /**
+     * Returns node drop location drawing bounds.
+     *
+     * @param dropPath node path
+     * @return node drop location drawing bounds
+     */
+    protected Rectangle getNodeDropLocationBounds ( final TreePath dropPath )
+    {
+        final Rectangle bounds = tree.getPathBounds ( dropPath );
+        bounds.x -= dropCellShadeWidth;
+        bounds.y -= dropCellShadeWidth;
+        bounds.width += dropCellShadeWidth * 2;
+        bounds.height += dropCellShadeWidth * 2;
+        return bounds;
+    }
+
+    /**
+     * Paints custom WebLaF multiselector.
+     *
+     * @param g2d graphics context
+     */
+    protected void paintMultiselector ( final Graphics2D g2d )
+    {
         if ( isSelectorAvailable () && selectionStart != null && selectionEnd != null )
         {
-            final Graphics2D g2d = ( Graphics2D ) g;
             final Object aa = LafUtils.setupAntialias ( g2d );
             final Stroke os = LafUtils.setupStroke ( g2d, selectorStroke );
 
@@ -1263,6 +1384,113 @@ public class WebTreeUI extends BasicTreeUI
             LafUtils.restoreStroke ( g2d, os );
             LafUtils.restoreAntialias ( g2d, aa );
         }
+    }
+
+    /**
+     * Returns whether the specified drop location should be displayed as line or not.
+     *
+     * @param loc drop location
+     * @return true if the specified drop location should be displayed as line, false otherwise
+     */
+    protected boolean isDropLine ( final JTree.DropLocation loc )
+    {
+        return loc != null && loc.getPath () != null && loc.getChildIndex () != -1;
+    }
+
+    /**
+     * Returns drop line rectangle.
+     *
+     * @param loc drop location
+     * @return drop line rectangle
+     */
+    protected Rectangle getDropLineRect ( final JTree.DropLocation loc )
+    {
+        final Rectangle rect;
+        final TreePath path = loc.getPath ();
+        final int index = loc.getChildIndex ();
+        final Insets insets = tree.getInsets ();
+
+        if ( tree.getRowCount () == 0 )
+        {
+            rect = new Rectangle ( insets.left, insets.top, tree.getWidth () - insets.left - insets.right, 0 );
+        }
+        else
+        {
+            final TreeModel model = getModel ();
+            final Object root = model.getRoot ();
+
+            if ( path.getLastPathComponent () == root && index >= model.getChildCount ( root ) )
+            {
+
+                rect = tree.getRowBounds ( tree.getRowCount () - 1 );
+                rect.y = rect.y + rect.height;
+                final Rectangle xRect;
+
+                if ( !tree.isRootVisible () )
+                {
+                    xRect = tree.getRowBounds ( 0 );
+                }
+                else if ( model.getChildCount ( root ) == 0 )
+                {
+                    xRect = tree.getRowBounds ( 0 );
+                    xRect.x += totalChildIndent;
+                    xRect.width -= totalChildIndent + totalChildIndent;
+                }
+                else
+                {
+                    final TreePath lastChildPath = path.pathByAddingChild ( model.getChild ( root, model.getChildCount ( root ) - 1 ) );
+                    xRect = tree.getPathBounds ( lastChildPath );
+                }
+
+                rect.x = xRect.x;
+                rect.width = xRect.width;
+            }
+            else
+            {
+                rect = tree.getPathBounds ( path.pathByAddingChild ( model.getChild ( path.getLastPathComponent (), index ) ) );
+            }
+        }
+
+        if ( rect.y != 0 )
+        {
+            rect.y--;
+        }
+
+        if ( !leftToRight )
+        {
+            rect.x = rect.x + rect.width - 80;
+        }
+
+        rect.width = 80;
+        rect.height = 2;
+
+        return rect;
+    }
+
+    /**
+     * Returns path bounds used for painting.
+     *
+     * @param path   tree path
+     * @param insets tree insets
+     * @param bounds bounds buffer
+     * @return path bounds
+     */
+    protected Rectangle getPathBounds ( final TreePath path, final Insets insets, Rectangle bounds )
+    {
+        bounds = treeState.getBounds ( path, bounds );
+        if ( bounds != null )
+        {
+            if ( leftToRight )
+            {
+                bounds.x += insets.left;
+            }
+            else
+            {
+                bounds.x = tree.getWidth () - ( bounds.x + bounds.width ) - insets.right;
+            }
+            bounds.y += insets.top;
+        }
+        return bounds;
     }
 
     /**

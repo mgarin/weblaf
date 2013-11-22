@@ -108,7 +108,7 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
      * @param drawBorder
      * @param selectedDate
      */
-    public WebDateField ( final Date selectedDate, boolean drawBorder )
+    public WebDateField ( final Date selectedDate, final boolean drawBorder )
     {
         super ();
 
@@ -132,7 +132,7 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
         popupButton.addActionListener ( new ActionListener ()
         {
             @Override
-            public void actionPerformed ( ActionEvent e )
+            public void actionPerformed ( final ActionEvent e )
             {
                 showCalendarPopup ();
             }
@@ -143,7 +143,7 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
         addActionListener ( new ActionListener ()
         {
             @Override
-            public void actionPerformed ( ActionEvent e )
+            public void actionPerformed ( final ActionEvent e )
             {
                 setDateFromField ();
             }
@@ -151,7 +151,7 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
         addMouseListener ( new MouseAdapter ()
         {
             @Override
-            public void mousePressed ( MouseEvent e )
+            public void mousePressed ( final MouseEvent e )
             {
                 if ( isEnabled () && SwingUtilities.isRightMouseButton ( e ) )
                 {
@@ -162,7 +162,7 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
         addFocusListener ( new FocusAdapter ()
         {
             @Override
-            public void focusLost ( FocusEvent e )
+            public void focusLost ( final FocusEvent e )
             {
                 if ( !SwingUtils.isEqualOrChild ( popup, e.getOppositeComponent () ) )
                 {
@@ -173,7 +173,7 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
         addKeyListener ( new KeyAdapter ()
         {
             @Override
-            public void keyReleased ( KeyEvent e )
+            public void keyReleased ( final KeyEvent e )
             {
                 if ( isEnabled () )
                 {
@@ -191,19 +191,19 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
         addAncestorListener ( new AncestorListener ()
         {
             @Override
-            public void ancestorAdded ( AncestorEvent event )
+            public void ancestorAdded ( final AncestorEvent event )
             {
                 hideCalendarPopup ();
             }
 
             @Override
-            public void ancestorRemoved ( AncestorEvent event )
+            public void ancestorRemoved ( final AncestorEvent event )
             {
                 hideCalendarPopup ();
             }
 
             @Override
-            public void ancestorMoved ( AncestorEvent event )
+            public void ancestorMoved ( final AncestorEvent event )
             {
                 hideCalendarPopup ();
             }
@@ -211,7 +211,7 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
         addComponentListener ( new ComponentAdapter ()
         {
             @Override
-            public void componentHidden ( ComponentEvent e )
+            public void componentHidden ( final ComponentEvent e )
             {
                 hideCalendarPopup ();
             }
@@ -273,7 +273,7 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
         // Create popup if it doesn't exist
         if ( popup == null || calendar == null )
         {
-            Window ancestor = SwingUtils.getWindowAncestor ( this );
+            final Window ancestor = SwingUtils.getWindowAncestor ( this );
 
             // Calendar
             calendar = new WebCalendar ( date );
@@ -287,14 +287,15 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
             popup.setCloseOnFocusLoss ( true );
             popup.setWindowOpaque ( false );
             popup.add ( calendar );
+            customizePopup ( popup );
             popup.pack ();
 
             // Correct popup positioning
             updatePopupLocation ();
-            ancestor.addPropertyChangeListener ( WebLookAndFeel.COMPONENT_ORIENTATION_PROPERTY, new PropertyChangeListener ()
+            ancestor.addPropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, new PropertyChangeListener ()
             {
                 @Override
-                public void propertyChange ( PropertyChangeEvent evt )
+                public void propertyChange ( final PropertyChangeEvent evt )
                 {
                     if ( popup.isShowing () )
                     {
@@ -307,7 +308,7 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
             dateSelectionListener = new DateSelectionListener ()
             {
                 @Override
-                public void dateSelected ( Date date )
+                public void dateSelected ( final Date date )
                 {
                     hideCalendarPopup ();
                     setDateFromCalendar ();
@@ -328,6 +329,12 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
         // Showing popup and changing focus
         popup.setVisible ( true );
         calendar.transferFocus ();
+    }
+
+    @SuppressWarnings ("UnusedParameters")
+    protected void customizePopup ( final WebWindow popup )
+    {
+        // You can customize date field popup window here
     }
 
     /**
@@ -399,7 +406,7 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
     {
         try
         {
-            String text = getText ();
+            final String text = getText ();
             if ( text != null && !text.trim ().equals ( "" ) )
             {
                 return dateFormat.parse ( text );
@@ -566,7 +573,7 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
      */
     public void fireDateSelected ( final Date date )
     {
-        for ( DateSelectionListener listener : CollectionUtils.copy ( dateSelectionListeners ) )
+        for ( final DateSelectionListener listener : CollectionUtils.copy ( dateSelectionListeners ) )
         {
             listener.dateSelected ( date );
         }

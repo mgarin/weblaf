@@ -29,19 +29,10 @@ import java.text.ParseException;
 
 public class WebFormattedTextFieldUI extends WebTextFieldUI implements ActionListener
 {
-    public WebFormattedTextFieldUI ( JFormattedTextField textField )
+    @SuppressWarnings ( "UnusedParameters" )
+    public static ComponentUI createUI ( final JComponent c )
     {
-        super ( textField );
-    }
-
-    public WebFormattedTextFieldUI ( JFormattedTextField textField, boolean drawBorder )
-    {
-        super ( textField, drawBorder );
-    }
-
-    public static ComponentUI createUI ( JComponent c )
-    {
-        return new WebFormattedTextFieldUI ( ( JFormattedTextField ) c );
+        return new WebFormattedTextFieldUI ();
     }
 
     @Override
@@ -53,7 +44,7 @@ public class WebFormattedTextFieldUI extends WebTextFieldUI implements ActionLis
     }
 
     @Override
-    public void uninstallUI ( JComponent c )
+    public void uninstallUI ( final JComponent c )
     {
         super.uninstallUI ( c );
 
@@ -61,9 +52,9 @@ public class WebFormattedTextFieldUI extends WebTextFieldUI implements ActionLis
     }
 
     @Override
-    public void actionPerformed ( ActionEvent e )
+    public void actionPerformed ( final ActionEvent e )
     {
-        JFormattedTextField ftf = ( JFormattedTextField ) getComponent ();
+        final JFormattedTextField ftf = ( JFormattedTextField ) getComponent ();
         try
         {
             ftf.commitEdit ();

@@ -115,4 +115,12 @@ public class SampleNode extends AsyncUniqueNode
     {
         this.time = time;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public String toString ()
+    {
+        return name + " (" + type + ")";
+    }
 }

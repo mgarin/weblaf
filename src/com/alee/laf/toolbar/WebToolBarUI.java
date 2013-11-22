@@ -62,12 +62,16 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeProvider, Borde
     private ToolbarStyle toolbarStyle = WebToolBarStyle.toolbarStyle;
     private Painter painter = WebToolBarStyle.painter;
 
+    private final Color middleColor = new Color ( 158, 158, 158 );
+    private final Color[] gradient = new Color[]{ StyleConstants.transparent, middleColor, middleColor, StyleConstants.transparent };
+    private final float[] fractions = { 0f, 0.33f, 0.66f, 1f };
+
     private AncestorListener ancestorListener;
     private PropertyChangeListener propertyChangeListener;
     private PropertyChangeListener componentOrientationListener;
 
-    @SuppressWarnings ( "UnusedParameters" )
-    public static ComponentUI createUI ( JComponent c )
+    @SuppressWarnings ("UnusedParameters")
+    public static ComponentUI createUI ( final JComponent c )
     {
         return new WebToolBarUI ();
     }
@@ -90,7 +94,7 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeProvider, Borde
         ancestorListener = new AncestorAdapter ()
         {
             @Override
-            public void ancestorAdded ( AncestorEvent event )
+            public void ancestorAdded ( final AncestorEvent event )
             {
                 updateBorder ();
                 updateLayout ( toolBar );
@@ -100,7 +104,7 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeProvider, Borde
         propertyChangeListener = new PropertyChangeListener ()
         {
             @Override
-            public void propertyChange ( PropertyChangeEvent evt )
+            public void propertyChange ( final PropertyChangeEvent evt )
             {
                 updateBorder ();
                 updateLayout ( toolBar );
@@ -110,24 +114,27 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeProvider, Borde
         componentOrientationListener = new PropertyChangeListener ()
         {
             @Override
-            public void propertyChange ( PropertyChangeEvent evt )
+            public void propertyChange ( final PropertyChangeEvent evt )
             {
                 updateBorder ();
             }
         };
-        toolBar.addPropertyChangeListener ( WebLookAndFeel.COMPONENT_ORIENTATION_PROPERTY, componentOrientationListener );
+        toolBar.addPropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, componentOrientationListener );
     }
 
     @Override
-    public void uninstallUI ( JComponent c )
+    public void uninstallUI ( final JComponent c )
     {
         PainterSupport.uninstallPainter ( toolBar, this.painter );
 
         c.removeAncestorListener ( ancestorListener );
         c.removePropertyChangeListener ( WebLookAndFeel.TOOLBAR_FLOATABLE_PROPERTY, propertyChangeListener );
-        c.removePropertyChangeListener ( WebLookAndFeel.COMPONENT_ORIENTATION_PROPERTY, componentOrientationListener );
+        c.removePropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, componentOrientationListener );
 
         super.uninstallUI ( c );
+
+        // Swing doesn't cleanup this value on its own
+        toolBar = null;
     }
 
     @Override
@@ -148,7 +155,7 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeProvider, Borde
         return undecorated;
     }
 
-    public void setUndecorated ( boolean undecorated )
+    public void setUndecorated ( final boolean undecorated )
     {
         this.undecorated = undecorated;
 
@@ -167,7 +174,7 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeProvider, Borde
         return painter;
     }
 
-    public void setPainter ( Painter painter )
+    public void setPainter ( final Painter painter )
     {
         PainterSupport.uninstallPainter ( toolBar, this.painter );
 
@@ -188,7 +195,7 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeProvider, Borde
         }
     }
 
-    public void setRound ( int round )
+    public void setRound ( final int round )
     {
         this.round = round;
     }
@@ -198,7 +205,7 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeProvider, Borde
         return topBgColor;
     }
 
-    public void setTopBgColor ( Color topBgColor )
+    public void setTopBgColor ( final Color topBgColor )
     {
         this.topBgColor = topBgColor;
     }
@@ -208,7 +215,7 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeProvider, Borde
         return bottomBgColor;
     }
 
-    public void setBottomBgColor ( Color bottomBgColor )
+    public void setBottomBgColor ( final Color bottomBgColor )
     {
         this.bottomBgColor = bottomBgColor;
     }
@@ -218,7 +225,7 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeProvider, Borde
         return borderColor;
     }
 
-    public void setBorderColor ( Color borderColor )
+    public void setBorderColor ( final Color borderColor )
     {
         this.borderColor = borderColor;
     }
@@ -228,7 +235,7 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeProvider, Borde
         return disabledBorderColor;
     }
 
-    public void setDisabledBorderColor ( Color disabledBorderColor )
+    public void setDisabledBorderColor ( final Color disabledBorderColor )
     {
         this.disabledBorderColor = disabledBorderColor;
     }
@@ -245,7 +252,7 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeProvider, Borde
         }
     }
 
-    public void setShadeWidth ( int shadeWidth )
+    public void setShadeWidth ( final int shadeWidth )
     {
         this.shadeWidth = shadeWidth;
         updateBorder ();
@@ -256,7 +263,7 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeProvider, Borde
         return margin;
     }
 
-    public void setMargin ( Insets margin )
+    public void setMargin ( final Insets margin )
     {
         this.margin = margin;
         updateBorder ();
@@ -267,7 +274,7 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeProvider, Borde
         return toolbarStyle;
     }
 
-    public void setToolbarStyle ( ToolbarStyle toolbarStyle )
+    public void setToolbarStyle ( final ToolbarStyle toolbarStyle )
     {
         this.toolbarStyle = toolbarStyle;
         updateBorder ();
@@ -278,7 +285,7 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeProvider, Borde
         return spacing;
     }
 
-    public void setSpacing ( int spacing )
+    public void setSpacing ( final int spacing )
     {
         this.spacing = spacing;
         updateLayout ( toolBar );
@@ -292,6 +299,12 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeProvider, Borde
     {
         if ( toolBar != null )
         {
+            // Preserve old borders
+            if ( SwingUtils.isPreserveBorders ( toolBar ) )
+            {
+                return;
+            }
+
             if ( painter != null )
             {
                 // Background insets
@@ -302,9 +315,9 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeProvider, Borde
             else if ( !undecorated )
             {
                 // Web-style insets
-                int gripperSpacing = toolBar.isFloatable () ? gripperSpace : 0;
-                boolean horizontal = toolBar.getOrientation () == WebToolBar.HORIZONTAL;
-                boolean ltr = toolBar.getComponentOrientation ().isLeftToRight ();
+                final int gripperSpacing = toolBar.isFloatable () ? gripperSpace : 0;
+                final boolean horizontal = toolBar.getOrientation () == WebToolBar.HORIZONTAL;
+                final boolean ltr = toolBar.getComponentOrientation ().isLeftToRight ();
                 if ( toolbarStyle.equals ( ToolbarStyle.standalone ) )
                 {
                     if ( isFloating () )
@@ -348,24 +361,19 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeProvider, Borde
         }
     }
 
-    private void updateLayout ( JComponent c )
+    private void updateLayout ( final JComponent c )
     {
-        ToolbarLayout layout = new ToolbarLayout ( spacing, toolBar.getOrientation () );
+        final ToolbarLayout layout = new ToolbarLayout ( spacing, toolBar.getOrientation () );
         if ( c.getLayout () instanceof ToolbarLayout )
         {
-            ToolbarLayout old = ( ToolbarLayout ) c.getLayout ();
+            final ToolbarLayout old = ( ToolbarLayout ) c.getLayout ();
             layout.setConstraints ( old.getConstraints () );
         }
         c.setLayout ( layout );
     }
 
-    private Color color = new Color ( 158, 158, 158 );
-    private Color transparent = new Color ( 0, 0, 0, 0 );
-    private Color[] gradient = new Color[]{ transparent, color, color, transparent };
-    private float[] fractions = { 0f, 0.33f, 0.66f, 1f };
-
     @Override
-    public void paint ( Graphics g, JComponent c )
+    public void paint ( final Graphics g, final JComponent c )
     {
         if ( painter != null )
         {
@@ -374,11 +382,11 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeProvider, Borde
         }
         else if ( !undecorated )
         {
-            Graphics2D g2d = ( Graphics2D ) g;
-            Object aa = LafUtils.setupAntialias ( g2d );
+            final Graphics2D g2d = ( Graphics2D ) g;
+            final Object aa = LafUtils.setupAntialias ( g2d );
 
-            boolean horizontal = toolBar.getOrientation () == WebToolBar.HORIZONTAL;
-            boolean ltr = c.getComponentOrientation ().isLeftToRight ();
+            final boolean horizontal = toolBar.getOrientation () == WebToolBar.HORIZONTAL;
+            final boolean ltr = c.getComponentOrientation ().isLeftToRight ();
 
             // Painting border and background
             if ( isFloating () )
@@ -397,7 +405,7 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeProvider, Borde
             {
                 if ( toolbarStyle.equals ( ToolbarStyle.standalone ) )
                 {
-                    RoundRectangle2D rr = new RoundRectangle2D.Double ( shadeWidth, shadeWidth, c.getWidth () - shadeWidth * 2 - 1,
+                    final RoundRectangle2D rr = new RoundRectangle2D.Double ( shadeWidth, shadeWidth, c.getWidth () - shadeWidth * 2 - 1,
                             c.getHeight () - shadeWidth * 2 - 1, round, round );
 
                     if ( c.isEnabled () )
@@ -454,8 +462,8 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeProvider, Borde
             {
                 if ( toolBar.getOrientation () == WebToolBar.HORIZONTAL )
                 {
-                    int gradY = shadeWidth + 1;
-                    int gradEndY = c.getHeight () - shadeWidth - 2;
+                    final int gradY = shadeWidth + 1;
+                    final int gradEndY = c.getHeight () - shadeWidth - 2;
                     if ( gradEndY > gradY )
                     {
                         g2d.setPaint ( new LinearGradientPaint ( 0, gradY, 0, gradEndY, fractions, gradient ) );
@@ -481,15 +489,16 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeProvider, Borde
                 }
                 else
                 {
-                    int gradX = shadeWidth + 1;
-                    int gradEndX = c.getWidth () - shadeWidth - 2;
+                    final int gradX = shadeWidth + 1;
+                    final int gradEndX = c.getWidth () - shadeWidth - 2;
                     if ( gradEndX > gradX )
                     {
                         g2d.setPaint ( new LinearGradientPaint ( gradX, 0, gradEndX, 0, fractions, gradient ) );
 
                         // Determining gripper Y coordinate
-                        int y = toolbarStyle.equals ( ToolbarStyle.standalone ) ? shadeWidth + 1 + margin.top + ( isFloating () ? -1 : 1 ) :
-                                margin.top + gripperSpace / 2 - 1;
+                        final int y =
+                                toolbarStyle.equals ( ToolbarStyle.standalone ) ? shadeWidth + 1 + margin.top + ( isFloating () ? -1 : 1 ) :
+                                        margin.top + gripperSpace / 2 - 1;
 
                         // Painting gripper
                         for ( int i = c.getWidth () / 2 - 3; i >= gradX; i -= 4 )
@@ -509,7 +518,7 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeProvider, Borde
     }
 
     @Override
-    public Dimension getPreferredSize ( JComponent c )
+    public Dimension getPreferredSize ( final JComponent c )
     {
         Dimension ps = c.getLayout () != null ? c.getLayout ().preferredLayoutSize ( c ) : null;
         if ( painter != null )
@@ -520,16 +529,16 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeProvider, Borde
     }
 
     @Override
-    protected RootPaneContainer createFloatingWindow ( JToolBar toolbar )
+    protected RootPaneContainer createFloatingWindow ( final JToolBar toolbar )
     {
         class ToolBarDialog extends WebDialog
         {
-            public ToolBarDialog ( Frame owner, String title, boolean modal )
+            public ToolBarDialog ( final Frame owner, final String title, final boolean modal )
             {
                 super ( owner, title, modal );
             }
 
-            public ToolBarDialog ( Dialog owner, String title, boolean modal )
+            public ToolBarDialog ( final Dialog owner, final String title, final boolean modal )
             {
                 super ( owner, title, modal );
             }
@@ -539,7 +548,7 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeProvider, Borde
             @Override
             protected JRootPane createRootPane ()
             {
-                JRootPane rootPane = new JRootPane ()
+                final JRootPane rootPane = new JRootPane ()
                 {
                     private boolean packing = false;
 
@@ -560,8 +569,8 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeProvider, Borde
             }
         }
 
-        JDialog dialog;
-        Window window = SwingUtils.getWindowAncestor ( toolbar );
+        final JDialog dialog;
+        final Window window = SwingUtils.getWindowAncestor ( toolbar );
         if ( window instanceof Frame )
         {
             dialog = new ToolBarDialog ( ( Frame ) window, toolbar.getName (), false );
@@ -578,7 +587,7 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeProvider, Borde
         dialog.getRootPane ().setName ( "ToolBar.FloatingWindow" );
         dialog.setTitle ( toolbar.getName () );
         dialog.setResizable ( false );
-        WindowListener wl = createFrameListener ();
+        final WindowListener wl = createFrameListener ();
         dialog.addWindowListener ( wl );
         //        dialog.setUndecorated ( true );
         return dialog;
@@ -595,9 +604,9 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeProvider, Borde
     //    }
 
     @Override
-    protected DragWindow createDragWindow ( JToolBar toolbar )
+    protected DragWindow createDragWindow ( final JToolBar toolbar )
     {
-        DragWindow dragWindow = super.createDragWindow ( toolbar );
+        final DragWindow dragWindow = super.createDragWindow ( toolbar );
         ProprietaryUtils.setWindowOpacity ( dragWindow, 0.5f );
         return dragWindow;
     }

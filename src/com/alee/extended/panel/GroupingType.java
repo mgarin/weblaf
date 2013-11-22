@@ -38,6 +38,9 @@ public enum GroupingType
     // Only last component fills free space
     fillLast,
 
+    // Only first and last components fill free space
+    fillFirstAndLast,
+
     // All components fill free space
     fillAll
 }

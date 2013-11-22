@@ -98,6 +98,7 @@ public class WebFonts
         if ( SystemUtils.isWindows () )
         {
             // Win8
+            // Win7
             fonts.put ( CONTROL, new FontUIResource ( TAHOMA, Font.PLAIN, 12 ) );
             fonts.put ( ALERT, new FontUIResource ( SEGOE_UI, Font.PLAIN, 13 ) );
             fonts.put ( MENU, new FontUIResource ( SEGOE_UI, Font.PLAIN, 12 ) );
@@ -105,12 +106,6 @@ public class WebFonts
             fonts.put ( TITLE, new FontUIResource ( SEGOE_UI, Font.PLAIN, 14 ) );
             fonts.put ( TEXT, new FontUIResource ( TAHOMA, Font.PLAIN, 12 ) );
             fonts.put ( TOOLTIP, new FontUIResource ( SEGOE_UI, Font.PLAIN, 12 ) );
-
-            // Win7
-            // todo
-
-            // Older
-            // todo
         }
         else if ( SystemUtils.isMac () )
         {
@@ -125,32 +120,14 @@ public class WebFonts
         }
         else
         {
-            if ( SystemUtils.isUnix () )
-            {
-                // Unix systems
-                fonts.put ( CONTROL, new FontUIResource ( SANS_SERIF, Font.PLAIN, 12 ) );
-                fonts.put ( ALERT, new FontUIResource ( SANS_SERIF, Font.PLAIN, 12 ) );
-                fonts.put ( MENU, new FontUIResource ( SANS_SERIF, Font.PLAIN, 12 ) );
-                fonts.put ( ACCELERATOR, new FontUIResource ( SANS_SERIF, Font.PLAIN, 11 ) );
-                fonts.put ( TITLE, new FontUIResource ( SANS_SERIF, Font.BOLD, 12 ) );
-                fonts.put ( TEXT, new FontUIResource ( SANS_SERIF, Font.PLAIN, 12 ) );
-                fonts.put ( TOOLTIP, new FontUIResource ( SANS_SERIF, Font.PLAIN, 12 ) );
-            }
-            //        else if ( SystemUtils.isSolaris () )
-            //        {
-            //            // todo
-            //        }
-            else
-            {
-                // Other OS
-                fonts.put ( CONTROL, new FontUIResource ( SANS_SERIF, Font.PLAIN, 12 ) );
-                fonts.put ( ALERT, new FontUIResource ( SANS_SERIF, Font.PLAIN, 12 ) );
-                fonts.put ( MENU, new FontUIResource ( SANS_SERIF, Font.PLAIN, 12 ) );
-                fonts.put ( ACCELERATOR, new FontUIResource ( SANS_SERIF, Font.PLAIN, 11 ) );
-                fonts.put ( TITLE, new FontUIResource ( SANS_SERIF, Font.BOLD, 12 ) );
-                fonts.put ( TEXT, new FontUIResource ( SANS_SERIF, Font.PLAIN, 12 ) );
-                fonts.put ( TOOLTIP, new FontUIResource ( SANS_SERIF, Font.PLAIN, 12 ) );
-            }
+            // Unix systems
+            fonts.put ( CONTROL, new FontUIResource ( SANS_SERIF, Font.PLAIN, 12 ) );
+            fonts.put ( ALERT, new FontUIResource ( SANS_SERIF, Font.PLAIN, 12 ) );
+            fonts.put ( MENU, new FontUIResource ( SANS_SERIF, Font.PLAIN, 12 ) );
+            fonts.put ( ACCELERATOR, new FontUIResource ( SANS_SERIF, Font.PLAIN, 11 ) );
+            fonts.put ( TITLE, new FontUIResource ( SANS_SERIF, Font.BOLD, 12 ) );
+            fonts.put ( TEXT, new FontUIResource ( SANS_SERIF, Font.PLAIN, 12 ) );
+            fonts.put ( TOOLTIP, new FontUIResource ( SANS_SERIF, Font.PLAIN, 12 ) );
         }
     }
 
