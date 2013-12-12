@@ -38,12 +38,12 @@ public class WhiteSpace extends JComponent implements SwingConstants
         this ( StyleConstants.contentSpacing );
     }
 
-    public WhiteSpace ( int spacing )
+    public WhiteSpace ( final int spacing )
     {
         this ( spacing, -1 );
     }
 
-    public WhiteSpace ( int spacing, int orientation )
+    public WhiteSpace ( final int spacing, final int orientation )
     {
         super ();
         SwingUtils.setOrientation ( this );
@@ -56,7 +56,7 @@ public class WhiteSpace extends JComponent implements SwingConstants
         return orientation;
     }
 
-    public void setOrientation ( int orientation )
+    public void setOrientation ( final int orientation )
     {
         this.orientation = orientation;
     }
@@ -66,7 +66,7 @@ public class WhiteSpace extends JComponent implements SwingConstants
         return spacing;
     }
 
-    public void setSpacing ( int spacing )
+    public void setSpacing ( final int spacing )
     {
         this.spacing = spacing;
     }
@@ -74,10 +74,10 @@ public class WhiteSpace extends JComponent implements SwingConstants
     @Override
     public Dimension getPreferredSize ()
     {
-        Container container = getParent ();
+        final Container container = getParent ();
         if ( container != null && container.getLayout () instanceof ToolbarLayout )
         {
-            ToolbarLayout layout = ( ToolbarLayout ) container.getLayout ();
+            final ToolbarLayout layout = ( ToolbarLayout ) container.getLayout ();
             return new Dimension ( layout.getOrientation () != VERTICAL ? spacing : 0,
                     layout.getOrientation () != HORIZONTAL ? spacing : 0 );
         }

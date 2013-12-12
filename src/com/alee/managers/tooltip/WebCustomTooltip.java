@@ -93,67 +93,68 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
     // Component listeners
     private AncestorListener ancestorListener;
 
-    private static WebLabel createDefaultComponent ( Icon icon, String tooltip )
+    private static WebLabel createDefaultComponent ( final Icon icon, final String tooltip )
     {
         return new WebLabel ( tooltip, icon );
     }
 
-    public WebCustomTooltip ( Component component, String tooltip )
+    public WebCustomTooltip ( final Component component, final String tooltip )
     {
         this ( component, null, tooltip );
     }
 
-    public WebCustomTooltip ( Component component, Icon icon, String tooltip )
+    public WebCustomTooltip ( final Component component, final Icon icon, final String tooltip )
     {
         this ( component, createDefaultComponent ( icon, tooltip ) );
     }
 
-    public WebCustomTooltip ( Component component, String tooltip, TooltipWay tooltipWay )
+    public WebCustomTooltip ( final Component component, final String tooltip, final TooltipWay tooltipWay )
     {
         this ( component, null, tooltip, tooltipWay );
     }
 
-    public WebCustomTooltip ( Component component, Icon icon, String tooltip, TooltipWay tooltipWay )
+    public WebCustomTooltip ( final Component component, final Icon icon, final String tooltip, final TooltipWay tooltipWay )
     {
         this ( component, createDefaultComponent ( icon, tooltip ), tooltipWay );
     }
 
-    public WebCustomTooltip ( Component component, String tooltip, boolean showHotkey )
+    public WebCustomTooltip ( final Component component, final String tooltip, final boolean showHotkey )
     {
         this ( component, null, tooltip, showHotkey );
     }
 
-    public WebCustomTooltip ( Component component, Icon icon, String tooltip, boolean showHotkey )
+    public WebCustomTooltip ( final Component component, final Icon icon, final String tooltip, final boolean showHotkey )
     {
         this ( component, createDefaultComponent ( icon, tooltip ), showHotkey );
     }
 
-    public WebCustomTooltip ( Component component, String tooltip, TooltipWay tooltipWay, boolean showHotkey )
+    public WebCustomTooltip ( final Component component, final String tooltip, final TooltipWay tooltipWay, final boolean showHotkey )
     {
         this ( component, null, tooltip, tooltipWay, showHotkey );
     }
 
-    public WebCustomTooltip ( Component component, Icon icon, String tooltip, TooltipWay tooltipWay, boolean showHotkey )
+    public WebCustomTooltip ( final Component component, final Icon icon, final String tooltip, final TooltipWay tooltipWay,
+                              final boolean showHotkey )
     {
         this ( component, createDefaultComponent ( icon, tooltip ), tooltipWay, showHotkey );
     }
 
-    public WebCustomTooltip ( Component component, JComponent tooltip )
+    public WebCustomTooltip ( final Component component, final JComponent tooltip )
     {
         this ( component, tooltip, WebCustomTooltipStyle.displayWay );
     }
 
-    public WebCustomTooltip ( Component component, JComponent tooltip, TooltipWay tooltipWay )
+    public WebCustomTooltip ( final Component component, final JComponent tooltip, final TooltipWay tooltipWay )
     {
         this ( component, tooltip, tooltipWay, WebCustomTooltipStyle.showHotkey );
     }
 
-    public WebCustomTooltip ( Component component, JComponent tooltip, boolean showHotkey )
+    public WebCustomTooltip ( final Component component, final JComponent tooltip, final boolean showHotkey )
     {
         this ( component, tooltip, WebCustomTooltipStyle.displayWay, showHotkey );
     }
 
-    public WebCustomTooltip ( Component component, JComponent tooltip, TooltipWay tooltipWay, boolean showHotkey )
+    public WebCustomTooltip ( final Component component, final JComponent tooltip, final TooltipWay tooltipWay, final boolean showHotkey )
     {
         super ();
 
@@ -190,10 +191,10 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
         fadeTimer.addActionListener ( new ActionListener ()
         {
             @Override
-            public void actionPerformed ( ActionEvent e )
+            public void actionPerformed ( final ActionEvent e )
             {
-                float roundsCount = fadeTime / ( 1000f / fadeFps );
-                float fadeSpeed = 1f / roundsCount;
+                final float roundsCount = fadeTime / ( 1000f / fadeFps );
+                final float fadeSpeed = 1f / roundsCount;
                 if ( fadeStateType.equals ( FadeStateType.fadeIn ) )
                 {
                     if ( fade < 1f )
@@ -219,7 +220,7 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
                         final JComponent parent = ( JComponent ) WebCustomTooltip.this.getParent ();
                         if ( parent != null )
                         {
-                            Rectangle b = WebCustomTooltip.this.getBounds ();
+                            final Rectangle b = WebCustomTooltip.this.getBounds ();
                             parent.remove ( WebCustomTooltip.this );
                             parent.repaint ( b );
                         }
@@ -231,7 +232,7 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
         addAncestorListener ( new AncestorListener ()
         {
             @Override
-            public void ancestorAdded ( AncestorEvent event )
+            public void ancestorAdded ( final AncestorEvent event )
             {
                 // Updating tooltip hotkey
                 updateHotkey ();
@@ -250,14 +251,19 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
             }
 
             @Override
-            public void ancestorRemoved ( AncestorEvent event )
+            public void ancestorRemoved ( final AncestorEvent event )
             {
-                // Informing listeners that tooltip was hidden
-                fireTooltipHidden ();
+                // Check that tooltip actually doesn't have a parent anymore
+                // This check is added for the case when parent glasspane is moved forcing this listener to be called
+                if ( WebCustomTooltip.this.getParent () == null )
+                {
+                    // Informing listeners that tooltip was hidden
+                    fireTooltipHidden ();
+                }
             }
 
             @Override
-            public void ancestorMoved ( AncestorEvent event )
+            public void ancestorMoved ( final AncestorEvent event )
             {
                 // Updating location of the tooltip
                 updateBorder ();
@@ -271,14 +277,14 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
             ancestorListener = new AncestorAdapter ()
             {
                 @Override
-                public void ancestorRemoved ( AncestorEvent event )
+                public void ancestorRemoved ( final AncestorEvent event )
                 {
                     // Closing tooltip
                     closeTooltip ();
                 }
 
                 @Override
-                public void ancestorMoved ( AncestorEvent event )
+                public void ancestorMoved ( final AncestorEvent event )
                 {
                     // Closing tooltip
                     closeTooltip ();
@@ -294,7 +300,7 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
 
     private void updateHotkey ()
     {
-        String hotkeyText = HotkeyManager.getComponentHotkeysString ( getComponent () );
+        final String hotkeyText = HotkeyManager.getComponentHotkeysString ( getComponent () );
         if ( showHotkey && !hotkeyText.trim ().equals ( "" ) )
         {
             // Updatings hotkey
@@ -355,7 +361,7 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
 
     public void destroyTooltip ()
     {
-        Component component = getComponent ();
+        final Component component = getComponent ();
         if ( component instanceof JComponent )
         {
             ( ( JComponent ) component ).removeAncestorListener ( ancestorListener );
@@ -369,12 +375,12 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
 
     public TooltipWay getActualDisplayWay ()
     {
-        Component component = getComponent ();
+        final Component component = getComponent ();
         if ( displayWay != null )
         {
             if ( displayWay.equals ( TooltipWay.leading ) || displayWay.equals ( TooltipWay.trailing ) )
             {
-                boolean ltr = component.getComponentOrientation ().isLeftToRight ();
+                final boolean ltr = component.getComponentOrientation ().isLeftToRight ();
                 if ( displayWay.equals ( TooltipWay.leading ) && ltr || displayWay.equals ( TooltipWay.trailing ) && !ltr )
                 {
                     return TooltipWay.left;
@@ -393,10 +399,10 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
                 return TooltipWay.down;
             }
 
-            Component glassPane = SwingUtilities.getRootPane ( component ).getGlassPane ();
-            Dimension rootSize = glassPane.getSize ();
-            Rectangle componentBounds = SwingUtils.getRelativeBounds ( component, glassPane );
-            Dimension ps = WebCustomTooltip.this.getPreferredSize ();
+            final Component glassPane = SwingUtilities.getRootPane ( component ).getGlassPane ();
+            final Dimension rootSize = glassPane.getSize ();
+            final Rectangle componentBounds = SwingUtils.getRelativeBounds ( component, glassPane );
+            final Dimension ps = WebCustomTooltip.this.getPreferredSize ();
 
             if ( componentBounds.y + getTooltipPoint ( component, TooltipWay.down ).y + ps.height < rootSize.height - windowSideSpacing )
             {
@@ -422,7 +428,7 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
         }
     }
 
-    private Point getTooltipPoint ( Component component, TooltipWay tooltipWay )
+    private Point getTooltipPoint ( final Component component, final TooltipWay tooltipWay )
     {
         if ( displayLocation == null )
         {
@@ -455,20 +461,20 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
 
     public void updateBorder ()
     {
-        TooltipWay displayWay = getActualDisplayWay ();
+        final TooltipWay displayWay = getActualDisplayWay ();
 
         // Default margins
-        int leftSpacing = shadeWidth + contentSpacing + leftRightSpacing +
+        final int leftSpacing = shadeWidth + contentSpacing + leftRightSpacing +
                 ( displayWay.equals ( TooltipWay.right ) ? cornerLength : 0 );
-        int rightSpacing = shadeWidth + contentSpacing + leftRightSpacing +
+        final int rightSpacing = shadeWidth + contentSpacing + leftRightSpacing +
                 ( displayWay.equals ( TooltipWay.left ) ? cornerLength : 0 );
-        int topSpacing = shadeWidth +
+        final int topSpacing = shadeWidth +
                 contentSpacing + ( displayWay.equals ( TooltipWay.down ) ? cornerLength : 0 );
-        int bottomSpacing = shadeWidth +
+        final int bottomSpacing = shadeWidth +
                 contentSpacing + ( displayWay.equals ( TooltipWay.up ) ? cornerLength : 0 );
 
         // Additional hotkey margins
-        Insets hm = getHotkeyMargins ();
+        final Insets hm = getHotkeyMargins ();
 
         // Updating border
         setBorder ( BorderFactory
@@ -478,12 +484,12 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
 
     private Insets getHotkeyMargins ()
     {
-        boolean ltr = getComponentOrientation ().isLeftToRight ();
-        boolean leftHotkey = hotkeyLocation == SwingConstants.LEFT ||
+        final boolean ltr = getComponentOrientation ().isLeftToRight ();
+        final boolean leftHotkey = hotkeyLocation == SwingConstants.LEFT ||
                 hotkeyLocation == SwingConstants.LEADING && ltr ||
                 hotkeyLocation == SwingConstants.TRAILING && !ltr;
-        int left = showHotkey && leftHotkey ? 0 : 2;
-        int right = showHotkey && !leftHotkey ? 0 : 2;
+        final int left = showHotkey && leftHotkey ? 0 : 2;
+        final int right = showHotkey && !leftHotkey ? 0 : 2;
         return new Insets ( 0, left, 0, right );
     }
 
@@ -492,7 +498,7 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
      */
 
     @Override
-    public void applyComponentOrientation ( ComponentOrientation o )
+    public void applyComponentOrientation ( final ComponentOrientation o )
     {
         super.applyComponentOrientation ( o );
         closeTooltip ();
@@ -507,7 +513,7 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
         return contentSpacing;
     }
 
-    public void setContentSpacing ( int contentSpacing )
+    public void setContentSpacing ( final int contentSpacing )
     {
         this.contentSpacing = contentSpacing;
         updateBorder ();
@@ -522,7 +528,7 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
         return leftRightSpacing;
     }
 
-    public void setLeftRightSpacing ( int leftRightSpacing )
+    public void setLeftRightSpacing ( final int leftRightSpacing )
     {
         this.leftRightSpacing = leftRightSpacing;
         updateBorder ();
@@ -535,19 +541,19 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
 
     public void updateLocation ()
     {
-        Component component = getComponent ();
+        final Component component = getComponent ();
         if ( getParent () != null && getParent ().isShowing () && component.isShowing () )
         {
-            TooltipWay displayWay = getActualDisplayWay ();
+            final TooltipWay displayWay = getActualDisplayWay ();
 
-            Point p = getParent ().getLocationOnScreen ();
-            Point c = component.getLocationOnScreen ();
-            Dimension ps = getPreferredSize ();
+            final Point p = getParent ().getLocationOnScreen ();
+            final Point c = component.getLocationOnScreen ();
+            final Dimension ps = getPreferredSize ();
 
             if ( displayWay.equals ( TooltipWay.up ) || displayWay.equals ( TooltipWay.down ) )
             {
-                int compMiddle;
-                int compTipY;
+                final int compMiddle;
+                final int compTipY;
                 if ( displayLocation == null )
                 {
                     compMiddle = c.x - p.x + component.getWidth () / 2;
@@ -562,13 +568,13 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
 
                 if ( compMiddle - ps.width / 2 < windowSideSpacing )
                 {
-                    int cw = windowSideSpacing - ( compMiddle - ps.width / 2 );
+                    final int cw = windowSideSpacing - ( compMiddle - ps.width / 2 );
                     cornerPeak = Math.max ( shadeWidth + round + cornerSideX + 1, getWidth () / 2 - cw );
                     setLocation ( windowSideSpacing, compTipY );
                 }
                 else if ( compMiddle + ps.width / 2 > getParent ().getWidth () - windowSideSpacing )
                 {
-                    int cw = ( compMiddle + ps.width / 2 ) - ( getParent ().getWidth () - windowSideSpacing );
+                    final int cw = ( compMiddle + ps.width / 2 ) - ( getParent ().getWidth () - windowSideSpacing );
                     cornerPeak = Math.min ( ps.width - shadeWidth - round - cornerSideX - 1, getWidth () / 2 + cw );
                     setLocation ( getParent ().getWidth () - windowSideSpacing - ps.width, compTipY );
                 }
@@ -580,8 +586,8 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
             }
             else if ( displayWay.equals ( TooltipWay.left ) || displayWay.equals ( TooltipWay.right ) )
             {
-                int compMiddle;
-                int compTipX;
+                final int compMiddle;
+                final int compTipX;
                 if ( displayLocation == null )
                 {
                     compMiddle = c.y - p.y + component.getHeight () / 2;
@@ -596,13 +602,13 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
 
                 if ( compMiddle - ps.height / 2 < windowSideSpacing )
                 {
-                    int cw = windowSideSpacing - ( compMiddle - ps.height / 2 );
+                    final int cw = windowSideSpacing - ( compMiddle - ps.height / 2 );
                     cornerPeak = Math.max ( shadeWidth + round + cornerSideX + 1, getHeight () / 2 - cw );
                     setLocation ( compTipX, windowSideSpacing );
                 }
                 else if ( compMiddle + ps.height / 2 > getParent ().getHeight () - windowSideSpacing )
                 {
-                    int cw = ( compMiddle + ps.height / 2 ) - ( getParent ().getHeight () - windowSideSpacing );
+                    final int cw = ( compMiddle + ps.height / 2 ) - ( getParent ().getHeight () - windowSideSpacing );
                     cornerPeak = Math.min ( ps.height - shadeWidth - round - cornerSideX - 1, getHeight () / 2 + cw );
                     setLocation ( compTipX, getParent ().getHeight () - windowSideSpacing - ps.height );
                 }
@@ -625,12 +631,12 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
         return displayLocation;
     }
 
-    public void setDisplayLocation ( int x, int y )
+    public void setDisplayLocation ( final int x, final int y )
     {
         setDisplayLocation ( new Point ( x, y ) );
     }
 
-    public void setDisplayLocation ( Point displayLocation )
+    public void setDisplayLocation ( final Point displayLocation )
     {
         this.displayLocation = displayLocation;
         updateLocation ();
@@ -645,7 +651,7 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
         return windowSideSpacing;
     }
 
-    public void setWindowSideSpacing ( int windowSideSpacing )
+    public void setWindowSideSpacing ( final int windowSideSpacing )
     {
         this.windowSideSpacing = windowSideSpacing;
         updateLocation ();
@@ -660,7 +666,7 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
         return round;
     }
 
-    public void setRound ( int round )
+    public void setRound ( final int round )
     {
         this.round = round;
         updateLocation ();
@@ -693,7 +699,7 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
         return tooltip;
     }
 
-    public void setTooltip ( String tooltip )
+    public void setTooltip ( final String tooltip )
     {
         // Updating label tooltip text
         if ( this.tooltip != null && this.tooltip instanceof JLabel )
@@ -704,7 +710,7 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
         }
     }
 
-    public void setTooltip ( JComponent tooltip )
+    public void setTooltip ( final JComponent tooltip )
     {
         // Removing old tooltip
         if ( this.tooltip != null )
@@ -728,7 +734,7 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
         return displayWay;
     }
 
-    public void setDisplayWay ( TooltipWay displayWay )
+    public void setDisplayWay ( final TooltipWay displayWay )
     {
         this.displayWay = displayWay;
         updateBorder ();
@@ -744,7 +750,7 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
         return showHotkey;
     }
 
-    public void setShowHotkey ( boolean showHotkey )
+    public void setShowHotkey ( final boolean showHotkey )
     {
         this.showHotkey = showHotkey;
         updateHotkey ();
@@ -761,7 +767,7 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
         return hotkeyLocation;
     }
 
-    public void setHotkeyLocation ( int hotkeyLocation )
+    public void setHotkeyLocation ( final int hotkeyLocation )
     {
         this.hotkeyLocation = hotkeyLocation;
         updateHotkey ();
@@ -778,7 +784,7 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
         return defaultCloseBehavior;
     }
 
-    public void setDefaultCloseBehavior ( boolean defaultCloseBehavior )
+    public void setDefaultCloseBehavior ( final boolean defaultCloseBehavior )
     {
         this.defaultCloseBehavior = defaultCloseBehavior;
     }
@@ -792,7 +798,7 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
         return textColor;
     }
 
-    public void setTextColor ( Color textColor )
+    public void setTextColor ( final Color textColor )
     {
         //todo
         this.textColor = textColor;
@@ -807,7 +813,7 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
         return hotkey.getForeground ();
     }
 
-    public void setHotkeyColor ( Color hotkeyColor )
+    public void setHotkeyColor ( final Color hotkeyColor )
     {
         hotkey.setForeground ( hotkeyColor );
     }
@@ -821,7 +827,7 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
         return topBgColor;
     }
 
-    public void setTopBgColor ( Color topBgColor )
+    public void setTopBgColor ( final Color topBgColor )
     {
         this.topBgColor = topBgColor;
     }
@@ -835,7 +841,7 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
         return bottomBgColor;
     }
 
-    public void setBottomBgColor ( Color bottomBgColor )
+    public void setBottomBgColor ( final Color bottomBgColor )
     {
         this.bottomBgColor = bottomBgColor;
     }
@@ -849,7 +855,7 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
         return borderColor;
     }
 
-    public void setBorderColor ( Color borderColor )
+    public void setBorderColor ( final Color borderColor )
     {
         this.borderColor = borderColor;
     }
@@ -863,7 +869,7 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
         return trasparency;
     }
 
-    public void setTrasparency ( float trasparency )
+    public void setTrasparency ( final float trasparency )
     {
         this.trasparency = trasparency;
     }
@@ -883,13 +889,13 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
      */
 
     @Override
-    protected void paintComponent ( Graphics g )
+    protected void paintComponent ( final Graphics g )
     {
         super.paintComponent ( g );
 
         // Draw settings
-        Graphics2D g2d = ( Graphics2D ) g;
-        Object aa = LafUtils.setupAntialias ( g2d );
+        final Graphics2D g2d = ( Graphics2D ) g;
+        final Object aa = LafUtils.setupAntialias ( g2d );
 
         // Fade animation and transparency
         if ( fade < 1f )
@@ -903,7 +909,7 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
         }
 
         // Tooltip settings
-        TooltipWay displayWay = getActualDisplayWay ();
+        final TooltipWay displayWay = getActualDisplayWay ();
 
         // Initialize border and shade shape
         Shape bs = null;
@@ -956,18 +962,18 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
         LafUtils.restoreAntialias ( g2d, aa );
     }
 
-    private Shape getTooltipShape ( TooltipWay displayWay, boolean fill )
+    private Shape getTooltipShape ( final TooltipWay displayWay, final boolean fill )
     {
-        Area borderShape;
+        final Area borderShape;
 
         // Fill shape extend
         float fillExtend = fill ? 1f : 0;
 
         // Content area shape
-        float widthMinus =
+        final float widthMinus =
                 ( displayWay.equals ( TooltipWay.left ) || displayWay.equals ( TooltipWay.right ) ? cornerLength + 1 : 1 ) - fillExtend +
                         shadeWidth * 2;
-        float heightMinus =
+        final float heightMinus =
                 ( displayWay.equals ( TooltipWay.up ) || displayWay.equals ( TooltipWay.down ) ? cornerLength + 1 : 1 ) - fillExtend +
                         shadeWidth * 2;
         borderShape = new Area ( new RoundRectangle2D.Double ( shadeWidth + ( displayWay.equals ( TooltipWay.right ) ? cornerLength : 0 ),
@@ -976,7 +982,7 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
 
         // Corner shape
         fillExtend = fill ? 0.5f : 0;
-        GeneralPath gp = new GeneralPath ( GeneralPath.WIND_EVEN_ODD );
+        final GeneralPath gp = new GeneralPath ( GeneralPath.WIND_EVEN_ODD );
         if ( displayWay.equals ( TooltipWay.up ) )
         {
             gp.moveTo ( cornerPeak + fillExtend, getHeight () - shadeWidth - 1 );
@@ -1011,12 +1017,12 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
      * Tooltip listeners
      */
 
-    public void addTooltipListener ( TooltipListener listener )
+    public void addTooltipListener ( final TooltipListener listener )
     {
         listeners.add ( listener );
     }
 
-    public void removeTooltipListener ( TooltipListener listener )
+    public void removeTooltipListener ( final TooltipListener listener )
     {
         listeners.remove ( listener );
     }
@@ -1028,7 +1034,7 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
 
     private void fireTooltipShown ()
     {
-        for ( TooltipListener listener : CollectionUtils.copy ( listeners ) )
+        for ( final TooltipListener listener : CollectionUtils.copy ( listeners ) )
         {
             listener.tooltipShowing ();
         }
@@ -1036,7 +1042,7 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
 
     private void fireTooltipFullyShown ()
     {
-        for ( TooltipListener listener : CollectionUtils.copy ( listeners ) )
+        for ( final TooltipListener listener : CollectionUtils.copy ( listeners ) )
         {
             listener.tooltipShown ();
         }
@@ -1044,7 +1050,7 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
 
     private void fireTooltipHidden ()
     {
-        for ( TooltipListener listener : CollectionUtils.copy ( listeners ) )
+        for ( final TooltipListener listener : CollectionUtils.copy ( listeners ) )
         {
             listener.tooltipHidden ();
         }
@@ -1052,7 +1058,7 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
 
     private void fireTooltipDestroyed ()
     {
-        for ( TooltipListener listener : CollectionUtils.copy ( listeners ) )
+        for ( final TooltipListener listener : CollectionUtils.copy ( listeners ) )
         {
             listener.tooltipDestroyed ();
         }

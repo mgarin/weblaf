@@ -39,7 +39,9 @@ import java.awt.*;
 
 public class GroupPanel extends WebPanel
 {
-    // Key for boolean value that is used to determine when component should fill all the space left
+    /**
+     * Key for boolean value that is used to determine when component should fill all the space left.
+     */
     public static final String FILL_CELL = "fill.component.cell";
 
     /**

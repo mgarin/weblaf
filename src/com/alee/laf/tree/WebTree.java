@@ -392,6 +392,27 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
     }
 
     /**
+     * Selects node under the specified point.
+     *
+     * @param point point to look for node
+     */
+    public void selectNodeUnderPoint ( final Point point )
+    {
+        selectNodeUnderPoint ( point.x, point.y );
+    }
+
+    /**
+     * Selects node under the specified point.
+     *
+     * @param x point X coordinate
+     * @param y point Y coordinate
+     */
+    public void selectNodeUnderPoint ( final int x, final int y )
+    {
+        setSelectionPath ( getPathForLocation ( x, y ) );
+    }
+
+    /**
      * Sets selected nodes.
      */
     public void setSelectedNode ( final E node )

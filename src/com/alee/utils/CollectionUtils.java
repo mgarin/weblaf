@@ -18,6 +18,7 @@
 package com.alee.utils;
 
 import com.alee.utils.compare.Filter;
+import com.alee.utils.text.TextProvider;
 
 import java.util.*;
 
@@ -37,10 +38,10 @@ public final class CollectionUtils
      * @param <T>        objects type
      * @return true if list changed as the result of this operation, false otherwise
      */
-    public static <T> boolean addAll ( Collection<T> collection, T... objects )
+    public static <T> boolean addAll ( final Collection<T> collection, final T... objects )
     {
         boolean result = false;
-        for ( T object : objects )
+        for ( final T object : objects )
         {
             result |= collection.add ( object );
         }
@@ -55,7 +56,7 @@ public final class CollectionUtils
      * @param <T>        list type
      * @return copy of the specified list
      */
-    public static <T> List<T> copy ( Collection<T> collection )
+    public static <T> List<T> copy ( final Collection<T> collection )
     {
         return new ArrayList<T> ( collection );
     }
@@ -68,10 +69,10 @@ public final class CollectionUtils
      * @param <T>        list type
      * @return clone of the specified list
      */
-    public static <T extends Cloneable> List<T> clone ( Collection<T> collection )
+    public static <T extends Cloneable> List<T> clone ( final Collection<T> collection )
     {
-        List<T> cloned = new ArrayList<T> ( collection.size () );
-        for ( T value : collection )
+        final List<T> cloned = new ArrayList<T> ( collection.size () );
+        for ( final T value : collection )
         {
             cloned.add ( ReflectUtils.cloneSafely ( value ) );
         }
@@ -85,9 +86,9 @@ public final class CollectionUtils
      * @param <T>  data type
      * @return data list
      */
-    public static <T> List<T> copy ( T... data )
+    public static <T> List<T> copy ( final T... data )
     {
-        List<T> list = new ArrayList<T> ( data.length );
+        final List<T> list = new ArrayList<T> ( data.length );
         Collections.addAll ( list, data );
         return list;
     }
@@ -99,7 +100,7 @@ public final class CollectionUtils
      * @param <T>  list type
      * @return refactored list
      */
-    public static <T> List<T> removeNulls ( List<T> list )
+    public static <T> List<T> removeNulls ( final List<T> list )
     {
         if ( list != null )
         {
@@ -121,7 +122,7 @@ public final class CollectionUtils
      * @param list2 second list
      * @return true if lists are equal, false otherwise
      */
-    public static boolean areEqual ( List list1, List list2 )
+    public static boolean areEqual ( final List list1, final List list2 )
     {
         if ( list1 == null && list2 == null )
         {
@@ -139,7 +140,7 @@ public final class CollectionUtils
             }
             else
             {
-                for ( Object object : list1 )
+                for ( final Object object : list1 )
                 {
                     if ( !list2.contains ( object ) )
                     {
@@ -152,17 +153,35 @@ public final class CollectionUtils
     }
 
     /**
+     * Returns list of strings extracted from the specified elements list.
+     *
+     * @param list         elements list
+     * @param textProvider text provider
+     * @param <T>          elements type
+     * @return list of strings extracted from the specified elements list
+     */
+    public static <T> List<String> toStringList ( final List<T> list, final TextProvider<T> textProvider )
+    {
+        final List<String> stringList = new ArrayList<String> ( list.size () );
+        for ( final T element : list )
+        {
+            stringList.add ( textProvider.provide ( element ) );
+        }
+        return stringList;
+    }
+
+    /**
      * Returns an int array created using Integer list.
      *
      * @param list Integer list
      * @return int array
      */
-    public static int[] toArray ( List<Integer> list )
+    public static int[] toArray ( final List<Integer> list )
     {
-        int[] array = new int[ list.size () ];
+        final int[] array = new int[ list.size () ];
         for ( int i = 0; i < list.size (); i++ )
         {
-            Integer integer = list.get ( i );
+            final Integer integer = list.get ( i );
             array[ i ] = integer != null ? integer : 0;
         }
         return array;
@@ -175,9 +194,9 @@ public final class CollectionUtils
      * @param <T>   data type
      * @return data list
      */
-    public static <T> List<T> toList ( T[] array )
+    public static <T> List<T> toList ( final T[] array )
     {
-        List<T> list = new ArrayList<T> ( array.length );
+        final List<T> list = new ArrayList<T> ( array.length );
         Collections.addAll ( list, array );
         return list;
     }
@@ -189,7 +208,7 @@ public final class CollectionUtils
      * @param <T>   data type
      * @return data list
      */
-    public static <T> List<T> toList ( Deque<T> deque )
+    public static <T> List<T> toList ( final Deque<T> deque )
     {
         return new ArrayList<T> ( deque );
     }
@@ -201,11 +220,11 @@ public final class CollectionUtils
      * @param array  array to process
      * @return index of specified object in array
      */
-    public static int indexOf ( Object object, Object[] array )
+    public static int indexOf ( final Object object, final Object[] array )
     {
         for ( int i = 0; i < array.length; i++ )
         {
-            Object obj = array[ i ];
+            final Object obj = array[ i ];
             if ( obj == null && object == null || obj != null && object != null && obj.equals ( object ) )
             {
                 return i;
@@ -221,7 +240,7 @@ public final class CollectionUtils
      * @param array array to process
      * @return index of specified text in array
      */
-    public static int indexOf ( String text, String[] array )
+    public static int indexOf ( final String text, final String[] array )
     {
         return indexOf ( text, array, false );
     }
@@ -234,11 +253,11 @@ public final class CollectionUtils
      * @param ignoreCase whether ignore text case or not
      * @return index of specified text in array
      */
-    public static int indexOf ( String text, String[] array, boolean ignoreCase )
+    public static int indexOf ( final String text, final String[] array, final boolean ignoreCase )
     {
         for ( int i = 0; i < array.length; i++ )
         {
-            String txt = array[ i ];
+            final String txt = array[ i ];
             if ( txt == null && text == null ||
                     txt != null && text != null && ( ignoreCase ? txt.equalsIgnoreCase ( text ) : txt.equals ( text ) ) )
             {
@@ -255,11 +274,11 @@ public final class CollectionUtils
      * @param array  array to process
      * @return index of specified integer in array
      */
-    public static int indexOf ( int number, int[] array )
+    public static int indexOf ( final int number, final int[] array )
     {
         for ( int i = 0; i < array.length; i++ )
         {
-            int num = array[ i ];
+            final int num = array[ i ];
             if ( num == number )
             {
                 return i;
@@ -275,11 +294,11 @@ public final class CollectionUtils
      * @param array     array to process
      * @return index of specified character in array
      */
-    public static int indexOf ( char character, char[] array )
+    public static int indexOf ( final char character, final char[] array )
     {
         for ( int i = 0; i < array.length; i++ )
         {
-            char ch = array[ i ];
+            final char ch = array[ i ];
             if ( ch == character )
             {
                 return i;
@@ -296,10 +315,10 @@ public final class CollectionUtils
      * @param <T>        elements type
      * @return list of elements filtered from collection
      */
-    public static <T> List<T> filter ( Collection<T> collection, Filter<T> filter )
+    public static <T> List<T> filter ( final Collection<T> collection, final Filter<T> filter )
     {
-        List<T> filtered = new ArrayList<T> ( collection.size () );
-        for ( T element : collection )
+        final List<T> filtered = new ArrayList<T> ( collection.size () );
+        for ( final T element : collection )
         {
             if ( filter.accept ( element ) )
             {

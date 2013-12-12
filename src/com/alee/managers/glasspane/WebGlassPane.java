@@ -96,7 +96,7 @@ public class WebGlassPane extends WebPanel
      *
      * @param rootPane JRootPane to process
      */
-    public WebGlassPane ( JRootPane rootPane )
+    public WebGlassPane ( final JRootPane rootPane )
     {
         super ();
         this.rootPane = rootPane;
@@ -121,7 +121,7 @@ public class WebGlassPane extends WebPanel
      *
      * @param layoutManager layout manager to add
      */
-    public void addLayoutManager ( LayoutManager layoutManager )
+    public void addLayoutManager ( final LayoutManager layoutManager )
     {
         getMultiLayout ().addLayoutManager ( layoutManager );
     }
@@ -131,7 +131,7 @@ public class WebGlassPane extends WebPanel
      *
      * @param layoutManager layout manager to remove
      */
-    public void removeLayoutManager ( LayoutManager layoutManager )
+    public void removeLayoutManager ( final LayoutManager layoutManager )
     {
         getMultiLayout ().removeLayoutManager ( layoutManager );
     }
@@ -166,7 +166,7 @@ public class WebGlassPane extends WebPanel
      *
      * @param component component to display
      */
-    public void showComponent ( JComponent component )
+    public void showComponent ( final JComponent component )
     {
         // Updating added component and its childs orientation
         SwingUtils.copyOrientation ( WebGlassPane.this, component );
@@ -185,7 +185,7 @@ public class WebGlassPane extends WebPanel
      * @return true if WebGlassPane should absorb mouse event from the specified point, false otherwise
      */
     @Override
-    public boolean contains ( int x, int y )
+    public boolean contains ( final int x, final int y )
     {
         return hitShape != null && hitShape.contains ( x, y );
     }
@@ -205,7 +205,7 @@ public class WebGlassPane extends WebPanel
      *
      * @param hitShape custom hit shape that is used to allow mouse events passthrough where it is required
      */
-    public void setHitShape ( Shape hitShape )
+    public void setHitShape ( final Shape hitShape )
     {
         this.hitShape = hitShape;
     }
@@ -246,7 +246,7 @@ public class WebGlassPane extends WebPanel
      * @param image    image to paint
      * @param location image location
      */
-    public void setPaintedImage ( BufferedImage image, Point location )
+    public void setPaintedImage ( final BufferedImage image, final Point location )
     {
         setPaintedImage ( image, location, 100 );
     }
@@ -258,9 +258,9 @@ public class WebGlassPane extends WebPanel
      * @param location image location
      * @param opacity  image opacity
      */
-    public void setPaintedImage ( BufferedImage image, Point location, int opacity )
+    public void setPaintedImage ( final BufferedImage image, final Point location, final int opacity )
     {
-        Rectangle oldRect = getPaintedImageBounds ();
+        final Rectangle oldRect = getPaintedImageBounds ();
 
         this.paintedImage = image;
         this.imageLocation = location;
@@ -342,9 +342,9 @@ public class WebGlassPane extends WebPanel
      *
      * @param components components to highlight
      */
-    public void addHighlightedComponents ( Component... components )
+    public void addHighlightedComponents ( final Component... components )
     {
-        for ( Component component : components )
+        for ( final Component component : components )
         {
             if ( !highlightedComponents.contains ( component ) )
             {
@@ -359,9 +359,9 @@ public class WebGlassPane extends WebPanel
      *
      * @param components components to highlight
      */
-    public void addHighlightedComponents ( List<Component> components )
+    public void addHighlightedComponents ( final List<Component> components )
     {
-        for ( Component component : components )
+        for ( final Component component : components )
         {
             if ( !highlightedComponents.contains ( component ) )
             {
@@ -376,9 +376,9 @@ public class WebGlassPane extends WebPanel
      *
      * @param components components to remove highlight from
      */
-    public void removeHighlightedComponents ( Component... components )
+    public void removeHighlightedComponents ( final Component... components )
     {
-        for ( Component component : components )
+        for ( final Component component : components )
         {
             highlightedComponents.remove ( component );
         }
@@ -390,9 +390,9 @@ public class WebGlassPane extends WebPanel
      *
      * @param components components to remove highlight from
      */
-    public void removeHighlightedComponents ( List<Component> components )
+    public void removeHighlightedComponents ( final List<Component> components )
     {
-        for ( Component component : components )
+        for ( final Component component : components )
         {
             highlightedComponents.remove ( component );
         }
@@ -423,7 +423,7 @@ public class WebGlassPane extends WebPanel
      *
      * @param highlightBase highlight painting base
      */
-    public void setHighlightBase ( Component highlightBase )
+    public void setHighlightBase ( final Component highlightBase )
     {
         this.highlightBase = highlightBase;
     }
@@ -443,7 +443,7 @@ public class WebGlassPane extends WebPanel
      *
      * @param spacing highlight spacing
      */
-    public void setHighlightSpacing ( int spacing )
+    public void setHighlightSpacing ( final int spacing )
     {
         this.highlightSpacing = spacing;
     }
@@ -462,24 +462,26 @@ public class WebGlassPane extends WebPanel
      * @param g graphics context.
      */
     @Override
-    protected void paintComponent ( Graphics g )
+    protected void paintComponent ( final Graphics g )
     {
         super.paintComponent ( g );
 
-        Graphics2D g2d = ( Graphics2D ) g;
-        Object aa = LafUtils.setupAntialias ( g2d );
+        final Graphics2D g2d = ( Graphics2D ) g;
+        final Object aa = LafUtils.setupAntialias ( g2d );
 
         if ( highlightedComponents.size () > 0 )
         {
-            Rectangle baseBounds = SwingUtils.getRelativeBounds ( highlightBase, WebGlassPane.this );
-            Area area = new Area ( new Rectangle ( baseBounds.x - 1, baseBounds.y - 1, baseBounds.width + 1, baseBounds.height + 1 ) );
-            for ( Component component : highlightedComponents )
+            final Rectangle baseBounds = SwingUtils.getRelativeBounds ( highlightBase, WebGlassPane.this );
+            final Area area =
+                    new Area ( new Rectangle ( baseBounds.x - 1, baseBounds.y - 1, baseBounds.width + 1, baseBounds.height + 1 ) );
+            for ( final Component component : highlightedComponents )
             {
                 if ( component.isShowing () )
                 {
-                    Rectangle bounds = SwingUtils.getRelativeBounds ( component, WebGlassPane.this );
-                    RoundRectangle2D.Double shape = new RoundRectangle2D.Double ( bounds.x - highlightSpacing, bounds.y - highlightSpacing,
-                            bounds.width + highlightSpacing * 2 - 1, bounds.height + highlightSpacing * 2 - 1, 8, 8 );
+                    final Rectangle bounds = SwingUtils.getRelativeBounds ( component, WebGlassPane.this );
+                    final RoundRectangle2D.Double shape =
+                            new RoundRectangle2D.Double ( bounds.x - highlightSpacing, bounds.y - highlightSpacing,
+                                    bounds.width + highlightSpacing * 2 - 1, bounds.height + highlightSpacing * 2 - 1, 8, 8 );
                     area.subtract ( new Area ( shape ) );
                 }
             }
@@ -496,7 +498,7 @@ public class WebGlassPane extends WebPanel
 
         if ( imageOpacity != 0 && paintedImage != null && imageLocation != null )
         {
-            Composite c = g2d.getComposite ();
+            final Composite c = g2d.getComposite ();
             if ( imageOpacity != 100 )
             {
                 g2d.setComposite ( AlphaComposite.getInstance ( AlphaComposite.SRC_OVER, ( float ) imageOpacity / 100 ) );

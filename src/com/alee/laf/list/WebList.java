@@ -39,7 +39,7 @@ import java.util.Vector;
 /**
  * This JList extension class provides a direct access to WebListUI methods.
  * There is also a set of additional methods to simplify some operations with list.
- * <p>
+ * <p/>
  * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
  * You could stil use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
  *
@@ -87,7 +87,7 @@ public class WebList extends JList implements FontMethods<WebList>, SizeMethods<
      *
      * @param listData list data
      */
-    public WebList ( List listData )
+    public WebList ( final List listData )
     {
         super ( listData.toArray () );
     }
@@ -97,7 +97,7 @@ public class WebList extends JList implements FontMethods<WebList>, SizeMethods<
      *
      * @param listData list data
      */
-    public WebList ( Vector listData )
+    public WebList ( final Vector listData )
     {
         super ( listData );
     }
@@ -107,7 +107,7 @@ public class WebList extends JList implements FontMethods<WebList>, SizeMethods<
      *
      * @param listData list data
      */
-    public WebList ( Object[] listData )
+    public WebList ( final Object[] listData )
     {
         super ( listData );
     }
@@ -117,9 +117,20 @@ public class WebList extends JList implements FontMethods<WebList>, SizeMethods<
      *
      * @param dataModel list model
      */
-    public WebList ( ListModel dataModel )
+    public WebList ( final ListModel dataModel )
     {
         super ( dataModel );
+    }
+
+    /**
+     * Sets whether multiply values selection allowed or not.
+     * This call simply changes selection mode according to provided value.
+     *
+     * @param allowed whether multiply values selection allowed or not
+     */
+    public void setMultiplySelectionAllowed ( final boolean allowed )
+    {
+        setSelectionMode ( allowed ? ListSelectionModel.MULTIPLE_INTERVAL_SELECTION : ListSelectionModel.SINGLE_SELECTION );
     }
 
     /**
@@ -138,7 +149,7 @@ public class WebList extends JList implements FontMethods<WebList>, SizeMethods<
      *
      * @param element element to select
      */
-    public void setSelectedValue ( Object element )
+    public void setSelectedValue ( final Object element )
     {
         setSelectedValue ( element, true );
     }
@@ -150,7 +161,7 @@ public class WebList extends JList implements FontMethods<WebList>, SizeMethods<
      *
      * @param values values to select
      */
-    public void setSelectedValues ( Object[] values )
+    public void setSelectedValues ( final Object[] values )
     {
         setSelectedValues ( CollectionUtils.toList ( values ) );
     }
@@ -162,7 +173,7 @@ public class WebList extends JList implements FontMethods<WebList>, SizeMethods<
      *
      * @param values values to select
      */
-    public void setSelectedValues ( Collection values )
+    public void setSelectedValues ( final Collection values )
     {
         setSelectedValues ( new ArrayList ( values ) );
     }
@@ -174,10 +185,10 @@ public class WebList extends JList implements FontMethods<WebList>, SizeMethods<
      *
      * @param values values to select
      */
-    public void setSelectedValues ( List values )
+    public void setSelectedValues ( final List values )
     {
-        List<Integer> indices = new ArrayList<Integer> ();
-        ListModel model = getModel ();
+        final List<Integer> indices = new ArrayList<Integer> ();
+        final ListModel model = getModel ();
         for ( int i = 0; i < model.getSize (); i++ )
         {
             if ( values.contains ( model.getElementAt ( i ) ) )
@@ -203,7 +214,7 @@ public class WebList extends JList implements FontMethods<WebList>, SizeMethods<
      *
      * @param editable whether this list is editable or not
      */
-    public void setEditable ( boolean editable )
+    public void setEditable ( final boolean editable )
     {
         this.editable = editable;
 
@@ -229,7 +240,7 @@ public class WebList extends JList implements FontMethods<WebList>, SizeMethods<
      *
      * @param enabled whether rollover selection is enabled for this list or not
      */
-    public void setRolloverSelectionEnabled ( boolean enabled )
+    public void setRolloverSelectionEnabled ( final boolean enabled )
     {
         if ( enabled )
         {
@@ -253,7 +264,7 @@ public class WebList extends JList implements FontMethods<WebList>, SizeMethods<
      *
      * @param listCellEditor new cell editor
      */
-    public void setCellEditor ( ListCellEditor listCellEditor )
+    public void setCellEditor ( final ListCellEditor listCellEditor )
     {
         removeCellEditor ();
         this.listCellEditor = listCellEditor;
@@ -305,7 +316,7 @@ public class WebList extends JList implements FontMethods<WebList>, SizeMethods<
      *
      * @param index index for the cell to edit
      */
-    public void editCell ( int index )
+    public void editCell ( final int index )
     {
         final ListCellEditor cellEditor = getCellEditor ();
         if ( index != -1 && cellEditor != null )
@@ -351,13 +362,13 @@ public class WebList extends JList implements FontMethods<WebList>, SizeMethods<
      *
      * @param unselectable whether list allows an empty selection or not
      */
-    public void setUnselectable ( boolean unselectable )
+    public void setUnselectable ( final boolean unselectable )
     {
         this.unselectable = unselectable;
 
         // Updating selection model
-        int lead = getLeadSelectionIndex ();
-        int[] selected = getSelectedIndices ();
+        final int lead = getLeadSelectionIndex ();
+        final int[] selected = getSelectedIndices ();
         setSelectionModel ( unselectable ? new DefaultListSelectionModel () : new UnselectableListModel () );
         setSelectedIndices ( selected );
         getSelectionModel ().setLeadSelectionIndex ( lead );
@@ -380,7 +391,7 @@ public class WebList extends JList implements FontMethods<WebList>, SizeMethods<
      * @param <T>   value type
      * @return model value at the specified cell index
      */
-    public <T> T getValueAt ( int index )
+    public <T> T getValueAt ( final int index )
     {
         return ( T ) getModel ().getElementAt ( index );
     }
@@ -390,7 +401,7 @@ public class WebList extends JList implements FontMethods<WebList>, SizeMethods<
      *
      * @param listener the ListDataListener to be added
      */
-    public void addListDataListener ( ListDataListener listener )
+    public void addListDataListener ( final ListDataListener listener )
     {
         getModel ().addListDataListener ( listener );
     }
@@ -400,7 +411,7 @@ public class WebList extends JList implements FontMethods<WebList>, SizeMethods<
      *
      * @param listener the ListDataListener to be removed
      */
-    public void removeListDataListener ( ListDataListener listener )
+    public void removeListDataListener ( final ListDataListener listener )
     {
         getModel ().removeListDataListener ( listener );
     }
@@ -410,11 +421,11 @@ public class WebList extends JList implements FontMethods<WebList>, SizeMethods<
      *
      * @param index cell index
      */
-    public void scrollToCell ( int index )
+    public void scrollToCell ( final int index )
     {
         if ( index != -1 )
         {
-            Rectangle cellBounds = getCellBounds ( index, index );
+            final Rectangle cellBounds = getCellBounds ( index, index );
             if ( cellBounds != null )
             {
                 scrollRectToVisible ( cellBounds );
@@ -437,7 +448,7 @@ public class WebList extends JList implements FontMethods<WebList>, SizeMethods<
      *
      * @param decorateSelection whether should decorate selected and rollover cells or not
      */
-    public void setDecorateSelection ( boolean decorateSelection )
+    public void setDecorateSelection ( final boolean decorateSelection )
     {
         getWebUI ().setDecorateSelection ( decorateSelection );
     }
@@ -457,7 +468,7 @@ public class WebList extends JList implements FontMethods<WebList>, SizeMethods<
      *
      * @param highlightRolloverCell whether should highlight rollover cell or not
      */
-    public void setHighlightRolloverCell ( boolean highlightRolloverCell )
+    public void setHighlightRolloverCell ( final boolean highlightRolloverCell )
     {
         getWebUI ().setHighlightRolloverCell ( highlightRolloverCell );
     }
@@ -477,7 +488,7 @@ public class WebList extends JList implements FontMethods<WebList>, SizeMethods<
      *
      * @param selectionRound new cells selection rounding
      */
-    public void setSelectionRound ( int selectionRound )
+    public void setSelectionRound ( final int selectionRound )
     {
         getWebUI ().setSelectionRound ( selectionRound );
     }
@@ -497,7 +508,7 @@ public class WebList extends JList implements FontMethods<WebList>, SizeMethods<
      *
      * @param selectionShadeWidth new cells selection shade width
      */
-    public void setSelectionShadeWidth ( int selectionShadeWidth )
+    public void setSelectionShadeWidth ( final int selectionShadeWidth )
     {
         getWebUI ().setSelectionShadeWidth ( selectionShadeWidth );
     }
@@ -517,7 +528,7 @@ public class WebList extends JList implements FontMethods<WebList>, SizeMethods<
      *
      * @param autoScrollToSelection whether to scroll list down to selection automatically or not
      */
-    public void setAutoScrollToSelection ( boolean autoScrollToSelection )
+    public void setAutoScrollToSelection ( final boolean autoScrollToSelection )
     {
         getWebUI ().setAutoScrollToSelection ( autoScrollToSelection );
     }
@@ -561,9 +572,9 @@ public class WebList extends JList implements FontMethods<WebList>, SizeMethods<
      *
      * @param value cell value
      */
-    public void repaint ( Object value )
+    public void repaint ( final Object value )
     {
-        ListModel model = getModel ();
+        final ListModel model = getModel ();
         if ( model instanceof WebListModel )
         {
             repaint ( ( ( WebListModel ) model ).indexOf ( value ) );
@@ -586,7 +597,7 @@ public class WebList extends JList implements FontMethods<WebList>, SizeMethods<
      *
      * @param index cell index
      */
-    public void repaint ( int index )
+    public void repaint ( final int index )
     {
         repaint ( index, index );
     }
@@ -597,7 +608,7 @@ public class WebList extends JList implements FontMethods<WebList>, SizeMethods<
      * @param from first cell index
      * @param to   last cell index
      */
-    public void repaint ( int from, int to )
+    public void repaint ( final int from, final int to )
     {
         final Rectangle cellBounds = getCellBounds ( from, to );
         if ( cellBounds != null )
@@ -621,7 +632,7 @@ public class WebList extends JList implements FontMethods<WebList>, SizeMethods<
      *
      * @param listener list edit listener to add
      */
-    public void addListEditListener ( ListEditListener listener )
+    public void addListEditListener ( final ListEditListener listener )
     {
         editListeners.add ( listener );
     }
@@ -631,7 +642,7 @@ public class WebList extends JList implements FontMethods<WebList>, SizeMethods<
      *
      * @param listener list edit listener to remove
      */
-    public void removeListEditListener ( ListEditListener listener )
+    public void removeListEditListener ( final ListEditListener listener )
     {
         editListeners.remove ( listener );
     }
@@ -641,10 +652,10 @@ public class WebList extends JList implements FontMethods<WebList>, SizeMethods<
      *
      * @param index edited cell index
      */
-    public void fireEditStarted ( int index )
+    public void fireEditStarted ( final int index )
     {
         editedCell = index;
-        for ( ListEditListener listener : CollectionUtils.copy ( editListeners ) )
+        for ( final ListEditListener listener : CollectionUtils.copy ( editListeners ) )
         {
             listener.editStarted ( index );
         }
@@ -657,10 +668,10 @@ public class WebList extends JList implements FontMethods<WebList>, SizeMethods<
      * @param oldValue old cell value
      * @param newValue new cell value
      */
-    public void fireEditFinished ( int index, Object oldValue, Object newValue )
+    public void fireEditFinished ( final int index, final Object oldValue, final Object newValue )
     {
         editedCell = -1;
-        for ( ListEditListener listener : CollectionUtils.copy ( editListeners ) )
+        for ( final ListEditListener listener : CollectionUtils.copy ( editListeners ) )
         {
             listener.editFinished ( index, oldValue, newValue );
         }
@@ -671,10 +682,10 @@ public class WebList extends JList implements FontMethods<WebList>, SizeMethods<
      *
      * @param index edited cell index
      */
-    public void fireEditCancelled ( int index )
+    public void fireEditCancelled ( final int index )
     {
         editedCell = -1;
-        for ( ListEditListener listener : CollectionUtils.copy ( editListeners ) )
+        for ( final ListEditListener listener : CollectionUtils.copy ( editListeners ) )
         {
             listener.editCancelled ( index );
         }
@@ -693,7 +704,7 @@ public class WebList extends JList implements FontMethods<WebList>, SizeMethods<
      * {@inheritDoc}
      */
     @Override
-    public WebList setPlainFont ( boolean apply )
+    public WebList setPlainFont ( final boolean apply )
     {
         return SwingUtils.setPlainFont ( this, apply );
     }
@@ -720,7 +731,7 @@ public class WebList extends JList implements FontMethods<WebList>, SizeMethods<
      * {@inheritDoc}
      */
     @Override
-    public WebList setBoldFont ( boolean apply )
+    public WebList setBoldFont ( final boolean apply )
     {
         return SwingUtils.setBoldFont ( this, apply );
     }
@@ -747,7 +758,7 @@ public class WebList extends JList implements FontMethods<WebList>, SizeMethods<
      * {@inheritDoc}
      */
     @Override
-    public WebList setItalicFont ( boolean apply )
+    public WebList setItalicFont ( final boolean apply )
     {
         return SwingUtils.setItalicFont ( this, apply );
     }
@@ -765,7 +776,7 @@ public class WebList extends JList implements FontMethods<WebList>, SizeMethods<
      * {@inheritDoc}
      */
     @Override
-    public WebList setFontStyle ( boolean bold, boolean italic )
+    public WebList setFontStyle ( final boolean bold, final boolean italic )
     {
         return SwingUtils.setFontStyle ( this, bold, italic );
     }
@@ -774,7 +785,7 @@ public class WebList extends JList implements FontMethods<WebList>, SizeMethods<
      * {@inheritDoc}
      */
     @Override
-    public WebList setFontStyle ( int style )
+    public WebList setFontStyle ( final int style )
     {
         return SwingUtils.setFontStyle ( this, style );
     }
@@ -783,7 +794,7 @@ public class WebList extends JList implements FontMethods<WebList>, SizeMethods<
      * {@inheritDoc}
      */
     @Override
-    public WebList setFontSize ( int fontSize )
+    public WebList setFontSize ( final int fontSize )
     {
         return SwingUtils.setFontSize ( this, fontSize );
     }
@@ -792,7 +803,7 @@ public class WebList extends JList implements FontMethods<WebList>, SizeMethods<
      * {@inheritDoc}
      */
     @Override
-    public WebList changeFontSize ( int change )
+    public WebList changeFontSize ( final int change )
     {
         return SwingUtils.changeFontSize ( this, change );
     }
@@ -810,7 +821,7 @@ public class WebList extends JList implements FontMethods<WebList>, SizeMethods<
      * {@inheritDoc}
      */
     @Override
-    public WebList setFontSizeAndStyle ( int fontSize, boolean bold, boolean italic )
+    public WebList setFontSizeAndStyle ( final int fontSize, final boolean bold, final boolean italic )
     {
         return SwingUtils.setFontSizeAndStyle ( this, fontSize, bold, italic );
     }
@@ -819,7 +830,7 @@ public class WebList extends JList implements FontMethods<WebList>, SizeMethods<
      * {@inheritDoc}
      */
     @Override
-    public WebList setFontSizeAndStyle ( int fontSize, int style )
+    public WebList setFontSizeAndStyle ( final int fontSize, final int style )
     {
         return SwingUtils.setFontSizeAndStyle ( this, fontSize, style );
     }
@@ -828,7 +839,7 @@ public class WebList extends JList implements FontMethods<WebList>, SizeMethods<
      * {@inheritDoc}
      */
     @Override
-    public WebList setFontName ( String fontName )
+    public WebList setFontName ( final String fontName )
     {
         return SwingUtils.setFontName ( this, fontName );
     }
@@ -855,7 +866,7 @@ public class WebList extends JList implements FontMethods<WebList>, SizeMethods<
      * {@inheritDoc}
      */
     @Override
-    public WebList setPreferredWidth ( int preferredWidth )
+    public WebList setPreferredWidth ( final int preferredWidth )
     {
         return SizeUtils.setPreferredWidth ( this, preferredWidth );
     }
@@ -873,7 +884,7 @@ public class WebList extends JList implements FontMethods<WebList>, SizeMethods<
      * {@inheritDoc}
      */
     @Override
-    public WebList setPreferredHeight ( int preferredHeight )
+    public WebList setPreferredHeight ( final int preferredHeight )
     {
         return SizeUtils.setPreferredHeight ( this, preferredHeight );
     }
@@ -891,7 +902,7 @@ public class WebList extends JList implements FontMethods<WebList>, SizeMethods<
      * {@inheritDoc}
      */
     @Override
-    public WebList setMinimumWidth ( int minimumWidth )
+    public WebList setMinimumWidth ( final int minimumWidth )
     {
         return SizeUtils.setMinimumWidth ( this, minimumWidth );
     }
@@ -909,7 +920,7 @@ public class WebList extends JList implements FontMethods<WebList>, SizeMethods<
      * {@inheritDoc}
      */
     @Override
-    public WebList setMinimumHeight ( int minimumHeight )
+    public WebList setMinimumHeight ( final int minimumHeight )
     {
         return SizeUtils.setMinimumHeight ( this, minimumHeight );
     }

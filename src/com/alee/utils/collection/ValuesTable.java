@@ -68,8 +68,10 @@ public class ValuesTable<K, V> implements Serializable
 
     /**
      * Constructs an empty ValuesTable with the specified initial capacity.
+     *
+     * @param initialCapacity initial table capacity
      */
-    public ValuesTable ( int initialCapacity )
+    public ValuesTable ( final int initialCapacity )
     {
         super ();
         keys = new ArrayList<K> ( initialCapacity );
@@ -103,7 +105,7 @@ public class ValuesTable<K, V> implements Serializable
      *
      * @param data Map with entries
      */
-    public void addAll ( Map<K, V> data )
+    public void addAll ( final Map<K, V> data )
     {
         putAll ( data );
     }
@@ -113,9 +115,9 @@ public class ValuesTable<K, V> implements Serializable
      *
      * @param data Map with entries
      */
-    public void putAll ( Map<K, V> data )
+    public void putAll ( final Map<K, V> data )
     {
-        for ( Map.Entry<K, V> entry : data.entrySet () )
+        for ( final Map.Entry<K, V> entry : data.entrySet () )
         {
             put ( entry.getKey (), entry.getValue () );
         }
@@ -126,7 +128,7 @@ public class ValuesTable<K, V> implements Serializable
      *
      * @param data ValuesTable with entries
      */
-    public void addAll ( ValuesTable<K, V> data )
+    public void addAll ( final ValuesTable<K, V> data )
     {
         putAll ( data );
     }
@@ -136,7 +138,7 @@ public class ValuesTable<K, V> implements Serializable
      *
      * @param data ValuesTable with entries
      */
-    public void putAll ( ValuesTable<K, V> data )
+    public void putAll ( final ValuesTable<K, V> data )
     {
         for ( int i = 0; i < data.size (); i++ )
         {
@@ -150,7 +152,7 @@ public class ValuesTable<K, V> implements Serializable
      * @param key   entry key
      * @param value entry value
      */
-    public void add ( K key, V value )
+    public void add ( final K key, final V value )
     {
         put ( key, value );
     }
@@ -161,7 +163,7 @@ public class ValuesTable<K, V> implements Serializable
      * @param key   entry key
      * @param value entry value
      */
-    public void put ( K key, V value )
+    public void put ( final K key, final V value )
     {
         put ( size (), key, value );
     }
@@ -173,7 +175,7 @@ public class ValuesTable<K, V> implements Serializable
      * @param key   entry key
      * @param value entry value
      */
-    public void add ( int index, K key, V value )
+    public void add ( final int index, final K key, final V value )
     {
         put ( index, key, value );
     }
@@ -185,7 +187,7 @@ public class ValuesTable<K, V> implements Serializable
      * @param key   entry key
      * @param value entry value
      */
-    public void put ( int index, K key, V value )
+    public void put ( int index, final K key, final V value )
     {
         // Searching for existing key
         int existingKeyIndex = -1;
@@ -247,7 +249,7 @@ public class ValuesTable<K, V> implements Serializable
      *
      * @param key entry key
      */
-    public void remove ( K key )
+    public void remove ( final K key )
     {
         removeByKey ( key );
     }
@@ -257,7 +259,7 @@ public class ValuesTable<K, V> implements Serializable
      *
      * @param key entry key
      */
-    public void removeByKey ( K key )
+    public void removeByKey ( final K key )
     {
         remove ( indexOfKey ( key ) );
     }
@@ -267,7 +269,7 @@ public class ValuesTable<K, V> implements Serializable
      *
      * @param value entry value
      */
-    public void removeByValue ( V value )
+    public void removeByValue ( final V value )
     {
         remove ( indexOfValue ( value ) );
     }
@@ -277,7 +279,7 @@ public class ValuesTable<K, V> implements Serializable
      *
      * @param index entry index
      */
-    public void remove ( int index )
+    public void remove ( final int index )
     {
         if ( index >= 0 && index < keys.size () )
         {
@@ -296,7 +298,7 @@ public class ValuesTable<K, V> implements Serializable
      * @param key   entry key
      * @param value entry value
      */
-    private void addEntry ( int index, K key, V value )
+    private void addEntry ( final int index, final K key, final V value )
     {
         keys.add ( index, key );
         values.add ( index, value );
@@ -309,10 +311,10 @@ public class ValuesTable<K, V> implements Serializable
      *
      * @param index entry index
      */
-    protected void removeExistingEntry ( int index )
+    protected void removeExistingEntry ( final int index )
     {
-        K rk = keys.remove ( index );
-        V rv = values.remove ( index );
+        final K rk = keys.remove ( index );
+        final V rv = values.remove ( index );
         valuesByKeys.remove ( rk );
         keysByValues.remove ( rv );
     }
@@ -323,7 +325,7 @@ public class ValuesTable<K, V> implements Serializable
      * @param index entry index
      * @return entry value
      */
-    public V get ( int index )
+    public V get ( final int index )
     {
         return getValue ( index );
     }
@@ -334,7 +336,7 @@ public class ValuesTable<K, V> implements Serializable
      * @param index entry index
      * @return entry value
      */
-    public V getValue ( int index )
+    public V getValue ( final int index )
     {
         return values.get ( index );
     }
@@ -345,7 +347,7 @@ public class ValuesTable<K, V> implements Serializable
      * @param index entry index
      * @return entry key
      */
-    public K getKey ( int index )
+    public K getKey ( final int index )
     {
         return keys.get ( index );
     }
@@ -357,7 +359,7 @@ public class ValuesTable<K, V> implements Serializable
      * @param key entry key
      * @return entry value
      */
-    public V get ( K key )
+    public V get ( final K key )
     {
         return getValue ( key );
     }
@@ -368,7 +370,7 @@ public class ValuesTable<K, V> implements Serializable
      * @param key entry key
      * @return entry value
      */
-    public V getValue ( K key )
+    public V getValue ( final K key )
     {
         return valuesByKeys.get ( key );
     }
@@ -379,7 +381,7 @@ public class ValuesTable<K, V> implements Serializable
      * @param value entry value
      * @return entry key
      */
-    public K getKey ( V value )
+    public K getKey ( final V value )
     {
         return keysByValues.get ( value );
     }
@@ -390,7 +392,7 @@ public class ValuesTable<K, V> implements Serializable
      * @param key entry key
      * @return true if this ValuesTable contains such entry, false otherwise
      */
-    public boolean contains ( K key )
+    public boolean contains ( final K key )
     {
         return valuesByKeys.containsKey ( key );
     }
@@ -401,7 +403,7 @@ public class ValuesTable<K, V> implements Serializable
      * @param key entry key
      * @return true if this ValuesTable contains such entry, false otherwise
      */
-    public boolean containsKey ( K key )
+    public boolean containsKey ( final K key )
     {
         return valuesByKeys.containsKey ( key );
     }
@@ -412,7 +414,7 @@ public class ValuesTable<K, V> implements Serializable
      * @param value entry value
      * @return true if this ValuesTable contains such entry, false otherwise
      */
-    public boolean containsValue ( V value )
+    public boolean containsValue ( final V value )
     {
         return keysByValues.containsKey ( value );
     }
@@ -423,7 +425,7 @@ public class ValuesTable<K, V> implements Serializable
      * @param key entry key
      * @return entry index
      */
-    public int indexOf ( K key )
+    public int indexOf ( final K key )
     {
         return indexOfKey ( key );
     }
@@ -434,7 +436,7 @@ public class ValuesTable<K, V> implements Serializable
      * @param key entry key
      * @return entry index
      */
-    public int indexOfKey ( K key )
+    public int indexOfKey ( final K key )
     {
         return keys.indexOf ( key );
     }
@@ -445,7 +447,7 @@ public class ValuesTable<K, V> implements Serializable
      * @param value entry value
      * @return entry index
      */
-    public int indexOfValue ( V value )
+    public int indexOfValue ( final V value )
     {
         return values.indexOf ( value );
     }
@@ -466,7 +468,7 @@ public class ValuesTable<K, V> implements Serializable
      * @param index index that is out of bounds
      * @return message text
      */
-    protected String outOfBoundsMsg ( int index )
+    protected String outOfBoundsMsg ( final int index )
     {
         return "Index: " + index + ", Size: " + size ();
     }

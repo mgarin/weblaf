@@ -49,7 +49,8 @@ public class WebListCellRenderer extends WebListElement implements ListCellRende
      * @return cell renderer component
      */
     @Override
-    public Component getListCellRendererComponent ( JList list, Object value, int index, boolean isSelected, boolean cellHasFocus )
+    public Component getListCellRendererComponent ( final JList list, final Object value, final int index, final boolean isSelected,
+                                                    final boolean cellHasFocus )
     {
         // Visual settings
         setFont ( list.getFont () );
@@ -69,8 +70,8 @@ public class WebListCellRenderer extends WebListElement implements ListCellRende
         }
 
         // Border
-        ListUI lui = list.getUI ();
-        int sw = lui instanceof WebListUI ? ( ( WebListUI ) lui ).getSelectionShadeWidth () : WebListStyle.selectionShadeWidth;
+        final ListUI lui = list.getUI ();
+        final int sw = lui instanceof WebListUI ? ( ( WebListUI ) lui ).getSelectionShadeWidth () : WebListStyle.selectionShadeWidth;
         setMargin ( sw + 2, sw + ( getIcon () != null ? 2 : 4 ), sw + 2, sw + 4 );
 
         // Orientation

@@ -23,7 +23,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * User: mgarin Date: 23.01.13 Time: 15:32
+ * Custom layout mostly used by custom GroupPanel container.
+ * It allows simple grouping of components placed into one line - either horizontally or vertically.
+ *
+ * @author Mikle Garin
  */
 
 public class GroupLayout extends AbstractLayoutManager implements SwingConstants
@@ -41,12 +44,12 @@ public class GroupLayout extends AbstractLayoutManager implements SwingConstants
         this ( HORIZONTAL );
     }
 
-    public GroupLayout ( int orientation )
+    public GroupLayout ( final int orientation )
     {
         this ( orientation, 0 );
     }
 
-    public GroupLayout ( int orientation, int gap )
+    public GroupLayout ( final int orientation, final int gap )
     {
         super ();
         setOrientation ( orientation );
@@ -58,7 +61,7 @@ public class GroupLayout extends AbstractLayoutManager implements SwingConstants
         return orientation;
     }
 
-    public void setOrientation ( int orientation )
+    public void setOrientation ( final int orientation )
     {
         this.orientation = orientation;
     }
@@ -68,7 +71,7 @@ public class GroupLayout extends AbstractLayoutManager implements SwingConstants
         return gap;
     }
 
-    public void setGap ( int gap )
+    public void setGap ( final int gap )
     {
         this.gap = gap;
     }
@@ -77,7 +80,7 @@ public class GroupLayout extends AbstractLayoutManager implements SwingConstants
      * {@inheritDoc}
      */
     @Override
-    public void addComponent ( Component component, Object constraints )
+    public void addComponent ( final Component component, final Object constraints )
     {
         this.constraints.put ( component, ( String ) constraints );
     }
@@ -86,7 +89,7 @@ public class GroupLayout extends AbstractLayoutManager implements SwingConstants
      * {@inheritDoc}
      */
     @Override
-    public void removeComponent ( Component component )
+    public void removeComponent ( final Component component )
     {
         this.constraints.remove ( component );
     }
@@ -95,7 +98,7 @@ public class GroupLayout extends AbstractLayoutManager implements SwingConstants
      * {@inheritDoc}
      */
     @Override
-    public Dimension preferredLayoutSize ( Container parent )
+    public Dimension preferredLayoutSize ( final Container parent )
     {
         return getLayoutSize ( parent, false );
     }
@@ -104,7 +107,7 @@ public class GroupLayout extends AbstractLayoutManager implements SwingConstants
      * {@inheritDoc}
      */
     @Override
-    public Dimension minimumLayoutSize ( Container parent )
+    public Dimension minimumLayoutSize ( final Container parent )
     {
         return getLayoutSize ( parent, true );
     }
@@ -113,14 +116,14 @@ public class GroupLayout extends AbstractLayoutManager implements SwingConstants
      * {@inheritDoc}
      */
     @Override
-    public void layoutContainer ( Container parent )
+    public void layoutContainer ( final Container parent )
     {
         // Gathering component sizes
         int fillCount = 0;
         int preferred = 0;
-        for ( Component component : parent.getComponents () )
+        for ( final Component component : parent.getComponents () )
         {
-            boolean fill = isFill ( component );
+            final boolean fill = isFill ( component );
             if ( fill )
             {
                 fillCount++;
@@ -140,44 +143,44 @@ public class GroupLayout extends AbstractLayoutManager implements SwingConstants
         }
 
         // Calculating required sizes
-        boolean ltr = parent.getComponentOrientation ().isLeftToRight ();
-        Insets insets = parent.getInsets ();
-        Dimension size = parent.getSize ();
-        int width = size.width - insets.left - insets.right;
-        int height = size.height - insets.top - insets.bottom;
-        int fillSize = orientation == HORIZONTAL ? ( fillCount > 0 && width > preferred ? ( width - preferred ) / fillCount : 0 ) :
+        final boolean ltr = parent.getComponentOrientation ().isLeftToRight ();
+        final Insets insets = parent.getInsets ();
+        final Dimension size = parent.getSize ();
+        final int width = size.width - insets.left - insets.right;
+        final int height = size.height - insets.top - insets.bottom;
+        final int fillSize = orientation == HORIZONTAL ? ( fillCount > 0 && width > preferred ? ( width - preferred ) / fillCount : 0 ) :
                 ( fillCount > 0 && height > preferred ? ( height - preferred ) / fillCount : 0 );
         int x = ltr || orientation == VERTICAL ? insets.left : size.width - insets.right;
         int y = insets.top;
 
         // Placing components
-        for ( Component component : parent.getComponents () )
+        for ( final Component component : parent.getComponents () )
         {
-            Dimension cps = component.getPreferredSize ();
-            boolean fill = isFill ( component );
+            final Dimension cps = component.getPreferredSize ();
+            final boolean fill = isFill ( component );
             if ( orientation == HORIZONTAL )
             {
-                int w = fill ? fillSize : cps.width;
+                final int w = fill ? fillSize : cps.width;
                 component.setBounds ( x - ( ltr ? 0 : w ), y, w, height );
                 x += ( ltr ? 1 : -1 ) * ( w + gap );
             }
             else
             {
-                int h = fill ? fillSize : cps.height;
+                final int h = fill ? fillSize : cps.height;
                 component.setBounds ( x, y, width, h );
                 y += h + gap;
             }
         }
     }
 
-    protected Dimension getLayoutSize ( Container parent, boolean minimum )
+    protected Dimension getLayoutSize ( final Container parent, final boolean minimum )
     {
-        Insets insets = parent.getInsets ();
-        Dimension ps = new Dimension ();
-        for ( Component component : parent.getComponents () )
+        final Insets insets = parent.getInsets ();
+        final Dimension ps = new Dimension ();
+        for ( final Component component : parent.getComponents () )
         {
-            Dimension cps = minimum ? component.getMinimumSize () : component.getPreferredSize ();
-            boolean ignoreSize = minimum && isFill ( component );
+            final Dimension cps = minimum ? component.getMinimumSize () : component.getPreferredSize ();
+            final boolean ignoreSize = minimum && isFill ( component );
             if ( orientation == HORIZONTAL )
             {
                 ps.width += ( ignoreSize ? 1 : cps.width );
@@ -205,11 +208,11 @@ public class GroupLayout extends AbstractLayoutManager implements SwingConstants
         return ps;
     }
 
-    protected boolean isFill ( Component component )
+    protected boolean isFill ( final Component component )
     {
         if ( constraints.containsKey ( component ) )
         {
-            String constraint = constraints.get ( component );
+            final String constraint = constraints.get ( component );
             return constraint != null && constraint.equals ( FILL );
         }
         else

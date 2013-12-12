@@ -17,6 +17,8 @@
 
 package com.alee.extended.tree;
 
+import java.util.List;
+
 /**
  * This interface provides methods for asynchronous tree data update.
  * Basically these methods called when some tree node is renamed, moved or removed.
@@ -31,10 +33,11 @@ public interface AsyncTreeDataUpdater<E extends AsyncUniqueNode>
      * Called when node add operation performed.
      * At this point node is already added visually, but you can still cancel this action if you cannot update data properly.
      *
-     * @param node
-     * @param addFailed
+     * @param nodes      added nodes list
+     * @param parentNode parent node where specified nodes were added
+     * @param addFailed  runnable you should call in case data update failed, it will cancel changes
      */
-    public void nodeAdded ( E node, Runnable addFailed );
+    public void nodesAdded ( List<E> nodes, E parentNode, Runnable addFailed );
 
     /**
      * Called when node rename operation performed.
@@ -45,10 +48,10 @@ public interface AsyncTreeDataUpdater<E extends AsyncUniqueNode>
      * @param newName      new node name
      * @param renameFailed runnable you should call in case data update failed, it will cancel changes
      */
-    public void nodeRenamed ( E node, Runnable renameFailed );
+    public void nodeRenamed ( E node, String oldName, String newName, Runnable renameFailed );
 
     /**
-     * Called when node move (drag or copy-paste) operation performed.
+     * Called when node move (D&D or cut/paste) operation performed.
      * At this point node is already moved visually, but you can still cancel this action if you cannot update data properly.
      *
      * @param node         moved node

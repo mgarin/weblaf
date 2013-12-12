@@ -38,6 +38,13 @@ import java.util.List;
 public abstract class AsyncTreeTransferHandler<T extends AsyncUniqueNode> extends TransferHandler
 {
     /**
+     * Whether should allow dropping nodes onto not-yet-loaded node or not.
+     * Be aware that if this set to true and your tree might fail loading childs - old nodes will still get removed on drop.
+     * If set to false tree will try to load child nodes first and then perform the drop operation.
+     */
+    protected boolean allowUncheckedDrop = false;
+
+    /**
      * Nodes flavor.
      */
     protected DataFlavor nodesFlavor;
@@ -50,25 +57,43 @@ public abstract class AsyncTreeTransferHandler<T extends AsyncUniqueNode> extend
     /**
      * Array of dragged nodes that should be removed at the end of DnD operation.
      */
-    protected T[] nodesToRemove;
+    protected List<T> nodesToRemove;
 
     /**
      * Constructs new async tree transfer handler.
-     *
-     * @param nodesArrayClass nodes array class type
      */
-    public AsyncTreeTransferHandler ( final Class<T[]> nodesArrayClass )
+    public AsyncTreeTransferHandler ()
     {
         super ();
         try
         {
-            nodesFlavor = new DataFlavor ( DataFlavor.javaJVMLocalObjectMimeType + ";class=\"" + nodesArrayClass.getName () + "\"" );
+            nodesFlavor = new DataFlavor ( DataFlavor.javaJVMLocalObjectMimeType + ";class=\"" + List.class.getName () + "\"" );
             flavors[ 0 ] = nodesFlavor;
         }
         catch ( ClassNotFoundException e )
         {
-            System.out.println ( "ClassNotFound: " + e.getMessage () );
+            e.printStackTrace ();
         }
+    }
+
+    /**
+     * Returns whether should allow dropping nodes onto not-yet-loaded node or not.
+     *
+     * @return true if should allow dropping nodes onto not-yet-loaded node, false otherwise
+     */
+    public boolean isAllowUncheckedDrop ()
+    {
+        return allowUncheckedDrop;
+    }
+
+    /**
+     * Sets whether should allow dropping nodes onto not-yet-loaded node or not
+     *
+     * @param allowUncheckedDrop whether should allow dropping nodes onto not-yet-loaded node or not
+     */
+    public void setAllowUncheckedDrop ( final boolean allowUncheckedDrop )
+    {
+        this.allowUncheckedDrop = allowUncheckedDrop;
     }
 
     /**
@@ -91,7 +116,12 @@ public abstract class AsyncTreeTransferHandler<T extends AsyncUniqueNode> extend
         // Do not allow a drop on busy node as that might break tree model
         // Do not allow a drop on a failed node as it is already messed
         final JTree.DropLocation dl = ( JTree.DropLocation ) support.getDropLocation ();
-        final T target = ( T ) dl.getPath ().getLastPathComponent ();
+        final TreePath path = dl.getPath ();
+        if ( path == null )
+        {
+            return false;
+        }
+        final T target = ( T ) path.getLastPathComponent ();
         if ( target.isLoading () || target.isFailed () )
         {
             return false;
@@ -113,7 +143,7 @@ public abstract class AsyncTreeTransferHandler<T extends AsyncUniqueNode> extend
             }
 
             // Perform the actual drop check
-            final T[] nodes = ( T[] ) support.getTransferable ().getTransferData ( nodesFlavor );
+            final List<T> nodes = ( List<T> ) support.getTransferable ().getTransferData ( nodesFlavor );
             final boolean canBeDropped = canBeDropped ( nodes, target, dl.getChildIndex () );
 
             // Displaying drop location
@@ -132,16 +162,6 @@ public abstract class AsyncTreeTransferHandler<T extends AsyncUniqueNode> extend
             return false;
         }
     }
-
-    /**
-     * Returns whether nodes can be dropped to the specified location and index or not.
-     *
-     * @param nodes        nodes to drop
-     * @param dropLocation node onto which drop was performed
-     * @param dropIndex    drop index if dropped between nodes unde dropLocation node or -1 if dropped directly onto dropLocation node
-     * @return true if nodes can be dropped to the specified location and index, false otherwise
-     */
-    protected abstract boolean canBeDropped ( T[] nodes, T dropLocation, int dropIndex );
 
     /**
      * Creates a Transferable to use as the source for a data transfer.
@@ -179,33 +199,13 @@ public abstract class AsyncTreeTransferHandler<T extends AsyncUniqueNode> extend
             }
 
             // Saving list of nodes to be deleted if operation succeed
-            nodesToRemove = toArray ( nodes );
+            nodesToRemove = nodes;
 
             // Returning new nodes transferable
-            return new NodesTransferable ( toArray ( copies ) );
+            return new NodesTransferable ( copies );
         }
         return null;
     }
-
-    protected abstract boolean canBeDragged ( List<T> nodes );
-
-    /**
-     * Translates nodes list into array and returns it.
-     * This one have to be defined outside of this class since we are not able to create typed array here.
-     *
-     * @param nodes nodes list to translate
-     * @return nodes array
-     */
-    protected abstract T[] toArray ( List<T> nodes );
-
-    /**
-     * Returns defensive node copy used in createTransferable.
-     * Used each time when node is moved within tree or into another tree.
-     *
-     * @param node node to copy
-     * @return node copy
-     */
-    protected abstract T copy ( final T node );
 
     /**
      * Invoked after data has been exported.
@@ -254,10 +254,10 @@ public abstract class AsyncTreeTransferHandler<T extends AsyncUniqueNode> extend
         }
 
         // Extracting transfer data.
-        final T[] nodes;
+        final List<T> nodes;
         try
         {
-            nodes = ( T[] ) support.getTransferable ().getTransferData ( nodesFlavor );
+            nodes = ( List<T> ) support.getTransferable ().getTransferData ( nodesFlavor );
         }
         catch ( UnsupportedFlavorException ufe )
         {
@@ -278,55 +278,138 @@ public abstract class AsyncTreeTransferHandler<T extends AsyncUniqueNode> extend
         final WebAsyncTree<T> tree = ( WebAsyncTree<T> ) support.getComponent ();
         final AsyncTreeModel<T> model = ( AsyncTreeModel<T> ) tree.getModel ();
 
-        // Acting differently in case parent node childs are not yet loaded
-        // We don't want to modify model (insert childs) before existing childs are actually loaded
-        if ( parent.isLoaded () )
+        if ( allowUncheckedDrop )
         {
-            // Adding data to model
-            model.insertNodesInto ( nodes, parent, childIndex == -1 ? parent.getChildCount () : childIndex );
+            // Acting differently in case parent node childs are not yet loaded
+            // We don't want to modify model (insert childs) before existing childs are actually loaded
+            if ( parent.isLoaded () )
+            {
+                // Adding data to model
+                performDropOperation ( nodes, parent, tree, model, childIndex == -1 ? parent.getChildCount () : childIndex );
+            }
+            else
+            {
+                // Loading childs first
+                tree.addAsyncTreeListener ( new AsyncTreeAdapter ()
+                {
+                    @Override
+                    public void childsLoadCompleted ( final AsyncUniqueNode loadedFor, final List childs )
+                    {
+                        if ( loadedFor == parent )
+                        {
+                            // Adding data to model
+                            performDropOperation ( nodes, parent, tree, model, parent.getChildCount () );
 
-            // Selecting inserted nodes
-            tree.setSelectedNodes ( nodes );
+                            // Removing listener
+                            tree.removeAsyncTreeListener ( this );
+                        }
+                    }
+
+                    @Override
+                    public void childsLoadFailed ( final AsyncUniqueNode loadedFor, final Throwable cause )
+                    {
+                        if ( loadedFor == parent )
+                        {
+                            // Removing listener
+                            tree.removeAsyncTreeListener ( this );
+                        }
+                    }
+                } );
+                tree.reloadNode ( parent );
+            }
+            return true;
         }
         else
         {
-            // Loading childs first
-            tree.addAsyncTreeListener ( new AsyncTreeAdapter ()
+            // We have to load childs synchronously, otherwise we cannot say for sure if drop succeed or not
+            if ( !parent.isLoaded () )
             {
-                @Override
-                public void childsLoadCompleted ( final AsyncUniqueNode loadedFor, final List childs )
-                {
-                    if ( loadedFor == parent )
-                    {
-                        // Adding data to model
-                        model.insertNodesInto ( nodes, parent, parent.getChildCount () );
+                tree.reloadNodeSync ( parent );
+            }
 
-                        // Selecting inserted nodes
-                        tree.setSelectedNodes ( nodes );
+            // If childs were loaded right away with our attempt - perform the drop
+            if ( parent.isLoaded () )
+            {
+                // Adding data to model
+                performDropOperation ( nodes, parent, tree, model, childIndex == -1 ? parent.getChildCount () : childIndex );
 
-                        // Removing listener
-                        tree.removeAsyncTreeListener ( this );
-                    }
-                }
-
-                @Override
-                public void childsLoadFailed ( final AsyncUniqueNode loadedFor, final Throwable cause )
-                {
-                    if ( loadedFor == parent )
-                    {
-                        // Removing listener
-                        tree.removeAsyncTreeListener ( this );
-                    }
-                }
-            } );
-            tree.reloadNode ( parent );
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
-
-        // Expanding node into which drop was performed
-        //        tree.expandNode ( parent );
-
-        return true;
     }
+
+    /**
+     * Performs actual nodes drop operation.
+     *
+     * @param nodes  list of nodes to drop
+     * @param parent parent node to drop nodes into
+     * @param tree   tree to drop nodes onto
+     * @param model  tree model
+     * @param index  nodes drop index
+     */
+    protected void performDropOperation ( final List<T> nodes, final T parent, final WebAsyncTree<T> tree, final AsyncTreeModel<T> model,
+                                          final int index )
+    {
+        // Adding data to model
+        model.insertNodesInto ( nodes, parent, index );
+
+        // Selecting inserted nodes
+        tree.setSelectedNodes ( nodes );
+
+        // Informing about drop in a separate thread
+        AsyncTreeQueue.execute ( tree, new Runnable ()
+        {
+            @Override
+            public void run ()
+            {
+                nodesDropped ( nodes, parent, tree, model, index );
+            }
+        } );
+    }
+
+    /**
+     * Returns whether the specified nodes drag can be started or not.
+     *
+     * @param nodes nodes to drag
+     * @return true if the specified nodes drag can be started, false otherwise
+     */
+    protected abstract boolean canBeDragged ( List<T> nodes );
+
+    /**
+     * Returns whether nodes can be dropped to the specified location and index or not.
+     *
+     * @param nodes        list of nodes to drop
+     * @param dropLocation node onto which drop was performed
+     * @param dropIndex    drop index if dropped between nodes unde dropLocation node or -1 if dropped directly onto dropLocation node
+     * @return true if nodes can be dropped to the specified location and index, false otherwise
+     */
+    protected abstract boolean canBeDropped ( List<T> nodes, T dropLocation, int dropIndex );
+
+    /**
+     * Returns defensive node copy used in createTransferable.
+     * Used each time when node is moved within tree or into another tree.
+     *
+     * @param node node to copy
+     * @return node copy
+     */
+    protected abstract T copy ( final T node );
+
+    /**
+     * Informs about nodes drop operation completition in a separate tree thread.
+     * This method should be used to perform actual data move operation.
+     *
+     * @param nodes  list of nodes to drop
+     * @param parent parent node to drop nodes into
+     * @param tree   tree to drop nodes onto
+     * @param model  tree model
+     * @param index  nodes drop index
+     */
+    public abstract void nodesDropped ( final List<T> nodes, final T parent, final WebAsyncTree<T> tree, final AsyncTreeModel<T> model,
+                                        final int index );
 
     /**
      * {@inheritDoc}
@@ -345,14 +428,14 @@ public abstract class AsyncTreeTransferHandler<T extends AsyncUniqueNode> extend
         /**
          * Transferred nodes.
          */
-        protected final T[] nodes;
+        protected final List<T> nodes;
 
         /**
          * Constructs new nodes transferable with the specified nodes as data.
          *
          * @param nodes transferred nodes
          */
-        public NodesTransferable ( final T[] nodes )
+        public NodesTransferable ( final List<T> nodes )
         {
             super ();
             this.nodes = nodes;

@@ -157,12 +157,15 @@ public class WebTreeModel<E extends MutableTreeNode> extends DefaultTreeModel
     }
 
     /**
-     * Forces node to be updated.
+     * Forces tree node to be updated.
      *
-     * @param node node to be updated
+     * @param node tree node to be updated
      */
     public void updateNode ( final E node )
     {
-        fireTreeNodesChanged ( WebTreeModel.this, getPathToRoot ( node ), null, null );
+        if ( node != null )
+        {
+            fireTreeNodesChanged ( WebTreeModel.this, getPathToRoot ( node ), null, null );
+        }
     }
 }

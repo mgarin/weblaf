@@ -2074,6 +2074,24 @@ public final class SwingUtils
     }
 
     /**
+     * Returns map of container child components preferred sizes.
+     *
+     * @param container container to process
+     * @return map of container child components preferred sizes
+     */
+    public static Map<Component, Dimension> getChildPreferredSizes ( final Container container )
+    {
+        final int cc = container.getComponentCount ();
+        final Map<Component, Dimension> cps = new HashMap<Component, Dimension> ( cc );
+        for ( int i = 0; i < cc; i++ )
+        {
+            final Component component = container.getComponent ( i );
+            cps.put ( component, component.getPreferredSize () );
+        }
+        return cps;
+    }
+
+    /**
      * Makes all specified component sizes equal.
      *
      * @param components components to modify

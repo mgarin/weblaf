@@ -56,7 +56,7 @@ public final class ImageFilterUtils
      * Applies grayscale filter to image
      */
 
-    private static ColorConvertOp grayscaleColorConvert = new ColorConvertOp ( ColorSpace.getInstance ( ColorSpace.CS_GRAY ), null );
+    private static final ColorConvertOp grayscaleColorConvert = new ColorConvertOp ( ColorSpace.getInstance ( ColorSpace.CS_GRAY ), null );
 
     public static BufferedImage applyGrayscaleFilter ( final Image src, final Image dst )
     {

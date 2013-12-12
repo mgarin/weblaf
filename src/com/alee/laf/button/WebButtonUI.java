@@ -46,60 +46,60 @@ import java.beans.PropertyChangeListener;
 import java.util.Map;
 
 /**
- * User: mgarin Date: 27.04.11 Time: 17:41
+ * @author Mikle Garin
  */
 
 public class WebButtonUI extends BasicButtonUI implements ShapeProvider, SwingConstants, BorderMethods
 {
-    private Color topBgColor = WebButtonStyle.topBgColor;
-    private Color bottomBgColor = WebButtonStyle.bottomBgColor;
-    private Color topSelectedBgColor = WebButtonStyle.topSelectedBgColor;
-    private Color bottomSelectedBgColor = WebButtonStyle.bottomSelectedBgColor;
-    private Color selectedForeground = WebButtonStyle.selectedForeground;
-    private boolean rolloverShine = WebButtonStyle.rolloverShine;
-    private Color shineColor = WebButtonStyle.shineColor;
-    private boolean rolloverDarkBorderOnly = WebButtonStyle.rolloverDarkBorderOnly;
-    private int round = WebButtonStyle.round;
-    private boolean drawShade = WebButtonStyle.drawShade;
-    private boolean rolloverShadeOnly = WebButtonStyle.rolloverShadeOnly;
-    private boolean showDisabledShade = WebButtonStyle.showDisabledShade;
-    private int shadeWidth = WebButtonStyle.shadeWidth;
-    private Insets margin = WebButtonStyle.margin;
-    private Color shadeColor = WebButtonStyle.shadeColor;
-    private int innerShadeWidth = WebButtonStyle.innerShadeWidth;
-    private Color innerShadeColor = WebButtonStyle.innerShadeColor;
-    private int leftRightSpacing = WebButtonStyle.leftRightSpacing;
-    private boolean shadeToggleIcon = WebButtonStyle.shadeToggleIcon;
-    private float shadeToggleIconTransparency = WebButtonStyle.shadeToggleIconTransparency;
-    private boolean drawFocus = WebButtonStyle.drawFocus;
-    private boolean rolloverDecoratedOnly = WebButtonStyle.rolloverDecoratedOnly;
-    private boolean animate = WebButtonStyle.animate;
-    private boolean undecorated = WebButtonStyle.undecorated;
-    private Painter painter = WebButtonStyle.painter;
-    private boolean moveIconOnPress = WebButtonStyle.moveIconOnPress;
+    protected Color topBgColor = WebButtonStyle.topBgColor;
+    protected Color bottomBgColor = WebButtonStyle.bottomBgColor;
+    protected Color topSelectedBgColor = WebButtonStyle.topSelectedBgColor;
+    protected Color bottomSelectedBgColor = WebButtonStyle.bottomSelectedBgColor;
+    protected Color selectedForeground = WebButtonStyle.selectedForeground;
+    protected boolean rolloverShine = WebButtonStyle.rolloverShine;
+    protected Color shineColor = WebButtonStyle.shineColor;
+    protected boolean rolloverDarkBorderOnly = WebButtonStyle.rolloverDarkBorderOnly;
+    protected int round = WebButtonStyle.round;
+    protected boolean drawShade = WebButtonStyle.drawShade;
+    protected boolean rolloverShadeOnly = WebButtonStyle.rolloverShadeOnly;
+    protected boolean showDisabledShade = WebButtonStyle.showDisabledShade;
+    protected int shadeWidth = WebButtonStyle.shadeWidth;
+    protected Insets margin = WebButtonStyle.margin;
+    protected Color shadeColor = WebButtonStyle.shadeColor;
+    protected int innerShadeWidth = WebButtonStyle.innerShadeWidth;
+    protected Color innerShadeColor = WebButtonStyle.innerShadeColor;
+    protected int leftRightSpacing = WebButtonStyle.leftRightSpacing;
+    protected boolean shadeToggleIcon = WebButtonStyle.shadeToggleIcon;
+    protected float shadeToggleIconTransparency = WebButtonStyle.shadeToggleIconTransparency;
+    protected boolean drawFocus = WebButtonStyle.drawFocus;
+    protected boolean rolloverDecoratedOnly = WebButtonStyle.rolloverDecoratedOnly;
+    protected boolean animate = WebButtonStyle.animate;
+    protected boolean undecorated = WebButtonStyle.undecorated;
+    protected Painter painter = WebButtonStyle.painter;
+    protected boolean moveIconOnPress = WebButtonStyle.moveIconOnPress;
 
-    private boolean drawTop = true;
-    private boolean drawLeft = true;
-    private boolean drawBottom = true;
-    private boolean drawRight = true;
+    protected boolean drawTop = true;
+    protected boolean drawLeft = true;
+    protected boolean drawBottom = true;
+    protected boolean drawRight = true;
 
-    private boolean drawTopLine = false;
-    private boolean drawLeftLine = false;
-    private boolean drawBottomLine = false;
-    private boolean drawRightLine = false;
+    protected boolean drawTopLine = false;
+    protected boolean drawLeftLine = false;
+    protected boolean drawBottomLine = false;
+    protected boolean drawRightLine = false;
 
-    private Color transparentShineColor = new Color ( shineColor.getRed (), shineColor.getGreen (), shineColor.getBlue (), 0 );
+    protected Color transparentShineColor = new Color ( shineColor.getRed (), shineColor.getGreen (), shineColor.getBlue (), 0 );
 
-    private boolean rollover = false;
-    private float transparency = 0f;
+    protected boolean rollover = false;
+    protected float transparency = 0f;
 
-    private Point mousePoint = null;
-    private WebTimer animator = null;
-    private AbstractButton button = null;
+    protected Point mousePoint = null;
+    protected WebTimer animator = null;
+    protected AbstractButton button = null;
 
-    private MouseAdapter mouseAdapter;
-    private AncestorListener ancestorListener;
-    private PropertyChangeListener propertyChangeListener;
+    protected MouseAdapter mouseAdapter;
+    protected AncestorListener ancestorListener;
+    protected PropertyChangeListener propertyChangeListener;
 
     @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
@@ -430,37 +430,47 @@ public class WebButtonUI extends BasicButtonUI implements ShapeProvider, SwingCo
                 return;
             }
 
-            // Actual margin
-            final boolean ltr = button.getComponentOrientation ().isLeftToRight ();
-            final Insets m = new Insets ( margin.top, ( ltr ? margin.left : margin.right ) + leftRightSpacing, margin.bottom,
-                    ( ltr ? margin.right : margin.left ) + leftRightSpacing );
-
-            // Applying border
-            if ( painter != null )
-            {
-                // Painter borders
-                final Insets pi = painter.getMargin ( button );
-                m.top += pi.top;
-                m.bottom += pi.bottom;
-                m.left += ltr ? pi.left : pi.right;
-                m.right += ltr ? pi.right : pi.left;
-            }
-            else if ( !undecorated )
-            {
-                // Styling borders
-                final boolean actualDrawLeft = ltr ? drawLeft : drawRight;
-                final boolean actualDrawLeftLine = ltr ? drawLeftLine : drawRightLine;
-                final boolean actualDrawRight = ltr ? drawRight : drawLeft;
-                final boolean actualDrawRightLine = ltr ? drawRightLine : drawLeftLine;
-                m.top += ( drawTop ? shadeWidth + 1 : ( drawTopLine ? 1 : 0 ) - 1 ) + innerShadeWidth;
-                m.left += ( actualDrawLeft ? shadeWidth + 1 : ( actualDrawLeftLine ? 1 : 0 ) - 1 ) + innerShadeWidth;
-                m.bottom += ( drawBottom ? shadeWidth + 1 : ( drawBottomLine ? 1 : 0 ) - 1 ) + innerShadeWidth;
-                m.right += ( actualDrawRight ? shadeWidth + 1 : ( actualDrawRightLine ? 1 : 0 ) - 1 ) + innerShadeWidth;
-            }
-
-            // Installing border
-            button.setBorder ( LafUtils.createWebBorder ( m ) );
+            // Installing newly created border
+            button.setBorder ( LafUtils.createWebBorder ( getBorderInsets () ) );
         }
+    }
+
+    /**
+     * Returns component border insets used for WebLaF border.
+     *
+     * @return component border insets
+     */
+    protected Insets getBorderInsets ()
+    {
+        // Actual margin
+        final boolean ltr = button.getComponentOrientation ().isLeftToRight ();
+        final Insets m = new Insets ( margin.top, ( ltr ? margin.left : margin.right ) + leftRightSpacing, margin.bottom,
+                ( ltr ? margin.right : margin.left ) + leftRightSpacing );
+
+        // Applying border
+        if ( painter != null )
+        {
+            // Painter borders
+            final Insets pi = painter.getMargin ( button );
+            m.top += pi.top;
+            m.bottom += pi.bottom;
+            m.left += ltr ? pi.left : pi.right;
+            m.right += ltr ? pi.right : pi.left;
+        }
+        else if ( !undecorated )
+        {
+            // Styling borders
+            final boolean actualDrawLeft = ltr ? drawLeft : drawRight;
+            final boolean actualDrawLeftLine = ltr ? drawLeftLine : drawRightLine;
+            final boolean actualDrawRight = ltr ? drawRight : drawLeft;
+            final boolean actualDrawRightLine = ltr ? drawRightLine : drawLeftLine;
+            m.top += ( drawTop ? shadeWidth + 1 : ( drawTopLine ? 1 : 0 ) - 1 ) + innerShadeWidth;
+            m.left += ( actualDrawLeft ? shadeWidth + 1 : ( actualDrawLeftLine ? 1 : 0 ) - 1 ) + innerShadeWidth;
+            m.bottom += ( drawBottom ? shadeWidth + 1 : ( drawBottomLine ? 1 : 0 ) - 1 ) + innerShadeWidth;
+            m.right += ( actualDrawRight ? shadeWidth + 1 : ( actualDrawRightLine ? 1 : 0 ) - 1 ) + innerShadeWidth;
+        }
+
+        return m;
     }
 
     public boolean isDrawShade ()

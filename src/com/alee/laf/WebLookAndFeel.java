@@ -17,6 +17,7 @@
 
 package com.alee.laf;
 
+import com.alee.extended.button.WebSplitButtonUI;
 import com.alee.extended.checkbox.WebTristateCheckBoxUI;
 import com.alee.extended.label.WebMultiLineLabelUI;
 import com.alee.extended.label.WebVerticalLabelUI;
@@ -142,6 +143,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
 
     // Button
     public static String buttonUI = WebButtonUI.class.getCanonicalName ();
+    public static String splitButtonUI = WebSplitButtonUI.class.getCanonicalName ();
     public static String toggleButtonUI = WebToggleButtonUI.class.getCanonicalName ();
     public static String checkBoxUI = WebCheckBoxUI.class.getCanonicalName ();
     public static String tristateCheckBoxUI = WebTristateCheckBoxUI.class.getCanonicalName ();
@@ -357,6 +359,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
 
         // Button
         table.put ( "ButtonUI", buttonUI );
+        table.put ( "SplitButtonUI", splitButtonUI );
         table.put ( "ToggleButtonUI", toggleButtonUI );
         table.put ( "CheckBoxUI", checkBoxUI );
         table.put ( "TristateCheckBoxUI", tristateCheckBoxUI );
@@ -448,7 +451,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
      *
      * @param table UI defaults table
      */
-    @SuppressWarnings ( "UnnecessaryBoxing" )
+    @SuppressWarnings ("UnnecessaryBoxing")
     @Override
     protected void initComponentDefaults ( final UIDefaults table )
     {

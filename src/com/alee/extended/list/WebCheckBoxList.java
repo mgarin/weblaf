@@ -27,6 +27,7 @@ import com.alee.utils.swing.WebTimer;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.List;
 
 /**
  * This component offers a checkbox list functionality.
@@ -135,6 +136,16 @@ public class WebCheckBoxList extends WebList
         {
             performAnimation ( index );
         }
+    }
+
+    /**
+     * Returns list of values from checked cells.
+     *
+     * @return list of values from checked cells
+     */
+    public List<Object> getCheckedValues ()
+    {
+        return getCheckBoxListModel ().getCheckedValues ();
     }
 
     /**

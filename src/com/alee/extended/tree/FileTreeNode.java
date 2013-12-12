@@ -64,6 +64,15 @@ public class FileTreeNode extends AsyncUniqueNode
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getId ()
+    {
+        return file != null ? file.getAbsolutePath () : "File.tree.root";
+    }
+
+    /**
      * Returns file for this node.
      *
      * @return file for this node
