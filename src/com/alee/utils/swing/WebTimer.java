@@ -32,7 +32,7 @@ import java.util.Map;
  * This timer is a small extension for standart javax.swing.Timer. Instead of running in a single queue it creates separate Threads for
  * each timer and does not affect event-dispatching thread, until events are dispatched. This basically means that you can use any number
  * of Timer instances and you can run them alltogether without having any issues.
- * <p>
+ * <p/>
  * Also this Timer implementation offers a variety of additional features and improvements which standard timer doesn't have (for example
  * you can dispatch events in a separate non-EDT thread and as a result avoid using EDT at all where it is not necessary).
  *
@@ -56,7 +56,7 @@ public class WebTimer
     /**
      * Timer event listeners list.
      */
-    private List<ActionListener> listeners = new ArrayList<ActionListener> ( 1 );
+    private final List<ActionListener> listeners = new ArrayList<ActionListener> ( 1 );
 
     /**
      * Unique (within one timer instance) ID of currently running thread.
@@ -71,7 +71,7 @@ public class WebTimer
     /**
      * Map of marks for currently active threads.
      */
-    private Map<Integer, Boolean> running = new Hashtable<Integer, Boolean> ();
+    private final Map<Integer, Boolean> running = new Hashtable<Integer, Boolean> ();
 
     /**
      * Last timer cycle start time.
@@ -137,7 +137,7 @@ public class WebTimer
      * @param delay delay between timer cycles
      * @see #parseDelay(String)
      */
-    public WebTimer ( String delay )
+    public WebTimer ( final String delay )
     {
         this ( parseDelay ( delay ) );
     }
@@ -147,7 +147,7 @@ public class WebTimer
      *
      * @param delay delay between timer cycles in milliseconds
      */
-    public WebTimer ( long delay )
+    public WebTimer ( final long delay )
     {
         this ( defaultThreadName, delay );
     }
@@ -159,7 +159,7 @@ public class WebTimer
      * @param delay delay between timer cycles
      * @see #parseDelay(String)
      */
-    public WebTimer ( String name, String delay )
+    public WebTimer ( final String name, final String delay )
     {
         this ( name, parseDelay ( delay ) );
     }
@@ -170,7 +170,7 @@ public class WebTimer
      * @param name  internal thread name
      * @param delay delay between timer cycles in milliseconds
      */
-    public WebTimer ( String name, long delay )
+    public WebTimer ( final String name, final long delay )
     {
         this ( name, delay, null );
     }
@@ -181,7 +181,7 @@ public class WebTimer
      * @param delay        delay between timer cycles in milliseconds
      * @param initialDelay delay before the first timer cycle run in milliseconds
      */
-    public WebTimer ( long delay, long initialDelay )
+    public WebTimer ( final long delay, final long initialDelay )
     {
         this ( defaultThreadName, delay, initialDelay );
     }
@@ -193,7 +193,7 @@ public class WebTimer
      * @param delay        delay between timer cycles in milliseconds
      * @param initialDelay delay before the first timer cycle run in milliseconds
      */
-    public WebTimer ( String name, long delay, long initialDelay )
+    public WebTimer ( final String name, final long delay, final long initialDelay )
     {
         this ( name, delay, initialDelay, null );
     }
@@ -205,7 +205,7 @@ public class WebTimer
      * @param listener action listener
      * @see #parseDelay(String)
      */
-    public WebTimer ( String delay, ActionListener listener )
+    public WebTimer ( final String delay, final ActionListener listener )
     {
         this ( parseDelay ( delay ), listener );
     }
@@ -216,7 +216,7 @@ public class WebTimer
      * @param delay    delay between timer cycles in milliseconds
      * @param listener action listener
      */
-    public WebTimer ( long delay, ActionListener listener )
+    public WebTimer ( final long delay, final ActionListener listener )
     {
         this ( defaultThreadName, delay, listener );
     }
@@ -229,7 +229,7 @@ public class WebTimer
      * @param listener action listener
      * @see #parseDelay(String)
      */
-    public WebTimer ( String name, String delay, ActionListener listener )
+    public WebTimer ( final String name, final String delay, final ActionListener listener )
     {
         this ( name, parseDelay ( delay ), listener );
     }
@@ -241,7 +241,7 @@ public class WebTimer
      * @param delay    delay between timer cycles in milliseconds
      * @param listener action listener
      */
-    public WebTimer ( String name, long delay, ActionListener listener )
+    public WebTimer ( final String name, final long delay, final ActionListener listener )
     {
         this ( name, delay, -1, listener );
     }
@@ -253,7 +253,7 @@ public class WebTimer
      * @param initialDelay delay before the first timer cycle run in milliseconds
      * @param listener     action listener
      */
-    public WebTimer ( long delay, long initialDelay, ActionListener listener )
+    public WebTimer ( final long delay, final long initialDelay, final ActionListener listener )
     {
         this ( defaultThreadName, delay, initialDelay, listener );
     }
@@ -267,7 +267,7 @@ public class WebTimer
      * @param listener     action listener
      * @see #parseDelay(String)
      */
-    public WebTimer ( String name, String delay, String initialDelay, ActionListener listener )
+    public WebTimer ( final String name, final String delay, final String initialDelay, final ActionListener listener )
     {
         this ( name, parseDelay ( delay ), parseDelay ( initialDelay ), listener );
     }
@@ -280,7 +280,7 @@ public class WebTimer
      * @param initialDelay delay before the first timer cycle run in milliseconds
      * @param listener     action listener
      */
-    public WebTimer ( String name, long delay, long initialDelay, ActionListener listener )
+    public WebTimer ( final String name, final long delay, final long initialDelay, final ActionListener listener )
     {
         super ();
         setName ( name );
@@ -314,7 +314,7 @@ public class WebTimer
      *
      * @param initialDelay delay before the first timer cycle run
      */
-    public void setInitialDelay ( String initialDelay )
+    public void setInitialDelay ( final String initialDelay )
     {
         setInitialDelay ( parseDelay ( initialDelay ) );
     }
@@ -324,7 +324,7 @@ public class WebTimer
      *
      * @param initialDelay delay before the first timer cycle run in milliseconds
      */
-    public void setInitialDelay ( long initialDelay )
+    public void setInitialDelay ( final long initialDelay )
     {
         if ( initialDelay != -1 && initialDelay < 0 )
         {
@@ -361,7 +361,7 @@ public class WebTimer
      *
      * @param delay delay between timer cycles
      */
-    public void setDelay ( String delay )
+    public void setDelay ( final String delay )
     {
         setDelay ( parseDelay ( delay ) );
     }
@@ -371,7 +371,7 @@ public class WebTimer
      *
      * @param delay delay between timer cycles in milliseconds
      */
-    public void setDelay ( long delay )
+    public void setDelay ( final long delay )
     {
         if ( delay < 0 )
         {
@@ -398,7 +398,7 @@ public class WebTimer
      *
      * @param repeats whether timer should repeat its cycles or not
      */
-    public void setRepeats ( boolean repeats )
+    public void setRepeats ( final boolean repeats )
     {
         this.repeats = repeats;
     }
@@ -418,7 +418,7 @@ public class WebTimer
      *
      * @param coalesce whether each action should be fired from a separate invoke and wait call or not
      */
-    public void setCoalesce ( boolean coalesce )
+    public void setCoalesce ( final boolean coalesce )
     {
         this.coalesce = coalesce;
     }
@@ -438,7 +438,7 @@ public class WebTimer
      *
      * @param useEventDispatchThread whether actions should be fired from Event Dispatch Thread or not
      */
-    public void setUseEventDispatchThread ( boolean useEventDispatchThread )
+    public void setUseEventDispatchThread ( final boolean useEventDispatchThread )
     {
         this.useEventDispatchThread = useEventDispatchThread;
     }
@@ -458,7 +458,7 @@ public class WebTimer
      *
      * @param actionCommand action command for fired events
      */
-    public void setActionCommand ( String actionCommand )
+    public void setActionCommand ( final String actionCommand )
     {
         this.actionCommand = actionCommand;
     }
@@ -479,7 +479,7 @@ public class WebTimer
      *
      * @param cyclesLimit timer cycles execution limit
      */
-    public void setCyclesLimit ( int cyclesLimit )
+    public void setCyclesLimit ( final int cyclesLimit )
     {
         this.cyclesLimit = cyclesLimit;
     }
@@ -499,7 +499,7 @@ public class WebTimer
      *
      * @param name internal timer thread name
      */
-    public void setName ( String name )
+    public void setName ( final String name )
     {
         this.name = name;
         if ( exec != null )
@@ -592,7 +592,7 @@ public class WebTimer
                 try
                 {
                     // Initial delay
-                    long actualInitialDelay = getInitialDelay () < 0 ? getDelay () : getInitialDelay ();
+                    final long actualInitialDelay = getInitialDelay () < 0 ? getDelay () : getInitialDelay ();
                     if ( actualInitialDelay > 0 )
                     {
                         sleepStart = System.currentTimeMillis ();
@@ -625,7 +625,7 @@ public class WebTimer
                                 // Waiting for next execution
                                 if ( getDelay () > 0 )
                                 {
-                                    long currentDelay = getDelay ();
+                                    final long currentDelay = getDelay ();
                                     sleepStart = System.currentTimeMillis ();
                                     sleepTime = currentDelay;
                                     Thread.sleep ( currentDelay );
@@ -658,7 +658,7 @@ public class WebTimer
      * @param id    thread ID
      * @return true if thread with specified ID should continue execution, false otherwise
      */
-    private boolean shouldContinue ( int cycle, int id )
+    private boolean shouldContinue ( final int cycle, final int id )
     {
         return running.get ( id ) && !Thread.currentThread ().isInterrupted () && ( cyclesLimit <= 0 || cyclesLimit > cycle );
     }
@@ -669,7 +669,7 @@ public class WebTimer
      * @param id    thread ID
      * @param alive whether thread is alive or not
      */
-    private void setAlive ( int id, boolean alive )
+    private void setAlive ( final int id, final boolean alive )
     {
         running.put ( id, alive );
     }
@@ -679,7 +679,7 @@ public class WebTimer
      *
      * @param id thread ID
      */
-    private void cleanUp ( int id )
+    private void cleanUp ( final int id )
     {
         running.remove ( id );
     }
@@ -714,7 +714,7 @@ public class WebTimer
      *
      * @param listener new action listener
      */
-    public void addActionListener ( ActionListener listener )
+    public void addActionListener ( final ActionListener listener )
     {
         if ( listener != null )
         {
@@ -727,7 +727,7 @@ public class WebTimer
      *
      * @param listener action listener
      */
-    public void removeActionListener ( ActionListener listener )
+    public void removeActionListener ( final ActionListener listener )
     {
         if ( listener != null )
         {
@@ -769,7 +769,7 @@ public class WebTimer
                         @Override
                         public void run ()
                         {
-                            for ( ActionListener listener : listenerList )
+                            for ( final ActionListener listener : listenerList )
                             {
                                 listener.actionPerformed ( actionEvent );
                             }
@@ -795,7 +795,7 @@ public class WebTimer
             else
             {
                 // Execute events in the same thread with timer
-                for ( ActionListener listener : listenerList )
+                for ( final ActionListener listener : listenerList )
                 {
                     listener.actionPerformed ( actionEvent );
                 }
@@ -829,7 +829,7 @@ public class WebTimer
      * @return newly created and started timer
      * @see #parseDelay(String)
      */
-    public static WebTimer delay ( String delay, ActionListener listener )
+    public static WebTimer delay ( final String delay, final ActionListener listener )
     {
         return delay ( parseDelay ( delay ), listener );
     }
@@ -841,7 +841,7 @@ public class WebTimer
      * @param listener action listener
      * @return newly created and started timer
      */
-    public static WebTimer delay ( long delay, ActionListener listener )
+    public static WebTimer delay ( final long delay, final ActionListener listener )
     {
         return delay ( defaultThreadName, delay, listener );
     }
@@ -855,7 +855,7 @@ public class WebTimer
      * @return newly created and started timer
      * @see #parseDelay(String)
      */
-    public static WebTimer delay ( String name, String delay, ActionListener listener )
+    public static WebTimer delay ( final String name, final String delay, final ActionListener listener )
     {
         return delay ( name, parseDelay ( delay ), listener );
     }
@@ -868,7 +868,7 @@ public class WebTimer
      * @param listener action listener
      * @return newly created and started timer
      */
-    public static WebTimer delay ( String name, long delay, ActionListener listener )
+    public static WebTimer delay ( final String name, final long delay, final ActionListener listener )
     {
         return delay ( name, delay, true, listener );
     }
@@ -882,7 +882,7 @@ public class WebTimer
      * @return newly created and started timer
      * @see #parseDelay(String)
      */
-    public static WebTimer delay ( String delay, boolean useEventDispatchThread, ActionListener listener )
+    public static WebTimer delay ( final String delay, final boolean useEventDispatchThread, final ActionListener listener )
     {
         return delay ( parseDelay ( delay ), useEventDispatchThread, listener );
     }
@@ -895,7 +895,7 @@ public class WebTimer
      * @param listener               action listener
      * @return newly created and started timer
      */
-    public static WebTimer delay ( long delay, boolean useEventDispatchThread, ActionListener listener )
+    public static WebTimer delay ( final long delay, final boolean useEventDispatchThread, final ActionListener listener )
     {
         return delay ( defaultThreadName, delay, useEventDispatchThread, listener );
     }
@@ -910,7 +910,8 @@ public class WebTimer
      * @return newly created and started timer
      * @see #parseDelay(String)
      */
-    public static WebTimer delay ( String name, String delay, boolean useEventDispatchThread, ActionListener listener )
+    public static WebTimer delay ( final String name, final String delay, final boolean useEventDispatchThread,
+                                   final ActionListener listener )
     {
         return delay ( name, parseDelay ( delay ), useEventDispatchThread, listener );
     }
@@ -924,9 +925,10 @@ public class WebTimer
      * @param listener               action listener
      * @return newly created and started timer
      */
-    public static WebTimer delay ( String name, long delay, boolean useEventDispatchThread, ActionListener listener )
+    public static WebTimer delay ( final String name, final long delay, final boolean useEventDispatchThread,
+                                   final ActionListener listener )
     {
-        WebTimer once = new WebTimer ( name, delay, listener );
+        final WebTimer once = new WebTimer ( name, delay, listener );
         once.setRepeats ( false );
         once.setUseEventDispatchThread ( useEventDispatchThread );
         once.start ();
@@ -941,7 +943,7 @@ public class WebTimer
      * @return newly created and started timer
      * @see #parseDelay(String)
      */
-    public static WebTimer repeat ( String delay, ActionListener listener )
+    public static WebTimer repeat ( final String delay, final ActionListener listener )
     {
         return repeat ( parseDelay ( delay ), listener );
     }
@@ -953,7 +955,7 @@ public class WebTimer
      * @param listener action listener
      * @return newly created and started timer
      */
-    public static WebTimer repeat ( long delay, ActionListener listener )
+    public static WebTimer repeat ( final long delay, final ActionListener listener )
     {
         return repeat ( defaultThreadName, delay, listener );
     }
@@ -967,7 +969,7 @@ public class WebTimer
      * @return newly created and started timer
      * @see #parseDelay(String)
      */
-    public static WebTimer repeat ( String name, String delay, ActionListener listener )
+    public static WebTimer repeat ( final String name, final String delay, final ActionListener listener )
     {
         return repeat ( name, parseDelay ( delay ), listener );
     }
@@ -980,7 +982,7 @@ public class WebTimer
      * @param listener action listener
      * @return newly created and started timer
      */
-    public static WebTimer repeat ( String name, long delay, ActionListener listener )
+    public static WebTimer repeat ( final String name, final long delay, final ActionListener listener )
     {
         return repeat ( name, delay, delay, true, listener );
     }
@@ -994,7 +996,7 @@ public class WebTimer
      * @return newly created and started timer
      * @see #parseDelay(String)
      */
-    public static WebTimer repeat ( String delay, boolean useEventDispatchThread, ActionListener listener )
+    public static WebTimer repeat ( final String delay, final boolean useEventDispatchThread, final ActionListener listener )
     {
         return repeat ( parseDelay ( delay ), useEventDispatchThread, listener );
     }
@@ -1007,7 +1009,7 @@ public class WebTimer
      * @param listener               action listener
      * @return newly created and started timer
      */
-    public static WebTimer repeat ( long delay, boolean useEventDispatchThread, ActionListener listener )
+    public static WebTimer repeat ( final long delay, final boolean useEventDispatchThread, final ActionListener listener )
     {
         return repeat ( defaultThreadName, delay, useEventDispatchThread, listener );
     }
@@ -1022,7 +1024,8 @@ public class WebTimer
      * @return newly created and started timer
      * @see #parseDelay(String)
      */
-    public static WebTimer repeat ( String name, String delay, boolean useEventDispatchThread, ActionListener listener )
+    public static WebTimer repeat ( final String name, final String delay, final boolean useEventDispatchThread,
+                                    final ActionListener listener )
     {
         return repeat ( name, parseDelay ( delay ), useEventDispatchThread, listener );
     }
@@ -1036,7 +1039,8 @@ public class WebTimer
      * @param listener               action listener
      * @return newly created and started timer
      */
-    public static WebTimer repeat ( String name, long delay, boolean useEventDispatchThread, ActionListener listener )
+    public static WebTimer repeat ( final String name, final long delay, final boolean useEventDispatchThread,
+                                    final ActionListener listener )
     {
         return repeat ( name, delay, delay, useEventDispatchThread, listener );
     }
@@ -1049,7 +1053,7 @@ public class WebTimer
      * @param listener     action listener
      * @return newly created and started timer
      */
-    public static WebTimer repeat ( long delay, long initialDelay, ActionListener listener )
+    public static WebTimer repeat ( final long delay, final long initialDelay, final ActionListener listener )
     {
         return repeat ( defaultThreadName, delay, initialDelay, listener );
     }
@@ -1063,7 +1067,7 @@ public class WebTimer
      * @param listener     action listener
      * @return newly created and started timer
      */
-    public static WebTimer repeat ( String name, long delay, long initialDelay, ActionListener listener )
+    public static WebTimer repeat ( final String name, final long delay, final long initialDelay, final ActionListener listener )
     {
         return repeat ( name, delay, initialDelay, true, listener );
     }
@@ -1077,7 +1081,8 @@ public class WebTimer
      * @param listener               action listener
      * @return newly created and started timer
      */
-    public static WebTimer repeat ( long delay, long initialDelay, boolean useEventDispatchThread, ActionListener listener )
+    public static WebTimer repeat ( final long delay, final long initialDelay, final boolean useEventDispatchThread,
+                                    final ActionListener listener )
     {
         return repeat ( defaultThreadName, delay, initialDelay, useEventDispatchThread, listener );
     }
@@ -1092,9 +1097,10 @@ public class WebTimer
      * @param listener               action listener
      * @return newly created and started timer
      */
-    public static WebTimer repeat ( String name, long delay, long initialDelay, boolean useEventDispatchThread, ActionListener listener )
+    public static WebTimer repeat ( final String name, final long delay, final long initialDelay, final boolean useEventDispatchThread,
+                                    final ActionListener listener )
     {
-        WebTimer repeat = new WebTimer ( name, delay, initialDelay, listener );
+        final WebTimer repeat = new WebTimer ( name, delay, initialDelay, listener );
         repeat.setRepeats ( true );
         repeat.setUseEventDispatchThread ( useEventDispatchThread );
         repeat.start ();
@@ -1109,20 +1115,20 @@ public class WebTimer
      * @param delay string delay
      * @return delay retrieved from string
      */
-    public static long parseDelay ( String delay ) throws DelayFormatException
+    public static long parseDelay ( final String delay ) throws DelayFormatException
     {
         try
         {
             long summ = 0;
-            String[] parts = delay.split ( " " );
-            for ( String part : parts )
+            final String[] parts = delay.split ( " " );
+            for ( final String part : parts )
             {
                 for ( int i = 0; i < part.length (); i++ )
                 {
                     if ( !Character.isDigit ( part.charAt ( i ) ) )
                     {
-                        int time = Integer.parseInt ( part.substring ( 0, i ) );
-                        PartType type = PartType.valueOf ( part.substring ( i ) );
+                        final int time = Integer.parseInt ( part.substring ( 0, i ) );
+                        final PartType type = PartType.valueOf ( part.substring ( i ) );
                         switch ( type )
                         {
                             case d:
@@ -1159,7 +1165,7 @@ public class WebTimer
      * @param delay delay to process
      * @return delay string representation
      */
-    public static String toStringDelay ( long delay )
+    public static String toStringDelay ( final long delay )
     {
         if ( delay <= 0 )
         {
@@ -1168,19 +1174,19 @@ public class WebTimer
 
         long time = delay;
 
-        long d = time / msInDay;
+        final long d = time / msInDay;
         time = time - d * msInDay;
 
-        long h = time / msInHour;
+        final long h = time / msInHour;
         time = time - h * msInHour;
 
-        long m = time / msInMinute;
+        final long m = time / msInMinute;
         time = time - m * msInMinute;
 
-        long s = time / msInSecond;
+        final long s = time / msInSecond;
         time = time - s * msInSecond;
 
-        long ms = time;
+        final long ms = time;
 
         final String stringDelay = ( d > 0 ? d + "d " : "" ) +
                 ( h > 0 ? h + "h " : "" ) +

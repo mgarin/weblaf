@@ -75,12 +75,12 @@ public final class NotificationManager implements SwingConstants
     /**
      * Cached notification layouts.
      */
-    private static Map<PopupLayer, NotificationsLayout> notificationsLayouts = new WeakHashMap<PopupLayer, NotificationsLayout> ();
+    private static final Map<PopupLayer, NotificationsLayout> notificationsLayouts = new WeakHashMap<PopupLayer, NotificationsLayout> ();
 
     /**
      * Cached notifications.
      */
-    private static Map<WebNotificationPopup, PopupLayer> notifications = new WeakHashMap<WebNotificationPopup, PopupLayer> ();
+    private static final Map<WebNotificationPopup, PopupLayer> notifications = new WeakHashMap<WebNotificationPopup, PopupLayer> ();
 
     /**
      * Returns notifications display location.
@@ -97,7 +97,7 @@ public final class NotificationManager implements SwingConstants
      *
      * @param location new notifications display location
      */
-    public static void setLocation ( int location )
+    public static void setLocation ( final int location )
     {
         NotificationManager.location = location;
         updateNotificationLayouts ();
@@ -139,7 +139,7 @@ public final class NotificationManager implements SwingConstants
      *
      * @param margin margin
      */
-    public static void setMargin ( int margin )
+    public static void setMargin ( final int margin )
     {
         setMargin ( margin, margin, margin, margin );
     }
@@ -152,7 +152,7 @@ public final class NotificationManager implements SwingConstants
      * @param bottom bottom margin
      * @param right  right margin
      */
-    public static void setMargin ( int top, int left, int bottom, int right )
+    public static void setMargin ( final int top, final int left, final int bottom, final int right )
     {
         setMargin ( new Insets ( top, left, bottom, right ) );
     }
@@ -162,7 +162,7 @@ public final class NotificationManager implements SwingConstants
      *
      * @param margin new notifications side margin
      */
-    public static void setMargin ( Insets margin )
+    public static void setMargin ( final Insets margin )
     {
         NotificationManager.margin = margin;
         updateNotificationLayouts ();
@@ -225,7 +225,7 @@ public final class NotificationManager implements SwingConstants
      *
      * @param cascadeAmount new amount of cascaded in a row popups
      */
-    public static void setCascadeAmount ( int cascadeAmount )
+    public static void setCascadeAmount ( final int cascadeAmount )
     {
         NotificationManager.cascadeAmount = cascadeAmount;
         if ( NotificationManager.cascade )
@@ -240,7 +240,7 @@ public final class NotificationManager implements SwingConstants
     public static void updateNotificationLayouts ()
     {
         final List<PopupLayer> layers = new ArrayList<PopupLayer> ();
-        for ( Map.Entry<WebNotificationPopup, PopupLayer> entry : notifications.entrySet () )
+        for ( final Map.Entry<WebNotificationPopup, PopupLayer> entry : notifications.entrySet () )
         {
             final PopupLayer popupLayer = entry.getValue ();
             if ( !layers.contains ( popupLayer ) )
@@ -256,7 +256,7 @@ public final class NotificationManager implements SwingConstants
      */
     public static void hideAllNotifications ()
     {
-        for ( Map.Entry<WebNotificationPopup, PopupLayer> entry : notifications.entrySet () )
+        for ( final Map.Entry<WebNotificationPopup, PopupLayer> entry : notifications.entrySet () )
         {
             entry.getKey ().hidePopup ();
         }
@@ -270,7 +270,7 @@ public final class NotificationManager implements SwingConstants
      */
     public static WebNotificationPopup showNotification ( final String content )
     {
-        return showNotification ( SwingUtils.getActiveWindow (), new WebLabel ( content ), NotificationIcon.information.getIcon () );
+        return showNotification ( getDefaulShowForWindow (), new WebLabel ( content ), NotificationIcon.information.getIcon () );
     }
 
     /**
@@ -282,7 +282,7 @@ public final class NotificationManager implements SwingConstants
      */
     public static WebNotificationPopup showNotification ( final String content, final Icon icon )
     {
-        return showNotification ( SwingUtils.getActiveWindow (), new WebLabel ( content ), icon );
+        return showNotification ( getDefaulShowForWindow (), new WebLabel ( content ), icon );
     }
 
     /**
@@ -318,7 +318,7 @@ public final class NotificationManager implements SwingConstants
      */
     public static WebNotificationPopup showNotification ( final Component content )
     {
-        return showNotification ( SwingUtils.getActiveWindow (), content, NotificationIcon.information.getIcon () );
+        return showNotification ( getDefaulShowForWindow (), content, NotificationIcon.information.getIcon () );
     }
 
     /**
@@ -330,7 +330,7 @@ public final class NotificationManager implements SwingConstants
      */
     public static WebNotificationPopup showNotification ( final Component content, final Icon icon )
     {
-        return showNotification ( SwingUtils.getActiveWindow (), content, icon );
+        return showNotification ( getDefaulShowForWindow (), content, icon );
     }
 
     /**
@@ -368,10 +368,9 @@ public final class NotificationManager implements SwingConstants
      * @param options notification selectable options
      * @return displayed notification
      */
-    public static WebNotificationPopup showNotification ( final String content, NotificationOption... options )
+    public static WebNotificationPopup showNotification ( final String content, final NotificationOption... options )
     {
-        return showNotification ( SwingUtils.getActiveWindow (), new WebLabel ( content ), NotificationIcon.information.getIcon (),
-                options );
+        return showNotification ( getDefaulShowForWindow (), new WebLabel ( content ), NotificationIcon.information.getIcon (), options );
     }
 
     /**
@@ -382,9 +381,9 @@ public final class NotificationManager implements SwingConstants
      * @param options notification selectable options
      * @return displayed notification
      */
-    public static WebNotificationPopup showNotification ( final String content, final Icon icon, NotificationOption... options )
+    public static WebNotificationPopup showNotification ( final String content, final Icon icon, final NotificationOption... options )
     {
-        return showNotification ( SwingUtils.getActiveWindow (), new WebLabel ( content ), icon, options );
+        return showNotification ( getDefaulShowForWindow (), new WebLabel ( content ), icon, options );
     }
 
     /**
@@ -395,7 +394,8 @@ public final class NotificationManager implements SwingConstants
      * @param options notification selectable options
      * @return displayed notification
      */
-    public static WebNotificationPopup showNotification ( final Component showFor, final String content, NotificationOption... options )
+    public static WebNotificationPopup showNotification ( final Component showFor, final String content,
+                                                          final NotificationOption... options )
     {
         return showNotification ( showFor, new WebLabel ( content ), NotificationIcon.information.getIcon (), options );
     }
@@ -410,7 +410,7 @@ public final class NotificationManager implements SwingConstants
      * @return displayed notification
      */
     public static WebNotificationPopup showNotification ( final Component showFor, final String content, final Icon icon,
-                                                          NotificationOption... options )
+                                                          final NotificationOption... options )
     {
         return showNotification ( showFor, new WebLabel ( content ), icon, options );
     }
@@ -422,9 +422,9 @@ public final class NotificationManager implements SwingConstants
      * @param options notification selectable options
      * @return displayed notification
      */
-    public static WebNotificationPopup showNotification ( final Component content, NotificationOption... options )
+    public static WebNotificationPopup showNotification ( final Component content, final NotificationOption... options )
     {
-        return showNotification ( SwingUtils.getActiveWindow (), content, NotificationIcon.information.getIcon (), options );
+        return showNotification ( getDefaulShowForWindow (), content, NotificationIcon.information.getIcon (), options );
     }
 
     /**
@@ -435,9 +435,9 @@ public final class NotificationManager implements SwingConstants
      * @param options notification selectable options
      * @return displayed notification
      */
-    public static WebNotificationPopup showNotification ( final Component content, final Icon icon, NotificationOption... options )
+    public static WebNotificationPopup showNotification ( final Component content, final Icon icon, final NotificationOption... options )
     {
-        return showNotification ( SwingUtils.getActiveWindow (), content, icon, options );
+        return showNotification ( getDefaulShowForWindow (), content, icon, options );
     }
 
     /**
@@ -448,7 +448,8 @@ public final class NotificationManager implements SwingConstants
      * @param options notification selectable options
      * @return displayed notification
      */
-    public static WebNotificationPopup showNotification ( final Component showFor, final Component content, NotificationOption... options )
+    public static WebNotificationPopup showNotification ( final Component showFor, final Component content,
+                                                          final NotificationOption... options )
     {
         return showNotification ( showFor, content, NotificationIcon.information.getIcon (), options );
     }
@@ -463,7 +464,7 @@ public final class NotificationManager implements SwingConstants
      * @return displayed notification
      */
     public static WebNotificationPopup showNotification ( final Component showFor, final Component content, final Icon icon,
-                                                          NotificationOption... options )
+                                                          final NotificationOption... options )
     {
         final WebNotificationPopup notificationPopup = new WebNotificationPopup ();
         notificationPopup.setIcon ( icon );
@@ -479,7 +480,7 @@ public final class NotificationManager implements SwingConstants
      */
     public static WebNotificationPopup showNotification ( final WebNotificationPopup notification )
     {
-        return showNotification ( SwingUtils.getActiveWindow (), notification );
+        return showNotification ( getDefaulShowForWindow (), notification );
     }
 
     /**
@@ -514,5 +515,26 @@ public final class NotificationManager implements SwingConstants
         notification.showPopup ( showFor );
 
         return notification;
+    }
+
+    /**
+     * Returns default window where notification should be displayed.
+     *
+     * @return default window where notification should be displayed
+     * @throws RuntimeException in case there is no displayed windows in this application
+     */
+    private static Window getDefaulShowForWindow ()
+    {
+        final Window activeWindow = SwingUtils.getActiveWindow ();
+        if ( activeWindow != null )
+        {
+            return activeWindow;
+        }
+        final Window[] allWindows = Window.getWindows ();
+        if ( allWindows != null && allWindows.length > 0 )
+        {
+            return allWindows[ 0 ];
+        }
+        throw new RuntimeException ( "There is no visible windows to display notification" );
     }
 }
