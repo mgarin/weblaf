@@ -24,6 +24,9 @@ import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
+import com.alee.managers.language.LanguageManager;
+import com.alee.managers.language.LanguageMethods;
+import com.alee.managers.language.updaters.LanguageUpdater;
 import com.alee.managers.settings.DefaultValue;
 import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.settings.SettingsMethods;
@@ -53,7 +56,7 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public class WebCollapsiblePane extends WebPanel implements SwingConstants, ShapeProvider, SettingsMethods
+public class WebCollapsiblePane extends WebPanel implements SwingConstants, ShapeProvider, LanguageMethods, SettingsMethods
 {
     /**
      * Whether animate transition between states or not.
@@ -1407,6 +1410,69 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
     public boolean isFocusable ()
     {
         return expandButton.isFocusable ();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setLanguage ( final String key, final Object... data )
+    {
+        LanguageManager.registerComponent ( this, key, data );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void updateLanguage ( final Object... data )
+    {
+        LanguageManager.updateComponent ( this, data );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void updateLanguage ( final String key, final Object... data )
+    {
+        LanguageManager.updateComponent ( this, key, data );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void removeLanguage ()
+    {
+        LanguageManager.unregisterComponent ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isLanguageSet ()
+    {
+        return LanguageManager.isRegisteredComponent ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setLanguageUpdater ( final LanguageUpdater updater )
+    {
+        LanguageManager.registerLanguageUpdater ( this, updater );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void removeLanguageUpdater ()
+    {
+        LanguageManager.unregisterLanguageUpdater ( this );
     }
 
     /**

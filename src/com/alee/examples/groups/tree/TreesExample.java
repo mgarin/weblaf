@@ -56,21 +56,21 @@ public class TreesExample extends DefaultExample
      * {@inheritDoc}
      */
     @Override
-    public Component getPreview ( WebLookAndFeelDemo owner )
+    public Component getPreview ( final WebLookAndFeelDemo owner )
     {
         // Editable tree
-        WebTree tree1 = new WebTree ();
+        final WebTree tree1 = new WebTree ();
         tree1.setEditable ( true );
         tree1.setSelectionMode ( WebTree.DISCONTIGUOUS_TREE_SELECTION );
-        WebScrollPane treeScroll1 = new WebScrollPane ( tree1 );
+        final WebScrollPane treeScroll1 = new WebScrollPane ( tree1 );
         treeScroll1.setPreferredSize ( new Dimension ( 200, 150 ) );
 
         // Tree with a custom selection style
-        WebTree tree2 = new WebTree ();
+        final WebTree tree2 = new WebTree ();
         tree2.setEditable ( true );
         tree2.setSelectionMode ( WebTree.DISCONTIGUOUS_TREE_SELECTION );
         tree2.setSelectionStyle ( TreeSelectionStyle.group );
-        WebScrollPane treeScroll2 = new WebScrollPane ( tree2 );
+        final WebScrollPane treeScroll2 = new WebScrollPane ( tree2 );
         treeScroll2.setPreferredSize ( new Dimension ( 200, 150 ) );
 
         return new GroupPanel ( treeScroll1, treeScroll2 );

@@ -33,7 +33,7 @@ public class JProgressBarLU extends DefaultLanguageUpdater<JProgressBar>
      * {@inheritDoc}
      */
     @Override
-    public void update ( JProgressBar c, String key, Value value, Object... data )
+    public void update ( final JProgressBar c, final String key, final Value value, final Object... data )
     {
         c.setString ( getDefaultText ( value, data ) );
     }

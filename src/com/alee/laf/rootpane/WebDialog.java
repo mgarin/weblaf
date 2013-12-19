@@ -18,6 +18,8 @@
 package com.alee.laf.rootpane;
 
 import com.alee.extended.panel.WebButtonGroup;
+import com.alee.managers.focus.DefaultFocusTracker;
+import com.alee.managers.focus.FocusManager;
 import com.alee.managers.language.LanguageContainerMethods;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.language.LanguageMethods;
@@ -34,94 +36,169 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * User: mgarin Date: 11.12.12 Time: 14:51
+ * This JDialog extenstion class provides some additional methods and options to manipulate dialog behavior.
+ *
+ * @author Mikle Garin
  */
 
 public class WebDialog extends JDialog implements LanguageMethods, LanguageContainerMethods, SettingsMethods, WindowMethods<WebDialog>
 {
+    /**
+     * Whether should close dialog on focus loss or not.
+     */
+    protected boolean closeOnFocusLoss = false;
+
     public WebDialog ()
     {
         super ();
+        initialize ();
     }
 
-    public WebDialog ( Frame owner )
+    public WebDialog ( final Frame owner )
     {
         super ( owner );
+        initialize ();
     }
 
-    public WebDialog ( Frame owner, boolean modal )
+    public WebDialog ( final Frame owner, final boolean modal )
     {
         super ( owner, modal );
+        initialize ();
     }
 
-    public WebDialog ( Frame owner, String title )
+    public WebDialog ( final Frame owner, final String title )
     {
         super ( owner, title );
+        initialize ();
     }
 
-    public WebDialog ( Frame owner, String title, boolean modal )
+    public WebDialog ( final Frame owner, final String title, final boolean modal )
     {
         super ( owner, title, modal );
+        initialize ();
     }
 
-    public WebDialog ( Frame owner, String title, boolean modal, GraphicsConfiguration gc )
+    public WebDialog ( final Frame owner, final String title, final boolean modal, final GraphicsConfiguration gc )
     {
         super ( owner, title, modal, gc );
+        initialize ();
     }
 
-    public WebDialog ( Dialog owner )
+    public WebDialog ( final Dialog owner )
     {
         super ( owner );
+        initialize ();
     }
 
-    public WebDialog ( Dialog owner, boolean modal )
+    public WebDialog ( final Dialog owner, final boolean modal )
     {
         super ( owner, modal );
+        initialize ();
     }
 
-    public WebDialog ( Dialog owner, String title )
+    public WebDialog ( final Dialog owner, final String title )
     {
         super ( owner, title );
+        initialize ();
     }
 
-    public WebDialog ( Dialog owner, String title, boolean modal )
+    public WebDialog ( final Dialog owner, final String title, final boolean modal )
     {
         super ( owner, title, modal );
+        initialize ();
     }
 
-    public WebDialog ( Dialog owner, String title, boolean modal, GraphicsConfiguration gc )
+    public WebDialog ( final Dialog owner, final String title, final boolean modal, final GraphicsConfiguration gc )
     {
         super ( owner, title, modal, gc );
+        initialize ();
     }
 
-    public WebDialog ( Component owner )
+    public WebDialog ( final Component owner )
     {
         super ( SwingUtils.getWindowAncestor ( owner ) );
+        initialize ();
     }
 
-    public WebDialog ( Window owner )
+    public WebDialog ( final Component owner, final String title )
+    {
+        super ( SwingUtils.getWindowAncestor ( owner ), title );
+        initialize ();
+    }
+
+    public WebDialog ( final Window owner )
     {
         super ( owner );
+        initialize ();
     }
 
-    public WebDialog ( Window owner, ModalityType modalityType )
+    public WebDialog ( final Window owner, final ModalityType modalityType )
     {
         super ( owner, modalityType );
+        initialize ();
     }
 
-    public WebDialog ( Window owner, String title )
+    public WebDialog ( final Window owner, final String title )
     {
         super ( owner, title );
+        initialize ();
     }
 
-    public WebDialog ( Window owner, String title, ModalityType modalityType )
+    public WebDialog ( final Window owner, final String title, final ModalityType modalityType )
     {
         super ( owner, title, modalityType );
+        initialize ();
     }
 
-    public WebDialog ( Window owner, String title, ModalityType modalityType, GraphicsConfiguration gc )
+    public WebDialog ( final Window owner, final String title, final ModalityType modalityType, final GraphicsConfiguration gc )
     {
         super ( owner, title, modalityType, gc );
+        initialize ();
+    }
+
+    /**
+     * Additional initializtion of WebDialog settings.
+     */
+    protected void initialize ()
+    {
+        SwingUtils.setOrientation ( this );
+        FocusManager.addFocusTracker ( this, new DefaultFocusTracker ( true )
+        {
+            @Override
+            public boolean isTrackingEnabled ()
+            {
+                return closeOnFocusLoss;
+            }
+
+            @Override
+            public void focusChanged ( final boolean focused )
+            {
+                if ( closeOnFocusLoss && WebDialog.this.isShowing () && !focused )
+                {
+                    setVisible ( false );
+                }
+            }
+        } );
+    }
+
+    /**
+     * Returns whether should close dialog on focus loss or not.
+     *
+     * @return true if should close dialog on focus loss, false otherwise
+     */
+    public boolean isCloseOnFocusLoss ()
+    {
+        return closeOnFocusLoss;
+    }
+
+    /**
+     * Sets whether should close dialog on focus loss or not.
+     *
+     * @param closeOnFocusLoss whether should close dialog on focus loss or not
+     */
+    public void setCloseOnFocusLoss ( final boolean closeOnFocusLoss )
+    {
+        this.closeOnFocusLoss = closeOnFocusLoss;
     }
 
     public Color getTopBg ()
@@ -129,7 +206,7 @@ public class WebDialog extends JDialog implements LanguageMethods, LanguageConta
         return getWebRootPaneUI ().getTopBg ();
     }
 
-    public void setTopBg ( Color topBg )
+    public void setTopBg ( final Color topBg )
     {
         getWebRootPaneUI ().setTopBg ( topBg );
     }
@@ -139,7 +216,7 @@ public class WebDialog extends JDialog implements LanguageMethods, LanguageConta
         return getWebRootPaneUI ().getMiddleBg ();
     }
 
-    public void setMiddleBg ( Color middleBg )
+    public void setMiddleBg ( final Color middleBg )
     {
         getWebRootPaneUI ().setMiddleBg ( middleBg );
     }
@@ -149,7 +226,7 @@ public class WebDialog extends JDialog implements LanguageMethods, LanguageConta
         return getWebRootPaneUI ().getShadeWidth ();
     }
 
-    public void setShadeWidth ( int shadeWidth )
+    public void setShadeWidth ( final int shadeWidth )
     {
         getWebRootPaneUI ().setShadeWidth ( shadeWidth );
     }
@@ -159,7 +236,7 @@ public class WebDialog extends JDialog implements LanguageMethods, LanguageConta
         return getWebRootPaneUI ().getInactiveShadeWidth ();
     }
 
-    public void setInactiveShadeWidth ( int inactiveShadeWidth )
+    public void setInactiveShadeWidth ( final int inactiveShadeWidth )
     {
         getWebRootPaneUI ().setInactiveShadeWidth ( inactiveShadeWidth );
     }
@@ -169,7 +246,7 @@ public class WebDialog extends JDialog implements LanguageMethods, LanguageConta
         return getWebRootPaneUI ().getRound ();
     }
 
-    public void setRound ( int round )
+    public void setRound ( final int round )
     {
         getWebRootPaneUI ().setRound ( round );
     }
@@ -179,7 +256,7 @@ public class WebDialog extends JDialog implements LanguageMethods, LanguageConta
         return getWebRootPaneUI ().isDrawWatermark ();
     }
 
-    public void setDrawWatermark ( boolean drawWatermark )
+    public void setDrawWatermark ( final boolean drawWatermark )
     {
         getWebRootPaneUI ().setDrawWatermark ( drawWatermark );
     }
@@ -189,7 +266,7 @@ public class WebDialog extends JDialog implements LanguageMethods, LanguageConta
         return getWebRootPaneUI ().getWatermark ();
     }
 
-    public void setWatermark ( ImageIcon watermark )
+    public void setWatermark ( final ImageIcon watermark )
     {
         getWebRootPaneUI ().setWatermark ( watermark );
     }
@@ -199,7 +276,7 @@ public class WebDialog extends JDialog implements LanguageMethods, LanguageConta
         return getWebRootPaneUI ().getTitleComponent ();
     }
 
-    public void setTitleComponent ( JComponent titleComponent )
+    public void setTitleComponent ( final JComponent titleComponent )
     {
         getWebRootPaneUI ().setTitleComponent ( titleComponent );
     }
@@ -219,7 +296,7 @@ public class WebDialog extends JDialog implements LanguageMethods, LanguageConta
         return getWebRootPaneUI ().isShowResizeCorner ();
     }
 
-    public void setShowResizeCorner ( boolean showResizeCorner )
+    public void setShowResizeCorner ( final boolean showResizeCorner )
     {
         getWebRootPaneUI ().setShowResizeCorner ( showResizeCorner );
     }
@@ -229,7 +306,7 @@ public class WebDialog extends JDialog implements LanguageMethods, LanguageConta
         return getWebRootPaneUI ().isShowTitleComponent ();
     }
 
-    public void setShowTitleComponent ( boolean showTitleComponent )
+    public void setShowTitleComponent ( final boolean showTitleComponent )
     {
         getWebRootPaneUI ().setShowTitleComponent ( showTitleComponent );
     }
@@ -239,7 +316,7 @@ public class WebDialog extends JDialog implements LanguageMethods, LanguageConta
         return getWebRootPaneUI ().isShowWindowButtons ();
     }
 
-    public void setShowWindowButtons ( boolean showWindowButtons )
+    public void setShowWindowButtons ( final boolean showWindowButtons )
     {
         getWebRootPaneUI ().setShowWindowButtons ( showWindowButtons );
     }
@@ -249,7 +326,7 @@ public class WebDialog extends JDialog implements LanguageMethods, LanguageConta
         return getWebRootPaneUI ().isShowMinimizeButton ();
     }
 
-    public void setShowMinimizeButton ( boolean showMinimizeButton )
+    public void setShowMinimizeButton ( final boolean showMinimizeButton )
     {
         getWebRootPaneUI ().setShowMinimizeButton ( showMinimizeButton );
     }
@@ -259,7 +336,7 @@ public class WebDialog extends JDialog implements LanguageMethods, LanguageConta
         return getWebRootPaneUI ().isShowMaximizeButton ();
     }
 
-    public void setShowMaximizeButton ( boolean showMaximizeButton )
+    public void setShowMaximizeButton ( final boolean showMaximizeButton )
     {
         getWebRootPaneUI ().setShowMaximizeButton ( showMaximizeButton );
     }
@@ -269,7 +346,7 @@ public class WebDialog extends JDialog implements LanguageMethods, LanguageConta
         return getWebRootPaneUI ().isShowCloseButton ();
     }
 
-    public void setShowCloseButton ( boolean showCloseButton )
+    public void setShowCloseButton ( final boolean showCloseButton )
     {
         getWebRootPaneUI ().setShowCloseButton ( showCloseButton );
     }
@@ -279,7 +356,7 @@ public class WebDialog extends JDialog implements LanguageMethods, LanguageConta
         return getWebRootPaneUI ().isGroupButtons ();
     }
 
-    public void setGroupButtons ( boolean groupButtons )
+    public void setGroupButtons ( final boolean groupButtons )
     {
         getWebRootPaneUI ().setGroupButtons ( groupButtons );
     }
@@ -289,7 +366,7 @@ public class WebDialog extends JDialog implements LanguageMethods, LanguageConta
         return getWebRootPaneUI ().isAttachButtons ();
     }
 
-    public void setAttachButtons ( boolean attachButtons )
+    public void setAttachButtons ( final boolean attachButtons )
     {
         getWebRootPaneUI ().setAttachButtons ( attachButtons );
     }
@@ -299,7 +376,7 @@ public class WebDialog extends JDialog implements LanguageMethods, LanguageConta
         return getWebRootPaneUI ().isShowMenuBar ();
     }
 
-    public void setShowMenuBar ( boolean showMenuBar )
+    public void setShowMenuBar ( final boolean showMenuBar )
     {
         getWebRootPaneUI ().setShowMenuBar ( showMenuBar );
     }
@@ -317,7 +394,7 @@ public class WebDialog extends JDialog implements LanguageMethods, LanguageConta
      * {@inheritDoc}
      */
     @Override
-    public void setLanguage ( String key, Object... data )
+    public void setLanguage ( final String key, final Object... data )
     {
         LanguageManager.registerComponent ( this, key, data );
     }
@@ -326,7 +403,7 @@ public class WebDialog extends JDialog implements LanguageMethods, LanguageConta
      * {@inheritDoc}
      */
     @Override
-    public void updateLanguage ( Object... data )
+    public void updateLanguage ( final Object... data )
     {
         LanguageManager.updateComponent ( this, data );
     }
@@ -335,7 +412,7 @@ public class WebDialog extends JDialog implements LanguageMethods, LanguageConta
      * {@inheritDoc}
      */
     @Override
-    public void updateLanguage ( String key, Object... data )
+    public void updateLanguage ( final String key, final Object... data )
     {
         LanguageManager.updateComponent ( this, key, data );
     }
@@ -362,7 +439,7 @@ public class WebDialog extends JDialog implements LanguageMethods, LanguageConta
      * {@inheritDoc}
      */
     @Override
-    public void setLanguageUpdater ( LanguageUpdater updater )
+    public void setLanguageUpdater ( final LanguageUpdater updater )
     {
         LanguageManager.registerLanguageUpdater ( this, updater );
     }
@@ -384,7 +461,7 @@ public class WebDialog extends JDialog implements LanguageMethods, LanguageConta
      * {@inheritDoc}
      */
     @Override
-    public void setLanguageContainerKey ( String key )
+    public void setLanguageContainerKey ( final String key )
     {
         LanguageManager.registerLanguageContainer ( this, key );
     }
@@ -415,7 +492,7 @@ public class WebDialog extends JDialog implements LanguageMethods, LanguageConta
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String key )
+    public void registerSettings ( final String key )
     {
         SettingsManager.registerComponent ( this, key );
     }
@@ -424,7 +501,7 @@ public class WebDialog extends JDialog implements LanguageMethods, LanguageConta
      * {@inheritDoc}
      */
     @Override
-    public <T extends DefaultValue> void registerSettings ( String key, Class<T> defaultValueClass )
+    public <T extends DefaultValue> void registerSettings ( final String key, final Class<T> defaultValueClass )
     {
         SettingsManager.registerComponent ( this, key, defaultValueClass );
     }
@@ -433,7 +510,7 @@ public class WebDialog extends JDialog implements LanguageMethods, LanguageConta
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String key, Object defaultValue )
+    public void registerSettings ( final String key, final Object defaultValue )
     {
         SettingsManager.registerComponent ( this, key, defaultValue );
     }
@@ -442,7 +519,7 @@ public class WebDialog extends JDialog implements LanguageMethods, LanguageConta
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String group, String key )
+    public void registerSettings ( final String group, final String key )
     {
         SettingsManager.registerComponent ( this, group, key );
     }
@@ -451,7 +528,7 @@ public class WebDialog extends JDialog implements LanguageMethods, LanguageConta
      * {@inheritDoc}
      */
     @Override
-    public <T extends DefaultValue> void registerSettings ( String group, String key, Class<T> defaultValueClass )
+    public <T extends DefaultValue> void registerSettings ( final String group, final String key, final Class<T> defaultValueClass )
     {
         SettingsManager.registerComponent ( this, group, key, defaultValueClass );
     }
@@ -460,7 +537,7 @@ public class WebDialog extends JDialog implements LanguageMethods, LanguageConta
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String group, String key, Object defaultValue )
+    public void registerSettings ( final String group, final String key, final Object defaultValue )
     {
         SettingsManager.registerComponent ( this, group, key, defaultValue );
     }
@@ -469,7 +546,7 @@ public class WebDialog extends JDialog implements LanguageMethods, LanguageConta
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String key, boolean loadInitialSettings, boolean applySettingsChanges )
+    public void registerSettings ( final String key, final boolean loadInitialSettings, final boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, key, loadInitialSettings, applySettingsChanges );
     }
@@ -478,8 +555,8 @@ public class WebDialog extends JDialog implements LanguageMethods, LanguageConta
      * {@inheritDoc}
      */
     @Override
-    public <T extends DefaultValue> void registerSettings ( String key, Class<T> defaultValueClass, boolean loadInitialSettings,
-                                                            boolean applySettingsChanges )
+    public <T extends DefaultValue> void registerSettings ( final String key, final Class<T> defaultValueClass,
+                                                            final boolean loadInitialSettings, final boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, key, defaultValueClass, loadInitialSettings, applySettingsChanges );
     }
@@ -488,7 +565,8 @@ public class WebDialog extends JDialog implements LanguageMethods, LanguageConta
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String key, Object defaultValue, boolean loadInitialSettings, boolean applySettingsChanges )
+    public void registerSettings ( final String key, final Object defaultValue, final boolean loadInitialSettings,
+                                   final boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, key, defaultValue, loadInitialSettings, applySettingsChanges );
     }
@@ -497,8 +575,8 @@ public class WebDialog extends JDialog implements LanguageMethods, LanguageConta
      * {@inheritDoc}
      */
     @Override
-    public <T extends DefaultValue> void registerSettings ( String group, String key, Class<T> defaultValueClass,
-                                                            boolean loadInitialSettings, boolean applySettingsChanges )
+    public <T extends DefaultValue> void registerSettings ( final String group, final String key, final Class<T> defaultValueClass,
+                                                            final boolean loadInitialSettings, final boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, group, key, defaultValueClass, loadInitialSettings, applySettingsChanges );
     }
@@ -507,8 +585,8 @@ public class WebDialog extends JDialog implements LanguageMethods, LanguageConta
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String group, String key, Object defaultValue, boolean loadInitialSettings,
-                                   boolean applySettingsChanges )
+    public void registerSettings ( final String group, final String key, final Object defaultValue, final boolean loadInitialSettings,
+                                   final boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, group, key, defaultValue, loadInitialSettings, applySettingsChanges );
     }
@@ -517,7 +595,7 @@ public class WebDialog extends JDialog implements LanguageMethods, LanguageConta
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( SettingsProcessor settingsProcessor )
+    public void registerSettings ( final SettingsProcessor settingsProcessor )
     {
         SettingsManager.registerComponent ( this, settingsProcessor );
     }
@@ -557,7 +635,7 @@ public class WebDialog extends JDialog implements LanguageMethods, LanguageConta
      * {@inheritDoc}
      */
     @Override
-    public WebDialog setWindowOpaque ( boolean opaque )
+    public WebDialog setWindowOpaque ( final boolean opaque )
     {
         return WindowUtils.setWindowOpaque ( this, opaque );
     }
@@ -575,7 +653,7 @@ public class WebDialog extends JDialog implements LanguageMethods, LanguageConta
      * {@inheritDoc}
      */
     @Override
-    public WebDialog setWindowOpacity ( float opacity )
+    public WebDialog setWindowOpacity ( final float opacity )
     {
         return WindowUtils.setWindowOpacity ( this, opacity );
     }
@@ -602,7 +680,7 @@ public class WebDialog extends JDialog implements LanguageMethods, LanguageConta
      * {@inheritDoc}
      */
     @Override
-    public WebDialog center ( Component relativeTo )
+    public WebDialog center ( final Component relativeTo )
     {
         return WindowUtils.center ( this, relativeTo );
     }
@@ -611,7 +689,7 @@ public class WebDialog extends JDialog implements LanguageMethods, LanguageConta
      * {@inheritDoc}
      */
     @Override
-    public WebDialog center ( int width, int height )
+    public WebDialog center ( final int width, final int height )
     {
         return WindowUtils.center ( this, width, height );
     }
@@ -620,7 +698,7 @@ public class WebDialog extends JDialog implements LanguageMethods, LanguageConta
      * {@inheritDoc}
      */
     @Override
-    public WebDialog center ( Component relativeTo, int width, int height )
+    public WebDialog center ( final Component relativeTo, final int width, final int height )
     {
         return WindowUtils.center ( this, relativeTo, width, height );
     }
@@ -629,7 +707,7 @@ public class WebDialog extends JDialog implements LanguageMethods, LanguageConta
      * {@inheritDoc}
      */
     @Override
-    public WebDialog packToWidth ( int width )
+    public WebDialog packToWidth ( final int width )
     {
         return WindowUtils.packToWidth ( this, width );
     }
@@ -638,7 +716,7 @@ public class WebDialog extends JDialog implements LanguageMethods, LanguageConta
      * {@inheritDoc}
      */
     @Override
-    public WebDialog packToHeight ( int height )
+    public WebDialog packToHeight ( final int height )
     {
         return WindowUtils.packToHeight ( this, height );
     }
@@ -656,7 +734,7 @@ public class WebDialog extends JDialog implements LanguageMethods, LanguageConta
      * {@inheritDoc}
      */
     @Override
-    public WebDialog packAndCenter ( boolean animate )
+    public WebDialog packAndCenter ( final boolean animate )
     {
         return WindowUtils.packAndCenter ( this, animate );
     }

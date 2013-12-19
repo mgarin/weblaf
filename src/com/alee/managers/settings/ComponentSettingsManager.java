@@ -34,14 +34,16 @@ import java.util.WeakHashMap;
 /**
  * This SettingsManager sub-manager registers and processes component settings auto-save/restore them on any changes within or outside of
  * that component.
- * <p>
+ * <p/>
  * This manager should never be called directly (except the case when you register new SettingsProcessor or if you know what you are doing)
  * to avoid any unexpected component behavior.
  *
  * @author Mikle Garin
+ * @see SettingsManager
+ * @see SettingsProcessor
  */
 
-public class ComponentSettingsManager
+public final class ComponentSettingsManager
 {
     /**
      * Registered settings processor classes.
@@ -102,7 +104,7 @@ public class ComponentSettingsManager
      *
      * @param throwExceptions whether throw exceptions on inappropriate actions or not
      */
-    public static void setThrowExceptions ( boolean throwExceptions )
+    public static void setThrowExceptions ( final boolean throwExceptions )
     {
         ComponentSettingsManager.throwExceptions = throwExceptions;
     }
@@ -113,7 +115,7 @@ public class ComponentSettingsManager
      * @param component component
      * @return true if the specified component is supported, false otherwise
      */
-    public static boolean isComponentSupported ( Component component )
+    public static boolean isComponentSupported ( final Component component )
     {
         return isComponentSupported ( component.getClass () );
     }
@@ -124,7 +126,7 @@ public class ComponentSettingsManager
      * @param componentType component type
      * @return true if the specified component is supported, false otherwise
      */
-    public static boolean isComponentSupported ( Class componentType )
+    public static boolean isComponentSupported ( final Class componentType )
     {
         // Checking if a suitable component processor exists
         return findSuitableSettingsProcessor ( componentType ) != null;
@@ -137,7 +139,8 @@ public class ComponentSettingsManager
      * @param settingsProcessor settings processor class
      * @param <T>               settings processor type
      */
-    public static <T extends SettingsProcessor> void registerSettingsProcessor ( Class componentType, Class<T> settingsProcessor )
+    public static <T extends SettingsProcessor> void registerSettingsProcessor ( final Class componentType,
+                                                                                 final Class<T> settingsProcessor )
     {
         // Saving settings processor under component type
         settingsProcessorClasses.put ( componentType, settingsProcessor );
@@ -149,10 +152,10 @@ public class ComponentSettingsManager
      * @param componentType component type
      * @return settings processor class for the specified component type
      */
-    private static Class findSuitableSettingsProcessor ( Class componentType )
+    private static Class findSuitableSettingsProcessor ( final Class componentType )
     {
         // Looking through map with strict elements order for proper settings processor
-        for ( Class type : settingsProcessorClasses.keySet () )
+        for ( final Class type : settingsProcessorClasses.keySet () )
         {
             if ( ReflectUtils.isAssignable ( type, componentType ) )
             {
@@ -168,15 +171,15 @@ public class ComponentSettingsManager
      * @param data SettingsProcessorData
      * @return new SettingsProcessor instance for the specified SettingsProcessorData
      */
-    private static SettingsProcessor createSettingsProcessor ( SettingsProcessorData data )
+    private static SettingsProcessor createSettingsProcessor ( final SettingsProcessorData data )
     {
         // Creating new settings processor from registered class
-        Class settingsProcessorClass = findSuitableSettingsProcessor ( data.getComponent ().getClass () );
+        final Class settingsProcessorClass = findSuitableSettingsProcessor ( data.getComponent ().getClass () );
         if ( settingsProcessorClass != null )
         {
             try
             {
-                return ( SettingsProcessor ) ReflectUtils.createInstance ( settingsProcessorClass, data );
+                return ReflectUtils.createInstance ( settingsProcessorClass, data );
             }
             catch ( Throwable e )
             {
@@ -204,10 +207,10 @@ public class ComponentSettingsManager
      *
      * @param data SettingsProcessorData
      */
-    public static void registerComponent ( SettingsProcessorData data )
+    public static void registerComponent ( final SettingsProcessorData data )
     {
         // Creating new component settings processor if needed
-        SettingsProcessor settingsProcessor = createSettingsProcessor ( data );
+        final SettingsProcessor settingsProcessor = createSettingsProcessor ( data );
         if ( settingsProcessor != null )
         {
             // Saving current component settings processor
@@ -227,7 +230,7 @@ public class ComponentSettingsManager
      * @param component         component to register
      * @param settingsProcessor component settings processor
      */
-    public static void registerComponent ( Component component, SettingsProcessor settingsProcessor )
+    public static void registerComponent ( final Component component, final SettingsProcessor settingsProcessor )
     {
         // Ensure that there is not registered processor for this component
         unregisterComponent ( component );
@@ -241,10 +244,10 @@ public class ComponentSettingsManager
      *
      * @param component component registered for settings auto-save
      */
-    public static void loadSettings ( Component component )
+    public static void loadSettings ( final Component component )
     {
         // Retrieving component settings processor
-        SettingsProcessor settingsProcessor = settingsProcessors.get ( component );
+        final SettingsProcessor settingsProcessor = settingsProcessors.get ( component );
         if ( settingsProcessor != null )
         {
             // Reloading saved settings into component
@@ -262,7 +265,7 @@ public class ComponentSettingsManager
      */
     public static void saveSettings ()
     {
-        for ( Map.Entry<Component, SettingsProcessor> entry : settingsProcessors.entrySet () )
+        for ( final Map.Entry<Component, SettingsProcessor> entry : settingsProcessors.entrySet () )
         {
             saveSettings ( entry.getKey () );
         }
@@ -273,10 +276,10 @@ public class ComponentSettingsManager
      *
      * @param component component registered for settings auto-save
      */
-    public static void saveSettings ( Component component )
+    public static void saveSettings ( final Component component )
     {
         // Retrieving component settings processor
-        SettingsProcessor settingsProcessor = settingsProcessors.get ( component );
+        final SettingsProcessor settingsProcessor = settingsProcessors.get ( component );
         if ( settingsProcessor != null )
         {
             // Saving component settings
@@ -294,10 +297,10 @@ public class ComponentSettingsManager
      *
      * @param component component to unregister
      */
-    public static void unregisterComponent ( Component component )
+    public static void unregisterComponent ( final Component component )
     {
         // Checking if component processor exists
-        SettingsProcessor settingsProcessor = settingsProcessors.get ( component );
+        final SettingsProcessor settingsProcessor = settingsProcessors.get ( component );
         if ( settingsProcessor != null )
         {
             // Unregistering component listeners and actions

@@ -18,21 +18,26 @@
 package com.alee.managers.popup;
 
 /**
- * User: mgarin Date: 16.04.12 Time: 15:24
+ * This enumeration represents possible popup display ways relative to invoker component.
+ *
+ * @author Mikle Garin
  */
 
 public enum PopupWay
 {
-    upRight,
     upCenter,
     upLeft,
-    leftDown,
+    upRight,
+
     leftCenter,
     leftUp,
-    downRight,
+    leftDown,
+
     downCenter,
     downLeft,
-    rightDown,
+    downRight,
+
     rightCenter,
-    rightUp
+    rightUp,
+    rightDown
 }

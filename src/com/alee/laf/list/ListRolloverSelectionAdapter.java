@@ -19,6 +19,7 @@ package com.alee.laf.list;
 
 import javax.swing.*;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 import java.awt.event.MouseMotionListener;
 
 /**
@@ -27,19 +28,19 @@ import java.awt.event.MouseMotionListener;
  * @author Mikle Garin
  */
 
-public class ListRolloverSelectionAdapter implements MouseMotionListener
+public class ListRolloverSelectionAdapter extends MouseMotionAdapter
 {
     /**
      * List into which this adapter is installed.
      */
-    private JList list;
+    private final JList list;
 
     /**
      * Constructs rollover selection adapter for the specified list.
      *
      * @param list list into which this adapter is installed
      */
-    public ListRolloverSelectionAdapter ( JList list )
+    public ListRolloverSelectionAdapter ( final JList list )
     {
         super ();
         this.list = list;
@@ -51,13 +52,13 @@ public class ListRolloverSelectionAdapter implements MouseMotionListener
      * @param e mouse event
      */
     @Override
-    public void mouseMoved ( MouseEvent e )
+    public void mouseMoved ( final MouseEvent e )
     {
         // Disabled lists aren't affected
         if ( list.isEnabled () )
         {
             // Compute cell under point
-            int index = list.locationToIndex ( e.getPoint () );
+            final int index = list.locationToIndex ( e.getPoint () );
             if ( index != list.getSelectedIndex () )
             {
                 // Change selection
@@ -67,29 +68,18 @@ public class ListRolloverSelectionAdapter implements MouseMotionListener
     }
 
     /**
-     * Ignored mouse event.
-     *
-     * @param e mouse event
-     */
-    @Override
-    public void mouseDragged ( MouseEvent e )
-    {
-        //
-    }
-
-    /**
      * Installs rollover selection adapter into list and ensures that it is the only one installed.
      *
      * @param list list to modify
      * @return installed rollover selection adapter
      */
-    public static ListRolloverSelectionAdapter install ( JList list )
+    public static ListRolloverSelectionAdapter install ( final JList list )
     {
         // Uninstall old adapters first
         uninstall ( list );
 
         // Add new adapter
-        ListRolloverSelectionAdapter adapter = new ListRolloverSelectionAdapter ( list );
+        final ListRolloverSelectionAdapter adapter = new ListRolloverSelectionAdapter ( list );
         list.addMouseMotionListener ( adapter );
         return adapter;
     }
@@ -99,9 +89,9 @@ public class ListRolloverSelectionAdapter implements MouseMotionListener
      *
      * @param list list to modify
      */
-    public static void uninstall ( JList list )
+    public static void uninstall ( final JList list )
     {
-        for ( MouseMotionListener listener : list.getMouseMotionListeners () )
+        for ( final MouseMotionListener listener : list.getMouseMotionListeners () )
         {
             if ( listener instanceof ListRolloverSelectionAdapter )
             {
@@ -116,9 +106,9 @@ public class ListRolloverSelectionAdapter implements MouseMotionListener
      * @param list list to process
      * @return true if the specified list has any rollover selection adapters installed, false otherwise
      */
-    public static boolean isInstalled ( JList list )
+    public static boolean isInstalled ( final JList list )
     {
-        for ( MouseMotionListener listener : list.getMouseMotionListeners () )
+        for ( final MouseMotionListener listener : list.getMouseMotionListeners () )
         {
             if ( listener instanceof ListRolloverSelectionAdapter )
             {

@@ -69,6 +69,30 @@ public class WebMenuItem extends JMenuItem implements LanguageMethods, FontMetho
     /**
      * Constructs new menu item using the specified settings.
      *
+     * @param text        menu item text
+     * @param accelerator menu item accelerator
+     */
+    public WebMenuItem ( final String text, final KeyStroke accelerator )
+    {
+        super ( text );
+        setAccelerator ( accelerator );
+    }
+
+    /**
+     * Constructs new menu item using the specified settings.
+     *
+     * @param text        menu item text
+     * @param accelerator menu item accelerator
+     */
+    public WebMenuItem ( final String text, final HotkeyData accelerator )
+    {
+        super ( text );
+        setAccelerator ( accelerator );
+    }
+
+    /**
+     * Constructs new menu item using the specified settings.
+     *
      * @param a menu item action
      */
     public WebMenuItem ( final Action a )

@@ -45,7 +45,7 @@ public class WindowSettingsProcessor extends SettingsProcessor<Window, Rectangle
      *
      * @param data SettingsProcessorData
      */
-    public WindowSettingsProcessor ( SettingsProcessorData data )
+    public WindowSettingsProcessor ( final SettingsProcessorData data )
     {
         super ( data );
     }
@@ -54,12 +54,12 @@ public class WindowSettingsProcessor extends SettingsProcessor<Window, Rectangle
      * {@inheritDoc}
      */
     @Override
-    protected void doInit ( Window window )
+    protected void doInit ( final Window window )
     {
         componentAdapter = new ComponentAdapter ()
         {
             @Override
-            public void componentResized ( ComponentEvent e )
+            public void componentResized ( final ComponentEvent e )
             {
                 if ( SettingsManager.isSaveOnChange () )
                 {
@@ -68,7 +68,7 @@ public class WindowSettingsProcessor extends SettingsProcessor<Window, Rectangle
             }
 
             @Override
-            public void componentMoved ( ComponentEvent e )
+            public void componentMoved ( final ComponentEvent e )
             {
                 if ( SettingsManager.isSaveOnChange () )
                 {
@@ -83,7 +83,7 @@ public class WindowSettingsProcessor extends SettingsProcessor<Window, Rectangle
      * {@inheritDoc}
      */
     @Override
-    protected void doDestroy ( Window window )
+    protected void doDestroy ( final Window window )
     {
         window.removeComponentListener ( componentAdapter );
         componentAdapter = null;
@@ -93,17 +93,19 @@ public class WindowSettingsProcessor extends SettingsProcessor<Window, Rectangle
      * {@inheritDoc}
      */
     @Override
-    protected void doLoad ( Window window )
+    protected void doLoad ( final Window window )
     {
-        Rectangle bounds = loadValue ();
+        final Rectangle bounds = loadValue ();
         if ( bounds == null )
         {
-            window.pack ();
-            window.setLocationRelativeTo ( null );
+            if ( SettingsManager.isSaveDefaultValues () )
+            {
+                save ();
+            }
         }
-        else if ( CompareUtils.equals ( bounds, window.getBounds () ) )
+        else if ( !CompareUtils.equals ( bounds, window.getBounds () ) )
         {
-            Dimension size = bounds.getSize ();
+            final Dimension size = bounds.getSize ();
             if ( size.width > 0 && size.height > 0 )
             {
                 window.setSize ( size );
@@ -113,7 +115,7 @@ public class WindowSettingsProcessor extends SettingsProcessor<Window, Rectangle
                 window.pack ();
             }
 
-            Point location = bounds.getLocation ();
+            final Point location = bounds.getLocation ();
             if ( location.x > 0 && location.y > 0 )
             {
                 window.setLocation ( location );
@@ -129,7 +131,7 @@ public class WindowSettingsProcessor extends SettingsProcessor<Window, Rectangle
      * {@inheritDoc}
      */
     @Override
-    protected void doSave ( Window window )
+    protected void doSave ( final Window window )
     {
         saveValue ( window.getBounds () );
     }

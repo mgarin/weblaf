@@ -56,6 +56,7 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements SwingConstants, 
     protected int shadeWidth = WebPopupMenuStyle.shadeWidth;
     protected float shadeOpacity = WebPopupMenuStyle.shadeOpacity;
     protected int cornerWidth = WebPopupMenuStyle.cornerWidth;
+    protected float transparency = WebPopupMenuStyle.transparency;
 
     /**
      * Component style settings.
@@ -87,7 +88,7 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements SwingConstants, 
      * @param c component that will use UI instance
      * @return instance of the WebPopupMenuUI
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebPopupMenuUI ();
@@ -243,6 +244,7 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements SwingConstants, 
             painter.setShadeWidth ( shadeWidth );
             painter.setShadeOpacity ( shadeOpacity );
             painter.setCornerWidth ( cornerWidth );
+            painter.setTransparency ( transparency );
 
             // Runtime variables
             painter.setTransparent ( transparent );
@@ -316,7 +318,6 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements SwingConstants, 
         {
             painter.setPopupPainterStyle ( style );
         }
-        updateBorder ();
     }
 
     /**
@@ -365,7 +366,6 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements SwingConstants, 
         {
             painter.setRound ( round );
         }
-        updateBorder ();
     }
 
     /**
@@ -390,7 +390,6 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements SwingConstants, 
         {
             painter.setShadeWidth ( width );
         }
-        updateBorder ();
     }
 
     /**
@@ -438,6 +437,30 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements SwingConstants, 
         if ( painter != null )
         {
             painter.setCornerWidth ( width );
+        }
+    }
+
+    /**
+     * Returns popup menu background transparency.
+     *
+     * @return popup menu background transparency
+     */
+    public float getTransparency ()
+    {
+        return transparency;
+    }
+
+    /**
+     * Sets popup menu background transparency.
+     *
+     * @param transparency popup menu background transparency
+     */
+    public void setTransparency ( final float transparency )
+    {
+        this.transparency = transparency;
+        if ( painter != null )
+        {
+            painter.setTransparency ( transparency );
         }
     }
 

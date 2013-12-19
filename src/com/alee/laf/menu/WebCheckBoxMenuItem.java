@@ -83,6 +83,30 @@ public class WebCheckBoxMenuItem extends JCheckBoxMenuItem implements LanguageMe
     /**
      * Constructs new checkbox menu item using the specified settings.
      *
+     * @param text        menu item text
+     * @param accelerator menu item accelerator
+     */
+    public WebCheckBoxMenuItem ( final String text, final KeyStroke accelerator )
+    {
+        super ( text );
+        setAccelerator ( accelerator );
+    }
+
+    /**
+     * Constructs new checkbox menu item using the specified settings.
+     *
+     * @param text        menu item text
+     * @param accelerator menu item accelerator
+     */
+    public WebCheckBoxMenuItem ( final String text, final HotkeyData accelerator )
+    {
+        super ( text );
+        setAccelerator ( accelerator );
+    }
+
+    /**
+     * Constructs new checkbox menu item using the specified settings.
+     *
      * @param text menu item text
      * @param b    whether this checkbox item is selected or not
      */

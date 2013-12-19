@@ -43,7 +43,7 @@ public abstract class DefaultLanguageUpdater<E extends Component> implements Lan
     /**
      * Hotkeys cache map.
      */
-    private static Map<Component, HotkeyInfo> hotkeysCache = new WeakHashMap<Component, HotkeyInfo> ();
+    private static final Map<Component, HotkeyInfo> hotkeysCache = new WeakHashMap<Component, HotkeyInfo> ();
 
     /**
      * {@inheritDoc}
@@ -67,7 +67,7 @@ public abstract class DefaultLanguageUpdater<E extends Component> implements Lan
      * @param component  component
      * @param hotkeyInfo hotkey data
      */
-    protected static void cacheHotkey ( Component component, HotkeyInfo hotkeyInfo )
+    protected static void cacheHotkey ( final Component component, final HotkeyInfo hotkeyInfo )
     {
         hotkeysCache.put ( component, hotkeyInfo );
     }
@@ -78,7 +78,7 @@ public abstract class DefaultLanguageUpdater<E extends Component> implements Lan
      * @param component hotkey's component
      * @return true if hotkey is cached, false otherwise
      */
-    protected static boolean isHotkeyCached ( Component component )
+    protected static boolean isHotkeyCached ( final Component component )
     {
         return hotkeysCache.containsKey ( component );
     }
@@ -89,7 +89,7 @@ public abstract class DefaultLanguageUpdater<E extends Component> implements Lan
      * @param component hotkey's component
      * @return cached hotkey data
      */
-    protected static HotkeyInfo getCachedHotkey ( Component component )
+    protected static HotkeyInfo getCachedHotkey ( final Component component )
     {
         return hotkeysCache.get ( component );
     }
@@ -101,7 +101,7 @@ public abstract class DefaultLanguageUpdater<E extends Component> implements Lan
      * @param data  formatting data
      * @return formatted default text
      */
-    protected String getDefaultText ( Value value, Object... data )
+    protected String getDefaultText ( final Value value, final Object... data )
     {
         return getDefaultText ( null, value, data );
     }
@@ -114,7 +114,7 @@ public abstract class DefaultLanguageUpdater<E extends Component> implements Lan
      * @param data  formatting data
      * @return formatted state text
      */
-    protected String getDefaultText ( String state, Value value, Object... data )
+    protected String getDefaultText ( final String state, final Value value, final Object... data )
     {
         return getDefaultText ( state, false, value, data );
     }
@@ -128,9 +128,9 @@ public abstract class DefaultLanguageUpdater<E extends Component> implements Lan
      * @param data         formatting data
      * @return formatted state text
      */
-    protected String getDefaultText ( String state, boolean defaultState, Value value, Object... data )
+    protected String getDefaultText ( final String state, final boolean defaultState, final Value value, final Object... data )
     {
-        String text = value.getText ( state, defaultState );
+        final String text = value.getText ( state, defaultState );
         return data != null && text != null ? formatDefaultText ( text, data ) : text;
     }
 
@@ -141,7 +141,7 @@ public abstract class DefaultLanguageUpdater<E extends Component> implements Lan
      * @param data formatting data
      * @return formatted  text
      */
-    private String formatDefaultText ( String text, Object[] data )
+    private String formatDefaultText ( final String text, final Object[] data )
     {
         return String.format ( text, data );
     }

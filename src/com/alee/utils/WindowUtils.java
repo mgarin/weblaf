@@ -37,7 +37,7 @@ public final class WindowUtils
     /**
      * Window pack timers map.
      */
-    private static Map<Window, WebTimer> windowPackTimers = new HashMap<Window, WebTimer> ();
+    private static final Map<Window, WebTimer> windowPackTimers = new HashMap<Window, WebTimer> ();
 
     /**
      * Sets window opaque if that option is supported by the underlying system.

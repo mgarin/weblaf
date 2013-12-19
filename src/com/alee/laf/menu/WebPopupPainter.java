@@ -18,6 +18,7 @@
 package com.alee.laf.menu;
 
 import com.alee.extended.painter.AbstractPainter;
+import com.alee.utils.ColorUtils;
 import com.alee.utils.LafUtils;
 import com.alee.utils.NinePatchUtils;
 import com.alee.utils.ShapeCache;
@@ -37,7 +38,7 @@ import java.awt.geom.GeneralPath;
  * @author Mikle Garin
  */
 
-@SuppressWarnings ( "UnusedParameters" )
+@SuppressWarnings ("UnusedParameters")
 public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> implements PainterShapeProvider<E>, SwingConstants
 {
     /**
@@ -49,6 +50,7 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
     protected int shadeWidth = WebPopupPainterStyle.shadeWidth;
     protected float shadeOpacity = WebPopupPainterStyle.shadeOpacity;
     protected int cornerWidth = WebPopupPainterStyle.cornerWidth;
+    protected float transparency = WebPopupPainterStyle.transparency;
 
     /**
      * Runtime variables.
@@ -75,7 +77,14 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
      */
     public void setPopupPainterStyle ( final PopupPainterStyle style )
     {
-        this.popupPainterStyle = style;
+        if ( this.popupPainterStyle != style )
+        {
+            this.popupPainterStyle = style;
+            if ( transparent )
+            {
+                fireUpdate ();
+            }
+        }
     }
 
     /**
@@ -95,7 +104,14 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
      */
     public void setBorderColor ( final Color color )
     {
-        this.borderColor = color;
+        if ( this.borderColor != color )
+        {
+            this.borderColor = color;
+            if ( transparent )
+            {
+                fireRepaint ();
+            }
+        }
     }
 
     /**
@@ -115,7 +131,14 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
      */
     public void setRound ( final int round )
     {
-        this.round = round;
+        if ( this.round != round )
+        {
+            this.round = round;
+            if ( transparent )
+            {
+                fireRepaint ();
+            }
+        }
     }
 
     /**
@@ -135,7 +158,14 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
      */
     public void setShadeWidth ( final int width )
     {
-        this.shadeWidth = width;
+        if ( this.shadeWidth != width )
+        {
+            this.shadeWidth = width;
+            if ( transparent )
+            {
+                fireUpdate ();
+            }
+        }
     }
 
     /**
@@ -155,7 +185,14 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
      */
     public void setShadeOpacity ( final float opacity )
     {
-        this.shadeOpacity = opacity;
+        if ( this.shadeOpacity != opacity )
+        {
+            this.shadeOpacity = opacity;
+            if ( transparent )
+            {
+                fireRepaint ();
+            }
+        }
     }
 
     /**
@@ -175,7 +212,41 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
      */
     public void setCornerWidth ( final int width )
     {
-        this.cornerWidth = width;
+        if ( this.cornerWidth != width )
+        {
+            this.cornerWidth = width;
+            if ( transparent )
+            {
+                fireRepaint ();
+            }
+        }
+    }
+
+    /**
+     * Returns popup background transparency.
+     *
+     * @return popup background transparency
+     */
+    public float getTransparency ()
+    {
+        return transparency;
+    }
+
+    /**
+     * Sets popup background transparency.
+     *
+     * @param transparency popup background transparency
+     */
+    public void setTransparency ( final float transparency )
+    {
+        if ( this.transparency != transparency )
+        {
+            this.transparency = transparency;
+            if ( transparent )
+            {
+                fireRepaint ();
+            }
+        }
     }
 
     /**
@@ -195,7 +266,11 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
      */
     public void setTransparent ( final boolean transparent )
     {
-        this.transparent = transparent;
+        if ( this.transparent != transparent )
+        {
+            this.transparent = transparent;
+            fireUpdate ();
+        }
     }
 
     /**
@@ -215,7 +290,14 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
      */
     public void setCornerSide ( final int cornerSide )
     {
-        this.cornerSide = cornerSide;
+        if ( this.cornerSide != cornerSide )
+        {
+            this.cornerSide = cornerSide;
+            if ( transparent )
+            {
+                fireRepaint ();
+            }
+        }
     }
 
     /**
@@ -235,7 +317,14 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
      */
     public void setRelativeCorner ( final int relativeCorner )
     {
-        this.relativeCorner = relativeCorner;
+        if ( this.relativeCorner != relativeCorner )
+        {
+            this.relativeCorner = relativeCorner;
+            if ( transparent )
+            {
+                fireRepaint ();
+            }
+        }
     }
 
     /**
@@ -255,7 +344,14 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
      */
     public void setCornerAlignment ( final int cornerAlignment )
     {
-        this.cornerAlignment = cornerAlignment;
+        if ( this.cornerAlignment != cornerAlignment )
+        {
+            this.cornerAlignment = cornerAlignment;
+            if ( transparent )
+            {
+                fireRepaint ();
+            }
+        }
     }
 
     /**
@@ -354,7 +450,7 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
     protected void paintSimplePopup ( final Graphics2D g2d, final E popup )
     {
         // Background
-        g2d.setColor ( popup.getBackground () );
+        g2d.setColor ( getBackgroundColor ( popup ) );
         g2d.fillRoundRect ( 1, 1, popup.getWidth () - 2, popup.getHeight () - 2, round * 2, round * 2 );
 
         // Border
@@ -371,7 +467,7 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
      */
     protected void paintShade ( final Graphics2D g2d, final E popup, final Dimension popupSize )
     {
-        final NinePatchIcon shade = NinePatchUtils.getShadeIcon ( shadeWidth, round * 2, shadeOpacity );
+        final NinePatchIcon shade = NinePatchUtils.getShadeIcon ( shadeWidth, round * 2, getShadeOpacity () );
         shade.setComponent ( popup );
         shade.paintIcon ( g2d, getShadeBounds ( popupSize ) );
     }
@@ -385,7 +481,7 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
      */
     protected void paintBackground ( final Graphics2D g2d, final E popup, final Dimension popupSize )
     {
-        g2d.setColor ( popup.getBackground () );
+        g2d.setColor ( getBackgroundColor ( popup ) );
         g2d.fill ( getBorderShape ( popup, popupSize, true ) );
     }
 
@@ -400,6 +496,19 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
     {
         g2d.setPaint ( borderColor );
         g2d.draw ( getBorderShape ( popup, popupSize, false ) );
+    }
+
+    /**
+     * Returns popup background color.
+     *
+     * @param popup popup component
+     * @return popup background color
+     */
+    protected Color getBackgroundColor ( final E popup )
+    {
+        final Color bg = popup.getBackground ();
+        return !transparent || transparency >= 1f ? bg :
+                ColorUtils.getTransparentColor ( bg, Math.max ( 0, Math.min ( ( int ) ( transparency * 255 ), 255 ) ) );
     }
 
     /**
@@ -514,19 +623,22 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
      */
     protected GeneralPath createDropdownShape ( final E popup, final Dimension popupSize, final boolean fill )
     {
-        final boolean north = cornerSide == NORTH || cornerSide == TOP;
-        final boolean south = cornerSide == SOUTH || cornerSide == BOTTOM;
+        final boolean topCorner = cornerSide == TOP;
+        final boolean bottomCorner = cornerSide == BOTTOM;
+        final boolean leftCorner = cornerSide == LEFT || cornerSide == LEADING;
+        final boolean rightCorner = cornerSide == RIGHT || cornerSide == TRAILING;
 
         // Painting shear
         final int shear = fill ? 1 : 0;
 
         // Corner left spacing
         final boolean ltr = popup.getComponentOrientation ().isLeftToRight ();
-        final int ds = shadeWidth + shear + round + cornerWidth * 2;
+        final int cornerShear = shadeWidth + shear + round + cornerWidth * 2;
+        final int length = topCorner || bottomCorner ? popupSize.width : popupSize.height;
         final int spacing;
-        if ( cornerAlignment == CENTER )
+        if ( cornerAlignment == CENTER || length < shadeWidth * 2 + round * 2 + cornerWidth * 4 )
         {
-            spacing = popupSize.width / 2 - shadeWidth - round - cornerWidth * 2;
+            spacing = length / 2 - shadeWidth - round - cornerWidth * 2;
         }
         else if ( cornerAlignment == LEFT || cornerAlignment == LEADING && ltr || cornerAlignment == TRAILING && !ltr )
         {
@@ -534,23 +646,24 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
         }
         else if ( cornerAlignment == RIGHT || cornerAlignment == TRAILING && ltr || cornerAlignment == LEADING && !ltr )
         {
-            spacing = popupSize.width - ds * 2;
+            spacing = length - cornerShear * 2;
         }
         else
         {
-            spacing = relativeCorner < shadeWidth + round + cornerWidth ? 0 : Math.min ( relativeCorner - ds, popupSize.width - ds * 2 );
+            spacing = relativeCorner < shadeWidth + round + cornerWidth * 2 ? 0 :
+                    Math.min ( relativeCorner - cornerShear, length - cornerShear * 2 );
         }
 
         // Side spacings
         final int top = shadeWidth + shear;
-        final int left = shadeWidth + shear;
-        final int botom = popupSize.height - 1 - shadeWidth;
         final int right = popupSize.width - 1 - shadeWidth;
+        final int botom = popupSize.height - 1 - shadeWidth;
+        final int left = shadeWidth + shear;
 
         final GeneralPath shape = new GeneralPath ( GeneralPath.WIND_EVEN_ODD );
         shape.moveTo ( left, top + round );
         shape.quadTo ( left, top, left + round, top );
-        if ( north )
+        if ( topCorner )
         {
             // Top corner
             shape.lineTo ( left + round + spacing + cornerWidth, top );
@@ -560,9 +673,17 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
         }
         shape.lineTo ( right - round, top );
         shape.quadTo ( right, top, right, top + round );
+        if ( rightCorner )
+        {
+            // Right corner
+            shape.lineTo ( right, top + round + spacing + cornerWidth );
+            shape.lineTo ( right + cornerWidth, top + round + spacing + cornerWidth * 2 );
+            shape.lineTo ( right + cornerWidth, top + round + spacing + cornerWidth * 2 + 1 );
+            shape.lineTo ( right, top + round + spacing + cornerWidth * 3 + 1 );
+        }
         shape.lineTo ( right, botom - round );
         shape.quadTo ( right, botom, right - round, botom );
-        if ( south )
+        if ( bottomCorner )
         {
             // Bottom corner
             shape.lineTo ( left + round + spacing + cornerWidth * 3 + 1, botom );
@@ -572,7 +693,123 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
         }
         shape.lineTo ( left + round, botom );
         shape.quadTo ( left, botom, shadeWidth, botom - round );
+        if ( leftCorner )
+        {
+            // Left corner
+            shape.lineTo ( left, top + round + spacing + cornerWidth * 3 + 1 );
+            shape.lineTo ( left - cornerWidth, top + round + spacing + cornerWidth * 2 + 1 );
+            shape.lineTo ( left - cornerWidth, top + round + spacing + cornerWidth * 2 );
+            shape.lineTo ( left, top + round + spacing + cornerWidth );
+        }
         shape.closePath ();
+
+        return shape;
+    }
+
+    /**
+     * Returns dropdown style corner shape.
+     * It is used to paint corner fill when menu item at the same as corner side of popup menu is selected.
+     *
+     * @param popupMenu popup menu
+     * @param menuSize  menu size
+     * @param fill      whether it is a fill shape or not
+     * @return dropdown style corner shape
+     */
+    protected Shape getDropdownCornerShape ( final E popupMenu, final Dimension menuSize, final boolean fill )
+    {
+        return ShapeCache.getShape ( popupMenu, fill ? "dropdown-corner-fill" : "dropdown-corner-border", new DataProvider<Shape> ()
+        {
+            @Override
+            public Shape provide ()
+            {
+                return createDropdownCornerShape ( popupMenu, menuSize, fill );
+            }
+        }, getCachedShapeSettings ( popupMenu ) );
+    }
+
+    /**
+     * Creates and returns dropdown style corner shape.
+     * It is used to paint corner fill when menu item at the same as corner side of popup menu is selected.
+     *
+     * @param popupMenu popup menu
+     * @param menuSize  menu size
+     * @param fill      whether it is a fill shape or not
+     * @return dropdown style corner shape
+     */
+    protected GeneralPath createDropdownCornerShape ( final E popupMenu, final Dimension menuSize, final boolean fill )
+    {
+        final boolean topCorner = cornerSide == NORTH || cornerSide == TOP;
+        final boolean bottomCorner = cornerSide == SOUTH || cornerSide == BOTTOM;
+        final boolean leftCorner = cornerSide == WEST || cornerSide == LEFT || cornerSide == LEADING;
+        final boolean rightCorner = cornerSide == EAST || cornerSide == RIGHT || cornerSide == TRAILING;
+
+        // Painting shear
+        final int shear = fill ? 1 : 0;
+
+        // Corner left spacing
+        final boolean ltr = popupMenu.getComponentOrientation ().isLeftToRight ();
+        final int cornerShear = shadeWidth + shear + round + cornerWidth * 2;
+        final int length = topCorner || bottomCorner ? menuSize.width : menuSize.height;
+        final int spacing;
+        if ( cornerAlignment == CENTER || length < shadeWidth * 2 + round * 2 + cornerWidth * 4 )
+        {
+            spacing = length / 2 - shadeWidth - round - cornerWidth * 2;
+        }
+        else if ( cornerAlignment == LEFT || cornerAlignment == LEADING && ltr || cornerAlignment == TRAILING && !ltr )
+        {
+            spacing = 0;
+        }
+        else if ( cornerAlignment == RIGHT || cornerAlignment == TRAILING && ltr || cornerAlignment == LEADING && !ltr )
+        {
+            spacing = length - cornerShear * 2;
+        }
+        else
+        {
+            spacing = relativeCorner < shadeWidth + round + cornerWidth * 2 ? 0 :
+                    Math.min ( relativeCorner - cornerShear, length - cornerShear * 2 );
+        }
+
+        // Side spacings
+        final int top = shadeWidth + shear;
+        final int right = menuSize.width - 1 - shadeWidth;
+        final int botom = menuSize.height - 1 - shadeWidth;
+        final int left = shadeWidth + shear;
+
+        final GeneralPath shape = new GeneralPath ( GeneralPath.WIND_EVEN_ODD );
+        if ( topCorner )
+        {
+            // Top corner
+            shape.moveTo ( left + round + spacing + cornerWidth, top );
+            shape.lineTo ( left + round + spacing + cornerWidth * 2, top - cornerWidth );
+            shape.lineTo ( left + round + spacing + cornerWidth * 2 + 1, top - cornerWidth );
+            shape.lineTo ( left + round + spacing + cornerWidth * 3 + 1, top );
+            shape.closePath ();
+        }
+        if ( rightCorner )
+        {
+            // Right corner
+            shape.lineTo ( right, top + round + spacing + cornerWidth );
+            shape.lineTo ( right + cornerWidth, top + round + spacing + cornerWidth * 2 );
+            shape.lineTo ( right + cornerWidth, top + round + spacing + cornerWidth * 2 + 1 );
+            shape.lineTo ( right, top + round + spacing + cornerWidth * 3 + 1 );
+        }
+        if ( bottomCorner )
+        {
+            // Bottom corner
+            shape.moveTo ( left + round + spacing + cornerWidth * 3 + 1, botom );
+            shape.lineTo ( left + round + spacing + cornerWidth * 2 + 1, botom + cornerWidth );
+            shape.lineTo ( left + round + spacing + cornerWidth * 2, botom + cornerWidth );
+            shape.lineTo ( left + round + spacing + cornerWidth, botom );
+            shape.closePath ();
+        }
+        if ( leftCorner )
+        {
+            // Left corner
+            shape.lineTo ( left, top + round + spacing + cornerWidth * 3 + 1 );
+            shape.lineTo ( left - cornerWidth, top + round + spacing + cornerWidth * 2 + 1 );
+            shape.lineTo ( left - cornerWidth, top + round + spacing + cornerWidth * 2 );
+            shape.lineTo ( left, top + round + spacing + cornerWidth );
+        }
         return shape;
     }
 }

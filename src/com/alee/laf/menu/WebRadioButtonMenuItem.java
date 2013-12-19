@@ -95,6 +95,30 @@ public class WebRadioButtonMenuItem extends JRadioButtonMenuItem
     /**
      * Constructs new radiobutton menu item using the specified settings.
      *
+     * @param text        menu item text
+     * @param accelerator menu item accelerator
+     */
+    public WebRadioButtonMenuItem ( final String text, final KeyStroke accelerator )
+    {
+        super ( text );
+        setAccelerator ( accelerator );
+    }
+
+    /**
+     * Constructs new radiobutton menu item using the specified settings.
+     *
+     * @param text        menu item text
+     * @param accelerator menu item accelerator
+     */
+    public WebRadioButtonMenuItem ( final String text, final HotkeyData accelerator )
+    {
+        super ( text );
+        setAccelerator ( accelerator );
+    }
+
+    /**
+     * Constructs new radiobutton menu item using the specified settings.
+     *
      * @param text menu item text
      * @param icon menu item icon
      */

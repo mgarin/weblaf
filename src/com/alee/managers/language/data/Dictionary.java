@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * User: mgarin Date: 20.04.12 Time: 13:48
+ * @author Mikle Garin
  */
 
 @XStreamAlias ("Dictionary")
@@ -68,14 +68,14 @@ public final class Dictionary implements Serializable
         setId ();
     }
 
-    public Dictionary ( String prefix )
+    public Dictionary ( final String prefix )
     {
         super ();
         setId ();
         setPrefix ( prefix );
     }
 
-    public Dictionary ( String prefix, String name )
+    public Dictionary ( final String prefix, final String name )
     {
         super ();
         setId ();
@@ -83,7 +83,7 @@ public final class Dictionary implements Serializable
         setName ( name );
     }
 
-    public Dictionary ( String prefix, String name, String author )
+    public Dictionary ( final String prefix, final String name, final String author )
     {
         super ();
         setId ();
@@ -92,7 +92,7 @@ public final class Dictionary implements Serializable
         setAuthor ( author );
     }
 
-    public Dictionary ( String prefix, String name, String author, String creationDate )
+    public Dictionary ( final String prefix, final String name, final String author, final String creationDate )
     {
         super ();
         setId ();
@@ -102,7 +102,7 @@ public final class Dictionary implements Serializable
         setCreationDate ( creationDate );
     }
 
-    public Dictionary ( String prefix, String name, String author, String creationDate, String notes )
+    public Dictionary ( final String prefix, final String name, final String author, final String creationDate, final String notes )
     {
         super ();
         setId ();
@@ -127,7 +127,7 @@ public final class Dictionary implements Serializable
         this.id = TextUtils.generateId ( ID_PREFIX );
     }
 
-    public void setId ( String id )
+    public void setId ( final String id )
     {
         this.id = id;
     }
@@ -137,7 +137,7 @@ public final class Dictionary implements Serializable
         return name;
     }
 
-    public void setName ( String name )
+    public void setName ( final String name )
     {
         this.name = name;
     }
@@ -147,7 +147,7 @@ public final class Dictionary implements Serializable
         return prefix;
     }
 
-    public void setPrefix ( String prefix )
+    public void setPrefix ( final String prefix )
     {
         this.prefix = prefix;
     }
@@ -157,7 +157,7 @@ public final class Dictionary implements Serializable
         return author;
     }
 
-    public void setAuthor ( String author )
+    public void setAuthor ( final String author )
     {
         this.author = author;
     }
@@ -167,7 +167,7 @@ public final class Dictionary implements Serializable
         return creationDate;
     }
 
-    public void setCreationDate ( String creationDate )
+    public void setCreationDate ( final String creationDate )
     {
         this.creationDate = creationDate;
     }
@@ -177,7 +177,7 @@ public final class Dictionary implements Serializable
         return notes;
     }
 
-    public void setNotes ( String notes )
+    public void setNotes ( final String notes )
     {
         this.notes = notes;
     }
@@ -187,7 +187,7 @@ public final class Dictionary implements Serializable
         return records;
     }
 
-    public void setRecords ( List<Record> records )
+    public void setRecords ( final List<Record> records )
     {
         this.records = records;
     }
@@ -197,7 +197,7 @@ public final class Dictionary implements Serializable
         return subdictionaries;
     }
 
-    public void setSubdictionaries ( List<Dictionary> subdictionaries )
+    public void setSubdictionaries ( final List<Dictionary> subdictionaries )
     {
         this.subdictionaries = subdictionaries;
     }
@@ -207,7 +207,7 @@ public final class Dictionary implements Serializable
         return languageInfos;
     }
 
-    public void setLanguageInfos ( List<LanguageInfo> languageInfos )
+    public void setLanguageInfos ( final List<LanguageInfo> languageInfos )
     {
         this.languageInfos = languageInfos;
     }
@@ -216,36 +216,36 @@ public final class Dictionary implements Serializable
     {
         if ( records == null )
         {
-            records = new ArrayList<Record> ();
+            records = new ArrayList<Record> ( 1 );
         }
     }
 
-    public Record addRecord ( String key, String language, String text )
+    public Record addRecord ( final String key, final String language, final String text )
     {
         return addRecord ( key, new Value ( language, text ) );
     }
 
-    public Record addRecord ( String key, String language, Character mnemonic, String text )
+    public Record addRecord ( final String key, final String language, final Character mnemonic, final String text )
     {
         return addRecord ( key, new Value ( language, mnemonic, text ) );
     }
 
-    public Record addRecord ( String key, Value... values )
+    public Record addRecord ( final String key, final Value... values )
     {
         return addRecord ( new Record ( key, values ) );
     }
 
-    public Record addRecord ( String key, List<Value> values )
+    public Record addRecord ( final String key, final List<Value> values )
     {
         return addRecord ( new Record ( key, values ) );
     }
 
-    public Record addRecord ( Record record )
+    public Record addRecord ( final Record record )
     {
         checkRecords ();
 
         // Records merge used within global dictionary
-        for ( Record r : records )
+        for ( final Record r : records )
         {
             if ( r.getKey ().equals ( record.getKey () ) )
             {
@@ -253,7 +253,7 @@ public final class Dictionary implements Serializable
                 {
                     record.setHotkey ( r.getHotkey () );
                 }
-                for ( Value value : r.getValues () )
+                for ( final Value value : r.getValues () )
                 {
                     if ( !record.hasValue ( value.getLang () ) )
                     {
@@ -268,7 +268,7 @@ public final class Dictionary implements Serializable
         return record;
     }
 
-    public void removeRecord ( Record record )
+    public void removeRecord ( final Record record )
     {
         if ( records != null )
         {
@@ -276,7 +276,7 @@ public final class Dictionary implements Serializable
         }
     }
 
-    public void removeRecord ( String key )
+    public void removeRecord ( final String key )
     {
         if ( records != null )
         {
@@ -291,7 +291,7 @@ public final class Dictionary implements Serializable
         }
     }
 
-    public void removeLanguage ( String language )
+    public void removeLanguage ( final String language )
     {
         if ( records != null )
         {
@@ -319,7 +319,7 @@ public final class Dictionary implements Serializable
         return records != null ? records.size () : 0;
     }
 
-    public void addSubdictionary ( Dictionary dictionary )
+    public void addSubdictionary ( final Dictionary dictionary )
     {
         checkSubdictionaries ();
         this.subdictionaries.add ( dictionary );
@@ -333,7 +333,7 @@ public final class Dictionary implements Serializable
         }
     }
 
-    public void removeSubdictionary ( Dictionary dictionary )
+    public void removeSubdictionary ( final Dictionary dictionary )
     {
         if ( subdictionaries != null )
         {
@@ -344,6 +344,30 @@ public final class Dictionary implements Serializable
     public int subdictionaries ()
     {
         return subdictionaries != null ? subdictionaries.size () : 0;
+    }
+
+    public List<String> getSupportedLanguages ()
+    {
+        return getSupportedLanguages ( new ArrayList<String> () );
+    }
+
+    public List<String> getSupportedLanguages ( final List<String> languages )
+    {
+        if ( records != null )
+        {
+            for ( final Record record : records )
+            {
+                record.getSupportedLanguages ( languages );
+            }
+        }
+        if ( subdictionaries != null )
+        {
+            for ( final Dictionary dictionary : subdictionaries )
+            {
+                dictionary.getSupportedLanguages ( languages );
+            }
+        }
+        return languages;
     }
 
     public String toString ()

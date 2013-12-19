@@ -34,7 +34,7 @@ public class LM implements LanguageConstants
      * @param key language key
      * @return key translation
      */
-    public static String get ( String key )
+    public static String get ( final String key )
     {
         return LanguageManager.get ( key );
     }
@@ -45,7 +45,7 @@ public class LM implements LanguageConstants
      * @param key language key
      * @return mnemonic
      */
-    public static Character getMnemonic ( String key )
+    public static Character getMnemonic ( final String key )
     {
         return LanguageManager.getMnemonic ( key );
     }
@@ -56,7 +56,7 @@ public class LM implements LanguageConstants
      * @param key language key
      * @return language value
      */
-    public static Value getValue ( String key )
+    public static Value getValue ( final String key )
     {
         return LanguageManager.getValue ( key );
     }

@@ -18,6 +18,8 @@
 package com.alee.laf.rootpane;
 
 import com.alee.extended.panel.WebButtonGroup;
+import com.alee.managers.focus.DefaultFocusTracker;
+import com.alee.managers.focus.FocusManager;
 import com.alee.managers.language.LanguageContainerMethods;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.language.LanguageMethods;
@@ -26,6 +28,7 @@ import com.alee.managers.settings.DefaultValue;
 import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.settings.SettingsMethods;
 import com.alee.managers.settings.SettingsProcessor;
+import com.alee.utils.SwingUtils;
 import com.alee.utils.WindowUtils;
 import com.alee.utils.swing.WindowMethods;
 
@@ -33,29 +36,85 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * User: mgarin Date: 07.12.12 Time: 18:01
+ * This JFrame extenstion class provides some additional methods and options to manipulate frame behavior.
+ *
+ * @author Mikle Garin
  */
 
 public class WebFrame extends JFrame implements LanguageMethods, LanguageContainerMethods, SettingsMethods, WindowMethods<WebFrame>
 {
+    /**
+     * Whether should close frame on focus loss or not.
+     */
+    protected boolean closeOnFocusLoss = false;
+
     public WebFrame ()
     {
         super ();
+        initialize ();
     }
 
-    public WebFrame ( GraphicsConfiguration gc )
+    public WebFrame ( final GraphicsConfiguration gc )
     {
         super ( gc );
+        initialize ();
     }
 
-    public WebFrame ( String title )
+    public WebFrame ( final String title )
     {
         super ( title );
+        initialize ();
     }
 
-    public WebFrame ( String title, GraphicsConfiguration gc )
+    public WebFrame ( final String title, final GraphicsConfiguration gc )
     {
         super ( title, gc );
+        initialize ();
+    }
+
+    /**
+     * Additional initializtion of WebFrame settings.
+     */
+    protected void initialize ()
+    {
+        SwingUtils.setOrientation ( this );
+        FocusManager.addFocusTracker ( this, new DefaultFocusTracker ( true )
+        {
+            @Override
+            public boolean isTrackingEnabled ()
+            {
+                return closeOnFocusLoss;
+            }
+
+            @Override
+            public void focusChanged ( final boolean focused )
+            {
+                if ( closeOnFocusLoss && WebFrame.this.isShowing () && !focused )
+                {
+                    setVisible ( false );
+                }
+            }
+        } );
+    }
+
+    /**
+     * Returns whether should close frame on focus loss or not.
+     *
+     * @return true if should close frame on focus loss, false otherwise
+     */
+    public boolean isCloseOnFocusLoss ()
+    {
+        return closeOnFocusLoss;
+    }
+
+    /**
+     * Sets whether should close frame on focus loss or not.
+     *
+     * @param closeOnFocusLoss whether should close frame on focus loss or not
+     */
+    public void setCloseOnFocusLoss ( final boolean closeOnFocusLoss )
+    {
+        this.closeOnFocusLoss = closeOnFocusLoss;
     }
 
     public Color getTopBg ()
@@ -63,7 +122,7 @@ public class WebFrame extends JFrame implements LanguageMethods, LanguageContain
         return getWebRootPaneUI ().getTopBg ();
     }
 
-    public void setTopBg ( Color topBg )
+    public void setTopBg ( final Color topBg )
     {
         getWebRootPaneUI ().setTopBg ( topBg );
     }
@@ -73,7 +132,7 @@ public class WebFrame extends JFrame implements LanguageMethods, LanguageContain
         return getWebRootPaneUI ().getMiddleBg ();
     }
 
-    public void setMiddleBg ( Color middleBg )
+    public void setMiddleBg ( final Color middleBg )
     {
         getWebRootPaneUI ().setMiddleBg ( middleBg );
     }
@@ -83,7 +142,7 @@ public class WebFrame extends JFrame implements LanguageMethods, LanguageContain
         return getWebRootPaneUI ().getShadeWidth ();
     }
 
-    public void setShadeWidth ( int shadeWidth )
+    public void setShadeWidth ( final int shadeWidth )
     {
         getWebRootPaneUI ().setShadeWidth ( shadeWidth );
     }
@@ -93,7 +152,7 @@ public class WebFrame extends JFrame implements LanguageMethods, LanguageContain
         return getWebRootPaneUI ().getInactiveShadeWidth ();
     }
 
-    public void setInactiveShadeWidth ( int inactiveShadeWidth )
+    public void setInactiveShadeWidth ( final int inactiveShadeWidth )
     {
         getWebRootPaneUI ().setInactiveShadeWidth ( inactiveShadeWidth );
     }
@@ -103,7 +162,7 @@ public class WebFrame extends JFrame implements LanguageMethods, LanguageContain
         return getWebRootPaneUI ().getRound ();
     }
 
-    public void setRound ( int round )
+    public void setRound ( final int round )
     {
         getWebRootPaneUI ().setRound ( round );
     }
@@ -113,7 +172,7 @@ public class WebFrame extends JFrame implements LanguageMethods, LanguageContain
         return getWebRootPaneUI ().isDrawWatermark ();
     }
 
-    public void setDrawWatermark ( boolean drawWatermark )
+    public void setDrawWatermark ( final boolean drawWatermark )
     {
         getWebRootPaneUI ().setDrawWatermark ( drawWatermark );
     }
@@ -123,7 +182,7 @@ public class WebFrame extends JFrame implements LanguageMethods, LanguageContain
         return getWebRootPaneUI ().getWatermark ();
     }
 
-    public void setWatermark ( ImageIcon watermark )
+    public void setWatermark ( final ImageIcon watermark )
     {
         getWebRootPaneUI ().setWatermark ( watermark );
     }
@@ -133,7 +192,7 @@ public class WebFrame extends JFrame implements LanguageMethods, LanguageContain
         return getWebRootPaneUI ().getTitleComponent ();
     }
 
-    public void setTitleComponent ( JComponent titleComponent )
+    public void setTitleComponent ( final JComponent titleComponent )
     {
         getWebRootPaneUI ().setTitleComponent ( titleComponent );
     }
@@ -153,7 +212,7 @@ public class WebFrame extends JFrame implements LanguageMethods, LanguageContain
         return getWebRootPaneUI ().isShowResizeCorner ();
     }
 
-    public void setShowResizeCorner ( boolean showResizeCorner )
+    public void setShowResizeCorner ( final boolean showResizeCorner )
     {
         getWebRootPaneUI ().setShowResizeCorner ( showResizeCorner );
     }
@@ -163,7 +222,7 @@ public class WebFrame extends JFrame implements LanguageMethods, LanguageContain
         return getWebRootPaneUI ().isShowTitleComponent ();
     }
 
-    public void setShowTitleComponent ( boolean showTitleComponent )
+    public void setShowTitleComponent ( final boolean showTitleComponent )
     {
         getWebRootPaneUI ().setShowTitleComponent ( showTitleComponent );
     }
@@ -173,7 +232,7 @@ public class WebFrame extends JFrame implements LanguageMethods, LanguageContain
         return getWebRootPaneUI ().isShowWindowButtons ();
     }
 
-    public void setShowWindowButtons ( boolean showWindowButtons )
+    public void setShowWindowButtons ( final boolean showWindowButtons )
     {
         getWebRootPaneUI ().setShowWindowButtons ( showWindowButtons );
     }
@@ -183,7 +242,7 @@ public class WebFrame extends JFrame implements LanguageMethods, LanguageContain
         return getWebRootPaneUI ().isShowMinimizeButton ();
     }
 
-    public void setShowMinimizeButton ( boolean showMinimizeButton )
+    public void setShowMinimizeButton ( final boolean showMinimizeButton )
     {
         getWebRootPaneUI ().setShowMinimizeButton ( showMinimizeButton );
     }
@@ -193,7 +252,7 @@ public class WebFrame extends JFrame implements LanguageMethods, LanguageContain
         return getWebRootPaneUI ().isShowMaximizeButton ();
     }
 
-    public void setShowMaximizeButton ( boolean showMaximizeButton )
+    public void setShowMaximizeButton ( final boolean showMaximizeButton )
     {
         getWebRootPaneUI ().setShowMaximizeButton ( showMaximizeButton );
     }
@@ -203,7 +262,7 @@ public class WebFrame extends JFrame implements LanguageMethods, LanguageContain
         return getWebRootPaneUI ().isShowCloseButton ();
     }
 
-    public void setShowCloseButton ( boolean showCloseButton )
+    public void setShowCloseButton ( final boolean showCloseButton )
     {
         getWebRootPaneUI ().setShowCloseButton ( showCloseButton );
     }
@@ -213,7 +272,7 @@ public class WebFrame extends JFrame implements LanguageMethods, LanguageContain
         return getWebRootPaneUI ().isGroupButtons ();
     }
 
-    public void setGroupButtons ( boolean groupButtons )
+    public void setGroupButtons ( final boolean groupButtons )
     {
         getWebRootPaneUI ().setGroupButtons ( groupButtons );
     }
@@ -223,7 +282,7 @@ public class WebFrame extends JFrame implements LanguageMethods, LanguageContain
         return getWebRootPaneUI ().isAttachButtons ();
     }
 
-    public void setAttachButtons ( boolean attachButtons )
+    public void setAttachButtons ( final boolean attachButtons )
     {
         getWebRootPaneUI ().setAttachButtons ( attachButtons );
     }
@@ -233,7 +292,7 @@ public class WebFrame extends JFrame implements LanguageMethods, LanguageContain
         return getWebRootPaneUI ().isShowMenuBar ();
     }
 
-    public void setShowMenuBar ( boolean showMenuBar )
+    public void setShowMenuBar ( final boolean showMenuBar )
     {
         getWebRootPaneUI ().setShowMenuBar ( showMenuBar );
     }
@@ -251,7 +310,7 @@ public class WebFrame extends JFrame implements LanguageMethods, LanguageContain
      * {@inheritDoc}
      */
     @Override
-    public void setLanguage ( String key, Object... data )
+    public void setLanguage ( final String key, final Object... data )
     {
         LanguageManager.registerComponent ( this, key, data );
     }
@@ -260,7 +319,7 @@ public class WebFrame extends JFrame implements LanguageMethods, LanguageContain
      * {@inheritDoc}
      */
     @Override
-    public void updateLanguage ( Object... data )
+    public void updateLanguage ( final Object... data )
     {
         LanguageManager.updateComponent ( this, data );
     }
@@ -269,7 +328,7 @@ public class WebFrame extends JFrame implements LanguageMethods, LanguageContain
      * {@inheritDoc}
      */
     @Override
-    public void updateLanguage ( String key, Object... data )
+    public void updateLanguage ( final String key, final Object... data )
     {
         LanguageManager.updateComponent ( this, key, data );
     }
@@ -296,7 +355,7 @@ public class WebFrame extends JFrame implements LanguageMethods, LanguageContain
      * {@inheritDoc}
      */
     @Override
-    public void setLanguageUpdater ( LanguageUpdater updater )
+    public void setLanguageUpdater ( final LanguageUpdater updater )
     {
         LanguageManager.registerLanguageUpdater ( this, updater );
     }
@@ -318,7 +377,7 @@ public class WebFrame extends JFrame implements LanguageMethods, LanguageContain
      * {@inheritDoc}
      */
     @Override
-    public void setLanguageContainerKey ( String key )
+    public void setLanguageContainerKey ( final String key )
     {
         LanguageManager.registerLanguageContainer ( this, key );
     }
@@ -349,7 +408,7 @@ public class WebFrame extends JFrame implements LanguageMethods, LanguageContain
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String key )
+    public void registerSettings ( final String key )
     {
         SettingsManager.registerComponent ( this, key );
     }
@@ -358,7 +417,7 @@ public class WebFrame extends JFrame implements LanguageMethods, LanguageContain
      * {@inheritDoc}
      */
     @Override
-    public <T extends DefaultValue> void registerSettings ( String key, Class<T> defaultValueClass )
+    public <T extends DefaultValue> void registerSettings ( final String key, final Class<T> defaultValueClass )
     {
         SettingsManager.registerComponent ( this, key, defaultValueClass );
     }
@@ -367,7 +426,7 @@ public class WebFrame extends JFrame implements LanguageMethods, LanguageContain
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String key, Object defaultValue )
+    public void registerSettings ( final String key, final Object defaultValue )
     {
         SettingsManager.registerComponent ( this, key, defaultValue );
     }
@@ -376,7 +435,7 @@ public class WebFrame extends JFrame implements LanguageMethods, LanguageContain
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String group, String key )
+    public void registerSettings ( final String group, final String key )
     {
         SettingsManager.registerComponent ( this, group, key );
     }
@@ -385,7 +444,7 @@ public class WebFrame extends JFrame implements LanguageMethods, LanguageContain
      * {@inheritDoc}
      */
     @Override
-    public <T extends DefaultValue> void registerSettings ( String group, String key, Class<T> defaultValueClass )
+    public <T extends DefaultValue> void registerSettings ( final String group, final String key, final Class<T> defaultValueClass )
     {
         SettingsManager.registerComponent ( this, group, key, defaultValueClass );
     }
@@ -394,7 +453,7 @@ public class WebFrame extends JFrame implements LanguageMethods, LanguageContain
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String group, String key, Object defaultValue )
+    public void registerSettings ( final String group, final String key, final Object defaultValue )
     {
         SettingsManager.registerComponent ( this, group, key, defaultValue );
     }
@@ -403,7 +462,7 @@ public class WebFrame extends JFrame implements LanguageMethods, LanguageContain
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String key, boolean loadInitialSettings, boolean applySettingsChanges )
+    public void registerSettings ( final String key, final boolean loadInitialSettings, final boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, key, loadInitialSettings, applySettingsChanges );
     }
@@ -412,8 +471,8 @@ public class WebFrame extends JFrame implements LanguageMethods, LanguageContain
      * {@inheritDoc}
      */
     @Override
-    public <T extends DefaultValue> void registerSettings ( String key, Class<T> defaultValueClass, boolean loadInitialSettings,
-                                                            boolean applySettingsChanges )
+    public <T extends DefaultValue> void registerSettings ( final String key, final Class<T> defaultValueClass,
+                                                            final boolean loadInitialSettings, final boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, key, defaultValueClass, loadInitialSettings, applySettingsChanges );
     }
@@ -422,7 +481,8 @@ public class WebFrame extends JFrame implements LanguageMethods, LanguageContain
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String key, Object defaultValue, boolean loadInitialSettings, boolean applySettingsChanges )
+    public void registerSettings ( final String key, final Object defaultValue, final boolean loadInitialSettings,
+                                   final boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, key, defaultValue, loadInitialSettings, applySettingsChanges );
     }
@@ -431,8 +491,8 @@ public class WebFrame extends JFrame implements LanguageMethods, LanguageContain
      * {@inheritDoc}
      */
     @Override
-    public <T extends DefaultValue> void registerSettings ( String group, String key, Class<T> defaultValueClass,
-                                                            boolean loadInitialSettings, boolean applySettingsChanges )
+    public <T extends DefaultValue> void registerSettings ( final String group, final String key, final Class<T> defaultValueClass,
+                                                            final boolean loadInitialSettings, final boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, group, key, defaultValueClass, loadInitialSettings, applySettingsChanges );
     }
@@ -441,8 +501,8 @@ public class WebFrame extends JFrame implements LanguageMethods, LanguageContain
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String group, String key, Object defaultValue, boolean loadInitialSettings,
-                                   boolean applySettingsChanges )
+    public void registerSettings ( final String group, final String key, final Object defaultValue, final boolean loadInitialSettings,
+                                   final boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, group, key, defaultValue, loadInitialSettings, applySettingsChanges );
     }
@@ -451,7 +511,7 @@ public class WebFrame extends JFrame implements LanguageMethods, LanguageContain
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( SettingsProcessor settingsProcessor )
+    public void registerSettings ( final SettingsProcessor settingsProcessor )
     {
         SettingsManager.registerComponent ( this, settingsProcessor );
     }
@@ -491,7 +551,7 @@ public class WebFrame extends JFrame implements LanguageMethods, LanguageContain
      * {@inheritDoc}
      */
     @Override
-    public WebFrame setWindowOpaque ( boolean opaque )
+    public WebFrame setWindowOpaque ( final boolean opaque )
     {
         return WindowUtils.setWindowOpaque ( this, opaque );
     }
@@ -509,7 +569,7 @@ public class WebFrame extends JFrame implements LanguageMethods, LanguageContain
      * {@inheritDoc}
      */
     @Override
-    public WebFrame setWindowOpacity ( float opacity )
+    public WebFrame setWindowOpacity ( final float opacity )
     {
         return WindowUtils.setWindowOpacity ( this, opacity );
     }
@@ -536,7 +596,7 @@ public class WebFrame extends JFrame implements LanguageMethods, LanguageContain
      * {@inheritDoc}
      */
     @Override
-    public WebFrame center ( Component relativeTo )
+    public WebFrame center ( final Component relativeTo )
     {
         return WindowUtils.center ( this, relativeTo );
     }
@@ -545,7 +605,7 @@ public class WebFrame extends JFrame implements LanguageMethods, LanguageContain
      * {@inheritDoc}
      */
     @Override
-    public WebFrame center ( int width, int height )
+    public WebFrame center ( final int width, final int height )
     {
         return WindowUtils.center ( this, width, height );
     }
@@ -554,7 +614,7 @@ public class WebFrame extends JFrame implements LanguageMethods, LanguageContain
      * {@inheritDoc}
      */
     @Override
-    public WebFrame center ( Component relativeTo, int width, int height )
+    public WebFrame center ( final Component relativeTo, final int width, final int height )
     {
         return WindowUtils.center ( this, relativeTo, width, height );
     }
@@ -563,7 +623,7 @@ public class WebFrame extends JFrame implements LanguageMethods, LanguageContain
      * {@inheritDoc}
      */
     @Override
-    public WebFrame packToWidth ( int width )
+    public WebFrame packToWidth ( final int width )
     {
         return WindowUtils.packToWidth ( this, width );
     }
@@ -572,7 +632,7 @@ public class WebFrame extends JFrame implements LanguageMethods, LanguageContain
      * {@inheritDoc}
      */
     @Override
-    public WebFrame packToHeight ( int height )
+    public WebFrame packToHeight ( final int height )
     {
         return WindowUtils.packToHeight ( this, height );
     }
@@ -590,7 +650,7 @@ public class WebFrame extends JFrame implements LanguageMethods, LanguageContain
      * {@inheritDoc}
      */
     @Override
-    public WebFrame packAndCenter ( boolean animate )
+    public WebFrame packAndCenter ( final boolean animate )
     {
         return WindowUtils.packAndCenter ( this, animate );
     }

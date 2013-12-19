@@ -1155,6 +1155,25 @@ public final class SwingUtils
     }
 
     /**
+     * Returns component content size limited by component border.
+     *
+     * @param component component to process
+     * @return component content size rectangle
+     */
+    public static Rectangle contentSize ( final Component component )
+    {
+        if ( component instanceof JComponent )
+        {
+            final Insets i = ( ( JComponent ) component ).getInsets ();
+            return new Rectangle ( i.left, i.top, component.getWidth () - i.left - i.right, component.getHeight () - i.top - i.bottom );
+        }
+        else
+        {
+            return size ( component );
+        }
+    }
+
+    /**
      * Returns maximum insets combined from the specified ones.
      *
      * @param insets1 first insets

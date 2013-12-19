@@ -59,7 +59,7 @@ public class WebFileDrop extends WebPanel implements LanguageMethods
     private Color dropBackground = new Color ( 242, 242, 242 );
     private Color dropBorder = new Color ( 192, 192, 192 );
 
-    private List<FilesSelectionListener> listeners = new ArrayList<FilesSelectionListener> ( 1 );
+    private final List<FilesSelectionListener> listeners = new ArrayList<FilesSelectionListener> ( 1 );
 
     private boolean showRemoveButton = true;
     private boolean showFileExtensions = false;
@@ -97,11 +97,11 @@ public class WebFileDrop extends WebPanel implements LanguageMethods
             }
 
             @Override
-            protected boolean filesImported ( List<File> files )
+            protected boolean filesImported ( final List<File> files )
             {
                 // Adding dragged files
                 boolean anyAdded = false;
-                for ( File file : files )
+                for ( final File file : files )
                 {
                     if ( fileFilter != null && !fileFilter.accept ( file ) ||
                             !allowSameFiles && FileUtils.containtsFile ( selectedFiles, file ) )
@@ -126,7 +126,7 @@ public class WebFileDrop extends WebPanel implements LanguageMethods
         addMouseListener ( new MouseAdapter ()
         {
             @Override
-            public void mousePressed ( MouseEvent e )
+            public void mousePressed ( final MouseEvent e )
             {
                 WebFileDrop.this.requestFocusInWindow ();
             }
@@ -139,7 +139,7 @@ public class WebFileDrop extends WebPanel implements LanguageMethods
             private WebTimer animator = null;
 
             @Override
-            public void selectionChanged ( List<File> selectedFiles )
+            public void selectionChanged ( final List<File> selectedFiles )
             {
                 if ( filesCount == 0 && selectedFiles.size () > 0 )
                 {
@@ -148,7 +148,7 @@ public class WebFileDrop extends WebPanel implements LanguageMethods
                     animator = new WebTimer ( "WebFileDrop.textFadeOutTimer", StyleConstants.animationDelay, new ActionListener ()
                     {
                         @Override
-                        public void actionPerformed ( ActionEvent e )
+                        public void actionPerformed ( final ActionEvent e )
                         {
                             if ( dropTextOpacity > 0f )
                             {
@@ -171,7 +171,7 @@ public class WebFileDrop extends WebPanel implements LanguageMethods
                     animator = new WebTimer ( "WebFileDrop.textFadeInTimer", StyleConstants.animationDelay, new ActionListener ()
                     {
                         @Override
-                        public void actionPerformed ( ActionEvent e )
+                        public void actionPerformed ( final ActionEvent e )
                         {
                             if ( dropTextOpacity < 1f )
                             {
@@ -204,7 +204,7 @@ public class WebFileDrop extends WebPanel implements LanguageMethods
         return showDropText;
     }
 
-    public void setShowDropText ( boolean showDropText )
+    public void setShowDropText ( final boolean showDropText )
     {
         this.showDropText = showDropText;
         WebFileDrop.this.repaint ();
@@ -215,7 +215,7 @@ public class WebFileDrop extends WebPanel implements LanguageMethods
         return filesDropEnabled;
     }
 
-    public void setFilesDropEnabled ( boolean filesDropEnabled )
+    public void setFilesDropEnabled ( final boolean filesDropEnabled )
     {
         this.filesDropEnabled = filesDropEnabled;
     }
@@ -225,11 +225,11 @@ public class WebFileDrop extends WebPanel implements LanguageMethods
         return selectedFiles;
     }
 
-    public void setSelectedFiles ( List<File> selectedFiles )
+    public void setSelectedFiles ( final List<File> selectedFiles )
     {
         // Filtering only accepted by filter files
-        List<File> accepted = new ArrayList<File> ();
-        for ( File file : selectedFiles )
+        final List<File> accepted = new ArrayList<File> ();
+        for ( final File file : selectedFiles )
         {
             if ( ( fileFilter == null || fileFilter.accept ( file ) ) && ( allowSameFiles || !FileUtils.containtsFile ( accepted, file ) ) )
             {
@@ -251,7 +251,7 @@ public class WebFileDrop extends WebPanel implements LanguageMethods
         return allowSameFiles;
     }
 
-    public void setAllowSameFiles ( boolean allowSameFiles )
+    public void setAllowSameFiles ( final boolean allowSameFiles )
     {
         this.allowSameFiles = allowSameFiles;
         setSelectedFiles ( selectedFiles );
@@ -262,7 +262,7 @@ public class WebFileDrop extends WebPanel implements LanguageMethods
         return fileFilter;
     }
 
-    public void setFileFilter ( AbstractFileFilter fileFilter )
+    public void setFileFilter ( final AbstractFileFilter fileFilter )
     {
         this.fileFilter = fileFilter;
         setSelectedFiles ( selectedFiles );
@@ -273,7 +273,7 @@ public class WebFileDrop extends WebPanel implements LanguageMethods
         return showRemoveButton;
     }
 
-    public void setShowRemoveButton ( boolean showRemoveButton )
+    public void setShowRemoveButton ( final boolean showRemoveButton )
     {
         this.showRemoveButton = showRemoveButton;
         updateFilesList ();
@@ -284,7 +284,7 @@ public class WebFileDrop extends WebPanel implements LanguageMethods
         return showFileExtensions;
     }
 
-    public void setShowFileExtensions ( boolean showFileExtensions )
+    public void setShowFileExtensions ( final boolean showFileExtensions )
     {
         this.showFileExtensions = showFileExtensions;
         updateFilesList ();
@@ -295,7 +295,7 @@ public class WebFileDrop extends WebPanel implements LanguageMethods
         return dropBackground;
     }
 
-    public void setDropBackground ( Color dropBackground )
+    public void setDropBackground ( final Color dropBackground )
     {
         this.dropBackground = dropBackground;
         repaint ();
@@ -306,7 +306,7 @@ public class WebFileDrop extends WebPanel implements LanguageMethods
         return dropBorder;
     }
 
-    public void setDropBorder ( Color dropBorder )
+    public void setDropBorder ( final Color dropBorder )
     {
         this.dropBorder = dropBorder;
         repaint ();
@@ -317,7 +317,7 @@ public class WebFileDrop extends WebPanel implements LanguageMethods
         return dashRound;
     }
 
-    public void setDashRound ( int dashRound )
+    public void setDashRound ( final int dashRound )
     {
         this.dashRound = dashRound;
         repaint ();
@@ -328,7 +328,7 @@ public class WebFileDrop extends WebPanel implements LanguageMethods
         return dashSideSpacing;
     }
 
-    public void setDashSideSpacing ( int dashSideSpacing )
+    public void setDashSideSpacing ( final int dashSideSpacing )
     {
         this.dashSideSpacing = dashSideSpacing;
         repaint ();
@@ -339,13 +339,13 @@ public class WebFileDrop extends WebPanel implements LanguageMethods
         return dropText;
     }
 
-    public void setDropText ( String dropText )
+    public void setDropText ( final String dropText )
     {
         this.dropText = dropText;
         repaint ();
     }
 
-    public void setShowDefaultDropText ( boolean defaultDropText )
+    public void setShowDefaultDropText ( final boolean defaultDropText )
     {
         if ( defaultDropText )
         {
@@ -364,7 +364,7 @@ public class WebFileDrop extends WebPanel implements LanguageMethods
     }
 
     @Override
-    protected void paintComponent ( Graphics g )
+    protected void paintComponent ( final Graphics g )
     {
         super.paintComponent ( g );
 
@@ -405,7 +405,7 @@ public class WebFileDrop extends WebPanel implements LanguageMethods
     private void updateFilesList ()
     {
         removeAll ();
-        for ( File file : selectedFiles )
+        for ( final File file : selectedFiles )
         {
             add ( createFilePlate ( file ) );
         }
@@ -415,13 +415,13 @@ public class WebFileDrop extends WebPanel implements LanguageMethods
 
     private WebFilePlate createFilePlate ( final File file )
     {
-        WebFilePlate filePlate = new WebFilePlate ( file );
+        final WebFilePlate filePlate = new WebFilePlate ( file );
 
         // To block parent container events
         addMouseListener ( new MouseAdapter ()
         {
             @Override
-            public void mousePressed ( MouseEvent e )
+            public void mousePressed ( final MouseEvent e )
             {
                 requestFocusInWindow ();
             }
@@ -431,7 +431,7 @@ public class WebFileDrop extends WebPanel implements LanguageMethods
         filePlate.addCloseListener ( new ActionListener ()
         {
             @Override
-            public void actionPerformed ( ActionEvent e )
+            public void actionPerformed ( final ActionEvent e )
             {
                 // Removing file from added files list
                 selectedFiles.remove ( file );
@@ -444,19 +444,19 @@ public class WebFileDrop extends WebPanel implements LanguageMethods
         return filePlate;
     }
 
-    public void addFileSelectionListener ( FilesSelectionListener listener )
+    public void addFileSelectionListener ( final FilesSelectionListener listener )
     {
         listeners.add ( listener );
     }
 
-    public void removeFileSelectionListener ( FilesSelectionListener listener )
+    public void removeFileSelectionListener ( final FilesSelectionListener listener )
     {
         listeners.remove ( listener );
     }
 
-    private void fireSelectionChanged ( List<File> selectedFiles )
+    private void fireSelectionChanged ( final List<File> selectedFiles )
     {
-        for ( FilesSelectionListener listener : CollectionUtils.copy ( listeners ) )
+        for ( final FilesSelectionListener listener : CollectionUtils.copy ( listeners ) )
         {
             listener.selectionChanged ( selectedFiles );
         }
@@ -470,7 +470,7 @@ public class WebFileDrop extends WebPanel implements LanguageMethods
      * {@inheritDoc}
      */
     @Override
-    public void setLanguage ( String key, Object... data )
+    public void setLanguage ( final String key, final Object... data )
     {
         LanguageManager.registerComponent ( this, key, data );
     }
@@ -479,7 +479,7 @@ public class WebFileDrop extends WebPanel implements LanguageMethods
      * {@inheritDoc}
      */
     @Override
-    public void updateLanguage ( Object... data )
+    public void updateLanguage ( final Object... data )
     {
         LanguageManager.updateComponent ( this, data );
     }
@@ -488,7 +488,7 @@ public class WebFileDrop extends WebPanel implements LanguageMethods
      * {@inheritDoc}
      */
     @Override
-    public void updateLanguage ( String key, Object... data )
+    public void updateLanguage ( final String key, final Object... data )
     {
         LanguageManager.updateComponent ( this, key, data );
     }
@@ -515,7 +515,7 @@ public class WebFileDrop extends WebPanel implements LanguageMethods
      * {@inheritDoc}
      */
     @Override
-    public void setLanguageUpdater ( LanguageUpdater updater )
+    public void setLanguageUpdater ( final LanguageUpdater updater )
     {
         LanguageManager.registerLanguageUpdater ( this, updater );
     }

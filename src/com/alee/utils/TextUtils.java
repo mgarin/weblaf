@@ -257,16 +257,16 @@ public final class TextUtils
      */
     public static List<String> stringToList ( final String string, final String separator )
     {
-        final List<String> imageTags = new ArrayList<String> ();
+        final List<String> strings = new ArrayList<String> ();
         if ( string != null )
         {
             final StringTokenizer tokenizer = new StringTokenizer ( string, separator, false );
             while ( tokenizer.hasMoreTokens () )
             {
-                imageTags.add ( tokenizer.nextToken ().trim () );
+                strings.add ( tokenizer.nextToken ().trim () );
             }
         }
-        return imageTags;
+        return strings;
     }
 
     /**
@@ -282,7 +282,7 @@ public final class TextUtils
         if ( stringList != null )
         {
             final List<Integer> intList = new ArrayList<Integer> ( stringList.size () );
-            for ( String s : stringList )
+            for ( final String s : stringList )
             {
                 intList.add ( Integer.parseInt ( s ) );
             }
@@ -315,17 +315,14 @@ public final class TextUtils
      */
     public static <T> String listToString ( final List<T> list, final String separator, final TextProvider<T> textProvider )
     {
-        if ( list.size () > 0 )
+        if ( list != null && list.size () > 0 )
         {
             final StringBuilder stringBuilder = new StringBuilder ();
-            if ( list != null )
+            final int end = list.size () - 1;
+            for ( int i = 0; i <= end; i++ )
             {
-                final int end = list.size () - 1;
-                for ( int i = 0; i <= end; i++ )
-                {
-                    stringBuilder.append ( textProvider.provide ( list.get ( i ) ) );
-                    stringBuilder.append ( i != end ? separator : "" );
-                }
+                stringBuilder.append ( textProvider.provide ( list.get ( i ) ) );
+                stringBuilder.append ( i != end ? separator : "" );
             }
             return stringBuilder.toString ();
         }
@@ -333,6 +330,54 @@ public final class TextUtils
         {
             return null;
         }
+    }
+
+    /**
+     * Converts list of enumeration constants into string with list of enumeration constants and returns it.
+     *
+     * @param enumList enumeration constants list
+     * @param <E>      enumeration type
+     * @return string with list of enumeration constants
+     */
+    public static <E extends Enum<E>> String enumListToString ( final List<E> enumList )
+    {
+        if ( enumList != null && enumList.size () > 0 )
+        {
+            final int end = enumList.size () - 1;
+            final StringBuilder stringBuilder = new StringBuilder ();
+            for ( int i = 0; i <= end; i++ )
+            {
+                stringBuilder.append ( enumList.get ( i ) );
+                stringBuilder.append ( i != end ? "," : "" );
+            }
+            return stringBuilder.toString ();
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    /**
+     * Converts string with list of enumeration constants into real list of enumeration constants and returns it.
+     *
+     * @param enumString enumeration constants string list
+     * @param enumClass  enumeration class
+     * @param <E>        enumeration type
+     * @return list of enumeration constants
+     */
+    public static <E extends Enum<E>> List<E> enumStringToList ( final String enumString, final Class<E> enumClass )
+    {
+        final List<E> strings = new ArrayList<E> ();
+        if ( enumString != null )
+        {
+            final StringTokenizer tokenizer = new StringTokenizer ( enumString, ",", false );
+            while ( tokenizer.hasMoreTokens () )
+            {
+                strings.add ( E.valueOf ( enumClass, tokenizer.nextToken ().trim () ) );
+            }
+        }
+        return strings;
     }
 
     /**

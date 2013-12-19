@@ -19,7 +19,6 @@ package com.alee.examples.groups.filechooser;
 
 import com.alee.examples.WebLookAndFeelDemo;
 import com.alee.examples.content.DefaultExample;
-import com.alee.examples.content.FeatureState;
 import com.alee.extended.filechooser.WebPathField;
 import com.alee.extended.panel.GroupPanel;
 import com.alee.utils.FileUtils;
@@ -45,16 +44,10 @@ public class PathFieldExample extends DefaultExample
     }
 
     @Override
-    public FeatureState getFeatureState ()
-    {
-        return FeatureState.beta;
-    }
-
-    @Override
-    public Component getPreview ( WebLookAndFeelDemo owner )
+    public Component getPreview ( final WebLookAndFeelDemo owner )
     {
         // Simple path field
-        WebPathField pathField = new WebPathField ( FileUtils.getDiskRoots ()[ 0 ] );
+        final WebPathField pathField = new WebPathField ( FileUtils.getDiskRoots ()[ 0 ] );
         pathField.setPreferredWidth ( 200 );
         return new GroupPanel ( pathField );
     }

@@ -25,35 +25,41 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public class WebPopupPainterStyle
+public final class WebPopupPainterStyle
 {
     /**
-     * Popup menu style.
+     * Popup style.
      */
     public static PopupPainterStyle popupPainterStyle = PopupPainterStyle.dropdown;
 
     /**
-     * Popup menu border color.
+     * Popup border color.
      */
     public static Color borderColor = new Color ( 128, 128, 128, 128 );
 
     /**
-     * Popup menu corners rounding.
+     * Popup corners rounding.
      */
     public static int round = StyleConstants.bigRound;
 
     /**
-     * Popup menu shade width.
+     * Popup shade width.
      */
     public static int shadeWidth = 12;
 
     /**
-     * Popup menu shade opacity.
+     * Popup shade opacity.
      */
     public static float shadeOpacity = 0.75f;
 
     /**
-     * Popup menu dropdown style corner width
+     * Popup dropdown style corner width.
+     * Should not be larger than shade width in current implementation.
      */
     public static int cornerWidth = 6;
+
+    /**
+     * Popup background transparency.
+     */
+    public static float transparency = 0.95f;
 }

@@ -47,7 +47,7 @@ public class WebWindow extends JWindow implements LanguageContainerMethods, Sett
 
     /**
      * Creates a window with no specified owner. This window will not be focusable.
-     * <p>
+     * <p/>
      * This constructor sets the component's locale property to the value returned by <code>JComponent.getDefaultLocale</code>.
      */
     public WebWindow ()
@@ -58,13 +58,13 @@ public class WebWindow extends JWindow implements LanguageContainerMethods, Sett
 
     /**
      * Creates a window with the specified <code>GraphicsConfiguration</code> of a screen device. This window will not be focusable.
-     * <p>
+     * <p/>
      * This constructor sets the component's locale property to the value returned by <code>JComponent.getDefaultLocale</code>.
      *
      * @param gc the <code>GraphicsConfiguration</code> that is used to construct the new window with; if gc is <code>null</code>,
      *           the system default <code>GraphicsConfiguration</code> is assumed
      */
-    public WebWindow ( GraphicsConfiguration gc )
+    public WebWindow ( final GraphicsConfiguration gc )
     {
         super ( gc );
         initialize ();
@@ -74,12 +74,12 @@ public class WebWindow extends JWindow implements LanguageContainerMethods, Sett
      * Creates a window with the specified owner frame.
      * If <code>owner</code> is <code>null</code>, the shared owner will be used and this window will not be focusable.
      * Also, this window will not be focusable unless its owner is showing on the screen.
-     * <p>
+     * <p/>
      * This constructor sets the component's locale property to the value returned by <code>JComponent.getDefaultLocale</code>.
      *
      * @param owner the frame from which the window is displayed
      */
-    public WebWindow ( Frame owner )
+    public WebWindow ( final Frame owner )
     {
         super ( owner );
         initialize ();
@@ -89,12 +89,12 @@ public class WebWindow extends JWindow implements LanguageContainerMethods, Sett
      * Creates a window with the owner window from the specified component.
      * This window will not be focusable unless its owner is showing on the screen.
      * If <code>owner</code> is <code>null</code>, the shared owner will be used and this window will not be focusable.
-     * <p>
+     * <p/>
      * This constructor sets the component's locale property to the value returned by <code>JComponent.getDefaultLocale</code>.
      *
      * @param owner the componnt from which parent window this window is displayed
      */
-    public WebWindow ( Component owner )
+    public WebWindow ( final Component owner )
     {
         super ( SwingUtils.getWindowAncestor ( owner ) );
         initialize ();
@@ -103,12 +103,12 @@ public class WebWindow extends JWindow implements LanguageContainerMethods, Sett
     /**
      * Creates a window with the specified owner window. This window will not be focusable unless its owner is showing on the screen.
      * If <code>owner</code> is <code>null</code>, the shared owner will be used and this window will not be focusable.
-     * <p>
+     * <p/>
      * This constructor sets the component's locale property to the value returned by <code>JComponent.getDefaultLocale</code>.
      *
      * @param owner the window from which the window is displayed
      */
-    public WebWindow ( Window owner )
+    public WebWindow ( final Window owner )
     {
         super ( owner );
         initialize ();
@@ -117,7 +117,7 @@ public class WebWindow extends JWindow implements LanguageContainerMethods, Sett
     /**
      * Creates a window with the specified owner window and <code>GraphicsConfiguration</code> of a screen device.
      * If <code>owner</code> is <code>null</code>, the shared owner will be used and this window will not be focusable.
-     * <p>
+     * <p/>
      * This constructor sets the component's locale property to the value returned by <code>JComponent.getDefaultLocale</code>.
      *
      * @param owner the window from which the window is displayed
@@ -125,7 +125,7 @@ public class WebWindow extends JWindow implements LanguageContainerMethods, Sett
      *              the system default <code>GraphicsConfiguration</code> is assumed, unless <code>owner</code> is also null, in which
      *              case the <code>GraphicsConfiguration</code> from the shared owner frame will be used
      */
-    public WebWindow ( Window owner, GraphicsConfiguration gc )
+    public WebWindow ( final Window owner, final GraphicsConfiguration gc )
     {
         super ( owner, gc );
         initialize ();
@@ -147,7 +147,7 @@ public class WebWindow extends JWindow implements LanguageContainerMethods, Sett
             }
 
             @Override
-            public void focusChanged ( boolean focused )
+            public void focusChanged ( final boolean focused )
             {
                 if ( closeOnFocusLoss && WebWindow.this.isShowing () && !focused )
                 {
@@ -172,7 +172,7 @@ public class WebWindow extends JWindow implements LanguageContainerMethods, Sett
      *
      * @param closeOnFocusLoss whether should close window on focus loss or not
      */
-    public void setCloseOnFocusLoss ( boolean closeOnFocusLoss )
+    public void setCloseOnFocusLoss ( final boolean closeOnFocusLoss )
     {
         this.closeOnFocusLoss = closeOnFocusLoss;
     }
@@ -181,7 +181,7 @@ public class WebWindow extends JWindow implements LanguageContainerMethods, Sett
      * {@inheritDoc}
      */
     @Override
-    public void setLanguageContainerKey ( String key )
+    public void setLanguageContainerKey ( final String key )
     {
         LanguageManager.registerLanguageContainer ( this, key );
     }
@@ -208,7 +208,7 @@ public class WebWindow extends JWindow implements LanguageContainerMethods, Sett
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String key )
+    public void registerSettings ( final String key )
     {
         SettingsManager.registerComponent ( this, key );
     }
@@ -217,7 +217,7 @@ public class WebWindow extends JWindow implements LanguageContainerMethods, Sett
      * {@inheritDoc}
      */
     @Override
-    public <T extends DefaultValue> void registerSettings ( String key, Class<T> defaultValueClass )
+    public <T extends DefaultValue> void registerSettings ( final String key, final Class<T> defaultValueClass )
     {
         SettingsManager.registerComponent ( this, key, defaultValueClass );
     }
@@ -226,7 +226,7 @@ public class WebWindow extends JWindow implements LanguageContainerMethods, Sett
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String key, Object defaultValue )
+    public void registerSettings ( final String key, final Object defaultValue )
     {
         SettingsManager.registerComponent ( this, key, defaultValue );
     }
@@ -235,7 +235,7 @@ public class WebWindow extends JWindow implements LanguageContainerMethods, Sett
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String group, String key )
+    public void registerSettings ( final String group, final String key )
     {
         SettingsManager.registerComponent ( this, group, key );
     }
@@ -244,7 +244,7 @@ public class WebWindow extends JWindow implements LanguageContainerMethods, Sett
      * {@inheritDoc}
      */
     @Override
-    public <T extends DefaultValue> void registerSettings ( String group, String key, Class<T> defaultValueClass )
+    public <T extends DefaultValue> void registerSettings ( final String group, final String key, final Class<T> defaultValueClass )
     {
         SettingsManager.registerComponent ( this, group, key, defaultValueClass );
     }
@@ -253,7 +253,7 @@ public class WebWindow extends JWindow implements LanguageContainerMethods, Sett
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String group, String key, Object defaultValue )
+    public void registerSettings ( final String group, final String key, final Object defaultValue )
     {
         SettingsManager.registerComponent ( this, group, key, defaultValue );
     }
@@ -262,7 +262,7 @@ public class WebWindow extends JWindow implements LanguageContainerMethods, Sett
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String key, boolean loadInitialSettings, boolean applySettingsChanges )
+    public void registerSettings ( final String key, final boolean loadInitialSettings, final boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, key, loadInitialSettings, applySettingsChanges );
     }
@@ -271,8 +271,8 @@ public class WebWindow extends JWindow implements LanguageContainerMethods, Sett
      * {@inheritDoc}
      */
     @Override
-    public <T extends DefaultValue> void registerSettings ( String key, Class<T> defaultValueClass, boolean loadInitialSettings,
-                                                            boolean applySettingsChanges )
+    public <T extends DefaultValue> void registerSettings ( final String key, final Class<T> defaultValueClass,
+                                                            final boolean loadInitialSettings, final boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, key, defaultValueClass, loadInitialSettings, applySettingsChanges );
     }
@@ -281,7 +281,8 @@ public class WebWindow extends JWindow implements LanguageContainerMethods, Sett
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String key, Object defaultValue, boolean loadInitialSettings, boolean applySettingsChanges )
+    public void registerSettings ( final String key, final Object defaultValue, final boolean loadInitialSettings,
+                                   final boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, key, defaultValue, loadInitialSettings, applySettingsChanges );
     }
@@ -290,8 +291,8 @@ public class WebWindow extends JWindow implements LanguageContainerMethods, Sett
      * {@inheritDoc}
      */
     @Override
-    public <T extends DefaultValue> void registerSettings ( String group, String key, Class<T> defaultValueClass,
-                                                            boolean loadInitialSettings, boolean applySettingsChanges )
+    public <T extends DefaultValue> void registerSettings ( final String group, final String key, final Class<T> defaultValueClass,
+                                                            final boolean loadInitialSettings, final boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, group, key, defaultValueClass, loadInitialSettings, applySettingsChanges );
     }
@@ -300,8 +301,8 @@ public class WebWindow extends JWindow implements LanguageContainerMethods, Sett
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String group, String key, Object defaultValue, boolean loadInitialSettings,
-                                   boolean applySettingsChanges )
+    public void registerSettings ( final String group, final String key, final Object defaultValue, final boolean loadInitialSettings,
+                                   final boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, group, key, defaultValue, loadInitialSettings, applySettingsChanges );
     }
@@ -310,7 +311,7 @@ public class WebWindow extends JWindow implements LanguageContainerMethods, Sett
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( SettingsProcessor settingsProcessor )
+    public void registerSettings ( final SettingsProcessor settingsProcessor )
     {
         SettingsManager.registerComponent ( this, settingsProcessor );
     }
@@ -346,7 +347,7 @@ public class WebWindow extends JWindow implements LanguageContainerMethods, Sett
      * {@inheritDoc}
      */
     @Override
-    public WebWindow setWindowOpaque ( boolean opaque )
+    public WebWindow setWindowOpaque ( final boolean opaque )
     {
         return WindowUtils.setWindowOpaque ( this, opaque );
     }
@@ -364,7 +365,7 @@ public class WebWindow extends JWindow implements LanguageContainerMethods, Sett
      * {@inheritDoc}
      */
     @Override
-    public WebWindow setWindowOpacity ( float opacity )
+    public WebWindow setWindowOpacity ( final float opacity )
     {
         return WindowUtils.setWindowOpacity ( this, opacity );
     }
@@ -391,7 +392,7 @@ public class WebWindow extends JWindow implements LanguageContainerMethods, Sett
      * {@inheritDoc}
      */
     @Override
-    public WebWindow center ( Component relativeTo )
+    public WebWindow center ( final Component relativeTo )
     {
         return WindowUtils.center ( this, relativeTo );
     }
@@ -400,7 +401,7 @@ public class WebWindow extends JWindow implements LanguageContainerMethods, Sett
      * {@inheritDoc}
      */
     @Override
-    public WebWindow center ( int width, int height )
+    public WebWindow center ( final int width, final int height )
     {
         return WindowUtils.center ( this, width, height );
     }
@@ -409,7 +410,7 @@ public class WebWindow extends JWindow implements LanguageContainerMethods, Sett
      * {@inheritDoc}
      */
     @Override
-    public WebWindow center ( Component relativeTo, int width, int height )
+    public WebWindow center ( final Component relativeTo, final int width, final int height )
     {
         return WindowUtils.center ( this, relativeTo, width, height );
     }
@@ -418,7 +419,7 @@ public class WebWindow extends JWindow implements LanguageContainerMethods, Sett
      * {@inheritDoc}
      */
     @Override
-    public WebWindow packToWidth ( int width )
+    public WebWindow packToWidth ( final int width )
     {
         return WindowUtils.packToWidth ( this, width );
     }
@@ -427,7 +428,7 @@ public class WebWindow extends JWindow implements LanguageContainerMethods, Sett
      * {@inheritDoc}
      */
     @Override
-    public WebWindow packToHeight ( int height )
+    public WebWindow packToHeight ( final int height )
     {
         return WindowUtils.packToHeight ( this, height );
     }
@@ -445,7 +446,7 @@ public class WebWindow extends JWindow implements LanguageContainerMethods, Sett
      * {@inheritDoc}
      */
     @Override
-    public WebWindow packAndCenter ( boolean animate )
+    public WebWindow packAndCenter ( final boolean animate )
     {
         return WindowUtils.packAndCenter ( this, animate );
     }

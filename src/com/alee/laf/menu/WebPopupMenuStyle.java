@@ -74,6 +74,11 @@ public final class WebPopupMenuStyle
     public static int cornerWidth = WebPopupPainterStyle.cornerWidth;
 
     /**
+     * Popup menu background transparency.
+     */
+    public static float transparency = WebPopupPainterStyle.transparency;
+
+    /**
      * Popup menu margin.
      */
     public static Insets margin = StyleConstants.emptyMargin;

@@ -58,6 +58,10 @@ public final class CollectionUtils
      */
     public static <T> List<T> copy ( final Collection<T> collection )
     {
+        if ( collection == null )
+        {
+            return null;
+        }
         return new ArrayList<T> ( collection );
     }
 
@@ -71,6 +75,10 @@ public final class CollectionUtils
      */
     public static <T extends Cloneable> List<T> clone ( final Collection<T> collection )
     {
+        if ( collection == null )
+        {
+            return null;
+        }
         final List<T> cloned = new ArrayList<T> ( collection.size () );
         for ( final T value : collection )
         {
@@ -102,14 +110,15 @@ public final class CollectionUtils
      */
     public static <T> List<T> removeNulls ( final List<T> list )
     {
-        if ( list != null )
+        if ( list == null )
         {
-            for ( int i = list.size () - 1; i >= 0; i-- )
+            return null;
+        }
+        for ( int i = list.size () - 1; i >= 0; i-- )
+        {
+            if ( list.get ( i ) == null )
             {
-                if ( list.get ( i ) == null )
-                {
-                    list.remove ( i );
-                }
+                list.remove ( i );
             }
         }
         return list;

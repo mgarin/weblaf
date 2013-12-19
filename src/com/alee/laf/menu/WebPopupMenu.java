@@ -283,6 +283,26 @@ public class WebPopupMenu extends JPopupMenu implements ShapeProvider
     }
 
     /**
+     * Returns popup menu background transparency.
+     *
+     * @return popup menu background transparency
+     */
+    public float getTransparency ()
+    {
+        return getWebUI ().getTransparency ();
+    }
+
+    /**
+     * Sets popup menu background transparency.
+     *
+     * @param transparency popup menu background transparency
+     */
+    public void setTransparency ( final float transparency )
+    {
+        getWebUI ().setTransparency ( transparency );
+    }
+
+    /**
      * Returns popup menu content margin.
      *
      * @return popup menu content margin
