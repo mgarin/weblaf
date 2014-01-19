@@ -105,7 +105,7 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements SwingConstants, 
 
         // Default settings
         SwingUtils.setOrientation ( popupMenu );
-        popupMenu.setOpaque ( false );
+        LookAndFeel.installProperty( popupMenu, "opaque", Boolean.FALSE );
         popupMenu.setBackground ( WebPopupMenuStyle.backgroundColor );
         PainterSupport.installPainter ( popupMenu, this.painter );
         updateBorder ();

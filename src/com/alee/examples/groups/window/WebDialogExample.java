@@ -77,7 +77,8 @@ public class WebDialogExample extends DefaultExample
 
                 // Opening dialog
                 ExampleDialog exampleDialog = new ExampleDialog ( owner );
-                exampleDialog.pack ();
+                //exampleDialog.pack ();
+                exampleDialog.setSize(600, 400);
                 exampleDialog.setLocationRelativeTo ( owner );
                 exampleDialog.setVisible ( true );
 
@@ -95,42 +96,42 @@ public class WebDialogExample extends DefaultExample
             super ( owner, "Example dialog" );
             setIconImages ( WebLookAndFeel.getImages () );
             setDefaultCloseOperation ( WebDialog.DISPOSE_ON_CLOSE );
-            setResizable ( false );
-            setModal ( true );
+//            setResizable ( false );
+//            setModal ( true );
 
-            TableLayout layout = new TableLayout ( new double[][]{ { TableLayout.PREFERRED, TableLayout.FILL },
-                    { TableLayout.PREFERRED, TableLayout.PREFERRED, TableLayout.PREFERRED } } );
-            layout.setHGap ( 5 );
-            layout.setVGap ( 5 );
-            WebPanel content = new WebPanel ( layout );
-            content.setMargin ( 15, 30, 15, 30 );
-            content.setOpaque ( false );
-
-            content.add ( new WebLabel ( "Login", WebLabel.TRAILING ), "0,0" );
-            content.add ( new WebTextField ( 15 ), "1,0" );
-
-            content.add ( new WebLabel ( "Password", WebLabel.TRAILING ), "0,1" );
-            content.add ( new WebPasswordField ( 15 ), "1,1" );
-
-            WebButton login = new WebButton ( "Login" );
-            WebButton cancel = new WebButton ( "Cancel" );
-            ActionListener listener = new ActionListener ()
-            {
-                @Override
-                public void actionPerformed ( ActionEvent e )
-                {
-                    setVisible ( false );
-                }
-            };
-            login.addActionListener ( listener );
-            cancel.addActionListener ( listener );
-            content.add ( new CenterPanel ( new GroupPanel ( 5, login, cancel ) ), "0,2,1,2" );
-            SwingUtils.equalizeComponentsWidths ( login, cancel );
-
-            add ( content );
-
-            HotkeyManager.registerHotkey ( this, login, Hotkey.ESCAPE );
-            HotkeyManager.registerHotkey ( this, login, Hotkey.ENTER );
+//            TableLayout layout = new TableLayout ( new double[][]{ { TableLayout.PREFERRED, TableLayout.FILL },
+//                    { TableLayout.PREFERRED, TableLayout.PREFERRED, TableLayout.PREFERRED } } );
+//            layout.setHGap ( 5 );
+//            layout.setVGap ( 5 );
+//            WebPanel content = new WebPanel ( layout );
+//            content.setMargin ( 15, 30, 15, 30 );
+//            content.setOpaque ( false );
+//
+//            content.add ( new WebLabel ( "Login", WebLabel.TRAILING ), "0,0" );
+//            content.add ( new WebTextField ( 15 ), "1,0" );
+//
+//            content.add ( new WebLabel ( "Password", WebLabel.TRAILING ), "0,1" );
+//            content.add ( new WebPasswordField ( 15 ), "1,1" );
+//
+//            WebButton login = new WebButton ( "Login" );
+//            WebButton cancel = new WebButton ( "Cancel" );
+//            ActionListener listener = new ActionListener ()
+//            {
+//                @Override
+//                public void actionPerformed ( ActionEvent e )
+//                {
+//                    setVisible ( false );
+//                }
+//            };
+//            login.addActionListener ( listener );
+//            cancel.addActionListener ( listener );
+//            content.add ( new CenterPanel ( new GroupPanel ( 5, login, cancel ) ), "0,2,1,2" );
+//            SwingUtils.equalizeComponentsWidths ( login, cancel );
+//
+//            add ( content );
+//
+//            HotkeyManager.registerHotkey ( this, login, Hotkey.ESCAPE );
+//            HotkeyManager.registerHotkey ( this, login, Hotkey.ENTER );
         }
     }
 }

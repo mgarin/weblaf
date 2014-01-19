@@ -20,6 +20,7 @@ package com.alee.laf;
 import com.alee.extended.checkbox.WebTristateCheckBoxUI;
 import com.alee.extended.label.WebMultiLineLabelUI;
 import com.alee.extended.label.WebVerticalLabelUI;
+import com.alee.extended.painter.BorderPainterStyle;
 import com.alee.laf.button.WebButtonUI;
 import com.alee.laf.button.WebToggleButtonUI;
 import com.alee.laf.checkbox.WebCheckBoxUI;
@@ -466,9 +467,15 @@ public class WebLookAndFeel extends BasicLookAndFeel
         // Fonts
         initializeFonts ( table );
         
+        // JLabels
+        Color controlText = table.getColor("controlText");
+        table.put( "Label.foreground", controlText );
+        table.put( "Label.disabledForeground", StyleConstants.disabledTextColor );
+        
         // JTextFields
         Object textComponentBorder =
-                new SwingLazyValue ( "javax.swing.plaf.BorderUIResource.LineBorderUIResource", new Object[] { StyleConstants.shadeColor });
+             new SwingLazyValue ( "javax.swing.plaf.BorderUIResource.LineBorderUIResource",
+                     new Object[] { BorderPainterStyle.color });
         table.put( "TextField.border", textComponentBorder );
         
         // JTextAreas
@@ -530,6 +537,8 @@ public class WebLookAndFeel extends BasicLookAndFeel
         table.put ( "TableHeader.cellBorder", LafUtils.createWebBorder ( WebTableStyle.headerMargin ) );
         table.put ( "TableHeader.focusCellBorder", LafUtils.createWebBorder ( WebTableStyle.headerMargin ) );
 
+        table.put ( "Viewport.background", WebTableStyle.background );
+        
         // Default list renderer
         table.put ( "List.cellRenderer", new UIDefaults.ActiveValue ()
         {

@@ -31,8 +31,8 @@ import com.alee.utils.swing.BorderMethods;
 
 import javax.swing.*;
 import javax.swing.border.Border;
-import javax.swing.plaf.BorderUIResource;
 import javax.swing.plaf.ComponentUI;
+import javax.swing.plaf.UIResource;
 import javax.swing.plaf.basic.BasicPanelUI;
 import java.awt.*;
 import java.awt.geom.GeneralPath;
@@ -193,7 +193,9 @@ public class WebPanelUI extends BasicPanelUI implements ShapeProvider, BorderMet
             if ( SwingUtils.getHonorUserBorders(panel) )
             {
                 Border oldBorder = panel.getBorder();
-                if (!(oldBorder instanceof BorderUIResource))
+                // Override null borders here for proper margins in
+                // LAF-decorated JFrames and JDialogs (via WebRootPaneUI).
+                if (oldBorder!=null && !(oldBorder instanceof UIResource))
                 {
                     return;
                 }
@@ -253,7 +255,7 @@ public class WebPanelUI extends BasicPanelUI implements ShapeProvider, BorderMet
         // Makes panel non-opaque when it becomes decorated
         if ( painter == null && !undecorated )
         {
-            panel.setOpaque ( false );
+            LookAndFeel.installProperty( panel, "opaque", Boolean.FALSE );
         }
     }
 

@@ -62,19 +62,7 @@ public class WebPopupMenuSeparatorUI extends BasicPopupMenuSeparatorUI
     public void installUI ( final JComponent c )
     {
         super.installUI ( c );
-        c.setOpaque ( false );
-    }
-
-    /**
-     * Uninstalls UI from the specified component.
-     *
-     * @param c component with this UI
-     */
-    @Override
-    public void uninstallUI ( final JComponent c )
-    {
-        c.setOpaque ( true );
-        super.uninstallUI ( c );
+        LookAndFeel.installProperty( c, "opaque", Boolean.FALSE );
     }
 
     /**

@@ -105,7 +105,7 @@ public class WebMenuUI extends BasicMenuUI implements BorderMethods
 
         // Default settings
         SwingUtils.setOrientation ( menuItem );
-        menuItem.setOpaque ( false );
+        LookAndFeel.installProperty( menuItem, "opaque", Boolean.FALSE );
         menuItem.setBackground ( selectedBottomBg );
         menuItem.setIconTextGap ( WebMenuItemStyle.iconTextGap );
         PainterSupport.installPainter ( menuItem, this.painter );
@@ -164,9 +164,6 @@ public class WebMenuUI extends BasicMenuUI implements BorderMethods
         mouseAdapter = null;
         menuItem.getModel ().removeChangeListener ( buttonModelChangeListener );
         buttonModelChangeListener = null;
-
-        // Restoring basic settings
-        menuItem.setOpaque ( true );
 
         super.uninstallUI ( c );
     }

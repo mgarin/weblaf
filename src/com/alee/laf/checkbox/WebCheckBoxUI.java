@@ -30,8 +30,8 @@ import com.alee.utils.swing.WebTimer;
 
 import javax.swing.*;
 import javax.swing.border.Border;
-import javax.swing.plaf.BorderUIResource;
 import javax.swing.plaf.ComponentUI;
+import javax.swing.plaf.UIResource;
 import javax.swing.plaf.basic.BasicCheckBoxUI;
 import javax.swing.tree.TreeCellRenderer;
 import java.awt.*;
@@ -147,7 +147,7 @@ public class WebCheckBoxUI extends BasicCheckBoxUI implements ShapeProvider
 
         // Default settings
         SwingUtils.setOrientation ( checkBox );
-        checkBox.setOpaque ( false );
+        LookAndFeel.installProperty( checkBox, "opaque", Boolean.FALSE );
         checkBox.setIcon ( createIcon () );
         setAnimated ( isAnimatedByDefault () );
         updateBorder ();
@@ -391,7 +391,7 @@ public class WebCheckBoxUI extends BasicCheckBoxUI implements ShapeProvider
         if ( SwingUtils.getHonorUserBorders(checkBox) )
         {
             Border oldBorder = checkBox.getBorder();
-            if (!(oldBorder instanceof BorderUIResource))
+            if (!(oldBorder instanceof UIResource))
             {
                 return;
             }

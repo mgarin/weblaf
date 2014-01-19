@@ -79,7 +79,7 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeProvider, Borde
 
         // Default settings
         SwingUtils.setOrientation ( toolBar );
-        toolBar.setOpaque ( false );
+        LookAndFeel.installProperty( toolBar, "opaque", Boolean.FALSE );
         PainterSupport.installPainter ( toolBar, this.painter );
 
         // Updating border and layout

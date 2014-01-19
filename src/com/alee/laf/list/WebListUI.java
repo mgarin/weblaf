@@ -24,6 +24,7 @@ import com.alee.utils.SwingUtils;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.plaf.ColorUIResource;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicListUI;
 import java.awt.*;
@@ -84,9 +85,9 @@ public class WebListUI extends BasicListUI
 
         // Default settings
         SwingUtils.setOrientation ( c );
-        list.setOpaque ( true );
-        list.setBackground ( WebListStyle.background );
-        list.setForeground ( WebListStyle.foreground );
+        LookAndFeel.installProperty( list, "opaque", Boolean.TRUE );
+        list.setBackground ( new ColorUIResource ( WebListStyle.background ) );
+        list.setForeground ( new ColorUIResource( WebListStyle.foreground ) );
 
         // Rollover listener
         mouseoverAdapter = new MouseAdapter ()

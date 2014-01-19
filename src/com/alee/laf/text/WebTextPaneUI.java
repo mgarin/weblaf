@@ -17,13 +17,8 @@
 
 package com.alee.laf.text;
 
-import com.alee.laf.StyleConstants;
-import com.alee.utils.SwingUtils;
-
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
-import javax.swing.text.JTextComponent;
-import java.awt.*;
 
 /**
  * User: mgarin Date: 17.08.11 Time: 23:02
@@ -38,21 +33,8 @@ public class WebTextPaneUI extends WebEditorPaneUI
     }
 
     @Override
-    public void installUI ( JComponent c )
+    protected String getPropertyPrefix ()
     {
-        super.installUI ( c );
-
-        JTextComponent textComponent = getComponent ();
-
-        // Default settings
-        SwingUtils.setOrientation ( textComponent );
-        textComponent.setMargin ( new Insets ( 2, 2, 2, 2 ) );
-        textComponent.setFocusable ( true );
-        textComponent.setOpaque ( true );
-        textComponent.setBackground ( Color.WHITE );
-        textComponent.setSelectionColor ( StyleConstants.textSelectionColor );
-        textComponent.setForeground ( Color.BLACK );
-        textComponent.setSelectedTextColor ( Color.BLACK );
-        textComponent.setCaretColor ( Color.GRAY );
+        return "TextPane";
     }
 }

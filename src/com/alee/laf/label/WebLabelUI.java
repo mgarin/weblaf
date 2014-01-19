@@ -27,8 +27,8 @@ import com.alee.utils.swing.BorderMethods;
 
 import javax.swing.*;
 import javax.swing.border.Border;
-import javax.swing.plaf.BorderUIResource;
 import javax.swing.plaf.ComponentUI;
+import javax.swing.plaf.UIResource;
 import javax.swing.plaf.basic.BasicLabelUI;
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
@@ -137,7 +137,7 @@ public class WebLabelUI extends BasicLabelUI implements BorderMethods
             if ( SwingUtils.getHonorUserBorders(label) )
             {
                 Border oldBorder = label.getBorder();
-                if (!(oldBorder instanceof BorderUIResource))
+                if (oldBorder!=null && !(oldBorder instanceof UIResource))
                 {
                     return;
                 }

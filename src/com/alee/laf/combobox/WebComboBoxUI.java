@@ -83,7 +83,7 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider
         // Default settings
         SwingUtils.setOrientation ( comboBox );
         comboBox.setFocusable ( true );
-        comboBox.setOpaque ( false );
+        LookAndFeel.installProperty( comboBox, "opaque", Boolean.FALSE );
 
         // Updating border
         updateBorder ();
@@ -140,7 +140,7 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider
     {
         if ( drawBorder )
         {
-            comboBox.setBorder ( BorderFactory.createEmptyBorder ( shadeWidth + 1, shadeWidth + 1, shadeWidth + 1, shadeWidth + 1 ) );
+            comboBox.setBorder ( LafUtils.createWebBorder ( shadeWidth + 1, shadeWidth + 1, shadeWidth + 1, shadeWidth + 1 ) );
         }
         else
         {
