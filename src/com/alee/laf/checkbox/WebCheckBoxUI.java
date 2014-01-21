@@ -29,9 +29,7 @@ import com.alee.utils.laf.ShapeProvider;
 import com.alee.utils.swing.WebTimer;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import javax.swing.plaf.ComponentUI;
-import javax.swing.plaf.UIResource;
 import javax.swing.plaf.basic.BasicCheckBoxUI;
 import javax.swing.tree.TreeCellRenderer;
 import java.awt.*;
@@ -121,7 +119,7 @@ public class WebCheckBoxUI extends BasicCheckBoxUI implements ShapeProvider
      * @param c component that will use UI instance
      * @return instance of the WebCheckBoxUI
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebCheckBoxUI ();
@@ -200,7 +198,7 @@ public class WebCheckBoxUI extends BasicCheckBoxUI implements ShapeProvider
                 checkIcon.setEnabled ( checkBox.isEnabled () );
             }
         };
-        checkBox.addPropertyChangeListener ( WebLookAndFeel.COMPONENT_ENABLED_PROPERTY, enabledStateListener );
+        checkBox.addPropertyChangeListener ( WebLookAndFeel.ENABLED_PROPERTY, enabledStateListener );
     }
 
     /**
@@ -208,7 +206,7 @@ public class WebCheckBoxUI extends BasicCheckBoxUI implements ShapeProvider
      */
     protected void uninstallEnabledStateListeners ()
     {
-        checkBox.removePropertyChangeListener ( WebLookAndFeel.COMPONENT_ENABLED_PROPERTY, enabledStateListener );
+        checkBox.removePropertyChangeListener ( WebLookAndFeel.ENABLED_PROPERTY, enabledStateListener );
     }
 
     /**
@@ -388,15 +386,12 @@ public class WebCheckBoxUI extends BasicCheckBoxUI implements ShapeProvider
      */
     protected void updateBorder ()
     {
-        if ( SwingUtils.getHonorUserBorders(checkBox) )
+        // Preserve old borders
+        if ( SwingUtils.isPreserveBorders ( checkBox ) )
         {
-            Border oldBorder = checkBox.getBorder();
-            if (!(oldBorder instanceof UIResource))
-            {
-                return;
-            }
+            return;
         }
-        
+
         // Actual margin
         final boolean ltr = checkBox.getComponentOrientation ().isLeftToRight ();
         final Insets m = new Insets ( margin.top, ltr ? margin.left : margin.right, margin.bottom, ltr ? margin.right : margin.left );
@@ -442,7 +437,7 @@ public class WebCheckBoxUI extends BasicCheckBoxUI implements ShapeProvider
      *
      * @param animated whether checkbox is animated or not
      */
-    public void setAnimated ( boolean animated )
+    public void setAnimated ( final boolean animated )
     {
         this.animated = animated;
     }
@@ -706,7 +701,7 @@ public class WebCheckBoxUI extends BasicCheckBoxUI implements ShapeProvider
     {
         if ( checkBox.isEnabled () )
         {
-            float darkness = getBgDarkness ();
+            final float darkness = getBgDarkness ();
             if ( darkness < 1f )
             {
                 return new Color[]{ ColorUtils.getIntermediateColor ( topBgColor, topSelectedBgColor, darkness ),

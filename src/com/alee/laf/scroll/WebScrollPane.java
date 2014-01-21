@@ -34,17 +34,17 @@ import java.awt.*;
 
 public class WebScrollPane extends JScrollPane implements ShapeProvider, SizeMethods<WebScrollPane>, LanguageContainerMethods
 {
-    public WebScrollPane ( Component view )
+    public WebScrollPane ( final Component view )
     {
         this ( view, true );
     }
 
-    public WebScrollPane ( Component view, boolean drawBorder )
+    public WebScrollPane ( final Component view, final boolean drawBorder )
     {
         this ( view, drawBorder, WebScrollBarStyle.drawBorder );
     }
 
-    public WebScrollPane ( Component view, boolean drawBorder, boolean drawInnerBorder )
+    public WebScrollPane ( final Component view, final boolean drawBorder, final boolean drawInnerBorder )
     {
         super ( view );
         setDrawBorder ( drawBorder );
@@ -91,7 +91,7 @@ public class WebScrollPane extends JScrollPane implements ShapeProvider, SizeMet
         return getWebUI ().isDrawBorder ();
     }
 
-    public WebScrollPane setDrawBorder ( boolean drawBorder )
+    public WebScrollPane setDrawBorder ( final boolean drawBorder )
     {
         getWebUI ().setDrawBorder ( drawBorder );
         return this;
@@ -102,7 +102,7 @@ public class WebScrollPane extends JScrollPane implements ShapeProvider, SizeMet
         return getWebUI ().getRound ();
     }
 
-    public WebScrollPane setRound ( int round )
+    public WebScrollPane setRound ( final int round )
     {
         getWebUI ().setRound ( round );
         return this;
@@ -113,7 +113,7 @@ public class WebScrollPane extends JScrollPane implements ShapeProvider, SizeMet
         return getWebUI ().getShadeWidth ();
     }
 
-    public WebScrollPane setShadeWidth ( int shadeWidth )
+    public WebScrollPane setShadeWidth ( final int shadeWidth )
     {
         getWebUI ().setShadeWidth ( shadeWidth );
         return this;
@@ -124,18 +124,18 @@ public class WebScrollPane extends JScrollPane implements ShapeProvider, SizeMet
         return getWebUI ().getMargin ();
     }
 
-    public WebScrollPane setMargin ( Insets margin )
+    public WebScrollPane setMargin ( final Insets margin )
     {
         getWebUI ().setMargin ( margin );
         return this;
     }
 
-    public WebScrollPane setMargin ( int top, int left, int bottom, int right )
+    public WebScrollPane setMargin ( final int top, final int left, final int bottom, final int right )
     {
         return setMargin ( new Insets ( top, left, bottom, right ) );
     }
 
-    public WebScrollPane setMargin ( int spacing )
+    public WebScrollPane setMargin ( final int spacing )
     {
         return setMargin ( spacing, spacing, spacing, spacing );
     }
@@ -145,7 +145,7 @@ public class WebScrollPane extends JScrollPane implements ShapeProvider, SizeMet
         return getWebUI ().isDrawFocus ();
     }
 
-    public WebScrollPane setDrawFocus ( boolean drawFocus )
+    public WebScrollPane setDrawFocus ( final boolean drawFocus )
     {
         getWebUI ().setDrawFocus ( drawFocus );
         return this;
@@ -156,7 +156,7 @@ public class WebScrollPane extends JScrollPane implements ShapeProvider, SizeMet
         return getWebUI ().isDrawBackground ();
     }
 
-    public WebScrollPane setDrawBackground ( boolean drawBackground )
+    public WebScrollPane setDrawBackground ( final boolean drawBackground )
     {
         getWebUI ().setDrawBackground ( drawBackground );
         return this;
@@ -167,7 +167,7 @@ public class WebScrollPane extends JScrollPane implements ShapeProvider, SizeMet
         return getWebUI ().getBorderColor ();
     }
 
-    public WebScrollPane setBorderColor ( Color borderColor )
+    public WebScrollPane setBorderColor ( final Color borderColor )
     {
         getWebUI ().setBorderColor ( borderColor );
         return this;
@@ -178,7 +178,7 @@ public class WebScrollPane extends JScrollPane implements ShapeProvider, SizeMet
         return getWebUI ().getDarkBorder ();
     }
 
-    public WebScrollPane setDarkBorder ( Color darkBorder )
+    public WebScrollPane setDarkBorder ( final Color darkBorder )
     {
         getWebUI ().setDarkBorder ( darkBorder );
         return this;
@@ -233,7 +233,7 @@ public class WebScrollPane extends JScrollPane implements ShapeProvider, SizeMet
      * {@inheritDoc}
      */
     @Override
-    public WebScrollPane setPreferredWidth ( int preferredWidth )
+    public WebScrollPane setPreferredWidth ( final int preferredWidth )
     {
         return SizeUtils.setPreferredWidth ( this, preferredWidth );
     }
@@ -251,7 +251,7 @@ public class WebScrollPane extends JScrollPane implements ShapeProvider, SizeMet
      * {@inheritDoc}
      */
     @Override
-    public WebScrollPane setPreferredHeight ( int preferredHeight )
+    public WebScrollPane setPreferredHeight ( final int preferredHeight )
     {
         return SizeUtils.setPreferredHeight ( this, preferredHeight );
     }
@@ -269,7 +269,7 @@ public class WebScrollPane extends JScrollPane implements ShapeProvider, SizeMet
      * {@inheritDoc}
      */
     @Override
-    public WebScrollPane setMinimumWidth ( int minimumWidth )
+    public WebScrollPane setMinimumWidth ( final int minimumWidth )
     {
         return SizeUtils.setMinimumWidth ( this, minimumWidth );
     }
@@ -287,7 +287,7 @@ public class WebScrollPane extends JScrollPane implements ShapeProvider, SizeMet
      * {@inheritDoc}
      */
     @Override
-    public WebScrollPane setMinimumHeight ( int minimumHeight )
+    public WebScrollPane setMinimumHeight ( final int minimumHeight )
     {
         return SizeUtils.setMinimumHeight ( this, minimumHeight );
     }
@@ -309,7 +309,7 @@ public class WebScrollPane extends JScrollPane implements ShapeProvider, SizeMet
      * {@inheritDoc}
      */
     @Override
-    public void setLanguageContainerKey ( String key )
+    public void setLanguageContainerKey ( final String key )
     {
         LanguageManager.registerLanguageContainer ( this, key );
     }

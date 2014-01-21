@@ -25,7 +25,7 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * User: mgarin Date: 15.08.11 Time: 20:23
+ * @author Mikle Garin
  */
 
 public class WebMenuBar extends JMenuBar implements ShapeProvider
@@ -35,12 +35,18 @@ public class WebMenuBar extends JMenuBar implements ShapeProvider
         super ();
     }
 
+    public WebMenuBar ( final MenuBarStyle menuBarStyle )
+    {
+        super ();
+        setMenuBarStyle ( menuBarStyle );
+    }
+
     public boolean isUndecorated ()
     {
         return getWebUI ().isUndecorated ();
     }
 
-    public void setUndecorated ( boolean undecorated )
+    public void setUndecorated ( final boolean undecorated )
     {
         getWebUI ().setUndecorated ( undecorated );
     }
@@ -50,7 +56,7 @@ public class WebMenuBar extends JMenuBar implements ShapeProvider
         return getWebUI ().getMenuBarStyle ();
     }
 
-    public void setMenuBarStyle ( MenuBarStyle menuBarStyle )
+    public void setMenuBarStyle ( final MenuBarStyle menuBarStyle )
     {
         getWebUI ().setMenuBarStyle ( menuBarStyle );
     }
@@ -60,7 +66,7 @@ public class WebMenuBar extends JMenuBar implements ShapeProvider
         return getWebUI ().getBorderColor ();
     }
 
-    public void setBorderColor ( Color borderColor )
+    public void setBorderColor ( final Color borderColor )
     {
         getWebUI ().setBorderColor ( borderColor );
     }
@@ -70,7 +76,7 @@ public class WebMenuBar extends JMenuBar implements ShapeProvider
         return getWebUI ().getRound ();
     }
 
-    public void setRound ( int round )
+    public void setRound ( final int round )
     {
         getWebUI ().setRound ( round );
     }
@@ -80,7 +86,7 @@ public class WebMenuBar extends JMenuBar implements ShapeProvider
         return getWebUI ().getShadeWidth ();
     }
 
-    public void setShadeWidth ( int shadeWidth )
+    public void setShadeWidth ( final int shadeWidth )
     {
         getWebUI ().setShadeWidth ( shadeWidth );
     }

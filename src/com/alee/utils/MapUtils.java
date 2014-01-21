@@ -17,6 +17,8 @@
 
 package com.alee.utils;
 
+import com.alee.utils.collection.DoubleMap;
+
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -37,14 +39,9 @@ public final class MapUtils
      * @param <V> Map value type
      * @return copied Map
      */
-    public static <K, V> Map<K, V> copyMap ( Map<K, V> map )
+    public static <K, V> Map<K, V> copyMap ( final Map<K, V> map )
     {
-        Map<K, V> clone = new HashMap<K, V> ();
-        for ( Map.Entry<K, V> entry : map.entrySet () )
-        {
-            clone.put ( entry.getKey (), entry.getValue () );
-        }
-        return clone;
+        return new HashMap<K, V> ( map );
     }
 
     /**
@@ -55,14 +52,9 @@ public final class MapUtils
      * @param <V> HashMap value type
      * @return copied HashMap
      */
-    public static <K, V> HashMap<K, V> copyHashMap ( HashMap<K, V> map )
+    public static <K, V> HashMap<K, V> copyHashMap ( final HashMap<K, V> map )
     {
-        HashMap<K, V> clone = new HashMap<K, V> ();
-        for ( Map.Entry<K, V> entry : map.entrySet () )
-        {
-            clone.put ( entry.getKey (), entry.getValue () );
-        }
-        return clone;
+        return new HashMap<K, V> ( map );
     }
 
     /**
@@ -73,28 +65,36 @@ public final class MapUtils
      * @param <V> LinkedHashMap value type
      * @return copied LinkedHashMap
      */
-    public static <K, V> LinkedHashMap<K, V> copyLinkedHashMap ( LinkedHashMap<K, V> map )
+    public static <K, V> LinkedHashMap<K, V> copyLinkedHashMap ( final LinkedHashMap<K, V> map )
     {
-        LinkedHashMap<K, V> clone = new LinkedHashMap<K, V> ();
-        for ( Map.Entry<K, V> entry : map.entrySet () )
-        {
-            clone.put ( entry.getKey (), entry.getValue () );
-        }
-        return clone;
+        return new LinkedHashMap<K, V> ( map );
     }
 
     /**
-     * Returns Map with clone values.
+     * Returns copied DoubleMap.
+     *
+     * @param map DoubleMap to copy
+     * @param <K> DoubleMap key type
+     * @param <V> DoubleMap value type
+     * @return copied DoubleMap
+     */
+    public static <K, V> DoubleMap<K, V> copyDoubleMap ( final DoubleMap<K, V> map )
+    {
+        return new DoubleMap<K, V> ( map );
+    }
+
+    /**
+     * Returns Map with cloned values.
      *
      * @param map Map to clone
      * @param <K> Map key type
      * @param <V> Map value type
      * @return cloned Map
      */
-    public static <K, V extends Cloneable> Map<K, V> cloneMap ( Map<K, V> map )
+    public static <K, V extends Cloneable> Map<K, V> cloneMap ( final Map<K, V> map )
     {
-        Map<K, V> clone = new HashMap<K, V> ();
-        for ( Map.Entry<K, V> entry : map.entrySet () )
+        final Map<K, V> clone = new HashMap<K, V> ( map.size () );
+        for ( final Map.Entry<K, V> entry : map.entrySet () )
         {
             clone.put ( entry.getKey (), ReflectUtils.cloneSafely ( entry.getValue () ) );
         }
@@ -102,17 +102,17 @@ public final class MapUtils
     }
 
     /**
-     * Returns HashMap with clone values.
+     * Returns HashMap with cloned values.
      *
      * @param map HashMap to clone
      * @param <K> HashMap key type
      * @param <V> HashMap value type
      * @return cloned HashMap
      */
-    public static <K, V extends Cloneable> HashMap<K, V> cloneHashMap ( HashMap<K, V> map )
+    public static <K, V extends Cloneable> HashMap<K, V> cloneHashMap ( final HashMap<K, V> map )
     {
-        HashMap<K, V> clone = new HashMap<K, V> ();
-        for ( Map.Entry<K, V> entry : map.entrySet () )
+        final HashMap<K, V> clone = new HashMap<K, V> ( map.size () );
+        for ( final Map.Entry<K, V> entry : map.entrySet () )
         {
             clone.put ( entry.getKey (), ReflectUtils.cloneSafely ( entry.getValue () ) );
         }
@@ -120,17 +120,35 @@ public final class MapUtils
     }
 
     /**
-     * Returns LinkedHashMap with clone values.
+     * Returns LinkedHashMap with cloned values.
      *
      * @param map LinkedHashMap to clone
      * @param <K> LinkedHashMap key type
      * @param <V> LinkedHashMap value type
      * @return cloned LinkedHashMap
      */
-    public static <K, V extends Cloneable> LinkedHashMap<K, V> cloneLinkedHashMap ( LinkedHashMap<K, V> map )
+    public static <K, V extends Cloneable> LinkedHashMap<K, V> cloneLinkedHashMap ( final LinkedHashMap<K, V> map )
     {
-        LinkedHashMap<K, V> clone = new LinkedHashMap<K, V> ();
-        for ( Map.Entry<K, V> entry : map.entrySet () )
+        final LinkedHashMap<K, V> clone = new LinkedHashMap<K, V> ( map.size () );
+        for ( final Map.Entry<K, V> entry : map.entrySet () )
+        {
+            clone.put ( entry.getKey (), ReflectUtils.cloneSafely ( entry.getValue () ) );
+        }
+        return clone;
+    }
+
+    /**
+     * Returns DoubleMap with cloned values.
+     *
+     * @param map DoubleMap to clone
+     * @param <K> DoubleMap key type
+     * @param <V> DoubleMap value type
+     * @return cloned DoubleMap
+     */
+    public static <K, V extends Cloneable> DoubleMap<K, V> cloneLinkedHashMap ( final DoubleMap<K, V> map )
+    {
+        final DoubleMap<K, V> clone = new DoubleMap<K, V> ( map.size () );
+        for ( final Map.Entry<K, V> entry : map.entrySet () )
         {
             clone.put ( entry.getKey (), ReflectUtils.cloneSafely ( entry.getValue () ) );
         }

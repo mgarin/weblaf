@@ -50,30 +50,30 @@ public class WebButton extends JButton implements ShapeProvider, LanguageMethods
         super ();
     }
 
-    public WebButton ( Icon icon )
+    public WebButton ( final Icon icon )
     {
         super ( icon );
         setRound ( WebButtonStyle.iconRound );
         setLeftRightSpacing ( WebButtonStyle.iconLeftRightSpacing );
     }
 
-    public WebButton ( String text )
+    public WebButton ( final String text )
     {
         super ( text );
     }
 
-    public WebButton ( String text, Icon icon )
+    public WebButton ( final String text, final Icon icon )
     {
         super ( text, icon );
     }
 
-    public WebButton ( ActionListener listener )
+    public WebButton ( final ActionListener listener )
     {
         super ();
         addActionListener ( listener );
     }
 
-    public WebButton ( Icon icon, ActionListener listener )
+    public WebButton ( final Icon icon, final ActionListener listener )
     {
         super ( icon );
         setRound ( WebButtonStyle.iconRound );
@@ -81,19 +81,19 @@ public class WebButton extends JButton implements ShapeProvider, LanguageMethods
         addActionListener ( listener );
     }
 
-    public WebButton ( String text, ActionListener listener )
+    public WebButton ( final String text, final ActionListener listener )
     {
         super ( text );
         addActionListener ( listener );
     }
 
-    public WebButton ( String text, Icon icon, ActionListener listener )
+    public WebButton ( final String text, final Icon icon, final ActionListener listener )
     {
         super ( text, icon );
         addActionListener ( listener );
     }
 
-    public WebButton ( Action a )
+    public WebButton ( final Action a )
     {
         super ( a );
     }
@@ -102,42 +102,42 @@ public class WebButton extends JButton implements ShapeProvider, LanguageMethods
      * Proxified kotkey manager methods
      */
 
-    public HotkeyInfo addHotkey ( Integer keyCode )
+    public HotkeyInfo addHotkey ( final Integer keyCode )
     {
         return addHotkey ( new HotkeyData ( keyCode ) );
     }
 
-    public HotkeyInfo addHotkey ( boolean isCtrl, boolean isAlt, boolean isShift, Integer keyCode )
+    public HotkeyInfo addHotkey ( final boolean isCtrl, final boolean isAlt, final boolean isShift, final Integer keyCode )
     {
         return addHotkey ( new HotkeyData ( isCtrl, isAlt, isShift, keyCode ) );
     }
 
-    public HotkeyInfo addHotkey ( HotkeyData hotkeyData )
+    public HotkeyInfo addHotkey ( final HotkeyData hotkeyData )
     {
         return HotkeyManager.registerHotkey ( this, hotkeyData );
     }
 
-    public HotkeyInfo addHotkey ( HotkeyData hotkeyData, boolean hidden )
+    public HotkeyInfo addHotkey ( final HotkeyData hotkeyData, final boolean hidden )
     {
         return HotkeyManager.registerHotkey ( this, hotkeyData, hidden );
     }
 
-    public HotkeyInfo addHotkey ( HotkeyData hotkeyData, TooltipWay tooltipWay )
+    public HotkeyInfo addHotkey ( final HotkeyData hotkeyData, final TooltipWay tooltipWay )
     {
         return HotkeyManager.registerHotkey ( this, hotkeyData, tooltipWay );
     }
 
-    public HotkeyInfo addHotkey ( Component topComponent, HotkeyData hotkeyData )
+    public HotkeyInfo addHotkey ( final Component topComponent, final HotkeyData hotkeyData )
     {
         return HotkeyManager.registerHotkey ( topComponent, this, hotkeyData );
     }
 
-    public HotkeyInfo addHotkey ( Component topComponent, HotkeyData hotkeyData, boolean hidden )
+    public HotkeyInfo addHotkey ( final Component topComponent, final HotkeyData hotkeyData, final boolean hidden )
     {
         return HotkeyManager.registerHotkey ( topComponent, this, hotkeyData, hidden );
     }
 
-    public HotkeyInfo addHotkey ( Component topComponent, HotkeyData hotkeyData, TooltipWay tooltipWay )
+    public HotkeyInfo addHotkey ( final Component topComponent, final HotkeyData hotkeyData, final TooltipWay tooltipWay )
     {
         return HotkeyManager.registerHotkey ( topComponent, this, hotkeyData, tooltipWay );
     }
@@ -147,7 +147,7 @@ public class WebButton extends JButton implements ShapeProvider, LanguageMethods
         return HotkeyManager.getComponentHotkeys ( this );
     }
 
-    public void removeHotkey ( HotkeyInfo hotkeyInfo )
+    public void removeHotkey ( final HotkeyInfo hotkeyInfo )
     {
         HotkeyManager.unregisterHotkey ( hotkeyInfo );
     }
@@ -166,7 +166,7 @@ public class WebButton extends JButton implements ShapeProvider, LanguageMethods
         return getWebUI ().getTopBgColor ();
     }
 
-    public WebButton setTopBgColor ( Color topBgColor )
+    public WebButton setTopBgColor ( final Color topBgColor )
     {
         getWebUI ().setTopBgColor ( topBgColor );
         return this;
@@ -177,7 +177,7 @@ public class WebButton extends JButton implements ShapeProvider, LanguageMethods
         return getWebUI ().getBottomBgColor ();
     }
 
-    public WebButton setBottomBgColor ( Color bottomBgColor )
+    public WebButton setBottomBgColor ( final Color bottomBgColor )
     {
         getWebUI ().setBottomBgColor ( bottomBgColor );
         return this;
@@ -188,7 +188,7 @@ public class WebButton extends JButton implements ShapeProvider, LanguageMethods
         return getWebUI ().getTopSelectedBgColor ();
     }
 
-    public WebButton setTopSelectedBgColor ( Color topSelectedBgColor )
+    public WebButton setTopSelectedBgColor ( final Color topSelectedBgColor )
     {
         getWebUI ().setTopSelectedBgColor ( topSelectedBgColor );
         return this;
@@ -199,7 +199,7 @@ public class WebButton extends JButton implements ShapeProvider, LanguageMethods
         return getWebUI ().getBottomSelectedBgColor ();
     }
 
-    public WebButton setBottomSelectedBgColor ( Color bottomSelectedBgColor )
+    public WebButton setBottomSelectedBgColor ( final Color bottomSelectedBgColor )
     {
         getWebUI ().setBottomSelectedBgColor ( bottomSelectedBgColor );
         return this;
@@ -210,7 +210,7 @@ public class WebButton extends JButton implements ShapeProvider, LanguageMethods
         return getWebUI ().getSelectedForeground ();
     }
 
-    public WebButton setSelectedForeground ( Color selectedForeground )
+    public WebButton setSelectedForeground ( final Color selectedForeground )
     {
         getWebUI ().setSelectedForeground ( selectedForeground );
         return this;
@@ -221,7 +221,7 @@ public class WebButton extends JButton implements ShapeProvider, LanguageMethods
         return getWebUI ().isRolloverDarkBorderOnly ();
     }
 
-    public WebButton setRolloverDarkBorderOnly ( boolean rolloverDarkBorderOnly )
+    public WebButton setRolloverDarkBorderOnly ( final boolean rolloverDarkBorderOnly )
     {
         getWebUI ().setRolloverDarkBorderOnly ( rolloverDarkBorderOnly );
         return this;
@@ -232,7 +232,7 @@ public class WebButton extends JButton implements ShapeProvider, LanguageMethods
         return getWebUI ().isRolloverShine ();
     }
 
-    public WebButton setRolloverShine ( boolean rolloverShine )
+    public WebButton setRolloverShine ( final boolean rolloverShine )
     {
         getWebUI ().setRolloverShine ( rolloverShine );
         return this;
@@ -243,7 +243,7 @@ public class WebButton extends JButton implements ShapeProvider, LanguageMethods
         return getWebUI ().getShineColor ();
     }
 
-    public WebButton setShineColor ( Color shineColor )
+    public WebButton setShineColor ( final Color shineColor )
     {
         getWebUI ().setShineColor ( shineColor );
         return this;
@@ -254,7 +254,7 @@ public class WebButton extends JButton implements ShapeProvider, LanguageMethods
         return getWebUI ().getRound ();
     }
 
-    public WebButton setRound ( int round )
+    public WebButton setRound ( final int round )
     {
         getWebUI ().setRound ( round );
         return this;
@@ -265,7 +265,7 @@ public class WebButton extends JButton implements ShapeProvider, LanguageMethods
         return getWebUI ().isDrawShade ();
     }
 
-    public WebButton setDrawShade ( boolean drawShade )
+    public WebButton setDrawShade ( final boolean drawShade )
     {
         getWebUI ().setDrawShade ( drawShade );
         return this;
@@ -276,7 +276,7 @@ public class WebButton extends JButton implements ShapeProvider, LanguageMethods
         return getWebUI ().isRolloverShadeOnly ();
     }
 
-    public WebButton setRolloverShadeOnly ( boolean rolloverShadeOnly )
+    public WebButton setRolloverShadeOnly ( final boolean rolloverShadeOnly )
     {
         getWebUI ().setRolloverShadeOnly ( rolloverShadeOnly );
         return this;
@@ -287,7 +287,7 @@ public class WebButton extends JButton implements ShapeProvider, LanguageMethods
         return getWebUI ().isShowDisabledShade ();
     }
 
-    public WebButton setShowDisabledShade ( boolean showDisabledShade )
+    public WebButton setShowDisabledShade ( final boolean showDisabledShade )
     {
         getWebUI ().setShowDisabledShade ( showDisabledShade );
         return this;
@@ -298,7 +298,7 @@ public class WebButton extends JButton implements ShapeProvider, LanguageMethods
         return getWebUI ().getShadeWidth ();
     }
 
-    public WebButton setShadeWidth ( int shadeWidth )
+    public WebButton setShadeWidth ( final int shadeWidth )
     {
         getWebUI ().setShadeWidth ( shadeWidth );
         return this;
@@ -309,7 +309,7 @@ public class WebButton extends JButton implements ShapeProvider, LanguageMethods
         return getWebUI ().getShadeColor ();
     }
 
-    public WebButton setShadeColor ( Color shadeColor )
+    public WebButton setShadeColor ( final Color shadeColor )
     {
         getWebUI ().setShadeColor ( shadeColor );
         return this;
@@ -320,7 +320,7 @@ public class WebButton extends JButton implements ShapeProvider, LanguageMethods
         return getWebUI ().getInnerShadeWidth ();
     }
 
-    public WebButton setInnerShadeWidth ( int innerShadeWidth )
+    public WebButton setInnerShadeWidth ( final int innerShadeWidth )
     {
         getWebUI ().setInnerShadeWidth ( innerShadeWidth );
         return this;
@@ -331,7 +331,7 @@ public class WebButton extends JButton implements ShapeProvider, LanguageMethods
         return getWebUI ().getInnerShadeColor ();
     }
 
-    public WebButton setInnerShadeColor ( Color innerShadeColor )
+    public WebButton setInnerShadeColor ( final Color innerShadeColor )
     {
         getWebUI ().setInnerShadeColor ( innerShadeColor );
         return this;
@@ -342,7 +342,7 @@ public class WebButton extends JButton implements ShapeProvider, LanguageMethods
         return getWebUI ().getLeftRightSpacing ();
     }
 
-    public WebButton setLeftRightSpacing ( int leftRightSpacing )
+    public WebButton setLeftRightSpacing ( final int leftRightSpacing )
     {
         getWebUI ().setLeftRightSpacing ( leftRightSpacing );
         return this;
@@ -353,9 +353,20 @@ public class WebButton extends JButton implements ShapeProvider, LanguageMethods
         return getWebUI ().isRolloverDecoratedOnly ();
     }
 
-    public WebButton setRolloverDecoratedOnly ( boolean rolloverDecoratedOnly )
+    public WebButton setRolloverDecoratedOnly ( final boolean rolloverDecoratedOnly )
     {
         getWebUI ().setRolloverDecoratedOnly ( rolloverDecoratedOnly );
+        return this;
+    }
+
+    public boolean isAnimate ()
+    {
+        return getWebUI ().isAnimate ();
+    }
+
+    public WebButton setAnimate ( final boolean animate )
+    {
+        getWebUI ().setAnimate ( animate );
         return this;
     }
 
@@ -364,7 +375,7 @@ public class WebButton extends JButton implements ShapeProvider, LanguageMethods
         return getWebUI ().isUndecorated ();
     }
 
-    public WebButton setUndecorated ( boolean undecorated )
+    public WebButton setUndecorated ( final boolean undecorated )
     {
         getWebUI ().setUndecorated ( undecorated );
         return this;
@@ -375,7 +386,7 @@ public class WebButton extends JButton implements ShapeProvider, LanguageMethods
         return getWebUI ().getPainter ();
     }
 
-    public WebButton setPainter ( Painter painter )
+    public WebButton setPainter ( final Painter painter )
     {
         getWebUI ().setPainter ( painter );
         return this;
@@ -386,7 +397,7 @@ public class WebButton extends JButton implements ShapeProvider, LanguageMethods
         return getWebUI ().isMoveIconOnPress ();
     }
 
-    public WebButton setMoveIconOnPress ( boolean moveIconOnPress )
+    public WebButton setMoveIconOnPress ( final boolean moveIconOnPress )
     {
         getWebUI ().setMoveIconOnPress ( moveIconOnPress );
         return this;
@@ -397,7 +408,7 @@ public class WebButton extends JButton implements ShapeProvider, LanguageMethods
         return getWebUI ().isDrawFocus ();
     }
 
-    public WebButton setDrawFocus ( boolean drawFocus )
+    public WebButton setDrawFocus ( final boolean drawFocus )
     {
         getWebUI ().setDrawFocus ( drawFocus );
         return this;
@@ -408,7 +419,7 @@ public class WebButton extends JButton implements ShapeProvider, LanguageMethods
         return getWebUI ().isDrawBottom ();
     }
 
-    public WebButton setDrawBottom ( boolean drawBottom )
+    public WebButton setDrawBottom ( final boolean drawBottom )
     {
         getWebUI ().setDrawBottom ( drawBottom );
         return this;
@@ -419,7 +430,7 @@ public class WebButton extends JButton implements ShapeProvider, LanguageMethods
         return getWebUI ().isDrawLeft ();
     }
 
-    public WebButton setDrawLeft ( boolean drawLeft )
+    public WebButton setDrawLeft ( final boolean drawLeft )
     {
         getWebUI ().setDrawLeft ( drawLeft );
         return this;
@@ -430,7 +441,7 @@ public class WebButton extends JButton implements ShapeProvider, LanguageMethods
         return getWebUI ().isDrawRight ();
     }
 
-    public WebButton setDrawRight ( boolean drawRight )
+    public WebButton setDrawRight ( final boolean drawRight )
     {
         getWebUI ().setDrawRight ( drawRight );
         return this;
@@ -441,13 +452,13 @@ public class WebButton extends JButton implements ShapeProvider, LanguageMethods
         return getWebUI ().isDrawTop ();
     }
 
-    public WebButton setDrawTop ( boolean drawTop )
+    public WebButton setDrawTop ( final boolean drawTop )
     {
         getWebUI ().setDrawTop ( drawTop );
         return this;
     }
 
-    public WebButton setDrawSides ( boolean top, boolean left, boolean bottom, boolean right )
+    public WebButton setDrawSides ( final boolean top, final boolean left, final boolean bottom, final boolean right )
     {
         getWebUI ().setDrawSides ( top, left, bottom, right );
         return this;
@@ -458,7 +469,7 @@ public class WebButton extends JButton implements ShapeProvider, LanguageMethods
         return getWebUI ().isDrawTopLine ();
     }
 
-    public WebButton setDrawTopLine ( boolean drawTopLine )
+    public WebButton setDrawTopLine ( final boolean drawTopLine )
     {
         getWebUI ().setDrawTopLine ( drawTopLine );
         return this;
@@ -469,7 +480,7 @@ public class WebButton extends JButton implements ShapeProvider, LanguageMethods
         return getWebUI ().isDrawLeftLine ();
     }
 
-    public WebButton setDrawLeftLine ( boolean drawLeftLine )
+    public WebButton setDrawLeftLine ( final boolean drawLeftLine )
     {
         getWebUI ().setDrawLeftLine ( drawLeftLine );
         return this;
@@ -480,7 +491,7 @@ public class WebButton extends JButton implements ShapeProvider, LanguageMethods
         return getWebUI ().isDrawBottomLine ();
     }
 
-    public WebButton setDrawBottomLine ( boolean drawBottomLine )
+    public WebButton setDrawBottomLine ( final boolean drawBottomLine )
     {
         getWebUI ().setDrawBottomLine ( drawBottomLine );
         return this;
@@ -491,13 +502,13 @@ public class WebButton extends JButton implements ShapeProvider, LanguageMethods
         return getWebUI ().isDrawRightLine ();
     }
 
-    public WebButton setDrawRightLine ( boolean drawRightLine )
+    public WebButton setDrawRightLine ( final boolean drawRightLine )
     {
         getWebUI ().setDrawRightLine ( drawRightLine );
         return this;
     }
 
-    public WebButton setDrawLines ( boolean top, boolean left, boolean bottom, boolean right )
+    public WebButton setDrawLines ( final boolean top, final boolean left, final boolean bottom, final boolean right )
     {
         getWebUI ().setDrawLines ( top, left, bottom, right );
         return this;
@@ -510,18 +521,18 @@ public class WebButton extends JButton implements ShapeProvider, LanguageMethods
     }
 
     @Override
-    public void setMargin ( Insets margin )
+    public void setMargin ( final Insets margin )
     {
         getWebUI ().setMargin ( margin );
     }
 
-    public WebButton setMargin ( int top, int left, int bottom, int right )
+    public WebButton setMargin ( final int top, final int left, final int bottom, final int right )
     {
         setMargin ( new Insets ( top, left, bottom, right ) );
         return this;
     }
 
-    public WebButton setMargin ( int spacing )
+    public WebButton setMargin ( final int spacing )
     {
         return setMargin ( spacing, spacing, spacing, spacing );
     }
@@ -566,7 +577,7 @@ public class WebButton extends JButton implements ShapeProvider, LanguageMethods
      * {@inheritDoc}
      */
     @Override
-    public void setLanguage ( String key, Object... data )
+    public void setLanguage ( final String key, final Object... data )
     {
         LanguageManager.registerComponent ( this, key, data );
     }
@@ -575,7 +586,7 @@ public class WebButton extends JButton implements ShapeProvider, LanguageMethods
      * {@inheritDoc}
      */
     @Override
-    public void updateLanguage ( Object... data )
+    public void updateLanguage ( final Object... data )
     {
         LanguageManager.updateComponent ( this, data );
     }
@@ -584,7 +595,7 @@ public class WebButton extends JButton implements ShapeProvider, LanguageMethods
      * {@inheritDoc}
      */
     @Override
-    public void updateLanguage ( String key, Object... data )
+    public void updateLanguage ( final String key, final Object... data )
     {
         LanguageManager.updateComponent ( this, key, data );
     }
@@ -611,7 +622,7 @@ public class WebButton extends JButton implements ShapeProvider, LanguageMethods
      * {@inheritDoc}
      */
     @Override
-    public void setLanguageUpdater ( LanguageUpdater updater )
+    public void setLanguageUpdater ( final LanguageUpdater updater )
     {
         LanguageManager.registerLanguageUpdater ( this, updater );
     }
@@ -642,7 +653,7 @@ public class WebButton extends JButton implements ShapeProvider, LanguageMethods
      * {@inheritDoc}
      */
     @Override
-    public WebButton setPlainFont ( boolean apply )
+    public WebButton setPlainFont ( final boolean apply )
     {
         return SwingUtils.setPlainFont ( this, apply );
     }
@@ -669,7 +680,7 @@ public class WebButton extends JButton implements ShapeProvider, LanguageMethods
      * {@inheritDoc}
      */
     @Override
-    public WebButton setBoldFont ( boolean apply )
+    public WebButton setBoldFont ( final boolean apply )
     {
         return SwingUtils.setBoldFont ( this, apply );
     }
@@ -696,7 +707,7 @@ public class WebButton extends JButton implements ShapeProvider, LanguageMethods
      * {@inheritDoc}
      */
     @Override
-    public WebButton setItalicFont ( boolean apply )
+    public WebButton setItalicFont ( final boolean apply )
     {
         return SwingUtils.setItalicFont ( this, apply );
     }
@@ -714,7 +725,7 @@ public class WebButton extends JButton implements ShapeProvider, LanguageMethods
      * {@inheritDoc}
      */
     @Override
-    public WebButton setFontStyle ( boolean bold, boolean italic )
+    public WebButton setFontStyle ( final boolean bold, final boolean italic )
     {
         return SwingUtils.setFontStyle ( this, bold, italic );
     }
@@ -723,7 +734,7 @@ public class WebButton extends JButton implements ShapeProvider, LanguageMethods
      * {@inheritDoc}
      */
     @Override
-    public WebButton setFontStyle ( int style )
+    public WebButton setFontStyle ( final int style )
     {
         return SwingUtils.setFontStyle ( this, style );
     }
@@ -732,7 +743,7 @@ public class WebButton extends JButton implements ShapeProvider, LanguageMethods
      * {@inheritDoc}
      */
     @Override
-    public WebButton setFontSize ( int fontSize )
+    public WebButton setFontSize ( final int fontSize )
     {
         return SwingUtils.setFontSize ( this, fontSize );
     }
@@ -741,7 +752,7 @@ public class WebButton extends JButton implements ShapeProvider, LanguageMethods
      * {@inheritDoc}
      */
     @Override
-    public WebButton changeFontSize ( int change )
+    public WebButton changeFontSize ( final int change )
     {
         return SwingUtils.changeFontSize ( this, change );
     }
@@ -759,7 +770,7 @@ public class WebButton extends JButton implements ShapeProvider, LanguageMethods
      * {@inheritDoc}
      */
     @Override
-    public WebButton setFontSizeAndStyle ( int fontSize, boolean bold, boolean italic )
+    public WebButton setFontSizeAndStyle ( final int fontSize, final boolean bold, final boolean italic )
     {
         return SwingUtils.setFontSizeAndStyle ( this, fontSize, bold, italic );
     }
@@ -768,7 +779,7 @@ public class WebButton extends JButton implements ShapeProvider, LanguageMethods
      * {@inheritDoc}
      */
     @Override
-    public WebButton setFontSizeAndStyle ( int fontSize, int style )
+    public WebButton setFontSizeAndStyle ( final int fontSize, final int style )
     {
         return SwingUtils.setFontSizeAndStyle ( this, fontSize, style );
     }
@@ -777,7 +788,7 @@ public class WebButton extends JButton implements ShapeProvider, LanguageMethods
      * {@inheritDoc}
      */
     @Override
-    public WebButton setFontName ( String fontName )
+    public WebButton setFontName ( final String fontName )
     {
         return SwingUtils.setFontName ( this, fontName );
     }
@@ -808,7 +819,7 @@ public class WebButton extends JButton implements ShapeProvider, LanguageMethods
      * {@inheritDoc}
      */
     @Override
-    public WebButton setPreferredWidth ( int preferredWidth )
+    public WebButton setPreferredWidth ( final int preferredWidth )
     {
         return SizeUtils.setPreferredWidth ( this, preferredWidth );
     }
@@ -826,7 +837,7 @@ public class WebButton extends JButton implements ShapeProvider, LanguageMethods
      * {@inheritDoc}
      */
     @Override
-    public WebButton setPreferredHeight ( int preferredHeight )
+    public WebButton setPreferredHeight ( final int preferredHeight )
     {
         return SizeUtils.setPreferredHeight ( this, preferredHeight );
     }
@@ -844,7 +855,7 @@ public class WebButton extends JButton implements ShapeProvider, LanguageMethods
      * {@inheritDoc}
      */
     @Override
-    public WebButton setMinimumWidth ( int minimumWidth )
+    public WebButton setMinimumWidth ( final int minimumWidth )
     {
         return SizeUtils.setMinimumWidth ( this, minimumWidth );
     }
@@ -862,7 +873,7 @@ public class WebButton extends JButton implements ShapeProvider, LanguageMethods
      * {@inheritDoc}
      */
     @Override
-    public WebButton setMinimumHeight ( int minimumHeight )
+    public WebButton setMinimumHeight ( final int minimumHeight )
     {
         return SizeUtils.setMinimumHeight ( this, minimumHeight );
     }
@@ -880,61 +891,65 @@ public class WebButton extends JButton implements ShapeProvider, LanguageMethods
      * Styled button short creation methods
      */
 
-    public static WebButton createIconWebButton ( ImageIcon imageIcon )
+    public static WebButton createIconWebButton ( final ImageIcon imageIcon )
     {
         return createIconWebButton ( imageIcon, StyleConstants.smallRound );
     }
 
-    public static WebButton createIconWebButton ( ImageIcon imageIcon, int round )
+    public static WebButton createIconWebButton ( final ImageIcon imageIcon, final int round )
     {
         return createIconWebButton ( imageIcon, round, StyleConstants.shadeWidth );
     }
 
-    public static WebButton createIconWebButton ( ImageIcon imageIcon, int round, int shadeWidth )
+    public static WebButton createIconWebButton ( final ImageIcon imageIcon, final int round, final int shadeWidth )
     {
         return createIconWebButton ( imageIcon, round, shadeWidth, StyleConstants.innerShadeWidth );
     }
 
-    public static WebButton createIconWebButton ( ImageIcon imageIcon, int round, int shadeWidth, int innerShadeWidth )
+    public static WebButton createIconWebButton ( final ImageIcon imageIcon, final int round, final int shadeWidth,
+                                                  final int innerShadeWidth )
     {
         return createIconWebButton ( imageIcon, round, shadeWidth, innerShadeWidth, StyleConstants.rolloverDecoratedOnly );
     }
 
-    public static WebButton createIconWebButton ( ImageIcon imageIcon, boolean rolloverDecoratedOnly )
+    public static WebButton createIconWebButton ( final ImageIcon imageIcon, final boolean rolloverDecoratedOnly )
     {
         return createIconWebButton ( imageIcon, StyleConstants.smallRound, rolloverDecoratedOnly );
     }
 
-    public static WebButton createIconWebButton ( ImageIcon imageIcon, int round, boolean rolloverDecoratedOnly )
+    public static WebButton createIconWebButton ( final ImageIcon imageIcon, final int round, final boolean rolloverDecoratedOnly )
     {
         return createIconWebButton ( imageIcon, round, StyleConstants.shadeWidth, StyleConstants.innerShadeWidth, rolloverDecoratedOnly,
                 StyleConstants.undecorated );
     }
 
-    public static WebButton createIconWebButton ( ImageIcon imageIcon, int round, int shadeWidth, int innerShadeWidth,
-                                                  boolean rolloverDecoratedOnly )
+    public static WebButton createIconWebButton ( final ImageIcon imageIcon, final int round, final int shadeWidth,
+                                                  final int innerShadeWidth, final boolean rolloverDecoratedOnly )
     {
         return createIconWebButton ( imageIcon, round, shadeWidth, innerShadeWidth, rolloverDecoratedOnly, StyleConstants.undecorated );
     }
 
-    public static WebButton createIconWebButton ( ImageIcon imageIcon, int round, int shadeWidth, int innerShadeWidth,
-                                                  boolean rolloverDecoratedOnly, boolean undecorated )
+    public static WebButton createIconWebButton ( final ImageIcon imageIcon, final int round, final int shadeWidth,
+                                                  final int innerShadeWidth, final boolean rolloverDecoratedOnly,
+                                                  final boolean undecorated )
     {
         return createIconWebButton ( imageIcon, round, shadeWidth, innerShadeWidth, rolloverDecoratedOnly, undecorated, true );
     }
 
-    public static WebButton createIconWebButton ( ImageIcon imageIcon, int round, int shadeWidth, int innerShadeWidth,
-                                                  boolean rolloverDecoratedOnly, boolean undecorated, boolean drawFocus )
+    public static WebButton createIconWebButton ( final ImageIcon imageIcon, final int round, final int shadeWidth,
+                                                  final int innerShadeWidth, final boolean rolloverDecoratedOnly, final boolean undecorated,
+                                                  final boolean drawFocus )
     {
-        WebButton iconWebButton = createWebButton ( round, shadeWidth, innerShadeWidth, 0, rolloverDecoratedOnly, undecorated, drawFocus );
+        final WebButton iconWebButton =
+                createWebButton ( round, shadeWidth, innerShadeWidth, 0, rolloverDecoratedOnly, undecorated, drawFocus );
         iconWebButton.setIcon ( imageIcon );
         return iconWebButton;
     }
 
-    public static WebButton createWebButton ( int round, int shadeWidth, int innerShadeWidth, int leftRightSpacing,
-                                              boolean rolloverDecoratedOnly, boolean undecorated, boolean drawFocus )
+    public static WebButton createWebButton ( final int round, final int shadeWidth, final int innerShadeWidth, final int leftRightSpacing,
+                                              final boolean rolloverDecoratedOnly, final boolean undecorated, final boolean drawFocus )
     {
-        WebButton webButton = new WebButton ();
+        final WebButton webButton = new WebButton ();
         webButton.setRound ( round );
         webButton.setShadeWidth ( shadeWidth );
         webButton.setInnerShadeWidth ( innerShadeWidth );

@@ -18,7 +18,6 @@
 package com.alee.extended.checkbox;
 
 import com.alee.laf.checkbox.CheckIcon;
-import com.alee.laf.checkbox.TristateCheckIcon;
 import com.alee.laf.checkbox.WebCheckBoxUI;
 
 import javax.swing.*;
@@ -39,7 +38,7 @@ public class WebTristateCheckBoxUI extends WebCheckBoxUI
      * @param c component that will use UI instance
      * @return instance of the WebTristateCheckBoxUI
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebTristateCheckBoxUI ();
@@ -51,7 +50,7 @@ public class WebTristateCheckBoxUI extends WebCheckBoxUI
      * @param c component for this UI
      */
     @Override
-    public void installUI ( JComponent c )
+    public void installUI ( final JComponent c )
     {
         super.installUI ( c );
 

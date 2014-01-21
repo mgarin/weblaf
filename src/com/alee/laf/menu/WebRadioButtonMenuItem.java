@@ -95,6 +95,30 @@ public class WebRadioButtonMenuItem extends JRadioButtonMenuItem
     /**
      * Constructs new radiobutton menu item using the specified settings.
      *
+     * @param text        menu item text
+     * @param accelerator menu item accelerator
+     */
+    public WebRadioButtonMenuItem ( final String text, final KeyStroke accelerator )
+    {
+        super ( text );
+        setAccelerator ( accelerator );
+    }
+
+    /**
+     * Constructs new radiobutton menu item using the specified settings.
+     *
+     * @param text        menu item text
+     * @param accelerator menu item accelerator
+     */
+    public WebRadioButtonMenuItem ( final String text, final HotkeyData accelerator )
+    {
+        super ( text );
+        setAccelerator ( accelerator );
+    }
+
+    /**
+     * Constructs new radiobutton menu item using the specified settings.
+     *
      * @param text menu item text
      * @param icon menu item icon
      */
@@ -210,6 +234,26 @@ public class WebRadioButtonMenuItem extends JRadioButtonMenuItem
     public void setMargin ( final Insets margin )
     {
         getWebUI ().setMargin ( margin );
+    }
+
+    /**
+     * Returns spacing between menu item content and its left/right borders.
+     *
+     * @return spacing between menu item content and its left/right borders
+     */
+    public int getSideSpacing ()
+    {
+        return getWebUI ().getSideSpacing ();
+    }
+
+    /**
+     * Sets spacing between menu item content and its left/right borders
+     *
+     * @param sideSpacing spacing between menu item content and its left/right borders
+     */
+    public void setSideSpacing ( final int sideSpacing )
+    {
+        getWebUI ().setSideSpacing ( sideSpacing );
     }
 
     /**

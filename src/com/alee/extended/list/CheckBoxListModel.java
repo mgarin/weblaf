@@ -17,7 +17,10 @@
 
 package com.alee.extended.list;
 
-import javax.swing.*;
+import com.alee.laf.list.WebListModel;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Custom list model for checkbox list component.
@@ -27,7 +30,7 @@ import javax.swing.*;
  * @author Mikle Garin
  */
 
-public class CheckBoxListModel extends DefaultListModel
+public class CheckBoxListModel extends WebListModel<CheckBoxCellData>
 {
     /**
      * Constructs checkbox list model.
@@ -37,12 +40,13 @@ public class CheckBoxListModel extends DefaultListModel
         super ();
     }
 
+
     /**
      * Adds new checkbox cell data with a specified user object into list model.
      *
      * @param userObject user object
      */
-    public void addCheckBoxElement ( Object userObject )
+    public void addCheckBoxElement ( final Object userObject )
     {
         addElement ( new CheckBoxCellData ( userObject ) );
     }
@@ -53,7 +57,7 @@ public class CheckBoxListModel extends DefaultListModel
      * @param userObject user object
      * @param selected   whether checkbox selected or not
      */
-    public void addCheckBoxElement ( Object userObject, boolean selected )
+    public void addCheckBoxElement ( final Object userObject, final boolean selected )
     {
         addElement ( new CheckBoxCellData ( userObject, selected ) );
     }
@@ -64,7 +68,7 @@ public class CheckBoxListModel extends DefaultListModel
      * @param index      new cell index
      * @param userObject user object
      */
-    public void addCheckBoxElementAt ( int index, Object userObject )
+    public void addCheckBoxElementAt ( final int index, final Object userObject )
     {
         add ( index, new CheckBoxCellData ( userObject ) );
     }
@@ -76,7 +80,7 @@ public class CheckBoxListModel extends DefaultListModel
      * @param userObject user object
      * @param selected   whether checkbox selected or not
      */
-    public void addCheckBoxElementAt ( int index, Object userObject, boolean selected )
+    public void addCheckBoxElementAt ( final int index, final Object userObject, final boolean selected )
     {
         add ( index, new CheckBoxCellData ( userObject, selected ) );
     }
@@ -87,9 +91,28 @@ public class CheckBoxListModel extends DefaultListModel
      * @param index cell index
      * @return true if checkbox at the specified cell index is selected, false otherwise
      */
-    public boolean isCheckBoxSelected ( int index )
+    public boolean isCheckBoxSelected ( final int index )
     {
         return get ( index ).isSelected ();
+    }
+
+    /**
+     * Returns list of values from checked cells.
+     *
+     * @return list of values from checked cells
+     */
+    public List<Object> getCheckedValues ()
+    {
+        final List<Object> values = new ArrayList<Object> ();
+        for ( int i = 0; i < getSize (); i++ )
+        {
+            final CheckBoxCellData cellData = get ( i );
+            if ( cellData.isSelected () )
+            {
+                values.add ( cellData.getUserObject () );
+            }
+        }
+        return values;
     }
 
     /**
@@ -97,7 +120,7 @@ public class CheckBoxListModel extends DefaultListModel
      *
      * @param index cell index
      */
-    public void invertCheckBoxSelection ( int index )
+    public void invertCheckBoxSelection ( final int index )
     {
         final CheckBoxCellData cellData = get ( index );
         cellData.setSelected ( !cellData.isSelected () );
@@ -111,7 +134,7 @@ public class CheckBoxListModel extends DefaultListModel
      * @param selected whether checkbox is selected or not
      * @return true if selection has changed, false otherwise
      */
-    public boolean setCheckBoxSelected ( int index, boolean selected )
+    public boolean setCheckBoxSelected ( final int index, final boolean selected )
     {
         final CheckBoxCellData cellData = get ( index );
         if ( cellData.isSelected () != selected )
@@ -124,113 +147,5 @@ public class CheckBoxListModel extends DefaultListModel
         {
             return false;
         }
-    }
-
-    /**
-     * Replaces the element at the specified position in this list with the specified element.
-     * <p>
-     * Throws an <code>ArrayIndexOutOfBoundsException</code> if the index is out of range (<code>index &lt; 0 || index &gt;=
-     * size()</code>).
-     *
-     * @param index   index of element to replace
-     * @param element element to be stored at the specified position
-     * @return the element previously at the specified position
-     */
-    @Override
-    public CheckBoxCellData set ( int index, Object element )
-    {
-        return ( CheckBoxCellData ) super.set ( index, element );
-    }
-
-    /**
-     * Returns the element at the specified position in this list.
-     * <p>
-     * Throws an <code>ArrayIndexOutOfBoundsException</code> if the index is out of range (<code>index &lt; 0 || index &gt;=
-     * size()</code>).
-     *
-     * @param index index of element to return
-     */
-    @Override
-    public CheckBoxCellData get ( int index )
-    {
-        return ( CheckBoxCellData ) super.get ( index );
-    }
-
-    /**
-     * Returns the component at the specified index.
-     * Throws an <code>ArrayIndexOutOfBoundsException</code> if the index is negative or not less than the size of the list.
-     * <blockquote>
-     * <b>Note:</b> Although this method is not deprecated, the preferred method to use is <code>get(int)</code>, which implements the
-     * <code>List</code> interface defined in the 1.2 Collections framework.
-     * </blockquote>
-     *
-     * @param index an index into this list
-     * @return the component at the specified index
-     * @see #get(int)
-     * @see java.util.Vector#elementAt(int)
-     */
-    @Override
-    public CheckBoxCellData elementAt ( int index )
-    {
-        return ( CheckBoxCellData ) super.elementAt ( index );
-    }
-
-    /**
-     * Returns the first component of this list.
-     * Throws a <code>NoSuchElementException</code> if this vector has no components.
-     *
-     * @return the first component of this list
-     * @see java.util.Vector#firstElement()
-     */
-    @Override
-    public CheckBoxCellData firstElement ()
-    {
-        return ( CheckBoxCellData ) super.firstElement ();
-    }
-
-    /**
-     * Returns the last component of the list.
-     * Throws a <code>NoSuchElementException</code> if this vector has no components.
-     *
-     * @return the last component of the list
-     * @see java.util.Vector#lastElement()
-     */
-    @Override
-    public CheckBoxCellData lastElement ()
-    {
-        return ( CheckBoxCellData ) super.lastElement ();
-    }
-
-    /**
-     * Returns the component at the specified index.
-     * <blockquote>
-     * <b>Note:</b> Although this method is not deprecated, the preferred method to use is <code>get(int)</code>, which implements the
-     * <code>List</code> interface defined in the 1.2 Collections framework.
-     * </blockquote>
-     *
-     * @param index an index into this list
-     * @return the component at the specified index
-     * @throws ArrayIndexOutOfBoundsException if the <code>index</code> is negative or greater than the current size of this list
-     * @see #get(int)
-     */
-    @Override
-    public CheckBoxCellData getElementAt ( int index )
-    {
-        return ( CheckBoxCellData ) super.getElementAt ( index );
-    }
-
-    /**
-     * Removes the element at the specified position in this list.
-     * Returns the element that was removed from the list.
-     * <p>
-     * Throws an <code>ArrayIndexOutOfBoundsException</code> if the index is out of range (<code>index &lt; 0 || index &gt;=
-     * size()</code>).
-     *
-     * @param index the index of the element to removed
-     */
-    @Override
-    public CheckBoxCellData remove ( int index )
-    {
-        return ( CheckBoxCellData ) super.remove ( index );
     }
 }

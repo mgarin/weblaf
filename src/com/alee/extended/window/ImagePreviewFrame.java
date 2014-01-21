@@ -34,56 +34,56 @@ import java.net.URL;
 
 public class ImagePreviewFrame extends WebFrame
 {
-    public ImagePreviewFrame ( String src )
+    public ImagePreviewFrame ( final String src )
     {
         super ();
         initializeUI ( new WebImage ( src ) );
     }
 
-    public ImagePreviewFrame ( Class nearClass, String src )
+    public ImagePreviewFrame ( final Class nearClass, final String src )
     {
         super ();
         initializeUI ( new WebImage ( nearClass, src ) );
     }
 
-    public ImagePreviewFrame ( URL url )
+    public ImagePreviewFrame ( final URL url )
     {
         super ();
         initializeUI ( new WebImage ( url ) );
     }
 
-    public ImagePreviewFrame ( Icon image )
+    public ImagePreviewFrame ( final Icon image )
     {
         super ();
         initializeUI ( new WebImage ( image ) );
     }
 
-    public ImagePreviewFrame ( ImageIcon image )
+    public ImagePreviewFrame ( final ImageIcon image )
     {
         super ();
         initializeUI ( new WebImage ( image ) );
     }
 
-    public ImagePreviewFrame ( Image image )
+    public ImagePreviewFrame ( final Image image )
     {
         super ();
         initializeUI ( new WebImage ( image ) );
     }
 
-    public ImagePreviewFrame ( BufferedImage image )
+    public ImagePreviewFrame ( final BufferedImage image )
     {
         super ();
         initializeUI ( new WebImage ( image ) );
     }
 
-    private void initializeUI ( WebImage image )
+    private void initializeUI ( final WebImage image )
     {
         setIconImages ( WebLookAndFeel.getImages () );
 
 
         setLayout ( new BorderLayout () );
 
-        WebPanel area = new WebPanel ( new AlphaLayerPainter () );
+        final WebPanel area = new WebPanel ( new AlphaLayerPainter () );
         area.setMargin ( Math.max ( 5, 80 - image.getWidth () ) );
         add ( area );
 

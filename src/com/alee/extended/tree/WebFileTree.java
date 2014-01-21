@@ -107,7 +107,7 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
 
         // Visual settings
         setEditable ( false );
-        setRootVisible ( false );
+        setRootVisible ( rootFiles != null && rootFiles.size () == 1 );
         setCellRenderer ( new WebFileTreeCellRenderer () );
         setCellEditor ( new WebFileTreeCellEditor () );
 
@@ -311,9 +311,10 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
      * Expands tree structure to the specified file.
      * This method might not have any effect in case the specified field doesn't exist under the file tree root.
      *
-     * @param file   file to expand tree sctructure to
-     * @param select whether to select file or not
-     * @param expand whether to expand file or not
+     * @param file        file to expand tree sctructure to
+     * @param select      whether to select file or not
+     * @param expand      whether to expand file or not
+     * @param finalAction action performed after maximum possible file path has been expanded
      */
     // todo Replace Runnable with listener (nodeExpanded, beforeSelection, afterSelection, completed)
     public void expandToFile ( final File file, final boolean select, final boolean expand, final Runnable finalAction )
@@ -423,6 +424,27 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
                                     {
                                         finalAction.run ();
                                     }
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void childsLoadFailed ( final FileTreeNode parent, final Throwable cause )
+                        {
+                            if ( parent == lastNode )
+                            {
+                                removeAsyncTreeListener ( this );
+                                if ( select && selectionId == delayedSelectionId )
+                                {
+                                    performFileSelection ( parent, false );
+                                }
+                                else
+                                {
+                                    scrollToNode ( parent );
+                                }
+                                if ( finalAction != null )
+                                {
+                                    finalAction.run ();
                                 }
                             }
                         }

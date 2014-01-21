@@ -29,7 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * User: mgarin Date: 20.04.12 Time: 14:03
+ * @author Mikle Garin
  */
 
 @XStreamAlias ("value")
@@ -47,14 +47,14 @@ public final class Value implements Serializable, Cloneable
         super ();
     }
 
-    public Value ( String lang, String text )
+    public Value ( final String lang, final String text )
     {
         super ();
         this.lang = lang;
         this.texts = CollectionUtils.copy ( new Text ( text ) );
     }
 
-    public Value ( String lang, Character mnemonic, String text )
+    public Value ( final String lang, final Character mnemonic, final String text )
     {
         super ();
         this.lang = lang;
@@ -62,7 +62,7 @@ public final class Value implements Serializable, Cloneable
         this.texts = CollectionUtils.copy ( new Text ( text ) );
     }
 
-    public Value ( String lang, String hotkey, String text )
+    public Value ( final String lang, final String hotkey, final String text )
     {
         super ();
         this.lang = lang;
@@ -70,7 +70,7 @@ public final class Value implements Serializable, Cloneable
         this.texts = CollectionUtils.copy ( new Text ( text ) );
     }
 
-    public Value ( String lang, Character mnemonic, String hotkey, String text )
+    public Value ( final String lang, final Character mnemonic, final String hotkey, final String text )
     {
         super ();
         this.lang = lang;
@@ -84,7 +84,7 @@ public final class Value implements Serializable, Cloneable
         return lang;
     }
 
-    public void setLang ( String lang )
+    public void setLang ( final String lang )
     {
         this.lang = lang;
     }
@@ -94,7 +94,7 @@ public final class Value implements Serializable, Cloneable
         return mnemonic;
     }
 
-    public void setMnemonic ( Character mnemonic )
+    public void setMnemonic ( final Character mnemonic )
     {
         this.mnemonic = mnemonic;
     }
@@ -104,7 +104,7 @@ public final class Value implements Serializable, Cloneable
         return hotkey;
     }
 
-    public void setHotkey ( String hotkey )
+    public void setHotkey ( final String hotkey )
     {
         this.hotkey = hotkey;
     }
@@ -114,7 +114,7 @@ public final class Value implements Serializable, Cloneable
         return texts;
     }
 
-    public void setTexts ( List<Text> texts )
+    public void setTexts ( final List<Text> texts )
     {
         this.texts = texts;
     }
@@ -124,14 +124,14 @@ public final class Value implements Serializable, Cloneable
         return getText ( null );
     }
 
-    public String getText ( String state )
+    public String getText ( final String state )
     {
         return getText ( state, false );
     }
 
-    public String getText ( String state, boolean defaultState )
+    public String getText ( final String state, final boolean defaultState )
     {
-        Text text = getTextObject ( state, defaultState );
+        final Text text = getTextObject ( state, defaultState );
         return text != null ? text.getText () : null;
     }
 
@@ -140,16 +140,16 @@ public final class Value implements Serializable, Cloneable
         return getTextObject ( null );
     }
 
-    public Text getTextObject ( String state )
+    public Text getTextObject ( final String state )
     {
         return getTextObject ( state, false );
     }
 
-    public Text getTextObject ( String state, boolean defaultState )
+    public Text getTextObject ( final String state, final boolean defaultState )
     {
         if ( texts != null )
         {
-            for ( Text text : texts )
+            for ( final Text text : texts )
             {
                 if ( CompareUtils.equals ( text.getState (), state ) || defaultState && text.getState () == null )
                 {
@@ -160,22 +160,22 @@ public final class Value implements Serializable, Cloneable
         return null;
     }
 
-    public Text getTextObject ( int index )
+    public Text getTextObject ( final int index )
     {
         return texts.get ( index );
     }
 
-    public Text addText ( String text )
+    public Text addText ( final String text )
     {
         return addText ( new Text ( text ) );
     }
 
-    public Text addText ( String text, String state )
+    public Text addText ( final String text, final String state )
     {
         return addText ( new Text ( text, state ) );
     }
 
-    public Text addText ( Text text )
+    public Text addText ( final Text text )
     {
         //        for ( Text existing : texts )
         //        {
@@ -195,7 +195,7 @@ public final class Value implements Serializable, Cloneable
         return text;
     }
 
-    public void removeText ( Text text )
+    public void removeText ( final Text text )
     {
         this.texts.remove ( text );
     }
@@ -205,37 +205,37 @@ public final class Value implements Serializable, Cloneable
         return tooltips;
     }
 
-    public void setTooltips ( List<Tooltip> tooltips )
+    public void setTooltips ( final List<Tooltip> tooltips )
     {
         this.tooltips = tooltips;
     }
 
-    public Tooltip addTooltip ( String text )
+    public Tooltip addTooltip ( final String text )
     {
         return addTooltip ( new Tooltip ( text ) );
     }
 
-    public Tooltip addTooltip ( Integer delay, String text )
+    public Tooltip addTooltip ( final Integer delay, final String text )
     {
         return addTooltip ( new Tooltip ( delay, text ) );
     }
 
-    public Tooltip addTooltip ( TooltipWay way, String text )
+    public Tooltip addTooltip ( final TooltipWay way, final String text )
     {
         return addTooltip ( new Tooltip ( way, text ) );
     }
 
-    public Tooltip addTooltip ( TooltipWay way, Integer delay, String text )
+    public Tooltip addTooltip ( final TooltipWay way, final Integer delay, final String text )
     {
         return addTooltip ( new Tooltip ( way, delay, text ) );
     }
 
-    public Tooltip addTooltip ( TooltipType type, String text )
+    public Tooltip addTooltip ( final TooltipType type, final String text )
     {
         return addTooltip ( new Tooltip ( type, text ) );
     }
 
-    public Tooltip addTooltip ( Tooltip tooltip )
+    public Tooltip addTooltip ( final Tooltip tooltip )
     {
         //        for ( Tooltip existing : tooltips )
         //        {
@@ -257,12 +257,12 @@ public final class Value implements Serializable, Cloneable
         return tooltip;
     }
 
-    public void removeTooltip ( Tooltip tooltip )
+    public void removeTooltip ( final Tooltip tooltip )
     {
         this.tooltips.remove ( tooltip );
     }
 
-    public Tooltip getTooltipObject ( int index )
+    public Tooltip getTooltipObject ( final int index )
     {
         return tooltips.get ( index );
     }

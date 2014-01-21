@@ -37,6 +37,11 @@ public final class WebMenuItemStyle
     public static Insets margin = StyleConstants.emptyMargin;
 
     /**
+     * Spacing between menu item content and its left/right borders.
+     */
+    public static int sideSpacing = WebPopupMenuStyle.round;
+
+    /**
      * Separate menu item corners rounding.
      * This will be applied to menu items that are placed outside popup menu.
      */

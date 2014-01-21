@@ -178,7 +178,7 @@ public class WebCalendar extends WebPanel
         previousSkip.addActionListener ( new ActionListener ()
         {
             @Override
-            public void actionPerformed ( ActionEvent e )
+            public void actionPerformed ( final ActionEvent e )
             {
                 changeYear ( -1 );
             }
@@ -189,7 +189,7 @@ public class WebCalendar extends WebPanel
         previous.addActionListener ( new ActionListener ()
         {
             @Override
-            public void actionPerformed ( ActionEvent e )
+            public void actionPerformed ( final ActionEvent e )
             {
                 changeMonth ( -1 );
             }
@@ -207,7 +207,7 @@ public class WebCalendar extends WebPanel
         titlePanel.addMouseListener ( new MouseAdapter ()
         {
             @Override
-            public void mousePressed ( MouseEvent e )
+            public void mousePressed ( final MouseEvent e )
             {
                 if ( SwingUtilities.isLeftMouseButton ( e ) )
                 {
@@ -222,7 +222,7 @@ public class WebCalendar extends WebPanel
         next.addActionListener ( new ActionListener ()
         {
             @Override
-            public void actionPerformed ( ActionEvent e )
+            public void actionPerformed ( final ActionEvent e )
             {
                 changeMonth ( 1 );
             }
@@ -233,7 +233,7 @@ public class WebCalendar extends WebPanel
         nextSkip.addActionListener ( new ActionListener ()
         {
             @Override
-            public void actionPerformed ( ActionEvent e )
+            public void actionPerformed ( final ActionEvent e )
             {
                 changeYear ( 1 );
             }
@@ -450,7 +450,7 @@ public class WebCalendar extends WebPanel
         weekHeaders.removeAll ();
         for ( int i = 1; i <= 7; i++ )
         {
-            int day = startWeekFromSunday ? ( i == 1 ? 7 : i - 1 ) : i;
+            final int day = startWeekFromSunday ? ( i == 1 ? 7 : i - 1 ) : i;
 
             final WebLabel dayOfWeekLabel = new WebLabel ();
             dayOfWeekLabel.setLanguage ( "weblaf.ex.calendar.dayOfWeek." + day );
@@ -486,7 +486,7 @@ public class WebCalendar extends WebPanel
 
         final ButtonGroup dates = new ButtonGroup ();
 
-        Calendar calendar = Calendar.getInstance ();
+        final Calendar calendar = Calendar.getInstance ();
         calendar.setTime ( shownDate );
         calendar.set ( Calendar.DAY_OF_MONTH, 1 );
 
@@ -537,9 +537,9 @@ public class WebCalendar extends WebPanel
             day.addItemListener ( new ItemListener ()
             {
                 @Override
-                public void itemStateChanged ( ItemEvent e )
+                public void itemStateChanged ( final ItemEvent e )
                 {
-                    WebToggleButton dayButton = ( WebToggleButton ) e.getSource ();
+                    final WebToggleButton dayButton = ( WebToggleButton ) e.getSource ();
                     if ( dayButton.isSelected () )
                     {
                         setDateImpl ( thisDate );
@@ -581,7 +581,7 @@ public class WebCalendar extends WebPanel
             day.addActionListener ( new ActionListener ()
             {
                 @Override
-                public void actionPerformed ( ActionEvent e )
+                public void actionPerformed ( final ActionEvent e )
                 {
                     lastSelectedDayButton = ( WebToggleButton ) e.getSource ();
                     setDateImpl ( thisDate );
@@ -625,9 +625,9 @@ public class WebCalendar extends WebPanel
             day.addItemListener ( new ItemListener ()
             {
                 @Override
-                public void itemStateChanged ( ItemEvent e )
+                public void itemStateChanged ( final ItemEvent e )
                 {
-                    WebToggleButton dayButton = ( WebToggleButton ) e.getSource ();
+                    final WebToggleButton dayButton = ( WebToggleButton ) e.getSource ();
                     if ( dayButton.isSelected () )
                     {
                         setDateImpl ( thisDate );
@@ -758,8 +758,14 @@ public class WebCalendar extends WebPanel
      * @param date    displayed month date
      * @param animate whether should animate month transition or not
      */
-    public void setShownDate ( final Date date, final boolean animate )
+    public void setShownDate ( Date date, final boolean animate )
     {
+        // Do not allow displayed date to be null
+        if ( date == null )
+        {
+            date = new Date ();
+        }
+
         this.oldShownDate = this.shownDate;
         this.shownDate = date;
 

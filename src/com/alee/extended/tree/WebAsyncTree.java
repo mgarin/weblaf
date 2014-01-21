@@ -30,6 +30,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.tree.TreeCellEditor;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -40,6 +41,11 @@ import java.util.List;
  *
  * @param <E> tree nodes type
  * @author Mikle Garin
+ * @see WebTree
+ * @see AsyncTreeModel
+ * @see AsyncTreeDataProvider
+ * @see AsyncTreeListener
+ * @see WebAsyncTreeCellRenderer
  */
 
 public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implements AsyncTreeModelListener<E>
@@ -328,8 +334,29 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
                 @Override
                 public void editingStopped ( final ChangeEvent e )
                 {
+                    // Updating tree sorting and filtering for parent of the edited node
                     final E node = ( E ) cellEditor.getCellEditorValue ();
                     updateSortingAndFiltering ( ( E ) node.getParent () );
+
+                    //                    // Performing data update in a proper separate thread as it might take some time
+                    //                    if ( dataUpdater != null )
+                    //                    {
+                    //                        AsyncTreeQueue.execute ( WebAsyncTree.this, new Runnable ()
+                    //                        {
+                    //                            @Override
+                    //                            public void run ()
+                    //                            {
+                    //                                dataUpdater.nodeRenamed ( node, new Runnable ()
+                    //                                {
+                    //                                    @Override
+                    //                                    public void run ()
+                    //                                    {
+                    //                                        //
+                    //                                    }
+                    //                                } );
+                    //                            }
+                    //                        } );
+                    //                    }
                 }
             };
             cellEditor.addCellEditorListener ( cellEditorAdapter );
@@ -359,6 +386,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
 
     /**
      * Sets maximum threads amount for this asynchronous tree.
+     * Separate threads are used for childs loading, data updates and other actions which should be performed asynchronously.
      *
      * @param amount new maximum threads amount
      */
@@ -370,6 +398,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
     /**
      * Sets child nodes for the specified node.
      * This method might be used to manually change tree node childs without causing any structure corruptions.
+     * It will also cause node to change its state to loaded and it will not retrieve childs from data provider unless reload is called.
      *
      * @param parent   node to process
      * @param children new node children
@@ -382,6 +411,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
     /**
      * Adds child nodes for the specified node.
      * This method might be used to manually change tree node childs without causing any structure corruptions.
+     * Be aware that added nodes will not be displayed if parent node is not yet loaded, this is a strict restriction for async tree.
      *
      * @param parent   node to process
      * @param children new node children
@@ -389,6 +419,46 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
     public void addChildNodes ( final E parent, final List<E> children )
     {
         getAsyncModel ().addChildNodes ( parent, children );
+    }
+
+    /**
+     * Inserts a list of child nodes into parent node.
+     * This method might be used to manually change tree node childs without causing any structure corruptions.
+     * Be aware that added nodes will not be displayed if parent node is not yet loaded, this is a strict restriction for async tree.
+     *
+     * @param children list of new child nodes
+     * @param parent   parent node
+     * @param index    insert index
+     */
+    public void insertChildNodes ( final List<E> children, final E parent, final int index )
+    {
+        getAsyncModel ().insertNodesInto ( children, parent, index );
+    }
+
+    /**
+     * Inserts an array of child nodes into parent node.
+     * This method might be used to manually change tree node childs without causing any structure corruptions.
+     * Be aware that added nodes will not be displayed if parent node is not yet loaded, this is a strict restriction for async tree.
+     *
+     * @param children array of new child nodes
+     * @param parent   parent node
+     * @param index    insert index
+     */
+    public void insertChildNodes ( final E[] children, final E parent, final int index )
+    {
+        getAsyncModel ().insertNodesInto ( children, parent, index );
+    }
+
+    /**
+     * Removes node with the specified ID from tree structure.
+     * This method will have effect only if node exists.
+     *
+     * @param nodeId ID of the node to remove
+     * @return true if tree structure was changed by the operation, false otherwise
+     */
+    public boolean removeNode ( final String nodeId )
+    {
+        return removeNode ( findNode ( nodeId ) );
     }
 
     /**
@@ -400,7 +470,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
      */
     public boolean removeNode ( final E node )
     {
-        final boolean exists = node != null;
+        final boolean exists = node != null && node.getParent () != null;
         if ( exists )
         {
             getAsyncModel ().removeNodeFromParent ( node );
@@ -416,10 +486,18 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
      */
     public void removeNodes ( final List<E> nodes )
     {
-        for ( final E node : nodes )
-        {
-            removeNode ( node );
-        }
+        getAsyncModel ().removeNodesFromParent ( nodes );
+    }
+
+    /**
+     * Removes nodes from tree structure.
+     * This method will have effect only if nodes exist.
+     *
+     * @param nodes array of nodes to remove
+     */
+    public void removeNodes ( final E[] nodes )
+    {
+        getAsyncModel ().removeNodesFromParent ( nodes );
     }
 
     /**
@@ -431,6 +509,37 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
     public boolean areChildsLoaded ( final E parent )
     {
         return getAsyncModel ().areChildsLoaded ( parent );
+    }
+
+    /**
+     * Looks for the node with the specified ID in the tree model and returns it or null if it was not found.
+     *
+     * @param nodeId node ID
+     * @return node with the specified ID or null if it was not found
+     */
+    public E findNode ( final String nodeId )
+    {
+        return getAsyncModel ().findNode ( nodeId );
+    }
+
+    /**
+     * Forces tree node with the specified ID to be updated.
+     *
+     * @param node ID of the tree node to be updated
+     */
+    public void updateNode ( final String nodeId )
+    {
+        updateNode ( findNode ( nodeId ) );
+    }
+
+    /**
+     * Forces tree node to be updated.
+     *
+     * @param node tree node to be updated
+     */
+    public void updateNode ( final E node )
+    {
+        getAsyncModel ().updateNode ( node );
     }
 
     /**
@@ -472,14 +581,50 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
     }
 
     /**
+     * Reloads node under the specified point.
+     *
+     * @param point point to look for node
+     * @return reloaded node or null if none reloaded
+     */
+    public E reloadNodeUnderPoint ( final Point point )
+    {
+        return reloadNodeUnderPoint ( point.x, point.y );
+    }
+
+    /**
+     * Reloads node under the specified point.
+     *
+     * @param x point X coordinate
+     * @param y point Y coordinate
+     * @return reloaded node or null if none reloaded
+     */
+    public E reloadNodeUnderPoint ( final int x, final int y )
+    {
+        return reloadPath ( getPathForLocation ( x, y ) );
+    }
+
+    /**
+     * Reloads node with the specified ID.
+     * Unlike asynchronous methods this one works in EDT and forces to wait until the nodes load finishes.
+     *
+     * @param nodeId ID of the node to reload
+     * @return reloaded node or null if none reloaded
+     */
+    public E reloadNodeSync ( final String nodeId )
+    {
+        return reloadNodeSync ( findNode ( nodeId ) );
+    }
+
+    /**
      * Reloads specified node childs.
      * Unlike asynchronous methods this one works in EDT and forces to wait until the nodes load finishes.
      *
      * @param node node to reload
+     * @return reloaded node or null if none reloaded
      */
-    public void reloadNodeSync ( final E node )
+    public E reloadNodeSync ( final E node )
     {
-        reloadNodeSync ( node, false );
+        return reloadNodeSync ( node, false );
     }
 
     /**
@@ -488,8 +633,9 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
      *
      * @param node   node to reload
      * @param select whether select the node or not
+     * @return reloaded node or null if none reloaded
      */
-    public void reloadNodeSync ( final E node, final boolean select )
+    public E reloadNodeSync ( final E node, final boolean select )
     {
         synchronized ( syncLoadingLock != null ? syncLoadingLock : lock )
         {
@@ -497,25 +643,40 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
             setAsyncLoading ( false );
             reloadNode ( node, select );
             setAsyncLoading ( async );
+            return node;
         }
+    }
+
+    /**
+     * Reloads root node childs.
+     *
+     * @return reloaded root node
+     */
+    public E reloadRootNode ()
+    {
+        return reloadNode ( getRootNode () );
+    }
+
+    /**
+     * Reloads node with the specified ID.
+     *
+     * @param nodeId ID of the node to reload
+     * @return reloaded node or null if none reloaded
+     */
+    public E reloadNode ( final String nodeId )
+    {
+        return reloadNode ( findNode ( nodeId ) );
     }
 
     /**
      * Reloads specified node childs.
      *
      * @param node node to reload
+     * @return reloaded node or null if none reloaded
      */
-    public void reloadNode ( final E node )
+    public E reloadNode ( final E node )
     {
-        reloadNode ( node, false );
-    }
-
-    /**
-     * Reloads root node childs.
-     */
-    public void reloadRootNode ()
-    {
-        reloadNode ( getRootNode () );
+        return reloadNode ( node, false );
     }
 
     /**
@@ -523,15 +684,18 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
      *
      * @param node   node to reload
      * @param select whether select the node or not
+     * @return reloaded node or null if none reloaded
      */
-    public void reloadNode ( final E node, final boolean select )
+    public E reloadNode ( final E node, final boolean select )
     {
         // Checking that node is not null
         if ( node != null && !node.isLoading () )
         {
             // Reloading node childs
             performReload ( node, getPathForNode ( node ), select );
+            return node;
         }
+        return null;
     }
 
     /**
@@ -539,10 +703,11 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
      * Unlike asynchronous methods this one works in EDT and forces to wait until the nodes load finishes.
      *
      * @param path path of the node to reload
+     * @return reloaded node or null if none reloaded
      */
-    public void reloadPathSync ( final TreePath path )
+    public E reloadPathSync ( final TreePath path )
     {
-        reloadPathSync ( path, false );
+        return reloadPathSync ( path, false );
     }
 
     /**
@@ -551,15 +716,17 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
      *
      * @param path   path of the node to reload
      * @param select whether select the node or not
+     * @return reloaded node or null if none reloaded
      */
-    public void reloadPathSync ( final TreePath path, final boolean select )
+    public E reloadPathSync ( final TreePath path, final boolean select )
     {
         synchronized ( syncLoadingLock != null ? syncLoadingLock : lock )
         {
             final boolean async = isAsyncLoading ();
             setAsyncLoading ( false );
-            reloadPath ( path, select );
+            final E node = reloadPath ( path, select );
             setAsyncLoading ( async );
+            return node;
         }
     }
 
@@ -567,10 +734,11 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
      * Reloads node childs at the specified path.
      *
      * @param path path of the node to reload
+     * @return reloaded node or null if none reloaded
      */
-    public void reloadPath ( final TreePath path )
+    public E reloadPath ( final TreePath path )
     {
-        reloadPath ( path, false );
+        return reloadPath ( path, false );
     }
 
     /**
@@ -578,8 +746,9 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
      *
      * @param path   path of the node to reload
      * @param select whether select the node or not
+     * @return reloaded node or null if none reloaded
      */
-    public void reloadPath ( final TreePath path, final boolean select )
+    public E reloadPath ( final TreePath path, final boolean select )
     {
         // Checking that path is not null
         if ( path != null )
@@ -590,8 +759,10 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
             {
                 // Reloading node childs
                 performReload ( node, path, select );
+                return node;
             }
         }
+        return null;
     }
 
     /**
@@ -659,7 +830,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
     {
         synchronized ( listenersLock )
         {
-            asyncTreeListeners.add ( listener );
+            asyncTreeListeners.remove ( listener );
         }
     }
 
@@ -756,20 +927,27 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
 
     /**
      * Expands all visible tree rows in a single call.
-     * <p>
+     * <p/>
      * This method provides similar functionality to WebTree expandAll method and will actually expand all tree elements - even those which
      * are not yet loaded from data provider. Make sure you know what you are doing before calling this method.
      */
     @Override
     public final void expandAll ()
     {
-        for ( int i = getRowCount () - 1; i >= 0; i-- )
+        if ( isAsyncLoading () )
         {
-            final TreePath path = getPathForRow ( i );
-            if ( !getModel ().isLeaf ( getNodeForPath ( path ) ) )
+            for ( int i = getRowCount () - 1; i >= 0; i-- )
             {
-                performPathExpand ( path );
+                final TreePath path = getPathForRow ( i );
+                if ( !getModel ().isLeaf ( getNodeForPath ( path ) ) )
+                {
+                    performPathExpand ( path );
+                }
             }
+        }
+        else
+        {
+            super.expandAll ();
         }
     }
 
@@ -815,7 +993,6 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
      */
     protected void performAsyncPathExpand ( final TreePath path )
     {
-        // todo Remove listener when finished
         // Add path expand listener first to get notified when this path will be expanded
         addAsyncTreeListener ( new AsyncTreeAdapter<E> ()
         {
@@ -828,6 +1005,16 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
                     {
                         performPathExpand ( child.getTreePath () );
                     }
+                    removeAsyncTreeListener ( this );
+                }
+            }
+
+            @Override
+            public void childsLoadFailed ( final E parent, final Throwable cause )
+            {
+                if ( parent == getNodeForPath ( path ) )
+                {
+                    removeAsyncTreeListener ( this );
                 }
             }
         } );

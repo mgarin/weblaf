@@ -31,13 +31,13 @@ import javax.swing.plaf.basic.BasicDesktopPaneUI;
 public class WebDesktopPaneUI extends BasicDesktopPaneUI
 {
     @SuppressWarnings ("UnusedParameters")
-    public static ComponentUI createUI ( JComponent c )
+    public static ComponentUI createUI ( final JComponent c )
     {
         return new WebDesktopPaneUI ();
     }
 
     @Override
-    public void installUI ( JComponent c )
+    public void installUI ( final JComponent c )
     {
         super.installUI ( c );
 

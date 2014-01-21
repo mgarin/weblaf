@@ -55,12 +55,12 @@ public final class TooltipManager
     private static boolean showHotkeysInOneTimeTooltips = false;
 
     // Standart tooltips
-    private static Map<Component, List<WebCustomTooltip>> webTooltips = new WeakHashMap<Component, List<WebCustomTooltip>> ();
-    private static Map<Component, MouseAdapter> adapters = new WeakHashMap<Component, MouseAdapter> ();
-    private static Map<Component, WebTimer> timers = new WeakHashMap<Component, WebTimer> ();
+    private static final Map<Component, List<WebCustomTooltip>> webTooltips = new WeakHashMap<Component, List<WebCustomTooltip>> ();
+    private static final Map<Component, MouseAdapter> adapters = new WeakHashMap<Component, MouseAdapter> ();
+    private static final Map<Component, WebTimer> timers = new WeakHashMap<Component, WebTimer> ();
 
     // One-time tooltips
-    private static List<WebCustomTooltip> oneTimeTooltips = new ArrayList<WebCustomTooltip> ();
+    private static final List<WebCustomTooltip> oneTimeTooltips = new ArrayList<WebCustomTooltip> ();
 
     // Initialization mark
     private static boolean initialized = false;
@@ -79,7 +79,7 @@ public final class TooltipManager
             Toolkit.getDefaultToolkit ().addAWTEventListener ( new AWTEventListener ()
             {
                 @Override
-                public void eventDispatched ( AWTEvent event )
+                public void eventDispatched ( final AWTEvent event )
                 {
                     if ( event instanceof MouseWheelEvent )
                     {
@@ -97,20 +97,20 @@ public final class TooltipManager
     public static void hideAllTooltips ()
     {
         // Hiding standart tooltips
-        for ( Component component : CollectionUtils.copy ( webTooltips.keySet () ) )
+        for ( final Component component : CollectionUtils.copy ( webTooltips.keySet () ) )
         {
             // Stopping any timers
-            WebTimer timer = timers.get ( component );
+            final WebTimer timer = timers.get ( component );
             if ( timer != null )
             {
                 timer.stop ();
             }
 
             // Closing tooltips
-            List<WebCustomTooltip> list = webTooltips.get ( component );
+            final List<WebCustomTooltip> list = webTooltips.get ( component );
             if ( list != null && list.size () > 0 )
             {
-                for ( WebCustomTooltip tooltip : CollectionUtils.copy ( list ) )
+                for ( final WebCustomTooltip tooltip : CollectionUtils.copy ( list ) )
                 {
                     tooltip.closeTooltip ();
                 }
@@ -118,9 +118,9 @@ public final class TooltipManager
         }
 
         // Hiding one-time tooltips
-        List<WebCustomTooltip> clonedOneTimeTooltips = new ArrayList<WebCustomTooltip> ();
+        final List<WebCustomTooltip> clonedOneTimeTooltips = new ArrayList<WebCustomTooltip> ();
         clonedOneTimeTooltips.addAll ( oneTimeTooltips );
-        for ( WebCustomTooltip tooltip : clonedOneTimeTooltips )
+        for ( final WebCustomTooltip tooltip : clonedOneTimeTooltips )
         {
             tooltip.closeTooltip ();
         }
@@ -130,47 +130,50 @@ public final class TooltipManager
      * Registers standart tooltip
      */
 
-    public static WebCustomTooltip setTooltip ( Component component, String tooltip )
+    public static WebCustomTooltip setTooltip ( final Component component, final String tooltip )
     {
         return setTooltip ( component, tooltip, null );
     }
 
-    public static WebCustomTooltip setTooltip ( Component component, Icon icon, String tooltip )
+    public static WebCustomTooltip setTooltip ( final Component component, final Icon icon, final String tooltip )
     {
         return setTooltip ( component, icon, tooltip, null );
     }
 
-    public static WebCustomTooltip setTooltip ( Component component, String tooltip, TooltipWay tooltipWay )
+    public static WebCustomTooltip setTooltip ( final Component component, final String tooltip, final TooltipWay tooltipWay )
     {
         return setTooltip ( component, tooltip, tooltipWay, defaultDelay );
     }
 
-    public static WebCustomTooltip setTooltip ( Component component, Icon icon, String tooltip, TooltipWay tooltipWay )
+    public static WebCustomTooltip setTooltip ( final Component component, final Icon icon, final String tooltip,
+                                                final TooltipWay tooltipWay )
     {
         return setTooltip ( component, icon, tooltip, tooltipWay, defaultDelay );
     }
 
-    public static WebCustomTooltip setTooltip ( Component component, String tooltip, TooltipWay tooltipWay, int delay )
+    public static WebCustomTooltip setTooltip ( final Component component, final String tooltip, final TooltipWay tooltipWay,
+                                                final int delay )
     {
         return setTooltip ( component, null, tooltip, tooltipWay, delay );
     }
 
-    public static WebCustomTooltip setTooltip ( Component component, Icon icon, String tooltip, TooltipWay tooltipWay, int delay )
+    public static WebCustomTooltip setTooltip ( final Component component, final Icon icon, final String tooltip,
+                                                final TooltipWay tooltipWay, final int delay )
     {
         return setTooltip ( component, new WebLabel ( tooltip, icon ), tooltipWay, delay );
     }
 
-    public static WebCustomTooltip setTooltip ( Component component, JComponent tooltip )
+    public static WebCustomTooltip setTooltip ( final Component component, final JComponent tooltip )
     {
         return setTooltip ( component, tooltip, null );
     }
 
-    public static WebCustomTooltip setTooltip ( Component component, JComponent tooltip, int delay )
+    public static WebCustomTooltip setTooltip ( final Component component, final JComponent tooltip, final int delay )
     {
         return setTooltip ( component, tooltip, null, delay );
     }
 
-    public static WebCustomTooltip setTooltip ( Component component, JComponent tooltip, TooltipWay tooltipWay )
+    public static WebCustomTooltip setTooltip ( final Component component, final JComponent tooltip, final TooltipWay tooltipWay )
     {
         return setTooltip ( component, tooltip, tooltipWay, defaultDelay );
     }
@@ -181,47 +184,50 @@ public final class TooltipManager
         return addTooltip ( component, tooltip, tooltipWay, delay, true );
     }
 
-    public static WebCustomTooltip addTooltip ( Component component, String tooltip )
+    public static WebCustomTooltip addTooltip ( final Component component, final String tooltip )
     {
         return addTooltip ( component, tooltip, null );
     }
 
-    public static WebCustomTooltip addTooltip ( Component component, Icon icon, String tooltip )
+    public static WebCustomTooltip addTooltip ( final Component component, final Icon icon, final String tooltip )
     {
         return addTooltip ( component, icon, tooltip, null );
     }
 
-    public static WebCustomTooltip addTooltip ( Component component, String tooltip, TooltipWay tooltipWay )
+    public static WebCustomTooltip addTooltip ( final Component component, final String tooltip, final TooltipWay tooltipWay )
     {
         return addTooltip ( component, tooltip, tooltipWay, defaultDelay );
     }
 
-    public static WebCustomTooltip addTooltip ( Component component, Icon icon, String tooltip, TooltipWay tooltipWay )
+    public static WebCustomTooltip addTooltip ( final Component component, final Icon icon, final String tooltip,
+                                                final TooltipWay tooltipWay )
     {
         return addTooltip ( component, icon, tooltip, tooltipWay, defaultDelay );
     }
 
-    public static WebCustomTooltip addTooltip ( Component component, String tooltip, TooltipWay tooltipWay, int delay )
+    public static WebCustomTooltip addTooltip ( final Component component, final String tooltip, final TooltipWay tooltipWay,
+                                                final int delay )
     {
         return addTooltip ( component, null, tooltip, tooltipWay, delay );
     }
 
-    public static WebCustomTooltip addTooltip ( Component component, Icon icon, String tooltip, TooltipWay tooltipWay, int delay )
+    public static WebCustomTooltip addTooltip ( final Component component, final Icon icon, final String tooltip,
+                                                final TooltipWay tooltipWay, final int delay )
     {
         return addTooltip ( component, new WebLabel ( tooltip, icon ), tooltipWay, delay );
     }
 
-    public static WebCustomTooltip addTooltip ( Component component, JComponent tooltip )
+    public static WebCustomTooltip addTooltip ( final Component component, final JComponent tooltip )
     {
         return addTooltip ( component, tooltip, null );
     }
 
-    public static WebCustomTooltip addTooltip ( Component component, JComponent tooltip, int delay )
+    public static WebCustomTooltip addTooltip ( final Component component, final JComponent tooltip, final int delay )
     {
         return addTooltip ( component, tooltip, null, delay );
     }
 
-    public static WebCustomTooltip addTooltip ( Component component, JComponent tooltip, TooltipWay tooltipWay )
+    public static WebCustomTooltip addTooltip ( final Component component, final JComponent tooltip, final TooltipWay tooltipWay )
     {
         return addTooltip ( component, tooltip, tooltipWay, defaultDelay );
     }
@@ -229,13 +235,13 @@ public final class TooltipManager
     public static WebCustomTooltip addTooltip ( final Component component, final JComponent tooltip, final TooltipWay tooltipWay,
                                                 final int delay )
     {
-        List<WebCustomTooltip> tooltips = webTooltips.get ( component );
-        boolean clear = tooltips != null && tooltips.size () > 0 && !allowMultiplyTooltips;
+        final List<WebCustomTooltip> tooltips = webTooltips.get ( component );
+        final boolean clear = tooltips != null && tooltips.size () > 0 && !allowMultiplyTooltips;
         return addTooltip ( component, tooltip, tooltipWay, delay, clear );
     }
 
     private static WebCustomTooltip addTooltip ( final Component component, final JComponent tooltip, final TooltipWay tooltipWay,
-                                                 final int delay, boolean clear )
+                                                 final int delay, final boolean clear )
     {
         // Erase old tooltip if more than one not allowed in this case
         if ( clear )
@@ -261,9 +267,9 @@ public final class TooltipManager
             showTips.addActionListener ( new ActionListener ()
             {
                 @Override
-                public void actionPerformed ( ActionEvent e )
+                public void actionPerformed ( final ActionEvent e )
                 {
-                    Window wa = SwingUtils.getWindowAncestor ( component );
+                    final Window wa = SwingUtils.getWindowAncestor ( component );
                     if ( wa != null && wa.isActive () )
                     {
                         showTooltips ( component, false );
@@ -274,13 +280,13 @@ public final class TooltipManager
             timers.put ( component, showTips );
 
             // Show/hide listener
-            MouseAdapter mouseAdapter = new MouseAdapter ()
+            final MouseAdapter mouseAdapter = new MouseAdapter ()
             {
                 @Override
-                public void mouseEntered ( MouseEvent e )
+                public void mouseEntered ( final MouseEvent e )
                 {
                     // Component ancestor window
-                    Window window = SwingUtils.getWindowAncestor ( component );
+                    final Window window = SwingUtils.getWindowAncestor ( component );
 
                     // Starting show timer if needed
                     if ( window.isShowing () && window.isActive () )
@@ -290,19 +296,19 @@ public final class TooltipManager
                 }
 
                 @Override
-                public void mouseExited ( MouseEvent e )
+                public void mouseExited ( final MouseEvent e )
                 {
                     cancelTooltips ();
                 }
 
                 @Override
-                public void mousePressed ( MouseEvent e )
+                public void mousePressed ( final MouseEvent e )
                 {
                     cancelTooltips ();
                 }
 
                 @Override
-                public void mouseReleased ( MouseEvent e )
+                public void mouseReleased ( final MouseEvent e )
                 {
                     cancelTooltips ();
                 }
@@ -321,13 +327,13 @@ public final class TooltipManager
         return customTooltip;
     }
 
-    private static void hideTooltips ( Component component )
+    private static void hideTooltips ( final Component component )
     {
         if ( webTooltips.get ( component ) != null )
         {
-            List<WebCustomTooltip> tooltips = new ArrayList<WebCustomTooltip> ();
+            final List<WebCustomTooltip> tooltips = new ArrayList<WebCustomTooltip> ();
             tooltips.addAll ( webTooltips.get ( component ) );
-            for ( WebCustomTooltip tooltip : tooltips )
+            for ( final WebCustomTooltip tooltip : tooltips )
             {
                 tooltip.closeTooltip ();
             }
@@ -338,12 +344,12 @@ public final class TooltipManager
      * Displays component tooltips
      */
 
-    public static boolean showTooltips ( Component component )
+    public static boolean showTooltips ( final Component component )
     {
         return showTooltips ( component, false );
     }
 
-    public static boolean showTooltips ( Component component, boolean delayed )
+    public static boolean showTooltips ( final Component component, final boolean delayed )
     {
         if ( webTooltips.containsKey ( component ) && component.isShowing () )
         {
@@ -353,12 +359,12 @@ public final class TooltipManager
             }
             else
             {
-                WebGlassPane webGlassPane = GlassPaneManager.getGlassPane ( component );
+                final WebGlassPane webGlassPane = GlassPaneManager.getGlassPane ( component );
                 if ( webGlassPane != null )
                 {
-                    List<WebCustomTooltip> tooltips = new ArrayList<WebCustomTooltip> ();
+                    final List<WebCustomTooltip> tooltips = new ArrayList<WebCustomTooltip> ();
                     tooltips.addAll ( webTooltips.get ( component ) );
-                    for ( WebCustomTooltip tooltip : tooltips )
+                    for ( final WebCustomTooltip tooltip : tooltips )
                     {
                         webGlassPane.showComponent ( tooltip );
                     }
@@ -376,7 +382,7 @@ public final class TooltipManager
      * Displays all tooltips for component's window
      */
 
-    public static void showAllTooltips ( Component component )
+    public static void showAllTooltips ( final Component component )
     {
         // Hiding all tooltips
         TooltipManager.hideAllTooltips ();
@@ -385,15 +391,15 @@ public final class TooltipManager
         showAllTooltips ( SwingUtils.getWindowAncestor ( component ) );
     }
 
-    private static void showAllTooltips ( Window window )
+    private static void showAllTooltips ( final Window window )
     {
         if ( window.isShowing () )
         {
-            for ( Component component : webTooltips.keySet () )
+            for ( final Component component : webTooltips.keySet () )
             {
                 if ( SwingUtils.getWindowAncestor ( component ) == window && component.isShowing () )
                 {
-                    for ( WebCustomTooltip tooltip : webTooltips.get ( component ) )
+                    for ( final WebCustomTooltip tooltip : webTooltips.get ( component ) )
                     {
                         showOneTimeTooltip ( tooltip, false );
                     }
@@ -408,11 +414,11 @@ public final class TooltipManager
 
     public static void showAllTooltips ()
     {
-        for ( Component component : webTooltips.keySet () )
+        for ( final Component component : webTooltips.keySet () )
         {
             if ( component.isShowing () )
             {
-                for ( WebCustomTooltip tooltip : webTooltips.get ( component ) )
+                for ( final WebCustomTooltip tooltip : webTooltips.get ( component ) )
                 {
                     showOneTimeTooltip ( tooltip, false );
                 }
@@ -458,12 +464,12 @@ public final class TooltipManager
         installShowAllTooltipsAction ( topComponent, Hotkey.F2 );
     }
 
-    public static void installShowAllTooltipsAction ( final Component topComponent, HotkeyData hotkeyData )
+    public static void installShowAllTooltipsAction ( final Component topComponent, final HotkeyData hotkeyData )
     {
         HotkeyManager.registerHotkey ( topComponent, hotkeyData, new HotkeyRunnable ()
         {
             @Override
-            public void run ( KeyEvent e )
+            public void run ( final KeyEvent e )
             {
                 showAllTooltips ( topComponent );
             }
@@ -474,28 +480,28 @@ public final class TooltipManager
      * Removes component tooltips
      */
 
-    public static void removeTooltips ( Component component )
+    public static void removeTooltips ( final Component component )
     {
         if ( webTooltips.get ( component ) != null )
         {
-            for ( WebCustomTooltip tooltip : CollectionUtils.copy ( webTooltips.get ( component ) ) )
+            for ( final WebCustomTooltip tooltip : CollectionUtils.copy ( webTooltips.get ( component ) ) )
             {
                 removeTooltip ( component, tooltip );
             }
         }
     }
 
-    public static void removeTooltips ( Component component, List<WebCustomTooltip> tooltips )
+    public static void removeTooltips ( final Component component, final List<WebCustomTooltip> tooltips )
     {
-        for ( WebCustomTooltip tooltip : tooltips )
+        for ( final WebCustomTooltip tooltip : tooltips )
         {
             removeTooltip ( component, tooltip );
         }
     }
 
-    public static void removeTooltip ( Component component, WebCustomTooltip tooltip )
+    public static void removeTooltip ( final Component component, final WebCustomTooltip tooltip )
     {
-        List<WebCustomTooltip> tooltips = webTooltips.get ( component );
+        final List<WebCustomTooltip> tooltips = webTooltips.get ( component );
         if ( tooltips != null && tooltips.contains ( tooltip ) )
         {
             // Removing all listeners in case its last component tooltip
@@ -529,41 +535,45 @@ public final class TooltipManager
      * Shows one-time tooltip
      */
 
-    public static WebCustomTooltip showOneTimeTooltip ( Component component, Point point, String tooltip )
+    public static WebCustomTooltip showOneTimeTooltip ( final Component component, final Point point, final String tooltip )
     {
         return showOneTimeTooltip ( component, point, tooltip, null );
     }
 
-    public static WebCustomTooltip showOneTimeTooltip ( Component component, Point point, Icon icon, String tooltip )
+    public static WebCustomTooltip showOneTimeTooltip ( final Component component, final Point point, final Icon icon,
+                                                        final String tooltip )
     {
         return showOneTimeTooltip ( component, point, icon, tooltip, null );
     }
 
-    public static WebCustomTooltip showOneTimeTooltip ( Component component, Point point, String tooltip, TooltipWay tooltipWay )
+    public static WebCustomTooltip showOneTimeTooltip ( final Component component, final Point point, final String tooltip,
+                                                        final TooltipWay tooltipWay )
     {
         return showOneTimeTooltip ( component, point, null, tooltip, tooltipWay );
     }
 
-    public static WebCustomTooltip showOneTimeTooltip ( Component component, Point point, Icon icon, String tooltip, TooltipWay tooltipWay )
+    public static WebCustomTooltip showOneTimeTooltip ( final Component component, final Point point, final Icon icon, final String tooltip,
+                                                        final TooltipWay tooltipWay )
     {
-        WebCustomTooltip customTooltip = new WebCustomTooltip ( component, icon, tooltip, tooltipWay, showHotkeysInOneTimeTooltips );
+        final WebCustomTooltip customTooltip = new WebCustomTooltip ( component, icon, tooltip, tooltipWay, showHotkeysInOneTimeTooltips );
         customTooltip.setDisplayLocation ( point );
         return showOneTimeTooltip ( customTooltip, true );
     }
 
-    public static WebCustomTooltip showOneTimeTooltip ( Component component, Point point, JComponent tooltip )
+    public static WebCustomTooltip showOneTimeTooltip ( final Component component, final Point point, final JComponent tooltip )
     {
         return showOneTimeTooltip ( component, point, tooltip, null );
     }
 
-    public static WebCustomTooltip showOneTimeTooltip ( Component component, Point point, JComponent tooltip, TooltipWay tooltipWay )
+    public static WebCustomTooltip showOneTimeTooltip ( final Component component, final Point point, final JComponent tooltip,
+                                                        final TooltipWay tooltipWay )
     {
-        WebCustomTooltip customTooltip = new WebCustomTooltip ( component, tooltip, tooltipWay, showHotkeysInOneTimeTooltips );
+        final WebCustomTooltip customTooltip = new WebCustomTooltip ( component, tooltip, tooltipWay, showHotkeysInOneTimeTooltips );
         customTooltip.setDisplayLocation ( point );
         return showOneTimeTooltip ( customTooltip, true );
     }
 
-    public static WebCustomTooltip showOneTimeTooltip ( WebCustomTooltip customTooltip )
+    public static WebCustomTooltip showOneTimeTooltip ( final WebCustomTooltip customTooltip )
     {
         return showOneTimeTooltip ( customTooltip, true );
     }
@@ -577,7 +587,7 @@ public final class TooltipManager
         }
 
         // Checking if glass pane is available
-        Window window = SwingUtils.getWindowAncestor ( customTooltip.getComponent () );
+        final Window window = SwingUtils.getWindowAncestor ( customTooltip.getComponent () );
         final WebGlassPane webGlassPane = GlassPaneManager.getGlassPane ( window );
         if ( webGlassPane == null )
         {
@@ -588,7 +598,7 @@ public final class TooltipManager
         final ComponentAdapter componentAdapter = new ComponentAdapter ()
         {
             @Override
-            public void componentResized ( ComponentEvent e )
+            public void componentResized ( final ComponentEvent e )
             {
                 customTooltip.updateLocation ();
             }
@@ -599,7 +609,7 @@ public final class TooltipManager
         final AWTEventListener closeListener = customTooltip.isDefaultCloseBehavior () ? new AWTEventListener ()
         {
             @Override
-            public void eventDispatched ( AWTEvent event )
+            public void eventDispatched ( final AWTEvent event )
             {
                 if ( event instanceof MouseEvent && event.getID () == MouseEvent.MOUSE_PRESSED )
                 {
@@ -665,7 +675,7 @@ public final class TooltipManager
         return defaultDelay;
     }
 
-    public static void setDefaultDelay ( int delay )
+    public static void setDefaultDelay ( final int delay )
     {
         defaultDelay = delay;
     }
@@ -679,7 +689,7 @@ public final class TooltipManager
         return allowMultiplyTooltips;
     }
 
-    public static void setAllowMultiplyTooltips ( boolean allowMultiplyTooltips )
+    public static void setAllowMultiplyTooltips ( final boolean allowMultiplyTooltips )
     {
         TooltipManager.allowMultiplyTooltips = allowMultiplyTooltips;
     }
@@ -693,7 +703,7 @@ public final class TooltipManager
         return showHotkeysInTooltips;
     }
 
-    public static void setShowHotkeysInTooltips ( boolean showHotkeysInTooltips )
+    public static void setShowHotkeysInTooltips ( final boolean showHotkeysInTooltips )
     {
         TooltipManager.showHotkeysInTooltips = showHotkeysInTooltips;
     }
@@ -707,7 +717,7 @@ public final class TooltipManager
         return showHotkeysInOneTimeTooltips;
     }
 
-    public static void setShowHotkeysInOneTimeTooltips ( boolean showHotkeysInOneTimeTooltips )
+    public static void setShowHotkeysInOneTimeTooltips ( final boolean showHotkeysInOneTimeTooltips )
     {
         TooltipManager.showHotkeysInOneTimeTooltips = showHotkeysInOneTimeTooltips;
     }

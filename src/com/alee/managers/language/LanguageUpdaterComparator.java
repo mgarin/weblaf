@@ -22,16 +22,21 @@ import com.alee.managers.language.updaters.LanguageUpdater;
 import java.util.Comparator;
 
 /**
- * User: mgarin Date: 29.10.12 Time: 17:43
+ * Special comparator for sorting LanguageUpdaters list.
+ *
+ * @author Mikle Garin
  */
 
 public class LanguageUpdaterComparator implements Comparator<LanguageUpdater>
 {
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public int compare ( LanguageUpdater lu1, LanguageUpdater lu2 )
+    public int compare ( final LanguageUpdater lu1, final LanguageUpdater lu2 )
     {
-        Class cc1 = lu1.getComponentClass ();
-        Class cc2 = lu2.getComponentClass ();
+        final Class cc1 = lu1.getComponentClass ();
+        final Class cc2 = lu2.getComponentClass ();
         if ( cc1.equals ( cc2 ) )
         {
             return 0;

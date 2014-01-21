@@ -35,7 +35,7 @@ public final class ColorUtils
      * @param color color to modify
      * @return color with alpha value set to 255
      */
-    public static Color removeAlpha ( Color color )
+    public static Color removeAlpha ( final Color color )
     {
         if ( color.getAlpha () != 255 )
         {
@@ -48,13 +48,13 @@ public final class ColorUtils
     }
 
     /**
-     * Returns color with modified alpha.
+     * Returns color with modified alpha value.
      *
      * @param color color to process
-     * @param alpha new alpha
-     * @return color with modified alpha
+     * @param alpha new alpha value
+     * @return color with modified alpha value
      */
-    public static Color changeAlpha ( Color color, int alpha )
+    public static Color getTransparentColor ( final Color color, final int alpha )
     {
         return new Color ( color.getRed (), color.getGreen (), color.getBlue (), alpha );
     }
@@ -67,7 +67,7 @@ public final class ColorUtils
      * @param progress progress of the intermediate color
      * @return intermediate color between two specified colors
      */
-    public static Color getIntermediateColor ( Color color1, Color color2, float progress )
+    public static Color getIntermediateColor ( final Color color1, final Color color2, final float progress )
     {
         return new Color ( getIntermediateValue ( color1.getRed (), color2.getRed (), progress ),
                 getIntermediateValue ( color1.getGreen (), color2.getGreen (), progress ),
@@ -83,7 +83,7 @@ public final class ColorUtils
      * @param progress progress of the intermediate value
      * @return intermediate value between two specified values
      */
-    public static int getIntermediateValue ( int value1, int value2, float progress )
+    public static int getIntermediateValue ( final int value1, final int value2, final float progress )
     {
         return value1 + Math.round ( ( ( float ) value2 - value1 ) * progress );
     }
@@ -94,7 +94,7 @@ public final class ColorUtils
      * @param color color to process
      * @return web-safe color
      */
-    public static Color getWebSafeColor ( Color color )
+    public static Color getWebSafeColor ( final Color color )
     {
         return new Color ( getWebSafeValue ( color.getRed () ), getWebSafeValue ( color.getGreen () ),
                 getWebSafeValue ( color.getBlue () ) );
@@ -106,7 +106,7 @@ public final class ColorUtils
      * @param value value to process
      * @return web-safe color value
      */
-    public static int getWebSafeValue ( int value )
+    public static int getWebSafeValue ( final int value )
     {
         if ( 0 <= value && value <= 51 )
         {
@@ -137,7 +137,7 @@ public final class ColorUtils
      * @param color color to process
      * @return hex color string for the specified color
      */
-    public static String getHexColor ( Color color )
+    public static String getHexColor ( final Color color )
     {
         return getHexColor ( color.getRGB () );
     }
@@ -148,9 +148,9 @@ public final class ColorUtils
      * @param rgb rgb value
      * @return hex color string for the specified rgb value
      */
-    public static String getHexColor ( int rgb )
+    public static String getHexColor ( final int rgb )
     {
-        String hex = Integer.toHexString ( rgb ).toUpperCase ();
+        final String hex = Integer.toHexString ( rgb ).toUpperCase ();
         return hex.substring ( 2, hex.length () );
     }
 
@@ -172,7 +172,7 @@ public final class ColorUtils
      * @param rgb rgb color string
      * @return color decoded from an rgb color string
      */
-    public static Color parseRgbColor ( String rgb )
+    public static Color parseRgbColor ( final String rgb )
     {
         return parseRgbColor ( rgb, "," );
     }
@@ -184,11 +184,11 @@ public final class ColorUtils
      * @param separator color parts separator
      * @return color decoded from an rgb color string
      */
-    public static Color parseRgbColor ( String rgb, String separator )
+    public static Color parseRgbColor ( String rgb, final String separator )
     {
         rgb = rgb.replaceAll ( " ", "" );
-        StringTokenizer st = new StringTokenizer ( rgb, separator, false );
-        int count = st.countTokens ();
+        final StringTokenizer st = new StringTokenizer ( rgb, separator, false );
+        final int count = st.countTokens ();
         if ( count == 3 )
         {
             return new Color ( Integer.parseInt ( st.nextToken () ), Integer.parseInt ( st.nextToken () ),
@@ -211,7 +211,7 @@ public final class ColorUtils
      * @param alpha color alpha
      * @return black color with specified alpha
      */
-    public static Color black ( int alpha )
+    public static Color black ( final int alpha )
     {
         return new Color ( 0, 0, 0, alpha );
     }
@@ -222,7 +222,7 @@ public final class ColorUtils
      * @param alpha color alpha
      * @return white color with specified alpha
      */
-    public static Color white ( int alpha )
+    public static Color white ( final int alpha )
     {
         return new Color ( 255, 255, 255, alpha );
     }
@@ -233,9 +233,9 @@ public final class ColorUtils
      * @param base color base
      * @return randomly generated soft color based on the specified color
      */
-    public static Color getRandomSoftColor ( Color base )
+    public static Color getRandomSoftColor ( final Color base )
     {
-        Random random = new Random ();
+        final Random random = new Random ();
         int red = random.nextInt ( 256 );
         int green = random.nextInt ( 256 );
         int blue = random.nextInt ( 256 );

@@ -37,7 +37,7 @@ public final class WindowUtils
     /**
      * Window pack timers map.
      */
-    private static Map<Window, WebTimer> windowPackTimers = new HashMap<Window, WebTimer> ();
+    private static final Map<Window, WebTimer> windowPackTimers = new HashMap<Window, WebTimer> ();
 
     /**
      * Sets window opaque if that option is supported by the underlying system.
@@ -230,13 +230,13 @@ public final class WindowUtils
                 private int step = 1;
 
                 @Override
-                public void actionPerformed ( ActionEvent e )
+                public void actionPerformed ( final ActionEvent e )
                 {
                     if ( step <= steps )
                     {
-                        int w = b.width + xDiff * step / steps;
-                        int h = b.height + yDiff * step / steps;
-                        Rectangle changed = new Rectangle ( b.x + b.width / 2 - w / 2, b.y + b.height / 2 - h / 2, w, h );
+                        final int w = b.width + xDiff * step / steps;
+                        final int h = b.height + yDiff * step / steps;
+                        final Rectangle changed = new Rectangle ( b.x + b.width / 2 - w / 2, b.y + b.height / 2 - h / 2, w, h );
                         window.setBounds ( changed );
                     }
                     else

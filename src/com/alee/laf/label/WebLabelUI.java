@@ -26,9 +26,7 @@ import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.BorderMethods;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import javax.swing.plaf.ComponentUI;
-import javax.swing.plaf.UIResource;
 import javax.swing.plaf.basic.BasicLabelUI;
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
@@ -69,7 +67,7 @@ public class WebLabelUI extends BasicLabelUI implements BorderMethods
      * @param c component that will use UI instance
      * @return instance of the WebLabelUI
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebLabelUI ();
@@ -103,7 +101,7 @@ public class WebLabelUI extends BasicLabelUI implements BorderMethods
                 updateBorder ();
             }
         };
-        label.addPropertyChangeListener ( WebLookAndFeel.COMPONENT_ORIENTATION_PROPERTY, propertyChangeListener );
+        label.addPropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, propertyChangeListener );
     }
 
     /**
@@ -118,7 +116,7 @@ public class WebLabelUI extends BasicLabelUI implements BorderMethods
         PainterSupport.uninstallPainter ( label, this.painter );
 
         // Removing label listeners
-        label.removePropertyChangeListener ( WebLookAndFeel.COMPONENT_ORIENTATION_PROPERTY, propertyChangeListener );
+        label.removePropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, propertyChangeListener );
 
         // Clearing link to label component
         label = null;
@@ -134,15 +132,12 @@ public class WebLabelUI extends BasicLabelUI implements BorderMethods
     {
         if ( label != null )
         {
-            if ( SwingUtils.getHonorUserBorders(label) )
+            // Preserve old borders
+            if ( label.getBorder () != null && SwingUtils.isPreserveBorders ( label ) )
             {
-                Border oldBorder = label.getBorder();
-                if (oldBorder!=null && !(oldBorder instanceof UIResource))
-                {
-                    return;
-                }
+                return;
             }
-            
+
             // Actual margin
             final boolean ltr = label.getComponentOrientation ().isLeftToRight ();
             final Insets m = new Insets ( margin.top, ltr ? margin.left : margin.right, margin.bottom, ltr ? margin.right : margin.left );

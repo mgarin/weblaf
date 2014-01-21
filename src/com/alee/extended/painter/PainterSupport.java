@@ -72,6 +72,7 @@ public final class PainterSupport
                     final BorderMethods borderMethods = LafUtils.getBorderMethods ( component );
                     if ( borderMethods != null )
                     {
+                        // todo Move to separate "updateBorder" method in PainterListener
                         borderMethods.updateBorder ();
                     }
                     component.revalidate ();

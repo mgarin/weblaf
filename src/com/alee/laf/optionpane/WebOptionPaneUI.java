@@ -40,14 +40,14 @@ public class WebOptionPaneUI extends BasicOptionPaneUI
     public static final ImageIcon ERROR_ICON = new ImageIcon ( WebOptionPaneUI.class.getResource ( "icons/error.png" ) );
     public static final ImageIcon QUESTION_ICON = new ImageIcon ( WebOptionPaneUI.class.getResource ( "icons/question.png" ) );
 
-    @SuppressWarnings ( "UnusedParameters" )
-    public static ComponentUI createUI ( JComponent c )
+    @SuppressWarnings ("UnusedParameters")
+    public static ComponentUI createUI ( final JComponent c )
     {
         return new WebOptionPaneUI ();
     }
 
     @Override
-    public void installUI ( JComponent c )
+    public void installUI ( final JComponent c )
     {
         super.installUI ( c );
 
@@ -63,7 +63,7 @@ public class WebOptionPaneUI extends BasicOptionPaneUI
     @Override
     protected Container createMessageArea ()
     {
-        Container messageArea = super.createMessageArea ();
+        final Container messageArea = super.createMessageArea ();
         SwingUtils.setOpaqueRecursively ( messageArea, false );
         return messageArea;
     }
@@ -73,7 +73,7 @@ public class WebOptionPaneUI extends BasicOptionPaneUI
      */
 
     @Override
-    protected void addButtonComponents ( Container container, Object[] buttons, int initialIndex )
+    protected void addButtonComponents ( final Container container, final Object[] buttons, final int initialIndex )
     {
         if ( container instanceof JComponent )
         {
@@ -81,9 +81,9 @@ public class WebOptionPaneUI extends BasicOptionPaneUI
         }
         if ( buttons != null && buttons.length > 0 )
         {
-            boolean sizeButtonsToSame = getSizeButtonsToSameWidth ();
+            final boolean sizeButtonsToSame = getSizeButtonsToSameWidth ();
             boolean createdAll = true;
-            int numButtons = buttons.length;
+            final int numButtons = buttons.length;
             JButton[] createdButtons = null;
             int maxWidth = 0;
 
@@ -94,8 +94,8 @@ public class WebOptionPaneUI extends BasicOptionPaneUI
 
             for ( int counter = 0; counter < numButtons; counter++ )
             {
-                Object button = buttons[ counter ];
-                Component newComponent;
+                final Object button = buttons[ counter ];
+                final Component newComponent;
 
                 if ( button instanceof Component )
                 {
@@ -107,7 +107,7 @@ public class WebOptionPaneUI extends BasicOptionPaneUI
                 }
                 else
                 {
-                    WebButton aButton;
+                    final WebButton aButton;
                     if ( button instanceof Icon )
                     {
                         aButton = new WebButton ( ( Icon ) button );
@@ -123,7 +123,7 @@ public class WebOptionPaneUI extends BasicOptionPaneUI
 
                     container.add ( aButton );
 
-                    ActionListener buttonListener = createButtonActionListener ( counter );
+                    final ActionListener buttonListener = createButtonActionListener ( counter );
                     if ( buttonListener != null )
                     {
                         aButton.addActionListener ( buttonListener );
@@ -140,16 +140,16 @@ public class WebOptionPaneUI extends BasicOptionPaneUI
                     initialFocusComponent = newComponent;
                     if ( initialFocusComponent instanceof JButton )
                     {
-                        JButton defaultB = ( JButton ) initialFocusComponent;
+                        final JButton defaultB = ( JButton ) initialFocusComponent;
                         defaultB.addHierarchyListener ( new HierarchyListener ()
                         {
                             @Override
-                            public void hierarchyChanged ( HierarchyEvent e )
+                            public void hierarchyChanged ( final HierarchyEvent e )
                             {
                                 if ( ( e.getChangeFlags () & HierarchyEvent.PARENT_CHANGED ) != 0 )
                                 {
-                                    JButton defaultButton = ( JButton ) e.getComponent ();
-                                    JRootPane root = SwingUtilities.getRootPane ( defaultButton );
+                                    final JButton defaultButton = ( JButton ) e.getComponent ();
+                                    final JRootPane root = SwingUtilities.getRootPane ( defaultButton );
                                     if ( root != null )
                                     {
                                         root.setDefaultButton ( defaultButton );
@@ -173,12 +173,12 @@ public class WebOptionPaneUI extends BasicOptionPaneUI
     {
         if ( optionPane != null )
         {
-            Object[] suppliedOptions = optionPane.getOptions ();
+            final Object[] suppliedOptions = optionPane.getOptions ();
 
             if ( suppliedOptions == null )
             {
-                WebButton[] defaultOptions;
-                int type = optionPane.getOptionType ();
+                final WebButton[] defaultOptions;
+                final int type = optionPane.getOptionType ();
                 if ( type == JOptionPane.YES_NO_OPTION )
                 {
                     defaultOptions = new WebButton[ 2 ];
@@ -229,7 +229,7 @@ public class WebOptionPaneUI extends BasicOptionPaneUI
                 }
 
                 int count = 0;
-                for ( WebButton button : defaultOptions )
+                for ( final WebButton button : defaultOptions )
                 {
                     configureButton ( button );
                     button.addActionListener ( createButtonActionListener ( count ) );
@@ -248,13 +248,13 @@ public class WebOptionPaneUI extends BasicOptionPaneUI
      * Default option pane button settings
      */
 
-    private void configureButton ( WebButton button )
+    private void configureButton ( final WebButton button )
     {
         button.setLeftRightSpacing ( 10 );
         button.setMinimumSize ( new Dimension ( 70, 0 ) );
         button.setRolloverShine ( WebOptionPaneStyle.highlightControlButtons );
 
-        Font buttonFont = UIManager.getFont ( "OptionPane.buttonFont" );
+        final Font buttonFont = UIManager.getFont ( "OptionPane.buttonFont" );
         if ( buttonFont != null )
         {
             button.setFont ( buttonFont );
@@ -266,12 +266,12 @@ public class WebOptionPaneUI extends BasicOptionPaneUI
      */
 
     @Override
-    protected Icon getIconForType ( int messageType )
+    protected Icon getIconForType ( final int messageType )
     {
         return getTypeIcon ( messageType );
     }
 
-    public static ImageIcon getTypeIcon ( int messageType )
+    public static ImageIcon getTypeIcon ( final int messageType )
     {
         if ( messageType < 0 || messageType > 3 )
         {

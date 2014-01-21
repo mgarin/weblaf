@@ -26,13 +26,12 @@ import com.alee.managers.focus.FocusManager;
 import com.alee.managers.focus.FocusTracker;
 import com.alee.utils.LafUtils;
 import com.alee.utils.SwingUtils;
+import com.alee.utils.laf.PainterShapeProvider;
 import com.alee.utils.laf.ShapeProvider;
 import com.alee.utils.swing.BorderMethods;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import javax.swing.plaf.ComponentUI;
-import javax.swing.plaf.UIResource;
 import javax.swing.plaf.basic.BasicPanelUI;
 import java.awt.*;
 import java.awt.geom.GeneralPath;
@@ -91,7 +90,7 @@ public class WebPanelUI extends BasicPanelUI implements ShapeProvider, BorderMet
      * @param c component that will use UI instance
      * @return instance of the WebPanelUI
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebPanelUI ();
@@ -128,7 +127,7 @@ public class WebPanelUI extends BasicPanelUI implements ShapeProvider, BorderMet
                 updateBorder ();
             }
         };
-        panel.addPropertyChangeListener ( WebLookAndFeel.COMPONENT_ORIENTATION_PROPERTY, propertyChangeListener );
+        panel.addPropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, propertyChangeListener );
 
         // Focus tracker for the panel content
         focusTracker = new DefaultFocusTracker ()
@@ -159,7 +158,7 @@ public class WebPanelUI extends BasicPanelUI implements ShapeProvider, BorderMet
     {
         PainterSupport.uninstallPainter ( panel, this.painter );
 
-        panel.removePropertyChangeListener ( WebLookAndFeel.COMPONENT_ORIENTATION_PROPERTY, propertyChangeListener );
+        panel.removePropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, propertyChangeListener );
 
         FocusManager.removeFocusTracker ( focusTracker );
 
@@ -172,7 +171,12 @@ public class WebPanelUI extends BasicPanelUI implements ShapeProvider, BorderMet
     @Override
     public Shape provideShape ()
     {
-        if ( painter != null || undecorated )
+        if ( painter != null )
+        {
+            final Rectangle size = SwingUtils.size ( panel );
+            return painter instanceof PainterShapeProvider ? ( ( PainterShapeProvider ) painter ).provideShape ( panel, size ) : size;
+        }
+        else if ( undecorated )
         {
             return SwingUtils.size ( panel );
         }
@@ -188,19 +192,16 @@ public class WebPanelUI extends BasicPanelUI implements ShapeProvider, BorderMet
     @Override
     public void updateBorder ()
     {
-    	if ( panel != null )
+        if ( panel != null )
         {
-            if ( SwingUtils.getHonorUserBorders(panel) )
+            // Preserve old borders
+            // Override null borders here for proper margins in
+            // LAF-decorated JFrames and JDialogs (via WebRootPaneUI).
+            if ( SwingUtils.isPreserveBorders ( panel ) && panel.getBorder () != null)
             {
-                Border oldBorder = panel.getBorder();
-                // Override null borders here for proper margins in
-                // LAF-decorated JFrames and JDialogs (via WebRootPaneUI).
-                if (oldBorder!=null && !(oldBorder instanceof UIResource))
-                {
-                    return;
-                }
+                return;
             }
-            
+
             // Actual margin
             final boolean ltr = panel.getComponentOrientation ().isLeftToRight ();
             final Insets m = new Insets ( margin.top, ltr ? margin.left : margin.right, margin.bottom, ltr ? margin.right : margin.left );

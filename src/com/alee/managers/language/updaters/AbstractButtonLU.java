@@ -37,10 +37,10 @@ public class AbstractButtonLU extends DefaultLanguageUpdater<AbstractButton>
      * {@inheritDoc}
      */
     @Override
-    public void update ( AbstractButton c, String key, Value value, Object... data )
+    public void update ( final AbstractButton c, final String key, final Value value, final Object... data )
     {
         // Updating text and mnemonic
-        String text = getDefaultText ( value, data );
+        final String text = getDefaultText ( value, data );
         c.setText ( text != null ? text : null );
         c.setMnemonic ( text != null && value.getMnemonic () != null ? value.getMnemonic () : 0 );
 
@@ -51,11 +51,11 @@ public class AbstractButtonLU extends DefaultLanguageUpdater<AbstractButton>
         }
         if ( value.getHotkey () != null )
         {
-            KeyStroke keyStroke = KeyStroke.getKeyStroke ( value.getHotkey () );
+            final KeyStroke keyStroke = KeyStroke.getKeyStroke ( value.getHotkey () );
             if ( keyStroke != null )
             {
-                HotkeyData hotkeyData = SwingUtils.getHotkeyData ( keyStroke );
-                HotkeyInfo hotkeyInfo = HotkeyManager.registerHotkey ( c, hotkeyData );
+                final HotkeyData hotkeyData = SwingUtils.getHotkeyData ( keyStroke );
+                final HotkeyInfo hotkeyInfo = HotkeyManager.registerHotkey ( c, hotkeyData );
                 cacheHotkey ( c, hotkeyInfo );
             }
         }

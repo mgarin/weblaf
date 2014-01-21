@@ -35,7 +35,7 @@ import java.util.Vector;
 /**
  * This JTree extension class provides a direct access to WebTreeUI methods.
  * There is also a set of additional methods to simplify some operations with tree.
- * <p>
+ * <p/>
  * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
  * You could stil use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
  *
@@ -380,14 +380,36 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
     public List<E> getSelectedNodes ()
     {
         final List<E> selectedNodes = new ArrayList<E> ();
-        if ( getSelectionPaths () != null )
+        final TreePath[] selectionPaths = getSelectionPaths ();
+        if ( selectionPaths != null )
         {
-            for ( final TreePath path : getSelectionPaths () )
+            for ( final TreePath path : selectionPaths )
             {
                 selectedNodes.add ( getNodeForPath ( path ) );
             }
         }
         return selectedNodes;
+    }
+
+    /**
+     * Selects node under the specified point.
+     *
+     * @param point point to look for node
+     */
+    public void selectNodeUnderPoint ( final Point point )
+    {
+        selectNodeUnderPoint ( point.x, point.y );
+    }
+
+    /**
+     * Selects node under the specified point.
+     *
+     * @param x point X coordinate
+     * @param y point Y coordinate
+     */
+    public void selectNodeUnderPoint ( final int x, final int y )
+    {
+        setSelectionPath ( getPathForLocation ( x, y ) );
     }
 
     /**
@@ -411,6 +433,19 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
         for ( int i = 0; i < nodes.size (); i++ )
         {
             paths[ i ] = getPathForNode ( nodes.get ( i ) );
+        }
+        setSelectionPaths ( paths );
+    }
+
+    /**
+     * Sets selected nodes.
+     */
+    public void setSelectedNodes ( final E[] nodes )
+    {
+        final TreePath[] paths = new TreePath[ nodes.length ];
+        for ( int i = 0; i < nodes.length; i++ )
+        {
+            paths[ i ] = getPathForNode ( nodes[ i ] );
         }
         setSelectionPaths ( paths );
     }
@@ -861,6 +896,26 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
     public void setSelectorStroke ( final BasicStroke stroke )
     {
         getWebUI ().setSelectorStroke ( stroke );
+    }
+
+    /**
+     * Returns drop cell highlight shade width.
+     *
+     * @return drop cell highlight shade width
+     */
+    public int getDropCellShadeWidth ()
+    {
+        return getWebUI ().getDropCellShadeWidth ();
+    }
+
+    /**
+     * Sets drop cell highlight shade width.
+     *
+     * @param dropCellShadeWidth new drop cell highlight shade width
+     */
+    public void setDropCellShadeWidth ( final int dropCellShadeWidth )
+    {
+        getWebUI ().setDropCellShadeWidth ( dropCellShadeWidth );
     }
 
     /**

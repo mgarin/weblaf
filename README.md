@@ -3,14 +3,15 @@ WebLaF
 **WebLaf** is a Java Swing Look and Feel and extended components library for cross-platform applications.<br>
 ![Preview](http://s5.hostingkartinok.com/uploads/images/2013/10/92f65b6b3262493a5f386dc6808efbba.png)
 
-Main advantages of WebLaF library:
+Main advantages
+----------
 
-1. Simple and stylish cross-platform default theme
-2. Lots of additional custom Swing components
-3. UIs and components easily stylable through painters
-4. Settings, language, hotkey, tooltip and other custom managers
-5. Various Swing and Java utilities for specific cases
-6. Both LTR and RTL component orientations supported
+- Simple and stylish cross-platform default theme
+- Lots of useful custom Swing components
+- UIs and components are easily stylable through settings and painters
+- Language, settings, hotkey, tooltip and other custom managers
+- Various Swing and Java utilities for specific cases
+- RTL components orientation is fully supported
 
 You can find more information about the library on official site:<br>
 http://weblookandfeel.com
@@ -44,27 +45,27 @@ Simply run `ant` command within the "build" library folder to build all artifact
 
 Here is a full list of usable ANT targets in WebLaF build script:
 
-1. `build.artifacts` - default target, build all artifacts at once
-2. `build.weblaf.jar` -> **weblaf-x.xx.jar** - build WebLaF binary
-3. `build.weblaf.simple.jar` -> **weblaf-simple-x.xx.jar** - build WebLaF binary without dependencies
-4. `build.sources.zip` -> **weblaf-src-x.xx.zip** - build WebLaF sources zip archive
-5. `build.npe.jar` -> **ninepatch-editor-x.xx.jar** - build 9-patch editor application
-6. `build.weblaf.demo.jar` -> **weblaf-demo-x.xx.jar** - build WebLaF demo application
-7. `build.javadoc` -> **weblaf-javadoc-x.xx.zip** & **javadoc** - create zipped and unzipped library JavaDoc
-8. `run.npe` -> build and run ninepatch-editor-x.xx.jar - 9-patch editor application
-9. `run.weblaf` -> build and run weblaf-x.xx.jar - library information dialog
-10. `run.weblaf.demo` -> build and run weblaf-demo-x.xx.jar - demo application
+1. `build.artifacts` default target, **build all artifacts** at once
+2. `build.weblaf.jar` **weblaf-x.xx.jar** - build WebLaF binary
+3. `build.weblaf.simple.jar` **weblaf-simple-x.xx.jar** - build WebLaF binary without dependencies
+4. `build.sources.zip` **weblaf-src-x.xx.zip** - build WebLaF sources zip archive
+5. `build.npe.jar` **ninepatch-editor-x.xx.jar** - build 9-patch editor application
+6. `build.weblaf.demo.jar` **weblaf-demo-x.xx.jar** - build WebLaF demo application
+7. `build.javadoc` **weblaf-javadoc-x.xx.zip** & **javadoc** - create zipped and unzipped library JavaDoc
+8. `run.npe` build and run ninepatch-editor-x.xx.jar - 9-patch editor application
+9. `run.weblaf` build and run weblaf-x.xx.jar - library information dialog
+10. `run.weblaf.demo` build and run weblaf-demo-x.xx.jar - demo application
 
 
 Example Usage
 ----------
 To install WebLaF you can simply call `install()` or use one of standard Swing L&F set methods:
 ```java
-public class WebLafUsage
+public class UsageExample
 {
     public static void main ( String[] args )
     {
-        // You should work with UI (including installing L&F) inside EDT
+        // You should work with UI (including installing L&F) inside Event Dispatch Thread (EDT)
         SwingUtilities.invokeLater ( new Runnable ()
         {
             public void run ()

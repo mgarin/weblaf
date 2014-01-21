@@ -44,25 +44,25 @@ public class WebProgressBar extends JProgressBar
         reinstallUI ();
     }
 
-    public WebProgressBar ( int orient )
+    public WebProgressBar ( final int orient )
     {
         super ( orient );
         reinstallUI ();
     }
 
-    public WebProgressBar ( int min, int max )
+    public WebProgressBar ( final int min, final int max )
     {
         super ( min, max );
         reinstallUI ();
     }
 
-    public WebProgressBar ( int orient, int min, int max )
+    public WebProgressBar ( final int orient, final int min, final int max )
     {
         super ( orient, min, max );
         reinstallUI ();
     }
 
-    public WebProgressBar ( BoundedRangeModel newModel )
+    public WebProgressBar ( final BoundedRangeModel newModel )
     {
         super ( newModel );
         reinstallUI ();
@@ -79,7 +79,7 @@ public class WebProgressBar extends JProgressBar
         return getWebUI ().getRound ();
     }
 
-    public void setRound ( int round )
+    public void setRound ( final int round )
     {
         getWebUI ().setRound ( round );
     }
@@ -89,7 +89,7 @@ public class WebProgressBar extends JProgressBar
         return getWebUI ().getInnerRound ();
     }
 
-    public void setInnerRound ( int innerRound )
+    public void setInnerRound ( final int innerRound )
     {
         getWebUI ().setInnerRound ( innerRound );
     }
@@ -99,7 +99,7 @@ public class WebProgressBar extends JProgressBar
         return getWebUI ().getShadeWidth ();
     }
 
-    public void setShadeWidth ( int shadeWidth )
+    public void setShadeWidth ( final int shadeWidth )
     {
         getWebUI ().setShadeWidth ( shadeWidth );
     }
@@ -109,7 +109,7 @@ public class WebProgressBar extends JProgressBar
         return getWebUI ().isPaintIndeterminateBorder ();
     }
 
-    public void setPaintIndeterminateBorder ( boolean paintIndeterminateBorder )
+    public void setPaintIndeterminateBorder ( final boolean paintIndeterminateBorder )
     {
         getWebUI ().setPaintIndeterminateBorder ( paintIndeterminateBorder );
     }
@@ -119,7 +119,7 @@ public class WebProgressBar extends JProgressBar
         return getWebUI ().getPreferredProgressWidth ();
     }
 
-    public void setPreferredProgressWidth ( int preferredWidth )
+    public void setPreferredProgressWidth ( final int preferredWidth )
     {
         getWebUI ().setPreferredProgressWidth ( preferredWidth );
     }
@@ -129,7 +129,7 @@ public class WebProgressBar extends JProgressBar
         return getWebUI ().getBgTop ();
     }
 
-    public void setBgTop ( Color bgTop )
+    public void setBgTop ( final Color bgTop )
     {
         getWebUI ().setBgTop ( bgTop );
     }
@@ -139,7 +139,7 @@ public class WebProgressBar extends JProgressBar
         return getWebUI ().getBgBottom ();
     }
 
-    public void setBgBottom ( Color bgBottom )
+    public void setBgBottom ( final Color bgBottom )
     {
         getWebUI ().setBgBottom ( bgBottom );
     }
@@ -149,7 +149,7 @@ public class WebProgressBar extends JProgressBar
         return getWebUI ().getProgressTopColor ();
     }
 
-    public void setProgressTopColor ( Color progressTopColor )
+    public void setProgressTopColor ( final Color progressTopColor )
     {
         getWebUI ().setProgressTopColor ( progressTopColor );
     }
@@ -159,7 +159,7 @@ public class WebProgressBar extends JProgressBar
         return getWebUI ().getProgressBottomColor ();
     }
 
-    public void setProgressBottomColor ( Color progressBottomColor )
+    public void setProgressBottomColor ( final Color progressBottomColor )
     {
         getWebUI ().setProgressBottomColor ( progressBottomColor );
     }
@@ -169,7 +169,7 @@ public class WebProgressBar extends JProgressBar
         return getWebUI ().getIndeterminateBorder ();
     }
 
-    public void setIndeterminateBorder ( Color indeterminateBorder )
+    public void setIndeterminateBorder ( final Color indeterminateBorder )
     {
         getWebUI ().setIndeterminateBorder ( indeterminateBorder );
     }
@@ -179,7 +179,7 @@ public class WebProgressBar extends JProgressBar
         return getWebUI ().getHighlightWhite ();
     }
 
-    public void setHighlightWhite ( Color highlightWhite )
+    public void setHighlightWhite ( final Color highlightWhite )
     {
         getWebUI ().setHighlightWhite ( highlightWhite );
     }
@@ -189,7 +189,7 @@ public class WebProgressBar extends JProgressBar
         return getWebUI ().getHighlightDarkWhite ();
     }
 
-    public void setHighlightDarkWhite ( Color highlightDarkWhite )
+    public void setHighlightDarkWhite ( final Color highlightDarkWhite )
     {
         getWebUI ().setHighlightDarkWhite ( highlightDarkWhite );
     }
@@ -234,7 +234,7 @@ public class WebProgressBar extends JProgressBar
      * {@inheritDoc}
      */
     @Override
-    public void setLanguage ( String key, Object... data )
+    public void setLanguage ( final String key, final Object... data )
     {
         LanguageManager.registerComponent ( this, key, data );
     }
@@ -243,7 +243,7 @@ public class WebProgressBar extends JProgressBar
      * {@inheritDoc}
      */
     @Override
-    public void updateLanguage ( Object... data )
+    public void updateLanguage ( final Object... data )
     {
         LanguageManager.updateComponent ( this, data );
     }
@@ -252,7 +252,7 @@ public class WebProgressBar extends JProgressBar
      * {@inheritDoc}
      */
     @Override
-    public void updateLanguage ( String key, Object... data )
+    public void updateLanguage ( final String key, final Object... data )
     {
         LanguageManager.updateComponent ( this, key, data );
     }
@@ -279,7 +279,7 @@ public class WebProgressBar extends JProgressBar
      * {@inheritDoc}
      */
     @Override
-    public void setLanguageUpdater ( LanguageUpdater updater )
+    public void setLanguageUpdater ( final LanguageUpdater updater )
     {
         LanguageManager.registerLanguageUpdater ( this, updater );
     }
@@ -310,7 +310,7 @@ public class WebProgressBar extends JProgressBar
      * {@inheritDoc}
      */
     @Override
-    public WebProgressBar setPlainFont ( boolean apply )
+    public WebProgressBar setPlainFont ( final boolean apply )
     {
         return SwingUtils.setPlainFont ( this, apply );
     }
@@ -337,7 +337,7 @@ public class WebProgressBar extends JProgressBar
      * {@inheritDoc}
      */
     @Override
-    public WebProgressBar setBoldFont ( boolean apply )
+    public WebProgressBar setBoldFont ( final boolean apply )
     {
         return SwingUtils.setBoldFont ( this, apply );
     }
@@ -364,7 +364,7 @@ public class WebProgressBar extends JProgressBar
      * {@inheritDoc}
      */
     @Override
-    public WebProgressBar setItalicFont ( boolean apply )
+    public WebProgressBar setItalicFont ( final boolean apply )
     {
         return SwingUtils.setItalicFont ( this, apply );
     }
@@ -382,7 +382,7 @@ public class WebProgressBar extends JProgressBar
      * {@inheritDoc}
      */
     @Override
-    public WebProgressBar setFontStyle ( boolean bold, boolean italic )
+    public WebProgressBar setFontStyle ( final boolean bold, final boolean italic )
     {
         return SwingUtils.setFontStyle ( this, bold, italic );
     }
@@ -391,7 +391,7 @@ public class WebProgressBar extends JProgressBar
      * {@inheritDoc}
      */
     @Override
-    public WebProgressBar setFontStyle ( int style )
+    public WebProgressBar setFontStyle ( final int style )
     {
         return SwingUtils.setFontStyle ( this, style );
     }
@@ -400,7 +400,7 @@ public class WebProgressBar extends JProgressBar
      * {@inheritDoc}
      */
     @Override
-    public WebProgressBar setFontSize ( int fontSize )
+    public WebProgressBar setFontSize ( final int fontSize )
     {
         return SwingUtils.setFontSize ( this, fontSize );
     }
@@ -409,7 +409,7 @@ public class WebProgressBar extends JProgressBar
      * {@inheritDoc}
      */
     @Override
-    public WebProgressBar changeFontSize ( int change )
+    public WebProgressBar changeFontSize ( final int change )
     {
         return SwingUtils.changeFontSize ( this, change );
     }
@@ -427,7 +427,7 @@ public class WebProgressBar extends JProgressBar
      * {@inheritDoc}
      */
     @Override
-    public WebProgressBar setFontSizeAndStyle ( int fontSize, boolean bold, boolean italic )
+    public WebProgressBar setFontSizeAndStyle ( final int fontSize, final boolean bold, final boolean italic )
     {
         return SwingUtils.setFontSizeAndStyle ( this, fontSize, bold, italic );
     }
@@ -436,7 +436,7 @@ public class WebProgressBar extends JProgressBar
      * {@inheritDoc}
      */
     @Override
-    public WebProgressBar setFontSizeAndStyle ( int fontSize, int style )
+    public WebProgressBar setFontSizeAndStyle ( final int fontSize, final int style )
     {
         return SwingUtils.setFontSizeAndStyle ( this, fontSize, style );
     }
@@ -445,7 +445,7 @@ public class WebProgressBar extends JProgressBar
      * {@inheritDoc}
      */
     @Override
-    public WebProgressBar setFontName ( String fontName )
+    public WebProgressBar setFontName ( final String fontName )
     {
         return SwingUtils.setFontName ( this, fontName );
     }
@@ -476,7 +476,7 @@ public class WebProgressBar extends JProgressBar
      * {@inheritDoc}
      */
     @Override
-    public WebProgressBar setPreferredWidth ( int preferredWidth )
+    public WebProgressBar setPreferredWidth ( final int preferredWidth )
     {
         return SizeUtils.setPreferredWidth ( this, preferredWidth );
     }
@@ -494,7 +494,7 @@ public class WebProgressBar extends JProgressBar
      * {@inheritDoc}
      */
     @Override
-    public WebProgressBar setPreferredHeight ( int preferredHeight )
+    public WebProgressBar setPreferredHeight ( final int preferredHeight )
     {
         return SizeUtils.setPreferredHeight ( this, preferredHeight );
     }
@@ -512,7 +512,7 @@ public class WebProgressBar extends JProgressBar
      * {@inheritDoc}
      */
     @Override
-    public WebProgressBar setMinimumWidth ( int minimumWidth )
+    public WebProgressBar setMinimumWidth ( final int minimumWidth )
     {
         return SizeUtils.setMinimumWidth ( this, minimumWidth );
     }
@@ -530,7 +530,7 @@ public class WebProgressBar extends JProgressBar
      * {@inheritDoc}
      */
     @Override
-    public WebProgressBar setMinimumHeight ( int minimumHeight )
+    public WebProgressBar setMinimumHeight ( final int minimumHeight )
     {
         return SizeUtils.setMinimumHeight ( this, minimumHeight );
     }

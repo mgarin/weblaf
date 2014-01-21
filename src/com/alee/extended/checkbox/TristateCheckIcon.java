@@ -15,10 +15,9 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.laf.checkbox;
+package com.alee.extended.checkbox;
 
-import com.alee.extended.checkbox.CheckState;
-import com.alee.extended.checkbox.WebTristateCheckBox;
+import com.alee.laf.checkbox.SimpleCheckIcon;
 import com.alee.utils.GeometryUtils;
 
 import javax.swing.*;
@@ -71,7 +70,7 @@ public class TristateCheckIcon extends SimpleCheckIcon
      * {@inheritDoc}
      */
     @Override
-    public void setNextState ( CheckState nextState )
+    public void setNextState ( final CheckState nextState )
     {
         super.setNextState ( nextState );
         switch ( state )

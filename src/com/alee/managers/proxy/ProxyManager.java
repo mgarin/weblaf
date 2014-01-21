@@ -70,7 +70,7 @@ public final class ProxyManager
     /**
      * Whether automatic proxy detection is enabled or not.
      */
-    private static boolean autoDetectionEnabled = true;
+    private static boolean autoDetectionEnabled = false;
 
     /**
      * Custom proxy authenticator.

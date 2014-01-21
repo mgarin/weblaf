@@ -46,42 +46,42 @@ public class WebTable extends JTable implements FontMethods<WebTable>
         super ();
     }
 
-    public WebTable ( TableModel dm )
+    public WebTable ( final TableModel dm )
     {
         super ( dm );
     }
 
-    public WebTable ( TableModel dm, TableColumnModel cm )
+    public WebTable ( final TableModel dm, final TableColumnModel cm )
     {
         super ( dm, cm );
     }
 
-    public WebTable ( TableModel dm, TableColumnModel cm, ListSelectionModel sm )
+    public WebTable ( final TableModel dm, final TableColumnModel cm, final ListSelectionModel sm )
     {
         super ( dm, cm, sm );
     }
 
-    public WebTable ( int numRows, int numColumns )
+    public WebTable ( final int numRows, final int numColumns )
     {
         super ( numRows, numColumns );
     }
 
-    public WebTable ( Vector rowData, Vector columnNames )
+    public WebTable ( final Vector rowData, final Vector columnNames )
     {
         super ( rowData, columnNames );
     }
 
-    public WebTable ( Object[][] rowData, Object[] columnNames )
+    public WebTable ( final Object[][] rowData, final Object[] columnNames )
     {
         super ( rowData, columnNames );
     }
 
-    public void setSelectedRow ( int row )
+    public void setSelectedRow ( final int row )
     {
         setSelectedRow ( row, true );
     }
 
-    public void setSelectedRow ( int row, boolean shouldScroll )
+    public void setSelectedRow ( final int row, final boolean shouldScroll )
     {
         clearSelection ();
         addSelectedRow ( row );
@@ -91,7 +91,7 @@ public class WebTable extends JTable implements FontMethods<WebTable>
         }
     }
 
-    public void addSelectedRow ( int row )
+    public void addSelectedRow ( final int row )
     {
         if ( row != -1 )
         {
@@ -100,13 +100,13 @@ public class WebTable extends JTable implements FontMethods<WebTable>
         }
     }
 
-    public void setSelectedRows ( int startRow, int endRow )
+    public void setSelectedRows ( final int startRow, final int endRow )
     {
         clearSelection ();
         addSelectedRows ( startRow, endRow );
     }
 
-    public void addSelectedRows ( int startRow, int endRow )
+    public void addSelectedRows ( final int startRow, final int endRow )
     {
         if ( startRow != -1 && endRow != -1 )
         {
@@ -115,12 +115,12 @@ public class WebTable extends JTable implements FontMethods<WebTable>
         }
     }
 
-    public void setSelectedColumn ( int column )
+    public void setSelectedColumn ( final int column )
     {
         setSelectedColumn ( column, true );
     }
 
-    public void setSelectedColumn ( int column, boolean shouldScroll )
+    public void setSelectedColumn ( final int column, final boolean shouldScroll )
     {
         clearSelection ();
         addSelectedColumn ( column );
@@ -130,7 +130,7 @@ public class WebTable extends JTable implements FontMethods<WebTable>
         }
     }
 
-    public void addSelectedColumn ( int column )
+    public void addSelectedColumn ( final int column )
     {
         if ( column != -1 )
         {
@@ -139,13 +139,13 @@ public class WebTable extends JTable implements FontMethods<WebTable>
         }
     }
 
-    public void setSelectedColumns ( int startColumn, int endColumn )
+    public void setSelectedColumns ( final int startColumn, final int endColumn )
     {
         clearSelection ();
         addSelectedColumns ( startColumn, endColumn );
     }
 
-    public void addSelectedColumns ( int startColumn, int endColumn )
+    public void addSelectedColumns ( final int startColumn, final int endColumn )
     {
         if ( startColumn != -1 && endColumn != -1 )
         {
@@ -154,7 +154,7 @@ public class WebTable extends JTable implements FontMethods<WebTable>
         }
     }
 
-    public void scrollToRow ( int row )
+    public void scrollToRow ( final int row )
     {
         final Rectangle firstCell = getCellRect ( row, 0, true );
         final Rectangle lastCell = getCellRect ( row, getColumnCount () - 1, true );
@@ -162,7 +162,7 @@ public class WebTable extends JTable implements FontMethods<WebTable>
         scrollRectToVisible ( rect );
     }
 
-    public void scrollToColumn ( int column )
+    public void scrollToColumn ( final int column )
     {
         final Rectangle firstCell = getCellRect ( 0, column, true );
         final Rectangle lastCell = getCellRect ( getRowCount () - 1, column, true );
@@ -171,19 +171,22 @@ public class WebTable extends JTable implements FontMethods<WebTable>
     }
 
     @Override
-    public boolean editCellAt ( int row, int column, EventObject event )
+    public boolean editCellAt ( final int row, final int column, final EventObject event )
     {
         final boolean editingStarted = super.editCellAt ( row, column, event );
         if ( editingStarted )
         {
-            CellEditor cellEditor = getCellEditor ();
-            try {
-                Object o = cellEditor.getClass().getMethod("getComponent").invoke(cellEditor);
+            final CellEditor cellEditor = getCellEditor ();
+            try
+            {
+                final Object o = cellEditor.getClass ().getMethod ( "getComponent" ).invoke ( cellEditor );
                 if ( o instanceof Component )
                 {
                     ( ( Component ) o ).requestFocusInWindow ();
                 }
-            } catch (Exception e) {
+            }
+            catch ( Exception e )
+            {
                 // ignore
             }
         }
@@ -197,7 +200,7 @@ public class WebTable extends JTable implements FontMethods<WebTable>
     }
 
     @Override
-    public boolean isCellEditable ( int row, int column )
+    public boolean isCellEditable ( final int row, final int column )
     {
         return editable && super.isCellEditable ( row, column );
     }
@@ -207,12 +210,12 @@ public class WebTable extends JTable implements FontMethods<WebTable>
         return editable;
     }
 
-    public void setEditable ( boolean editable )
+    public void setEditable ( final boolean editable )
     {
         this.editable = editable;
     }
 
-    public void setVisibleRowCount ( int visibleRowCount )
+    public void setVisibleRowCount ( final int visibleRowCount )
     {
         this.visibleRowCount = visibleRowCount;
 
@@ -220,7 +223,7 @@ public class WebTable extends JTable implements FontMethods<WebTable>
         setPreferredScrollableViewportSize ( null );
 
         // Update viewport size
-        JScrollPane scrollPane = SwingUtils.getScrollPane ( this );
+        final JScrollPane scrollPane = SwingUtils.getScrollPane ( this );
         if ( scrollPane != null )
         {
             scrollPane.getViewport ().invalidate ();
@@ -243,10 +246,10 @@ public class WebTable extends JTable implements FontMethods<WebTable>
         final Dimension ps = getPreferredSize ();
         if ( visibleRowCount != -1 )
         {
-            int rowHeight;
+            final int rowHeight;
             if ( getRowCount () > 0 )
             {
-                Rectangle r = getCellRect ( 0, 0, true );
+                final Rectangle r = getCellRect ( 0, 0, true );
                 rowHeight = r.height;
             }
             else
@@ -303,17 +306,17 @@ public class WebTable extends JTable implements FontMethods<WebTable>
 
     private void configureEnclosingScrollPaneUI ()
     {
-        Container p = getParent ();
+        final Container p = getParent ();
         if ( p instanceof JViewport )
         {
-            Container gp = p.getParent ();
+            final Container gp = p.getParent ();
             if ( gp instanceof JScrollPane )
             {
-                JScrollPane scrollPane = ( JScrollPane ) gp;
+                final JScrollPane scrollPane = ( JScrollPane ) gp;
                 // Make certain we are the viewPort's view and not, for
                 // example, the rowHeaderView of the scrollPane -
                 // an implementor of fixed columns might do this.
-                JViewport viewport = scrollPane.getViewport ();
+                final JViewport viewport = scrollPane.getViewport ();
                 if ( viewport == null || viewport.getView () != this )
                 {
                     return;
@@ -333,7 +336,7 @@ public class WebTable extends JTable implements FontMethods<WebTable>
                 if ( corner == null || corner instanceof UIResource )
                 {
                     corner = null;
-                    Object componentClass = UIManager.get ( "Table.scrollPaneCornerComponent" );
+                    final Object componentClass = UIManager.get ( "Table.scrollPaneCornerComponent" );
                     if ( componentClass instanceof Class )
                     {
                         try
@@ -368,7 +371,7 @@ public class WebTable extends JTable implements FontMethods<WebTable>
      * {@inheritDoc}
      */
     @Override
-    public WebTable setPlainFont ( boolean apply )
+    public WebTable setPlainFont ( final boolean apply )
     {
         return SwingUtils.setPlainFont ( this, apply );
     }
@@ -395,7 +398,7 @@ public class WebTable extends JTable implements FontMethods<WebTable>
      * {@inheritDoc}
      */
     @Override
-    public WebTable setBoldFont ( boolean apply )
+    public WebTable setBoldFont ( final boolean apply )
     {
         return SwingUtils.setBoldFont ( this, apply );
     }
@@ -422,7 +425,7 @@ public class WebTable extends JTable implements FontMethods<WebTable>
      * {@inheritDoc}
      */
     @Override
-    public WebTable setItalicFont ( boolean apply )
+    public WebTable setItalicFont ( final boolean apply )
     {
         return SwingUtils.setItalicFont ( this, apply );
     }
@@ -440,7 +443,7 @@ public class WebTable extends JTable implements FontMethods<WebTable>
      * {@inheritDoc}
      */
     @Override
-    public WebTable setFontStyle ( boolean bold, boolean italic )
+    public WebTable setFontStyle ( final boolean bold, final boolean italic )
     {
         return SwingUtils.setFontStyle ( this, bold, italic );
     }
@@ -449,7 +452,7 @@ public class WebTable extends JTable implements FontMethods<WebTable>
      * {@inheritDoc}
      */
     @Override
-    public WebTable setFontStyle ( int style )
+    public WebTable setFontStyle ( final int style )
     {
         return SwingUtils.setFontStyle ( this, style );
     }
@@ -458,7 +461,7 @@ public class WebTable extends JTable implements FontMethods<WebTable>
      * {@inheritDoc}
      */
     @Override
-    public WebTable setFontSize ( int fontSize )
+    public WebTable setFontSize ( final int fontSize )
     {
         return SwingUtils.setFontSize ( this, fontSize );
     }
@@ -467,7 +470,7 @@ public class WebTable extends JTable implements FontMethods<WebTable>
      * {@inheritDoc}
      */
     @Override
-    public WebTable changeFontSize ( int change )
+    public WebTable changeFontSize ( final int change )
     {
         return SwingUtils.changeFontSize ( this, change );
     }
@@ -485,7 +488,7 @@ public class WebTable extends JTable implements FontMethods<WebTable>
      * {@inheritDoc}
      */
     @Override
-    public WebTable setFontSizeAndStyle ( int fontSize, boolean bold, boolean italic )
+    public WebTable setFontSizeAndStyle ( final int fontSize, final boolean bold, final boolean italic )
     {
         return SwingUtils.setFontSizeAndStyle ( this, fontSize, bold, italic );
     }
@@ -494,7 +497,7 @@ public class WebTable extends JTable implements FontMethods<WebTable>
      * {@inheritDoc}
      */
     @Override
-    public WebTable setFontSizeAndStyle ( int fontSize, int style )
+    public WebTable setFontSizeAndStyle ( final int fontSize, final int style )
     {
         return SwingUtils.setFontSizeAndStyle ( this, fontSize, style );
     }
@@ -503,7 +506,7 @@ public class WebTable extends JTable implements FontMethods<WebTable>
      * {@inheritDoc}
      */
     @Override
-    public WebTable setFontName ( String fontName )
+    public WebTable setFontName ( final String fontName )
     {
         return SwingUtils.setFontName ( this, fontName );
     }

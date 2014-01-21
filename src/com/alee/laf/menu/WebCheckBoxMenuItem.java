@@ -83,6 +83,30 @@ public class WebCheckBoxMenuItem extends JCheckBoxMenuItem implements LanguageMe
     /**
      * Constructs new checkbox menu item using the specified settings.
      *
+     * @param text        menu item text
+     * @param accelerator menu item accelerator
+     */
+    public WebCheckBoxMenuItem ( final String text, final KeyStroke accelerator )
+    {
+        super ( text );
+        setAccelerator ( accelerator );
+    }
+
+    /**
+     * Constructs new checkbox menu item using the specified settings.
+     *
+     * @param text        menu item text
+     * @param accelerator menu item accelerator
+     */
+    public WebCheckBoxMenuItem ( final String text, final HotkeyData accelerator )
+    {
+        super ( text );
+        setAccelerator ( accelerator );
+    }
+
+    /**
+     * Constructs new checkbox menu item using the specified settings.
+     *
      * @param text menu item text
      * @param b    whether this checkbox item is selected or not
      */
@@ -198,6 +222,26 @@ public class WebCheckBoxMenuItem extends JCheckBoxMenuItem implements LanguageMe
     public void setMargin ( final Insets margin )
     {
         getWebUI ().setMargin ( margin );
+    }
+
+    /**
+     * Returns spacing between menu item content and its left/right borders.
+     *
+     * @return spacing between menu item content and its left/right borders
+     */
+    public int getSideSpacing ()
+    {
+        return getWebUI ().getSideSpacing ();
+    }
+
+    /**
+     * Sets spacing between menu item content and its left/right borders
+     *
+     * @param sideSpacing spacing between menu item content and its left/right borders
+     */
+    public void setSideSpacing ( final int sideSpacing )
+    {
+        getWebUI ().setSideSpacing ( sideSpacing );
     }
 
     /**

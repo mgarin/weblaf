@@ -17,7 +17,6 @@
 
 package com.alee.laf.menu;
 
-import com.alee.extended.painter.Painter;
 import com.alee.laf.StyleConstants;
 import com.alee.utils.ProprietaryUtils;
 
@@ -34,7 +33,7 @@ public final class WebPopupMenuStyle
     /**
      * Popup menu style.
      */
-    public static PopupMenuStyle popupMenuStyle = PopupMenuPainterStyle.popupMenuStyle;
+    public static PopupPainterStyle popupPainterStyle = WebPopupPainterStyle.popupPainterStyle;
 
     /**
      * Whether should apply dropdown popup menu style to popup menues within menubar.
@@ -49,30 +48,35 @@ public final class WebPopupMenuStyle
     /**
      * Popup menu border color.
      */
-    public static Color borderColor = PopupMenuPainterStyle.borderColor;
+    public static Color borderColor = WebPopupPainterStyle.borderColor;
 
     /**
      * Popup menu corners rounding.
      * This value might vary depending on available underlying system features.
      */
-    public static int round = ProprietaryUtils.isWindowTransparencyAllowed () ? PopupMenuPainterStyle.round : StyleConstants.smallRound;
+    public static int round = ProprietaryUtils.isWindowTransparencyAllowed () ? WebPopupPainterStyle.round : StyleConstants.smallRound;
 
     /**
      * Popup menu shade width.
      * Be aware that this value should always be greater or equal to cornerWidth due to Swing menu processing limitations.
      * This value might vary depending on available underlying system features.
      */
-    public static int shadeWidth = ProprietaryUtils.isWindowTransparencyAllowed () ? PopupMenuPainterStyle.shadeWidth : 0;
+    public static int shadeWidth = ProprietaryUtils.isWindowTransparencyAllowed () ? WebPopupPainterStyle.shadeWidth : 0;
 
     /**
      * Popup menu shade opacity.
      */
-    public static float shadeOpacity = PopupMenuPainterStyle.shadeOpacity;
+    public static float shadeOpacity = WebPopupPainterStyle.shadeOpacity;
 
     /**
      * Popup menu dropdown style corner width
      */
-    public static int cornerWidth = PopupMenuPainterStyle.cornerWidth;
+    public static int cornerWidth = WebPopupPainterStyle.cornerWidth;
+
+    /**
+     * Popup menu background transparency.
+     */
+    public static float transparency = WebPopupPainterStyle.transparency;
 
     /**
      * Popup menu margin.
@@ -88,7 +92,7 @@ public final class WebPopupMenuStyle
      * Popup menu painter.
      * If set it will override WebLaF styling.
      */
-    public static Painter painter = null;
+    public static PopupMenuPainter painter = null;
 
     /**
      * Whether should fix initial popup menu location or not.

@@ -28,7 +28,7 @@ import java.awt.*;
 
 /**
  * User: mgarin Date: 14.02.12 Time: 12:08
- * <p>
+ * <p/>
  * This class provides a quick way to display a progress dialog anywhere you need it and change the progress values without any additional
  * efforts like working with Swing thread to update progress
  */
@@ -43,12 +43,12 @@ public class WebProgressDialog extends WebDialog
     private Component middleComponent = null;
     private WebProgressBar progressBar;
 
-    public WebProgressDialog ( String title )
+    public WebProgressDialog ( final String title )
     {
         this ( null, title );
     }
 
-    public WebProgressDialog ( Window owner, String title )
+    public WebProgressDialog ( final Window owner, final String title )
     {
         super ( owner, title );
         setLayout ( new BorderLayout () );
@@ -64,7 +64,7 @@ public class WebProgressDialog extends WebDialog
             @Override
             public Dimension getPreferredSize ()
             {
-                Dimension ps = super.getPreferredSize ();
+                final Dimension ps = super.getPreferredSize ();
                 ps.width = 0;
                 return ps;
             }
@@ -78,7 +78,7 @@ public class WebProgressDialog extends WebDialog
             @Override
             public Dimension getPreferredSize ()
             {
-                Dimension ps = super.getPreferredSize ();
+                final Dimension ps = super.getPreferredSize ();
                 if ( preferredProgressWidth > 0 )
                 {
                     ps.width = preferredProgressWidth;
@@ -217,7 +217,7 @@ public class WebProgressDialog extends WebDialog
         return preferredProgressWidth;
     }
 
-    public void setPreferredProgressWidth ( int preferredProgressWidth )
+    public void setPreferredProgressWidth ( final int preferredProgressWidth )
     {
         this.preferredProgressWidth = preferredProgressWidth;
         updateBounds ();
@@ -238,7 +238,7 @@ public class WebProgressDialog extends WebDialog
         return middleComponent;
     }
 
-    public void setMiddleComponent ( Component middleComponent )
+    public void setMiddleComponent ( final Component middleComponent )
     {
         if ( this.middleComponent != null )
         {
@@ -255,7 +255,7 @@ public class WebProgressDialog extends WebDialog
         return progressBar;
     }
 
-    public void setShowProgressBar ( boolean showProgressBar )
+    public void setShowProgressBar ( final boolean showProgressBar )
     {
         if ( showProgressBar )
         {
@@ -287,7 +287,7 @@ public class WebProgressDialog extends WebDialog
     }
 
     @Override
-    public void setVisible ( boolean b )
+    public void setVisible ( final boolean b )
     {
         if ( b )
         {

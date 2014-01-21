@@ -46,20 +46,20 @@ public class FieldsInputPromptExample extends DefaultExample
     }
 
     @Override
-    public Component getPreview ( WebLookAndFeelDemo owner )
+    public Component getPreview ( final WebLookAndFeelDemo owner )
     {
         // Text field input prompt
-        WebTextField textField = new WebTextField ( 15 );
+        final WebTextField textField = new WebTextField ( 15 );
         textField.setInputPrompt ( "Enter text..." );
         textField.setInputPromptFont ( textField.getFont ().deriveFont ( Font.ITALIC ) );
 
         // Password field input prompt
-        WebPasswordField passwordField = new WebPasswordField ( 15 );
+        final WebPasswordField passwordField = new WebPasswordField ( 15 );
         passwordField.setInputPrompt ( "Enter pass..." );
         passwordField.setHideInputPromptOnFocus ( false );
 
         // Date field input prompt
-        WebDateField dateField = new WebDateField ();
+        final WebDateField dateField = new WebDateField ();
         dateField.setInputPrompt ( "Enter date..." );
         dateField.setInputPromptPosition ( SwingConstants.CENTER );
 

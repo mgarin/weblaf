@@ -48,13 +48,13 @@ public class WebTextAreaUI extends BasicTextAreaUI implements BorderMethods
     private PropertyChangeListener marginChangeListener;
 
     @SuppressWarnings ("UnusedParameters")
-    public static ComponentUI createUI ( JComponent c )
+    public static ComponentUI createUI ( final JComponent c )
     {
         return new WebTextAreaUI ();
     }
 
     @Override
-    public void installUI ( JComponent c )
+    public void installUI ( final JComponent c )
     {
         super.installUI ( c );
 
@@ -77,13 +77,13 @@ public class WebTextAreaUI extends BasicTextAreaUI implements BorderMethods
         focusListener = new FocusListener ()
         {
             @Override
-            public void focusLost ( FocusEvent e )
+            public void focusLost ( final FocusEvent e )
             {
                 textComponent.repaint ();
             }
 
             @Override
-            public void focusGained ( FocusEvent e )
+            public void focusGained ( final FocusEvent e )
             {
                 textComponent.repaint ();
             }
@@ -93,23 +93,23 @@ public class WebTextAreaUI extends BasicTextAreaUI implements BorderMethods
         marginChangeListener = new PropertyChangeListener ()
         {
             @Override
-            public void propertyChange ( PropertyChangeEvent evt )
+            public void propertyChange ( final PropertyChangeEvent evt )
             {
                 updateBorder ();
             }
         };
-        textComponent.addPropertyChangeListener ( WebLookAndFeel.COMPONENT_MARGIN_PROPERTY, marginChangeListener );
+        textComponent.addPropertyChangeListener ( WebLookAndFeel.MARGIN_PROPERTY, marginChangeListener );
     }
 
     @Override
-    public void uninstallUI ( JComponent c )
+    public void uninstallUI ( final JComponent c )
     {
         final JTextComponent component = getComponent ();
 
         PainterSupport.uninstallPainter ( component, this.painter );
 
         component.removeFocusListener ( focusListener );
-        component.removePropertyChangeListener ( WebLookAndFeel.COMPONENT_MARGIN_PROPERTY, marginChangeListener );
+        component.removePropertyChangeListener ( WebLookAndFeel.MARGIN_PROPERTY, marginChangeListener );
 
         super.uninstallUI ( c );
     }
@@ -119,7 +119,7 @@ public class WebTextAreaUI extends BasicTextAreaUI implements BorderMethods
         return painter;
     }
 
-    public void setPainter ( Painter painter )
+    public void setPainter ( final Painter painter )
     {
         final JTextComponent textComponent = getComponent ();
         PainterSupport.uninstallPainter ( textComponent, this.painter );
@@ -136,20 +136,26 @@ public class WebTextAreaUI extends BasicTextAreaUI implements BorderMethods
     @Override
     public void updateBorder ()
     {
-        JTextComponent component = getComponent ();
+        final JTextComponent component = getComponent ();
         if ( component != null )
         {
+            // Preserve old borders
+            if ( SwingUtils.isPreserveBorders ( component ) )
+            {
+                return;
+            }
+
             // Actual margin
-            Insets margin = component.getMargin ();
-            boolean ltr = component.getComponentOrientation ().isLeftToRight ();
-            Insets m = margin == null ? new Insets ( 0, 0, 0, 0 ) :
+            final Insets margin = component.getMargin ();
+            final boolean ltr = component.getComponentOrientation ().isLeftToRight ();
+            final Insets m = margin == null ? new Insets ( 0, 0, 0, 0 ) :
                     new Insets ( margin.top, ( ltr ? margin.left : margin.right ), margin.bottom, ( ltr ? margin.right : margin.left ) );
 
             // Applying border
             if ( painter != null )
             {
                 // Painter borders
-                Insets pi = painter.getMargin ( component );
+                final Insets pi = painter.getMargin ( component );
                 m.top += pi.top;
                 m.bottom += pi.bottom;
                 m.left += ltr ? pi.left : pi.right;
@@ -162,16 +168,16 @@ public class WebTextAreaUI extends BasicTextAreaUI implements BorderMethods
     }
 
     @Override
-    protected void paintBackground ( Graphics g )
+    protected void paintBackground ( final Graphics g )
     {
         //
     }
 
     @Override
-    protected void paintSafely ( Graphics g )
+    protected void paintSafely ( final Graphics g )
     {
-        Graphics2D g2d = ( Graphics2D ) g;
-        JTextComponent c = getComponent ();
+        final Graphics2D g2d = ( Graphics2D ) g;
+        final JTextComponent c = getComponent ();
 
         if ( c.isOpaque () && ( painter == null || !painter.isOpaque ( c ) ) )
         {
@@ -186,13 +192,13 @@ public class WebTextAreaUI extends BasicTextAreaUI implements BorderMethods
             painter.paint ( g2d, SwingUtils.size ( c ), c );
         }
 
-        Map hints = SwingUtils.setupTextAntialias ( g2d );
+        final Map hints = SwingUtils.setupTextAntialias ( g2d );
         super.paintSafely ( g );
         SwingUtils.restoreTextAntialias ( g2d, hints );
     }
 
     @Override
-    public Dimension getPreferredSize ( JComponent c )
+    public Dimension getPreferredSize ( final JComponent c )
     {
         Dimension ps = super.getPreferredSize ( c );
         if ( painter != null )

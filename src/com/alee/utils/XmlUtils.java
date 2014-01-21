@@ -31,6 +31,7 @@ import com.alee.utils.xml.*;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.converters.Converter;
 import com.thoughtworks.xstream.converters.SingleValueConverter;
+import com.thoughtworks.xstream.io.xml.DomDriver;
 
 import javax.swing.*;
 import java.awt.*;
@@ -91,7 +92,7 @@ public final class XmlUtils
         try
         {
             // XStream instnce initialization
-            xStream = new XStream ();
+            xStream = new XStream ( new DomDriver () );
 
             // Standart Java-classes aliases
             if ( aliasJdkClasses )

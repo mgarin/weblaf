@@ -19,7 +19,6 @@ package com.alee.examples.groups.filechooser;
 
 import com.alee.examples.WebLookAndFeelDemo;
 import com.alee.examples.content.DefaultExample;
-import com.alee.examples.content.FeatureState;
 import com.alee.extended.filechooser.WebFileChooserField;
 import com.alee.extended.panel.GroupPanel;
 
@@ -45,20 +44,14 @@ public class FileChooserFieldsExample extends DefaultExample
     }
 
     @Override
-    public FeatureState getFeatureState ()
-    {
-        return FeatureState.beta;
-    }
-
-    @Override
-    public Component getPreview ( WebLookAndFeelDemo owner )
+    public Component getPreview ( final WebLookAndFeelDemo owner )
     {
         // Simple file chooser field
-        WebFileChooserField fileChooserField1 = new WebFileChooserField ( owner );
+        final WebFileChooserField fileChooserField1 = new WebFileChooserField ( owner );
         fileChooserField1.setPreferredWidth ( 200 );
 
         // Single file chooser field with custom root
-        WebFileChooserField fileChooserField2 = new WebFileChooserField ( owner );
+        final WebFileChooserField fileChooserField2 = new WebFileChooserField ( owner );
         fileChooserField2.setPreferredWidth ( 200 );
         fileChooserField2.setMultiSelectionEnabled ( false );
         fileChooserField2.setShowFileShortName ( false );

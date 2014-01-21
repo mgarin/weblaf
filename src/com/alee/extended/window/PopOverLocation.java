@@ -15,24 +15,59 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.laf.menu;
+package com.alee.extended.window;
 
 /**
- * This enumeration represents possible popup menu styles.
+ * This enumeration represents possible WebPopOver default display locations on the screen.
  *
  * @author Mikle Garin
+ * @see WebPopOver
  */
 
-public enum PopupMenuStyle
+public enum PopOverLocation
 {
     /**
-     * Simple popup menu style.
+     * Center of the screen.
      */
-    simple,
+    center,
 
     /**
-     * Dropdown popup menu style.
-     * Menu will paint an additional styled corner faced to the side it is invoked from.
+     * Top-left corner of the screen.
      */
-    dropdown
+    topLeft,
+
+    /**
+     * Top-right corner of the screen.
+     */
+    topRight,
+
+    /**
+     * Bottom-left corner of the screen.
+     */
+    bottomLeft,
+
+    /**
+     * Bottom-right corner of the screen.
+     */
+    bottomRight,
+
+    /**
+     * Top center of the screen.
+     */
+    topCenter,
+
+    /**
+     * Bottom center of the screen.
+     */
+    bottomCenter,
+
+    /**
+     * Left center of the screen.
+     */
+    leftCenter,
+
+    /**
+     * Right center of the screen.
+     */
+    rightCenter,
 }

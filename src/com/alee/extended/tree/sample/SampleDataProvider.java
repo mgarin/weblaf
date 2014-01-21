@@ -53,7 +53,7 @@ public class SampleDataProvider extends AbstractTreeDataProvider<SampleNode>
     {
         // Sample loading delay to see the loader in progress
         parent.setTime ( 0 );
-        final int time = MathUtils.random ( 100, 3000 );
+        final int time = MathUtils.random ( 100, 2000 );
         ThreadUtils.sleepSafely ( time );
         parent.setTime ( time );
 

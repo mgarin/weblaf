@@ -29,7 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * User: mgarin Date: 20.04.12 Time: 13:57
+ * @author Mikle Garin
  */
 
 @XStreamAlias ("record")
@@ -49,26 +49,26 @@ public final class Record implements Serializable, Cloneable
         this ( null );
     }
 
-    public Record ( String key )
+    public Record ( final String key )
     {
         this ( key, new ArrayList<Value> () );
     }
 
-    public Record ( String key, Value... values )
+    public Record ( final String key, final Value... values )
     {
         super ();
         setKey ( key );
         setValues ( CollectionUtils.copy ( values ) );
     }
 
-    public Record ( String key, List<Value> values )
+    public Record ( final String key, final List<Value> values )
     {
         super ();
         setKey ( key );
         setValues ( CollectionUtils.copy ( values ) );
     }
 
-    public Record ( String key, String hotkey, Value... values )
+    public Record ( final String key, final String hotkey, final Value... values )
     {
         super ();
         setKey ( key );
@@ -76,7 +76,7 @@ public final class Record implements Serializable, Cloneable
         setValues ( CollectionUtils.copy ( values ) );
     }
 
-    public Record ( String key, String hotkey, List<Value> values )
+    public Record ( final String key, final String hotkey, final List<Value> values )
     {
         super ();
         setKey ( key );
@@ -89,7 +89,7 @@ public final class Record implements Serializable, Cloneable
         return key;
     }
 
-    public void setKey ( String key )
+    public void setKey ( final String key )
     {
         this.key = key;
     }
@@ -99,7 +99,7 @@ public final class Record implements Serializable, Cloneable
         return hotkey;
     }
 
-    public void setHotkey ( String hotkey )
+    public void setHotkey ( final String hotkey )
     {
         this.hotkey = hotkey;
     }
@@ -109,83 +109,107 @@ public final class Record implements Serializable, Cloneable
         return values;
     }
 
-    public void setValues ( List<Value> values )
+    public void setValues ( final List<Value> values )
     {
         this.values = values;
     }
 
-    public Value addValue ( Value value )
+    public Value addValue ( final Value value )
     {
-        //        for ( Value v : values )
-        //        {
-        //            if ( v.getLang ().equals ( value.getLang () ) )
-        //            {
-        //                v.setMnemonic ( value.getMnemonic () );
-        //                v.setHotkey ( value.getHotkey () );
-        //                v.setTexts ( value.getTexts () );
-        //                v.setTooltips ( value.getTooltips () );
-        //                return v;
-        //            }
-        //        }
-
-        this.values.add ( value );
+        if ( values == null )
+        {
+            values = new ArrayList<Value> ( 1 );
+        }
+        values.add ( value );
         return value;
     }
 
-    public void removeValue ( Value value )
+    public void removeValue ( final Value value )
     {
-        this.values.remove ( value );
+        if ( values != null )
+        {
+            values.remove ( value );
+        }
     }
 
-    public void removeValue ( String language )
+    public void removeValue ( final String language )
     {
-        for ( int i = 0; i < values.size (); i++ )
+        if ( values != null )
         {
-            String valueLang = values.get ( i ).getLang ();
-            if ( CompareUtils.equals ( valueLang, language ) )
+            for ( int i = 0; i < values.size (); i++ )
             {
-                values.remove ( i );
+                final String valueLang = values.get ( i ).getLang ();
+                if ( CompareUtils.equals ( valueLang, language ) )
+                {
+                    values.remove ( i );
+                }
             }
         }
     }
 
     public void clear ()
     {
-        values.clear ();
+        if ( values != null )
+        {
+            values.clear ();
+        }
     }
 
     public int size ()
     {
-        return values.size ();
+        return values != null ? values.size () : 0;
     }
 
-    public String getText ( String lang )
+    public String getText ( final String lang )
     {
         return getText ( lang, null );
     }
 
-    public String getText ( String lang, String state )
+    public String getText ( final String lang, final String state )
     {
-        Value value = getValue ( lang );
+        final Value value = getValue ( lang );
         return value != null ? value.getText ( state ) : null;
     }
 
-    public Value getValue ( String lang )
+    public Value getValue ( final String lang )
     {
-        for ( Value value : values )
+        if ( values != null )
         {
-            final String valueLang = value.getLang ();
-            if ( valueLang == null || CompareUtils.equals ( valueLang, lang ) )
+            for ( final Value value : values )
             {
-                return value;
+                final String valueLang = value.getLang ();
+                if ( valueLang == null || CompareUtils.equals ( valueLang, lang ) )
+                {
+                    return value;
+                }
             }
         }
         return null;
     }
 
-    public boolean hasValue ( String lang )
+    public boolean hasValue ( final String lang )
     {
         return getValue ( lang ) != null;
+    }
+
+    public List<String> getSupportedLanguages ()
+    {
+        return getSupportedLanguages ( new ArrayList<String> ( size () ) );
+    }
+
+    public List<String> getSupportedLanguages ( final List<String> languages )
+    {
+        if ( values != null )
+        {
+            for ( final Value value : values )
+            {
+                if ( !languages.contains ( value.getLang () ) )
+                {
+                    languages.add ( value.getLang () );
+                }
+            }
+        }
+        return languages;
     }
 
     @Override
@@ -199,7 +223,7 @@ public final class Record implements Serializable, Cloneable
         return toString ( false );
     }
 
-    public String toString ( boolean boldKey )
+    public String toString ( final boolean boldKey )
     {
         return ( boldKey ? "<html><b>" : "" ) + key + ( boldKey ? "</b>" : "" ) +
                 ( hotkey != null ? " (" + hotkey + ")" : "" ) + " -> " +

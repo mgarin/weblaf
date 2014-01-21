@@ -35,7 +35,7 @@ public class WebTreeModel<E extends MutableTreeNode> extends DefaultTreeModel
      *
      * @param root TreeNode object that is the root of the tree
      */
-    public WebTreeModel ( E root )
+    public WebTreeModel ( final E root )
     {
         super ( root );
     }
@@ -46,7 +46,7 @@ public class WebTreeModel<E extends MutableTreeNode> extends DefaultTreeModel
      * @param root               TreeNode object that is the root of the tree
      * @param asksAllowsChildren false if any node can have children, true if each node is asked to see if it can have children
      */
-    public WebTreeModel ( E root, boolean asksAllowsChildren )
+    public WebTreeModel ( final E root, final boolean asksAllowsChildren )
     {
         super ( root, asksAllowsChildren );
     }
@@ -58,14 +58,14 @@ public class WebTreeModel<E extends MutableTreeNode> extends DefaultTreeModel
      * @param parent   parent node
      * @param index    insert index
      */
-    public void insertNodesInto ( List<E> children, E parent, int index )
+    public void insertNodesInto ( final List<E> children, final E parent, final int index )
     {
         for ( int i = children.size () - 1; i >= 0; i-- )
         {
             parent.insert ( children.get ( i ), index );
         }
 
-        int[] indices = new int[ children.size () ];
+        final int[] indices = new int[ children.size () ];
         for ( int i = 0; i < children.size (); i++ )
         {
             indices[ i ] = index + i;
@@ -75,12 +75,97 @@ public class WebTreeModel<E extends MutableTreeNode> extends DefaultTreeModel
     }
 
     /**
-     * Forces node to be updated.
+     * Inserts a list of child nodes into parent node.
      *
-     * @param node node to be updated
+     * @param children array of new child nodes
+     * @param parent   parent node
+     * @param index    insert index
      */
-    public void updateNode ( E node )
+    public void insertNodesInto ( final E[] children, final E parent, final int index )
     {
-        fireTreeNodesChanged ( WebTreeModel.this, getPathToRoot ( node ), null, null );
+        for ( int i = children.length - 1; i >= 0; i-- )
+        {
+            parent.insert ( children[ i ], index );
+        }
+
+        final int[] indices = new int[ children.length ];
+        for ( int i = 0; i < children.length; i++ )
+        {
+            indices[ i ] = index + i;
+        }
+
+        nodesWereInserted ( parent, indices );
+    }
+
+    /**
+     * Removes specified nodes from tree structure.
+     *
+     * @param nodes nodes to remove
+     */
+    public void removeNodesFromParent ( final List<E> nodes )
+    {
+        // todo Optimized delete
+        //        final Map<E, List<Integer>> removedNodes = new HashMap<E, List<Integer>> ();
+        //        for ( final E node : nodes )
+        //        {
+        //            final E parent = ( E ) node.getParent ();
+        //            final int index = parent.getIndex ( node );
+        //
+        //            List<Integer> indices = removedNodes.get ( parent );
+        //            indices
+        //        }
+        //
+        //        final int[] indices = new int[ children.length ];
+        //        for ( int i = 0; i < children.length; i++ )
+        //        {
+        //            indices[ i ] = index + i;
+        //        }
+        //
+        //        nodesWereRemoved ( parent, childIndex, removedArray );
+
+        for ( final E node : nodes )
+        {
+            removeNodeFromParent ( node );
+        }
+    }
+
+    /**
+     * Removes specified nodes from tree structure.
+     *
+     * @param nodes nodes to remove
+     */
+    public void removeNodesFromParent ( final E parentNode )
+    {
+        for ( int i = 0; i < parentNode.getChildCount (); i++ )
+        {
+            removeNodeFromParent ( ( MutableTreeNode ) parentNode.getChildAt ( i ) );
+        }
+    }
+
+    /**
+     * Removes specified nodes from tree structure.
+     *
+     * @param nodes nodes to remove
+     */
+    public void removeNodesFromParent ( final E[] nodes )
+    {
+        // todo Optimized delete
+        for ( final E node : nodes )
+        {
+            removeNodeFromParent ( node );
+        }
+    }
+
+    /**
+     * Forces tree node to be updated.
+     *
+     * @param node tree node to be updated
+     */
+    public void updateNode ( final E node )
+    {
+        if ( node != null )
+        {
+            fireTreeNodesChanged ( WebTreeModel.this, getPathToRoot ( node ), null, null );
+        }
     }
 }

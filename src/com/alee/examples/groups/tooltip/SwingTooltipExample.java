@@ -44,11 +44,11 @@ public class SwingTooltipExample extends DefaultExample
     }
 
     @Override
-    public Component getPreview ( WebLookAndFeelDemo owner )
+    public Component getPreview ( final WebLookAndFeelDemo owner )
     {
         // Simple Swing tooltip
-        String tipText = "Swing " + ToolTipManager.sharedInstance ().getInitialDelay () + "ms delay tooltip";
-        WebLabel tip = new WebLabel ( tipText, loadIcon ( "swing.png" ) );
+        final String tipText = "Swing " + ToolTipManager.sharedInstance ().getInitialDelay () + "ms delay tooltip";
+        final WebLabel tip = new WebLabel ( tipText, loadIcon ( "swing.png" ) );
         tip.setToolTipText ( "Delayed swing tooltip" );
         tip.setMargin ( 4 );
 

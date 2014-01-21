@@ -39,32 +39,32 @@ public class WebMultiLineLabel extends JLabel implements LanguageMethods, FontMe
         super ();
     }
 
-    public WebMultiLineLabel ( Icon image )
+    public WebMultiLineLabel ( final Icon image )
     {
         super ( image );
     }
 
-    public WebMultiLineLabel ( Icon image, int horizontalAlignment )
+    public WebMultiLineLabel ( final Icon image, final int horizontalAlignment )
     {
         super ( image, horizontalAlignment );
     }
 
-    public WebMultiLineLabel ( String text )
+    public WebMultiLineLabel ( final String text )
     {
         super ( text );
     }
 
-    public WebMultiLineLabel ( String text, int horizontalAlignment )
+    public WebMultiLineLabel ( final String text, final int horizontalAlignment )
     {
         super ( text, horizontalAlignment );
     }
 
-    public WebMultiLineLabel ( String text, Icon icon )
+    public WebMultiLineLabel ( final String text, final Icon icon )
     {
         super ( text, icon, LEADING );
     }
 
-    public WebMultiLineLabel ( String text, Icon icon, int horizontalAlignment )
+    public WebMultiLineLabel ( final String text, final Icon icon, final int horizontalAlignment )
     {
         super ( text, icon, horizontalAlignment );
     }
@@ -74,7 +74,7 @@ public class WebMultiLineLabel extends JLabel implements LanguageMethods, FontMe
         return getWebUI ().isDrawShade ();
     }
 
-    public void setDrawShade ( boolean drawShade )
+    public void setDrawShade ( final boolean drawShade )
     {
         getWebUI ().setDrawShade ( drawShade );
     }
@@ -84,7 +84,7 @@ public class WebMultiLineLabel extends JLabel implements LanguageMethods, FontMe
         return getWebUI ().getShadeColor ();
     }
 
-    public void setShadeColor ( Color shadeColor )
+    public void setShadeColor ( final Color shadeColor )
     {
         getWebUI ().setShadeColor ( shadeColor );
     }
@@ -123,7 +123,7 @@ public class WebMultiLineLabel extends JLabel implements LanguageMethods, FontMe
      * {@inheritDoc}
      */
     @Override
-    public void setLanguage ( String key, Object... data )
+    public void setLanguage ( final String key, final Object... data )
     {
         LanguageManager.registerComponent ( this, key, data );
     }
@@ -132,7 +132,7 @@ public class WebMultiLineLabel extends JLabel implements LanguageMethods, FontMe
      * {@inheritDoc}
      */
     @Override
-    public void updateLanguage ( Object... data )
+    public void updateLanguage ( final Object... data )
     {
         LanguageManager.updateComponent ( this, data );
     }
@@ -141,7 +141,7 @@ public class WebMultiLineLabel extends JLabel implements LanguageMethods, FontMe
      * {@inheritDoc}
      */
     @Override
-    public void updateLanguage ( String key, Object... data )
+    public void updateLanguage ( final String key, final Object... data )
     {
         LanguageManager.updateComponent ( this, key, data );
     }
@@ -168,7 +168,7 @@ public class WebMultiLineLabel extends JLabel implements LanguageMethods, FontMe
      * {@inheritDoc}
      */
     @Override
-    public void setLanguageUpdater ( LanguageUpdater updater )
+    public void setLanguageUpdater ( final LanguageUpdater updater )
     {
         LanguageManager.registerLanguageUpdater ( this, updater );
     }
@@ -199,7 +199,7 @@ public class WebMultiLineLabel extends JLabel implements LanguageMethods, FontMe
      * {@inheritDoc}
      */
     @Override
-    public WebMultiLineLabel setPlainFont ( boolean apply )
+    public WebMultiLineLabel setPlainFont ( final boolean apply )
     {
         return SwingUtils.setPlainFont ( this, apply );
     }
@@ -226,7 +226,7 @@ public class WebMultiLineLabel extends JLabel implements LanguageMethods, FontMe
      * {@inheritDoc}
      */
     @Override
-    public WebMultiLineLabel setBoldFont ( boolean apply )
+    public WebMultiLineLabel setBoldFont ( final boolean apply )
     {
         return SwingUtils.setBoldFont ( this, apply );
     }
@@ -253,7 +253,7 @@ public class WebMultiLineLabel extends JLabel implements LanguageMethods, FontMe
      * {@inheritDoc}
      */
     @Override
-    public WebMultiLineLabel setItalicFont ( boolean apply )
+    public WebMultiLineLabel setItalicFont ( final boolean apply )
     {
         return SwingUtils.setItalicFont ( this, apply );
     }
@@ -271,7 +271,7 @@ public class WebMultiLineLabel extends JLabel implements LanguageMethods, FontMe
      * {@inheritDoc}
      */
     @Override
-    public WebMultiLineLabel setFontStyle ( boolean bold, boolean italic )
+    public WebMultiLineLabel setFontStyle ( final boolean bold, final boolean italic )
     {
         return SwingUtils.setFontStyle ( this, bold, italic );
     }
@@ -280,7 +280,7 @@ public class WebMultiLineLabel extends JLabel implements LanguageMethods, FontMe
      * {@inheritDoc}
      */
     @Override
-    public WebMultiLineLabel setFontStyle ( int style )
+    public WebMultiLineLabel setFontStyle ( final int style )
     {
         return SwingUtils.setFontStyle ( this, style );
     }
@@ -289,7 +289,7 @@ public class WebMultiLineLabel extends JLabel implements LanguageMethods, FontMe
      * {@inheritDoc}
      */
     @Override
-    public WebMultiLineLabel setFontSize ( int fontSize )
+    public WebMultiLineLabel setFontSize ( final int fontSize )
     {
         return SwingUtils.setFontSize ( this, fontSize );
     }
@@ -298,7 +298,7 @@ public class WebMultiLineLabel extends JLabel implements LanguageMethods, FontMe
      * {@inheritDoc}
      */
     @Override
-    public WebMultiLineLabel changeFontSize ( int change )
+    public WebMultiLineLabel changeFontSize ( final int change )
     {
         return SwingUtils.changeFontSize ( this, change );
     }
@@ -316,7 +316,7 @@ public class WebMultiLineLabel extends JLabel implements LanguageMethods, FontMe
      * {@inheritDoc}
      */
     @Override
-    public WebMultiLineLabel setFontSizeAndStyle ( int fontSize, boolean bold, boolean italic )
+    public WebMultiLineLabel setFontSizeAndStyle ( final int fontSize, final boolean bold, final boolean italic )
     {
         return SwingUtils.setFontSizeAndStyle ( this, fontSize, bold, italic );
     }
@@ -325,7 +325,7 @@ public class WebMultiLineLabel extends JLabel implements LanguageMethods, FontMe
      * {@inheritDoc}
      */
     @Override
-    public WebMultiLineLabel setFontSizeAndStyle ( int fontSize, int style )
+    public WebMultiLineLabel setFontSizeAndStyle ( final int fontSize, final int style )
     {
         return SwingUtils.setFontSizeAndStyle ( this, fontSize, style );
     }
@@ -334,7 +334,7 @@ public class WebMultiLineLabel extends JLabel implements LanguageMethods, FontMe
      * {@inheritDoc}
      */
     @Override
-    public WebMultiLineLabel setFontName ( String fontName )
+    public WebMultiLineLabel setFontName ( final String fontName )
     {
         return SwingUtils.setFontName ( this, fontName );
     }

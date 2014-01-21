@@ -40,7 +40,7 @@ public class JarStructure
     private String jarLocation;
     private JarEntry root;
 
-    public JarStructure ( JarEntry root )
+    public JarStructure ( final JarEntry root )
     {
         super ();
         setRoot ( root );
@@ -51,7 +51,7 @@ public class JarStructure
         return jarLocation;
     }
 
-    public void setJarLocation ( String jarLocation )
+    public void setJarLocation ( final String jarLocation )
     {
         this.jarLocation = jarLocation;
     }
@@ -61,32 +61,32 @@ public class JarStructure
         return root;
     }
 
-    public void setRoot ( JarEntry root )
+    public void setRoot ( final JarEntry root )
     {
         this.root = root;
     }
 
-    public List<JarEntry> getChildEntries ( JarEntry entry )
+    public List<JarEntry> getChildEntries ( final JarEntry entry )
     {
-        List<JarEntry> childs = entry != null ? entry.getChilds () : getRoot ().getChilds ();
+        final List<JarEntry> childs = entry != null ? entry.getChilds () : getRoot ().getChilds ();
         Collections.sort ( childs, COMPARATOR );
         return childs;
     }
 
-    public JarEntry findEntryByName ( String name )
+    public JarEntry findEntryByName ( final String name )
     {
         return findEntryByName ( name, getRoot () );
     }
 
-    private JarEntry findEntryByName ( String name, JarEntry entry )
+    private JarEntry findEntryByName ( final String name, final JarEntry entry )
     {
-        for ( JarEntry child : entry.getChilds () )
+        for ( final JarEntry child : entry.getChilds () )
         {
             if ( FileUtils.getFileNamePart ( child.getName () ).equals ( name ) )
             {
                 return child;
             }
-            JarEntry found = findEntryByName ( name, child );
+            final JarEntry found = findEntryByName ( name, child );
             if ( found != null )
             {
                 return found;
@@ -95,17 +95,18 @@ public class JarStructure
         return null;
     }
 
-    public List<JarEntry> findSimilarEntries ( String name )
+    public List<JarEntry> findSimilarEntries ( final String name )
     {
         return findSimilarEntries ( name.toLowerCase (), null );
     }
 
-    public List<JarEntry> findSimilarEntries ( String name, Filter<JarEntry> filter )
+    public List<JarEntry> findSimilarEntries ( final String name, final Filter<JarEntry> filter )
     {
         return findSimilarEntries ( name.toLowerCase (), getRoot (), filter, new ArrayList<JarEntry> () );
     }
 
-    private List<JarEntry> findSimilarEntries ( String name, JarEntry entry, Filter<JarEntry> filter, List<JarEntry> entries )
+    private List<JarEntry> findSimilarEntries ( final String name, final JarEntry entry, final Filter<JarEntry> filter,
+                                                final List<JarEntry> entries )
     {
         if ( entry.getName ().toLowerCase ().contains ( name ) )
         {
@@ -114,17 +115,17 @@ public class JarStructure
                 entries.add ( entry );
             }
         }
-        for ( JarEntry child : entry.getChilds () )
+        for ( final JarEntry child : entry.getChilds () )
         {
             findSimilarEntries ( name, child, filter, entries );
         }
         return entries;
     }
 
-    public JarEntry getClassEntry ( Class forClass )
+    public JarEntry getClassEntry ( final Class forClass )
     {
-        String[] packages = ReflectUtils.getClassPackages ( forClass );
-        String classFileName = ReflectUtils.getJavaClassName ( forClass );
+        final String[] packages = ReflectUtils.getClassPackages ( forClass );
+        final String classFileName = ReflectUtils.getJavaClassName ( forClass );
 
         int currentPackage = 0;
         JarEntry currentLevel = getRoot ();
@@ -145,16 +146,16 @@ public class JarStructure
         return currentLevel;
     }
 
-    public void setPackageIcon ( Package packageType, ImageIcon icon )
+    public void setPackageIcon ( final Package packageType, final ImageIcon icon )
     {
         setPackageIcon ( packageType.getName (), icon );
     }
 
-    public void setPackageIcon ( String packageName, ImageIcon icon )
+    public void setPackageIcon ( final String packageName, final ImageIcon icon )
     {
-        String[] packages = ReflectUtils.getPackages ( packageName );
+        final String[] packages = ReflectUtils.getPackages ( packageName );
         JarEntry currentLevel = getRoot ();
-        for ( String currentPackage : packages )
+        for ( final String currentPackage : packages )
         {
             if ( currentLevel != null )
             {
@@ -168,16 +169,16 @@ public class JarStructure
         currentLevel.setIcon ( icon );
     }
 
-    public void setClassIcon ( Class classType, ImageIcon icon )
+    public void setClassIcon ( final Class classType, final ImageIcon icon )
     {
-        JarEntry classEntry = getClassEntry ( classType );
+        final JarEntry classEntry = getClassEntry ( classType );
         if ( classEntry != null )
         {
             classEntry.setIcon ( icon );
         }
     }
 
-    public InputStream getEntryInputStream ( JarEntry entry ) throws IOException
+    public InputStream getEntryInputStream ( final JarEntry entry ) throws IOException
     {
         return new ZipFile ( getJarLocation () ).getInputStream ( entry.getZipEntry () );
     }

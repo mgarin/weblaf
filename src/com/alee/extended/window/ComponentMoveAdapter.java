@@ -25,79 +25,153 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 /**
- * User: mgarin Date: 02.11.11 Time: 15:59
+ * This listener allows you to simplify window/component move action.
+ * Simply install this listener onto any component to make it move the window when dragged.
+ * You can specify moved window/component or simply let the listener detect it.
+ *
+ * @author Mikle Garin
  */
 
 public class ComponentMoveAdapter extends MouseAdapter
 {
-    // todo Works incorrect on Unix systems
+    /**
+     * todo 1. Fix incorrect behavior on Unix systems
+     */
 
+    /**
+     * Component that should be dragged.
+     * If set to null mouse events source component parent window will be dragged instead.
+     */
     protected Component toDrag;
 
+    /**
+     * Whether component is being dragged or not.
+     */
     protected boolean dragging = false;
+
+    /**
+     * Currently dragged component.
+     */
     protected Component dragged = null;
+
+    /**
+     * Drag start point.
+     */
     protected Point initialPoint = null;
+
+    /**
+     * Dragged component initial bounds.
+     */
     protected Rectangle initialBounds = null;
 
-    public static void install ( Component component )
+    /**
+     * Installs window move adapter to the specified window component.
+     *
+     * @param component window component that will act as gripper
+     */
+    public static void install ( final Component component )
     {
         install ( component, null );
     }
 
-    public static void install ( Component component, Component toDrag )
+    /**
+     * Installs component move adapter to the specified component.
+     *
+     * @param component component that will act as gripper
+     * @param toDrag    component to be moved by the gripper component
+     */
+    public static void install ( final Component component, final Component toDrag )
     {
-        ComponentMoveAdapter wma = new ComponentMoveAdapter ( toDrag );
+        final ComponentMoveAdapter wma = new ComponentMoveAdapter ( toDrag );
         component.addMouseListener ( wma );
         component.addMouseMotionListener ( wma );
     }
 
+    /**
+     * Constructs new component move adapter that alows source component parent window dragging.
+     */
     public ComponentMoveAdapter ()
     {
         this ( null );
     }
 
-    public ComponentMoveAdapter ( Component toDrag )
+    /**
+     * Constructs new component move adapter that allows specified component dragging.
+     *
+     * @param toDrag component to drag
+     */
+    public ComponentMoveAdapter ( final Component toDrag )
     {
         super ();
         this.toDrag = toDrag;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public void mousePressed ( MouseEvent e )
+    public void mousePressed ( final MouseEvent e )
     {
         if ( SwingUtilities.isLeftMouseButton ( e ) )
         {
             dragged = getDraggedComponent ( e );
             if ( dragged != null )
             {
-                dragging = true;
-                initialPoint = MouseInfo.getPointerInfo ().getLocation ();
-                initialBounds = dragged.getBounds ();
+                final Rectangle dragStartBounds = getDragStartBounds ( e );
+                if ( dragStartBounds != null && dragStartBounds.contains ( e.getPoint () ) )
+                {
+                    dragging = true;
+                    initialPoint = MouseInfo.getPointerInfo ().getLocation ();
+                    initialBounds = dragged.getBounds ();
+                }
             }
         }
     }
 
-    private Component getDraggedComponent ( MouseEvent e )
-    {
-        return toDrag == null ? SwingUtils.getWindowAncestor ( e.getComponent () ) : toDrag;
-    }
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public void mouseDragged ( MouseEvent e )
+    public void mouseDragged ( final MouseEvent e )
     {
         if ( dragging )
         {
-            Point point = MouseInfo.getPointerInfo ().getLocation ();
+            final Point point = MouseInfo.getPointerInfo ().getLocation ();
             dragged.setLocation ( initialBounds.x + ( point.x - initialPoint.x ), initialBounds.y + ( point.y - initialPoint.y ) );
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public void mouseReleased ( MouseEvent e )
+    public void mouseReleased ( final MouseEvent e )
     {
         dragging = false;
         dragged = null;
         initialPoint = null;
         initialBounds = null;
+    }
+
+    /**
+     * Returns actual dragged component.
+     *
+     * @param e occured mouse event
+     * @return actual dragged component
+     */
+    protected Component getDraggedComponent ( final MouseEvent e )
+    {
+        return toDrag == null ? SwingUtils.getWindowAncestor ( e.getComponent () ) : toDrag;
+    }
+
+    /**
+     * Returns bounds within which component will act as a gripper.
+     *
+     * @param e occured mouse event
+     * @return bounds within which component will act as a gripper
+     */
+    protected Rectangle getDragStartBounds ( final MouseEvent e )
+    {
+        return SwingUtils.size ( e.getComponent () );
     }
 }

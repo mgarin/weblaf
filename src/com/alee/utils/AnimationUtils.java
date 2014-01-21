@@ -27,7 +27,7 @@ public final class AnimationUtils
     /**
      * Returns move animation speed depending on the animated object location.
      * Speed provided by this method will ensure smooth movement animation with spring effect.
-     * <p>
+     * <p/>
      * Specified location must be a floating point number in the inclusive range [0.0, 1.0].
      * 0.0 location = object is at the start of its path.
      * 1.0 location = object has reached the end of its path.
@@ -37,7 +37,7 @@ public final class AnimationUtils
      * @param maxSpeed maximum desired object speed, used when object is in the middle of its path
      * @return move animation speed
      */
-    public static float calculateSpeed ( float location, float minSpeed, float maxSpeed )
+    public static float calculateSpeed ( final float location, final float minSpeed, final float maxSpeed )
     {
         return Math.max ( minSpeed, maxSpeed * ( 1f - MathUtils.sqr ( ( location - 0.5f ) * 2 ) ) );
     }

@@ -42,6 +42,7 @@ import com.alee.examples.groups.optionpane.OptionPanesGroup;
 import com.alee.examples.groups.overlay.OverlayGroup;
 import com.alee.examples.groups.painter.PaintersGroup;
 import com.alee.examples.groups.panel.PanelsGroup;
+import com.alee.examples.groups.popover.PopOverGroup;
 import com.alee.examples.groups.popup.PopupsGroup;
 import com.alee.examples.groups.progress.ProgressGroup;
 import com.alee.examples.groups.progressbar.ProgressBarsGroup;
@@ -98,9 +99,9 @@ import java.util.List;
 public class ExamplesManager
 {
     // Example manager icons
-    private static ImageIcon presentationIcon = new ImageIcon ( ExamplesManager.class.getResource ( "icons/presentation.png" ) );
-    private static ImageIcon logoIcon = new ImageIcon ( ExamplesManager.class.getResource ( "icons/logo.png" ) );
-    private static ImageIcon linkIcon = new ImageIcon ( ExamplesManager.class.getResource ( "icons/link.png" ) );
+    private static final ImageIcon presentationIcon = new ImageIcon ( ExamplesManager.class.getResource ( "icons/presentation.png" ) );
+    private static final ImageIcon logoIcon = new ImageIcon ( ExamplesManager.class.getResource ( "icons/logo.png" ) );
+    private static final ImageIcon linkIcon = new ImageIcon ( ExamplesManager.class.getResource ( "icons/link.png" ) );
 
     // Loaded example groups
     private static List<ExampleGroup> exampleGroups = null;
@@ -142,6 +143,7 @@ public class ExamplesManager
             exampleGroups.add ( new WindowsGroup () );
             exampleGroups.add ( new OptionPanesGroup () );
             exampleGroups.add ( new PopupsGroup () );
+            exampleGroups.add ( new PopOverGroup () );
             exampleGroups.add ( new NotificationsGroup () );
             exampleGroups.add ( new GalleryGroup () );
             exampleGroups.add ( new TransitionsGroup () );
@@ -158,12 +160,12 @@ public class ExamplesManager
     public static JarStructure createJarStructure ( final WebProgressDialog progress )
     {
         // Download listener in case of remote jar-file (for e.g. demo loaded from .jnlp)
-        FileDownloadListener listener = new FileDownloadListener ()
+        final FileDownloadListener listener = new FileDownloadListener ()
         {
             private int totalSize = 0;
 
             @Override
-            public void sizeDetermined ( int totalSize )
+            public void sizeDetermined ( final int totalSize )
             {
                 // Download started
                 this.totalSize = totalSize;
@@ -171,7 +173,7 @@ public class ExamplesManager
             }
 
             @Override
-            public void partDownloaded ( int totalBytesDownloaded )
+            public void partDownloaded ( final int totalBytesDownloaded )
             {
                 // Some part loaded
                 updateProgress ( totalBytesDownloaded );
@@ -183,7 +185,7 @@ public class ExamplesManager
                 return false;
             }
 
-            private void updateProgress ( int downloaded )
+            private void updateProgress ( final int downloaded )
             {
                 // Updating progress text
                 progress.setText ( "<html>Loading source files... <b>" +
@@ -192,14 +194,14 @@ public class ExamplesManager
             }
 
             @Override
-            public void fileDownloaded ( File file )
+            public void fileDownloaded ( final File file )
             {
                 // Updating progress text
                 progress.setText ( "Creating source files structure..." );
             }
 
             @Override
-            public void fileDownloadFailed ( Throwable e )
+            public void fileDownloadFailed ( final Throwable e )
             {
                 // Updating progress text
                 progress.setText ( "Filed to download source files" );
@@ -208,13 +210,13 @@ public class ExamplesManager
 
         // Creating structure using any of classes contained inside jar
         progress.setText ( "Creating source files structure..." );
-        List<String> extensions = Arrays.asList ( ".java", ".png", ".gif", ".jpg", ".txt", ".xml" );
-        List<String> packages = Arrays.asList ( "com/alee", "licenses" );
-        JarStructure jarStructure = ReflectUtils.getJarStructure ( ExamplesManager.class, extensions, packages, listener );
+        final List<String> extensions = Arrays.asList ( ".java", ".png", ".gif", ".jpg", ".txt", ".xml" );
+        final List<String> packages = Arrays.asList ( "com/alee", "licenses" );
+        final JarStructure jarStructure = ReflectUtils.getJarStructure ( ExamplesManager.class, extensions, packages, listener );
 
         // Updating some of package icons
         jarStructure.setPackageIcon ( WebLookAndFeelDemo.class.getPackage (), new ImageIcon ( WebLookAndFeel.getImages ().get ( 0 ) ) );
-        for ( ExampleGroup exampleGroup : getExampleGroups () )
+        for ( final ExampleGroup exampleGroup : getExampleGroups () )
         {
             jarStructure.setClassIcon ( exampleGroup.getClass (), ( ImageIcon ) exampleGroup.getGroupIcon () );
         }
@@ -222,26 +224,26 @@ public class ExamplesManager
         return jarStructure;
     }
 
-    public static WebTabbedPane createExampleTabs ( WebLookAndFeelDemo owner, WebProgressDialog load )
+    public static WebTabbedPane createExampleTabs ( final WebLookAndFeelDemo owner, final WebProgressDialog load )
     {
         // All example groups
         load.setText ( "Loading groups list" );
-        List<ExampleGroup> exampleGroups = getExampleGroups ();
+        final List<ExampleGroup> exampleGroups = getExampleGroups ();
         load.setMinimum ( 0 );
         load.setMaximum ( exampleGroups.size () + 1 );
         load.setProgress ( 0 );
 
         // Example tabs
-        WebTabbedPane exampleTabs = new WebTabbedPane ();
+        final WebTabbedPane exampleTabs = new WebTabbedPane ();
         exampleTabs.setTabbedPaneStyle ( TabbedPaneStyle.attached );
         // exampleTabs.setTabLayoutPolicy ( WebTabbedPane.SCROLL_TAB_LAYOUT );
 
         // Progress component
-        IconProgress ip = ( IconProgress ) load.getMiddleComponent ();
+        final IconProgress ip = ( IconProgress ) load.getMiddleComponent ();
 
         // Creating all examples
         int progress = 1;
-        for ( ExampleGroup group : exampleGroups )
+        for ( final ExampleGroup group : exampleGroups )
         {
             // Updating progress state
             load.setText ( "Loading group: " + group.getGroupName () );
@@ -249,7 +251,7 @@ public class ExamplesManager
             progress++;
 
             // Updating progress icons
-            Icon gi = group.getGroupIcon ();
+            final Icon gi = group.getGroupIcon ();
             ip.addLoadedElement ( gi );
 
             // Adding group view to new tab
@@ -266,14 +268,14 @@ public class ExamplesManager
         return exampleTabs;
     }
 
-    public static Component createGroupView ( WebLookAndFeelDemo owner, ExampleGroup group )
+    public static Component createGroupView ( final WebLookAndFeelDemo owner, final ExampleGroup group )
     {
         // Creating group view
         Component exampleView;
-        List<Example> examples = group.getGroupExamples ();
+        final List<Example> examples = group.getGroupExamples ();
         if ( group.isSingleExample () && examples.size () == 1 )
         {
-            Example example = examples.get ( 0 );
+            final Example example = examples.get ( 0 );
             exampleView = example.getPreview ( owner );
         }
         else
@@ -283,9 +285,9 @@ public class ExamplesManager
             final WebPanel groupPanel = new WebPanel ()
             {
                 @Override
-                public void setEnabled ( boolean enabled )
+                public void setEnabled ( final boolean enabled )
                 {
-                    for ( Component previewComponent : preview )
+                    for ( final Component previewComponent : preview )
                     {
                         SwingUtils.setEnabledRecursively ( previewComponent, enabled );
                     }
@@ -296,8 +298,8 @@ public class ExamplesManager
             groupPanel.setOpaque ( false );
             exampleView = groupPanel;
 
-            int rowsAmount = examples.size () > 1 ? examples.size () * 2 - 1 : 1;
-            double[] rows = new double[ 6 + rowsAmount ];
+            final int rowsAmount = examples.size () > 1 ? examples.size () * 2 - 1 : 1;
+            final double[] rows = new double[ 6 + rowsAmount ];
             rows[ 0 ] = TableLayout.FILL;
             rows[ 1 ] = 20;
             rows[ 2 ] = TableLayout.PREFERRED;
@@ -309,11 +311,12 @@ public class ExamplesManager
             rows[ rows.length - 2 ] = 20;
             rows[ rows.length - 1 ] = TableLayout.FILL;
 
-            double[] columns = { 20, 1f - group.getContentPartSize (), TableLayout.PREFERRED, TableLayout.PREFERRED, TableLayout.PREFERRED,
-                    TableLayout.PREFERRED, TableLayout.PREFERRED, TableLayout.PREFERRED, TableLayout.PREFERRED, group.getContentPartSize (),
-                    20 };
+            final double[] columns =
+                    { 20, 1f - group.getContentPartSize (), TableLayout.PREFERRED, TableLayout.PREFERRED, TableLayout.PREFERRED,
+                            TableLayout.PREFERRED, TableLayout.PREFERRED, TableLayout.PREFERRED, TableLayout.PREFERRED,
+                            group.getContentPartSize (), 20 };
 
-            TableLayout groupLayout = new TableLayout ( new double[][]{ columns, rows } );
+            final TableLayout groupLayout = new TableLayout ( new double[][]{ columns, rows } );
             groupLayout.setHGap ( 4 );
             groupLayout.setVGap ( 4 );
             groupPanel.setLayout ( groupLayout );
@@ -329,27 +332,27 @@ public class ExamplesManager
                             ( rows.length - 3 ) );
 
             int row = 3;
-            for ( Example example : examples )
+            for ( final Example example : examples )
             {
                 // Title & description
                 groupPanel.add ( createDescription ( example, group ), "1," + row );
 
                 // Marks
-                Component mark = createMark ( owner, example );
+                final Component mark = createMark ( owner, example );
                 groupPanel.add ( mark, "3," + row );
 
                 // Source code
-                Component source = createSourceButton ( owner, example );
+                final Component source = createSourceButton ( owner, example );
                 groupPanel.add ( source, "5," + row );
 
                 // More usage examples
-                Component usage = createPresentationButton ( example );
+                final Component usage = createPresentationButton ( example );
                 groupPanel.add ( usage, "7," + row );
 
                 SwingUtils.equalizeComponentsSize ( mark, source, usage );
 
                 // Preview
-                Component previewComponent = createPreview ( owner, example );
+                final Component previewComponent = createPreview ( owner, example );
                 groupPanel.add ( previewComponent, "9," + row );
                 preview.add ( previewComponent );
 
@@ -366,7 +369,7 @@ public class ExamplesManager
 
         if ( group.isShowWatermark () )
         {
-            WebImage linkImage = new WebImage ( logoIcon );
+            final WebImage linkImage = new WebImage ( logoIcon );
             linkImage.setCursor ( Cursor.getPredefinedCursor ( Cursor.HAND_CURSOR ) );
 
             TooltipManager.setTooltip ( linkImage, linkIcon, "Library site", TooltipWay.trailing );
@@ -374,13 +377,13 @@ public class ExamplesManager
             linkImage.addMouseListener ( new MouseAdapter ()
             {
                 @Override
-                public void mousePressed ( MouseEvent e )
+                public void mousePressed ( final MouseEvent e )
                 {
                     WebUtils.browseSiteSafely ( WebLookAndFeelDemo.WEBLAF_SITE );
                 }
             } );
 
-            WebOverlay linkOverlay = new WebOverlay ( exampleView, linkImage, WebOverlay.LEADING, WebOverlay.BOTTOM );
+            final WebOverlay linkOverlay = new WebOverlay ( exampleView, linkImage, WebOverlay.LEADING, WebOverlay.BOTTOM );
             linkOverlay.setOverlayMargin ( 15, 15, 15, 15 );
             linkOverlay.setOpaque ( false );
 
@@ -392,23 +395,23 @@ public class ExamplesManager
 
     private static WebSeparator createHorizontalSeparator ()
     {
-        WebSeparator separator = new WebSeparator ( WebSeparator.HORIZONTAL );
+        final WebSeparator separator = new WebSeparator ( WebSeparator.HORIZONTAL );
         separator.setDrawSideLines ( false );
         return separator;
     }
 
     private static WebSeparator createVerticalSeparator ()
     {
-        WebSeparator separator = new WebSeparator ( WebSeparator.VERTICAL );
+        final WebSeparator separator = new WebSeparator ( WebSeparator.VERTICAL );
         separator.setDrawSideLines ( false );
         return separator;
     }
 
-    private static Component createDescription ( Example example, ExampleGroup group )
+    private static Component createDescription ( final Example example, final ExampleGroup group )
     {
-        Color foreground = group.getPreferredForeground ();
+        final Color foreground = group.getPreferredForeground ();
 
-        WebLabel titleLabel = new WebLabel ( example.getTitle (), JLabel.TRAILING );
+        final WebLabel titleLabel = new WebLabel ( example.getTitle (), JLabel.TRAILING );
         titleLabel.setDrawShade ( true );
         titleLabel.setForeground ( foreground );
         if ( foreground.equals ( Color.WHITE ) )
@@ -422,11 +425,11 @@ public class ExamplesManager
         }
         else
         {
-            WebLabel descriptionLabel = new WebLabel ( example.getDescription (), WebLabel.TRAILING );
+            final WebLabel descriptionLabel = new WebLabel ( example.getDescription (), WebLabel.TRAILING );
             descriptionLabel.setForeground ( Color.GRAY );
             SwingUtils.changeFontSize ( descriptionLabel, -1 );
 
-            WebPanel vertical = new WebPanel ( new VerticalFlowLayout ( VerticalFlowLayout.MIDDLE, 0, 0, true, false ) );
+            final WebPanel vertical = new WebPanel ( new VerticalFlowLayout ( VerticalFlowLayout.MIDDLE, 0, 0, true, false ) );
             vertical.setOpaque ( false );
             vertical.add ( titleLabel );
             vertical.add ( descriptionLabel );
@@ -438,13 +441,13 @@ public class ExamplesManager
     private static Component createMark ( final WebLookAndFeelDemo owner, final Example example )
     {
         final FeatureState fs = example.getFeatureState ();
-        ImageIcon fsIcon = fs.getIcon ();
+        final ImageIcon fsIcon = fs.getIcon ();
         final WebLabel featureState = new WebLabel ( fsIcon );
         TooltipManager.setTooltip ( featureState, fsIcon, fs.getDescription (), TooltipWay.up );
         featureState.addMouseListener ( new MouseAdapter ()
         {
             @Override
-            public void mousePressed ( MouseEvent e )
+            public void mousePressed ( final MouseEvent e )
             {
                 owner.showLegend ( featureState, fs );
             }
@@ -452,11 +455,11 @@ public class ExamplesManager
         return new CenterPanel ( featureState, true, true );
     }
 
-    private static Component createSourceButton ( final WebLookAndFeelDemo owner, Example example )
+    private static Component createSourceButton ( final WebLookAndFeelDemo owner, final Example example )
     {
         final Class classType = example.getClass ();
 
-        WebButton sourceButton = WebButton.createIconWebButton ( JarEntry.javaIcon );
+        final WebButton sourceButton = WebButton.createIconWebButton ( JarEntry.javaIcon );
         TooltipManager.setTooltip ( sourceButton, JarEntry.javaIcon, ReflectUtils.getJavaClassName ( classType ), TooltipWay.up );
         sourceButton.setRolloverDecoratedOnly ( true );
         sourceButton.setFocusable ( false );
@@ -464,7 +467,7 @@ public class ExamplesManager
         sourceButton.addActionListener ( new ActionListener ()
         {
             @Override
-            public void actionPerformed ( ActionEvent e )
+            public void actionPerformed ( final ActionEvent e )
             {
                 owner.showSource ( classType );
             }
@@ -489,7 +492,7 @@ public class ExamplesManager
             presentation.addActionListener ( new ActionListener ()
             {
                 @Override
-                public void actionPerformed ( ActionEvent e )
+                public void actionPerformed ( final ActionEvent e )
                 {
                     if ( presentation.isSelected () )
                     {
@@ -519,7 +522,7 @@ public class ExamplesManager
                     WebTimer.delay ( 1500, new ActionListener ()
                     {
                         @Override
-                        public void actionPerformed ( ActionEvent e )
+                        public void actionPerformed ( final ActionEvent e )
                         {
                             end.closeTooltip ();
                         }
@@ -531,9 +534,9 @@ public class ExamplesManager
         return new CenterPanel ( presentation, false, true );
     }
 
-    private static Component createPreview ( WebLookAndFeelDemo owner, Example example )
+    private static Component createPreview ( final WebLookAndFeelDemo owner, final Example example )
     {
-        WebPanel previewPanel = new WebPanel ();
+        final WebPanel previewPanel = new WebPanel ();
         previewPanel.setOpaque ( false );
         previewPanel.setLayout ( new TableLayout ( new double[][]{ { example.isFillWidth () ? TableLayout.FILL : TableLayout.PREFERRED },
                 { TableLayout.FILL, TableLayout.PREFERRED, TableLayout.FILL } } ) );

@@ -67,8 +67,8 @@ public class WebListUI extends BasicListUI
      * @param c component that will use UI instance
      * @return instance of the WebListUI
      */
-    @SuppressWarnings ( "UnusedParameters" )
-    public static ComponentUI createUI ( JComponent c )
+    @SuppressWarnings ("UnusedParameters")
+    public static ComponentUI createUI ( final JComponent c )
     {
         return new WebListUI ();
     }
@@ -79,7 +79,7 @@ public class WebListUI extends BasicListUI
      * @param c component for this UI
      */
     @Override
-    public void installUI ( JComponent c )
+    public void installUI ( final JComponent c )
     {
         super.installUI ( c );
 
@@ -93,30 +93,12 @@ public class WebListUI extends BasicListUI
         mouseoverAdapter = new MouseAdapter ()
         {
             @Override
-            public void mouseEntered ( MouseEvent e )
+            public void mouseMoved ( final MouseEvent e )
             {
                 updateMouseover ( e );
             }
 
-            @Override
-            public void mouseExited ( MouseEvent e )
-            {
-                updateMouseover ( e );
-            }
-
-            @Override
-            public void mouseMoved ( MouseEvent e )
-            {
-                updateMouseover ( e );
-            }
-
-            @Override
-            public void mouseDragged ( MouseEvent e )
-            {
-                updateMouseover ( e );
-            }
-
-            private void updateMouseover ( MouseEvent e )
+            private void updateMouseover ( final MouseEvent e )
             {
                 // Ignore events if rollover highlight is disabled
                 if ( !decorateSelection || !highlightRolloverCell )
@@ -126,7 +108,7 @@ public class WebListUI extends BasicListUI
 
                 // Determining highlighted cell index
                 int index = list.locationToIndex ( e.getPoint () );
-                Rectangle bounds = list.getCellBounds ( index, index );
+                final Rectangle bounds = list.getCellBounds ( index, index );
                 if ( bounds == null || !bounds.contains ( e.getPoint () ) || !list.isEnabled () )
                 {
                     index = -1;
@@ -135,11 +117,11 @@ public class WebListUI extends BasicListUI
                 // Updating rollover cell
                 if ( rolloverIndex != index )
                 {
-                    int oldIndex = rolloverIndex;
+                    final int oldIndex = rolloverIndex;
                     rolloverIndex = index;
                     if ( rolloverIndex != -1 )
                     {
-                        Rectangle cellBounds = list.getCellBounds ( rolloverIndex, rolloverIndex );
+                        final Rectangle cellBounds = list.getCellBounds ( rolloverIndex, rolloverIndex );
                         if ( cellBounds != null )
                         {
                             list.repaint ( cellBounds );
@@ -151,7 +133,7 @@ public class WebListUI extends BasicListUI
                     }
                     if ( oldIndex != -1 )
                     {
-                        Rectangle cellBounds = list.getCellBounds ( oldIndex, oldIndex );
+                        final Rectangle cellBounds = list.getCellBounds ( oldIndex, oldIndex );
                         if ( cellBounds != null )
                         {
                             list.repaint ( cellBounds );
@@ -171,14 +153,14 @@ public class WebListUI extends BasicListUI
         selectionListener = new ListSelectionListener ()
         {
             @Override
-            public void valueChanged ( ListSelectionEvent e )
+            public void valueChanged ( final ListSelectionEvent e )
             {
                 if ( autoScrollToSelection )
                 {
                     if ( list.getSelectedIndex () != -1 )
                     {
                         final int index = list.getLeadSelectionIndex ();
-                        Rectangle selection = getCellBounds ( list, index, index );
+                        final Rectangle selection = getCellBounds ( list, index, index );
                         if ( selection != null && !selection.intersects ( list.getVisibleRect () ) )
                         {
                             list.scrollRectToVisible ( selection );
@@ -196,7 +178,7 @@ public class WebListUI extends BasicListUI
      * @param c component with this UI
      */
     @Override
-    public void uninstallUI ( JComponent c )
+    public void uninstallUI ( final JComponent c )
     {
         list.removeMouseListener ( mouseoverAdapter );
         list.removeMouseMotionListener ( mouseoverAdapter );
@@ -220,7 +202,7 @@ public class WebListUI extends BasicListUI
      *
      * @param decorateSelection whether should decorate selected and rollover cells or not
      */
-    public void setDecorateSelection ( boolean decorateSelection )
+    public void setDecorateSelection ( final boolean decorateSelection )
     {
         this.decorateSelection = decorateSelection;
     }
@@ -240,7 +222,7 @@ public class WebListUI extends BasicListUI
      *
      * @param highlightRolloverCell whether should highlight rollover cell or not
      */
-    public void setHighlightRolloverCell ( boolean highlightRolloverCell )
+    public void setHighlightRolloverCell ( final boolean highlightRolloverCell )
     {
         this.highlightRolloverCell = highlightRolloverCell;
     }
@@ -260,7 +242,7 @@ public class WebListUI extends BasicListUI
      *
      * @param selectionRound new cells selection rounding
      */
-    public void setSelectionRound ( int selectionRound )
+    public void setSelectionRound ( final int selectionRound )
     {
         this.selectionRound = selectionRound;
     }
@@ -280,7 +262,7 @@ public class WebListUI extends BasicListUI
      *
      * @param selectionShadeWidth new cells selection shade width
      */
-    public void setSelectionShadeWidth ( int selectionShadeWidth )
+    public void setSelectionShadeWidth ( final int selectionShadeWidth )
     {
         this.selectionShadeWidth = selectionShadeWidth;
     }
@@ -300,7 +282,7 @@ public class WebListUI extends BasicListUI
      *
      * @param autoScrollToSelection whether to scroll list down to selection automatically or not
      */
-    public void setAutoScrollToSelection ( boolean autoScrollToSelection )
+    public void setAutoScrollToSelection ( final boolean autoScrollToSelection )
     {
         this.autoScrollToSelection = autoScrollToSelection;
     }
@@ -312,7 +294,7 @@ public class WebListUI extends BasicListUI
      * @param c painted component
      */
     @Override
-    public void paint ( Graphics g, JComponent c )
+    public void paint ( final Graphics g, final JComponent c )
     {
         super.paint ( g, c );
 
@@ -342,8 +324,8 @@ public class WebListUI extends BasicListUI
      * @see #paint
      */
     @Override
-    protected void paintCell ( Graphics g, int index, Rectangle rowBounds, ListCellRenderer cellRenderer, ListModel dataModel,
-                               ListSelectionModel selModel, int leadIndex )
+    protected void paintCell ( final Graphics g, final int index, final Rectangle rowBounds, final ListCellRenderer cellRenderer,
+                               final ListModel dataModel, final ListSelectionModel selModel, final int leadIndex )
     {
         // todo Even-odd cells highlight
         //        if ( list.getLayoutOrientation () == WebList.VERTICAL && ( evenLineColor != null || oddLineColor != null ) )

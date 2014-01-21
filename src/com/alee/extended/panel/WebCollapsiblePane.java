@@ -24,6 +24,9 @@ import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
+import com.alee.managers.language.LanguageManager;
+import com.alee.managers.language.LanguageMethods;
+import com.alee.managers.language.updaters.LanguageUpdater;
 import com.alee.managers.settings.DefaultValue;
 import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.settings.SettingsMethods;
@@ -53,7 +56,7 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public class WebCollapsiblePane extends WebPanel implements SwingConstants, ShapeProvider, SettingsMethods
+public class WebCollapsiblePane extends WebPanel implements SwingConstants, ShapeProvider, LanguageMethods, SettingsMethods
 {
     /**
      * Whether animate transition between states or not.
@@ -305,12 +308,12 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
             @Override
             public Dimension getPreferredSize ()
             {
-                Dimension ps = super.getPreferredSize ();
+                final Dimension ps = super.getPreferredSize ();
                 if ( titlePanePostion == TOP || titlePanePostion == BOTTOM )
                 {
                     if ( WebCollapsiblePane.this.content != null )
                     {
-                        Insets insets = getInsets ();
+                        final Insets insets = getInsets ();
                         ps.width = insets.left + WebCollapsiblePane.this.content.getPreferredSize ().width + insets.right;
                     }
                     if ( transitionProgress < 1f )
@@ -322,7 +325,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
                 {
                     if ( WebCollapsiblePane.this.content != null )
                     {
-                        Insets insets = getInsets ();
+                        final Insets insets = getInsets ();
                         ps.height = insets.top + WebCollapsiblePane.this.content.getPreferredSize ().height + insets.bottom;
                     }
                     if ( transitionProgress < 1f )
@@ -343,7 +346,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
             contentPanel.add ( this.content, BorderLayout.CENTER );
         }
 
-        addPropertyChangeListener ( WebLookAndFeel.COMPONENT_ORIENTATION_PROPERTY, new PropertyChangeListener ()
+        addPropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, new PropertyChangeListener ()
         {
             @Override
             public void propertyChange ( final PropertyChangeEvent evt )
@@ -1156,7 +1159,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
     {
         if ( cachedExpandIcon == null )
         {
-            boolean ltr = getComponentOrientation ().isLeftToRight ();
+            final boolean ltr = getComponentOrientation ().isLeftToRight ();
             if ( !rotateStateIcon || titlePanePostion == TOP || titlePanePostion == BOTTOM )
             {
                 cachedExpandIcon = expandIcon;
@@ -1407,6 +1410,69 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
     public boolean isFocusable ()
     {
         return expandButton.isFocusable ();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setLanguage ( final String key, final Object... data )
+    {
+        LanguageManager.registerComponent ( this, key, data );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void updateLanguage ( final Object... data )
+    {
+        LanguageManager.updateComponent ( this, data );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void updateLanguage ( final String key, final Object... data )
+    {
+        LanguageManager.updateComponent ( this, key, data );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void removeLanguage ()
+    {
+        LanguageManager.unregisterComponent ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isLanguageSet ()
+    {
+        return LanguageManager.isRegisteredComponent ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setLanguageUpdater ( final LanguageUpdater updater )
+    {
+        LanguageManager.registerLanguageUpdater ( this, updater );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void removeLanguageUpdater ()
+    {
+        LanguageManager.unregisterLanguageUpdater ( this );
     }
 
     /**

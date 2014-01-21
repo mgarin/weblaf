@@ -24,11 +24,20 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * User: mgarin Date: 19.12.12 Time: 19:31
+ * Custom panel that aligns contained component.
+ *
+ * @author Mikle Garin
  */
 
 public class AlignPanel extends WebPanel implements SwingConstants
 {
+    /**
+     * Constructs new align panel.
+     *
+     * @param component component to align
+     * @param halign    horizontal alignment
+     * @param valign    vertical alignment
+     */
     public AlignPanel ( final Component component, final int halign, final int valign )
     {
         super ( new AlignLayout () );

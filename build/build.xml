@@ -95,6 +95,7 @@
             <fileset dir="${dist.dir}">
                 <exclude name="com/test/**" />
                 <exclude name="com/alee/examples/**" />
+                <exclude name="com/alee/demo/**" />
             </fileset>
             <!-- WebLaF library manifest -->
             <manifest>
@@ -119,6 +120,7 @@
             <fileset dir="${dist.dir}">
                 <exclude name="com/test/**" />
                 <exclude name="com/alee/examples/**" />
+                <exclude name="com/alee/demo/**" />
             </fileset>
             <!-- WebLaF library manifest -->
             <manifest>
@@ -171,6 +173,7 @@
             <fileset dir="${dist.dir}">
                 <exclude name="com/test/**" />
                 <exclude name="com/alee/examples/**" />
+                <exclude name="com/alee/demo/**" />
             </fileset>
             <!-- Nine-patch editor manifest -->
             <manifest>
@@ -189,6 +192,7 @@
             <packageset dir="${src.dir}" defaultexcludes="yes">
                 <exclude name="com/test/**" />
                 <exclude name="com/alee/examples/**" />
+                <exclude name="com/alee/demo/**" />
             </packageset>
             <classpath refid="java" />
         </javadoc>
@@ -212,6 +216,7 @@
             <fileset dir="${dist.dir}">
                 <exclude name="com/test/**" />
                 <exclude name="com/alee/examples/**" />
+                <exclude name="com/alee/demo/**" />
             </fileset>
             <!-- WebLaF library manifest -->
             <manifest>

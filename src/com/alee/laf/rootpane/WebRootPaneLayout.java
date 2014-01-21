@@ -39,7 +39,7 @@ public class WebRootPaneLayout extends AbstractLayoutManager
      * {@inheritDoc}
      */
     @Override
-    public Dimension preferredLayoutSize ( Container parent )
+    public Dimension preferredLayoutSize ( final Container parent )
     {
         return calculateSize ( parent, true );
     }
@@ -48,7 +48,7 @@ public class WebRootPaneLayout extends AbstractLayoutManager
      * {@inheritDoc}
      */
     @Override
-    public Dimension minimumLayoutSize ( Container parent )
+    public Dimension minimumLayoutSize ( final Container parent )
     {
         return calculateSize ( parent, false );
     }
@@ -57,7 +57,7 @@ public class WebRootPaneLayout extends AbstractLayoutManager
      * {@inheritDoc}
      */
     @Override
-    public void layoutContainer ( Container parent )
+    public void layoutContainer ( final Container parent )
     {
         final JRootPane root = ( JRootPane ) parent;
         final WebRootPaneUI rootUI = ( WebRootPaneUI ) root.getUI ();
@@ -150,7 +150,7 @@ public class WebRootPaneLayout extends AbstractLayoutManager
         // Placing window resize corner
         if ( showResizeCorner )
         {
-            //parent.setComponentZOrder ( resizeCorner, 0 );
+            // parent.setComponentZOrder ( resizeCorner, 0 );
             final Dimension ps = resizeCorner.getPreferredSize ();
             resizeCorner.setVisible ( true );
             resizeCorner.setBounds ( s.width - i.right - ps.width - 2, s.height - i.bottom - ps.height - 2, ps.width, ps.height );
@@ -168,7 +168,7 @@ public class WebRootPaneLayout extends AbstractLayoutManager
      * @param preferred whether return preferred size or not
      * @return layout size for various cases
      */
-    private Dimension calculateSize ( Container parent, boolean preferred )
+    private Dimension calculateSize ( final Container parent, final boolean preferred )
     {
         final Insets i = parent.getInsets ();
         final Insets ci = new Insets ( 1, 1, 1, 1 );
@@ -283,7 +283,7 @@ public class WebRootPaneLayout extends AbstractLayoutManager
         {
             if ( showWindowButtons )
             {
-                int buttonsShear = getButtonsShear ( rootUI );
+                final int buttonsShear = getButtonsShear ( rootUI );
                 if ( showTitleComponent )
                 {
                     // Title and buttons
@@ -364,7 +364,7 @@ public class WebRootPaneLayout extends AbstractLayoutManager
      * @param webRootPaneUI root pane UI
      * @return button side shear
      */
-    private int getButtonsShear ( WebRootPaneUI webRootPaneUI )
+    private int getButtonsShear ( final WebRootPaneUI webRootPaneUI )
     {
         final int round = webRootPaneUI.getRound ();
         return webRootPaneUI.isAttachButtons () && round > 0 ? round - WebButtonStyle.shadeWidth : 0;

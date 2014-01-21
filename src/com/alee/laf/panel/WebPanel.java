@@ -86,6 +86,13 @@ public class WebPanel extends JPanel implements ShapeProvider, SizeMethods<WebPa
         add ( component, BorderLayout.CENTER );
     }
 
+    public WebPanel ( final LayoutManager layout, final Painter painter, final Component... components )
+    {
+        super ( layout );
+        setPainter ( painter );
+        add ( components );
+    }
+
     public WebPanel ( final LayoutManager layout )
     {
         super ( layout );

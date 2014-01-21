@@ -47,7 +47,7 @@ public class WebCheckBoxMenuItemUI extends WebMenuItemUI
      * @param c component that will use UI instance
      * @return instance of the WebCheckBoxMenuItemUI
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebCheckBoxMenuItemUI ();
@@ -82,6 +82,26 @@ public class WebCheckBoxMenuItemUI extends WebMenuItemUI
     public void setCheckColor ( final Color color )
     {
         this.checkColor = color;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Paint getNorthCornerFill ()
+    {
+        final boolean selected = menuItem.isEnabled () && menuItem.getModel ().isArmed ();
+        return !selected && menuItem.isSelected () ? checkColor : super.getNorthCornerFill ();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Paint getSouthCornerFill ()
+    {
+        final boolean selected = menuItem.isEnabled () && menuItem.getModel ().isArmed ();
+        return !selected && menuItem.isSelected () ? checkColor : super.getSouthCornerFill ();
     }
 
     /**

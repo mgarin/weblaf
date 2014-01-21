@@ -19,7 +19,6 @@ package com.alee.examples.groups.filechooser;
 
 import com.alee.examples.content.DefaultExampleGroup;
 import com.alee.examples.content.Example;
-import com.alee.examples.content.FeatureState;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -50,15 +49,9 @@ public class FileChoosersGroup extends DefaultExampleGroup
     }
 
     @Override
-    public FeatureState getFeatureGroupState ()
-    {
-        return FeatureState.beta;
-    }
-
-    @Override
     public List<Example> getGroupExamples ()
     {
-        List<Example> examples = new ArrayList<Example> ();
+        final List<Example> examples = new ArrayList<Example> ();
         examples.add ( new FileChoosersExample () );
         examples.add ( new DirectoryChooserExample () );
         examples.add ( new FileChooserFieldsExample () );

@@ -117,6 +117,6 @@ public abstract class AbstractLayoutManager implements LayoutManager2
     @Override
     public void invalidateLayout ( final Container target )
     {
-        layoutContainer ( target );
+        //
     }
 }

@@ -34,17 +34,17 @@ import java.util.Map;
 public class WebEditorPaneUI extends BasicEditorPaneUI
 {
     @SuppressWarnings ("UnusedParameters")
-    public static ComponentUI createUI ( JComponent c )
+    public static ComponentUI createUI ( final JComponent c )
     {
         return new WebEditorPaneUI ();
     }
 
     @Override
-    public void installUI ( JComponent c )
+    public void installUI ( final JComponent c )
     {
         super.installUI ( c );
 
-        JTextComponent textComponent = getComponent ();
+        final JTextComponent textComponent = getComponent ();
 
         // Default settings
         SwingUtils.setOrientation ( textComponent );
@@ -59,10 +59,10 @@ public class WebEditorPaneUI extends BasicEditorPaneUI
     }
 
     @Override
-    protected void paintSafely ( Graphics g )
+    protected void paintSafely ( final Graphics g )
     {
-        Graphics2D g2d = ( Graphics2D ) g;
-        Map hints = SwingUtils.setupTextAntialias ( g2d );
+        final Graphics2D g2d = ( Graphics2D ) g;
+        final Map hints = SwingUtils.setupTextAntialias ( g2d );
         super.paintSafely ( g );
         SwingUtils.restoreTextAntialias ( g2d, hints );
     }

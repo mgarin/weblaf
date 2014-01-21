@@ -30,7 +30,7 @@ public final class ThreadUtils
      *
      * @param millis time to sleep
      */
-    public static void sleepSafely ( long millis )
+    public static void sleepSafely ( final long millis )
     {
         try
         {

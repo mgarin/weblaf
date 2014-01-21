@@ -23,6 +23,7 @@ import com.alee.utils.SwingUtils;
 import com.alee.utils.ThreadUtils;
 import com.alee.utils.laf.ShapeProvider;
 import com.alee.utils.swing.AncestorAdapter;
+import com.alee.utils.swing.BorderMethods;
 import com.alee.utils.swing.WebTimer;
 
 import javax.swing.*;
@@ -40,12 +41,12 @@ import java.beans.PropertyChangeListener;
  * User: mgarin Date: 28.04.11 Time: 15:05
  */
 
-public class WebProgressBarUI extends BasicProgressBarUI implements ShapeProvider
+public class WebProgressBarUI extends BasicProgressBarUI implements ShapeProvider, BorderMethods
 {
     private static final int indeterminateStep = 20;
     private static final int determinateAnimationWidth = 120;
 
-    private static AffineTransform moveX = new AffineTransform ();
+    private static final AffineTransform moveX = new AffineTransform ();
 
     static
     {
@@ -71,141 +72,20 @@ public class WebProgressBarUI extends BasicProgressBarUI implements ShapeProvide
 
     private int preferredProgressWidth = WebProgressBarStyle.preferredProgressWidth;
 
-    private int determinateAnimationPause = 1500;
+    private final int determinateAnimationPause = 1500;
     private int animationLocation = 0;
     private WebTimer animator = null;
 
     private PropertyChangeListener propertyChangeListener;
 
-    @SuppressWarnings ("UnusedParameters")
-    public static ComponentUI createUI ( JComponent c )
+    @SuppressWarnings ( "UnusedParameters" )
+    public static ComponentUI createUI ( final JComponent c )
     {
         return new WebProgressBarUI ();
     }
 
-    public int getRound ()
-    {
-        return round;
-    }
-
-    public void setRound ( int round )
-    {
-        this.round = round;
-    }
-
-    public int getInnerRound ()
-    {
-        return innerRound;
-    }
-
-    public void setInnerRound ( int innerRound )
-    {
-        this.innerRound = innerRound;
-    }
-
-    public int getShadeWidth ()
-    {
-        return shadeWidth;
-    }
-
-    public void setShadeWidth ( int shadeWidth )
-    {
-        this.shadeWidth = shadeWidth;
-        updateBorder ( progressBar );
-    }
-
-    public boolean isPaintIndeterminateBorder ()
-    {
-        return paintIndeterminateBorder;
-    }
-
-    public void setPaintIndeterminateBorder ( boolean paintIndeterminateBorder )
-    {
-        this.paintIndeterminateBorder = paintIndeterminateBorder;
-    }
-
-    public int getPreferredProgressWidth ()
-    {
-        return preferredProgressWidth;
-    }
-
-    public void setPreferredProgressWidth ( int preferredProgressWidth )
-    {
-        this.preferredProgressWidth = preferredProgressWidth;
-    }
-
-    public Color getBgTop ()
-    {
-        return bgTop;
-    }
-
-    public void setBgTop ( Color bgTop )
-    {
-        this.bgTop = bgTop;
-    }
-
-    public Color getBgBottom ()
-    {
-        return bgBottom;
-    }
-
-    public void setBgBottom ( Color bgBottom )
-    {
-        this.bgBottom = bgBottom;
-    }
-
-    public Color getProgressTopColor ()
-    {
-        return progressTopColor;
-    }
-
-    public void setProgressTopColor ( Color progressTopColor )
-    {
-        this.progressTopColor = progressTopColor;
-    }
-
-    public Color getProgressBottomColor ()
-    {
-        return progressBottomColor;
-    }
-
-    public void setProgressBottomColor ( Color progressBottomColor )
-    {
-        this.progressBottomColor = progressBottomColor;
-    }
-
-    public Color getIndeterminateBorder ()
-    {
-        return indeterminateBorder;
-    }
-
-    public void setIndeterminateBorder ( Color indeterminateBorder )
-    {
-        this.indeterminateBorder = indeterminateBorder;
-    }
-
-    public Color getHighlightWhite ()
-    {
-        return highlightWhite;
-    }
-
-    public void setHighlightWhite ( Color highlightWhite )
-    {
-        this.highlightWhite = highlightWhite;
-    }
-
-    public Color getHighlightDarkWhite ()
-    {
-        return highlightDarkWhite;
-    }
-
-    public void setHighlightDarkWhite ( Color highlightDarkWhite )
-    {
-        this.highlightDarkWhite = highlightDarkWhite;
-    }
-
     @Override
-    public void installUI ( JComponent c )
+    public void installUI ( final JComponent c )
     {
         super.installUI ( c );
 
@@ -216,13 +96,13 @@ public class WebProgressBarUI extends BasicProgressBarUI implements ShapeProvide
         progressBar.setForeground ( Color.DARK_GRAY );
 
         // Updating border
-        updateBorder ( progressBar );
+        updateBorder ();
 
         // Change listeners
         propertyChangeListener = new PropertyChangeListener ()
         {
             @Override
-            public void propertyChange ( PropertyChangeEvent evt )
+            public void propertyChange ( final PropertyChangeEvent evt )
             {
                 updateAnimator ( progressBar );
             }
@@ -234,29 +114,21 @@ public class WebProgressBarUI extends BasicProgressBarUI implements ShapeProvide
         c.addAncestorListener ( new AncestorAdapter ()
         {
             @Override
-            public void ancestorAdded ( AncestorEvent event )
+            public void ancestorAdded ( final AncestorEvent event )
             {
                 updateAnimator ( progressBar );
             }
 
             @Override
-            public void ancestorRemoved ( AncestorEvent event )
+            public void ancestorRemoved ( final AncestorEvent event )
             {
                 updateAnimator ( progressBar );
             }
         } );
     }
 
-    private void updateBorder ( JComponent c )
-    {
-        if ( c != null )
-        {
-            c.setBorder ( LafUtils.createWebBorder ( shadeWidth + 1, shadeWidth + 1, shadeWidth + 1, shadeWidth + 1 ) );
-        }
-    }
-
     @Override
-    public void uninstallUI ( JComponent c )
+    public void uninstallUI ( final JComponent c )
     {
         c.removePropertyChangeListener ( propertyChangeListener );
 
@@ -266,6 +138,145 @@ public class WebProgressBarUI extends BasicProgressBarUI implements ShapeProvide
         }
 
         super.uninstallUI ( c );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void updateBorder ()
+    {
+        if ( progressBar != null )
+        {
+            // Preserve old borders
+            if ( SwingUtils.isPreserveBorders ( progressBar ) )
+            {
+                return;
+            }
+
+            progressBar.setBorder ( LafUtils.createWebBorder ( shadeWidth + 1, shadeWidth + 1, shadeWidth + 1, shadeWidth + 1 ) );
+        }
+    }
+
+    public int getRound ()
+    {
+        return round;
+    }
+
+    public void setRound ( final int round )
+    {
+        this.round = round;
+    }
+
+    public int getInnerRound ()
+    {
+        return innerRound;
+    }
+
+    public void setInnerRound ( final int innerRound )
+    {
+        this.innerRound = innerRound;
+    }
+
+    public int getShadeWidth ()
+    {
+        return shadeWidth;
+    }
+
+    public void setShadeWidth ( final int shadeWidth )
+    {
+        this.shadeWidth = shadeWidth;
+        updateBorder ();
+    }
+
+    public boolean isPaintIndeterminateBorder ()
+    {
+        return paintIndeterminateBorder;
+    }
+
+    public void setPaintIndeterminateBorder ( final boolean paintIndeterminateBorder )
+    {
+        this.paintIndeterminateBorder = paintIndeterminateBorder;
+    }
+
+    public int getPreferredProgressWidth ()
+    {
+        return preferredProgressWidth;
+    }
+
+    public void setPreferredProgressWidth ( final int preferredProgressWidth )
+    {
+        this.preferredProgressWidth = preferredProgressWidth;
+    }
+
+    public Color getBgTop ()
+    {
+        return bgTop;
+    }
+
+    public void setBgTop ( final Color bgTop )
+    {
+        this.bgTop = bgTop;
+    }
+
+    public Color getBgBottom ()
+    {
+        return bgBottom;
+    }
+
+    public void setBgBottom ( final Color bgBottom )
+    {
+        this.bgBottom = bgBottom;
+    }
+
+    public Color getProgressTopColor ()
+    {
+        return progressTopColor;
+    }
+
+    public void setProgressTopColor ( final Color progressTopColor )
+    {
+        this.progressTopColor = progressTopColor;
+    }
+
+    public Color getProgressBottomColor ()
+    {
+        return progressBottomColor;
+    }
+
+    public void setProgressBottomColor ( final Color progressBottomColor )
+    {
+        this.progressBottomColor = progressBottomColor;
+    }
+
+    public Color getIndeterminateBorder ()
+    {
+        return indeterminateBorder;
+    }
+
+    public void setIndeterminateBorder ( final Color indeterminateBorder )
+    {
+        this.indeterminateBorder = indeterminateBorder;
+    }
+
+    public Color getHighlightWhite ()
+    {
+        return highlightWhite;
+    }
+
+    public void setHighlightWhite ( final Color highlightWhite )
+    {
+        this.highlightWhite = highlightWhite;
+    }
+
+    public Color getHighlightDarkWhite ()
+    {
+        return highlightDarkWhite;
+    }
+
+    public void setHighlightDarkWhite ( final Color highlightDarkWhite )
+    {
+        this.highlightDarkWhite = highlightDarkWhite;
     }
 
     @Override
@@ -290,7 +301,7 @@ public class WebProgressBarUI extends BasicProgressBarUI implements ShapeProvide
                     animator = new WebTimer ( "WebProgressBarUI.animator", StyleConstants.animationDelay, new ActionListener ()
                     {
                         @Override
-                        public void actionPerformed ( ActionEvent e )
+                        public void actionPerformed ( final ActionEvent e )
                         {
                             if ( animationLocation < indeterminateStep * 2 - 1 )
                             {
@@ -318,7 +329,7 @@ public class WebProgressBarUI extends BasicProgressBarUI implements ShapeProvide
                     animator = new WebTimer ( "WebProgressBarUI.animator", StyleConstants.animationDelay, new ActionListener ()
                     {
                         @Override
-                        public void actionPerformed ( ActionEvent e )
+                        public void actionPerformed ( final ActionEvent e )
                         {
                             if ( animationLocation < getProgressWidth () )
                             {
@@ -358,7 +369,7 @@ public class WebProgressBarUI extends BasicProgressBarUI implements ShapeProvide
     @Override
     protected Dimension getPreferredInnerHorizontal ()
     {
-        Dimension ph = super.getPreferredInnerHorizontal ();
+        final Dimension ph = super.getPreferredInnerHorizontal ();
         ph.width = preferredProgressWidth;
         return ph;
     }
@@ -366,38 +377,38 @@ public class WebProgressBarUI extends BasicProgressBarUI implements ShapeProvide
     @Override
     protected Dimension getPreferredInnerVertical ()
     {
-        Dimension pv = super.getPreferredInnerVertical ();
+        final Dimension pv = super.getPreferredInnerVertical ();
         pv.height = preferredProgressWidth;
         return pv;
     }
 
     @Override
-    public void paint ( Graphics g, JComponent c )
+    public void paint ( final Graphics g, final JComponent c )
     {
-        Object aa = LafUtils.setupAntialias ( g );
+        final Object aa = LafUtils.setupAntialias ( g );
         super.paint ( g, c );
         LafUtils.restoreAntialias ( g, aa );
     }
 
     @Override
-    protected void paintIndeterminate ( Graphics g, JComponent c )
+    protected void paintIndeterminate ( final Graphics g, final JComponent c )
     {
-        Graphics2D g2d = ( Graphics2D ) g;
+        final Graphics2D g2d = ( Graphics2D ) g;
 
         // Outer border
         paintProgressBarBorder ( c, g2d );
 
         // Indeterminate view
 
-        Shape is = getInnerProgressShape ( c );
+        final Shape is = getInnerProgressShape ( c );
 
-        Shape oldClip = g2d.getClip ();
-        Area newClip = new Area ( is );
+        final Shape oldClip = g2d.getClip ();
+        final Area newClip = new Area ( is );
         newClip.intersect ( new Area ( oldClip ) );
         g2d.setClip ( newClip );
 
-        GeneralPath bs = getIndeterminateProgressShape ( c );
-        AffineTransform at = new AffineTransform ();
+        final GeneralPath bs = getIndeterminateProgressShape ( c );
+        final AffineTransform at = new AffineTransform ();
         at.translate ( animationLocation, 0 );
         bs.transform ( at );
 
@@ -420,10 +431,10 @@ public class WebProgressBarUI extends BasicProgressBarUI implements ShapeProvide
         if ( progressBar.isStringPainted () && progressBar.getString () != null &&
                 progressBar.getString ().trim ().length () > 0 )
         {
-            int tw = g2d.getFontMetrics ().stringWidth ( progressBar.getString () );
-            float percentage = ( float ) tw / ( progressBar.getWidth () * 2 );
-            float start = 0.5f - percentage;
-            float end = 0.5f + percentage;
+            final int tw = g2d.getFontMetrics ().stringWidth ( progressBar.getString () );
+            final float percentage = ( float ) tw / ( progressBar.getWidth () * 2 );
+            final float start = 0.5f - percentage;
+            final float end = 0.5f + percentage;
             g2d.setPaint ( new LinearGradientPaint ( 0, 0, progressBar.getWidth (), 0,
                     new float[]{ start / 2, start, end, end + ( 1f - end ) / 2 },
                     new Color[]{ StyleConstants.transparent, highlightWhite, highlightWhite, StyleConstants.transparent } ) );
@@ -445,7 +456,7 @@ public class WebProgressBarUI extends BasicProgressBarUI implements ShapeProvide
     }
 
     @Override
-    protected void paintDeterminate ( Graphics g, JComponent c )
+    protected void paintDeterminate ( final Graphics g, final JComponent c )
     {
         final Graphics2D g2d = ( Graphics2D ) g;
 
@@ -455,7 +466,7 @@ public class WebProgressBarUI extends BasicProgressBarUI implements ShapeProvide
         // Progress bar
         if ( progressBar.getValue () > progressBar.getMinimum () )
         {
-            Shape is = getInnerProgressShape ( c );
+            final Shape is = getInnerProgressShape ( c );
 
             if ( c.isEnabled () )
             {
@@ -484,8 +495,8 @@ public class WebProgressBarUI extends BasicProgressBarUI implements ShapeProvide
             // Running highlight
             if ( c.isEnabled () )
             {
-                Shape oldClip = g2d.getClip ();
-                Area newClip = new Area ( is );
+                final Shape oldClip = g2d.getClip ();
+                final Area newClip = new Area ( is );
                 newClip.intersect ( new Area ( oldClip ) );
                 g2d.setClip ( newClip );
                 if ( progressBar.getOrientation () == JProgressBar.HORIZONTAL )
@@ -522,7 +533,7 @@ public class WebProgressBarUI extends BasicProgressBarUI implements ShapeProvide
         drawProgressBarText ( g2d );
     }
 
-    private void drawProgressBarText ( Graphics2D g2d )
+    private void drawProgressBarText ( final Graphics2D g2d )
     {
         if ( progressBar.isStringPainted () )
         {
@@ -550,9 +561,9 @@ public class WebProgressBarUI extends BasicProgressBarUI implements ShapeProvide
         }
     }
 
-    private void paintProgressBarBorder ( JComponent c, Graphics2D g2d )
+    private void paintProgressBarBorder ( final JComponent c, final Graphics2D g2d )
     {
-        Shape bs = getProgressShape ( c );
+        final Shape bs = getProgressShape ( c );
 
         if ( c.isEnabled () )
         {
@@ -573,7 +584,7 @@ public class WebProgressBarUI extends BasicProgressBarUI implements ShapeProvide
         g2d.draw ( bs );
     }
 
-    private Shape getProgressShape ( JComponent c )
+    private Shape getProgressShape ( final JComponent c )
     {
         if ( round > 0 )
         {
@@ -587,9 +598,9 @@ public class WebProgressBarUI extends BasicProgressBarUI implements ShapeProvide
         }
     }
 
-    private Shape getInnerProgressShape ( JComponent c )
+    private Shape getInnerProgressShape ( final JComponent c )
     {
-        int progress = getProgressWidth ();
+        final int progress = getProgressWidth ();
         if ( progressBar.getOrientation () == JProgressBar.HORIZONTAL )
         {
             if ( innerRound > 0 )
@@ -634,7 +645,7 @@ public class WebProgressBarUI extends BasicProgressBarUI implements ShapeProvide
 
     private int getProgressWidth ()
     {
-        int progress;
+        final int progress;
         if ( progressBar.isIndeterminate () )
         {
             if ( progressBar.getOrientation () == JProgressBar.HORIZONTAL )
@@ -665,7 +676,7 @@ public class WebProgressBarUI extends BasicProgressBarUI implements ShapeProvide
     }
 
 
-    private GeneralPath getIndeterminateProgressShape ( JComponent c )
+    private GeneralPath getIndeterminateProgressShape ( final JComponent c )
     {
         // Small inner
         //        GeneralPath gp = new GeneralPath ( GeneralPath.WIND_EVEN_ODD );
@@ -686,7 +697,7 @@ public class WebProgressBarUI extends BasicProgressBarUI implements ShapeProvide
         //        return gp;
 
         // Outer
-        GeneralPath gp = new GeneralPath ( GeneralPath.WIND_EVEN_ODD );
+        final GeneralPath gp = new GeneralPath ( GeneralPath.WIND_EVEN_ODD );
         gp.moveTo ( shadeWidth * 2 - indeterminateStep * 2, c.getHeight () - shadeWidth - 1 );
         gp.lineTo ( shadeWidth * 2 - indeterminateStep, shadeWidth );
         gp.lineTo ( shadeWidth * 2, shadeWidth );

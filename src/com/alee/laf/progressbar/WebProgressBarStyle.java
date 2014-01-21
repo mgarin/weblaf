@@ -22,68 +22,70 @@ import com.alee.laf.StyleConstants;
 import java.awt.*;
 
 /**
- * User: mgarin Date: 11/16/11 Time: 2:18 PM
+ * WebProgressBar style class.
+ *
+ * @author Mikle Garin
  */
 
 public final class WebProgressBarStyle
 {
     /**
-     * Top background gradient color
+     * Top background gradient color.
      */
     public static Color bgTop = new Color ( 242, 242, 242 );
 
     /**
-     * Bottom background gradient color
+     * Bottom background gradient color.
      */
     public static Color bgBottom = new Color ( 223, 223, 223 );
 
     /**
-     * Inner progress background top gradient color
+     * Inner progress background top gradient color.
      */
     public static Color progressTopColor = Color.WHITE;
 
     /**
-     * Inner progress background bottom gradient color
+     * Inner progress background bottom gradient color.
      */
     public static Color progressBottomColor = new Color ( 223, 223, 223 );
 
     /**
-     * Highlight color
+     * Highlight color.
      */
     public static Color highlightWhite = new Color ( 255, 255, 255, 180 );
 
     /**
-     * Highlight dark color
+     * Highlight dark color.
      */
     public static Color highlightDarkWhite = new Color ( 255, 255, 255, 210 );
 
     /**
-     * Indeterminate border color
+     * Indeterminate border color.
      */
     public static Color indeterminateBorder = new Color ( 210, 210, 210 );
 
     /**
-     * Decoration rounding
+     * Decoration rounding.
      */
     public static int round = StyleConstants.bigRound;
 
     /**
-     * Inner progress rounding
+     * Inner progress rounding.
      */
     public static int innerRound = StyleConstants.smallRound;
 
     /**
-     * Decoration shade width
+     * Decoration shade width.
      */
     public static int shadeWidth = StyleConstants.shadeWidth;
 
     /**
-     * Should paint border for indeterminate state
+     * Whether should paint border for indeterminate state or not.
      */
     public static boolean paintIndeterminateBorder = true;
 
     /**
-     * Default preferred progress width
+     * Default preferred progress width.
      */
     public static int preferredProgressWidth = 240;
 }

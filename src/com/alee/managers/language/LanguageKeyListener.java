@@ -22,13 +22,18 @@ import com.alee.managers.language.data.Value;
 import java.util.EventListener;
 
 /**
- * User: mgarin Date: 25.10.12 Time: 12:59
+ * Specific language key changes listener.
+ *
+ * @author Mikle Garin
  */
 
 public interface LanguageKeyListener extends EventListener
 {
     /**
-     * Current application language changed
+     * Notifies that the specified language key value has changed.
+     *
+     * @param key   language key
+     * @param value updated language value
      */
     public void languageKeyUpdated ( String key, Value value );
 }

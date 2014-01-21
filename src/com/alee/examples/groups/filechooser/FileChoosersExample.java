@@ -19,7 +19,6 @@ package com.alee.examples.groups.filechooser;
 
 import com.alee.examples.WebLookAndFeelDemo;
 import com.alee.examples.content.DefaultExample;
-import com.alee.examples.content.FeatureState;
 import com.alee.extended.panel.GroupPanel;
 import com.alee.laf.GlobalConstants;
 import com.alee.laf.button.WebButton;
@@ -47,12 +46,6 @@ public class FileChoosersExample extends DefaultExample
     public String getDescription ()
     {
         return "Web-styled file choosers";
-    }
-
-    @Override
-    public FeatureState getFeatureState ()
-    {
-        return FeatureState.beta;
     }
 
     @Override

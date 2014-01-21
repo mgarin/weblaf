@@ -20,6 +20,7 @@ package com.alee.laf.tooltip;
 import com.alee.utils.LafUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.laf.ShapeProvider;
+import com.alee.utils.swing.BorderMethods;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
@@ -34,7 +35,7 @@ import java.util.Map;
  * @author Mikle Garin
  */
 
-public class WebToolTipUI extends BasicToolTipUI implements ShapeProvider
+public class WebToolTipUI extends BasicToolTipUI implements ShapeProvider, BorderMethods
 {
     /**
      * Tooltip instance.
@@ -48,8 +49,8 @@ public class WebToolTipUI extends BasicToolTipUI implements ShapeProvider
      * @param c component that will use UI instance
      * @return instance of the WebToolTipUI
      */
-    @SuppressWarnings ("UnusedParameters")
-    public static ComponentUI createUI ( JComponent c )
+    @SuppressWarnings ( "UnusedParameters" )
+    public static ComponentUI createUI ( final JComponent c )
     {
         return new WebToolTipUI ();
     }
@@ -60,7 +61,7 @@ public class WebToolTipUI extends BasicToolTipUI implements ShapeProvider
      * @param c component for this UI
      */
     @Override
-    public void installUI ( JComponent c )
+    public void installUI ( final JComponent c )
     {
         super.installUI ( c );
 
@@ -73,7 +74,7 @@ public class WebToolTipUI extends BasicToolTipUI implements ShapeProvider
         tooltip.setForeground ( WebTooltipStyle.textColor );
 
         // Updating border
-        updateBorder ( tooltip );
+        updateBorder ();
     }
 
     /**
@@ -82,7 +83,7 @@ public class WebToolTipUI extends BasicToolTipUI implements ShapeProvider
      * @param c component with this UI
      */
     @Override
-    public void uninstallUI ( JComponent c )
+    public void uninstallUI ( final JComponent c )
     {
         this.tooltip = null;
 
@@ -102,13 +103,18 @@ public class WebToolTipUI extends BasicToolTipUI implements ShapeProvider
     }
 
     /**
-     * Updates component border
-     *
-     * @param c component to process
+     * {@inheritDoc}
      */
-    private void updateBorder ( JComponent c )
+    @Override
+    public void updateBorder ()
     {
-        c.setBorder ( LafUtils.createWebBorder ( WebTooltipStyle.contentMargin ) );
+        // Preserve old borders
+        if ( SwingUtils.isPreserveBorders ( tooltip ) )
+        {
+            return;
+        }
+
+        tooltip.setBorder ( LafUtils.createWebBorder ( WebTooltipStyle.contentMargin ) );
     }
 
     /**
@@ -118,12 +124,12 @@ public class WebToolTipUI extends BasicToolTipUI implements ShapeProvider
      * @param c component
      */
     @Override
-    public void paint ( Graphics g, JComponent c )
+    public void paint ( final Graphics g, final JComponent c )
     {
-        Graphics2D g2d = ( Graphics2D ) g;
+        final Graphics2D g2d = ( Graphics2D ) g;
 
-        Object aa = LafUtils.setupAntialias ( g2d );
-        Composite oc = LafUtils.setupAlphaComposite ( g2d, WebTooltipStyle.trasparency );
+        final Object aa = LafUtils.setupAntialias ( g2d );
+        final Composite oc = LafUtils.setupAlphaComposite ( g2d, WebTooltipStyle.trasparency );
 
         g2d.setPaint ( c.getBackground () );
         g2d.fillRoundRect ( 0, 0, c.getWidth (), c.getHeight (), WebTooltipStyle.round * 2, WebTooltipStyle.round * 2 );
@@ -131,7 +137,7 @@ public class WebToolTipUI extends BasicToolTipUI implements ShapeProvider
         LafUtils.restoreComposite ( g2d, oc );
         LafUtils.restoreAntialias ( g2d, aa );
 
-        Map taa = SwingUtils.setupTextAntialias ( g2d );
+        final Map taa = SwingUtils.setupTextAntialias ( g2d );
         super.paint ( g, c );
         SwingUtils.restoreTextAntialias ( g2d, taa );
     }

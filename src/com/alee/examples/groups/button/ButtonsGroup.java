@@ -25,37 +25,52 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * User: mgarin Date: 23.01.12 Time: 12:05
+ * Button examples group.
+ *
+ * @author Mikle Garin
  */
 
 public class ButtonsGroup extends DefaultExampleGroup
 {
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Icon getGroupIcon ()
     {
         return loadGroupIcon ( "button.png" );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getGroupName ()
     {
         return "Buttons";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getGroupDescription ()
     {
         return "Various examples of button usage";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Example> getGroupExamples ()
     {
-        List<Example> examples = new ArrayList<Example> ();
+        final List<Example> examples = new ArrayList<Example> ();
         examples.add ( new ButtonsExample () );
         examples.add ( new ToggleButtonsExample () );
         examples.add ( new GroupedButtonsExample () );
         examples.add ( new DoubleGroupedButtonsExample () );
+        examples.add ( new SplitButtonExample () );
         examples.add ( new CustomizedButtonsExample () );
         examples.add ( new ButtonPaintersExample () );
         examples.add ( new SwitchExample () );

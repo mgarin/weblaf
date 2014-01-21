@@ -113,7 +113,7 @@ public class WebDirectoryChooserPanel extends WebPanel
         setOpaque ( true );
 
         // Controls pane
-        WebToolBar contolsToolbar = new WebToolBar ( WebToolBar.HORIZONTAL );
+        final WebToolBar contolsToolbar = new WebToolBar ( WebToolBar.HORIZONTAL );
         contolsToolbar.setToolbarStyle ( ToolbarStyle.attached );
         contolsToolbar.setFloatable ( false );
 
@@ -124,7 +124,7 @@ public class WebDirectoryChooserPanel extends WebPanel
         folderUp.addActionListener ( new ActionListener ()
         {
             @Override
-            public void actionPerformed ( ActionEvent e )
+            public void actionPerformed ( final ActionEvent e )
             {
                 if ( selectedDirectory != null )
                 {
@@ -141,7 +141,7 @@ public class WebDirectoryChooserPanel extends WebPanel
         folderHome.addActionListener ( new ActionListener ()
         {
             @Override
-            public void actionPerformed ( ActionEvent e )
+            public void actionPerformed ( final ActionEvent e )
             {
                 updateSelectedDirectory ( FileUtils.getUserHome (), true, true );
             }
@@ -152,13 +152,13 @@ public class WebDirectoryChooserPanel extends WebPanel
 
         for ( final File file : FileUtils.getDiskRoots () )
         {
-            WebButton root = new WebButton ( FileUtils.getFileIcon ( file ) );
+            final WebButton root = new WebButton ( FileUtils.getFileIcon ( file ) );
             TooltipManager.setTooltip ( root, FileUtils.getDisplayFileName ( file ) );
             root.setRolloverDecoratedOnly ( true );
             root.addActionListener ( new ActionListener ()
             {
                 @Override
-                public void actionPerformed ( ActionEvent e )
+                public void actionPerformed ( final ActionEvent e )
                 {
                     updateSelectedDirectory ( file, true, true );
                 }
@@ -174,7 +174,7 @@ public class WebDirectoryChooserPanel extends WebPanel
         refresh.addActionListener ( new ActionListener ()
         {
             @Override
-            public void actionPerformed ( ActionEvent e )
+            public void actionPerformed ( final ActionEvent e )
             {
                 if ( selectedDirectory != null )
                 {
@@ -195,7 +195,7 @@ public class WebDirectoryChooserPanel extends WebPanel
         folderNew.addActionListener ( new ActionListener ()
         {
             @Override
-            public void actionPerformed ( ActionEvent e )
+            public void actionPerformed ( final ActionEvent e )
             {
                 if ( selectedDirectory != null )
                 {
@@ -228,9 +228,9 @@ public class WebDirectoryChooserPanel extends WebPanel
         remove.addActionListener ( new ActionListener ()
         {
             @Override
-            public void actionPerformed ( ActionEvent e )
+            public void actionPerformed ( final ActionEvent e )
             {
-                File file = fileTree.getSelectedFile ();
+                final File file = fileTree.getSelectedFile ();
                 if ( file == null )
                 {
                     return;
@@ -239,16 +239,17 @@ public class WebDirectoryChooserPanel extends WebPanel
                 // Displaying delete confirmation
                 final String message = LanguageManager.get ( "weblaf.ex.dirchooser.delete.confirm.text" );
                 final String title = LanguageManager.get ( "weblaf.ex.dirchooser.delete.confirm.title" );
-                int confirm = WebOptionPane.showConfirmDialog ( WebDirectoryChooserPanel.this, message, title, WebOptionPane.YES_NO_OPTION,
-                        WebOptionPane.QUESTION_MESSAGE );
+                final int confirm = WebOptionPane
+                        .showConfirmDialog ( WebDirectoryChooserPanel.this, message, title, WebOptionPane.YES_NO_OPTION,
+                                WebOptionPane.QUESTION_MESSAGE );
 
                 // Proceed if delete was confirmed
                 if ( confirm == WebOptionPane.YES_OPTION )
                 {
                     // Retrieving index of deleted file node in parent node
-                    FileTreeNode parentNode = fileTree.getSelectedNode ().getParent ();
-                    int index = parentNode.indexOfFileChild ( file );
-                    int count = parentNode.getChildCount ();
+                    final FileTreeNode parentNode = fileTree.getSelectedNode ().getParent ();
+                    final int index = parentNode.indexOfFileChild ( file );
+                    final int count = parentNode.getChildCount ();
 
                     // Removing file
                     FileUtils.deleteFile ( file );
@@ -268,7 +269,7 @@ public class WebDirectoryChooserPanel extends WebPanel
         webPathField.addPathFieldListener ( new PathFieldListener ()
         {
             @Override
-            public void directoryChanged ( File newDirectory )
+            public void directoryChanged ( final File newDirectory )
             {
                 updateSelectedDirectory ( webPathField.getSelectedPath (), false, true );
             }
@@ -286,7 +287,7 @@ public class WebDirectoryChooserPanel extends WebPanel
         fileTreeListener = new TreeSelectionListener ()
         {
             @Override
-            public void valueChanged ( TreeSelectionEvent e )
+            public void valueChanged ( final TreeSelectionEvent e )
             {
                 updateSelectedDirectory ( fileTree.getSelectedFile (), true, false );
             }
@@ -297,20 +298,20 @@ public class WebDirectoryChooserPanel extends WebPanel
         fileTree.addTreeSelectionListener ( new TreeSelectionListener ()
         {
             @Override
-            public void valueChanged ( TreeSelectionEvent e )
+            public void valueChanged ( final TreeSelectionEvent e )
             {
                 updateToolbarControlsState ();
             }
         } );
 
         // Tree scroll
-        WebScrollPane treeScroll = new WebScrollPane ( fileTree );
+        final WebScrollPane treeScroll = new WebScrollPane ( fileTree );
         treeScroll.setPreferredWidth ( 400 );
 
         // Panel content
         setLayout ( new BorderLayout ( 0, 3 ) );
         add ( contolsToolbar, BorderLayout.NORTH );
-        WebPanel panel = new WebPanel ( new BorderLayout ( 0, 1 ) );
+        final WebPanel panel = new WebPanel ( new BorderLayout ( 0, 1 ) );
         panel.setMargin ( 0, 3, 2, 3 );
         panel.add ( webPathField, BorderLayout.NORTH );
         panel.add ( treeScroll, BorderLayout.CENTER );
@@ -325,7 +326,7 @@ public class WebDirectoryChooserPanel extends WebPanel
      */
     protected void updateToolbarControlsState ()
     {
-        File selectedFile = fileTree.getSelectedFile ();
+        final File selectedFile = fileTree.getSelectedFile ();
 
         folderUp.setEnabled ( selectedFile != null && selectedFile.getParentFile () != null );
 
@@ -341,7 +342,7 @@ public class WebDirectoryChooserPanel extends WebPanel
      * @param updatePath whether to update path field or not
      * @param updateTree whether to update file tree or not
      */
-    protected void updateSelectedDirectory ( final File directory, boolean updatePath, boolean updateTree )
+    protected void updateSelectedDirectory ( final File directory, final boolean updatePath, final boolean updateTree )
     {
         this.selectedDirectory = directory;
 
@@ -390,7 +391,7 @@ public class WebDirectoryChooserPanel extends WebPanel
      *
      * @param selectedDirectory currently selected directory
      */
-    public void setSelectedDirectory ( File selectedDirectory )
+    public void setSelectedDirectory ( final File selectedDirectory )
     {
         updateSelectedDirectory ( selectedDirectory, true, true );
     }
@@ -411,7 +412,7 @@ public class WebDirectoryChooserPanel extends WebPanel
      *
      * @param listener directory chooser listener to add
      */
-    public void addDirectoryChooserListener ( DirectoryChooserListener listener )
+    public void addDirectoryChooserListener ( final DirectoryChooserListener listener )
     {
         listeners.add ( listener );
     }
@@ -421,7 +422,7 @@ public class WebDirectoryChooserPanel extends WebPanel
      *
      * @param listener directory chooser listener to remove
      */
-    public void removeDirectoryChooserListener ( DirectoryChooserListener listener )
+    public void removeDirectoryChooserListener ( final DirectoryChooserListener listener )
     {
         listeners.remove ( listener );
     }
@@ -431,9 +432,9 @@ public class WebDirectoryChooserPanel extends WebPanel
      *
      * @param file newly selected directory
      */
-    protected void fireSelectionChanged ( File file )
+    protected void fireSelectionChanged ( final File file )
     {
-        for ( DirectoryChooserListener listener : CollectionUtils.copy ( listeners ) )
+        for ( final DirectoryChooserListener listener : CollectionUtils.copy ( listeners ) )
         {
             listener.selectionChanged ( file );
         }

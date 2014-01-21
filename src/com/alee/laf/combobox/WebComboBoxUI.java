@@ -28,6 +28,7 @@ import com.alee.laf.text.WebTextFieldUI;
 import com.alee.utils.LafUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.laf.ShapeProvider;
+import com.alee.utils.swing.BorderMethods;
 import com.alee.utils.swing.WebDefaultCellEditor;
 
 import javax.swing.*;
@@ -50,7 +51,7 @@ import java.awt.event.MouseWheelListener;
  * User: mgarin Date: 01.06.11 Time: 14:36
  */
 
-public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider
+public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider, BorderMethods
 {
     private ImageIcon expandIcon = WebComboBoxStyle.expandIcon;
     private ImageIcon collapseIcon = WebComboBoxStyle.collapseIcon;
@@ -64,8 +65,8 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider
     private MouseWheelListener mouseWheelListener = null;
     private WebButton arrow = null;
 
-    @SuppressWarnings ("UnusedParameters")
-    public static ComponentUI createUI ( JComponent c )
+    @SuppressWarnings ( "UnusedParameters" )
+    public static ComponentUI createUI ( final JComponent c )
     {
         return new WebComboBoxUI ();
     }
@@ -74,7 +75,7 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider
      * {@inheritDoc}
      */
     @Override
-    public void installUI ( JComponent c )
+    public void installUI ( final JComponent c )
     {
         super.installUI ( c );
 
@@ -98,7 +99,7 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider
         mouseWheelListener = new MouseWheelListener ()
         {
             @Override
-            public void mouseWheelMoved ( MouseWheelEvent e )
+            public void mouseWheelMoved ( final MouseWheelEvent e )
             {
                 if ( mouseWheelScrollingEnabled && comboBox.isEnabled () )
                 {
@@ -119,7 +120,7 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider
      * {@inheritDoc}
      */
     @Override
-    public void uninstallUI ( JComponent c )
+    public void uninstallUI ( final JComponent c )
     {
         c.removeMouseWheelListener ( mouseWheelListener );
         mouseWheelListener = null;
@@ -128,7 +129,7 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider
         super.uninstallUI ( c );
     }
 
-    public void setEditorColumns ( int columns )
+    public void setEditorColumns ( final int columns )
     {
         if ( editor instanceof JTextField )
         {
@@ -136,8 +137,15 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider
         }
     }
 
-    private void updateBorder ()
+    @Override
+    public void updateBorder ()
     {
+        // Preserve old borders
+        if ( SwingUtils.isPreserveBorders ( comboBox ) )
+        {
+            return;
+        }
+
         if ( drawBorder )
         {
             comboBox.setBorder ( LafUtils.createWebBorder ( shadeWidth + 1, shadeWidth + 1, shadeWidth + 1, shadeWidth + 1 ) );
@@ -178,17 +186,17 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider
     protected ComboBoxEditor createEditor ()
     {
         final ComboBoxEditor editor = super.createEditor ();
-        Component e = editor.getEditorComponent ();
+        final Component e = editor.getEditorComponent ();
         e.addFocusListener ( new FocusAdapter ()
         {
             @Override
-            public void focusGained ( FocusEvent e )
+            public void focusGained ( final FocusEvent e )
             {
                 comboBox.repaint ();
             }
 
             @Override
-            public void focusLost ( FocusEvent e )
+            public void focusLost ( final FocusEvent e )
             {
                 comboBox.repaint ();
             }
@@ -199,8 +207,10 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider
         }
         if ( e instanceof JTextField )
         {
-            JTextField textField = ( JTextField ) e;
-            textField.setUI ( new WebTextFieldUI ( textField, false ) );
+            final JTextField textField = ( JTextField ) e;
+            final WebTextFieldUI textFieldUI = new WebTextFieldUI ();
+            textFieldUI.setDrawBorder ( false );
+            textField.setUI ( textFieldUI );
             textField.setMargin ( new Insets ( 0, 1, 0, 1 ) );
         }
         return editor;
@@ -338,7 +348,7 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider
                 show ( comboBox, location.x, location.y );
             }
 
-            private void setListSelection ( int selectedIndex )
+            private void setListSelection ( final int selectedIndex )
             {
                 if ( selectedIndex == -1 )
                 {
@@ -402,7 +412,7 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider
         return expandIcon;
     }
 
-    public void setExpandIcon ( ImageIcon expandIcon )
+    public void setExpandIcon ( final ImageIcon expandIcon )
     {
         this.expandIcon = expandIcon;
         if ( arrow != null && !isPopupVisible ( comboBox ) )
@@ -416,7 +426,7 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider
         return collapseIcon;
     }
 
-    public void setCollapseIcon ( ImageIcon collapseIcon )
+    public void setCollapseIcon ( final ImageIcon collapseIcon )
     {
         this.collapseIcon = collapseIcon;
         if ( arrow != null && isPopupVisible ( comboBox ) )
@@ -430,7 +440,7 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider
         return iconSpacing;
     }
 
-    public void setIconSpacing ( int iconSpacing )
+    public void setIconSpacing ( final int iconSpacing )
     {
         this.iconSpacing = iconSpacing;
         if ( arrow != null )
@@ -444,7 +454,7 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider
         return drawBorder;
     }
 
-    public void setDrawBorder ( boolean drawBorder )
+    public void setDrawBorder ( final boolean drawBorder )
     {
         this.drawBorder = drawBorder;
         updateBorder ();
@@ -455,7 +465,7 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider
         return drawFocus;
     }
 
-    public void setDrawFocus ( boolean drawFocus )
+    public void setDrawFocus ( final boolean drawFocus )
     {
         this.drawFocus = drawFocus;
     }
@@ -465,7 +475,7 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider
         return round;
     }
 
-    public void setRound ( int round )
+    public void setRound ( final int round )
     {
         this.round = round;
     }
@@ -475,7 +485,7 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider
         return shadeWidth;
     }
 
-    public void setShadeWidth ( int shadeWidth )
+    public void setShadeWidth ( final int shadeWidth )
     {
         this.shadeWidth = shadeWidth;
         updateBorder ();
@@ -486,7 +496,7 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider
         return mouseWheelScrollingEnabled;
     }
 
-    public void setMouseWheelScrollingEnabled ( boolean enabled )
+    public void setMouseWheelScrollingEnabled ( final boolean enabled )
     {
         this.mouseWheelScrollingEnabled = enabled;
     }
@@ -495,10 +505,10 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider
      * {@inheritDoc}
      */
     @Override
-    public void paint ( Graphics g, JComponent c )
+    public void paint ( final Graphics g, final JComponent c )
     {
         hasFocus = comboBox.hasFocus ();
-        Rectangle r = rectangleForCurrentValue ();
+        final Rectangle r = rectangleForCurrentValue ();
 
         // Background
         paintCurrentValueBackground ( g, r, hasFocus );
@@ -514,9 +524,9 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider
      * {@inheritDoc}
      */
     @Override
-    public void paintCurrentValueBackground ( Graphics g, Rectangle bounds, boolean hasFocus )
+    public void paintCurrentValueBackground ( final Graphics g, final Rectangle bounds, final boolean hasFocus )
     {
-        Graphics2D g2d = ( Graphics2D ) g;
+        final Graphics2D g2d = ( Graphics2D ) g;
 
         if ( drawBorder )
         {
@@ -529,8 +539,8 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider
         else
         {
             // Simple background
-            boolean pressed = isPopupVisible ( comboBox );
-            Rectangle cb = SwingUtils.size ( comboBox );
+            final boolean pressed = isPopupVisible ( comboBox );
+            final Rectangle cb = SwingUtils.size ( comboBox );
             g2d.setPaint ( new GradientPaint ( 0, shadeWidth, pressed ? StyleConstants.topSelectedBgColor : StyleConstants.topBgColor, 0,
                     comboBox.getHeight () - shadeWidth, pressed ? StyleConstants.bottomSelectedBgColor : StyleConstants.bottomBgColor ) );
             g2d.fillRect ( cb.x, cb.y, cb.width, cb.height );
@@ -539,9 +549,9 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider
         // Separator line
         if ( comboBox.isEditable () )
         {
-            boolean ltr = comboBox.getComponentOrientation ().isLeftToRight ();
-            Insets insets = comboBox.getInsets ();
-            int lx = ltr ? comboBox.getWidth () - insets.right - arrow.getWidth () - 1 : insets.left + arrow.getWidth ();
+            final boolean ltr = comboBox.getComponentOrientation ().isLeftToRight ();
+            final Insets insets = comboBox.getInsets ();
+            final int lx = ltr ? comboBox.getWidth () - insets.right - arrow.getWidth () - 1 : insets.left + arrow.getWidth ();
 
             g2d.setPaint ( comboBox.isEnabled () ? StyleConstants.borderColor : StyleConstants.disabledBorderColor );
             g2d.drawLine ( lx, insets.top + 1, lx, comboBox.getHeight () - insets.bottom - 2 );
@@ -552,10 +562,10 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider
      * {@inheritDoc}
      */
     @Override
-    public void paintCurrentValue ( Graphics g, Rectangle bounds, boolean hasFocus )
+    public void paintCurrentValue ( final Graphics g, final Rectangle bounds, final boolean hasFocus )
     {
-        ListCellRenderer renderer = comboBox.getRenderer ();
-        Component c;
+        final ListCellRenderer renderer = comboBox.getRenderer ();
+        final Component c;
 
         if ( hasFocus && !isPopupVisible ( comboBox ) )
         {
@@ -585,10 +595,10 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider
             shouldValidate = true;
         }
 
-        int x = bounds.x;
-        int y = bounds.y;
-        int w = bounds.width;
-        int h = bounds.height;
+        final int x = bounds.x;
+        final int y = bounds.y;
+        final int w = bounds.width;
+        final int h = bounds.height;
 
         currentValuePane.paintComponent ( g, c, comboBox, x, y, w, h, shouldValidate );
     }
@@ -611,7 +621,7 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider
          * {@inheritDoc}
          */
         @Override
-        public Dimension preferredLayoutSize ( Container parent )
+        public Dimension preferredLayoutSize ( final Container parent )
         {
             return parent.getPreferredSize ();
         }
@@ -620,7 +630,7 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider
          * {@inheritDoc}
          */
         @Override
-        public Dimension minimumLayoutSize ( Container parent )
+        public Dimension minimumLayoutSize ( final Container parent )
         {
             return parent.getMinimumSize ();
         }
@@ -629,17 +639,17 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider
          * {@inheritDoc}
          */
         @Override
-        public void layoutContainer ( Container parent )
+        public void layoutContainer ( final Container parent )
         {
-            JComboBox cb = ( JComboBox ) parent;
-            int width = cb.getWidth ();
-            int height = cb.getHeight ();
+            final JComboBox cb = ( JComboBox ) parent;
+            final int width = cb.getWidth ();
+            final int height = cb.getHeight ();
 
             if ( arrowButton != null )
             {
-                Insets insets = getInsets ();
-                int buttonHeight = height - ( insets.top + insets.bottom );
-                int buttonWidth = arrowButton.getPreferredSize ().width;
+                final Insets insets = getInsets ();
+                final int buttonHeight = height - ( insets.top + insets.bottom );
+                final int buttonWidth = arrowButton.getPreferredSize ().width;
                 if ( cb.getComponentOrientation ().isLeftToRight () )
                 {
                     arrowButton.setBounds ( width - ( insets.right + buttonWidth ), insets.top, buttonWidth, buttonHeight );

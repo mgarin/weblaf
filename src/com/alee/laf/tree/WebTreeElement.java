@@ -66,7 +66,7 @@ public class WebTreeElement extends WebLabel
      * Overridden for performance reasons.
      */
     @Override
-    public void repaint ( long tm, int x, int y, int width, int height )
+    public void repaint ( final long tm, final int x, final int y, final int width, final int height )
     {
     }
 
@@ -74,7 +74,7 @@ public class WebTreeElement extends WebLabel
      * Overridden for performance reasons.
      */
     @Override
-    public void repaint ( Rectangle r )
+    public void repaint ( final Rectangle r )
     {
     }
 
@@ -90,7 +90,7 @@ public class WebTreeElement extends WebLabel
      * Overridden for performance reasons.
      */
     @Override
-    protected void firePropertyChange ( String propertyName, Object oldValue, Object newValue )
+    protected void firePropertyChange ( final String propertyName, final Object oldValue, final Object newValue )
     {
         // Strings get interned
         // noinspection StringEquality
@@ -106,7 +106,7 @@ public class WebTreeElement extends WebLabel
      * Overridden for performance reasons.
      */
     @Override
-    public void firePropertyChange ( String propertyName, byte oldValue, byte newValue )
+    public void firePropertyChange ( final String propertyName, final byte oldValue, final byte newValue )
     {
     }
 
@@ -114,7 +114,7 @@ public class WebTreeElement extends WebLabel
      * Overridden for performance reasons.
      */
     @Override
-    public void firePropertyChange ( String propertyName, char oldValue, char newValue )
+    public void firePropertyChange ( final String propertyName, final char oldValue, final char newValue )
     {
     }
 
@@ -122,7 +122,7 @@ public class WebTreeElement extends WebLabel
      * Overridden for performance reasons.
      */
     @Override
-    public void firePropertyChange ( String propertyName, short oldValue, short newValue )
+    public void firePropertyChange ( final String propertyName, final short oldValue, final short newValue )
     {
     }
 
@@ -130,7 +130,7 @@ public class WebTreeElement extends WebLabel
      * Overridden for performance reasons.
      */
     @Override
-    public void firePropertyChange ( String propertyName, int oldValue, int newValue )
+    public void firePropertyChange ( final String propertyName, final int oldValue, final int newValue )
     {
     }
 
@@ -138,7 +138,7 @@ public class WebTreeElement extends WebLabel
      * Overridden for performance reasons.
      */
     @Override
-    public void firePropertyChange ( String propertyName, long oldValue, long newValue )
+    public void firePropertyChange ( final String propertyName, final long oldValue, final long newValue )
     {
     }
 
@@ -146,7 +146,7 @@ public class WebTreeElement extends WebLabel
      * Overridden for performance reasons.
      */
     @Override
-    public void firePropertyChange ( String propertyName, float oldValue, float newValue )
+    public void firePropertyChange ( final String propertyName, final float oldValue, final float newValue )
     {
     }
 
@@ -154,7 +154,7 @@ public class WebTreeElement extends WebLabel
      * Overridden for performance reasons.
      */
     @Override
-    public void firePropertyChange ( String propertyName, double oldValue, double newValue )
+    public void firePropertyChange ( final String propertyName, final double oldValue, final double newValue )
     {
     }
 
@@ -162,7 +162,7 @@ public class WebTreeElement extends WebLabel
      * Overridden for performance reasons.
      */
     @Override
-    public void firePropertyChange ( String propertyName, boolean oldValue, boolean newValue )
+    public void firePropertyChange ( final String propertyName, final boolean oldValue, final boolean newValue )
     {
     }
 }

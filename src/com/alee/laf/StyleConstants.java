@@ -204,12 +204,12 @@ public class StyleConstants
 
     static
     {
-        Toolkit tk = Toolkit.getDefaultToolkit ();
+        final Toolkit tk = Toolkit.getDefaultToolkit ();
         textRenderingHints = ( Map ) tk.getDesktopProperty ( "awt.font.desktophints" );
         tk.addPropertyChangeListener ( "awt.font.desktophints", new PropertyChangeListener ()
         {
             @Override
-            public void propertyChange ( PropertyChangeEvent evt )
+            public void propertyChange ( final PropertyChangeEvent evt )
             {
                 if ( evt.getNewValue () instanceof RenderingHints )
                 {

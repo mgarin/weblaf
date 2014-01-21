@@ -98,7 +98,7 @@ public class FileTreeDataProvider extends AbstractTreeDataProvider<FileTreeNode>
     @Override
     public FileTreeNode getRoot ()
     {
-        return new FileTreeNode ( null );
+        return rootFiles.size () == 1 ? new FileTreeNode ( rootFiles.get ( 0 ) ) : new FileTreeNode ( null );
     }
 
     /**

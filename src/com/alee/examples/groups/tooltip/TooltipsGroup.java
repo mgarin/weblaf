@@ -51,7 +51,7 @@ public class TooltipsGroup extends DefaultExampleGroup
     @Override
     public List<Example> getGroupExamples ()
     {
-        List<Example> examples = new ArrayList<Example> ();
+        final List<Example> examples = new ArrayList<Example> ();
         examples.add ( new SwingTooltipExample () );
         examples.add ( new CustomDelayedTooltipExample () );
         examples.add ( new CustomInstantTooltipExample () );

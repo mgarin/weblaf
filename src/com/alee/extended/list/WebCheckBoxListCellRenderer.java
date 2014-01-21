@@ -59,13 +59,14 @@ public class WebCheckBoxListCellRenderer implements ListCellRenderer
      * @return cell renderer component
      */
     @Override
-    public Component getListCellRendererComponent ( JList list, Object value, int index, boolean isSelected, boolean cellHasFocus )
+    public Component getListCellRendererComponent ( final JList list, final Object value, final int index, final boolean isSelected,
+                                                    final boolean cellHasFocus )
     {
         // Cell data
-        CheckBoxCellData data = ( CheckBoxCellData ) value;
+        final CheckBoxCellData data = ( CheckBoxCellData ) value;
 
         // Actual renderer for cell
-        WebCheckBoxListElement renderer = getElement ( data );
+        final WebCheckBoxListElement renderer = getElement ( data );
 
         // Visual settings
         renderer.setFont ( list.getFont () );
@@ -76,8 +77,8 @@ public class WebCheckBoxListCellRenderer implements ListCellRenderer
         renderer.setText ( data.getUserObject () == null ? "" : data.getUserObject ().toString () );
 
         // Border
-        ListUI lui = list.getUI ();
-        int sw = lui instanceof WebListUI ? ( ( WebListUI ) lui ).getSelectionShadeWidth () : WebListStyle.selectionShadeWidth;
+        final ListUI lui = list.getUI ();
+        final int sw = lui instanceof WebListUI ? ( ( WebListUI ) lui ).getSelectionShadeWidth () : WebListStyle.selectionShadeWidth;
         renderer.setMargin ( sw + 2, sw + 2, sw + 2, sw + 4 );
 
         // Orientation
@@ -92,9 +93,9 @@ public class WebCheckBoxListCellRenderer implements ListCellRenderer
      * @param data data to process
      * @return cached checkbox element
      */
-    public WebCheckBoxListElement getElement ( CheckBoxCellData data )
+    public WebCheckBoxListElement getElement ( final CheckBoxCellData data )
     {
-        String key = data.getId ();
+        final String key = data.getId ();
         if ( elements.containsKey ( key ) )
         {
             final WebCheckBoxListElement element = elements.get ( key );

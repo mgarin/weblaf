@@ -21,6 +21,8 @@ import com.alee.extended.painter.Painter;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.language.LanguageContainerMethods;
 import com.alee.managers.language.LanguageManager;
+import com.alee.managers.language.LanguageMethods;
+import com.alee.managers.language.updaters.LanguageUpdater;
 import com.alee.managers.settings.DefaultValue;
 import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.settings.SettingsMethods;
@@ -38,36 +40,36 @@ import java.awt.*;
  */
 
 public class WebTabbedPane extends JTabbedPane
-        implements ShapeProvider, SettingsMethods, FontMethods<WebTabbedPane>, LanguageContainerMethods
+        implements ShapeProvider, LanguageMethods, SettingsMethods, FontMethods<WebTabbedPane>, LanguageContainerMethods
 {
     public WebTabbedPane ()
     {
         super ();
     }
 
-    public WebTabbedPane ( int tabPlacement )
+    public WebTabbedPane ( final int tabPlacement )
     {
         super ( tabPlacement );
     }
 
-    public WebTabbedPane ( int tabPlacement, int tabLayoutPolicy )
+    public WebTabbedPane ( final int tabPlacement, final int tabLayoutPolicy )
     {
         super ( tabPlacement, tabLayoutPolicy );
     }
 
-    public WebTabbedPane ( TabbedPaneStyle style )
+    public WebTabbedPane ( final TabbedPaneStyle style )
     {
         super ();
         setTabbedPaneStyle ( style );
     }
 
-    public WebTabbedPane ( int tabPlacement, TabbedPaneStyle style )
+    public WebTabbedPane ( final int tabPlacement, final TabbedPaneStyle style )
     {
         super ( tabPlacement );
         setTabbedPaneStyle ( style );
     }
 
-    public WebTabbedPane ( int tabPlacement, int tabLayoutPolicy, TabbedPaneStyle style )
+    public WebTabbedPane ( final int tabPlacement, final int tabLayoutPolicy, final TabbedPaneStyle style )
     {
         super ( tabPlacement, tabLayoutPolicy );
         setTabbedPaneStyle ( style );
@@ -78,7 +80,7 @@ public class WebTabbedPane extends JTabbedPane
         return getWebUI ().getRound ();
     }
 
-    public void setRound ( int round )
+    public void setRound ( final int round )
     {
         getWebUI ().setRound ( round );
     }
@@ -88,9 +90,19 @@ public class WebTabbedPane extends JTabbedPane
         return getWebUI ().getShadeWidth ();
     }
 
-    public void setShadeWidth ( int shadeWidth )
+    public void setShadeWidth ( final int shadeWidth )
     {
         getWebUI ().setShadeWidth ( shadeWidth );
+    }
+
+    public boolean isRotateTabInsets ()
+    {
+        return getWebUI ().isRotateTabInsets ();
+    }
+
+    public void setRotateTabInsets ( final boolean rotateTabInsets )
+    {
+        getWebUI ().setRotateTabInsets ( rotateTabInsets );
     }
 
     public Insets getContentInsets ()
@@ -98,7 +110,7 @@ public class WebTabbedPane extends JTabbedPane
         return getWebUI ().getContentInsets ();
     }
 
-    public void setContentInsets ( Insets contentInsets )
+    public void setContentInsets ( final Insets contentInsets )
     {
         getWebUI ().setContentInsets ( contentInsets );
     }
@@ -108,7 +120,7 @@ public class WebTabbedPane extends JTabbedPane
         return getWebUI ().getTabInsets ();
     }
 
-    public void setTabInsets ( Insets tabInsets )
+    public void setTabInsets ( final Insets tabInsets )
     {
         getWebUI ().setTabInsets ( tabInsets );
     }
@@ -118,7 +130,7 @@ public class WebTabbedPane extends JTabbedPane
         return getWebUI ().getSelectedTopBg ();
     }
 
-    public void setSelectedTopBg ( Color selectedTopBg )
+    public void setSelectedTopBg ( final Color selectedTopBg )
     {
         getWebUI ().setSelectedTopBg ( selectedTopBg );
     }
@@ -128,7 +140,7 @@ public class WebTabbedPane extends JTabbedPane
         return getWebUI ().getSelectedBottomBg ();
     }
 
-    public void setSelectedBottomBg ( Color selectedBottomBg )
+    public void setSelectedBottomBg ( final Color selectedBottomBg )
     {
         getWebUI ().setSelectedBottomBg ( selectedBottomBg );
     }
@@ -138,7 +150,7 @@ public class WebTabbedPane extends JTabbedPane
         return getWebUI ().getTopBg ();
     }
 
-    public void setTopBg ( Color topBg )
+    public void setTopBg ( final Color topBg )
     {
         getWebUI ().setTopBg ( topBg );
     }
@@ -148,27 +160,27 @@ public class WebTabbedPane extends JTabbedPane
         return getWebUI ().getBottomBg ();
     }
 
-    public void setBottomBg ( Color bottomBg )
+    public void setBottomBg ( final Color bottomBg )
     {
         getWebUI ().setBottomBg ( bottomBg );
     }
 
-    public void setSelectedForegroundAt ( int tabIndex, Color foreground )
+    public void setSelectedForegroundAt ( final int tabIndex, final Color foreground )
     {
         getWebUI ().setSelectedForegroundAt ( tabIndex, foreground );
     }
 
-    public Color getSelectedForegroundAt ( int tabIndex )
+    public Color getSelectedForegroundAt ( final int tabIndex )
     {
         return getWebUI ().getSelectedForegroundAt ( tabIndex );
     }
 
-    public void setBackgroundPainterAt ( int tabIndex, Painter painter )
+    public void setBackgroundPainterAt ( final int tabIndex, final Painter painter )
     {
         getWebUI ().setBackgroundPainterAt ( tabIndex, painter );
     }
 
-    public Painter getBackgroundPainterAt ( int tabIndex )
+    public Painter getBackgroundPainterAt ( final int tabIndex )
     {
         return getWebUI ().getBackgroundPainterAt ( tabIndex );
     }
@@ -178,7 +190,7 @@ public class WebTabbedPane extends JTabbedPane
         return getWebUI ().getTabbedPaneStyle ();
     }
 
-    public void setTabbedPaneStyle ( TabbedPaneStyle tabbedPaneStyle )
+    public void setTabbedPaneStyle ( final TabbedPaneStyle tabbedPaneStyle )
     {
         getWebUI ().setTabbedPaneStyle ( tabbedPaneStyle );
     }
@@ -188,7 +200,7 @@ public class WebTabbedPane extends JTabbedPane
         return getWebUI ().getPainter ();
     }
 
-    public void setPainter ( Painter painter )
+    public void setPainter ( final Painter painter )
     {
         getWebUI ().setPainter ( painter );
     }
@@ -198,7 +210,7 @@ public class WebTabbedPane extends JTabbedPane
         return getWebUI ().getTabRunIndent ();
     }
 
-    public void setTabRunIndent ( int tabRunIndent )
+    public void setTabRunIndent ( final int tabRunIndent )
     {
         getWebUI ().setTabRunIndent ( tabRunIndent );
     }
@@ -208,7 +220,7 @@ public class WebTabbedPane extends JTabbedPane
         return getWebUI ().getTabOverlay ();
     }
 
-    public void setTabOverlay ( int tabOverlay )
+    public void setTabOverlay ( final int tabOverlay )
     {
         getWebUI ().setTabOverlay ( tabOverlay );
     }
@@ -218,7 +230,7 @@ public class WebTabbedPane extends JTabbedPane
         return getWebUI ().getTabStretchType ();
     }
 
-    public void setTabStretchType ( TabStretchType tabStretchType )
+    public void setTabStretchType ( final TabStretchType tabStretchType )
     {
         getWebUI ().setTabStretchType ( tabStretchType );
     }
@@ -256,6 +268,73 @@ public class WebTabbedPane extends JTabbedPane
     }
 
     /**
+     * Language methods
+     */
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setLanguage ( final String key, final Object... data )
+    {
+        LanguageManager.registerComponent ( this, key, data );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void updateLanguage ( final Object... data )
+    {
+        LanguageManager.updateComponent ( this, data );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void updateLanguage ( final String key, final Object... data )
+    {
+        LanguageManager.updateComponent ( this, key, data );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void removeLanguage ()
+    {
+        LanguageManager.unregisterComponent ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isLanguageSet ()
+    {
+        return LanguageManager.isRegisteredComponent ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setLanguageUpdater ( final LanguageUpdater updater )
+    {
+        LanguageManager.registerLanguageUpdater ( this, updater );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void removeLanguageUpdater ()
+    {
+        LanguageManager.unregisterLanguageUpdater ( this );
+    }
+
+    /**
      * Settings methods
      */
 
@@ -263,7 +342,7 @@ public class WebTabbedPane extends JTabbedPane
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String key )
+    public void registerSettings ( final String key )
     {
         SettingsManager.registerComponent ( this, key );
     }
@@ -272,7 +351,7 @@ public class WebTabbedPane extends JTabbedPane
      * {@inheritDoc}
      */
     @Override
-    public <T extends DefaultValue> void registerSettings ( String key, Class<T> defaultValueClass )
+    public <T extends DefaultValue> void registerSettings ( final String key, final Class<T> defaultValueClass )
     {
         SettingsManager.registerComponent ( this, key, defaultValueClass );
     }
@@ -281,7 +360,7 @@ public class WebTabbedPane extends JTabbedPane
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String key, Object defaultValue )
+    public void registerSettings ( final String key, final Object defaultValue )
     {
         SettingsManager.registerComponent ( this, key, defaultValue );
     }
@@ -290,7 +369,7 @@ public class WebTabbedPane extends JTabbedPane
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String group, String key )
+    public void registerSettings ( final String group, final String key )
     {
         SettingsManager.registerComponent ( this, group, key );
     }
@@ -299,7 +378,7 @@ public class WebTabbedPane extends JTabbedPane
      * {@inheritDoc}
      */
     @Override
-    public <T extends DefaultValue> void registerSettings ( String group, String key, Class<T> defaultValueClass )
+    public <T extends DefaultValue> void registerSettings ( final String group, final String key, final Class<T> defaultValueClass )
     {
         SettingsManager.registerComponent ( this, group, key, defaultValueClass );
     }
@@ -308,7 +387,7 @@ public class WebTabbedPane extends JTabbedPane
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String group, String key, Object defaultValue )
+    public void registerSettings ( final String group, final String key, final Object defaultValue )
     {
         SettingsManager.registerComponent ( this, group, key, defaultValue );
     }
@@ -317,7 +396,7 @@ public class WebTabbedPane extends JTabbedPane
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String key, boolean loadInitialSettings, boolean applySettingsChanges )
+    public void registerSettings ( final String key, final boolean loadInitialSettings, final boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, key, loadInitialSettings, applySettingsChanges );
     }
@@ -326,8 +405,8 @@ public class WebTabbedPane extends JTabbedPane
      * {@inheritDoc}
      */
     @Override
-    public <T extends DefaultValue> void registerSettings ( String key, Class<T> defaultValueClass, boolean loadInitialSettings,
-                                                            boolean applySettingsChanges )
+    public <T extends DefaultValue> void registerSettings ( final String key, final Class<T> defaultValueClass,
+                                                            final boolean loadInitialSettings, final boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, key, defaultValueClass, loadInitialSettings, applySettingsChanges );
     }
@@ -336,7 +415,8 @@ public class WebTabbedPane extends JTabbedPane
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String key, Object defaultValue, boolean loadInitialSettings, boolean applySettingsChanges )
+    public void registerSettings ( final String key, final Object defaultValue, final boolean loadInitialSettings,
+                                   final boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, key, defaultValue, loadInitialSettings, applySettingsChanges );
     }
@@ -345,8 +425,8 @@ public class WebTabbedPane extends JTabbedPane
      * {@inheritDoc}
      */
     @Override
-    public <T extends DefaultValue> void registerSettings ( String group, String key, Class<T> defaultValueClass,
-                                                            boolean loadInitialSettings, boolean applySettingsChanges )
+    public <T extends DefaultValue> void registerSettings ( final String group, final String key, final Class<T> defaultValueClass,
+                                                            final boolean loadInitialSettings, final boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, group, key, defaultValueClass, loadInitialSettings, applySettingsChanges );
     }
@@ -355,8 +435,8 @@ public class WebTabbedPane extends JTabbedPane
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String group, String key, Object defaultValue, boolean loadInitialSettings,
-                                   boolean applySettingsChanges )
+    public void registerSettings ( final String group, final String key, final Object defaultValue, final boolean loadInitialSettings,
+                                   final boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, group, key, defaultValue, loadInitialSettings, applySettingsChanges );
     }
@@ -365,7 +445,7 @@ public class WebTabbedPane extends JTabbedPane
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( SettingsProcessor settingsProcessor )
+    public void registerSettings ( final SettingsProcessor settingsProcessor )
     {
         SettingsManager.registerComponent ( this, settingsProcessor );
     }
@@ -414,7 +494,7 @@ public class WebTabbedPane extends JTabbedPane
      * {@inheritDoc}
      */
     @Override
-    public WebTabbedPane setPlainFont ( boolean apply )
+    public WebTabbedPane setPlainFont ( final boolean apply )
     {
         return SwingUtils.setPlainFont ( this, apply );
     }
@@ -441,7 +521,7 @@ public class WebTabbedPane extends JTabbedPane
      * {@inheritDoc}
      */
     @Override
-    public WebTabbedPane setBoldFont ( boolean apply )
+    public WebTabbedPane setBoldFont ( final boolean apply )
     {
         return SwingUtils.setBoldFont ( this, apply );
     }
@@ -468,7 +548,7 @@ public class WebTabbedPane extends JTabbedPane
      * {@inheritDoc}
      */
     @Override
-    public WebTabbedPane setItalicFont ( boolean apply )
+    public WebTabbedPane setItalicFont ( final boolean apply )
     {
         return SwingUtils.setItalicFont ( this, apply );
     }
@@ -486,7 +566,7 @@ public class WebTabbedPane extends JTabbedPane
      * {@inheritDoc}
      */
     @Override
-    public WebTabbedPane setFontStyle ( boolean bold, boolean italic )
+    public WebTabbedPane setFontStyle ( final boolean bold, final boolean italic )
     {
         return SwingUtils.setFontStyle ( this, bold, italic );
     }
@@ -495,7 +575,7 @@ public class WebTabbedPane extends JTabbedPane
      * {@inheritDoc}
      */
     @Override
-    public WebTabbedPane setFontStyle ( int style )
+    public WebTabbedPane setFontStyle ( final int style )
     {
         return SwingUtils.setFontStyle ( this, style );
     }
@@ -504,7 +584,7 @@ public class WebTabbedPane extends JTabbedPane
      * {@inheritDoc}
      */
     @Override
-    public WebTabbedPane setFontSize ( int fontSize )
+    public WebTabbedPane setFontSize ( final int fontSize )
     {
         return SwingUtils.setFontSize ( this, fontSize );
     }
@@ -513,7 +593,7 @@ public class WebTabbedPane extends JTabbedPane
      * {@inheritDoc}
      */
     @Override
-    public WebTabbedPane changeFontSize ( int change )
+    public WebTabbedPane changeFontSize ( final int change )
     {
         return SwingUtils.changeFontSize ( this, change );
     }
@@ -531,7 +611,7 @@ public class WebTabbedPane extends JTabbedPane
      * {@inheritDoc}
      */
     @Override
-    public WebTabbedPane setFontSizeAndStyle ( int fontSize, boolean bold, boolean italic )
+    public WebTabbedPane setFontSizeAndStyle ( final int fontSize, final boolean bold, final boolean italic )
     {
         return SwingUtils.setFontSizeAndStyle ( this, fontSize, bold, italic );
     }
@@ -540,7 +620,7 @@ public class WebTabbedPane extends JTabbedPane
      * {@inheritDoc}
      */
     @Override
-    public WebTabbedPane setFontSizeAndStyle ( int fontSize, int style )
+    public WebTabbedPane setFontSizeAndStyle ( final int fontSize, final int style )
     {
         return SwingUtils.setFontSizeAndStyle ( this, fontSize, style );
     }
@@ -549,7 +629,7 @@ public class WebTabbedPane extends JTabbedPane
      * {@inheritDoc}
      */
     @Override
-    public WebTabbedPane setFontName ( String fontName )
+    public WebTabbedPane setFontName ( final String fontName )
     {
         return SwingUtils.setFontName ( this, fontName );
     }
@@ -571,7 +651,7 @@ public class WebTabbedPane extends JTabbedPane
      * {@inheritDoc}
      */
     @Override
-    public void setLanguageContainerKey ( String key )
+    public void setLanguageContainerKey ( final String key )
     {
         LanguageManager.registerLanguageContainer ( this, key );
     }

@@ -30,8 +30,7 @@ import javax.swing.*;
 import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,6 +58,7 @@ public class WebPopup extends WebPanel
     protected List<Component> focusableChilds = new ArrayList<Component> ();
 
     protected Component lastComponent = null;
+    protected ComponentListener lastComponentListener = null;
     protected AncestorListener lastAncestorListener = null;
 
     protected boolean focused = false;
@@ -298,44 +298,51 @@ public class WebPopup extends WebPanel
 
     public void showAsPopupMenu ( final Component component )
     {
-        // Detrmining component position inside window
-        final Rectangle cb = SwingUtils.getBoundsInWindow ( component );
-        final Dimension rps = SwingUtils.getRootPane ( component ).getSize ();
-        final Dimension ps = WebPopup.this.getPreferredSize ();
-        //        Painter bp = getPainter ();
-        //        Insets bm = bp != null ? bp.getMargin ( this ) : new Insets ( 0, 0, 0, 0 );
+        showPopup ( component, new DataProvider<Rectangle> ()
+        {
+            @Override
+            public Rectangle provide ()
+            {
+                // Detrmining component position inside window
+                final Rectangle cb = SwingUtils.getBoundsInWindow ( component );
+                final Dimension rps = SwingUtils.getRootPane ( component ).getSize ();
+                final Dimension ps = WebPopup.this.getPreferredSize ();
+                //        Painter bp = getPainter ();
+                //        Insets bm = bp != null ? bp.getMargin ( this ) : new Insets ( 0, 0, 0, 0 );
 
-        // Choosing display way
-        final int x;
-        if ( cb.x + ps.width < rps.width || rps.width - cb.x - ps.width > cb.x )
-        {
-            // Expanding popup to the right side
-            x = 0;
-        }
-        else
-        {
-            // Expanding popup to the left side
-            x = cb.width - ps.width;
-        }
-        final int y;
-        if ( cb.y + cb.height + ps.height < rps.height || rps.height - cb.y - cb.height - ps.height > cb.y )
-        {
-            // Displaying popup below the component
-            y = cb.height;
-        }
-        else
-        {
-            // Displaying popup above the component
-            y = -ps.height;
-        }
+                // Choosing display way
+                final Point p = new Point ();
+                if ( cb.x + ps.width < rps.width || rps.width - cb.x - ps.width > cb.x )
+                {
+                    // Expanding popup to the right side
+                    p.x = 0;
+                }
+                else
+                {
+                    // Expanding popup to the left side
+                    p.x = cb.width - ps.width;
+                }
+                if ( cb.y + cb.height + ps.height < rps.height || rps.height - cb.y - cb.height - ps.height > cb.y )
+                {
+                    // Displaying popup below the component
+                    p.y = cb.height;
+                }
+                else
+                {
+                    // Displaying popup above the component
+                    p.y = -ps.height;
+                }
 
-        showPopup ( component, x, y );
+                // Returning proper location
+                return new Rectangle ( p, WebPopup.this.getPreferredSize () );
+            }
+        } );
     }
 
     public void showPopup ( final Component component )
     {
         PopupManager.showPopup ( component, this, requestFocusOnShow );
-        clearComponentAncestorListener ();
+        clearLocationListeners ();
     }
 
     public void showPopup ( final Component component, final Rectangle bounds )
@@ -372,7 +379,7 @@ public class WebPopup extends WebPanel
     {
         updatePopupBounds ( component, boundsProvider.provide () );
         PopupManager.showPopup ( component, this, requestFocusOnShow );
-        updateComponentAncestorListener ( component, boundsProvider );
+        updateLocationListeners ( component, boundsProvider );
     }
 
     protected void updatePopupBounds ( final Component component, final Rectangle bounds )
@@ -395,7 +402,7 @@ public class WebPopup extends WebPanel
     protected void updateComponentAncestorListener ( final Component component, final int x, final int y, final int width,
                                                      final int height )
     {
-        clearComponentAncestorListener ();
+        clearLocationListeners ();
 
         lastComponent = component;
         if ( component instanceof JComponent )
@@ -412,11 +419,28 @@ public class WebPopup extends WebPanel
         }
     }
 
-    protected void updateComponentAncestorListener ( final Component component, final DataProvider<Rectangle> boundsProvider )
+    protected void updateLocationListeners ( final Component component, final DataProvider<Rectangle> boundsProvider )
     {
-        clearComponentAncestorListener ();
+        clearLocationListeners ();
 
         lastComponent = component;
+
+        lastComponentListener = new ComponentAdapter ()
+        {
+            @Override
+            public void componentResized ( final ComponentEvent e )
+            {
+                updatePopupBounds ( component, boundsProvider.provide () );
+            }
+
+            @Override
+            public void componentMoved ( final ComponentEvent e )
+            {
+                updatePopupBounds ( component, boundsProvider.provide () );
+            }
+        };
+        lastComponent.addComponentListener ( lastComponentListener );
+
         if ( component instanceof JComponent )
         {
             lastAncestorListener = new AncestorAdapter ()
@@ -431,11 +455,18 @@ public class WebPopup extends WebPanel
         }
     }
 
-    protected void clearComponentAncestorListener ()
+    protected void clearLocationListeners ()
     {
-        if ( lastComponent != null && lastAncestorListener != null && lastComponent instanceof JComponent )
+        if ( lastComponent != null )
         {
-            ( ( JComponent ) lastComponent ).removeAncestorListener ( lastAncestorListener );
+            if ( lastComponentListener != null )
+            {
+                lastComponent.removeComponentListener ( lastComponentListener );
+            }
+            if ( lastAncestorListener != null && lastComponent instanceof JComponent )
+            {
+                ( ( JComponent ) lastComponent ).removeAncestorListener ( lastAncestorListener );
+            }
         }
     }
 
@@ -475,7 +506,7 @@ public class WebPopup extends WebPanel
 
     protected void hidePopupImpl ()
     {
-        clearComponentAncestorListener ();
+        clearLocationListeners ();
 
         final PopupLayer layer = ( PopupLayer ) this.getParent ();
         if ( layer != null )
@@ -512,7 +543,7 @@ public class WebPopup extends WebPanel
     @Override
     public boolean contains ( final int x, final int y )
     {
-        return provideShape ().contains ( x, y ) && fadeStateType != FadeStateType.fadeOut;
+        return fadeStateType != FadeStateType.fadeOut && provideShape ().contains ( x, y );
     }
 
     /**

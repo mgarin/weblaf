@@ -27,7 +27,7 @@ import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.language.data.Value;
 import com.alee.managers.language.updaters.DefaultLanguageUpdater;
-import com.alee.utils.swing.WindowFollowListener;
+import com.alee.utils.swing.WindowFollowAdapter;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -68,13 +68,13 @@ public class LanguageExample extends DefaultExample
         myButton.addActionListener ( new ActionListener ()
         {
             @Override
-            public void actionPerformed ( ActionEvent e )
+            public void actionPerformed ( final ActionEvent e )
             {
-                WebDialog myDialog = new WebDialog ( owner );
+                final WebDialog myDialog = new WebDialog ( owner );
                 myDialog.setLanguage ( "my.dialog.title" );
-                WindowFollowListener.install ( myDialog, owner );
+                WindowFollowAdapter.install ( myDialog, owner );
 
-                MyLabel myText = new MyLabel ();
+                final MyLabel myText = new MyLabel ();
                 myText.setLanguage ( "my.dialog.text" );
                 myDialog.add ( myText );
 
@@ -97,7 +97,7 @@ public class LanguageExample extends DefaultExample
          * {@inheritDoc}
          */
         @Override
-        public void update ( MyLabel c, String key, Value value, Object... data )
+        public void update ( final MyLabel c, final String key, final Value value, final Object... data )
         {
             c.setText ( value.getText ( c.isPressed () ? "pressed" : null ) );
         }
@@ -124,7 +124,7 @@ public class LanguageExample extends DefaultExample
             addKeyListener ( new KeyAdapter ()
             {
                 @Override
-                public void keyPressed ( KeyEvent e )
+                public void keyPressed ( final KeyEvent e )
                 {
                     if ( Hotkey.TAB.isTriggered ( e ) )
                     {
@@ -134,7 +134,7 @@ public class LanguageExample extends DefaultExample
                 }
 
                 @Override
-                public void keyReleased ( KeyEvent e )
+                public void keyReleased ( final KeyEvent e )
                 {
                     if ( Hotkey.TAB.isTriggered ( e ) )
                     {

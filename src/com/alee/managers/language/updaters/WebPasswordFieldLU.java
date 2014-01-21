@@ -32,7 +32,7 @@ public class WebPasswordFieldLU extends DefaultLanguageUpdater<WebPasswordField>
      * {@inheritDoc}
      */
     @Override
-    public void update ( WebPasswordField c, String key, Value value, Object... data )
+    public void update ( final WebPasswordField c, final String key, final Value value, final Object... data )
     {
         c.setText ( getDefaultText ( value, data ) );
         c.setInputPrompt ( getDefaultText ( INPUT_PROMPT, value, data ) );

@@ -173,7 +173,7 @@ public class WebNotificationPopup extends WebPopup
         addMouseListener ( new MouseAdapter ()
         {
             @Override
-            public void mousePressed ( MouseEvent e )
+            public void mousePressed ( final MouseEvent e )
             {
                 if ( clickToClose )
                 {
@@ -228,7 +228,7 @@ public class WebNotificationPopup extends WebPopup
             displayTimer = WebTimer.delay ( displayTime, new ActionListener ()
             {
                 @Override
-                public void actionPerformed ( ActionEvent e )
+                public void actionPerformed ( final ActionEvent e )
                 {
                     hidePopup ();
                 }
@@ -262,7 +262,7 @@ public class WebNotificationPopup extends WebPopup
      *
      * @param icon new notification icon
      */
-    public void setIcon ( Icon icon )
+    public void setIcon ( final Icon icon )
     {
         this.icon = icon;
         updateIcon ();
@@ -273,7 +273,7 @@ public class WebNotificationPopup extends WebPopup
      *
      * @param iconType new notification icon type
      */
-    public void setIcon ( NotificationIcon iconType )
+    public void setIcon ( final NotificationIcon iconType )
     {
         setIcon ( iconType.getIcon () );
     }
@@ -302,7 +302,7 @@ public class WebNotificationPopup extends WebPopup
      *
      * @param content new notification content
      */
-    public void setContent ( Component content )
+    public void setContent ( final Component content )
     {
         this.content = content;
         updateContent ();
@@ -313,7 +313,7 @@ public class WebNotificationPopup extends WebPopup
      *
      * @param content new notification text content
      */
-    public void setContent ( String content )
+    public void setContent ( final String content )
     {
         setContent ( new WebLabel ( content ) );
     }
@@ -346,7 +346,7 @@ public class WebNotificationPopup extends WebPopup
      *
      * @param options new notification options
      */
-    public void setOptions ( NotificationOption... options )
+    public void setOptions ( final NotificationOption... options )
     {
         setOptions ( Arrays.asList ( options ) );
     }
@@ -356,7 +356,7 @@ public class WebNotificationPopup extends WebPopup
      *
      * @param options new notification options list
      */
-    public void setOptions ( List<NotificationOption> options )
+    public void setOptions ( final List<NotificationOption> options )
     {
         this.options = options;
         updateOptions ();
@@ -371,12 +371,12 @@ public class WebNotificationPopup extends WebPopup
         {
             for ( final NotificationOption option : options )
             {
-                WebButton optionButton = new WebButton ( "" );
+                final WebButton optionButton = new WebButton ( "" );
                 optionButton.setLanguage ( option.getLanguageKey () );
                 optionButton.addActionListener ( new ActionListener ()
                 {
                     @Override
-                    public void actionPerformed ( ActionEvent e )
+                    public void actionPerformed ( final ActionEvent e )
                     {
                         fireOptionSelected ( option );
                         if ( closeOnOptionSelection )
@@ -439,7 +439,7 @@ public class WebNotificationPopup extends WebPopup
      *
      * @param closeOnOptionSelection whether notification popup should be closed when some option is selected by user or not
      */
-    public void setCloseOnOptionSelection ( boolean closeOnOptionSelection )
+    public void setCloseOnOptionSelection ( final boolean closeOnOptionSelection )
     {
         this.closeOnOptionSelection = closeOnOptionSelection;
     }
@@ -459,7 +459,7 @@ public class WebNotificationPopup extends WebPopup
      *
      * @param displayTime new notification display time
      */
-    public void setDisplayTime ( long displayTime )
+    public void setDisplayTime ( final long displayTime )
     {
         this.displayTime = displayTime;
         if ( isShowing () )
@@ -498,9 +498,9 @@ public class WebNotificationPopup extends WebPopup
     /**
      * Fires when notification options is selected.
      */
-    public void fireOptionSelected ( NotificationOption option )
+    public void fireOptionSelected ( final NotificationOption option )
     {
-        for ( NotificationListener listener : CollectionUtils.copy ( listeners ) )
+        for ( final NotificationListener listener : CollectionUtils.copy ( listeners ) )
         {
             listener.optionSelected ( option );
         }
@@ -511,7 +511,7 @@ public class WebNotificationPopup extends WebPopup
      */
     public void fireAccepted ()
     {
-        for ( NotificationListener listener : CollectionUtils.copy ( listeners ) )
+        for ( final NotificationListener listener : CollectionUtils.copy ( listeners ) )
         {
             listener.accepted ();
         }
@@ -522,7 +522,7 @@ public class WebNotificationPopup extends WebPopup
      */
     public void fireClosed ()
     {
-        for ( NotificationListener listener : CollectionUtils.copy ( listeners ) )
+        for ( final NotificationListener listener : CollectionUtils.copy ( listeners ) )
         {
             listener.closed ();
         }

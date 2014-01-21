@@ -984,7 +984,7 @@ public final class ReflectUtils
         final Class[] parameterTypes = new Class[ arguments.length ];
         for ( int i = 0; i < arguments.length; i++ )
         {
-            parameterTypes[ i ] = arguments[ i ].getClass ();
+            parameterTypes[ i ] = arguments[ i ] != null ? arguments[ i ].getClass () : null;
         }
         return parameterTypes;
     }
@@ -992,59 +992,60 @@ public final class ReflectUtils
     /**
      * Returns whether first type is assignable from second one or not.
      *
-     * @param type first type
-     * @param from second type
+     * @param type checked whether is assignable, always not null
+     * @param from checked type, might be null
      * @return true if first type is assignable from second one, false otherwise
      */
     public static boolean isAssignable ( final Class type, final Class from )
     {
-        if ( type.isAssignableFrom ( from ) )
+        if ( from == null )
         {
             return true;
         }
-        else
+        else if ( type.isAssignableFrom ( from ) )
         {
-            if ( type.isPrimitive () )
-            {
-                if ( type == boolean.class )
-                {
-                    return Boolean.class.isAssignableFrom ( from );
-                }
-                else if ( type == char.class )
-                {
-                    return Character.class.isAssignableFrom ( from );
-                }
-                else if ( type == byte.class )
-                {
-                    return Byte.class.isAssignableFrom ( from );
-                }
-                else if ( type == short.class )
-                {
-                    return Short.class.isAssignableFrom ( from );
-                }
-                else if ( type == int.class )
-                {
-                    return Integer.class.isAssignableFrom ( from );
-                }
-                else if ( type == long.class )
-                {
-                    return Long.class.isAssignableFrom ( from );
-                }
-                else if ( type == float.class )
-                {
-                    return Float.class.isAssignableFrom ( from );
-                }
-                else if ( type == double.class )
-                {
-                    return Double.class.isAssignableFrom ( from );
-                }
-                else if ( type == void.class )
-                {
-                    return Void.class.isAssignableFrom ( from );
-                }
-            }
-            return false;
+            return true;
         }
+        else if ( type.isPrimitive () )
+        {
+            if ( type == boolean.class )
+            {
+                return Boolean.class.isAssignableFrom ( from );
+            }
+            else if ( type == int.class )
+            {
+                return Integer.class.isAssignableFrom ( from );
+            }
+            else if ( type == char.class )
+            {
+                return Character.class.isAssignableFrom ( from );
+            }
+            else if ( type == byte.class )
+            {
+                return Byte.class.isAssignableFrom ( from );
+            }
+            else if ( type == short.class )
+            {
+                return Short.class.isAssignableFrom ( from );
+            }
+            else if ( type == long.class )
+            {
+                return Long.class.isAssignableFrom ( from );
+            }
+            else if ( type == float.class )
+            {
+                return Float.class.isAssignableFrom ( from );
+            }
+            else if ( type == double.class )
+            {
+                return Double.class.isAssignableFrom ( from );
+            }
+            else if ( type == void.class )
+            {
+                return Void.class.isAssignableFrom ( from );
+            }
+        }
+        return false;
     }
 
     /**

@@ -19,7 +19,6 @@ package com.alee.examples.groups.filechooser;
 
 import com.alee.examples.WebLookAndFeelDemo;
 import com.alee.examples.content.DefaultExample;
-import com.alee.examples.content.FeatureState;
 import com.alee.extended.filechooser.WebFileDrop;
 import com.alee.extended.panel.GroupPanel;
 import com.alee.laf.scroll.WebScrollPane;
@@ -45,19 +44,13 @@ public class FileDropExample extends DefaultExample
     }
 
     @Override
-    public FeatureState getFeatureState ()
-    {
-        return FeatureState.beta;
-    }
-
-    @Override
     public Component getPreview ( final WebLookAndFeelDemo owner )
     {
         // Simple file drop area
-        WebFileDrop webFileDrop = new WebFileDrop ();
+        final WebFileDrop webFileDrop = new WebFileDrop ();
 
         // File drop area scroll
-        WebScrollPane webFilesDropScroll = new WebScrollPane ( webFileDrop );
+        final WebScrollPane webFilesDropScroll = new WebScrollPane ( webFileDrop );
         webFilesDropScroll.setPreferredSize ( new Dimension ( 300, 150 ) );
 
         return new GroupPanel ( webFilesDropScroll );

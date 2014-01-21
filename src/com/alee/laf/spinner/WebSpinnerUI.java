@@ -23,6 +23,7 @@ import com.alee.laf.text.WebTextFieldUI;
 import com.alee.utils.LafUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.laf.ShapeProvider;
+import com.alee.utils.swing.BorderMethods;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
@@ -35,7 +36,7 @@ import java.awt.event.FocusEvent;
  * User: mgarin Date: 25.07.11 Time: 17:10
  */
 
-public class WebSpinnerUI extends BasicSpinnerUI implements ShapeProvider
+public class WebSpinnerUI extends BasicSpinnerUI implements ShapeProvider, BorderMethods
 {
     private static final ImageIcon UP_ICON = new ImageIcon ( WebSpinnerUI.class.getResource ( "icons/up.png" ) );
     private static final ImageIcon DOWN_ICON = new ImageIcon ( WebSpinnerUI.class.getResource ( "icons/down.png" ) );
@@ -46,13 +47,13 @@ public class WebSpinnerUI extends BasicSpinnerUI implements ShapeProvider
     private int shadeWidth = StyleConstants.shadeWidth;
 
     @SuppressWarnings ("UnusedParameters")
-    public static ComponentUI createUI ( JComponent c )
+    public static ComponentUI createUI ( final JComponent c )
     {
         return new WebSpinnerUI ();
     }
 
     @Override
-    public void installUI ( JComponent c )
+    public void installUI ( final JComponent c )
     {
         super.installUI ( c );
 
@@ -62,7 +63,7 @@ public class WebSpinnerUI extends BasicSpinnerUI implements ShapeProvider
         spinner.setOpaque ( false );
 
         // Updating border
-        updateBorder ( drawBorder );
+        updateBorder ();
     }
 
     @Override
@@ -71,10 +72,17 @@ public class WebSpinnerUI extends BasicSpinnerUI implements ShapeProvider
         return LafUtils.getWebBorderShape ( spinner, getShadeWidth (), getRound () );
     }
 
-    private void updateBorder ( boolean drawBorder )
+    @Override
+    public void updateBorder ()
     {
         if ( spinner != null )
         {
+            // Preserve old borders
+            if ( SwingUtils.isPreserveBorders ( spinner ) )
+            {
+                return;
+            }
+
             if ( drawBorder )
             {
                 spinner.setBorder ( BorderFactory.createEmptyBorder ( shadeWidth + 2, shadeWidth + 2, shadeWidth + 2, shadeWidth + 2 ) );
@@ -91,10 +99,10 @@ public class WebSpinnerUI extends BasicSpinnerUI implements ShapeProvider
         return shadeWidth;
     }
 
-    public void setShadeWidth ( int shadeWidth )
+    public void setShadeWidth ( final int shadeWidth )
     {
         this.shadeWidth = shadeWidth;
-        updateBorder ( drawBorder );
+        updateBorder ();
     }
 
     public int getRound ()
@@ -102,10 +110,10 @@ public class WebSpinnerUI extends BasicSpinnerUI implements ShapeProvider
         return round;
     }
 
-    public void setRound ( int round )
+    public void setRound ( final int round )
     {
         this.round = round;
-        updateBorder ( drawBorder );
+        updateBorder ();
     }
 
     public boolean isDrawBorder ()
@@ -113,10 +121,10 @@ public class WebSpinnerUI extends BasicSpinnerUI implements ShapeProvider
         return drawBorder;
     }
 
-    public void setDrawBorder ( boolean drawBorder )
+    public void setDrawBorder ( final boolean drawBorder )
     {
         this.drawBorder = drawBorder;
-        updateBorder ( drawBorder );
+        updateBorder ();
     }
 
     public boolean isDrawFocus ()
@@ -124,13 +132,13 @@ public class WebSpinnerUI extends BasicSpinnerUI implements ShapeProvider
         return drawFocus;
     }
 
-    public void setDrawFocus ( boolean drawFocus )
+    public void setDrawFocus ( final boolean drawFocus )
     {
         this.drawFocus = drawFocus;
     }
 
     @Override
-    public void paint ( Graphics g, JComponent c )
+    public void paint ( final Graphics g, final JComponent c )
     {
         // Border, background and shade
         LafUtils.drawWebStyle ( ( Graphics2D ) g, c,
@@ -143,7 +151,7 @@ public class WebSpinnerUI extends BasicSpinnerUI implements ShapeProvider
     @Override
     protected Component createNextButton ()
     {
-        WebButton nextButton = WebButton.createIconWebButton ( UP_ICON, StyleConstants.smallRound, 1, 2 );
+        final WebButton nextButton = WebButton.createIconWebButton ( UP_ICON, StyleConstants.smallRound, 1, 2 );
         nextButton.setLeftRightSpacing ( 1 );
         nextButton.setDrawFocus ( false );
         nextButton.setFocusable ( false );
@@ -157,7 +165,7 @@ public class WebSpinnerUI extends BasicSpinnerUI implements ShapeProvider
     @Override
     protected Component createPreviousButton ()
     {
-        WebButton previousButton = WebButton.createIconWebButton ( DOWN_ICON, StyleConstants.smallRound, 1, 2 );
+        final WebButton previousButton = WebButton.createIconWebButton ( DOWN_ICON, StyleConstants.smallRound, 1, 2 );
         previousButton.setLeftRightSpacing ( 1 );
         previousButton.setDrawFocus ( false );
         previousButton.setFocusable ( false );
@@ -171,28 +179,30 @@ public class WebSpinnerUI extends BasicSpinnerUI implements ShapeProvider
     @Override
     protected JComponent createEditor ()
     {
-        JComponent editor = super.createEditor ();
+        final JComponent editor = super.createEditor ();
         installFieldUI ( ( ( JSpinner.DefaultEditor ) editor ).getTextField (), spinner );
         return editor;
     }
 
-    public static void installFieldUI ( JFormattedTextField field, final JSpinner spinner )
+    public static void installFieldUI ( final JFormattedTextField field, final JSpinner spinner )
     {
         field.setMargin ( new Insets ( 0, 0, 0, 0 ) );
         field.setBorder ( BorderFactory.createEmptyBorder ( 0, 0, 0, 0 ) );
-        field.setUI ( new WebTextFieldUI ( field, false ) );
+        final WebTextFieldUI textFieldUI = new WebTextFieldUI ();
+        textFieldUI.setDrawBorder ( false );
+        field.setUI ( textFieldUI );
         field.setOpaque ( true );
         field.setBackground ( Color.WHITE );
         field.addFocusListener ( new FocusAdapter ()
         {
             @Override
-            public void focusGained ( FocusEvent e )
+            public void focusGained ( final FocusEvent e )
             {
                 spinner.repaint ();
             }
 
             @Override
-            public void focusLost ( FocusEvent e )
+            public void focusLost ( final FocusEvent e )
             {
                 spinner.repaint ();
             }

@@ -17,7 +17,6 @@
 
 package com.alee.laf.menu;
 
-import com.alee.extended.painter.Painter;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.laf.ShapeProvider;
@@ -168,9 +167,9 @@ public class WebPopupMenu extends JPopupMenu implements ShapeProvider
      *
      * @return popup menu style
      */
-    public PopupMenuStyle getPopupMenuStyle ()
+    public PopupPainterStyle getPopupMenuStyle ()
     {
-        return getWebUI ().getPopupMenuStyle ();
+        return getWebUI ().getPopupPainterStyle ();
     }
 
     /**
@@ -178,9 +177,9 @@ public class WebPopupMenu extends JPopupMenu implements ShapeProvider
      *
      * @param style new popup menu style
      */
-    public void setPopupMenuStyle ( final PopupMenuStyle style )
+    public void setPopupMenuStyle ( final PopupPainterStyle style )
     {
-        getWebUI ().setPopupMenuStyle ( style );
+        getWebUI ().setPopupPainterStyle ( style );
     }
 
     /**
@@ -284,6 +283,26 @@ public class WebPopupMenu extends JPopupMenu implements ShapeProvider
     }
 
     /**
+     * Returns popup menu background transparency.
+     *
+     * @return popup menu background transparency
+     */
+    public float getTransparency ()
+    {
+        return getWebUI ().getTransparency ();
+    }
+
+    /**
+     * Sets popup menu background transparency.
+     *
+     * @param transparency popup menu background transparency
+     */
+    public void setTransparency ( final float transparency )
+    {
+        getWebUI ().setTransparency ( transparency );
+    }
+
+    /**
      * Returns popup menu content margin.
      *
      * @return popup menu content margin
@@ -309,7 +328,7 @@ public class WebPopupMenu extends JPopupMenu implements ShapeProvider
      *
      * @return popup menu painter
      */
-    public Painter getPainter ()
+    public PopupMenuPainter getPainter ()
     {
         return getWebUI ().getPainter ();
     }
@@ -319,7 +338,7 @@ public class WebPopupMenu extends JPopupMenu implements ShapeProvider
      *
      * @param painter new popup menu painter
      */
-    public void setPainter ( final Painter painter )
+    public void setPainter ( final PopupMenuPainter painter )
     {
         getWebUI ().setPainter ( painter );
     }
