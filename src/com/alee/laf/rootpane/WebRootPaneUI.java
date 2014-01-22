@@ -720,15 +720,7 @@ public class WebRootPaneUI extends BasicRootPaneUI implements SwingConstants
         titleLabel.addMouseListener ( cma );
         titleLabel.addMouseMotionListener ( cma );
 
-        WebPanel titlePanel = new WebPanel ( new BorderLayout ( 5, 0 ) ) {
-            public Insets getInsets() {
-                Insets insets = super.getInsets();
-                return insets;
-            }
-            public void setMargin(Insets margin) {
-                super.setMargin(margin);
-            }
-        };
+        WebPanel titlePanel = new WebPanel ( new BorderLayout ( 5, 0 ) );
         titlePanel.setOpaque ( false );
         titlePanel.setMargin ( 4, 5, 4, 10 );
         titlePanel.add ( titleIcon, BorderLayout.LINE_START );

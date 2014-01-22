@@ -107,8 +107,8 @@ public class WebButtonUI extends BasicButtonUI implements ShapeProvider, SwingCo
     protected AncestorListener ancestorListener;
     protected PropertyChangeListener propertyChangeListener;
 
-    @SuppressWarnings ("UnusedParameters")
-    public static ComponentUI createUI ( JComponent c )
+    @SuppressWarnings ( "UnusedParameters" )
+    public static ComponentUI createUI ( final JComponent c )
     {
         return new WebButtonUI ();
     }

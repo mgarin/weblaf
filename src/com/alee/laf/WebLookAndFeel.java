@@ -462,17 +462,17 @@ public class WebLookAndFeel extends BasicLookAndFeel
 
         // Fonts
         initializeFonts ( table );
-        
+
         // JLabels
         Color controlText = table.getColor("controlText");
-        table.put( "Label.foreground", controlText );
-        table.put( "Label.disabledForeground", StyleConstants.disabledTextColor );
+        table.put ( "Label.foreground", controlText );
+        table.put ( "Label.disabledForeground", StyleConstants.disabledTextColor );
         
         // JTextFields
         final Object textComponentBorder =
                 new SwingLazyValue ( "javax.swing.plaf.BorderUIResource.LineBorderUIResource", new Object[]{ StyleConstants.shadeColor } );
-        table.put( "TextField.border", textComponentBorder );
-        
+        table.put ( "TextField.border", textComponentBorder );
+
         // JTextAreas
         table.put ( "TextArea.border", textComponentBorder );
 

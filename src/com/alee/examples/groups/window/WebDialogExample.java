@@ -77,8 +77,7 @@ public class WebDialogExample extends DefaultExample
 
                 // Opening dialog
                 ExampleDialog exampleDialog = new ExampleDialog ( owner );
-                //exampleDialog.pack ();
-                exampleDialog.setSize(600, 400);
+                exampleDialog.pack ();
                 exampleDialog.setLocationRelativeTo ( owner );
                 exampleDialog.setVisible ( true );
 
