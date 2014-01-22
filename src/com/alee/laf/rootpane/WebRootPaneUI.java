@@ -871,6 +871,12 @@ public class WebRootPaneUI extends BasicRootPaneUI implements SwingConstants
             titleComponent = null;
         }
 
+        // Buttons
+        if ( windowButtons != null )
+        {
+            root.remove ( windowButtons );
+        }
+
         // Resize corner
         if ( resizeCorner != null )
         {

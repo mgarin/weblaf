@@ -63,7 +63,7 @@ public class WebSeparatorUI extends BasicSeparatorUI
 
         // Default settings
         SwingUtils.setOrientation ( separator );
-        separator.setOpaque ( false );
+        LookAndFeel.installProperty( separator, "opaque", Boolean.FALSE );
 
         // Updating border
         updateBorder ();
@@ -72,8 +72,6 @@ public class WebSeparatorUI extends BasicSeparatorUI
     @Override
     public void uninstallUI ( final JComponent c )
     {
-        separator.setOpaque ( true );
-
         this.separator = null;
 
         super.uninstallUI ( c );

@@ -97,6 +97,12 @@ public class WebButtonUI extends BasicButtonUI implements ShapeProvider, SwingCo
     protected WebTimer animator = null;
     protected AbstractButton button = null;
 
+    // Cached old values from button to restore on LAF change.
+    private boolean oldFocusPainted;
+    private boolean oldContentAreaFilled;
+    private boolean oldBorderPainted;
+    private boolean oldFocusable;
+
     protected MouseAdapter mouseAdapter;
     protected AncestorListener ancestorListener;
     protected PropertyChangeListener propertyChangeListener;
@@ -117,11 +123,15 @@ public class WebButtonUI extends BasicButtonUI implements ShapeProvider, SwingCo
 
         // Default settings
         SwingUtils.setOrientation ( button );
+        oldFocusPainted = button.isFocusPainted();
+        oldContentAreaFilled = button.isContentAreaFilled();
+        oldBorderPainted = button.isBorderPainted();
+        oldFocusable = button.isFocusable();
         button.setFocusPainted ( false );
         button.setContentAreaFilled ( false );
         button.setBorderPainted ( false );
         button.setFocusable ( true );
-        button.setOpaque ( false );
+        LookAndFeel.installProperty( button, "opaque", Boolean.FALSE );
         PainterSupport.installPainter ( button, this.painter );
 
         // Updating border
@@ -312,6 +322,11 @@ public class WebButtonUI extends BasicButtonUI implements ShapeProvider, SwingCo
         c.removeMouseMotionListener ( mouseAdapter );
         c.removeAncestorListener ( ancestorListener );
         c.removePropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, propertyChangeListener );
+
+        button.setBorderPainted ( oldBorderPainted );
+        button.setContentAreaFilled ( oldContentAreaFilled );
+        button.setFocusPainted ( oldFocusPainted );
+        button.setFocusable ( oldFocusable );
 
         super.uninstallUI ( c );
     }

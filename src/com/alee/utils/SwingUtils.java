@@ -36,8 +36,8 @@ import javax.swing.*;
 import javax.swing.FocusManager;
 import javax.swing.border.Border;
 import javax.swing.event.AncestorListener;
-import javax.swing.plaf.BorderUIResource;
 import javax.swing.plaf.RootPaneUI;
+import javax.swing.plaf.UIResource;
 import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
@@ -118,8 +118,12 @@ public final class SwingUtils
      */
     public static boolean isPreserveBorders ( final JComponent component )
     {
-        return getHonorUserBorders ( component ) && !( component.getBorder () instanceof BorderUIResource ) &&
-                !( component.getBorder () instanceof WeblafBorder );
+        if ( getHonorUserBorders ( component ) ) {
+            Border border = component.getBorder ();
+            return border!=null && !( component.getBorder () instanceof UIResource ) &&
+                    !( component.getBorder () instanceof WeblafBorder );
+        }
+        return false;
     }
 
     /**

@@ -52,7 +52,7 @@ public class WebColorChooserUI extends BasicColorChooserUI
         chooser = ( JColorChooser ) c;
         selectionModel = chooser.getSelectionModel ();
 
-        chooser.setOpaque ( false );
+        LookAndFeel.installProperty( chooser, "opaque", Boolean.FALSE );
         chooser.setLayout ( new BorderLayout () );
 
         colorChooserPanel = new WebColorChooserPanel ( false );

@@ -463,6 +463,11 @@ public class WebLookAndFeel extends BasicLookAndFeel
         // Fonts
         initializeFonts ( table );
 
+        // JLabels
+        Color controlText = table.getColor("controlText");
+        table.put ( "Label.foreground", controlText );
+        table.put ( "Label.disabledForeground", StyleConstants.disabledTextColor );
+        
         // JTextFields
         final Object textComponentBorder =
                 new SwingLazyValue ( "javax.swing.plaf.BorderUIResource.LineBorderUIResource", new Object[]{ StyleConstants.shadeColor } );
@@ -527,10 +532,13 @@ public class WebLookAndFeel extends BasicLookAndFeel
         table.put ( "Table.background", WebTableStyle.background );
         table.put ( "Table.selectionForeground", WebTableStyle.selectionForeground );
         table.put ( "Table.selectionBackground", WebTableStyle.selectionBackground );
+        table.put ( "Table.scrollPaneBorder", null ); // Force JScrollPane to keep its border
         // Table header defaults
         table.put ( "TableHeader.cellBorder", LafUtils.createWebBorder ( WebTableStyle.headerMargin ) );
         table.put ( "TableHeader.focusCellBorder", LafUtils.createWebBorder ( WebTableStyle.headerMargin ) );
 
+        table.put ( "Viewport.background", WebTableStyle.background );
+        
         // Default list renderer
         table.put ( "List.cellRenderer", new UIDefaults.ActiveValue ()
         {

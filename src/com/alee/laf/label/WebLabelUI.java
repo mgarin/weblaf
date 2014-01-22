@@ -133,7 +133,7 @@ public class WebLabelUI extends BasicLabelUI implements BorderMethods
         if ( label != null )
         {
             // Preserve old borders
-            if ( SwingUtils.isPreserveBorders ( label ) )
+            if ( label.getBorder () != null && SwingUtils.isPreserveBorders ( label ) )
             {
                 return;
             }

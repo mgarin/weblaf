@@ -20,6 +20,7 @@ package com.alee.laf.desktoppane;
 import com.alee.utils.SwingUtils;
 
 import javax.swing.*;
+import javax.swing.plaf.BorderUIResource;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicDesktopIconUI;
 import java.awt.*;
@@ -43,8 +44,8 @@ public class WebDesktopIconUI extends BasicDesktopIconUI
 
         // Default settings
         SwingUtils.setOrientation ( c );
-        c.setBorder ( BorderFactory.createEmptyBorder () );
-        c.setOpaque ( false );
+        c.setBorder ( new BorderUIResource.EmptyBorderUIResource( 0, 0, 0, 0 ) );
+        LookAndFeel.installProperty( c, "opaque", Boolean.FALSE );
     }
 
     @Override

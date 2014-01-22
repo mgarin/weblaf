@@ -73,7 +73,7 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeProvider
 
         // Default settings
         SwingUtils.setOrientation ( scrollpane );
-        scrollpane.setOpaque ( false );
+        LookAndFeel.installProperty( scrollpane, "opaque", Boolean.FALSE );
         scrollpane.setBackground ( StyleConstants.backgroundColor );
 
         // Border
@@ -140,6 +140,7 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeProvider
     {
         if ( scrollpane != null )
         {
+            // Must use a non-UIResource border otherwise tables don't look right (?)
             // Preserve old borders
             if ( SwingUtils.isPreserveBorders ( scrollpane ) )
             {

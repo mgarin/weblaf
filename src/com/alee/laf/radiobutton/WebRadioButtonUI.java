@@ -109,7 +109,7 @@ public class WebRadioButtonUI extends BasicRadioButtonUI implements ShapeProvide
 
         // Default settings
         SwingUtils.setOrientation ( c );
-        radioButton.setOpaque ( false );
+        LookAndFeel.installProperty( radioButton, "opaque", Boolean.FALSE );
 
         // Initial check state
         checkIcon = radioButton.isSelected () ? CHECK_STATES.size () - 1 : 0;

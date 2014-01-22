@@ -69,7 +69,7 @@ public class WebToolTipUI extends BasicToolTipUI implements ShapeProvider, Borde
 
         // Default settings
         SwingUtils.setOrientation ( tooltip );
-        tooltip.setOpaque ( false );
+        LookAndFeel.installProperty( tooltip, "opaque", Boolean.FALSE );
         tooltip.setBackground ( WebTooltipStyle.backgroundColor );
         tooltip.setForeground ( WebTooltipStyle.textColor );
 

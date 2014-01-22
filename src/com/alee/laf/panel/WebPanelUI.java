@@ -195,7 +195,9 @@ public class WebPanelUI extends BasicPanelUI implements ShapeProvider, BorderMet
         if ( panel != null )
         {
             // Preserve old borders
-            if ( SwingUtils.isPreserveBorders ( panel ) )
+            // Override null borders here for proper margins in
+            // LAF-decorated JFrames and JDialogs (via WebRootPaneUI).
+            if ( SwingUtils.isPreserveBorders ( panel ) && panel.getBorder () != null)
             {
                 return;
             }
@@ -254,7 +256,7 @@ public class WebPanelUI extends BasicPanelUI implements ShapeProvider, BorderMet
         // Makes panel non-opaque when it becomes decorated
         if ( painter == null && !undecorated )
         {
-            panel.setOpaque ( false );
+            LookAndFeel.installProperty( panel, "opaque", Boolean.FALSE );
         }
     }
 

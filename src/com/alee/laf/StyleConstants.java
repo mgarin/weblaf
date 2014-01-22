@@ -22,7 +22,6 @@ import com.alee.utils.laf.FocusType;
 import com.alee.utils.laf.ShadeType;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -61,11 +60,6 @@ public class StyleConstants
     public static final Color greenHighlight = new Color ( 0, 255, 0, 48 );
     public static final Color blueHighlight = new Color ( 0, 0, 255, 48 );
     public static final Color yellowHighlight = new Color ( 255, 255, 0, 48 );
-
-    /**
-     * Default borders.
-     */
-    public static final Border emptyBorder = BorderFactory.createEmptyBorder ();
 
     /**
      * Components shade painting style.

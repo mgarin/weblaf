@@ -50,7 +50,7 @@ public class WebEditorPaneUI extends BasicEditorPaneUI
         SwingUtils.setOrientation ( textComponent );
         textComponent.setMargin ( new Insets ( 2, 2, 2, 2 ) );
         textComponent.setFocusable ( true );
-        textComponent.setOpaque ( true );
+        LookAndFeel.installProperty ( textComponent, "opaque", Boolean.TRUE );
         textComponent.setBackground ( Color.WHITE );
         textComponent.setSelectionColor ( StyleConstants.textSelectionColor );
         textComponent.setForeground ( Color.BLACK );

@@ -68,7 +68,7 @@ public class WebTableUI extends BasicTableUI
 
         // Default settings
         SwingUtils.setOrientation ( table );
-        table.setOpaque ( false );
+        LookAndFeel.installProperty( table, "opaque", Boolean.FALSE );
         table.setFillsViewportHeight ( false );
         table.setBackground ( WebTableStyle.background );
         table.setForeground ( WebTableStyle.foreground );

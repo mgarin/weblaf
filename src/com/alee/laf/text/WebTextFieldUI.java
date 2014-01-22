@@ -90,7 +90,7 @@ public class WebTextFieldUI extends BasicTextFieldUI implements ShapeProvider, S
         SwingUtils.setOrientation ( textField );
         textField.putClientProperty ( SwingUtils.HANDLES_ENABLE_STATE, true );
         textField.setFocusable ( true );
-        textField.setOpaque ( false );
+        LookAndFeel.installProperty( textField, "opaque", Boolean.FALSE );
         textField.setMargin ( WebTextFieldStyle.margin );
         textField.setBackground ( Color.WHITE );
         textField.setSelectionColor ( StyleConstants.textSelectionColor );
