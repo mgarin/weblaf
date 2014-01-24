@@ -51,6 +51,10 @@ import java.util.List;
 public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implements AsyncTreeModelListener<E>
 {
     /**
+     * todo 1. Allow adding async tree listener for specific node/nodeId listening
+     */
+
+    /**
      * General lock.
      */
     protected static final Object lock = new Object ();
@@ -926,6 +930,257 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
     }
 
     /**
+     * Expands node with the specified ID.
+     *
+     * @param nodeId ID of the node to expand
+     */
+    public void expandNode ( final String nodeId )
+    {
+        expandNode ( findNode ( nodeId ) );
+    }
+
+    /**
+     * Expands path using the specified node path IDs.
+     * IDs are used to find real nodes within the expanded roots.
+     * Be aware that operation might stop even before reaching the end of the path if something unexpected happened.
+     *
+     * @param pathNodeIds node path IDs
+     */
+    public void expandPath ( final List<String> pathNodeIds )
+    {
+        expandPath ( pathNodeIds, true, true, null );
+    }
+
+    /**
+     * Expands path using the specified node path IDs.
+     * IDs are used to find real nodes within the expanded roots.
+     * Be aware that operation might stop even before reaching the end of the path if something unexpected happened.
+     *
+     * @param pathNodeIds node path IDs
+     * @param listener    async path expansion listener
+     */
+    public void expandPath ( final List<String> pathNodeIds, final AsyncPathExpansionListener listener )
+    {
+        expandPath ( pathNodeIds, true, true, listener );
+    }
+
+    /**
+     * Expands path using the specified node path IDs.
+     * IDs are used to find real nodes within the expanded roots.
+     * Be aware that operation might stop even before reaching the end of the path if something unexpected happened.
+     *
+     * @param pathNodeIds    node path IDs
+     * @param expandLastNode whether should expand last found path node or not
+     */
+    public void expandPath ( final List<String> pathNodeIds, final boolean expandLastNode )
+    {
+        expandPath ( pathNodeIds, expandLastNode, true, null );
+    }
+
+    /**
+     * Expands path using the specified node path IDs.
+     * IDs are used to find real nodes within the expanded roots.
+     * Be aware that operation might stop even before reaching the end of the path if something unexpected happened.
+     *
+     * @param pathNodeIds    node path IDs
+     * @param expandLastNode whether should expand last found path node or not
+     * @param listener       async path expansion listener
+     */
+    public void expandPath ( final List<String> pathNodeIds, final boolean expandLastNode, final AsyncPathExpansionListener listener )
+    {
+        expandPath ( pathNodeIds, expandLastNode, true, listener );
+    }
+
+    /**
+     * Expands path using the specified node path IDs.
+     * IDs are used to find real nodes within the expanded roots.
+     * Be aware that operation might stop even before reaching the end of the path if something unexpected happened.
+     *
+     * @param pathNodeIds    node path IDs
+     * @param expandLastNode whether should expand last found path node or not
+     * @param selectLastNode whether should select last found path node or not
+     */
+    public void expandPath ( final List<String> pathNodeIds, final boolean expandLastNode, final boolean selectLastNode )
+    {
+        expandPath ( pathNodeIds, expandLastNode, selectLastNode, null );
+    }
+
+    /**
+     * Expands path using the specified node path IDs.
+     * IDs are used to find real nodes within the expanded roots.
+     * Be aware that operation might stop even before reaching the end of the path if something unexpected happened.
+     *
+     * @param pathNodeIds    node path IDs
+     * @param expandLastNode whether should expand last found path node or not
+     * @param selectLastNode whether should select last found path node or not
+     * @param listener       async path expansion listener
+     */
+    public void expandPath ( final List<String> pathNodeIds, final boolean expandLastNode, final boolean selectLastNode,
+                             final AsyncPathExpansionListener listener )
+    {
+        for ( int initial = 0; initial < pathNodeIds.size (); initial++ )
+        {
+            final E initialNode = findNode ( pathNodeIds.get ( initial ) );
+            if ( initialNode != null )
+            {
+                for ( int i = 0; i <= initial; i++ )
+                {
+                    pathNodeIds.remove ( i );
+                }
+                if ( pathNodeIds.size () > 0 )
+                {
+                    expandPathImpl ( initialNode, pathNodeIds, expandLastNode, selectLastNode, listener );
+                }
+                return;
+            }
+        }
+
+        // Informing listener that path failed to expand
+        if ( listener != null )
+        {
+            listener.pathFailedToExpand ();
+        }
+    }
+
+    /**
+     * Performs a single path node expansion.
+     * Be aware that operation might stop even before reaching the end of the path if something unexpected happened.
+     *
+     * @param currentNode    last reached node
+     * @param leftToExpand   node path IDs left for expansion
+     * @param expandLastNode whether should expand last found path node or not
+     * @param selectLastNode whether should select last found path node or not
+     * @param listener       async path expansion listener
+     */
+    protected void expandPathImpl ( final E currentNode, final List<String> leftToExpand, final boolean expandLastNode,
+                                    final boolean selectLastNode, final AsyncPathExpansionListener listener )
+    {
+        // There is still more to load
+        if ( leftToExpand.size () > 0 )
+        {
+            if ( currentNode.isLoaded () )
+            {
+                // Expanding already loaded node
+                expandNode ( currentNode );
+
+                // Informing listener that one of path nodes was just expanded
+                if ( listener != null )
+                {
+                    listener.pathNodeExpanded ( currentNode );
+                }
+
+                // Retrieving next node
+                final E nextNode = findNode ( leftToExpand.get ( 0 ) );
+                leftToExpand.remove ( 0 );
+
+                // If node exists continue expanding path
+                if ( nextNode != null )
+                {
+                    expandPathImpl ( nextNode, leftToExpand, expandLastNode, selectLastNode, listener );
+                }
+                else
+                {
+                    expandPathEndImpl ( currentNode, expandLastNode, selectLastNode );
+
+                    // Informing listener that path was expanded as much as it was possible
+                    if ( listener != null )
+                    {
+                        listener.pathPartiallyExpanded ( currentNode );
+                    }
+                }
+            }
+            else
+            {
+                // Adding node expansion listener
+                addAsyncTreeListener ( new AsyncTreeAdapter ()
+                {
+                    @Override
+                    public void childsLoadCompleted ( final AsyncUniqueNode parent, final List childs )
+                    {
+                        if ( parent.getId ().equals ( currentNode.getId () ) )
+                        {
+                            removeAsyncTreeListener ( this );
+
+                            // Informing listener that one of path nodes was just expanded
+                            if ( listener != null )
+                            {
+                                listener.pathNodeExpanded ( currentNode );
+                            }
+
+                            // Retrieving next node
+                            final E nextNode = findNode ( leftToExpand.get ( 0 ) );
+                            leftToExpand.remove ( 0 );
+
+                            // If node exists continue expanding path
+                            if ( nextNode != null )
+                            {
+                                expandPathImpl ( nextNode, leftToExpand, expandLastNode, selectLastNode, listener );
+                            }
+                            else
+                            {
+                                expandPathEndImpl ( currentNode, expandLastNode, selectLastNode );
+
+                                // Informing listener that path was expanded as much as it was possible
+                                if ( listener != null )
+                                {
+                                    listener.pathPartiallyExpanded ( currentNode );
+                                }
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void childsLoadFailed ( final AsyncUniqueNode parent, final Throwable cause )
+                    {
+                        if ( parent.getId ().equals ( currentNode.getId () ) )
+                        {
+                            removeAsyncTreeListener ( this );
+                            expandPathEndImpl ( currentNode, expandLastNode, selectLastNode );
+
+                            // Informing listener that path was expanded as much as it was possible
+                            if ( listener != null )
+                            {
+                                listener.pathPartiallyExpanded ( currentNode );
+                            }
+                        }
+                    }
+                } );
+                expandNode ( currentNode );
+            }
+        }
+        else
+        {
+            expandPathEndImpl ( currentNode, expandLastNode, selectLastNode );
+
+            // todo Maybe wait till last node expands?
+            // Informing listener that path was fully expanded
+            if ( listener != null )
+            {
+                listener.pathExpanded ( currentNode );
+            }
+        }
+    }
+
+    /**
+     * Finishes async tree path expansion.
+     *
+     * @param lastFoundNode  last found path node
+     * @param expandLastNode whether should expand last found path node or not
+     * @param selectLastNode whether should select last found path node or not
+     */
+    protected void expandPathEndImpl ( final E lastFoundNode, final boolean expandLastNode, final boolean selectLastNode )
+    {
+        if ( selectLastNode )
+        {
+            setSelectedNode ( lastFoundNode );
+        }
+        if ( expandLastNode )
+        {
+            expandNode ( lastFoundNode );
+        }
+    }
+
+    /**
      * Expands all visible tree rows in a single call.
      * <p/>
      * This method provides similar functionality to WebTree expandAll method and will actually expand all tree elements - even those which
@@ -941,7 +1196,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
                 final TreePath path = getPathForRow ( i );
                 if ( !getModel ().isLeaf ( getNodeForPath ( path ) ) )
                 {
-                    performPathExpand ( path );
+                    performFullPathExpand ( path );
                 }
             }
         }
@@ -956,15 +1211,15 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
      *
      * @param path path to expand
      */
-    protected void performPathExpand ( final TreePath path )
+    protected void performFullPathExpand ( final TreePath path )
     {
         if ( hasBeenExpanded ( path ) )
         {
-            performSyncPathExpand ( path );
+            performFullSyncPathExpand ( path );
         }
         else
         {
-            performAsyncPathExpand ( path );
+            performFullAsyncPathExpand ( path );
         }
     }
 
@@ -973,7 +1228,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
      *
      * @param path path to expand
      */
-    protected void performSyncPathExpand ( final TreePath path )
+    protected void performFullSyncPathExpand ( final TreePath path )
     {
         // Expand path
         expandPath ( path );
@@ -982,7 +1237,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
         final E node = getNodeForPath ( path );
         for ( int i = 0; i < node.getChildCount (); i++ )
         {
-            performPathExpand ( getPathForNode ( ( E ) node.getChildAt ( i ) ) );
+            performFullPathExpand ( getPathForNode ( ( E ) node.getChildAt ( i ) ) );
         }
     }
 
@@ -991,7 +1246,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
      *
      * @param path path to expand
      */
-    protected void performAsyncPathExpand ( final TreePath path )
+    protected void performFullAsyncPathExpand ( final TreePath path )
     {
         // Add path expand listener first to get notified when this path will be expanded
         addAsyncTreeListener ( new AsyncTreeAdapter<E> ()
@@ -1003,7 +1258,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
                 {
                     for ( final E child : childs )
                     {
-                        performPathExpand ( child.getTreePath () );
+                        performFullPathExpand ( child.getTreePath () );
                     }
                     removeAsyncTreeListener ( this );
                 }

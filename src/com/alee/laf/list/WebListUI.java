@@ -18,12 +18,14 @@
 package com.alee.laf.list;
 
 import com.alee.laf.StyleConstants;
+import com.alee.laf.WebLookAndFeel;
 import com.alee.utils.LafUtils;
 import com.alee.utils.SwingUtils;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.plaf.ColorUIResource;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicListUI;
 import java.awt.*;
@@ -83,10 +85,10 @@ public class WebListUI extends BasicListUI
         super.installUI ( c );
 
         // Default settings
-        SwingUtils.setOrientation ( c );
-        list.setOpaque ( true );
-        list.setBackground ( WebListStyle.background );
-        list.setForeground ( WebListStyle.foreground );
+        SwingUtils.setOrientation ( list );
+        LookAndFeel.installProperty ( list, WebLookAndFeel.OPAQUE_PROPERTY, Boolean.TRUE );
+        list.setBackground ( new ColorUIResource ( WebListStyle.background ) );
+        list.setForeground ( new ColorUIResource ( WebListStyle.foreground ) );
 
         // Rollover listener
         mouseoverAdapter = new MouseAdapter ()

@@ -56,6 +56,7 @@ import com.alee.laf.toolbar.WebToolBarSeparatorUI;
 import com.alee.laf.toolbar.WebToolBarUI;
 import com.alee.laf.tooltip.WebToolTipUI;
 import com.alee.laf.tree.WebTreeUI;
+import com.alee.laf.viewport.WebViewportStyle;
 import com.alee.laf.viewport.WebViewportUI;
 import com.alee.managers.focus.FocusManager;
 import com.alee.managers.hotkey.HotkeyManager;
@@ -75,6 +76,8 @@ import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
+import java.util.Map;
+import java.util.WeakHashMap;
 
 /**
  * This core class contains methods to install, configure and uninstall WebLookAndFeel.
@@ -104,14 +107,23 @@ public class WebLookAndFeel extends BasicLookAndFeel
     public static final String ENABLED_PROPERTY = "enabled";
     public static final String TOOLBAR_FLOATABLE_PROPERTY = "floatable";
     public static final String WINDOW_DECORATION_STYLE_PROPERTY = "windowDecorationStyle";
+    public static final String WINDOW_RESIZABLE_PROPERTY = "resizable";
+    public static final String WINDOW_ICON_PROPERTY = "iconImage";
+    public static final String WINDOW_TITLE_PROPERTY = "title";
     public static final String VISIBLE_PROPERTY = "visible";
     public static final String DOCUMENT_PROPERTY = "document";
+    public static final String OPAQUE_PROPERTY = "opaque";
     public static final String DROP_LOCATION = "dropLocation";
 
     /**
      * List of WebLookAndFeel icons.
      */
     private static List<ImageIcon> icons = null;
+
+    /**
+     * Disabled icons cache.
+     */
+    private static Map<Icon, ImageIcon> disabledIcons = new WeakHashMap<Icon, ImageIcon> ( 50 );
 
     /**
      * Alt hotkey processor for application windows with menu.
@@ -451,7 +463,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
      *
      * @param table UI defaults table
      */
-    @SuppressWarnings ("UnnecessaryBoxing")
+    @SuppressWarnings ( "UnnecessaryBoxing" )
     @Override
     protected void initComponentDefaults ( final UIDefaults table )
     {
@@ -462,6 +474,11 @@ public class WebLookAndFeel extends BasicLookAndFeel
 
         // Fonts
         initializeFonts ( table );
+
+        // JLabels
+        final Color controlText = table.getColor ( "controlText" );
+        table.put ( "Label.foreground", controlText );
+        table.put ( "Label.disabledForeground", StyleConstants.disabledTextColor );
 
         // JTextFields
         final Object textComponentBorder =
@@ -519,6 +536,9 @@ public class WebLookAndFeel extends BasicLookAndFeel
         table.put ( "Menu.submenuPopupOffsetX", new Integer ( 0 ) );
         table.put ( "Menu.submenuPopupOffsetY", new Integer ( 0 ) );
 
+        // JViewport
+        table.put ( "Viewport.background", WebViewportStyle.background );
+
         // Table defaults
         table.put ( "Table.cellNoFocusBorder", LafUtils.createWebBorder ( 1, 1, 1, 1 ) );
         table.put ( "Table.focusSelectedCellHighlightBorder", LafUtils.createWebBorder ( 1, 1, 1, 1 ) );
@@ -527,6 +547,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
         table.put ( "Table.background", WebTableStyle.background );
         table.put ( "Table.selectionForeground", WebTableStyle.selectionForeground );
         table.put ( "Table.selectionBackground", WebTableStyle.selectionBackground );
+        table.put ( "Table.scrollPaneBorder", null );
         // Table header defaults
         table.put ( "TableHeader.cellBorder", LafUtils.createWebBorder ( WebTableStyle.headerMargin ) );
         table.put ( "TableHeader.focusCellBorder", LafUtils.createWebBorder ( WebTableStyle.headerMargin ) );
@@ -939,7 +960,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
 
     /**
      * Returns a beter disabled icon than BasicLookAndFeel offers.
-     * Generated icons won't be cached here, so make sure you don't call this method directly from some paint methods.
+     * Generated disabled icons are cached within a weak hash map under icon key.
      *
      * @param component component that requests disabled icon
      * @param icon      normal icon
@@ -948,11 +969,16 @@ public class WebLookAndFeel extends BasicLookAndFeel
     @Override
     public Icon getDisabledIcon ( final JComponent component, final Icon icon )
     {
-        if ( icon instanceof ImageIcon )
+        if ( disabledIcons.containsKey ( icon ) )
         {
-            return ImageUtils.createDisabledCopy ( ( ImageIcon ) icon );
+            return disabledIcons.get ( icon );
         }
-        return null;
+        else
+        {
+            final ImageIcon disabledIcon = icon instanceof ImageIcon ? ImageUtils.createDisabledCopy ( ( ImageIcon ) icon ) : null;
+            disabledIcons.put ( icon, disabledIcon );
+            return disabledIcon;
+        }
     }
 
     /**

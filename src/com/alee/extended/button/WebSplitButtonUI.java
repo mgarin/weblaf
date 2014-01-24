@@ -47,10 +47,10 @@ public class WebSplitButtonUI extends WebButtonUI
      * @param c component that will use UI instance
      * @return instance of the WebSplitButtonUI
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
-        return new WebButtonUI ();
+        return new WebSplitButtonUI ();
     }
 
     /**

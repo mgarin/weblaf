@@ -66,20 +66,20 @@ public class ToolbarLayout extends AbstractLayoutManager implements SwingConstan
         super ();
     }
 
-    public ToolbarLayout ( int spacing )
+    public ToolbarLayout ( final int spacing )
     {
         super ();
         this.spacing = spacing;
     }
 
-    public ToolbarLayout ( int spacing, int orientation )
+    public ToolbarLayout ( final int spacing, final int orientation )
     {
         super ();
         this.spacing = spacing;
         this.orientation = orientation;
     }
 
-    public ToolbarLayout ( int spacing, int partsSpacing, int orientation )
+    public ToolbarLayout ( final int spacing, final int partsSpacing, final int orientation )
     {
         super ();
         this.spacing = spacing;
@@ -96,7 +96,7 @@ public class ToolbarLayout extends AbstractLayoutManager implements SwingConstan
         return constraints;
     }
 
-    public void setConstraints ( Map<Component, String> constraints )
+    public void setConstraints ( final Map<Component, String> constraints )
     {
         this.constraints = constraints;
     }
@@ -110,7 +110,7 @@ public class ToolbarLayout extends AbstractLayoutManager implements SwingConstan
         return spacing;
     }
 
-    public void setSpacing ( int spacing )
+    public void setSpacing ( final int spacing )
     {
         this.spacing = spacing;
     }
@@ -124,7 +124,7 @@ public class ToolbarLayout extends AbstractLayoutManager implements SwingConstan
         return partsSpacing;
     }
 
-    public void setPartsSpacing ( int partsSpacing )
+    public void setPartsSpacing ( final int partsSpacing )
     {
         this.partsSpacing = partsSpacing;
     }
@@ -138,7 +138,7 @@ public class ToolbarLayout extends AbstractLayoutManager implements SwingConstan
         return orientation;
     }
 
-    public void setOrientation ( int orientation )
+    public void setOrientation ( final int orientation )
     {
         this.orientation = orientation;
     }
@@ -152,7 +152,7 @@ public class ToolbarLayout extends AbstractLayoutManager implements SwingConstan
         return margin;
     }
 
-    public void setMargin ( Insets margin )
+    public void setMargin ( final Insets margin )
     {
         this.margin = margin;
     }
@@ -165,9 +165,9 @@ public class ToolbarLayout extends AbstractLayoutManager implements SwingConstan
      * {@inheritDoc}
      */
     @Override
-    public void addComponent ( Component component, Object constraints )
+    public void addComponent ( final Component component, final Object constraints )
     {
-        String value = ( String ) constraints;
+        final String value = ( String ) constraints;
         if ( value != null && !value.trim ().equals ( "" ) && !value.equals ( START ) &&
                 !value.equals ( MIDDLE ) && !value.equals ( FILL ) && !value.equals ( END ) )
         {
@@ -181,7 +181,7 @@ public class ToolbarLayout extends AbstractLayoutManager implements SwingConstan
      * {@inheritDoc}
      */
     @Override
-    public void removeComponent ( Component component )
+    public void removeComponent ( final Component component )
     {
         constraints.remove ( component );
     }
@@ -190,15 +190,15 @@ public class ToolbarLayout extends AbstractLayoutManager implements SwingConstan
      * {@inheritDoc}
      */
     @Override
-    public Dimension preferredLayoutSize ( Container parent )
+    public Dimension preferredLayoutSize ( final Container parent )
     {
-        Insets insets = getActualInsets ( parent );
-        Dimension ps = new Dimension ( insets.left + insets.right, insets.top + insets.bottom );
-        int componentCount = parent.getComponentCount ();
+        final Insets insets = getActualInsets ( parent );
+        final Dimension ps = new Dimension ( insets.left + insets.right, insets.top + insets.bottom );
+        final int componentCount = parent.getComponentCount ();
         for ( int i = 0; i < componentCount; i++ )
         {
-            Component component = parent.getComponent ( i );
-            Dimension cps = component.getPreferredSize ();
+            final Component component = parent.getComponent ( i );
+            final Dimension cps = component.getPreferredSize ();
             if ( orientation == HORIZONTAL )
             {
                 ps.width += cps.width + ( i < componentCount - 1 ? spacing : 0 );
@@ -212,7 +212,7 @@ public class ToolbarLayout extends AbstractLayoutManager implements SwingConstan
         }
 
         // Additional spacing between start and end parts
-        boolean addPartsSpacing = hasElement ( START ) && hasElement ( END ) && !hasElement ( MIDDLE ) && !hasElement ( FILL );
+        final boolean addPartsSpacing = hasElement ( START ) && hasElement ( END ) && !hasElement ( MIDDLE ) && !hasElement ( FILL );
         if ( orientation == HORIZONTAL )
         {
             // ps.height = insets.top + ps.height + insets.bottom;
@@ -236,9 +236,9 @@ public class ToolbarLayout extends AbstractLayoutManager implements SwingConstan
      * {@inheritDoc}
      */
     @Override
-    public void layoutContainer ( Container parent )
+    public void layoutContainer ( final Container parent )
     {
-        Insets insets = getActualInsets ( parent );
+        final Insets insets = getActualInsets ( parent );
         if ( orientation == HORIZONTAL )
         {
             if ( parent.getComponentOrientation ().isLeftToRight () )
@@ -249,12 +249,12 @@ public class ToolbarLayout extends AbstractLayoutManager implements SwingConstan
                 int startX = insets.left;
                 for ( int i = 0; i < parent.getComponentCount (); i++ )
                 {
-                    Component component = parent.getComponent ( i );
+                    final Component component = parent.getComponent ( i );
                     if ( constraints.get ( component ) == null ||
                             constraints.get ( component ).trim ().equals ( "" ) ||
                             constraints.get ( component ).equals ( START ) )
                     {
-                        Dimension ps = component.getPreferredSize ();
+                        final Dimension ps = component.getPreferredSize ();
                         component.setBounds ( startX, insets.top, ps.width, parent.getHeight () - insets.top - insets.bottom );
                         startX += ps.width + spacing;
                     }
@@ -266,10 +266,10 @@ public class ToolbarLayout extends AbstractLayoutManager implements SwingConstan
                 {
                     for ( int i = parent.getComponentCount () - 1; i >= 0; i-- )
                     {
-                        Component component = parent.getComponent ( i );
+                        final Component component = parent.getComponent ( i );
                         if ( constraints.get ( component ) != null && constraints.get ( component ).equals ( END ) )
                         {
-                            Dimension ps = component.getPreferredSize ();
+                            final Dimension ps = component.getPreferredSize ();
                             endX -= ps.width;
                             component.setBounds ( endX, insets.top, ps.width, parent.getHeight () - insets.top - insets.bottom );
                             endX -= spacing;
@@ -279,13 +279,13 @@ public class ToolbarLayout extends AbstractLayoutManager implements SwingConstan
 
                 if ( endX > startX && ( hasElement ( MIDDLE ) || hasElement ( FILL ) ) )
                 {
-                    for ( Component component : parent.getComponents () )
+                    for ( final Component component : parent.getComponents () )
                     {
                         if ( constraints.get ( component ) != null )
                         {
                             if ( constraints.get ( component ).equals ( MIDDLE ) )
                             {
-                                Dimension ps = component.getPreferredSize ();
+                                final Dimension ps = component.getPreferredSize ();
                                 component.setBounds ( Math.max ( startX, ( startX + endX ) / 2 - ps.width / 2 ), insets.top,
                                         Math.min ( ps.width, endX - startX ), parent.getHeight () - insets.top - insets.bottom );
                             }
@@ -308,10 +308,10 @@ public class ToolbarLayout extends AbstractLayoutManager implements SwingConstan
                 {
                     for ( int i = parent.getComponentCount () - 1; i >= 0; i-- )
                     {
-                        Component component = parent.getComponent ( i );
+                        final Component component = parent.getComponent ( i );
                         if ( constraints.get ( component ) != null && constraints.get ( component ).equals ( END ) )
                         {
-                            Dimension ps = component.getPreferredSize ();
+                            final Dimension ps = component.getPreferredSize ();
                             component.setBounds ( startX, insets.top, ps.width, parent.getHeight () - insets.top - insets.bottom );
                             startX += ps.width + spacing;
                         }
@@ -322,12 +322,12 @@ public class ToolbarLayout extends AbstractLayoutManager implements SwingConstan
                 int endX = parent.getWidth () - insets.right;
                 for ( int i = 0; i < parent.getComponentCount (); i++ )
                 {
-                    Component component = parent.getComponent ( i );
+                    final Component component = parent.getComponent ( i );
                     if ( constraints.get ( component ) == null ||
                             constraints.get ( component ).trim ().equals ( "" ) ||
                             constraints.get ( component ).equals ( START ) )
                     {
-                        Dimension ps = component.getPreferredSize ();
+                        final Dimension ps = component.getPreferredSize ();
                         endX -= ps.width;
                         component.setBounds ( endX, insets.top, ps.width, parent.getHeight () - insets.top - insets.bottom );
                         endX -= spacing;
@@ -336,13 +336,13 @@ public class ToolbarLayout extends AbstractLayoutManager implements SwingConstan
 
                 if ( endX > startX && ( hasElement ( MIDDLE ) || hasElement ( FILL ) ) )
                 {
-                    for ( Component component : parent.getComponents () )
+                    for ( final Component component : parent.getComponents () )
                     {
                         if ( constraints.get ( component ) != null )
                         {
                             if ( constraints.get ( component ).equals ( MIDDLE ) )
                             {
-                                Dimension ps = component.getPreferredSize ();
+                                final Dimension ps = component.getPreferredSize ();
                                 component.setBounds ( Math.max ( startX, ( startX + endX ) / 2 - ps.width / 2 ), insets.top,
                                         Math.min ( ps.width, endX - startX ), parent.getHeight () - insets.top - insets.bottom );
                             }
@@ -362,10 +362,10 @@ public class ToolbarLayout extends AbstractLayoutManager implements SwingConstan
             int startY = insets.top;
             for ( int i = 0; i < parent.getComponentCount (); i++ )
             {
-                Component component = parent.getComponent ( i );
+                final Component component = parent.getComponent ( i );
                 if ( constraints.get ( component ) == null || constraints.get ( component ).equals ( START ) )
                 {
-                    Dimension ps = component.getPreferredSize ();
+                    final Dimension ps = component.getPreferredSize ();
                     component.setBounds ( insets.left, startY, parent.getWidth () - insets.left - insets.right, ps.height );
                     startY += ps.height + spacing;
                 }
@@ -377,10 +377,10 @@ public class ToolbarLayout extends AbstractLayoutManager implements SwingConstan
             {
                 for ( int i = parent.getComponentCount () - 1; i >= 0; i-- )
                 {
-                    Component component = parent.getComponent ( i );
+                    final Component component = parent.getComponent ( i );
                     if ( constraints.get ( component ) != null && constraints.get ( component ).equals ( END ) )
                     {
-                        Dimension ps = component.getPreferredSize ();
+                        final Dimension ps = component.getPreferredSize ();
                         endY -= ps.height;
                         component.setBounds ( insets.left, endY, parent.getWidth () - insets.left - insets.right, ps.height );
                         endY -= spacing;
@@ -390,13 +390,13 @@ public class ToolbarLayout extends AbstractLayoutManager implements SwingConstan
 
             if ( endY > startY && ( hasElement ( MIDDLE ) || hasElement ( FILL ) ) )
             {
-                for ( Component component : parent.getComponents () )
+                for ( final Component component : parent.getComponents () )
                 {
                     if ( constraints.get ( component ) != null )
                     {
                         if ( constraints.get ( component ).equals ( MIDDLE ) )
                         {
-                            Dimension ps = component.getPreferredSize ();
+                            final Dimension ps = component.getPreferredSize ();
                             component.setBounds ( insets.left, Math.max ( startY, ( startY + endY ) / 2 - ps.height / 2 ),
                                     parent.getWidth () - insets.left - insets.right, Math.min ( ps.height, endY - startY ) );
                         }
@@ -411,16 +411,16 @@ public class ToolbarLayout extends AbstractLayoutManager implements SwingConstan
         }
     }
 
-    protected boolean hasElement ( String element )
+    protected boolean hasElement ( final String element )
     {
         return constraints.containsValue ( element );
     }
 
-    protected Insets getActualInsets ( Container container )
+    protected Insets getActualInsets ( final Container container )
     {
         if ( margin != null )
         {
-            Insets insets = container.getInsets ();
+            final Insets insets = container.getInsets ();
             insets.top += margin.top;
             insets.left += margin.left;
             insets.bottom += margin.bottom;

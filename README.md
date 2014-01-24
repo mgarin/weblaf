@@ -3,7 +3,7 @@ WebLaF
 **WebLaf** is a Java Swing Look and Feel and extended components library for cross-platform applications.<br>
 ![Preview](http://s5.hostingkartinok.com/uploads/images/2013/10/92f65b6b3262493a5f386dc6808efbba.png)
 
-Main advantages
+Advantages
 ----------
 
 - Simple and stylish cross-platform default theme

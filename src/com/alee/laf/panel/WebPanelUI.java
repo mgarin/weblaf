@@ -254,7 +254,7 @@ public class WebPanelUI extends BasicPanelUI implements ShapeProvider, BorderMet
         // Makes panel non-opaque when it becomes decorated
         if ( painter == null && !undecorated )
         {
-            panel.setOpaque ( false );
+            LookAndFeel.installProperty ( panel, WebLookAndFeel.OPAQUE_PROPERTY, Boolean.FALSE );
         }
     }
 

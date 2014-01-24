@@ -40,26 +40,27 @@ public class IconProgress extends WebPanel
     public IconProgress ()
     {
         super ( true, new HorizontalFlowLayout ( 2, false ) );
+        setOpaque ( false );
         setMargin ( 2 );
         setWebColored ( false );
         setBackground ( Color.WHITE );
     }
 
-    public void addLoadedElement ( Icon icon )
+    public void addLoadedElement ( final Icon icon )
     {
         add ( new FadeInImage ( ImageUtils.getBufferedImage ( icon ) ) );
     }
 
     private class FadeInImage extends WebImage
     {
-        public FadeInImage ( Image image )
+        public FadeInImage ( final Image image )
         {
             super ( image );
             setTransparency ( 0f );
             addAncestorListener ( new AncestorAdapter ()
             {
                 @Override
-                public void ancestorAdded ( AncestorEvent event )
+                public void ancestorAdded ( final AncestorEvent event )
                 {
                     fadeIn ();
                 }
@@ -71,9 +72,9 @@ public class IconProgress extends WebPanel
             WebTimer.repeat ( "FadeInImage.updater", StyleConstants.avgAnimationDelay, new ActionListener ()
             {
                 @Override
-                public void actionPerformed ( ActionEvent e )
+                public void actionPerformed ( final ActionEvent e )
                 {
-                    float t = getTransparency ();
+                    final float t = getTransparency ();
                     if ( t < 1f )
                     {
                         setTransparency ( Math.min ( t + 0.05f, 1f ) );

@@ -19,6 +19,7 @@ package com.alee.extended.layout;
 
 import com.alee.utils.SwingUtils;
 
+import javax.swing.*;
 import java.awt.*;
 import java.util.Map;
 import java.util.WeakHashMap;
@@ -46,6 +47,28 @@ public class FormLayout extends AbstractLayoutManager
      * Whether right side of the form should fill all the free space given by container or not.
      */
     protected boolean fillRightSide;
+
+    /**
+     * Whether component in each form row on the left side of the form should fill given height or not by default.
+     */
+    protected boolean fillLeftSideHeight;
+
+    /**
+     * Whether component in each form row on the right side of the form should fill given height or not by default.
+     */
+    protected boolean fillRightSideHeight;
+
+    /**
+     * Default vertical alignment of components on the left side of the form.
+     * This is applied only if left side components do not fill the whole row height.
+     */
+    protected int leftVerticalAlignment;
+
+    /**
+     * Default vertical alignment of components on the right side of the form.
+     * This is applied only if right side components do not fill the whole row height.
+     */
+    protected int rightVerticalAlignment;
 
     /**
      * Horizontal gap between columns.
@@ -107,6 +130,10 @@ public class FormLayout extends AbstractLayoutManager
         this.fillRightSide = fillRightSide;
         this.horizontalGap = horizontalGap;
         this.verticalGap = verticalGap;
+        this.fillLeftSideHeight = false;
+        this.fillRightSideHeight = false;
+        this.leftVerticalAlignment = SwingConstants.CENTER;
+        this.rightVerticalAlignment = SwingConstants.CENTER;
     }
 
     /**
@@ -147,6 +174,86 @@ public class FormLayout extends AbstractLayoutManager
     public void setFillRightSide ( final boolean fillRightSide )
     {
         this.fillRightSide = fillRightSide;
+    }
+
+    /**
+     * Returns whether component in each form row on the left side of the form should fill given height or not.
+     *
+     * @return true if component in each form row on the left side of the form should fill given height, false otherwise
+     */
+    public boolean isFillLeftSideHeight ()
+    {
+        return fillLeftSideHeight;
+    }
+
+    /**
+     * Sets whether component in each form row on the left side of the form should fill given height or not.
+     *
+     * @param fillLeftSideHeight whether component in each form row on the left side of the form should fill given height or not
+     */
+    public void setFillLeftSideHeight ( final boolean fillLeftSideHeight )
+    {
+        this.fillLeftSideHeight = fillLeftSideHeight;
+    }
+
+    /**
+     * Returns whether component in each form row on the right side of the form should fill given height or not.
+     *
+     * @return true if component in each form row on the right side of the form should fill given height, false otherwise
+     */
+    public boolean isFillRightSideHeight ()
+    {
+        return fillRightSideHeight;
+    }
+
+    /**
+     * Sets whether component in each form row on the right side of the form should fill given height or not.
+     *
+     * @param fillRightSideHeight whether component in each form row on the right side of the form should fill given height or not
+     */
+    public void setFillRightSideHeight ( final boolean fillRightSideHeight )
+    {
+        this.fillRightSideHeight = fillRightSideHeight;
+    }
+
+    /**
+     * Returns default vertical alignment of components on the left side of the form.
+     *
+     * @return default vertical alignment of components on the left side of the form
+     */
+    public int getLeftVerticalAlignment ()
+    {
+        return leftVerticalAlignment;
+    }
+
+    /**
+     * Sets default vertical alignment of components on the left side of the form.
+     *
+     * @param leftVerticalAlignment default vertical alignment of components on the left side of the form
+     */
+    public void setLeftVerticalAlignment ( final int leftVerticalAlignment )
+    {
+        this.leftVerticalAlignment = leftVerticalAlignment;
+    }
+
+    /**
+     * Returns default vertical alignment of components on the right side of the form.
+     *
+     * @return default vertical alignment of components on the right side of the form
+     */
+    public int getRightVerticalAlignment ()
+    {
+        return rightVerticalAlignment;
+    }
+
+    /**
+     * Sets default vertical alignment of components on the right side of the form.
+     *
+     * @param rightVerticalAlignment default vertical alignment of components on the right side of the form
+     */
+    public void setRightVerticalAlignment ( final int rightVerticalAlignment )
+    {
+        this.rightVerticalAlignment = rightVerticalAlignment;
     }
 
     /**
@@ -195,6 +302,7 @@ public class FormLayout extends AbstractLayoutManager
     @Override
     public void addComponent ( final Component component, final Object constraints )
     {
+        // Adding default constraints if needed (left side components aligned to right, right side components fill the space)
         final String halign = constraints != null ? "" + constraints : ( layoutConstraints.size () % 2 == 0 ? RIGHT : FILL );
         layoutConstraints.put ( component, halign );
     }
@@ -335,21 +443,23 @@ public class FormLayout extends AbstractLayoutManager
                     final int rh = Math.max ( ps.height, next );
 
                     // First column
+                    final int cy = fillLeftSideHeight ? y : getSideY ( true, y, rh, ps.height );
+                    final int ch = fillLeftSideHeight ? rh : ps.height;
                     if ( pos.equals ( LEFT ) )
                     {
-                        component.setBounds ( x1, y + rh / 2 - ps.height / 2, ps.width, ps.height );
+                        component.setBounds ( x1, cy, ps.width, ch );
                     }
                     else if ( pos.equals ( CENTER ) )
                     {
-                        component.setBounds ( x1 + lpw / 2 - ps.width / 2, y + rh / 2 - ps.height / 2, ps.width, ps.height );
+                        component.setBounds ( x1 + lpw / 2 - ps.width / 2, cy, ps.width, ch );
                     }
                     else if ( pos.equals ( RIGHT ) )
                     {
-                        component.setBounds ( x1 + lpw - ps.width, y + rh / 2 - ps.height / 2, ps.width, ps.height );
+                        component.setBounds ( x1 + lpw - ps.width, cy, ps.width, ch );
                     }
                     else if ( pos.equals ( FILL ) )
                     {
-                        component.setBounds ( x1, y + rh / 2 - ps.height / 2, lpw, ps.height );
+                        component.setBounds ( x1, cy, lpw, ch );
                     }
                 }
                 else
@@ -359,21 +469,23 @@ public class FormLayout extends AbstractLayoutManager
                     final int rh = Math.max ( ps.height, prev );
 
                     // Second column
+                    final int cy = fillRightSideHeight ? y : getSideY ( false, y, rh, ps.height );
+                    final int ch = fillRightSideHeight ? rh : ps.height;
                     if ( pos.equals ( LEFT ) )
                     {
-                        component.setBounds ( x2, y + rh / 2 - ps.height / 2, ps.width, ps.height );
+                        component.setBounds ( x2, cy, ps.width, ch );
                     }
                     else if ( pos.equals ( CENTER ) )
                     {
-                        component.setBounds ( x2 + rpw / 2 - ps.width / 2, y + rh / 2 - ps.height / 2, ps.width, ps.height );
+                        component.setBounds ( x2 + rpw / 2 - ps.width / 2, cy, ps.width, ch );
                     }
                     else if ( pos.equals ( RIGHT ) )
                     {
-                        component.setBounds ( x2 + rpw - ps.width, y + rh / 2 - ps.height / 2, ps.width, ps.height );
+                        component.setBounds ( x2 + rpw - ps.width, cy, ps.width, ch );
                     }
                     else if ( pos.equals ( FILL ) )
                     {
-                        component.setBounds ( x2, y + rh / 2 - ps.height / 2, rpw, ps.height );
+                        component.setBounds ( x2, cy, rpw, ch );
                     }
 
                     // Incrementing Y position
@@ -381,5 +493,31 @@ public class FormLayout extends AbstractLayoutManager
                 }
             }
         }
+    }
+
+    /**
+     * Returns component Y coordinate for the specified side and other settings.
+     *
+     * @param leftSide        whether component is on the left side of the form or not
+     * @param rowY            row Y coordinate
+     * @param rowHeight       row height
+     * @param componentHeight component preferred height
+     * @return component Y coordinate
+     */
+    protected int getSideY ( final boolean leftSide, final int rowY, final int rowHeight, final int componentHeight )
+    {
+        if ( leftSide ? leftVerticalAlignment == SwingConstants.CENTER : rightVerticalAlignment == SwingConstants.CENTER )
+        {
+            return rowY + rowHeight / 2 - componentHeight / 2;
+        }
+        else if ( leftSide ? leftVerticalAlignment == SwingConstants.TOP : rightVerticalAlignment == SwingConstants.TOP )
+        {
+            return rowY;
+        }
+        else if ( leftSide ? leftVerticalAlignment == SwingConstants.BOTTOM : rightVerticalAlignment == SwingConstants.BOTTOM )
+        {
+            return rowY + rowHeight - componentHeight;
+        }
+        return rowY;
     }
 }

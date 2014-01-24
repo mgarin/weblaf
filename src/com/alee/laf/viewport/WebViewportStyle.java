@@ -30,5 +30,5 @@ public final class WebViewportStyle
     /**
      * Viewport background color.
      */
-    public static Color backgroundColor = Color.WHITE;
+    public static Color background = Color.WHITE;
 }

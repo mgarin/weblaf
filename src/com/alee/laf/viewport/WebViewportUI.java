@@ -39,7 +39,7 @@ public class WebViewportUI extends BasicViewportUI
      * @return instance of the WebViewportUI
      */
     @SuppressWarnings ("UnusedParameters")
-    public static ComponentUI createUI ( JComponent c )
+    public static ComponentUI createUI ( final JComponent c )
     {
         return new WebViewportUI ();
     }
@@ -50,7 +50,7 @@ public class WebViewportUI extends BasicViewportUI
      * @param c component for this UI
      */
     @Override
-    public void installUI ( JComponent c )
+    public void installUI ( final JComponent c )
     {
         super.installUI ( c );
 

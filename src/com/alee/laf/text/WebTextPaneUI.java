@@ -17,14 +17,8 @@
 
 package com.alee.laf.text;
 
-import com.alee.laf.StyleConstants;
-import com.alee.utils.SwingUtils;
-
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
-import javax.swing.text.JTextComponent;
-import java.awt.*;
-import java.util.Map;
 
 /**
  * User: mgarin Date: 17.08.11 Time: 23:02
@@ -32,37 +26,15 @@ import java.util.Map;
 
 public class WebTextPaneUI extends WebEditorPaneUI
 {
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebTextPaneUI ();
     }
 
     @Override
-    public void installUI ( final JComponent c )
+    protected String getPropertyPrefix ()
     {
-        super.installUI ( c );
-
-        final JTextComponent textComponent = getComponent ();
-
-        // Default settings
-        SwingUtils.setOrientation ( textComponent );
-        textComponent.setMargin ( new Insets ( 2, 2, 2, 2 ) );
-        textComponent.setFocusable ( true );
-        textComponent.setOpaque ( true );
-        textComponent.setBackground ( Color.WHITE );
-        textComponent.setSelectionColor ( StyleConstants.textSelectionColor );
-        textComponent.setForeground ( Color.BLACK );
-        textComponent.setSelectedTextColor ( Color.BLACK );
-        textComponent.setCaretColor ( Color.GRAY );
-    }
-
-    @Override
-    protected void paintSafely ( final Graphics g )
-    {
-        final Graphics2D g2d = ( Graphics2D ) g;
-        final Map hints = SwingUtils.setupTextAntialias ( g2d );
-        super.paintSafely ( g );
-        SwingUtils.restoreTextAntialias ( g2d, hints );
+        return "TextPane";
     }
 }

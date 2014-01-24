@@ -19,6 +19,7 @@ package com.alee.laf.menu;
 
 import com.alee.extended.layout.ToolbarLayout;
 import com.alee.laf.StyleConstants;
+import com.alee.laf.WebLookAndFeel;
 import com.alee.utils.LafUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.laf.ShapeProvider;
@@ -42,7 +43,7 @@ public class WebMenuBarUI extends BasicMenuBarUI implements ShapeProvider, Borde
     private MenuBarStyle menuBarStyle = WebMenuBarStyle.menuBarStyle;
     private Color borderColor = WebMenuBarStyle.borderColor;
 
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebMenuBarUI ();
@@ -56,7 +57,7 @@ public class WebMenuBarUI extends BasicMenuBarUI implements ShapeProvider, Borde
         // Default settings
         SwingUtils.setOrientation ( menuBar );
         menuBar.setLayout ( new ToolbarLayout ( 0 ) );
-        menuBar.setOpaque ( false );
+        LookAndFeel.installProperty ( menuBar, WebLookAndFeel.OPAQUE_PROPERTY, Boolean.FALSE );
 
         // Updating border
         updateBorder ();

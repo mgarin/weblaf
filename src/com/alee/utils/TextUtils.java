@@ -368,14 +368,19 @@ public final class TextUtils
      */
     public static <E extends Enum<E>> List<E> enumStringToList ( final String enumString, final Class<E> enumClass )
     {
-        final List<E> strings = new ArrayList<E> ();
+        final List<E> strings;
         if ( enumString != null )
         {
             final StringTokenizer tokenizer = new StringTokenizer ( enumString, ",", false );
+            strings = new ArrayList<E> ();
             while ( tokenizer.hasMoreTokens () )
             {
                 strings.add ( E.valueOf ( enumClass, tokenizer.nextToken ().trim () ) );
             }
+        }
+        else
+        {
+            strings = new ArrayList<E> ( 0 );
         }
         return strings;
     }

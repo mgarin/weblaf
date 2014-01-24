@@ -15,34 +15,49 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.utils.swing;
-
-import javax.swing.event.AncestorEvent;
-import javax.swing.event.AncestorListener;
+package com.alee.extended.tree;
 
 /**
- * Adapter to support notification when changes occur to a JComponent or one of its ancestors. These include movement and when the
- * component becomes visible or invisible, either by the setVisible() method or by being added or removed from the component hierarchy.
+ * This custom adapter is used to track async tree path expansion action.
  *
+ * @param <E> node type
  * @author Mikle Garin
  */
 
-public abstract class AncestorAdapter implements AncestorListener
+public abstract class AsyncPathExpansionAdapter<E extends AsyncUniqueNode> implements AsyncPathExpansionListener<E>
 {
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public void ancestorAdded ( final AncestorEvent event )
+    public void pathFailedToExpand ()
     {
         // Do nothing by default
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public void ancestorRemoved ( final AncestorEvent event )
+    public void pathNodeExpanded ( final E expandedNode )
     {
         // Do nothing by default
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public void ancestorMoved ( final AncestorEvent event )
+    public void pathPartiallyExpanded ( final E lastFoundNode )
+    {
+        // Do nothing by default
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void pathExpanded ( final E lastNode )
     {
         // Do nothing by default
     }

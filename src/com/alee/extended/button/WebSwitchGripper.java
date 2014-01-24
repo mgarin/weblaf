@@ -28,6 +28,7 @@ public class WebSwitchGripper extends WebPanel
     public WebSwitchGripper ()
     {
         super ( true );
+        setOpaque ( false );
         setRound ( WebSwitchStyle.gripperRound );
     }
 }

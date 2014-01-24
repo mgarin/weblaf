@@ -73,7 +73,7 @@ public class WebTextFieldUI extends BasicTextFieldUI implements ShapeProvider, S
     private PropertyChangeListener marginChangeListener;
     private ComponentAdapter componentResizeListener;
 
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebTextFieldUI ();
@@ -88,9 +88,9 @@ public class WebTextFieldUI extends BasicTextFieldUI implements ShapeProvider, S
 
         // Default settings
         SwingUtils.setOrientation ( textField );
+        LookAndFeel.installProperty ( textField, WebLookAndFeel.OPAQUE_PROPERTY, Boolean.FALSE );
         textField.putClientProperty ( SwingUtils.HANDLES_ENABLE_STATE, true );
         textField.setFocusable ( true );
-        textField.setOpaque ( false );
         textField.setMargin ( WebTextFieldStyle.margin );
         textField.setBackground ( Color.WHITE );
         textField.setSelectionColor ( StyleConstants.textSelectionColor );

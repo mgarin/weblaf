@@ -187,6 +187,26 @@ public class WebFrame extends JFrame implements LanguageMethods, LanguageContain
         getWebRootPaneUI ().setWatermark ( watermark );
     }
 
+    public int getMaxTitleWidth ()
+    {
+        return getWebRootPaneUI ().getMaxTitleWidth ();
+    }
+
+    public void setMaxTitleWidth ( final int width )
+    {
+        getWebRootPaneUI ().setMaxTitleWidth ( width );
+    }
+
+    public String getEmptyTitleText ()
+    {
+        return getWebRootPaneUI ().getEmptyTitleText ();
+    }
+
+    public void setEmptyTitleText ( final String text )
+    {
+        getWebRootPaneUI ().setEmptyTitleText ( text );
+    }
+
     public JComponent getTitleComponent ()
     {
         return getWebRootPaneUI ().getTitleComponent ();

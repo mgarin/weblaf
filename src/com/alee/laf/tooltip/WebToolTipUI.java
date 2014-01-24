@@ -17,6 +17,7 @@
 
 package com.alee.laf.tooltip;
 
+import com.alee.laf.WebLookAndFeel;
 import com.alee.utils.LafUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.laf.ShapeProvider;
@@ -49,7 +50,7 @@ public class WebToolTipUI extends BasicToolTipUI implements ShapeProvider, Borde
      * @param c component that will use UI instance
      * @return instance of the WebToolTipUI
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebToolTipUI ();
@@ -69,7 +70,7 @@ public class WebToolTipUI extends BasicToolTipUI implements ShapeProvider, Borde
 
         // Default settings
         SwingUtils.setOrientation ( tooltip );
-        tooltip.setOpaque ( false );
+        LookAndFeel.installProperty ( tooltip, WebLookAndFeel.OPAQUE_PROPERTY, Boolean.FALSE );
         tooltip.setBackground ( WebTooltipStyle.backgroundColor );
         tooltip.setForeground ( WebTooltipStyle.textColor );
 

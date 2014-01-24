@@ -45,6 +45,11 @@ public final class WebPopOverStyle
     public static Color borderColor = new Color ( 128, 128, 128, 128 );
 
     /**
+     * WebPopOver background color.
+     */
+    public static Color contentBackgroundColor = Color.WHITE;
+
+    /**
      * WebPopOver corners rounding.
      */
     public static int round = StyleConstants.bigRound;

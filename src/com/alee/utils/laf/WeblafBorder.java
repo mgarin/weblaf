@@ -17,7 +17,7 @@
 
 package com.alee.utils.laf;
 
-import javax.swing.border.EmptyBorder;
+import javax.swing.plaf.BorderUIResource;
 import java.awt.*;
 
 /**
@@ -29,7 +29,7 @@ import java.awt.*;
  * @see com.alee.laf.WebLookAndFeel#PROPERTY_HONOR_USER_BORDERS
  */
 
-public final class WeblafBorder extends EmptyBorder
+public final class WeblafBorder extends BorderUIResource.EmptyBorderUIResource
 {
     /**
      * Constructs new empty border with the specified border width at each side.

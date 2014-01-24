@@ -23,6 +23,7 @@ import com.alee.laf.menu.WebPopupPainter;
 import com.alee.laf.panel.WebPanel;
 import com.alee.laf.rootpane.WebDialog;
 import com.alee.utils.SwingUtils;
+import com.alee.utils.swing.DataProvider;
 import com.alee.utils.swing.WindowFollowAdapter;
 
 import java.awt.*;
@@ -31,7 +32,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 /**
- * Custom stylish pop-over dialog with styling corner auto-aligned to invoker component.
+ * Custom stylish pop-over dialog with a special corner that follows invoker component.
  * It may also act as a simple dialog with custom styling if configured so.
  *
  * @author Mikle Garin
@@ -200,7 +201,7 @@ public class WebPopOver extends WebDialog
         painter.setPopupPainterStyle ( PopupPainterStyle.simple );
 
         container = new WebPanel ( painter );
-        container.setBackground ( Color.WHITE );
+        container.setBackground ( WebPopOverStyle.contentBackgroundColor );
         setContentPane ( container );
 
         final ComponentMoveAdapter moveAdapter = new ComponentMoveAdapter ()
@@ -251,6 +252,26 @@ public class WebPopOver extends WebDialog
                 container.repaint ();
             }
         } );
+    }
+
+    /**
+     * Sets WebPopOver content background color.
+     *
+     * @param color new content background color
+     */
+    public void setContentBackground ( final Color color )
+    {
+        container.setBackground ( color );
+    }
+
+    /**
+     * Returns WebPopOver content background color.
+     *
+     * @return WebPopOver content background color
+     */
+    public Color getContentBackground ()
+    {
+        return container.getBackground ();
     }
 
     /**
@@ -628,6 +649,185 @@ public class WebPopOver extends WebDialog
      */
     public WebPopOver show ( final Component invoker, final PopOverDirection direction, final PopOverAlignment alignment )
     {
+        return show ( invoker, null, direction, alignment );
+    }
+
+    /**
+     * Displays WebPopOver attached to the invoker component coordinates and faced to specified direction.
+     * It will also be aligned using the specified alignment type when possible.
+     * WebPopOver opened in this way will always auto-follow invoker's ancestor window.
+     *
+     * @param invoker invoker component
+     * @param x       source area X coordinate in invoker's component coordinate system
+     * @param y       source area Y coordinate in invoker's component coordinate system
+     * @return displayed WebPopOver
+     */
+    public WebPopOver show ( final Component invoker, final int x, final int y )
+    {
+        return show ( invoker, x, y, PopOverDirection.down );
+    }
+
+    /**
+     * Displays WebPopOver attached to the invoker component coordinates and faced to specified direction.
+     * It will also be aligned using the specified alignment type when possible.
+     * WebPopOver opened in this way will always auto-follow invoker's ancestor window.
+     *
+     * @param invoker   invoker component
+     * @param x         source area X coordinate in invoker's component coordinate system
+     * @param y         source area Y coordinate in invoker's component coordinate system
+     * @param direction preferred display direction
+     * @return displayed WebPopOver
+     */
+    public WebPopOver show ( final Component invoker, final int x, final int y, final PopOverDirection direction )
+    {
+        return show ( invoker, x, y, direction, PopOverAlignment.centered );
+    }
+
+    /**
+     * Displays WebPopOver attached to the invoker component coordinates and faced to specified direction.
+     * It will also be aligned using the specified alignment type when possible.
+     * WebPopOver opened in this way will always auto-follow invoker's ancestor window.
+     *
+     * @param invoker   invoker component
+     * @param x         source area X coordinate in invoker's component coordinate system
+     * @param y         source area Y coordinate in invoker's component coordinate system
+     * @param direction preferred display direction
+     * @param alignment preferred display alignment
+     * @return displayed WebPopOver
+     */
+    public WebPopOver show ( final Component invoker, final int x, final int y, final PopOverDirection direction,
+                             final PopOverAlignment alignment )
+    {
+        return show ( invoker, x, y, 0, 0, direction, alignment );
+    }
+
+    /**
+     * Displays WebPopOver attached to the invoker component area and faced to specified direction.
+     * It will also be aligned using the specified alignment type when possible.
+     * WebPopOver opened in this way will always auto-follow invoker's ancestor window.
+     *
+     * @param invoker invoker component
+     * @param x       source area X coordinate in invoker's component coordinate system
+     * @param y       source area Y coordinate in invoker's component coordinate system
+     * @param w       source area width
+     * @param h       source area height
+     * @return displayed WebPopOver
+     */
+    public WebPopOver show ( final Component invoker, final int x, final int y, final int w, final int h )
+    {
+        return show ( invoker, x, y, w, h, PopOverDirection.down );
+    }
+
+    /**
+     * Displays WebPopOver attached to the invoker component area and faced to specified direction.
+     * It will also be aligned using the specified alignment type when possible.
+     * WebPopOver opened in this way will always auto-follow invoker's ancestor window.
+     *
+     * @param invoker   invoker component
+     * @param x         source area X coordinate in invoker's component coordinate system
+     * @param y         source area Y coordinate in invoker's component coordinate system
+     * @param w         source area width
+     * @param h         source area height
+     * @param direction preferred display direction
+     * @return displayed WebPopOver
+     */
+    public WebPopOver show ( final Component invoker, final int x, final int y, final int w, final int h, final PopOverDirection direction )
+    {
+        return show ( invoker, x, y, w, h, direction, PopOverAlignment.centered );
+    }
+
+    /**
+     * Displays WebPopOver attached to the invoker component area and faced to specified direction.
+     * It will also be aligned using the specified alignment type when possible.
+     * WebPopOver opened in this way will always auto-follow invoker's ancestor window.
+     *
+     * @param invoker   invoker component
+     * @param x         source area X coordinate in invoker's component coordinate system
+     * @param y         source area Y coordinate in invoker's component coordinate system
+     * @param w         source area width
+     * @param h         source area height
+     * @param direction preferred display direction
+     * @param alignment preferred display alignment
+     * @return displayed WebPopOver
+     */
+    public WebPopOver show ( final Component invoker, final int x, final int y, final int w, final int h, final PopOverDirection direction,
+                             final PopOverAlignment alignment )
+    {
+        final Rectangle bounds = new Rectangle ( x, y, w, h );
+        return show ( invoker, new DataProvider<Rectangle> ()
+        {
+            @Override
+            public Rectangle provide ()
+            {
+                return bounds;
+            }
+        }, direction, alignment );
+    }
+
+    /**
+     * Displays WebPopOver attached to the invoker component area and faced to specified direction.
+     * It will also be aligned using the specified alignment type when possible.
+     * WebPopOver opened in this way will always auto-follow invoker's ancestor window.
+     *
+     * @param invoker        invoker component
+     * @param boundsProvider source area provider
+     * @return displayed WebPopOver
+     */
+    public WebPopOver show ( final Component invoker, final DataProvider<Rectangle> boundsProvider )
+    {
+        return show ( invoker, boundsProvider, PopOverDirection.down );
+    }
+
+    /**
+     * Displays WebPopOver attached to the invoker component area and faced to specified direction.
+     * It will also be aligned using the specified alignment type when possible.
+     * WebPopOver opened in this way will always auto-follow invoker's ancestor window.
+     *
+     * @param invoker        invoker component
+     * @param boundsProvider source area provider
+     * @param direction      preferred display direction
+     * @return displayed WebPopOver
+     */
+    public WebPopOver show ( final Component invoker, final DataProvider<Rectangle> boundsProvider, final PopOverDirection direction )
+    {
+        return show ( invoker, boundsProvider, direction, PopOverAlignment.centered );
+    }
+
+    /**
+     * Displays WebPopOver attached to the invoker component area and faced to specified direction.
+     * It will also be aligned using the specified alignment type when possible.
+     * WebPopOver opened in this way will always auto-follow invoker's ancestor window.
+     *
+     * @param invoker        invoker component
+     * @param boundsProvider source area provider
+     * @param direction      preferred display direction
+     * @param alignment      preferred display alignment
+     * @return displayed WebPopOver
+     */
+    public WebPopOver show ( final Component invoker, final DataProvider<Rectangle> boundsProvider, final PopOverDirection direction,
+                             final PopOverAlignment alignment )
+    {
+        // Translating coordinates into screen coordinates system
+        final DataProvider<Rectangle> actualBoundsProvider = boundsProvider == null ? null : new DataProvider<Rectangle> ()
+        {
+            private Rectangle lastBounds = new Rectangle ();
+
+            @Override
+            public Rectangle provide ()
+            {
+                // Invoker might be hidden while WebPopOver is still visible
+                // This is why we should simply stop updating its position when that happens
+                // It is not the best workaround but at least it will keep us safe from exceptions
+                if ( invoker.isShowing () )
+                {
+                    final Rectangle bounds = boundsProvider.provide ();
+                    final Point los = invoker.getLocationOnScreen ();
+                    lastBounds = new Rectangle ( los.x + bounds.x, los.y + bounds.y, bounds.width, bounds.height );
+                }
+                return lastBounds;
+            }
+        };
+
         // Updating WebPopOver variables
         attached = true;
         preferredDirection = direction;
@@ -635,8 +835,8 @@ public class WebPopOver extends WebDialog
 
         // Updating dialog location on screen and size
         pack ();
-        updatePopOverLocation ( invoker );
-        installPopOverLocationUpdater ( invoker );
+        updatePopOverLocation ( invoker, actualBoundsProvider );
+        installPopOverLocationUpdater ( invoker, actualBoundsProvider );
 
         // Displaying dialog
         setVisible ( true );
@@ -648,9 +848,25 @@ public class WebPopOver extends WebDialog
      *
      * @param invoker invoker component
      */
+    protected void updatePopOverLocation ( final Component invoker, final DataProvider<Rectangle> invokerBoundsProvider )
+    {
+        if ( invokerBoundsProvider != null )
+        {
+            updatePopOverLocation ( invokerBoundsProvider.provide () );
+        }
+        else
+        {
+            updatePopOverLocation ( invoker );
+        }
+    }
+
+    /**
+     * Updates WebPopOver location on screen.
+     *
+     * @param invoker invoker component
+     */
     protected void updatePopOverLocation ( final Component invoker )
     {
-        final Point actualLocation;
         if ( invoker instanceof Window )
         {
             // Applying proper painter style
@@ -659,35 +875,48 @@ public class WebPopOver extends WebDialog
             // Determining final WebPopOver position
             final Rectangle ib = invoker.getBounds ();
             final Dimension size = getSize ();
-            actualLocation = new Point ( ib.x + ib.width / 2 - size.width / 2, ib.y + ib.height / 2 - size.height / 2 );
+
+            // Updating WebPopOver location
+            setLocation ( ib.x + ib.width / 2 - size.width / 2, ib.y + ib.height / 2 - size.height / 2 );
         }
         else
         {
-            // Applying proper painter style
-            painter.setPopupPainterStyle ( PopupPainterStyle.dropdown );
-
-            // WebPopOver preferred size without shade
-            final Dimension size = getSize ();
-            final int sw = getShadeWidth ();
-            final int round = getRound ();
-            final int cw = getCornerWidth ();
-            final Dimension ps = new Dimension ( size.width - sw * 2, size.height - sw * 2 );
-            final Dimension screenSize = Toolkit.getDefaultToolkit ().getScreenSize ();
-            final boolean ltr = getComponentOrientation ().isLeftToRight ();
-
-            // Determining actual direction
-            final PopOverDirection actualDirection = getActualDirection ( invoker, ltr, cw, ps, screenSize );
-            painter.setCornerSide ( actualDirection.getCornerSide ( ltr ) );
-
-            // Determining position according to alignment
-            actualLocation = getActualLocation ( invoker, ltr, round, cw, ps, screenSize, actualDirection );
-            actualLocation.x -= sw;
-            actualLocation.y -= sw;
-
-            // Updating corner position
-            painter.setCornerAlignment ( -1 );
-            painter.setRelativeCorner ( getRelativeCorner ( invoker, actualDirection, actualLocation ) );
+            // Updating WebPopOver location in a smarter way
+            updatePopOverLocation ( SwingUtils.getBoundsOnScreen ( invoker ) );
         }
+    }
+
+    /**
+     * Updates WebPopOver location on screen.
+     *
+     * @param invokerBounds invoker component bounds on screen
+     */
+    protected void updatePopOverLocation ( final Rectangle invokerBounds )
+    {
+        // Applying proper painter style
+        painter.setPopupPainterStyle ( PopupPainterStyle.dropdown );
+
+        // WebPopOver preferred size without shade
+        final Dimension size = getSize ();
+        final int sw = getShadeWidth ();
+        final int round = getRound ();
+        final int cw = getCornerWidth ();
+        final Dimension ps = new Dimension ( size.width - sw * 2, size.height - sw * 2 );
+        final Dimension screenSize = Toolkit.getDefaultToolkit ().getScreenSize ();
+        final boolean ltr = getComponentOrientation ().isLeftToRight ();
+
+        // Determining actual direction
+        final PopOverDirection actualDirection = getActualDirection ( invokerBounds, ltr, cw, ps, screenSize );
+        painter.setCornerSide ( actualDirection.getCornerSide ( ltr ) );
+
+        // Determining position according to alignment
+        final Point actualLocation = getActualLocation ( invokerBounds, ltr, round, cw, ps, screenSize, actualDirection );
+        actualLocation.x -= sw;
+        actualLocation.y -= sw;
+
+        // Updating corner position
+        painter.setCornerAlignment ( -1 );
+        painter.setRelativeCorner ( getRelativeCorner ( invokerBounds, actualDirection, actualLocation ) );
 
         // Updating WebPopOver location
         setLocation ( actualLocation );
@@ -698,7 +927,7 @@ public class WebPopOver extends WebDialog
      *
      * @param invoker invoker component
      */
-    protected void installPopOverLocationUpdater ( final Component invoker )
+    protected void installPopOverLocationUpdater ( final Component invoker, final DataProvider<Rectangle> invokerBoundsProvider )
     {
         // Invoker component window
         final Window invokerWindow = SwingUtils.getWindowAncestor ( invoker );
@@ -722,7 +951,7 @@ public class WebPopOver extends WebDialog
             {
                 if ( attached )
                 {
-                    updatePopOverLocation ( invoker );
+                    updatePopOverLocation ( invoker, invokerBoundsProvider );
                     windowFollowAdapter.updateLastLocation ();
                 }
             }
@@ -737,7 +966,7 @@ public class WebPopOver extends WebDialog
             {
                 if ( attached )
                 {
-                    updatePopOverLocation ( invoker );
+                    updatePopOverLocation ( invoker, invokerBoundsProvider );
                     windowFollowAdapter.updateLastLocation ();
                 }
             }
@@ -747,7 +976,7 @@ public class WebPopOver extends WebDialog
             {
                 if ( attached )
                 {
-                    updatePopOverLocation ( invoker );
+                    updatePopOverLocation ( invoker, invokerBoundsProvider );
                     windowFollowAdapter.updateLastLocation ();
                 }
             }
@@ -760,12 +989,13 @@ public class WebPopOver extends WebDialog
             @Override
             public void propertyChange ( final PropertyChangeEvent evt )
             {
-                updatePopOverLocation ( invoker );
+                updatePopOverLocation ( invoker, invokerBoundsProvider );
                 windowFollowAdapter.updateLastLocation ();
             }
         };
         addPropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, orientationListener );
 
+        // Removing all listeners on window close event
         addWindowListener ( new WindowAdapter ()
         {
             @Override
@@ -783,23 +1013,21 @@ public class WebPopOver extends WebDialog
     /**
      * Returns relative corner position.
      *
-     * @param invoker         invoker component
+     * @param ib              invoker component bounds on screen
      * @param actualDirection actual WebPopOver direction
      * @param actualLocation  actual WebPopOver location
      * @return relative corner position
      */
-    protected int getRelativeCorner ( final Component invoker, final PopOverDirection actualDirection, final Point actualLocation )
+    protected int getRelativeCorner ( final Rectangle ib, final PopOverDirection actualDirection, final Point actualLocation )
     {
-        final Point los = invoker.getLocationOnScreen ();
-        final Dimension size = invoker.getSize ();
         switch ( actualDirection )
         {
             case up:
             case down:
-                return los.x + size.width / 2 - actualLocation.x;
+                return ib.x + ib.width / 2 - actualLocation.x;
             case left:
             case right:
-                return los.y + size.height / 2 - actualLocation.y;
+                return ib.y + ib.height / 2 - actualLocation.y;
         }
         return -1;
     }
@@ -808,7 +1036,7 @@ public class WebPopOver extends WebDialog
      * Returns actual WebPopOver location.
      * Shade width is not yet taken into account within this location.
      *
-     * @param invoker         invoker component
+     * @param ib              invoker component bounds on screen
      * @param ltr             whether LTR orientation is active or not
      * @param round           corners round
      * @param cw              corner width
@@ -816,10 +1044,10 @@ public class WebPopOver extends WebDialog
      * @param screenSize      screen size
      * @param actualDirection actual WebPopOver direction     @return actual WebPopOver location
      */
-    protected Point getActualLocation ( final Component invoker, final boolean ltr, final int round, final int cw, final Dimension ps,
+    protected Point getActualLocation ( final Rectangle ib, final boolean ltr, final int round, final int cw, final Dimension ps,
                                         final Dimension screenSize, final PopOverDirection actualDirection )
     {
-        final Point sp = getActualSourcePoint ( invoker, ltr, actualDirection );
+        final Point sp = getActualSourcePoint ( ib, ltr, actualDirection );
         if ( actualDirection == PopOverDirection.up )
         {
             if ( preferredAlignment == PopOverAlignment.centered )
@@ -954,18 +1182,18 @@ public class WebPopOver extends WebDialog
     /**
      * Returns actual direction depending on preferred WebPopOver direction, its sizes and source point.
      *
-     * @param invoker    invoker component
+     * @param ib         invoker component bounds on screen
      * @param ltr        whether LTR orientation is active or not
      * @param cw         corner with
      * @param ps         WebPopOver size without shade widths
      * @param screenSize screen size    @return actual WebPopOver direction
      */
-    protected PopOverDirection getActualDirection ( final Component invoker, final boolean ltr, final int cw, final Dimension ps,
+    protected PopOverDirection getActualDirection ( final Rectangle ib, final boolean ltr, final int cw, final Dimension ps,
                                                     final Dimension screenSize )
     {
         for ( final PopOverDirection checkedDirection : preferredDirection.getPriority () )
         {
-            final Point sp = getActualSourcePoint ( invoker, ltr, checkedDirection );
+            final Point sp = getActualSourcePoint ( ib, ltr, checkedDirection );
             if ( checkedDirection == PopOverDirection.up )
             {
                 if ( sp.y - cw - ps.height > 0 )
@@ -1001,35 +1229,33 @@ public class WebPopOver extends WebDialog
     /**
      * Returns actual source point depending on WebPopOver direction and invoker component location on screen.
      *
-     * @param invoker   invoker component
+     * @param ib        invoker component bounds on screen
      * @param ltr       whether LTR orientation is active or not
      * @param direction WebPopOver direction  @return actual source point
      */
-    protected Point getActualSourcePoint ( final Component invoker, final boolean ltr, final PopOverDirection direction )
+    protected Point getActualSourcePoint ( final Rectangle ib, final boolean ltr, final PopOverDirection direction )
     {
-        final Point los = invoker.getLocationOnScreen ();
-        final Dimension size = invoker.getSize ();
         if ( popOverSourcePoint == PopOverSourcePoint.componentCenter )
         {
-            return new Point ( los.x + size.width / 2, los.y + size.height / 2 );
+            return new Point ( ib.x + ib.width / 2, ib.y + ib.height / 2 );
         }
         else
         {
             if ( direction == PopOverDirection.up )
             {
-                return new Point ( los.x + size.width / 2, los.y );
+                return new Point ( ib.x + ib.width / 2, ib.y );
             }
             else if ( direction == PopOverDirection.down )
             {
-                return new Point ( los.x + size.width / 2, los.y + size.height );
+                return new Point ( ib.x + ib.width / 2, ib.y + ib.height );
             }
             else if ( direction == ( ltr ? PopOverDirection.left : PopOverDirection.right ) )
             {
-                return new Point ( los.x, los.y + size.height / 2 );
+                return new Point ( ib.x, ib.y + ib.height / 2 );
             }
             else if ( direction == ( ltr ? PopOverDirection.right : PopOverDirection.left ) )
             {
-                return new Point ( los.x + size.width, los.y + size.height / 2 );
+                return new Point ( ib.x + ib.width, ib.y + ib.height / 2 );
             }
         }
         return null;

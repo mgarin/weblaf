@@ -72,7 +72,7 @@ public class WebPasswordFieldUI extends BasicPasswordFieldUI implements ShapePro
     private PropertyChangeListener marginChangeListener;
     private ComponentAdapter componentResizeListener;
 
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebPasswordFieldUI ();
@@ -87,9 +87,9 @@ public class WebPasswordFieldUI extends BasicPasswordFieldUI implements ShapePro
 
         // Default settings
         SwingUtils.setOrientation ( passwordField );
+        LookAndFeel.installProperty ( passwordField, WebLookAndFeel.OPAQUE_PROPERTY, Boolean.FALSE );
         passwordField.putClientProperty ( SwingUtils.HANDLES_ENABLE_STATE, true );
         passwordField.setFocusable ( true );
-        passwordField.setOpaque ( false );
         passwordField.setMargin ( WebPasswordFieldStyle.margin );
         passwordField.setBackground ( Color.WHITE );
         passwordField.setSelectionColor ( StyleConstants.textSelectionColor );

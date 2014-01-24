@@ -18,6 +18,7 @@
 package com.alee.laf.text;
 
 import com.alee.laf.StyleConstants;
+import com.alee.laf.WebLookAndFeel;
 import com.alee.utils.SwingUtils;
 
 import javax.swing.*;
@@ -48,9 +49,9 @@ public class WebEditorPaneUI extends BasicEditorPaneUI
 
         // Default settings
         SwingUtils.setOrientation ( textComponent );
+        LookAndFeel.installProperty ( textComponent, WebLookAndFeel.OPAQUE_PROPERTY, Boolean.TRUE );
         textComponent.setMargin ( new Insets ( 2, 2, 2, 2 ) );
         textComponent.setFocusable ( true );
-        textComponent.setOpaque ( true );
         textComponent.setBackground ( Color.WHITE );
         textComponent.setSelectionColor ( StyleConstants.textSelectionColor );
         textComponent.setForeground ( Color.BLACK );

@@ -51,7 +51,7 @@ public class WebProgressOverlay extends WebOverlay
         initializeProgressLayer ();
     }
 
-    public WebProgressOverlay ( Component component )
+    public WebProgressOverlay ( final Component component )
     {
         super ( component );
         initializeProgressLayer ();
@@ -65,7 +65,7 @@ public class WebProgressOverlay extends WebOverlay
     }
 
     @Override
-    public void setComponent ( Component component )
+    public void setComponent ( final Component component )
     {
         super.setComponent ( component );
 
@@ -73,7 +73,7 @@ public class WebProgressOverlay extends WebOverlay
         setClipShapeProducer ( component != null ? new WebShapeProducer ( component ) : null );
     }
 
-    public void setClipShapeProducer ( ShapeProducer clipShapeProducer )
+    public void setClipShapeProducer ( final ShapeProducer clipShapeProducer )
     {
         this.clipShapeProducer = clipShapeProducer;
     }
@@ -88,7 +88,7 @@ public class WebProgressOverlay extends WebOverlay
         return progressLayer.isShowLoad ();
     }
 
-    public void setShowLoad ( boolean showLoad )
+    public void setShowLoad ( final boolean showLoad )
     {
         progressLayer.setShowLoad ( showLoad );
     }
@@ -98,7 +98,7 @@ public class WebProgressOverlay extends WebOverlay
         return progressLayer.isConsumeEvents ();
     }
 
-    public void setConsumeEvents ( boolean consumeEvents )
+    public void setConsumeEvents ( final boolean consumeEvents )
     {
         progressLayer.setConsumeEvents ( consumeEvents );
     }
@@ -108,7 +108,7 @@ public class WebProgressOverlay extends WebOverlay
         return progressWidth;
     }
 
-    public void setProgressWidth ( int progressWidth )
+    public void setProgressWidth ( final int progressWidth )
     {
         this.progressWidth = progressWidth;
     }
@@ -118,7 +118,7 @@ public class WebProgressOverlay extends WebOverlay
         return speed;
     }
 
-    public void setSpeed ( int speed )
+    public void setSpeed ( final int speed )
     {
         this.speed = speed;
     }
@@ -128,7 +128,7 @@ public class WebProgressOverlay extends WebOverlay
         return progressColor;
     }
 
-    public void setProgressColor ( Color progressColor )
+    public void setProgressColor ( final Color progressColor )
     {
         this.progressColor = progressColor;
     }
@@ -151,7 +151,7 @@ public class WebProgressOverlay extends WebOverlay
         }
 
         @Override
-        public boolean contains ( int x, int y )
+        public boolean contains ( final int x, final int y )
         {
             return consumeEvents && super.contains ( x, y );
         }
@@ -161,7 +161,7 @@ public class WebProgressOverlay extends WebOverlay
             return consumeEvents;
         }
 
-        public void setConsumeEvents ( boolean consumeEvents )
+        public void setConsumeEvents ( final boolean consumeEvents )
         {
             this.consumeEvents = consumeEvents;
         }
@@ -171,7 +171,7 @@ public class WebProgressOverlay extends WebOverlay
             return showLoad;
         }
 
-        public void setShowLoad ( boolean showLoad )
+        public void setShowLoad ( final boolean showLoad )
         {
             this.showLoad = showLoad;
             if ( showLoad )
@@ -182,7 +182,7 @@ public class WebProgressOverlay extends WebOverlay
                 opacityAnimator = new WebTimer ( "WebProgressOverlay.opacityAnimator", StyleConstants.animationDelay, new ActionListener ()
                 {
                     @Override
-                    public void actionPerformed ( ActionEvent e )
+                    public void actionPerformed ( final ActionEvent e )
                     {
                         if ( opacity < 128 )
                         {
@@ -201,7 +201,7 @@ public class WebProgressOverlay extends WebOverlay
                 animator = new WebTimer ( "WebProgressOverlay.animator", StyleConstants.avgAnimationDelay, new ActionListener ()
                 {
                     @Override
-                    public void actionPerformed ( ActionEvent e )
+                    public void actionPerformed ( final ActionEvent e )
                     {
                         if ( loadProgress < getProgressWidth () * 2 )
                         {
@@ -226,7 +226,7 @@ public class WebProgressOverlay extends WebOverlay
                         new WebTimer ( "WebProgressOverlay.opacityAnimator", StyleConstants.avgAnimationDelay, new ActionListener ()
                         {
                             @Override
-                            public void actionPerformed ( ActionEvent e )
+                            public void actionPerformed ( final ActionEvent e )
                             {
                                 if ( opacity > 0 )
                                 {
@@ -265,22 +265,22 @@ public class WebProgressOverlay extends WebOverlay
         }
 
         @Override
-        protected void paintComponent ( Graphics g )
+        protected void paintComponent ( final Graphics g )
         {
             super.paintComponent ( g );
 
             if ( opacity > 0 )
             {
-                int w = getWidth ();
-                int h = getHeight ();
-                int pw = getProgressWidth ();
+                final int w = getWidth ();
+                final int h = getHeight ();
+                final int pw = getProgressWidth ();
                 if ( w > 0 && h > 0 && pw > 0 )
                 {
-                    Graphics2D g2d = ( Graphics2D ) g;
+                    final Graphics2D g2d = ( Graphics2D ) g;
                     LafUtils.setupAntialias ( g2d );
 
-                    Shape clip = getClipShape ();
-                    Shape oldClip = LafUtils.intersectClip ( g2d, clip, clip != null );
+                    final Shape clip = getClipShape ();
+                    final Shape oldClip = LafUtils.intersectClip ( g2d, clip, clip != null );
 
                     // todo Draw correctly when width is less than height
                     g2d.setPaint ( new Color ( progressColor.getRed (), progressColor.getGreen (), progressColor.getBlue (), opacity ) );
@@ -291,7 +291,7 @@ public class WebProgressOverlay extends WebOverlay
                             continue;
                         }
 
-                        GeneralPath gp = new GeneralPath ( GeneralPath.WIND_EVEN_ODD );
+                        final GeneralPath gp = new GeneralPath ( GeneralPath.WIND_EVEN_ODD );
 
                         // Top side lines
                         gp.moveTo ( i < w ? i : w, i < w ? 0 : Math.min ( h, i - w ) );

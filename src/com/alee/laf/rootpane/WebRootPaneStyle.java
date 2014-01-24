@@ -86,6 +86,17 @@ public final class WebRootPaneStyle
     public static ImageIcon watermark = null;
 
     /**
+     * Maximum title text width.
+     * You can set this to -1 to allow title take as much space as it requires.
+     */
+    public static int maxTitleWidth = 100;
+
+    /**
+     * Text displayed when window title is not set.
+     */
+    public static String emptyTitleText = "   ";
+
+    /**
      * Display window title component by default.
      */
     public static boolean showTitleComponent = true;

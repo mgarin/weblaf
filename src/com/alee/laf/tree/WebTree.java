@@ -243,6 +243,17 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
     }
 
     /**
+     * Returns whether node is expanded or not.
+     *
+     * @param node node to check
+     * @return true if node is expanded, false otherwise
+     */
+    public boolean isExpanded ( final E node )
+    {
+        return isExpanded ( getPathForNode ( node ) );
+    }
+
+    /**
      * Returns node bounds.
      *
      * @param node node to process

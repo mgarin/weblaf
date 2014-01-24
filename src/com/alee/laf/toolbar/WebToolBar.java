@@ -42,17 +42,17 @@ public class WebToolBar extends JToolBar implements ShapeProvider, LanguageConta
         super ();
     }
 
-    public WebToolBar ( String name )
+    public WebToolBar ( final String name )
     {
         super ( name );
     }
 
-    public WebToolBar ( String name, int orientation )
+    public WebToolBar ( final String name, final int orientation )
     {
         super ( name, orientation );
     }
 
-    public WebToolBar ( int orientation )
+    public WebToolBar ( final int orientation )
     {
         super ( orientation );
     }
@@ -61,17 +61,17 @@ public class WebToolBar extends JToolBar implements ShapeProvider, LanguageConta
      * Additional toolbar element methods
      */
 
-    public void addToMiddle ( Component component )
+    public void addToMiddle ( final Component component )
     {
         add ( component, ToolbarLayout.MIDDLE );
     }
 
-    public void addFill ( Component component )
+    public void addFill ( final Component component )
     {
         add ( component, ToolbarLayout.FILL );
     }
 
-    public void addToEnd ( Component component )
+    public void addToEnd ( final Component component )
     {
         add ( component, ToolbarLayout.END );
     }
@@ -87,24 +87,24 @@ public class WebToolBar extends JToolBar implements ShapeProvider, LanguageConta
         return addSeparator ( ToolbarLayout.END );
     }
 
-    public WebSeparator addSeparator ( String constrain )
+    public WebSeparator addSeparator ( final String constrain )
     {
         final WebSeparator separator = new WebSeparator ( getOrientation () );
         add ( separator, constrain );
         return separator;
     }
 
-    public WebSeparator addSeparator ( int spacing )
+    public WebSeparator addSeparator ( final int spacing )
     {
         return addSeparator ( ToolbarLayout.START, spacing );
     }
 
-    public WebSeparator addSeparatorToEnd ( int spacing )
+    public WebSeparator addSeparatorToEnd ( final int spacing )
     {
         return addSeparator ( ToolbarLayout.END, spacing );
     }
 
-    public WebSeparator addSeparator ( String constrain, int spacing )
+    public WebSeparator addSeparator ( final String constrain, final int spacing )
     {
         final boolean hor = getOrientation () == HORIZONTAL;
         final WebSeparator separator = new WebSeparator ( hor ? VERTICAL : HORIZONTAL );
@@ -117,7 +117,7 @@ public class WebToolBar extends JToolBar implements ShapeProvider, LanguageConta
         addSpacing ( StyleConstants.contentSpacing );
     }
 
-    public void addSpacing ( int spacing )
+    public void addSpacing ( final int spacing )
     {
         addSpacing ( spacing, ToolbarLayout.START );
     }
@@ -127,12 +127,12 @@ public class WebToolBar extends JToolBar implements ShapeProvider, LanguageConta
         addSpacingToEnd ( StyleConstants.contentSpacing );
     }
 
-    public void addSpacingToEnd ( int spacing )
+    public void addSpacingToEnd ( final int spacing )
     {
         addSpacing ( spacing, ToolbarLayout.END );
     }
 
-    public void addSpacing ( int spacing, String constrain )
+    public void addSpacing ( final int spacing, final String constrain )
     {
         add ( new WhiteSpace ( spacing ), constrain );
     }
@@ -141,7 +141,7 @@ public class WebToolBar extends JToolBar implements ShapeProvider, LanguageConta
      * Additional childs interaction methods
      */
 
-    public void add ( List<? extends Component> components, int index )
+    public void add ( final List<? extends Component> components, final int index )
     {
         if ( components != null )
         {
@@ -152,29 +152,29 @@ public class WebToolBar extends JToolBar implements ShapeProvider, LanguageConta
         }
     }
 
-    public void add ( List<? extends Component> components, String constraints )
+    public void add ( final List<? extends Component> components, final String constraints )
     {
         if ( components != null )
         {
-            for ( Component component : components )
+            for ( final Component component : components )
             {
                 add ( component, constraints );
             }
         }
     }
 
-    public void add ( List<? extends Component> components )
+    public void add ( final List<? extends Component> components )
     {
         if ( components != null )
         {
-            for ( Component component : components )
+            for ( final Component component : components )
             {
                 add ( component );
             }
         }
     }
 
-    public void add ( int index, Component... components )
+    public void add ( final int index, final Component... components )
     {
         if ( components != null && components.length > 0 )
         {
@@ -185,22 +185,22 @@ public class WebToolBar extends JToolBar implements ShapeProvider, LanguageConta
         }
     }
 
-    public void add ( String constraints, Component... components )
+    public void add ( final String constraints, final Component... components )
     {
         if ( components != null && components.length > 0 )
         {
-            for ( Component component : components )
+            for ( final Component component : components )
             {
                 add ( component, constraints );
             }
         }
     }
 
-    public void add ( Component... components )
+    public void add ( final Component... components )
     {
         if ( components != null && components.length > 0 )
         {
-            for ( Component component : components )
+            for ( final Component component : components )
             {
                 add ( component );
             }
@@ -240,7 +240,7 @@ public class WebToolBar extends JToolBar implements ShapeProvider, LanguageConta
         return getWebUI ().isUndecorated ();
     }
 
-    public void setUndecorated ( boolean undecorated )
+    public void setUndecorated ( final boolean undecorated )
     {
         getWebUI ().setUndecorated ( undecorated );
     }
@@ -250,7 +250,7 @@ public class WebToolBar extends JToolBar implements ShapeProvider, LanguageConta
         return getWebUI ().getPainter ();
     }
 
-    public void setPainter ( Painter painter )
+    public void setPainter ( final Painter painter )
     {
         getWebUI ().setPainter ( painter );
     }
@@ -260,7 +260,7 @@ public class WebToolBar extends JToolBar implements ShapeProvider, LanguageConta
         return getWebUI ().getRound ();
     }
 
-    public void setRound ( int round )
+    public void setRound ( final int round )
     {
         getWebUI ().setRound ( round );
     }
@@ -270,7 +270,7 @@ public class WebToolBar extends JToolBar implements ShapeProvider, LanguageConta
         return getWebUI ().getShadeWidth ();
     }
 
-    public void setShadeWidth ( int shadeWidth )
+    public void setShadeWidth ( final int shadeWidth )
     {
         getWebUI ().setShadeWidth ( shadeWidth );
     }
@@ -282,17 +282,17 @@ public class WebToolBar extends JToolBar implements ShapeProvider, LanguageConta
     }
 
     @Override
-    public void setMargin ( Insets margin )
+    public void setMargin ( final Insets margin )
     {
         getWebUI ().setMargin ( margin );
     }
 
-    public void setMargin ( int top, int left, int bottom, int right )
+    public void setMargin ( final int top, final int left, final int bottom, final int right )
     {
         setMargin ( new Insets ( top, left, bottom, right ) );
     }
 
-    public void setMargin ( int spacing )
+    public void setMargin ( final int spacing )
     {
         setMargin ( spacing, spacing, spacing, spacing );
     }
@@ -302,7 +302,7 @@ public class WebToolBar extends JToolBar implements ShapeProvider, LanguageConta
         return getWebUI ().getToolbarStyle ();
     }
 
-    public void setToolbarStyle ( ToolbarStyle toolbarStyle )
+    public void setToolbarStyle ( final ToolbarStyle toolbarStyle )
     {
         getWebUI ().setToolbarStyle ( toolbarStyle );
     }
@@ -312,7 +312,7 @@ public class WebToolBar extends JToolBar implements ShapeProvider, LanguageConta
         return getWebUI ().getSpacing ();
     }
 
-    public void setSpacing ( int spacing )
+    public void setSpacing ( final int spacing )
     {
         getWebUI ().setSpacing ( spacing );
     }
@@ -322,7 +322,7 @@ public class WebToolBar extends JToolBar implements ShapeProvider, LanguageConta
         return getWebUI ().getTopBgColor ();
     }
 
-    public void setTopBgColor ( Color topBgColor )
+    public void setTopBgColor ( final Color topBgColor )
     {
         getWebUI ().setTopBgColor ( topBgColor );
     }
@@ -332,7 +332,7 @@ public class WebToolBar extends JToolBar implements ShapeProvider, LanguageConta
         return getWebUI ().getBottomBgColor ();
     }
 
-    public void setBottomBgColor ( Color bottomBgColor )
+    public void setBottomBgColor ( final Color bottomBgColor )
     {
         getWebUI ().setBottomBgColor ( bottomBgColor );
     }
@@ -342,7 +342,7 @@ public class WebToolBar extends JToolBar implements ShapeProvider, LanguageConta
         return getWebUI ().getBorderColor ();
     }
 
-    public void setBorderColor ( Color lowerBorderColor )
+    public void setBorderColor ( final Color lowerBorderColor )
     {
         getWebUI ().setBorderColor ( lowerBorderColor );
     }
@@ -397,7 +397,7 @@ public class WebToolBar extends JToolBar implements ShapeProvider, LanguageConta
      * {@inheritDoc}
      */
     @Override
-    public void setLanguageContainerKey ( String key )
+    public void setLanguageContainerKey ( final String key )
     {
         LanguageManager.registerLanguageContainer ( this, key );
     }

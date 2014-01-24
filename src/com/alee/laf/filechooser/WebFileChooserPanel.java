@@ -383,6 +383,7 @@ public class WebFileChooserPanel extends WebPanel
                 final WebPopupMenu historyPopup = new WebPopupMenu ();
 
                 final WebList historyList = new WebList ( navigationHistory );
+                historyList.setOpaque ( false );
                 historyList.setVisibleRowCount ( Math.min ( 10, navigationHistory.size () ) );
                 historyList.setRolloverSelectionEnabled ( true );
                 historyList.setCellRenderer ( new WebComboBoxCellRenderer ( historyList )
@@ -419,6 +420,8 @@ public class WebFileChooserPanel extends WebPanel
                     }
                 } );
                 final WebScrollPane scrollPane = new WebScrollPane ( historyList, false, false );
+                scrollPane.setOpaque ( false );
+                scrollPane.getViewport ().setOpaque ( false );
                 scrollPane.setShadeWidth ( 0 );
                 historyPopup.add ( scrollPane );
 

@@ -17,6 +17,7 @@
 
 package com.alee.laf.separator;
 
+import com.alee.laf.WebLookAndFeel;
 import com.alee.utils.LafUtils;
 import com.alee.utils.SwingUtils;
 
@@ -63,7 +64,7 @@ public class WebSeparatorUI extends BasicSeparatorUI
 
         // Default settings
         SwingUtils.setOrientation ( separator );
-        separator.setOpaque ( false );
+        LookAndFeel.installProperty ( separator, WebLookAndFeel.OPAQUE_PROPERTY, Boolean.FALSE );
 
         // Updating border
         updateBorder ();
@@ -72,10 +73,7 @@ public class WebSeparatorUI extends BasicSeparatorUI
     @Override
     public void uninstallUI ( final JComponent c )
     {
-        separator.setOpaque ( true );
-
         this.separator = null;
-
         super.uninstallUI ( c );
     }
 

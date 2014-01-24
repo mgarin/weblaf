@@ -48,7 +48,9 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 
 /**
- * User: mgarin Date: 01.06.11 Time: 14:36
+ * Custom UI for JComboBox component.
+ *
+ * @author Mikle Garin
  */
 
 public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider, BorderMethods
@@ -84,7 +86,7 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider, Bor
         // Default settings
         SwingUtils.setOrientation ( comboBox );
         comboBox.setFocusable ( true );
-        comboBox.setOpaque ( false );
+        LookAndFeel.installProperty ( comboBox, WebLookAndFeel.OPAQUE_PROPERTY, Boolean.FALSE );
 
         // Updating border
         updateBorder ();
@@ -101,7 +103,7 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider, Bor
             @Override
             public void mouseWheelMoved ( final MouseWheelEvent e )
             {
-                if ( mouseWheelScrollingEnabled && comboBox.isEnabled () )
+                if ( mouseWheelScrollingEnabled && comboBox.isEnabled () && SwingUtils.hasFocusOwner ( comboBox ) )
                 {
                     // Changing selection in case index actually changed
                     final int index = comboBox.getSelectedIndex ();
@@ -146,14 +148,15 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider, Bor
             return;
         }
 
+        final Insets m = new Insets ( 0, 0, 0, 0 );
         if ( drawBorder )
         {
-            comboBox.setBorder ( BorderFactory.createEmptyBorder ( shadeWidth + 1, shadeWidth + 1, shadeWidth + 1, shadeWidth + 1 ) );
+            m.top += shadeWidth + 1;
+            m.left += shadeWidth + 1;
+            m.bottom += shadeWidth + 1;
+            m.right += shadeWidth + 1;
         }
-        else
-        {
-            comboBox.setBorder ( null );
-        }
+        comboBox.setBorder ( LafUtils.createWebBorder ( m ) );
     }
 
     /**

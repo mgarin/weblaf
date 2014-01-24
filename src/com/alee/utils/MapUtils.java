@@ -154,4 +154,36 @@ public final class MapUtils
         }
         return clone;
     }
+
+    /**
+     * Returns newly created HashMap with the specified key and value pair added.
+     *
+     * @param key   key to add
+     * @param value value to add
+     * @param <K>   key type
+     * @param <V>   value type
+     * @return newly created HashMap
+     */
+    public static <K, V> HashMap<K, V> newHashMap ( final K key, final V value )
+    {
+        final HashMap<K, V> map = new HashMap<K, V> ( 1 );
+        map.put ( key, value );
+        return map;
+    }
+
+    /**
+     * Returns newly created LinkedHashMap with the specified key and value pair added.
+     *
+     * @param key   key to add
+     * @param value value to add
+     * @param <K>   key type
+     * @param <V>   value type
+     * @return newly created LinkedHashMap
+     */
+    public static <K, V> HashMap<K, V> newLinkedHashMap ( final K key, final V value )
+    {
+        final LinkedHashMap<K, V> map = new LinkedHashMap<K, V> ( 1 );
+        map.put ( key, value );
+        return map;
+    }
 }

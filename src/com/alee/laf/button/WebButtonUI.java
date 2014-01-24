@@ -97,11 +97,17 @@ public class WebButtonUI extends BasicButtonUI implements ShapeProvider, SwingCo
     protected WebTimer animator = null;
     protected AbstractButton button = null;
 
+    // Cached old values from button to restore on LAF change.
+    protected boolean oldFocusPainted;
+    protected boolean oldContentAreaFilled;
+    protected boolean oldBorderPainted;
+    protected boolean oldFocusable;
+
     protected MouseAdapter mouseAdapter;
     protected AncestorListener ancestorListener;
     protected PropertyChangeListener propertyChangeListener;
 
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebButtonUI ();
@@ -115,13 +121,19 @@ public class WebButtonUI extends BasicButtonUI implements ShapeProvider, SwingCo
         // Saving button to local variable
         button = ( AbstractButton ) c;
 
+        // Saving old button settings
+        oldFocusPainted = button.isFocusPainted ();
+        oldContentAreaFilled = button.isContentAreaFilled ();
+        oldBorderPainted = button.isBorderPainted ();
+        oldFocusable = button.isFocusable ();
+
         // Default settings
         SwingUtils.setOrientation ( button );
         button.setFocusPainted ( false );
         button.setContentAreaFilled ( false );
         button.setBorderPainted ( false );
         button.setFocusable ( true );
-        button.setOpaque ( false );
+        LookAndFeel.installProperty ( button, WebLookAndFeel.OPAQUE_PROPERTY, Boolean.FALSE );
         PainterSupport.installPainter ( button, this.painter );
 
         // Updating border
@@ -313,6 +325,11 @@ public class WebButtonUI extends BasicButtonUI implements ShapeProvider, SwingCo
         c.removeAncestorListener ( ancestorListener );
         c.removePropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, propertyChangeListener );
 
+        button.setBorderPainted ( oldBorderPainted );
+        button.setContentAreaFilled ( oldContentAreaFilled );
+        button.setFocusPainted ( oldFocusPainted );
+        button.setFocusable ( oldFocusable );
+
         super.uninstallUI ( c );
     }
 
@@ -425,10 +442,10 @@ public class WebButtonUI extends BasicButtonUI implements ShapeProvider, SwingCo
         if ( button != null )
         {
             // Preserve old borders
-            if ( SwingUtils.isPreserveBorders ( button ) )
-            {
-                return;
-            }
+            //            if ( SwingUtils.isPreserveBorders ( button ) )
+            //            {
+            //                return;
+            //            }
 
             // Installing newly created border
             button.setBorder ( LafUtils.createWebBorder ( getBorderInsets () ) );

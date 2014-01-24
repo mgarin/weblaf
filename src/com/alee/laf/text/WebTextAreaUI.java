@@ -62,7 +62,7 @@ public class WebTextAreaUI extends BasicTextAreaUI implements BorderMethods
 
         // Default settings
         SwingUtils.setOrientation ( textComponent );
-        textComponent.setOpaque ( true );
+        LookAndFeel.installProperty ( textComponent, WebLookAndFeel.OPAQUE_PROPERTY, Boolean.TRUE );
         textComponent.setBackground ( Color.WHITE );
         textComponent.setSelectionColor ( StyleConstants.textSelectionColor );
         textComponent.setForeground ( Color.BLACK );

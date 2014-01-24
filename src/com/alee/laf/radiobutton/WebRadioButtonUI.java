@@ -18,6 +18,7 @@
 package com.alee.laf.radiobutton;
 
 import com.alee.laf.StyleConstants;
+import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.list.WebListElement;
 import com.alee.laf.tree.WebTreeElement;
 import com.alee.utils.ColorUtils;
@@ -108,8 +109,8 @@ public class WebRadioButtonUI extends BasicRadioButtonUI implements ShapeProvide
         radioButton = ( JRadioButton ) c;
 
         // Default settings
-        SwingUtils.setOrientation ( c );
-        radioButton.setOpaque ( false );
+        SwingUtils.setOrientation ( radioButton );
+        LookAndFeel.installProperty ( radioButton, WebLookAndFeel.OPAQUE_PROPERTY, Boolean.FALSE );
 
         // Initial check state
         checkIcon = radioButton.isSelected () ? CHECK_STATES.size () - 1 : 0;

@@ -17,6 +17,8 @@
 
 package com.alee.laf.colorchooser;
 
+import com.alee.laf.WebLookAndFeel;
+
 import javax.swing.*;
 import javax.swing.colorchooser.ColorSelectionModel;
 import javax.swing.event.ChangeEvent;
@@ -40,7 +42,7 @@ public class WebColorChooserUI extends BasicColorChooserUI
     private ChangeListener modelChangeListener;
     private boolean modifying = false;
 
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebColorChooserUI ();
@@ -52,7 +54,7 @@ public class WebColorChooserUI extends BasicColorChooserUI
         chooser = ( JColorChooser ) c;
         selectionModel = chooser.getSelectionModel ();
 
-        chooser.setOpaque ( false );
+        LookAndFeel.installProperty ( chooser, WebLookAndFeel.OPAQUE_PROPERTY, Boolean.FALSE );
         chooser.setLayout ( new BorderLayout () );
 
         colorChooserPanel = new WebColorChooserPanel ( false );

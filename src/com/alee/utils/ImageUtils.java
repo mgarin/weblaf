@@ -1170,6 +1170,11 @@ public final class ImageUtils
 
     private static Map<String, ImageIcon> grayscaleCache = new HashMap<String, ImageIcon> ();
 
+    public static void clearDisabledCopyCache ()
+    {
+        grayscaleCache.clear ();
+    }
+
     public static void clearDisabledCopyCache ( final String id )
     {
         grayscaleCache.remove ( id );
@@ -1312,7 +1317,7 @@ public final class ImageUtils
     {
         // todo Properly use height
         final int width = shadeWidth * 2 + w;
-        @SuppressWarnings ("UnusedDeclaration") final int height = shadeWidth * 2 + h;
+        @SuppressWarnings ( "UnusedDeclaration" ) final int height = shadeWidth * 2 + h;
 
         // Creating template image
         final BufferedImage bi = createCompatibleImage ( width, width, Transparency.TRANSLUCENT );

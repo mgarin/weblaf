@@ -87,7 +87,7 @@ public class WebMenuUI extends BasicMenuUI implements BorderMethods
      * @param c component that will use UI instance
      * @return instance of the WebMenuUI
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebMenuUI ();
@@ -105,7 +105,7 @@ public class WebMenuUI extends BasicMenuUI implements BorderMethods
 
         // Default settings
         SwingUtils.setOrientation ( menuItem );
-        menuItem.setOpaque ( false );
+        LookAndFeel.installProperty ( menuItem, WebLookAndFeel.OPAQUE_PROPERTY, Boolean.FALSE );
         menuItem.setBackground ( selectedBottomBg );
         menuItem.setIconTextGap ( WebMenuItemStyle.iconTextGap );
         PainterSupport.installPainter ( menuItem, this.painter );
@@ -163,9 +163,6 @@ public class WebMenuUI extends BasicMenuUI implements BorderMethods
         mouseAdapter = null;
         MenuItemChangeListener.uninstall ( buttonModelChangeListener, menuItem );
         buttonModelChangeListener = null;
-
-        // Restoring basic settings
-        menuItem.setOpaque ( true );
 
         super.uninstallUI ( c );
     }

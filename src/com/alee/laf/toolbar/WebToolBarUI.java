@@ -83,7 +83,7 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeProvider, Borde
 
         // Default settings
         SwingUtils.setOrientation ( toolBar );
-        toolBar.setOpaque ( false );
+        LookAndFeel.installProperty ( toolBar, WebLookAndFeel.OPAQUE_PROPERTY, Boolean.FALSE );
         PainterSupport.installPainter ( toolBar, this.painter );
 
         // Updating border and layout
@@ -609,5 +609,41 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeProvider, Borde
         final DragWindow dragWindow = super.createDragWindow ( toolbar );
         ProprietaryUtils.setWindowOpacity ( dragWindow, 0.5f );
         return dragWindow;
+    }
+
+    @Override
+    protected void installRolloverBorders ( final JComponent c )
+    {
+        // Do not touch any elements here as it will break WebLaF borders
+    }
+
+    @Override
+    protected void installNonRolloverBorders ( final JComponent c )
+    {
+        // Do not touch any elements here as it will break WebLaF borders
+    }
+
+    @Override
+    protected void installNormalBorders ( final JComponent c )
+    {
+        // Do not touch any elements here as it will break WebLaF borders
+    }
+
+    @Override
+    protected void setBorderToRollover ( final Component c )
+    {
+        // Do not touch any elements here as it will break WebLaF borders
+    }
+
+    @Override
+    protected void setBorderToNonRollover ( final Component c )
+    {
+        // Do not touch any elements here as it will break WebLaF borders
+    }
+
+    @Override
+    protected void setBorderToNormal ( final Component c )
+    {
+        // Do not touch any elements here as it will break WebLaF borders
     }
 }
