@@ -155,7 +155,7 @@ public class LineColorChooser extends WebPanel
     {
         // Retrieving hue from Color
         setHue ( 360 - Math.round ( ( float ) 360 * Color.RGBtoHSB ( color.getRed (), color.getGreen (), color.getBlue (), null )[ 0 ] ),
-                false );
+                true );
     }
 
     public Color getColor ()
