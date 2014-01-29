@@ -340,6 +340,10 @@ public class WebRootPaneLayout extends AbstractLayoutManager
         }
         if ( showResizeCorner )
         {
+            // Placing resize corner at the top of all other components within the root pane
+            // Called from here since root pane content might be changed and we have to keep this up-to-date
+            parent.setComponentZOrder ( resizeCorner, 0 );
+
             final Dimension rcd = resizeCorner.getPreferredSize ();
             if ( rcd != null )
             {

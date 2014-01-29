@@ -24,8 +24,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This abstract painter provides a few additional features.
- * Usually this class is extended by various painters instead of Painter interface.
+ * This abstract painter provides a few additional useful features atop of the Painter interface.
+ * Usually this class is extended by various painters instead of implementing Painter interface directly.
  *
  * @param <E> component type
  * @author Mikle Garin
@@ -34,6 +34,10 @@ import java.util.List;
 
 public abstract class AbstractPainter<E extends Component> implements Painter<E>
 {
+    /**
+     * todo 1. Additional "quick" methods for painting (setAA/setFont/setComposite/...)
+     */
+
     /**
      * Whether visual data is opaque or not.
      */
@@ -58,6 +62,24 @@ public abstract class AbstractPainter<E extends Component> implements Painter<E>
      * {@inheritDoc}
      */
     @Override
+    public void install ( final E c )
+    {
+        // Simply do nothing by default
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void uninstall ( final E c )
+    {
+        // Simply do nothing by default
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public boolean isOpaque ( final E c )
     {
         return opaque;
@@ -71,7 +93,7 @@ public abstract class AbstractPainter<E extends Component> implements Painter<E>
     public void setOpaque ( final boolean opaque )
     {
         this.opaque = opaque;
-        fireRepaint ();
+        repaint ();
     }
 
     /**
@@ -91,7 +113,7 @@ public abstract class AbstractPainter<E extends Component> implements Painter<E>
     public void setPreferredSize ( final Dimension preferredSize )
     {
         this.preferredSize = preferredSize;
-        fireRevalidate ();
+        revalidate ();
     }
 
     /**
@@ -111,7 +133,7 @@ public abstract class AbstractPainter<E extends Component> implements Painter<E>
     public void setMargin ( final Insets margin )
     {
         this.margin = margin;
-        fireRevalidate ();
+        revalidate ();
     }
 
     /**
@@ -156,37 +178,75 @@ public abstract class AbstractPainter<E extends Component> implements Painter<E>
     }
 
     /**
-     * Fired when painter size and visual representation changes.
+     * Should be called when painter visual representation changes.
+     */
+    public void repaint ()
+    {
+        for ( final PainterListener listener : CollectionUtils.copy ( listeners ) )
+        {
+            listener.repaint ();
+        }
+    }
+
+    /**
+     * Should be called when part of painter visual representation changes.
+     *
+     * @param bounds part bounds
+     */
+    public void repaint ( final Rectangle bounds )
+    {
+        repaint ( bounds.x, bounds.y, bounds.width, bounds.height );
+    }
+
+    /**
+     * Should be called when part of painter visual representation changes.
+     *
+     * @param x      part bounds X coordinate
+     * @param y      part bounds Y coordinate
+     * @param width  part bounds width
+     * @param height part bounds height
+     */
+    public void repaint ( final int x, final int y, final int width, final int height )
+    {
+        for ( final PainterListener listener : CollectionUtils.copy ( listeners ) )
+        {
+            listener.repaint ( x, y, width, height );
+        }
+    }
+
+    /**
+     * Should be called when painter size or border changes.
+     */
+    public void revalidate ()
+    {
+        for ( final PainterListener listener : CollectionUtils.copy ( listeners ) )
+        {
+            listener.revalidate ();
+        }
+    }
+
+    /**
+     * Should be called when painter opacity changes.
+     */
+    public void updateOpacity ()
+    {
+        for ( final PainterListener listener : CollectionUtils.copy ( listeners ) )
+        {
+            listener.updateOpacity ();
+        }
+    }
+
+    /**
+     * Should be called when painter size, border and visual representation changes.
      * Calls both revalidate and update listener methods.
      */
-    public void fireUpdate ()
+    public void updateAll ()
     {
         for ( final PainterListener listener : CollectionUtils.copy ( listeners ) )
         {
+            listener.updateOpacity ();
             listener.revalidate ();
             listener.repaint ();
-        }
-    }
-
-    /**
-     * Fired when painter visual representation changes.
-     */
-    public void fireRepaint ()
-    {
-        for ( final PainterListener listener : CollectionUtils.copy ( listeners ) )
-        {
-            listener.repaint ();
-        }
-    }
-
-    /**
-     * Fired when painter size changes.
-     */
-    public void fireRevalidate ()
-    {
-        for ( final PainterListener listener : CollectionUtils.copy ( listeners ) )
-        {
-            listener.revalidate ();
         }
     }
 }

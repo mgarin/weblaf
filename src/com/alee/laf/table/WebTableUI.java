@@ -80,6 +80,7 @@ public class WebTableUI extends BasicTableUI
         table.setShowVerticalLines ( WebTableStyle.showVerticalLines );
         table.setIntercellSpacing ( WebTableStyle.cellsSpacing );
 
+        // todo Save and restore old renderers/editors on uninstall
         // Configuring default renderers
         table.setDefaultRenderer ( Object.class, new WebTableCellRenderer () );
         table.setDefaultRenderer ( Number.class, new WebNumberRenderer () );

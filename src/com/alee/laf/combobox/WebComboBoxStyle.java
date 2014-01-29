@@ -21,50 +21,73 @@ import com.alee.laf.StyleConstants;
 import com.alee.utils.ImageUtils;
 
 import javax.swing.*;
+import java.awt.*;
 
 /**
- * User: mgarin Date: 31.10.12 Time: 17:07
+ * WebComboBox style class.
+ *
+ * @author Mikle Garin
  */
 
 public final class WebComboBoxStyle
 {
     /**
-     * Expand icon
+     * Expand icon.
      */
     public static ImageIcon expandIcon = new ImageIcon ( WebComboBoxStyle.class.getResource ( "icons/arrow.png" ) );
 
     /**
-     * Collapse icon
+     * Collapse icon.
      */
     public static ImageIcon collapseIcon = ImageUtils.rotateImage180 ( expandIcon );
 
     /**
-     * Icon side spacing
+     * Icon side spacing.
      */
     public static int iconSpacing = 3;
 
     /**
-     * Draw combobox border
+     * Draw combobox border.
      */
     public static boolean drawBorder = StyleConstants.drawBorder;
 
     /**
-     * Draw combobox focus
+     * Draw combobox focus.
      */
     public static boolean drawFocus = true;
 
     /**
-     * Decoration rounding
+     * Decoration rounding.
      */
     public static int round = StyleConstants.smallRound;
 
     /**
-     * Decoration shade width
+     * Decoration shade width.
      */
     public static int shadeWidth = StyleConstants.shadeWidth;
 
     /**
-     * Values scrolling using mouse wheel enabled
+     * Values scrolling using mouse wheel enabled.
      */
     public static boolean mouseWheelScrollingEnabled = true;
+
+    /**
+     * Scroll bar thumb corners rounding.
+     */
+    public static int scrollBarThumbRound = 4;
+
+    /**
+     * Scroll bar margin.
+     */
+    public static Insets scrollBarMargin = new Insets ( 0, 1, 0, 1 );
+
+    /**
+     * Whether should display scroll bar buttons or not.
+     */
+    public static boolean scrollBarButtonsVisible = false;
+
+    /**
+     * Whether should display scroll bar track or not.
+     */
+    public static boolean scrollBarTrackVisible = false;
 }

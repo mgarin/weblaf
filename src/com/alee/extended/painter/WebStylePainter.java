@@ -55,10 +55,10 @@ public class WebStylePainter<E extends JComponent> extends AbstractPainter<E>
         return drawBackground;
     }
 
-    public void setDrawBackground ( boolean drawBackground )
+    public void setDrawBackground ( final boolean drawBackground )
     {
         this.drawBackground = drawBackground;
-        fireRepaint ();
+        repaint ();
     }
 
     public int getRound ()
@@ -66,10 +66,10 @@ public class WebStylePainter<E extends JComponent> extends AbstractPainter<E>
         return round;
     }
 
-    public void setRound ( int round )
+    public void setRound ( final int round )
     {
         this.round = round;
-        fireRepaint ();
+        repaint ();
     }
 
     public boolean isDrawFocus ()
@@ -77,10 +77,10 @@ public class WebStylePainter<E extends JComponent> extends AbstractPainter<E>
         return drawFocus;
     }
 
-    public void setDrawFocus ( boolean drawFocus )
+    public void setDrawFocus ( final boolean drawFocus )
     {
         this.drawFocus = drawFocus;
-        fireRepaint ();
+        repaint ();
     }
 
     public int getShadeWidth ()
@@ -88,10 +88,10 @@ public class WebStylePainter<E extends JComponent> extends AbstractPainter<E>
         return shadeWidth;
     }
 
-    public void setShadeWidth ( int shadeWidth )
+    public void setShadeWidth ( final int shadeWidth )
     {
         this.shadeWidth = shadeWidth;
-        fireUpdate ();
+        updateAll ();
     }
 
     public boolean isFillBackground ()
@@ -99,10 +99,10 @@ public class WebStylePainter<E extends JComponent> extends AbstractPainter<E>
         return fillBackground;
     }
 
-    public void setFillBackground ( boolean fillBackground )
+    public void setFillBackground ( final boolean fillBackground )
     {
         this.fillBackground = fillBackground;
-        fireRepaint ();
+        repaint ();
     }
 
     public boolean isWebColored ()
@@ -110,26 +110,17 @@ public class WebStylePainter<E extends JComponent> extends AbstractPainter<E>
         return webColored;
     }
 
-    public void setWebColored ( boolean webColored )
+    public void setWebColored ( final boolean webColored )
     {
         this.webColored = webColored;
-        fireRepaint ();
+        repaint ();
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public boolean isOpaque ( E c )
-    {
-        return false;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Insets getMargin ( E c )
+    public Insets getMargin ( final E c )
     {
         return new Insets ( shadeWidth + 1, shadeWidth + 1, shadeWidth + 1, shadeWidth + 1 );
     }
@@ -138,7 +129,7 @@ public class WebStylePainter<E extends JComponent> extends AbstractPainter<E>
      * {@inheritDoc}
      */
     @Override
-    public void paint ( Graphics2D g2d, Rectangle bounds, E c )
+    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c )
     {
         if ( drawBackground )
         {

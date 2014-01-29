@@ -53,10 +53,18 @@ public class VersionUpdater
      *
      * @param args arguments
      */
-    public static void main ( String[] args ) throws IOException
+    public static void main ( final String[] args ) throws IOException
     {
         VersionManager.initialize ();
-        updateVersion ( args.length == 0 || args[ 0 ].equals ( "increment" ) ? 1 : -1 );
+        if ( args.length == 0 || args[ 0 ].equals ( "increment" ) || args[ 0 ].equals ( "decrement" ) )
+        {
+            updateVersion ( args.length == 0 || args[ 0 ].equals ( "increment" ) ? 1 : -1 );
+        }
+        else if ( args[ 0 ].equals ( "update" ) )
+        {
+            updateVersion ( -1 );
+            updateVersion ( +1 );
+        }
     }
 
     /**
@@ -65,7 +73,7 @@ public class VersionUpdater
      * @param change version change amount
      * @throws IOException
      */
-    private static void updateVersion ( int change ) throws IOException
+    private static void updateVersion ( final int change ) throws IOException
     {
         // Updating version in properties
         final File propertiesFile = new File ( propertiesPath );

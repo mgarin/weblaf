@@ -17,240 +17,728 @@
 
 package com.alee.laf.scroll;
 
+import com.alee.extended.painter.PainterSupport;
+import com.alee.laf.WebLookAndFeel;
+import com.alee.laf.button.WebButton;
 import com.alee.utils.LafUtils;
 import com.alee.utils.SwingUtils;
+import com.alee.utils.swing.BorderMethods;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 /**
- * User: mgarin Date: 29.04.11 Time: 15:34
+ * Custom UI for JScrollBar component.
+ *
+ * @author Mikle Garin
  */
 
-public class WebScrollBarUI extends BasicScrollBarUI
+public class WebScrollBarUI extends BasicScrollBarUI implements BorderMethods
 {
-    public static final int LENGTH = 13;
+    /**
+     * Painter style settings.
+     */
+    protected boolean buttonsVisible = WebScrollBarStyle.buttonsVisible;
+    protected boolean drawTrack = WebScrollBarStyle.drawTrack;
+    protected Color trackBorderColor = WebScrollBarStyle.trackBorderColor;
+    protected Color trackBackgroundColor = WebScrollBarStyle.trackBackgroundColor;
+    protected Color thumbBorderColor = WebScrollBarStyle.thumbBorderColor;
+    protected Color thumbBackgroundColor = WebScrollBarStyle.thumbBackgroundColor;
+    protected Color thumbDisabledBorderColor = WebScrollBarStyle.thumbDisabledBorderColor;
+    protected Color thumbDisabledBackgroundColor = WebScrollBarStyle.thumbDisabledBackgroundColor;
+    protected Color thumbRolloverBorderColor = WebScrollBarStyle.thumbRolloverBorderColor;
+    protected Color thumbRolloverBackgroundColor = WebScrollBarStyle.thumbRolloverBackgroundColor;
+    protected Color thumbPressedBorderColor = WebScrollBarStyle.thumbPressedBorderColor;
+    protected Color thumbPressedBackgroundColor = WebScrollBarStyle.thumbPressedBackgroundColor;
+    protected int thumbRound = WebScrollBarStyle.thumbRound;
+    protected Insets thumbMargin = WebScrollBarStyle.thumbMargin;
 
-    private Color scrollBg = WebScrollBarStyle.scrollBg;
-    private Color scrollBorder = WebScrollBarStyle.scrollBorder;
-    private Color scrollBarBorder = WebScrollBarStyle.scrollBarBorder;
-    private Color scrollGradientLeft = WebScrollBarStyle.scrollGradientLeft;
-    private Color scrollGradientRight = WebScrollBarStyle.scrollGradientRight;
-    private Color scrollSelGradientLeft = WebScrollBarStyle.scrollSelGradientLeft;
-    private Color scrollSelGradientRight = WebScrollBarStyle.scrollSelGradientRight;
+    /**
+     * Component style settings.
+     */
+    protected Insets margin = WebScrollBarStyle.margin;
+    protected ScrollBarPainter painter;
+    protected ScrollBarButtonPainter decreaseButtonPainter;
+    protected ScrollBarButtonPainter increaseButtonPainter;
 
-    private int round = WebScrollBarStyle.rounding;
-    private boolean drawBorder = WebScrollBarStyle.drawBorder;
+    /**
+     * Scroll bar listeners.
+     */
+    protected PropertyChangeListener orientationChangeListener;
 
-    private MouseAdapter mouseAdapter;
+    /**
+     * Runtime variables.
+     */
+    protected int scrollBarWidth;
 
-    @SuppressWarnings ("UnusedParameters")
+    /**
+     * Returns an instance of the WebScrollBarUI for the specified component.
+     * This tricky method is used by UIManager to create component UIs when needed.
+     *
+     * @param c component that will use UI instance
+     * @return instance of the WebScrollBarUI
+     */
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebScrollBarUI ();
     }
 
+    /**
+     * Installs UI in the specified component.
+     *
+     * @param c component for this UI
+     */
     @Override
     public void installUI ( final JComponent c )
     {
         super.installUI ( c );
+
+        // Proper enabled state handling
+        scrollbar.putClientProperty ( SwingUtils.HANDLES_ENABLE_STATE, true );
+
+        // UI defaults
+        scrollBarWidth = UIManager.getInt ( "ScrollBar.width" );
+        if ( scrollBarWidth <= 0 )
+        {
+            scrollBarWidth = 16;
+        }
 
         // Default settings
         SwingUtils.setOrientation ( scrollbar );
         scrollbar.setUnitIncrement ( 4 );
         scrollbar.setUnitIncrement ( 16 );
 
-        mouseAdapter = new MouseAdapter ()
+        // Installing default painters
+        setPainter ( new ScrollBarPainter () );
+        setDecreaseButtonPainter ( new ScrollBarButtonPainter ( scrollbar, ScrollBarButtonType.decrease ) );
+        setIncreaseButtonPainter ( new ScrollBarButtonPainter ( scrollbar, ScrollBarButtonType.increase ) );
+
+        // Orientation change listener
+        orientationChangeListener = new PropertyChangeListener ()
         {
             @Override
-            public void mousePressed ( final MouseEvent e )
+            public void propertyChange ( final PropertyChangeEvent evt )
             {
-                scrollbar.repaint ();
+                updateBorder ();
             }
         };
-        scrollbar.addMouseListener ( mouseAdapter );
+        scrollbar.addPropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, orientationChangeListener );
     }
 
+    /**
+     * Uninstalls UI from the specified component.
+     *
+     * @param c component with this UI
+     */
     @Override
     public void uninstallUI ( final JComponent c )
     {
-        scrollbar.removeMouseListener ( mouseAdapter );
+        // Uninstalling painters
+        setPainter ( null );
+        setDecreaseButtonPainter ( null );
+        setIncreaseButtonPainter ( null );
+
+        // Removing listeners
+        scrollbar.removePropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, orientationChangeListener );
 
         super.uninstallUI ( c );
     }
 
-    public boolean isDrawBorder ()
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void updateBorder ()
     {
-        return drawBorder;
+        if ( scrollbar != null )
+        {
+            // Preserve old borders
+            if ( SwingUtils.isPreserveBorders ( scrollbar ) )
+            {
+                return;
+            }
+
+            // Actual margin
+            final boolean ltr = scrollbar.getComponentOrientation ().isLeftToRight ();
+            final Insets m = new Insets ( margin.top, ltr ? margin.left : margin.right, margin.bottom, ltr ? margin.right : margin.left );
+
+            // Calculating additional borders
+            if ( painter != null )
+            {
+                // Painter borders
+                final Insets pi = painter.getMargin ( scrollbar );
+                m.top += pi.top;
+                m.left += ltr ? pi.left : pi.right;
+                m.bottom += pi.bottom;
+                m.right += ltr ? pi.right : pi.left;
+            }
+
+            // Installing border
+            scrollbar.setBorder ( LafUtils.createWebBorder ( m ) );
+        }
     }
 
-    public void setDrawBorder ( final boolean drawBorder )
+    /**
+     * Returns whether scroll bar arrow buttons should be displayed or not.
+     *
+     * @return true if scroll bar arrow buttons should be displayed, false otherwise
+     */
+    public boolean isButtonsVisible ()
     {
-        this.drawBorder = drawBorder;
-        scrollbar.setOpaque ( drawBorder );
+        return buttonsVisible;
     }
 
-    public int getRound ()
+    /**
+     * Sets whether scroll bar arrow buttons should be displayed or not.
+     *
+     * @param visible whether scroll bar arrow buttons should be displayed or not
+     */
+    public void setButtonsVisible ( final boolean visible )
     {
-        return round;
+        this.buttonsVisible = visible;
+        if ( painter != null )
+        {
+            painter.setButtonsVisible ( visible );
+        }
     }
 
-    public void setRound ( final int round )
+    /**
+     * Returns whether scroll bar track should be displayed or not.
+     *
+     * @return true if scroll bar track should be displayed, false otherwise
+     */
+    public boolean isDrawTrack ()
     {
-        this.round = round;
+        return drawTrack;
     }
 
-    public Color getScrollBg ()
+    /**
+     * Sets whether scroll bar track should be displayed or not.
+     *
+     * @param draw whether scroll bar track should be displayed or not
+     */
+    public void setDrawTrack ( final boolean draw )
     {
-        return scrollBg;
+        this.drawTrack = draw;
+        if ( painter != null )
+        {
+            painter.setDrawTrack ( draw );
+        }
     }
 
-    public void setScrollBg ( final Color scrollBg )
+    /**
+     * Returns scroll bar track border color.
+     *
+     * @return scroll bar track border color
+     */
+    public Color getTrackBorderColor ()
     {
-        this.scrollBg = scrollBg;
+        return trackBorderColor;
     }
 
-    public Color getScrollBorder ()
+    /**
+     * Sets scroll bar track border color.
+     *
+     * @param color new scroll bar track border color
+     */
+    public void setTrackBorderColor ( final Color color )
     {
-        return scrollBorder;
+        this.trackBorderColor = color;
+        if ( painter != null )
+        {
+            painter.setTrackBorderColor ( color );
+        }
     }
 
-    public void setScrollBorder ( final Color scrollBorder )
+    /**
+     * Returns scroll bar track background color.
+     *
+     * @return scroll bar track background color
+     */
+    public Color getTrackBackgroundColor ()
     {
-        this.scrollBorder = scrollBorder;
+        return trackBackgroundColor;
     }
 
-    public Color getScrollBarBorder ()
+    /**
+     * Sets scroll bar track background color.
+     *
+     * @param color new scroll bar track background color
+     */
+    public void setTrackBackgroundColor ( final Color color )
     {
-        return scrollBarBorder;
+        this.trackBackgroundColor = color;
+        if ( painter != null )
+        {
+            painter.setTrackBackgroundColor ( color );
+        }
     }
 
-    public void setScrollBarBorder ( final Color scrollBarBorder )
+    /**
+     * Returns scroll bar thumb border color.
+     *
+     * @return scroll bar thumb border color
+     */
+    public Color getThumbBorderColor ()
     {
-        this.scrollBarBorder = scrollBarBorder;
+        return thumbBorderColor;
     }
 
-    public Color getScrollGradientLeft ()
+    /**
+     * Sets scroll bar thumb border color.
+     *
+     * @param color new scroll bar thumb border color
+     */
+    public void setThumbBorderColor ( final Color color )
     {
-        return scrollGradientLeft;
+        this.thumbBorderColor = color;
+        if ( painter != null )
+        {
+            painter.setThumbBorderColor ( color );
+        }
     }
 
-    public void setScrollGradientLeft ( final Color scrollGradientLeft )
+    /**
+     * Returns scroll bar thumb background color.
+     *
+     * @return scroll bar thumb background color
+     */
+    public Color getThumbBackgroundColor ()
     {
-        this.scrollGradientLeft = scrollGradientLeft;
+        return thumbBackgroundColor;
     }
 
-    public Color getScrollGradientRight ()
+    /**
+     * Sets scroll bar thumb background color.
+     *
+     * @param color new scroll bar thumb background color
+     */
+    public void setThumbBackgroundColor ( final Color color )
     {
-        return scrollGradientRight;
+        this.thumbBackgroundColor = color;
+        if ( painter != null )
+        {
+            painter.setThumbBackgroundColor ( color );
+        }
     }
 
-    public void setScrollGradientRight ( final Color scrollGradientRight )
+    /**
+     * Returns scroll bar thumb disabled border color.
+     *
+     * @return scroll bar thumb disabled border color
+     */
+    public Color getThumbDisabledBorderColor ()
     {
-        this.scrollGradientRight = scrollGradientRight;
+        return thumbDisabledBorderColor;
     }
 
-    public Color getScrollSelGradientLeft ()
+    /**
+     * Sets scroll bar thumb disabled border color.
+     *
+     * @param color new scroll bar thumb disabled border color
+     */
+    public void setThumbDisabledBorderColor ( final Color color )
     {
-        return scrollSelGradientLeft;
+        this.thumbDisabledBorderColor = color;
+        if ( painter != null )
+        {
+            painter.setThumbDisabledBorderColor ( color );
+        }
     }
 
-    public void setScrollSelGradientLeft ( final Color scrollSelGradientLeft )
+    /**
+     * Returns scroll bar thumb disabled background color.
+     *
+     * @return scroll bar thumb disabled background color
+     */
+    public Color getThumbDisabledBackgroundColor ()
     {
-        this.scrollSelGradientLeft = scrollSelGradientLeft;
+        return thumbDisabledBackgroundColor;
     }
 
-    public Color getScrollSelGradientRight ()
+    /**
+     * Sets scroll bar thumb disabled background color.
+     *
+     * @param color new scroll bar thumb disabled background color
+     */
+    public void setThumbDisabledBackgroundColor ( final Color color )
     {
-        return scrollSelGradientRight;
+        this.thumbDisabledBackgroundColor = color;
+        if ( painter != null )
+        {
+            painter.setThumbDisabledBackgroundColor ( color );
+        }
     }
 
-    public void setScrollSelGradientRight ( final Color scrollSelGradientRight )
+    /**
+     * Returns scroll bar thumb rollover border color.
+     *
+     * @return scroll bar thumb rollover border color
+     */
+    public Color getThumbRolloverBorderColor ()
     {
-        this.scrollSelGradientRight = scrollSelGradientRight;
+        return thumbRolloverBorderColor;
     }
 
+    /**
+     * Sets scroll bar thumb rollover border color.
+     *
+     * @param color new scroll bar thumb rollover border color
+     */
+    public void setThumbRolloverBorderColor ( final Color color )
+    {
+        this.thumbRolloverBorderColor = color;
+        if ( painter != null )
+        {
+            painter.setThumbRolloverBorderColor ( color );
+        }
+    }
+
+    /**
+     * Returns scroll bar thumb rollover background color.
+     *
+     * @return scroll bar thumb rollover background color
+     */
+    public Color getThumbRolloverBackgroundColor ()
+    {
+        return thumbRolloverBackgroundColor;
+    }
+
+    /**
+     * Sets scroll bar thumb rollover background color.
+     *
+     * @param color new scroll bar thumb rollover background color
+     */
+    public void setThumbRolloverBackgroundColor ( final Color color )
+    {
+        this.thumbRolloverBackgroundColor = color;
+        if ( painter != null )
+        {
+            painter.setThumbRolloverBackgroundColor ( color );
+        }
+    }
+
+    /**
+     * Returns scroll bar thumb pressed/dragged border color.
+     *
+     * @return scroll bar thumb pressed/dragged border color
+     */
+    public Color getThumbPressedBorderColor ()
+    {
+        return thumbPressedBorderColor;
+    }
+
+    /**
+     * Sets scroll bar thumb pressed/dragged border color.
+     *
+     * @param color new scroll bar thumb pressed/dragged border color1
+     */
+    public void setThumbPressedBorderColor ( final Color color )
+    {
+        this.thumbPressedBorderColor = color;
+        if ( painter != null )
+        {
+            painter.setThumbPressedBorderColor ( color );
+        }
+    }
+
+    /**
+     * Returns scroll bar thumb pressed/dragged background color.
+     *
+     * @return scroll bar thumb pressed/dragged background color
+     */
+    public Color getThumbPressedBackgroundColor ()
+    {
+        return thumbPressedBackgroundColor;
+    }
+
+    /**
+     * Sets scroll bar thumb pressed/dragged background color.
+     *
+     * @param color new scroll bar thumb pressed/dragged background color
+     */
+    public void setThumbPressedBackgroundColor ( final Color color )
+    {
+        this.thumbPressedBackgroundColor = color;
+        if ( painter != null )
+        {
+            painter.setThumbPressedBackgroundColor ( color );
+        }
+    }
+
+    /**
+     * Returns scroll bar thumb corners rounding.
+     *
+     * @return scroll bar thumb corners rounding
+     */
+    public int getThumbRound ()
+    {
+        return thumbRound;
+    }
+
+    /**
+     * Sets scroll bar thumb corners rounding.
+     *
+     * @param round new scroll bar thumb corners rounding
+     */
+    public void setThumbRound ( final int round )
+    {
+        this.thumbRound = round;
+        if ( painter != null )
+        {
+            painter.setThumbRound ( round );
+        }
+    }
+
+    /**
+     * Returns scroll bar thumb margin.
+     *
+     * @return scroll bar thumb margin
+     */
+    public Insets getThumbMargin ()
+    {
+        return thumbMargin;
+    }
+
+    /**
+     * Sets scroll bar thumb margin.
+     *
+     * @param margin new scroll bar thumb margin
+     */
+    public void setThumbMargin ( final Insets margin )
+    {
+        this.thumbMargin = margin;
+        if ( painter != null )
+        {
+            painter.setThumbMargin ( margin );
+        }
+    }
+
+    /**
+     * Returns scroll bar content margin.
+     *
+     * @return scroll bar content margin
+     */
+    public Insets getMargin ()
+    {
+        return margin;
+    }
+
+    /**
+     * Sets scroll bar content margin.
+     *
+     * @param margin new scroll bar content margin
+     */
+    public void setMargin ( final Insets margin )
+    {
+        this.margin = margin;
+        updateBorder ();
+    }
+
+    /**
+     * Returns scroll bar painter.
+     *
+     * @return scroll bar painter
+     */
+    public ScrollBarPainter getPainter ()
+    {
+        return painter;
+    }
+
+    /**
+     * Sets scroll bar painter.
+     * Pass null to remove scroll bar painter.
+     *
+     * @param painter new scroll bar painter
+     */
+    public void setPainter ( final ScrollBarPainter painter )
+    {
+        PainterSupport.uninstallPainter ( scrollbar, this.painter );
+        this.painter = painter;
+        applyPainterSettings ( painter );
+        PainterSupport.installPainter ( scrollbar, this.painter );
+    }
+
+    /**
+     * Applies UI settings to this specific painter.
+     *
+     * @param painter popup menu painter
+     */
+    protected void applyPainterSettings ( final ScrollBarPainter painter )
+    {
+        if ( painter != null )
+        {
+            // Style settings
+            painter.setButtonsVisible ( buttonsVisible );
+            painter.setDrawTrack ( drawTrack );
+            painter.setTrackBorderColor ( trackBorderColor );
+            painter.setTrackBackgroundColor ( trackBackgroundColor );
+            painter.setThumbBorderColor ( thumbBorderColor );
+            painter.setThumbBackgroundColor ( thumbBackgroundColor );
+            painter.setThumbDisabledBorderColor ( thumbDisabledBorderColor );
+            painter.setThumbDisabledBackgroundColor ( thumbDisabledBackgroundColor );
+            painter.setThumbRolloverBorderColor ( thumbRolloverBorderColor );
+            painter.setThumbRolloverBackgroundColor ( thumbRolloverBackgroundColor );
+            painter.setThumbPressedBorderColor ( thumbPressedBorderColor );
+            painter.setThumbPressedBackgroundColor ( thumbPressedBackgroundColor );
+            painter.setThumbRound ( thumbRound );
+            painter.setThumbMargin ( thumbMargin );
+        }
+    }
+
+    /**
+     * Returns decrease button painter.
+     * This the button displayed at top or left side of the scroll bar.
+     *
+     * @return decrease button painter
+     */
+    public ScrollBarButtonPainter getDecreaseButtonPainter ()
+    {
+        return decreaseButtonPainter;
+    }
+
+    /**
+     * Sets decrease button painter.
+     * This the button displayed at top or left side of the scroll bar.
+     *
+     * @param painter new decrease button painter
+     */
+    public void setDecreaseButtonPainter ( final ScrollBarButtonPainter painter )
+    {
+        this.decreaseButtonPainter = painter;
+        if ( decrButton != null )
+        {
+            ( ( WebButton ) decrButton ).setPainter ( painter );
+        }
+    }
+
+    /**
+     * Returns increase button painter.
+     * This the button displayed at bottom or right side of the scroll bar.
+     *
+     * @return increase button painter
+     */
+    public ScrollBarButtonPainter getIncreaseButtonPainter ()
+    {
+        return increaseButtonPainter;
+    }
+
+    /**
+     * Sets increase button painter.
+     * This the button displayed at bottom or right side of the scroll bar.
+     *
+     * @param painter new increase button painter
+     */
+    public void setIncreaseButtonPainter ( final ScrollBarButtonPainter painter )
+    {
+        this.increaseButtonPainter = painter;
+        if ( incrButton != null )
+        {
+            ( ( WebButton ) incrButton ).setPainter ( painter );
+        }
+    }
+
+    /**
+     * Paints scroll bar decorations.
+     * The whole painting process is delegated to installed painter class.
+     *
+     * @param g graphics context
+     * @param c scroll bar component
+     */
     @Override
     public void paint ( final Graphics g, final JComponent c )
     {
-        final Object aa = LafUtils.disableAntialias ( g );
-        super.paint ( g, c );
-        LafUtils.restoreAntialias ( g, aa );
-    }
-
-    @Override
-    protected void paintTrack ( final Graphics g, final JComponent c, final Rectangle trackBounds )
-    {
-        if ( drawBorder )
+        if ( painter != null )
         {
-            final Graphics2D g2d = ( Graphics2D ) g;
-
-            g2d.setPaint ( scrollBg );
-            g2d.fillRect ( 0, 0, scrollbar.getWidth (), scrollbar.getHeight () );
-
-            if ( scrollbar.getOrientation () == JScrollBar.VERTICAL )
-            {
-                final int vBorder = scrollbar.getComponentOrientation ().isLeftToRight () ? 0 : scrollbar.getWidth () - 1;
-                g2d.setColor ( scrollBorder );
-                g2d.drawLine ( vBorder, 0, vBorder, scrollbar.getHeight () - 1 );
-            }
-            else
-            {
-                g2d.setColor ( scrollBorder );
-                g2d.drawLine ( 0, 0, scrollbar.getWidth (), 0 );
-            }
+            painter.setDragged ( isDragging );
+            painter.setTrackBounds ( getTrackBounds () );
+            painter.setThumbBounds ( getThumbBounds () );
+            painter.paint ( ( Graphics2D ) g, SwingUtils.size ( scrollbar ), scrollbar );
         }
     }
 
-    @Override
-    protected void paintThumb ( final Graphics g, final JComponent c, final Rectangle thumbBounds )
-    {
-        final Graphics2D g2d = ( Graphics2D ) g;
-
-        final Color leftC = isDragging ? scrollSelGradientLeft : scrollGradientLeft;
-        final Color rightC = isDragging ? scrollSelGradientRight : scrollGradientRight;
-
-        if ( scrollbar.getOrientation () == JScrollBar.VERTICAL )
-        {
-            final boolean ltr = scrollbar.getComponentOrientation ().isLeftToRight ();
-            final Color leftColor = ltr ? leftC : rightC;
-            final Color rightColor = ltr ? rightC : leftC;
-            final int x = ltr ? 2 : 1;
-
-            g2d.setPaint ( new GradientPaint ( 3, 0, leftColor, scrollbar.getWidth () - 4, 0, rightColor ) );
-            g2d.fillRoundRect ( thumbRect.x + x, thumbRect.y + 1, thumbRect.width - 4, thumbRect.height - 3, round, round );
-
-            g2d.setPaint ( scrollBarBorder );
-            g2d.drawRoundRect ( thumbRect.x + x, thumbRect.y + 1, thumbRect.width - 4, thumbRect.height - 3, round, round );
-        }
-        else
-        {
-            g2d.setPaint ( new GradientPaint ( 0, thumbRect.y + 2, leftC, 0, thumbRect.y + 2 + thumbRect.height - 4, rightC ) );
-            g2d.fillRoundRect ( thumbRect.x + 1, thumbRect.y + 2, thumbRect.width - 3, thumbRect.height - 4, round, round );
-
-            g2d.setPaint ( scrollBarBorder );
-            g2d.drawRoundRect ( thumbRect.x + 1, thumbRect.y + 2, thumbRect.width - 3, thumbRect.height - 4, round, round );
-        }
-    }
-
+    /**
+     * Installs additional scroll bar components.
+     */
     @Override
     protected void installComponents ()
     {
-        incrButton = new JButton ();
-        incrButton.setPreferredSize ( new Dimension ( 0, 0 ) );
-        decrButton = new JButton ();
-        decrButton.setPreferredSize ( new Dimension ( 0, 0 ) );
+        final WebButton db = new WebButton ( decreaseButtonPainter )
+        {
+            @Override
+            public Dimension getPreferredSize ()
+            {
+                // The best way (so far) to hide buttons without causing a serious mess in the code
+                return buttonsVisible ? super.getPreferredSize () : new Dimension ( 0, 0 );
+            }
+        };
+        db.setFocusable ( false );
+        db.setLeftRightSpacing ( 0 );
+
+        decrButton = db;
+        scrollbar.add ( decrButton );
+
+        final WebButton ib = new WebButton ( increaseButtonPainter )
+        {
+            @Override
+            public Dimension getPreferredSize ()
+            {
+                // The best way (so far) to hide buttons without causing a serious mess in the code
+                return buttonsVisible ? super.getPreferredSize () : new Dimension ( 0, 0 );
+            }
+        };
+        ib.setFocusable ( false );
+        ib.setLeftRightSpacing ( 0 );
+
+        incrButton = ib;
+        scrollbar.add ( incrButton );
+
+        // Force the children's enabled state to be updated.
+        scrollbar.setEnabled ( scrollbar.isEnabled () );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Dimension getPreferredSize ( final JComponent c )
     {
-        final Dimension preferredSize = super.getPreferredSize ( c );
-        return ( scrollbar.getOrientation () == JScrollBar.VERTICAL ) ? new Dimension ( LENGTH, preferredSize.height ) :
-                new Dimension ( preferredSize.width, LENGTH );
+        final boolean ver = scrollbar.getOrientation () == JScrollBar.VERTICAL;
+
+        // Simple scroll bar preferred size
+        Dimension ps = ver ? new Dimension ( scrollBarWidth, 48 ) : new Dimension ( 48, scrollBarWidth );
+
+        // Arrow button preferred sizes
+        if ( buttonsVisible && decrButton != null && incrButton != null )
+        {
+            final Dimension dps = decrButton.getPreferredSize ();
+            final Dimension ips = decrButton.getPreferredSize ();
+            if ( ver )
+            {
+                ps.width = Math.max ( ps.width, Math.max ( dps.width, ips.width ) );
+            }
+            else
+            {
+                ps.height = Math.max ( ps.height, Math.max ( dps.height, ips.height ) );
+            }
+        }
+
+        // Insets
+        final Insets i = c.getInsets ();
+        ps.width += i.left + i.right;
+        ps.height += i.top + i.bottom;
+
+        // Background painter preferred size
+        if ( painter != null )
+        {
+            ps = SwingUtils.max ( ps, painter.getPreferredSize ( c ) );
+        }
+
+        return ps;
     }
 }

@@ -529,7 +529,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
     /**
      * Forces tree node with the specified ID to be updated.
      *
-     * @param node ID of the tree node to be updated
+     * @param nodeId ID of the tree node to be updated
      */
     public void updateNode ( final String nodeId )
     {

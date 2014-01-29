@@ -136,7 +136,7 @@ public class TitledBorderPainter<E extends JComponent> extends BorderPainter<E> 
     public void setTitleOffset ( final int titleOffset )
     {
         this.titleOffset = titleOffset;
-        fireUpdate ();
+        updateAll ();
     }
 
     public int getTitleBorderGap ()
@@ -147,7 +147,7 @@ public class TitledBorderPainter<E extends JComponent> extends BorderPainter<E> 
     public void setTitleBorderGap ( final int titleBorderGap )
     {
         this.titleBorderGap = titleBorderGap;
-        fireUpdate ();
+        updateAll ();
     }
 
     public int getTitleSide ()
@@ -158,7 +158,7 @@ public class TitledBorderPainter<E extends JComponent> extends BorderPainter<E> 
     public void setTitleSide ( final int titleSide )
     {
         this.titleSide = titleSide;
-        fireUpdate ();
+        updateAll ();
     }
 
     public int getTitleAlignment ()
@@ -169,7 +169,7 @@ public class TitledBorderPainter<E extends JComponent> extends BorderPainter<E> 
     public void setTitleAlignment ( final int titleAlignment )
     {
         this.titleAlignment = titleAlignment;
-        fireRepaint ();
+        repaint ();
     }
 
     public TitlePosition getTitlePosition ()
@@ -180,7 +180,7 @@ public class TitledBorderPainter<E extends JComponent> extends BorderPainter<E> 
     public void setTitlePosition ( final TitlePosition titlePosition )
     {
         this.titlePosition = titlePosition;
-        fireRepaint ();
+        repaint ();
     }
 
     public Color getForeground ()
@@ -191,7 +191,7 @@ public class TitledBorderPainter<E extends JComponent> extends BorderPainter<E> 
     public void setForeground ( final Color foreground )
     {
         this.foreground = foreground;
-        fireRepaint ();
+        repaint ();
     }
 
     public Color getBackground ()
@@ -202,7 +202,7 @@ public class TitledBorderPainter<E extends JComponent> extends BorderPainter<E> 
     public void setBackground ( final Color background )
     {
         this.background = background;
-        fireRepaint ();
+        repaint ();
     }
 
     public boolean isClipTitleBackground ()
@@ -213,7 +213,7 @@ public class TitledBorderPainter<E extends JComponent> extends BorderPainter<E> 
     public void setClipTitleBackground ( final boolean clipTitleBackground )
     {
         this.clipTitleBackground = clipTitleBackground;
-        fireRepaint ();
+        repaint ();
     }
 
     public String getTitleText ()
@@ -224,7 +224,7 @@ public class TitledBorderPainter<E extends JComponent> extends BorderPainter<E> 
     public void setTitleText ( final String titleText )
     {
         this.titleText = titleText;
-        fireUpdate ();
+        updateAll ();
     }
 
     @Override
@@ -349,7 +349,7 @@ public class TitledBorderPainter<E extends JComponent> extends BorderPainter<E> 
                 case TOP:
                 case BOTTOM:
                 {
-                    Map hints = SwingUtils.setupTextAntialias ( g2d );
+                    final Map hints = SwingUtils.setupTextAntialias ( g2d );
                     g2d.drawString ( titleText, titleX, titleY );
                     SwingUtils.restoreTextAntialias ( g2d, hints );
                     break;
@@ -443,7 +443,7 @@ public class TitledBorderPainter<E extends JComponent> extends BorderPainter<E> 
         }
         else
         {
-            int height = c.getFontMetrics ( c.getFont () ).getHeight ();
+            final int height = c.getFontMetrics ( c.getFont () ).getHeight ();
             return titlePosition.equals ( TitlePosition.onLine ) ? height : height + width;
         }
     }

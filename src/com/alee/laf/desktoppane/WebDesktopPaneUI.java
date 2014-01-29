@@ -18,6 +18,8 @@
 package com.alee.laf.desktoppane;
 
 import com.alee.laf.StyleConstants;
+import com.alee.laf.WebLookAndFeel;
+import com.alee.utils.LafUtils;
 import com.alee.utils.SwingUtils;
 
 import javax.swing.*;
@@ -43,7 +45,8 @@ public class WebDesktopPaneUI extends BasicDesktopPaneUI
 
         // Default settings
         SwingUtils.setOrientation ( c );
-        c.setOpaque ( true );
+        LookAndFeel.installProperty ( c, WebLookAndFeel.OPAQUE_PROPERTY, Boolean.TRUE );
+        c.setBorder ( LafUtils.createWebBorder ( 0, 0, 0, 0 ) );
         c.setBackground ( StyleConstants.backgroundColor );
     }
 }

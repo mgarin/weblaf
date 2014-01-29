@@ -69,10 +69,21 @@ public final class ColorUtils
      */
     public static Color getIntermediateColor ( final Color color1, final Color color2, final float progress )
     {
-        return new Color ( getIntermediateValue ( color1.getRed (), color2.getRed (), progress ),
-                getIntermediateValue ( color1.getGreen (), color2.getGreen (), progress ),
-                getIntermediateValue ( color1.getBlue (), color2.getBlue (), progress ),
-                getIntermediateValue ( color1.getAlpha (), color2.getAlpha (), progress ) );
+        if ( progress <= 0f )
+        {
+            return color1;
+        }
+        else if ( progress >= 1f )
+        {
+            return color2;
+        }
+        else
+        {
+            return new Color ( getIntermediateValue ( color1.getRed (), color2.getRed (), progress ),
+                    getIntermediateValue ( color1.getGreen (), color2.getGreen (), progress ),
+                    getIntermediateValue ( color1.getBlue (), color2.getBlue (), progress ),
+                    getIntermediateValue ( color1.getAlpha (), color2.getAlpha (), progress ) );
+        }
     }
 
     /**

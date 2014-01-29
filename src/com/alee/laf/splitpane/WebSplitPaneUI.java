@@ -59,7 +59,7 @@ public class WebSplitPaneUI extends BasicSplitPaneUI implements BorderMethods
      * @param c component that will use UI instance
      * @return instance of the WebSplitPaneUI
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebSplitPaneUI ();
@@ -77,8 +77,8 @@ public class WebSplitPaneUI extends BasicSplitPaneUI implements BorderMethods
 
         // Default settings
         SwingUtils.setOrientation ( splitPane );
-        splitPane.setOpaque ( false );
-        splitPane.setBorder ( null );
+        LookAndFeel.installProperty ( splitPane, WebLookAndFeel.OPAQUE_PROPERTY, Boolean.FALSE );
+        splitPane.setBorder ( LafUtils.createWebBorder ( 0 ) );
         splitPane.setDividerSize ( 6 );
 
         // Updating border

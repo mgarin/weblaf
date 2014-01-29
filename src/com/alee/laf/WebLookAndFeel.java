@@ -504,6 +504,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
 
         // Scroll bars minimum size
         table.put ( "ScrollBar.minimumThumbSize", new Dimension ( WebScrollBarStyle.minThumbWidth, WebScrollBarStyle.minThumbHeight ) );
+        table.put ( "ScrollBar.width", new Integer ( 10 ) );
 
         // Tree icons
         table.put ( "Tree.openIcon", WebTreeUI.OPEN_ICON );

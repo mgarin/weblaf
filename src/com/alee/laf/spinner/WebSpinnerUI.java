@@ -18,6 +18,7 @@
 package com.alee.laf.spinner;
 
 import com.alee.laf.StyleConstants;
+import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.text.WebTextFieldUI;
 import com.alee.utils.LafUtils;
@@ -59,8 +60,8 @@ public class WebSpinnerUI extends BasicSpinnerUI implements ShapeProvider, Borde
 
         // Default settings
         SwingUtils.setOrientation ( spinner );
+        LookAndFeel.installProperty ( spinner, WebLookAndFeel.OPAQUE_PROPERTY, Boolean.FALSE );
         spinner.setBackground ( Color.WHITE );
-        spinner.setOpaque ( false );
 
         // Updating border
         updateBorder ();

@@ -38,9 +38,17 @@ import java.awt.geom.GeneralPath;
  * @author Mikle Garin
  */
 
-@SuppressWarnings ("UnusedParameters")
+@SuppressWarnings ( "UnusedParameters" )
 public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> implements PainterShapeProvider<E>, SwingConstants
 {
+    /**
+     * Shape cache keys.
+     */
+    protected static final String SIMPLE_FILL_SHAPE = "simple-fill";
+    protected static final String SIMPLE_BORDER_SHAPE = "simple-border";
+    protected static final String DROPDOWN_FILL_SHAPE = "dropdown-fill";
+    protected static final String DROPDOWN_BORDER_SHAPE = "dropdown-border";
+
     /**
      * Style settings.
      */
@@ -82,7 +90,7 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
             this.popupPainterStyle = style;
             if ( transparent )
             {
-                fireUpdate ();
+                updateAll ();
             }
         }
     }
@@ -109,7 +117,7 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
             this.borderColor = color;
             if ( transparent )
             {
-                fireRepaint ();
+                repaint ();
             }
         }
     }
@@ -136,7 +144,7 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
             this.round = round;
             if ( transparent )
             {
-                fireRepaint ();
+                repaint ();
             }
         }
     }
@@ -163,7 +171,7 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
             this.shadeWidth = width;
             if ( transparent )
             {
-                fireUpdate ();
+                updateAll ();
             }
         }
     }
@@ -190,7 +198,7 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
             this.shadeOpacity = opacity;
             if ( transparent )
             {
-                fireRepaint ();
+                repaint ();
             }
         }
     }
@@ -217,7 +225,7 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
             this.cornerWidth = width;
             if ( transparent )
             {
-                fireRepaint ();
+                repaint ();
             }
         }
     }
@@ -244,7 +252,7 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
             this.transparency = transparency;
             if ( transparent )
             {
-                fireRepaint ();
+                repaint ();
             }
         }
     }
@@ -269,7 +277,7 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
         if ( this.transparent != transparent )
         {
             this.transparent = transparent;
-            fireUpdate ();
+            updateAll ();
         }
     }
 
@@ -295,7 +303,7 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
             this.cornerSide = cornerSide;
             if ( transparent )
             {
-                fireRepaint ();
+                repaint ();
             }
         }
     }
@@ -322,7 +330,7 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
             this.relativeCorner = relativeCorner;
             if ( transparent )
             {
-                fireRepaint ();
+                repaint ();
             }
         }
     }
@@ -349,7 +357,7 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
             this.cornerAlignment = cornerAlignment;
             if ( transparent )
             {
-                fireRepaint ();
+                repaint ();
             }
         }
     }
@@ -547,7 +555,7 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
         {
             case simple:
             {
-                return ShapeCache.getShape ( popup, fill ? "simple-fill" : "simple-border", new DataProvider<Shape> ()
+                return ShapeCache.getShape ( popup, fill ? SIMPLE_FILL_SHAPE : SIMPLE_BORDER_SHAPE, new DataProvider<Shape> ()
                 {
                     @Override
                     public Shape provide ()
@@ -558,7 +566,7 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
             }
             case dropdown:
             {
-                return ShapeCache.getShape ( popup, fill ? "dropdown-fill" : "dropdown-border", new DataProvider<Shape> ()
+                return ShapeCache.getShape ( popup, fill ? DROPDOWN_FILL_SHAPE : DROPDOWN_BORDER_SHAPE, new DataProvider<Shape> ()
                 {
                     @Override
                     public Shape provide ()

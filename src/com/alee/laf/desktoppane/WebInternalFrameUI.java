@@ -18,6 +18,7 @@
 package com.alee.laf.desktoppane;
 
 import com.alee.laf.StyleConstants;
+import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.focus.DefaultFocusTracker;
 import com.alee.managers.focus.FocusManager;
 import com.alee.managers.focus.FocusTracker;
@@ -86,10 +87,10 @@ public class WebInternalFrameUI extends BasicInternalFrameUI
         super.installUI ( c );
 
         // Default settings
-        SwingUtils.setOrientation ( c );
-        c.setOpaque ( false );
-        c.setBackground ( new Color ( 90, 90, 90, 220 ) );
-        c.setBorder ( BorderFactory.createEmptyBorder () );
+        SwingUtils.setOrientation ( frame );
+        LookAndFeel.installProperty ( frame, WebLookAndFeel.OPAQUE_PROPERTY, Boolean.FALSE );
+        frame.setBackground ( new Color ( 90, 90, 90, 220 ) );
+        frame.setBorder ( LafUtils.createWebBorder ( 0, 0, 0, 0 ) );
 
         // Focus tracker for the panel content
         focusTracker = new DefaultFocusTracker ()
@@ -112,6 +113,7 @@ public class WebInternalFrameUI extends BasicInternalFrameUI
     @Override
     public void uninstallUI ( final JComponent c )
     {
+        // Removing focus tracker
         FocusManager.removeFocusTracker ( focusTracker );
 
         super.uninstallUI ( c );

@@ -109,7 +109,7 @@ public class WebSliderUI extends BasicSliderUI implements BorderMethods
 
         // Default settings
         SwingUtils.setOrientation ( slider );
-        slider.setOpaque ( false );
+        LookAndFeel.installProperty ( slider, WebLookAndFeel.OPAQUE_PROPERTY, Boolean.FALSE );
         slider.setForeground ( StyleConstants.textColor );
         PainterSupport.installPainter ( slider, this.painter );
         updateBorder ();

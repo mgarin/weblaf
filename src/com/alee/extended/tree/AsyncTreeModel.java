@@ -1118,9 +1118,9 @@ public class AsyncTreeModel<E extends AsyncUniqueNode> extends WebTreeModel<E>
      *
      * @param nodes nodes
      */
-    protected void registerObservers ( final E[] children )
+    protected void registerObservers ( final E[] nodes )
     {
-        for ( final E newChild : children )
+        for ( final E newChild : nodes )
         {
             registerObserver ( newChild );
         }

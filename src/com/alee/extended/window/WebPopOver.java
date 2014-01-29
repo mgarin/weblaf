@@ -229,7 +229,7 @@ public class WebPopOver extends WebDialog
                     attached = false;
                     preferredDirection = null;
                     painter.setPopupPainterStyle ( PopupPainterStyle.simple );
-                    painter.fireUpdate ();
+                    painter.updateAll ();
                 }
 
                 super.mouseDragged ( e );

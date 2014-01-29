@@ -33,25 +33,25 @@ import java.util.Map;
 
 public class NeoTabbedPaneUI extends BasicTabbedPaneUI
 {
-    private Color borderColor = new Color ( 165, 165, 165 );
-    private Color innerBorderColor = new Color ( 248, 248, 248 );
+    private final Color borderColor = new Color ( 165, 165, 165 );
+    private final Color innerBorderColor = new Color ( 248, 248, 248 );
 
-    @SuppressWarnings ( "UnusedParameters" )
-    public static ComponentUI createUI ( JComponent c )
+    @SuppressWarnings ("UnusedParameters")
+    public static ComponentUI createUI ( final JComponent c )
     {
         return new NeoTabbedPaneUI ();
     }
 
     @Override
-    protected void paintTabArea ( Graphics g, int tabPlacement, int selectedIndex )
+    protected void paintTabArea ( final Graphics g, final int tabPlacement, final int selectedIndex )
     {
-        Graphics2D g2d = ( Graphics2D ) g;
+        final Graphics2D g2d = ( Graphics2D ) g;
 
-        int tabCount = tabPane.getTabCount ();
+        final int tabCount = tabPane.getTabCount ();
 
-        Rectangle iconRect = new Rectangle ();
-        Rectangle textRect = new Rectangle ();
-        Rectangle clipRect = g.getClipBounds ();
+        final Rectangle iconRect = new Rectangle ();
+        final Rectangle textRect = new Rectangle ();
+        final Rectangle clipRect = g.getClipBounds ();
 
         // Paint tabRuns of tabs from back to front
         int sr = -1;
@@ -60,10 +60,10 @@ public class NeoTabbedPaneUI extends BasicTabbedPaneUI
         for ( int i = runCount - 1; i >= 0; i-- )
         {
             int col = 0;
-            int start = tabRuns[ i ];
-            int next = tabRuns[ ( i == runCount - 1 ) ? 0 : i + 1 ];
-            int end = ( next != 0 ? next - 1 : tabCount - 1 );
-            int colsInRow = end - start + 1;
+            final int start = tabRuns[ i ];
+            final int next = tabRuns[ ( i == runCount - 1 ) ? 0 : i + 1 ];
+            final int end = ( next != 0 ? next - 1 : tabCount - 1 );
+            final int colsInRow = end - start + 1;
             for ( int j = start; j <= end; j++ )
             {
                 if ( j != selectedIndex && rects[ j ].intersects ( clipRect ) )
@@ -105,20 +105,20 @@ public class NeoTabbedPaneUI extends BasicTabbedPaneUI
         //        }
     }
 
-    protected void paintTab ( Graphics2D g2d, int tabPlacement, Rectangle[] rects, int row, int col, int colsInRow, int tabIndex,
-                              Rectangle iconRect, Rectangle textRect )
+    protected void paintTab ( final Graphics2D g2d, final int tabPlacement, final Rectangle[] rects, final int row, final int col,
+                              final int colsInRow, final int tabIndex, final Rectangle iconRect, final Rectangle textRect )
     {
-        Rectangle tabRect = rects[ tabIndex ];
-        int selectedIndex = tabPane.getSelectedIndex ();
-        boolean isSelected = selectedIndex == tabIndex;
+        final Rectangle tabRect = rects[ tabIndex ];
+        final int selectedIndex = tabPane.getSelectedIndex ();
+        final boolean isSelected = selectedIndex == tabIndex;
 
         paintTabBackground ( g2d, tabPlacement, row, col, colsInRow, tabIndex, tabRect.x, tabRect.y, tabRect.width, tabRect.height,
                 isSelected );
 
-        String title = tabPane.getTitleAt ( tabIndex );
-        Font font = tabPane.getFont ();
-        FontMetrics metrics = SwingUtils.getFontMetrics ( tabPane, g2d, font );
-        Icon icon = getIconForTab ( tabIndex );
+        final String title = tabPane.getTitleAt ( tabIndex );
+        final Font font = tabPane.getFont ();
+        final FontMetrics metrics = SwingUtils.getFontMetrics ( tabPane, g2d, font );
+        final Icon icon = getIconForTab ( tabIndex );
 
         layoutLabel ( tabPlacement, metrics, tabIndex, title, icon, tabRect, iconRect, textRect, isSelected );
 
@@ -132,12 +132,12 @@ public class NeoTabbedPaneUI extends BasicTabbedPaneUI
     }
 
     @Override
-    protected void paintText ( Graphics g, int tabPlacement, Font font, FontMetrics metrics, int tabIndex, String title, Rectangle textRect,
-                               boolean isSelected )
+    protected void paintText ( final Graphics g, final int tabPlacement, final Font font, final FontMetrics metrics, final int tabIndex,
+                               final String title, final Rectangle textRect, final boolean isSelected )
     {
-        Map aa = SwingUtils.setupTextAntialias ( g );
+        final Map aa = SwingUtils.setupTextAntialias ( g );
         g.setFont ( font );
-        View v = getTextViewForTab ( tabIndex );
+        final View v = getTextViewForTab ( tabIndex );
         if ( v != null )
         {
             // html
@@ -146,14 +146,14 @@ public class NeoTabbedPaneUI extends BasicTabbedPaneUI
         else
         {
             // plain text
-            int mnemIndex = tabPane.getDisplayedMnemonicIndexAt ( tabIndex );
+            final int mnemIndex = tabPane.getDisplayedMnemonicIndexAt ( tabIndex );
 
             if ( tabPane.isEnabled () && tabPane.isEnabledAt ( tabIndex ) )
             {
                 Color fg = tabPane.getForegroundAt ( tabIndex );
                 if ( isSelected && ( fg instanceof UIResource ) )
                 {
-                    Color selectedFG = UIManager.getColor ( "TabbedPane.selectedForeground" );
+                    final Color selectedFG = UIManager.getColor ( "TabbedPane.selectedForeground" );
                     if ( selectedFG != null )
                     {
                         fg = selectedFG;
@@ -215,9 +215,9 @@ public class NeoTabbedPaneUI extends BasicTabbedPaneUI
     //        }
     //    }
 
-    @SuppressWarnings ( "UnusedParameters" )
-    protected void paintTabBackground ( Graphics2D g2d, int tabPlacement, int row, int col, int colsInRow, int tabIndex, int x, int y,
-                                        int w, int h, boolean isSelected )
+    @SuppressWarnings ("UnusedParameters")
+    protected void paintTabBackground ( final Graphics2D g2d, final int tabPlacement, final int row, final int col, final int colsInRow,
+                                        final int tabIndex, final int x, final int y, final int w, final int h, final boolean isSelected )
     {
 
         // Background
@@ -233,8 +233,8 @@ public class NeoTabbedPaneUI extends BasicTabbedPaneUI
         }
 
         // Border
-        boolean topBorder = row > 0;
-        boolean trailingBorder = runCount == 1 || col < colsInRow - 1;
+        final boolean topBorder = row > 0;
+        final boolean trailingBorder = runCount == 1 || col < colsInRow - 1;
         if ( isSelected )
         {
             // Border
@@ -290,11 +290,11 @@ public class NeoTabbedPaneUI extends BasicTabbedPaneUI
     }
 
     @Override
-    protected void paintContentBorder ( Graphics g, int tabPlacement, int selectedIndex )
+    protected void paintContentBorder ( final Graphics g, final int tabPlacement, final int selectedIndex )
     {
-        int width = tabPane.getWidth ();
+        final int width = tabPane.getWidth ();
         // int height = tabPane.getHeight ();
-        Insets insets = tabPane.getInsets ();
+        final Insets insets = tabPane.getInsets ();
 
         int x = insets.left;
         int y = insets.top;
@@ -330,7 +330,7 @@ public class NeoTabbedPaneUI extends BasicTabbedPaneUI
             case TOP:
             default:
             {
-                Graphics2D g2d = ( Graphics2D ) g;
+                final Graphics2D g2d = ( Graphics2D ) g;
 
                 g2d.setPaint ( new GradientPaint ( x, y + 1, new Color ( 232, 232, 232 ), x, y + 3, new Color ( 230, 230, 230 ) ) );
                 g2d.fillRect ( x, y + 1, w, 3 );

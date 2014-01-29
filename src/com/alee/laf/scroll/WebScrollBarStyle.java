@@ -17,68 +17,105 @@
 
 package com.alee.laf.scroll;
 
-import com.alee.laf.StyleConstants;
-
 import java.awt.*;
 
 /**
- * User: mgarin Date: 11/15/11 Time: 4:36 PM
+ * WebScrollBar style class.
+ *
+ * @author Mikle Garin
  */
 
 public final class WebScrollBarStyle
 {
     /**
-     * Scroll bar background color
+     * Whether scroll bar arrow buttons should be displayed or not.
      */
-    public static Color scrollBg = new Color ( 245, 245, 245 );
+    public static boolean buttonsVisible = true;
 
     /**
-     * Scroll bar side border color
+     * Whether scroll bar track should be displayed or not.
      */
-    public static Color scrollBorder = new Color ( 230, 230, 230 );
+    public static boolean drawTrack = false;
 
     /**
-     * Scroll bar border color
+     * Scroll bar track border color.
      */
-    public static Color scrollBarBorder = new Color ( 201, 201, 201 );
+    public static Color trackBorderColor = new Color ( 230, 230, 230 );
 
     /**
-     * Scroll bar top or left gradient
+     * Scroll bar track background color.
      */
-    public static Color scrollGradientLeft = new Color ( 239, 239, 239 );
+    public static Color trackBackgroundColor = new Color ( 245, 245, 245 );
 
     /**
-     * Scroll bar bottom or right gradient
+     * Scroll bar thumb border color.
      */
-    public static Color scrollGradientRight = new Color ( 211, 211, 211 );
+    public static Color thumbBorderColor = new Color ( 189, 189, 189 );
 
     /**
-     * Dragged scroll bar top or left gradient
+     * Scroll bar thumb background color.
      */
-    public static Color scrollSelGradientLeft = new Color ( 203, 203, 203 );
+    public static Color thumbBackgroundColor = new Color ( 217, 217, 217 );
 
     /**
-     * Dragged scroll bar bottom or right gradient
+     * Scroll bar thumb disabled border color.
      */
-    public static Color scrollSelGradientRight = new Color ( 175, 175, 175 );
+    public static Color thumbDisabledBorderColor = new Color ( 210, 210, 210 );
 
     /**
-     * Decoration rounding
+     * Scroll bar thumb disabled background color.
      */
-    public static int rounding = StyleConstants.smallRound;
+    public static Color thumbDisabledBackgroundColor = new Color ( 230, 230, 230 );
 
     /**
-     * Decoration shade width
+     * Scroll bar thumb rollover border color.
      */
-    public static boolean drawBorder = StyleConstants.drawBorder;
+    public static Color thumbRolloverBorderColor = new Color ( 166, 166, 166 );
 
     /**
-     * Minimum horizontal scroll bar thumb width
+     * Scroll bar thumb rollover background color.
      */
-    public static int minThumbWidth = 30;
+    public static Color thumbRolloverBackgroundColor = new Color ( 194, 194, 194 );
 
     /**
-     * Minimum vertical scroll bar thumb height
+     * Scroll bar thumb pressed/dragged border color.
      */
-    public static int minThumbHeight = 30;
+    public static Color thumbPressedBorderColor = new Color ( 126, 126, 126 );
+
+    /**
+     * Scroll bar thumb pressed/dragged background color.
+     */
+    public static Color thumbPressedBackgroundColor = new Color ( 145, 145, 145 );
+
+    /**
+     * Scroll bar thumb corners rounding.
+     */
+    public static int thumbRound = 8;
+
+    /**
+     * Scroll bar margin.
+     */
+    public static Insets margin = new Insets ( 0, 0, 0, 0 );
+
+    /**
+     * Scroll bar thumb margin.
+     */
+    public static Insets thumbMargin = new Insets ( 0, 2, 0, 2 );
+
+    /**
+     * Scroll bar arrow buttons preferred size.
+     * Only odd values are recommended for default button representation.
+     * For custom implementations you may specify anything you like.
+     */
+    public static Dimension buttonsSize = new Dimension ( 13, 13 );
+
+    /**
+     * Minimum horizontal scroll bar thumb width.
+     */
+    public static int minThumbWidth = 25;
+
+    /**
+     * Minimum vertical scroll bar thumb height.
+     */
+    public static int minThumbHeight = 25;
 }

@@ -98,6 +98,12 @@ public class WebButton extends JButton implements ShapeProvider, LanguageMethods
         super ( a );
     }
 
+    public WebButton ( final Painter painter )
+    {
+        super ();
+        setPainter ( painter );
+    }
+
     /**
      * Proxified kotkey manager methods
      */

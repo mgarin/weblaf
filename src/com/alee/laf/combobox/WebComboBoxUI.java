@@ -276,7 +276,10 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider, Bor
                     if ( scrollBarUI instanceof WebScrollBarUI )
                     {
                         final WebScrollBarUI webScrollBarUI = ( WebScrollBarUI ) scrollBarUI;
-                        webScrollBarUI.setDrawBorder ( false );
+                        webScrollBarUI.setMargin ( WebComboBoxStyle.scrollBarMargin );
+                        webScrollBarUI.setThumbRound ( WebComboBoxStyle.scrollBarThumbRound );
+                        webScrollBarUI.setButtonsVisible ( WebComboBoxStyle.scrollBarButtonsVisible );
+                        webScrollBarUI.setDrawTrack ( WebComboBoxStyle.scrollBarTrackVisible );
                     }
                 }
 

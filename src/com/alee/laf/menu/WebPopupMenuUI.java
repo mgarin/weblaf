@@ -229,31 +229,6 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements SwingConstants, 
     }
 
     /**
-     * Applies UI settings to this specific painter.
-     *
-     * @param painter popup menu painter
-     */
-    protected void applyPainterSettings ( final PopupMenuPainter painter )
-    {
-        if ( painter != null )
-        {
-            // Style settings
-            painter.setPopupPainterStyle ( popupPainterStyle );
-            painter.setBorderColor ( borderColor );
-            painter.setRound ( round );
-            painter.setShadeWidth ( shadeWidth );
-            painter.setShadeOpacity ( shadeOpacity );
-            painter.setCornerWidth ( cornerWidth );
-            painter.setTransparency ( transparency );
-
-            // Runtime variables
-            painter.setTransparent ( transparent );
-            painter.setCornerSide ( cornerSide );
-            painter.setRelativeCorner ( relativeCorner );
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -482,6 +457,7 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements SwingConstants, 
     public void setMargin ( final Insets margin )
     {
         this.margin = margin;
+        updateBorder ();
     }
 
     /**
@@ -506,7 +482,31 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements SwingConstants, 
         this.painter = painter;
         applyPainterSettings ( painter );
         PainterSupport.installPainter ( popupMenu, this.painter );
-        updateBorder ();
+    }
+
+    /**
+     * Applies UI settings to this specific painter.
+     *
+     * @param painter popup menu painter
+     */
+    protected void applyPainterSettings ( final PopupMenuPainter painter )
+    {
+        if ( painter != null )
+        {
+            // Style settings
+            painter.setPopupPainterStyle ( popupPainterStyle );
+            painter.setBorderColor ( borderColor );
+            painter.setRound ( round );
+            painter.setShadeWidth ( shadeWidth );
+            painter.setShadeOpacity ( shadeOpacity );
+            painter.setCornerWidth ( cornerWidth );
+            painter.setTransparency ( transparency );
+
+            // Runtime variables
+            painter.setTransparent ( transparent );
+            painter.setCornerSide ( cornerSide );
+            painter.setRelativeCorner ( relativeCorner );
+        }
     }
 
     /**
@@ -726,7 +726,8 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements SwingConstants, 
     }
 
     /**
-     * Paints popup menu decoration.
+     * Paints popup menu decorations.
+     * The whole painting process is delegated to installed painter class.
      *
      * @param g graphics context
      * @param c popup menu component
@@ -736,7 +737,7 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements SwingConstants, 
     {
         if ( painter != null )
         {
-            painter.paint ( ( Graphics2D ) g, SwingUtils.size ( c ), c );
+            painter.paint ( ( Graphics2D ) g, SwingUtils.size ( popupMenu ), popupMenu );
         }
     }
 }

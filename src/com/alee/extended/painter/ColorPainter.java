@@ -66,7 +66,7 @@ public class ColorPainter<E extends JComponent> extends AbstractPainter<E>
     public void setColor ( final Color color )
     {
         this.color = color;
-        fireRepaint ();
+        repaint ();
     }
 
     /**

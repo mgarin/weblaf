@@ -22,6 +22,7 @@ import com.alee.laf.GlobalConstants;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.language.LanguageManager;
 import com.alee.utils.FileUtils;
+import com.alee.utils.LafUtils;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
@@ -103,7 +104,7 @@ public class WebFileChooserUI extends FileChooserUI
         fileView = new WebFileView ();
 
         fileChooser.setLayout ( new BorderLayout () );
-        fileChooser.setBorder ( BorderFactory.createEmptyBorder ( 0, 0, 0, 0 ) );
+        fileChooser.setBorder ( LafUtils.createWebBorder ( 0, 0, 0, 0 ) );
 
         fileChooserPanel = new WebFileChooserPanel ( getFileChooserType (), fileChooser.getControlButtonsAreShown () );
         fileChooserPanel.setMultiSelectionEnabled ( fileChooser.isMultiSelectionEnabled () );

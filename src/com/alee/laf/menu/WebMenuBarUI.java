@@ -56,8 +56,8 @@ public class WebMenuBarUI extends BasicMenuBarUI implements ShapeProvider, Borde
 
         // Default settings
         SwingUtils.setOrientation ( menuBar );
-        menuBar.setLayout ( new ToolbarLayout ( 0 ) );
         LookAndFeel.installProperty ( menuBar, WebLookAndFeel.OPAQUE_PROPERTY, Boolean.FALSE );
+        menuBar.setLayout ( new ToolbarLayout ( 0 ) );
 
         // Updating border
         updateBorder ();

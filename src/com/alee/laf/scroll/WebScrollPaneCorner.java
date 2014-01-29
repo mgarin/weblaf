@@ -37,14 +37,14 @@ public class WebScrollPaneCorner extends JComponent
     }
 
     @Override
-    protected void paintComponent ( Graphics g )
+    protected void paintComponent ( final Graphics g )
     {
         super.paintComponent ( g );
 
-        int vBorder = getComponentOrientation ().isLeftToRight () ? 0 : getWidth () - 1;
-        g.setColor ( WebScrollBarStyle.scrollBg );
+        final int vBorder = getComponentOrientation ().isLeftToRight () ? 0 : getWidth () - 1;
+        g.setColor ( WebScrollBarStyle.trackBackgroundColor );
         g.fillRect ( 0, 0, getWidth (), getHeight () );
-        g.setColor ( WebScrollBarStyle.scrollBorder );
+        g.setColor ( WebScrollBarStyle.trackBorderColor );
         g.drawLine ( 0, 0, getWidth () - 1, 0 );
         g.drawLine ( vBorder, 0, vBorder, getHeight () - 1 );
     }

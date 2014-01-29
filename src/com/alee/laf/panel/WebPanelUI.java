@@ -111,7 +111,7 @@ public class WebPanelUI extends BasicPanelUI implements ShapeProvider, BorderMet
 
         // Default settings
         SwingUtils.setOrientation ( panel );
-        panel.setOpaque ( true );
+        LookAndFeel.installProperty ( panel, WebLookAndFeel.OPAQUE_PROPERTY, Boolean.TRUE );
         panel.setBackground ( WebPanelStyle.backgroundColor );
         PainterSupport.installPainter ( panel, this.painter );
 

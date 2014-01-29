@@ -18,6 +18,7 @@
 package com.alee.laf.table;
 
 import com.alee.laf.StyleConstants;
+import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.table.renderers.WebTableHeaderCellRenderer;
 import com.alee.utils.SwingUtils;
 
@@ -41,28 +42,28 @@ public class WebTableHeaderUI extends BasicTableHeaderUI
     public static final Color bottomLineColor = new Color ( 104, 104, 104 );
 
     @SuppressWarnings ("UnusedParameters")
-    public static ComponentUI createUI ( JComponent c )
+    public static ComponentUI createUI ( final JComponent c )
     {
         return new WebTableHeaderUI ();
     }
 
     @Override
-    public void installUI ( JComponent c )
+    public void installUI ( final JComponent c )
     {
         super.installUI ( c );
 
         // Default settings
         SwingUtils.setOrientation ( header );
-        header.setOpaque ( true );
+        LookAndFeel.installProperty ( header, WebLookAndFeel.OPAQUE_PROPERTY, Boolean.TRUE );
 
         // Default renderer
         header.setDefaultRenderer ( new WebTableHeaderCellRenderer ()
         {
             @Override
-            public Component getTableCellRendererComponent ( JTable table, Object value, boolean isSelected, boolean hasFocus, int row,
-                                                             int column )
+            public Component getTableCellRendererComponent ( final JTable table, final Object value, final boolean isSelected,
+                                                             final boolean hasFocus, final int row, final int column )
             {
-                JLabel renderer = ( JLabel ) super.getTableCellRendererComponent ( table, value, isSelected, hasFocus, row, column );
+                final JLabel renderer = ( JLabel ) super.getTableCellRendererComponent ( table, value, isSelected, hasFocus, row, column );
                 renderer.setHorizontalAlignment ( JLabel.CENTER );
                 return renderer;
             }
@@ -70,12 +71,12 @@ public class WebTableHeaderUI extends BasicTableHeaderUI
     }
 
     @Override
-    public void paint ( Graphics g, JComponent c )
+    public void paint ( final Graphics g, final JComponent c )
     {
-        Graphics2D g2d = ( Graphics2D ) g;
+        final Graphics2D g2d = ( Graphics2D ) g;
 
         // Table header background
-        GradientPaint bgPaint = createBackgroundPaint ( 0, 1, 0, header.getHeight () - 1 );
+        final GradientPaint bgPaint = createBackgroundPaint ( 0, 1, 0, header.getHeight () - 1 );
         g2d.setPaint ( bgPaint );
         g2d.fillRect ( 0, 1, header.getWidth (), header.getHeight () - 1 );
 
@@ -91,11 +92,11 @@ public class WebTableHeaderUI extends BasicTableHeaderUI
         }
 
         // Variables
-        boolean ltr = header.getComponentOrientation ().isLeftToRight ();
-        Rectangle clip = g.getClipBounds ();
-        Point left = clip.getLocation ();
-        Point right = new Point ( clip.x + clip.width - 1, clip.y );
-        TableColumnModel cm = header.getColumnModel ();
+        final boolean ltr = header.getComponentOrientation ().isLeftToRight ();
+        final Rectangle clip = g.getClipBounds ();
+        final Point left = clip.getLocation ();
+        final Point right = new Point ( clip.x + clip.width - 1, clip.y );
+        final TableColumnModel cm = header.getColumnModel ();
         int cMin = header.columnAtPoint ( ltr ? left : right );
         int cMax = header.columnAtPoint ( ltr ? right : left );
 
@@ -113,9 +114,9 @@ public class WebTableHeaderUI extends BasicTableHeaderUI
         }
 
         // Table titles
-        TableColumn draggedColumn = header.getDraggedColumn ();
+        final TableColumn draggedColumn = header.getDraggedColumn ();
         int columnWidth;
-        Rectangle cellRect = header.getHeaderRect ( ltr ? cMin : cMax );
+        final Rectangle cellRect = header.getHeaderRect ( ltr ? cMin : cMax );
         TableColumn aColumn;
         if ( ltr )
         {
@@ -150,8 +151,8 @@ public class WebTableHeaderUI extends BasicTableHeaderUI
         if ( draggedColumn != null )
         {
             // Calculating dragged cell rect
-            int draggedColumnIndex = viewIndexForColumn ( draggedColumn );
-            Rectangle draggedCellRect = header.getHeaderRect ( draggedColumnIndex );
+            final int draggedColumnIndex = viewIndexForColumn ( draggedColumn );
+            final Rectangle draggedCellRect = header.getHeaderRect ( draggedColumnIndex );
             draggedCellRect.x += header.getDraggedDistance ();
 
             // Background
@@ -163,21 +164,22 @@ public class WebTableHeaderUI extends BasicTableHeaderUI
         }
     }
 
-    public static GradientPaint createBackgroundPaint ( int x1, int y1, int x2, int y2 )
+    public static GradientPaint createBackgroundPaint ( final int x1, final int y1, final int x2, final int y2 )
     {
         return new GradientPaint ( x1, y1, topBgColor, x2, y2, bottomBgColor );
     }
 
-    private void paintCell ( Graphics g, Rectangle rect, int columnIndex, TableColumn tc, TableColumn dc, TableColumnModel cm )
+    private void paintCell ( final Graphics g, final Rectangle rect, final int columnIndex, final TableColumn tc, final TableColumn dc,
+                             final TableColumnModel cm )
     {
-        boolean ltr = header.getComponentOrientation ().isLeftToRight ();
+        final boolean ltr = header.getComponentOrientation ().isLeftToRight ();
 
         // Left side border
         g.setColor ( StyleConstants.borderColor );
         g.drawLine ( rect.x - 1, rect.y + 2, rect.x - 1, rect.y + rect.height - 4 );
 
         // Painting dragged cell renderer
-        JComponent component = ( JComponent ) getHeaderRenderer ( columnIndex );
+        final JComponent component = ( JComponent ) getHeaderRenderer ( columnIndex );
         component.setOpaque ( false );
         component.setEnabled ( header.getTable ().isEnabled () );
         rendererPane.paintComponent ( g, component, header, rect.x, rect.y, rect.width, rect.height, true );
@@ -190,22 +192,22 @@ public class WebTableHeaderUI extends BasicTableHeaderUI
         }
     }
 
-    private Component getHeaderRenderer ( int columnIndex )
+    private Component getHeaderRenderer ( final int columnIndex )
     {
-        TableColumn aColumn = header.getColumnModel ().getColumn ( columnIndex );
+        final TableColumn aColumn = header.getColumnModel ().getColumn ( columnIndex );
         TableCellRenderer renderer = aColumn.getHeaderRenderer ();
         if ( renderer == null )
         {
             renderer = header.getDefaultRenderer ();
         }
 
-        boolean hasFocus = !header.isPaintingForPrint () && header.hasFocus ();
+        final boolean hasFocus = !header.isPaintingForPrint () && header.hasFocus ();
         return renderer.getTableCellRendererComponent ( header.getTable (), aColumn.getHeaderValue (), false, hasFocus, -1, columnIndex );
     }
 
-    private int viewIndexForColumn ( TableColumn aColumn )
+    private int viewIndexForColumn ( final TableColumn aColumn )
     {
-        TableColumnModel cm = header.getColumnModel ();
+        final TableColumnModel cm = header.getColumnModel ();
         for ( int column = 0; column < cm.getColumnCount (); column++ )
         {
             if ( cm.getColumn ( column ) == aColumn )
@@ -217,9 +219,9 @@ public class WebTableHeaderUI extends BasicTableHeaderUI
     }
 
     @Override
-    public Dimension getPreferredSize ( JComponent c )
+    public Dimension getPreferredSize ( final JComponent c )
     {
-        Dimension ps = super.getPreferredSize ( c );
+        final Dimension ps = super.getPreferredSize ( c );
         ps.height = Math.max ( ps.height, WebTableStyle.headerHeight );
         return ps;
     }

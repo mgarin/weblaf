@@ -19,6 +19,7 @@ package com.alee.laf.list;
 
 import com.alee.laf.StyleConstants;
 import com.alee.laf.WebLookAndFeel;
+import com.alee.utils.GeometryUtils;
 import com.alee.utils.LafUtils;
 import com.alee.utils.SwingUtils;
 
@@ -120,30 +121,30 @@ public class WebListUI extends BasicListUI
                 {
                     final int oldIndex = rolloverIndex;
                     rolloverIndex = index;
-                    if ( rolloverIndex != -1 )
-                    {
-                        final Rectangle cellBounds = list.getCellBounds ( rolloverIndex, rolloverIndex );
-                        if ( cellBounds != null )
-                        {
-                            list.repaint ( cellBounds );
-                        }
-                        else
-                        {
-                            list.repaint ();
-                        }
-                    }
-                    if ( oldIndex != -1 )
-                    {
-                        final Rectangle cellBounds = list.getCellBounds ( oldIndex, oldIndex );
-                        if ( cellBounds != null )
-                        {
-                            list.repaint ( cellBounds );
-                        }
-                        else
-                        {
-                            list.repaint ();
-                        }
-                    }
+                    repaintChange ( oldIndex, rolloverIndex );
+                }
+            }
+
+            @Override
+            public void mouseExited ( final MouseEvent e )
+            {
+                // Cleaning up rollover index
+                if ( rolloverIndex != -1 )
+                {
+                    final int oldIndex = rolloverIndex;
+                    rolloverIndex = -1;
+                    repaintChange ( oldIndex, rolloverIndex );
+                }
+            }
+
+            private void repaintChange ( final int oldIndex, final int newIndex )
+            {
+                final Rectangle oldBounds = list.getCellBounds ( oldIndex, oldIndex );
+                final Rectangle newBounds = list.getCellBounds ( newIndex, newIndex );
+                final Rectangle rect = GeometryUtils.getContainingRect ( oldBounds, newBounds );
+                if ( rect != null )
+                {
+                    list.repaint ( rect );
                 }
             }
         };

@@ -20,8 +20,12 @@ package com.alee.extended.painter;
 import java.awt.*;
 
 /**
- * This interface provides basic methods for component background (or component parts) painting.
- * It is supported in most of the Web-components and WebLaF UIs so that you can quickly and easily change any component view.
+ * This interface provides basic methods for component view painting.
+ * Using painters you can quickly and easily change Swing and WebLaF components view.
+ * <p/>
+ * You might want to use single painter for multiply components, but be aware that whether or not single painter can work with multiply
+ * components at once depends only on its own way of implementation. In most cases painters which does some animation won't work well with
+ * multiply components unless noted otherwise.
  *
  * @param <E> component type
  * @author Mikle Garin
@@ -31,9 +35,20 @@ import java.awt.*;
 public interface Painter<E extends Component>
 {
     /**
-     * todo 1. Opacity change fired in listener
-     * todo 2. Additional "quick" methods for painting (setAA/setFont/setComposite/...)
+     * Called when painter is intalled into some component.
+     * You might want to use this method to add custom component listeners or modify component settings.
+     *
+     * @param c component to process
      */
+    public void install ( E c );
+
+    /**
+     * Called when painter is intalled into some component.
+     * You might want to use this method to add custom component listeners or modify component settings.
+     *
+     * @param c component to process
+     */
+    public void uninstall ( E c );
 
     /**
      * Returns whether visual data provided by this painter is opaque or not.

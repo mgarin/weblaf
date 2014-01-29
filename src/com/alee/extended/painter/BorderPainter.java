@@ -122,7 +122,7 @@ public class BorderPainter<E extends JComponent> extends AbstractPainter<E>
     {
         this.width = width;
         updateStroke ();
-        fireUpdate ();
+        updateAll ();
     }
 
     /**
@@ -145,7 +145,7 @@ public class BorderPainter<E extends JComponent> extends AbstractPainter<E>
     {
         this.round = round;
         updateStroke ();
-        fireRepaint ();
+        repaint ();
     }
 
     /**
@@ -166,7 +166,7 @@ public class BorderPainter<E extends JComponent> extends AbstractPainter<E>
     public void setColor ( final Color color )
     {
         this.color = color;
-        fireRepaint ();
+        repaint ();
     }
 
     /**
@@ -190,7 +190,7 @@ public class BorderPainter<E extends JComponent> extends AbstractPainter<E>
     public void setStroke ( final Stroke stroke )
     {
         this.stroke = stroke;
-        fireRepaint ();
+        repaint ();
     }
 
     /**
@@ -224,7 +224,7 @@ public class BorderPainter<E extends JComponent> extends AbstractPainter<E>
     @Override
     public Insets getMargin ( final E c )
     {
-        Insets m = super.getMargin ( c );
+        final Insets m = super.getMargin ( c );
         return new Insets ( m.top + width, m.left + width, m.bottom + width, m.right + width );
     }
 

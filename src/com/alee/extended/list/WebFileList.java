@@ -19,7 +19,6 @@ package com.alee.extended.list;
 
 import com.alee.laf.list.WebList;
 import com.alee.laf.list.editor.ListCellEditor;
-import com.alee.laf.scroll.WebScrollBarUI;
 import com.alee.laf.scroll.WebScrollPane;
 import com.alee.utils.FileUtils;
 
@@ -463,7 +462,9 @@ public class WebFileList extends WebList
                     }
                 }
                 final Insets bi = getInsets ();
-                ps.width = oneCell.width * preferredColumnCount + bi.left + bi.right + WebScrollBarUI.LENGTH + 1;
+                final JScrollBar vsb = getVerticalScrollBar ();
+                final int sbw = vsb != null && vsb.isShowing () ? vsb.getPreferredSize ().width : 0;
+                ps.width = oneCell.width * preferredColumnCount + bi.left + bi.right + sbw + 1;
                 ps.height = oneCell.height * preferredRowCount + bi.top + bi.bottom + 1;
                 return ps;
             }

@@ -76,6 +76,7 @@ public class WebTable extends JTable implements FontMethods<WebTable>
         super ( rowData, columnNames );
     }
 
+
     public void setSelectedRow ( final int row )
     {
         setSelectedRow ( row, true );
@@ -159,7 +160,10 @@ public class WebTable extends JTable implements FontMethods<WebTable>
         final Rectangle firstCell = getCellRect ( row, 0, true );
         final Rectangle lastCell = getCellRect ( row, getColumnCount () - 1, true );
         final Rectangle rect = GeometryUtils.getContainingRect ( firstCell, lastCell );
-        scrollRectToVisible ( rect );
+        if ( rect != null )
+        {
+            scrollRectToVisible ( rect );
+        }
     }
 
     public void scrollToColumn ( final int column )
@@ -167,7 +171,10 @@ public class WebTable extends JTable implements FontMethods<WebTable>
         final Rectangle firstCell = getCellRect ( 0, column, true );
         final Rectangle lastCell = getCellRect ( getRowCount () - 1, column, true );
         final Rectangle rect = GeometryUtils.getContainingRect ( firstCell, lastCell );
-        scrollRectToVisible ( rect );
+        if ( rect != null )
+        {
+            scrollRectToVisible ( rect );
+        }
     }
 
     @Override

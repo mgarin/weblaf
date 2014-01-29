@@ -981,7 +981,14 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
      */
     public void repaint ( final int from, final int to )
     {
-        repaint ( GeometryUtils.getContainingRect ( getWebUI ().getRowBounds ( from ), getWebUI ().getRowBounds ( to ) ) );
+        final WebTreeUI webUI = getWebUI ();
+        final Rectangle fromBounds = webUI.getRowBounds ( from );
+        final Rectangle toBounds = webUI.getRowBounds ( to );
+        final Rectangle rect = GeometryUtils.getContainingRect ( fromBounds, toBounds );
+        if ( rect != null )
+        {
+            repaint ( rect );
+        }
     }
 
     /**
@@ -1009,11 +1016,7 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
             Rectangle summ = null;
             for ( final E node : nodes )
             {
-                final Rectangle nodeBounds = getNodeBounds ( node );
-                if ( nodeBounds != null )
-                {
-                    summ = GeometryUtils.getContainingRect ( summ, nodeBounds );
-                }
+                summ = GeometryUtils.getContainingRect ( summ, getNodeBounds ( node ) );
             }
             if ( summ != null )
             {

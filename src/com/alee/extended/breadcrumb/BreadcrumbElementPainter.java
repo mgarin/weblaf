@@ -81,11 +81,11 @@ public class BreadcrumbElementPainter<E extends JComponent> extends AbstractPain
         return overlap;
     }
 
-    public void setOverlap ( int overlap )
+    public void setOverlap ( final int overlap )
     {
         this.overlap = overlap;
         borderShapeCache.clear ();
-        fireUpdate ();
+        updateAll ();
     }
 
     public BreadcrumbElementType getType ()
@@ -93,11 +93,11 @@ public class BreadcrumbElementPainter<E extends JComponent> extends AbstractPain
         return type;
     }
 
-    public void setType ( BreadcrumbElementType type )
+    public void setType ( final BreadcrumbElementType type )
     {
         this.type = type;
         borderShapeCache.clear ();
-        fireUpdate ();
+        updateAll ();
     }
 
     public boolean isShowProgress ()
@@ -105,10 +105,10 @@ public class BreadcrumbElementPainter<E extends JComponent> extends AbstractPain
         return showProgress;
     }
 
-    public void setShowProgress ( boolean showProgress )
+    public void setShowProgress ( final boolean showProgress )
     {
         this.showProgress = showProgress;
-        fireRepaint ();
+        repaint ();
     }
 
     public float getProgress ()
@@ -116,19 +116,19 @@ public class BreadcrumbElementPainter<E extends JComponent> extends AbstractPain
         return progress;
     }
 
-    public void setProgress ( float progress )
+    public void setProgress ( final float progress )
     {
         this.progress = Math.min ( 1f, progress );
-        fireRepaint ();
+        repaint ();
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Insets getMargin ( E c )
+    public Insets getMargin ( final E c )
     {
-        int left;
+        final int left;
         if ( type.equals ( BreadcrumbElementType.none ) )
         {
             left = 0;
@@ -137,7 +137,7 @@ public class BreadcrumbElementPainter<E extends JComponent> extends AbstractPain
         {
             left = type.equals ( BreadcrumbElementType.start ) ? 0 : overlap;
         }
-        int right;
+        final int right;
         if ( type.equals ( BreadcrumbElementType.none ) )
         {
             right = 0;
@@ -153,7 +153,7 @@ public class BreadcrumbElementPainter<E extends JComponent> extends AbstractPain
      * {@inheritDoc}
      */
     @Override
-    public void paint ( Graphics2D g2d, Rectangle bounds, E c )
+    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c )
     {
         final int br = BreadcrumbUtils.getRound ( c );
         final boolean ltr = c.getComponentOrientation ().isLeftToRight ();
@@ -165,8 +165,8 @@ public class BreadcrumbElementPainter<E extends JComponent> extends AbstractPain
         boolean selected = false;
         if ( c instanceof AbstractButton )
         {
-            AbstractButton ab = ( AbstractButton ) c;
-            ButtonModel bm = ab.getModel ();
+            final AbstractButton ab = ( AbstractButton ) c;
+            final ButtonModel bm = ab.getModel ();
             selected = bm.isPressed () || bm.isSelected ();
         }
 
@@ -215,15 +215,15 @@ public class BreadcrumbElementPainter<E extends JComponent> extends AbstractPain
         // Progress background
         if ( showProgress && progress > 0f )
         {
-            Shape progressFillShape = getProgressFillShape ( c, fs );
-            Rectangle pb = progressFillShape.getBounds ();
+            final Shape progressFillShape = getProgressFillShape ( c, fs );
+            final Rectangle pb = progressFillShape.getBounds ();
 
             // Background fill
             g2d.setPaint ( getProgressPaint ( c ) );
             g2d.fill ( progressFillShape );
 
             // Line with proper background-shaped clipping
-            Shape oldClip = LafUtils.intersectClip ( g2d, fs );
+            final Shape oldClip = LafUtils.intersectClip ( g2d, fs );
             g2d.setPaint ( getProgressLinePaint ( c ) );
             g2d.drawLine ( ltr ? pb.x + pb.width : pb.x, pb.y, ltr ? pb.x + pb.width : pb.x, pb.y + pb.height );
             LafUtils.restoreClip ( g2d, oldClip );
@@ -233,26 +233,26 @@ public class BreadcrumbElementPainter<E extends JComponent> extends AbstractPain
         LafUtils.restoreAntialias ( g2d, old );
     }
 
-    protected LinearGradientPaint getProgressPaint ( E c )
+    protected LinearGradientPaint getProgressPaint ( final E c )
     {
         boolean pressed = false;
         if ( c instanceof AbstractButton )
         {
-            ButtonModel bm = ( ( AbstractButton ) c ).getModel ();
+            final ButtonModel bm = ( ( AbstractButton ) c ).getModel ();
             pressed = bm.isPressed () || bm.isSelected ();
         }
         return new LinearGradientPaint ( 0, 0, 0, c.getHeight (), progressFractions,
                 pressed ? selectedProgressFillColors : progressFillColors );
     }
 
-    protected LinearGradientPaint getProgressLinePaint ( E c )
+    protected LinearGradientPaint getProgressLinePaint ( final E c )
     {
         return new LinearGradientPaint ( 0, 0, 0, c.getHeight (), progressFractions, progressLineColors );
     }
 
-    public GeneralPath getBorderShape ( E c, boolean ltr )
+    public GeneralPath getBorderShape ( final E c, final boolean ltr )
     {
-        String key = ltr + ":" + c.getWidth () + "," + c.getHeight ();
+        final String key = ltr + ":" + c.getWidth () + "," + c.getHeight ();
         GeneralPath bs = borderShapeCache.get ( key );
         if ( bs == null )
         {
@@ -263,9 +263,9 @@ public class BreadcrumbElementPainter<E extends JComponent> extends AbstractPain
         return bs;
     }
 
-    protected GeneralPath getBorderShapeImpl ( E c, boolean ltr )
+    protected GeneralPath getBorderShapeImpl ( final E c, final boolean ltr )
     {
-        GeneralPath gp = new GeneralPath ( GeneralPath.WIND_EVEN_ODD );
+        final GeneralPath gp = new GeneralPath ( GeneralPath.WIND_EVEN_ODD );
         if ( ltr )
         {
             gp.moveTo ( c.getWidth () - overlap - shadeWidth - 1, -1 );
@@ -281,9 +281,9 @@ public class BreadcrumbElementPainter<E extends JComponent> extends AbstractPain
         return gp;
     }
 
-    public Shape getFillShape ( E c, boolean ltr, int round )
+    public Shape getFillShape ( final E c, final boolean ltr, final int round )
     {
-        String key = ltr + ":" + round + ":" + c.getWidth () + "," + c.getHeight ();
+        final String key = ltr + ":" + round + ":" + c.getWidth () + "," + c.getHeight ();
         Shape fs = fillShapeCache.get ( key );
         if ( fs == null )
         {
@@ -294,11 +294,11 @@ public class BreadcrumbElementPainter<E extends JComponent> extends AbstractPain
         return fs;
     }
 
-    protected Shape getFillShapeImpl ( E c, boolean ltr, int round )
+    protected Shape getFillShapeImpl ( final E c, final boolean ltr, final int round )
     {
         final int width = c.getWidth ();
         final int height = c.getHeight ();
-        boolean encloseLast = isEncloseLastElement ( c );
+        final boolean encloseLast = isEncloseLastElement ( c );
         if ( c.getParent () != null && c.getParent ().getComponentCount () == 1 && !encloseLast )
         {
             if ( round > 0 )
@@ -312,7 +312,7 @@ public class BreadcrumbElementPainter<E extends JComponent> extends AbstractPain
         }
         else if ( !type.equals ( BreadcrumbElementType.end ) )
         {
-            GeneralPath gp = new GeneralPath ( GeneralPath.WIND_EVEN_ODD );
+            final GeneralPath gp = new GeneralPath ( GeneralPath.WIND_EVEN_ODD );
             if ( ltr )
             {
                 gp.moveTo ( width - overlap - shadeWidth - 1, 0 );
@@ -357,7 +357,7 @@ public class BreadcrumbElementPainter<E extends JComponent> extends AbstractPain
         {
             if ( round > 0 )
             {
-                GeneralPath gp = new GeneralPath ( GeneralPath.WIND_EVEN_ODD );
+                final GeneralPath gp = new GeneralPath ( GeneralPath.WIND_EVEN_ODD );
                 if ( ltr )
                 {
                     gp.moveTo ( 0, 0 );
@@ -386,19 +386,19 @@ public class BreadcrumbElementPainter<E extends JComponent> extends AbstractPain
         }
     }
 
-    protected boolean isEncloseLastElement ( E c )
+    protected boolean isEncloseLastElement ( final E c )
     {
         return c.getParent () != null && c.getParent () instanceof WebBreadcrumb &&
                 ( ( WebBreadcrumb ) c.getParent () ).isEncloseLastElement ();
     }
 
-    public Shape getProgressFillShape ( E c, Shape fillShape )
+    public Shape getProgressFillShape ( final E c, final Shape fillShape )
     {
-        boolean ltr = c.getComponentOrientation ().isLeftToRight ();
-        Area fill = new Area ( fillShape );
+        final boolean ltr = c.getComponentOrientation ().isLeftToRight ();
+        final Area fill = new Area ( fillShape );
 
-        Rectangle bounds = fill.getBounds ();
-        int oldWidth = bounds.width;
+        final Rectangle bounds = fill.getBounds ();
+        final int oldWidth = bounds.width;
         bounds.width = Math.round ( oldWidth * progress );
         bounds.x = ltr ? bounds.x : bounds.x + oldWidth - bounds.width;
         fill.intersect ( new Area ( bounds ) );

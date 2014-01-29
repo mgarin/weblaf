@@ -130,15 +130,15 @@ public class WebTreeModel<E extends MutableTreeNode> extends DefaultTreeModel
     }
 
     /**
-     * Removes specified nodes from tree structure.
+     * Removes all child nodes under the specified node from tree structure.
      *
-     * @param nodes nodes to remove
+     * @param node node to remove childs from
      */
-    public void removeNodesFromParent ( final E parentNode )
+    public void removeNodesFromParent ( final E node )
     {
-        for ( int i = 0; i < parentNode.getChildCount (); i++ )
+        for ( int i = 0; i < node.getChildCount (); i++ )
         {
-            removeNodeFromParent ( ( MutableTreeNode ) parentNode.getChildAt ( i ) );
+            removeNodeFromParent ( ( MutableTreeNode ) node.getChildAt ( i ) );
         }
     }
 

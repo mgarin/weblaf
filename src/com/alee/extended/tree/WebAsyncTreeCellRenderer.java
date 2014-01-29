@@ -50,7 +50,6 @@ public class WebAsyncTreeCellRenderer extends WebTreeCellRenderer
     /**
      * Returns user failed state icon.
      *
-     * @param key  icon key
      * @param icon base icon
      * @return user failed state icon
      */

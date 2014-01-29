@@ -1532,6 +1532,27 @@ public final class LafUtils
     }
 
     /**
+     * Attempts to update component border if border methods are available for it.
+     * Returns whether attempt has succeed or not.
+     *
+     * @param component component which border should be updated
+     * @return true if attempt has succeed, false otherwise
+     */
+    public static boolean updateBorder ( final Component component )
+    {
+        final BorderMethods borderMethods = LafUtils.getBorderMethods ( component );
+        if ( borderMethods != null )
+        {
+            borderMethods.updateBorder ();
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    /**
      * Returns border methods for the specified component or null if custom WebLaF border is not supported.
      *
      * @param component component to process

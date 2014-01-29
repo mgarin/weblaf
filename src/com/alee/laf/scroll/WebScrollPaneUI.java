@@ -28,6 +28,7 @@ import com.alee.utils.laf.ShapeProvider;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
+import javax.swing.plaf.ScrollBarUI;
 import javax.swing.plaf.basic.BasicScrollPaneUI;
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
@@ -39,6 +40,10 @@ import java.beans.PropertyChangeListener;
 
 public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeProvider
 {
+    /**
+     * todo 1. Implement optional shade layer
+     */
+
     private boolean drawBorder = WebScrollPaneStyle.drawBorder;
     private Color borderColor = WebScrollPaneStyle.borderColor;
     private Color darkBorder = WebScrollPaneStyle.darkBorder;
@@ -60,7 +65,7 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeProvider
 
     private boolean focused = false;
 
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebScrollPaneUI ();
@@ -75,6 +80,59 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeProvider
         SwingUtils.setOrientation ( scrollpane );
         LookAndFeel.installProperty ( scrollpane, WebLookAndFeel.OPAQUE_PROPERTY, Boolean.FALSE );
         scrollpane.setBackground ( StyleConstants.backgroundColor );
+
+        final ScrollBarUI vui = scrollpane.getVerticalScrollBar ().getUI ();
+        if ( vui instanceof WebScrollBarUI )
+        {
+            ( ( WebScrollBarUI ) vui ).setDrawTrack ( drawBorder );
+        }
+        final ScrollBarUI hui = scrollpane.getHorizontalScrollBar ().getUI ();
+        if ( hui instanceof WebScrollBarUI )
+        {
+            ( ( WebScrollBarUI ) hui ).setDrawTrack ( drawBorder );
+        }
+
+        //        // Shade layer
+        //        final WebPanel shadeLayer = new WebPanel ( new AbstractPainter ()
+        //        {
+        //            final int shadeWidth = 15;
+        //            final float transparency = 0.7f;
+        //
+        //            @Override
+        //            public void paint ( final Graphics2D g2d, final Rectangle bounds, final Component c )
+        //            {
+        //                final JViewport viewport = scrollpane.getViewport ();
+        //                final Component vc = viewport.getView ();
+        //                if ( vc != null && vc instanceof JComponent )
+        //                {
+        //                    final JComponent view = ( JComponent ) vc;
+        //                    final Rectangle vr = view.getVisibleRect ();
+        //
+        //                    final int topY = vr.y;
+        //                    if ( topY > 0 )
+        //                    {
+        //                        final float max = topY / 2;
+        //                        final float opacity = ( shadeWidth < max ? 1f : ( 1f - ( shadeWidth - max ) / shadeWidth ) ) * transparency;
+        //                        final NinePatchIcon npi = NinePatchUtils.getShadeIcon ( shadeWidth, 0, opacity );
+        //                        final Dimension ps = npi.getPreferredSize ();
+        //                        npi.paintIcon ( g2d, -shadeWidth * 2, shadeWidth - ps.height, vr.width + shadeWidth * 4, ps.height );
+        //                    }
+        //
+        //                    final int bottomY = vr.y + vr.height;
+        //                    final int height = view.getHeight ();
+        //                    if ( bottomY < height )
+        //                    {
+        //                        final float max = ( height - bottomY ) / 2;
+        //                        final float opacity = ( shadeWidth < max ? 1f : ( 1f - ( shadeWidth - max ) / shadeWidth ) ) * transparency;
+        //                        final NinePatchIcon npi = NinePatchUtils.getShadeIcon ( shadeWidth, 0, opacity );
+        //                        final Dimension ps = npi.getPreferredSize ();
+        //                        npi.paintIcon ( g2d, -shadeWidth * 2, vr.height - shadeWidth, vr.width + shadeWidth * 4, ps.height );
+        //                    }
+        //                }
+        //            }
+        //        } );
+        //        scrollpane.add ( shadeLayer, scrollpane.getComponentCount () );
+        //        scrollpane.setLayout ( new WebScrollPaneLayout.UIResource ( shadeLayer ) );
 
         // Border
         updateBorder ();
@@ -140,7 +198,6 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeProvider
     {
         if ( scrollpane != null )
         {
-            // Must use a non-UIResource border otherwise tables don't look right (?)
             // Preserve old borders
             if ( SwingUtils.isPreserveBorders ( scrollpane ) )
             {

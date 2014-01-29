@@ -54,10 +54,10 @@ public interface AsyncTreeDataUpdater<E extends AsyncUniqueNode>
      * Called when node move (D&D or cut/paste) operation performed.
      * At this point node is already moved visually, but you can still cancel this action if you cannot update data properly.
      *
-     * @param node         moved node
-     * @param oldParent    old parent node
-     * @param newParent    new parent node
-     * @param renameFailed runnable you should call in case data update failed, it will cancel changes
+     * @param node       moved node
+     * @param oldParent  old parent node
+     * @param newParent  new parent node
+     * @param moveFailed runnable you should call in case data update failed, it will cancel changes
      */
     public void nodeMoved ( E node, E oldParent, E newParent, Runnable moveFailed );
 
@@ -66,7 +66,7 @@ public interface AsyncTreeDataUpdater<E extends AsyncUniqueNode>
      * At this point node is already removed visually, but you can still cancel this action if you cannot update data properly.
      *
      * @param node         removed node
-     * @param renameFailed runnable you should call in case data update failed, it will cancel changes
+     * @param removeFailed runnable you should call in case data update failed, it will cancel changes
      */
     public void nodeRemoved ( E node, Runnable removeFailed );
 }

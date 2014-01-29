@@ -18,7 +18,6 @@
 package com.alee.extended.image;
 
 import com.alee.laf.StyleConstants;
-import com.alee.laf.scroll.WebScrollBarUI;
 import com.alee.laf.scroll.WebScrollPane;
 import com.alee.managers.hotkey.Hotkey;
 import com.alee.utils.ImageUtils;
@@ -41,22 +40,22 @@ import java.util.List;
 
 public class WebImageGallery extends JComponent
 {
-    private int spacing = 20;
+    private final int spacing = 20;
     private int imageLength = 200;
-    private int borderWidth = 3;
-    private float fadeHeight = 0.7f;
-    private int opacity = 125;
+    private final int borderWidth = 3;
+    private final float fadeHeight = 0.7f;
+    private final int opacity = 125;
 
-    private Color light = new Color ( 128, 128, 128 );
-    private Color selectedLight = new Color ( 255, 255, 255 );
-    private Color transparent = new Color ( 128, 128, 128, 0 );
-    private Color selectedTransparent = new Color ( 255, 255, 255, 0 );
+    private final Color light = new Color ( 128, 128, 128 );
+    private final Color selectedLight = new Color ( 255, 255, 255 );
+    private final Color transparent = new Color ( 128, 128, 128, 0 );
+    private final Color selectedTransparent = new Color ( 255, 255, 255, 0 );
 
     private int maxWidth = 0;
     private int maxHeight = 0;
-    private List<ImageIcon> images = new ArrayList<ImageIcon> ();
-    private List<BufferedImage> reflections = new ArrayList<BufferedImage> ();
-    private List<String> descriptions = new ArrayList<String> ();
+    private final List<ImageIcon> images = new ArrayList<ImageIcon> ();
+    private final List<BufferedImage> reflections = new ArrayList<BufferedImage> ();
+    private final List<String> descriptions = new ArrayList<String> ();
     //    private List<Integer> sizes = new ArrayList<Integer> (  );
 
     private int preferredColumnCount = 4;
@@ -77,10 +76,10 @@ public class WebImageGallery extends JComponent
         setFocusable ( true );
         setFont ( new JLabel ().getFont ().deriveFont ( Font.BOLD ) );
 
-        MouseAdapter mouseAdapter = new MouseAdapter ()
+        final MouseAdapter mouseAdapter = new MouseAdapter ()
         {
             @Override
-            public void mousePressed ( MouseEvent e )
+            public void mousePressed ( final MouseEvent e )
             {
                 if ( SwingUtilities.isLeftMouseButton ( e ) )
                 {
@@ -97,11 +96,11 @@ public class WebImageGallery extends JComponent
             }
 
             @Override
-            public void mouseWheelMoved ( MouseWheelEvent e )
+            public void mouseWheelMoved ( final MouseWheelEvent e )
             {
-                int index = getSelectedIndex ();
-                int maxIndex = images.size () - 1;
-                int wheelRotation = e.getWheelRotation ();
+                final int index = getSelectedIndex ();
+                final int maxIndex = images.size () - 1;
+                final int wheelRotation = e.getWheelRotation ();
                 int newIndex;
                 if ( wheelRotation > 0 )
                 {
@@ -128,11 +127,11 @@ public class WebImageGallery extends JComponent
         addKeyListener ( new KeyAdapter ()
         {
             @Override
-            public void keyPressed ( KeyEvent e )
+            public void keyPressed ( final KeyEvent e )
             {
                 if ( images.size () > 0 )
                 {
-                    int si = getSelectedIndex ();
+                    final int si = getSelectedIndex ();
                     if ( Hotkey.LEFT.isTriggered ( e ) )
                     {
                         setSelectedIndex ( si == -1 || si == 0 ? images.size () - 1 : si - 1 );
@@ -164,7 +163,7 @@ public class WebImageGallery extends JComponent
         return preferredColumnCount;
     }
 
-    public void setPreferredColumnCount ( int preferredColumnCount )
+    public void setPreferredColumnCount ( final int preferredColumnCount )
     {
         this.preferredColumnCount = preferredColumnCount;
     }
@@ -174,7 +173,7 @@ public class WebImageGallery extends JComponent
         return getView ( true );
     }
 
-    public WebScrollPane getView ( boolean withBorder )
+    public WebScrollPane getView ( final boolean withBorder )
     {
         if ( view == null )
         {
@@ -183,15 +182,17 @@ public class WebImageGallery extends JComponent
                 @Override
                 public Dimension getPreferredSize ()
                 {
-                    int columns = Math.min ( images.size (), preferredColumnCount );
+                    final int columns = Math.min ( images.size (), preferredColumnCount );
+                    final JScrollBar hsb = getHorizontalScrollBar ();
+                    final int sbh = hsb != null && hsb.isShowing () ? hsb.getPreferredSize ().height : 0;
                     return new Dimension ( spacing * ( columns + 1 ) + columns * maxWidth,
-                            WebImageGallery.this.getPreferredSize ().height + WebScrollBarUI.LENGTH );
+                            WebImageGallery.this.getPreferredSize ().height + sbh );
                 }
             };
             view.setHorizontalScrollBarPolicy ( WebScrollPane.HORIZONTAL_SCROLLBAR_NEVER );
             view.setVerticalScrollBarPolicy ( WebScrollPane.VERTICAL_SCROLLBAR_NEVER );
 
-            InputMap im = view.getInputMap ( JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT );
+            final InputMap im = view.getInputMap ( JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT );
             im.put ( KeyStroke.getKeyStroke ( "UP" ), "none" );
             im.put ( KeyStroke.getKeyStroke ( "DOWN" ), "none" );
             im.put ( KeyStroke.getKeyStroke ( "LEFT" ), "none" );
@@ -205,7 +206,7 @@ public class WebImageGallery extends JComponent
         return imageLength;
     }
 
-    public void setImageLength ( int imageLength )
+    public void setImageLength ( final int imageLength )
     {
         this.imageLength = imageLength;
     }
@@ -215,7 +216,7 @@ public class WebImageGallery extends JComponent
         return scrollOnSelection;
     }
 
-    public void setScrollOnSelection ( boolean scrollOnSelection )
+    public void setScrollOnSelection ( final boolean scrollOnSelection )
     {
         this.scrollOnSelection = scrollOnSelection;
     }
@@ -225,7 +226,7 @@ public class WebImageGallery extends JComponent
         return selectedIndex;
     }
 
-    public void setSelectedIndex ( int selectedIndex )
+    public void setSelectedIndex ( final int selectedIndex )
     {
         if ( this.selectedIndex == selectedIndex )
         {
@@ -237,7 +238,7 @@ public class WebImageGallery extends JComponent
         repaint ();
         if ( scrollOnSelection )
         {
-            Rectangle rect = getImageRect ( selectedIndex );
+            final Rectangle rect = getImageRect ( selectedIndex );
             SwingUtils.scrollSmoothly ( getView (), rect.x + rect.width / 2 - WebImageGallery.this.getVisibleRect ().width / 2, rect.y );
         }
         moveReflection ();
@@ -254,7 +255,7 @@ public class WebImageGallery extends JComponent
         reflectionMover = new WebTimer ( "WebImageGallery.reflectionMoveTimer", StyleConstants.fastAnimationDelay, new ActionListener ()
         {
             @Override
-            public void actionPerformed ( ActionEvent e )
+            public void actionPerformed ( final ActionEvent e )
             {
                 if ( progress < 1f )
                 {
@@ -271,32 +272,32 @@ public class WebImageGallery extends JComponent
         reflectionMover.start ();
     }
 
-    public Rectangle getImageRect ( int index )
+    public Rectangle getImageRect ( final int index )
     {
-        int iconWidth = images.get ( index ).getIconWidth ();
-        int iconHeight = images.get ( index ).getIconHeight ();
-        Dimension ps = getPreferredSize ();
-        int x = ( getWidth () > ps.width ? ( getWidth () - ps.width ) / 2 : 0 ) + spacing +
+        final int iconWidth = images.get ( index ).getIconWidth ();
+        final int iconHeight = images.get ( index ).getIconHeight ();
+        final Dimension ps = getPreferredSize ();
+        final int x = ( getWidth () > ps.width ? ( getWidth () - ps.width ) / 2 : 0 ) + spacing +
                 ( maxWidth + spacing ) * index + maxWidth / 2;
-        int y = getHeight () / 2 - spacing / 2 - iconHeight / 2;
+        final int y = getHeight () / 2 - spacing / 2 - iconHeight / 2;
         return new Rectangle ( x - iconWidth / 2, y - iconHeight / 2, iconWidth, iconHeight );
     }
 
-    public void addImage ( ImageIcon image )
+    public void addImage ( final ImageIcon image )
     {
         addImage ( 0, image );
     }
 
-    public void addImage ( int index, ImageIcon image )
+    public void addImage ( final int index, final ImageIcon image )
     {
         try
         {
-            ImageIcon previewIcon = ImageUtils.createPreviewIcon ( image, imageLength );
-            int rwidth = previewIcon.getIconWidth ();
-            int rheight = previewIcon.getIconHeight ();
+            final ImageIcon previewIcon = ImageUtils.createPreviewIcon ( image, imageLength );
+            final int rwidth = previewIcon.getIconWidth ();
+            final int rheight = previewIcon.getIconHeight ();
 
-            BufferedImage reflection = ImageUtils.createCompatibleImage ( rwidth, rheight, Transparency.TRANSLUCENT );
-            Graphics2D g2d = reflection.createGraphics ();
+            final BufferedImage reflection = ImageUtils.createCompatibleImage ( rwidth, rheight, Transparency.TRANSLUCENT );
+            final Graphics2D g2d = reflection.createGraphics ();
             LafUtils.setupAntialias ( g2d );
             g2d.drawImage ( previewIcon.getImage (), 0, 0, null );
             g2d.setComposite ( AlphaComposite.getInstance ( AlphaComposite.DST_IN ) );
@@ -318,7 +319,7 @@ public class WebImageGallery extends JComponent
         updateContainer ();
     }
 
-    public void removeImage ( ImageIcon image )
+    public void removeImage ( final ImageIcon image )
     {
         if ( images.contains ( image ) )
         {
@@ -326,11 +327,11 @@ public class WebImageGallery extends JComponent
         }
     }
 
-    public void removeImage ( int index )
+    public void removeImage ( final int index )
     {
         if ( index >= 0 && index < images.size () )
         {
-            boolean wasSelected = getSelectedIndex () == index;
+            final boolean wasSelected = getSelectedIndex () == index;
 
             images.remove ( index );
             descriptions.remove ( index );
@@ -356,7 +357,7 @@ public class WebImageGallery extends JComponent
 
     private void recalcualteMaxSizes ()
     {
-        for ( ImageIcon icon : images )
+        for ( final ImageIcon icon : images )
         {
             maxWidth = Math.max ( maxWidth, icon.getIconWidth () );
             maxHeight = Math.max ( maxHeight, icon.getIconHeight () );
@@ -399,7 +400,7 @@ public class WebImageGallery extends JComponent
 
             // Initial image
 
-            float add = selectedIndex == i ? progress * 0.4f : ( oldSelectedIndex == i ? 0.4f - progress * 0.4f : 0 );
+            final float add = selectedIndex == i ? progress * 0.4f : ( oldSelectedIndex == i ? 0.4f - progress * 0.4f : 0 );
             g2d.setComposite ( AlphaComposite.getInstance ( AlphaComposite.SRC_OVER, 0.6f + add ) );
 
             g2d.drawImage ( bi, x - imageWidth / 2, y - imageHeight / 2, null );

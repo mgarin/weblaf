@@ -38,6 +38,7 @@ import com.alee.laf.StyleConstants;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.combobox.WebComboBox;
 import com.alee.laf.combobox.WebComboBoxCellRenderer;
+import com.alee.laf.combobox.WebComboBoxStyle;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.list.WebList;
 import com.alee.laf.list.editor.ListEditAdapter;
@@ -45,7 +46,7 @@ import com.alee.laf.menu.WebPopupMenu;
 import com.alee.laf.menu.WebRadioButtonMenuItem;
 import com.alee.laf.optionpane.WebOptionPane;
 import com.alee.laf.panel.WebPanel;
-import com.alee.laf.scroll.WebScrollBarUI;
+import com.alee.laf.scroll.WebScrollBar;
 import com.alee.laf.scroll.WebScrollPane;
 import com.alee.laf.splitpane.WebSplitPane;
 import com.alee.laf.text.WebTextField;
@@ -403,7 +404,7 @@ public class WebFileChooserPanel extends WebPanel
                         else
                         {
                             renderer.setIcon ( FileUtils.getFileIcon ( file ) );
-                            renderer.setText ( FileUtils.getDisplayFileName ( file ) );
+                            renderer.setText ( TextUtils.shortenText ( FileUtils.getDisplayFileName ( file ), 40, true ) );
                         }
                         renderer.setBoldFont ( index == currentHistoryIndex );
 
@@ -419,10 +420,18 @@ public class WebFileChooserPanel extends WebPanel
                         historyPopup.setVisible ( false );
                     }
                 } );
+
                 final WebScrollPane scrollPane = new WebScrollPane ( historyList, false, false );
                 scrollPane.setOpaque ( false );
                 scrollPane.getViewport ().setOpaque ( false );
                 scrollPane.setShadeWidth ( 0 );
+
+                final WebScrollBar vsb = scrollPane.getWebVerticalScrollBar ();
+                vsb.setThumbRound ( WebComboBoxStyle.scrollBarThumbRound );
+                vsb.setMargin ( WebComboBoxStyle.scrollBarMargin );
+                vsb.setButtonsVisible ( WebComboBoxStyle.scrollBarButtonsVisible );
+                vsb.setDrawTrack ( WebComboBoxStyle.scrollBarTrackVisible );
+
                 historyPopup.add ( scrollPane );
 
                 historyPopup.showBelowMiddle ( history );
@@ -1528,8 +1537,15 @@ public class WebFileChooserPanel extends WebPanel
             public Dimension getPreferredSize ()
             {
                 final Dimension ps = super.getPreferredSize ();
-                ps.width = ps.width + WebScrollBarUI.LENGTH;
+
+                final JScrollBar vsb = getVerticalScrollBar ();
+                if ( vsb != null && vsb.isShowing () )
+                {
+                    ps.width = ps.width + vsb.getPreferredSize ().width;
+                }
+
                 ps.height = Math.min ( ps.height, 100 );
+
                 return ps;
             }
         };

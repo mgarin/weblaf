@@ -59,7 +59,6 @@ public class WebSeparatorUI extends BasicSeparatorUI
     public void installUI ( final JComponent c )
     {
         super.installUI ( c );
-
         this.separator = ( JSeparator ) c;
 
         // Default settings

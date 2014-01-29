@@ -130,7 +130,7 @@ public class NinePatchIconPainter<E extends JComponent> extends AbstractPainter<
     public void setNinePatchIcon ( final NinePatchIcon icon )
     {
         this.icon = icon;
-        fireUpdate ();
+        updateAll ();
     }
 
     /**

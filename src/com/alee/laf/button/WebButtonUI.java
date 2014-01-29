@@ -785,6 +785,11 @@ public class WebButtonUI extends BasicButtonUI implements ShapeProvider, SwingCo
         updateBorder ();
     }
 
+    public boolean isRollover ()
+    {
+        return rollover;
+    }
+
     @Override
     public void paint ( final Graphics g, final JComponent c )
     {

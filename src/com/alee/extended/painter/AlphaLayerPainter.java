@@ -105,7 +105,7 @@ public class AlphaLayerPainter<E extends JComponent> extends AbstractPainter<E>
     public void setSquareSize ( final int squareSize )
     {
         this.squareSize = squareSize;
-        fireRepaint ();
+        repaint ();
     }
 
     /**
@@ -126,7 +126,7 @@ public class AlphaLayerPainter<E extends JComponent> extends AbstractPainter<E>
     public void setLightSquareColor ( final Color lightSquareColor )
     {
         this.lightSquareColor = lightSquareColor;
-        fireRepaint ();
+        repaint ();
     }
 
     /**
@@ -147,7 +147,7 @@ public class AlphaLayerPainter<E extends JComponent> extends AbstractPainter<E>
     public void setDarkSquareColor ( final Color darkSquareColor )
     {
         this.darkSquareColor = darkSquareColor;
-        fireRepaint ();
+        repaint ();
     }
 
     /**

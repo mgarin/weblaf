@@ -140,7 +140,7 @@ public class TexturePainter<E extends JComponent> extends AbstractPainter<E>
     protected void updatePainter ( final BufferedImage image )
     {
         this.paint = image != null ? new TexturePaint ( image, new Rectangle ( 0, 0, image.getWidth (), image.getHeight () ) ) : null;
-        fireRepaint ();
+        repaint ();
     }
 
     /**

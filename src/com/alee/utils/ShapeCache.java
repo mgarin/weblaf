@@ -33,8 +33,28 @@ import java.util.WeakHashMap;
 
 public class ShapeCache
 {
+    /**
+     * Separator for settings cached within single key.
+     */
+    private static final String settingsSeparator = ";";
+
+    /**
+     * Shapes cache map.
+     */
     private static final Map<Component, Map<String, CachedShape>> shapeCache = new WeakHashMap<Component, Map<String, CachedShape>> ( 10 );
 
+    /**
+     * Returns cached component shape.
+     * If shape is not yet cached it will be created.
+     * If shape settings are changed from the last time it was queued it will be re-created.
+     *
+     * @param component     component for which shape is cached
+     * @param shapeId       unique shape ID
+     * @param shapeProvider shape provider
+     * @param settings      shape settings used as a shape key
+     * @param <T>           shape type
+     * @return cached component shape
+     */
     public static <T extends Shape> T getShape ( final Component component, final String shapeId, final DataProvider<T> shapeProvider,
                                                  final Object... settings )
     {
@@ -67,16 +87,58 @@ public class ShapeCache
         }
     }
 
+    /**
+     * Combines shape settings into a single key for cache map and returns it.
+     *
+     * @param settings settings to combine
+     * @return key for the specified shape settings
+     */
     private static String combineSettingsKey ( final Object... settings )
     {
         final StringBuilder stringBuilder = new StringBuilder ();
         for ( final Object object : settings )
         {
-            stringBuilder.append ( object.toString () );
+            if ( stringBuilder.length () > 0 )
+            {
+                stringBuilder.append ( settingsSeparator );
+            }
+            stringBuilder.append ( getSettingKey ( object ) );
         }
         return stringBuilder.toString ();
     }
 
+    /**
+     * Returns setting string representation.
+     *
+     * @param setting setting to be converted
+     * @return setting string representation
+     */
+    private static String getSettingKey ( final Object setting )
+    {
+        if ( setting instanceof Insets )
+        {
+            final Insets i = ( Insets ) setting;
+            return i.top + "," + i.left + "," + i.bottom + "," + i.right;
+        }
+        else if ( setting instanceof Rectangle )
+        {
+            final Rectangle r = ( Rectangle ) setting;
+            return r.x + "," + r.y + "," + r.width + "," + r.height;
+        }
+        else if ( setting instanceof Point )
+        {
+            final Point p = ( Point ) setting;
+            return p.x + "," + p.y;
+        }
+        else
+        {
+            return setting.toString ();
+        }
+    }
+
+    /**
+     * Cached shape class.
+     */
     private static class CachedShape
     {
         private final String key;

@@ -28,7 +28,8 @@ import javax.swing.plaf.ComponentUI;
 
 public class WebToolBarSeparatorUI extends WebSeparatorUI
 {
-    public static ComponentUI createUI ( JComponent c )
+    @SuppressWarnings ( "UnusedParameters" )
+    public static ComponentUI createUI ( final JComponent c )
     {
         return new WebToolBarSeparatorUI ();
     }

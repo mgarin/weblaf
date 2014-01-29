@@ -45,7 +45,7 @@ public class WebSplitButton extends WebButton implements MouseMotionListener, Mo
      *
      * @see #getUIClassID
      */
-    private static final String uiClassID = "TristateCheckBoxUI";
+    private static final String uiClassID = "SplitButtonUI";
 
     /**
      * Whether should always display popup menu when button is clicked or not.
@@ -231,9 +231,9 @@ public class WebSplitButton extends WebButton implements MouseMotionListener, Mo
      *
      * @param way approximate popup menu display way
      */
-    public void setPopupMenuWay ( final PopupMenuWay popupMenuWay )
+    public void setPopupMenuWay ( final PopupMenuWay way )
     {
-        this.popupMenuWay = popupMenuWay;
+        this.popupMenuWay = way;
     }
 
     /**
@@ -449,7 +449,7 @@ public class WebSplitButton extends WebButton implements MouseMotionListener, Mo
      * parameter.
      *
      * @param event the <code>ActionEvent</code> object
-     * @see EventListenerList
+     * @see javax.swing.event.EventListenerList
      */
     protected void fireButtonClicked ( final ActionEvent event )
     {
@@ -485,7 +485,7 @@ public class WebSplitButton extends WebButton implements MouseMotionListener, Mo
      * parameter.
      *
      * @param event the <code>ActionEvent</code> object
-     * @see EventListenerList
+     * @see javax.swing.event.EventListenerList
      */
     protected void fireSplitbuttonClicked ( final ActionEvent event )
     {

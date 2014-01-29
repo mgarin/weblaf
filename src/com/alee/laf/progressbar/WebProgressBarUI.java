@@ -18,6 +18,7 @@
 package com.alee.laf.progressbar;
 
 import com.alee.laf.StyleConstants;
+import com.alee.laf.WebLookAndFeel;
 import com.alee.utils.LafUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.ThreadUtils;
@@ -78,7 +79,7 @@ public class WebProgressBarUI extends BasicProgressBarUI implements ShapeProvide
 
     private PropertyChangeListener propertyChangeListener;
 
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebProgressBarUI ();
@@ -91,7 +92,7 @@ public class WebProgressBarUI extends BasicProgressBarUI implements ShapeProvide
 
         // Default settings
         SwingUtils.setOrientation ( progressBar );
-        progressBar.setOpaque ( false );
+        LookAndFeel.installProperty ( progressBar, WebLookAndFeel.OPAQUE_PROPERTY, Boolean.FALSE );
         progressBar.setBorderPainted ( false );
         progressBar.setForeground ( Color.DARK_GRAY );
 

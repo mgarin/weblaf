@@ -56,7 +56,7 @@ public class DashedBorderPainter<E extends JComponent> extends BorderPainter<E>
      *
      * @param dash dashing pattern
      */
-    public DashedBorderPainter ( float[] dash )
+    public DashedBorderPainter ( final float[] dash )
     {
         super ();
         setDash ( dash );
@@ -68,7 +68,7 @@ public class DashedBorderPainter<E extends JComponent> extends BorderPainter<E>
      * @param dash      dashing pattern
      * @param dashPhase dashing pattern offset
      */
-    public DashedBorderPainter ( float[] dash, float dashPhase )
+    public DashedBorderPainter ( final float[] dash, final float dashPhase )
     {
         super ();
         setDash ( dash );
@@ -91,11 +91,11 @@ public class DashedBorderPainter<E extends JComponent> extends BorderPainter<E>
      *
      * @param dash new dashing pattern
      */
-    public void setDash ( float[] dash )
+    public void setDash ( final float[] dash )
     {
         this.dash = dash;
         updateStroke ();
-        fireRepaint ();
+        repaint ();
     }
 
     /**
@@ -114,11 +114,11 @@ public class DashedBorderPainter<E extends JComponent> extends BorderPainter<E>
      *
      * @param dashPhase new dashing pattern offset
      */
-    public void setDashPhase ( float dashPhase )
+    public void setDashPhase ( final float dashPhase )
     {
         this.dashPhase = dashPhase;
         updateStroke ();
-        fireRepaint ();
+        repaint ();
     }
 
     /**

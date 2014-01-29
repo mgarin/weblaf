@@ -86,7 +86,7 @@ public class NinePatchStatePainter<E extends JComponent> extends AbstractPainter
     public void setStateIcons ( final Map<String, NinePatchIcon> stateIcons )
     {
         this.stateIcons = stateIcons;
-        fireUpdate ();
+        updateAll ();
     }
 
     /**
@@ -98,7 +98,7 @@ public class NinePatchStatePainter<E extends JComponent> extends AbstractPainter
     public void addStateIcon ( final String state, final NinePatchIcon ninePatchIcon )
     {
         stateIcons.put ( state, ninePatchIcon );
-        fireUpdate ();
+        updateAll ();
     }
 
     /**
@@ -109,7 +109,7 @@ public class NinePatchStatePainter<E extends JComponent> extends AbstractPainter
     public void removeStateIcon ( final String state )
     {
         stateIcons.remove ( state );
-        fireUpdate ();
+        updateAll ();
     }
 
     /**
@@ -323,7 +323,7 @@ public class NinePatchStatePainter<E extends JComponent> extends AbstractPainter
         if ( hasStateIcons () )
         {
             Dimension maxDimension = new Dimension ( 0, 0 );
-            for ( NinePatchIcon npi : stateIcons.values () )
+            for ( final NinePatchIcon npi : stateIcons.values () )
             {
                 npi.setComponent ( c );
                 maxDimension = SwingUtils.max ( maxDimension, npi.getPreferredSize () );

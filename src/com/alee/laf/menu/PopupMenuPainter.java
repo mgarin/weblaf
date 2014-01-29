@@ -21,7 +21,8 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * Base painter for JPopupMenu component used as WebPopupMenuUI default styling.
+ * Base painter for JPopupMenu component.
+ * It is used as WebPopupMenuUI default styling.
  *
  * @author Mikle Garin
  */

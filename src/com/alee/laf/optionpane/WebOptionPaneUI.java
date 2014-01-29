@@ -18,7 +18,9 @@
 package com.alee.laf.optionpane;
 
 import com.alee.laf.StyleConstants;
+import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
+import com.alee.utils.LafUtils;
 import com.alee.utils.SwingUtils;
 
 import javax.swing.*;
@@ -53,16 +55,15 @@ public class WebOptionPaneUI extends BasicOptionPaneUI
 
         // Default settings
         SwingUtils.setOrientation ( optionPane );
-        optionPane.setOpaque ( false );
+        LookAndFeel.installProperty ( optionPane, WebLookAndFeel.OPAQUE_PROPERTY, Boolean.FALSE );
         optionPane.setBackground ( WebOptionPaneStyle.backgroundColor );
-
-        // Updating border
-        optionPane.setBorder ( BorderFactory.createEmptyBorder ( 15, 15, 15, 15 ) );
+        optionPane.setBorder ( LafUtils.createWebBorder ( 15, 15, 15, 15 ) );
     }
 
     @Override
     protected Container createMessageArea ()
     {
+        // todo Really bad workaround
         final Container messageArea = super.createMessageArea ();
         SwingUtils.setOpaqueRecursively ( messageArea, false );
         return messageArea;
