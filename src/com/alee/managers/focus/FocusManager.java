@@ -278,7 +278,9 @@ public final class FocusManager
             Map<FocusTracker, Boolean> componentTrackers = trackers.get ( component );
             if ( componentTrackers == null )
             {
-                componentTrackers = new HashMap<FocusTracker, Boolean> ();
+                // Trackers must also be kept in a weak references as they might have links leading to component
+                // That caused most of memory leak issues in previous tracker versions
+                componentTrackers = new WeakHashMap<FocusTracker, Boolean> ();
                 trackers.put ( component, componentTrackers );
             }
             componentTrackers.put ( focusTracker,
@@ -287,7 +289,7 @@ public final class FocusManager
     }
 
     /**
-     * Unregisters focus tracker.
+     * Unregisters specified focus tracker.
      *
      * @param focusTracker focus tracker to unregister
      */
@@ -306,6 +308,24 @@ public final class FocusManager
                     iterator.remove ();
                 }
             }
+        }
+    }
+
+    /**
+     * Unregisters all focus trackers from the specified component.
+     *
+     * @param component component to unregister all focus trackers from
+     */
+    public static void removeFocusTrackers ( final Component component )
+    {
+        synchronized ( trackersLock )
+        {
+            final Map<FocusTracker, Boolean> allTrackers = trackers.get ( component );
+            if ( allTrackers != null && allTrackers.size () > 0 )
+            {
+                allTrackers.clear ();
+            }
+            trackers.remove ( component );
         }
     }
 }

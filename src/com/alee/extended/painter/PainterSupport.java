@@ -21,6 +21,7 @@ import com.alee.laf.WebLookAndFeel;
 import com.alee.utils.LafUtils;
 
 import javax.swing.*;
+import java.lang.ref.WeakReference;
 import java.util.Map;
 import java.util.WeakHashMap;
 
@@ -71,6 +72,11 @@ public final class PainterSupport
             // Updating border
             LafUtils.updateBorder ( component );
 
+            // Creating weak references to use them inside the listener
+            // Otherwise we will force it to keep strong reference to component and painter if we use them directly
+            final WeakReference<JComponent> c = new WeakReference<JComponent> ( component );
+            final WeakReference<Painter> p = new WeakReference<Painter> ( painter );
+
             // Adding painter listener
             final PainterListener listener = new PainterListener ()
             {
@@ -78,14 +84,14 @@ public final class PainterSupport
                 public void repaint ()
                 {
                     // Forcing component to be repainted
-                    component.repaint ();
+                    c.get ().repaint ();
                 }
 
                 @Override
                 public void repaint ( final int x, final int y, final int width, final int height )
                 {
                     // Forcing component to be repainted
-                    component.repaint ( x, y, width, height );
+                    c.get ().repaint ( x, y, width, height );
                 }
 
                 @Override
@@ -93,17 +99,17 @@ public final class PainterSupport
                 {
                     // todo Move to separate "updateBorder" method in PainterListener?
                     // Forcing border updates
-                    LafUtils.updateBorder ( component );
+                    LafUtils.updateBorder ( c.get () );
 
                     // Forcing layout updates
-                    component.revalidate ();
+                    c.get ().revalidate ();
                 }
 
                 @Override
                 public void updateOpacity ()
                 {
                     // Updating component opacity according to painter
-                    component.setOpaque ( painter.isOpaque ( component ) );
+                    c.get ().setOpaque ( p.get ().isOpaque ( c.get () ) );
                 }
             };
             painter.addPainterListener ( listener );
