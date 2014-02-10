@@ -60,12 +60,12 @@ public class ImageTransition extends JComponent implements ActionListener
         this ( null, null );
     }
 
-    public ImageTransition ( BufferedImage currentImage )
+    public ImageTransition ( final BufferedImage currentImage )
     {
         this ( currentImage, null );
     }
 
-    public ImageTransition ( BufferedImage currentImage, BufferedImage otherImage )
+    public ImageTransition ( final BufferedImage currentImage, final BufferedImage otherImage )
     {
         super ();
         this.currentImage = currentImage;
@@ -85,7 +85,7 @@ public class ImageTransition extends JComponent implements ActionListener
         return blocked;
     }
 
-    public void setBlocked ( boolean blocked )
+    public void setBlocked ( final boolean blocked )
     {
         this.blocked = blocked;
     }
@@ -95,7 +95,7 @@ public class ImageTransition extends JComponent implements ActionListener
         return currentImage;
     }
 
-    public void setCurrentImage ( BufferedImage currentImage )
+    public void setCurrentImage ( final BufferedImage currentImage )
     {
         this.currentImage = currentImage;
     }
@@ -105,7 +105,7 @@ public class ImageTransition extends JComponent implements ActionListener
         return otherImage;
     }
 
-    public void setOtherImage ( BufferedImage otherImage )
+    public void setOtherImage ( final BufferedImage otherImage )
     {
         this.otherImage = otherImage;
     }
@@ -120,7 +120,7 @@ public class ImageTransition extends JComponent implements ActionListener
         return transitionEffects != null && transitionEffects.size () > 0 ? transitionEffects.get ( 0 ) : null;
     }
 
-    public void addTransitionEffect ( TransitionEffect transitionEffect )
+    public void addTransitionEffect ( final TransitionEffect transitionEffect )
     {
         if ( transitionEffects == null )
         {
@@ -138,7 +138,7 @@ public class ImageTransition extends JComponent implements ActionListener
         }
     }
 
-    public void removeTransitionEffect ( TransitionEffect transitionEffect )
+    public void removeTransitionEffect ( final TransitionEffect transitionEffect )
     {
         if ( transitionEffects != null )
         {
@@ -146,17 +146,17 @@ public class ImageTransition extends JComponent implements ActionListener
         }
     }
 
-    public void setTransitionEffect ( TransitionEffect transitionEffect )
+    public void setTransitionEffect ( final TransitionEffect transitionEffect )
     {
         transitionEffects = transitionEffect != null ? CollectionUtils.copy ( transitionEffect ) : null;
     }
 
-    public void setTransitionEffects ( List<TransitionEffect> transitionEffects )
+    public void setTransitionEffects ( final List<TransitionEffect> transitionEffects )
     {
         this.transitionEffects = transitionEffects;
     }
 
-    public void setTransitionEffects ( TransitionEffect... transitionEffects )
+    public void setTransitionEffects ( final TransitionEffect... transitionEffects )
     {
         this.transitionEffects = transitionEffects != null ? CollectionUtils.copy ( transitionEffects ) : null;
     }
@@ -184,7 +184,7 @@ public class ImageTransition extends JComponent implements ActionListener
         }
     }
 
-    public void changeImage ( BufferedImage otherImage )
+    public void changeImage ( final BufferedImage otherImage )
     {
         // Start only if there is not transition running
         if ( !isAnimating () )
@@ -226,7 +226,7 @@ public class ImageTransition extends JComponent implements ActionListener
     }
 
     @Override
-    public void actionPerformed ( ActionEvent e )
+    public void actionPerformed ( final ActionEvent e )
     {
         if ( actualTransitionEffect == null || actualTransitionEffect.performAnimationTick ( ImageTransition.this ) )
         {
@@ -246,7 +246,7 @@ public class ImageTransition extends JComponent implements ActionListener
     protected void finishTransition ()
     {
         // Switching images
-        BufferedImage oldCurrent = this.currentImage;
+        final BufferedImage oldCurrent = this.currentImage;
         this.currentImage = this.otherImage;
         this.otherImage = oldCurrent;
 
@@ -261,11 +261,11 @@ public class ImageTransition extends JComponent implements ActionListener
     }
 
     @Override
-    protected void paintComponent ( Graphics g )
+    protected void paintComponent ( final Graphics g )
     {
         super.paintComponent ( g );
 
-        Graphics2D g2d = ( Graphics2D ) g;
+        final Graphics2D g2d = ( Graphics2D ) g;
         if ( actualTransitionEffect != null && actualTransitionEffect.isAnimating () && currentImage != null && otherImage != null )
         {
             // Transition view
@@ -295,19 +295,19 @@ public class ImageTransition extends JComponent implements ActionListener
         }
     }
 
-    public void addTransitionListener ( TransitionListener listener )
+    public void addTransitionListener ( final TransitionListener listener )
     {
         transitionListeners.add ( listener );
     }
 
-    public void removeTransitionListener ( TransitionListener listener )
+    public void removeTransitionListener ( final TransitionListener listener )
     {
         transitionListeners.remove ( listener );
     }
 
     public void fireTransitionStarted ()
     {
-        for ( TransitionListener listener : CollectionUtils.copy ( transitionListeners ) )
+        for ( final TransitionListener listener : CollectionUtils.copy ( transitionListeners ) )
         {
             listener.transitionStarted ();
         }
@@ -315,7 +315,7 @@ public class ImageTransition extends JComponent implements ActionListener
 
     public void fireTransitionFinished ()
     {
-        for ( TransitionListener listener : CollectionUtils.copy ( transitionListeners ) )
+        for ( final TransitionListener listener : CollectionUtils.copy ( transitionListeners ) )
         {
             listener.transitionFinished ();
         }

@@ -68,6 +68,9 @@ public class WebPopup extends WebPanel
     protected float fade = 0;
     protected WebTimer fadeTimer;
 
+    // Focus tracker strong reference
+    protected DefaultFocusTracker focusTracker;
+
     public WebPopup ()
     {
         this ( PopupManager.getDefaultPopupPainter () );
@@ -177,7 +180,7 @@ public class WebPopup extends WebPanel
         } );
 
         // Focus tracking
-        FocusManager.addFocusTracker ( this, new DefaultFocusTracker ( true )
+        focusTracker = new DefaultFocusTracker ( true )
         {
             @Override
             public boolean isTrackingEnabled ()
@@ -190,7 +193,8 @@ public class WebPopup extends WebPanel
             {
                 WebPopup.this.focusChanged ( focused );
             }
-        } );
+        };
+        FocusManager.addFocusTracker ( this, focusTracker );
     }
 
     /**

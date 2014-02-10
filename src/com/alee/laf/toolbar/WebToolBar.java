@@ -89,7 +89,7 @@ public class WebToolBar extends JToolBar implements ShapeProvider, LanguageConta
 
     public WebSeparator addSeparator ( final String constrain )
     {
-        final WebSeparator separator = new WebSeparator ( getOrientation () );
+        final WebSeparator separator = new WebSeparator ( getOrientation () == HORIZONTAL ? VERTICAL : HORIZONTAL );
         add ( separator, constrain );
         return separator;
     }
@@ -377,7 +377,7 @@ public class WebToolBar extends JToolBar implements ShapeProvider, LanguageConta
             {
                 setUI ( ( WebToolBarUI ) ReflectUtils.createInstance ( WebLookAndFeel.toolBarUI ) );
             }
-            catch ( Throwable e )
+            catch ( final Throwable e )
             {
                 e.printStackTrace ();
                 setUI ( new WebToolBarUI () );

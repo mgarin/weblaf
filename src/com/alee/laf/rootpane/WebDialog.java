@@ -48,6 +48,11 @@ public class WebDialog extends JDialog implements LanguageMethods, LanguageConta
      */
     protected boolean closeOnFocusLoss = false;
 
+    /**
+     * Window focus tracker.
+     */
+    protected DefaultFocusTracker focusTracker;
+
     public WebDialog ()
     {
         super ();
@@ -162,7 +167,10 @@ public class WebDialog extends JDialog implements LanguageMethods, LanguageConta
     protected void initialize ()
     {
         SwingUtils.setOrientation ( this );
-        FocusManager.addFocusTracker ( this, new DefaultFocusTracker ( true )
+
+        // Adding focus tracker for this dialog
+        // It is stored into a separate field to avoid its disposal from memory
+        focusTracker = new DefaultFocusTracker ( true )
         {
             @Override
             public boolean isTrackingEnabled ()
@@ -178,7 +186,8 @@ public class WebDialog extends JDialog implements LanguageMethods, LanguageConta
                     setVisible ( false );
                 }
             }
-        } );
+        };
+        FocusManager.addFocusTracker ( this, focusTracker );
     }
 
     /**

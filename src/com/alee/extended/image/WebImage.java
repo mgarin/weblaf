@@ -253,38 +253,45 @@ public class WebImage extends JComponent implements SwingConstants
      * Changes image to new one taken from specified icon.
      *
      * @param icon icon to process
+     * @return this image component
      */
-    public void setIcon ( final Icon icon )
+    public WebImage setIcon ( final Icon icon )
     {
         setImage ( ImageUtils.getBufferedImage ( icon ) );
+        return this;
     }
 
     /**
      * Changes image to new one taken from specified image icon.
      *
      * @param icon image icon to process
+     * @return this image component
      */
-    public void setIcon ( final ImageIcon icon )
+    public WebImage setIcon ( final ImageIcon icon )
     {
         setImage ( icon.getImage () );
+        return this;
     }
 
     /**
      * Changes image to the specified one.
      *
      * @param image new image
+     * @return this image component
      */
-    public void setImage ( final Image image )
+    public WebImage setImage ( final Image image )
     {
         setImage ( ImageUtils.getBufferedImage ( image ) );
+        return this;
     }
 
     /**
      * Changes image to the specified one.
      *
      * @param image new image
+     * @return this image component
      */
-    public void setImage ( final BufferedImage image )
+    public WebImage setImage ( final BufferedImage image )
     {
         this.image = image;
         if ( !isEnabled () )
@@ -293,6 +300,7 @@ public class WebImage extends JComponent implements SwingConstants
         }
         revalidate ();
         repaint ();
+        return this;
     }
 
     /**
@@ -309,11 +317,13 @@ public class WebImage extends JComponent implements SwingConstants
      * Changes image display type.
      *
      * @param displayType new image display type
+     * @return this image component
      */
-    public void setDisplayType ( final DisplayType displayType )
+    public WebImage setDisplayType ( final DisplayType displayType )
     {
         this.displayType = displayType;
         updateView ();
+        return this;
     }
 
     /**
@@ -330,11 +340,13 @@ public class WebImage extends JComponent implements SwingConstants
      * Changes image horizontal alignment to the specified one.
      *
      * @param horizontalAlignment new image horizontal alignment
+     * @return this image component
      */
-    public void setHorizontalAlignment ( final int horizontalAlignment )
+    public WebImage setHorizontalAlignment ( final int horizontalAlignment )
     {
         this.horizontalAlignment = horizontalAlignment;
         updateView ();
+        return this;
     }
 
     /**
@@ -351,11 +363,13 @@ public class WebImage extends JComponent implements SwingConstants
      * Changes image vertical alignment to the specified one.
      *
      * @param verticalAlignment new image vertical alignment
+     * @return this image component
      */
-    public void setVerticalAlignment ( final int verticalAlignment )
+    public WebImage setVerticalAlignment ( final int verticalAlignment )
     {
         this.verticalAlignment = verticalAlignment;
         updateView ();
+        return this;
     }
 
     /**
@@ -372,17 +386,19 @@ public class WebImage extends JComponent implements SwingConstants
      * Changes image transparency.
      *
      * @param transparency new image transparency
+     * @return this image component
      */
-    public void setTransparency ( final float transparency )
+    public WebImage setTransparency ( final float transparency )
     {
         this.transparency = transparency;
         updateView ();
+        return this;
     }
 
     /**
      * Updates image component view.
      */
-    private void updateView ()
+    protected void updateView ()
     {
         if ( isShowing () )
         {
@@ -404,11 +420,13 @@ public class WebImage extends JComponent implements SwingConstants
      * Changes image margin.
      *
      * @param margin new image margin
+     * @return this image component
      */
-    public void setMargin ( final Insets margin )
+    public WebImage setMargin ( final Insets margin )
     {
         this.margin = margin;
         updateBorder ();
+        return this;
     }
 
     /**
@@ -418,26 +436,28 @@ public class WebImage extends JComponent implements SwingConstants
      * @param left   left margin
      * @param bottom bottom margin
      * @param right  right margin
+     * @return this image component
      */
-    public void setMargin ( final int top, final int left, final int bottom, final int right )
+    public WebImage setMargin ( final int top, final int left, final int bottom, final int right )
     {
-        setMargin ( new Insets ( top, left, bottom, right ) );
+        return setMargin ( new Insets ( top, left, bottom, right ) );
     }
 
     /**
      * Changes image margin.
      *
      * @param spacing side spacing
+     * @return this image component
      */
-    public void setMargin ( final int spacing )
+    public WebImage setMargin ( final int spacing )
     {
-        setMargin ( spacing, spacing, spacing, spacing );
+        return setMargin ( spacing, spacing, spacing, spacing );
     }
 
     /**
      * Updates image component border.
      */
-    private void updateBorder ()
+    protected void updateBorder ()
     {
         if ( margin != null )
         {
@@ -529,7 +549,7 @@ public class WebImage extends JComponent implements SwingConstants
      * @param insets image component insets
      * @return image component center X coordinate
      */
-    private int getCenterX ( final Insets insets )
+    protected int getCenterX ( final Insets insets )
     {
         return insets.left + ( getWidth () - insets.left - insets.right ) / 2;
     }
@@ -540,7 +560,7 @@ public class WebImage extends JComponent implements SwingConstants
      * @param insets image component insets
      * @return image component center Y coordinate
      */
-    private int getCenterY ( final Insets insets )
+    protected int getCenterY ( final Insets insets )
     {
         return insets.top + ( getHeight () - insets.top - insets.bottom ) / 2;
     }
@@ -551,7 +571,7 @@ public class WebImage extends JComponent implements SwingConstants
      * @param insets image component insets
      * @return preview image
      */
-    private BufferedImage getPreviewImage ( final Insets insets )
+    protected BufferedImage getPreviewImage ( final Insets insets )
     {
         if ( image.getWidth () > getWidth () || image.getHeight () > getHeight () )
         {
@@ -580,7 +600,7 @@ public class WebImage extends JComponent implements SwingConstants
      *
      * @return currently displayed image
      */
-    private BufferedImage getCurrentImage ()
+    protected BufferedImage getCurrentImage ()
     {
         return !isEnabled () && disabledImage != null ? disabledImage : image;
     }
@@ -608,7 +628,7 @@ public class WebImage extends JComponent implements SwingConstants
      *
      * @return component size required to fully show the image
      */
-    private Dimension getRequiredSize ()
+    protected Dimension getRequiredSize ()
     {
         final Insets insets = getInsets ();
         return new Dimension ( insets.left + ( image != null ? image.getWidth () : 0 ) + insets.right,

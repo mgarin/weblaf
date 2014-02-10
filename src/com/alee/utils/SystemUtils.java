@@ -23,6 +23,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.datatransfer.*;
 import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.lang.management.ManagementFactory;
 import java.security.AccessController;
@@ -65,9 +66,19 @@ public final class SystemUtils
      */
     private static JavaVersion javaVersion;
 
+    /**
+     * Cached OS name.
+     */
     private static final String osName;
+
+    /**
+     * Cached shor OS name.
+     */
     private static final String shortOsName;
 
+    /**
+     * Cached OS variables initialization.
+     */
     static
     {
         osName = AccessController.doPrivileged ( new PrivilegedAction<String> ()
@@ -102,6 +113,11 @@ public final class SystemUtils
     }
 
     /**
+     * Transparent cursor.
+     */
+    private static Cursor transparentCursor;
+
+    /**
      * Copies text to system clipboard.
      *
      * @param text text to copy into clipboard
@@ -113,7 +129,7 @@ public final class SystemUtils
             final Clipboard clipboard = Toolkit.getDefaultToolkit ().getSystemClipboard ();
             clipboard.setContents ( new StringSelection ( text ), null );
         }
-        catch ( Throwable e )
+        catch ( final Throwable e )
         {
             e.printStackTrace ();
         }
@@ -133,11 +149,11 @@ public final class SystemUtils
             {
                 return ( String ) t.getTransferData ( DataFlavor.stringFlavor );
             }
-            catch ( UnsupportedFlavorException e )
+            catch ( final UnsupportedFlavorException e )
             {
                 return null;
             }
-            catch ( IOException e )
+            catch ( final IOException e )
             {
                 return null;
             }
@@ -304,7 +320,7 @@ public final class SystemUtils
      *
      * @return true if current OS is windows, false otherwise
      */
-    @SuppressWarnings ( "StringEquality" )
+    @SuppressWarnings ("StringEquality")
     public static boolean isWindows ()
     {
         return shortOsName == WINDOWS;
@@ -315,7 +331,7 @@ public final class SystemUtils
      *
      * @return true if current OS is mac, false otherwise
      */
-    @SuppressWarnings ( "StringEquality" )
+    @SuppressWarnings ("StringEquality")
     public static boolean isMac ()
     {
         return shortOsName == MAC;
@@ -326,7 +342,7 @@ public final class SystemUtils
      *
      * @return true if current OS is unix, false otherwise
      */
-    @SuppressWarnings ( "StringEquality" )
+    @SuppressWarnings ("StringEquality")
     public static boolean isUnix ()
     {
         return shortOsName == UNIX;
@@ -337,7 +353,7 @@ public final class SystemUtils
      *
      * @return true if current OS is solaris, false otherwise
      */
-    @SuppressWarnings ( "StringEquality" )
+    @SuppressWarnings ("StringEquality")
     public static boolean isSolaris ()
     {
         return shortOsName == SOLARIS;
@@ -507,5 +523,16 @@ public final class SystemUtils
             }
         }
         return devices;
+    }
+
+    public static Cursor getTransparentCursor ()
+    {
+        if ( transparentCursor == null )
+        {
+            final Dimension d = Toolkit.getDefaultToolkit ().getBestCursorSize ( 16, 16 );
+            final BufferedImage image = ImageUtils.createCompatibleImage ( d.width, d.height, Transparency.TRANSLUCENT );
+            transparentCursor = Toolkit.getDefaultToolkit ().createCustomCursor ( image, new Point ( 0, 0 ), "transparent" );
+        }
+        return transparentCursor;
     }
 }

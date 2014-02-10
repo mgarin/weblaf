@@ -106,23 +106,23 @@ public class WebCalendar extends WebPanel
     /**
      * Date buttons customizer.
      */
-    protected DateCustomizer dateCustomizer = null;
+    protected DateCustomizer dateCustomizer;
 
     /**
      * Currently selected date.
      */
-    protected Date date = new Date ();
+    protected Date date;
 
     /**
      * Displayed month date.
      */
-    protected Date shownDate = new Date ();
+    protected Date shownDate;
 
     /**
      * Previously displayed month date.
      * Used to perform animation in a specific direction.
      */
-    protected Date oldShownDate = new Date ();
+    protected Date oldShownDate;
 
     /**
      * UI components.
@@ -330,6 +330,7 @@ public class WebCalendar extends WebPanel
 
         final Calendar calendar = Calendar.getInstance ();
         calendar.setTime ( shownDate );
+        calendar.set ( Calendar.DAY_OF_MONTH, 1 );
         calendar.set ( Calendar.MONTH, calendar.get ( Calendar.MONTH ) + change );
         setShownDate ( calendar.getTime () );
     }
@@ -349,6 +350,7 @@ public class WebCalendar extends WebPanel
 
         final Calendar calendar = Calendar.getInstance ();
         calendar.setTime ( shownDate );
+        calendar.set ( Calendar.DAY_OF_MONTH, 1 );
         calendar.set ( Calendar.YEAR, calendar.get ( Calendar.YEAR ) + change );
         setShownDate ( calendar.getTime () );
     }

@@ -240,14 +240,17 @@ public class BorderPainter<E extends JComponent> extends AbstractPainter<E>
     @Override
     public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c )
     {
-        final Object aa = LafUtils.setupAntialias ( g2d );
-        final Stroke os = LafUtils.setupStroke ( g2d, stroke, stroke != null );
+        if ( width > 0 && stroke != null && color != null )
+        {
+            final Object aa = LafUtils.setupAntialias ( g2d );
+            final Stroke os = LafUtils.setupStroke ( g2d, stroke, stroke != null );
 
-        g2d.setPaint ( color );
-        g2d.draw ( getBorderShape ( bounds ) );
+            g2d.setPaint ( color );
+            g2d.draw ( getBorderShape ( bounds ) );
 
-        LafUtils.restoreStroke ( g2d, os, stroke != null );
-        LafUtils.restoreAntialias ( g2d, aa );
+            LafUtils.restoreStroke ( g2d, os, stroke != null );
+            LafUtils.restoreAntialias ( g2d, aa );
+        }
     }
 
     /**

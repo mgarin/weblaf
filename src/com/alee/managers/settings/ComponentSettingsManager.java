@@ -48,12 +48,12 @@ public final class ComponentSettingsManager
     /**
      * Registered settings processor classes.
      */
-    private static Map<Class, Class> settingsProcessorClasses = new LinkedHashMap<Class, Class> ();
+    private static final Map<Class, Class> settingsProcessorClasses = new LinkedHashMap<Class, Class> ();
 
     /**
      * Registered component settings processors.
      */
-    private static Map<Component, SettingsProcessor> settingsProcessors = new WeakHashMap<Component, SettingsProcessor> ();
+    private static final Map<Component, SettingsProcessor> settingsProcessors = new WeakHashMap<Component, SettingsProcessor> ();
 
     /**
      * Whether throw exceptions on inappropriate actions or not.
@@ -81,6 +81,7 @@ public final class ComponentSettingsManager
             registerSettingsProcessor ( WebDateField.class, WebDateFieldSettingsProcessor.class );
             registerSettingsProcessor ( JPasswordField.class, JPasswordFieldSettingsProcessor.class );
             registerSettingsProcessor ( JTextComponent.class, JTextComponentSettingsProcessor.class );
+            registerSettingsProcessor ( JScrollBar.class, JScrollBarSettingsProcessor.class );
             registerSettingsProcessor ( WebCollapsiblePane.class, WebCollapsiblePaneSettingsProcessor.class );
             registerSettingsProcessor ( WebAccordion.class, WebAccordionSettingsProcessor.class );
             registerSettingsProcessor ( WebGradientColorChooser.class, WebGradientColorChooserSettingsProcessor.class );
@@ -181,7 +182,7 @@ public final class ComponentSettingsManager
             {
                 return ReflectUtils.createInstance ( settingsProcessorClass, data );
             }
-            catch ( Throwable e )
+            catch ( final Throwable e )
             {
                 if ( throwExceptions )
                 {

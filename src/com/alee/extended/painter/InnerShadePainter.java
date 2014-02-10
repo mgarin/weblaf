@@ -45,7 +45,7 @@ public class InnerShadePainter<E extends JComponent> extends NinePatchIconPainte
         super ();
     }
 
-    public InnerShadePainter ( final int shadeWidth, final int round, final int shadeOpacity )
+    public InnerShadePainter ( final int shadeWidth, final int round, final float shadeOpacity )
     {
         super ();
         this.shadeWidth = shadeWidth;

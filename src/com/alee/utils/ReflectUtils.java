@@ -25,6 +25,7 @@ import com.alee.utils.reflection.JarStructure;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URI;
@@ -46,6 +47,136 @@ import java.util.zip.ZipInputStream;
 public final class ReflectUtils
 {
     /**
+     * Returns specified class field's type.
+     * This method will also look for the field in super-classes if any exist.
+     *
+     * @param classType type of the class where field can be located
+     * @param fieldName field name
+     * @return specified class field's type
+     */
+    public static Class<?> getFieldTypeSafely ( final Class classType, final String fieldName )
+    {
+        try
+        {
+            return getFieldType ( classType, fieldName );
+        }
+        catch ( final NoSuchFieldException e )
+        {
+            return null;
+        }
+    }
+
+    /**
+     * Returns specified class field's type.
+     * This method will also look for the field in super-classes if any exist.
+     *
+     * @param classType type of the class where field can be located
+     * @param fieldName field name
+     * @return specified class field's type
+     * @throws NoSuchFieldException
+     */
+    public static Class<?> getFieldType ( final Class classType, final String fieldName ) throws NoSuchFieldException
+    {
+        return getField ( classType, fieldName ).getType ();
+    }
+
+    /**
+     * Returns specified class field.
+     * This method will also look for the field in super-classes if any exist.
+     *
+     * @param classType type of the class where field can be located
+     * @param fieldName field name
+     * @return specified class field
+     * @throws NoSuchFieldException
+     */
+    public static Field getFieldSafely ( final Class classType, final String fieldName ) throws NoSuchFieldException
+    {
+        try
+        {
+            return getField ( classType, fieldName );
+        }
+        catch ( final NoSuchFieldException e )
+        {
+            return null;
+        }
+    }
+
+    /**
+     * Returns specified class field.
+     * This method will also look for the field in super-classes if any exist.
+     *
+     * @param classType type of the class where field can be located
+     * @param fieldName field name
+     * @return specified class field
+     * @throws NoSuchFieldException
+     */
+    public static Field getField ( final Class classType, final String fieldName ) throws NoSuchFieldException
+    {
+        Field field;
+        try
+        {
+            field = classType.getDeclaredField ( fieldName );
+        }
+        catch ( final NoSuchFieldException e )
+        {
+            final Class superclass = classType.getSuperclass ();
+            field = superclass != null ? getField ( superclass, fieldName ) : null;
+        }
+        if ( field != null )
+        {
+            return field;
+        }
+        else
+        {
+            throw new NoSuchFieldException ( fieldName );
+        }
+    }
+
+    /**
+     * Applies specified value to object field.
+     * This method allows to access and modify even private object fields.
+     *
+     * @param object object instance
+     * @param field  object field
+     * @param value  field value
+     * @return true if value was applied successfully, false otherwise
+     */
+    public static boolean applyFieldValueSafely ( final Object object, final String field, final Object value )
+    {
+        try
+        {
+            applyFieldValue ( object, field, value );
+            return true;
+        }
+        catch ( final NoSuchFieldException e )
+        {
+            return false;
+        }
+        catch ( final IllegalAccessException e )
+        {
+            return false;
+        }
+    }
+
+    /**
+     * Applies specified value to object field.
+     * This method allows to access and modify even private object fields.
+     *
+     * @param object object instance
+     * @param field  object field
+     * @param value  field value
+     * @throws IllegalAccessException
+     * @throws NoSuchFieldException
+     */
+    public static void applyFieldValue ( final Object object, final String field, final Object value )
+            throws IllegalAccessException, NoSuchFieldException
+    {
+        final Field actualField = object.getClass ().getDeclaredField ( field );
+        actualField.setAccessible ( true );
+        actualField.set ( object, value );
+    }
+
+    /**
      * Returns class for the specified canonical name.
      *
      * @param canonicalName class canonical name
@@ -57,7 +188,7 @@ public final class ReflectUtils
         {
             return Class.forName ( canonicalName );
         }
-        catch ( ClassNotFoundException e )
+        catch ( final ClassNotFoundException e )
         {
             return null;
         }
@@ -70,9 +201,9 @@ public final class ReflectUtils
      * @return class for the specified canonical name
      * @throws ClassNotFoundException
      */
-    public static Class getClass ( final String canonicalName ) throws ClassNotFoundException
+    public static <T> Class<T> getClass ( final String canonicalName ) throws ClassNotFoundException
     {
-        return Class.forName ( canonicalName );
+        return ( Class<T> ) Class.forName ( canonicalName );
     }
 
     /**
@@ -577,6 +708,7 @@ public final class ReflectUtils
         //        Constructor constructor = theClass.getConstructor ( parameterTypes );
 
         // Creating new instance
+        constructor.setAccessible ( true );
         return ( T ) constructor.newInstance ( arguments );
     }
 
@@ -741,6 +873,7 @@ public final class ReflectUtils
                         }
                         if ( fits )
                         {
+                            method.setAccessible ( true );
                             return ( T ) method.invoke ( null, arguments );
                         }
                     }
@@ -870,43 +1003,59 @@ public final class ReflectUtils
     {
         // todo Methods priority check (by super types)
         // todo For now some method with [Object] arg might be used instead of method with [String]
+        final Class aClass = object.getClass ();
         if ( arguments.length == 0 )
         {
             // Calling simple method w/o arguments
-            return ( T ) object.getClass ().getMethod ( methodName ).invoke ( object );
+            return ( T ) aClass.getMethod ( methodName ).invoke ( object );
         }
         else
         {
             // Searching for more complex method
             final Class[] types = getClassTypes ( arguments );
-            for ( final Method method : object.getClass ().getMethods () )
+            return callMethod ( object, aClass, methodName, arguments, types );
+        }
+    }
+
+    private static <T> T callMethod ( final Object object, final Class objectClass, final String methodName, final Object[] arguments,
+                                      final Class[] types ) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException
+    {
+        for ( final Method method : objectClass.getMethods () )
+        {
+            // Checking method name
+            if ( method.getName ().equals ( methodName ) )
             {
-                // Checking method name
-                if ( method.getName ().equals ( methodName ) )
+                // Checking method arguments count
+                final Class<?>[] mt = method.getParameterTypes ();
+                if ( mt.length == types.length )
                 {
-                    // Checking method arguments count
-                    final Class<?>[] mt = method.getParameterTypes ();
-                    if ( mt.length == types.length )
+                    // Checking that arguments fit
+                    boolean fits = true;
+                    for ( int i = 0; i < mt.length; i++ )
                     {
-                        // Checking that arguments fit
-                        boolean fits = true;
-                        for ( int i = 0; i < mt.length; i++ )
+                        if ( !isAssignable ( mt[ i ], types[ i ] ) )
                         {
-                            if ( !isAssignable ( mt[ i ], types[ i ] ) )
-                            {
-                                fits = false;
-                                break;
-                            }
+                            fits = false;
+                            break;
                         }
-                        if ( fits )
-                        {
-                            return ( T ) method.invoke ( object, arguments );
-                        }
+                    }
+                    if ( fits )
+                    {
+                        method.setAccessible ( true );
+                        return ( T ) method.invoke ( object, arguments );
                     }
                 }
             }
-            throw new NoSuchMethodException ( object.getClass ().getName () + "." + methodName + argumentTypesToString ( types ) );
         }
+
+        // Check superclass for this method
+        final Class superclass = objectClass.getSuperclass ();
+        if ( superclass != null )
+        {
+            return callMethod ( object, superclass, methodName, arguments, types );
+        }
+
+        throw new NoSuchMethodException ( objectClass.getName () + "." + methodName + argumentTypesToString ( types ) );
     }
 
     /**

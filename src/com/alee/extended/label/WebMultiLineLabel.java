@@ -34,6 +34,13 @@ import java.awt.*;
 
 public class WebMultiLineLabel extends JLabel implements LanguageMethods, FontMethods<WebMultiLineLabel>
 {
+    /**
+     * Unique UI class ID.
+     *
+     * @see #getUIClassID
+     */
+    private static final String uiClassID = "MultiLineLabelUI";
+
     public WebMultiLineLabel ()
     {
         super ();
@@ -103,7 +110,7 @@ public class WebMultiLineLabel extends JLabel implements LanguageMethods, FontMe
             {
                 setUI ( ( WebMultiLineLabelUI ) ReflectUtils.createInstance ( WebLookAndFeel.multiLineLabelUI ) );
             }
-            catch ( Throwable e )
+            catch ( final Throwable e )
             {
                 e.printStackTrace ();
                 setUI ( new WebMultiLineLabelUI () );
@@ -113,6 +120,15 @@ public class WebMultiLineLabel extends JLabel implements LanguageMethods, FontMe
         {
             setUI ( getUI () );
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getUIClassID ()
+    {
+        return uiClassID;
     }
 
     /**

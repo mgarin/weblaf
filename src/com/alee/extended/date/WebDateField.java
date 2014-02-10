@@ -416,7 +416,7 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
                 return null;
             }
         }
-        catch ( Throwable ex )
+        catch ( final Throwable ex )
         {
             return date;
         }

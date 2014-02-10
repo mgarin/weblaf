@@ -48,10 +48,10 @@ public class WebComponentPanel extends WebPanel
     public static final int GRIPPER_SIZE = 7;
     public static final int SINGLE_GRIPPER_STEP = 4;
 
-    private List<ComponentReorderListener> listeners = new ArrayList<ComponentReorderListener> ( 1 );
+    private final List<ComponentReorderListener> listeners = new ArrayList<ComponentReorderListener> ( 1 );
 
     private WebPanel container;
-    private Map<Component, WebSelectablePanel> components = new LinkedHashMap<Component, WebSelectablePanel> ();
+    private final Map<Component, WebSelectablePanel> components = new LinkedHashMap<Component, WebSelectablePanel> ();
 
     private Insets elementMargin = new Insets ( 2, 2, 2, 2 );
     private boolean reorderingAllowed = false;
@@ -65,7 +65,7 @@ public class WebComponentPanel extends WebPanel
         initialize ();
     }
 
-    public WebComponentPanel ( boolean decorated )
+    public WebComponentPanel ( final boolean decorated )
     {
         super ( decorated );
         initialize ();
@@ -82,14 +82,14 @@ public class WebComponentPanel extends WebPanel
         add ( container, BorderLayout.CENTER );
 
         // Previous action hotkeys
-        HotkeyRunnable prevAction = new HotkeyRunnable ()
+        final HotkeyRunnable prevAction = new HotkeyRunnable ()
         {
             @Override
-            public void run ( KeyEvent e )
+            public void run ( final KeyEvent e )
             {
                 if ( upDownHotkeysAllowed && Hotkey.UP.isTriggered ( e ) || leftRightHotkeysAllowed && Hotkey.LEFT.isTriggered ( e ) )
                 {
-                    int index = getFocusedElementIndex ();
+                    final int index = getFocusedElementIndex ();
                     if ( index == -1 )
                     {
                         focusElement ( getElementCount () - 1 );
@@ -105,14 +105,14 @@ public class WebComponentPanel extends WebPanel
         HotkeyManager.registerHotkey ( this, this, Hotkey.LEFT, prevAction );
 
         // Next action hotkeys
-        HotkeyRunnable nextAction = new HotkeyRunnable ()
+        final HotkeyRunnable nextAction = new HotkeyRunnable ()
         {
             @Override
-            public void run ( KeyEvent e )
+            public void run ( final KeyEvent e )
             {
                 if ( upDownHotkeysAllowed && Hotkey.DOWN.isTriggered ( e ) || leftRightHotkeysAllowed && Hotkey.RIGHT.isTriggered ( e ) )
                 {
-                    int index = getFocusedElementIndex ();
+                    final int index = getFocusedElementIndex ();
                     if ( index == -1 )
                     {
                         focusElement ( 0 );
@@ -129,7 +129,7 @@ public class WebComponentPanel extends WebPanel
     }
 
     @Override
-    public void applyComponentOrientation ( ComponentOrientation o )
+    public void applyComponentOrientation ( final ComponentOrientation o )
     {
         super.applyComponentOrientation ( o );
         updateAllBorders ();
@@ -145,7 +145,7 @@ public class WebComponentPanel extends WebPanel
         return upDownHotkeysAllowed;
     }
 
-    public void setUpDownHotkeysAllowed ( boolean upDownHotkeysAllowed )
+    public void setUpDownHotkeysAllowed ( final boolean upDownHotkeysAllowed )
     {
         this.upDownHotkeysAllowed = upDownHotkeysAllowed;
     }
@@ -155,12 +155,12 @@ public class WebComponentPanel extends WebPanel
         return leftRightHotkeysAllowed;
     }
 
-    public void setLeftRightHotkeysAllowed ( boolean leftRightHotkeysAllowed )
+    public void setLeftRightHotkeysAllowed ( final boolean leftRightHotkeysAllowed )
     {
         this.leftRightHotkeysAllowed = leftRightHotkeysAllowed;
     }
 
-    public WebSelectablePanel addElement ( Component component )
+    public WebSelectablePanel addElement ( final Component component )
     {
         // Ignore existing component insert
         if ( components.containsKey ( component ) )
@@ -169,7 +169,7 @@ public class WebComponentPanel extends WebPanel
         }
 
         // Creating view for component
-        WebSelectablePanel element = new WebSelectablePanel ();
+        final WebSelectablePanel element = new WebSelectablePanel ();
         element.add ( component, BorderLayout.CENTER );
 
         // todo Fix this workaround and check other layouts for that problem
@@ -185,14 +185,14 @@ public class WebComponentPanel extends WebPanel
         return element;
     }
 
-    public void removeElement ( int index )
+    public void removeElement ( final int index )
     {
         removeElement ( getElement ( index ) );
     }
 
-    public void removeElement ( WebSelectablePanel element )
+    public void removeElement ( final WebSelectablePanel element )
     {
-        for ( Component component : components.keySet () )
+        for ( final Component component : components.keySet () )
         {
             if ( components.get ( component ) == element )
             {
@@ -202,10 +202,10 @@ public class WebComponentPanel extends WebPanel
         }
     }
 
-    public void removeElement ( Component component )
+    public void removeElement ( final Component component )
     {
         // Removing actual element
-        WebSelectablePanel element = components.get ( component );
+        final WebSelectablePanel element = components.get ( component );
         container.remove ( element );
 
         // Removing data
@@ -220,16 +220,16 @@ public class WebComponentPanel extends WebPanel
         return components.size ();
     }
 
-    public WebSelectablePanel getElement ( int index )
+    public WebSelectablePanel getElement ( final int index )
     {
         return ( WebSelectablePanel ) getContainerLayout ().getComponent ( index );
     }
 
     public WebSelectablePanel getFocusedElement ()
     {
-        for ( Component component : getContainerLayout ().getComponents () )
+        for ( final Component component : getContainerLayout ().getComponents () )
         {
-            WebSelectablePanel selectablePanel = ( WebSelectablePanel ) component;
+            final WebSelectablePanel selectablePanel = ( WebSelectablePanel ) component;
             if ( selectablePanel.isFocused () )
             {
                 return selectablePanel;
@@ -243,7 +243,7 @@ public class WebComponentPanel extends WebPanel
         return getContainerLayout ().indexOf ( getFocusedElement () );
     }
 
-    public void focusElement ( int index )
+    public void focusElement ( final int index )
     {
         getElement ( index ).transferFocus ();
     }
@@ -253,17 +253,17 @@ public class WebComponentPanel extends WebPanel
         return elementMargin;
     }
 
-    public void setElementMargin ( int margin )
+    public void setElementMargin ( final int margin )
     {
         setElementMargin ( margin, margin, margin, margin );
     }
 
-    public void setElementMargin ( int top, int left, int bottom, int right )
+    public void setElementMargin ( final int top, final int left, final int bottom, final int right )
     {
         setElementMargin ( new Insets ( top, left, bottom, right ) );
     }
 
-    public void setElementMargin ( Insets margin )
+    public void setElementMargin ( final Insets margin )
     {
         this.elementMargin = margin;
 
@@ -276,7 +276,7 @@ public class WebComponentPanel extends WebPanel
         return reorderingAllowed;
     }
 
-    public void setReorderingAllowed ( boolean reorderingAllowed )
+    public void setReorderingAllowed ( final boolean reorderingAllowed )
     {
         this.reorderingAllowed = reorderingAllowed;
 
@@ -289,7 +289,7 @@ public class WebComponentPanel extends WebPanel
         return showReorderGrippers;
     }
 
-    public void setShowReorderGrippers ( boolean showReorderGrippers )
+    public void setShowReorderGrippers ( final boolean showReorderGrippers )
     {
         this.showReorderGrippers = showReorderGrippers;
 
@@ -299,7 +299,7 @@ public class WebComponentPanel extends WebPanel
 
     private void updateAllBorders ()
     {
-        for ( WebSelectablePanel panel : components.values () )
+        for ( final WebSelectablePanel panel : components.values () )
         {
             panel.updateBorder ();
         }
@@ -307,6 +307,8 @@ public class WebComponentPanel extends WebPanel
 
     public class WebSelectablePanel extends WebPanel
     {
+        private final DefaultFocusTracker focusTracker;
+
         private boolean dragged = false;
         private boolean focused = false;
 
@@ -319,12 +321,12 @@ public class WebComponentPanel extends WebPanel
             setPainter ( new WebSelectablePanelPainter () );
 
             // On-press focus transfer & reorder
-            MouseAdapter mouseAdapter = new MouseAdapter ()
+            final MouseAdapter mouseAdapter = new MouseAdapter ()
             {
                 private int startY;
 
                 @Override
-                public void mousePressed ( MouseEvent e )
+                public void mousePressed ( final MouseEvent e )
                 {
                     if ( !SwingUtils.hasFocusOwner ( WebSelectablePanel.this ) )
                     {
@@ -339,7 +341,7 @@ public class WebComponentPanel extends WebPanel
                 }
 
                 @Override
-                public void mouseDragged ( MouseEvent e )
+                public void mouseDragged ( final MouseEvent e )
                 {
                     if ( dragged )
                     {
@@ -349,10 +351,10 @@ public class WebComponentPanel extends WebPanel
                 }
 
                 @Override
-                public void mouseReleased ( MouseEvent e )
+                public void mouseReleased ( final MouseEvent e )
                 {
-                    WebSelectablePanel wsp = WebSelectablePanel.this;
-                    ComponentPanelLayout cpl = getContainerLayout ();
+                    final WebSelectablePanel wsp = WebSelectablePanel.this;
+                    final ComponentPanelLayout cpl = getContainerLayout ();
                     if ( SwingUtilities.isLeftMouseButton ( e ) && dragged )
                     {
                         // Stop drag
@@ -367,12 +369,12 @@ public class WebComponentPanel extends WebPanel
                         else
                         {
                             // Dragged panel index and middle
-                            int oldIndex = cpl.indexOf ( wsp );
-                            int middle = getMiddleY ( wsp );
+                            final int oldIndex = cpl.indexOf ( wsp );
+                            final int middle = getMiddleY ( wsp );
 
                             // Searching for insert index
                             int insertIndex = 0;
-                            for ( Component component : cpl.getComponents () )
+                            for ( final Component component : cpl.getComponents () )
                             {
                                 if ( component != wsp && middle > getMiddleY ( component ) )
                                 {
@@ -407,9 +409,9 @@ public class WebComponentPanel extends WebPanel
                     }
                 }
 
-                private int getMiddleY ( Component component )
+                private int getMiddleY ( final Component component )
                 {
-                    Rectangle rectangle = component.getBounds ();
+                    final Rectangle rectangle = component.getBounds ();
                     return rectangle.y + rectangle.height / 2;
                 }
 
@@ -422,12 +424,12 @@ public class WebComponentPanel extends WebPanel
             addMouseMotionListener ( mouseAdapter );
 
             // Panel focus tracking
-            FocusManager.addFocusTracker ( WebSelectablePanel.this, new DefaultFocusTracker ( true )
+            focusTracker = new DefaultFocusTracker ( true )
             {
                 @Override
-                public void focusChanged ( boolean focused )
+                public void focusChanged ( final boolean focused )
                 {
-                    WebSelectablePanel wsp = WebSelectablePanel.this;
+                    final WebSelectablePanel wsp = WebSelectablePanel.this;
                     wsp.focused = focused;
 
                     // Cancel panel drag on focus loss
@@ -440,18 +442,19 @@ public class WebComponentPanel extends WebPanel
 
                     repaint ();
                 }
-            } );
+            };
+            FocusManager.addFocusTracker ( WebSelectablePanel.this, focusTracker );
         }
 
         public void updateBorder ()
         {
-            int index = getIndex ();
-            boolean ltr = getComponentOrientation ().isLeftToRight ();
+            final int index = getIndex ();
+            final boolean ltr = getComponentOrientation ().isLeftToRight ();
 
-            int top = index == 0 ? elementMargin.top : elementMargin.top + 1;
-            int left = elementMargin.left + ( reorderingAllowed && showReorderGrippers && ltr ? GRIPPER_SIZE : 0 );
-            int bottom = index == components.size () - 1 ? elementMargin.bottom : elementMargin.bottom + 1;
-            int right = elementMargin.right + ( reorderingAllowed && showReorderGrippers && !ltr ? GRIPPER_SIZE : 0 );
+            final int top = index == 0 ? elementMargin.top : elementMargin.top + 1;
+            final int left = elementMargin.left + ( reorderingAllowed && showReorderGrippers && ltr ? GRIPPER_SIZE : 0 );
+            final int bottom = index == components.size () - 1 ? elementMargin.bottom : elementMargin.bottom + 1;
+            final int right = elementMargin.right + ( reorderingAllowed && showReorderGrippers && !ltr ? GRIPPER_SIZE : 0 );
 
             setMargin ( top, left, bottom, right );
         }
@@ -493,7 +496,7 @@ public class WebComponentPanel extends WebPanel
          * {@inheritDoc}
          */
         @Override
-        public boolean isOpaque ( WebSelectablePanel c )
+        public boolean isOpaque ( final WebSelectablePanel c )
         {
             return true;
         }
@@ -502,10 +505,10 @@ public class WebComponentPanel extends WebPanel
          * {@inheritDoc}
          */
         @Override
-        public void paint ( Graphics2D g2d, Rectangle bounds, WebSelectablePanel panel )
+        public void paint ( final Graphics2D g2d, final Rectangle bounds, final WebSelectablePanel panel )
         {
-            boolean notFirst = panel.getIndex () > 0;
-            boolean notLast = panel.getIndex () < components.size () - 1;
+            final boolean notFirst = panel.getIndex () > 0;
+            final boolean notLast = panel.getIndex () < components.size () - 1;
 
             if ( panel.isFocused () )
             {
@@ -515,8 +518,8 @@ public class WebComponentPanel extends WebPanel
                 g2d.fill ( bounds );
 
                 // Borders
-                Integer shift = getContainerLayout ().getComponentShift ( panel );
-                boolean moved = panel.isDragged () && shift != null && shift != 0;
+                final Integer shift = getContainerLayout ().getComponentShift ( panel );
+                final boolean moved = panel.isDragged () && shift != null && shift != 0;
                 g2d.setPaint ( StyleConstants.darkBorderColor );
                 if ( notFirst || moved )
                 {
@@ -532,15 +535,15 @@ public class WebComponentPanel extends WebPanel
             if ( reorderingAllowed && showReorderGrippers )
             {
                 // Determining coordinates
-                boolean ltr = panel.getComponentOrientation ().isLeftToRight ();
-                int minY = bounds.y + 2 + ( notFirst ? 1 : 0 );
-                int maxY = bounds.x + bounds.height - 2 - ( notLast ? 1 : 0 );
-                int x = ltr ? bounds.x + 3 : bounds.x + bounds.width - GRIPPER_SIZE + 2;
+                final boolean ltr = panel.getComponentOrientation ().isLeftToRight ();
+                final int minY = bounds.y + 2 + ( notFirst ? 1 : 0 );
+                final int maxY = bounds.x + bounds.height - 2 - ( notLast ? 1 : 0 );
+                final int x = ltr ? bounds.x + 3 : bounds.x + bounds.width - GRIPPER_SIZE + 2;
                 int y = minY + ( ( maxY - minY ) % SINGLE_GRIPPER_STEP ) / 2;
 
                 // Painters
-                Paint light = new LinearGradientPaint ( x, minY, x, maxY, fractions, lightColors );
-                Paint dark = new LinearGradientPaint ( x, minY, x, maxY, fractions, darkColors );
+                final Paint light = new LinearGradientPaint ( x, minY, x, maxY, fractions, lightColors );
+                final Paint dark = new LinearGradientPaint ( x, minY, x, maxY, fractions, darkColors );
 
                 // Paint cycle
                 while ( y + 3 < maxY )
@@ -555,19 +558,19 @@ public class WebComponentPanel extends WebPanel
         }
     }
 
-    public void addComponentReorderListener ( ComponentReorderListener listener )
+    public void addComponentReorderListener ( final ComponentReorderListener listener )
     {
         listeners.add ( listener );
     }
 
-    public void removeComponentReorderListener ( ComponentReorderListener listener )
+    public void removeComponentReorderListener ( final ComponentReorderListener listener )
     {
         listeners.remove ( listener );
     }
 
-    private void fireComponentOrderChanged ( Component component, int oldIndex, int newIndex )
+    private void fireComponentOrderChanged ( final Component component, final int oldIndex, final int newIndex )
     {
-        for ( ComponentReorderListener listener : CollectionUtils.copy ( listeners ) )
+        for ( final ComponentReorderListener listener : CollectionUtils.copy ( listeners ) )
         {
             listener.componentOrderChanged ( component, oldIndex, newIndex );
         }

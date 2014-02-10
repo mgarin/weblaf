@@ -17,15 +17,16 @@
 
 package com.alee.laf.menu;
 
+import com.alee.extended.painter.Painter;
 import com.alee.extended.painter.PainterSupport;
 import com.alee.laf.StyleConstants;
 import com.alee.laf.WebLookAndFeel;
-import com.alee.utils.LafUtils;
-import com.alee.utils.ProprietaryUtils;
-import com.alee.utils.SwingUtils;
-import com.alee.utils.SystemUtils;
+import com.alee.managers.style.StyleManager;
+import com.alee.managers.style.data.PainterStyle;
+import com.alee.utils.*;
 import com.alee.utils.laf.ShapeProvider;
 import com.alee.utils.swing.BorderMethods;
+import com.alee.utils.swing.PainterMethods;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
@@ -40,7 +41,7 @@ import java.beans.PropertyChangeListener;
  * @author Mikle Garin
  */
 
-public class WebPopupMenuUI extends BasicPopupMenuUI implements SwingConstants, ShapeProvider, BorderMethods
+public class WebPopupMenuUI extends BasicPopupMenuUI implements SwingConstants, ShapeProvider, BorderMethods, PainterMethods
 {
     /**
      * todo 1. Left/Right corner
@@ -48,23 +49,16 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements SwingConstants, 
      */
 
     /**
-     * Painter style settings.
-     */
-    protected PopupPainterStyle popupPainterStyle = WebPopupMenuStyle.popupPainterStyle;
-    protected Color borderColor = WebPopupMenuStyle.borderColor;
-    protected int round = WebPopupMenuStyle.round;
-    protected int shadeWidth = WebPopupMenuStyle.shadeWidth;
-    protected float shadeOpacity = WebPopupMenuStyle.shadeOpacity;
-    protected int cornerWidth = WebPopupMenuStyle.cornerWidth;
-    protected float transparency = WebPopupMenuStyle.transparency;
-
-    /**
      * Component style settings.
      */
     protected Insets margin = WebPopupMenuStyle.margin;
-    protected PopupMenuPainter painter = WebPopupMenuStyle.painter;
     protected int menuSpacing = WebPopupMenuStyle.menuSpacing;
     protected boolean fixLocation = WebPopupMenuStyle.fixLocation;
+
+    /**
+     * Component painter.
+     */
+    protected PopupMenuPainter painter;
 
     /**
      * Menu listeners.
@@ -109,10 +103,9 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements SwingConstants, 
         // Default settings
         SwingUtils.setOrientation ( popupMenu );
         LookAndFeel.installProperty ( popupMenu, WebLookAndFeel.OPAQUE_PROPERTY, Boolean.FALSE );
-        popupMenu.setBackground ( WebPopupMenuStyle.backgroundColor );
 
-        // Initializing default painer
-        setPainter ( new PopupMenuPainter () );
+        // Applying skin
+        StyleManager.applySkin ( popupMenu );
 
         // Popup orientation change listener
         orientationChangeListener = new PropertyChangeListener ()
@@ -205,9 +198,6 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements SwingConstants, 
     @Override
     public void uninstallUI ( final JComponent c )
     {
-        // Uninstalling painter
-        setPainter ( null );
-
         // Removing listeners
         popupMenu.removePropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, orientationChangeListener );
         if ( transparent )
@@ -225,7 +215,19 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements SwingConstants, 
             }
         }
 
+        // Uninstalling applied skin
+        StyleManager.removeSkin ( popupMenu );
+
         super.uninstallUI ( c );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Shape provideShape ()
+    {
+        return LafUtils.getWebBorderShape ( popupMenu, 0, StyleConstants.smallRound );
     }
 
     /**
@@ -266,9 +268,27 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements SwingConstants, 
      * {@inheritDoc}
      */
     @Override
-    public Shape provideShape ()
+    public Painter createPainter ( final PainterStyle style )
     {
-        return LafUtils.getWebBorderShape ( popupMenu, 0, StyleConstants.smallRound );
+        return ReflectUtils.createInstanceSafely ( style.getPainterClass () );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void installPainter ( final Painter painter, final PainterStyle style )
+    {
+        setPainter ( ( PopupMenuPainter ) painter );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void uninstallPainters ()
+    {
+        setPainter ( null );
     }
 
     /**
@@ -278,7 +298,7 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements SwingConstants, 
      */
     public PopupPainterStyle getPopupPainterStyle ()
     {
-        return popupPainterStyle;
+        return painter.getPopupPainterStyle ();
     }
 
     /**
@@ -288,11 +308,7 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements SwingConstants, 
      */
     public void setPopupPainterStyle ( final PopupPainterStyle style )
     {
-        this.popupPainterStyle = style;
-        if ( painter != null )
-        {
-            painter.setPopupPainterStyle ( style );
-        }
+        painter.setPopupPainterStyle ( style );
     }
 
     /**
@@ -302,7 +318,7 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements SwingConstants, 
      */
     public Color getBorderColor ()
     {
-        return borderColor;
+        return painter.getBorderColor ();
     }
 
     /**
@@ -312,11 +328,7 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements SwingConstants, 
      */
     public void setBorderColor ( final Color color )
     {
-        this.borderColor = color;
-        if ( painter != null )
-        {
-            painter.setBorderColor ( color );
-        }
+        painter.setBorderColor ( color );
     }
 
     /**
@@ -326,7 +338,7 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements SwingConstants, 
      */
     public int getRound ()
     {
-        return round;
+        return painter.getRound ();
     }
 
     /**
@@ -336,11 +348,7 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements SwingConstants, 
      */
     public void setRound ( final int round )
     {
-        this.round = round;
-        if ( painter != null )
-        {
-            painter.setRound ( round );
-        }
+        painter.setRound ( round );
     }
 
     /**
@@ -350,7 +358,7 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements SwingConstants, 
      */
     public int getShadeWidth ()
     {
-        return shadeWidth;
+        return painter.getShadeWidth ();
     }
 
     /**
@@ -360,11 +368,7 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements SwingConstants, 
      */
     public void setShadeWidth ( final int width )
     {
-        this.shadeWidth = width;
-        if ( painter != null )
-        {
-            painter.setShadeWidth ( width );
-        }
+        painter.setShadeWidth ( width );
     }
 
     /**
@@ -374,7 +378,7 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements SwingConstants, 
      */
     public float getShadeOpacity ()
     {
-        return shadeOpacity;
+        return painter.getShadeOpacity ();
     }
 
     /**
@@ -384,11 +388,7 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements SwingConstants, 
      */
     public void setShadeOpacity ( final float opacity )
     {
-        this.shadeOpacity = opacity;
-        if ( painter != null )
-        {
-            painter.setShadeOpacity ( opacity );
-        }
+        painter.setShadeOpacity ( opacity );
     }
 
     /**
@@ -398,7 +398,7 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements SwingConstants, 
      */
     public int getCornerWidth ()
     {
-        return cornerWidth;
+        return painter.getCornerWidth ();
     }
 
     /**
@@ -408,11 +408,7 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements SwingConstants, 
      */
     public void setCornerWidth ( final int width )
     {
-        this.cornerWidth = width;
-        if ( painter != null )
-        {
-            painter.setCornerWidth ( width );
-        }
+        painter.setCornerWidth ( width );
     }
 
     /**
@@ -422,7 +418,7 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements SwingConstants, 
      */
     public float getTransparency ()
     {
-        return transparency;
+        return painter.getTransparency ();
     }
 
     /**
@@ -432,11 +428,7 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements SwingConstants, 
      */
     public void setTransparency ( final float transparency )
     {
-        this.transparency = transparency;
-        if ( painter != null )
-        {
-            painter.setTransparency ( transparency );
-        }
+        painter.setTransparency ( transparency );
     }
 
     /**
@@ -493,15 +485,6 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements SwingConstants, 
     {
         if ( painter != null )
         {
-            // Style settings
-            painter.setPopupPainterStyle ( popupPainterStyle );
-            painter.setBorderColor ( borderColor );
-            painter.setRound ( round );
-            painter.setShadeWidth ( shadeWidth );
-            painter.setShadeOpacity ( shadeOpacity );
-            painter.setCornerWidth ( cornerWidth );
-            painter.setTransparency ( transparency );
-
             // Runtime variables
             painter.setTransparent ( transparent );
             painter.setCornerSide ( cornerSide );
@@ -571,7 +554,13 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements SwingConstants, 
     }
 
     /**
-     * {@inheritDoc}
+     * Returns the <code>Popup</code> that will be responsible for displaying the <code>JPopupMenu</code>.
+     * Also does necessary modifications to popup coordinates in case they are actually required.
+     *
+     * @param popup JPopupMenu requesting Popup
+     * @param x     screen x location Popup is to be shown at
+     * @param y     screen y location Popup is to be shown at
+     * @return Popup that will show the JPopupMenu
      */
     @Override
     public Popup getPopup ( final JPopupMenu popup, int x, int y )
@@ -581,6 +570,12 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements SwingConstants, 
         final Point los = invoker.isShowing () ? invoker.getLocationOnScreen () : null;
         final boolean fixLocation = this.fixLocation && invoker.isShowing ();
         final boolean ltr = invoker.getComponentOrientation ().isLeftToRight ();
+
+        // Painter settings
+        final PopupPainterStyle popupPainterStyle = painter.getPopupPainterStyle ();
+        final int shadeWidth = painter.getShadeWidth ();
+        final int round = painter.getRound ();
+        final int cornerWidth = painter.getCornerWidth ();
 
         // Default corner position
         relativeCorner = ltr ? 0 : Integer.MAX_VALUE;

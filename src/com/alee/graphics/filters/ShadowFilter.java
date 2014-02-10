@@ -57,7 +57,7 @@ public class ShadowFilter extends AbstractBufferedImageOp
     {
     }
 
-    public ShadowFilter ( int radius, int xOffset, int yOffset, float opacity )
+    public ShadowFilter ( final int radius, final int xOffset, final int yOffset, final float opacity )
     {
         this.radius = radius;
         this.xOffset = xOffset;
@@ -65,7 +65,7 @@ public class ShadowFilter extends AbstractBufferedImageOp
         this.opacity = opacity;
     }
 
-    public void setXOffset ( int xOffset )
+    public void setXOffset ( final int xOffset )
     {
         this.xOffset = xOffset;
     }
@@ -75,7 +75,7 @@ public class ShadowFilter extends AbstractBufferedImageOp
         return xOffset;
     }
 
-    public void setYOffset ( int yOffset )
+    public void setYOffset ( final int yOffset )
     {
         this.yOffset = yOffset;
     }
@@ -90,7 +90,7 @@ public class ShadowFilter extends AbstractBufferedImageOp
      *
      * @param radius the radius of the blur in pixels.
      */
-    public void setRadius ( int radius )
+    public void setRadius ( final int radius )
     {
         this.radius = radius;
     }
@@ -105,7 +105,7 @@ public class ShadowFilter extends AbstractBufferedImageOp
         return radius;
     }
 
-    public void setOpacity ( float opacity )
+    public void setOpacity ( final float opacity )
     {
         this.opacity = opacity;
     }
@@ -115,7 +115,7 @@ public class ShadowFilter extends AbstractBufferedImageOp
         return opacity;
     }
 
-    public void setShadowColor ( int shadowColor )
+    public void setShadowColor ( final int shadowColor )
     {
         this.shadowColor = shadowColor;
     }
@@ -125,7 +125,7 @@ public class ShadowFilter extends AbstractBufferedImageOp
         return shadowColor;
     }
 
-    public void setAddMargins ( boolean addMargins )
+    public void setAddMargins ( final boolean addMargins )
     {
         this.addMargins = addMargins;
     }
@@ -135,7 +135,7 @@ public class ShadowFilter extends AbstractBufferedImageOp
         return addMargins;
     }
 
-    public void setShadowOnly ( boolean shadowOnly )
+    public void setShadowOnly ( final boolean shadowOnly )
     {
         this.shadowOnly = shadowOnly;
     }
@@ -145,7 +145,7 @@ public class ShadowFilter extends AbstractBufferedImageOp
         return shadowOnly;
     }
 
-    protected void transformSpace ( Rectangle r )
+    protected void transformSpace ( final Rectangle r )
     {
         if ( addMargins )
         {
@@ -155,16 +155,16 @@ public class ShadowFilter extends AbstractBufferedImageOp
     }
 
     @Override
-    public BufferedImage filter ( BufferedImage src, BufferedImage dst )
+    public BufferedImage filter ( final BufferedImage src, BufferedImage dst )
     {
-        int width = src.getWidth ();
-        int height = src.getHeight ();
+        final int width = src.getWidth ();
+        final int height = src.getHeight ();
 
         if ( dst == null )
         {
             if ( addMargins )
             {
-                ColorModel cm = src.getColorModel ();
+                final ColorModel cm = src.getColorModel ();
                 dst = new BufferedImage ( cm, cm.createCompatibleWritableRaster ( src.getWidth (), src.getHeight () ),
                         cm.isAlphaPremultiplied (), null );
             }
@@ -175,17 +175,17 @@ public class ShadowFilter extends AbstractBufferedImageOp
         }
 
         // Make a black mask from the image's alpha channel
-        float[][] extractAlpha = { { 0, 0, 0, 0 }, { 0, 0, 0, 0 }, { 0, 0, 0, 0 }, { 0, 0, 0, opacity } };
+        final float[][] extractAlpha = { { 0, 0, 0, 0 }, { 0, 0, 0, 0 }, { 0, 0, 0, 0 }, { 0, 0, 0, opacity } };
         BufferedImage shadow = new BufferedImage ( width, height, BufferedImage.TYPE_INT_ARGB );
         new BandCombineOp ( extractAlpha, null ).filter ( src.getRaster (), shadow.getRaster () );
         shadow = new GaussianFilter ( radius ).filter ( shadow, null );
 
-        Graphics2D g = dst.createGraphics ();
+        final Graphics2D g = dst.createGraphics ();
         g.setComposite ( AlphaComposite.getInstance ( AlphaComposite.SRC_OVER, opacity ) );
         if ( addMargins )
         {
-            int topShadow = Math.max ( 0, radius - yOffset );
-            int leftShadow = Math.max ( 0, radius - xOffset );
+            final int topShadow = Math.max ( 0, radius - yOffset );
+            final int leftShadow = Math.max ( 0, radius - xOffset );
             g.translate ( topShadow, leftShadow );
         }
         g.drawRenderedImage ( shadow, AffineTransform.getTranslateInstance ( xOffset, yOffset ) );

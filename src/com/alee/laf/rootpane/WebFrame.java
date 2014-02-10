@@ -48,6 +48,11 @@ public class WebFrame extends JFrame implements LanguageMethods, LanguageContain
      */
     protected boolean closeOnFocusLoss = false;
 
+    /**
+     * Window focus tracker.
+     */
+    protected DefaultFocusTracker focusTracker;
+
     public WebFrame ()
     {
         super ();
@@ -78,7 +83,10 @@ public class WebFrame extends JFrame implements LanguageMethods, LanguageContain
     protected void initialize ()
     {
         SwingUtils.setOrientation ( this );
-        FocusManager.addFocusTracker ( this, new DefaultFocusTracker ( true )
+
+        // Adding focus tracker for this frame
+        // It is stored into a separate field to avoid its disposal from memory
+        focusTracker = new DefaultFocusTracker ( true )
         {
             @Override
             public boolean isTrackingEnabled ()
@@ -94,7 +102,8 @@ public class WebFrame extends JFrame implements LanguageMethods, LanguageContain
                     setVisible ( false );
                 }
             }
-        } );
+        };
+        FocusManager.addFocusTracker ( this, focusTracker );
     }
 
     /**

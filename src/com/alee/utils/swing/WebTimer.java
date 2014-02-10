@@ -37,6 +37,7 @@ import java.util.Map;
  * you can dispatch events in a separate non-EDT thread and as a result avoid using EDT at all where it is not necessary).
  *
  * @author Mikle Garin
+ * @see javax.swing.Timer
  */
 public class WebTimer
 {
@@ -56,80 +57,80 @@ public class WebTimer
     /**
      * Timer event listeners list.
      */
-    private final List<ActionListener> listeners = new ArrayList<ActionListener> ( 1 );
+    protected final List<ActionListener> listeners = new ArrayList<ActionListener> ( 1 );
 
     /**
      * Unique (within one timer instance) ID of currently running thread.
      */
-    private int id = 0;
+    protected int id = 0;
 
     /**
      * ID of previously executed thread.
      */
-    private int lastId;
+    protected int lastId;
 
     /**
      * Map of marks for currently active threads.
      */
-    private final Map<Integer, Boolean> running = new Hashtable<Integer, Boolean> ();
+    protected final Map<Integer, Boolean> running = new Hashtable<Integer, Boolean> ();
 
     /**
      * Last timer cycle start time.
      */
-    private long sleepStart = 0;
+    protected long sleepStart = 0;
 
     /**
      * Last timer cycle delay time.
      */
-    private long sleepTime = 0;
+    protected long sleepTime = 0;
 
     /**
      * Last timer thread.
      */
-    private Thread exec = null;
+    protected Thread exec = null;
 
     /**
      * Delay between timer cycles in milliseconds.
      */
-    private long delay;
+    protected long delay;
 
     /**
      * Delay before the first timer cycle run in milliseconds.
      */
-    private long initialDelay;
+    protected long initialDelay;
 
     /**
      * Whether timer repeat its cycles or not.
      */
-    private boolean repeats = true;
+    protected boolean repeats = true;
 
     /**
      * Whether each action should be fired from a separate invoke and wait call or not.
      * This might be useful if you are going to use multiply action listeners and make some interface changes on each action.
      */
-    private boolean coalesce = true;
+    protected boolean coalesce = true;
 
     /**
      * Whether actions should be fired from Event Dispatch Thread or not.
      * This might be useful if operations you want to perform within timer cycles have nothing to do with Event Dispatch Thread.
      */
-    private boolean useEventDispatchThread = true;
+    protected boolean useEventDispatchThread = true;
 
     /**
      * Action command for fired events.
      */
-    private String actionCommand = "";
+    protected String actionCommand = "";
 
     /**
      * Internal timer thread name.
      */
-    private String name = null;
+    protected String name = null;
 
     /**
      * Timer cycles execution limit.
      * Zero and less = unlimited amount of execution cycles.
      */
-    private int cyclesLimit = 0;
+    protected int cyclesLimit = 0;
 
     /**
      * Constructs timer with specified delay.
@@ -313,18 +314,21 @@ public class WebTimer
      * Sets delay before the first timer cycle run.
      *
      * @param initialDelay delay before the first timer cycle run
+     * @return this timer
      */
-    public void setInitialDelay ( final String initialDelay )
+    public WebTimer setInitialDelay ( final String initialDelay )
     {
         setInitialDelay ( parseDelay ( initialDelay ) );
+        return this;
     }
 
     /**
      * Sets delay before the first timer cycle run in milliseconds.
      *
      * @param initialDelay delay before the first timer cycle run in milliseconds
+     * @return this timer
      */
-    public void setInitialDelay ( final long initialDelay )
+    public WebTimer setInitialDelay ( final long initialDelay )
     {
         if ( initialDelay != -1 && initialDelay < 0 )
         {
@@ -333,6 +337,7 @@ public class WebTimer
         else
         {
             this.initialDelay = initialDelay;
+            return this;
         }
     }
 
@@ -360,18 +365,21 @@ public class WebTimer
      * Sets delay between timer cycles.
      *
      * @param delay delay between timer cycles
+     * @return this timer
      */
-    public void setDelay ( final String delay )
+    public WebTimer setDelay ( final String delay )
     {
         setDelay ( parseDelay ( delay ) );
+        return this;
     }
 
     /**
      * Sets delay between timer cycles in milliseconds.
      *
      * @param delay delay between timer cycles in milliseconds
+     * @return this timer
      */
-    public void setDelay ( final long delay )
+    public WebTimer setDelay ( final long delay )
     {
         if ( delay < 0 )
         {
@@ -380,6 +388,7 @@ public class WebTimer
         else
         {
             this.delay = delay;
+            return this;
         }
     }
 
@@ -397,10 +406,12 @@ public class WebTimer
      * Sets whether timer should repeat its cycles or not.
      *
      * @param repeats whether timer should repeat its cycles or not
+     * @return this timer
      */
-    public void setRepeats ( final boolean repeats )
+    public WebTimer setRepeats ( final boolean repeats )
     {
         this.repeats = repeats;
+        return this;
     }
 
     /**
@@ -417,10 +428,12 @@ public class WebTimer
      * Sets whether each action should be fired from a separate invoke and wait call or not.
      *
      * @param coalesce whether each action should be fired from a separate invoke and wait call or not
+     * @return this timer
      */
-    public void setCoalesce ( final boolean coalesce )
+    public WebTimer setCoalesce ( final boolean coalesce )
     {
         this.coalesce = coalesce;
+        return this;
     }
 
     /**
@@ -437,10 +450,12 @@ public class WebTimer
      * Sets whether actions should be fired from Event Dispatch Thread or not.
      *
      * @param useEventDispatchThread whether actions should be fired from Event Dispatch Thread or not
+     * @return this timer
      */
-    public void setUseEventDispatchThread ( final boolean useEventDispatchThread )
+    public WebTimer setUseEventDispatchThread ( final boolean useEventDispatchThread )
     {
         this.useEventDispatchThread = useEventDispatchThread;
+        return this;
     }
 
     /**
@@ -457,10 +472,12 @@ public class WebTimer
      * Sets action command for fired events.
      *
      * @param actionCommand action command for fired events
+     * @return this timer
      */
-    public void setActionCommand ( final String actionCommand )
+    public WebTimer setActionCommand ( final String actionCommand )
     {
         this.actionCommand = actionCommand;
+        return this;
     }
 
     /**
@@ -478,10 +495,12 @@ public class WebTimer
      * Zero and less = unlimited amount of execution cycles.
      *
      * @param cyclesLimit timer cycles execution limit
+     * @return this timer
      */
-    public void setCyclesLimit ( final int cyclesLimit )
+    public WebTimer setCyclesLimit ( final int cyclesLimit )
     {
         this.cyclesLimit = cyclesLimit;
+        return this;
     }
 
     /**
@@ -498,14 +517,16 @@ public class WebTimer
      * Sets internal timer thread name.
      *
      * @param name internal timer thread name
+     * @return this timer
      */
-    public void setName ( final String name )
+    public WebTimer setName ( final String name )
     {
         this.name = name;
         if ( exec != null )
         {
             exec.setName ( name );
         }
+        return this;
     }
 
     /**
@@ -531,27 +552,98 @@ public class WebTimer
 
     /**
      * Starts timer execution.
+     *
+     * @return this timer
      */
-    public void start ()
+    public WebTimer start ()
     {
         startExec ();
+        return this;
     }
 
     /**
      * Stops timer execution.
+     *
+     * @return this timer
      */
-    public void stop ()
+    public WebTimer stop ()
     {
         stopExec ();
+        return this;
     }
 
     /**
      * Restarts timer execution.
+     *
+     * @return this timer
      */
-    public void restart ()
+    public WebTimer restart ()
     {
         stopExec ();
         startExec ();
+        return this;
+    }
+
+    /**
+     * Restarts timer execution and modifies timer delay.
+     *
+     * @param delay delay between timer cycles
+     * @return this timer
+     */
+    public WebTimer restart ( final long delay )
+    {
+        stopExec ();
+        setInitialDelay ( delay );
+        setDelay ( delay );
+        startExec ();
+        return this;
+    }
+
+    /**
+     * Restarts timer execution and modifies timer delays.
+     *
+     * @param initialDelay delay before the first timer cycle run
+     * @param delay        delay between timer cycles
+     * @return this timer
+     */
+    public WebTimer restart ( final long initialDelay, final long delay )
+    {
+        stopExec ();
+        setInitialDelay ( initialDelay );
+        setDelay ( delay );
+        startExec ();
+        return this;
+    }
+
+    /**
+     * Restarts timer execution and modifies timer delay.
+     *
+     * @param delay delay between timer cycles
+     * @return this timer
+     */
+    public WebTimer restart ( final String delay )
+    {
+        stopExec ();
+        setInitialDelay ( delay );
+        setDelay ( delay );
+        startExec ();
+        return this;
+    }
+
+    /**
+     * Restarts timer execution and modifies timer delays.
+     *
+     * @param initialDelay delay before the first timer cycle run
+     * @param delay        delay between timer cycles
+     * @return this timer
+     */
+    public WebTimer restart ( final String initialDelay, final String delay )
+    {
+        stopExec ();
+        setInitialDelay ( initialDelay );
+        setDelay ( delay );
+        startExec ();
+        return this;
     }
 
     /**
@@ -567,7 +659,7 @@ public class WebTimer
     /**
      * Starts timer execution thread.
      */
-    private synchronized void startExec ()
+    protected synchronized void startExec ()
     {
         // Ignore if timer is already running
         if ( isRunning () )
@@ -611,7 +703,7 @@ public class WebTimer
                             while ( shouldContinue ( cycle, currentId ) )
                             {
                                 // Firing events
-                                fireEvent ();
+                                fireActionPerformed ();
 
                                 // Incrementing cycles count
                                 cycle++;
@@ -635,11 +727,11 @@ public class WebTimer
                         else
                         {
                             // Single event
-                            fireEvent ();
+                            fireActionPerformed ();
                         }
                     }
                 }
-                catch ( InterruptedException e )
+                catch ( final InterruptedException e )
                 {
                     // Execution interrupted
                 }
@@ -658,7 +750,7 @@ public class WebTimer
      * @param id    thread ID
      * @return true if thread with specified ID should continue execution, false otherwise
      */
-    private boolean shouldContinue ( final int cycle, final int id )
+    protected boolean shouldContinue ( final int cycle, final int id )
     {
         return running.get ( id ) && !Thread.currentThread ().isInterrupted () && ( cyclesLimit <= 0 || cyclesLimit > cycle );
     }
@@ -669,7 +761,7 @@ public class WebTimer
      * @param id    thread ID
      * @param alive whether thread is alive or not
      */
-    private void setAlive ( final int id, final boolean alive )
+    protected void setAlive ( final int id, final boolean alive )
     {
         running.put ( id, alive );
     }
@@ -679,7 +771,7 @@ public class WebTimer
      *
      * @param id thread ID
      */
-    private void cleanUp ( final int id )
+    protected void cleanUp ( final int id )
     {
         running.remove ( id );
     }
@@ -687,7 +779,7 @@ public class WebTimer
     /**
      * Stops timer execution.
      */
-    private synchronized void stopExec ()
+    protected synchronized void stopExec ()
     {
         if ( exec != null )
         {
@@ -702,7 +794,7 @@ public class WebTimer
             {
                 exec.join ();
             }
-            catch ( InterruptedException e )
+            catch ( final InterruptedException e )
             {
                 e.printStackTrace ();
             }
@@ -713,26 +805,30 @@ public class WebTimer
      * Adds new action listener.
      *
      * @param listener new action listener
+     * @return this timer
      */
-    public void addActionListener ( final ActionListener listener )
+    public WebTimer addActionListener ( final ActionListener listener )
     {
         if ( listener != null )
         {
             listeners.add ( listener );
         }
+        return this;
     }
 
     /**
      * Removes an action listener.
      *
      * @param listener action listener
+     * @return this timer
      */
-    public void removeActionListener ( final ActionListener listener )
+    public WebTimer removeActionListener ( final ActionListener listener )
     {
         if ( listener != null )
         {
             listeners.remove ( listener );
         }
+        return this;
     }
 
     /**
@@ -748,7 +844,7 @@ public class WebTimer
     /**
      * Fires action events.
      */
-    private void fireEvent ()
+    public void fireActionPerformed ()
     {
         if ( listeners.size () > 0 )
         {
@@ -808,7 +904,7 @@ public class WebTimer
      *
      * @return action event
      */
-    private ActionEvent createActionEvent ()
+    protected ActionEvent createActionEvent ()
     {
         return new ActionEvent ( WebTimer.this, 0, actionCommand, TimeUtils.currentTime (), 0 );
     }
@@ -1153,7 +1249,7 @@ public class WebTimer
             }
             return summ;
         }
-        catch ( Throwable e )
+        catch ( final Throwable e )
         {
             throw new DelayFormatException ( e );
         }
@@ -1200,7 +1296,7 @@ public class WebTimer
     /**
      * Time part type enumeration used to parse string delay.
      */
-    private static enum PartType
+    protected static enum PartType
     {
         d, h, m, s, ms
     }

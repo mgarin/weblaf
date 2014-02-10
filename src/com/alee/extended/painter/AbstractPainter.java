@@ -35,10 +35,6 @@ import java.util.List;
 public abstract class AbstractPainter<E extends Component> implements Painter<E>
 {
     /**
-     * todo 1. Additional "quick" methods for painting (setAA/setFont/setComposite/...)
-     */
-
-    /**
      * Whether visual data is opaque or not.
      */
     protected boolean opaque = false;

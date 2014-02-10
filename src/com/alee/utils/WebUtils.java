@@ -44,13 +44,13 @@ public final class WebUtils
      * @param url the url to normalize
      * @return normalized url
      */
-    public static String normalizeUrl ( String url )
+    public static String normalizeUrl ( final String url )
     {
         try
         {
             return new URI ( url ).normalize ().toASCIIString ();
         }
-        catch ( URISyntaxException e )
+        catch ( final URISyntaxException e )
         {
             return url;
         }
@@ -62,17 +62,17 @@ public final class WebUtils
      * @param url the url to parse
      * @return parameters map
      */
-    public static Map<String, List<String>> getUrlParameters ( String url )
+    public static Map<String, List<String>> getUrlParameters ( final String url )
     {
-        Map<String, List<String>> params = new HashMap<String, List<String>> ();
-        String[] urlParts = url.split ( "\\?" );
+        final Map<String, List<String>> params = new HashMap<String, List<String>> ();
+        final String[] urlParts = url.split ( "\\?" );
         if ( urlParts.length > 1 )
         {
-            String query = urlParts[ 1 ];
-            for ( String param : query.split ( "&" ) )
+            final String query = urlParts[ 1 ];
+            for ( final String param : query.split ( "&" ) )
             {
-                String pair[] = param.split ( "=" );
-                String key = decodeUrl ( pair[ 0 ] );
+                final String[] pair = param.split ( "=" );
+                final String key = decodeUrl ( pair[ 0 ] );
                 String value = "";
                 if ( pair.length > 1 )
                 {
@@ -96,15 +96,15 @@ public final class WebUtils
      * @param url the url to encode
      * @return encoded url
      */
-    public static String encodeUrl ( String url )
+    public static String encodeUrl ( final String url )
     {
         try
         {
-            URL u = new URL ( url );
-            URI uri = new URI ( u.getProtocol (), u.getHost (), u.getPath (), u.getQuery (), null );
+            final URL u = new URL ( url );
+            final URI uri = new URI ( u.getProtocol (), u.getHost (), u.getPath (), u.getQuery (), null );
             return uri.toASCIIString ();
         }
-        catch ( Throwable e )
+        catch ( final Throwable e )
         {
             return url;
         }
@@ -116,13 +116,13 @@ public final class WebUtils
      * @param url the url to decode
      * @return decoded url
      */
-    public static String decodeUrl ( String url )
+    public static String decodeUrl ( final String url )
     {
         try
         {
             return URLDecoder.decode ( url, "UTF-8" );
         }
-        catch ( UnsupportedEncodingException e )
+        catch ( final UnsupportedEncodingException e )
         {
             return url;
         }
@@ -144,7 +144,7 @@ public final class WebUtils
                 {
                     browseSite ( "http://twitter.com/intent/tweet?text=" + address );
                 }
-                catch ( Throwable ex )
+                catch ( final Throwable ex )
                 {
                     //
                 }
@@ -168,7 +168,7 @@ public final class WebUtils
                 {
                     browseSite ( "http://vkontakte.ru/share.php?url=" + address );
                 }
-                catch ( Throwable ex )
+                catch ( final Throwable ex )
                 {
                     //
                 }
@@ -192,7 +192,7 @@ public final class WebUtils
                 {
                     browseSite ( "http://www.facebook.com/sharer.php?u=" + address );
                 }
-                catch ( Throwable ex )
+                catch ( final Throwable ex )
                 {
                     //
                 }
@@ -205,13 +205,13 @@ public final class WebUtils
      *
      * @param address the address to open
      */
-    public static void browseSiteSafely ( String address )
+    public static void browseSiteSafely ( final String address )
     {
         try
         {
             browseSite ( address );
         }
-        catch ( Throwable e )
+        catch ( final Throwable e )
         {
             //
         }
@@ -222,7 +222,7 @@ public final class WebUtils
      *
      * @param address the address to open
      */
-    public static void browseSite ( String address ) throws URISyntaxException, IOException
+    public static void browseSite ( final String address ) throws URISyntaxException, IOException
     {
         Desktop.getDesktop ().browse ( new URI ( address ) );
     }
@@ -232,13 +232,13 @@ public final class WebUtils
      *
      * @param file the file to open
      */
-    public static void openFileSafely ( File file )
+    public static void openFileSafely ( final File file )
     {
         try
         {
             openFile ( file );
         }
-        catch ( Throwable e )
+        catch ( final Throwable e )
         {
             //
         }
@@ -249,7 +249,7 @@ public final class WebUtils
      *
      * @param file the file to open
      */
-    public static void openFile ( File file ) throws IOException
+    public static void openFile ( final File file ) throws IOException
     {
         Desktop.getDesktop ().open ( file );
     }
@@ -259,13 +259,13 @@ public final class WebUtils
      *
      * @param email the destination email address
      */
-    public static void writeEmailSafely ( String email )
+    public static void writeEmailSafely ( final String email )
     {
         try
         {
             writeEmail ( email );
         }
-        catch ( Throwable e )
+        catch ( final Throwable e )
         {
             //
         }
@@ -276,7 +276,7 @@ public final class WebUtils
      *
      * @param email the destination email address
      */
-    public static void writeEmail ( String email ) throws URISyntaxException, IOException
+    public static void writeEmail ( final String email ) throws URISyntaxException, IOException
     {
         writeEmail ( email, null, null );
     }
@@ -288,13 +288,13 @@ public final class WebUtils
      * @param subject letter subject
      * @param body    letter text
      */
-    public static void writeEmailSafely ( String email, String subject, String body )
+    public static void writeEmailSafely ( final String email, final String subject, final String body )
     {
         try
         {
             writeEmail ( email, subject, body );
         }
-        catch ( Throwable e )
+        catch ( final Throwable e )
         {
             //
         }
@@ -309,7 +309,7 @@ public final class WebUtils
      */
     public static void writeEmail ( String email, String subject, String body ) throws URISyntaxException, IOException
     {
-        URI uri;
+        final URI uri;
         if ( !email.startsWith ( "mailto:" ) )
         {
             email = "mailto:" + email;

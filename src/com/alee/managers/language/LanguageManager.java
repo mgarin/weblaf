@@ -284,7 +284,7 @@ public final class LanguageManager implements LanguageConstants
     private static boolean initialized = false;
 
     /**
-     * Initializes LanguageManager default settings.
+     * Initializes LanguageManager settings.
      */
     public static void initialize ()
     {
@@ -848,7 +848,7 @@ public final class LanguageManager implements LanguageConstants
                 final URL res = LanguageManager.class.getResource ( "icons/lang/" + language + ".png" );
                 icon = new ImageIcon ( res );
             }
-            catch ( Throwable e )
+            catch ( final Throwable e )
             {
                 icon = other;
             }
@@ -972,6 +972,16 @@ public final class LanguageManager implements LanguageConstants
         {
             return ComponentOrientation.getOrientation ( Locale.getDefault () );
         }
+    }
+
+    /**
+     * Returns orientation opposite to current global component orientation.
+     *
+     * @return orientation opposite to current global component orientation
+     */
+    public static ComponentOrientation getOppositeOrientation ()
+    {
+        return isLeftToRight () ? ComponentOrientation.RIGHT_TO_LEFT : ComponentOrientation.LEFT_TO_RIGHT;
     }
 
     public static void setOrientation ( final boolean leftToRight )

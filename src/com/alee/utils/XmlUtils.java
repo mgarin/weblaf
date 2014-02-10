@@ -56,9 +56,10 @@ public final class XmlUtils
     public static boolean aliasJdkClasses = true;
 
     /**
-     * Custom color converter.
+     * Custom converters.
      */
     public static final ColorConverter colorConverter = new ColorConverter ();
+    public static final InsetsConverter insetsConverter = new InsetsConverter ();
 
     /**
      * Custom password converter that encrypts serialized passwords.
@@ -108,14 +109,11 @@ public final class XmlUtils
                 xStream.useAttributeFor ( Rectangle.class, "y" );
                 xStream.useAttributeFor ( Rectangle.class, "width" );
                 xStream.useAttributeFor ( Rectangle.class, "height" );
-                xStream.alias ( "Insets", Insets.class );
-                xStream.useAttributeFor ( Insets.class, "top" );
-                xStream.useAttributeFor ( Insets.class, "left" );
-                xStream.useAttributeFor ( Insets.class, "bottom" );
-                xStream.useAttributeFor ( Insets.class, "right" );
                 xStream.alias ( "Font", Font.class );
                 xStream.alias ( "Color", Color.class );
                 xStream.registerConverter ( colorConverter );
+                xStream.alias ( "Insets", Insets.class );
+                xStream.registerConverter ( insetsConverter );
             }
 
             // XML resources aliases
@@ -132,7 +130,7 @@ public final class XmlUtils
             xStream.processAnnotations ( GradientColorData.class );
             xStream.processAnnotations ( HSBColor.class );
         }
-        catch ( Throwable e )
+        catch ( final Throwable e )
         {
             e.printStackTrace ();
         }
@@ -263,7 +261,7 @@ public final class XmlUtils
             osw.close ();
             fos.close ();
         }
-        catch ( IOException e )
+        catch ( final IOException e )
         {
             e.printStackTrace ();
         }
@@ -414,7 +412,7 @@ public final class XmlUtils
                 {
                     return XmlUtils.fromXML ( new URL ( resource.getSource () ) );
                 }
-                catch ( MalformedURLException e )
+                catch ( final MalformedURLException e )
                 {
                     e.printStackTrace ();
                     return null;
@@ -432,7 +430,7 @@ public final class XmlUtils
                     is = Class.forName ( resource.getClassName () ).getResourceAsStream ( resource.getSource () );
                     return XmlUtils.fromXML ( is );
                 }
-                catch ( ClassNotFoundException e )
+                catch ( final ClassNotFoundException e )
                 {
                     e.printStackTrace ();
                     return null;
@@ -443,7 +441,7 @@ public final class XmlUtils
                     {
                         is.close ();
                     }
-                    catch ( Throwable e )
+                    catch ( final Throwable e )
                     {
                         e.printStackTrace ();
                     }
@@ -482,7 +480,7 @@ public final class XmlUtils
                 return FileUtils
                         .readToString ( new BufferedReader ( new InputStreamReader ( new URL ( resource.getSource () ).openStream () ) ) );
             }
-            catch ( IOException e )
+            catch ( final IOException e )
             {
                 e.printStackTrace ();
                 return null;
@@ -498,7 +496,7 @@ public final class XmlUtils
             {
                 return FileUtils.readToString ( Class.forName ( resource.getClassName () ), resource.getSource () );
             }
-            catch ( ClassNotFoundException e )
+            catch ( final ClassNotFoundException e )
             {
                 e.printStackTrace ();
                 return null;
@@ -535,7 +533,7 @@ public final class XmlUtils
             {
                 return new ImageIcon ( new URL ( resource.getSource () ) );
             }
-            catch ( MalformedURLException e )
+            catch ( final MalformedURLException e )
             {
                 e.printStackTrace ();
                 return null;
@@ -547,7 +545,7 @@ public final class XmlUtils
             {
                 return new ImageIcon ( new File ( resource.getSource () ).getCanonicalPath () );
             }
-            catch ( IOException e )
+            catch ( final IOException e )
             {
                 e.printStackTrace ();
                 return null;
@@ -559,7 +557,7 @@ public final class XmlUtils
             {
                 return new ImageIcon ( Class.forName ( resource.getClassName () ).getResource ( resource.getSource () ) );
             }
-            catch ( ClassNotFoundException e )
+            catch ( final ClassNotFoundException e )
             {
                 e.printStackTrace ();
                 return null;

@@ -39,9 +39,10 @@ public class IntTextDocument extends PlainDocument
         {
             return;
         }
-        if ( getLength () + str.length () <= 5 )
+        final int length = getLength ();
+        if ( length + str.length () <= 5 )
         {
-            final String oldString = getText ( 0, getLength () );
+            final String oldString = getText ( 0, length );
             final String newString = oldString.substring ( 0, offs ) + str + oldString.substring ( offs );
             try
             {
@@ -50,8 +51,9 @@ public class IntTextDocument extends PlainDocument
                     super.insertString ( offs, str, a );
                 }
             }
-            catch ( NumberFormatException ignored )
+            catch ( final NumberFormatException ignored )
             {
+                // Ignore any exceptions here
             }
         }
     }
@@ -62,7 +64,7 @@ public class IntTextDocument extends PlainDocument
      * @param integer entered integer number
      * @return true if entered integer number is accepted, false otherwise
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     protected boolean accept ( final int integer )
     {
         return true;

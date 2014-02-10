@@ -32,7 +32,7 @@ public abstract class DocumentChangeListener implements DocumentListener
      * {@inheritDoc}
      */
     @Override
-    public void insertUpdate ( DocumentEvent e )
+    public void insertUpdate ( final DocumentEvent e )
     {
         documentChanged ( e );
     }
@@ -41,7 +41,7 @@ public abstract class DocumentChangeListener implements DocumentListener
      * {@inheritDoc}
      */
     @Override
-    public void removeUpdate ( DocumentEvent e )
+    public void removeUpdate ( final DocumentEvent e )
     {
         documentChanged ( e );
     }
@@ -50,7 +50,7 @@ public abstract class DocumentChangeListener implements DocumentListener
      * {@inheritDoc}
      */
     @Override
-    public void changedUpdate ( DocumentEvent e )
+    public void changedUpdate ( final DocumentEvent e )
     {
         documentChanged ( e );
     }

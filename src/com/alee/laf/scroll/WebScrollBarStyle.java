@@ -98,6 +98,11 @@ public final class WebScrollBarStyle
     public static Insets margin = new Insets ( 0, 0, 0, 0 );
 
     /**
+     * Default width of scroll bar.
+     */
+    public static int scrollBarWidth = 10;
+
+    /**
      * Scroll bar thumb margin.
      */
     public static Insets thumbMargin = new Insets ( 0, 2, 0, 2 );

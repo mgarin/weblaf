@@ -17,21 +17,24 @@
 
 package com.alee.utils.xml;
 
+import com.alee.utils.ColorUtils;
 import com.alee.utils.collection.ValuesTable;
 import com.thoughtworks.xstream.converters.basic.AbstractSingleValueConverter;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.StringTokenizer;
 
 /**
- * User: mgarin Date: 22.03.12 Time: 14:44
+ * Custom Color class converter.
+ *
+ * @author Mikle Garin
  */
 
 public class ColorConverter extends AbstractSingleValueConverter
 {
-    private static ValuesTable<String, Color> defaultColors = new ValuesTable<String, Color> ();
+    /**
+     * Default colors map.
+     */
+    private static final ValuesTable<String, Color> defaultColors = new ValuesTable<String, Color> ();
 
     static
     {
@@ -50,61 +53,34 @@ public class ColorConverter extends AbstractSingleValueConverter
         defaultColors.put ( "cyan", Color.CYAN );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public boolean canConvert ( Class type )
+    public boolean canConvert ( final Class type )
     {
         return type.equals ( Color.class );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public Object fromString ( String color )
+    public Object fromString ( final String color )
     {
-        if ( defaultColors.containsKey ( color ) )
-        {
-            return defaultColors.get ( color );
-        }
-        else
-        {
-            StringTokenizer tokenizer = new StringTokenizer ( color.replaceAll ( " ", "" ), "," );
-            List<Integer> values = new ArrayList<Integer> ();
-            while ( tokenizer.hasMoreTokens () )
-            {
-                try
-                {
-                    values.add ( Integer.parseInt ( tokenizer.nextToken () ) );
-                }
-                catch ( NumberFormatException e )
-                {
-                    return null;
-                }
-            }
-            if ( values.size () == 3 )
-            {
-                return new Color ( values.get ( 0 ), values.get ( 1 ), values.get ( 2 ) );
-            }
-            else if ( values.size () == 4 )
-            {
-                return new Color ( values.get ( 0 ), values.get ( 1 ), values.get ( 2 ), values.get ( 3 ) );
-            }
-            else
-            {
-                return null;
-            }
-        }
+        return defaultColors.containsKey ( color ) ? defaultColors.get ( color ) :
+                color.contains ( "#" ) ? ColorUtils.parseHexColor ( color ) : ColorUtils.parseRgbColor ( color );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public String toString ( Object obj )
+    public String toString ( final Object object )
     {
-        Color color = ( Color ) obj;
-        if ( defaultColors.containsValue ( color ) )
-        {
-            return defaultColors.getKey ( color );
-        }
-        else
-        {
-            return color.getRed () + "," + color.getGreen () + "," + color.getBlue () +
-                    ( color.getAlpha () < 255 ? "," + color.getAlpha () : "" );
-        }
+        final Color color = ( Color ) object;
+        return defaultColors.containsValue ( color ) ? defaultColors.getKey ( color ) :
+                color.getRed () + "," + color.getGreen () + "," + color.getBlue () +
+                        ( color.getAlpha () < 255 ? "," + color.getAlpha () : "" );
     }
 }

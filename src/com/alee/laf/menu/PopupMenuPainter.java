@@ -72,29 +72,36 @@ public class PopupMenuPainter<E extends JPopupMenu> extends WebPopupPainter<E>
      */
     protected void paintDropdownCornerFill ( final Graphics2D g2d, final E popupMenu, final Dimension menuSize )
     {
+        // Checking whether corner should be filled or not
         if ( popupPainterStyle == PopupPainterStyle.dropdown && round == 0 )
         {
-            // Checking whether corner should be filled or not
+            // Check that menu item is attached to menu side
             final boolean north = cornerSide == NORTH;
-            final int zIndex = north ? 0 : popupMenu.getComponentCount () - 1;
-            final Component component = popupMenu.getComponent ( zIndex );
-            if ( component instanceof JMenuItem )
+            final WebPopupMenuUI pmui = ( WebPopupMenuUI ) popupMenu.getUI ();
+            final boolean stick = north ? ( pmui.getMargin ().top + margin.top == 0 ) : ( pmui.getMargin ().bottom + margin.bottom == 0 );
+            if ( stick )
             {
-                final JMenuItem menuItem = ( JMenuItem ) component;
-                if ( menuItem.isEnabled () && ( menuItem.getModel ().isArmed () || menuItem.isSelected () ) )
+                // Checking that we can actually retrieve what item wants to fill corner with
+                final int zIndex = north ? 0 : popupMenu.getComponentCount () - 1;
+                final Component component = popupMenu.getComponent ( zIndex );
+                if ( component instanceof JMenuItem )
                 {
-                    // Filling corner properly
-                    if ( menuItem.getUI () instanceof WebMenuUI )
+                    final JMenuItem menuItem = ( JMenuItem ) component;
+                    if ( menuItem.isEnabled () && ( menuItem.getModel ().isArmed () || menuItem.isSelected () ) )
                     {
-                        final WebMenuUI ui = ( WebMenuUI ) menuItem.getUI ();
-                        g2d.setPaint ( north ? ui.getNorthCornerFill () : ui.getSouthCornerFill () );
-                        g2d.fill ( getDropdownCornerShape ( popupMenu, menuSize, true ) );
-                    }
-                    else if ( menuItem.getUI () instanceof WebMenuItemUI )
-                    {
-                        final WebMenuItemUI ui = ( WebMenuItemUI ) menuItem.getUI ();
-                        g2d.setPaint ( north ? ui.getNorthCornerFill () : ui.getSouthCornerFill () );
-                        g2d.fill ( getDropdownCornerShape ( popupMenu, menuSize, true ) );
+                        // Filling corner properly
+                        if ( menuItem.getUI () instanceof WebMenuUI )
+                        {
+                            final WebMenuUI ui = ( WebMenuUI ) menuItem.getUI ();
+                            g2d.setPaint ( north ? ui.getNorthCornerFill () : ui.getSouthCornerFill () );
+                            g2d.fill ( getDropdownCornerShape ( popupMenu, menuSize, true ) );
+                        }
+                        else if ( menuItem.getUI () instanceof WebMenuItemUI )
+                        {
+                            final WebMenuItemUI ui = ( WebMenuItemUI ) menuItem.getUI ();
+                            g2d.setPaint ( north ? ui.getNorthCornerFill () : ui.getSouthCornerFill () );
+                            g2d.fill ( getDropdownCornerShape ( popupMenu, menuSize, true ) );
+                        }
                     }
                 }
             }

@@ -84,15 +84,15 @@ public class SourceViewer extends WebPanel
 
     private static final String SETTINGS_PREFIX = "SourceViewer.";
 
-    private JarStructure jarStructure;
+    private final JarStructure jarStructure;
 
-    private WebPanel toolBar;
-    private WebBreadcrumb classPath;
-    private ViewTabbedPane viewTabbedPane;
-    private ChangeListener viewChangeListener;
+    private final WebPanel toolBar;
+    private final WebBreadcrumb classPath;
+    private final ViewTabbedPane viewTabbedPane;
+    private final ChangeListener viewChangeListener;
 
     private final Object activeEditorsLock = new Object ();
-    private Map<JarEntry, RSyntaxTextArea> activeEditors = new HashMap<JarEntry, RSyntaxTextArea> ();
+    private final Map<JarEntry, RSyntaxTextArea> activeEditors = new HashMap<JarEntry, RSyntaxTextArea> ();
 
     private WebPopup classSearchPopup;
     private WebTextField classSearchField;
@@ -757,7 +757,7 @@ public class SourceViewer extends WebPanel
                             final File jarFile = new File ( jarStructure.getJarLocation () );
                             Desktop.getDesktop ().browse ( jarFile.getParentFile ().toURI () );
                         }
-                        catch ( Throwable ex )
+                        catch ( final Throwable ex )
                         {
                             ex.printStackTrace ();
                         }
@@ -986,7 +986,7 @@ public class SourceViewer extends WebPanel
                 theme.apply ( source );
                 themesCache.put ( themeName, theme );
             }
-            catch ( IOException e )
+            catch ( final IOException e )
             {
                 e.printStackTrace ();
                 themesCache.put ( themeName, null );
@@ -1025,7 +1025,7 @@ public class SourceViewer extends WebPanel
         {
             return new ZipFile ( jarStructure.getJarLocation () ).getInputStream ( entry.getZipEntry () );
         }
-        catch ( IOException e )
+        catch ( final IOException e )
         {
             e.printStackTrace ();
             return null;
@@ -1104,13 +1104,11 @@ public class SourceViewer extends WebPanel
                     if ( classByName != null && ( classByName.getType ().equals ( JarEntryType.classEntry ) ||
                             classByName.getType ().equals ( JarEntryType.javaEntry ) ) && classByName != entry )
                     {
-                        System.out.println ( "Generated" );
                         value = new LinkGeneratorResult ()
                         {
                             @Override
                             public HyperlinkEvent execute ()
                             {
-                                System.out.println ( "Executed" );
                                 updateClassPath ( classByName, true );
                                 return new HyperlinkEvent ( this, HyperlinkEvent.EventType.EXITED, null );
                             }

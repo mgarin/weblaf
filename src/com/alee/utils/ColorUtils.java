@@ -161,8 +161,15 @@ public final class ColorUtils
      */
     public static String getHexColor ( final int rgb )
     {
-        final String hex = Integer.toHexString ( rgb ).toUpperCase ();
-        return hex.substring ( 2, hex.length () );
+        if ( rgb == 0 )
+        {
+            return "000000";
+        }
+        else
+        {
+            final String hex = Integer.toHexString ( rgb ).toUpperCase ();
+            return hex.substring ( 2, hex.length () );
+        }
     }
 
     /**

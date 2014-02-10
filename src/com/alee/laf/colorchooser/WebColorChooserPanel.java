@@ -53,8 +53,8 @@ import java.util.List;
 
 public class WebColorChooserPanel extends WebPanel implements DialogOptions
 {
-    private List<ChangeListener> changeListeners = new ArrayList<ChangeListener> ( 1 );
-    private List<ColorChooserListener> colorChooserListeners = new ArrayList<ColorChooserListener> ( 1 );
+    private final List<ChangeListener> changeListeners = new ArrayList<ChangeListener> ( 1 );
+    private final List<ColorChooserListener> colorChooserListeners = new ArrayList<ColorChooserListener> ( 1 );
 
     private boolean showButtonsPanel = false;
     private Boolean webOnlyColors = false;
@@ -66,17 +66,17 @@ public class WebColorChooserPanel extends WebPanel implements DialogOptions
 
     private boolean adjustingText = false;
 
-    private PaletteColorChooser palette;
-    private LineColorChooser lineColorChooser;
-    private DoubleColorField doubleColorField;
+    private final PaletteColorChooser palette;
+    private final LineColorChooser lineColorChooser;
+    private final DoubleColorField doubleColorField;
 
-    private WebTextField hueField;
-    private WebTextField saturationField;
-    private WebTextField brightnessField;
-    private WebTextField redField;
-    private WebTextField greenField;
-    private WebTextField blueField;
-    private WebTextField hexColor;
+    private final WebTextField hueField;
+    private final WebTextField saturationField;
+    private final WebTextField brightnessField;
+    private final WebTextField redField;
+    private final WebTextField greenField;
+    private final WebTextField blueField;
+    private final WebTextField hexColor;
 
     private WebPanel buttonsPanel;
 
@@ -85,7 +85,7 @@ public class WebColorChooserPanel extends WebPanel implements DialogOptions
         this ( false );
     }
 
-    public WebColorChooserPanel ( boolean showButtonsPanel )
+    public WebColorChooserPanel ( final boolean showButtonsPanel )
     {
         super ();
 
@@ -104,7 +104,7 @@ public class WebColorChooserPanel extends WebPanel implements DialogOptions
         final ChangeListener paletteListener = new ChangeListener ()
         {
             @Override
-            public void stateChanged ( ChangeEvent e )
+            public void stateChanged ( final ChangeEvent e )
             {
                 color = palette.getColor ();
                 updateColors ( color, UpdateSource.palette );
@@ -119,7 +119,7 @@ public class WebColorChooserPanel extends WebPanel implements DialogOptions
         lineColorChooser.addChangeListener ( new ChangeListener ()
         {
             @Override
-            public void stateChanged ( ChangeEvent e )
+            public void stateChanged ( final ChangeEvent e )
             {
                 palette.setSideColor ( lineColorChooser.getColor () );
             }
@@ -127,7 +127,7 @@ public class WebColorChooserPanel extends WebPanel implements DialogOptions
         add ( lineColorChooser, "2,0" );
 
 
-        JPanel infoPanel = new JPanel ();
+        final JPanel infoPanel = new JPanel ();
         infoPanel.setLayout ( new TableLayout ( new double[][]{ { TableLayout.PREFERRED, 4, TableLayout.FILL },
                 { 3, TableLayout.FILL, 5, TableLayout.PREFERRED, 4, TableLayout.PREFERRED, 1, TableLayout.PREFERRED, 1,
                         TableLayout.PREFERRED, 1, TableLayout.PREFERRED, 3 } } ) );
@@ -139,13 +139,13 @@ public class WebColorChooserPanel extends WebPanel implements DialogOptions
         doubleColorField.addDoubleColorFieldListener ( new DoubleColorFieldListener ()
         {
             @Override
-            public void newColorPressed ( Color newColor )
+            public void newColorPressed ( final Color newColor )
             {
                 //
             }
 
             @Override
-            public void oldColorPressed ( Color currentColor )
+            public void oldColorPressed ( final Color currentColor )
             {
                 setColor ( doubleColorField.getOldColor () );
             }
@@ -158,7 +158,7 @@ public class WebColorChooserPanel extends WebPanel implements DialogOptions
         infoPanel.add ( new WebSeparator ( WebSeparator.HORIZONTAL ), "0,5,2,5" );
 
 
-        JPanel colorsPanel = new JPanel ();
+        final JPanel colorsPanel = new JPanel ();
         colorsPanel.setLayout ( new TableLayout ( new double[][]{ { TableLayout.FILL, 5, TableLayout.PREFERRED, 4, TableLayout.PREFERRED },
                 { TableLayout.PREFERRED, 0, TableLayout.PREFERRED, 0, TableLayout.PREFERRED, 1, TableLayout.PREFERRED, 1,
                         TableLayout.PREFERRED, 0, TableLayout.PREFERRED, 0, TableLayout.PREFERRED } } ) );
@@ -166,39 +166,39 @@ public class WebColorChooserPanel extends WebPanel implements DialogOptions
         infoPanel.add ( colorsPanel, "0,7,2,7" );
 
         // Hue
-        WebLabel hueButton = new WebLabel ( "H:" );
+        final WebLabel hueButton = new WebLabel ( "H:" );
         hueButton.setDrawShade ( true );
         colorsPanel.add ( hueButton, "0,0" );
         hueField = new WebTextField ();
         colorsPanel.add ( hueField, "2,0" );
-        WebLabel hueSuffix = new WebLabel ( "°" );
+        final WebLabel hueSuffix = new WebLabel ( "°" );
         hueSuffix.setDrawShade ( true );
         colorsPanel.add ( hueSuffix, "4,0" );
 
         // Saturation
-        WebLabel saturationButton = new WebLabel ( "S:" );
+        final WebLabel saturationButton = new WebLabel ( "S:" );
         saturationButton.setDrawShade ( true );
         colorsPanel.add ( saturationButton, "0,2" );
         saturationField = new WebTextField ();
         colorsPanel.add ( saturationField, "2,2" );
-        WebLabel saturationSuffix = new WebLabel ( "%" );
+        final WebLabel saturationSuffix = new WebLabel ( "%" );
         saturationSuffix.setDrawShade ( true );
         colorsPanel.add ( saturationSuffix, "4,2" );
 
         // Brightness
-        WebLabel brightnessButton = new WebLabel ( "B:" );
+        final WebLabel brightnessButton = new WebLabel ( "B:" );
         brightnessButton.setDrawShade ( true );
         colorsPanel.add ( brightnessButton, "0,4" );
         brightnessField = new WebTextField ();
         colorsPanel.add ( brightnessField, "2,4" );
-        WebLabel brightnessSuffix = new WebLabel ( "%" );
+        final WebLabel brightnessSuffix = new WebLabel ( "%" );
         brightnessSuffix.setDrawShade ( true );
         colorsPanel.add ( brightnessSuffix, "4,4" );
 
         final CaretListener hsbListener = new CaretListener ()
         {
             @Override
-            public void caretUpdate ( CaretEvent e )
+            public void caretUpdate ( final CaretEvent e )
             {
                 if ( !adjustingText )
                 {
@@ -206,13 +206,13 @@ public class WebColorChooserPanel extends WebPanel implements DialogOptions
 
                     try
                     {
-                        float h = ( float ) Integer.parseInt ( hueField.getText () ) / 360;
-                        float s = ( float ) Integer.parseInt ( saturationField.getText () ) / 100;
-                        float b = ( float ) Integer.parseInt ( brightnessField.getText () ) / 100;
+                        final float h = ( float ) Integer.parseInt ( hueField.getText () ) / 360;
+                        final float s = ( float ) Integer.parseInt ( saturationField.getText () ) / 100;
+                        final float b = ( float ) Integer.parseInt ( brightnessField.getText () ) / 100;
                         color = new HSBColor ( h, s, b ).getColor ();
                         updateColors ( color, UpdateSource.hsbField );
                     }
-                    catch ( Throwable ex )
+                    catch ( final Throwable ex )
                     {
                         //
                     }
@@ -229,21 +229,21 @@ public class WebColorChooserPanel extends WebPanel implements DialogOptions
         colorsPanel.add ( new WebSeparator ( WebSeparator.HORIZONTAL ), "0,6,4,6" );
 
 
-        WebLabel redButton = new WebLabel ( "R:" );
+        final WebLabel redButton = new WebLabel ( "R:" );
         redButton.setDrawShade ( true );
         colorsPanel.add ( redButton, "0,8" );
         redField = new WebTextField ();
         redField.setColumns ( 3 );
         colorsPanel.add ( redField, "2,8" );
 
-        WebLabel greenButton = new WebLabel ( "G:" );
+        final WebLabel greenButton = new WebLabel ( "G:" );
         greenButton.setDrawShade ( true );
         colorsPanel.add ( greenButton, "0,10" );
         greenField = new WebTextField ();
         greenField.setColumns ( 3 );
         colorsPanel.add ( greenField, "2,10" );
 
-        WebLabel blueButton = new WebLabel ( "B:" );
+        final WebLabel blueButton = new WebLabel ( "B:" );
         blueButton.setDrawShade ( true );
         colorsPanel.add ( blueButton, "0,12" );
         blueField = new WebTextField ();
@@ -253,7 +253,7 @@ public class WebColorChooserPanel extends WebPanel implements DialogOptions
         final CaretListener rgbListener = new CaretListener ()
         {
             @Override
-            public void caretUpdate ( CaretEvent e )
+            public void caretUpdate ( final CaretEvent e )
             {
                 if ( !adjustingText )
                 {
@@ -261,13 +261,13 @@ public class WebColorChooserPanel extends WebPanel implements DialogOptions
 
                     try
                     {
-                        int r = Integer.parseInt ( redField.getText () );
-                        int g = Integer.parseInt ( greenField.getText () );
-                        int b = Integer.parseInt ( blueField.getText () );
+                        final int r = Integer.parseInt ( redField.getText () );
+                        final int g = Integer.parseInt ( greenField.getText () );
+                        final int b = Integer.parseInt ( blueField.getText () );
                         color = new Color ( r, g, b );
                         updateColors ( color, UpdateSource.rgbField );
                     }
-                    catch ( Throwable ex )
+                    catch ( final Throwable ex )
                     {
                         //
                     }
@@ -284,7 +284,7 @@ public class WebColorChooserPanel extends WebPanel implements DialogOptions
         infoPanel.add ( new WebSeparator ( WebSeparator.HORIZONTAL ), "0,9,2,9" );
 
 
-        WebLabel hexLabel = new WebLabel ( "#" );
+        final WebLabel hexLabel = new WebLabel ( "#" );
         hexLabel.setDrawShade ( true );
         infoPanel.add ( hexLabel, "0,11" );
         hexColor = new WebTextField ();
@@ -292,7 +292,7 @@ public class WebColorChooserPanel extends WebPanel implements DialogOptions
         final CaretListener hexListener = new CaretListener ()
         {
             @Override
-            public void caretUpdate ( CaretEvent e )
+            public void caretUpdate ( final CaretEvent e )
             {
                 if ( !adjustingText )
                 {
@@ -303,7 +303,7 @@ public class WebColorChooserPanel extends WebPanel implements DialogOptions
                         color = ColorUtils.parseHexColor ( hexColor.getText () );
                         updateColors ( color, UpdateSource.hexField );
                     }
-                    catch ( Throwable ex )
+                    catch ( final Throwable ex )
                     {
                         //
                     }
@@ -356,7 +356,7 @@ public class WebColorChooserPanel extends WebPanel implements DialogOptions
         webOnly.addActionListener ( new ActionListener ()
         {
             @Override
-            public void actionPerformed ( ActionEvent e )
+            public void actionPerformed ( final ActionEvent e )
             {
                 setWebOnlyColors ( webOnly.isSelected () );
             }
@@ -373,7 +373,7 @@ public class WebColorChooserPanel extends WebPanel implements DialogOptions
         ok.addActionListener ( new ActionListener ()
         {
             @Override
-            public void actionPerformed ( ActionEvent e )
+            public void actionPerformed ( final ActionEvent e )
             {
                 result = OK_OPTION;
                 fireOkPressed ( e );
@@ -382,7 +382,7 @@ public class WebColorChooserPanel extends WebPanel implements DialogOptions
         palette.getColorChooser ().addMouseListener ( new MouseAdapter ()
         {
             @Override
-            public void mouseClicked ( MouseEvent e )
+            public void mouseClicked ( final MouseEvent e )
             {
                 if ( e.getClickCount () == 2 )
                 {
@@ -402,7 +402,7 @@ public class WebColorChooserPanel extends WebPanel implements DialogOptions
         reset.addActionListener ( new ActionListener ()
         {
             @Override
-            public void actionPerformed ( ActionEvent e )
+            public void actionPerformed ( final ActionEvent e )
             {
                 setColor ( getOldColor () );
                 fireResetPressed ( e );
@@ -420,7 +420,7 @@ public class WebColorChooserPanel extends WebPanel implements DialogOptions
         cancel.addActionListener ( new ActionListener ()
         {
             @Override
-            public void actionPerformed ( ActionEvent e )
+            public void actionPerformed ( final ActionEvent e )
             {
                 result = CANCEL_OPTION;
                 setColor ( getOldColor () );
@@ -438,7 +438,7 @@ public class WebColorChooserPanel extends WebPanel implements DialogOptions
         return showButtonsPanel;
     }
 
-    public void setShowButtonsPanel ( boolean showButtonsPanel )
+    public void setShowButtonsPanel ( final boolean showButtonsPanel )
     {
         if ( this.showButtonsPanel != showButtonsPanel )
         {
@@ -460,14 +460,14 @@ public class WebColorChooserPanel extends WebPanel implements DialogOptions
         return webOnlyColors;
     }
 
-    public void setWebOnlyColors ( boolean webOnlyColors )
+    public void setWebOnlyColors ( final boolean webOnlyColors )
     {
         this.webOnlyColors = webOnlyColors;
         palette.setWebOnlyColors ( webOnlyColors );
         lineColorChooser.setWebOnlyColors ( webOnlyColors );
     }
 
-    private void updateColors ( Color color, UpdateSource updateSource )
+    private void updateColors ( final Color color, final UpdateSource updateSource )
     {
         adjustingText = true;
 
@@ -507,32 +507,32 @@ public class WebColorChooserPanel extends WebPanel implements DialogOptions
         fireStateChanged ();
     }
 
-    private void updateView ( Color color )
+    private void updateView ( final Color color )
     {
         lineColorChooser.setColor ( color );
         palette.setColor ( color );
     }
 
-    private void updateDoubleColorField ( Color color )
+    private void updateDoubleColorField ( final Color color )
     {
         doubleColorField.setNewColor ( color );
     }
 
-    private void updateHexField ( Color color )
+    private void updateHexField ( final Color color )
     {
         hexColor.setText ( ColorUtils.getHexColor ( color ) );
     }
 
-    private void updateRGBFields ( Color color )
+    private void updateRGBFields ( final Color color )
     {
         redField.setText ( "" + color.getRed () );
         greenField.setText ( "" + color.getGreen () );
         blueField.setText ( "" + color.getBlue () );
     }
 
-    private void updateHSBFields ( Color color )
+    private void updateHSBFields ( final Color color )
     {
-        float[] values = Color.RGBtoHSB ( color.getRed (), color.getGreen (), color.getBlue (), null );
+        final float[] values = Color.RGBtoHSB ( color.getRed (), color.getGreen (), color.getBlue (), null );
         hueField.setText ( "" + lineColorChooser.getHue () );
         saturationField.setText ( "" + Math.round ( 100 * values[ 1 ] ) );
         brightnessField.setText ( "" + Math.round ( 100 * values[ 2 ] ) );
@@ -543,7 +543,7 @@ public class WebColorChooserPanel extends WebPanel implements DialogOptions
         return color;
     }
 
-    public void setColor ( Color color )
+    public void setColor ( final Color color )
     {
         this.color = color;
         setOldColor ( color );
@@ -555,7 +555,7 @@ public class WebColorChooserPanel extends WebPanel implements DialogOptions
         return oldColor;
     }
 
-    public void setOldColor ( Color oldColor )
+    public void setOldColor ( final Color oldColor )
     {
         this.oldColor = oldColor;
         doubleColorField.setOldColor ( oldColor );
@@ -566,7 +566,7 @@ public class WebColorChooserPanel extends WebPanel implements DialogOptions
         setResult ( NONE_OPTION );
     }
 
-    public void setResult ( int result )
+    public void setResult ( final int result )
     {
         this.result = result;
     }
@@ -576,54 +576,54 @@ public class WebColorChooserPanel extends WebPanel implements DialogOptions
         return result;
     }
 
-    public void addChangeListener ( ChangeListener changeListener )
+    public void addChangeListener ( final ChangeListener changeListener )
     {
         changeListeners.add ( changeListener );
     }
 
-    public void removeChangeListener ( ChangeListener changeListener )
+    public void removeChangeListener ( final ChangeListener changeListener )
     {
         changeListeners.remove ( changeListener );
     }
 
     private void fireStateChanged ()
     {
-        ChangeEvent changeEvent = new ChangeEvent ( WebColorChooserPanel.this );
-        for ( ChangeListener listener : CollectionUtils.copy ( changeListeners ) )
+        final ChangeEvent changeEvent = new ChangeEvent ( WebColorChooserPanel.this );
+        for ( final ChangeListener listener : CollectionUtils.copy ( changeListeners ) )
         {
             listener.stateChanged ( changeEvent );
         }
     }
 
-    public void addColorChooserListener ( ColorChooserListener colorChooserListener )
+    public void addColorChooserListener ( final ColorChooserListener colorChooserListener )
     {
         colorChooserListeners.add ( colorChooserListener );
     }
 
-    public void removeColorChooserListener ( ColorChooserListener colorChooserListener )
+    public void removeColorChooserListener ( final ColorChooserListener colorChooserListener )
     {
         colorChooserListeners.remove ( colorChooserListener );
     }
 
-    private void fireOkPressed ( ActionEvent actionEvent )
+    private void fireOkPressed ( final ActionEvent actionEvent )
     {
-        for ( ColorChooserListener listener : CollectionUtils.copy ( colorChooserListeners ) )
+        for ( final ColorChooserListener listener : CollectionUtils.copy ( colorChooserListeners ) )
         {
             listener.okPressed ( actionEvent );
         }
     }
 
-    private void fireResetPressed ( ActionEvent actionEvent )
+    private void fireResetPressed ( final ActionEvent actionEvent )
     {
-        for ( ColorChooserListener listener : CollectionUtils.copy ( colorChooserListeners ) )
+        for ( final ColorChooserListener listener : CollectionUtils.copy ( colorChooserListeners ) )
         {
             listener.resetPressed ( actionEvent );
         }
     }
 
-    private void fireCancelPressed ( ActionEvent actionEvent )
+    private void fireCancelPressed ( final ActionEvent actionEvent )
     {
-        for ( ColorChooserListener listener : CollectionUtils.copy ( colorChooserListeners ) )
+        for ( final ColorChooserListener listener : CollectionUtils.copy ( colorChooserListeners ) )
         {
             listener.cancelPressed ( actionEvent );
         }

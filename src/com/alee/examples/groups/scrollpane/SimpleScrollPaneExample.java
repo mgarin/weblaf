@@ -55,14 +55,14 @@ public class SimpleScrollPaneExample extends DefaultExample
      * {@inheritDoc}
      */
     @Override
-    public Component getPreview ( WebLookAndFeelDemo owner )
+    public Component getPreview ( final WebLookAndFeelDemo owner )
     {
-        WebTextArea scrollableArea = new WebTextArea ( ExamplesManager.createLongString () );
+        final WebTextArea scrollableArea = new WebTextArea ( ExamplesManager.createLongString () );
         scrollableArea.setLineWrap ( true );
         scrollableArea.setWrapStyleWord ( true );
         scrollableArea.setMargin ( 5 );
 
-        WebScrollPane webScrollPane = new WebScrollPane ( scrollableArea, false, false );
+        final WebScrollPane webScrollPane = new WebScrollPane ( scrollableArea, false, true );
         webScrollPane.setPreferredSize ( new Dimension ( 0, 0 ) );
         return webScrollPane;
     }

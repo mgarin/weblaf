@@ -43,7 +43,7 @@ public class JSliderSettingsProcessor extends SettingsProcessor<JSlider, Integer
      *
      * @param data SettingsProcessorData
      */
-    public JSliderSettingsProcessor ( SettingsProcessorData data )
+    public JSliderSettingsProcessor ( final SettingsProcessorData data )
     {
         super ( data );
     }
@@ -66,12 +66,12 @@ public class JSliderSettingsProcessor extends SettingsProcessor<JSlider, Integer
      * {@inheritDoc}
      */
     @Override
-    protected void doInit ( JSlider slider )
+    protected void doInit ( final JSlider slider )
     {
         changeListener = new ChangeListener ()
         {
             @Override
-            public void stateChanged ( ChangeEvent e )
+            public void stateChanged ( final ChangeEvent e )
             {
                 if ( SettingsManager.isSaveOnChange () )
                 {
@@ -86,7 +86,7 @@ public class JSliderSettingsProcessor extends SettingsProcessor<JSlider, Integer
      * {@inheritDoc}
      */
     @Override
-    protected void doDestroy ( JSlider slider )
+    protected void doDestroy ( final JSlider slider )
     {
         slider.removeChangeListener ( changeListener );
         changeListener = null;
@@ -96,7 +96,7 @@ public class JSliderSettingsProcessor extends SettingsProcessor<JSlider, Integer
      * {@inheritDoc}
      */
     @Override
-    protected void doLoad ( JSlider slider )
+    protected void doLoad ( final JSlider slider )
     {
         slider.setValue ( loadValue () );
     }
@@ -105,7 +105,7 @@ public class JSliderSettingsProcessor extends SettingsProcessor<JSlider, Integer
      * {@inheritDoc}
      */
     @Override
-    protected void doSave ( JSlider slider )
+    protected void doSave ( final JSlider slider )
     {
         SettingsManager.set ( getGroup (), getKey (), slider.getValue () );
     }

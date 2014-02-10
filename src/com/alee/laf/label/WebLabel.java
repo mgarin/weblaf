@@ -206,7 +206,7 @@ public class WebLabel extends JLabel implements LanguageMethods, FontMethods<Web
             {
                 setUI ( ( WebLabelUI ) ReflectUtils.createInstance ( WebLookAndFeel.labelUI ) );
             }
-            catch ( Throwable e )
+            catch ( final Throwable e )
             {
                 e.printStackTrace ();
                 setUI ( new WebLabelUI () );

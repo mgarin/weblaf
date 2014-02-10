@@ -17,52 +17,19 @@
 
 package com.alee.laf;
 
-import com.alee.extended.button.WebSplitButtonUI;
-import com.alee.extended.checkbox.WebTristateCheckBoxUI;
-import com.alee.extended.label.WebMultiLineLabelUI;
-import com.alee.extended.label.WebVerticalLabelUI;
-import com.alee.laf.button.WebButtonUI;
-import com.alee.laf.button.WebToggleButtonUI;
-import com.alee.laf.checkbox.WebCheckBoxUI;
-import com.alee.laf.colorchooser.WebColorChooserUI;
-import com.alee.laf.combobox.WebComboBoxUI;
-import com.alee.laf.desktoppane.WebDesktopIconUI;
-import com.alee.laf.desktoppane.WebDesktopPaneUI;
-import com.alee.laf.desktoppane.WebInternalFrameUI;
-import com.alee.laf.filechooser.WebFileChooserUI;
-import com.alee.laf.label.WebLabelUI;
 import com.alee.laf.list.WebListCellRenderer;
 import com.alee.laf.list.WebListStyle;
-import com.alee.laf.list.WebListUI;
-import com.alee.laf.menu.*;
-import com.alee.laf.optionpane.WebOptionPaneUI;
-import com.alee.laf.panel.WebPanelUI;
-import com.alee.laf.progressbar.WebProgressBarUI;
-import com.alee.laf.radiobutton.WebRadioButtonUI;
-import com.alee.laf.rootpane.WebRootPaneUI;
 import com.alee.laf.scroll.WebScrollBarStyle;
-import com.alee.laf.scroll.WebScrollBarUI;
-import com.alee.laf.scroll.WebScrollPaneUI;
-import com.alee.laf.separator.WebSeparatorUI;
-import com.alee.laf.slider.WebSliderUI;
-import com.alee.laf.spinner.WebSpinnerUI;
-import com.alee.laf.splitpane.WebSplitPaneUI;
-import com.alee.laf.tabbedpane.WebTabbedPaneUI;
-import com.alee.laf.table.WebTableHeaderUI;
 import com.alee.laf.table.WebTableStyle;
-import com.alee.laf.table.WebTableUI;
-import com.alee.laf.text.*;
-import com.alee.laf.toolbar.WebToolBarSeparatorUI;
-import com.alee.laf.toolbar.WebToolBarUI;
-import com.alee.laf.tooltip.WebToolTipUI;
 import com.alee.laf.tree.WebTreeUI;
 import com.alee.laf.viewport.WebViewportStyle;
-import com.alee.laf.viewport.WebViewportUI;
 import com.alee.managers.focus.FocusManager;
 import com.alee.managers.hotkey.HotkeyManager;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.proxy.ProxyManager;
 import com.alee.managers.settings.SettingsManager;
+import com.alee.managers.style.StyleManager;
+import com.alee.managers.style.SupportedComponent;
 import com.alee.managers.tooltip.TooltipManager;
 import com.alee.managers.version.VersionManager;
 import com.alee.utils.*;
@@ -87,6 +54,10 @@ import java.util.WeakHashMap;
 
 public class WebLookAndFeel extends BasicLookAndFeel
 {
+    /**
+     * todo 1. Install default UI classes automatically (not manually) using SupportedComponent enumeration
+     */
+
     /**
      * If this client property is set to {@link Boolean#TRUE} on a component, UI delegates should follow the typical Swing behavior of not
      * overriding a user-defined border on it.
@@ -123,7 +94,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
     /**
      * Disabled icons cache.
      */
-    private static Map<Icon, ImageIcon> disabledIcons = new WeakHashMap<Icon, ImageIcon> ( 50 );
+    private static final Map<Icon, ImageIcon> disabledIcons = new WeakHashMap<Icon, ImageIcon> ( 50 );
 
     /**
      * Alt hotkey processor for application windows with menu.
@@ -149,84 +120,104 @@ public class WebLookAndFeel extends BasicLookAndFeel
      * Reassignable LookAndFeel UI class names.
      */
 
-    // Label
-    public static String labelUI = WebLabelUI.class.getCanonicalName ();
-    public static String toolTipUI = WebToolTipUI.class.getCanonicalName ();
-
-    // Button
-    public static String buttonUI = WebButtonUI.class.getCanonicalName ();
-    public static String splitButtonUI = WebSplitButtonUI.class.getCanonicalName ();
-    public static String toggleButtonUI = WebToggleButtonUI.class.getCanonicalName ();
-    public static String checkBoxUI = WebCheckBoxUI.class.getCanonicalName ();
-    public static String tristateCheckBoxUI = WebTristateCheckBoxUI.class.getCanonicalName ();
-    public static String radioButtonUI = WebRadioButtonUI.class.getCanonicalName ();
-
-    // Menu
-    public static String menuBarUI = WebMenuBarUI.class.getCanonicalName ();
-    public static String menuUI = WebMenuUI.class.getCanonicalName ();
-    public static String popupMenuUI = WebPopupMenuUI.class.getCanonicalName ();
-    public static String menuItemUI = WebMenuItemUI.class.getCanonicalName ();
-    public static String checkBoxMenuItemUI = WebCheckBoxMenuItemUI.class.getCanonicalName ();
-    public static String radioButtonMenuItemUI = WebRadioButtonMenuItemUI.class.getCanonicalName ();
-    public static String popupMenuSeparatorUI = WebPopupMenuSeparatorUI.class.getCanonicalName ();
-
-    // Separator
-    public static String separatorUI = WebSeparatorUI.class.getCanonicalName ();
-
-    // Scroll
-    public static String scrollBarUI = WebScrollBarUI.class.getCanonicalName ();
-    public static String scrollPaneUI = WebScrollPaneUI.class.getCanonicalName ();
-
-    // Text
-    public static String textFieldUI = WebTextFieldUI.class.getCanonicalName ();
-    public static String passwordFieldUI = WebPasswordFieldUI.class.getCanonicalName ();
-    public static String formattedTextFieldUI = WebFormattedTextFieldUI.class.getCanonicalName ();
-    public static String textAreaUI = WebTextAreaUI.class.getCanonicalName ();
-    public static String editorPaneUI = WebEditorPaneUI.class.getCanonicalName ();
-    public static String textPaneUI = WebTextPaneUI.class.getCanonicalName ();
-
-    // Toolbar
-    public static String toolBarUI = WebToolBarUI.class.getCanonicalName ();
-    public static String toolBarSeparatorUI = WebToolBarSeparatorUI.class.getCanonicalName ();
-
-    // Table
-    public static String tableUI = WebTableUI.class.getCanonicalName ();
-    public static String tableHeaderUI = WebTableHeaderUI.class.getCanonicalName ();
-
-    // Chooser
-    public static String colorChooserUI = WebColorChooserUI.class.getCanonicalName ();
-    public static String fileChooserUI = WebFileChooserUI.class.getCanonicalName ();
-
-    // Container
-    public static String panelUI = WebPanelUI.class.getCanonicalName ();
-    public static String viewportUI = WebViewportUI.class.getCanonicalName ();
-    public static String rootPaneUI = WebRootPaneUI.class.getCanonicalName ();
-    public static String tabbedPaneUI = WebTabbedPaneUI.class.getCanonicalName ();
-    public static String splitPaneUI = WebSplitPaneUI.class.getCanonicalName ();
-
-    // Complex components
-    public static String progressBarUI = WebProgressBarUI.class.getCanonicalName ();
-    public static String sliderUI = WebSliderUI.class.getCanonicalName ();
-    public static String spinnerUI = WebSpinnerUI.class.getCanonicalName ();
-    public static String treeUI = WebTreeUI.class.getCanonicalName ();
-    public static String listUI = WebListUI.class.getCanonicalName ();
-    public static String comboBoxUI = WebComboBoxUI.class.getCanonicalName ();
-
-    // Desktop pane
-    public static String desktopPaneUI = WebDesktopPaneUI.class.getCanonicalName ();
-    public static String descktopIconUI = WebDesktopIconUI.class.getCanonicalName ();
-    public static String internalFrameUI = WebInternalFrameUI.class.getCanonicalName ();
-
-    // Option pane
-    public static String optionPaneUI = WebOptionPaneUI.class.getCanonicalName ();
+    /**
+     * Label-related components.
+     */
+    public static String labelUI = SupportedComponent.label.getDefaultUIClass ();
+    public static String verticalLabelUI = SupportedComponent.verticalLabel.getDefaultUIClass ();
+    public static String multiLineLabelUI = SupportedComponent.multiLineLabel.getDefaultUIClass ();
+    public static String toolTipUI = SupportedComponent.toolTip.getDefaultUIClass ();
 
     /**
-     * WebLaF specific components reassignable UI class names.
+     * Button-related components.
      */
+    public static String buttonUI = SupportedComponent.button.getDefaultUIClass ();
+    public static String splitButtonUI = SupportedComponent.splitButton.getDefaultUIClass ();
+    public static String toggleButtonUI = SupportedComponent.toggleButton.getDefaultUIClass ();
+    public static String checkBoxUI = SupportedComponent.checkBox.getDefaultUIClass ();
+    public static String tristateCheckBoxUI = SupportedComponent.tristateCheckBox.getDefaultUIClass ();
+    public static String radioButtonUI = SupportedComponent.radioButton.getDefaultUIClass ();
 
-    // Label
-    public static String verticalLabelUI = WebVerticalLabelUI.class.getCanonicalName ();
-    public static String multiLineLabelUI = WebMultiLineLabelUI.class.getCanonicalName ();
+    /**
+     * Menu-related components.
+     */
+    public static String menuBarUI = SupportedComponent.menuBar.getDefaultUIClass ();
+    public static String menuUI = SupportedComponent.menu.getDefaultUIClass ();
+    public static String popupMenuUI = SupportedComponent.popupMenu.getDefaultUIClass ();
+    public static String menuItemUI = SupportedComponent.menuItem.getDefaultUIClass ();
+    public static String checkBoxMenuItemUI = SupportedComponent.checkBoxMenuItem.getDefaultUIClass ();
+    public static String radioButtonMenuItemUI = SupportedComponent.radioButtonMenuItem.getDefaultUIClass ();
+    public static String popupMenuSeparatorUI = SupportedComponent.popupMenuSeparator.getDefaultUIClass ();
+
+    /**
+     * Separator component.
+     */
+    public static String separatorUI = SupportedComponent.separator.getDefaultUIClass ();
+
+    /**
+     * Scroll-related components.
+     */
+    public static String scrollBarUI = SupportedComponent.scrollBar.getDefaultUIClass ();
+    public static String scrollPaneUI = SupportedComponent.scrollPane.getDefaultUIClass ();
+    public static String viewportUI = SupportedComponent.viewport.getDefaultUIClass ();
+
+    /**
+     * Text-related components.
+     */
+    public static String textFieldUI = SupportedComponent.textField.getDefaultUIClass ();
+    public static String passwordFieldUI = SupportedComponent.passwordField.getDefaultUIClass ();
+    public static String formattedTextFieldUI = SupportedComponent.formattedTextField.getDefaultUIClass ();
+    public static String textAreaUI = SupportedComponent.textArea.getDefaultUIClass ();
+    public static String editorPaneUI = SupportedComponent.editorPane.getDefaultUIClass ();
+    public static String textPaneUI = SupportedComponent.textPane.getDefaultUIClass ();
+
+    /**
+     * Toolbar-related components.
+     */
+    public static String toolBarUI = SupportedComponent.toolBar.getDefaultUIClass ();
+    public static String toolBarSeparatorUI = SupportedComponent.toolBarSeparator.getDefaultUIClass ();
+
+    /**
+     * Table-related components.
+     */
+    public static String tableUI = SupportedComponent.table.getDefaultUIClass ();
+    public static String tableHeaderUI = SupportedComponent.tableHeader.getDefaultUIClass ();
+
+    /**
+     * Chooser components.
+     */
+    public static String colorChooserUI = SupportedComponent.colorChooser.getDefaultUIClass ();
+    public static String fileChooserUI = SupportedComponent.fileChooser.getDefaultUIClass ();
+
+    /**
+     * Container-related components.
+     */
+    public static String panelUI = SupportedComponent.panel.getDefaultUIClass ();
+    public static String rootPaneUI = SupportedComponent.rootPane.getDefaultUIClass ();
+    public static String tabbedPaneUI = SupportedComponent.tabbedPane.getDefaultUIClass ();
+    public static String splitPaneUI = SupportedComponent.splitPane.getDefaultUIClass ();
+
+    /**
+     * Other data-related components.
+     */
+    public static String progressBarUI = SupportedComponent.progressBar.getDefaultUIClass ();
+    public static String sliderUI = SupportedComponent.slider.getDefaultUIClass ();
+    public static String spinnerUI = SupportedComponent.spinner.getDefaultUIClass ();
+    public static String treeUI = SupportedComponent.tree.getDefaultUIClass ();
+    public static String listUI = SupportedComponent.list.getDefaultUIClass ();
+    public static String comboBoxUI = SupportedComponent.comboBox.getDefaultUIClass ();
+
+    /**
+     * Desktop-pane-related components.
+     */
+    public static String desktopPaneUI = SupportedComponent.desktopPane.getDefaultUIClass ();
+    public static String descktopIconUI = SupportedComponent.desktopIcon.getDefaultUIClass ();
+    public static String internalFrameUI = SupportedComponent.internalFrame.getDefaultUIClass ();
+
+    /**
+     * Option pane component.
+     */
+    public static String optionPaneUI = SupportedComponent.optionPane.getDefaultUIClass ();
 
     /**
      * Reassignable LookAndFeel fonts.
@@ -367,6 +358,8 @@ public class WebLookAndFeel extends BasicLookAndFeel
     {
         // Label
         table.put ( "LabelUI", labelUI );
+        table.put ( "VerticalLabelUI", verticalLabelUI );
+        table.put ( "MultiLineLabelUI", multiLineLabelUI );
         table.put ( "ToolTipUI", toolTipUI );
 
         // Button
@@ -392,6 +385,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
         // Scroll
         table.put ( "ScrollBarUI", scrollBarUI );
         table.put ( "ScrollPaneUI", scrollPaneUI );
+        table.put ( "ViewportUI", viewportUI );
 
         // Text
         table.put ( "TextFieldUI", textFieldUI );
@@ -415,7 +409,6 @@ public class WebLookAndFeel extends BasicLookAndFeel
 
         // Container
         table.put ( "PanelUI", panelUI );
-        table.put ( "ViewportUI", viewportUI );
         table.put ( "RootPaneUI", rootPaneUI );
         table.put ( "TabbedPaneUI", tabbedPaneUI );
         table.put ( "SplitPaneUI", splitPaneUI );
@@ -463,7 +456,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
      *
      * @param table UI defaults table
      */
-    @SuppressWarnings ( "UnnecessaryBoxing" )
+    @SuppressWarnings ("UnnecessaryBoxing")
     @Override
     protected void initComponentDefaults ( final UIDefaults table )
     {
@@ -860,7 +853,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
             // LookAndFeel installed sucessfully
             return true;
         }
-        catch ( Throwable e )
+        catch ( final Throwable e )
         {
             // Printing exception
             e.printStackTrace ();
@@ -893,6 +886,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
         FocusManager.initialize ();
         TooltipManager.initialize ();
         ProxyManager.initialize ();
+        StyleManager.initialize ();
     }
 
     /**
@@ -1075,6 +1069,16 @@ public class WebLookAndFeel extends BasicLookAndFeel
     public static ComponentOrientation getOrientation ()
     {
         return LanguageManager.getOrientation ();
+    }
+
+    /**
+     * Returns orientation opposite to current global component orientation.
+     *
+     * @return orientation opposite to current global component orientation
+     */
+    public static ComponentOrientation getOppositeOrientation ()
+    {
+        return LanguageManager.getOppositeOrientation ();
     }
 
     /**

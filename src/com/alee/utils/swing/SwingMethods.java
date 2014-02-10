@@ -27,10 +27,11 @@ package com.alee.utils.swing;
  * @see com.alee.managers.language.LanguageContainerMethods
  * @see com.alee.managers.hotkey.HotkeyMethods
  * @see com.alee.managers.hotkey.ButtonHotkeyMethods
- * @see SizeMethods
- * @see FontMethods
- * @see BorderMethods
- * @see WindowMethods
+ * @see com.alee.utils.swing.SizeMethods
+ * @see com.alee.utils.swing.FontMethods
+ * @see com.alee.utils.swing.BorderMethods
+ * @see com.alee.utils.swing.WindowMethods
+ * @see com.alee.utils.swing.PainterMethods
  */
 
 public interface SwingMethods

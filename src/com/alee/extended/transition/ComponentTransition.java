@@ -56,17 +56,17 @@ public class ComponentTransition extends WebPanel
         this ( ( Component ) null );
     }
 
-    public ComponentTransition ( Component content )
+    public ComponentTransition ( final Component content )
     {
         this ( content, null );
     }
 
-    public ComponentTransition ( TransitionEffect transitionEffect )
+    public ComponentTransition ( final TransitionEffect transitionEffect )
     {
         this ( null, transitionEffect );
     }
 
-    public ComponentTransition ( Component content, TransitionEffect transitionEffect )
+    public ComponentTransition ( final Component content, final TransitionEffect transitionEffect )
     {
         // Special layout allowing double content
         super ( new StackLayout () );
@@ -93,7 +93,7 @@ public class ComponentTransition extends WebPanel
         return getComponentCount () > 0 ? getComponent ( 0 ) : null;
     }
 
-    public void setContent ( Component content )
+    public void setContent ( final Component content )
     {
         if ( !isAnimating () )
         {
@@ -125,7 +125,7 @@ public class ComponentTransition extends WebPanel
      * Delayed transition
      */
 
-    public void delayTransition ( long delay, final Component content )
+    public void delayTransition ( final long delay, final Component content )
     {
         SwingUtils.delayInvokeLater ( delay, new Runnable ()
         {
@@ -189,7 +189,7 @@ public class ComponentTransition extends WebPanel
         }
         else
         {
-            Component currentContent = getComponentCount () > 0 ? getComponent ( 0 ) : null;
+            final Component currentContent = getComponentCount () > 0 ? getComponent ( 0 ) : null;
             currentSnapshot = SwingUtils.createComponentSnapshot ( currentContent, width, height );
         }
 
@@ -203,10 +203,10 @@ public class ComponentTransition extends WebPanel
             // Focus handler required to wait for focus change
             // This is required to handle focus properly and have atleast one component focused withing window of calendar
             // Otherwise focus will be lost and window may become "bugged" and may require additiona user actions in some cases
-            FocusAdapter focusHandle = new FocusAdapter ()
+            final FocusAdapter focusHandle = new FocusAdapter ()
             {
                 @Override
-                public void focusGained ( FocusEvent e )
+                public void focusGained ( final FocusEvent e )
                 {
                     removeFocusListener ( this );
                     continueTransitionImpl ( content, width, height, currentSnapshot );
@@ -233,7 +233,8 @@ public class ComponentTransition extends WebPanel
         return getTransitionEffect () != null && isShowing ();
     }
 
-    protected void continueTransitionImpl ( final Component content, int width, int height, BufferedImage currentSnapshot )
+    protected void continueTransitionImpl ( final Component content, final int width, final int height,
+                                            final BufferedImage currentSnapshot )
     {
         // New content image
         removeAll ();
@@ -243,7 +244,7 @@ public class ComponentTransition extends WebPanel
         }
 
         // Creating snapshot before removing all components
-        BufferedImage otherSnapshot = SwingUtils.createComponentSnapshot ( content, width, height );
+        final BufferedImage otherSnapshot = SwingUtils.createComponentSnapshot ( content, width, height );
 
         // Transition panel
         removeAll ();
@@ -273,7 +274,7 @@ public class ComponentTransition extends WebPanel
         transition.performTransition ();
     }
 
-    protected void finishTransitionImpl ( Component content )
+    protected void finishTransitionImpl ( final Component content )
     {
         // Destroying all image links
         this.removeAll ();
@@ -320,7 +321,7 @@ public class ComponentTransition extends WebPanel
         return transitionEffects != null && transitionEffects.size () > 0 ? transitionEffects.get ( 0 ) : null;
     }
 
-    public void addTransitionEffect ( TransitionEffect transitionEffect )
+    public void addTransitionEffect ( final TransitionEffect transitionEffect )
     {
         if ( transitionEffects == null )
         {
@@ -338,7 +339,7 @@ public class ComponentTransition extends WebPanel
         }
     }
 
-    public void removeTransitionEffect ( TransitionEffect transitionEffect )
+    public void removeTransitionEffect ( final TransitionEffect transitionEffect )
     {
         if ( transitionEffects != null )
         {
@@ -346,34 +347,34 @@ public class ComponentTransition extends WebPanel
         }
     }
 
-    public void setTransitionEffect ( TransitionEffect transitionEffect )
+    public void setTransitionEffect ( final TransitionEffect transitionEffect )
     {
         transitionEffects = transitionEffect != null ? CollectionUtils.copy ( transitionEffect ) : null;
     }
 
-    public void setTransitionEffects ( List<TransitionEffect> transitionEffects )
+    public void setTransitionEffects ( final List<TransitionEffect> transitionEffects )
     {
         this.transitionEffects = transitionEffects;
     }
 
-    public void setTransitionEffects ( TransitionEffect... transitionEffects )
+    public void setTransitionEffects ( final TransitionEffect... transitionEffects )
     {
         this.transitionEffects = transitionEffects != null ? CollectionUtils.copy ( transitionEffects ) : null;
     }
 
-    public void addTransitionListener ( TransitionListener listener )
+    public void addTransitionListener ( final TransitionListener listener )
     {
         transitionListeners.add ( listener );
     }
 
-    public void removeTransitionListener ( TransitionListener listener )
+    public void removeTransitionListener ( final TransitionListener listener )
     {
         transitionListeners.remove ( listener );
     }
 
     public void fireTransitionStarted ()
     {
-        for ( TransitionListener listener : CollectionUtils.copy ( transitionListeners ) )
+        for ( final TransitionListener listener : CollectionUtils.copy ( transitionListeners ) )
         {
             listener.transitionStarted ();
         }
@@ -381,7 +382,7 @@ public class ComponentTransition extends WebPanel
 
     public void fireTransitionFinished ()
     {
-        for ( TransitionListener listener : CollectionUtils.copy ( transitionListeners ) )
+        for ( final TransitionListener listener : CollectionUtils.copy ( transitionListeners ) )
         {
             listener.transitionFinished ();
         }

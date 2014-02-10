@@ -368,21 +368,21 @@ public final class TextUtils
      */
     public static <E extends Enum<E>> List<E> enumStringToList ( final String enumString, final Class<E> enumClass )
     {
-        final List<E> strings;
+        final List<E> enumerations;
         if ( enumString != null )
         {
             final StringTokenizer tokenizer = new StringTokenizer ( enumString, ",", false );
-            strings = new ArrayList<E> ();
+            enumerations = new ArrayList<E> ();
             while ( tokenizer.hasMoreTokens () )
             {
-                strings.add ( E.valueOf ( enumClass, tokenizer.nextToken ().trim () ) );
+                enumerations.add ( Enum.valueOf ( enumClass, tokenizer.nextToken ().trim () ) );
             }
         }
         else
         {
-            strings = new ArrayList<E> ( 0 );
+            enumerations = new ArrayList<E> ( 0 );
         }
-        return strings;
+        return enumerations;
     }
 
     /**
@@ -415,19 +415,8 @@ public final class TextUtils
      */
     public static String generateId ( final String prefix, final String suffix )
     {
-        final StringBuilder idBuilder = new StringBuilder ();
-        idBuilder.append ( prefix == null ? defaultIdPrefix : prefix );
-        idBuilder.append ( "-" );
-        idBuilder.append ( generateId ( idPartLength ) );
-        idBuilder.append ( "-" );
-        idBuilder.append ( generateId ( idPartLength ) );
-        idBuilder.append ( "-" );
-        idBuilder.append ( generateId ( idPartLength ) );
-        idBuilder.append ( "-" );
-        idBuilder.append ( generateId ( idPartLength ) );
-        idBuilder.append ( "-" );
-        idBuilder.append ( suffix == null ? defaultIdSuffix : suffix );
-        return idBuilder.toString ();
+        return ( prefix == null ? defaultIdPrefix : prefix ) + "-" + generateId ( idPartLength ) + "-" + generateId ( idPartLength ) + "-" +
+                generateId ( idPartLength ) + "-" + generateId ( idPartLength ) + "-" + ( suffix == null ? defaultIdSuffix : suffix );
     }
 
     /**

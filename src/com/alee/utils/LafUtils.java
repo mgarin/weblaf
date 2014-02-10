@@ -326,6 +326,7 @@ public final class LafUtils
 
     public static void restoreClip ( final Graphics g, final Shape clip, final boolean shouldRestore )
     {
+        // todo Maybe let setup null clip? Might cause errors in case when initial clip was null
         if ( shouldRestore && clip != null )
         {
             g.setClip ( clip );

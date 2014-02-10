@@ -19,6 +19,8 @@ package com.alee.laf.scroll;
 
 import com.alee.laf.WebLookAndFeel;
 import com.alee.utils.ReflectUtils;
+import com.alee.utils.SizeUtils;
+import com.alee.utils.swing.SizeMethods;
 
 import javax.swing.*;
 import java.awt.*;
@@ -29,7 +31,7 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public class WebScrollBar extends JScrollBar
+public class WebScrollBar extends JScrollBar implements SizeMethods<WebScrollBar>
 {
     /**
      * Constructs new scroll bar.
@@ -511,7 +513,7 @@ public class WebScrollBar extends JScrollBar
             {
                 setUI ( ( WebScrollBarUI ) ReflectUtils.createInstance ( WebLookAndFeel.scrollBarUI ) );
             }
-            catch ( Throwable e )
+            catch ( final Throwable e )
             {
                 e.printStackTrace ();
                 setUI ( new WebScrollBarUI () );
@@ -521,5 +523,86 @@ public class WebScrollBar extends JScrollBar
         {
             setUI ( getUI () );
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int getPreferredWidth ()
+    {
+        return SizeUtils.getPreferredWidth ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebScrollBar setPreferredWidth ( final int preferredWidth )
+    {
+        return SizeUtils.setPreferredWidth ( this, preferredWidth );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int getPreferredHeight ()
+    {
+        return SizeUtils.getPreferredHeight ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebScrollBar setPreferredHeight ( final int preferredHeight )
+    {
+        return SizeUtils.setPreferredHeight ( this, preferredHeight );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int getMinimumWidth ()
+    {
+        return SizeUtils.getMinimumWidth ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebScrollBar setMinimumWidth ( final int minimumWidth )
+    {
+        return SizeUtils.setMinimumWidth ( this, minimumWidth );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int getMinimumHeight ()
+    {
+        return SizeUtils.getMinimumHeight ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebScrollBar setMinimumHeight ( final int minimumHeight )
+    {
+        return SizeUtils.setMinimumHeight ( this, minimumHeight );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Dimension getPreferredSize ()
+    {
+        return SizeUtils.getPreferredSize ( this, super.getPreferredSize () );
     }
 }

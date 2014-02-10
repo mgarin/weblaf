@@ -36,7 +36,7 @@ public class WebVerticalLabelUI extends WebLabelUI
     private Rectangle verticalTextR = new Rectangle ();
 
     @SuppressWarnings ("UnusedParameters")
-    public static ComponentUI createUI ( JComponent c )
+    public static ComponentUI createUI ( final JComponent c )
     {
         return new WebVerticalLabelUI ();
     }
@@ -46,7 +46,7 @@ public class WebVerticalLabelUI extends WebLabelUI
         this.clockwise = false;
     }
 
-    public WebVerticalLabelUI ( boolean clockwise )
+    public WebVerticalLabelUI ( final boolean clockwise )
     {
         this.clockwise = clockwise;
     }
@@ -56,28 +56,28 @@ public class WebVerticalLabelUI extends WebLabelUI
         return clockwise;
     }
 
-    public void setClockwise ( boolean clockwise )
+    public void setClockwise ( final boolean clockwise )
     {
         this.clockwise = clockwise;
     }
 
     @Override
-    public int getBaseline ( JComponent c, int width, int height )
+    public int getBaseline ( final JComponent c, final int width, final int height )
     {
         super.getBaseline ( c, width, height );
         return -1;
     }
 
     @Override
-    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( JComponent c )
+    public Component.BaselineResizeBehavior getBaselineResizeBehavior ( final JComponent c )
     {
         super.getBaselineResizeBehavior ( c );
         return Component.BaselineResizeBehavior.OTHER;
     }
 
     @Override
-    protected String layoutCL ( JLabel label, FontMetrics fontMetrics, String text, Icon icon, Rectangle viewR, Rectangle iconR,
-                                Rectangle textR )
+    protected String layoutCL ( final JLabel label, final FontMetrics fontMetrics, String text, final Icon icon, final Rectangle viewR,
+                                final Rectangle iconR, final Rectangle textR )
     {
         verticalViewR = transposeRectangle ( viewR, verticalViewR );
         verticalIconR = transposeRectangle ( iconR, verticalIconR );
@@ -93,9 +93,9 @@ public class WebVerticalLabelUI extends WebLabelUI
     }
 
     @Override
-    public void paint ( Graphics g, JComponent c )
+    public void paint ( final Graphics g, final JComponent c )
     {
-        Graphics2D g2 = ( Graphics2D ) g.create ();
+        final Graphics2D g2 = ( Graphics2D ) g.create ();
         if ( c.getComponentOrientation ().isLeftToRight () ? clockwise : !clockwise )
         {
             g2.rotate ( Math.PI / 2, c.getSize ().width / 2, c.getSize ().width / 2 );
@@ -108,29 +108,29 @@ public class WebVerticalLabelUI extends WebLabelUI
     }
 
     @Override
-    public Dimension getPreferredSize ( JComponent c )
+    public Dimension getPreferredSize ( final JComponent c )
     {
         return transposeDimension ( super.getPreferredSize ( c ) );
     }
 
     @Override
-    public Dimension getMaximumSize ( JComponent c )
+    public Dimension getMaximumSize ( final JComponent c )
     {
         return transposeDimension ( super.getMaximumSize ( c ) );
     }
 
     @Override
-    public Dimension getMinimumSize ( JComponent c )
+    public Dimension getMinimumSize ( final JComponent c )
     {
         return transposeDimension ( super.getMinimumSize ( c ) );
     }
 
-    private Dimension transposeDimension ( Dimension from )
+    private Dimension transposeDimension ( final Dimension from )
     {
         return new Dimension ( from.height, from.width );
     }
 
-    private Rectangle transposeRectangle ( Rectangle from, Rectangle to )
+    private Rectangle transposeRectangle ( final Rectangle from, Rectangle to )
     {
         if ( to == null )
         {
@@ -143,7 +143,7 @@ public class WebVerticalLabelUI extends WebLabelUI
         return to;
     }
 
-    private Rectangle copyRectangle ( Rectangle from, Rectangle to )
+    private Rectangle copyRectangle ( final Rectangle from, Rectangle to )
     {
         if ( to == null )
         {

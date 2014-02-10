@@ -53,11 +53,11 @@ public class Tetris extends JComponent
     public static final Dimension PREFERRED_SIZE =
             new Dimension ( BLOCKS_IN_WIDTH * BLOCK_SIDE + BLOCKS_IN_WIDTH + 1, BLOCKS_IN_HEIGHT * BLOCK_SIDE + BLOCKS_IN_HEIGHT + 1 );
 
-    private static Color bgTop = Color.WHITE;
-    private static Color bgBottom = new Color ( 223, 223, 223 );
+    private static final Color bgTop = Color.WHITE;
+    private static final Color bgBottom = new Color ( 223, 223, 223 );
 
-    private static List<TickListener> tickListeners = new ArrayList<TickListener> ( 1 );
-    private static List<TetrisListener> tetrisListeners = new ArrayList<TetrisListener> ( 1 );
+    private static final List<TickListener> tickListeners = new ArrayList<TickListener> ( 1 );
+    private static final List<TetrisListener> tetrisListeners = new ArrayList<TetrisListener> ( 1 );
 
     // Game state variables
     private boolean gameRunning = false;
@@ -67,23 +67,23 @@ public class Tetris extends JComponent
     private int score = 0;
 
     // Figures queue
-    private List<Figure> figuresQueue = new ArrayList<Figure> ();
+    private final List<Figure> figuresQueue = new ArrayList<Figure> ();
 
     // Fallen figure blocks
-    private Map<Point, Block> terrain = new HashMap<Point, Block> ();
+    private final Map<Point, Block> terrain = new HashMap<Point, Block> ();
 
     // Game time counter
-    private WebTimer pusher;
+    private final WebTimer pusher;
 
     // Current falling figure
     private Figure currentFigure = null;
 
     // Keyboard events
     private Action action = null;
-    private WebTimer keyTimer;
+    private final WebTimer keyTimer;
 
     // Next figure field
-    private JComponent nextFigureField;
+    private final JComponent nextFigureField;
 
     // Use internal hotkeys or not
     private boolean useInternalHotkeys = true;
@@ -100,7 +100,7 @@ public class Tetris extends JComponent
         keyTimer = new WebTimer ( "Tetris.keyTimer", 60, new ActionListener ()
         {
             @Override
-            public void actionPerformed ( ActionEvent e )
+            public void actionPerformed ( final ActionEvent e )
             {
                 if ( gameRunning )
                 {
@@ -117,24 +117,24 @@ public class Tetris extends JComponent
         pusher = new WebTimer ( "Tetris.gameTimer", getTickTime (), null )
         {
             @Override
-            public void start ()
+            public WebTimer start ()
             {
                 gameRunning = true;
-                super.start ();
+                return super.start ();
             }
 
             @Override
-            public void stop ()
+            public WebTimer stop ()
             {
                 gameRunning = false;
-                super.stop ();
+                return super.stop ();
             }
         };
         pusher.setInitialDelay ( 0 );
         pusher.addActionListener ( new ActionListener ()
         {
             @Override
-            public void actionPerformed ( ActionEvent e )
+            public void actionPerformed ( final ActionEvent e )
             {
                 if ( keyTimer.isRunning () )
                 {
@@ -147,7 +147,7 @@ public class Tetris extends JComponent
         addKeyListener ( new KeyAdapter ()
         {
             @Override
-            public void keyPressed ( KeyEvent e )
+            public void keyPressed ( final KeyEvent e )
             {
                 if ( gameRunning && currentFigure != null && !keyTimer.isRunning () )
                 {
@@ -175,7 +175,7 @@ public class Tetris extends JComponent
             }
 
             @Override
-            public void keyReleased ( KeyEvent e )
+            public void keyReleased ( final KeyEvent e )
             {
                 if ( useInternalHotkeys && Hotkey.P.isTriggered ( e ) )
                 {
@@ -209,7 +209,7 @@ public class Tetris extends JComponent
         addMouseListener ( new MouseAdapter ()
         {
             @Override
-            public void mousePressed ( MouseEvent e )
+            public void mousePressed ( final MouseEvent e )
             {
                 requestFocusInWindow ();
             }
@@ -230,15 +230,15 @@ public class Tetris extends JComponent
             }
 
             @Override
-            protected void paintComponent ( Graphics g )
+            protected void paintComponent ( final Graphics g )
             {
-                Graphics2D g2d = ( Graphics2D ) g;
+                final Graphics2D g2d = ( Graphics2D ) g;
                 LafUtils.setupAntialias ( g2d );
 
                 g2d.setPaint ( Color.WHITE );
                 g2d.fillRect ( 0, 0, getWidth (), getHeight () );
 
-                Stroke old = g2d.getStroke ();
+                final Stroke old = g2d.getStroke ();
                 g2d.setStroke ( borderStroke );
                 g2d.setPaint ( Color.LIGHT_GRAY );
                 g2d.drawRect ( 0, 0, getWidth () - 1, getHeight () - 1 );
@@ -254,7 +254,7 @@ public class Tetris extends JComponent
         return useInternalHotkeys;
     }
 
-    public void setUseInternalHotkeys ( boolean useInternalHotkeys )
+    public void setUseInternalHotkeys ( final boolean useInternalHotkeys )
     {
         this.useInternalHotkeys = useInternalHotkeys;
     }
@@ -320,7 +320,7 @@ public class Tetris extends JComponent
     private void performOneTick ()
     {
         // If there is no current falling figure adding next one
-        boolean cantMoveFuther = currentFigure != null && !currentFigure.canMoveDown ( getTerrainShape () );
+        final boolean cantMoveFuther = currentFigure != null && !currentFigure.canMoveDown ( getTerrainShape () );
         if ( currentFigure == null || cantMoveFuther )
         {
             if ( cantMoveFuther )
@@ -329,13 +329,13 @@ public class Tetris extends JComponent
                 terrain.putAll ( currentFigure.getBlocks () );
 
                 // Determining blocks amount in each level
-                List<Integer> levels = new ArrayList<Integer> ();
-                Map<Integer, Integer> blocksPerLevel = new HashMap<Integer, Integer> ();
-                for ( Point point : terrain.keySet () )
+                final List<Integer> levels = new ArrayList<Integer> ();
+                final Map<Integer, Integer> blocksPerLevel = new HashMap<Integer, Integer> ();
+                for ( final Point point : terrain.keySet () )
                 {
-                    Block block = terrain.get ( point );
+                    final Block block = terrain.get ( point );
 
-                    int level = block.getBlockPoint ().y;
+                    final int level = block.getBlockPoint ().y;
                     if ( !levels.contains ( level ) )
                     {
                         levels.add ( level );
@@ -348,17 +348,17 @@ public class Tetris extends JComponent
                 Collections.sort ( levels );
 
                 // Checking for filled rows
-                for ( int level : levels )
+                for ( final int level : levels )
                 {
                     if ( blocksPerLevel.get ( level ) == BLOCKS_IN_WIDTH )
                     {
                         // Destroying filled rows and moving upper rows
-                        List<Point> toRemove = new ArrayList<Point> ();
-                        List<Point> toMove = new ArrayList<Point> ();
-                        for ( Point point : terrain.keySet () )
+                        final List<Point> toRemove = new ArrayList<Point> ();
+                        final List<Point> toMove = new ArrayList<Point> ();
+                        for ( final Point point : terrain.keySet () )
                         {
-                            Block block = terrain.get ( point );
-                            int lvl = block.getBlockPoint ().y;
+                            final Block block = terrain.get ( point );
+                            final int lvl = block.getBlockPoint ().y;
                             if ( lvl == level )
                             {
                                 // Adding block to delete list
@@ -370,7 +370,7 @@ public class Tetris extends JComponent
                                 toMove.add ( point );
                             }
                         }
-                        for ( Point removed : toRemove )
+                        for ( final Point removed : toRemove )
                         {
                             terrain.remove ( removed );
                         }
@@ -379,18 +379,18 @@ public class Tetris extends JComponent
                         Collections.sort ( toMove, new Comparator<Point> ()
                         {
                             @Override
-                            public int compare ( Point o1, Point o2 )
+                            public int compare ( final Point o1, final Point o2 )
                             {
-                                Integer int1 = o1.y;
-                                Integer int2 = o2.y;
+                                final Integer int1 = o1.y;
+                                final Integer int2 = o2.y;
                                 return -int1.compareTo ( int2 );
                             }
                         } );
-                        Map<Point, Block> movedBlocks = new HashMap<Point, Block> ();
-                        for ( Point point : toMove )
+                        final Map<Point, Block> movedBlocks = new HashMap<Point, Block> ();
+                        for ( final Point point : toMove )
                         {
-                            Block block = terrain.get ( point );
-                            int lvl = block.getBlockPoint ().y;
+                            final Block block = terrain.get ( point );
+                            final int lvl = block.getBlockPoint ().y;
                             if ( lvl < level )
                             {
                                 // Moving block
@@ -449,7 +449,7 @@ public class Tetris extends JComponent
     private Figure pushNextFigure ()
     {
         // Figure from queue
-        Figure figure = figuresQueue.remove ( 0 );
+        final Figure figure = figuresQueue.remove ( 0 );
 
         if ( figuresQueue.size () == 0 )
         {
@@ -467,8 +467,8 @@ public class Tetris extends JComponent
 
     private GeneralPath getTerrainShape ()
     {
-        GeneralPath border = getBorderShape ();
-        for ( Point point : terrain.keySet () )
+        final GeneralPath border = getBorderShape ();
+        for ( final Point point : terrain.keySet () )
         {
             border.append ( new Rectangle ( point, new Dimension ( BLOCK_SIDE, BLOCK_SIDE ) ), false );
         }
@@ -477,7 +477,7 @@ public class Tetris extends JComponent
 
     private GeneralPath getBorderShape ()
     {
-        GeneralPath border = new GeneralPath ( GeneralPath.WIND_EVEN_ODD );
+        final GeneralPath border = new GeneralPath ( GeneralPath.WIND_EVEN_ODD );
         border.append ( new Rectangle ( -BLOCK_SIDE - 1, -BLOCK_SIDE * 3 - 3, BLOCK_SIDE, PREFERRED_SIZE.height + BLOCK_SIDE * 3 + 3 ),
                 false );
         border.append ( new Rectangle ( -BLOCK_SIDE - 1, PREFERRED_SIZE.height + 1, PREFERRED_SIZE.width + 2 + BLOCK_SIDE * 2, BLOCK_SIDE ),
@@ -506,17 +506,17 @@ public class Tetris extends JComponent
     public static Stroke borderStroke = new BasicStroke ( 0.5f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 1f, new float[]{ 4, 4 }, 0f );
 
     @Override
-    protected void paintComponent ( Graphics g )
+    protected void paintComponent ( final Graphics g )
     {
         super.paintComponent ( g );
 
-        Graphics2D g2d = ( Graphics2D ) g;
+        final Graphics2D g2d = ( Graphics2D ) g;
         LafUtils.setupAntialias ( g2d );
 
         g2d.setPaint ( Color.WHITE );
         g2d.fillRect ( 0, 0, getWidth (), getHeight () );
 
-        Stroke old = g2d.getStroke ();
+        final Stroke old = g2d.getStroke ();
         g2d.setStroke ( borderStroke );
         g2d.setPaint ( Color.LIGHT_GRAY );
         for ( int i = 0; i <= BLOCKS_IN_WIDTH; i++ )
@@ -532,9 +532,9 @@ public class Tetris extends JComponent
         //        g2d.setPaint ( Color.RED );
         //        g2d.draw ( getTerrainShape () );
 
-        for ( Point point : terrain.keySet () )
+        for ( final Point point : terrain.keySet () )
         {
-            Block block = terrain.get ( point );
+            final Block block = terrain.get ( point );
             block.paintBlock ( g2d, new Rectangle ( point, new Dimension ( BLOCK_SIDE, BLOCK_SIDE ) ), block.getRotation () );
         }
 
@@ -576,19 +576,19 @@ public class Tetris extends JComponent
 
             g2d.setFont ( largeFont );
             FontMetrics fm = g2d.getFontMetrics ();
-            FontRenderContext frc = fm.getFontRenderContext ();
-            GlyphVector gv = g2d.getFont ().createGlyphVector ( frc, gameOver ? gameOverText : gamePausedText );
-            Rectangle bigTextBounds = gv.getVisualBounds ().getBounds ();
+            final FontRenderContext frc = fm.getFontRenderContext ();
+            final GlyphVector gv = g2d.getFont ().createGlyphVector ( frc, gameOver ? gameOverText : gamePausedText );
+            final Rectangle bigTextBounds = gv.getVisualBounds ().getBounds ();
 
             g2d.setFont ( smallFont );
             fm = g2d.getFontMetrics ();
-            int smallTextWidth = fm.stringWidth ( gameOver ? gameOverTip : gamePausedTip );
+            final int smallTextWidth = fm.stringWidth ( gameOver ? gameOverTip : gamePausedTip );
 
-            int width = Math.max ( bigTextBounds.width, smallTextWidth );
-            RoundRectangle2D rr = new RoundRectangle2D.Double ( getWidth () / 2 - width / 2 - 10,
+            final int width = Math.max ( bigTextBounds.width, smallTextWidth );
+            final RoundRectangle2D rr = new RoundRectangle2D.Double ( getWidth () / 2 - width / 2 - 10,
                     getHeight () / 2 - bigTextBounds.height / 2 - smallFont.getSize () / 2 - 10, width + 20,
                     bigTextBounds.height + smallFont.getSize () + 20, 10, 10 );
-            Rectangle bounds = rr.getBounds ();
+            final Rectangle bounds = rr.getBounds ();
 
             g2d.setPaint ( new GradientPaint ( 0, bounds.y, bgTop, 0, bounds.y + bounds.height, bgBottom ) );
             g2d.fill ( rr );
@@ -608,37 +608,37 @@ public class Tetris extends JComponent
         }
     }
 
-    public void addTickListener ( TickListener tickListener )
+    public void addTickListener ( final TickListener tickListener )
     {
         tickListeners.add ( tickListener );
     }
 
-    public void removeTickListener ( TickListener tickListener )
+    public void removeTickListener ( final TickListener tickListener )
     {
         tickListeners.remove ( tickListener );
     }
 
     private void fireTick ()
     {
-        for ( TickListener tickListener : CollectionUtils.copy ( tickListeners ) )
+        for ( final TickListener tickListener : CollectionUtils.copy ( tickListeners ) )
         {
             tickListener.tick ();
         }
     }
 
-    public void addTetrisListener ( TetrisListener tetrisListener )
+    public void addTetrisListener ( final TetrisListener tetrisListener )
     {
         tetrisListeners.add ( tetrisListener );
     }
 
-    public void removeTickListener ( TetrisListener tetrisListener )
+    public void removeTickListener ( final TetrisListener tetrisListener )
     {
         tetrisListeners.remove ( tetrisListener );
     }
 
     private void fireNewGameStarted ()
     {
-        for ( TetrisListener tetrisListener : CollectionUtils.copy ( tetrisListeners ) )
+        for ( final TetrisListener tetrisListener : CollectionUtils.copy ( tetrisListeners ) )
         {
             tetrisListener.newGameStarted ();
         }
@@ -646,7 +646,7 @@ public class Tetris extends JComponent
 
     private void fireGamePaused ()
     {
-        for ( TetrisListener tetrisListener : CollectionUtils.copy ( tetrisListeners ) )
+        for ( final TetrisListener tetrisListener : CollectionUtils.copy ( tetrisListeners ) )
         {
             tetrisListener.gamePaused ();
         }
@@ -654,7 +654,7 @@ public class Tetris extends JComponent
 
     private void fireGameUnpaused ()
     {
-        for ( TetrisListener tetrisListener : CollectionUtils.copy ( tetrisListeners ) )
+        for ( final TetrisListener tetrisListener : CollectionUtils.copy ( tetrisListeners ) )
         {
             tetrisListener.gameUnpaused ();
         }
@@ -662,7 +662,7 @@ public class Tetris extends JComponent
 
     private void fireGameOver ()
     {
-        for ( TetrisListener tetrisListener : CollectionUtils.copy ( tetrisListeners ) )
+        for ( final TetrisListener tetrisListener : CollectionUtils.copy ( tetrisListeners ) )
         {
             tetrisListener.gameOver ();
         }

@@ -89,12 +89,6 @@ public final class WebPopupMenuStyle
     public static int menuSpacing = 1;
 
     /**
-     * Popup menu painter.
-     * If set it will override WebLaF styling.
-     */
-    public static PopupMenuPainter painter = null;
-
-    /**
      * Whether should fix initial popup menu location or not.
      * If set to true popup menu will try to use best possible location to show up.
      * <p/>

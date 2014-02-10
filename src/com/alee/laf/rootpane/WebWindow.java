@@ -46,6 +46,11 @@ public class WebWindow extends JWindow implements LanguageContainerMethods, Sett
     protected boolean closeOnFocusLoss = false;
 
     /**
+     * Window focus tracker.
+     */
+    protected DefaultFocusTracker focusTracker;
+
+    /**
      * Creates a window with no specified owner. This window will not be focusable.
      * <p/>
      * This constructor sets the component's locale property to the value returned by <code>JComponent.getDefaultLocale</code>.
@@ -138,7 +143,10 @@ public class WebWindow extends JWindow implements LanguageContainerMethods, Sett
     {
         setFocusable ( true );
         SwingUtils.setOrientation ( this );
-        FocusManager.addFocusTracker ( this, new DefaultFocusTracker ( true )
+
+        // Adding focus tracker for this window
+        // It is stored into a separate field to avoid its disposal from memory
+        focusTracker = new DefaultFocusTracker ( true )
         {
             @Override
             public boolean isTrackingEnabled ()
@@ -154,7 +162,8 @@ public class WebWindow extends JWindow implements LanguageContainerMethods, Sett
                     setVisible ( false );
                 }
             }
-        } );
+        };
+        FocusManager.addFocusTracker ( this, focusTracker );
     }
 
     /**

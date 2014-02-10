@@ -29,67 +29,74 @@ import javax.swing.*;
 
 public class WebVerticalLabel extends WebLabel
 {
+    /**
+     * Unique UI class ID.
+     *
+     * @see #getUIClassID
+     */
+    private static final String uiClassID = "VerticalLabelUI";
+
     public WebVerticalLabel ()
     {
         this ( false );
     }
 
-    public WebVerticalLabel ( boolean clockwise )
+    public WebVerticalLabel ( final boolean clockwise )
     {
         super ();
         setClockwise ( clockwise );
     }
 
-    public WebVerticalLabel ( Icon image )
+    public WebVerticalLabel ( final Icon image )
     {
         this ( image, false );
     }
 
-    public WebVerticalLabel ( Icon image, boolean clockwise )
+    public WebVerticalLabel ( final Icon image, final boolean clockwise )
     {
         super ( image );
         setClockwise ( clockwise );
     }
 
-    public WebVerticalLabel ( Icon image, int horizontalAlignment )
+    public WebVerticalLabel ( final Icon image, final int horizontalAlignment )
     {
         this ( image, horizontalAlignment, false );
     }
 
-    public WebVerticalLabel ( Icon image, int horizontalAlignment, boolean clockwise )
+    public WebVerticalLabel ( final Icon image, final int horizontalAlignment, final boolean clockwise )
     {
         super ( image, horizontalAlignment );
         setClockwise ( clockwise );
     }
 
-    public WebVerticalLabel ( String text )
+    public WebVerticalLabel ( final String text )
     {
         this ( text, false );
     }
 
-    public WebVerticalLabel ( String text, boolean clockwise )
+    public WebVerticalLabel ( final String text, final boolean clockwise )
     {
         super ( text );
         setClockwise ( clockwise );
     }
 
-    public WebVerticalLabel ( String text, int horizontalAlignment )
+    public WebVerticalLabel ( final String text, final int horizontalAlignment )
     {
         this ( text, horizontalAlignment, false );
     }
 
-    public WebVerticalLabel ( String text, int horizontalAlignment, boolean clockwise )
+    public WebVerticalLabel ( final String text, final int horizontalAlignment, final boolean clockwise )
     {
         super ( text, horizontalAlignment );
         setClockwise ( clockwise );
     }
 
-    public WebVerticalLabel ( String text, Icon icon, int horizontalAlignment )
+    public WebVerticalLabel ( final String text, final Icon icon, final int horizontalAlignment )
     {
         this ( text, icon, horizontalAlignment, false );
     }
 
-    public WebVerticalLabel ( String text, Icon icon, int horizontalAlignment, boolean clockwise )
+    public WebVerticalLabel ( final String text, final Icon icon, final int horizontalAlignment, final boolean clockwise )
     {
         super ( text, icon, horizontalAlignment );
         setClockwise ( clockwise );
@@ -100,7 +107,7 @@ public class WebVerticalLabel extends WebLabel
         return getWebUI ().isClockwise ();
     }
 
-    public void setClockwise ( boolean clockwise )
+    public void setClockwise ( final boolean clockwise )
     {
         getWebUI ().setClockwise ( clockwise );
     }
@@ -121,7 +128,7 @@ public class WebVerticalLabel extends WebLabel
                 setUI ( ( WebVerticalLabelUI ) ReflectUtils.createInstance ( WebLookAndFeel.verticalLabelUI ) );
 
             }
-            catch ( Throwable e )
+            catch ( final Throwable e )
             {
                 e.printStackTrace ();
                 setUI ( new WebVerticalLabelUI () );
@@ -131,5 +138,14 @@ public class WebVerticalLabel extends WebLabel
         {
             setUI ( getUI () );
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getUIClassID ()
+    {
+        return uiClassID;
     }
 }

@@ -96,17 +96,19 @@ public class WebPathField extends WebPanel
     protected WebPopupMenu rootsMenu = null;
     protected WebToggleButton rootsArrowButton = null;
 
+    protected final DefaultFocusTracker focusTracker;
+
     public WebPathField ()
     {
         this ( FileUtils.getDiskRoots ()[ 0 ] );
     }
 
-    public WebPathField ( String path )
+    public WebPathField ( final String path )
     {
         this ( new File ( path ) );
     }
 
-    public WebPathField ( File path )
+    public WebPathField ( final File path )
     {
         super ( true );
 
@@ -127,13 +129,13 @@ public class WebPathField extends WebPanel
             }
 
             @Override
-            protected boolean filesImported ( List<File> files )
+            protected boolean filesImported ( final List<File> files )
             {
                 // Setting dragged files
-                FileFilter filter = getFileFilter ();
-                for ( File file : files )
+                final FileFilter filter = getFileFilter ();
+                for ( final File file : files )
                 {
-                    File actualFile = file.isDirectory () ? file : file.getParentFile ();
+                    final File actualFile = file.isDirectory () ? file : file.getParentFile ();
                     if ( filter == null || filter.accept ( actualFile ) )
                     {
                         folderSelected ( actualFile );
@@ -168,7 +170,7 @@ public class WebPathField extends WebPanel
         pathField.addActionListener ( new ActionListener ()
         {
             @Override
-            public void actionPerformed ( ActionEvent e )
+            public void actionPerformed ( final ActionEvent e )
             {
                 if ( autocompleteDialog == null || !autocompleteDialog.isVisible () )
                 {
@@ -178,7 +180,7 @@ public class WebPathField extends WebPanel
                     }
                     else
                     {
-                        File choosenPath = new File ( pathField.getText () );
+                        final File choosenPath = new File ( pathField.getText () );
                         if ( choosenPath.exists () && choosenPath.isDirectory () )
                         {
                             folderSelected ( choosenPath );
@@ -195,7 +197,7 @@ public class WebPathField extends WebPanel
         pathField.addKeyListener ( new KeyAdapter ()
         {
             @Override
-            public void keyPressed ( KeyEvent e )
+            public void keyPressed ( final KeyEvent e )
             {
                 if ( autocompleteDialog == null || !autocompleteDialog.isVisible () )
                 {
@@ -219,7 +221,7 @@ public class WebPathField extends WebPanel
         pathFocusListener = new FocusAdapter ()
         {
             @Override
-            public void focusLost ( FocusEvent e )
+            public void focusLost ( final FocusEvent e )
             {
                 if ( selectedPath == null && pathField.getText ().trim ().equals ( "" ) ||
                         selectedPath != null && getProperSelectedPath ().equals ( pathField.getText () ) )
@@ -236,7 +238,7 @@ public class WebPathField extends WebPanel
             private WebScrollPane listScroll;
 
             @Override
-            public void caretUpdate ( CaretEvent e )
+            public void caretUpdate ( final CaretEvent e )
             {
                 if ( !autocompleteEnabled || !pathField.isVisible () || !pathField.isShowing () )
                 {
@@ -256,13 +258,13 @@ public class WebPathField extends WebPanel
                     SwingUtils.getWindowAncestor ( WebPathField.this ).addComponentListener ( new ComponentAdapter ()
                     {
                         @Override
-                        public void componentMoved ( ComponentEvent e )
+                        public void componentMoved ( final ComponentEvent e )
                         {
                             hideDialog ();
                         }
 
                         @Override
-                        public void componentResized ( ComponentEvent e )
+                        public void componentResized ( final ComponentEvent e )
                         {
                             hideDialog ();
                         }
@@ -275,10 +277,10 @@ public class WebPathField extends WebPanel
                     list.setCellRenderer ( new WebListCellRenderer ()
                     {
                         @Override
-                        public Component getListCellRendererComponent ( JList list, Object value, int index, boolean isSelected,
-                                                                        boolean cellHasFocus )
+                        public Component getListCellRendererComponent ( final JList list, final Object value, final int index,
+                                                                        final boolean isSelected, final boolean cellHasFocus )
                         {
-                            JLabel renderer =
+                            final JLabel renderer =
                                     ( JLabel ) super.getListCellRendererComponent ( list, value, index, isSelected, cellHasFocus );
                             renderer.setIcon ( FileUtils.getFileIcon ( ( File ) value ) );
                             renderer.setText ( FileUtils.getDisplayFileName ( ( File ) value ) );
@@ -288,7 +290,7 @@ public class WebPathField extends WebPanel
                     list.addMouseListener ( new MouseAdapter ()
                     {
                         @Override
-                        public void mousePressed ( MouseEvent e )
+                        public void mousePressed ( final MouseEvent e )
                         {
                             final int index = list.getUI ().locationToIndex ( list, e.getPoint () );
                             if ( SwingUtilities.isLeftMouseButton ( e ) && index != -1 )
@@ -300,7 +302,7 @@ public class WebPathField extends WebPanel
                     list.addKeyListener ( new KeyAdapter ()
                     {
                         @Override
-                        public void keyPressed ( KeyEvent e )
+                        public void keyPressed ( final KeyEvent e )
                         {
                             if ( Hotkey.ENTER.isTriggered ( e ) )
                             {
@@ -317,7 +319,7 @@ public class WebPathField extends WebPanel
                     pathField.addKeyListener ( new KeyAdapter ()
                     {
                         @Override
-                        public void keyPressed ( KeyEvent e )
+                        public void keyPressed ( final KeyEvent e )
                         {
                             if ( autocompleteDialog.isShowing () && list.getModel ().getSize () > 0 )
                             {
@@ -377,7 +379,7 @@ public class WebPathField extends WebPanel
                     pathField.addFocusListener ( new FocusAdapter ()
                     {
                         @Override
-                        public void focusLost ( FocusEvent e )
+                        public void focusLost ( final FocusEvent e )
                         {
                             hideDialog ();
                         }
@@ -389,17 +391,17 @@ public class WebPathField extends WebPanel
                 //                    public void run ()
                 //                    {
                 // Taking only the part till the caret
-                String t = pathField.getText ().substring ( 0, pathField.getCaretPosition () );
+                final String t = pathField.getText ().substring ( 0, pathField.getCaretPosition () );
 
                 // Retrieving parent path
                 int beginIndex = t.lastIndexOf ( File.separator );
                 beginIndex = beginIndex != -1 ? beginIndex + 1 : 0;
 
                 // Parent file
-                String parentPath = t.substring ( 0, beginIndex );
-                File parent = parentPath.trim ().equals ( "" ) ? null : new File ( parentPath );
+                final String parentPath = t.substring ( 0, beginIndex );
+                final File parent = parentPath.trim ().equals ( "" ) ? null : new File ( parentPath );
 
-                List<File> similar = getSimilarFileChilds ( parent, t.substring ( beginIndex ) );
+                final List<File> similar = getSimilarFileChilds ( parent, t.substring ( beginIndex ) );
                 if ( similar != null && similar.size () > 0 )
                 {
                     updateList ( similar );
@@ -428,7 +430,7 @@ public class WebPathField extends WebPanel
                             }
 
                             @Override
-                            public Object getElementAt ( int i )
+                            public Object getElementAt ( final int i )
                             {
                                 return similar.get ( i );
                             }
@@ -441,7 +443,7 @@ public class WebPathField extends WebPanel
                         }
 
                         // Fixing window bounds
-                        Point los = pathField.getLocationOnScreen ();
+                        final Point los = pathField.getLocationOnScreen ();
                         autocompleteDialog.setSize ( pathField.getWidth (), listScroll.getPreferredSize ().height );
                         autocompleteDialog.setLocation ( pathField.getComponentOrientation ().isLeftToRight () ? los.x :
                                 los.x + pathField.getWidth () - autocompleteDialog.getWidth (), los.y + pathField.getHeight () );
@@ -468,7 +470,7 @@ public class WebPathField extends WebPanel
                 } );
             }
 
-            private void setSelectedPath ( File path )
+            private void setSelectedPath ( final File path )
             {
                 String text = path.getAbsolutePath ();
                 text = text.endsWith ( File.separator ) ? text : text + File.separator;
@@ -481,7 +483,7 @@ public class WebPathField extends WebPanel
         contentPanel.addMouseListener ( new MouseAdapter ()
         {
             @Override
-            public void mousePressed ( MouseEvent e )
+            public void mousePressed ( final MouseEvent e )
             {
                 if ( SwingUtilities.isLeftMouseButton ( e ) )
                 {
@@ -492,7 +494,7 @@ public class WebPathField extends WebPanel
         HotkeyManager.registerHotkey ( WebPathField.this, WebPathField.this, Hotkey.F2, new HotkeyRunnable ()
         {
             @Override
-            public void run ( KeyEvent e )
+            public void run ( final KeyEvent e )
             {
                 startEditing ();
             }
@@ -502,7 +504,7 @@ public class WebPathField extends WebPanel
         addComponentListener ( new ComponentAdapter ()
         {
             @Override
-            public void componentResized ( ComponentEvent e )
+            public void componentResized ( final ComponentEvent e )
             {
                 if ( !pathField.isShowing () )
                 {
@@ -512,15 +514,16 @@ public class WebPathField extends WebPanel
         } );
 
         // Focus listener
-        FocusManager.addFocusTracker ( WebPathField.this, new DefaultFocusTracker ()
+        focusTracker = new DefaultFocusTracker ()
         {
             @Override
-            public void focusChanged ( boolean focused )
+            public void focusChanged ( final boolean focused )
             {
                 focusOwner = focused;
                 WebPathField.this.repaint ();
             }
-        } );
+        };
+        FocusManager.addFocusTracker ( WebPathField.this, focusTracker );
 
         // Updatin initial path
         updatePath ( path );
@@ -575,7 +578,7 @@ public class WebPathField extends WebPanel
         return autocompleteEnabled;
     }
 
-    public void setAutocompleteEnabled ( boolean autocompleteEnabled )
+    public void setAutocompleteEnabled ( final boolean autocompleteEnabled )
     {
         this.autocompleteEnabled = autocompleteEnabled;
     }
@@ -585,12 +588,12 @@ public class WebPathField extends WebPanel
         return fileFilter;
     }
 
-    public void setFileFilter ( AbstractFileFilter fileFilter )
+    public void setFileFilter ( final AbstractFileFilter fileFilter )
     {
         setFileFilter ( fileFilter, true );
     }
 
-    public void setFileFilter ( AbstractFileFilter fileFilter, boolean updatePath )
+    public void setFileFilter ( final AbstractFileFilter fileFilter, final boolean updatePath )
     {
         this.fileFilter = fileFilter;
         if ( updatePath )
@@ -604,7 +607,7 @@ public class WebPathField extends WebPanel
         return filesDropEnabled;
     }
 
-    public void setFilesDropEnabled ( boolean filesDropEnabled )
+    public void setFilesDropEnabled ( final boolean filesDropEnabled )
     {
         this.filesDropEnabled = filesDropEnabled;
     }
@@ -614,7 +617,7 @@ public class WebPathField extends WebPanel
         return selectedPath;
     }
 
-    public void setSelectedPath ( File selectedPath )
+    public void setSelectedPath ( final File selectedPath )
     {
         updatePath ( selectedPath );
     }
@@ -629,7 +632,7 @@ public class WebPathField extends WebPanel
         updatePath ( selectedPath );
     }
 
-    protected synchronized void updatePath ( File path )
+    protected synchronized void updatePath ( final File path )
     {
         // todo check if path is proper (filter/hidden)
 
@@ -645,12 +648,12 @@ public class WebPathField extends WebPanel
         contentPanel.removeAll ();
 
         // Determining oriention
-        boolean ltr = WebPathField.this.getComponentOrientation ().isLeftToRight ();
+        final boolean ltr = WebPathField.this.getComponentOrientation ().isLeftToRight ();
 
         // Determining root
         if ( SystemUtils.isWindows () )
         {
-            WebButton computerButton = getMyComputer ();
+            final WebButton computerButton = getMyComputer ();
             contentPanel.add ( computerButton );
             contentPanel.add ( getRootsArrowButton ( ltr ) );
         }
@@ -659,7 +662,7 @@ public class WebPathField extends WebPanel
         {
             // Creating parents list
             File folder = new File ( selectedPath.getAbsolutePath () );
-            List<File> parents = new ArrayList<File> ();
+            final List<File> parents = new ArrayList<File> ();
             parents.add ( 0, folder );
             while ( folder.getParent () != null )
             {
@@ -669,11 +672,9 @@ public class WebPathField extends WebPanel
 
             // Adding path buttons
             boolean first = true;
-            for ( File file : parents )
+            for ( final File file : parents )
             {
-                final File ff = file;
-
-                WebButton wb = new WebButton ();
+                final WebButton wb = new WebButton ();
                 wb.setRound ( !SystemUtils.isWindows () && first ? StyleConstants.smallRound : 0 );
                 wb.setShadeWidth ( 0 );
                 wb.setLeftRightSpacing ( 0 );
@@ -687,34 +688,34 @@ public class WebPathField extends WebPanel
                 }
                 else
                 {
-                    wb.setText ( fsv.getSystemDisplayName ( ff ) );
-                    wb.putClientProperty ( FILE_ICON, FileUtils.getFileIcon ( ff, false ) );
+                    wb.setText ( fsv.getSystemDisplayName ( file ) );
+                    wb.putClientProperty ( FILE_ICON, FileUtils.getFileIcon ( file, false ) );
                 }
                 wb.addActionListener ( new ActionListener ()
                 {
                     @Override
-                    public void actionPerformed ( ActionEvent e )
+                    public void actionPerformed ( final ActionEvent e )
                     {
-                        folderSelected ( ff );
+                        folderSelected ( file );
                     }
                 } );
                 contentPanel.add ( wb );
 
                 int childsCount = 0;
                 final WebPopupMenu menu = new WebPopupMenu ();
-                File[] files = FileUtils.sortFiles ( getFileChilds ( ff ) );
+                final File[] files = FileUtils.sortFiles ( getFileChilds ( file ) );
                 if ( files != null )
                 {
                     for ( final File root : files )
                     {
                         if ( root.isDirectory () )
                         {
-                            WebMenuItem menuItem = new WebMenuItem ( FileUtils.getDisplayFileName ( root ) );
+                            final WebMenuItem menuItem = new WebMenuItem ( FileUtils.getDisplayFileName ( root ) );
                             menuItem.setIcon ( FileUtils.getFileIcon ( root, false ) );
                             menuItem.addActionListener ( new ActionListener ()
                             {
                                 @Override
-                                public void actionPerformed ( ActionEvent e )
+                                public void actionPerformed ( final ActionEvent e )
                                 {
                                     folderSelected ( root );
                                 }
@@ -745,7 +746,7 @@ public class WebPathField extends WebPanel
                 childs.addActionListener ( new ActionListener ()
                 {
                     @Override
-                    public void actionPerformed ( ActionEvent e )
+                    public void actionPerformed ( final ActionEvent e )
                     {
                         // todo Apply orientation globally on change, not here
                         WebPathField.this.transferFocus ();
@@ -758,19 +759,19 @@ public class WebPathField extends WebPanel
                 menu.addPopupMenuListener ( new PopupMenuListener ()
                 {
                     @Override
-                    public void popupMenuWillBecomeVisible ( PopupMenuEvent e )
+                    public void popupMenuWillBecomeVisible ( final PopupMenuEvent e )
                     {
                         //
                     }
 
                     @Override
-                    public void popupMenuWillBecomeInvisible ( PopupMenuEvent e )
+                    public void popupMenuWillBecomeInvisible ( final PopupMenuEvent e )
                     {
                         childs.setSelected ( false );
                     }
 
                     @Override
-                    public void popupMenuCanceled ( PopupMenuEvent e )
+                    public void popupMenuCanceled ( final PopupMenuEvent e )
                     {
                         childs.setSelected ( false );
                     }
@@ -798,8 +799,8 @@ public class WebPathField extends WebPanel
         while ( canShortenPath () )
         {
             // Andding menu element
-            WebButton wb = ( WebButton ) contentPanel.getComponent ( 2 );
-            WebMenuItem menuItem = new WebMenuItem ();
+            final WebButton wb = ( WebButton ) contentPanel.getComponent ( 2 );
+            final WebMenuItem menuItem = new WebMenuItem ();
             menuItem.setIcon ( ( Icon ) wb.getClientProperty ( FILE_ICON ) );
             menuItem.setText ( wb.getText () );
             menuItem.addActionListener ( wb.getActionListeners ()[ 0 ] );
@@ -815,14 +816,14 @@ public class WebPathField extends WebPanel
         repaint ();
     }
 
-    protected List<File> getSimilarFileChilds ( File file, String namePart )
+    protected List<File> getSimilarFileChilds ( final File file, final String namePart )
     {
-        String searchText = namePart.toLowerCase ();
-        File[] childs = getFileChilds ( file );
-        List<File> similar = new ArrayList<File> ();
+        final String searchText = namePart.toLowerCase ();
+        final File[] childs = getFileChilds ( file );
+        final List<File> similar = new ArrayList<File> ();
         if ( childs != null )
         {
-            for ( File child : childs )
+            for ( final File child : childs )
             {
                 if ( child.getName ().toLowerCase ().contains ( searchText ) )
                 {
@@ -833,7 +834,7 @@ public class WebPathField extends WebPanel
         return similar;
     }
 
-    protected File[] getFileChilds ( File file )
+    protected File[] getFileChilds ( final File file )
     {
         return file != null ? file.listFiles ( fileFilter ) : FileUtils.getDiskRoots ();
     }
@@ -859,7 +860,7 @@ public class WebPathField extends WebPanel
             myComputer.addActionListener ( new ActionListener ()
             {
                 @Override
-                public void actionPerformed ( ActionEvent e )
+                public void actionPerformed ( final ActionEvent e )
                 {
                     folderSelected ( null );
                 }
@@ -878,27 +879,27 @@ public class WebPathField extends WebPanel
         return rootsMenuItemsCount;
     }
 
-    public void setRootsMenu ( WebPopupMenu rootsMenu, int childsCount )
+    public void setRootsMenu ( final WebPopupMenu rootsMenu, final int childsCount )
     {
         this.rootsMenu = rootsMenu;
         this.rootsMenuItemsCount = childsCount;
     }
 
-    protected WebToggleButton getRootsArrowButton ( boolean ltr )
+    protected WebToggleButton getRootsArrowButton ( final boolean ltr )
     {
         if ( rootsArrowButton == null )
         {
             rootsMenu = new WebPopupMenu ();
 
-            File[] rootFiles = FileUtils.getDiskRoots ();
+            final File[] rootFiles = FileUtils.getDiskRoots ();
             for ( final File root : FileUtils.sortFiles ( rootFiles ) )
             {
-                WebMenuItem menuItem = new WebMenuItem ( FileUtils.getDisplayFileName ( root ) );
+                final WebMenuItem menuItem = new WebMenuItem ( FileUtils.getDisplayFileName ( root ) );
                 menuItem.setIcon ( FileUtils.getFileIcon ( root, false ) );
                 menuItem.addActionListener ( new ActionListener ()
                 {
                     @Override
-                    public void actionPerformed ( ActionEvent e )
+                    public void actionPerformed ( final ActionEvent e )
                     {
                         folderSelected ( root );
                     }
@@ -922,7 +923,7 @@ public class WebPathField extends WebPanel
             rootsArrowButton.addActionListener ( new ActionListener ()
             {
                 @Override
-                public void actionPerformed ( ActionEvent e )
+                public void actionPerformed ( final ActionEvent e )
                 {
                     WebPathField.this.transferFocus ();
                     SwingUtils.applyOrientation ( rootsMenu );
@@ -933,19 +934,19 @@ public class WebPathField extends WebPanel
             rootsMenu.addPopupMenuListener ( new PopupMenuListener ()
             {
                 @Override
-                public void popupMenuWillBecomeVisible ( PopupMenuEvent e )
+                public void popupMenuWillBecomeVisible ( final PopupMenuEvent e )
                 {
 
                 }
 
                 @Override
-                public void popupMenuWillBecomeInvisible ( PopupMenuEvent e )
+                public void popupMenuWillBecomeInvisible ( final PopupMenuEvent e )
                 {
                     rootsArrowButton.setSelected ( false );
                 }
 
                 @Override
-                public void popupMenuCanceled ( PopupMenuEvent e )
+                public void popupMenuCanceled ( final PopupMenuEvent e )
                 {
                     rootsArrowButton.setSelected ( false );
                 }
@@ -977,26 +978,26 @@ public class WebPathField extends WebPanel
         WebPathField.this.transferFocus ();
     }
 
-    public void addPathFieldListener ( PathFieldListener listener )
+    public void addPathFieldListener ( final PathFieldListener listener )
     {
         listeners.add ( listener );
     }
 
-    public void removePathFieldListener ( PathFieldListener listener )
+    public void removePathFieldListener ( final PathFieldListener listener )
     {
         listeners.remove ( listener );
     }
 
-    protected void fireDirectoryChanged ( File newDirectory )
+    protected void fireDirectoryChanged ( final File newDirectory )
     {
-        for ( PathFieldListener listener : CollectionUtils.copy ( listeners ) )
+        for ( final PathFieldListener listener : CollectionUtils.copy ( listeners ) )
         {
             listener.directoryChanged ( newDirectory );
         }
     }
 
     @Override
-    public void applyComponentOrientation ( ComponentOrientation o )
+    public void applyComponentOrientation ( final ComponentOrientation o )
     {
         super.applyComponentOrientation ( o );
         updatePath ();

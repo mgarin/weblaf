@@ -43,6 +43,12 @@ import java.awt.*;
 public class FocusTrackingExample extends DefaultExample
 {
     /**
+     * Focus tracker strong references.
+     */
+    private DefaultFocusTracker focusTracker1;
+    private DefaultFocusTracker focusTracker2;
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -64,7 +70,7 @@ public class FocusTrackingExample extends DefaultExample
      * {@inheritDoc}
      */
     @Override
-    public Component getPreview ( WebLookAndFeelDemo owner )
+    public Component getPreview ( final WebLookAndFeelDemo owner )
     {
         // Tracked forms
         final Component form1 = createForm ();
@@ -84,25 +90,27 @@ public class FocusTrackingExample extends DefaultExample
 
         // Form #1 focus tracker
         // It tracks only focus loss/gain by form overall and doesn't inform about focus changes within the form
-        FocusManager.addFocusTracker ( form1, new DefaultFocusTracker ( true )
+        focusTracker1 = new DefaultFocusTracker ( true )
         {
             @Override
-            public void focusChanged ( boolean focused )
+            public void focusChanged ( final boolean focused )
             {
                 updateInfo ( focused, info, "form1" );
             }
-        } );
+        };
+        FocusManager.addFocusTracker ( form1, focusTracker1 );
 
         // Form #2 focus tracker
         // It tracks only focus loss/gain by form overall and doesn't inform about focus changes within the form
-        FocusManager.addFocusTracker ( form2, new DefaultFocusTracker ( true )
+        focusTracker2 = new DefaultFocusTracker ( true )
         {
             @Override
-            public void focusChanged ( boolean focused )
+            public void focusChanged ( final boolean focused )
             {
                 updateInfo ( focused, info, "form2" );
             }
-        } );
+        };
+        FocusManager.addFocusTracker ( form2, focusTracker2 );
 
         return new GroupPanel ( 10, new GroupPanel ( 10, false, form1, form2 ), panel ).setMargin ( 5 );
     }
@@ -114,7 +122,7 @@ public class FocusTrackingExample extends DefaultExample
      * @param info    information text area
      * @param form    tracked form title
      */
-    private void updateInfo ( boolean focused, WebTextArea info, String form )
+    private void updateInfo ( final boolean focused, final WebTextArea info, final String form )
     {
         final String s = info.getText ().trim ().length () > 0 ? ( info.getText () + "\n" ) : "";
         info.setText ( s + ( focused ? form + " gained focus" : form + " lost focus" ) );

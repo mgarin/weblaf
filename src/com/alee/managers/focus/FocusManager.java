@@ -110,7 +110,7 @@ public final class FocusManager
                 }
             }, AWTEvent.FOCUS_EVENT_MASK );
 
-            // Adding global focus tracker for trackers
+            // Adding global focus listener to inform focus trackers
             registerGlobalFocusListener ( new GlobalFocusListener ()
             {
                 @Override
@@ -268,6 +268,9 @@ public final class FocusManager
 
     /**
      * Registers focus tracker.
+     * <p/>
+     * Be aware that when all links to either component or focus tracker (outside of the FocusManager) are lost all component focus
+     * trackers or specific focus tracker will be disposed. So make sure you keep strong references to whatever you pass here.
      *
      * @param focusTracker new focus tracker
      */
