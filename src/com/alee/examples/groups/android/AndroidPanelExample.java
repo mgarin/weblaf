@@ -50,14 +50,14 @@ public class AndroidPanelExample extends DefaultExample
     }
 
     @Override
-    public Component getPreview ( WebLookAndFeelDemo owner )
+    public Component getPreview ( final WebLookAndFeelDemo owner )
     {
         // Panel styled with nine-patch icon painter
-        WebPanel panel = new WebPanel ();
+        final WebPanel panel = new WebPanel ();
         panel.setPainter ( XmlUtils.loadNinePatchIconPainter ( getResource ( "panel.xml" ) ) );
 
         // Panel content
-        WebLabel label = new WebLabel ( "<html><center>Sample text inside styled panel<br>" +
+        final WebLabel label = new WebLabel ( "<html><center>Sample text inside styled panel<br>" +
                 "Note that margins are automatically set by the image file</center></html>" );
         label.setHorizontalAlignment ( WebLabel.CENTER );
         label.setForeground ( Color.WHITE );

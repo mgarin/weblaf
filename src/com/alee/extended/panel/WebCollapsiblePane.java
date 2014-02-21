@@ -241,9 +241,9 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
 
         this.content = content;
 
-        setDrawFocus ( true );
+        setPaintFocus ( true );
         setUndecorated ( false );
-        setWebColored ( false );
+        setWebColoredBackground ( false );
         setRound ( StyleConstants.smallRound );
         setLayout ( new BorderLayout ( 0, 0 ) );
 
@@ -449,7 +449,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
      */
     protected void updateHeaderSides ()
     {
-        headerPanel.setDrawSides ( expanded && titlePanePostion == BOTTOM, expanded && titlePanePostion == RIGHT,
+        headerPanel.setPaintSides ( expanded && titlePanePostion == BOTTOM, expanded && titlePanePostion == RIGHT,
                 expanded && titlePanePostion == TOP, expanded && titlePanePostion == LEFT );
     }
 

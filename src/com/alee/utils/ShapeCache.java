@@ -34,6 +34,10 @@ import java.util.WeakHashMap;
 public class ShapeCache
 {
     /**
+     * todo 1. Improve shape settings key generation/usage performance
+     */
+
+    /**
      * Separator for settings cached within single key.
      */
     private static final String settingsSeparator = ";";

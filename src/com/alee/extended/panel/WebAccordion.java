@@ -114,23 +114,23 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
     /**
      * Constructs empty accordion with the specified style.
      *
-     * @param accordionStyle
+     * @param style accordion style
      */
-    public WebAccordion ( final AccordionStyle accordionStyle )
+    public WebAccordion ( final AccordionStyle style )
     {
         super ();
-        initializeDefaultSettings ( accordionStyle );
+        initializeDefaultSettings ( style );
     }
 
     /**
      * Initializes default accordion settings.
      */
-    protected void initializeDefaultSettings ( final AccordionStyle accordionStyle )
+    protected void initializeDefaultSettings ( final AccordionStyle style )
     {
-        setDrawFocus ( true );
-        setWebColored ( false );
+        setPaintFocus ( true );
+        setWebColoredBackground ( false );
         setLayout ( new AccordionLayout ( this ) );
-        setAccordionStyle ( accordionStyle );
+        setAccordionStyle ( style );
     }
 
     /**
@@ -400,7 +400,7 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
      * @param content collapsible pane content
      * @return new collapsible pane
      */
-    public WebCollapsiblePane addPane ( final Icon icon, final String title, Component content )
+    public WebCollapsiblePane addPane ( final Icon icon, final String title, final Component content )
     {
         return addPane ( panes.size (), icon, title, content );
     }
@@ -441,7 +441,7 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
      */
     public WebCollapsiblePane addPane ( final int index, final Component title, final Component content )
     {
-        WebCollapsiblePane pane = new WebCollapsiblePane ( "", content );
+        final WebCollapsiblePane pane = new WebCollapsiblePane ( "", content );
         pane.setTitleComponent ( title );
         return addPane ( index, pane );
     }
@@ -634,12 +634,12 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
             if ( separated )
             {
                 pane.setShadeWidth ( WebPanelStyle.shadeWidth );
-                pane.setDrawSides ( separated, separated, separated, separated );
+                pane.setPaintSides ( separated, separated, separated, separated );
             }
             else
             {
                 pane.setShadeWidth ( 0 );
-                pane.setDrawSides ( !hor && i > 0, hor && i > 0, false, false );
+                pane.setPaintSides ( !hor && i > 0, hor && i > 0, false, false );
             }
         }
 
@@ -952,7 +952,7 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String key )
+    public void registerSettings ( final String key )
     {
         SettingsManager.registerComponent ( this, key );
     }

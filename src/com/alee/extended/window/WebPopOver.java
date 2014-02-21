@@ -18,11 +18,14 @@
 package com.alee.extended.window;
 
 import com.alee.laf.WebLookAndFeel;
-import com.alee.laf.menu.PopupPainterStyle;
-import com.alee.laf.menu.WebPopupPainter;
 import com.alee.laf.panel.WebPanel;
 import com.alee.laf.rootpane.WebDialog;
+import com.alee.managers.style.StyleManager;
+import com.alee.managers.style.skin.web.PopupStyle;
+import com.alee.managers.style.skin.web.WebPopOverPainter;
+import com.alee.managers.style.skin.web.WebPopupPainter;
 import com.alee.utils.SwingUtils;
+import com.alee.utils.laf.Styleable;
 import com.alee.utils.swing.DataProvider;
 import com.alee.utils.swing.WindowFollowAdapter;
 
@@ -43,7 +46,7 @@ import java.beans.PropertyChangeListener;
  * @see PopOverAlignment
  */
 
-public class WebPopOver extends WebDialog
+public class WebPopOver extends WebDialog implements Styleable
 {
     /**
      * Whether WebPopOver should be movable or not.
@@ -59,11 +62,6 @@ public class WebPopOver extends WebDialog
      * WebPopOver components container.
      */
     protected WebPanel container;
-
-    /**
-     * WebPopOver style painter.
-     */
-    protected WebPopupPainter<WebPanel> painter;
 
     /**
      * Whether WebPopOver is attached to invoker component or not.
@@ -183,25 +181,26 @@ public class WebPopOver extends WebDialog
         setUndecorated ( true );
         setWindowOpaque ( false );
 
-        painter = new WebPopupPainter<WebPanel> ()
-        {
-            @Override
-            public float getShadeOpacity ()
-            {
-                final float actualShadeOpacity = super.getShadeOpacity ();
-                return WebPopOver.this.isFocused () ? actualShadeOpacity : actualShadeOpacity * 0.7f;
-            }
-        };
-        painter.setBorderColor ( WebPopOverStyle.borderColor );
-        painter.setRound ( WebPopOverStyle.round );
-        painter.setShadeWidth ( WebPopOverStyle.shadeWidth );
-        painter.setShadeOpacity ( WebPopOverStyle.shadeOpacity );
-        painter.setCornerWidth ( WebPopOverStyle.cornerWidth );
-        painter.setTransparency ( WebPopOverStyle.transparency );
-        painter.setPopupPainterStyle ( PopupPainterStyle.simple );
+        // todo Custom shade opacity when not focused
+        //        painter = new WebPopupPainter<WebPanel> ()
+        //        {
+        //            @Override
+        //            public float getShadeTransparency ()
+        //            {
+        //                final float actualShadeOpacity = super.getShadeTransparency ();
+        //                return WebPopOver.this.isFocused () ? actualShadeOpacity : actualShadeOpacity * 0.7f;
+        //            }
+        //        };
+        //        painter.setBorderColor ( WebPopOverStyle.borderColor );
+        //        painter.setRound ( WebPopOverStyle.round );
+        //        painter.setShadeWidth ( WebPopOverStyle.shadeWidth );
+        //        painter.setShadeTransparency ( WebPopOverStyle.shadeTransparency );
+        //        painter.setCornerWidth ( WebPopOverStyle.cornerWidth );
+        //        painter.setTransparency ( WebPopOverStyle.transparency );
+        //        painter.setPopupStyle ( PopupStyle.simple );
 
-        container = new WebPanel ( painter );
-        container.setBackground ( WebPopOverStyle.contentBackgroundColor );
+        container = new WebPanel ( /*painter*/ );
+        container.setStyleId ( "pop-over" );
         setContentPane ( container );
 
         final ComponentMoveAdapter moveAdapter = new ComponentMoveAdapter ()
@@ -211,7 +210,7 @@ public class WebPopOver extends WebDialog
             {
                 if ( movable )
                 {
-                    final int sw = painter.getShadeWidth ();
+                    final int sw = getShadeWidth ();
                     return new Rectangle ( sw, sw, container.getWidth () - sw * 2, container.getHeight () - sw * 2 );
                 }
                 else
@@ -228,8 +227,7 @@ public class WebPopOver extends WebDialog
                 {
                     attached = false;
                     preferredDirection = null;
-                    painter.setPopupPainterStyle ( PopupPainterStyle.simple );
-                    painter.updateAll ();
+                    setPopupStyle ( PopupStyle.simple );
                 }
 
                 super.mouseDragged ( e );
@@ -243,15 +241,33 @@ public class WebPopOver extends WebDialog
             @Override
             public void windowGainedFocus ( final WindowEvent e )
             {
-                container.repaint ();
+                setPopOverFocused ( true );
             }
 
             @Override
             public void windowLostFocus ( final WindowEvent e )
             {
-                container.repaint ();
+                setPopOverFocused ( false );
             }
         } );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getStyleId ()
+    {
+        return container.getStyleId ();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setStyleId ( final String id )
+    {
+        container.setStyleId ( id );
     }
 
     /**
@@ -328,9 +344,9 @@ public class WebPopOver extends WebDialog
      *
      * @return base WebPopOver painter
      */
-    public WebPopupPainter<WebPanel> getPainter ()
+    public WebPopOverPainter getPainter ()
     {
-        return painter;
+        return ( WebPopOverPainter ) container.getPainter ();
     }
 
     /**
@@ -338,9 +354,8 @@ public class WebPopOver extends WebDialog
      *
      * @param painter base WebPopOver painter
      */
-    public void setPainter ( final WebPopupPainter<WebPanel> painter )
+    public void setPainter ( final WebPopOverPainter painter )
     {
-        this.painter = painter;
         container.setPainter ( painter );
     }
 
@@ -391,7 +406,7 @@ public class WebPopOver extends WebDialog
      */
     public Color getBorderColor ()
     {
-        return painter.getBorderColor ();
+        return getPainter ().getBorderColor ();
     }
 
     /**
@@ -401,7 +416,7 @@ public class WebPopOver extends WebDialog
      */
     public void setBorderColor ( final Color color )
     {
-        painter.setBorderColor ( color );
+        StyleManager.setCustomStyle ( container, "borderColor", color );
     }
 
     /**
@@ -412,7 +427,7 @@ public class WebPopOver extends WebDialog
     @Override
     public int getRound ()
     {
-        return painter.getRound ();
+        return getPainter ().getRound ();
     }
 
     /**
@@ -423,7 +438,7 @@ public class WebPopOver extends WebDialog
     @Override
     public void setRound ( final int round )
     {
-        painter.setRound ( round );
+        StyleManager.setCustomStyle ( container, "round", round );
     }
 
     /**
@@ -434,7 +449,7 @@ public class WebPopOver extends WebDialog
     @Override
     public int getShadeWidth ()
     {
-        return painter.getShadeWidth ();
+        return getPainter ().getShadeWidth ();
     }
 
     /**
@@ -445,27 +460,27 @@ public class WebPopOver extends WebDialog
     @Override
     public void setShadeWidth ( final int width )
     {
-        painter.setShadeWidth ( width );
+        StyleManager.setCustomStyle ( container, "shadeWidth", width );
     }
 
     /**
-     * Returns popup menu shade opacity.
+     * Returns popup menu shade transparency.
      *
-     * @return popup menu shade opacity
+     * @return popup menu shade transparency
      */
-    public float getShadeOpacity ()
+    public float getShadeTransparency ()
     {
-        return painter.getShadeOpacity ();
+        return getPainter ().getShadeTransparency ();
     }
 
     /**
-     * Sets popup menu shade opacity.
+     * Sets popup menu shade transparency.
      *
-     * @param opacity new popup menu shade opacity
+     * @param opacity new popup menu shade transparency
      */
-    public void setShadeOpacity ( final float opacity )
+    public void setShadeTransparency ( final float opacity )
     {
-        painter.setShadeOpacity ( opacity );
+        StyleManager.setCustomStyle ( container, "shadeTransparency", opacity );
     }
 
     /**
@@ -475,7 +490,7 @@ public class WebPopOver extends WebDialog
      */
     public int getCornerWidth ()
     {
-        return painter.getCornerWidth ();
+        return getPainter ().getCornerWidth ();
     }
 
     /**
@@ -485,7 +500,7 @@ public class WebPopOver extends WebDialog
      */
     public void setCornerWidth ( final int width )
     {
-        painter.setCornerWidth ( width );
+        StyleManager.setCustomStyle ( container, "cornerWidth", width );
     }
 
     /**
@@ -495,7 +510,7 @@ public class WebPopOver extends WebDialog
      */
     public float getTransparency ()
     {
-        return painter.getTransparency ();
+        return getPainter ().getTransparency ();
     }
 
     /**
@@ -505,7 +520,109 @@ public class WebPopOver extends WebDialog
      */
     public void setTransparency ( final float transparency )
     {
-        painter.setTransparency ( transparency );
+        StyleManager.setCustomStyle ( container, "transparency", transparency );
+    }
+
+    /**
+     * Returns popup style.
+     * This method is made protected because requesting style is necessary only within the WebPopOver.
+     *
+     * @return popup style
+     */
+    protected PopupStyle getPopupStyle ()
+    {
+        return getPainter ().getPopupStyle ();
+    }
+
+    /**
+     * Sets popup style.
+     * This method is made protected because modifying style is necessary only within the WebPopOver.
+     *
+     * @param style new popup style
+     */
+    protected void setPopupStyle ( final PopupStyle style )
+    {
+        StyleManager.setCustomStyle ( container, "popupStyle", style );
+    }
+
+    /**
+     * Returns dropdown style corner side.
+     *
+     * @return dropdown style corner side
+     */
+    protected int getCornerSide ()
+    {
+        return getPainter ().getCornerSide ();
+    }
+
+    /**
+     * Sets dropdown style corner side.
+     *
+     * @param cornerSide dropdown style corner side
+     */
+    protected void setCornerSide ( final int cornerSide )
+    {
+        StyleManager.setCustomStyle ( container, "cornerSide", cornerSide );
+    }
+
+    /**
+     * Returns relative dropdown corner position.
+     *
+     * @return relative dropdown corner position
+     */
+    protected int getRelativeCorner ()
+    {
+        return getPainter ().getRelativeCorner ();
+    }
+
+    /**
+     * Sets relative dropdown corner position.
+     *
+     * @param relativeCorner relative dropdown corner position
+     */
+    protected void setRelativeCorner ( final int relativeCorner )
+    {
+        StyleManager.setCustomStyle ( container, "relativeCorner", relativeCorner );
+    }
+
+    /**
+     * Returns dropdown corner alignment.
+     *
+     * @return dropdown corner alignment
+     */
+    protected int getCornerAlignment ()
+    {
+        return getPainter ().getCornerAlignment ();
+    }
+
+    /**
+     * Sets dropdown corner alignment.
+     *
+     * @param cornerAlignment dropdown corner alignment
+     */
+    protected void setCornerAlignment ( final int cornerAlignment )
+    {
+        StyleManager.setCustomStyle ( container, "cornerAlignment", cornerAlignment );
+    }
+
+    /**
+     * Returns whether this WebPopOver is focus owner or not.
+     *
+     * @return true if this WebPopOver is focus owner, false otherwise
+     */
+    public boolean isPopOverFocused ()
+    {
+        return getPainter ().isPopOverFocused ();
+    }
+
+    /**
+     * Sets whether this WebPopOver is focus owner or not.
+     *
+     * @param focused whether this WebPopOver is focus owner or not
+     */
+    public void setPopOverFocused ( final boolean focused )
+    {
+        StyleManager.setCustomStyle ( container, "popOverFocused", focused );
     }
 
     /**
@@ -519,7 +636,7 @@ public class WebPopOver extends WebDialog
         // Updating WebPopOver variables
         attached = false;
         preferredDirection = null;
-        painter.setPopupPainterStyle ( PopupPainterStyle.simple );
+        setPopupStyle ( PopupStyle.simple );
 
         // Updating dialog location on screen and size
         final Dimension ss = Toolkit.getDefaultToolkit ().getScreenSize ();
@@ -601,7 +718,7 @@ public class WebPopOver extends WebDialog
         // Updating WebPopOver variables
         attached = false;
         preferredDirection = null;
-        painter.setPopupPainterStyle ( PopupPainterStyle.simple );
+        setPopupStyle ( PopupStyle.simple );
 
         // Updating dialog location on screen and size
         pack ();
@@ -870,7 +987,7 @@ public class WebPopOver extends WebDialog
         if ( invoker instanceof Window )
         {
             // Applying proper painter style
-            painter.setPopupPainterStyle ( PopupPainterStyle.simple );
+            setPopupStyle ( PopupStyle.simple );
 
             // Determining final WebPopOver position
             final Rectangle ib = invoker.getBounds ();
@@ -894,7 +1011,7 @@ public class WebPopOver extends WebDialog
     protected void updatePopOverLocation ( final Rectangle invokerBounds )
     {
         // Applying proper painter style
-        painter.setPopupPainterStyle ( PopupPainterStyle.dropdown );
+        setPopupStyle ( PopupStyle.dropdown );
 
         // WebPopOver preferred size without shade
         final Dimension size = getSize ();
@@ -907,7 +1024,7 @@ public class WebPopOver extends WebDialog
 
         // Determining actual direction
         final PopOverDirection actualDirection = getActualDirection ( invokerBounds, ltr, cw, ps, screenSize );
-        painter.setCornerSide ( actualDirection.getCornerSide ( ltr ) );
+        setCornerSide ( actualDirection.getCornerSide ( ltr ) );
 
         // Determining position according to alignment
         final Point actualLocation = getActualLocation ( invokerBounds, ltr, round, cw, ps, screenSize, actualDirection );
@@ -915,8 +1032,8 @@ public class WebPopOver extends WebDialog
         actualLocation.y -= sw;
 
         // Updating corner position
-        painter.setCornerAlignment ( -1 );
-        painter.setRelativeCorner ( getRelativeCorner ( invokerBounds, actualDirection, actualLocation ) );
+        setCornerAlignment ( -1 );
+        setRelativeCorner ( getRelativeCorner ( invokerBounds, actualDirection, actualLocation ) );
 
         // Updating WebPopOver location
         setLocation ( actualLocation );
@@ -980,6 +1097,8 @@ public class WebPopOver extends WebDialog
                     windowFollowAdapter.updateLastLocation ();
                 }
             }
+
+
         };
         invoker.addComponentListener ( invokerAdapter );
 
@@ -996,18 +1115,87 @@ public class WebPopOver extends WebDialog
         addPropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, orientationListener );
 
         // Removing all listeners on window close event
-        addWindowListener ( new WindowAdapter ()
+        class PopOverCloseListener implements ComponentListener, WindowListener
         {
+            @Override
+            public void componentResized ( final ComponentEvent e )
+            {
+                // Do nothing
+            }
+
+            @Override
+            public void componentMoved ( final ComponentEvent e )
+            {
+                // Do nothing
+            }
+
+            @Override
+            public void componentShown ( final ComponentEvent e )
+            {
+                // Do nothing
+            }
+
+            @Override
+            public void componentHidden ( final ComponentEvent e )
+            {
+                cleanupListeners ();
+            }
+
+            @Override
+            public void windowOpened ( final WindowEvent e )
+            {
+                // Do nothing
+            }
+
+            @Override
+            public void windowClosing ( final WindowEvent e )
+            {
+                // Do nothing
+            }
+
             @Override
             public void windowClosed ( final WindowEvent e )
             {
+                cleanupListeners ();
+            }
+
+            @Override
+            public void windowIconified ( final WindowEvent e )
+            {
+                // Do nothing
+            }
+
+            @Override
+            public void windowDeiconified ( final WindowEvent e )
+            {
+                // Do nothing
+            }
+
+            @Override
+            public void windowActivated ( final WindowEvent e )
+            {
+                // Do nothing
+            }
+
+            @Override
+            public void windowDeactivated ( final WindowEvent e )
+            {
+                // Do nothing
+            }
+
+            public void cleanupListeners ()
+            {
+                removeComponentListener ( this );
                 removeWindowListener ( this );
                 invokerWindow.removeComponentListener ( invokerWindowAdapter );
                 invokerWindow.removeComponentListener ( windowFollowAdapter );
                 invoker.removeComponentListener ( invokerAdapter );
                 removePropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, orientationListener );
             }
-        } );
+        }
+        final PopOverCloseListener closeListener = new PopOverCloseListener ();
+        addComponentListener ( closeListener );
+        addWindowListener ( closeListener );
     }
 
     /**

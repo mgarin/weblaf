@@ -60,9 +60,9 @@ public final class WebPopOverStyle
     public static int shadeWidth = 20;
 
     /**
-     * WebPopOver shade opacity.
+     * WebPopOver shade transparency.
      */
-    public static float shadeOpacity = 0.75f;
+    public static float shadeTransparency = 0.75f;
 
     /**
      * WebPopOver dropdown style corner width.

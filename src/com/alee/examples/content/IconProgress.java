@@ -42,7 +42,7 @@ public class IconProgress extends WebPanel
         super ( true, new HorizontalFlowLayout ( 2, false ) );
         setOpaque ( false );
         setMargin ( 2 );
-        setWebColored ( false );
+        setWebColoredBackground ( false );
         setBackground ( Color.WHITE );
     }
 

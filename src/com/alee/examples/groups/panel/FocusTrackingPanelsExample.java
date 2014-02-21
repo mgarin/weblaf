@@ -48,25 +48,25 @@ public class FocusTrackingPanelsExample extends DefaultExample
     }
 
     @Override
-    public Component getPreview ( WebLookAndFeelDemo owner )
+    public Component getPreview ( final WebLookAndFeelDemo owner )
     {
         // Panel with focusable field
-        WebPanel panel1 = new WebPanel ( true );
-        panel1.setDrawFocus ( true );
+        final WebPanel panel1 = new WebPanel ( true );
+        panel1.setPaintFocus ( true );
         panel1.setMargin ( 10 );
         panel1.add ( new WebLabel ( "Some field:", WebLabel.CENTER ), BorderLayout.NORTH );
         panel1.add ( new WebTextField ( "TextField", 6 ), BorderLayout.CENTER );
 
         // Panel with focusable button
-        WebPanel panel2 = new WebPanel ( true );
-        panel2.setDrawFocus ( true );
+        final WebPanel panel2 = new WebPanel ( true );
+        panel2.setPaintFocus ( true );
         panel2.setMargin ( 10 );
         panel2.add ( new WebLabel ( "Some button:", WebLabel.CENTER ), BorderLayout.NORTH );
         panel2.add ( new WebButton ( "Button" ), BorderLayout.CENTER );
 
         // Panel with focusable combobox
-        WebPanel panel3 = new WebPanel ( true );
-        panel3.setDrawFocus ( true );
+        final WebPanel panel3 = new WebPanel ( true );
+        panel3.setPaintFocus ( true );
         panel3.setMargin ( 10 );
         panel3.add ( new WebLabel ( "Some combo:", WebLabel.CENTER ), BorderLayout.NORTH );
         panel3.add ( new WebComboBox ( new String[]{ "ComboBox" } ), BorderLayout.CENTER );

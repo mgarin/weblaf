@@ -276,13 +276,15 @@ public class TestFrame extends WebFrame
         container = new WebPanel ( layout );
         if ( margin != null )
         {
+            final BorderPanel borderPanel = new BorderPanel ( component, margin );
+            borderPanel.setOpaque ( false );
             if ( constraints != null )
             {
-                container.add ( new BorderPanel ( component, margin ), constraints );
+                container.add ( borderPanel, constraints );
             }
             else
             {
-                container.add ( new BorderPanel ( component, margin ) );
+                container.add ( borderPanel );
             }
         }
         else
@@ -695,7 +697,7 @@ public class TestFrame extends WebFrame
         {
             libVersion = "[ " + VersionManager.getLibraryVersion ().toString () + " ] ";
         }
-        catch ( Throwable e )
+        catch ( final Throwable e )
         {
             // Cannot load version now
         }

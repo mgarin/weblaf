@@ -45,7 +45,7 @@ public class CustomSkin extends WebLafSkin
     /**
      * Constructs new custom theme.
      *
-     * @param location skin info XML location
+     * @param location skin info XML location relative to this class
      */
     public CustomSkin ( final String location )
     {
@@ -123,8 +123,17 @@ public class CustomSkin extends WebLafSkin
      * {@inheritDoc}
      */
     @Override
+    public String getSkinClass ()
+    {
+        return skinInfo.getSkinClass ();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public ComponentStyle getComponentStyle ( final JComponent component, final SupportedComponent type )
     {
-        return skinInfo.getStyle ( type );
+        return skinInfo.getStyle ( component, type );
     }
 }

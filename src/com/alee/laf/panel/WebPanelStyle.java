@@ -17,7 +17,6 @@
 
 package com.alee.laf.panel;
 
-import com.alee.extended.painter.Painter;
 import com.alee.laf.StyleConstants;
 
 import java.awt.*;
@@ -54,6 +53,11 @@ public final class WebPanelStyle
     public static int shadeWidth = StyleConstants.shadeWidth;
 
     /**
+     * Panel shade transparency.
+     */
+    public static float shadeTransparency = 0.75f;
+
+    /**
      * Panel margin.
      */
     public static Insets margin = StyleConstants.emptyMargin;
@@ -65,47 +69,27 @@ public final class WebPanelStyle
     public static Stroke borderStroke = null;
 
     /**
-     * Whether should draw background or not.
+     * Decoration border color.
      */
-    public static boolean drawBackground = true;
+    public static Color borderColor = StyleConstants.darkBorderColor;
 
     /**
-     * Whether should draw web-styled background or not.
+     * Disabled decoration border color.
      */
-    public static boolean webColored = true;
+    public static Color disabledBorderColor = StyleConstants.disabledBorderColor;
+
+    /**
+     * Whether should paint background or not.
+     */
+    public static boolean paintBackground = true;
+
+    /**
+     * Whether should paint web-styled background or not.
+     */
+    public static boolean webColoredBackground = true;
 
     /**
      * Panel background color.
      */
     public static Color backgroundColor = StyleConstants.backgroundColor;
-
-    /**
-     * Panel decoration painter.
-     * If set it will override WebLaF styling.
-     */
-    public static Painter painter = null;
-
-    /**
-     * Whether should draw top panel side or not.
-     * This variable doesn't affect anything if panel is undecorated.
-     */
-    public static boolean drawTop = true;
-
-    /**
-     * Whether should draw left panel side or not.
-     * This variable doesn't affect anything if panel is undecorated.
-     */
-    public static boolean drawLeft = true;
-
-    /**
-     * Whether should draw bottom panel side or not.
-     * This variable doesn't affect anything if panel is undecorated.
-     */
-    public static boolean drawBottom = true;
-
-    /**
-     * Whether should draw right panel side or not.
-     * This variable doesn't affect anything if panel is undecorated.
-     */
-    public static boolean drawRight = true;
 }

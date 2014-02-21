@@ -74,7 +74,7 @@ public class WebComponentPanel extends WebPanel
     private void initialize ()
     {
         // Default styling
-        setWebColored ( false );
+        setWebColoredBackground ( false );
 
         // Elements layout
         container = new WebPanel ();
@@ -496,7 +496,7 @@ public class WebComponentPanel extends WebPanel
          * {@inheritDoc}
          */
         @Override
-        public boolean isOpaque ( final WebSelectablePanel c )
+        public Boolean isOpaque ( final WebSelectablePanel c )
         {
             return true;
         }

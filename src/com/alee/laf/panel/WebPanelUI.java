@@ -19,22 +19,20 @@ package com.alee.laf.panel;
 
 import com.alee.extended.painter.Painter;
 import com.alee.extended.painter.PainterSupport;
-import com.alee.laf.StyleConstants;
+import com.alee.extended.painter.PartialDecoration;
 import com.alee.laf.WebLookAndFeel;
-import com.alee.managers.focus.DefaultFocusTracker;
-import com.alee.managers.focus.FocusManager;
-import com.alee.managers.focus.FocusTracker;
+import com.alee.managers.style.StyleManager;
 import com.alee.utils.LafUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.laf.PainterShapeProvider;
 import com.alee.utils.laf.ShapeProvider;
+import com.alee.utils.laf.Styleable;
 import com.alee.utils.swing.BorderMethods;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicPanelUI;
 import java.awt.*;
-import java.awt.geom.GeneralPath;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
@@ -44,44 +42,38 @@ import java.beans.PropertyChangeListener;
  * @author Mikle Garin
  */
 
-public class WebPanelUI extends BasicPanelUI implements ShapeProvider, BorderMethods
+public class WebPanelUI extends BasicPanelUI implements Styleable, ShapeProvider, BorderMethods, PartialDecoration
 {
     /**
      * Style settings.
      */
-    private boolean undecorated = WebPanelStyle.undecorated;
-    private boolean drawFocus = WebPanelStyle.drawFocus;
-    private int round = WebPanelStyle.round;
-    private int shadeWidth = WebPanelStyle.shadeWidth;
-    private Insets margin = WebPanelStyle.margin;
-    private Stroke borderStroke = WebPanelStyle.borderStroke;
-    private boolean drawBackground = WebPanelStyle.drawBackground;
-    private boolean webColored = WebPanelStyle.webColored;
-    private Painter painter = WebPanelStyle.painter;
-    private boolean drawTop = WebPanelStyle.drawTop;
-    private boolean drawLeft = WebPanelStyle.drawLeft;
-    private boolean drawBottom = WebPanelStyle.drawBottom;
-    private boolean drawRight = WebPanelStyle.drawRight;
+    protected boolean undecorated = WebPanelStyle.undecorated;
+    protected boolean paintFocus = WebPanelStyle.drawFocus;
+    protected Insets margin = WebPanelStyle.margin;
+    protected boolean paintTop = true;
+    protected boolean paintLeft = true;
+    protected boolean paintBottom = true;
+    protected boolean paintRight = true;
+    protected boolean paintTopLine = false;
+    protected boolean paintLeftLine = false;
+    protected boolean paintBottomLine = false;
+    protected boolean paintRightLine = false;
 
     /**
-     * Panel to which this UI is applied.
+     * Component painter.
      */
-    private JPanel panel;
+    protected PanelPainter painter;
 
     /**
      * Panel listeners.
      */
-    private PropertyChangeListener propertyChangeListener;
+    protected PropertyChangeListener propertyChangeListener;
 
     /**
-     * Panel focus tracker.
+     * Runtime variables.
      */
-    protected FocusTracker focusTracker;
-
-    /**
-     * Whether panel is focused or owns focused component or not.
-     */
-    protected boolean focused = false;
+    protected String styleId;
+    protected JPanel panel;
 
     /**
      * Returns an instance of the WebPanelUI for the specified component.
@@ -90,7 +82,7 @@ public class WebPanelUI extends BasicPanelUI implements ShapeProvider, BorderMet
      * @param c component that will use UI instance
      * @return instance of the WebPanelUI
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebPanelUI ();
@@ -105,18 +97,13 @@ public class WebPanelUI extends BasicPanelUI implements ShapeProvider, BorderMet
     public void installUI ( final JComponent c )
     {
         super.installUI ( c );
-
-        // Saving panel to local variable
         panel = ( JPanel ) c;
 
         // Default settings
         SwingUtils.setOrientation ( panel );
-        LookAndFeel.installProperty ( panel, WebLookAndFeel.OPAQUE_PROPERTY, Boolean.TRUE );
-        panel.setBackground ( WebPanelStyle.backgroundColor );
-        PainterSupport.installPainter ( panel, this.painter );
 
-        // Updating border
-        updateBorder ();
+        // Applying skin
+        StyleManager.applySkin ( panel );
 
         // Orientation change listener
         propertyChangeListener = new PropertyChangeListener ()
@@ -128,24 +115,6 @@ public class WebPanelUI extends BasicPanelUI implements ShapeProvider, BorderMet
             }
         };
         panel.addPropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, propertyChangeListener );
-
-        // Focus tracker for the panel content
-        focusTracker = new DefaultFocusTracker ()
-        {
-            @Override
-            public boolean isTrackingEnabled ()
-            {
-                return !undecorated && drawFocus;
-            }
-
-            @Override
-            public void focusChanged ( final boolean focused )
-            {
-                WebPanelUI.this.focused = focused;
-                panel.repaint ();
-            }
-        };
-        FocusManager.addFocusTracker ( panel, focusTracker );
     }
 
     /**
@@ -156,13 +125,33 @@ public class WebPanelUI extends BasicPanelUI implements ShapeProvider, BorderMet
     @Override
     public void uninstallUI ( final JComponent c )
     {
-        PainterSupport.uninstallPainter ( panel, this.painter );
-
+        // Removing listeners
         panel.removePropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, propertyChangeListener );
 
-        FocusManager.removeFocusTracker ( focusTracker );
+        // Uninstalling applied skin
+        StyleManager.removeSkin ( panel );
 
+        panel = null;
         super.uninstallUI ( c );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getStyleId ()
+    {
+        return styleId;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setStyleId ( final String id )
+    {
+        this.styleId = id;
+        StyleManager.applySkin ( panel );
     }
 
     /**
@@ -171,18 +160,13 @@ public class WebPanelUI extends BasicPanelUI implements ShapeProvider, BorderMet
     @Override
     public Shape provideShape ()
     {
-        if ( painter != null )
+        if ( painter != null && painter instanceof PainterShapeProvider )
         {
-            final Rectangle size = SwingUtils.size ( panel );
-            return painter instanceof PainterShapeProvider ? ( ( PainterShapeProvider ) painter ).provideShape ( panel, size ) : size;
-        }
-        else if ( undecorated )
-        {
-            return SwingUtils.size ( panel );
+            return ( ( PainterShapeProvider ) painter ).provideShape ( panel, SwingUtils.size ( panel ) );
         }
         else
         {
-            return getPanelShape ( panel, true );
+            return SwingUtils.size ( panel );
         }
     }
 
@@ -192,42 +176,7 @@ public class WebPanelUI extends BasicPanelUI implements ShapeProvider, BorderMet
     @Override
     public void updateBorder ()
     {
-        if ( panel != null )
-        {
-            // Preserve old borders
-            if ( SwingUtils.isPreserveBorders ( panel ) )
-            {
-                return;
-            }
-
-            // Actual margin
-            final boolean ltr = panel.getComponentOrientation ().isLeftToRight ();
-            final Insets m = new Insets ( margin.top, ltr ? margin.left : margin.right, margin.bottom, ltr ? margin.right : margin.left );
-
-            // Calculating additional borders
-            if ( painter != null )
-            {
-                // Painter borders
-                final Insets pi = painter.getMargin ( panel );
-                m.top += pi.top;
-                m.bottom += pi.bottom;
-                m.left += ltr ? pi.left : pi.right;
-                m.right += ltr ? pi.right : pi.left;
-            }
-            else if ( !undecorated )
-            {
-                // Styling borders
-                final boolean actualDrawLeft = ltr ? drawLeft : drawRight;
-                final boolean actualDrawRight = ltr ? drawRight : drawLeft;
-                m.top += drawTop ? shadeWidth + 1 : 0;
-                m.left += actualDrawLeft ? shadeWidth + 1 : 0;
-                m.bottom += drawBottom ? shadeWidth + 1 : 0;
-                m.right += actualDrawRight ? shadeWidth + 1 : 0;
-            }
-
-            // Installing border
-            panel.setBorder ( LafUtils.createWebBorder ( m ) );
-        }
+        LafUtils.updateBorder ( panel, margin, painter );
     }
 
     /**
@@ -248,119 +197,36 @@ public class WebPanelUI extends BasicPanelUI implements ShapeProvider, BorderMet
     public void setUndecorated ( final boolean undecorated )
     {
         this.undecorated = undecorated;
-        updateBorder ();
-
-        // todo Bad workaround
-        // Makes panel non-opaque when it becomes decorated
-        if ( painter == null && !undecorated )
-        {
-            LookAndFeel.installProperty ( panel, WebLookAndFeel.OPAQUE_PROPERTY, Boolean.FALSE );
-        }
-    }
-
-    /**
-     * Returns whether panel should display when it owns focus or not.
-     *
-     * @return true if panel should display when it owns focus, false otherwise
-     */
-    public boolean isDrawFocus ()
-    {
-        return drawFocus;
-    }
-
-    /**
-     * Sets whether panel should display when it owns focus or not.
-     *
-     * @param drawFocus whether panel should display when it owns focus or not
-     */
-    public void setDrawFocus ( final boolean drawFocus )
-    {
-        this.drawFocus = drawFocus;
-    }
-
-    /**
-     * Returns panel background painter.
-     *
-     * @return panel background painter
-     */
-    public Painter getPainter ()
-    {
-        return painter;
-    }
-
-    /**
-     * Sets panel background painter.
-     *
-     * @param painter new panel background painter
-     */
-    public void setPainter ( final Painter painter )
-    {
-        PainterSupport.uninstallPainter ( panel, this.painter );
-
-        this.painter = painter;
-        PainterSupport.installPainter ( panel, this.painter );
-        updateBorder ();
-
-        // Changes panel opacity according to specified painter
         if ( painter != null )
         {
-            panel.setOpaque ( painter.isOpaque ( panel ) );
+            painter.setUndecorated ( undecorated );
         }
     }
 
     /**
-     * Returns decoration rounding.
+     * Returns whether focus should be painted or not.
+     * Panel focus is displayed when either panel or one of its children are focused.
      *
-     * @return decoration rounding
+     * @return true if focus should be painted, false otherwise
      */
-    public int getRound ()
+    public boolean isPaintFocus ()
     {
-        if ( undecorated )
-        {
-            return 0;
-        }
-        else
-        {
-            return round;
-        }
+        return paintFocus;
     }
 
     /**
-     * Sets decoration rounding.
+     * Sets whether focus should be painted or not.
+     * Panel focus is displayed when either panel or one of its children are focused.
      *
-     * @param round new decoration rounding
+     * @param paint whether focus should be painted or not
      */
-    public void setRound ( final int round )
+    public void setPaintFocus ( final boolean paint )
     {
-        this.round = round;
-    }
-
-    /**
-     * Returns decoration shade width.
-     *
-     * @return decoration shade width
-     */
-    public int getShadeWidth ()
-    {
-        if ( undecorated )
+        this.paintFocus = paint;
+        if ( painter != null )
         {
-            return 0;
+            painter.setPaintFocus ( paint );
         }
-        else
-        {
-            return shadeWidth;
-        }
-    }
-
-    /**
-     * Sets decoration shade width.
-     *
-     * @param shadeWidth new decoration shade width
-     */
-    public void setShadeWidth ( final int shadeWidth )
-    {
-        this.shadeWidth = shadeWidth;
-        updateBorder ();
     }
 
     /**
@@ -385,164 +251,431 @@ public class WebPanelUI extends BasicPanelUI implements ShapeProvider, BorderMet
     }
 
     /**
+     * Returns whether should paint top side or not.
+     *
+     * @return true if should paint top side, false otherwise
+     */
+    public boolean isPaintTop ()
+    {
+        return paintTop;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setPaintTop ( final boolean top )
+    {
+        this.paintTop = top;
+        if ( painter != null )
+        {
+            painter.setPaintTop ( top );
+        }
+    }
+
+    /**
+     * Returns whether should paint left side or not.
+     *
+     * @return true if should paint left side, false otherwise
+     */
+    public boolean isPaintLeft ()
+    {
+        return paintLeft;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setPaintLeft ( final boolean left )
+    {
+        this.paintLeft = left;
+        if ( painter != null )
+        {
+            painter.setPaintLeft ( left );
+        }
+    }
+
+    /**
+     * Returns whether should paint bottom side or not.
+     *
+     * @return true if should paint bottom side, false otherwise
+     */
+    public boolean isPaintBottom ()
+    {
+        return paintBottom;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setPaintBottom ( final boolean bottom )
+    {
+        this.paintBottom = bottom;
+        if ( painter != null )
+        {
+            painter.setPaintBottom ( bottom );
+        }
+    }
+
+    /**
+     * Returns whether should paint right side or not.
+     *
+     * @return true if should paint right side, false otherwise
+     */
+    public boolean isPaintRight ()
+    {
+        return paintRight;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setPaintRight ( final boolean right )
+    {
+        this.paintRight = right;
+        if ( painter != null )
+        {
+            painter.setPaintRight ( right );
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setPaintSides ( final boolean top, final boolean left, final boolean bottom, final boolean right )
+    {
+        this.paintTop = top;
+        this.paintLeft = left;
+        this.paintBottom = bottom;
+        this.paintRight = right;
+        if ( painter != null )
+        {
+            painter.setPaintSides ( top, left, bottom, right );
+        }
+    }
+
+    /**
+     * Returns whether should paint top side line or not.
+     *
+     * @return true if should paint top side line, false otherwise
+     */
+    public boolean isPaintTopLine ()
+    {
+        return paintTopLine;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setPaintTopLine ( final boolean top )
+    {
+        this.paintTopLine = top;
+        if ( painter != null )
+        {
+            painter.setPaintTopLine ( top );
+        }
+    }
+
+    /**
+     * Returns whether should paint left side line or not.
+     *
+     * @return true if should paint left side line, false otherwise
+     */
+    public boolean isPaintLeftLine ()
+    {
+        return paintLeftLine;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setPaintLeftLine ( final boolean left )
+    {
+        this.paintLeftLine = left;
+        if ( painter != null )
+        {
+            painter.setPaintLeftLine ( left );
+        }
+    }
+
+    /**
+     * Returns whether should paint bottom side line or not.
+     *
+     * @return true if should paint bottom side line, false otherwise
+     */
+    public boolean isPaintBottomLine ()
+    {
+        return paintBottomLine;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setPaintBottomLine ( final boolean bottom )
+    {
+        this.paintBottomLine = bottom;
+        if ( painter != null )
+        {
+            painter.setPaintBottomLine ( bottom );
+        }
+    }
+
+    /**
+     * Returns whether should paint right side line or not.
+     *
+     * @return true if should paint right side line, false otherwise
+     */
+    public boolean isPaintRightLine ()
+    {
+        return paintRightLine;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setPaintRightLine ( final boolean right )
+    {
+        this.paintRightLine = right;
+        if ( painter != null )
+        {
+            painter.setPaintRightLine ( right );
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setPaintSideLines ( final boolean top, final boolean left, final boolean bottom, final boolean right )
+    {
+        this.paintTopLine = top;
+        this.paintLeftLine = left;
+        this.paintBottomLine = bottom;
+        this.paintRightLine = right;
+        if ( painter != null )
+        {
+            painter.setPaintSideLines ( top, left, bottom, right );
+        }
+    }
+
+    /**
+     * Returns decoration corners rounding.
+     *
+     * @return decoration corners rounding
+     */
+    public int getRound ()
+    {
+        final Integer round = StyleManager.getStyleValue ( panel, "round" );
+        return round != null ? round : WebPanelStyle.round;
+    }
+
+    /**
+     * Sets decoration corners rounding.
+     *
+     * @param round decoration corners rounding
+     */
+    public void setRound ( final int round )
+    {
+        StyleManager.setCustomStyle ( panel, "round", round );
+    }
+
+    /**
+     * Returns decoration shade width.
+     *
+     * @return decoration shade width
+     */
+    public int getShadeWidth ()
+    {
+        final Integer shadeWidth = StyleManager.getStyleValue ( panel, "shadeWidth" );
+        return shadeWidth != null ? shadeWidth : WebPanelStyle.shadeWidth;
+    }
+
+    /**
+     * Sets decoration shade width.
+     *
+     * @param shadeWidth decoration shade width
+     */
+    public void setShadeWidth ( final int shadeWidth )
+    {
+        StyleManager.setCustomStyle ( panel, "shadeWidth", shadeWidth );
+    }
+
+    /**
+     * Returns decoration shade transparency.
+     *
+     * @return decoration shade transparency
+     */
+    public float getShadeTransparency ()
+    {
+        final Float shadeTransparency = StyleManager.getStyleValue ( panel, "shadeTransparency" );
+        return shadeTransparency != null ? shadeTransparency : WebPanelStyle.shadeTransparency;
+    }
+
+    /**
+     * Sets decoration shade transparency.
+     *
+     * @param transparency new decoration shade transparency
+     */
+    public void setShadeTransparency ( final float transparency )
+    {
+        StyleManager.setCustomStyle ( panel, "shadeTransparency", transparency );
+    }
+
+    /**
      * Returns decoration border stroke.
      *
      * @return decoration border stroke
      */
     public Stroke getBorderStroke ()
     {
-        return borderStroke;
+        final Stroke borderStroke = StyleManager.getStyleValue ( panel, "borderStroke" );
+        return borderStroke != null ? borderStroke : WebPanelStyle.borderStroke;
     }
 
     /**
      * Sets decoration border stroke.
      *
-     * @param stroke new decoration border stroke
+     * @param stroke decoration border stroke
      */
     public void setBorderStroke ( final Stroke stroke )
     {
-        this.borderStroke = stroke;
+        StyleManager.setCustomStyle ( panel, "borderStroke", stroke );
     }
 
     /**
-     * Returns whether should draw background or not.
+     * Returns decoration border color.
      *
-     * @return true if should draw background, false otherwise
+     * @return decoration border color
      */
-    public boolean isDrawBackground ()
+    public Color getBorderColor ()
     {
-        return drawBackground;
+        final Color borderColor = StyleManager.getStyleValue ( panel, "borderColor" );
+        return borderColor != null ? borderColor : WebPanelStyle.borderColor;
     }
 
     /**
-     * Sets whether should draw background or not.
+     * Sets decoration border color.
      *
-     * @param drawBackground whether should draw background or not
+     * @param color decoration border color
      */
-    public void setDrawBackground ( final boolean drawBackground )
+    public void setBorderColor ( final Color color )
     {
-        this.drawBackground = drawBackground;
+        StyleManager.setCustomStyle ( panel, "borderColor", color );
     }
 
     /**
-     * Returns whether should draw web-colored background or not.
+     * Returns decoration disabled border color.
      *
-     * @return true if should draw web-colored background, false otherwise
+     * @return decoration disabled border color
      */
-    public boolean isWebColored ()
+    public Color getDisabledBorderColor ()
     {
-        return webColored;
+        final Color disabledBorderColor = StyleManager.getStyleValue ( panel, "disabledBorderColor" );
+        return disabledBorderColor != null ? disabledBorderColor : WebPanelStyle.disabledBorderColor;
     }
 
     /**
-     * Sets whether should draw web-colored background or not.
+     * Sets decoration disabled border color.
      *
-     * @param webColored whether should draw web-colored background or not
+     * @param color decoration disabled border color
      */
-    public void setWebColored ( final boolean webColored )
+    public void setDisabledBorderColor ( final Color color )
     {
-        this.webColored = webColored;
+        StyleManager.setCustomStyle ( panel, "disabledBorderColor", color );
     }
 
     /**
-     * Returns whether should draw top panel side or not.
+     * Returns whether should paint decoration background or not.
      *
-     * @return true if should draw top panel side, false otherwise
+     * @return true if should paint decoration background, false otherwise
      */
-    public boolean isDrawTop ()
+    public boolean isPaintBackground ()
     {
-        return drawTop;
+        final Boolean paintBackground = StyleManager.getStyleValue ( panel, "paintBackground" );
+        return paintBackground != null ? paintBackground : WebPanelStyle.paintBackground;
     }
 
     /**
-     * Sets whether should draw top panel side or not.
+     * Sets whether should paint decoration background or not.
      *
-     * @param drawTop whether should draw top panel side or not
+     * @param paint whether should paint decoration background or not
      */
-    public void setDrawTop ( final boolean drawTop )
+    public void setPaintBackground ( final boolean paint )
     {
-        this.drawTop = drawTop;
-        updateBorder ();
+        StyleManager.setCustomStyle ( panel, "paintBackground", paint );
     }
 
     /**
-     * Returns whether should draw left panel side or not.
+     * Returns whether should paint web-styled background or not.
      *
-     * @return true if should draw left panel side, false otherwise
+     * @return true if should paint web-styled background, false otherwise
      */
-    public boolean isDrawLeft ()
+    public boolean isWebColoredBackground ()
     {
-        return drawLeft;
+        final Boolean webColored = StyleManager.getStyleValue ( panel, "webColoredBackground" );
+        return webColored != null ? webColored : WebPanelStyle.webColoredBackground;
     }
 
     /**
-     * Sets whether should draw left panel side or not.
+     * Sets whether should paint web-styled background or not.
      *
-     * @param drawLeft whether should draw left panel side or not
+     * @param webColored whether should paint web-styled background or not
      */
-    public void setDrawLeft ( final boolean drawLeft )
+    public void setWebColoredBackground ( final boolean webColored )
     {
-        this.drawLeft = drawLeft;
-        updateBorder ();
+        StyleManager.setCustomStyle ( panel, "webColoredBackground", webColored );
     }
 
     /**
-     * Returns whether should draw bottom panel side or not.
+     * Returns panel painter.
      *
-     * @return true if should draw bottom panel side, false otherwise
+     * @return panel painter
      */
-    public boolean isDrawBottom ()
+    public Painter getPainter ()
     {
-        return drawBottom;
+        return painter instanceof AdaptivePanelPainter ? ( ( AdaptivePanelPainter ) painter ).getPainter () : painter;
     }
 
     /**
-     * Sets whether should draw bottom panel side or not.
+     * Sets panel painter.
+     * Pass null to remove panel painter.
      *
-     * @param drawBottom whether should draw bottom panel side or not
+     * @param painter new panel painter
      */
-    public void setDrawBottom ( final boolean drawBottom )
+    public void setPainter ( final Painter painter )
     {
-        this.drawBottom = drawBottom;
-        updateBorder ();
+        final boolean correctType = painter == null || painter instanceof PanelPainter;
+        final PanelPainter panelPainter = correctType ? ( PanelPainter ) painter : new AdaptivePanelPainter ( painter );
+
+        PainterSupport.uninstallPainter ( panel, this.painter );
+        this.painter = panelPainter;
+        applyPainterSettings ( panelPainter );
+        PainterSupport.installPainter ( panel, panelPainter );
     }
 
     /**
-     * Returns whether should draw right panel side or not.
+     * Applies UI settings to this specific painter.
      *
-     * @return true if should draw right panel side, false otherwise
+     * @param painter panel painter
      */
-    public boolean isDrawRight ()
+    private void applyPainterSettings ( final PanelPainter painter )
     {
-        return drawRight;
-    }
-
-    /**
-     * Sets whether should draw right panel side or not.
-     *
-     * @param drawRight whether should draw right panel side or not
-     */
-    public void setDrawRight ( final boolean drawRight )
-    {
-        this.drawRight = drawRight;
-        updateBorder ();
-    }
-
-    /**
-     * Sets whether should draw specific panel sides or not.
-     *
-     * @param top    whether should draw top panel side or not
-     * @param left   whether should draw left panel side or not
-     * @param bottom whether should draw bottom panel side or not
-     * @param right  whether should draw right panel side or not
-     */
-    public void setDrawSides ( final boolean top, final boolean left, final boolean bottom, final boolean right )
-    {
-        this.drawTop = top;
-        this.drawLeft = left;
-        this.drawBottom = bottom;
-        this.drawRight = right;
-        updateBorder ();
+        if ( painter != null )
+        {
+            // UI settings
+            painter.setUndecorated ( undecorated );
+            painter.setPaintFocus ( paintFocus );
+            painter.setPaintSides ( paintTop, paintLeft, paintBottom, paintRight );
+            painter.setPaintSideLines ( paintTopLine, paintLeftLine, paintBottomLine, paintRightLine );
+        }
     }
 
     /**
@@ -554,202 +687,9 @@ public class WebPanelUI extends BasicPanelUI implements ShapeProvider, BorderMet
     @Override
     public void paint ( final Graphics g, final JComponent c )
     {
-        // To be applied for all childs painting
-        LafUtils.setupSystemTextHints ( g );
-
         if ( painter != null )
         {
-            // Use background painter instead of default UI graphics
             painter.paint ( ( Graphics2D ) g, SwingUtils.size ( c ), c );
         }
-        else if ( !undecorated )
-        {
-            // Checking need of painting
-            final boolean anyBorder = drawTop || drawRight || drawBottom || drawLeft;
-            if ( anyBorder || drawBackground )
-            {
-                final Graphics2D g2d = ( Graphics2D ) g;
-                final Object aa = LafUtils.setupAntialias ( g2d );
-
-                // Border shape
-                final Shape borderShape = getPanelShape ( c, false );
-
-                // Outer shadow
-                if ( anyBorder && c.isEnabled () )
-                {
-                    LafUtils.drawShade ( g2d, borderShape,
-                            drawFocus && focused ? StyleConstants.fieldFocusColor : StyleConstants.shadeColor, shadeWidth );
-                }
-
-                // Background
-                if ( drawBackground )
-                {
-                    // Bg shape
-                    final Shape bgShape = getPanelShape ( c, true );
-
-                    // Draw bg
-                    if ( webColored )
-                    {
-                        // Setup cached gradient paint
-                        final Rectangle bgBounds = bgShape.getBounds ();
-                        g2d.setPaint ( LafUtils.getWebGradientPaint ( 0, bgBounds.y, 0, bgBounds.y + bgBounds.height ) );
-                    }
-                    else
-                    {
-                        // Setup single color paint
-                        g2d.setPaint ( c.getBackground () );
-                    }
-                    g2d.fill ( bgShape );
-                }
-
-                // Border
-                if ( anyBorder )
-                {
-                    final Stroke os = LafUtils.setupStroke ( g2d, borderStroke, borderStroke != null );
-                    g2d.setPaint ( c.isEnabled () ? StyleConstants.darkBorderColor : StyleConstants.disabledBorderColor );
-                    g2d.draw ( borderShape );
-                    LafUtils.restoreStroke ( g2d, os, borderStroke != null );
-                }
-
-                LafUtils.restoreAntialias ( g2d, aa );
-            }
-        }
-    }
-
-    /**
-     * Returns panel shape.
-     *
-     * @param c          component
-     * @param background whether should return background shape or not
-     * @return panel shape
-     */
-    private Shape getPanelShape ( final JComponent c, final boolean background )
-    {
-        // Changing draw marks in case of RTL orientation
-        final boolean ltr = c.getComponentOrientation ().isLeftToRight ();
-        final boolean actualDrawLeft = ltr ? drawLeft : drawRight;
-        final boolean actualDrawRight = ltr ? drawRight : drawLeft;
-
-        // Width and height
-        final int w = c.getWidth ();
-        final int h = c.getHeight ();
-
-        if ( background )
-        {
-            final Point[] corners = new Point[ 4 ];
-            final boolean[] rounded = new boolean[ 4 ];
-
-            corners[ 0 ] = p ( actualDrawLeft ? shadeWidth : 0, drawTop ? shadeWidth : 0 );
-            rounded[ 0 ] = actualDrawLeft && drawTop;
-
-            corners[ 1 ] = p ( actualDrawRight ? w - shadeWidth : w, drawTop ? shadeWidth : 0 );
-            rounded[ 1 ] = actualDrawRight && drawTop;
-
-            corners[ 2 ] = p ( actualDrawRight ? w - shadeWidth : w, drawBottom ? h - shadeWidth : h );
-            rounded[ 2 ] = actualDrawRight && drawBottom;
-
-            corners[ 3 ] = p ( actualDrawLeft ? shadeWidth : 0, drawBottom ? h - shadeWidth : h );
-            rounded[ 3 ] = actualDrawLeft && drawBottom;
-
-            return LafUtils.createRoundedShape ( round > 0 ? round + 1 : 0, corners, rounded );
-        }
-        else
-        {
-            final GeneralPath shape = new GeneralPath ( GeneralPath.WIND_EVEN_ODD );
-            boolean connect = false;
-            boolean moved = false;
-            if ( drawTop )
-            {
-                shape.moveTo ( actualDrawLeft ? shadeWidth + round : 0, shadeWidth );
-                if ( actualDrawRight )
-                {
-                    shape.lineTo ( w - shadeWidth - round - 1, shadeWidth );
-                    shape.quadTo ( w - shadeWidth - 1, shadeWidth, w - shadeWidth - 1, shadeWidth + round );
-                }
-                else
-                {
-                    shape.lineTo ( w - 1, shadeWidth );
-                }
-                connect = true;
-            }
-            if ( actualDrawRight )
-            {
-                if ( !connect )
-                {
-                    shape.moveTo ( w - shadeWidth - 1, drawTop ? shadeWidth + round : 0 );
-                    moved = true;
-                }
-                if ( drawBottom )
-                {
-                    shape.lineTo ( w - shadeWidth - 1, h - shadeWidth - round - 1 );
-                    shape.quadTo ( w - shadeWidth - 1, h - shadeWidth - 1, w - shadeWidth - round - 1, h - shadeWidth - 1 );
-                }
-                else
-                {
-                    shape.lineTo ( w - shadeWidth - 1, h - 1 );
-                }
-                connect = true;
-            }
-            else
-            {
-                connect = false;
-            }
-            if ( drawBottom )
-            {
-                if ( !connect )
-                {
-                    shape.moveTo ( actualDrawRight ? w - shadeWidth - round - 1 : w - 1, h - shadeWidth - 1 );
-                    moved = true;
-                }
-                if ( actualDrawLeft )
-                {
-                    shape.lineTo ( shadeWidth + round, h - shadeWidth - 1 );
-                    shape.quadTo ( shadeWidth, h - shadeWidth - 1, shadeWidth, h - shadeWidth - round - 1 );
-                }
-                else
-                {
-                    shape.lineTo ( 0, h - shadeWidth - 1 );
-                }
-                connect = true;
-            }
-            else
-            {
-                connect = false;
-            }
-            if ( actualDrawLeft )
-            {
-                if ( !connect )
-                {
-                    shape.moveTo ( shadeWidth, drawBottom ? h - shadeWidth - round - 1 : h - 1 );
-                    moved = true;
-                }
-                if ( drawTop )
-                {
-                    shape.lineTo ( shadeWidth, shadeWidth + round );
-                    shape.quadTo ( shadeWidth, shadeWidth, shadeWidth + round, shadeWidth );
-                    if ( !moved )
-                    {
-                        shape.closePath ();
-                    }
-                }
-                else
-                {
-                    shape.lineTo ( shadeWidth, 0 );
-                }
-            }
-            return shape;
-        }
-    }
-
-    /**
-     * Returns point for the specified coordinates.
-     *
-     * @param x X coordinate
-     * @param y Y coordinate
-     * @return point for the specified coordinates
-     */
-    private Point p ( final int x, final int y )
-    {
-        return new Point ( x, y );
     }
 }

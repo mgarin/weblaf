@@ -18,10 +18,10 @@
 package com.alee.managers.popup;
 
 import com.alee.extended.layout.TableLayout;
-import com.alee.extended.painter.AbstractPainter;
 import com.alee.laf.StyleConstants;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.panel.WebPanel;
+import com.alee.managers.style.skin.web.WebPanelPainter;
 import com.alee.utils.LafUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.AncestorAdapter;
@@ -613,7 +613,7 @@ public class WebButtonPopup extends WebPopup
     /**
      * Custom button popup painter.
      */
-    protected class WebButtonPopupPainter extends AbstractPainter<WebButtonPopup>
+    protected class WebButtonPopupPainter extends WebPanelPainter<WebButtonPopup>
     {
         /**
          * {@inheritDoc}
@@ -623,7 +623,7 @@ public class WebButtonPopup extends WebPopup
         {
             LafUtils.drawCustomWebBorder ( g2d, c, getPopupShape ( c ),
                     button.isFocusable () && button.isDrawFocus () && focused ? StyleConstants.fieldFocusColor : StyleConstants.shadeColor,
-                    button.getShadeWidth (), true, isWebColored () );
+                    button.getShadeWidth (), true, isWebColoredBackground () );
         }
     }
 }

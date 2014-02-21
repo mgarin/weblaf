@@ -15,24 +15,23 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.laf.menu;
+package com.alee.managers.style.editor;
+
+import com.alee.managers.style.skin.CustomSkin;
 
 /**
- * This enumeration represents possible popup painter styles.
+ * Custom skin class for Style Editor.
  *
  * @author Mikle Garin
  */
 
-public enum PopupPainterStyle
+public class StyleEditorSkin extends CustomSkin
 {
     /**
-     * Simple popup style.
+     * Constructs new Style Editor skin.
      */
-    simple,
-
-    /**
-     * Dropdown popup style.
-     * Painter will paint an additional styled corner.
-     */
-    dropdown
+    public StyleEditorSkin ()
+    {
+        super ( "resources/StyleEditorSkin.xml" );
+    }
 }

@@ -15,7 +15,7 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.laf.menu;
+package com.alee.managers.style.skin.web;
 
 import com.alee.extended.painter.AbstractPainter;
 import com.alee.utils.ColorUtils;
@@ -52,11 +52,11 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
     /**
      * Style settings.
      */
-    protected PopupPainterStyle popupPainterStyle = WebPopupPainterStyle.popupPainterStyle;
+    protected PopupStyle popupStyle = WebPopupPainterStyle.popupStyle;
     protected Color borderColor = WebPopupPainterStyle.borderColor;
     protected int round = WebPopupPainterStyle.round;
     protected int shadeWidth = WebPopupPainterStyle.shadeWidth;
-    protected float shadeOpacity = WebPopupPainterStyle.shadeOpacity;
+    protected float shadeTransparency = WebPopupPainterStyle.shadeTransparency;
     protected int cornerWidth = WebPopupPainterStyle.cornerWidth;
     protected float transparency = WebPopupPainterStyle.transparency;
 
@@ -73,21 +73,21 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
      *
      * @return popup style
      */
-    public PopupPainterStyle getPopupPainterStyle ()
+    public PopupStyle getPopupStyle ()
     {
-        return popupPainterStyle;
+        return popupStyle;
     }
 
     /**
-     * Sets popup  style.
+     * Sets popup style.
      *
      * @param style new popup style
      */
-    public void setPopupPainterStyle ( final PopupPainterStyle style )
+    public void setPopupStyle ( final PopupStyle style )
     {
-        if ( this.popupPainterStyle != style )
+        if ( this.popupStyle != style )
         {
-            this.popupPainterStyle = style;
+            this.popupStyle = style;
             if ( transparent )
             {
                 updateAll ();
@@ -177,25 +177,25 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
     }
 
     /**
-     * Returns popup shade opacity.
+     * Returns popup shade transparency.
      *
-     * @return popup shade opacity
+     * @return popup shade transparency
      */
-    public float getShadeOpacity ()
+    public float getShadeTransparency ()
     {
-        return shadeOpacity;
+        return shadeTransparency;
     }
 
     /**
-     * Sets popup shade opacity.
+     * Sets popup shade transparency.
      *
-     * @param opacity new popup shade opacity
+     * @param transparency new popup shade transparency
      */
-    public void setShadeOpacity ( final float opacity )
+    public void setShadeTransparency ( final float transparency )
     {
-        if ( this.shadeOpacity != opacity )
+        if ( this.shadeTransparency != transparency )
         {
-            this.shadeOpacity = opacity;
+            this.shadeTransparency = transparency;
             if ( transparent )
             {
                 repaint ();
@@ -225,7 +225,7 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
             this.cornerWidth = width;
             if ( transparent )
             {
-                repaint ();
+                updateAll ();
             }
         }
     }
@@ -375,7 +375,7 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
      * {@inheritDoc}
      */
     @Override
-    public boolean isOpaque ( final E c )
+    public Boolean isOpaque ( final E c )
     {
         return !transparent;
     }
@@ -393,10 +393,11 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
         // Calculating additional borders
         if ( transparent )
         {
-            m.top += shadeWidth + 1;
-            m.left += shadeWidth + 1;
-            m.bottom += shadeWidth + 1;
-            m.right += shadeWidth + 1;
+            final int sideWidth = getSideWidth ();
+            m.top += sideWidth + 1;
+            m.left += sideWidth + 1;
+            m.bottom += sideWidth + 1;
+            m.right += sideWidth + 1;
         }
         else
         {
@@ -475,9 +476,23 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
      */
     protected void paintShade ( final Graphics2D g2d, final E popup, final Dimension popupSize )
     {
-        final NinePatchIcon shade = NinePatchUtils.getShadeIcon ( shadeWidth, round * 2, getShadeOpacity () );
-        shade.setComponent ( popup );
-        shade.paintIcon ( g2d, getShadeBounds ( popupSize ) );
+        if ( shadeWidth > 0 )
+        {
+            final NinePatchIcon shade = NinePatchUtils.getShadeIcon ( shadeWidth, round * 2, getCurrentShadeTransparency () );
+            shade.setComponent ( popup );
+            shade.paintIcon ( g2d, getShadeBounds ( popupSize ) );
+        }
+    }
+
+    /**
+     * Returns current shade transparency.
+     * This part moved to a separate method to make it simple to override without touchin the actual transparency value.
+     *
+     * @return current shade transparency
+     */
+    protected float getCurrentShadeTransparency ()
+    {
+        return shadeTransparency;
     }
 
     /**
@@ -527,12 +542,16 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
      */
     protected Rectangle getShadeBounds ( final Dimension popupSize )
     {
-        switch ( popupPainterStyle )
+        switch ( popupStyle )
         {
             case simple:
-            case dropdown:
             {
                 return new Rectangle ( 0, 0, popupSize.width, popupSize.height );
+            }
+            case dropdown:
+            {
+                final int spacing = Math.max ( 0, cornerWidth - shadeWidth );
+                return new Rectangle ( spacing, spacing, popupSize.width - spacing * 2, popupSize.height - spacing * 2 );
             }
             default:
             {
@@ -551,7 +570,7 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
      */
     protected Shape getBorderShape ( final E popup, final Dimension popupSize, final boolean fill )
     {
-        switch ( popupPainterStyle )
+        switch ( popupStyle )
         {
             case simple:
             {
@@ -590,7 +609,8 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
      */
     protected Object[] getCachedShapeSettings ( final E popup )
     {
-        return new Object[]{ round, shadeWidth, cornerWidth, cornerSide, relativeCorner, cornerAlignment, popup.getSize () };
+        return new Object[]{ round, shadeWidth, cornerWidth, cornerSide, relativeCorner, cornerAlignment, popup.getSize (),
+                popup.getComponentOrientation ().isLeftToRight () };
     }
 
     /**
@@ -639,14 +659,17 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
         // Painting shear
         final int shear = fill ? 1 : 0;
 
+        // Side width
+        final int sideWidth = getSideWidth ();
+
         // Corner left spacing
         final boolean ltr = popup.getComponentOrientation ().isLeftToRight ();
-        final int cornerShear = shadeWidth + shear + round + cornerWidth * 2;
+        final int cornerShear = sideWidth + shear + round + cornerWidth * 2;
         final int length = topCorner || bottomCorner ? popupSize.width : popupSize.height;
         final int spacing;
-        if ( cornerAlignment == CENTER || length < shadeWidth * 2 + round * 2 + cornerWidth * 4 )
+        if ( cornerAlignment == CENTER || length < sideWidth * 2 + round * 2 + cornerWidth * 4 )
         {
-            spacing = length / 2 - shadeWidth - round - cornerWidth * 2;
+            spacing = length / 2 - sideWidth - round - cornerWidth * 2;
         }
         else if ( cornerAlignment == LEFT || cornerAlignment == LEADING && ltr || cornerAlignment == TRAILING && !ltr )
         {
@@ -658,15 +681,15 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
         }
         else
         {
-            spacing = relativeCorner < shadeWidth + round + cornerWidth * 2 ? 0 :
+            spacing = relativeCorner < sideWidth + round + cornerWidth * 2 ? 0 :
                     Math.min ( relativeCorner - cornerShear, length - cornerShear * 2 );
         }
 
         // Side spacings
-        final int top = shadeWidth + shear;
-        final int right = popupSize.width - 1 - shadeWidth;
-        final int botom = popupSize.height - 1 - shadeWidth;
-        final int left = shadeWidth + shear;
+        final int top = sideWidth + shear;
+        final int right = popupSize.width - 1 - sideWidth;
+        final int botom = popupSize.height - 1 - sideWidth;
+        final int left = sideWidth + shear;
 
         final GeneralPath shape = new GeneralPath ( GeneralPath.WIND_EVEN_ODD );
         shape.moveTo ( left, top + round );
@@ -700,7 +723,7 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
             shape.lineTo ( left + round + spacing + cornerWidth, botom );
         }
         shape.lineTo ( left + round, botom );
-        shape.quadTo ( left, botom, shadeWidth, botom - round );
+        shape.quadTo ( left, botom, left, botom - round );
         if ( leftCorner )
         {
             // Left corner
@@ -754,14 +777,17 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
         // Painting shear
         final int shear = fill ? 1 : 0;
 
+        // Side width
+        final int sideWidth = getSideWidth ();
+
         // Corner left spacing
         final boolean ltr = popupMenu.getComponentOrientation ().isLeftToRight ();
-        final int cornerShear = shadeWidth + shear + round + cornerWidth * 2;
+        final int cornerShear = sideWidth + shear + round + cornerWidth * 2;
         final int length = topCorner || bottomCorner ? menuSize.width : menuSize.height;
         final int spacing;
-        if ( cornerAlignment == CENTER || length < shadeWidth * 2 + round * 2 + cornerWidth * 4 )
+        if ( cornerAlignment == CENTER || length < sideWidth * 2 + round * 2 + cornerWidth * 4 )
         {
-            spacing = length / 2 - shadeWidth - round - cornerWidth * 2;
+            spacing = length / 2 - sideWidth - round - cornerWidth * 2;
         }
         else if ( cornerAlignment == LEFT || cornerAlignment == LEADING && ltr || cornerAlignment == TRAILING && !ltr )
         {
@@ -773,15 +799,15 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
         }
         else
         {
-            spacing = relativeCorner < shadeWidth + round + cornerWidth * 2 ? 0 :
+            spacing = relativeCorner < sideWidth + round + cornerWidth * 2 ? 0 :
                     Math.min ( relativeCorner - cornerShear, length - cornerShear * 2 );
         }
 
         // Side spacings
-        final int top = shadeWidth + shear;
-        final int right = menuSize.width - 1 - shadeWidth;
-        final int botom = menuSize.height - 1 - shadeWidth;
-        final int left = shadeWidth + shear;
+        final int top = sideWidth + shear;
+        final int right = menuSize.width - 1 - sideWidth;
+        final int botom = menuSize.height - 1 - sideWidth;
+        final int left = sideWidth + shear;
 
         final GeneralPath shape = new GeneralPath ( GeneralPath.WIND_EVEN_ODD );
         if ( topCorner )
@@ -819,5 +845,16 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
             shape.lineTo ( left, top + round + spacing + cornerWidth );
         }
         return shape;
+    }
+
+    /**
+     * Returns popup side space width.
+     * This is the space taken by popup shade and corner.
+     *
+     * @return popup side space width
+     */
+    protected int getSideWidth ()
+    {
+        return popupStyle == PopupStyle.dropdown ? Math.max ( cornerWidth, shadeWidth ) : shadeWidth;
     }
 }

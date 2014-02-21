@@ -115,7 +115,7 @@ public class SourceViewer extends WebPanel
         this.jarStructure = jarStructure;
 
         toolBar = new WebPanel ( true, new ToolbarLayout () );
-        toolBar.setDrawSides ( false, false, true, false );
+        toolBar.setPaintSides ( false, false, true, false );
         toolBar.setShadeWidth ( 0 );
         add ( toolBar, BorderLayout.NORTH );
 

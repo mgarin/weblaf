@@ -41,7 +41,7 @@ import java.util.Vector;
  * There is also a set of additional methods to simplify some operations with list.
  * <p/>
  * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
- * You could stil use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
+ * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
  *
  * @author Mikle Garin
  */
@@ -555,7 +555,7 @@ public class WebList extends JList implements FontMethods<WebList>, SizeMethods<
             {
                 setUI ( ( WebListUI ) ReflectUtils.createInstance ( WebLookAndFeel.listUI ) );
             }
-            catch ( Throwable e )
+            catch ( final Throwable e )
             {
                 e.printStackTrace ();
                 setUI ( new WebListUI () );

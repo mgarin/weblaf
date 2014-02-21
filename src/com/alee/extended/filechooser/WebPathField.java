@@ -115,8 +115,8 @@ public class WebPathField extends WebPanel
         // Default settings
         setMargin ( -1 );
         setOpaque ( false );
-        setWebColored ( false );
-        setDrawFocus ( true );
+        setPaintFocus ( true );
+        setWebColoredBackground ( false );
         setBackground ( Color.WHITE );
 
         // Files TransferHandler

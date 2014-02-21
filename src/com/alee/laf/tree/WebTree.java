@@ -37,7 +37,7 @@ import java.util.Vector;
  * There is also a set of additional methods to simplify some operations with tree.
  * <p/>
  * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
- * You could stil use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
+ * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
  *
  * @param <E> tree nodes type
  * @author Mikle Garin
@@ -331,7 +331,7 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
      * Returns the path for the node at the specified location.
      *
      * @param location location to process
-     * @return the <code>TreePath</code> for the node at that location
+     * @return the {@code TreePath} for the node at that location
      */
     public TreePath getPathForLocation ( final Point location )
     {
@@ -365,8 +365,7 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
      * Returns the path to the node that is closest to the specified location.
      *
      * @param location location to process
-     * @return the <code>TreePath</code> for the node closest to that location,
-     *         <code>null</code> if nothing is viewable or there is no model
+     * @return the {@code TreePath} for the node closest to that location, {@code null} if nothing is viewable or there is no model
      */
     public TreePath getClosestPathForLocation ( final Point location )
     {
@@ -951,7 +950,7 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
             {
                 setUI ( ( WebTreeUI ) ReflectUtils.createInstance ( WebLookAndFeel.treeUI ) );
             }
-            catch ( Throwable e )
+            catch ( final Throwable e )
             {
                 e.printStackTrace ();
                 setUI ( new WebTreeUI () );

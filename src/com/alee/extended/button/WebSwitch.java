@@ -43,7 +43,7 @@ public class WebSwitch extends WebPanel
     /**
      * Switch action listeners.
      */
-    private List<ActionListener> actionListeners = new ArrayList<ActionListener> ( 1 );
+    private final List<ActionListener> actionListeners = new ArrayList<ActionListener> ( 1 );
 
     /**
      * Style settings.
@@ -60,7 +60,7 @@ public class WebSwitch extends WebPanel
     /**
      * UI elements.
      */
-    private WebSwitchGripper gripper;
+    private final WebSwitchGripper gripper;
     private WebLabel leftComponent;
     private WebLabel rightComponent;
 
@@ -77,14 +77,14 @@ public class WebSwitch extends WebPanel
      *
      * @param selected whether switch is selected or not
      */
-    public WebSwitch ( boolean selected )
+    public WebSwitch ( final boolean selected )
     {
         super ( true, new WebSwitchLayout () );
 
         // Switch syling
         putClientProperty ( SwingUtils.HANDLES_ENABLE_STATE, true );
         setRound ( WebSwitchStyle.round );
-        setDrawFocus ( true );
+        setPaintFocus ( true );
         setFocusable ( true );
 
         // Switch gripper
@@ -111,10 +111,10 @@ public class WebSwitch extends WebPanel
         createAnimator ();
 
         // Selection switch listener
-        MouseAdapter mouseAdapter = new MouseAdapter ()
+        final MouseAdapter mouseAdapter = new MouseAdapter ()
         {
             @Override
-            public void mousePressed ( MouseEvent e )
+            public void mousePressed ( final MouseEvent e )
             {
                 if ( SwingUtils.isLeftMouseButton ( e ) && isEnabled () )
                 {
@@ -138,10 +138,10 @@ public class WebSwitch extends WebPanel
         animator = new WebTimer ( "WebSwitch.animator", StyleConstants.maxAnimationDelay, new ActionListener ()
         {
             @Override
-            public void actionPerformed ( ActionEvent e )
+            public void actionPerformed ( final ActionEvent e )
             {
                 // Updating gripper location
-                WebSwitchLayout switchLayout = getSwitchLayout ();
+                final WebSwitchLayout switchLayout = getSwitchLayout ();
                 switchLayout.setGripperLocation ( switchLayout.getGripperLocation () + ( selected ? 0.1f : -0.1f ) );
 
                 // Checking what to do
@@ -211,7 +211,7 @@ public class WebSwitch extends WebPanel
      *
      * @param leftComponent new left switch component
      */
-    public void setLeftComponent ( WebLabel leftComponent )
+    public void setLeftComponent ( final WebLabel leftComponent )
     {
         if ( this.leftComponent != null )
         {
@@ -237,7 +237,7 @@ public class WebSwitch extends WebPanel
      *
      * @param rightComponent new right switch component
      */
-    public void setRightComponent ( WebLabel rightComponent )
+    public void setRightComponent ( final WebLabel rightComponent )
     {
         if ( this.rightComponent != null )
         {
@@ -254,7 +254,7 @@ public class WebSwitch extends WebPanel
      * @param enabled whether switch is enabled or not
      */
     @Override
-    public void setEnabled ( boolean enabled )
+    public void setEnabled ( final boolean enabled )
     {
         super.setEnabled ( enabled );
         gripper.setEnabled ( enabled );
@@ -268,7 +268,7 @@ public class WebSwitch extends WebPanel
      * @param round switch corners rounding
      */
     @Override
-    public WebPanel setRound ( int round )
+    public WebPanel setRound ( final int round )
     {
         if ( gripper != null )
         {
@@ -292,7 +292,7 @@ public class WebSwitch extends WebPanel
      *
      * @param selected whether switch is selected or not
      */
-    public void setSelected ( boolean selected )
+    public void setSelected ( final boolean selected )
     {
         setSelected ( selected, animate );
     }
@@ -303,7 +303,7 @@ public class WebSwitch extends WebPanel
      * @param selected whether switch is selected or not
      * @param animate  whether switch should animate the transition or not
      */
-    public void setSelected ( boolean selected, boolean animate )
+    public void setSelected ( final boolean selected, final boolean animate )
     {
         this.selected = selected;
         if ( animate )
@@ -333,7 +333,7 @@ public class WebSwitch extends WebPanel
      *
      * @param animate whether switch should animate all transition by default or not
      */
-    public void setAnimate ( boolean animate )
+    public void setAnimate ( final boolean animate )
     {
         this.animate = animate;
     }
@@ -343,7 +343,7 @@ public class WebSwitch extends WebPanel
      *
      * @param actionListener switch action listener
      */
-    public void addActionListener ( ActionListener actionListener )
+    public void addActionListener ( final ActionListener actionListener )
     {
         actionListeners.add ( actionListener );
     }
@@ -353,7 +353,7 @@ public class WebSwitch extends WebPanel
      *
      * @param actionListener switch action listener
      */
-    public void removeActionListener ( ActionListener actionListener )
+    public void removeActionListener ( final ActionListener actionListener )
     {
         actionListeners.remove ( actionListener );
     }
@@ -363,8 +363,8 @@ public class WebSwitch extends WebPanel
      */
     private void fireActionPerformed ()
     {
-        ActionEvent actionEvent = new ActionEvent ( WebSwitch.this, 0, "Selection changed" );
-        for ( ActionListener actionListener : CollectionUtils.copy ( actionListeners ) )
+        final ActionEvent actionEvent = new ActionEvent ( WebSwitch.this, 0, "Selection changed" );
+        for ( final ActionListener actionListener : CollectionUtils.copy ( actionListeners ) )
         {
             actionListener.actionPerformed ( actionEvent );
         }

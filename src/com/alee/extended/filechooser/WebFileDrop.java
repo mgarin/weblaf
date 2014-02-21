@@ -238,7 +238,7 @@ public class WebFileDrop extends WebPanel implements LanguageMethods
         }
 
         // Checking if lists are equal
-        if ( FileUtils.equals ( accepted, this.selectedFiles ) )
+        if ( !FileUtils.equals ( accepted, this.selectedFiles ) )
         {
             this.selectedFiles = accepted;
             updateFilesList ();
@@ -276,7 +276,10 @@ public class WebFileDrop extends WebPanel implements LanguageMethods
     public void setShowRemoveButton ( final boolean showRemoveButton )
     {
         this.showRemoveButton = showRemoveButton;
-        updateFilesList ();
+        for ( int i = 0; i < getComponentCount (); i++ )
+        {
+            ( ( WebFilePlate ) getComponent ( i ) ).setShowRemoveButton ( showRemoveButton );
+        }
     }
 
     public boolean isShowFileExtensions ()
@@ -287,7 +290,10 @@ public class WebFileDrop extends WebPanel implements LanguageMethods
     public void setShowFileExtensions ( final boolean showFileExtensions )
     {
         this.showFileExtensions = showFileExtensions;
-        updateFilesList ();
+        for ( int i = 0; i < getComponentCount (); i++ )
+        {
+            ( ( WebFilePlate ) getComponent ( i ) ).setShowFileExtensions ( showFileExtensions );
+        }
     }
 
     public Color getDropBackground ()
@@ -416,6 +422,7 @@ public class WebFileDrop extends WebPanel implements LanguageMethods
     private WebFilePlate createFilePlate ( final File file )
     {
         final WebFilePlate filePlate = new WebFilePlate ( file );
+        filePlate.setShowFileExtensions ( showFileExtensions );
 
         // To block parent container events
         addMouseListener ( new MouseAdapter ()

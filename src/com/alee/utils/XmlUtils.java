@@ -428,9 +428,20 @@ public final class XmlUtils
                 try
                 {
                     is = Class.forName ( resource.getClassName () ).getResourceAsStream ( resource.getSource () );
+                    if ( is == null )
+                    {
+                        final String src = resource.getSource ();
+                        final String cn = resource.getClassName ();
+                        throw new RuntimeException ( "Unable to read XML file \"" + src + "\" near class \"" + cn + "\"" );
+                    }
                     return XmlUtils.fromXML ( is );
                 }
                 catch ( final ClassNotFoundException e )
+                {
+                    e.printStackTrace ();
+                    return null;
+                }
+                catch ( final Throwable e )
                 {
                     e.printStackTrace ();
                     return null;
@@ -439,7 +450,10 @@ public final class XmlUtils
                 {
                     try
                     {
-                        is.close ();
+                        if ( is != null )
+                        {
+                            is.close ();
+                        }
                     }
                     catch ( final Throwable e )
                     {

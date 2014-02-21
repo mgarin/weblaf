@@ -846,7 +846,9 @@ public final class ReflectUtils
         if ( arguments.length == 0 )
         {
             // Calling simple method w/o arguments
-            return ( T ) theClass.getMethod ( methodName ).invoke ( null );
+            final Method method = theClass.getMethod ( methodName );
+            method.setAccessible ( true );
+            return ( T ) method.invoke ( null );
         }
         else
         {
@@ -988,6 +990,8 @@ public final class ReflectUtils
     }
 
     /**
+     * Calls object's method with the specified name and arguments.
+     * If method is not found in the object class all superclasses will be searched for that method.
      * Returns result given by called method.
      *
      * @param object     object instance
@@ -1007,7 +1011,9 @@ public final class ReflectUtils
         if ( arguments.length == 0 )
         {
             // Calling simple method w/o arguments
-            return ( T ) aClass.getMethod ( methodName ).invoke ( object );
+            final Method method = aClass.getMethod ( methodName );
+            method.setAccessible ( true );
+            return ( T ) method.invoke ( object );
         }
         else
         {
@@ -1017,9 +1023,26 @@ public final class ReflectUtils
         }
     }
 
+    /**
+     * Calls object's method with the specified name and arguments.
+     * If method is not found in the object class all superclasses will be searched for that method.
+     * Returns result given by called method.
+     *
+     * @param object      object instance
+     * @param objectClass object class
+     * @param methodName  method name
+     * @param arguments   method arguments
+     * @param types       method argument types
+     * @param <T>         return type
+     * @return result given by called method
+     * @throws IllegalAccessException
+     * @throws InvocationTargetException
+     * @throws NoSuchMethodException
+     */
     private static <T> T callMethod ( final Object object, final Class objectClass, final String methodName, final Object[] arguments,
                                       final Class[] types ) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException
     {
+        // Searching for the specified method in object's class or one of its superclasses
         for ( final Method method : objectClass.getMethods () )
         {
             // Checking method name
@@ -1048,7 +1071,7 @@ public final class ReflectUtils
             }
         }
 
-        // Check superclass for this method
+        // Search object superclass for this method
         final Class superclass = objectClass.getSuperclass ();
         if ( superclass != null )
         {

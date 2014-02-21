@@ -17,6 +17,9 @@
 
 package com.alee.laf.menu;
 
+import com.alee.managers.style.skin.web.PopupStyle;
+import com.alee.managers.style.skin.web.WebPopupMenuPainter;
+
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -93,22 +96,29 @@ public class MenuItemChangeListener implements ChangeListener
             final JPopupMenu popupMenu = ( JPopupMenu ) parent;
             if ( popupMenu.getUI () instanceof WebPopupMenuUI )
             {
+                // Checking whether web-painter is used or not
                 final WebPopupMenuUI ui = ( WebPopupMenuUI ) popupMenu.getUI ();
-                if ( ui.getPopupPainterStyle () == PopupPainterStyle.dropdown )
+                final PopupMenuPainter painter = ui.getPainter ();
+                if ( painter instanceof WebPopupMenuPainter )
                 {
-                    // Checking whether this item state change affect the corner
-                    final int zOrder = popupMenu.getComponentZOrder ( menuItem );
-                    if ( ui.getCornerSide () == SwingConstants.NORTH && zOrder == 0 )
+                    // Checking painter sttyle
+                    final WebPopupMenuPainter webPainter = ( WebPopupMenuPainter ) painter;
+                    if ( webPainter.getPopupStyle () == PopupStyle.dropdown )
                     {
-                        // Repainting only corner bounds
-                        popupMenu.repaint ( 0, 0, popupMenu.getWidth (), menuItem.getBounds ().y );
-                    }
-                    else if ( ui.getCornerSide () == SwingConstants.SOUTH && zOrder == popupMenu.getComponentCount () - 1 )
-                    {
-                        // Repainting only corner bounds
-                        final Rectangle itemBounds = menuItem.getBounds ();
-                        final int y = itemBounds.y + itemBounds.height;
-                        popupMenu.repaint ( 0, y, popupMenu.getWidth (), popupMenu.getHeight () - y );
+                        // Checking whether this item state change affect the corner
+                        final int zOrder = popupMenu.getComponentZOrder ( menuItem );
+                        if ( webPainter.getCornerSide () == SwingConstants.NORTH && zOrder == 0 )
+                        {
+                            // Repainting only corner bounds
+                            popupMenu.repaint ( 0, 0, popupMenu.getWidth (), menuItem.getBounds ().y );
+                        }
+                        else if ( webPainter.getCornerSide () == SwingConstants.SOUTH && zOrder == popupMenu.getComponentCount () - 1 )
+                        {
+                            // Repainting only corner bounds
+                            final Rectangle itemBounds = menuItem.getBounds ();
+                            final int y = itemBounds.y + itemBounds.height;
+                            popupMenu.repaint ( 0, y, popupMenu.getWidth (), popupMenu.getHeight () - y );
+                        }
                     }
                 }
             }

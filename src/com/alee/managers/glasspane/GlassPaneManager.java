@@ -46,7 +46,7 @@ public final class GlassPaneManager
      * @param component component to process
      * @return registered WebGlassPane for JRootPane under the specified component or null if it cannot be registered
      */
-    public static WebGlassPane getGlassPane ( Component component )
+    public static WebGlassPane getGlassPane ( final Component component )
     {
         return getGlassPane ( SwingUtils.getRootPane ( component ) );
     }
@@ -59,7 +59,7 @@ public final class GlassPaneManager
      * @param rootPane JRootPane to process
      * @return registered WebGlassPane for JRootPane under the specified component or null if it cannot be registered
      */
-    public static WebGlassPane getGlassPane ( JRootPane rootPane )
+    public static WebGlassPane getGlassPane ( final JRootPane rootPane )
     {
         if ( rootPane != null )
         {
@@ -69,7 +69,7 @@ public final class GlassPaneManager
             }
             else
             {
-                WebGlassPane glassPane = new WebGlassPane ( rootPane );
+                final WebGlassPane glassPane = new WebGlassPane ( rootPane );
                 rootPane.setGlassPane ( glassPane );
                 glassPane.setVisible ( true );
                 rootPane.invalidate ();

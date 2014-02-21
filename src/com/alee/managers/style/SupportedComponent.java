@@ -57,7 +57,9 @@ import com.alee.laf.toolbar.WebToolBarUI;
 import com.alee.laf.tooltip.WebToolTipUI;
 import com.alee.laf.tree.WebTreeUI;
 import com.alee.laf.viewport.WebViewportUI;
+import com.alee.utils.LafUtils;
 import com.alee.utils.ReflectUtils;
+import com.alee.utils.laf.Styleable;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
@@ -71,7 +73,7 @@ import java.util.Map;
  * It also contains some default references and useful settings.
  *
  * @author Mikle Garin
- * @see WebLookAndFeel
+ * @see com.alee.laf.WebLookAndFeel
  */
 
 public enum SupportedComponent
@@ -1092,6 +1094,18 @@ public enum SupportedComponent
     public abstract String getDefaultUIClass ();
 
     /**
+     * Returns style identifier for the specified component.
+     * This identifier might be customized in component to force StyleManager provide another style for that specific component.
+     *
+     * @return component identifier used within style in skin descriptor
+     */
+    public String getComponentStyleId ( final JComponent component )
+    {
+        final Styleable styleable = LafUtils.getStyleable ( component );
+        return styleable != null ? styleable.getStyleId () : null;
+    }
+
+    /**
      * Lazily initialized component UI class map by their types.
      */
     private static final Map<SupportedComponent, Class> componentUIClassByUIClassID =
@@ -1100,8 +1114,6 @@ public enum SupportedComponent
     /**
      * Returns UI class for this component type.
      *
-     * @param uiClassID UI class ID
-     * @param <T>       component UI type
      * @return UI class for this component type
      */
     public Class<? extends ComponentUI> getUIClass ()

@@ -47,14 +47,14 @@ public class AttachedTabbedPanesExample extends DefaultExample
     }
 
     @Override
-    public Component getPreview ( WebLookAndFeelDemo owner )
+    public Component getPreview ( final WebLookAndFeelDemo owner )
     {
-        WebTabbedPane tabbedPane1 = new WebTabbedPane ()
+        final WebTabbedPane tabbedPane1 = new WebTabbedPane ()
         {
             @Override
             public Dimension getPreferredSize ()
             {
-                Dimension ps = super.getPreferredSize ();
+                final Dimension ps = super.getPreferredSize ();
                 ps.width = 150;
                 return ps;
             }
@@ -62,12 +62,12 @@ public class AttachedTabbedPanesExample extends DefaultExample
         tabbedPane1.setTabbedPaneStyle ( TabbedPaneStyle.attached );
         setupTabbedPane ( tabbedPane1, "Without panel" );
 
-        WebTabbedPane tabbedPane2 = new WebTabbedPane ()
+        final WebTabbedPane tabbedPane2 = new WebTabbedPane ()
         {
             @Override
             public Dimension getPreferredSize ()
             {
-                Dimension ps = super.getPreferredSize ();
+                final Dimension ps = super.getPreferredSize ();
                 ps.width = 150;
                 return ps;
             }
@@ -75,13 +75,13 @@ public class AttachedTabbedPanesExample extends DefaultExample
         tabbedPane2.setTabbedPaneStyle ( TabbedPaneStyle.attached );
         setupTabbedPane ( tabbedPane2, "Inside styled panel" );
 
-        WebPanel tabPanel = new WebPanel ( true, tabbedPane2 );
-        tabPanel.setDrawFocus ( true );
+        final WebPanel tabPanel = new WebPanel ( true, tabbedPane2 );
+        tabPanel.setPaintFocus ( true );
 
         return new GroupPanel ( 4, tabbedPane1, tabPanel );
     }
 
-    private static void setupTabbedPane ( JTabbedPane tabbedPane, String text )
+    private static void setupTabbedPane ( final JTabbedPane tabbedPane, final String text )
     {
         tabbedPane.addTab ( "1", createContent ( text ) );
         tabbedPane.addTab ( "2", createContent ( text ) );
@@ -90,9 +90,9 @@ public class AttachedTabbedPanesExample extends DefaultExample
         tabbedPane.addTab ( "5", createContent ( text ) );
     }
 
-    private static WebLabel createContent ( String text )
+    private static WebLabel createContent ( final String text )
     {
-        WebLabel label = new WebLabel ( text, WebLabel.CENTER );
+        final WebLabel label = new WebLabel ( text, WebLabel.CENTER );
         label.setMargin ( 5 );
         return label;
     }

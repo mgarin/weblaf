@@ -17,6 +17,7 @@
 
 package com.alee.utils.xml;
 
+import com.alee.utils.CompareUtils;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
@@ -38,17 +39,17 @@ public class ResourceFile implements Serializable
     @XStreamAsAttribute
     private String className;
 
-    public ResourceFile ( ResourceLocation location, String source )
+    public ResourceFile ( final ResourceLocation location, final String source )
     {
         this ( location, source, ( String ) null );
     }
 
-    public ResourceFile ( ResourceLocation location, String source, Class nearClass )
+    public ResourceFile ( final ResourceLocation location, final String source, final Class nearClass )
     {
         this ( location, source, nearClass.getCanonicalName () );
     }
 
-    public ResourceFile ( ResourceLocation location, String source, String className )
+    public ResourceFile ( final ResourceLocation location, final String source, final String className )
     {
         super ();
         setLocation ( location );
@@ -61,7 +62,7 @@ public class ResourceFile implements Serializable
         return location;
     }
 
-    public void setLocation ( ResourceLocation location )
+    public void setLocation ( final ResourceLocation location )
     {
         this.location = location;
     }
@@ -71,7 +72,7 @@ public class ResourceFile implements Serializable
         return source;
     }
 
-    public void setSource ( String source )
+    public void setSource ( final String source )
     {
         this.source = source;
     }
@@ -81,8 +82,26 @@ public class ResourceFile implements Serializable
         return className;
     }
 
-    public void setClassName ( String className )
+    public void setClassName ( final String className )
     {
         this.className = className;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals ( final Object object )
+    {
+        if ( object != null && object instanceof ResourceFile )
+        {
+            final ResourceFile other = ( ResourceFile ) object;
+            return other.location == location && CompareUtils.equals ( other.source, source ) &&
+                    CompareUtils.equals ( other.className, className );
+        }
+        else
+        {
+            return false;
+        }
     }
 }

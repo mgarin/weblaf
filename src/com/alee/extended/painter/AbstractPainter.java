@@ -19,6 +19,7 @@ package com.alee.extended.painter;
 
 import com.alee.utils.CollectionUtils;
 
+import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,12 +33,12 @@ import java.util.List;
  * @see Painter
  */
 
-public abstract class AbstractPainter<E extends Component> implements Painter<E>
+public abstract class AbstractPainter<E extends JComponent> implements Painter<E>
 {
     /**
      * Whether visual data is opaque or not.
      */
-    protected boolean opaque = false;
+    protected Boolean opaque = false;
 
     /**
      * Visual data preferred size.
@@ -76,7 +77,7 @@ public abstract class AbstractPainter<E extends Component> implements Painter<E>
      * {@inheritDoc}
      */
     @Override
-    public boolean isOpaque ( final E c )
+    public Boolean isOpaque ( final E c )
     {
         return opaque;
     }
@@ -86,7 +87,7 @@ public abstract class AbstractPainter<E extends Component> implements Painter<E>
      *
      * @param opaque whether visual data provided by this painter is opaque or not
      */
-    public void setOpaque ( final boolean opaque )
+    public void setOpaque ( final Boolean opaque )
     {
         this.opaque = opaque;
         repaint ();
@@ -244,5 +245,18 @@ public abstract class AbstractPainter<E extends Component> implements Painter<E>
             listener.revalidate ();
             listener.repaint ();
         }
+    }
+
+    /**
+     * Returns point for the specified coordinates.
+     * Might be useful for points generation in various cases
+     *
+     * @param x X coordinate
+     * @param y Y coordinate
+     * @return point for the specified coordinates
+     */
+    protected Point p ( final int x, final int y )
+    {
+        return new Point ( x, y );
     }
 }

@@ -30,12 +30,12 @@ public final class WebScrollBarStyle
     /**
      * Whether scroll bar arrow buttons should be displayed or not.
      */
-    public static boolean buttonsVisible = true;
+    public static boolean paintButtons = true;
 
     /**
      * Whether scroll bar track should be displayed or not.
      */
-    public static boolean drawTrack = false;
+    public static boolean paintTrack = false;
 
     /**
      * Scroll bar track border color.

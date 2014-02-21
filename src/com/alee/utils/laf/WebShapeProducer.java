@@ -17,7 +17,7 @@
 
 package com.alee.utils.laf;
 
-import com.alee.utils.SwingUtils;
+import com.alee.utils.LafUtils;
 
 import java.awt.*;
 
@@ -29,17 +29,17 @@ public class WebShapeProducer extends ShapeProducer
 {
     private ShapeProvider shapeProvider;
 
-    public WebShapeProducer ( Component component )
+    public WebShapeProducer ( final Component component )
     {
         super ( component );
     }
 
     @Override
-    public void setProduceFor ( Component produceFor )
+    public void setProduceFor ( final Component produceFor )
     {
         super.setProduceFor ( produceFor );
 
-        this.shapeProvider = SwingUtils.getShapeProvider ( produceFor );
+        this.shapeProvider = LafUtils.getShapeProvider ( produceFor );
     }
 
     @Override

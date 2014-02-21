@@ -20,6 +20,7 @@ package com.alee.laf.scroll;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.language.LanguageContainerMethods;
 import com.alee.managers.language.LanguageManager;
+import com.alee.utils.LafUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SizeUtils;
 import com.alee.utils.laf.ShapeProvider;
@@ -48,8 +49,8 @@ public class WebScrollPane extends JScrollPane implements ShapeProvider, SizeMet
     {
         super ( view );
         setDrawBorder ( drawBorder );
-        getWebHorizontalScrollBar ().setDrawTrack ( drawInnerBorder );
-        getWebVerticalScrollBar ().setDrawTrack ( drawInnerBorder );
+        getWebHorizontalScrollBar ().setPaintTrack ( drawInnerBorder );
+        getWebVerticalScrollBar ().setPaintTrack ( drawInnerBorder );
         if ( !drawInnerBorder )
         {
             setCorner ( JScrollPane.LOWER_RIGHT_CORNER, null );
@@ -184,6 +185,16 @@ public class WebScrollPane extends JScrollPane implements ShapeProvider, SizeMet
         return this;
     }
 
+    /**
+     * Sets scroll bar style ID.
+     *
+     * @param id scroll bar style ID
+     */
+    public void setScrollBarStyleId ( final String id )
+    {
+        LafUtils.setScrollBarStyleId ( this, id );
+    }
+
     @Override
     public Shape provideShape ()
     {
@@ -204,7 +215,7 @@ public class WebScrollPane extends JScrollPane implements ShapeProvider, SizeMet
             {
                 setUI ( ( WebScrollPaneUI ) ReflectUtils.createInstance ( WebLookAndFeel.scrollPaneUI ) );
             }
-            catch ( Throwable e )
+            catch ( final Throwable e )
             {
                 e.printStackTrace ();
                 setUI ( new WebScrollPaneUI () );

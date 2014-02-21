@@ -117,7 +117,7 @@ public class WebRootPaneUI extends BasicRootPaneUI implements SwingConstants
      * @param c component that will use UI instance
      * @return instance of the WebRootPaneUI
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebRootPaneUI ();
@@ -743,7 +743,7 @@ public class WebRootPaneUI extends BasicRootPaneUI implements SwingConstants
             @Override
             public void mouseClicked ( final MouseEvent e )
             {
-                if ( isFrame () && SwingUtils.isLeftMouseButton ( e ) && e.getClickCount () == 2 )
+                if ( isFrame () && isShowMaximizeButton () && SwingUtils.isLeftMouseButton ( e ) && e.getClickCount () == 2 )
                 {
                     if ( isFrameMaximized () )
                     {

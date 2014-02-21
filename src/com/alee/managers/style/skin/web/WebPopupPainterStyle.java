@@ -15,7 +15,7 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.laf.menu;
+package com.alee.managers.style.skin.web;
 
 import com.alee.laf.StyleConstants;
 
@@ -30,7 +30,7 @@ public final class WebPopupPainterStyle
     /**
      * Popup style.
      */
-    public static PopupPainterStyle popupPainterStyle = PopupPainterStyle.dropdown;
+    public static PopupStyle popupStyle = PopupStyle.dropdown;
 
     /**
      * Popup border color.
@@ -48,9 +48,9 @@ public final class WebPopupPainterStyle
     public static int shadeWidth = 12;
 
     /**
-     * Popup shade opacity.
+     * Popup shade transparency.
      */
-    public static float shadeOpacity = 0.75f;
+    public static float shadeTransparency = 0.75f;
 
     /**
      * Popup dropdown style corner width.

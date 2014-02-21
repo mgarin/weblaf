@@ -427,10 +427,9 @@ public class WebFileChooserPanel extends WebPanel
                 scrollPane.setShadeWidth ( 0 );
 
                 final WebScrollBar vsb = scrollPane.getWebVerticalScrollBar ();
-                vsb.setThumbRound ( WebComboBoxStyle.scrollBarThumbRound );
                 vsb.setMargin ( WebComboBoxStyle.scrollBarMargin );
-                vsb.setButtonsVisible ( WebComboBoxStyle.scrollBarButtonsVisible );
-                vsb.setDrawTrack ( WebComboBoxStyle.scrollBarTrackVisible );
+                vsb.setPaintButtons ( WebComboBoxStyle.scrollBarButtonsVisible );
+                vsb.setPaintTrack ( WebComboBoxStyle.scrollBarTrackVisible );
 
                 historyPopup.add ( scrollPane );
 

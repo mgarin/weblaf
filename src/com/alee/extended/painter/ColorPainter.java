@@ -73,7 +73,7 @@ public class ColorPainter<E extends JComponent> extends AbstractPainter<E>
      * {@inheritDoc}
      */
     @Override
-    public boolean isOpaque ( final E c )
+    public Boolean isOpaque ( final E c )
     {
         return color != null && color.getAlpha () == 255;
     }

@@ -67,7 +67,11 @@ public final class PainterSupport
             painter.install ( component );
 
             // Applying initial component settings
-            LookAndFeel.installProperty ( component, WebLookAndFeel.OPAQUE_PROPERTY, painter.isOpaque ( component ) );
+            final Boolean opaque = painter.isOpaque ( component );
+            if ( opaque != null )
+            {
+                LookAndFeel.installProperty ( component, WebLookAndFeel.OPAQUE_PROPERTY, opaque ? Boolean.TRUE : Boolean.FALSE );
+            }
 
             // Updating border
             LafUtils.updateBorder ( component );
@@ -109,7 +113,15 @@ public final class PainterSupport
                 public void updateOpacity ()
                 {
                     // Updating component opacity according to painter
-                    c.get ().setOpaque ( p.get ().isOpaque ( c.get () ) );
+                    final Painter painter = p.get ();
+                    if ( painter != null )
+                    {
+                        final Boolean opaque = painter.isOpaque ( c.get () );
+                        if ( opaque != null )
+                        {
+                            c.get ().setOpaque ( opaque );
+                        }
+                    }
                 }
             };
             painter.addPainterListener ( listener );

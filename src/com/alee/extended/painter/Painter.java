@@ -17,6 +17,7 @@
 
 package com.alee.extended.painter;
 
+import javax.swing.*;
 import java.awt.*;
 
 /**
@@ -32,7 +33,7 @@ import java.awt.*;
  * @see AbstractPainter
  */
 
-public interface Painter<E extends Component>
+public interface Painter<E extends JComponent>
 {
     /**
      * Called when painter is intalled into some component.
@@ -53,11 +54,12 @@ public interface Painter<E extends Component>
     /**
      * Returns whether visual data provided by this painter is opaque or not.
      * Returned value might affect component opacity depending on painter support inside that component UI.
+     * Simply return null if you don't want to change default component opacity.
      *
      * @param c component to process
      * @return true if visual data provided by this painter is opaque, false otherwise
      */
-    public boolean isOpaque ( E c );
+    public Boolean isOpaque ( E c );
 
     /**
      * Returns preferred size required for proper painting of visual data provided by this painter.
@@ -71,9 +73,10 @@ public interface Painter<E extends Component>
     /**
      * Returns margin required for visual data provided by this painter.
      * This margin is usually added to component's margin when the final component border is calculated.
+     * You may pass null instead of zero margin - it will simply be ignored in that case.
      *
      * @param c component to process
-     * @return margin required for visual data provided by this painter
+     * @return margin required for visual data provided by this painter or null for zero margin
      */
     public Insets getMargin ( E c );
 

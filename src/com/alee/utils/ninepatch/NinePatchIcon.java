@@ -29,16 +29,16 @@ import java.util.List;
 
 /**
  * This class allows you to create and use nine-patch icons within Swing applications.
- * <p>
+ * <p/>
  * Basically it parses nine-patch image data (patches at the side of .9.png image) into understandable values and uses them to stretch the
  * image properly when it is painted anywhere.
- * <p>
+ * <p/>
  * Here is a simple example how NinePatchIcon can be used as a stretchable panel background:
- * <code>
+ * {@code
  * NinePatchIcon icon = new NinePatchIcon ( "icon.9.png" );
  * NinePatchIconPainter painter = new NinePatchIconPainter ( icon );
  * WebPanel panel = new WebPanel ( painter );
- * </code>
+ * }
  *
  * @author Mikle Garin
  * @see com.alee.extended.painter.NinePatchIconPainter
@@ -99,7 +99,7 @@ public class NinePatchIcon implements Icon
      *
      * @param url nine-patch image URL
      */
-    public NinePatchIcon ( URL url )
+    public NinePatchIcon ( final URL url )
     {
         this ( url, null );
     }
@@ -110,7 +110,7 @@ public class NinePatchIcon implements Icon
      * @param url       nine-patch image URL
      * @param component component atop of which icon will be stretched
      */
-    public NinePatchIcon ( URL url, Component component )
+    public NinePatchIcon ( final URL url, final Component component )
     {
         this ( ImageUtils.getBufferedImage ( url ), component );
     }
@@ -120,7 +120,7 @@ public class NinePatchIcon implements Icon
      *
      * @param iconSrc nine-patch image path
      */
-    public NinePatchIcon ( String iconSrc )
+    public NinePatchIcon ( final String iconSrc )
     {
         this ( iconSrc, null );
     }
@@ -131,7 +131,7 @@ public class NinePatchIcon implements Icon
      * @param iconSrc   nine-patch image path
      * @param component component atop of which icon will be stretched
      */
-    public NinePatchIcon ( String iconSrc, Component component )
+    public NinePatchIcon ( final String iconSrc, final Component component )
     {
         this ( ImageUtils.getBufferedImage ( iconSrc ), component );
     }
@@ -141,7 +141,7 @@ public class NinePatchIcon implements Icon
      *
      * @param imageIcon nine-patch image
      */
-    public NinePatchIcon ( ImageIcon imageIcon )
+    public NinePatchIcon ( final ImageIcon imageIcon )
     {
         this ( imageIcon, null );
     }
@@ -152,7 +152,7 @@ public class NinePatchIcon implements Icon
      * @param imageIcon nine-patch image
      * @param component component atop of which icon will be stretched
      */
-    public NinePatchIcon ( ImageIcon imageIcon, Component component )
+    public NinePatchIcon ( final ImageIcon imageIcon, final Component component )
     {
         this ( ImageUtils.getBufferedImage ( imageIcon ), component );
     }
@@ -162,7 +162,7 @@ public class NinePatchIcon implements Icon
      *
      * @param image nine-patch image
      */
-    public NinePatchIcon ( Image image )
+    public NinePatchIcon ( final Image image )
     {
         this ( image, null );
     }
@@ -173,7 +173,7 @@ public class NinePatchIcon implements Icon
      * @param image     nine-patch image
      * @param component component atop of which icon will be stretched
      */
-    public NinePatchIcon ( Image image, Component component )
+    public NinePatchIcon ( final Image image, final Component component )
     {
         this ( ImageUtils.getBufferedImage ( image ), component );
     }
@@ -183,7 +183,7 @@ public class NinePatchIcon implements Icon
      *
      * @param bufferedImage nine-patch image
      */
-    public NinePatchIcon ( BufferedImage bufferedImage )
+    public NinePatchIcon ( final BufferedImage bufferedImage )
     {
         this ( bufferedImage, null );
     }
@@ -194,7 +194,7 @@ public class NinePatchIcon implements Icon
      * @param bufferedImage nine-patch image
      * @param component     component atop of which icon will be stretched
      */
-    public NinePatchIcon ( BufferedImage bufferedImage, Component component )
+    public NinePatchIcon ( final BufferedImage bufferedImage, final Component component )
     {
         this ( bufferedImage, component, true );
     }
@@ -206,7 +206,7 @@ public class NinePatchIcon implements Icon
      * @param component     component atop of which icon will be stretched
      * @param parsePatches  whether should parse image patches or not
      */
-    protected NinePatchIcon ( BufferedImage bufferedImage, Component component, boolean parsePatches )
+    protected NinePatchIcon ( final BufferedImage bufferedImage, final Component component, final boolean parsePatches )
     {
         super ();
 
@@ -222,10 +222,10 @@ public class NinePatchIcon implements Icon
             this.component = component;
 
             // Creating actual image in a compatible format
-            int w = bufferedImage.getWidth () - 2;
-            int h = bufferedImage.getHeight () - 2;
+            final int w = bufferedImage.getWidth () - 2;
+            final int h = bufferedImage.getHeight () - 2;
             rawImage = ImageUtils.createCompatibleImage ( bufferedImage, w, h );
-            Graphics2D g2d = rawImage.createGraphics ();
+            final Graphics2D g2d = rawImage.createGraphics ();
             g2d.drawImage ( bufferedImage, 0, 0, w, h, 1, 1, bufferedImage.getWidth () - 1, bufferedImage.getHeight () - 1, null );
             g2d.dispose ();
 
@@ -241,12 +241,12 @@ public class NinePatchIcon implements Icon
             }
 
             // Parsing content margins
-            List<NinePatchInterval> vc = NinePatchUtils.parseIntervals ( bufferedImage, NinePatchIntervalType.verticalContent );
-            List<NinePatchInterval> hc = NinePatchUtils.parseIntervals ( bufferedImage, NinePatchIntervalType.horizontalContent );
-            int top = vc.size () == 0 ? 0 : vc.get ( 0 ).getStart ();
-            int bottom = vc.size () == 0 ? 0 : rawImage.getHeight () - vc.get ( 0 ).getEnd () - 1;
-            int left = hc.size () == 0 ? 0 : hc.get ( 0 ).getStart ();
-            int right = hc.size () == 0 ? 0 : rawImage.getWidth () - hc.get ( 0 ).getEnd () - 1;
+            final List<NinePatchInterval> vc = NinePatchUtils.parseIntervals ( bufferedImage, NinePatchIntervalType.verticalContent );
+            final List<NinePatchInterval> hc = NinePatchUtils.parseIntervals ( bufferedImage, NinePatchIntervalType.horizontalContent );
+            final int top = vc.size () == 0 ? 0 : vc.get ( 0 ).getStart ();
+            final int bottom = vc.size () == 0 ? 0 : rawImage.getHeight () - vc.get ( 0 ).getEnd () - 1;
+            final int left = hc.size () == 0 ? 0 : hc.get ( 0 ).getStart ();
+            final int right = hc.size () == 0 ? 0 : rawImage.getWidth () - hc.get ( 0 ).getEnd () - 1;
             margin = new Insets ( top, left, bottom, right );
 
             // Forcing cached data calculation on initialization
@@ -275,7 +275,7 @@ public class NinePatchIcon implements Icon
      * @param rawImage raw image without patches
      * @return newly created NinePatchIcon with empty patches
      */
-    public static NinePatchIcon create ( BufferedImage rawImage )
+    public static NinePatchIcon create ( final BufferedImage rawImage )
     {
         return new NinePatchIcon ( rawImage, null, false );
     }
@@ -305,7 +305,7 @@ public class NinePatchIcon implements Icon
      *
      * @param component component atop of which icon will be stretched
      */
-    public void setComponent ( Component component )
+    public void setComponent ( final Component component )
     {
         this.component = component;
     }
@@ -329,7 +329,7 @@ public class NinePatchIcon implements Icon
      *
      * @param horizontalStretch list of horizontal stretch intervals
      */
-    public void setHorizontalStretch ( List<NinePatchInterval> horizontalStretch )
+    public void setHorizontalStretch ( final List<NinePatchInterval> horizontalStretch )
     {
         this.horizontalStretch = horizontalStretch;
         clearCachedWidthData ();
@@ -340,7 +340,7 @@ public class NinePatchIcon implements Icon
      *
      * @param interval horizontal stretch interval to add
      */
-    public void addHorizontalStretch ( NinePatchInterval interval )
+    public void addHorizontalStretch ( final NinePatchInterval interval )
     {
         this.horizontalStretch.add ( interval );
         clearCachedWidthData ();
@@ -353,7 +353,7 @@ public class NinePatchIcon implements Icon
      * @param end   interval end
      * @param pixel whether fixed interval or not
      */
-    public void addHorizontalStretch ( int start, int end, boolean pixel )
+    public void addHorizontalStretch ( final int start, final int end, final boolean pixel )
     {
         addHorizontalStretch ( new NinePatchInterval ( start, end, pixel ) );
     }
@@ -373,7 +373,7 @@ public class NinePatchIcon implements Icon
      *
      * @param verticalStretch list of vertical stretch intervals
      */
-    public void setVerticalStretch ( List<NinePatchInterval> verticalStretch )
+    public void setVerticalStretch ( final List<NinePatchInterval> verticalStretch )
     {
         this.verticalStretch = verticalStretch;
         clearCachedHeightData ();
@@ -384,7 +384,7 @@ public class NinePatchIcon implements Icon
      *
      * @param interval vertical stretch interval to add
      */
-    public void addVerticalStretch ( NinePatchInterval interval )
+    public void addVerticalStretch ( final NinePatchInterval interval )
     {
         this.verticalStretch.add ( interval );
         clearCachedHeightData ();
@@ -397,7 +397,7 @@ public class NinePatchIcon implements Icon
      * @param end   interval end
      * @param pixel whether fixed interval or not
      */
-    public void addVerticalStretch ( int start, int end, boolean pixel )
+    public void addVerticalStretch ( final int start, final int end, final boolean pixel )
     {
         addVerticalStretch ( new NinePatchInterval ( start, end, pixel ) );
     }
@@ -417,7 +417,7 @@ public class NinePatchIcon implements Icon
      *
      * @param margin content margin
      */
-    public void setMargin ( Insets margin )
+    public void setMargin ( final Insets margin )
     {
         this.margin = margin;
     }
@@ -430,7 +430,7 @@ public class NinePatchIcon implements Icon
      * @param bottom bottom margin
      * @param right  right margin
      */
-    public void setMargin ( int top, int left, int bottom, int right )
+    public void setMargin ( final int top, final int left, final int bottom, final int right )
     {
         setMargin ( new Insets ( top, left, bottom, right ) );
     }
@@ -440,7 +440,7 @@ public class NinePatchIcon implements Icon
      *
      * @param spacing sides margin
      */
-    public void setMargin ( int spacing )
+    public void setMargin ( final int spacing )
     {
         setMargin ( spacing, spacing, spacing, spacing );
     }
@@ -451,7 +451,7 @@ public class NinePatchIcon implements Icon
      * @param c component to process
      * @param g graphics context
      */
-    public void paintIcon ( Component c, Graphics g )
+    public void paintIcon ( final Component c, final Graphics g )
     {
         paintIcon ( ( Graphics2D ) g, 0, 0, c.getWidth (), c.getHeight () );
     }
@@ -465,7 +465,7 @@ public class NinePatchIcon implements Icon
      * @param y location Y coordinate
      */
     @Override
-    public void paintIcon ( Component c, Graphics g, int x, int y )
+    public void paintIcon ( final Component c, final Graphics g, final int x, final int y )
     {
         // todo Modify this behavior so that icon is properly painted in Swing components
         paintIcon ( ( Graphics2D ) g, 0, 0, c.getWidth (), c.getHeight () );
@@ -477,7 +477,7 @@ public class NinePatchIcon implements Icon
      * @param g2d    graphics context
      * @param bounds icon bounds
      */
-    public void paintIcon ( Graphics2D g2d, Rectangle bounds )
+    public void paintIcon ( final Graphics2D g2d, final Rectangle bounds )
     {
         paintIcon ( g2d, bounds.x, bounds.y, bounds.width, bounds.height );
     }
@@ -491,44 +491,44 @@ public class NinePatchIcon implements Icon
      * @param width  icon width
      * @param height icon height
      */
-    public void paintIcon ( Graphics2D g2d, int x, int y, int width, int height )
+    public void paintIcon ( final Graphics2D g2d, final int x, final int y, final int width, final int height )
     {
-        final int componentWidth = Math.max ( width, getIconWidth () );
-        final int componentHeight = Math.max ( height, getIconHeight () );
+        final int availableWidth = Math.max ( width, getFixedPixelsWidth ( true ) );
+        final int availableHeight = Math.max ( height, getFixedPixelsHeight ( true ) );
         final int fixedPixelsX = getFixedPixelsWidth ( false );
-        final int unfixedX = componentWidth - fixedPixelsX;
+        final int unfixedX = availableWidth - fixedPixelsX;
         final int fixedPixelsY = getFixedPixelsHeight ( false );
-        final int unfixedY = componentHeight - fixedPixelsY;
+        final int unfixedY = availableHeight - fixedPixelsY;
 
         int currentY = y;
-        for ( NinePatchInterval intervalY : verticalStretch )
+        for ( final NinePatchInterval intervalY : verticalStretch )
         {
             // Percent part height
-            int intervalHeight = intervalY.getEnd () - intervalY.getStart () + 1;
-            int finalHeight;
+            final int intervalHeight = intervalY.getEnd () - intervalY.getStart () + 1;
+            final int finalHeight;
             if ( intervalY.isPixel () )
             {
                 finalHeight = intervalHeight;
             }
             else
             {
-                float percents = ( float ) intervalHeight / ( rawImage.getHeight () - fixedPixelsY );
+                final float percents = ( float ) intervalHeight / ( rawImage.getHeight () - fixedPixelsY );
                 finalHeight = Math.round ( percents * unfixedY );
             }
 
             int currentX = x;
-            for ( NinePatchInterval intervalX : horizontalStretch )
+            for ( final NinePatchInterval intervalX : horizontalStretch )
             {
                 // Percent part width
-                int intervalWidth = intervalX.getEnd () - intervalX.getStart () + 1;
-                int finalWidth;
+                final int intervalWidth = intervalX.getEnd () - intervalX.getStart () + 1;
+                final int finalWidth;
                 if ( intervalX.isPixel () )
                 {
                     finalWidth = intervalWidth;
                 }
                 else
                 {
-                    float percents = ( float ) intervalWidth / ( rawImage.getWidth () - fixedPixelsX );
+                    final float percents = ( float ) intervalWidth / ( rawImage.getWidth () - fixedPixelsX );
                     finalWidth = Math.round ( percents * unfixedX );
                 }
 
@@ -551,7 +551,7 @@ public class NinePatchIcon implements Icon
      * @param addUnfixedSpaces whether to add 1px for each stretchable area or not
      * @return cached fixed minimum width for this icon
      */
-    public int getFixedPixelsWidth ( boolean addUnfixedSpaces )
+    public int getFixedPixelsWidth ( final boolean addUnfixedSpaces )
     {
         if ( addUnfixedSpaces )
         {
@@ -577,10 +577,10 @@ public class NinePatchIcon implements Icon
      * @param addUnfixedSpaces whether to add 1px for each stretchable area or not
      * @return fixed minimum width for this icon
      */
-    protected int calculateFixedPixelsWidth ( boolean addUnfixedSpaces )
+    protected int calculateFixedPixelsWidth ( final boolean addUnfixedSpaces )
     {
         int fixedPixelsX = rawImage.getWidth ();
-        for ( NinePatchInterval interval : horizontalStretch )
+        for ( final NinePatchInterval interval : horizontalStretch )
         {
             if ( !interval.isPixel () )
             {
@@ -609,7 +609,7 @@ public class NinePatchIcon implements Icon
      * @param addUnfixedSpaces whether to add 1px for each stretchable area or not
      * @return cached fixed minimum height for this icon
      */
-    public int getFixedPixelsHeight ( boolean addUnfixedSpaces )
+    public int getFixedPixelsHeight ( final boolean addUnfixedSpaces )
     {
         if ( addUnfixedSpaces )
         {
@@ -635,10 +635,10 @@ public class NinePatchIcon implements Icon
      * @param addUnfixedSpaces swhether to add 1px for each stretchable area or not
      * @return fixed minimum height for this icon
      */
-    protected int calculateFixedPixelsHeight ( boolean addUnfixedSpaces )
+    protected int calculateFixedPixelsHeight ( final boolean addUnfixedSpaces )
     {
         int fixedPixelsY = rawImage.getHeight ();
-        for ( NinePatchInterval interval : verticalStretch )
+        for ( final NinePatchInterval interval : verticalStretch )
         {
             if ( !interval.isPixel () )
             {

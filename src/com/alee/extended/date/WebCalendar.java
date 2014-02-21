@@ -158,7 +158,7 @@ public class WebCalendar extends WebPanel
         this.date = date != null ? new Date ( date.getTime () ) : null;
         this.shownDate = date != null ? new Date ( date.getTime () ) : new Date ();
 
-        setDrawFocus ( true );
+        setPaintFocus ( true );
         setRound ( StyleConstants.smallRound );
         setLayout ( new BorderLayout ( 0, 0 ) );
         putClientProperty ( SwingUtils.HANDLES_ENABLE_STATE, true );
@@ -248,7 +248,7 @@ public class WebCalendar extends WebPanel
         // Week days
         weekHeaders = new WebPanel ();
         weekHeaders.setUndecorated ( false );
-        weekHeaders.setDrawSides ( true, false, true, false );
+        weekHeaders.setPaintSides ( true, false, true, false );
         weekHeaders.setShadeWidth ( 0 );
         weekHeaders.setOpaque ( false );
         weekHeaders.setMargin ( StyleConstants.shadeWidth, StyleConstants.shadeWidth - 1, StyleConstants.shadeWidth + 1,

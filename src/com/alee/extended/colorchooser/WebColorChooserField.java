@@ -226,7 +226,7 @@ public class WebColorChooserField extends WebTextField
                     updateViewFromColor ();
                 }
             }
-            catch ( Throwable e )
+            catch ( final Throwable e )
             {
                 // Restore old value
                 updateViewFromColor ();
@@ -295,7 +295,7 @@ public class WebColorChooserField extends WebTextField
             {
                 robot = new Robot ();
             }
-            catch ( AWTException e )
+            catch ( final AWTException e )
             {
                 e.printStackTrace ();
             }
@@ -584,7 +584,7 @@ public class WebColorChooserField extends WebTextField
             colorChooserPanel = new WebColorChooserPanel ( true );
             colorChooserPanel.setColor ( color );
             colorChooserPanel.setUndecorated ( false );
-            colorChooserPanel.setDrawFocus ( false );
+            colorChooserPanel.setPaintFocus ( false );
             colorChooserPanel.setRound ( StyleConstants.smallRound );
             colorChooserPanel.setShadeWidth ( 0 );
 

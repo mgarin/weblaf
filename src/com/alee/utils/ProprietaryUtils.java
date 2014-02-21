@@ -29,46 +29,46 @@ import java.lang.reflect.InvocationTargetException;
  *
  * @author Mikle Garin
  */
+
 public final class ProprietaryUtils
 {
     /**
      * Installs some proprietary L&amp;F defaults for proper text rendering.
-     * <p>
      * Basically this method is a workaround for this simple call:
-     * <code>
+     * {@code
      * table.put ( sun.swing.SwingUtilities2.AA_TEXT_PROPERTY_KEY, sun.swing.SwingUtilities2.AATextInfo.getAATextInfo ( true ) );
-     * </code>
+     * }
      * but it doesn't directly use any proprietary API.
      *
      * @param table defaults table
      */
-    public static void setupUIDefaults ( UIDefaults table )
+    public static void setupUIDefaults ( final UIDefaults table )
     {
         try
         {
-            Class su2 = ReflectUtils.getClass ( "sun.swing.SwingUtilities2" );
-            Object aaProperty = ReflectUtils.getStaticFieldValue ( su2, "AA_TEXT_PROPERTY_KEY" );
-            Class aaTextInfo = ReflectUtils.getInnerClass ( su2, "AATextInfo" );
-            Object aaValue = ReflectUtils.callStaticMethod ( aaTextInfo, "getAATextInfo", true );
+            final Class su2 = ReflectUtils.getClass ( "sun.swing.SwingUtilities2" );
+            final Object aaProperty = ReflectUtils.getStaticFieldValue ( su2, "AA_TEXT_PROPERTY_KEY" );
+            final Class aaTextInfo = ReflectUtils.getInnerClass ( su2, "AATextInfo" );
+            final Object aaValue = ReflectUtils.callStaticMethod ( aaTextInfo, "getAATextInfo", true );
             table.put ( aaProperty, aaValue );
         }
-        catch ( ClassNotFoundException e )
+        catch ( final ClassNotFoundException e )
         {
             e.printStackTrace ();
         }
-        catch ( NoSuchFieldException e )
+        catch ( final NoSuchFieldException e )
         {
             e.printStackTrace ();
         }
-        catch ( IllegalAccessException e )
+        catch ( final IllegalAccessException e )
         {
             e.printStackTrace ();
         }
-        catch ( NoSuchMethodException e )
+        catch ( final NoSuchMethodException e )
         {
             e.printStackTrace ();
         }
-        catch ( InvocationTargetException e )
+        catch ( final InvocationTargetException e )
         {
             e.printStackTrace ();
         }
@@ -87,7 +87,7 @@ public final class ProprietaryUtils
             // com.sun.awt.AWTUtilities.isTranslucencySupported ( com.sun.awt.AWTUtilities.Translucency.PERPIXEL_TRANSPARENT )
             return SystemUtils.isWindows () || SystemUtils.isMac () || SystemUtils.isSolaris ();
         }
-        catch ( Throwable e )
+        catch ( final Throwable e )
         {
             return false;
         }
@@ -99,7 +99,7 @@ public final class ProprietaryUtils
      * @param window window to process
      * @param opaque whether should make window opaque or not
      */
-    public static void setWindowOpaque ( Window window, boolean opaque )
+    public static void setWindowOpaque ( final Window window, final boolean opaque )
     {
         if ( window != null && isWindowTransparencyAllowed () )
         {
@@ -117,7 +117,7 @@ public final class ProprietaryUtils
                     ReflectUtils.callStaticMethod ( "com.sun.awt.AWTUtilities", "setWindowOpaque", window, opaque );
                 }
             }
-            catch ( Throwable e )
+            catch ( final Throwable e )
             {
                 // Ignore any exceptions this native feature might cause
                 // Still, should inform that such actions cause an exception on the underlying system
@@ -132,13 +132,13 @@ public final class ProprietaryUtils
      * @param window window to process
      * @return whether window background is opaque or not
      */
-    public static boolean isWindowOpaque ( Window window )
+    public static boolean isWindowOpaque ( final Window window )
     {
         if ( window != null && isWindowTransparencyAllowed () )
         {
             try
             {
-                Boolean isOpaque;
+                final Boolean isOpaque;
                 if ( SystemUtils.isJava7orAbove () )
                 {
                     // For Java 7 and later this will work just fine
@@ -152,7 +152,7 @@ public final class ProprietaryUtils
                 }
                 return isOpaque != null ? isOpaque : true;
             }
-            catch ( Throwable e )
+            catch ( final Throwable e )
             {
                 // Ignore any exceptions this native feature might cause
                 // Still, should inform that such actions cause an exception on the underlying system
@@ -168,7 +168,7 @@ public final class ProprietaryUtils
      * @param window  window to process
      * @param opacity new window opacity
      */
-    public static void setWindowOpacity ( Window window, float opacity )
+    public static void setWindowOpacity ( final Window window, final float opacity )
     {
         if ( window != null && isWindowTransparencyAllowed () )
         {
@@ -185,7 +185,7 @@ public final class ProprietaryUtils
                     ReflectUtils.callStaticMethod ( "com.sun.awt.AWTUtilities", "setWindowOpacity", window, opacity );
                 }
             }
-            catch ( Throwable e )
+            catch ( final Throwable e )
             {
                 // Ignore any exceptions this native feature might cause
                 // Still, should inform that such actions cause an exception on the underlying system
@@ -200,13 +200,13 @@ public final class ProprietaryUtils
      * @param window window to process
      * @return window opacity
      */
-    public static float getWindowOpacity ( Window window )
+    public static float getWindowOpacity ( final Window window )
     {
         if ( window != null && isWindowTransparencyAllowed () )
         {
             try
             {
-                Float opacity;
+                final Float opacity;
                 if ( SystemUtils.isJava7orAbove () )
                 {
                     // For Java 7 and later this will work just fine
@@ -219,7 +219,7 @@ public final class ProprietaryUtils
                 }
                 return opacity != null ? opacity : 1f;
             }
-            catch ( Throwable e )
+            catch ( final Throwable e )
             {
                 // Ignore any exceptions this native feature might cause
                 // Still, should inform that such actions cause an exception on the underlying system

@@ -27,17 +27,17 @@ import java.awt.*;
 
 public class WebTitledPanel extends WebPanel
 {
-    private WebPanel title;
-    private WebPanel content;
+    private final WebPanel title;
+    private final WebPanel content;
 
     public WebTitledPanel ()
     {
         super ( true );
         setMargin ( 0 );
-        setWebColored ( false );
+        setWebColoredBackground ( false );
 
         title = new WebPanel ( true );
-        title.setDrawSides ( false, false, true, false );
+        title.setPaintSides ( false, false, true, false );
         title.setMargin ( 0 );
         title.setShadeWidth ( 0 );
         add ( title, BorderLayout.NORTH );
@@ -62,7 +62,7 @@ public class WebTitledPanel extends WebPanel
         return title.getComponentCount () > 0 ? title.getComponent ( 0 ) : null;
     }
 
-    public void setTitle ( Component titleComponent )
+    public void setTitle ( final Component titleComponent )
     {
         title.removeAll ();
         title.add ( titleComponent );
@@ -75,7 +75,7 @@ public class WebTitledPanel extends WebPanel
         return content.getComponentCount () > 0 ? content.getComponent ( 0 ) : null;
     }
 
-    public void setContent ( Component contentComponent )
+    public void setContent ( final Component contentComponent )
     {
         content.removeAll ();
         content.add ( contentComponent );

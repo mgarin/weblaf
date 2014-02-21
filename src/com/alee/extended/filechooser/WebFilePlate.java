@@ -45,35 +45,35 @@ public class WebFilePlate extends WebPanel
 {
     public static final ImageIcon CROSS_ICON = new ImageIcon ( WebFilePlate.class.getResource ( "icons/cross.png" ) );
 
-    private List<ActionListener> closeListeners = new ArrayList<ActionListener> ( 1 );
+    private final List<ActionListener> closeListeners = new ArrayList<ActionListener> ( 1 );
 
     private boolean showRemoveButton = true;
     private boolean showFileExtensions = false;
-    private boolean animate = StyleConstants.animate;
+    private final boolean animate = StyleConstants.animate;
 
-    private File file;
+    private final File file;
 
     private WebTimer animator = null;
     private float opacity = 0f;
 
-    private WebLabel fileName;
+    private final WebLabel fileName;
     private WebButton remove = null;
 
-    public WebFilePlate ( File file )
+    public WebFilePlate ( final File file )
     {
         this ( file, true );
     }
 
-    public WebFilePlate ( File file, boolean decorated )
+    public WebFilePlate ( final File file, final boolean decorated )
     {
         super ( decorated );
 
         this.file = file;
 
-        // setDrawFocus ( true );
+        // setPaintFocus ( true );
         setMargin ( 0, 3, 0, 0 );
 
-        TableLayout tableLayout =
+        final TableLayout tableLayout =
                 new TableLayout ( new double[][]{ { TableLayout.FILL, TableLayout.PREFERRED }, { TableLayout.PREFERRED } } );
         tableLayout.setHGap ( 0 );
         tableLayout.setVGap ( 0 );
@@ -97,7 +97,7 @@ public class WebFilePlate extends WebPanel
         addAncestorListener ( new AncestorAdapter ()
         {
             @Override
-            public void ancestorAdded ( AncestorEvent event )
+            public void ancestorAdded ( final AncestorEvent event )
             {
                 if ( animator != null && animator.isRunning () )
                 {
@@ -108,7 +108,7 @@ public class WebFilePlate extends WebPanel
                     animator = new WebTimer ( "WebFilePlate.fadeInTimer", StyleConstants.animationDelay, new ActionListener ()
                     {
                         @Override
-                        public void actionPerformed ( ActionEvent e )
+                        public void actionPerformed ( final ActionEvent e )
                         {
                             opacity += 0.1f;
                             if ( opacity < 1f )
@@ -160,7 +160,7 @@ public class WebFilePlate extends WebPanel
                         animator = new WebTimer ( "WebFilePlate.fadeOutTimer", StyleConstants.animationDelay, new ActionListener ()
                         {
                             @Override
-                            public void actionPerformed ( ActionEvent e )
+                            public void actionPerformed ( final ActionEvent e )
                             {
                                 opacity -= 0.1f;
                                 if ( opacity > 0f )
@@ -199,24 +199,24 @@ public class WebFilePlate extends WebPanel
         opacity = 0f;
 
         // Remove file
-        Container container = this.getParent ();
+        final Container container = this.getParent ();
         if ( container != null && container instanceof JComponent )
         {
-            JComponent parent = ( JComponent ) container;
+            final JComponent parent = ( JComponent ) container;
             parent.remove ( this );
             parent.revalidate ();
             parent.repaint ();
         }
     }
 
-    private ImageIcon getDisplayIcon ( File file )
+    private ImageIcon getDisplayIcon ( final File file )
     {
         return FileUtils.getFileIcon ( file, false );
     }
 
-    private String getDisplayName ( File file )
+    private String getDisplayName ( final File file )
     {
-        String name = FileUtils.getDisplayFileName ( file );
+        final String name = FileUtils.getDisplayFileName ( file );
         return showFileExtensions || file.isDirectory () ? name : FileUtils.getFileNamePart ( name );
     }
 
@@ -225,7 +225,7 @@ public class WebFilePlate extends WebPanel
         return showRemoveButton;
     }
 
-    public void setShowRemoveButton ( boolean showRemoveButton )
+    public void setShowRemoveButton ( final boolean showRemoveButton )
     {
         if ( this.showRemoveButton != showRemoveButton )
         {
@@ -247,31 +247,31 @@ public class WebFilePlate extends WebPanel
         return showFileExtensions;
     }
 
-    public void setShowFileExtensions ( boolean showFileExtensions )
+    public void setShowFileExtensions ( final boolean showFileExtensions )
     {
         this.showFileExtensions = showFileExtensions;
     }
 
     @Override
-    protected void paintComponent ( Graphics g )
+    protected void paintComponent ( final Graphics g )
     {
         LafUtils.setupAlphaComposite ( ( Graphics2D ) g, opacity, opacity < 1f );
         super.paintComponent ( g );
     }
 
-    public void addCloseListener ( ActionListener actionListener )
+    public void addCloseListener ( final ActionListener actionListener )
     {
         closeListeners.add ( actionListener );
     }
 
-    public void removeCloseListener ( ActionListener actionListener )
+    public void removeCloseListener ( final ActionListener actionListener )
     {
         closeListeners.remove ( actionListener );
     }
 
-    private void fireActionPerformed ( ActionEvent e )
+    private void fireActionPerformed ( final ActionEvent e )
     {
-        for ( ActionListener listener : CollectionUtils.copy ( closeListeners ) )
+        for ( final ActionListener listener : CollectionUtils.copy ( closeListeners ) )
         {
             listener.actionPerformed ( e );
         }

@@ -43,7 +43,7 @@ public final class NinePatchUtils
     /**
      * Shade nine-patch icons cache.
      */
-    private static Map<String, NinePatchIcon> shadeIconCache = new HashMap<String, NinePatchIcon> ();
+    private static final Map<String, NinePatchIcon> shadeIconCache = new HashMap<String, NinePatchIcon> ();
 
     /**
      * Returns cached shade nine-patch icon.

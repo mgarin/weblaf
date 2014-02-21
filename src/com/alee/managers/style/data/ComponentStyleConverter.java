@@ -27,19 +27,34 @@ import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 import com.thoughtworks.xstream.mapper.Mapper;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
- * Custom XStream converter for skin style information.
+ * Custom XStream converter for ComponentStyle class.
  *
  * @author Mikle Garin
+ * @see ComponentStyle
  */
 
 public class ComponentStyleConverter extends ReflectionConverter
 {
+    /**
+     * Converter constants.
+     */
+    public static final String STYLE_ID_ATTRIBUTE = "id";
+    public static final String COMPONENT_TYPE_ATTRIBUTE = "type";
+    public static final String EXTENDS_ID_ATTRIBUTE = "extends";
+    public static final String COMPONENT_NODE = "component";
+    public static final String UI_NODE = "ui";
+    public static final String PAINTER_NODE = "painter";
+    public static final String PAINTER_ID_ATTRIBUTE = "id";
+    public static final String PAINTER_CLASS_ATTRIBUTE = "class";
+
+    /**
+     * Default component style ID.
+     */
+    public static final String DEFAULT_STYLE_ID = "default";
+
     /**
      * Constructs ComponentStyleConverter with the specified mapper and reflection provider.
      *
@@ -69,13 +84,24 @@ public class ComponentStyleConverter extends ReflectionConverter
         final ComponentStyle componentStyle = ( ComponentStyle ) source;
 
         // Component style ID
-        writer.addAttribute ( "id", componentStyle.getId ().toString () );
+        final String componentStyleId = componentStyle.getId ();
+        writer.addAttribute ( STYLE_ID_ATTRIBUTE, componentStyleId != null ? componentStyleId : DEFAULT_STYLE_ID );
+
+        // Style component type
+        writer.addAttribute ( COMPONENT_TYPE_ATTRIBUTE, componentStyle.getType ().toString () );
+
+        // Extended style ID
+        final String extendsId = componentStyle.getExtendsId ();
+        if ( extendsId != null )
+        {
+            writer.addAttribute ( EXTENDS_ID_ATTRIBUTE, extendsId );
+        }
 
         // Component properties
         final Map<String, Object> componentProperties = componentStyle.getComponentProperties ();
         if ( componentProperties != null )
         {
-            writer.startNode ( "component" );
+            writer.startNode ( COMPONENT_NODE );
             for ( final Map.Entry<String, Object> property : componentProperties.entrySet () )
             {
                 writer.startNode ( property.getKey () );
@@ -89,7 +115,7 @@ public class ComponentStyleConverter extends ReflectionConverter
         final Map<String, Object> uiProperties = componentStyle.getUIProperties ();
         if ( uiProperties != null )
         {
-            writer.startNode ( "ui" );
+            writer.startNode ( UI_NODE );
             for ( final Map.Entry<String, Object> property : uiProperties.entrySet () )
             {
                 writer.startNode ( property.getKey () );
@@ -105,9 +131,9 @@ public class ComponentStyleConverter extends ReflectionConverter
         {
             for ( final PainterStyle painterStyle : painters )
             {
-                writer.startNode ( "painter" );
-                writer.addAttribute ( "id", painterStyle.getId () );
-                writer.addAttribute ( "class", painterStyle.getPainterClass () );
+                writer.startNode ( PAINTER_NODE );
+                writer.addAttribute ( PAINTER_ID_ATTRIBUTE, painterStyle.getId () );
+                writer.addAttribute ( PAINTER_CLASS_ATTRIBUTE, painterStyle.getPainterClass () );
                 for ( final Map.Entry<String, Object> property : painterStyle.getProperties ().entrySet () )
                 {
                     writer.startNode ( property.getKey () );
@@ -127,8 +153,17 @@ public class ComponentStyleConverter extends ReflectionConverter
     {
         // Creating component style
         final ComponentStyle componentStyle = new ComponentStyle ();
-        final SupportedComponent type = SupportedComponent.valueOf ( reader.getAttribute ( "id" ) );
-        componentStyle.setId ( type );
+
+        // Reading style ID
+        final String componentStyleId = reader.getAttribute ( STYLE_ID_ATTRIBUTE );
+        componentStyle.setId ( componentStyleId != null ? componentStyleId : DEFAULT_STYLE_ID );
+
+        // Reading style component type
+        final SupportedComponent type = SupportedComponent.valueOf ( reader.getAttribute ( COMPONENT_TYPE_ATTRIBUTE ) );
+        componentStyle.setType ( type );
+
+        // Reading extended style ID
+        componentStyle.setExtendsId ( reader.getAttribute ( EXTENDS_ID_ATTRIBUTE ) );
 
         // Reading component style properties and painters
         // Using LinkedHashMap to keep properties order intact
@@ -140,7 +175,7 @@ public class ComponentStyleConverter extends ReflectionConverter
             // Read next node
             reader.moveDown ();
             final String nodeName = reader.getNodeName ();
-            if ( nodeName.equals ( "component" ) )
+            if ( nodeName.equals ( COMPONENT_NODE ) )
             {
                 // Reading component property
                 while ( reader.hasMoreChildren () )
@@ -156,7 +191,7 @@ public class ComponentStyleConverter extends ReflectionConverter
                     reader.moveUp ();
                 }
             }
-            else if ( nodeName.equals ( "ui" ) )
+            else if ( nodeName.equals ( UI_NODE ) )
             {
                 // Reading UI property
                 while ( reader.hasMoreChildren () )
@@ -172,17 +207,40 @@ public class ComponentStyleConverter extends ReflectionConverter
                     reader.moveUp ();
                 }
             }
-            else if ( nodeName.equals ( "painter" ) )
+            else if ( nodeName.equals ( PAINTER_NODE ) )
             {
-                // Creating painter style
-                final PainterStyle painterStyle = new PainterStyle ();
-                painterStyle.setId ( reader.getAttribute ( "id" ) );
-                painterStyle.setPainterClass ( reader.getAttribute ( "class" ) );
+                // Collecting style IDs
+                final String indicesString = reader.getAttribute ( PAINTER_ID_ATTRIBUTE );
+                final List<String> indices = new ArrayList<String> ( 1 );
+                if ( indicesString.contains ( "," ) )
+                {
+                    final StringTokenizer st = new StringTokenizer ( indicesString, ",", false );
+                    while ( st.hasMoreTokens () )
+                    {
+                        indices.add ( st.nextToken () );
+                    }
+                }
+                else
+                {
+                    indices.add ( indicesString );
+                }
+
+                // Creating separate painter styles for each style ID
+                // This might be the case when the same style scheme applied to more than one painter
+                final String painterClassName = reader.getAttribute ( PAINTER_CLASS_ATTRIBUTE );
+                final List<PainterStyle> separateStyles = new ArrayList<PainterStyle> ( indices.size () );
+                for ( final String id : indices )
+                {
+                    final PainterStyle painterStyle = new PainterStyle ();
+                    painterStyle.setId ( id );
+                    painterStyle.setPainterClass ( painterClassName );
+                    separateStyles.add ( painterStyle );
+                }
 
                 // Reading painter style properties
                 // Using LinkedHashMap to keep properties order
                 final Map<String, Object> painterProperties = new LinkedHashMap<String, Object> ();
-                final Class painterClass = ReflectUtils.getClassSafely ( painterStyle.getPainterClass () );
+                final Class painterClass = ReflectUtils.getClassSafely ( painterClassName );
                 if ( painterClass != null )
                 {
                     while ( reader.hasMoreChildren () )
@@ -197,12 +255,40 @@ public class ComponentStyleConverter extends ReflectionConverter
                         reader.moveUp ();
                     }
                 }
-                painterStyle.setProperties ( painterProperties );
+                for ( final PainterStyle painterStyle : separateStyles )
+                {
+                    painterStyle.setProperties ( painterProperties );
+                }
 
                 // Adding read painter style
-                painters.add ( painterStyle );
+                painters.addAll ( separateStyles );
             }
             reader.moveUp ();
+        }
+
+        // Marking base painter
+        if ( componentStyle.getExtendsId () == null )
+        {
+            if ( painters.size () == 1 )
+            {
+                painters.get ( 0 ).setBase ( true );
+            }
+            else
+            {
+                boolean baseSet = false;
+                for ( final PainterStyle painter : painters )
+                {
+                    if ( painter.isBase () )
+                    {
+                        baseSet = true;
+                        break;
+                    }
+                }
+                if ( !baseSet && painters.size () > 0 )
+                {
+                    painters.get ( 0 ).setBase ( true );
+                }
+            }
         }
 
         // Updating values we have just read

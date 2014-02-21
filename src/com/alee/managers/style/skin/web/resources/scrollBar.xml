@@ -1,0 +1,55 @@
+<skin>
+
+    <!-- JScrollBar styling -->
+    <style type="scrollBar" id="default">
+        <ui>
+            <margin>1,1,1,1</margin>
+            <paintButtons>true</paintButtons>
+            <paintTrack>false</paintTrack>
+        </ui>
+        <painter id="painter" base="true" class="com.alee.managers.style.skin.web.WebScrollBarPainter">
+            <thumbRound>8</thumbRound>
+            <thumbMargin>1,2,1,2</thumbMargin>
+            <trackBorderColor>230,230,230</trackBorderColor>
+            <trackBackgroundColor>245,245,245</trackBackgroundColor>
+            <thumbBorderColor>189,189,189</thumbBorderColor>
+            <thumbBackgroundColor>217,217,217</thumbBackgroundColor>
+            <thumbDisabledBorderColor>210,210,210</thumbDisabledBorderColor>
+            <thumbDisabledBackgroundColor>230,230,230</thumbDisabledBackgroundColor>
+            <thumbRolloverBorderColor>166,166,166</thumbRolloverBorderColor>
+            <thumbRolloverBackgroundColor>194,194,194</thumbRolloverBackgroundColor>
+            <thumbPressedBorderColor>126,126,126</thumbPressedBorderColor>
+            <thumbPressedBackgroundColor>145,145,145</thumbPressedBackgroundColor>
+        </painter>
+        <painter id="decreaseButtonPainter,increaseButtonPainter" class="com.alee.managers.style.skin.web.WebScrollBarButtonPainter">
+            <borderColor>189,189,189</borderColor>
+            <backgroundColor>217,217,217</backgroundColor>
+            <disabledBorderColor>210,210,210</disabledBorderColor>
+            <disabledBackgroundColor>230,230,230</disabledBackgroundColor>
+            <rolloverBorderColor>166,166,166</rolloverBorderColor>
+            <rolloverBackgroundColor>194,194,194</rolloverBackgroundColor>
+            <pressedBorderColor>126,126,126</pressedBorderColor>
+            <pressedBackgroundColor>145,145,145</pressedBackgroundColor>
+        </painter>
+    </style>
+
+    <!-- JScrollBar styling for JScrollPane -->
+    <style type="scrollBar" id="scroll-pane" extends="default">
+        <ui>
+            <paintTrack>true</paintTrack>
+        </ui>
+    </style>
+
+    <!-- JScrollBar styling for JComboBox -->
+    <style type="scrollBar" id="combo-box" extends="default">
+        <ui>
+            <margin>0,2,0,2</margin>
+            <paintButtons>false</paintButtons>
+        </ui>
+        <painter id="painter" base="true" class="com.alee.managers.style.skin.web.WebScrollBarPainter">
+            <thumbRound>4</thumbRound>
+            <thumbMargin>0,2,0,2</thumbMargin>
+        </painter>
+    </style>
+
+</skin>

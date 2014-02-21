@@ -93,7 +93,7 @@ public class WebColorChooserPanel extends WebPanel implements DialogOptions
 
         // Panel settings
         setOpaque ( false );
-        setWebColored ( false );
+        setWebColoredBackground ( false );
         setMargin ( 2, 5, 2, 5 );
         setLayout ( new TableLayout ( new double[][]{ { TableLayout.FILL, 4, TableLayout.PREFERRED, 4, TableLayout.PREFERRED },
                 { TableLayout.PREFERRED, TableLayout.PREFERRED } } ) );

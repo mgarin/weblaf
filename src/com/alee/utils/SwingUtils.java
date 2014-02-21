@@ -28,7 +28,6 @@ import com.alee.laf.rootpane.WebRootPaneUI;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.hotkey.HotkeyRunnable;
 import com.alee.managers.language.LanguageManager;
-import com.alee.utils.laf.ShapeProvider;
 import com.alee.utils.laf.WeblafBorder;
 import com.alee.utils.swing.EventPump;
 
@@ -454,29 +453,6 @@ public final class SwingUtils
         {
             throw new RuntimeException ( throwable );
         }
-    }
-
-    /**
-     * Returns shape provider for the specified component or null if shape provider is not supported.
-     *
-     * @param component component to process
-     * @return shape provider
-     */
-    public static ShapeProvider getShapeProvider ( final Component component )
-    {
-        if ( component instanceof ShapeProvider )
-        {
-            return ( ShapeProvider ) component;
-        }
-        else
-        {
-            final Object ui = ReflectUtils.callMethodSafely ( component, "getUI" );
-            if ( ui instanceof ShapeProvider )
-            {
-                return ( ShapeProvider ) ui;
-            }
-        }
-        return null;
     }
 
     /**
@@ -1378,6 +1354,26 @@ public final class SwingUtils
     }
 
     /**
+     * Adds HANDLES_ENABLE_STATE mark into component client properties.
+     *
+     * @param component component to process
+     */
+    public static void setHandlesEnableStateMark ( final JComponent component )
+    {
+        component.putClientProperty ( HANDLES_ENABLE_STATE, Boolean.TRUE );
+    }
+
+    /**
+     * Removes HANDLES_ENABLE_STATE mark from component client properties.
+     *
+     * @param component component to process
+     */
+    public static void removeHandlesEnableStateMark ( final JComponent component )
+    {
+        component.putClientProperty ( HANDLES_ENABLE_STATE, Boolean.FALSE );
+    }
+
+    /**
      * Sets enabled state of component and all of its children.
      *
      * @param component component to modify
@@ -1691,13 +1687,11 @@ public final class SwingUtils
      */
     public static String hotkeyToString ( final boolean isCtrl, final boolean isAlt, final boolean isShift, final Integer keyCode )
     {
-        final StringBuilder text = new StringBuilder ( "" );
-        text.append ( isCtrl ? KeyEvent.getKeyModifiersText ( SwingUtils.getSystemShortcutModifier () ) +
-                ( isAlt || isShift || keyCode != null ? "+" : "" ) : "" );
-        text.append ( isAlt ? KeyEvent.getKeyModifiersText ( Event.ALT_MASK ) + ( isShift || keyCode != null ? "+" : "" ) : "" );
-        text.append ( isShift ? KeyEvent.getKeyModifiersText ( Event.SHIFT_MASK ) + ( keyCode != null ? "+" : "" ) : "" );
-        text.append ( keyCode != null ? KeyEvent.getKeyText ( keyCode ) : "" );
-        return text.toString ();
+        return "" + ( isCtrl ? KeyEvent.getKeyModifiersText ( SwingUtils.getSystemShortcutModifier () ) +
+                ( isAlt || isShift || keyCode != null ? "+" : "" ) : "" ) +
+                ( isAlt ? KeyEvent.getKeyModifiersText ( Event.ALT_MASK ) + ( isShift || keyCode != null ? "+" : "" ) : "" ) +
+                ( isShift ? KeyEvent.getKeyModifiersText ( Event.SHIFT_MASK ) + ( keyCode != null ? "+" : "" ) : "" ) +
+                ( keyCode != null ? KeyEvent.getKeyText ( keyCode ) : "" );
     }
 
     /**

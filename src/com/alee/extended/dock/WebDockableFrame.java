@@ -32,54 +32,54 @@ import java.awt.*;
 
 public class WebDockableFrame extends WebPanel
 {
-    private static ImageIcon dockTop = new ImageIcon ( WebDockablePane.class.getResource ( "icons/dock_top.png" ) );
-    private static ImageIcon dockLeft = new ImageIcon ( WebDockablePane.class.getResource ( "icons/dock_left.png" ) );
-    private static ImageIcon dockRight = new ImageIcon ( WebDockablePane.class.getResource ( "icons/dock_right.png" ) );
-    private static ImageIcon dockBottom = new ImageIcon ( WebDockablePane.class.getResource ( "icons/dock_bottom.png" ) );
+    private static final ImageIcon dockTop = new ImageIcon ( WebDockablePane.class.getResource ( "icons/dock_top.png" ) );
+    private static final ImageIcon dockLeft = new ImageIcon ( WebDockablePane.class.getResource ( "icons/dock_left.png" ) );
+    private static final ImageIcon dockRight = new ImageIcon ( WebDockablePane.class.getResource ( "icons/dock_right.png" ) );
+    private static final ImageIcon dockBottom = new ImageIcon ( WebDockablePane.class.getResource ( "icons/dock_bottom.png" ) );
 
     public static final String ID_PREFIX = "WDF";
 
     private String frameId;
     private FrameType frameType;
 
-    private WebPanel titlePanel;
-    private WebLabel titleLabel;
-    private WebButton dock;
+    private final WebPanel titlePanel;
+    private final WebLabel titleLabel;
+    private final WebButton dock;
 
     public WebDockableFrame ()
     {
         this ( "" );
     }
 
-    public WebDockableFrame ( String frameTitle )
+    public WebDockableFrame ( final String frameTitle )
     {
         this ( TextUtils.generateId ( ID_PREFIX ), frameTitle );
     }
 
-    public WebDockableFrame ( String frameId, String frameTitle )
+    public WebDockableFrame ( final String frameId, final String frameTitle )
     {
         this ( frameId, null, frameTitle );
     }
 
-    public WebDockableFrame ( Icon frameIcon, String frameTitle )
+    public WebDockableFrame ( final Icon frameIcon, final String frameTitle )
     {
         this ( TextUtils.generateId ( ID_PREFIX ), frameIcon, frameTitle );
     }
 
-    public WebDockableFrame ( String frameId, Icon frameIcon, String frameTitle )
+    public WebDockableFrame ( final String frameId, final Icon frameIcon, final String frameTitle )
     {
         super ( true );
 
         this.frameId = frameId;
 
         setShadeWidth ( 0 );
-        setWebColored ( false );
-        setDrawSides ( false, false, false, false );
+        setWebColoredBackground ( false );
+        setPaintSides ( false, false, false, false );
 
         titlePanel = new WebPanel ( true )
         {
             @Override
-            protected void paintComponent ( Graphics g )
+            protected void paintComponent ( final Graphics g )
             {
                 super.paintComponent ( g );
                 g.setColor ( Color.WHITE );
@@ -88,7 +88,7 @@ public class WebDockableFrame extends WebPanel
                 g.drawLine ( getWidth () - 1, 0, getWidth () - 1, getHeight () - 2 );
             }
         };
-        titlePanel.setDrawSides ( false, false, true, false );
+        titlePanel.setPaintSides ( false, false, true, false );
         titlePanel.setShadeWidth ( 0 );
         add ( titlePanel, BorderLayout.NORTH );
 
@@ -109,12 +109,12 @@ public class WebDockableFrame extends WebPanel
         return frameId;
     }
 
-    public void setFrameId ( String frameId )
+    public void setFrameId ( final String frameId )
     {
         this.frameId = frameId;
     }
 
-    public void setIcon ( Icon icon )
+    public void setIcon ( final Icon icon )
     {
         titleLabel.setIcon ( icon );
     }
@@ -129,19 +129,19 @@ public class WebDockableFrame extends WebPanel
         return frameType;
     }
 
-    public void setFrameType ( FrameType frameType )
+    public void setFrameType ( final FrameType frameType )
     {
         this.frameType = frameType;
 
         // Changing displayed sides
-        setDrawSides ( frameType.equals ( FrameType.bottom ), frameType.equals ( FrameType.right ), frameType.equals ( FrameType.top ),
+        setPaintSides ( frameType.equals ( FrameType.bottom ), frameType.equals ( FrameType.right ), frameType.equals ( FrameType.top ),
                 frameType.equals ( FrameType.left ) );
 
         // Changing tool icons
         dock.setIcon ( getDockIcon ( frameType ) );
     }
 
-    public void setTitlePainter ( Painter painter )
+    public void setTitlePainter ( final Painter painter )
     {
         titlePanel.setPainter ( painter );
     }
@@ -161,7 +161,7 @@ public class WebDockableFrame extends WebPanel
         return titleLabel;
     }
 
-    private Icon getDockIcon ( FrameType frameType )
+    private Icon getDockIcon ( final FrameType frameType )
     {
         if ( frameType.equals ( FrameType.top ) )
         {

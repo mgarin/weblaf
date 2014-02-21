@@ -20,10 +20,13 @@ package com.alee.managers.style.data;
 import com.alee.managers.style.SupportedComponent;
 import com.alee.utils.TextUtils;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamConverter;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
 
+import javax.swing.*;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Skin information class.
@@ -32,8 +35,14 @@ import java.util.List;
  */
 
 @XStreamAlias ( "skin" )
+@XStreamConverter (SkinInfoConverter.class)
 public final class SkinInfo implements Serializable
 {
+    /**
+     * Skin styles cache map.
+     */
+    private transient Map<SupportedComponent, Map<String, ComponentStyle>> stylesCache;
+
     /**
      * Unique skin ID.
      * Used to collect and manage skins within StyleManager.
@@ -65,6 +74,13 @@ public final class SkinInfo implements Serializable
     private String supportedSystems;
 
     /**
+     * Sking class canonical name.
+     * Used to locate included resources.
+     */
+    @XStreamAlias ("class")
+    private String skinClass;
+
+    /**
      * List of skin styles.
      * This list contains all styling settings and painter directions.
      */
@@ -77,6 +93,16 @@ public final class SkinInfo implements Serializable
     public SkinInfo ()
     {
         super ();
+    }
+
+    public Map<SupportedComponent, Map<String, ComponentStyle>> getStylesCache ()
+    {
+        return stylesCache;
+    }
+
+    public void setStylesCache ( final Map<SupportedComponent, Map<String, ComponentStyle>> stylesCache )
+    {
+        this.stylesCache = stylesCache;
     }
 
     public String getId ()
@@ -129,6 +155,16 @@ public final class SkinInfo implements Serializable
         this.supportedSystems = supportedSystems;
     }
 
+    public String getSkinClass ()
+    {
+        return skinClass;
+    }
+
+    public void setSkinClass ( final String skinClass )
+    {
+        this.skinClass = skinClass;
+    }
+
     public List<ComponentStyle> getStyles ()
     {
         return styles;
@@ -151,19 +187,25 @@ public final class SkinInfo implements Serializable
 
     /**
      * Returns style for the specified supported component type.
+     * Custom style ID can be specified in any Web-component or Web-UI to override default component style.
+     * If style for such custom ID is not found in skin descriptor then default style for that component is used.
      *
-     * @param type supported component type
+     * @param component component we are looking style for
+     * @param type      supported component type
      * @return component style
      */
-    public ComponentStyle getStyle ( final SupportedComponent type )
+    public ComponentStyle getStyle ( final JComponent component, final SupportedComponent type )
     {
-        for ( final ComponentStyle style : styles )
+        final Map<String, ComponentStyle> componentStyles = stylesCache.get ( type );
+        if ( componentStyles != null )
         {
-            if ( style.getId () == type )
-            {
-                return style;
-            }
+            final String styleId = type.getComponentStyleId ( component );
+            final ComponentStyle style = componentStyles.get ( styleId );
+            return style != null ? style : componentStyles.get ( ComponentStyleConverter.DEFAULT_STYLE_ID );
         }
-        return null;
+        else
+        {
+            return null;
+        }
     }
 }

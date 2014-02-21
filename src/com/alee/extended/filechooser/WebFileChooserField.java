@@ -90,8 +90,8 @@ public class WebFileChooserField extends WebPanel
 
         setOpaque ( false );
         setLayout ( new BorderLayout ( 0, 0 ) );
-        setWebColored ( false );
-        setDrawFocus ( true );
+        setWebColoredBackground ( false );
+        setPaintFocus ( true );
         setMargin ( -1 );
         setBackground ( Color.WHITE );
 
@@ -377,7 +377,7 @@ public class WebFileChooserField extends WebPanel
             super ( true );
 
             setLayout ( new BorderLayout () );
-            setDrawSides ( false, false, false, true );
+            setPaintSides ( false, false, false, true );
             setShadeWidth ( 0 );
             setMargin ( 0, 3, 0, 1 );
             setFocusable ( true );

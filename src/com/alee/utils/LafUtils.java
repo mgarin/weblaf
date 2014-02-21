@@ -17,17 +17,19 @@
 
 package com.alee.utils;
 
+import com.alee.extended.painter.Painter;
 import com.alee.laf.StyleConstants;
 import com.alee.laf.label.WebLabel;
+import com.alee.laf.scroll.WebScrollBarUI;
 import com.alee.laf.text.WebTextField;
-import com.alee.utils.laf.FocusType;
-import com.alee.utils.laf.ShadeType;
-import com.alee.utils.laf.WeblafBorder;
+import com.alee.utils.laf.*;
 import com.alee.utils.ninepatch.NinePatchIcon;
 import com.alee.utils.swing.BorderMethods;
 
 import javax.swing.*;
 import javax.swing.border.Border;
+import javax.swing.plaf.ComponentUI;
+import javax.swing.plaf.ScrollBarUI;
 import javax.swing.plaf.basic.BasicButtonUI;
 import java.awt.*;
 import java.awt.font.FontRenderContext;
@@ -60,6 +62,96 @@ public final class LafUtils
     public static Border createWebBorder ( final int margin )
     {
         return new WeblafBorder ( margin, margin, margin, margin );
+    }
+
+    /**
+     * Sets scroll pane bars style ID.
+     *
+     * @param scrollPane scroll pane to process
+     * @param styleId    scroll pane bars style ID
+     */
+    public static void setScrollBarStyleId ( final JScrollPane scrollPane, final String styleId )
+    {
+        final JScrollBar vsb = scrollPane.getVerticalScrollBar ();
+        if ( vsb != null )
+        {
+            final ScrollBarUI vui = vsb.getUI ();
+            if ( vui instanceof WebScrollBarUI )
+            {
+                final WebScrollBarUI ui = ( WebScrollBarUI ) vui;
+                ui.setStyleId ( styleId );
+            }
+        }
+        final JScrollBar hsb = scrollPane.getHorizontalScrollBar ();
+        if ( hsb != null )
+        {
+            final ScrollBarUI hui = hsb.getUI ();
+            if ( hui instanceof WebScrollBarUI )
+            {
+                final WebScrollBarUI ui = ( WebScrollBarUI ) hui;
+                ui.setStyleId ( styleId );
+            }
+        }
+    }
+
+    /**
+     * Returns component UI or null if UI cannot be retreived.
+     *
+     * @param component component to retrieve UI from
+     * @param <T>       UI class type
+     * @return component UI or null if UI cannot be retreived
+     */
+    public static <T extends ComponentUI> T getUI ( final Component component )
+    {
+        return ReflectUtils.callMethodSafely ( component, "getUI" );
+    }
+
+    /**
+     * Updates component border using the specified margin
+     *
+     * @param component component which border needs to be updated
+     * @param margin    component margin, or null if it doesn't have one
+     * @param painter   component painter, or null if it doesn't have one
+     */
+    public static void updateBorder ( final JComponent component, final Insets margin, final Painter painter )
+    {
+        if ( component != null )
+        {
+            // Preserve old borders
+            if ( SwingUtils.isPreserveBorders ( component ) )
+            {
+                return;
+            }
+
+            final boolean ltr = component.getComponentOrientation ().isLeftToRight ();
+            final Insets m = new Insets ( 0, 0, 0, 0 );
+
+            // Calculating margin borders
+            if ( margin != null )
+            {
+                m.top += margin.top;
+                m.left += ltr ? margin.left : margin.right;
+                m.bottom += margin.bottom;
+                m.right += ltr ? margin.right : margin.left;
+            }
+
+            // Calculating additional borders
+            if ( painter != null )
+            {
+                // Painter borders
+                final Insets pi = painter.getMargin ( component );
+                if ( pi != null )
+                {
+                    m.top += pi.top;
+                    m.left += ltr ? pi.left : pi.right;
+                    m.bottom += pi.bottom;
+                    m.right += ltr ? pi.right : pi.left;
+                }
+            }
+
+            // Installing border
+            component.setBorder ( LafUtils.createWebBorder ( m ) );
+        }
     }
 
     /**
@@ -1404,7 +1496,7 @@ public final class LafUtils
     /**
      * Draw a string with a blur or shadow effect. The light angle is assumed to be 0 degrees, (i.e., window is illuminated from top). The
      * effect is intended to be subtle to be usable in as many text components as possible. The effect is generated with multiple calls to
-     * draw string. This method paints the text on coordinates <code>tx</code>, <code>ty</code>. If text should be painted elsewhere, a
+     * draw string. This method paints the text on coordinates {@code tx}, {@code ty}. If text should be painted elsewhere, a
      * transform should be applied to the graphics before passing it.
      */
 
@@ -1554,10 +1646,10 @@ public final class LafUtils
     }
 
     /**
-     * Returns border methods for the specified component or null if custom WebLaF border is not supported.
+     * Returns BorderMethods for the specified component or null if custom WebLaF border is not supported.
      *
      * @param component component to process
-     * @return border methods
+     * @return BorderMethods for the specified component or null if custom WebLaF border is not supported
      */
     public static BorderMethods getBorderMethods ( final Component component )
     {
@@ -1567,10 +1659,57 @@ public final class LafUtils
         }
         else
         {
-            final Object ui = ReflectUtils.callMethodSafely ( component, "getUI" );
-            if ( ui instanceof BorderMethods )
+            final ComponentUI ui = getUI ( component );
+            if ( ui != null && ui instanceof BorderMethods )
             {
                 return ( BorderMethods ) ui;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Returns shape provider for the specified component or null if shape provider is not supported.
+     * This might be used to provide dynamic component shape to other components.
+     *
+     * @param component component to process
+     * @return shape provider for the specified component or null if shape provider is not supported
+     */
+    public static ShapeProvider getShapeProvider ( final Component component )
+    {
+        if ( component instanceof ShapeProvider )
+        {
+            return ( ShapeProvider ) component;
+        }
+        else
+        {
+            final ComponentUI ui = getUI ( component );
+            if ( ui != null && ui instanceof ShapeProvider )
+            {
+                return ( ShapeProvider ) ui;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Returns Styleable for the specified component or null if component is not styleable.
+     *
+     * @param component component to process
+     * @return Styleable for the specified component or null if component is not styleable
+     */
+    public static Styleable getStyleable ( final Component component )
+    {
+        if ( component instanceof Styleable )
+        {
+            return ( Styleable ) component;
+        }
+        else
+        {
+            final ComponentUI ui = getUI ( component );
+            if ( ui != null && ui instanceof Styleable )
+            {
+                return ( Styleable ) ui;
             }
         }
         return null;

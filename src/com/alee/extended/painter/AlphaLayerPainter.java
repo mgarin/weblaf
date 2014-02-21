@@ -158,7 +158,7 @@ public class AlphaLayerPainter<E extends JComponent> extends AbstractPainter<E>
      * @return true if visual data provided by this painter is opaque, false otherwise
      */
     @Override
-    public boolean isOpaque ( final E c )
+    public Boolean isOpaque ( final E c )
     {
         return lightSquareColor.getAlpha () == 255 && darkSquareColor.getAlpha () == 255;
     }

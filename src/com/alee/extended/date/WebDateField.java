@@ -89,7 +89,9 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
     }
 
     /**
-     * @param drawBorder
+     * Constructs new date field.
+     *
+     * @param drawBorder whether should draw border or not
      */
     public WebDateField ( final boolean drawBorder )
     {
@@ -97,22 +99,26 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
     }
 
     /**
-     * @param selectedDate
+     * Constructs new date field with the specified selected date.
+     *
+     * @param date selected date
      */
-    public WebDateField ( final Date selectedDate )
+    public WebDateField ( final Date date )
     {
-        this ( selectedDate, WebDateFieldStyle.drawBorder );
+        this ( date, WebDateFieldStyle.drawBorder );
     }
 
     /**
-     * @param drawBorder
-     * @param selectedDate
+     * Constructs new date field with the specified selected date.
+     *
+     * @param drawBorder whether should draw border or not
+     * @param date       selected date
      */
-    public WebDateField ( final Date selectedDate, final boolean drawBorder )
+    public WebDateField ( final Date date, final boolean drawBorder )
     {
         super ();
 
-        this.date = selectedDate;
+        this.date = date;
 
         // Basic field settings
         setOpaque ( false );
@@ -277,7 +283,7 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
 
             // Calendar
             calendar = new WebCalendar ( date );
-            calendar.setDrawFocus ( false );
+            calendar.setPaintFocus ( false );
             calendar.setRound ( StyleConstants.smallRound );
             calendar.setShadeWidth ( 0 );
 
@@ -331,7 +337,7 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
         calendar.transferFocus ();
     }
 
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     protected void customizePopup ( final WebWindow popup )
     {
         // You can customize date field popup window here

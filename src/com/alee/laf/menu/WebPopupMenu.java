@@ -18,8 +18,15 @@
 package com.alee.laf.menu;
 
 import com.alee.laf.WebLookAndFeel;
+import com.alee.managers.language.LanguageContainerMethods;
+import com.alee.managers.language.LanguageManager;
+import com.alee.managers.style.skin.web.PopupStyle;
+import com.alee.managers.style.skin.web.WebPopupMenuPainter;
 import com.alee.utils.ReflectUtils;
+import com.alee.utils.SizeUtils;
 import com.alee.utils.laf.ShapeProvider;
+import com.alee.utils.laf.Styleable;
+import com.alee.utils.swing.SizeMethods;
 
 import javax.swing.*;
 import java.awt.*;
@@ -31,7 +38,7 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public class WebPopupMenu extends JPopupMenu implements ShapeProvider
+public class WebPopupMenu extends JPopupMenu implements Styleable, ShapeProvider, SizeMethods<WebPopupMenu>, LanguageContainerMethods
 {
     /**
      * Constructs new popup menu.
@@ -75,10 +82,11 @@ public class WebPopupMenu extends JPopupMenu implements ShapeProvider
      * This method takes into account component orientation.
      *
      * @param invoker invoker component
+     * @return this popup menu
      */
-    public void showAbove ( final Component invoker )
+    public WebPopupMenu showAbove ( final Component invoker )
     {
-        showAboveStart ( invoker );
+        return showAboveStart ( invoker );
     }
 
     /**
@@ -86,22 +94,26 @@ public class WebPopupMenu extends JPopupMenu implements ShapeProvider
      * This method takes into account component orientation.
      *
      * @param invoker invoker component
+     * @return this popup menu
      */
-    public void showAboveStart ( final Component invoker )
+    public WebPopupMenu showAboveStart ( final Component invoker )
     {
         setPopupMenuWay ( PopupMenuWay.aboveStart );
         show ( invoker, 0, 0 );
+        return this;
     }
 
     /**
      * Displays popup menu above the invoker component at its middle.
      *
      * @param invoker invoker component
+     * @return this popup menu
      */
-    public void showAboveMiddle ( final Component invoker )
+    public WebPopupMenu showAboveMiddle ( final Component invoker )
     {
         setPopupMenuWay ( PopupMenuWay.aboveMiddle );
         show ( invoker, 0, 0 );
+        return this;
     }
 
     /**
@@ -109,11 +121,13 @@ public class WebPopupMenu extends JPopupMenu implements ShapeProvider
      * This method takes into account component orientation.
      *
      * @param invoker invoker component
+     * @return this popup menu
      */
-    public void showAboveEnd ( final Component invoker )
+    public WebPopupMenu showAboveEnd ( final Component invoker )
     {
         setPopupMenuWay ( PopupMenuWay.aboveEnd );
         show ( invoker, 0, 0 );
+        return this;
     }
 
     /**
@@ -121,10 +135,11 @@ public class WebPopupMenu extends JPopupMenu implements ShapeProvider
      * This method also takes into account component orientation.
      *
      * @param invoker invoker component
+     * @return this popup menu
      */
-    public void showBelow ( final Component invoker )
+    public WebPopupMenu showBelow ( final Component invoker )
     {
-        showBelowStart ( invoker );
+        return showBelowStart ( invoker );
     }
 
     /**
@@ -132,22 +147,26 @@ public class WebPopupMenu extends JPopupMenu implements ShapeProvider
      * This method takes into account component orientation.
      *
      * @param invoker invoker component
+     * @return this popup menu
      */
-    public void showBelowStart ( final Component invoker )
+    public WebPopupMenu showBelowStart ( final Component invoker )
     {
         setPopupMenuWay ( PopupMenuWay.belowStart );
         show ( invoker, 0, 0 );
+        return this;
     }
 
     /**
      * Displays popup menu under the invoker component at its middle.
      *
      * @param invoker invoker component
+     * @return this popup menu
      */
-    public void showBelowMiddle ( final Component invoker )
+    public WebPopupMenu showBelowMiddle ( final Component invoker )
     {
         setPopupMenuWay ( PopupMenuWay.belowMiddle );
         show ( invoker, 0, 0 );
+        return this;
     }
 
     /**
@@ -155,151 +174,13 @@ public class WebPopupMenu extends JPopupMenu implements ShapeProvider
      * This method takes into account component orientation.
      *
      * @param invoker invoker component
+     * @return this popup menu
      */
-    public void showBelowEnd ( final Component invoker )
+    public WebPopupMenu showBelowEnd ( final Component invoker )
     {
         setPopupMenuWay ( PopupMenuWay.belowEnd );
         show ( invoker, 0, 0 );
-    }
-
-    /**
-     * Returns popup menu style.
-     *
-     * @return popup menu style
-     */
-    public PopupPainterStyle getPopupMenuStyle ()
-    {
-        return getWebUI ().getPopupPainterStyle ();
-    }
-
-    /**
-     * Sets popup menu style.
-     *
-     * @param style new popup menu style
-     */
-    public void setPopupMenuStyle ( final PopupPainterStyle style )
-    {
-        getWebUI ().setPopupPainterStyle ( style );
-    }
-
-    /**
-     * Returns popup menu border color.
-     *
-     * @return popup menu border color
-     */
-    public Color getBorderColor ()
-    {
-        return getWebUI ().getBorderColor ();
-    }
-
-    /**
-     * Sets popup menu border color.
-     *
-     * @param color new popup menu border color
-     */
-    public void setBorderColor ( final Color color )
-    {
-        getWebUI ().setBorderColor ( color );
-    }
-
-    /**
-     * Returns popup menu border corners rounding.
-     *
-     * @return popup menu border corners rounding
-     */
-    public int getRound ()
-    {
-        return getWebUI ().getRound ();
-    }
-
-    /**
-     * Sets popup menu border corners rounding.
-     *
-     * @param round new popup menu border corners rounding
-     */
-    public void setRound ( final int round )
-    {
-        getWebUI ().setRound ( round );
-    }
-
-    /**
-     * Returns popup menu shade width.
-     *
-     * @return popup menu shade width
-     */
-    public int getShadeWidth ()
-    {
-        return getWebUI ().getShadeWidth ();
-    }
-
-    /**
-     * Sets popup menu shade width.
-     *
-     * @param width new popup menu shade width
-     */
-    public void setShadeWidth ( final int width )
-    {
-        getWebUI ().setShadeWidth ( width );
-    }
-
-    /**
-     * Returns popup menu shade opacity.
-     *
-     * @return popup menu shade opacity
-     */
-    public float getShadeOpacity ()
-    {
-        return getWebUI ().getShadeOpacity ();
-    }
-
-    /**
-     * Sets popup menu shade opacity.
-     *
-     * @param opacity new popup menu shade opacity
-     */
-    public void setShadeOpacity ( final float opacity )
-    {
-        getWebUI ().setShadeOpacity ( opacity );
-    }
-
-    /**
-     * Returns popup menu dropdown style corner width.
-     *
-     * @return popup menu dropdown style corner width
-     */
-    public int getCornerWidth ()
-    {
-        return getWebUI ().getCornerWidth ();
-    }
-
-    /**
-     * Sets popup menu dropdown style corner width.
-     *
-     * @param width popup menu dropdown style corner width
-     */
-    public void setCornerWidth ( final int width )
-    {
-        getWebUI ().setCornerWidth ( width );
-    }
-
-    /**
-     * Returns popup menu background transparency.
-     *
-     * @return popup menu background transparency
-     */
-    public float getTransparency ()
-    {
-        return getWebUI ().getTransparency ();
-    }
-
-    /**
-     * Sets popup menu background transparency.
-     *
-     * @param transparency popup menu background transparency
-     */
-    public void setTransparency ( final float transparency )
-    {
-        getWebUI ().setTransparency ( transparency );
+        return this;
     }
 
     /**
@@ -316,11 +197,38 @@ public class WebPopupMenu extends JPopupMenu implements ShapeProvider
     /**
      * Sets popup menu content margin.
      *
-     * @param margin new popup menu content margin
+     * @param margin popup menu content margin
+     * @return this popup menu
      */
-    public void setMargin ( final Insets margin )
+    public WebPopupMenu setMargin ( final Insets margin )
     {
         getWebUI ().setMargin ( margin );
+        return this;
+    }
+
+    /**
+     * Sets popup menu content margin.
+     *
+     * @param top    top popup menu content margin
+     * @param left   left popup menu content margin
+     * @param bottom bottom popup menu content margin
+     * @param right  right popup menu content margin
+     * @return this popup menu
+     */
+    public WebPopupMenu setMargin ( final int top, final int left, final int bottom, final int right )
+    {
+        return setMargin ( new Insets ( top, left, bottom, right ) );
+    }
+
+    /**
+     * Sets popup menu content margin.
+     *
+     * @param spacing popup menu content margin
+     * @return this popup menu
+     */
+    public WebPopupMenu setMargin ( final int spacing )
+    {
+        return setMargin ( spacing, spacing, spacing, spacing );
     }
 
     /**
@@ -337,10 +245,12 @@ public class WebPopupMenu extends JPopupMenu implements ShapeProvider
      * Sets popup menu painter.
      *
      * @param painter new popup menu painter
+     * @return this popup menu
      */
-    public void setPainter ( final PopupMenuPainter painter )
+    public WebPopupMenu setPainter ( final WebPopupMenuPainter painter )
     {
         getWebUI ().setPainter ( painter );
+        return this;
     }
 
     /**
@@ -357,10 +267,12 @@ public class WebPopupMenu extends JPopupMenu implements ShapeProvider
      * Sets spacing between menubar popup menus.
      *
      * @param spacing new spacing between menubar popup menus
+     * @return this popup menu
      */
-    public void setMenuSpacing ( final int spacing )
+    public WebPopupMenu setMenuSpacing ( final int spacing )
     {
         getWebUI ().setMenuSpacing ( spacing );
+        return this;
     }
 
     /**
@@ -377,10 +289,12 @@ public class WebPopupMenu extends JPopupMenu implements ShapeProvider
      * Sets whether popup menu should try to fix its initial location when displayed or not.
      *
      * @param fixLocation whether popup menu should try to fix its initial location when displayed or not
+     * @return this popup menu
      */
-    public void setFixLocation ( final boolean fixLocation )
+    public WebPopupMenu setFixLocation ( final boolean fixLocation )
     {
         getWebUI ().setFixLocation ( fixLocation );
+        return this;
     }
 
     /**
@@ -388,10 +302,184 @@ public class WebPopupMenu extends JPopupMenu implements ShapeProvider
      * Its value nullified right after first usage to avoid popup menu display issues in future.
      *
      * @param way approximate popup menu display way
+     * @return this popup menu
      */
-    public void setPopupMenuWay ( final PopupMenuWay way )
+    public WebPopupMenu setPopupMenuWay ( final PopupMenuWay way )
     {
         getWebUI ().setPopupMenuWay ( way );
+        return this;
+    }
+
+    /**
+     * Returns popup style.
+     *
+     * @return popup style
+     */
+    public PopupStyle getPopupStyle ()
+    {
+        return getWebUI ().getPopupStyle ();
+    }
+
+    /**
+     * Sets popup style.
+     *
+     * @param style new popup style
+     * @return this popup menu
+     */
+    public WebPopupMenu setPopupStyle ( final PopupStyle style )
+    {
+        getWebUI ().setPopupStyle ( style );
+        return this;
+    }
+
+    /**
+     * Returns popup border color.
+     *
+     * @return popup border color
+     */
+    public Color getBorderColor ()
+    {
+        return getWebUI ().getBorderColor ();
+    }
+
+    /**
+     * Sets popup border color.
+     *
+     * @param color new popup border color
+     * @return this popup menu
+     */
+    public WebPopupMenu setBorderColor ( final Color color )
+    {
+        getWebUI ().setBorderColor ( color );
+        return this;
+    }
+
+    /**
+     * Returns decoration corners rounding.
+     *
+     * @return decoration corners rounding
+     */
+    public int getRound ()
+    {
+        return getWebUI ().getRound ();
+    }
+
+    /**
+     * Sets decoration corners rounding.
+     *
+     * @param round decoration corners rounding
+     * @return this popup menu
+     */
+    public WebPopupMenu setRound ( final int round )
+    {
+        getWebUI ().setRound ( round );
+        return this;
+    }
+
+    /**
+     * Returns decoration shade width.
+     *
+     * @return decoration shade width
+     */
+    public int getShadeWidth ()
+    {
+        return getWebUI ().getShadeWidth ();
+    }
+
+    /**
+     * Sets decoration shade width.
+     *
+     * @param shadeWidth decoration shade width
+     * @return this popup menu
+     */
+    public WebPopupMenu setShadeWidth ( final int shadeWidth )
+    {
+        getWebUI ().setShadeWidth ( shadeWidth );
+        return this;
+    }
+
+    /**
+     * Returns popup shade transparency.
+     *
+     * @return popup shade transparency
+     */
+    public float getShadeTransparency ()
+    {
+        return getWebUI ().getShadeTransparency ();
+    }
+
+    /**
+     * Sets popup shade transparency.
+     *
+     * @param opacity new popup shade transparency
+     * @return this popup menu
+     */
+    public WebPopupMenu setShadeTransparency ( final float opacity )
+    {
+        getWebUI ().setShadeTransparency ( opacity );
+        return this;
+    }
+
+    /**
+     * Returns popup dropdown style corner width.
+     *
+     * @return popup dropdown style corner width
+     */
+    public int getCornerWidth ()
+    {
+        return getWebUI ().getCornerWidth ();
+    }
+
+    /**
+     * Sets popup dropdown style corner width.
+     *
+     * @param width popup dropdown style corner width
+     * @return this popup menu
+     */
+    public WebPopupMenu setCornerWidth ( final int width )
+    {
+        getWebUI ().setCornerWidth ( width );
+        return this;
+    }
+
+    /**
+     * Returns popup background transparency.
+     *
+     * @return popup background transparency
+     */
+    public float getTransparency ()
+    {
+        return getWebUI ().getTransparency ();
+    }
+
+    /**
+     * Sets popup background transparency.
+     *
+     * @param transparency popup background transparency
+     * @return this popup menu
+     */
+    public WebPopupMenu setTransparency ( final float transparency )
+    {
+        getWebUI ().setTransparency ( transparency );
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getStyleId ()
+    {
+        return getWebUI ().getStyleId ();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setStyleId ( final String id )
+    {
+        getWebUI ().setStyleId ( id );
     }
 
     /**
@@ -425,7 +513,7 @@ public class WebPopupMenu extends JPopupMenu implements ShapeProvider
             {
                 setUI ( ( WebPopupMenuUI ) ReflectUtils.createInstance ( WebLookAndFeel.popupMenuUI ) );
             }
-            catch ( Throwable e )
+            catch ( final Throwable e )
             {
                 e.printStackTrace ();
                 setUI ( new WebPopupMenuUI () );
@@ -435,5 +523,113 @@ public class WebPopupMenu extends JPopupMenu implements ShapeProvider
         {
             setUI ( getUI () );
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int getPreferredWidth ()
+    {
+        return SizeUtils.getPreferredWidth ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebPopupMenu setPreferredWidth ( final int preferredWidth )
+    {
+        return SizeUtils.setPreferredWidth ( this, preferredWidth );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int getPreferredHeight ()
+    {
+        return SizeUtils.getPreferredHeight ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebPopupMenu setPreferredHeight ( final int preferredHeight )
+    {
+        return SizeUtils.setPreferredHeight ( this, preferredHeight );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int getMinimumWidth ()
+    {
+        return SizeUtils.getMinimumWidth ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebPopupMenu setMinimumWidth ( final int minimumWidth )
+    {
+        return SizeUtils.setMinimumWidth ( this, minimumWidth );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int getMinimumHeight ()
+    {
+        return SizeUtils.getMinimumHeight ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebPopupMenu setMinimumHeight ( final int minimumHeight )
+    {
+        return SizeUtils.setMinimumHeight ( this, minimumHeight );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Dimension getPreferredSize ()
+    {
+        return SizeUtils.getPreferredSize ( this, super.getPreferredSize () );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setLanguageContainerKey ( final String key )
+    {
+        LanguageManager.registerLanguageContainer ( this, key );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void removeLanguageContainerKey ()
+    {
+        LanguageManager.unregisterLanguageContainer ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getLanguageContainerKey ()
+    {
+        return LanguageManager.getLanguageContainerKey ( this );
     }
 }

@@ -20,6 +20,7 @@ package com.alee.laf.scroll;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SizeUtils;
+import com.alee.utils.laf.Styleable;
 import com.alee.utils.swing.SizeMethods;
 
 import javax.swing.*;
@@ -31,7 +32,7 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public class WebScrollBar extends JScrollBar implements SizeMethods<WebScrollBar>
+public class WebScrollBar extends JScrollBar implements Styleable, SizeMethods<WebScrollBar>
 {
     /**
      * Constructs new scroll bar.
@@ -70,20 +71,20 @@ public class WebScrollBar extends JScrollBar implements SizeMethods<WebScrollBar
      *
      * @return true if scroll bar arrow buttons should be displayed, false otherwise
      */
-    public boolean isButtonsVisible ()
+    public boolean isPaintButtons ()
     {
-        return getWebUI ().isButtonsVisible ();
+        return getWebUI ().isPaintButtons ();
     }
 
     /**
      * Sets whether scroll bar arrow buttons should be displayed or not.
      *
-     * @param visible whether scroll bar arrow buttons should be displayed or not
+     * @param paintButtons whether scroll bar arrow buttons should be displayed or not
      * @return scroll bar
      */
-    public WebScrollBar setButtonsVisible ( final boolean visible )
+    public WebScrollBar setPaintButtons ( final boolean paintButtons )
     {
-        getWebUI ().setButtonsVisible ( visible );
+        getWebUI ().setPaintButtons ( paintButtons );
         return this;
     }
 
@@ -92,284 +93,20 @@ public class WebScrollBar extends JScrollBar implements SizeMethods<WebScrollBar
      *
      * @return true if scroll bar track should be displayed, false otherwise
      */
-    public boolean isDrawTrack ()
+    public boolean isPaintTrack ()
     {
-        return getWebUI ().isDrawTrack ();
+        return getWebUI ().isPaintTrack ();
     }
 
     /**
      * Sets whether scroll bar track should be displayed or not.
      *
-     * @param draw whether scroll bar track should be displayed or not
+     * @param paintTrack whether scroll bar track should be displayed or not
      * @return scroll bar
      */
-    public WebScrollBar setDrawTrack ( final boolean draw )
+    public WebScrollBar setPaintTrack ( final boolean paintTrack )
     {
-        getWebUI ().setDrawTrack ( draw );
-        return this;
-    }
-
-    /**
-     * Returns scroll bar track border color.
-     *
-     * @return scroll bar track border color
-     */
-    public Color getTrackBorderColor ()
-    {
-        return getWebUI ().getTrackBorderColor ();
-    }
-
-    /**
-     * Sets scroll bar track border color.
-     *
-     * @param color new scroll bar track border color
-     * @return scroll bar
-     */
-    public WebScrollBar setTrackBorderColor ( final Color color )
-    {
-        getWebUI ().setTrackBorderColor ( color );
-        return this;
-    }
-
-    /**
-     * Returns scroll bar track background color.
-     *
-     * @return scroll bar track background color
-     */
-    public Color getTrackBackgroundColor ()
-    {
-        return getWebUI ().getTrackBackgroundColor ();
-    }
-
-    /**
-     * Sets scroll bar track background color.
-     *
-     * @param color new scroll bar track background color
-     * @return scroll bar
-     */
-    public WebScrollBar setTrackBackgroundColor ( final Color color )
-    {
-        getWebUI ().setTrackBackgroundColor ( color );
-        return this;
-    }
-
-    /**
-     * Returns scroll bar thumb border color.
-     *
-     * @return scroll bar thumb border color
-     */
-    public Color getThumbBorderColor ()
-    {
-        return getWebUI ().getThumbBorderColor ();
-    }
-
-    /**
-     * Sets scroll bar thumb border color.
-     *
-     * @param color new scroll bar thumb border color
-     * @return scroll bar
-     */
-    public WebScrollBar setThumbBorderColor ( final Color color )
-    {
-        getWebUI ().setThumbBorderColor ( color );
-        return this;
-    }
-
-    /**
-     * Returns scroll bar thumb background color.
-     *
-     * @return scroll bar thumb background color
-     */
-    public Color getThumbBackgroundColor ()
-    {
-        return getWebUI ().getThumbBackgroundColor ();
-    }
-
-    /**
-     * Sets scroll bar thumb background color.
-     *
-     * @param color new scroll bar thumb background color
-     * @return scroll bar
-     */
-    public WebScrollBar setThumbBackgroundColor ( final Color color )
-    {
-        getWebUI ().setThumbBackgroundColor ( color );
-        return this;
-    }
-
-    /**
-     * Returns scroll bar thumb disabled border color.
-     *
-     * @return scroll bar thumb disabled border color
-     */
-    public Color getThumbDisabledBorderColor ()
-    {
-        return getWebUI ().getThumbDisabledBorderColor ();
-    }
-
-    /**
-     * Sets scroll bar thumb disabled border color.
-     *
-     * @param color new scroll bar thumb disabled border color
-     * @return scroll bar
-     */
-    public WebScrollBar setThumbDisabledBorderColor ( final Color color )
-    {
-        getWebUI ().setThumbDisabledBorderColor ( color );
-        return this;
-    }
-
-    /**
-     * Returns scroll bar thumb disabled background color.
-     *
-     * @return scroll bar thumb disabled background color
-     */
-    public Color getThumbDisabledBackgroundColor ()
-    {
-        return getWebUI ().getThumbDisabledBackgroundColor ();
-    }
-
-    /**
-     * Sets scroll bar thumb disabled background color.
-     *
-     * @param color new scroll bar thumb disabled background color
-     * @return scroll bar
-     */
-    public WebScrollBar setThumbDisabledBackgroundColor ( final Color color )
-    {
-        getWebUI ().setThumbDisabledBackgroundColor ( color );
-        return this;
-    }
-
-    /**
-     * Returns scroll bar thumb rollover border color.
-     *
-     * @return scroll bar thumb rollover border color
-     */
-    public Color getThumbRolloverBorderColor ()
-    {
-        return getWebUI ().getThumbRolloverBorderColor ();
-    }
-
-    /**
-     * Sets scroll bar thumb rollover border color.
-     *
-     * @param color new scroll bar thumb rollover border color
-     * @return scroll bar
-     */
-    public WebScrollBar setThumbRolloverBorderColor ( final Color color )
-    {
-        getWebUI ().setThumbRolloverBorderColor ( color );
-        return this;
-    }
-
-    /**
-     * Returns scroll bar thumb rollover background color.
-     *
-     * @return scroll bar thumb rollover background color
-     */
-    public Color getThumbRolloverBackgroundColor ()
-    {
-        return getWebUI ().getThumbRolloverBackgroundColor ();
-    }
-
-    /**
-     * Sets scroll bar thumb rollover background color.
-     *
-     * @param color new scroll bar thumb rollover background color
-     * @return scroll bar
-     */
-    public WebScrollBar setThumbRolloverBackgroundColor ( final Color color )
-    {
-        getWebUI ().setThumbRolloverBackgroundColor ( color );
-        return this;
-    }
-
-    /**
-     * Returns scroll bar thumb pressed border color.
-     *
-     * @return scroll bar thumb pressed border color
-     */
-    public Color getThumbPressedBorderColor ()
-    {
-        return getWebUI ().getThumbPressedBorderColor ();
-    }
-
-    /**
-     * Sets scroll bar thumb pressed border color.
-     *
-     * @param color new scroll bar thumb pressed border color
-     * @return scroll bar
-     */
-    public WebScrollBar setThumbPressedBorderColor ( final Color color )
-    {
-        getWebUI ().setThumbPressedBorderColor ( color );
-        return this;
-    }
-
-    /**
-     * Returns scroll bar thumb pressed/dragged background color.
-     *
-     * @return scroll bar thumb pressed/dragged background color
-     */
-    public Color getThumbPressedBackgroundColor ()
-    {
-        return getWebUI ().getThumbPressedBackgroundColor ();
-    }
-
-    /**
-     * Sets scroll bar thumb pressed/dragged background color.
-     *
-     * @param color new scroll bar thumb pressed/dragged background color
-     * @return scroll bar
-     */
-    public WebScrollBar setThumbPressedBackgroundColor ( final Color color )
-    {
-        getWebUI ().setThumbPressedBackgroundColor ( color );
-        return this;
-    }
-
-    /**
-     * Returns scroll bar thumb corners rounding.
-     *
-     * @return scroll bar thumb corners rounding
-     */
-    public int getThumbRound ()
-    {
-        return getWebUI ().getThumbRound ();
-    }
-
-    /**
-     * Sets scroll bar thumb corners rounding.
-     *
-     * @param round new scroll bar thumb corners rounding
-     * @return scroll bar
-     */
-    public WebScrollBar setThumbRound ( final int round )
-    {
-        getWebUI ().setThumbRound ( round );
-        return this;
-    }
-
-    /**
-     * Returns scroll bar thumb margin.
-     *
-     * @return scroll bar thumb margin
-     */
-    public Insets getThumbMargin ()
-    {
-        return getWebUI ().getThumbMargin ();
-    }
-
-    /**
-     * Sets scroll bar thumb margin.
-     *
-     * @param margin new scroll bar thumb margin
-     * @return scroll bar
-     */
-    public WebScrollBar setThumbMargin ( final Insets margin )
-    {
-        getWebUI ().setThumbMargin ( margin );
+        getWebUI ().setPaintTrack ( paintTrack );
         return this;
     }
 
@@ -489,6 +226,24 @@ public class WebScrollBar extends JScrollBar implements SizeMethods<WebScrollBar
     {
         getWebUI ().setIncreaseButtonPainter ( painter );
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getStyleId ()
+    {
+        return getWebUI ().getStyleId ();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setStyleId ( final String id )
+    {
+        getWebUI ().setStyleId ( id );
     }
 
     /**

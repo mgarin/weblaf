@@ -18,6 +18,8 @@
 package com.alee.laf.menu;
 
 import com.alee.laf.StyleConstants;
+import com.alee.managers.style.skin.web.PopupStyle;
+import com.alee.managers.style.skin.web.WebPopupPainterStyle;
 import com.alee.utils.ProprietaryUtils;
 
 import java.awt.*;
@@ -33,7 +35,7 @@ public final class WebPopupMenuStyle
     /**
      * Popup menu style.
      */
-    public static PopupPainterStyle popupPainterStyle = WebPopupPainterStyle.popupPainterStyle;
+    public static PopupStyle popupStyle = WebPopupPainterStyle.popupStyle;
 
     /**
      * Whether should apply dropdown popup menu style to popup menues within menubar.
@@ -64,9 +66,9 @@ public final class WebPopupMenuStyle
     public static int shadeWidth = ProprietaryUtils.isWindowTransparencyAllowed () ? WebPopupPainterStyle.shadeWidth : 0;
 
     /**
-     * Popup menu shade opacity.
+     * Popup menu shade transparency.
      */
-    public static float shadeOpacity = WebPopupPainterStyle.shadeOpacity;
+    public static float shadeTransparency = WebPopupPainterStyle.shadeTransparency;
 
     /**
      * Popup menu dropdown style corner width
@@ -84,7 +86,7 @@ public final class WebPopupMenuStyle
     public static Insets margin = StyleConstants.emptyMargin;
 
     /**
-     * Spacing between different popup menues.
+     * Spacing between different popup menus.
      */
     public static int menuSpacing = 1;
 
@@ -93,7 +95,7 @@ public final class WebPopupMenuStyle
      * If set to true popup menu will try to use best possible location to show up.
      * <p/>
      * This is set to true by default to place menubar and menu popups correctly.
-     * You might want to set this to false for some specific popup menu, not all of them at once.
+     * You might want to set this to false for some specific popup menu, but not all of them at once.
      */
     public static boolean fixLocation = true;
 }

@@ -275,23 +275,23 @@ public class WebButtonGroup extends WebPanel implements SwingConstants
     //            // Ignore affected by parent sides
     //            if ( horizontal )
     //            {
-    //                ui.setDrawLeft ( true );
+    //                ui.setPaintLeft ( true );
     //                ui.setDrawLeftLine ( false );
-    //                ui.setDrawRight ( true );
+    //                ui.setPaintRight ( true );
     //                ui.setDrawRightLine ( false );
     //            }
     //            else
     //            {
-    //                ui.setDrawTop ( true );
+    //                ui.setPaintTop ( true );
     //                ui.setDrawTopLine ( false );
-    //                ui.setDrawBottom ( true );
+    //                ui.setPaintBottom ( true );
     //                ui.setDrawBottomLine ( false );
     //            }
     //        }
     //        else
     //        {
     //            // Restore all sides
-    //            ui.setDrawSides ( true, true, true, true );
+    //            ui.setPaintSides ( true, true, true, true );
     //            ui.setDrawLines ( false, false, false, false );
     //        }
     //    }

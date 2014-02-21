@@ -48,39 +48,39 @@ public class PartialPanelsExample extends DefaultExample implements SwingConstan
     }
 
     @Override
-    public Component getPreview ( WebLookAndFeelDemo owner )
+    public Component getPreview ( final WebLookAndFeelDemo owner )
     {
         return new GroupPanel ( createFirstPanel (), createSecondPanel () );
     }
 
     private WebPanel createFirstPanel ()
     {
-        WebPanel panel = new WebPanel ();
+        final WebPanel panel = new WebPanel ();
         panel.setUndecorated ( false );
         panel.setLayout ( new BorderLayout () );
-        panel.setWebColored ( false );
+        panel.setWebColoredBackground ( false );
 
-        WebPanel northPanel = new WebPanel ();
-        northPanel.setDrawSides ( false, false, true, false );
+        final WebPanel northPanel = new WebPanel ();
+        northPanel.setPaintSides ( false, false, true, false );
         setupPanel ( northPanel, NORTH );
         panel.add ( northPanel, BorderLayout.NORTH );
 
-        WebPanel southPanel = new WebPanel ();
-        southPanel.setDrawSides ( true, false, false, false );
+        final WebPanel southPanel = new WebPanel ();
+        southPanel.setPaintSides ( true, false, false, false );
         setupPanel ( southPanel, SOUTH );
         panel.add ( southPanel, BorderLayout.SOUTH );
 
-        WebPanel leadingPanel = new WebPanel ();
-        leadingPanel.setDrawLeft ( false );
+        final WebPanel leadingPanel = new WebPanel ();
+        leadingPanel.setPaintLeft ( false );
         setupPanel ( leadingPanel, WEST );
         panel.add ( leadingPanel, BorderLayout.LINE_START );
 
-        WebPanel trailingPanel = new WebPanel ();
-        trailingPanel.setDrawRight ( false );
+        final WebPanel trailingPanel = new WebPanel ();
+        trailingPanel.setPaintRight ( false );
         setupPanel ( trailingPanel, EAST );
         panel.add ( trailingPanel, BorderLayout.LINE_END );
 
-        WebPanel centerPanel = new WebPanel ();
+        final WebPanel centerPanel = new WebPanel ();
         setupPanel ( centerPanel, CENTER );
         panel.add ( centerPanel, BorderLayout.CENTER );
 
@@ -89,40 +89,40 @@ public class PartialPanelsExample extends DefaultExample implements SwingConstan
 
     private WebPanel createSecondPanel ()
     {
-        WebPanel panel = new WebPanel ();
+        final WebPanel panel = new WebPanel ();
         panel.setUndecorated ( false );
         panel.setLayout ( new TableLayout ( new double[][]{ { TableLayout.PREFERRED, TableLayout.FILL, TableLayout.PREFERRED },
                 { TableLayout.PREFERRED, TableLayout.FILL, TableLayout.PREFERRED } } ) );
-        panel.setWebColored ( false );
+        panel.setWebColoredBackground ( false );
 
-        WebPanel northPanel = new WebPanel ();
-        northPanel.setDrawSides ( false, false, true, true );
+        final WebPanel northPanel = new WebPanel ();
+        northPanel.setPaintSides ( false, false, true, true );
         setupPanel ( northPanel, NORTH );
         panel.add ( northPanel, "0,0,1,0" );
 
-        WebPanel southPanel = new WebPanel ();
-        southPanel.setDrawSides ( true, true, false, false );
+        final WebPanel southPanel = new WebPanel ();
+        southPanel.setPaintSides ( true, true, false, false );
         setupPanel ( southPanel, SOUTH );
         panel.add ( southPanel, "1,2,2,2" );
 
-        WebPanel leadingPanel = new WebPanel ();
-        leadingPanel.setDrawSides ( true, false, false, true );
+        final WebPanel leadingPanel = new WebPanel ();
+        leadingPanel.setPaintSides ( true, false, false, true );
         setupPanel ( leadingPanel, WEST );
         panel.add ( leadingPanel, "0,1,0,2" );
 
-        WebPanel trailingPanel = new WebPanel ();
-        trailingPanel.setDrawSides ( false, true, true, false );
+        final WebPanel trailingPanel = new WebPanel ();
+        trailingPanel.setPaintSides ( false, true, true, false );
         setupPanel ( trailingPanel, EAST );
         panel.add ( trailingPanel, "2,0,2,1" );
 
-        WebPanel centerPanel = new WebPanel ();
+        final WebPanel centerPanel = new WebPanel ();
         setupPanel ( centerPanel, CENTER );
         panel.add ( centerPanel, "1,1" );
 
         return panel;
     }
 
-    private void setupPanel ( WebPanel panel, int location )
+    private void setupPanel ( final WebPanel panel, final int location )
     {
         // Decoration settings
         panel.setUndecorated ( false );

@@ -36,10 +36,22 @@ import java.util.Map;
 public final class ComponentStyle implements Serializable
 {
     /**
-     * Style component ID.
-     * Refers to component that should be styled.
+     * Style component type.
+     * Refers to component type this style belongs to.
      */
-    private SupportedComponent id;
+    private SupportedComponent type;
+
+    /**
+     * Unique component style ID.
+     * Default component style always has "default" ID.
+     */
+    private String id;
+
+    /**
+     * Another component style ID which is extended by this style.
+     * You can specify any existing style ID here to extend it.
+     */
+    private String extendsId;
 
     /**
      * Component settings.
@@ -67,14 +79,34 @@ public final class ComponentStyle implements Serializable
         super ();
     }
 
-    public SupportedComponent getId ()
+    public SupportedComponent getType ()
+    {
+        return type;
+    }
+
+    public void setType ( final SupportedComponent type )
+    {
+        this.type = type;
+    }
+
+    public String getId ()
     {
         return id;
     }
 
-    public void setId ( final SupportedComponent id )
+    public void setId ( final String id )
     {
         this.id = id;
+    }
+
+    public String getExtendsId ()
+    {
+        return extendsId;
+    }
+
+    public void setExtendsId ( final String id )
+    {
+        this.extendsId = id;
     }
 
     public Map<String, Object> getComponentProperties ()
@@ -105,5 +137,24 @@ public final class ComponentStyle implements Serializable
     public void setPainters ( final List<PainterStyle> painters )
     {
         this.painters = painters;
+    }
+
+    public PainterStyle getBasePainter ()
+    {
+        if ( painters.size () == 1 )
+        {
+            return painters.get ( 0 );
+        }
+        else
+        {
+            for ( final PainterStyle painter : painters )
+            {
+                if ( painter.isBase () )
+                {
+                    return painter;
+                }
+            }
+            return null;
+        }
     }
 }

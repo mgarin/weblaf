@@ -42,16 +42,16 @@ public class WebBreadcrumb extends WebPanel
         this ( true );
     }
 
-    public WebBreadcrumb ( boolean decorated )
+    public WebBreadcrumb ( final boolean decorated )
     {
         super ( decorated, BreadcrumbUtils.createDefaultLayout () );
 
-        setDrawFocus ( true );
+        setPaintFocus ( true );
 
         addContainerListener ( new ContainerListener ()
         {
             @Override
-            public void componentAdded ( ContainerEvent e )
+            public void componentAdded ( final ContainerEvent e )
             {
                 if ( autoUpdate )
                 {
@@ -61,7 +61,7 @@ public class WebBreadcrumb extends WebPanel
             }
 
             @Override
-            public void componentRemoved ( ContainerEvent e )
+            public void componentRemoved ( final ContainerEvent e )
             {
                 if ( autoUpdate )
                 {
@@ -76,7 +76,7 @@ public class WebBreadcrumb extends WebPanel
         return autoUpdate;
     }
 
-    protected void setAutoUpdate ( boolean autoUpdate )
+    protected void setAutoUpdate ( final boolean autoUpdate )
     {
         this.autoUpdate = autoUpdate;
     }
@@ -86,7 +86,7 @@ public class WebBreadcrumb extends WebPanel
         return elementOverlap;
     }
 
-    public WebBreadcrumb setElementOverlap ( int overlap )
+    public WebBreadcrumb setElementOverlap ( final int overlap )
     {
         this.elementOverlap = overlap;
         getBreadcrumbLayout ().setOverlap ( overlap + WebBreadcrumbStyle.shadeWidth );
@@ -99,17 +99,17 @@ public class WebBreadcrumb extends WebPanel
         return elementMargin;
     }
 
-    public WebBreadcrumb setElementMargin ( int spacing )
+    public WebBreadcrumb setElementMargin ( final int spacing )
     {
         return setElementMargin ( spacing, spacing, spacing, spacing );
     }
 
-    public WebBreadcrumb setElementMargin ( int top, int left, int bottom, int right )
+    public WebBreadcrumb setElementMargin ( final int top, final int left, final int bottom, final int right )
     {
         return setElementMargin ( new Insets ( top, left, bottom, right ) );
     }
 
-    public WebBreadcrumb setElementMargin ( Insets margin )
+    public WebBreadcrumb setElementMargin ( final Insets margin )
     {
         this.elementMargin = margin;
         updateElements ();
@@ -121,7 +121,7 @@ public class WebBreadcrumb extends WebPanel
         return encloseLastElement;
     }
 
-    public void setEncloseLastElement ( boolean encloseLastElement )
+    public void setEncloseLastElement ( final boolean encloseLastElement )
     {
         this.encloseLastElement = encloseLastElement;
         updateElementTypes ();
@@ -141,14 +141,14 @@ public class WebBreadcrumb extends WebPanel
     protected void updateElements ()
     {
         // Updating all elements settings
-        for ( Component element : getComponents () )
+        for ( final Component element : getComponents () )
         {
             updateElement ( element );
         }
         updateBreadcrumb ();
     }
 
-    protected void updateElement ( Component element )
+    protected void updateElement ( final Component element )
     {
         // Updating added component and its childs orientation
         SwingUtils.copyOrientation ( WebBreadcrumb.this, element );
@@ -156,7 +156,7 @@ public class WebBreadcrumb extends WebPanel
         // Updating standart properties
         if ( element instanceof BreadcrumbElement )
         {
-            BreadcrumbElement be = ( BreadcrumbElement ) element;
+            final BreadcrumbElement be = ( BreadcrumbElement ) element;
             updateElementType ( element, be );
             be.setOverlap ( elementOverlap );
             be.setMargin ( elementMargin );
@@ -166,7 +166,7 @@ public class WebBreadcrumb extends WebPanel
     protected void updateElementTypes ()
     {
         // Updating element types
-        for ( Component element : getComponents () )
+        for ( final Component element : getComponents () )
         {
             if ( element instanceof BreadcrumbElement )
             {
@@ -177,11 +177,11 @@ public class WebBreadcrumb extends WebPanel
         updateBreadcrumb ();
     }
 
-    protected void updateElementType ( Component element, BreadcrumbElement be )
+    protected void updateElementType ( final Component element, final BreadcrumbElement be )
     {
         // Updating element type
-        int index = getComponentZOrder ( element );
-        int last = getComponentCount () - 1;
+        final int index = getComponentZOrder ( element );
+        final int last = getComponentCount () - 1;
         if ( last == 0 && !encloseLastElement )
         {
             be.setType ( BreadcrumbElementType.none );

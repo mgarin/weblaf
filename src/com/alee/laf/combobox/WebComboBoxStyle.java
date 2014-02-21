@@ -73,6 +73,7 @@ public final class WebComboBoxStyle
 
     /**
      * Scroll bar thumb corners rounding.
+     * todo Not used, but should be specified under combobox style XML later
      */
     public static int scrollBarThumbRound = 4;
 

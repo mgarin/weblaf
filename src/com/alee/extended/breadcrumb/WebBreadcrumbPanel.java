@@ -36,49 +36,49 @@ public class WebBreadcrumbPanel extends WebPanel implements BreadcrumbElement<We
         initialize ();
     }
 
-    public WebBreadcrumbPanel ( boolean decorated )
+    public WebBreadcrumbPanel ( final boolean decorated )
     {
         super ( decorated );
         initialize ();
     }
 
-    public WebBreadcrumbPanel ( boolean decorated, LayoutManager layout )
+    public WebBreadcrumbPanel ( final boolean decorated, final LayoutManager layout )
     {
         super ( decorated, layout );
         initialize ();
     }
 
-    public WebBreadcrumbPanel ( boolean decorated, Component component )
+    public WebBreadcrumbPanel ( final boolean decorated, final Component component )
     {
         super ( decorated, component );
         initialize ();
     }
 
-    public WebBreadcrumbPanel ( Component component )
+    public WebBreadcrumbPanel ( final Component component )
     {
         super ( component );
         initialize ();
     }
 
-    public WebBreadcrumbPanel ( Painter painter )
+    public WebBreadcrumbPanel ( final Painter painter )
     {
         super ( painter );
         initialize ();
     }
 
-    public WebBreadcrumbPanel ( Painter painter, Component component )
+    public WebBreadcrumbPanel ( final Painter painter, final Component component )
     {
         super ( painter, component );
         initialize ();
     }
 
-    public WebBreadcrumbPanel ( LayoutManager layout )
+    public WebBreadcrumbPanel ( final LayoutManager layout )
     {
         super ( layout );
         initialize ();
     }
 
-    public WebBreadcrumbPanel ( LayoutManager layout, boolean isDoubleBuffered )
+    public WebBreadcrumbPanel ( final LayoutManager layout, final boolean isDoubleBuffered )
     {
         super ( layout, isDoubleBuffered );
         initialize ();
@@ -96,7 +96,7 @@ public class WebBreadcrumbPanel extends WebPanel implements BreadcrumbElement<We
      * {@inheritDoc}
      */
     @Override
-    public void setType ( BreadcrumbElementType type )
+    public void setType ( final BreadcrumbElementType type )
     {
         painter.setType ( type );
     }
@@ -105,7 +105,7 @@ public class WebBreadcrumbPanel extends WebPanel implements BreadcrumbElement<We
      * {@inheritDoc}
      */
     @Override
-    public void setOverlap ( int overlap )
+    public void setOverlap ( final int overlap )
     {
         painter.setOverlap ( overlap );
     }
@@ -114,7 +114,7 @@ public class WebBreadcrumbPanel extends WebPanel implements BreadcrumbElement<We
      * {@inheritDoc}
      */
     @Override
-    public void setShowProgress ( boolean showProgress )
+    public void setShowProgress ( final boolean showProgress )
     {
         painter.setShowProgress ( showProgress );
     }
@@ -123,7 +123,7 @@ public class WebBreadcrumbPanel extends WebPanel implements BreadcrumbElement<We
      * {@inheritDoc}
      */
     @Override
-    public void setProgress ( float progress )
+    public void setProgress ( final float progress )
     {
         painter.setProgress ( progress );
     }
@@ -141,7 +141,7 @@ public class WebBreadcrumbPanel extends WebPanel implements BreadcrumbElement<We
      * {@inheritDoc}
      */
     @Override
-    public boolean contains ( int x, int y )
+    public boolean contains ( final int x, final int y )
     {
         return BreadcrumbUtils.contains ( x, y, this );
     }

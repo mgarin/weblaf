@@ -36,6 +36,11 @@ public final class PainterStyle implements Serializable
     private String id;
 
     /**
+     * Whether this is base component painter or not.
+     */
+    private boolean base;
+
+    /**
      * Painter class canonical name.
      * Used for painter instantiation.
      */
@@ -63,6 +68,16 @@ public final class PainterStyle implements Serializable
     public void setId ( final String id )
     {
         this.id = id;
+    }
+
+    public boolean isBase ()
+    {
+        return base;
+    }
+
+    public void setBase ( final boolean base )
+    {
+        this.base = base;
     }
 
     public String getPainterClass ()

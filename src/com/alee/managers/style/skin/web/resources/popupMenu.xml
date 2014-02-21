@@ -1,0 +1,16 @@
+<skin>
+
+    <!-- JPopupMenu styling -->
+    <style type="popupMenu" id="default">
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebPopupMenuPainter">
+            <popupPainterStyle>dropdown</popupPainterStyle>
+            <borderColor>128,128,128,128</borderColor>
+            <round>4</round>
+            <shadeWidth>12</shadeWidth>
+            <shadeOpacity>0.75</shadeOpacity>
+            <cornerWidth>6</cornerWidth>
+            <transparency>0.95</transparency>
+        </painter>
+    </style>
+
+</skin>

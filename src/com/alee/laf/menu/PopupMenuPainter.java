@@ -17,94 +17,69 @@
 
 package com.alee.laf.menu;
 
+import com.alee.extended.painter.Painter;
+
 import javax.swing.*;
 import java.awt.*;
 
 /**
- * Base painter for JPopupMenu component.
- * It is used as WebPopupMenuUI default styling.
+ * Base interface for JPopupMenu component painters.
  *
  * @author Mikle Garin
  */
 
-public class PopupMenuPainter<E extends JPopupMenu> extends WebPopupPainter<E>
+public interface PopupMenuPainter<E extends JPopupMenu> extends Painter<E>
 {
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Insets getMargin ( final E c )
-    {
-        final Insets margin = super.getMargin ( c );
-        margin.top += round;
-        margin.bottom += round;
-        return margin;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected void paintTransparentPopup ( final Graphics2D g2d, final E popupMenu )
-    {
-        final Dimension menuSize = popupMenu.getSize ();
-
-        // Painting shade
-        paintShade ( g2d, popupMenu, menuSize );
-
-        // Painting background
-        paintBackground ( g2d, popupMenu, menuSize );
-
-        // Painting dropdown corner fill
-        // This is a specific for WebPopupMenuUI feature
-        paintDropdownCornerFill ( g2d, popupMenu, menuSize );
-
-        // Painting border
-        paintBorder ( g2d, popupMenu, menuSize );
-    }
-
-    /**
-     * Paints dropdown-styled popup menu corner fill if menu item near it is selected.
+     * Sets whether popup menu is transparent or not.
+     * This mark is updated only once per component as it is initialized on UI initialization only.
      *
-     * @param g2d       graphics context
-     * @param popupMenu popup menu
-     * @param menuSize  menu size
+     * @param transparent whether popup menu is transparent or not
      */
-    protected void paintDropdownCornerFill ( final Graphics2D g2d, final E popupMenu, final Dimension menuSize )
-    {
-        // Checking whether corner should be filled or not
-        if ( popupPainterStyle == PopupPainterStyle.dropdown && round == 0 )
-        {
-            // Check that menu item is attached to menu side
-            final boolean north = cornerSide == NORTH;
-            final WebPopupMenuUI pmui = ( WebPopupMenuUI ) popupMenu.getUI ();
-            final boolean stick = north ? ( pmui.getMargin ().top + margin.top == 0 ) : ( pmui.getMargin ().bottom + margin.bottom == 0 );
-            if ( stick )
-            {
-                // Checking that we can actually retrieve what item wants to fill corner with
-                final int zIndex = north ? 0 : popupMenu.getComponentCount () - 1;
-                final Component component = popupMenu.getComponent ( zIndex );
-                if ( component instanceof JMenuItem )
-                {
-                    final JMenuItem menuItem = ( JMenuItem ) component;
-                    if ( menuItem.isEnabled () && ( menuItem.getModel ().isArmed () || menuItem.isSelected () ) )
-                    {
-                        // Filling corner properly
-                        if ( menuItem.getUI () instanceof WebMenuUI )
-                        {
-                            final WebMenuUI ui = ( WebMenuUI ) menuItem.getUI ();
-                            g2d.setPaint ( north ? ui.getNorthCornerFill () : ui.getSouthCornerFill () );
-                            g2d.fill ( getDropdownCornerShape ( popupMenu, menuSize, true ) );
-                        }
-                        else if ( menuItem.getUI () instanceof WebMenuItemUI )
-                        {
-                            final WebMenuItemUI ui = ( WebMenuItemUI ) menuItem.getUI ();
-                            g2d.setPaint ( north ? ui.getNorthCornerFill () : ui.getSouthCornerFill () );
-                            g2d.fill ( getDropdownCornerShape ( popupMenu, menuSize, true ) );
-                        }
-                    }
-                }
-            }
-        }
-    }
+    public void setTransparent ( boolean transparent );
+
+    /**
+     * Sets spacing between popup menus.
+     *
+     * @param spacing spacing between popup menus
+     */
+    public void setMenuSpacing ( int spacing );
+
+    /**
+     * Sets whether should fix initial popup menu location or not.
+     * If set to true popup menu will try to use best possible location to show up.
+     * <p/>
+     * This is set to true by default to place menubar and menu popups correctly.
+     * You might want to set this to false for some specific popup menu, but not all of them at once.
+     *
+     * @param fix whether should fix initial popup menu location or not
+     */
+    public void setFixLocation ( boolean fix );
+
+    /**
+     * Sets preferred popup menu display way.
+     * This value is updated right before preparePopupMenu method call.
+     *
+     * @param way preferred popup menu display way
+     */
+    public void setPopupMenuWay ( PopupMenuWay way );
+
+    /**
+     * Sets popup menu type.
+     * This value is updated right before popup menu window becomes visible.
+     * You can use it to draw different popup menu decoration for each popup menu type.
+     *
+     * @param type popup menu type
+     */
+    public void setPopupMenuType ( final PopupMenuType type );
+
+    /**
+     * Prepares popup menu to be displayed.
+     *
+     * @param popupMenu JPopupMenu to prepare for display
+     * @param x         screen x location actual popup is to be shown at
+     * @param y         screen y location actual popup is to be shown at
+     * @return modified popup display location
+     */
+    public Point preparePopupMenu ( E popupMenu, Component invoker, int x, int y );
 }

@@ -129,7 +129,7 @@ public class LibraryInfoDialog extends WebFrame
      * @param component tab content
      * @return tabbed pane separator
      */
-    private Component createTabSeparator ( Component component )
+    private Component createTabSeparator ( final Component component )
     {
         final WebPanel content = new WebPanel ();
         content.add ( new TabAreaSeparator (), BorderLayout.NORTH );
@@ -149,7 +149,7 @@ public class LibraryInfoDialog extends WebFrame
          * @param g graphics
          */
         @Override
-        protected void paintComponent ( Graphics g )
+        protected void paintComponent ( final Graphics g )
         {
             g.setColor ( StyleConstants.backgroundColor );
             g.fillRect ( 0, 0, getWidth (), getHeight () - 1 );
@@ -179,8 +179,8 @@ public class LibraryInfoDialog extends WebFrame
         final WebPanel content = new WebPanel ( new VerticalFlowLayout ( 30, 30 ) );
         content.setMargin ( 60, 70, 60, 70 );
         content.setUndecorated ( false );
-        content.setWebColored ( true );
-        content.setDrawSides ( false, false, false, false );
+        content.setWebColoredBackground ( true );
+        content.setPaintSides ( false, false, false, false );
 
         content.add ( createLibraryVersionPanel () );
         content.add ( new WebSeparator ( false, WebSeparator.HORIZONTAL ) );
@@ -304,13 +304,13 @@ public class LibraryInfoDialog extends WebFrame
                                 HotkeyManager.registerHotkey ( textArea, Hotkey.ESCAPE, new HotkeyRunnable ()
                                 {
                                     @Override
-                                    public void run ( KeyEvent e )
+                                    public void run ( final KeyEvent e )
                                     {
                                         licensePopup.hidePopup ();
                                     }
                                 } );
                             }
-                            catch ( IOException e )
+                            catch ( final IOException e )
                             {
                                 e.printStackTrace ();
                             }
@@ -341,7 +341,7 @@ public class LibraryInfoDialog extends WebFrame
             scrollPane.setPreferredHeight ( 0 );
             return scrollPane;
         }
-        catch ( Throwable e )
+        catch ( final Throwable e )
         {
             e.printStackTrace ();
             return createErrorLibrariesTab ();
@@ -354,7 +354,7 @@ public class LibraryInfoDialog extends WebFrame
      * @param librariesUrlText libraries data file content
      * @return parsed libraries data
      */
-    private Map<String, String> parseUrls ( String librariesUrlText )
+    private Map<String, String> parseUrls ( final String librariesUrlText )
     {
         final Map<String, String> librariesUrl = new HashMap<String, String> ();
         final StringTokenizer st = new StringTokenizer ( librariesUrlText, "\n", false );
@@ -396,11 +396,11 @@ public class LibraryInfoDialog extends WebFrame
             @Override
             public void languageUpdated ()
             {
-                int[] selection = propertiesTable.getSelectedRows ();
+                final int[] selection = propertiesTable.getSelectedRows ();
 
                 model.setColumnIdentifiers ( getPropertiesTableColumnNames () );
 
-                for ( int s : selection )
+                for ( final int s : selection )
                 {
                     propertiesTable.addRowSelectionInterval ( s, s );
                 }
@@ -429,7 +429,7 @@ public class LibraryInfoDialog extends WebFrame
         final Properties properties = System.getProperties ();
         final Object[][] data = new Object[ properties.size () ][ 2 ];
         int i = 0;
-        for ( Map.Entry entry : properties.entrySet () )
+        for ( final Map.Entry entry : properties.entrySet () )
         {
             data[ i ][ 0 ] = entry.getKey ();
             data[ i ][ 1 ] = entry.getValue ();
@@ -438,7 +438,7 @@ public class LibraryInfoDialog extends WebFrame
         Arrays.sort ( data, new Comparator<Object[]> ()
         {
             @Override
-            public int compare ( Object[] o1, Object[] o2 )
+            public int compare ( final Object[] o1, final Object[] o2 )
             {
                 return ( ( String ) o1[ 0 ] ).compareTo ( ( String ) o2[ 0 ] );
             }
@@ -451,7 +451,7 @@ public class LibraryInfoDialog extends WebFrame
      *
      * @param args launch arguments
      */
-    public static void main ( String[] args )
+    public static void main ( final String[] args )
     {
         // L&F
         WebLookAndFeel.install ();
@@ -460,7 +460,7 @@ public class LibraryInfoDialog extends WebFrame
         HotkeyManager.registerHotkey ( Hotkey.ALT_R, new HotkeyRunnable ()
         {
             @Override
-            public void run ( KeyEvent e )
+            public void run ( final KeyEvent e )
             {
                 WebLookAndFeel.changeOrientation ();
             }
@@ -470,7 +470,7 @@ public class LibraryInfoDialog extends WebFrame
         HotkeyManager.registerHotkey ( Hotkey.ALT_L, new HotkeyRunnable ()
         {
             @Override
-            public void run ( KeyEvent e )
+            public void run ( final KeyEvent e )
             {
                 final String current = LanguageManager.getLanguage ();
                 final List<String> supported = LanguageManager.getSupportedLanguages ();

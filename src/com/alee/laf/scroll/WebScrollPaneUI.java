@@ -55,7 +55,9 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeProvider
     private boolean drawFocus = WebScrollPaneStyle.drawFocus;
     private boolean drawBackground = WebScrollPaneStyle.drawBackground;
 
-    private WebScrollPaneCorner corner;
+    private WebScrollPaneCorner lowerTrailing;
+    private WebScrollPaneCorner lowerLeading;
+    private WebScrollPaneCorner upperTrailing;
     private PropertyChangeListener propertyChangeListener;
 
     /**
@@ -81,16 +83,23 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeProvider
         LookAndFeel.installProperty ( scrollpane, WebLookAndFeel.OPAQUE_PROPERTY, Boolean.FALSE );
         scrollpane.setBackground ( StyleConstants.backgroundColor );
 
+        // Updating scroll bars
+        // todo Remove these when scroll pane painter will be completed
         final ScrollBarUI vui = scrollpane.getVerticalScrollBar ().getUI ();
         if ( vui instanceof WebScrollBarUI )
         {
-            ( ( WebScrollBarUI ) vui ).setDrawTrack ( drawBorder );
+            final WebScrollBarUI ui = ( WebScrollBarUI ) vui;
+            ui.setPaintTrack ( drawBorder );
         }
         final ScrollBarUI hui = scrollpane.getHorizontalScrollBar ().getUI ();
         if ( hui instanceof WebScrollBarUI )
         {
-            ( ( WebScrollBarUI ) hui ).setDrawTrack ( drawBorder );
+            final WebScrollBarUI ui = ( WebScrollBarUI ) hui;
+            ui.setPaintTrack ( drawBorder );
         }
+
+        // Special
+        LafUtils.setScrollBarStyleId ( scrollpane, "scroll-pane" );
 
         //        // Shade layer
         //        final WebPanel shadeLayer = new WebPanel ( new AbstractPainter ()
@@ -138,13 +147,17 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeProvider
         updateBorder ();
 
         // Styled scroll pane corner
-        scrollpane.setCorner ( JScrollPane.LOWER_TRAILING_CORNER, getCornerComponent () );
+        scrollpane.setCorner ( JScrollPane.LOWER_LEADING_CORNER, getLowerLeadingCorner () );
+        scrollpane.setCorner ( JScrollPane.LOWER_TRAILING_CORNER, getLowerTrailingCorner () );
+        scrollpane.setCorner ( JScrollPane.UPPER_TRAILING_CORNER, getUpperTrailing () );
         propertyChangeListener = new PropertyChangeListener ()
         {
             @Override
             public void propertyChange ( final PropertyChangeEvent evt )
             {
-                scrollpane.setCorner ( JScrollPane.LOWER_TRAILING_CORNER, getCornerComponent () );
+                scrollpane.setCorner ( JScrollPane.LOWER_LEADING_CORNER, getLowerLeadingCorner () );
+                scrollpane.setCorner ( JScrollPane.LOWER_TRAILING_CORNER, getLowerTrailingCorner () );
+                scrollpane.setCorner ( JScrollPane.UPPER_TRAILING_CORNER, getUpperTrailing () );
             }
         };
         scrollpane.addPropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, propertyChangeListener );
@@ -172,20 +185,40 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeProvider
     public void uninstallUI ( final JComponent c )
     {
         scrollpane.removePropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, propertyChangeListener );
-        scrollpane.remove ( getCornerComponent () );
+        scrollpane.remove ( getLowerLeadingCorner () );
+        scrollpane.remove ( getLowerTrailingCorner () );
+        scrollpane.remove ( getUpperTrailing () );
 
         FocusManager.removeFocusTracker ( focusTracker );
 
         super.uninstallUI ( c );
     }
 
-    private WebScrollPaneCorner getCornerComponent ()
+    private WebScrollPaneCorner getLowerLeadingCorner ()
     {
-        if ( corner == null )
+        if ( lowerLeading == null )
         {
-            corner = new WebScrollPaneCorner ();
+            lowerLeading = new WebScrollPaneCorner ( JScrollPane.LOWER_LEADING_CORNER );
         }
-        return corner;
+        return lowerLeading;
+    }
+
+    private WebScrollPaneCorner getLowerTrailingCorner ()
+    {
+        if ( lowerTrailing == null )
+        {
+            lowerTrailing = new WebScrollPaneCorner ( JScrollPane.LOWER_TRAILING_CORNER );
+        }
+        return lowerTrailing;
+    }
+
+    private WebScrollPaneCorner getUpperTrailing ()
+    {
+        if ( upperTrailing == null )
+        {
+            upperTrailing = new WebScrollPaneCorner ( JScrollPane.UPPER_TRAILING_CORNER );
+        }
+        return upperTrailing;
     }
 
     @Override

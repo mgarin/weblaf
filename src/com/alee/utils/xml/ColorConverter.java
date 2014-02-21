@@ -38,6 +38,10 @@ public class ColorConverter extends AbstractSingleValueConverter
 
     static
     {
+        // Special value for null color
+        defaultColors.put ( "null", null );
+
+        // Standard Swing color set
         defaultColors.put ( "black", Color.BLACK );
         defaultColors.put ( "white", Color.WHITE );
         defaultColors.put ( "red", Color.RED );

@@ -31,7 +31,6 @@ package com.alee.utils.swing;
  * @see com.alee.utils.swing.FontMethods
  * @see com.alee.utils.swing.BorderMethods
  * @see com.alee.utils.swing.WindowMethods
- * @see com.alee.utils.swing.PainterMethods
  */
 
 public interface SwingMethods

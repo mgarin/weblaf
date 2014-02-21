@@ -18,6 +18,7 @@
 package com.alee.laf.panel;
 
 import com.alee.extended.painter.Painter;
+import com.alee.extended.painter.PartialDecoration;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.language.LanguageContainerMethods;
 import com.alee.managers.language.LanguageManager;
@@ -25,6 +26,7 @@ import com.alee.utils.ReflectUtils;
 import com.alee.utils.SizeUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.laf.ShapeProvider;
+import com.alee.utils.laf.Styleable;
 import com.alee.utils.swing.SizeMethods;
 
 import javax.swing.*;
@@ -32,28 +34,55 @@ import java.awt.*;
 import java.util.List;
 
 /**
- * User: mgarin Date: 26.07.11 Time: 13:12
+ * This JPanel extension class provides a direct access to WebPanelUI methods.
+ * By default WebPanel uses BorderLayout instead of FlowLayout (unlike JPanel).
+ * <p/>
+ * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
+ * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
+ *
+ * @author Mikle Garin
  */
 
-public class WebPanel extends JPanel implements ShapeProvider, SizeMethods<WebPanel>, LanguageContainerMethods
+public class WebPanel extends JPanel implements Styleable, ShapeProvider, PartialDecoration, SizeMethods<WebPanel>, LanguageContainerMethods
 {
+    /**
+     * Constructs new panel.
+     */
     public WebPanel ()
     {
         super ( new BorderLayout () );
     }
 
+    /**
+     * Constructs new panel which is either decorated or undecorated.
+     *
+     * @param decorated whether panel should be decorated or not
+     */
     public WebPanel ( final boolean decorated )
     {
         super ( new BorderLayout () );
         setUndecorated ( !decorated );
     }
 
+    /**
+     * Constructs new panel with the specified layout which is either decorated or undecorated.
+     *
+     * @param decorated whether panel should be decorated or not
+     * @param layout    panel layout
+     */
     public WebPanel ( final boolean decorated, final LayoutManager layout )
     {
         super ( layout );
         setUndecorated ( !decorated );
     }
 
+    /**
+     * Constructs new panel which is either decorated or undecorated.
+     * Also the specified component is automatically added into panel's center area.
+     *
+     * @param decorated whether panel should be decorated or not
+     * @param component component to add into the panel
+     */
     public WebPanel ( final boolean decorated, final Component component )
     {
         super ( new BorderLayout () );
@@ -61,24 +90,47 @@ public class WebPanel extends JPanel implements ShapeProvider, SizeMethods<WebPa
         add ( component, BorderLayout.CENTER );
     }
 
+    /**
+     * Constructs new panel with the specified component automatically added into panel's center area.
+     *
+     * @param component component to add into the panel
+     */
     public WebPanel ( final Component component )
     {
         super ( new BorderLayout () );
         add ( component, BorderLayout.CENTER );
     }
 
+    /**
+     * Constructs new panel with the specified painter.
+     *
+     * @param painter panel painter
+     */
     public WebPanel ( final Painter painter )
     {
         super ( new BorderLayout () );
         setPainter ( painter );
     }
 
+    /**
+     * Constructs new panel with the specified layout and painter.
+     *
+     * @param layout  panel layout
+     * @param painter panel painter
+     */
     public WebPanel ( final LayoutManager layout, final Painter painter )
     {
         super ( layout );
         setPainter ( painter );
     }
 
+    /**
+     * Constructs new panel with the specified painter.
+     * Also the specified component is automatically added into panel's center area.
+     *
+     * @param painter   panel painter
+     * @param component component to add into the panel
+     */
     public WebPanel ( final Painter painter, final Component component )
     {
         super ( new BorderLayout () );
@@ -86,6 +138,14 @@ public class WebPanel extends JPanel implements ShapeProvider, SizeMethods<WebPa
         add ( component, BorderLayout.CENTER );
     }
 
+    /**
+     * Constructs new panel with the specified layout and painter.
+     * Also the specified components are automatically added into panel's center area.
+     *
+     * @param layout     panel layout
+     * @param painter    panel painter
+     * @param components components to add into panel
+     */
     public WebPanel ( final LayoutManager layout, final Painter painter, final Component... components )
     {
         super ( layout );
@@ -93,16 +153,34 @@ public class WebPanel extends JPanel implements ShapeProvider, SizeMethods<WebPa
         add ( components );
     }
 
+    /**
+     * Constructs new panel with the specified layout.
+     *
+     * @param layout panel layout
+     */
     public WebPanel ( final LayoutManager layout )
     {
         super ( layout );
     }
 
+    /**
+     * Constructs new panel with the specified layout and double-buffered mark.
+     *
+     * @param layout           panel layout
+     * @param isDoubleBuffered whether panel should be double-buffered or not
+     */
     public WebPanel ( final LayoutManager layout, final boolean isDoubleBuffered )
     {
         super ( layout, isDoubleBuffered );
     }
 
+    /**
+     * Constructs new panel with the specified layout.
+     * Also the specified components are automatically added into panel's center area.
+     *
+     * @param layout     panel layout
+     * @param components components to add into panel
+     */
     public WebPanel ( final LayoutManager layout, final Component... components )
     {
         super ( layout );
@@ -110,10 +188,37 @@ public class WebPanel extends JPanel implements ShapeProvider, SizeMethods<WebPa
     }
 
     /**
-     * Additional childs interaction methods
+     * onstructs new panel with the specified style ID.
+     *
+     * @param styleId style ID
      */
+    public WebPanel ( final String styleId )
+    {
+        super ( new BorderLayout () );
+        setStyleId ( styleId );
+    }
 
-    public void add ( final List<? extends Component> components, final int index )
+    /**
+     * onstructs new panel with the specified style ID.
+     *
+     * @param styleId   style ID
+     * @param component component to add into panel
+     */
+    public WebPanel ( final String styleId, final Component component )
+    {
+        super ( new BorderLayout () );
+        setStyleId ( styleId );
+        add ( component, BorderLayout.CENTER );
+    }
+
+    /**
+     * Adds all components from the list into the panel under the specified index.
+     *
+     * @param components components to add into panel
+     * @param index      index where components should be placed
+     * @return this panel
+     */
+    public WebPanel add ( final List<? extends Component> components, final int index )
     {
         if ( components != null )
         {
@@ -122,9 +227,17 @@ public class WebPanel extends JPanel implements ShapeProvider, SizeMethods<WebPa
                 add ( components.get ( i ), index + i );
             }
         }
+        return this;
     }
 
-    public void add ( final List<? extends Component> components, final String constraints )
+    /**
+     * Adds all components from the list into the panel under the specified constraints.
+     *
+     * @param components  components to add into panel
+     * @param constraints constraints for all components
+     * @return this panel
+     */
+    public WebPanel add ( final List<? extends Component> components, final String constraints )
     {
         if ( components != null )
         {
@@ -133,9 +246,16 @@ public class WebPanel extends JPanel implements ShapeProvider, SizeMethods<WebPa
                 add ( component, constraints );
             }
         }
+        return this;
     }
 
-    public void add ( final List<? extends Component> components )
+    /**
+     * Adds all components from the list into the panel.
+     *
+     * @param components components to add into panel
+     * @return this panel
+     */
+    public WebPanel add ( final List<? extends Component> components )
     {
         if ( components != null )
         {
@@ -144,9 +264,17 @@ public class WebPanel extends JPanel implements ShapeProvider, SizeMethods<WebPa
                 add ( component );
             }
         }
+        return this;
     }
 
-    public void add ( final int index, final Component... components )
+    /**
+     * Adds all components into the panel under the specified index.
+     *
+     * @param index      index where components should be placed
+     * @param components components to add into panel
+     * @return this panel
+     */
+    public WebPanel add ( final int index, final Component... components )
     {
         if ( components != null && components.length > 0 )
         {
@@ -155,9 +283,18 @@ public class WebPanel extends JPanel implements ShapeProvider, SizeMethods<WebPa
                 add ( components[ i ], index + i );
             }
         }
+        return this;
     }
 
-    public void add ( final String constraints, final Component... components )
+    /**
+     * Adds all components into the panel under the specified constraints.
+     * It might be a rare case when you would require to put more than one component under the same constraint, but it is possible.
+     *
+     * @param constraints constraints for all components
+     * @param components  components to add into panel
+     * @return this panel
+     */
+    public WebPanel add ( final String constraints, final Component... components )
     {
         if ( components != null && components.length > 0 )
         {
@@ -166,9 +303,17 @@ public class WebPanel extends JPanel implements ShapeProvider, SizeMethods<WebPa
                 add ( component, constraints );
             }
         }
+        return this;
     }
 
-    public void add ( final Component... components )
+    /**
+     * Adds all specified components into the panel.
+     * Useful for layouts like FlowLayout and some others.
+     *
+     * @param components components to add into panel
+     * @return this panel
+     */
+    public WebPanel add ( final Component... components )
     {
         if ( components != null && components.length > 0 )
         {
@@ -177,8 +322,14 @@ public class WebPanel extends JPanel implements ShapeProvider, SizeMethods<WebPa
                 add ( component );
             }
         }
+        return this;
     }
 
+    /**
+     * Returns first component contained in this panel.
+     *
+     * @return first component contained in this panel
+     */
     public Component getFirstComponent ()
     {
         if ( getComponentCount () > 0 )
@@ -191,6 +342,11 @@ public class WebPanel extends JPanel implements ShapeProvider, SizeMethods<WebPa
         }
     }
 
+    /**
+     * Returns last component contained in this panel.
+     *
+     * @return last component contained in this panel
+     */
     public Component getLastComponent ()
     {
         if ( getComponentCount () > 0 )
@@ -204,179 +360,506 @@ public class WebPanel extends JPanel implements ShapeProvider, SizeMethods<WebPa
     }
 
     /**
-     * UI methods
+     * Returns whether panel is undecorated or not.
+     *
+     * @return true if panel is undecorated, false otherwise
      */
-
     public boolean isUndecorated ()
     {
         return getWebUI ().isUndecorated ();
     }
 
+    /**
+     * Sets whether panel should be undecorated or not.
+     *
+     * @param undecorated whether panel should be undecorated or not
+     * @return this panel
+     */
     public WebPanel setUndecorated ( final boolean undecorated )
     {
         getWebUI ().setUndecorated ( undecorated );
         return this;
     }
 
-    public boolean isDrawFocus ()
+    /**
+     * Returns whether focus should be painted or not.
+     * Panel focus is displayed when either panel or one of its children are focused.
+     *
+     * @return true if focus should be painted, false otherwise
+     */
+    public boolean isPaintFocus ()
     {
-        return getWebUI ().isDrawFocus ();
+        return getWebUI ().isPaintFocus ();
     }
 
-    public WebPanel setDrawFocus ( final boolean drawFocus )
+    /**
+     * Sets whether focus should be painted or not.
+     * Panel focus is displayed when either panel or one of its children are focused.
+     *
+     * @param paint whether focus should be painted or not
+     * @return this panel
+     */
+    public WebPanel setPaintFocus ( final boolean paint )
     {
-        getWebUI ().setDrawFocus ( drawFocus );
+        getWebUI ().setPaintFocus ( paint );
         return this;
     }
 
-    public Painter getPainter ()
-    {
-        return getWebUI ().getPainter ();
-    }
-
-    public WebPanel setPainter ( final Painter painter )
-    {
-        getWebUI ().setPainter ( painter );
-        return this;
-    }
-
-    public int getRound ()
-    {
-        return getWebUI ().getRound ();
-    }
-
-    public WebPanel setRound ( final int round )
-    {
-        getWebUI ().setRound ( round );
-        return this;
-    }
-
-    public int getShadeWidth ()
-    {
-        return getWebUI ().getShadeWidth ();
-    }
-
-    public WebPanel setShadeWidth ( final int shadeWidth )
-    {
-        getWebUI ().setShadeWidth ( shadeWidth );
-        return this;
-    }
-
+    /**
+     * Returns panel margin.
+     *
+     * @return panel margin
+     */
     public Insets getMargin ()
     {
         return getWebUI ().getMargin ();
     }
 
+    /**
+     * Sets panel margin.
+     *
+     * @param margin new panel margin
+     */
     public void setMargin ( final Insets margin )
     {
         getWebUI ().setMargin ( margin );
     }
 
+    /**
+     * Sets panel margin.
+     *
+     * @param top    top panel margin
+     * @param left   left panel margin
+     * @param bottom bottom panel margin
+     * @param right  right panel margin
+     * @return this panel
+     */
     public WebPanel setMargin ( final int top, final int left, final int bottom, final int right )
     {
         setMargin ( new Insets ( top, left, bottom, right ) );
         return this;
     }
 
+    /**
+     * Sets panel margin.
+     *
+     * @param spacing panel margin
+     * @return this panel
+     */
     public WebPanel setMargin ( final int spacing )
     {
         return setMargin ( spacing, spacing, spacing, spacing );
     }
 
+    /**
+     * Returns whether should paint top side or not.
+     *
+     * @return true if should paint top side, false otherwise
+     */
+    public boolean isPaintTop ()
+    {
+        return getWebUI ().isPaintTop ();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setPaintTop ( final boolean top )
+    {
+        getWebUI ().setPaintTop ( top );
+    }
+
+    /**
+     * Returns whether should paint left side or not.
+     *
+     * @return true if should paint left side, false otherwise
+     */
+    public boolean isPaintLeft ()
+    {
+        return getWebUI ().isPaintLeft ();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setPaintLeft ( final boolean left )
+    {
+        getWebUI ().setPaintLeft ( left );
+    }
+
+    /**
+     * Returns whether should paint bottom side or not.
+     *
+     * @return true if should paint bottom side, false otherwise
+     */
+    public boolean isPaintBottom ()
+    {
+        return getWebUI ().isPaintBottom ();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setPaintBottom ( final boolean bottom )
+    {
+        getWebUI ().setPaintBottom ( bottom );
+    }
+
+    /**
+     * Returns whether should paint right side or not.
+     *
+     * @return true if should paint right side, false otherwise
+     */
+    public boolean isPaintRight ()
+    {
+        return getWebUI ().isPaintRight ();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setPaintRight ( final boolean right )
+    {
+        getWebUI ().setPaintRight ( right );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setPaintSides ( final boolean top, final boolean left, final boolean bottom, final boolean right )
+    {
+        getWebUI ().setPaintSides ( top, left, bottom, right );
+    }
+
+    /**
+     * Returns whether should paint top side line or not.
+     *
+     * @return true if should paint top side line, false otherwise
+     */
+    public boolean isPaintTopLine ()
+    {
+        return getWebUI ().isPaintTopLine ();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setPaintTopLine ( final boolean top )
+    {
+        getWebUI ().setPaintTopLine ( top );
+    }
+
+    /**
+     * Returns whether should paint left side line or not.
+     *
+     * @return true if should paint left side line, false otherwise
+     */
+    public boolean isPaintLeftLine ()
+    {
+        return getWebUI ().isPaintLeftLine ();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setPaintLeftLine ( final boolean left )
+    {
+        getWebUI ().setPaintLeftLine ( left );
+    }
+
+    /**
+     * Returns whether should paint bottom side line or not.
+     *
+     * @return true if should paint bottom side line, false otherwise
+     */
+    public boolean isPaintBottomLine ()
+    {
+        return getWebUI ().isPaintBottomLine ();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setPaintBottomLine ( final boolean bottom )
+    {
+        getWebUI ().setPaintBottomLine ( bottom );
+    }
+
+    /**
+     * Returns whether should paint right side line or not.
+     *
+     * @return true if should paint right side line, false otherwise
+     */
+    public boolean isPaintRightLine ()
+    {
+        return getWebUI ().isPaintRightLine ();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setPaintRightLine ( final boolean right )
+    {
+        getWebUI ().setPaintRightLine ( right );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setPaintSideLines ( final boolean top, final boolean left, final boolean bottom, final boolean right )
+    {
+        getWebUI ().setPaintSideLines ( top, left, bottom, right );
+    }
+
+    /**
+     * Returns decoration corners rounding.
+     *
+     * @return decoration corners rounding
+     */
+    public int getRound ()
+    {
+        return getWebUI ().getRound ();
+    }
+
+    /**
+     * Sets decoration corners rounding.
+     *
+     * @param round decoration corners rounding
+     * @return this panel
+     */
+    public WebPanel setRound ( final int round )
+    {
+        getWebUI ().setRound ( round );
+        return this;
+    }
+
+    /**
+     * Returns decoration shade width.
+     *
+     * @return decoration shade width
+     */
+    public int getShadeWidth ()
+    {
+        return getWebUI ().getShadeWidth ();
+    }
+
+    /**
+     * Sets decoration shade width.
+     *
+     * @param shadeWidth decoration shade width
+     * @return this panel
+     */
+    public WebPanel setShadeWidth ( final int shadeWidth )
+    {
+        getWebUI ().setShadeWidth ( shadeWidth );
+        return this;
+    }
+
+    /**
+     * Returns decoration shade transparency.
+     *
+     * @return decoration shade transparency
+     */
+    public float getShadeTransparency ()
+    {
+        return getWebUI ().getShadeTransparency ();
+    }
+
+    /**
+     * Sets decoration shade transparency.
+     *
+     * @param transparency new decoration shade transparency
+     * @return this panel
+     */
+    public WebPanel setShadeTransparency ( final float transparency )
+    {
+        getWebUI ().setShadeTransparency ( transparency );
+        return this;
+    }
+
+    /**
+     * Returns decoration border stroke.
+     *
+     * @return decoration border stroke
+     */
     public Stroke getBorderStroke ()
     {
         return getWebUI ().getBorderStroke ();
     }
 
+    /**
+     * Sets decoration border stroke.
+     *
+     * @param stroke decoration border stroke
+     * @return this panel
+     */
     public WebPanel setBorderStroke ( final Stroke stroke )
     {
         getWebUI ().setBorderStroke ( stroke );
         return this;
     }
 
-    public boolean isDrawBackground ()
+    /**
+     * Returns decoration border color.
+     *
+     * @return decoration border color
+     */
+    public Color getBorderColor ()
     {
-        return getWebUI ().isDrawBackground ();
+        return getWebUI ().getBorderColor ();
     }
 
-    public WebPanel setDrawBackground ( final boolean drawBackground )
+    /**
+     * Sets decoration border color.
+     *
+     * @param color decoration border color
+     * @return this panel
+     */
+    public WebPanel setBorderColor ( final Color color )
     {
-        getWebUI ().setDrawBackground ( drawBackground );
+        getWebUI ().setBorderColor ( color );
         return this;
     }
 
-    public boolean isWebColored ()
+    /**
+     * Returns decoration disabled border color.
+     *
+     * @return decoration disabled border color
+     */
+    public Color getDisabledBorderColor ()
     {
-        return getWebUI ().isWebColored ();
+        return getWebUI ().getDisabledBorderColor ();
     }
 
-    public WebPanel setWebColored ( final boolean webColored )
+    /**
+     * Sets decoration disabled border color.
+     *
+     * @param color decoration disabled border color
+     * @return this panel
+     */
+    public WebPanel setDisabledBorderColor ( final Color color )
     {
-        getWebUI ().setWebColored ( webColored );
+        getWebUI ().setDisabledBorderColor ( color );
         return this;
     }
 
-    public boolean isDrawBottom ()
+    /**
+     * Returns whether should paint decoration background or not.
+     *
+     * @return true if should paint decoration background, false otherwise
+     */
+    public boolean isPaintBackground ()
     {
-        return getWebUI ().isDrawBottom ();
+        return getWebUI ().isPaintBackground ();
     }
 
-    public WebPanel setDrawBottom ( final boolean drawBottom )
+    /**
+     * Sets whether should paint decoration background or not.
+     *
+     * @param paint whether should paint decoration background or not
+     * @return this panel
+     */
+    public WebPanel setPaintBackground ( final boolean paint )
     {
-        getWebUI ().setDrawBottom ( drawBottom );
+        getWebUI ().setPaintBackground ( paint );
         return this;
     }
 
-    public boolean isDrawLeft ()
+    /**
+     * Returns whether should paint web-styled background or not.
+     *
+     * @return true if should paint web-styled background, false otherwise
+     */
+    public boolean isWebColoredBackground ()
     {
-        return getWebUI ().isDrawLeft ();
+        return getWebUI ().isWebColoredBackground ();
     }
 
-    public WebPanel setDrawLeft ( final boolean drawLeft )
+    /**
+     * Sets whether should paint web-styled background or not.
+     *
+     * @param webColored whether should paint web-styled background or not
+     * @return this panel
+     */
+    public WebPanel setWebColoredBackground ( final boolean webColored )
     {
-        getWebUI ().setDrawLeft ( drawLeft );
+        getWebUI ().setWebColoredBackground ( webColored );
         return this;
     }
 
-    public boolean isDrawRight ()
+    /**
+     * Returns panel painter.
+     *
+     * @return panel painter
+     */
+    public Painter getPainter ()
     {
-        return getWebUI ().isDrawRight ();
+        return getWebUI ().getPainter ();
     }
 
-    public WebPanel setDrawRight ( final boolean drawRight )
+    /**
+     * Sets panel painter.
+     * Pass null to remove panel painter.
+     *
+     * @param painter new panel painter
+     * @return this panel
+     */
+    public WebPanel setPainter ( final Painter painter )
     {
-        getWebUI ().setDrawRight ( drawRight );
+        getWebUI ().setPainter ( painter );
         return this;
     }
 
-    public boolean isDrawTop ()
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getStyleId ()
     {
-        return getWebUI ().isDrawTop ();
+        return getWebUI ().getStyleId ();
     }
 
-    public WebPanel setDrawTop ( final boolean drawTop )
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setStyleId ( final String id )
     {
-        getWebUI ().setDrawTop ( drawTop );
-        return this;
+        getWebUI ().setStyleId ( id );
     }
 
-    public WebPanel setDrawSides ( final boolean top, final boolean left, final boolean bottom, final boolean right )
-    {
-        getWebUI ().setDrawSides ( top, left, bottom, right );
-        return this;
-    }
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Shape provideShape ()
     {
         return getWebUI ().provideShape ();
     }
 
+    /**
+     * Returns Web-UI applied to this class.
+     *
+     * @return Web-UI applied to this class
+     */
     public WebPanelUI getWebUI ()
     {
         return ( WebPanelUI ) getUI ();
     }
 
+    /**
+     * Installs a Web-UI into this component.
+     */
     @Override
     public void updateUI ()
     {
@@ -386,7 +869,7 @@ public class WebPanel extends JPanel implements ShapeProvider, SizeMethods<WebPa
             {
                 setUI ( ( WebPanelUI ) ReflectUtils.createInstance ( WebLookAndFeel.panelUI ) );
             }
-            catch ( Throwable e )
+            catch ( final Throwable e )
             {
                 e.printStackTrace ();
                 setUI ( new WebPanelUI () );
@@ -397,10 +880,6 @@ public class WebPanel extends JPanel implements ShapeProvider, SizeMethods<WebPa
             setUI ( getUI () );
         }
     }
-
-    /**
-     * Size methods.
-     */
 
     /**
      * {@inheritDoc}
@@ -491,10 +970,6 @@ public class WebPanel extends JPanel implements ShapeProvider, SizeMethods<WebPa
 
         return ps;
     }
-
-    /**
-     * Language container methods
-     */
 
     /**
      * {@inheritDoc}

@@ -67,7 +67,7 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider, Bor
     private MouseWheelListener mouseWheelListener = null;
     private WebButton arrow = null;
 
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebComboBoxUI ();
@@ -277,11 +277,12 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider, Bor
                     {
                         final WebScrollBarUI webScrollBarUI = ( WebScrollBarUI ) scrollBarUI;
                         webScrollBarUI.setMargin ( WebComboBoxStyle.scrollBarMargin );
-                        webScrollBarUI.setThumbRound ( WebComboBoxStyle.scrollBarThumbRound );
-                        webScrollBarUI.setButtonsVisible ( WebComboBoxStyle.scrollBarButtonsVisible );
-                        webScrollBarUI.setDrawTrack ( WebComboBoxStyle.scrollBarTrackVisible );
+                        webScrollBarUI.setPaintButtons ( WebComboBoxStyle.scrollBarButtonsVisible );
+                        webScrollBarUI.setPaintTrack ( WebComboBoxStyle.scrollBarTrackVisible );
                     }
                 }
+
+                LafUtils.setScrollBarStyleId ( scroll, "combo-box" );
 
                 return scroll;
             }
