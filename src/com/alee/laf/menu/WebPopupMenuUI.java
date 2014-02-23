@@ -180,7 +180,7 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements SwingConstants, 
                         }
 
                         // Updating menu opacity state in case menu is in a separate heavy-weight window
-                        if ( ancestor != null && ancestor.getClass ().getCanonicalName ().endsWith ( "HeavyWeightWindow" ) )
+                        if ( isHeavyWeightWindow ( ancestor ) )
                         {
                             ProprietaryUtils.setWindowOpaque ( ancestor, false );
                         }
@@ -188,7 +188,7 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements SwingConstants, 
                     else
                     {
                         // Restoring menu opacity state in case menu is in a separate heavy-weight window
-                        if ( ancestor != null && ancestor.getClass ().getCanonicalName ().endsWith ( "HeavyWeightWindow" ) )
+                        if ( isHeavyWeightWindow ( ancestor ) )
                         {
                             ProprietaryUtils.setWindowOpaque ( ancestor, true );
                         }
@@ -210,7 +210,7 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements SwingConstants, 
                         if ( evt.getNewValue () == Boolean.TRUE )
                         {
                             final Window ancestor = SwingUtils.getWindowAncestor ( popupMenu );
-                            if ( ancestor != null && ancestor.getClass ().getCanonicalName ().endsWith ( "HeavyWeightWindow" ) )
+                            if ( isHeavyWeightWindow ( ancestor ) )
                             {
                                 final Component parent = ancestor.getParent ();
                                 if ( parent != null && parent instanceof Window && !ProprietaryUtils.isWindowOpaque ( ( Window ) parent ) )
@@ -619,5 +619,12 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements SwingConstants, 
         {
             painter.paint ( ( Graphics2D ) g, SwingUtils.size ( c ), c );
         }
+    }
+
+    private static boolean isHeavyWeightWindow ( final Window w )
+    {
+        if ( w == null ) return false;
+        final String can = w.getClass().getCanonicalName();
+        return can != null && can.endsWith ( "HeavyWeightWindow" );
     }
 }
