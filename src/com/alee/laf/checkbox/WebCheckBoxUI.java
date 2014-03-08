@@ -357,7 +357,7 @@ public class WebCheckBoxUI extends BasicCheckBoxUI implements ShapeProvider
     protected boolean isAnimatedByDefault ()
     {
         // Workaround for Jide tristate checkbox
-        return !ReflectUtils.containsInClassOrSuperclassName ( checkBox.getClass (), "com.jidesoft.swing.TristateCheckBox" );
+        return WebCheckBoxStyle.animated && !ReflectUtils.containsInClassOrSuperclassName ( checkBox.getClass (), "com.jidesoft.swing.TristateCheckBox" );
     }
 
     /**
