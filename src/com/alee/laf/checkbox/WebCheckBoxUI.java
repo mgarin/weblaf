@@ -109,6 +109,7 @@ public class WebCheckBoxUI extends BasicCheckBoxUI implements ShapeProvider
      * Checkbox listeners.
      */
     protected PropertyChangeListener enabledStateListener;
+    protected PropertyChangeListener modelChangeListener;
     protected MouseAdapter mouseAdapter;
     protected ItemListener itemListener;
 
@@ -154,6 +155,7 @@ public class WebCheckBoxUI extends BasicCheckBoxUI implements ShapeProvider
         installEnabledStateListeners ();
         installRolloverListeners ();
         installStateChangeListeners ();
+
     }
 
     /**
@@ -311,6 +313,16 @@ public class WebCheckBoxUI extends BasicCheckBoxUI implements ShapeProvider
             }
         };
         checkBox.addItemListener ( itemListener );
+
+        modelChangeListener = new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                performStateChanged();
+            }
+        };
+
+        checkBox.addPropertyChangeListener( WebLookAndFeel.MODEL_PROPERTY, modelChangeListener );
+
     }
 
     /**
@@ -338,6 +350,7 @@ public class WebCheckBoxUI extends BasicCheckBoxUI implements ShapeProvider
     protected void uninstallStateChangeListeners ()
     {
         checkBox.removeItemListener ( itemListener );
+        checkBox.removePropertyChangeListener( modelChangeListener );
     }
 
     /**
