@@ -50,22 +50,22 @@ public final class NinePatchInterval implements Serializable, Cloneable
         this ( 0 );
     }
 
-    public NinePatchInterval ( int start )
+    public NinePatchInterval ( final int start )
     {
         this ( start, start );
     }
 
-    public NinePatchInterval ( int start, boolean pixel )
+    public NinePatchInterval ( final int start, final boolean pixel )
     {
         this ( start, start, pixel );
     }
 
-    public NinePatchInterval ( int start, int end )
+    public NinePatchInterval ( final int start, final int end )
     {
         this ( start, end, true );
     }
 
-    public NinePatchInterval ( int start, int end, boolean pixel )
+    public NinePatchInterval ( final int start, final int end, final boolean pixel )
     {
         super ();
         setId ();
@@ -79,7 +79,7 @@ public final class NinePatchInterval implements Serializable, Cloneable
         return id;
     }
 
-    public void setId ( String id )
+    public void setId ( final String id )
     {
         this.id = id;
     }
@@ -94,7 +94,7 @@ public final class NinePatchInterval implements Serializable, Cloneable
         return pixel;
     }
 
-    public void setPixel ( boolean pixel )
+    public void setPixel ( final boolean pixel )
     {
         this.pixel = pixel;
     }
@@ -104,7 +104,7 @@ public final class NinePatchInterval implements Serializable, Cloneable
         return start;
     }
 
-    public void setStart ( int start )
+    public void setStart ( final int start )
     {
         this.start = start;
     }
@@ -114,12 +114,12 @@ public final class NinePatchInterval implements Serializable, Cloneable
         return end;
     }
 
-    public void setEnd ( int end )
+    public void setEnd ( final int end )
     {
         this.end = end;
     }
 
-    public boolean intersects ( NinePatchInterval npi )
+    public boolean intersects ( final NinePatchInterval npi )
     {
         return new Rectangle ( getStart (), 0, getEnd () - getStart (), 1 )
                 .intersects ( new Rectangle ( npi.getStart (), 0, npi.getEnd () - npi.getStart (), 1 ) );
@@ -128,7 +128,7 @@ public final class NinePatchInterval implements Serializable, Cloneable
     @Override
     public NinePatchInterval clone ()
     {
-        NinePatchInterval npi = new NinePatchInterval ();
+        final NinePatchInterval npi = new NinePatchInterval ();
         npi.setId ( getId () );
         npi.setPixel ( isPixel () );
         npi.setStart ( getStart () );
@@ -136,16 +136,21 @@ public final class NinePatchInterval implements Serializable, Cloneable
         return npi;
     }
 
-    public boolean isSame ( NinePatchInterval ninePatchInterval )
+    public int getLength ()
+    {
+        return getEnd () - getStart ();
+    }
+
+    public boolean isSame ( final NinePatchInterval ninePatchInterval )
     {
         return ninePatchInterval != null && this.getId ().equals ( ninePatchInterval.getId () );
     }
 
-    public boolean equals ( Object obj )
+    public boolean equals ( final Object obj )
     {
         if ( obj != null && obj instanceof NinePatchInterval )
         {
-            NinePatchInterval npi = ( NinePatchInterval ) obj;
+            final NinePatchInterval npi = ( NinePatchInterval ) obj;
             return isPixel () == npi.isPixel () && getStart () == npi.getStart () &&
                     getEnd () == npi.getEnd ();
         }

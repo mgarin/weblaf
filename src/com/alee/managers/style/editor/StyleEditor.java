@@ -17,20 +17,20 @@
 
 package com.alee.managers.style.editor;
 
+import com.alee.extended.breadcrumb.WebBreadcrumb;
+import com.alee.extended.breadcrumb.WebBreadcrumbLabel;
+import com.alee.extended.breadcrumb.WebBreadcrumbPanel;
+import com.alee.extended.layout.HorizontalFlowLayout;
 import com.alee.extended.layout.VerticalFlowLayout;
 import com.alee.extended.panel.BorderPanel;
 import com.alee.extended.panel.CenterPanel;
-import com.alee.extended.panel.GroupPanel;
 import com.alee.extended.panel.WebButtonGroup;
 import com.alee.extended.statusbar.WebMemoryBar;
 import com.alee.extended.statusbar.WebStatusBar;
-import com.alee.extended.window.PopOverDirection;
-import com.alee.extended.window.WebPopOver;
 import com.alee.laf.StyleConstants;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.button.WebToggleButton;
-import com.alee.laf.colorchooser.WebColorChooserPanel;
 import com.alee.laf.combobox.WebComboBox;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.menu.WebMenuItem;
@@ -62,22 +62,19 @@ import com.alee.utils.*;
 import com.alee.utils.swing.DocumentChangeListener;
 import com.alee.utils.swing.IntTextDocument;
 import com.alee.utils.swing.WebTimer;
-import com.alee.utils.xml.ColorConverter;
 import com.alee.utils.xml.ResourceFile;
 import com.alee.utils.xml.ResourceLocation;
 import com.thoughtworks.xstream.converters.ConversionException;
 import net.htmlparser.jericho.Element;
 import net.htmlparser.jericho.Source;
-import org.fife.ui.rsyntaxtextarea.*;
+import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
+import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
+import org.fife.ui.rsyntaxtextarea.Theme;
 import org.fife.ui.rtextarea.RTextScrollPane;
 import org.fife.ui.rtextarea.RUndoManager;
 
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
-import javax.swing.event.HyperlinkEvent;
-import javax.swing.text.BadLocationException;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.Ellipse2D;
@@ -88,6 +85,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * WebLaF style editor application.
+ * It allows you to edit and preview WebLaF skins in runtime.
+ *
  * @author Mikle Garin
  */
 
@@ -95,6 +95,7 @@ public class StyleEditor extends WebFrame
 {
     /**
      * todo 1. Translate editor
+     * todo 2. Add JavaDoc
      */
 
     private static final ImageIcon info = new ImageIcon ( StyleEditor.class.getResource ( "icons/status/info.png" ) );
@@ -111,9 +112,9 @@ public class StyleEditor extends WebFrame
     private WebSplitPane split;
     private WebPanel componentViewer;
     private WebPanel editorsContainer;
-    private WebStatusBar statusbar;
 
-    private WebLabel statusMessage;
+    private WebStatusBar statusbar;
+    private WebBreadcrumbLabel statusMessage;
 
     private final List<JComponent> previewComponents = new ArrayList<JComponent> ();
     private final List<WebPanel> boundsPanels = new ArrayList<WebPanel> ();
@@ -258,9 +259,32 @@ public class StyleEditor extends WebFrame
 
         //
 
+        container.add ( toolBar, BorderLayout.NORTH );
+    }
+
+    private void initializeContainer ()
+    {
+        container = new WebPanel ();
+        getContentPane ().add ( container, BorderLayout.CENTER );
+
+        split = new WebSplitPane ( WebSplitPane.HORIZONTAL_SPLIT, true );
+        split.setDividerLocation ( 300 );
+        container.add ( new BorderPanel ( split, 7 ), BorderLayout.CENTER );
+    }
+
+    private void initializeStatusBar ()
+    {
+        statusbar = new WebStatusBar ();
+
+        //
+
+        final WebBreadcrumb updateBreadcrumb = new WebBreadcrumb ( false );
+        updateBreadcrumb.setEncloseLastElement ( false );
+
         final ImageIcon updateIcon = new ImageIcon ( StyleEditor.class.getResource ( "icons/editor/update.png" ) );
-        final WebLabel delayLabel = new WebLabel ( "Skin update delay:", updateIcon ).setMargin ( 4 );
+        final WebLabel delayLabel = new WebLabel ( "Skin update delay:", updateIcon );
         final WebTextField delayField = new WebTextField ( new IntTextDocument (), "" + updateDelay, 3 );
+        delayField.setShadeWidth ( 0 );
         delayField.setHorizontalAlignment ( WebTextField.CENTER );
         delayField.getDocument ().addDocumentListener ( new DocumentChangeListener ()
         {
@@ -282,28 +306,22 @@ public class StyleEditor extends WebFrame
             }
         } );
         final WebLabel msLabel = new WebLabel ( "ms" ).setMargin ( 4 );
-        toolBar.addToEnd ( new GroupPanel ( 4, delayLabel, delayField, msLabel ) );
+        final WebBreadcrumbPanel panel = new WebBreadcrumbPanel ();
+        panel.setLayout ( new HorizontalFlowLayout ( 4, false ) );
+        panel.add ( delayLabel, new CenterPanel ( delayField, false, true ), msLabel );
+        updateBreadcrumb.add ( panel );
 
-        container.add ( toolBar, BorderLayout.NORTH );
-    }
+        statusMessage = new WebBreadcrumbLabel ( "Edit XML at the right side and see UI changes at the left side!", info );
+        statusMessage.setStyleId ( "status-message-label" );
+        updateBreadcrumb.add ( statusMessage );
 
-    private void initializeContainer ()
-    {
-        container = new WebPanel ();
-        getContentPane ().add ( container, BorderLayout.CENTER );
+        statusbar.add ( updateBreadcrumb );
 
-        split = new WebSplitPane ( WebSplitPane.HORIZONTAL_SPLIT, true );
-        split.setDividerLocation ( 300 );
-        container.add ( new BorderPanel ( split, 7 ), BorderLayout.CENTER );
-    }
+        //
 
-    private void initializeStatusBar ()
-    {
-        statusbar = new WebStatusBar ();
-
-        statusMessage = new WebLabel ( "Edit XML at the right side and see UI changes at the left side!", info ).setMargin ( 4 );
-        statusbar.add ( statusMessage );
         statusbar.addToEnd ( new WebMemoryBar ().setPreferredWidth ( 200 ) );
+
+        //
 
         container.add ( statusbar, BorderLayout.SOUTH );
     }
@@ -315,6 +333,11 @@ public class StyleEditor extends WebFrame
         final WebScrollPane previewScroll = new WebScrollPane ( componentViewer, false, false );
         previewScroll.setScrollBarStyleId ( "preview-scroll" );
         split.setLeftComponent ( previewScroll );
+
+        //
+
+        final WebLabel label = new WebLabel ( "Just a label", WebLookAndFeel.getIcon ( 16 ) );
+        addViewComponent ( "JLabel", label, label, true );
 
         //
 
@@ -462,7 +485,7 @@ public class StyleEditor extends WebFrame
         xmlEditor.setCaretPosition ( 0 );
 
         xmlEditor.setHyperlinksEnabled ( true );
-        xmlEditor.setLinkGenerator ( new CodeLinkGenerator () );
+        xmlEditor.setLinkGenerator ( new CodeLinkGenerator ( xmlEditor ) );
 
         HotkeyManager.registerHotkey ( xmlEditor, xmlEditor, Hotkey.CTRL_SHIFT_Z, new HotkeyRunnable ()
         {
@@ -558,7 +581,7 @@ public class StyleEditor extends WebFrame
     {
         try
         {
-            return Theme.load ( StyleEditor.class.getResourceAsStream ( "resources/editorTheme.xml" ) );
+            return Theme.load ( StyleEditor.class.getResourceAsStream ( "resources/XmlEditorTheme.xml" ) );
         }
         catch ( final IOException e )
         {
@@ -584,7 +607,7 @@ public class StyleEditor extends WebFrame
         {
             // Short stack trace for parse exceptions
             System.err.println ( "Unable to update skin: " + ex.getMessage () );
-            ex.printStackTrace ();
+            // ex.printStackTrace ();
 
             // Information in status bar
             statusMessage.setIcon ( error );
@@ -740,143 +763,15 @@ public class StyleEditor extends WebFrame
     }
 
     /**
-     * Code links generator for XML editor.
-     */
-    private class CodeLinkGenerator implements LinkGenerator
-    {
-        private final String contentStartTag = ">";
-        private final String contentEndTag = "<";
-
-        private final String trueString = "true";
-        private final String falseString = "false";
-
-        private final ColorConverter colorConverter = new ColorConverter ();
-
-        public CodeLinkGenerator ()
-        {
-            super ();
-        }
-
-        @Override
-        public LinkGeneratorResult isLinkAtOffset ( final RSyntaxTextArea source, final int pos )
-        {
-            final String code = source.getText ();
-            final int wordStart = getContentStart ( code, pos );
-            final int wordEnd = getContentEnd ( code, pos );
-            final String word = code.substring ( wordStart, wordEnd );
-
-            if ( word.equals ( trueString ) || word.equals ( falseString ) )
-            {
-                return new LinkGeneratorResult ()
-                {
-                    @Override
-                    public HyperlinkEvent execute ()
-                    {
-                        source.replaceRange ( word.equals ( trueString ) ? falseString : trueString, wordStart, wordEnd );
-                        return new HyperlinkEvent ( this, HyperlinkEvent.EventType.EXITED, null );
-                    }
-
-                    @Override
-                    public int getSourceOffset ()
-                    {
-                        return wordStart;
-                    }
-                };
-            }
-            else
-            {
-                try
-                {
-                    final Color color = ( Color ) colorConverter.fromString ( word );
-                    return color != null ? new LinkGeneratorResult ()
-                    {
-                        @Override
-                        public HyperlinkEvent execute ()
-                        {
-                            try
-                            {
-                                final WebPopOver colorChooser = new WebPopOver ( StyleEditor.this );
-                                colorChooser.setCloseOnFocusLoss ( true );
-                                colorChooser.setStyleId ( "color-pop-over" );
-
-                                final WebColorChooserPanel colorChooserPanel = new WebColorChooserPanel ( false );
-                                colorChooserPanel.setColor ( color );
-                                colorChooserPanel.addChangeListener ( new ChangeListener ()
-                                {
-                                    private int length = wordEnd - wordStart;
-
-                                    @Override
-                                    public void stateChanged ( final ChangeEvent e )
-                                    {
-                                        final Color newColor = colorChooserPanel.getColor ();
-                                        if ( newColor != null && !newColor.equals ( color ) )
-                                        {
-                                            final String colorString = colorConverter.toString ( newColor );
-                                            source.replaceRange ( colorString, wordStart, wordStart + length );
-                                            length = colorString.length ();
-                                        }
-                                    }
-                                } );
-                                colorChooser.add ( colorChooserPanel );
-
-                                final Rectangle wb = source.getUI ().modelToView ( source, ( wordStart + wordEnd ) / 2 );
-                                colorChooser.show ( source, wb.x, wb.y, wb.width, wb.height, PopOverDirection.down );
-
-                                return new HyperlinkEvent ( this, HyperlinkEvent.EventType.EXITED, null );
-                            }
-                            catch ( final BadLocationException e )
-                            {
-                                e.printStackTrace ();
-                                return null;
-                            }
-                        }
-
-                        @Override
-                        public int getSourceOffset ()
-                        {
-                            return wordStart;
-                        }
-                    } : null;
-                }
-                catch ( final Throwable e )
-                {
-                    return null;
-                }
-            }
-        }
-
-        public int getContentStart ( final String text, final int location )
-        {
-            int wordStart = location;
-            while ( wordStart > 0 && !text.substring ( wordStart - 1, wordStart ).equals ( contentStartTag ) )
-            {
-                wordStart--;
-            }
-            return wordStart;
-        }
-
-        public int getContentEnd ( final String text, final int location )
-        {
-            int wordEnd = location;
-            while ( wordEnd < text.length () - 1 && !text.substring ( wordEnd, wordEnd + 1 ).equals ( contentEndTag ) )
-            {
-                wordEnd++;
-            }
-            return wordEnd;
-        }
-    }
-
-    /**
      * StyleEditor main method used to launch editor.
      *
      * @param args arguments
      */
     public static void main ( final String[] args )
     {
-        WebLookAndFeel.install ();
-
         // Custom StyleEditor skin for WebLaF
-        StyleManager.applySkin ( new StyleEditorSkin () );
+        StyleManager.setDefaultSkin ( StyleEditorSkin.class.getCanonicalName () );
+        WebLookAndFeel.install ();
 
         // Displaying StyleEditor
         final StyleEditor styleEditor = new StyleEditor ();

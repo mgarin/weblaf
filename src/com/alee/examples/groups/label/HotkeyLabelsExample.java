@@ -45,18 +45,18 @@ public class HotkeyLabelsExample extends DefaultExample
     }
 
     @Override
-    public Component getPreview ( WebLookAndFeelDemo owner )
+    public Component getPreview ( final WebLookAndFeelDemo owner )
     {
         // Text-based hotkeys
-        GroupPanel panel1 = new GroupPanel ( 4, new WebHotkeyLabel ( "Shift" ), new WebHotkeyLabel ( "Escape" ),
+        final GroupPanel panel1 = new GroupPanel ( 4, new WebHotkeyLabel ( "Shift" ), new WebHotkeyLabel ( "Escape" ),
                 new WebHotkeyLabel ( "Shift+Escape" ) );
 
         // Disabled KeyEvent-based hotkeys
-        GroupPanel panel2 = new GroupPanel ( 4, new WebHotkeyLabel ( KeyEvent.VK_SPACE ),
+        final GroupPanel panel2 = new GroupPanel ( 4, new WebHotkeyLabel ( KeyEvent.VK_SPACE ),
                 new WebHotkeyLabel ( KeyEvent.VK_SPACE, KeyEvent.CTRL_MASK ) );
 
         // HotkeyData-based hotkeys
-        GroupPanel panel3 = new GroupPanel ( 4, new WebHotkeyLabel ( Hotkey.ALT ), new WebHotkeyLabel ( Hotkey.F4 ),
+        final GroupPanel panel3 = new GroupPanel ( 4, new WebHotkeyLabel ( Hotkey.ALT ), new WebHotkeyLabel ( Hotkey.F4 ),
                 new WebHotkeyLabel ( Hotkey.ALT_F4 ) );
 
         return new GroupPanel ( 4, false, panel1, panel2, panel3 );

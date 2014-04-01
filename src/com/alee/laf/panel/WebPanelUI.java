@@ -473,7 +473,7 @@ public class WebPanelUI extends BasicPanelUI implements Styleable, ShapeProvider
      */
     public int getRound ()
     {
-        final Integer round = StyleManager.getStyleValue ( panel, "round" );
+        final Integer round = StyleManager.getPainterPropertyValue ( panel, "round" );
         return round != null ? round : WebPanelStyle.round;
     }
 
@@ -484,7 +484,7 @@ public class WebPanelUI extends BasicPanelUI implements Styleable, ShapeProvider
      */
     public void setRound ( final int round )
     {
-        StyleManager.setCustomStyle ( panel, "round", round );
+        StyleManager.setCustomPainterProperty ( panel, "round", round );
     }
 
     /**
@@ -494,7 +494,7 @@ public class WebPanelUI extends BasicPanelUI implements Styleable, ShapeProvider
      */
     public int getShadeWidth ()
     {
-        final Integer shadeWidth = StyleManager.getStyleValue ( panel, "shadeWidth" );
+        final Integer shadeWidth = StyleManager.getPainterPropertyValue ( panel, "shadeWidth" );
         return shadeWidth != null ? shadeWidth : WebPanelStyle.shadeWidth;
     }
 
@@ -505,7 +505,7 @@ public class WebPanelUI extends BasicPanelUI implements Styleable, ShapeProvider
      */
     public void setShadeWidth ( final int shadeWidth )
     {
-        StyleManager.setCustomStyle ( panel, "shadeWidth", shadeWidth );
+        StyleManager.setCustomPainterProperty ( panel, "shadeWidth", shadeWidth );
     }
 
     /**
@@ -515,7 +515,7 @@ public class WebPanelUI extends BasicPanelUI implements Styleable, ShapeProvider
      */
     public float getShadeTransparency ()
     {
-        final Float shadeTransparency = StyleManager.getStyleValue ( panel, "shadeTransparency" );
+        final Float shadeTransparency = StyleManager.getPainterPropertyValue ( panel, "shadeTransparency" );
         return shadeTransparency != null ? shadeTransparency : WebPanelStyle.shadeTransparency;
     }
 
@@ -526,7 +526,7 @@ public class WebPanelUI extends BasicPanelUI implements Styleable, ShapeProvider
      */
     public void setShadeTransparency ( final float transparency )
     {
-        StyleManager.setCustomStyle ( panel, "shadeTransparency", transparency );
+        StyleManager.setCustomPainterProperty ( panel, "shadeTransparency", transparency );
     }
 
     /**
@@ -536,7 +536,7 @@ public class WebPanelUI extends BasicPanelUI implements Styleable, ShapeProvider
      */
     public Stroke getBorderStroke ()
     {
-        final Stroke borderStroke = StyleManager.getStyleValue ( panel, "borderStroke" );
+        final Stroke borderStroke = StyleManager.getPainterPropertyValue ( panel, "borderStroke" );
         return borderStroke != null ? borderStroke : WebPanelStyle.borderStroke;
     }
 
@@ -547,7 +547,7 @@ public class WebPanelUI extends BasicPanelUI implements Styleable, ShapeProvider
      */
     public void setBorderStroke ( final Stroke stroke )
     {
-        StyleManager.setCustomStyle ( panel, "borderStroke", stroke );
+        StyleManager.setCustomPainterProperty ( panel, "borderStroke", stroke );
     }
 
     /**
@@ -557,7 +557,7 @@ public class WebPanelUI extends BasicPanelUI implements Styleable, ShapeProvider
      */
     public Color getBorderColor ()
     {
-        final Color borderColor = StyleManager.getStyleValue ( panel, "borderColor" );
+        final Color borderColor = StyleManager.getPainterPropertyValue ( panel, "borderColor" );
         return borderColor != null ? borderColor : WebPanelStyle.borderColor;
     }
 
@@ -568,7 +568,7 @@ public class WebPanelUI extends BasicPanelUI implements Styleable, ShapeProvider
      */
     public void setBorderColor ( final Color color )
     {
-        StyleManager.setCustomStyle ( panel, "borderColor", color );
+        StyleManager.setCustomPainterProperty ( panel, "borderColor", color );
     }
 
     /**
@@ -578,7 +578,7 @@ public class WebPanelUI extends BasicPanelUI implements Styleable, ShapeProvider
      */
     public Color getDisabledBorderColor ()
     {
-        final Color disabledBorderColor = StyleManager.getStyleValue ( panel, "disabledBorderColor" );
+        final Color disabledBorderColor = StyleManager.getPainterPropertyValue ( panel, "disabledBorderColor" );
         return disabledBorderColor != null ? disabledBorderColor : WebPanelStyle.disabledBorderColor;
     }
 
@@ -589,7 +589,7 @@ public class WebPanelUI extends BasicPanelUI implements Styleable, ShapeProvider
      */
     public void setDisabledBorderColor ( final Color color )
     {
-        StyleManager.setCustomStyle ( panel, "disabledBorderColor", color );
+        StyleManager.setCustomPainterProperty ( panel, "disabledBorderColor", color );
     }
 
     /**
@@ -599,7 +599,7 @@ public class WebPanelUI extends BasicPanelUI implements Styleable, ShapeProvider
      */
     public boolean isPaintBackground ()
     {
-        final Boolean paintBackground = StyleManager.getStyleValue ( panel, "paintBackground" );
+        final Boolean paintBackground = StyleManager.getPainterPropertyValue ( panel, "paintBackground" );
         return paintBackground != null ? paintBackground : WebPanelStyle.paintBackground;
     }
 
@@ -610,7 +610,7 @@ public class WebPanelUI extends BasicPanelUI implements Styleable, ShapeProvider
      */
     public void setPaintBackground ( final boolean paint )
     {
-        StyleManager.setCustomStyle ( panel, "paintBackground", paint );
+        StyleManager.setCustomPainterProperty ( panel, "paintBackground", paint );
     }
 
     /**
@@ -620,7 +620,7 @@ public class WebPanelUI extends BasicPanelUI implements Styleable, ShapeProvider
      */
     public boolean isWebColoredBackground ()
     {
-        final Boolean webColored = StyleManager.getStyleValue ( panel, "webColoredBackground" );
+        final Boolean webColored = StyleManager.getPainterPropertyValue ( panel, "webColoredBackground" );
         return webColored != null ? webColored : WebPanelStyle.webColoredBackground;
     }
 
@@ -631,7 +631,7 @@ public class WebPanelUI extends BasicPanelUI implements Styleable, ShapeProvider
      */
     public void setWebColoredBackground ( final boolean webColored )
     {
-        StyleManager.setCustomStyle ( panel, "webColoredBackground", webColored );
+        StyleManager.setCustomPainterProperty ( panel, "webColoredBackground", webColored );
     }
 
     /**
@@ -641,7 +641,7 @@ public class WebPanelUI extends BasicPanelUI implements Styleable, ShapeProvider
      */
     public Painter getPainter ()
     {
-        return painter instanceof AdaptivePanelPainter ? ( ( AdaptivePanelPainter ) painter ).getPainter () : painter;
+        return LafUtils.getAdaptedPainter ( painter );
     }
 
     /**
@@ -652,13 +652,19 @@ public class WebPanelUI extends BasicPanelUI implements Styleable, ShapeProvider
      */
     public void setPainter ( final Painter painter )
     {
-        final boolean correctType = painter == null || painter instanceof PanelPainter;
-        final PanelPainter panelPainter = correctType ? ( PanelPainter ) painter : new AdaptivePanelPainter ( painter );
+        // Creating adaptive painter if required
+        final PanelPainter properPainter = LafUtils.getProperPainter ( painter, PanelPainter.class, AdaptivePanelPainter.class );
 
+        // Properly updating painter
         PainterSupport.uninstallPainter ( panel, this.painter );
-        this.painter = panelPainter;
-        applyPainterSettings ( panelPainter );
-        PainterSupport.installPainter ( panel, panelPainter );
+        final Painter oldPainter = this.painter;
+        this.painter = properPainter;
+        applyPainterSettings ( properPainter );
+        PainterSupport.installPainter ( panel, properPainter );
+
+        // Firing painter change event
+        // This is made using reflection because required method is protected within Component class
+        LafUtils.firePainterChanged ( panel, oldPainter, properPainter );
     }
 
     /**

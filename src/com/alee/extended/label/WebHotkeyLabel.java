@@ -23,11 +23,10 @@ import com.alee.managers.hotkey.HotkeyData;
 import java.awt.event.KeyEvent;
 
 /**
- * User: mgarin Date: 16.05.12 Time: 12:05
- * <p>
  * This class provides a quick access to hotkey-styled label with additional costructors for quick hotkey text initialization. This label
- * is
- * only a hotkey visualization and have nothing to do with real hotkeys. To modify actual hotkeys use HotkeyManager or key listeners.
+ * is only a hotkey visualization and have nothing to do with real hotkeys. To modify actual hotkeys use HotkeyManager or key listeners.
+ *
+ * @author Mikle Garin
  */
 
 public class WebHotkeyLabel extends WebLabel
@@ -38,26 +37,26 @@ public class WebHotkeyLabel extends WebLabel
         initializeView ();
     }
 
-    public WebHotkeyLabel ( int keyCode )
+    public WebHotkeyLabel ( final int keyCode )
     {
         super ( KeyEvent.getKeyText ( keyCode ) );
         initializeView ();
     }
 
-    public WebHotkeyLabel ( int keyCode, int modifiers )
+    public WebHotkeyLabel ( final int keyCode, final int modifiers )
     {
         super ( KeyEvent.getKeyModifiersText ( modifiers ) + "+" +
                 KeyEvent.getKeyText ( keyCode ) );
         initializeView ();
     }
 
-    public WebHotkeyLabel ( HotkeyData hotkeyData )
+    public WebHotkeyLabel ( final HotkeyData hotkeyData )
     {
         super ( hotkeyData.toString () );
         initializeView ();
     }
 
-    public WebHotkeyLabel ( String text )
+    public WebHotkeyLabel ( final String text )
     {
         super ( text );
         initializeView ();
@@ -65,6 +64,6 @@ public class WebHotkeyLabel extends WebLabel
 
     private void initializeView ()
     {
-        setPainter ( new HotkeyPainter () );
+        setStyleId ( "hotkey-label" );
     }
 }

@@ -25,33 +25,17 @@ import com.alee.laf.label.WebLabel;
 
 public class WebComboBoxElement extends WebLabel
 {
-    private WebComboBoxElementPainter painter;
-
-    private int totalElements;
-    private int index;
-    private boolean selected;
+    /**
+     * Runtime variables.
+     */
+    protected int totalElements;
+    protected int index;
+    protected boolean selected;
 
     public WebComboBoxElement ()
     {
         super ();
-        setPainter ( new WebComboBoxElementPainter () );
-    }
-
-    public void updatePainter ()
-    {
-        super.setPainter ( painter );
-    }
-
-    @Override
-    public WebComboBoxElementPainter getPainter ()
-    {
-        return painter;
-    }
-
-    public void setPainter ( WebComboBoxElementPainter painter )
-    {
-        this.painter = painter;
-        updatePainter ();
+        setName ( "List.cellRenderer" );
     }
 
     public int getTotalElements ()
@@ -59,7 +43,7 @@ public class WebComboBoxElement extends WebLabel
         return totalElements;
     }
 
-    public void setTotalElements ( int totalElements )
+    public void setTotalElements ( final int totalElements )
     {
         this.totalElements = totalElements;
     }
@@ -69,7 +53,7 @@ public class WebComboBoxElement extends WebLabel
         return index;
     }
 
-    public void setIndex ( int index )
+    public void setIndex ( final int index )
     {
         this.index = index;
     }
@@ -79,38 +63,8 @@ public class WebComboBoxElement extends WebLabel
         return selected;
     }
 
-    public void setSelected ( boolean selected )
+    public void setSelected ( final boolean selected )
     {
         this.selected = selected;
     }
-
-    /**
-     * Overridden for performance reasons.
-     */
-
-    // Doesn't work well on OpenJDK
-
-    //    public void repaint ()
-    //    {
-    //    }
-    //
-    //    public void repaint ( long tm, int x, int y, int width, int height )
-    //    {
-    //    }
-    //
-    //    public void repaint ( Rectangle r )
-    //    {
-    //    }
-    //
-    //    public void validate ()
-    //    {
-    //    }
-    //
-    //    public void invalidate ()
-    //    {
-    //    }
-    //
-    //    public void revalidate ()
-    //    {
-    //    }
 }

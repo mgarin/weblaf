@@ -17,7 +17,6 @@
 
 package com.alee.managers.settings.processors;
 
-import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.settings.SettingsProcessor;
 import com.alee.managers.settings.SettingsProcessorData;
 import com.alee.utils.CompareUtils;
@@ -32,9 +31,13 @@ import java.awt.event.ComponentEvent;
  * @author Mikle Garin
  */
 
-// todo Save window normal/maximized window states, iconified should be converted into normal
 public class WindowSettingsProcessor extends SettingsProcessor<Window, Rectangle>
 {
+    /**
+     * todo 1. Save window normal/maximized window states, iconified should be converted into normal
+     * todo 2. Save screen where window was located? Probably saved by coordinates but might be wrong if screen settings changed
+     */
+
     /**
      * Window move and resize listener.
      */
@@ -61,19 +64,13 @@ public class WindowSettingsProcessor extends SettingsProcessor<Window, Rectangle
             @Override
             public void componentResized ( final ComponentEvent e )
             {
-                if ( SettingsManager.isSaveOnChange () )
-                {
-                    save ();
-                }
+                save ();
             }
 
             @Override
             public void componentMoved ( final ComponentEvent e )
             {
-                if ( SettingsManager.isSaveOnChange () )
-                {
-                    save ();
-                }
+                save ();
             }
         };
         window.addComponentListener ( componentAdapter );
@@ -96,14 +93,7 @@ public class WindowSettingsProcessor extends SettingsProcessor<Window, Rectangle
     protected void doLoad ( final Window window )
     {
         final Rectangle bounds = loadValue ();
-        if ( bounds == null )
-        {
-            if ( SettingsManager.isSaveDefaultValues () )
-            {
-                save ();
-            }
-        }
-        else if ( !CompareUtils.equals ( bounds, window.getBounds () ) )
+        if ( bounds != null && !CompareUtils.equals ( bounds, window.getBounds () ) )
         {
             final Dimension size = bounds.getSize ();
             if ( size.width > 0 && size.height > 0 )

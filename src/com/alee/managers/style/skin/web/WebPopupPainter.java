@@ -504,8 +504,12 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
      */
     protected void paintBackground ( final Graphics2D g2d, final E popup, final Dimension popupSize )
     {
-        g2d.setColor ( getBackgroundColor ( popup ) );
-        g2d.fill ( getBorderShape ( popup, popupSize, true ) );
+        final Color backgroundColor = getBackgroundColor ( popup );
+        if ( backgroundColor != null )
+        {
+            g2d.setColor ( backgroundColor );
+            g2d.fill ( getBorderShape ( popup, popupSize, true ) );
+        }
     }
 
     /**
@@ -517,8 +521,11 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
      */
     protected void paintBorder ( final Graphics2D g2d, final E popup, final Dimension popupSize )
     {
-        g2d.setPaint ( borderColor );
-        g2d.draw ( getBorderShape ( popup, popupSize, false ) );
+        if ( borderColor != null )
+        {
+            g2d.setPaint ( borderColor );
+            g2d.draw ( getBorderShape ( popup, popupSize, false ) );
+        }
     }
 
     /**
@@ -769,10 +776,10 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
      */
     protected GeneralPath createDropdownCornerShape ( final E popupMenu, final Dimension menuSize, final boolean fill )
     {
-        final boolean topCorner = cornerSide == NORTH || cornerSide == TOP;
-        final boolean bottomCorner = cornerSide == SOUTH || cornerSide == BOTTOM;
-        final boolean leftCorner = cornerSide == WEST || cornerSide == LEFT || cornerSide == LEADING;
-        final boolean rightCorner = cornerSide == EAST || cornerSide == RIGHT || cornerSide == TRAILING;
+        final boolean topCorner = cornerSide == TOP;
+        final boolean bottomCorner = cornerSide == BOTTOM;
+        final boolean leftCorner = cornerSide == LEFT || cornerSide == LEADING;
+        final boolean rightCorner = cornerSide == RIGHT || cornerSide == TRAILING;
 
         // Painting shear
         final int shear = fill ? 1 : 0;

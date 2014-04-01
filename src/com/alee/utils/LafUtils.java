@@ -17,8 +17,10 @@
 
 package com.alee.utils;
 
+import com.alee.extended.painter.AdaptivePainter;
 import com.alee.extended.painter.Painter;
 import com.alee.laf.StyleConstants;
+import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.scroll.WebScrollBarUI;
 import com.alee.laf.text.WebTextField;
@@ -36,6 +38,7 @@ import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
 import java.awt.geom.*;
 import java.awt.image.BufferedImage;
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -62,6 +65,64 @@ public final class LafUtils
     public static Border createWebBorder ( final int margin )
     {
         return new WeblafBorder ( margin, margin, margin, margin );
+    }
+
+    /**
+     * Returns the specified painter if it can be assigned to proper painter type.
+     * Otherwise returns newly created adapter painter that wraps the specified painter.
+     * Used by component UIs to adapt general-type painters for their specific-type needs.
+     *
+     * @param painter      processed painter
+     * @param properClass  proper painter class
+     * @param adapterClass adapter painter class
+     * @param <T>          proper painter type
+     * @return specified painter if it can be assigned to proper painter type, new painter adapter if it cannot be assigned
+     */
+    public static <T extends Painter> T getProperPainter ( final Painter painter, final Class properClass, final Class adapterClass )
+    {
+        return painter == null ? null : ( ReflectUtils.isAssignable ( properClass, painter.getClass () ) ? ( T ) painter :
+                ( T ) ReflectUtils.createInstanceSafely ( adapterClass, painter ) );
+    }
+
+    /**
+     * Returns either the specified painter if it is not an adapted painter or the adapted painter.
+     * Used by component UIs to retrieve painters adapted for their specific needs.
+     *
+     * @param painter painter to process
+     * @param <T>     desired painter type
+     * @return either the specified painter if it is not an adapted painter or the adapted painter
+     */
+    public static <T extends Painter> T getAdaptedPainter ( final Painter painter )
+    {
+        return ( T ) ( painter != null && painter instanceof AdaptivePainter ? ( ( AdaptivePainter ) painter ).getPainter () : painter );
+    }
+
+    /**
+     * Fires painter property change event.
+     * This is a workaround since {@code firePropertyChange()} method is protected and cannot be called w/o using reflection.
+     *
+     * @param component  component to fire property change to
+     * @param oldPainter old painter
+     * @param newPainter new painter
+     */
+    public static void firePainterChanged ( final JComponent component, final Painter oldPainter, final Painter newPainter )
+    {
+        try
+        {
+            ReflectUtils.callMethod ( component, "firePropertyChange", WebLookAndFeel.PAINTER_PROPERTY, oldPainter, newPainter );
+        }
+        catch ( final NoSuchMethodException e )
+        {
+            e.printStackTrace ();
+        }
+        catch ( final InvocationTargetException e )
+        {
+            e.printStackTrace ();
+        }
+        catch ( final IllegalAccessException e )
+        {
+            e.printStackTrace ();
+        }
     }
 
     /**
@@ -1163,13 +1224,15 @@ public final class LafUtils
                         new Ellipse2D.Double ( selection.x - halfButton, selection.y - halfButton, halfButton * 2, halfButton * 2 ) ) );
                 buttonsShape.add ( new Area (
                         new Ellipse2D.Double ( selection.x + selection.width - halfButton, selection.y - halfButton, halfButton * 2,
-                                halfButton * 2 ) ) );
+                                halfButton * 2 )
+                ) );
             }
             if ( drawSideControls )
             {
                 buttonsShape.add ( new Area (
                         new Ellipse2D.Double ( selection.x + selection.width / 2 - halfButton, selection.y - halfButton, halfButton * 2,
-                                halfButton * 2 ) ) );
+                                halfButton * 2 )
+                ) );
             }
         }
 
@@ -1178,10 +1241,12 @@ public final class LafUtils
         {
             buttonsShape.add ( new Area (
                     new Ellipse2D.Double ( selection.x - halfButton, selection.y + selection.height / 2 - halfButton, halfButton * 2,
-                            halfButton * 2 ) ) );
+                            halfButton * 2 )
+            ) );
             buttonsShape.add ( new Area (
                     new Ellipse2D.Double ( selection.x + selection.width - halfButton, selection.y + selection.height / 2 - halfButton,
-                            halfButton * 2, halfButton * 2 ) ) );
+                            halfButton * 2, halfButton * 2 )
+            ) );
         }
 
         // Bottom
@@ -1191,16 +1256,19 @@ public final class LafUtils
             {
                 buttonsShape.add ( new Area (
                         new Ellipse2D.Double ( selection.x - halfButton, selection.y + selection.height - halfButton, halfButton * 2,
-                                halfButton * 2 ) ) );
+                                halfButton * 2 )
+                ) );
                 buttonsShape.add ( new Area (
                         new Ellipse2D.Double ( selection.x + selection.width - halfButton, selection.y + selection.height - halfButton,
-                                halfButton * 2, halfButton * 2 ) ) );
+                                halfButton * 2, halfButton * 2 )
+                ) );
             }
             if ( drawSideControls )
             {
                 buttonsShape.add ( new Area (
                         new Ellipse2D.Double ( selection.x + selection.width / 2 - halfButton, selection.y + selection.height - halfButton,
-                                halfButton * 2, halfButton * 2 ) ) );
+                                halfButton * 2, halfButton * 2 )
+                ) );
             }
         }
 
@@ -1209,10 +1277,12 @@ public final class LafUtils
         {
             final Area selectionShape = new Area (
                     new RoundRectangle2D.Double ( selection.x - halfLine, selection.y - halfLine, selection.width + halfLine * 2,
-                            selection.height + halfLine * 2, 5, 5 ) );
+                            selection.height + halfLine * 2, 5, 5 )
+            );
             selectionShape.subtract ( new Area (
                     new RoundRectangle2D.Double ( selection.x + halfLine, selection.y + halfLine, selection.width - halfLine * 2,
-                            selection.height - halfLine * 2, 3, 3 ) ) );
+                            selection.height - halfLine * 2, 3, 3 )
+            ) );
             buttonsShape.add ( selectionShape );
         }
 

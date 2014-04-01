@@ -10,14 +10,6 @@
             <shadeWidth>2</shadeWidth>
             <paintBackground>true</paintBackground>
             <webColoredBackground>true</webColoredBackground>
-            <paintTop>true</paintTop>
-            <paintLeft>true</paintLeft>
-            <paintBottom>true</paintBottom>
-            <paintRight>true</paintRight>
-            <paintTopLine>true</paintTopLine>
-            <paintLeftLine>true</paintLeftLine>
-            <paintBottomLine>true</paintBottomLine>
-            <paintRightLine>true</paintRightLine>
         </painter>
     </style>
 
@@ -30,10 +22,18 @@
             <borderColor>128,128,128,128</borderColor>
             <round>4</round>
             <shadeWidth>20</shadeWidth>
-            <shadeOpacity>0.75</shadeOpacity>
+            <shadeTransparency>0.75</shadeTransparency>
             <cornerWidth>10</cornerWidth>
             <transparency>0.95</transparency>
         </painter>
+    </style>
+
+    <!-- WebBreadcrumbPanel styling -->
+    <style type="panel" id="breadcrumb-element" extends="default">
+        <ui>
+            <margin>1,5,1,5</margin>
+        </ui>
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebBreadcrumbPanelPainter" />
     </style>
 
 </skin>

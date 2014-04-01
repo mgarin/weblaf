@@ -15,45 +15,42 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.extended.drag;
+package com.alee.managers.style.skin.ninepatch;
 
-import com.alee.utils.DragUtils;
+import com.alee.extended.painter.AbstractPainter;
+import com.alee.laf.scroll.ScrollBarButtonPainter;
+import com.alee.laf.scroll.ScrollBarButtonType;
 
 import javax.swing.*;
-import java.awt.datatransfer.Transferable;
-import java.io.File;
-import java.util.List;
+import java.awt.*;
 
 /**
- * User: mgarin Date: 07.10.11 Time: 14:37
+ * Base 9-patch painter for JScrollBar arrow buttons.
+ *
+ * @author Mikle Garin
  */
 
-public class FileDropHandler extends TransferHandler
+public class NPScrollBarButtonPainter<E extends AbstractButton> extends AbstractPainter<E> implements ScrollBarButtonPainter<E>
 {
-    @Override
-    public boolean canImport ( TransferHandler.TransferSupport info )
-    {
-        return isDropEnabled ();
-    }
+    /**
+     * todo 1. Implement when ButtonPainter/WebButtonPainter will be added and available
+     */
 
     @Override
-    public boolean importData ( TransferHandler.TransferSupport info )
+    public void setButtonType ( final ScrollBarButtonType type )
     {
-        return info.isDrop () && importData ( info.getTransferable () );
+        // todo
     }
 
-    public boolean importData ( Transferable t )
+    @Override
+    public void setScrollbar ( final JScrollBar scrollbar )
     {
-        return isDropEnabled () && filesImported ( DragUtils.getImportedFiles ( t ) );
+        // todo
     }
 
-    protected boolean isDropEnabled ()
+    @Override
+    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c )
     {
-        return true;
-    }
-
-    protected boolean filesImported ( List<File> files )
-    {
-        return true;
+        // todo
     }
 }

@@ -17,7 +17,6 @@
 
 package com.alee.managers.settings.processors;
 
-import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.settings.SettingsProcessor;
 import com.alee.managers.settings.SettingsProcessorData;
 import com.alee.utils.EncryptionUtils;
@@ -51,7 +50,7 @@ public class JPasswordFieldSettingsProcessor extends SettingsProcessor<JPassword
      *
      * @param data SettingsProcessorData
      */
-    public JPasswordFieldSettingsProcessor ( SettingsProcessorData data )
+    public JPasswordFieldSettingsProcessor ( final SettingsProcessorData data )
     {
         super ( data );
     }
@@ -74,17 +73,14 @@ public class JPasswordFieldSettingsProcessor extends SettingsProcessor<JPassword
      * {@inheritDoc}
      */
     @Override
-    protected void doInit ( JPasswordField passwordField )
+    protected void doInit ( final JPasswordField passwordField )
     {
         actionListener = new ActionListener ()
         {
             @Override
-            public void actionPerformed ( ActionEvent e )
+            public void actionPerformed ( final ActionEvent e )
             {
-                if ( SettingsManager.isSaveOnChange () )
-                {
-                    save ();
-                }
+                save ();
             }
         };
         passwordField.addActionListener ( actionListener );
@@ -92,12 +88,9 @@ public class JPasswordFieldSettingsProcessor extends SettingsProcessor<JPassword
         focusAdapter = new FocusAdapter ()
         {
             @Override
-            public void focusLost ( FocusEvent e )
+            public void focusLost ( final FocusEvent e )
             {
-                if ( SettingsManager.isSaveOnChange () )
-                {
-                    save ();
-                }
+                save ();
             }
         };
         passwordField.addFocusListener ( focusAdapter );
@@ -107,7 +100,7 @@ public class JPasswordFieldSettingsProcessor extends SettingsProcessor<JPassword
      * {@inheritDoc}
      */
     @Override
-    protected void doDestroy ( JPasswordField passwordField )
+    protected void doDestroy ( final JPasswordField passwordField )
     {
         passwordField.removeActionListener ( actionListener );
         actionListener = null;
@@ -120,7 +113,7 @@ public class JPasswordFieldSettingsProcessor extends SettingsProcessor<JPassword
      * {@inheritDoc}
      */
     @Override
-    protected void doLoad ( JPasswordField passwordField )
+    protected void doLoad ( final JPasswordField passwordField )
     {
         passwordField.setText ( EncryptionUtils.decrypt ( loadValue () ) );
     }
@@ -129,7 +122,7 @@ public class JPasswordFieldSettingsProcessor extends SettingsProcessor<JPassword
      * {@inheritDoc}
      */
     @Override
-    protected void doSave ( JPasswordField passwordField )
+    protected void doSave ( final JPasswordField passwordField )
     {
         saveValue ( EncryptionUtils.encrypt ( new String ( passwordField.getPassword () ) ) );
     }

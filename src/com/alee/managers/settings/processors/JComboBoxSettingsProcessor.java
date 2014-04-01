@@ -17,7 +17,6 @@
 
 package com.alee.managers.settings.processors;
 
-import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.settings.SettingsProcessor;
 import com.alee.managers.settings.SettingsProcessorData;
 
@@ -43,7 +42,7 @@ public class JComboBoxSettingsProcessor extends SettingsProcessor<JComboBox, Int
      *
      * @param data SettingsProcessorData
      */
-    public JComboBoxSettingsProcessor ( SettingsProcessorData data )
+    public JComboBoxSettingsProcessor ( final SettingsProcessorData data )
     {
         super ( data );
     }
@@ -66,17 +65,14 @@ public class JComboBoxSettingsProcessor extends SettingsProcessor<JComboBox, Int
      * {@inheritDoc}
      */
     @Override
-    protected void doInit ( JComboBox comboBox )
+    protected void doInit ( final JComboBox comboBox )
     {
         actionListener = new ActionListener ()
         {
             @Override
-            public void actionPerformed ( ActionEvent e )
+            public void actionPerformed ( final ActionEvent e )
             {
-                if ( SettingsManager.isSaveOnChange () )
-                {
-                    save ();
-                }
+                save ();
             }
         };
         comboBox.addActionListener ( actionListener );
@@ -86,7 +82,7 @@ public class JComboBoxSettingsProcessor extends SettingsProcessor<JComboBox, Int
      * {@inheritDoc}
      */
     @Override
-    protected void doDestroy ( JComboBox comboBox )
+    protected void doDestroy ( final JComboBox comboBox )
     {
         comboBox.removeActionListener ( actionListener );
         actionListener = null;
@@ -96,9 +92,9 @@ public class JComboBoxSettingsProcessor extends SettingsProcessor<JComboBox, Int
      * {@inheritDoc}
      */
     @Override
-    protected void doLoad ( JComboBox comboBox )
+    protected void doLoad ( final JComboBox comboBox )
     {
-        Integer index = loadValue ();
+        final Integer index = loadValue ();
         if ( index != null && index >= 0 && comboBox.getModel ().getSize () > index && comboBox.getSelectedIndex () != index )
         {
             comboBox.setSelectedIndex ( index );
@@ -109,7 +105,7 @@ public class JComboBoxSettingsProcessor extends SettingsProcessor<JComboBox, Int
      * {@inheritDoc}
      */
     @Override
-    protected void doSave ( JComboBox comboBox )
+    protected void doSave ( final JComboBox comboBox )
     {
         saveValue ( comboBox.getSelectedIndex () );
     }

@@ -79,24 +79,19 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
     private float trasparency = WebCustomTooltipStyle.trasparency;
 
     // Tooltip listeners
-    private List<TooltipListener> listeners = new ArrayList<TooltipListener> ( 2 );
+    private final List<TooltipListener> listeners = new ArrayList<TooltipListener> ( 2 );
 
     // Tooltip variables
-    private HotkeyTipLabel hotkey;
+    private final HotkeyTipLabel hotkey;
     private int cornerPeak = 0;
 
     // Animation variables
+    private final WebTimer fadeTimer;
     private FadeStateType fadeStateType;
     private float fade = 0;
-    private WebTimer fadeTimer;
 
     // Component listeners
     private AncestorListener ancestorListener;
-
-    private static WebLabel createDefaultComponent ( final Icon icon, final String tooltip )
-    {
-        return new WebLabel ( tooltip, icon );
-    }
 
     public WebCustomTooltip ( final Component component, final String tooltip )
     {
@@ -159,7 +154,7 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
         super ();
 
         SwingUtils.setOrientation ( this );
-        SwingUtils.setForegroundRecursively ( tooltip, textColor );
+        // SwingUtils.setForegroundRecursively ( tooltip, textColor );
         setOpaque ( false );
 
         // Tooltip unique id
@@ -170,7 +165,6 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
 
         // Tooltip component
         this.tooltip = tooltip;
-        this.tooltip.setFont ( WebFonts.getSystemTooltipFont () );
 
         // Show component hotkey on tooltip
         this.showHotkey = showHotkey;
@@ -673,6 +667,37 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
     }
 
     /**
+     * Tooltip shade width
+     */
+
+    public int getShadeWidth ()
+    {
+        return shadeWidth;
+    }
+
+    public void setShadeWidth ( final int shadeWidth )
+    {
+        this.shadeWidth = shadeWidth;
+        updateBorder ();
+        updateLocation ();
+    }
+
+    /**
+     * Tooltip shade color
+     */
+
+    public Color getShadeColor ()
+    {
+        return shadeColor;
+    }
+
+    public void setShadeColor ( final Color shadeColor )
+    {
+        this.shadeColor = shadeColor;
+        repaint ();
+    }
+
+    /**
      * Component to which this tooltip attached
      */
 
@@ -1062,5 +1087,13 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
         {
             listener.tooltipDestroyed ();
         }
+    }
+
+    public static WebLabel createDefaultComponent ( final Icon icon, final String tooltip )
+    {
+        final WebLabel label = new WebLabel ( tooltip, icon );
+        label.setStyleId ( "custom-tooltip-label" );
+        label.setFont ( WebFonts.getSystemTooltipFont () );
+        return label;
     }
 }

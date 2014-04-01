@@ -17,7 +17,7 @@
 
 package com.alee.extended.image;
 
-import com.alee.extended.drag.FileDropHandler;
+import com.alee.extended.drag.FileDragAndDropHandler;
 import com.alee.utils.ImageUtils;
 
 import javax.swing.*;
@@ -25,26 +25,26 @@ import java.io.File;
 import java.util.List;
 
 /**
- * User: mgarin Date: 31.10.11 Time: 13:43
+ * @author Mikle Garin
  */
 
-public class GalleryTransferHandler extends FileDropHandler
+public class GalleryTransferHandler extends FileDragAndDropHandler
 {
     private WebImageGallery gallery = null;
 
-    public GalleryTransferHandler ( WebImageGallery gallery )
+    public GalleryTransferHandler ( final WebImageGallery gallery )
     {
         super ();
         this.gallery = gallery;
     }
 
     @Override
-    protected boolean filesImported ( List<File> files )
+    public boolean filesDropped ( final List<File> files )
     {
         boolean added = false;
         if ( gallery != null )
         {
-            for ( File file : files )
+            for ( final File file : files )
             {
                 if ( ImageUtils.isImageLoadable ( file.getName () ) )
                 {

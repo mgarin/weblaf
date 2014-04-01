@@ -111,7 +111,7 @@ public class FileTreeDataProvider extends AbstractTreeDataProvider<FileTreeNode>
         {
             listener.childsLoadCompleted ( parent.getFile () == null ? getRootChilds () : getFileChilds ( parent ) );
         }
-        catch ( Throwable cause )
+        catch ( final Throwable cause )
         {
             listener.childsLoadFailed ( cause );
         }
@@ -154,6 +154,16 @@ public class FileTreeDataProvider extends AbstractTreeDataProvider<FileTreeNode>
             }
             return childs;
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Filter<FileTreeNode> getChildsFilter ( final FileTreeNode node )
+    {
+        // We must not filter out given roots
+        return node.getFile () == null ? null : super.getChildsFilter ( node );
     }
 
     /**

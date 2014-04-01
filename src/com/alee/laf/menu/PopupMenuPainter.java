@@ -18,6 +18,7 @@
 package com.alee.laf.menu;
 
 import com.alee.extended.painter.Painter;
+import com.alee.extended.painter.SpecificPainter;
 
 import javax.swing.*;
 import java.awt.*;
@@ -28,7 +29,7 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public interface PopupMenuPainter<E extends JPopupMenu> extends Painter<E>
+public interface PopupMenuPainter<E extends JPopupMenu> extends Painter<E>, SpecificPainter
 {
     /**
      * Sets whether popup menu is transparent or not.

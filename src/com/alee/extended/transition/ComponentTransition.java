@@ -334,7 +334,6 @@ public class ComponentTransition extends WebPanel
     {
         if ( transitionEffects != null )
         {
-            transitionEffects.clear ();
             transitionEffects = null;
         }
     }

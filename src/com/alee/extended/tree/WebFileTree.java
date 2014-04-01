@@ -17,7 +17,7 @@
 
 package com.alee.extended.tree;
 
-import com.alee.extended.drag.FileDropHandler;
+import com.alee.extended.drag.FileDragAndDropHandler;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.FileUtils;
 import com.alee.utils.compare.Filter;
@@ -46,7 +46,7 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
     /**
      * File lookup drop handler.
      */
-    protected FileDropHandler fileLookupDropHandler = null;
+    protected FileDragAndDropHandler fileLookupDropHandler = null;
 
     /**
      * Delayed selection ID operations lock.
@@ -144,20 +144,20 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
      *
      * @return file lookup drop handler
      */
-    protected FileDropHandler getFileLookupDropHandler ()
+    protected FileDragAndDropHandler getFileLookupDropHandler ()
     {
         if ( fileLookupDropHandler == null )
         {
-            fileLookupDropHandler = new FileDropHandler ()
+            fileLookupDropHandler = new FileDragAndDropHandler ()
             {
                 @Override
-                protected boolean isDropEnabled ()
+                public boolean isDropEnabled ()
                 {
                     return filesDropSearchEnabled;
                 }
 
                 @Override
-                protected boolean filesImported ( final List<File> files )
+                public boolean filesDropped ( final List<File> files )
                 {
                     // Selecting dragged files in tree
                     if ( files.size () > 0 )
@@ -191,7 +191,7 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
     {
         this.filesDropSearchEnabled = filesDropSearchEnabled;
 
-        final FileDropHandler lookupDropHandler = getFileLookupDropHandler ();
+        final FileDragAndDropHandler lookupDropHandler = getFileLookupDropHandler ();
         if ( filesDropSearchEnabled )
         {
             setTransferHandler ( lookupDropHandler );

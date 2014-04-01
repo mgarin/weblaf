@@ -300,4 +300,73 @@ public final class NinePatchUtils
         }
         return intervals;
     }
+
+    /**
+     * Returns rotated by 90 degrees clockwise NinePatchIcon.
+     * This method also modifies patches information properly.
+     *
+     * @param icon NinePatchIcon to rotate
+     * @return rotated by 90 degrees clockwise NinePatchIcon
+     */
+    public static NinePatchIcon rotateIcon90CW ( final NinePatchIcon icon )
+    {
+        final BufferedImage rawImage = ImageUtils.rotateImage90CW ( icon.getRawImage () );
+        final NinePatchIcon rotated = NinePatchIcon.create ( rawImage );
+
+        // Rotating stretch information
+        rotated.setHorizontalStretch ( CollectionUtils.copy ( icon.getVerticalStretch () ) );
+        rotated.setVerticalStretch ( CollectionUtils.copy ( icon.getHorizontalStretch () ) );
+
+        // Rotating margin
+        final Insets om = icon.getMargin ();
+        rotated.setMargin ( om.left, om.bottom, om.right, om.top );
+
+        return rotated;
+    }
+
+    /**
+     * Returns rotated by 90 degrees counter-clockwise NinePatchIcon.
+     * This method also modifies patches information properly.
+     *
+     * @param icon NinePatchIcon to rotate
+     * @return rotated by 90 degrees counter-clockwise NinePatchIcon
+     */
+    public static NinePatchIcon rotateIcon90CCW ( final NinePatchIcon icon )
+    {
+        final BufferedImage rawImage = ImageUtils.rotateImage90CCW ( icon.getRawImage () );
+        final NinePatchIcon rotated = NinePatchIcon.create ( rawImage );
+
+        // Rotating stretch information
+        rotated.setHorizontalStretch ( CollectionUtils.copy ( icon.getVerticalStretch () ) );
+        rotated.setVerticalStretch ( CollectionUtils.copy ( icon.getHorizontalStretch () ) );
+
+        // Rotating margin
+        final Insets om = icon.getMargin ();
+        rotated.setMargin ( om.right, om.top, om.left, om.bottom );
+
+        return rotated;
+    }
+
+    /**
+     * Returns rotated by 180 degrees NinePatchIcon.
+     * This method also modifies patches information properly.
+     *
+     * @param icon NinePatchIcon to rotate
+     * @return rotated by 180 degrees NinePatchIcon
+     */
+    public static NinePatchIcon rotateIcon180 ( final NinePatchIcon icon )
+    {
+        final BufferedImage rawImage = ImageUtils.rotateImage180 ( icon.getRawImage () );
+        final NinePatchIcon rotated = NinePatchIcon.create ( rawImage );
+
+        // Rotating stretch information
+        rotated.setHorizontalStretch ( CollectionUtils.copy ( icon.getHorizontalStretch () ) );
+        rotated.setVerticalStretch ( CollectionUtils.copy ( icon.getVerticalStretch () ) );
+
+        // Rotating margin
+        final Insets om = icon.getMargin ();
+        rotated.setMargin ( om.bottom, om.right, om.top, om.left );
+
+        return rotated;
+    }
 }

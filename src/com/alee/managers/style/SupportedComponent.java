@@ -18,45 +18,11 @@
 package com.alee.managers.style;
 
 import com.alee.extended.button.WebSplitButton;
-import com.alee.extended.button.WebSplitButtonUI;
 import com.alee.extended.checkbox.WebTristateCheckBox;
-import com.alee.extended.checkbox.WebTristateCheckBoxUI;
 import com.alee.extended.label.WebMultiLineLabel;
-import com.alee.extended.label.WebMultiLineLabelUI;
 import com.alee.extended.label.WebVerticalLabel;
-import com.alee.extended.label.WebVerticalLabelUI;
-import com.alee.laf.button.WebButtonUI;
-import com.alee.laf.button.WebToggleButtonUI;
-import com.alee.laf.checkbox.WebCheckBoxUI;
-import com.alee.laf.colorchooser.WebColorChooserUI;
-import com.alee.laf.combobox.WebComboBoxUI;
-import com.alee.laf.desktoppane.WebDesktopIconUI;
-import com.alee.laf.desktoppane.WebDesktopPaneUI;
-import com.alee.laf.desktoppane.WebInternalFrameUI;
-import com.alee.laf.filechooser.WebFileChooserUI;
-import com.alee.laf.label.WebLabelUI;
-import com.alee.laf.list.WebListUI;
-import com.alee.laf.menu.*;
-import com.alee.laf.optionpane.WebOptionPaneUI;
-import com.alee.laf.panel.WebPanelUI;
-import com.alee.laf.progressbar.WebProgressBarUI;
-import com.alee.laf.radiobutton.WebRadioButtonUI;
-import com.alee.laf.rootpane.WebRootPaneUI;
-import com.alee.laf.scroll.WebScrollBarUI;
-import com.alee.laf.scroll.WebScrollPaneUI;
-import com.alee.laf.separator.WebSeparatorUI;
-import com.alee.laf.slider.WebSliderUI;
-import com.alee.laf.spinner.WebSpinnerUI;
-import com.alee.laf.splitpane.WebSplitPaneUI;
-import com.alee.laf.tabbedpane.WebTabbedPaneUI;
-import com.alee.laf.table.WebTableHeaderUI;
-import com.alee.laf.table.WebTableUI;
-import com.alee.laf.text.*;
-import com.alee.laf.toolbar.WebToolBarSeparatorUI;
-import com.alee.laf.toolbar.WebToolBarUI;
-import com.alee.laf.tooltip.WebToolTipUI;
-import com.alee.laf.tree.WebTreeUI;
-import com.alee.laf.viewport.WebViewportUI;
+import com.alee.laf.WebLookAndFeel;
+import com.alee.managers.style.data.ComponentStyleConverter;
 import com.alee.utils.LafUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.laf.Styleable;
@@ -64,9 +30,7 @@ import com.alee.utils.laf.Styleable;
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.table.JTableHeader;
-import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * This enumeration represents list of supported components.
@@ -84,6 +48,12 @@ public enum SupportedComponent
     label
             {
                 @Override
+                public boolean supportsPainters ()
+                {
+                    return true;
+                }
+
+                @Override
                 public Class<? extends JComponent> getComponentClass ()
                 {
                     return JLabel.class;
@@ -98,11 +68,17 @@ public enum SupportedComponent
                 @Override
                 public String getDefaultUIClass ()
                 {
-                    return WebLabelUI.class.getCanonicalName ();
+                    return WebLookAndFeel.labelUI;
                 }
             },
     verticalLabel
             {
+                @Override
+                public boolean supportsPainters ()
+                {
+                    return true;
+                }
+
                 @Override
                 public Class<? extends JComponent> getComponentClass ()
                 {
@@ -118,7 +94,7 @@ public enum SupportedComponent
                 @Override
                 public String getDefaultUIClass ()
                 {
-                    return WebVerticalLabelUI.class.getCanonicalName ();
+                    return WebLookAndFeel.verticalLabelUI;
                 }
             },
     multiLineLabel
@@ -138,7 +114,7 @@ public enum SupportedComponent
                 @Override
                 public String getDefaultUIClass ()
                 {
-                    return WebMultiLineLabelUI.class.getCanonicalName ();
+                    return WebLookAndFeel.multiLineLabelUI;
                 }
             },
     toolTip
@@ -158,7 +134,7 @@ public enum SupportedComponent
                 @Override
                 public String getDefaultUIClass ()
                 {
-                    return WebToolTipUI.class.getCanonicalName ();
+                    return WebLookAndFeel.toolTipUI;
                 }
             },
 
@@ -182,7 +158,7 @@ public enum SupportedComponent
                 @Override
                 public String getDefaultUIClass ()
                 {
-                    return WebButtonUI.class.getCanonicalName ();
+                    return WebLookAndFeel.buttonUI;
                 }
             },
     splitButton
@@ -202,7 +178,7 @@ public enum SupportedComponent
                 @Override
                 public String getDefaultUIClass ()
                 {
-                    return WebSplitButtonUI.class.getCanonicalName ();
+                    return WebLookAndFeel.splitButtonUI;
                 }
             },
     toggleButton
@@ -222,7 +198,7 @@ public enum SupportedComponent
                 @Override
                 public String getDefaultUIClass ()
                 {
-                    return WebToggleButtonUI.class.getCanonicalName ();
+                    return WebLookAndFeel.toggleButtonUI;
                 }
             },
     checkBox
@@ -242,7 +218,7 @@ public enum SupportedComponent
                 @Override
                 public String getDefaultUIClass ()
                 {
-                    return WebCheckBoxUI.class.getCanonicalName ();
+                    return WebLookAndFeel.checkBoxUI;
                 }
             },
     tristateCheckBox
@@ -262,7 +238,7 @@ public enum SupportedComponent
                 @Override
                 public String getDefaultUIClass ()
                 {
-                    return WebTristateCheckBoxUI.class.getCanonicalName ();
+                    return WebLookAndFeel.tristateCheckBoxUI;
                 }
             },
     radioButton
@@ -282,7 +258,7 @@ public enum SupportedComponent
                 @Override
                 public String getDefaultUIClass ()
                 {
-                    return WebRadioButtonUI.class.getCanonicalName ();
+                    return WebLookAndFeel.radioButtonUI;
                 }
             },
 
@@ -306,7 +282,7 @@ public enum SupportedComponent
                 @Override
                 public String getDefaultUIClass ()
                 {
-                    return WebMenuBarUI.class.getCanonicalName ();
+                    return WebLookAndFeel.menuBarUI;
                 }
             },
     menu
@@ -326,11 +302,17 @@ public enum SupportedComponent
                 @Override
                 public String getDefaultUIClass ()
                 {
-                    return WebMenuUI.class.getCanonicalName ();
+                    return WebLookAndFeel.menuUI;
                 }
             },
     popupMenu
             {
+                @Override
+                public boolean supportsPainters ()
+                {
+                    return true;
+                }
+
                 @Override
                 public Class<? extends JComponent> getComponentClass ()
                 {
@@ -346,7 +328,7 @@ public enum SupportedComponent
                 @Override
                 public String getDefaultUIClass ()
                 {
-                    return WebPopupMenuUI.class.getCanonicalName ();
+                    return WebLookAndFeel.popupMenuUI;
                 }
             },
     menuItem
@@ -366,7 +348,7 @@ public enum SupportedComponent
                 @Override
                 public String getDefaultUIClass ()
                 {
-                    return WebMenuItemUI.class.getCanonicalName ();
+                    return WebLookAndFeel.menuItemUI;
                 }
             },
     checkBoxMenuItem
@@ -386,7 +368,7 @@ public enum SupportedComponent
                 @Override
                 public String getDefaultUIClass ()
                 {
-                    return WebCheckBoxMenuItemUI.class.getCanonicalName ();
+                    return WebLookAndFeel.checkBoxMenuItemUI;
                 }
             },
     radioButtonMenuItem
@@ -406,7 +388,7 @@ public enum SupportedComponent
                 @Override
                 public String getDefaultUIClass ()
                 {
-                    return WebRadioButtonMenuItemUI.class.getCanonicalName ();
+                    return WebLookAndFeel.radioButtonMenuItemUI;
                 }
             },
     popupMenuSeparator
@@ -426,7 +408,7 @@ public enum SupportedComponent
                 @Override
                 public String getDefaultUIClass ()
                 {
-                    return WebPopupMenuSeparatorUI.class.getCanonicalName ();
+                    return WebLookAndFeel.popupMenuSeparatorUI;
                 }
             },
 
@@ -450,7 +432,7 @@ public enum SupportedComponent
                 @Override
                 public String getDefaultUIClass ()
                 {
-                    return WebSeparatorUI.class.getCanonicalName ();
+                    return WebLookAndFeel.separatorUI;
                 }
             },
 
@@ -459,6 +441,12 @@ public enum SupportedComponent
      */
     scrollBar
             {
+                @Override
+                public boolean supportsPainters ()
+                {
+                    return true;
+                }
+
                 @Override
                 public Class<? extends JComponent> getComponentClass ()
                 {
@@ -474,7 +462,7 @@ public enum SupportedComponent
                 @Override
                 public String getDefaultUIClass ()
                 {
-                    return WebScrollBarUI.class.getCanonicalName ();
+                    return WebLookAndFeel.scrollBarUI;
                 }
             },
     scrollPane
@@ -494,7 +482,7 @@ public enum SupportedComponent
                 @Override
                 public String getDefaultUIClass ()
                 {
-                    return WebScrollPaneUI.class.getCanonicalName ();
+                    return WebLookAndFeel.scrollPaneUI;
                 }
             },
     viewport
@@ -514,7 +502,7 @@ public enum SupportedComponent
                 @Override
                 public String getDefaultUIClass ()
                 {
-                    return WebViewportUI.class.getCanonicalName ();
+                    return WebLookAndFeel.viewportUI;
                 }
             },
 
@@ -538,7 +526,7 @@ public enum SupportedComponent
                 @Override
                 public String getDefaultUIClass ()
                 {
-                    return WebTextFieldUI.class.getCanonicalName ();
+                    return WebLookAndFeel.textFieldUI;
                 }
             },
     passwordField
@@ -558,7 +546,7 @@ public enum SupportedComponent
                 @Override
                 public String getDefaultUIClass ()
                 {
-                    return WebPasswordFieldUI.class.getCanonicalName ();
+                    return WebLookAndFeel.passwordFieldUI;
                 }
             },
     formattedTextField
@@ -578,7 +566,7 @@ public enum SupportedComponent
                 @Override
                 public String getDefaultUIClass ()
                 {
-                    return WebFormattedTextFieldUI.class.getCanonicalName ();
+                    return WebLookAndFeel.formattedTextFieldUI;
                 }
             },
     textArea
@@ -598,7 +586,7 @@ public enum SupportedComponent
                 @Override
                 public String getDefaultUIClass ()
                 {
-                    return WebTextAreaUI.class.getCanonicalName ();
+                    return WebLookAndFeel.textAreaUI;
                 }
             },
     editorPane
@@ -618,7 +606,7 @@ public enum SupportedComponent
                 @Override
                 public String getDefaultUIClass ()
                 {
-                    return WebEditorPaneUI.class.getCanonicalName ();
+                    return WebLookAndFeel.editorPaneUI;
                 }
             },
     textPane
@@ -638,7 +626,7 @@ public enum SupportedComponent
                 @Override
                 public String getDefaultUIClass ()
                 {
-                    return WebTextPaneUI.class.getCanonicalName ();
+                    return WebLookAndFeel.textPaneUI;
                 }
             },
 
@@ -662,7 +650,7 @@ public enum SupportedComponent
                 @Override
                 public String getDefaultUIClass ()
                 {
-                    return WebToolBarUI.class.getCanonicalName ();
+                    return WebLookAndFeel.toolBarUI;
                 }
             },
     toolBarSeparator
@@ -682,7 +670,7 @@ public enum SupportedComponent
                 @Override
                 public String getDefaultUIClass ()
                 {
-                    return WebToolBarSeparatorUI.class.getCanonicalName ();
+                    return WebLookAndFeel.toolBarSeparatorUI;
                 }
             },
 
@@ -706,7 +694,7 @@ public enum SupportedComponent
                 @Override
                 public String getDefaultUIClass ()
                 {
-                    return WebTableUI.class.getCanonicalName ();
+                    return WebLookAndFeel.tableUI;
                 }
             },
     tableHeader
@@ -726,7 +714,7 @@ public enum SupportedComponent
                 @Override
                 public String getDefaultUIClass ()
                 {
-                    return WebTableHeaderUI.class.getCanonicalName ();
+                    return WebLookAndFeel.tableHeaderUI;
                 }
             },
 
@@ -750,7 +738,7 @@ public enum SupportedComponent
                 @Override
                 public String getDefaultUIClass ()
                 {
-                    return WebColorChooserUI.class.getCanonicalName ();
+                    return WebLookAndFeel.colorChooserUI;
                 }
             },
     fileChooser
@@ -770,7 +758,7 @@ public enum SupportedComponent
                 @Override
                 public String getDefaultUIClass ()
                 {
-                    return WebFileChooserUI.class.getCanonicalName ();
+                    return WebLookAndFeel.fileChooserUI;
                 }
             },
 
@@ -779,6 +767,12 @@ public enum SupportedComponent
      */
     panel
             {
+                @Override
+                public boolean supportsPainters ()
+                {
+                    return true;
+                }
+
                 @Override
                 public Class<? extends JComponent> getComponentClass ()
                 {
@@ -794,7 +788,7 @@ public enum SupportedComponent
                 @Override
                 public String getDefaultUIClass ()
                 {
-                    return WebPanelUI.class.getCanonicalName ();
+                    return WebLookAndFeel.panelUI;
                 }
             },
     rootPane
@@ -814,7 +808,7 @@ public enum SupportedComponent
                 @Override
                 public String getDefaultUIClass ()
                 {
-                    return WebRootPaneUI.class.getCanonicalName ();
+                    return WebLookAndFeel.rootPaneUI;
                 }
             },
     tabbedPane
@@ -834,7 +828,7 @@ public enum SupportedComponent
                 @Override
                 public String getDefaultUIClass ()
                 {
-                    return WebTabbedPaneUI.class.getCanonicalName ();
+                    return WebLookAndFeel.tabbedPaneUI;
                 }
             },
     splitPane
@@ -854,7 +848,7 @@ public enum SupportedComponent
                 @Override
                 public String getDefaultUIClass ()
                 {
-                    return WebSplitPaneUI.class.getCanonicalName ();
+                    return WebLookAndFeel.splitPaneUI;
                 }
             },
 
@@ -878,7 +872,7 @@ public enum SupportedComponent
                 @Override
                 public String getDefaultUIClass ()
                 {
-                    return WebProgressBarUI.class.getCanonicalName ();
+                    return WebLookAndFeel.progressBarUI;
                 }
             },
     slider
@@ -898,7 +892,7 @@ public enum SupportedComponent
                 @Override
                 public String getDefaultUIClass ()
                 {
-                    return WebSliderUI.class.getCanonicalName ();
+                    return WebLookAndFeel.sliderUI;
                 }
             },
     spinner
@@ -918,7 +912,7 @@ public enum SupportedComponent
                 @Override
                 public String getDefaultUIClass ()
                 {
-                    return WebSpinnerUI.class.getCanonicalName ();
+                    return WebLookAndFeel.spinnerUI;
                 }
             },
     tree
@@ -938,7 +932,7 @@ public enum SupportedComponent
                 @Override
                 public String getDefaultUIClass ()
                 {
-                    return WebTreeUI.class.getCanonicalName ();
+                    return WebLookAndFeel.treeUI;
                 }
             },
     list
@@ -958,7 +952,7 @@ public enum SupportedComponent
                 @Override
                 public String getDefaultUIClass ()
                 {
-                    return WebListUI.class.getCanonicalName ();
+                    return WebLookAndFeel.listUI;
                 }
             },
     comboBox
@@ -978,7 +972,7 @@ public enum SupportedComponent
                 @Override
                 public String getDefaultUIClass ()
                 {
-                    return WebComboBoxUI.class.getCanonicalName ();
+                    return WebLookAndFeel.comboBoxUI;
                 }
             },
 
@@ -1002,7 +996,7 @@ public enum SupportedComponent
                 @Override
                 public String getDefaultUIClass ()
                 {
-                    return WebDesktopPaneUI.class.getCanonicalName ();
+                    return WebLookAndFeel.desktopPaneUI;
                 }
             },
     desktopIcon
@@ -1022,7 +1016,7 @@ public enum SupportedComponent
                 @Override
                 public String getDefaultUIClass ()
                 {
-                    return WebDesktopIconUI.class.getCanonicalName ();
+                    return WebLookAndFeel.desktopIconUI;
                 }
             },
     internalFrame
@@ -1042,7 +1036,7 @@ public enum SupportedComponent
                 @Override
                 public String getDefaultUIClass ()
                 {
-                    return WebInternalFrameUI.class.getCanonicalName ();
+                    return WebLookAndFeel.internalFrameUI;
                 }
             },
 
@@ -1066,9 +1060,19 @@ public enum SupportedComponent
                 @Override
                 public String getDefaultUIClass ()
                 {
-                    return WebOptionPaneUI.class.getCanonicalName ();
+                    return WebLookAndFeel.optionPaneUI;
                 }
             };
+
+    /**
+     * Returns whether this component type supports painters or not.
+     *
+     * @return true if this component type supports painters, false otherwise
+     */
+    public boolean supportsPainters ()
+    {
+        return false;
+    }
 
     /**
      * Returns component class for this component type.
@@ -1102,29 +1106,21 @@ public enum SupportedComponent
     public String getComponentStyleId ( final JComponent component )
     {
         final Styleable styleable = LafUtils.getStyleable ( component );
-        return styleable != null ? styleable.getStyleId () : null;
+        final String styleId = styleable != null ? styleable.getStyleId () : ComponentStyleConverter.DEFAULT_STYLE_ID;
+        return styleId != null ? styleId : ComponentStyleConverter.DEFAULT_STYLE_ID;
     }
 
     /**
-     * Lazily initialized component UI class map by their types.
-     */
-    private static final Map<SupportedComponent, Class> componentUIClassByUIClassID =
-            new EnumMap<SupportedComponent, Class> ( SupportedComponent.class );
-
-    /**
      * Returns UI class for this component type.
+     * Result of this method is not cached because UI classes might be changed in runtime.
      *
      * @return UI class for this component type
      */
     public Class<? extends ComponentUI> getUIClass ()
     {
-        Class type = componentUIClassByUIClassID.get ( this );
-        if ( type == null )
-        {
-            type = ReflectUtils.getClassSafely ( UIManager.getString ( getUIClassID () ) );
-            componentUIClassByUIClassID.put ( this, type );
-        }
-        return type;
+        final Class type = ReflectUtils.getClassSafely ( UIManager.getString ( getUIClassID () ) );
+        final Class defaultType = ReflectUtils.getClassSafely ( getDefaultUIClass () );
+        return ReflectUtils.isAssignable ( defaultType, type ) ? type : defaultType;
     }
 
     /**
@@ -1171,5 +1167,23 @@ public enum SupportedComponent
             }
         }
         return componentByUIClassID.get ( uiClassID );
+    }
+
+    /**
+     * Returns list of component types which supports painters.
+     *
+     * @return list of component types which supports painters
+     */
+    public static List<SupportedComponent> getPainterSupportedComponents ()
+    {
+        final List<SupportedComponent> supportedComponents = new ArrayList<SupportedComponent> ();
+        for ( final SupportedComponent sc : SupportedComponent.values () )
+        {
+            if ( sc.supportsPainters () )
+            {
+                supportedComponents.add ( sc );
+            }
+        }
+        return supportedComponents;
     }
 }

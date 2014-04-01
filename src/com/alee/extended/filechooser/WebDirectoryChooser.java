@@ -17,6 +17,7 @@
 
 package com.alee.extended.filechooser;
 
+import com.alee.extended.filefilter.AbstractFileFilter;
 import com.alee.extended.panel.GroupPanel;
 import com.alee.laf.StyleConstants;
 import com.alee.laf.button.WebButton;
@@ -71,7 +72,7 @@ public class WebDirectoryChooser extends WebDialog implements DialogOptions
      *
      * @param parent parent window
      */
-    public WebDirectoryChooser ( Window parent )
+    public WebDirectoryChooser ( final Window parent )
     {
         this ( parent, null );
     }
@@ -82,7 +83,7 @@ public class WebDirectoryChooser extends WebDialog implements DialogOptions
      * @param parent parent window
      * @param title  dialog title
      */
-    public WebDirectoryChooser ( Window parent, String title )
+    public WebDirectoryChooser ( final Window parent, final String title )
     {
         super ( parent, title != null ? title : "" );
         setIconImage ( ICON.getImage () );
@@ -105,7 +106,7 @@ public class WebDirectoryChooser extends WebDialog implements DialogOptions
         HotkeyManager.addContainerHotkeyCondition ( this, new HotkeyCondition ()
         {
             @Override
-            public boolean checkCondition ( Component component )
+            public boolean checkCondition ( final Component component )
             {
                 return directoryChooserPanel.allowHotkeys ();
             }
@@ -125,7 +126,7 @@ public class WebDirectoryChooser extends WebDialog implements DialogOptions
         approveButton.addActionListener ( new ActionListener ()
         {
             @Override
-            public void actionPerformed ( ActionEvent e )
+            public void actionPerformed ( final ActionEvent e )
             {
                 result = OK_OPTION;
                 WebDirectoryChooser.this.dispose ();
@@ -140,7 +141,7 @@ public class WebDirectoryChooser extends WebDialog implements DialogOptions
         cancelButton.addActionListener ( new ActionListener ()
         {
             @Override
-            public void actionPerformed ( ActionEvent e )
+            public void actionPerformed ( final ActionEvent e )
             {
                 result = CANCEL_OPTION;
                 WebDirectoryChooser.this.dispose ();
@@ -154,7 +155,7 @@ public class WebDirectoryChooser extends WebDialog implements DialogOptions
         final PropertyChangeListener pcl = new PropertyChangeListener ()
         {
             @Override
-            public void propertyChange ( PropertyChangeEvent evt )
+            public void propertyChange ( final PropertyChangeEvent evt )
             {
                 approveButton.setPreferredSize ( null );
                 cancelButton.setPreferredSize ( null );
@@ -169,7 +170,7 @@ public class WebDirectoryChooser extends WebDialog implements DialogOptions
         directoryChooserPanel.addDirectoryChooserListener ( new DirectoryChooserListener ()
         {
             @Override
-            public void selectionChanged ( File file )
+            public void selectionChanged ( final File file )
             {
                 updateButtonsState ( file );
             }
@@ -180,7 +181,7 @@ public class WebDirectoryChooser extends WebDialog implements DialogOptions
         addWindowListener ( new WindowAdapter ()
         {
             @Override
-            public void windowClosed ( WindowEvent e )
+            public void windowClosed ( final WindowEvent e )
             {
                 result = CLOSE_OPTION;
             }
@@ -196,9 +197,29 @@ public class WebDirectoryChooser extends WebDialog implements DialogOptions
      *
      * @param file newly selected file
      */
-    protected void updateButtonsState ( File file )
+    protected void updateButtonsState ( final File file )
     {
         approveButton.setEnabled ( file != null );
+    }
+
+    /**
+     * Returns directory chooser file filter.
+     *
+     * @return directory chooser file filter
+     */
+    public AbstractFileFilter getFilter ()
+    {
+        return directoryChooserPanel.getFilter ();
+    }
+
+    /**
+     * Sets directory chooser file filter.
+     *
+     * @param filter directory chooser file filter
+     */
+    public void setFilter ( final AbstractFileFilter filter )
+    {
+        directoryChooserPanel.setFilter ( filter );
     }
 
     /**
@@ -226,7 +247,7 @@ public class WebDirectoryChooser extends WebDialog implements DialogOptions
      *
      * @param selectedDirectory currently selected directory
      */
-    public void setSelectedDirectory ( File selectedDirectory )
+    public void setSelectedDirectory ( final File selectedDirectory )
     {
         directoryChooserPanel.setSelectedDirectory ( selectedDirectory );
     }
@@ -236,7 +257,7 @@ public class WebDirectoryChooser extends WebDialog implements DialogOptions
      *
      * @param listener directory chooser listener to add
      */
-    public void addDirectoryChooserListener ( DirectoryChooserListener listener )
+    public void addDirectoryChooserListener ( final DirectoryChooserListener listener )
     {
         directoryChooserPanel.addDirectoryChooserListener ( listener );
     }
@@ -246,7 +267,7 @@ public class WebDirectoryChooser extends WebDialog implements DialogOptions
      *
      * @param listener directory chooser listener to remove
      */
-    public void removeDirectoryChooserListener ( DirectoryChooserListener listener )
+    public void removeDirectoryChooserListener ( final DirectoryChooserListener listener )
     {
         directoryChooserPanel.removeDirectoryChooserListener ( listener );
     }
@@ -266,7 +287,7 @@ public class WebDirectoryChooser extends WebDialog implements DialogOptions
      * {@inheritDoc}
      */
     @Override
-    public void setVisible ( boolean b )
+    public void setVisible ( final boolean b )
     {
         if ( b )
         {
@@ -283,7 +304,7 @@ public class WebDirectoryChooser extends WebDialog implements DialogOptions
      * @param parent parent window
      * @return selected directory
      */
-    public static File showDialog ( Window parent )
+    public static File showDialog ( final Window parent )
     {
         return showDialog ( parent, null );
     }
@@ -296,17 +317,10 @@ public class WebDirectoryChooser extends WebDialog implements DialogOptions
      * @param title  dialog title
      * @return selected directory
      */
-    public static File showDialog ( Window parent, String title )
+    public static File showDialog ( final Window parent, final String title )
     {
-        WebDirectoryChooser wdc = new WebDirectoryChooser ( parent, title );
+        final WebDirectoryChooser wdc = new WebDirectoryChooser ( parent, title );
         wdc.setVisible ( true );
-        if ( wdc.getResult () == OK_OPTION )
-        {
-            return wdc.getSelectedDirectory ();
-        }
-        else
-        {
-            return null;
-        }
+        return wdc.getResult () == OK_OPTION ? wdc.getSelectedDirectory () : null;
     }
 }

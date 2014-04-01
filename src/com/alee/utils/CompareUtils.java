@@ -18,6 +18,7 @@
 package com.alee.utils;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * This class provides a set of utilities to compare various objects.
@@ -36,7 +37,7 @@ public final class CompareUtils
      * @param s2 second String
      * @return true if the first String equals to the second String, false otherwise
      */
-    public static boolean equals ( String s1, String s2 )
+    public static boolean equals ( final String s1, final String s2 )
     {
         return s1 == null && s2 == null || !( s1 == null || s2 == null ) && s1.equals ( s2 );
     }
@@ -50,7 +51,7 @@ public final class CompareUtils
      * @param d2 second Date
      * @return true if the first Date equals to the second Date, false otherwise
      */
-    public static boolean equals ( Date d1, Date d2 )
+    public static boolean equals ( final Date d1, final Date d2 )
     {
         return d1 == null && d2 == null || !( d1 == null || d2 == null ) && d1.equals ( d2 );
     }
@@ -64,8 +65,27 @@ public final class CompareUtils
      * @param o2 second Object
      * @return true if the first Object equals to the second Object, false otherwise
      */
-    public static boolean equals ( Object o1, Object o2 )
+    public static boolean equals ( final Object o1, final Object o2 )
     {
         return o1 == null && o2 == null || !( o1 == null || o2 == null ) && o1.equals ( o2 );
+    }
+
+    /**
+     * Returns whether text contains any of the tokens from the specified list or not.
+     *
+     * @param text   text to look for tokens
+     * @param tokens tokens list
+     * @return true if text contains any of the tokens from the specified list, false otherwise
+     */
+    public static boolean contains ( final String text, final List<String> tokens )
+    {
+        for ( final String token : tokens )
+        {
+            if ( text.contains ( token ) )
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }

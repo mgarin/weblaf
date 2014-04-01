@@ -54,7 +54,8 @@ public class DefaultLayoutStyle extends LayoutStyle
      * {@inheritDoc}
      */
     @Override
-    public int getPreferredGap ( JComponent component1, JComponent component2, ComponentPlacement type, int position, Container parent )
+    public int getPreferredGap ( final JComponent component1, final JComponent component2, final ComponentPlacement type,
+                                 final int position, final Container parent )
     {
 
         if ( component1 == null || component2 == null || type == null )
@@ -63,7 +64,7 @@ public class DefaultLayoutStyle extends LayoutStyle
         }
         if ( type == ComponentPlacement.INDENT && ( position == SwingConstants.EAST || position == SwingConstants.WEST ) )
         {
-            int indent = getIndent ( component1, position );
+            final int indent = getIndent ( component1, position );
             if ( indent > 0 )
             {
                 return indent;
@@ -76,7 +77,7 @@ public class DefaultLayoutStyle extends LayoutStyle
      * {@inheritDoc}
      */
     @Override
-    public int getContainerGap ( JComponent component, int position, Container parent )
+    public int getContainerGap ( final JComponent component, final int position, final Container parent )
     {
         if ( component == null )
         {
@@ -94,12 +95,12 @@ public class DefaultLayoutStyle extends LayoutStyle
      * @param position position doing layout along
      * @return true if the classes identify a JLabel and a non-JLabel along the horizontal axis, false otherwise
      */
-    protected boolean isLabelAndNonlabel ( JComponent c1, JComponent c2, int position )
+    protected boolean isLabelAndNonlabel ( final JComponent c1, final JComponent c2, final int position )
     {
         if ( position == SwingConstants.EAST || position == SwingConstants.WEST )
         {
-            boolean c1Label = ( c1 instanceof JLabel );
-            boolean c2Label = ( c2 instanceof JLabel );
+            final boolean c1Label = ( c1 instanceof JLabel );
+            final boolean c2Label = ( c2 instanceof JLabel );
             return ( ( c1Label || c2Label ) && ( c1Label != c2Label ) );
         }
         return false;
@@ -115,7 +116,7 @@ public class DefaultLayoutStyle extends LayoutStyle
      * @param offset   Ideal offset, not including border/margin
      * @return offset - border/margin around the component
      */
-    protected int getButtonGap ( JComponent source, JComponent target, int position, int offset )
+    protected int getButtonGap ( final JComponent source, final JComponent target, final int position, int offset )
     {
         offset -= getButtonGap ( source, position );
         if ( offset > 0 )
@@ -138,25 +139,25 @@ public class DefaultLayoutStyle extends LayoutStyle
      * @param offset   ideal offset, not including border/margin
      * @return offset - border/margin around the component
      */
-    protected int getButtonGap ( JComponent source, int position, int offset )
+    protected int getButtonGap ( final JComponent source, final int position, int offset )
     {
         offset -= getButtonGap ( source, position );
         return Math.max ( offset, 0 );
     }
 
     /**
-     * If <code>c</code> is a check box or radio button, and the border is not painted this returns the inset along the specified axis.
+     * If {@code c} is a check box or radio button, and the border is not painted this returns the inset along the specified axis.
      *
      * @param c        component
      * @param position position doing layout along
      * @return button gap
      */
-    public int getButtonGap ( JComponent c, int position )
+    public int getButtonGap ( final JComponent c, final int position )
     {
-        String classID = c.getUIClassID ();
+        final String classID = c.getUIClassID ();
         if ( ( classID.equals ( "CheckBoxUI" ) || classID.equals ( "RadioButtonUI" ) ) && !( ( AbstractButton ) c ).isBorderPainted () )
         {
-            Border border = c.getBorder ();
+            final Border border = c.getBorder ();
             if ( border instanceof UIResource )
             {
                 return getInset ( c, position );
@@ -170,7 +171,7 @@ public class DefaultLayoutStyle extends LayoutStyle
      *
      * @param position position doing layout along
      */
-    private void checkPosition ( int position )
+    private void checkPosition ( final int position )
     {
         if ( position != SwingConstants.NORTH &&
                 position != SwingConstants.SOUTH &&
@@ -187,7 +188,7 @@ public class DefaultLayoutStyle extends LayoutStyle
      * @param position position doing layout along
      * @return flipped direction
      */
-    protected int flipDirection ( int position )
+    protected int flipDirection ( final int position )
     {
         switch ( position )
         {
@@ -212,15 +213,15 @@ public class DefaultLayoutStyle extends LayoutStyle
      * @param position position doing layout along
      * @return the amount to indent the specified component if it's a JCheckBox or JRadioButton or zero if it is not
      */
-    protected int getIndent ( JComponent c, int position )
+    protected int getIndent ( final JComponent c, final int position )
     {
-        String classID = c.getUIClassID ();
+        final String classID = c.getUIClassID ();
         if ( classID.equals ( "CheckBoxUI" ) || classID.equals ( "RadioButtonUI" ) )
         {
-            AbstractButton button = ( AbstractButton ) c;
-            Insets insets = c.getInsets ();
-            Icon icon = getIcon ( button );
-            int gap = button.getIconTextGap ();
+            final AbstractButton button = ( AbstractButton ) c;
+            final Insets insets = c.getInsets ();
+            final Icon icon = getIcon ( button );
+            final int gap = button.getIconTextGap ();
             if ( isLeftAligned ( button, position ) )
             {
                 return insets.left + icon.getIconWidth () + gap;
@@ -239,9 +240,9 @@ public class DefaultLayoutStyle extends LayoutStyle
      * @param button button to process
      * @return button icon
      */
-    private Icon getIcon ( AbstractButton button )
+    private Icon getIcon ( final AbstractButton button )
     {
-        Icon icon = button.getIcon ();
+        final Icon icon = button.getIcon ();
         if ( icon != null )
         {
             return icon;
@@ -257,7 +258,7 @@ public class DefaultLayoutStyle extends LayoutStyle
         }
         if ( key != null )
         {
-            Object oIcon = UIManager.get ( key );
+            final Object oIcon = UIManager.get ( key );
             if ( oIcon instanceof Icon )
             {
                 return ( Icon ) oIcon;
@@ -273,12 +274,12 @@ public class DefaultLayoutStyle extends LayoutStyle
      * @param position position doing layout along
      * @return true if the specified button is left aligned, false otherwise
      */
-    private boolean isLeftAligned ( AbstractButton button, int position )
+    private boolean isLeftAligned ( final AbstractButton button, final int position )
     {
         if ( position == SwingConstants.WEST )
         {
-            boolean ltr = button.getComponentOrientation ().isLeftToRight ();
-            int hAlign = button.getHorizontalAlignment ();
+            final boolean ltr = button.getComponentOrientation ().isLeftToRight ();
+            final int hAlign = button.getHorizontalAlignment ();
             return ( ( ltr && ( hAlign == SwingConstants.LEFT || hAlign == SwingConstants.LEADING ) ) ||
                     ( !ltr && ( hAlign == SwingConstants.TRAILING ) ) );
         }
@@ -292,12 +293,12 @@ public class DefaultLayoutStyle extends LayoutStyle
      * @param position position doing layout along
      * @return true if the specified button is right aligned, false otherwise
      */
-    private boolean isRightAligned ( AbstractButton button, int position )
+    private boolean isRightAligned ( final AbstractButton button, final int position )
     {
         if ( position == SwingConstants.EAST )
         {
-            boolean ltr = button.getComponentOrientation ().isLeftToRight ();
-            int hAlign = button.getHorizontalAlignment ();
+            final boolean ltr = button.getComponentOrientation ().isLeftToRight ();
+            final int hAlign = button.getHorizontalAlignment ();
             return ( ( ltr && ( hAlign == SwingConstants.RIGHT || hAlign == SwingConstants.TRAILING ) ) ||
                     ( !ltr && ( hAlign == SwingConstants.LEADING ) ) );
         }
@@ -311,7 +312,7 @@ public class DefaultLayoutStyle extends LayoutStyle
      * @param position position doing layout along
      * @return one of insets values according to specified position
      */
-    private int getInset ( JComponent c, int position )
+    private int getInset ( final JComponent c, final int position )
     {
         return getInset ( c.getInsets (), position );
     }
@@ -323,7 +324,7 @@ public class DefaultLayoutStyle extends LayoutStyle
      * @param position position doing layout along
      * @return one of insets values according to specified position
      */
-    private int getInset ( Insets insets, int position )
+    private int getInset ( final Insets insets, final int position )
     {
         if ( insets == null )
         {

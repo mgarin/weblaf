@@ -899,38 +899,7 @@ public class AsyncTreeModel<E extends AsyncUniqueNode> extends WebTreeModel<E>
      */
     public void updateSortingAndFiltering ()
     {
-        // Process this action only if node childs are already loaded and cached
-        final E parentNode = getRoot ();
-        if ( parentNode.isLoaded () && rawNodeChildsCache.containsKey ( parentNode.getId () ) )
-        {
-            // Childs are already loaded, simply updating their sorting and filtering
-            performSortingAndFiltering ( parentNode, true );
-        }
-        else if ( parentNode.isLoading () )
-        {
-            // Childs are being loaded, wait until the operation finishes
-            addAsyncTreeModelListener ( new AsyncTreeModelAdapter ()
-            {
-                @Override
-                public void childsLoadCompleted ( final AsyncUniqueNode parent, final List childs )
-                {
-                    if ( parentNode.getId ().equals ( parent.getId () ) )
-                    {
-                        removeAsyncTreeModelListener ( this );
-                        performSortingAndFiltering ( parentNode, true );
-                    }
-                }
-
-                @Override
-                public void childsLoadFailed ( final AsyncUniqueNode parent, final Throwable cause )
-                {
-                    if ( parentNode.getId ().equals ( parent.getId () ) )
-                    {
-                        removeAsyncTreeModelListener ( this );
-                    }
-                }
-            } );
-        }
+        updateSortingAndFiltering ( getRoot (), true );
     }
 
     /**
@@ -940,36 +909,52 @@ public class AsyncTreeModel<E extends AsyncUniqueNode> extends WebTreeModel<E>
      */
     public void updateSortingAndFiltering ( final E parentNode )
     {
-        // Process this action only if node childs are already loaded and cached
-        if ( parentNode.isLoaded () && rawNodeChildsCache.containsKey ( parentNode.getId () ) )
-        {
-            // Childs are already loaded, simply updating their sorting and filtering
-            performSortingAndFiltering ( parentNode, false );
-        }
-        else if ( parentNode.isLoading () )
-        {
-            // Childs are being loaded, wait until the operation finishes
-            addAsyncTreeModelListener ( new AsyncTreeModelAdapter ()
-            {
-                @Override
-                public void childsLoadCompleted ( final AsyncUniqueNode parent, final List childs )
-                {
-                    if ( parentNode.getId ().equals ( parent.getId () ) )
-                    {
-                        removeAsyncTreeModelListener ( this );
-                        performSortingAndFiltering ( parentNode, false );
-                    }
-                }
+        updateSortingAndFiltering ( parentNode, false );
+    }
 
-                @Override
-                public void childsLoadFailed ( final AsyncUniqueNode parent, final Throwable cause )
+    /**
+     * Updates sorting and filtering for the specified node childs.
+     *
+     * @param parentNode  node which childs sorting and filtering should be updated
+     * @param recursively whether should update the whole childs structure recursively or not
+     */
+    public void updateSortingAndFiltering ( final E parentNode, final boolean recursively )
+    {
+        // Process only this is not a root node
+        // We don't need to update root sorting as there is always one root in the tree
+        if ( parentNode != null )
+        {
+            // Process this action only if node childs are already loaded and cached
+            if ( parentNode.isLoaded () && rawNodeChildsCache.containsKey ( parentNode.getId () ) )
+            {
+                // Childs are already loaded, simply updating their sorting and filtering
+                performSortingAndFiltering ( parentNode, recursively );
+            }
+            else if ( parentNode.isLoading () )
+            {
+                // Childs are being loaded, wait until the operation finishes
+                addAsyncTreeModelListener ( new AsyncTreeModelAdapter ()
                 {
-                    if ( parentNode.getId ().equals ( parent.getId () ) )
+                    @Override
+                    public void childsLoadCompleted ( final AsyncUniqueNode parent, final List childs )
                     {
-                        removeAsyncTreeModelListener ( this );
+                        if ( parentNode.getId ().equals ( parent.getId () ) )
+                        {
+                            removeAsyncTreeModelListener ( this );
+                            performSortingAndFiltering ( parentNode, recursively );
+                        }
                     }
-                }
-            } );
+
+                    @Override
+                    public void childsLoadFailed ( final AsyncUniqueNode parent, final Throwable cause )
+                    {
+                        if ( parentNode.getId ().equals ( parent.getId () ) )
+                        {
+                            removeAsyncTreeModelListener ( this );
+                        }
+                    }
+                } );
+            }
         }
     }
 

@@ -905,11 +905,11 @@ public class WebRootPaneUI extends BasicRootPaneUI implements SwingConstants
         windowButtons = new WebButtonGroup ( buttons )
         {
             @Override
-            public void updateButtons ()
+            public void updateButtonsStyling ()
             {
                 if ( groupButtons )
                 {
-                    super.updateButtons ();
+                    super.updateButtonsStyling ();
                 }
             }
         };

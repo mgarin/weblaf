@@ -36,7 +36,7 @@ public final class GlassPaneManager
     /**
      * Registered glass panes per JRootPane.
      */
-    private static Map<JRootPane, WebGlassPane> registeredWindows = new WeakHashMap<JRootPane, WebGlassPane> ();
+    private static final Map<JRootPane, WebGlassPane> registeredWindows = new WeakHashMap<JRootPane, WebGlassPane> ();
 
     /**
      * Returns registered WebGlassPane for JRootPane under the specified component.

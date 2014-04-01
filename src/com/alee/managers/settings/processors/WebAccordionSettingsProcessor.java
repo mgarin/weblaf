@@ -45,7 +45,7 @@ public class WebAccordionSettingsProcessor extends SettingsProcessor<WebAccordio
      *
      * @param data SettingsProcessorData
      */
-    public WebAccordionSettingsProcessor ( SettingsProcessorData data )
+    public WebAccordionSettingsProcessor ( final SettingsProcessorData data )
     {
         super ( data );
     }
@@ -54,7 +54,7 @@ public class WebAccordionSettingsProcessor extends SettingsProcessor<WebAccordio
      * {@inheritDoc}
      */
     @Override
-    protected void doInit ( WebAccordion accordion )
+    protected void doInit ( final WebAccordion accordion )
     {
         accordionListener = new AccordionListener ()
         {
@@ -71,7 +71,7 @@ public class WebAccordionSettingsProcessor extends SettingsProcessor<WebAccordio
      * {@inheritDoc}
      */
     @Override
-    protected void doDestroy ( WebAccordion accordion )
+    protected void doDestroy ( final WebAccordion accordion )
     {
         accordion.removeAccordionListener ( accordionListener );
         accordionListener = null;
@@ -81,7 +81,7 @@ public class WebAccordionSettingsProcessor extends SettingsProcessor<WebAccordio
      * {@inheritDoc}
      */
     @Override
-    protected void doLoad ( WebAccordion accordion )
+    protected void doLoad ( final WebAccordion accordion )
     {
         // Empty string identifies empty selection
         final String string = loadValue ();
@@ -93,7 +93,7 @@ public class WebAccordionSettingsProcessor extends SettingsProcessor<WebAccordio
      * {@inheritDoc}
      */
     @Override
-    protected void doSave ( WebAccordion accordion )
+    protected void doSave ( final WebAccordion accordion )
     {
         // For empty selection empty string is used to avoid having null as value as this will call for default value on load
         final String value = TextUtils.listToString ( accordion.getSelectedIndices (), "," );

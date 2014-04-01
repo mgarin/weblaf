@@ -17,19 +17,53 @@
 
 package com.alee.laf;
 
+import com.alee.extended.button.WebSplitButtonUI;
+import com.alee.extended.checkbox.WebTristateCheckBoxUI;
+import com.alee.extended.label.WebMultiLineLabelUI;
+import com.alee.extended.label.WebVerticalLabelUI;
+import com.alee.laf.button.WebButtonUI;
+import com.alee.laf.button.WebToggleButtonUI;
+import com.alee.laf.checkbox.WebCheckBoxUI;
+import com.alee.laf.colorchooser.WebColorChooserUI;
+import com.alee.laf.combobox.WebComboBoxUI;
+import com.alee.laf.desktoppane.WebDesktopIconUI;
+import com.alee.laf.desktoppane.WebDesktopPaneUI;
+import com.alee.laf.desktoppane.WebInternalFrameUI;
+import com.alee.laf.filechooser.WebFileChooserUI;
+import com.alee.laf.label.WebLabelUI;
 import com.alee.laf.list.WebListCellRenderer;
 import com.alee.laf.list.WebListStyle;
+import com.alee.laf.list.WebListUI;
+import com.alee.laf.menu.*;
+import com.alee.laf.optionpane.WebOptionPaneUI;
+import com.alee.laf.panel.WebPanelUI;
+import com.alee.laf.progressbar.WebProgressBarUI;
+import com.alee.laf.radiobutton.WebRadioButtonUI;
+import com.alee.laf.rootpane.WebRootPaneUI;
 import com.alee.laf.scroll.WebScrollBarStyle;
+import com.alee.laf.scroll.WebScrollBarUI;
+import com.alee.laf.scroll.WebScrollPaneUI;
+import com.alee.laf.separator.WebSeparatorUI;
+import com.alee.laf.slider.WebSliderUI;
+import com.alee.laf.spinner.WebSpinnerUI;
+import com.alee.laf.splitpane.WebSplitPaneUI;
+import com.alee.laf.tabbedpane.WebTabbedPaneUI;
+import com.alee.laf.table.WebTableHeaderUI;
 import com.alee.laf.table.WebTableStyle;
+import com.alee.laf.table.WebTableUI;
+import com.alee.laf.text.*;
+import com.alee.laf.toolbar.WebToolBarSeparatorUI;
+import com.alee.laf.toolbar.WebToolBarUI;
+import com.alee.laf.tooltip.WebToolTipUI;
 import com.alee.laf.tree.WebTreeUI;
 import com.alee.laf.viewport.WebViewportStyle;
+import com.alee.laf.viewport.WebViewportUI;
 import com.alee.managers.focus.FocusManager;
 import com.alee.managers.hotkey.HotkeyManager;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.proxy.ProxyManager;
 import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.style.StyleManager;
-import com.alee.managers.style.SupportedComponent;
 import com.alee.managers.tooltip.TooltipManager;
 import com.alee.managers.version.VersionManager;
 import com.alee.utils.*;
@@ -50,6 +84,8 @@ import java.util.WeakHashMap;
  * This core class contains methods to install, configure and uninstall WebLookAndFeel.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebLaF">How to use WebLaF</a>
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-build-WebLaF-from-sources">How to build WebLaF from sources</a>
  */
 
 public class WebLookAndFeel extends BasicLookAndFeel
@@ -65,7 +101,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
     public static final String PROPERTY_HONOR_USER_BORDER = "WebLookAndFeel.honorUserBorder";
 
     /**
-     * If this system property is set to <code>true</code>, UI delegates should follow the typical Swing behavior of not overriding a
+     * If this system property is set to {@code true}, UI delegates should follow the typical Swing behavior of not overriding a
      * user-defined border if one is installed on components.
      */
     public static final String PROPERTY_HONOR_USER_BORDERS = "WebLookAndFeel.honorUserBorders";
@@ -73,6 +109,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
     /**
      * Some known UI constants.
      */
+    public static final String LOOK_AND_FEEL_PROPERTY = "lookAndFeel";
     public static final String ORIENTATION_PROPERTY = "componentOrientation";
     public static final String MARGIN_PROPERTY = "margin";
     public static final String ENABLED_PROPERTY = "enabled";
@@ -85,6 +122,8 @@ public class WebLookAndFeel extends BasicLookAndFeel
     public static final String VISIBLE_PROPERTY = "visible";
     public static final String DOCUMENT_PROPERTY = "document";
     public static final String OPAQUE_PROPERTY = "opaque";
+    public static final String PAINTER_PROPERTY = "painter";
+    public static final String RENDERER_PROPERTY = "renderer";
     public static final String DROP_LOCATION = "dropLocation";
 
     /**
@@ -124,101 +163,101 @@ public class WebLookAndFeel extends BasicLookAndFeel
     /**
      * Label-related components.
      */
-    public static String labelUI = SupportedComponent.label.getDefaultUIClass ();
-    public static String verticalLabelUI = SupportedComponent.verticalLabel.getDefaultUIClass ();
-    public static String multiLineLabelUI = SupportedComponent.multiLineLabel.getDefaultUIClass ();
-    public static String toolTipUI = SupportedComponent.toolTip.getDefaultUIClass ();
+    public static String labelUI = WebLabelUI.class.getCanonicalName ();
+    public static String verticalLabelUI = WebVerticalLabelUI.class.getCanonicalName ();
+    public static String multiLineLabelUI = WebMultiLineLabelUI.class.getCanonicalName ();
+    public static String toolTipUI = WebToolTipUI.class.getCanonicalName ();
 
     /**
      * Button-related components.
      */
-    public static String buttonUI = SupportedComponent.button.getDefaultUIClass ();
-    public static String splitButtonUI = SupportedComponent.splitButton.getDefaultUIClass ();
-    public static String toggleButtonUI = SupportedComponent.toggleButton.getDefaultUIClass ();
-    public static String checkBoxUI = SupportedComponent.checkBox.getDefaultUIClass ();
-    public static String tristateCheckBoxUI = SupportedComponent.tristateCheckBox.getDefaultUIClass ();
-    public static String radioButtonUI = SupportedComponent.radioButton.getDefaultUIClass ();
+    public static String buttonUI = WebButtonUI.class.getCanonicalName ();
+    public static String splitButtonUI = WebSplitButtonUI.class.getCanonicalName ();
+    public static String toggleButtonUI = WebToggleButtonUI.class.getCanonicalName ();
+    public static String checkBoxUI = WebCheckBoxUI.class.getCanonicalName ();
+    public static String tristateCheckBoxUI = WebTristateCheckBoxUI.class.getCanonicalName ();
+    public static String radioButtonUI = WebRadioButtonUI.class.getCanonicalName ();
 
     /**
      * Menu-related components.
      */
-    public static String menuBarUI = SupportedComponent.menuBar.getDefaultUIClass ();
-    public static String menuUI = SupportedComponent.menu.getDefaultUIClass ();
-    public static String popupMenuUI = SupportedComponent.popupMenu.getDefaultUIClass ();
-    public static String menuItemUI = SupportedComponent.menuItem.getDefaultUIClass ();
-    public static String checkBoxMenuItemUI = SupportedComponent.checkBoxMenuItem.getDefaultUIClass ();
-    public static String radioButtonMenuItemUI = SupportedComponent.radioButtonMenuItem.getDefaultUIClass ();
-    public static String popupMenuSeparatorUI = SupportedComponent.popupMenuSeparator.getDefaultUIClass ();
+    public static String menuBarUI = WebMenuBarUI.class.getCanonicalName ();
+    public static String menuUI = WebMenuUI.class.getCanonicalName ();
+    public static String popupMenuUI = WebPopupMenuUI.class.getCanonicalName ();
+    public static String menuItemUI = WebMenuItemUI.class.getCanonicalName ();
+    public static String checkBoxMenuItemUI = WebCheckBoxMenuItemUI.class.getCanonicalName ();
+    public static String radioButtonMenuItemUI = WebRadioButtonMenuItemUI.class.getCanonicalName ();
+    public static String popupMenuSeparatorUI = WebPopupMenuSeparatorUI.class.getCanonicalName ();
 
     /**
      * Separator component.
      */
-    public static String separatorUI = SupportedComponent.separator.getDefaultUIClass ();
+    public static String separatorUI = WebSeparatorUI.class.getCanonicalName ();
 
     /**
      * Scroll-related components.
      */
-    public static String scrollBarUI = SupportedComponent.scrollBar.getDefaultUIClass ();
-    public static String scrollPaneUI = SupportedComponent.scrollPane.getDefaultUIClass ();
-    public static String viewportUI = SupportedComponent.viewport.getDefaultUIClass ();
+    public static String scrollBarUI = WebScrollBarUI.class.getCanonicalName ();
+    public static String scrollPaneUI = WebScrollPaneUI.class.getCanonicalName ();
+    public static String viewportUI = WebViewportUI.class.getCanonicalName ();
 
     /**
      * Text-related components.
      */
-    public static String textFieldUI = SupportedComponent.textField.getDefaultUIClass ();
-    public static String passwordFieldUI = SupportedComponent.passwordField.getDefaultUIClass ();
-    public static String formattedTextFieldUI = SupportedComponent.formattedTextField.getDefaultUIClass ();
-    public static String textAreaUI = SupportedComponent.textArea.getDefaultUIClass ();
-    public static String editorPaneUI = SupportedComponent.editorPane.getDefaultUIClass ();
-    public static String textPaneUI = SupportedComponent.textPane.getDefaultUIClass ();
+    public static String textFieldUI = WebTextFieldUI.class.getCanonicalName ();
+    public static String passwordFieldUI = WebPasswordFieldUI.class.getCanonicalName ();
+    public static String formattedTextFieldUI = WebFormattedTextFieldUI.class.getCanonicalName ();
+    public static String textAreaUI = WebTextAreaUI.class.getCanonicalName ();
+    public static String editorPaneUI = WebEditorPaneUI.class.getCanonicalName ();
+    public static String textPaneUI = WebTextPaneUI.class.getCanonicalName ();
 
     /**
      * Toolbar-related components.
      */
-    public static String toolBarUI = SupportedComponent.toolBar.getDefaultUIClass ();
-    public static String toolBarSeparatorUI = SupportedComponent.toolBarSeparator.getDefaultUIClass ();
+    public static String toolBarUI = WebToolBarUI.class.getCanonicalName ();
+    public static String toolBarSeparatorUI = WebToolBarSeparatorUI.class.getCanonicalName ();
 
     /**
      * Table-related components.
      */
-    public static String tableUI = SupportedComponent.table.getDefaultUIClass ();
-    public static String tableHeaderUI = SupportedComponent.tableHeader.getDefaultUIClass ();
+    public static String tableUI = WebTableUI.class.getCanonicalName ();
+    public static String tableHeaderUI = WebTableHeaderUI.class.getCanonicalName ();
 
     /**
      * Chooser components.
      */
-    public static String colorChooserUI = SupportedComponent.colorChooser.getDefaultUIClass ();
-    public static String fileChooserUI = SupportedComponent.fileChooser.getDefaultUIClass ();
+    public static String colorChooserUI = WebColorChooserUI.class.getCanonicalName ();
+    public static String fileChooserUI = WebFileChooserUI.class.getCanonicalName ();
 
     /**
      * Container-related components.
      */
-    public static String panelUI = SupportedComponent.panel.getDefaultUIClass ();
-    public static String rootPaneUI = SupportedComponent.rootPane.getDefaultUIClass ();
-    public static String tabbedPaneUI = SupportedComponent.tabbedPane.getDefaultUIClass ();
-    public static String splitPaneUI = SupportedComponent.splitPane.getDefaultUIClass ();
+    public static String panelUI = WebPanelUI.class.getCanonicalName ();
+    public static String rootPaneUI = WebRootPaneUI.class.getCanonicalName ();
+    public static String tabbedPaneUI = WebTabbedPaneUI.class.getCanonicalName ();
+    public static String splitPaneUI = WebSplitPaneUI.class.getCanonicalName ();
 
     /**
      * Other data-related components.
      */
-    public static String progressBarUI = SupportedComponent.progressBar.getDefaultUIClass ();
-    public static String sliderUI = SupportedComponent.slider.getDefaultUIClass ();
-    public static String spinnerUI = SupportedComponent.spinner.getDefaultUIClass ();
-    public static String treeUI = SupportedComponent.tree.getDefaultUIClass ();
-    public static String listUI = SupportedComponent.list.getDefaultUIClass ();
-    public static String comboBoxUI = SupportedComponent.comboBox.getDefaultUIClass ();
+    public static String progressBarUI = WebProgressBarUI.class.getCanonicalName ();
+    public static String sliderUI = WebSliderUI.class.getCanonicalName ();
+    public static String spinnerUI = WebSpinnerUI.class.getCanonicalName ();
+    public static String treeUI = WebTreeUI.class.getCanonicalName ();
+    public static String listUI = WebListUI.class.getCanonicalName ();
+    public static String comboBoxUI = WebComboBoxUI.class.getCanonicalName ();
 
     /**
      * Desktop-pane-related components.
      */
-    public static String desktopPaneUI = SupportedComponent.desktopPane.getDefaultUIClass ();
-    public static String descktopIconUI = SupportedComponent.desktopIcon.getDefaultUIClass ();
-    public static String internalFrameUI = SupportedComponent.internalFrame.getDefaultUIClass ();
+    public static String desktopPaneUI = WebDesktopPaneUI.class.getCanonicalName ();
+    public static String desktopIconUI = WebDesktopIconUI.class.getCanonicalName ();
+    public static String internalFrameUI = WebInternalFrameUI.class.getCanonicalName ();
 
     /**
      * Option pane component.
      */
-    public static String optionPaneUI = SupportedComponent.optionPane.getDefaultUIClass ();
+    public static String optionPaneUI = WebOptionPaneUI.class.getCanonicalName ();
 
     /**
      * Reassignable LookAndFeel fonts.
@@ -424,7 +463,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
 
         // Desktop pane
         table.put ( "DesktopPaneUI", desktopPaneUI );
-        table.put ( "DesktopIconUI", descktopIconUI );
+        table.put ( "DesktopIconUI", desktopIconUI );
         table.put ( "InternalFrameUI", internalFrameUI );
 
         // Option pane
@@ -432,7 +471,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
     }
 
     /**
-     * Adds some default colors to the <code>UIDefaults</code> that are not used by WebLookAndFeel directly, but will help custom
+     * Adds some default colors to the {@code UIDefaults} that are not used by WebLookAndFeel directly, but will help custom
      * components that assume BasicLookAndFeel conventions.
      *
      * @param table UIDefaults table
@@ -491,6 +530,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
         // Option pane
         table.put ( "OptionPane.messageAreaBorder",
                 new SwingLazyValue ( "javax.swing.plaf.BorderUIResource$EmptyBorderUIResource", new Object[]{ 0, 0, 5, 0 } ) );
+        table.put ( "OptionPane.isYesLast", SystemUtils.isMac () ? Boolean.TRUE : Boolean.FALSE );
 
         // HTML image icons
         table.put ( "html.pendingImage", StyleConstants.htmlPendingIcon );
@@ -563,6 +603,8 @@ public class WebLookAndFeel extends BasicLookAndFeel
         table.put ( "ComboBox.selectionForeground", Color.BLACK );
         // Combobox non-square arrow
         table.put ( "ComboBox.squareButton", false );
+        // Combobox empty padding
+        table.put ( "ComboBox.padding", new InsetsUIResource ( 0, 0, 0, 0 ) );
 
         // Default components borders
         table.put ( "ProgressBar.border", new SwingLazyValue ( "com.alee.laf.WebBorders", "getProgressBarBorder" ) );
@@ -586,7 +628,8 @@ public class WebLookAndFeel extends BasicLookAndFeel
                         DefaultEditorKit.deletePrevWordAction, "RIGHT", DefaultEditorKit.forwardAction, "LEFT",
                         DefaultEditorKit.backwardAction, "KP_RIGHT", DefaultEditorKit.forwardAction, "KP_LEFT",
                         DefaultEditorKit.backwardAction, "ENTER", JTextField.notifyAction, "control shift O", "toggle-componentOrientation"
-                        /*DefaultEditorKit.toggleComponentOrientation*/ } ) );
+                        /*DefaultEditorKit.toggleComponentOrientation*/ }
+        ) );
 
         // WebPasswordField actions
         table.put ( "PasswordField.focusInputMap", new UIDefaults.LazyInputMap (
@@ -605,7 +648,8 @@ public class WebLookAndFeel extends BasicLookAndFeel
                         DefaultEditorKit.deleteNextCharAction, "RIGHT", DefaultEditorKit.forwardAction, "LEFT",
                         DefaultEditorKit.backwardAction, "KP_RIGHT", DefaultEditorKit.forwardAction, "KP_LEFT",
                         DefaultEditorKit.backwardAction, "ENTER", JTextField.notifyAction, "control shift O", "toggle-componentOrientation"
-                        /*DefaultEditorKit.toggleComponentOrientation*/ } ) );
+                        /*DefaultEditorKit.toggleComponentOrientation*/ }
+        ) );
 
         // WebFormattedTextField actions
         table.put ( "FormattedTextField.focusInputMap", new UIDefaults.LazyInputMap (
@@ -628,7 +672,8 @@ public class WebLookAndFeel extends BasicLookAndFeel
                         DefaultEditorKit.forwardAction, "LEFT", DefaultEditorKit.backwardAction, "KP_RIGHT", DefaultEditorKit.forwardAction,
                         "KP_LEFT", DefaultEditorKit.backwardAction, "ENTER", JTextField.notifyAction, "ctrl BACK_SLASH", "unselect",
                         "control shift O", "toggle-componentOrientation", "ESCAPE", "reset-field-edit", "UP", "increment", "KP_UP",
-                        "increment", "DOWN", "decrement", "KP_DOWN", "decrement", } ) );
+                        "increment", "DOWN", "decrement", "KP_DOWN", "decrement", }
+        ) );
 
         // Multiline areas actions
         final Object multilineInputMap = new UIDefaults.LazyInputMap (
@@ -656,7 +701,8 @@ public class WebLookAndFeel extends BasicLookAndFeel
                         DefaultEditorKit.insertBreakAction, "TAB", DefaultEditorKit.insertTabAction, "control T", "next-link-action",
                         "control shift T", "previous-link-action", "control SPACE", "activate-link-action", "control shift O",
                         "toggle-componentOrientation"
-                        /*DefaultEditorKit.toggleComponentOrientation*/ } );
+                        /*DefaultEditorKit.toggleComponentOrientation*/ }
+        );
         table.put ( "TextArea.focusInputMap", multilineInputMap );
         table.put ( "TextPane.focusInputMap", multilineInputMap );
         table.put ( "EditorPane.focusInputMap", multilineInputMap );
@@ -666,12 +712,14 @@ public class WebLookAndFeel extends BasicLookAndFeel
                 new Object[]{ "ESCAPE", "hidePopup", "PAGE_UP", "pageUpPassThrough", "PAGE_DOWN", "pageDownPassThrough", "HOME",
                         "homePassThrough", "END", "endPassThrough", "DOWN", "selectNext", "KP_DOWN", "selectNext", "alt DOWN",
                         "togglePopup", "alt KP_DOWN", "togglePopup", "alt UP", "togglePopup", "alt KP_UP", "togglePopup", "SPACE",
-                        "spacePopup", "ENTER", "enterPressed", "UP", "selectPrevious", "KP_UP", "selectPrevious" } ) );
+                        "spacePopup", "ENTER", "enterPressed", "UP", "selectPrevious", "KP_UP", "selectPrevious" }
+        ) );
 
         // WebFileChooser actions
         table.put ( "FileChooser.ancestorInputMap", new UIDefaults.LazyInputMap (
                 new Object[]{ "ESCAPE", "cancelSelection", "F2", "editFileName", "F5", "refresh", "BACK_SPACE", "Go Up", "ENTER",
-                        "approveSelection", "ctrl ENTER", "approveSelection" } ) );
+                        "approveSelection", "ctrl ENTER", "approveSelection" }
+        ) );
     }
 
     /**
@@ -767,19 +815,20 @@ public class WebLookAndFeel extends BasicLookAndFeel
             @Override
             public void propertyChange ( final PropertyChangeEvent evt )
             {
-                if ( evt.getPropertyName ().equals ( "lookAndFeel" ) )
+                if ( evt.getPropertyName ().equals ( LOOK_AND_FEEL_PROPERTY ) )
                 {
-                    // Web decoration for frames and dialogs
-                    JFrame.setDefaultLookAndFeelDecorated ( decorateFrames );
-                    JDialog.setDefaultLookAndFeelDecorated ( decorateDialogs );
-
-                    // Initializing managers if Web L&F was installed
+                    // Initializing managers if WebLaF was installed
                     if ( evt.getNewValue () instanceof WebLookAndFeel )
                     {
+                        // Web decoration for frames and dialogs
+                        JFrame.setDefaultLookAndFeelDecorated ( decorateFrames );
+                        JDialog.setDefaultLookAndFeelDecorated ( decorateDialogs );
+
+                        // Initializing WebLaF managers
                         initializeManagers ();
                     }
 
-                    // Remove listener in any case a
+                    // Remove listener in any case
                     UIManager.removePropertyChangeListener ( this );
                 }
             }

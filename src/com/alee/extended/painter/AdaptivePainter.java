@@ -21,69 +21,107 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * Special painter made to adapts any kind of painters to fit custom painters within the UIs.
- * To use it properly you should extend this class and implement UI painter interface
+ * Special painter made to adapts any kind of painters to fit custom painters within the specific UIs.
+ * To use it properly you should extend this class and implement UI painter interface methods.
+ * In general cases those methods might have no effect since general-type painters do not know anything about component specifics.
  *
  * @author Mikle Garin
  */
 
 public abstract class AdaptivePainter<E extends JComponent> extends AbstractPainter<E>
 {
+    /**
+     * Adapted painter.
+     */
     private final Painter painter;
 
+    /**
+     * Constructs new AdaptivePainter to adapt specified painter.
+     *
+     * @param painter painter to adapt
+     */
     public AdaptivePainter ( final Painter painter )
     {
         super ();
         this.painter = painter;
     }
 
+    /**
+     * Returns adapted painter.
+     *
+     * @return adapted painter
+     */
     public Painter getPainter ()
     {
         return painter;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void install ( final E c )
     {
         painter.install ( c );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void uninstall ( final E c )
     {
         painter.uninstall ( c );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Boolean isOpaque ( final E c )
     {
         return painter.isOpaque ( c );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Dimension getPreferredSize ( final E c )
     {
         return painter.getPreferredSize ( c );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Insets getMargin ( final E c )
     {
         return painter.getMargin ( c );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void addPainterListener ( final PainterListener listener )
     {
         painter.addPainterListener ( listener );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void removePainterListener ( final PainterListener listener )
     {
         painter.removePainterListener ( listener );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c )
     {

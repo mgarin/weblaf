@@ -606,7 +606,7 @@ public class WebToggleButton extends JToggleButton
             {
                 setUI ( ( WebToggleButtonUI ) ReflectUtils.createInstance ( WebLookAndFeel.toggleButtonUI ) );
             }
-            catch ( Throwable e )
+            catch ( final Throwable e )
             {
                 e.printStackTrace ();
                 setUI ( new WebToggleButtonUI () );

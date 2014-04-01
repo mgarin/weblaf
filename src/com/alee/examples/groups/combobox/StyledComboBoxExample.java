@@ -24,6 +24,7 @@ import com.alee.extended.panel.GroupPanel;
 import com.alee.laf.GlobalConstants;
 import com.alee.laf.combobox.WebComboBox;
 import com.alee.laf.combobox.WebComboBoxCellRenderer;
+import com.alee.laf.combobox.WebComboBoxElement;
 
 import javax.swing.*;
 import java.awt.*;
@@ -47,17 +48,19 @@ public class StyledComboBoxExample extends DefaultExample
     }
 
     @Override
-    public Component getPreview ( WebLookAndFeelDemo owner )
+    public Component getPreview ( final WebLookAndFeelDemo owner )
     {
-        WebComboBox styled = new WebComboBox ( GlobalConstants.DEFAULT_FILTERS.toArray () );
+        final WebComboBox styled = new WebComboBox ( GlobalConstants.DEFAULT_FILTERS.toArray () );
         styled.setSelectedIndex ( 0 );
-        styled.setRenderer ( new WebComboBoxCellRenderer ( styled )
+        styled.setRenderer ( new WebComboBoxCellRenderer ()
         {
             @Override
-            public Component getListCellRendererComponent ( JList list, Object value, int index, boolean isSelected, boolean cellHasFocus )
+            public Component getListCellRendererComponent ( final JList list, final Object value, final int index, final boolean isSelected,
+                                                            final boolean cellHasFocus )
             {
-                JLabel renderer = ( JLabel ) super.getListCellRendererComponent ( list, value, index, isSelected, cellHasFocus );
-                AbstractFileFilter abstractFileFilter = ( AbstractFileFilter ) value;
+                final AbstractFileFilter abstractFileFilter = ( AbstractFileFilter ) value;
+                final WebComboBoxElement renderer =
+                        ( WebComboBoxElement ) super.getListCellRendererComponent ( list, value, index, isSelected, cellHasFocus );
                 renderer.setIcon ( abstractFileFilter.getIcon () );
                 renderer.setText ( abstractFileFilter.getDescription () );
                 return renderer;

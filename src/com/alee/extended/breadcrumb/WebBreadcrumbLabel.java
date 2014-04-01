@@ -22,12 +22,16 @@ import com.alee.laf.label.WebLabel;
 import javax.swing.*;
 
 /**
- * User: mgarin Date: 02.03.12 Time: 12:29
+ * Custom label that can be used as WebBreadcrumb element.
+ * It has its own unique styling and progress display.
+ *
+ * @author Mikle Garin
  */
 
-public class WebBreadcrumbLabel extends WebLabel implements BreadcrumbElement<WebLabel>
+public class WebBreadcrumbLabel extends WebLabel implements BreadcrumbElement
 {
-    private BreadcrumbElementPainter painter;
+    protected boolean showProgress;
+    protected float progress;
 
     public WebBreadcrumbLabel ()
     {
@@ -35,37 +39,37 @@ public class WebBreadcrumbLabel extends WebLabel implements BreadcrumbElement<We
         initialize ();
     }
 
-    public WebBreadcrumbLabel ( Icon image )
+    public WebBreadcrumbLabel ( final Icon image )
     {
         super ( image );
         initialize ();
     }
 
-    public WebBreadcrumbLabel ( Icon image, int horizontalAlignment )
+    public WebBreadcrumbLabel ( final Icon image, final int horizontalAlignment )
     {
         super ( image, horizontalAlignment );
         initialize ();
     }
 
-    public WebBreadcrumbLabel ( String text )
+    public WebBreadcrumbLabel ( final String text )
     {
         super ( text );
         initialize ();
     }
 
-    public WebBreadcrumbLabel ( String text, int horizontalAlignment )
+    public WebBreadcrumbLabel ( final String text, final int horizontalAlignment )
     {
         super ( text, horizontalAlignment );
         initialize ();
     }
 
-    public WebBreadcrumbLabel ( String text, Icon icon )
+    public WebBreadcrumbLabel ( final String text, final Icon icon )
     {
         super ( text, icon );
         initialize ();
     }
 
-    public WebBreadcrumbLabel ( String text, Icon icon, int horizontalAlignment )
+    public WebBreadcrumbLabel ( final String text, final Icon icon, final int horizontalAlignment )
     {
         super ( text, icon, horizontalAlignment );
         initialize ();
@@ -73,63 +77,53 @@ public class WebBreadcrumbLabel extends WebLabel implements BreadcrumbElement<We
 
     private void initialize ()
     {
-        setMargin ( WebBreadcrumbStyle.elementMargin );
-
-        painter = new BreadcrumbElementPainter ();
-        setPainter ( painter );
+        setStyleId ( WebBreadcrumb.ELEMENT_STYLE_ID );
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void setType ( BreadcrumbElementType type )
+    public void setShowProgress ( final boolean showProgress )
     {
-        painter.setType ( type );
+        this.showProgress = showProgress;
+        repaint ();
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void setOverlap ( int overlap )
+    public boolean isShowProgress ()
     {
-        painter.setOverlap ( overlap );
+        return showProgress;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void setShowProgress ( boolean showProgress )
+    public void setProgress ( final float progress )
     {
-        painter.setShowProgress ( showProgress );
+        this.progress = progress;
+        repaint ();
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void setProgress ( float progress )
+    public float getProgress ()
     {
-        painter.setProgress ( progress );
+        return progress;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public BreadcrumbElementPainter getPainter ()
+    public boolean contains ( final int x, final int y )
     {
-        return painter;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean contains ( int x, int y )
-    {
-        return BreadcrumbUtils.contains ( x, y, this );
+        return BreadcrumbUtils.contains ( this, x, y );
     }
 }

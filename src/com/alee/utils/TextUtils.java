@@ -309,8 +309,9 @@ public final class TextUtils
     /**
      * Returns single text combined using list of strings and specified separator.
      *
-     * @param list      list to combine into single text
-     * @param separator text parts separator
+     * @param list         list to combine into single text
+     * @param separator    text parts separator
+     * @param textProvider text provider
      * @return single text
      */
     public static <T> String listToString ( final List<T> list, final String separator, final TextProvider<T> textProvider )

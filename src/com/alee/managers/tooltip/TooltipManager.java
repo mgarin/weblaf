@@ -17,7 +17,6 @@
 
 package com.alee.managers.tooltip;
 
-import com.alee.laf.label.WebLabel;
 import com.alee.managers.glasspane.GlassPaneManager;
 import com.alee.managers.glasspane.WebGlassPane;
 import com.alee.managers.hotkey.Hotkey;
@@ -160,7 +159,7 @@ public final class TooltipManager
     public static WebCustomTooltip setTooltip ( final Component component, final Icon icon, final String tooltip,
                                                 final TooltipWay tooltipWay, final int delay )
     {
-        return setTooltip ( component, new WebLabel ( tooltip, icon ), tooltipWay, delay );
+        return setTooltip ( component, WebCustomTooltip.createDefaultComponent ( icon, tooltip ), tooltipWay, delay );
     }
 
     public static WebCustomTooltip setTooltip ( final Component component, final JComponent tooltip )
@@ -214,7 +213,7 @@ public final class TooltipManager
     public static WebCustomTooltip addTooltip ( final Component component, final Icon icon, final String tooltip,
                                                 final TooltipWay tooltipWay, final int delay )
     {
-        return addTooltip ( component, new WebLabel ( tooltip, icon ), tooltipWay, delay );
+        return addTooltip ( component, WebCustomTooltip.createDefaultComponent ( icon, tooltip ), tooltipWay, delay );
     }
 
     public static WebCustomTooltip addTooltip ( final Component component, final JComponent tooltip )

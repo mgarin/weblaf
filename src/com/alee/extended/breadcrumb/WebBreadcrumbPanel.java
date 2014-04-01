@@ -26,9 +26,10 @@ import java.awt.*;
  * User: mgarin Date: 25.09.12 Time: 13:26
  */
 
-public class WebBreadcrumbPanel extends WebPanel implements BreadcrumbElement<WebPanel>
+public class WebBreadcrumbPanel extends WebPanel implements BreadcrumbElement
 {
-    private BreadcrumbElementPainter painter;
+    protected boolean showProgress;
+    protected float progress;
 
     public WebBreadcrumbPanel ()
     {
@@ -86,28 +87,7 @@ public class WebBreadcrumbPanel extends WebPanel implements BreadcrumbElement<We
 
     private void initialize ()
     {
-        setMargin ( WebBreadcrumbStyle.elementMargin );
-
-        painter = new BreadcrumbElementPainter ();
-        setPainter ( painter );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setType ( final BreadcrumbElementType type )
-    {
-        painter.setType ( type );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setOverlap ( final int overlap )
-    {
-        painter.setOverlap ( overlap );
+        setStyleId ( WebBreadcrumb.ELEMENT_STYLE_ID );
     }
 
     /**
@@ -116,7 +96,17 @@ public class WebBreadcrumbPanel extends WebPanel implements BreadcrumbElement<We
     @Override
     public void setShowProgress ( final boolean showProgress )
     {
-        painter.setShowProgress ( showProgress );
+        this.showProgress = showProgress;
+        repaint ();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isShowProgress ()
+    {
+        return showProgress;
     }
 
     /**
@@ -125,16 +115,17 @@ public class WebBreadcrumbPanel extends WebPanel implements BreadcrumbElement<We
     @Override
     public void setProgress ( final float progress )
     {
-        painter.setProgress ( progress );
+        this.progress = progress;
+        repaint ();
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public BreadcrumbElementPainter getPainter ()
+    public float getProgress ()
     {
-        return painter;
+        return progress;
     }
 
     /**
@@ -143,6 +134,6 @@ public class WebBreadcrumbPanel extends WebPanel implements BreadcrumbElement<We
     @Override
     public boolean contains ( final int x, final int y )
     {
-        return BreadcrumbUtils.contains ( x, y, this );
+        return BreadcrumbUtils.contains ( this, x, y );
     }
 }

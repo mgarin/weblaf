@@ -314,15 +314,16 @@ public class WebCheckBoxUI extends BasicCheckBoxUI implements ShapeProvider
         };
         checkBox.addItemListener ( itemListener );
 
-        modelChangeListener = new PropertyChangeListener() {
+        // Proper state update on model changes
+        modelChangeListener = new PropertyChangeListener ()
+        {
             @Override
-            public void propertyChange(PropertyChangeEvent evt) {
-                performStateChanged();
+            public void propertyChange ( final PropertyChangeEvent e )
+            {
+                performStateChanged ();
             }
         };
-
-        checkBox.addPropertyChangeListener( WebLookAndFeel.MODEL_PROPERTY, modelChangeListener );
-
+        checkBox.addPropertyChangeListener ( WebLookAndFeel.MODEL_PROPERTY, modelChangeListener );
     }
 
     /**
@@ -350,7 +351,7 @@ public class WebCheckBoxUI extends BasicCheckBoxUI implements ShapeProvider
     protected void uninstallStateChangeListeners ()
     {
         checkBox.removeItemListener ( itemListener );
-        checkBox.removePropertyChangeListener( modelChangeListener );
+        checkBox.removePropertyChangeListener ( modelChangeListener );
     }
 
     /**
@@ -370,7 +371,8 @@ public class WebCheckBoxUI extends BasicCheckBoxUI implements ShapeProvider
     protected boolean isAnimatedByDefault ()
     {
         // Workaround for Jide tristate checkbox
-        return WebCheckBoxStyle.animated && !ReflectUtils.containsInClassOrSuperclassName ( checkBox.getClass (), "com.jidesoft.swing.TristateCheckBox" );
+        return WebCheckBoxStyle.animated &&
+                !ReflectUtils.containsInClassOrSuperclassName ( checkBox.getClass (), "com.jidesoft.swing.TristateCheckBox" );
     }
 
     /**

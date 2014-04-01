@@ -17,7 +17,7 @@
 
 package com.alee.laf.filechooser;
 
-import com.alee.extended.drag.FileDropHandler;
+import com.alee.extended.drag.FileDragAndDropHandler;
 import com.alee.extended.filechooser.PathFieldListener;
 import com.alee.extended.filechooser.WebFileChooserField;
 import com.alee.extended.filechooser.WebFileTable;
@@ -38,6 +38,7 @@ import com.alee.laf.StyleConstants;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.combobox.WebComboBox;
 import com.alee.laf.combobox.WebComboBoxCellRenderer;
+import com.alee.laf.combobox.WebComboBoxElement;
 import com.alee.laf.combobox.WebComboBoxStyle;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.list.WebList;
@@ -387,13 +388,14 @@ public class WebFileChooserPanel extends WebPanel
                 historyList.setOpaque ( false );
                 historyList.setVisibleRowCount ( Math.min ( 10, navigationHistory.size () ) );
                 historyList.setRolloverSelectionEnabled ( true );
-                historyList.setCellRenderer ( new WebComboBoxCellRenderer ( historyList )
+                historyList.setCellRenderer ( new WebComboBoxCellRenderer ()
                 {
                     @Override
                     public Component getListCellRendererComponent ( final JList list, final Object value, final int index,
                                                                     final boolean isSelected, final boolean cellHasFocus )
                     {
-                        super.getListCellRendererComponent ( list, value, index, isSelected, cellHasFocus );
+                        final WebComboBoxElement renderer =
+                                ( WebComboBoxElement ) super.getListCellRendererComponent ( list, value, index, isSelected, cellHasFocus );
 
                         final File file = ( File ) value;
                         if ( file == null )
@@ -430,6 +432,8 @@ public class WebFileChooserPanel extends WebPanel
                 vsb.setMargin ( WebComboBoxStyle.scrollBarMargin );
                 vsb.setPaintButtons ( WebComboBoxStyle.scrollBarButtonsVisible );
                 vsb.setPaintTrack ( WebComboBoxStyle.scrollBarTrackVisible );
+
+                LafUtils.setScrollBarStyleId ( scrollPane, "combo-box" );
 
                 historyPopup.add ( scrollPane );
 
@@ -925,7 +929,7 @@ public class WebFileChooserPanel extends WebPanel
         southPanel.add ( selectedFilesPanel, ToolbarLayout.FILL );
 
         fileFilters = new WebComboBox ();
-        fileFilters.setRenderer ( new DefaultFileFilterListCellRenderer ( fileFilters ) );
+        fileFilters.setRenderer ( new DefaultFileFilterListCellRenderer () );
         fileFilters.addActionListener ( new ActionListener ()
         {
             @Override
@@ -2060,9 +2064,9 @@ public class WebFileChooserPanel extends WebPanel
     }
 
     /**
-     * FileDropHandler extension to provide drop-to-find-file functionality.
+     * FileDragAndDropHandler extension to provide drop-to-find-file functionality.
      */
-    protected class FilesLocateDropHandler extends FileDropHandler
+    protected class FilesLocateDropHandler extends FileDragAndDropHandler
     {
         /**
          * Source of updates.
@@ -2084,7 +2088,7 @@ public class WebFileChooserPanel extends WebPanel
          * {@inheritDoc}
          */
         @Override
-        protected boolean filesImported ( final List<File> files )
+        public boolean filesDropped ( final List<File> files )
         {
             if ( files.size () > 0 )
             {

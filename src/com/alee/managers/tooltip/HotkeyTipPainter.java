@@ -19,6 +19,7 @@ package com.alee.managers.tooltip;
 
 import com.alee.extended.painter.AbstractPainter;
 import com.alee.laf.StyleConstants;
+import com.alee.managers.style.skin.web.WebLabelPainter;
 import com.alee.utils.LafUtils;
 
 import java.awt.*;
@@ -31,14 +32,13 @@ import java.awt.*;
  * @see com.alee.extended.painter.Painter
  */
 
-public class HotkeyTipPainter extends AbstractPainter<HotkeyTipLabel>
+public class HotkeyTipPainter<T extends HotkeyTipLabel> extends WebLabelPainter<T>
 {
     /**
      * Style constants.
      */
     public static Color bg = new Color ( 255, 255, 255, 178 );
     public static int round = StyleConstants.smallRound;
-    public static Insets margin = new Insets ( 0, 3, 1, 3 );
 
     /**
      * Constructs new hotkey tip painter.
@@ -52,20 +52,13 @@ public class HotkeyTipPainter extends AbstractPainter<HotkeyTipLabel>
      * {@inheritDoc}
      */
     @Override
-    public Insets getMargin ( final HotkeyTipLabel c )
-    {
-        return margin;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final HotkeyTipLabel c )
+    public void paint ( final Graphics2D g2d, final Rectangle bounds, final T c )
     {
         final Object aa = LafUtils.setupAntialias ( g2d );
         g2d.setColor ( bg );
         g2d.fillRoundRect ( bounds.x, bounds.y, bounds.width, bounds.height, round * 2, round * 2 );
         LafUtils.restoreAntialias ( g2d, aa );
+
+        super.paint ( g2d, bounds, c );
     }
 }

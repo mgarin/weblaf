@@ -73,10 +73,7 @@ public class JScrollBarSettingsProcessor extends SettingsProcessor<JScrollBar, I
             @Override
             public void adjustmentValueChanged ( final AdjustmentEvent e )
             {
-                if ( SettingsManager.isSaveOnChange () )
-                {
-                    save ();
-                }
+                save ();
             }
         };
         scrollBar.addAdjustmentListener ( adjustmentListener );

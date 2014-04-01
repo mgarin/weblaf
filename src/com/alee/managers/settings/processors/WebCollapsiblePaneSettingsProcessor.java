@@ -19,7 +19,6 @@ package com.alee.managers.settings.processors;
 
 import com.alee.extended.panel.CollapsiblePaneAdapter;
 import com.alee.extended.panel.WebCollapsiblePane;
-import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.settings.SettingsProcessor;
 import com.alee.managers.settings.SettingsProcessorData;
 
@@ -41,7 +40,7 @@ public class WebCollapsiblePaneSettingsProcessor extends SettingsProcessor<WebCo
      *
      * @param data SettingsProcessorData
      */
-    public WebCollapsiblePaneSettingsProcessor ( SettingsProcessorData data )
+    public WebCollapsiblePaneSettingsProcessor ( final SettingsProcessorData data )
     {
         super ( data );
     }
@@ -64,26 +63,20 @@ public class WebCollapsiblePaneSettingsProcessor extends SettingsProcessor<WebCo
      * {@inheritDoc}
      */
     @Override
-    protected void doInit ( WebCollapsiblePane collapsiblePane )
+    protected void doInit ( final WebCollapsiblePane collapsiblePane )
     {
         collapsiblePaneAdapter = new CollapsiblePaneAdapter ()
         {
             @Override
-            public void expanding ( WebCollapsiblePane pane )
+            public void expanding ( final WebCollapsiblePane pane )
             {
-                if ( SettingsManager.isSaveOnChange () )
-                {
-                    save ();
-                }
+                save ();
             }
 
             @Override
-            public void collapsing ( WebCollapsiblePane pane )
+            public void collapsing ( final WebCollapsiblePane pane )
             {
-                if ( SettingsManager.isSaveOnChange () )
-                {
-                    save ();
-                }
+                save ();
             }
         };
         collapsiblePane.addCollapsiblePaneListener ( collapsiblePaneAdapter );
@@ -93,7 +86,7 @@ public class WebCollapsiblePaneSettingsProcessor extends SettingsProcessor<WebCo
      * {@inheritDoc}
      */
     @Override
-    protected void doDestroy ( WebCollapsiblePane collapsiblePane )
+    protected void doDestroy ( final WebCollapsiblePane collapsiblePane )
     {
         collapsiblePane.removeCollapsiblePaneListener ( collapsiblePaneAdapter );
         collapsiblePaneAdapter = null;
@@ -103,7 +96,7 @@ public class WebCollapsiblePaneSettingsProcessor extends SettingsProcessor<WebCo
      * {@inheritDoc}
      */
     @Override
-    protected void doLoad ( WebCollapsiblePane collapsiblePane )
+    protected void doLoad ( final WebCollapsiblePane collapsiblePane )
     {
         collapsiblePane.setExpanded ( loadValue () );
     }
@@ -112,7 +105,7 @@ public class WebCollapsiblePaneSettingsProcessor extends SettingsProcessor<WebCo
      * {@inheritDoc}
      */
     @Override
-    protected void doSave ( WebCollapsiblePane collapsiblePane )
+    protected void doSave ( final WebCollapsiblePane collapsiblePane )
     {
         saveValue ( collapsiblePane.isExpanded () );
     }

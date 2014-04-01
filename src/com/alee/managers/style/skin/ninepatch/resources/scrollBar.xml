@@ -1,0 +1,36 @@
+<skin>
+
+    <!-- JScrollBar styling -->
+    <style type="scrollBar" id="default">
+        <ui>
+            <margin>0,0,0,0</margin>
+            <paintButtons>false</paintButtons>
+            <paintTrack>false</paintTrack>
+            <scrollBarWidth>15</scrollBarWidth>
+        </ui>
+        <painter id="painter" base="true" class="com.alee.managers.style.skin.ninepatch.NPScrollBarPainter">
+            <thumbMargin>3,3,3,4</thumbMargin>
+            <hBackgroundIcon>icons/scroll/hsbg.9.png</hBackgroundIcon>
+            <hThumbIcon>icons/scroll/hsthumb.9.png</hThumbIcon>
+            <vBackgroundIcon>icons/scroll/vsbg.9.png</vBackgroundIcon>
+            <vThumbIcon>icons/scroll/vsthumb.9.png</vThumbIcon>
+        </painter>
+    </style>
+
+    <!-- JScrollBar styling for JScrollPane -->
+    <style type="scrollBar" id="scroll-pane" extends="default">
+        <ui>
+            <paintButtons>false</paintButtons>
+            <paintTrack>true</paintTrack>
+        </ui>
+    </style>
+
+    <!-- JScrollBar styling for JComboBox -->
+    <style type="scrollBar" id="combo-box" extends="default">
+        <ui>
+            <paintButtons>false</paintButtons>
+            <paintTrack>false</paintTrack>
+        </ui>
+    </style>
+
+</skin>

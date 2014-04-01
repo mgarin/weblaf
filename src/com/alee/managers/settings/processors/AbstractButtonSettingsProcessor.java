@@ -17,7 +17,6 @@
 
 package com.alee.managers.settings.processors;
 
-import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.settings.SettingsProcessor;
 import com.alee.managers.settings.SettingsProcessorData;
 
@@ -43,7 +42,7 @@ public class AbstractButtonSettingsProcessor extends SettingsProcessor<AbstractB
      *
      * @param data SettingsProcessorData
      */
-    public AbstractButtonSettingsProcessor ( SettingsProcessorData data )
+    public AbstractButtonSettingsProcessor ( final SettingsProcessorData data )
     {
         super ( data );
     }
@@ -66,17 +65,14 @@ public class AbstractButtonSettingsProcessor extends SettingsProcessor<AbstractB
      * {@inheritDoc}
      */
     @Override
-    protected void doInit ( AbstractButton abstractButton )
+    protected void doInit ( final AbstractButton abstractButton )
     {
         itemListener = new ItemListener ()
         {
             @Override
-            public void itemStateChanged ( ItemEvent e )
+            public void itemStateChanged ( final ItemEvent e )
             {
-                if ( SettingsManager.isSaveOnChange () )
-                {
-                    save ();
-                }
+                save ();
             }
         };
         abstractButton.addItemListener ( itemListener );
@@ -86,7 +82,7 @@ public class AbstractButtonSettingsProcessor extends SettingsProcessor<AbstractB
      * {@inheritDoc}
      */
     @Override
-    public void doDestroy ( AbstractButton abstractButton )
+    public void doDestroy ( final AbstractButton abstractButton )
     {
         abstractButton.removeItemListener ( itemListener );
         itemListener = null;
@@ -96,9 +92,9 @@ public class AbstractButtonSettingsProcessor extends SettingsProcessor<AbstractB
      * {@inheritDoc}
      */
     @Override
-    public void doLoad ( AbstractButton abstractButton )
+    public void doLoad ( final AbstractButton abstractButton )
     {
-        boolean newValue = loadValue ();
+        final boolean newValue = loadValue ();
         if ( abstractButton.isSelected () != newValue )
         {
             abstractButton.setSelected ( newValue );
@@ -109,7 +105,7 @@ public class AbstractButtonSettingsProcessor extends SettingsProcessor<AbstractB
      * {@inheritDoc}
      */
     @Override
-    public void doSave ( AbstractButton abstractButton )
+    public void doSave ( final AbstractButton abstractButton )
     {
         saveValue ( abstractButton.isSelected () );
     }

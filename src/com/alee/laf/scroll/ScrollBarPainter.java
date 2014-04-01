@@ -18,6 +18,7 @@
 package com.alee.laf.scroll;
 
 import com.alee.extended.painter.Painter;
+import com.alee.extended.painter.SpecificPainter;
 
 import javax.swing.*;
 import java.awt.*;
@@ -28,7 +29,7 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public interface ScrollBarPainter<E extends JScrollBar> extends Painter<E>
+public interface ScrollBarPainter<E extends JScrollBar> extends Painter<E>, SpecificPainter
 {
     /**
      * Sets whether scroll bar arrow buttons are visible or not.

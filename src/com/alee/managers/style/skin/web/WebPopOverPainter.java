@@ -22,6 +22,9 @@ import com.alee.laf.panel.PanelPainter;
 import javax.swing.*;
 
 /**
+ * Web-style painter for WebPopOver component.
+ * It is used as default WebPopOver painter.
+ *
  * @author Mikle Garin
  */
 
@@ -63,7 +66,7 @@ public class WebPopOverPainter<E extends JPanel> extends WebPopupPainter<E> impl
     protected float getCurrentShadeTransparency ()
     {
         // Reducing the shade when WebPopOver is not focused
-        return popOverFocused ? transparency : transparency * 0.7f;
+        return popOverFocused ? shadeTransparency : shadeTransparency * 0.7f;
     }
 
     /**

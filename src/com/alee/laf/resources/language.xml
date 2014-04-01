@@ -1261,6 +1261,26 @@
                 <value lang="pt" state="tooltip">Escolha o ficheiro no qual guardar</value>
                 <value lang="de" state="tooltip">Escolha o ficheiro no qual guardar</value>
             </record>
+            <record key="undo">
+                <value lang="en" state="tooltip">Undo</value>
+                <value lang="ru" state="tooltip">Отмена</value>
+                <value lang="pl" state="tooltip">Cofnij</value>
+                <value lang="ar" state="tooltip">تراجع</value>
+                <value lang="es" state="tooltip">Deshacer</value>
+                <value lang="fr" state="tooltip">Annuler</value>
+                <value lang="pt" state="tooltip">Desfazer</value>
+                <value lang="de" state="tooltip">Rückgängig</value>
+            </record>
+            <record key="redo">
+                <value lang="en" state="tooltip">Redo</value>
+                <value lang="ru" state="tooltip">Повтор</value>
+                <value lang="pl" state="tooltip">Powtórz</value>
+                <value lang="ar" state="tooltip">أعد</value>
+                <value lang="es" state="tooltip">Rehacer</value>
+                <value lang="fr" state="tooltip">Rétablir</value>
+                <value lang="pt" state="tooltip">Refazer</value>
+                <value lang="de" state="tooltip">Wiederholen</value>
+            </record>
             <record key="copyInfo">
                 <value lang="en" state="tooltip">Copy patch locations</value>
                 <value lang="ru" state="tooltip">Копировать расположение патчей</value>
@@ -1281,25 +1301,35 @@
                 <value lang="pt" state="tooltip">Colar as localizações das patch</value>
                 <value lang="de" state="tooltip">Patchpfad einfügen</value>
             </record>
-            <record key="undo">
-                <value lang="en" state="tooltip">Undo</value>
-                <value lang="ru" state="tooltip">Отмена</value>
-                <value lang="pl" state="tooltip">Cofnij</value>
-                <value lang="ar" state="tooltip">تراجع</value>
-                <value lang="es" state="tooltip">Deshacer</value>
-                <value lang="fr" state="tooltip">Annuler</value>
-                <value lang="pt" state="tooltip">Desfazer</value>
-                <value lang="de" state="tooltip">Rückgängig</value>
+            <record key="rotateCCW">
+                <value lang="en" state="tooltip">Rotate by 90 degrees CCW</value>
+                <value lang="ru" state="tooltip">Поворот на 90 градусов против часовой стрелки</value>
+                <value lang="pl" state="tooltip">Obrót o 90 stopni w lewo</value>
+                <value lang="ar" state="tooltip">تدوير 90 درجة عكس عقارب الساعة</value>
+                <value lang="es" state="tooltip">Girar 90 grados en sentido antihorario</value>
+                <value lang="fr" state="tooltip">Rotation de 90 degrés dans le sens antihoraire</value>
+                <value lang="pt" state="tooltip">Girar 90 graus para a esquerda</value>
+                <value lang="de" state="tooltip">Um 90 Grad gegen den Uhrzeigersinn</value>
             </record>
-            <record key="redo">
-                <value lang="en" state="tooltip">Redo</value>
-                <value lang="ru" state="tooltip">Повтор</value>
-                <value lang="pl" state="tooltip">Powtórz</value>
-                <value lang="ar" state="tooltip">أعد</value>
-                <value lang="es" state="tooltip">Rehacer</value>
-                <value lang="fr" state="tooltip">Rétablir</value>
-                <value lang="pt" state="tooltip">Refazer</value>
-                <value lang="de" state="tooltip">Wiederholen</value>
+            <record key="rotateCW">
+                <value lang="en" state="tooltip">Rotate by 90 degrees CW</value>
+                <value lang="ru" state="tooltip">Поворот на 90 градусов по часовой стрелке</value>
+                <value lang="pl" state="tooltip">Obrót o 90 stopni w prawo</value>
+                <value lang="ar" state="tooltip">تدوير 90 درجة في اتجاه عقارب الساعة</value>
+                <value lang="es" state="tooltip">Gire 90 grados hacia la derecha</value>
+                <value lang="fr" state="tooltip">Faire pivoter de 90 degrés vers la droite</value>
+                <value lang="pt" state="tooltip">Girar 90 graus no sentido horário</value>
+                <value lang="de" state="tooltip">Um 90 Grad im Uhrzeigersinn</value>
+            </record>
+            <record key="rotate180">
+                <value lang="en" state="tooltip">Rotate by 180 degrees</value>
+                <value lang="ru" state="tooltip">Поворот на 180 градусов</value>
+                <value lang="pl" state="tooltip">Obracać o 180 stopni</value>
+                <value lang="ar" state="tooltip">يستدير بمقدار 180 درجة</value>
+                <value lang="es" state="tooltip">Girar 180 grados</value>
+                <value lang="fr" state="tooltip">Une rotation de 180 degrés</value>
+                <value lang="pt" state="tooltip">Girar 180 graus</value>
+                <value lang="de" state="tooltip">Drehen um 180 Grad</value>
             </record>
             <record key="preview.text">
                 <value lang="en">Simple text</value>

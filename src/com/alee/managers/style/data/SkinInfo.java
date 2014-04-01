@@ -34,7 +34,7 @@ import java.util.Map;
  * @author Mikle Garin
  */
 
-@XStreamAlias ( "skin" )
+@XStreamAlias ("skin")
 @XStreamConverter (SkinInfoConverter.class)
 public final class SkinInfo implements Serializable
 {
@@ -201,7 +201,17 @@ public final class SkinInfo implements Serializable
         {
             final String styleId = type.getComponentStyleId ( component );
             final ComponentStyle style = componentStyles.get ( styleId );
-            return style != null ? style : componentStyles.get ( ComponentStyleConverter.DEFAULT_STYLE_ID );
+            if ( style != null )
+            {
+                // We have found required style
+                return style;
+            }
+            else
+            {
+                // Required style cannot be found, using default style
+                System.err.println ( "Unable to find style with ID \"" + styleId + "\" for component: " + component );
+                return componentStyles.get ( ComponentStyleConverter.DEFAULT_STYLE_ID );
+            }
         }
         else
         {

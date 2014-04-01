@@ -17,6 +17,7 @@
 
 package com.alee.utils;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
@@ -41,7 +42,12 @@ public final class DragUtils
     /**
      * URI list mime type.
      */
-    private static final String URI_LIST_MIME_TYPE = "text/uri-list;class=java.lang.String";
+    public static final String URI_LIST_MIME_TYPE = "text/uri-list;class=java.lang.String";
+
+    /**
+     * URI string data separator.
+     */
+    public static final String uriListSeparator = "\r\n";
 
     /**
      * URI list data flavor.
@@ -54,23 +60,23 @@ public final class DragUtils
      * @param t transferable
      * @return improrted image
      */
-    public static Image getImportedImage ( Transferable t )
+    public static Image getImportedImage ( final Transferable t )
     {
         if ( t.isDataFlavorSupported ( DataFlavor.imageFlavor ) )
         {
             try
             {
-                Object data = t.getTransferData ( DataFlavor.imageFlavor );
+                final Object data = t.getTransferData ( DataFlavor.imageFlavor );
                 if ( data instanceof Image )
                 {
                     return ( Image ) data;
                 }
             }
-            catch ( UnsupportedFlavorException e )
+            catch ( final UnsupportedFlavorException e )
             {
                 //
             }
-            catch ( IOException e )
+            catch ( final IOException e )
             {
                 //
             }
@@ -84,7 +90,7 @@ public final class DragUtils
      * @param t transferable
      * @return list of imported files
      */
-    public static List<File> getImportedFiles ( Transferable t )
+    public static List<File> getImportedFiles ( final Transferable t )
     {
         // From files list (Linux/MacOS)
         try
@@ -95,7 +101,7 @@ public final class DragUtils
                 return textURIListToFileList ( ( String ) t.getTransferData ( getUriListDataFlavor () ) );
             }
         }
-        catch ( Throwable e )
+        catch ( final Throwable e )
         {
             //
         }
@@ -106,14 +112,14 @@ public final class DragUtils
             if ( hasURIListFlavor ( t.getTransferDataFlavors () ) )
             {
                 // File link
-                String url = ( String ) t.getTransferData ( getUriListDataFlavor () );
+                final String url = ( String ) t.getTransferData ( getUriListDataFlavor () );
                 final File file = new File ( new URL ( url ).getPath () );
 
                 // Returning file
                 return Arrays.asList ( file );
             }
         }
-        catch ( Throwable e )
+        catch ( final Throwable e )
         {
             //
         }
@@ -124,7 +130,7 @@ public final class DragUtils
             // Getting files list
             return ( List<File> ) t.getTransferData ( DataFlavor.javaFileListFlavor );
         }
-        catch ( Throwable e )
+        catch ( final Throwable e )
         {
             //
         }
@@ -138,12 +144,12 @@ public final class DragUtils
      * @param data text list of URI
      * @return list of files
      */
-    public static List<File> textURIListToFileList ( String data )
+    public static List<File> textURIListToFileList ( final String data )
     {
-        List<File> list = new ArrayList<File> ( 1 );
-        for ( StringTokenizer st = new StringTokenizer ( data, "\r\n" ); st.hasMoreTokens (); )
+        final List<File> list = new ArrayList<File> ( 1 );
+        for ( final StringTokenizer st = new StringTokenizer ( data, uriListSeparator ); st.hasMoreTokens (); )
         {
-            String s = st.nextToken ();
+            final String s = st.nextToken ();
             if ( s.startsWith ( "#" ) )
             {
                 // the line is a comment (as per the RFC 2483)
@@ -153,7 +159,7 @@ public final class DragUtils
             {
                 list.add ( new File ( new URI ( s ) ) );
             }
-            catch ( Throwable e )
+            catch ( final Throwable e )
             {
                 //
             }
@@ -162,14 +168,31 @@ public final class DragUtils
     }
 
     /**
+     * Returns text URI list for the specified list of files.
+     *
+     * @param files list of files to convert
+     * @return text URI list
+     */
+    public static String fileListToTextURIList ( final List<File> files )
+    {
+        final StringBuilder sb = new StringBuilder ();
+        for ( final File file : files )
+        {
+            sb.append ( file.toURI ().toASCIIString () );
+            sb.append ( uriListSeparator );
+        }
+        return sb.toString ();
+    }
+
+    /**
      * Returns whether flavors array has URI list flavor or not.
      *
      * @param flavors flavors array
      * @return true if flavors array has URI list flavor, false otherwise
      */
-    public static boolean hasURIListFlavor ( DataFlavor[] flavors )
+    public static boolean hasURIListFlavor ( final DataFlavor[] flavors )
     {
-        for ( DataFlavor flavor : flavors )
+        for ( final DataFlavor flavor : flavors )
         {
             if ( getUriListDataFlavor ().equals ( flavor ) )
             {
@@ -190,16 +213,75 @@ public final class DragUtils
         {
             try
             {
-                return uriListFlavor = new DataFlavor ( URI_LIST_MIME_TYPE );
+                uriListFlavor = new DataFlavor ( URI_LIST_MIME_TYPE );
             }
-            catch ( Throwable e )
+            catch ( final Throwable e )
             {
-                return null;
+                e.printStackTrace ();
             }
         }
-        else
+        return uriListFlavor;
+    }
+
+    /**
+     * Returns whether can pass drop action to closest component parent that has its own TransferHandler.
+     * This might be used to make some components that has drag handler transparent for drop actions.
+     *
+     * @param info transfer support
+     * @return true if drop action succeed, false otherwise
+     */
+    public static boolean canPassDrop ( final TransferHandler.TransferSupport info )
+    {
+        return canPassDrop ( info.getComponent (), info );
+    }
+
+    /**
+     * Returns whether can pass drop action to closest component parent that has its own TransferHandler.
+     * This might be used to make some components that has drag handler transparent for drop actions.
+     *
+     * @param component component to pass drop action from
+     * @param info      transfer support
+     * @return true if drop action succeed, false otherwise
+     */
+    public static boolean canPassDrop ( final Component component, final TransferHandler.TransferSupport info )
+    {
+        final Container parent = component.getParent ();
+        if ( parent != null && parent instanceof JComponent )
         {
-            return uriListFlavor;
+            final TransferHandler th = ( ( JComponent ) parent ).getTransferHandler ();
+            return th != null ? th.canImport ( info ) : canPassDrop ( parent, info );
         }
+        return false;
+    }
+
+    /**
+     * Passes drop action to closest component parent that has its own TransferHandler.
+     * This might be used to make some components that has drag handler transparent for drop actions.
+     *
+     * @param info transfer support
+     * @return true if drop action succeed, false otherwise
+     */
+    public static boolean passDropAction ( final TransferHandler.TransferSupport info )
+    {
+        return passDropAction ( info.getComponent (), info );
+    }
+
+    /**
+     * Passes drop action to closest component parent that has its own TransferHandler.
+     * This might be used to make some components that has drag handler transparent for drop actions.
+     *
+     * @param component component to pass drop action from
+     * @param info      transfer support
+     * @return true if drop action succeed, false otherwise
+     */
+    public static boolean passDropAction ( final Component component, final TransferHandler.TransferSupport info )
+    {
+        final Container parent = component.getParent ();
+        if ( parent != null && parent instanceof JComponent )
+        {
+            final TransferHandler th = ( ( JComponent ) parent ).getTransferHandler ();
+            return th != null ? th.importData ( info ) : passDropAction ( parent, info );
+        }
+        return false;
     }
 }

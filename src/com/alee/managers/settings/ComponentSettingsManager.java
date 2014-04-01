@@ -284,7 +284,7 @@ public final class ComponentSettingsManager
         if ( settingsProcessor != null )
         {
             // Saving component settings
-            settingsProcessor.save ();
+            settingsProcessor.save ( false );
         }
         else if ( throwExceptions )
         {

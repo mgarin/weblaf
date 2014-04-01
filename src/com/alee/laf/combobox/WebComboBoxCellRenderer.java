@@ -17,44 +17,107 @@
 
 package com.alee.laf.combobox;
 
+import com.alee.laf.WebLookAndFeel;
+import com.alee.utils.swing.RendererListener;
+
 import javax.swing.*;
 import java.awt.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * User: mgarin Date: 01.06.11 Time: 23:25
+ * Custom cell renderer for JComboBox value and popup list and some other similar cases.
+ * It uses {@code WebComboBoxElement} as renderer which is being styled by a custom LabelPainter.
+ *
+ * @author Mikle Garin
+ * @see WebComboBoxElement
  */
 
-public class WebComboBoxCellRenderer extends DefaultListCellRenderer
+public class WebComboBoxCellRenderer implements ListCellRenderer
 {
-    protected Component component;
-    protected WebComboBoxElement renderer;
+    /**
+     * Renderer listeners.
+     */
+    protected List<RendererListener> rendererListeners = new ArrayList<RendererListener> ( 1 );
 
-    public WebComboBoxCellRenderer ( final Component component )
+    /**
+     * Actual renderer components.
+     */
+    protected WebComboBoxElement boxRenderer;
+    protected WebComboBoxElement elementRenderer;
+
+    /**
+     * Constructs new combo box renderer.
+     */
+    public WebComboBoxCellRenderer ()
     {
         super ();
-        this.component = component;
-        this.renderer = new WebComboBoxElement ();
+
+        // Additional renderer for combo box selected value rendering
+        this.boxRenderer = new WebComboBoxElement ();
+        this.boxRenderer.setStyleId ( "combo-box-value" );
+
+        // Elements renderer
+        this.elementRenderer = new WebComboBoxElement ();
+        this.elementRenderer.setStyleId ( "combo-box-element" );
+
+        // Painter change listener
+        final PropertyChangeListener listener = new PropertyChangeListener ()
+        {
+            @Override
+            public void propertyChange ( final PropertyChangeEvent evt )
+            {
+                fireRevalidate ();
+            }
+        };
+        this.boxRenderer.addPropertyChangeListener ( WebLookAndFeel.PAINTER_PROPERTY, listener );
+        this.elementRenderer.addPropertyChangeListener ( WebLookAndFeel.PAINTER_PROPERTY, listener );
     }
 
-    public WebComboBoxElement getRenderer ()
+    /**
+     * Returns actual combo box value renderer.
+     *
+     * @return actual combo box value renderer
+     */
+    public WebComboBoxElement getBoxRenderer ()
     {
-        return renderer;
+        return boxRenderer;
     }
 
+    /**
+     * Returns actual elements renderer.
+     *
+     * @return actual elements renderer
+     */
+    public WebComboBoxElement getElementRenderer ()
+    {
+        return elementRenderer;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Component getListCellRendererComponent ( final JList list, final Object value, final int index, final boolean isSelected,
                                                     final boolean cellHasFocus )
     {
+        // Choosing actual renderer
+        final WebComboBoxElement renderer = index == -1 ? boxRenderer : elementRenderer;
+
+        // Updating runtime variables
         renderer.setIndex ( index );
         renderer.setTotalElements ( list.getModel ().getSize () );
         renderer.setSelected ( isSelected );
-        renderer.updatePainter ();
 
-        renderer.setEnabled ( component.isEnabled () );
-        renderer.setFont ( component.getFont () );
+        // Updating renderer visual settings
+        renderer.setEnabled ( list.isEnabled () );
+        renderer.setFont ( list.getFont () );
         renderer.setForeground ( isSelected ? list.getSelectionForeground () : list.getForeground () );
         renderer.setComponentOrientation ( list.getComponentOrientation () );
 
+        // Updating icon and text
         if ( value instanceof Icon )
         {
             renderer.setIcon ( ( Icon ) value );
@@ -67,5 +130,47 @@ public class WebComboBoxCellRenderer extends DefaultListCellRenderer
         }
 
         return renderer;
+    }
+
+    /**
+     * Adds RendererListener to this renderer.
+     *
+     * @param listener RendererListener to add
+     */
+    public void addRendererListener ( final RendererListener listener )
+    {
+        rendererListeners.add ( listener );
+    }
+
+    /**
+     * Removes RendererListener from this renderer.
+     *
+     * @param listener RendererListener to remove
+     */
+    public void removeRendererListener ( final RendererListener listener )
+    {
+        rendererListeners.remove ( listener );
+    }
+
+    /**
+     * Fires repaint event.
+     */
+    public void fireRepaint ()
+    {
+        for ( final RendererListener listener : rendererListeners )
+        {
+            listener.repaint ();
+        }
+    }
+
+    /**
+     * Fires revalidate event.
+     */
+    public void fireRevalidate ()
+    {
+        for ( final RendererListener listener : rendererListeners )
+        {
+            listener.revalidate ();
+        }
     }
 }

@@ -73,10 +73,7 @@ public class JSliderSettingsProcessor extends SettingsProcessor<JSlider, Integer
             @Override
             public void stateChanged ( final ChangeEvent e )
             {
-                if ( SettingsManager.isSaveOnChange () )
-                {
-                    save ();
-                }
+                save ();
             }
         };
         slider.addChangeListener ( changeListener );

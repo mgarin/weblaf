@@ -76,4 +76,17 @@ public abstract class AbstractTreeDataProvider<E extends AsyncUniqueNode> implem
     {
         this.filter = filter;
     }
+
+    /**
+     * Returns false by default to allow childs load requests.
+     * It is recommended to override this behavior if you can easily determine whether node is leaf or not.
+     *
+     * @param node node
+     * @return false
+     */
+    @Override
+    public boolean isLeaf ( final E node )
+    {
+        return false;
+    }
 }

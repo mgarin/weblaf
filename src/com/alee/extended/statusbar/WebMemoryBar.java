@@ -92,6 +92,7 @@ public class WebMemoryBar extends WebLabel implements ShapeProvider, SizeMethods
         updateBorder ();
 
         tooltipLabel = new WebLabel ( memoryIcon );
+        tooltipLabel.setStyleId ( "memory-bar-tip" );
         updateTooltip ();
 
         updateMemory ();

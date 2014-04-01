@@ -25,33 +25,47 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * User: mgarin Date: 13.09.12 Time: 18:45
+ * Custom painter examples group.
+ *
+ * @author Mikle Garin
  */
 
 public class PaintersGroup extends DefaultExampleGroup
 {
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Icon getGroupIcon ()
     {
         return loadGroupIcon ( "painter.png" );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getGroupName ()
     {
         return "Painters";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getGroupDescription ()
     {
         return "Various examples of painters usage";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Example> getGroupExamples ()
     {
-        List<Example> examples = new ArrayList<Example> ();
+        final List<Example> examples = new ArrayList<Example> ();
         examples.add ( new BorderPaintersExample () );
         examples.add ( new NinePatchPaintersExample () );
         examples.add ( new CustomPaintersExample () );

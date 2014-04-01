@@ -294,14 +294,7 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
      */
     public E getNodeForPath ( final TreePath path )
     {
-        if ( path != null )
-        {
-            return ( E ) path.getLastPathComponent ();
-        }
-        else
-        {
-            return null;
-        }
+        return path != null ? ( E ) path.getLastPathComponent () : null;
     }
 
     /**

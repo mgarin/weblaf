@@ -18,6 +18,7 @@
 package com.alee.extended.breadcrumb;
 
 import com.alee.laf.button.WebButton;
+import com.alee.managers.style.skin.web.WebBreadcrumbButtonPainter;
 
 import javax.swing.*;
 
@@ -25,9 +26,10 @@ import javax.swing.*;
  * User: mgarin Date: 01.03.12 Time: 19:07
  */
 
-public class WebBreadcrumbButton extends WebButton implements BreadcrumbElement<WebButton>
+public class WebBreadcrumbButton extends WebButton implements BreadcrumbElement
 {
-    private BreadcrumbElementPainter painter;
+    protected boolean showProgress;
+    protected float progress;
 
     public WebBreadcrumbButton ()
     {
@@ -35,25 +37,25 @@ public class WebBreadcrumbButton extends WebButton implements BreadcrumbElement<
         initialize ();
     }
 
-    public WebBreadcrumbButton ( Icon icon )
+    public WebBreadcrumbButton ( final Icon icon )
     {
         super ( icon );
         initialize ();
     }
 
-    public WebBreadcrumbButton ( String text )
+    public WebBreadcrumbButton ( final String text )
     {
         super ( text );
         initialize ();
     }
 
-    public WebBreadcrumbButton ( Action a )
+    public WebBreadcrumbButton ( final Action a )
     {
         super ( a );
         initialize ();
     }
 
-    public WebBreadcrumbButton ( String text, Icon icon )
+    public WebBreadcrumbButton ( final String text, final Icon icon )
     {
         super ( text, icon );
         initialize ();
@@ -63,62 +65,53 @@ public class WebBreadcrumbButton extends WebButton implements BreadcrumbElement<
     {
         setMargin ( WebBreadcrumbStyle.elementMargin );
         setLeftRightSpacing ( 0 );
-
-        painter = new BreadcrumbElementPainter ();
-        setPainter ( painter );
+        setPainter ( new WebBreadcrumbButtonPainter () );
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void setType ( BreadcrumbElementType type )
+    public void setShowProgress ( final boolean showProgress )
     {
-        painter.setType ( type );
+        this.showProgress = showProgress;
+        repaint ();
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void setOverlap ( int overlap )
+    public boolean isShowProgress ()
     {
-        painter.setOverlap ( overlap );
+        return showProgress;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void setShowProgress ( boolean showProgress )
+    public void setProgress ( final float progress )
     {
-        painter.setShowProgress ( showProgress );
+        this.progress = progress;
+        repaint ();
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void setProgress ( float progress )
+    public float getProgress ()
     {
-        painter.setProgress ( progress );
+        return progress;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public BreadcrumbElementPainter getPainter ()
+    public boolean contains ( final int x, final int y )
     {
-        return painter;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean contains ( int x, int y )
-    {
-        return BreadcrumbUtils.contains ( x, y, this );
+        return BreadcrumbUtils.contains ( this, x, y );
     }
 }

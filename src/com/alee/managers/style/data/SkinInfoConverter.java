@@ -17,6 +17,8 @@
 
 package com.alee.managers.style.data;
 
+import com.alee.managers.style.StyleException;
+import com.alee.managers.style.StyleManager;
 import com.alee.managers.style.SupportedComponent;
 import com.alee.utils.MapUtils;
 import com.alee.utils.ReflectUtils;
@@ -85,15 +87,6 @@ public class SkinInfoConverter extends ReflectionConverter
     {
         return type.equals ( SkinInfo.class );
     }
-
-    //    /**
-    //     * {@inheritDoc}
-    //     */
-    //    @Override
-    //    public void marshal ( final Object source, final HierarchicalStreamWriter writer, final MarshallingContext context )
-    //    {
-    //        final ComponentStyle componentStyle = ( ComponentStyle ) source;
-    //    }
 
     /**
      * {@inheritDoc}
@@ -165,7 +158,7 @@ public class SkinInfoConverter extends ReflectionConverter
                 final String skinClass = skinInfo.getSkinClass ();
                 if ( skinClass == null )
                 {
-                    throw new RuntimeException (
+                    throw new StyleException (
                             "Included skin file \"" + resourceFile.getSource () + "\" specified but skin \"class\" property is not set!" );
                 }
                 resourceFile.setClassName ( skinClass );
@@ -175,7 +168,7 @@ public class SkinInfoConverter extends ReflectionConverter
             final SkinInfo include = loadSkinInfo ( resourceFile );
             if ( include == null )
             {
-                throw new RuntimeException ( "Included skin file \"" + resourceFile.getSource () + "\" cannot be read!" );
+                throw new StyleException ( "Included skin file \"" + resourceFile.getSource () + "\" cannot be read!" );
             }
 
             // Adding information from included file
@@ -227,22 +220,31 @@ public class SkinInfoConverter extends ReflectionConverter
      */
     protected SkinInfo loadSkinInfo ( final ResourceFile resourceFile )
     {
-        final Map<String, String> nearClassMap = resourceMap.get ( resourceFile.getClassName () );
-        if ( nearClassMap != null )
+        try
         {
-            final String xml = nearClassMap.get ( resourceFile.getSource () );
-            if ( xml != null )
+            final Map<String, String> nearClassMap = resourceMap.get ( resourceFile.getClassName () );
+            if ( nearClassMap != null )
             {
-                return XmlUtils.fromXML ( xml );
+                final String xml = nearClassMap.get ( resourceFile.getSource () );
+                if ( xml != null )
+                {
+                    return XmlUtils.fromXML ( xml );
+                }
+                else
+                {
+                    return XmlUtils.fromXML ( resourceFile );
+                }
             }
             else
             {
                 return XmlUtils.fromXML ( resourceFile );
             }
         }
-        else
+        catch ( final Throwable e )
         {
-            return XmlUtils.fromXML ( resourceFile );
+            // todo Exceptions are not caught here for some reason (probably XStream blocks this somehow)
+            e.printStackTrace ();
+            return null;
         }
     }
 
@@ -274,14 +276,14 @@ public class SkinInfoConverter extends ReflectionConverter
         // Style cannot extend itself
         if ( extendsId.equals ( id ) )
         {
-            throw new RuntimeException ( "Component style \"" + style.getType () + ":" + id + "\" extends itself!" );
+            throw new StyleException ( "Component style \"" + style.getType () + ":" + id + "\" extends itself!" );
         }
 
         // Extended style cannot be found
         final ComponentStyle extendedStyle = styles.get ( extendsId );
         if ( extendedStyle == null )
         {
-            throw new RuntimeException (
+            throw new StyleException (
                     "Component style \"" + style.getType () + ":" + id + "\" extends missing style \"" + extendsId + "\"!" );
         }
 
@@ -344,7 +346,7 @@ public class SkinInfoConverter extends ReflectionConverter
                 {
                     final String pc = painterClass == null ? painterStyle.getPainterClass () : extendedPainterStyle.getPainterClass ();
                     final String sid = style.getType () + ":" + style.getId ();
-                    throw new RuntimeException ( "Component style \"" + sid + "\" points to missing painter class: \"" + pc + "\"!" );
+                    throw new StyleException ( "Component style \"" + sid + "\" points to missing painter class: \"" + pc + "\"!" );
                 }
                 if ( ReflectUtils.isAssignable ( extendedPainterClass, painterClass ) )
                 {
@@ -357,10 +359,33 @@ public class SkinInfoConverter extends ReflectionConverter
                 // Creating full copy of painter style
                 final PainterStyle painterStyle = new PainterStyle ();
                 painterStyle.setId ( extendedPainterStyle.getId () );
-                painterStyle.setBase ( extendedPainterStyle.isBase () );
                 painterStyle.setPainterClass ( extendedPainterStyle.getPainterClass () );
                 painterStyle.setProperties ( MapUtils.copyMap ( extendedPainterStyle.getProperties () ) );
                 paintersMap.put ( painterId, painterStyle );
+            }
+        }
+
+        // Fixing possible base mark issues
+        if ( paintersMap.size () > 0 )
+        {
+            boolean hasBase = false;
+            for ( final Map.Entry<String, PainterStyle> entry : paintersMap.entrySet () )
+            {
+                final PainterStyle painterStyle = entry.getValue ();
+                if ( painterStyle.isBase () )
+                {
+                    hasBase = true;
+                    break;
+                }
+            }
+            if ( !hasBase )
+            {
+                PainterStyle painterStyle = paintersMap.get ( StyleManager.DEFAULT_PAINTER_ID );
+                if ( painterStyle == null )
+                {
+                    painterStyle = paintersMap.entrySet ().iterator ().next ().getValue ();
+                }
+                painterStyle.setBase ( true );
             }
         }
 
@@ -386,7 +411,7 @@ public class SkinInfoConverter extends ReflectionConverter
             if ( paintersMap.containsKey ( painterId ) )
             {
                 final String sid = style.getType () + ":" + style.getId ();
-                throw new RuntimeException ( "Component style \"" + sid + "\" has duplicate painters for id \"" + painterId + "\"!" );
+                throw new StyleException ( "Component style \"" + sid + "\" has duplicate painters for id \"" + painterId + "\"!" );
             }
             paintersMap.put ( painterId, painter );
         }

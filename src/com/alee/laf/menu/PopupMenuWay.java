@@ -69,12 +69,12 @@ public enum PopupMenuWay
             case aboveStart:
             case aboveMiddle:
             case aboveEnd:
-                return SwingConstants.SOUTH;
+                return SwingConstants.BOTTOM;
             case belowStart:
             case belowMiddle:
             case belowEnd:
             default:
-                return SwingConstants.NORTH;
+                return SwingConstants.TOP;
 
         }
     }

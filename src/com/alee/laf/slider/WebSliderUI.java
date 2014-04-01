@@ -537,11 +537,11 @@ public class WebSliderUI extends BasicSliderUI implements BorderMethods
             // Thumb shape
             final Shape ts = getThumbShape ();
 
-            // Thumb shade
-            if ( slider.isEnabled () )
-            {
-                LafUtils.drawShade ( g2d, ts, StyleConstants.shadeColor, thumbShadeWidth );
-            }
+            //            // Thumb shade
+            //            if ( slider.isEnabled () )
+            //            {
+            //                LafUtils.drawShade ( g2d, ts, StyleConstants.shadeColor, thumbShadeWidth );
+            //            }
 
             // Thumb background
             if ( slider.getOrientation () == JSlider.HORIZONTAL )
@@ -705,13 +705,15 @@ public class WebSliderUI extends BasicSliderUI implements BorderMethods
             {
                 g2d.setPaint (
                         new GradientPaint ( 0, bounds.y + progressShadeWidth, Color.WHITE, 0, bounds.y + bounds.height - progressShadeWidth,
-                                new Color ( 223, 223, 223 ) ) );
+                                new Color ( 223, 223, 223 ) )
+                );
             }
             else
             {
                 g2d.setPaint (
                         new GradientPaint ( bounds.x + progressShadeWidth, 0, Color.WHITE, bounds.x + bounds.width - progressShadeWidth, 0,
-                                new Color ( 223, 223, 223 ) ) );
+                                new Color ( 223, 223, 223 ) )
+                );
             }
             g2d.fill ( ps );
 

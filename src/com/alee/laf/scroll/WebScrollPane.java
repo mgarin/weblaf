@@ -186,6 +186,24 @@ public class WebScrollPane extends JScrollPane implements ShapeProvider, SizeMet
     }
 
     /**
+     * Scroll bars buttons painting.
+     */
+
+    public void setPaintButtons ( final boolean paintButtons )
+    {
+        final WebScrollBar hsb = getWebHorizontalScrollBar ();
+        if ( hsb != null )
+        {
+            hsb.setPaintButtons ( paintButtons );
+        }
+        final WebScrollBar vsb = getWebVerticalScrollBar ();
+        if ( vsb != null )
+        {
+            vsb.setPaintButtons ( paintButtons );
+        }
+    }
+
+    /**
      * Sets scroll bar style ID.
      *
      * @param id scroll bar style ID

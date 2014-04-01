@@ -17,6 +17,7 @@
 
 package com.alee.laf.scroll;
 
+import com.alee.extended.painter.Painter;
 import com.alee.extended.painter.PainterSupport;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
@@ -41,6 +42,11 @@ import java.beans.PropertyChangeListener;
 
 public class WebScrollBarUI extends BasicScrollBarUI implements Styleable, BorderMethods
 {
+    /**
+     * todo 1. Return painters taken directly from the buttons to avoid inconsistance
+     * todo 2. Probably fire additional button-painter change events? Or just leave it for button UIs?
+     */
+
     /**
      * UI style settings.
      */
@@ -73,7 +79,7 @@ public class WebScrollBarUI extends BasicScrollBarUI implements Styleable, Borde
      * @param c component that will use UI instance
      * @return instance of the WebScrollBarUI
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebScrollBarUI ();
@@ -248,9 +254,9 @@ public class WebScrollBarUI extends BasicScrollBarUI implements Styleable, Borde
      *
      * @return scroll bar painter
      */
-    public ScrollBarPainter getPainter ()
+    public Painter getPainter ()
     {
-        return painter;
+        return LafUtils.getAdaptedPainter ( painter );
     }
 
     /**
@@ -259,12 +265,22 @@ public class WebScrollBarUI extends BasicScrollBarUI implements Styleable, Borde
      *
      * @param painter new scroll bar painter
      */
-    public void setPainter ( final ScrollBarPainter painter )
+    public void setPainter ( final Painter painter )
     {
+        // Creating adaptive painter if required
+        final ScrollBarPainter properPainter =
+                LafUtils.getProperPainter ( painter, ScrollBarPainter.class, AdaptiveScrollBarPainter.class );
+
+        // Properly updating painter
         PainterSupport.uninstallPainter ( scrollbar, this.painter );
-        this.painter = painter;
-        applyPainterSettings ( painter );
-        PainterSupport.installPainter ( scrollbar, this.painter );
+        final Painter oldPainter = this.painter;
+        this.painter = properPainter;
+        applyPainterSettings ( properPainter );
+        PainterSupport.installPainter ( scrollbar, properPainter );
+
+        // Firing painter change event
+        // This is made using reflection because required method is protected within Component class
+        LafUtils.firePainterChanged ( scrollbar, oldPainter, properPainter );
     }
 
     /**
@@ -293,9 +309,9 @@ public class WebScrollBarUI extends BasicScrollBarUI implements Styleable, Borde
      *
      * @return decrease button painter
      */
-    public ScrollBarButtonPainter getDecreaseButtonPainter ()
+    public Painter getDecreaseButtonPainter ()
     {
-        return decreaseButtonPainter;
+        return LafUtils.getAdaptedPainter ( decreaseButtonPainter );
     }
 
     /**
@@ -304,17 +320,22 @@ public class WebScrollBarUI extends BasicScrollBarUI implements Styleable, Borde
      *
      * @param painter new decrease button painter
      */
-    public void setDecreaseButtonPainter ( final ScrollBarButtonPainter painter )
+    public void setDecreaseButtonPainter ( final Painter painter )
     {
-        this.decreaseButtonPainter = painter;
+        // Creating adaptive painter if required
+        final ScrollBarButtonPainter properPainter =
+                LafUtils.getProperPainter ( painter, ScrollBarButtonPainter.class, AdaptiveScrollBarButtonPainter.class );
+
+        // Properly updating painter
+        this.decreaseButtonPainter = properPainter;
         if ( decrButton != null )
         {
-            if ( painter != null )
+            if ( properPainter != null )
             {
-                painter.setButtonType ( ScrollBarButtonType.decrease );
-                painter.setScrollbar ( scrollbar );
+                properPainter.setButtonType ( ScrollBarButtonType.decrease );
+                properPainter.setScrollbar ( scrollbar );
             }
-            ( ( WebButton ) decrButton ).setPainter ( painter );
+            ( ( WebButton ) decrButton ).setPainter ( properPainter );
         }
     }
 
@@ -324,9 +345,9 @@ public class WebScrollBarUI extends BasicScrollBarUI implements Styleable, Borde
      *
      * @return increase button painter
      */
-    public ScrollBarButtonPainter getIncreaseButtonPainter ()
+    public Painter getIncreaseButtonPainter ()
     {
-        return increaseButtonPainter;
+        return LafUtils.getAdaptedPainter ( increaseButtonPainter );
     }
 
     /**
@@ -335,17 +356,22 @@ public class WebScrollBarUI extends BasicScrollBarUI implements Styleable, Borde
      *
      * @param painter new increase button painter
      */
-    public void setIncreaseButtonPainter ( final ScrollBarButtonPainter painter )
+    public void setIncreaseButtonPainter ( final Painter painter )
     {
-        this.increaseButtonPainter = painter;
+        // Creating adaptive painter if required
+        final ScrollBarButtonPainter properPainter =
+                LafUtils.getProperPainter ( painter, ScrollBarButtonPainter.class, AdaptiveScrollBarButtonPainter.class );
+
+        // Properly updating painter
+        this.increaseButtonPainter = properPainter;
         if ( incrButton != null )
         {
-            if ( painter != null )
+            if ( properPainter != null )
             {
-                painter.setButtonType ( ScrollBarButtonType.increase );
-                painter.setScrollbar ( scrollbar );
+                properPainter.setButtonType ( ScrollBarButtonType.increase );
+                properPainter.setScrollbar ( scrollbar );
             }
-            ( ( WebButton ) incrButton ).setPainter ( painter );
+            ( ( WebButton ) incrButton ).setPainter ( properPainter );
         }
     }
 

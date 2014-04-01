@@ -17,6 +17,7 @@
 
 package com.alee.laf.menu;
 
+import com.alee.extended.painter.Painter;
 import com.alee.extended.painter.PainterSupport;
 import com.alee.laf.StyleConstants;
 import com.alee.laf.WebLookAndFeel;
@@ -45,10 +46,6 @@ import java.beans.PropertyChangeListener;
 
 public class WebPopupMenuUI extends BasicPopupMenuUI implements SwingConstants, Styleable, ShapeProvider, BorderMethods
 {
-    /**
-     * todo 1. Left/Right corner
-     */
-
     /**
      * UI style settings.
      */
@@ -180,7 +177,7 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements SwingConstants, 
                         }
 
                         // Updating menu opacity state in case menu is in a separate heavy-weight window
-                        if ( isHeavyWeightWindow ( ancestor ) )
+                        if ( SwingUtils.isHeavyWeightWindow ( ancestor ) )
                         {
                             ProprietaryUtils.setWindowOpaque ( ancestor, false );
                         }
@@ -188,7 +185,7 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements SwingConstants, 
                     else
                     {
                         // Restoring menu opacity state in case menu is in a separate heavy-weight window
-                        if ( isHeavyWeightWindow ( ancestor ) )
+                        if ( SwingUtils.isHeavyWeightWindow ( ancestor ) )
                         {
                             ProprietaryUtils.setWindowOpaque ( ancestor, true );
                         }
@@ -210,7 +207,7 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements SwingConstants, 
                         if ( evt.getNewValue () == Boolean.TRUE )
                         {
                             final Window ancestor = SwingUtils.getWindowAncestor ( popupMenu );
-                            if ( isHeavyWeightWindow ( ancestor ) )
+                            if ( SwingUtils.isHeavyWeightWindow ( ancestor ) )
                             {
                                 final Component parent = ancestor.getParent ();
                                 if ( parent != null && parent instanceof Window && !ProprietaryUtils.isWindowOpaque ( ( Window ) parent ) )
@@ -388,7 +385,7 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements SwingConstants, 
      */
     public PopupStyle getPopupStyle ()
     {
-        final PopupStyle popupStyle = StyleManager.getStyleValue ( popupMenu, "popupStyle" );
+        final PopupStyle popupStyle = StyleManager.getPainterPropertyValue ( popupMenu, "popupStyle" );
         return popupStyle != null ? popupStyle : WebPopupMenuStyle.popupStyle;
     }
 
@@ -399,7 +396,7 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements SwingConstants, 
      */
     public void setPopupStyle ( final PopupStyle style )
     {
-        StyleManager.setCustomStyle ( popupMenu, "popupStyle", style );
+        StyleManager.setCustomPainterProperty ( popupMenu, "popupStyle", style );
     }
 
     /**
@@ -409,7 +406,7 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements SwingConstants, 
      */
     public Color getBorderColor ()
     {
-        final Color borderColor = StyleManager.getStyleValue ( popupMenu, "borderColor" );
+        final Color borderColor = StyleManager.getPainterPropertyValue ( popupMenu, "borderColor" );
         return borderColor != null ? borderColor : WebPopupMenuStyle.borderColor;
     }
 
@@ -420,7 +417,7 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements SwingConstants, 
      */
     public void setBorderColor ( final Color color )
     {
-        StyleManager.setCustomStyle ( popupMenu, "borderColor", color );
+        StyleManager.setCustomPainterProperty ( popupMenu, "borderColor", color );
     }
 
     /**
@@ -430,7 +427,7 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements SwingConstants, 
      */
     public int getRound ()
     {
-        final Integer round = StyleManager.getStyleValue ( popupMenu, "round" );
+        final Integer round = StyleManager.getPainterPropertyValue ( popupMenu, "round" );
         return round != null ? round : WebPopupMenuStyle.round;
     }
 
@@ -441,7 +438,7 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements SwingConstants, 
      */
     public void setRound ( final int round )
     {
-        StyleManager.setCustomStyle ( popupMenu, "round", round );
+        StyleManager.setCustomPainterProperty ( popupMenu, "round", round );
     }
 
     /**
@@ -451,7 +448,7 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements SwingConstants, 
      */
     public int getShadeWidth ()
     {
-        final Integer shadeWidth = StyleManager.getStyleValue ( popupMenu, "shadeWidth" );
+        final Integer shadeWidth = StyleManager.getPainterPropertyValue ( popupMenu, "shadeWidth" );
         return shadeWidth != null ? shadeWidth : WebPopupMenuStyle.shadeWidth;
     }
 
@@ -462,7 +459,7 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements SwingConstants, 
      */
     public void setShadeWidth ( final int shadeWidth )
     {
-        StyleManager.setCustomStyle ( popupMenu, "shadeWidth", shadeWidth );
+        StyleManager.setCustomPainterProperty ( popupMenu, "shadeWidth", shadeWidth );
     }
 
     /**
@@ -472,7 +469,7 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements SwingConstants, 
      */
     public float getShadeTransparency ()
     {
-        final Float shadeTransparency = StyleManager.getStyleValue ( popupMenu, "shadeTransparency" );
+        final Float shadeTransparency = StyleManager.getPainterPropertyValue ( popupMenu, "shadeTransparency" );
         return shadeTransparency != null ? shadeTransparency : WebPopupMenuStyle.shadeTransparency;
     }
 
@@ -483,7 +480,7 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements SwingConstants, 
      */
     public void setShadeTransparency ( final float opacity )
     {
-        StyleManager.setCustomStyle ( popupMenu, "shadeTransparency", opacity );
+        StyleManager.setCustomPainterProperty ( popupMenu, "shadeTransparency", opacity );
     }
 
     /**
@@ -493,7 +490,7 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements SwingConstants, 
      */
     public int getCornerWidth ()
     {
-        final Integer cornerWidth = StyleManager.getStyleValue ( popupMenu, "cornerWidth" );
+        final Integer cornerWidth = StyleManager.getPainterPropertyValue ( popupMenu, "cornerWidth" );
         return cornerWidth != null ? cornerWidth : WebPopupMenuStyle.cornerWidth;
     }
 
@@ -504,7 +501,7 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements SwingConstants, 
      */
     public void setCornerWidth ( final int width )
     {
-        StyleManager.setCustomStyle ( popupMenu, "cornerWidth", width );
+        StyleManager.setCustomPainterProperty ( popupMenu, "cornerWidth", width );
     }
 
     /**
@@ -514,7 +511,7 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements SwingConstants, 
      */
     public float getTransparency ()
     {
-        final Float transparency = StyleManager.getStyleValue ( popupMenu, "transparency" );
+        final Float transparency = StyleManager.getPainterPropertyValue ( popupMenu, "transparency" );
         return transparency != null ? transparency : WebPopupMenuStyle.transparency;
     }
 
@@ -525,7 +522,7 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements SwingConstants, 
      */
     public void setTransparency ( final float transparency )
     {
-        StyleManager.setCustomStyle ( popupMenu, "transparency", transparency );
+        StyleManager.setCustomPainterProperty ( popupMenu, "transparency", transparency );
     }
 
     /**
@@ -533,9 +530,9 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements SwingConstants, 
      *
      * @return popup menu painter
      */
-    public PopupMenuPainter getPainter ()
+    public Painter getPainter ()
     {
-        return painter;
+        return LafUtils.getAdaptedPainter ( painter );
     }
 
     /**
@@ -544,12 +541,22 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements SwingConstants, 
      *
      * @param painter new popup menu painter
      */
-    public void setPainter ( final PopupMenuPainter painter )
+    public void setPainter ( final Painter painter )
     {
+        // Creating adaptive painter if required
+        final PopupMenuPainter properPainter =
+                LafUtils.getProperPainter ( painter, PopupMenuPainter.class, AdaptivePopupMenuPainter.class );
+
+        // Properly updating painter
         PainterSupport.uninstallPainter ( popupMenu, this.painter );
-        this.painter = painter;
-        applyPainterSettings ( painter );
-        PainterSupport.installPainter ( popupMenu, this.painter );
+        final Painter oldPainter = this.painter;
+        this.painter = properPainter;
+        applyPainterSettings ( properPainter );
+        PainterSupport.installPainter ( popupMenu, properPainter );
+
+        // Firing painter change event
+        // This is made using reflection because required method is protected within Component class
+        LafUtils.firePainterChanged ( popupMenu, oldPainter, properPainter );
     }
 
     /**
@@ -619,12 +626,5 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements SwingConstants, 
         {
             painter.paint ( ( Graphics2D ) g, SwingUtils.size ( c ), c );
         }
-    }
-
-    private static boolean isHeavyWeightWindow ( final Window w )
-    {
-        if ( w == null ) return false;
-        final String can = w.getClass().getCanonicalName();
-        return can != null && can.endsWith ( "HeavyWeightWindow" );
     }
 }

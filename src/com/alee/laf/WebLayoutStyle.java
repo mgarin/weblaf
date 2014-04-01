@@ -52,7 +52,8 @@ public class WebLayoutStyle extends DefaultLayoutStyle
      * {@inheritDoc}
      */
     @Override
-    public int getPreferredGap ( JComponent component1, JComponent component2, ComponentPlacement type, int position, Container parent )
+    public int getPreferredGap ( final JComponent component1, final JComponent component2, final ComponentPlacement type,
+                                 final int position, final Container parent )
     {
         super.getPreferredGap ( component1, component2, type, position, parent );
 
@@ -62,7 +63,7 @@ public class WebLayoutStyle extends DefaultLayoutStyle
             case INDENT:
                 if ( position == SwingConstants.EAST || position == SwingConstants.WEST )
                 {
-                    int indent = getIndent ( component1, position );
+                    final int indent = getIndent ( component1, position );
                     if ( indent > 0 )
                     {
                         return indent;
@@ -72,9 +73,9 @@ public class WebLayoutStyle extends DefaultLayoutStyle
             case RELATED:
                 if ( component1.getUIClassID ().equals ( "ToggleButtonUI" ) && component2.getUIClassID ().equals ( "ToggleButtonUI" ) )
                 {
-                    ButtonModel sourceModel = ( ( JToggleButton ) component1 ).
+                    final ButtonModel sourceModel = ( ( JToggleButton ) component1 ).
                             getModel ();
-                    ButtonModel targetModel = ( ( JToggleButton ) component2 ).
+                    final ButtonModel targetModel = ( ( JToggleButton ) component2 ).
                             getModel ();
                     if ( ( sourceModel instanceof DefaultButtonModel ) &&
                             ( targetModel instanceof DefaultButtonModel ) &&
@@ -102,7 +103,7 @@ public class WebLayoutStyle extends DefaultLayoutStyle
      * {@inheritDoc}
      */
     @Override
-    public int getContainerGap ( JComponent component, int position, Container parent )
+    public int getContainerGap ( final JComponent component, final int position, final Container parent )
     {
         super.getContainerGap ( component, position, parent );
         return getButtonGap ( component, position, 12 - getButtonAdjustment ( component, position ) );
@@ -112,7 +113,7 @@ public class WebLayoutStyle extends DefaultLayoutStyle
      * {@inheritDoc}
      */
     @Override
-    protected int getButtonGap ( JComponent source, JComponent target, int position, int offset )
+    protected int getButtonGap ( final JComponent source, final JComponent target, final int position, int offset )
     {
         offset = super.getButtonGap ( source, target, position, offset );
         if ( offset > 0 )
@@ -138,9 +139,9 @@ public class WebLayoutStyle extends DefaultLayoutStyle
      * @param edge   button edge
      * @return button adjustment
      */
-    private int getButtonAdjustment ( JComponent source, int edge )
+    private int getButtonAdjustment ( final JComponent source, final int edge )
     {
-        String classID = source.getUIClassID ();
+        final String classID = source.getUIClassID ();
         if ( classID.equals ( "ButtonUI" ) || classID.equals ( "ToggleButtonUI" ) )
         {
             if ( ( edge == SwingConstants.EAST || edge == SwingConstants.SOUTH ) )

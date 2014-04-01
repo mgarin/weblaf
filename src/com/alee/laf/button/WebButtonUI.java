@@ -19,6 +19,7 @@ package com.alee.laf.button;
 
 import com.alee.extended.painter.Painter;
 import com.alee.extended.painter.PainterSupport;
+import com.alee.extended.panel.WebButtonGroup;
 import com.alee.laf.StyleConstants;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.utils.ColorUtils;
@@ -51,6 +52,11 @@ import java.util.Map;
 
 public class WebButtonUI extends BasicButtonUI implements ShapeProvider, SwingConstants, BorderMethods
 {
+    /**
+     * todo 1. Properly check situations when button sides are painted within multi-row/column WebButtonGroup
+     * todo 2. Properly paint side-borders when grouped buttons are rollover decorated only
+     */
+
     protected Color topBgColor = WebButtonStyle.topBgColor;
     protected Color bottomBgColor = WebButtonStyle.bottomBgColor;
     protected Color topSelectedBgColor = WebButtonStyle.topSelectedBgColor;
@@ -481,10 +487,10 @@ public class WebButtonUI extends BasicButtonUI implements ShapeProvider, SwingCo
             final boolean actualDrawLeftLine = ltr ? drawLeftLine : drawRightLine;
             final boolean actualDrawRight = ltr ? drawRight : drawLeft;
             final boolean actualDrawRightLine = ltr ? drawRightLine : drawLeftLine;
-            m.top += ( drawTop ? shadeWidth + 1 : ( drawTopLine ? 1 : 0 ) - 1 ) + innerShadeWidth;
-            m.left += ( actualDrawLeft ? shadeWidth + 1 : ( actualDrawLeftLine ? 1 : 0 ) - 1 ) + innerShadeWidth;
-            m.bottom += ( drawBottom ? shadeWidth + 1 : ( drawBottomLine ? 1 : 0 ) - 1 ) + innerShadeWidth;
-            m.right += ( actualDrawRight ? shadeWidth + 1 : ( actualDrawRightLine ? 1 : 0 ) - 1 ) + innerShadeWidth;
+            m.top += ( drawTop ? ( shadeWidth + 1 ) : ( drawTopLine ? 1 : 0 ) ) + innerShadeWidth;
+            m.left += ( actualDrawLeft ? ( shadeWidth + 1 ) : ( actualDrawLeftLine ? 1 : 0 ) ) + innerShadeWidth;
+            m.bottom += ( drawBottom ? ( shadeWidth + 1 ) : ( drawBottomLine ? 1 : 0 ) ) + innerShadeWidth;
+            m.right += ( actualDrawRight ? ( shadeWidth + 1 ) : ( actualDrawRightLine ? 1 : 0 ) ) + innerShadeWidth;
         }
 
         return m;
@@ -819,7 +825,7 @@ public class WebButtonUI extends BasicButtonUI implements ShapeProvider, SwingCo
                     final Composite oldComposite = LafUtils.setupAlphaComposite ( g2d, transparency, animatedTransparency );
 
                     // Shade
-                    if ( /*( !pressed || isFocusActive ( c ) ) &&*/ drawShade && ( c.isEnabled () || showDisabledShade ) &&
+                    if ( drawShade && ( c.isEnabled () || isInButtonGroup ( button ) || showDisabledShade ) &&
                             ( !rolloverShadeOnly || rollover ) )
                     {
                         final boolean setInner = !animatedTransparency && rolloverShadeOnly;
@@ -863,28 +869,35 @@ public class WebButtonUI extends BasicButtonUI implements ShapeProvider, SwingCo
                     final boolean actualDrawRightLine = ltr ? drawRightLine : drawLeftLine;
 
                     // Side-border
-                    g2d.setPaint ( c.isEnabled () ? StyleConstants.darkBorderColor : StyleConstants.disabledBorderColor );
-                    if ( drawTopLine )
+                    if ( !drawTop && drawTopLine )
                     {
                         final int x = actualDrawLeft ? shadeWidth : 0;
+                        g2d.setPaint ( c.isEnabled () || isAfterEnabledButton ( button ) ? StyleConstants.darkBorderColor :
+                                StyleConstants.disabledBorderColor );
                         g2d.drawLine ( x, 0, x + c.getWidth () - ( actualDrawLeft ? shadeWidth : 0 ) -
                                 ( actualDrawRight ? shadeWidth + 1 : 0 ), 0 );
                     }
-                    if ( drawBottomLine )
-                    {
-                        final int x = actualDrawLeft ? shadeWidth : 0;
-                        g2d.drawLine ( x, c.getHeight () - 1, x + c.getWidth () - ( actualDrawLeft ? shadeWidth : 0 ) -
-                                ( actualDrawRight ? shadeWidth + 1 : 0 ), c.getHeight () - 1 );
-                    }
-                    if ( actualDrawLeftLine )
+                    if ( !actualDrawLeft && actualDrawLeftLine )
                     {
                         final int y = drawTop ? shadeWidth : 0;
+                        g2d.setPaint ( c.isEnabled () || isAfterEnabledButton ( button ) ? StyleConstants.darkBorderColor :
+                                StyleConstants.disabledBorderColor );
                         g2d.drawLine ( 0, y, 0, y + c.getHeight () - ( drawTop ? shadeWidth : 0 ) -
                                 ( drawBottom ? shadeWidth + 1 : 0 ) );
                     }
-                    if ( actualDrawRightLine )
+                    if ( !drawBottom && drawBottomLine )
+                    {
+                        final int x = actualDrawLeft ? shadeWidth : 0;
+                        g2d.setPaint ( c.isEnabled () || isBeforeEnabledButton ( button ) ? StyleConstants.darkBorderColor :
+                                StyleConstants.disabledBorderColor );
+                        g2d.drawLine ( x, c.getHeight () - 1, x + c.getWidth () - ( actualDrawLeft ? shadeWidth : 0 ) -
+                                ( actualDrawRight ? shadeWidth + 1 : 0 ), c.getHeight () - 1 );
+                    }
+                    if ( !actualDrawRight && actualDrawRightLine )
                     {
                         final int y = drawTop ? shadeWidth : 0;
+                        g2d.setPaint ( c.isEnabled () || isBeforeEnabledButton ( button ) ? StyleConstants.darkBorderColor :
+                                StyleConstants.disabledBorderColor );
                         g2d.drawLine ( c.getWidth () - 1, y, c.getWidth () - 1, y + c.getHeight () - ( drawTop ? shadeWidth : 0 ) -
                                 ( drawBottom ? shadeWidth + 1 : 0 ) );
                     }
@@ -906,6 +919,70 @@ public class WebButtonUI extends BasicButtonUI implements ShapeProvider, SwingCo
         final Map hints = SwingUtils.setupTextAntialias ( g2d );
         super.paint ( g, c );
         SwingUtils.restoreTextAntialias ( g2d, hints );
+    }
+
+    /**
+     * Returns whether this button placed after another enabled button inside a WebButtonGroup container or not.
+     * This check is required to paint button sides with proper colors.
+     *
+     * @param button this button
+     * @return true if this button placed after another enabled button inside a WebButtonGroup container, false otherwise
+     */
+    protected boolean isAfterEnabledButton ( final AbstractButton button )
+    {
+        final Container container = button.getParent ();
+        if ( container != null && container instanceof WebButtonGroup )
+        {
+            final int zOrder = container.getComponentZOrder ( button );
+            if ( zOrder > 0 )
+            {
+                final WebButtonGroup group = ( WebButtonGroup ) container;
+                final Component before = group.getComponent ( zOrder - 1 );
+                if ( before instanceof WebButton )
+                {
+                    return before.isEnabled ();
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns whether this button placed before another enabled button inside a WebButtonGroup container or not.
+     * This check is required to paint button sides with proper colors.
+     *
+     * @param button this button
+     * @return true if this button placed before another enabled button inside a WebButtonGroup container, false otherwise
+     */
+    protected boolean isBeforeEnabledButton ( final AbstractButton button )
+    {
+        final Container container = button.getParent ();
+        if ( container != null && container instanceof WebButtonGroup )
+        {
+            final int zOrder = container.getComponentZOrder ( button );
+            if ( zOrder < container.getComponentCount () - 1 )
+            {
+                final WebButtonGroup group = ( WebButtonGroup ) container;
+                final Component before = group.getComponent ( zOrder + 1 );
+                if ( before instanceof WebButton )
+                {
+                    return before.isEnabled ();
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns whether this button is inside WebButtonGroup or not.
+     *
+     * @param button this button
+     * @return true if this button is inside WebButtonGroup, false otherwise
+     */
+    protected boolean isInButtonGroup ( final AbstractButton button )
+    {
+        final Container container = button.getParent ();
+        return container != null && container instanceof WebButtonGroup;
     }
 
     private Color getShadeColor ( final JComponent c )

@@ -32,6 +32,11 @@ import java.awt.*;
 public class ColorConverter extends AbstractSingleValueConverter
 {
     /**
+     * Null color constant.
+     */
+    public static final String NULL_COLOR = "null";
+
+    /**
      * Default colors map.
      */
     private static final ValuesTable<String, Color> defaultColors = new ValuesTable<String, Color> ();
@@ -39,7 +44,7 @@ public class ColorConverter extends AbstractSingleValueConverter
     static
     {
         // Special value for null color
-        defaultColors.put ( "null", null );
+        defaultColors.put ( NULL_COLOR, null );
 
         // Standard Swing color set
         defaultColors.put ( "black", Color.BLACK );

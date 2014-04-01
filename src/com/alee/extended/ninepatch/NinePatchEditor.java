@@ -42,7 +42,7 @@ import java.util.List;
  * This editor is not based on the Android dev kit editor - NinePatchEditor is much more advanced and user-friendly. It allows fully visual
  * and quick nine-patch editing, nine-patch information copying and also creation of new nine-patch files based on any image file that
  * could be loaded by WebLookAndFeel library.
- * <p>
+ * <p/>
  * Android dev kit editor: http://developer.android.com/guide/developing/tools/draw9patch.html
  *
  * @author Mikle Garin
@@ -64,10 +64,10 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
     public static final int MIN_ZOOM = 1;
     public static final int MAX_ZOOM = 32;
 
-    private List<ChangeListener> changeListeners = new ArrayList<ChangeListener> ( 1 );
-    private List<ZoomChangeListener> zoomChangeListeners = new ArrayList<ZoomChangeListener> ( 1 );
+    private final List<ChangeListener> changeListeners = new ArrayList<ChangeListener> ( 1 );
+    private final List<ZoomChangeListener> zoomChangeListeners = new ArrayList<ZoomChangeListener> ( 1 );
 
-    private List<NinePatchInfo> history = new ArrayList<NinePatchInfo> ();
+    private final List<NinePatchInfo> history = new ArrayList<NinePatchInfo> ();
     private int historyState = -1;
 
     private BufferedImage ninePatchImage;
@@ -81,7 +81,7 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
     private boolean showAreaCursorPosition = false;
     private int zoom = 5;
 
-    private WebScrollPane view;
+    private final WebScrollPane view;
 
     private boolean changed = false;
     private boolean someDragged = false;
@@ -102,7 +102,7 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
 
         view = new WebScrollPane ( this, false );
 
-        NinePatchEditorMouseAdapter npema = new NinePatchEditorMouseAdapter ();
+        final NinePatchEditorMouseAdapter npema = new NinePatchEditorMouseAdapter ();
         addMouseListener ( npema );
         addMouseMotionListener ( npema );
         addMouseWheelListener ( npema );
@@ -123,7 +123,7 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
         return changed;
     }
 
-    public void setChanged ( boolean changed )
+    public void setChanged ( final boolean changed )
     {
         this.changed = changed;
     }
@@ -133,7 +133,7 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
         return zoom;
     }
 
-    public void setZoom ( int zoom )
+    public void setZoom ( final int zoom )
     {
         this.zoom = Math.max ( MIN_ZOOM, Math.min ( zoom, MAX_ZOOM ) );
         revalidate ();
@@ -146,7 +146,7 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
         return fillStretchAreas;
     }
 
-    public void setFillStretchAreas ( boolean fillStretchAreas )
+    public void setFillStretchAreas ( final boolean fillStretchAreas )
     {
         this.fillStretchAreas = fillStretchAreas;
         repaint ();
@@ -157,7 +157,7 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
         return fillContentArea;
     }
 
-    public void setFillContentArea ( boolean fillContentArea )
+    public void setFillContentArea ( final boolean fillContentArea )
     {
         this.fillContentArea = fillContentArea;
         repaint ();
@@ -168,7 +168,7 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
         return showRulerCursorPosition;
     }
 
-    public void setShowRulerCursorPosition ( boolean showRulerCursorPosition )
+    public void setShowRulerCursorPosition ( final boolean showRulerCursorPosition )
     {
         this.showRulerCursorPosition = showRulerCursorPosition;
         repaint ();
@@ -179,7 +179,7 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
         return showAreaCursorPosition;
     }
 
-    public void setShowAreaCursorPosition ( boolean showAreaCursorPosition )
+    public void setShowAreaCursorPosition ( final boolean showAreaCursorPosition )
     {
         this.showAreaCursorPosition = showAreaCursorPosition;
         repaint ();
@@ -190,7 +190,7 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
         return showGuideSpacing;
     }
 
-    public void setShowGuideSpacing ( boolean showGuideSpacing )
+    public void setShowGuideSpacing ( final boolean showGuideSpacing )
     {
         this.showGuideSpacing = showGuideSpacing;
         repaint ();
@@ -201,7 +201,7 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
         return showRuler;
     }
 
-    public void setShowRuler ( boolean showRuler )
+    public void setShowRuler ( final boolean showRuler )
     {
         this.showRuler = showRuler;
         repaint ();
@@ -225,7 +225,7 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
         }
     }
 
-    public void setNinePatchImage ( BufferedImage ninePatchImage )
+    public void setNinePatchImage ( final BufferedImage ninePatchImage )
     {
         // Ignore action if something is being dragged
         if ( isSomeDragged () )
@@ -252,7 +252,7 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
         fireStateChanged ();
     }
 
-    public void setNinePatchIcon ( NinePatchIcon ninePatchIcon )
+    public void setNinePatchIcon ( final NinePatchIcon ninePatchIcon )
     {
         // Ignore action if something is being dragged
         if ( isSomeDragged () )
@@ -279,7 +279,7 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
         fireStateChanged ();
     }
 
-    public void setNinePatchInfo ( NinePatchInfo ninePatchInfo )
+    public void setNinePatchInfo ( final NinePatchInfo ninePatchInfo )
     {
         // Some cases in which we ignore this action
         if ( this.ninePatchIcon == null || ninePatchInfo == null || isSomeDragged () ||
@@ -312,7 +312,7 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
             return null;
         }
 
-        NinePatchInfo ninePatchInfo = new NinePatchInfo ();
+        final NinePatchInfo ninePatchInfo = new NinePatchInfo ();
         ninePatchInfo.setImageSize ( ninePatchIcon.getRealImageSize () );
         ninePatchInfo.setHorizontalStretch ( ninePatchIcon.getHorizontalStretch () );
         ninePatchInfo.setVerticalStretch ( ninePatchIcon.getVerticalStretch () );
@@ -343,7 +343,7 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
         }
     }
 
-    private void restoreHistoryState ( NinePatchInfo state )
+    private void restoreHistoryState ( final NinePatchInfo state )
     {
         // Ignore action if history state doesn't fit current image
         if ( !state.getImageSize ().equals ( ninePatchIcon.getRealImageSize () ) )
@@ -376,7 +376,7 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
             }
 
             // Adding new state
-            NinePatchInfo info = new NinePatchInfo ();
+            final NinePatchInfo info = new NinePatchInfo ();
             info.setImageSize ( ninePatchIcon.getRealImageSize () );
             info.setMargin ( SwingUtils.copy ( ninePatchIcon.getMargin () ) );
             info.setHorizontalStretch ( CollectionUtils.clone ( ninePatchIcon.getHorizontalStretch () ) );
@@ -429,48 +429,48 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
         private NinePatchInterval removedInterval = null;
 
         @Override
-        public void mouseWheelMoved ( MouseWheelEvent e )
+        public void mouseWheelMoved ( final MouseWheelEvent e )
         {
             mouseEvent ( e, MouseEventType.mouseWheelMoved );
         }
 
         @Override
-        public void mousePressed ( MouseEvent e )
+        public void mousePressed ( final MouseEvent e )
         {
             mouseEvent ( e, MouseEventType.mousePressed );
         }
 
         @Override
-        public void mouseDragged ( MouseEvent e )
+        public void mouseDragged ( final MouseEvent e )
         {
             mouseEvent ( e, MouseEventType.mouseDragged );
         }
 
         @Override
-        public void mouseReleased ( MouseEvent e )
+        public void mouseReleased ( final MouseEvent e )
         {
             mouseEvent ( e, MouseEventType.mouseReleased );
         }
 
         @Override
-        public void mouseEntered ( MouseEvent e )
+        public void mouseEntered ( final MouseEvent e )
         {
             mouseEvent ( e, MouseEventType.mouseEntered );
         }
 
         @Override
-        public void mouseExited ( MouseEvent e )
+        public void mouseExited ( final MouseEvent e )
         {
             mouseEvent ( e, MouseEventType.mouseExited );
         }
 
         @Override
-        public void mouseMoved ( MouseEvent e )
+        public void mouseMoved ( final MouseEvent e )
         {
             mouseEvent ( e, MouseEventType.mouseMoved );
         }
 
-        private void mouseEvent ( MouseEvent e, MouseEventType mouseEventType )
+        private void mouseEvent ( final MouseEvent e, final MouseEventType mouseEventType )
         {
             if ( processMouseEvent ( e, mouseEventType ) )
             {
@@ -478,7 +478,7 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
             }
         }
 
-        private boolean processMouseEvent ( MouseEvent e, MouseEventType mouseEventType )
+        private boolean processMouseEvent ( MouseEvent e, final MouseEventType mouseEventType )
         {
             // Checking whether image is set into the editor or not
             final BufferedImage image = getRawImage ();
@@ -527,7 +527,7 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
             if ( !someDragged && mouseEventType.equals ( MouseEventType.mouseWheelMoved ) &&
                     ( SwingUtils.isCtrl ( e ) || SwingUtils.isAlt ( e ) ) )
             {
-                MouseWheelEvent mwe = ( MouseWheelEvent ) e;
+                final MouseWheelEvent mwe = ( MouseWheelEvent ) e;
                 setZoom ( getZoom () - mwe.getWheelRotation () );
                 setCursor ( Cursor.getDefaultCursor () );
                 return repaintRequired;
@@ -582,7 +582,7 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
                 }
                 else if ( hContentAreaDragged && mouseEventType.equals ( MouseEventType.mouseDragged ) )
                 {
-                    int changeX = ( x - startX ) / zoom;
+                    final int changeX = ( x - startX ) / zoom;
                     int left = startMargin.left + changeX;
                     if ( left < 0 )
                     {
@@ -628,7 +628,7 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
                 }
                 else if ( vContentAreaDragged && mouseEventType.equals ( MouseEventType.mouseDragged ) )
                 {
-                    int changeY = ( y - startY ) / zoom;
+                    final int changeY = ( y - startY ) / zoom;
                     int top = startMargin.top + changeY;
                     if ( top < 0 )
                     {
@@ -676,7 +676,7 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
                 }
                 else if ( hContentStartDragged && mouseEventType.equals ( MouseEventType.mouseDragged ) )
                 {
-                    int changeX = ( x - startX ) / zoom;
+                    final int changeX = ( x - startX ) / zoom;
                     int left = startMargin.left + changeX;
                     if ( left < 0 )
                     {
@@ -713,7 +713,7 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
                 }
                 else if ( hContentEndDragged && mouseEventType.equals ( MouseEventType.mouseDragged ) )
                 {
-                    int changeX = ( x - startX ) / zoom;
+                    final int changeX = ( x - startX ) / zoom;
                     int right = startMargin.right - changeX;
                     if ( right < 0 )
                     {
@@ -750,7 +750,7 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
                 }
                 else if ( vContentStartDragged && mouseEventType.equals ( MouseEventType.mouseDragged ) )
                 {
-                    int changeY = ( y - startY ) / zoom;
+                    final int changeY = ( y - startY ) / zoom;
                     int top = startMargin.top + changeY;
                     if ( top < 0 )
                     {
@@ -787,7 +787,7 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
                 }
                 else if ( vContentEndDragged && mouseEventType.equals ( MouseEventType.mouseDragged ) )
                 {
-                    int changeY = ( y - startY ) / zoom;
+                    final int changeY = ( y - startY ) / zoom;
                     int bottom = startMargin.bottom - changeY;
                     if ( bottom < 0 )
                     {
@@ -813,7 +813,7 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
             }
 
             // Stretch
-            for ( NinePatchInterval npi : ninePatchIcon.getHorizontalStretch () )
+            for ( final NinePatchInterval npi : ninePatchIcon.getHorizontalStretch () )
             {
                 if ( !npi.isPixel () )
                 {
@@ -833,7 +833,7 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
                         }
                         else if ( hStretchAreaDragged && mouseEventType.equals ( MouseEventType.mouseDragged ) )
                         {
-                            int changeX = ( x - startX ) / zoom;
+                            final int changeX = ( x - startX ) / zoom;
                             int start = changedInterval.getStart () + changeX;
                             if ( start < 0 )
                             {
@@ -886,7 +886,7 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
                             }
                             else if ( hStretchStartDragged && mouseEventType.equals ( MouseEventType.mouseDragged ) )
                             {
-                                int changeX = ( x - startX ) / zoom;
+                                final int changeX = ( x - startX ) / zoom;
                                 int start = changedInterval.getStart () + changeX;
                                 if ( start < 0 )
                                 {
@@ -925,7 +925,7 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
                             }
                             else if ( hStretchEndDragged && mouseEventType.equals ( MouseEventType.mouseDragged ) )
                             {
-                                int changeX = ( x - startX ) / zoom;
+                                final int changeX = ( x - startX ) / zoom;
                                 int end = changedInterval.getEnd () + changeX;
                                 if ( end < changedInterval.getStart () )
                                 {
@@ -953,7 +953,7 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
                     }
                 }
             }
-            for ( NinePatchInterval npi : ninePatchIcon.getVerticalStretch () )
+            for ( final NinePatchInterval npi : ninePatchIcon.getVerticalStretch () )
             {
                 if ( !npi.isPixel () )
                 {
@@ -972,7 +972,7 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
                         }
                         else if ( vStretchAreaDragged && mouseEventType.equals ( MouseEventType.mouseDragged ) )
                         {
-                            int changeY = ( y - startY ) / zoom;
+                            final int changeY = ( y - startY ) / zoom;
                             int start = changedInterval.getStart () + changeY;
                             if ( start < 0 )
                             {
@@ -1025,7 +1025,7 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
                             }
                             else if ( vStretchStartDragged && mouseEventType.equals ( MouseEventType.mouseDragged ) )
                             {
-                                int changeY = ( y - startY ) / zoom;
+                                final int changeY = ( y - startY ) / zoom;
                                 int start = changedInterval.getStart () + changeY;
                                 if ( start < 0 )
                                 {
@@ -1064,7 +1064,7 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
                             }
                             else if ( vStretchEndDragged && mouseEventType.equals ( MouseEventType.mouseDragged ) )
                             {
-                                int changeY = ( y - startY ) / zoom;
+                                final int changeY = ( y - startY ) / zoom;
                                 int end = changedInterval.getEnd () + changeY;
                                 if ( end < changedInterval.getStart () )
                                 {
@@ -1111,7 +1111,7 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
                     }
                     else if ( contentAreaDragged && mouseEventType.equals ( MouseEventType.mouseDragged ) )
                     {
-                        int changeY = ( y - startY ) / zoom;
+                        final int changeY = ( y - startY ) / zoom;
                         int top = startMargin.top + changeY;
                         if ( top < 0 )
                         {
@@ -1130,7 +1130,7 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
                         {
                             bottom = image.getHeight () - 1;
                         }
-                        int changeX = ( x - startX ) / zoom;
+                        final int changeX = ( x - startX ) / zoom;
                         int left = startMargin.left + changeX;
                         if ( left < 0 )
                         {
@@ -1182,8 +1182,8 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
                     }
                     else if ( addingHorizontalStretch && mouseEventType.equals ( MouseEventType.mouseDragged ) )
                     {
-                        int start = ( startX - imageStartX ) / zoom;
-                        int end = ( x - imageStartX ) / zoom;
+                        final int start = ( startX - imageStartX ) / zoom;
+                        final int end = ( x - imageStartX ) / zoom;
                         changedInterval.setStart ( Math.max ( 0, Math.min ( start, end ) ) );
                         changedInterval.setEnd ( Math.min ( image.getWidth () - 1, Math.max ( start, end ) ) );
                         repaintRequired = true;
@@ -1212,8 +1212,8 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
                     }
                     else if ( addingVerticalStretch && mouseEventType.equals ( MouseEventType.mouseDragged ) )
                     {
-                        int start = ( startY - imageStartY ) / zoom;
-                        int end = ( y - imageStartY ) / zoom;
+                        final int start = ( startY - imageStartY ) / zoom;
+                        final int end = ( y - imageStartY ) / zoom;
                         changedInterval.setStart ( Math.max ( 0, Math.min ( start, end ) ) );
                         changedInterval.setEnd ( Math.min ( image.getHeight () - 1, Math.max ( start, end ) ) );
                         repaintRequired = true;
@@ -1247,8 +1247,8 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
                     }
                     else if ( removingHorizontalStretch && mouseEventType.equals ( MouseEventType.mouseDragged ) )
                     {
-                        int start = ( startX - imageStartX ) / zoom;
-                        int end = ( x - imageStartX ) / zoom;
+                        final int start = ( startX - imageStartX ) / zoom;
+                        final int end = ( x - imageStartX ) / zoom;
                         removedInterval.setStart ( Math.max ( 0, Math.min ( start, end ) ) );
                         removedInterval.setEnd ( Math.min ( image.getWidth () - 1, Math.max ( start, end ) ) );
                         finishHorizontalRemoval ();
@@ -1277,8 +1277,8 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
                     }
                     else if ( removingVerticalStretch && mouseEventType.equals ( MouseEventType.mouseDragged ) )
                     {
-                        int start = ( startY - imageStartY ) / zoom;
-                        int end = ( y - imageStartY ) / zoom;
+                        final int start = ( startY - imageStartY ) / zoom;
+                        final int end = ( y - imageStartY ) / zoom;
                         removedInterval.setStart ( Math.max ( 0, Math.min ( start, end ) ) );
                         removedInterval.setEnd ( Math.min ( image.getHeight () - 1, Math.max ( start, end ) ) );
                         finishVerticalRemoval ();
@@ -1303,7 +1303,7 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
 
         private void finishHorizontalRemoval ()
         {
-            boolean[] filled = getHorizontalFilledPixels ();
+            final boolean[] filled = getHorizontalFilledPixels ();
             for ( int i = removedInterval.getStart (); i <= removedInterval.getEnd (); i++ )
             {
                 filled[ i ] = false;
@@ -1314,7 +1314,7 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
 
         private void finishVerticalRemoval ()
         {
-            boolean[] filled = getVerticalFilledPixels ();
+            final boolean[] filled = getVerticalFilledPixels ();
             for ( int i = removedInterval.getStart (); i <= removedInterval.getEnd (); i++ )
             {
                 filled[ i ] = false;
@@ -1349,14 +1349,14 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
     private void verifyHorizontalStretchAreas ()
     {
         // Verifies that there is no excessive intervals by regrouping all pixels info
-        boolean[] filled = getHorizontalFilledPixels ();
+        final boolean[] filled = getHorizontalFilledPixels ();
         ninePatchIcon.setHorizontalStretch ( NinePatchUtils.parseStretchIntervals ( filled ) );
     }
 
     private boolean[] getHorizontalFilledPixels ()
     {
-        boolean[] filled = new boolean[ getRawImage ().getWidth () ];
-        for ( NinePatchInterval npi : ninePatchIcon.getHorizontalStretch () )
+        final boolean[] filled = new boolean[ getRawImage ().getWidth () ];
+        for ( final NinePatchInterval npi : ninePatchIcon.getHorizontalStretch () )
         {
             for ( int i = npi.getStart (); i <= npi.getEnd (); i++ )
             {
@@ -1372,14 +1372,14 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
     private void verifyVerticalStretchAreas ()
     {
         // Verifies that there is no excessive intervals by regrouping all pixels info
-        boolean[] filled = getVerticalFilledPixels ();
+        final boolean[] filled = getVerticalFilledPixels ();
         ninePatchIcon.setVerticalStretch ( NinePatchUtils.parseStretchIntervals ( filled ) );
     }
 
     private boolean[] getVerticalFilledPixels ()
     {
-        boolean[] filled = new boolean[ getRawImage ().getHeight () ];
-        for ( NinePatchInterval npi : ninePatchIcon.getVerticalStretch () )
+        final boolean[] filled = new boolean[ getRawImage ().getHeight () ];
+        for ( final NinePatchInterval npi : ninePatchIcon.getVerticalStretch () )
         {
             for ( int i = npi.getStart (); i <= npi.getEnd (); i++ )
             {
@@ -1395,9 +1395,9 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
     private void verifyMargin ()
     {
         // Verifies that margins fit the image size properly
-        Insets margin = ninePatchIcon.getMargin ();
+        final Insets margin = ninePatchIcon.getMargin ();
 
-        int maxVmargin = getRawImage ().getHeight () - 1;
+        final int maxVmargin = getRawImage ().getHeight () - 1;
         if ( margin.top > maxVmargin )
         {
             margin.top = maxVmargin;
@@ -1407,7 +1407,7 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
             margin.bottom = maxVmargin - margin.top;
         }
 
-        int maxHmargin = getRawImage ().getWidth () - 1;
+        final int maxHmargin = getRawImage ().getWidth () - 1;
         if ( margin.left > maxHmargin )
         {
             margin.left = maxHmargin;
@@ -1418,7 +1418,7 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
         }
     }
 
-    private void disassembleImage ( BufferedImage ninePatchImage )
+    private void disassembleImage ( final BufferedImage ninePatchImage )
     {
         // Disassembles image into editor data
         try
@@ -1427,12 +1427,12 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
             this.ninePatchIcon = new NinePatchIcon ( ninePatchImage );
             this.ninePatchImage = ninePatchImage;
         }
-        catch ( IllegalArgumentException e )
+        catch ( final IllegalArgumentException e )
         {
             // If image is not a nine-patch image we will fix it to be one
-            BufferedImage fixedImage = ImageUtils
+            final BufferedImage fixedImage = ImageUtils
                     .createCompatibleImage ( ninePatchImage.getWidth () + 2, ninePatchImage.getHeight () + 2, Transparency.TRANSLUCENT );
-            Graphics2D g2d = fixedImage.createGraphics ();
+            final Graphics2D g2d = fixedImage.createGraphics ();
             g2d.drawImage ( ninePatchImage, 1, 1, null );
             g2d.setPaint ( Color.BLACK );
             g2d.drawLine ( 1, 0, fixedImage.getWidth () - 2, 0 );
@@ -1453,17 +1453,17 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
 
         // New image template
         ninePatchImage = ImageUtils.createCompatibleImage ( rawImage.getWidth () + 2, rawImage.getHeight () + 2, Transparency.TRANSLUCENT );
-        Graphics2D g2d = ninePatchImage.createGraphics ();
+        final Graphics2D g2d = ninePatchImage.createGraphics ();
         g2d.drawImage ( rawImage, 1, 1, null );
         g2d.dispose ();
 
         // Color to fill with marks
-        int rgb = Color.BLACK.getRGB ();
+        final int rgb = Color.BLACK.getRGB ();
 
         // todo Replace pixel filling with line painting to speedup assembling process in times
 
         // Stretch
-        boolean[] hf = getHorizontalFilledPixels ();
+        final boolean[] hf = getHorizontalFilledPixels ();
         for ( int i = 0; i < rawImage.getWidth (); i++ )
         {
             if ( hf[ i ] )
@@ -1471,7 +1471,7 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
                 ninePatchImage.setRGB ( i + 1, 0, rgb );
             }
         }
-        boolean[] vf = getVerticalFilledPixels ();
+        final boolean[] vf = getVerticalFilledPixels ();
         for ( int i = 0; i < rawImage.getHeight (); i++ )
         {
             if ( vf[ i ] )
@@ -1481,7 +1481,7 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
         }
 
         // Content
-        Insets margin = ninePatchIcon.getMargin ();
+        final Insets margin = ninePatchIcon.getMargin ();
         for ( int i = margin.left; i < rawImage.getWidth () - margin.right; i++ )
         {
             ninePatchImage.setRGB ( i + 1, ninePatchImage.getHeight () - 1, rgb );
@@ -1493,15 +1493,15 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
     }
 
     @Override
-    protected void paintComponent ( Graphics g )
+    protected void paintComponent ( final Graphics g )
     {
         super.paintComponent ( g );
 
         // Editor image representation shown only when image is loaded
         if ( ninePatchIcon != null )
         {
-            Graphics2D g2d = ( Graphics2D ) g;
-            FontMetrics fm = g2d.getFontMetrics ();
+            final Graphics2D g2d = ( Graphics2D ) g;
+            final FontMetrics fm = g2d.getFontMetrics ();
             final BufferedImage image = getRawImage ();
             final int cw = getWidth ();
             final int ch = getHeight ();
@@ -1510,7 +1510,7 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
             final Insets margin = ninePatchIcon.getMargin ();
             final int imageStartX = ( cw + ( showRuler ? RULER_LENGTH : 0 ) ) / 2 - iw / 2;
             final int imageStartY = ( ch + ( showRuler ? RULER_LENGTH : 0 ) ) / 2 - ih / 2;
-            Stroke stroke = g2d.getStroke ();
+            final Stroke stroke = g2d.getStroke ();
 
             // Alpha-background
             LafUtils.drawAlphaLayer ( g2d, imageStartX, imageStartY, iw, ih );
@@ -1524,7 +1524,7 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
 
             // Editor stretch guidelines
             g2d.setStroke ( StyleConstants.guidelinesStroke );
-            for ( NinePatchInterval npi : ninePatchIcon.getHorizontalStretch () )
+            for ( final NinePatchInterval npi : ninePatchIcon.getHorizontalStretch () )
             {
                 if ( !npi.isPixel () )
                 {
@@ -1548,7 +1548,7 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
                             ( npi.getEnd () - npi.getStart () + 1 ) * zoom - 1, zoom );
                 }
             }
-            for ( NinePatchInterval npi : ninePatchIcon.getVerticalStretch () )
+            for ( final NinePatchInterval npi : ninePatchIcon.getVerticalStretch () )
             {
                 if ( !npi.isPixel () )
                 {
@@ -1574,10 +1574,10 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
             }
 
             // Editor content area
-            int csx = getContentStartX ( imageStartX, margin );
-            int cex = getContentEndX ( imageStartX, iw, margin );
-            int csy = getContentStartY ( imageStartY, margin );
-            int cey = getContentEndY ( imageStartY, ih, margin );
+            final int csx = getContentStartX ( imageStartX, margin );
+            final int cex = getContentEndX ( imageStartX, iw, margin );
+            final int csy = getContentStartY ( imageStartY, margin );
+            final int cey = getContentEndY ( imageStartY, ih, margin );
             if ( fillContentArea )
             {
                 g2d.setPaint ( CONTENT_COLOR );
@@ -1618,7 +1618,7 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
                     final String px = "" + ( nextGuide - guide );
                     g2d.drawString ( px, ( x1 + x2 ) / 2 + LafUtils.getTextCenterShearX ( fm, px ), imageStartY - zoom - 15 );
                 }
-                List<Integer> verticalGuides = getVerticalGuides ();
+                final List<Integer> verticalGuides = getVerticalGuides ();
                 for ( int i = 0; i < verticalGuides.size () - 1; i++ )
                 {
                     final Integer guide = verticalGuides.get ( i );
@@ -1644,7 +1644,7 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
         }
     }
 
-    private void drawRuler ( Graphics2D g2d, Point zp, int imageStartX, int imageStartY )
+    private void drawRuler ( final Graphics2D g2d, final Point zp, final int imageStartX, final int imageStartY )
     {
         // Variables
         final Rectangle vr = NinePatchEditor.this.getVisibleRect ();
@@ -1669,7 +1669,7 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
                 final int py = ( mouse.y - imageStartY ) / zoom - ( mouse.y >= imageStartY ? 0 : 1 );
 
                 // Position marker transparency
-                Composite oc = LafUtils.setupAlphaComposite ( g2d, 0.5f );
+                final Composite oc = LafUtils.setupAlphaComposite ( g2d, 0.5f );
 
                 // Ruler cursor position
                 if ( showRulerCursorPosition )
@@ -1682,7 +1682,7 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
                 // Area cursor position
                 if ( showAreaCursorPosition )
                 {
-                    Shape oldClip = LafUtils.intersectClip ( g2d,
+                    final Shape oldClip = LafUtils.intersectClip ( g2d,
                             new Rectangle ( vr.x + RULER_LENGTH, vr.y + RULER_LENGTH, vr.width - RULER_LENGTH, vr.height - RULER_LENGTH ),
                             showAreaCursorPosition );
                     g2d.setPaint ( Color.RED );
@@ -1791,10 +1791,10 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
 
     private List<Integer> getHorizontalGuides ()
     {
-        List<Integer> horizontalGuides = new ArrayList<Integer> ();
+        final List<Integer> horizontalGuides = new ArrayList<Integer> ();
 
         // Stretch guides
-        for ( NinePatchInterval npi : ninePatchIcon.getHorizontalStretch () )
+        for ( final NinePatchInterval npi : ninePatchIcon.getHorizontalStretch () )
         {
             if ( !horizontalGuides.contains ( npi.getStart () ) )
             {
@@ -1807,7 +1807,7 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
         }
 
         // Content guides
-        Insets margin = ninePatchIcon.getMargin ();
+        final Insets margin = ninePatchIcon.getMargin ();
         if ( !horizontalGuides.contains ( margin.left ) )
         {
             horizontalGuides.add ( margin.left );
@@ -1825,10 +1825,10 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
 
     private List<Integer> getVerticalGuides ()
     {
-        List<Integer> verticalGuides = new ArrayList<Integer> ();
+        final List<Integer> verticalGuides = new ArrayList<Integer> ();
 
         // Stretch guides
-        for ( NinePatchInterval npi : ninePatchIcon.getVerticalStretch () )
+        for ( final NinePatchInterval npi : ninePatchIcon.getVerticalStretch () )
         {
             if ( !verticalGuides.contains ( npi.getStart () ) )
             {
@@ -1841,7 +1841,7 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
         }
 
         // Content guides
-        Insets margin = ninePatchIcon.getMargin ();
+        final Insets margin = ninePatchIcon.getMargin ();
         if ( !verticalGuides.contains ( margin.top ) )
         {
             verticalGuides.add ( margin.top );
@@ -1857,22 +1857,22 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
         return verticalGuides;
     }
 
-    private int getContentStartX ( int imageStartX, Insets margin )
+    private int getContentStartX ( final int imageStartX, final Insets margin )
     {
         return imageStartX + margin.left * zoom;
     }
 
-    private int getContentEndX ( int imageStartX, int iw, Insets margin )
+    private int getContentEndX ( final int imageStartX, final int iw, final Insets margin )
     {
         return imageStartX + iw - margin.right * zoom;
     }
 
-    private int getContentStartY ( int imageStartY, Insets margin )
+    private int getContentStartY ( final int imageStartY, final Insets margin )
     {
         return imageStartY + margin.top * zoom;
     }
 
-    private int getContentEndY ( int imageStartY, int ih, Insets margin )
+    private int getContentEndY ( final int imageStartY, final int ih, final Insets margin )
     {
         return imageStartY + ih - margin.bottom * zoom;
     }
@@ -1882,20 +1882,20 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
         return changeListeners;
     }
 
-    public void addChangeListener ( ChangeListener changeListener )
+    public void addChangeListener ( final ChangeListener changeListener )
     {
         changeListeners.add ( changeListener );
     }
 
-    public void removeChangeListener ( ChangeListener changeListener )
+    public void removeChangeListener ( final ChangeListener changeListener )
     {
         changeListeners.add ( changeListener );
     }
 
     private void fireStateChanged ()
     {
-        ChangeEvent changeEvent = new ChangeEvent ( NinePatchEditor.this );
-        for ( ChangeListener listener : CollectionUtils.copy ( changeListeners ) )
+        final ChangeEvent changeEvent = new ChangeEvent ( NinePatchEditor.this );
+        for ( final ChangeListener listener : CollectionUtils.copy ( changeListeners ) )
         {
             listener.stateChanged ( changeEvent );
         }
@@ -1906,19 +1906,19 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
         return zoomChangeListeners;
     }
 
-    public void addZoomChangeListener ( ZoomChangeListener zoomChangeListener )
+    public void addZoomChangeListener ( final ZoomChangeListener zoomChangeListener )
     {
         zoomChangeListeners.add ( zoomChangeListener );
     }
 
-    public void removeZoomChangeListener ( ZoomChangeListener zoomChangeListener )
+    public void removeZoomChangeListener ( final ZoomChangeListener zoomChangeListener )
     {
         zoomChangeListeners.add ( zoomChangeListener );
     }
 
     private void fireZoomChanged ()
     {
-        for ( ZoomChangeListener listener : CollectionUtils.copy ( zoomChangeListeners ) )
+        for ( final ZoomChangeListener listener : CollectionUtils.copy ( zoomChangeListeners ) )
         {
             listener.zoomChanged ();
         }
@@ -1941,7 +1941,7 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
      * {@inheritDoc}
      */
     @Override
-    public NinePatchEditor setPreferredWidth ( int preferredWidth )
+    public NinePatchEditor setPreferredWidth ( final int preferredWidth )
     {
         return SizeUtils.setPreferredWidth ( this, preferredWidth );
     }
@@ -1959,7 +1959,7 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
      * {@inheritDoc}
      */
     @Override
-    public NinePatchEditor setPreferredHeight ( int preferredHeight )
+    public NinePatchEditor setPreferredHeight ( final int preferredHeight )
     {
         return SizeUtils.setPreferredHeight ( this, preferredHeight );
     }
@@ -1977,7 +1977,7 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
      * {@inheritDoc}
      */
     @Override
-    public NinePatchEditor setMinimumWidth ( int minimumWidth )
+    public NinePatchEditor setMinimumWidth ( final int minimumWidth )
     {
         return SizeUtils.setMinimumWidth ( this, minimumWidth );
     }
@@ -1995,7 +1995,7 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
      * {@inheritDoc}
      */
     @Override
-    public NinePatchEditor setMinimumHeight ( int minimumHeight )
+    public NinePatchEditor setMinimumHeight ( final int minimumHeight )
     {
         return SizeUtils.setMinimumHeight ( this, minimumHeight );
     }

@@ -23,11 +23,11 @@ import java.io.Serializable;
 /**
  * This abstract class represents core component settings tracking functionality.
  * Extend and register it in SettingsManager or ComponentSettingsManager to provide additional components support.
- * <p>
+ * <p/>
  * SettingsProcessor is also defended from recursive settings load/save which might occur if component sends additional data change events
  * when new data is loaded into it (doesn't matter from SettingsProcessor or some other source).
- * <p>
- * To register new SettingsProcessor use <code>registerSettingsProcessor(Class, Class)</code> method from SettingsManager or
+ * <p/>
+ * To register new SettingsProcessor use {@code registerSettingsProcessor(Class, Class)} method from SettingsManager or
  * ComponentSettingsManager class (they both do the same).
  *
  * @author Mikle Garin
@@ -67,8 +67,8 @@ public abstract class SettingsProcessor<C extends Component, V extends Serializa
      * @param loadInitialSettings  whether to load initial available settings into the component or not
      * @param applySettingsChanges whether to apply settings changes to the component or not
      */
-    public SettingsProcessor ( Component component, String group, String key, Object defaultValue, boolean loadInitialSettings,
-                               boolean applySettingsChanges )
+    public SettingsProcessor ( final Component component, final String group, final String key, final Object defaultValue,
+                               final boolean loadInitialSettings, final boolean applySettingsChanges )
     {
         this ( new SettingsProcessorData ( component, group, key, defaultValue, loadInitialSettings, applySettingsChanges ) );
     }
@@ -78,7 +78,7 @@ public abstract class SettingsProcessor<C extends Component, V extends Serializa
      *
      * @param data SettingsProcessorData
      */
-    public SettingsProcessor ( SettingsProcessorData data )
+    public SettingsProcessor ( final SettingsProcessorData data )
     {
         super ();
 
@@ -92,7 +92,7 @@ public abstract class SettingsProcessor<C extends Component, V extends Serializa
             {
                 load ();
             }
-            catch ( Throwable e )
+            catch ( final Throwable e )
             {
                 if ( SettingsManager.isDisplayExceptions () )
                 {
@@ -108,7 +108,7 @@ public abstract class SettingsProcessor<C extends Component, V extends Serializa
         {
             doInit ( getComponent () );
         }
-        catch ( Throwable e )
+        catch ( final Throwable e )
         {
             if ( SettingsManager.isDisplayExceptions () )
             {
@@ -124,7 +124,7 @@ public abstract class SettingsProcessor<C extends Component, V extends Serializa
             SettingsManager.addSettingsListener ( getGroup (), getKey (), new SettingsListener ()
             {
                 @Override
-                public void settingsChanged ( String group, String key, Object newValue )
+                public void settingsChanged ( final String group, final String key, final Object newValue )
                 {
                     load ();
                 }
@@ -201,9 +201,27 @@ public abstract class SettingsProcessor<C extends Component, V extends Serializa
 
     /**
      * Saves settings taken from the component.
+     * This method might be called from the component listeners to provide auto-save functionality.
      */
     public final void save ()
     {
+        save ( true );
+    }
+
+    /**
+     * Saves settings taken from the component.
+     * This method might be called from the component listeners to provide auto-save functionality.
+     *
+     * @param onChange whether this save is called from component change listeners
+     */
+    public final void save ( final boolean onChange )
+    {
+        // Ignore this call if save-on-change is disabled
+        if ( onChange && !SettingsManager.isSaveOnChange () )
+        {
+            return;
+        }
+
         // Ignore save if its save or load already running
         if ( loading || saving )
         {
@@ -240,7 +258,7 @@ public abstract class SettingsProcessor<C extends Component, V extends Serializa
      *
      * @param value new component settings
      */
-    protected void saveValue ( V value )
+    protected void saveValue ( final V value )
     {
         SettingsManager.set ( getGroup (), getKey (), value );
     }

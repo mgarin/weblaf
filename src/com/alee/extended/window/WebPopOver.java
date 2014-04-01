@@ -416,7 +416,7 @@ public class WebPopOver extends WebDialog implements Styleable
      */
     public void setBorderColor ( final Color color )
     {
-        StyleManager.setCustomStyle ( container, "borderColor", color );
+        StyleManager.setCustomPainterProperty ( container, "borderColor", color );
     }
 
     /**
@@ -438,7 +438,7 @@ public class WebPopOver extends WebDialog implements Styleable
     @Override
     public void setRound ( final int round )
     {
-        StyleManager.setCustomStyle ( container, "round", round );
+        StyleManager.setCustomPainterProperty ( container, "round", round );
     }
 
     /**
@@ -460,7 +460,7 @@ public class WebPopOver extends WebDialog implements Styleable
     @Override
     public void setShadeWidth ( final int width )
     {
-        StyleManager.setCustomStyle ( container, "shadeWidth", width );
+        StyleManager.setCustomPainterProperty ( container, "shadeWidth", width );
     }
 
     /**
@@ -476,11 +476,11 @@ public class WebPopOver extends WebDialog implements Styleable
     /**
      * Sets popup menu shade transparency.
      *
-     * @param opacity new popup menu shade transparency
+     * @param transparency new popup menu shade transparency
      */
-    public void setShadeTransparency ( final float opacity )
+    public void setShadeTransparency ( final float transparency )
     {
-        StyleManager.setCustomStyle ( container, "shadeTransparency", opacity );
+        StyleManager.setCustomPainterProperty ( container, "shadeTransparency", transparency );
     }
 
     /**
@@ -500,7 +500,7 @@ public class WebPopOver extends WebDialog implements Styleable
      */
     public void setCornerWidth ( final int width )
     {
-        StyleManager.setCustomStyle ( container, "cornerWidth", width );
+        StyleManager.setCustomPainterProperty ( container, "cornerWidth", width );
     }
 
     /**
@@ -520,7 +520,7 @@ public class WebPopOver extends WebDialog implements Styleable
      */
     public void setTransparency ( final float transparency )
     {
-        StyleManager.setCustomStyle ( container, "transparency", transparency );
+        StyleManager.setCustomPainterProperty ( container, "transparency", transparency );
     }
 
     /**
@@ -542,7 +542,7 @@ public class WebPopOver extends WebDialog implements Styleable
      */
     protected void setPopupStyle ( final PopupStyle style )
     {
-        StyleManager.setCustomStyle ( container, "popupStyle", style );
+        StyleManager.setCustomPainterProperty ( container, "popupStyle", style );
     }
 
     /**
@@ -562,7 +562,7 @@ public class WebPopOver extends WebDialog implements Styleable
      */
     protected void setCornerSide ( final int cornerSide )
     {
-        StyleManager.setCustomStyle ( container, "cornerSide", cornerSide );
+        StyleManager.setCustomPainterProperty ( container, "cornerSide", cornerSide );
     }
 
     /**
@@ -582,7 +582,7 @@ public class WebPopOver extends WebDialog implements Styleable
      */
     protected void setRelativeCorner ( final int relativeCorner )
     {
-        StyleManager.setCustomStyle ( container, "relativeCorner", relativeCorner );
+        StyleManager.setCustomPainterProperty ( container, "relativeCorner", relativeCorner );
     }
 
     /**
@@ -602,7 +602,7 @@ public class WebPopOver extends WebDialog implements Styleable
      */
     protected void setCornerAlignment ( final int cornerAlignment )
     {
-        StyleManager.setCustomStyle ( container, "cornerAlignment", cornerAlignment );
+        StyleManager.setCustomPainterProperty ( container, "cornerAlignment", cornerAlignment );
     }
 
     /**
@@ -622,7 +622,7 @@ public class WebPopOver extends WebDialog implements Styleable
      */
     public void setPopOverFocused ( final boolean focused )
     {
-        StyleManager.setCustomStyle ( container, "popOverFocused", focused );
+        StyleManager.setCustomPainterProperty ( container, "popOverFocused", focused );
     }
 
     /**

@@ -29,13 +29,18 @@ import java.awt.*;
 import java.awt.geom.RoundRectangle2D;
 
 /**
- * User: mgarin Date: 15.08.11 Time: 13:49
- * <p>
  * This class provides a quick access to step-styled label which can be used to visualize some process steps.
+ *
+ * @author Mikle Garin
  */
 
 public class WebStepLabel extends WebLabel implements ShapeProvider, LanguageMethods
 {
+    /**
+     * todo 1. Move painting to a proper separate painter
+     * todo 2. Add custom UI for that kind of component
+     */
+
     private Color topBgColor = StyleConstants.topBgColor;
     private Color bottomBgColor = StyleConstants.bottomBgColor;
     private Color selectedBgColor = StyleConstants.selectedBgColor;
@@ -52,31 +57,31 @@ public class WebStepLabel extends WebLabel implements ShapeProvider, LanguageMet
         setupSettings ();
     }
 
-    public WebStepLabel ( Icon image )
+    public WebStepLabel ( final Icon image )
     {
         super ( image );
         setupSettings ();
     }
 
-    public WebStepLabel ( Icon image, int horizontalAlignment )
+    public WebStepLabel ( final Icon image, final int horizontalAlignment )
     {
         super ( image, horizontalAlignment );
         setupSettings ();
     }
 
-    public WebStepLabel ( String text )
+    public WebStepLabel ( final String text )
     {
         super ( text );
         setupSettings ();
     }
 
-    public WebStepLabel ( String text, int horizontalAlignment )
+    public WebStepLabel ( final String text, final int horizontalAlignment )
     {
         super ( text, horizontalAlignment );
         setupSettings ();
     }
 
-    public WebStepLabel ( String text, Icon icon, int horizontalAlignment )
+    public WebStepLabel ( final String text, final Icon icon, final int horizontalAlignment )
     {
         super ( text, icon, horizontalAlignment );
         setupSettings ();
@@ -95,12 +100,45 @@ public class WebStepLabel extends WebLabel implements ShapeProvider, LanguageMet
         SwingUtils.setFontSize ( this, 20 );
     }
 
+    public Color getTopBgColor ()
+    {
+        return topBgColor;
+    }
+
+    public void setTopBgColor ( final Color topBgColor )
+    {
+        this.topBgColor = topBgColor;
+        this.repaint ();
+    }
+
+    public Color getBottomBgColor ()
+    {
+        return bottomBgColor;
+    }
+
+    public void setBottomBgColor ( final Color bottomBgColor )
+    {
+        this.bottomBgColor = bottomBgColor;
+        this.repaint ();
+    }
+
+    public Color getSelectedBgColor ()
+    {
+        return selectedBgColor;
+    }
+
+    public void setSelectedBgColor ( final Color selectedBgColor )
+    {
+        this.selectedBgColor = selectedBgColor;
+        this.repaint ();
+    }
+
     public Color getBorderColor ()
     {
         return borderColor;
     }
 
-    public void setBorderColor ( Color borderColor )
+    public void setBorderColor ( final Color borderColor )
     {
         this.borderColor = borderColor;
         this.repaint ();
@@ -111,7 +149,7 @@ public class WebStepLabel extends WebLabel implements ShapeProvider, LanguageMet
         return disabledBorderColor;
     }
 
-    public void setDisabledBorderColor ( Color disabledBorderColor )
+    public void setDisabledBorderColor ( final Color disabledBorderColor )
     {
         this.disabledBorderColor = disabledBorderColor;
         this.repaint ();
@@ -122,7 +160,7 @@ public class WebStepLabel extends WebLabel implements ShapeProvider, LanguageMet
         return selected;
     }
 
-    public void setSelected ( boolean selected )
+    public void setSelected ( final boolean selected )
     {
         this.selected = selected;
         this.repaint ();
@@ -131,22 +169,22 @@ public class WebStepLabel extends WebLabel implements ShapeProvider, LanguageMet
     @Override
     public Shape provideShape ()
     {
-        int width = getWidth ();
-        int height = getHeight ();
-        int length = Math.min ( width, height );
+        final int width = getWidth ();
+        final int height = getHeight ();
+        final int length = Math.min ( width, height );
         return new RoundRectangle2D.Double ( width / 2 - length / 2 + 1, height / 2 - length / 2 + 1, length - 3, length - 3,
                 getWidth () - 4, getHeight () - 4 );
     }
 
     @Override
-    protected void paintComponent ( Graphics g )
+    protected void paintComponent ( final Graphics g )
     {
-        Graphics2D g2d = ( Graphics2D ) g;
-        Object aa = LafUtils.setupAntialias ( g2d );
+        final Graphics2D g2d = ( Graphics2D ) g;
+        final Object aa = LafUtils.setupAntialias ( g2d );
 
-        int width = getWidth ();
-        int height = getHeight ();
-        int length = Math.min ( width, height );
+        final int width = getWidth ();
+        final int height = getHeight ();
+        final int length = Math.min ( width, height );
 
         // Background
         if ( getBackground () != null )
@@ -180,8 +218,8 @@ public class WebStepLabel extends WebLabel implements ShapeProvider, LanguageMet
     @Override
     public Dimension getPreferredSize ()
     {
-        Dimension ps = super.getPreferredSize ();
-        int max = Math.max ( ps.width, ps.height );
+        final Dimension ps = super.getPreferredSize ();
+        final int max = Math.max ( ps.width, ps.height );
         ps.width = max;
         ps.height = max;
         return ps;

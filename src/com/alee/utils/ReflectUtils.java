@@ -128,7 +128,7 @@ public final class ReflectUtils
         }
         else
         {
-            throw new NoSuchFieldException ( fieldName );
+            throw new NoSuchFieldException ( "Field \"" + fieldName + "\" not found in class: " + classType.getCanonicalName () );
         }
     }
 
@@ -761,7 +761,9 @@ public final class ReflectUtils
                     return constructor;
                 }
             }
-            throw new NoSuchMethodException ( theClass.getName () + argumentTypesToString ( parameterTypes ) );
+
+            // Throwing proper exception that constructor was not found
+            throw new NoSuchMethodException ( theClass.getCanonicalName () + argumentTypesToString ( parameterTypes ) );
         }
     }
 
@@ -1019,7 +1021,7 @@ public final class ReflectUtils
         {
             // Searching for more complex method
             final Class[] types = getClassTypes ( arguments );
-            return callMethod ( object, aClass, methodName, arguments, types );
+            return callMethod ( object, aClass, aClass, methodName, arguments, types );
         }
     }
 
@@ -1029,7 +1031,8 @@ public final class ReflectUtils
      * Returns result given by called method.
      *
      * @param object      object instance
-     * @param objectClass object class
+     * @param topClass    initial object class
+     * @param objectClass object class we are looking for the method
      * @param methodName  method name
      * @param arguments   method arguments
      * @param types       method argument types
@@ -1039,11 +1042,12 @@ public final class ReflectUtils
      * @throws InvocationTargetException
      * @throws NoSuchMethodException
      */
-    private static <T> T callMethod ( final Object object, final Class objectClass, final String methodName, final Object[] arguments,
-                                      final Class[] types ) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException
+    private static <T> T callMethod ( final Object object, final Class topClass, final Class objectClass, final String methodName,
+                                      final Object[] arguments, final Class[] types )
+            throws IllegalAccessException, InvocationTargetException, NoSuchMethodException
     {
         // Searching for the specified method in object's class or one of its superclasses
-        for ( final Method method : objectClass.getMethods () )
+        for ( final Method method : objectClass.getDeclaredMethods () )
         {
             // Checking method name
             if ( method.getName ().equals ( methodName ) )
@@ -1064,8 +1068,16 @@ public final class ReflectUtils
                     }
                     if ( fits )
                     {
-                        method.setAccessible ( true );
-                        return ( T ) method.invoke ( object, arguments );
+                        try
+                        {
+                            method.setAccessible ( true );
+                            return ( T ) method.invoke ( object, arguments );
+                        }
+                        catch ( final IllegalArgumentException e )
+                        {
+                            throw new IllegalArgumentException ( object + ":" +
+                                    topClass.getCanonicalName () + "." + methodName + argumentTypesToString ( types ) );
+                        }
                     }
                 }
             }
@@ -1075,10 +1087,11 @@ public final class ReflectUtils
         final Class superclass = objectClass.getSuperclass ();
         if ( superclass != null )
         {
-            return callMethod ( object, superclass, methodName, arguments, types );
+            return callMethod ( object, topClass, superclass, methodName, arguments, types );
         }
 
-        throw new NoSuchMethodException ( objectClass.getName () + "." + methodName + argumentTypesToString ( types ) );
+        // Throwing proper method not found exception
+        throw new NoSuchMethodException ( topClass.getCanonicalName () + "." + methodName + argumentTypesToString ( types ) );
     }
 
     /**
@@ -1099,7 +1112,7 @@ public final class ReflectUtils
                     buf.append ( ", " );
                 }
                 final Class c = argTypes[ i ];
-                buf.append ( ( c == null ) ? "null" : c.getName () );
+                buf.append ( ( c == null ) ? "null" : c.getCanonicalName () );
             }
         }
         return buf.append ( ")" ).toString ();
@@ -1172,7 +1185,7 @@ public final class ReflectUtils
     {
         if ( from == null )
         {
-            return true;
+            return !type.isPrimitive ();
         }
         else if ( type.isAssignableFrom ( from ) )
         {

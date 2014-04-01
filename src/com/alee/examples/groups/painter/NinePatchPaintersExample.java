@@ -19,54 +19,65 @@ package com.alee.examples.groups.painter;
 
 import com.alee.examples.WebLookAndFeelDemo;
 import com.alee.examples.content.DefaultExample;
-import com.alee.extended.painter.NinePatchIconPainter;
 import com.alee.extended.painter.NinePatchStatePainter;
 import com.alee.extended.panel.GroupPanel;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.text.WebTextField;
+import com.alee.managers.style.skin.ninepatch.NPLabelPainter;
 import com.alee.utils.XmlUtils;
+import com.alee.utils.ninepatch.NinePatchIcon;
 
 import java.awt.*;
 
 /**
- * User: mgarin Date: 14.09.12 Time: 17:04
+ * 9-patch painters example.
+ *
+ * @author Mikle Garin
  */
 
 public class NinePatchPaintersExample extends DefaultExample
 {
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getTitle ()
     {
         return "Nine-patch painters";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getDescription ()
     {
         return "Nine-patch based painters";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public Component getPreview ( WebLookAndFeelDemo owner )
+    public Component getPreview ( final WebLookAndFeelDemo owner )
     {
-        // Simple nine-patch styling
-        NinePatchIconPainter ninPatchPainter = new NinePatchIconPainter ( loadIcon ( "simple.9.png" ) );
+        // Simple 9-patch styling
+        final NinePatchIcon ninePatchIcon = new NinePatchIcon ( loadIcon ( "simple.9.png" ) );
+        final NPLabelPainter painter = new NPLabelPainter ( ninePatchIcon );
 
-        WebLabel label = new WebLabel ( "Simple nine-patch file based styling", WebLabel.CENTER );
-        label.setForeground ( Color.WHITE );
-        label.setMargin ( 5 );
-        label.setPainter ( ninPatchPainter );
+        final WebLabel label = new WebLabel ( "Simple nine-patch file based styling", WebLabel.CENTER );
+        label.setPainter ( painter ).setMargin ( 5 ).setForeground ( Color.WHITE );
 
-        // State-dependant nine-patch styling
-        NinePatchStatePainter statePainter = XmlUtils.loadNinePatchStatePainter ( getResource ( "styling.xml" ) );
+        // State-dependant 9-patch styling
+        final NinePatchStatePainter statePainter = XmlUtils.loadNinePatchStatePainter ( getResource ( "styling.xml" ) );
 
-        WebTextField field1 = new WebTextField ( "State-dependant" );
+        final WebTextField field1 = new WebTextField ( "State-dependant" );
         field1.setPainter ( statePainter );
 
-        WebTextField field2 = new WebTextField ( "nine-patch" );
+        final WebTextField field2 = new WebTextField ( "nine-patch" );
         field2.setPainter ( statePainter );
 
-        WebTextField field3 = new WebTextField ( "styling" );
+        final WebTextField field3 = new WebTextField ( "styling" );
         field3.setPainter ( statePainter );
 
         return new GroupPanel ( 4, false, label, new GroupPanel ( 4, field1, field2, field3 ) );

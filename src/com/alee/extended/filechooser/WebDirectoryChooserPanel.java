@@ -20,6 +20,7 @@ package com.alee.extended.filechooser;
 import com.alee.extended.filefilter.AbstractFileFilter;
 import com.alee.extended.layout.ToolbarLayout;
 import com.alee.extended.tree.FileTreeNode;
+import com.alee.extended.tree.FileTreeRootType;
 import com.alee.extended.tree.WebFileTree;
 import com.alee.laf.GlobalConstants;
 import com.alee.laf.button.WebButton;
@@ -68,11 +69,6 @@ public class WebDirectoryChooserPanel extends WebPanel
     protected static final ImageIcon REMOVE_ICON = new ImageIcon ( WebDirectoryChooserPanel.class.getResource ( "icons/remove.png" ) );
 
     /**
-     * Default file filter for directory chooser.
-     */
-    public static AbstractFileFilter abstractFileFilter = GlobalConstants.NON_HIDDEN_DIRECTORIES_FILTER;
-
-    /**
      * Directory chooser listeners.
      */
     protected List<DirectoryChooserListener> listeners = new ArrayList<DirectoryChooserListener> ( 1 );
@@ -81,6 +77,11 @@ public class WebDirectoryChooserPanel extends WebPanel
      * Currently selected directory.
      */
     protected File selectedDirectory = FileUtils.getDiskRoots ()[ 0 ];
+
+    /**
+     * File filter.
+     */
+    protected AbstractFileFilter filter = GlobalConstants.NON_HIDDEN_DIRECTORIES_FILTER;
 
     /**
      * Toolbar components.
@@ -150,7 +151,7 @@ public class WebDirectoryChooserPanel extends WebPanel
 
         contolsToolbar.addSeparator ();
 
-        for ( final File file : FileUtils.getDiskRoots () )
+        for ( final File file : FileTreeRootType.drives.getRoots () )
         {
             final WebButton root = new WebButton ( FileUtils.getFileIcon ( file ) );
             TooltipManager.setTooltip ( root, FileUtils.getDisplayFileName ( file ) );
@@ -265,7 +266,7 @@ public class WebDirectoryChooserPanel extends WebPanel
 
         // Path field
         webPathField = new WebPathField ( selectedDirectory );
-        webPathField.setFileFilter ( abstractFileFilter );
+        webPathField.setFileFilter ( filter );
         webPathField.addPathFieldListener ( new PathFieldListener ()
         {
             @Override
@@ -276,9 +277,9 @@ public class WebDirectoryChooserPanel extends WebPanel
         } );
 
         // Files tree
-        fileTree = new WebFileTree ();
+        fileTree = new WebFileTree ( FileTreeRootType.drives );
         fileTree.setVisibleRowCount ( 15 );
-        fileTree.setFileFilter ( abstractFileFilter );
+        fileTree.setFileFilter ( filter );
         fileTree.setSelectedFile ( selectedDirectory, true );
         fileTree.setSelectionMode ( TreeSelectionModel.SINGLE_TREE_SELECTION );
         fileTree.setEditable ( true );
@@ -374,6 +375,27 @@ public class WebDirectoryChooserPanel extends WebPanel
         }
 
         fireSelectionChanged ( this.selectedDirectory );
+    }
+
+    /**
+     * Returns directory chooser file filter.
+     *
+     * @return directory chooser file filter
+     */
+    public AbstractFileFilter getFilter ()
+    {
+        return filter;
+    }
+
+    /**
+     * Sets directory chooser file filter.
+     *
+     * @param filter directory chooser file filter
+     */
+    public void setFilter ( final AbstractFileFilter filter )
+    {
+        this.filter = filter;
+        fileTree.setFileFilter ( filter );
     }
 
     /**

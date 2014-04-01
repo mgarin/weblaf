@@ -19,7 +19,6 @@ package com.alee.managers.settings.processors;
 
 import com.alee.extended.colorchooser.GradientData;
 import com.alee.extended.colorchooser.WebGradientColorChooser;
-import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.settings.SettingsProcessor;
 import com.alee.managers.settings.SettingsProcessorData;
 
@@ -44,7 +43,7 @@ public class WebGradientColorChooserSettingsProcessor extends SettingsProcessor<
      *
      * @param data SettingsProcessorData
      */
-    public WebGradientColorChooserSettingsProcessor ( SettingsProcessorData data )
+    public WebGradientColorChooserSettingsProcessor ( final SettingsProcessorData data )
     {
         super ( data );
     }
@@ -53,17 +52,14 @@ public class WebGradientColorChooserSettingsProcessor extends SettingsProcessor<
      * {@inheritDoc}
      */
     @Override
-    protected void doInit ( WebGradientColorChooser gradientColorChooser )
+    protected void doInit ( final WebGradientColorChooser gradientColorChooser )
     {
         changeListener = new ChangeListener ()
         {
             @Override
-            public void stateChanged ( ChangeEvent e )
+            public void stateChanged ( final ChangeEvent e )
             {
-                if ( SettingsManager.isSaveOnChange () )
-                {
-                    save ();
-                }
+                save ();
             }
         };
         gradientColorChooser.addChangeListener ( changeListener );
@@ -73,7 +69,7 @@ public class WebGradientColorChooserSettingsProcessor extends SettingsProcessor<
      * {@inheritDoc}
      */
     @Override
-    protected void doDestroy ( WebGradientColorChooser gradientColorChooser )
+    protected void doDestroy ( final WebGradientColorChooser gradientColorChooser )
     {
         gradientColorChooser.removeChangeListener ( changeListener );
         changeListener = null;
@@ -83,7 +79,7 @@ public class WebGradientColorChooserSettingsProcessor extends SettingsProcessor<
      * {@inheritDoc}
      */
     @Override
-    protected void doLoad ( WebGradientColorChooser gradientColorChooser )
+    protected void doLoad ( final WebGradientColorChooser gradientColorChooser )
     {
         gradientColorChooser.setGradientData ( loadValue () );
     }
@@ -92,7 +88,7 @@ public class WebGradientColorChooserSettingsProcessor extends SettingsProcessor<
      * {@inheritDoc}
      */
     @Override
-    protected void doSave ( WebGradientColorChooser gradientColorChooser )
+    protected void doSave ( final WebGradientColorChooser gradientColorChooser )
     {
         saveValue ( gradientColorChooser.getGradientData () );
     }

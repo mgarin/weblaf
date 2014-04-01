@@ -20,7 +20,7 @@ package com.alee.managers.style.editor;
 import com.alee.managers.style.skin.CustomSkin;
 
 /**
- * Custom skin class for Style Editor.
+ * Custom skin class for StyleEditor.
  *
  * @author Mikle Garin
  */

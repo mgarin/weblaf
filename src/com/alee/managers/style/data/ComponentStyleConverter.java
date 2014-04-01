@@ -41,6 +41,7 @@ public class ComponentStyleConverter extends ReflectionConverter
     /**
      * Converter constants.
      */
+    public static final String STYLE_NODE = "style";
     public static final String STYLE_ID_ATTRIBUTE = "id";
     public static final String COMPONENT_TYPE_ATTRIBUTE = "type";
     public static final String EXTENDS_ID_ATTRIBUTE = "extends";
@@ -186,7 +187,7 @@ public class ComponentStyleConverter extends ReflectionConverter
                     final Class fieldClass = ReflectUtils.getFieldTypeSafely ( componentClass, subNodeName );
                     if ( fieldClass != null )
                     {
-                        componentProperties.put ( subNodeName, context.convertAnother ( uiProperties, fieldClass ) );
+                        componentProperties.put ( subNodeName, context.convertAnother ( componentProperties, fieldClass ) );
                     }
                     reader.moveUp ();
                 }
@@ -236,6 +237,7 @@ public class ComponentStyleConverter extends ReflectionConverter
                     painterStyle.setPainterClass ( painterClassName );
                     separateStyles.add ( painterStyle );
                 }
+                context.put ( PAINTER_CLASS_ATTRIBUTE, painterClassName );
 
                 // Reading painter style properties
                 // Using LinkedHashMap to keep properties order

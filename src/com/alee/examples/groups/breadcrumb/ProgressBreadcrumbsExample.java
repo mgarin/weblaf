@@ -51,7 +51,7 @@ public class ProgressBreadcrumbsExample extends DefaultExample
     }
 
     @Override
-    public Component getPreview ( WebLookAndFeelDemo owner )
+    public Component getPreview ( final WebLookAndFeelDemo owner )
     {
         // Decorated breadcrumb
         final WebBreadcrumb breadcrumb1 = new WebBreadcrumb ( true );
@@ -66,10 +66,10 @@ public class ProgressBreadcrumbsExample extends DefaultExample
         return new GroupPanel ( 4, false, breadcrumb1, breadcrumb2 );
     }
 
-    private void fillBreadcrumb ( WebBreadcrumb b )
+    private void fillBreadcrumb ( final WebBreadcrumb b )
     {
         // Sample breadcrumb data
-        ImageIcon icon = loadIcon ( "icon.png" );
+        final ImageIcon icon = loadIcon ( "icon.png" );
         b.add ( new WebBreadcrumbToggleButton ( "img1.png", icon ) );
         b.add ( new WebBreadcrumbToggleButton ( "img2.png", icon ) );
         b.add ( new WebBreadcrumbToggleButton ( "img3.png", icon ) );
@@ -87,13 +87,13 @@ public class ProgressBreadcrumbsExample extends DefaultExample
                     private int element = 0;
 
                     @Override
-                    public void actionPerformed ( ActionEvent e )
+                    public void actionPerformed ( final ActionEvent e )
                     {
                         // Currently updated element
-                        BreadcrumbElement be = getElement ( element );
+                        final BreadcrumbElement be = getElement ( element );
 
                         // Calculating progress changes
-                        float progress = be.getPainter ().getProgress ();
+                        final float progress = be.getProgress ();
                         if ( progress >= 1f )
                         {
                             if ( run % 2 != 0 )
@@ -125,7 +125,7 @@ public class ProgressBreadcrumbsExample extends DefaultExample
                                 {
                                     for ( int i = 0; i <= 3; i++ )
                                     {
-                                        BreadcrumbElement el = getElement ( i );
+                                        final BreadcrumbElement el = getElement ( i );
                                         el.setProgress ( 0f );
                                         el.setShowProgress ( false );
                                     }
@@ -135,7 +135,7 @@ public class ProgressBreadcrumbsExample extends DefaultExample
                         else
                         {
                             // Updating progress
-                            if ( !be.getPainter ().isShowProgress () )
+                            if ( !be.isShowProgress () )
                             {
                                 be.setShowProgress ( true );
                             }
@@ -143,7 +143,7 @@ public class ProgressBreadcrumbsExample extends DefaultExample
                         }
                     }
 
-                    private BreadcrumbElement getElement ( int element )
+                    private BreadcrumbElement getElement ( final int element )
                     {
                         return ( BreadcrumbElement ) breadcrumb.getComponent ( element );
                     }

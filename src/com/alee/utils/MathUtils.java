@@ -48,7 +48,7 @@ public final class MathUtils
      * @param cap random numbers cap
      * @return random integer number between 0 (inclusive) and cap (exclusive)
      */
-    public static int random ( int cap )
+    public static int random ( final int cap )
     {
         return random.nextInt ( cap );
     }
@@ -60,7 +60,7 @@ public final class MathUtils
      * @param max random numbers maximum
      * @return random integer number between min (inclusive) and max (inclusive)
      */
-    public static int random ( int min, int max )
+    public static int random ( final int min, final int max )
     {
         return min + random.nextInt ( Math.abs ( max + 1 - min ) );
     }
@@ -71,7 +71,7 @@ public final class MathUtils
      * @param numbers number to choose random one from
      * @return random integer number from one the specified integers
      */
-    public static int random ( int... numbers )
+    public static int random ( final int... numbers )
     {
         return numbers[ random ( 0, numbers.length - 1 ) ];
     }
@@ -82,7 +82,7 @@ public final class MathUtils
      * @param i integer number to process
      * @return square for specified integer number
      */
-    public static int sqr ( int i )
+    public static int sqr ( final int i )
     {
         return i * i;
     }
@@ -93,7 +93,7 @@ public final class MathUtils
      * @param f float number to process
      * @return square for specified float number
      */
-    public static float sqr ( float f )
+    public static float sqr ( final float f )
     {
         return f * f;
     }
@@ -104,9 +104,22 @@ public final class MathUtils
      * @param i integer number to process
      * @return rounded square root for the specified integer number
      */
-    public static int sqrt ( double i )
+    public static int sqrt ( final double i )
     {
         return ( int ) Math.round ( Math.sqrt ( i ) );
+    }
+
+    /**
+     * Returns value limited by the specified range.
+     *
+     * @param value value to limit
+     * @param min   range minimum
+     * @param max   range maximum
+     * @return value limited by the specified range
+     */
+    public static int limit ( final int value, final int min, final int max )
+    {
+        return Math.max ( min, Math.min ( value, max ) );
     }
 
     /**
@@ -115,7 +128,7 @@ public final class MathUtils
      * @param integers integer numbers to process
      * @return maximum of the specified integer numbers
      */
-    public static int max ( int... integers )
+    public static int max ( final int... integers )
     {
         int max = integers[ 0 ];
         for ( int i = 1; i < integers.length; i++ )
@@ -123,6 +136,22 @@ public final class MathUtils
             max = Math.max ( max, integers[ i ] );
         }
         return max;
+    }
+
+    /**
+     * Returns minimum of the specified integer numbers.
+     *
+     * @param integers integer numbers to process
+     * @return minimum of the specified integer numbers
+     */
+    public static int min ( final int... integers )
+    {
+        int min = integers[ 0 ];
+        for ( int i = 1; i < integers.length; i++ )
+        {
+            min = Math.min ( min, integers[ i ] );
+        }
+        return min;
     }
 
     //    /**

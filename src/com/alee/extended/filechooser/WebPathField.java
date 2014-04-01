@@ -17,7 +17,7 @@
 
 package com.alee.extended.filechooser;
 
-import com.alee.extended.drag.FileDropHandler;
+import com.alee.extended.drag.FileDragAndDropHandler;
 import com.alee.extended.filefilter.AbstractFileFilter;
 import com.alee.extended.layout.HorizontalFlowLayout;
 import com.alee.laf.GlobalConstants;
@@ -120,16 +120,16 @@ public class WebPathField extends WebPanel
         setBackground ( Color.WHITE );
 
         // Files TransferHandler
-        setTransferHandler ( new FileDropHandler ()
+        setTransferHandler ( new FileDragAndDropHandler ()
         {
             @Override
-            protected boolean isDropEnabled ()
+            public boolean isDropEnabled ()
             {
                 return filesDropEnabled;
             }
 
             @Override
-            protected boolean filesImported ( final List<File> files )
+            public boolean filesDropped ( final List<File> files )
             {
                 // Setting dragged files
                 final FileFilter filter = getFileFilter ();

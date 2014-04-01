@@ -17,36 +17,96 @@
 
 package com.alee.extended.drag;
 
+import com.alee.utils.DragUtils;
+
 import javax.swing.*;
 
 /**
- * User: mgarin Date: 19.04.12 Time: 12:36
- * <p>
- * This TransferHandler allows you to proxify drop event to another JComponent
+ * This TransferHandler allows you to proxify drop event to another JComponent.
+ *
+ * @author Mikle Garin
  */
 
 public class ProxyDropHandler extends TransferHandler
 {
-    // Component onto which drop should be proxified
+    /**
+     * Component onto which drop should be proxified.
+     */
     private JComponent component;
 
-    public ProxyDropHandler ( JComponent component )
+    /**
+     * Constructs new ProxyDropHandler that passes drop actions to parent components.
+     */
+    public ProxyDropHandler ()
+    {
+        super ();
+        this.component = null;
+    }
+
+    /**
+     * Constructs new ProxyDropHandler that passes drop actions to specified component.
+     *
+     * @param component component to pass drop actions to
+     */
+    public ProxyDropHandler ( final JComponent component )
     {
         super ();
         this.component = component;
     }
 
-    @Override
-    public boolean canImport ( TransferHandler.TransferSupport info )
+    /**
+     * Returns component to pass drop actions to.
+     * Null means that drop actions are passes to parent components.
+     *
+     * @return component to pass drop actions to
+     */
+    public JComponent getComponent ()
     {
-        TransferHandler th = component.getTransferHandler ();
-        return th != null && th.canImport ( info );
+        return component;
     }
 
-    @Override
-    public boolean importData ( TransferHandler.TransferSupport info )
+    /**
+     * Sets component to pass drop actions to.
+     * If set to null drop actions will be passes to parent components.
+     *
+     * @param component component to pass drop actions to
+     */
+    public void setComponent ( final JComponent component )
     {
-        TransferHandler th = component.getTransferHandler ();
-        return th != null && th.importData ( info );
+        this.component = component;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean canImport ( final TransferHandler.TransferSupport info )
+    {
+        if ( component != null )
+        {
+            final TransferHandler th = component.getTransferHandler ();
+            return th != null && th.canImport ( info );
+        }
+        else
+        {
+            return DragUtils.canPassDrop ( info );
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean importData ( final TransferHandler.TransferSupport info )
+    {
+        if ( component != null )
+        {
+            final TransferHandler th = component.getTransferHandler ();
+            return th != null && th.importData ( info );
+        }
+        else
+        {
+            return DragUtils.passDropAction ( info );
+        }
     }
 }

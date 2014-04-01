@@ -100,6 +100,12 @@ public class WebListUI extends BasicListUI
                 updateMouseover ( e );
             }
 
+            @Override
+            public void mouseDragged ( final MouseEvent e )
+            {
+                updateMouseover ( e );
+            }
+
             private void updateMouseover ( final MouseEvent e )
             {
                 // Ignore events if rollover highlight is disabled
@@ -356,7 +362,8 @@ public class WebListUI extends BasicListUI
             LafUtils.drawCustomWebBorder ( g2d, list,
                     new RoundRectangle2D.Double ( rowBounds.x + selectionShadeWidth, rowBounds.y + selectionShadeWidth,
                             rowBounds.width - selectionShadeWidth * 2 - 1, rowBounds.height - selectionShadeWidth * 2 - 1,
-                            selectionRound * 2, selectionRound * 2 ), StyleConstants.shadeColor, selectionShadeWidth, true, true );
+                            selectionRound * 2, selectionRound * 2 ), StyleConstants.shadeColor, selectionShadeWidth, true, true
+            );
 
             LafUtils.restoreComposite ( g2d, oc, !isSelected );
         }

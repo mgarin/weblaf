@@ -45,6 +45,7 @@ import java.util.Map;
  * appear empty.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-SettingsManager">How to use SettingsManager</a>
  * @see ComponentSettingsManager
  * @see XmlUtils
  */
@@ -58,7 +59,7 @@ public final class SettingsManager
     /**
      * Settings change listeners.
      */
-    private static Map<String, Map<String, List<SettingsListener>>> settingsListeners =
+    private static final Map<String, Map<String, List<SettingsListener>>> settingsListeners =
             new HashMap<String, Map<String, List<SettingsListener>>> ();
 
     /**
@@ -89,22 +90,22 @@ public final class SettingsManager
     /**
      * Redefined per-group settings save locations.
      */
-    private static Map<String, String> groupFileLocation = new HashMap<String, String> ();
+    private static final Map<String, String> groupFileLocation = new HashMap<String, String> ();
 
     /**
      * Group settings read success marks.
      */
-    private static Map<String, SettingsGroupState> groupState = new HashMap<String, SettingsGroupState> ();
+    private static final Map<String, SettingsGroupState> groupState = new HashMap<String, SettingsGroupState> ();
 
     /**
      * Cached settings map.
      */
-    private static Map<String, SettingsGroup> groups = new HashMap<String, SettingsGroup> ();
+    private static final Map<String, SettingsGroup> groups = new HashMap<String, SettingsGroup> ();
 
     /**
      * Cached files map.
      */
-    private static Map<String, Object> files = new HashMap<String, Object> ();
+    private static final Map<String, Object> files = new HashMap<String, Object> ();
 
     /**
      * Whether should save settings right after any changes made or not.
@@ -135,7 +136,7 @@ public final class SettingsManager
     /**
      * Delayed settings groups to save.
      */
-    private static List<String> groupsToSaveOnChange = new ArrayList<String> ();
+    private static final List<String> groupsToSaveOnChange = new ArrayList<String> ();
 
     /**
      * Whether should display settings load and save exceptions or not.
@@ -820,7 +821,7 @@ public final class SettingsManager
             // Returning retrieved value
             return ( T ) value;
         }
-        catch ( ClassCastException e )
+        catch ( final ClassCastException e )
         {
             // Displaying what caused the problem if needed
             if ( displayExceptions )
@@ -970,7 +971,7 @@ public final class SettingsManager
                         // Saving settings group read state
                         groupState.put ( group, new SettingsGroupState ( readFromDump ? ReadState.restored : ReadState.ok ) );
                     }
-                    catch ( Throwable e )
+                    catch ( final Throwable e )
                     {
                         // Display errors
                         if ( displayExceptions )
@@ -1084,7 +1085,7 @@ public final class SettingsManager
                     throw new RuntimeException ( "Cannot create settings directory: " + dir.getAbsolutePath () );
                 }
             }
-            catch ( Throwable e )
+            catch ( final Throwable e )
             {
                 if ( displayExceptions )
                 {
@@ -1199,7 +1200,7 @@ public final class SettingsManager
             {
                 value = XmlUtils.fromXML ( getSettingsFile ( fileName ) );
             }
-            catch ( Throwable e )
+            catch ( final Throwable e )
             {
                 value = defaultValue;
             }

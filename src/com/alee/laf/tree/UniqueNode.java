@@ -17,6 +17,7 @@
 
 package com.alee.laf.tree;
 
+import com.alee.utils.ReflectUtils;
 import com.alee.utils.TextUtils;
 
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -112,5 +113,15 @@ public class UniqueNode extends DefaultMutableTreeNode implements Serializable
     public TreePath getTreePath ()
     {
         return new TreePath ( getPath () );
+    }
+
+    /**
+     * Returns text node representation.
+     *
+     * @return text node representation
+     */
+    public String toString ()
+    {
+        return userObject == null ? ReflectUtils.getClassName ( this.getClass () ) : userObject.toString ();
     }
 }

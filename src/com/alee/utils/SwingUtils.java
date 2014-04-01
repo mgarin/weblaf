@@ -665,6 +665,22 @@ public final class SwingUtils
     }
 
     /**
+     * Returns whether specified window is a HeavyWeightWindow or not.
+     *
+     * @param window window to process
+     * @return true if specified window is a HeavyWeightWindow, false otherwise
+     */
+    public static boolean isHeavyWeightWindow ( final Window window )
+    {
+        if ( window == null )
+        {
+            return false;
+        }
+        final String can = window.getClass ().getCanonicalName ();
+        return can != null && can.endsWith ( "HeavyWeightWindow" );
+    }
+
+    /**
      * Returns window ancestor for specified component or null if it doesn't exist.
      *
      * @param component component to process

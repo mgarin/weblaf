@@ -24,31 +24,29 @@ import javax.swing.plaf.ComponentUI;
 import java.awt.*;
 
 /**
- * User: mgarin Date: 11.10.11 Time: 13:16
+ * Custom UI for WebVerticalLabel component.
+ *
+ * @author Mikle Garin
  */
 
 public class WebVerticalLabelUI extends WebLabelUI
 {
-    private boolean clockwise;
+    /**
+     * Style settings.
+     */
+    protected boolean clockwise = false;
 
-    private Rectangle verticalViewR = new Rectangle ();
-    private Rectangle verticalIconR = new Rectangle ();
-    private Rectangle verticalTextR = new Rectangle ();
-
+    /**
+     * Returns an instance of the WebVerticalLabelUI for the specified component.
+     * This tricky method is used by UIManager to create component UIs when needed.
+     *
+     * @param c component that will use UI instance
+     * @return instance of the WebVerticalLabelUI
+     */
     @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebVerticalLabelUI ();
-    }
-
-    public WebVerticalLabelUI ()
-    {
-        this.clockwise = false;
-    }
-
-    public WebVerticalLabelUI ( final boolean clockwise )
-    {
-        this.clockwise = clockwise;
     }
 
     public boolean isClockwise ()
@@ -76,23 +74,6 @@ public class WebVerticalLabelUI extends WebLabelUI
     }
 
     @Override
-    protected String layoutCL ( final JLabel label, final FontMetrics fontMetrics, String text, final Icon icon, final Rectangle viewR,
-                                final Rectangle iconR, final Rectangle textR )
-    {
-        verticalViewR = transposeRectangle ( viewR, verticalViewR );
-        verticalIconR = transposeRectangle ( iconR, verticalIconR );
-        verticalTextR = transposeRectangle ( textR, verticalTextR );
-
-        text = super.layoutCL ( label, fontMetrics, text, icon, verticalViewR, verticalIconR, verticalTextR );
-
-        copyRectangle ( verticalViewR, viewR );
-        copyRectangle ( verticalIconR, iconR );
-        copyRectangle ( verticalTextR, textR );
-
-        return text;
-    }
-
-    @Override
     public void paint ( final Graphics g, final JComponent c )
     {
         final Graphics2D g2 = ( Graphics2D ) g.create ();
@@ -105,54 +86,5 @@ public class WebVerticalLabelUI extends WebLabelUI
             g2.rotate ( -Math.PI / 2, c.getSize ().height / 2, c.getSize ().height / 2 );
         }
         super.paint ( g2, c );
-    }
-
-    @Override
-    public Dimension getPreferredSize ( final JComponent c )
-    {
-        return transposeDimension ( super.getPreferredSize ( c ) );
-    }
-
-    @Override
-    public Dimension getMaximumSize ( final JComponent c )
-    {
-        return transposeDimension ( super.getMaximumSize ( c ) );
-    }
-
-    @Override
-    public Dimension getMinimumSize ( final JComponent c )
-    {
-        return transposeDimension ( super.getMinimumSize ( c ) );
-    }
-
-    private Dimension transposeDimension ( final Dimension from )
-    {
-        return new Dimension ( from.height, from.width );
-    }
-
-    private Rectangle transposeRectangle ( final Rectangle from, Rectangle to )
-    {
-        if ( to == null )
-        {
-            to = new Rectangle ();
-        }
-        to.x = from.y;
-        to.y = from.x;
-        to.width = from.height;
-        to.height = from.width;
-        return to;
-    }
-
-    private Rectangle copyRectangle ( final Rectangle from, Rectangle to )
-    {
-        if ( to == null )
-        {
-            to = new Rectangle ();
-        }
-        to.x = from.x;
-        to.y = from.y;
-        to.width = from.width;
-        to.height = from.height;
-        return to;
     }
 }

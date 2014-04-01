@@ -53,7 +53,7 @@ public class SimplePopupExample extends DefaultExample
     }
 
     @Override
-    public Component getPreview ( WebLookAndFeelDemo owner )
+    public Component getPreview ( final WebLookAndFeelDemo owner )
     {
         // Popup
         final WebPopup popup = new WebPopup ();
@@ -69,10 +69,11 @@ public class SimplePopupExample extends DefaultExample
         // Popup style chooser
         final WebComboBox popupStyle = new WebComboBox ( PopupStyle.values () );
         popupStyle.setSelectedItem ( PopupManager.getDefaultPopupStyle () );
-        popupStyle.setRenderer ( new WebComboBoxCellRenderer ( popupStyle )
+        popupStyle.setRenderer ( new WebComboBoxCellRenderer ()
         {
             @Override
-            public Component getListCellRendererComponent ( JList list, Object value, int index, boolean isSelected, boolean cellHasFocus )
+            public Component getListCellRendererComponent ( final JList list, final Object value, final int index, final boolean isSelected,
+                                                            final boolean cellHasFocus )
             {
                 return super.getListCellRendererComponent ( list, "Style: " + value, index, isSelected, cellHasFocus );
             }
@@ -80,7 +81,7 @@ public class SimplePopupExample extends DefaultExample
         popupStyle.addActionListener ( new ActionListener ()
         {
             @Override
-            public void actionPerformed ( ActionEvent e )
+            public void actionPerformed ( final ActionEvent e )
             {
                 popup.setPopupStyle ( ( PopupStyle ) popupStyle.getSelectedItem () );
                 popup.packPopup ();
@@ -91,7 +92,7 @@ public class SimplePopupExample extends DefaultExample
         showPopup.addActionListener ( new ActionListener ()
         {
             @Override
-            public void actionPerformed ( ActionEvent e )
+            public void actionPerformed ( final ActionEvent e )
             {
                 if ( popup.isShowing () )
                 {

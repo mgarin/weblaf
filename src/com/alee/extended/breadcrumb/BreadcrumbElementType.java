@@ -17,14 +17,64 @@
 
 package com.alee.extended.breadcrumb;
 
+import javax.swing.*;
+
 /**
- * User: mgarin Date: 01.03.12 Time: 20:07
+ * This enumeration represents possible breadcrumb element types.
+ * Each type has its own appropriate styling.
+ *
+ * @author Mikle Garin
  */
 
 public enum BreadcrumbElementType
 {
+    /**
+     * First element in the breadcrumb.
+     */
     start,
+
+    /**
+     * Middle element in the breadcrumb.
+     */
     middle,
+
+    /**
+     * Last element in the breadcrumb.
+     */
     end,
-    none
+
+    /**
+     * Undecorated breadcrumb element.
+     */
+    none;
+
+    /**
+     * Returns breadcrumb element type.
+     *
+     * @param element    breadcrumb element
+     * @param breadcrumb breadcrumb
+     * @return breadcrumb element type
+     */
+    public static BreadcrumbElementType getType ( final JComponent element, final WebBreadcrumb breadcrumb )
+    {
+        final int index = breadcrumb.getComponentZOrder ( element );
+        final int last = breadcrumb.getComponentCount () - 1;
+        final boolean encloseLastElement = breadcrumb.isEncloseLastElement ();
+        if ( last == 0 && !encloseLastElement )
+        {
+            return BreadcrumbElementType.none;
+        }
+        else if ( index == 0 )
+        {
+            return BreadcrumbElementType.start;
+        }
+        else if ( index == last && !encloseLastElement )
+        {
+            return BreadcrumbElementType.end;
+        }
+        else
+        {
+            return BreadcrumbElementType.middle;
+        }
+    }
 }

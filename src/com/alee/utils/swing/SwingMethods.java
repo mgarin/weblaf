@@ -35,11 +35,13 @@ package com.alee.utils.swing;
 
 public interface SwingMethods
 {
-    // todo To add:
-    // todo HotkeyMethods, ButtonHotkeyMethods - add and replace all workarounds
-    // todo TooltipMethods, OrientationMethods - add
-
-    // todo To modify:
-    // todo SizeMethods - add into all available components
-    // todo Move font methods from SwingUtils to FontUtils
+    /**
+     * todo To add:
+     * todo HotkeyMethods, ButtonHotkeyMethods - add and replace all workarounds
+     * todo TooltipMethods, OrientationMethods - add
+     *
+     * todo To modify:
+     * todo SizeMethods - add into all available components
+     * todo Move font methods from SwingUtils to FontUtils
+     */
 }

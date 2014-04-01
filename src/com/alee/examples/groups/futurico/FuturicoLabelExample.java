@@ -20,41 +20,57 @@ package com.alee.examples.groups.futurico;
 import com.alee.examples.WebLookAndFeelDemo;
 import com.alee.examples.content.DefaultExample;
 import com.alee.laf.label.WebLabel;
+import com.alee.managers.style.skin.ninepatch.NPLabelPainter;
 import com.alee.utils.XmlUtils;
+import com.alee.utils.ninepatch.NinePatchIcon;
 
 import java.awt.*;
 
 /**
- * User: mgarin Date: 14.03.12 Time: 14:19
+ * Futurico label painter example.
+ *
+ * @author Mikle Garin
  */
 
 public class FuturicoLabelExample extends DefaultExample
 {
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getTitle ()
     {
         return "Futurico label";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getDescription ()
     {
         return "Futurico-styled label";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isFillWidth ()
     {
         return true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public Component getPreview ( WebLookAndFeelDemo owner )
+    public Component getPreview ( final WebLookAndFeelDemo owner )
     {
         // Label styled with nine-patch icon painter
-        WebLabel label = new WebLabel ( "Sample text within styled label", WebLabel.CENTER );
-        label.setForeground ( Color.WHITE );
-        label.setPainter ( XmlUtils.loadNinePatchIconPainter ( getResource ( "label.xml" ) ) );
+        final NinePatchIcon icon = XmlUtils.loadNinePatchIcon ( getResource ( "label.xml" ) );
+        final WebLabel label = new WebLabel ( "Sample text within styled label", WebLabel.CENTER );
+        label.setPainter ( new NPLabelPainter ( icon ) ).setForeground ( Color.WHITE );
         return label;
     }
 }

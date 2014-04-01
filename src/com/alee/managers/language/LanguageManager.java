@@ -48,6 +48,7 @@ import java.util.List;
  * The original list of dictionaries will be preserved and will not be modified, but all translation will be taken from global data map.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-LanguageManager">How to use LanguageManager</a>
  */
 
 public final class LanguageManager implements LanguageConstants

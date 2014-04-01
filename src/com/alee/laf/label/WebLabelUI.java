@@ -19,10 +19,11 @@ package com.alee.laf.label;
 
 import com.alee.extended.painter.Painter;
 import com.alee.extended.painter.PainterSupport;
-import com.alee.laf.StyleConstants;
 import com.alee.laf.WebLookAndFeel;
+import com.alee.managers.style.StyleManager;
 import com.alee.utils.LafUtils;
 import com.alee.utils.SwingUtils;
+import com.alee.utils.laf.Styleable;
 import com.alee.utils.swing.BorderMethods;
 
 import javax.swing.*;
@@ -31,7 +32,6 @@ import javax.swing.plaf.basic.BasicLabelUI;
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.Map;
 
 /**
  * Custom UI for JLabel component.
@@ -39,26 +39,29 @@ import java.util.Map;
  * @author Mikle Garin
  */
 
-public class WebLabelUI extends BasicLabelUI implements BorderMethods
+public class WebLabelUI extends BasicLabelUI implements Styleable, BorderMethods
 {
     /**
      * Style settings.
      */
     protected Insets margin = WebLabelStyle.margin;
-    protected Painter painter = WebLabelStyle.painter;
     protected boolean drawShade = WebLabelStyle.drawShade;
-    protected Color shadeColor = WebLabelStyle.shadeColor;
-    protected Float transparency = WebLabelStyle.transparency;
 
     /**
-     * JLabel instance to which this UI is applied.
+     * Component painter.
      */
-    protected JLabel label;
+    protected LabelPainter painter;
 
     /**
      * Label listeners.
      */
     protected PropertyChangeListener propertyChangeListener;
+
+    /**
+     * Runtime variables.
+     */
+    protected String styleId;
+    protected JLabel label;
 
     /**
      * Returns an instance of the WebLabelUI for the specified component.
@@ -67,7 +70,7 @@ public class WebLabelUI extends BasicLabelUI implements BorderMethods
      * @param c component that will use UI instance
      * @return instance of the WebLabelUI
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebLabelUI ();
@@ -88,9 +91,9 @@ public class WebLabelUI extends BasicLabelUI implements BorderMethods
 
         // Default settings
         SwingUtils.setOrientation ( label );
-        label.setBackground ( WebLabelStyle.backgroundColor );
-        PainterSupport.installPainter ( label, this.painter );
-        updateBorder ();
+
+        // Applying skin
+        StyleManager.applySkin ( label );
 
         // Orientation change listener
         propertyChangeListener = new PropertyChangeListener ()
@@ -112,16 +115,33 @@ public class WebLabelUI extends BasicLabelUI implements BorderMethods
     @Override
     public void uninstallUI ( final JComponent c )
     {
-        // Uninstalling painter
-        PainterSupport.uninstallPainter ( label, this.painter );
-
         // Removing label listeners
         label.removePropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, propertyChangeListener );
 
-        // Clearing link to label component
-        label = null;
+        // Uninstalling applied skin
+        StyleManager.removeSkin ( label );
 
+        label = null;
         super.uninstallUI ( c );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getStyleId ()
+    {
+        return styleId;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setStyleId ( final String id )
+    {
+        this.styleId = id;
+        StyleManager.applySkin ( label );
     }
 
     /**
@@ -130,31 +150,30 @@ public class WebLabelUI extends BasicLabelUI implements BorderMethods
     @Override
     public void updateBorder ()
     {
-        if ( label != null )
+        LafUtils.updateBorder ( label, margin, painter );
+    }
+
+    /**
+     * Returns whether text shade is displayed or not.
+     *
+     * @return true if text shade is displayed, false otherwise
+     */
+    public boolean isDrawShade ()
+    {
+        return drawShade;
+    }
+
+    /**
+     * Sets whether text shade should be displayed or not.
+     *
+     * @param drawShade whether text shade should be displayed or not
+     */
+    public void setDrawShade ( final boolean drawShade )
+    {
+        this.drawShade = drawShade;
+        if ( painter != null )
         {
-            // Preserve old borders
-            if ( SwingUtils.isPreserveBorders ( label ) )
-            {
-                return;
-            }
-
-            // Actual margin
-            final boolean ltr = label.getComponentOrientation ().isLeftToRight ();
-            final Insets m = new Insets ( margin.top, ltr ? margin.left : margin.right, margin.bottom, ltr ? margin.right : margin.left );
-
-            // Calculating additional borders
-            if ( painter != null )
-            {
-                // Painter borders
-                final Insets pi = painter.getMargin ( label );
-                m.top += pi.top;
-                m.bottom += pi.bottom;
-                m.left += ltr ? pi.left : pi.right;
-                m.right += ltr ? pi.right : pi.left;
-            }
-
-            // Installing border
-            label.setBorder ( LafUtils.createWebBorder ( m ) );
+            painter.setDrawShade ( drawShade );
         }
     }
 
@@ -180,57 +199,14 @@ public class WebLabelUI extends BasicLabelUI implements BorderMethods
     }
 
     /**
-     * Returns component painter.
-     *
-     * @return component painter
-     */
-    public Painter getPainter ()
-    {
-        return painter;
-    }
-
-    /**
-     * Sets component painter.
-     *
-     * @param painter component painter
-     */
-    public void setPainter ( final Painter painter )
-    {
-        PainterSupport.uninstallPainter ( label, this.painter );
-        this.painter = painter;
-        PainterSupport.installPainter ( label, this.painter );
-        updateBorder ();
-    }
-
-    /**
-     * Returns whether text shade is displayed or not.
-     *
-     * @return true if text shade is displayed, false otherwise
-     */
-    public boolean isDrawShade ()
-    {
-        return drawShade;
-    }
-
-    /**
-     * Sets whether text shade should be displayed or not.
-     *
-     * @param drawShade whether text shade should be displayed or not
-     */
-    public void setDrawShade ( final boolean drawShade )
-    {
-        this.drawShade = drawShade;
-        label.repaint ();
-    }
-
-    /**
      * Returns text shade color.
      *
      * @return text shade color
      */
     public Color getShadeColor ()
     {
-        return shadeColor;
+        final Color shadeColor = StyleManager.getPainterPropertyValue ( label, "shadeColor" );
+        return shadeColor != null ? shadeColor : WebLabelStyle.shadeColor;
     }
 
     /**
@@ -240,8 +216,7 @@ public class WebLabelUI extends BasicLabelUI implements BorderMethods
      */
     public void setShadeColor ( final Color shadeColor )
     {
-        this.shadeColor = shadeColor;
-        label.repaint ();
+        StyleManager.setCustomPainterProperty ( label, "shadeColor", shadeColor );
     }
 
     /**
@@ -251,7 +226,8 @@ public class WebLabelUI extends BasicLabelUI implements BorderMethods
      */
     public Float getTransparency ()
     {
-        return transparency;
+        final Float transparency = StyleManager.getPainterPropertyValue ( label, "transparency" );
+        return transparency != null ? transparency : WebLabelStyle.transparency;
     }
 
     /**
@@ -261,8 +237,54 @@ public class WebLabelUI extends BasicLabelUI implements BorderMethods
      */
     public void setTransparency ( final Float transparency )
     {
-        this.transparency = transparency;
-        label.repaint ();
+        StyleManager.setCustomPainterProperty ( label, "transparency", transparency );
+    }
+
+    /**
+     * Returns label painter.
+     *
+     * @return label painter
+     */
+    public Painter getPainter ()
+    {
+        return LafUtils.getAdaptedPainter ( painter );
+    }
+
+    /**
+     * Sets label painter.
+     * Pass null to remove label painter.
+     *
+     * @param painter new label painter
+     */
+    public void setPainter ( final Painter painter )
+    {
+        // Creating adaptive painter if required
+        final LabelPainter properPainter = LafUtils.getProperPainter ( painter, LabelPainter.class, AdaptiveLabelPainter.class );
+
+        // Properly updating painter
+        PainterSupport.uninstallPainter ( label, this.painter );
+        final Painter oldPainter = this.painter;
+        this.painter = properPainter;
+        applyPainterSettings ( properPainter );
+        PainterSupport.installPainter ( label, properPainter );
+
+        // Firing painter change event
+        // This is made using reflection because required method is protected within Component class
+        LafUtils.firePainterChanged ( label, oldPainter, properPainter );
+    }
+
+    /**
+     * Applies UI settings to this specific painter.
+     *
+     * @param painter label painter
+     */
+    private void applyPainterSettings ( final LabelPainter painter )
+    {
+        if ( painter != null )
+        {
+            // UI settings
+            painter.setDrawShade ( drawShade );
+        }
     }
 
     /**
@@ -274,69 +296,10 @@ public class WebLabelUI extends BasicLabelUI implements BorderMethods
     @Override
     public void paint ( final Graphics g, final JComponent c )
     {
-        final Graphics2D g2d = ( Graphics2D ) g;
-
-        // Force painter to draw background
         if ( painter != null )
         {
-            painter.paint ( g2d, SwingUtils.size ( c ), c );
+            painter.paint ( ( Graphics2D ) g, SwingUtils.size ( c ), c );
         }
-
-        final Composite oc = LafUtils.setupAlphaComposite ( g2d, transparency, transparency != null );
-        final Map textHints = drawShade ? StyleConstants.defaultTextRenderingHints : StyleConstants.textRenderingHints;
-        final Map oldHints = SwingUtils.setupTextAntialias ( g2d, textHints );
-        super.paint ( g, c );
-        SwingUtils.restoreTextAntialias ( g2d, oldHints );
-        LafUtils.restoreComposite ( g2d, oc, transparency != null );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected void paintEnabledText ( final JLabel l, final Graphics g, final String s, final int textX, final int textY )
-    {
-        if ( drawShade )
-        {
-            g.setColor ( l.getForeground () );
-            paintShadowText ( g, s, textX, textY );
-        }
-        else
-        {
-            super.paintEnabledText ( l, g, s, textX, textY );
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected void paintDisabledText ( final JLabel l, final Graphics g, final String s, final int textX, final int textY )
-    {
-        if ( l.isEnabled () && drawShade )
-        {
-            g.setColor ( l.getBackground ().darker () );
-            paintShadowText ( g, s, textX, textY );
-        }
-        else
-        {
-            super.paintDisabledText ( l, g, s, textX, textY );
-        }
-    }
-
-    /**
-     * Paints custom text shade.
-     *
-     * @param g     graphics context
-     * @param s     text
-     * @param textX text X coordinate
-     * @param textY text Y coordinate
-     */
-    protected void paintShadowText ( final Graphics g, final String s, final int textX, final int textY )
-    {
-        g.translate ( textX, textY );
-        LafUtils.paintTextShadow ( ( Graphics2D ) g, s, shadeColor );
-        g.translate ( -textX, -textY );
     }
 
     /**
@@ -345,14 +308,18 @@ public class WebLabelUI extends BasicLabelUI implements BorderMethods
     @Override
     public Dimension getPreferredSize ( final JComponent c )
     {
-        Dimension ps = super.getPreferredSize ( c );
+        Dimension ps;
         if ( painter != null )
         {
+            ps = painter.getPreferredSize ( c );
             if ( c.getLayout () != null )
             {
                 ps = SwingUtils.max ( ps, c.getLayout ().preferredLayoutSize ( c ) );
             }
-            ps = SwingUtils.max ( ps, painter.getPreferredSize ( c ) );
+        }
+        else
+        {
+            ps = new Dimension ( 0, 0 );
         }
         return ps;
     }

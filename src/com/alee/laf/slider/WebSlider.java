@@ -43,27 +43,27 @@ public class WebSlider extends JSlider implements SettingsMethods, FontMethods<W
         super ();
     }
 
-    public WebSlider ( int orientation )
+    public WebSlider ( final int orientation )
     {
         super ( orientation );
     }
 
-    public WebSlider ( int min, int max )
+    public WebSlider ( final int min, final int max )
     {
         super ( min, max );
     }
 
-    public WebSlider ( int min, int max, int value )
+    public WebSlider ( final int min, final int max, final int value )
     {
         super ( min, max, value );
     }
 
-    public WebSlider ( int orientation, int min, int max, int value )
+    public WebSlider ( final int orientation, final int min, final int max, final int value )
     {
         super ( orientation, min, max, value );
     }
 
-    public WebSlider ( BoundedRangeModel brm )
+    public WebSlider ( final BoundedRangeModel brm )
     {
         super ( brm );
     }
@@ -73,7 +73,7 @@ public class WebSlider extends JSlider implements SettingsMethods, FontMethods<W
         return getWebUI ().isAnimated ();
     }
 
-    public void setAnimated ( boolean animated )
+    public void setAnimated ( final boolean animated )
     {
         getWebUI ().setAnimated ( animated );
     }
@@ -83,7 +83,7 @@ public class WebSlider extends JSlider implements SettingsMethods, FontMethods<W
         return getWebUI ().isRolloverDarkBorderOnly ();
     }
 
-    public void setRolloverDarkBorderOnly ( boolean rolloverDarkBorderOnly )
+    public void setRolloverDarkBorderOnly ( final boolean rolloverDarkBorderOnly )
     {
         getWebUI ().setRolloverDarkBorderOnly ( rolloverDarkBorderOnly );
     }
@@ -93,7 +93,7 @@ public class WebSlider extends JSlider implements SettingsMethods, FontMethods<W
         return getWebUI ().getTrackBgTop ();
     }
 
-    public void setTrackBgTop ( Color trackBgTop )
+    public void setTrackBgTop ( final Color trackBgTop )
     {
         getWebUI ().setTrackBgTop ( trackBgTop );
     }
@@ -103,7 +103,7 @@ public class WebSlider extends JSlider implements SettingsMethods, FontMethods<W
         return getWebUI ().getTrackBgBottom ();
     }
 
-    public void setTrackBgBottom ( Color trackBgBottom )
+    public void setTrackBgBottom ( final Color trackBgBottom )
     {
         getWebUI ().setTrackBgBottom ( trackBgBottom );
     }
@@ -113,7 +113,7 @@ public class WebSlider extends JSlider implements SettingsMethods, FontMethods<W
         return getWebUI ().getTrackHeight ();
     }
 
-    public void setTrackHeight ( int trackHeight )
+    public void setTrackHeight ( final int trackHeight )
     {
         getWebUI ().setTrackHeight ( trackHeight );
     }
@@ -123,7 +123,7 @@ public class WebSlider extends JSlider implements SettingsMethods, FontMethods<W
         return getWebUI ().getTrackRound ();
     }
 
-    public void setTrackRound ( int trackRound )
+    public void setTrackRound ( final int trackRound )
     {
         getWebUI ().setTrackRound ( trackRound );
     }
@@ -133,7 +133,7 @@ public class WebSlider extends JSlider implements SettingsMethods, FontMethods<W
         return getWebUI ().getTrackShadeWidth ();
     }
 
-    public void setTrackShadeWidth ( int trackShadeWidth )
+    public void setTrackShadeWidth ( final int trackShadeWidth )
     {
         getWebUI ().setTrackShadeWidth ( trackShadeWidth );
     }
@@ -143,7 +143,7 @@ public class WebSlider extends JSlider implements SettingsMethods, FontMethods<W
         return getWebUI ().isDrawProgress ();
     }
 
-    public void setDrawProgress ( boolean drawProgress )
+    public void setDrawProgress ( final boolean drawProgress )
     {
         getWebUI ().setDrawProgress ( drawProgress );
     }
@@ -153,7 +153,7 @@ public class WebSlider extends JSlider implements SettingsMethods, FontMethods<W
         return getWebUI ().getProgressRound ();
     }
 
-    public void setProgressRound ( int progressRound )
+    public void setProgressRound ( final int progressRound )
     {
         getWebUI ().setProgressRound ( progressRound );
     }
@@ -163,7 +163,7 @@ public class WebSlider extends JSlider implements SettingsMethods, FontMethods<W
         return getWebUI ().getProgressShadeWidth ();
     }
 
-    public void setProgressShadeWidth ( int progressShadeWidth )
+    public void setProgressShadeWidth ( final int progressShadeWidth )
     {
         getWebUI ().setProgressShadeWidth ( progressShadeWidth );
     }
@@ -173,7 +173,7 @@ public class WebSlider extends JSlider implements SettingsMethods, FontMethods<W
         return getWebUI ().isDrawThumb ();
     }
 
-    public void setDrawThumb ( boolean drawThumb )
+    public void setDrawThumb ( final boolean drawThumb )
     {
         getWebUI ().setDrawThumb ( drawThumb );
     }
@@ -183,7 +183,7 @@ public class WebSlider extends JSlider implements SettingsMethods, FontMethods<W
         return getWebUI ().getThumbBgTop ();
     }
 
-    public void setThumbBgTop ( Color thumbBgTop )
+    public void setThumbBgTop ( final Color thumbBgTop )
     {
         getWebUI ().setThumbBgTop ( thumbBgTop );
     }
@@ -193,7 +193,7 @@ public class WebSlider extends JSlider implements SettingsMethods, FontMethods<W
         return getWebUI ().getThumbBgBottom ();
     }
 
-    public void setThumbBgBottom ( Color thumbBgBottom )
+    public void setThumbBgBottom ( final Color thumbBgBottom )
     {
         getWebUI ().setThumbBgBottom ( thumbBgBottom );
     }
@@ -203,7 +203,7 @@ public class WebSlider extends JSlider implements SettingsMethods, FontMethods<W
         return getWebUI ().getThumbWidth ();
     }
 
-    public void setThumbWidth ( int thumbWidth )
+    public void setThumbWidth ( final int thumbWidth )
     {
         getWebUI ().setThumbWidth ( thumbWidth );
     }
@@ -213,7 +213,7 @@ public class WebSlider extends JSlider implements SettingsMethods, FontMethods<W
         return getWebUI ().getThumbHeight ();
     }
 
-    public void setThumbHeight ( int thumbHeight )
+    public void setThumbHeight ( final int thumbHeight )
     {
         getWebUI ().setThumbHeight ( thumbHeight );
     }
@@ -223,7 +223,7 @@ public class WebSlider extends JSlider implements SettingsMethods, FontMethods<W
         return getWebUI ().getThumbRound ();
     }
 
-    public void setThumbRound ( int thumbRound )
+    public void setThumbRound ( final int thumbRound )
     {
         getWebUI ().setThumbRound ( thumbRound );
     }
@@ -233,7 +233,7 @@ public class WebSlider extends JSlider implements SettingsMethods, FontMethods<W
         return getWebUI ().getThumbShadeWidth ();
     }
 
-    public void setThumbShadeWidth ( int thumbShadeWidth )
+    public void setThumbShadeWidth ( final int thumbShadeWidth )
     {
         getWebUI ().setThumbShadeWidth ( thumbShadeWidth );
     }
@@ -243,7 +243,7 @@ public class WebSlider extends JSlider implements SettingsMethods, FontMethods<W
         return getWebUI ().isAngledThumb ();
     }
 
-    public void setAngledThumb ( boolean angledThumb )
+    public void setAngledThumb ( final boolean angledThumb )
     {
         getWebUI ().setAngledThumb ( angledThumb );
     }
@@ -253,7 +253,7 @@ public class WebSlider extends JSlider implements SettingsMethods, FontMethods<W
         return getWebUI ().isSharpThumbAngle ();
     }
 
-    public void setSharpThumbAngle ( boolean sharpThumbAngle )
+    public void setSharpThumbAngle ( final boolean sharpThumbAngle )
     {
         getWebUI ().setSharpThumbAngle ( sharpThumbAngle );
     }
@@ -263,7 +263,7 @@ public class WebSlider extends JSlider implements SettingsMethods, FontMethods<W
         return getWebUI ().getThumbAngleLength ();
     }
 
-    public void setThumbAngleLength ( int thumbAngleLength )
+    public void setThumbAngleLength ( final int thumbAngleLength )
     {
         getWebUI ().setThumbAngleLength ( thumbAngleLength );
     }
@@ -273,18 +273,18 @@ public class WebSlider extends JSlider implements SettingsMethods, FontMethods<W
         return getWebUI ().getMargin ();
     }
 
-    public void setMargin ( Insets margin )
+    public void setMargin ( final Insets margin )
     {
         getWebUI ().setMargin ( margin );
     }
 
-    public WebSlider setMargin ( int top, int left, int bottom, int right )
+    public WebSlider setMargin ( final int top, final int left, final int bottom, final int right )
     {
         setMargin ( new Insets ( top, left, bottom, right ) );
         return this;
     }
 
-    public WebSlider setMargin ( int spacing )
+    public WebSlider setMargin ( final int spacing )
     {
         return setMargin ( spacing, spacing, spacing, spacing );
     }
@@ -294,7 +294,7 @@ public class WebSlider extends JSlider implements SettingsMethods, FontMethods<W
         return getWebUI ().getPainter ();
     }
 
-    public WebSlider setPainter ( Painter painter )
+    public WebSlider setPainter ( final Painter painter )
     {
         getWebUI ().setPainter ( painter );
         return this;
@@ -314,7 +314,7 @@ public class WebSlider extends JSlider implements SettingsMethods, FontMethods<W
             {
                 setUI ( ( WebSliderUI ) ReflectUtils.createInstance ( WebLookAndFeel.sliderUI, this ) );
             }
-            catch ( Throwable e )
+            catch ( final Throwable e )
             {
                 e.printStackTrace ();
                 setUI ( new WebSliderUI ( this ) );
@@ -334,7 +334,7 @@ public class WebSlider extends JSlider implements SettingsMethods, FontMethods<W
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String key )
+    public void registerSettings ( final String key )
     {
         SettingsManager.registerComponent ( this, key );
     }
@@ -343,7 +343,7 @@ public class WebSlider extends JSlider implements SettingsMethods, FontMethods<W
      * {@inheritDoc}
      */
     @Override
-    public <T extends DefaultValue> void registerSettings ( String key, Class<T> defaultValueClass )
+    public <T extends DefaultValue> void registerSettings ( final String key, final Class<T> defaultValueClass )
     {
         SettingsManager.registerComponent ( this, key, defaultValueClass );
     }
@@ -352,7 +352,7 @@ public class WebSlider extends JSlider implements SettingsMethods, FontMethods<W
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String key, Object defaultValue )
+    public void registerSettings ( final String key, final Object defaultValue )
     {
         SettingsManager.registerComponent ( this, key, defaultValue );
     }
@@ -361,7 +361,7 @@ public class WebSlider extends JSlider implements SettingsMethods, FontMethods<W
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String group, String key )
+    public void registerSettings ( final String group, final String key )
     {
         SettingsManager.registerComponent ( this, group, key );
     }
@@ -370,7 +370,7 @@ public class WebSlider extends JSlider implements SettingsMethods, FontMethods<W
      * {@inheritDoc}
      */
     @Override
-    public <T extends DefaultValue> void registerSettings ( String group, String key, Class<T> defaultValueClass )
+    public <T extends DefaultValue> void registerSettings ( final String group, final String key, final Class<T> defaultValueClass )
     {
         SettingsManager.registerComponent ( this, group, key, defaultValueClass );
     }
@@ -379,7 +379,7 @@ public class WebSlider extends JSlider implements SettingsMethods, FontMethods<W
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String group, String key, Object defaultValue )
+    public void registerSettings ( final String group, final String key, final Object defaultValue )
     {
         SettingsManager.registerComponent ( this, group, key, defaultValue );
     }
@@ -388,7 +388,7 @@ public class WebSlider extends JSlider implements SettingsMethods, FontMethods<W
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String key, boolean loadInitialSettings, boolean applySettingsChanges )
+    public void registerSettings ( final String key, final boolean loadInitialSettings, final boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, key, loadInitialSettings, applySettingsChanges );
     }
@@ -397,8 +397,8 @@ public class WebSlider extends JSlider implements SettingsMethods, FontMethods<W
      * {@inheritDoc}
      */
     @Override
-    public <T extends DefaultValue> void registerSettings ( String key, Class<T> defaultValueClass, boolean loadInitialSettings,
-                                                            boolean applySettingsChanges )
+    public <T extends DefaultValue> void registerSettings ( final String key, final Class<T> defaultValueClass,
+                                                            final boolean loadInitialSettings, final boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, key, defaultValueClass, loadInitialSettings, applySettingsChanges );
     }
@@ -407,7 +407,8 @@ public class WebSlider extends JSlider implements SettingsMethods, FontMethods<W
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String key, Object defaultValue, boolean loadInitialSettings, boolean applySettingsChanges )
+    public void registerSettings ( final String key, final Object defaultValue, final boolean loadInitialSettings,
+                                   final boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, key, defaultValue, loadInitialSettings, applySettingsChanges );
     }
@@ -416,8 +417,8 @@ public class WebSlider extends JSlider implements SettingsMethods, FontMethods<W
      * {@inheritDoc}
      */
     @Override
-    public <T extends DefaultValue> void registerSettings ( String group, String key, Class<T> defaultValueClass,
-                                                            boolean loadInitialSettings, boolean applySettingsChanges )
+    public <T extends DefaultValue> void registerSettings ( final String group, final String key, final Class<T> defaultValueClass,
+                                                            final boolean loadInitialSettings, final boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, group, key, defaultValueClass, loadInitialSettings, applySettingsChanges );
     }
@@ -426,8 +427,8 @@ public class WebSlider extends JSlider implements SettingsMethods, FontMethods<W
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String group, String key, Object defaultValue, boolean loadInitialSettings,
-                                   boolean applySettingsChanges )
+    public void registerSettings ( final String group, final String key, final Object defaultValue, final boolean loadInitialSettings,
+                                   final boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, group, key, defaultValue, loadInitialSettings, applySettingsChanges );
     }
@@ -436,7 +437,7 @@ public class WebSlider extends JSlider implements SettingsMethods, FontMethods<W
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( SettingsProcessor settingsProcessor )
+    public void registerSettings ( final SettingsProcessor settingsProcessor )
     {
         SettingsManager.registerComponent ( this, settingsProcessor );
     }
@@ -485,7 +486,7 @@ public class WebSlider extends JSlider implements SettingsMethods, FontMethods<W
      * {@inheritDoc}
      */
     @Override
-    public WebSlider setPlainFont ( boolean apply )
+    public WebSlider setPlainFont ( final boolean apply )
     {
         return SwingUtils.setPlainFont ( this, apply );
     }
@@ -512,7 +513,7 @@ public class WebSlider extends JSlider implements SettingsMethods, FontMethods<W
      * {@inheritDoc}
      */
     @Override
-    public WebSlider setBoldFont ( boolean apply )
+    public WebSlider setBoldFont ( final boolean apply )
     {
         return SwingUtils.setBoldFont ( this, apply );
     }
@@ -539,7 +540,7 @@ public class WebSlider extends JSlider implements SettingsMethods, FontMethods<W
      * {@inheritDoc}
      */
     @Override
-    public WebSlider setItalicFont ( boolean apply )
+    public WebSlider setItalicFont ( final boolean apply )
     {
         return SwingUtils.setItalicFont ( this, apply );
     }
@@ -557,7 +558,7 @@ public class WebSlider extends JSlider implements SettingsMethods, FontMethods<W
      * {@inheritDoc}
      */
     @Override
-    public WebSlider setFontStyle ( boolean bold, boolean italic )
+    public WebSlider setFontStyle ( final boolean bold, final boolean italic )
     {
         return SwingUtils.setFontStyle ( this, bold, italic );
     }
@@ -566,7 +567,7 @@ public class WebSlider extends JSlider implements SettingsMethods, FontMethods<W
      * {@inheritDoc}
      */
     @Override
-    public WebSlider setFontStyle ( int style )
+    public WebSlider setFontStyle ( final int style )
     {
         return SwingUtils.setFontStyle ( this, style );
     }
@@ -575,7 +576,7 @@ public class WebSlider extends JSlider implements SettingsMethods, FontMethods<W
      * {@inheritDoc}
      */
     @Override
-    public WebSlider setFontSize ( int fontSize )
+    public WebSlider setFontSize ( final int fontSize )
     {
         return SwingUtils.setFontSize ( this, fontSize );
     }
@@ -584,7 +585,7 @@ public class WebSlider extends JSlider implements SettingsMethods, FontMethods<W
      * {@inheritDoc}
      */
     @Override
-    public WebSlider changeFontSize ( int change )
+    public WebSlider changeFontSize ( final int change )
     {
         return SwingUtils.changeFontSize ( this, change );
     }
@@ -602,7 +603,7 @@ public class WebSlider extends JSlider implements SettingsMethods, FontMethods<W
      * {@inheritDoc}
      */
     @Override
-    public WebSlider setFontSizeAndStyle ( int fontSize, boolean bold, boolean italic )
+    public WebSlider setFontSizeAndStyle ( final int fontSize, final boolean bold, final boolean italic )
     {
         return SwingUtils.setFontSizeAndStyle ( this, fontSize, bold, italic );
     }
@@ -611,7 +612,7 @@ public class WebSlider extends JSlider implements SettingsMethods, FontMethods<W
      * {@inheritDoc}
      */
     @Override
-    public WebSlider setFontSizeAndStyle ( int fontSize, int style )
+    public WebSlider setFontSizeAndStyle ( final int fontSize, final int style )
     {
         return SwingUtils.setFontSizeAndStyle ( this, fontSize, style );
     }
@@ -620,7 +621,7 @@ public class WebSlider extends JSlider implements SettingsMethods, FontMethods<W
      * {@inheritDoc}
      */
     @Override
-    public WebSlider setFontName ( String fontName )
+    public WebSlider setFontName ( final String fontName )
     {
         return SwingUtils.setFontName ( this, fontName );
     }
@@ -651,7 +652,7 @@ public class WebSlider extends JSlider implements SettingsMethods, FontMethods<W
      * {@inheritDoc}
      */
     @Override
-    public WebSlider setPreferredWidth ( int preferredWidth )
+    public WebSlider setPreferredWidth ( final int preferredWidth )
     {
         return SizeUtils.setPreferredWidth ( this, preferredWidth );
     }
@@ -669,7 +670,7 @@ public class WebSlider extends JSlider implements SettingsMethods, FontMethods<W
      * {@inheritDoc}
      */
     @Override
-    public WebSlider setPreferredHeight ( int preferredHeight )
+    public WebSlider setPreferredHeight ( final int preferredHeight )
     {
         return SizeUtils.setPreferredHeight ( this, preferredHeight );
     }
@@ -687,7 +688,7 @@ public class WebSlider extends JSlider implements SettingsMethods, FontMethods<W
      * {@inheritDoc}
      */
     @Override
-    public WebSlider setMinimumWidth ( int minimumWidth )
+    public WebSlider setMinimumWidth ( final int minimumWidth )
     {
         return SizeUtils.setMinimumWidth ( this, minimumWidth );
     }
@@ -705,7 +706,7 @@ public class WebSlider extends JSlider implements SettingsMethods, FontMethods<W
      * {@inheritDoc}
      */
     @Override
-    public WebSlider setMinimumHeight ( int minimumHeight )
+    public WebSlider setMinimumHeight ( final int minimumHeight )
     {
         return SizeUtils.setMinimumHeight ( this, minimumHeight );
     }

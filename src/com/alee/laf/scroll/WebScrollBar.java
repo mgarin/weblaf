@@ -17,7 +17,9 @@
 
 package com.alee.laf.scroll;
 
+import com.alee.extended.painter.Painter;
 import com.alee.laf.WebLookAndFeel;
+import com.alee.managers.style.StyleManager;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SizeUtils;
 import com.alee.utils.laf.Styleable;
@@ -162,9 +164,9 @@ public class WebScrollBar extends JScrollBar implements Styleable, SizeMethods<W
      *
      * @return scroll bar painter
      */
-    public ScrollBarPainter getPainter ()
+    public Painter getPainter ()
     {
-        return getWebUI ().getPainter ();
+        return StyleManager.getPainter ( this );
     }
 
     /**
@@ -174,9 +176,9 @@ public class WebScrollBar extends JScrollBar implements Styleable, SizeMethods<W
      * @param painter new scroll bar painter
      * @return scroll bar
      */
-    public WebScrollBar setPainter ( final ScrollBarPainter painter )
+    public WebScrollBar setPainter ( final Painter painter )
     {
-        getWebUI ().setPainter ( painter );
+        StyleManager.setCustomPainter ( this, painter );
         return this;
     }
 
@@ -186,7 +188,7 @@ public class WebScrollBar extends JScrollBar implements Styleable, SizeMethods<W
      *
      * @return decrease button painter
      */
-    public ScrollBarButtonPainter getDecreaseButtonPainter ()
+    public Painter getDecreaseButtonPainter ()
     {
         return getWebUI ().getDecreaseButtonPainter ();
     }
@@ -198,7 +200,7 @@ public class WebScrollBar extends JScrollBar implements Styleable, SizeMethods<W
      * @param painter new decrease button painter
      * @return scroll bar
      */
-    public WebScrollBar setDecreaseButtonPainter ( final ScrollBarButtonPainter painter )
+    public WebScrollBar setDecreaseButtonPainter ( final Painter painter )
     {
         getWebUI ().setDecreaseButtonPainter ( painter );
         return this;
@@ -210,7 +212,7 @@ public class WebScrollBar extends JScrollBar implements Styleable, SizeMethods<W
      *
      * @return increase button painter
      */
-    public ScrollBarButtonPainter getIncreaseButtonPainter ()
+    public Painter getIncreaseButtonPainter ()
     {
         return getWebUI ().getIncreaseButtonPainter ();
     }
@@ -222,7 +224,7 @@ public class WebScrollBar extends JScrollBar implements Styleable, SizeMethods<W
      * @param painter new increase button painter
      * @return scroll bar
      */
-    public WebScrollBar setIncreaseButtonPainter ( final ScrollBarButtonPainter painter )
+    public WebScrollBar setIncreaseButtonPainter ( final Painter painter )
     {
         getWebUI ().setIncreaseButtonPainter ( painter );
         return this;

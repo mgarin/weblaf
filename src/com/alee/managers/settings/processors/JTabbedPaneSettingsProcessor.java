@@ -42,7 +42,7 @@ public class JTabbedPaneSettingsProcessor extends SettingsProcessor<JTabbedPane,
      *
      * @param data SettingsProcessorData
      */
-    public JTabbedPaneSettingsProcessor ( SettingsProcessorData data )
+    public JTabbedPaneSettingsProcessor ( final SettingsProcessorData data )
     {
         super ( data );
     }
@@ -51,12 +51,12 @@ public class JTabbedPaneSettingsProcessor extends SettingsProcessor<JTabbedPane,
      * {@inheritDoc}
      */
     @Override
-    protected void doInit ( JTabbedPane component )
+    protected void doInit ( final JTabbedPane component )
     {
         listener = new ChangeListener ()
         {
             @Override
-            public void stateChanged ( ChangeEvent e )
+            public void stateChanged ( final ChangeEvent e )
             {
                 save ();
             }
@@ -68,7 +68,7 @@ public class JTabbedPaneSettingsProcessor extends SettingsProcessor<JTabbedPane,
      * {@inheritDoc}
      */
     @Override
-    protected void doDestroy ( JTabbedPane component )
+    protected void doDestroy ( final JTabbedPane component )
     {
         component.removeChangeListener ( listener );
         listener = null;
@@ -78,7 +78,7 @@ public class JTabbedPaneSettingsProcessor extends SettingsProcessor<JTabbedPane,
      * {@inheritDoc}
      */
     @Override
-    protected void doLoad ( JTabbedPane component )
+    protected void doLoad ( final JTabbedPane component )
     {
         final Integer index = loadValue ();
         if ( index != null && index >= 0 && component.getTabCount () > index && index != component.getSelectedIndex () )
@@ -91,7 +91,7 @@ public class JTabbedPaneSettingsProcessor extends SettingsProcessor<JTabbedPane,
      * {@inheritDoc}
      */
     @Override
-    protected void doSave ( JTabbedPane component )
+    protected void doSave ( final JTabbedPane component )
     {
         saveValue ( component.getSelectedIndex () );
     }

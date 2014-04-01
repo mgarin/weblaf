@@ -26,8 +26,9 @@ import javax.swing.*;
 import java.util.List;
 
 /**
- * This theme is used by StyleManager for cases when the whole theme has only XML description.
- * It will do the stuff required to apply
+ * This theme is used by StyleManager for cases when theme settings are stored within XML.
+ * To use it simply specify XML location relative to your skin class or provide SkinInfo object.
+ * All settings and painters will be loaded and applied by this skin automatically when it is used.
  *
  * @author Mikle Garin
  * @see com.alee.managers.style.skin.WebLafSkin

@@ -19,7 +19,7 @@ package com.alee.utils.swing;
 
 import com.alee.extended.filefilter.AbstractFileFilter;
 import com.alee.laf.combobox.WebComboBoxCellRenderer;
-import com.alee.laf.label.WebLabel;
+import com.alee.laf.combobox.WebComboBoxElement;
 
 import javax.swing.*;
 import java.awt.*;
@@ -34,22 +34,22 @@ public class DefaultFileFilterListCellRenderer extends WebComboBoxCellRenderer
 {
     /**
      * Constructs a default file filter cell renderer.
-     *
-     * @param comboBox chooser combobox
      */
-    public DefaultFileFilterListCellRenderer ( JComboBox comboBox )
+    public DefaultFileFilterListCellRenderer ()
     {
-        super ( comboBox );
+        super ();
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Component getListCellRendererComponent ( JList list, Object value, int index, boolean isSelected, boolean cellHasFocus )
+    public Component getListCellRendererComponent ( final JList list, final Object value, final int index, final boolean isSelected,
+                                                    final boolean cellHasFocus )
     {
         final AbstractFileFilter abstractFileFilter = ( AbstractFileFilter ) value;
-        final WebLabel renderer = ( WebLabel ) super.getListCellRendererComponent ( list, "", index, isSelected, cellHasFocus );
+        final WebComboBoxElement renderer =
+                ( WebComboBoxElement ) super.getListCellRendererComponent ( list, "", index, isSelected, cellHasFocus );
         renderer.setIcon ( abstractFileFilter.getIcon () );
         renderer.setText ( abstractFileFilter.getDescription () );
         return renderer;

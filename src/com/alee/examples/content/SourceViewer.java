@@ -553,7 +553,7 @@ public class SourceViewer extends WebPanel
 
         theme = new WebComboBox ( EditorTheme.values () );
         theme.registerSettings ( SETTINGS_PREFIX + "theme", 0 );
-        theme.setRenderer ( new WebComboBoxCellRenderer ( theme )
+        theme.setRenderer ( new WebComboBoxCellRenderer ()
         {
             @Override
             public Component getListCellRendererComponent ( final JList list, final Object value, final int index, final boolean isSelected,
@@ -819,8 +819,6 @@ public class SourceViewer extends WebPanel
                 }
             }
         }
-
-        classPath.updateBreadcrumb ();
 
         if ( openInEditor && lastEntry != null )
         {

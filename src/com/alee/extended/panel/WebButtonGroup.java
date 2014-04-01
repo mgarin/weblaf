@@ -28,6 +28,8 @@ import com.alee.utils.swing.UnselectableButtonGroup;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ContainerAdapter;
+import java.awt.event.ContainerEvent;
 
 /**
  * This component allows quick visual web-styled buttons grouping. It also contains all UI methods from the buttons.
@@ -39,11 +41,15 @@ import java.awt.*;
 public class WebButtonGroup extends WebPanel implements SwingConstants
 {
     /**
-     * todo 1. Fix all "add" methods so buttons could be added dynamically
+     * Settings.
      */
+    protected int orientation = -1;
+    protected boolean group = false;
 
-    private int orientation;
-    private UnselectableButtonGroup buttonGroup;
+    /**
+     * Runtime variables.
+     */
+    protected UnselectableButtonGroup buttonGroup;
 
     public WebButtonGroup ( final JComponent... component )
     {
@@ -63,46 +69,46 @@ public class WebButtonGroup extends WebPanel implements SwingConstants
     public WebButtonGroup ( final int orientation, final boolean group, final JComponent... components )
     {
         super ();
+
+        this.group = group;
+
+        // Default button group settings
         putClientProperty ( SwingUtils.HANDLES_ENABLE_STATE, true );
-
-        // Transparent by default
         setOpaque ( false );
-
-        // Update orientation and layout
         setOrientation ( orientation );
 
-        // Adding component to panel   
-        if ( components != null )
+        // Container listener
+        addContainerListener ( new ContainerAdapter ()
         {
-            for ( final JComponent component : components )
+            @Override
+            public void componentAdded ( final ContainerEvent e )
             {
-                if ( component != null )
+                // Group added button(s)
+                if ( group )
                 {
-                    add ( component );
-                    if ( group )
-                    {
-                        if ( isButton ( component ) )
-                        {
-                            getButtonGroup ().add ( ( AbstractButton ) component );
-                        }
-                        else if ( isWebButtonGroup ( component ) )
-                        {
-                            final WebButtonGroup innerGroup = ( WebButtonGroup ) component;
-                            for ( final Component innerComponent : innerGroup.getComponents () )
-                            {
-                                if ( isButton ( innerComponent ) )
-                                {
-                                    getButtonGroup ().add ( ( AbstractButton ) innerComponent );
-                                }
-                            }
-                        }
-                    }
+                    groupButtons ( e.getComponent () );
                 }
-            }
-        }
 
-        // Updating UIs
-        updateButtons ();
+                // Updating buttons styling
+                updateButtonsStyling ();
+            }
+
+            @Override
+            public void componentRemoved ( final ContainerEvent e )
+            {
+                // Ungroup removed button(s)
+                if ( group )
+                {
+                    ungroupButtons ( e.getComponent () );
+                }
+
+                // Updating buttons styling
+                updateButtonsStyling ();
+            }
+        } );
+
+        // Adding component to panel
+        add ( components );
     }
 
     public WebButton getWebButton ( final int index )
@@ -127,6 +133,27 @@ public class WebButtonGroup extends WebPanel implements SwingConstants
         return buttonGroup.getSelection () != null && buttonGroup.getSelection ().isSelected ();
     }
 
+    public boolean isGroup ()
+    {
+        return group;
+    }
+
+    public void setGroup ( final boolean group )
+    {
+        if ( this.group != group )
+        {
+            this.group = group;
+            if ( group )
+            {
+                groupButtons ( this );
+            }
+            else
+            {
+                ungroupButtons ( this );
+            }
+        }
+    }
+
     public UnselectableButtonGroup getButtonGroup ()
     {
         if ( buttonGroup == null )
@@ -135,6 +162,38 @@ public class WebButtonGroup extends WebPanel implements SwingConstants
             buttonGroup.setUnselectable ( false );
         }
         return buttonGroup;
+    }
+
+    protected void groupButtons ( final Component component )
+    {
+        if ( isButton ( component ) )
+        {
+            getButtonGroup ().add ( ( AbstractButton ) component );
+        }
+        else if ( isWebButtonGroup ( component ) )
+        {
+            final WebButtonGroup innerGroup = ( WebButtonGroup ) component;
+            for ( final Component innerComponent : innerGroup.getComponents () )
+            {
+                groupButtons ( innerComponent );
+            }
+        }
+    }
+
+    protected void ungroupButtons ( final Component component )
+    {
+        if ( isButton ( component ) )
+        {
+            getButtonGroup ().remove ( ( AbstractButton ) component );
+        }
+        else if ( isWebButtonGroup ( component ) )
+        {
+            final WebButtonGroup innerGroup = ( WebButtonGroup ) component;
+            for ( final Component innerComponent : innerGroup.getComponents () )
+            {
+                ungroupButtons ( innerComponent );
+            }
+        }
     }
 
     public boolean isUnselectable ()
@@ -154,18 +213,20 @@ public class WebButtonGroup extends WebPanel implements SwingConstants
 
     public void setOrientation ( final int orientation )
     {
-        this.orientation = orientation;
+        if ( this.orientation != orientation )
+        {
+            this.orientation = orientation;
 
-        // Updating layout
-        final boolean horizontal = orientation == HORIZONTAL;
-        setLayout (
-                horizontal ? new HorizontalFlowLayout ( 0, false ) : new VerticalFlowLayout ( VerticalFlowLayout.TOP, 0, 0, true, false ) );
+            // Updating layout
+            setLayout ( orientation == HORIZONTAL ? new HorizontalFlowLayout ( 0, false ) :
+                    new VerticalFlowLayout ( VerticalFlowLayout.TOP, 0, 0, true, false ) );
 
-        // Updating UIs
-        updateButtons ();
+            // Updating buttons styling
+            updateButtonsStyling ();
+        }
     }
 
-    public void updateButtons ()
+    protected void updateButtonsStyling ()
     {
         // Updating button UI's
         final Component[] components = getComponents ();
@@ -194,7 +255,8 @@ public class WebButtonGroup extends WebPanel implements SwingConstants
                 }
 
                 // Hiding right side
-                if ( i < components.length - 1 && isWebStyledButton ( components[ i + 1 ] ) )
+                if ( i < components.length - 1 &&
+                        ( isWebStyledButton ( components[ i + 1 ] ) || isWebButtonGroup ( components[ i + 1 ] ) ) )
                 {
                     if ( horizontal )
                     {
@@ -238,7 +300,8 @@ public class WebButtonGroup extends WebPanel implements SwingConstants
                 }
 
                 // Hiding right side
-                if ( i < components.length - 1 && isWebButtonGroup ( components[ i + 1 ] ) )
+                if ( i < components.length - 1 &&
+                        ( isWebStyledButton ( components[ i + 1 ] ) || isWebButtonGroup ( components[ i + 1 ] ) ) )
                 {
                     for ( final Component component : wbg.getComponents () )
                     {
@@ -268,45 +331,17 @@ public class WebButtonGroup extends WebPanel implements SwingConstants
         }
     }
 
-    //    private void restoreSides ( final boolean horizontal, final WebButtonUI ui )
-    //    {
-    //        if ( getParent () instanceof WebButtonGroup )
-    //        {
-    //            // Ignore affected by parent sides
-    //            if ( horizontal )
-    //            {
-    //                ui.setPaintLeft ( true );
-    //                ui.setDrawLeftLine ( false );
-    //                ui.setPaintRight ( true );
-    //                ui.setDrawRightLine ( false );
-    //            }
-    //            else
-    //            {
-    //                ui.setPaintTop ( true );
-    //                ui.setDrawTopLine ( false );
-    //                ui.setPaintBottom ( true );
-    //                ui.setDrawBottomLine ( false );
-    //            }
-    //        }
-    //        else
-    //        {
-    //            // Restore all sides
-    //            ui.setPaintSides ( true, true, true, true );
-    //            ui.setDrawLines ( false, false, false, false );
-    //        }
-    //    }
-
-    private boolean isWebStyledButton ( final Component component )
-    {
-        return isButton ( component ) && ( ( AbstractButton ) component ).getUI () instanceof WebButtonUI;
-    }
-
-    private boolean isButton ( final Component component )
+    protected boolean isButton ( final Component component )
     {
         return component instanceof AbstractButton;
     }
 
-    private boolean isWebButtonGroup ( final Component component )
+    protected boolean isWebStyledButton ( final Component component )
+    {
+        return isButton ( component ) && ( ( AbstractButton ) component ).getUI () instanceof WebButtonUI;
+    }
+
+    protected boolean isWebButtonGroup ( final Component component )
     {
         return component instanceof WebButtonGroup;
     }
@@ -320,7 +355,7 @@ public class WebButtonGroup extends WebPanel implements SwingConstants
         setFocusable ( WebButtonGroup.this, focusable );
     }
 
-    private void setFocusable ( final WebButtonGroup group, final boolean focusable )
+    protected void setFocusable ( final WebButtonGroup group, final boolean focusable )
     {
         for ( final Component component : group.getComponents () )
         {
@@ -340,7 +375,7 @@ public class WebButtonGroup extends WebPanel implements SwingConstants
         setForeground ( WebButtonGroup.this, foreground );
     }
 
-    private void setForeground ( final WebButtonGroup group, final Color foreground )
+    protected void setForeground ( final WebButtonGroup group, final Color foreground )
     {
         for ( final Component component : group.getComponents () )
         {
@@ -360,7 +395,7 @@ public class WebButtonGroup extends WebPanel implements SwingConstants
         setSelectedForeground ( WebButtonGroup.this, selectedForeground );
     }
 
-    private void setSelectedForeground ( final WebButtonGroup group, final Color selectedForeground )
+    protected void setSelectedForeground ( final WebButtonGroup group, final Color selectedForeground )
     {
         for ( final Component component : group.getComponents () )
         {
@@ -381,7 +416,7 @@ public class WebButtonGroup extends WebPanel implements SwingConstants
         setDrawTop ( WebButtonGroup.this, drawTop );
     }
 
-    private void setDrawTop ( final WebButtonGroup group, final boolean drawTop )
+    protected void setDrawTop ( final WebButtonGroup group, final boolean drawTop )
     {
         if ( orientation == HORIZONTAL )
         {
@@ -396,7 +431,7 @@ public class WebButtonGroup extends WebPanel implements SwingConstants
         }
     }
 
-    private void setDrawTop ( final Component component, final boolean drawTop )
+    protected void setDrawTop ( final Component component, final boolean drawTop )
     {
         if ( isWebStyledButton ( component ) )
         {
@@ -414,7 +449,7 @@ public class WebButtonGroup extends WebPanel implements SwingConstants
         setDrawLeft ( WebButtonGroup.this, drawLeft );
     }
 
-    private void setDrawLeft ( final WebButtonGroup group, final boolean drawLeft )
+    protected void setDrawLeft ( final WebButtonGroup group, final boolean drawLeft )
     {
         if ( orientation == VERTICAL )
         {
@@ -429,7 +464,7 @@ public class WebButtonGroup extends WebPanel implements SwingConstants
         }
     }
 
-    private void setDrawLeft ( final Component component, final boolean drawLeft )
+    protected void setDrawLeft ( final Component component, final boolean drawLeft )
     {
         if ( isWebStyledButton ( component ) )
         {
@@ -447,7 +482,7 @@ public class WebButtonGroup extends WebPanel implements SwingConstants
         setDrawBottom ( WebButtonGroup.this, drawBottom );
     }
 
-    private void setDrawBottom ( final WebButtonGroup group, final boolean drawBottom )
+    protected void setDrawBottom ( final WebButtonGroup group, final boolean drawBottom )
     {
         if ( orientation == HORIZONTAL )
         {
@@ -462,7 +497,7 @@ public class WebButtonGroup extends WebPanel implements SwingConstants
         }
     }
 
-    private void setDrawBottom ( final Component component, final boolean drawBottom )
+    protected void setDrawBottom ( final Component component, final boolean drawBottom )
     {
         if ( isWebStyledButton ( component ) )
         {
@@ -480,7 +515,7 @@ public class WebButtonGroup extends WebPanel implements SwingConstants
         setDrawRight ( WebButtonGroup.this, drawRight );
     }
 
-    private void setDrawRight ( final WebButtonGroup group, final boolean drawRight )
+    protected void setDrawRight ( final WebButtonGroup group, final boolean drawRight )
     {
         if ( orientation == VERTICAL )
         {
@@ -495,7 +530,7 @@ public class WebButtonGroup extends WebPanel implements SwingConstants
         }
     }
 
-    private void setDrawRight ( final Component component, final boolean drawRight )
+    protected void setDrawRight ( final Component component, final boolean drawRight )
     {
         if ( isWebStyledButton ( component ) )
         {
@@ -521,7 +556,7 @@ public class WebButtonGroup extends WebPanel implements SwingConstants
         setRolloverDarkBorderOnly ( WebButtonGroup.this, rolloverDarkBorderOnly );
     }
 
-    private void setRolloverDarkBorderOnly ( final WebButtonGroup group, final boolean rolloverDarkBorderOnly )
+    protected void setRolloverDarkBorderOnly ( final WebButtonGroup group, final boolean rolloverDarkBorderOnly )
     {
         for ( final Component component : group.getComponents () )
         {
@@ -542,7 +577,7 @@ public class WebButtonGroup extends WebPanel implements SwingConstants
         setRolloverShine ( WebButtonGroup.this, rolloverShine );
     }
 
-    private void setRolloverShine ( final WebButtonGroup group, final boolean rolloverShine )
+    protected void setRolloverShine ( final WebButtonGroup group, final boolean rolloverShine )
     {
         for ( final Component component : group.getComponents () )
         {
@@ -563,7 +598,7 @@ public class WebButtonGroup extends WebPanel implements SwingConstants
         setShineColor ( WebButtonGroup.this, shineColor );
     }
 
-    private void setShineColor ( final WebButtonGroup group, final Color shineColor )
+    protected void setShineColor ( final WebButtonGroup group, final Color shineColor )
     {
         for ( final Component component : group.getComponents () )
         {
@@ -584,7 +619,7 @@ public class WebButtonGroup extends WebPanel implements SwingConstants
         setRound ( WebButtonGroup.this, round );
     }
 
-    private void setRound ( final WebButtonGroup group, final int round )
+    protected void setRound ( final WebButtonGroup group, final int round )
     {
         for ( final Component component : group.getComponents () )
         {
@@ -605,7 +640,7 @@ public class WebButtonGroup extends WebPanel implements SwingConstants
         setRolloverShadeOnly ( WebButtonGroup.this, rolloverShadeOnly );
     }
 
-    private void setRolloverShadeOnly ( final WebButtonGroup group, final boolean rolloverShadeOnly )
+    protected void setRolloverShadeOnly ( final WebButtonGroup group, final boolean rolloverShadeOnly )
     {
         for ( final Component component : group.getComponents () )
         {
@@ -626,7 +661,7 @@ public class WebButtonGroup extends WebPanel implements SwingConstants
         setShadeWidth ( WebButtonGroup.this, shadeWidth );
     }
 
-    private void setShadeWidth ( final WebButtonGroup group, final int shadeWidth )
+    protected void setShadeWidth ( final WebButtonGroup group, final int shadeWidth )
     {
         for ( final Component component : group.getComponents () )
         {
@@ -647,7 +682,7 @@ public class WebButtonGroup extends WebPanel implements SwingConstants
         setShadeColor ( WebButtonGroup.this, shadeColor );
     }
 
-    private void setShadeColor ( final WebButtonGroup group, final Color shadeColor )
+    protected void setShadeColor ( final WebButtonGroup group, final Color shadeColor )
     {
         for ( final Component component : group.getComponents () )
         {
@@ -668,7 +703,7 @@ public class WebButtonGroup extends WebPanel implements SwingConstants
         setInnerShadeWidth ( WebButtonGroup.this, innerShadeWidth );
     }
 
-    private void setInnerShadeWidth ( final WebButtonGroup group, final int innerShadeWidth )
+    protected void setInnerShadeWidth ( final WebButtonGroup group, final int innerShadeWidth )
     {
         for ( final Component component : group.getComponents () )
         {
@@ -689,7 +724,7 @@ public class WebButtonGroup extends WebPanel implements SwingConstants
         setInnerShadeColor ( WebButtonGroup.this, innerShadeColor );
     }
 
-    private void setInnerShadeColor ( final WebButtonGroup group, final Color innerShadeColor )
+    protected void setInnerShadeColor ( final WebButtonGroup group, final Color innerShadeColor )
     {
         for ( final Component component : group.getComponents () )
         {
@@ -710,7 +745,7 @@ public class WebButtonGroup extends WebPanel implements SwingConstants
         setLeftRightSpacing ( WebButtonGroup.this, leftRightSpacing );
     }
 
-    private void setLeftRightSpacing ( final WebButtonGroup group, final int leftRightSpacing )
+    protected void setLeftRightSpacing ( final WebButtonGroup group, final int leftRightSpacing )
     {
         for ( final Component component : group.getComponents () )
         {
@@ -731,7 +766,7 @@ public class WebButtonGroup extends WebPanel implements SwingConstants
         setRolloverDecoratedOnly ( WebButtonGroup.this, rolloverDecoratedOnly );
     }
 
-    private void setRolloverDecoratedOnly ( final WebButtonGroup group, final boolean rolloverDecoratedOnly )
+    protected void setRolloverDecoratedOnly ( final WebButtonGroup group, final boolean rolloverDecoratedOnly )
     {
         for ( final Component component : group.getComponents () )
         {
@@ -752,7 +787,7 @@ public class WebButtonGroup extends WebPanel implements SwingConstants
         setUndecorated ( WebButtonGroup.this, undecorated );
     }
 
-    private void setUndecorated ( final WebButtonGroup group, final boolean undecorated )
+    protected void setUndecorated ( final WebButtonGroup group, final boolean undecorated )
     {
         for ( final Component component : group.getComponents () )
         {
@@ -773,7 +808,7 @@ public class WebButtonGroup extends WebPanel implements SwingConstants
         setPainter ( WebButtonGroup.this, painter );
     }
 
-    private void setPainter ( final WebButtonGroup group, final Painter painter )
+    protected void setPainter ( final WebButtonGroup group, final Painter painter )
     {
         for ( final Component component : group.getComponents () )
         {
@@ -794,7 +829,7 @@ public class WebButtonGroup extends WebPanel implements SwingConstants
         setMoveIconOnPress ( WebButtonGroup.this, moveIconOnPress );
     }
 
-    private void setMoveIconOnPress ( final WebButtonGroup group, final boolean moveIconOnPress )
+    protected void setMoveIconOnPress ( final WebButtonGroup group, final boolean moveIconOnPress )
     {
         for ( final Component component : group.getComponents () )
         {
@@ -815,7 +850,7 @@ public class WebButtonGroup extends WebPanel implements SwingConstants
         setDrawFocus ( WebButtonGroup.this, drawFocus );
     }
 
-    private void setDrawFocus ( final WebButtonGroup group, final boolean drawFocus )
+    protected void setDrawFocus ( final WebButtonGroup group, final boolean drawFocus )
     {
         for ( final Component component : group.getComponents () )
         {
@@ -846,7 +881,7 @@ public class WebButtonGroup extends WebPanel implements SwingConstants
         setButtonsMargin ( spacing, spacing, spacing, spacing );
     }
 
-    private void setMargin ( final WebButtonGroup group, final Insets margin )
+    protected void setMargin ( final WebButtonGroup group, final Insets margin )
     {
         for ( final Component component : group.getComponents () )
         {

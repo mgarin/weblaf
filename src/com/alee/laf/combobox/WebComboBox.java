@@ -17,7 +17,11 @@
 
 package com.alee.laf.combobox;
 
+import com.alee.extended.window.TestFrame;
 import com.alee.laf.WebLookAndFeel;
+import com.alee.laf.button.WebButton;
+import com.alee.laf.menu.WebMenuItem;
+import com.alee.laf.menu.WebPopupMenu;
 import com.alee.managers.settings.DefaultValue;
 import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.settings.SettingsMethods;
@@ -31,6 +35,8 @@ import com.alee.utils.swing.SizeMethods;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Vector;
 
 /**
@@ -39,65 +45,100 @@ import java.util.Vector;
 
 public class WebComboBox extends JComboBox implements ShapeProvider, SettingsMethods, FontMethods<WebComboBox>, SizeMethods<WebComboBox>
 {
+    public static void main ( final String[] args )
+    {
+        WebLookAndFeel.install ();
+
+        //        TestFrame.show ( new WebComboBox ( new String[]{ ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "." } ), 20 );
+
+        final WebButton wb = new WebButton ( "asfasdasd" );
+        wb.addActionListener ( new ActionListener ()
+        {
+            @Override
+            public void actionPerformed ( final ActionEvent e )
+            {
+                final WebPopupMenu m = new WebPopupMenu ();
+                m.add ( new WebMenuItem ( "Item" ) );
+                m.add ( new WebMenuItem ( "Item" ) );
+                m.add ( new WebMenuItem ( "Item" ) );
+                m.add ( new WebMenuItem ( "Item" ) );
+                m.add ( new WebMenuItem ( "Item" ) );
+                m.add ( new WebMenuItem ( "Item" ) );
+                m.showAbove ( wb );
+            }
+        } );
+        TestFrame.show ( wb );
+    }
+
     public WebComboBox ()
     {
         super ();
     }
 
-    public WebComboBox ( Vector<?> items )
+    public WebComboBox ( final Vector<?> items )
     {
         super ( items );
     }
 
-    public WebComboBox ( Vector<?> items, int selected )
-    {
-        super ( items );
-        setSelectedIndex ( selected );
-    }
-
-    public WebComboBox ( Vector<?> items, Object selected )
-    {
-        super ( items );
-        setSelectedItem ( selected );
-    }
-
-    public WebComboBox ( Object[] items )
-    {
-        super ( items );
-    }
-
-    public WebComboBox ( Object[] items, int selected )
+    public WebComboBox ( final Vector<?> items, final int selected )
     {
         super ( items );
         setSelectedIndex ( selected );
     }
 
-    public WebComboBox ( Object[] items, Object selected )
+    public WebComboBox ( final Vector<?> items, final Object selected )
     {
         super ( items );
         setSelectedItem ( selected );
     }
 
-    public WebComboBox ( ComboBoxModel aModel )
+    public WebComboBox ( final Object[] items )
+    {
+        super ( items );
+    }
+
+    public WebComboBox ( final Object[] items, final int selected )
+    {
+        super ( items );
+        setSelectedIndex ( selected );
+    }
+
+    public WebComboBox ( final Object[] items, final Object selected )
+    {
+        super ( items );
+        setSelectedItem ( selected );
+    }
+
+    public WebComboBox ( final ComboBoxModel aModel )
     {
         super ( aModel );
     }
 
-    public WebComboBox ( ComboBoxModel aModel, int selected )
+    public WebComboBox ( final ComboBoxModel aModel, final int selected )
     {
         super ( aModel );
         setSelectedIndex ( selected );
     }
 
-    public WebComboBox ( ComboBoxModel aModel, Object selected )
+    public WebComboBox ( final ComboBoxModel aModel, final Object selected )
     {
         super ( aModel );
         setSelectedItem ( selected );
     }
 
-    public void setEditorColumns ( int columns )
+    public void setEditorColumns ( final int columns )
     {
         getWebUI ().setEditorColumns ( columns );
+    }
+
+    public boolean isUseFirstValueAsPrototype ()
+    {
+        return getWebUI ().isUseFirstValueAsPrototype ();
+    }
+
+    public void setUseFirstValueAsPrototype ( final boolean use )
+    {
+        getWebUI ().setUseFirstValueAsPrototype ( use );
     }
 
     public ImageIcon getExpandIcon ()
@@ -105,7 +146,7 @@ public class WebComboBox extends JComboBox implements ShapeProvider, SettingsMet
         return getWebUI ().getExpandIcon ();
     }
 
-    public void setExpandIcon ( ImageIcon expandIcon )
+    public void setExpandIcon ( final ImageIcon expandIcon )
     {
         getWebUI ().setExpandIcon ( expandIcon );
     }
@@ -115,7 +156,7 @@ public class WebComboBox extends JComboBox implements ShapeProvider, SettingsMet
         return getWebUI ().getCollapseIcon ();
     }
 
-    public void setCollapseIcon ( ImageIcon collapseIcon )
+    public void setCollapseIcon ( final ImageIcon collapseIcon )
     {
         getWebUI ().setCollapseIcon ( collapseIcon );
     }
@@ -125,7 +166,7 @@ public class WebComboBox extends JComboBox implements ShapeProvider, SettingsMet
         return getWebUI ().getIconSpacing ();
     }
 
-    public void setIconSpacing ( int iconSpacing )
+    public void setIconSpacing ( final int iconSpacing )
     {
         getWebUI ().setIconSpacing ( iconSpacing );
     }
@@ -135,7 +176,7 @@ public class WebComboBox extends JComboBox implements ShapeProvider, SettingsMet
         return getWebUI ().isDrawBorder ();
     }
 
-    public void setDrawBorder ( boolean drawBorder )
+    public void setDrawBorder ( final boolean drawBorder )
     {
         getWebUI ().setDrawBorder ( drawBorder );
     }
@@ -145,7 +186,7 @@ public class WebComboBox extends JComboBox implements ShapeProvider, SettingsMet
         return getWebUI ().isDrawFocus ();
     }
 
-    public void setDrawFocus ( boolean drawFocus )
+    public void setDrawFocus ( final boolean drawFocus )
     {
         getWebUI ().setDrawFocus ( drawFocus );
     }
@@ -155,7 +196,7 @@ public class WebComboBox extends JComboBox implements ShapeProvider, SettingsMet
         return getWebUI ().getRound ();
     }
 
-    public void setRound ( int round )
+    public void setRound ( final int round )
     {
         getWebUI ().setRound ( round );
     }
@@ -165,7 +206,7 @@ public class WebComboBox extends JComboBox implements ShapeProvider, SettingsMet
         return getWebUI ().getShadeWidth ();
     }
 
-    public void setShadeWidth ( int shadeWidth )
+    public void setShadeWidth ( final int shadeWidth )
     {
         getWebUI ().setShadeWidth ( shadeWidth );
     }
@@ -175,7 +216,7 @@ public class WebComboBox extends JComboBox implements ShapeProvider, SettingsMet
         return getWebUI ().isMouseWheelScrollingEnabled ();
     }
 
-    public void setMouseWheelScrollingEnabled ( boolean enabled )
+    public void setMouseWheelScrollingEnabled ( final boolean enabled )
     {
         getWebUI ().setMouseWheelScrollingEnabled ( enabled );
     }
@@ -205,7 +246,7 @@ public class WebComboBox extends JComboBox implements ShapeProvider, SettingsMet
             {
                 setUI ( ( WebComboBoxUI ) ReflectUtils.createInstance ( WebLookAndFeel.comboBoxUI ) );
             }
-            catch ( Throwable e )
+            catch ( final Throwable e )
             {
                 e.printStackTrace ();
                 setUI ( new WebComboBoxUI () );
@@ -225,7 +266,7 @@ public class WebComboBox extends JComboBox implements ShapeProvider, SettingsMet
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String key )
+    public void registerSettings ( final String key )
     {
         SettingsManager.registerComponent ( this, key );
     }
@@ -234,7 +275,7 @@ public class WebComboBox extends JComboBox implements ShapeProvider, SettingsMet
      * {@inheritDoc}
      */
     @Override
-    public <T extends DefaultValue> void registerSettings ( String key, Class<T> defaultValueClass )
+    public <T extends DefaultValue> void registerSettings ( final String key, final Class<T> defaultValueClass )
     {
         SettingsManager.registerComponent ( this, key, defaultValueClass );
     }
@@ -243,7 +284,7 @@ public class WebComboBox extends JComboBox implements ShapeProvider, SettingsMet
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String key, Object defaultValue )
+    public void registerSettings ( final String key, final Object defaultValue )
     {
         SettingsManager.registerComponent ( this, key, defaultValue );
     }
@@ -252,7 +293,7 @@ public class WebComboBox extends JComboBox implements ShapeProvider, SettingsMet
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String group, String key )
+    public void registerSettings ( final String group, final String key )
     {
         SettingsManager.registerComponent ( this, group, key );
     }
@@ -261,7 +302,7 @@ public class WebComboBox extends JComboBox implements ShapeProvider, SettingsMet
      * {@inheritDoc}
      */
     @Override
-    public <T extends DefaultValue> void registerSettings ( String group, String key, Class<T> defaultValueClass )
+    public <T extends DefaultValue> void registerSettings ( final String group, final String key, final Class<T> defaultValueClass )
     {
         SettingsManager.registerComponent ( this, group, key, defaultValueClass );
     }
@@ -270,7 +311,7 @@ public class WebComboBox extends JComboBox implements ShapeProvider, SettingsMet
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String group, String key, Object defaultValue )
+    public void registerSettings ( final String group, final String key, final Object defaultValue )
     {
         SettingsManager.registerComponent ( this, group, key, defaultValue );
     }
@@ -279,7 +320,7 @@ public class WebComboBox extends JComboBox implements ShapeProvider, SettingsMet
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String key, boolean loadInitialSettings, boolean applySettingsChanges )
+    public void registerSettings ( final String key, final boolean loadInitialSettings, final boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, key, loadInitialSettings, applySettingsChanges );
     }
@@ -288,8 +329,8 @@ public class WebComboBox extends JComboBox implements ShapeProvider, SettingsMet
      * {@inheritDoc}
      */
     @Override
-    public <T extends DefaultValue> void registerSettings ( String key, Class<T> defaultValueClass, boolean loadInitialSettings,
-                                                            boolean applySettingsChanges )
+    public <T extends DefaultValue> void registerSettings ( final String key, final Class<T> defaultValueClass,
+                                                            final boolean loadInitialSettings, final boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, key, defaultValueClass, loadInitialSettings, applySettingsChanges );
     }
@@ -298,7 +339,8 @@ public class WebComboBox extends JComboBox implements ShapeProvider, SettingsMet
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String key, Object defaultValue, boolean loadInitialSettings, boolean applySettingsChanges )
+    public void registerSettings ( final String key, final Object defaultValue, final boolean loadInitialSettings,
+                                   final boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, key, defaultValue, loadInitialSettings, applySettingsChanges );
     }
@@ -307,8 +349,8 @@ public class WebComboBox extends JComboBox implements ShapeProvider, SettingsMet
      * {@inheritDoc}
      */
     @Override
-    public <T extends DefaultValue> void registerSettings ( String group, String key, Class<T> defaultValueClass,
-                                                            boolean loadInitialSettings, boolean applySettingsChanges )
+    public <T extends DefaultValue> void registerSettings ( final String group, final String key, final Class<T> defaultValueClass,
+                                                            final boolean loadInitialSettings, final boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, group, key, defaultValueClass, loadInitialSettings, applySettingsChanges );
     }
@@ -317,8 +359,8 @@ public class WebComboBox extends JComboBox implements ShapeProvider, SettingsMet
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String group, String key, Object defaultValue, boolean loadInitialSettings,
-                                   boolean applySettingsChanges )
+    public void registerSettings ( final String group, final String key, final Object defaultValue, final boolean loadInitialSettings,
+                                   final boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, group, key, defaultValue, loadInitialSettings, applySettingsChanges );
     }
@@ -327,7 +369,7 @@ public class WebComboBox extends JComboBox implements ShapeProvider, SettingsMet
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( SettingsProcessor settingsProcessor )
+    public void registerSettings ( final SettingsProcessor settingsProcessor )
     {
         SettingsManager.registerComponent ( this, settingsProcessor );
     }
@@ -376,7 +418,7 @@ public class WebComboBox extends JComboBox implements ShapeProvider, SettingsMet
      * {@inheritDoc}
      */
     @Override
-    public WebComboBox setPlainFont ( boolean apply )
+    public WebComboBox setPlainFont ( final boolean apply )
     {
         return SwingUtils.setPlainFont ( this, apply );
     }
@@ -403,7 +445,7 @@ public class WebComboBox extends JComboBox implements ShapeProvider, SettingsMet
      * {@inheritDoc}
      */
     @Override
-    public WebComboBox setBoldFont ( boolean apply )
+    public WebComboBox setBoldFont ( final boolean apply )
     {
         return SwingUtils.setBoldFont ( this, apply );
     }
@@ -430,7 +472,7 @@ public class WebComboBox extends JComboBox implements ShapeProvider, SettingsMet
      * {@inheritDoc}
      */
     @Override
-    public WebComboBox setItalicFont ( boolean apply )
+    public WebComboBox setItalicFont ( final boolean apply )
     {
         return SwingUtils.setItalicFont ( this, apply );
     }
@@ -448,7 +490,7 @@ public class WebComboBox extends JComboBox implements ShapeProvider, SettingsMet
      * {@inheritDoc}
      */
     @Override
-    public WebComboBox setFontStyle ( boolean bold, boolean italic )
+    public WebComboBox setFontStyle ( final boolean bold, final boolean italic )
     {
         return SwingUtils.setFontStyle ( this, bold, italic );
     }
@@ -457,7 +499,7 @@ public class WebComboBox extends JComboBox implements ShapeProvider, SettingsMet
      * {@inheritDoc}
      */
     @Override
-    public WebComboBox setFontStyle ( int style )
+    public WebComboBox setFontStyle ( final int style )
     {
         return SwingUtils.setFontStyle ( this, style );
     }
@@ -466,7 +508,7 @@ public class WebComboBox extends JComboBox implements ShapeProvider, SettingsMet
      * {@inheritDoc}
      */
     @Override
-    public WebComboBox setFontSize ( int fontSize )
+    public WebComboBox setFontSize ( final int fontSize )
     {
         return SwingUtils.setFontSize ( this, fontSize );
     }
@@ -475,7 +517,7 @@ public class WebComboBox extends JComboBox implements ShapeProvider, SettingsMet
      * {@inheritDoc}
      */
     @Override
-    public WebComboBox changeFontSize ( int change )
+    public WebComboBox changeFontSize ( final int change )
     {
         return SwingUtils.changeFontSize ( this, change );
     }
@@ -493,7 +535,7 @@ public class WebComboBox extends JComboBox implements ShapeProvider, SettingsMet
      * {@inheritDoc}
      */
     @Override
-    public WebComboBox setFontSizeAndStyle ( int fontSize, boolean bold, boolean italic )
+    public WebComboBox setFontSizeAndStyle ( final int fontSize, final boolean bold, final boolean italic )
     {
         return SwingUtils.setFontSizeAndStyle ( this, fontSize, bold, italic );
     }
@@ -502,7 +544,7 @@ public class WebComboBox extends JComboBox implements ShapeProvider, SettingsMet
      * {@inheritDoc}
      */
     @Override
-    public WebComboBox setFontSizeAndStyle ( int fontSize, int style )
+    public WebComboBox setFontSizeAndStyle ( final int fontSize, final int style )
     {
         return SwingUtils.setFontSizeAndStyle ( this, fontSize, style );
     }
@@ -511,7 +553,7 @@ public class WebComboBox extends JComboBox implements ShapeProvider, SettingsMet
      * {@inheritDoc}
      */
     @Override
-    public WebComboBox setFontName ( String fontName )
+    public WebComboBox setFontName ( final String fontName )
     {
         return SwingUtils.setFontName ( this, fontName );
     }
@@ -542,7 +584,7 @@ public class WebComboBox extends JComboBox implements ShapeProvider, SettingsMet
      * {@inheritDoc}
      */
     @Override
-    public WebComboBox setPreferredWidth ( int preferredWidth )
+    public WebComboBox setPreferredWidth ( final int preferredWidth )
     {
         return SizeUtils.setPreferredWidth ( this, preferredWidth );
     }
@@ -560,7 +602,7 @@ public class WebComboBox extends JComboBox implements ShapeProvider, SettingsMet
      * {@inheritDoc}
      */
     @Override
-    public WebComboBox setPreferredHeight ( int preferredHeight )
+    public WebComboBox setPreferredHeight ( final int preferredHeight )
     {
         return SizeUtils.setPreferredHeight ( this, preferredHeight );
     }
@@ -578,7 +620,7 @@ public class WebComboBox extends JComboBox implements ShapeProvider, SettingsMet
      * {@inheritDoc}
      */
     @Override
-    public WebComboBox setMinimumWidth ( int minimumWidth )
+    public WebComboBox setMinimumWidth ( final int minimumWidth )
     {
         return SizeUtils.setMinimumWidth ( this, minimumWidth );
     }
@@ -596,7 +638,7 @@ public class WebComboBox extends JComboBox implements ShapeProvider, SettingsMet
      * {@inheritDoc}
      */
     @Override
-    public WebComboBox setMinimumHeight ( int minimumHeight )
+    public WebComboBox setMinimumHeight ( final int minimumHeight )
     {
         return SizeUtils.setMinimumHeight ( this, minimumHeight );
     }

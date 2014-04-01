@@ -22,6 +22,7 @@ import com.alee.extended.painter.PartialDecoration;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.language.LanguageContainerMethods;
 import com.alee.managers.language.LanguageManager;
+import com.alee.managers.style.StyleManager;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SizeUtils;
 import com.alee.utils.SwingUtils;
@@ -222,9 +223,18 @@ public class WebPanel extends JPanel implements Styleable, ShapeProvider, Partia
     {
         if ( components != null )
         {
+            int skipped = 0;
             for ( int i = 0; i < components.size (); i++ )
             {
-                add ( components.get ( i ), index + i );
+                final Component component = components.get ( i );
+                if ( component != null )
+                {
+                    add ( component, index + i - skipped );
+                }
+                else
+                {
+                    skipped++;
+                }
             }
         }
         return this;
@@ -243,7 +253,10 @@ public class WebPanel extends JPanel implements Styleable, ShapeProvider, Partia
         {
             for ( final Component component : components )
             {
-                add ( component, constraints );
+                if ( component != null )
+                {
+                    add ( component, constraints );
+                }
             }
         }
         return this;
@@ -261,7 +274,10 @@ public class WebPanel extends JPanel implements Styleable, ShapeProvider, Partia
         {
             for ( final Component component : components )
             {
-                add ( component );
+                if ( component != null )
+                {
+                    add ( component );
+                }
             }
         }
         return this;
@@ -278,9 +294,18 @@ public class WebPanel extends JPanel implements Styleable, ShapeProvider, Partia
     {
         if ( components != null && components.length > 0 )
         {
+            int skipped = 0;
             for ( int i = 0; i < components.length; i++ )
             {
-                add ( components[ i ], index + i );
+                final Component component = components[ i ];
+                if ( component != null )
+                {
+                    add ( component, index + i - skipped );
+                }
+                else
+                {
+                    skipped++;
+                }
             }
         }
         return this;
@@ -300,7 +325,10 @@ public class WebPanel extends JPanel implements Styleable, ShapeProvider, Partia
         {
             for ( final Component component : components )
             {
-                add ( component, constraints );
+                if ( component != null )
+                {
+                    add ( component, constraints );
+                }
             }
         }
         return this;
@@ -319,7 +347,10 @@ public class WebPanel extends JPanel implements Styleable, ShapeProvider, Partia
         {
             for ( final Component component : components )
             {
-                add ( component );
+                if ( component != null )
+                {
+                    add ( component );
+                }
             }
         }
         return this;
@@ -804,7 +835,7 @@ public class WebPanel extends JPanel implements Styleable, ShapeProvider, Partia
      */
     public Painter getPainter ()
     {
-        return getWebUI ().getPainter ();
+        return StyleManager.getPainter ( this );
     }
 
     /**
@@ -816,7 +847,7 @@ public class WebPanel extends JPanel implements Styleable, ShapeProvider, Partia
      */
     public WebPanel setPainter ( final Painter painter )
     {
-        getWebUI ().setPainter ( painter );
+        StyleManager.setCustomPainter ( this, painter );
         return this;
     }
 

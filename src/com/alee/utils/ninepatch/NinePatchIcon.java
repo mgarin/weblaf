@@ -19,6 +19,7 @@ package com.alee.utils.ninepatch;
 
 import com.alee.utils.ImageUtils;
 import com.alee.utils.NinePatchUtils;
+import com.thoughtworks.xstream.annotations.XStreamConverter;
 
 import javax.swing.*;
 import java.awt.*;
@@ -32,18 +33,12 @@ import java.util.List;
  * <p/>
  * Basically it parses nine-patch image data (patches at the side of .9.png image) into understandable values and uses them to stretch the
  * image properly when it is painted anywhere.
- * <p/>
- * Here is a simple example how NinePatchIcon can be used as a stretchable panel background:
- * {@code
- * NinePatchIcon icon = new NinePatchIcon ( "icon.9.png" );
- * NinePatchIconPainter painter = new NinePatchIconPainter ( icon );
- * WebPanel panel = new WebPanel ( painter );
- * }
  *
  * @author Mikle Garin
  * @see com.alee.extended.painter.NinePatchIconPainter
  * @see com.alee.extended.painter.NinePatchStatePainter
  */
+@XStreamConverter (NinePatchIconConverter.class)
 public class NinePatchIcon implements Icon
 {
     /**
@@ -250,10 +245,10 @@ public class NinePatchIcon implements Icon
             margin = new Insets ( top, left, bottom, right );
 
             // Forcing cached data calculation on initialization
-            calculateFixedPixelsWidth ( true );
-            calculateFixedPixelsWidth ( false );
-            calculateFixedPixelsHeight ( true );
-            calculateFixedPixelsHeight ( false );
+            getFixedPixelsWidth ( true );
+            getFixedPixelsWidth ( false );
+            getFixedPixelsHeight ( true );
+            getFixedPixelsHeight ( false );
         }
         else
         {
@@ -332,7 +327,7 @@ public class NinePatchIcon implements Icon
     public void setHorizontalStretch ( final List<NinePatchInterval> horizontalStretch )
     {
         this.horizontalStretch = horizontalStretch;
-        clearCachedWidthData ();
+        updateCachedWidthData ();
     }
 
     /**
@@ -343,7 +338,7 @@ public class NinePatchIcon implements Icon
     public void addHorizontalStretch ( final NinePatchInterval interval )
     {
         this.horizontalStretch.add ( interval );
-        clearCachedWidthData ();
+        updateCachedWidthData ();
     }
 
     /**
@@ -376,7 +371,7 @@ public class NinePatchIcon implements Icon
     public void setVerticalStretch ( final List<NinePatchInterval> verticalStretch )
     {
         this.verticalStretch = verticalStretch;
-        clearCachedHeightData ();
+        updateCachedHeightData ();
     }
 
     /**
@@ -387,7 +382,7 @@ public class NinePatchIcon implements Icon
     public void addVerticalStretch ( final NinePatchInterval interval )
     {
         this.verticalStretch.add ( interval );
-        clearCachedHeightData ();
+        updateCachedHeightData ();
     }
 
     /**
@@ -403,13 +398,27 @@ public class NinePatchIcon implements Icon
     }
 
     /**
-     * Returns content margin taken from image patches.
+     * Returns margin taken from image content patches.
      *
-     * @return content margin taken from image patches
+     * @return margin taken from image content patches
      */
     public Insets getMargin ()
     {
-        return margin;
+        return ( Insets ) margin.clone ();
+    }
+
+    /**
+     * Returns margin taken from image stretch patches.
+     *
+     * @return margin taken from image stretch patches
+     */
+    public Insets getStretchMargin ()
+    {
+        final NinePatchInterval top = verticalStretch.get ( 0 );
+        final NinePatchInterval left = horizontalStretch.get ( 0 );
+        final NinePatchInterval bottom = verticalStretch.get ( verticalStretch.size () - 1 );
+        final NinePatchInterval right = horizontalStretch.get ( horizontalStretch.size () - 1 );
+        return new Insets ( top.getLength (), left.getLength (), bottom.getLength (), right.getLength () );
     }
 
     /**
@@ -597,10 +606,12 @@ public class NinePatchIcon implements Icon
     /**
      * Clears fixed pixels width caches.
      */
-    protected void clearCachedWidthData ()
+    protected void updateCachedWidthData ()
     {
         cachedWidth0 = null;
         cachedWidth1 = null;
+        getFixedPixelsWidth ( true );
+        getFixedPixelsWidth ( false );
     }
 
     /**
@@ -655,10 +666,12 @@ public class NinePatchIcon implements Icon
     /**
      * Clears fixed pixels height caches.
      */
-    protected void clearCachedHeightData ()
+    protected void updateCachedHeightData ()
     {
         cachedHeight0 = null;
         cachedHeight1 = null;
+        getFixedPixelsHeight ( true );
+        getFixedPixelsHeight ( false );
     }
 
     /**

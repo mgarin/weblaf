@@ -19,7 +19,6 @@ package com.alee.managers.settings.processors;
 
 import com.alee.extended.date.DateSelectionListener;
 import com.alee.extended.date.WebDateField;
-import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.settings.SettingsProcessor;
 import com.alee.managers.settings.SettingsProcessorData;
 
@@ -43,7 +42,7 @@ public class WebDateFieldSettingsProcessor extends SettingsProcessor<WebDateFiel
      *
      * @param data SettingsProcessorData
      */
-    public WebDateFieldSettingsProcessor ( SettingsProcessorData data )
+    public WebDateFieldSettingsProcessor ( final SettingsProcessorData data )
     {
         super ( data );
     }
@@ -52,17 +51,14 @@ public class WebDateFieldSettingsProcessor extends SettingsProcessor<WebDateFiel
      * {@inheritDoc}
      */
     @Override
-    protected void doInit ( WebDateField dateField )
+    protected void doInit ( final WebDateField dateField )
     {
         selectionListener = new DateSelectionListener ()
         {
             @Override
-            public void dateSelected ( Date date )
+            public void dateSelected ( final Date date )
             {
-                if ( SettingsManager.isSaveOnChange () )
-                {
-                    save ();
-                }
+                save ();
             }
         };
         dateField.addDateSelectionListener ( selectionListener );
@@ -72,7 +68,7 @@ public class WebDateFieldSettingsProcessor extends SettingsProcessor<WebDateFiel
      * {@inheritDoc}
      */
     @Override
-    protected void doDestroy ( WebDateField dateField )
+    protected void doDestroy ( final WebDateField dateField )
     {
         dateField.removeDateSelectionListener ( selectionListener );
         selectionListener = null;
@@ -82,7 +78,7 @@ public class WebDateFieldSettingsProcessor extends SettingsProcessor<WebDateFiel
      * {@inheritDoc}
      */
     @Override
-    protected void doLoad ( WebDateField dateField )
+    protected void doLoad ( final WebDateField dateField )
     {
         final Long date = loadValue ();
         final Date value = date != null ? new Date ( date ) : null;
@@ -93,7 +89,7 @@ public class WebDateFieldSettingsProcessor extends SettingsProcessor<WebDateFiel
      * {@inheritDoc}
      */
     @Override
-    protected void doSave ( WebDateField dateField )
+    protected void doSave ( final WebDateField dateField )
     {
         final Date date = dateField.getDate ();
         final Long value = date != null ? date.getTime () : null;

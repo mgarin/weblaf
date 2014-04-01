@@ -18,11 +18,14 @@
 package com.alee.managers.style.skin;
 
 import com.alee.extended.painter.Painter;
+import com.alee.managers.style.StyleException;
+import com.alee.managers.style.StyleManager;
 import com.alee.managers.style.SupportedComponent;
 import com.alee.managers.style.data.ComponentStyle;
 import com.alee.managers.style.data.PainterStyle;
 import com.alee.utils.LafUtils;
 import com.alee.utils.ReflectUtils;
+import com.alee.utils.SystemUtils;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
@@ -42,6 +45,11 @@ import java.util.Map;
 
 public abstract class WebLafSkin
 {
+    /**
+     * Constant provided in the skin that supports any kind of systems.
+     */
+    public static final String ALL_SYSTEMS_SUPPORTED = "all";
+
     /**
      * Returns unique skin ID.
      * Used to collect and manage skins within StyleManager.
@@ -79,6 +87,20 @@ public abstract class WebLafSkin
     public abstract List<String> getSupportedSystems ();
 
     /**
+     * Returns whether this skin is supported or not.
+     * This method reflects the default mechanism of checking skin support.
+     * You can override it in your own skin to provide any custom checks.
+     *
+     * @return true if this skin is supported, false otherwise
+     */
+    public boolean isSupported ()
+    {
+        final List<String> systems = getSupportedSystems ();
+        final boolean supportsAny = systems != null && systems.size () > 0;
+        return supportsAny && ( systems.contains ( ALL_SYSTEMS_SUPPORTED ) || systems.contains ( SystemUtils.getShortOsName () ) );
+    }
+
+    /**
      * Returns skin base class name.
      *
      * @return skin base class name
@@ -107,9 +129,21 @@ public abstract class WebLafSkin
         final SupportedComponent type = SupportedComponent.getComponentTypeByUIClassID ( component.getUIClassID () );
         if ( type == null )
         {
-            throw new RuntimeException ( "Unknown component UI class ID: " + component.getUIClassID () );
+            throw new StyleException ( "Unknown component UI class ID: " + component.getUIClassID () );
         }
         return type;
+    }
+
+    /**
+     * Returns component style.
+     * This method does a check that style exists in addition to abstract one.
+     *
+     * @param component component instance
+     * @return component style
+     */
+    protected ComponentStyle getComponentStyleImpl ( final JComponent component )
+    {
+        return getComponentStyleImpl ( component, getSupportedComponentTypeImpl ( component ) );
     }
 
     /**
@@ -125,7 +159,7 @@ public abstract class WebLafSkin
         final ComponentStyle style = getComponentStyle ( component, type );
         if ( style == null )
         {
-            throw new RuntimeException ( "Skin doesn't contain style for UI class ID: " + component.getUIClassID () );
+            throw new StyleException ( "Skin doesn't contain style for UI class ID: " + component.getUIClassID () );
         }
         return style;
     }
@@ -141,7 +175,7 @@ public abstract class WebLafSkin
         final ComponentUI ui = LafUtils.getUI ( component );
         if ( ui == null )
         {
-            throw new RuntimeException ( "Unable to retrieve UI from component: " + component );
+            throw new StyleException ( "Unable to retrieve UI from component: " + component );
         }
         return ui;
     }
@@ -153,20 +187,22 @@ public abstract class WebLafSkin
      * @param component component to apply skin to
      * @return true if skin was applied, false otherwise
      */
-    public boolean apply ( final JComponent component )
+    public boolean applySkin ( final JComponent component )
     {
-        return apply ( component, null );
+        return applySkin ( component, StyleManager.getCustomPainterProperties ( component ), StyleManager.getCustomPainters ( component ) );
     }
 
     /**
      * Applies this skin to the specified component.
      * Returns whether sking was successfully applied or not.
      *
-     * @param component        component to apply skin to
-     * @param customProperties custom properties to apply, these properties are provided directly into the specific component
+     * @param component               component to apply skin to
+     * @param customPainterProperties custom painter properties to apply
+     * @param customPainters          custom painters to apply
      * @return true if skin was applied, false otherwise
      */
-    public boolean apply ( final JComponent component, final Map<String, Object> customProperties )
+    public boolean applySkin ( final JComponent component, final Map<String, Map<String, Object>> customPainterProperties,
+                               final Map<String, Painter> customPainters )
     {
         try
         {
@@ -174,32 +210,51 @@ public abstract class WebLafSkin
             final ComponentStyle style = getComponentStyleImpl ( component, type );
             final ComponentUI ui = getComponentUIImpl ( component );
 
-            // Applying component properties
-            // todo Check whether properties should be applied or not somehow
-            applyProperties ( component, style.getComponentProperties (), null );
-
-            // Applying UI properties
-            // todo Check whether properties should be applied or not somehow
-            applyProperties ( ui, style.getUIProperties (), null );
-
             // Installing painters
             for ( final PainterStyle painterStyle : style.getPainters () )
             {
-                // Creating painter instance
-                // Be aware that all painters must have default constructor
-                final Painter painter = ReflectUtils.createInstanceSafely ( painterStyle.getPainterClass () );
-                if ( painter == null )
+                // Painter ID
+                final String painterId = painterStyle.getId ();
+
+                // Retrieving painter to install into component
+                // Custom painter can be null - that will just mean that component should not have painter installed
+                final Painter painter;
+                if ( customPainters != null && customPainters.containsKey ( painterId ) )
                 {
-                    throw new RuntimeException ( "Unable to create painter: " + painterStyle.getPainterClass () );
+                    // Using provided custom painter
+                    // This might be set using Web-component "set...Painter"-like methods
+                    painter = customPainters.get ( painterId );
+                }
+                else
+                {
+                    // Creating painter instance
+                    // Be aware that all painters must have default constructor
+                    painter = ReflectUtils.createInstanceSafely ( painterStyle.getPainterClass () );
+                    if ( painter == null )
+                    {
+                        throw new StyleException (
+                                "Unable to create painter \"" + painterStyle.getPainterClass () + "\" for component: " + component );
+                    }
+
+                    // Applying painter properties
+                    // These properties are applied only for style-provided painters
+                    // Customly provided painters are not affected by these properties to avoid unexpected changes in them
+                    final Map<String, Object> cpp = getCustomPainterProperties ( customPainterProperties, painterStyle, painterId );
+                    applyProperties ( painter, painterStyle.getProperties (), cpp );
                 }
 
-                // Applying painter properties
-                applyProperties ( painter, painterStyle.getProperties (), customProperties );
-
                 // Installing painter into the UI
-                final String setterMethod = getSetterMethodName ( painterStyle.getId () );
+                final String setterMethod = getSetterMethodName ( painterId );
                 ReflectUtils.callMethod ( ui, setterMethod, painter );
             }
+
+            // Applying UI properties
+            // todo Check whether properties should be applied or not somehow? Additional settings?
+            applyProperties ( ui, style.getUIProperties (), null );
+
+            // Applying component properties
+            // todo Check whether properties should be applied or not somehow? Additional settings?
+            applyProperties ( component, style.getComponentProperties (), null );
 
             return true;
         }
@@ -210,54 +265,18 @@ public abstract class WebLafSkin
         }
     }
 
-    public <T> T getStyleValue ( final JComponent component, final String key )
-    {
-        final SupportedComponent type = getSupportedComponentTypeImpl ( component );
-        final ComponentStyle style = getComponentStyleImpl ( component, type );
-        final ComponentUI ui = getComponentUIImpl ( component );
-
-        // Retrieving component base painter
-        // todo Allow retrieving style properties from non-base painters
-        final Painter painter = getFieldValue ( ui, style.getBasePainter ().getId () );
-        if ( painter != null )
-        {
-            // Retrieving painter field value
-            return getFieldValue ( painter, key );
-        }
-        else
-        {
-            return null;
-        }
-    }
-
     /**
-     * Applies custom style property to the specified component's painter.
-     * This tricky method retrieves component painter throught its UI and skin settings and applies the specified style property.
+     * Returns custom painter properties based on painter ID.
      *
-     * @param component component to apply custom style property to
-     * @param key       custom style property key
-     * @param value     custom style property value
-     * @return true if custom style property was applied, false otherwise
+     * @param customPainterProperties all custom painter properties
+     * @param painterStyle            painter style
+     * @param painterId               painter ID
+     * @return specific custom painter properties
      */
-    public boolean applyCustomStyle ( final JComponent component, final String key, final Object value )
+    protected Map<String, Object> getCustomPainterProperties ( final Map<String, Map<String, Object>> customPainterProperties,
+                                                               final PainterStyle painterStyle, final String painterId )
     {
-        final SupportedComponent type = getSupportedComponentTypeImpl ( component );
-        final ComponentStyle style = getComponentStyleImpl ( component, type );
-        final ComponentUI ui = getComponentUIImpl ( component );
-
-        // Retrieving component base painter
-        // todo Allow applying custom style properties to non-base painters
-        final Painter painter = getFieldValue ( ui, style.getBasePainter ().getId () );
-        if ( painter != null )
-        {
-            // Updating painter field with custom style property value
-            setFieldValue ( painter, key, value );
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return customPainterProperties != null ? customPainterProperties.get ( painterStyle.isBase () ? null : painterId ) : null;
     }
 
     /**
@@ -266,15 +285,13 @@ public abstract class WebLafSkin
      * @param component component to remove skin from
      * @return true if skin was successfully removed, false otherwise
      */
-    public boolean remove ( final JComponent component )
+    public boolean removeSkin ( final JComponent component )
     {
         try
         {
-            final SupportedComponent type = getSupportedComponentTypeImpl ( component );
-            final ComponentStyle style = getComponentStyleImpl ( component, type );
-            final ComponentUI ui = getComponentUIImpl ( component );
-
             // Uninstalling skin painters from the UI
+            final ComponentStyle style = getComponentStyleImpl ( component );
+            final ComponentUI ui = getComponentUIImpl ( component );
             for ( final PainterStyle painterStyle : style.getPainters () )
             {
                 final String setterMethod = getSetterMethodName ( painterStyle.getId () );
@@ -286,6 +303,95 @@ public abstract class WebLafSkin
         {
             e.printStackTrace ();
             return false;
+        }
+    }
+
+    /**
+     * Returns painter property value from the specified component.
+     * Specified property is searched only inside the base painter so far.
+     *
+     * @param component component to retrieve style property from
+     * @param key       style property key
+     * @param <T>       style property value type
+     * @return style property value
+     */
+    public <T> T getPainterPropertyValue ( final JComponent component, final String key )
+    {
+        return getPainterPropertyValue ( component, null, key );
+    }
+
+    /**
+     * Returns painter property value from the specified component.
+     * Specified property is searched only inside the base painter so far.
+     *
+     * @param component component to retrieve style property from
+     * @param painterId painter ID
+     * @param key       style property key
+     * @param <T>       style property value type
+     * @return style property value
+     */
+    public <T> T getPainterPropertyValue ( final JComponent component, final String painterId, final String key )
+    {
+        final Painter painter = getPainter ( component, painterId );
+        if ( painter != null )
+        {
+            // Retrieving painter field value
+            return getFieldValue ( painter, key );
+        }
+        else if ( !StyleManager.isStrictStyleChecks () )
+        {
+            // Simply return null
+            return null;
+        }
+        else
+        {
+            // Throw exception if painter was not found
+            throw new StyleException ( "Painter with ID \"" + painterId + "\" was not found for component: " + component );
+        }
+    }
+
+    /**
+     * Sets custom value for painter property for the specified component.
+     * This tricky method retrieves component painter throught its UI and skin settings and applies the specified style property.
+     *
+     * @param component component to apply custom style property to
+     * @param key       custom style property key
+     * @param value     custom style property value
+     * @return true if custom style property was applied, false otherwise
+     */
+    public boolean setCustomPainterProperty ( final JComponent component, final String key, final Object value )
+    {
+        return setCustomPainterProperty ( component, null, key, value );
+    }
+
+    /**
+     * Sets custom value for painter property for the specified component.
+     * This tricky method retrieves component painter throught its UI and skin settings and applies the specified style property.
+     *
+     * @param component component to apply custom style property to
+     * @param painterId painter ID
+     * @param key       custom style property key
+     * @param value     custom style property value
+     * @return true if custom style property was applied, false otherwise
+     */
+    public boolean setCustomPainterProperty ( final JComponent component, final String painterId, final String key, final Object value )
+    {
+        final Painter painter = getPainter ( component, painterId );
+        if ( painter != null )
+        {
+            // Updating painter field with custom style property value
+            setFieldValue ( painter, key, value );
+            return true;
+        }
+        else if ( !StyleManager.isStrictStyleChecks () )
+        {
+            // Simply return false
+            return false;
+        }
+        else
+        {
+            // Throw exception if painter was not found
+            throw new StyleException ( "Painter with ID \"" + painterId + "\" was not found for component: " + component );
         }
     }
 
@@ -305,7 +411,8 @@ public abstract class WebLafSkin
         {
             if ( skinProperties != null && skinProperties.size () > 0 )
             {
-                mergedProperties = new HashMap<String, Object> ( skinProperties.size () );
+                // Custom properties are added after skin properties to replace existing values
+                mergedProperties = new HashMap<String, Object> ( Math.max ( skinProperties.size (), customProperties.size () ) );
                 mergedProperties.putAll ( skinProperties );
                 mergedProperties.putAll ( customProperties );
             }
@@ -320,7 +427,7 @@ public abstract class WebLafSkin
         }
 
         // Applying merged properties
-        if ( mergedProperties != null )
+        if ( mergedProperties != null && mergedProperties.size () > 0 )
         {
             for ( final Map.Entry<String, Object> entry : mergedProperties.entrySet () )
             {
@@ -383,17 +490,6 @@ public abstract class WebLafSkin
     }
 
     /**
-     * Returns setter method name for the specified field.
-     *
-     * @param field field name
-     * @return setter method name for the specified field
-     */
-    public static String getSetterMethodName ( final String field )
-    {
-        return "set" + field.substring ( 0, 1 ).toUpperCase () + field.substring ( 1 );
-    }
-
-    /**
      * Returns object field value.
      * This method allows to access even private object fields.
      * Note that this method might also work even if there is no real field with the specified name but there is fitting getter method.
@@ -408,15 +504,16 @@ public abstract class WebLafSkin
         final Class<?> objectClass = object.getClass ();
 
         // Trying to use getter method to retrieve value
-        // Note that this method might work even if there is no field with the specified name but there is fitting getter method
+        // Note that this method might work even if there is no real field with the specified name but there is fitting getter method
+        // This was made to improve call speed (no real field check) and avoid accessing field directly (in most of cases)
         try
         {
             final String getterMethod = getGetterMethodName ( field );
             return ReflectUtils.callMethod ( object, getterMethod );
         }
-        catch ( final NoSuchMethodException e )
+        catch ( final NoSuchMethodException ignored )
         {
-            e.printStackTrace ();
+            // We simply ignore this one and try to access field directly
         }
         catch ( final InvocationTargetException e )
         {
@@ -428,6 +525,7 @@ public abstract class WebLafSkin
         }
 
         // Retrieving field value directly
+        // This one is rarely used and in most of times will be called when inappropriate property is set
         try
         {
             final Field actualField = ReflectUtils.getField ( objectClass, field );
@@ -447,14 +545,17 @@ public abstract class WebLafSkin
     }
 
     /**
-     * Returns getter method name for the specified field.
+     * Returns component painter for the specified painter ID.
      *
-     * @param field field name
-     * @return getter method name for the specified field
+     * @param component component to retrieve painter from
+     * @param painterId painter ID
+     * @return component painter
      */
-    public static String getGetterMethodName ( final String field )
+    public <T extends Painter> T getPainter ( final JComponent component, final String painterId )
     {
-        return "get" + field.substring ( 0, 1 ).toUpperCase () + field.substring ( 1 );
+        final String pid = painterId != null ? painterId : getComponentStyleImpl ( component ).getBasePainter ().getId ();
+        final ComponentUI ui = getComponentUIImpl ( component );
+        return getFieldValue ( ui, pid );
     }
 
     /**
@@ -464,5 +565,27 @@ public abstract class WebLafSkin
     public String toString ()
     {
         return getName ();
+    }
+
+    /**
+     * Returns setter method name for the specified field.
+     *
+     * @param field field name
+     * @return setter method name for the specified field
+     */
+    public static String getSetterMethodName ( final String field )
+    {
+        return "set" + field.substring ( 0, 1 ).toUpperCase () + field.substring ( 1 );
+    }
+
+    /**
+     * Returns getter method name for the specified field.
+     *
+     * @param field field name
+     * @return getter method name for the specified field
+     */
+    public static String getGetterMethodName ( final String field )
+    {
+        return "get" + field.substring ( 0, 1 ).toUpperCase () + field.substring ( 1 );
     }
 }

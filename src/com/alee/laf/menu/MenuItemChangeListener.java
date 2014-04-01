@@ -17,6 +17,7 @@
 
 package com.alee.laf.menu;
 
+import com.alee.extended.painter.Painter;
 import com.alee.managers.style.skin.web.PopupStyle;
 import com.alee.managers.style.skin.web.WebPopupMenuPainter;
 
@@ -98,7 +99,7 @@ public class MenuItemChangeListener implements ChangeListener
             {
                 // Checking whether web-painter is used or not
                 final WebPopupMenuUI ui = ( WebPopupMenuUI ) popupMenu.getUI ();
-                final PopupMenuPainter painter = ui.getPainter ();
+                final Painter painter = ui.getPainter ();
                 if ( painter instanceof WebPopupMenuPainter )
                 {
                     // Checking painter sttyle

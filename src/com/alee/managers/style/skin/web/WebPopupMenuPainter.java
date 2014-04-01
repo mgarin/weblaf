@@ -34,6 +34,7 @@ public class WebPopupMenuPainter<E extends JPopupMenu> extends WebPopupPainter<E
     /**
      * todo 1. Incorrect menu placement when corner is off (spacing == shade)
      * todo 2. When using popupMenuWay take invoker shade into account (if its UI has one -> ShadeProvider interface)
+     * todo 3. Add left/right corners display support
      */
 
     /**
@@ -155,13 +156,13 @@ public class WebPopupMenuPainter<E extends JPopupMenu> extends WebPopupPainter<E
         if ( popupStyle == PopupStyle.dropdown && round == 0 )
         {
             // Check that menu item is attached to menu side
-            final boolean north = cornerSide == NORTH;
+            final boolean top = cornerSide == TOP;
             final WebPopupMenuUI pmui = ( WebPopupMenuUI ) popupMenu.getUI ();
-            final boolean stick = north ? ( pmui.getMargin ().top + margin.top == 0 ) : ( pmui.getMargin ().bottom + margin.bottom == 0 );
+            final boolean stick = top ? ( pmui.getMargin ().top + margin.top == 0 ) : ( pmui.getMargin ().bottom + margin.bottom == 0 );
             if ( stick )
             {
                 // Checking that we can actually retrieve what item wants to fill corner with
-                final int zIndex = north ? 0 : popupMenu.getComponentCount () - 1;
+                final int zIndex = top ? 0 : popupMenu.getComponentCount () - 1;
                 final Component component = popupMenu.getComponent ( zIndex );
                 if ( component instanceof JMenuItem )
                 {
@@ -172,13 +173,13 @@ public class WebPopupMenuPainter<E extends JPopupMenu> extends WebPopupPainter<E
                         if ( menuItem.getUI () instanceof WebMenuUI )
                         {
                             final WebMenuUI ui = ( WebMenuUI ) menuItem.getUI ();
-                            g2d.setPaint ( north ? ui.getNorthCornerFill () : ui.getSouthCornerFill () );
+                            g2d.setPaint ( top ? ui.getNorthCornerFill () : ui.getSouthCornerFill () );
                             g2d.fill ( getDropdownCornerShape ( popupMenu, menuSize, true ) );
                         }
                         else if ( menuItem.getUI () instanceof WebMenuItemUI )
                         {
                             final WebMenuItemUI ui = ( WebMenuItemUI ) menuItem.getUI ();
-                            g2d.setPaint ( north ? ui.getNorthCornerFill () : ui.getSouthCornerFill () );
+                            g2d.setPaint ( top ? ui.getNorthCornerFill () : ui.getSouthCornerFill () );
                             g2d.fill ( getDropdownCornerShape ( popupMenu, menuSize, true ) );
                         }
                     }
@@ -236,7 +237,7 @@ public class WebPopupMenuPainter<E extends JPopupMenu> extends WebPopupPainter<E
                     // Displaying dropdown-styled top-level menu
                     // It is displayed below or above the menu bar
                     setPopupStyle ( PopupStyle.dropdown );
-                    cornerSide = los.y <= y ? NORTH : SOUTH;
+                    cornerSide = los.y <= y ? TOP : BOTTOM;
                     if ( fixLocation )
                     {
                         // Invoker X-location on screen also works as orientation indicator, so we don't need to check it here
@@ -251,11 +252,11 @@ public class WebPopupMenuPainter<E extends JPopupMenu> extends WebPopupPainter<E
                 final boolean dropdown = popupStyle == PopupStyle.dropdown;
                 if ( invoker instanceof JComboBox && popupMenu.getName ().equals ( "ComboPopup.popup" ) )
                 {
-                    cornerSide = los.y <= y ? NORTH : SOUTH;
+                    cornerSide = los.y <= y ? TOP : BOTTOM;
                     if ( fixLocation )
                     {
                         x += transparent ? -sideWidth : 0;
-                        if ( cornerSide == NORTH )
+                        if ( cornerSide == TOP )
                         {
                             y -= transparent ? ( sideWidth - ( dropdown ? cornerWidth : 0 ) ) : 0;
                         }

@@ -17,7 +17,6 @@
 
 package com.alee.managers.settings.processors;
 
-import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.settings.SettingsProcessor;
 import com.alee.managers.settings.SettingsProcessorData;
 
@@ -51,7 +50,7 @@ public class JTextComponentSettingsProcessor extends SettingsProcessor<JTextComp
      *
      * @param data SettingsProcessorData
      */
-    public JTextComponentSettingsProcessor ( SettingsProcessorData data )
+    public JTextComponentSettingsProcessor ( final SettingsProcessorData data )
     {
         super ( data );
     }
@@ -74,33 +73,27 @@ public class JTextComponentSettingsProcessor extends SettingsProcessor<JTextComp
      * {@inheritDoc}
      */
     @Override
-    protected void doInit ( JTextComponent textComponent )
+    protected void doInit ( final JTextComponent textComponent )
     {
         focusAdapter = new FocusAdapter ()
         {
             @Override
-            public void focusLost ( FocusEvent e )
+            public void focusLost ( final FocusEvent e )
             {
-                if ( SettingsManager.isSaveOnChange () )
-                {
-                    save ();
-                }
+                save ();
             }
         };
         textComponent.addFocusListener ( focusAdapter );
 
         if ( textComponent instanceof JTextField )
         {
-            JTextField textField = ( JTextField ) textComponent;
+            final JTextField textField = ( JTextField ) textComponent;
             actionListener = new ActionListener ()
             {
                 @Override
-                public void actionPerformed ( ActionEvent e )
+                public void actionPerformed ( final ActionEvent e )
                 {
-                    if ( SettingsManager.isSaveOnChange () )
-                    {
-                        save ();
-                    }
+                    save ();
                 }
             };
             textField.addActionListener ( actionListener );
@@ -111,7 +104,7 @@ public class JTextComponentSettingsProcessor extends SettingsProcessor<JTextComp
      * {@inheritDoc}
      */
     @Override
-    protected void doLoad ( JTextComponent textComponent )
+    protected void doLoad ( final JTextComponent textComponent )
     {
         textComponent.setText ( loadValue () );
     }
@@ -120,7 +113,7 @@ public class JTextComponentSettingsProcessor extends SettingsProcessor<JTextComp
      * {@inheritDoc}
      */
     @Override
-    protected void doSave ( JTextComponent textComponent )
+    protected void doSave ( final JTextComponent textComponent )
     {
         saveValue ( textComponent.getText () );
     }
@@ -129,14 +122,14 @@ public class JTextComponentSettingsProcessor extends SettingsProcessor<JTextComp
      * {@inheritDoc}
      */
     @Override
-    protected void doDestroy ( JTextComponent textComponent )
+    protected void doDestroy ( final JTextComponent textComponent )
     {
         textComponent.removeFocusListener ( focusAdapter );
         focusAdapter = null;
 
         if ( textComponent instanceof JTextField )
         {
-            JTextField textField = ( JTextField ) textComponent;
+            final JTextField textField = ( JTextField ) textComponent;
             textField.removeActionListener ( actionListener );
             actionListener = null;
         }

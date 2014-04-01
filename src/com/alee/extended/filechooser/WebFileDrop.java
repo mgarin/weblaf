@@ -17,7 +17,7 @@
 
 package com.alee.extended.filechooser;
 
-import com.alee.extended.drag.FileDropHandler;
+import com.alee.extended.drag.FileDragAndDropHandler;
 import com.alee.extended.filefilter.AbstractFileFilter;
 import com.alee.extended.layout.WrapFlowLayout;
 import com.alee.laf.StyleConstants;
@@ -43,7 +43,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * User: mgarin Date: 07.10.11 Time: 14:25
+ * Custom component that acts as files container and allows drag & drop them.
+ * Separate WebFilePlate component is created for each added file to display it.
+ *
+ * @author Mikle Garin
  */
 
 public class WebFileDrop extends WebPanel implements LanguageMethods
@@ -63,6 +66,10 @@ public class WebFileDrop extends WebPanel implements LanguageMethods
 
     private boolean showRemoveButton = true;
     private boolean showFileExtensions = false;
+
+    private boolean filesDragEnabled = false;
+    private int dragAction = TransferHandler.MOVE;
+
     private boolean filesDropEnabled = true;
 
     private boolean allowSameFiles = false;
@@ -88,16 +95,16 @@ public class WebFileDrop extends WebPanel implements LanguageMethods
         setShowDefaultDropText ( true );
 
         // Files TransferHandler
-        setTransferHandler ( new FileDropHandler ()
+        setTransferHandler ( new FileDragAndDropHandler ()
         {
             @Override
-            protected boolean isDropEnabled ()
+            public boolean isDropEnabled ()
             {
                 return filesDropEnabled;
             }
 
             @Override
-            protected boolean filesImported ( final List<File> files )
+            public boolean filesDropped ( final List<File> files )
             {
                 // Adding dragged files
                 boolean anyAdded = false;
@@ -208,6 +215,26 @@ public class WebFileDrop extends WebPanel implements LanguageMethods
     {
         this.showDropText = showDropText;
         WebFileDrop.this.repaint ();
+    }
+
+    public boolean isFilesDragEnabled ()
+    {
+        return filesDragEnabled;
+    }
+
+    public void setFilesDragEnabled ( final boolean filesDragEnabled )
+    {
+        this.filesDragEnabled = filesDragEnabled;
+    }
+
+    public int getDragAction ()
+    {
+        return dragAction;
+    }
+
+    public void setDragAction ( final int dragAction )
+    {
+        this.dragAction = dragAction;
     }
 
     public boolean isFilesDropEnabled ()

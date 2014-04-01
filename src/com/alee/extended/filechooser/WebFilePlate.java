@@ -17,12 +17,14 @@
 
 package com.alee.extended.filechooser;
 
+import com.alee.extended.drag.FileDragAndDropHandler;
 import com.alee.extended.layout.TableLayout;
 import com.alee.laf.StyleConstants;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
 import com.alee.utils.CollectionUtils;
+import com.alee.utils.DragUtils;
 import com.alee.utils.FileUtils;
 import com.alee.utils.LafUtils;
 import com.alee.utils.swing.AncestorAdapter;
@@ -33,31 +35,39 @@ import javax.swing.event.AncestorEvent;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * User: mgarin Date: 24.02.12 Time: 13:42
+ * This is a custom panel that represents a single File within any container.
+ * It is basically used within WebFileDrop component to render selected files.
+ *
+ * @author Mikle Garin
  */
 
 public class WebFilePlate extends WebPanel
 {
     public static final ImageIcon CROSS_ICON = new ImageIcon ( WebFilePlate.class.getResource ( "icons/cross.png" ) );
 
-    private final List<ActionListener> closeListeners = new ArrayList<ActionListener> ( 1 );
+    protected final List<ActionListener> closeListeners = new ArrayList<ActionListener> ( 1 );
 
-    private boolean showRemoveButton = true;
-    private boolean showFileExtensions = false;
-    private final boolean animate = StyleConstants.animate;
+    protected boolean showRemoveButton = true;
+    protected boolean showFileExtensions = false;
+    protected final boolean animate = StyleConstants.animate;
 
-    private final File file;
+    private boolean dragEnabled = false;
+    private int dragAction = TransferHandler.MOVE;
 
-    private WebTimer animator = null;
-    private float opacity = 0f;
+    protected final File file;
 
-    private final WebLabel fileName;
-    private WebButton remove = null;
+    protected WebTimer animator = null;
+    protected float opacity = 0f;
+
+    protected final WebLabel fileName;
+    protected WebButton remove = null;
 
     public WebFilePlate ( final File file )
     {
@@ -132,15 +142,108 @@ public class WebFilePlate extends WebPanel
                 }
             }
         } );
+
+        // Custom file drag handler
+        final MouseAdapter ma = new MouseAdapter ()
+        {
+            public boolean doDrag;
+
+            @Override
+            public void mousePressed ( final MouseEvent e )
+            {
+                doDrag = true;
+            }
+
+            @Override
+            public void mouseDragged ( final MouseEvent e )
+            {
+                if ( doDrag )
+                {
+                    final TransferHandler transferHandler = getTransferHandler ();
+                    transferHandler.exportAsDrag ( WebFilePlate.this, e, transferHandler.getSourceActions ( WebFilePlate.this ) );
+                    doDrag = false;
+                }
+            }
+        };
+        addMouseListener ( ma );
+        addMouseMotionListener ( ma );
+        setTransferHandler ( new FileDragAndDropHandler ( true, true )
+        {
+            @Override
+            public boolean isDragEnabled ()
+            {
+                final Container parent = WebFilePlate.this.getParent ();
+                if ( parent instanceof WebFileDrop )
+                {
+                    return ( ( WebFileDrop ) parent ).isFilesDragEnabled ();
+                }
+                return WebFilePlate.this.isDragEnabled ();
+            }
+
+            @Override
+            public int getDragAction ()
+            {
+                final Container parent = WebFilePlate.this.getParent ();
+                if ( parent instanceof WebFileDrop )
+                {
+                    return ( ( WebFileDrop ) parent ).getDragAction ();
+                }
+                return WebFilePlate.this.getDragAction ();
+            }
+
+            @Override
+            public File fileDragged ()
+            {
+                // Remove this plate from WebFileDrop if it is a move action
+                if ( getDragAction () == MOVE )
+                {
+                    final Container parent = getParent ();
+                    if ( parent instanceof WebFileDrop )
+                    {
+                        performPlateRemoval ( new ActionEvent ( WebFilePlate.this, 0, "File moved by drag" ), false );
+                    }
+                }
+
+                // Pass this plate's file
+                return file;
+            }
+
+            @Override
+            public boolean importData ( final TransferSupport info )
+            {
+                // Special workaround to make this plate drop-transparent
+                return DragUtils.passDropAction ( WebFilePlate.this, info );
+            }
+        } );
     }
 
-    private void updateFileName ()
+    public boolean isDragEnabled ()
+    {
+        return dragEnabled;
+    }
+
+    public void setDragEnabled ( final boolean dragEnabled )
+    {
+        this.dragEnabled = dragEnabled;
+    }
+
+    public int getDragAction ()
+    {
+        return dragAction;
+    }
+
+    public void setDragAction ( final int dragAction )
+    {
+        this.dragAction = dragAction;
+    }
+
+    protected void updateFileName ()
     {
         fileName.setIcon ( getDisplayIcon ( file ) );
         fileName.setText ( getDisplayName ( file ) );
     }
 
-    private WebButton getRemoveButton ()
+    protected WebButton getRemoveButton ()
     {
         if ( remove == null )
         {
@@ -151,49 +254,54 @@ public class WebFilePlate extends WebPanel
                 @Override
                 public void actionPerformed ( final ActionEvent ae )
                 {
-                    if ( animator != null && animator.isRunning () )
-                    {
-                        animator.stop ();
-                    }
-                    if ( animate )
-                    {
-                        animator = new WebTimer ( "WebFilePlate.fadeOutTimer", StyleConstants.animationDelay, new ActionListener ()
-                        {
-                            @Override
-                            public void actionPerformed ( final ActionEvent e )
-                            {
-                                opacity -= 0.1f;
-                                if ( opacity > 0f )
-                                {
-                                    WebFilePlate.this.repaint ();
-                                }
-                                else
-                                {
-                                    // Remove file plate
-                                    removeFromParent ();
-
-                                    // Firing final close listeners
-                                    fireActionPerformed ( ae );
-
-                                    // Stopping animation
-                                    animator.stop ();
-                                }
-                            }
-                        } );
-                        animator.start ();
-                    }
-                    else
-                    {
-                        // Remove file plate
-                        removeFromParent ();
-                    }
+                    performPlateRemoval ( ae, animate );
                 }
             } );
         }
         return remove;
     }
 
-    private void removeFromParent ()
+    protected void performPlateRemoval ( final ActionEvent ae, final boolean animate )
+    {
+        if ( animator != null && animator.isRunning () )
+        {
+            animator.stop ();
+        }
+        if ( animate )
+        {
+            animator = new WebTimer ( "WebFilePlate.fadeOutTimer", StyleConstants.animationDelay, new ActionListener ()
+            {
+                @Override
+                public void actionPerformed ( final ActionEvent e )
+                {
+                    opacity -= 0.1f;
+                    if ( opacity > 0f )
+                    {
+                        WebFilePlate.this.repaint ();
+                    }
+                    else
+                    {
+                        // Remove file plate
+                        removeFromParent ();
+
+                        // Stopping animation
+                        animator.stop ();
+                    }
+                }
+            } );
+            animator.start ();
+        }
+        else
+        {
+            // Remove file plate
+            removeFromParent ();
+        }
+
+        // Firing close listeners
+        fireCloseActionPerformed ( ae );
+    }
+
+    protected void removeFromParent ()
     {
         // Change visibility option
         opacity = 0f;
@@ -209,12 +317,12 @@ public class WebFilePlate extends WebPanel
         }
     }
 
-    private ImageIcon getDisplayIcon ( final File file )
+    protected ImageIcon getDisplayIcon ( final File file )
     {
         return FileUtils.getFileIcon ( file, false );
     }
 
-    private String getDisplayName ( final File file )
+    protected String getDisplayName ( final File file )
     {
         final String name = FileUtils.getDisplayFileName ( file );
         return showFileExtensions || file.isDirectory () ? name : FileUtils.getFileNamePart ( name );
@@ -269,7 +377,7 @@ public class WebFilePlate extends WebPanel
         closeListeners.remove ( actionListener );
     }
 
-    private void fireActionPerformed ( final ActionEvent e )
+    protected void fireCloseActionPerformed ( final ActionEvent e )
     {
         for ( final ActionListener listener : CollectionUtils.copy ( closeListeners ) )
         {

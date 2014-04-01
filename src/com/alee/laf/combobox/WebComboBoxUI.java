@@ -29,6 +29,7 @@ import com.alee.utils.LafUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.laf.ShapeProvider;
 import com.alee.utils.swing.BorderMethods;
+import com.alee.utils.swing.RendererListener;
 import com.alee.utils.swing.WebDefaultCellEditor;
 
 import javax.swing.*;
@@ -46,6 +47,8 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 /**
  * Custom UI for JComboBox component.
@@ -55,6 +58,11 @@ import java.awt.event.MouseWheelListener;
 
 public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider, BorderMethods
 {
+    /**
+     * Default combobox renderer.
+     */
+    protected static ListCellRenderer DEFAULT_RENDERER;
+
     private ImageIcon expandIcon = WebComboBoxStyle.expandIcon;
     private ImageIcon collapseIcon = WebComboBoxStyle.collapseIcon;
     private int iconSpacing = WebComboBoxStyle.iconSpacing;
@@ -63,11 +71,15 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider, Bor
     private int shadeWidth = WebComboBoxStyle.shadeWidth;
     private boolean drawFocus = WebComboBoxStyle.drawFocus;
     private boolean mouseWheelScrollingEnabled = WebComboBoxStyle.mouseWheelScrollingEnabled;
+    private boolean useFirstValueAsPrototype = false;
 
-    private MouseWheelListener mouseWheelListener = null;
     private WebButton arrow = null;
+    private MouseWheelListener mouseWheelListener = null;
+    private RendererListener rendererListener = null;
+    private PropertyChangeListener rendererChangeListener = null;
+    private PropertyChangeListener enabledStateListener = null;
 
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebComboBoxUI ();
@@ -94,7 +106,7 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider, Bor
         // Drfault renderer
         if ( !( comboBox.getRenderer () instanceof WebComboBoxCellRenderer ) )
         {
-            comboBox.setRenderer ( new WebComboBoxCellRenderer ( comboBox ) );
+            comboBox.setRenderer ( new WebComboBoxCellRenderer () );
         }
 
         // Rollover scrolling listener
@@ -116,6 +128,49 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider, Bor
             }
         };
         comboBox.addMouseWheelListener ( mouseWheelListener );
+
+        // Renderer change listener
+        // Used to provide feedback from the renderer
+        rendererListener = new RendererListener ()
+        {
+            @Override
+            public void repaint ()
+            {
+                comboBox.repaint ();
+                listBox.repaint ();
+            }
+
+            @Override
+            public void revalidate ()
+            {
+                isMinimumSizeDirty = true;
+                comboBox.revalidate ();
+                listBox.revalidate ();
+            }
+        };
+        installRendererListener ( comboBox.getRenderer () );
+        rendererChangeListener = new PropertyChangeListener ()
+        {
+            @Override
+            public void propertyChange ( final PropertyChangeEvent e )
+            {
+                uninstallRendererListener ( e.getOldValue () );
+                installRendererListener ( e.getNewValue () );
+            }
+        };
+        comboBox.addPropertyChangeListener ( WebLookAndFeel.RENDERER_PROPERTY, rendererChangeListener );
+
+        // Enabled property change listener
+        // This is a workaround to allow box renderer properly inherit enabled state
+        enabledStateListener = new PropertyChangeListener ()
+        {
+            @Override
+            public void propertyChange ( final PropertyChangeEvent evt )
+            {
+                listBox.setEnabled ( comboBox.isEnabled () );
+            }
+        };
+        comboBox.addPropertyChangeListener ( WebLookAndFeel.ENABLED_PROPERTY, enabledStateListener );
     }
 
     /**
@@ -124,19 +179,18 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider, Bor
     @Override
     public void uninstallUI ( final JComponent c )
     {
+        comboBox.removePropertyChangeListener ( WebLookAndFeel.ENABLED_PROPERTY, enabledStateListener );
+
+        comboBox.removePropertyChangeListener ( WebLookAndFeel.RENDERER_PROPERTY, rendererChangeListener );
+        uninstallRendererListener ( comboBox.getRenderer () );
+        rendererListener = null;
+
         c.removeMouseWheelListener ( mouseWheelListener );
         mouseWheelListener = null;
+
         arrow = null;
 
         super.uninstallUI ( c );
-    }
-
-    public void setEditorColumns ( final int columns )
-    {
-        if ( editor instanceof JTextField )
-        {
-            ( ( JTextField ) editor ).setColumns ( columns );
-        }
     }
 
     @Override
@@ -157,6 +211,32 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider, Bor
             m.right += shadeWidth + 1;
         }
         comboBox.setBorder ( LafUtils.createWebBorder ( m ) );
+    }
+
+    /**
+     * Installs RendererListener into specified renderer if possible.
+     *
+     * @param renderer RendererListener to install
+     */
+    protected void installRendererListener ( final Object renderer )
+    {
+        if ( renderer != null && renderer instanceof WebComboBoxCellRenderer )
+        {
+            ( ( WebComboBoxCellRenderer ) renderer ).addRendererListener ( rendererListener );
+        }
+    }
+
+    /**
+     * Uninstalls RendererListener from specified renderer if possible.
+     *
+     * @param renderer RendererListener to uninstall
+     */
+    protected void uninstallRendererListener ( final Object renderer )
+    {
+        if ( renderer != null && renderer instanceof WebComboBoxCellRenderer )
+        {
+            ( ( WebComboBoxCellRenderer ) renderer ).removeRendererListener ( rendererListener );
+        }
     }
 
     /**
@@ -414,6 +494,26 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider, Bor
         }
     }
 
+    public void setEditorColumns ( final int columns )
+    {
+        if ( editor instanceof JTextField )
+        {
+            ( ( JTextField ) editor ).setColumns ( columns );
+        }
+    }
+
+    public boolean isUseFirstValueAsPrototype ()
+    {
+        return useFirstValueAsPrototype;
+    }
+
+    public void setUseFirstValueAsPrototype ( final boolean use )
+    {
+        this.useFirstValueAsPrototype = use;
+        this.isMinimumSizeDirty = true;
+        comboBox.revalidate ();
+    }
+
     public ImageIcon getExpandIcon ()
     {
         return expandIcon;
@@ -620,9 +720,148 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider, Bor
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Dimension getMinimumSize ( final JComponent c )
+    {
+        if ( !isMinimumSizeDirty )
+        {
+            return new Dimension ( cachedMinimumSize );
+        }
+
+        final Dimension size = getDisplaySize ();
+        final Insets insets = getInsets ();
+
+        // Calculate the width the button
+        final int buttonWidth = arrowButton.getPreferredSize ().width;
+
+        // Adjust the size based on the button width
+        size.height += insets.top + insets.bottom;
+        size.width += insets.left + insets.right + buttonWidth;
+
+        cachedMinimumSize.setSize ( size.width, size.height );
+        isMinimumSizeDirty = false;
+
+        return new Dimension ( size );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected Dimension getDisplaySize ()
+    {
+        Dimension result = new Dimension ();
+
+        // Use default renderer
+        ListCellRenderer renderer = comboBox.getRenderer ();
+        if ( renderer == null )
+        {
+            renderer = new DefaultListCellRenderer ();
+        }
+
+        final Object prototypeValue = comboBox.getPrototypeDisplayValue ();
+        if ( prototypeValue != null )
+        {
+            // Calculates the dimension based on the prototype value
+            result = getSizeForComponent ( renderer.getListCellRendererComponent ( listBox, prototypeValue, -1, false, false ) );
+        }
+        else
+        {
+            final ComboBoxModel model = comboBox.getModel ();
+            final int modelSize = model.getSize ();
+            Dimension d;
+
+            if ( modelSize > 0 )
+            {
+                if ( useFirstValueAsPrototype )
+                {
+                    // Calculates the maximum height and width based on first element
+                    final Object value = model.getElementAt ( 0 );
+                    final Component c = renderer.getListCellRendererComponent ( listBox, value, -1, false, false );
+                    d = getSizeForComponent ( c );
+                    result.width = Math.max ( result.width, d.width );
+                    result.height = Math.max ( result.height, d.height );
+                }
+                else
+                {
+                    // Calculate the dimension by iterating over all the elements in the combo box list
+                    for ( int i = 0; i < modelSize; i++ )
+                    {
+                        // Calculates the maximum height and width based on the largest element
+                        final Object value = model.getElementAt ( i );
+                        final Component c = renderer.getListCellRendererComponent ( listBox, value, -1, false, false );
+                        d = getSizeForComponent ( c );
+                        result.width = Math.max ( result.width, d.width );
+                        result.height = Math.max ( result.height, d.height );
+                    }
+                }
+            }
+            else
+            {
+                // Calculates the maximum height and width based on default renderer
+                result = getDefaultSize ();
+                if ( comboBox.isEditable () )
+                {
+                    result.width = 100;
+                }
+            }
+        }
+
+        if ( comboBox.isEditable () )
+        {
+            final Dimension d = editor.getPreferredSize ();
+            result.width = Math.max ( result.width, d.width );
+            result.height = Math.max ( result.height, d.height );
+        }
+
+        return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected Dimension getDefaultSize ()
+    {
+        // Calculates the height and width using the default text renderer
+        return getSizeForComponent ( getDefaultListCellRenderer ().getListCellRendererComponent ( listBox, " ", -1, false, false ) );
+    }
+
+    /**
+     * Returns default list cell renderer instance.
+     *
+     * @return default list cell renderer instance
+     */
+    protected static ListCellRenderer getDefaultListCellRenderer ()
+    {
+        if ( DEFAULT_RENDERER == null )
+        {
+            DEFAULT_RENDERER = new WebComboBoxCellRenderer ();
+        }
+        return DEFAULT_RENDERER;
+    }
+
+    /**
+     * Returns renderer component preferred size.
+     *
+     * @param c renderer component
+     * @return renderer component preferred size
+     */
+    protected Dimension getSizeForComponent ( final Component c )
+    {
+        currentValuePane.add ( c );
+        c.setFont ( comboBox.getFont () );
+        final Dimension d = c.getPreferredSize ();
+        currentValuePane.remove ( c );
+        return d;
+    }
+
+    /**
      * Custom layout manager for WebComboBoxUI.
      */
-    private class WebComboBoxLayout extends AbstractLayoutManager
+    protected class WebComboBoxLayout extends AbstractLayoutManager
     {
         /**
          * {@inheritDoc}

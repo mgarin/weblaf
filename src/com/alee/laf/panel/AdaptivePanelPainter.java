@@ -23,84 +23,126 @@ import com.alee.extended.painter.Painter;
 import javax.swing.*;
 
 /**
- * Simple adapter class
+ * Simple PanelPainter adapter class.
+ * It is used to install simple non-specific painters into WebPanelUI.
  *
  * @author Mikle Garin
  */
 
 public class AdaptivePanelPainter<E extends JPanel> extends AdaptivePainter<E> implements PanelPainter<E>
 {
+    /**
+     * Constructs new AdaptivePanelPainter for the specified painter.
+     *
+     * @param painter painter to adapt
+     */
     public AdaptivePanelPainter ( final Painter painter )
     {
         super ( painter );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setUndecorated ( final boolean undecorated )
     {
         // Ignore this method in adaptive class
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setPaintFocus ( final boolean paint )
     {
         // Ignore this method in adaptive class
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setPaintTop ( final boolean top )
     {
         // Ignore this method in adaptive class
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setPaintLeft ( final boolean left )
     {
         // Ignore this method in adaptive class
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setPaintBottom ( final boolean bottom )
     {
         // Ignore this method in adaptive class
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setPaintRight ( final boolean right )
     {
         // Ignore this method in adaptive class
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setPaintSides ( final boolean top, final boolean left, final boolean bottom, final boolean right )
     {
         // Ignore this method in adaptive class
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setPaintTopLine ( final boolean top )
     {
         // Ignore this method in adaptive class
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setPaintLeftLine ( final boolean left )
     {
         // Ignore this method in adaptive class
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setPaintBottomLine ( final boolean bottom )
     {
         // Ignore this method in adaptive class
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setPaintRightLine ( final boolean right )
     {
         // Ignore this method in adaptive class
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setPaintSideLines ( final boolean top, final boolean left, final boolean bottom, final boolean right )
     {

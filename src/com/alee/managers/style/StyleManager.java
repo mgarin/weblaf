@@ -17,17 +17,21 @@
 
 package com.alee.managers.style;
 
+import com.alee.extended.painter.Painter;
 import com.alee.managers.style.data.ComponentStyle;
 import com.alee.managers.style.data.SkinInfo;
 import com.alee.managers.style.skin.WebLafSkin;
 import com.alee.managers.style.skin.web.WebSkin;
+import com.alee.utils.LafUtils;
 import com.alee.utils.ReflectUtils;
-import com.alee.utils.SystemUtils;
 import com.alee.utils.XmlUtils;
+import com.alee.utils.laf.Styleable;
+import com.alee.utils.ninepatch.NinePatchIcon;
 
 import javax.swing.*;
+import javax.swing.plaf.ComponentUI;
+import java.awt.*;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.WeakHashMap;
 
@@ -43,37 +47,70 @@ import java.util.WeakHashMap;
 public final class StyleManager
 {
     /**
-     * todo 1. Rename "setCustomStyle" to "setCustomPainterStyle" (and such...)
-     * todo 2. Probably add "setCustomUIStyle" to override settings provided by skin
+     * todo 1. Probably add "setCustomUIStyle" to override settings provided by skin
      */
 
     /**
-     * Constant provided in the skin that supports any kind of systems.
+     * Default painter ID.
      */
-    public static final String ALL_SYSTEMS_SUPPORTED = "all";
+    public static final String DEFAULT_PAINTER_ID = "painter";
+
+    /**
+     * Static class aliases processing.
+     * This allows StyleManager usage without its initialization.
+     */
+    static
+    {
+        // Class aliases
+        XmlUtils.processAnnotations ( SkinInfo.class );
+        XmlUtils.processAnnotations ( ComponentStyle.class );
+        XmlUtils.processAnnotations ( NinePatchIcon.class );
+    }
 
     /**
      * Skins applied for each specific skinnable component.
      * Used to determine skinnable components, update them properly and detect their current skin.
+     * Map structure: JComponent -> WebLafSkin
      */
     private static final Map<JComponent, WebLafSkin> appliedSkins = new WeakHashMap<JComponent, WebLafSkin> ();
 
     /**
-     * Custom component properties.
+     * Custom painter properties.
      * These properties may be specified for each separate component.
+     * Map structure: JComponent -> painterId -> propertyName -> propertyValue
      */
-    private static final Map<JComponent, Map<String, Object>> customComponentProperties =
-            new WeakHashMap<JComponent, Map<String, Object>> ();
+    private static final Map<JComponent, Map<String, Map<String, Object>>> customPainterProperties =
+            new WeakHashMap<JComponent, Map<String, Map<String, Object>>> ();
+
+    /**
+     * Custom component painters.
+     * These are the painters set from the code and they replace default painters provided by skin.
+     * Map structure: JComponent -> Painter ID -> Painter
+     */
+    private static final Map<JComponent, Map<String, Painter>> customPainters = new WeakHashMap<JComponent, Map<String, Painter>> ();
 
     /**
      * Default WebLaF skin.
+     * Skin used by default when no other skins provided.
+     * This skin can be set before WebLaF initialization to avoid unnecessary UI updates afterwards.
      */
     private static WebLafSkin defaultSkin = null;
 
     /**
-     * Currently applied skin.
+     * Currently used skin.
+     * This skin is applied to all newly created components styled by WebLaF except customized ones.
      */
     private static WebLafSkin currentSkin = null;
+
+    /**
+     * Whether strict style checks are enabled or not.
+     * <p/>
+     * In case strick checks are enabled any incorrect properties or painters getter and setter calls will cause exceptions.
+     * These exceptions will not cause UI to halt but they will properly inform about missing styles, incorrect settings etc.
+     * <p/>
+     * It is highly recommended to keep this property enabled to see and fix all problems right away.
+     */
+    private static boolean strictStyleChecks = true;
 
     /**
      * Manager initialization mark.
@@ -89,26 +126,29 @@ public final class StyleManager
         {
             initialized = true;
 
-            // Class aliases
-            XmlUtils.processAnnotations ( SkinInfo.class );
-            XmlUtils.processAnnotations ( ComponentStyle.class );
-
             // Applying default skin as current skin
             applyDefaultSkin ();
         }
     }
 
     /**
-     * Returns whether the specified skin is supported or not.
+     * Returns whether strict style checks are enabled or not.
      *
-     * @param skin skin to check
-     * @return true if the specified skin is supported, false otherwise
+     * @return true if strict style checks are enabled, false otherwise
      */
-    public static boolean isSupported ( final WebLafSkin skin )
+    public static boolean isStrictStyleChecks ()
     {
-        final List<String> systems = skin != null ? skin.getSupportedSystems () : null;
-        final boolean supportsAny = systems != null && systems.size () > 0;
-        return supportsAny && ( systems.contains ( ALL_SYSTEMS_SUPPORTED ) || systems.contains ( SystemUtils.getShortOsName () ) );
+        return strictStyleChecks;
+    }
+
+    /**
+     * Sets whether strict style checks are enabled or not.
+     *
+     * @param strict whether strict style checks are enabled or not
+     */
+    public static void setStrictStyleChecks ( final boolean strict )
+    {
+        StyleManager.strictStyleChecks = strict;
     }
 
     /**
@@ -118,9 +158,13 @@ public final class StyleManager
      */
     private static void checkSupport ( final WebLafSkin skin )
     {
-        if ( !isSupported ( skin ) )
+        if ( skin == null )
         {
-            throw new RuntimeException ( "Skin \"" + skin.getName () + "\" is not supported in this system" );
+            throw new StyleException ( "Empty skin provided" );
+        }
+        if ( !skin.isSupported () )
+        {
+            throw new StyleException ( "Skin \"" + skin.getName () + "\" is not supported in this system" );
         }
     }
 
@@ -131,6 +175,10 @@ public final class StyleManager
      */
     public static WebLafSkin getDefaultSkin ()
     {
+        if ( defaultSkin == null )
+        {
+            setDefaultSkin ( new WebSkin () );
+        }
         return defaultSkin;
     }
 
@@ -181,12 +229,7 @@ public final class StyleManager
      */
     public static WebLafSkin applyDefaultSkin ()
     {
-        if ( defaultSkin == null )
-        {
-            // Initialize default skin if none specified
-            defaultSkin = new WebSkin ();
-        }
-        return applySkin ( defaultSkin );
+        return applySkin ( getDefaultSkin () );
     }
 
     /**
@@ -196,7 +239,7 @@ public final class StyleManager
      */
     public static WebLafSkin getCurrentSkin ()
     {
-        return currentSkin;
+        return currentSkin != null ? currentSkin : getDefaultSkin ();
     }
 
     /**
@@ -224,11 +267,11 @@ public final class StyleManager
             final WebLafSkin oldSkin = entry.getValue ();
             if ( oldSkin != null )
             {
-                oldSkin.remove ( component );
+                oldSkin.removeSkin ( component );
             }
             if ( skin != null )
             {
-                skin.apply ( component, customComponentProperties.get ( component ) );
+                skin.applySkin ( component );
             }
             entry.setValue ( skin );
         }
@@ -244,11 +287,12 @@ public final class StyleManager
      */
     public static WebLafSkin applySkin ( final JComponent component )
     {
-        return applySkin ( component, currentSkin );
+        return applySkin ( component, getCurrentSkin () );
     }
 
     /**
      * Applies specified skin to the skinnable component.
+     * todo Do not replace custom applied skins when current skin changed?
      *
      * @param component component to apply skin to
      * @param skin      skin to be applied
@@ -263,7 +307,7 @@ public final class StyleManager
         final WebLafSkin previousSkin = removeSkin ( component );
 
         // Applying new skin
-        skin.apply ( component, customComponentProperties.get ( component ) );
+        skin.applySkin ( component );
         appliedSkins.put ( component, skin );
 
         return previousSkin;
@@ -280,14 +324,44 @@ public final class StyleManager
         final WebLafSkin skin = appliedSkins.get ( component );
         if ( skin != null )
         {
-            skin.remove ( component );
+            skin.removeSkin ( component );
             appliedSkins.remove ( component );
         }
         return skin;
     }
 
     /**
-     * Sets custom style property for the specified component.
+     * Returns painter property value from the specified component.
+     * Specified property is searched only inside the base painter so far.
+     *
+     * @param component component to retrieve style property from
+     * @param key       style property key
+     * @param <T>       style property value type
+     * @return style property value
+     */
+    public static <T> T getPainterPropertyValue ( final JComponent component, final String key )
+    {
+        return getPainterPropertyValue ( component, null, key );
+    }
+
+    /**
+     * Returns painter property value from the specified component.
+     * Specified property is searched only inside the base painter so far.
+     *
+     * @param component component to retrieve style property from
+     * @param painterId painter ID
+     * @param key       style property key
+     * @param <T>       style property value type
+     * @return style property value
+     */
+    public static <T> T getPainterPropertyValue ( final JComponent component, final String painterId, final String key )
+    {
+        final WebLafSkin skin = appliedSkins.get ( component );
+        return skin != null ? ( T ) skin.getPainterPropertyValue ( component, painterId, key ) : null;
+    }
+
+    /**
+     * Sets custom value for painter property for the specified component.
      * This tricky method uses component skin to set the specified property into component painter.
      *
      * @param component component to apply custom style property to
@@ -296,14 +370,38 @@ public final class StyleManager
      * @param <T>       custom style property value type
      * @return old custom style property value
      */
-    public static <T> T setCustomStyle ( final JComponent component, final String key, final T value )
+    public static <T> T setCustomPainterProperty ( final JComponent component, final String key, final T value )
+    {
+        return setCustomPainterProperty ( component, null, key, value );
+    }
+
+    /**
+     * Sets custom value for painter property for the specified component.
+     * This tricky method uses component skin to set the specified property into component painter.
+     *
+     * @param component component to apply custom style property to
+     * @param painterId painter ID
+     * @param key       custom style property key
+     * @param value     custom style property value
+     * @param <T>       custom style property value type
+     * @return old custom style property value
+     */
+    public static <T> T setCustomPainterProperty ( final JComponent component, final String painterId, final String key, final T value )
     {
         // Retrieving custom properties map
-        Map<String, Object> properties = customComponentProperties.get ( component );
+        Map<String, Map<String, Object>> allProperties = customPainterProperties.get ( component );
+        if ( allProperties == null )
+        {
+            allProperties = new HashMap<String, Map<String, Object>> ( 1 );
+            customPainterProperties.put ( component, allProperties );
+        }
+
+        // Retrieving painter properties map
+        Map<String, Object> properties = allProperties.get ( painterId );
         if ( properties == null )
         {
             properties = new HashMap<String, Object> ( 1 );
-            customComponentProperties.put ( component, properties );
+            allProperties.put ( painterId, properties );
         }
 
         // Saving custom property
@@ -313,30 +411,198 @@ public final class StyleManager
         final WebLafSkin componentSkin = appliedSkins.get ( component );
         if ( componentSkin != null )
         {
-            componentSkin.applyCustomStyle ( component, key, value );
+            componentSkin.setCustomPainterProperty ( component, key, value );
         }
 
         return oldValue;
     }
 
     /**
-     * Returns style property from the specified component.
+     * Returns all custom painter properties.
+     * Map structure: JComponent -> painterId -> propertyName -> propertyValue
      *
-     * @param component component to retrieve style property from
-     * @param key       style property key
-     * @param <T>       style property value type
-     * @return style property value
+     * @return all custom painter properties
      */
-    public static <T> T getStyleValue ( final JComponent component, final String key )
+    public static Map<JComponent, Map<String, Map<String, Object>>> getCustomPainterProperties ()
     {
-        final WebLafSkin componentSkin = appliedSkins.get ( component );
-        if ( componentSkin != null )
+        return customPainterProperties;
+    }
+
+    /**
+     * Returns all custom painter properties for the specified component.
+     * Map structure: painterId -> propertyName -> propertyValue
+     *
+     * @param component component to retrieve custom properties for
+     * @return all custom painter properties for the specified component
+     */
+    public static Map<String, Map<String, Object>> getCustomPainterProperties ( final JComponent component )
+    {
+        return customPainterProperties.get ( component );
+    }
+
+    /**
+     * Clears all custom painter properties for the specified component.
+     * This is required when painter changes to avoid setting unexisting variables into painter.
+     *
+     * @param component component to clear custom painter properties for
+     */
+    public static void clearCustomPainterProperties ( final JComponent component )
+    {
+        final Map<String, Map<String, Object>> properties = customPainterProperties.get ( component );
+        if ( properties != null )
         {
-            return componentSkin.getStyleValue ( component, key );
+            // Removing all custom painter properties
+            properties.clear ();
+
+            // Forcing component skin update
+            applySkin ( component );
+        }
+    }
+
+    /**
+     * Returns painter for the specified component.
+     *
+     * @param component component to retrieve painter from
+     * @param <T>       painter type
+     * @return current component painter
+     */
+    public static <T extends Painter> T getPainter ( final JComponent component )
+    {
+        // todo Change ID to null
+        return getPainter ( component, DEFAULT_PAINTER_ID );
+    }
+
+    /**
+     * Returns painter for the specified component and painter ID.
+     *
+     * @param component component to retrieve painter from
+     * @param painterId painter ID
+     * @param <T>       painter type
+     * @return current component painter for the specified painter ID
+     */
+    public static <T extends Painter> T getPainter ( final JComponent component, final String painterId )
+    {
+        final Map<String, Painter> painters = customPainters.get ( component );
+        if ( painters != null && painters.containsKey ( painterId ) )
+        {
+            // Return custom installed painter
+            return ( T ) painters.get ( painterId );
         }
         else
         {
-            return null;
+            // Return painter applied by skin
+            return getCurrentSkin ().getPainter ( component, painterId );
         }
+    }
+
+    /**
+     * Sets custom default painter for the specified component.
+     * You should call this method when setting painter outside of the UI to avoid
+     *
+     * @param component component to set painter for
+     * @param painter   painter
+     * @param <T>       painter type
+     * @return old custom painter
+     */
+    public static <T extends Painter> T setCustomPainter ( final JComponent component, final T painter )
+    {
+        // todo Change ID to null
+        return setCustomPainter ( component, DEFAULT_PAINTER_ID, painter );
+    }
+
+    /**
+     * Sets custom painter for the specified component.
+     * You should call this method when setting painter outside of the UI to avoid
+     *
+     * @param component component to set painter for
+     * @param id        painter ID
+     * @param painter   painter
+     * @param <T>       painter type
+     * @return old custom painter
+     */
+    public static <T extends Painter> T setCustomPainter ( final JComponent component, final String id, final T painter )
+    {
+        // Clearing custom properties first
+        clearCustomPainterProperties ( component );
+
+        // Saving custom painter
+        Map<String, Painter> painters = customPainters.get ( component );
+        if ( painters == null )
+        {
+            painters = new HashMap<String, Painter> ( 1 );
+            customPainters.put ( component, painters );
+        }
+        final T oldValue = ( T ) painters.put ( id, painter );
+
+        // Forcing component update
+        applySkin ( component );
+
+        return oldValue;
+    }
+
+    /**
+     * Returns all custom painters.
+     *
+     * @return all custom painters
+     */
+    public static Map<JComponent, Map<String, Painter>> getCustomPainters ()
+    {
+        return customPainters;
+    }
+
+    /**
+     * Returns all custom painters for the specified component.
+     *
+     * @param component component to retrieve custom painters for
+     * @return all custom painters for the specified component
+     */
+    public static Map<String, Painter> getCustomPainters ( final JComponent component )
+    {
+        return customPainters.get ( component );
+    }
+
+    /**
+     * Removes all custom painters from the specified component.
+     *
+     * @param component component to remove custom painters from
+     */
+    public static void removeCustomPainters ( final JComponent component )
+    {
+        final Map<String, Painter> painters = customPainters.get ( component );
+        if ( painters != null )
+        {
+            // Removing all custom painters
+            painters.clear ();
+
+            // Forcing component skin update
+            applySkin ( component );
+        }
+    }
+
+    /**
+     * Sets component style ID if component or its UI is instance of Styleable interface.
+     * This might be useful in cases when you cannot be sure about component type but want to provide style if possible.
+     *
+     * @param component component to apply style ID to
+     * @param styleId   style ID
+     * @return true if style ID was successfully applied, false otherwise
+     */
+    public static boolean setStyleId ( final Component component, final String styleId )
+    {
+        if ( component instanceof Styleable )
+        {
+            ( ( Styleable ) component ).setStyleId ( styleId );
+            return true;
+        }
+        else
+        {
+            final ComponentUI ui = LafUtils.getUI ( component );
+            if ( ui != null && ui instanceof Styleable )
+            {
+                ( ( Styleable ) ui ).setStyleId ( styleId );
+                return true;
+            }
+        }
+        return false;
     }
 }

@@ -24,11 +24,21 @@ import com.alee.utils.ReflectUtils;
 import javax.swing.*;
 
 /**
- * User: mgarin Date: 11.10.11 Time: 14:09
+ * This WebLabel extension class allows you to display text vertically and provides a direct access to WebVerticalLabelUI methods.
+ * It also provides a few additional constructors nad methods to setup the label.
+ * <p/>
+ * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
+ * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
+ *
+ * @author Mikle Garin
  */
 
 public class WebVerticalLabel extends WebLabel
 {
+    /**
+     * todo 1. Integrate rotation right into WebLabel and remove WebVerticalLabel
+     */
+
     /**
      * Unique UI class ID.
      *
@@ -102,22 +112,40 @@ public class WebVerticalLabel extends WebLabel
         setClockwise ( clockwise );
     }
 
+    /**
+     * Returns whether text should be rotated clockwise or not.
+     *
+     * @return true if text should be rotated clockwise, false if counter-clockwise
+     */
     public boolean isClockwise ()
     {
         return getWebUI ().isClockwise ();
     }
 
+    /**
+     * Sets whether text should be rotated clockwise or not.
+     *
+     * @param clockwise whether text should be rotated clockwise or not
+     */
     public void setClockwise ( final boolean clockwise )
     {
         getWebUI ().setClockwise ( clockwise );
     }
 
+    /**
+     * Returns Web-UI applied to this class.
+     *
+     * @return Web-UI applied to this class
+     */
     @Override
     public WebVerticalLabelUI getWebUI ()
     {
         return ( WebVerticalLabelUI ) getUI ();
     }
 
+    /**
+     * Installs a Web-UI into this component.
+     */
     @Override
     public void updateUI ()
     {

@@ -51,6 +51,7 @@ import com.alee.managers.hotkey.HotkeyRunnable;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.notification.NotificationManager;
 import com.alee.managers.settings.SettingsManager;
+import com.alee.managers.style.StyleManager;
 import com.alee.managers.tooltip.TooltipAdapter;
 import com.alee.managers.tooltip.TooltipManager;
 import com.alee.managers.tooltip.TooltipWay;
@@ -101,7 +102,7 @@ public class WebLookAndFeelDemo extends WebFrame
     private WebBreadcrumbToggleButton sourcesButton;
     private WebMemoryBar memoryBar;
 
-    @SuppressWarnings ( "UnusedDeclaration" )
+    @SuppressWarnings ("UnusedDeclaration")
     private WebButton featureStateLegend;
 
     private static WebLookAndFeelDemo instance = null;
@@ -432,7 +433,7 @@ public class WebLookAndFeelDemo extends WebFrame
                         ( ( WebTimer ) e.getSource () ).stop ();
                     }
                 }
-                catch ( Throwable ex )
+                catch ( final Throwable ex )
                 {
                     // Ignore version check exceptions
                 }
@@ -447,7 +448,7 @@ public class WebLookAndFeelDemo extends WebFrame
                         final String versionUrl = WebLookAndFeelDemo.WEBLAF_SITE + "downloads/version.xml";
                         lastVersion = XmlUtils.fromXML ( new URL ( versionUrl ) );
                     }
-                    catch ( Throwable ex )
+                    catch ( final Throwable ex )
                     {
                         // Ignore version check exceptions
                     }
@@ -580,6 +581,7 @@ public class WebLookAndFeelDemo extends WebFrame
         // Component orientation toggle
         final WebToggleButton ltrOrientation = WebToggleButton.createIconWebButton ( orientationIcon );
         TooltipManager.setTooltip ( ltrOrientation, orientationIcon, "Use LTR components orientation" );
+        ltrOrientation.addHotkey ( ltrOrientation, Hotkey.ALT_R );
         ltrOrientation.setSelected ( LanguageManager.isLeftToRight () );
         ltrOrientation.addActionListener ( new ActionListener ()
         {
@@ -596,7 +598,10 @@ public class WebLookAndFeelDemo extends WebFrame
             @Override
             public void run ( final KeyEvent e )
             {
-                ltrOrientation.doClick ();
+                if ( !ltrOrientation.isFocusOwner () )
+                {
+                    ltrOrientation.doClick ();
+                }
             }
         } );
 
@@ -683,12 +688,19 @@ public class WebLookAndFeelDemo extends WebFrame
         {
             legendPanel = new WebPanel ( new VerticalFlowLayout () );
             legendPanel.setOpaque ( false );
-            legendPanel.add ( new WebLabel ( featureState.getDescription (), featureState.getIcon (), WebLabel.CENTER ).setBoldFont () );
-            legendPanel.add ( new WebLabel ( featureState.getFullDescription (), WebLabel.CENTER ) );
+            legendPanel.add ( createLegendLabel ( featureState.getDescription (), featureState.getIcon () ).setBoldFont () );
+            legendPanel.add ( createLegendLabel ( featureState.getFullDescription (), null ).setMargin ( 5 ) );
             legendCache.put ( featureState, legendPanel );
         }
         lastTip = TooltipManager.showOneTimeTooltip ( component, null, legendPanel, TooltipWay.up );
         lastComponent = component;
+    }
+
+    protected WebLabel createLegendLabel ( final String text, final ImageIcon icon )
+    {
+        final WebLabel legendLabel = new WebLabel ( text, icon );
+        legendLabel.setStyleId ( "legend-label" );
+        return legendLabel;
     }
 
     private WebBreadcrumb getLocationBreadcrumb ()
@@ -849,6 +861,10 @@ public class WebLookAndFeelDemo extends WebFrame
 
         // Default demo language for now
         LanguageManager.DEFAULT = LanguageManager.ENGLISH;
+
+        // Demo application skin
+        // It extends default WebLaF skin and adds some custom styling
+        StyleManager.setDefaultSkin ( DemoSkin.class.getCanonicalName () );
 
         // Look and Feel
         WebLookAndFeel.install ();

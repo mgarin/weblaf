@@ -22,9 +22,11 @@ import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.language.LanguageMethods;
 import com.alee.managers.language.updaters.LanguageUpdater;
+import com.alee.managers.style.StyleManager;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SizeUtils;
 import com.alee.utils.SwingUtils;
+import com.alee.utils.laf.Styleable;
 import com.alee.utils.swing.FontMethods;
 import com.alee.utils.swing.SizeMethods;
 
@@ -32,10 +34,16 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * User: mgarin Date: 26.07.11 Time: 13:16
+ * This JLabel extension class provides a direct access to WebLabelUI methods.
+ * It also provides a few additional constructors nad methods to setup the label.
+ * <p/>
+ * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
+ * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
+ *
+ * @author Mikle Garin
  */
 
-public class WebLabel extends JLabel implements LanguageMethods, FontMethods<WebLabel>, SizeMethods<WebLabel>
+public class WebLabel extends JLabel implements Styleable, LanguageMethods, FontMethods<WebLabel>, SizeMethods<WebLabel>
 {
     public WebLabel ()
     {
@@ -150,12 +158,12 @@ public class WebLabel extends JLabel implements LanguageMethods, FontMethods<Web
 
     public Painter getPainter ()
     {
-        return getWebUI ().getPainter ();
+        return StyleManager.getPainter ( this );
     }
 
     public WebLabel setPainter ( final Painter painter )
     {
-        getWebUI ().setPainter ( painter );
+        StyleManager.setCustomPainter ( this, painter );
         return this;
     }
 
@@ -192,11 +200,37 @@ public class WebLabel extends JLabel implements LanguageMethods, FontMethods<Web
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getStyleId ()
+    {
+        return getWebUI ().getStyleId ();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setStyleId ( final String id )
+    {
+        getWebUI ().setStyleId ( id );
+    }
+
+    /**
+     * Returns Web-UI applied to this class.
+     *
+     * @return Web-UI applied to this class
+     */
     public WebLabelUI getWebUI ()
     {
         return ( WebLabelUI ) getUI ();
     }
 
+    /**
+     * Installs a Web-UI into this component.
+     */
     @Override
     public void updateUI ()
     {
@@ -217,10 +251,6 @@ public class WebLabel extends JLabel implements LanguageMethods, FontMethods<Web
             setUI ( getUI () );
         }
     }
-
-    /**
-     * Language methods
-     */
 
     /**
      * {@inheritDoc}
@@ -284,10 +314,6 @@ public class WebLabel extends JLabel implements LanguageMethods, FontMethods<Web
     {
         LanguageManager.unregisterLanguageUpdater ( this );
     }
-
-    /**
-     * Font methods
-     */
 
     /**
      * {@inheritDoc}
@@ -450,10 +476,6 @@ public class WebLabel extends JLabel implements LanguageMethods, FontMethods<Web
     {
         return SwingUtils.getFontName ( this );
     }
-
-    /**
-     * Size methods.
-     */
 
     /**
      * {@inheritDoc}

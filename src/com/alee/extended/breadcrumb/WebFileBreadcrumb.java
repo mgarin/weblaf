@@ -261,9 +261,6 @@ public class WebFileBreadcrumb extends WebBreadcrumb
 
         // Restoring auto-update
         setAutoUpdate ( true );
-
-        // Performing single update
-        updateElements ();
     }
 
     private void addFile ( final File file )

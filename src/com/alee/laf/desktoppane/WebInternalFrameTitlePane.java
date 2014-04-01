@@ -39,7 +39,7 @@ public class WebInternalFrameTitlePane extends BasicInternalFrameTitlePane
     public static final ImageIcon restoreIcon = new ImageIcon ( WebInternalFrameTitlePane.class.getResource ( "icons/restore.png" ) );
     public static final ImageIcon closeIcon = new ImageIcon ( WebInternalFrameTitlePane.class.getResource ( "icons/close.png" ) );
 
-    public WebInternalFrameTitlePane ( JInternalFrame f )
+    public WebInternalFrameTitlePane ( final JInternalFrame f )
     {
         super ( f );
 
@@ -59,7 +59,7 @@ public class WebInternalFrameTitlePane extends BasicInternalFrameTitlePane
     }
 
     @Override
-    public void paintComponent ( Graphics g )
+    public void paintComponent ( final Graphics g )
     {
         // super.paintComponent ( g );
         if ( !isFrameTitle () )
@@ -81,7 +81,7 @@ public class WebInternalFrameTitlePane extends BasicInternalFrameTitlePane
         add ( new BorderPanel ( new WebLabel ( frame.getTitle (), new Icon ()
         {
             @Override
-            public void paintIcon ( Component c, Graphics g, int x, int y )
+            public void paintIcon ( final Component c, final Graphics g, final int x, final int y )
             {
                 if ( frame.getFrameIcon () != null )
                 {
@@ -109,9 +109,9 @@ public class WebInternalFrameTitlePane extends BasicInternalFrameTitlePane
             }
         }, isFrameTitle () ? 3 : 1, 3, 0, 3 ), BorderLayout.CENTER );
 
-        int buttons = ( frame.isIconifiable () ? 1 : 0 ) + ( frame.isMaximizable () ? 1 : 0 ) +
+        final int buttons = ( frame.isIconifiable () ? 1 : 0 ) + ( frame.isMaximizable () ? 1 : 0 ) +
                 ( frame.isClosable () ? 1 : 0 );
-        JPanel buttonsPanel = new JPanel ( new GridLayout ( 1, buttons ) );
+        final JPanel buttonsPanel = new JPanel ( new GridLayout ( 1, buttons ) );
         buttonsPanel.setOpaque ( false );
         if ( frame.isIconifiable () )
         {
@@ -139,7 +139,7 @@ public class WebInternalFrameTitlePane extends BasicInternalFrameTitlePane
                 setShadeWidth ( 0 );
                 setRound ( StyleConstants.bigRound );
                 setInnerShadeWidth ( 2 );
-                setDrawFocus ( false );
+                setFocusable ( false );
                 if ( isFrameTitle () )
                 {
                     setDrawRight ( false );
@@ -167,7 +167,7 @@ public class WebInternalFrameTitlePane extends BasicInternalFrameTitlePane
                 setShadeWidth ( 0 );
                 setRound ( StyleConstants.bigRound );
                 setInnerShadeWidth ( 2 );
-                setDrawFocus ( false );
+                setFocusable ( false );
                 setDrawLeft ( false );
                 setDrawLeftLine ( false );
                 setDrawRight ( false );
@@ -185,7 +185,7 @@ public class WebInternalFrameTitlePane extends BasicInternalFrameTitlePane
                 setShadeWidth ( 0 );
                 setRound ( StyleConstants.bigRound );
                 setInnerShadeWidth ( 2 );
-                setDrawFocus ( false );
+                setFocusable ( false );
                 if ( isFrameTitle () )
                 {
                     setDrawLeft ( false );

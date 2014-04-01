@@ -34,6 +34,7 @@ public class HotkeyTipLabel extends WebLabel
     public HotkeyTipLabel ()
     {
         super ();
+        setStyleId ( "hotkey-tip-label" );
 
         setForeground ( WebCustomTooltipStyle.hotkeyColor );
         SwingUtils.setBoldFont ( this );
@@ -41,7 +42,5 @@ public class HotkeyTipLabel extends WebLabel
 
         setHorizontalAlignment ( WebLabel.CENTER );
         setVerticalAlignment ( WebLabel.CENTER );
-
-        setPainter ( new HotkeyTipPainter () );
     }
 }

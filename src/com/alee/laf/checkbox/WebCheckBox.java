@@ -347,7 +347,7 @@ public class WebCheckBox extends JCheckBox
             {
                 setUI ( ( WebCheckBoxUI ) ReflectUtils.createInstance ( WebLookAndFeel.checkBoxUI ) );
             }
-            catch ( Throwable e )
+            catch ( final Throwable e )
             {
                 e.printStackTrace ();
                 setUI ( new WebCheckBoxUI () );

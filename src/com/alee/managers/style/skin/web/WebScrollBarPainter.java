@@ -23,6 +23,7 @@ import com.alee.laf.scroll.ScrollBarPainter;
 import com.alee.laf.scroll.WebScrollBarStyle;
 import com.alee.utils.ColorUtils;
 import com.alee.utils.LafUtils;
+import com.alee.utils.MathUtils;
 import com.alee.utils.swing.WebTimer;
 
 import javax.swing.*;
@@ -62,6 +63,7 @@ public class WebScrollBarPainter<E extends JScrollBar> extends AbstractPainter<E
     /**
      * Runtime variables.
      */
+    protected boolean animated;
     protected WebTimer rolloverAnimator;
     protected float rolloverState;
     protected boolean rollover;
@@ -85,6 +87,9 @@ public class WebScrollBarPainter<E extends JScrollBar> extends AbstractPainter<E
     public void install ( final E scrollbar )
     {
         super.install ( scrollbar );
+
+        // This styling is animated
+        animated = true;
 
         // Mouse listener
         mouseAdapter = new MouseAdapter ()
@@ -210,7 +215,7 @@ public class WebScrollBarPainter<E extends JScrollBar> extends AbstractPainter<E
     /**
      * Returns scroll bar thumb margin.
      * This value doesn't affect scroll bar size, just the visual representation of the thumb.
-     * Also these margins are the same only for vertical scroll bar, and are rotated counter-clockwise for horizontal scroll bar.
+     * Also these margins are the same only for vertical scroll bar, and are rotated clockwise for horizontal scroll bar.
      *
      * @return scroll bar thumb margin
      */
@@ -222,7 +227,7 @@ public class WebScrollBarPainter<E extends JScrollBar> extends AbstractPainter<E
     /**
      * Sets scroll bar thumb margin.
      * This value doesn't affect scroll bar size, just the visual representation of the thumb.
-     * Also these margins are the same only for vertical scroll bar, and are rotated counter-clockwise for horizontal scroll bar.
+     * Also these margins are the same only for vertical scroll bar, and are rotated clockwise for horizontal scroll bar.
      *
      * @param margin new scroll bar thumb margin
      */
@@ -246,8 +251,8 @@ public class WebScrollBarPainter<E extends JScrollBar> extends AbstractPainter<E
     protected void updateThumbMargins ()
     {
         this.thumbMarginR = new Insets ( thumbMargin.top, thumbMargin.right, thumbMargin.bottom, thumbMargin.left );
-        this.thumbMarginHL = new Insets ( thumbMargin.right, thumbMargin.top, thumbMargin.left, thumbMargin.bottom );
-        this.thumbMarginHR = new Insets ( thumbMargin.left, thumbMargin.bottom, thumbMargin.right, thumbMargin.top );
+        this.thumbMarginHL = new Insets ( thumbMargin.left, thumbMargin.bottom, thumbMargin.right, thumbMargin.top );
+        this.thumbMarginHR = new Insets ( thumbMargin.right, thumbMargin.top, thumbMargin.left, thumbMargin.bottom );
     }
 
     /**
@@ -510,38 +515,46 @@ public class WebScrollBarPainter<E extends JScrollBar> extends AbstractPainter<E
         if ( this.rollover != rollover )
         {
             this.rollover = rollover;
-            if ( rollover )
+            if ( animated )
             {
-                if ( rolloverAnimator != null )
+                if ( rollover )
                 {
-                    rolloverAnimator.stop ();
+                    if ( rolloverAnimator != null )
+                    {
+                        rolloverAnimator.stop ();
+                    }
+                    repaintThumb ();
                 }
-                repaintThumb ();
+                else
+                {
+                    if ( rolloverAnimator == null )
+                    {
+                        rolloverAnimator = new WebTimer ( StyleConstants.avgAnimationDelay, new ActionListener ()
+                        {
+                            @Override
+                            public void actionPerformed ( final ActionEvent e )
+                            {
+                                if ( rolloverState > 0f )
+                                {
+                                    rolloverState -= 0.1f;
+                                    repaintThumb ();
+                                }
+                                else
+                                {
+                                    rolloverState = 0f;
+                                    rolloverAnimator.stop ();
+                                }
+                            }
+                        } );
+                    }
+                    rolloverState = 1f;
+                    rolloverAnimator.start ();
+                }
             }
             else
             {
-                if ( rolloverAnimator == null )
-                {
-                    rolloverAnimator = new WebTimer ( StyleConstants.avgAnimationDelay, new ActionListener ()
-                    {
-                        @Override
-                        public void actionPerformed ( final ActionEvent e )
-                        {
-                            if ( rolloverState > 0f )
-                            {
-                                rolloverState -= 0.1f;
-                                repaintThumb ();
-                            }
-                            else
-                            {
-                                rolloverState = 0f;
-                                rolloverAnimator.stop ();
-                            }
-                        }
-                    } );
-                }
-                rolloverState = 1f;
-                rolloverAnimator.start ();
+                rolloverState = rollover ? 1f : 0f;
+                repaintThumb ();
             }
         }
     }
@@ -695,16 +708,19 @@ public class WebScrollBarPainter<E extends JScrollBar> extends AbstractPainter<E
     protected void paintThumb ( final Graphics2D g2d, final E scrollbar, final Rectangle bounds )
     {
         final Insets m = getCurrentThumbMargin ( scrollbar );
+        final int w = bounds.width - m.left - m.right;
+        final int h = bounds.height - m.top - m.bottom;
+
+        // Round is limited to thumb minimum width/height to avoid painting artifacts
+        final int round = MathUtils.min ( thumbRound, w - 1, h - 1 );
 
         // Painting thumb background
         g2d.setPaint ( getCurrentThumbBackgroundColor ( scrollbar ) );
-        g2d.fillRoundRect ( bounds.x + m.left, bounds.y + m.top, bounds.width - m.left - m.right, bounds.height - m.top - m.bottom,
-                thumbRound, thumbRound );
+        g2d.fillRoundRect ( bounds.x + m.left, bounds.y + m.top, w, h, round, round );
 
         // Painting thumb border
         g2d.setPaint ( getCurrentThumbBorderColor ( scrollbar ) );
-        g2d.drawRoundRect ( bounds.x + m.left, bounds.y + m.top, bounds.width - m.left - m.right - 1, bounds.height - m.top - m.bottom - 1,
-                thumbRound, thumbRound );
+        g2d.drawRoundRect ( bounds.x + m.left, bounds.y + m.top, w - 1, h - 1, round, round );
     }
 
     /**

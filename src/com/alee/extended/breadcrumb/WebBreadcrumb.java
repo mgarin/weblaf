@@ -19,11 +19,8 @@ package com.alee.extended.breadcrumb;
 
 import com.alee.extended.layout.BreadcrumbLayout;
 import com.alee.laf.panel.WebPanel;
-import com.alee.utils.SwingUtils;
 
 import java.awt.*;
-import java.awt.event.ContainerEvent;
-import java.awt.event.ContainerListener;
 
 /**
  * User: mgarin Date: 01.03.12 Time: 18:54
@@ -31,6 +28,8 @@ import java.awt.event.ContainerListener;
 
 public class WebBreadcrumb extends WebPanel
 {
+    public static final String ELEMENT_STYLE_ID = "breadcrumb-element";
+
     private int elementOverlap = WebBreadcrumbStyle.elementOverlap;
     private Insets elementMargin = WebBreadcrumbStyle.elementMargin;
     private boolean encloseLastElement = WebBreadcrumbStyle.encloseLastElement;
@@ -44,31 +43,31 @@ public class WebBreadcrumb extends WebPanel
 
     public WebBreadcrumb ( final boolean decorated )
     {
-        super ( decorated, BreadcrumbUtils.createDefaultLayout () );
+        super ( decorated, createDefaultLayout () );
 
         setPaintFocus ( true );
 
-        addContainerListener ( new ContainerListener ()
-        {
-            @Override
-            public void componentAdded ( final ContainerEvent e )
-            {
-                if ( autoUpdate )
-                {
-                    updateElement ( e.getChild () );
-                    updateElementTypes ();
-                }
-            }
-
-            @Override
-            public void componentRemoved ( final ContainerEvent e )
-            {
-                if ( autoUpdate )
-                {
-                    updateElementTypes ();
-                }
-            }
-        } );
+        //        addContainerListener ( new ContainerListener ()
+        //        {
+        //            @Override
+        //            public void componentAdded ( final ContainerEvent e )
+        //            {
+        //                if ( autoUpdate )
+        //                {
+        //                    updateElement ( e.getChild () );
+        //                    updateElementTypes ();
+        //                }
+        //            }
+        //
+        //            @Override
+        //            public void componentRemoved ( final ContainerEvent e )
+        //            {
+        //                if ( autoUpdate )
+        //                {
+        //                    updateElementTypes ();
+        //                }
+        //            }
+        //        } );
     }
 
     protected boolean isAutoUpdate ()
@@ -90,7 +89,7 @@ public class WebBreadcrumb extends WebPanel
     {
         this.elementOverlap = overlap;
         getBreadcrumbLayout ().setOverlap ( overlap + WebBreadcrumbStyle.shadeWidth );
-        updateElements ();
+        //        updateElements ();
         return this;
     }
 
@@ -112,7 +111,7 @@ public class WebBreadcrumb extends WebPanel
     public WebBreadcrumb setElementMargin ( final Insets margin )
     {
         this.elementMargin = margin;
-        updateElements ();
+        //        updateElements ();
         return this;
     }
 
@@ -124,79 +123,89 @@ public class WebBreadcrumb extends WebPanel
     public void setEncloseLastElement ( final boolean encloseLastElement )
     {
         this.encloseLastElement = encloseLastElement;
-        updateElementTypes ();
+        //        updateElementTypes ();
     }
 
-    public void updateBreadcrumb ()
-    {
-        revalidate ();
-        repaint ();
-    }
+    //    public void updateBreadcrumb ()
+    //    {
+    //        revalidate ();
+    //        repaint ();
+    //    }
 
     public BreadcrumbLayout getBreadcrumbLayout ()
     {
         return ( BreadcrumbLayout ) super.getLayout ();
     }
 
-    protected void updateElements ()
-    {
-        // Updating all elements settings
-        for ( final Component element : getComponents () )
-        {
-            updateElement ( element );
-        }
-        updateBreadcrumb ();
-    }
+    //    protected void updateElements ()
+    //    {
+    //        // Updating all elements settings
+    //        for ( final Component element : getComponents () )
+    //        {
+    //            updateElement ( element );
+    //        }
+    //        updateBreadcrumb ();
+    //    }
 
-    protected void updateElement ( final Component element )
-    {
-        // Updating added component and its childs orientation
-        SwingUtils.copyOrientation ( WebBreadcrumb.this, element );
+    //    protected void updateElement ( final Component element )
+    //    {
+    //        // Updating added component and its childs orientation
+    //        SwingUtils.copyOrientation ( WebBreadcrumb.this, element );
+    //
+    //        // Updating standart properties
+    //        if ( element instanceof BreadcrumbElement )
+    //        {
+    //            final BreadcrumbElement be = ( BreadcrumbElement ) element;
+    //            updateElementType ( element, be );
+    //            be.setOverlap ( elementOverlap );
+    //            be.setMargin ( elementMargin );
+    //        }
+    //    }
 
-        // Updating standart properties
-        if ( element instanceof BreadcrumbElement )
-        {
-            final BreadcrumbElement be = ( BreadcrumbElement ) element;
-            updateElementType ( element, be );
-            be.setOverlap ( elementOverlap );
-            be.setMargin ( elementMargin );
-        }
-    }
+    //    protected void updateElementTypes ()
+    //    {
+    //        // Updating element types
+    //        for ( final Component element : getComponents () )
+    //        {
+    //            if ( element instanceof BreadcrumbElement )
+    //            {
+    //                updateElementType ( element, ( BreadcrumbElement ) element );
+    //            }
+    //        }
+    //        setLayout ( getLayout () );
+    //        updateBreadcrumb ();
+    //    }
 
-    protected void updateElementTypes ()
-    {
-        // Updating element types
-        for ( final Component element : getComponents () )
-        {
-            if ( element instanceof BreadcrumbElement )
-            {
-                updateElementType ( element, ( BreadcrumbElement ) element );
-            }
-        }
-        setLayout ( getLayout () );
-        updateBreadcrumb ();
-    }
+    //    protected void updateElementType ( final Component element, final BreadcrumbElement be )
+    //    {
+    //        // Updating element type
+    //        final int index = getComponentZOrder ( element );
+    //        final int last = getComponentCount () - 1;
+    //        if ( last == 0 && !encloseLastElement )
+    //        {
+    //            be.setType ( BreadcrumbElementType.none );
+    //        }
+    //        else if ( index == 0 )
+    //        {
+    //            be.setType ( BreadcrumbElementType.start );
+    //        }
+    //        else if ( index == last && !encloseLastElement )
+    //        {
+    //            be.setType ( BreadcrumbElementType.end );
+    //        }
+    //        else
+    //        {
+    //            be.setType ( BreadcrumbElementType.middle );
+    //        }
+    //    }
 
-    protected void updateElementType ( final Component element, final BreadcrumbElement be )
+    /**
+     * Creates and returns default breadcrumb layout.
+     *
+     * @return default breadcrumb layout
+     */
+    protected static BreadcrumbLayout createDefaultLayout ()
     {
-        // Updating element type
-        final int index = getComponentZOrder ( element );
-        final int last = getComponentCount () - 1;
-        if ( last == 0 && !encloseLastElement )
-        {
-            be.setType ( BreadcrumbElementType.none );
-        }
-        else if ( index == 0 )
-        {
-            be.setType ( BreadcrumbElementType.start );
-        }
-        else if ( index == last && !encloseLastElement )
-        {
-            be.setType ( BreadcrumbElementType.end );
-        }
-        else
-        {
-            be.setType ( BreadcrumbElementType.middle );
-        }
+        return new BreadcrumbLayout ( WebBreadcrumbStyle.elementOverlap + WebBreadcrumbStyle.shadeWidth );
     }
 }

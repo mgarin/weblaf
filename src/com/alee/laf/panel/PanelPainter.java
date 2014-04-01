@@ -19,6 +19,7 @@ package com.alee.laf.panel;
 
 import com.alee.extended.painter.Painter;
 import com.alee.extended.painter.PartialDecoration;
+import com.alee.extended.painter.SpecificPainter;
 
 import javax.swing.*;
 
@@ -28,7 +29,7 @@ import javax.swing.*;
  * @author Mikle Garin
  */
 
-public interface PanelPainter<E extends JPanel> extends Painter<E>, PartialDecoration
+public interface PanelPainter<E extends JPanel> extends Painter<E>, PartialDecoration, SpecificPainter
 {
     /**
      * Sets whether panel decoration should be painted or not.

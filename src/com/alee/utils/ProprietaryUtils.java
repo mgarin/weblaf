@@ -123,6 +123,37 @@ public final class ProprietaryUtils
                 // Still, should inform that such actions cause an exception on the underlying system
                 e.printStackTrace ();
             }
+
+            // Fix for later Java 7 versions
+            // Plus this makes sense even for earlier JDK versions so its outside of version-relative part
+            if ( window instanceof JWindow )
+            {
+                final JWindow jWindow = ( JWindow ) window;
+                boolean modified = false;
+
+                // Setting root pane to proper opacity state
+                final JRootPane rootPane = jWindow.getRootPane ();
+                if ( rootPane != null && rootPane.isOpaque () != opaque )
+                {
+                    rootPane.setOpaque ( opaque );
+                    modified = true;
+                }
+
+                // Setting content pane to proper opacity state
+                final Container container = jWindow.getContentPane ();
+                if ( container != null && container instanceof JComponent && container.isOpaque () != opaque )
+                {
+                    ( ( JComponent ) container ).setOpaque ( opaque );
+                    modified = true;
+                }
+
+                // Repaint root pane in case opacity changed
+                // Without this update will not be properly displayed
+                if ( modified )
+                {
+                    rootPane.repaint ();
+                }
+            }
         }
     }
 

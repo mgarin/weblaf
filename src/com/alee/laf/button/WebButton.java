@@ -563,7 +563,7 @@ public class WebButton extends JButton implements ShapeProvider, LanguageMethods
             {
                 setUI ( ( WebButtonUI ) ReflectUtils.createInstance ( WebLookAndFeel.buttonUI ) );
             }
-            catch ( Throwable e )
+            catch ( final Throwable e )
             {
                 e.printStackTrace ();
                 setUI ( new WebButtonUI () );
