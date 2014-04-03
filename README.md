@@ -6,7 +6,7 @@ WebLaF
 
 Important
 ----------
-With [v1.27](https://github.com/mgarin/weblaf/releases/tag/v1.27) update core StyleManager functionality was added and implemented in a few WebLaF components so the way they act might differ from what you got used to. You might want to [read here](https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager) about features that Style manager brings.
+With [v1.27](https://github.com/mgarin/weblaf/releases/tag/v1.27) update core StyleManager functionality was added and implemented in a few WebLaF components so the way they act might differ from what you got used to. You might want to [read here](https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager) about features that StyleManager brings.
 
 I will also be adding more articles into GitHub WIKI from now on, so you can find information about various WebLaF features there.
 
