@@ -3,6 +3,14 @@ WebLaF
 **WebLaf** is a Java Swing Look and Feel and extended components library for cross-platform applications.<br>
 ![Preview](http://s5.hostingkartinok.com/uploads/images/2013/10/92f65b6b3262493a5f386dc6808efbba.png)
 
+
+Important
+----------
+With [v1.27](https://github.com/mgarin/weblaf/releases/tag/v1.27) update core StyleManager functionality was added and implemented in a few WebLaF components so the way they act might differ from what you got used to. You might want to [read here](https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager) about features that Style manager brings.
+
+I will also be adding more articles into GitHub WIKI from now on, so you can find information about various WebLaF features there.
+
+
 Advantages
 ----------
 
@@ -24,12 +32,12 @@ https://github.com/mgarin/weblaf/releases
 
 Here are the direct links for the latest release:
 
-1. [**weblaf-1.26.jar**](https://github.com/mgarin/weblaf/releases/download/v1.26/weblaf-1.26.jar) - library jar
-2. [**weblaf-simple-1.26.jar**](https://github.com/mgarin/weblaf/releases/download/v1.26/weblaf-simple-1.26.jar) - library jar without dependencies
-3. [**weblaf-src-1.26.zip**](https://github.com/mgarin/weblaf/releases/download/v1.26/weblaf-src-1.26.zip) - project sources zip
-4. [**weblaf-demo-1.26.jar**](https://github.com/mgarin/weblaf/releases/download/v1.26/weblaf-demo-1.26.jar) - executable demo jar
-5. [**weblaf-javadoc-1.26.zip**](https://github.com/mgarin/weblaf/releases/download/v1.26/weblaf-javadoc-1.26.zip) - JavaDoc zip
-6. [**ninepatch-editor-1.26.jar**](https://github.com/mgarin/weblaf/releases/download/v1.26/ninepatch-editor-1.26.jar) - executable 9-patch editor jar
+1. [**weblaf-1.27.jar**](https://github.com/mgarin/weblaf/releases/download/v1.27/weblaf-1.27.jar) - library jar
+2. [**weblaf-simple-1.27.jar**](https://github.com/mgarin/weblaf/releases/download/v1.27/weblaf-simple-1.27.jar) - library jar without dependencies
+3. [**weblaf-src-1.27.zip**](https://github.com/mgarin/weblaf/releases/download/v1.27/weblaf-src-1.27.zip) - project sources zip
+4. [**weblaf-demo-1.27.jar**](https://github.com/mgarin/weblaf/releases/download/v1.27/weblaf-demo-1.27.jar) - executable demo jar
+5. [**weblaf-javadoc-1.27.zip**](https://github.com/mgarin/weblaf/releases/download/v1.27/weblaf-javadoc-1.27.zip) - JavaDoc zip
+6. [**ninepatch-editor-1.27.jar**](https://github.com/mgarin/weblaf/releases/download/v1.27/ninepatch-editor-1.27.jar) - executable 9-patch editor jar
 
 
 Roadmap

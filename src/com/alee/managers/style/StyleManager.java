@@ -201,7 +201,18 @@ public final class StyleManager
      */
     public static WebLafSkin setDefaultSkin ( final Class skinClass )
     {
-        return setDefaultSkin ( ( WebLafSkin ) ReflectUtils.createInstanceSafely ( skinClass ) );
+        return setDefaultSkin ( createSkin ( skinClass ) );
+    }
+
+    /**
+     * Returns newly created skin class instance.
+     *
+     * @param skinClass skin class
+     * @return newly created skin class instance
+     */
+    public static WebLafSkin createSkin ( final Class skinClass )
+    {
+        return ( WebLafSkin ) ReflectUtils.createInstanceSafely ( skinClass );
     }
 
     /**
@@ -240,6 +251,30 @@ public final class StyleManager
     public static WebLafSkin getCurrentSkin ()
     {
         return currentSkin != null ? currentSkin : getDefaultSkin ();
+    }
+
+    /**
+     * Applies specified skin to all existing skinnable components.
+     * This skin will also be applied to all skinnable components created afterwards.
+     *
+     * @param skinClassName class name of the skin to be applied
+     * @return previously applied skin
+     */
+    public static WebLafSkin applySkin ( final String skinClassName )
+    {
+        return applySkin ( ReflectUtils.getClassSafely ( skinClassName ) );
+    }
+
+    /**
+     * Applies specified skin to all existing skinnable components.
+     * This skin will also be applied to all skinnable components created afterwards.
+     *
+     * @param skinClass class of the skin to be applied
+     * @return previously applied skin
+     */
+    public static WebLafSkin applySkin ( final Class skinClass )
+    {
+        return applySkin ( createSkin ( skinClass ) );
     }
 
     /**
