@@ -17,11 +17,7 @@
 
 package com.alee.laf.combobox;
 
-import com.alee.extended.window.TestFrame;
 import com.alee.laf.WebLookAndFeel;
-import com.alee.laf.button.WebButton;
-import com.alee.laf.menu.WebMenuItem;
-import com.alee.laf.menu.WebPopupMenu;
 import com.alee.managers.settings.DefaultValue;
 import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.settings.SettingsMethods;
@@ -35,8 +31,6 @@ import com.alee.utils.swing.SizeMethods;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Vector;
 
 /**
@@ -45,31 +39,6 @@ import java.util.Vector;
 
 public class WebComboBox extends JComboBox implements ShapeProvider, SettingsMethods, FontMethods<WebComboBox>, SizeMethods<WebComboBox>
 {
-    public static void main ( final String[] args )
-    {
-        WebLookAndFeel.install ();
-
-        //        TestFrame.show ( new WebComboBox ( new String[]{ ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "." } ), 20 );
-
-        final WebButton wb = new WebButton ( "asfasdasd" );
-        wb.addActionListener ( new ActionListener ()
-        {
-            @Override
-            public void actionPerformed ( final ActionEvent e )
-            {
-                final WebPopupMenu m = new WebPopupMenu ();
-                m.add ( new WebMenuItem ( "Item" ) );
-                m.add ( new WebMenuItem ( "Item" ) );
-                m.add ( new WebMenuItem ( "Item" ) );
-                m.add ( new WebMenuItem ( "Item" ) );
-                m.add ( new WebMenuItem ( "Item" ) );
-                m.add ( new WebMenuItem ( "Item" ) );
-                m.showAbove ( wb );
-            }
-        } );
-        TestFrame.show ( wb );
-    }
-
     public WebComboBox ()
     {
         super ();

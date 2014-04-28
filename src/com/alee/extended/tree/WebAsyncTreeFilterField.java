@@ -239,7 +239,7 @@ public class WebAsyncTreeFilterField<E extends AsyncUniqueNode> extends WebTextF
         addKeyListener ( new KeyAdapter ()
         {
             @Override
-            public void keyPressed ( KeyEvent e )
+            public void keyPressed ( final KeyEvent e )
             {
                 if ( Hotkey.ESCAPE.isTriggered ( e ) )
                 {
@@ -354,7 +354,7 @@ public class WebAsyncTreeFilterField<E extends AsyncUniqueNode> extends WebTextF
     /**
      * Updates tree filtering.
      */
-    protected void updateFiltering ()
+    public void updateFiltering ()
     {
         // Cleaning up filter cache
         filter.clearCache ();
@@ -364,6 +364,25 @@ public class WebAsyncTreeFilterField<E extends AsyncUniqueNode> extends WebTextF
         if ( asyncTree != null )
         {
             asyncTree.updateSortingAndFiltering ();
+        }
+    }
+
+    /**
+     * Performs node acceptance re-check.
+     * Might be useful if external tree updates are applied.
+     *
+     * @param node node that should be re-checked
+     */
+    public void updateNodeAcceptance ( final E node )
+    {
+        // Cleaning up filter cache
+        filter.clearCache ( node );
+
+        // Updating tree filtering
+        final WebAsyncTree<E> asyncTree = getAsyncTree ();
+        if ( asyncTree != null )
+        {
+            asyncTree.updateSortingAndFiltering ( ( E ) node.getParent () );
         }
     }
 }

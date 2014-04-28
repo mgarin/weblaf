@@ -21,6 +21,7 @@ import com.alee.extended.button.WebSplitButtonUI;
 import com.alee.extended.checkbox.WebTristateCheckBoxUI;
 import com.alee.extended.label.WebMultiLineLabelUI;
 import com.alee.extended.label.WebVerticalLabelUI;
+import com.alee.extended.log.Log;
 import com.alee.laf.button.WebButtonUI;
 import com.alee.laf.button.WebToggleButtonUI;
 import com.alee.laf.checkbox.WebCheckBoxUI;
@@ -496,7 +497,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
      *
      * @param table UI defaults table
      */
-    @SuppressWarnings ("UnnecessaryBoxing")
+    @SuppressWarnings ( "UnnecessaryBoxing" )
     @Override
     protected void initComponentDefaults ( final UIDefaults table )
     {
@@ -929,6 +930,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
      */
     public static void initializeManagers ()
     {
+        Log.initialize ();
         VersionManager.initialize ();
         LanguageManager.initialize ();
         SettingsManager.initialize ();
@@ -1156,21 +1158,20 @@ public class WebLookAndFeel extends BasicLookAndFeel
     {
         public void handle ( final Throwable thrown )
         {
-            // for EDT exceptions
+            // For EDT exceptions
             handleException ( Thread.currentThread ().getName (), thrown );
         }
 
         @Override
         public void uncaughtException ( final Thread thread, final Throwable thrown )
         {
-            // for other uncaught exceptions
+            // For other uncaught exceptions
             handleException ( thread.getName (), thrown );
         }
 
         protected void handleException ( final String tname, final Throwable thrown )
         {
-            System.err.print ( "Exception in thread " + tname + ": " );
-            thrown.printStackTrace ();
+            Log.error ( WebLookAndFeel.class, "Exception in thread " + tname + ": ", thrown );
         }
     }
 }

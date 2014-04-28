@@ -20,8 +20,6 @@ package com.alee.extended.tree.sample;
 import com.alee.extended.tree.AbstractTreeDataProvider;
 import com.alee.extended.tree.ChildsListener;
 import com.alee.utils.CollectionUtils;
-import com.alee.utils.MathUtils;
-import com.alee.utils.ThreadUtils;
 
 /**
  * Sample asynchronous tree data provider.
@@ -52,10 +50,10 @@ public class SampleDataProvider extends AbstractTreeDataProvider<SampleNode>
     public void loadChilds ( final SampleNode parent, final ChildsListener<SampleNode> listener )
     {
         // Sample loading delay to see the loader in progress
-        parent.setTime ( 0 );
-        final int time = MathUtils.random ( 100, 2000 );
-        ThreadUtils.sleepSafely ( time );
-        parent.setTime ( time );
+        //        parent.setTime ( 0 );
+        //        final int time = MathUtils.random ( 100, 2000 );
+        //        ThreadUtils.sleepSafely ( time );
+        //        parent.setTime ( time );
 
         if ( parent.getName ().toLowerCase ().contains ( "fail" ) )
         {

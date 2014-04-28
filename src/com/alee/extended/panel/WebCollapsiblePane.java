@@ -937,6 +937,19 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
     }
 
     /**
+     * Sets default title component text alignment.
+     *
+     * @param alignment new default title component text alignment
+     */
+    public void setTitleAlignment ( final int alignment )
+    {
+        if ( !customTitle )
+        {
+            ( ( WebLabel ) titleComponent ).setHorizontalAlignment ( alignment );
+        }
+    }
+
+    /**
      * Returns expanded state icon.
      *
      * @return expanded state icon

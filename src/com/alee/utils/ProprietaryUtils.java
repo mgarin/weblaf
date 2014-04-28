@@ -105,16 +105,40 @@ public final class ProprietaryUtils
         {
             try
             {
+                // Change system window opacity
                 if ( SystemUtils.isJava7orAbove () )
                 {
-                    // For Java 7 and later this will work just fine
-                    final Color bg = opaque ? StyleConstants.backgroundColor : StyleConstants.transparent;
-                    ReflectUtils.callMethod ( window, "setBackground", bg );
+                    // In Java 7 and later we change window background color to make it opaque or non-opaque
+                    setupOpacityBackgroundColor ( opaque, window );
                 }
                 else
                 {
-                    // Workaround to allow this method usage on all possible Java versions
+                    // In Java 6 we use AWTUtilities method to change window opacity mode
                     ReflectUtils.callStaticMethod ( "com.sun.awt.AWTUtilities", "setWindowOpaque", window, opaque );
+                }
+
+                // Changing opacity of root and content panes
+                final JRootPane rootPane = SwingUtils.getRootPane ( window );
+                if ( rootPane != null )
+                {
+                    // Changing root pane background color and opacity
+                    setupOpacityBackgroundColor ( opaque, rootPane );
+                    rootPane.setOpaque ( opaque );
+
+                    // Changing content pane color and opacity
+                    final Container container = rootPane.getContentPane ();
+                    if ( container != null )
+                    {
+                        setupOpacityBackgroundColor ( opaque, container );
+                        if ( container instanceof JComponent )
+                        {
+                            ( ( JComponent ) container ).setOpaque ( opaque );
+                        }
+                    }
+
+                    // Repaint root pane in case opacity changed
+                    // Without this repaint it will not be properly displayed
+                    rootPane.repaint ();
                 }
             }
             catch ( final Throwable e )
@@ -123,38 +147,23 @@ public final class ProprietaryUtils
                 // Still, should inform that such actions cause an exception on the underlying system
                 e.printStackTrace ();
             }
-
-            // Fix for later Java 7 versions
-            // Plus this makes sense even for earlier JDK versions so its outside of version-relative part
-            if ( window instanceof JWindow )
-            {
-                final JWindow jWindow = ( JWindow ) window;
-                boolean modified = false;
-
-                // Setting root pane to proper opacity state
-                final JRootPane rootPane = jWindow.getRootPane ();
-                if ( rootPane != null && rootPane.isOpaque () != opaque )
-                {
-                    rootPane.setOpaque ( opaque );
-                    modified = true;
-                }
-
-                // Setting content pane to proper opacity state
-                final Container container = jWindow.getContentPane ();
-                if ( container != null && container instanceof JComponent && container.isOpaque () != opaque )
-                {
-                    ( ( JComponent ) container ).setOpaque ( opaque );
-                    modified = true;
-                }
-
-                // Repaint root pane in case opacity changed
-                // Without this update will not be properly displayed
-                if ( modified )
-                {
-                    rootPane.repaint ();
-                }
-            }
         }
+    }
+
+    /**
+     * Changes component background color to match opacity.
+     *
+     * @param opaque    whether component should should be opaque or not
+     * @param component component to process
+     * @throws NoSuchMethodException
+     * @throws InvocationTargetException
+     * @throws IllegalAccessException
+     */
+    protected static void setupOpacityBackgroundColor ( final boolean opaque, final Component component )
+            throws NoSuchMethodException, InvocationTargetException, IllegalAccessException
+    {
+        final Color bg = opaque ? StyleConstants.backgroundColor : StyleConstants.transparent;
+        ReflectUtils.callMethod ( component, "setBackground", bg );
     }
 
     /**

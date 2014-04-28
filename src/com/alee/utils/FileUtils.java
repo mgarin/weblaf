@@ -42,7 +42,7 @@ import java.util.*;
 
 /**
  * This class provides a set of utilities to work with files, file names and their extensions.
- * <p>
+ * <p/>
  * Note that methods which request information about files from the system has their own caches to improve performance.
  * If you will need to clear that cache simply call the corresponding clearCache method, for example:
  * For method "isHidden" you will need to call "clearIsHiddenCache" and all cached values will be resetted.
@@ -51,6 +51,11 @@ import java.util.*;
  */
 public final class FileUtils
 {
+    /**
+     * todo 1. File.exists doesn't work in JDK7? Probably should add workaround for that?
+     *
+     */
+
     /**
      * Icons.
      */
@@ -64,7 +69,7 @@ public final class FileUtils
     /**
      * Display date format.
      */
-    private static SimpleDateFormat sdf = new SimpleDateFormat ( "dd MMM yyyy HH:mm" );
+    private static final SimpleDateFormat sdf = new SimpleDateFormat ( "dd MMM yyyy HH:mm" );
 
     /**
      * Buffer size for MD5 calculations.
@@ -106,57 +111,57 @@ public final class FileUtils
     /**
      * Cache for "isDrive" method result.
      */
-    private static Map<String, Boolean> isDriveCache = new HashMap<String, Boolean> ();
+    private static final Map<String, Boolean> isDriveCache = new HashMap<String, Boolean> ();
 
     /**
      * Cache for "isComputer" method result.
      */
-    private static Map<String, Boolean> isComputerCache = new HashMap<String, Boolean> ();
+    private static final Map<String, Boolean> isComputerCache = new HashMap<String, Boolean> ();
 
     /**
      * Cache for "isCdDrive" method result.
      */
-    private static Map<String, Boolean> isCdDriveCache = new HashMap<String, Boolean> ();
+    private static final Map<String, Boolean> isCdDriveCache = new HashMap<String, Boolean> ();
 
     /**
      * Cache for "isFile" method result.
      */
-    private static Map<String, Boolean> isFileCache = new HashMap<String, Boolean> ();
+    private static final Map<String, Boolean> isFileCache = new HashMap<String, Boolean> ();
 
     /**
      * Cache for "isDirectory" method result.
      */
-    private static Map<String, Boolean> isDirectoryCache = new HashMap<String, Boolean> ();
+    private static final Map<String, Boolean> isDirectoryCache = new HashMap<String, Boolean> ();
 
     /**
      * Cache for "isHidden" method result.
      */
-    private static Map<String, Boolean> isHiddenCache = new HashMap<String, Boolean> ();
+    private static final Map<String, Boolean> isHiddenCache = new HashMap<String, Boolean> ();
 
     /**
      * Cache for "getDisplayFileName" method result.
      */
-    private static Map<String, String> displayFileNameCache = new HashMap<String, String> ();
+    private static final Map<String, String> displayFileNameCache = new HashMap<String, String> ();
 
     /**
      * Cache for "getFileDescription" method result.
      */
-    private static Map<String, FileDescription> fileDescriptionCache = new HashMap<String, FileDescription> ();
+    private static final Map<String, FileDescription> fileDescriptionCache = new HashMap<String, FileDescription> ();
 
     /**
      * Cache for "getFileTypeDescription" method result.
      */
-    private static Map<String, String> fileTypeDescriptionCache = new HashMap<String, String> ();
+    private static final Map<String, String> fileTypeDescriptionCache = new HashMap<String, String> ();
 
     /**
      * Cache for "getDisplayFileCreationDate" method result.
      */
-    private static Map<String, String> displayFileCreationDateCache = new HashMap<String, String> ();
+    private static final Map<String, String> displayFileCreationDateCache = new HashMap<String, String> ();
 
     /**
      * Cache for "getDisplayFileModificationDate" method result.
      */
-    private static Map<String, String> displayFileModificationDateCache = new HashMap<String, String> ();
+    private static final Map<String, String> displayFileModificationDateCache = new HashMap<String, String> ();
 
     /**
      * File extension icons cache lock.
@@ -166,12 +171,12 @@ public final class FileUtils
     /**
      * File extension icons cache.
      */
-    private static Map<String, ImageIcon> extensionIconsCache = new HashMap<String, ImageIcon> ();
+    private static final Map<String, ImageIcon> extensionIconsCache = new HashMap<String, ImageIcon> ();
 
     /**
      * Resource icons cache.
      */
-    private static Map<String, ImageIcon> resourceIconsCache = new HashMap<String, ImageIcon> ();
+    private static final Map<String, ImageIcon> resourceIconsCache = new HashMap<String, ImageIcon> ();
 
     /**
      * Clears all caches for specified files.
@@ -218,7 +223,7 @@ public final class FileUtils
 
     /**
      * Returns list of files contained in path of the specified file.
-     * <p>
+     * <p/>
      * For example if you have some file that points to some local file:
      * "C:\folder\file.txt"
      * You will get this list of files:
@@ -295,7 +300,7 @@ public final class FileUtils
         {
             return file.setExecutable ( true, false );
         }
-        catch ( Throwable e )
+        catch ( final Throwable e )
         {
             e.printStackTrace ();
             return false;
@@ -314,7 +319,7 @@ public final class FileUtils
         {
             return file != null ? file.getCanonicalFile () : file;
         }
-        catch ( IOException e )
+        catch ( final IOException e )
         {
             return file;
         }
@@ -415,7 +420,7 @@ public final class FileUtils
         {
             return computeMD5 ( new FileInputStream ( file ), bufferLength );
         }
-        catch ( FileNotFoundException e )
+        catch ( final FileNotFoundException e )
         {
             return null;
         }
@@ -455,7 +460,7 @@ public final class FileUtils
             final BigInteger bigInt = new BigInteger ( 1, md5sum );
             return bigInt.toString ( 16 );
         }
-        catch ( Throwable e )
+        catch ( final Throwable e )
         {
             return null;
         }
@@ -465,7 +470,7 @@ public final class FileUtils
             {
                 bis.close ();
             }
-            catch ( Throwable e )
+            catch ( final Throwable e )
             {
                 //
             }
@@ -517,7 +522,7 @@ public final class FileUtils
             {
                 return notNull && file1.getCanonicalPath ().equals ( file2.getCanonicalPath () );
             }
-            catch ( IOException e )
+            catch ( final IOException e )
             {
                 return notNull && file1.getAbsolutePath ().equals ( file2.getAbsolutePath () );
             }
@@ -877,7 +882,7 @@ public final class FileUtils
                 index = Integer.parseInt ( nameStart.substring ( ob + 1, cb ) );
                 index++;
             }
-            catch ( Throwable e )
+            catch ( final Throwable e )
             {
                 //
             }
@@ -1365,7 +1370,7 @@ public final class FileUtils
             dstFC.close ();
             return true;
         }
-        catch ( IOException e )
+        catch ( final IOException e )
         {
             return false;
         }
@@ -1402,7 +1407,7 @@ public final class FileUtils
         {
             return readToString ( url.openConnection ().getInputStream () );
         }
-        catch ( Throwable e )
+        catch ( final Throwable e )
         {
             return null;
         }
@@ -1437,7 +1442,7 @@ public final class FileUtils
             {
                 inputStream.close ();
             }
-            catch ( IOException e )
+            catch ( final IOException e )
             {
                 // Ignore this exception
             }
@@ -1463,7 +1468,7 @@ public final class FileUtils
                 return null;
             }
         }
-        catch ( Throwable e )
+        catch ( final Throwable e )
         {
             return null;
         }
@@ -1502,7 +1507,7 @@ public final class FileUtils
             {
                 reader.close ();
             }
-            catch ( IOException e )
+            catch ( final IOException e )
             {
                 // Ignore this exception
             }
@@ -1546,11 +1551,11 @@ public final class FileUtils
             writer = new PrintWriter ( file, encoding );
             writer.write ( text );
         }
-        catch ( FileNotFoundException e )
+        catch ( final FileNotFoundException e )
         {
             e.printStackTrace ();
         }
-        catch ( UnsupportedEncodingException e )
+        catch ( final UnsupportedEncodingException e )
         {
             e.printStackTrace ();
         }

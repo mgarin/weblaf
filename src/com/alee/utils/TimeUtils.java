@@ -17,6 +17,8 @@
 
 package com.alee.utils;
 
+import com.alee.extended.log.Log;
+
 import java.util.Calendar;
 import java.util.Date;
 
@@ -88,22 +90,22 @@ public final class TimeUtils
     }
 
     /**
-     * Returns time passed since either last pin request or last time request if total is false. Otherwise always returns time passed since
-     * last pin request.
+     * Returns time passed since either last pin request or last time request if total is false.
+     * Otherwise always returns time passed since last pin request.
      *
      * @param total should always return time passed since last pin request or not
      * @return passed time
      */
-    public static long getPassedTime ( boolean total )
+    public static long getPassedTime ( final boolean total )
     {
-        long time = currentTime ();
-        long passedTime = total ? time - pinnedTime : time - lastTime;
+        final long time = currentTime ();
+        final long passedTime = total ? time - pinnedTime : time - lastTime;
         lastTime = time;
         return passedTime;
     }
 
     /**
-     * Writes time passed since either last pin request or last time request to System.out.
+     * Writes time passed since either last pin request or last time request to log.
      */
     public static void showPassedTime ()
     {
@@ -111,37 +113,37 @@ public final class TimeUtils
     }
 
     /**
-     * Writes time passed since either last pin request or last time request to System.out with specified prefix.
+     * Writes time passed since either last pin request or last time request to log with specified prefix.
      *
      * @param prefix output string prefix
      */
-    public static void showPassedTime ( String prefix )
+    public static void showPassedTime ( final String prefix )
     {
         showPassedTime ( false, prefix );
     }
 
     /**
-     * Writes time passed since either last pin request or last time request if total is false to System.out. Otherwise always writes time
-     * passed since last pin request.
+     * Writes time passed since either last pin request or last time request if total is false to log.
+     * Otherwise always writes time passed since last pin request.
      *
      * @param total should always write time passed since last pin request or not
      */
-    public static void showPassedTime ( boolean total )
+    public static void showPassedTime ( final boolean total )
     {
         showPassedTime ( total, "" );
     }
 
     /**
-     * Writes time passed since either last pin request or last time request if total is false to System.out with specified prefix.
+     * Writes time passed since either last pin request or last time request if total is false to log with specified prefix.
      * Otherwise always writes time passed since last pin request.
      *
      * @param total  should always write time passed since last pin request or not
      * @param prefix output string prefix
      */
-    public static void showPassedTime ( boolean total, String prefix )
+    public static void showPassedTime ( final boolean total, final String prefix )
     {
-        long time = currentTime ();
-        System.out.println ( prefix + ( total ? time - pinnedTime : time - lastTime ) );
+        final long time = currentTime ();
+        Log.info ( TimeUtils.class, prefix + ( total ? time - pinnedTime : time - lastTime ) );
         lastTime = time;
     }
 
@@ -194,22 +196,22 @@ public final class TimeUtils
     }
 
     /**
-     * Returns nanotime passed since either last pin request or last nanotime request if total is false. Otherwise always returns nanotime
-     * passed since last pin request.
+     * Returns nanotime passed since either last pin request or last nanotime request if total is false.
+     * Otherwise always returns nanotime passed since last pin request.
      *
      * @param total should always return time passed since last pin request or not
      * @return passed nanotime
      */
-    public static long getPassedNanoTime ( boolean total )
+    public static long getPassedNanoTime ( final boolean total )
     {
-        long time = currentNanoTime ();
-        long passedTime = total ? time - pinnedNanoTime : time - lastNanoTime;
+        final long time = currentNanoTime ();
+        final long passedTime = total ? time - pinnedNanoTime : time - lastNanoTime;
         lastNanoTime = time;
         return passedTime;
     }
 
     /**
-     * Writes nanotime passed since either last pin request or last nanotime request to System.out.
+     * Writes nanotime passed since either last pin request or last nanotime request to log.
      */
     public static void showPassedNanoTime ()
     {
@@ -217,37 +219,37 @@ public final class TimeUtils
     }
 
     /**
-     * Writes nanotime passed since either last pin request or last nanotime request to System.out with specified prefix.
+     * Writes nanotime passed since either last pin request or last nanotime request to log with specified prefix.
      *
      * @param prefix output string prefix
      */
-    public static void showPassedNanoTime ( String prefix )
+    public static void showPassedNanoTime ( final String prefix )
     {
         showPassedNanoTime ( false, prefix );
     }
 
     /**
-     * Writes nanotime passed since either last pin request or last nanotime request if total is false to System.out. Otherwise always
-     * writes nanotime passed since last pin request.
+     * Writes nanotime passed since either last pin request or last nanotime request if total is false to log.
+     * Otherwise always writes nanotime passed since last pin request.
      *
      * @param total should always write nanotime passed since last pin request or not
      */
-    public static void showPassedNanoTime ( boolean total )
+    public static void showPassedNanoTime ( final boolean total )
     {
         showPassedNanoTime ( total, "" );
     }
 
     /**
-     * Writes nanotime passed since either last pin request or last nanotime request if total is false to System.out with specified prefix.
+     * Writes nanotime passed since either last pin request or last nanotime request if total is false to log with specified prefix.
      * Otherwise always writes nanotime passed since last pin request.
      *
      * @param total  should always write nanotime passed since last pin request or not
      * @param prefix output string prefix
      */
-    public static void showPassedNanoTime ( boolean total, String prefix )
+    public static void showPassedNanoTime ( final boolean total, final String prefix )
     {
-        long time = currentNanoTime ();
-        System.out.println ( prefix + ( total ? time - pinnedNanoTime : time - lastNanoTime ) );
+        final long time = currentNanoTime ();
+        Log.info ( TimeUtils.class, prefix + ( total ? time - pinnedNanoTime : time - lastNanoTime ) );
         lastNanoTime = time;
     }
 
@@ -297,7 +299,7 @@ public final class TimeUtils
      * @param date2 second date
      * @return day comparison result
      */
-    public static boolean isSameDay ( Date date1, Date date2 )
+    public static boolean isSameDay ( final Date date1, final Date date2 )
     {
         return isSameDay ( date1.getTime (), date2.getTime () );
     }
@@ -309,15 +311,15 @@ public final class TimeUtils
      * @param time2 second time
      * @return day comparison result
      */
-    public static boolean isSameDay ( Long time1, Long time2 )
+    public static boolean isSameDay ( final Long time1, final Long time2 )
     {
-        Calendar calendar = Calendar.getInstance ();
+        final Calendar calendar = Calendar.getInstance ();
 
         // Saving calendar time
-        Date tmp = calendar.getTime ();
+        final Date tmp = calendar.getTime ();
 
         calendar.setTimeInMillis ( time1 );
-        boolean same = isSameDay ( calendar, time2 );
+        final boolean same = isSameDay ( calendar, time2 );
 
         // Restoring calendar time
         calendar.setTime ( tmp );
@@ -332,7 +334,7 @@ public final class TimeUtils
      * @param date     date
      * @return day comparison result
      */
-    public static boolean isSameDay ( Calendar calendar, Date date )
+    public static boolean isSameDay ( final Calendar calendar, final Date date )
     {
         return isSameDay ( calendar, date.getTime () );
     }
@@ -344,17 +346,17 @@ public final class TimeUtils
      * @param date     date
      * @return day comparison result
      */
-    public static boolean isSameDay ( Calendar calendar, Long date )
+    public static boolean isSameDay ( final Calendar calendar, final Long date )
     {
         // Saving calendar time
-        long time = calendar.getTimeInMillis ();
+        final long time = calendar.getTimeInMillis ();
 
-        int year = calendar.get ( Calendar.YEAR );
-        int month = calendar.get ( Calendar.MONTH );
-        int day = calendar.get ( Calendar.DAY_OF_MONTH );
+        final int year = calendar.get ( Calendar.YEAR );
+        final int month = calendar.get ( Calendar.MONTH );
+        final int day = calendar.get ( Calendar.DAY_OF_MONTH );
 
         calendar.setTimeInMillis ( date );
-        boolean sameDay = year == calendar.get ( Calendar.YEAR ) &&
+        final boolean sameDay = year == calendar.get ( Calendar.YEAR ) &&
                 month == calendar.get ( Calendar.MONTH ) &&
                 day == calendar.get ( Calendar.DAY_OF_MONTH );
 
@@ -370,9 +372,9 @@ public final class TimeUtils
      * @param date date to process
      * @return start-of-day date
      */
-    public static Date getStartOfDay ( Date date )
+    public static Date getStartOfDay ( final Date date )
     {
-        Calendar calendar = Calendar.getInstance ();
+        final Calendar calendar = Calendar.getInstance ();
         calendar.setTime ( date );
         calendar.set ( Calendar.HOUR_OF_DAY, 0 );
         calendar.set ( Calendar.MINUTE, 0 );
@@ -387,9 +389,9 @@ public final class TimeUtils
      * @param date date to process
      * @return end-of-day date
      */
-    public static Date getEndOfDay ( Date date )
+    public static Date getEndOfDay ( final Date date )
     {
-        Calendar calendar = Calendar.getInstance ();
+        final Calendar calendar = Calendar.getInstance ();
         calendar.setTime ( date );
         calendar.set ( Calendar.HOUR_OF_DAY, 23 );
         calendar.set ( Calendar.MINUTE, 59 );
@@ -403,7 +405,7 @@ public final class TimeUtils
      *
      * @param calendar calendar that should be changed
      */
-    public static void increaseByDay ( Calendar calendar )
+    public static void increaseByDay ( final Calendar calendar )
     {
         changeByDays ( calendar, 1 );
     }
@@ -413,7 +415,7 @@ public final class TimeUtils
      *
      * @param calendar calendar that should be changed
      */
-    public static void decreaseByDay ( Calendar calendar )
+    public static void decreaseByDay ( final Calendar calendar )
     {
         changeByDays ( calendar, -1 );
     }
@@ -424,7 +426,7 @@ public final class TimeUtils
      * @param calendar calendar that should be changed
      * @param days     days amount
      */
-    public static void changeByDays ( Calendar calendar, int days )
+    public static void changeByDays ( final Calendar calendar, final int days )
     {
         calendar.set ( Calendar.DAY_OF_MONTH, calendar.get ( Calendar.DAY_OF_MONTH ) + days );
     }

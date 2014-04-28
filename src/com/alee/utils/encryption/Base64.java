@@ -1,4 +1,21 @@
 /*
+ * This file is part of WebLookAndFeel library.
+ *
+ * WebLookAndFeel library is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * WebLookAndFeel library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/*
  * The Apache Software License, Version 1.1
  *
  *
@@ -57,6 +74,8 @@
 
 package com.alee.utils.encryption;
 
+import com.alee.extended.log.Log;
+
 /**
  * This class provides encode/decode for RFC 2045 Base64 as
  * defined by RFC 2045, N. Freed and N. Borenstein.
@@ -64,7 +83,7 @@ package com.alee.utils.encryption;
  * Part One: Format of Internet Message Bodies. Reference
  * 1996 Available at: http://www.ietf.org/rfc/rfc2045.txt
  * This class is used by XML Schema binary format validation
- * <p>
+ * <p/>
  * This implementation does not encode/decode streaming
  * data. You need the data that you will encode/decode
  * already on a byte array.
@@ -128,22 +147,22 @@ public final class Base64
         lookUpBase64Alphabet[ 63 ] = '/';
     }
 
-    protected static boolean isWhiteSpace ( char octect )
+    protected static boolean isWhiteSpace ( final char octect )
     {
         return ( octect == 0x20 || octect == 0xd || octect == 0xa || octect == 0x9 );
     }
 
-    protected static boolean isPad ( char octect )
+    protected static boolean isPad ( final char octect )
     {
         return ( octect == PAD );
     }
 
-    protected static boolean isData ( char octect )
+    protected static boolean isData ( final char octect )
     {
         return ( base64Alphabet[ octect ] != -1 );
     }
 
-    protected static boolean isBase64 ( char octect )
+    protected static boolean isBase64 ( final char octect )
     {
         return ( isWhiteSpace ( octect ) || isPad ( octect ) || isData ( octect ) );
     }
@@ -154,24 +173,24 @@ public final class Base64
      * @param binaryData Array containing binaryData
      * @return Encoded Base64 array
      */
-    public static String encode ( byte[] binaryData )
+    public static String encode ( final byte[] binaryData )
     {
         if ( binaryData == null )
         {
             return null;
         }
 
-        int lengthDataBits = binaryData.length * EIGHTBIT;
+        final int lengthDataBits = binaryData.length * EIGHTBIT;
         if ( lengthDataBits == 0 )
         {
             return "";
         }
 
-        int fewerThan24bits = lengthDataBits % TWENTYFOURBITGROUP;
-        int numberTriplets = lengthDataBits / TWENTYFOURBITGROUP;
-        int numberQuartet = fewerThan24bits != 0 ? numberTriplets + 1 : numberTriplets;
-        int numberLines = ( numberQuartet - 1 ) / 19 + 1;
-        char encodedData[];
+        final int fewerThan24bits = lengthDataBits % TWENTYFOURBITGROUP;
+        final int numberTriplets = lengthDataBits / TWENTYFOURBITGROUP;
+        final int numberQuartet = fewerThan24bits != 0 ? numberTriplets + 1 : numberTriplets;
+        final int numberLines = ( numberQuartet - 1 ) / 19 + 1;
+        final char[] encodedData;
 
         encodedData = new char[ numberQuartet * 4 + numberLines ];
 
@@ -186,7 +205,7 @@ public final class Base64
         int i = 0;
         if ( fDebug )
         {
-            System.out.println ( "number of triplets = " + numberTriplets );
+            Log.debug ( Base64.class, "number of triplets = " + numberTriplets );
         }
 
         for ( int line = 0; line < numberLines - 1; line++ )
@@ -199,22 +218,22 @@ public final class Base64
 
                 if ( fDebug )
                 {
-                    System.out.println ( "b1= " + b1 + ", b2= " + b2 + ", b3= " + b3 );
+                    Log.debug ( Base64.class, "b1= " + b1 + ", b2= " + b2 + ", b3= " + b3 );
                 }
 
                 l = ( byte ) ( b2 & 0x0f );
                 k = ( byte ) ( b1 & 0x03 );
 
-                byte val1 = ( ( b1 & SIGN ) == 0 ) ? ( byte ) ( b1 >> 2 ) : ( byte ) ( ( b1 ) >> 2 ^ 0xc0 );
+                final byte val1 = ( ( b1 & SIGN ) == 0 ) ? ( byte ) ( b1 >> 2 ) : ( byte ) ( ( b1 ) >> 2 ^ 0xc0 );
 
-                byte val2 = ( ( b2 & SIGN ) == 0 ) ? ( byte ) ( b2 >> 4 ) : ( byte ) ( ( b2 ) >> 4 ^ 0xf0 );
-                byte val3 = ( ( b3 & SIGN ) == 0 ) ? ( byte ) ( b3 >> 6 ) : ( byte ) ( ( b3 ) >> 6 ^ 0xfc );
+                final byte val2 = ( ( b2 & SIGN ) == 0 ) ? ( byte ) ( b2 >> 4 ) : ( byte ) ( ( b2 ) >> 4 ^ 0xf0 );
+                final byte val3 = ( ( b3 & SIGN ) == 0 ) ? ( byte ) ( b3 >> 6 ) : ( byte ) ( ( b3 ) >> 6 ^ 0xfc );
 
                 if ( fDebug )
                 {
-                    System.out.println ( "val2 = " + val2 );
-                    System.out.println ( "k4   = " + ( k << 4 ) );
-                    System.out.println ( "vak  = " + ( val2 | ( k << 4 ) ) );
+                    Log.debug ( Base64.class, "val2 = " + val2 );
+                    Log.debug ( Base64.class, "k4   = " + ( k << 4 ) );
+                    Log.debug ( Base64.class, "vak  = " + ( val2 | ( k << 4 ) ) );
                 }
 
                 encodedData[ encodedIndex++ ] = lookUpBase64Alphabet[ val1 ];
@@ -235,22 +254,22 @@ public final class Base64
 
             if ( fDebug )
             {
-                System.out.println ( "b1= " + b1 + ", b2= " + b2 + ", b3= " + b3 );
+                Log.debug ( Base64.class, "b1= " + b1 + ", b2= " + b2 + ", b3= " + b3 );
             }
 
             l = ( byte ) ( b2 & 0x0f );
             k = ( byte ) ( b1 & 0x03 );
 
-            byte val1 = ( ( b1 & SIGN ) == 0 ) ? ( byte ) ( b1 >> 2 ) : ( byte ) ( ( b1 ) >> 2 ^ 0xc0 );
+            final byte val1 = ( ( b1 & SIGN ) == 0 ) ? ( byte ) ( b1 >> 2 ) : ( byte ) ( ( b1 ) >> 2 ^ 0xc0 );
 
-            byte val2 = ( ( b2 & SIGN ) == 0 ) ? ( byte ) ( b2 >> 4 ) : ( byte ) ( ( b2 ) >> 4 ^ 0xf0 );
-            byte val3 = ( ( b3 & SIGN ) == 0 ) ? ( byte ) ( b3 >> 6 ) : ( byte ) ( ( b3 ) >> 6 ^ 0xfc );
+            final byte val2 = ( ( b2 & SIGN ) == 0 ) ? ( byte ) ( b2 >> 4 ) : ( byte ) ( ( b2 ) >> 4 ^ 0xf0 );
+            final byte val3 = ( ( b3 & SIGN ) == 0 ) ? ( byte ) ( b3 >> 6 ) : ( byte ) ( ( b3 ) >> 6 ^ 0xfc );
 
             if ( fDebug )
             {
-                System.out.println ( "val2 = " + val2 );
-                System.out.println ( "k4   = " + ( k << 4 ) );
-                System.out.println ( "vak  = " + ( val2 | ( k << 4 ) ) );
+                Log.debug ( Base64.class, "val2 = " + val2 );
+                Log.debug ( Base64.class, "k4   = " + ( k << 4 ) );
+                Log.debug ( Base64.class, "vak  = " + ( val2 | ( k << 4 ) ) );
             }
 
             encodedData[ encodedIndex++ ] = lookUpBase64Alphabet[ val1 ];
@@ -266,10 +285,10 @@ public final class Base64
             k = ( byte ) ( b1 & 0x03 );
             if ( fDebug )
             {
-                System.out.println ( "b1=" + b1 );
-                System.out.println ( "b1<<2 = " + ( b1 >> 2 ) );
+                Log.debug ( Base64.class, "b1=" + b1 );
+                Log.debug ( Base64.class, "b1<<2 = " + ( b1 >> 2 ) );
             }
-            byte val1 = ( ( b1 & SIGN ) == 0 ) ? ( byte ) ( b1 >> 2 ) : ( byte ) ( ( b1 ) >> 2 ^ 0xc0 );
+            final byte val1 = ( ( b1 & SIGN ) == 0 ) ? ( byte ) ( b1 >> 2 ) : ( byte ) ( ( b1 ) >> 2 ^ 0xc0 );
             encodedData[ encodedIndex++ ] = lookUpBase64Alphabet[ val1 ];
             encodedData[ encodedIndex++ ] = lookUpBase64Alphabet[ k << 4 ];
             encodedData[ encodedIndex++ ] = PAD;
@@ -282,8 +301,8 @@ public final class Base64
             l = ( byte ) ( b2 & 0x0f );
             k = ( byte ) ( b1 & 0x03 );
 
-            byte val1 = ( ( b1 & SIGN ) == 0 ) ? ( byte ) ( b1 >> 2 ) : ( byte ) ( ( b1 ) >> 2 ^ 0xc0 );
-            byte val2 = ( ( b2 & SIGN ) == 0 ) ? ( byte ) ( b2 >> 4 ) : ( byte ) ( ( b2 ) >> 4 ^ 0xf0 );
+            final byte val1 = ( ( b1 & SIGN ) == 0 ) ? ( byte ) ( b1 >> 2 ) : ( byte ) ( ( b1 ) >> 2 ^ 0xc0 );
+            final byte val2 = ( ( b2 & SIGN ) == 0 ) ? ( byte ) ( b2 >> 4 ) : ( byte ) ( ( b2 ) >> 4 ^ 0xf0 );
 
             encodedData[ encodedIndex++ ] = lookUpBase64Alphabet[ val1 ];
             encodedData[ encodedIndex++ ] = lookUpBase64Alphabet[ val2 | ( k << 4 ) ];
@@ -303,30 +322,30 @@ public final class Base64
      * @return Array containind decoded data.
      */
     @SuppressWarnings ( "UnusedAssignment" )
-    public static byte[] decode ( String encoded )
+    public static byte[] decode ( final String encoded )
     {
         if ( encoded == null )
         {
             return null;
         }
 
-        char[] base64Data = encoded.toCharArray ();
+        final char[] base64Data = encoded.toCharArray ();
         // remove white spaces
-        int len = removeWhiteSpace ( base64Data );
+        final int len = removeWhiteSpace ( base64Data );
 
         if ( len % FOURBYTE != 0 )
         {
             return null;//should be divisible by four
         }
 
-        int numberQuadruple = ( len / FOURBYTE );
+        final int numberQuadruple = ( len / FOURBYTE );
 
         if ( numberQuadruple == 0 )
         {
             return new byte[ 0 ];
         }
 
-        byte decodedData[];
+        final byte[] decodedData;
         byte b1;
         byte b2;
         byte b3;
@@ -380,7 +399,7 @@ public final class Base64
                 {
                     return null;
                 }
-                byte[] tmp = new byte[ i * 3 + 1 ];
+                final byte[] tmp = new byte[ i * 3 + 1 ];
                 System.arraycopy ( decodedData, 0, tmp, 0, i * 3 );
                 tmp[ encodedIndex ] = ( byte ) ( b1 << 2 | b2 >> 4 );
                 return tmp;
@@ -392,7 +411,7 @@ public final class Base64
                 {
                     return null;
                 }
-                byte[] tmp = new byte[ i * 3 + 2 ];
+                final byte[] tmp = new byte[ i * 3 + 2 ];
                 System.arraycopy ( decodedData, 0, tmp, 0, i * 3 );
                 tmp[ encodedIndex++ ] = ( byte ) ( b1 << 2 | b2 >> 4 );
                 tmp[ encodedIndex ] = ( byte ) ( ( ( b2 & 0xf ) << 4 ) | ( ( b3 >> 2 ) & 0xf ) );
@@ -422,7 +441,7 @@ public final class Base64
      * @param data the byte array of base64 data (with WS)
      * @return the new length
      */
-    protected static int removeWhiteSpace ( char[] data )
+    protected static int removeWhiteSpace ( final char[] data )
     {
         if ( data == null )
         {
@@ -431,7 +450,7 @@ public final class Base64
 
         // count characters that's not whitespace
         int newSize = 0;
-        int len = data.length;
+        final int len = data.length;
         for ( int i = 0; i < len; i++ )
         {
             if ( !isWhiteSpace ( data[ i ] ) )

@@ -20,6 +20,7 @@ package com.alee.laf;
 import com.alee.extended.image.WebImage;
 import com.alee.extended.label.WebLinkLabel;
 import com.alee.extended.layout.VerticalFlowLayout;
+import com.alee.extended.log.Log;
 import com.alee.extended.panel.GroupPanel;
 import com.alee.extended.window.ComponentMoveAdapter;
 import com.alee.laf.label.WebLabel;
@@ -65,6 +66,10 @@ import java.util.List;
 
 public class LibraryInfoDialog extends WebFrame
 {
+    /**
+     * todo 1. Fix inner popup with license close action
+     */
+
     /**
      * Library data separator.
      */
@@ -343,7 +348,7 @@ public class LibraryInfoDialog extends WebFrame
         }
         catch ( final Throwable e )
         {
-            e.printStackTrace ();
+            Log.error ( this, e );
             return createErrorLibrariesTab ();
         }
     }

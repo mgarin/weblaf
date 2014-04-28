@@ -17,6 +17,7 @@
 
 package com.alee.utils.ninepatch;
 
+import com.alee.extended.log.Log;
 import com.alee.managers.style.data.ComponentStyleConverter;
 import com.alee.utils.ReflectUtils;
 import com.thoughtworks.xstream.converters.UnmarshallingContext;
@@ -93,8 +94,7 @@ public class NinePatchIconConverter extends ReflectionConverter
                 }
                 catch ( final Throwable e )
                 {
-                    System.err.println ( "Unable to read 9-patch icon near class \"" + nearClass + "\": " + iconPath );
-                    e.printStackTrace ();
+                    Log.error ( this, "Unable to read 9-patch icon near class \"" + nearClass + "\": " + iconPath, e );
                     return null;
                 }
             }

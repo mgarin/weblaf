@@ -24,6 +24,7 @@ import com.alee.managers.style.StyleManager;
 import com.alee.managers.style.skin.web.PopupStyle;
 import com.alee.managers.style.skin.web.WebPopOverPainter;
 import com.alee.managers.style.skin.web.WebPopupPainter;
+import com.alee.utils.CollectionUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.laf.Styleable;
 import com.alee.utils.swing.DataProvider;
@@ -33,6 +34,8 @@ import java.awt.*;
 import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Custom stylish pop-over dialog with a special corner that follows invoker component.
@@ -77,6 +80,11 @@ public class WebPopOver extends WebDialog implements Styleable
      * Preferred WebPopOver alignment relative to display source point.
      */
     protected PopOverAlignment preferredAlignment = null;
+
+    /**
+     * WebPopOver state listeners.
+     */
+    protected List<PopOverListener> popOverListeners = new ArrayList<PopOverListener> ( 1 );
 
     /**
      * Constructs new WebPopOver dialog.
@@ -228,6 +236,7 @@ public class WebPopOver extends WebDialog implements Styleable
                     attached = false;
                     preferredDirection = null;
                     setPopupStyle ( PopupStyle.simple );
+                    firePopOverDetached ();
                 }
 
                 super.mouseDragged ( e );
@@ -250,6 +259,18 @@ public class WebPopOver extends WebDialog implements Styleable
                 setPopOverFocused ( false );
             }
         } );
+
+        // Removing all listeners on window close event
+        final PopOverCloseListener closeListener = new PopOverCloseListener ()
+        {
+            @Override
+            public void popOverClosed ()
+            {
+                firePopOverClosed ();
+            }
+        };
+        addComponentListener ( closeListener );
+        addWindowListener ( closeListener );
     }
 
     /**
@@ -1097,8 +1118,6 @@ public class WebPopOver extends WebDialog implements Styleable
                     windowFollowAdapter.updateLastLocation ();
                 }
             }
-
-
         };
         invoker.addComponentListener ( invokerAdapter );
 
@@ -1115,87 +1134,18 @@ public class WebPopOver extends WebDialog implements Styleable
         addPropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, orientationListener );
 
         // Removing all listeners on window close event
-        class PopOverCloseListener implements ComponentListener, WindowListener
+        addPopOverListener ( new PopOverAdapter ()
         {
             @Override
-            public void componentResized ( final ComponentEvent e )
+            public void popOverClosed ()
             {
-                // Do nothing
-            }
-
-            @Override
-            public void componentMoved ( final ComponentEvent e )
-            {
-                // Do nothing
-            }
-
-            @Override
-            public void componentShown ( final ComponentEvent e )
-            {
-                // Do nothing
-            }
-
-            @Override
-            public void componentHidden ( final ComponentEvent e )
-            {
-                cleanupListeners ();
-            }
-
-            @Override
-            public void windowOpened ( final WindowEvent e )
-            {
-                // Do nothing
-            }
-
-            @Override
-            public void windowClosing ( final WindowEvent e )
-            {
-                // Do nothing
-            }
-
-            @Override
-            public void windowClosed ( final WindowEvent e )
-            {
-                cleanupListeners ();
-            }
-
-            @Override
-            public void windowIconified ( final WindowEvent e )
-            {
-                // Do nothing
-            }
-
-            @Override
-            public void windowDeiconified ( final WindowEvent e )
-            {
-                // Do nothing
-            }
-
-            @Override
-            public void windowActivated ( final WindowEvent e )
-            {
-                // Do nothing
-            }
-
-            @Override
-            public void windowDeactivated ( final WindowEvent e )
-            {
-                // Do nothing
-            }
-
-            public void cleanupListeners ()
-            {
-                removeComponentListener ( this );
-                removeWindowListener ( this );
+                removePopOverListener ( this );
                 invokerWindow.removeComponentListener ( invokerWindowAdapter );
                 invokerWindow.removeComponentListener ( windowFollowAdapter );
                 invoker.removeComponentListener ( invokerAdapter );
                 removePropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, orientationListener );
             }
-        }
-        final PopOverCloseListener closeListener = new PopOverCloseListener ();
-        addComponentListener ( closeListener );
-        addWindowListener ( closeListener );
+        } );
     }
 
     /**
@@ -1447,5 +1397,31 @@ public class WebPopOver extends WebDialog implements Styleable
             }
         }
         return null;
+    }
+
+    public void addPopOverListener ( final PopOverListener listener )
+    {
+        popOverListeners.add ( listener );
+    }
+
+    public void removePopOverListener ( final PopOverListener listener )
+    {
+        popOverListeners.remove ( listener );
+    }
+
+    public void firePopOverDetached ()
+    {
+        for ( final PopOverListener listener : CollectionUtils.copy ( popOverListeners ) )
+        {
+            listener.popOverDetached ();
+        }
+    }
+
+    public void firePopOverClosed ()
+    {
+        for ( final PopOverListener listener : CollectionUtils.copy ( popOverListeners ) )
+        {
+            listener.popOverClosed ();
+        }
     }
 }

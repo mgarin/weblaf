@@ -17,6 +17,7 @@
 
 package com.alee.managers.settings;
 
+import com.alee.extended.log.Log;
 import com.alee.utils.xml.XMLChar;
 import com.thoughtworks.xstream.converters.MarshallingContext;
 import com.thoughtworks.xstream.converters.UnmarshallingContext;
@@ -37,11 +38,6 @@ import java.util.Map;
 
 public class SettingsConverter extends ReflectionConverter
 {
-    /**
-     * Error output prefix.
-     */
-    private static final String ERROR_PREFIX = "[SettingsConverter] ";
-
     /**
      * Special value type for null values.
      */
@@ -183,9 +179,8 @@ public class SettingsConverter extends ReflectionConverter
                 {
                     if ( SettingsManager.isDisplayExceptions () )
                     {
-                        System.err.println ( ERROR_PREFIX + "Unable to load settings entry for group \"" +
-                                settingsGroup.getName () + "\" under key \"" + key + "\" due to unexpected exception:" );
-                        e.printStackTrace ();
+                        Log.error ( this, "Unable to load settings entry for group \"" +
+                                settingsGroup.getName () + "\" under key \"" + key + "\" due to unexpected exception:", e );
                     }
                 }
             }

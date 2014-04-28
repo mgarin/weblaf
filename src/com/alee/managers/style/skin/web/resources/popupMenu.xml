@@ -3,7 +3,7 @@
     <!-- JPopupMenu styling -->
     <style type="popupMenu" id="default">
         <painter id="painter" class="com.alee.managers.style.skin.web.WebPopupMenuPainter">
-            <popupPainterStyle>dropdown</popupPainterStyle>
+            <popupStyle>dropdown</popupStyle>
             <borderColor>128,128,128,128</borderColor>
             <round>4</round>
             <shadeWidth>12</shadeWidth>

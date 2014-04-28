@@ -937,6 +937,15 @@ public final class LanguageManager implements LanguageConstants
         }
     }
 
+    public static void switchLanguage ()
+    {
+        if ( supportedLanguages.size () > 0 )
+        {
+            final int current = supportedLanguages.indexOf ( getLanguage () );
+            setLanguage ( supportedLanguages.get ( ( current == -1 || current == supportedLanguages.size () - 1 ) ? 0 : current + 1 ) );
+        }
+    }
+
     private static void updateLocale ()
     {
         // Proper locale for language

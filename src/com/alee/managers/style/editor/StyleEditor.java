@@ -22,6 +22,7 @@ import com.alee.extended.breadcrumb.WebBreadcrumbLabel;
 import com.alee.extended.breadcrumb.WebBreadcrumbPanel;
 import com.alee.extended.layout.HorizontalFlowLayout;
 import com.alee.extended.layout.VerticalFlowLayout;
+import com.alee.extended.log.Log;
 import com.alee.extended.panel.BorderPanel;
 import com.alee.extended.panel.CenterPanel;
 import com.alee.extended.panel.WebButtonGroup;
@@ -606,8 +607,7 @@ public class StyleEditor extends WebFrame
         catch ( final ConversionException ex )
         {
             // Short stack trace for parse exceptions
-            System.err.println ( "Unable to update skin: " + ex.getMessage () );
-            // ex.printStackTrace ();
+            Log.error ( this, "Unable to update skin: " + ex.getMessage () );
 
             // Information in status bar
             statusMessage.setIcon ( error );
@@ -616,8 +616,7 @@ public class StyleEditor extends WebFrame
         catch ( final Throwable ex )
         {
             // Full stack trace for unknown exceptions
-            System.err.println ( "Unable to update skin: " + ex.getMessage () );
-            ex.printStackTrace ();
+            Log.error ( this, "Unable to update skin: " + ex.getMessage (), ex );
 
             // Information in status bar
             statusMessage.setIcon ( error );

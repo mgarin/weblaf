@@ -271,7 +271,7 @@ public final class ImageUtils
      * Merges few images into single one
      */
 
-    private static Map<String, ImageIcon> mergedIconsCache = new HashMap<String, ImageIcon> ();
+    private static final Map<String, ImageIcon> mergedIconsCache = new HashMap<String, ImageIcon> ();
 
     public static void clearMergedIconsCache ()
     {
@@ -358,7 +358,7 @@ public final class ImageUtils
         return icon;
     }
 
-    private static Map<String, BufferedImage> mergedImagesCache = new HashMap<String, BufferedImage> ();
+    private static final Map<String, BufferedImage> mergedImagesCache = new HashMap<String, BufferedImage> ();
 
     public static void clearMergedImagesCache ()
     {
@@ -441,7 +441,7 @@ public final class ImageUtils
         {
             return ImageIO.read ( file );
         }
-        catch ( Throwable e )
+        catch ( final Throwable e )
         {
             return null;
         }
@@ -463,7 +463,7 @@ public final class ImageUtils
             //            return imageIcon;
             return new ImageIcon ( url );
         }
-        catch ( Throwable e )
+        catch ( final Throwable e )
         {
             return null;
         }
@@ -479,7 +479,7 @@ public final class ImageUtils
         {
             return new ImageIcon ( nearClass.getResource ( src ) );
         }
-        catch ( Throwable e )
+        catch ( final Throwable e )
         {
             return null;
         }
@@ -495,7 +495,7 @@ public final class ImageUtils
         {
             return new ImageIcon ( ImageIO.read ( inputStream ) );
         }
-        catch ( Throwable e )
+        catch ( final Throwable e )
         {
             return null;
         }
@@ -851,7 +851,7 @@ public final class ImageUtils
      * Image read methods
      */
 
-    private static Map<String, ImageIcon> iconsCache = new HashMap<String, ImageIcon> ();
+    private static final Map<String, ImageIcon> iconsCache = new HashMap<String, ImageIcon> ();
 
     public static boolean isImageCached ( final String src )
     {
@@ -942,7 +942,7 @@ public final class ImageUtils
             {
                 return new ImageIcon ( ImageIO.read ( new File ( src ) ) );
             }
-            catch ( Throwable e )
+            catch ( final Throwable e )
             {
                 return new ImageIcon ();
             }
@@ -1168,7 +1168,7 @@ public final class ImageUtils
      * Creates disabled image copy
      */
 
-    private static Map<String, ImageIcon> grayscaleCache = new HashMap<String, ImageIcon> ();
+    private static final Map<String, ImageIcon> grayscaleCache = new HashMap<String, ImageIcon> ();
 
     public static void clearDisabledCopyCache ()
     {
@@ -1234,7 +1234,7 @@ public final class ImageUtils
      * Creating partially transparent ImageIcon
      */
 
-    private static Map<String, ImageIcon> trasparentCache = new HashMap<String, ImageIcon> ();
+    private static final Map<String, ImageIcon> trasparentCache = new HashMap<String, ImageIcon> ();
 
     public static ImageIcon getTransparentCopy ( final String id, final ImageIcon imageIcon, final float trasparency )
     {
@@ -1317,7 +1317,7 @@ public final class ImageUtils
     {
         // todo Properly use height
         final int width = shadeWidth * 2 + w;
-        @SuppressWarnings ( "UnusedDeclaration" ) final int height = shadeWidth * 2 + h;
+        @SuppressWarnings ("UnusedDeclaration") final int height = shadeWidth * 2 + h;
 
         // Creating template image
         final BufferedImage bi = createCompatibleImage ( width, width, Transparency.TRANSLUCENT );

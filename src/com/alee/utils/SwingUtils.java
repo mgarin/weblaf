@@ -30,6 +30,7 @@ import com.alee.managers.hotkey.HotkeyRunnable;
 import com.alee.managers.language.LanguageManager;
 import com.alee.utils.laf.WeblafBorder;
 import com.alee.utils.swing.EventPump;
+import com.alee.utils.swing.SizeMethods;
 
 import javax.swing.*;
 import javax.swing.FocusManager;
@@ -714,7 +715,11 @@ public final class SwingUtils
      */
     public static JRootPane getRootPane ( final Component component )
     {
-        if ( component instanceof JFrame )
+        if ( component == null )
+        {
+            return null;
+        }
+        else if ( component instanceof JFrame )
         {
             return ( ( JFrame ) component ).getRootPane ();
         }
@@ -736,15 +741,20 @@ public final class SwingUtils
         }
         else
         {
-            for ( Container p = component.getParent (); p != null; p = p.getParent () )
-            {
-                if ( p instanceof JRootPane )
-                {
-                    return ( JRootPane ) p;
-                }
-            }
+            return getRootPane ( component.getParent () );
         }
-        return null;
+    }
+
+    /**
+     * Returns content pane for the specified component or null if it doesn't exist.
+     *
+     * @param component component to look under
+     * @return content pane for the specified component or null if it doesn't exist
+     */
+    public static Container getContentPane ( final Component component )
+    {
+        final JRootPane rootPane = getRootPane ( component );
+        return rootPane != null ? rootPane.getContentPane () : null;
     }
 
     /**
@@ -2169,7 +2179,14 @@ public final class SwingUtils
         {
             if ( c != null )
             {
-                c.setPreferredSize ( new Dimension ( maxWidth, c.getPreferredSize ().height ) );
+                if ( c instanceof SizeMethods )
+                {
+                    ( ( SizeMethods ) c ).setPreferredWidth ( maxWidth );
+                }
+                else
+                {
+                    c.setPreferredSize ( new Dimension ( maxWidth, c.getPreferredSize ().height ) );
+                }
             }
         }
     }
@@ -2193,7 +2210,14 @@ public final class SwingUtils
         {
             if ( c != null )
             {
-                c.setPreferredSize ( new Dimension ( c.getPreferredSize ().width, maxHeight ) );
+                if ( c instanceof SizeMethods )
+                {
+                    ( ( SizeMethods ) c ).setPreferredHeight ( maxHeight );
+                }
+                else
+                {
+                    c.setPreferredSize ( new Dimension ( c.getPreferredSize ().width, maxHeight ) );
+                }
             }
         }
     }
@@ -2996,6 +3020,7 @@ public final class SwingUtils
         /**
          * {@inheritDoc}
          */
+        @Override
         public boolean equals ( final Object entry )
         {
             if ( entry == this )
@@ -3013,6 +3038,7 @@ public final class SwingUtils
         /**
          * {@inheritDoc}
          */
+        @Override
         public int hashCode ()
         {
             int result = 17;

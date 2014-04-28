@@ -17,6 +17,7 @@
 
 package com.alee.managers.style.data;
 
+import com.alee.extended.log.Log;
 import com.alee.managers.style.SupportedComponent;
 import com.alee.utils.TextUtils;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -34,8 +35,8 @@ import java.util.Map;
  * @author Mikle Garin
  */
 
-@XStreamAlias ("skin")
-@XStreamConverter (SkinInfoConverter.class)
+@XStreamAlias ( "skin" )
+@XStreamConverter ( SkinInfoConverter.class )
 public final class SkinInfo implements Serializable
 {
     /**
@@ -77,7 +78,7 @@ public final class SkinInfo implements Serializable
      * Sking class canonical name.
      * Used to locate included resources.
      */
-    @XStreamAlias ("class")
+    @XStreamAlias ( "class" )
     private String skinClass;
 
     /**
@@ -209,7 +210,7 @@ public final class SkinInfo implements Serializable
             else
             {
                 // Required style cannot be found, using default style
-                System.err.println ( "Unable to find style with ID \"" + styleId + "\" for component: " + component );
+                Log.error ( this, "Unable to find style with ID \"" + styleId + "\" for component: " + component );
                 return componentStyles.get ( ComponentStyleConverter.DEFAULT_STYLE_ID );
             }
         }
