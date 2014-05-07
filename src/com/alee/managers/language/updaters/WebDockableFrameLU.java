@@ -15,35 +15,25 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.managers.hotkey;
+package com.alee.managers.language.updaters;
 
-import java.awt.event.KeyEvent;
+import com.alee.extended.dock.WebDockableFrame;
+import com.alee.managers.language.data.Value;
 
 /**
- * This interface allows you to create action for hotkey events which can be used together with HotkeyManager methods. Unlike Runnable this
- * interface provides KeyEvent as action source.
+ * This class provides language default updates for WebDockableFrame component.
  *
  * @author Mikle Garin
  */
 
-public interface HotkeyRunnable
+public class WebDockableFrameLU extends DefaultLanguageUpdater<WebDockableFrame>
 {
     /**
-     * Simple runnable that doesn't perform any actions.
+     * {@inheritDoc}
      */
-    public static final HotkeyRunnable NONE = new HotkeyRunnable ()
+    @Override
+    public void update ( final WebDockableFrame c, final String key, final Value value, final Object... data )
     {
-        @Override
-        public void run ( final KeyEvent e )
-        {
-            // Do nothing
-        }
-    };
-
-    /**
-     * Performs hotkey action.
-     *
-     * @param e occured key event
-     */
-    public void run ( KeyEvent e );
+        c.setTitle ( getDefaultText ( value, data ) );
+    }
 }

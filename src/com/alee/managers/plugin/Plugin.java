@@ -20,17 +20,33 @@ package com.alee.managers.plugin;
 import com.alee.extended.log.Log;
 import com.alee.managers.plugin.data.InitializationStrategy;
 import com.alee.managers.plugin.data.PluginInformation;
+import com.alee.utils.XmlUtils;
 
 /**
  * Base class for any plugin.
  * You still might want to use {@code AbstractPlugin} instead as it has some basic plugin methods.
  *
  * @author Mikle Garin
- * @see com.alee.managers.plugin.AbstractPlugin
+ * @see com.alee.managers.plugin.PluginManager
  */
 
 public abstract class Plugin
 {
+    /**
+     * Cached plugin information.
+     */
+    protected PluginInformation pluginInformation;
+
+    /**
+     * Cached plugin initialization strategy.
+     */
+    protected InitializationStrategy initializationStrategy;
+
+    /**
+     * Whether this plugin is enabled or not.
+     */
+    protected boolean enabled = true;
+
     /**
      * Says whether plugin can be hot-loaded or not.
      * That means that plugin can or cannot be loaded when application was already running for some time and initialization phase passed.
@@ -38,7 +54,10 @@ public abstract class Plugin
      *
      * @return true if plugin can be hot-loaded, false otherwise
      */
-    public abstract boolean isHotLoadAvailable ();
+    public boolean isHotLoadable ()
+    {
+        return getPluginInformation ().isHotLoadable ();
+    }
 
     /**
      * Says whether plugin can be disabled in runtime or not.
@@ -47,14 +66,34 @@ public abstract class Plugin
      *
      * @return true if plugin can be disabled in runtime, false otherwise
      */
-    public abstract boolean isDisableable ();
+    public boolean isDisableable ()
+    {
+        return getPluginInformation ().isDisableable ();
+    }
 
     /**
      * Provides information about this plugin.
      *
      * @return information about this plugin
      */
-    public abstract PluginInformation getPluginInformation ();
+    public PluginInformation getPluginInformation ()
+    {
+        if ( pluginInformation == null )
+        {
+            pluginInformation = loadPluginInformation ( getClass (), getPluginDescriptor () );
+        }
+        return pluginInformation;
+    }
+
+    /**
+     * Loads plugin information from the specified location near class.
+     *
+     * @return plugin information from the specified location near class
+     */
+    protected PluginInformation loadPluginInformation ( final Class nearClass, final String path )
+    {
+        return XmlUtils.fromXML ( nearClass.getResource ( path ) );
+    }
 
     /**
      * Returns name of the plugin descriptor file.
@@ -62,7 +101,10 @@ public abstract class Plugin
      *
      * @return name of the plugin descriptor file
      */
-    protected abstract String getPluginDescriptor ();
+    protected String getPluginDescriptor ()
+    {
+        return "resources/plugin.xml";
+    }
 
     /**
      * Returns plugin initialization strategy.
@@ -70,7 +112,24 @@ public abstract class Plugin
      *
      * @return plugin initialization strategy
      */
-    public abstract InitializationStrategy getInitializationStrategy ();
+    public InitializationStrategy getInitializationStrategy ()
+    {
+        if ( initializationStrategy == null )
+        {
+            initializationStrategy = createInitializationStrategy ();
+        }
+        return initializationStrategy;
+    }
+
+    /**
+     * Creates and returns plugin initialization strategy.
+     *
+     * @return plugin initialization strategy
+     */
+    protected InitializationStrategy createInitializationStrategy ()
+    {
+        return InitializationStrategy.any ();
+    }
 
     /**
      * Disables plugin runtime actions.
@@ -80,7 +139,15 @@ public abstract class Plugin
     {
         if ( isDisableable () )
         {
-            disabled ();
+            if ( enabled )
+            {
+                disabled ();
+                enabled = false;
+            }
+            else
+            {
+                Log.warn ( this, "Plugin [ " + getPluginInformation () + " ] is already disabled" );
+            }
         }
         else
         {
@@ -92,7 +159,10 @@ public abstract class Plugin
      * This method called when plugin is disabled.
      * Plugin should stop all its services and wait till re-enable or application exit.
      */
-    protected abstract void disabled ();
+    protected void disabled ()
+    {
+        // Do nothing by default
+    }
 
     /**
      * Enables plugin runtime actions.
@@ -100,9 +170,17 @@ public abstract class Plugin
      */
     public final void enable ()
     {
-        if ( isHotLoadAvailable () )
+        if ( isHotLoadable () )
         {
-            enabled ();
+            if ( !enabled )
+            {
+                enabled ();
+                enabled = true;
+            }
+            else
+            {
+                Log.warn ( this, "Plugin [ " + getPluginInformation () + " ] is already enabled" );
+            }
         }
         else
         {
@@ -114,5 +192,35 @@ public abstract class Plugin
      * This method called when plugin is re-enabled.
      * Plugin should restart all its services.
      */
-    protected abstract void enabled ();
+    protected void enabled ()
+    {
+        // Do nothing by default
+    }
+
+    /**
+     * Returns whether this plugin is enabled or not.
+     *
+     * @return true if this plugin is enabled, false otherwise
+     */
+    public boolean isEnabled ()
+    {
+        return enabled;
+    }
+
+    /**
+     * Sets whether this plugin should be enabled or not.
+     *
+     * @param enabled whether this plugin should be enabled or not
+     */
+    public void setEnabled ( final boolean enabled )
+    {
+        if ( enabled )
+        {
+            enable ();
+        }
+        else
+        {
+            disable ();
+        }
+    }
 }

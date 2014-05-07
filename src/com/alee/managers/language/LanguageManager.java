@@ -324,6 +324,7 @@ public final class LanguageManager implements LanguageConstants
             registerLanguageUpdater ( new JInternalFrameLU () );
             registerLanguageUpdater ( new WebFileDropLU () );
             registerLanguageUpdater ( new WebCollapsiblePaneLU () );
+            registerLanguageUpdater ( new WebDockableFrameLU () );
 
             // Language listener for components update
             addLanguageListener ( new LanguageListener ()
@@ -517,12 +518,6 @@ public final class LanguageManager implements LanguageConstants
                     public void ancestorAdded ( final AncestorEvent event )
                     {
                         updateComponentKey ( component );
-                    }
-
-                    @Override
-                    public void ancestorMoved ( final AncestorEvent event )
-                    {
-                        updateComponent ( component );
                     }
                 };
                 jComponent.addAncestorListener ( listener );
@@ -856,6 +851,18 @@ public final class LanguageManager implements LanguageConstants
             languageIcons.put ( language, icon );
             return icon;
         }
+    }
+
+    /**
+     * Returns language title in that language translation.
+     *
+     * @param language language to get title for
+     * @return language title in that language translation
+     */
+    public static String getLanguageTitle ( final String language )
+    {
+        final LanguageInfo info = globalDictionary.getLanguageInfo ( language );
+        return info != null ? info.getTitle () : null;
     }
 
     /**
@@ -1240,7 +1247,7 @@ public final class LanguageManager implements LanguageConstants
         // Determining prefix
         prefix = prefix != null && !prefix.equals ( "" ) ? prefix + "." : "";
 
-        // Parsing current level records
+        // Merging current level records
         if ( dictionary.getRecords () != null )
         {
             for ( final Record record : dictionary.getRecords () )
@@ -1248,6 +1255,15 @@ public final class LanguageManager implements LanguageConstants
                 final Record clone = record.clone ();
                 clone.setKey ( prefix + clone.getKey () );
                 globalDictionary.addRecord ( clone );
+            }
+        }
+
+        // Merging language information data
+        if ( dictionary.getLanguageInfos () != null )
+        {
+            for ( final LanguageInfo info : dictionary.getLanguageInfos () )
+            {
+                globalDictionary.addLanguageInfo ( info );
             }
         }
 

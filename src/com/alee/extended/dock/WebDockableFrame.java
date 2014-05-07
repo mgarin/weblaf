@@ -21,6 +21,9 @@ import com.alee.extended.painter.Painter;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
+import com.alee.managers.language.LanguageManager;
+import com.alee.managers.language.LanguageMethods;
+import com.alee.managers.language.updaters.LanguageUpdater;
 import com.alee.utils.TextUtils;
 
 import javax.swing.*;
@@ -30,7 +33,7 @@ import java.awt.*;
  * User: mgarin Date: 28.06.12 Time: 13:31
  */
 
-public class WebDockableFrame extends WebPanel
+public class WebDockableFrame extends WebPanel implements LanguageMethods
 {
     private static final ImageIcon dockTop = new ImageIcon ( WebDockablePane.class.getResource ( "icons/dock_top.png" ) );
     private static final ImageIcon dockLeft = new ImageIcon ( WebDockablePane.class.getResource ( "icons/dock_left.png" ) );
@@ -44,7 +47,7 @@ public class WebDockableFrame extends WebPanel
 
     private final WebPanel titlePanel;
     private final WebLabel titleLabel;
-    private final WebButton dock;
+    private final WebButton dockButton;
 
     public WebDockableFrame ()
     {
@@ -61,9 +64,19 @@ public class WebDockableFrame extends WebPanel
         this ( frameId, null, frameTitle );
     }
 
+    public WebDockableFrame ( final Icon frameIcon )
+    {
+        this ( frameIcon, "" );
+    }
+
     public WebDockableFrame ( final Icon frameIcon, final String frameTitle )
     {
         this ( TextUtils.generateId ( ID_PREFIX ), frameIcon, frameTitle );
+    }
+
+    public WebDockableFrame ( final String frameId, final Icon frameIcon )
+    {
+        this ( frameId, frameIcon, "" );
     }
 
     public WebDockableFrame ( final String frameId, final Icon frameIcon, final String frameTitle )
@@ -97,11 +110,11 @@ public class WebDockableFrame extends WebPanel
         titleLabel.setDrawShade ( true );
         titlePanel.add ( titleLabel, BorderLayout.CENTER );
 
-        dock = new WebButton ();
-        dock.setLeftRightSpacing ( 0 );
-        dock.setShadeWidth ( 0 );
-        dock.setDrawSides ( false, true, false, false );
-        titlePanel.add ( dock, BorderLayout.EAST );
+        dockButton = new WebButton ();
+        dockButton.setLeftRightSpacing ( 0 );
+        dockButton.setShadeWidth ( 0 );
+        dockButton.setDrawSides ( false, true, false, false );
+        titlePanel.add ( dockButton, BorderLayout.EAST );
     }
 
     public String getFrameId ()
@@ -138,7 +151,7 @@ public class WebDockableFrame extends WebPanel
                 frameType.equals ( FrameType.left ) );
 
         // Changing tool icons
-        dock.setIcon ( getDockIcon ( frameType ) );
+        dockButton.setIcon ( getDockIcon ( frameType ) );
     }
 
     public void setTitlePainter ( final Painter painter )
@@ -159,6 +172,21 @@ public class WebDockableFrame extends WebPanel
     public WebLabel getTitleLabel ()
     {
         return titleLabel;
+    }
+
+    public WebButton getDockButton ()
+    {
+        return dockButton;
+    }
+
+    public String getTitle ()
+    {
+        return titleLabel.getText ();
+    }
+
+    public void setTitle ( final String title )
+    {
+        titleLabel.setText ( title );
     }
 
     private Icon getDockIcon ( final FrameType frameType )
@@ -183,5 +211,72 @@ public class WebDockableFrame extends WebPanel
         {
             return null;
         }
+    }
+
+    /**
+     * Language methods
+     */
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setLanguage ( final String key, final Object... data )
+    {
+        LanguageManager.registerComponent ( this, key, data );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void updateLanguage ( final Object... data )
+    {
+        LanguageManager.updateComponent ( this, data );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void updateLanguage ( final String key, final Object... data )
+    {
+        LanguageManager.updateComponent ( this, key, data );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void removeLanguage ()
+    {
+        LanguageManager.unregisterComponent ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isLanguageSet ()
+    {
+        return LanguageManager.isRegisteredComponent ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setLanguageUpdater ( final LanguageUpdater updater )
+    {
+        LanguageManager.registerLanguageUpdater ( this, updater );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void removeLanguageUpdater ()
+    {
+        LanguageManager.unregisterLanguageUpdater ( this );
     }
 }

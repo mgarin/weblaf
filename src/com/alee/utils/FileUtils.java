@@ -653,6 +653,24 @@ public final class FileUtils
     }
 
     /**
+     * Returns file canonical path if its possible or absolute path otherwise.
+     *
+     * @param file file to process
+     * @return file canonical path if its possible or absolute path otherwise
+     */
+    public static String canonicalPath ( final File file )
+    {
+        try
+        {
+            return file.getCanonicalPath ();
+        }
+        catch ( final IOException e )
+        {
+            return file.getAbsolutePath ();
+        }
+    }
+
+    /**
      * Returns top not-null parent for the specified file.
      * If file has no parents at all simply returns null.
      *

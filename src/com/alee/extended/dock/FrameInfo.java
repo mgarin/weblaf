@@ -15,35 +15,12 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.managers.hotkey;
-
-import java.awt.event.KeyEvent;
+package com.alee.extended.dock;
 
 /**
- * This interface allows you to create action for hotkey events which can be used together with HotkeyManager methods. Unlike Runnable this
- * interface provides KeyEvent as action source.
- *
  * @author Mikle Garin
  */
 
-public interface HotkeyRunnable
+public class FrameInfo
 {
-    /**
-     * Simple runnable that doesn't perform any actions.
-     */
-    public static final HotkeyRunnable NONE = new HotkeyRunnable ()
-    {
-        @Override
-        public void run ( final KeyEvent e )
-        {
-            // Do nothing
-        }
-    };
-
-    /**
-     * Performs hotkey action.
-     *
-     * @param e occured key event
-     */
-    public void run ( KeyEvent e );
 }

@@ -249,6 +249,20 @@ public final class TextUtils
     }
 
     /**
+     * Returns shortened text.
+     *
+     * @param text      text to shorten
+     * @param maxLength maximum shortened text lenght
+     * @param addDots   add dots at the end of the text when shortened
+     * @return shortened text
+     */
+    public static String shortenTextEnd ( final String text, final int maxLength, final boolean addDots )
+    {
+        return text.length () <= maxLength ? text :
+                ( addDots ? "..." : "" ) + text.substring ( text.length () - ( maxLength > 3 && addDots ? maxLength - 3 : maxLength ) );
+    }
+
+    /**
      * Returns a list of text parts splitted using specified separator.
      *
      * @param string    text to split

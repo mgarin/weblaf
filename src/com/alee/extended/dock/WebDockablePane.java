@@ -39,7 +39,7 @@ import java.awt.event.MouseEvent;
 
 public class WebDockablePane extends WebPanel
 {
-    private static final Color buttonsPaneBackground = new Color ( 233, 236, 240 );
+    private static final Color buttonsPaneBackground = new Color ( 240, 240, 240 );
 
     public WebDockablePane ()
     {
@@ -51,24 +51,24 @@ public class WebDockablePane extends WebPanel
         return ( DockingPaneLayout ) getLayout ();
     }
 
-    public void addDockableFrame ( WebDockableFrame dockableFrame, String position )
-    {
-        // todo
-    }
+    //    public void addDockableFrame ( final WebDockableFrame dockableFrame, final String position )
+    //    {
+    //        // todo
+    //    }
 
     @Override
-    protected void paintComponent ( Graphics g )
+    protected void paintComponent ( final Graphics g )
     {
         super.paintComponent ( g );
 
-        Graphics2D g2d = ( Graphics2D ) g;
-        DockingPaneLayout layout = getActualLayout ();
-        DockingPaneInfo info = layout.getDockingPaneInfo ();
+        final Graphics2D g2d = ( Graphics2D ) g;
+        final DockingPaneLayout layout = getActualLayout ();
+        final DockingPaneInfo info = layout.getDockingPaneInfo ();
 
-        int x = info.hasLeftButtons ? info.leftButtonsPaneBounds.x + info.leftButtonsPaneBounds.width : info.rect.x;
-        int y = info.hasTopButtons ? info.topButtonsPaneBounds.y + info.topButtonsPaneBounds.height : info.rect.y;
-        int x2 = info.hasRightButtons ? info.rightButtonsPaneBounds.x - 1 : info.rect.x + info.rect.width - 1;
-        int y2 = info.hasBottomButtons ? info.bottomButtonsPaneBounds.y - 1 : info.rect.y + info.rect.height - 1;
+        final int x = info.hasLeftButtons ? info.leftButtonsPaneBounds.x + info.leftButtonsPaneBounds.width : info.rect.x;
+        final int y = info.hasTopButtons ? info.topButtonsPaneBounds.y + info.topButtonsPaneBounds.height : info.rect.y;
+        final int x2 = info.hasRightButtons ? info.rightButtonsPaneBounds.x - 1 : info.rect.x + info.rect.width - 1;
+        final int y2 = info.hasBottomButtons ? info.bottomButtonsPaneBounds.y - 1 : info.rect.y + info.rect.height - 1;
 
         if ( info.hasTopButtons )
         {
@@ -100,12 +100,12 @@ public class WebDockablePane extends WebPanel
         }
     }
 
-    private static ImageIcon top = new ImageIcon ( WebDockablePane.class.getResource ( "icons/dock_top_.png" ) );
-    private static ImageIcon left = new ImageIcon ( WebDockablePane.class.getResource ( "icons/dock_left_.png" ) );
-    private static ImageIcon right = new ImageIcon ( WebDockablePane.class.getResource ( "icons/dock_right_.png" ) );
-    private static ImageIcon bottom = new ImageIcon ( WebDockablePane.class.getResource ( "icons/dock_bottom_.png" ) );
+    private static final ImageIcon top = new ImageIcon ( WebDockablePane.class.getResource ( "icons/dock_top_.png" ) );
+    private static final ImageIcon left = new ImageIcon ( WebDockablePane.class.getResource ( "icons/dock_left_.png" ) );
+    private static final ImageIcon right = new ImageIcon ( WebDockablePane.class.getResource ( "icons/dock_right_.png" ) );
+    // private static ImageIcon bottom = new ImageIcon ( WebDockablePane.class.getResource ( "icons/dock_bottom_.png" ) );
 
-    public static void main ( String[] args )
+    public static void main ( final String[] args )
     {
         WebButtonStyle.round = 0;
         WebButtonStyle.drawFocus = false;
@@ -160,7 +160,7 @@ public class WebDockablePane extends WebPanel
                 c.addMouseListener ( new MouseAdapter ()
                 {
                     @Override
-                    public void mousePressed ( MouseEvent e )
+                    public void mousePressed ( final MouseEvent e )
                     {
                         if ( SwingUtilities.isMiddleMouseButton ( e ) )
                         {
@@ -178,7 +178,7 @@ public class WebDockablePane extends WebPanel
 
     private static Component createLeftFrame ()
     {
-        WebDockableFrame frame = new WebDockableFrame ( left, "Left frame" );
+        final WebDockableFrame frame = new WebDockableFrame ( left, "Left frame" );
         frame.setFrameType ( FrameType.left );
         frame.add ( new WebTextArea ( "123" ) );
         //        frame.setPainter ( PopupManager.getPopupPainter ( PopupStyle.lightSmall ) );
@@ -187,7 +187,7 @@ public class WebDockablePane extends WebPanel
 
     private static Component createTopFrame ()
     {
-        WebDockableFrame frame = new WebDockableFrame ( top, "Top frame" );
+        final WebDockableFrame frame = new WebDockableFrame ( top, "Top frame" );
         frame.setFrameType ( FrameType.top );
         frame.add ( new WebTextArea ( "123", 3, 0 ) );
         //        frame.setPainter ( PopupManager.getPopupPainter ( PopupStyle.lightSmall ) );
@@ -196,7 +196,7 @@ public class WebDockablePane extends WebPanel
 
     private static Component createContent ()
     {
-        WebTabbedPane content = new WebTabbedPane ( WebTabbedPane.TOP );
+        final WebTabbedPane content = new WebTabbedPane ( WebTabbedPane.TOP );
         content.setTabbedPaneStyle ( TabbedPaneStyle.attached );
         for ( int i = 0; i < 20; i++ )
         {

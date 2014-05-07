@@ -88,7 +88,7 @@ public class DockingPaneInfo implements DockingPaneConstants
     public Component content;
     public Rectangle contentBounds;
 
-    public DockingPaneInfo ( DockingPaneLayout layout, Container parent )
+    public DockingPaneInfo ( final DockingPaneLayout layout, final Container parent )
     {
         super ();
 
@@ -119,7 +119,7 @@ public class DockingPaneInfo implements DockingPaneConstants
         rightFrame = null;
         bottomFrame = null;
         content = null;
-        for ( Component component : constraints.keySet () )
+        for ( final Component component : constraints.keySet () )
         {
             if ( constraints.get ( component ).equals ( TOP_LEFT ) )
             {
@@ -200,7 +200,8 @@ public class DockingPaneInfo implements DockingPaneConstants
         leftBottomButtonsSize = hasLeftButtons ? getSideSize ( LEFT_BOTTOM, leftBottomButtons ) : new Dimension ( 0, 0 );
         leftButtonsSize = hasLeftButtons ? new Dimension ( Math.max ( leftTopButtonsSize.width, leftBottomButtonsSize.width ),
                 leftTopButtonsSize.height + ( twoSided ? buttonSidesSpacing : 0 ) +
-                        leftBottomButtonsSize.height ) : new Dimension ( 0, 0 );
+                        leftBottomButtonsSize.height
+        ) : new Dimension ( 0, 0 );
 
         twoSided = rightTopButtons.size () > 0 && rightBottomButtons.size () > 0;
         hasRightButtons = rightTopButtons.size () > 0 || rightBottomButtons.size () > 0;
@@ -208,7 +209,8 @@ public class DockingPaneInfo implements DockingPaneConstants
         rightBottomButtonsSize = hasRightButtons ? getSideSize ( LEFT_BOTTOM, rightBottomButtons ) : new Dimension ( 0, 0 );
         rightButtonsSize = hasRightButtons ? new Dimension ( Math.max ( rightTopButtonsSize.width, rightBottomButtonsSize.width ),
                 rightTopButtonsSize.height + ( twoSided ? buttonSidesSpacing : 0 ) +
-                        rightBottomButtonsSize.height ) : new Dimension ( 0, 0 );
+                        rightBottomButtonsSize.height
+        ) : new Dimension ( 0, 0 );
 
         twoSided = bottomLeftButtons.size () > 0 && bottomRightButtons.size () > 0;
         hasBottomButtons = bottomLeftButtons.size () > 0 || bottomRightButtons.size () > 0;
@@ -234,36 +236,39 @@ public class DockingPaneInfo implements DockingPaneConstants
                         new Rectangle ( 0, 0 );
         leftButtonsPaneBounds = hasLeftButtons ? new Rectangle ( rect.x, rect.y + topButtonsPaneBounds.height,
                 buttonsMargin.left + leftButtonsSize.width + buttonsMargin.right, rect.height - topButtonsPaneBounds.height -
-                bottomButtonsPaneBounds.height ) : new Rectangle ( 0, 0 );
+                bottomButtonsPaneBounds.height
+        ) : new Rectangle ( 0, 0 );
         rightButtonsPaneBounds = hasRightButtons ? new Rectangle ( rect.x + rect.width - buttonsMargin.left - rightButtonsSize.width -
                 buttonsMargin.right, rect.y + topButtonsPaneBounds.height,
                 buttonsMargin.left + rightButtonsSize.width + buttonsMargin.right, rect.height - topButtonsPaneBounds.height -
-                bottomButtonsPaneBounds.height ) : new Rectangle ( 0, 0 );
+                bottomButtonsPaneBounds.height
+        ) : new Rectangle ( 0, 0 );
 
         // Frames bounds
         // Additional 1px added @ each side that has buttons
-        int topBonus = ( hasTopButtons ? 1 : 0 ) + framesMargin.top;
-        int leftBonus = ( hasLeftButtons ? 1 : 0 ) + framesMargin.left;
-        int rightBonus = ( hasRightButtons ? 1 : 0 ) + framesMargin.right;
-        int bottomBonus = ( hasBottomButtons ? 1 : 0 ) + framesMargin.bottom;
-        Dimension tfps = topFrame != null ? topFrame.getPreferredSize () : null;
+        final int topBonus = ( hasTopButtons ? 1 : 0 ) + framesMargin.top;
+        final int leftBonus = ( hasLeftButtons ? 1 : 0 ) + framesMargin.left;
+        final int rightBonus = ( hasRightButtons ? 1 : 0 ) + framesMargin.right;
+        final int bottomBonus = ( hasBottomButtons ? 1 : 0 ) + framesMargin.bottom;
+        final Dimension tfps = topFrame != null ? topFrame.getPreferredSize () : null;
         topFrameBounds = topFrame != null ?
                 new Rectangle ( rect.x + leftButtonsPaneBounds.width + leftBonus, rect.y + topButtonsPaneBounds.height + topBonus,
                         rect.width - leftButtonsPaneBounds.width - rightButtonsPaneBounds.width -
-                                leftBonus - rightBonus, tfps.height ) : new Rectangle ( 0, 0 );
-        Dimension bfps = bottomFrame != null ? bottomFrame.getPreferredSize () : null;
+                                leftBonus - rightBonus, tfps.height
+                ) : new Rectangle ( 0, 0 );
+        final Dimension bfps = bottomFrame != null ? bottomFrame.getPreferredSize () : null;
         bottomFrameBounds = bottomFrame != null ?
                 new Rectangle ( rect.x + leftButtonsPaneBounds.width + leftBonus, rect.y + rect.height - bottomButtonsPaneBounds.height -
                         bottomBonus - bfps.height, rect.width - leftButtonsPaneBounds.width - rightButtonsPaneBounds.width -
                         leftBonus - rightBonus, bfps.height ) : new Rectangle ( 0, 0 );
-        Dimension lfps = leftFrame != null ? leftFrame.getPreferredSize () : null;
+        final Dimension lfps = leftFrame != null ? leftFrame.getPreferredSize () : null;
         leftFrameBounds =
                 leftFrame != null ? new Rectangle ( rect.x + leftButtonsPaneBounds.width + leftBonus, rect.y + topButtonsPaneBounds.height +
                         topBonus + topFrameBounds.height, lfps.width, rect.height - topButtonsPaneBounds.height - topBonus -
                         topFrameBounds.height -
                         bottomButtonsPaneBounds.height - bottomBonus -
                         bottomFrameBounds.height ) : new Rectangle ( 0, 0 );
-        Dimension rfps = rightFrame != null ? rightFrame.getPreferredSize () : null;
+        final Dimension rfps = rightFrame != null ? rightFrame.getPreferredSize () : null;
         rightFrameBounds = rightFrame != null ? new Rectangle ( rect.x + rect.width - rightButtonsPaneBounds.width - rightBonus -
                 rfps.width, rect.y + topButtonsPaneBounds.height +
                 topBonus + topFrameBounds.height, rfps.width, rect.height - topButtonsPaneBounds.height - topBonus -
@@ -283,15 +288,15 @@ public class DockingPaneInfo implements DockingPaneConstants
                 contentMargin.top - contentMargin.bottom ) : null;
     }
 
-    private Dimension getSideSize ( String side, List<Component> components )
+    private Dimension getSideSize ( final String side, final List<Component> components )
     {
-        Dimension size = new Dimension ( 0, 0 );
+        final Dimension size = new Dimension ( 0, 0 );
         if ( side.startsWith ( "TOP" ) || side.startsWith ( "BOTTOM" ) )
         {
             // Horizontal buttons bar
-            for ( Component button : components )
+            for ( final Component button : components )
             {
-                Dimension ps = button.getPreferredSize ();
+                final Dimension ps = button.getPreferredSize ();
                 size.width += ps.width + buttonSpacing;
                 size.height = Math.max ( size.height, ps.height );
             }
@@ -303,9 +308,9 @@ public class DockingPaneInfo implements DockingPaneConstants
         else
         {
             // Vertical buttons bar
-            for ( Component button : components )
+            for ( final Component button : components )
             {
-                Dimension ps = button.getPreferredSize ();
+                final Dimension ps = button.getPreferredSize ();
                 size.height += ps.height + buttonSpacing;
                 size.width = Math.max ( size.width, ps.width );
             }

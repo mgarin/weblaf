@@ -47,10 +47,10 @@ public class TextFieldOverlayExample extends DefaultExample
     }
 
     @Override
-    public Component getPreview ( WebLookAndFeelDemo owner )
+    public Component getPreview ( final WebLookAndFeelDemo owner )
     {
         // Overlay
-        WebOverlay overlayPanel = new WebOverlay ();
+        final WebOverlay overlayPanel = new WebOverlay ();
 
         // Overlayed text field
         final WebTextField textField = new WebTextField ( 15 );
@@ -60,7 +60,7 @@ public class TextFieldOverlayExample extends DefaultExample
         final WebLabel overlay = new WebLabel ( "Enter text here..." )
         {
             @Override
-            public boolean contains ( int x, int y )
+            public boolean contains ( final int x, final int y )
             {
                 // Making label invisible for mouse events
                 return false;

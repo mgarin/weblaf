@@ -20,6 +20,7 @@ package com.alee.managers.plugin;
 import com.alee.extended.log.Log;
 import com.alee.laf.GlobalConstants;
 import com.alee.managers.plugin.data.*;
+import com.alee.utils.CollectionUtils;
 import com.alee.utils.XmlUtils;
 import com.alee.utils.ZipUtils;
 
@@ -39,10 +40,20 @@ import java.util.zip.ZipFile;
  * Base for any plugin manager you might want to create.
  *
  * @author Mikle Garin
+ * @see com.alee.managers.plugin.Plugin
  */
 
 public abstract class PluginManager<T extends Plugin>
 {
+    /**
+     * todo 1. Check for similar plugins seems broken
+     */
+
+    /**
+     * Plugins listeners.
+     */
+    protected List<PluginsListener<T>> listeners = new ArrayList<PluginsListener<T>> ( 1 );
+
     /**
      * Plugin checks lock object.
      */
@@ -55,11 +66,23 @@ public abstract class PluginManager<T extends Plugin>
     protected List<DetectedPlugin<T>> detectedPlugins;
 
     /**
+     * Recently detected plugins list.
+     * Contains plugins detected while last plugins check.
+     */
+    protected List<DetectedPlugin<T>> recentlyDetected;
+
+    /**
      * Loaded and running plugins list.
      * This might be less than list of detected plugins in the end due to lots of different reasons.
      * Only those plugins which are actually loaded successfully are getting added here.
      */
     protected List<T> availablePlugins;
+
+    /**
+     * Recently initialized plugins list.
+     * Contains plugins initialized while last plugins check.
+     */
+    protected List<T> recentlyInitialized;
 
     /**
      * Amount of successfully loaded plugins.
@@ -144,14 +167,32 @@ public abstract class PluginManager<T extends Plugin>
      *
      * @return name of the plugin descriptor file
      */
-    protected abstract String getPluginDescriptor ();
+    protected String getPluginDescriptor ()
+    {
+        return "plugin.xml";
+    }
+
+    /**
+     * Returns name of the plugin logo file.
+     * Logo should be placed near the plugin descriptor file.
+     *
+     * @return name of the plugin logo file
+     */
+    protected String getPluginLogo ()
+    {
+        return "logo.png";
+    }
 
     /**
      * Returns accepted by this manager plugin type.
+     * In case {@code null} is returned this manager accepts any plugin type.
      *
      * @return accepted by this manager plugin type
      */
-    protected abstract String getAcceptedPluginType ();
+    protected String getAcceptedPluginType ()
+    {
+        return null;
+    }
 
     /**
      * Performs plugins search within the specified plugins directory.
@@ -187,15 +228,43 @@ public abstract class PluginManager<T extends Plugin>
     {
         synchronized ( checkLock )
         {
+            // Informing about plugins check start
+            firePluginsCheckStarted ( pluginsDirectoryPath, checkRecursively );
+
             // Collecting plugins information
             if ( collectPluginsInformation ( pluginsDirectoryPath, checkRecursively ) )
             {
+                // Informing about newly detected plugins
+                firePluginsDetected ( recentlyDetected );
+
+                Log.info ( this, "Initializing plugins..." );
+
                 // Initializing plugins
                 initializePlugins ();
 
                 // Sorting plugins according to their initialization strategies
                 applyInitializationStrategy ();
+
+                // Properly sorting recently initialized plugins
+                Collections.sort ( recentlyInitialized, new Comparator<T> ()
+                {
+                    @Override
+                    public int compare ( final T o1, final T o2 )
+                    {
+                        final Integer i1 = availablePlugins.indexOf ( o1 );
+                        final Integer i2 = availablePlugins.indexOf ( o2 );
+                        return i1.compareTo ( i2 );
+                    }
+                } );
+
+                // Informing about new plugins initialization
+                firePluginsInitialized ( recentlyInitialized );
+
+                Log.info ( this, "Plugins initialization finished" );
             }
+
+            // Informing about plugins check end
+            firePluginsCheckEnded ( pluginsDirectoryPath, checkRecursively );
         }
     }
 
@@ -209,6 +278,7 @@ public abstract class PluginManager<T extends Plugin>
         if ( pluginsDirectoryPath != null )
         {
             Log.info ( this, "Collecting plugins information..." );
+            recentlyDetected = new ArrayList<DetectedPlugin<T>> ();
             return collectPluginsInformationImpl ( new File ( pluginsDirectoryPath ), checkRecursively );
         }
         else
@@ -262,12 +332,14 @@ public abstract class PluginManager<T extends Plugin>
     {
         try
         {
+            final String pluginDescriptor = getPluginDescriptor ();
+            final String pluginLogo = getPluginLogo ();
             final ZipFile zipFile = new ZipFile ( file );
             final Enumeration entries = zipFile.entries ();
             while ( entries.hasMoreElements () )
             {
                 final ZipEntry entry = ( ZipEntry ) entries.nextElement ();
-                if ( entry.getName ().endsWith ( getPluginDescriptor () ) )
+                if ( entry.getName ().endsWith ( pluginDescriptor ) )
                 {
                     // Reading plugin information
                     final InputStream inputStream = zipFile.getInputStream ( entry );
@@ -275,7 +347,7 @@ public abstract class PluginManager<T extends Plugin>
                     inputStream.close ();
 
                     // Reading plugin icon
-                    final ZipEntry logoEntry = new ZipEntry ( ZipUtils.getZipEntryFileLocation ( entry ) + "logo.png" );
+                    final ZipEntry logoEntry = new ZipEntry ( ZipUtils.getZipEntryFileLocation ( entry ) + pluginLogo );
                     final InputStream logoInputStream = zipFile.getInputStream ( logoEntry );
                     final ImageIcon logo = new ImageIcon ( ImageIO.read ( logoInputStream ) );
                     logoInputStream.close ();
@@ -285,6 +357,7 @@ public abstract class PluginManager<T extends Plugin>
                     {
                         final DetectedPlugin<T> plugin = new DetectedPlugin<T> ( file.getParent (), file.getName (), info, logo );
                         detectedPlugins.add ( plugin );
+                        recentlyDetected.add ( plugin );
                         Log.info ( this, "Plugin detected: " + info );
                     }
 
@@ -323,13 +396,16 @@ public abstract class PluginManager<T extends Plugin>
      */
     protected void initializePlugins ()
     {
-        Log.info ( this, "Initializing plugins..." );
-
         // Map to store plugin libraries
         final Map<String, Map<PluginLibrary, PluginInformation>> pluginLibraries =
                 new HashMap<String, Map<PluginLibrary, PluginInformation>> ();
 
+        // List to collect newly initialized plugins
+        // This is required to properly inform about newly loaded plugins later
+        recentlyInitialized = new ArrayList<T> ();
+
         // Initializing detected plugins
+        final String acceptedPluginType = getAcceptedPluginType ();
         for ( final DetectedPlugin<T> detectedPlugin : detectedPlugins )
         {
             // Skip plugins we have already tried to initialize
@@ -343,14 +419,14 @@ public abstract class PluginManager<T extends Plugin>
             try
             {
                 // Checking plugin type as we don't want (for example) to load server plugins on client side
-                if ( !info.getType ().equals ( getAcceptedPluginType () ) )
+                if ( acceptedPluginType != null && !info.getType ().equals ( acceptedPluginType ) )
                 {
                     Log.warn ( this, prefix + "Plugin of type \"" + info.getType () + "\" cannot be loaded, " +
-                            "required plugin type is \"" + getAcceptedPluginType () + "\"" );
+                            "required plugin type is \"" + acceptedPluginType + "\"" );
                     detectedPlugin.setStatus ( PluginStatus.failed );
                     detectedPlugin.setFailureCause ( "Inappropriate plugin type" );
                     detectedPlugin.setExceptionMessage ( "Detected plugin type: " + info.getType () + "\", " +
-                            "required plugin type: \"" + getAcceptedPluginType () + "\"" );
+                            "required plugin type: \"" + acceptedPluginType + "\"" );
                     failedPluginsAmount++;
                     continue;
                 }
@@ -406,6 +482,7 @@ public abstract class PluginManager<T extends Plugin>
                     final URLClassLoader classLoader = URLClassLoader.newInstance ( jarPaths.toArray ( new URL[ jarPaths.size () ] ) );
                     final T plugin = ( T ) classLoader.loadClass ( info.getMainClass () ).newInstance ();
                     availablePlugins.add ( plugin );
+                    recentlyInitialized.add ( plugin );
                     Log.info ( this, prefix + "Plugin initialized" );
 
                     detectedPlugin.setStatus ( PluginStatus.loaded );
@@ -689,5 +766,79 @@ public abstract class PluginManager<T extends Plugin>
     public void setFileFilter ( final FileFilter fileFilter )
     {
         this.fileFilter = fileFilter;
+    }
+
+    /**
+     * Adds plugins listener.
+     *
+     * @param listener new plugins listener
+     */
+    public void addPluginsListener ( final PluginsListener<T> listener )
+    {
+        listeners.add ( listener );
+    }
+
+    /**
+     * Removes plugins listener.
+     *
+     * @param listener plugins listener to remove
+     */
+    public void removePluginsListener ( final PluginsListener<T> listener )
+    {
+        listeners.remove ( listener );
+    }
+
+    /**
+     * Informs about plugins check operation start.
+     *
+     * @param directory checked plugins directory path
+     * @param recursive whether plugins directory subfolders are checked recursively or not
+     */
+    public void firePluginsCheckStarted ( final String directory, final boolean recursive )
+    {
+        for ( final PluginsListener<T> listener : CollectionUtils.copy ( listeners ) )
+        {
+            listener.pluginsCheckStarted ( directory, recursive );
+        }
+    }
+
+    /**
+     * Informs about plugins check operation end.
+     *
+     * @param directory checked plugins directory path
+     * @param recursive whether plugins directory subfolders are checked recursively or not
+     */
+    public void firePluginsCheckEnded ( final String directory, final boolean recursive )
+    {
+        for ( final PluginsListener<T> listener : CollectionUtils.copy ( listeners ) )
+        {
+            listener.pluginsCheckEnded ( directory, recursive );
+        }
+    }
+
+    /**
+     * Informs about newly detected plugins.
+     *
+     * @param plugins newly detected plugins list
+     */
+    public void firePluginsDetected ( final List<DetectedPlugin<T>> plugins )
+    {
+        for ( final PluginsListener<T> listener : CollectionUtils.copy ( listeners ) )
+        {
+            listener.pluginsDetected ( CollectionUtils.copy ( plugins ) );
+        }
+    }
+
+    /**
+     * Informs about newly initialized plugins.
+     *
+     * @param plugins newly initialized plugins list
+     */
+    public void firePluginsInitialized ( final List<T> plugins )
+    {
+        for ( final PluginsListener<T> listener : CollectionUtils.copy ( listeners ) )
+        {
+            listener.pluginsInitialized ( CollectionUtils.copy ( plugins ) );
+        }
     }
 }

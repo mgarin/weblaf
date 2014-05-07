@@ -1486,13 +1486,13 @@
         </Dictionary>
     </Dictionary>
     <LanguageInfo>
-        <langInfo lang="en" author="mgarin" info="English" />
-        <langInfo lang="ru" author="mgarin" info="Russian" />
-        <langInfo lang="pl" author="sciepa" info="Polish" />
-        <langInfo lang="ar" author="Abu Abdullah" info="Arabic" />
-        <langInfo lang="es" author="pablovilas" info="Spanish" />
-        <langInfo lang="fr" author="movierenamer" info="French" />
-        <langInfo lang="pt" author="esimoes" info="Portuguese" />
-        <langInfo lang="de" author="trashguru" info="German" />
+        <langInfo lang="en" author="mgarin" info="English" title="English" />
+        <langInfo lang="ru" author="mgarin" info="Russian" title="Русский" />
+        <langInfo lang="pl" author="sciepa" info="Polish" title="Polski" />
+        <langInfo lang="ar" author="Abu Abdullah" info="Arabic" title="العربية" />
+        <langInfo lang="es" author="pablovilas" info="Spanish" title="Español" />
+        <langInfo lang="fr" author="movierenamer" info="French" title="Français" />
+        <langInfo lang="pt" author="esimoes" info="Portuguese" title="Português" />
+        <langInfo lang="de" author="trashguru" info="German" title="Deutsch" />
     </LanguageInfo>
 </Dictionary>

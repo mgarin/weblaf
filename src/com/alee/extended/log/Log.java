@@ -61,7 +61,7 @@ public class Log
             initialized = true;
 
             // Settings for SLF4J simple logger
-            System.setProperty ( "org.slf4j.simpleLogger.logFile", "System.err" );
+            System.setProperty ( "org.slf4j.simpleLogger.logFile", "System.out" );
             System.setProperty ( "org.slf4j.simpleLogger.levelInBrackets", "true" );
         }
     }
