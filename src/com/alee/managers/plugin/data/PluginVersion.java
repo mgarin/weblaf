@@ -94,6 +94,11 @@ public class PluginVersion implements Serializable
         return otherVersion.major > this.major || otherVersion.major == this.major && otherVersion.minor > this.minor;
     }
 
+    public boolean same ( final PluginVersion otherVersion )
+    {
+        return otherVersion.major == this.major && otherVersion.minor == this.minor;
+    }
+
     @Override
     public String toString ()
     {

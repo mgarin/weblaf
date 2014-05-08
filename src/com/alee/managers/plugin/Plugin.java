@@ -18,9 +18,11 @@
 package com.alee.managers.plugin;
 
 import com.alee.extended.log.Log;
+import com.alee.managers.plugin.data.DetectedPlugin;
 import com.alee.managers.plugin.data.InitializationStrategy;
 import com.alee.managers.plugin.data.PluginInformation;
-import com.alee.utils.XmlUtils;
+
+import javax.swing.*;
 
 /**
  * Base class for any plugin.
@@ -30,12 +32,17 @@ import com.alee.utils.XmlUtils;
  * @see com.alee.managers.plugin.PluginManager
  */
 
-public abstract class Plugin
+public abstract class Plugin<T extends Plugin<T>>
 {
     /**
-     * Cached plugin information.
+     * Plugin manager which loaded this plugin.
      */
-    protected PluginInformation pluginInformation;
+    protected PluginManager<T> pluginManager;
+
+    /**
+     * Detected plugin information.
+     */
+    protected DetectedPlugin<T> detectedPlugin;
 
     /**
      * Cached plugin initialization strategy.
@@ -48,15 +55,43 @@ public abstract class Plugin
     protected boolean enabled = true;
 
     /**
-     * Says whether plugin can be hot-loaded or not.
-     * That means that plugin can or cannot be loaded when application was already running for some time and initialization phase passed.
-     * Plugins that can be hot-loaded might be loaded either at the start of the application or in runtime.
+     * Returns plugin manager which loaded this plugin.
      *
-     * @return true if plugin can be hot-loaded, false otherwise
+     * @return plugin manager which loaded this plugin
      */
-    public boolean isHotLoadable ()
+    public PluginManager<T> getPluginManager ()
     {
-        return getPluginInformation ().isHotLoadable ();
+        return pluginManager;
+    }
+
+    /**
+     * Sets plugin manager which loaded this plugin.
+     *
+     * @param pluginManager plugin manager which loaded this plugin
+     */
+    protected void setPluginManager ( final PluginManager<T> pluginManager )
+    {
+        this.pluginManager = pluginManager;
+    }
+
+    /**
+     * Returns additional information about this plugin.
+     *
+     * @return additional information about this plugin
+     */
+    public DetectedPlugin<T> getDetectedPlugin ()
+    {
+        return detectedPlugin;
+    }
+
+    /**
+     * Sets additional information about this plugin.
+     *
+     * @param detectedPlugin additional information about this plugin
+     */
+    protected void setDetectedPlugin ( final DetectedPlugin<T> detectedPlugin )
+    {
+        this.detectedPlugin = detectedPlugin;
     }
 
     /**
@@ -72,38 +107,23 @@ public abstract class Plugin
     }
 
     /**
-     * Provides information about this plugin.
+     * Returns information about this plugin.
      *
      * @return information about this plugin
      */
     public PluginInformation getPluginInformation ()
     {
-        if ( pluginInformation == null )
-        {
-            pluginInformation = loadPluginInformation ( getClass (), getPluginDescriptor () );
-        }
-        return pluginInformation;
+        return detectedPlugin.getInformation ();
     }
 
     /**
-     * Loads plugin information from the specified location near class.
+     * Returns plugin logo.
      *
-     * @return plugin information from the specified location near class
+     * @return plugin logo
      */
-    protected PluginInformation loadPluginInformation ( final Class nearClass, final String path )
+    public ImageIcon getPluginLogo ()
     {
-        return XmlUtils.fromXML ( nearClass.getResource ( path ) );
-    }
-
-    /**
-     * Returns name of the plugin descriptor file.
-     * This file should contain serialized PluginInformation.
-     *
-     * @return name of the plugin descriptor file
-     */
-    protected String getPluginDescriptor ()
-    {
-        return "resources/plugin.xml";
+        return detectedPlugin.getLogo ();
     }
 
     /**
@@ -170,7 +190,7 @@ public abstract class Plugin
      */
     public final void enable ()
     {
-        if ( isHotLoadable () )
+        if ( isDisableable () )
         {
             if ( !enabled )
             {

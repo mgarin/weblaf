@@ -17,6 +17,7 @@
 
 package com.alee.laf.tree;
 
+import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.MutableTreeNode;
 import java.util.List;
@@ -28,7 +29,7 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public class WebTreeModel<E extends MutableTreeNode> extends DefaultTreeModel
+public class WebTreeModel<E extends DefaultMutableTreeNode> extends DefaultTreeModel
 {
     /**
      * Constructs tree model with a specified node as root.
@@ -49,6 +50,16 @@ public class WebTreeModel<E extends MutableTreeNode> extends DefaultTreeModel
     public WebTreeModel ( final E root, final boolean asksAllowsChildren )
     {
         super ( root, asksAllowsChildren );
+    }
+
+    /**
+     * Returns root node.
+     *
+     * @return root node
+     */
+    public E getRootNode ()
+    {
+        return ( E ) getRoot ();
     }
 
     /**
@@ -104,7 +115,8 @@ public class WebTreeModel<E extends MutableTreeNode> extends DefaultTreeModel
      */
     public void removeNodesFromParent ( final List<E> nodes )
     {
-        // todo Optimized delete
+        // todo Optimize delete process
+
         //        final Map<E, List<Integer>> removedNodes = new HashMap<E, List<Integer>> ();
         //        for ( final E node : nodes )
         //        {
@@ -149,7 +161,7 @@ public class WebTreeModel<E extends MutableTreeNode> extends DefaultTreeModel
      */
     public void removeNodesFromParent ( final E[] nodes )
     {
-        // todo Optimized delete
+        // todo Optimize delete process
         for ( final E node : nodes )
         {
             removeNodeFromParent ( node );
@@ -167,5 +179,14 @@ public class WebTreeModel<E extends MutableTreeNode> extends DefaultTreeModel
         {
             fireTreeNodesChanged ( WebTreeModel.this, getPathToRoot ( node ), null, null );
         }
+    }
+
+    /**
+     * Forces update of all visible node sizes and view.
+     * This call might be useful if renderer changes dramatically and you have to update the whole tree.
+     */
+    public void updateTree ()
+    {
+        fireTreeStructureChanged ( WebTreeModel.this, getRootNode ().getPath (), null, null );
     }
 }

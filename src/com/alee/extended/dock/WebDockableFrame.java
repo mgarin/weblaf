@@ -17,6 +17,7 @@
 
 package com.alee.extended.dock;
 
+import com.alee.extended.layout.HorizontalFlowLayout;
 import com.alee.extended.painter.Painter;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.label.WebLabel;
@@ -35,19 +36,20 @@ import java.awt.*;
 
 public class WebDockableFrame extends WebPanel implements LanguageMethods
 {
-    private static final ImageIcon dockTop = new ImageIcon ( WebDockablePane.class.getResource ( "icons/dock_top.png" ) );
-    private static final ImageIcon dockLeft = new ImageIcon ( WebDockablePane.class.getResource ( "icons/dock_left.png" ) );
-    private static final ImageIcon dockRight = new ImageIcon ( WebDockablePane.class.getResource ( "icons/dock_right.png" ) );
-    private static final ImageIcon dockBottom = new ImageIcon ( WebDockablePane.class.getResource ( "icons/dock_bottom.png" ) );
+    public static final ImageIcon dockTop = new ImageIcon ( WebDockablePane.class.getResource ( "icons/dock_top.png" ) );
+    public static final ImageIcon dockLeft = new ImageIcon ( WebDockablePane.class.getResource ( "icons/dock_left.png" ) );
+    public static final ImageIcon dockRight = new ImageIcon ( WebDockablePane.class.getResource ( "icons/dock_right.png" ) );
+    public static final ImageIcon dockBottom = new ImageIcon ( WebDockablePane.class.getResource ( "icons/dock_bottom.png" ) );
 
     public static final String ID_PREFIX = "WDF";
 
-    private String frameId;
-    private FrameType frameType;
+    protected String frameId;
+    protected FrameType frameType;
 
-    private final WebPanel titlePanel;
-    private final WebLabel titleLabel;
-    private final WebButton dockButton;
+    protected final WebPanel titlePanel;
+    protected final WebLabel titleLabel;
+    protected final WebPanel buttonsPanel;
+    protected final WebButton dockButton;
 
     public WebDockableFrame ()
     {
@@ -110,11 +112,14 @@ public class WebDockableFrame extends WebPanel implements LanguageMethods
         titleLabel.setDrawShade ( true );
         titlePanel.add ( titleLabel, BorderLayout.CENTER );
 
+        buttonsPanel = new WebPanel ( new HorizontalFlowLayout ( 0, false ) );
+        titlePanel.add ( buttonsPanel, BorderLayout.EAST );
+
         dockButton = new WebButton ();
         dockButton.setLeftRightSpacing ( 0 );
         dockButton.setShadeWidth ( 0 );
         dockButton.setDrawSides ( false, true, false, false );
-        titlePanel.add ( dockButton, BorderLayout.EAST );
+        buttonsPanel.add ( dockButton );
     }
 
     public String getFrameId ()
@@ -174,6 +179,27 @@ public class WebDockableFrame extends WebPanel implements LanguageMethods
         return titleLabel;
     }
 
+    public WebPanel getButtonsPanel ()
+    {
+        return buttonsPanel;
+    }
+
+    public void addButton ( final WebButton button )
+    {
+        // Styling button properly
+        button.setShadeWidth ( 0 );
+        button.setDrawSides ( false, true, false, false );
+        if ( button.getText () == null || button.getText ().trim ().length () == 0 )
+        {
+            button.setLeftRightSpacing ( 0 );
+        }
+
+        // Adding new button
+        buttonsPanel.add ( button, 0 );
+        buttonsPanel.revalidate ();
+        buttonsPanel.repaint ();
+    }
+
     public WebButton getDockButton ()
     {
         return dockButton;
@@ -189,7 +215,7 @@ public class WebDockableFrame extends WebPanel implements LanguageMethods
         titleLabel.setText ( title );
     }
 
-    private Icon getDockIcon ( final FrameType frameType )
+    protected Icon getDockIcon ( final FrameType frameType )
     {
         if ( frameType.equals ( FrameType.top ) )
         {

@@ -56,12 +56,6 @@ public class PluginInformation implements Serializable
     private String types;
 
     /**
-     * Whether plugin can be hot-loaded or not.
-     * Plugins that can be hot-loaded might be loaded either at the start of the application or in runtime.
-     */
-    private boolean hotLoadable;
-
-    /**
      * Whether plugin can be disabled or not.
      */
     private boolean disableable;
@@ -103,25 +97,23 @@ public class PluginInformation implements Serializable
     /**
      * Constructs new plugin information data object with the specified values.
      *
-     * @param id             plugin ID
-     * @param type           plugin type
-     * @param types          available plugin types
-     * @param hotLoadable whether plugin can be hot-loaded or not
-     * @param disableable  whether plugin can be disabled or not
-     * @param mainClass      plugin main class
-     * @param title          plugin title
-     * @param description    plugin short description
-     * @param version        plugin version data
+     * @param id          plugin ID
+     * @param type        plugin type
+     * @param types       available plugin types
+     * @param disableable whether plugin can be disabled or not
+     * @param mainClass   plugin main class
+     * @param title       plugin title
+     * @param description plugin short description
+     * @param version     plugin version data
      */
-    public PluginInformation ( final String id, final String type, final String types, final boolean hotLoadable, final boolean disableable,
-                               final String mainClass, final String title, final String description,
-                               final PluginVersion version, final List<PluginLibrary> libraries )
+    public PluginInformation ( final String id, final String type, final String types, final boolean disableable, final String mainClass,
+                               final String title, final String description, final PluginVersion version,
+                               final List<PluginLibrary> libraries )
     {
         super ();
         this.id = id;
         this.type = type;
         this.types = types;
-        this.hotLoadable = hotLoadable;
         this.disableable = disableable;
         this.mainClass = mainClass;
         this.title = title;
@@ -163,16 +155,6 @@ public class PluginInformation implements Serializable
     public void setTypes ( final String types )
     {
         this.types = types;
-    }
-
-    public boolean isHotLoadable ()
-    {
-        return hotLoadable;
-    }
-
-    public void setHotLoadable ( final boolean hotLoadable )
-    {
-        this.hotLoadable = hotLoadable;
     }
 
     public boolean isDisableable ()

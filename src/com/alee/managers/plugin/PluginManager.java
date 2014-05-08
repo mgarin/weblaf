@@ -21,8 +21,10 @@ import com.alee.extended.log.Log;
 import com.alee.laf.GlobalConstants;
 import com.alee.managers.plugin.data.*;
 import com.alee.utils.CollectionUtils;
+import com.alee.utils.ReflectUtils;
 import com.alee.utils.XmlUtils;
 import com.alee.utils.ZipUtils;
+import com.alee.utils.compare.Filter;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -70,6 +72,18 @@ public abstract class PluginManager<T extends Plugin>
      * Contains plugins detected while last plugins check.
      */
     protected List<DetectedPlugin<T>> recentlyDetected;
+
+    /**
+     * Special filter to filter out unwanted plugins before their initialization.
+     * It is up to developer to specify this filter and its conditions.
+     */
+    protected Filter<DetectedPlugin<T>> pluginFilter = null;
+
+    /**
+     * Whether should allow loading multiply plugins with the same ID or not.
+     * In case this is set to false only the newest version of the same plugin will be loaded if more than one provided.
+     */
+    protected boolean allowSimilarPlugins = false;
 
     /**
      * Loaded and running plugins list.
@@ -167,7 +181,7 @@ public abstract class PluginManager<T extends Plugin>
      *
      * @return name of the plugin descriptor file
      */
-    protected String getPluginDescriptor ()
+    protected String getPluginDescriptorFile ()
     {
         return "plugin.xml";
     }
@@ -178,7 +192,7 @@ public abstract class PluginManager<T extends Plugin>
      *
      * @return name of the plugin logo file
      */
-    protected String getPluginLogo ()
+    protected String getPluginLogoFile ()
     {
         return "logo.png";
     }
@@ -332,8 +346,8 @@ public abstract class PluginManager<T extends Plugin>
     {
         try
         {
-            final String pluginDescriptor = getPluginDescriptor ();
-            final String pluginLogo = getPluginLogo ();
+            final String pluginDescriptor = getPluginDescriptorFile ();
+            final String pluginLogo = getPluginLogoFile ();
             final ZipFile zipFile = new ZipFile ( file );
             final Enumeration entries = zipFile.entries ();
             while ( entries.hasMoreElements () )
@@ -415,7 +429,7 @@ public abstract class PluginManager<T extends Plugin>
             }
 
             final PluginInformation info = detectedPlugin.getInformation ();
-            final String prefix = "[" + info.toString () + "] ";
+            final String prefix = "[" + info + "] ";
             try
             {
                 // Checking plugin type as we don't want (for example) to load server plugins on client side
@@ -424,21 +438,44 @@ public abstract class PluginManager<T extends Plugin>
                     Log.warn ( this, prefix + "Plugin of type \"" + info.getType () + "\" cannot be loaded, " +
                             "required plugin type is \"" + acceptedPluginType + "\"" );
                     detectedPlugin.setStatus ( PluginStatus.failed );
-                    detectedPlugin.setFailureCause ( "Inappropriate plugin type" );
+                    detectedPlugin.setFailureCause ( "Wrong type" );
                     detectedPlugin.setExceptionMessage ( "Detected plugin type: " + info.getType () + "\", " +
                             "required plugin type: \"" + acceptedPluginType + "\"" );
                     failedPluginsAmount++;
                     continue;
                 }
 
-                // Checking that it is latest plugin version of all available
+                // Checking that this is latest plugin version of all available
                 // Usually there shouldn't be different versions of the same plugin but everyone make mistakes
-                if ( isDeprecated ( detectedPlugin, detectedPlugins ) )
+                if ( isDeprecatedVersion ( detectedPlugin, detectedPlugins ) )
                 {
                     Log.warn ( this, prefix + "Plugin is deprecated, newer version of plugin will be loaded instead" );
                     detectedPlugin.setStatus ( PluginStatus.failed );
-                    detectedPlugin.setFailureCause ( "Deprecated plugin" );
+                    detectedPlugin.setFailureCause ( "Deprecated" );
                     detectedPlugin.setExceptionMessage ( "This plugin is deprecated, newer version loaded instead" );
+                    failedPluginsAmount++;
+                    continue;
+                }
+
+                // Checking that this plugin version is not yet loaded
+                // This might occur in case the same plugin appears more than once in different files
+                if ( isSameVersionAlreadyLoaded ( detectedPlugin, detectedPlugins ) )
+                {
+                    Log.warn ( this, prefix + "Plugin is duplicate, it will be loaded from another file" );
+                    detectedPlugin.setStatus ( PluginStatus.failed );
+                    detectedPlugin.setFailureCause ( "Duplicate" );
+                    detectedPlugin.setExceptionMessage ( "This plugin is duplicate, it will be loaded from another file" );
+                    failedPluginsAmount++;
+                    continue;
+                }
+
+                // Checking that plugin filter accepts this plugin
+                if ( pluginFilter != null && !pluginFilter.accept ( detectedPlugin ) )
+                {
+                    Log.info ( this, prefix + "Plugin was not accepted by plugin filter" );
+                    detectedPlugin.setStatus ( PluginStatus.failed );
+                    detectedPlugin.setFailureCause ( "Filtered" );
+                    detectedPlugin.setExceptionMessage ( "Plugin was not accepted by plugin filter" );
                     failedPluginsAmount++;
                     continue;
                 }
@@ -480,7 +517,10 @@ public abstract class PluginManager<T extends Plugin>
                 {
                     // Loading the plugin
                     final URLClassLoader classLoader = URLClassLoader.newInstance ( jarPaths.toArray ( new URL[ jarPaths.size () ] ) );
-                    final T plugin = ( T ) classLoader.loadClass ( info.getMainClass () ).newInstance ();
+                    final Class<?> pluginClass = classLoader.loadClass ( info.getMainClass () );
+                    final T plugin = ReflectUtils.createInstance ( pluginClass );
+                    plugin.setPluginManager ( PluginManager.this );
+                    plugin.setDetectedPlugin ( detectedPlugin );
                     availablePlugins.add ( plugin );
                     recentlyInitialized.add ( plugin );
                     Log.info ( this, prefix + "Plugin initialized" );
@@ -493,7 +533,7 @@ public abstract class PluginManager<T extends Plugin>
                 {
                     Log.error ( this, prefix + "Unable to initialize plugin", e );
                     detectedPlugin.setStatus ( PluginStatus.failed );
-                    detectedPlugin.setFailureCause ( "Internal plugin exception" );
+                    detectedPlugin.setFailureCause ( "Internal exception" );
                     detectedPlugin.setException ( e );
                     failedPluginsAmount++;
                 }
@@ -502,7 +542,7 @@ public abstract class PluginManager<T extends Plugin>
             {
                 Log.error ( this, prefix + "Unable to initialize plugin data", e );
                 detectedPlugin.setStatus ( PluginStatus.failed );
-                detectedPlugin.setFailureCause ( "Plugin data initialization exception" );
+                detectedPlugin.setFailureCause ( "Data exception" );
                 detectedPlugin.setException ( e );
                 failedPluginsAmount++;
             }
@@ -540,7 +580,7 @@ public abstract class PluginManager<T extends Plugin>
      * @param detectedPlugins list of detected plugins
      * @return true if the list of detected plugins contain a newer version of the specified plugin, false otherwise
      */
-    protected boolean isDeprecated ( final DetectedPlugin<T> plugin, final List<DetectedPlugin<T>> detectedPlugins )
+    protected boolean isDeprecatedVersion ( final DetectedPlugin<T> plugin, final List<DetectedPlugin<T>> detectedPlugins )
     {
         final PluginInformation pluginInfo = plugin.getInformation ();
         for ( final DetectedPlugin detectedPlugin : detectedPlugins )
@@ -550,6 +590,32 @@ public abstract class PluginManager<T extends Plugin>
                 final PluginInformation detectedPluginInfo = detectedPlugin.getInformation ();
                 if ( detectedPluginInfo.getId ().equals ( pluginInfo.getId () ) &&
                         detectedPluginInfo.getVersion ().newerThan ( pluginInfo.getVersion () ) )
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns whether the list of detected plugins contain the same version of the specified plugin or not.
+     *
+     * @param plugin          plugin to compare with other detected plugins
+     * @param detectedPlugins list of detected plugins
+     * @return true if the list of detected plugins contain the same version of the specified plugin, false otherwise
+     */
+    protected boolean isSameVersionAlreadyLoaded ( final DetectedPlugin<T> plugin, final List<DetectedPlugin<T>> detectedPlugins )
+    {
+        final PluginInformation pluginInfo = plugin.getInformation ();
+        for ( final DetectedPlugin detectedPlugin : detectedPlugins )
+        {
+            if ( detectedPlugin != plugin )
+            {
+                final PluginInformation detectedPluginInfo = detectedPlugin.getInformation ();
+                if ( detectedPluginInfo.getId ().equals ( pluginInfo.getId () ) &&
+                        detectedPluginInfo.getVersion ().same ( pluginInfo.getVersion () ) &&
+                        detectedPlugin.getStatus () == PluginStatus.loaded )
                 {
                     return true;
                 }
@@ -761,11 +827,51 @@ public abstract class PluginManager<T extends Plugin>
     /**
      * Sets plugins directory file filter.
      *
-     * @param fileFilter plugins directory file filter
+     * @param filter plugins directory file filter
      */
-    public void setFileFilter ( final FileFilter fileFilter )
+    public void setFileFilter ( final FileFilter filter )
     {
-        this.fileFilter = fileFilter;
+        this.fileFilter = filter;
+    }
+
+    /**
+     * Returns special filter that filters out unwanted plugins before their initialization.
+     *
+     * @return special filter that filters out unwanted plugins before their initialization
+     */
+    public Filter<DetectedPlugin<T>> getPluginFilter ()
+    {
+        return pluginFilter;
+    }
+
+    /**
+     * Sets special filter that filters out unwanted plugins before their initialization.
+     *
+     * @param pluginFilter special filter that filters out unwanted plugins before their initialization
+     */
+    public void setPluginFilter ( final Filter<DetectedPlugin<T>> pluginFilter )
+    {
+        this.pluginFilter = pluginFilter;
+    }
+
+    /**
+     * Returns whether should allow loading multiply plugins with the same ID or not.
+     *
+     * @return true if should allow loading multiply plugins with the same ID, false otherwise
+     */
+    public boolean isAllowSimilarPlugins ()
+    {
+        return allowSimilarPlugins;
+    }
+
+    /**
+     * Sets whether should allow loading multiply plugins with the same ID or not.
+     *
+     * @param allow whether should allow loading multiply plugins with the same ID or not
+     */
+    public void setAllowSimilarPlugins ( final boolean allow )
+    {
+        this.allowSimilarPlugins = allow;
     }
 
     /**
