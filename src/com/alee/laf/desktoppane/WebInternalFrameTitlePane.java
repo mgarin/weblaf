@@ -19,27 +19,26 @@ package com.alee.laf.desktoppane;
 
 import com.alee.extended.panel.BorderPanel;
 import com.alee.laf.StyleConstants;
-import com.alee.laf.WebFonts;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.label.WebLabel;
 import com.alee.utils.LafUtils;
 
 import javax.swing.*;
-import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
 import java.awt.*;
+import javax.swing.plaf.metal.MetalInternalFrameTitlePane;
 
 /**
  * User: mgarin Date: 24.08.11 Time: 20:30
  */
 
-public class WebInternalFrameTitlePane extends BasicInternalFrameTitlePane
+public class WebInternalFrameTitlePane extends  MetalInternalFrameTitlePane
 {
     public static final ImageIcon iconifyIcon = new ImageIcon ( WebInternalFrameTitlePane.class.getResource ( "icons/minimize.png" ) );
     public static final ImageIcon maximizeIcon = new ImageIcon ( WebInternalFrameTitlePane.class.getResource ( "icons/maximize.png" ) );
     public static final ImageIcon restoreIcon = new ImageIcon ( WebInternalFrameTitlePane.class.getResource ( "icons/restore.png" ) );
     public static final ImageIcon closeIcon = new ImageIcon ( WebInternalFrameTitlePane.class.getResource ( "icons/close.png" ) );
 
-    public WebInternalFrameTitlePane ( final JInternalFrame f )
+    public WebInternalFrameTitlePane ( JInternalFrame f )
     {
         super ( f );
 
@@ -57,9 +56,8 @@ public class WebInternalFrameTitlePane extends BasicInternalFrameTitlePane
     {
         return true;
     }
-
-    @Override
-    public void paintComponent ( final Graphics g )
+//
+    public void paintComponent ( Graphics g )
     {
         // super.paintComponent ( g );
         if ( !isFrameTitle () )
@@ -68,144 +66,139 @@ public class WebInternalFrameTitlePane extends BasicInternalFrameTitlePane
                     StyleConstants.bigRound, true, false );
         }
     }
-
-    @Override
-    protected LayoutManager createLayout ()
-    {
-        return new BorderLayout ();
-    }
-
-    @Override
-    protected void addSubComponents ()
-    {
-        add ( new BorderPanel ( new WebLabel ( frame.getTitle (), new Icon ()
-        {
-            @Override
-            public void paintIcon ( final Component c, final Graphics g, final int x, final int y )
-            {
-                if ( frame.getFrameIcon () != null )
-                {
-                    frame.getFrameIcon ().paintIcon ( c, g, x, y );
-                }
-            }
-
-            @Override
-            public int getIconWidth ()
-            {
-                return frame.getFrameIcon () != null ? frame.getFrameIcon ().getIconWidth () : 16;
-            }
-
-            @Override
-            public int getIconHeight ()
-            {
-                return frame.getFrameIcon () != null ? frame.getFrameIcon ().getIconHeight () : 16;
-            }
-        }, WebLabel.LEFT )
-        {
-            {
-                setOpaque ( false );
-                setForeground ( Color.WHITE );
-                setFont ( WebFonts.getSystemTitleFont () );
-            }
-        }, isFrameTitle () ? 3 : 1, 3, 0, 3 ), BorderLayout.CENTER );
-
-        final int buttons = ( frame.isIconifiable () ? 1 : 0 ) + ( frame.isMaximizable () ? 1 : 0 ) +
-                ( frame.isClosable () ? 1 : 0 );
-        final JPanel buttonsPanel = new JPanel ( new GridLayout ( 1, buttons ) );
-        buttonsPanel.setOpaque ( false );
-        if ( frame.isIconifiable () )
-        {
-            buttonsPanel.add ( iconButton );
-        }
-        if ( frame.isMaximizable () )
-        {
-            buttonsPanel.add ( maxButton );
-        }
-        if ( frame.isClosable () )
-        {
-            buttonsPanel.add ( closeButton );
-        }
-        add ( new BorderPanel ( buttonsPanel, 0, 0, 0, 0 ), BorderLayout.EAST );
-    }
-
-    @Override
-    protected void createButtons ()
-    {
-        iconButton = new WebButton ()
-        {
-            {
-                setEnabled ( frame.isIconifiable () );
-                setRolloverDarkBorderOnly ( false );
-                setShadeWidth ( 0 );
-                setRound ( StyleConstants.bigRound );
-                setInnerShadeWidth ( 2 );
-                setFocusable ( false );
-                if ( isFrameTitle () )
-                {
-                    setDrawRight ( false );
-                    setDrawRightLine ( true );
-                    setDrawTop ( false );
-                    setDrawTopLine ( true );
-                }
-                else
-                {
-                    setDrawLeft ( false );
-                    setDrawLeftLine ( true );
-                    setDrawRight ( false );
-                    setDrawRightLine ( true );
-                }
-                setBorder ( BorderFactory.createEmptyBorder ( 4, 7, 4, 6 ) );
-            }
-        };
-        iconButton.addActionListener ( iconifyAction );
-
-        maxButton = new WebButton ()
-        {
-            {
-                setEnabled ( frame.isMaximizable () );
-                setRolloverDarkBorderOnly ( false );
-                setShadeWidth ( 0 );
-                setRound ( StyleConstants.bigRound );
-                setInnerShadeWidth ( 2 );
-                setFocusable ( false );
-                setDrawLeft ( false );
-                setDrawLeftLine ( false );
-                setDrawRight ( false );
-                setDrawRightLine ( true );
-                setBorder ( BorderFactory.createEmptyBorder ( 4, 6, 4, 6 ) );
-            }
-        };
-        maxButton.addActionListener ( maximizeAction );
-
-        closeButton = new WebButton ()
-        {
-            {
-                setEnabled ( frame.isClosable () );
-                setRolloverDarkBorderOnly ( false );
-                setShadeWidth ( 0 );
-                setRound ( StyleConstants.bigRound );
-                setInnerShadeWidth ( 2 );
-                setFocusable ( false );
-                if ( isFrameTitle () )
-                {
-                    setDrawLeft ( false );
-                    setDrawLeftLine ( false );
-                    setDrawBottom ( false );
-                    setDrawBottomLine ( true );
-                }
-                else
-                {
-                    setDrawLeft ( false );
-                    setDrawLeftLine ( false );
-                }
-                setBorder ( BorderFactory.createEmptyBorder ( 4, 6, 4, 7 ) );
-            }
-        };
-        closeButton.addActionListener ( closeAction );
-
-        setButtonIcons ();
-    }
-
+//
+//    protected LayoutManager createLayout ()
+//    {
+//        return new BorderLayout ();
+//    }
+//
+//    @Override
+//    protected void addSubComponents ()
+//    {
+//        add ( new BorderPanel ( new WebLabel ( frame.getTitle (), new Icon ()
+//        {
+//            public void paintIcon ( Component c, Graphics g, int x, int y )
+//            {
+//                if ( frame.getFrameIcon () != null )
+//                {
+//                    frame.getFrameIcon ().paintIcon ( c, g, x, y );
+//                }
+//            }
+//
+//            public int getIconWidth ()
+//            {
+//                return frame.getFrameIcon () != null ? frame.getFrameIcon ().getIconWidth () : 16;
+//            }
+//
+//            public int getIconHeight ()
+//            {
+//                return frame.getFrameIcon () != null ? frame.getFrameIcon ().getIconHeight () : 16;
+//            }
+//        }, WebLabel.LEFT )
+//        {
+//            {
+//                setOpaque ( false );
+//                setForeground ( Color.WHITE );
+//            }
+//        }, isFrameTitle () ? 3 : 1, 3, 0, 3 ), BorderLayout.CENTER );
+//
+//        int buttons = ( frame.isIconifiable () ? 1 : 0 ) + ( frame.isMaximizable () ? 1 : 0 ) +
+//                ( frame.isClosable () ? 1 : 0 );
+//        JPanel buttonsPanel = new JPanel ( new GridLayout ( 1, buttons ) );
+//        buttonsPanel.setOpaque ( false );
+//        if ( frame.isIconifiable () )
+//        {
+//            buttonsPanel.add ( iconButton );
+//        }
+//        if ( frame.isMaximizable () )
+//        {
+//            buttonsPanel.add ( maxButton );
+//        }
+//        if ( frame.isClosable () )
+//        {
+//            buttonsPanel.add ( closeButton );
+//        }
+//        add ( new BorderPanel ( buttonsPanel, 0, 0, 0, 0 ), BorderLayout.EAST );
+//    }
+//
+//    protected void createButtons ()
+//    {
+//        iconButton = new WebButton ()
+//        {
+//            {
+//                setEnabled ( frame.isIconifiable () );
+//                setRolloverDarkBorderOnly ( false );
+//                setShadeWidth ( 0 );
+//                setRound ( StyleConstants.bigRound );
+//                setInnerShadeWidth ( 2 );
+//                setDrawFocus ( false );
+//                if ( isFrameTitle () )
+//                {
+//                    setDrawRight ( false );
+//                    setDrawRightLine ( true );
+//                    setDrawTop ( false );
+//                    setDrawTopLine ( true );
+//                }
+//                else
+//                {
+//                    setDrawLeft ( false );
+//                    setDrawLeftLine ( true );
+//                    setDrawRight ( false );
+//                    setDrawRightLine ( true );
+//                }
+//                setBorder ( BorderFactory.createEmptyBorder ( 4, 7, 4, 6 ) );
+//            }
+//        };
+//        iconButton.addActionListener ( iconifyAction );
+//
+//        maxButton = new WebButton ()
+//        {
+//            {
+//                setEnabled ( frame.isMaximizable () );
+//                setRolloverDarkBorderOnly ( false );
+//                setShadeWidth ( 0 );
+//                setRound ( StyleConstants.bigRound );
+//                setInnerShadeWidth ( 2 );
+//                setDrawFocus ( false );
+//                setDrawLeft ( false );
+//                setDrawLeftLine ( false );
+//                setDrawRight ( false );
+//                setDrawRightLine ( true );
+//                setBorder ( BorderFactory.createEmptyBorder ( 4, 6, 4, 6 ) );
+//            }
+//        };
+//        maxButton.addActionListener ( maximizeAction );
+//
+//        closeButton = new WebButton ()
+//        {
+//            {
+//                setEnabled ( frame.isClosable () );
+//                setRolloverDarkBorderOnly ( false );
+//                setShadeWidth ( 0 );
+//                setRound ( StyleConstants.bigRound );
+//                setInnerShadeWidth ( 2 );
+//                setDrawFocus ( false );
+//                if ( isFrameTitle () )
+//                {
+//                    setDrawLeft ( false );
+//                    setDrawLeftLine ( false );
+//                    setDrawBottom ( false );
+//                    setDrawBottomLine ( true );
+//                }
+//                else
+//                {
+//                    setDrawLeft ( false );
+//                    setDrawLeftLine ( false );
+//                }
+//                setBorder ( BorderFactory.createEmptyBorder ( 4, 6, 4, 7 ) );
+//            }
+//        };
+//        closeButton.addActionListener ( closeAction );
+//
+//        setButtonIcons ();
+//    }
+//
+    
     @Override
     protected void setButtonIcons ()
     {
