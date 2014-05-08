@@ -58,12 +58,12 @@ public class WebInternalFrameUI extends BasicInternalFrameUI implements FocusTra
         c.setBackground ( new Color ( 90, 90, 90, 220 ) );
         c.setBorder ( BorderFactory.createEmptyBorder () );
 
-        FocusManager.registerFocusTracker ( WebInternalFrameUI.this );
+        //FocusManager.registerFocusTracker ( WebInternalFrameUI.this );
     }
 
     public void uninstallUI ( JComponent c )
     {
-        FocusManager.unregisterFocusTracker ( WebInternalFrameUI.this );
+        //FocusManager.unregisterFocusTracker ( WebInternalFrameUI.this );
 
         super.uninstallUI ( c );
     }
