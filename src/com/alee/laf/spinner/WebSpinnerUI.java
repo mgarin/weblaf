@@ -42,7 +42,8 @@ public class WebSpinnerUI extends BasicSpinnerUI implements ShapeProvider, Borde
     private static final ImageIcon UP_ICON = new ImageIcon ( WebSpinnerUI.class.getResource ( "icons/up.png" ) );
     private static final ImageIcon DOWN_ICON = new ImageIcon ( WebSpinnerUI.class.getResource ( "icons/down.png" ) );
 
-    private boolean drawBorder = StyleConstants.drawBorder;
+    private boolean drawBorder = WebSpinnerStyle.drawBorder;
+            //StyleConstants.drawBorder;
     private boolean drawFocus = StyleConstants.drawFocus;
     private int round = StyleConstants.smallRound;
     private int shadeWidth = StyleConstants.shadeWidth;
