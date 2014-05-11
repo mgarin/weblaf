@@ -1,7 +1,7 @@
 WebLaF
 ==========
 **WebLaf** is a Java Swing Look and Feel and extended components library for cross-platform applications.<br>
-![Preview](./blob/master/weblaf-preview.png)
+![Preview](./weblaf-preview.png)
 
 
 Important
