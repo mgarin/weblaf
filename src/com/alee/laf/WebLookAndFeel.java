@@ -497,7 +497,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
      *
      * @param table UI defaults table
      */
-    @SuppressWarnings ( "UnnecessaryBoxing" )
+    @SuppressWarnings ("UnnecessaryBoxing")
     @Override
     protected void initComponentDefaults ( final UIDefaults table )
     {
@@ -827,6 +827,9 @@ public class WebLookAndFeel extends BasicLookAndFeel
 
                         // Initializing WebLaF managers
                         initializeManagers ();
+
+                        // todo Workaround for JSpinner ENTER update issue when created after JTextField
+                        new JSpinner ();
                     }
 
                     // Remove listener in any case

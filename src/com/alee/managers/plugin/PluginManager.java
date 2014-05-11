@@ -20,10 +20,7 @@ package com.alee.managers.plugin;
 import com.alee.extended.log.Log;
 import com.alee.laf.GlobalConstants;
 import com.alee.managers.plugin.data.*;
-import com.alee.utils.CollectionUtils;
-import com.alee.utils.ReflectUtils;
-import com.alee.utils.XmlUtils;
-import com.alee.utils.ZipUtils;
+import com.alee.utils.*;
 import com.alee.utils.compare.Filter;
 
 import javax.imageio.ImageIO;
@@ -420,16 +417,17 @@ public abstract class PluginManager<T extends Plugin>
 
         // Initializing detected plugins
         final String acceptedPluginType = getAcceptedPluginType ();
-        for ( final DetectedPlugin<T> detectedPlugin : detectedPlugins )
+        for ( final DetectedPlugin<T> dp : detectedPlugins )
         {
             // Skip plugins we have already tried to initialize
-            if ( detectedPlugin.getStatus () != PluginStatus.detected )
+            if ( dp.getStatus () != PluginStatus.detected )
             {
                 continue;
             }
 
-            final PluginInformation info = detectedPlugin.getInformation ();
-            final String prefix = "[" + info + "] ";
+            final File pluginFile = new File ( dp.getPluginFolder (), dp.getPluginFile () );
+            final PluginInformation info = dp.getInformation ();
+            final String prefix = "[" + FileUtils.canonicalPath ( pluginFile ) + "] [" + info + "] ";
             try
             {
                 // Checking plugin type as we don't want (for example) to load server plugins on client side
@@ -437,9 +435,9 @@ public abstract class PluginManager<T extends Plugin>
                 {
                     Log.warn ( this, prefix + "Plugin of type \"" + info.getType () + "\" cannot be loaded, " +
                             "required plugin type is \"" + acceptedPluginType + "\"" );
-                    detectedPlugin.setStatus ( PluginStatus.failed );
-                    detectedPlugin.setFailureCause ( "Wrong type" );
-                    detectedPlugin.setExceptionMessage ( "Detected plugin type: " + info.getType () + "\", " +
+                    dp.setStatus ( PluginStatus.failed );
+                    dp.setFailureCause ( "Wrong type" );
+                    dp.setExceptionMessage ( "Detected plugin type: " + info.getType () + "\", " +
                             "required plugin type: \"" + acceptedPluginType + "\"" );
                     failedPluginsAmount++;
                     continue;
@@ -447,51 +445,51 @@ public abstract class PluginManager<T extends Plugin>
 
                 // Checking that this is latest plugin version of all available
                 // Usually there shouldn't be different versions of the same plugin but everyone make mistakes
-                if ( isDeprecatedVersion ( detectedPlugin, detectedPlugins ) )
+                if ( isDeprecatedVersion ( dp, detectedPlugins ) )
                 {
-                    Log.warn ( this, prefix + "Plugin is deprecated, newer version of plugin will be loaded instead" );
-                    detectedPlugin.setStatus ( PluginStatus.failed );
-                    detectedPlugin.setFailureCause ( "Deprecated" );
-                    detectedPlugin.setExceptionMessage ( "This plugin is deprecated, newer version loaded instead" );
+                    Log.warn ( this, prefix + "This plugin is deprecated, newer version loaded instead" );
+                    dp.setStatus ( PluginStatus.failed );
+                    dp.setFailureCause ( "Deprecated" );
+                    dp.setExceptionMessage ( "This plugin is deprecated, newer version loaded instead" );
                     failedPluginsAmount++;
                     continue;
                 }
 
                 // Checking that this plugin version is not yet loaded
                 // This might occur in case the same plugin appears more than once in different files
-                if ( isSameVersionAlreadyLoaded ( detectedPlugin, detectedPlugins ) )
+                if ( isSameVersionAlreadyLoaded ( dp, detectedPlugins ) )
                 {
                     Log.warn ( this, prefix + "Plugin is duplicate, it will be loaded from another file" );
-                    detectedPlugin.setStatus ( PluginStatus.failed );
-                    detectedPlugin.setFailureCause ( "Duplicate" );
-                    detectedPlugin.setExceptionMessage ( "This plugin is duplicate, it will be loaded from another file" );
+                    dp.setStatus ( PluginStatus.failed );
+                    dp.setFailureCause ( "Duplicate" );
+                    dp.setExceptionMessage ( "This plugin is duplicate, it will be loaded from another file" );
                     failedPluginsAmount++;
                     continue;
                 }
 
                 // Checking that plugin filter accepts this plugin
-                if ( pluginFilter != null && !pluginFilter.accept ( detectedPlugin ) )
+                if ( pluginFilter != null && !pluginFilter.accept ( dp ) )
                 {
                     Log.info ( this, prefix + "Plugin was not accepted by plugin filter" );
-                    detectedPlugin.setStatus ( PluginStatus.failed );
-                    detectedPlugin.setFailureCause ( "Filtered" );
-                    detectedPlugin.setExceptionMessage ( "Plugin was not accepted by plugin filter" );
+                    dp.setStatus ( PluginStatus.failed );
+                    dp.setFailureCause ( "Filtered" );
+                    dp.setExceptionMessage ( "Plugin was not accepted by plugin filter" );
                     failedPluginsAmount++;
                     continue;
                 }
 
                 // Now loading the plugin
                 Log.info ( this, prefix + "Initializing plugin..." );
-                detectedPlugin.setStatus ( PluginStatus.loading );
+                dp.setStatus ( PluginStatus.loading );
 
                 // Collecting plugin and its libraries JAR paths
                 final List<URL> jarPaths = new ArrayList<URL> ( 1 + info.getLibrariesCount () );
-                jarPaths.add ( new File ( detectedPlugin.getPluginFolder (), detectedPlugin.getPluginFile () ).toURI ().toURL () );
+                jarPaths.add ( pluginFile.toURI ().toURL () );
                 if ( info.getLibraries () != null )
                 {
                     for ( final PluginLibrary library : info.getLibraries () )
                     {
-                        final File file = new File ( detectedPlugin.getPluginFolder (), library.getFile () );
+                        final File file = new File ( dp.getPluginFolder (), library.getFile () );
                         if ( file.exists () )
                         {
                             // Adding library URI to path
@@ -520,30 +518,30 @@ public abstract class PluginManager<T extends Plugin>
                     final Class<?> pluginClass = classLoader.loadClass ( info.getMainClass () );
                     final T plugin = ReflectUtils.createInstance ( pluginClass );
                     plugin.setPluginManager ( PluginManager.this );
-                    plugin.setDetectedPlugin ( detectedPlugin );
+                    plugin.setDetectedPlugin ( dp );
                     availablePlugins.add ( plugin );
                     recentlyInitialized.add ( plugin );
                     Log.info ( this, prefix + "Plugin initialized" );
 
-                    detectedPlugin.setStatus ( PluginStatus.loaded );
-                    detectedPlugin.setPlugin ( plugin );
+                    dp.setStatus ( PluginStatus.loaded );
+                    dp.setPlugin ( plugin );
                     loadedPluginsAmount++;
                 }
                 catch ( final Throwable e )
                 {
                     Log.error ( this, prefix + "Unable to initialize plugin", e );
-                    detectedPlugin.setStatus ( PluginStatus.failed );
-                    detectedPlugin.setFailureCause ( "Internal exception" );
-                    detectedPlugin.setException ( e );
+                    dp.setStatus ( PluginStatus.failed );
+                    dp.setFailureCause ( "Internal exception" );
+                    dp.setException ( e );
                     failedPluginsAmount++;
                 }
             }
             catch ( final Throwable e )
             {
                 Log.error ( this, prefix + "Unable to initialize plugin data", e );
-                detectedPlugin.setStatus ( PluginStatus.failed );
-                detectedPlugin.setFailureCause ( "Data exception" );
-                detectedPlugin.setException ( e );
+                dp.setStatus ( PluginStatus.failed );
+                dp.setFailureCause ( "Data exception" );
+                dp.setException ( e );
                 failedPluginsAmount++;
             }
         }

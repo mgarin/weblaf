@@ -19,50 +19,34 @@ package com.alee.laf.text;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.text.ParseException;
 
 /**
- * User: mgarin Date: 17.08.11 Time: 22:51
+ * Custom UI for JFormattedTextField component.
+ *
+ * @author Mikle Garin
  */
 
-public class WebFormattedTextFieldUI extends WebTextFieldUI implements ActionListener
+public class WebFormattedTextFieldUI extends WebTextFieldUI
 {
+    /**
+     * Returns an instance of the WebFormattedTextFieldUI for the specified component.
+     * This tricky method is used by UIManager to create component UIs when needed.
+     *
+     * @param c component that will use UI instance
+     * @return instance of the WebFormattedTextFieldUI
+     */
     @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebFormattedTextFieldUI ();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public void installUI ( final JComponent c )
+    protected String getPropertyPrefix ()
     {
-        super.installUI ( c );
-
-        ( ( JFormattedTextField ) c ).addActionListener ( WebFormattedTextFieldUI.this );
-    }
-
-    @Override
-    public void uninstallUI ( final JComponent c )
-    {
-        super.uninstallUI ( c );
-
-        ( ( JFormattedTextField ) c ).removeActionListener ( WebFormattedTextFieldUI.this );
-    }
-
-    @Override
-    public void actionPerformed ( final ActionEvent e )
-    {
-        final JFormattedTextField ftf = ( JFormattedTextField ) getComponent ();
-        try
-        {
-            ftf.commitEdit ();
-            ftf.setValue ( ftf.getValue () );
-        }
-        catch ( ParseException e1 )
-        {
-            ftf.setValue ( ftf.getValue () );
-        }
+        return "FormattedTextField";
     }
 }
