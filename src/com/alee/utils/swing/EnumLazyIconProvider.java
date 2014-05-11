@@ -32,7 +32,7 @@ public class EnumLazyIconProvider
     /**
      * Cached enum icons map.
      */
-    private static final Map<Enum, ImageIcon> icons = new HashMap<Enum, ImageIcon> ();
+    private static final Map<Enum, Map<String, ImageIcon>> icons = new HashMap<Enum, Map<String, ImageIcon>> ();
 
     /**
      * Returns cached or just loaded enum icon.
@@ -44,18 +44,40 @@ public class EnumLazyIconProvider
      */
     public static <E extends Enum<E>> ImageIcon getIcon ( final E enumeration, final String folder )
     {
-        ImageIcon imageIcon = icons.get ( enumeration );
-        if ( imageIcon == null && !icons.containsKey ( enumeration ) )
+        return getIcon ( enumeration, null, folder );
+    }
+
+    /**
+     * Returns cached or just loaded enum icon for the specified state.
+     * State string will be used to determine icon name automatically.
+     *
+     * @param enumeration enumeration constant for which icon should be loaded
+     * @param state       enumeration icon state
+     * @param folder      enumeration icons folder
+     * @param <E>         enumeration type
+     * @return cached or just loaded enum icon
+     */
+    public static <E extends Enum<E>> ImageIcon getIcon ( final E enumeration, final String state, final String folder )
+    {
+        Map<String, ImageIcon> stateIcons = icons.get ( enumeration );
+        if ( stateIcons == null )
+        {
+            stateIcons = new HashMap<String, ImageIcon> ( 1 );
+            icons.put ( enumeration, stateIcons );
+        }
+        ImageIcon imageIcon = stateIcons.get ( state );
+        if ( imageIcon == null && !stateIcons.containsKey ( state ) )
         {
             try
             {
-                imageIcon = new ImageIcon ( enumeration.getClass ().getResource ( folder + enumeration + ".png" ) );
-                icons.put ( enumeration, imageIcon );
+                final String stateSuffix = state != null ? "-" + state : "";
+                imageIcon = new ImageIcon ( enumeration.getClass ().getResource ( folder + enumeration + stateSuffix + ".png" ) );
+                stateIcons.put ( state, imageIcon );
             }
             catch ( final Throwable e )
             {
                 e.printStackTrace ();
-                icons.put ( enumeration, null );
+                stateIcons.put ( state, null );
             }
         }
         return imageIcon;
