@@ -31,6 +31,11 @@ public final class WebSpinnerStyle
     public static boolean drawBorder = StyleConstants.drawBorder;
 
     /**
+     * Draw spinner focus.
+     */
+    public static boolean drawFocus = StyleConstants.drawFocus;
+
+    /**
      * Decoration rounding
      */
     public static int round = StyleConstants.bigRound;
