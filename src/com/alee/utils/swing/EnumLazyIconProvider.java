@@ -17,6 +17,8 @@
 
 package com.alee.utils.swing;
 
+import com.alee.extended.log.Log;
+
 import javax.swing.*;
 import java.util.HashMap;
 import java.util.Map;
@@ -68,15 +70,17 @@ public class EnumLazyIconProvider
         ImageIcon imageIcon = stateIcons.get ( state );
         if ( imageIcon == null && !stateIcons.containsKey ( state ) )
         {
+            final String stateSuffix = state != null ? "-" + state : "";
+            final String path = folder + enumeration + stateSuffix + ".png";
             try
             {
-                final String stateSuffix = state != null ? "-" + state : "";
-                imageIcon = new ImageIcon ( enumeration.getClass ().getResource ( folder + enumeration + stateSuffix + ".png" ) );
+                imageIcon = new ImageIcon ( enumeration.getClass ().getResource ( path ) );
                 stateIcons.put ( state, imageIcon );
             }
             catch ( final Throwable e )
             {
-                e.printStackTrace ();
+                final String cn = enumeration.getClass ().getCanonicalName ();
+                Log.error ( EnumLazyIconProvider.class, "Unable to find icon \"" + path + "\" near class: " + cn );
                 stateIcons.put ( state, null );
             }
         }
