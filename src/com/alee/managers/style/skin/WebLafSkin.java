@@ -22,6 +22,7 @@ import com.alee.managers.style.StyleException;
 import com.alee.managers.style.StyleManager;
 import com.alee.managers.style.SupportedComponent;
 import com.alee.managers.style.data.ComponentStyle;
+import com.alee.managers.style.data.IgnoredValue;
 import com.alee.managers.style.data.PainterStyle;
 import com.alee.utils.LafUtils;
 import com.alee.utils.ReflectUtils;
@@ -380,8 +381,7 @@ public abstract class WebLafSkin
         if ( painter != null )
         {
             // Updating painter field with custom style property value
-            setFieldValue ( painter, key, value );
-            return true;
+            return setFieldValue ( painter, key, value );
         }
         else if ( !StyleManager.isStrictStyleChecks () )
         {
@@ -448,7 +448,11 @@ public abstract class WebLafSkin
      */
     public static boolean setFieldValue ( final Object object, final String field, final Object value )
     {
-        final Class<?> objectClass = object.getClass ();
+        // Skip ignored values
+        if ( value == IgnoredValue.VALUE )
+        {
+            return false;
+        }
 
         // Trying to use setter method to apply the specified value
         try
@@ -472,7 +476,7 @@ public abstract class WebLafSkin
         // Applying field value directly
         try
         {
-            final Field actualField = ReflectUtils.getField ( objectClass, field );
+            final Field actualField = ReflectUtils.getField ( object.getClass (), field );
             actualField.setAccessible ( true );
             actualField.set ( object, value );
             return true;

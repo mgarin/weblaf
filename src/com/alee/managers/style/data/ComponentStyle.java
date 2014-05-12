@@ -31,8 +31,8 @@ import java.util.Map;
  * @author Mikle Garin
  */
 
-@XStreamAlias ("style")
-@XStreamConverter (ComponentStyleConverter.class)
+@XStreamAlias ( "style" )
+@XStreamConverter ( ComponentStyleConverter.class )
 public final class ComponentStyle implements Serializable
 {
     /**

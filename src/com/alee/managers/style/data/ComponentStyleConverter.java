@@ -50,6 +50,7 @@ public class ComponentStyleConverter extends ReflectionConverter
     public static final String PAINTER_NODE = "painter";
     public static final String PAINTER_ID_ATTRIBUTE = "id";
     public static final String PAINTER_CLASS_ATTRIBUTE = "class";
+    public static final String IGNORED_ATTRIBUTE = "ignored";
 
     /**
      * Default component style ID.
@@ -179,15 +180,23 @@ public class ComponentStyleConverter extends ReflectionConverter
             if ( nodeName.equals ( COMPONENT_NODE ) )
             {
                 // Reading component property
+                final Class componentClass = type.getComponentClass ();
                 while ( reader.hasMoreChildren () )
                 {
                     reader.moveDown ();
-                    final Class componentClass = type.getComponentClass ();
-                    final String subNodeName = reader.getNodeName ();
-                    final Class fieldClass = ReflectUtils.getFieldTypeSafely ( componentClass, subNodeName );
-                    if ( fieldClass != null )
+                    final String propName = reader.getNodeName ();
+                    final String ignored = reader.getAttribute ( IGNORED_ATTRIBUTE );
+                    if ( ignored != null && Boolean.parseBoolean ( ignored ) )
                     {
-                        componentProperties.put ( subNodeName, context.convertAnother ( componentProperties, fieldClass ) );
+                        componentProperties.put ( propName, IgnoredValue.VALUE );
+                    }
+                    else
+                    {
+                        final Class fieldClass = ReflectUtils.getFieldTypeSafely ( componentClass, propName );
+                        if ( fieldClass != null )
+                        {
+                            componentProperties.put ( propName, context.convertAnother ( componentProperties, fieldClass ) );
+                        }
                     }
                     reader.moveUp ();
                 }
@@ -195,15 +204,23 @@ public class ComponentStyleConverter extends ReflectionConverter
             else if ( nodeName.equals ( UI_NODE ) )
             {
                 // Reading UI property
+                final Class uiClass = type.getUIClass ();
                 while ( reader.hasMoreChildren () )
                 {
                     reader.moveDown ();
-                    final Class uiClass = type.getUIClass ();
-                    final String subNodeName = reader.getNodeName ();
-                    final Class fieldClass = ReflectUtils.getFieldTypeSafely ( uiClass, subNodeName );
-                    if ( fieldClass != null )
+                    final String propName = reader.getNodeName ();
+                    final String ignored = reader.getAttribute ( IGNORED_ATTRIBUTE );
+                    if ( ignored != null && Boolean.parseBoolean ( ignored ) )
                     {
-                        uiProperties.put ( subNodeName, context.convertAnother ( uiProperties, fieldClass ) );
+                        uiProperties.put ( propName, IgnoredValue.VALUE );
+                    }
+                    else
+                    {
+                        final Class fieldClass = ReflectUtils.getFieldTypeSafely ( uiClass, propName );
+                        if ( fieldClass != null )
+                        {
+                            uiProperties.put ( propName, context.convertAnother ( uiProperties, fieldClass ) );
+                        }
                     }
                     reader.moveUp ();
                 }
@@ -249,10 +266,18 @@ public class ComponentStyleConverter extends ReflectionConverter
                     {
                         reader.moveDown ();
                         final String propName = reader.getNodeName ();
-                        final Class fieldClass = ReflectUtils.getFieldTypeSafely ( painterClass, propName );
-                        if ( fieldClass != null )
+                        final String ignored = reader.getAttribute ( IGNORED_ATTRIBUTE );
+                        if ( ignored != null && Boolean.parseBoolean ( ignored ) )
                         {
-                            painterProperties.put ( propName, context.convertAnother ( painterProperties, fieldClass ) );
+                            painterProperties.put ( propName, IgnoredValue.VALUE );
+                        }
+                        else
+                        {
+                            final Class fieldClass = ReflectUtils.getFieldTypeSafely ( painterClass, propName );
+                            if ( fieldClass != null )
+                            {
+                                painterProperties.put ( propName, context.convertAnother ( painterProperties, fieldClass ) );
+                            }
                         }
                         reader.moveUp ();
                     }
