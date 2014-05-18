@@ -72,7 +72,7 @@ public class WebPanelUI extends BasicPanelUI implements Styleable, ShapeProvider
     /**
      * Runtime variables.
      */
-    protected String styleId;
+    protected String styleId = null;
     protected JPanel panel;
 
     /**
@@ -82,7 +82,7 @@ public class WebPanelUI extends BasicPanelUI implements Styleable, ShapeProvider
      * @param c component that will use UI instance
      * @return instance of the WebPanelUI
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebPanelUI ();

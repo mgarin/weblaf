@@ -45,20 +45,20 @@ public class IconedBreadcrumbsExample extends DefaultExample
     }
 
     @Override
-    public Component getPreview ( WebLookAndFeelDemo owner )
+    public Component getPreview ( final WebLookAndFeelDemo owner )
     {
         // Decorated breadcrumb
-        WebBreadcrumb breadcrumb1 = new WebBreadcrumb ( true );
+        final WebBreadcrumb breadcrumb1 = new WebBreadcrumb ( true );
         fillBreadcrumb ( breadcrumb1 );
 
         // Undecorated breadcrumb
-        WebBreadcrumb breadcrumb2 = new WebBreadcrumb ( false );
+        final WebBreadcrumb breadcrumb2 = new WebBreadcrumb ( false );
         fillBreadcrumb ( breadcrumb2 );
 
         return new GroupPanel ( 4, false, breadcrumb1, breadcrumb2 );
     }
 
-    private void fillBreadcrumb ( WebBreadcrumb b )
+    public void fillBreadcrumb ( final WebBreadcrumb b )
     {
         // Sample breadcrumb data
         b.add ( new WebBreadcrumbToggleButton ( "Element", loadIcon ( "numbers/0.png" ) ) );

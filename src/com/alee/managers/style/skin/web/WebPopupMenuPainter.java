@@ -329,6 +329,11 @@ public class WebPopupMenuPainter<E extends JPopupMenu> extends WebPopupPainter<E
                             cornerSide = popupMenuWay.getCornerSide ();
                         }
                     }
+                    //                    else if ( cornerAlignment != -1 )
+                    //                    {
+                    //                        final Dimension ps = popupMenu.getPreferredSize ();
+                    //                        final Dimension is = invoker.getSize ();
+                    //                    }
                 }
             }
         }

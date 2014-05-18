@@ -1036,18 +1036,19 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
     public void expandPath ( final List<String> pathNodeIds, final boolean expandLastNode, final boolean selectLastNode,
                              final AsyncPathExpansionListener listener )
     {
-        for ( int initial = 0; initial < pathNodeIds.size (); initial++ )
+        final List<String> ids = CollectionUtils.copy ( pathNodeIds );
+        for ( int initial = 0; initial < ids.size (); initial++ )
         {
-            final E initialNode = findNode ( pathNodeIds.get ( initial ) );
+            final E initialNode = findNode ( ids.get ( initial ) );
             if ( initialNode != null )
             {
                 for ( int i = 0; i <= initial; i++ )
                 {
-                    pathNodeIds.remove ( i );
+                    ids.remove ( i );
                 }
-                if ( pathNodeIds.size () > 0 )
+                if ( ids.size () > 0 )
                 {
-                    expandPathImpl ( initialNode, pathNodeIds, expandLastNode, selectLastNode, listener );
+                    expandPathImpl ( initialNode, ids, expandLastNode, selectLastNode, listener );
                 }
                 return;
             }

@@ -35,32 +35,33 @@ public class WebSplitPane extends JSplitPane
         super ();
     }
 
-    public WebSplitPane ( int newOrientation )
+    public WebSplitPane ( final int newOrientation )
     {
         super ( newOrientation );
     }
 
-    public WebSplitPane ( int newOrientation, boolean newContinuousLayout )
+    public WebSplitPane ( final int newOrientation, final boolean newContinuousLayout )
     {
         super ( newOrientation, newContinuousLayout );
     }
 
-    public WebSplitPane ( int newOrientation, Component newLeftComponent, Component newRightComponent )
+    public WebSplitPane ( final int newOrientation, final Component newLeftComponent, final Component newRightComponent )
     {
         super ( newOrientation, newLeftComponent, newRightComponent );
     }
 
-    public WebSplitPane ( int newOrientation, boolean newContinuousLayout, Component newLeftComponent, Component newRightComponent )
+    public WebSplitPane ( final int newOrientation, final boolean newContinuousLayout, final Component newLeftComponent,
+                          final Component newRightComponent )
     {
         super ( newOrientation, newContinuousLayout, newLeftComponent, newRightComponent );
     }
 
-    public void addDividerListener ( ComponentListener listener )
+    public void addDividerListener ( final ComponentListener listener )
     {
         getWebUI ().getDivider ().addComponentListener ( listener );
     }
 
-    public void removeDividerListener ( ComponentListener listener )
+    public void removeDividerListener ( final ComponentListener listener )
     {
         getWebUI ().getDivider ().removeComponentListener ( listener );
     }
@@ -70,18 +71,18 @@ public class WebSplitPane extends JSplitPane
         return getWebUI ().getMargin ();
     }
 
-    public void setMargin ( Insets margin )
+    public void setMargin ( final Insets margin )
     {
         getWebUI ().setMargin ( margin );
     }
 
-    public WebSplitPane setMargin ( int top, int left, int bottom, int right )
+    public WebSplitPane setMargin ( final int top, final int left, final int bottom, final int right )
     {
         setMargin ( new Insets ( top, left, bottom, right ) );
         return this;
     }
 
-    public WebSplitPane setMargin ( int spacing )
+    public WebSplitPane setMargin ( final int spacing )
     {
         return setMargin ( spacing, spacing, spacing, spacing );
     }
@@ -91,9 +92,51 @@ public class WebSplitPane extends JSplitPane
         return getWebUI ().getDragDividerColor ();
     }
 
-    public WebSplitPane setDragDividerColor ( Color dragDividerColor )
+    public WebSplitPane setDragDividerColor ( final Color dragDividerColor )
     {
         getWebUI ().setDragDividerColor ( dragDividerColor );
+        return this;
+    }
+
+    /**
+     * Returns whether divider border is painted or not.
+     *
+     * @return true if divider border is painted, false otherwise
+     */
+    public boolean isDrawDividerBorder ()
+    {
+        return getWebUI ().isDrawDividerBorder ();
+    }
+
+    /**
+     * Sets whether divider border is painted or not.
+     *
+     * @param draw whether divider border is painted or not
+     */
+    public WebSplitPane setDrawDividerBorder ( final boolean draw )
+    {
+        getWebUI ().setDrawDividerBorder ( draw );
+        return this;
+    }
+
+    /**
+     * Returns divider border color.
+     *
+     * @return divider border color
+     */
+    public Color getDividerBorderColor ()
+    {
+        return getWebUI ().getDividerBorderColor ();
+    }
+
+    /**
+     * Sets divider border color.
+     *
+     * @param color new divider border color
+     */
+    public WebSplitPane setDividerBorderColor ( final Color color )
+    {
+        getWebUI ().setDividerBorderColor ( color );
         return this;
     }
 
@@ -111,7 +154,7 @@ public class WebSplitPane extends JSplitPane
             {
                 setUI ( ( WebSplitPaneUI ) ReflectUtils.createInstance ( WebLookAndFeel.splitPaneUI ) );
             }
-            catch ( Throwable e )
+            catch ( final Throwable e )
             {
                 e.printStackTrace ();
                 setUI ( new WebSplitPaneUI () );

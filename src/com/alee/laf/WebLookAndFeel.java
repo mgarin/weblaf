@@ -59,6 +59,7 @@ import com.alee.laf.tooltip.WebToolTipUI;
 import com.alee.laf.tree.WebTreeUI;
 import com.alee.laf.viewport.WebViewportStyle;
 import com.alee.laf.viewport.WebViewportUI;
+import com.alee.managers.drag.DragManager;
 import com.alee.managers.focus.FocusManager;
 import com.alee.managers.hotkey.HotkeyManager;
 import com.alee.managers.language.LanguageManager;
@@ -804,9 +805,6 @@ public class WebLookAndFeel extends BasicLookAndFeel
     {
         super.initialize ();
 
-        // Installs a tricky thread exception handler that will output any uncaught error that occurs in Event Dispatch Thread
-        System.setProperty ( "sun.awt.exception.handler", ExceptionHandler.class.getName () );
-
         // Listening to ALT key for menubar quick focusing
         KeyboardFocusManager.getCurrentKeyboardFocusManager ().addKeyEventPostProcessor ( altProcessor );
 
@@ -942,6 +940,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
         TooltipManager.initialize ();
         ProxyManager.initialize ();
         StyleManager.initialize ();
+        DragManager.initialize ();
     }
 
     /**
@@ -1152,29 +1151,5 @@ public class WebLookAndFeel extends BasicLookAndFeel
     public static void changeOrientation ()
     {
         LanguageManager.changeOrientation ();
-    }
-
-    /**
-     * Custom exceptions handler for EDT.
-     */
-    public static class ExceptionHandler implements Thread.UncaughtExceptionHandler
-    {
-        public void handle ( final Throwable thrown )
-        {
-            // For EDT exceptions
-            handleException ( Thread.currentThread ().getName (), thrown );
-        }
-
-        @Override
-        public void uncaughtException ( final Thread thread, final Throwable thrown )
-        {
-            // For other uncaught exceptions
-            handleException ( thread.getName (), thrown );
-        }
-
-        protected void handleException ( final String tname, final Throwable thrown )
-        {
-            Log.error ( WebLookAndFeel.class, "Exception in thread " + tname + ": ", thrown );
-        }
     }
 }

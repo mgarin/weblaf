@@ -166,7 +166,8 @@ public final class SwingUtils
      */
     public static boolean isLeftMouseButton ( final MouseEvent e )
     {
-        return ( e.getModifiers () & InputEvent.BUTTON1_MASK ) != 0;
+        return e.getButton () == MouseEvent.BUTTON1;
+        // return ( e.getModifiers () & InputEvent.BUTTON1_MASK ) != 0;
     }
 
     /**
@@ -177,7 +178,8 @@ public final class SwingUtils
      */
     public static boolean isMiddleMouseButton ( final MouseEvent e )
     {
-        return ( e.getModifiers () & InputEvent.BUTTON2_MASK ) == InputEvent.BUTTON2_MASK;
+        return e.getButton () == MouseEvent.BUTTON2;
+        // return ( e.getModifiers () & InputEvent.BUTTON2_MASK ) == InputEvent.BUTTON2_MASK;
     }
 
     /**
@@ -188,7 +190,8 @@ public final class SwingUtils
      */
     public static boolean isRightMouseButton ( final MouseEvent e )
     {
-        return ( e.getModifiers () & InputEvent.BUTTON3_MASK ) == InputEvent.BUTTON3_MASK;
+        return e.getButton () == MouseEvent.BUTTON3;
+        // return ( e.getModifiers () & InputEvent.BUTTON3_MASK ) == InputEvent.BUTTON3_MASK;
     }
 
     /**
@@ -679,6 +682,24 @@ public final class SwingUtils
         }
         final String can = window.getClass ().getCanonicalName ();
         return can != null && can.endsWith ( "HeavyWeightWindow" );
+    }
+
+    /**
+     * Returns first parent which is instance of specified class type or null if none found.
+     *
+     * @param component   component to look parent for
+     * @param parentClass parent component class
+     * @param <T>         parent component class type
+     * @return first parent which is instance of specified class type or null if none found
+     */
+    public static <T> T getFirstParent ( final Component component, final Class<T> parentClass )
+    {
+        Component parent = component.getParent ();
+        while ( !parentClass.isInstance ( parent ) && parent != null )
+        {
+            parent = parent.getParent ();
+        }
+        return ( T ) parent;
     }
 
     /**
@@ -1614,7 +1635,7 @@ public final class SwingUtils
      */
     public static void setAccelerator ( final JMenuItem menuItem, final HotkeyData hotkey )
     {
-        if ( hotkey.isHotkeySet () )
+        if ( hotkey != null && hotkey.isHotkeySet () )
         {
             final int ctrl = hotkey.isCtrl () ? getSystemShortcutModifier () : 0;
             final int alt = hotkey.isAlt () ? KeyEvent.ALT_MASK : 0;

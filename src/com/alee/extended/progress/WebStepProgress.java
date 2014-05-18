@@ -20,8 +20,10 @@ package com.alee.extended.progress;
 import com.alee.laf.StyleConstants;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.LafUtils;
+import com.alee.utils.SizeUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.laf.ShapeProvider;
+import com.alee.utils.swing.SizeMethods;
 
 import javax.swing.*;
 import java.awt.*;
@@ -40,7 +42,7 @@ import java.util.List;
  * User: mgarin Date: 14.01.13 Time: 13:52
  */
 
-public class WebStepProgress extends JComponent implements SwingConstants, ShapeProvider
+public class WebStepProgress extends JComponent implements SwingConstants, ShapeProvider, SizeMethods<WebStepProgress>
 {
     public static final int STEP_SELECTION = 1;
     public static final int PROGRESS_SELECTION = 2;
@@ -69,7 +71,6 @@ public class WebStepProgress extends JComponent implements SwingConstants, Shape
     private float progress = 0f;
 
     // Runtime variables
-    private int rolloverStep = -1;
     private boolean selecting = false;
     private int sideWidth = 0;
     private Shape borderShape;
@@ -81,27 +82,27 @@ public class WebStepProgress extends JComponent implements SwingConstants, Shape
         this ( 3 );
     }
 
-    public WebStepProgress ( int steps )
+    public WebStepProgress ( final int steps )
     {
         this ( createDefaultData ( steps ) );
     }
 
-    public WebStepProgress ( String... steps )
+    public WebStepProgress ( final String... steps )
     {
         this ( createSteps ( steps ) );
     }
 
-    public WebStepProgress ( Component... steps )
+    public WebStepProgress ( final Component... steps )
     {
         this ( createSteps ( steps ) );
     }
 
-    public WebStepProgress ( StepData... steps )
+    public WebStepProgress ( final StepData... steps )
     {
         this ( CollectionUtils.copy ( steps ) );
     }
 
-    public WebStepProgress ( List<StepData> steps )
+    public WebStepProgress ( final List<StepData> steps )
     {
         super ();
 
@@ -112,7 +113,7 @@ public class WebStepProgress extends JComponent implements SwingConstants, Shape
         setLayout ( new ProgressLayout () );
 
         // Step updater and selector
-        ProgressMouseAdapter pma = new ProgressMouseAdapter ();
+        final ProgressMouseAdapter pma = new ProgressMouseAdapter ();
         addMouseListener ( pma );
         addMouseMotionListener ( pma );
 
@@ -120,7 +121,7 @@ public class WebStepProgress extends JComponent implements SwingConstants, Shape
         addComponentListener ( new ComponentAdapter ()
         {
             @Override
-            public void componentResized ( ComponentEvent e )
+            public void componentResized ( final ComponentEvent e )
             {
                 updateShapes ();
             }
@@ -130,28 +131,28 @@ public class WebStepProgress extends JComponent implements SwingConstants, Shape
     private class ProgressLayout implements LayoutManager
     {
         @Override
-        public void addLayoutComponent ( String name, Component comp )
+        public void addLayoutComponent ( final String name, final Component comp )
         {
             //
         }
 
         @Override
-        public void removeLayoutComponent ( Component comp )
+        public void removeLayoutComponent ( final Component comp )
         {
             //
         }
 
         @Override
-        public void layoutContainer ( Container parent )
+        public void layoutContainer ( final Container parent )
         {
-            boolean ltr = getComponentOrientation ().isLeftToRight ();
+            final boolean ltr = getComponentOrientation ().isLeftToRight ();
             for ( int i = 0; i < steps.size (); i++ )
             {
-                Component label = getStep ( i ).getLabel ();
+                final Component label = getStep ( i ).getLabel ();
                 if ( label != null )
                 {
-                    Point sc = getStepCenter ( i );
-                    Dimension ps = label.getPreferredSize ();
+                    final Point sc = getStepCenter ( i );
+                    final Dimension ps = label.getPreferredSize ();
                     if ( orientation == HORIZONTAL )
                     {
                         if ( labelsPosition == LEADING )
@@ -182,13 +183,13 @@ public class WebStepProgress extends JComponent implements SwingConstants, Shape
         }
 
         @Override
-        public Dimension preferredLayoutSize ( Container parent )
+        public Dimension preferredLayoutSize ( final Container parent )
         {
             return null;
         }
 
         @Override
-        public Dimension minimumLayoutSize ( Container parent )
+        public Dimension minimumLayoutSize ( final Container parent )
         {
             return null;
         }
@@ -197,7 +198,7 @@ public class WebStepProgress extends JComponent implements SwingConstants, Shape
     private class ProgressMouseAdapter extends MouseAdapter
     {
         @Override
-        public void mousePressed ( MouseEvent e )
+        public void mousePressed ( final MouseEvent e )
         {
             if ( isEnabled () && isSelectionEnabled () && SwingUtils.isLeftMouseButton ( e ) )
             {
@@ -207,7 +208,7 @@ public class WebStepProgress extends JComponent implements SwingConstants, Shape
         }
 
         @Override
-        public void mouseDragged ( MouseEvent e )
+        public void mouseDragged ( final MouseEvent e )
         {
             if ( selecting && SwingUtils.isLeftMouseButton ( e ) )
             {
@@ -215,9 +216,9 @@ public class WebStepProgress extends JComponent implements SwingConstants, Shape
             }
         }
 
-        private void updateProgress ( Point p )
+        private void updateProgress ( final Point p )
         {
-            float tp = getTotalProgressAt ( p );
+            final float tp = getTotalProgressAt ( p );
             if ( selectionMode == PROGRESS_SELECTION )
             {
                 setSelectedStep ( Math.round ( tp - tp % 1 ) );
@@ -230,7 +231,7 @@ public class WebStepProgress extends JComponent implements SwingConstants, Shape
         }
 
         @Override
-        public void mouseReleased ( MouseEvent e )
+        public void mouseReleased ( final MouseEvent e )
         {
             if ( selecting && SwingUtils.isLeftMouseButton ( e ) )
             {
@@ -248,19 +249,19 @@ public class WebStepProgress extends JComponent implements SwingConstants, Shape
         return margin;
     }
 
-    public void setMargin ( Insets margin )
+    public void setMargin ( final Insets margin )
     {
         this.margin = margin;
         revalidate ();
         repaint ();
     }
 
-    public void setMargin ( int top, int left, int bottom, int right )
+    public void setMargin ( final int top, final int left, final int bottom, final int right )
     {
         setMargin ( new Insets ( top, left, bottom, right ) );
     }
 
-    public void setMargin ( int spacing )
+    public void setMargin ( final int spacing )
     {
         setMargin ( spacing, spacing, spacing, spacing );
     }
@@ -274,7 +275,7 @@ public class WebStepProgress extends JComponent implements SwingConstants, Shape
         return shadeWidth;
     }
 
-    public void setShadeWidth ( int shadeWidth )
+    public void setShadeWidth ( final int shadeWidth )
     {
         this.shadeWidth = shadeWidth;
         revalidate ();
@@ -290,7 +291,7 @@ public class WebStepProgress extends JComponent implements SwingConstants, Shape
         return stepControlSize;
     }
 
-    public void setStepControlSize ( int stepControlSize )
+    public void setStepControlSize ( final int stepControlSize )
     {
         this.stepControlSize = stepControlSize;
         revalidate ();
@@ -302,7 +303,7 @@ public class WebStepProgress extends JComponent implements SwingConstants, Shape
         return stepControlRound;
     }
 
-    public void setStepControlRound ( int stepControlRound )
+    public void setStepControlRound ( final int stepControlRound )
     {
         this.stepControlRound = stepControlRound;
         repaint ();
@@ -313,7 +314,7 @@ public class WebStepProgress extends JComponent implements SwingConstants, Shape
         return stepControlFillSize;
     }
 
-    public void setStepControlFillSize ( int stepControlFillSize )
+    public void setStepControlFillSize ( final int stepControlFillSize )
     {
         this.stepControlFillSize = stepControlFillSize;
         revalidate ();
@@ -325,7 +326,7 @@ public class WebStepProgress extends JComponent implements SwingConstants, Shape
         return stepControlFillRound;
     }
 
-    public void setStepControlFillRound ( int stepControlFillRound )
+    public void setStepControlFillRound ( final int stepControlFillRound )
     {
         this.stepControlFillRound = stepControlFillRound;
         repaint ();
@@ -340,7 +341,7 @@ public class WebStepProgress extends JComponent implements SwingConstants, Shape
         return pathSize;
     }
 
-    public void setPathSize ( int pathSize )
+    public void setPathSize ( final int pathSize )
     {
         this.pathSize = pathSize;
         revalidate ();
@@ -352,7 +353,7 @@ public class WebStepProgress extends JComponent implements SwingConstants, Shape
         return fillPathSize;
     }
 
-    public void setFillPathSize ( int fillPathSize )
+    public void setFillPathSize ( final int fillPathSize )
     {
         this.fillPathSize = fillPathSize;
         revalidate ();
@@ -368,14 +369,14 @@ public class WebStepProgress extends JComponent implements SwingConstants, Shape
         return showLabels;
     }
 
-    public void setShowLabels ( boolean showLabels )
+    public void setShowLabels ( final boolean showLabels )
     {
         if ( this.showLabels != showLabels )
         {
             this.showLabels = showLabels;
             if ( showLabels )
             {
-                for ( StepData step : steps )
+                for ( final StepData step : steps )
                 {
                     if ( step.getLabel () != null )
                     {
@@ -385,7 +386,7 @@ public class WebStepProgress extends JComponent implements SwingConstants, Shape
             }
             else
             {
-                for ( StepData step : steps )
+                for ( final StepData step : steps )
                 {
                     if ( step.getLabel () != null )
                     {
@@ -407,7 +408,7 @@ public class WebStepProgress extends JComponent implements SwingConstants, Shape
         return orientation;
     }
 
-    public void setOrientation ( int orientation )
+    public void setOrientation ( final int orientation )
     {
         this.orientation = orientation;
         revalidate ();
@@ -423,7 +424,7 @@ public class WebStepProgress extends JComponent implements SwingConstants, Shape
         return labelsPosition;
     }
 
-    public void setLabelsPosition ( int labelsPosition )
+    public void setLabelsPosition ( final int labelsPosition )
     {
         this.labelsPosition = labelsPosition;
         revalidate ();
@@ -439,7 +440,7 @@ public class WebStepProgress extends JComponent implements SwingConstants, Shape
         return spacing;
     }
 
-    public void setSpacing ( int spacing )
+    public void setSpacing ( final int spacing )
     {
         this.spacing = spacing;
         revalidate ();
@@ -455,7 +456,7 @@ public class WebStepProgress extends JComponent implements SwingConstants, Shape
         return selectionEnabled;
     }
 
-    public void setSelectionEnabled ( boolean selectionEnabled )
+    public void setSelectionEnabled ( final boolean selectionEnabled )
     {
         this.selectionEnabled = selectionEnabled;
     }
@@ -465,7 +466,7 @@ public class WebStepProgress extends JComponent implements SwingConstants, Shape
         return selectionMode;
     }
 
-    public void setSelectionMode ( int selectionMode )
+    public void setSelectionMode ( final int selectionMode )
     {
         this.selectionMode = selectionMode;
     }
@@ -484,29 +485,29 @@ public class WebStepProgress extends JComponent implements SwingConstants, Shape
         return steps;
     }
 
-    public StepData getStep ( int index )
+    public StepData getStep ( final int index )
     {
         return steps.get ( index );
     }
 
-    public void setSteps ( String... steps )
+    public void setSteps ( final String... steps )
     {
         setSteps ( createSteps ( steps ) );
     }
 
-    public void setSteps ( Component... steps )
+    public void setSteps ( final Component... steps )
     {
         setSteps ( createSteps ( steps ) );
     }
 
-    public void setSteps ( List<StepData> steps )
+    public void setSteps ( final List<StepData> steps )
     {
         clearSteps ();
         addSteps ( steps );
         validateSelectedStep ();
     }
 
-    public void addSteps ( String... steps )
+    public void addSteps ( final String... steps )
     {
         if ( steps != null )
         {
@@ -514,7 +515,7 @@ public class WebStepProgress extends JComponent implements SwingConstants, Shape
         }
     }
 
-    public void addSteps ( Component... steps )
+    public void addSteps ( final Component... steps )
     {
         if ( steps != null )
         {
@@ -522,14 +523,14 @@ public class WebStepProgress extends JComponent implements SwingConstants, Shape
         }
     }
 
-    public void addSteps ( List<StepData> steps )
+    public void addSteps ( final List<StepData> steps )
     {
         if ( steps != null )
         {
             this.steps.addAll ( steps );
             if ( showLabels )
             {
-                for ( StepData step : steps )
+                for ( final StepData step : steps )
                 {
                     if ( step.getLabel () != null )
                     {
@@ -542,12 +543,12 @@ public class WebStepProgress extends JComponent implements SwingConstants, Shape
         }
     }
 
-    public void removeStep ( int index )
+    public void removeStep ( final int index )
     {
         removeStep ( getStep ( index ) );
     }
 
-    public void removeStep ( StepData stepData )
+    public void removeStep ( final StepData stepData )
     {
         clearStep ( stepData );
         validateSelectedStep ();
@@ -555,7 +556,7 @@ public class WebStepProgress extends JComponent implements SwingConstants, Shape
         repaint ();
     }
 
-    public void setStepsAmount ( int stepsAmount )
+    public void setStepsAmount ( final int stepsAmount )
     {
         clearSteps ();
         addSteps ( createDefaultData ( stepsAmount ) );
@@ -568,18 +569,18 @@ public class WebStepProgress extends JComponent implements SwingConstants, Shape
     {
         if ( steps.size () > 0 )
         {
-            for ( StepData step : CollectionUtils.copy ( steps ) )
+            for ( final StepData step : CollectionUtils.copy ( steps ) )
             {
                 clearStep ( step );
             }
         }
     }
 
-    private void clearStep ( StepData step )
+    private void clearStep ( final StepData step )
     {
         if ( showLabels )
         {
-            Component label = step.getLabel ();
+            final Component label = step.getLabel ();
             if ( label != null )
             {
                 label.getParent ().remove ( label );
@@ -645,14 +646,14 @@ public class WebStepProgress extends JComponent implements SwingConstants, Shape
         }
         if ( progress < 0f )
         {
-            float p = Math.abs ( progress );
-            int s = selectedStep - Math.round ( p - p % 1 ) - 1;
+            final float p = Math.abs ( progress );
+            final int s = selectedStep - Math.round ( p - p % 1 ) - 1;
             progress = s < 0 ? 0 : 1 - p % 1;
             setSelectedStep ( s );
         }
         else if ( progress >= 1f )
         {
-            int s = selectedStep + Math.round ( progress - progress % 1 );
+            final int s = selectedStep + Math.round ( progress - progress % 1 );
             progress = s >= steps.size () ? 0 : progress % 1;
             setSelectedStep ( s );
         }
@@ -675,12 +676,12 @@ public class WebStepProgress extends JComponent implements SwingConstants, Shape
         return ( selectedStep + progress ) / ( steps.size () - 1 );
     }
 
-    public float getTotalProgressAt ( Point point )
+    public float getTotalProgressAt ( final Point point )
     {
-        boolean hor = orientation == HORIZONTAL;
-        Point p1 = getPathStart ();
-        Point p2 = getPathEnd ();
-        float pw = getPathWidth ();
+        final boolean hor = orientation == HORIZONTAL;
+        final Point p1 = getPathStart ();
+        final Point p2 = getPathEnd ();
+        final float pw = getPathWidth ();
         if ( hor )
         {
             if ( getComponentOrientation ().isLeftToRight () )
@@ -743,12 +744,12 @@ public class WebStepProgress extends JComponent implements SwingConstants, Shape
      */
 
     @Override
-    protected void paintComponent ( Graphics g )
+    protected void paintComponent ( final Graphics g )
     {
         super.paintComponent ( g );
 
-        Graphics2D g2d = ( Graphics2D ) g;
-        Object aa = LafUtils.setupAntialias ( g2d );
+        final Graphics2D g2d = ( Graphics2D ) g;
+        final Object aa = LafUtils.setupAntialias ( g2d );
 
         // Border and background
         LafUtils.drawCustomWebBorder ( g2d, this, getBorderShape (), StyleConstants.shadeColor, shadeWidth, true, true );
@@ -774,20 +775,20 @@ public class WebStepProgress extends JComponent implements SwingConstants, Shape
      * Shapes cache update methods
      */
 
-    private void updateBorderShape ()
+    protected void updateBorderShape ()
     {
         borderShape = null;
         repaint ();
     }
 
-    private void updateFillShape ()
+    protected void updateFillShape ()
     {
         fillPaint = null;
         fillShape = null;
         repaint ();
     }
 
-    private void updateShapes ()
+    protected void updateShapes ()
     {
         borderShape = null;
         fillPaint = null;
@@ -810,7 +811,7 @@ public class WebStepProgress extends JComponent implements SwingConstants, Shape
 
     private Shape createBorderShape ()
     {
-        Area border = new Area ( getPathShape () );
+        final Area border = new Area ( getPathShape () );
         for ( int i = 0; i < steps.size (); i++ )
         {
             border.add ( new Area ( getStepBorderCircle ( i ) ) );
@@ -818,9 +819,9 @@ public class WebStepProgress extends JComponent implements SwingConstants, Shape
         return border;
     }
 
-    private Shape getStepBorderCircle ( int step )
+    private Shape getStepBorderCircle ( final int step )
     {
-        Point center = getStepCenter ( step );
+        final Point center = getStepCenter ( step );
         if ( stepControlRound * 2 >= stepControlSize )
         {
             return new Ellipse2D.Double ( center.x - stepControlSize / 2, center.y - stepControlSize / 2, stepControlSize,
@@ -848,24 +849,24 @@ public class WebStepProgress extends JComponent implements SwingConstants, Shape
 
     private LinearGradientPaint createFillPaint ()
     {
-        Point p1 = getPathStart ();
-        float tss = selectedStep + progress;
-        int sw = getPathWidth () / ( steps.size () - 1 );
-        float pw = stepControlFillSize * 1.5f + sw * tss;
-        Color color = isEnabled () ? progressColor : disabledProgressColor;
+        final Point p1 = getPathStart ();
+        final float tss = selectedStep + progress;
+        final int sw = getPathWidth () / ( steps.size () - 1 );
+        final float pw = stepControlFillSize * 1.5f + sw * tss;
+        final Color color = isEnabled () ? progressColor : disabledProgressColor;
         if ( orientation == HORIZONTAL )
         {
-            boolean ltr = getComponentOrientation ().isLeftToRight ();
-            float px = ltr ? ( p1.x - stepControlFillSize / 2 ) : ( p1.x + stepControlFillSize / 2 - pw );
-            float[] fractions = ltr ? new float[]{ 0f, ( stepControlFillSize + sw * tss ) / pw, 1f } :
+            final boolean ltr = getComponentOrientation ().isLeftToRight ();
+            final float px = ltr ? ( p1.x - stepControlFillSize / 2 ) : ( p1.x + stepControlFillSize / 2 - pw );
+            final float[] fractions = ltr ? new float[]{ 0f, ( stepControlFillSize + sw * tss ) / pw, 1f } :
                     new float[]{ 0f, 1 - ( stepControlFillSize + sw * tss ) / pw, 1f };
-            Color[] colors =
+            final Color[] colors =
                     ltr ? new Color[]{ color, color, StyleConstants.transparent } : new Color[]{ StyleConstants.transparent, color, color };
             return new LinearGradientPaint ( px, 0, px + pw, 0, fractions, colors );
         }
         else
         {
-            float py = p1.y - stepControlFillSize / 2;
+            final float py = p1.y - stepControlFillSize / 2;
             return new LinearGradientPaint ( 0, py, 0, py + pw, new float[]{ 0f, ( stepControlFillSize + sw * tss ) / pw, 1f },
                     new Color[]{ color, color, StyleConstants.transparent } );
         }
@@ -882,7 +883,7 @@ public class WebStepProgress extends JComponent implements SwingConstants, Shape
 
     private Shape createFillShape ()
     {
-        Area border = new Area ( getPathFillShape () );
+        final Area border = new Area ( getPathFillShape () );
         for ( int i = 0; i < steps.size (); i++ )
         {
             border.add ( new Area ( getStepFillCircle ( i ) ) );
@@ -890,9 +891,9 @@ public class WebStepProgress extends JComponent implements SwingConstants, Shape
         return border;
     }
 
-    private Shape getStepFillCircle ( int step )
+    private Shape getStepFillCircle ( final int step )
     {
-        Point center = getStepCenter ( step );
+        final Point center = getStepCenter ( step );
         if ( stepControlFillRound * 2 >= stepControlFillSize )
         {
             return new Ellipse2D.Double ( center.x - stepControlFillSize / 2, center.y - stepControlFillSize / 2, stepControlFillSize,
@@ -911,11 +912,11 @@ public class WebStepProgress extends JComponent implements SwingConstants, Shape
 
     private Shape getPathShape ()
     {
-        Point p1 = getPathStart ();
-        Point p2 = getPathEnd ();
+        final Point p1 = getPathStart ();
+        final Point p2 = getPathEnd ();
         if ( orientation == HORIZONTAL )
         {
-            boolean ltr = getComponentOrientation ().isLeftToRight ();
+            final boolean ltr = getComponentOrientation ().isLeftToRight ();
             return new Rectangle2D.Double ( ltr ? p1.x : p2.x, p1.y - pathSize / 2f, ltr ? ( p2.x - p1.x ) : ( p1.x - p2.x ), pathSize );
         }
         else
@@ -926,11 +927,11 @@ public class WebStepProgress extends JComponent implements SwingConstants, Shape
 
     private Shape getPathFillShape ()
     {
-        Point p1 = getPathStart ();
-        Point p2 = getPathEnd ();
+        final Point p1 = getPathStart ();
+        final Point p2 = getPathEnd ();
         if ( orientation == HORIZONTAL )
         {
-            boolean ltr = getComponentOrientation ().isLeftToRight ();
+            final boolean ltr = getComponentOrientation ().isLeftToRight ();
             return new Rectangle2D.Double ( ltr ? p1.x : p2.x, p1.y + 0.5f - fillPathSize / 2f, ltr ? ( p2.x - p1.x ) : ( p1.x - p2.x ),
                     fillPathSize );
         }
@@ -950,26 +951,26 @@ public class WebStepProgress extends JComponent implements SwingConstants, Shape
         return getStepCenter ( steps.size () - 1 );
     }
 
-    private Point getStepCenter ( int step )
+    private Point getStepCenter ( final int step )
     {
-        Dimension max = getMaximumComponentSize ();
-        boolean ltr = getComponentOrientation ().isLeftToRight ();
+        final Dimension max = getMaximumComponentSize ();
+        final boolean ltr = getComponentOrientation ().isLeftToRight ();
         if ( orientation == HORIZONTAL )
         {
-            int x = margin.left + sideWidth + getPathWidth () * ( ltr ? step : ( steps.size () - 1 - step ) ) / ( steps.size () - 1 );
-            int wh = getHeight () - margin.top - margin.bottom;
-            int sh = max.height + ( max.height > 0 ? spacing : 0 );
-            int ch = sh + stepControlSize + shadeWidth * 2;
-            int y = margin.top + wh / 2 - ch / 2 + ( labelsPosition == LEADING ? sh : 0 ) + shadeWidth + stepControlSize / 2;
+            final int x = margin.left + sideWidth + getPathWidth () * ( ltr ? step : ( steps.size () - 1 - step ) ) / ( steps.size () - 1 );
+            final int wh = getHeight () - margin.top - margin.bottom;
+            final int sh = max.height + ( max.height > 0 ? spacing : 0 );
+            final int ch = sh + stepControlSize + shadeWidth * 2;
+            final int y = margin.top + wh / 2 - ch / 2 + ( labelsPosition == LEADING ? sh : 0 ) + shadeWidth + stepControlSize / 2;
             return new Point ( x, y );
         }
         else
         {
-            int y = margin.top + sideWidth + getPathWidth () * step / ( steps.size () - 1 );
-            int ww = getWidth () - margin.left - margin.right;
-            int sw = max.width + ( max.width > 0 ? spacing : 0 );
-            int cw = sw + stepControlSize + shadeWidth * 2;
-            int x = margin.left + ww / 2 - cw / 2 + ( ( ltr ? labelsPosition == LEADING : labelsPosition == TRAILING ) ? sw : 0 ) +
+            final int y = margin.top + sideWidth + getPathWidth () * step / ( steps.size () - 1 );
+            final int ww = getWidth () - margin.left - margin.right;
+            final int sw = max.width + ( max.width > 0 ? spacing : 0 );
+            final int cw = sw + stepControlSize + shadeWidth * 2;
+            final int x = margin.left + ww / 2 - cw / 2 + ( ( ltr ? labelsPosition == LEADING : labelsPosition == TRAILING ) ? sw : 0 ) +
                     shadeWidth + stepControlSize / 2;
             return new Point ( x, y );
         }
@@ -987,7 +988,7 @@ public class WebStepProgress extends JComponent implements SwingConstants, Shape
         }
     }
 
-    public int getStepCircleAt ( Point point )
+    public int getStepCircleAt ( final Point point )
     {
         for ( int i = 0; i < steps.size (); i++ )
         {
@@ -1000,37 +1001,119 @@ public class WebStepProgress extends JComponent implements SwingConstants, Shape
     }
 
     /**
-     * Custom preferred size
+     * Size methods.
      */
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int getPreferredWidth ()
+    {
+        return SizeUtils.getPreferredWidth ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebStepProgress setPreferredWidth ( final int preferredWidth )
+    {
+        return SizeUtils.setPreferredWidth ( this, preferredWidth );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int getPreferredHeight ()
+    {
+        return SizeUtils.getPreferredHeight ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebStepProgress setPreferredHeight ( final int preferredHeight )
+    {
+        return SizeUtils.setPreferredHeight ( this, preferredHeight );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int getMinimumWidth ()
+    {
+        return SizeUtils.getMinimumWidth ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebStepProgress setMinimumWidth ( final int minimumWidth )
+    {
+        return SizeUtils.setMinimumWidth ( this, minimumWidth );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int getMinimumHeight ()
+    {
+        return SizeUtils.getMinimumHeight ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebStepProgress setMinimumHeight ( final int minimumHeight )
+    {
+        return SizeUtils.setMinimumHeight ( this, minimumHeight );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Dimension getPreferredSize ()
     {
+        final Dimension ps;
         if ( isPreferredSizeSet () )
         {
-            return super.getPreferredSize ();
+            ps = super.getPreferredSize ();
         }
         else
         {
-            Dimension max = getMaximumComponentSize ();
-            Dimension maxSide = getMaximumSideComponentSize ();
+            // todo Move to custom UI
+            final Dimension max = getMaximumComponentSize ();
+            final Dimension maxSide = getMaximumSideComponentSize ();
             if ( orientation == HORIZONTAL )
             {
                 sideWidth = Math.max ( maxSide.width / 2, stepControlSize / 2 + shadeWidth );
-                int w = margin.left + shadeWidth * ( steps.size () - 1 ) * 2 + stepControlSize * ( steps.size () - 1 ) + sideWidth * 2 +
-                        margin.right + 1;
-                int h = margin.top + shadeWidth * 2 + stepControlSize + max.height + ( max.height > 0 ? spacing : 0 ) + margin.bottom + 1;
-                return new Dimension ( w, h );
+                final int w =
+                        margin.left + shadeWidth * ( steps.size () - 1 ) * 2 + stepControlSize * ( steps.size () - 1 ) + sideWidth * 2 +
+                                margin.right + 1;
+                final int h =
+                        margin.top + shadeWidth * 2 + stepControlSize + max.height + ( max.height > 0 ? spacing : 0 ) + margin.bottom + 1;
+                ps = new Dimension ( w, h );
             }
             else
             {
                 sideWidth = Math.max ( maxSide.height / 2, stepControlSize / 2 + shadeWidth );
-                int w = margin.left + shadeWidth * 2 + stepControlSize + max.width + ( max.width > 0 ? spacing : 0 ) + margin.right + 1;
-                int h = margin.top + shadeWidth * ( steps.size () - 1 ) * 2 + stepControlSize * ( steps.size () - 1 ) + sideWidth * 2 +
-                        margin.bottom + 1;
-                return new Dimension ( w, h );
+                final int w =
+                        margin.left + shadeWidth * 2 + stepControlSize + max.width + ( max.width > 0 ? spacing : 0 ) + margin.right + 1;
+                final int h =
+                        margin.top + shadeWidth * ( steps.size () - 1 ) * 2 + stepControlSize * ( steps.size () - 1 ) + sideWidth * 2 +
+                                margin.bottom + 1;
+                ps = new Dimension ( w, h );
             }
         }
+        return SizeUtils.getPreferredSize ( this, ps );
     }
 
     private Dimension getMaximumComponentSize ()
@@ -1038,7 +1121,7 @@ public class WebStepProgress extends JComponent implements SwingConstants, Shape
         Dimension max = new Dimension ( 0, 0 );
         if ( showLabels && steps.size () > 0 )
         {
-            for ( StepData step : steps )
+            for ( final StepData step : steps )
             {
                 if ( step.getLabel () != null )
                 {
@@ -1053,8 +1136,8 @@ public class WebStepProgress extends JComponent implements SwingConstants, Shape
     {
         if ( showLabels && steps.size () > 0 )
         {
-            Component l1 = steps.get ( 0 ).getLabel ();
-            Component l2 = steps.get ( steps.size () - 1 ).getLabel ();
+            final Component l1 = steps.get ( 0 ).getLabel ();
+            final Component l2 = steps.get ( steps.size () - 1 ).getLabel ();
             if ( l1 != null && l2 != null )
             {
                 return SwingUtils.max ( l1.getPreferredSize (), l2.getPreferredSize () );
@@ -1082,29 +1165,29 @@ public class WebStepProgress extends JComponent implements SwingConstants, Shape
      * Additional useful methods
      */
 
-    public static List<StepData> createSteps ( String[] steps )
+    public static List<StepData> createSteps ( final String[] steps )
     {
-        List<StepData> s = new ArrayList<StepData> ();
-        for ( String step : steps )
+        final List<StepData> s = new ArrayList<StepData> ();
+        for ( final String step : steps )
         {
             s.add ( new StepData ( step ) );
         }
         return s;
     }
 
-    public static List<StepData> createSteps ( Component[] steps )
+    public static List<StepData> createSteps ( final Component[] steps )
     {
-        List<StepData> s = new ArrayList<StepData> ();
-        for ( Component step : steps )
+        final List<StepData> s = new ArrayList<StepData> ();
+        for ( final Component step : steps )
         {
             s.add ( new StepData ( step ) );
         }
         return s;
     }
 
-    public static List<StepData> createDefaultData ( int stepsAmount )
+    public static List<StepData> createDefaultData ( final int stepsAmount )
     {
-        List<StepData> s = new ArrayList<StepData> ( stepsAmount );
+        final List<StepData> s = new ArrayList<StepData> ( stepsAmount );
         for ( int i = 0; i < stepsAmount; i++ )
         {
             s.add ( new StepData () );

@@ -36,4 +36,11 @@
         <painter id="painter" class="com.alee.managers.style.skin.web.WebBreadcrumbPanelPainter" />
     </style>
 
+    <!-- WebDocumentPane styling -->
+    <style type="panel" id="document-pane" extends="default">
+        <component>
+            <opaque>false</opaque>
+        </component>
+    </style>
+
 </skin>

@@ -422,7 +422,7 @@ public class WebMenuItem extends JMenuItem implements LanguageMethods, FontMetho
             {
                 setUI ( ( WebMenuItemUI ) ReflectUtils.createInstance ( WebLookAndFeel.menuItemUI ) );
             }
-            catch ( Throwable e )
+            catch ( final Throwable e )
             {
                 e.printStackTrace ();
                 setUI ( new WebMenuItemUI () );

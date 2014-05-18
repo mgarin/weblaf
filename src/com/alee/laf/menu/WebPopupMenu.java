@@ -50,13 +50,14 @@ public class WebPopupMenu extends JPopupMenu implements Styleable, ShapeProvider
     }
 
     /**
-     * Constructs new popup menu with the specified label.
+     * Constructs new popup menu with the specified style ID.
      *
-     * @param label popup menu label
+     * @param styleId popup menu style ID
      */
-    public WebPopupMenu ( final String label )
+    public WebPopupMenu ( final String styleId )
     {
-        super ( label );
+        super ();
+        setStyleId ( styleId );
     }
 
     /**
@@ -441,6 +442,26 @@ public class WebPopupMenu extends JPopupMenu implements Styleable, ShapeProvider
     {
         getWebUI ().setCornerWidth ( width );
         return this;
+    }
+
+    /**
+     * Returns dropdown corner alignment.
+     *
+     * @return dropdown corner alignment
+     */
+    public int getCornerAlignment ()
+    {
+        return getWebUI ().getCornerAlignment ();
+    }
+
+    /**
+     * Sets dropdown corner alignment.
+     *
+     * @param cornerAlignment dropdown corner alignment
+     */
+    public void setCornerAlignment ( final int cornerAlignment )
+    {
+        StyleManager.setCustomPainterProperty ( this, "cornerAlignment", cornerAlignment );
     }
 
     /**

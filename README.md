@@ -1,14 +1,7 @@
 WebLaF
 ==========
 **WebLaf** is a Java Swing Look and Feel and extended components library for cross-platform applications.<br>
-![Preview](./weblaf-preview.png)
-
-
-Important
-----------
-With [v1.27](https://github.com/mgarin/weblaf/releases/tag/v1.27) update core StyleManager functionality was added and implemented in a few WebLaF components so the way they act might differ from what you got used to. You might want to [read here](https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager) about features that StyleManager brings.
-
-I will also be adding more articles into GitHub WIKI from now on, so you can find information about various WebLaF features there.
+![Preview](./screenshots/weblaf-preview.png)
 
 
 Advantages
@@ -16,13 +9,61 @@ Advantages
 
 - Simple and stylish cross-platform default theme
 - Lots of useful custom Swing components
-- UIs and components are easily stylable through settings and painters
+- Fully stylable through settings, painters and custom skins
 - Language, settings, hotkey, tooltip and other custom managers
-- Various Swing and Java utilities for specific cases
-- RTL components orientation is fully supported
+- Various Swing and general utilities for many possible cases
+- Full support for RTL components orientation
 
 You can find more information about the library on official site:<br>
 http://weblookandfeel.com
+
+
+Custom components
+---------
+Here are **some** screenshots of the custom WebLaF components:
+
+`WebTristateCheckBox`<br>
+![Tristate checkbox](./screenshots/tristate-checkbox.png)
+
+`WebLinkLabel`<br>
+![Link label](./screenshots/link-label.png)
+
+`WebCollapsiblePane`<br>
+![Collapsible pane](./screenshots/collapsible-pane.png)
+
+`WebAccordion`<br>
+![Accordion](./screenshots/accordion.png)
+
+`WebDateField` and `WebCalendar`<br>
+![Date field and calendar](./screenshots/date-calendar.png)
+
+`WebMemoryBar`<br>
+![Memory bar](./screenshots/memory-bar.png)
+
+`WebBreadcrumb`<br>
+![Breadcrumb with custom content](./screenshots/breadcrumb-custom.png)<br>
+![Breadcrumb with toggle buttons](./screenshots/breadcrumb-toggle.png)
+
+`WebFileTree`<br>
+![Asynchronous file tree](./screenshots/file-tree.png)
+
+`WebColorChooserField`<br>
+![Color chooser field](./screenshots/color-chooser-field.png)
+
+`WebGradientColorChooser`<br>
+![Gradient color chooser](./screenshots/gradient-color-chooser.png)
+
+`WebStepProgress`<br>
+![Step progress](./screenshots/step-progress.png)
+
+You can find a lot more live examples in the demo application!
+
+
+Important
+----------
+With [v1.27](https://github.com/mgarin/weblaf/releases/tag/v1.27) update core `StyleManager` functionality was added and implemented in a few WebLaF components so the way they act might differ from what you got used to. You might want to [read here](https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager) about features that `StyleManager` brings.
+
+I will also be adding more articles into GitHub WIKI from now on, so you can find information about various WebLaF features there.
 
 
 Artifacts
@@ -44,6 +85,16 @@ Roadmap
 ----------
 You can always check what fixes, features and improvements are coming by checking the milestones page:<br>
 https://github.com/mgarin/weblaf/issues/milestones
+I am not updating them very frequently, but they actually represent features I want to focus on.
+
+
+Updates
+---------
+New WebLaF versions appear approximately every month.
+
+Sometimes it might take less time if there are some small but critical issue fixes, sometimes it might take more time if I am going to release some large feature (like it was with `StyleManager`) as I have to modify/add a lot of code and consider a lot of stuff.
+
+In any case WebLaF is not going to disappear anytime soon. Hopefully Swing won't disappear or become deprecated soon as well.
 
 
 Building
@@ -86,8 +137,11 @@ public class UsageExample
                 // UIManager.setLookAndFeel ( "com.alee.laf.WebLookAndFeel" );
                 // UIManager.setLookAndFeel ( WebLookAndFeel.class.getCanonicalName () );
 
-                // Create you Swing application here
+                // Create you application here using Swing components
                 // JFrame frame = ...
+
+                // Or use similar WebLaF components to use extended features
+                // WebFrame frame = ...
             }
         } );
     }

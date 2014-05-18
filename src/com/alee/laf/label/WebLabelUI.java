@@ -60,7 +60,7 @@ public class WebLabelUI extends BasicLabelUI implements Styleable, BorderMethods
     /**
      * Runtime variables.
      */
-    protected String styleId;
+    protected String styleId = null;
     protected JLabel label;
 
     /**

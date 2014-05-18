@@ -730,6 +730,7 @@ public final class ReflectUtils
         }
         else
         {
+            // todo Use getDeclaredConstructors instead and recursive checking
             for ( final Constructor constructor : theClass.getConstructors () )
             {
                 final Class[] types = constructor.getParameterTypes ();
@@ -834,8 +835,8 @@ public final class ReflectUtils
      *
      * @param theClass   class to process
      * @param methodName static method name
-     * @param arguments  method arguments
-     * @return result of called static method
+     * @param arguments  static method arguments
+     * @return result given by called static method
      * @throws NoSuchMethodException
      * @throws InvocationTargetException
      * @throws IllegalAccessException
@@ -856,35 +857,75 @@ public final class ReflectUtils
         {
             // Searching for more complex method
             final Class[] types = getClassTypes ( arguments );
-            for ( final Method method : theClass.getMethods () )
+            return callStaticMethod ( theClass, theClass, methodName, arguments, types );
+        }
+    }
+
+    /**
+     * Returns result of called static method.
+     * Will return null in case method is void-type.
+     *
+     * @param topClass     initial class
+     * @param currentClass class we are looking in for the static method
+     * @param methodName   static method name
+     * @param arguments    static method arguments
+     * @param types        static method argument types
+     * @param <T>          return type
+     * @return result given by called static method
+     * @throws IllegalAccessException
+     * @throws InvocationTargetException
+     * @throws NoSuchMethodException
+     */
+    private static <T> T callStaticMethod ( final Class topClass, final Class currentClass, final String methodName,
+                                            final Object[] arguments, final Class[] types )
+            throws IllegalAccessException, InvocationTargetException, NoSuchMethodException
+    {
+        // Searching for the specified method in class or one of its superclasses
+        for ( final Method method : currentClass.getDeclaredMethods () )
+        {
+            // Checking method name
+            if ( method.getName ().equals ( methodName ) )
             {
-                // Checking method name
-                if ( method.getName ().equals ( methodName ) )
+                // Checking method arguments count
+                final Class<?>[] mt = method.getParameterTypes ();
+                if ( mt.length == types.length )
                 {
-                    // Checking method arguments count
-                    final Class<?>[] mt = method.getParameterTypes ();
-                    if ( mt.length == types.length )
+                    // Checking that arguments fit
+                    boolean fits = true;
+                    for ( int i = 0; i < mt.length; i++ )
                     {
-                        // Checking that arguments fit
-                        boolean fits = true;
-                        for ( int i = 0; i < mt.length; i++ )
+                        if ( !isAssignable ( mt[ i ], types[ i ] ) )
                         {
-                            if ( !isAssignable ( mt[ i ], types[ i ] ) )
-                            {
-                                fits = false;
-                                break;
-                            }
+                            fits = false;
+                            break;
                         }
-                        if ( fits )
+                    }
+                    if ( fits )
+                    {
+                        try
                         {
                             method.setAccessible ( true );
                             return ( T ) method.invoke ( null, arguments );
                         }
+                        catch ( final IllegalArgumentException e )
+                        {
+                            throw new IllegalArgumentException (
+                                    topClass.getCanonicalName () + "." + methodName + argumentTypesToString ( types ) );
+                        }
                     }
                 }
             }
-            throw new NoSuchMethodException ( theClass.getName () + "." + methodName + argumentTypesToString ( types ) );
         }
+
+        // Search superclass for this method
+        final Class superclass = currentClass.getSuperclass ();
+        if ( superclass != null )
+        {
+            return callStaticMethod ( topClass, superclass, methodName, arguments, types );
+        }
+
+        // Throwing proper method not found exception
+        throw new NoSuchMethodException ( currentClass.getName () + "." + methodName + argumentTypesToString ( types ) );
     }
 
     /**
@@ -1030,24 +1071,24 @@ public final class ReflectUtils
      * If method is not found in the object class all superclasses will be searched for that method.
      * Returns result given by called method.
      *
-     * @param object      object instance
-     * @param topClass    initial object class
-     * @param objectClass object class we are looking for the method
-     * @param methodName  method name
-     * @param arguments   method arguments
-     * @param types       method argument types
-     * @param <T>         return type
+     * @param object       object instance
+     * @param topClass     initial object class
+     * @param currentClass object class we are looking in for the method
+     * @param methodName   method name
+     * @param arguments    method arguments
+     * @param types        method argument types
+     * @param <T>          return type
      * @return result given by called method
      * @throws IllegalAccessException
      * @throws InvocationTargetException
      * @throws NoSuchMethodException
      */
-    private static <T> T callMethod ( final Object object, final Class topClass, final Class objectClass, final String methodName,
+    private static <T> T callMethod ( final Object object, final Class topClass, final Class currentClass, final String methodName,
                                       final Object[] arguments, final Class[] types )
             throws IllegalAccessException, InvocationTargetException, NoSuchMethodException
     {
         // Searching for the specified method in object's class or one of its superclasses
-        for ( final Method method : objectClass.getDeclaredMethods () )
+        for ( final Method method : currentClass.getDeclaredMethods () )
         {
             // Checking method name
             if ( method.getName ().equals ( methodName ) )
@@ -1084,7 +1125,7 @@ public final class ReflectUtils
         }
 
         // Search object superclass for this method
-        final Class superclass = objectClass.getSuperclass ();
+        final Class superclass = currentClass.getSuperclass ();
         if ( superclass != null )
         {
             return callMethod ( object, topClass, superclass, methodName, arguments, types );

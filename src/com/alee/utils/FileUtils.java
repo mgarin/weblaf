@@ -365,7 +365,7 @@ public final class FileUtils
         int proper = 0;
         for ( final File root : roots )
         {
-            if ( root.isDirectory () )
+            if ( isDirectory ( root ) )
             {
                 proper++;
             }
@@ -374,7 +374,7 @@ public final class FileUtils
         int currentIndex = 0;
         for ( final File root : roots )
         {
-            if ( root.isDirectory () )
+            if ( isDirectory ( root ) )
             {
                 properRoots[ currentIndex ] = root;
                 currentIndex++;
@@ -475,6 +475,26 @@ public final class FileUtils
                 //
             }
         }
+    }
+
+    /**
+     * Returns application working directory.
+     *
+     * @return application working directory
+     */
+    public static File getWorkingDirectory ()
+    {
+        return new File ( getWorkingDirectoryPath () );
+    }
+
+    /**
+     * Returns application working directory.
+     *
+     * @return application working directory
+     */
+    public static String getWorkingDirectoryPath ()
+    {
+        return System.getProperty ( "user.dir" );
     }
 
     /**

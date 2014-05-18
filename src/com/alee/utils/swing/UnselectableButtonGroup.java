@@ -29,7 +29,7 @@ import java.util.List;
 
 public class UnselectableButtonGroup extends ButtonGroup
 {
-    private List<ButtonGroupListener> listeners = new ArrayList<ButtonGroupListener> ( 1 );
+    private final List<ButtonGroupListener> listeners = new ArrayList<ButtonGroupListener> ( 1 );
 
     private boolean unselectable = true;
 
@@ -38,16 +38,22 @@ public class UnselectableButtonGroup extends ButtonGroup
         super ();
     }
 
-    public UnselectableButtonGroup ( AbstractButton... buttons )
+    public UnselectableButtonGroup ( final AbstractButton... buttons )
     {
         super ();
         add ( buttons );
     }
 
-    public UnselectableButtonGroup ( List<AbstractButton> buttons )
+    public UnselectableButtonGroup ( final List<AbstractButton> buttons )
     {
         super ();
         add ( buttons );
+    }
+
+    public UnselectableButtonGroup ( final boolean unselectable )
+    {
+        super ();
+        setUnselectable ( unselectable );
     }
 
     public boolean isUnselectable ()
@@ -55,13 +61,13 @@ public class UnselectableButtonGroup extends ButtonGroup
         return unselectable;
     }
 
-    public void setUnselectable ( boolean unselectable )
+    public void setUnselectable ( final boolean unselectable )
     {
         this.unselectable = unselectable;
     }
 
     @Override
-    public void setSelected ( ButtonModel model, boolean selected )
+    public void setSelected ( final ButtonModel model, final boolean selected )
     {
         if ( selected || !unselectable )
         {
@@ -79,46 +85,46 @@ public class UnselectableButtonGroup extends ButtonGroup
         return CollectionUtils.copy ( buttons );
     }
 
-    public void addButtonGroupListener ( ButtonGroupListener listener )
+    public void addButtonGroupListener ( final ButtonGroupListener listener )
     {
         listeners.add ( listener );
     }
 
-    public void removeButtonGroupListener ( ButtonGroupListener listener )
+    public void removeButtonGroupListener ( final ButtonGroupListener listener )
     {
         listeners.remove ( listener );
     }
 
     public void fireSelectionChanged ()
     {
-        for ( ButtonGroupListener listener : CollectionUtils.copy ( listeners ) )
+        for ( final ButtonGroupListener listener : CollectionUtils.copy ( listeners ) )
         {
             listener.selectionChanged ();
         }
     }
 
-    public void add ( AbstractButton... b )
+    public void add ( final AbstractButton... b )
     {
-        for ( AbstractButton button : b )
+        for ( final AbstractButton button : b )
         {
             add ( button );
         }
     }
 
-    public void add ( List<AbstractButton> b )
+    public void add ( final List<AbstractButton> b )
     {
-        for ( AbstractButton button : b )
+        for ( final AbstractButton button : b )
         {
             add ( button );
         }
     }
 
-    public static UnselectableButtonGroup group ( AbstractButton... buttons )
+    public static UnselectableButtonGroup group ( final AbstractButton... buttons )
     {
         return new UnselectableButtonGroup ( buttons );
     }
 
-    public static UnselectableButtonGroup group ( List<AbstractButton> buttons )
+    public static UnselectableButtonGroup group ( final List<AbstractButton> buttons )
     {
         return new UnselectableButtonGroup ( buttons );
     }

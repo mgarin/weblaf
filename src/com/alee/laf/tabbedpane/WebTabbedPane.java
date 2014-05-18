@@ -75,6 +75,53 @@ public class WebTabbedPane extends JTabbedPane
         setTabbedPaneStyle ( style );
     }
 
+    /**
+     * Returns tab index for the specified location or -1 if there is no tab there.
+     *
+     * @param point location
+     * @return tab index for the specified location or -1 if there is no tab there
+     */
+    public int getTabAt ( final Point point )
+    {
+        return getTabAt ( point.x, point.y );
+    }
+
+    /**
+     * Returns tab index for the specified location or -1 if there is no tab there.
+     *
+     * @param x location X
+     * @param y location Y
+     * @return tab index for the specified location or -1 if there is no tab there
+     */
+    public int getTabAt ( final int x, final int y )
+    {
+        return indexAtLocation ( x, y );
+    }
+
+    /**
+     * Returns tab bounds for the specified location or null if there is no tab there.
+     *
+     * @param point location
+     * @return tab bounds for the specified location or null if there is no tab there
+     */
+    public Rectangle getBoundsAt ( final Point point )
+    {
+        return getBoundsAt ( point.x, point.y );
+    }
+
+    /**
+     * Returns tab bounds for the specified location or null if there is no tab there.
+     *
+     * @param x location X
+     * @param y location Y
+     * @return tab bounds for the specified location or null if there is no tab there
+     */
+    public Rectangle getBoundsAt ( final int x, final int y )
+    {
+        final int index = getTabAt ( x, y );
+        return index != -1 ? getBoundsAt ( index ) : null;
+    }
+
     public int getRound ()
     {
         return getWebUI ().getRound ();
@@ -255,7 +302,7 @@ public class WebTabbedPane extends JTabbedPane
             {
                 setUI ( ( WebTabbedPaneUI ) ReflectUtils.createInstance ( WebLookAndFeel.tabbedPaneUI ) );
             }
-            catch ( Throwable e )
+            catch ( final Throwable e )
             {
                 e.printStackTrace ();
                 setUI ( new WebTabbedPaneUI () );

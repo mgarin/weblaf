@@ -45,10 +45,6 @@ import java.util.zip.ZipFile;
 public abstract class PluginManager<T extends Plugin>
 {
     /**
-     * todo 1. Check for similar plugins seems broken
-     */
-
-    /**
      * Plugins listeners.
      */
     protected List<PluginsListener<T>> listeners = new ArrayList<PluginsListener<T>> ( 1 );
@@ -212,7 +208,19 @@ public abstract class PluginManager<T extends Plugin>
      */
     public void checkPlugins ()
     {
-        checkPlugins ( pluginsDirectoryPath );
+        checkPlugins ( pluginsDirectoryPath, checkRecursively );
+    }
+
+    /**
+     * Performs plugins search within the specified plugins directory.
+     * This call might be performed as many times as you like.
+     * It will simply ignore plugins detected before and will process newly found plugins appropriately.
+     *
+     * @param checkRecursively whether plugins directory subfolders should be checked recursively or not
+     */
+    public void checkPlugins ( final boolean checkRecursively )
+    {
+        checkPlugins ( pluginsDirectoryPath, checkRecursively );
     }
 
     /**
@@ -239,6 +247,12 @@ public abstract class PluginManager<T extends Plugin>
     {
         synchronized ( checkLock )
         {
+            // Ignore check if check path is not specified
+            if ( pluginsDirectoryPath == null )
+            {
+                return;
+            }
+
             // Informing about plugins check start
             firePluginsCheckStarted ( pluginsDirectoryPath, checkRecursively );
 
@@ -824,6 +838,7 @@ public abstract class PluginManager<T extends Plugin>
 
     /**
      * Sets plugins directory file filter.
+     * Note that setting this filter will not have any effect on plugins which are already initialized.
      *
      * @param filter plugins directory file filter
      */

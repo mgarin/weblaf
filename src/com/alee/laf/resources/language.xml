@@ -1484,6 +1484,78 @@
                 <value lang="de" state="inputPropmt">Suchen...</value>
             </record>
         </Dictionary>
+        <Dictionary name="WebDocumentPane language" prefix="docpane">
+            <record key="close">
+                <value lang="en">Close</value>
+                <value lang="ru">Закрыть</value>
+                <value lang="pl">Blisko</value>
+                <value lang="ar">قريب</value>
+                <value lang="es">Cerca</value>
+                <value lang="fr">Proche</value>
+                <value lang="pt">Perto</value>
+                <value lang="de">Schließen</value>
+            </record>
+            <record key="left">
+                <value lang="en">Move to left group</value>
+                <value lang="ru">Переместить в левую группу</value>
+                <value lang="pl">Przenieść do lewej grupy</value>
+                <value lang="ar">انتقال إلى مجموعة اليسار</value>
+                <value lang="es">Mover al grupo de la izquierda</value>
+                <value lang="fr">Déplacez à gauche groupe</value>
+                <value lang="pt">Mover para grupo deixou</value>
+                <value lang="de">Nach links Gruppe</value>
+            </record>
+            <record key="right">
+                <value lang="en">Move to right group</value>
+                <value lang="ru">Переместить в правую группу</value>
+                <value lang="pl">Przenieść się do odpowiedniej grupy</value>
+                <value lang="ar">الانتقال إلى فريق الحق</value>
+                <value lang="es">Mover al grupo correcto</value>
+                <value lang="fr">Déplacez-vous bon groupe</value>
+                <value lang="pt">Mover para grupo certo</value>
+                <value lang="de">Bewegen nach rechts-Gruppe</value>
+            </record>
+            <record key="top">
+                <value lang="en">Move to top group</value>
+                <value lang="ru">Переместить в верхнюю группу</value>
+                <value lang="pl">Przesuń do góry grupy</value>
+                <value lang="ar">انتقال إلى المجموعة الأولى</value>
+                <value lang="es">Mover al grupo de cabeza</value>
+                <value lang="fr">Monter en haut groupe</value>
+                <value lang="pt">Mover para o início do grupo</value>
+                <value lang="de">Gehen Sie zu Top-Gruppe</value>
+            </record>
+            <record key="bottom">
+                <value lang="en">Move to bottom group</value>
+                <value lang="ru">Переместить в нижнюю группу</value>
+                <value lang="pl">Przenieś do grupy dolnej</value>
+                <value lang="ar">الانتقال إلى فريق القاع</value>
+                <value lang="es">Mover al grupo inferior</value>
+                <value lang="fr">Déplacer vers le groupe inférieur</value>
+                <value lang="pt">Mover para grupo inferior</value>
+                <value lang="de">Nach ganz unten Gruppe</value>
+            </record>
+            <record key="unsplit">
+                <value lang="en">Combine groups</value>
+                <value lang="ru">Объединить группы</value>
+                <value lang="pl">łączyć grupy</value>
+                <value lang="ar">الجمع بين مجموعات</value>
+                <value lang="es">Combine grupos</value>
+                <value lang="fr">Combiner des groupes</value>
+                <value lang="pt">Combine grupos</value>
+                <value lang="de">Kombinieren Sie Gruppen</value>
+            </record>
+            <record key="unsplitall">
+                <value lang="en">Combine all groups</value>
+                <value lang="ru">Объединить все группы</value>
+                <value lang="pl">Połączyć wszystkie grupy</value>
+                <value lang="ar">الجمع بين جميع المجموعات</value>
+                <value lang="es">Combine todos los grupos</value>
+                <value lang="fr">Mélanger tous les groupes</value>
+                <value lang="pt">Misture todos os grupos</value>
+                <value lang="de">Kombinieren Sie alle Gruppen</value>
+            </record>
+        </Dictionary>
     </Dictionary>
     <LanguageInfo>
         <langInfo lang="en" author="mgarin" info="English" title="English" />

@@ -57,6 +57,14 @@ public class WebButton extends JButton implements ShapeProvider, LanguageMethods
         setLeftRightSpacing ( WebButtonStyle.iconLeftRightSpacing );
     }
 
+    public WebButton ( final Icon icon, final Icon rolloverIcon )
+    {
+        super ( icon );
+        setRolloverIcon ( rolloverIcon );
+        setRound ( WebButtonStyle.iconRound );
+        setLeftRightSpacing ( WebButtonStyle.iconLeftRightSpacing );
+    }
+
     public WebButton ( final String text )
     {
         super ( text );

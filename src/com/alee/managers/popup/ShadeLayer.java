@@ -67,10 +67,10 @@ public class ShadeLayer extends PopupLayer
     {
         super ( new AlignLayout () );
 
-        MouseAdapter mouseAdapter = new MouseAdapter ()
+        final MouseAdapter mouseAdapter = new MouseAdapter ()
         {
             @Override
-            public void mousePressed ( MouseEvent e )
+            public void mousePressed ( final MouseEvent e )
             {
                 if ( !blockClose )
                 {
@@ -86,7 +86,7 @@ public class ShadeLayer extends PopupLayer
      * {@inheritDoc}
      */
     @Override
-    public void showPopup ( WebPopup popup )
+    public void showPopup ( final WebPopup popup )
     {
         showPopup ( popup, false, false );
     }
@@ -98,13 +98,13 @@ public class ShadeLayer extends PopupLayer
      * @param hfill whether popup should fill the whole available window width or not
      * @param vfill whether popup should fill the whole available window height or not
      */
-    public void showPopup ( WebPopup popup, boolean hfill, boolean vfill )
+    public void showPopup ( final WebPopup popup, final boolean hfill, final boolean vfill )
     {
         // Updating layout settings
-        LayoutManager layoutManager = getLayout ();
+        final LayoutManager layoutManager = getLayout ();
         if ( layoutManager instanceof AlignLayout )
         {
-            AlignLayout layout = ( AlignLayout ) layoutManager;
+            final AlignLayout layout = ( AlignLayout ) layoutManager;
             layout.setHfill ( hfill );
             layout.setVfill ( vfill );
         }
@@ -133,7 +133,7 @@ public class ShadeLayer extends PopupLayer
      *
      * @param animate whether modal shade should be animated or not
      */
-    public void setAnimate ( boolean animate )
+    public void setAnimate ( final boolean animate )
     {
         this.animate = animate;
     }
@@ -153,7 +153,7 @@ public class ShadeLayer extends PopupLayer
      *
      * @param blockClose whether popup close attemps should be blocked or not
      */
-    public void setBlockClose ( boolean blockClose )
+    public void setBlockClose ( final boolean blockClose )
     {
         this.blockClose = blockClose;
     }
@@ -162,7 +162,7 @@ public class ShadeLayer extends PopupLayer
      * {@inheritDoc}
      */
     @Override
-    public void paint ( Graphics g )
+    public void paint ( final Graphics g )
     {
         // todo Really bad workaround
         LafUtils.setupAlphaComposite ( ( Graphics2D ) g, ( float ) opacity / 100, opacity < 100 );
@@ -173,14 +173,14 @@ public class ShadeLayer extends PopupLayer
      * {@inheritDoc}
      */
     @Override
-    protected void paintComponent ( Graphics g )
+    protected void paintComponent ( final Graphics g )
     {
         super.paintComponent ( g );
 
-        Graphics2D g2d = ( Graphics2D ) g;
-        Object old = LafUtils.setupAntialias ( g2d );
+        final Graphics2D g2d = ( Graphics2D ) g;
+        final Object old = LafUtils.setupAntialias ( g2d );
 
-        Composite comp = LafUtils.setupAlphaComposite ( g2d, 0.8f );
+        final Composite comp = LafUtils.setupAlphaComposite ( g2d, 0.8f );
         g2d.setPaint ( Color.LIGHT_GRAY );
         g2d.fillRect ( 0, 0, getWidth (), getHeight () );
         LafUtils.restoreComposite ( g2d, comp );
@@ -192,7 +192,7 @@ public class ShadeLayer extends PopupLayer
      * {@inheritDoc}
      */
     @Override
-    public void setVisible ( boolean visible )
+    public void setVisible ( final boolean visible )
     {
         super.setVisible ( visible );
         if ( visible )
@@ -207,7 +207,7 @@ public class ShadeLayer extends PopupLayer
                 animator = new WebTimer ( "ShadeLayer.fadeIn", StyleConstants.animationDelay, new ActionListener ()
                 {
                     @Override
-                    public void actionPerformed ( ActionEvent e )
+                    public void actionPerformed ( final ActionEvent e )
                     {
                         if ( opacity < 100 )
                         {
@@ -238,7 +238,7 @@ public class ShadeLayer extends PopupLayer
      * @return true if the specified point is within bounds of this popup layer, false otherwise
      */
     @Override
-    public boolean contains ( int x, int y )
+    public boolean contains ( final int x, final int y )
     {
         return normalContains ( x, y );
     }
