@@ -29,6 +29,7 @@ import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.hotkey.HotkeyManager;
 import com.alee.managers.hotkey.HotkeyRunnable;
 import com.alee.utils.SwingUtils;
+import com.alee.utils.swing.Customizer;
 import com.alee.utils.swing.menu.PopupMenuGenerator;
 
 import javax.swing.*;
@@ -51,13 +52,20 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
 
     protected List<T> data = new ArrayList<T> ();
 
-    public PaneData ()
+    public PaneData ( final WebDocumentPane<T> documentPane )
     {
         super ();
 
         // Creating tabbed pane
         tabbedPane = new WebTabbedPane ( TabbedPaneStyle.attached );
         tabbedPane.putClientProperty ( WebDocumentPane.DATA_KEY, this );
+
+        // Customizing tabbed pane
+        final Customizer<WebTabbedPane> customizer = documentPane.getTabbedPaneCustomizer ();
+        if ( customizer != null )
+        {
+            customizer.customize ( tabbedPane );
+        }
 
         // Some hotkeys
         HotkeyManager.registerHotkey ( tabbedPane, tabbedPane, Hotkey.CTRL_W, new HotkeyRunnable ()
@@ -244,7 +252,15 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
         final int i = index != -1 ? index : tabbedPane.getTabCount ();
         data.add ( i, document );
         tabbedPane.insertTab ( "", document.getIcon (), document.getComponent (), null, i );
+        tabbedPane.setBackgroundAt ( i, document.getBackground () );
         tabbedPane.setTabComponentAt ( i, createTabComponent ( document ) );
+
+        // Customizing document
+        final Customizer<T> customizer = getDocumentPane ().getDocumentCustomizer ();
+        if ( customizer != null )
+        {
+            customizer.customize ( document );
+        }
     }
 
     protected JComponent createTabComponent ( final T document )

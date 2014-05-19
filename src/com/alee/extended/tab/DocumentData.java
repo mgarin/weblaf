@@ -52,6 +52,12 @@ public class DocumentData
     protected String title;
 
     /**
+     * Document tab background color.
+     * Used to color tab and tab content background.
+     */
+    protected Color background;
+
+    /**
      * Document content.
      * A component that represents document tab content.
      */
@@ -60,17 +66,19 @@ public class DocumentData
     /**
      * Constructs new document.
      *
-     * @param id        document ID
-     * @param icon      document icon
-     * @param title     document title
-     * @param component document content
+     * @param id         document ID
+     * @param icon       document icon
+     * @param title      document title
+     * @param background document tab background color
+     * @param component  document content
      */
-    public DocumentData ( final String id, final Icon icon, final String title, final Component component )
+    public DocumentData ( final String id, final Icon icon, final String title, final Color background, final Component component )
     {
         super ();
         this.id = id;
         this.icon = icon;
         this.title = title;
+        this.background = background;
         this.component = component;
     }
 
@@ -142,6 +150,26 @@ public class DocumentData
     public void setTitle ( final String title )
     {
         this.title = title;
+    }
+
+    /**
+     * Returns document tab background color.
+     *
+     * @return document tab background color
+     */
+    public Color getBackground ()
+    {
+        return background;
+    }
+
+    /**
+     * Sets document tab background color.
+     *
+     * @param background document tab background color
+     */
+    public void setBackground ( final Color background )
+    {
+        this.background = background;
     }
 
     /**

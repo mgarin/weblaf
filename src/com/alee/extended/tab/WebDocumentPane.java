@@ -24,6 +24,7 @@ import com.alee.managers.drag.DragManager;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.TextUtils;
 import com.alee.utils.swing.AncestorAdapter;
+import com.alee.utils.swing.Customizer;
 
 import javax.swing.*;
 import javax.swing.event.AncestorEvent;
@@ -59,6 +60,16 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel implements
      * Last active pane.
      */
     protected PaneData<T> activePane;
+
+    /**
+     * Tabbed panes customizer.
+     */
+    protected Customizer<WebTabbedPane> tabbedPaneCustomizer;
+
+    /**
+     * Document customizer.
+     */
+    protected Customizer<T> documentCustomizer;
 
     /**
      * Whether documents can be closed or not.
@@ -111,6 +122,27 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel implements
                 DragManager.unregisterViewHandler ( dragViewHandler );
             }
         } );
+    }
+
+
+    public Customizer<WebTabbedPane> getTabbedPaneCustomizer ()
+    {
+        return tabbedPaneCustomizer;
+    }
+
+    public void setTabbedPaneCustomizer ( final Customizer<WebTabbedPane> customizer )
+    {
+        this.tabbedPaneCustomizer = customizer;
+    }
+
+    public Customizer<T> getDocumentCustomizer ()
+    {
+        return documentCustomizer;
+    }
+
+    public void setDocumentCustomizer ( final Customizer<T> customizer )
+    {
+        this.documentCustomizer = customizer;
     }
 
     public boolean isCloseable ()
@@ -215,7 +247,7 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel implements
     protected void init ()
     {
         // Creating data for root pane
-        final PaneData rootPane = new PaneData<T> ();
+        final PaneData rootPane = new PaneData<T> ( this );
 
         // Adding root pane
         add ( rootPane.getTabbedPane (), BorderLayout.CENTER );
@@ -259,7 +291,7 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel implements
             if ( splittedPane.getTabbedPane ().getParent () == WebDocumentPane.this )
             {
                 // Creating data for new pane
-                otherPane = new PaneData<T> ();
+                otherPane = new PaneData<T> ( this );
 
                 // Saving sizes to restore split locations
                 final Dimension size = splittedPane.getTabbedPane ().getSize ();
@@ -297,7 +329,7 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel implements
                 else
                 {
                     // Creating data for new pane
-                    otherPane = new PaneData<T> ();
+                    otherPane = new PaneData<T> ( this );
 
                     // Saving sizes to restore split locations
                     final int parentSplitLocation = parentSplitData.getSplitPane ().getDividerLocation ();
@@ -448,7 +480,18 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel implements
     }
 
     /**
-     * Marks new pane as active one.
+     * Returns currently active pane data.
+     * This is the last pane that had focus within this document pane.
+     *
+     * @return currently active pane data
+     */
+    public PaneData<T> getActivePane ()
+    {
+        return activePane;
+    }
+
+    /**
+     * Sets active pane.
      *
      * @param paneData new active pane
      */
@@ -457,11 +500,22 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel implements
         activePane = paneData;
     }
 
+    /**
+     * Returns selected document data.
+     *
+     * @return selected document data
+     */
     public T getSelectedDocument ()
     {
         return activePane != null ? activePane.getSelected () : null;
     }
 
+    /**
+     * Returns document at the specified tab index of the active pane.
+     *
+     * @param index active pane tab index
+     * @return document at the specified tab index of the active pane
+     */
     public T getDocument ( final int index )
     {
         return activePane != null ? activePane.get ( index ) : null;
@@ -480,6 +534,11 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel implements
         return null;
     }
 
+    /**
+     * Returns list of all available panes within this document pane.
+     *
+     * @return list of all available panes within this document pane
+     */
     public List<PaneData<T>> getAllPanes ()
     {
         final List<PaneData<T>> panes = new ArrayList<PaneData<T>> ();

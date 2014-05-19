@@ -45,6 +45,10 @@ import java.util.zip.ZipFile;
 public abstract class PluginManager<T extends Plugin>
 {
     /**
+     * todo 1. Allow to disable logging from this manager
+     */
+
+    /**
      * Plugins listeners.
      */
     protected List<PluginsListener<T>> listeners = new ArrayList<PluginsListener<T>> ( 1 );
@@ -441,7 +445,7 @@ public abstract class PluginManager<T extends Plugin>
 
             final File pluginFile = new File ( dp.getPluginFolder (), dp.getPluginFile () );
             final PluginInformation info = dp.getInformation ();
-            final String prefix = "[" + FileUtils.canonicalPath ( pluginFile ) + "] [" + info + "] ";
+            final String prefix = "[" + FileUtils.getRelativePath ( pluginFile, new File ( pluginsDirectoryPath ) ) + "] [" + info + "] ";
             try
             {
                 // Checking plugin type as we don't want (for example) to load server plugins on client side

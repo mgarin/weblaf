@@ -244,6 +244,20 @@ public final class FileUtils
     }
 
     /**
+     * Returns file path relative to specified folder or canonical path if file is not inside that folder.
+     *
+     * @param file   file to get relative path to
+     * @param folder one of file's parent folders
+     * @return file path relative to specified folder or canonical path if file is not inside that folder
+     */
+    public static String getRelativePath ( final File file, final File folder )
+    {
+        final String filePath = canonicalPath ( file );
+        final String folderPath = canonicalPath ( folder );
+        return filePath.startsWith ( folderPath ) ? filePath.substring ( folderPath.length () + 1 ) : filePath;
+    }
+
+    /**
      * Returns whether specified file's name can be edited.
      *
      * @param file file to edit
