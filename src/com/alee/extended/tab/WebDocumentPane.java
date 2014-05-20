@@ -42,6 +42,9 @@ import java.util.List;
 
 public class WebDocumentPane<T extends DocumentData> extends WebPanel implements SwingConstants
 {
+    /**
+     * Constant key used to put pane element data into the UI component.
+     */
     protected static final String DATA_KEY = "document.pane.data";
 
     /**
@@ -96,9 +99,24 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel implements
      */
     protected boolean tabMenuEnabled = true;
 
+    /**
+     * Constructs new document pane.
+     */
     public WebDocumentPane ()
     {
+        this ( null, null );
+    }
+
+    /**
+     * Constructs new document pane.
+     */
+    public WebDocumentPane ( final Customizer<WebTabbedPane> tabbedPaneCustomizer, final Customizer<WebSplitPane> splitPaneCustomizer )
+    {
         super ( "document-pane" );
+
+        // Customizers
+        this.tabbedPaneCustomizer = tabbedPaneCustomizer;
+        this.splitPaneCustomizer = splitPaneCustomizer;
 
         // Generating unique document pane ID
         this.id = TextUtils.generateId ( "WDP" );
@@ -124,6 +142,10 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel implements
         } );
     }
 
+    public String getId ()
+    {
+        return id;
+    }
 
     public Customizer<WebTabbedPane> getTabbedPaneCustomizer ()
     {
@@ -395,7 +417,7 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel implements
             if ( parent instanceof WebSplitPane )
             {
                 final WebSplitPane splitPane = ( WebSplitPane ) parent;
-                mergeImpl ( getData ( splitPane ) );
+                mergeImpl ( ( SplitData<T> ) getData ( splitPane ) );
 
                 // Updating document pane view
                 revalidate ();
@@ -413,6 +435,11 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel implements
         }
     }
 
+    /**
+     * Merges specified split element and its sub-elements if it is possible.
+     *
+     * @param splitData split element to merge
+     */
     protected void mergeImpl ( final SplitData<T> splitData )
     {
         final StructureData first = splitData.getFirst ();
@@ -480,11 +507,6 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel implements
             // Restoring divider location
             parentSplit.setDividerLocation ( dividerLocation );
         }
-    }
-
-    protected boolean isEmptyPane ( final StructureData data )
-    {
-        return data instanceof PaneData && ( ( PaneData<T> ) data ).count () == 0;
     }
 
     /**
@@ -642,6 +664,11 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel implements
         }
     }
 
+    /**
+     * Closes document at the specified index in the active pane.
+     *
+     * @param index index of the document to close
+     */
     public void closeDocument ( final int index )
     {
         if ( activePane != null )
@@ -650,6 +677,11 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel implements
         }
     }
 
+    /**
+     * Closes document with the specified ID.
+     *
+     * @param id ID of the document to close
+     */
     public void closeDocument ( final String id )
     {
         for ( final PaneData<T> paneData : getAllPanes () )
@@ -658,21 +690,54 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel implements
         }
     }
 
+    /**
+     * Closes the specified document.
+     *
+     * @param document document to close
+     */
     public void closeDocument ( final T document )
     {
         for ( final PaneData<T> paneData : getAllPanes () )
         {
-            paneData.close ( document );
+            if ( paneData.close ( document ) )
+            {
+                break;
+            }
         }
     }
 
-    public PaneData<T> getData ( final WebTabbedPane tabbedPane )
+    /**
+     * Returns pane data stored inside the tabbed pane component.
+     *
+     * @param tabbedPane tabbed pane component
+     * @param <T>        document type
+     * @return pane data stored inside the tabbed pane component
+     */
+    public static <T extends DocumentData> PaneData<T> getData ( final WebTabbedPane tabbedPane )
     {
         return ( PaneData<T> ) tabbedPane.getClientProperty ( DATA_KEY );
     }
 
-    public SplitData<T> getData ( final WebSplitPane splitPane )
+    /**
+     * Returns split data stored inside the split pane component.
+     *
+     * @param splitPane split pane component
+     * @param <T>       document type
+     * @return split data stored inside the split pane component
+     */
+    public static <T extends DocumentData> SplitData<T> getData ( final WebSplitPane splitPane )
     {
         return ( SplitData<T> ) splitPane.getClientProperty ( DATA_KEY );
+    }
+
+    /**
+     * Returns whether the specified element is an empty pane or not.
+     *
+     * @param data structure element to check
+     * @return true if the specified element is an empty pane, false otherwise
+     */
+    public static boolean isEmptyPane ( final StructureData data )
+    {
+        return data instanceof PaneData && ( ( PaneData ) data ).count () == 0;
     }
 }

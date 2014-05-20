@@ -1535,6 +1535,16 @@
                 <value lang="pt">Mover para grupo inferior</value>
                 <value lang="de">Nach ganz unten Gruppe</value>
             </record>
+            <record key="rotate">
+                <value lang="en">Change split orientation</value>
+                <value lang="ru">Сменить ориентацию разделителя</value>
+                <value lang="pl">Zmienić orientację podziału</value>
+                <value lang="ar">تغيير اتجاه الانقسام</value>
+                <value lang="es">Cambiar la orientación de división</value>
+                <value lang="fr">Changer l'orientation scission</value>
+                <value lang="pt">Altere a orientação de divisão</value>
+                <value lang="de">Ändern Sie Split-Orientierung</value>
+            </record>
             <record key="unsplit">
                 <value lang="en">Combine groups</value>
                 <value lang="ru">Объединить группы</value>

@@ -23,6 +23,9 @@ import com.alee.utils.swing.Customizer;
 import java.awt.*;
 
 /**
+ * Data for single split pane within document pane.
+ * It basically contains split pane and links to two other elements contained within split pane.
+ *
  * @author Mikle Garin
  */
 
@@ -56,6 +59,12 @@ public final class SplitData<T extends DocumentData> implements StructureData<T>
         splitPane.setDividerSize ( 8 );
         splitPane.setResizeWeight ( 0.5f );
         return splitPane;
+    }
+
+    protected void changeSplitOrientation ()
+    {
+        orientation = orientation == WebSplitPane.HORIZONTAL_SPLIT ? WebSplitPane.VERTICAL_SPLIT : WebSplitPane.HORIZONTAL_SPLIT;
+        splitPane.setOrientation ( orientation );
     }
 
     protected void updateSplitPaneCustomizer ( final WebDocumentPane<T> documentPane )
