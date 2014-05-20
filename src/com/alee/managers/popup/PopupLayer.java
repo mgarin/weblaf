@@ -108,6 +108,7 @@ public class PopupLayer extends WebPanel
         add ( popup, 0 );
 
         // Updating popup position and content
+        setVisible ( true );
         popup.revalidate ();
         popup.repaint ();
     }

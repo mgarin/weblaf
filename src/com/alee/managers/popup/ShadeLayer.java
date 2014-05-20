@@ -100,6 +100,9 @@ public class ShadeLayer extends PopupLayer
      */
     public void showPopup ( final WebPopup popup, final boolean hfill, final boolean vfill )
     {
+        // Informing that popup will now become visible
+        popup.firePopupWillBeOpened ();
+
         // Updating layout settings
         final LayoutManager layoutManager = getLayout ();
         if ( layoutManager instanceof AlignLayout )
@@ -109,10 +112,12 @@ public class ShadeLayer extends PopupLayer
             layout.setVfill ( vfill );
         }
 
+        // Updating popup layer
+        setBounds ( new Rectangle ( 0, 0, getParent ().getWidth (), getParent ().getHeight () ) );
+
         // Adding popup
         removeAll ();
         add ( popup, SwingConstants.CENTER + AlignLayout.SEPARATOR + SwingConstants.CENTER, 0 );
-        setBounds ( new Rectangle ( 0, 0, getParent ().getWidth (), getParent ().getHeight () ) );
         setVisible ( true );
         revalidate ();
         repaint ();

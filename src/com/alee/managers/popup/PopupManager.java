@@ -251,10 +251,24 @@ public final class PopupManager
      */
     public static void showModalPopup ( final Component component, final WebPopup popup, final boolean hfill, final boolean vfill )
     {
+        showModalPopup ( component, popup, hfill, vfill, false );
+    }
+
+    /**
+     * Displays popup as modal for the root pane containing specified component.
+     *
+     * @param component component used to determine root pane for which modal popup will be displayed
+     * @param popup     popup to display
+     * @param hfill     whether popup should fill the whole available width or not
+     * @param vfill     whether popup should fill the whole available height or not
+     */
+    public static void showModalPopup ( final Component component, final WebPopup popup, final boolean hfill, final boolean vfill,
+                                        final boolean blockClose )
+    {
         final JRootPane rootPane = SwingUtils.getRootPane ( component );
         if ( rootPane != null )
         {
-            showModalPopup ( rootPane, popup, hfill, vfill );
+            showModalPopup ( rootPane, popup, hfill, vfill, blockClose );
         }
     }
 
@@ -268,11 +282,27 @@ public final class PopupManager
      */
     public static void showModalPopup ( final JRootPane rootPane, final WebPopup popup, final boolean hfill, final boolean vfill )
     {
+        showModalPopup ( rootPane, popup, hfill, vfill, false );
+    }
+
+    /**
+     * Displays popup as modal for the specified root pane.
+     *
+     * @param rootPane root pane used to display modal popup
+     * @param popup    popup to display
+     * @param hfill    whether popup should fill the whole available width or not
+     * @param vfill    whether popup should fill the whole available height or not
+     */
+    public static void showModalPopup ( final JRootPane rootPane, final WebPopup popup, final boolean hfill, final boolean vfill,
+                                        final boolean blockClose )
+    {
         // Hiding all modal and simple popups inside root pane
         hideAllPopups ( rootPane );
 
         // Displaying new modal popup
-        getShadeLayer ( rootPane ).showPopup ( popup, hfill, vfill );
+        final ShadeLayer shadeLayer = getShadeLayer ( rootPane );
+        shadeLayer.setBlockClose ( blockClose );
+        shadeLayer.showPopup ( popup, hfill, vfill );
 
         // Transfering focus to first focusable component in the popup
         popup.transferFocus ();
@@ -284,8 +314,12 @@ public final class PopupManager
      * @param rootPane root pane for the shade layer
      * @return cached shade layer for the specified root pane
      */
-    private static ShadeLayer getShadeLayer ( final JRootPane rootPane )
+    public static ShadeLayer getShadeLayer ( final JRootPane rootPane )
     {
+        if ( rootPane == null )
+        {
+            throw new RuntimeException ( "JRootPane for PopupLayer cannot be found" );
+        }
         if ( shadeLayers.containsKey ( rootPane ) )
         {
             return shadeLayers.get ( rootPane );
@@ -295,7 +329,7 @@ public final class PopupManager
             final JLayeredPane layeredPane = rootPane.getLayeredPane ();
             if ( layeredPane == null )
             {
-                throw new IllegalArgumentException ( "Popup layer can be installed only into window or applet with JLayeredPane" );
+                throw new RuntimeException ( "Popup layer can be installed only into window or applet with JLayeredPane" );
             }
 
             final ShadeLayer shadeLayer = new ShadeLayer ();
