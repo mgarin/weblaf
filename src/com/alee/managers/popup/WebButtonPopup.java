@@ -338,6 +338,7 @@ public class WebButtonPopup extends WebPopup
 
     private void copySettings ( final WebButton button, final WebButton copy )
     {
+        copy.setFont ( button.getFont () );
         copy.setIcon ( button.getIcon () );
         copy.setText ( button.getText () );
         copy.setIconTextGap ( button.getIconTextGap () );
