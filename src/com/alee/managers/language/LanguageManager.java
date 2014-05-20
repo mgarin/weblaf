@@ -1359,7 +1359,7 @@ public final class LanguageManager implements LanguageConstants
      * @param key language key to check
      * @return whether specified language key exists or not
      */
-    public static boolean exists ( final String key )
+    public static boolean contains ( final String key )
     {
         return globalCache.containsKey ( key );
     }

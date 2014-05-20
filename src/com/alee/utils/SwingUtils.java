@@ -166,8 +166,7 @@ public final class SwingUtils
      */
     public static boolean isLeftMouseButton ( final MouseEvent e )
     {
-        return e.getButton () == MouseEvent.BUTTON1;
-        // return ( e.getModifiers () & InputEvent.BUTTON1_MASK ) != 0;
+        return ( e.getModifiers () & InputEvent.BUTTON1_MASK ) != 0;
     }
 
     /**
@@ -178,8 +177,7 @@ public final class SwingUtils
      */
     public static boolean isMiddleMouseButton ( final MouseEvent e )
     {
-        return e.getButton () == MouseEvent.BUTTON2;
-        // return ( e.getModifiers () & InputEvent.BUTTON2_MASK ) == InputEvent.BUTTON2_MASK;
+        return ( e.getModifiers () & InputEvent.BUTTON2_MASK ) == InputEvent.BUTTON2_MASK;
     }
 
     /**
@@ -190,8 +188,7 @@ public final class SwingUtils
      */
     public static boolean isRightMouseButton ( final MouseEvent e )
     {
-        return e.getButton () == MouseEvent.BUTTON3;
-        // return ( e.getModifiers () & InputEvent.BUTTON3_MASK ) == InputEvent.BUTTON3_MASK;
+        return ( e.getModifiers () & InputEvent.BUTTON3_MASK ) == InputEvent.BUTTON3_MASK;
     }
 
     /**

@@ -18,6 +18,7 @@
 package com.alee.extended.tab;
 
 import com.alee.laf.splitpane.WebSplitPane;
+import com.alee.utils.swing.Customizer;
 
 import java.awt.*;
 
@@ -32,13 +33,18 @@ public final class SplitData<T extends DocumentData> implements StructureData<T>
     protected StructureData first;
     protected StructureData last;
 
-    public SplitData ( final int orientation, final StructureData first, final StructureData last )
+    public SplitData ( final WebDocumentPane<T> documentPane, final int orientation, final StructureData first, final StructureData last )
     {
         super ();
-        this.splitPane = createSplit ( orientation, first, last );
         this.orientation = orientation;
         this.first = first;
         this.last = last;
+
+        // Creating split pane
+        this.splitPane = createSplit ( orientation, first, last );
+
+        // Customizing split pane
+        updateSplitPaneCustomizer ( documentPane );
     }
 
     protected WebSplitPane createSplit ( final int orientation, final StructureData first, final StructureData last )
@@ -50,6 +56,15 @@ public final class SplitData<T extends DocumentData> implements StructureData<T>
         splitPane.setDividerSize ( 8 );
         splitPane.setResizeWeight ( 0.5f );
         return splitPane;
+    }
+
+    protected void updateSplitPaneCustomizer ( final WebDocumentPane<T> documentPane )
+    {
+        final Customizer<WebSplitPane> customizer = documentPane.getSplitPaneCustomizer ();
+        if ( customizer != null )
+        {
+            customizer.customize ( splitPane );
+        }
     }
 
     @Override

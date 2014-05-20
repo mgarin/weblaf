@@ -39,6 +39,18 @@ public class LM implements LanguageConstants
         return LanguageManager.get ( key );
     }
 
+
+    /**
+     * Returns whether specified language key exists or not.
+     *
+     * @param key language key to check
+     * @return whether specified language key exists or not
+     */
+    public static boolean contains ( final String key )
+    {
+        return LanguageManager.contains ( key );
+    }
+
     /**
      * Returns mnemonic for specified language key.
      *

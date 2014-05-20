@@ -69,7 +69,7 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel implements
     /**
      * Document customizer.
      */
-    protected Customizer<T> documentCustomizer;
+    protected Customizer<WebSplitPane> splitPaneCustomizer;
 
     /**
      * Whether documents can be closed or not.
@@ -133,16 +133,24 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel implements
     public void setTabbedPaneCustomizer ( final Customizer<WebTabbedPane> customizer )
     {
         this.tabbedPaneCustomizer = customizer;
+        for ( final PaneData<T> paneData : getAllPanes () )
+        {
+            paneData.updateTabbedPaneCustomizer ( this );
+        }
     }
 
-    public Customizer<T> getDocumentCustomizer ()
+    public Customizer<WebSplitPane> getSplitPaneCustomizer ()
     {
-        return documentCustomizer;
+        return splitPaneCustomizer;
     }
 
-    public void setDocumentCustomizer ( final Customizer<T> customizer )
+    public void setSplitPaneCustomizer ( final Customizer<WebSplitPane> customizer )
     {
-        this.documentCustomizer = customizer;
+        this.splitPaneCustomizer = customizer;
+        for ( final SplitData<T> paneData : getAllSplitPanes () )
+        {
+            paneData.updateSplitPaneCustomizer ( this );
+        }
     }
 
     public boolean isCloseable ()
@@ -299,7 +307,7 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel implements
                 // Adding root split
                 final PaneData<T> first = ltr ? splittedPane : otherPane;
                 final PaneData<T> last = ltr ? otherPane : splittedPane;
-                final SplitData<T> splitData = new SplitData<T> ( orientation, first, last );
+                final SplitData<T> splitData = new SplitData<T> ( WebDocumentPane.this, orientation, first, last );
                 remove ( splittedPane.getTabbedPane () );
                 add ( splitData.getSplitPane (), BorderLayout.CENTER );
 
@@ -338,7 +346,7 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel implements
                     // Adding inner split
                     final PaneData<T> first = ltr ? splittedPane : otherPane;
                     final PaneData<T> last = ltr ? otherPane : splittedPane;
-                    final SplitData<T> splitData = new SplitData<T> ( orientation, first, last );
+                    final SplitData<T> splitData = new SplitData<T> ( WebDocumentPane.this, orientation, first, last );
                     parentSplitData.replace ( splittedPane, splitData );
 
                     // Restoring split locations
@@ -557,6 +565,29 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel implements
             final SplitData<T> splitData = ( SplitData<T> ) structureData;
             collectPanes ( splitData.getFirst (), panes );
             collectPanes ( splitData.getLast (), panes );
+        }
+    }
+
+    /**
+     * Returns list of all available split panes within this document pane.
+     *
+     * @return list of all available split panes within this document pane
+     */
+    public List<SplitData<T>> getAllSplitPanes ()
+    {
+        final List<SplitData<T>> panes = new ArrayList<SplitData<T>> ();
+        collectSplitPanes ( root, panes );
+        return panes;
+    }
+
+    protected void collectSplitPanes ( final StructureData structureData, final List<SplitData<T>> panes )
+    {
+        if ( structureData instanceof SplitData )
+        {
+            final SplitData<T> splitData = ( SplitData<T> ) structureData;
+            panes.add ( splitData );
+            collectSplitPanes ( splitData.getFirst (), panes );
+            collectSplitPanes ( splitData.getLast (), panes );
         }
     }
 

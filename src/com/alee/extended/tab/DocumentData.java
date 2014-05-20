@@ -66,6 +66,43 @@ public class DocumentData
     /**
      * Constructs new document.
      *
+     * @param id        document ID
+     * @param title     document title
+     * @param component document content
+     */
+    public DocumentData ( final String id, final String title, final Component component )
+    {
+        this ( id, null, title, null, component );
+    }
+
+    /**
+     * Constructs new document.
+     *
+     * @param id        document ID
+     * @param icon      document icon
+     * @param component document content
+     */
+    public DocumentData ( final String id, final Icon icon, final Component component )
+    {
+        this ( id, icon, null, null, component );
+    }
+
+    /**
+     * Constructs new document.
+     *
+     * @param id        document ID
+     * @param icon      document icon
+     * @param title     document title
+     * @param component document content
+     */
+    public DocumentData ( final String id, final Icon icon, final String title, final Component component )
+    {
+        this ( id, icon, title, null, component );
+    }
+
+    /**
+     * Constructs new document.
+     *
      * @param id         document ID
      * @param icon       document icon
      * @param title      document title

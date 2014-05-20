@@ -377,7 +377,8 @@ public class WebColorChooserField extends WebTextField
                                         final Point p = MouseInfo.getPointerInfo ().getLocation ();
                                         screenshot = robot.createScreenCapture (
                                                 new Rectangle ( p.x - pipettePixels / 2, p.y - pipettePixels / 2, pipettePixels,
-                                                        pipettePixels ) );
+                                                        pipettePixels )
+                                        );
                                         color = new Color ( screenshot.getRGB ( pipettePixels / 2, pipettePixels / 2 ) );
                                         if ( screen != null )
                                         {

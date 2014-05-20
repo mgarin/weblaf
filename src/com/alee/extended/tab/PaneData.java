@@ -28,6 +28,7 @@ import com.alee.managers.focus.FocusManager;
 import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.hotkey.HotkeyManager;
 import com.alee.managers.hotkey.HotkeyRunnable;
+import com.alee.managers.language.LM;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.Customizer;
 import com.alee.utils.swing.menu.PopupMenuGenerator;
@@ -61,11 +62,7 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
         tabbedPane.putClientProperty ( WebDocumentPane.DATA_KEY, this );
 
         // Customizing tabbed pane
-        final Customizer<WebTabbedPane> customizer = documentPane.getTabbedPaneCustomizer ();
-        if ( customizer != null )
-        {
-            customizer.customize ( tabbedPane );
-        }
+        updateTabbedPaneCustomizer ( documentPane );
 
         // Some hotkeys
         HotkeyManager.registerHotkey ( tabbedPane, tabbedPane, Hotkey.CTRL_W, new HotkeyRunnable ()
@@ -205,6 +202,15 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
         FocusManager.addFocusTracker ( tabbedPane, focusTracker );
     }
 
+    protected void updateTabbedPaneCustomizer ( final WebDocumentPane<T> documentPane )
+    {
+        final Customizer<WebTabbedPane> customizer = documentPane.getTabbedPaneCustomizer ();
+        if ( customizer != null )
+        {
+            customizer.customize ( tabbedPane );
+        }
+    }
+
     @Override
     public Component getComponent ()
     {
@@ -254,13 +260,6 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
         tabbedPane.insertTab ( "", document.getIcon (), document.getComponent (), null, i );
         tabbedPane.setBackgroundAt ( i, document.getBackground () );
         tabbedPane.setTabComponentAt ( i, createTabComponent ( document ) );
-
-        // Customizing document
-        final Customizer<T> customizer = getDocumentPane ().getDocumentCustomizer ();
-        if ( customizer != null )
-        {
-            customizer.customize ( document );
-        }
     }
 
     protected JComponent createTabComponent ( final T document )
@@ -268,8 +267,26 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
         final WebPanel tabPanel = new WebPanel ( new BorderLayout ( 2, 0 ) );
         tabPanel.setOpaque ( false );
 
-        tabPanel.add ( document.getTitle () == null ? WebLabel.createTranslatedLabel ( document.getIcon (), document.getId () ) :
-                new WebLabel ( document.getTitle (), document.getIcon () ), BorderLayout.CENTER );
+        // Creating title component
+        final String title = document.getTitle ();
+        if ( title != null )
+        {
+            if ( LM.contains ( title ) )
+            {
+                // Tab with translated title and icon
+                tabPanel.add ( WebLabel.createTranslatedLabel ( document.getIcon (), title ), BorderLayout.CENTER );
+            }
+            else
+            {
+                // Tab with simple title and icon
+                tabPanel.add ( new WebLabel ( title, document.getIcon () ), BorderLayout.CENTER );
+            }
+        }
+        else
+        {
+            // Tab with icon only
+            tabPanel.add ( new WebLabel ( document.getIcon () ), BorderLayout.CENTER );
+        }
 
         final WebButton closeButton = new WebButton ( closeTabIcon, closeTabRolloverIcon );
         closeButton.setUndecorated ( true );
