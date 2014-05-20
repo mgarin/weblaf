@@ -380,7 +380,8 @@ public class WebButtonPopup extends WebPopup
             {
                 setBounds (
                         new Rectangle ( new Point ( rl.x + button.getWidth () / 2 - ps.width / 2, rl.y + button.getHeight () - ps.height ),
-                                ps ) );
+                                ps )
+                );
             }
             else if ( popupWay.equals ( PopupWay.upRight ) )
             {
@@ -396,7 +397,8 @@ public class WebButtonPopup extends WebPopup
             {
                 setBounds (
                         new Rectangle ( new Point ( rl.x + button.getWidth () - ps.width, rl.y + button.getHeight () / 2 - ps.height / 2 ),
-                                ps ) );
+                                ps )
+                );
             }
             else if ( popupWay.equals ( PopupWay.leftDown ) )
             {
