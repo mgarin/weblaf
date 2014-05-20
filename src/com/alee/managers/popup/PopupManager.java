@@ -217,6 +217,10 @@ public final class PopupManager
      */
     public static PopupLayer getPopupLayer ( final JRootPane rootPane )
     {
+        if ( rootPane == null )
+        {
+            throw new RuntimeException ( "JRootPane for PopupLayer cannot be found" );
+        }
         if ( popupLayers.containsKey ( rootPane ) )
         {
             return popupLayers.get ( rootPane );
@@ -226,7 +230,7 @@ public final class PopupManager
             final JLayeredPane layeredPane = rootPane.getLayeredPane ();
             if ( layeredPane == null )
             {
-                throw new IllegalArgumentException ( "Popup layer can be installed only into window or applet with JLayeredPane" );
+                throw new RuntimeException ( "Popup layer can be installed only into window or applet with JLayeredPane" );
             }
 
             final PopupLayer popupLayer = new PopupLayer ();
