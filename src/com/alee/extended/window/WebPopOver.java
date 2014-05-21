@@ -30,6 +30,7 @@ import com.alee.utils.laf.Styleable;
 import com.alee.utils.swing.DataProvider;
 import com.alee.utils.swing.WindowFollowAdapter;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
@@ -190,6 +191,7 @@ public class WebPopOver extends WebDialog implements Styleable
     {
         super.initialize ();
 
+        getRootPane ().setWindowDecorationStyle ( JRootPane.NONE );
         setUndecorated ( true );
         setWindowOpaque ( false );
 
