@@ -1116,7 +1116,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
      *
      * @param allow whether per-pixel transparent windows usage is allowed on Linux systems or not
      */
-    public static void setAllowLinuxTransparency ( boolean allow )
+    public static void setAllowLinuxTransparency ( final boolean allow )
     {
         WebLookAndFeel.allowLinuxTransparency = allow;
     }
