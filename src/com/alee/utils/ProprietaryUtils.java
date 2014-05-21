@@ -18,6 +18,7 @@
 package com.alee.utils;
 
 import com.alee.laf.StyleConstants;
+import com.alee.laf.WebLookAndFeel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -85,7 +86,8 @@ public final class ProprietaryUtils
         {
             // Replace when Unix-systems will have proper support for transparency
             // com.sun.awt.AWTUtilities.isTranslucencySupported ( com.sun.awt.AWTUtilities.Translucency.PERPIXEL_TRANSPARENT )
-            return SystemUtils.isWindows () || SystemUtils.isMac () || SystemUtils.isSolaris ();
+            return WebLookAndFeel.isAllowLinuxTransparency () ||
+                    SystemUtils.isWindows () || SystemUtils.isMac () || SystemUtils.isSolaris ();
         }
         catch ( final Throwable e )
         {

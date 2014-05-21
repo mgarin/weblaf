@@ -159,6 +159,12 @@ public class WebLookAndFeel extends BasicLookAndFeel
     private static boolean decorateDialogs = false;
 
     /**
+     * Allow per-pixel transparent windows usage on Linux systems.
+     * This might be an unstable feature so it is disabled by default.
+     */
+    private static boolean allowLinuxTransparency = false;
+
+    /**
      * Reassignable LookAndFeel UI class names.
      */
 
@@ -498,7 +504,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
      *
      * @param table UI defaults table
      */
-    @SuppressWarnings ("UnnecessaryBoxing")
+    @SuppressWarnings ( "UnnecessaryBoxing" )
     @Override
     protected void initComponentDefaults ( final UIDefaults table )
     {
@@ -1092,6 +1098,27 @@ public class WebLookAndFeel extends BasicLookAndFeel
     {
         WebLookAndFeel.decorateDialogs = decorateDialogs;
         JDialog.setDefaultLookAndFeelDecorated ( decorateDialogs );
+    }
+
+    /**
+     * Returns whether per-pixel transparent windows usage is allowed on Linux systems or not.
+     *
+     * @return true if per-pixel transparent windows usage is allowed on Linux systems, false otherwise
+     */
+    public static boolean isAllowLinuxTransparency ()
+    {
+        return allowLinuxTransparency;
+    }
+
+    /**
+     * Sets whether per-pixel transparent windows usage is allowed on Linux systems or not.
+     * This might be an unstable feature so it is disabled by default. Use it at your own risk.
+     *
+     * @param allow whether per-pixel transparent windows usage is allowed on Linux systems or not
+     */
+    public static void setAllowLinuxTransparency ( boolean allow )
+    {
+        WebLookAndFeel.allowLinuxTransparency = allow;
     }
 
     /**
