@@ -55,7 +55,7 @@ public class WebCheckBoxUI extends BasicCheckBoxUI implements ShapeProvider
     /**
      * Animation updates delay in milliseconds.
      */
-    public static final int UPDATE_DELAY = 40;
+    public static final long UPDATE_DELAY = 40L;
 
     /**
      * Background gradient fractions.

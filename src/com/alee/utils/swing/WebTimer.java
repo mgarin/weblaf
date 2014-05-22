@@ -55,6 +55,16 @@ public class WebTimer
     public static String defaultThreadName = "WebTimer";
 
     /**
+     * Default cycles number limit.
+     */
+    public static int defaultCyclesLimit = 0;
+
+    /**
+     * Whether EDT should be used as the default timer action execution thread.
+     */
+    public static boolean useEdtByDefault = true;
+
+    /**
      * Timer event listeners list.
      */
     protected final List<ActionListener> listeners = new ArrayList<ActionListener> ( 1 );
@@ -912,6 +922,7 @@ public class WebTimer
     /**
      * {@inheritDoc}
      */
+    @Override
     public String toString ()
     {
         return name + ", delay (" + getStringDelay () + "), initialDelay (" + getInitialStringDelay () + ")";
@@ -1041,7 +1052,23 @@ public class WebTimer
      */
     public static WebTimer repeat ( final String delay, final ActionListener listener )
     {
-        return repeat ( parseDelay ( delay ), listener );
+        final long pd = parseDelay ( delay );
+        return repeat ( defaultThreadName, pd, pd, defaultCyclesLimit, useEdtByDefault, listener );
+    }
+
+    /**
+     * Returns newly created and started timer that repeats and has the specified delay and action listener.
+     *
+     * @param delay       delay between timer cycles
+     * @param cyclesLimit timer cycles execution limit
+     * @param listener    action listener
+     * @return newly created and started timer
+     * @see #parseDelay(String)
+     */
+    public static WebTimer repeat ( final String delay, final int cyclesLimit, final ActionListener listener )
+    {
+        final long pd = parseDelay ( delay );
+        return repeat ( defaultThreadName, pd, pd, cyclesLimit, useEdtByDefault, listener );
     }
 
     /**
@@ -1053,7 +1080,20 @@ public class WebTimer
      */
     public static WebTimer repeat ( final long delay, final ActionListener listener )
     {
-        return repeat ( defaultThreadName, delay, listener );
+        return repeat ( defaultThreadName, delay, delay, defaultCyclesLimit, useEdtByDefault, listener );
+    }
+
+    /**
+     * Returns newly created and started timer that repeats and has the specified delay and action listener.
+     *
+     * @param delay       delay between timer cycles in milliseconds
+     * @param cyclesLimit timer cycles execution limit
+     * @param listener    action listener
+     * @return newly created and started timer
+     */
+    public static WebTimer repeat ( final long delay, final int cyclesLimit, final ActionListener listener )
+    {
+        return repeat ( defaultThreadName, delay, delay, cyclesLimit, useEdtByDefault, listener );
     }
 
     /**
@@ -1067,7 +1107,24 @@ public class WebTimer
      */
     public static WebTimer repeat ( final String name, final String delay, final ActionListener listener )
     {
-        return repeat ( name, parseDelay ( delay ), listener );
+        final long pd = parseDelay ( delay );
+        return repeat ( name, pd, pd, defaultCyclesLimit, useEdtByDefault, listener );
+    }
+
+    /**
+     * Returns newly created and started timer that repeats and has the specified delay and action listener.
+     *
+     * @param name        thread name
+     * @param delay       delay between timer cycles
+     * @param cyclesLimit timer cycles execution limit
+     * @param listener    action listener
+     * @return newly created and started timer
+     * @see #parseDelay(String)
+     */
+    public static WebTimer repeat ( final String name, final String delay, final int cyclesLimit, final ActionListener listener )
+    {
+        final long pd = parseDelay ( delay );
+        return repeat ( name, pd, pd, cyclesLimit, useEdtByDefault, listener );
     }
 
     /**
@@ -1080,7 +1137,21 @@ public class WebTimer
      */
     public static WebTimer repeat ( final String name, final long delay, final ActionListener listener )
     {
-        return repeat ( name, delay, delay, true, listener );
+        return repeat ( name, delay, delay, defaultCyclesLimit, useEdtByDefault, listener );
+    }
+
+    /**
+     * Returns newly created and started timer that repeats and has the specified delay and action listener.
+     *
+     * @param name        thread name
+     * @param delay       delay between timer cycles in milliseconds
+     * @param cyclesLimit timer cycles execution limit
+     * @param listener    action listener
+     * @return newly created and started timer
+     */
+    public static WebTimer repeat ( final String name, final long delay, final int cyclesLimit, final ActionListener listener )
+    {
+        return repeat ( name, delay, delay, cyclesLimit, useEdtByDefault, listener );
     }
 
     /**
@@ -1094,7 +1165,25 @@ public class WebTimer
      */
     public static WebTimer repeat ( final String delay, final boolean useEventDispatchThread, final ActionListener listener )
     {
-        return repeat ( parseDelay ( delay ), useEventDispatchThread, listener );
+        final long pd = parseDelay ( delay );
+        return repeat ( defaultThreadName, pd, pd, defaultCyclesLimit, useEventDispatchThread, listener );
+    }
+
+    /**
+     * Returns newly created and started timer that repeats and has the specified delay and action listener.
+     *
+     * @param delay                  delay between timer cycles
+     * @param cyclesLimit            timer cycles execution limit
+     * @param useEventDispatchThread whether actions should be fired from Event Dispatch Thread or not
+     * @param listener               action listener
+     * @return newly created and started timer
+     * @see #parseDelay(String)
+     */
+    public static WebTimer repeat ( final String delay, final int cyclesLimit, final boolean useEventDispatchThread,
+                                    final ActionListener listener )
+    {
+        final long pd = parseDelay ( delay );
+        return repeat ( defaultThreadName, pd, pd, cyclesLimit, useEventDispatchThread, listener );
     }
 
     /**
@@ -1107,7 +1196,22 @@ public class WebTimer
      */
     public static WebTimer repeat ( final long delay, final boolean useEventDispatchThread, final ActionListener listener )
     {
-        return repeat ( defaultThreadName, delay, useEventDispatchThread, listener );
+        return repeat ( defaultThreadName, delay, delay, defaultCyclesLimit, useEventDispatchThread, listener );
+    }
+
+    /**
+     * Returns newly created and started timer that repeats and has the specified delay and action listener.
+     *
+     * @param delay                  delay between timer cycles in milliseconds
+     * @param cyclesLimit            timer cycles execution limit
+     * @param useEventDispatchThread whether actions should be fired from Event Dispatch Thread or not
+     * @param listener               action listener
+     * @return newly created and started timer
+     */
+    public static WebTimer repeat ( final long delay, final int cyclesLimit, final boolean useEventDispatchThread,
+                                    final ActionListener listener )
+    {
+        return repeat ( defaultThreadName, delay, delay, cyclesLimit, useEventDispatchThread, listener );
     }
 
     /**
@@ -1123,7 +1227,26 @@ public class WebTimer
     public static WebTimer repeat ( final String name, final String delay, final boolean useEventDispatchThread,
                                     final ActionListener listener )
     {
-        return repeat ( name, parseDelay ( delay ), useEventDispatchThread, listener );
+        final long pd = parseDelay ( delay );
+        return repeat ( name, pd, pd, defaultCyclesLimit, useEventDispatchThread, listener );
+    }
+
+    /**
+     * Returns newly created and started timer that repeats and has the specified delay and action listener.
+     *
+     * @param name                   thread name
+     * @param delay                  delay between timer cycles
+     * @param cyclesLimit            timer cycles execution limit
+     * @param useEventDispatchThread whether actions should be fired from Event Dispatch Thread or not
+     * @param listener               action listener
+     * @return newly created and started timer
+     * @see #parseDelay(String)
+     */
+    public static WebTimer repeat ( final String name, final String delay, final int cyclesLimit, final boolean useEventDispatchThread,
+                                    final ActionListener listener )
+    {
+        final long pd = parseDelay ( delay );
+        return repeat ( name, pd, pd, cyclesLimit, useEventDispatchThread, listener );
     }
 
     /**
@@ -1138,7 +1261,23 @@ public class WebTimer
     public static WebTimer repeat ( final String name, final long delay, final boolean useEventDispatchThread,
                                     final ActionListener listener )
     {
-        return repeat ( name, delay, delay, useEventDispatchThread, listener );
+        return repeat ( name, delay, delay, defaultCyclesLimit, useEventDispatchThread, listener );
+    }
+
+    /**
+     * Returns newly created and started timer that repeats and has the specified delay and action listener.
+     *
+     * @param name                   thread name
+     * @param delay                  delay between timer cycles in milliseconds
+     * @param cyclesLimit            timer cycles execution limit
+     * @param useEventDispatchThread whether actions should be fired from Event Dispatch Thread or not
+     * @param listener               action listener
+     * @return newly created and started timer
+     */
+    public static WebTimer repeat ( final String name, final long delay, final int cyclesLimit, final boolean useEventDispatchThread,
+                                    final ActionListener listener )
+    {
+        return repeat ( name, delay, delay, cyclesLimit, useEventDispatchThread, listener );
     }
 
     /**
@@ -1151,7 +1290,21 @@ public class WebTimer
      */
     public static WebTimer repeat ( final long delay, final long initialDelay, final ActionListener listener )
     {
-        return repeat ( defaultThreadName, delay, initialDelay, listener );
+        return repeat ( defaultThreadName, delay, initialDelay, defaultCyclesLimit, useEdtByDefault, listener );
+    }
+
+    /**
+     * Returns newly created and started timer that repeats and has the specified delay, initial delay and action listener.
+     *
+     * @param delay        delay between timer cycles in milliseconds
+     * @param initialDelay delay before the first timer cycle run in milliseconds
+     * @param cyclesLimit  timer cycles execution limit
+     * @param listener     action listener
+     * @return newly created and started timer
+     */
+    public static WebTimer repeat ( final long delay, final long initialDelay, final int cyclesLimit, final ActionListener listener )
+    {
+        return repeat ( defaultThreadName, delay, initialDelay, cyclesLimit, useEdtByDefault, listener );
     }
 
     /**
@@ -1165,7 +1318,23 @@ public class WebTimer
      */
     public static WebTimer repeat ( final String name, final long delay, final long initialDelay, final ActionListener listener )
     {
-        return repeat ( name, delay, initialDelay, true, listener );
+        return repeat ( name, delay, initialDelay, defaultCyclesLimit, useEdtByDefault, listener );
+    }
+
+    /**
+     * Returns newly created and started timer that repeats and has the specified delay, initial delay and action listener.
+     *
+     * @param name         thread name
+     * @param delay        delay between timer cycles in milliseconds
+     * @param initialDelay delay before the first timer cycle run in milliseconds
+     * @param cyclesLimit  timer cycles execution limit
+     * @param listener     action listener
+     * @return newly created and started timer
+     */
+    public static WebTimer repeat ( final String name, final long delay, final long initialDelay, final int cyclesLimit,
+                                    final ActionListener listener )
+    {
+        return repeat ( name, delay, initialDelay, cyclesLimit, useEdtByDefault, listener );
     }
 
     /**
@@ -1180,7 +1349,23 @@ public class WebTimer
     public static WebTimer repeat ( final long delay, final long initialDelay, final boolean useEventDispatchThread,
                                     final ActionListener listener )
     {
-        return repeat ( defaultThreadName, delay, initialDelay, useEventDispatchThread, listener );
+        return repeat ( defaultThreadName, delay, initialDelay, defaultCyclesLimit, useEventDispatchThread, listener );
+    }
+
+    /**
+     * Returns newly created and started timer that repeats and has the specified delay, initial delay and action listener.
+     *
+     * @param delay                  delay between timer cycles in milliseconds
+     * @param initialDelay           delay before the first timer cycle run in milliseconds
+     * @param cyclesLimit            timer cycles execution limit
+     * @param useEventDispatchThread whether actions should be fired from Event Dispatch Thread or not
+     * @param listener               action listener
+     * @return newly created and started timer
+     */
+    public static WebTimer repeat ( final long delay, final long initialDelay, final int cyclesLimit, final boolean useEventDispatchThread,
+                                    final ActionListener listener )
+    {
+        return repeat ( defaultThreadName, delay, initialDelay, cyclesLimit, useEventDispatchThread, listener );
     }
 
     /**
@@ -1196,9 +1381,27 @@ public class WebTimer
     public static WebTimer repeat ( final String name, final long delay, final long initialDelay, final boolean useEventDispatchThread,
                                     final ActionListener listener )
     {
+        return repeat ( name, delay, initialDelay, defaultCyclesLimit, useEventDispatchThread, listener );
+    }
+
+    /**
+     * Returns newly created and started timer that repeats and has the specified delay, initial delay and action listener.
+     *
+     * @param name                   thread name
+     * @param delay                  delay between timer cycles in milliseconds
+     * @param initialDelay           delay before the first timer cycle run in milliseconds
+     * @param cyclesLimit            timer cycles execution limit
+     * @param useEventDispatchThread whether actions should be fired from Event Dispatch Thread or not
+     * @param listener               action listener
+     * @return newly created and started timer
+     */
+    public static WebTimer repeat ( final String name, final long delay, final long initialDelay, final int cyclesLimit,
+                                    final boolean useEventDispatchThread, final ActionListener listener )
+    {
         final WebTimer repeat = new WebTimer ( name, delay, initialDelay, listener );
         repeat.setRepeats ( true );
         repeat.setUseEventDispatchThread ( useEventDispatchThread );
+        repeat.setCyclesLimit ( cyclesLimit );
         repeat.start ();
         return repeat;
     }

@@ -46,6 +46,10 @@ import java.lang.ref.WeakReference;
 public class WebAsyncTreeFilterField<E extends AsyncUniqueNode> extends WebTextField
 {
     /**
+     * todo 1. Listen to tree model changes and update filtering appropriately
+     */
+
+    /**
      * Used icons.
      */
     public static final ImageIcon settingsIcon =
