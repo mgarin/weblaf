@@ -455,7 +455,8 @@ public abstract class PluginManager<T extends Plugin>
     {
         for ( final DetectedPlugin<T> plugin : detectedPlugins )
         {
-            if ( plugin.getPluginFolder ().equals ( pluginFolder ) && plugin.getPluginFile ().equals ( pluginFile ) )
+            if ( plugin.getPluginFile () != null && plugin.getPluginFolder ().equals ( pluginFolder ) &&
+                    plugin.getPluginFile ().equals ( pluginFile ) )
             {
                 return true;
             }

@@ -106,12 +106,11 @@ public class PluginInformation implements Serializable
      * @param mainClass   plugin main class
      * @param title       plugin title
      * @param description plugin short description
-     * @param version     plugin version data
      */
     public PluginInformation ( final String id, final boolean disableable, final String mainClass, final String title,
                                final String description )
     {
-        this ( id, null, null, disableable, mainClass, title, description, null, null );
+        this ( id, null, null, disableable, mainClass, title, description, PluginVersion.DEFAULT, null );
     }
 
     /**

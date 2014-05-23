@@ -32,6 +32,11 @@ import java.io.Serializable;
 public class PluginVersion implements Serializable
 {
     /**
+     * Simple default v1.0.
+     */
+    public static final PluginVersion DEFAULT = new PluginVersion ( 1, 0 );
+
+    /**
      * Major plugin version.
      */
     @XStreamAsAttribute
