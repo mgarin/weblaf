@@ -82,12 +82,15 @@ public class PluginInformation implements Serializable
 
     /**
      * Libraries used by this plugin.
+     * These are additional libraries which are loaded only for this plugin.
+     * They should not affect the general application since used in custom sub-classloader.
      */
     @XStreamImplicit
     private List<PluginLibrary> libraries;
 
     /**
      * Constructs new plugin information data object.
+     * This constuctor might be used by XStream in some cases to create information instance from plugin XML descriptor.
      */
     public PluginInformation ()
     {
@@ -96,6 +99,41 @@ public class PluginInformation implements Serializable
 
     /**
      * Constructs new plugin information data object with the specified values.
+     * This constructor can be used to create programmatical plugin information.
+     *
+     * @param id          plugin ID
+     * @param disableable whether plugin can be disabled or not
+     * @param mainClass   plugin main class
+     * @param title       plugin title
+     * @param description plugin short description
+     * @param version     plugin version data
+     */
+    public PluginInformation ( final String id, final boolean disableable, final String mainClass, final String title,
+                               final String description )
+    {
+        this ( id, null, null, disableable, mainClass, title, description, null, null );
+    }
+
+    /**
+     * Constructs new plugin information data object with the specified values.
+     * This constructor can be used to create programmatical plugin information.
+     *
+     * @param id          plugin ID
+     * @param disableable whether plugin can be disabled or not
+     * @param mainClass   plugin main class
+     * @param title       plugin title
+     * @param description plugin short description
+     * @param version     plugin version data
+     */
+    public PluginInformation ( final String id, final boolean disableable, final String mainClass, final String title,
+                               final String description, final PluginVersion version )
+    {
+        this ( id, null, null, disableable, mainClass, title, description, version, null );
+    }
+
+    /**
+     * Constructs new plugin information data object with the specified values.
+     * This constructor can be used to create programmatical plugin information.
      *
      * @param id          plugin ID
      * @param type        plugin type
@@ -105,6 +143,7 @@ public class PluginInformation implements Serializable
      * @param title       plugin title
      * @param description plugin short description
      * @param version     plugin version data
+     * @param libraries   plugin libraries
      */
     public PluginInformation ( final String id, final String type, final String types, final boolean disableable, final String mainClass,
                                final String title, final String description, final PluginVersion version,

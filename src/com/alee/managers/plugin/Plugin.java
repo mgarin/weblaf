@@ -18,11 +18,10 @@
 package com.alee.managers.plugin;
 
 import com.alee.extended.log.Log;
-import com.alee.managers.plugin.data.DetectedPlugin;
-import com.alee.managers.plugin.data.InitializationStrategy;
-import com.alee.managers.plugin.data.PluginInformation;
+import com.alee.managers.plugin.data.*;
 
 import javax.swing.*;
+import java.util.List;
 
 /**
  * Base class for any plugin.
@@ -95,6 +94,56 @@ public abstract class Plugin<T extends Plugin<T>>
     }
 
     /**
+     * Returns information about this plugin.
+     *
+     * @return information about this plugin
+     */
+    public PluginInformation getPluginInformation ()
+    {
+        return detectedPlugin != null ? detectedPlugin.getInformation () : null;
+    }
+
+    /**
+     * Returns plugin logo.
+     *
+     * @return plugin logo
+     */
+    public ImageIcon getPluginLogo ()
+    {
+        return detectedPlugin.getLogo ();
+    }
+
+    /**
+     * Returns plugin ID.
+     *
+     * @return plugin ID
+     */
+    public String getId ()
+    {
+        return getPluginInformation ().getId ();
+    }
+
+    /**
+     * Returns plugin type.
+     *
+     * @return plugin type
+     */
+    public String getType ()
+    {
+        return getPluginInformation ().getType ();
+    }
+
+    /**
+     * Returns plugin types.
+     *
+     * @return plugin types
+     */
+    public String getTypes ()
+    {
+        return getPluginInformation ().getTypes ();
+    }
+
+    /**
      * Says whether plugin can be disabled in runtime or not.
      * In some cases you don't want plugin to be disabled in runtime, for example if it is vital for system runtime.
      * Note that if plugin is disableable but cannot be hot-loaded you won't be able to enable it after disabling.
@@ -107,23 +156,53 @@ public abstract class Plugin<T extends Plugin<T>>
     }
 
     /**
-     * Returns information about this plugin.
+     * Returns plugin main class.
      *
-     * @return information about this plugin
+     * @return plugin main class
      */
-    public PluginInformation getPluginInformation ()
+    public String getMainClass ()
     {
-        return detectedPlugin.getInformation ();
+        return getPluginInformation ().getMainClass ();
     }
 
     /**
-     * Returns plugin logo.
+     * Returns plugin title.
      *
-     * @return plugin logo
+     * @return plugin title
      */
-    public ImageIcon getPluginLogo ()
+    public String getTitle ()
     {
-        return detectedPlugin.getLogo ();
+        return getPluginInformation ().getTitle ();
+    }
+
+    /**
+     * Returns plugin description.
+     *
+     * @return plugin description
+     */
+    public String getDescription ()
+    {
+        return getPluginInformation ().getDescription ();
+    }
+
+    /**
+     * Returns plugin version information.
+     *
+     * @return plugin version information
+     */
+    public PluginVersion getVersion ()
+    {
+        return getPluginInformation ().getVersion ();
+    }
+
+    /**
+     * Returns plugin libraries list.
+     *
+     * @return plugin libraries list
+     */
+    public List<PluginLibrary> getLibraries ()
+    {
+        return getPluginInformation ().getLibraries ();
     }
 
     /**

@@ -56,6 +56,7 @@ public interface PluginsListener<T extends Plugin>
     /**
      * Called when new portion of plugins have been successfully initialized.
      * Be aware that this list does not provide all initialized plugins - complete plugins list can be retrieved from PluginManager.
+     * This also can be called without pre-call of plugin check and detection methods if plugins are registered programmatically.
      *
      * @param plugins recently initialized plugins
      */

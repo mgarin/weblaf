@@ -46,6 +46,7 @@ public abstract class PluginManager<T extends Plugin>
 {
     /**
      * todo 1. Allow to disable logging from this manager
+     * todo 2. Make plugin operations thread-safe
      */
 
     /**
@@ -88,6 +89,11 @@ public abstract class PluginManager<T extends Plugin>
      * Only those plugins which are actually loaded successfully are getting added here.
      */
     protected List<T> availablePlugins;
+
+    /**
+     * Map of plugins cached by their IDs.
+     */
+    protected Map<String, T> availablePluginsById = new HashMap<String, T> ();
 
     /**
      * Recently initialized plugins list.
@@ -203,6 +209,43 @@ public abstract class PluginManager<T extends Plugin>
     protected String getAcceptedPluginType ()
     {
         return null;
+    }
+
+    /**
+     * Registers programmatically loaded plugin within this PluginManager.
+     * This call will add the specified plugin into available plugins list.
+     * It will also create a custom DetectedPlugin data based on provided information.
+     *
+     * @param plugin plugin to register
+     */
+    public void registerPlugin ( final T plugin )
+    {
+        registerPlugin ( plugin, plugin.getPluginInformation (), plugin.getPluginLogo () );
+    }
+
+    /**
+     * Registers programmatically loaded plugin within this PluginManager.
+     * This call will add the specified plugin into available plugins list.
+     * It will also create a custom DetectedPlugin data based on provided information.
+     *
+     * @param plugin      plugin to register
+     * @param information about this plugin
+     * @param logo        plugin logo
+     */
+    public void registerPlugin ( final T plugin, final PluginInformation information, final ImageIcon logo )
+    {
+        // Creating base detected plugin information
+        final DetectedPlugin<T> detectedPlugin = new DetectedPlugin<T> ( null, null, information, logo );
+        detectedPlugin.setStatus ( PluginStatus.loaded );
+        detectedPlugin.setPlugin ( plugin );
+
+        // Saving plugin
+        detectedPlugins.add ( detectedPlugin );
+        availablePlugins.add ( plugin );
+        availablePluginsById.put ( plugin.getId (), plugin );
+
+        // Informing
+        firePluginsInitialized ( Arrays.asList ( plugin ) );
     }
 
     /**
@@ -449,7 +492,7 @@ public abstract class PluginManager<T extends Plugin>
             try
             {
                 // Checking plugin type as we don't want (for example) to load server plugins on client side
-                if ( acceptedPluginType != null && !info.getType ().equals ( acceptedPluginType ) )
+                if ( acceptedPluginType != null && ( info.getType () == null || !info.getType ().equals ( acceptedPluginType ) ) )
                 {
                     Log.warn ( this, prefix + "Plugin of type \"" + info.getType () + "\" cannot be loaded, " +
                             "required plugin type is \"" + acceptedPluginType + "\"" );
@@ -463,7 +506,7 @@ public abstract class PluginManager<T extends Plugin>
 
                 // Checking that this is latest plugin version of all available
                 // Usually there shouldn't be different versions of the same plugin but everyone make mistakes
-                if ( isDeprecatedVersion ( dp, detectedPlugins ) )
+                if ( isDeprecatedVersion ( dp ) )
                 {
                     Log.warn ( this, prefix + "This plugin is deprecated, newer version loaded instead" );
                     dp.setStatus ( PluginStatus.failed );
@@ -537,10 +580,13 @@ public abstract class PluginManager<T extends Plugin>
                     final T plugin = ReflectUtils.createInstance ( pluginClass );
                     plugin.setPluginManager ( PluginManager.this );
                     plugin.setDetectedPlugin ( dp );
-                    availablePlugins.add ( plugin );
-                    recentlyInitialized.add ( plugin );
-                    Log.info ( this, prefix + "Plugin initialized" );
 
+                    // Saving initialized plugin
+                    availablePlugins.add ( plugin );
+                    availablePluginsById.put ( plugin.getId (), plugin );
+                    recentlyInitialized.add ( plugin );
+
+                    Log.info ( this, prefix + "Plugin initialized" );
                     dp.setStatus ( PluginStatus.loaded );
                     dp.setPlugin ( plugin );
                     loadedPluginsAmount++;
@@ -592,11 +638,22 @@ public abstract class PluginManager<T extends Plugin>
     /**
      * Returns whether the list of detected plugins contain a newer version of the specified plugin or not.
      *
+     * @param plugin plugin to compare with other detected plugins
+     * @return true if the list of detected plugins contain a newer version of the specified plugin, false otherwise
+     */
+    public boolean isDeprecatedVersion ( final DetectedPlugin<T> plugin )
+    {
+        return isDeprecatedVersion ( plugin, detectedPlugins );
+    }
+
+    /**
+     * Returns whether the list of detected plugins contain a newer version of the specified plugin or not.
+     *
      * @param plugin          plugin to compare with other detected plugins
      * @param detectedPlugins list of detected plugins
      * @return true if the list of detected plugins contain a newer version of the specified plugin, false otherwise
      */
-    protected boolean isDeprecatedVersion ( final DetectedPlugin<T> plugin, final List<DetectedPlugin<T>> detectedPlugins )
+    public boolean isDeprecatedVersion ( final DetectedPlugin<T> plugin, final List<DetectedPlugin<T>> detectedPlugins )
     {
         final PluginInformation pluginInfo = plugin.getInformation ();
         for ( final DetectedPlugin detectedPlugin : detectedPlugins )
@@ -605,6 +662,7 @@ public abstract class PluginManager<T extends Plugin>
             {
                 final PluginInformation detectedPluginInfo = detectedPlugin.getInformation ();
                 if ( detectedPluginInfo.getId ().equals ( pluginInfo.getId () ) &&
+                        detectedPluginInfo.getVersion () != null && pluginInfo.getVersion () != null &&
                         detectedPluginInfo.getVersion ().newerThan ( pluginInfo.getVersion () ) )
                 {
                     return true;
@@ -630,7 +688,8 @@ public abstract class PluginManager<T extends Plugin>
             {
                 final PluginInformation detectedPluginInfo = detectedPlugin.getInformation ();
                 if ( detectedPluginInfo.getId ().equals ( pluginInfo.getId () ) &&
-                        detectedPluginInfo.getVersion ().same ( pluginInfo.getVersion () ) &&
+                        ( detectedPluginInfo.getVersion () == null && pluginInfo.getVersion () == null ||
+                                detectedPluginInfo.getVersion ().same ( pluginInfo.getVersion () ) ) &&
                         detectedPlugin.getStatus () == PluginStatus.loaded )
                 {
                     return true;
@@ -685,6 +744,8 @@ public abstract class PluginManager<T extends Plugin>
             }
         }
 
+        // todo Sort only recently initialized plugins
+        // todo Already initialized plugins should not be sorted again, that is useless and that breaks order in which they were initialized
         if ( middle.size () == 0 )
         {
             // Combining all plugins into single list
@@ -700,12 +761,12 @@ public abstract class PluginManager<T extends Plugin>
             {
                 final InitializationStrategy strategy = plugin.getInitializationStrategy ();
                 final String id = strategy.getId ();
-                if ( !plugin.getPluginInformation ().getId ().equals ( id ) )
+                if ( !plugin.getId ().equals ( id ) )
                 {
                     final int oldIndex = sortedMiddle.indexOf ( plugin );
                     for ( int index = 0; index < sortedMiddle.size (); index++ )
                     {
-                        if ( sortedMiddle.get ( index ).getPluginInformation ().getId ().equals ( id ) )
+                        if ( sortedMiddle.get ( index ).getId ().equals ( id ) )
                         {
                             switch ( strategy.getType () )
                             {
@@ -768,6 +829,17 @@ public abstract class PluginManager<T extends Plugin>
     public List<T> getAvailablePlugins ()
     {
         return availablePlugins;
+    }
+
+    /**
+     * Returns available plugin by its ID.
+     *
+     * @param pluginId available plugin ID
+     * @return available plugin
+     */
+    public T getPlugin ( final String pluginId )
+    {
+        return availablePluginsById.get ( pluginId );
     }
 
     /**
