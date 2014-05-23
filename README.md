@@ -99,7 +99,7 @@ In any case WebLaF is not going to disappear anytime soon. Hopefully Swing won't
 
 Building
 ----------
-To build various WebLaF artifacts you will need [Java 1.6 (update 30 or later) or Java 1.7](http://www.oracle.com/technetwork/java/javase/downloads/index.html) and [Apache ANT] (http://ant.apache.org/).<br>
+To build various WebLaF artifacts you will need [Java 1.6 update 30 or any later](http://www.oracle.com/technetwork/java/javase/downloads/index.html) including Java 7 and 8 and [Apache ANT] (http://ant.apache.org/).<br>
 Simply run `ant` command within the "build" library folder to build all artifacts at once.
 
 Here is a full list of usable ANT targets in WebLaF build script:

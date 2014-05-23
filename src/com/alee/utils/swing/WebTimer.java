@@ -38,6 +38,7 @@ import java.util.Map;
  *
  * @author Mikle Garin
  * @see javax.swing.Timer
+ * @see com.alee.utils.swing.TimerActionListener
  */
 public class WebTimer
 {
@@ -93,6 +94,11 @@ public class WebTimer
      * Last timer cycle delay time.
      */
     protected long sleepTime = 0;
+
+    /**
+     * Number of executed cycles;
+     */
+    protected int cycleCount = 0;
 
     /**
      * Last timer thread.
@@ -561,6 +567,38 @@ public class WebTimer
     }
 
     /**
+     * Returns executed cycles count.
+     * This number changes only after cycle execution (including action execution).
+     *
+     * @return executed cycles count
+     */
+    public int getCycleCount ()
+    {
+        return cycleCount;
+    }
+
+    /**
+     * Returns current cycle number.
+     * This number changes only after cycle execution (including action execution).
+     *
+     * @return current cycle number
+     */
+    public int getCycleNumber ()
+    {
+        return cycleCount + 1;
+    }
+
+    /**
+     * Return whether last cycle exection is ongoing or not.
+     *
+     * @return true if last cycle exection is ongoing, false otherwise
+     */
+    public boolean isLastCycle ()
+    {
+        return getCyclesLimit () > 0 && getCycleNumber () == getCyclesLimit ();
+    }
+
+    /**
      * Starts timer execution.
      *
      * @return this timer
@@ -705,21 +743,23 @@ public class WebTimer
                     // Checking if we sould stop execution
                     if ( shouldContinue ( -1, currentId ) )
                     {
+                        // Clearing cycles count
+                        cycleCount = 0;
+
                         // Starting cycles execution
                         if ( repeats )
                         {
                             // Repeated events
-                            int cycle = 0;
-                            while ( shouldContinue ( cycle, currentId ) )
+                            while ( shouldContinue ( cycleCount, currentId ) )
                             {
                                 // Firing events
                                 fireActionPerformed ();
 
                                 // Incrementing cycles count
-                                cycle++;
+                                cycleCount++;
 
                                 // Checking if we sould stop execution due to changes through events
-                                if ( !shouldContinue ( cycle, currentId ) )
+                                if ( !shouldContinue ( cycleCount, currentId ) )
                                 {
                                     break;
                                 }
@@ -738,6 +778,9 @@ public class WebTimer
                         {
                             // Single event
                             fireActionPerformed ();
+
+                            // Incrementing cycles count
+                            cycleCount++;
                         }
                     }
                 }
@@ -813,6 +856,7 @@ public class WebTimer
 
     /**
      * Adds new action listener.
+     * You can use TimerActionListener instead of simple ActionListener to simplify interaction with timer.
      *
      * @param listener new action listener
      * @return this timer
