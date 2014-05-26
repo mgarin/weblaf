@@ -321,6 +321,7 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
 
         final WebButton closeButton = new WebButton ( closeTabIcon, closeTabRolloverIcon );
         closeButton.setUndecorated ( true );
+        closeButton.setFocusable ( false );
         closeButton.addActionListener ( new ActionListener ()
         {
             @Override

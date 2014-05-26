@@ -680,9 +680,14 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel implements
 
     public boolean isDocumentOpened ( final T document )
     {
+        return isDocumentOpened ( document.getId () );
+    }
+
+    public boolean isDocumentOpened ( final String documentId )
+    {
         for ( final PaneData<T> paneData : getAllPanes () )
         {
-            if ( paneData.contains ( document ) )
+            if ( paneData.contains ( documentId ) )
             {
                 return true;
             }

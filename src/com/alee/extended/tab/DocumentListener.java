@@ -18,6 +18,8 @@
 package com.alee.extended.tab;
 
 /**
+ * Documents state listener for WebDocumentPane component.
+ *
  * @author Mikle Garin
  */
 
