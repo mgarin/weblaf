@@ -535,10 +535,6 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel implements
         if ( paneData != null )
         {
             activePane = paneData;
-            if ( activePane.count () > 0 )
-            {
-                activePane.getTabbedPane ().transferFocus ();
-            }
         }
     }
 
@@ -674,6 +670,7 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel implements
             if ( document != null )
             {
                 paneData.setSelected ( document );
+                paneData.activate ();
             }
         }
     }
@@ -699,7 +696,7 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel implements
     {
         if ( isDocumentOpened ( document ) )
         {
-            activate ( document );
+            setSelected ( document );
         }
         else if ( activePane != null )
         {
