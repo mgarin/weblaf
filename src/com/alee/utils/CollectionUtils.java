@@ -336,4 +336,56 @@ public final class CollectionUtils
         }
         return filtered;
     }
+
+    /**
+     * Returns map keys list.
+     *
+     * @param map map to process
+     * @param <K> key object type
+     * @param <V> value object type
+     * @return map keys list
+     */
+    public static <K, V> List<K> keysList ( final Map<K, V> map )
+    {
+        return new ArrayList<K> ( map.keySet () );
+    }
+
+    /**
+     * Returns map values list.
+     *
+     * @param map map to process
+     * @param <K> key object type
+     * @param <V> value object type
+     * @return map values list
+     */
+    public static <K, V> List<V> valuesList ( final Map<K, V> map )
+    {
+        return new ArrayList<V> ( map.values () );
+    }
+
+    /**
+     * Returns map values summary list with unique elements only.
+     *
+     * @param map map to process
+     * @param <K> key object type
+     * @param <V> value object type
+     * @return map values summary list with unique elements only
+     */
+    public static <K, V> List<V> valuesSummaryList ( final Map<K, List<V>> map )
+    {
+        final ArrayList<V> summary = new ArrayList<V> ( 0 );
+        for ( final Map.Entry<K, List<V>> entry : map.entrySet () )
+        {
+            final List<V> list = entry.getValue ();
+            summary.ensureCapacity ( summary.size () + list.size () );
+            for ( final V value : list )
+            {
+                if ( !summary.contains ( value ) )
+                {
+                    summary.add ( value );
+                }
+            }
+        }
+        return summary;
+    }
 }
