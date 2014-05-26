@@ -48,6 +48,11 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel implements
     protected static final String DATA_KEY = "document.pane.data";
 
     /**
+     * Document listeners.
+     */
+    protected List<DocumentListener<T>> listeners = new ArrayList<DocumentListener<T>> ( 1 );
+
+    /**
      * Unique document pane ID.
      * Used to allow or disallow documents drag between different document panes.
      */
@@ -527,7 +532,25 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel implements
      */
     protected void activate ( final PaneData<T> paneData )
     {
-        activePane = paneData;
+        if ( paneData != null )
+        {
+            activePane = paneData;
+            if ( activePane.count () > 0 )
+            {
+                activePane.getTabbedPane ().transferFocus ();
+            }
+        }
+    }
+
+    /**
+     * Sets active pane.
+     *
+     * @param document document to activate
+     */
+    protected void activate ( final T document )
+    {
+        activate ( getPane ( document ) );
+        setSelected ( document );
     }
 
     /**
@@ -622,8 +645,7 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel implements
     {
         for ( final PaneData<T> paneData : getAllPanes () )
         {
-            final T document = paneData.get ( documentId );
-            if ( document != null )
+            if ( paneData.contains ( documentId ) )
             {
                 return paneData;
             }
@@ -656,11 +678,27 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel implements
         }
     }
 
+    public boolean isDocumentOpened ( final T document )
+    {
+        for ( final PaneData<T> paneData : getAllPanes () )
+        {
+            if ( paneData.contains ( document ) )
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void openDocument ( final T document )
     {
-        if ( activePane != null )
+        if ( isDocumentOpened ( document ) )
         {
-            activePane.add ( document );
+            activate ( document );
+        }
+        else if ( activePane != null )
+        {
+            activePane.open ( document );
         }
     }
 
@@ -703,6 +741,42 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel implements
             {
                 break;
             }
+        }
+    }
+
+    public void addDocumentListener ( final DocumentListener<T> listener )
+    {
+        listeners.add ( listener );
+    }
+
+    public void removeDocumentListener ( final DocumentListener<T> listener )
+    {
+        listeners.remove ( listener );
+    }
+
+    public void fireDocumentOpened ( final T document, final PaneData<T> pane, final int index )
+    {
+        for ( final DocumentListener<T> listener : CollectionUtils.copy ( listeners ) )
+        {
+            listener.opened ( document, pane, index );
+        }
+    }
+
+    public boolean fireDocumentClosing ( final T document, final PaneData<T> pane, final int index )
+    {
+        boolean allow = true;
+        for ( final DocumentListener<T> listener : CollectionUtils.copy ( listeners ) )
+        {
+            allow = allow && listener.closing ( document, pane, index );
+        }
+        return allow;
+    }
+
+    public void fireDocumentClosed ( final T document, final PaneData<T> pane, final int index )
+    {
+        for ( final DocumentListener<T> listener : CollectionUtils.copy ( listeners ) )
+        {
+            listener.closed ( document, pane, index );
         }
     }
 

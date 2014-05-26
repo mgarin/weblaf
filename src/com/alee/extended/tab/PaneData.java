@@ -262,6 +262,23 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
         this.data = data;
     }
 
+    public boolean contains ( final T document )
+    {
+        return contains ( document.getId () );
+    }
+
+    public boolean contains ( final String documentId )
+    {
+        for ( final T document : data )
+        {
+            if ( document.getId ().equals ( documentId ) )
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void add ( final T document )
     {
         add ( document, -1 );
@@ -315,6 +332,15 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
         tabPanel.add ( closeButton, BorderLayout.LINE_END );
 
         return tabPanel;
+    }
+
+    public void open ( final T document )
+    {
+        // Opening document
+        add ( document );
+
+        // Informing listeners about document open event
+        getDocumentPane ().fireDocumentOpened ( document, this, indexOf ( document ) );
     }
 
     public T get ( final int index )
@@ -406,15 +432,24 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
     }
 
     /**
+     * Closes all document in this group.
+     */
+    public void closeAll ()
+    {
+        for ( final T document : data )
+        {
+            close ( document );
+        }
+    }
+
+    /**
      * Closes document at the specified index in the active pane.
      *
      * @param index index of the document to close
      */
     public boolean close ( final int index )
     {
-        final boolean removed = remove ( index );
-        mergeIfEmpty ();
-        return removed;
+        return close ( get ( index ) );
     }
 
     /**
@@ -424,9 +459,7 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
      */
     public boolean close ( final String id )
     {
-        final boolean removed = remove ( id );
-        mergeIfEmpty ();
-        return removed;
+        return close ( get ( id ) );
     }
 
     /**
@@ -436,9 +469,32 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
      */
     public boolean close ( final T document )
     {
-        final boolean removed = remove ( document );
-        mergeIfEmpty ();
-        return removed;
+        if ( document != null )
+        {
+            final WebDocumentPane documentPane = getDocumentPane ();
+            final int index = indexOf ( document );
+
+            // Informing listeners about document closing event
+            if ( documentPane.fireDocumentClosing ( document, this, index ) )
+            {
+                // Closing document and fixing view
+                final boolean removed = remove ( document );
+                mergeIfEmpty ();
+
+                // Informing listeners about document close event
+                documentPane.fireDocumentClosed ( document, this, index );
+
+                return removed;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return false;
+        }
     }
 
     public void closeSelected ()
