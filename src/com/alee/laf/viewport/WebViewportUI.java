@@ -17,6 +17,7 @@
 
 package com.alee.laf.viewport;
 
+import com.alee.laf.WebLookAndFeel;
 import com.alee.utils.SwingUtils;
 
 import javax.swing.*;
@@ -55,6 +56,8 @@ public class WebViewportUI extends BasicViewportUI
         super.installUI ( c );
 
         // Default settings
+        final JViewport viewport = ( JViewport ) c;
+        viewport.setScrollMode ( WebLookAndFeel.getScrollMode () );
         SwingUtils.setOrientation ( c );
     }
 }

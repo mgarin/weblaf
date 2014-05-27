@@ -165,6 +165,12 @@ public class WebLookAndFeel extends BasicLookAndFeel
     private static boolean allowLinuxTransparency = false;
 
     /**
+     * Default scroll mode used by JViewportUI to handle scrolling repaints.
+     * It is different in WebLaF by default due to issues in other scroll mode on some OS.
+     */
+    private static int scrollMode = JViewport.BACKINGSTORE_SCROLL_MODE;
+
+    /**
      * Reassignable LookAndFeel UI class names.
      */
 
@@ -1119,6 +1125,26 @@ public class WebLookAndFeel extends BasicLookAndFeel
     public static void setAllowLinuxTransparency ( final boolean allow )
     {
         WebLookAndFeel.allowLinuxTransparency = allow;
+    }
+
+    /**
+     * Returns default scroll mode used by JViewportUI to handle scrolling repaints.
+     *
+     * @return default scroll mode used by JViewportUI to handle scrolling repaints
+     */
+    public static int getScrollMode ()
+    {
+        return scrollMode;
+    }
+
+    /**
+     * Sets default scroll mode used by JViewportUI to handle scrolling repaints.
+     *
+     * @param scrollMode new default scroll mode
+     */
+    public static void setScrollMode ( final int scrollMode )
+    {
+        WebLookAndFeel.scrollMode = scrollMode;
     }
 
     /**

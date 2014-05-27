@@ -39,6 +39,18 @@ public class LM implements LanguageConstants
         return LanguageManager.get ( key );
     }
 
+    /**
+     * Returns translation for specified language key and formatting data.
+     *
+     * @param key  language key
+     * @param data formatting data
+     * @return key translation
+     */
+    public static String get ( final String key, final Object... data )
+    {
+        return LanguageManager.get ( key, data );
+    }
+
 
     /**
      * Returns whether specified language key exists or not.

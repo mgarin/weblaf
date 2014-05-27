@@ -1325,6 +1325,13 @@ public final class LanguageManager implements LanguageConstants
         return value != null ? value.getText () : key;
     }
 
+    public static String get ( final String key, final Object... data )
+    {
+        final String text = get ( key );
+        final Object[] actualData = parseData ( data );
+        return String.format ( text, actualData );
+    }
+
     public static Character getMnemonic ( final String key )
     {
         final Value value = getValue ( key );
