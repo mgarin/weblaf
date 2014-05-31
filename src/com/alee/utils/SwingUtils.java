@@ -1418,6 +1418,25 @@ public final class SwingUtils
     }
 
     /**
+     * Returns whether HANDLES_ENABLE_STATE mark is set in this component to true or not.
+     *
+     * @param component component to process
+     * @return true if HANDLES_ENABLE_STATE mark is set in this component to true, false otherwise
+     */
+    public static boolean isHandlesEnableState ( final Component component )
+    {
+        if ( component instanceof JComponent )
+        {
+            final Object handlesEnabledState = ( ( JComponent ) component ).getClientProperty ( HANDLES_ENABLE_STATE );
+            if ( handlesEnabledState != null && handlesEnabledState instanceof Boolean && ( Boolean ) handlesEnabledState )
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * Sets enabled state of component and all of its children.
      *
      * @param component component to modify
@@ -1431,30 +1450,103 @@ public final class SwingUtils
     /**
      * Sets enabled state of component and all of its children.
      *
-     * @param component  component to modify
-     * @param enabled    whether component is enabled or not
-     * @param childsOnly whether exclude component from changes or not
+     * @param component       component to modify
+     * @param enabled         whether component is enabled or not
+     * @param startFromChilds whether exclude component from changes or not
      */
-    public static void setEnabledRecursively ( final Component component, final boolean enabled, final boolean childsOnly )
+    public static void setEnabledRecursively ( final Component component, final boolean enabled, final boolean startFromChilds )
     {
-        if ( !childsOnly )
+        if ( !startFromChilds )
         {
             component.setEnabled ( enabled );
         }
         if ( component instanceof Container )
         {
-            if ( component instanceof JComponent && !childsOnly )
+            if ( !startFromChilds && isHandlesEnableState ( component ) )
             {
-                final Object handlesEnabledState = ( ( JComponent ) component ).getClientProperty ( HANDLES_ENABLE_STATE );
-                if ( handlesEnabledState != null && handlesEnabledState instanceof Boolean && ( Boolean ) handlesEnabledState )
-                {
-                    return;
-                }
+                return;
             }
             for ( final Component child : ( ( Container ) component ).getComponents () )
             {
                 setEnabledRecursively ( child, enabled, false );
             }
+        }
+    }
+
+    /**
+     * Disables component and all of its children recursively.
+     *
+     * @param component       component to disable
+     * @param startFromChilds whether should disable only component childs or not
+     * @param excludePanels   whether should exclude panels from disabling or not
+     * @param excluded        components to exclude from disabling
+     * @return list of actually disabled components
+     */
+    public static List<Component> disableRecursively ( final Component component, final boolean startFromChilds,
+                                                       final boolean excludePanels, final Component... excluded )
+    {
+        return disableRecursively ( component, startFromChilds, excludePanels, Arrays.asList ( excluded ) );
+    }
+
+    /**
+     * Disables component and all of its children recursively.
+     *
+     * @param component       component to disable
+     * @param startFromChilds whether should disable only component childs or not
+     * @param excludePanels   whether should exclude panels from disabling or not
+     * @param excluded        components to exclude from disabling
+     * @return list of actually disabled components
+     */
+    public static List<Component> disableRecursively ( final Component component, final boolean startFromChilds,
+                                                       final boolean excludePanels, final List<Component> excluded )
+    {
+        final List<Component> disabled = new ArrayList<Component> ();
+        disableRecursively ( component, startFromChilds, excludePanels, excluded, disabled );
+        return disabled;
+    }
+
+    /**
+     * Disables component and all of its children recursively.
+     *
+     * @param component       component to disable
+     * @param startFromChilds whether should disable only component childs or not
+     * @param excludePanels   whether should exclude panels from disabling or not
+     * @param excluded        components to exclude from disabling
+     * @param disabled        list of actually disabled components
+     */
+    private static void disableRecursively ( final Component component, final boolean startFromChilds, final boolean excludePanels,
+                                             final List<Component> excluded, final List<Component> disabled )
+    {
+        final boolean b = !startFromChilds && !excluded.contains ( component ) && !( component instanceof JPanel && excludePanels );
+        if ( b && component.isEnabled () )
+        {
+            component.setEnabled ( false );
+            disabled.add ( component );
+        }
+        if ( component instanceof Container )
+        {
+            if ( b && isHandlesEnableState ( component ) )
+            {
+                return;
+            }
+            final Container container = ( Container ) component;
+            for ( final Component child : container.getComponents () )
+            {
+                disableRecursively ( child, false, excludePanels, excluded, disabled );
+            }
+        }
+    }
+
+    /**
+     * Enables specified components.
+     *
+     * @param disabled disabled components list
+     */
+    public static void enable ( final List<Component> disabled )
+    {
+        for ( final Component component : disabled )
+        {
+            component.setEnabled ( true );
         }
     }
 

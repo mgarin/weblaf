@@ -32,51 +32,82 @@ public class LimitedDocument extends PlainDocument
     /**
      * Characters limit.
      */
-    private int limit;
+    private final int limit;
 
     /**
      * Whether should translate all characters to upper case or not.
      */
-    private boolean toUppercase = false;
+    private final boolean toUppercase;
 
     /**
      * Constructs new limited document.
-     *
-     * @param limit characters limit
      */
-    public LimitedDocument ( int limit )
+    public LimitedDocument ()
     {
         super ();
-        this.limit = limit;
+        this.limit = 0;
+        this.toUppercase = false;
     }
 
     /**
      * Constructs new limited document.
      *
      * @param limit characters limit
-     * @param upper whether to translate all characters to upper case or not
      */
-    public LimitedDocument ( int limit, boolean upper )
+    public LimitedDocument ( final int limit )
     {
         super ();
         this.limit = limit;
-        toUppercase = upper;
+        this.toUppercase = false;
+    }
+
+    /**
+     * Constructs new limited document.
+     *
+     * @param limit characters limit
+     * @param upper whether should translate all characters to upper case or not
+     */
+    public LimitedDocument ( final int limit, final boolean upper )
+    {
+        super ();
+        this.limit = limit;
+        this.toUppercase = upper;
+    }
+
+    /**
+     * Returns document characters limit.
+     *
+     * @return document characters limit
+     */
+    public int getLimit ()
+    {
+        return limit;
+    }
+
+    /**
+     * Returns whether should translate all characters to upper case or not.
+     *
+     * @return true if should translate all characters to upper case, false otherwise
+     */
+    public boolean isToUppercase ()
+    {
+        return toUppercase;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void insertString ( int offset, String str, AttributeSet attr ) throws BadLocationException
+    public void insertString ( final int offset, String str, final AttributeSet attr ) throws BadLocationException
     {
         if ( str == null )
         {
             return;
         }
 
-        if ( ( getLength () + str.length () ) <= limit )
+        if ( getLimit () > 0 && ( getLength () + str.length () ) <= getLimit () )
         {
-            if ( toUppercase )
+            if ( isToUppercase () )
             {
                 str = str.toUpperCase ();
             }

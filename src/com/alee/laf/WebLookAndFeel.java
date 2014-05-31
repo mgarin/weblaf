@@ -168,7 +168,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
      * Default scroll mode used by JViewportUI to handle scrolling repaints.
      * It is different in WebLaF by default due to issues in other scroll mode on some OS.
      */
-    private static int scrollMode = JViewport.BACKINGSTORE_SCROLL_MODE;
+    private static int scrollMode = JViewport.BLIT_SCROLL_MODE;
 
     /**
      * Reassignable LookAndFeel UI class names.

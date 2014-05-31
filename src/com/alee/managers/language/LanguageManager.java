@@ -23,10 +23,7 @@ import com.alee.managers.language.data.*;
 import com.alee.managers.language.updaters.*;
 import com.alee.managers.tooltip.TooltipManager;
 import com.alee.managers.tooltip.WebCustomTooltip;
-import com.alee.utils.CollectionUtils;
-import com.alee.utils.CompareUtils;
-import com.alee.utils.SwingUtils;
-import com.alee.utils.XmlUtils;
+import com.alee.utils.*;
 import com.alee.utils.swing.AncestorAdapter;
 import com.alee.utils.swing.DataProvider;
 
@@ -125,6 +122,16 @@ public final class LanguageManager implements LanguageConstants
      * @see #removeLanguageListener(LanguageListener)
      */
     private static final List<LanguageListener> languageListeners = new ArrayList<LanguageListener> ();
+
+    /**
+     * Language changes listeners.
+     *
+     * @see LanguageListener
+     * @see #getLanguageListeners()
+     * @see #addLanguageListener(LanguageListener)
+     * @see #removeLanguageListener(LanguageListener)
+     */
+    private static final Map<Component, LanguageListener> componentLanguageListeners = new WeakHashMap<Component, LanguageListener> ();
 
     /**
      * Language key listeners operations synchronization object.
@@ -1554,6 +1561,30 @@ public final class LanguageManager implements LanguageConstants
         }
     }
 
+    public static Map<Component, LanguageListener> getComponentLanguageListeners ()
+    {
+        synchronized ( languageListenersLock )
+        {
+            return MapUtils.copyMap ( componentLanguageListeners );
+        }
+    }
+
+    public static void addLanguageListener ( final Component component, final LanguageListener listener )
+    {
+        synchronized ( languageListenersLock )
+        {
+            componentLanguageListeners.put ( component, listener );
+        }
+    }
+
+    public static void removeLanguageListener ( final Component component )
+    {
+        synchronized ( languageListenersLock )
+        {
+            componentLanguageListeners.remove ( component );
+        }
+    }
+
     private static void fireLanguageChanged ( final String oldLang, final String newLang )
     {
         synchronized ( languageListenersLock )
@@ -1561,6 +1592,18 @@ public final class LanguageManager implements LanguageConstants
             for ( final LanguageListener listener : languageListeners )
             {
                 listener.languageChanged ( oldLang, newLang );
+            }
+            for ( final Map.Entry<Component, LanguageListener> entry : componentLanguageListeners.entrySet () )
+            {
+                final Component key = entry.getKey ();
+                if ( key != null )
+                {
+                    final LanguageListener value = entry.getValue ();
+                    if ( value != null )
+                    {
+                        value.languageChanged ( oldLang, newLang );
+                    }
+                }
             }
         }
     }
@@ -1573,6 +1616,18 @@ public final class LanguageManager implements LanguageConstants
             {
                 listener.dictionaryAdded ( dictionary );
             }
+            for ( final Map.Entry<Component, LanguageListener> entry : componentLanguageListeners.entrySet () )
+            {
+                final Component key = entry.getKey ();
+                if ( key != null )
+                {
+                    final LanguageListener value = entry.getValue ();
+                    if ( value != null )
+                    {
+                        value.dictionaryAdded ( dictionary );
+                    }
+                }
+            }
         }
     }
 
@@ -1584,6 +1639,18 @@ public final class LanguageManager implements LanguageConstants
             {
                 listener.dictionaryRemoved ( dictionary );
             }
+            for ( final Map.Entry<Component, LanguageListener> entry : componentLanguageListeners.entrySet () )
+            {
+                final Component key = entry.getKey ();
+                if ( key != null )
+                {
+                    final LanguageListener value = entry.getValue ();
+                    if ( value != null )
+                    {
+                        value.dictionaryRemoved ( dictionary );
+                    }
+                }
+            }
         }
     }
 
@@ -1594,6 +1661,18 @@ public final class LanguageManager implements LanguageConstants
             for ( final LanguageListener listener : languageListeners )
             {
                 listener.dictionariesCleared ();
+            }
+            for ( final Map.Entry<Component, LanguageListener> entry : componentLanguageListeners.entrySet () )
+            {
+                final Component key = entry.getKey ();
+                if ( key != null )
+                {
+                    final LanguageListener value = entry.getValue ();
+                    if ( value != null )
+                    {
+                        value.dictionariesCleared ();
+                    }
+                }
             }
         }
     }

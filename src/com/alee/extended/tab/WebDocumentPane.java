@@ -570,6 +570,12 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel implements
         return activePane != null ? activePane.get ( index ) : null;
     }
 
+    /**
+     * Returns document with the specified ID or null if it is not inside this document pane.
+     *
+     * @param id document ID
+     * @return document with the specified ID or null if it is not inside this document pane
+     */
     public T getDocument ( final String id )
     {
         for ( final PaneData<T> paneData : getAllPanes () )
@@ -584,6 +590,36 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel implements
     }
 
     /**
+     * Returns all documents opened in this document pane.
+     *
+     * @return all documents opened in this document pane
+     */
+    public List<T> getDocuments ()
+    {
+        final List<T> documents = new ArrayList<T> ();
+        for ( final PaneData<T> paneData : getAllPanes () )
+        {
+            documents.addAll ( paneData.getData () );
+        }
+        return documents;
+    }
+
+    /**
+     * Returns amount of documents opened in this document pane.
+     *
+     * @return amount of documents opened in this document pane
+     */
+    public int getDocumentsCount ()
+    {
+        int count = 0;
+        for ( final PaneData<T> paneData : getAllPanes () )
+        {
+            count += paneData.count ();
+        }
+        return count;
+    }
+
+    /**
      * Returns list of all available panes within this document pane.
      *
      * @return list of all available panes within this document pane
@@ -595,6 +631,12 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel implements
         return panes;
     }
 
+    /**
+     * Collects all PaneData available under the specified stucture element into list.
+     *
+     * @param structureData structure element
+     * @param panes         PaneData list
+     */
     protected void collectPanes ( final StructureData structureData, final List<PaneData<T>> panes )
     {
         if ( structureData instanceof PaneData )
@@ -621,22 +663,40 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel implements
         return panes;
     }
 
-    protected void collectSplitPanes ( final StructureData structureData, final List<SplitData<T>> panes )
+    /**
+     * Collects all SplitData available under the specified stucture element into list.
+     *
+     * @param structureData structure element
+     * @param splits        SplitData list
+     */
+    protected void collectSplitPanes ( final StructureData structureData, final List<SplitData<T>> splits )
     {
         if ( structureData instanceof SplitData )
         {
             final SplitData<T> splitData = ( SplitData<T> ) structureData;
-            panes.add ( splitData );
-            collectSplitPanes ( splitData.getFirst (), panes );
-            collectSplitPanes ( splitData.getLast (), panes );
+            splits.add ( splitData );
+            collectSplitPanes ( splitData.getFirst (), splits );
+            collectSplitPanes ( splitData.getLast (), splits );
         }
     }
 
+    /**
+     * Returns pane that contains specified document.
+     *
+     * @param document document to look for
+     * @return pane that contains specified document
+     */
     public PaneData<T> getPane ( final T document )
     {
         return getPane ( document.getId () );
     }
 
+    /**
+     * Returns pane that contains document with the specified ID.
+     *
+     * @param documentId ID of the document to look for
+     * @return pane that contains document with the specified ID
+     */
     public PaneData<T> getPane ( final String documentId )
     {
         for ( final PaneData<T> paneData : getAllPanes () )
@@ -649,6 +709,11 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel implements
         return null;
     }
 
+    /**
+     * Sets selected document index inside the active pane.
+     *
+     * @param index index of the document to select
+     */
     public void setSelected ( final int index )
     {
         if ( activePane != null )
@@ -657,11 +722,21 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel implements
         }
     }
 
+    /**
+     * Sets document selected inside its pane.
+     *
+     * @param document document to select
+     */
     public void setSelected ( final DocumentData document )
     {
         setSelected ( document.getId () );
     }
 
+    /**
+     * Sets document with the specified ID selected inside its pane.
+     *
+     * @param id ID of the document to select
+     */
     public void setSelected ( final String id )
     {
         for ( final PaneData<T> paneData : getAllPanes () )
@@ -675,11 +750,23 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel implements
         }
     }
 
+    /**
+     * Returns whether specified document is opened inside this document pane or not.
+     *
+     * @param document document to look for
+     * @return true if specified document is opened inside this document pane, false otherwise
+     */
     public boolean isDocumentOpened ( final T document )
     {
         return isDocumentOpened ( document.getId () );
     }
 
+    /**
+     * Returns whether document with the specified ID is opened inside this document pane or not.
+     *
+     * @param documentId ID of the document to look for
+     * @return true if document with the specified ID is opened inside this document pane, false otherwise
+     */
     public boolean isDocumentOpened ( final String documentId )
     {
         for ( final PaneData<T> paneData : getAllPanes () )
@@ -692,6 +779,11 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel implements
         return false;
     }
 
+    /**
+     * Opens document in this document pane.
+     *
+     * @param document document to open
+     */
     public void openDocument ( final T document )
     {
         if ( isDocumentOpened ( document ) )

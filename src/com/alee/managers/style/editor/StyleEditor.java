@@ -61,6 +61,7 @@ import com.alee.managers.style.skin.CustomSkin;
 import com.alee.managers.tooltip.TooltipManager;
 import com.alee.utils.*;
 import com.alee.utils.swing.DocumentChangeListener;
+import com.alee.utils.swing.IntDocumentChangeListener;
 import com.alee.utils.swing.IntTextDocument;
 import com.alee.utils.swing.WebTimer;
 import com.alee.utils.xml.ResourceFile;
@@ -287,22 +288,15 @@ public class StyleEditor extends WebFrame
         final WebTextField delayField = new WebTextField ( new IntTextDocument (), "" + updateDelay, 3 );
         delayField.setShadeWidth ( 0 );
         delayField.setHorizontalAlignment ( WebTextField.CENTER );
-        delayField.getDocument ().addDocumentListener ( new DocumentChangeListener ()
+        delayField.getDocument ().addDocumentListener ( new IntDocumentChangeListener ()
         {
             @Override
-            public void documentChanged ( final DocumentEvent e )
+            public void documentChanged ( final Integer newValue, final DocumentEvent e )
             {
-                try
+                updateDelay = newValue != null ? newValue : updateDelay;
+                if ( updateDelay < 0 )
                 {
-                    updateDelay = Integer.parseInt ( delayField.getText () );
-                    if ( updateDelay < 0 )
-                    {
-                        updateDelay = 0;
-                    }
-                }
-                catch ( final Throwable ex )
-                {
-                    // Ignore exceptions
+                    updateDelay = 0;
                 }
             }
         } );

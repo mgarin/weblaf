@@ -23,7 +23,7 @@ import com.alee.laf.menu.WebCheckBoxMenuItem;
 import com.alee.laf.menu.WebPopupMenu;
 import com.alee.laf.text.WebTextField;
 import com.alee.managers.hotkey.Hotkey;
-import com.alee.utils.swing.DocumentChangeListener;
+import com.alee.utils.swing.StringDocumentChangeListener;
 import com.alee.utils.text.TextProvider;
 
 import javax.swing.*;
@@ -218,12 +218,12 @@ public class WebAsyncTreeFilterField<E extends AsyncUniqueNode> extends WebTextF
     protected void initFieldListeners ()
     {
         // Field changes listener
-        documentListener = new DocumentChangeListener ()
+        documentListener = new StringDocumentChangeListener ()
         {
             @Override
-            public void documentChanged ( final DocumentEvent e )
+            public void documentChanged ( final String newValue, final DocumentEvent e )
             {
-                filter.setSearchText ( getText () );
+                filter.setSearchText ( newValue );
                 updateFiltering ();
             }
         };

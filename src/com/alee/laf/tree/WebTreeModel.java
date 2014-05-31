@@ -182,6 +182,19 @@ public class WebTreeModel<E extends DefaultMutableTreeNode> extends DefaultTreeM
     }
 
     /**
+     * Forces tree node to be updated.
+     *
+     * @param node tree node to be updated
+     */
+    public void updateNodeStructure ( final E node )
+    {
+        if ( node != null )
+        {
+            fireTreeStructureChanged ( WebTreeModel.this, getPathToRoot ( node ), null, null );
+        }
+    }
+
+    /**
      * Forces update of all visible node sizes and view.
      * This call might be useful if renderer changes dramatically and you have to update the whole tree.
      */

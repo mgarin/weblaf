@@ -401,6 +401,23 @@ public final class TextUtils
     }
 
     /**
+     * Creates new string filled with specified amount of same characters.
+     *
+     * @param character character to fill string with
+     * @param length    string length
+     * @return new string filled with specified amount of same characters
+     */
+    public static String createString ( final String character, int length )
+    {
+        final StringBuilder sb = new StringBuilder ( length );
+        while ( length-- > 0 )
+        {
+            sb.append ( character );
+        }
+        return sb.toString ();
+    }
+
+    /**
      * Returns random ID with default prefix and suffix.
      *
      * @return ID

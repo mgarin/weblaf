@@ -565,6 +565,26 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
     }
 
     /**
+     * Forces tree node structure with the specified ID to be updated.
+     *
+     * @param nodeId ID of the tree node to be updated
+     */
+    public void updateNodeStructure ( final String nodeId )
+    {
+        updateNodeStructure ( findNode ( nodeId ) );
+    }
+
+    /**
+     * Forces tree node structure with the specified ID to be updated.
+     *
+     * @param node tree node to be updated
+     */
+    public void updateNodeStructure ( final E node )
+    {
+        getAsyncModel ().updateNodeStructure ( node );
+    }
+
+    /**
      * Reloads selected node childs.
      * Unlike asynchronous methods this one works in EDT and forces to wait until the nodes load finishes.
      */
