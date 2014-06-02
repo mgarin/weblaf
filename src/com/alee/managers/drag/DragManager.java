@@ -25,7 +25,10 @@ import com.alee.utils.SwingUtils;
 import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
-import java.awt.dnd.*;
+import java.awt.dnd.DragSource;
+import java.awt.dnd.DragSourceAdapter;
+import java.awt.dnd.DragSourceDragEvent;
+import java.awt.dnd.DragSourceDropEvent;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
@@ -128,20 +131,6 @@ public final class DragManager
                     final Point mp = SwingUtils.getMousePoint ( gp );
                     final Point vp = dragViewHandler.getViewRelativeLocation ( data );
                     return new Point ( mp.x + vp.x, mp.y + vp.y );
-                }
-
-                @Override
-                public void dragExit ( final DragSourceEvent dsde )
-                {
-                    // Cleanup displayed data
-                    if ( view != null )
-                    {
-                        glassPane.clearPaintedImage ();
-                        glassPane = null;
-                        data = null;
-                        view = null;
-                        dragViewHandler = null;
-                    }
                 }
 
                 @Override
