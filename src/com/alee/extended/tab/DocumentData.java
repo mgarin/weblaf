@@ -58,6 +58,12 @@ public class DocumentData
     protected Color background;
 
     /**
+     * Whether this document is closeable or not.
+     * All documents are closeable by default, but you may change that.
+     */
+    protected boolean closeable;
+
+    /**
      * Document content.
      * A component that represents document tab content.
      */
@@ -111,11 +117,28 @@ public class DocumentData
      */
     public DocumentData ( final String id, final Icon icon, final String title, final Color background, final Component component )
     {
+        this ( id, icon, title, background, true, component );
+    }
+
+    /**
+     * Constructs new document.
+     *
+     * @param id         document ID
+     * @param icon       document icon
+     * @param title      document title
+     * @param background document tab background color
+     * @param closeable  whether document is closeable or not
+     * @param component  document content
+     */
+    public DocumentData ( final String id, final Icon icon, final String title, final Color background, final boolean closeable,
+                          final Component component )
+    {
         super ();
         this.id = id;
         this.icon = icon;
         this.title = title;
         this.background = background;
+        this.closeable = closeable;
         this.component = component;
     }
 
@@ -207,6 +230,26 @@ public class DocumentData
     public void setBackground ( final Color background )
     {
         this.background = background;
+    }
+
+    /**
+     * Returns whether document is closeable or not.
+     *
+     * @return true if document is closeable, false otherwise
+     */
+    public boolean isCloseable ()
+    {
+        return closeable;
+    }
+
+    /**
+     * Sets whether document is closeable or not.
+     *
+     * @param closeable whether document is closeable or not
+     */
+    public void setCloseable ( final boolean closeable )
+    {
+        this.closeable = closeable;
     }
 
     /**

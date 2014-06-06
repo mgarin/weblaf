@@ -21,6 +21,7 @@ import com.alee.extended.painter.Painter;
 import com.alee.extended.painter.PainterSupport;
 import com.alee.laf.StyleConstants;
 import com.alee.laf.WebLookAndFeel;
+import com.alee.managers.language.LM;
 import com.alee.utils.LafUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.laf.ShapeProvider;
@@ -52,13 +53,13 @@ public class WebPasswordFieldUI extends BasicPasswordFieldUI implements ShapePro
     private int shadeWidth = WebPasswordFieldStyle.shadeWidth;
     private boolean drawBackground = WebPasswordFieldStyle.drawBackground;
     private boolean webColored = WebPasswordFieldStyle.webColored;
-    private Painter painter = WebPasswordFieldStyle.painter;
     private Insets fieldMargin = WebPasswordFieldStyle.fieldMargin;
     private String inputPrompt = WebTextFieldStyle.inputPrompt;
     private Font inputPromptFont = WebTextFieldStyle.inputPromptFont;
     private Color inputPromptForeground = WebTextFieldStyle.inputPromptForeground;
     private int inputPromptPosition = WebTextFieldStyle.inputPromptPosition;
     private boolean hideInputPromptOnFocus = WebTextFieldStyle.hideInputPromptOnFocus;
+    private Painter painter = WebPasswordFieldStyle.painter;
 
     private JPasswordField passwordField;
     private JComponent leadingComponent = null;
@@ -590,21 +591,22 @@ public class WebPasswordFieldUI extends BasicPasswordFieldUI implements ShapePro
             g2d.setFont ( inputPromptFont != null ? inputPromptFont : c.getFont () );
             g2d.setPaint ( inputPromptForeground != null ? inputPromptForeground : c.getForeground () );
 
+            final String text = LM.get ( inputPrompt );
             final FontMetrics fm = g2d.getFontMetrics ();
             final int x;
             if ( inputPromptPosition == CENTER )
             {
-                x = b.x + b.width / 2 - fm.stringWidth ( inputPrompt ) / 2;
+                x = b.x + b.width / 2 - fm.stringWidth ( text ) / 2;
             }
-            else if ( ltr && inputPromptPosition == LEADING || !ltr && inputPromptPosition == TRAILING )
+            else if ( ltr && inputPromptPosition == LEADING || !ltr && inputPromptPosition == TRAILING || inputPromptPosition == LEFT )
             {
                 x = b.x;
             }
             else
             {
-                x = b.x + b.width - fm.stringWidth ( inputPrompt );
+                x = b.x + b.width - fm.stringWidth ( text );
             }
-            g2d.drawString ( inputPrompt, x, getBaseline ( c, c.getWidth (), c.getHeight () ) );
+            g2d.drawString ( text, x, getBaseline ( c, c.getWidth (), c.getHeight () ) );
 
             g2d.setClip ( oc );
         }

@@ -685,7 +685,7 @@ public class WebCheckBoxTree<E extends DefaultMutableTreeNode> extends WebTree<E
                 final List<E> nodes = getSelectedNodes ();
 
                 // Removing invisible nodes from checking list
-                Iterator<E> nodesIterator = nodes.iterator ();
+                final Iterator<E> nodesIterator = nodes.iterator ();
                 while ( nodesIterator.hasNext () )
                 {
                     final E node = nodesIterator.next ();

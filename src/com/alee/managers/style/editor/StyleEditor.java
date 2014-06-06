@@ -23,8 +23,9 @@ import com.alee.extended.breadcrumb.WebBreadcrumbPanel;
 import com.alee.extended.layout.HorizontalFlowLayout;
 import com.alee.extended.layout.VerticalFlowLayout;
 import com.alee.extended.log.Log;
-import com.alee.extended.panel.BorderPanel;
 import com.alee.extended.panel.CenterPanel;
+import com.alee.extended.panel.GroupPanel;
+import com.alee.extended.panel.GroupingType;
 import com.alee.extended.panel.WebButtonGroup;
 import com.alee.extended.statusbar.WebMemoryBar;
 import com.alee.extended.statusbar.WebStatusBar;
@@ -129,13 +130,13 @@ public class StyleEditor extends WebFrame
     private final ResourceFile baseSkinFile;
     private List<RSyntaxTextArea> editors;
 
-    public StyleEditor ()
+    public StyleEditor ( final ResourceFile editedSkinFile )
     {
         super ( "WebLaF skin editor" );
         setIconImages ( WebLookAndFeel.getImages () );
 
         // todo Make changeable through constructor
-        baseSkinFile = new ResourceFile ( ResourceLocation.nearClass, "resources/StyleEditorSkin.xml", StyleEditorSkin.class );
+        baseSkinFile = editedSkinFile;
 
         initializeContainer ();
         initializeToolBar ();
@@ -144,7 +145,7 @@ public class StyleEditor extends WebFrame
         initializeEditors ();
 
         setDefaultCloseOperation ( WindowConstants.EXIT_ON_CLOSE );
-        setSize ( 1000, 700 );
+        setSize ( 1200, 800 );
         setLocationRelativeTo ( null );
     }
 
@@ -157,7 +158,7 @@ public class StyleEditor extends WebFrame
         toolBar.setFloatable ( false );
 
         final ImageIcon magnifierIcon = new ImageIcon ( StyleEditor.class.getResource ( "icons/editor/magnifier.png" ) );
-        final WebToggleButton magnifierButton = new WebToggleButton ( "Magnifier", magnifierIcon );
+        final WebToggleButton magnifierButton = new WebToggleButton ( magnifierIcon );
         TooltipManager.setTooltip ( magnifierButton, magnifierIcon, "Show/hide magnifier tool" );
         magnifierButton.addHotkey ( Hotkey.ALT_Q );
         magnifierButton.setRound ( 0 );
@@ -193,7 +194,7 @@ public class StyleEditor extends WebFrame
         toolBar.add ( new WebButtonGroup ( magnifierButton, zoomFactorButton ) );
 
         final ImageIcon boundsIcon = new ImageIcon ( StyleEditor.class.getResource ( "icons/editor/bounds.png" ) );
-        final WebToggleButton boundsButton = new WebToggleButton ( "Bounds", boundsIcon );
+        final WebToggleButton boundsButton = new WebToggleButton ( boundsIcon );
         TooltipManager.setTooltip ( boundsButton, boundsIcon, "Show/hide component bounds" );
         boundsButton.addHotkey ( Hotkey.ALT_W );
         boundsButton.setRound ( 0 );
@@ -212,7 +213,7 @@ public class StyleEditor extends WebFrame
         toolBar.add ( boundsButton );
 
         final ImageIcon disabledIcon = new ImageIcon ( StyleEditor.class.getResource ( "icons/editor/disabled.png" ) );
-        final WebToggleButton disabledButton = new WebToggleButton ( "Disabled", disabledIcon );
+        final WebToggleButton disabledButton = new WebToggleButton ( disabledIcon );
         TooltipManager.setTooltip ( disabledButton, disabledIcon, "Disable/enable components" );
         disabledButton.addHotkey ( Hotkey.ALT_D );
         disabledButton.setRound ( 0 );
@@ -234,7 +235,7 @@ public class StyleEditor extends WebFrame
         toolBar.add ( disabledButton );
 
         final ImageIcon orientationIcon = new ImageIcon ( StyleEditor.class.getResource ( "icons/editor/orientation.png" ) );
-        final WebToggleButton orientationButton = new WebToggleButton ( "RTL orientation", orientationIcon );
+        final WebToggleButton orientationButton = new WebToggleButton ( orientationIcon );
         TooltipManager.setTooltip ( orientationButton, orientationIcon, "Change components orientation" );
         orientationButton.addHotkey ( Hotkey.ALT_R );
         orientationButton.setRound ( 0 );
@@ -258,10 +259,6 @@ public class StyleEditor extends WebFrame
             }
         } );
         toolBar.add ( orientationButton );
-
-        //
-
-        container.add ( toolBar, BorderLayout.NORTH );
     }
 
     private void initializeContainer ()
@@ -271,7 +268,10 @@ public class StyleEditor extends WebFrame
 
         split = new WebSplitPane ( WebSplitPane.HORIZONTAL_SPLIT, true );
         split.setDividerLocation ( 300 );
-        container.add ( new BorderPanel ( split, 7 ), BorderLayout.CENTER );
+        split.setDividerSize ( 8 );
+        split.setDrawDividerBorder ( true );
+        split.setOneTouchExpandable ( true );
+        container.add ( split, BorderLayout.CENTER );
     }
 
     private void initializeStatusBar ()
@@ -324,10 +324,13 @@ public class StyleEditor extends WebFrame
     private void initializeViewer ()
     {
         componentViewer = new WebPanel ( new VerticalFlowLayout ( VerticalFlowLayout.TOP, 0, 15, true, false ) );
-        componentViewer.setMargin ( 5 );
-        final WebScrollPane previewScroll = new WebScrollPane ( componentViewer, false, false );
+        componentViewer.setMargin ( 10 );
+
+        final WebScrollPane previewScroll = new WebScrollPane ( componentViewer, false );
         previewScroll.setScrollBarStyleId ( "preview-scroll" );
-        split.setLeftComponent ( previewScroll );
+        previewScroll.setVerticalScrollBarPolicy ( ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS );
+
+        split.setLeftComponent ( new GroupPanel ( GroupingType.fillLast, 0, false, toolBar, previewScroll ) );
 
         //
 
@@ -427,7 +430,7 @@ public class StyleEditor extends WebFrame
     {
         // Creating XML editors tabbed pane
         final WebTabbedPane editorTabs = new WebTabbedPane ( TabbedPaneStyle.attached );
-        editorsContainer = new WebPanel ( true, editorTabs );
+        editorsContainer = new WebPanel ( false, editorTabs );
 
         // Loading editor code theme
         final Theme theme = loadXmlEditorTheme ();
@@ -511,8 +514,10 @@ public class StyleEditor extends WebFrame
                 @Override
                 public void actionPerformed ( final ActionEvent e )
                 {
+                    TimeUtils.pinTime ();
                     SkinInfoConverter.addCustomResource ( xmlFile.getClassName (), xmlFile.getSource (), xmlEditor.getText () );
                     applySkin ();
+                    TimeUtils.showPassedTime ( "Time to apply skin: " );
                 }
             } ).setRepeats ( false );
 
@@ -767,7 +772,8 @@ public class StyleEditor extends WebFrame
         WebLookAndFeel.install ();
 
         // Displaying StyleEditor
-        final StyleEditor styleEditor = new StyleEditor ();
+        final ResourceFile skin = new ResourceFile ( ResourceLocation.nearClass, "resources/StyleEditorSkin.xml", StyleEditorSkin.class );
+        final StyleEditor styleEditor = new StyleEditor ( skin );
         styleEditor.setVisible ( true );
     }
 }

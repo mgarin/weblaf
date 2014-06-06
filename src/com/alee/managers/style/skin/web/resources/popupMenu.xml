@@ -7,7 +7,7 @@
             <borderColor>128,128,128,128</borderColor>
             <round>4</round>
             <shadeWidth>12</shadeWidth>
-            <shadeOpacity>0.75</shadeOpacity>
+            <shadeTransparency>0.75</shadeTransparency>
             <cornerWidth>6</cornerWidth>
             <transparency>0.95</transparency>
         </painter>

@@ -94,7 +94,11 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
                         final int index = tabbedPane.getTabAt ( e.getPoint () );
                         if ( index != -1 )
                         {
-                            close ( get ( index ) );
+                            final T document = get ( index );
+                            if ( document.isCloseable () )
+                            {
+                                close ( document );
+                            }
                         }
                     }
                 }
@@ -116,7 +120,7 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
 
                     // Variables
                     final T document = get ( index );
-                    final boolean csb = documentPane.isCloseable ();
+                    final boolean csb = documentPane.isCloseable () && document.isCloseable ();
                     final boolean spb = data.size () > 1;
                     final boolean spl = tabbedPane.getParent () instanceof WebSplitPane;
 
@@ -319,18 +323,21 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
             tabPanel.add ( new WebLabel ( document.getIcon () ), BorderLayout.CENTER );
         }
 
-        final WebButton closeButton = new WebButton ( closeTabIcon, closeTabRolloverIcon );
-        closeButton.setUndecorated ( true );
-        closeButton.setFocusable ( false );
-        closeButton.addActionListener ( new ActionListener ()
+        if ( getDocumentPane ().isCloseable () && document.isCloseable () )
         {
-            @Override
-            public void actionPerformed ( final ActionEvent e )
+            final WebButton closeButton = new WebButton ( closeTabIcon, closeTabRolloverIcon );
+            closeButton.setUndecorated ( true );
+            closeButton.setFocusable ( false );
+            closeButton.addActionListener ( new ActionListener ()
             {
-                close ( document );
-            }
-        } );
-        tabPanel.add ( closeButton, BorderLayout.LINE_END );
+                @Override
+                public void actionPerformed ( final ActionEvent e )
+                {
+                    close ( document );
+                }
+            } );
+            tabPanel.add ( closeButton, BorderLayout.LINE_END );
+        }
 
         return tabPanel;
     }

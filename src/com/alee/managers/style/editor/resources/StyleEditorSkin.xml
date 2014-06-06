@@ -41,7 +41,7 @@
     <!-- Custom scroll bars styling for preview area -->
     <style type="scrollBar" id="preview-scroll" extends="default">
         <ui>
-            <paintTrack>false</paintTrack>
+            <paintTrack>true</paintTrack>
         </ui>
     </style>
 

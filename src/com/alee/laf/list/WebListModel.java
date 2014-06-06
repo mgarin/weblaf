@@ -516,6 +516,7 @@ public class WebListModel<T> extends AbstractListModel
      *
      * @return a String representation of this object
      */
+    @Override
     public String toString ()
     {
         return delegate.toString ();
@@ -566,6 +567,16 @@ public class WebListModel<T> extends AbstractListModel
     }
 
     /**
+     * Adds the specified element to this list.
+     *
+     * @param element element to be added
+     */
+    public void add ( final T element )
+    {
+        add ( size (), element );
+    }
+
+    /**
      * Inserts the specified element at the specified position in this list.
      * <p/>
      * Throws an {@code ArrayIndexOutOfBoundsException} if the index is out of range ({@code index &lt; 0 || index &gt; size()}).
@@ -580,12 +591,25 @@ public class WebListModel<T> extends AbstractListModel
     }
 
     /**
+     * Removes the specified element from this list.
+     *
+     * @param element element to remove
+     * @return removed element
+     */
+    public T remove ( final T element )
+    {
+        final int index = indexOf ( element );
+        return index != -1 ? remove ( index ) : null;
+    }
+
+    /**
      * Removes the element at the specified position in this list. Returns the element that was removed from the list.
      * <p/>
      * Throws an {@code ArrayIndexOutOfBoundsException} if the index is out of range ({@code index &lt; 0 || index &gt;=
      * size()}).
      *
      * @param index the index of the element to removed
+     * @return removed element
      */
     public T remove ( final int index )
     {

@@ -91,33 +91,20 @@ public class WebDockableFrame extends WebPanel implements LanguageMethods
         setWebColoredBackground ( false );
         setPaintSides ( false, false, false, false );
 
-        titlePanel = new WebPanel ( true )
-        {
-            @Override
-            protected void paintComponent ( final Graphics g )
-            {
-                super.paintComponent ( g );
-                g.setColor ( Color.WHITE );
-                g.drawLine ( 0, 0, 0, getHeight () - 2 );
-                g.drawLine ( 0, 0, getWidth () - 1, 0 );
-                g.drawLine ( getWidth () - 1, 0, getWidth () - 1, getHeight () - 2 );
-            }
-        };
-        titlePanel.setPaintSides ( false, false, true, false );
-        titlePanel.setShadeWidth ( 0 );
+        titlePanel = new WebPanel ( "dockable-frame-title" );
         add ( titlePanel, BorderLayout.NORTH );
 
         titleLabel = new WebLabel ( frameTitle, frameIcon );
-        titleLabel.setMargin ( 3, 3, 3, 20 );
-        titleLabel.setDrawShade ( true );
+        titleLabel.setStyleId ( "dockable-frame-title" );
         titlePanel.add ( titleLabel, BorderLayout.CENTER );
 
-        buttonsPanel = new WebPanel ( new HorizontalFlowLayout ( 0, false ) );
+        buttonsPanel = new WebPanel ( "dockable-frame-buttons", new HorizontalFlowLayout ( 0, false ) );
         titlePanel.add ( buttonsPanel, BorderLayout.EAST );
 
         dockButton = new WebButton ();
         dockButton.setLeftRightSpacing ( 0 );
         dockButton.setShadeWidth ( 0 );
+        dockButton.setFocusable ( false );
         dockButton.setDrawSides ( false, true, false, false );
         buttonsPanel.add ( dockButton );
     }

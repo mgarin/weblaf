@@ -301,7 +301,6 @@ public abstract class AsyncTreeTransferHandler<N extends AsyncUniqueNode, T exte
         final T tree = ( T ) support.getComponent ();
         final AsyncTreeModel<N> model = ( AsyncTreeModel<N> ) tree.getModel ();
 
-
         if ( allowUncheckedDrop )
         {
             // Acting differently in case parent node childs are not yet loaded

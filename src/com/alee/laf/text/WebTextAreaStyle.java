@@ -19,6 +19,7 @@ package com.alee.laf.text;
 
 import com.alee.extended.painter.Painter;
 
+import javax.swing.*;
 import java.awt.*;
 
 /**
@@ -33,6 +34,39 @@ public final class WebTextAreaStyle
      * Text area margin.
      */
     public static Insets margin = new Insets ( 2, 2, 2, 2 );
+
+    /**
+     * Input prompt text.
+     * Set to null to disable input prompt.
+     */
+    public static String inputPrompt = null;
+
+    /**
+     * Input prompt text font.
+     * Set to null to use the same font area uses.
+     */
+    public static Font inputPromptFont = null;
+
+    /**
+     * Input prompt text foreground.
+     * Set to null to use the same foreground area uses.
+     */
+    public static Color inputPromptForeground = new Color ( 160, 160, 160 );
+
+    /**
+     * Input prompt text position.
+     */
+    public static int inputPromptHorizontalPosition = SwingConstants.CENTER;
+
+    /**
+     * Input prompt text position.
+     */
+    public static int inputPromptVerticalPosition = SwingConstants.CENTER;
+
+    /**
+     * Whether should hide input prompt when field is focused or not.
+     */
+    public static boolean hideInputPromptOnFocus = true;
 
     /**
      * Text area painter.

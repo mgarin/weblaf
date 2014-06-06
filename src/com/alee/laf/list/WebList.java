@@ -145,6 +145,17 @@ public class WebList extends JList implements FontMethods<WebList>, SizeMethods<
     }
 
     /**
+     * Returns specific web list model or null if another type of model is used.
+     *
+     * @return specific web list model or null if another type of model is used
+     */
+    public WebListModel getWebModel ()
+    {
+        final ListModel model = getModel ();
+        return model instanceof WebListModel ? ( WebListModel ) model : null;
+    }
+
+    /**
      * Sets selected value and scrolls view to its cell.
      *
      * @param element element to select

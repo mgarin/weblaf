@@ -109,7 +109,6 @@ public class WebDockablePane extends WebPanel
     {
         WebButtonStyle.round = 0;
         WebButtonStyle.drawFocus = false;
-        WebButtonStyle.rolloverDecoratedOnly = true;
         //        WebButtonStyle.shadeWidth = 0;
         WebLookAndFeel.install ();
 

@@ -43,4 +43,30 @@
         </component>
     </style>
 
+    <!-- WebDockableFrame styling -->
+    <style type="panel" id="dockable-frame-title" extends="default">
+        <ui>
+            <undecorated>false</undecorated>
+            <paintTop>false</paintTop>
+            <paintLeft>false</paintLeft>
+            <paintBottom>true</paintBottom>
+            <paintRight>false</paintRight>
+        </ui>
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebPanelPainter">
+            <round>0</round>
+            <shadeWidth>0</shadeWidth>
+            <paintBackground>true</paintBackground>
+            <webColoredBackground>true</webColoredBackground>
+        </painter>
+    </style>
+    <style type="panel" id="dockable-frame-buttons" extends="default">
+        <component>
+            <opaque>false</opaque>
+        </component>
+        <ui>
+            <undecorated>true</undecorated>
+        </ui>
+    </style>
+
+
 </skin>

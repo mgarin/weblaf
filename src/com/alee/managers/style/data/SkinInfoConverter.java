@@ -32,7 +32,7 @@ import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.mapper.Mapper;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -46,7 +46,8 @@ import java.util.Map;
 public class SkinInfoConverter extends ReflectionConverter
 {
     /**
-     * todo 1. Create proper object->xml marshalling strategy
+     * todo 1. When skins included one by one (not extended) dependencies cannot be matched
+     * todo 2. Create proper object->xml marshalling strategy
      */
 
     /**
@@ -66,7 +67,7 @@ public class SkinInfoConverter extends ReflectionConverter
      * Custom resource map used by StyleEditor to link resources and modified XML files.
      * In other circumstances this map shouln't be required and will be empty.
      */
-    private static final Map<String, Map<String, String>> resourceMap = new HashMap<String, Map<String, String>> ();
+    private static final Map<String, Map<String, String>> resourceMap = new LinkedHashMap<String, Map<String, String>> ();
 
     /**
      * Constructs SkinInfoConverter with the specified mapper and reflection provider.
@@ -183,14 +184,14 @@ public class SkinInfoConverter extends ReflectionConverter
         // Generating skin info cache
         // Also merging all styles with the same ID
         final Map<SupportedComponent, Map<String, ComponentStyle>> stylesCache =
-                new HashMap<SupportedComponent, Map<String, ComponentStyle>> ( SupportedComponent.values ().length );
+                new LinkedHashMap<SupportedComponent, Map<String, ComponentStyle>> ( SupportedComponent.values ().length );
         for ( final ComponentStyle style : styles )
         {
             final SupportedComponent type = style.getType ();
             Map<String, ComponentStyle> componentStyles = stylesCache.get ( type );
             if ( componentStyles == null )
             {
-                componentStyles = new HashMap<String, ComponentStyle> ( 1 );
+                componentStyles = new LinkedHashMap<String, ComponentStyle> ( 1 );
                 stylesCache.put ( type, componentStyles );
             }
             componentStyles.put ( style.getId (), style );
@@ -404,7 +405,7 @@ public class SkinInfoConverter extends ReflectionConverter
      */
     private Map<String, PainterStyle> collectPainters ( final ComponentStyle style, final List<PainterStyle> painters )
     {
-        final Map<String, PainterStyle> paintersMap = new HashMap<String, PainterStyle> ( painters.size () );
+        final Map<String, PainterStyle> paintersMap = new LinkedHashMap<String, PainterStyle> ( painters.size () );
         for ( final PainterStyle painter : painters )
         {
             final String painterId = painter.getId ();
@@ -431,7 +432,7 @@ public class SkinInfoConverter extends ReflectionConverter
         Map<String, String> nearClassMap = resourceMap.get ( nearClass );
         if ( nearClassMap == null )
         {
-            nearClassMap = new HashMap<String, String> ();
+            nearClassMap = new LinkedHashMap<String, String> ();
             resourceMap.put ( nearClass, nearClassMap );
         }
         nearClassMap.put ( src, xml );
