@@ -43,7 +43,7 @@ public abstract class CustomFileFilter extends AbstractFileFilter
      * @param icon        file filter icon
      * @param description file filter description
      */
-    public CustomFileFilter ( ImageIcon icon, String description )
+    public CustomFileFilter ( final ImageIcon icon, final String description )
     {
         super ();
         this.icon = icon;
@@ -64,7 +64,7 @@ public abstract class CustomFileFilter extends AbstractFileFilter
      *
      * @param icon new file filter icon
      */
-    public void setIcon ( ImageIcon icon )
+    public void setIcon ( final ImageIcon icon )
     {
         this.icon = icon;
     }
@@ -83,7 +83,7 @@ public abstract class CustomFileFilter extends AbstractFileFilter
      *
      * @param description new short file filter description
      */
-    public void setDescription ( String description )
+    public void setDescription ( final String description )
     {
         this.description = description;
     }
