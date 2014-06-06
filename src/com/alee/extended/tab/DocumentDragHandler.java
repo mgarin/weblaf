@@ -198,7 +198,7 @@ public class DocumentDragHandler extends TransferHandler
             else
             {
                 int dropSide = -1;
-                if ( pane.getTabCount () > 0 )
+                if ( paneData.getDocumentPane ().isSplitEnabled () && pane.getTabCount () > 0 )
                 {
                     final int tabPlacement = pane.getTabPlacement ();
                     final int w = pane.getWidth ();

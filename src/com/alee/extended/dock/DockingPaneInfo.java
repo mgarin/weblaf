@@ -26,7 +26,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * User: mgarin Date: 28.06.12 Time: 17:32
+ * DockingPaneLayout information.
+ *
+ * @author Mikle Garin
  */
 
 public class DockingPaneInfo implements DockingPaneConstants

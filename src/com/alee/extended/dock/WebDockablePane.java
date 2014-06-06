@@ -141,6 +141,8 @@ public class WebDockablePane extends WebPanel
         pane.add ( new WebToggleButton ( right ), DockingPaneLayout.RIGHT_BOTTOM );
         pane.add ( new WebToggleButton ( right ), DockingPaneLayout.RIGHT_BOTTOM );
         //
+        pane.add ( new WebToggleButton ( "Test left", top ), DockingPaneLayout.BOTTOM_LEFT );
+        pane.add ( new WebToggleButton ( "Test right", top ), DockingPaneLayout.BOTTOM_RIGHT );
         //        pane.add ( new WebToggleButton ( "Test 4", bottom ), DockingPaneLayout.BOTTOM_LEFT );
         //        pane.add ( new WebToggleButton ( "Test 5", bottom ), DockingPaneLayout.BOTTOM_RIGHT );
         //        pane.add ( new WebToggleButton ( "Test 6", bottom ), DockingPaneLayout.BOTTOM_RIGHT );
