@@ -338,6 +338,7 @@ public class WebButtonPopup extends WebPopup
 
     private void copySettings ( final WebButton button, final WebButton copy )
     {
+        copy.setFont ( button.getFont () );
         copy.setIcon ( button.getIcon () );
         copy.setText ( button.getText () );
         copy.setIconTextGap ( button.getIconTextGap () );
@@ -379,7 +380,8 @@ public class WebButtonPopup extends WebPopup
             {
                 setBounds (
                         new Rectangle ( new Point ( rl.x + button.getWidth () / 2 - ps.width / 2, rl.y + button.getHeight () - ps.height ),
-                                ps ) );
+                                ps )
+                );
             }
             else if ( popupWay.equals ( PopupWay.upRight ) )
             {
@@ -395,7 +397,8 @@ public class WebButtonPopup extends WebPopup
             {
                 setBounds (
                         new Rectangle ( new Point ( rl.x + button.getWidth () - ps.width, rl.y + button.getHeight () / 2 - ps.height / 2 ),
-                                ps ) );
+                                ps )
+                );
             }
             else if ( popupWay.equals ( PopupWay.leftDown ) )
             {

@@ -17,6 +17,7 @@
 
 package com.alee.managers.style.data;
 
+import com.alee.managers.style.StyleException;
 import com.alee.managers.style.SupportedComponent;
 import com.alee.utils.ReflectUtils;
 import com.thoughtworks.xstream.converters.MarshallingContext;
@@ -27,6 +28,7 @@ import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 import com.thoughtworks.xstream.mapper.Mapper;
 
+import java.lang.reflect.Method;
 import java.util.*;
 
 /**
@@ -50,6 +52,7 @@ public class ComponentStyleConverter extends ReflectionConverter
     public static final String PAINTER_NODE = "painter";
     public static final String PAINTER_ID_ATTRIBUTE = "id";
     public static final String PAINTER_CLASS_ATTRIBUTE = "class";
+    public static final String IGNORED_ATTRIBUTE = "ignored";
 
     /**
      * Default component style ID.
@@ -179,32 +182,24 @@ public class ComponentStyleConverter extends ReflectionConverter
             if ( nodeName.equals ( COMPONENT_NODE ) )
             {
                 // Reading component property
+                final Class componentClass = type.getComponentClass ();
                 while ( reader.hasMoreChildren () )
                 {
                     reader.moveDown ();
-                    final Class componentClass = type.getComponentClass ();
-                    final String subNodeName = reader.getNodeName ();
-                    final Class fieldClass = ReflectUtils.getFieldTypeSafely ( componentClass, subNodeName );
-                    if ( fieldClass != null )
-                    {
-                        componentProperties.put ( subNodeName, context.convertAnother ( componentProperties, fieldClass ) );
-                    }
+                    final String propName = reader.getNodeName ();
+                    readProperty ( reader, context, componentStyleId, componentProperties, componentClass, propName );
                     reader.moveUp ();
                 }
             }
             else if ( nodeName.equals ( UI_NODE ) )
             {
                 // Reading UI property
+                final Class uiClass = type.getUIClass ();
                 while ( reader.hasMoreChildren () )
                 {
                     reader.moveDown ();
-                    final Class uiClass = type.getUIClass ();
-                    final String subNodeName = reader.getNodeName ();
-                    final Class fieldClass = ReflectUtils.getFieldTypeSafely ( uiClass, subNodeName );
-                    if ( fieldClass != null )
-                    {
-                        uiProperties.put ( subNodeName, context.convertAnother ( uiProperties, fieldClass ) );
-                    }
+                    final String propName = reader.getNodeName ();
+                    readProperty ( reader, context, componentStyleId, uiProperties, uiClass, propName );
                     reader.moveUp ();
                 }
             }
@@ -249,11 +244,7 @@ public class ComponentStyleConverter extends ReflectionConverter
                     {
                         reader.moveDown ();
                         final String propName = reader.getNodeName ();
-                        final Class fieldClass = ReflectUtils.getFieldTypeSafely ( painterClass, propName );
-                        if ( fieldClass != null )
-                        {
-                            painterProperties.put ( propName, context.convertAnother ( painterProperties, fieldClass ) );
-                        }
+                        readProperty ( reader, context, componentStyleId, painterProperties, painterClass, propName );
                         reader.moveUp ();
                     }
                 }
@@ -299,5 +290,47 @@ public class ComponentStyleConverter extends ReflectionConverter
         componentStyle.setPainters ( painters );
 
         return componentStyle;
+    }
+
+    /**
+     * Parses single style property into properties map.
+     *
+     * @param reader           hierarchical stream reader
+     * @param context          unmarshalling context
+     * @param componentStyleId component style ID
+     * @param properties       properties
+     * @param propertyClass    property class
+     * @param propertyName     property name
+     */
+    protected void readProperty ( final HierarchicalStreamReader reader, final UnmarshallingContext context, final String componentStyleId,
+                                  final Map<String, Object> properties, final Class propertyClass, final String propertyName )
+    {
+        final String ignored = reader.getAttribute ( IGNORED_ATTRIBUTE );
+        if ( ignored != null && Boolean.parseBoolean ( ignored ) )
+        {
+            properties.put ( propertyName, IgnoredValue.VALUE );
+        }
+        else
+        {
+            final Class fieldClass = ReflectUtils.getFieldTypeSafely ( propertyClass, propertyName );
+            if ( fieldClass != null )
+            {
+                properties.put ( propertyName, context.convertAnother ( properties, fieldClass ) );
+            }
+            else
+            {
+                final Method getter = ReflectUtils.getFieldGetter ( propertyClass, propertyName );
+                if ( getter != null )
+                {
+                    final Class<?> rClass = getter.getReturnType ();
+                    properties.put ( propertyName, context.convertAnother ( properties, rClass ) );
+                }
+                else
+                {
+                    throw new StyleException ( "Component property \"" + propertyName + "\" type from style \"" + componentStyleId +
+                            "\" cannot be determined! Make sure it points to existing field or getter method." );
+                }
+            }
+        }
     }
 }

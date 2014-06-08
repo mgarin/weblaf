@@ -31,8 +31,8 @@ import java.util.Map;
  * @author Mikle Garin
  */
 
-@XStreamAlias ( "SettingsGroup" )
-@XStreamConverter ( SettingsConverter.class )
+@XStreamAlias ("SettingsGroup")
+@XStreamConverter (SettingsConverter.class)
 public class SettingsGroup implements Serializable
 {
     /**
@@ -68,7 +68,7 @@ public class SettingsGroup implements Serializable
      *
      * @param name SettingsGroup name
      */
-    public SettingsGroup ( String name )
+    public SettingsGroup ( final String name )
     {
         super ();
         this.id = TextUtils.generateId ( ID_PREFIX );
@@ -81,7 +81,7 @@ public class SettingsGroup implements Serializable
      * @param id   SettingsGroup ID
      * @param name SettingsGroup name
      */
-    public SettingsGroup ( String id, String name )
+    public SettingsGroup ( final String id, final String name )
     {
         super ();
         this.id = id;
@@ -103,7 +103,7 @@ public class SettingsGroup implements Serializable
      *
      * @param id new unique ID
      */
-    public void setId ( String id )
+    public void setId ( final String id )
     {
         this.id = id;
     }
@@ -123,7 +123,7 @@ public class SettingsGroup implements Serializable
      *
      * @param name new unique name
      */
-    public void setName ( String name )
+    public void setName ( final String name )
     {
         this.name = name;
     }
@@ -147,7 +147,7 @@ public class SettingsGroup implements Serializable
      *
      * @param settings new settings map
      */
-    public void setSettings ( Map<String, Object> settings )
+    public void setSettings ( final Map<String, Object> settings )
     {
         this.settings = settings;
     }
@@ -158,7 +158,7 @@ public class SettingsGroup implements Serializable
      * @param key key
      * @return value for specified key
      */
-    public Object get ( String key )
+    public Object get ( final String key )
     {
         return getSettings ().get ( key );
     }
@@ -171,7 +171,7 @@ public class SettingsGroup implements Serializable
      * @param <T>    value type
      * @return previous value for the specified key
      */
-    public <T> T put ( String key, T object )
+    public <T> T put ( final String key, final T object )
     {
         return ( T ) getSettings ().put ( key, object );
     }

@@ -24,6 +24,7 @@ import com.thoughtworks.xstream.annotations.XStreamImplicit;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -212,6 +213,40 @@ public final class Dictionary implements Serializable
         this.languageInfos = languageInfos;
     }
 
+    public LanguageInfo getLanguageInfo ( final String language )
+    {
+        if ( languageInfos != null )
+        {
+            for ( final LanguageInfo languageInfo : languageInfos )
+            {
+                if ( languageInfo.getLang ().equals ( language ) )
+                {
+                    return languageInfo;
+                }
+            }
+        }
+        return null;
+    }
+
+    public void addLanguageInfo ( final LanguageInfo info )
+    {
+        if ( languageInfos == null )
+        {
+            languageInfos = new ArrayList<LanguageInfo> ( 1 );
+        }
+        final Iterator<LanguageInfo> iterator = languageInfos.iterator ();
+        while ( iterator.hasNext () )
+        {
+            final LanguageInfo next = iterator.next ();
+            if ( next.getLang ().equals ( info.getLang () ) )
+            {
+                iterator.remove ();
+                break;
+            }
+        }
+        languageInfos.add ( info );
+    }
+
     private void checkRecords ()
     {
         if ( records == null )
@@ -370,6 +405,7 @@ public final class Dictionary implements Serializable
         return languages;
     }
 
+    @Override
     public String toString ()
     {
         return ( name != null ? name + " " : "" ) +

@@ -120,6 +120,7 @@ public class UniqueNode extends DefaultMutableTreeNode implements Serializable
      *
      * @return text node representation
      */
+    @Override
     public String toString ()
     {
         return userObject == null ? ReflectUtils.getClassName ( this.getClass () ) : userObject.toString ();

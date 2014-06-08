@@ -875,7 +875,7 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider,
         LafUtils.restoreAntialias ( g2d, aa );
     }
 
-    private int getTabAreaLength ( final int tabPlacement )
+    public int getTabAreaLength ( final int tabPlacement )
     {
         return tabPlacement == JTabbedPane.TOP || tabPlacement == JTabbedPane.BOTTOM ?
                 calculateTabAreaHeight ( tabPlacement, runCount, maxTabHeight ) - 1 :
@@ -1046,7 +1046,8 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider,
                 return new RoundRectangle2D.Double ( bi.left + ( left ? tabAreaSize : 0 ), bi.top + ( top ? tabAreaSize : 0 ),
                         tabPane.getWidth () - bi.left - bi.right -
                                 ( left || right ? tabAreaSize : 0 ), tabPane.getHeight () - bi.top - bi.bottom -
-                        ( top || bottom ? tabAreaSize : 0 ), round * 2, round * 2 );
+                        ( top || bottom ? tabAreaSize : 0 ), round * 2, round * 2
+                );
             }
         }
         else

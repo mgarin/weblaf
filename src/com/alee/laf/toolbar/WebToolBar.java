@@ -25,7 +25,10 @@ import com.alee.laf.separator.WebSeparator;
 import com.alee.managers.language.LanguageContainerMethods;
 import com.alee.managers.language.LanguageManager;
 import com.alee.utils.ReflectUtils;
+import com.alee.utils.SizeUtils;
+import com.alee.utils.SwingUtils;
 import com.alee.utils.laf.ShapeProvider;
+import com.alee.utils.swing.SizeMethods;
 
 import javax.swing.*;
 import java.awt.*;
@@ -35,7 +38,7 @@ import java.util.List;
  * User: mgarin Date: 23.08.11 Time: 16:15
  */
 
-public class WebToolBar extends JToolBar implements ShapeProvider, LanguageContainerMethods
+public class WebToolBar extends JToolBar implements ShapeProvider, SizeMethods<WebToolBar>, LanguageContainerMethods
 {
     public WebToolBar ()
     {
@@ -387,6 +390,96 @@ public class WebToolBar extends JToolBar implements ShapeProvider, LanguageConta
         {
             setUI ( getUI () );
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int getPreferredWidth ()
+    {
+        return SizeUtils.getPreferredWidth ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebToolBar setPreferredWidth ( final int preferredWidth )
+    {
+        return SizeUtils.setPreferredWidth ( this, preferredWidth );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int getPreferredHeight ()
+    {
+        return SizeUtils.getPreferredHeight ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebToolBar setPreferredHeight ( final int preferredHeight )
+    {
+        return SizeUtils.setPreferredHeight ( this, preferredHeight );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int getMinimumWidth ()
+    {
+        return SizeUtils.getMinimumWidth ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebToolBar setMinimumWidth ( final int minimumWidth )
+    {
+        return SizeUtils.setMinimumWidth ( this, minimumWidth );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int getMinimumHeight ()
+    {
+        return SizeUtils.getMinimumHeight ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebToolBar setMinimumHeight ( final int minimumHeight )
+    {
+        return SizeUtils.setMinimumHeight ( this, minimumHeight );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Dimension getPreferredSize ()
+    {
+        Dimension ps = SizeUtils.getPreferredSize ( this, super.getPreferredSize () );
+
+        // Fix to take painter preferres size into account
+        final Painter painter = getPainter ();
+        if ( painter != null )
+        {
+            ps = SwingUtils.max ( ps, painter.getPreferredSize ( this ) );
+        }
+
+        return ps;
     }
 
     /**

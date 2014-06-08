@@ -24,7 +24,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * User: mgarin Date: 28.06.12 Time: 14:46
+ * Custom layout for WebDockablePane component.
+ *
+ * @author Mikle Garin
  */
 
 public class DockingPaneLayout extends AbstractLayoutManager implements DockingPaneConstants
@@ -59,7 +61,7 @@ public class DockingPaneLayout extends AbstractLayoutManager implements DockingP
         return buttonPanesVisible;
     }
 
-    public void setButtonPanesVisible ( boolean buttonPanesVisible )
+    public void setButtonPanesVisible ( final boolean buttonPanesVisible )
     {
         this.buttonPanesVisible = buttonPanesVisible;
     }
@@ -69,7 +71,7 @@ public class DockingPaneLayout extends AbstractLayoutManager implements DockingP
         return filledFrame;
     }
 
-    public void setFilledFrame ( String filledFrame )
+    public void setFilledFrame ( final String filledFrame )
     {
         this.filledFrame = filledFrame;
     }
@@ -79,7 +81,7 @@ public class DockingPaneLayout extends AbstractLayoutManager implements DockingP
         return buttonsMargin;
     }
 
-    public void setButtonsMargin ( Insets buttonsMargin )
+    public void setButtonsMargin ( final Insets buttonsMargin )
     {
         this.buttonsMargin = buttonsMargin;
     }
@@ -89,7 +91,7 @@ public class DockingPaneLayout extends AbstractLayoutManager implements DockingP
         return buttonSpacing;
     }
 
-    public void setButtonSpacing ( int buttonSpacing )
+    public void setButtonSpacing ( final int buttonSpacing )
     {
         this.buttonSpacing = buttonSpacing;
     }
@@ -99,7 +101,7 @@ public class DockingPaneLayout extends AbstractLayoutManager implements DockingP
         return buttonSidesSpacing;
     }
 
-    public void setButtonSidesSpacing ( int buttonSidesSpacing )
+    public void setButtonSidesSpacing ( final int buttonSidesSpacing )
     {
         this.buttonSidesSpacing = buttonSidesSpacing;
     }
@@ -109,7 +111,7 @@ public class DockingPaneLayout extends AbstractLayoutManager implements DockingP
         return framesMargin;
     }
 
-    public void setFramesMargin ( Insets framesMargin )
+    public void setFramesMargin ( final Insets framesMargin )
     {
         this.framesMargin = framesMargin;
     }
@@ -119,7 +121,7 @@ public class DockingPaneLayout extends AbstractLayoutManager implements DockingP
         return contentMargin;
     }
 
-    public void setContentMargin ( Insets contentMargin )
+    public void setContentMargin ( final Insets contentMargin )
     {
         this.contentMargin = contentMargin;
     }
@@ -129,7 +131,7 @@ public class DockingPaneLayout extends AbstractLayoutManager implements DockingP
         return constraints;
     }
 
-    public void setConstraints ( Map<Component, String> constraints )
+    public void setConstraints ( final Map<Component, String> constraints )
     {
         this.constraints = constraints;
     }
@@ -151,7 +153,7 @@ public class DockingPaneLayout extends AbstractLayoutManager implements DockingP
      * {@inheritDoc}
      */
     @Override
-    public void addComponent ( Component component, Object constraints )
+    public void addComponent ( final Component component, final Object constraints )
     {
         this.constraints.put ( component, ( String ) constraints );
     }
@@ -160,7 +162,7 @@ public class DockingPaneLayout extends AbstractLayoutManager implements DockingP
      * {@inheritDoc}
      */
     @Override
-    public void removeComponent ( Component component )
+    public void removeComponent ( final Component component )
     {
         this.constraints.remove ( component );
     }
@@ -169,42 +171,19 @@ public class DockingPaneLayout extends AbstractLayoutManager implements DockingP
      * {@inheritDoc}
      */
     @Override
-    public Dimension preferredLayoutSize ( Container parent )
+    public Dimension preferredLayoutSize ( final Container parent )
     {
-        // Collecting components positioning info
-        info = new DockingPaneInfo ( DockingPaneLayout.this, parent );
-
-        Dimension top = new Dimension ( buttonsMargin.left + info.topButtonsSize.width + buttonsMargin.right,
-                buttonsMargin.top + info.topButtonsSize.height + buttonsMargin.bottom );
-        Dimension left = new Dimension ( buttonsMargin.left + info.leftButtonsSize.width + buttonsMargin.right,
-                buttonsMargin.top + info.leftButtonsSize.height + buttonsMargin.bottom );
-        Dimension right = new Dimension ( buttonsMargin.left + info.rightButtonsSize.width + buttonsMargin.right,
-                buttonsMargin.top + info.rightButtonsSize.height + buttonsMargin.bottom );
-        Dimension bottom = new Dimension ( buttonsMargin.left + info.bottomButtonsSize.width + buttonsMargin.right,
-                buttonsMargin.top + info.bottomButtonsSize.height + buttonsMargin.bottom );
-
-        int width = info.margin.left + left.width + Math.max ( top.width, bottom.width ) +
-                right.width + info.margin.right;
-        int height = info.margin.top + top.height + Math.max ( left.height, right.height ) +
-                bottom.height + info.margin.bottom;
-
-        // Frames and content is not counted for preferred size to allow area to be reduced
-        return new Dimension ( width, height );
+        return new Dimension ( 0, 0 );
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void layoutContainer ( Container parent )
+    public void layoutContainer ( final Container parent )
     {
         // Collecting components positioning info
-        Dimension pls = preferredLayoutSize ( parent );
-
-        // Limiting minimum layout size to preferred size
-        info.rect.width = Math.max ( info.rect.width, pls.width - info.margin.left - info.margin.right );
-        info.rect.height = Math.max ( info.rect.height, pls.height - info.margin.top - info.margin.bottom );
-        info.updateBounds ();
+        info = new DockingPaneInfo ( DockingPaneLayout.this, parent );
 
         // Layouting button components
 
@@ -215,21 +194,55 @@ public class DockingPaneLayout extends AbstractLayoutManager implements DockingP
         // Top buttons pane
         if ( info.hasTopButtons )
         {
+            final int topY = info.rect.y + buttonsMargin.top;
+            final int leftX = info.rect.x + info.leftButtonsPaneBounds.width + buttonsMargin.left;
             x = 0;
-            for ( Component component : info.topLeftButtons )
+            for ( final Component component : info.topLeftButtons )
             {
-                Dimension ps = component.getPreferredSize ();
-                component.setBounds ( info.rect.x + info.leftButtonsPaneBounds.width + buttonsMargin.left + x,
-                        info.rect.y + buttonsMargin.top, ps.width, info.topButtonsSize.height );
+                final Dimension ps = component.getPreferredSize ();
+                component.setBounds ( leftX + x, topY, ps.width, info.topButtonsSize.height );
                 x += ps.width + buttonSpacing;
             }
+
+            final boolean fit =
+                    info.topButtonsSize.width + info.leftButtonsPaneBounds.width + info.rightButtonsPaneBounds.width < info.rect.width;
+            final int rightX = fit ? ( info.rect.x + info.rect.width - info.rightButtonsPaneBounds.width - buttonsMargin.right ) :
+                    ( x > 0 ? leftX + x - buttonSpacing + info.buttonSidesSpacing : leftX ) + info.topRightButtonsSize.width -
+                            buttonsMargin.right;
             x = 0;
-            for ( Component component : info.topRightButtons )
+            for ( final Component component : info.topRightButtons )
             {
-                Dimension ps = component.getPreferredSize ();
+                final Dimension ps = component.getPreferredSize ();
                 x += ps.width;
-                component.setBounds ( info.rect.x + info.rect.width - info.rightButtonsPaneBounds.width -
-                        buttonsMargin.right - x, info.rect.y + buttonsMargin.top, ps.width, info.topButtonsSize.height );
+                component.setBounds ( rightX - x, topY, ps.width, info.topButtonsSize.height );
+                x += buttonSpacing;
+            }
+        }
+
+        // Bottom buttons pane
+        if ( info.hasBottomButtons )
+        {
+            final int bottomY = info.rect.y + info.rect.height - buttonsMargin.bottom - info.bottomButtonsSize.height;
+            final int leftX = info.rect.x + info.leftButtonsPaneBounds.width + buttonsMargin.left;
+            x = 0;
+            for ( final Component component : info.bottomLeftButtons )
+            {
+                final Dimension ps = component.getPreferredSize ();
+                component.setBounds ( leftX + x, bottomY, ps.width, info.bottomButtonsSize.height );
+                x += ps.width + buttonSpacing;
+            }
+
+            final boolean fit =
+                    info.bottomButtonsSize.width + info.leftButtonsPaneBounds.width + info.rightButtonsPaneBounds.width < info.rect.width;
+            final int rightX = fit ? ( info.rect.x + info.rect.width - info.rightButtonsPaneBounds.width - buttonsMargin.right ) :
+                    ( x > 0 ? leftX + x - buttonSpacing + info.buttonSidesSpacing : leftX ) + info.bottomRightButtonsSize.width -
+                            buttonsMargin.right;
+            x = 0;
+            for ( final Component component : info.bottomRightButtons )
+            {
+                final Dimension ps = component.getPreferredSize ();
+                x += ps.width;
+                component.setBounds ( rightX - x, bottomY, ps.width, info.bottomButtonsSize.height );
                 x += buttonSpacing;
             }
         }
@@ -237,22 +250,27 @@ public class DockingPaneLayout extends AbstractLayoutManager implements DockingP
         // Left buttons pane
         if ( info.hasLeftButtons )
         {
+            final int leftX = info.rect.x + buttonsMargin.left;
+            final int topY = info.rect.y + info.topButtonsPaneBounds.height + buttonsMargin.top;
             y = 0;
-            for ( Component component : info.leftTopButtons )
+            for ( final Component component : info.leftTopButtons )
             {
-                Dimension ps = component.getPreferredSize ();
-                component.setBounds ( info.rect.x + buttonsMargin.left,
-                        info.rect.y + info.topButtonsPaneBounds.height + buttonsMargin.top + y, info.leftButtonsSize.width, ps.height );
+                final Dimension ps = component.getPreferredSize ();
+                component.setBounds ( leftX, topY + y, info.leftButtonsSize.width, ps.height );
                 y += ps.height + buttonSpacing;
             }
+
+            final boolean fit =
+                    info.leftButtonsSize.height + info.topButtonsPaneBounds.height + info.bottomButtonsPaneBounds.height < info.rect.height;
+            final int bottomY = fit ? ( info.rect.y + info.rect.height - info.bottomButtonsPaneBounds.height - buttonsMargin.bottom ) :
+                    ( y > 0 ? topY + y - buttonSpacing + info.buttonSidesSpacing : topY ) + info.leftBottomButtonsSize.height -
+                            buttonsMargin.bottom;
             y = 0;
-            for ( Component component : info.leftBottomButtons )
+            for ( final Component component : info.leftBottomButtons )
             {
-                Dimension ps = component.getPreferredSize ();
+                final Dimension ps = component.getPreferredSize ();
                 y += ps.height;
-                component.setBounds ( info.rect.x + buttonsMargin.left,
-                        info.rect.y + info.rect.height - info.bottomButtonsPaneBounds.height -
-                                buttonsMargin.bottom - y, info.leftButtonsSize.width, ps.height );
+                component.setBounds ( leftX, bottomY - y, info.leftButtonsSize.width, ps.height );
                 y += buttonSpacing;
             }
         }
@@ -260,48 +278,28 @@ public class DockingPaneLayout extends AbstractLayoutManager implements DockingP
         // Right buttons pane
         if ( info.hasRightButtons )
         {
+            final int leftX = info.rect.x + info.rect.width - buttonsMargin.right - info.rightButtonsSize.width;
+            final int topY = info.rect.y + info.topButtonsPaneBounds.height + buttonsMargin.top;
             y = 0;
-            for ( Component component : info.rightTopButtons )
+            for ( final Component component : info.rightTopButtons )
             {
-                Dimension ps = component.getPreferredSize ();
-                component.setBounds ( info.rect.x + info.rect.width - buttonsMargin.right -
-                        info.rightButtonsSize.width, info.rect.y + info.topButtonsPaneBounds.height + buttonsMargin.top + y,
-                        info.rightButtonsSize.width, ps.height );
+                final Dimension ps = component.getPreferredSize ();
+                component.setBounds ( leftX, topY + y, info.rightButtonsSize.width, ps.height );
                 y += ps.height + buttonSpacing;
             }
-            y = 0;
-            for ( Component component : info.rightBottomButtons )
-            {
-                Dimension ps = component.getPreferredSize ();
-                y += ps.height;
-                component.setBounds ( info.rect.x + info.rect.width - buttonsMargin.right -
-                        info.rightButtonsSize.width, info.rect.y + info.rect.height - info.bottomButtonsPaneBounds.height -
-                        buttonsMargin.bottom - y, info.rightButtonsSize.width, ps.height );
-                y += buttonSpacing;
-            }
-        }
 
-        // Bottom buttons pane
-        if ( info.hasBottomButtons )
-        {
-            x = 0;
-            for ( Component component : info.bottomLeftButtons )
+            final boolean fit = info.rightButtonsSize.height + info.topButtonsPaneBounds.height + info.bottomButtonsPaneBounds.height <
+                    info.rect.height;
+            final int bottomY = fit ? ( info.rect.y + info.rect.height - info.bottomButtonsPaneBounds.height - buttonsMargin.bottom ) :
+                    ( y > 0 ? topY + y - buttonSpacing + info.buttonSidesSpacing : topY ) + info.rightBottomButtonsSize.height -
+                            buttonsMargin.bottom;
+            y = 0;
+            for ( final Component component : info.rightBottomButtons )
             {
-                Dimension ps = component.getPreferredSize ();
-                component.setBounds ( info.rect.x + info.leftButtonsPaneBounds.width + buttonsMargin.left + x,
-                        info.rect.y + info.rect.height - buttonsMargin.bottom -
-                                info.bottomButtonsSize.height, ps.width, info.bottomButtonsSize.height );
-                x += ps.width + buttonSpacing;
-            }
-            x = 0;
-            for ( Component component : info.bottomRightButtons )
-            {
-                Dimension ps = component.getPreferredSize ();
-                x += ps.width;
-                component.setBounds ( info.rect.x + info.rect.width - info.rightButtonsPaneBounds.width -
-                        buttonsMargin.right - x, info.rect.y + info.rect.height - buttonsMargin.bottom -
-                        info.bottomButtonsSize.height, ps.width, info.bottomButtonsSize.height );
-                x += buttonSpacing;
+                final Dimension ps = component.getPreferredSize ();
+                y += ps.height;
+                component.setBounds ( leftX, bottomY - y, info.rightButtonsSize.width, ps.height );
+                y += buttonSpacing;
             }
         }
 

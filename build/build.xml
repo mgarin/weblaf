@@ -86,6 +86,8 @@
     <target name="build.weblaf.jar" depends="compile,copy.res,copy.lic,create.artifacts">
         <jar destfile="${library.jar}">
             <!-- Base libraries -->
+            <zipfileset src="${lib.dir}/${slf4j.api.jar}" />
+            <zipfileset src="${lib.dir}/${slf4j.binding.jar}" />
             <zipfileset src="${lib.dir}/${imagescaling.jar}" />
             <zipfileset src="${lib.dir}/${jericho.jar}" />
             <zipfileset src="${lib.dir}/${xmlpull.jar}" />
@@ -129,7 +131,7 @@
                 <attribute name="Package-Title" value="${package}" />
                 <attribute name="Package-Version" value="${version.info}" />
                 <attribute name="Main-Class" value="${library.simple.main}" />
-                <attribute name="Class-Path" value="${imagescaling.jar} ${jericho.jar} ${xmlpull.jar} ${xpp3.jar} ${xstream.jar}" />
+                <attribute name="Class-Path" value="${slf4j.api.jar} ${slf4j.binding.jar} ${imagescaling.jar} ${jericho.jar} ${xmlpull.jar} ${xpp3.jar} ${xstream.jar}" />
             </manifest>
         </jar>
     </target>
@@ -140,6 +142,8 @@
             <!-- Demo libraries -->
             <zipfileset src="${lib.dir}/${rsyntaxtextarea.jar}" />
             <!-- Base libraries -->
+            <zipfileset src="${lib.dir}/${slf4j.api.jar}" />
+            <zipfileset src="${lib.dir}/${slf4j.binding.jar}" />
             <zipfileset src="${lib.dir}/${imagescaling.jar}" />
             <zipfileset src="${lib.dir}/${jericho.jar}" />
             <zipfileset src="${lib.dir}/${xmlpull.jar}" />
@@ -164,6 +168,8 @@
     <target name="build.npe.jar" depends="compile,copy.res,copy.lic,create.artifacts">
         <jar destfile="${npe.jar}">
             <!-- Base libraries -->
+            <zipfileset src="${lib.dir}/${slf4j.api.jar}" />
+            <zipfileset src="${lib.dir}/${slf4j.binding.jar}" />
             <zipfileset src="${lib.dir}/${imagescaling.jar}" />
             <zipfileset src="${lib.dir}/${jericho.jar}" />
             <zipfileset src="${lib.dir}/${xmlpull.jar}" />
@@ -207,6 +213,8 @@
     <target name="update.library.build" depends="compile,copy.res,copy.lic,create.artifacts">
         <jar destfile="${vupdater.jar}">
             <!-- Base libraries -->
+            <zipfileset src="${lib.dir}/${slf4j.api.jar}" />
+            <zipfileset src="${lib.dir}/${slf4j.binding.jar}" />
             <zipfileset src="${lib.dir}/${imagescaling.jar}" />
             <zipfileset src="${lib.dir}/${jericho.jar}" />
             <zipfileset src="${lib.dir}/${xmlpull.jar}" />

@@ -17,15 +17,12 @@
 
 package com.alee.laf.combobox;
 
-import com.alee.extended.window.TestFrame;
 import com.alee.laf.WebLookAndFeel;
-import com.alee.laf.button.WebButton;
-import com.alee.laf.menu.WebMenuItem;
-import com.alee.laf.menu.WebPopupMenu;
 import com.alee.managers.settings.DefaultValue;
 import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.settings.SettingsMethods;
 import com.alee.managers.settings.SettingsProcessor;
+import com.alee.utils.CompareUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SizeUtils;
 import com.alee.utils.SwingUtils;
@@ -35,8 +32,6 @@ import com.alee.utils.swing.SizeMethods;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Vector;
 
 /**
@@ -45,31 +40,6 @@ import java.util.Vector;
 
 public class WebComboBox extends JComboBox implements ShapeProvider, SettingsMethods, FontMethods<WebComboBox>, SizeMethods<WebComboBox>
 {
-    public static void main ( final String[] args )
-    {
-        WebLookAndFeel.install ();
-
-        //        TestFrame.show ( new WebComboBox ( new String[]{ ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "." } ), 20 );
-
-        final WebButton wb = new WebButton ( "asfasdasd" );
-        wb.addActionListener ( new ActionListener ()
-        {
-            @Override
-            public void actionPerformed ( final ActionEvent e )
-            {
-                final WebPopupMenu m = new WebPopupMenu ();
-                m.add ( new WebMenuItem ( "Item" ) );
-                m.add ( new WebMenuItem ( "Item" ) );
-                m.add ( new WebMenuItem ( "Item" ) );
-                m.add ( new WebMenuItem ( "Item" ) );
-                m.add ( new WebMenuItem ( "Item" ) );
-                m.add ( new WebMenuItem ( "Item" ) );
-                m.showAbove ( wb );
-            }
-        } );
-        TestFrame.show ( wb );
-    }
-
     public WebComboBox ()
     {
         super ();
@@ -124,6 +94,30 @@ public class WebComboBox extends JComboBox implements ShapeProvider, SettingsMet
     {
         super ( aModel );
         setSelectedItem ( selected );
+    }
+
+    /**
+     * Returns selected value index.
+     * This method is overriden by WebComboBox to fix issue with "null" value from the model being ignored if selected.
+     * By default (in JComboBox) this method will not return index of "null" value in the model if it is selected.
+     *
+     * @return index of the selected value
+     */
+    @Override
+    public int getSelectedIndex ()
+    {
+        final Object sObject = dataModel.getSelectedItem ();
+        int i;
+        Object obj;
+        for ( i = 0; i < dataModel.getSize (); i++ )
+        {
+            obj = dataModel.getElementAt ( i );
+            if ( CompareUtils.equals ( obj, sObject ) )
+            {
+                return i;
+            }
+        }
+        return -1;
     }
 
     public void setEditorColumns ( final int columns )

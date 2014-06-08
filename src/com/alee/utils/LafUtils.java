@@ -43,11 +43,41 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * User: mgarin Date: 27.04.11 Time: 17:41
+ * Various utilities
+ *
+ * @author Mikle Garin
  */
 
 public final class LafUtils
 {
+    /**
+     * Predefined transforms to move shapes or painting 1px l/r/u/d.
+     */
+    public static final AffineTransform moveLeft = new AffineTransform ()
+    {
+        {
+            translate ( -1, 0 );
+        }
+    };
+    public static final AffineTransform moveRight = new AffineTransform ()
+    {
+        {
+            translate ( 1, 0 );
+        }
+    };
+    public static final AffineTransform moveUp = new AffineTransform ()
+    {
+        {
+            translate ( 0, -1 );
+        }
+    };
+    public static final AffineTransform moveDown = new AffineTransform ()
+    {
+        {
+            translate ( 0, 1 );
+        }
+    };
+
     /**
      * Creates border for web components.
      */

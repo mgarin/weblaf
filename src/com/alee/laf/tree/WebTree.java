@@ -265,6 +265,29 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
     }
 
     /**
+     * Returns nodes combined bounds.
+     *
+     * @param nodes nodes to process
+     * @return nodes combined bounds
+     */
+    public Rectangle getNodeBounds ( final List<E> nodes )
+    {
+        if ( nodes == null || nodes.size () == 0 )
+        {
+            return null;
+        }
+        else
+        {
+            Rectangle combined = null;
+            for ( final E node : nodes )
+            {
+                combined = GeometryUtils.getContainingRect ( combined, getNodeBounds ( node ) );
+            }
+            return combined;
+        }
+    }
+
+    /**
      * Returns tree node for the specified row.
      *
      * @param row row to process
@@ -363,6 +386,17 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
     public TreePath getClosestPathForLocation ( final Point location )
     {
         return getClosestPathForLocation ( location.x, location.y );
+    }
+
+    /**
+     * Returns whether specified node is selected or not.
+     *
+     * @param node node to check
+     * @return true if specified node is selected, false otherwise
+     */
+    public boolean isSelected ( final E node )
+    {
+        return isPathSelected ( getPathForNode ( node ) );
     }
 
     /**

@@ -48,7 +48,7 @@ public class VerticalFlowLayout extends FlowLayout
     /**
      * Construct a new VerticalFlowLayout with a middle alignemnt.
      */
-    public VerticalFlowLayout ( boolean hfill, boolean vfill )
+    public VerticalFlowLayout ( final boolean hfill, final boolean vfill )
     {
         this ( TOP, 0, 0, hfill, vfill );
     }
@@ -56,7 +56,7 @@ public class VerticalFlowLayout extends FlowLayout
     /**
      * Construct a new VerticalFlowLayout with a middle alignemnt.
      */
-    public VerticalFlowLayout ( int hgap, int vgap )
+    public VerticalFlowLayout ( final int hgap, final int vgap )
     {
         this ( TOP, hgap, vgap, true, false );
     }
@@ -64,7 +64,7 @@ public class VerticalFlowLayout extends FlowLayout
     /**
      * Construct a new VerticalFlowLayout with a middle alignemnt.
      */
-    public VerticalFlowLayout ( int align, int hgap, int vgap )
+    public VerticalFlowLayout ( final int align, final int hgap, final int vgap )
     {
         this ( align, hgap, vgap, true, false );
     }
@@ -72,7 +72,7 @@ public class VerticalFlowLayout extends FlowLayout
     /**
      * Construct a new VerticalFlowLayout with a middle alignemnt.
      */
-    public VerticalFlowLayout ( int align )
+    public VerticalFlowLayout ( final int align )
     {
         this ( align, 0, 0, true, false );
     }
@@ -80,7 +80,7 @@ public class VerticalFlowLayout extends FlowLayout
     /**
      * Construct a new VerticalFlowLayout.
      */
-    public VerticalFlowLayout ( int align, boolean hfill, boolean vfill )
+    public VerticalFlowLayout ( final int align, final boolean hfill, final boolean vfill )
     {
         this ( align, 0, 0, hfill, vfill );
     }
@@ -88,7 +88,7 @@ public class VerticalFlowLayout extends FlowLayout
     /**
      * Construct a new VerticalFlowLayout.
      */
-    public VerticalFlowLayout ( int align, int hgap, int vgap, boolean hfill, boolean vfill )
+    public VerticalFlowLayout ( final int align, final int hgap, final int vgap, final boolean hfill, final boolean vfill )
     {
         setAlignment ( align );
         this.hgap = hgap;
@@ -101,7 +101,7 @@ public class VerticalFlowLayout extends FlowLayout
      * {@inheritDoc}
      */
     @Override
-    public void setHgap ( int hgap )
+    public void setHgap ( final int hgap )
     {
         super.setHgap ( hgap );
         this.hgap = hgap;
@@ -111,7 +111,7 @@ public class VerticalFlowLayout extends FlowLayout
      * {@inheritDoc}
      */
     @Override
-    public void setVgap ( int vgap )
+    public void setVgap ( final int vgap )
     {
         super.setVgap ( vgap );
         this.vgap = vgap;
@@ -120,7 +120,7 @@ public class VerticalFlowLayout extends FlowLayout
     /**
      * Sets the VerticalFill attribute of the VerticalLayout object
      */
-    public void setVerticalFill ( boolean vfill )
+    public void setVerticalFill ( final boolean vfill )
     {
         this.vfill = vfill;
     }
@@ -128,7 +128,7 @@ public class VerticalFlowLayout extends FlowLayout
     /**
      * Sets the HorizontalFill attribute of the VerticalLayout object
      */
-    public void setHorizontalFill ( boolean hfill )
+    public void setHorizontalFill ( final boolean hfill )
     {
         this.hfill = hfill;
     }
@@ -171,16 +171,15 @@ public class VerticalFlowLayout extends FlowLayout
      * {@inheritDoc}
      */
     @Override
-    public Dimension preferredLayoutSize ( Container target )
+    public Dimension preferredLayoutSize ( final Container target )
     {
-        Dimension tarsiz = new Dimension ( 0, 0 );
-
+        final Dimension tarsiz = new Dimension ( 0, 0 );
         for ( int i = 0; i < target.getComponentCount (); i++ )
         {
-            Component m = target.getComponent ( i );
+            final Component m = target.getComponent ( i );
             if ( m.isVisible () )
             {
-                Dimension d = m.getPreferredSize ();
+                final Dimension d = m.getPreferredSize ();
                 tarsiz.width = Math.max ( tarsiz.width, d.width );
                 if ( i > 0 )
                 {
@@ -189,7 +188,7 @@ public class VerticalFlowLayout extends FlowLayout
                 tarsiz.height += d.height;
             }
         }
-        Insets insets = target.getInsets ();
+        final Insets insets = target.getInsets ();
         tarsiz.width += insets.left + insets.right;
         tarsiz.height += insets.top + insets.bottom;
         return tarsiz;
@@ -199,16 +198,16 @@ public class VerticalFlowLayout extends FlowLayout
      * {@inheritDoc}
      */
     @Override
-    public Dimension minimumLayoutSize ( Container target )
+    public Dimension minimumLayoutSize ( final Container target )
     {
-        Dimension tarsiz = new Dimension ( 0, 0 );
+        final Dimension tarsiz = new Dimension ( 0, 0 );
 
         for ( int i = 0; i < target.getComponentCount (); i++ )
         {
-            Component m = target.getComponent ( i );
+            final Component m = target.getComponent ( i );
             if ( m.isVisible () )
             {
-                Dimension d = m.getMinimumSize ();
+                final Dimension d = m.getMinimumSize ();
                 tarsiz.width = Math.max ( tarsiz.width, d.width );
                 if ( i > 0 )
                 {
@@ -217,7 +216,7 @@ public class VerticalFlowLayout extends FlowLayout
                 tarsiz.height += d.height;
             }
         }
-        Insets insets = target.getInsets ();
+        final Insets insets = target.getInsets ();
         tarsiz.width += insets.left + insets.right;
         tarsiz.height += insets.top + insets.bottom;
         return tarsiz;
@@ -227,12 +226,12 @@ public class VerticalFlowLayout extends FlowLayout
      * {@inheritDoc}
      */
     @Override
-    public void layoutContainer ( Container target )
+    public void layoutContainer ( final Container target )
     {
-        Insets insets = target.getInsets ();
-        int maxheight = target.getSize ().height - ( insets.top + insets.bottom );
-        int maxwidth = target.getSize ().width - ( insets.left + insets.right );
-        int numcomp = target.getComponentCount ();
+        final Insets insets = target.getInsets ();
+        final int maxheight = target.getSize ().height - ( insets.top + insets.bottom );
+        final int maxwidth = target.getSize ().width - ( insets.left + insets.right );
+        final int numcomp = target.getComponentCount ();
         int x = insets.left;
         int y = 0;
         int colw = 0;
@@ -240,10 +239,10 @@ public class VerticalFlowLayout extends FlowLayout
 
         for ( int i = 0; i < numcomp; i++ )
         {
-            Component m = target.getComponent ( i );
+            final Component m = target.getComponent ( i );
             if ( m.isVisible () )
             {
-                Dimension d = m.getPreferredSize ();
+                final Dimension d = m.getPreferredSize ();
                 // fit last component to remaining height
                 if ( ( this.vfill ) && ( i == ( numcomp - 1 ) ) )
                 {
@@ -261,7 +260,7 @@ public class VerticalFlowLayout extends FlowLayout
                     m.setSize ( d.width, d.height );
                 }
 
-                if ( y + d.height > maxheight )
+                if ( this.vfill && y + d.height > maxheight )
                 {
                     placeThem ( target, x, insets.top, colw, maxheight - y, start, i );
                     y = d.height;
@@ -286,9 +285,10 @@ public class VerticalFlowLayout extends FlowLayout
     /**
      * places the components defined by first to last within the target container using the bounds box defined
      */
-    protected void placeThem ( Container target, int x, int y, int width, int height, int first, int last )
+    protected void placeThem ( final Container target, final int x, int y, final int width, final int height, final int first,
+                               final int last )
     {
-        int align = getAlignment ();
+        final int align = getAlignment ();
         //if ( align == this.TOP )
         //  y = 0;
         if ( align == MIDDLE )
@@ -302,11 +302,11 @@ public class VerticalFlowLayout extends FlowLayout
 
         for ( int i = first; i < last; i++ )
         {
-            Component m = target.getComponent ( i );
-            Dimension md = m.getSize ();
+            final Component m = target.getComponent ( i );
+            final Dimension md = m.getSize ();
             if ( m.isVisible () )
             {
-                int px = x + ( width - md.width ) / 2;
+                final int px = x + ( width - md.width ) / 2;
                 m.setLocation ( px, y );
                 y += vgap + md.height;
             }

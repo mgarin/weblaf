@@ -45,27 +45,27 @@ public class WebTextArea extends JTextArea implements LanguageMethods, SettingsM
         super ();
     }
 
-    public WebTextArea ( String text )
+    public WebTextArea ( final String text )
     {
         super ( text );
     }
 
-    public WebTextArea ( int rows, int columns )
+    public WebTextArea ( final int rows, final int columns )
     {
         super ( rows, columns );
     }
 
-    public WebTextArea ( String text, int rows, int columns )
+    public WebTextArea ( final String text, final int rows, final int columns )
     {
         super ( text, rows, columns );
     }
 
-    public WebTextArea ( Document doc )
+    public WebTextArea ( final Document doc )
     {
         super ( doc );
     }
 
-    public WebTextArea ( Document doc, String text, int rows, int columns )
+    public WebTextArea ( final Document doc, final String text, final int rows, final int columns )
     {
         super ( doc, text, rows, columns );
     }
@@ -83,14 +83,74 @@ public class WebTextArea extends JTextArea implements LanguageMethods, SettingsM
      * UI methods
      */
 
-    public void setMargin ( int top, int left, int bottom, int right )
+    public void setMargin ( final int top, final int left, final int bottom, final int right )
     {
         setMargin ( new Insets ( top, left, bottom, right ) );
     }
 
-    public void setMargin ( int spacing )
+    public void setMargin ( final int spacing )
     {
         setMargin ( spacing, spacing, spacing, spacing );
+    }
+
+    public String getInputPrompt ()
+    {
+        return getWebUI ().getInputPrompt ();
+    }
+
+    public void setInputPrompt ( final String inputPrompt )
+    {
+        getWebUI ().setInputPrompt ( inputPrompt );
+    }
+
+    public Font getInputPromptFont ()
+    {
+        return getWebUI ().getInputPromptFont ();
+    }
+
+    public void setInputPromptFont ( final Font inputPromptFont )
+    {
+        getWebUI ().setInputPromptFont ( inputPromptFont );
+    }
+
+    public Color getInputPromptForeground ()
+    {
+        return getWebUI ().getInputPromptForeground ();
+    }
+
+    public void setInputPromptForeground ( final Color inputPromptForeground )
+    {
+        getWebUI ().setInputPromptForeground ( inputPromptForeground );
+    }
+
+    public int getInputPromptHorizontalPosition ()
+    {
+        return getWebUI ().getInputPromptHorizontalPosition ();
+    }
+
+    public void setInputPromptHorizontalPosition ( final int inputPromptHorizontalPosition )
+    {
+        getWebUI ().setInputPromptHorizontalPosition ( inputPromptHorizontalPosition );
+    }
+
+    public int getInputPromptVerticalPosition ()
+    {
+        return getWebUI ().getInputPromptVerticalPosition ();
+    }
+
+    public void setInputPromptVerticalPosition ( final int inputPromptVerticalPosition )
+    {
+        getWebUI ().setInputPromptVerticalPosition ( inputPromptVerticalPosition );
+    }
+
+    public boolean isHideInputPromptOnFocus ()
+    {
+        return getWebUI ().isHideInputPromptOnFocus ();
+    }
+
+    public void setHideInputPromptOnFocus ( final boolean hideInputPromptOnFocus )
+    {
+        getWebUI ().setHideInputPromptOnFocus ( hideInputPromptOnFocus );
     }
 
     public Painter getPainter ()
@@ -98,7 +158,7 @@ public class WebTextArea extends JTextArea implements LanguageMethods, SettingsM
         return getWebUI ().getPainter ();
     }
 
-    public void setPainter ( Painter painter )
+    public void setPainter ( final Painter painter )
     {
         getWebUI ().setPainter ( painter );
     }
@@ -117,7 +177,7 @@ public class WebTextArea extends JTextArea implements LanguageMethods, SettingsM
             {
                 setUI ( ( WebTextAreaUI ) ReflectUtils.createInstance ( WebLookAndFeel.textAreaUI ) );
             }
-            catch ( Throwable e )
+            catch ( final Throwable e )
             {
                 e.printStackTrace ();
                 setUI ( new WebTextAreaUI () );
@@ -138,7 +198,7 @@ public class WebTextArea extends JTextArea implements LanguageMethods, SettingsM
      * {@inheritDoc}
      */
     @Override
-    public void setLanguage ( String key, Object... data )
+    public void setLanguage ( final String key, final Object... data )
     {
         LanguageManager.registerComponent ( this, key, data );
     }
@@ -147,7 +207,7 @@ public class WebTextArea extends JTextArea implements LanguageMethods, SettingsM
      * {@inheritDoc}
      */
     @Override
-    public void updateLanguage ( Object... data )
+    public void updateLanguage ( final Object... data )
     {
         LanguageManager.updateComponent ( this, data );
     }
@@ -156,7 +216,7 @@ public class WebTextArea extends JTextArea implements LanguageMethods, SettingsM
      * {@inheritDoc}
      */
     @Override
-    public void updateLanguage ( String key, Object... data )
+    public void updateLanguage ( final String key, final Object... data )
     {
         LanguageManager.updateComponent ( this, key, data );
     }
@@ -183,7 +243,7 @@ public class WebTextArea extends JTextArea implements LanguageMethods, SettingsM
      * {@inheritDoc}
      */
     @Override
-    public void setLanguageUpdater ( LanguageUpdater updater )
+    public void setLanguageUpdater ( final LanguageUpdater updater )
     {
         LanguageManager.registerLanguageUpdater ( this, updater );
     }
@@ -205,7 +265,7 @@ public class WebTextArea extends JTextArea implements LanguageMethods, SettingsM
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String key )
+    public void registerSettings ( final String key )
     {
         SettingsManager.registerComponent ( this, key );
     }
@@ -214,7 +274,7 @@ public class WebTextArea extends JTextArea implements LanguageMethods, SettingsM
      * {@inheritDoc}
      */
     @Override
-    public <T extends DefaultValue> void registerSettings ( String key, Class<T> defaultValueClass )
+    public <T extends DefaultValue> void registerSettings ( final String key, final Class<T> defaultValueClass )
     {
         SettingsManager.registerComponent ( this, key, defaultValueClass );
     }
@@ -223,7 +283,7 @@ public class WebTextArea extends JTextArea implements LanguageMethods, SettingsM
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String key, Object defaultValue )
+    public void registerSettings ( final String key, final Object defaultValue )
     {
         SettingsManager.registerComponent ( this, key, defaultValue );
     }
@@ -232,7 +292,7 @@ public class WebTextArea extends JTextArea implements LanguageMethods, SettingsM
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String group, String key )
+    public void registerSettings ( final String group, final String key )
     {
         SettingsManager.registerComponent ( this, group, key );
     }
@@ -241,7 +301,7 @@ public class WebTextArea extends JTextArea implements LanguageMethods, SettingsM
      * {@inheritDoc}
      */
     @Override
-    public <T extends DefaultValue> void registerSettings ( String group, String key, Class<T> defaultValueClass )
+    public <T extends DefaultValue> void registerSettings ( final String group, final String key, final Class<T> defaultValueClass )
     {
         SettingsManager.registerComponent ( this, group, key, defaultValueClass );
     }
@@ -250,7 +310,7 @@ public class WebTextArea extends JTextArea implements LanguageMethods, SettingsM
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String group, String key, Object defaultValue )
+    public void registerSettings ( final String group, final String key, final Object defaultValue )
     {
         SettingsManager.registerComponent ( this, group, key, defaultValue );
     }
@@ -259,7 +319,7 @@ public class WebTextArea extends JTextArea implements LanguageMethods, SettingsM
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String key, boolean loadInitialSettings, boolean applySettingsChanges )
+    public void registerSettings ( final String key, final boolean loadInitialSettings, final boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, key, loadInitialSettings, applySettingsChanges );
     }
@@ -268,8 +328,8 @@ public class WebTextArea extends JTextArea implements LanguageMethods, SettingsM
      * {@inheritDoc}
      */
     @Override
-    public <T extends DefaultValue> void registerSettings ( String key, Class<T> defaultValueClass, boolean loadInitialSettings,
-                                                            boolean applySettingsChanges )
+    public <T extends DefaultValue> void registerSettings ( final String key, final Class<T> defaultValueClass,
+                                                            final boolean loadInitialSettings, final boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, key, defaultValueClass, loadInitialSettings, applySettingsChanges );
     }
@@ -278,7 +338,8 @@ public class WebTextArea extends JTextArea implements LanguageMethods, SettingsM
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String key, Object defaultValue, boolean loadInitialSettings, boolean applySettingsChanges )
+    public void registerSettings ( final String key, final Object defaultValue, final boolean loadInitialSettings,
+                                   final boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, key, defaultValue, loadInitialSettings, applySettingsChanges );
     }
@@ -287,8 +348,8 @@ public class WebTextArea extends JTextArea implements LanguageMethods, SettingsM
      * {@inheritDoc}
      */
     @Override
-    public <T extends DefaultValue> void registerSettings ( String group, String key, Class<T> defaultValueClass,
-                                                            boolean loadInitialSettings, boolean applySettingsChanges )
+    public <T extends DefaultValue> void registerSettings ( final String group, final String key, final Class<T> defaultValueClass,
+                                                            final boolean loadInitialSettings, final boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, group, key, defaultValueClass, loadInitialSettings, applySettingsChanges );
     }
@@ -297,8 +358,8 @@ public class WebTextArea extends JTextArea implements LanguageMethods, SettingsM
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String group, String key, Object defaultValue, boolean loadInitialSettings,
-                                   boolean applySettingsChanges )
+    public void registerSettings ( final String group, final String key, final Object defaultValue, final boolean loadInitialSettings,
+                                   final boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, group, key, defaultValue, loadInitialSettings, applySettingsChanges );
     }
@@ -307,7 +368,7 @@ public class WebTextArea extends JTextArea implements LanguageMethods, SettingsM
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( SettingsProcessor settingsProcessor )
+    public void registerSettings ( final SettingsProcessor settingsProcessor )
     {
         SettingsManager.registerComponent ( this, settingsProcessor );
     }
@@ -356,7 +417,7 @@ public class WebTextArea extends JTextArea implements LanguageMethods, SettingsM
      * {@inheritDoc}
      */
     @Override
-    public WebTextArea setPlainFont ( boolean apply )
+    public WebTextArea setPlainFont ( final boolean apply )
     {
         return SwingUtils.setPlainFont ( this, apply );
     }
@@ -383,7 +444,7 @@ public class WebTextArea extends JTextArea implements LanguageMethods, SettingsM
      * {@inheritDoc}
      */
     @Override
-    public WebTextArea setBoldFont ( boolean apply )
+    public WebTextArea setBoldFont ( final boolean apply )
     {
         return SwingUtils.setBoldFont ( this, apply );
     }
@@ -410,7 +471,7 @@ public class WebTextArea extends JTextArea implements LanguageMethods, SettingsM
      * {@inheritDoc}
      */
     @Override
-    public WebTextArea setItalicFont ( boolean apply )
+    public WebTextArea setItalicFont ( final boolean apply )
     {
         return SwingUtils.setItalicFont ( this, apply );
     }
@@ -428,7 +489,7 @@ public class WebTextArea extends JTextArea implements LanguageMethods, SettingsM
      * {@inheritDoc}
      */
     @Override
-    public WebTextArea setFontStyle ( boolean bold, boolean italic )
+    public WebTextArea setFontStyle ( final boolean bold, final boolean italic )
     {
         return SwingUtils.setFontStyle ( this, bold, italic );
     }
@@ -437,7 +498,7 @@ public class WebTextArea extends JTextArea implements LanguageMethods, SettingsM
      * {@inheritDoc}
      */
     @Override
-    public WebTextArea setFontStyle ( int style )
+    public WebTextArea setFontStyle ( final int style )
     {
         return SwingUtils.setFontStyle ( this, style );
     }
@@ -446,7 +507,7 @@ public class WebTextArea extends JTextArea implements LanguageMethods, SettingsM
      * {@inheritDoc}
      */
     @Override
-    public WebTextArea setFontSize ( int fontSize )
+    public WebTextArea setFontSize ( final int fontSize )
     {
         return SwingUtils.setFontSize ( this, fontSize );
     }
@@ -455,7 +516,7 @@ public class WebTextArea extends JTextArea implements LanguageMethods, SettingsM
      * {@inheritDoc}
      */
     @Override
-    public WebTextArea changeFontSize ( int change )
+    public WebTextArea changeFontSize ( final int change )
     {
         return SwingUtils.changeFontSize ( this, change );
     }
@@ -473,7 +534,7 @@ public class WebTextArea extends JTextArea implements LanguageMethods, SettingsM
      * {@inheritDoc}
      */
     @Override
-    public WebTextArea setFontSizeAndStyle ( int fontSize, boolean bold, boolean italic )
+    public WebTextArea setFontSizeAndStyle ( final int fontSize, final boolean bold, final boolean italic )
     {
         return SwingUtils.setFontSizeAndStyle ( this, fontSize, bold, italic );
     }
@@ -482,7 +543,7 @@ public class WebTextArea extends JTextArea implements LanguageMethods, SettingsM
      * {@inheritDoc}
      */
     @Override
-    public WebTextArea setFontSizeAndStyle ( int fontSize, int style )
+    public WebTextArea setFontSizeAndStyle ( final int fontSize, final int style )
     {
         return SwingUtils.setFontSizeAndStyle ( this, fontSize, style );
     }
@@ -491,7 +552,7 @@ public class WebTextArea extends JTextArea implements LanguageMethods, SettingsM
      * {@inheritDoc}
      */
     @Override
-    public WebTextArea setFontName ( String fontName )
+    public WebTextArea setFontName ( final String fontName )
     {
         return SwingUtils.setFontName ( this, fontName );
     }

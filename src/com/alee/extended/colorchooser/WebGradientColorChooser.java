@@ -43,22 +43,20 @@ public class WebGradientColorChooser extends JComponent
         implements MouseListener, MouseMotionListener, FocusListener, SettingsMethods, SizeMethods<WebGradientColorChooser>
 {
     // Style constants
-    private static Color borderColor = Color.DARK_GRAY; // new Color ( 51, 51, 51 );
-    private static Color disabledBorderColor = Color.LIGHT_GRAY;
-    private static Color foreground = Color.BLACK;
-    private static Color disabledForeground = new Color ( 178, 178, 178 );
-    private static Color innerBorderColor = ColorUtils.white ( 180 );
-    private static float[] overlayFractions = new float[]{ 0f, 0.4f, 0.41f, 1f };
-    private static Color[] lineOverlayColors =
+    private static final Color borderColor = Color.DARK_GRAY; // new Color ( 51, 51, 51 );
+    private static final Color disabledBorderColor = Color.LIGHT_GRAY;
+    private static final Color foreground = Color.BLACK;
+    private static final Color disabledForeground = new Color ( 178, 178, 178 );
+    private static final Color innerBorderColor = ColorUtils.white ( 180 );
+    private static final float[] overlayFractions = new float[]{ 0f, 0.4f, 0.41f, 1f };
+    private static final Color[] lineOverlayColors =
             new Color[]{ ColorUtils.white ( 160 ), ColorUtils.white ( 120 ), ColorUtils.white ( 100 ), ColorUtils.white ( 40 ) };
-    private static Color[] controlOverlayColors =
+    private static final Color[] controlOverlayColors =
             new Color[]{ ColorUtils.white ( 80 ), ColorUtils.white ( 50 ), ColorUtils.white ( 20 ), StyleConstants.transparent };
-    private static final Stroke stripeStroke =
-            new BasicStroke ( 1f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 1f, new float[]{ 4f, 4f }, 0f );
     private static final float closestPoint = 0.001f;
 
     // Runtime data
-    private List<ChangeListener> changeListeners = new ArrayList<ChangeListener> ( 1 );
+    private final List<ChangeListener> changeListeners = new ArrayList<ChangeListener> ( 1 );
     private GradientData gradientData;
 
     // Settings
@@ -77,7 +75,7 @@ public class WebGradientColorChooser extends JComponent
         this ( SettingsManager.getDefaultValue ( GradientData.class ) );
     }
 
-    public WebGradientColorChooser ( GradientData gradientData )
+    public WebGradientColorChooser ( final GradientData gradientData )
     {
         super ();
 
@@ -93,19 +91,19 @@ public class WebGradientColorChooser extends JComponent
     }
 
     @Override
-    public void focusGained ( FocusEvent e )
+    public void focusGained ( final FocusEvent e )
     {
         repaint ();
     }
 
     @Override
-    public void focusLost ( FocusEvent e )
+    public void focusLost ( final FocusEvent e )
     {
         repaint ();
     }
 
     @Override
-    public void mouseClicked ( MouseEvent e )
+    public void mouseClicked ( final MouseEvent e )
     {
         if ( !isEnabled () )
         {
@@ -115,10 +113,10 @@ public class WebGradientColorChooser extends JComponent
         // Displaying color chooser dialog on double-click
         if ( SwingUtilities.isLeftMouseButton ( e ) && e.getClickCount () == 2 )
         {
-            GradientColorData colorData = getColorDataUnderPoint ( e.getPoint () );
+            final GradientColorData colorData = getColorDataUnderPoint ( e.getPoint () );
             if ( colorData != null )
             {
-                Color newColor = WebColorChooser.showDialog ( WebGradientColorChooser.this, colorData.getColor () );
+                final Color newColor = WebColorChooser.showDialog ( WebGradientColorChooser.this, colorData.getColor () );
                 if ( newColor != null )
                 {
                     // Updating color
@@ -132,7 +130,7 @@ public class WebGradientColorChooser extends JComponent
     }
 
     @Override
-    public void mousePressed ( MouseEvent e )
+    public void mousePressed ( final MouseEvent e )
     {
         if ( !isEnabled () )
         {
@@ -146,7 +144,7 @@ public class WebGradientColorChooser extends JComponent
 
         if ( SwingUtilities.isLeftMouseButton ( e ) )
         {
-            GradientColorData colorData = getColorDataUnderPoint ( e.getPoint () );
+            final GradientColorData colorData = getColorDataUnderPoint ( e.getPoint () );
             if ( colorData != null )
             {
                 if ( SwingUtils.isAlt ( e ) )
@@ -170,7 +168,7 @@ public class WebGradientColorChooser extends JComponent
             if ( draggedGripper == null && e.getY () > 0 )
             {
                 // Checking that click location doesn't have a color
-                float newLocation = getLocationForPoint ( e );
+                final float newLocation = getLocationForPoint ( e );
                 if ( isFree ( newLocation ) )
                 {
                     // Creating new color when clicked not on gripper
@@ -185,7 +183,7 @@ public class WebGradientColorChooser extends JComponent
         }
         else if ( ( SwingUtils.isMiddleMouseButton ( e ) || SwingUtils.isRightMouseButton ( e ) ) && gradientData.size () > 2 )
         {
-            GradientColorData colorData = getColorDataUnderPoint ( e.getPoint () );
+            final GradientColorData colorData = getColorDataUnderPoint ( e.getPoint () );
             if ( colorData != null )
             {
                 // Removing color
@@ -197,12 +195,12 @@ public class WebGradientColorChooser extends JComponent
         }
     }
 
-    public GradientColorData getColorDataUnderPoint ( Point point )
+    public GradientColorData getColorDataUnderPoint ( final Point point )
     {
         GradientColorData colorData = null;
         for ( int i = gradientData.size () - 1; i >= 0; i-- )
         {
-            GradientColorData gcd = gradientData.get ( i );
+            final GradientColorData gcd = gradientData.get ( i );
             if ( getGripperBounds ( gcd ).contains ( point ) )
             {
                 colorData = gcd;
@@ -213,7 +211,7 @@ public class WebGradientColorChooser extends JComponent
     }
 
     @Override
-    public void mouseDragged ( MouseEvent e )
+    public void mouseDragged ( final MouseEvent e )
     {
         if ( !isEnabled () )
         {
@@ -255,7 +253,7 @@ public class WebGradientColorChooser extends JComponent
     }
 
     @Override
-    public void mouseReleased ( MouseEvent e )
+    public void mouseReleased ( final MouseEvent e )
     {
         if ( !isEnabled () )
         {
@@ -269,24 +267,24 @@ public class WebGradientColorChooser extends JComponent
     }
 
     @Override
-    public void mouseEntered ( MouseEvent e )
+    public void mouseEntered ( final MouseEvent e )
     {
         //
     }
 
     @Override
-    public void mouseExited ( MouseEvent e )
+    public void mouseExited ( final MouseEvent e )
     {
         //
     }
 
     @Override
-    public void mouseMoved ( MouseEvent e )
+    public void mouseMoved ( final MouseEvent e )
     {
         //
     }
 
-    public boolean isFree ( float location )
+    public boolean isFree ( final float location )
     {
         return !gradientData.containtsLocation ( location );
     }
@@ -313,34 +311,34 @@ public class WebGradientColorChooser extends JComponent
         return newLocation;
     }
 
-    public Rectangle getGripperBounds ( int index )
+    public Rectangle getGripperBounds ( final int index )
     {
         return getGripperBounds ( gradientData.getGradientColorsData ().get ( index ) );
     }
 
-    public Rectangle getGripperBounds ( GradientColorData colorData )
+    public Rectangle getGripperBounds ( final GradientColorData colorData )
     {
-        float location = colorData.getLocation ();
-        Rectangle lineBounds = getLineBounds ();
-        int x = lineBounds.x + 2 + Math.round ( ( lineBounds.width - 4 ) * location ) - gripperSize.width / 2;
-        int y = lineBounds.y + lineBounds.height - gripperSize.height / 2;
+        final float location = colorData.getLocation ();
+        final Rectangle lineBounds = getLineBounds ();
+        final int x = lineBounds.x + 2 + Math.round ( ( lineBounds.width - 4 ) * location ) - gripperSize.width / 2;
+        final int y = lineBounds.y + lineBounds.height - gripperSize.height / 2;
         return new Rectangle ( x, y, gripperSize.width, gripperSize.height );
     }
 
-    private float getLocationForPoint ( MouseEvent e )
+    private float getLocationForPoint ( final MouseEvent e )
     {
         return getLocationForPoint ( e.getPoint () );
     }
 
-    public float getLocationForPoint ( Point point )
+    public float getLocationForPoint ( final Point point )
     {
-        Rectangle lineBounds = getLineBounds ();
-        int x = lineBounds.x + 2;
-        int w = lineBounds.width - 4;
+        final Rectangle lineBounds = getLineBounds ();
+        final int x = lineBounds.x + 2;
+        final int w = lineBounds.width - 4;
         return ( float ) Math.max ( 0, Math.min ( point.x - x, w ) ) / w;
     }
 
-    public Color getColorForLocation ( float location )
+    public Color getColorForLocation ( final float location )
     {
         return gradientData.getColorForLocation ( location );
     }
@@ -350,7 +348,7 @@ public class WebGradientColorChooser extends JComponent
         return gradientData;
     }
 
-    public void setGradientData ( GradientData gradientData )
+    public void setGradientData ( final GradientData gradientData )
     {
         if ( !CompareUtils.equals ( this.gradientData, gradientData ) )
         {
@@ -366,7 +364,7 @@ public class WebGradientColorChooser extends JComponent
         return shadeWidth;
     }
 
-    public void setShadeWidth ( int shadeWidth )
+    public void setShadeWidth ( final int shadeWidth )
     {
         this.shadeWidth = shadeWidth;
         updateBorder ();
@@ -377,7 +375,7 @@ public class WebGradientColorChooser extends JComponent
         return lineWidth;
     }
 
-    public void setLineWidth ( int lineWidth )
+    public void setLineWidth ( final int lineWidth )
     {
         this.lineWidth = lineWidth;
     }
@@ -387,7 +385,7 @@ public class WebGradientColorChooser extends JComponent
         return gripperSize;
     }
 
-    public void setGripperSize ( Dimension gripperSize )
+    public void setGripperSize ( final Dimension gripperSize )
     {
         this.gripperSize = gripperSize;
     }
@@ -397,18 +395,18 @@ public class WebGradientColorChooser extends JComponent
         return margin;
     }
 
-    public void setMargin ( Insets margin )
+    public void setMargin ( final Insets margin )
     {
         this.margin = margin;
         updateBorder ();
     }
 
-    public void setMargin ( int top, int left, int bottom, int right )
+    public void setMargin ( final int top, final int left, final int bottom, final int right )
     {
         setMargin ( new Insets ( top, left, bottom, right ) );
     }
 
-    public void setMargin ( int spacing )
+    public void setMargin ( final int spacing )
     {
         setMargin ( spacing, spacing, spacing, spacing );
     }
@@ -423,21 +421,21 @@ public class WebGradientColorChooser extends JComponent
         return paintLabels;
     }
 
-    public void setPaintLabels ( boolean paintLabels )
+    public void setPaintLabels ( final boolean paintLabels )
     {
         this.paintLabels = paintLabels;
     }
 
     @Override
-    protected void paintComponent ( Graphics g )
+    protected void paintComponent ( final Graphics g )
     {
         super.paintComponent ( g );
 
-        Graphics2D g2d = ( Graphics2D ) g;
+        final Graphics2D g2d = ( Graphics2D ) g;
         LafUtils.setupAntialias ( g2d );
 
         // Line bounds
-        Rectangle lineBounds = getLineBounds ();
+        final Rectangle lineBounds = getLineBounds ();
 
         // Painting main gradient line
         paintBorderedBackground ( g2d, lineBounds, getLineBackgroundPainter ( lineBounds ), getLineOverlayPainter ( lineBounds ), false );
@@ -446,20 +444,20 @@ public class WebGradientColorChooser extends JComponent
         paintControls ( g2d, lineBounds );
     }
 
-    private void paintControls ( Graphics2D g2d, Rectangle lineBounds )
+    private void paintControls ( final Graphics2D g2d, final Rectangle lineBounds )
     {
-        int x = lineBounds.x + 2;
-        int w = lineBounds.width - 4;
-        int y = lineBounds.y + lineBounds.height - gripperSize.height / 2;
-        int textY = y + gripperSize.height;
-        FontMetrics fm = g2d.getFontMetrics ();
-        int lineY = textY - LafUtils.getTextCenterShearY ( fm ) - 1;
+        final int x = lineBounds.x + 2;
+        final int w = lineBounds.width - 4;
+        final int y = lineBounds.y + lineBounds.height - gripperSize.height / 2;
+        final int textY = y + gripperSize.height;
+        final FontMetrics fm = g2d.getFontMetrics ();
+        final int lineY = textY - LafUtils.getTextCenterShearY ( fm ) - 1;
         for ( int i = 0; i < gradientData.size (); i++ )
         {
-            GradientColorData gradientColorData = gradientData.get ( i );
-            float currentLocation = gradientColorData.getLocation ();
-            int currentX = x + Math.round ( w * currentLocation ) - gripperSize.width / 2;
-            Rectangle controlBounds = new Rectangle ( currentX, y, gripperSize.width, gripperSize.height );
+            final GradientColorData gradientColorData = gradientData.get ( i );
+            final float currentLocation = gradientColorData.getLocation ();
+            final int currentX = x + Math.round ( w * currentLocation ) - gripperSize.width / 2;
+            final Rectangle controlBounds = new Rectangle ( currentX, y, gripperSize.width, gripperSize.height );
 
             // Painting control
             paintBorderedBackground ( g2d, controlBounds, gradientColorData.getColor (), getControlOverlayPainter ( controlBounds ), true );
@@ -467,14 +465,14 @@ public class WebGradientColorChooser extends JComponent
             // Painting text and separators between controls if there is enough space
             if ( paintLabels && i < gradientData.size () - 1 )
             {
-                GradientColorData nextGradientColorData = gradientData.get ( i + 1 );
-                int gapX1 = currentX + gripperSize.width;
-                int gapX2 = x + Math.round ( w * nextGradientColorData.getLocation () ) - gripperSize.width / 2;
-                int gapInPercents = Math.round ( ( nextGradientColorData.getLocation () - currentLocation ) * 100 );
-                int textWidth = fm.stringWidth ( gapInPercents + "" );
+                final GradientColorData nextGradientColorData = gradientData.get ( i + 1 );
+                final int gapX1 = currentX + gripperSize.width;
+                final int gapX2 = x + Math.round ( w * nextGradientColorData.getLocation () ) - gripperSize.width / 2;
+                final int gapInPercents = Math.round ( ( nextGradientColorData.getLocation () - currentLocation ) * 100 );
+                final int textWidth = fm.stringWidth ( gapInPercents + "" );
                 if ( gapX2 - gapX1 > textWidth + 4 )
                 {
-                    int textX = ( gapX1 + gapX2 ) / 2 - textWidth / 2;
+                    final int textX = ( gapX1 + gapX2 ) / 2 - textWidth / 2;
 
                     // Painting text
                     g2d.setPaint ( isEnabled () ? foreground : disabledForeground );
@@ -494,7 +492,8 @@ public class WebGradientColorChooser extends JComponent
         }
     }
 
-    private void paintBorderedBackground ( Graphics2D g2d, Rectangle bounds, Paint background, Paint overlay, boolean control )
+    private void paintBorderedBackground ( final Graphics2D g2d, final Rectangle bounds, final Paint background, final Paint overlay,
+                                           final boolean control )
     {
         // Shade & focus
         if ( isEnabled () && !control )
@@ -528,30 +527,30 @@ public class WebGradientColorChooser extends JComponent
         g2d.drawRoundRect ( bounds.x, bounds.y, bounds.width - 1, bounds.height - 1, 4, 4 );
     }
 
-    private LinearGradientPaint getLineBackgroundPainter ( Rectangle lineBounds )
+    private LinearGradientPaint getLineBackgroundPainter ( final Rectangle lineBounds )
     {
         return new LinearGradientPaint ( lineBounds.x + 1, 0, lineBounds.x + lineBounds.width - 1, 0, gradientData.getFractions (),
                 gradientData.getColors () );
     }
 
-    private LinearGradientPaint getLineOverlayPainter ( Rectangle bounds )
+    private LinearGradientPaint getLineOverlayPainter ( final Rectangle bounds )
     {
         return getOverlayPainter ( bounds, overlayFractions, lineOverlayColors );
     }
 
-    private LinearGradientPaint getControlOverlayPainter ( Rectangle bounds )
+    private LinearGradientPaint getControlOverlayPainter ( final Rectangle bounds )
     {
         return getOverlayPainter ( bounds, overlayFractions, controlOverlayColors );
     }
 
-    private LinearGradientPaint getOverlayPainter ( Rectangle bounds, float[] overlayFractions, Color[] overlayColors )
+    private LinearGradientPaint getOverlayPainter ( final Rectangle bounds, final float[] overlayFractions, final Color[] overlayColors )
     {
         return new LinearGradientPaint ( 0, bounds.y + 2, 0, bounds.y + bounds.height - 2, overlayFractions, overlayColors );
     }
 
     private Rectangle getLineBounds ()
     {
-        Insets insets = getInsets ();
+        final Insets insets = getInsets ();
         return new Rectangle ( insets.left + Math.max ( gripperSize.width / 2, shadeWidth ) - 2, insets.top + shadeWidth,
                 getWidth () - insets.left - insets.right - Math.max ( gripperSize.width, shadeWidth * 2 ) + 4, lineWidth );
     }
@@ -561,20 +560,20 @@ public class WebGradientColorChooser extends JComponent
         return changeListeners;
     }
 
-    public void addChangeListener ( ChangeListener dataChangeListener )
+    public void addChangeListener ( final ChangeListener dataChangeListener )
     {
         changeListeners.add ( dataChangeListener );
     }
 
-    public void removeChangeListener ( ChangeListener dataChangeListener )
+    public void removeChangeListener ( final ChangeListener dataChangeListener )
     {
         changeListeners.remove ( dataChangeListener );
     }
 
     private void fireStateChanged ()
     {
-        ChangeEvent changeEvent = new ChangeEvent ( WebGradientColorChooser.this );
-        for ( ChangeListener dataChangeListener : changeListeners )
+        final ChangeEvent changeEvent = new ChangeEvent ( WebGradientColorChooser.this );
+        for ( final ChangeListener dataChangeListener : changeListeners )
         {
             dataChangeListener.stateChanged ( changeEvent );
         }
@@ -588,7 +587,7 @@ public class WebGradientColorChooser extends JComponent
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String key )
+    public void registerSettings ( final String key )
     {
         SettingsManager.registerComponent ( this, key );
     }
@@ -597,7 +596,7 @@ public class WebGradientColorChooser extends JComponent
      * {@inheritDoc}
      */
     @Override
-    public <T extends DefaultValue> void registerSettings ( String key, Class<T> defaultValueClass )
+    public <T extends DefaultValue> void registerSettings ( final String key, final Class<T> defaultValueClass )
     {
         SettingsManager.registerComponent ( this, key, defaultValueClass );
     }
@@ -606,7 +605,7 @@ public class WebGradientColorChooser extends JComponent
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String key, Object defaultValue )
+    public void registerSettings ( final String key, final Object defaultValue )
     {
         SettingsManager.registerComponent ( this, key, defaultValue );
     }
@@ -615,7 +614,7 @@ public class WebGradientColorChooser extends JComponent
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String group, String key )
+    public void registerSettings ( final String group, final String key )
     {
         SettingsManager.registerComponent ( this, group, key );
     }
@@ -624,7 +623,7 @@ public class WebGradientColorChooser extends JComponent
      * {@inheritDoc}
      */
     @Override
-    public <T extends DefaultValue> void registerSettings ( String group, String key, Class<T> defaultValueClass )
+    public <T extends DefaultValue> void registerSettings ( final String group, final String key, final Class<T> defaultValueClass )
     {
         SettingsManager.registerComponent ( this, group, key, defaultValueClass );
     }
@@ -633,7 +632,7 @@ public class WebGradientColorChooser extends JComponent
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String group, String key, Object defaultValue )
+    public void registerSettings ( final String group, final String key, final Object defaultValue )
     {
         SettingsManager.registerComponent ( this, group, key, defaultValue );
     }
@@ -642,7 +641,7 @@ public class WebGradientColorChooser extends JComponent
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String key, boolean loadInitialSettings, boolean applySettingsChanges )
+    public void registerSettings ( final String key, final boolean loadInitialSettings, final boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, key, loadInitialSettings, applySettingsChanges );
     }
@@ -651,8 +650,8 @@ public class WebGradientColorChooser extends JComponent
      * {@inheritDoc}
      */
     @Override
-    public <T extends DefaultValue> void registerSettings ( String key, Class<T> defaultValueClass, boolean loadInitialSettings,
-                                                            boolean applySettingsChanges )
+    public <T extends DefaultValue> void registerSettings ( final String key, final Class<T> defaultValueClass,
+                                                            final boolean loadInitialSettings, final boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, key, defaultValueClass, loadInitialSettings, applySettingsChanges );
     }
@@ -661,7 +660,8 @@ public class WebGradientColorChooser extends JComponent
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String key, Object defaultValue, boolean loadInitialSettings, boolean applySettingsChanges )
+    public void registerSettings ( final String key, final Object defaultValue, final boolean loadInitialSettings,
+                                   final boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, key, defaultValue, loadInitialSettings, applySettingsChanges );
     }
@@ -670,8 +670,8 @@ public class WebGradientColorChooser extends JComponent
      * {@inheritDoc}
      */
     @Override
-    public <T extends DefaultValue> void registerSettings ( String group, String key, Class<T> defaultValueClass,
-                                                            boolean loadInitialSettings, boolean applySettingsChanges )
+    public <T extends DefaultValue> void registerSettings ( final String group, final String key, final Class<T> defaultValueClass,
+                                                            final boolean loadInitialSettings, final boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, group, key, defaultValueClass, loadInitialSettings, applySettingsChanges );
     }
@@ -680,8 +680,8 @@ public class WebGradientColorChooser extends JComponent
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String group, String key, Object defaultValue, boolean loadInitialSettings,
-                                   boolean applySettingsChanges )
+    public void registerSettings ( final String group, final String key, final Object defaultValue, final boolean loadInitialSettings,
+                                   final boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, group, key, defaultValue, loadInitialSettings, applySettingsChanges );
     }
@@ -690,7 +690,7 @@ public class WebGradientColorChooser extends JComponent
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( SettingsProcessor settingsProcessor )
+    public void registerSettings ( final SettingsProcessor settingsProcessor )
     {
         SettingsManager.registerComponent ( this, settingsProcessor );
     }
@@ -739,7 +739,7 @@ public class WebGradientColorChooser extends JComponent
      * {@inheritDoc}
      */
     @Override
-    public WebGradientColorChooser setPreferredWidth ( int preferredWidth )
+    public WebGradientColorChooser setPreferredWidth ( final int preferredWidth )
     {
         return SizeUtils.setPreferredWidth ( this, preferredWidth );
     }
@@ -757,7 +757,7 @@ public class WebGradientColorChooser extends JComponent
      * {@inheritDoc}
      */
     @Override
-    public WebGradientColorChooser setPreferredHeight ( int preferredHeight )
+    public WebGradientColorChooser setPreferredHeight ( final int preferredHeight )
     {
         return SizeUtils.setPreferredHeight ( this, preferredHeight );
     }
@@ -775,7 +775,7 @@ public class WebGradientColorChooser extends JComponent
      * {@inheritDoc}
      */
     @Override
-    public WebGradientColorChooser setMinimumWidth ( int minimumWidth )
+    public WebGradientColorChooser setMinimumWidth ( final int minimumWidth )
     {
         return SizeUtils.setMinimumWidth ( this, minimumWidth );
     }
@@ -793,7 +793,7 @@ public class WebGradientColorChooser extends JComponent
      * {@inheritDoc}
      */
     @Override
-    public WebGradientColorChooser setMinimumHeight ( int minimumHeight )
+    public WebGradientColorChooser setMinimumHeight ( final int minimumHeight )
     {
         return SizeUtils.setMinimumHeight ( this, minimumHeight );
     }
@@ -805,10 +805,10 @@ public class WebGradientColorChooser extends JComponent
     public Dimension getPreferredSize ()
     {
         // todo Move to custom UI
-        Insets i = getInsets ();
+        final Insets i = getInsets ();
         final int width = i.left + gripperSize.width * 5 + Math.max ( gripperSize.width, shadeWidth * 2 ) - 4 + i.right;
         final int height = i.top + shadeWidth * 2 + lineWidth + gripperSize.height / 2 + ( gripperSize.height % 2 == 0 ? 0 : 1 ) + i.bottom;
-        Dimension ps = new Dimension ( width, height );
+        final Dimension ps = new Dimension ( width, height );
 
         return SizeUtils.getPreferredSize ( this, ps );
     }

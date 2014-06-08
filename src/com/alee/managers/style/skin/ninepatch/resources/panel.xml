@@ -11,6 +11,13 @@
         <painter id="painter" class="com.alee.managers.style.skin.ninepatch.NPPanelPainter" />
     </style>
 
+    <!-- WebDocumentPane styling -->
+    <style type="panel" id="document-pane" extends="default">
+        <component>
+            <opaque>false</opaque>
+        </component>
+    </style>
+
     <!-- Mac-like JPanel styling -->
     <style type="panel" id="mac-panel" extends="default">
         <ui>

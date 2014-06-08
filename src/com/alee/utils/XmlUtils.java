@@ -25,6 +25,9 @@ import com.alee.extended.painter.TexturePainter;
 import com.alee.laf.colorchooser.HSBColor;
 import com.alee.laf.tree.NodeState;
 import com.alee.laf.tree.TreeState;
+import com.alee.managers.plugin.data.PluginInformation;
+import com.alee.managers.plugin.data.PluginLibrary;
+import com.alee.managers.plugin.data.PluginVersion;
 import com.alee.utils.collection.ValuesTable;
 import com.alee.utils.ninepatch.NinePatchIcon;
 import com.alee.utils.xml.*;
@@ -129,6 +132,11 @@ public final class XmlUtils
             xStream.processAnnotations ( GradientData.class );
             xStream.processAnnotations ( GradientColorData.class );
             xStream.processAnnotations ( HSBColor.class );
+
+            // Plugin manager classes aliases
+            xStream.processAnnotations ( PluginInformation.class );
+            xStream.processAnnotations ( PluginVersion.class );
+            xStream.processAnnotations ( PluginLibrary.class );
         }
         catch ( final Throwable e )
         {

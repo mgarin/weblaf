@@ -19,6 +19,8 @@ package com.alee.utils.swing;
 
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
 
 /**
  * Special document listener that only notifies about occured changes.
@@ -56,9 +58,29 @@ public abstract class DocumentChangeListener implements DocumentListener
     }
 
     /**
-     * Document has changed in some way.
+     * Informs that document has changed in some way.
      *
      * @param e document event
      */
     public abstract void documentChanged ( DocumentEvent e );
+
+    /**
+     * Returns text contained in the event's document.
+     *
+     * @return text contained in the event's document
+     */
+    protected String getText ( final DocumentEvent e )
+    {
+        final Document doc = e.getDocument ();
+        String txt;
+        try
+        {
+            txt = doc.getText ( 0, doc.getLength () );
+        }
+        catch ( final BadLocationException ex )
+        {
+            txt = null;
+        }
+        return txt;
+    }
 }

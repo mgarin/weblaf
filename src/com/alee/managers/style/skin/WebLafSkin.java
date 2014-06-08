@@ -22,6 +22,7 @@ import com.alee.managers.style.StyleException;
 import com.alee.managers.style.StyleManager;
 import com.alee.managers.style.SupportedComponent;
 import com.alee.managers.style.data.ComponentStyle;
+import com.alee.managers.style.data.IgnoredValue;
 import com.alee.managers.style.data.PainterStyle;
 import com.alee.utils.LafUtils;
 import com.alee.utils.ReflectUtils;
@@ -31,6 +32,7 @@ import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -244,7 +246,7 @@ public abstract class WebLafSkin
                 }
 
                 // Installing painter into the UI
-                final String setterMethod = getSetterMethodName ( painterId );
+                final String setterMethod = ReflectUtils.getSetterMethodName ( painterId );
                 ReflectUtils.callMethod ( ui, setterMethod, painter );
             }
 
@@ -294,7 +296,7 @@ public abstract class WebLafSkin
             final ComponentUI ui = getComponentUIImpl ( component );
             for ( final PainterStyle painterStyle : style.getPainters () )
             {
-                final String setterMethod = getSetterMethodName ( painterStyle.getId () );
+                final String setterMethod = ReflectUtils.getSetterMethodName ( painterStyle.getId () );
                 ReflectUtils.callMethod ( ui, setterMethod, ( Painter ) null );
             }
             return true;
@@ -380,8 +382,7 @@ public abstract class WebLafSkin
         if ( painter != null )
         {
             // Updating painter field with custom style property value
-            setFieldValue ( painter, key, value );
-            return true;
+            return setFieldValue ( painter, key, value );
         }
         else if ( !StyleManager.isStrictStyleChecks () )
         {
@@ -448,13 +449,18 @@ public abstract class WebLafSkin
      */
     public static boolean setFieldValue ( final Object object, final String field, final Object value )
     {
-        final Class<?> objectClass = object.getClass ();
+        // Skip ignored values
+        if ( value == IgnoredValue.VALUE )
+        {
+            return false;
+        }
 
         // Trying to use setter method to apply the specified value
         try
         {
-            final String setterMethod = getSetterMethodName ( field );
+            final String setterMethod = ReflectUtils.getSetterMethodName ( field );
             ReflectUtils.callMethod ( object, setterMethod, value );
+            return true;
         }
         catch ( final NoSuchMethodException e )
         {
@@ -472,7 +478,7 @@ public abstract class WebLafSkin
         // Applying field value directly
         try
         {
-            final Field actualField = ReflectUtils.getField ( objectClass, field );
+            final Field actualField = ReflectUtils.getField ( object.getClass (), field );
             actualField.setAccessible ( true );
             actualField.set ( object, value );
             return true;
@@ -508,12 +514,8 @@ public abstract class WebLafSkin
         // This was made to improve call speed (no real field check) and avoid accessing field directly (in most of cases)
         try
         {
-            final String getterMethod = getGetterMethodName ( field );
-            return ReflectUtils.callMethod ( object, getterMethod );
-        }
-        catch ( final NoSuchMethodException ignored )
-        {
-            // We simply ignore this one and try to access field directly
+            final Method getter = ReflectUtils.getFieldGetter ( object, field );
+            return ( T ) getter.invoke ( object );
         }
         catch ( final InvocationTargetException e )
         {
@@ -565,27 +567,5 @@ public abstract class WebLafSkin
     public String toString ()
     {
         return getName ();
-    }
-
-    /**
-     * Returns setter method name for the specified field.
-     *
-     * @param field field name
-     * @return setter method name for the specified field
-     */
-    public static String getSetterMethodName ( final String field )
-    {
-        return "set" + field.substring ( 0, 1 ).toUpperCase () + field.substring ( 1 );
-    }
-
-    /**
-     * Returns getter method name for the specified field.
-     *
-     * @param field field name
-     * @return getter method name for the specified field
-     */
-    public static String getGetterMethodName ( final String field )
-    {
-        return "get" + field.substring ( 0, 1 ).toUpperCase () + field.substring ( 1 );
     }
 }

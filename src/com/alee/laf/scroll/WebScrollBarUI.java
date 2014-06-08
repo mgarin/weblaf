@@ -70,7 +70,7 @@ public class WebScrollBarUI extends BasicScrollBarUI implements Styleable, Borde
     /**
      * Runtime variables.
      */
-    protected String styleId;
+    protected String styleId = null;
 
     /**
      * Returns an instance of the WebScrollBarUI for the specified component.

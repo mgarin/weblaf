@@ -55,7 +55,7 @@ public class AccordionExample extends DefaultExample
     }
 
     @Override
-    public Component getPreview ( WebLookAndFeelDemo owner )
+    public Component getPreview ( final WebLookAndFeelDemo owner )
     {
         // Title icon
         final ImageIcon icon = loadIcon ( "text.png" );
@@ -70,17 +70,17 @@ public class AccordionExample extends DefaultExample
         return new GroupPanel ( 4, accordion );
     }
 
-    private WebScrollPane createCustomHorContent ()
+    public static WebScrollPane createCustomHorContent ()
     {
         return createCustomContent ( 150, 100 );
     }
 
-    private WebScrollPane createCustomVerContent ()
-    {
-        return createCustomContent ( 100, 100 );
-    }
+    //    private WebScrollPane createCustomVerContent ()
+    //    {
+    //        return createCustomContent ( 100, 100 );
+    //    }
 
-    private WebScrollPane createCustomContent ( int w, int h )
+    public static WebScrollPane createCustomContent ( final int w, final int h )
     {
         // Content text area
         final WebTextArea textArea = new WebTextArea ( ExamplesManager.createLongString () );

@@ -69,7 +69,7 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements SwingConstants, 
     /**
      * Runtime variables.
      */
-    protected String styleId;
+    protected String styleId = null;
     protected boolean transparent = false;
     protected PopupMenuWay popupMenuWay = null;
 
@@ -502,6 +502,27 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements SwingConstants, 
     public void setCornerWidth ( final int width )
     {
         StyleManager.setCustomPainterProperty ( popupMenu, "cornerWidth", width );
+    }
+
+    /**
+     * Returns dropdown corner alignment.
+     *
+     * @return dropdown corner alignment
+     */
+    public int getCornerAlignment ()
+    {
+        final Integer cornerAlignment = StyleManager.getPainterPropertyValue ( popupMenu, "cornerAlignment" );
+        return cornerAlignment != null ? cornerAlignment : WebPopupMenuStyle.cornerAlignment;
+    }
+
+    /**
+     * Sets dropdown corner alignment.
+     *
+     * @param cornerAlignment dropdown corner alignment
+     */
+    public void setCornerAlignment ( final int cornerAlignment )
+    {
+        StyleManager.setCustomPainterProperty ( popupMenu, "cornerAlignment", cornerAlignment );
     }
 
     /**

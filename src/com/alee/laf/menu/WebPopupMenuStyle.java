@@ -71,9 +71,15 @@ public final class WebPopupMenuStyle
     public static float shadeTransparency = WebPopupPainterStyle.shadeTransparency;
 
     /**
-     * Popup menu dropdown style corner width
+     * Popup menu dropdown style corner width.
+     * This property is used only when corner location is not being fixed.
      */
     public static int cornerWidth = WebPopupPainterStyle.cornerWidth;
+
+    /**
+     * Popup menu dropdown corner alignment.
+     */
+    public static int cornerAlignment = -1;
 
     /**
      * Popup menu background transparency.

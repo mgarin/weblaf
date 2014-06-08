@@ -213,6 +213,16 @@ public class WebPopup extends WebPanel
     }
 
     /**
+     * Returns popup layer this WebPopup is added into.
+     *
+     * @return popup layer this WebPopup is added into
+     */
+    public PopupLayer getPopupLayer ()
+    {
+        return ( PopupLayer ) getParent ();
+    }
+
+    /**
      * Popup styling
      */
 

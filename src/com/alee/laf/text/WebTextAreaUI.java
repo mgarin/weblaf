@@ -21,6 +21,7 @@ import com.alee.extended.painter.Painter;
 import com.alee.extended.painter.PainterSupport;
 import com.alee.laf.StyleConstants;
 import com.alee.laf.WebLookAndFeel;
+import com.alee.managers.language.LM;
 import com.alee.utils.LafUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.BorderMethods;
@@ -40,14 +41,22 @@ import java.util.Map;
  * User: mgarin Date: 17.08.11 Time: 23:01
  */
 
-public class WebTextAreaUI extends BasicTextAreaUI implements BorderMethods
+public class WebTextAreaUI extends BasicTextAreaUI implements BorderMethods, SwingConstants
 {
+    private String inputPrompt = WebTextAreaStyle.inputPrompt;
+    private Font inputPromptFont = WebTextAreaStyle.inputPromptFont;
+    private Color inputPromptForeground = WebTextAreaStyle.inputPromptForeground;
+    private int inputPromptHorizontalPosition = WebTextAreaStyle.inputPromptHorizontalPosition;
+    private int inputPromptVerticalPosition = WebTextAreaStyle.inputPromptVerticalPosition;
+    private boolean hideInputPromptOnFocus = WebTextAreaStyle.hideInputPromptOnFocus;
     private Painter painter = WebTextAreaStyle.painter;
+
+    private boolean inputPromptSet = false;
 
     private FocusListener focusListener;
     private PropertyChangeListener marginChangeListener;
 
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebTextAreaUI ();
@@ -114,6 +123,73 @@ public class WebTextAreaUI extends BasicTextAreaUI implements BorderMethods
         super.uninstallUI ( c );
     }
 
+    public String getInputPrompt ()
+    {
+        return inputPrompt;
+    }
+
+    public void setInputPrompt ( final String inputPrompt )
+    {
+        this.inputPrompt = inputPrompt;
+        this.inputPromptSet = inputPrompt != null && !inputPrompt.trim ().equals ( "" );
+        updateInputPromptView ();
+    }
+
+    public Font getInputPromptFont ()
+    {
+        return inputPromptFont;
+    }
+
+    public void setInputPromptFont ( final Font inputPromptFont )
+    {
+        this.inputPromptFont = inputPromptFont;
+        updateInputPromptView ();
+    }
+
+    public Color getInputPromptForeground ()
+    {
+        return inputPromptForeground;
+    }
+
+    public void setInputPromptForeground ( final Color inputPromptForeground )
+    {
+        this.inputPromptForeground = inputPromptForeground;
+        updateInputPromptView ();
+    }
+
+    public int getInputPromptHorizontalPosition ()
+    {
+        return inputPromptHorizontalPosition;
+    }
+
+    public void setInputPromptHorizontalPosition ( final int inputPromptHorizontalPosition )
+    {
+        this.inputPromptHorizontalPosition = inputPromptHorizontalPosition;
+        updateInputPromptView ();
+    }
+
+    public int getInputPromptVerticalPosition ()
+    {
+        return inputPromptVerticalPosition;
+    }
+
+    public void setInputPromptVerticalPosition ( final int inputPromptVerticalPosition )
+    {
+        this.inputPromptVerticalPosition = inputPromptVerticalPosition;
+        updateInputPromptView ();
+    }
+
+    public boolean isHideInputPromptOnFocus ()
+    {
+        return hideInputPromptOnFocus;
+    }
+
+    public void setHideInputPromptOnFocus ( final boolean hideInputPromptOnFocus )
+    {
+        this.hideInputPromptOnFocus = hideInputPromptOnFocus;
+        updateInputPromptView ();
+    }
+
     public Painter getPainter ()
     {
         return painter;
@@ -128,6 +204,28 @@ public class WebTextAreaUI extends BasicTextAreaUI implements BorderMethods
         textComponent.setOpaque ( painter == null || painter.isOpaque ( textComponent ) );
         PainterSupport.installPainter ( textComponent, this.painter );
         updateBorder ();
+    }
+
+    private void updateInputPromptView ()
+    {
+        if ( isInputPromptVisible ( getComponent () ) )
+        {
+            updateView ();
+        }
+    }
+
+    private boolean isInputPromptVisible ( final JTextComponent c )
+    {
+        return inputPromptSet && c.isEditable () && c.isEnabled () && ( !hideInputPromptOnFocus || !c.isFocusOwner () ) &&
+                c.getText ().equals ( "" );
+    }
+
+    private void updateView ()
+    {
+        if ( getComponent () != null )
+        {
+            getComponent ().repaint ();
+        }
     }
 
     /**
@@ -194,6 +292,43 @@ public class WebTextAreaUI extends BasicTextAreaUI implements BorderMethods
 
         final Map hints = SwingUtils.setupTextAntialias ( g2d );
         super.paintSafely ( g );
+        if ( isInputPromptVisible ( c ) )
+        {
+            final boolean ltr = c.getComponentOrientation ().isLeftToRight ();
+            final Rectangle b = getVisibleEditorRect ();
+            final Shape oc = LafUtils.intersectClip ( g2d, b );
+            g2d.setFont ( inputPromptFont != null ? inputPromptFont : c.getFont () );
+            g2d.setPaint ( inputPromptForeground != null ? inputPromptForeground : c.getForeground () );
+
+            final String text = LM.get ( inputPrompt );
+            final FontMetrics fm = g2d.getFontMetrics ();
+            final int x;
+            if ( inputPromptHorizontalPosition == CENTER )
+            {
+                x = b.x + b.width / 2 - fm.stringWidth ( text ) / 2;
+            }
+            else if ( ltr && inputPromptHorizontalPosition == LEADING || !ltr && inputPromptHorizontalPosition == TRAILING ||
+                    inputPromptHorizontalPosition == LEFT )
+            {
+                x = b.x;
+            }
+            else
+            {
+                x = b.x + b.width - fm.stringWidth ( text );
+            }
+            final int y;
+            if ( inputPromptVerticalPosition == CENTER )
+            {
+                y = b.y + b.height / 2 + LafUtils.getTextCenterShearY ( fm );
+            }
+            else
+            {
+                y = getBaseline ( c, c.getWidth (), c.getHeight () );
+            }
+            g2d.drawString ( text, x, y );
+
+            g2d.setClip ( oc );
+        }
         SwingUtils.restoreTextAntialias ( g2d, hints );
     }
 

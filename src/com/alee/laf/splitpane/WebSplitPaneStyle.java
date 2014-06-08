@@ -38,4 +38,14 @@ public final class WebSplitPaneStyle
      * Split pane divider color when dragged.
      */
     public static Color dragDividerColor = Color.LIGHT_GRAY;
+
+    /**
+     * Whether should draw divider border or not.
+     */
+    public static boolean drawDividerBorder = false;
+
+    /**
+     * Border color.
+     */
+    public static Color dividerBorderColor = StyleConstants.darkBorderColor;
 }

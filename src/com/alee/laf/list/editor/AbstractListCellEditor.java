@@ -61,6 +61,11 @@ public abstract class AbstractListCellEditor<E extends Component, T> implements 
     protected MouseAdapter mouseAdapter = null;
 
     /**
+     * Amount of mouse clicks required to start editing cell.
+     */
+    protected int clicksToEdit = 2;
+
+    /**
      * List key adapter.
      */
     protected KeyAdapter keyAdapter = null;
@@ -112,7 +117,7 @@ public abstract class AbstractListCellEditor<E extends Component, T> implements 
             @Override
             public void mouseClicked ( final MouseEvent e )
             {
-                if ( e.getClickCount () == 2 && SwingUtilities.isLeftMouseButton ( e ) )
+                if ( getClicksToEdit () > 0 && e.getClickCount () == getClicksToEdit () && SwingUtilities.isLeftMouseButton ( e ) )
                 {
                     final Point point = e.getPoint ();
                     final int index = list.getUI ().locationToIndex ( list, point );
@@ -211,9 +216,11 @@ public abstract class AbstractListCellEditor<E extends Component, T> implements 
     /**
      * Creates listeners for list cell editor component.
      *
-     * @param list
+     * @param list  list to process
+     * @param index cell index
+     * @param value cell value
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     protected void createCellEditorListeners ( final JList list, final int index, final T value )
     {
         // Editing stop on focus loss event
@@ -505,5 +512,25 @@ public abstract class AbstractListCellEditor<E extends Component, T> implements 
     public boolean isEditing ()
     {
         return editedCell != -1;
+    }
+
+    /**
+     * Returns amount of mouse clicks required to start editing cell.
+     *
+     * @return amount of mouse clicks required to start editing cell
+     */
+    public int getClicksToEdit ()
+    {
+        return clicksToEdit;
+    }
+
+    /**
+     * Sets amount of mouse clicks required to start editing cell.
+     *
+     * @param clicksToEdit amount of mouse clicks required to start editing cell
+     */
+    public void setClicksToEdit ( final int clicksToEdit )
+    {
+        this.clicksToEdit = clicksToEdit;
     }
 }

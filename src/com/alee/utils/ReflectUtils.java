@@ -33,7 +33,9 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.security.CodeSource;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -46,6 +48,8 @@ import java.util.zip.ZipInputStream;
 
 public final class ReflectUtils
 {
+    private static final Map<Class, Map<String, Method>> methodsLookupCache = new HashMap<Class, Map<String, Method>> ();
+
     /**
      * Returns specified class field's type.
      * This method will also look for the field in super-classes if any exist.
@@ -112,16 +116,7 @@ public final class ReflectUtils
      */
     public static Field getField ( final Class classType, final String fieldName ) throws NoSuchFieldException
     {
-        Field field;
-        try
-        {
-            field = classType.getDeclaredField ( fieldName );
-        }
-        catch ( final NoSuchFieldException e )
-        {
-            final Class superclass = classType.getSuperclass ();
-            field = superclass != null ? getField ( superclass, fieldName ) : null;
-        }
+        final Field field = getFieldImpl ( classType, fieldName );
         if ( field != null )
         {
             return field;
@@ -130,6 +125,30 @@ public final class ReflectUtils
         {
             throw new NoSuchFieldException ( "Field \"" + fieldName + "\" not found in class: " + classType.getCanonicalName () );
         }
+    }
+
+    /**
+     * Returns specified class field.
+     * This method will also look for the field in super-classes if any exist.
+     *
+     * @param classType type of the class where field can be located
+     * @param fieldName field name
+     * @return specified class field
+     * @throws NoSuchFieldException
+     */
+    public static Field getFieldImpl ( final Class classType, final String fieldName ) throws NoSuchFieldException
+    {
+        Field field;
+        try
+        {
+            field = classType.getDeclaredField ( fieldName );
+        }
+        catch ( final NoSuchFieldException e )
+        {
+            final Class superclass = classType.getSuperclass ();
+            field = superclass != null ? getFieldImpl ( superclass, fieldName ) : null;
+        }
+        return field;
     }
 
     /**
@@ -705,7 +724,6 @@ public final class ReflectUtils
 
         // Retrieving constructor
         final Constructor constructor = getConstructor ( theClass, parameterTypes );
-        //        Constructor constructor = theClass.getConstructor ( parameterTypes );
 
         // Creating new instance
         constructor.setAccessible ( true );
@@ -724,13 +742,15 @@ public final class ReflectUtils
     {
         // todo Constructors priority check (by super types)
         // todo For now some constructor with [Object] arg might be used instead of constructor with [String]
+        // todo To avoid issues don't call constructors with same amount of arguments and which are castable to each other
         if ( parameterTypes.length == 0 )
         {
             return theClass.getConstructor ();
         }
         else
         {
-            for ( final Constructor constructor : theClass.getConstructors () )
+            // Constructors can be used only from the topmost class so we don't need to look for them in superclasses
+            for ( final Constructor constructor : theClass.getDeclaredConstructors () )
             {
                 final Class[] types = constructor.getParameterTypes ();
 
@@ -834,8 +854,8 @@ public final class ReflectUtils
      *
      * @param theClass   class to process
      * @param methodName static method name
-     * @param arguments  method arguments
-     * @return result of called static method
+     * @param arguments  static method arguments
+     * @return result given by called static method
      * @throws NoSuchMethodException
      * @throws InvocationTargetException
      * @throws IllegalAccessException
@@ -843,48 +863,8 @@ public final class ReflectUtils
     public static <T> T callStaticMethod ( final Class theClass, final String methodName, final Object... arguments )
             throws NoSuchMethodException, InvocationTargetException, IllegalAccessException
     {
-        // todo Methods priority check (by super types)
-        // todo For now some method with [Object] arg might be used instead of method with [String]
-        if ( arguments.length == 0 )
-        {
-            // Calling simple method w/o arguments
-            final Method method = theClass.getMethod ( methodName );
-            method.setAccessible ( true );
-            return ( T ) method.invoke ( null );
-        }
-        else
-        {
-            // Searching for more complex method
-            final Class[] types = getClassTypes ( arguments );
-            for ( final Method method : theClass.getMethods () )
-            {
-                // Checking method name
-                if ( method.getName ().equals ( methodName ) )
-                {
-                    // Checking method arguments count
-                    final Class<?>[] mt = method.getParameterTypes ();
-                    if ( mt.length == types.length )
-                    {
-                        // Checking that arguments fit
-                        boolean fits = true;
-                        for ( int i = 0; i < mt.length; i++ )
-                        {
-                            if ( !isAssignable ( mt[ i ], types[ i ] ) )
-                            {
-                                fits = false;
-                                break;
-                            }
-                        }
-                        if ( fits )
-                        {
-                            method.setAccessible ( true );
-                            return ( T ) method.invoke ( null, arguments );
-                        }
-                    }
-                }
-            }
-            throw new NoSuchMethodException ( theClass.getName () + "." + methodName + argumentTypesToString ( types ) );
-        }
+        final Method method = getMethod ( theClass, methodName, arguments );
+        return ( T ) method.invoke ( null, arguments );
     }
 
     /**
@@ -1007,22 +987,78 @@ public final class ReflectUtils
     public static <T> T callMethod ( final Object object, final String methodName, final Object... arguments )
             throws NoSuchMethodException, InvocationTargetException, IllegalAccessException
     {
-        // todo Methods priority check (by super types)
-        // todo For now some method with [Object] arg might be used instead of method with [String]
-        final Class aClass = object.getClass ();
-        if ( arguments.length == 0 )
+        final Method method = getMethod ( object.getClass (), methodName, arguments );
+        return ( T ) method.invoke ( object, arguments );
+    }
+
+    /**
+     * Returns field getter methor by popular method naming pattern.
+     * Basically those are "getFieldName"-like and "isFieldName"-like method names.
+     *
+     * @param object object
+     * @param field  field name
+     * @return field getter methor by popular method naming pattern
+     */
+    public static Method getFieldGetter ( final Object object, final String field )
+    {
+        return getFieldGetter ( object.getClass (), field );
+    }
+
+    /**
+     * Returns field getter methor by popular method naming pattern.
+     * Basically those are "getFieldName"-like and "isFieldName"-like method names.
+     *
+     * @param aClass object class
+     * @param field  field name
+     * @return field getter methor by popular method naming pattern
+     */
+    public static Method getFieldGetter ( final Class aClass, final String field )
+    {
+        // Try "get" method first
+        final Method get = getMethodSafely ( aClass, getGetterMethodName ( field ) );
+        if ( get != null )
         {
-            // Calling simple method w/o arguments
-            final Method method = aClass.getMethod ( methodName );
-            method.setAccessible ( true );
-            return ( T ) method.invoke ( object );
+            return get;
         }
         else
         {
-            // Searching for more complex method
-            final Class[] types = getClassTypes ( arguments );
-            return callMethod ( object, aClass, aClass, methodName, arguments, types );
+            // Try "is" method second
+            final Method is = getMethodSafely ( aClass, getIsGetterMethodName ( field ) );
+            return is != null ? is : null;
         }
+    }
+
+    /**
+     * Returns setter method name for the specified field.
+     *
+     * @param field field name
+     * @return setter method name for the specified field
+     */
+    public static String getSetterMethodName ( final String field )
+    {
+        return "set" + field.substring ( 0, 1 ).toUpperCase () + field.substring ( 1 );
+    }
+
+    /**
+     * Returns getter method name for the specified field.
+     *
+     * @param field field name
+     * @return getter method name for the specified field
+     */
+    public static String getGetterMethodName ( final String field )
+    {
+        return "get" + field.substring ( 0, 1 ).toUpperCase () + field.substring ( 1 );
+    }
+
+    /**
+     * Returns "is" getter method name for the specified field.
+     *
+     * @param field field name
+     * @return "is" getter method name for the specified field
+     */
+    public static String getIsGetterMethodName ( final String field )
+    {
+        return "is" + field.substring ( 0, 1 ).toUpperCase () + field.substring ( 1 );
     }
 
     /**
@@ -1030,24 +1066,151 @@ public final class ReflectUtils
      * If method is not found in the object class all superclasses will be searched for that method.
      * Returns result given by called method.
      *
-     * @param object      object instance
-     * @param topClass    initial object class
-     * @param objectClass object class we are looking for the method
-     * @param methodName  method name
-     * @param arguments   method arguments
-     * @param types       method argument types
-     * @param <T>         return type
+     * @param object     object
+     * @param methodName method name
+     * @param arguments  method arguments
      * @return result given by called method
+     */
+    public static Method getMethodSafely ( final Object object, final String methodName, final Object... arguments )
+    {
+        return getMethodSafely ( object.getClass (), methodName, arguments );
+    }
+
+    /**
+     * Returns object's method with the specified name and arguments.
+     * If method is not found in the object class all superclasses will be searched for that method.
+     *
+     * @param aClass     object class
+     * @param methodName method name
+     * @param arguments  method arguments
+     * @return object's method with the specified name and arguments
+     */
+    public static Method getMethodSafely ( final Class aClass, final String methodName, final Object... arguments )
+    {
+        try
+        {
+            return getMethod ( aClass, methodName, arguments );
+        }
+        catch ( final Throwable e )
+        {
+            return null;
+        }
+    }
+
+    /**
+     * Returns object's method with the specified name and arguments.
+     * If method is not found in the object class all superclasses will be searched for that method.
+     *
+     * @param object     object
+     * @param methodName method name
+     * @param arguments  method arguments
+     * @return object's method with the specified name and arguments
+     * @throws NoSuchMethodException
+     * @throws InvocationTargetException
+     * @throws IllegalAccessException
+     */
+    public static Method getMethod ( final Object object, final String methodName, final Object... arguments )
+            throws NoSuchMethodException, InvocationTargetException, IllegalAccessException
+    {
+        return getMethod ( object.getClass (), methodName, arguments );
+    }
+
+    /**
+     * Returns object's method with the specified name and arguments.
+     * If method is not found in the object class all superclasses will be searched for that method.
+     *
+     * @param aClass     object class
+     * @param methodName method name
+     * @param arguments  method arguments
+     * @return object's method with the specified name and arguments
+     * @throws NoSuchMethodException
+     * @throws InvocationTargetException
+     * @throws IllegalAccessException
+     */
+    public static Method getMethod ( final Class aClass, final String methodName, final Object... arguments )
+            throws NoSuchMethodException, InvocationTargetException, IllegalAccessException
+    {
+        // todo Methods priority check (by super types)
+        // todo For now some method with [Object] arg might be used instead of method with [String]
+        // todo To avoid issues don't call methods with same amount of arguments and which are castable to each other
+
+        // Method key
+        final Class[] classTypes = getClassTypes ( arguments );
+        final String key = aClass.getCanonicalName () + "." + methodName + argumentTypesToString ( classTypes );
+
+        // Checking cache
+        Method method = null;
+        Map<String, Method> classMethodsCache = methodsLookupCache.get ( aClass );
+        if ( classMethodsCache != null )
+        {
+            method = classMethodsCache.get ( key );
+        }
+        else
+        {
+            classMethodsCache = new HashMap<String, Method> ( 1 );
+            methodsLookupCache.put ( aClass, classMethodsCache );
+        }
+
+        // Updating cache
+        if ( method == null )
+        {
+            method = getMethodImpl ( aClass, methodName, arguments );
+            classMethodsCache.put ( key, method );
+        }
+
+        return method;
+    }
+
+    /**
+     * Returns object's method with the specified name and arguments.
+     * If method is not found in the object class all superclasses will be searched for that method.
+     *
+     * @param aClass     object class
+     * @param methodName method name
+     * @param arguments  method arguments
+     * @return object's method with the specified name and arguments
+     * @throws NoSuchMethodException
+     * @throws InvocationTargetException
+     * @throws IllegalAccessException
+     */
+    protected static Method getMethodImpl ( final Class aClass, final String methodName, final Object[] arguments )
+            throws NoSuchMethodException, IllegalAccessException, InvocationTargetException
+    {
+        final Method method;
+        if ( arguments.length == 0 )
+        {
+            // Searching simple method w/o arguments
+            method = aClass.getMethod ( methodName );
+            method.setAccessible ( true );
+        }
+        else
+        {
+            // Searching for more complex method
+            final Class[] types = getClassTypes ( arguments );
+            method = getMethod ( aClass, aClass, methodName, types );
+            method.setAccessible ( true );
+        }
+        return method;
+    }
+
+    /**
+     * Returns object's method with the specified name and arguments.
+     * If method is not found in the object class all superclasses will be searched for that method.
+     *
+     * @param topClass     initial object class
+     * @param currentClass object class we are looking in for the method
+     * @param methodName   method name
+     * @param types        method argument types
+     * @return object's method with the specified name and arguments
      * @throws IllegalAccessException
      * @throws InvocationTargetException
      * @throws NoSuchMethodException
      */
-    private static <T> T callMethod ( final Object object, final Class topClass, final Class objectClass, final String methodName,
-                                      final Object[] arguments, final Class[] types )
+    private static Method getMethod ( final Class topClass, final Class currentClass, final String methodName, final Class[] types )
             throws IllegalAccessException, InvocationTargetException, NoSuchMethodException
     {
         // Searching for the specified method in object's class or one of its superclasses
-        for ( final Method method : objectClass.getDeclaredMethods () )
+        for ( final Method method : currentClass.getDeclaredMethods () )
         {
             // Checking method name
             if ( method.getName ().equals ( methodName ) )
@@ -1068,26 +1231,18 @@ public final class ReflectUtils
                     }
                     if ( fits )
                     {
-                        try
-                        {
-                            method.setAccessible ( true );
-                            return ( T ) method.invoke ( object, arguments );
-                        }
-                        catch ( final IllegalArgumentException e )
-                        {
-                            throw new IllegalArgumentException ( object + ":" +
-                                    topClass.getCanonicalName () + "." + methodName + argumentTypesToString ( types ) );
-                        }
+                        // Returning found method
+                        return method;
                     }
                 }
             }
         }
 
         // Search object superclass for this method
-        final Class superclass = objectClass.getSuperclass ();
+        final Class superclass = currentClass.getSuperclass ();
         if ( superclass != null )
         {
-            return callMethod ( object, topClass, superclass, methodName, arguments, types );
+            return getMethod ( topClass, superclass, methodName, types );
         }
 
         // Throwing proper method not found exception

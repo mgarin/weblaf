@@ -55,7 +55,7 @@ public abstract class DefaultLanguageUpdater<E extends Component> implements Lan
         {
             return ( Class ) ( ( ParameterizedType ) getClass ().getGenericSuperclass () ).getActualTypeArguments ()[ 0 ];
         }
-        catch ( Throwable e )
+        catch ( final Throwable e )
         {
             return null;
         }

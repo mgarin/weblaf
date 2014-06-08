@@ -29,7 +29,7 @@ public class DefaultTextProvider implements TextProvider
      * {@inheritDoc}
      */
     @Override
-    public String provide ( Object object )
+    public String provide ( final Object object )
     {
         return object != null ? object.toString () : "";
     }

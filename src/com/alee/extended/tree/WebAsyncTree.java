@@ -32,6 +32,7 @@ import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
@@ -414,6 +415,19 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
     }
 
     /**
+     * Adds child node for the specified node.
+     * This method might be used to manually change tree node childs without causing any structure corruptions.
+     * Be aware that added node will not be displayed if parent node is not yet loaded, this is a strict restriction for async tree.
+     *
+     * @param parent node to process
+     * @param child  new node child
+     */
+    public void addChildNode ( final E parent, final E child )
+    {
+        getAsyncModel ().addChildNodes ( parent, Arrays.asList ( child ) );
+    }
+
+    /**
      * Adds child nodes for the specified node.
      * This method might be used to manually change tree node childs without causing any structure corruptions.
      * Be aware that added nodes will not be displayed if parent node is not yet loaded, this is a strict restriction for async tree.
@@ -545,6 +559,29 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
     public void updateNode ( final E node )
     {
         getAsyncModel ().updateNode ( node );
+
+        // todo Should actually perform this here (but need to improve filter interface methods - add cache clear methods)
+        // updateSortingAndFiltering ( ( E ) node.getParent () );
+    }
+
+    /**
+     * Forces tree node structure with the specified ID to be updated.
+     *
+     * @param nodeId ID of the tree node to be updated
+     */
+    public void updateNodeStructure ( final String nodeId )
+    {
+        updateNodeStructure ( findNode ( nodeId ) );
+    }
+
+    /**
+     * Forces tree node structure with the specified ID to be updated.
+     *
+     * @param node tree node to be updated
+     */
+    public void updateNodeStructure ( final E node )
+    {
+        getAsyncModel ().updateNodeStructure ( node );
     }
 
     /**
@@ -1019,18 +1056,19 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
     public void expandPath ( final List<String> pathNodeIds, final boolean expandLastNode, final boolean selectLastNode,
                              final AsyncPathExpansionListener listener )
     {
-        for ( int initial = 0; initial < pathNodeIds.size (); initial++ )
+        final List<String> ids = CollectionUtils.copy ( pathNodeIds );
+        for ( int initial = 0; initial < ids.size (); initial++ )
         {
-            final E initialNode = findNode ( pathNodeIds.get ( initial ) );
+            final E initialNode = findNode ( ids.get ( initial ) );
             if ( initialNode != null )
             {
                 for ( int i = 0; i <= initial; i++ )
                 {
-                    pathNodeIds.remove ( i );
+                    ids.remove ( i );
                 }
-                if ( pathNodeIds.size () > 0 )
+                if ( ids.size () > 0 )
                 {
-                    expandPathImpl ( initialNode, pathNodeIds, expandLastNode, selectLastNode, listener );
+                    expandPathImpl ( initialNode, ids, expandLastNode, selectLastNode, listener );
                 }
                 return;
             }

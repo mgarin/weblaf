@@ -174,6 +174,22 @@ public class AsyncTreeNodesFilter<E extends AsyncUniqueNode> implements Filter<E
     }
 
     /**
+     * Clears specific node accept state cache.
+     */
+    public void clearCache ( final E node )
+    {
+        clearCache ( node.getId () );
+    }
+
+    /**
+     * Clears specific node accept state cache.
+     */
+    public void clearCache ( final String nodeId )
+    {
+        acceptStatesCache.remove ( nodeId );
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override

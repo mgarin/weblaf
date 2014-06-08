@@ -35,10 +35,10 @@ import java.util.List;
  * This manager allows you to quickly register global hotkeys (like accelerators on menu items in menubar menus) for any Swing component.
  * Additionally you can specify a component which will limit hotkey events to its area (meaning that hotkey event will occur only if this
  * component or any of its childs is focused when hotkey pressed).
- * <p>
+ * <p/>
  * TooltipManager is integrated with this manager to automatically show component hotkeys in its tooltip if needed/allowed by tooltip and
  * hotkey settings.
- * <p>
+ * <p/>
  * All hotkeys are stored into WeakHashMap so hotkeys will be removed as soon as the component for which hotkey is registered gets
  * finalized. HotkeyInfo also keeps a weak reference to both top and hotkey components.
  *
@@ -176,11 +176,14 @@ public final class HotkeyManager
     }
 
     /**
-     * @param e
+     * Processes all available registered hotkeys.
+     *
+     * @param e key event
      */
     protected static void processHotkeys ( final KeyEvent e )
     {
-        for ( final Map.Entry<Component, List<HotkeyInfo>> entry : copyHotkeys ().entrySet () )
+        final Map<Component, List<HotkeyInfo>> hotkeysCopy = copyHotkeys ();
+        for ( final Map.Entry<Component, List<HotkeyInfo>> entry : hotkeysCopy.entrySet () )
         {
             for ( final HotkeyInfo hotkeyInfo : entry.getValue () )
             {
@@ -532,7 +535,8 @@ public final class HotkeyManager
                             forComponent.isShowing () && SwingUtils.getWindowAncestor ( forComponent ) == window )
                     {
                         final WebLabel tip = new WebLabel ( HotkeyManager.getComponentHotkeysString ( forComponent ) );
-                        SwingUtils.setBoldFont ( tip );
+                        tip.setStyleId ( "custom-tooltip-hotkey-label" );
+                        tip.setBoldFont ();
                         TooltipManager.showOneTimeTooltip ( forComponent, null, tip, hotkeyInfo.getHotkeyDisplayWay () );
                         shown.add ( forComponent );
                     }

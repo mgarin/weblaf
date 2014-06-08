@@ -24,6 +24,7 @@ import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
+import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.language.LanguageMethods;
 import com.alee.managers.language.updaters.LanguageUpdater;
@@ -40,10 +41,7 @@ import com.alee.utils.swing.WebTimer;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
@@ -241,6 +239,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
 
         this.content = content;
 
+        setFocusable ( true );
         setPaintFocus ( true );
         setUndecorated ( false );
         setWebColoredBackground ( false );
@@ -257,26 +256,29 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
         headerPanel.addMouseListener ( new MouseAdapter ()
         {
             @Override
-            public void mousePressed ( final MouseEvent e )
-            {
-                if ( isAllowAction ( e ) )
-                {
-                    takeFocus ();
-                }
-            }
-
-            @Override
             public void mouseReleased ( final MouseEvent e )
             {
                 if ( isAllowAction ( e ) )
                 {
                     invertExpandState ();
+                    takeFocus ();
                 }
             }
 
             private boolean isAllowAction ( final MouseEvent e )
             {
                 return SwingUtilities.isLeftMouseButton ( e ) && SwingUtils.size ( WebCollapsiblePane.this ).contains ( e.getPoint () );
+            }
+        } );
+        headerPanel.addKeyListener ( new KeyAdapter ()
+        {
+            @Override
+            public void keyReleased ( final KeyEvent e )
+            {
+                if ( Hotkey.ENTER.isTriggered ( e ) || Hotkey.SPACE.isTriggered ( e ) )
+                {
+                    invertExpandState ();
+                }
             }
         } );
         updateHeaderPosition ();
@@ -286,7 +288,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
 
         expandButton = new WebButton ( collapseIcon );
         expandButton.setUndecorated ( true );
-        expandButton.setDrawFocus ( false );
+        expandButton.setFocusable ( false );
         expandButton.setMoveIconOnPress ( false );
         expandButton.addActionListener ( new ActionListener ()
         {
@@ -363,7 +365,14 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
     {
         if ( isShowing () && isEnabled () )
         {
-            expandButton.requestFocusInWindow ();
+            if ( isFocusable () )
+            {
+                requestFocusInWindow ();
+            }
+            else
+            {
+                transferFocus ();
+            }
         }
     }
 
@@ -937,6 +946,19 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
     }
 
     /**
+     * Sets default title component text alignment.
+     *
+     * @param alignment new default title component text alignment
+     */
+    public void setTitleAlignment ( final int alignment )
+    {
+        if ( !customTitle )
+        {
+            ( ( WebLabel ) titleComponent ).setHorizontalAlignment ( alignment );
+        }
+    }
+
+    /**
      * Returns expanded state icon.
      *
      * @return expanded state icon
@@ -1387,29 +1409,6 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
                 return new Dimension ( ps.width - Math.round ( cps.width * transitionProgress ), ps.height );
             }
         }
-    }
-
-    /**
-     * Sets the focusable state of this Component to the specified value.
-     * This value overrides the Component's default focusability.
-     *
-     * @param focusable indicates whether this Component is focusable
-     */
-    @Override
-    public void setFocusable ( final boolean focusable )
-    {
-        expandButton.setFocusable ( focusable );
-    }
-
-    /**
-     * Returns whether this Component can be focused.
-     *
-     * @return true if this Component is focusable, false otherwise
-     */
-    @Override
-    public boolean isFocusable ()
-    {
-        return expandButton.isFocusable ();
     }
 
     /**

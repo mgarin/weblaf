@@ -249,6 +249,20 @@ public final class TextUtils
     }
 
     /**
+     * Returns shortened text.
+     *
+     * @param text      text to shorten
+     * @param maxLength maximum shortened text lenght
+     * @param addDots   add dots at the end of the text when shortened
+     * @return shortened text
+     */
+    public static String shortenTextEnd ( final String text, final int maxLength, final boolean addDots )
+    {
+        return text.length () <= maxLength ? text :
+                ( addDots ? "..." : "" ) + text.substring ( text.length () - ( maxLength > 3 && addDots ? maxLength - 3 : maxLength ) );
+    }
+
+    /**
      * Returns a list of text parts splitted using specified separator.
      *
      * @param string    text to split
@@ -384,6 +398,23 @@ public final class TextUtils
             enumerations = new ArrayList<E> ( 0 );
         }
         return enumerations;
+    }
+
+    /**
+     * Creates new string filled with specified amount of same characters.
+     *
+     * @param character character to fill string with
+     * @param length    string length
+     * @return new string filled with specified amount of same characters
+     */
+    public static String createString ( final String character, int length )
+    {
+        final StringBuilder sb = new StringBuilder ( length );
+        while ( length-- > 0 )
+        {
+            sb.append ( character );
+        }
+        return sb.toString ();
     }
 
     /**

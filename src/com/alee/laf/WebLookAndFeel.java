@@ -21,6 +21,7 @@ import com.alee.extended.button.WebSplitButtonUI;
 import com.alee.extended.checkbox.WebTristateCheckBoxUI;
 import com.alee.extended.label.WebMultiLineLabelUI;
 import com.alee.extended.label.WebVerticalLabelUI;
+import com.alee.extended.log.Log;
 import com.alee.laf.button.WebButtonUI;
 import com.alee.laf.button.WebToggleButtonUI;
 import com.alee.laf.checkbox.WebCheckBoxUI;
@@ -58,6 +59,7 @@ import com.alee.laf.tooltip.WebToolTipUI;
 import com.alee.laf.tree.WebTreeUI;
 import com.alee.laf.viewport.WebViewportStyle;
 import com.alee.laf.viewport.WebViewportUI;
+import com.alee.managers.drag.DragManager;
 import com.alee.managers.focus.FocusManager;
 import com.alee.managers.hotkey.HotkeyManager;
 import com.alee.managers.language.LanguageManager;
@@ -155,6 +157,18 @@ public class WebLookAndFeel extends BasicLookAndFeel
      * Whether all dialogs should be decorated using WebLaF styling by default or not.
      */
     private static boolean decorateDialogs = false;
+
+    /**
+     * Allow per-pixel transparent windows usage on Linux systems.
+     * This might be an unstable feature so it is disabled by default.
+     */
+    private static boolean allowLinuxTransparency = false;
+
+    /**
+     * Default scroll mode used by JViewportUI to handle scrolling repaints.
+     * It is different in WebLaF by default due to issues in other scroll mode on some OS.
+     */
+    private static int scrollMode = JViewport.BLIT_SCROLL_MODE;
 
     /**
      * Reassignable LookAndFeel UI class names.
@@ -496,7 +510,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
      *
      * @param table UI defaults table
      */
-    @SuppressWarnings ("UnnecessaryBoxing")
+    @SuppressWarnings ( "UnnecessaryBoxing" )
     @Override
     protected void initComponentDefaults ( final UIDefaults table )
     {
@@ -803,9 +817,6 @@ public class WebLookAndFeel extends BasicLookAndFeel
     {
         super.initialize ();
 
-        // Installs a tricky thread exception handler that will output any uncaught error that occurs in Event Dispatch Thread
-        System.setProperty ( "sun.awt.exception.handler", ExceptionHandler.class.getName () );
-
         // Listening to ALT key for menubar quick focusing
         KeyboardFocusManager.getCurrentKeyboardFocusManager ().addKeyEventPostProcessor ( altProcessor );
 
@@ -826,6 +837,9 @@ public class WebLookAndFeel extends BasicLookAndFeel
 
                         // Initializing WebLaF managers
                         initializeManagers ();
+
+                        // todo Workaround for JSpinner ENTER update issue when created after JTextField
+                        new JSpinner ();
                     }
 
                     // Remove listener in any case
@@ -929,6 +943,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
      */
     public static void initializeManagers ()
     {
+        Log.initialize ();
         VersionManager.initialize ();
         LanguageManager.initialize ();
         SettingsManager.initialize ();
@@ -937,6 +952,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
         TooltipManager.initialize ();
         ProxyManager.initialize ();
         StyleManager.initialize ();
+        DragManager.initialize ();
     }
 
     /**
@@ -1091,6 +1107,47 @@ public class WebLookAndFeel extends BasicLookAndFeel
     }
 
     /**
+     * Returns whether per-pixel transparent windows usage is allowed on Linux systems or not.
+     *
+     * @return true if per-pixel transparent windows usage is allowed on Linux systems, false otherwise
+     */
+    public static boolean isAllowLinuxTransparency ()
+    {
+        return allowLinuxTransparency;
+    }
+
+    /**
+     * Sets whether per-pixel transparent windows usage is allowed on Linux systems or not.
+     * This might be an unstable feature so it is disabled by default. Use it at your own risk.
+     *
+     * @param allow whether per-pixel transparent windows usage is allowed on Linux systems or not
+     */
+    public static void setAllowLinuxTransparency ( final boolean allow )
+    {
+        WebLookAndFeel.allowLinuxTransparency = allow;
+    }
+
+    /**
+     * Returns default scroll mode used by JViewportUI to handle scrolling repaints.
+     *
+     * @return default scroll mode used by JViewportUI to handle scrolling repaints
+     */
+    public static int getScrollMode ()
+    {
+        return scrollMode;
+    }
+
+    /**
+     * Sets default scroll mode used by JViewportUI to handle scrolling repaints.
+     *
+     * @param scrollMode new default scroll mode
+     */
+    public static void setScrollMode ( final int scrollMode )
+    {
+        WebLookAndFeel.scrollMode = scrollMode;
+    }
+
+    /**
      * Sets whether look and feel should use custom decoration for newly created frames and dialogs or not.
      *
      * @param decorateAllWindows whether look and feel should use custom decoration for newly created frames and dialogs or not
@@ -1147,30 +1204,5 @@ public class WebLookAndFeel extends BasicLookAndFeel
     public static void changeOrientation ()
     {
         LanguageManager.changeOrientation ();
-    }
-
-    /**
-     * Custom exceptions handler for EDT.
-     */
-    public static class ExceptionHandler implements Thread.UncaughtExceptionHandler
-    {
-        public void handle ( final Throwable thrown )
-        {
-            // for EDT exceptions
-            handleException ( Thread.currentThread ().getName (), thrown );
-        }
-
-        @Override
-        public void uncaughtException ( final Thread thread, final Throwable thrown )
-        {
-            // for other uncaught exceptions
-            handleException ( thread.getName (), thrown );
-        }
-
-        protected void handleException ( final String tname, final Throwable thrown )
-        {
-            System.err.print ( "Exception in thread " + tname + ": " );
-            thrown.printStackTrace ();
-        }
     }
 }

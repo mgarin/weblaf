@@ -3,13 +3,21 @@
     <!-- JPopupMenu styling -->
     <style type="popupMenu" id="default">
         <painter id="painter" class="com.alee.managers.style.skin.web.WebPopupMenuPainter">
-            <popupPainterStyle>dropdown</popupPainterStyle>
+            <popupStyle>dropdown</popupStyle>
             <borderColor>128,128,128,128</borderColor>
             <round>4</round>
             <shadeWidth>12</shadeWidth>
-            <shadeOpacity>0.75</shadeOpacity>
+            <shadeTransparency>0.75</shadeTransparency>
             <cornerWidth>6</cornerWidth>
             <transparency>0.95</transparency>
+        </painter>
+    </style>
+
+    <!-- WebDocumentPane tab menu styling -->
+    <style type="popupMenu" id="document-pane-menu" extends="default">
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebPopupMenuPainter">
+            <popupStyle>dropdown</popupStyle>
+            <cornerAlignment>0</cornerAlignment>
         </painter>
     </style>
 

@@ -23,7 +23,7 @@ import com.alee.laf.menu.WebCheckBoxMenuItem;
 import com.alee.laf.menu.WebPopupMenu;
 import com.alee.laf.text.WebTextField;
 import com.alee.managers.hotkey.Hotkey;
-import com.alee.utils.swing.DocumentChangeListener;
+import com.alee.utils.swing.StringDocumentChangeListener;
 import com.alee.utils.text.TextProvider;
 
 import javax.swing.*;
@@ -45,6 +45,10 @@ import java.lang.ref.WeakReference;
 
 public class WebAsyncTreeFilterField<E extends AsyncUniqueNode> extends WebTextField
 {
+    /**
+     * todo 1. Listen to tree model changes and update filtering appropriately
+     */
+
     /**
      * Used icons.
      */
@@ -214,12 +218,12 @@ public class WebAsyncTreeFilterField<E extends AsyncUniqueNode> extends WebTextF
     protected void initFieldListeners ()
     {
         // Field changes listener
-        documentListener = new DocumentChangeListener ()
+        documentListener = new StringDocumentChangeListener ()
         {
             @Override
-            public void documentChanged ( final DocumentEvent e )
+            public void documentChanged ( final String newValue, final DocumentEvent e )
             {
-                filter.setSearchText ( getText () );
+                filter.setSearchText ( newValue );
                 updateFiltering ();
             }
         };
@@ -239,7 +243,7 @@ public class WebAsyncTreeFilterField<E extends AsyncUniqueNode> extends WebTextF
         addKeyListener ( new KeyAdapter ()
         {
             @Override
-            public void keyPressed ( KeyEvent e )
+            public void keyPressed ( final KeyEvent e )
             {
                 if ( Hotkey.ESCAPE.isTriggered ( e ) )
                 {
@@ -354,7 +358,7 @@ public class WebAsyncTreeFilterField<E extends AsyncUniqueNode> extends WebTextF
     /**
      * Updates tree filtering.
      */
-    protected void updateFiltering ()
+    public void updateFiltering ()
     {
         // Cleaning up filter cache
         filter.clearCache ();
@@ -364,6 +368,25 @@ public class WebAsyncTreeFilterField<E extends AsyncUniqueNode> extends WebTextF
         if ( asyncTree != null )
         {
             asyncTree.updateSortingAndFiltering ();
+        }
+    }
+
+    /**
+     * Performs node acceptance re-check.
+     * Might be useful if external tree updates are applied.
+     *
+     * @param node node that should be re-checked
+     */
+    public void updateNodeAcceptance ( final E node )
+    {
+        // Cleaning up filter cache
+        filter.clearCache ( node );
+
+        // Updating tree filtering
+        final WebAsyncTree<E> asyncTree = getAsyncTree ();
+        if ( asyncTree != null )
+        {
+            asyncTree.updateSortingAndFiltering ( ( E ) node.getParent () );
         }
     }
 }

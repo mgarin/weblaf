@@ -202,6 +202,18 @@ public class WebPanel extends JPanel implements Styleable, ShapeProvider, Partia
     /**
      * onstructs new panel with the specified style ID.
      *
+     * @param styleId style ID
+     * @param layout  panel layout
+     */
+    public WebPanel ( final String styleId, final LayoutManager layout )
+    {
+        super ( layout );
+        setStyleId ( styleId );
+    }
+
+    /**
+     * onstructs new panel with the specified style ID.
+     *
      * @param styleId   style ID
      * @param component component to add into panel
      */

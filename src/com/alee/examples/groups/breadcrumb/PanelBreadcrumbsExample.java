@@ -50,23 +50,23 @@ public class PanelBreadcrumbsExample extends DefaultExample
     }
 
     @Override
-    public Component getPreview ( WebLookAndFeelDemo owner )
+    public Component getPreview ( final WebLookAndFeelDemo owner )
     {
         // Decorated breadcrumb
-        WebBreadcrumb breadcrumb1 = new WebBreadcrumb ( true );
+        final WebBreadcrumb breadcrumb1 = new WebBreadcrumb ( true );
         fillBreadcrumb ( breadcrumb1 );
 
         // Undecorated breadcrumb
-        WebBreadcrumb breadcrumb2 = new WebBreadcrumb ( false );
+        final WebBreadcrumb breadcrumb2 = new WebBreadcrumb ( false );
         fillBreadcrumb ( breadcrumb2 );
 
         return new GroupPanel ( 4, false, breadcrumb1, breadcrumb2 );
     }
 
-    private void fillBreadcrumb ( WebBreadcrumb b )
+    public static void fillBreadcrumb ( final WebBreadcrumb b )
     {
         // Radio buttons panel
-        WebBreadcrumbPanel panel1 = new WebBreadcrumbPanel ( new HorizontalFlowLayout ( 4 ) );
+        final WebBreadcrumbPanel panel1 = new WebBreadcrumbPanel ( new HorizontalFlowLayout ( 4 ) );
         panel1.add ( new WebRadioButton ( "1" ) );
         panel1.add ( new WebRadioButton ( "2" ) );
         panel1.add ( new WebRadioButton ( "3" ) );
@@ -74,9 +74,9 @@ public class PanelBreadcrumbsExample extends DefaultExample
         b.add ( panel1 );
 
         // Label and text field panel
-        WebBreadcrumbPanel panel2 = new WebBreadcrumbPanel ( new HorizontalFlowLayout () );
+        final WebBreadcrumbPanel panel2 = new WebBreadcrumbPanel ( new HorizontalFlowLayout () );
         panel2.add ( new WebLabel ( "Field:" ) );
-        WebTextField textField = new WebTextField ( 5 );
+        final WebTextField textField = new WebTextField ( 5 );
         SwingUtils.setFontSize ( textField, 8 );
         panel2.add ( textField );
         b.add ( panel2 );

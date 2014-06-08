@@ -88,10 +88,10 @@ public class StyleConstants
      * Components animation settings.
      */
     public static boolean animate = true;
-    public static int animationDelay = 40; // 24 fps
-    public static int avgAnimationDelay = 30; // 36 fps
-    public static int fastAnimationDelay = 20; // 48 fps
-    public static int maxAnimationDelay = 10; // 96 fps
+    public static long animationDelay = 42L; // ~24 fps
+    public static long avgAnimationDelay = 28L; // ~36 fps
+    public static long fastAnimationDelay = 21L; // ~48 fps
+    public static long maxAnimationDelay = 10L; // 100 fps
 
     /**
      * Components border settings.

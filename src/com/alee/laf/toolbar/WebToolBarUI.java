@@ -332,7 +332,8 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeProvider, Borde
                                 margin.left + 1 + shadeWidth +
                                         ( horizontal && ltr ? gripperSpacing : 0 ), margin.bottom + 1 + shadeWidth,
                                 margin.right + 1 + shadeWidth +
-                                        ( horizontal && !ltr ? gripperSpacing : 0 ) ) );
+                                        ( horizontal && !ltr ? gripperSpacing : 0 )
+                        ) );
                     }
                 }
                 else
@@ -349,7 +350,8 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeProvider, Borde
                                 margin.left + ( horizontal && ltr ? gripperSpacing : 0 ) +
                                         ( !horizontal && !ltr ? 1 : 0 ), margin.bottom + ( horizontal ? 1 : 0 ),
                                 margin.right + ( horizontal && !ltr ? gripperSpacing : 0 ) +
-                                        ( !horizontal && ltr ? 1 : 0 ) ) );
+                                        ( !horizontal && ltr ? 1 : 0 )
+                        ) );
                     }
                 }
             }
@@ -592,16 +594,6 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeProvider, Borde
         //        dialog.setUndecorated ( true );
         return dialog;
     }
-
-    //    protected void paintDragWindow ( Graphics g )
-    //    {
-    //        super.paintDragWindow ( g );
-    //        System.out.println (
-    //                "can fock now: " + dragWindow.getBorderColor ().equals ( dockingBorderColor ) );
-    //        System.out.println (
-    //                "horizontal: " + ( dragWindow.getOrientation () == WebToolBar.HORIZONTAL ) );
-    //        toolBar.printAll ( g );
-    //    }
 
     @Override
     protected DragWindow createDragWindow ( final JToolBar toolbar )

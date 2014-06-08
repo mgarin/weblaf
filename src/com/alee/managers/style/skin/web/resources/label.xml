@@ -53,6 +53,11 @@
             <foreground>white</foreground>
         </component>
     </style>
+    <style type="label" id="custom-tooltip-hotkey-label" extends="default">
+        <component>
+            <foreground>white</foreground>
+        </component>
+    </style>
 
     <!-- WebMemoryBar tooltip label styling -->
     <style type="label" id="memory-bar-tip" extends="default">
@@ -77,6 +82,14 @@
             <margin>1,5,1,5</margin>
         </ui>
         <painter id="painter" class="com.alee.managers.style.skin.web.WebBreadcrumbLabelPainter" />
+    </style>
+
+    <!-- WebDockableFrame styling -->
+    <style type="label" id="dockable-frame-title" extends="default">
+        <ui>
+            <drawShade>true</drawShade>
+            <margin>3,3,3,10</margin>
+        </ui>
     </style>
 
 </skin>

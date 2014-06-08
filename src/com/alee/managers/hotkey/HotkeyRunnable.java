@@ -29,6 +29,18 @@ import java.awt.event.KeyEvent;
 public interface HotkeyRunnable
 {
     /**
+     * Simple runnable that doesn't perform any actions.
+     */
+    public static final HotkeyRunnable NONE = new HotkeyRunnable ()
+    {
+        @Override
+        public void run ( final KeyEvent e )
+        {
+            // Do nothing
+        }
+    };
+
+    /**
      * Performs hotkey action.
      *
      * @param e occured key event

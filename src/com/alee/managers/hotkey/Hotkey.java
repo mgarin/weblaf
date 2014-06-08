@@ -126,6 +126,11 @@ public final class Hotkey
     public static final HotkeyData CTRL_F = new HotkeyData ( true, false, false, KeyEvent.VK_F );
     public static final HotkeyData CTRL_G = new HotkeyData ( true, false, false, KeyEvent.VK_G );
     public static final HotkeyData CTRL_H = new HotkeyData ( true, false, false, KeyEvent.VK_H );
+    public static final HotkeyData CTRL_I = new HotkeyData ( true, false, false, KeyEvent.VK_I );
+    public static final HotkeyData CTRL_J = new HotkeyData ( true, false, false, KeyEvent.VK_J );
+    public static final HotkeyData CTRL_K = new HotkeyData ( true, false, false, KeyEvent.VK_K );
+    public static final HotkeyData CTRL_L = new HotkeyData ( true, false, false, KeyEvent.VK_L );
+    public static final HotkeyData CTRL_M = new HotkeyData ( true, false, false, KeyEvent.VK_M );
     public static final HotkeyData CTRL_N = new HotkeyData ( true, false, false, KeyEvent.VK_N );
     public static final HotkeyData CTRL_O = new HotkeyData ( true, false, false, KeyEvent.VK_O );
     public static final HotkeyData CTRL_P = new HotkeyData ( true, false, false, KeyEvent.VK_P );
@@ -134,6 +139,7 @@ public final class Hotkey
     public static final HotkeyData CTRL_S = new HotkeyData ( true, false, false, KeyEvent.VK_S );
     public static final HotkeyData CTRL_T = new HotkeyData ( true, false, false, KeyEvent.VK_T );
     public static final HotkeyData CTRL_V = new HotkeyData ( true, false, false, KeyEvent.VK_V );
+    public static final HotkeyData CTRL_U = new HotkeyData ( true, false, false, KeyEvent.VK_U );
     public static final HotkeyData CTRL_W = new HotkeyData ( true, false, false, KeyEvent.VK_W );
     public static final HotkeyData CTRL_X = new HotkeyData ( true, false, false, KeyEvent.VK_X );
     public static final HotkeyData CTRL_Y = new HotkeyData ( true, false, false, KeyEvent.VK_Y );

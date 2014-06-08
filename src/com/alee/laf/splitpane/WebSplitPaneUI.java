@@ -44,13 +44,15 @@ public class WebSplitPaneUI extends BasicSplitPaneUI implements BorderMethods
     /**
      * Style settings.
      */
-    private Insets margin = WebSplitPaneStyle.margin;
-    private Color dragDividerColor = WebSplitPaneStyle.dragDividerColor;
+    protected Insets margin = WebSplitPaneStyle.margin;
+    protected Color dragDividerColor = WebSplitPaneStyle.dragDividerColor;
+    protected boolean drawDividerBorder = WebSplitPaneStyle.drawDividerBorder;
+    protected Color dividerBorderColor = WebSplitPaneStyle.dividerBorderColor;
 
     /**
      * SplitPane listeners.
      */
-    private PropertyChangeListener propertyChangeListener;
+    protected PropertyChangeListener propertyChangeListener;
 
     /**
      * Returns an instance of the WebSplitPaneUI for the specified component.
@@ -174,6 +176,46 @@ public class WebSplitPaneUI extends BasicSplitPaneUI implements BorderMethods
     }
 
     /**
+     * Returns whether divider border is painted or not.
+     *
+     * @return true if divider border is painted, false otherwise
+     */
+    public boolean isDrawDividerBorder ()
+    {
+        return drawDividerBorder;
+    }
+
+    /**
+     * Sets whether divider border is painted or not.
+     *
+     * @param draw whether divider border is painted or not
+     */
+    public void setDrawDividerBorder ( final boolean draw )
+    {
+        this.drawDividerBorder = draw;
+    }
+
+    /**
+     * Returns divider border color.
+     *
+     * @return divider border color
+     */
+    public Color getDividerBorderColor ()
+    {
+        return dividerBorderColor;
+    }
+
+    /**
+     * Sets divider border color.
+     *
+     * @param color new divider border color
+     */
+    public void setDividerBorderColor ( final Color color )
+    {
+        this.dividerBorderColor = color;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -181,10 +223,10 @@ public class WebSplitPaneUI extends BasicSplitPaneUI implements BorderMethods
     {
         return new BasicSplitPaneDivider ( this )
         {
-            private final Border border = BorderFactory.createEmptyBorder ( 0, 0, 0, 0 );
+            protected final Border border = BorderFactory.createEmptyBorder ( 0, 0, 0, 0 );
 
-            private final Color color = new Color ( 158, 158, 158 );
-            private final Color[] gradient = new Color[]{ StyleConstants.transparent, color, color, StyleConstants.transparent };
+            protected final Color color = new Color ( 158, 158, 158 );
+            protected final Color[] gradient = new Color[]{ StyleConstants.transparent, color, color, StyleConstants.transparent };
 
             @Override
             public Border getBorder ()
@@ -196,8 +238,9 @@ public class WebSplitPaneUI extends BasicSplitPaneUI implements BorderMethods
             protected JButton createLeftOneTouchButton ()
             {
                 final WebButton iconWebButton = WebButton.createIconWebButton ( new ImageIcon ( WebSplitPaneUI.class
-                        .getResource ( orientation == JSplitPane.HORIZONTAL_SPLIT ? "icons/left.png" : "icons/up.png" ) ), 0, 0, 0, false,
-                        true, false );
+                                .getResource ( orientation == JSplitPane.HORIZONTAL_SPLIT ? "icons/left.png" : "icons/up.png" ) ), 0, 0, 0,
+                        false, true, false
+                );
                 iconWebButton.setBorder ( BorderFactory.createEmptyBorder ( 0, 0, 0, 0 ) );
                 iconWebButton.setCursor ( Cursor.getDefaultCursor () );
                 iconWebButton
@@ -209,8 +252,9 @@ public class WebSplitPaneUI extends BasicSplitPaneUI implements BorderMethods
             protected JButton createRightOneTouchButton ()
             {
                 final JButton iconWebButton = WebButton.createIconWebButton ( new ImageIcon ( WebSplitPaneUI.class
-                        .getResource ( orientation == JSplitPane.HORIZONTAL_SPLIT ? "icons/right.png" : "icons/down.png" ) ), 0, 0, 0,
-                        false, true, false );
+                                .getResource ( orientation == JSplitPane.HORIZONTAL_SPLIT ? "icons/right.png" : "icons/down.png" ) ), 0, 0,
+                        0, false, true, false
+                );
                 iconWebButton.setBorder ( BorderFactory.createEmptyBorder ( 0, 0, 0, 0 ) );
                 iconWebButton.setCursor ( Cursor.getDefaultCursor () );
                 iconWebButton
@@ -233,6 +277,13 @@ public class WebSplitPaneUI extends BasicSplitPaneUI implements BorderMethods
                     {
                         g2d.fillRect ( getWidth () / 2 - 1, i - 1, 2, 2 );
                     }
+
+                    if ( drawDividerBorder )
+                    {
+                        g2d.setPaint ( dividerBorderColor );
+                        g2d.drawLine ( 0, 0, 0, getHeight () - 1 );
+                        g2d.drawLine ( getWidth () - 1, 0, getWidth () - 1, getHeight () - 1 );
+                    }
                 }
                 else
                 {
@@ -242,6 +293,13 @@ public class WebSplitPaneUI extends BasicSplitPaneUI implements BorderMethods
                     for ( int i = startX; i < endX; i += 5 )
                     {
                         g2d.fillRect ( i - 1, getHeight () / 2 - 1, 2, 2 );
+                    }
+
+                    if ( drawDividerBorder )
+                    {
+                        g2d.setPaint ( dividerBorderColor );
+                        g2d.drawLine ( 0, 0, getWidth () - 1, 0 );
+                        g2d.drawLine ( 0, getHeight () - 1, getWidth () - 1, getHeight () - 1 );
                     }
                 }
 

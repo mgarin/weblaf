@@ -38,7 +38,7 @@ import java.awt.geom.GeneralPath;
  * @author Mikle Garin
  */
 
-@SuppressWarnings ( "UnusedParameters" )
+@SuppressWarnings ("UnusedParameters")
 public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> implements PainterShapeProvider<E>, SwingConstants
 {
     /**
@@ -536,9 +536,21 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
      */
     protected Color getBackgroundColor ( final E popup )
     {
-        final Color bg = popup.getBackground ();
+        final Color bg = getComponentBackground ( popup );
         return !transparent || transparency >= 1f ? bg :
                 ColorUtils.getTransparentColor ( bg, Math.max ( 0, Math.min ( ( int ) ( transparency * 255 ), 255 ) ) );
+    }
+
+    /**
+     * Returns popup background color.
+     * This call moved into a separate method so you can override it to provide different background color.
+     *
+     * @param popup popup component
+     * @return popup background color
+     */
+    protected Color getComponentBackground ( final E popup )
+    {
+        return popup.getBackground ();
     }
 
     /**

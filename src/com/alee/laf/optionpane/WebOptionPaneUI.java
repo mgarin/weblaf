@@ -20,6 +20,7 @@ package com.alee.laf.optionpane;
 import com.alee.laf.StyleConstants;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
+import com.alee.managers.language.LM;
 import com.alee.utils.LafUtils;
 import com.alee.utils.SwingUtils;
 
@@ -115,7 +116,12 @@ public class WebOptionPaneUI extends BasicOptionPaneUI
                     }
                     else
                     {
-                        aButton = new WebButton ( button.toString () );
+                        final String text = button.toString ();
+                        aButton = new WebButton ( text );
+                        if ( LM.contains ( text ) )
+                        {
+                            aButton.setLanguage ( text );
+                        }
                     }
 
                     aButton.setName ( "OptionPane.button" );

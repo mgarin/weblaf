@@ -36,13 +36,13 @@ public final class HtmlUtils
      * @param html HTML
      * @return plain text
      */
-    public static String getPlainText ( String html )
+    public static String getPlainText ( final String html )
     {
-        Source source = new Source ( html );
-        Tag[] tags = source.fullSequentialParse ();
+        final Source source = new Source ( html );
+        final Tag[] tags = source.fullSequentialParse ();
         if ( tags.length > 0 )
         {
-            Renderer renderer = source.getRenderer ();
+            final Renderer renderer = source.getRenderer ();
             renderer.setIncludeHyperlinkURLs ( false );
             renderer.setIncludeAlternateText ( false );
             renderer.setDecorateFontStyles ( false );
@@ -64,7 +64,7 @@ public final class HtmlUtils
      * @param text text to process
      * @return HTML with specified text made bold
      */
-    public static String bold ( String text )
+    public static String bold ( final String text )
     {
         return "<html><b>" + text + "</b></html>";
     }
@@ -75,7 +75,7 @@ public final class HtmlUtils
      * @param text text to process
      * @return true if the specified text contains HTML tags, false otherwise
      */
-    public static boolean hasTags ( String text )
+    public static boolean hasTags ( final String text )
     {
         return text != null && text.trim ().length () > 0 && new Source ( text ).fullSequentialParse ().length > 0;
     }
@@ -86,7 +86,7 @@ public final class HtmlUtils
      * @param text text to process
      * @return true if specified text contains HTML tag, false otherwise
      */
-    public static boolean hasHtml ( String text )
+    public static boolean hasHtml ( final String text )
     {
         return hasTag ( text, HTMLElementName.HTML );
     }
@@ -98,11 +98,11 @@ public final class HtmlUtils
      * @param tag  tag to find
      * @return true if text contains the specified tag, false otherwise
      */
-    public static boolean hasTag ( String text, String tag )
+    public static boolean hasTag ( final String text, final String tag )
     {
         if ( text != null && text.trim ().length () > 0 )
         {
-            Source source = new Source ( text );
+            final Source source = new Source ( text );
             source.fullSequentialParse ();
             return source.getFirstElement ( tag ) != null;
         }
@@ -118,21 +118,21 @@ public final class HtmlUtils
      * @param text text to process
      * @return HTML content between body or html tags
      */
-    public static String getContent ( String text )
+    public static String getContent ( final String text )
     {
-        String lowerCaseText = text.toLowerCase ();
+        final String lowerCaseText = text.toLowerCase ();
 
-        String bodyTag = "<body>";
-        int body = lowerCaseText.indexOf ( bodyTag );
-        int bodyEnd = lowerCaseText.indexOf ( "</body>" );
+        final String bodyTag = "<body>";
+        final int body = lowerCaseText.indexOf ( bodyTag );
+        final int bodyEnd = lowerCaseText.indexOf ( "</body>" );
         if ( body != -1 && bodyEnd != -1 )
         {
             return text.substring ( body + bodyTag.length (), bodyEnd );
         }
 
-        String htmlTag = "<html>";
-        int html = lowerCaseText.indexOf ( bodyTag );
-        int htmlEnd = lowerCaseText.indexOf ( "</html>" );
+        final String htmlTag = "<html>";
+        final int html = lowerCaseText.indexOf ( bodyTag );
+        final int htmlEnd = lowerCaseText.indexOf ( "</html>" );
         if ( html != -1 && htmlEnd != -1 )
         {
             return text.substring ( html + htmlTag.length (), htmlEnd );
@@ -148,10 +148,10 @@ public final class HtmlUtils
      * @param lineBreak line break text
      * @return text converted into multiline HTML
      */
-    public static String convertToMultilineHtml ( String text, String... lineBreak )
+    public static String convertToMultilineHtml ( final String text, final String... lineBreak )
     {
         String body = text;
-        for ( String divider : lineBreak )
+        for ( final String divider : lineBreak )
         {
             body = body.replaceAll ( divider, "<br>" );
         }

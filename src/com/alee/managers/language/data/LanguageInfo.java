@@ -38,6 +38,9 @@ public class LanguageInfo implements Serializable
     @XStreamAsAttribute
     private String info;
 
+    @XStreamAsAttribute
+    private String title;
+
     public LanguageInfo ()
     {
         super ();
@@ -48,7 +51,7 @@ public class LanguageInfo implements Serializable
         return lang;
     }
 
-    public void setLang ( String lang )
+    public void setLang ( final String lang )
     {
         this.lang = lang;
     }
@@ -58,7 +61,7 @@ public class LanguageInfo implements Serializable
         return author;
     }
 
-    public void setAuthor ( String author )
+    public void setAuthor ( final String author )
     {
         this.author = author;
     }
@@ -68,8 +71,18 @@ public class LanguageInfo implements Serializable
         return info;
     }
 
-    public void setInfo ( String info )
+    public void setInfo ( final String info )
     {
         this.info = info;
+    }
+
+    public String getTitle ()
+    {
+        return title;
+    }
+
+    public void setTitle ( final String title )
+    {
+        this.title = title;
     }
 }

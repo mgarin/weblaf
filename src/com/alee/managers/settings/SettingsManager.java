@@ -17,6 +17,7 @@
 
 package com.alee.managers.settings;
 
+import com.alee.extended.log.Log;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.FileUtils;
 import com.alee.utils.ReflectUtils;
@@ -51,11 +52,6 @@ import java.util.Map;
  */
 public final class SettingsManager
 {
-    /**
-     * Error output prefix.
-     */
-    private static final String ERROR_PREFIX = "[SettingsManager] ";
-
     /**
      * Settings change listeners.
      */
@@ -826,9 +822,8 @@ public final class SettingsManager
             // Displaying what caused the problem if needed
             if ( displayExceptions )
             {
-                System.err.println ( ERROR_PREFIX + "Unable to load settings value for group \"" + group + "\" and key \"" + key +
-                        "\" because it has inappropriate class type:" );
-                e.printStackTrace ();
+                Log.error ( SettingsManager.class, "Unable to load settings value for group \"" + group + "\" and key \"" + key +
+                        "\" because it has inappropriate class type:", e );
             }
 
             // Saving default value if needed
@@ -976,9 +971,8 @@ public final class SettingsManager
                         // Display errors
                         if ( displayExceptions )
                         {
-                            System.err.println ( ERROR_PREFIX + "Unable to load settings group \"" + group +
-                                    "\" due to unexpected exception:" );
-                            e.printStackTrace ();
+                            Log.error ( SettingsManager.class, "Unable to load settings group \"" + group +
+                                    "\" due to unexpected exception:", e );
                         }
 
                         // Delete incorrect SettingsGroup file
@@ -1089,9 +1083,8 @@ public final class SettingsManager
             {
                 if ( displayExceptions )
                 {
-                    System.err.println ( ERROR_PREFIX + "Unable to save settings group \"" + settingsGroup.getName () +
-                            "\" due to unexpected exception:" );
-                    e.printStackTrace ();
+                    Log.error ( SettingsManager.class, "Unable to save settings group \"" + settingsGroup.getName () +
+                            "\" due to unexpected exception:", e );
                 }
             }
         }

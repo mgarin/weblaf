@@ -17,6 +17,7 @@
 
 package com.alee.managers.focus;
 
+import com.alee.extended.log.Log;
 import com.alee.laf.GlobalConstants;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.SwingUtils;
@@ -124,7 +125,7 @@ public final class FocusManager
                     {
                         final String oldName = oldFocus != null ? oldFocus.getClass ().getName () : null;
                         final String newName = newFocus != null ? newFocus.getClass ().getName () : null;
-                        System.out.println ( "Focus changed: " + oldName + " --> " + newName );
+                        Log.debug ( this, "Focus changed: " + oldName + " --> " + newName );
                     }
 
                     // Checking all added trackers

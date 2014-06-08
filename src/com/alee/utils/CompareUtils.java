@@ -17,7 +17,6 @@
 
 package com.alee.utils;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -29,34 +28,6 @@ import java.util.List;
 public final class CompareUtils
 {
     /**
-     * Returns whether the first String equals to the second String or not.
-     * This method will compare two String objects even if they are null without throwing any exceptions.
-     * This method should not be called from any method that overrides object default "equals" method.
-     *
-     * @param s1 first String
-     * @param s2 second String
-     * @return true if the first String equals to the second String, false otherwise
-     */
-    public static boolean equals ( final String s1, final String s2 )
-    {
-        return s1 == null && s2 == null || !( s1 == null || s2 == null ) && s1.equals ( s2 );
-    }
-
-    /**
-     * Returns whether the first Date equals to the second Date or not.
-     * This method will compare two Date objects even if they are null without throwing any exceptions.
-     * This method should not be called from any method that overrides object default "equals" method.
-     *
-     * @param d1 first Date
-     * @param d2 second Date
-     * @return true if the first Date equals to the second Date, false otherwise
-     */
-    public static boolean equals ( final Date d1, final Date d2 )
-    {
-        return d1 == null && d2 == null || !( d1 == null || d2 == null ) && d1.equals ( d2 );
-    }
-
-    /**
      * Returns whether the first Object equals to the second Object or not.
      * This method will compare two objects even if they are null without throwing any exceptions.
      * This method should not be called from any method that overrides object default "equals" method.
@@ -67,7 +38,7 @@ public final class CompareUtils
      */
     public static boolean equals ( final Object o1, final Object o2 )
     {
-        return o1 == null && o2 == null || !( o1 == null || o2 == null ) && o1.equals ( o2 );
+        return o1 == null && o2 == null || o1 != null && o2 != null && o1.equals ( o2 );
     }
 
     /**

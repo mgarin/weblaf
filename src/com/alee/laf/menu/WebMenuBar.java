@@ -111,7 +111,7 @@ public class WebMenuBar extends JMenuBar implements ShapeProvider
             {
                 setUI ( ( WebMenuBarUI ) ReflectUtils.createInstance ( WebLookAndFeel.menuBarUI ) );
             }
-            catch ( Throwable e )
+            catch ( final Throwable e )
             {
                 e.printStackTrace ();
                 setUI ( new WebMenuBarUI () );
