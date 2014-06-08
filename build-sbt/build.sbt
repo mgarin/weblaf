@@ -7,6 +7,8 @@ organization     := "de.sciss"
 
 // version       := "1.27.0"
 
+lazy val isSnapshotVersion = true
+
 // version is determined from version.properties
 version := {
   val propF = baseDirectory.value / ".." / "build" / "version.properties"
@@ -16,7 +18,7 @@ version := {
   r.close()
   val major = prop.getProperty("version.number")
   val minor = prop.getProperty("build.number"  )
-  s"$major.$minor"
+  s"$major.$minor${if (isSnapshotVersion) "-SNAPSHOT" else ""}"
 }
 
 homepage         := Some(url("http://weblookandfeel.com"))
@@ -46,13 +48,15 @@ mainClass in (Compile,run) := Some("com.alee.laf.LibraryInfoDialog")
 
 // sbt will always retrieve a Scala version,
 // even if not used in the projects
-scalaVersion     := "2.10.4"
+scalaVersion     := "2.11.1"
 
 libraryDependencies ++= Seq(
   "com.thoughtworks.xstream" % "xstream"            % "1.4.7" exclude("xpp3", "xpp3_min") exclude("xmlpull", "xmlpull"),
   "net.htmlparser.jericho"   % "jericho-html"       % "3.3",
   "com.fifesoft"             % "rsyntaxtextarea"    % "2.5.0",
-  "com.mortennobel"          % "java-image-scaling" % "0.8.5"
+  "com.mortennobel"          % "java-image-scaling" % "0.8.5",
+  "org.slf4j"                % "slf4j-api"          % "1.7.7",
+  "org.slf4j"                % "slf4j-simple"       % "1.7.7"
 )
 
 retrieveManaged := true
