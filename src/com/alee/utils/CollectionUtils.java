@@ -23,7 +23,7 @@ import com.alee.utils.text.TextProvider;
 import java.util.*;
 
 /**
- * This class provides a set of utilities to work with various collections and arrays.
+ * This class provides a set of utilities to work with collections.
  *
  * @author Mikle Garin
  */
@@ -220,100 +220,6 @@ public final class CollectionUtils
     public static <T> List<T> toList ( final Deque<T> deque )
     {
         return new ArrayList<T> ( deque );
-    }
-
-    /**
-     * Returns index of specified object in array.
-     *
-     * @param object object to find
-     * @param array  array to process
-     * @return index of specified object in array
-     */
-    public static int indexOf ( final Object object, final Object[] array )
-    {
-        for ( int i = 0; i < array.length; i++ )
-        {
-            final Object obj = array[ i ];
-            if ( obj == null && object == null || obj != null && object != null && obj.equals ( object ) )
-            {
-                return i;
-            }
-        }
-        return -1;
-    }
-
-    /**
-     * Returns index of specified text in array.
-     *
-     * @param text  text to find
-     * @param array array to process
-     * @return index of specified text in array
-     */
-    public static int indexOf ( final String text, final String[] array )
-    {
-        return indexOf ( text, array, false );
-    }
-
-    /**
-     * Returns index of specified text in array.
-     *
-     * @param text       text to find
-     * @param array      array to process
-     * @param ignoreCase whether ignore text case or not
-     * @return index of specified text in array
-     */
-    public static int indexOf ( final String text, final String[] array, final boolean ignoreCase )
-    {
-        for ( int i = 0; i < array.length; i++ )
-        {
-            final String txt = array[ i ];
-            if ( txt == null && text == null ||
-                    txt != null && text != null && ( ignoreCase ? txt.equalsIgnoreCase ( text ) : txt.equals ( text ) ) )
-            {
-                return i;
-            }
-        }
-        return -1;
-    }
-
-    /**
-     * Returns index of specified integer in array.
-     *
-     * @param number integer to find
-     * @param array  array to process
-     * @return index of specified integer in array
-     */
-    public static int indexOf ( final int number, final int[] array )
-    {
-        for ( int i = 0; i < array.length; i++ )
-        {
-            final int num = array[ i ];
-            if ( num == number )
-            {
-                return i;
-            }
-        }
-        return -1;
-    }
-
-    /**
-     * Returns index of specified character in array.
-     *
-     * @param character character to find
-     * @param array     array to process
-     * @return index of specified character in array
-     */
-    public static int indexOf ( final char character, final char[] array )
-    {
-        for ( int i = 0; i < array.length; i++ )
-        {
-            final char ch = array[ i ];
-            if ( ch == character )
-            {
-                return i;
-            }
-        }
-        return -1;
     }
 
     /**
