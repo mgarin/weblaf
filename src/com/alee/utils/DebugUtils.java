@@ -49,7 +49,7 @@ public final class DebugUtils
      *
      * @param g graphics
      */
-    public static void paintTimeDebugInfo ( Graphics g )
+    public static void paintTimeDebugInfo ( final Graphics g )
     {
         if ( GlobalConstants.DEBUG )
         {
@@ -63,7 +63,7 @@ public final class DebugUtils
      *
      * @param g2d graphics
      */
-    public static void paintTimeDebugInfo ( Graphics2D g2d )
+    public static void paintTimeDebugInfo ( final Graphics2D g2d )
     {
         if ( GlobalConstants.DEBUG )
         {
@@ -76,19 +76,19 @@ public final class DebugUtils
      *
      * @param g2d graphics
      */
-    private static void paintDebugInfoImpl ( Graphics2D g2d )
+    private static void paintDebugInfoImpl ( final Graphics2D g2d )
     {
-        double ms = TimeUtils.getPassedNanoTime () / 1000000f;
-        String micro = "" + StyleConstants.DEBUG_FORMAT.format ( ms );
-        Rectangle cb = g2d.getClip ().getBounds ();
-        Font font = g2d.getFont ();
+        final double ms = TimeUtils.getPassedNanoTime () / 1000000f;
+        final String micro = "" + StyleConstants.DEBUG_FORMAT.format ( ms );
+        final Rectangle cb = g2d.getClip ().getBounds ();
+        final Font font = g2d.getFont ();
 
         g2d.setFont ( StyleConstants.DEBUG_FONT );
-        Object aa = LafUtils.setupAntialias ( g2d );
+        final Object aa = LafUtils.setupAntialias ( g2d );
 
-        FontMetrics fm = g2d.getFontMetrics ();
-        int w = fm.stringWidth ( micro ) + 4;
-        int h = fm.getHeight ();
+        final FontMetrics fm = g2d.getFontMetrics ();
+        final int w = fm.stringWidth ( micro ) + 4;
+        final int h = fm.getHeight ();
 
         g2d.setPaint ( Color.BLACK );
         g2d.fillRect ( cb.x + cb.width - w, cb.y, w, h );
@@ -107,7 +107,7 @@ public final class DebugUtils
      * @param g graphics
      * @param c component
      */
-    public static void paintBorderDebugInfo ( Graphics g, JComponent c )
+    public static void paintBorderDebugInfo ( final Graphics g, final JComponent c )
     {
         paintBorderDebugInfo ( g, c, Color.RED );
     }
@@ -120,9 +120,9 @@ public final class DebugUtils
      * @param c     component
      * @param color debug shape color
      */
-    public static void paintBorderDebugInfo ( Graphics g, JComponent c, Color color )
+    public static void paintBorderDebugInfo ( final Graphics g, final JComponent c, final Color color )
     {
-        Insets margin = c.getInsets ();
+        final Insets margin = c.getInsets ();
         g.setColor ( color );
         g.drawRect ( 0, 0, c.getWidth () - 1, c.getHeight () - 1 );
         g.drawRect ( margin.left, margin.top, c.getWidth () - margin.left - margin.right - 1,
