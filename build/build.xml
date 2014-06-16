@@ -20,7 +20,7 @@
 
     <!-- Classpath -->
     <path id="core.classpath">
-    <fileset dir="${lib.dir}" includes="*.jar" />
+        <fileset dir="${lib.dir}" includes="*.jar" />
     </path>
     <path id="ui.classpath">
         <fileset dir="${lib.dir}" includes="*.jar" />
@@ -36,18 +36,18 @@
 
     <!-- Dist directory -->
     <target name="clean.dist.dir">
-    <delete dir="${dist.dir}" />
+        <delete dir="${dist.dir}" />
     </target>
     <target name="create.dist.dir">
-    <mkdir dir="${dist.dir}" />
+        <mkdir dir="${dist.dir}" />
     </target>
 
     <!-- Artifacts directory -->
     <target name="clean.artifacts.dir">
-    <delete dir="${artifacts.dir}" />
+        <delete dir="${artifacts.dir}" />
     </target>
     <target name="create.artifacts.dir">
-    <mkdir dir="${artifacts.dir}" />
+        <mkdir dir="${artifacts.dir}" />
     </target>
 
     <!-- Compile classes -->
@@ -314,7 +314,7 @@
             <classpath refid="demo.classpath" />
         </javadoc>
         <zip destfile="${javadoc.jar}">
-        <fileset dir="${javadoc.dir}" />
+            <fileset dir="${javadoc.dir}" />
         </zip>
     </target>
 
@@ -335,7 +335,7 @@
 
     <!-- Copy XML version file into artifacts folder -->
     <target name="copy.version.file">
-    <copy file="${xml.version.file}" todir="${artifacts.dir}" />
+        <copy file="${xml.version.file}" todir="${artifacts.dir}" />
     </target>
 
     <!-- =========================== Complex targets ============================ -->
@@ -415,7 +415,7 @@
     <!-- =========================== Run targets ============================ -->
 
     <target name="run.weblaf" depends="build.weblaf.complete.jar">
-    <java jar="${library.jar}" fork="true" />
+        <java jar="${library.complete.jar}" fork="true" />
     </target>
 
     <target name="run.weblaf.demo" depends="build.weblaf.demo.jar">

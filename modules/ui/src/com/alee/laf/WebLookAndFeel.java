@@ -168,6 +168,11 @@ public class WebLookAndFeel extends BasicLookAndFeel
     /**
      * Default scroll mode used by JViewportUI to handle scrolling repaints.
      * It is different in WebLaF by default due to issues in other scroll mode on some OS.
+     * <p/>
+     * Some information about scroll modes:
+     * BLIT_SCROLL_MODE - handles all cases pretty well, but has some issues on Win 8 earlier versions
+     * BACKINGSTORE_SCROLL_MODE - doesn't allow viewport transparency
+     * SIMPLE_SCROLL_MODE - pretty slow since it fully repaints scrolled area with each move
      */
     private static int scrollMode = JViewport.BLIT_SCROLL_MODE;
 
@@ -521,7 +526,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
      *
      * @param table UI defaults table
      */
-    @SuppressWarnings ( "UnnecessaryBoxing" )
+    @SuppressWarnings ("UnnecessaryBoxing")
     @Override
     protected void initComponentDefaults ( final UIDefaults table )
     {
