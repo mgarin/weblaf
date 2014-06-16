@@ -54,6 +54,7 @@ public class WebPopOver extends WebDialog implements Styleable
 {
     /**
      * todo 1. Fix directional WebPopOver location when dragged to/from secondary screen
+     * todo 2. Add "opened" listener event
      */
 
     /**
@@ -80,6 +81,11 @@ public class WebPopOver extends WebDialog implements Styleable
      * Preferred direction in which WebPopOver should be displayed.
      */
     protected PopOverDirection preferredDirection = null;
+
+    /**
+     * Current display direction.
+     */
+    protected PopOverDirection currentDirection = null;
 
     /**
      * Preferred WebPopOver alignment relative to display source point.
@@ -1020,6 +1026,9 @@ public class WebPopOver extends WebDialog implements Styleable
             final Rectangle ib = invoker.getBounds ();
             final Dimension size = getSize ();
 
+            // Updating current direction
+            currentDirection = null;
+
             // Updating WebPopOver location
             setLocation ( ib.x + ib.width / 2 - size.width / 2, ib.y + ib.height / 2 - size.height / 2 );
         }
@@ -1052,6 +1061,7 @@ public class WebPopOver extends WebDialog implements Styleable
         // Determining actual direction
         final PopOverDirection actualDirection = getActualDirection ( invokerBounds, ltr, cw, ps, screenBounds );
         setCornerSide ( actualDirection.getCornerSide ( ltr ) );
+        currentDirection = actualDirection;
 
         // Determining position according to alignment
         final Point actualLocation = getActualLocation ( invokerBounds, ltr, round, cw, ps, screenBounds, actualDirection );
@@ -1409,16 +1419,69 @@ public class WebPopOver extends WebDialog implements Styleable
         return null;
     }
 
+    /**
+     * Returns preferred direction in which WebPopOver should be displayed.
+     *
+     * @return preferred direction in which WebPopOver should be displayed
+     */
+    public PopOverDirection getPreferredDirection ()
+    {
+        return preferredDirection;
+    }
+
+    /**
+     * Sets preferred direction in which WebPopOver should be displayed.
+     *
+     * @param direction preferred direction in which WebPopOver should be displayed
+     */
+    public void setPreferredDirection ( final PopOverDirection direction )
+    {
+        this.preferredDirection = direction;
+    }
+
+    /**
+     * Returns current display direction.
+     *
+     * @return current display direction
+     */
+    public PopOverDirection getCurrentDirection ()
+    {
+        return currentDirection;
+    }
+
+    /**
+     * Sets current display direction.
+     *
+     * @param direction current display direction
+     */
+    public void setCurrentDirection ( final PopOverDirection direction )
+    {
+        this.currentDirection = direction;
+    }
+
+    /**
+     * Adds pop-over listener.
+     *
+     * @param listener pop-over listener
+     */
     public void addPopOverListener ( final PopOverListener listener )
     {
         popOverListeners.add ( listener );
     }
 
+    /**
+     * Removes pop-over listener.
+     *
+     * @param listener pop-over listener
+     */
     public void removePopOverListener ( final PopOverListener listener )
     {
         popOverListeners.remove ( listener );
     }
 
+    /**
+     * Informs that this pop-over was detached from invoker component.
+     */
     public void firePopOverDetached ()
     {
         for ( final PopOverListener listener : CollectionUtils.copy ( popOverListeners ) )
@@ -1427,6 +1490,9 @@ public class WebPopOver extends WebDialog implements Styleable
         }
     }
 
+    /**
+     * Informs that this pop-over was closed.
+     */
     public void firePopOverClosed ()
     {
         for ( final PopOverListener listener : CollectionUtils.copy ( popOverListeners ) )

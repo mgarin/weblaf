@@ -409,7 +409,7 @@
     <!-- =========================== Run targets ============================ -->
 
     <target name="run.weblaf" depends="build.weblaf.complete.jar">
-        <java jar="${library.jar}" fork="true" />
+        <java jar="${library.complete.jar}" fork="true" />
     </target>
 
     <target name="run.weblaf.demo" depends="build.weblaf.demo.jar">
