@@ -115,7 +115,7 @@ public class WebTreeUI extends BasicTreeUI
      * @param c component that will use UI instance
      * @return instance of the WebTreeUI
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebTreeUI ();
@@ -1375,12 +1375,15 @@ public class WebTreeUI extends BasicTreeUI
             final Stroke os = GraphicsUtils.setupStroke ( g2d, selectorStroke );
 
             final Rectangle sb = GeometryUtils.getContainingRect ( selectionStart, selectionEnd );
+            final Rectangle fsb = sb.intersection ( SwingUtils.size ( tree ) );
+            fsb.width -= 1;
+            fsb.height -= 1;
 
             g2d.setPaint ( selectorColor );
-            g2d.fill ( getSelectionShape ( sb, true ) );
+            g2d.fill ( getSelectionShape ( fsb, true ) );
 
             g2d.setPaint ( selectorBorderColor );
-            g2d.draw ( getSelectionShape ( sb, false ) );
+            g2d.draw ( getSelectionShape ( fsb, false ) );
 
             GraphicsUtils.restoreStroke ( g2d, os );
             GraphicsUtils.restoreAntialias ( g2d, aa );
