@@ -332,4 +332,26 @@ public final class GeometryUtils
         }
         return middle;
     }
+
+    /**
+     * Returns angle converted into radians.
+     *
+     * @param angle angle to convert
+     * @return angle converted into radians
+     */
+    public static double toRadians ( final double angle )
+    {
+        return angle * Math.PI / 180;
+    }
+
+    /**
+     * Returns angle converted into degrees.
+     *
+     * @param angle angle to convert
+     * @return angle converted into degrees
+     */
+    public static double toDegrees ( final double angle )
+    {
+        return angle * 180 / Math.PI;
+    }
 }

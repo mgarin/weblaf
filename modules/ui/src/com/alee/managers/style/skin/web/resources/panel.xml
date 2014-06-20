@@ -12,6 +12,11 @@
             <webColoredBackground>true</webColoredBackground>
         </painter>
     </style>
+    <style type="panel" id="transparent" extends="default">
+        <component>
+            <opaque>false</opaque>
+        </component>
+    </style>
 
     <!-- WebPopOver container styling -->
     <style type="panel" id="pop-over" extends="default">

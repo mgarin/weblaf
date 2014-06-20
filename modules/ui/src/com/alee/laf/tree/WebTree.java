@@ -25,6 +25,8 @@ import com.alee.utils.swing.FontMethods;
 
 import javax.swing.*;
 import javax.swing.event.CellEditorListener;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.*;
 import java.awt.*;
 import java.util.ArrayList;
@@ -68,6 +70,12 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
      * These listeners act separately from the cell editor and will be moved to new tree cell editor automatically on set.
      */
     protected List<CellEditorListener> cellEditorListeners = new ArrayList<CellEditorListener> ( 1 );
+
+    /**
+     * Listener that forces tree to scroll view to selection.
+     * It is disabled by default and null in that case.
+     */
+    protected TreeSelectionListener scrollToSelectionListener = null;
 
     /**
      * Constructs tree with default sample model.
@@ -488,6 +496,105 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
     }
 
     /**
+     * Returns first visible leaf node from the top of the tree.
+     * This doesn't include nodes under collapsed paths but does include nodes which are not in visible rect.
+     *
+     * @return first visible leaf node from the top of the tree
+     */
+    public E getFirstVisibleLeafNode ()
+    {
+        for ( int i = 0; i < getRowCount (); i++ )
+        {
+            final E node = getNodeForRow ( i );
+            if ( getModel ().isLeaf ( node ) )
+            {
+                return node;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Selects first visible leaf node from the top of the tree.
+     */
+    public void selectFirstVisibleLeafNode ()
+    {
+        final E node = getFirstVisibleLeafNode ();
+        if ( node != null )
+        {
+            setSelectedNode ( node );
+        }
+    }
+
+    /**
+     * Selects row next to currently selected.
+     * First row will be selected if none or last row was selected.
+     */
+    public void selectNextRow ()
+    {
+        selectNextRow ( true );
+    }
+
+    /**
+     * Selects row next to currently selected.
+     * First row will be selected if none was selected.
+     * First row will be selected if last row was selected and cycling is allowed.
+     */
+    public void selectNextRow ( final boolean cycle )
+    {
+        final int row = getLeadSelectionRow ();
+        if ( row != -1 )
+        {
+            if ( row < getRowCount () - 1 )
+            {
+                setSelectionRow ( row + 1 );
+            }
+            else if ( cycle )
+            {
+                setSelectionRow ( 0 );
+            }
+        }
+        else
+        {
+            setSelectionRow ( 0 );
+        }
+    }
+
+    /**
+     * Selects row next to currently selected.
+     * Last row will be selected if none or first row was selected.
+     */
+    public void selectPreviousRow ()
+    {
+        selectPreviousRow ( true );
+    }
+
+    /**
+     * Selects row previous to currently selected.
+     * Last row will be selected if none or last was selected.
+     * Last row will be selected if first row was selected and cycling is allowed.
+     */
+    public void selectPreviousRow ( final boolean cycle )
+    {
+        final int row = getLeadSelectionRow ();
+        if ( row != -1 )
+        {
+            if ( row > 0 )
+            {
+                setSelectionRow ( row - 1 );
+            }
+            else if ( cycle )
+            {
+                setSelectionRow ( getRowCount () - 1 );
+            }
+        }
+        else
+        {
+            setSelectionRow ( getRowCount () - 1 );
+        }
+    }
+
+    /**
      * Returns tree root node.
      *
      * @return tree root node
@@ -543,6 +650,48 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
     public void setMultiplySelectionAllowed ( final boolean allowed )
     {
         setSelectionMode ( allowed ? DISCONTIGUOUS_TREE_SELECTION : SINGLE_TREE_SELECTION );
+    }
+
+    /**
+     * Returns whether tree automatically scrolls to selection or not.
+     *
+     * @return true if tree automatically scrolls to selection, false otherwise
+     */
+    public boolean isScrollToSelection ()
+    {
+        return scrollToSelectionListener != null;
+    }
+
+    /**
+     * Sets whether tree should automatically scroll to selection or not.
+     *
+     * @param scroll whether tree should automatically scroll to selection or not
+     */
+    public void setScrollToSelection ( final boolean scroll )
+    {
+        if ( scroll )
+        {
+            if ( !isScrollToSelection () )
+            {
+                scrollToSelectionListener = new TreeSelectionListener ()
+                {
+                    @Override
+                    public void valueChanged ( final TreeSelectionEvent e )
+                    {
+                        scrollToSelection ();
+                    }
+                };
+                addTreeSelectionListener ( scrollToSelectionListener );
+            }
+        }
+        else
+        {
+            if ( isScrollToSelection () )
+            {
+                removeTreeSelectionListener ( scrollToSelectionListener );
+                scrollToSelectionListener = null;
+            }
+        }
     }
 
     /**
