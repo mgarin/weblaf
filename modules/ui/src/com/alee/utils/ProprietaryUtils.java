@@ -33,6 +33,21 @@ import java.lang.reflect.InvocationTargetException;
 public final class ProprietaryUtils
 {
     /**
+     * Key used to indicate a light weight popup should be used.
+     */
+    public static final int LIGHT_WEIGHT_POPUP = 0;
+
+    /**
+     * Key used to indicate a medium weight Popup should be used.
+     */
+    public static final int MEDIUM_WEIGHT_POPUP = 1;
+
+    /*
+     * Key used to indicate a heavy weight Popup should be used.
+     */
+    public static final int HEAVY_WEIGHT_POPUP = 2;
+
+    /**
      * Allow per-pixel transparent windows usage on Linux systems.
      * This might be an unstable feature so it is disabled by default.
      */
@@ -295,5 +310,22 @@ public final class ProprietaryUtils
             }
         }
         return 1f;
+    }
+
+    /**
+     * Returns heavyweight popup instance.
+     * By default Swing popups are MEDIUM_WEIGHT_POPUP and there is no convenient way to create popups of other types.
+     * Though this can be done by calling similar method on the PopupFactory instance which simply takes the popup type.
+     * This method is safe to use and should work on any JDK version.
+     *
+     * @param invoker invoker component
+     * @param content popup content
+     * @param x       popup initial location X coordinate
+     * @param y       popup initial location Y coordinate
+     * @return heavyweight popup instance
+     */
+    public static Popup createHeavyweightPopup ( final Component invoker, final Component content, final int x, final int y )
+    {
+        return ReflectUtils.callMethodSafely ( PopupFactory.getSharedInstance (), "getPopup", invoker, content, x, y, HEAVY_WEIGHT_POPUP );
     }
 }

@@ -21,8 +21,11 @@ import com.alee.extended.image.WebImage;
 import com.alee.global.StyleConstants;
 import com.alee.laf.panel.WebPanel;
 import com.alee.laf.rootpane.WebWindow;
+import com.alee.managers.focus.FocusManager;
+import com.alee.managers.focus.GlobalFocusListener;
 import com.alee.utils.GeometryUtils;
 import com.alee.utils.GraphicsUtils;
+import com.alee.utils.ProprietaryUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.WebTimer;
 import com.alee.utils.swing.WindowFollowAdapter;
@@ -107,7 +110,13 @@ public class WebDynamicMenu extends WebPanel
      * Window in which menu is currently displayed.
      * It is null in case menu is currently hidden.
      */
-    protected WebWindow window;
+    protected Window window;
+
+    /**
+     * Popup in which menu is currently displayed.
+     * It is null in case menu is currently hidden.
+     */
+    protected Popup popup;
 
     /**
      * Invoker component window.
@@ -138,7 +147,12 @@ public class WebDynamicMenu extends WebPanel
     /**
      * Custom global mouse listener that closes menu.
      */
-    protected AWTEventListener closeListener;
+    protected AWTEventListener mouseListener;
+
+    /**
+     * Custom global focus listener that closes menu.
+     */
+    protected GlobalFocusListener focusListener;
 
     /**
      * Listeners synchronization object.
@@ -358,8 +372,7 @@ public class WebDynamicMenu extends WebPanel
             }
 
             // Creating menu and displaying it
-            createMenuWindow ( invoker, location );
-            window.setVisible ( true );
+            displayMenuWindow ( invoker, location );
 
             // Displaying menu softly
             animator = WebTimer.repeat ( StyleConstants.fastAnimationDelay, 0L, new ActionListener ()
@@ -373,7 +386,8 @@ public class WebDynamicMenu extends WebPanel
                         {
                             currentProgress = Math.min ( currentProgress + stepProgress, 1f );
                             revalidate ();
-                            window.setWindowOpacity ( currentProgress );
+                            ProprietaryUtils.setWindowOpacity ( window, currentProgress );
+                            // window.setWindowOpacity ( currentProgress );
                         }
                         else
                         {
@@ -386,6 +400,68 @@ public class WebDynamicMenu extends WebPanel
                 }
             } );
         }
+    }
+
+    /**
+     * Creates new menu window.
+     *
+     * @param invoker  menu invoker
+     * @param location menu location
+     */
+    protected void displayMenuWindow ( final Component invoker, final Point location )
+    {
+        invokerWindow = SwingUtils.getWindowAncestor ( invoker );
+
+        // Creating popup
+        final Dimension size = getPreferredSize ();
+        final Rectangle bos = SwingUtils.getBoundsOnScreen ( invoker );
+        final int x = bos.x + location.x - size.width / 2;
+        final int y = bos.y + location.y - size.height / 2;
+        popup = ProprietaryUtils.createHeavyweightPopup ( invoker, this, x, y );
+        window = SwingUtils.getWindowAncestor ( this );
+
+        // Modifying opacity if needed
+        ProprietaryUtils.setWindowOpaque ( window, false );
+        ProprietaryUtils.setWindowOpacity ( window, currentProgress );
+
+        // Adding follow behavior if needed
+        followAdapter = WindowFollowAdapter.install ( window, invokerWindow );
+
+        // Displaying popup
+        popup.show ();
+
+        // Creating menu hide mouse event listener (when mouse pressed outside of the menu)
+        mouseListener = new AWTEventListener ()
+        {
+            @Override
+            public void eventDispatched ( final AWTEvent event )
+            {
+                final MouseEvent e = ( MouseEvent ) event;
+                if ( e.getID () == MouseEvent.MOUSE_PRESSED )
+                {
+                    final Component component = e.getComponent ();
+                    if ( !isAncestorOf ( component ) )
+                    {
+                        hideMenu ();
+                    }
+                }
+            }
+        };
+        Toolkit.getDefaultToolkit ().addAWTEventListener ( mouseListener, AWTEvent.MOUSE_EVENT_MASK );
+
+        // Creating menu hide focus event listener (when focus leaves application)
+        focusListener = new GlobalFocusListener ()
+        {
+            @Override
+            public void focusChanged ( final Component oldFocus, final Component newFocus )
+            {
+                if ( newFocus == null )
+                {
+                    hideMenu ();
+                }
+            }
+        };
+        FocusManager.registerGlobalFocusListener ( focusListener );
     }
 
     /**
@@ -435,11 +511,11 @@ public class WebDynamicMenu extends WebPanel
                         {
                             currentProgress = Math.max ( currentProgress - stepProgress, 0f );
                             revalidate ();
-                            window.setWindowOpacity ( currentProgress );
+                            ProprietaryUtils.setWindowOpacity ( window, currentProgress );
                         }
                         else
                         {
-                            cleanupMenuWindow ();
+                            destroyMenuWindow ();
                             animator.stop ();
                             animator = null;
                             hiding = false;
@@ -450,6 +526,27 @@ public class WebDynamicMenu extends WebPanel
                 }
             } );
         }
+    }
+
+    /**
+     * Disposes old menu window.
+     */
+    protected void destroyMenuWindow ()
+    {
+        // Removing menu hide event listeners
+        Toolkit.getDefaultToolkit ().removeAWTEventListener ( mouseListener );
+        mouseListener = null;
+        FocusManager.unregisterGlobalFocusListener ( focusListener );
+        focusListener = null;
+
+        // Removing follow adapter
+        WindowFollowAdapter.uninstall ( invokerWindow, followAdapter );
+        invokerWindow = null;
+        followAdapter = null;
+
+        // Disposing of menu window
+        popup.hide ();
+        window = null;
     }
 
     /**
@@ -555,72 +652,6 @@ public class WebDynamicMenu extends WebPanel
     public DynamicMenuLayout getActualLayout ()
     {
         return ( DynamicMenuLayout ) getLayout ();
-    }
-
-    /**
-     * Creates new menu window.
-     *
-     * @param invoker  menu invoker
-     * @param location menu location
-     */
-    protected void createMenuWindow ( final Component invoker, final Point location )
-    {
-        // Creating window with menu as content
-        window = new WebWindow ( invoker );
-        window.setContentPane ( this );
-
-        // Making window non-opaque and transparent
-        window.setWindowOpaque ( false );
-        window.setWindowOpacity ( currentProgress );
-
-        // Packing to preferred size
-        window.pack ();
-
-        // Applying proper position
-        final Rectangle bos = SwingUtils.getBoundsOnScreen ( invoker );
-        window.setLocation ( bos.x + location.x - getWidth () / 2, bos.y + location.y - getHeight () / 2 );
-
-        // Window following behavior
-        invokerWindow = SwingUtils.getWindowAncestor ( invoker );
-        followAdapter = WindowFollowAdapter.install ( window, invokerWindow );
-
-        // Creating menu hide event listener
-        closeListener = new AWTEventListener ()
-        {
-            @Override
-            public void eventDispatched ( final AWTEvent event )
-            {
-                final MouseEvent e = ( MouseEvent ) event;
-                if ( e.getID () == MouseEvent.MOUSE_PRESSED )
-                {
-                    final Component component = e.getComponent ();
-                    if ( SwingUtils.getWindowAncestor ( component ) != window )
-                    {
-                        hideMenu ();
-                    }
-                }
-            }
-        };
-        Toolkit.getDefaultToolkit ().addAWTEventListener ( closeListener, AWTEvent.MOUSE_EVENT_MASK );
-    }
-
-    /**
-     * Disposes old menu window.
-     */
-    protected void cleanupMenuWindow ()
-    {
-        // Removing menu hide event listener
-        Toolkit.getDefaultToolkit ().removeAWTEventListener ( closeListener );
-        closeListener = null;
-
-        // Removing follow adapter
-        WindowFollowAdapter.uninstall ( invokerWindow, followAdapter );
-        invokerWindow = null;
-        followAdapter = null;
-
-        // Disposing of menu window
-        window.dispose ();
-        window = null;
     }
 
     /**
