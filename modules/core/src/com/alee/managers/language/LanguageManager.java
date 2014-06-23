@@ -873,6 +873,16 @@ public final class LanguageManager implements LanguageConstants
      * Language methods
      */
 
+    public static String getDefaultLanguage ()
+    {
+        return DEFAULT;
+    }
+
+    public static void setDefaultLanguage ( final String lang )
+    {
+        LanguageManager.DEFAULT = lang;
+    }
+
     public static String getLanguage ()
     {
         return language;
