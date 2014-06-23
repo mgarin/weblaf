@@ -20,35 +20,52 @@ package com.alee.managers.language;
 import com.alee.managers.language.data.Dictionary;
 
 /**
- * User: mgarin Date: 03.08.12 Time: 17:13
+ * Custom LanguageListener adapter.
+ *
+ * @author Mikle Garin
  */
 
 public abstract class LanguageAdapter implements LanguageListener
 {
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public void languageChanged ( String oldLang, String newLang )
+    public void languageChanged ( final String oldLang, final String newLang )
     {
         languageUpdated ();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public void dictionaryAdded ( Dictionary dictionary )
+    public void dictionaryAdded ( final Dictionary dictionary )
     {
         languageUpdated ();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public void dictionaryRemoved ( Dictionary dictionary )
+    public void dictionaryRemoved ( final Dictionary dictionary )
     {
         languageUpdated ();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void dictionariesCleared ()
     {
         languageUpdated ();
     }
 
+    /**
+     * Informs that language was updated in some way.
+     */
     public void languageUpdated ()
     {
         //

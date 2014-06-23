@@ -78,8 +78,11 @@ public final class LanguageManager implements LanguageConstants
      * Default WebLaF language.
      * You can set different value here before initializing WebLaF to decrease amount of UI updates.
      * If possible default language is taken from system properties.
+     *
+     * @see #setDefaultLanguage(String)
+     * @see #getDefaultLanguage()
      */
-    public static String DEFAULT = getDefaultLanguageKey ();
+    private static String DEFAULT = getDefaultLanguageKey ();
 
     /**
      * Currently used language.
@@ -142,7 +145,7 @@ public final class LanguageManager implements LanguageConstants
 
     /**
      * Global dictionary merged from all added dictionaries.
-     * Used to store current dictionaries merge result.
+     * Used to store current dictionaries merge result and as a result improve translations retrieval speed.
      */
     private static Dictionary globalDictionary;
 
@@ -271,7 +274,8 @@ public final class LanguageManager implements LanguageConstants
     private static final Map<String, ImageIcon> languageIcons = new HashMap<String, ImageIcon> ();
 
     /**
-     * Currrent tooltip support class.
+     * Currrent tooltip support.
+     * This is a custom support object that provides tooltips according to language files.
      */
     private static TooltipLanguageSupport tooltipLanguageSupport;
 
@@ -356,7 +360,7 @@ public final class LanguageManager implements LanguageConstants
                     }
 
                     // Updating registered components
-                    updateAllComponents ();
+                    updateComponentsLanguage ();
                 }
 
                 private void updateSmart ( final Dictionary dictionary )
@@ -374,7 +378,7 @@ public final class LanguageManager implements LanguageConstants
                     }
 
                     // Updating relevant components
-                    updateAllComponents ( relevantKeys );
+                    updateComponentsLanguage ( relevantKeys );
                 }
 
                 private List<String> gatherKeys ( final Dictionary dictionary )
@@ -417,9 +421,11 @@ public final class LanguageManager implements LanguageConstants
     }
 
     /**
-     * Supported languages
+     * Returns list of currently supported languages.
+     * By default it contains list of languages supported by WebLaF, but it can be modified.
+     *
+     * @return list of currently supported languages
      */
-
     public static List<String> getSupportedLanguages ()
     {
         synchronized ( supportedLanguagesLock )
@@ -428,6 +434,11 @@ public final class LanguageManager implements LanguageConstants
         }
     }
 
+    /**
+     * Sets supported languages.
+     *
+     * @param supportedLanguages collection of supported languages
+     */
     public static void setSupportedLanguages ( final Collection<String> supportedLanguages )
     {
         synchronized ( supportedLanguagesLock )
@@ -437,6 +448,11 @@ public final class LanguageManager implements LanguageConstants
         }
     }
 
+    /**
+     * Sets supported languages.
+     *
+     * @param supportedLanguages supported languages
+     */
     public static void setSupportedLanguages ( final String... supportedLanguages )
     {
         synchronized ( supportedLanguagesLock )
@@ -446,6 +462,11 @@ public final class LanguageManager implements LanguageConstants
         }
     }
 
+    /**
+     * Adds supported language.
+     *
+     * @param language new supported language
+     */
     public static void addSupportedLanguage ( final String language )
     {
         synchronized ( supportedLanguagesLock )
@@ -454,15 +475,26 @@ public final class LanguageManager implements LanguageConstants
         }
     }
 
+    /**
+     * Adds supported language and new dictionary.
+     *
+     * @param language   new supported language
+     * @param dictionary new dictionary
+     */
     public static void addSupportedLanguage ( final String language, final Dictionary dictionary )
     {
         synchronized ( supportedLanguagesLock )
         {
-            addDictionary ( dictionary );
             supportedLanguages.add ( language );
+            addDictionary ( dictionary );
         }
     }
 
+    /**
+     * Removes supported language.
+     *
+     * @param language supported language to remove
+     */
     public static void removeSupportedLanguage ( final String language )
     {
         synchronized ( supportedLanguagesLock )
@@ -471,6 +503,9 @@ public final class LanguageManager implements LanguageConstants
         }
     }
 
+    /**
+     * Clears list of supported languages.
+     */
     public static void clearSupportedLanguages ()
     {
         synchronized ( supportedLanguagesLock )
@@ -480,9 +515,14 @@ public final class LanguageManager implements LanguageConstants
     }
 
     /**
-     * Components registration
+     * Registers component for language updates.
+     * This component language will be automatically updated using existing LanguageUpdater.
+     *
+     * @param component component to register
+     * @param key       component language key
+     * @param data      component language data
+     * @see com.alee.managers.language.updaters.LanguageUpdater
      */
-
     public static void registerComponent ( final Component component, final String key, Object... data )
     {
         // Nullifying data if it has no values
@@ -520,6 +560,11 @@ public final class LanguageManager implements LanguageConstants
         }
     }
 
+    /**
+     * Updates components tree language keys according to their container keys.
+     *
+     * @param component component to update
+     */
     public static void updateComponentsTree ( final Component component )
     {
         updateComponentKey ( component );
@@ -532,6 +577,11 @@ public final class LanguageManager implements LanguageConstants
         }
     }
 
+    /**
+     * Updates component language key according to its container keys.
+     *
+     * @param component component to update
+     */
     private static void updateComponentKey ( final Component component )
     {
         final String key = getComponentKey ( component );
@@ -546,6 +596,11 @@ public final class LanguageManager implements LanguageConstants
         }
     }
 
+    /**
+     * Unregisters component from language updates.
+     *
+     * @param component component to unregister
+     */
     public static void unregisterComponent ( final Component component )
     {
         synchronized ( componentsLock )
@@ -562,6 +617,12 @@ public final class LanguageManager implements LanguageConstants
         }
     }
 
+    /**
+     * Returns whether component is registered for language updates or not.
+     *
+     * @param component component to check
+     * @return true if component is registered for language updates, false otherwise
+     */
     public static boolean isRegisteredComponent ( final Component component )
     {
         synchronized ( componentsLock )
@@ -570,6 +631,14 @@ public final class LanguageManager implements LanguageConstants
         }
     }
 
+    /**
+     * Returns component language key.
+     * Note that this is the key which was used to register the component.
+     * Its actual language key might be different in case there is a language container under this component.
+     *
+     * @param component component to retrieve language key for
+     * @return component language key
+     */
     public static String getComponentKey ( final Component component )
     {
         synchronized ( componentsLock )
@@ -579,9 +648,12 @@ public final class LanguageManager implements LanguageConstants
     }
 
     /**
-     * Components language updaters registration
+     * Register custom LanguageUpdater.
+     * Each LanguageUpdater is tied to a certain component class and can perform language updates only for that component type.
+     *
+     * @param updater new LanguageUpdater
+     * @see com.alee.managers.language.updaters.LanguageUpdater
      */
-
     public static void registerLanguageUpdater ( final LanguageUpdater updater )
     {
         synchronized ( updatersLock )
@@ -602,6 +674,11 @@ public final class LanguageManager implements LanguageConstants
         }
     }
 
+    /**
+     * Unregister custom LanguageUpdater.
+     *
+     * @param updater LanguageUpdater to unregister
+     */
     public static void unregisterLanguageUpdater ( final LanguageUpdater updater )
     {
         synchronized ( updatersLock )
@@ -612,6 +689,12 @@ public final class LanguageManager implements LanguageConstants
         }
     }
 
+    /**
+     * Registers custom LanguageUpdater for specific component.
+     *
+     * @param component component to register LanguageUpdater for
+     * @param updater   custom LanguageUpdater
+     */
     public static void registerLanguageUpdater ( final Component component, final LanguageUpdater updater )
     {
         synchronized ( updatersLock )
@@ -620,6 +703,11 @@ public final class LanguageManager implements LanguageConstants
         }
     }
 
+    /**
+     * Unregisters component's custom LanguageUpdater.
+     *
+     * @param component component to unregister custom LanguageUpdater from
+     */
     public static void unregisterLanguageUpdater ( final Component component )
     {
         synchronized ( updatersLock )
@@ -628,6 +716,14 @@ public final class LanguageManager implements LanguageConstants
         }
     }
 
+    /**
+     * Returns LanguageUpdater currently used for the specified component.
+     * This method might return either a custom per-component LanguageUpdater or global LanguageUpdater.
+     * In case LanguageUpdater cannot be found for the specified component an exception will be thrown.
+     *
+     * @param component component to retrieve LanguageUpdater for
+     * @return LanguageUpdater currently used for the specified component
+     */
     public static LanguageUpdater getLanguageUpdater ( final Component component )
     {
         synchronized ( updatersLock )
@@ -672,6 +768,12 @@ public final class LanguageManager implements LanguageConstants
                     Collections.sort ( foundUpdaters, languageUpdaterComparator );
                     updater = foundUpdaters.get ( 0 );
                 }
+                else
+                {
+                    // Throw an exception in case no LanguageUpdater found
+                    // Usually this shouldn't happen unless you register an unsupported component
+                    throw new RuntimeException ( "Unable to find LanguageUpdater for component: " + component );
+                }
 
                 // Caching calculated updater
                 updatersCache.put ( component.getClass (), updater );
@@ -682,10 +784,9 @@ public final class LanguageManager implements LanguageConstants
     }
 
     /**
-     * Components language update methods
+     * Forces full language update for all registered components.
      */
-
-    public static void updateAllComponents ()
+    public static void updateComponentsLanguage ()
     {
         synchronized ( componentsLock )
         {
@@ -696,7 +797,12 @@ public final class LanguageManager implements LanguageConstants
         }
     }
 
-    public static void updateAllComponents ( final List<String> keys )
+    /**
+     * Forces language update for components with the specified keys.
+     *
+     * @param keys language keys of the components to update
+     */
+    public static void updateComponentsLanguage ( final List<String> keys )
     {
         synchronized ( componentsLock )
         {
@@ -710,6 +816,12 @@ public final class LanguageManager implements LanguageConstants
         }
     }
 
+    /**
+     * Forces component language update.
+     *
+     * @param component component to update
+     * @param data      component language data
+     */
     public static void updateComponent ( final Component component, final Object... data )
     {
         final String key = components.get ( component );
@@ -719,6 +831,13 @@ public final class LanguageManager implements LanguageConstants
         }
     }
 
+    /**
+     * Forces component language update.
+     *
+     * @param component component to update
+     * @param key       component language key
+     * @param data      component language data
+     */
     public static void updateComponent ( final Component component, final String key, Object... data )
     {
         // Nullifying data if it has no values
@@ -759,7 +878,13 @@ public final class LanguageManager implements LanguageConstants
         }
     }
 
-    private static Object[] parseData ( final Object... data )
+    /**
+     * Returns language data transformed into its final form.
+     *
+     * @param data language data to process
+     * @return language data transformed into its final form
+     */
+    public static Object[] parseData ( final Object... data )
     {
         if ( data != null )
         {
@@ -785,9 +910,12 @@ public final class LanguageManager implements LanguageConstants
     }
 
     /**
-     * Language icon
+     * Returns icon for the specified language.
+     * By default there are icons only for languages supported by WebLaF.
+     *
+     * @param language language to retrieve icon for
+     * @return icon for the specified language
      */
-
     public static ImageIcon getLanguageIcon ( final String language )
     {
         if ( languageIcons.containsKey ( language ) )
@@ -836,9 +964,11 @@ public final class LanguageManager implements LanguageConstants
     }
 
     /**
-     * Returns current tooltip language support class.
+     * Returns current tooltip language support.
      *
-     * @return current tooltip language support class
+     * @return current tooltip language support
+     * @see com.alee.managers.language.TooltipLanguageSupport
+     * @see com.alee.managers.language.SwingTooltipLanguageSupport
      */
     public static TooltipLanguageSupport getTooltipLanguageSupport ()
     {
@@ -846,9 +976,11 @@ public final class LanguageManager implements LanguageConstants
     }
 
     /**
-     * Sets tooltip language support class.
+     * Sets tooltip language support.
      *
-     * @param support new tooltip language support class
+     * @param support new tooltip language support
+     * @see com.alee.managers.language.TooltipLanguageSupport
+     * @see com.alee.managers.language.SwingTooltipLanguageSupport
      */
     public static void setTooltipLanguageSupport ( final TooltipLanguageSupport support )
     {
@@ -856,49 +988,84 @@ public final class LanguageManager implements LanguageConstants
     }
 
     /**
-     * Default tooltip type
+     * Returns default tooltip type.
+     * This tooltip type is used for all tooltips which doesn't have a specified type in language file.
+     *
+     * @return default tooltip type
+     * @see com.alee.managers.language.data.TooltipType
      */
-
     public static TooltipType getDefaultTooltipType ()
     {
         return defaultTooltipType;
     }
 
+    /**
+     * Sets default tooltip type.
+     * This tooltip type is used for all tooltips which doesn't have a specified type in language file.
+     *
+     * @param defaultTooltipType new default tooltip type
+     * @see com.alee.managers.language.data.TooltipType
+     */
     public static void setDefaultTooltipType ( final TooltipType defaultTooltipType )
     {
         LanguageManager.defaultTooltipType = defaultTooltipType;
     }
 
     /**
-     * Language methods
+     * Returns default language.
+     * This language is used when LanguageManager is initialized.
+     *
+     * @return default language
      */
-
     public static String getDefaultLanguage ()
     {
         return DEFAULT;
     }
 
+    /**
+     * Sets default language.
+     * This language is used when LanguageManager is initialized.
+     *
+     * @param lang new default language
+     */
     public static void setDefaultLanguage ( final String lang )
     {
         LanguageManager.DEFAULT = lang;
     }
 
+    /**
+     * Returns currently used language.
+     *
+     * @return currently used language
+     */
     public static String getLanguage ()
     {
         return language;
     }
 
+    /**
+     * Returns whether the specified language is currently used or not.
+     *
+     * @param language language to check
+     * @return true if the specified language is currently used, false otherwise
+     */
     public static boolean isCurrentLanguage ( final String language )
     {
         return LanguageManager.language.equals ( language );
     }
 
+    /**
+     * Sets currently used language.
+     * In case LanguageManager is not yet initialized this will simply set default language
+     *
+     * @param language new language
+     */
     public static void setLanguage ( final String language )
     {
         if ( initialized )
         {
             // Ignore incorrect and pointless changes
-            if ( language == null || getLanguage ().trim ().toLowerCase ().equals ( language.trim ().toLowerCase () ) )
+            if ( language == null || isCurrentLanguage ( language ) )
             {
                 return;
             }
@@ -923,6 +1090,9 @@ public final class LanguageManager implements LanguageConstants
         }
     }
 
+    /**
+     * Switches current language to next language in supported languages list.
+     */
     public static void switchLanguage ()
     {
         if ( supportedLanguages.size () > 0 )
@@ -932,6 +1102,9 @@ public final class LanguageManager implements LanguageConstants
         }
     }
 
+    /**
+     * Updates Locale according to currently used language.
+     */
     private static void updateLocale ()
     {
         // Proper locale for language
@@ -941,6 +1114,12 @@ public final class LanguageManager implements LanguageConstants
         // Locale.setDefault ( Locale.forLanguageTag ( language ) );
     }
 
+    /**
+     * Returns Locale for the specified language.
+     *
+     * @param language language to return Locale for
+     * @return Locale for the specified language
+     */
     public static Locale getLocale ( final String language )
     {
         Locale detected = null;
@@ -955,42 +1134,65 @@ public final class LanguageManager implements LanguageConstants
     }
 
     /**
-     * Global dictionary that aggregates all added dictionaries, records and values
+     * Returns global dictionary that aggregates all added dictionaries.
+     *
+     * @return global dictionary that aggregates all added dictionaries
      */
-
     public static Dictionary getGlobalDictionary ()
     {
         return globalDictionary;
     }
 
     /**
-     * Loaded dictionaries
+     * Returns all dictionaries added into LanguageManager.
+     *
+     * @return all dictionaries added into LanguageManager
      */
-
     public static List<Dictionary> getDictionaries ()
     {
         return CollectionUtils.copy ( dictionaries );
     }
 
     /**
-     * Loads dictionary from xml
+     * Returns dictionary loaded from the specified location near class.
+     *
+     * @param nearClass class near which dictionary XML is located
+     * @param resource  dictionary XML file
+     * @return dictionary loaded from the specified location near class
      */
-
     public static Dictionary loadDictionary ( final Class nearClass, final String resource )
     {
         return loadDictionary ( nearClass.getResource ( resource ) );
     }
 
+    /**
+     * Returns dictionary loaded from the specified URL.
+     *
+     * @param url URL to load dictionary from
+     * @return dictionary loaded from the specified URL
+     */
     public static Dictionary loadDictionary ( final URL url )
     {
         return XmlUtils.fromXML ( url );
     }
 
+    /**
+     * Returns dictionary loaded from the specified file path.
+     *
+     * @param path file path to load dictionary from
+     * @return dictionary loaded from the specified file path
+     */
     public static Dictionary loadDictionary ( final String path )
     {
         return loadDictionary ( new File ( path ) );
     }
 
+    /**
+     * Returns dictionary loaded from the specified file.
+     *
+     * @param file file to load dictionary from
+     * @return dictionary loaded from the specified file
+     */
     public static Dictionary loadDictionary ( final File file )
     {
         return XmlUtils.fromXML ( file );
@@ -1174,11 +1376,22 @@ public final class LanguageManager implements LanguageConstants
         return null;
     }
 
+    /**
+     * Merges specified dictionary with the global dictionary.
+     *
+     * @param dictionary dictionary to merge
+     */
     private static void mergeDictionary ( final Dictionary dictionary )
     {
         mergeDictionary ( dictionary.getPrefix (), dictionary );
     }
 
+    /**
+     * Merges specified dictionary with the global dictionary.
+     *
+     * @param prefix     dictionary prefix
+     * @param dictionary dictionary to merge
+     */
     private static void mergeDictionary ( String prefix, final Dictionary dictionary )
     {
         // Determining prefix
@@ -1253,15 +1466,24 @@ public final class LanguageManager implements LanguageConstants
     }
 
     /**
-     * Value request methods
+     * Returns translation for the specified language key.
+     *
+     * @param key language key to retrieve translation for
+     * @return translation for the specified language key
      */
-
     public static String get ( final String key )
     {
         final Value value = getValue ( key );
         return value != null ? value.getText () : key;
     }
 
+    /**
+     * Returns translation for the specified language key.
+     *
+     * @param key  language key to retrieve translation for
+     * @param data language data
+     * @return translation for the specified language key
+     */
     public static String get ( final String key, final Object... data )
     {
         final String text = get ( key );
@@ -1269,18 +1491,36 @@ public final class LanguageManager implements LanguageConstants
         return String.format ( text, actualData );
     }
 
+    /**
+     * Returns mnemonic for the specified language key.
+     *
+     * @param key language key to retrieve mnemonic for
+     * @return mnemonic for the specified language key
+     */
     public static Character getMnemonic ( final String key )
     {
         final Value value = getValue ( key );
         return value != null ? value.getMnemonic () : null;
     }
 
+    /**
+     * Returns value for the specified language key.
+     *
+     * @param key language key to retrieve value for
+     * @return value for the specified language key
+     */
     public static Value getValue ( final String key )
     {
         // Global cache might be null when LanguageManager is not initialized
         return globalCache != null ? globalCache.get ( key ) : null;
     }
 
+    /**
+     * Returns non-null value for the specified language key.
+     *
+     * @param key language key to retrieve value for
+     * @return non-null value for the specified language key
+     */
     public static Value getNotNullValue ( final String key )
     {
         // Not-null value returned in any case

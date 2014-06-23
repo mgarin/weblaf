@@ -21,7 +21,7 @@ import com.alee.managers.language.data.Value;
 
 /**
  * This is short-named reference class for some basic LanguageManager methods.
- * It is added to reduce the code size of language values requests.
+ * It is added to reduce the code size of language values requests in cases of direct translations use.
  *
  * @author Mikle Garin
  */

@@ -48,8 +48,9 @@ import java.util.Map;
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-SettingsManager">How to use SettingsManager</a>
  * @see ComponentSettingsManager
- * @see XmlUtils
+ * @see com.alee.utils.XmlUtils
  */
+
 public final class SettingsManager
 {
     /**

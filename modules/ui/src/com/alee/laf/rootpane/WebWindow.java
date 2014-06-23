@@ -53,7 +53,7 @@ public class WebWindow extends JWindow implements LanguageContainerMethods, Sett
     /**
      * Creates a window with no specified owner. This window will not be focusable.
      * <p/>
-     * This constructor sets the component's locale property to the value returned by <code>JComponent.getDefaultLocale</code>.
+     * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
      */
     public WebWindow ()
     {
@@ -62,12 +62,12 @@ public class WebWindow extends JWindow implements LanguageContainerMethods, Sett
     }
 
     /**
-     * Creates a window with the specified <code>GraphicsConfiguration</code> of a screen device. This window will not be focusable.
+     * Creates a window with the specified {@code GraphicsConfiguration} of a screen device. This window will not be focusable.
      * <p/>
-     * This constructor sets the component's locale property to the value returned by <code>JComponent.getDefaultLocale</code>.
+     * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
      *
-     * @param gc the <code>GraphicsConfiguration</code> that is used to construct the new window with; if gc is <code>null</code>,
-     *           the system default <code>GraphicsConfiguration</code> is assumed
+     * @param gc the {@code GraphicsConfiguration} that is used to construct the new window with; if gc is {@code null},
+     *           the system default {@code GraphicsConfiguration} is assumed
      */
     public WebWindow ( final GraphicsConfiguration gc )
     {
@@ -77,10 +77,10 @@ public class WebWindow extends JWindow implements LanguageContainerMethods, Sett
 
     /**
      * Creates a window with the specified owner frame.
-     * If <code>owner</code> is <code>null</code>, the shared owner will be used and this window will not be focusable.
+     * If {@code owner} is {@code null}, the shared owner will be used and this window will not be focusable.
      * Also, this window will not be focusable unless its owner is showing on the screen.
      * <p/>
-     * This constructor sets the component's locale property to the value returned by <code>JComponent.getDefaultLocale</code>.
+     * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
      *
      * @param owner the frame from which the window is displayed
      */
@@ -93,9 +93,9 @@ public class WebWindow extends JWindow implements LanguageContainerMethods, Sett
     /**
      * Creates a window with the owner window from the specified component.
      * This window will not be focusable unless its owner is showing on the screen.
-     * If <code>owner</code> is <code>null</code>, the shared owner will be used and this window will not be focusable.
+     * If {@code owner} is {@code null}, the shared owner will be used and this window will not be focusable.
      * <p/>
-     * This constructor sets the component's locale property to the value returned by <code>JComponent.getDefaultLocale</code>.
+     * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
      *
      * @param owner the componnt from which parent window this window is displayed
      */
@@ -107,9 +107,9 @@ public class WebWindow extends JWindow implements LanguageContainerMethods, Sett
 
     /**
      * Creates a window with the specified owner window. This window will not be focusable unless its owner is showing on the screen.
-     * If <code>owner</code> is <code>null</code>, the shared owner will be used and this window will not be focusable.
+     * If {@code owner} is {@code null}, the shared owner will be used and this window will not be focusable.
      * <p/>
-     * This constructor sets the component's locale property to the value returned by <code>JComponent.getDefaultLocale</code>.
+     * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
      *
      * @param owner the window from which the window is displayed
      */
@@ -120,15 +120,15 @@ public class WebWindow extends JWindow implements LanguageContainerMethods, Sett
     }
 
     /**
-     * Creates a window with the specified owner window and <code>GraphicsConfiguration</code> of a screen device.
-     * If <code>owner</code> is <code>null</code>, the shared owner will be used and this window will not be focusable.
+     * Creates a window with the specified owner window and {@code GraphicsConfiguration} of a screen device.
+     * If {@code owner} is {@code null}, the shared owner will be used and this window will not be focusable.
      * <p/>
-     * This constructor sets the component's locale property to the value returned by <code>JComponent.getDefaultLocale</code>.
+     * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
      *
      * @param owner the window from which the window is displayed
-     * @param gc    the <code>GraphicsConfiguration</code> that is used to construct the new window with; if gc is <code>null</code>,
-     *              the system default <code>GraphicsConfiguration</code> is assumed, unless <code>owner</code> is also null, in which
-     *              case the <code>GraphicsConfiguration</code> from the shared owner frame will be used
+     * @param gc    the {@code GraphicsConfiguration} that is used to construct the new window with; if gc is {@code null},
+     *              the system default {@code GraphicsConfiguration} is assumed, unless {@code owner} is also null, in which
+     *              case the {@code GraphicsConfiguration} from the shared owner frame will be used
      */
     public WebWindow ( final Window owner, final GraphicsConfiguration gc )
     {
