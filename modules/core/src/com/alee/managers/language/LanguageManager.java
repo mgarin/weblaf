@@ -360,7 +360,7 @@ public final class LanguageManager implements LanguageConstants
                     }
 
                     // Updating registered components
-                    updateComponentsLanguage ();
+                    updateComponents ();
                 }
 
                 private void updateSmart ( final Dictionary dictionary )
@@ -378,7 +378,7 @@ public final class LanguageManager implements LanguageConstants
                     }
 
                     // Updating relevant components
-                    updateComponentsLanguage ( relevantKeys );
+                    updateComponents ( relevantKeys );
                 }
 
                 private List<String> gatherKeys ( final Dictionary dictionary )
@@ -786,7 +786,7 @@ public final class LanguageManager implements LanguageConstants
     /**
      * Forces full language update for all registered components.
      */
-    public static void updateComponentsLanguage ()
+    public static void updateComponents ()
     {
         synchronized ( componentsLock )
         {
@@ -802,7 +802,7 @@ public final class LanguageManager implements LanguageConstants
      *
      * @param keys language keys of the components to update
      */
-    public static void updateComponentsLanguage ( final List<String> keys )
+    public static void updateComponents ( final List<String> keys )
     {
         synchronized ( componentsLock )
         {
@@ -1549,49 +1549,99 @@ public final class LanguageManager implements LanguageConstants
     }
 
     /**
-     * Component value request methods
+     * Returns component translation.
+     *
+     * @param component component to retrieve translation for
+     * @param key       component language key
+     * @return component translation
      */
-
     public static String get ( final Component component, final String key )
     {
         return get ( combineWithContainerKeys ( component, key ) );
     }
 
+    /**
+     * Returns component mnemonic.
+     *
+     * @param component component to retrieve mnemonic for
+     * @param key       component language key
+     * @return component mnemonic
+     */
     public static Character getMnemonic ( final Component component, final String key )
     {
         return getMnemonic ( combineWithContainerKeys ( component, key ) );
     }
 
+    /**
+     * Returns component language value.
+     *
+     * @param component component to retrieve language value for
+     * @param key       component language key
+     * @return component language value
+     */
     public static Value getValue ( final Component component, final String key )
     {
         return getValue ( combineWithContainerKeys ( component, key ) );
     }
 
+    /**
+     * Returns non-null component language value.
+     *
+     * @param component component to retrieve language value for
+     * @param key       component language key
+     * @return non-null component language value
+     */
     public static Value getNotNullValue ( final Component component, final String key )
     {
         return getNotNullValue ( combineWithContainerKeys ( component, key ) );
     }
 
+    /**
+     * Returns component language value.
+     *
+     * @param component     component to retrieve language value for
+     * @param key           component language key
+     * @param additionalKey additional language key
+     * @return component language value
+     */
     public static Value getValue ( final Component component, final String key, final String additionalKey )
     {
         return getValue ( combineWithContainerKeys ( component, key ) + "." + additionalKey );
     }
 
+    /**
+     * Returns non-null component language value.
+     *
+     * @param component     component to retrieve language value for
+     * @param key           component language key
+     * @param additionalKey additional language key
+     * @return non-null component language value
+     */
     public static Value getNotNullValue ( final Component component, final String key, final String additionalKey )
     {
         return getNotNullValue ( combineWithContainerKeys ( component, key ) + "." + additionalKey );
     }
 
     /**
-     * Language container methods
+     * Returns component language key combined with its containers keys.
+     *
+     * @param component component to retrieve language key for
+     * @param key       component language key
+     * @return component language key combined with its containers keys
      */
-
     public static String combineWithContainerKeys ( final Component component, final String key )
     {
         final String cachedKey = componentKeysCache.get ( component );
         return cachedKey != null ? cachedKey : combineWithContainerKeysImpl ( component, key );
     }
 
+    /**
+     * Returns component language key combined with its containers keys.
+     *
+     * @param component component to retrieve language key for
+     * @param key       component language key
+     * @return component language key combined with its containers keys
+     */
     private static String combineWithContainerKeysImpl ( final Component component, final String key )
     {
         final StringBuilder sb = new StringBuilder ( key );
@@ -1613,6 +1663,12 @@ public final class LanguageManager implements LanguageConstants
         return cachedKey;
     }
 
+    /**
+     * Registers language container key.
+     *
+     * @param container container to register
+     * @param key       language container key
+     */
     public static void registerLanguageContainer ( final Container container, final String key )
     {
         synchronized ( languageContainersLock )
@@ -1621,6 +1677,11 @@ public final class LanguageManager implements LanguageConstants
         }
     }
 
+    /**
+     * Unregisters language container key.
+     *
+     * @param container container to unregister
+     */
     public static void unregisterLanguageContainer ( final Container container )
     {
         synchronized ( languageContainersLock )
@@ -1629,6 +1690,12 @@ public final class LanguageManager implements LanguageConstants
         }
     }
 
+    /**
+     * Returns language container key for the specified container.
+     *
+     * @param container container to retrieve language container key for
+     * @return language container key for the specified container
+     */
     public static String getLanguageContainerKey ( final Container container )
     {
         synchronized ( languageContainersLock )
@@ -1638,25 +1705,39 @@ public final class LanguageManager implements LanguageConstants
     }
 
     /**
-     * Cache operations
+     * Rebuilds global dictionaries cache from a scratch.
+     * This is required for cases when dictionary changes cannot be tracked or when current language changes.
      */
-
     private static void rebuildCache ()
     {
         clearCache ();
         updateCache ( globalDictionary );
     }
 
+    /**
+     * Clears global dictionaries cache.
+     */
     private static void clearCache ()
     {
         globalCache.clear ();
     }
 
+    /**
+     * Updates global dictionaries cache with the specified dictionary.
+     *
+     * @param dictionary dictionary to update cache with
+     */
     private static void updateCache ( final Dictionary dictionary )
     {
         updateCache ( dictionary.getPrefix (), dictionary );
     }
 
+    /**
+     * Updates global dictionaries cache with the specified dictionary.
+     *
+     * @param prefix     dictionary prefix
+     * @param dictionary dictionary to update cache with
+     */
     private static void updateCache ( String prefix, final Dictionary dictionary )
     {
         // Determining prefix
@@ -1689,24 +1770,31 @@ public final class LanguageManager implements LanguageConstants
     }
 
     /**
-     * Default system language key
+     * Returns default language key.
+     *
+     * @return default language key
      */
-
     public static String getDefaultLanguageKey ()
     {
         final String systemLang = getSystemLanguageKey ();
         return supportedLanguages.contains ( systemLang ) ? systemLang : ENGLISH;
     }
 
+    /**
+     * Returns system language key.
+     *
+     * @return system language key
+     */
     public static String getSystemLanguageKey ()
     {
         return System.getProperty ( "user.language" );
     }
 
     /**
-     * Language listeners operations
+     * Returns language listeners.
+     *
+     * @return language listeners
      */
-
     public static List<LanguageListener> getLanguageListeners ()
     {
         synchronized ( languageListenersLock )
@@ -1715,6 +1803,11 @@ public final class LanguageManager implements LanguageConstants
         }
     }
 
+    /**
+     * Adds new language listener.
+     *
+     * @param listener new language listener
+     */
     public static void addLanguageListener ( final LanguageListener listener )
     {
         synchronized ( languageListenersLock )
@@ -1723,6 +1816,11 @@ public final class LanguageManager implements LanguageConstants
         }
     }
 
+    /**
+     * Removes language listener.
+     *
+     * @param listener language listener to remove
+     */
     public static void removeLanguageListener ( final LanguageListener listener )
     {
         synchronized ( languageListenersLock )
@@ -1731,6 +1829,11 @@ public final class LanguageManager implements LanguageConstants
         }
     }
 
+    /**
+     * Returns component language listeners.
+     *
+     * @return component language listeners
+     */
     public static Map<Component, LanguageListener> getComponentLanguageListeners ()
     {
         synchronized ( languageListenersLock )
@@ -1739,6 +1842,12 @@ public final class LanguageManager implements LanguageConstants
         }
     }
 
+    /**
+     * Adds language listener for the specified component.
+     *
+     * @param component component to add language listener for
+     * @param listener  new language listener
+     */
     public static void addLanguageListener ( final Component component, final LanguageListener listener )
     {
         synchronized ( languageListenersLock )
@@ -1747,6 +1856,11 @@ public final class LanguageManager implements LanguageConstants
         }
     }
 
+    /**
+     * Removes language listener from the specified component.
+     *
+     * @param component component to remove language listener from
+     */
     public static void removeLanguageListener ( final Component component )
     {
         synchronized ( languageListenersLock )
@@ -1755,6 +1869,12 @@ public final class LanguageManager implements LanguageConstants
         }
     }
 
+    /**
+     * Fires language changed event whenever current language changes.
+     *
+     * @param oldLang old language
+     * @param newLang new language
+     */
     private static void fireLanguageChanged ( final String oldLang, final String newLang )
     {
         synchronized ( languageListenersLock )
@@ -1778,6 +1898,11 @@ public final class LanguageManager implements LanguageConstants
         }
     }
 
+    /**
+     * Fires dictionary added event whenever new dictionary is added into LanguageManager.
+     *
+     * @param dictionary new dictionary
+     */
     private static void fireDictionaryAdded ( final Dictionary dictionary )
     {
         synchronized ( languageListenersLock )
@@ -1801,6 +1926,11 @@ public final class LanguageManager implements LanguageConstants
         }
     }
 
+    /**
+     * Fires dictionary removed event whenever dictionary is removed from LanguageManager.
+     *
+     * @param dictionary removed dictionary
+     */
     private static void fireDictionaryRemoved ( final Dictionary dictionary )
     {
         synchronized ( languageListenersLock )
@@ -1824,6 +1954,9 @@ public final class LanguageManager implements LanguageConstants
         }
     }
 
+    /**
+     * Fires dictionaries cleared event whenever all dictionaries are removed from LanguageManager.
+     */
     private static void fireDictionariesCleared ()
     {
         synchronized ( languageListenersLock )
@@ -1848,14 +1981,21 @@ public final class LanguageManager implements LanguageConstants
     }
 
     /**
-     * Language key listeners operations
+     * Returns language key listeners.
+     *
+     * @return language key listeners
      */
-
     public static Map<String, List<LanguageKeyListener>> getLanguageKeyListeners ()
     {
         return languageKeyListeners;
     }
 
+    /**
+     * Adds language key listener.
+     *
+     * @param key      language key to register listener for
+     * @param listener new language key listener
+     */
     public static void addLanguageKeyListener ( final String key, final LanguageKeyListener listener )
     {
         synchronized ( languageKeyListenersLock )
@@ -1870,6 +2010,11 @@ public final class LanguageManager implements LanguageConstants
         }
     }
 
+    /**
+     * Removes language key listener
+     *
+     * @param listener language key listener to remove
+     */
     public static void removeLanguageKeyListener ( final LanguageKeyListener listener )
     {
         synchronized ( languageKeyListenersLock )
@@ -1881,6 +2026,11 @@ public final class LanguageManager implements LanguageConstants
         }
     }
 
+    /**
+     * Removes language key listener.
+     *
+     * @param key language key to remove listeners for
+     */
     public static void removeLanguageKeyListeners ( final String key )
     {
         synchronized ( languageKeyListenersLock )
@@ -1889,6 +2039,11 @@ public final class LanguageManager implements LanguageConstants
         }
     }
 
+    /**
+     * Fires language key updated event whenever specified dictionary key is updated with new translation.
+     *
+     * @param key updated language key
+     */
     private static void fireLanguageKeyUpdated ( final String key )
     {
         synchronized ( languageKeyListenersLock )
@@ -1905,6 +2060,9 @@ public final class LanguageManager implements LanguageConstants
         }
     }
 
+    /**
+     * Fires language key updated event for all language keys.
+     */
     private static void fireAllLanguageKeysUpdated ()
     {
         synchronized ( languageKeyListenersLock )

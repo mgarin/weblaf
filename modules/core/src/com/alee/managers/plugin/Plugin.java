@@ -110,7 +110,7 @@ public abstract class Plugin<T extends Plugin<T>>
      */
     public ImageIcon getPluginLogo ()
     {
-        return detectedPlugin.getLogo ();
+        return detectedPlugin != null ? detectedPlugin.getLogo () : null;
     }
 
     /**

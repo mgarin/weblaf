@@ -860,7 +860,7 @@ public class WebLookAndFeelDemo extends WebFrame
         SettingsManager.setSaveOnChange ( true );
 
         // Default demo language for now
-        LanguageManager.DEFAULT = LanguageManager.ENGLISH;
+        LanguageManager.setDefaultLanguage ( LanguageManager.ENGLISH );
 
         // Demo application skin
         // It extends default WebLaF skin and adds some custom styling

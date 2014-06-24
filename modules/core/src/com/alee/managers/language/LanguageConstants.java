@@ -18,7 +18,7 @@
 package com.alee.managers.language;
 
 /**
- * Supported languages.
+ * Languages supported by WebLaF inteface by default.
  *
  * @author Mikle Garin
  */

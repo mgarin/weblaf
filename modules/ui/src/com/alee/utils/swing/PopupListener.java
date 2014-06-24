@@ -15,15 +15,15 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.managers.popup;
+package com.alee.utils.swing;
 
 import java.util.EventListener;
 
 /**
- * Special listener for WebPopup component.
+ * Basic listener for any popup.
  *
  * @author Mikle Garin
- * @see WebPopup
+ * @see com.alee.managers.popup.WebPopup
  */
 
 public interface PopupListener extends EventListener

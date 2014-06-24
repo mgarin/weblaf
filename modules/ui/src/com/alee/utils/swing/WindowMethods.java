@@ -95,7 +95,7 @@ public interface WindowMethods<W extends Window> extends SwingMethods
     /**
      * Packs window to its preffered height and specified width.
      *
-     * @param width
+     * @param width new window width
      * @return processed window
      */
     public W packToWidth ( int width );
@@ -103,7 +103,7 @@ public interface WindowMethods<W extends Window> extends SwingMethods
     /**
      * Packs window to its preffered width and specified height.
      *
-     * @param height
+     * @param height new window height
      * @return processed window
      */
     public W packToHeight ( int height );

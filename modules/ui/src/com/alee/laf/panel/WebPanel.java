@@ -189,7 +189,7 @@ public class WebPanel extends JPanel implements Styleable, ShapeProvider, Partia
     }
 
     /**
-     * onstructs new panel with the specified style ID.
+     * Constructs new panel with the specified style ID.
      *
      * @param styleId style ID
      */
@@ -200,7 +200,7 @@ public class WebPanel extends JPanel implements Styleable, ShapeProvider, Partia
     }
 
     /**
-     * onstructs new panel with the specified style ID.
+     * Constructs new panel with the specified style ID.
      *
      * @param styleId style ID
      * @param layout  panel layout
@@ -212,7 +212,7 @@ public class WebPanel extends JPanel implements Styleable, ShapeProvider, Partia
     }
 
     /**
-     * onstructs new panel with the specified style ID.
+     * Constructs new panel with the specified style ID.
      *
      * @param styleId   style ID
      * @param component component to add into panel

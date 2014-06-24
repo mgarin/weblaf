@@ -48,6 +48,7 @@ public abstract class PluginManager<T extends Plugin>
      * todo 1. Allow to disable logging from this manager
      * todo 2. Make plugin operations thread-safe
      * todo 3. Translate/replace error messages?
+     * todo 4. PluginManager -> Plugin -> dependencies on other plugins
      */
 
     /**
@@ -130,6 +131,12 @@ public abstract class PluginManager<T extends Plugin>
      * By defauly "*.jar" and "*.plugin" files are accepted.
      */
     protected FileFilter fileFilter;
+
+    /**
+     * Whether should create new class loader for each loaded plugin or not.
+     * Be aware that you might experience various issues with separate class loaders.
+     */
+    protected boolean createNewClassLoader = false;
 
     /**
      * Constructs new plugin manager.
@@ -422,8 +429,16 @@ public abstract class PluginManager<T extends Plugin>
                     // Reading plugin icon
                     final ZipEntry logoEntry = new ZipEntry ( ZipUtils.getZipEntryFileLocation ( entry ) + pluginLogo );
                     final InputStream logoInputStream = zipFile.getInputStream ( logoEntry );
-                    final ImageIcon logo = new ImageIcon ( ImageIO.read ( logoInputStream ) );
-                    logoInputStream.close ();
+                    final ImageIcon logo;
+                    if ( logoInputStream != null )
+                    {
+                        logo = new ImageIcon ( ImageIO.read ( logoInputStream ) );
+                        logoInputStream.close ();
+                    }
+                    else
+                    {
+                        logo = null;
+                    }
 
                     // Checking whether we have already detected this plugin or not
                     if ( !wasDetected ( file.getParent (), file.getName () ) )
@@ -531,7 +546,7 @@ public abstract class PluginManager<T extends Plugin>
                 }
 
                 // Checking that plugin filter accepts this plugin
-                if ( pluginFilter != null && !pluginFilter.accept ( dp ) )
+                if ( getPluginFilter () != null && !getPluginFilter ().accept ( dp ) )
                 {
                     Log.info ( this, prefix + "Plugin was not accepted by plugin filter" );
                     dp.setStatus ( PluginStatus.failed );
@@ -576,8 +591,25 @@ public abstract class PluginManager<T extends Plugin>
 
                 try
                 {
-                    // Loading the plugin
-                    final URLClassLoader classLoader = URLClassLoader.newInstance ( jarPaths.toArray ( new URL[ jarPaths.size () ] ) );
+                    // Choosing class loader
+                    final ClassLoader cl = getClass ().getClassLoader ();
+                    final ClassLoader classLoader;
+                    if ( createNewClassLoader || !( cl instanceof URLClassLoader ) )
+                    {
+                        // Create new class loader
+                        classLoader = URLClassLoader.newInstance ( jarPaths.toArray ( new URL[ jarPaths.size () ] ), cl );
+                    }
+                    else
+                    {
+                        // Use current class loader
+                        classLoader = cl;
+                        for ( final URL url : jarPaths )
+                        {
+                            ReflectUtils.callMethodSafely ( classLoader, "addURL", url );
+                        }
+                    }
+
+                    // Loading plugin
                     final Class<?> pluginClass = classLoader.loadClass ( info.getMainClass () );
                     final T plugin = ReflectUtils.createInstance ( pluginClass );
                     plugin.setPluginManager ( PluginManager.this );
@@ -923,6 +955,26 @@ public abstract class PluginManager<T extends Plugin>
     public void setFileFilter ( final FileFilter filter )
     {
         this.fileFilter = filter;
+    }
+
+    /**
+     * Returns whether should create new class loader for each loaded plugin or not.
+     *
+     * @return true if should create new class loader for each loaded plugin, false otherwise
+     */
+    public boolean isCreateNewClassLoader ()
+    {
+        return createNewClassLoader;
+    }
+
+    /**
+     * Sets whether should create new class loader for each loaded plugin or not.
+     *
+     * @param createNewClassLoader whether should create new class loader for each loaded plugin or not
+     */
+    public void setCreateNewClassLoader ( final boolean createNewClassLoader )
+    {
+        this.createNewClassLoader = createNewClassLoader;
     }
 
     /**
