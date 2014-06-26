@@ -27,6 +27,8 @@ import com.alee.examples.groups.colorchooser.ColorChoosersGroup;
 import com.alee.examples.groups.combobox.ComboBoxesGroup;
 import com.alee.examples.groups.date.DateChoosersGroup;
 import com.alee.examples.groups.desktoppane.DesktopPaneGroup;
+import com.alee.examples.groups.docpane.DocumentPaneGroup;
+import com.alee.examples.groups.dynamicmenu.DynamicMenuGroup;
 import com.alee.examples.groups.field.FieldsGroup;
 import com.alee.examples.groups.filechooser.FileChoosersGroup;
 import com.alee.examples.groups.futurico.FuturicoStylingGroup;
@@ -137,6 +139,7 @@ public class ExamplesManager
             exampleGroups.add ( new SplitPanesGroup () );
             exampleGroups.add ( new ScrollPaneGroup () );
             exampleGroups.add ( new TabbedPanesGroup () );
+            exampleGroups.add ( new DocumentPaneGroup () );
             exampleGroups.add ( new CollapsiblePanesGroup () );
             exampleGroups.add ( new DesktopPaneGroup () );
             exampleGroups.add ( new WindowsGroup () );
@@ -144,6 +147,7 @@ public class ExamplesManager
             exampleGroups.add ( new PopupsGroup () );
             exampleGroups.add ( new PopOverGroup () );
             exampleGroups.add ( new NotificationsGroup () );
+            exampleGroups.add ( new DynamicMenuGroup () );
             exampleGroups.add ( new GalleryGroup () );
             exampleGroups.add ( new TransitionsGroup () );
             exampleGroups.add ( new ImagesGroup () );

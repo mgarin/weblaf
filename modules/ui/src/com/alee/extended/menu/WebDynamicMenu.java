@@ -42,7 +42,7 @@ import java.util.List;
 public class WebDynamicMenu extends WebHeavyWeightPopup
 {
     /**
-     * todo 1. Allow sliding down vertical menu (with text and selection background)
+     * todo 1. Add sliding down vertical menu (with text and selection background)
      */
 
     /**

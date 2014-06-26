@@ -109,7 +109,7 @@ public abstract class DefaultExample implements Example
             @Override
             public void run ()
             {
-                for ( PresentationStep step : presentationSteps )
+                for ( final PresentationStep step : presentationSteps )
                 {
                     // Step start
                     if ( shouldStop )
@@ -120,7 +120,7 @@ public abstract class DefaultExample implements Example
                     step.getOnStart ().run ();
 
                     // Step duration (0 = unending step, requires user assistance to proceed)
-                    int duration = step.getDuration ();
+                    final int duration = step.getDuration ();
                     ThreadUtils.sleepSafely ( duration > 0 ? duration : Long.MAX_VALUE );
 
                     // Step end
@@ -173,7 +173,7 @@ public abstract class DefaultExample implements Example
      * {@inheritDoc}
      */
     @Override
-    public void doWhenPresentationFinished ( Runnable runnable )
+    public void doWhenPresentationFinished ( final Runnable runnable )
     {
         this.onPresentationEnd = runnable;
     }
@@ -202,7 +202,7 @@ public abstract class DefaultExample implements Example
      * @param path path to the icon inside icons package
      * @return loaded icon
      */
-    public ImageIcon loadIcon ( String path )
+    public ImageIcon loadIcon ( final String path )
     {
         return loadIcon ( getClass (), path );
     }
@@ -214,9 +214,9 @@ public abstract class DefaultExample implements Example
      * @param path      path to the icon inside icons package
      * @return loaded icon
      */
-    public ImageIcon loadIcon ( Class nearClass, String path )
+    public ImageIcon loadIcon ( final Class nearClass, final String path )
     {
-        String key = nearClass.getCanonicalName () + ":" + path;
+        final String key = nearClass.getCanonicalName () + ":" + path;
         if ( !iconsCache.containsKey ( key ) )
         {
             iconsCache.put ( key, new ImageIcon ( nearClass.getResource ( "icons/" + path ) ) );
@@ -230,7 +230,7 @@ public abstract class DefaultExample implements Example
      * @param path path to the resource file inside resources package
      * @return resource file url
      */
-    public URL getResource ( String path )
+    public URL getResource ( final String path )
     {
         return getClass ().getResource ( "resources/" + path );
     }

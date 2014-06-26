@@ -157,7 +157,7 @@ public class WebNotificationPopup extends WebPopup
         setAnimated ( true );
 
         iconImage = new WebImage ();
-        add ( new AlignPanel ( iconImage, SwingConstants.CENTER, SwingConstants.TOP ), BorderLayout.WEST );
+        add ( new AlignPanel ( iconImage, SwingConstants.CENTER, SwingConstants.CENTER ), BorderLayout.WEST );
         updateIcon ();
 
         contentPanel = new WebPanel ();

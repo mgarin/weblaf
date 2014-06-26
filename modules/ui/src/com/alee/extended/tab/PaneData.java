@@ -30,6 +30,7 @@ import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.hotkey.HotkeyManager;
 import com.alee.managers.hotkey.HotkeyRunnable;
 import com.alee.managers.language.LM;
+import com.alee.utils.CollectionUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.Customizer;
 import com.alee.utils.swing.menu.PopupMenuGenerator;
@@ -569,7 +570,7 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
      */
     public void closeAll ()
     {
-        for ( final T document : data )
+        for ( final T document : CollectionUtils.copy ( data ) )
         {
             close ( document );
         }

@@ -50,6 +50,10 @@ import java.util.List;
 public class WebDocumentPane<T extends DocumentData> extends WebPanel implements SwingConstants
 {
     /**
+     * todo 1. Possibility to save/restore documents positions and splits
+     */
+
+    /**
      * Constant key used to put pane element data into the UI component.
      */
     protected static final String DATA_KEY = "document.pane.data";
@@ -568,6 +572,12 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel implements
             result = toPane;
         }
 
+        // Uodate active pane
+        if ( activePane == first || activePane == last )
+        {
+            activePane = result.findClosestPane ();
+        }
+
         // Removing merged split
         final WebSplitPane splitPane = splitData.getSplitPane ();
         if ( splitPane.getParent () == WebDocumentPane.this )
@@ -922,6 +932,18 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel implements
             {
                 break;
             }
+        }
+    }
+
+    /**
+     * Closes all documents.
+     * Be aware that some documents might cancel their close operation and will still be opened after this call.
+     */
+    public void closeAll ()
+    {
+        for ( final PaneData<T> paneData : getAllPanes () )
+        {
+            paneData.closeAll ();
         }
     }
 
