@@ -47,7 +47,7 @@ public class VersionUpdater
      * XML file path.
      */
     private static final String versionPath =
-            "modules" + s + "laf" + s + "src" + s + "com" + s + "alee" + s + "laf" + s + "resources" + s + "version.xml";
+            "modules" + s + "ui" + s + "src" + s + "com" + s + "alee" + s + "laf" + s + "resources" + s + "version.xml";
 
     /**
      * Increments library build version and updates build date.
