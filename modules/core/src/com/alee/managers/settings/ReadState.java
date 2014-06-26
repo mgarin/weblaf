@@ -23,11 +23,13 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * This enumeration represents SettingsGroup read states.
  *
  * @author Mikle Garin
- * @see SettingsGroupState
- * @see SettingsGroup
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-SettingsManager">How to use SettingsManager</a>
+ * @see com.alee.managers.settings.SettingsManager
+ * @see com.alee.managers.settings.SettingsGroupState
+ * @see com.alee.managers.settings.SettingsGroup
  */
 
-@XStreamAlias ( "ReadState" )
+@XStreamAlias ("ReadState")
 public enum ReadState
 {
     /**

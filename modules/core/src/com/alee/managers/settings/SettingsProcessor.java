@@ -33,9 +33,11 @@ import java.io.Serializable;
  * ComponentSettingsManager class (they both do the same).
  *
  * @author Mikle Garin
- * @see SettingsManager#registerSettingsProcessor(Class, Class)
- * @see ComponentSettingsManager#registerSettingsProcessor(Class, Class)
- * @see ComponentSettingsManager
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-SettingsManager">How to use SettingsManager</a>
+ * @see com.alee.managers.settings.SettingsManager
+ * @see com.alee.managers.settings.SettingsManager#registerSettingsProcessor(Class, Class)
+ * @see com.alee.managers.settings.ComponentSettingsManager
+ * @see com.alee.managers.settings.ComponentSettingsManager#registerSettingsProcessor(Class, Class)
  */
 public abstract class SettingsProcessor<C extends Component, V extends Serializable>
 {

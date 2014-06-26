@@ -24,8 +24,9 @@ import com.alee.utils.swing.SwingMethods;
  * Basically all these methods are already implemented in SettingsManager but it is much easier to call them directly from component.
  *
  * @author Mikle Garin
- * @see SwingMethods
- * @see SettingsManager
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-SettingsManager">How to use SettingsManager</a>
+ * @see com.alee.managers.settings.SettingsManager
+ * @see com.alee.utils.swing.SwingMethods
  */
 
 public interface SettingsMethods extends SwingMethods

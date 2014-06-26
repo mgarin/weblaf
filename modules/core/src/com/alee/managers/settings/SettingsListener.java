@@ -23,6 +23,8 @@ import java.util.EventListener;
  * Settings change listener interface.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-SettingsManager">How to use SettingsManager</a>
+ * @see com.alee.managers.settings.SettingsManager
  */
 
 public interface SettingsListener extends EventListener

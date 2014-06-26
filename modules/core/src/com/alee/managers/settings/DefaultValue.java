@@ -22,12 +22,14 @@ package com.alee.managers.settings;
  * default class instance when called. This method is used by SettingsManager when settings "get" methods called without default value.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-SettingsManager">How to use SettingsManager</a>
+ * @see com.alee.managers.settings.SettingsManager
  */
 
 public interface DefaultValue
 {
     /**
      * Define similar method in implementing class to provide its default value for other classes usage:
-     * <code>public static T getDefaultValue ();</code>
+     * {@code public static T getDefaultValue ();}
      */
 }

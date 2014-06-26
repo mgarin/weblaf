@@ -29,6 +29,9 @@ import java.awt.event.ComponentEvent;
  * Custom SettingsProcessor for Window component.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-SettingsManager">How to use SettingsManager</a>
+ * @see com.alee.managers.settings.SettingsManager
+ * @see com.alee.managers.settings.SettingsProcessor
  */
 
 public class WindowSettingsProcessor extends SettingsProcessor<Window, Rectangle>

@@ -28,6 +28,9 @@ import java.awt.event.ActionListener;
  * Custom SettingsProcessor for JComboBox component.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-SettingsManager">How to use SettingsManager</a>
+ * @see com.alee.managers.settings.SettingsManager
+ * @see com.alee.managers.settings.SettingsProcessor
  */
 
 public class JComboBoxSettingsProcessor extends SettingsProcessor<JComboBox, Integer>

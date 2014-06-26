@@ -29,6 +29,9 @@ import javax.swing.event.ChangeListener;
  * Custom SettingsProcessor for JSlider component.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-SettingsManager">How to use SettingsManager</a>
+ * @see com.alee.managers.settings.SettingsManager
+ * @see com.alee.managers.settings.SettingsProcessor
  */
 
 public class JSliderSettingsProcessor extends SettingsProcessor<JSlider, Integer>

@@ -47,12 +47,18 @@ import java.util.Map;
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-SettingsManager">How to use SettingsManager</a>
- * @see ComponentSettingsManager
+ * @see com.alee.managers.settings.ComponentSettingsManager
  * @see com.alee.utils.XmlUtils
  */
 
 public final class SettingsManager
 {
+    /**
+     * todo 1. JListSettingsProcessor
+     * todo 2. JTableSettingsProcessor
+     * todo 3. JScrollPaneSettingsProcessor
+     */
+
     /**
      * Settings change listeners.
      */

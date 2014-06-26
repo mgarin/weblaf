@@ -26,10 +26,12 @@ import java.io.Serializable;
  * This class contains information about single SettingsGroup read state.
  *
  * @author Mikle Garin
- * @see SettingsGroup
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-SettingsManager">How to use SettingsManager</a>
+ * @see com.alee.managers.settings.SettingsManager
+ * @see com.alee.managers.settings.SettingsGroup
  */
 
-@XStreamAlias ( "SettingsGroupState" )
+@XStreamAlias ("SettingsGroupState")
 public class SettingsGroupState implements Serializable
 {
     /**
@@ -56,7 +58,7 @@ public class SettingsGroupState implements Serializable
      *
      * @param readState read state
      */
-    public SettingsGroupState ( ReadState readState )
+    public SettingsGroupState ( final ReadState readState )
     {
         this ( readState, null );
     }
@@ -67,7 +69,7 @@ public class SettingsGroupState implements Serializable
      * @param readState read state
      * @param error     occured error
      */
-    public SettingsGroupState ( ReadState readState, Throwable error )
+    public SettingsGroupState ( final ReadState readState, final Throwable error )
     {
         super ();
         setReadState ( readState );
@@ -89,7 +91,7 @@ public class SettingsGroupState implements Serializable
      *
      * @param readState new SettingsGroup read state
      */
-    public void setReadState ( ReadState readState )
+    public void setReadState ( final ReadState readState )
     {
         this.readState = readState;
     }
@@ -109,7 +111,7 @@ public class SettingsGroupState implements Serializable
      *
      * @param error occured error
      */
-    public void setError ( Throwable error )
+    public void setError ( final Throwable error )
     {
         this.error = error;
     }

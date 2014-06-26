@@ -31,6 +31,9 @@ import java.awt.event.FocusEvent;
  * Custom SettingsProcessor for JTextComponent component.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-SettingsManager">How to use SettingsManager</a>
+ * @see com.alee.managers.settings.SettingsManager
+ * @see com.alee.managers.settings.SettingsProcessor
  */
 
 public class JTextComponentSettingsProcessor extends SettingsProcessor<JTextComponent, String>

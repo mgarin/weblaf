@@ -23,9 +23,10 @@ import java.awt.*;
  * Base data class for any SettingsProcessor.
  *
  * @author Mikle Garin
- * @see SettingsProcessor
- * @see com.alee.managers.settings.ComponentSettingsManager
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-SettingsManager">How to use SettingsManager</a>
  * @see com.alee.managers.settings.SettingsManager
+ * @see com.alee.managers.settings.ComponentSettingsManager
+ * @see com.alee.managers.settings.SettingsProcessor
  */
 
 public class SettingsProcessorData
@@ -78,8 +79,8 @@ public class SettingsProcessorData
      * @param loadInitialSettings  whether to load initial available settings into the component or not
      * @param applySettingsChanges whether to apply settings changes to the component or not
      */
-    public SettingsProcessorData ( Component component, String group, String key, Object defaultValue, boolean loadInitialSettings,
-                                   boolean applySettingsChanges )
+    public SettingsProcessorData ( final Component component, final String group, final String key, final Object defaultValue,
+                                   final boolean loadInitialSettings, final boolean applySettingsChanges )
     {
         super ();
         setComponent ( component );
@@ -105,7 +106,7 @@ public class SettingsProcessorData
      *
      * @param component component which settings are being managed
      */
-    public void setComponent ( Component component )
+    public void setComponent ( final Component component )
     {
         this.component = component;
     }
@@ -125,7 +126,7 @@ public class SettingsProcessorData
      *
      * @param group component settings group
      */
-    public void setGroup ( String group )
+    public void setGroup ( final String group )
     {
         this.group = group;
     }
@@ -145,7 +146,7 @@ public class SettingsProcessorData
      *
      * @param key component settings key
      */
-    public void setKey ( String key )
+    public void setKey ( final String key )
     {
         this.key = key;
     }
@@ -165,7 +166,7 @@ public class SettingsProcessorData
      *
      * @param defaultValue component default value
      */
-    public void setDefaultValue ( Object defaultValue )
+    public void setDefaultValue ( final Object defaultValue )
     {
         this.defaultValue = defaultValue;
     }
@@ -185,7 +186,7 @@ public class SettingsProcessorData
      *
      * @param loadInitialSettings whether to load initial available settings into the component or not
      */
-    public void setLoadInitialSettings ( boolean loadInitialSettings )
+    public void setLoadInitialSettings ( final boolean loadInitialSettings )
     {
         this.loadInitialSettings = loadInitialSettings;
     }
@@ -205,7 +206,7 @@ public class SettingsProcessorData
      *
      * @param applySettingsChanges whether to apply settings changes to the component or not
      */
-    public void setApplySettingsChanges ( boolean applySettingsChanges )
+    public void setApplySettingsChanges ( final boolean applySettingsChanges )
     {
         this.applySettingsChanges = applySettingsChanges;
     }
