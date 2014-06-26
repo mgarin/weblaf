@@ -22,11 +22,9 @@ import com.alee.extended.painter.PainterSupport;
 import com.alee.extended.panel.WebButtonGroup;
 import com.alee.global.StyleConstants;
 import com.alee.laf.WebLookAndFeel;
-import com.alee.utils.ColorUtils;
-import com.alee.utils.GraphicsUtils;
-import com.alee.utils.LafUtils;
-import com.alee.utils.SwingUtils;
+import com.alee.utils.*;
 import com.alee.utils.laf.ShapeProvider;
+import com.alee.utils.ninepatch.NinePatchIcon;
 import com.alee.utils.swing.AncestorAdapter;
 import com.alee.utils.swing.BorderMethods;
 import com.alee.utils.swing.WebTimer;
@@ -831,7 +829,32 @@ public class WebButtonUI extends BasicButtonUI implements ShapeProvider, SwingCo
                     {
                         final boolean setInner = !animatedTransparency && rolloverShadeOnly;
                         final Composite oc = GraphicsUtils.setupAlphaComposite ( g2d, transparency, setInner );
-                        GraphicsUtils.drawShade ( g2d, borderShape, getShadeColor ( c ), shadeWidth );
+                        if ( shadeWidth < 3 )
+                        {
+                            GraphicsUtils.drawShade ( g2d, borderShape, getShadeColor ( c ), shadeWidth );
+                        }
+                        else
+                        {
+                            // todo Properly paint shade color
+
+                            final int w = button.getWidth ();
+                            final int h = button.getHeight ();
+
+                            // Changing line marks in case of RTL orientation
+                            final boolean ltr = button.getComponentOrientation ().isLeftToRight ();
+                            final boolean actualPaintLeft = ltr ? drawLeft : drawRight;
+                            final boolean actualPaintRight = ltr ? drawRight : drawLeft;
+
+                            // Retrieve shade 9-patch icon
+                            final NinePatchIcon shade = NinePatchUtils.getShadeIcon ( shadeWidth, round * 2, transparency );
+
+                            // Calculate shade bounds and paint it
+                            final int x = actualPaintLeft ? 0 : -shadeWidth * 2;
+                            final int width = w + ( actualPaintLeft ? 0 : shadeWidth * 2 ) + ( actualPaintRight ? 0 : shadeWidth * 2 );
+                            final int y = drawTop ? 0 : -shadeWidth * 2;
+                            final int height = h + ( drawTop ? 0 : shadeWidth * 2 ) + ( drawBottom ? 0 : shadeWidth * 2 );
+                            shade.paintIcon ( g2d, x, y, width, height );
+                        }
                         GraphicsUtils.restoreComposite ( g2d, oc, setInner );
                     }
 

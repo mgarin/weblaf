@@ -45,6 +45,16 @@ import java.util.Map;
 public final class NinePatchUtils
 {
     /**
+     * todo 1. Allow custom shade colors
+     */
+
+    /**
+     * Shade prefixes.
+     */
+    public static final String OUTER_SHADE_PREFIX = "outer";
+    public static final String INNER_SHADE_PREFIX = "inner";
+
+    /**
      * Shade nine-patch icons cache.
      */
     private static final Map<String, NinePatchIcon> shadeIconCache = new HashMap<String, NinePatchIcon> ();
@@ -59,7 +69,7 @@ public final class NinePatchUtils
      */
     public static NinePatchIcon getShadeIcon ( final int shadeWidth, final int round, final float shadeOpacity )
     {
-        final String key = "outer;" + shadeWidth + ";" + round + ";" + shadeOpacity;
+        final String key = OUTER_SHADE_PREFIX + ";" + shadeWidth + ";" + round + ";" + shadeOpacity;
         if ( shadeIconCache.containsKey ( key ) )
         {
             return shadeIconCache.get ( key );
@@ -128,7 +138,7 @@ public final class NinePatchUtils
      */
     public static NinePatchIcon getInnerShadeIcon ( final int shadeWidth, final int round, final float shadeOpacity )
     {
-        final String key = "inner;" + shadeWidth + ";" + round + ";" + shadeOpacity;
+        final String key = INNER_SHADE_PREFIX + ";" + shadeWidth + ";" + round + ";" + shadeOpacity;
         if ( shadeIconCache.containsKey ( key ) )
         {
             return shadeIconCache.get ( key );
@@ -161,8 +171,8 @@ public final class NinePatchUtils
         GraphicsUtils.setupAntialias ( ig );
         final Area area = new Area ( new Rectangle ( 0, 0, width, width ) );
         area.exclusiveOr ( new Area (
-                new RoundRectangle2D.Double ( shadeWidth, shadeWidth, width - shadeWidth * 2, width - shadeWidth * 2, round * 2, round * 2 )
-        ) );
+                new RoundRectangle2D.Double ( shadeWidth, shadeWidth, width - shadeWidth * 2, width - shadeWidth * 2, round * 2,
+                        round * 2 ) ) );
         ig.setPaint ( Color.BLACK );
         ig.fill ( area );
         ig.dispose ();

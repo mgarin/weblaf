@@ -247,7 +247,7 @@ public class WebFilePlate extends WebPanel
     {
         if ( remove == null )
         {
-            remove = WebButton.createIconWebButton ( CROSS_ICON, StyleConstants.smallRound, 3, 2, true, false );
+            remove = WebButton.createIconWebButton ( CROSS_ICON, StyleConstants.smallRound, 3, 1, true, false );
             remove.setFocusable ( false );
             remove.addActionListener ( new ActionListener ()
             {
@@ -358,6 +358,17 @@ public class WebFilePlate extends WebPanel
     public void setShowFileExtensions ( final boolean showFileExtensions )
     {
         this.showFileExtensions = showFileExtensions;
+        updateFileName ();
+    }
+
+    public File getFile ()
+    {
+        return file;
+    }
+
+    public void remove ()
+    {
+        remove.doClick ( 0 );
     }
 
     @Override

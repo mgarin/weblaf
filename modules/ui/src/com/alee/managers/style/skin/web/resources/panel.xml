@@ -54,6 +54,17 @@
         </component>
     </style>
 
+    <!-- WebFileDrop styling -->
+    <style type="panel" id="file-drop" extends="default">
+        <component>
+            <background>white</background>
+            <focusable>true</focusable>
+        </component>
+        <ui>
+            <margin>2,2,2,2</margin>
+        </ui>
+    </style>
+
     <!-- WebDockableFrame styling -->
     <style type="panel" id="dockable-frame-title" extends="default">
         <ui>

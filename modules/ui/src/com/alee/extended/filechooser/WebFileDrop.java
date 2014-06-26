@@ -48,44 +48,46 @@ import java.util.Map;
 
 public class WebFileDrop extends WebPanel implements LanguageMethods
 {
+    /**
+     * Remove file icon.
+     */
     public static final ImageIcon CROSS_ICON = new ImageIcon ( WebFileDrop.class.getResource ( "icons/cross.png" ) );
 
-    private static final BasicStroke dashStroke =
+    protected static final BasicStroke dashStroke =
             new BasicStroke ( 3, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 1f, new float[]{ 8f, 8f }, 0f );
 
-    public int dashRound = StyleConstants.smallRound;
-    public int dashSideSpacing = 10;
+    protected int dashRound = StyleConstants.smallRound;
+    protected int dashSideSpacing = 10;
 
-    private Color dropBackground = new Color ( 242, 242, 242 );
-    private Color dropBorder = new Color ( 192, 192, 192 );
+    protected Color dropBackground = new Color ( 242, 242, 242 );
+    protected Color dropBorder = new Color ( 192, 192, 192 );
 
-    private final List<FilesSelectionListener> listeners = new ArrayList<FilesSelectionListener> ( 1 );
+    protected final List<FilesSelectionListener> listeners = new ArrayList<FilesSelectionListener> ( 1 );
 
-    private boolean showRemoveButton = true;
-    private boolean showFileExtensions = false;
+    protected boolean showRemoveButton = true;
+    protected boolean showFileExtensions = false;
 
-    private boolean filesDragEnabled = false;
-    private int dragAction = TransferHandler.MOVE;
+    protected boolean filesDragEnabled = false;
+    protected int dragAction = TransferHandler.MOVE;
 
-    private boolean filesDropEnabled = true;
+    protected boolean filesDropEnabled = true;
 
-    private boolean allowSameFiles = false;
-    private AbstractFileFilter fileFilter = null;
+    protected boolean allowSameFiles = false;
+    protected AbstractFileFilter fileFilter = null;
 
-    private boolean showDropText = true;
-    private float dropTextOpacity = 1f;
-    private String dropText = null;
+    protected boolean showDropText = true;
+    protected float dropTextOpacity = 1f;
+    protected String dropText = null;
 
-    private List<File> selectedFiles = new ArrayList<File> ();
+    protected List<File> selectedFiles = new ArrayList<File> ();
 
     public WebFileDrop ()
     {
-        super ();
+        super ( "file-drop", new WrapFlowLayout ( true ) );
+        setUndecorated ( false );
+        setShadeWidth ( 25 );
 
-        setBackground ( Color.WHITE );
-        setLayout ( new WrapFlowLayout ( true ) );
-        setMargin ( 1, 1, 1, 1 );
-        setFocusable ( true );
+        // Default visual settings
         setFont ( SwingUtils.getDefaultLabelFont ().deriveFont ( Font.BOLD ).deriveFont ( 20f ) );
 
         // Empty drop field text
@@ -104,25 +106,8 @@ public class WebFileDrop extends WebPanel implements LanguageMethods
             public boolean filesDropped ( final List<File> files )
             {
                 // Adding dragged files
-                boolean anyAdded = false;
-                for ( final File file : files )
-                {
-                    if ( fileFilter != null && !fileFilter.accept ( file ) ||
-                            !allowSameFiles && FileUtils.containtsFile ( selectedFiles, file ) )
-                    {
-                        continue;
-                    }
-                    selectedFiles.add ( file );
-                    WebFileDrop.this.add ( createFilePlate ( file ) );
-                    anyAdded = true;
-                }
-                if ( anyAdded )
-                {
-                    WebFileDrop.this.revalidate ();
-                    WebFileDrop.this.repaint ();
-                    fireSelectionChanged ( selectedFiles );
-                }
-                return anyAdded;
+                addSelectedFiles ( files );
+                return true;
             }
         } );
 
@@ -246,28 +231,158 @@ public class WebFileDrop extends WebPanel implements LanguageMethods
 
     public List<File> getSelectedFiles ()
     {
-        return selectedFiles;
+        return CollectionUtils.copy ( selectedFiles );
     }
 
-    public void setSelectedFiles ( final List<File> selectedFiles )
+    public void setSelectedFiles ( final List<File> files )
     {
-        // Filtering only accepted by filter files
-        final List<File> accepted = new ArrayList<File> ();
-        for ( final File file : selectedFiles )
+        removeAllSelectedFiles ();
+        addSelectedFiles ( files );
+    }
+
+    public void addSelectedFiles ( final List<File> files )
+    {
+        boolean changed = false;
+        for ( final File file : files )
         {
-            if ( ( fileFilter == null || fileFilter.accept ( file ) ) && ( allowSameFiles || !FileUtils.containtsFile ( accepted, file ) ) )
+            changed = addSelectedFileImpl ( file ) || changed;
+        }
+        if ( changed )
+        {
+            revalidate ();
+            fireSelectionChanged ();
+        }
+    }
+
+    public void addSelectedFiles ( final File... files )
+    {
+        boolean changed = false;
+        for ( final File file : files )
+        {
+            changed = addSelectedFileImpl ( file ) || changed;
+        }
+        if ( changed )
+        {
+            revalidate ();
+            fireSelectionChanged ();
+        }
+    }
+
+    public void addSelectedFile ( final File file )
+    {
+        if ( addSelectedFileImpl ( file ) )
+        {
+            revalidate ();
+            fireSelectionChanged ();
+        }
+    }
+
+    protected boolean addSelectedFileImpl ( final File file )
+    {
+        if ( ( fileFilter == null || fileFilter.accept ( file ) ) &&
+                ( allowSameFiles || !FileUtils.containtsFile ( selectedFiles, file ) ) )
+        {
+            add ( createFilePlate ( file ) );
+            selectedFiles.add ( file );
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public void removeAllSelectedFiles ()
+    {
+        boolean changed = false;
+        for ( final File file : CollectionUtils.copy ( selectedFiles ) )
+        {
+            changed = removeSelectedFileImpl ( file, false ) || changed;
+        }
+        if ( changed )
+        {
+            revalidate ();
+            fireSelectionChanged ();
+        }
+    }
+
+    public void removeSelectedFiles ( final List<File> files )
+    {
+        boolean changed = false;
+        for ( final File file : files )
+        {
+            changed = removeSelectedFileImpl ( file, true ) || changed;
+        }
+        if ( changed )
+        {
+            revalidate ();
+            fireSelectionChanged ();
+        }
+    }
+
+    public void removeSelectedFiles ( final File... files )
+    {
+        boolean changed = false;
+        for ( final File file : files )
+        {
+            changed = removeSelectedFileImpl ( file, true ) || changed;
+        }
+        if ( changed )
+        {
+            revalidate ();
+            fireSelectionChanged ();
+        }
+    }
+
+    public void removeSelectedFile ( final File file )
+    {
+        if ( removeSelectedFileImpl ( file, true ) )
+        {
+            revalidate ();
+            fireSelectionChanged ();
+        }
+    }
+
+    protected boolean removeSelectedFileImpl ( final File file, final boolean animate )
+    {
+        if ( FileUtils.containtsFile ( selectedFiles, file ) )
+        {
+            for ( final WebFilePlate filePlate : getFilePlates ( file ) )
             {
-                accepted.add ( file );
+                if ( animate )
+                {
+                    filePlate.remove ();
+                }
+                else
+                {
+                    remove ( filePlate );
+                    selectedFiles.remove ( file );
+                }
+            }
+            return !animate;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public List<WebFilePlate> getFilePlates ( final File file )
+    {
+        final List<WebFilePlate> plates = new ArrayList<WebFilePlate> ( 1 );
+        for ( int i = 0; i < getComponentCount (); i++ )
+        {
+            final Component component = getComponent ( i );
+            if ( component instanceof WebFilePlate )
+            {
+                final WebFilePlate filePlate = ( WebFilePlate ) component;
+                if ( file.getAbsolutePath ().equals ( filePlate.getFile ().getAbsolutePath () ) )
+                {
+                    plates.add ( filePlate );
+                }
             }
         }
-
-        // Checking if lists are equal
-        if ( !FileUtils.equals ( accepted, this.selectedFiles ) )
-        {
-            this.selectedFiles = accepted;
-            updateFilesList ();
-            fireSelectionChanged ( accepted );
-        }
+        return plates;
     }
 
     public boolean isAllowSameFiles ()
@@ -393,57 +508,7 @@ public class WebFileDrop extends WebPanel implements LanguageMethods
         return dropText != null && showDropText && dropTextOpacity > 0f;
     }
 
-    @Override
-    protected void paintComponent ( final Graphics g )
-    {
-        super.paintComponent ( g );
-
-        if ( isDropTextVisible () )
-        {
-            final Graphics2D g2d = ( Graphics2D ) g;
-            final Composite old = GraphicsUtils.setupAlphaComposite ( g2d, dropTextOpacity );
-            final Object aa = GraphicsUtils.setupAntialias ( g2d );
-
-            final int dashX = dashSideSpacing + Math.round ( dashStroke.getLineWidth () / 2 );
-            final int dashY = dashSideSpacing + Math.round ( dashStroke.getLineWidth () / 2 );
-            final int dashWidth = getWidth () - dashSideSpacing * 2 - Math.round ( dashStroke.getLineWidth () );
-            final int dashHeight = getHeight () - dashSideSpacing * 2 - Math.round ( dashStroke.getLineWidth () );
-            g2d.setPaint ( dropBackground );
-            g2d.fillRoundRect ( dashX, dashY, dashWidth, dashHeight, dashRound * 2, dashRound * 2 );
-
-            final Stroke os = GraphicsUtils.setupStroke ( g2d, dashStroke );
-            g2d.setPaint ( dropBorder );
-            g2d.drawRoundRect ( dashSideSpacing, dashSideSpacing, getWidth () - dashSideSpacing * 2 - 1,
-                    getHeight () - dashSideSpacing * 2 - 1, dashRound * 2, dashRound * 2 );
-            GraphicsUtils.restoreStroke ( g2d, os );
-
-            GraphicsUtils.restoreAntialias ( g2d, aa );
-
-            final FontMetrics fm = g2d.getFontMetrics ();
-            if ( dashWidth >= fm.stringWidth ( dropText ) && dashHeight > fm.getHeight () )
-            {
-                final Map hints = SwingUtils.setupTextAntialias ( g2d );
-                final Point ts = LafUtils.getTextCenterShear ( fm, dropText );
-                g2d.drawString ( dropText, getWidth () / 2 + ts.x, getHeight () / 2 + ts.y );
-                SwingUtils.restoreTextAntialias ( g2d, hints );
-            }
-
-            GraphicsUtils.restoreComposite ( g2d, old );
-        }
-    }
-
-    private void updateFilesList ()
-    {
-        removeAll ();
-        for ( final File file : selectedFiles )
-        {
-            add ( createFilePlate ( file ) );
-        }
-        revalidate ();
-        repaint ();
-    }
-
-    private WebFilePlate createFilePlate ( final File file )
+    protected WebFilePlate createFilePlate ( final File file )
     {
         final WebFilePlate filePlate = new WebFilePlate ( file );
         filePlate.setShowFileExtensions ( showFileExtensions );
@@ -468,11 +533,52 @@ public class WebFileDrop extends WebPanel implements LanguageMethods
                 selectedFiles.remove ( file );
 
                 // Inform that selected files changed
-                fireSelectionChanged ( selectedFiles );
+                fireSelectionChanged ();
             }
         } );
 
         return filePlate;
+    }
+
+    @Override
+    protected void paintComponent ( final Graphics g )
+    {
+        super.paintComponent ( g );
+
+        if ( isDropTextVisible () )
+        {
+            final Graphics2D g2d = ( Graphics2D ) g;
+            final Composite old = GraphicsUtils.setupAlphaComposite ( g2d, dropTextOpacity );
+            final Object aa = GraphicsUtils.setupAntialias ( g2d );
+
+            final Insets bi = getInsets ();
+            final int hd = Math.round ( dashStroke.getLineWidth () / 2 );
+            final int hd2 = Math.round ( dashStroke.getLineWidth () );
+            final int dashX = dashSideSpacing + bi.left;
+            final int dashY = dashSideSpacing + bi.top;
+            final int dashWidth = getWidth () - dashSideSpacing * 2 - bi.left - bi.right;
+            final int dashHeight = getHeight () - dashSideSpacing * 2 - bi.top - bi.bottom;
+            g2d.setPaint ( dropBackground );
+            g2d.fillRoundRect ( dashX + hd, dashY + hd, dashWidth - hd2, dashHeight - hd2, dashRound * 2, dashRound * 2 );
+
+            final Stroke os = GraphicsUtils.setupStroke ( g2d, dashStroke );
+            g2d.setPaint ( dropBorder );
+            g2d.drawRoundRect ( dashX, dashY, dashWidth, dashHeight, dashRound * 2, dashRound * 2 );
+            GraphicsUtils.restoreStroke ( g2d, os );
+
+            GraphicsUtils.restoreAntialias ( g2d, aa );
+
+            final FontMetrics fm = g2d.getFontMetrics ();
+            if ( dashWidth >= fm.stringWidth ( dropText ) && dashHeight > fm.getHeight () )
+            {
+                final Map hints = SwingUtils.setupTextAntialias ( g2d );
+                final Point ts = LafUtils.getTextCenterShear ( fm, dropText );
+                g2d.drawString ( dropText, dashX + dashWidth / 2 + ts.x, dashY + dashHeight / 2 + ts.y );
+                SwingUtils.restoreTextAntialias ( g2d, hints );
+            }
+
+            GraphicsUtils.restoreComposite ( g2d, old );
+        }
     }
 
     public void addFileSelectionListener ( final FilesSelectionListener listener )
@@ -485,11 +591,11 @@ public class WebFileDrop extends WebPanel implements LanguageMethods
         listeners.remove ( listener );
     }
 
-    private void fireSelectionChanged ( final List<File> selectedFiles )
+    protected void fireSelectionChanged ()
     {
         for ( final FilesSelectionListener listener : CollectionUtils.copy ( listeners ) )
         {
-            listener.selectionChanged ( selectedFiles );
+            listener.selectionChanged ( CollectionUtils.copy ( selectedFiles ) );
         }
     }
 
