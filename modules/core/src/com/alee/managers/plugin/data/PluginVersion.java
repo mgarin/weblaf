@@ -17,6 +17,7 @@
 
 package com.alee.managers.plugin.data;
 
+import com.alee.utils.CompareUtils;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
@@ -32,9 +33,9 @@ import java.io.Serializable;
 public class PluginVersion implements Serializable
 {
     /**
-     * Simple default v1.0.
+     * Simple default v1.0.0.
      */
-    public static final PluginVersion DEFAULT = new PluginVersion ( 1, 0 );
+    public static final PluginVersion DEFAULT = new PluginVersion ( 1, 0, 0 );
 
     /**
      * Major plugin version.
@@ -49,11 +50,20 @@ public class PluginVersion implements Serializable
     private int minor;
 
     /**
+     * Plugin build version.
+     */
+    @XStreamAsAttribute
+    private Integer build;
+
+    /**
      * Constructs new plugin version data object.
      */
     public PluginVersion ()
     {
         super ();
+        this.major = DEFAULT.major;
+        this.minor = DEFAULT.minor;
+        this.build = DEFAULT.build;
     }
 
     /**
@@ -67,6 +77,22 @@ public class PluginVersion implements Serializable
         super ();
         this.major = major;
         this.minor = minor;
+        this.build = null;
+    }
+
+    /**
+     * Constructs new plugin version data object with the specified major and minor version numbers.
+     *
+     * @param major major version number
+     * @param minor minor version number
+     * @param build build version number
+     */
+    public PluginVersion ( final int major, final int minor, final Integer build )
+    {
+        super ();
+        this.major = major;
+        this.minor = minor;
+        this.build = build;
     }
 
     public int getMajor ()
@@ -89,24 +115,40 @@ public class PluginVersion implements Serializable
         this.minor = minor;
     }
 
-    public boolean newerThan ( final PluginVersion otherVersion )
+    public Integer getBuild ()
     {
-        return this.major > otherVersion.major || this.major == otherVersion.major && this.minor > otherVersion.minor;
+        return build;
     }
 
-    public boolean olderThan ( final PluginVersion otherVersion )
+    public void setBuild ( final Integer build )
     {
-        return otherVersion.major > this.major || otherVersion.major == this.major && otherVersion.minor > this.minor;
+        this.build = build;
     }
 
-    public boolean same ( final PluginVersion otherVersion )
+    public boolean isNewerThan ( final PluginVersion ov )
     {
-        return otherVersion.major == this.major && otherVersion.minor == this.minor;
+        return this.major > ov.major ||
+                this.major == ov.major && this.minor > ov.minor ||
+                this.major == ov.major && this.minor == ov.minor && this.build != null && ov.build == null ||
+                this.major == ov.major && this.minor == ov.minor && this.build == null && ov.build != null && this.build > ov.build;
+    }
+
+    public boolean isOlderThan ( final PluginVersion ov )
+    {
+        return ov.major > this.major ||
+                ov.major == this.major && ov.minor > this.minor ||
+                ov.major == this.major && ov.minor == this.minor && ov.build != null && this.build == null ||
+                ov.major == this.major && ov.minor == this.minor && ov.build != null && this.build != null && ov.build > this.build;
+    }
+
+    public boolean isSame ( final PluginVersion ov )
+    {
+        return ov.major == this.major && ov.minor == this.minor && CompareUtils.equals ( ov.build, this.build );
     }
 
     @Override
     public String toString ()
     {
-        return "v" + major + "." + minor;
+        return "v" + major + "." + minor + ( build != null ? ( "." + build ) : "" );
     }
 }

@@ -1280,7 +1280,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
     {
         if ( this.content != null )
         {
-            contentPanel.remove ( content );
+            contentPanel.remove ( this.content );
         }
 
         this.content = content;

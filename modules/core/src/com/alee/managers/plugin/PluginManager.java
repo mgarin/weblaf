@@ -98,22 +98,15 @@ public abstract class PluginManager<T extends Plugin>
     protected Map<String, T> availablePluginsById = new HashMap<String, T> ();
 
     /**
+     * Map of plugins cached by their classes.
+     */
+    protected Map<Class<? extends Plugin>, T> availablePluginsByClass = new HashMap<Class<? extends Plugin>, T> ();
+
+    /**
      * Recently initialized plugins list.
      * Contains plugins initialized while last plugins check.
      */
     protected List<T> recentlyInitialized;
-
-    /**
-     * Amount of successfully loaded plugins.
-     */
-    protected int loadedPluginsAmount = 0;
-
-    /**
-     * Amount of plugins which have failed to load.
-     * There might be a lot of reasons why they failed to load - exception, broken JAR, missing libraries etc.
-     * Simply check the log or retrieve failure cause from DetectedPlugin to understand what happened.
-     */
-    protected int failedPluginsAmount = 0;
 
     /**
      * Plugins directory path.
@@ -242,15 +235,23 @@ public abstract class PluginManager<T extends Plugin>
      */
     public void registerPlugin ( final T plugin, final PluginInformation information, final ImageIcon logo )
     {
+        final String prefix = "[" + information + "] ";
+        Log.info ( this, prefix + "Initializing pre-loaded plugin..." );
+
         // Creating base detected plugin information
         final DetectedPlugin<T> detectedPlugin = new DetectedPlugin<T> ( null, null, information, logo );
         detectedPlugin.setStatus ( PluginStatus.loaded );
         detectedPlugin.setPlugin ( plugin );
+        plugin.setPluginManager ( PluginManager.this );
+        plugin.setDetectedPlugin ( detectedPlugin );
 
         // Saving plugin
         detectedPlugins.add ( detectedPlugin );
         availablePlugins.add ( plugin );
         availablePluginsById.put ( plugin.getId (), plugin );
+        availablePluginsByClass.put ( plugin.getClass (), plugin );
+
+        Log.info ( this, prefix + "Pre-loaded plugin initialized" );
 
         // Informing
         firePluginsInitialized ( Arrays.asList ( plugin ) );
@@ -517,7 +518,6 @@ public abstract class PluginManager<T extends Plugin>
                     dp.setFailureCause ( "Wrong type" );
                     dp.setExceptionMessage ( "Detected plugin type: " + info.getType () + "\", " +
                             "required plugin type: \"" + acceptedPluginType + "\"" );
-                    failedPluginsAmount++;
                     continue;
                 }
 
@@ -529,7 +529,6 @@ public abstract class PluginManager<T extends Plugin>
                     dp.setStatus ( PluginStatus.failed );
                     dp.setFailureCause ( "Deprecated" );
                     dp.setExceptionMessage ( "This plugin is deprecated, newer version loaded instead" );
-                    failedPluginsAmount++;
                     continue;
                 }
 
@@ -541,7 +540,6 @@ public abstract class PluginManager<T extends Plugin>
                     dp.setStatus ( PluginStatus.failed );
                     dp.setFailureCause ( "Duplicate" );
                     dp.setExceptionMessage ( "This plugin is duplicate, it will be loaded from another file" );
-                    failedPluginsAmount++;
                     continue;
                 }
 
@@ -552,7 +550,6 @@ public abstract class PluginManager<T extends Plugin>
                     dp.setStatus ( PluginStatus.failed );
                     dp.setFailureCause ( "Filtered" );
                     dp.setExceptionMessage ( "Plugin was not accepted by plugin filter" );
-                    failedPluginsAmount++;
                     continue;
                 }
 
@@ -618,12 +615,12 @@ public abstract class PluginManager<T extends Plugin>
                     // Saving initialized plugin
                     availablePlugins.add ( plugin );
                     availablePluginsById.put ( plugin.getId (), plugin );
+                    availablePluginsByClass.put ( plugin.getClass (), plugin );
                     recentlyInitialized.add ( plugin );
 
                     Log.info ( this, prefix + "Plugin initialized" );
                     dp.setStatus ( PluginStatus.loaded );
                     dp.setPlugin ( plugin );
-                    loadedPluginsAmount++;
                 }
                 catch ( final Throwable e )
                 {
@@ -631,7 +628,6 @@ public abstract class PluginManager<T extends Plugin>
                     dp.setStatus ( PluginStatus.failed );
                     dp.setFailureCause ( "Internal exception" );
                     dp.setException ( e );
-                    failedPluginsAmount++;
                 }
             }
             catch ( final Throwable e )
@@ -640,7 +636,6 @@ public abstract class PluginManager<T extends Plugin>
                 dp.setStatus ( PluginStatus.failed );
                 dp.setFailureCause ( "Data exception" );
                 dp.setException ( e );
-                failedPluginsAmount++;
             }
         }
 
@@ -697,7 +692,7 @@ public abstract class PluginManager<T extends Plugin>
                 final PluginInformation detectedPluginInfo = detectedPlugin.getInformation ();
                 if ( detectedPluginInfo.getId ().equals ( pluginInfo.getId () ) &&
                         detectedPluginInfo.getVersion () != null && pluginInfo.getVersion () != null &&
-                        detectedPluginInfo.getVersion ().newerThan ( pluginInfo.getVersion () ) )
+                        detectedPluginInfo.getVersion ().isNewerThan ( pluginInfo.getVersion () ) )
                 {
                     return true;
                 }
@@ -723,7 +718,7 @@ public abstract class PluginManager<T extends Plugin>
                 final PluginInformation detectedPluginInfo = detectedPlugin.getInformation ();
                 if ( detectedPluginInfo.getId ().equals ( pluginInfo.getId () ) &&
                         ( detectedPluginInfo.getVersion () == null && pluginInfo.getVersion () == null ||
-                                detectedPluginInfo.getVersion ().same ( pluginInfo.getVersion () ) ) &&
+                                detectedPluginInfo.getVersion ().isSame ( pluginInfo.getVersion () ) ) &&
                         detectedPlugin.getStatus () == PluginStatus.loaded )
                 {
                     return true;
@@ -866,14 +861,35 @@ public abstract class PluginManager<T extends Plugin>
     }
 
     /**
-     * Returns available plugin by its ID.
+     * Returns available plugin instance by its ID.
      *
-     * @param pluginId available plugin ID
-     * @return available plugin
+     * @param pluginId plugin ID
+     * @return available plugin instance by its ID
      */
-    public T getPlugin ( final String pluginId )
+    public <P extends T> P getPlugin ( final String pluginId )
     {
-        return availablePluginsById.get ( pluginId );
+        return ( P ) availablePluginsById.get ( pluginId );
+    }
+
+    /**
+     * Returns available plugin instance by its class.
+     *
+     * @param pluginClass plugin class
+     * @return available plugin instance by its class
+     */
+    public <P extends T> P getPlugin ( final Class<P> pluginClass )
+    {
+        return ( P ) availablePluginsByClass.get ( pluginClass );
+    }
+
+    /**
+     * Returns amount of detected plugins.
+     *
+     * @return amount of detected loaded plugins
+     */
+    public int getDetectedPluginsAmount ()
+    {
+        return getDetectedPlugins ().size ();
     }
 
     /**
@@ -883,17 +899,19 @@ public abstract class PluginManager<T extends Plugin>
      */
     public int getLoadedPluginsAmount ()
     {
-        return loadedPluginsAmount;
+        return getAvailablePlugins ().size ();
     }
 
     /**
      * Returns amount of plugins which have failed to load.
+     * There might be a lot of reasons why they failed to load - exception, broken JAR, missing libraries etc.
+     * Simply check the log or retrieve failure cause from DetectedPlugin to understand what happened.
      *
      * @return amount of plugins which have failed to load
      */
     public int getFailedPluginsAmount ()
     {
-        return failedPluginsAmount;
+        return getDetectedPlugins ().size () - getAvailablePlugins ().size ();
     }
 
     /**
