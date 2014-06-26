@@ -27,13 +27,15 @@ import java.io.Serializable;
  * Plugin version data class.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-PluginManager">How to use PluginManager</a>
+ * @see com.alee.managers.plugin.PluginManager
  */
 
-@XStreamAlias ("PluginVersion")
+@XStreamAlias ( "PluginVersion" )
 public class PluginVersion implements Serializable
 {
     /**
-     * Simple default v1.0.0.
+     * Simple default v1.0.0 version.
      */
     public static final PluginVersion DEFAULT = new PluginVersion ( 1, 0, 0 );
 
@@ -95,36 +97,74 @@ public class PluginVersion implements Serializable
         this.build = build;
     }
 
+    /**
+     * Returns major plugin version.
+     *
+     * @return major plugin version
+     */
     public int getMajor ()
     {
         return major;
     }
 
+    /**
+     * Sets major plugin version.
+     *
+     * @param major new major plugin version
+     */
     public void setMajor ( final int major )
     {
         this.major = major;
     }
 
+    /**
+     * Returns minor plugin version.
+     *
+     * @return minor plugin version
+     */
     public int getMinor ()
     {
         return minor;
     }
 
+    /**
+     * Sets minor plugin version
+     *
+     * @param minor new minor plugin version
+     */
     public void setMinor ( final int minor )
     {
         this.minor = minor;
     }
 
+    /**
+     * Returns plugin build version.
+     * Might return null in case build is not specified.
+     *
+     * @return plugin build version
+     */
     public Integer getBuild ()
     {
         return build;
     }
 
+    /**
+     * Sets plugin build version.
+     * You might want to set it to null in case you don't need build number.
+     *
+     * @param build plugin build version
+     */
     public void setBuild ( final Integer build )
     {
         this.build = build;
     }
 
+    /**
+     * Returns whether this plugin version is newer than the specified one or not.
+     *
+     * @param ov other plugin version
+     * @return true if this plugin version is newer than the specified one, false otherwise
+     */
     public boolean isNewerThan ( final PluginVersion ov )
     {
         return this.major > ov.major ||
@@ -133,6 +173,12 @@ public class PluginVersion implements Serializable
                 this.major == ov.major && this.minor == ov.minor && this.build == null && ov.build != null && this.build > ov.build;
     }
 
+    /**
+     * Returns whether this plugin version is older than the specified one or not.
+     *
+     * @param ov other plugin version
+     * @return true if this plugin version is older than the specified one, false otherwise
+     */
     public boolean isOlderThan ( final PluginVersion ov )
     {
         return ov.major > this.major ||
@@ -141,11 +187,20 @@ public class PluginVersion implements Serializable
                 ov.major == this.major && ov.minor == this.minor && ov.build != null && this.build != null && ov.build > this.build;
     }
 
+    /**
+     * Returns whether this plugin version is the same as the specified one or not.
+     *
+     * @param ov other plugin version
+     * @return true if this plugin version is the same as the specified one, false otherwise
+     */
     public boolean isSame ( final PluginVersion ov )
     {
         return ov.major == this.major && ov.minor == this.minor && CompareUtils.equals ( ov.build, this.build );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString ()
     {

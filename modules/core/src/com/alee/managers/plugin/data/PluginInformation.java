@@ -30,9 +30,11 @@ import java.util.List;
  * It will be read each time PluginManager attempt to load its plugins.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-PluginManager">How to use PluginManager</a>
+ * @see com.alee.managers.plugin.PluginManager
  */
 
-@XStreamAlias ("PluginInformation")
+@XStreamAlias ( "PluginInformation" )
 public class PluginInformation implements Serializable
 {
     /**
@@ -43,25 +45,27 @@ public class PluginInformation implements Serializable
     private String id;
 
     /**
-     * This specific plugin part type.
-     * Tells where exactly this plugin part (specific JAR with this descriptor) can be used.
-     * This property can be used to limit plugins from loading on different application sides (for example client/server).
+     * This specific plugin custom type.
+     * Tells where exactly this plugin (loaded from specific JAR with this descriptor) can be used.
+     * This property can be used to limit plugins from loading on different application sides (for example client/server/web/etc.).
      */
     private String type;
 
     /**
-     * All available types of this plugin.
-     * Tells where each part of this plugin is placed.
+     * All available custom types of this plugin.
+     * Tells where different parts of this plugin can be placed.
+     * It might be useful to know on each application side where specific plugin can be placed.
      */
     private String types;
 
     /**
      * Whether plugin can be disabled or not.
+     * Note that plugin enabling/disabling implementation is up to plugin developer.
      */
     private boolean disableable;
 
     /**
-     * Plugin main class.
+     * Plugin main class canonical name.
      */
     private String mainClass;
 
@@ -160,96 +164,191 @@ public class PluginInformation implements Serializable
         this.libraries = libraries;
     }
 
+    /**
+     * Returns plugin ID.
+     *
+     * @return plugin ID
+     */
     public String getId ()
     {
         return id;
     }
 
+    /**
+     * Sets plugin ID.
+     *
+     * @param id new plugin ID
+     */
     public void setId ( final String id )
     {
         this.id = id;
     }
 
+    /**
+     * Returns custom plugin type.
+     *
+     * @return custom plugin type
+     */
     public String getType ()
     {
         return type;
     }
 
+    /**
+     * Sets custom plugin type.
+     *
+     * @param type new custom plugin type
+     */
     public void setType ( final String type )
     {
         this.type = type;
     }
 
+    /**
+     * Returns all custom plugin types.
+     *
+     * @return all custom plugin types
+     */
     public String getTypes ()
     {
         return types;
     }
 
+    /**
+     * Returns all custom plugin types list.
+     *
+     * @return all custom plugin types list
+     */
     public List<String> getActualTypes ()
     {
         return TextUtils.stringToList ( types, "," );
     }
 
+    /**
+     * Sets custom plugin types.
+     *
+     * @param types new custom plugin types
+     */
     public void setTypes ( final String types )
     {
         this.types = types;
     }
 
+    /**
+     * Returns whether this plugin is disableable or not.
+     *
+     * @return true if this plugin is disableable, false otherwise
+     */
     public boolean isDisableable ()
     {
         return disableable;
     }
 
+    /**
+     * Sets whether this plugin is disableable or not.
+     *
+     * @param disableable whether this plugin is disableable or not
+     */
     public void setDisableable ( final boolean disableable )
     {
         this.disableable = disableable;
     }
 
+    /**
+     * Returns plugin main class canonical name.
+     *
+     * @return plugin main class canonical name
+     */
     public String getMainClass ()
     {
         return mainClass;
     }
 
+    /**
+     * Sets plugin main class canonical name.
+     *
+     * @param mainClass new plugin main class canonical name
+     */
     public void setMainClass ( final String mainClass )
     {
         this.mainClass = mainClass;
     }
 
+    /**
+     * Returns plugin title.
+     *
+     * @return plugin title
+     */
     public String getTitle ()
     {
         return title;
     }
 
+    /**
+     * Sets plugin title.
+     *
+     * @param title new plugin title
+     */
     public void setTitle ( final String title )
     {
         this.title = title;
     }
 
+    /**
+     * Returns plugin description.
+     *
+     * @return plugin description
+     */
     public String getDescription ()
     {
         return description;
     }
 
+    /**
+     * Sets plugin description.
+     *
+     * @param description new plugin description
+     */
     public void setDescription ( final String description )
     {
         this.description = description;
     }
 
+    /**
+     * Returns plugin version.
+     *
+     * @return plugin version
+     */
     public PluginVersion getVersion ()
     {
         return version;
     }
 
+    /**
+     * Sets plugin version.
+     *
+     * @param version new plugin version
+     */
     public void setVersion ( final PluginVersion version )
     {
         this.version = version;
     }
 
+    /**
+     * Returns plugin libraries list.
+     *
+     * @return plugin libraries list
+     */
     public List<PluginLibrary> getLibraries ()
     {
         return libraries;
     }
 
+    /**
+     * Sets plugin libraries list.
+     *
+     * @param libraries new plugin libraries list
+     */
     public void setLibraries ( final List<PluginLibrary> libraries )
     {
         this.libraries = libraries;

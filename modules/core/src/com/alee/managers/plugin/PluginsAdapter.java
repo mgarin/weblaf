@@ -25,6 +25,8 @@ import java.util.List;
  * Special listener adapter for PluginManager events.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-PluginManager">How to use PluginManager</a>
+ * @see com.alee.managers.plugin.PluginManager
  */
 
 public class PluginsAdapter<T extends Plugin> implements PluginsListener<T>

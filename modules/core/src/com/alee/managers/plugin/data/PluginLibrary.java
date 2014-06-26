@@ -25,9 +25,11 @@ import java.io.Serializable;
  * Plugin library information data class.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-PluginManager">How to use PluginManager</a>
+ * @see com.alee.managers.plugin.PluginManager
  */
 
-@XStreamAlias ("PluginLibrary")
+@XStreamAlias ( "PluginLibrary" )
 public class PluginLibrary implements Serializable
 {
     /**
@@ -87,51 +89,101 @@ public class PluginLibrary implements Serializable
         this.file = file;
     }
 
+    /**
+     * Returns plugin library ID.
+     *
+     * @return plugin library ID
+     */
     public String getId ()
     {
         return id;
     }
 
+    /**
+     * Sets plugin library ID.
+     *
+     * @param id new plugin library ID
+     */
     public void setId ( final String id )
     {
         this.id = id;
     }
 
+    /**
+     * Returns plugin library title.
+     *
+     * @return plugin library title
+     */
     public String getTitle ()
     {
         return title;
     }
 
+    /**
+     * Sets plugin library title.
+     *
+     * @param title new plugin library title
+     */
     public void setTitle ( final String title )
     {
         this.title = title;
     }
 
+    /**
+     * Returns plugin library description.
+     *
+     * @return plugin library description
+     */
     public String getDescription ()
     {
         return description;
     }
 
+    /**
+     * Sets plugin library description.
+     *
+     * @param description new plugin library description
+     */
     public void setDescription ( final String description )
     {
         this.description = description;
     }
 
+    /**
+     * Returns plugin library version.
+     *
+     * @return plugin library version
+     */
     public String getVersion ()
     {
         return version;
     }
 
+    /**
+     * Sets plugin library version.
+     *
+     * @param version new plugin library version
+     */
     public void setVersion ( final String version )
     {
         this.version = version;
     }
 
+    /**
+     * Returns plugin library file path relative to plugin file location.
+     *
+     * @return plugin library file path relative to plugin file location
+     */
     public String getFile ()
     {
         return file;
     }
 
+    /**
+     * Sets plugin library file path relative to plugin file location.
+     *
+     * @param file new plugin library file path
+     */
     public void setFile ( final String file )
     {
         this.file = file;

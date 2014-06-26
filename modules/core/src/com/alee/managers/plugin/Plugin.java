@@ -28,6 +28,7 @@ import java.util.List;
  * You still might want to use {@code AbstractPlugin} instead as it has some basic plugin methods.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-PluginManager">How to use PluginManager</a>
  * @see com.alee.managers.plugin.PluginManager
  */
 

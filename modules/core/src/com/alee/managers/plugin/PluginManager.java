@@ -36,19 +36,21 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 /**
- * Base for any plugin manager you might want to create.
+ * Base class for any plugin manager you might want to create.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-PluginManager">How to use PluginManager</a>
  * @see com.alee.managers.plugin.Plugin
  */
 
 public abstract class PluginManager<T extends Plugin>
 {
     /**
-     * todo 1. Allow to disable logging from this manager
-     * todo 2. Make plugin operations thread-safe
-     * todo 3. Translate/replace error messages?
+     * todo 1. Allow direct plugin loading from specified file/url (including loading from within another jar)
+     * todo 2. Allow to disable logging from this manager
+     * todo 3. Make plugin operations thread-safe
      * todo 4. PluginManager -> Plugin -> dependencies on other plugins
+     * todo 5. Translate/replace error messages? or not
      */
 
     /**
@@ -774,7 +776,7 @@ public abstract class PluginManager<T extends Plugin>
         }
 
         // todo Sort only recently initialized plugins
-        // todo Already initialized plugins should not be sorted again, that is useless and that breaks order in which they were initialized
+        // todo Already initialized plugins should not be sorted again, that is useless and might break initial initialization order
         if ( middle.size () == 0 )
         {
             // Combining all plugins into single list

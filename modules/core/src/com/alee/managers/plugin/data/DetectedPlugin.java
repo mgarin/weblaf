@@ -25,12 +25,14 @@ import javax.swing.*;
  * Initial information gathered about existing plugin.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-PluginManager">How to use PluginManager</a>
+ * @see com.alee.managers.plugin.PluginManager
  */
 
 public class DetectedPlugin<T extends Plugin>
 {
     /**
-     * Path to plugin file folder.
+     * Path to plugin folder.
      */
     private final String pluginFolder;
 
@@ -55,7 +57,7 @@ public class DetectedPlugin<T extends Plugin>
     private PluginStatus status;
 
     /**
-     * Possible failure cause.
+     * Possible load failure cause.
      */
     private String failureCause;
 
@@ -65,7 +67,7 @@ public class DetectedPlugin<T extends Plugin>
     private Throwable exception;
 
     /**
-     * Custom exception message.
+     * Custom load exception message.
      */
     private String exceptionMessage;
 
@@ -92,79 +94,163 @@ public class DetectedPlugin<T extends Plugin>
         this.status = PluginStatus.detected;
     }
 
+    /**
+     * Returns plugin folder path.
+     *
+     * @return plugin folder path
+     */
     public String getPluginFolder ()
     {
         return pluginFolder;
     }
 
+    /**
+     * Returns plugin file name.
+     *
+     * @return plugin file name
+     */
     public String getPluginFile ()
     {
         return pluginFile;
     }
 
+    /**
+     * Returns plugin information.
+     *
+     * @return plugin information
+     */
     public PluginInformation getInformation ()
     {
         return information;
     }
 
+    /**
+     * Returns plugin logo.
+     *
+     * @return plugin logo
+     */
     public ImageIcon getLogo ()
     {
         return logo;
     }
 
+    /**
+     * Returns plugin status.
+     *
+     * @return plugin status
+     */
     public PluginStatus getStatus ()
     {
         return status;
     }
 
+    /**
+     * Sets plugin status.
+     *
+     * @param status new plugin status
+     */
     public void setStatus ( final PluginStatus status )
     {
         this.status = status;
     }
 
+    /**
+     * Returns load failure cause.
+     *
+     * @return load failure cause
+     */
     public String getFailureCause ()
     {
         return failureCause;
     }
 
+    /**
+     * Sets load failure cause.
+     *
+     * @param failureCause new load failure cause
+     */
     public void setFailureCause ( final String failureCause )
     {
         this.failureCause = failureCause;
     }
 
+    /**
+     * Returns load exception.
+     *
+     * @return load exception
+     */
     public Throwable getException ()
     {
         return exception;
     }
 
+    /**
+     * Sets load exception.
+     *
+     * @param exception new load exception
+     */
     public void setException ( final Throwable exception )
     {
         this.exception = exception;
     }
 
+    /**
+     * Returns load exception message.
+     *
+     * @return load exception message
+     */
     public String getExceptionMessage ()
     {
         return exceptionMessage;
     }
 
+    /**
+     * Sets load exception message.
+     *
+     * @param exceptionMessage new load exception message
+     */
     public void setExceptionMessage ( final String exceptionMessage )
     {
         this.exceptionMessage = exceptionMessage;
     }
 
-    public String getFailureText ()
+    /**
+     * Returns load failure HTML description.
+     *
+     * @return load failure HTML description
+     */
+    public String getFailureHtmlText ()
     {
         return "<html><b>" + failureCause + "</b>" + ( exceptionMessage != null || exception != null ?
                 "<br>" + ( exceptionMessage != null ? exceptionMessage : exception.toString () ) : "" ) + "</html>";
     }
 
+    /**
+     * Returns loaded plugin instance.
+     *
+     * @return loaded plugin instance
+     */
     public T getPlugin ()
     {
         return plugin;
     }
 
+    /**
+     * Sets loaded plugin instance.
+     *
+     * @param plugin new loaded plugin instance
+     */
     public void setPlugin ( final T plugin )
     {
         this.plugin = plugin;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString ()
+    {
+        return information + ", Status: " + status + ( status == PluginStatus.failed ? ( ", Cause: " + failureCause ) : "" );
     }
 }
