@@ -126,7 +126,7 @@ public class WebComboBoxCellRenderer implements ListCellRenderer
         else
         {
             renderer.setIcon ( null );
-            renderer.setText ( value == null ? "" : value.toString () );
+            renderer.setText ( value == null || value.toString ().equals ( "" ) ? " " : value.toString () );
         }
 
         return renderer;
