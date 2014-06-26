@@ -15,7 +15,7 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.extended.editor;
+package com.alee.extended.style;
 
 import com.alee.managers.style.skin.CustomSkin;
 
