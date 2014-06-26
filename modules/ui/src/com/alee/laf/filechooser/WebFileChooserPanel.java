@@ -1187,7 +1187,7 @@ public class WebFileChooserPanel extends WebPanel
      * @param allFiles files to filter
      * @return list of filtered selected files
      */
-    protected List<File> getFilteredSelectedFiles ( final List<File> allFiles )
+    protected List<File> getFilteredSelectedFiles ( final Collection<File> allFiles )
     {
         return FileUtils.filterFiles ( allFiles, fileFilter );
     }
@@ -1230,6 +1230,10 @@ public class WebFileChooserPanel extends WebPanel
         {
             fileTable.setSelectedFile ( file );
         }
+        if ( !file.exists () )
+        {
+            updateSelectedFilesFieldImpl ( Arrays.asList ( file ) );
+        }
     }
 
     /**
@@ -1257,6 +1261,7 @@ public class WebFileChooserPanel extends WebPanel
         {
             fileTable.setSelectedFiles ( files );
         }
+        updateSelectedFilesFieldImpl ( files );
     }
 
     /**
@@ -1266,13 +1271,22 @@ public class WebFileChooserPanel extends WebPanel
     {
         // All selected files
         final List<File> allFiles = getAllSelectedFiles ();
+        updateSelectedFilesFieldImpl ( allFiles );
+    }
 
+    /**
+     * Updates currently selected files field.
+     *
+     * @param selected selected files
+     */
+    protected void updateSelectedFilesFieldImpl ( final Collection<File> selected )
+    {
         // Filtered selected files
-        final List<File> files = getFilteredSelectedFiles ( allFiles );
+        final List<File> files = getFilteredSelectedFiles ( selected );
 
         // Updating controls
         folderNew.setEnabled ( currentFolder != null );
-        remove.setEnabled ( currentFolder != null && allFiles.size () > 0 );
+        remove.setEnabled ( currentFolder != null && selected.size () > 0 );
 
         // Updating selected files view component
         if ( chooserType == FileChooserType.save )
@@ -1281,17 +1295,17 @@ public class WebFileChooserPanel extends WebPanel
             {
                 // Accept only file as selection, otherwise leave old file selected
                 final File file = files.get ( 0 );
-                if ( FileUtils.isFile ( file ) )
+                if ( !file.exists () || FileUtils.isFile ( file ) )
                 {
                     selectedFilesViewField.setSelectedFile ( file );
-                    selectedFilesTextField.setText ( file.getName () );
+                    selectedFilesTextField.setText ( getSingleFileView ( file ) );
                 }
             }
         }
         else
         {
             selectedFilesViewField.setSelectedFiles ( files );
-            selectedFilesTextField.setText ( TextUtils.listToString ( files, ", ", quotedFileNameProvider ) );
+            selectedFilesTextField.setText ( getFilesView ( files ) );
         }
 
         // When choose action allowed
@@ -1299,6 +1313,39 @@ public class WebFileChooserPanel extends WebPanel
 
         // Firing selection change
         fireFileSelectionChanged ( files );
+    }
+
+    /**
+     * Returns text representtation for specified files list.
+     *
+     * @param files files list
+     * @return text representtation for specified files list
+     */
+    private String getFilesView ( final List<File> files )
+    {
+        return files.size () > 1 ? getMultiFilesView ( files ) : files.size () == 1 ? getSingleFileView ( files.get ( 0 ) ) : "";
+    }
+
+    /**
+     * Returns text representtation for single file.
+     *
+     * @param file file
+     * @return text representtation for single file
+     */
+    protected String getSingleFileView ( final File file )
+    {
+        return file.getName ();
+    }
+
+    /**
+     * Returns text representtation for multiply files.
+     *
+     * @param files files list
+     * @return text representtation for multiply files
+     */
+    protected String getMultiFilesView ( final List<File> files )
+    {
+        return TextUtils.listToString ( files, ", ", quotedFileNameProvider );
     }
 
     /**
