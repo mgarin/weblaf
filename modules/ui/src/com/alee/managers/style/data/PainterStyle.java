@@ -24,6 +24,8 @@ import java.util.Map;
  * Painter style information class.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
+ * @see com.alee.managers.style.StyleManager
  */
 
 public final class PainterStyle implements Serializable
@@ -60,41 +62,81 @@ public final class PainterStyle implements Serializable
         super ();
     }
 
+    /**
+     * Returns painter ID.
+     *
+     * @return painter ID
+     */
     public String getId ()
     {
         return id;
     }
 
+    /**
+     * Sets painter ID.
+     *
+     * @param id new painter ID
+     */
     public void setId ( final String id )
     {
         this.id = id;
     }
 
+    /**
+     * Returns whether this is base component painter or not.
+     *
+     * @return true if this is base component painter, false otherwise
+     */
     public boolean isBase ()
     {
         return base;
     }
 
+    /**
+     * Sets whether this is base component painter or not.
+     *
+     * @param base whether this is base component painter or not
+     */
     public void setBase ( final boolean base )
     {
         this.base = base;
     }
 
+    /**
+     * Returns painter class canonical name.
+     *
+     * @return painter class canonical name
+     */
     public String getPainterClass ()
     {
         return painterClass;
     }
 
+    /**
+     * Sets painter class canonical name.
+     *
+     * @param painterClass new painter class canonical name
+     */
     public void setPainterClass ( final String painterClass )
     {
         this.painterClass = painterClass;
     }
 
+    /**
+     * Returns painter properties.
+     *
+     * @return painter properties
+     */
     public Map<String, Object> getProperties ()
     {
         return properties;
     }
 
+    /**
+     * Sets painter properties.
+     *
+     * @param properties new painter properties
+     */
     public void setProperties ( final Map<String, Object> properties )
     {
         this.properties = properties;

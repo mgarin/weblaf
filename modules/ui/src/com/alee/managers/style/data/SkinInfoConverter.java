@@ -40,7 +40,9 @@ import java.util.Map;
  * Custom XStream converter for SkinInfo class.
  *
  * @author Mikle Garin
- * @see SkinInfo
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
+ * @see com.alee.managers.style.StyleManager
+ * @see com.alee.managers.style.data.SkinInfo
  */
 
 public class SkinInfoConverter extends ReflectionConverter

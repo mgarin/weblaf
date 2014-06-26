@@ -40,6 +40,7 @@ import java.util.WeakHashMap;
  * It also manages available WebLaF skins and can install/change them in runtime.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
  * @see com.alee.managers.style.skin.WebLafSkin
  * @see com.alee.managers.style.data.SkinInfo
  */

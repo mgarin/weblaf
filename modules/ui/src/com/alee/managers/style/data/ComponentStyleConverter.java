@@ -35,7 +35,9 @@ import java.util.*;
  * Custom XStream converter for ComponentStyle class.
  *
  * @author Mikle Garin
- * @see ComponentStyle
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
+ * @see com.alee.managers.style.StyleManager
+ * @see com.alee.managers.style.data.ComponentStyle
  */
 
 public class ComponentStyleConverter extends ReflectionConverter

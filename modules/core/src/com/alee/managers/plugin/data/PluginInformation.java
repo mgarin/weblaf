@@ -219,7 +219,7 @@ public class PluginInformation implements Serializable
      *
      * @return all custom plugin types list
      */
-    public List<String> getActualTypes ()
+    public List<String> getTypesList ()
     {
         return TextUtils.stringToList ( types, "," );
     }
@@ -232,6 +232,16 @@ public class PluginInformation implements Serializable
     public void setTypes ( final String types )
     {
         this.types = types;
+    }
+
+    /**
+     * Sets custom plugin types.
+     *
+     * @param types new custom plugin types
+     */
+    public void setTypes ( final List<String> types )
+    {
+        this.types = TextUtils.listToString ( types, "," );
     }
 
     /**

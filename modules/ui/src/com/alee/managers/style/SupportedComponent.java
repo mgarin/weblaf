@@ -37,8 +37,9 @@ import java.util.*;
  * It also contains some references and useful settings for each component type.
  *
  * @author Mikle Garin
- * @see com.alee.laf.WebLookAndFeel
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
  * @see com.alee.managers.style.StyleManager
+ * @see com.alee.laf.WebLookAndFeel
  */
 
 public enum SupportedComponent

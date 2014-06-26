@@ -33,17 +33,14 @@ import java.util.Map;
  * Skin information class.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
+ * @see com.alee.managers.style.StyleManager
  */
 
-@XStreamAlias ("skin")
-@XStreamConverter (SkinInfoConverter.class)
+@XStreamAlias ( "skin" )
+@XStreamConverter ( SkinInfoConverter.class )
 public final class SkinInfo implements Serializable
 {
-    /**
-     * Skin styles cache map.
-     */
-    private transient Map<SupportedComponent, Map<String, ComponentStyle>> stylesCache;
-
     /**
      * Unique skin ID.
      * Used to collect and manage skins within StyleManager.
@@ -75,10 +72,10 @@ public final class SkinInfo implements Serializable
     private String supportedSystems;
 
     /**
-     * Sking class canonical name.
+     * Skin class canonical name.
      * Used to locate included resources.
      */
-    @XStreamAlias ("class")
+    @XStreamAlias ( "class" )
     private String skinClass;
 
     /**
@@ -89,6 +86,11 @@ public final class SkinInfo implements Serializable
     private List<ComponentStyle> styles;
 
     /**
+     * Skin styles cache map.
+     */
+    private transient Map<SupportedComponent, Map<String, ComponentStyle>> stylesCache;
+
+    /**
      * Constructs new skin information.
      */
     public SkinInfo ()
@@ -96,94 +98,184 @@ public final class SkinInfo implements Serializable
         super ();
     }
 
-    public Map<SupportedComponent, Map<String, ComponentStyle>> getStylesCache ()
-    {
-        return stylesCache;
-    }
-
-    public void setStylesCache ( final Map<SupportedComponent, Map<String, ComponentStyle>> stylesCache )
-    {
-        this.stylesCache = stylesCache;
-    }
-
+    /**
+     * Returns skin ID.
+     *
+     * @return skin ID
+     */
     public String getId ()
     {
         return id;
     }
 
+    /**
+     * Sets skin ID.
+     *
+     * @param id new skin ID
+     */
     public void setId ( final String id )
     {
         this.id = id;
     }
 
+    /**
+     * Returns skin name.
+     *
+     * @return skin name
+     */
     public String getName ()
     {
         return name;
     }
 
+    /**
+     * Sets skin name.
+     *
+     * @param name new skin name
+     */
     public void setName ( final String name )
     {
         this.name = name;
     }
 
+    /**
+     * Returns skin description.
+     *
+     * @return skin description
+     */
     public String getDescription ()
     {
         return description;
     }
 
+    /**
+     * Sets skin description.
+     *
+     * @param description new skin description
+     */
     public void setDescription ( final String description )
     {
         this.description = description;
     }
 
+    /**
+     * Returns skin author.
+     *
+     * @return skin author
+     */
     public String getAuthor ()
     {
         return author;
     }
 
+    /**
+     * Sets skin author.
+     *
+     * @param author new skin author
+     */
     public void setAuthor ( final String author )
     {
         this.author = author;
     }
 
+    /**
+     * Returns supported systems.
+     *
+     * @return supported systems
+     */
     public String getSupportedSystems ()
     {
         return supportedSystems;
     }
 
+    /**
+     * Returns supported systems list.
+     *
+     * @return supported systems list
+     */
+    public List<String> getSupportedSystemsList ()
+    {
+        return TextUtils.stringToList ( supportedSystems, "," );
+    }
+
+    /**
+     * Sets supported systems.
+     *
+     * @param supportedSystems supported systems
+     */
     public void setSupportedSystems ( final String supportedSystems )
     {
         this.supportedSystems = supportedSystems;
     }
 
+    /**
+     * Sets supported systems.
+     *
+     * @param supportedSystems supported systems
+     */
+    public void setSupportedSystems ( final List<String> supportedSystems )
+    {
+        this.supportedSystems = TextUtils.listToString ( supportedSystems, "," );
+    }
+
+    /**
+     * Returns skin class canonical name.
+     *
+     * @return skin class canonical name
+     */
     public String getSkinClass ()
     {
         return skinClass;
     }
 
+    /**
+     * Sets skin class canonical name.
+     *
+     * @param skinClass new skin class canonical name
+     */
     public void setSkinClass ( final String skinClass )
     {
         this.skinClass = skinClass;
     }
 
+    /**
+     * Returns skin styles.
+     *
+     * @return skin styles
+     */
     public List<ComponentStyle> getStyles ()
     {
         return styles;
     }
 
+    /**
+     * Sets skin styles.
+     *
+     * @param styles new skin styles
+     */
     public void setStyles ( final List<ComponentStyle> styles )
     {
         this.styles = styles;
     }
 
     /**
-     * Returns list of supported OS.
+     * Returns skin styles cache map.
      *
-     * @return list of supported OS
+     * @return skin styles cache map
      */
-    public List<String> getSupportedSystemsList ()
+    public Map<SupportedComponent, Map<String, ComponentStyle>> getStylesCache ()
     {
-        return TextUtils.stringToList ( supportedSystems, "," );
+        return stylesCache;
+    }
+
+    /**
+     * Sets skin styles cache map.
+     *
+     * @param stylesCache new skin styles cache map
+     */
+    public void setStylesCache ( final Map<SupportedComponent, Map<String, ComponentStyle>> stylesCache )
+    {
+        this.stylesCache = stylesCache;
     }
 
     /**

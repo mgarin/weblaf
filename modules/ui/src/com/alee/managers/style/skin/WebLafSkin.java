@@ -42,7 +42,9 @@ import java.util.Map;
  * Each skin combines a group of component painters and settings to provide an unique visual style.
  *
  * @author Mikle Garin
- * @see CustomSkin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
+ * @see com.alee.managers.style.StyleManager
+ * @see com.alee.managers.style.skin.CustomSkin
  */
 
 public abstract class WebLafSkin

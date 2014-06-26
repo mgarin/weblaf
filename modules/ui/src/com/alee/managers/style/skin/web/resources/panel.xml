@@ -17,6 +17,12 @@
             <opaque>false</opaque>
         </component>
     </style>
+    <style type="panel" id="white" extends="default">
+        <component>
+            <opaque>true</opaque>
+            <background>white</background>
+        </component>
+    </style>
 
     <!-- WebPopOver container styling -->
     <style type="panel" id="pop-over" extends="default">
