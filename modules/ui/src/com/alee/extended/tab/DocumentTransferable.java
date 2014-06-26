@@ -23,34 +23,62 @@ import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
 
 /**
+ * Custom Transferable for WebDocumentPane documents.
+ *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebDocumentPane">How to use WebDocumentPane</a>
+ * @see com.alee.extended.tab.WebDocumentPane
  */
 
 public class DocumentTransferable implements Transferable
 {
+    /**
+     * DocumentData data flavor.
+     */
     public static final DataFlavor flavor = new DataFlavor ( DocumentData.class, "DocumentData" );
+
+    /**
+     * DocumentData data flavors array.
+     */
     public static final DataFlavor[] flavors = new DataFlavor[]{ flavor };
 
+    /**
+     * Dragged DocumentData instance.
+     */
     private final DocumentData document;
 
+    /**
+     * Constructs new DocumentTransferable for the specified DocumentData.
+     *
+     * @param document dragged DocumentData
+     */
     public DocumentTransferable ( final DocumentData document )
     {
         super ();
         this.document = document;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataFlavor[] getTransferDataFlavors ()
     {
         return flavors;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isDataFlavorSupported ( final DataFlavor flavor )
     {
         return DocumentTransferable.flavor.equals ( flavor );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Object getTransferData ( final DataFlavor flavor ) throws UnsupportedFlavorException, IOException
     {

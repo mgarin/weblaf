@@ -18,6 +18,7 @@
 package com.alee.extended.tab;
 
 import com.alee.laf.splitpane.WebSplitPane;
+import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.Customizer;
 
 import java.awt.*;
@@ -27,15 +28,40 @@ import java.awt.*;
  * It basically contains split pane and links to two other elements contained within split pane.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebDocumentPane">How to use WebDocumentPane</a>
+ * @see com.alee.extended.tab.WebDocumentPane
  */
 
 public final class SplitData<T extends DocumentData> implements StructureData<T>
 {
+    /**
+     * Actual split component.
+     */
     protected final WebSplitPane splitPane;
+
+    /**
+     * Split orientation.
+     */
     protected int orientation;
+
+    /**
+     * First split element.
+     */
     protected StructureData first;
+
+    /**
+     * Last split element.
+     */
     protected StructureData last;
 
+    /**
+     * Constructs new SplitData.
+     *
+     * @param documentPane parent WebDocumentPane
+     * @param orientation  split orientation
+     * @param first        first split element
+     * @param last         last split element
+     */
     public SplitData ( final WebDocumentPane<T> documentPane, final int orientation, final StructureData first, final StructureData last )
     {
         super ();
@@ -50,6 +76,14 @@ public final class SplitData<T extends DocumentData> implements StructureData<T>
         updateSplitPaneCustomizer ( documentPane );
     }
 
+    /**
+     * Returns new split component.
+     *
+     * @param orientation split orientation
+     * @param first       first split element
+     * @param last        last split element
+     * @return new split component
+     */
     protected WebSplitPane createSplit ( final int orientation, final StructureData first, final StructureData last )
     {
         final WebSplitPane splitPane = new WebSplitPane ( orientation, first.getComponent (), last.getComponent () );
@@ -61,12 +95,20 @@ public final class SplitData<T extends DocumentData> implements StructureData<T>
         return splitPane;
     }
 
+    /**
+     * Changes split orientation.
+     */
     protected void changeSplitOrientation ()
     {
         orientation = orientation == WebSplitPane.HORIZONTAL_SPLIT ? WebSplitPane.VERTICAL_SPLIT : WebSplitPane.HORIZONTAL_SPLIT;
         splitPane.setOrientation ( orientation );
     }
 
+    /**
+     * Updates split customizer.
+     *
+     * @param documentPane parent WebDocumentPane
+     */
     protected void updateSplitPaneCustomizer ( final WebDocumentPane<T> documentPane )
     {
         final Customizer<WebSplitPane> customizer = documentPane.getSplitPaneCustomizer ();
@@ -76,55 +118,112 @@ public final class SplitData<T extends DocumentData> implements StructureData<T>
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Component getComponent ()
     {
         return getSplitPane ();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PaneData<T> findClosestPane ()
     {
         return getFirst ().findClosestPane ();
     }
 
+    /**
+     * Returns parent WebDocumentPane.
+     *
+     * @return parent WebDocumentPane
+     */
+    public WebDocumentPane getDocumentPane ()
+    {
+        return SwingUtils.getFirstParent ( splitPane, WebDocumentPane.class );
+    }
+
+    /**
+     * Returns actual split component.
+     *
+     * @return actual split component
+     */
     public WebSplitPane getSplitPane ()
     {
         return splitPane;
     }
 
+    /**
+     * Returns split orientation.
+     *
+     * @return split orientation
+     */
     public int getOrientation ()
     {
         return orientation;
     }
 
+    /**
+     * Sets split orientation.
+     *
+     * @param orientation new split orientation
+     */
     public void setOrientation ( final int orientation )
     {
         this.orientation = orientation;
     }
 
+    /**
+     * Returns first split element.
+     *
+     * @return first split element
+     */
     public StructureData getFirst ()
     {
         return first;
     }
 
+    /**
+     * Sets first split element.
+     *
+     * @param first new first split element
+     */
     public void setFirst ( final StructureData first )
     {
         this.first = first;
         splitPane.setLeftComponent ( first.getComponent () );
     }
 
+    /**
+     * Returns last split element.
+     *
+     * @return last split element
+     */
     public StructureData getLast ()
     {
         return last;
     }
 
+    /**
+     * Sets last split element.
+     *
+     * @param last new last split element
+     */
     public void setLast ( final StructureData last )
     {
         this.last = last;
         splitPane.setRightComponent ( last.getComponent () );
     }
 
+    /**
+     * Replaces specified element with new one.
+     *
+     * @param element     element to replace
+     * @param replacement element replacement
+     */
     public void replace ( final StructureData element, final StructureData replacement )
     {
         if ( first == element )

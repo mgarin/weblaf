@@ -45,18 +45,38 @@ import java.util.List;
  * It basically contains tabbed pane and opened documents list.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebDocumentPane">How to use WebDocumentPane</a>
+ * @see com.alee.extended.tab.WebDocumentPane
  */
 
 public final class PaneData<T extends DocumentData> implements StructureData<T>, SwingConstants
 {
+    /**
+     * Close icons.
+     */
     private static final ImageIcon closeTabIcon = new ImageIcon ( PaneData.class.getResource ( "icons/close.png" ) );
     private static final ImageIcon closeTabRolloverIcon = new ImageIcon ( PaneData.class.getResource ( "icons/close-rollover.png" ) );
 
+    /**
+     * Actual tabbed pane component.
+     */
     protected final WebTabbedPane tabbedPane;
+
+    /**
+     * Pane focus tracker.
+     */
     protected final DefaultFocusTracker focusTracker;
 
+    /**
+     * Pane documents.
+     */
     protected List<T> data = new ArrayList<T> ();
 
+    /**
+     * Constructs new PaneData for the specified WebDocumentPane.
+     *
+     * @param documentPane parent WebDocumentPane
+     */
     public PaneData ( final WebDocumentPane<T> documentPane )
     {
         super ();
@@ -220,6 +240,11 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
         FocusManager.addFocusTracker ( tabbedPane, focusTracker );
     }
 
+    /**
+     * Updates tabbed pane customizer.
+     *
+     * @param documentPane parent WebDocumentPane
+     */
     protected void updateTabbedPaneCustomizer ( final WebDocumentPane<T> documentPane )
     {
         final Customizer<WebTabbedPane> customizer = documentPane.getTabbedPaneCustomizer ();
@@ -229,48 +254,81 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Component getComponent ()
     {
         return getTabbedPane ();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PaneData<T> findClosestPane ()
     {
         return this;
     }
 
+    /**
+     * Returns parent WebDocumentPane.
+     *
+     * @return parent WebDocumentPane
+     */
     public WebDocumentPane getDocumentPane ()
     {
         return SwingUtils.getFirstParent ( tabbedPane, WebDocumentPane.class );
     }
 
+    /**
+     * Returns actual tabbed pane component.
+     *
+     * @return actual tabbed pane component
+     */
     public WebTabbedPane getTabbedPane ()
     {
         return tabbedPane;
     }
 
+    /**
+     * Returns pane documents.
+     *
+     * @return pane documents
+     */
     public List<T> getData ()
     {
         return data;
     }
 
+    /**
+     * Returns pane documents count.
+     *
+     * @return pane documents count
+     */
     public int count ()
     {
         return data.size ();
     }
 
-    public void setData ( final List<T> data )
-    {
-        this.data = data;
-    }
-
+    /**
+     * Returns whether specified document is in this pane or not.
+     *
+     * @param document document to look for
+     * @return true if specified document is in this pane, false otherwise
+     */
     public boolean contains ( final T document )
     {
         return contains ( document.getId () );
     }
 
+    /**
+     * Returns whether document with the specified ID is in this pane or not.
+     *
+     * @param documentId ID of the document to look for
+     * @return true if document with the specified ID is in this pane, false otherwise
+     */
     public boolean contains ( final String documentId )
     {
         for ( final T document : data )
@@ -283,11 +341,22 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
         return false;
     }
 
+    /**
+     * Adds new document into this pane.
+     *
+     * @param document document to add
+     */
     public void add ( final T document )
     {
         add ( document, -1 );
     }
 
+    /**
+     * Adds new document into this pane at the specified index.
+     *
+     * @param document document to add
+     * @param index    index to add at
+     */
     public void add ( final T document, final int index )
     {
         final int i = index != -1 ? index : tabbedPane.getTabCount ();
@@ -297,6 +366,12 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
         tabbedPane.setTabComponentAt ( i, createTabComponent ( document ) );
     }
 
+    /**
+     * Returns new tab component.
+     *
+     * @param document document to create tab component for
+     * @return new tab component
+     */
     protected JComponent createTabComponent ( final T document )
     {
         final WebPanel tabPanel = new WebPanel ( new BorderLayout ( 2, 0 ) );
@@ -342,6 +417,12 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
         return tabPanel;
     }
 
+    /**
+     * Opens document in this pane.
+     * Unlike add method this one informs listeners about opened document.
+     *
+     * @param document document to open
+     */
     public void open ( final T document )
     {
         // Opening document
@@ -351,11 +432,23 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
         getDocumentPane ().fireDocumentOpened ( document, this, indexOf ( document ) );
     }
 
+    /**
+     * Returns pane document at the specified index.
+     *
+     * @param index document index
+     * @return pane document at the specified index
+     */
     public T get ( final int index )
     {
         return data.get ( index );
     }
 
+    /**
+     * Returns pane document with the specified ID.
+     *
+     * @param id document ID
+     * @return pane document with the specified ID
+     */
     public T get ( final String id )
     {
         for ( final T document : data )
@@ -368,32 +461,64 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
         return null;
     }
 
+    /**
+     * Returns pane's selected document.
+     *
+     * @return pane's selected document
+     */
     public T getSelected ()
     {
         final int index = tabbedPane.getSelectedIndex ();
         return index != -1 ? data.get ( index ) : null;
     }
 
+    /**
+     * Sets pane's selected document ID.
+     *
+     * @param id ID of the document to select
+     */
     public void setSelected ( final String id )
     {
         setSelected ( indexOf ( id ) );
     }
 
+    /**
+     * Sets selected document.
+     *
+     * @param document document to select
+     */
     public void setSelected ( final T document )
     {
         setSelected ( indexOf ( document ) );
     }
 
+    /**
+     * Sets selected document index.
+     *
+     * @param index index of the document to select
+     */
     public void setSelected ( final int index )
     {
         tabbedPane.setSelectedIndex ( index );
     }
 
+    /**
+     * Returns index of the document with the specified ID.
+     *
+     * @param id document ID
+     * @return index of the document with the specified ID
+     */
     public int indexOf ( final String id )
     {
         return indexOf ( get ( id ) );
     }
 
+    /**
+     * Returns index of the specified document.
+     *
+     * @param document document
+     * @return index of the specified document
+     */
     public int indexOf ( final T document )
     {
         return data.indexOf ( document );
@@ -505,6 +630,9 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
         }
     }
 
+    /**
+     * Closes selected document.
+     */
     public void closeSelected ()
     {
         final T selected = getSelected ();
@@ -514,6 +642,9 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
         }
     }
 
+    /**
+     * Activates this pane within WebDocumentPane.
+     */
     public void activate ()
     {
         final WebDocumentPane pane = getDocumentPane ();
@@ -523,6 +654,12 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
         }
     }
 
+    /**
+     * Splits the specified document into a separate pane.
+     *
+     * @param document  document to split
+     * @param direction split direction
+     */
     public void split ( final T document, final int direction )
     {
         final WebDocumentPane pane = getDocumentPane ();
@@ -532,6 +669,9 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
         }
     }
 
+    /**
+     * Merges this pane with its neighbour if it is empty.
+     */
     public void mergeIfEmpty ()
     {
         if ( count () == 0 )
@@ -540,6 +680,9 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
         }
     }
 
+    /**
+     * Changes parent split orientation if this pane is located within a split.
+     */
     public void rotate ()
     {
         final Container parent = tabbedPane.getParent ();
@@ -550,6 +693,9 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
         }
     }
 
+    /**
+     * Merges this pane with its neighbour.
+     */
     public void merge ()
     {
         final WebDocumentPane documentPane = getDocumentPane ();
@@ -559,6 +705,9 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
         }
     }
 
+    /**
+     * Merges all panes within WebDocumentPane.
+     */
     public void mergeAll ()
     {
         final WebDocumentPane pane = getDocumentPane ();

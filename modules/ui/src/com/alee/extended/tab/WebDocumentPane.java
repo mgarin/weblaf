@@ -33,11 +33,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This component can
- * This might be us
+ * This component is basically a special container for customizable documents described by DocumentData class.
+ * You can also override DocumentData class and for example include your own data into the document itself.
+ * <p/>
+ * This component uses either single or multiply tabbed panes and allow tabs reorder, drag, split and closability.
+ * All those features are of course configurable within the WebDocumentPane instance.
  *
  * @param <T> document type
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebDocumentPane">How to use WebDocumentPane</a>
+ * @see com.alee.extended.tab.PaneData
+ * @see com.alee.extended.tab.SplitData
+ * @see com.alee.extended.tab.DocumentData
  */
 
 public class WebDocumentPane<T extends DocumentData> extends WebPanel implements SwingConstants
@@ -90,7 +97,7 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel implements
     protected boolean dragEnabled = true;
 
     /**
-     * Whether documents drag between different document panes is enabled or not.
+     * Whether documents drag between tabbed panes is enabled or not.
      */
     protected boolean dragBetweenPanesEnabled = false;
 
@@ -147,16 +154,34 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel implements
         } );
     }
 
+    /**
+     * Returns unique document pane ID.
+     * Might be used within D&D functionality to determine whether drag source is the same as destination.
+     *
+     * @return unique document pane ID
+     */
     public String getId ()
     {
         return id;
     }
 
+    /**
+     * Returns tabbed pane customizer.
+     * It is null by default.
+     *
+     * @return tabbed pane customizer
+     */
     public Customizer<WebTabbedPane> getTabbedPaneCustomizer ()
     {
         return tabbedPaneCustomizer;
     }
 
+    /**
+     * Sets tabbed pane customizer and applies it to existing panes.
+     * Note that changes made by previously set customizers are not reverted even if you set this to null.
+     *
+     * @param customizer new tabbed pane customizer
+     */
     public void setTabbedPaneCustomizer ( final Customizer<WebTabbedPane> customizer )
     {
         this.tabbedPaneCustomizer = customizer;
@@ -166,11 +191,23 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel implements
         }
     }
 
+    /**
+     * Returns split pane customizer.
+     * It is null by default.
+     *
+     * @return split pane customizer
+     */
     public Customizer<WebSplitPane> getSplitPaneCustomizer ()
     {
         return splitPaneCustomizer;
     }
 
+    /**
+     * Sets split pane customizer and applies it to existing panes.
+     * Note that changes made by previously set customizers are not reverted even if you set this to null.
+     *
+     * @param customizer new split pane customizer
+     */
     public void setSplitPaneCustomizer ( final Customizer<WebSplitPane> customizer )
     {
         this.splitPaneCustomizer = customizer;
@@ -180,51 +217,101 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel implements
         }
     }
 
+    /**
+     * Returns whether tabs in this document pane are globally closable or not.
+     *
+     * @return true if tabs in this document pane are globally closable, false otherwise
+     */
     public boolean isCloseable ()
     {
         return closeable;
     }
 
+    /**
+     * Sets whether tabs in this document pane should be globally closable or not.
+     *
+     * @param closeable whether tabs in this document pane should be globally closable or not
+     */
     public void setCloseable ( final boolean closeable )
     {
         this.closeable = closeable;
     }
 
+    /**
+     * Returns whether tabs drag is enabled or not.
+     *
+     * @return true if tabs drag is enabled, false otherwise
+     */
     public boolean isDragEnabled ()
     {
         return dragEnabled;
     }
 
+    /**
+     * Sets whether tabs drag is enabled or not.
+     *
+     * @param dragEnabled whether tabs drag is enabled or not
+     */
     public void setDragEnabled ( final boolean dragEnabled )
     {
         this.dragEnabled = dragEnabled;
     }
 
+    /**
+     * Returns whether tabs drag between different tabbed panes is enabled or not.
+     *
+     * @return true if tabs drag between different tabbed panes is enabled, false otherwise
+     */
     public boolean isDragBetweenPanesEnabled ()
     {
         return dragBetweenPanesEnabled;
     }
 
+    /**
+     * Sets whether tabs drag between different tabbed panes is enabled or not.
+     *
+     * @param dragBetweenPanesEnabled whether tabs drag between different tabbed panes is enabled or not
+     */
     public void setDragBetweenPanesEnabled ( final boolean dragBetweenPanesEnabled )
     {
         this.dragBetweenPanesEnabled = dragBetweenPanesEnabled;
     }
 
+    /**
+     * Returns whether split creation is enabled or not.
+     *
+     * @return true if split creation is enabled, false otherwise
+     */
     public boolean isSplitEnabled ()
     {
         return splitEnabled;
     }
 
+    /**
+     * Sets whether split creation is enabled or not.
+     *
+     * @param splitEnabled true if split creation is enabled, false otherwise
+     */
     public void setSplitEnabled ( final boolean splitEnabled )
     {
         this.splitEnabled = splitEnabled;
     }
 
+    /**
+     * Returns whether tab menu is enabled or not.
+     *
+     * @return true if tab menu is enabled, false otherwise
+     */
     public boolean isTabMenuEnabled ()
     {
         return tabMenuEnabled;
     }
 
+    /**
+     * Sets whether tab menu is enabled or not.
+     *
+     * @param tabMenuEnabled whether tab menu is enabled or not
+     */
     public void setTabMenuEnabled ( final boolean tabMenuEnabled )
     {
         this.tabMenuEnabled = tabMenuEnabled;
@@ -838,16 +925,33 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel implements
         }
     }
 
+    /**
+     * Adds document listener.
+     *
+     * @param listener new document listener
+     */
     public void addDocumentListener ( final DocumentListener<T> listener )
     {
         listeners.add ( listener );
     }
 
+    /**
+     * Removes document listener.
+     *
+     * @param listener document listener
+     */
     public void removeDocumentListener ( final DocumentListener<T> listener )
     {
         listeners.remove ( listener );
     }
 
+    /**
+     * Fires document opened event.
+     *
+     * @param document opened document
+     * @param pane     document's pane
+     * @param index    document's index
+     */
     public void fireDocumentOpened ( final T document, final PaneData<T> pane, final int index )
     {
         for ( final DocumentListener<T> listener : CollectionUtils.copy ( listeners ) )
@@ -856,6 +960,15 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel implements
         }
     }
 
+    /**
+     * Fires document closing event.
+     * Returns whether document is allowed to close or not.
+     *
+     * @param document closing document
+     * @param pane     document's pane
+     * @param index    document's index
+     * @return true if document is allowed to close, false otherwise
+     */
     public boolean fireDocumentClosing ( final T document, final PaneData<T> pane, final int index )
     {
         boolean allow = true;
@@ -866,6 +979,13 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel implements
         return allow;
     }
 
+    /**
+     * Fires document closed event.
+     *
+     * @param document closed document
+     * @param pane     document's pane
+     * @param index    document's index
+     */
     public void fireDocumentClosed ( final T document, final PaneData<T> pane, final int index )
     {
         for ( final DocumentListener<T> listener : CollectionUtils.copy ( listeners ) )

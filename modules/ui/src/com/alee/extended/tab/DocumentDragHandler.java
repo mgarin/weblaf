@@ -33,6 +33,8 @@ import java.awt.event.MouseEvent;
  * This TransferHandler is made specially for WebDocumentPane component.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebDocumentPane">How to use WebDocumentPane</a>
+ * @see com.alee.extended.tab.WebDocumentPane
  */
 
 public class DocumentDragHandler extends TransferHandler
@@ -92,13 +94,20 @@ public class DocumentDragHandler extends TransferHandler
     {
         if ( e instanceof MouseEvent && action == MOVE )
         {
+            // Find dragged document
             final MouseEvent me = ( MouseEvent ) e;
             final int index = tabbedPane.indexAtLocation ( me.getX (), me.getY () );
             if ( index != -1 )
             {
-                documentIndex = index;
-                document = paneData.get ( index );
-                super.exportAsDrag ( comp, e, action );
+                // Check whether it can be dragged
+                final DocumentData documentData = paneData.get ( index );
+                if ( documentData.isDraggable () )
+                {
+                    // Perform export
+                    documentIndex = index;
+                    document = documentData;
+                    super.exportAsDrag ( comp, e, action );
+                }
             }
         }
     }

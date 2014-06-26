@@ -20,12 +20,27 @@ package com.alee.extended.tab;
 import java.awt.*;
 
 /**
+ * Base interface for visual parts within WebDocumentPane.
+ *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebDocumentPane">How to use WebDocumentPane</a>
+ * @see com.alee.extended.tab.WebDocumentPane
  */
 
 public interface StructureData<T extends DocumentData>
 {
+    /**
+     * Returns actual component behind this structure element.
+     *
+     * @return actual component behind this structure element
+     */
     public Component getComponent ();
 
+    /**
+     * Returns closest PaneData.
+     * Used to provide default active pane.
+     *
+     * @return closest PaneData
+     */
     public PaneData<T> findClosestPane ();
 }

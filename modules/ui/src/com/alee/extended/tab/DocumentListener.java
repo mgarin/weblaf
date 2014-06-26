@@ -21,6 +21,8 @@ package com.alee.extended.tab;
  * Documents state listener for WebDocumentPane component.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebDocumentPane">How to use WebDocumentPane</a>
+ * @see com.alee.extended.tab.WebDocumentPane
  */
 
 public interface DocumentListener<T extends DocumentData>
@@ -36,6 +38,7 @@ public interface DocumentListener<T extends DocumentData>
 
     /**
      * Informs that provided document is being closed.
+     * Returns whether document is allowed to close or not.
      *
      * @param document document data
      * @param pane     specific document pane

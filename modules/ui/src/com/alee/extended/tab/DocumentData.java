@@ -26,12 +26,17 @@ import java.awt.*;
  * This class represents basic data for single document opened in WebDocumentPane.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebDocumentPane">How to use WebDocumentPane</a>
  * @see com.alee.extended.tab.WebDocumentPane
  * @see com.alee.extended.tab.PaneData
  */
 
 public class DocumentData
 {
+    /**
+     * todo 1. DocumentData listeners to update view properly
+     */
+
     /**
      * Document ID.
      * This ID have to be unique only within single WebDocumentPane instance.
@@ -62,6 +67,12 @@ public class DocumentData
      * All documents are closeable by default, but you may change that.
      */
     protected boolean closeable;
+
+    /**
+     * Whether this document is draggable or not.
+     * All documents are draggable by default, but you may change that.
+     */
+    protected boolean draggable;
 
     /**
      * Document content.
@@ -133,12 +144,30 @@ public class DocumentData
     public DocumentData ( final String id, final Icon icon, final String title, final Color background, final boolean closeable,
                           final Component component )
     {
+        this ( id, icon, title, background, closeable, true, component );
+    }
+
+    /**
+     * Constructs new document.
+     *
+     * @param id         document ID
+     * @param icon       document icon
+     * @param title      document title
+     * @param background document tab background color
+     * @param closeable  whether document is closeable or not
+     * @param draggable  whether document is draggable or not
+     * @param component  document content
+     */
+    public DocumentData ( final String id, final Icon icon, final String title, final Color background, final boolean closeable,
+                          final boolean draggable, final Component component )
+    {
         super ();
         this.id = id;
         this.icon = icon;
         this.title = title;
         this.background = background;
         this.closeable = closeable;
+        this.draggable = draggable;
         this.component = component;
     }
 
@@ -250,6 +279,26 @@ public class DocumentData
     public void setCloseable ( final boolean closeable )
     {
         this.closeable = closeable;
+    }
+
+    /**
+     * Returns whether document is draggable or not.
+     *
+     * @return true if document is draggable, false otherwise
+     */
+    public boolean isDraggable ()
+    {
+        return draggable;
+    }
+
+    /**
+     * Sets whether document is draggable or not.
+     *
+     * @param draggable whether document is draggable or not
+     */
+    public void setDraggable ( final boolean draggable )
+    {
+        this.draggable = draggable;
     }
 
     /**

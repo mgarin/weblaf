@@ -28,9 +28,12 @@ import java.awt.datatransfer.DataFlavor;
 import java.awt.image.BufferedImage;
 
 /**
- * Custom DragViewHandler for DocumentData object.
+ * Custom DragViewHandler for WebDocumentPane document.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebDocumentPane">How to use WebDocumentPane</a>
+ * @see com.alee.extended.tab.WebDocumentPane
+ * @see com.alee.managers.drag.DragManager
  */
 
 public class DocumentDragViewHandler<T extends DocumentData> implements DragViewHandler<T>
