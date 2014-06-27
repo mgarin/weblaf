@@ -17,6 +17,7 @@
 
 package com.alee.log;
 
+import com.alee.utils.ReflectUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,6 +32,10 @@ import java.util.WeakHashMap;
 
 public class Log
 {
+    /**
+     * todo 1. Add option to log within a separate thread to improve overall performance
+     */
+
     /**
      * Loggers cache.
      */
@@ -92,6 +97,17 @@ public class Log
     /**
      * Writes specified information message into log.
      *
+     * @param message information message
+     * @param data    formatting data
+     */
+    public static void info ( final String message, final Object... data )
+    {
+        info ( ReflectUtils.getCallerClass (), message, data );
+    }
+
+    /**
+     * Writes specified information message into log.
+     *
      * @param logFor  where to log message is attached
      * @param message information message
      * @param data    formatting data
@@ -103,6 +119,17 @@ public class Log
             final String msg = data == null || data.length == 0 ? message : String.format ( message, data );
             getLogger ( logFor ).info ( msg );
         }
+    }
+
+    /**
+     * Writes specified information message into log.
+     *
+     * @param message debugEnabled message
+     * @param data    formatting data
+     */
+    public static void debug ( final String message, final Object... data )
+    {
+        debug ( ReflectUtils.getCallerClass (), message, data );
     }
 
     /**
@@ -127,6 +154,16 @@ public class Log
     /**
      * Writes specified warning message into log.
      *
+     * @param message warning message
+     */
+    public static void warn ( final String message )
+    {
+        warn ( ReflectUtils.getCallerClass (), message );
+    }
+
+    /**
+     * Writes specified warning message into log.
+     *
      * @param logFor  where to log message is attached
      * @param message warning message
      */
@@ -136,6 +173,17 @@ public class Log
         {
             getLogger ( logFor ).warn ( message );
         }
+    }
+
+    /**
+     * Writes specified warning message into log.
+     *
+     * @param message   warning message
+     * @param throwable exception
+     */
+    public static void warn ( final String message, final Throwable throwable )
+    {
+        warn ( ReflectUtils.getCallerClass (), message, throwable );
     }
 
     /**
@@ -156,6 +204,16 @@ public class Log
     /**
      * Writes specified exception into log.
      *
+     * @param throwable exception
+     */
+    public static void error ( final Throwable throwable )
+    {
+        error ( ReflectUtils.getCallerClass (), throwable );
+    }
+
+    /**
+     * Writes specified exception into log.
+     *
      * @param logFor    where to log message is attached
      * @param throwable exception
      */
@@ -165,6 +223,17 @@ public class Log
         {
             getLogger ( logFor ).error ( throwable.toString (), throwable );
         }
+    }
+
+    /**
+     * Writes specified exception message into log.
+     *
+     * @param message   exception message
+     * @param throwable exception
+     */
+    public static void error ( final String message, final Throwable throwable )
+    {
+        error ( ReflectUtils.getCallerClass (), message, throwable );
     }
 
     /**
@@ -180,6 +249,16 @@ public class Log
         {
             getLogger ( logFor ).error ( message, throwable );
         }
+    }
+
+    /**
+     * Writes specified exception message into log.
+     *
+     * @param message exception message
+     */
+    public static void error ( final String message )
+    {
+        error ( ReflectUtils.getCallerClass (), message );
     }
 
     /**
@@ -202,7 +281,7 @@ public class Log
      * @param object class type or object type
      * @return logger for the specified class type
      */
-    private static Logger getLogger ( final Object object )
+    public static Logger getLogger ( final Object object )
     {
         synchronized ( logLock )
         {

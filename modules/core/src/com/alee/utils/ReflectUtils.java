@@ -477,16 +477,42 @@ public final class ReflectUtils
      */
     public static Class getCallerClass ()
     {
+        // We have to add one to depth since this method call is increasing it
+        return getCallerClass ( 1 );
+    }
+
+    /**
+     * Returns method caller class.
+     * It is not recommended to use this method anywhere but in debugging.
+     *
+     * @param additionalDepth additional methods depth
+     * @return method caller class
+     */
+    public static Class getCallerClass ( final int additionalDepth )
+    {
+        // Depth explaination:
+        // 0 - this method class
+        // 1 - this method caller class
+        // 2 - caller's class caller
+        // additionalDepth - in case call goes through additional methods this is required
+        final int depth = 2 + additionalDepth;
+
         try
         {
-            // 0 - this method class
-            // 1 - this method caller class
-            // 2 - caller's class caller
-            return Class.forName ( new Throwable ().getStackTrace ()[ 2 ].getClassName () );
+            // We add additional 3 levels of depth due to reflection calls here
+            return callStaticMethod ( "sun.reflect.Reflection", "getCallerClass", depth + 3 );
         }
         catch ( final Throwable e )
         {
-            return null;
+            try
+            {
+                // Simply use determined depth
+                return Class.forName ( new Throwable ().getStackTrace ()[ depth ].getClassName () );
+            }
+            catch ( final ClassNotFoundException ex )
+            {
+                return null;
+            }
         }
     }
 
