@@ -17,17 +17,19 @@
 
 package com.alee.managers.style.skin.web;
 
-import com.alee.extended.painter.AbstractPainter;
+import com.alee.laf.combobox.ComboBoxElementType;
 import com.alee.laf.combobox.WebComboBoxElement;
 import com.alee.laf.menu.WebMenuItemStyle;
 
 import java.awt.*;
 
 /**
- * Custom painter for ComboBox elements.
+ * Custom painter for default combobox elements renderer.
+ * It simply paints gradient background for selected elements in combobox popup list.
  *
  * @author Mikle Garin
- * @see AbstractPainter
+ * @see com.alee.managers.style.skin.web.WebLabelPainter
+ * @see com.alee.extended.painter.AbstractPainter
  * @see com.alee.extended.painter.Painter
  */
 
@@ -60,18 +62,28 @@ public class WebComboBoxElementPainter<E extends WebComboBoxElement> extends Web
     /**
      * Sets top selected background color.
      *
-     * @param color top selected background color
+     * @param color new top selected background color
      */
     public void setTopSelectedBackgroundColor ( final Color color )
     {
         this.topSelectedBackgroundColor = color;
     }
 
+    /**
+     * Returns bottom selected background color.
+     *
+     * @return bottom selected background color
+     */
     public Color getBottomSelectedBackgroundColor ()
     {
         return bottomSelectedBackgroundColor;
     }
 
+    /**
+     * Sets bottom selected background color.
+     *
+     * @param color new bottom selected background color
+     */
     public void setBottomSelectedBackgroundColor ( final Color color )
     {
         this.bottomSelectedBackgroundColor = color;
@@ -83,18 +95,21 @@ public class WebComboBoxElementPainter<E extends WebComboBoxElement> extends Web
     @Override
     public void paint ( final Graphics2D g2d, final Rectangle bounds, final E element )
     {
-        // Painting
-        if ( element.getIndex () == -1 )
+        // Painting background
+        if ( element.getType () == ComboBoxElementType.box )
         {
+            // Painting box background
             paintBoxBackground ( g2d, bounds, element );
         }
         else if ( element.isSelected () )
         {
-            paintSelectedBackground ( g2d, bounds, element );
+            // Painting selected list element background
+            paintListSelectedBackground ( g2d, bounds, element );
         }
         else
         {
-            paintDeselectedBackground ( g2d, bounds, element );
+            // Painting deselected list element background
+            paintListDeselectedBackground ( g2d, bounds, element );
         }
 
         // Painting label
@@ -118,14 +133,13 @@ public class WebComboBoxElementPainter<E extends WebComboBoxElement> extends Web
      * Paints selected combobox popup list element background.
      *
      * @param g2d     graphics context
-     * @param bounds  element bounds
+     * @param b       element bounds
      * @param element combobox element
      */
     @SuppressWarnings ( "UnusedParameters" )
-    protected void paintSelectedBackground ( final Graphics2D g2d, final Rectangle bounds, final E element )
+    protected void paintListSelectedBackground ( final Graphics2D g2d, final Rectangle b, final E element )
     {
-        g2d.setPaint (
-                new GradientPaint ( 0, bounds.y, topSelectedBackgroundColor, 0, bounds.y + bounds.height, bottomSelectedBackgroundColor ) );
+        g2d.setPaint ( new GradientPaint ( 0, b.y, topSelectedBackgroundColor, 0, b.y + b.height, bottomSelectedBackgroundColor ) );
         g2d.fillRect ( 0, 0, element.getWidth (), element.getHeight () );
     }
 
@@ -137,8 +151,8 @@ public class WebComboBoxElementPainter<E extends WebComboBoxElement> extends Web
      * @param element combobox element
      */
     @SuppressWarnings ( "UnusedParameters" )
-    protected void paintDeselectedBackground ( final Graphics2D g2d, final Rectangle bounds, final E element )
+    protected void paintListDeselectedBackground ( final Graphics2D g2d, final Rectangle bounds, final E element )
     {
-        //
+        // Doesn't paint anything by default
     }
 }

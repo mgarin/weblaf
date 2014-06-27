@@ -32,7 +32,8 @@ import java.util.List;
  * It uses {@code WebComboBoxElement} as renderer which is being styled by a custom LabelPainter.
  *
  * @author Mikle Garin
- * @see WebComboBoxElement
+ * @see com.alee.laf.combobox.WebComboBoxElement
+ * @see com.alee.managers.style.skin.web.WebComboBoxElementPainter
  */
 
 public class WebComboBoxCellRenderer implements ListCellRenderer
@@ -56,12 +57,10 @@ public class WebComboBoxCellRenderer implements ListCellRenderer
         super ();
 
         // Additional renderer for combo box selected value rendering
-        this.boxRenderer = new WebComboBoxElement ();
-        this.boxRenderer.setStyleId ( "combo-box-value" );
+        this.boxRenderer = new WebComboBoxElement ( ComboBoxElementType.box );
 
         // Elements renderer
-        this.elementRenderer = new WebComboBoxElement ();
-        this.elementRenderer.setStyleId ( "combo-box-element" );
+        this.elementRenderer = new WebComboBoxElement ( ComboBoxElementType.list );
 
         // Painter change listener
         final PropertyChangeListener listener = new PropertyChangeListener ()

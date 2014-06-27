@@ -49,7 +49,7 @@ public abstract class PluginManager<T extends Plugin>
      * todo 1. Allow direct plugin loading from specified file/url (including loading from within another jar)
      * todo 2. Allow to disable logging from this manager
      * todo 3. Make plugin operations thread-safe
-     * todo 4. PluginManager -> Plugin -> dependencies on other plugins
+     * todo 4. PluginManager -> Plugin -> dependencies on other plugins? or not
      * todo 5. Translate/replace error messages? or not
      */
 

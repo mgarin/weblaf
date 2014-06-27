@@ -27,14 +27,14 @@
     </style>
 
     <!-- JComboBox value and list element renderers styling -->
-    <style type="label" id="combo-box-value" extends="default">
+    <style type="label" id="combo-box-box" extends="default">
         <painter id="painter" class="com.alee.managers.style.skin.web.WebComboBoxElementPainter">
-            <margin>2,2,2,2</margin>
+        <margin>2,2,2,2</margin>
         </painter>
     </style>
-    <style type="label" id="combo-box-element" extends="default">
+    <style type="label" id="combo-box-list" extends="default">
         <painter id="painter" class="com.alee.managers.style.skin.web.WebComboBoxElementPainter">
-            <margin>4,6,4,6</margin>
+        <margin>4,6,4,6</margin>
             <topSelectedBackgroundColor>208,208,198</topSelectedBackgroundColor>
             <bottomSelectedBackgroundColor>196,196,186</bottomSelectedBackgroundColor>
         </painter>

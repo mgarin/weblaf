@@ -30,6 +30,8 @@ import com.alee.utils.swing.WindowFollowAdapter;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.geom.Area;
+import java.awt.geom.Ellipse2D;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -264,10 +266,17 @@ public class WebDynamicMenu extends WebHeavyWeightPopup
                 {
                     final Graphics2D g2d = ( Graphics2D ) g;
                     final Object aa = GraphicsUtils.setupAntialias ( g2d );
+
+                    final Area outer = new Area ( new Ellipse2D.Double ( 0, 0, getWidth (), getHeight () ) );
+                    final Ellipse2D.Double inner = new Ellipse2D.Double ( 2, 2, getWidth () - 4, getHeight () - 4 );
+                    outer.exclusiveOr ( new Area ( inner ) );
+
                     g2d.setPaint ( isEnabled () ? item.getBorderColor () : item.getDisabledBorderColor () );
-                    g2d.fillOval ( 0, 0, getWidth (), getHeight () );
+                    g2d.fill ( outer );
+
                     g2d.setColor ( Color.WHITE );
-                    g2d.fillOval ( 2, 2, getWidth () - 4, getHeight () - 4 );
+                    g2d.fill ( inner );
+
                     GraphicsUtils.restoreAntialias ( g2d, aa );
                 }
 
@@ -333,6 +342,18 @@ public class WebDynamicMenu extends WebHeavyWeightPopup
      */
     public void showMenu ( final Component invoker, final Point location )
     {
+        showMenu ( invoker, location.x, location.y );
+    }
+
+    /**
+     * Displays dynamic menu for the specified invoker location.
+     *
+     * @param invoker menu invoker
+     * @param x       menu location X coordinate
+     * @param y       menu location Y coordinate
+     */
+    public void showMenu ( final Component invoker, final int x, final int y )
+    {
         synchronized ( sync )
         {
             if ( displaying || window != null || getComponentCount () == 0 )
@@ -354,7 +375,7 @@ public class WebDynamicMenu extends WebHeavyWeightPopup
             }
 
             // Creating menu and displaying it
-            displayMenuWindow ( invoker, location );
+            displayMenuWindow ( invoker, x, y );
 
             // Displaying menu softly
             animator = WebTimer.repeat ( StyleConstants.fastAnimationDelay, 0L, new ActionListener ()
@@ -386,17 +407,18 @@ public class WebDynamicMenu extends WebHeavyWeightPopup
     /**
      * Creates new menu window.
      *
-     * @param invoker  menu invoker
-     * @param location menu location
+     * @param invoker menu invoker
+     * @param x       menu location X coordinate
+     * @param y       menu location Y coordinate
      */
-    protected void displayMenuWindow ( final Component invoker, final Point location )
+    protected void displayMenuWindow ( final Component invoker, final int x, final int y )
     {
         // Updating opacity
         setWindowOpacity ( currentProgress );
 
         // Displaying popup
         final Dimension size = getPreferredSize ();
-        showPopup ( invoker, location.x - size.width / 2, location.y - size.height / 2 );
+        showPopup ( invoker, x - size.width / 2, y - size.height / 2 );
     }
 
     /**
@@ -620,4 +642,63 @@ public class WebDynamicMenu extends WebHeavyWeightPopup
             }
         }
     }
+
+    //    private List<BufferedImage> images = new ArrayList<BufferedImage> ();
+    //
+    //    {
+    //        onFullDisplay ( new Runnable ()
+    //        {
+    //            @Override
+    //            public void run ()
+    //            {
+    //                images.add ( images.size () - 1, null );
+    //                onFullHide ( new Runnable ()
+    //                {
+    //                    @Override
+    //                    public void run ()
+    //                    {
+    //                        System.out.println ( images.size () );
+    //                        final GifEncoder e = new GifEncoder ();
+    //                        e.start ( "C:\\Projects\\GitHub\\weblaf\\gif\\" + getType () + "-" + getHideType () + ".gif" );
+    //                        e.setRepeat ( 0 );
+    //                        e.delay = 2;
+    //                        boolean middle = false;
+    //                        for ( final BufferedImage image : images )
+    //                        {
+    //                            if ( image != null )
+    //                            {
+    //                                e.addFrame ( image );
+    //                                if ( middle )
+    //                                {
+    //                                    e.delay = 2;
+    //                                    middle = false;
+    //                                }
+    //                            }
+    //                            else
+    //                            {
+    //                                middle = true;
+    //                                e.delay = 200;
+    //                            }
+    //                        }
+    //                        e.finish ();
+    //                        images.clear ();
+    //                    }
+    //                } );
+    //            }
+    //        } );
+    //    }
+    //
+    //    @Override
+    //    public void paint ( final Graphics g )
+    //    {
+    //        final BufferedImage image = ImageUtils.createCompatibleImage ( getWidth (), getHeight (), Transparency.TRANSLUCENT );
+    //        final Graphics2D graphics = image.createGraphics ();
+    //        graphics.setPaint ( Color.WHITE );
+    //        graphics.fillRect ( 0, 0, image.getWidth (), getHeight () );
+    //        GraphicsUtils.setupAlphaComposite ( graphics, currentProgress );
+    //        super.paint ( graphics );
+    //        graphics.dispose ();
+    //        g.drawImage ( image, 0, 0, null );
+    //        images.add ( image );
+    //    }
 }

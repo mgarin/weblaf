@@ -99,6 +99,16 @@ public class WebDynamicMenuItem
         this.margin = margin;
     }
 
+    public void setMargin ( final int margin )
+    {
+        this.margin = new Insets ( margin, margin, margin, margin );
+    }
+
+    public void setMargin ( final int top, final int left, final int bottom, final int right )
+    {
+        this.margin = new Insets ( top, left, bottom, right );
+    }
+
     public boolean isDrawBorder ()
     {
         return drawBorder;
