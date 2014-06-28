@@ -1,17 +1,19 @@
-name             := "WebLaF"
+lazy val baseName = "WebLaF"
 
-// organization  := "com.alee"
-
-// we use this organization in order to publish to Sonatype Nexus (Maven Central)
-organization     := "de.sciss"
+lazy val baseNameL = baseName.toLowerCase
 
 // version       := "1.27.0"
+lazy val isSnapshotVersion = false
 
-lazy val isSnapshotVersion = true
+// - generate debugging symbols
+// - compile to 1.6 compatible class files
+// - source adheres to Java 1.6 API
+lazy val commonJavaOptions = Seq("-source", "1.6")
 
-// version is determined from version.properties
-version := {
-  val propF = baseDirectory.value / ".." / "build" / "version.properties"
+lazy val fullDescr = "WebLaf is a Java Swing Look and Feel and extended components library for cross-platform applications"
+
+def mkVersion(base: File): String = {
+  val propF = base / ".." / "build" / "version.properties"
   val prop  = new java.util.Properties()
   val r     = new java.io.FileReader(propF)
   prop.load(r)
@@ -21,86 +23,100 @@ version := {
   s"$major.$minor${if (isSnapshotVersion) "-SNAPSHOT" else ""}"
 }
 
-homepage         := Some(url("http://weblookandfeel.com"))
-
-licenses         := Seq("GPL v3+" -> url("http://www.gnu.org/licenses/gpl-3.0.txt"))
-
-description      := "WebLaf is a Java Swing Look and Feel and extended components library for cross-platform applications"
-
-// For pure Java projects, do not use
-// Scala version based artifacts
-crossPaths       := false
-
-// For pure Java projects, sbt needs to be told not to
-// add the Scala runtime library to the dependencies
-autoScalaLibrary := false
-
-// - generate debugging symbols
-// - compile to 1.6 compatible class files
-// - source adheres to Java 1.6 API
-lazy val commonJavaOptions = Seq("-source", "1.6")
-
-javacOptions        := commonJavaOptions ++ Seq("-target", "1.6", "-g", "-Xlint:deprecation" /*, "-Xlint:unchecked" */)
-
-javacOptions in doc := commonJavaOptions   // cf. sbt issue #355
-
-mainClass in (Compile,run) := Some("com.alee.laf.LibraryInfoDialog")
-
-// sbt will always retrieve a Scala version,
-// even if not used in the projects
-scalaVersion     := "2.11.1"
-
-libraryDependencies ++= Seq(
-  "com.thoughtworks.xstream" % "xstream"            % "1.4.7" exclude("xpp3", "xpp3_min") exclude("xmlpull", "xmlpull"),
-  "net.htmlparser.jericho"   % "jericho-html"       % "3.3",
-  "com.fifesoft"             % "rsyntaxtextarea"    % "2.5.0",
-  "com.mortennobel"          % "java-image-scaling" % "0.8.5",
-  "org.slf4j"                % "slf4j-api"          % "1.7.7",
-  "org.slf4j"                % "slf4j-simple"       % "1.7.7"
-)
-
-retrieveManaged := true
-
-// ---- paths ----
-
-javaSource        in Compile := baseDirectory.value / ".." / "src"
-
-resourceDirectory in Compile := baseDirectory.value / ".." / "src"
-
-excludeFilter in (Compile, unmanagedSources)   := new SimpleFileFilter(_.getPath.contains("/examples/"))
-
-excludeFilter in (Compile, unmanagedResources) := "*.java"
-
-// this is used by LibraryInfoDialog.java, however assuming a jar file,
-// so it is not found when using `sbt run`.
-unmanagedResourceDirectories in Compile += baseDirectory.value / ".." / "licenses"
-
-// ---- publishing to Maven Central ----
-
-publishMavenStyle in ThisBuild := true
-
-publishTo in ThisBuild :=
-  Some(if (version.value endsWith "-SNAPSHOT")
-    "Sonatype Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots"
-  else
-    "Sonatype Releases"  at "https://oss.sonatype.org/service/local/staging/deploy/maven2"
-  )
-
-publishArtifact in Test in ThisBuild := false
-
-pomIncludeRepository in ThisBuild := { _ => false }
-
-pomExtra := { val n = name.value.toLowerCase
+lazy val commonSettings = Project.defaultSettings ++ Seq(
+  // organization  := "com.alee"
+  // we use this organization in order to publish to Sonatype Nexus (Maven Central)
+  organization      := "de.sciss",
+  scalaVersion      := "2.11.1",  // not used
+  homepage          := Some(url("http://weblookandfeel.com")),
+  licenses          := Seq("GPL v3+" -> url("http://www.gnu.org/licenses/gpl-3.0.txt")),
+  crossPaths        := false,   // this is just a Java project
+  autoScalaLibrary  := false,   // this is just a Java project
+  javacOptions      := commonJavaOptions ++ Seq("-target", "1.6", "-g", "-Xlint:deprecation" /*, "-Xlint:unchecked" */),
+  javacOptions in doc := commonJavaOptions,  // cf. sbt issue #355
+  // this is used by LibraryInfoDialog.java, however assuming a jar file,
+  // so it is not found when using `sbt run`.
+  unmanagedResourceDirectories in Compile += baseDirectory.value / ".." / "licenses",
+  // ---- publishing to Maven Central ----
+  publishMavenStyle := true,
+  publishTo := {
+    Some(if (version.value endsWith "-SNAPSHOT")
+      "Sonatype Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots"
+    else
+      "Sonatype Releases"  at "https://oss.sonatype.org/service/local/staging/deploy/maven2"
+    )
+  },
+  publishArtifact in Test := false,
+  pomIncludeRepository := { _ => false },
+  pomExtra := { val n = name.value.toLowerCase
   <scm>
     <url>git@github.com:mgarin/{n}.git</url>
     <connection>scm:git:git@github.com:mgarin/{n}.git</connection>
   </scm>
-  <developers>
-    <developer>
-      <id>mgarin</id>
-      <name>Mikle Garin</name>
-      <url>http://weblookandfeel.com</url>
-    </developer>
-  </developers>
-}
+    <developers>
+      <developer>
+        <id>mgarin</id>
+        <name>Mikle Garin</name>
+        <url>http://weblookandfeel.com</url>
+      </developer>
+    </developers>
+  }
+)
 
+// ---- projects ----
+
+lazy val full = Project(
+  id            = baseNameL,
+  base          = file("."),
+  aggregate     = Seq(core, ui),
+  dependencies  = Seq(core, ui),
+  settings      = commonSettings ++ Seq(
+    name := baseName,
+    description := fullDescr,
+    // version is determined from version.properties
+    version := mkVersion(baseDirectory.value),
+    publishArtifact in (Compile, packageBin) := false, // there are no binaries
+    publishArtifact in (Compile, packageDoc) := false, // there are no javadocs
+    publishArtifact in (Compile, packageSrc) := false  // there are no sources
+  )
+)
+
+lazy val core: Project = Project(
+  id        = s"$baseNameL-core",
+  base      = file("core"),
+  settings  = commonSettings ++ Seq(
+    name        := s"$baseName-core",
+    description := "Core components for WebLaf",
+    version     := mkVersion(baseDirectory.value / ".."),
+    libraryDependencies ++= Seq(
+      "com.thoughtworks.xstream" % "xstream"            % "1.4.7" exclude("xpp3", "xpp3_min") exclude("xmlpull", "xmlpull"),
+      "net.htmlparser.jericho"   % "jericho-html"       % "3.3",
+      "com.mortennobel"          % "java-image-scaling" % "0.8.5",
+      "org.slf4j"                % "slf4j-api"          % "1.7.7",
+      "org.slf4j"                % "slf4j-simple"       % "1.7.7"
+    ),
+    javaSource        in Compile := baseDirectory.value / ".." / ".." / "modules" / "core" / "src",
+    resourceDirectory in Compile := baseDirectory.value / ".." / ".." / "modules" / "core" / "src",
+    excludeFilter in (Compile, unmanagedSources)   := new SimpleFileFilter(_.getPath.contains("/examples/")),
+    excludeFilter in (Compile, unmanagedResources) := "*.java"
+  )
+)
+
+lazy val ui = Project(
+  id        = s"$baseNameL-ui",
+  base      = file("ui"),
+  dependencies = Seq(core),
+  settings  = commonSettings ++ Seq(
+    name        := s"$baseName-ui",
+    description := fullDescr,
+    version     := mkVersion(baseDirectory.value / ".."),
+    libraryDependencies ++= Seq(
+      "com.fifesoft" % "rsyntaxtextarea" % "2.5.0" % "provided"  // we don't want to drag this under in 99% of cases
+    ),
+    mainClass in (Compile,run) := Some("com.alee.laf.LibraryInfoDialog"),
+    javaSource        in Compile := baseDirectory.value / ".." / ".." / "modules" / "ui" / "src",
+    resourceDirectory in Compile := baseDirectory.value / ".." / ".." / "modules" / "ui" / "src",
+    excludeFilter in (Compile, unmanagedSources)   := new SimpleFileFilter(_.getPath.contains("/examples/")),
+    excludeFilter in (Compile, unmanagedResources) := "*.java"
+  )
+)

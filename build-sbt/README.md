@@ -11,10 +11,11 @@ WebLaF can be used in your maven project using the following information:
     <dependency>
       <groupId>de.sciss</groupId>
       <artifactId>weblaf</artifactId>
-      <version>1.27</version>
+      <version>1.28</version>
     </dependency>
 
 Or in an sbt based project:
 
-    "de.sciss" % "weblaf" % "1.27"
+    "de.sciss" % "weblaf" % "1.28"
 
+Note that the dependency on RSyntaxTextArea is not declared, so if you want to use `StyleEditor`, you have to add the additional dependency on this library.
