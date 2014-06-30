@@ -17,8 +17,6 @@
 
 package com.alee.managers.style.skin.web;
 
-import com.alee.extended.painter.AbstractPainter;
-
 import javax.swing.*;
 import java.awt.*;
 
@@ -26,7 +24,8 @@ import java.awt.*;
  * Custom painter for WebHotkeyLabel component.
  *
  * @author Mikle Garin
- * @see AbstractPainter
+ * @see com.alee.managers.style.skin.web.WebLabelPainter
+ * @see com.alee.extended.painter.AbstractPainter
  * @see com.alee.extended.painter.Painter
  */
 
@@ -36,7 +35,7 @@ public class WebHotkeyLabelPainter<E extends JLabel> extends WebLabelPainter<E>
      * Used colors.
      */
     public static Color border = new Color ( 204, 204, 204 );
-    public static Color bg = new Color ( 247, 247, 247 );
+    public static Color background = new Color ( 247, 247, 247 );
 
     /**
      * {@inheritDoc}
@@ -49,7 +48,7 @@ public class WebHotkeyLabelPainter<E extends JLabel> extends WebLabelPainter<E>
         g2d.fillRoundRect ( bounds.x, bounds.y, bounds.width, bounds.height - 1, 6, 6 );
 
         // Background
-        g2d.setPaint ( bg );
+        g2d.setPaint ( background );
         g2d.fillRect ( bounds.x + 3, bounds.y + 3, bounds.width - 6, bounds.height - 7 );
 
         // Border

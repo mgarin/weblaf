@@ -17,18 +17,20 @@
 
 package com.alee.extended.tree;
 
+import com.alee.laf.tree.UniqueNode;
 import com.alee.utils.compare.Filter;
 
 import java.util.Comparator;
+import java.util.List;
 
 /**
- * This interface provides methods for asynchronous tree data retrieval.
+ * This interface provides methods for ex tree data retrieval.
  *
  * @param <E> custom node type
  * @author Mikle Garin
  */
 
-public interface AsyncTreeDataProvider<E extends AsyncUniqueNode>
+public interface ExTreeDataProvider<E extends UniqueNode>
 {
     /**
      * Returns asynchronous tree root node.
@@ -39,14 +41,12 @@ public interface AsyncTreeDataProvider<E extends AsyncUniqueNode>
     public E getRoot ();
 
     /**
-     * Starts loading child nodes for the specified asynchronous tree node.
-     * When you finish loading childs for the specified node or you failed to load them, simply inform the listener about that.
-     * This request uses a separate thread and might take a lot of time to process without having any UI issues.
+     * Returns child nodes for the specified asynchronous tree node.
      *
-     * @param node     parent node
-     * @param listener childs loading progress listener
+     * @param node parent node
+     * @return child nodes list
      */
-    public void loadChilds ( E node, ChildsListener<E> listener );
+    public List<E> getChilds ( E node );
 
     /**
      * Returns child nodes comparator for the specified asynchronous tree node.
@@ -68,7 +68,6 @@ public interface AsyncTreeDataProvider<E extends AsyncUniqueNode>
 
     /**
      * Returns whether the specified node is leaf (doesn't have any childs) or not.
-     * This request uses the EDT and should be processed quickly.
      * If you are not sure if the node is leaf or not - simply return false, that will allow the tree to expand this node on request.
      *
      * @param node node

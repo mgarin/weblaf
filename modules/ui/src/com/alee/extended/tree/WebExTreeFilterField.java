@@ -22,6 +22,7 @@ import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.menu.WebCheckBoxMenuItem;
 import com.alee.laf.menu.WebPopupMenu;
 import com.alee.laf.text.WebTextField;
+import com.alee.laf.tree.UniqueNode;
 import com.alee.managers.hotkey.Hotkey;
 import com.alee.utils.swing.StringDocumentChangeListener;
 import com.alee.utils.text.TextProvider;
@@ -37,13 +38,10 @@ import java.beans.PropertyChangeListener;
 import java.lang.ref.WeakReference;
 
 /**
- * Special filter field that can be attached to any WebAsyncTree.
- *
- * @param <E> filtered node type
  * @author Mikle Garin
  */
 
-public class WebAsyncTreeFilterField<E extends AsyncUniqueNode> extends WebTextField
+public class WebExTreeFilterField<E extends UniqueNode> extends WebTextField
 {
     /**
      * todo 1. Listen to tree model changes and update filtering appropriately
@@ -52,19 +50,17 @@ public class WebAsyncTreeFilterField<E extends AsyncUniqueNode> extends WebTextF
     /**
      * Used icons.
      */
-    public static final ImageIcon settingsIcon =
-            new ImageIcon ( WebAsyncTreeFilterField.class.getResource ( "icons/filter/settings.png" ) );
-    public static final ImageIcon matchCaseIcon =
-            new ImageIcon ( WebAsyncTreeFilterField.class.getResource ( "icons/filter/matchCase.png" ) );
+    public static final ImageIcon settingsIcon = new ImageIcon ( WebExTreeFilterField.class.getResource ( "icons/filter/settings.png" ) );
+    public static final ImageIcon matchCaseIcon = new ImageIcon ( WebExTreeFilterField.class.getResource ( "icons/filter/matchCase.png" ) );
     public static final ImageIcon useSpaceAsSeparatorIcon =
-            new ImageIcon ( WebAsyncTreeFilterField.class.getResource ( "icons/filter/useSpaceAsSeparator.png" ) );
+            new ImageIcon ( WebExTreeFilterField.class.getResource ( "icons/filter/useSpaceAsSeparator.png" ) );
     public static final ImageIcon searchFromStartIcon =
-            new ImageIcon ( WebAsyncTreeFilterField.class.getResource ( "icons/filter/searchFromStart.png" ) );
+            new ImageIcon ( WebExTreeFilterField.class.getResource ( "icons/filter/searchFromStart.png" ) );
 
     /**
      * Async tree to which this field should apply filtering.
      */
-    protected WeakReference<WebAsyncTree<E>> asyncTree;
+    protected WeakReference<WebExTree<E>> asyncTree;
 
     /**
      * Nodes filter used by this field.
@@ -93,7 +89,7 @@ public class WebAsyncTreeFilterField<E extends AsyncUniqueNode> extends WebTextF
     /**
      * Constructs new async tree filter field.
      */
-    public WebAsyncTreeFilterField ()
+    public WebExTreeFilterField ()
     {
         this ( null, null );
     }
@@ -103,7 +99,7 @@ public class WebAsyncTreeFilterField<E extends AsyncUniqueNode> extends WebTextF
      *
      * @param asyncTree async tree to which this field applies filtering
      */
-    public WebAsyncTreeFilterField ( final WebAsyncTree<E> asyncTree )
+    public WebExTreeFilterField ( final WebExTree<E> asyncTree )
     {
         this ( asyncTree, null );
     }
@@ -113,7 +109,7 @@ public class WebAsyncTreeFilterField<E extends AsyncUniqueNode> extends WebTextF
      *
      * @param textProvider node text provider
      */
-    public WebAsyncTreeFilterField ( final TextProvider<E> textProvider )
+    public WebExTreeFilterField ( final TextProvider<E> textProvider )
     {
         this ( null, textProvider );
     }
@@ -124,7 +120,7 @@ public class WebAsyncTreeFilterField<E extends AsyncUniqueNode> extends WebTextF
      * @param asyncTree    async tree to which this field applies filtering
      * @param textProvider node text provider
      */
-    public WebAsyncTreeFilterField ( final WebAsyncTree<E> asyncTree, final TextProvider<E> textProvider )
+    public WebExTreeFilterField ( final WebExTree<E> asyncTree, final TextProvider<E> textProvider )
     {
         super ();
         setAsyncTree ( asyncTree );
@@ -151,7 +147,7 @@ public class WebAsyncTreeFilterField<E extends AsyncUniqueNode> extends WebTextF
      */
     protected void initFilterIcon ()
     {
-        filterIcon = new WebImage ( WebAsyncTreeFilterField.class, "icons/filter/settings.png" );
+        filterIcon = new WebImage ( WebExTreeFilterField.class, "icons/filter/settings.png" );
         filterIcon.setMargin ( 0, 2, 0, 2 );
         filterIcon.setCursor ( Cursor.getDefaultCursor () );
         filterIcon.addMouseListener ( new MouseAdapter ()
@@ -247,7 +243,7 @@ public class WebAsyncTreeFilterField<E extends AsyncUniqueNode> extends WebTextF
             {
                 if ( Hotkey.ESCAPE.isTriggered ( e ) )
                 {
-                    WebAsyncTreeFilterField.this.clear ();
+                    WebExTreeFilterField.this.clear ();
                 }
             }
         } );
@@ -274,7 +270,7 @@ public class WebAsyncTreeFilterField<E extends AsyncUniqueNode> extends WebTextF
      *
      * @return async tree to which this field applies filtering
      */
-    public WebAsyncTree<E> getAsyncTree ()
+    public WebExTree<E> getAsyncTree ()
     {
         return asyncTree != null ? asyncTree.get () : null;
     }
@@ -284,10 +280,10 @@ public class WebAsyncTreeFilterField<E extends AsyncUniqueNode> extends WebTextF
      *
      * @param asyncTree async tree to which this field applies filtering
      */
-    public void setAsyncTree ( final WebAsyncTree<E> asyncTree )
+    public void setAsyncTree ( final WebExTree<E> asyncTree )
     {
         clearFilter ();
-        this.asyncTree = new WeakReference<WebAsyncTree<E>> ( asyncTree );
+        this.asyncTree = new WeakReference<WebExTree<E>> ( asyncTree );
         applyFilter ();
     }
 
@@ -364,7 +360,7 @@ public class WebAsyncTreeFilterField<E extends AsyncUniqueNode> extends WebTextF
         filter.clearCache ();
 
         // Updating tree filtering
-        final WebAsyncTree<E> asyncTree = getAsyncTree ();
+        final WebExTree<E> asyncTree = getAsyncTree ();
         if ( asyncTree != null )
         {
             asyncTree.updateSortingAndFiltering ();
@@ -383,7 +379,7 @@ public class WebAsyncTreeFilterField<E extends AsyncUniqueNode> extends WebTextF
         filter.clearCache ( node );
 
         // Updating tree filtering
-        final WebAsyncTree<E> asyncTree = getAsyncTree ();
+        final WebExTree<E> asyncTree = getAsyncTree ();
         if ( asyncTree != null )
         {
             asyncTree.updateSortingAndFiltering ( ( E ) node.getParent () );

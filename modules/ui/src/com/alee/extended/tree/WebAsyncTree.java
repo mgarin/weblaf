@@ -17,7 +17,7 @@
 
 package com.alee.extended.tree;
 
-import com.alee.extended.tree.sample.SampleDataProvider;
+import com.alee.extended.tree.sample.SampleAsyncDataProvider;
 import com.alee.extended.tree.sample.SampleTreeCellEditor;
 import com.alee.extended.tree.sample.SampleTreeCellRenderer;
 import com.alee.laf.tree.WebTree;
@@ -105,7 +105,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
         super ();
 
         // Installing sample data provider
-        setDataProvider ( new SampleDataProvider () );
+        setDataProvider ( new SampleAsyncDataProvider () );
         setAsyncLoading ( true );
 
         // Tree cell renderer & editor
@@ -218,9 +218,9 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
         this.comparator = comparator;
 
         final AsyncTreeDataProvider dataProvider = getDataProvider ();
-        if ( dataProvider instanceof AbstractTreeDataProvider )
+        if ( dataProvider instanceof AbstractAsyncTreeDataProvider )
         {
-            ( ( AbstractTreeDataProvider ) dataProvider ).setChildsComparator ( comparator );
+            ( ( AbstractAsyncTreeDataProvider ) dataProvider ).setChildsComparator ( comparator );
             updateSortingAndFiltering ();
         }
     }
@@ -254,9 +254,9 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
         this.filter = filter;
 
         final AsyncTreeDataProvider dataProvider = getDataProvider ();
-        if ( dataProvider instanceof AbstractTreeDataProvider )
+        if ( dataProvider instanceof AbstractAsyncTreeDataProvider )
         {
-            ( ( AbstractTreeDataProvider ) dataProvider ).setChildsFilter ( filter );
+            ( ( AbstractAsyncTreeDataProvider ) dataProvider ).setChildsFilter ( filter );
             updateSortingAndFiltering ();
         }
     }

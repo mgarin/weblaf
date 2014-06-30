@@ -17,7 +17,7 @@
 
 package com.alee.extended.tree.sample;
 
-import com.alee.extended.tree.AbstractTreeDataProvider;
+import com.alee.extended.tree.AbstractAsyncTreeDataProvider;
 import com.alee.extended.tree.ChildsListener;
 import com.alee.utils.CollectionUtils;
 
@@ -27,7 +27,7 @@ import com.alee.utils.CollectionUtils;
  * @author Mikle Garin
  */
 
-public class SampleDataProvider extends AbstractTreeDataProvider<SampleNode>
+public class SampleAsyncDataProvider extends AbstractAsyncTreeDataProvider<SampleNode>
 {
     /**
      * Returns asynchronous tree sample root node.

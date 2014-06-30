@@ -17,6 +17,7 @@
 
 package com.alee.extended.tree;
 
+import com.alee.laf.tree.UniqueNode;
 import com.alee.utils.compare.Filter;
 import com.alee.utils.text.DefaultTextProvider;
 import com.alee.utils.text.TextProvider;
@@ -32,7 +33,7 @@ import java.util.StringTokenizer;
  * @author Mikle Garin
  */
 
-public class AsyncTreeNodesFilter<E extends AsyncUniqueNode> implements Filter<E>
+public class StructuredTreeNodesFilter<E extends UniqueNode> implements Filter<E>
 {
     /**
      * Nodes text provider.

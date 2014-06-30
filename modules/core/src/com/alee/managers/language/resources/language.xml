@@ -1472,7 +1472,7 @@
                 <value lang="de">Wollen Sie das bearbeitete Bild speichern?</value>
             </record>
         </Dictionary>
-        <Dictionary name="WebAsyncTreeFilterField language" prefix="asynctreefilter">
+        <Dictionary name="WebAsyncTreeFilterField language" prefix="treefilter">
             <record key="inputprompt">
                 <value lang="en" state="inputPropmt">Search...</value>
                 <value lang="ru" state="inputPropmt">Искать...</value>

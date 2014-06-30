@@ -27,7 +27,7 @@ import java.util.Comparator;
  * @author Mikle Garin
  */
 
-public abstract class AbstractTreeDataProvider<E extends AsyncUniqueNode> implements AsyncTreeDataProvider<E>
+public abstract class AbstractAsyncTreeDataProvider<E extends AsyncUniqueNode> implements AsyncTreeDataProvider<E>
 {
     /**
      * Childs comparator.

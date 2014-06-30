@@ -31,7 +31,7 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public class FileTreeDataProvider extends AbstractTreeDataProvider<FileTreeNode>
+public class FileTreeDataProvider extends AbstractAsyncTreeDataProvider<FileTreeNode>
 {
     /**
      * Tree root files.
