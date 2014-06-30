@@ -98,7 +98,7 @@ public class CustomContentTooltipExample extends DefaultExample
             super.paintComponent ( g );
 
             final Graphics2D g2d = ( Graphics2D ) g;
-            final Object aa = GraphicsUtils.setupImageQuality ( g2d );
+            final Object iq = GraphicsUtils.setupImageQuality ( g2d );
 
             g2d.translate ( wheelIcon.getIconWidth () / 2, wheelIcon.getIconHeight () / 2 );
             if ( angle != 0 )
@@ -108,7 +108,7 @@ public class CustomContentTooltipExample extends DefaultExample
             g2d.drawImage ( wheelIcon.getImage (), -wheelIcon.getIconWidth () / 2, -wheelIcon.getIconHeight () / 2,
                     wheelIcon.getImageObserver () );
 
-            GraphicsUtils.restoreAntialias ( g2d, aa );
+            GraphicsUtils.restoreImageQuality ( g2d, iq );
         }
 
         @Override
