@@ -120,7 +120,7 @@
     <!-- Assemble library core jar -->
     <target name="build.core.jar" description="Build ${library.core.jar}" depends="clean.dist.dir,compile.core,copy.core.res,copy.lic,create.artifacts.dir">
         <jar destfile="${library.core.jar}">
-        <fileset dir="${dist.dir}" includes="licenses/**" />
+            <fileset dir="${dist.dir}" includes="licenses/**" />
             <fileset dir="${library.core.dist.dir}" />
             <manifest>
                 <attribute name="Package-Title" value="${package}" />
@@ -135,7 +135,7 @@
     <!-- Assemble library ui jar -->
     <target name="build.ui.jar" description="Build ${library.ui.jar}" depends="clean.dist.dir,compile.ui,copy.ui.res,copy.lic,create.artifacts.dir">
         <jar destfile="${library.ui.jar}">
-        <fileset dir="${dist.dir}" includes="licenses/**" />
+            <fileset dir="${dist.dir}" includes="licenses/**" />
             <fileset dir="${library.ui.dist.dir}" />
             <manifest>
                 <attribute name="Package-Title" value="${package}" />
@@ -170,7 +170,7 @@
     <!-- Assemble library binary -->
     <target name="build.weblaf.jar" description="Build ${library.jar}" depends="clean.dist.dir,compile.ui,copy.ui.res,copy.lic,create.artifacts.dir">
         <jar destfile="${library.jar}">
-        <fileset dir="${dist.dir}" includes="licenses/**" />
+            <fileset dir="${dist.dir}" includes="licenses/**" />
             <fileset dir="${library.core.dist.dir}" />
             <fileset dir="${library.ui.dist.dir}" />
             <manifest>
@@ -187,7 +187,7 @@
     <!-- Assemble complete library binary -->
     <target name="build.weblaf.complete.jar" description="Build ${library.complete.jar}" depends="clean.dist.dir,compile.ui,copy.ui.res,copy.lic,create.artifacts.dir">
         <jar destfile="${library.complete.jar}">
-        <zipfileset src="${lib.dir}/${rsyntaxtextarea.jar}" />
+            <zipfileset src="${lib.dir}/${rsyntaxtextarea.jar}" />
             <zipfileset src="${lib.dir}/${slf4j.api.jar}" />
             <zipfileset src="${lib.dir}/${slf4j.binding.jar}" />
             <zipfileset src="${lib.dir}/${imagescaling.jar}" />
@@ -237,7 +237,7 @@
     <!-- Assemble nine-patch editor jar -->
     <target name="build.npe.jar" description="Build ${npe.jar}" depends="clean.dist.dir,compile.ui,copy.ui.res,copy.lic,create.artifacts.dir">
         <jar destfile="${npe.jar}">
-        <zipfileset src="${lib.dir}/${rsyntaxtextarea.jar}" />
+            <zipfileset src="${lib.dir}/${rsyntaxtextarea.jar}" />
             <zipfileset src="${lib.dir}/${slf4j.api.jar}" />
             <zipfileset src="${lib.dir}/${slf4j.binding.jar}" />
             <zipfileset src="${lib.dir}/${imagescaling.jar}" />
@@ -261,7 +261,7 @@
     <!-- Assemble library sources ZIP archive -->
     <target name="build.sources.zip" description="Build ${sources.zip}" depends="clean.dist.dir,create.dist.dir,create.artifacts.dir">
         <copy todir="${dist.dir}/build">
-        <fileset dir="${build.dir}" />
+            <fileset dir="${build.dir}" />
         </copy>
         <copy todir="${dist.dir}/lib">
             <fileset dir="${lib.dir}" />
@@ -282,7 +282,7 @@
     <!-- Assemble library sources JAR -->
     <target name="build.sources.jar" description="Build ${sources.jar}" depends="clean.dist.dir,create.dist.dir,create.artifacts.dir">
         <copy todir="${dist.dir}/licenses">
-        <fileset dir="${lic.dir}" />
+            <fileset dir="${lic.dir}" />
         </copy>
         <copy todir="${dist.dir}">
             <fileset dir="${library.core.src.dir}" />
@@ -305,7 +305,7 @@
     <!-- Assemble JavaDoc JAR -->
     <target name="build.javadoc.jar" description="Build ${javadoc.jar}" depends="create.artifacts.dir">
         <javadoc destdir="${javadoc.dir}" author="true" version="true" use="true">
-        <packageset dir="${library.core.src.dir}" defaultexcludes="yes" />
+            <packageset dir="${library.core.src.dir}" defaultexcludes="yes" />
             <packageset dir="${library.ui.src.dir}" defaultexcludes="yes" />
             <packageset dir="${library.demo.src.dir}" defaultexcludes="yes" />
             <classpath refid="demo.classpath" />
