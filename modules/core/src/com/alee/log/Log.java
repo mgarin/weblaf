@@ -42,6 +42,11 @@ public class Log
     private static final Map<Class, Logger> loggers = new WeakHashMap<Class, Logger> ();
 
     /**
+     * Logging enabled/disabled conditions.
+     */
+    private static final Map<Class, Boolean> loggingEnabled = new WeakHashMap<Class, Boolean> ();
+
+    /**
      * Logger synchronization lock object.
      */
     private static final Object logLock = new Object ();
@@ -116,8 +121,11 @@ public class Log
     {
         synchronized ( logLock )
         {
-            final String msg = data == null || data.length == 0 ? message : String.format ( message, data );
-            getLogger ( logFor ).info ( msg );
+            if ( isLoggingEnabled ( logFor ) )
+            {
+                final String msg = data == null || data.length == 0 ? message : String.format ( message, data );
+                getLogger ( logFor ).info ( msg );
+            }
         }
     }
 
@@ -145,8 +153,11 @@ public class Log
         {
             if ( debugEnabled )
             {
-                final String msg = data == null || data.length == 0 ? message : String.format ( message, data );
-                getLogger ( logFor ).debug ( msg );
+                if ( isLoggingEnabled ( logFor ) )
+                {
+                    final String msg = data == null || data.length == 0 ? message : String.format ( message, data );
+                    getLogger ( logFor ).debug ( msg );
+                }
             }
         }
     }
@@ -171,7 +182,10 @@ public class Log
     {
         synchronized ( logLock )
         {
-            getLogger ( logFor ).warn ( message );
+            if ( isLoggingEnabled ( logFor ) )
+            {
+                getLogger ( logFor ).warn ( message );
+            }
         }
     }
 
@@ -197,7 +211,10 @@ public class Log
     {
         synchronized ( logLock )
         {
-            getLogger ( logFor ).warn ( message, throwable );
+            if ( isLoggingEnabled ( logFor ) )
+            {
+                getLogger ( logFor ).warn ( message, throwable );
+            }
         }
     }
 
@@ -221,7 +238,10 @@ public class Log
     {
         synchronized ( logLock )
         {
-            getLogger ( logFor ).error ( throwable.toString (), throwable );
+            if ( isLoggingEnabled ( logFor ) )
+            {
+                getLogger ( logFor ).error ( throwable.toString (), throwable );
+            }
         }
     }
 
@@ -247,7 +267,10 @@ public class Log
     {
         synchronized ( logLock )
         {
-            getLogger ( logFor ).error ( message, throwable );
+            if ( isLoggingEnabled ( logFor ) )
+            {
+                getLogger ( logFor ).error ( message, throwable );
+            }
         }
     }
 
@@ -271,7 +294,10 @@ public class Log
     {
         synchronized ( logLock )
         {
-            getLogger ( logFor ).error ( message );
+            if ( isLoggingEnabled ( logFor ) )
+            {
+                getLogger ( logFor ).error ( message );
+            }
         }
     }
 
@@ -293,6 +319,57 @@ public class Log
                 loggers.put ( type, logger );
             }
             return logger;
+        }
+    }
+
+    /**
+     * Disables logging for the specified class type.
+     *
+     * @param object class type or object type
+     */
+    public static void disableLogging ( final Object object )
+    {
+        setLoggingEnabled ( object, false );
+    }
+
+    /**
+     * Enables logging for the specified class type.
+     *
+     * @param object class type or object type
+     */
+    public static void enableLogging ( final Object object )
+    {
+        setLoggingEnabled ( object, true );
+    }
+
+    /**
+     * Sets whether logging for the specified class type is enabled or not.
+     *
+     * @param object  class type or object type
+     * @param enabled whether logging is enabled or not
+     */
+    public static void setLoggingEnabled ( final Object object, final boolean enabled )
+    {
+        synchronized ( logLock )
+        {
+            final Class type = object instanceof Class ? ( Class ) object : object.getClass ();
+            loggingEnabled.put ( type, enabled );
+        }
+    }
+
+    /**
+     * Returns whether logging for the specified class type is enabled or not.
+     *
+     * @param object class type or object type
+     * @return true if logging for the specified class type is enabled, false otherwise
+     */
+    public static boolean isLoggingEnabled ( final Object object )
+    {
+        synchronized ( logLock )
+        {
+            final Class type = object instanceof Class ? ( Class ) object : object.getClass ();
+            final Boolean enabled = loggingEnabled.get ( type );
+            return enabled == null || enabled;
         }
     }
 }

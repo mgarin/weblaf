@@ -29,6 +29,7 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.*;
@@ -46,11 +47,7 @@ import java.util.zip.ZipFile;
 public abstract class PluginManager<T extends Plugin>
 {
     /**
-     * todo 1. Allow direct plugin loading from specified file/url (including loading from within another jar)
-     * todo 2. Allow to disable logging from this manager
-     * todo 3. Make plugin operations thread-safe
-     * todo 4. PluginManager -> Plugin -> dependencies on other plugins? or not
-     * todo 5. Translate/replace error messages? or not
+     * todo 1. PluginManager -> Plugin -> dependencies on other plugins? or not
      */
 
     /**
@@ -86,6 +83,11 @@ public abstract class PluginManager<T extends Plugin>
      * In case this is set to false only the newest version of the same plugin will be loaded if more than one provided.
      */
     protected boolean allowSimilarPlugins = false;
+
+    /**
+     * Whether plugin manager logging is enabled or not.
+     */
+    protected boolean loggingEnabled = true;
 
     /**
      * Loaded and running plugins list.
@@ -260,13 +262,76 @@ public abstract class PluginManager<T extends Plugin>
     }
 
     /**
+     * Downloads plugin from the specified URL and tries to load it.
+     * In case the file is not a plugin it will simply be ignored.
+     * Plugins added this way will also be filtered and checked for other means.
+     *
+     * @param pluginFileURL plugin file URL
+     */
+    public void scanPlugin ( final URL pluginFileURL )
+    {
+        try
+        {
+            final String url = pluginFileURL.toURI ().toASCIIString ();
+            final File tmpFile = File.createTempFile ( "plugin", ".jar" );
+            final File downloadedPlugin = FileUtils.downloadFile ( url, tmpFile );
+            scanPlugin ( downloadedPlugin );
+        }
+        catch ( final URISyntaxException e )
+        {
+            Log.error ( this, "Unable to parse plugin URL", e );
+        }
+        catch ( final IOException e )
+        {
+            Log.error ( this, "Unable to create local file to download plugin", e );
+        }
+    }
+
+    /**
+     * Tries to load plugin from the specified file.
+     * In case the file is not a plugin it will simply be ignored.
+     * Plugins added this way will also be filtered and checked for other means.
+     *
+     * @param pluginFile plugin file path
+     */
+    public void scanPlugin ( final String pluginFile )
+    {
+        scanPlugin ( new File ( pluginFile ) );
+    }
+
+    /**
+     * Tries to load plugin from the specified file.
+     * In case the file is not a plugin it will simply be ignored.
+     * Plugins added this way will also be filtered and checked for other means.
+     *
+     * @param pluginFile plugin file
+     */
+    public void scanPlugin ( final File pluginFile )
+    {
+        synchronized ( checkLock )
+        {
+            Log.info ( this, "Scanning plugin file: " + FileUtils.canonicalPath ( pluginFile ) );
+
+            // Resetting recently detected plugins list
+            recentlyDetected = new ArrayList<DetectedPlugin<T>> ();
+
+            // Collecting plugins information
+            if ( collectPluginInformation ( pluginFile ) )
+            {
+                // Initializing detected plugins
+                initializeDetectedPlugins ();
+            }
+        }
+    }
+
+    /**
      * Performs plugins search within the specified plugins directory.
      * This call might be performed as many times as you like.
      * It will simply ignore plugins detected before and will process newly found plugins appropriately.
      */
-    public void checkPlugins ()
+    public void scanPluginsDirectory ()
     {
-        checkPlugins ( pluginsDirectoryPath, checkRecursively );
+        scanPluginsDirectory ( pluginsDirectoryPath, checkRecursively );
     }
 
     /**
@@ -276,9 +341,9 @@ public abstract class PluginManager<T extends Plugin>
      *
      * @param checkRecursively whether plugins directory subfolders should be checked recursively or not
      */
-    public void checkPlugins ( final boolean checkRecursively )
+    public void scanPluginsDirectory ( final boolean checkRecursively )
     {
-        checkPlugins ( pluginsDirectoryPath, checkRecursively );
+        scanPluginsDirectory ( pluginsDirectoryPath, checkRecursively );
     }
 
     /**
@@ -288,9 +353,9 @@ public abstract class PluginManager<T extends Plugin>
      *
      * @param pluginsDirectoryPath plugins directory path
      */
-    public void checkPlugins ( final String pluginsDirectoryPath )
+    public void scanPluginsDirectory ( final String pluginsDirectoryPath )
     {
-        checkPlugins ( pluginsDirectoryPath, checkRecursively );
+        scanPluginsDirectory ( pluginsDirectoryPath, checkRecursively );
     }
 
     /**
@@ -301,7 +366,7 @@ public abstract class PluginManager<T extends Plugin>
      * @param pluginsDirectoryPath plugins directory path
      * @param checkRecursively     whether plugins directory subfolders should be checked recursively or not
      */
-    public void checkPlugins ( final String pluginsDirectoryPath, final boolean checkRecursively )
+    public void scanPluginsDirectory ( final String pluginsDirectoryPath, final boolean checkRecursively )
     {
         synchronized ( checkLock )
         {
@@ -314,36 +379,16 @@ public abstract class PluginManager<T extends Plugin>
             // Informing about plugins check start
             firePluginsCheckStarted ( pluginsDirectoryPath, checkRecursively );
 
+            Log.info ( this, "Scanning plugins directory" + ( checkRecursively ? " recursively" : "" ) + ": " + pluginsDirectoryPath );
+
+            // Resetting recently detected plugins list
+            recentlyDetected = new ArrayList<DetectedPlugin<T>> ();
+
             // Collecting plugins information
             if ( collectPluginsInformation ( pluginsDirectoryPath, checkRecursively ) )
             {
-                // Informing about newly detected plugins
-                firePluginsDetected ( recentlyDetected );
-
-                Log.info ( this, "Initializing plugins..." );
-
-                // Initializing plugins
-                initializePlugins ();
-
-                // Sorting plugins according to their initialization strategies
-                applyInitializationStrategy ();
-
-                // Properly sorting recently initialized plugins
-                Collections.sort ( recentlyInitialized, new Comparator<T> ()
-                {
-                    @Override
-                    public int compare ( final T o1, final T o2 )
-                    {
-                        final Integer i1 = availablePlugins.indexOf ( o1 );
-                        final Integer i2 = availablePlugins.indexOf ( o2 );
-                        return i1.compareTo ( i2 );
-                    }
-                } );
-
-                // Informing about new plugins initialization
-                firePluginsInitialized ( recentlyInitialized );
-
-                Log.info ( this, "Plugins initialization finished" );
+                // Initializing detected plugins
+                initializeDetectedPlugins ();
             }
 
             // Informing about plugins check end
@@ -361,7 +406,6 @@ public abstract class PluginManager<T extends Plugin>
         if ( pluginsDirectoryPath != null )
         {
             Log.info ( this, "Collecting plugins information..." );
-            recentlyDetected = new ArrayList<DetectedPlugin<T>> ();
             return collectPluginsInformationImpl ( new File ( pluginsDirectoryPath ), checkRecursively );
         }
         else
@@ -410,8 +454,9 @@ public abstract class PluginManager<T extends Plugin>
      * This call will simply be ignored if this is not a plugin file or if something goes wrong.
      *
      * @param file plugin file to process
+     * @return true if operation succeeded, false otherwise
      */
-    protected void collectPluginInformation ( final File file )
+    protected boolean collectPluginInformation ( final File file )
     {
         try
         {
@@ -450,6 +495,7 @@ public abstract class PluginManager<T extends Plugin>
                         detectedPlugins.add ( plugin );
                         recentlyDetected.add ( plugin );
                         Log.info ( this, "Plugin detected: " + info );
+                        return true;
                     }
 
                     break;
@@ -461,6 +507,7 @@ public abstract class PluginManager<T extends Plugin>
         {
             Log.error ( this, e );
         }
+        return false;
     }
 
     /**
@@ -484,9 +531,44 @@ public abstract class PluginManager<T extends Plugin>
     }
 
     /**
-     * Initializes detected earlier plugins.
+     * Initializes earlier detected plugins.
+     * Also informs listeners about appropriate events.
      */
-    protected void initializePlugins ()
+    protected void initializeDetectedPlugins ()
+    {
+        // Informing about newly detected plugins
+        firePluginsDetected ( recentlyDetected );
+
+        Log.info ( this, "Initializing plugins..." );
+
+        // Initializing plugins
+        initializeDetectedPluginsImpl ();
+
+        // Sorting plugins according to their initialization strategies
+        applyInitializationStrategy ();
+
+        // Properly sorting recently initialized plugins
+        Collections.sort ( recentlyInitialized, new Comparator<T> ()
+        {
+            @Override
+            public int compare ( final T o1, final T o2 )
+            {
+                final Integer i1 = availablePlugins.indexOf ( o1 );
+                final Integer i2 = availablePlugins.indexOf ( o2 );
+                return i1.compareTo ( i2 );
+            }
+        } );
+
+        // Informing about new plugins initialization
+        firePluginsInitialized ( recentlyInitialized );
+
+        Log.info ( this, "Plugins initialization finished" );
+    }
+
+    /**
+     * Initializes earlier detected plugins.
+     */
+    protected void initializeDetectedPluginsImpl ()
     {
         // Map to store plugin libraries
         final Map<String, Map<PluginLibrary, PluginInformation>> pluginLibraries =
@@ -555,7 +637,7 @@ public abstract class PluginManager<T extends Plugin>
                     continue;
                 }
 
-                // Now loading the plugin
+                // Srating to load plugin now
                 Log.info ( this, prefix + "Initializing plugin..." );
                 dp.setStatus ( PluginStatus.loading );
 
@@ -620,12 +702,14 @@ public abstract class PluginManager<T extends Plugin>
                     availablePluginsByClass.put ( plugin.getClass (), plugin );
                     recentlyInitialized.add ( plugin );
 
+                    // Updating detected plugin status
                     Log.info ( this, prefix + "Plugin initialized" );
                     dp.setStatus ( PluginStatus.loaded );
                     dp.setPlugin ( plugin );
                 }
                 catch ( final Throwable e )
                 {
+                    // Something happened while performing plugin class load
                     Log.error ( this, prefix + "Unable to initialize plugin", e );
                     dp.setStatus ( PluginStatus.failed );
                     dp.setFailureCause ( "Internal exception" );
@@ -634,6 +718,7 @@ public abstract class PluginManager<T extends Plugin>
             }
             catch ( final Throwable e )
             {
+                // Something happened while checking plugin information
                 Log.error ( this, prefix + "Unable to initialize plugin data", e );
                 dp.setStatus ( PluginStatus.failed );
                 dp.setFailureCause ( "Data exception" );
@@ -642,7 +727,7 @@ public abstract class PluginManager<T extends Plugin>
         }
 
         // Checking for same/similar libraries used within plugins
-        boolean warned = false;
+        boolean sameLibrariesInPlugins = false;
         for ( final Map.Entry<String, Map<PluginLibrary, PluginInformation>> libraries : pluginLibraries.entrySet () )
         {
             final Map<PluginLibrary, PluginInformation> sameLibraries = libraries.getValue ();
@@ -657,12 +742,13 @@ public abstract class PluginManager<T extends Plugin>
                     sb.append ( "[ " ).append ( plugin.toString () ).append ( ", version " ).append ( libraryVersion ).append ( " ] " );
                 }
                 Log.warn ( this, sb.toString () );
-                warned = true;
+                sameLibrariesInPlugins = true;
+                break;
             }
         }
-        if ( warned )
+        if ( sameLibrariesInPlugins )
         {
-            Log.warn ( this, "Make sure the same library usafe within different plugins was actually your intent" );
+            Log.warn ( this, "Make sure that the same library usage within different plugins was actually your intent" );
         }
     }
 
@@ -775,8 +861,7 @@ public abstract class PluginManager<T extends Plugin>
             }
         }
 
-        // todo Sort only recently initialized plugins
-        // todo Already initialized plugins should not be sorted again, that is useless and might break initial initialization order
+        // todo Sort only recently initialized plugins?
         if ( middle.size () == 0 )
         {
             // Combining all plugins into single list
@@ -1035,6 +1120,27 @@ public abstract class PluginManager<T extends Plugin>
     public void setAllowSimilarPlugins ( final boolean allow )
     {
         this.allowSimilarPlugins = allow;
+    }
+
+    /**
+     * Returns whether plugin manager logging is enabled or not.
+     *
+     * @return true if plugin manager logging is enabled, false otherwise
+     */
+    public boolean isLoggingEnabled ()
+    {
+        return loggingEnabled;
+    }
+
+    /**
+     * Sets whether plugin manager logging is enabled or not.
+     *
+     * @param loggingEnabled whether plugin manager logging is enabled or not
+     */
+    public void setLoggingEnabled ( final boolean loggingEnabled )
+    {
+        this.loggingEnabled = loggingEnabled;
+        Log.setLoggingEnabled ( this, loggingEnabled );
     }
 
     /**
