@@ -24,9 +24,12 @@ import com.alee.laf.tree.UniqueNode;
 import com.alee.laf.tree.WebTree;
 import com.alee.laf.tree.WebTreeCellEditor;
 import com.alee.laf.tree.WebTreeCellRenderer;
+import com.alee.utils.CollectionUtils;
 import com.alee.utils.compare.Filter;
 
 import javax.swing.tree.TreeModel;
+import javax.swing.tree.TreePath;
+import java.awt.*;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
@@ -379,5 +382,289 @@ public class WebExTree<E extends UniqueNode> extends WebTree<E>
     public void updateNodeStructure ( final E node )
     {
         getExModel ().updateNodeStructure ( node );
+    }
+
+    /**
+     * Reloads selected node childs.
+     */
+    public void reloadSelectedNodes ()
+    {
+        // Checking that selection is not empty
+        final TreePath[] paths = getSelectionPaths ();
+        if ( paths != null )
+        {
+            // Reloading all selected nodes
+            for ( final TreePath path : paths )
+            {
+                // Checking if node is not null and not busy yet
+                final E node = getNodeForPath ( path );
+                if ( node != null )
+                {
+                    // Reloading node childs
+                    performReload ( node, path, false );
+                }
+            }
+        }
+    }
+
+    /**
+     * Reloads node under the specified point.
+     *
+     * @param point point to look for node
+     * @return reloaded node or null if none reloaded
+     */
+    public E reloadNodeUnderPoint ( final Point point )
+    {
+        return reloadNodeUnderPoint ( point.x, point.y );
+    }
+
+    /**
+     * Reloads node under the specified point.
+     *
+     * @param x point X coordinate
+     * @param y point Y coordinate
+     * @return reloaded node or null if none reloaded
+     */
+    public E reloadNodeUnderPoint ( final int x, final int y )
+    {
+        return reloadPath ( getPathForLocation ( x, y ) );
+    }
+
+    /**
+     * Reloads root node childs.
+     *
+     * @return reloaded root node
+     */
+    public E reloadRootNode ()
+    {
+        return reloadNode ( getRootNode () );
+    }
+
+    /**
+     * Reloads node with the specified ID.
+     *
+     * @param nodeId ID of the node to reload
+     * @return reloaded node or null if none reloaded
+     */
+    public E reloadNode ( final String nodeId )
+    {
+        return reloadNode ( findNode ( nodeId ) );
+    }
+
+    /**
+     * Reloads specified node childs.
+     *
+     * @param node node to reload
+     * @return reloaded node or null if none reloaded
+     */
+    public E reloadNode ( final E node )
+    {
+        return reloadNode ( node, false );
+    }
+
+    /**
+     * Reloads specified node childs and selects it if requested.
+     *
+     * @param node   node to reload
+     * @param select whether select the node or not
+     * @return reloaded node or null if none reloaded
+     */
+    public E reloadNode ( final E node, final boolean select )
+    {
+        // Checking that node is not null
+        if ( node != null )
+        {
+            // Reloading node childs
+            performReload ( node, getPathForNode ( node ), select );
+            return node;
+        }
+        return null;
+    }
+
+    /**
+     * Reloads node childs at the specified path.
+     *
+     * @param path path of the node to reload
+     * @return reloaded node or null if none reloaded
+     */
+    public E reloadPath ( final TreePath path )
+    {
+        return reloadPath ( path, false );
+    }
+
+    /**
+     * Reloads node childs at the specified path and selects it if needed.
+     *
+     * @param path   path of the node to reload
+     * @param select whether select the node or not
+     * @return reloaded node or null if none reloaded
+     */
+    public E reloadPath ( final TreePath path, final boolean select )
+    {
+        // Checking that path is not null
+        if ( path != null )
+        {
+            // Checking if node is not null and not busy yet
+            final E node = getNodeForPath ( path );
+            if ( node != null )
+            {
+                // Reloading node childs
+                performReload ( node, path, select );
+                return node;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Performs the actual reload call.
+     *
+     * @param node   node to reload
+     * @param path   path to node
+     * @param select whether select the node or not
+     */
+    protected void performReload ( final E node, final TreePath path, final boolean select )
+    {
+        // Select node under the mouse
+        if ( select && !isPathSelected ( path ) )
+        {
+            setSelectionPath ( path );
+        }
+
+        // Expand the selected node since the collapsed node will ignore reload call
+        // In case the node childs were not loaded yet this call will cause it to load childs
+        if ( !isExpanded ( path ) )
+        {
+            expandPath ( path );
+        }
+
+        // Reload selected node childs
+        // This won't be called if node was not loaded yet since expand would call load before
+        if ( node != null )
+        {
+            getExModel ().reload ( node );
+        }
+    }
+
+    /**
+     * Expands node with the specified ID.
+     *
+     * @param nodeId ID of the node to expand
+     */
+    public void expandNode ( final String nodeId )
+    {
+        expandNode ( findNode ( nodeId ) );
+    }
+
+    /**
+     * Expands path using the specified node path IDs.
+     * IDs are used to find real nodes within the expanded roots.
+     * Be aware that operation might stop even before reaching the end of the path if something unexpected happened.
+     *
+     * @param pathNodeIds node path IDs
+     */
+    public void expandPath ( final List<String> pathNodeIds )
+    {
+        expandPath ( pathNodeIds, true, true );
+    }
+
+    /**
+     * Expands path using the specified node path IDs.
+     * IDs are used to find real nodes within the expanded roots.
+     * Be aware that operation might stop even before reaching the end of the path if something unexpected happened.
+     *
+     * @param pathNodeIds    node path IDs
+     * @param expandLastNode whether should expand last found path node or not
+     */
+    public void expandPath ( final List<String> pathNodeIds, final boolean expandLastNode )
+    {
+        expandPath ( pathNodeIds, expandLastNode, true );
+    }
+
+    /**
+     * Expands path using the specified node path IDs.
+     * IDs are used to find real nodes within the expanded roots.
+     * Be aware that operation might stop even before reaching the end of the path if something unexpected happened.
+     *
+     * @param pathNodeIds    node path IDs
+     * @param expandLastNode whether should expand last found path node or not
+     * @param selectLastNode whether should select last found path node or not
+     */
+    public void expandPath ( final List<String> pathNodeIds, final boolean expandLastNode, final boolean selectLastNode )
+    {
+        final List<String> ids = CollectionUtils.copy ( pathNodeIds );
+        for ( int initial = 0; initial < ids.size (); initial++ )
+        {
+            final E initialNode = findNode ( ids.get ( initial ) );
+            if ( initialNode != null )
+            {
+                for ( int i = 0; i <= initial; i++ )
+                {
+                    ids.remove ( i );
+                }
+                if ( ids.size () > 0 )
+                {
+                    expandPathImpl ( initialNode, ids, expandLastNode, selectLastNode );
+                }
+                return;
+            }
+        }
+    }
+
+    /**
+     * Performs a single path node expansion.
+     * Be aware that operation might stop even before reaching the end of the path if something unexpected happened.
+     *
+     * @param currentNode    last reached node
+     * @param leftToExpand   node path IDs left for expansion
+     * @param expandLastNode whether should expand last found path node or not
+     * @param selectLastNode whether should select last found path node or not
+     */
+    protected void expandPathImpl ( final E currentNode, final List<String> leftToExpand, final boolean expandLastNode,
+                                    final boolean selectLastNode )
+    {
+        // There is still more to load
+        if ( leftToExpand.size () > 0 )
+        {
+            // Expanding already loaded node
+            expandNode ( currentNode );
+
+            // Retrieving next node
+            final E nextNode = findNode ( leftToExpand.get ( 0 ) );
+            leftToExpand.remove ( 0 );
+
+            // If node exists continue expanding path
+            if ( nextNode != null )
+            {
+                expandPathImpl ( nextNode, leftToExpand, expandLastNode, selectLastNode );
+            }
+            else
+            {
+                expandPathEndImpl ( currentNode, expandLastNode, selectLastNode );
+            }
+        }
+        else
+        {
+            expandPathEndImpl ( currentNode, expandLastNode, selectLastNode );
+        }
+    }
+
+    /**
+     * Finishes async tree path expansion.
+     *
+     * @param lastFoundNode  last found path node
+     * @param expandLastNode whether should expand last found path node or not
+     * @param selectLastNode whether should select last found path node or not
+     */
+    protected void expandPathEndImpl ( final E lastFoundNode, final boolean expandLastNode, final boolean selectLastNode )
+    {
+        if ( selectLastNode )
+        {
+            setSelectedNode ( lastFoundNode );
+        }
+        if ( expandLastNode )
+        {
+            expandNode ( lastFoundNode );
+        }
     }
 }

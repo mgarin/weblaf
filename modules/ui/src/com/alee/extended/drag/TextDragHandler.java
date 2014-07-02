@@ -37,12 +37,12 @@ public class TextDragHandler extends TransferHandler
         this ( component, null );
     }
 
-    public TextDragHandler ( final JComponent component, String text )
+    public TextDragHandler ( final JComponent component, final String text )
     {
         this ( component, text, true );
     }
 
-    public TextDragHandler ( final JComponent component, String text, boolean defaultBehavior )
+    public TextDragHandler ( final JComponent component, final String text, final boolean defaultBehavior )
     {
         super ();
         setText ( text );
@@ -51,7 +51,7 @@ public class TextDragHandler extends TransferHandler
         component.addMouseMotionListener ( new MouseAdapter ()
         {
             @Override
-            public void mouseDragged ( MouseEvent e )
+            public void mouseDragged ( final MouseEvent e )
             {
                 if ( isDefaultBehavior () && SwingUtilities.isLeftMouseButton ( e ) &&
                         component.isEnabled () )
@@ -67,7 +67,7 @@ public class TextDragHandler extends TransferHandler
         return text;
     }
 
-    public void setText ( String text )
+    public void setText ( final String text )
     {
         this.text = text;
     }
@@ -77,19 +77,19 @@ public class TextDragHandler extends TransferHandler
         return defaultBehavior;
     }
 
-    public void setDefaultBehavior ( boolean defaultBehavior )
+    public void setDefaultBehavior ( final boolean defaultBehavior )
     {
         this.defaultBehavior = defaultBehavior;
     }
 
     @Override
-    public int getSourceActions ( JComponent c )
+    public int getSourceActions ( final JComponent c )
     {
         return COPY;
     }
 
     @Override
-    protected Transferable createTransferable ( JComponent c )
+    protected Transferable createTransferable ( final JComponent c )
     {
         return new StringSelection ( getText () );
     }

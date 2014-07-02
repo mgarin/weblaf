@@ -65,6 +65,18 @@ public class UniqueNode extends DefaultMutableTreeNode implements Serializable
     }
 
     /**
+     * Costructs a node with a specified user object and node ID.
+     *
+     * @param id         node ID
+     * @param userObject custom user object
+     */
+    public UniqueNode ( final String id, final Object userObject )
+    {
+        super ( userObject );
+        setId ( id );
+    }
+
+    /**
      * Returns node ID and creates it if it doesn't exist.
      *
      * @return node ID

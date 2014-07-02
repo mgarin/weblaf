@@ -66,6 +66,17 @@ public abstract class AsyncUniqueNode extends UniqueNode implements Serializable
     }
 
     /**
+     * Constructs AsyncUniqueNode with a custom user object and node ID.
+     *
+     * @param id         node ID
+     * @param userObject custom user object
+     */
+    public AsyncUniqueNode ( final String id, final Object userObject )
+    {
+        super ( id, userObject );
+    }
+
+    /**
      * Returns async node state.
      *
      * @return async node state

@@ -838,136 +838,6 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
     }
 
     /**
-     * Returns all available asynchronous tree listeners list.
-     *
-     * @return asynchronous tree listeners list
-     */
-    public List<AsyncTreeListener> getAsyncTreeListeners ()
-    {
-        synchronized ( listenersLock )
-        {
-            return CollectionUtils.copy ( asyncTreeListeners );
-        }
-    }
-
-    /**
-     * Adds new asynchronous tree listener.
-     *
-     * @param listener asynchronous tree listener to add
-     */
-    public void addAsyncTreeListener ( final AsyncTreeListener listener )
-    {
-        synchronized ( listenersLock )
-        {
-            asyncTreeListeners.add ( listener );
-        }
-    }
-
-    /**
-     * Removes asynchronous tree listener.
-     *
-     * @param listener asynchronous tree listener to remove
-     */
-    public void removeAsyncTreeListener ( final AsyncTreeListener listener )
-    {
-        synchronized ( listenersLock )
-        {
-            asyncTreeListeners.remove ( listener );
-        }
-    }
-
-    /**
-     * Invoked when childs load operation starts.
-     *
-     * @param parent node which childs are being loaded
-     */
-    @Override
-    public void childsLoadStarted ( final E parent )
-    {
-        fireChildsLoadStarted ( parent );
-    }
-
-    /**
-     * Fires childs load start event.
-     *
-     * @param parent node which childs are being loaded
-     */
-    protected void fireChildsLoadStarted ( final E parent )
-    {
-        final List<AsyncTreeListener> listeners;
-        synchronized ( listenersLock )
-        {
-            listeners = CollectionUtils.copy ( asyncTreeListeners );
-        }
-        for ( final AsyncTreeListener listener : listeners )
-        {
-            listener.childsLoadStarted ( parent );
-        }
-    }
-
-    /**
-     * Invoked when childs load operation finishes.
-     *
-     * @param parent node which childs were loaded
-     * @param childs loaded child nodes
-     */
-    @Override
-    public void childsLoadCompleted ( final E parent, final List<E> childs )
-    {
-        fireChildsLoadCompleted ( parent, childs );
-    }
-
-    /**
-     * Fires childs load complete event.
-     *
-     * @param parent node which childs were loaded
-     * @param childs loaded child nodes
-     */
-    protected void fireChildsLoadCompleted ( final E parent, final List<E> childs )
-    {
-        final List<AsyncTreeListener> listeners;
-        synchronized ( listenersLock )
-        {
-            listeners = CollectionUtils.copy ( asyncTreeListeners );
-        }
-        for ( final AsyncTreeListener listener : listeners )
-        {
-            listener.childsLoadCompleted ( parent, childs );
-        }
-    }
-
-    /**
-     * Invoked when childs load operation fails.
-     *
-     * @param parent node which childs were loaded
-     * @param cause  childs load failure cause
-     */
-    @Override
-    public void childsLoadFailed ( final E parent, final Throwable cause )
-    {
-        fireChildsLoadFailed ( parent, cause );
-    }
-
-    /**
-     * Fires childs load complete event.
-     *
-     * @param parent node which childs were loaded
-     * @param cause  childs load failure cause
-     */
-    protected void fireChildsLoadFailed ( final E parent, final Throwable cause )
-    {
-        final List<AsyncTreeListener> listeners;
-        synchronized ( listenersLock )
-        {
-            listeners = CollectionUtils.copy ( asyncTreeListeners );
-        }
-        for ( final AsyncTreeListener listener : listeners )
-        {
-            listener.childsLoadFailed ( parent, cause );
-        }
-    }
-
-    /**
      * Expands node with the specified ID.
      *
      * @param nodeId ID of the node to expand
@@ -1315,5 +1185,135 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
 
         // Force path to expand
         expandPath ( path );
+    }
+
+    /**
+     * Returns all available asynchronous tree listeners list.
+     *
+     * @return asynchronous tree listeners list
+     */
+    public List<AsyncTreeListener> getAsyncTreeListeners ()
+    {
+        synchronized ( listenersLock )
+        {
+            return CollectionUtils.copy ( asyncTreeListeners );
+        }
+    }
+
+    /**
+     * Adds new asynchronous tree listener.
+     *
+     * @param listener asynchronous tree listener to add
+     */
+    public void addAsyncTreeListener ( final AsyncTreeListener listener )
+    {
+        synchronized ( listenersLock )
+        {
+            asyncTreeListeners.add ( listener );
+        }
+    }
+
+    /**
+     * Removes asynchronous tree listener.
+     *
+     * @param listener asynchronous tree listener to remove
+     */
+    public void removeAsyncTreeListener ( final AsyncTreeListener listener )
+    {
+        synchronized ( listenersLock )
+        {
+            asyncTreeListeners.remove ( listener );
+        }
+    }
+
+    /**
+     * Invoked when childs load operation starts.
+     *
+     * @param parent node which childs are being loaded
+     */
+    @Override
+    public void childsLoadStarted ( final E parent )
+    {
+        fireChildsLoadStarted ( parent );
+    }
+
+    /**
+     * Fires childs load start event.
+     *
+     * @param parent node which childs are being loaded
+     */
+    protected void fireChildsLoadStarted ( final E parent )
+    {
+        final List<AsyncTreeListener> listeners;
+        synchronized ( listenersLock )
+        {
+            listeners = CollectionUtils.copy ( asyncTreeListeners );
+        }
+        for ( final AsyncTreeListener listener : listeners )
+        {
+            listener.childsLoadStarted ( parent );
+        }
+    }
+
+    /**
+     * Invoked when childs load operation finishes.
+     *
+     * @param parent node which childs were loaded
+     * @param childs loaded child nodes
+     */
+    @Override
+    public void childsLoadCompleted ( final E parent, final List<E> childs )
+    {
+        fireChildsLoadCompleted ( parent, childs );
+    }
+
+    /**
+     * Fires childs load complete event.
+     *
+     * @param parent node which childs were loaded
+     * @param childs loaded child nodes
+     */
+    protected void fireChildsLoadCompleted ( final E parent, final List<E> childs )
+    {
+        final List<AsyncTreeListener> listeners;
+        synchronized ( listenersLock )
+        {
+            listeners = CollectionUtils.copy ( asyncTreeListeners );
+        }
+        for ( final AsyncTreeListener listener : listeners )
+        {
+            listener.childsLoadCompleted ( parent, childs );
+        }
+    }
+
+    /**
+     * Invoked when childs load operation fails.
+     *
+     * @param parent node which childs were loaded
+     * @param cause  childs load failure cause
+     */
+    @Override
+    public void childsLoadFailed ( final E parent, final Throwable cause )
+    {
+        fireChildsLoadFailed ( parent, cause );
+    }
+
+    /**
+     * Fires childs load complete event.
+     *
+     * @param parent node which childs were loaded
+     * @param cause  childs load failure cause
+     */
+    protected void fireChildsLoadFailed ( final E parent, final Throwable cause )
+    {
+        final List<AsyncTreeListener> listeners;
+        synchronized ( listenersLock )
+        {
+            listeners = CollectionUtils.copy ( asyncTreeListeners );
+        }
+        for ( final AsyncTreeListener listener : listeners )
+        {
+            listener.childsLoadFailed ( parent, cause );
+        }
     }
 }

@@ -1940,6 +1940,21 @@ public final class SwingUtils
     }
 
     /**
+     * Returns default label font metrics.
+     * This method might be used as a hack with other L&amp;Fs to retrieve system default font metrics for simple text.
+     *
+     * @return default label font metrics
+     */
+    public static FontMetrics getDefaultLabelFontMetrics ()
+    {
+        if ( label == null )
+        {
+            label = new JLabel ();
+        }
+        return label.getFontMetrics ( label.getFont () );
+    }
+
+    /**
      * Returns scroll pane for specified component if exists, null otherwise.
      *
      * @param component component to process

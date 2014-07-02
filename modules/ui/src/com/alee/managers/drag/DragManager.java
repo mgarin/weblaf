@@ -25,10 +25,7 @@ import com.alee.utils.SwingUtils;
 import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
-import java.awt.dnd.DragSource;
-import java.awt.dnd.DragSourceAdapter;
-import java.awt.dnd.DragSourceDragEvent;
-import java.awt.dnd.DragSourceDropEvent;
+import java.awt.dnd.*;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
@@ -58,6 +55,7 @@ public final class DragManager
     private static WebGlassPane glassPane;
     private static Object data;
     private static BufferedImage view;
+    private static Component dropLocation;
     private static DragViewHandler dragViewHandler;
 
     /**
@@ -84,8 +82,17 @@ public final class DragManager
                 @Override
                 public void dragEnter ( final DragSourceDragEvent dsde )
                 {
+                    actualDragEnter ( dsde );
+                }
+
+                protected void actualDragEnter ( final DragSourceDragEvent dsde )
+                {
+                    // Save drop location component
+                    final DragSourceContext dsc = dsde.getDragSourceContext ();
+                    dropLocation = dsc.getComponent ();
+
                     // Deciding on enter what to display for this kind of data
-                    final Transferable transferable = dsde.getDragSourceContext ().getTransferable ();
+                    final Transferable transferable = dsc.getTransferable ();
                     final DataFlavor[] flavors = transferable.getTransferDataFlavors ();
                     for ( final DataFlavor flavor : flavors )
                     {
@@ -97,7 +104,7 @@ public final class DragManager
                                 dragViewHandler = viewHandlers.get ( flavor );
                                 view = dragViewHandler.getView ( data );
 
-                                glassPane = GlassPaneManager.getGlassPane ( dsde.getDragSourceContext ().getComponent () );
+                                glassPane = GlassPaneManager.getGlassPane ( dsc.getComponent () );
                                 glassPane.setPaintedImage ( view, getLocation ( glassPane ) );
 
                                 break;
@@ -113,6 +120,12 @@ public final class DragManager
                 @Override
                 public void dragMouseMoved ( final DragSourceDragEvent dsde )
                 {
+                    final DragSourceContext dsc = dsde.getDragSourceContext ();
+                    if ( dsc.getComponent () != dropLocation )
+                    {
+                        actualDragEnter ( dsde );
+                    }
+
                     // Move displayed data
                     if ( view != null )
                     {
@@ -136,6 +149,9 @@ public final class DragManager
                 @Override
                 public void dragDropEnd ( final DragSourceDropEvent dsde )
                 {
+                    // Cleanup drop location component
+                    dropLocation = null;
+
                     // Cleanup displayed data
                     if ( view != null )
                     {

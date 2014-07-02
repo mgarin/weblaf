@@ -81,7 +81,7 @@ public class DocumentDragViewHandler<T extends DocumentData> implements DragView
         final int tm = margin.left + ( icon != null ? icon.getIconWidth () + 4 : 5 );
         final int em = margin.right + 5;
         final int w = tm + fm.stringWidth ( title ) + em;
-        final int h = margin.top + Math.max ( ( icon != null ? icon.getIconHeight () : 0 ), fm.getHeight () ) + margin.bottom;
+        final int h = margin.top + Math.max ( icon != null ? icon.getIconHeight () : 0, fm.getHeight () ) + margin.bottom;
 
         final BufferedImage image = ImageUtils.createCompatibleImage ( w, h, Transparency.TRANSLUCENT );
         final Graphics2D g2d = image.createGraphics ();
