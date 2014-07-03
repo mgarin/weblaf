@@ -353,7 +353,14 @@ public class Log
         synchronized ( logLock )
         {
             final Class type = object instanceof Class ? ( Class ) object : object.getClass ();
-            loggingEnabled.put ( type, enabled );
+            if ( !enabled )
+            {
+                loggingEnabled.put ( type, enabled );
+            }
+            else
+            {
+                loggingEnabled.remove ( type );
+            }
         }
     }
 
@@ -367,6 +374,10 @@ public class Log
     {
         synchronized ( logLock )
         {
+            if ( loggingEnabled.size () == 0 )
+            {
+                return true;
+            }
             final Class type = object instanceof Class ? ( Class ) object : object.getClass ();
             final Boolean enabled = loggingEnabled.get ( type );
             return enabled == null || enabled;

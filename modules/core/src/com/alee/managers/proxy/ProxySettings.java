@@ -17,6 +17,7 @@
 
 package com.alee.managers.proxy;
 
+import com.alee.utils.TextUtils;
 import com.alee.utils.xml.PasswordConverter;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
@@ -25,44 +26,85 @@ import com.thoughtworks.xstream.annotations.XStreamConverter;
 import java.io.Serializable;
 
 /**
- * User: mgarin Date: 12.10.11 Time: 17:49
+ * Proxy settings object.
+ *
+ * @author Mikle Garin
+ * @see com.alee.managers.proxy.ProxyManager
  */
 
-@XStreamAlias ("ProxySettings")
+@XStreamAlias ( "ProxySettings" )
 public class ProxySettings implements Serializable, Cloneable
 {
+    /**
+     * Whether should use proxy settings or not.
+     */
     @XStreamAsAttribute
     private boolean useProxy = false;
 
+    /**
+     * Proxy host.
+     */
     @XStreamAsAttribute
     private String proxyHost = null;
 
+    /**
+     * Proxy port.
+     */
     @XStreamAsAttribute
     private String proxyPort = null;
 
+    /**
+     * No proxy hosts.
+     */
     @XStreamAsAttribute
     private String nonProxyHosts = null;
 
+    /**
+     * Whether proxy requires authentification or not.
+     */
     @XStreamAsAttribute
     private boolean useProxyAuthentification = false;
 
+    /**
+     * Proxy login.
+     */
     @XStreamAsAttribute
     private String proxyLogin = null;
 
+    /**
+     * Proxy password.
+     */
     @XStreamAsAttribute
-    @XStreamConverter (PasswordConverter.class)
+    @XStreamConverter ( PasswordConverter.class )
     private String proxyPassword = null;
 
+    /**
+     * Constructs disabled proxy settings.
+     */
     public ProxySettings ()
     {
         this ( null, null );
     }
 
+    /**
+     * Constructs proxy settings for host without authentification.
+     *
+     * @param proxyHost proxy host
+     * @param proxyPort proxy port
+     */
     public ProxySettings ( final String proxyHost, final String proxyPort )
     {
         this ( proxyHost, proxyPort, null, null );
     }
 
+    /**
+     * Constructs proxy settings for host that requires authentification.
+     *
+     * @param proxyHost     proxy host
+     * @param proxyPort     proxy port
+     * @param proxyLogin    proxy login
+     * @param proxyPassword proxy password
+     */
     public ProxySettings ( final String proxyHost, final String proxyPort, final String proxyLogin, final String proxyPassword )
     {
         super ();
@@ -173,6 +215,27 @@ public class ProxySettings implements Serializable, Cloneable
         this.proxyPassword = proxyPassword;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString ()
+    {
+        if ( isUseProxy () )
+        {
+            final boolean useAuth = isUseProxyAuthentification ();
+            final String auth = useAuth ? getProxyLogin () + ":" + TextUtils.createString ( "*", getProxyPassword ().length () ) + "@" : "";
+            return "ProxySettings [ " + auth + getProxyHost () + ":" + getProxyPort () + " ]";
+        }
+        else
+        {
+            return "ProxySettings [ no proxy ]";
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected ProxySettings clone ()
     {

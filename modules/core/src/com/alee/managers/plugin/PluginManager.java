@@ -861,7 +861,8 @@ public abstract class PluginManager<T extends Plugin>
             }
         }
 
-        // todo Sort only recently initialized plugins?
+        // Sorting plugins in appropriate order
+        // This order is not used by PluginManager itself due to possbile unstructurized plugin loading
         if ( middle.size () == 0 )
         {
             // Combining all plugins into single list

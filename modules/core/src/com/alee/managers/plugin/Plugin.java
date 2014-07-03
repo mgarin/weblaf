@@ -208,11 +208,11 @@ public abstract class Plugin<T extends Plugin<T>>
 
     /**
      * Returns plugin initialization strategy.
-     * It will determine sequence in which plugins are initialized.
+     * It will determine order in which plugins are sorted for futher usage.
      *
      * @return plugin initialization strategy
      */
-    public InitializationStrategy getInitializationStrategy ()
+    public final InitializationStrategy getInitializationStrategy ()
     {
         if ( initializationStrategy == null )
         {
@@ -223,6 +223,7 @@ public abstract class Plugin<T extends Plugin<T>>
 
     /**
      * Creates and returns plugin initialization strategy.
+     * It will determine order in which plugins are sorted for futher usage.
      *
      * @return plugin initialization strategy
      */

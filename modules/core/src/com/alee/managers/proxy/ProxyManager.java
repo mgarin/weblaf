@@ -33,6 +33,7 @@ import java.util.Properties;
  * That will happen in case it will detect that your proxy settings does not match system proxy settings.
  *
  * @author Mikle Garin
+ * @see com.alee.managers.proxy.ProxySettings
  */
 
 public final class ProxyManager
