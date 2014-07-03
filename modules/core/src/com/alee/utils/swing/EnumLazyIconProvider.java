@@ -17,7 +17,7 @@
 
 package com.alee.utils.swing;
 
-import com.alee.log.Log;
+import com.alee.managers.log.Log;
 
 import javax.swing.*;
 import java.util.HashMap;

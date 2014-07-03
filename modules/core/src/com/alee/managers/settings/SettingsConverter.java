@@ -17,7 +17,7 @@
 
 package com.alee.managers.settings;
 
-import com.alee.log.Log;
+import com.alee.managers.log.Log;
 import com.alee.utils.xml.XMLChar;
 import com.thoughtworks.xstream.converters.MarshallingContext;
 import com.thoughtworks.xstream.converters.UnmarshallingContext;

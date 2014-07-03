@@ -33,7 +33,9 @@ import java.util.Properties;
  * That will happen in case it will detect that your proxy settings does not match system proxy settings.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-ProxyManager">How to use ProxyManager</a>
  * @see com.alee.managers.proxy.ProxySettings
+ * @see com.alee.managers.proxy.SystemProxyConfirmationSupport
  */
 
 public final class ProxyManager
@@ -91,7 +93,7 @@ public final class ProxyManager
     /**
      * Initializes manager if it wasn't already initialized.
      */
-    public static void initialize ()
+    public static synchronized void initialize ()
     {
         if ( !initialized )
         {
@@ -112,20 +114,25 @@ public final class ProxyManager
                         !CompareUtils.equals ( proxySettings.getProxyHost (), systemProxySettings.getProxyHost () ) ||
                         !CompareUtils.equals ( proxySettings.getProxyPort (), systemProxySettings.getProxyPort () ) )
                 {
+                    // Checking whether we have proxy confirmation support or auto settings are enabled
                     if ( systemProxyConfirmationSupport == null || isAutoSettingsInitialization () )
                     {
+                        // Checking whether we are allowed to use system settings
                         if ( isAlwaysUseSystemSettings () )
                         {
+                            // Applying system settings automatically
                             proxySettings = systemProxySettings;
                         }
                     }
                     else
                     {
+                        // Asking proxy confirmation support whether we should use system proxy or leave current settings intact
                         final boolean useSystemProxy = systemProxyConfirmationSupport.shouldUseSystemProxy ();
                         if ( useSystemProxy )
                         {
                             proxySettings = systemProxySettings;
                         }
+                        // Saving the choice if confirmation shouldn't be pronpted anymore
                         if ( systemProxyConfirmationSupport.alwaysDoTheSame () )
                         {
                             setAutoSettingsInitialization ( true );

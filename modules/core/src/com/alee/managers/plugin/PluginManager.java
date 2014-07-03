@@ -18,7 +18,7 @@
 package com.alee.managers.plugin;
 
 import com.alee.global.GlobalConstants;
-import com.alee.log.Log;
+import com.alee.managers.log.Log;
 import com.alee.managers.plugin.data.*;
 import com.alee.utils.*;
 import com.alee.utils.compare.Filter;

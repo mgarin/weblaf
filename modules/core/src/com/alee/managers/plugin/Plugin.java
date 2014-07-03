@@ -17,7 +17,7 @@
 
 package com.alee.managers.plugin;
 
-import com.alee.log.Log;
+import com.alee.managers.log.Log;
 import com.alee.managers.plugin.data.*;
 
 import javax.swing.*;

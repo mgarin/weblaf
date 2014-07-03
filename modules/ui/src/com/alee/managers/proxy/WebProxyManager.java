@@ -18,7 +18,11 @@
 package com.alee.managers.proxy;
 
 /**
+ * ProxyManager extension that provides basic visualization for proxy setup.
+ *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-ProxyManager">How to use ProxyManager</a>
+ * @see com.alee.managers.proxy.ProxyManager
  */
 
 public class WebProxyManager

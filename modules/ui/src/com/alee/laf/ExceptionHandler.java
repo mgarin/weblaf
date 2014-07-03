@@ -17,7 +17,7 @@
 
 package com.alee.laf;
 
-import com.alee.log.Log;
+import com.alee.managers.log.Log;
 
 /**
  * Custom exceptions handler.

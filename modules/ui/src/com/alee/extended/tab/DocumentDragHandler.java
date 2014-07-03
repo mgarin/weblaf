@@ -18,7 +18,7 @@
 package com.alee.extended.tab;
 
 import com.alee.laf.tabbedpane.WebTabbedPane;
-import com.alee.log.Log;
+import com.alee.managers.log.Log;
 import com.alee.utils.SwingUtils;
 
 import javax.swing.*;

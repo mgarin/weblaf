@@ -17,7 +17,7 @@
 
 package com.alee.extended.syntax;
 
-import com.alee.log.Log;
+import com.alee.managers.log.Log;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.Theme;
 

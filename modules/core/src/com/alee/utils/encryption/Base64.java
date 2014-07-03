@@ -74,7 +74,7 @@
 
 package com.alee.utils.encryption;
 
-import com.alee.log.Log;
+import com.alee.managers.log.Log;
 
 /**
  * This class provides encode/decode for RFC 2045 Base64 as
@@ -149,22 +149,22 @@ public final class Base64
 
     protected static boolean isWhiteSpace ( final char octect )
     {
-        return ( octect == 0x20 || octect == 0xd || octect == 0xa || octect == 0x9 );
+        return octect == 0x20 || octect == 0xd || octect == 0xa || octect == 0x9;
     }
 
     protected static boolean isPad ( final char octect )
     {
-        return ( octect == PAD );
+        return octect == PAD;
     }
 
     protected static boolean isData ( final char octect )
     {
-        return ( base64Alphabet[ octect ] != -1 );
+        return base64Alphabet[ octect ] != -1;
     }
 
     protected static boolean isBase64 ( final char octect )
     {
-        return ( isWhiteSpace ( octect ) || isPad ( octect ) || isData ( octect ) );
+        return isWhiteSpace ( octect ) || isPad ( octect ) || isData ( octect );
     }
 
     /**
@@ -224,10 +224,10 @@ public final class Base64
                 l = ( byte ) ( b2 & 0x0f );
                 k = ( byte ) ( b1 & 0x03 );
 
-                final byte val1 = ( ( b1 & SIGN ) == 0 ) ? ( byte ) ( b1 >> 2 ) : ( byte ) ( ( b1 ) >> 2 ^ 0xc0 );
+                final byte val1 = ( ( b1 & SIGN ) == 0 ) ? ( byte ) ( b1 >> 2 ) : ( byte ) ( b1 >> 2 ^ 0xc0 );
 
-                final byte val2 = ( ( b2 & SIGN ) == 0 ) ? ( byte ) ( b2 >> 4 ) : ( byte ) ( ( b2 ) >> 4 ^ 0xf0 );
-                final byte val3 = ( ( b3 & SIGN ) == 0 ) ? ( byte ) ( b3 >> 6 ) : ( byte ) ( ( b3 ) >> 6 ^ 0xfc );
+                final byte val2 = ( ( b2 & SIGN ) == 0 ) ? ( byte ) ( b2 >> 4 ) : ( byte ) ( b2 >> 4 ^ 0xf0 );
+                final byte val3 = ( ( b3 & SIGN ) == 0 ) ? ( byte ) ( b3 >> 6 ) : ( byte ) ( b3 >> 6 ^ 0xfc );
 
                 if ( fDebug )
                 {
@@ -260,10 +260,10 @@ public final class Base64
             l = ( byte ) ( b2 & 0x0f );
             k = ( byte ) ( b1 & 0x03 );
 
-            final byte val1 = ( ( b1 & SIGN ) == 0 ) ? ( byte ) ( b1 >> 2 ) : ( byte ) ( ( b1 ) >> 2 ^ 0xc0 );
+            final byte val1 = ( ( b1 & SIGN ) == 0 ) ? ( byte ) ( b1 >> 2 ) : ( byte ) ( b1 >> 2 ^ 0xc0 );
 
-            final byte val2 = ( ( b2 & SIGN ) == 0 ) ? ( byte ) ( b2 >> 4 ) : ( byte ) ( ( b2 ) >> 4 ^ 0xf0 );
-            final byte val3 = ( ( b3 & SIGN ) == 0 ) ? ( byte ) ( b3 >> 6 ) : ( byte ) ( ( b3 ) >> 6 ^ 0xfc );
+            final byte val2 = ( ( b2 & SIGN ) == 0 ) ? ( byte ) ( b2 >> 4 ) : ( byte ) ( b2 >> 4 ^ 0xf0 );
+            final byte val3 = ( ( b3 & SIGN ) == 0 ) ? ( byte ) ( b3 >> 6 ) : ( byte ) ( b3 >> 6 ^ 0xfc );
 
             if ( fDebug )
             {
@@ -288,7 +288,7 @@ public final class Base64
                 Log.debug ( Base64.class, "b1=" + b1 );
                 Log.debug ( Base64.class, "b1<<2 = " + ( b1 >> 2 ) );
             }
-            final byte val1 = ( ( b1 & SIGN ) == 0 ) ? ( byte ) ( b1 >> 2 ) : ( byte ) ( ( b1 ) >> 2 ^ 0xc0 );
+            final byte val1 = ( ( b1 & SIGN ) == 0 ) ? ( byte ) ( b1 >> 2 ) : ( byte ) ( b1 >> 2 ^ 0xc0 );
             encodedData[ encodedIndex++ ] = lookUpBase64Alphabet[ val1 ];
             encodedData[ encodedIndex++ ] = lookUpBase64Alphabet[ k << 4 ];
             encodedData[ encodedIndex++ ] = PAD;
@@ -301,8 +301,8 @@ public final class Base64
             l = ( byte ) ( b2 & 0x0f );
             k = ( byte ) ( b1 & 0x03 );
 
-            final byte val1 = ( ( b1 & SIGN ) == 0 ) ? ( byte ) ( b1 >> 2 ) : ( byte ) ( ( b1 ) >> 2 ^ 0xc0 );
-            final byte val2 = ( ( b2 & SIGN ) == 0 ) ? ( byte ) ( b2 >> 4 ) : ( byte ) ( ( b2 ) >> 4 ^ 0xf0 );
+            final byte val1 = ( ( b1 & SIGN ) == 0 ) ? ( byte ) ( b1 >> 2 ) : ( byte ) ( b1 >> 2 ^ 0xc0 );
+            final byte val2 = ( ( b2 & SIGN ) == 0 ) ? ( byte ) ( b2 >> 4 ) : ( byte ) ( b2 >> 4 ^ 0xf0 );
 
             encodedData[ encodedIndex++ ] = lookUpBase64Alphabet[ val1 ];
             encodedData[ encodedIndex++ ] = lookUpBase64Alphabet[ val2 | ( k << 4 ) ];
@@ -338,7 +338,7 @@ public final class Base64
             return null;//should be divisible by four
         }
 
-        final int numberQuadruple = ( len / FOURBYTE );
+        final int numberQuadruple = len / FOURBYTE;
 
         if ( numberQuadruple == 0 )
         {
@@ -358,15 +358,15 @@ public final class Base64
         int i = 0;
         int encodedIndex = 0;
         int dataIndex = 0;
-        decodedData = new byte[ ( numberQuadruple ) * 3 ];
+        decodedData = new byte[ numberQuadruple * 3 ];
 
         for (; i < numberQuadruple - 1; i++ )
         {
 
-            if ( !isData ( ( d1 = base64Data[ dataIndex++ ] ) ) ||
-                    !isData ( ( d2 = base64Data[ dataIndex++ ] ) ) ||
-                    !isData ( ( d3 = base64Data[ dataIndex++ ] ) ) ||
-                    !isData ( ( d4 = base64Data[ dataIndex++ ] ) ) )
+            if ( !isData ( d1 = base64Data[ dataIndex++ ] ) ||
+                    !isData ( d2 = base64Data[ dataIndex++ ] ) ||
+                    !isData ( d3 = base64Data[ dataIndex++ ] ) ||
+                    !isData ( d4 = base64Data[ dataIndex++ ] ) )
             {
                 return null;//if found "no data" just return null
             }
@@ -381,7 +381,7 @@ public final class Base64
             decodedData[ encodedIndex++ ] = ( byte ) ( b3 << 6 | b4 );
         }
 
-        if ( !isData ( ( d1 = base64Data[ dataIndex++ ] ) ) || !isData ( ( d2 = base64Data[ dataIndex++ ] ) ) )
+        if ( !isData ( d1 = base64Data[ dataIndex++ ] ) || !isData ( d2 = base64Data[ dataIndex++ ] ) )
         {
             return null;//if found "no data" just return null
         }
@@ -391,7 +391,7 @@ public final class Base64
 
         d3 = base64Data[ dataIndex++ ];
         d4 = base64Data[ dataIndex++ ];
-        if ( !isData ( ( d3 ) ) || !isData ( ( d4 ) ) )
+        if ( !isData ( d3 ) || !isData ( d4 ) )
         {//Check if they are PAD characters
             if ( isPad ( d3 ) && isPad ( d4 ) )
             {               //Two PAD e.g. 3c[Pad][Pad]

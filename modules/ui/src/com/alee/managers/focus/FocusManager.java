@@ -18,7 +18,7 @@
 package com.alee.managers.focus;
 
 import com.alee.global.GlobalConstants;
-import com.alee.log.Log;
+import com.alee.managers.log.Log;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.SwingUtils;
 

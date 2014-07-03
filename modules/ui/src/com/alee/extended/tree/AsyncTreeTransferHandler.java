@@ -18,7 +18,7 @@
 package com.alee.extended.tree;
 
 import com.alee.laf.tree.TreeUtils;
-import com.alee.log.Log;
+import com.alee.managers.log.Log;
 
 import javax.swing.*;
 import javax.swing.tree.TreePath;

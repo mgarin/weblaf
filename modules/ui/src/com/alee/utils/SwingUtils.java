@@ -1023,7 +1023,7 @@ public final class SwingUtils
      */
     public static <C extends Component> C setFontStyle ( final C component, final boolean bold, final boolean italic )
     {
-        final int style = bold && italic ? Font.BOLD | Font.ITALIC : ( bold ? Font.BOLD : ( italic ? Font.ITALIC : Font.PLAIN ) );
+        final int style = bold && italic ? Font.BOLD | Font.ITALIC : bold ? Font.BOLD : italic ? Font.ITALIC : Font.PLAIN;
         return setFontStyle ( component, style );
     }
 
@@ -1057,7 +1057,7 @@ public final class SwingUtils
     public static <C extends Component> C setFontSizeAndStyle ( final C component, final int fontSize, final boolean bold,
                                                                 final boolean italic )
     {
-        final int style = bold && italic ? Font.BOLD | Font.ITALIC : ( bold ? Font.BOLD : ( italic ? Font.ITALIC : Font.PLAIN ) );
+        final int style = bold && italic ? Font.BOLD | Font.ITALIC : bold ? Font.BOLD : italic ? Font.ITALIC : Font.PLAIN;
         return setFontSizeAndStyle ( component, fontSize, style );
     }
 
@@ -3078,7 +3078,7 @@ public final class SwingUtils
             this.font = fontMetrics.getFont ();
             this.frc = fontMetrics.getFontRenderContext ();
             this.cache = new HashMap<Character, Short> ();
-            assert ( font != null && frc != null );
+            assert font != null && frc != null;
         }
 
         public int getLeftSideBearing ( final char aChar )
@@ -3153,7 +3153,7 @@ public final class SwingUtils
                 rsb = 0;
             }
 
-            final int bearing = ( ( lsb + 127 ) << 8 ) + ( rsb + 127 );
+            final int bearing = ( ( lsb + 127 ) << 8 ) + rsb + 127;
             return ( short ) bearing;
         }
 
@@ -3172,7 +3172,7 @@ public final class SwingUtils
                 return false;
             }
             final BearingCacheEntry oEntry = ( BearingCacheEntry ) entry;
-            return ( font.equals ( oEntry.font ) && frc.equals ( oEntry.frc ) );
+            return font.equals ( oEntry.font ) && frc.equals ( oEntry.frc );
         }
 
         /**

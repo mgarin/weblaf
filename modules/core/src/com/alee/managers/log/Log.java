@@ -15,7 +15,7 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.log;
+package com.alee.managers.log;
 
 import com.alee.utils.ReflectUtils;
 import org.slf4j.Logger;

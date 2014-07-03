@@ -17,9 +17,9 @@
 
 package com.alee.managers.drag;
 
-import com.alee.log.Log;
 import com.alee.managers.glasspane.GlassPaneManager;
 import com.alee.managers.glasspane.WebGlassPane;
+import com.alee.managers.log.Log;
 import com.alee.utils.SwingUtils;
 
 import java.awt.*;

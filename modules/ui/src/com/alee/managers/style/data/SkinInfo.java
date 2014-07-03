@@ -17,7 +17,7 @@
 
 package com.alee.managers.style.data;
 
-import com.alee.log.Log;
+import com.alee.managers.log.Log;
 import com.alee.managers.style.SupportedComponent;
 import com.alee.utils.TextUtils;
 import com.thoughtworks.xstream.annotations.XStreamAlias;

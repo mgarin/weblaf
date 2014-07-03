@@ -64,16 +64,7 @@ import com.alee.laf.tree.TreeState;
 import com.alee.laf.tree.WebTreeUI;
 import com.alee.laf.viewport.WebViewportStyle;
 import com.alee.laf.viewport.WebViewportUI;
-import com.alee.log.Log;
-import com.alee.managers.drag.DragManager;
-import com.alee.managers.focus.FocusManager;
-import com.alee.managers.hotkey.HotkeyManager;
-import com.alee.managers.language.WebLanguageManager;
-import com.alee.managers.proxy.WebProxyManager;
-import com.alee.managers.settings.WebSettingsManager;
-import com.alee.managers.style.StyleManager;
-import com.alee.managers.tooltip.TooltipManager;
-import com.alee.managers.version.VersionManager;
+import com.alee.managers.WebLafManagers;
 import com.alee.utils.*;
 import com.alee.utils.swing.SwingLazyValue;
 
@@ -966,16 +957,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
      */
     public static void initializeManagers ()
     {
-        Log.initialize ();
-        VersionManager.initialize ();
-        WebLanguageManager.initialize ();
-        WebSettingsManager.initialize ();
-        HotkeyManager.initialize ();
-        FocusManager.initialize ();
-        TooltipManager.initialize ();
-        WebProxyManager.initialize ();
-        StyleManager.initialize ();
-        DragManager.initialize ();
+        WebLafManagers.initialize ();
     }
 
     /**

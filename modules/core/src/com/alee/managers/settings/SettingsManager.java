@@ -17,7 +17,7 @@
 
 package com.alee.managers.settings;
 
-import com.alee.log.Log;
+import com.alee.managers.log.Log;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.FileUtils;
 import com.alee.utils.ReflectUtils;
