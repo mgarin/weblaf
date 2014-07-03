@@ -528,12 +528,24 @@ public final class NotificationManager implements SwingConstants
         final Window activeWindow = SwingUtils.getActiveWindow ();
         if ( activeWindow != null )
         {
-            return activeWindow;
+            if ( activeWindow instanceof JFrame || activeWindow instanceof JDialog || activeWindow instanceof JWindow )
+            {
+                return activeWindow;
+            }
         }
         final Window[] allWindows = Window.getWindows ();
         if ( allWindows != null && allWindows.length > 0 )
         {
-            return allWindows[ 0 ];
+            for ( final Window window : allWindows )
+            {
+                if ( window.isShowing () )
+                {
+                    if ( window instanceof JFrame || window instanceof JDialog || window instanceof JWindow )
+                    {
+                        return window;
+                    }
+                }
+            }
         }
         throw new RuntimeException ( "There is no visible windows to display notification" );
     }

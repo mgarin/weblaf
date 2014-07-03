@@ -1760,7 +1760,7 @@ public final class SwingUtils
         Window window = null;
         for ( final Window w : windows )
         {
-            if ( w.isVisible () && w.isActive () && w.isFocused () )
+            if ( w.isShowing () && w.isActive () && w.isFocused () )
             {
                 window = w;
                 break;
