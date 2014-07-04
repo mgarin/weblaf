@@ -64,7 +64,7 @@ public class Log
     /**
      * Initializes SettingsManager.
      */
-    public static void initialize ()
+    public static synchronized void initialize ()
     {
         if ( !initialized )
         {

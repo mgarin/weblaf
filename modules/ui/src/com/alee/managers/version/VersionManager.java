@@ -46,7 +46,7 @@ public final class VersionManager
     /**
      * Initializes VersionManager settings.
      */
-    public static void initialize ()
+    public static synchronized void initialize ()
     {
         if ( !initialized )
         {

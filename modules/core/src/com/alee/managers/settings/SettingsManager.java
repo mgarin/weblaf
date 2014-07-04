@@ -161,7 +161,7 @@ public final class SettingsManager
     /**
      * Initializes SettingsManager.
      */
-    public static void initialize ()
+    public static synchronized void initialize ()
     {
         if ( !initialized )
         {

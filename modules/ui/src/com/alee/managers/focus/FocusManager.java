@@ -76,7 +76,7 @@ public final class FocusManager
     /**
      * Initializes manager if it wasn't already initialized.
      */
-    public static void initialize ()
+    public static synchronized void initialize ()
     {
         // To avoid more than one initialization
         if ( !initialized )

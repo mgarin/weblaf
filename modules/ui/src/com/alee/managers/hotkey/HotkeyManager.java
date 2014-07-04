@@ -80,7 +80,7 @@ public final class HotkeyManager
     /**
      * Initializes hotkey manager.
      */
-    public static void initialize ()
+    public static synchronized void initialize ()
     {
         if ( !initialized )
         {

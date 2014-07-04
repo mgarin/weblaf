@@ -287,7 +287,7 @@ public final class LanguageManager implements LanguageConstants
     /**
      * Initializes LanguageManager settings.
      */
-    public static void initialize ()
+    public static synchronized void initialize ()
     {
         if ( !initialized )
         {

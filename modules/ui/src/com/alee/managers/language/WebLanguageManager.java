@@ -38,7 +38,7 @@ public class WebLanguageManager
     /**
      * Initializes LanguageManager settings.
      */
-    public static void initialize ()
+    public static synchronized void initialize ()
     {
         if ( !initialized )
         {

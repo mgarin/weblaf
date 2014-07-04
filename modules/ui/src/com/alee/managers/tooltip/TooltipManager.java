@@ -69,7 +69,7 @@ public final class TooltipManager
      * TooltipManager initialization
      */
 
-    public static void initialize ()
+    public static synchronized void initialize ()
     {
         if ( !initialized )
         {

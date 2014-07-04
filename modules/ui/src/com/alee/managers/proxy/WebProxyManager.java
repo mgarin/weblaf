@@ -35,7 +35,7 @@ public class WebProxyManager
     /**
      * Initializes manager if it wasn't already initialized.
      */
-    public static void initialize ()
+    public static synchronized void initialize ()
     {
         if ( !initialized )
         {

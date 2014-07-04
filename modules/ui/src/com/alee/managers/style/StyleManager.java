@@ -121,7 +121,7 @@ public final class StyleManager
     /**
      * Initializes StyleManager settings.
      */
-    public static void initialize ()
+    public static synchronized void initialize ()
     {
         if ( !initialized )
         {
