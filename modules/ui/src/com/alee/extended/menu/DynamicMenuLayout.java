@@ -40,7 +40,7 @@ public class DynamicMenuLayout extends AbstractLayoutManager
     public void layoutContainer ( final Container parent )
     {
         final WebDynamicMenu menu = ( WebDynamicMenu ) parent;
-        final float displayProgress = MathUtils.sqr ( menu.getCurrentProgress () );
+        final float displayProgress = MathUtils.sqr ( menu.getDisplayProgress () );
 
         final Dimension max = SwingUtils.max ( menu.getComponents () );
         final Point center = new Point ( menu.getRadius (), menu.getRadius () );

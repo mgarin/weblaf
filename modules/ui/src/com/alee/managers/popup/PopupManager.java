@@ -17,7 +17,6 @@
 
 package com.alee.managers.popup;
 
-import com.alee.extended.painter.NinePatchIconPainter;
 import com.alee.extended.painter.Painter;
 import com.alee.utils.SwingUtils;
 
@@ -37,7 +36,7 @@ import java.util.Map;
  * @see PopupLayer
  * @see WebPopup
  * @see WebButtonPopup
- * @see com.alee.managers.notification.WebNotificationPopup
+ * @see com.alee.managers.notification.WebInnerNotification
  */
 
 public final class PopupManager
@@ -56,11 +55,6 @@ public final class PopupManager
      * Default style used for popups.
      */
     private static PopupStyle defaultPopupStyle = PopupStyle.bordered;
-
-    /**
-     * Style painters cache.
-     */
-    private static final Map<PopupStyle, Painter> stylePainters = new HashMap<PopupStyle, Painter> ();
 
     /**
      * Hides all visible popups on all cached popup layers.
@@ -131,25 +125,7 @@ public final class PopupManager
      */
     public static Painter getDefaultPopupPainter ()
     {
-        return getPopupPainter ( defaultPopupStyle );
-    }
-
-    /**
-     * Returns popup painter for the specified popup style.
-     *
-     * @param style popup style
-     * @return popup painter for the specified popup style
-     */
-    public static Painter getPopupPainter ( final PopupStyle style )
-    {
-        Painter painter = stylePainters.get ( style );
-        if ( painter == null )
-        {
-            painter = style == PopupStyle.none ? null :
-                    new NinePatchIconPainter ( PopupManager.class.getResource ( "icons/popup/" + style + ".9.png" ) );
-            stylePainters.put ( style, painter );
-        }
-        return painter;
+        return defaultPopupStyle.getPainter ();
     }
 
     /**

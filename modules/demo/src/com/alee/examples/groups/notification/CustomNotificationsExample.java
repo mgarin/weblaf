@@ -26,7 +26,7 @@ import com.alee.extended.time.WebClock;
 import com.alee.laf.button.WebButton;
 import com.alee.managers.notification.NotificationIcon;
 import com.alee.managers.notification.NotificationManager;
-import com.alee.managers.notification.WebNotificationPopup;
+import com.alee.managers.notification.WebNotification;
 
 import javax.swing.*;
 import java.awt.*;
@@ -63,15 +63,15 @@ public class CustomNotificationsExample extends DefaultExample
      * {@inheritDoc}
      */
     @Override
-    public Component getPreview ( WebLookAndFeelDemo owner )
+    public Component getPreview ( final WebLookAndFeelDemo owner )
     {
-        WebButton notification1 = new WebButton ( "Simple custom content" );
+        final WebButton notification1 = new WebButton ( "Simple custom content" );
         notification1.addActionListener ( new ActionListener ()
         {
             @Override
-            public void actionPerformed ( ActionEvent e )
+            public void actionPerformed ( final ActionEvent e )
             {
-                final WebNotificationPopup notificationPopup = new WebNotificationPopup ();
+                final WebNotification notificationPopup = new WebNotification ();
                 notificationPopup.setIcon ( NotificationIcon.question );
 
                 final JLabel label = new JLabel ( "Are you sure you want to" );
@@ -86,7 +86,7 @@ public class CustomNotificationsExample extends DefaultExample
                      * {@inheritDoc}
                      */
                     @Override
-                    public void actionPerformed ( ActionEvent e )
+                    public void actionPerformed ( final ActionEvent e )
                     {
                         notificationPopup.hidePopup ();
                     }
@@ -98,13 +98,13 @@ public class CustomNotificationsExample extends DefaultExample
             }
         } );
 
-        WebButton notification2 = new WebButton ( "Limited duration notification" );
+        final WebButton notification2 = new WebButton ( "Limited duration notification" );
         notification2.addActionListener ( new ActionListener ()
         {
             @Override
-            public void actionPerformed ( ActionEvent e )
+            public void actionPerformed ( final ActionEvent e )
             {
-                final WebNotificationPopup notificationPopup = new WebNotificationPopup ();
+                final WebNotification notificationPopup = new WebNotification ();
                 notificationPopup.setIcon ( NotificationIcon.clock );
                 notificationPopup.setDisplayTime ( 5000 );
 

@@ -31,7 +31,7 @@ import java.awt.*;
  * @see com.alee.extended.tab.PaneData
  */
 
-public class DocumentData
+public class DocumentData<C extends Component>
 {
     /**
      * todo 1. DocumentData listeners to update view properly
@@ -78,7 +78,7 @@ public class DocumentData
      * Document content.
      * A component that represents document tab content.
      */
-    protected Component component;
+    protected C component;
 
     /**
      * Constructs new document.
@@ -87,7 +87,7 @@ public class DocumentData
      * @param title     document title
      * @param component document content
      */
-    public DocumentData ( final String id, final String title, final Component component )
+    public DocumentData ( final String id, final String title, final C component )
     {
         this ( id, null, title, null, component );
     }
@@ -99,7 +99,7 @@ public class DocumentData
      * @param icon      document icon
      * @param component document content
      */
-    public DocumentData ( final String id, final Icon icon, final Component component )
+    public DocumentData ( final String id, final Icon icon, final C component )
     {
         this ( id, icon, null, null, component );
     }
@@ -112,7 +112,7 @@ public class DocumentData
      * @param title     document title
      * @param component document content
      */
-    public DocumentData ( final String id, final Icon icon, final String title, final Component component )
+    public DocumentData ( final String id, final Icon icon, final String title, final C component )
     {
         this ( id, icon, title, null, component );
     }
@@ -126,7 +126,7 @@ public class DocumentData
      * @param background document tab background color
      * @param component  document content
      */
-    public DocumentData ( final String id, final Icon icon, final String title, final Color background, final Component component )
+    public DocumentData ( final String id, final Icon icon, final String title, final Color background, final C component )
     {
         this ( id, icon, title, background, true, component );
     }
@@ -142,7 +142,7 @@ public class DocumentData
      * @param component  document content
      */
     public DocumentData ( final String id, final Icon icon, final String title, final Color background, final boolean closeable,
-                          final Component component )
+                          final C component )
     {
         this ( id, icon, title, background, closeable, true, component );
     }
@@ -159,7 +159,7 @@ public class DocumentData
      * @param component  document content
      */
     public DocumentData ( final String id, final Icon icon, final String title, final Color background, final boolean closeable,
-                          final boolean draggable, final Component component )
+                          final boolean draggable, final C component )
     {
         super ();
         this.id = id;
@@ -306,7 +306,7 @@ public class DocumentData
      *
      * @return document content
      */
-    public Component getComponent ()
+    public C getComponent ()
     {
         return component;
     }
@@ -316,7 +316,7 @@ public class DocumentData
      *
      * @param component new document content
      */
-    public void setComponent ( final Component component )
+    public void setComponent ( final C component )
     {
         this.component = component;
     }

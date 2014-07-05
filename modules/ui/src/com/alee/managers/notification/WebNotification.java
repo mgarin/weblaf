@@ -26,9 +26,9 @@ import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
 import com.alee.managers.popup.PopupAdapter;
 import com.alee.managers.popup.PopupStyle;
-import com.alee.managers.popup.WebPopup;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.SwingUtils;
+import com.alee.utils.swing.WebHeavyWeightPopup;
 import com.alee.utils.swing.WebTimer;
 
 import javax.swing.*;
@@ -42,17 +42,17 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Custom popup used to display notifications within the application windows.
+ * Custom popup used to display notifications in separate windows.
  *
  * @author Mikle Garin
- * @see NotificationManager
- * @see NotificationStyle
- * @see NotificationIcon
- * @see NotificationOption
- * @see WebPopup
+ * @see com.alee.managers.notification.NotificationManager
+ * @see com.alee.managers.notification.NotificationStyle
+ * @see com.alee.managers.notification.NotificationIcon
+ * @see com.alee.managers.notification.NotificationOption
+ * @see com.alee.utils.swing.WebHeavyWeightPopup
  */
 
-public class WebNotificationPopup extends WebPopup
+public class WebNotification extends WebHeavyWeightPopup
 {
     /**
      * Notification popup listeners.
@@ -111,7 +111,7 @@ public class WebNotificationPopup extends WebPopup
     /**
      * Constructs new notification popup.
      */
-    public WebNotificationPopup ()
+    public WebNotification ()
     {
         this ( NotificationStyle.web );
     }
@@ -121,7 +121,7 @@ public class WebNotificationPopup extends WebPopup
      *
      * @param notificationStyle notification style
      */
-    public WebNotificationPopup ( final NotificationStyle notificationStyle )
+    public WebNotification ( final NotificationStyle notificationStyle )
     {
         this ( notificationStyle.getPainter () );
     }
@@ -131,10 +131,9 @@ public class WebNotificationPopup extends WebPopup
      *
      * @param popupStyle popup style
      */
-    public WebNotificationPopup ( final PopupStyle popupStyle )
+    public WebNotification ( final PopupStyle popupStyle )
     {
-        super ( popupStyle );
-        initializeNotificationPopup ();
+        this ( popupStyle.getPainter () );
     }
 
     /**
@@ -142,9 +141,20 @@ public class WebNotificationPopup extends WebPopup
      *
      * @param stylePainter popup style painter
      */
-    public WebNotificationPopup ( final Painter stylePainter )
+    public WebNotification ( final Painter stylePainter )
     {
         super ( stylePainter );
+        initializeNotificationPopup ();
+    }
+
+    /**
+     * Constructs new notification popup with the specified style ID.
+     *
+     * @param styleId style ID
+     */
+    public WebNotification ( final String styleId )
+    {
+        super ( styleId );
         initializeNotificationPopup ();
     }
 
@@ -153,8 +163,10 @@ public class WebNotificationPopup extends WebPopup
      */
     protected void initializeNotificationPopup ()
     {
+        setAlwaysOnTop ( true );
+        setWindowOpaque ( false );
+        setCloseOnOuterAction ( false );
         setLayout ( new BorderLayout ( 15, 5 ) );
-        setAnimated ( true );
 
         iconImage = new WebImage ();
         add ( new AlignPanel ( iconImage, SwingConstants.CENTER, SwingConstants.CENTER ), BorderLayout.WEST );

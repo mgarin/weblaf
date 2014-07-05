@@ -78,12 +78,18 @@ public class WebPopup extends WebPanel
 
     public WebPopup ( final PopupStyle popupStyle )
     {
-        this ( PopupManager.getPopupPainter ( popupStyle ) );
+        this ( popupStyle.getPainter () );
     }
 
     public WebPopup ( final Painter stylePainter )
     {
         super ( stylePainter );
+        initializePopup ();
+    }
+
+    public WebPopup ( final String styleId )
+    {
+        super ( styleId );
         initializePopup ();
     }
 
@@ -228,7 +234,7 @@ public class WebPopup extends WebPanel
 
     public void setPopupStyle ( final PopupStyle popupStyle )
     {
-        setPainter ( PopupManager.getPopupPainter ( popupStyle ) );
+        setPainter ( popupStyle.getPainter () );
     }
 
     /**
