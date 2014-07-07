@@ -161,11 +161,11 @@ public final class ReflectUtils
      * @param value  field value
      * @return true if value was applied successfully, false otherwise
      */
-    public static boolean applyFieldValueSafely ( final Object object, final String field, final Object value )
+    public static boolean setFieldValueSafely ( final Object object, final String field, final Object value )
     {
         try
         {
-            applyFieldValue ( object, field, value );
+            setFieldValue ( object, field, value );
             return true;
         }
         catch ( final NoSuchFieldException e )
@@ -188,7 +188,7 @@ public final class ReflectUtils
      * @throws IllegalAccessException
      * @throws NoSuchFieldException
      */
-    public static void applyFieldValue ( final Object object, final String field, final Object value )
+    public static void setFieldValue ( final Object object, final String field, final Object value )
             throws IllegalAccessException, NoSuchFieldException
     {
         final Field actualField = object.getClass ().getDeclaredField ( field );
