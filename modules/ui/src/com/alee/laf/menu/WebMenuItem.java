@@ -23,6 +23,7 @@ import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.language.LanguageMethods;
 import com.alee.managers.language.updaters.LanguageUpdater;
+import com.alee.managers.log.Log;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.FontMethods;
@@ -424,7 +425,7 @@ public class WebMenuItem extends JMenuItem implements LanguageMethods, FontMetho
             }
             catch ( final Throwable e )
             {
-                e.printStackTrace ();
+                Log.error ( this, e );
                 setUI ( new WebMenuItemUI () );
             }
         }

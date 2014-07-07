@@ -17,6 +17,7 @@
 
 package com.alee.utils;
 
+import com.alee.managers.log.Log;
 import com.alee.utils.file.FileDownloadListener;
 import com.alee.utils.reflection.JarEntry;
 import com.alee.utils.reflection.JarEntryType;
@@ -311,11 +312,11 @@ public final class ReflectUtils
         }
         catch ( final IOException e )
         {
-            e.printStackTrace ();
+            Log.error ( ReflectUtils.class, e );
         }
         catch ( final URISyntaxException e )
         {
-            e.printStackTrace ();
+            Log.error ( ReflectUtils.class, e );
         }
         return null;
     }
@@ -356,7 +357,7 @@ public final class ReflectUtils
         }
         catch ( final URISyntaxException e )
         {
-            e.printStackTrace ();
+            Log.error ( ReflectUtils.class, e );
         }
         return null;
     }

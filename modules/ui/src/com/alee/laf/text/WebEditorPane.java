@@ -21,6 +21,7 @@ import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.language.LanguageMethods;
 import com.alee.managers.language.updaters.LanguageUpdater;
+import com.alee.managers.log.Log;
 import com.alee.managers.settings.DefaultValue;
 import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.settings.SettingsMethods;
@@ -44,17 +45,17 @@ public class WebEditorPane extends JEditorPane implements LanguageMethods, Setti
         super ();
     }
 
-    public WebEditorPane ( URL initialPage ) throws IOException
+    public WebEditorPane ( final URL initialPage ) throws IOException
     {
         super ( initialPage );
     }
 
-    public WebEditorPane ( String type, String text )
+    public WebEditorPane ( final String type, final String text )
     {
         super ( type, text );
     }
 
-    public WebEditorPane ( String url ) throws IOException
+    public WebEditorPane ( final String url ) throws IOException
     {
         super ( url );
     }
@@ -86,9 +87,9 @@ public class WebEditorPane extends JEditorPane implements LanguageMethods, Setti
             {
                 setUI ( ( WebEditorPaneUI ) ReflectUtils.createInstance ( WebLookAndFeel.editorPaneUI ) );
             }
-            catch ( Throwable e )
+            catch ( final Throwable e )
             {
-                e.printStackTrace ();
+                Log.error ( this, e );
                 setUI ( new WebEditorPaneUI () );
             }
         }
@@ -107,7 +108,7 @@ public class WebEditorPane extends JEditorPane implements LanguageMethods, Setti
      * {@inheritDoc}
      */
     @Override
-    public void setLanguage ( String key, Object... data )
+    public void setLanguage ( final String key, final Object... data )
     {
         LanguageManager.registerComponent ( this, key, data );
     }
@@ -116,7 +117,7 @@ public class WebEditorPane extends JEditorPane implements LanguageMethods, Setti
      * {@inheritDoc}
      */
     @Override
-    public void updateLanguage ( Object... data )
+    public void updateLanguage ( final Object... data )
     {
         LanguageManager.updateComponent ( this, data );
     }
@@ -125,7 +126,7 @@ public class WebEditorPane extends JEditorPane implements LanguageMethods, Setti
      * {@inheritDoc}
      */
     @Override
-    public void updateLanguage ( String key, Object... data )
+    public void updateLanguage ( final String key, final Object... data )
     {
         LanguageManager.updateComponent ( this, key, data );
     }
@@ -152,7 +153,7 @@ public class WebEditorPane extends JEditorPane implements LanguageMethods, Setti
      * {@inheritDoc}
      */
     @Override
-    public void setLanguageUpdater ( LanguageUpdater updater )
+    public void setLanguageUpdater ( final LanguageUpdater updater )
     {
         LanguageManager.registerLanguageUpdater ( this, updater );
     }
@@ -174,7 +175,7 @@ public class WebEditorPane extends JEditorPane implements LanguageMethods, Setti
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String key )
+    public void registerSettings ( final String key )
     {
         SettingsManager.registerComponent ( this, key );
     }
@@ -183,7 +184,7 @@ public class WebEditorPane extends JEditorPane implements LanguageMethods, Setti
      * {@inheritDoc}
      */
     @Override
-    public <T extends DefaultValue> void registerSettings ( String key, Class<T> defaultValueClass )
+    public <T extends DefaultValue> void registerSettings ( final String key, final Class<T> defaultValueClass )
     {
         SettingsManager.registerComponent ( this, key, defaultValueClass );
     }
@@ -192,7 +193,7 @@ public class WebEditorPane extends JEditorPane implements LanguageMethods, Setti
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String key, Object defaultValue )
+    public void registerSettings ( final String key, final Object defaultValue )
     {
         SettingsManager.registerComponent ( this, key, defaultValue );
     }
@@ -201,7 +202,7 @@ public class WebEditorPane extends JEditorPane implements LanguageMethods, Setti
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String group, String key )
+    public void registerSettings ( final String group, final String key )
     {
         SettingsManager.registerComponent ( this, group, key );
     }
@@ -210,7 +211,7 @@ public class WebEditorPane extends JEditorPane implements LanguageMethods, Setti
      * {@inheritDoc}
      */
     @Override
-    public <T extends DefaultValue> void registerSettings ( String group, String key, Class<T> defaultValueClass )
+    public <T extends DefaultValue> void registerSettings ( final String group, final String key, final Class<T> defaultValueClass )
     {
         SettingsManager.registerComponent ( this, group, key, defaultValueClass );
     }
@@ -219,7 +220,7 @@ public class WebEditorPane extends JEditorPane implements LanguageMethods, Setti
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String group, String key, Object defaultValue )
+    public void registerSettings ( final String group, final String key, final Object defaultValue )
     {
         SettingsManager.registerComponent ( this, group, key, defaultValue );
     }
@@ -228,7 +229,7 @@ public class WebEditorPane extends JEditorPane implements LanguageMethods, Setti
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String key, boolean loadInitialSettings, boolean applySettingsChanges )
+    public void registerSettings ( final String key, final boolean loadInitialSettings, final boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, key, loadInitialSettings, applySettingsChanges );
     }
@@ -237,8 +238,8 @@ public class WebEditorPane extends JEditorPane implements LanguageMethods, Setti
      * {@inheritDoc}
      */
     @Override
-    public <T extends DefaultValue> void registerSettings ( String key, Class<T> defaultValueClass, boolean loadInitialSettings,
-                                                            boolean applySettingsChanges )
+    public <T extends DefaultValue> void registerSettings ( final String key, final Class<T> defaultValueClass,
+                                                            final boolean loadInitialSettings, final boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, key, defaultValueClass, loadInitialSettings, applySettingsChanges );
     }
@@ -247,7 +248,8 @@ public class WebEditorPane extends JEditorPane implements LanguageMethods, Setti
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String key, Object defaultValue, boolean loadInitialSettings, boolean applySettingsChanges )
+    public void registerSettings ( final String key, final Object defaultValue, final boolean loadInitialSettings,
+                                   final boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, key, defaultValue, loadInitialSettings, applySettingsChanges );
     }
@@ -256,8 +258,8 @@ public class WebEditorPane extends JEditorPane implements LanguageMethods, Setti
      * {@inheritDoc}
      */
     @Override
-    public <T extends DefaultValue> void registerSettings ( String group, String key, Class<T> defaultValueClass,
-                                                            boolean loadInitialSettings, boolean applySettingsChanges )
+    public <T extends DefaultValue> void registerSettings ( final String group, final String key, final Class<T> defaultValueClass,
+                                                            final boolean loadInitialSettings, final boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, group, key, defaultValueClass, loadInitialSettings, applySettingsChanges );
     }
@@ -266,8 +268,8 @@ public class WebEditorPane extends JEditorPane implements LanguageMethods, Setti
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String group, String key, Object defaultValue, boolean loadInitialSettings,
-                                   boolean applySettingsChanges )
+    public void registerSettings ( final String group, final String key, final Object defaultValue, final boolean loadInitialSettings,
+                                   final boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, group, key, defaultValue, loadInitialSettings, applySettingsChanges );
     }
@@ -276,7 +278,7 @@ public class WebEditorPane extends JEditorPane implements LanguageMethods, Setti
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( SettingsProcessor settingsProcessor )
+    public void registerSettings ( final SettingsProcessor settingsProcessor )
     {
         SettingsManager.registerComponent ( this, settingsProcessor );
     }
@@ -325,7 +327,7 @@ public class WebEditorPane extends JEditorPane implements LanguageMethods, Setti
      * {@inheritDoc}
      */
     @Override
-    public WebEditorPane setPlainFont ( boolean apply )
+    public WebEditorPane setPlainFont ( final boolean apply )
     {
         return SwingUtils.setPlainFont ( this, apply );
     }
@@ -352,7 +354,7 @@ public class WebEditorPane extends JEditorPane implements LanguageMethods, Setti
      * {@inheritDoc}
      */
     @Override
-    public WebEditorPane setBoldFont ( boolean apply )
+    public WebEditorPane setBoldFont ( final boolean apply )
     {
         return SwingUtils.setBoldFont ( this, apply );
     }
@@ -379,7 +381,7 @@ public class WebEditorPane extends JEditorPane implements LanguageMethods, Setti
      * {@inheritDoc}
      */
     @Override
-    public WebEditorPane setItalicFont ( boolean apply )
+    public WebEditorPane setItalicFont ( final boolean apply )
     {
         return SwingUtils.setItalicFont ( this, apply );
     }
@@ -397,7 +399,7 @@ public class WebEditorPane extends JEditorPane implements LanguageMethods, Setti
      * {@inheritDoc}
      */
     @Override
-    public WebEditorPane setFontStyle ( boolean bold, boolean italic )
+    public WebEditorPane setFontStyle ( final boolean bold, final boolean italic )
     {
         return SwingUtils.setFontStyle ( this, bold, italic );
     }
@@ -406,7 +408,7 @@ public class WebEditorPane extends JEditorPane implements LanguageMethods, Setti
      * {@inheritDoc}
      */
     @Override
-    public WebEditorPane setFontStyle ( int style )
+    public WebEditorPane setFontStyle ( final int style )
     {
         return SwingUtils.setFontStyle ( this, style );
     }
@@ -415,7 +417,7 @@ public class WebEditorPane extends JEditorPane implements LanguageMethods, Setti
      * {@inheritDoc}
      */
     @Override
-    public WebEditorPane setFontSize ( int fontSize )
+    public WebEditorPane setFontSize ( final int fontSize )
     {
         return SwingUtils.setFontSize ( this, fontSize );
     }
@@ -424,7 +426,7 @@ public class WebEditorPane extends JEditorPane implements LanguageMethods, Setti
      * {@inheritDoc}
      */
     @Override
-    public WebEditorPane changeFontSize ( int change )
+    public WebEditorPane changeFontSize ( final int change )
     {
         return SwingUtils.changeFontSize ( this, change );
     }
@@ -442,7 +444,7 @@ public class WebEditorPane extends JEditorPane implements LanguageMethods, Setti
      * {@inheritDoc}
      */
     @Override
-    public WebEditorPane setFontSizeAndStyle ( int fontSize, boolean bold, boolean italic )
+    public WebEditorPane setFontSizeAndStyle ( final int fontSize, final boolean bold, final boolean italic )
     {
         return SwingUtils.setFontSizeAndStyle ( this, fontSize, bold, italic );
     }
@@ -451,7 +453,7 @@ public class WebEditorPane extends JEditorPane implements LanguageMethods, Setti
      * {@inheritDoc}
      */
     @Override
-    public WebEditorPane setFontSizeAndStyle ( int fontSize, int style )
+    public WebEditorPane setFontSizeAndStyle ( final int fontSize, final int style )
     {
         return SwingUtils.setFontSizeAndStyle ( this, fontSize, style );
     }
@@ -460,7 +462,7 @@ public class WebEditorPane extends JEditorPane implements LanguageMethods, Setti
      * {@inheritDoc}
      */
     @Override
-    public WebEditorPane setFontName ( String fontName )
+    public WebEditorPane setFontName ( final String fontName )
     {
         return SwingUtils.setFontName ( this, fontName );
     }

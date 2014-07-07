@@ -34,20 +34,20 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 
 /**
- * User: mgarin Date: 10.08.12 Time: 15:08
- * <p/>
  * This manager provides easy-to-use effects (like "fade in" and "fade out"), applyable to any Swing component without additional efforts.
  * Some of methods relies on other WebLaF managers and requires that they are properly initialized (through installing WebLaF or manually
  * initializing them, one by one).
+ *
+ * @author Mikle Garin
  */
 
-public final class EffectsManager
+public class EffectsManager
 {
     /**
      * Makes any Swing component fade out using glass pane trick
      */
 
-    public static void fadeOut ( JComponent component )
+    public static void fadeOut ( final JComponent component )
     {
         final BufferedImage bi = SwingUtils.createComponentSnapshot ( component );
         final Rectangle b = SwingUtils.getBoundsInWindow ( component );
@@ -65,12 +65,12 @@ public final class EffectsManager
             private int opacity = 100;
 
             @Override
-            public void actionPerformed ( ActionEvent e )
+            public void actionPerformed ( final ActionEvent e )
             {
                 if ( opacity > 0 )
                 {
                     opacity -= 5;
-                    Point l = b.getLocation ();
+                    final Point l = b.getLocation ();
                     l.y += ( 100 - opacity ) / 2;
                     wgp.setPaintedImage ( bi, l, opacity );
                 }
@@ -83,7 +83,7 @@ public final class EffectsManager
         } );
     }
 
-    public static void main ( String[] args )
+    public static void main ( final String[] args )
     {
         WebLookAndFeel.install ();
 
@@ -91,7 +91,7 @@ public final class EffectsManager
         b1.addActionListener ( new ActionListener ()
         {
             @Override
-            public void actionPerformed ( ActionEvent e )
+            public void actionPerformed ( final ActionEvent e )
             {
                 EffectsManager.fadeOut ( b1 );
             }
@@ -101,7 +101,7 @@ public final class EffectsManager
         b2.addActionListener ( new ActionListener ()
         {
             @Override
-            public void actionPerformed ( ActionEvent e )
+            public void actionPerformed ( final ActionEvent e )
             {
                 EffectsManager.fadeOut ( b2 );
             }
@@ -111,7 +111,7 @@ public final class EffectsManager
         b3.addActionListener ( new ActionListener ()
         {
             @Override
-            public void actionPerformed ( ActionEvent e )
+            public void actionPerformed ( final ActionEvent e )
             {
                 EffectsManager.fadeOut ( b3 );
             }

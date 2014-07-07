@@ -547,7 +547,7 @@ public class StyleEditor extends WebFrame
             }
             catch ( final IOException e )
             {
-                e.printStackTrace ();
+                Log.error ( this, e );
             }
         }
     }
@@ -585,7 +585,7 @@ public class StyleEditor extends WebFrame
         }
         catch ( final IOException e )
         {
-            e.printStackTrace ();
+            Log.error ( this, e );
             return null;
         }
     }

@@ -21,6 +21,7 @@ import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.list.editor.DefaultListCellEditor;
 import com.alee.laf.list.editor.ListCellEditor;
 import com.alee.laf.list.editor.ListEditListener;
+import com.alee.managers.log.Log;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SizeUtils;
@@ -568,7 +569,7 @@ public class WebList extends JList implements FontMethods<WebList>, SizeMethods<
             }
             catch ( final Throwable e )
             {
-                e.printStackTrace ();
+                Log.error ( this, e );
                 setUI ( new WebListUI () );
             }
         }

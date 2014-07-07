@@ -32,12 +32,12 @@ import com.alee.managers.settings.processors.WebGradientColorChooserSettingsProc
  * @author Mikle Garin
  */
 
-public final class WebSettingsManager
+public class WebSettingsManager
 {
     /**
      * Whether SettingsManager is initialized or not.
      */
-    private static boolean initialized = false;
+    protected static boolean initialized = false;
 
     /**
      * Initializes SettingsManager.

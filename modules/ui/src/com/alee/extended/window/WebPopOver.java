@@ -771,7 +771,7 @@ public class WebPopOver extends WebDialog implements Styleable
      */
     public WebPopOver show ( final Component invoker )
     {
-        return show ( invoker, PopOverDirection.down );
+        return show ( invoker, preferredDirection );
     }
 
     /**
@@ -814,7 +814,7 @@ public class WebPopOver extends WebDialog implements Styleable
      */
     public WebPopOver show ( final Component invoker, final int x, final int y )
     {
-        return show ( invoker, x, y, PopOverDirection.down );
+        return show ( invoker, x, y, preferredDirection );
     }
 
     /**
@@ -865,7 +865,7 @@ public class WebPopOver extends WebDialog implements Styleable
      */
     public WebPopOver show ( final Component invoker, final int x, final int y, final int w, final int h )
     {
-        return show ( invoker, x, y, w, h, PopOverDirection.down );
+        return show ( invoker, x, y, w, h, preferredDirection );
     }
 
     /**
@@ -925,7 +925,7 @@ public class WebPopOver extends WebDialog implements Styleable
      */
     public WebPopOver show ( final Component invoker, final DataProvider<Rectangle> boundsProvider )
     {
-        return show ( invoker, boundsProvider, PopOverDirection.down );
+        return show ( invoker, boundsProvider, preferredDirection );
     }
 
     /**
@@ -980,7 +980,7 @@ public class WebPopOver extends WebDialog implements Styleable
 
         // Updating WebPopOver variables
         attached = true;
-        preferredDirection = direction;
+        preferredDirection = direction != null ? direction : PopOverDirection.down;
         preferredAlignment = alignment;
 
         // Updating dialog location on screen and size

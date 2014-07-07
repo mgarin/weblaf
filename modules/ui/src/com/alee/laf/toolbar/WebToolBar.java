@@ -24,6 +24,7 @@ import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.separator.WebSeparator;
 import com.alee.managers.language.LanguageContainerMethods;
 import com.alee.managers.language.LanguageManager;
+import com.alee.managers.log.Log;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SizeUtils;
 import com.alee.utils.SwingUtils;
@@ -382,7 +383,7 @@ public class WebToolBar extends JToolBar implements ShapeProvider, SizeMethods<W
             }
             catch ( final Throwable e )
             {
-                e.printStackTrace ();
+                Log.error ( this, e );
                 setUI ( new WebToolBarUI () );
             }
         }

@@ -39,22 +39,22 @@ import java.util.Map;
  * @see com.alee.managers.notification.WebInnerNotification
  */
 
-public final class PopupManager
+public class PopupManager
 {
     /**
      * Shade layers cache.
      */
-    private static final Map<JRootPane, ShadeLayer> shadeLayers = new HashMap<JRootPane, ShadeLayer> ();
+    protected static final Map<JRootPane, ShadeLayer> shadeLayers = new HashMap<JRootPane, ShadeLayer> ();
 
     /**
      * Popup layers cache.
      */
-    private static final Map<JRootPane, PopupLayer> popupLayers = new HashMap<JRootPane, PopupLayer> ();
+    protected static final Map<JRootPane, PopupLayer> popupLayers = new HashMap<JRootPane, PopupLayer> ();
 
     /**
      * Default style used for popups.
      */
-    private static PopupStyle defaultPopupStyle = PopupStyle.bordered;
+    protected static PopupStyle defaultPopupStyle = PopupStyle.bordered;
 
     /**
      * Hides all visible popups on all cached popup layers.
@@ -323,7 +323,7 @@ public final class PopupManager
      * @param rootPane    root pane for which popup layer should be installed
      * @param layeredPane window's layered pane
      */
-    private static void installPopupLayer ( final PopupLayer popupLayer, final JRootPane rootPane, final JLayeredPane layeredPane )
+    protected static void installPopupLayer ( final PopupLayer popupLayer, final JRootPane rootPane, final JLayeredPane layeredPane )
     {
         popupLayer.setBounds ( 0, 0, layeredPane.getWidth (), layeredPane.getHeight () );
         popupLayer.setVisible ( true );

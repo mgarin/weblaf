@@ -65,6 +65,7 @@ import com.alee.laf.tree.WebTreeUI;
 import com.alee.laf.viewport.WebViewportStyle;
 import com.alee.laf.viewport.WebViewportUI;
 import com.alee.managers.WebLafManagers;
+import com.alee.managers.log.Log;
 import com.alee.utils.*;
 import com.alee.utils.swing.SwingLazyValue;
 
@@ -934,7 +935,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
         catch ( final Throwable e )
         {
             // Printing exception
-            e.printStackTrace ();
+            Log.error ( WebLookAndFeel.class, e );
 
             // LookAndFeel installation failed
             return false;

@@ -31,12 +31,12 @@ import java.util.WeakHashMap;
  * @see WebGlassPane
  */
 
-public final class GlassPaneManager
+public class GlassPaneManager
 {
     /**
      * Registered glass panes per JRootPane.
      */
-    private static final Map<JRootPane, WebGlassPane> registeredWindows = new WeakHashMap<JRootPane, WebGlassPane> ();
+    protected static final Map<JRootPane, WebGlassPane> registeredWindows = new WeakHashMap<JRootPane, WebGlassPane> ();
 
     /**
      * Returns registered WebGlassPane for JRootPane under the specified component.

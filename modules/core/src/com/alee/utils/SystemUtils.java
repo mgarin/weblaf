@@ -17,6 +17,7 @@
 
 package com.alee.utils;
 
+import com.alee.managers.log.Log;
 import com.alee.utils.system.JavaVersion;
 
 import javax.swing.*;
@@ -131,7 +132,7 @@ public final class SystemUtils
         }
         catch ( final Throwable e )
         {
-            e.printStackTrace ();
+            Log.error ( SystemUtils.class, e );
         }
     }
 
@@ -320,7 +321,7 @@ public final class SystemUtils
      *
      * @return true if current OS is windows, false otherwise
      */
-    @SuppressWarnings ( "StringEquality" )
+    @SuppressWarnings ("StringEquality")
     public static boolean isWindows ()
     {
         return shortOsName == WINDOWS;
@@ -331,7 +332,7 @@ public final class SystemUtils
      *
      * @return true if current OS is mac, false otherwise
      */
-    @SuppressWarnings ( "StringEquality" )
+    @SuppressWarnings ("StringEquality")
     public static boolean isMac ()
     {
         return shortOsName == MAC;
@@ -342,7 +343,7 @@ public final class SystemUtils
      *
      * @return true if current OS is unix, false otherwise
      */
-    @SuppressWarnings ( "StringEquality" )
+    @SuppressWarnings ("StringEquality")
     public static boolean isUnix ()
     {
         return shortOsName == UNIX;
@@ -353,7 +354,7 @@ public final class SystemUtils
      *
      * @return true if current OS is solaris, false otherwise
      */
-    @SuppressWarnings ( "StringEquality" )
+    @SuppressWarnings ("StringEquality")
     public static boolean isSolaris ()
     {
         return shortOsName == SOLARIS;

@@ -17,6 +17,7 @@
 
 package com.alee.utils;
 
+import com.alee.managers.log.Log;
 import com.alee.managers.plugin.data.PluginInformation;
 import com.alee.managers.plugin.data.PluginLibrary;
 import com.alee.managers.plugin.data.PluginVersion;
@@ -126,7 +127,7 @@ public final class XmlUtils
         }
         catch ( final Throwable e )
         {
-            e.printStackTrace ();
+            Log.error ( XmlUtils.class, e );
         }
     }
 
@@ -257,7 +258,7 @@ public final class XmlUtils
         }
         catch ( final IOException e )
         {
-            e.printStackTrace ();
+            Log.error ( XmlUtils.class, e );
         }
     }
 
@@ -408,7 +409,7 @@ public final class XmlUtils
                 }
                 catch ( final MalformedURLException e )
                 {
-                    e.printStackTrace ();
+                    Log.error ( XmlUtils.class, e );
                     return null;
                 }
             }
@@ -432,12 +433,12 @@ public final class XmlUtils
                 }
                 catch ( final ClassNotFoundException e )
                 {
-                    e.printStackTrace ();
+                    Log.error ( XmlUtils.class, e );
                     return null;
                 }
                 catch ( final Throwable e )
                 {
-                    e.printStackTrace ();
+                    Log.error ( XmlUtils.class, e );
                     return null;
                 }
                 finally
@@ -451,7 +452,7 @@ public final class XmlUtils
                     }
                     catch ( final Throwable e )
                     {
-                        e.printStackTrace ();
+                        Log.error ( XmlUtils.class, e );
                     }
                 }
             }
@@ -490,7 +491,7 @@ public final class XmlUtils
             }
             catch ( final IOException e )
             {
-                e.printStackTrace ();
+                Log.error ( XmlUtils.class, e );
                 return null;
             }
         }
@@ -506,7 +507,7 @@ public final class XmlUtils
             }
             catch ( final ClassNotFoundException e )
             {
-                e.printStackTrace ();
+                Log.error ( XmlUtils.class, e );
                 return null;
             }
         }
@@ -543,7 +544,7 @@ public final class XmlUtils
             }
             catch ( final MalformedURLException e )
             {
-                e.printStackTrace ();
+                Log.error ( XmlUtils.class, e );
                 return null;
             }
         }
@@ -555,7 +556,7 @@ public final class XmlUtils
             }
             catch ( final IOException e )
             {
-                e.printStackTrace ();
+                Log.error ( XmlUtils.class, e );
                 return null;
             }
         }
@@ -567,7 +568,7 @@ public final class XmlUtils
             }
             catch ( final ClassNotFoundException e )
             {
-                e.printStackTrace ();
+                Log.error ( XmlUtils.class, e );
                 return null;
             }
         }

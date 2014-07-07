@@ -25,6 +25,7 @@ import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.scroll.WebScrollBarUI;
 import com.alee.laf.text.WebTextField;
+import com.alee.managers.log.Log;
 import com.alee.utils.laf.FocusType;
 import com.alee.utils.laf.ShapeProvider;
 import com.alee.utils.laf.Styleable;
@@ -149,15 +150,15 @@ public final class LafUtils
         }
         catch ( final NoSuchMethodException e )
         {
-            e.printStackTrace ();
+            Log.error ( LafUtils.class, e );
         }
         catch ( final InvocationTargetException e )
         {
-            e.printStackTrace ();
+            Log.error ( LafUtils.class, e );
         }
         catch ( final IllegalAccessException e )
         {
-            e.printStackTrace ();
+            Log.error ( LafUtils.class, e );
         }
     }
 

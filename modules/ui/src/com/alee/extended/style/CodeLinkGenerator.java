@@ -28,6 +28,7 @@ import com.alee.laf.scroll.WebScrollBar;
 import com.alee.laf.scroll.WebScrollPane;
 import com.alee.laf.slider.WebSlider;
 import com.alee.managers.hotkey.Hotkey;
+import com.alee.managers.log.Log;
 import com.alee.managers.style.SupportedComponent;
 import com.alee.managers.style.data.ComponentStyleConverter;
 import com.alee.utils.CompareUtils;
@@ -233,7 +234,7 @@ public class CodeLinkGenerator implements LinkGenerator
                                 }
                                 catch ( final BadLocationException e )
                                 {
-                                    e.printStackTrace ();
+                                    Log.error ( this, e );
                                     return null;
                                 }
                             }
@@ -317,7 +318,7 @@ public class CodeLinkGenerator implements LinkGenerator
                                 }
                                 catch ( final BadLocationException e )
                                 {
-                                    e.printStackTrace ();
+                                    Log.error ( this, e );
                                     return null;
                                 }
                             }
@@ -377,7 +378,7 @@ public class CodeLinkGenerator implements LinkGenerator
                                 }
                                 catch ( final BadLocationException e )
                                 {
-                                    e.printStackTrace ();
+                                    Log.error ( this, e );
                                     return null;
                                 }
                             }

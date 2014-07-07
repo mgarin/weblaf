@@ -318,7 +318,7 @@ public class LibraryInfoDialog extends WebFrame
                             }
                             catch ( final IOException e )
                             {
-                                e.printStackTrace ();
+                                Log.error ( this, e );
                             }
                         }
                     } );

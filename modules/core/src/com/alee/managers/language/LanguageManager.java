@@ -48,7 +48,7 @@ import java.util.List;
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-LanguageManager">How to use LanguageManager</a>
  */
 
-public final class LanguageManager implements LanguageConstants
+public class LanguageManager implements LanguageConstants
 {
     /**
      * Unknown language icon.
@@ -58,7 +58,7 @@ public final class LanguageManager implements LanguageConstants
     /**
      * Supported languages operations synchronization object.
      */
-    private static final Object supportedLanguagesLock = new Object ();
+    protected static final Object supportedLanguagesLock = new Object ();
 
     /**
      * Predefined list of languages supported by WebLaF.
@@ -71,7 +71,7 @@ public final class LanguageManager implements LanguageConstants
      * @see #setSupportedLanguages(java.util.Collection)
      * @see #setSupportedLanguages(String...)
      */
-    private static final List<String> supportedLanguages =
+    protected static final List<String> supportedLanguages =
             CollectionUtils.copy ( ENGLISH, RUSSIAN, POLISH, ARABIC, SPANISH, FRENCH, PORTUGUESE, GERMAN );
 
     /**
@@ -82,7 +82,7 @@ public final class LanguageManager implements LanguageConstants
      * @see #setDefaultLanguage(String)
      * @see #getDefaultLanguage()
      */
-    private static String DEFAULT = getDefaultLanguageKey ();
+    protected static String DEFAULT = getDefaultLanguageKey ();
 
     /**
      * Currently used language.
@@ -90,7 +90,7 @@ public final class LanguageManager implements LanguageConstants
      * @see #getLanguage()
      * @see #setLanguage(String)
      */
-    private static String language = DEFAULT;
+    protected static String language = DEFAULT;
 
     /**
      * Default tooltip type used to display tooltips provided inside language files.
@@ -99,12 +99,12 @@ public final class LanguageManager implements LanguageConstants
      * @see #getDefaultTooltipType()
      * @see #setDefaultTooltipType(com.alee.managers.language.data.TooltipType)
      */
-    private static TooltipType defaultTooltipType = TooltipType.weblaf;
+    protected static TooltipType defaultTooltipType = TooltipType.weblaf;
 
     /**
      * Language listeners operations synchronization object.
      */
-    private static final Object languageListenersLock = new Object ();
+    protected static final Object languageListenersLock = new Object ();
 
     /**
      * Language changes listeners.
@@ -114,7 +114,7 @@ public final class LanguageManager implements LanguageConstants
      * @see #addLanguageListener(LanguageListener)
      * @see #removeLanguageListener(LanguageListener)
      */
-    private static final List<LanguageListener> languageListeners = new ArrayList<LanguageListener> ();
+    protected static final List<LanguageListener> languageListeners = new ArrayList<LanguageListener> ();
 
     /**
      * Language changes listeners.
@@ -124,12 +124,12 @@ public final class LanguageManager implements LanguageConstants
      * @see #addLanguageListener(LanguageListener)
      * @see #removeLanguageListener(LanguageListener)
      */
-    private static final Map<Component, LanguageListener> componentLanguageListeners = new WeakHashMap<Component, LanguageListener> ();
+    protected static final Map<Component, LanguageListener> componentLanguageListeners = new WeakHashMap<Component, LanguageListener> ();
 
     /**
      * Language key listeners operations synchronization object.
      */
-    private static final Object languageKeyListenersLock = new Object ();
+    protected static final Object languageKeyListenersLock = new Object ();
 
     /**
      * Language key changes listeners.
@@ -141,19 +141,19 @@ public final class LanguageManager implements LanguageConstants
      * @see #removeLanguageKeyListener(LanguageKeyListener)
      * @see #removeLanguageKeyListeners(String)
      */
-    private static final Map<String, List<LanguageKeyListener>> languageKeyListeners = new HashMap<String, List<LanguageKeyListener>> ();
+    protected static final Map<String, List<LanguageKeyListener>> languageKeyListeners = new HashMap<String, List<LanguageKeyListener>> ();
 
     /**
      * Global dictionary merged from all added dictionaries.
      * Used to store current dictionaries merge result and as a result improve translations retrieval speed.
      */
-    private static Dictionary globalDictionary;
+    protected static Dictionary globalDictionary;
 
     /**
      * Global values map that contains merged translations for currently selected language.
      * It gets updated on any dictionaries change or global language change.
      */
-    private static final Map<String, Value> globalCache = new HashMap<String, Value> ();
+    protected static final Map<String, Value> globalCache = new HashMap<String, Value> ();
 
     /**
      * List of all added dictionaries.
@@ -167,12 +167,12 @@ public final class LanguageManager implements LanguageConstants
      * @see #removeDictionary(com.alee.managers.language.data.Dictionary)
      * @see #getDictionaries()
      */
-    private static final List<Dictionary> dictionaries = new ArrayList<Dictionary> ();
+    protected static final List<Dictionary> dictionaries = new ArrayList<Dictionary> ();
 
     /**
      * Component operations synchronization object.
      */
-    private static final Object componentsLock = new Object ();
+    protected static final Object componentsLock = new Object ();
 
     /**
      * Components registered for auto-translation.
@@ -184,7 +184,7 @@ public final class LanguageManager implements LanguageConstants
      * @see #unregisterComponent(java.awt.Component)
      * @see #isRegisteredComponent(java.awt.Component)
      */
-    private static final Map<Component, String> components = new WeakHashMap<Component, String> ();
+    protected static final Map<Component, String> components = new WeakHashMap<Component, String> ();
 
     /**
      * Object data provided with component language key.
@@ -195,7 +195,7 @@ public final class LanguageManager implements LanguageConstants
      * @see #updateComponent(java.awt.Component, Object...)
      * @see #updateComponent(java.awt.Component, String, Object...)
      */
-    private static final Map<Component, Object[]> componentsData = new WeakHashMap<Component, Object[]> ();
+    protected static final Map<Component, Object[]> componentsData = new WeakHashMap<Component, Object[]> ();
 
     /**
      * Calculated components cache map.
@@ -203,17 +203,17 @@ public final class LanguageManager implements LanguageConstants
      *
      * @see #updateComponentKey(java.awt.Component)
      */
-    private static final Map<Component, String> componentKeysCache = new WeakHashMap<Component, String> ();
+    protected static final Map<Component, String> componentKeysCache = new WeakHashMap<Component, String> ();
 
     /**
      * Components ancestor listeners used to update component keys cache.
      */
-    private static final Map<Component, AncestorListener> componentsListeners = new WeakHashMap<Component, AncestorListener> ();
+    protected static final Map<Component, AncestorListener> componentsListeners = new WeakHashMap<Component, AncestorListener> ();
 
     /**
      * Language container operations synchronization object.
      */
-    private static final Object languageContainersLock = new Object ();
+    protected static final Object languageContainersLock = new Object ();
 
     /**
      * Registered language containers.
@@ -225,17 +225,17 @@ public final class LanguageManager implements LanguageConstants
      * @see #unregisterLanguageContainer(java.awt.Container)
      * @see #combineWithContainerKeys(java.awt.Component, String)
      */
-    private static final Map<Container, String> languageContainers = new WeakHashMap<Container, String> ();
+    protected static final Map<Container, String> languageContainers = new WeakHashMap<Container, String> ();
 
     /**
      * LanguageUpdater operations synchronization object.
      */
-    private static final Object updatersLock = new Object ();
+    protected static final Object updatersLock = new Object ();
 
     /**
      * Special comparator for sorting LanguageUpdaters list.
      */
-    private static final LanguageUpdaterComparator languageUpdaterComparator = new LanguageUpdaterComparator ();
+    protected static final LanguageUpdaterComparator languageUpdaterComparator = new LanguageUpdaterComparator ();
 
     /**
      * Registered language updaters.
@@ -245,7 +245,7 @@ public final class LanguageManager implements LanguageConstants
      * @see #registerLanguageUpdater(com.alee.managers.language.updaters.LanguageUpdater)
      * @see #unregisterLanguageUpdater(com.alee.managers.language.updaters.LanguageUpdater)
      */
-    private static final List<LanguageUpdater> updaters = new ArrayList<LanguageUpdater> ();
+    protected static final List<LanguageUpdater> updaters = new ArrayList<LanguageUpdater> ();
 
     /**
      * Component-specific language updaters.
@@ -255,14 +255,14 @@ public final class LanguageManager implements LanguageConstants
      * @see #registerLanguageUpdater(java.awt.Component, com.alee.managers.language.updaters.LanguageUpdater)
      * @see #unregisterLanguageUpdater(java.awt.Component)
      */
-    private static final Map<Component, LanguageUpdater> customUpdaters = new WeakHashMap<Component, LanguageUpdater> ();
+    protected static final Map<Component, LanguageUpdater> customUpdaters = new WeakHashMap<Component, LanguageUpdater> ();
 
     /**
      * Language updaters cache by specific class types.
      * Used to improve LanguageUpdater retrieval speed for language requests.
      * This cache gets fully updated when any language updater is added or removed.
      */
-    private static final Map<Class, LanguageUpdater> updatersCache = new HashMap<Class, LanguageUpdater> ();
+    protected static final Map<Class, LanguageUpdater> updatersCache = new HashMap<Class, LanguageUpdater> ();
 
     /**
      * Language icons.
@@ -271,18 +271,18 @@ public final class LanguageManager implements LanguageConstants
      *
      * @see #setLanguageIcon(String, javax.swing.ImageIcon)
      */
-    private static final Map<String, ImageIcon> languageIcons = new HashMap<String, ImageIcon> ();
+    protected static final Map<String, ImageIcon> languageIcons = new HashMap<String, ImageIcon> ();
 
     /**
      * Currrent tooltip support.
      * This is a custom support object that provides tooltips according to language files.
      */
-    private static TooltipLanguageSupport tooltipLanguageSupport;
+    protected static TooltipLanguageSupport tooltipLanguageSupport;
 
     /**
      * Manager initialization mark.
      */
-    private static boolean initialized = false;
+    protected static boolean initialized = false;
 
     /**
      * Initializes LanguageManager settings.
@@ -582,7 +582,7 @@ public final class LanguageManager implements LanguageConstants
      *
      * @param component component to update
      */
-    private static void updateComponentKey ( final Component component )
+    protected static void updateComponentKey ( final Component component )
     {
         final String key = getComponentKey ( component );
         if ( key != null )
@@ -1105,7 +1105,7 @@ public final class LanguageManager implements LanguageConstants
     /**
      * Updates Locale according to currently used language.
      */
-    private static void updateLocale ()
+    protected static void updateLocale ()
     {
         // Proper locale for language
         Locale.setDefault ( getLocale ( language ) );
@@ -1381,7 +1381,7 @@ public final class LanguageManager implements LanguageConstants
      *
      * @param dictionary dictionary to merge
      */
-    private static void mergeDictionary ( final Dictionary dictionary )
+    protected static void mergeDictionary ( final Dictionary dictionary )
     {
         mergeDictionary ( dictionary.getPrefix (), dictionary );
     }
@@ -1392,7 +1392,7 @@ public final class LanguageManager implements LanguageConstants
      * @param prefix     dictionary prefix
      * @param dictionary dictionary to merge
      */
-    private static void mergeDictionary ( String prefix, final Dictionary dictionary )
+    protected static void mergeDictionary ( String prefix, final Dictionary dictionary )
     {
         // Determining prefix
         prefix = prefix != null && !prefix.equals ( "" ) ? prefix + "." : "";
@@ -1642,7 +1642,7 @@ public final class LanguageManager implements LanguageConstants
      * @param key       component language key
      * @return component language key combined with its containers keys
      */
-    private static String combineWithContainerKeysImpl ( final Component component, final String key )
+    protected static String combineWithContainerKeysImpl ( final Component component, final String key )
     {
         final StringBuilder sb = new StringBuilder ( key );
         if ( component != null )
@@ -1708,7 +1708,7 @@ public final class LanguageManager implements LanguageConstants
      * Rebuilds global dictionaries cache from a scratch.
      * This is required for cases when dictionary changes cannot be tracked or when current language changes.
      */
-    private static void rebuildCache ()
+    protected static void rebuildCache ()
     {
         clearCache ();
         updateCache ( globalDictionary );
@@ -1717,7 +1717,7 @@ public final class LanguageManager implements LanguageConstants
     /**
      * Clears global dictionaries cache.
      */
-    private static void clearCache ()
+    protected static void clearCache ()
     {
         globalCache.clear ();
     }
@@ -1727,7 +1727,7 @@ public final class LanguageManager implements LanguageConstants
      *
      * @param dictionary dictionary to update cache with
      */
-    private static void updateCache ( final Dictionary dictionary )
+    protected static void updateCache ( final Dictionary dictionary )
     {
         updateCache ( dictionary.getPrefix (), dictionary );
     }
@@ -1738,7 +1738,7 @@ public final class LanguageManager implements LanguageConstants
      * @param prefix     dictionary prefix
      * @param dictionary dictionary to update cache with
      */
-    private static void updateCache ( String prefix, final Dictionary dictionary )
+    protected static void updateCache ( String prefix, final Dictionary dictionary )
     {
         // Determining prefix
         prefix = prefix != null && !prefix.equals ( "" ) ? prefix + "." : "";
@@ -1875,7 +1875,7 @@ public final class LanguageManager implements LanguageConstants
      * @param oldLang old language
      * @param newLang new language
      */
-    private static void fireLanguageChanged ( final String oldLang, final String newLang )
+    protected static void fireLanguageChanged ( final String oldLang, final String newLang )
     {
         synchronized ( languageListenersLock )
         {
@@ -1903,7 +1903,7 @@ public final class LanguageManager implements LanguageConstants
      *
      * @param dictionary new dictionary
      */
-    private static void fireDictionaryAdded ( final Dictionary dictionary )
+    protected static void fireDictionaryAdded ( final Dictionary dictionary )
     {
         synchronized ( languageListenersLock )
         {
@@ -1931,7 +1931,7 @@ public final class LanguageManager implements LanguageConstants
      *
      * @param dictionary removed dictionary
      */
-    private static void fireDictionaryRemoved ( final Dictionary dictionary )
+    protected static void fireDictionaryRemoved ( final Dictionary dictionary )
     {
         synchronized ( languageListenersLock )
         {
@@ -1957,7 +1957,7 @@ public final class LanguageManager implements LanguageConstants
     /**
      * Fires dictionaries cleared event whenever all dictionaries are removed from LanguageManager.
      */
-    private static void fireDictionariesCleared ()
+    protected static void fireDictionariesCleared ()
     {
         synchronized ( languageListenersLock )
         {
@@ -2044,7 +2044,7 @@ public final class LanguageManager implements LanguageConstants
      *
      * @param key updated language key
      */
-    private static void fireLanguageKeyUpdated ( final String key )
+    protected static void fireLanguageKeyUpdated ( final String key )
     {
         synchronized ( languageKeyListenersLock )
         {
@@ -2063,7 +2063,7 @@ public final class LanguageManager implements LanguageConstants
     /**
      * Fires language key updated event for all language keys.
      */
-    private static void fireAllLanguageKeysUpdated ()
+    protected static void fireAllLanguageKeysUpdated ()
     {
         synchronized ( languageKeyListenersLock )
         {

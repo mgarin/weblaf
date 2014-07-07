@@ -20,6 +20,7 @@ package com.alee.utils;
 import com.alee.global.GlobalConstants;
 import com.alee.global.StyleConstants;
 import com.alee.managers.language.LanguageManager;
+import com.alee.managers.log.Log;
 import com.alee.managers.proxy.ProxyManager;
 import com.alee.utils.file.FileDescription;
 import com.alee.utils.file.FileDownloadListener;
@@ -315,7 +316,7 @@ public final class FileUtils
         }
         catch ( final Throwable e )
         {
-            e.printStackTrace ();
+            Log.error ( FileUtils.class, e );
             return false;
         }
     }
@@ -1604,11 +1605,11 @@ public final class FileUtils
         }
         catch ( final FileNotFoundException e )
         {
-            e.printStackTrace ();
+            Log.error ( FileUtils.class, e );
         }
         catch ( final UnsupportedEncodingException e )
         {
-            e.printStackTrace ();
+            Log.error ( FileUtils.class, e );
         }
         finally
         {
@@ -1885,7 +1886,7 @@ public final class FileUtils
         }
         catch ( final Throwable e )
         {
-            e.printStackTrace ();
+            Log.error ( FileUtils.class, e );
             return -1;
         }
     }
@@ -1909,7 +1910,7 @@ public final class FileUtils
         }
         catch ( final Throwable e )
         {
-            e.printStackTrace ();
+            Log.error ( FileUtils.class, e );
             return -1;
         }
     }

@@ -42,6 +42,7 @@ import com.alee.laf.toolbar.WebToolBar;
 import com.alee.laf.tree.TreeSelectionStyle;
 import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.language.LanguageManager;
+import com.alee.managers.log.Log;
 import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.style.skin.ninepatch.NPLabelPainter;
 import com.alee.utils.*;
@@ -293,7 +294,7 @@ public class NinePatchEditorPanel extends WebPanel
                     }
                     catch ( final IOException e1 )
                     {
-                        e1.printStackTrace ();
+                        Log.error ( this, e1 );
                     }
                 }
             }
@@ -330,7 +331,7 @@ public class NinePatchEditorPanel extends WebPanel
                     }
                     catch ( final IOException e1 )
                     {
-                        e1.printStackTrace ();
+                        Log.error ( this, e1 );
                     }
                 }
             }

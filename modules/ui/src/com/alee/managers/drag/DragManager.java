@@ -38,7 +38,7 @@ import java.util.Map;
  * @author Mikle Garin
  */
 
-public final class DragManager
+public class DragManager
 {
     /**
      * todo 1. Move dragged object display to a separate transparent non-focusable window
@@ -47,21 +47,21 @@ public final class DragManager
     /**
      * Drag view handlers map.
      */
-    private static Map<DataFlavor, DragViewHandler> viewHandlers;
+    protected static Map<DataFlavor, DragViewHandler> viewHandlers;
 
     /**
      * Dragged object representation variables.
      */
-    private static WebGlassPane glassPane;
-    private static Object data;
-    private static BufferedImage view;
-    private static Component dropLocation;
-    private static DragViewHandler dragViewHandler;
+    protected static WebGlassPane glassPane;
+    protected static Object data;
+    protected static BufferedImage view;
+    protected static Component dropLocation;
+    protected static DragViewHandler dragViewHandler;
 
     /**
      * Whether manager is initialized or not.
      */
-    private static boolean initialized = false;
+    protected static boolean initialized = false;
 
     /**
      * Initializes manager if it wasn't already initialized.

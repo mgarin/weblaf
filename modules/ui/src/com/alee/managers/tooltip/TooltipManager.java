@@ -46,24 +46,24 @@ import java.util.WeakHashMap;
  * @see HotkeyManager
  */
 
-public final class TooltipManager
+public class TooltipManager
 {
     // Default settings
-    private static int defaultDelay = 500;
-    private static boolean allowMultiplyTooltips = true;
-    private static boolean showHotkeysInTooltips = true;
-    private static boolean showHotkeysInOneTimeTooltips = false;
+    protected static int defaultDelay = 500;
+    protected static boolean allowMultiplyTooltips = true;
+    protected static boolean showHotkeysInTooltips = true;
+    protected static boolean showHotkeysInOneTimeTooltips = false;
 
     // Standart tooltips
-    private static final Map<Component, List<WebCustomTooltip>> webTooltips = new WeakHashMap<Component, List<WebCustomTooltip>> ();
-    private static final Map<Component, MouseAdapter> adapters = new WeakHashMap<Component, MouseAdapter> ();
-    private static final Map<Component, WebTimer> timers = new WeakHashMap<Component, WebTimer> ();
+    protected static final Map<Component, List<WebCustomTooltip>> webTooltips = new WeakHashMap<Component, List<WebCustomTooltip>> ();
+    protected static final Map<Component, MouseAdapter> adapters = new WeakHashMap<Component, MouseAdapter> ();
+    protected static final Map<Component, WebTimer> timers = new WeakHashMap<Component, WebTimer> ();
 
     // One-time tooltips
-    private static final List<WebCustomTooltip> oneTimeTooltips = new ArrayList<WebCustomTooltip> ();
+    protected static final List<WebCustomTooltip> oneTimeTooltips = new ArrayList<WebCustomTooltip> ();
 
     // Initialization mark
-    private static boolean initialized = false;
+    protected static boolean initialized = false;
 
     /**
      * TooltipManager initialization
@@ -240,8 +240,8 @@ public final class TooltipManager
         return addTooltip ( component, tooltip, tooltipWay, delay, clear );
     }
 
-    private static WebCustomTooltip addTooltip ( final Component component, final JComponent tooltip, final TooltipWay tooltipWay,
-                                                 final int delay, final boolean clear )
+    protected static WebCustomTooltip addTooltip ( final Component component, final JComponent tooltip, final TooltipWay tooltipWay,
+                                                   final int delay, final boolean clear )
     {
         // Erase old tooltip if more than one not allowed in this case
         if ( clear )
@@ -327,7 +327,7 @@ public final class TooltipManager
         return customTooltip;
     }
 
-    private static void hideTooltips ( final Component component )
+    protected static void hideTooltips ( final Component component )
     {
         if ( webTooltips.get ( component ) != null )
         {
@@ -391,7 +391,7 @@ public final class TooltipManager
         showAllTooltips ( SwingUtils.getWindowAncestor ( component ) );
     }
 
-    private static void showAllTooltips ( final Window window )
+    protected static void showAllTooltips ( final Window window )
     {
         if ( window.isShowing () )
         {
@@ -578,7 +578,7 @@ public final class TooltipManager
         return showOneTimeTooltip ( customTooltip, true );
     }
 
-    private static WebCustomTooltip showOneTimeTooltip ( final WebCustomTooltip customTooltip, final boolean destroyOnClose )
+    protected static WebCustomTooltip showOneTimeTooltip ( final WebCustomTooltip customTooltip, final boolean destroyOnClose )
     {
         // Checking if component is properly set and showing
         if ( customTooltip.getComponent () == null || !customTooltip.getComponent ().isShowing () )

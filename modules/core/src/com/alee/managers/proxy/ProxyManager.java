@@ -38,7 +38,7 @@ import java.util.Properties;
  * @see com.alee.managers.proxy.SystemProxyConfirmationSupport
  */
 
-public final class ProxyManager
+public class ProxyManager
 {
     /**
      * Settings group key for proxy settings.
@@ -68,27 +68,27 @@ public final class ProxyManager
     /**
      * Whether automatic proxy detection is enabled or not.
      */
-    private static boolean autoDetectionEnabled = false;
+    protected static boolean autoDetectionEnabled = false;
 
     /**
      * Custom proxy authenticator.
      */
-    private static Authenticator authenticator;
+    protected static Authenticator authenticator;
 
     /**
      * Proxy settings install flag.
      */
-    private static boolean proxySet = false;
+    protected static boolean proxySet = false;
 
     /**
      * System proxy settings confirmation dialog support.
      */
-    private static SystemProxyConfirmationSupport systemProxyConfirmationSupport = null;
+    protected static SystemProxyConfirmationSupport systemProxyConfirmationSupport = null;
 
     /**
      * Whether manager is initialized or not.
      */
-    private static boolean initialized = false;
+    protected static boolean initialized = false;
 
     /**
      * Initializes manager if it wasn't already initialized.
@@ -431,7 +431,7 @@ public final class ProxyManager
      *
      * @return system http proxy
      */
-    private static Proxy getSystemHttpProxy ()
+    protected static Proxy getSystemHttpProxy ()
     {
         try
         {

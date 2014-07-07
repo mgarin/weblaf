@@ -39,27 +39,27 @@ public class Log
     /**
      * Loggers cache.
      */
-    private static final Map<Class, Logger> loggers = new WeakHashMap<Class, Logger> ();
+    protected static final Map<Class, Logger> loggers = new WeakHashMap<Class, Logger> ();
 
     /**
      * Logging enabled/disabled conditions.
      */
-    private static final Map<Class, Boolean> loggingEnabled = new WeakHashMap<Class, Boolean> ();
+    protected static final Map<Class, Boolean> loggingEnabled = new WeakHashMap<Class, Boolean> ();
 
     /**
      * Logger synchronization lock object.
      */
-    private static final Object logLock = new Object ();
+    protected static final Object logLock = new Object ();
 
     /**
      * Whether debug messages are enabled or not.
      */
-    private static boolean debugEnabled = false;
+    protected static boolean debugEnabled = false;
 
     /**
      * Whether Log is initialized or not.
      */
-    private static boolean initialized = false;
+    protected static boolean initialized = false;
 
     /**
      * Initializes SettingsManager.

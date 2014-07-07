@@ -23,6 +23,7 @@ import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.language.LanguageMethods;
 import com.alee.managers.language.updaters.LanguageUpdater;
+import com.alee.managers.log.Log;
 import com.alee.managers.settings.DefaultValue;
 import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.settings.SettingsMethods;
@@ -142,8 +143,8 @@ public class WebRadioButtonMenuItem extends JRadioButtonMenuItem
     /**
      * Constructs new radiobutton menu item using the specified settings.
      *
-     * @param text
-     * @param selected
+     * @param text     menu item text
+     * @param selected whether this radiobutton item is selected or not
      */
     public WebRadioButtonMenuItem ( final String text, final boolean selected )
     {
@@ -498,9 +499,9 @@ public class WebRadioButtonMenuItem extends JRadioButtonMenuItem
             {
                 setUI ( ( WebRadioButtonMenuItemUI ) ReflectUtils.createInstance ( WebLookAndFeel.radioButtonMenuItemUI ) );
             }
-            catch ( Throwable e )
+            catch ( final Throwable e )
             {
-                e.printStackTrace ();
+                Log.error ( this, e );
                 setUI ( new WebRadioButtonMenuItemUI () );
             }
         }

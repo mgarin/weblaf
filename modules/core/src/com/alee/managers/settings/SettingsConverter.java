@@ -179,7 +179,7 @@ public class SettingsConverter extends ReflectionConverter
                 }
                 catch ( final Throwable e )
                 {
-                    if ( SettingsManager.isDisplayExceptions () )
+                    if ( SettingsManager.isLoggingEnabled () )
                     {
                         Log.error ( this, "Unable to load settings entry for group \"" +
                                 settingsGroup.getName () + "\" under key \"" + key + "\" due to unexpected exception:", e );

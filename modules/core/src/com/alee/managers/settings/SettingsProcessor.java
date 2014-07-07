@@ -93,7 +93,7 @@ public abstract class SettingsProcessor<C extends Component, V extends Serializa
             }
             catch ( final Throwable e )
             {
-                if ( SettingsManager.isDisplayExceptions () )
+                if ( SettingsManager.isLoggingEnabled () )
                 {
                     Log.error ( this, "Unable to load initial component settings for group \"" + data.getGroup () +
                             "\" and key \"" + data.getKey () + "\" due to unexpected exception:", e );
@@ -108,7 +108,7 @@ public abstract class SettingsProcessor<C extends Component, V extends Serializa
         }
         catch ( final Throwable e )
         {
-            if ( SettingsManager.isDisplayExceptions () )
+            if ( SettingsManager.isLoggingEnabled () )
             {
                 Log.error ( this, "Unable to initialize specific processor settings for component with group \"" +
                         data.getGroup () + "\" and key \"" + data.getKey () + "\" due to unexpected exception:", e );

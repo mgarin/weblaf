@@ -19,6 +19,7 @@ package com.alee.laf.scroll;
 
 import com.alee.extended.painter.Painter;
 import com.alee.laf.WebLookAndFeel;
+import com.alee.managers.log.Log;
 import com.alee.managers.style.StyleManager;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SizeUtils;
@@ -272,7 +273,7 @@ public class WebScrollBar extends JScrollBar implements Styleable, SizeMethods<W
             }
             catch ( final Throwable e )
             {
-                e.printStackTrace ();
+                Log.error ( this, e );
                 setUI ( new WebScrollBarUI () );
             }
         }

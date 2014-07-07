@@ -51,112 +51,112 @@ import java.util.Map;
  * @see com.alee.utils.XmlUtils
  */
 
-public final class SettingsManager
+public class SettingsManager
 {
-    /**
-     * todo 1. JListSettingsProcessor
-     * todo 2. JTableSettingsProcessor
-     * todo 3. JScrollPaneSettingsProcessor
-     */
-
     /**
      * Settings change listeners.
      */
-    private static final Map<String, Map<String, List<SettingsListener>>> settingsListeners =
+    protected static final Map<String, Map<String, List<SettingsListener>>> settingsListeners =
             new HashMap<String, Map<String, List<SettingsListener>>> ();
 
     /**
      * Settings files extension.
      */
-    private static String settingsFilesExtension = ".xml";
+    protected static String settingsFilesExtension = ".xml";
 
     /**
      * Backup files extension.
      */
-    private static String backupFilesExtension = ".backup";
+    protected static String backupFilesExtension = ".backup";
 
     /**
      * Default settings directory location.
      */
-    private static String defaultSettingsDir = null;
+    protected static String defaultSettingsDir = null;
 
     /**
      * Default settings directory name.
      */
-    private static String defaultSettingsDirName = ".weblaf";
+    protected static String defaultSettingsDirName = ".weblaf";
 
     /**
      * Default settings group name.
      */
-    private static String defaultSettingsGroup = "default";
+    protected static String defaultSettingsGroup = "default";
 
     /**
      * Redefined per-group settings save locations.
      */
-    private static final Map<String, String> groupFileLocation = new HashMap<String, String> ();
+    protected static final Map<String, String> groupFileLocation = new HashMap<String, String> ();
 
     /**
      * Group settings read success marks.
      */
-    private static final Map<String, SettingsGroupState> groupState = new HashMap<String, SettingsGroupState> ();
+    protected static final Map<String, SettingsGroupState> groupState = new HashMap<String, SettingsGroupState> ();
 
     /**
      * Cached settings map.
      */
-    private static final Map<String, SettingsGroup> groups = new HashMap<String, SettingsGroup> ();
+    protected static final Map<String, SettingsGroup> groups = new HashMap<String, SettingsGroup> ();
 
     /**
      * Cached files map.
      */
-    private static final Map<String, Object> files = new HashMap<String, Object> ();
+    protected static final Map<String, Object> files = new HashMap<String, Object> ();
 
     /**
      * Whether should save settings right after any changes made or not.
      */
-    private static boolean saveOnChange = true;
+    protected static boolean saveOnChange = true;
 
     /**
      * Whether should save provided default value in "get" calls or not.
      */
-    private static boolean saveDefaultValues = true;
+    protected static boolean saveDefaultValues = true;
 
     /**
      * Save-on-change scheduler lock object.
      */
-    private static final Object saveOnChangeLock = new Object ();
+    protected static final Object saveOnChangeLock = new Object ();
 
     /**
      * Save-on-change save delay in milliseconds.
      * If larger than 0 then settings will be accumulated and saved all at once as soon as no new changes came within the delay time.
      */
-    private static long saveOnChangeDelay = 500;
+    protected static long saveOnChangeDelay = 500;
 
     /**
      * Save-on-change scheduler timer.
      */
-    private static WebTimer groupSaveScheduler = null;
+    protected static WebTimer groupSaveScheduler = null;
 
     /**
      * Delayed settings groups to save.
      */
-    private static final List<String> groupsToSaveOnChange = new ArrayList<String> ();
+    protected static final List<String> groupsToSaveOnChange = new ArrayList<String> ();
 
     /**
-     * Whether should display settings load and save exceptions or not.
-     * They might occur for example if settings cannot be read due to corrupted file or modified object stucture.
+     * Whether settings log is enabled or not.
+     * Log will display what settings are being loaded and saved and when that happens.
+     * Log might contain exceptions if settings cannot be read due to corrupted file or modified object stucture.
      */
-    private static boolean displayExceptions = true;
+    protected static boolean loggingEnabled = true;
+
+    /**
+     * Whether settings save log is enabled or not.
+     */
+    protected static boolean saveLoggingEnabled = false;
 
     /**
      * Whether should allow saving settings into files or not.
      * If set to false settings will be available only in runtime and will be lost after application finishes working.
      */
-    private static boolean allowSave = true;
+    protected static boolean allowSave = true;
 
     /**
      * Whether SettingsManager is initialized or not.
      */
-    private static boolean initialized = false;
+    protected static boolean initialized = false;
 
     /**
      * Initializes SettingsManager.
@@ -826,12 +826,8 @@ public final class SettingsManager
         }
         catch ( final ClassCastException e )
         {
-            // Displaying what caused the problem if needed
-            if ( displayExceptions )
-            {
-                Log.error ( SettingsManager.class, "Unable to load settings value for group \"" + group + "\" and key \"" + key +
-                        "\" because it has inappropriate class type:", e );
-            }
+            Log.error ( SettingsManager.class, "Unable to load settings value for group \"" + group + "\" and key \"" + key +
+                    "\" because it has inappropriate class type:", e );
 
             // Saving default value if needed
             if ( saveDefaultValues )
@@ -912,6 +908,45 @@ public final class SettingsManager
     }
 
     /**
+     * Resets all settings within the default settings group.
+     */
+    public static void resetDefaultGroup ()
+    {
+        resetGroup ( defaultSettingsGroup );
+    }
+
+    /**
+     * Resets all settings within the specified settings group.
+     *
+     * @param group settings group
+     */
+    public static void resetGroup ( final String group )
+    {
+        // todo
+    }
+
+    /**
+     * Resets settings under the key within the default settings group.
+     *
+     * @param key settings key to reset
+     */
+    public static void resetKey ( final String key )
+    {
+        resetKey ( defaultSettingsGroup, key );
+    }
+
+    /**
+     * Resets settings under the key within the specified settings group.
+     *
+     * @param group settings group
+     * @param key   settings key to reset
+     */
+    public static void resetKey ( final String group, final String key )
+    {
+        // todo
+    }
+
+    /**
      * Returns settings group for the specified name.
      *
      * @param group settings group name
@@ -935,31 +970,34 @@ public final class SettingsManager
      * @param group settings group name
      * @return loaded settings group for the specified name
      */
-    private static SettingsGroup loadSettingsGroup ( final String group )
+    protected static SettingsGroup loadSettingsGroup ( final String group )
     {
         SettingsGroup settingsGroup = null;
 
         // Settings group file           
-        final File dir = new File ( getGroupFileLocation ( group ) );
+        final File dir = new File ( getGroupFilePath ( group ) );
         if ( dir.exists () && dir.isDirectory () )
         {
-            final File file = new File ( dir, group + settingsFilesExtension );
-            final File dumpFile = new File ( dir, file.getName () + backupFilesExtension );
+            final File file = getGroupFile ( group, dir );
+            final File backupFile = getGroupBackupFile ( group, dir );
 
-            if ( file.exists () && file.isFile () || dumpFile.exists () && dumpFile.isFile () )
+            // todo Modify read logic so that;
+            // todo 1. Backup reading occurs only if original file cannot be read
+            // todo 2. Do not delete the settings that cannot be read right away, just move them aside with ".failed" extension mark
+            if ( file.exists () && file.isFile () || backupFile.exists () && backupFile.isFile () )
             {
-                // Check if there is a group dump file and restore it
-                boolean readFromDump = false;
-                if ( dumpFile.exists () && dumpFile.isFile () )
+                // Check if there is a group backup file and restore it
+                boolean readFromBackup = false;
+                if ( backupFile.exists () && backupFile.isFile () )
                 {
-                    // Replacing file with dump
-                    FileUtils.copyFile ( dumpFile, file );
+                    // Replacing file with backup
+                    FileUtils.copyFile ( backupFile, file );
 
-                    // Removing dump file
-                    FileUtils.deleteFile ( dumpFile );
+                    // Removing backup file
+                    FileUtils.deleteFile ( backupFile );
 
-                    // Dump read mark
-                    readFromDump = true;
+                    // Backup read mark
+                    readFromBackup = true;
                 }
 
                 // Try reading SettingsGroup
@@ -971,16 +1009,15 @@ public final class SettingsManager
                         settingsGroup = XmlUtils.fromXML ( file );
 
                         // Saving settings group read state
-                        groupState.put ( group, new SettingsGroupState ( readFromDump ? ReadState.restored : ReadState.ok ) );
+                        groupState.put ( group, new SettingsGroupState ( readFromBackup ? ReadState.restored : ReadState.ok ) );
+
+                        final String state = readFromBackup ? "restored from backup" : "loaded";
+                        Log.info ( SettingsManager.class, "Settings group \"" + group + "\" " + state + " successfully" );
                     }
                     catch ( final Throwable e )
                     {
-                        // Display errors
-                        if ( displayExceptions )
-                        {
-                            Log.error ( SettingsManager.class, "Unable to load settings group \"" + group +
-                                    "\" due to unexpected exception:", e );
-                        }
+                        Log.error ( SettingsManager.class, "Unable to load settings group \"" + group +
+                                "\" due to unexpected exception:", e );
 
                         // Delete incorrect SettingsGroup file
                         FileUtils.deleteFile ( file );
@@ -992,14 +1029,18 @@ public final class SettingsManager
             }
             else
             {
-                // No group settings file or dump exists, new SettingsGroup will be created
+                // No group settings file or backup exists, new SettingsGroup will be created
                 groupState.put ( group, new SettingsGroupState ( ReadState.created ) );
+
+                Log.info ( SettingsManager.class, "Settings group \"" + group + "\" created successfully" );
             }
         }
         else
         {
             // No group setting dir exists, new SettingsGroup will be created
             groupState.put ( group, new SettingsGroupState ( ReadState.created ) );
+
+            Log.info ( SettingsManager.class, "Settings group \"" + group + "\" created successfully" );
         }
 
         // Create new SettingsGroup
@@ -1056,29 +1097,34 @@ public final class SettingsManager
             {
                 // Used values
                 final String group = settingsGroup.getName ();
-                final File dir = new File ( getGroupFileLocation ( group ) );
+                final File dir = new File ( getGroupFilePath ( group ) );
 
                 // Ensure group settings directory exists and perform save
                 if ( FileUtils.ensureDirectoryExists ( dir ) )
                 {
                     // Settings file
-                    final File file = new File ( dir, group + settingsFilesExtension );
+                    final File file = getGroupFile ( group, dir );
 
-                    // Creating settings dump if there are old settings
-                    File dumpFile = null;
+                    // Creating settings backup if there are old settings
+                    File backupFile = null;
                     if ( file.exists () )
                     {
-                        dumpFile = new File ( dir, group + settingsFilesExtension + backupFilesExtension );
-                        FileUtils.copyFile ( file, dumpFile );
+                        backupFile = getGroupBackupFile ( group, dir );
+                        FileUtils.copyFile ( file, backupFile );
                     }
 
                     // Saving settings
                     XmlUtils.toXML ( settingsGroup, file );
 
-                    // Clearing dump file
-                    if ( dumpFile != null && dumpFile.exists () )
+                    // Removing backup file if save was successful
+                    if ( backupFile != null && backupFile.exists () )
                     {
-                        FileUtils.deleteFile ( dumpFile );
+                        FileUtils.deleteFile ( backupFile );
+                    }
+
+                    if ( saveLoggingEnabled )
+                    {
+                        Log.info ( SettingsManager.class, "Settings group \"" + group + "\" saved successfully" );
                     }
                 }
                 else
@@ -1088,13 +1134,20 @@ public final class SettingsManager
             }
             catch ( final Throwable e )
             {
-                if ( displayExceptions )
-                {
-                    Log.error ( SettingsManager.class, "Unable to save settings group \"" + settingsGroup.getName () +
-                            "\" due to unexpected exception:", e );
-                }
+                Log.error ( SettingsManager.class, "Unable to save settings group \"" + settingsGroup.getName () +
+                        "\" due to unexpected exception:", e );
             }
         }
+    }
+
+    protected static File getGroupFile ( final String group, final File dir )
+    {
+        return new File ( dir, group + settingsFilesExtension );
+    }
+
+    protected static File getGroupBackupFile ( final String group, final File dir )
+    {
+        return new File ( dir, group + settingsFilesExtension + backupFilesExtension );
     }
 
     /**
@@ -1102,7 +1155,7 @@ public final class SettingsManager
      *
      * @param group name of the settings group to save
      */
-    private static void delayedSaveSettingsGroup ( final String group )
+    protected static void delayedSaveSettingsGroup ( final String group )
     {
         // Determining when we should save changes into file system
         if ( saveOnChangeDelay > 0 )
@@ -1230,7 +1283,7 @@ public final class SettingsManager
      * @param fileName settings file name
      * @param settings value
      */
-    private static void saveSettings ( final String fileName, final Object settings )
+    protected static void saveSettings ( final String fileName, final Object settings )
     {
         if ( allowSave )
         {
@@ -1255,7 +1308,7 @@ public final class SettingsManager
      * @param fileName settings file name
      * @return settings file for the specified file name
      */
-    private static File getSettingsFile ( final String fileName )
+    protected static File getSettingsFile ( final String fileName )
     {
         return new File ( getDefaultSettingsDir (), fileName );
     }
@@ -1374,7 +1427,7 @@ public final class SettingsManager
      * @param group settings group name
      * @param dir   settings group file directory
      */
-    public static void setGroupFileLocation ( final String group, final String dir )
+    public static void setGroupFilePath ( final String group, final String dir )
     {
         groupFileLocation.put ( group, dir );
     }
@@ -1385,7 +1438,7 @@ public final class SettingsManager
      * @param group settings group name
      * @return directory where settings group file is saved
      */
-    public static String getGroupFileLocation ( final String group )
+    public static String getGroupFilePath ( final String group )
     {
         if ( groupFileLocation.containsKey ( group ) )
         {
@@ -1463,19 +1516,40 @@ public final class SettingsManager
      *
      * @return true if should display settings load and save error messages, false otherwise
      */
-    public static boolean isDisplayExceptions ()
+    public static boolean isLoggingEnabled ()
     {
-        return displayExceptions;
+        return loggingEnabled;
     }
 
     /**
      * Sets whether should display settings load and save error messages or not.
      *
-     * @param displayExceptions whether should display settings load and save error messages or not
+     * @param loggingEnabled whether should display settings load and save error messages or not
      */
-    public static void setDisplayExceptions ( final boolean displayExceptions )
+    public static void setLoggingEnabled ( final boolean loggingEnabled )
     {
-        SettingsManager.displayExceptions = displayExceptions;
+        SettingsManager.loggingEnabled = loggingEnabled;
+        Log.setLoggingEnabled ( SettingsManager.class, loggingEnabled );
+    }
+
+    /**
+     * Returns whether settings save log is enabled or not.
+     *
+     * @return true if settings save log is enabled, false otherwise
+     */
+    public static boolean isSaveLoggingEnabled ()
+    {
+        return saveLoggingEnabled;
+    }
+
+    /**
+     * Sets whether settings save log is enabled or not.
+     *
+     * @param enabled whether settings save log is enabled or not
+     */
+    public static void setSaveLoggingEnabled ( final boolean enabled )
+    {
+        SettingsManager.saveLoggingEnabled = enabled;
     }
 
     /**
@@ -1581,7 +1655,7 @@ public final class SettingsManager
      * @param key      settings key
      * @param newValue new value
      */
-    private static void fireSettingsChanged ( final String group, final String key, final Object newValue )
+    protected static void fireSettingsChanged ( final String group, final String key, final Object newValue )
     {
         if ( settingsListeners.containsKey ( group ) )
         {

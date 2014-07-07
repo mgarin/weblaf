@@ -19,6 +19,7 @@ package com.alee.extended.label;
 
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.label.WebLabel;
+import com.alee.managers.log.Log;
 import com.alee.utils.ReflectUtils;
 
 import javax.swing.*;
@@ -158,7 +159,7 @@ public class WebVerticalLabel extends WebLabel
             }
             catch ( final Throwable e )
             {
-                e.printStackTrace ();
+                Log.error ( this, e );
                 setUI ( new WebVerticalLabelUI () );
             }
         }

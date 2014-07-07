@@ -18,6 +18,7 @@
 package com.alee.laf.menu;
 
 import com.alee.laf.WebLookAndFeel;
+import com.alee.managers.log.Log;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.laf.ShapeProvider;
 
@@ -113,7 +114,7 @@ public class WebMenuBar extends JMenuBar implements ShapeProvider
             }
             catch ( final Throwable e )
             {
-                e.printStackTrace ();
+                Log.error ( this, e );
                 setUI ( new WebMenuBarUI () );
             }
         }

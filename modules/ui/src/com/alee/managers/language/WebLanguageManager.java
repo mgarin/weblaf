@@ -33,7 +33,7 @@ public class WebLanguageManager
     /**
      * Manager initialization mark.
      */
-    private static boolean initialized = false;
+    protected static boolean initialized = false;
 
     /**
      * Initializes LanguageManager settings.

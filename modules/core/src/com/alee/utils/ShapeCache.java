@@ -31,7 +31,7 @@ import java.util.WeakHashMap;
  * @author Mikle Garin
  */
 
-public class ShapeCache
+public final class ShapeCache
 {
     /**
      * todo 1. Improve shape settings key generation/usage performance

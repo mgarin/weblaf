@@ -18,6 +18,7 @@
 package com.alee.laf.tree;
 
 import com.alee.laf.WebLookAndFeel;
+import com.alee.managers.log.Log;
 import com.alee.utils.GeometryUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SwingUtils;
@@ -262,6 +263,16 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
     }
 
     /**
+     * Returns selected node bounds.
+     *
+     * @return selected node bounds
+     */
+    public Rectangle getSelectedNodeBounds ()
+    {
+        return getNodeBounds ( getSelectedNode () );
+    }
+
+    /**
      * Returns node bounds.
      *
      * @param node node to process
@@ -293,6 +304,39 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
             }
             return combined;
         }
+    }
+
+    /**
+     * Returns full row bounds including the space before the node and after the node.
+     *
+     * @param node node to retrieve full row bounds for
+     * @return full row bounds including the space before the node and after the node
+     */
+    public Rectangle getFullRowBounds ( final E node )
+    {
+        return getFullRowBounds ( getRowForNode ( node ) );
+    }
+
+    /**
+     * Returns full row bounds including the space before the node and after the node.
+     *
+     * @param row row to retrieve full bounds for
+     * @return full row bounds including the space before the node and after the node
+     */
+    public Rectangle getFullRowBounds ( final int row )
+    {
+        return getWebUI ().getFullRowBounds ( row );
+    }
+
+    /**
+     * Returns row of the specified node.
+     *
+     * @param node node to find row for
+     * @return row of the specified node
+     */
+    public int getRowForNode ( final E node )
+    {
+        return getRowForPath ( getPathForNode ( node ) );
     }
 
     /**
@@ -1128,7 +1172,7 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
             }
             catch ( final Throwable e )
             {
-                e.printStackTrace ();
+                Log.error ( this, e );
                 setUI ( new WebTreeUI () );
             }
         }

@@ -30,7 +30,7 @@ public class WebProxyManager
     /**
      * Whether manager is initialized or not.
      */
-    private static boolean initialized = false;
+    protected static boolean initialized = false;
 
     /**
      * Initializes manager if it wasn't already initialized.

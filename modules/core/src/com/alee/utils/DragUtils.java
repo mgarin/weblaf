@@ -17,6 +17,8 @@
 
 package com.alee.utils;
 
+import com.alee.managers.log.Log;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
@@ -217,7 +219,7 @@ public final class DragUtils
             }
             catch ( final Throwable e )
             {
-                e.printStackTrace ();
+                Log.error ( DragUtils.class, e );
             }
         }
         return uriListFlavor;

@@ -306,7 +306,7 @@ public class ComponentTransition extends WebPanel
         fireTransitionFinished ();
     }
 
-    protected boolean isAnimating ()
+    public boolean isAnimating ()
     {
         return animating;
     }

@@ -18,6 +18,7 @@
 package com.alee.laf.splitpane;
 
 import com.alee.laf.WebLookAndFeel;
+import com.alee.managers.log.Log;
 import com.alee.utils.ReflectUtils;
 
 import javax.swing.*;
@@ -156,7 +157,7 @@ public class WebSplitPane extends JSplitPane
             }
             catch ( final Throwable e )
             {
-                e.printStackTrace ();
+                Log.error ( this, e );
                 setUI ( new WebSplitPaneUI () );
             }
         }

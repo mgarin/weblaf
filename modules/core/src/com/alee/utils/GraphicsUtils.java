@@ -31,7 +31,7 @@ import java.util.Map;
  * @author Mikle Garin
  */
 
-public class GraphicsUtils
+public final class GraphicsUtils
 {
     /**
      * Setting antialias on

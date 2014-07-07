@@ -39,62 +39,62 @@ import java.util.WeakHashMap;
  * @see DisplayType
  */
 
-public final class NotificationManager implements SwingConstants
+public class NotificationManager implements SwingConstants
 {
     /**
      * Notifications display location.
      */
-    private static int location = SOUTH_EAST;
+    protected static int location = SOUTH_EAST;
 
     /**
      * Notifications display type.
      */
-    private static DisplayType displayType = DisplayType.stack;
+    protected static DisplayType displayType = DisplayType.stack;
 
     /**
      * Notifications side margin.
      */
-    private static Insets margin = new Insets ( 0, 0, 0, 0 );
+    protected static Insets margin = new Insets ( 0, 0, 0, 0 );
 
     /**
      * Gap between notifications.
      */
-    private static int gap = 10;
+    protected static int gap = 10;
 
     /**
      * Whether popups should be cascaded or not.
      */
-    private static boolean cascade = true;
+    protected static boolean cascade = true;
 
     /**
      * Amount of cascaded in a row popups.
      */
-    private static int cascadeAmount = 4;
+    protected static int cascadeAmount = 4;
 
     /**
      * Whether notifications displayed in separate windows should avoid overlapping system toolbar or not.
      */
-    private static boolean avoidOverlappingSystemToolbar = true;
+    protected static boolean avoidOverlappingSystemToolbar = true;
 
     /**
      * Cached notification layouts.
      */
-    private static final Map<PopupLayer, NotificationsLayout> notificationsLayouts = new WeakHashMap<PopupLayer, NotificationsLayout> ();
+    protected static final Map<PopupLayer, NotificationsLayout> notificationsLayouts = new WeakHashMap<PopupLayer, NotificationsLayout> ();
 
     /**
      * Cached notification popups.
      */
-    private static final Map<WebInnerNotification, PopupLayer> notificationPopups = new WeakHashMap<WebInnerNotification, PopupLayer> ();
+    protected static final Map<WebInnerNotification, PopupLayer> notificationPopups = new WeakHashMap<WebInnerNotification, PopupLayer> ();
 
     /**
      * Special layout for notification windows.
      */
-    private static final NotificationsScreenLayout screenLayout = new NotificationsScreenLayout ();
+    protected static final NotificationsScreenLayout screenLayout = new NotificationsScreenLayout ();
 
     /**
      * Cached notification windows.
      */
-    private static final Map<WebNotification, Window> notificationWindows = new WeakHashMap<WebNotification, Window> ();
+    protected static final Map<WebNotification, Window> notificationWindows = new WeakHashMap<WebNotification, Window> ();
 
     /**
      * Returns notifications display location.

@@ -36,42 +36,42 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public final class FocusManager
+public class FocusManager
 {
     /**
      * Tracker list and cache lock.
      */
-    private static final Object trackersLock = new Object ();
+    protected static final Object trackersLock = new Object ();
 
     /**
      * Focus trackers list.
      */
-    private static final Map<Component, Map<FocusTracker, Boolean>> trackers = new WeakHashMap<Component, Map<FocusTracker, Boolean>> ();
+    protected static final Map<Component, Map<FocusTracker, Boolean>> trackers = new WeakHashMap<Component, Map<FocusTracker, Boolean>> ();
 
     /**
      * Global focus listeners lock.
      */
-    private static final Object listenersLock = new Object ();
+    protected static final Object listenersLock = new Object ();
 
     /**
      * Global focus listeners list.
      */
-    private static final List<GlobalFocusListener> globalFocusListeners = new ArrayList<GlobalFocusListener> ( 2 );
+    protected static final List<GlobalFocusListener> globalFocusListeners = new ArrayList<GlobalFocusListener> ( 2 );
 
     /**
      * Reference to previously focused component.
      */
-    private static WeakReference<Component> oldFocusOwner;
+    protected static WeakReference<Component> oldFocusOwner;
 
     /**
      * Reference to currently focused component.
      */
-    private static WeakReference<Component> focusOwner;
+    protected static WeakReference<Component> focusOwner;
 
     /**
      * Whether manager is initialized or not.
      */
-    private static boolean initialized = false;
+    protected static boolean initialized = false;
 
     /**
      * Initializes manager if it wasn't already initialized.
@@ -182,7 +182,7 @@ public final class FocusManager
      *
      * @return trackers map copy
      */
-    private static Map<Component, Map<FocusTracker, Boolean>> getTrackersCopy ()
+    protected static Map<Component, Map<FocusTracker, Boolean>> getTrackersCopy ()
     {
         // Checking all added trackers
         synchronized ( trackersLock )
@@ -254,7 +254,7 @@ public final class FocusManager
      * @param oldComponent previously focused component
      * @param newComponent currently focused component
      */
-    private static void fireGlobalFocusChanged ( final Component oldComponent, final Component newComponent )
+    protected static void fireGlobalFocusChanged ( final Component oldComponent, final Component newComponent )
     {
         final List<GlobalFocusListener> listeners;
         synchronized ( listenersLock )

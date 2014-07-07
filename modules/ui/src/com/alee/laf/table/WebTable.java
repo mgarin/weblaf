@@ -18,6 +18,7 @@
 package com.alee.laf.table;
 
 import com.alee.laf.WebLookAndFeel;
+import com.alee.managers.log.Log;
 import com.alee.utils.GeometryUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SwingUtils;
@@ -192,7 +193,7 @@ public class WebTable extends JTable implements FontMethods<WebTable>
                     ( ( Component ) o ).requestFocusInWindow ();
                 }
             }
-            catch ( Exception e )
+            catch ( final Exception e )
             {
                 // ignore
             }
@@ -299,9 +300,9 @@ public class WebTable extends JTable implements FontMethods<WebTable>
             {
                 setUI ( ( WebTableUI ) ReflectUtils.createInstance ( WebLookAndFeel.tableUI ) );
             }
-            catch ( Throwable e )
+            catch ( final Throwable e )
             {
-                e.printStackTrace ();
+                Log.error ( this, e );
                 setUI ( new WebTableUI () );
             }
         }
@@ -350,7 +351,7 @@ public class WebTable extends JTable implements FontMethods<WebTable>
                         {
                             corner = ( Component ) ( ( Class ) componentClass ).newInstance ();
                         }
-                        catch ( Exception e )
+                        catch ( final Exception e )
                         {
                             // just ignore and don't set corner
                         }

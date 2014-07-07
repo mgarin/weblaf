@@ -18,6 +18,7 @@
 package com.alee.extended.tree;
 
 import com.alee.extended.drag.FileDragAndDropHandler;
+import com.alee.managers.log.Log;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.FileUtils;
 import com.alee.utils.compare.Filter;
@@ -503,7 +504,7 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
         }
         catch ( final Throwable e )
         {
-            e.printStackTrace ();
+            Log.error ( this, e );
         }
     }
 

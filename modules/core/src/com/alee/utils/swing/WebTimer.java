@@ -17,6 +17,7 @@
 
 package com.alee.utils.swing;
 
+import com.alee.managers.log.Log;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.TimeUtils;
 
@@ -850,7 +851,7 @@ public class WebTimer
             }
             catch ( final InterruptedException e )
             {
-                e.printStackTrace ();
+                Log.error ( this, e );
             }
         }
     }

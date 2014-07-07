@@ -21,6 +21,7 @@ import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.language.LanguageMethods;
 import com.alee.managers.language.updaters.LanguageUpdater;
+import com.alee.managers.log.Log;
 import com.alee.utils.ReflectUtils;
 
 import javax.swing.*;
@@ -37,27 +38,28 @@ public class WebInternalFrame extends JInternalFrame implements LanguageMethods
         super ();
     }
 
-    public WebInternalFrame ( String title )
+    public WebInternalFrame ( final String title )
     {
         super ( title );
     }
 
-    public WebInternalFrame ( String title, boolean resizable )
+    public WebInternalFrame ( final String title, final boolean resizable )
     {
         super ( title, resizable );
     }
 
-    public WebInternalFrame ( String title, boolean resizable, boolean closable )
+    public WebInternalFrame ( final String title, final boolean resizable, final boolean closable )
     {
         super ( title, resizable, closable );
     }
 
-    public WebInternalFrame ( String title, boolean resizable, boolean closable, boolean maximizable )
+    public WebInternalFrame ( final String title, final boolean resizable, final boolean closable, final boolean maximizable )
     {
         super ( title, resizable, closable, maximizable );
     }
 
-    public WebInternalFrame ( String title, boolean resizable, boolean closable, boolean maximizable, boolean iconifiable )
+    public WebInternalFrame ( final String title, final boolean resizable, final boolean closable, final boolean maximizable,
+                              final boolean iconifiable )
     {
         super ( title, resizable, closable, maximizable, iconifiable );
     }
@@ -68,15 +70,15 @@ public class WebInternalFrame extends JInternalFrame implements LanguageMethods
     }
 
     @Override
-    public void setIcon ( boolean b )
+    public void setIcon ( final boolean b )
     {
         try
         {
             super.setIcon ( b );
         }
-        catch ( PropertyVetoException e )
+        catch ( final PropertyVetoException e )
         {
-            e.printStackTrace ();
+            Log.error ( this, e );
         }
     }
 
@@ -86,9 +88,9 @@ public class WebInternalFrame extends JInternalFrame implements LanguageMethods
         {
             setClosed ( true );
         }
-        catch ( PropertyVetoException e )
+        catch ( final PropertyVetoException e )
         {
-            e.printStackTrace ();
+            Log.error ( this, e );
         }
     }
 
@@ -99,9 +101,9 @@ public class WebInternalFrame extends JInternalFrame implements LanguageMethods
             setClosed ( false );
             setVisible ( true );
         }
-        catch ( PropertyVetoException e )
+        catch ( final PropertyVetoException e )
         {
-            e.printStackTrace ();
+            Log.error ( this, e );
         }
     }
 
@@ -114,9 +116,9 @@ public class WebInternalFrame extends JInternalFrame implements LanguageMethods
             {
                 setUI ( ( WebInternalFrameUI ) ReflectUtils.createInstance ( WebLookAndFeel.internalFrameUI, this ) );
             }
-            catch ( Throwable e )
+            catch ( final Throwable e )
             {
-                e.printStackTrace ();
+                Log.error ( this, e );
                 setUI ( new WebInternalFrameUI ( this ) );
             }
         }
@@ -132,19 +134,19 @@ public class WebInternalFrame extends JInternalFrame implements LanguageMethods
      */
 
     @Override
-    public void setLanguage ( String key, Object... data )
+    public void setLanguage ( final String key, final Object... data )
     {
         LanguageManager.registerComponent ( this, key, data );
     }
 
     @Override
-    public void updateLanguage ( Object... data )
+    public void updateLanguage ( final Object... data )
     {
         LanguageManager.updateComponent ( this, data );
     }
 
     @Override
-    public void updateLanguage ( String key, Object... data )
+    public void updateLanguage ( final String key, final Object... data )
     {
         LanguageManager.updateComponent ( this, key, data );
     }
@@ -162,7 +164,7 @@ public class WebInternalFrame extends JInternalFrame implements LanguageMethods
     }
 
     @Override
-    public void setLanguageUpdater ( LanguageUpdater updater )
+    public void setLanguageUpdater ( final LanguageUpdater updater )
     {
         LanguageManager.registerLanguageUpdater ( this, updater );
     }

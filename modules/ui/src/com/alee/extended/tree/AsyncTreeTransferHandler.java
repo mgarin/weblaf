@@ -81,7 +81,7 @@ public abstract class AsyncTreeTransferHandler<N extends AsyncUniqueNode, T exte
         }
         catch ( final ClassNotFoundException e )
         {
-            e.printStackTrace ();
+            Log.error ( this, e );
         }
     }
 

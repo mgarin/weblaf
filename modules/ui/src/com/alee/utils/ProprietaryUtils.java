@@ -18,6 +18,7 @@
 package com.alee.utils;
 
 import com.alee.global.StyleConstants;
+import com.alee.managers.log.Log;
 
 import javax.swing.*;
 import java.awt.*;
@@ -96,23 +97,23 @@ public final class ProprietaryUtils
         }
         catch ( final ClassNotFoundException e )
         {
-            e.printStackTrace ();
+            Log.error ( ProprietaryUtils.class, e );
         }
         catch ( final NoSuchFieldException e )
         {
-            e.printStackTrace ();
+            Log.error ( ProprietaryUtils.class, e );
         }
         catch ( final IllegalAccessException e )
         {
-            e.printStackTrace ();
+            Log.error ( ProprietaryUtils.class, e );
         }
         catch ( final NoSuchMethodException e )
         {
-            e.printStackTrace ();
+            Log.error ( ProprietaryUtils.class, e );
         }
         catch ( final InvocationTargetException e )
         {
-            e.printStackTrace ();
+            Log.error ( ProprietaryUtils.class, e );
         }
     }
 
@@ -188,7 +189,7 @@ public final class ProprietaryUtils
             {
                 // Ignore any exceptions this native feature might cause
                 // Still, should inform that such actions cause an exception on the underlying system
-                e.printStackTrace ();
+                Log.error ( ProprietaryUtils.class, e );
             }
         }
     }
@@ -239,7 +240,7 @@ public final class ProprietaryUtils
             {
                 // Ignore any exceptions this native feature might cause
                 // Still, should inform that such actions cause an exception on the underlying system
-                e.printStackTrace ();
+                Log.error ( ProprietaryUtils.class, e );
             }
         }
         return true;
@@ -272,7 +273,7 @@ public final class ProprietaryUtils
             {
                 // Ignore any exceptions this native feature might cause
                 // Still, should inform that such actions cause an exception on the underlying system
-                e.printStackTrace ();
+                Log.error ( ProprietaryUtils.class, e );
             }
         }
     }
@@ -306,7 +307,7 @@ public final class ProprietaryUtils
             {
                 // Ignore any exceptions this native feature might cause
                 // Still, should inform that such actions cause an exception on the underlying system
-                e.printStackTrace ();
+                Log.error ( ProprietaryUtils.class, e );
             }
         }
         return 1f;

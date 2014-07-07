@@ -45,7 +45,7 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public final class HotkeyManager
+public class HotkeyManager
 {
     /**
      * Synchronization object.

@@ -18,6 +18,7 @@
 package com.alee.laf.tooltip;
 
 import com.alee.laf.WebLookAndFeel;
+import com.alee.managers.log.Log;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.laf.ShapeProvider;
@@ -75,9 +76,9 @@ public class WebToolTip extends JToolTip implements ShapeProvider, FontMethods<W
             {
                 setUI ( ( WebToolTipUI ) ReflectUtils.createInstance ( WebLookAndFeel.toolTipUI ) );
             }
-            catch ( Throwable e )
+            catch ( final Throwable e )
             {
-                e.printStackTrace ();
+                Log.error ( this, e );
                 setUI ( new WebToolTipUI () );
             }
         }
@@ -100,7 +101,7 @@ public class WebToolTip extends JToolTip implements ShapeProvider, FontMethods<W
      * {@inheritDoc}
      */
     @Override
-    public WebToolTip setPlainFont ( boolean apply )
+    public WebToolTip setPlainFont ( final boolean apply )
     {
         return SwingUtils.setPlainFont ( this, apply );
     }
@@ -127,7 +128,7 @@ public class WebToolTip extends JToolTip implements ShapeProvider, FontMethods<W
      * {@inheritDoc}
      */
     @Override
-    public WebToolTip setBoldFont ( boolean apply )
+    public WebToolTip setBoldFont ( final boolean apply )
     {
         return SwingUtils.setBoldFont ( this, apply );
     }
@@ -154,7 +155,7 @@ public class WebToolTip extends JToolTip implements ShapeProvider, FontMethods<W
      * {@inheritDoc}
      */
     @Override
-    public WebToolTip setItalicFont ( boolean apply )
+    public WebToolTip setItalicFont ( final boolean apply )
     {
         return SwingUtils.setItalicFont ( this, apply );
     }
@@ -172,7 +173,7 @@ public class WebToolTip extends JToolTip implements ShapeProvider, FontMethods<W
      * {@inheritDoc}
      */
     @Override
-    public WebToolTip setFontStyle ( boolean bold, boolean italic )
+    public WebToolTip setFontStyle ( final boolean bold, final boolean italic )
     {
         return SwingUtils.setFontStyle ( this, bold, italic );
     }
@@ -181,7 +182,7 @@ public class WebToolTip extends JToolTip implements ShapeProvider, FontMethods<W
      * {@inheritDoc}
      */
     @Override
-    public WebToolTip setFontStyle ( int style )
+    public WebToolTip setFontStyle ( final int style )
     {
         return SwingUtils.setFontStyle ( this, style );
     }
@@ -190,7 +191,7 @@ public class WebToolTip extends JToolTip implements ShapeProvider, FontMethods<W
      * {@inheritDoc}
      */
     @Override
-    public WebToolTip setFontSize ( int fontSize )
+    public WebToolTip setFontSize ( final int fontSize )
     {
         return SwingUtils.setFontSize ( this, fontSize );
     }
@@ -199,7 +200,7 @@ public class WebToolTip extends JToolTip implements ShapeProvider, FontMethods<W
      * {@inheritDoc}
      */
     @Override
-    public WebToolTip changeFontSize ( int change )
+    public WebToolTip changeFontSize ( final int change )
     {
         return SwingUtils.changeFontSize ( this, change );
     }
@@ -217,7 +218,7 @@ public class WebToolTip extends JToolTip implements ShapeProvider, FontMethods<W
      * {@inheritDoc}
      */
     @Override
-    public WebToolTip setFontSizeAndStyle ( int fontSize, boolean bold, boolean italic )
+    public WebToolTip setFontSizeAndStyle ( final int fontSize, final boolean bold, final boolean italic )
     {
         return SwingUtils.setFontSizeAndStyle ( this, fontSize, bold, italic );
     }
@@ -226,7 +227,7 @@ public class WebToolTip extends JToolTip implements ShapeProvider, FontMethods<W
      * {@inheritDoc}
      */
     @Override
-    public WebToolTip setFontSizeAndStyle ( int fontSize, int style )
+    public WebToolTip setFontSizeAndStyle ( final int fontSize, final int style )
     {
         return SwingUtils.setFontSizeAndStyle ( this, fontSize, style );
     }
@@ -235,7 +236,7 @@ public class WebToolTip extends JToolTip implements ShapeProvider, FontMethods<W
      * {@inheritDoc}
      */
     @Override
-    public WebToolTip setFontName ( String fontName )
+    public WebToolTip setFontName ( final String fontName )
     {
         return SwingUtils.setFontName ( this, fontName );
     }

@@ -22,6 +22,7 @@ import com.alee.extended.painter.PartialDecoration;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.language.LanguageContainerMethods;
 import com.alee.managers.language.LanguageManager;
+import com.alee.managers.log.Log;
 import com.alee.managers.style.StyleManager;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SizeUtils;
@@ -914,7 +915,7 @@ public class WebPanel extends JPanel implements Styleable, ShapeProvider, Partia
             }
             catch ( final Throwable e )
             {
-                e.printStackTrace ();
+                Log.error ( this, e );
                 setUI ( new WebPanelUI () );
             }
         }

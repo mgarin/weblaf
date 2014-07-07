@@ -26,7 +26,7 @@ import com.alee.utils.XmlUtils;
  * @author Mikle Garin
  */
 
-public final class VersionManager
+public class VersionManager
 {
     /**
      * todo 1. Extend this manager to allow custom versions management.
@@ -36,12 +36,12 @@ public final class VersionManager
     /**
      * Library version.
      */
-    private static VersionInfo libraryVersion = null;
+    protected static VersionInfo libraryVersion = null;
 
     /**
      * Initialization mark.
      */
-    private static boolean initialized = false;
+    protected static boolean initialized = false;
 
     /**
      * Initializes VersionManager settings.

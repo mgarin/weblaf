@@ -25,6 +25,7 @@ import com.alee.managers.language.LanguageManager;
 import com.alee.managers.language.LanguageMethods;
 import com.alee.managers.language.data.TooltipWay;
 import com.alee.managers.language.updaters.LanguageUpdater;
+import com.alee.managers.log.Log;
 import com.alee.managers.settings.DefaultValue;
 import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.settings.SettingsMethods;
@@ -52,42 +53,42 @@ public class WebRadioButton extends JRadioButton
         super ();
     }
 
-    public WebRadioButton ( boolean selected )
+    public WebRadioButton ( final boolean selected )
     {
         super ( "", selected );
     }
 
-    public WebRadioButton ( Icon icon )
+    public WebRadioButton ( final Icon icon )
     {
         super ( icon );
     }
 
-    public WebRadioButton ( Action a )
+    public WebRadioButton ( final Action a )
     {
         super ( a );
     }
 
-    public WebRadioButton ( Icon icon, boolean selected )
+    public WebRadioButton ( final Icon icon, final boolean selected )
     {
         super ( icon, selected );
     }
 
-    public WebRadioButton ( String text )
+    public WebRadioButton ( final String text )
     {
         super ( text );
     }
 
-    public WebRadioButton ( String text, boolean selected )
+    public WebRadioButton ( final String text, final boolean selected )
     {
         super ( text, selected );
     }
 
-    public WebRadioButton ( String text, Icon icon )
+    public WebRadioButton ( final String text, final Icon icon )
     {
         super ( text, icon );
     }
 
-    public WebRadioButton ( String text, Icon icon, boolean selected )
+    public WebRadioButton ( final String text, final Icon icon, final boolean selected )
     {
         super ( text, icon, selected );
     }
@@ -96,42 +97,42 @@ public class WebRadioButton extends JRadioButton
      * Proxified kotkey manager methods
      */
 
-    public HotkeyInfo addHotkey ( Integer keyCode )
+    public HotkeyInfo addHotkey ( final Integer keyCode )
     {
         return addHotkey ( new HotkeyData ( keyCode ) );
     }
 
-    public HotkeyInfo addHotkey ( boolean isCtrl, boolean isAlt, boolean isShift, Integer keyCode )
+    public HotkeyInfo addHotkey ( final boolean isCtrl, final boolean isAlt, final boolean isShift, final Integer keyCode )
     {
         return addHotkey ( new HotkeyData ( isCtrl, isAlt, isShift, keyCode ) );
     }
 
-    public HotkeyInfo addHotkey ( HotkeyData hotkeyData )
+    public HotkeyInfo addHotkey ( final HotkeyData hotkeyData )
     {
         return HotkeyManager.registerHotkey ( this, hotkeyData );
     }
 
-    public HotkeyInfo addHotkey ( HotkeyData hotkeyData, boolean hidden )
+    public HotkeyInfo addHotkey ( final HotkeyData hotkeyData, final boolean hidden )
     {
         return HotkeyManager.registerHotkey ( this, hotkeyData, hidden );
     }
 
-    public HotkeyInfo addHotkey ( HotkeyData hotkeyData, TooltipWay tooltipWay )
+    public HotkeyInfo addHotkey ( final HotkeyData hotkeyData, final TooltipWay tooltipWay )
     {
         return HotkeyManager.registerHotkey ( this, hotkeyData, tooltipWay );
     }
 
-    public HotkeyInfo addHotkey ( Component topComponent, HotkeyData hotkeyData )
+    public HotkeyInfo addHotkey ( final Component topComponent, final HotkeyData hotkeyData )
     {
         return HotkeyManager.registerHotkey ( topComponent, this, hotkeyData );
     }
 
-    public HotkeyInfo addHotkey ( Component topComponent, HotkeyData hotkeyData, boolean hidden )
+    public HotkeyInfo addHotkey ( final Component topComponent, final HotkeyData hotkeyData, final boolean hidden )
     {
         return HotkeyManager.registerHotkey ( topComponent, this, hotkeyData, hidden );
     }
 
-    public HotkeyInfo addHotkey ( Component topComponent, HotkeyData hotkeyData, TooltipWay tooltipWay )
+    public HotkeyInfo addHotkey ( final Component topComponent, final HotkeyData hotkeyData, final TooltipWay tooltipWay )
     {
         return HotkeyManager.registerHotkey ( topComponent, this, hotkeyData, tooltipWay );
     }
@@ -141,7 +142,7 @@ public class WebRadioButton extends JRadioButton
         return HotkeyManager.getComponentHotkeys ( this );
     }
 
-    public void removeHotkey ( HotkeyInfo hotkeyInfo )
+    public void removeHotkey ( final HotkeyInfo hotkeyInfo )
     {
         HotkeyManager.unregisterHotkey ( hotkeyInfo );
     }
@@ -162,17 +163,17 @@ public class WebRadioButton extends JRadioButton
     }
 
     @Override
-    public void setMargin ( Insets margin )
+    public void setMargin ( final Insets margin )
     {
         getWebUI ().setMargin ( margin );
     }
 
-    public void setMargin ( int top, int left, int bottom, int right )
+    public void setMargin ( final int top, final int left, final int bottom, final int right )
     {
         setMargin ( new Insets ( top, left, bottom, right ) );
     }
 
-    public void setMargin ( int spacing )
+    public void setMargin ( final int spacing )
     {
         setMargin ( spacing, spacing, spacing, spacing );
     }
@@ -182,7 +183,7 @@ public class WebRadioButton extends JRadioButton
         return getWebUI ().isAnimated ();
     }
 
-    public void setAnimated ( boolean animated )
+    public void setAnimated ( final boolean animated )
     {
         getWebUI ().setAnimated ( animated );
     }
@@ -192,7 +193,7 @@ public class WebRadioButton extends JRadioButton
         return getWebUI ().isRolloverDarkBorderOnly ();
     }
 
-    public void setRolloverDarkBorderOnly ( boolean rolloverDarkBorderOnly )
+    public void setRolloverDarkBorderOnly ( final boolean rolloverDarkBorderOnly )
     {
         getWebUI ().setRolloverDarkBorderOnly ( rolloverDarkBorderOnly );
     }
@@ -202,7 +203,7 @@ public class WebRadioButton extends JRadioButton
         return getWebUI ().getBorderColor ();
     }
 
-    public void setBorderColor ( Color borderColor )
+    public void setBorderColor ( final Color borderColor )
     {
         getWebUI ().setBorderColor ( borderColor );
     }
@@ -212,7 +213,7 @@ public class WebRadioButton extends JRadioButton
         return getWebUI ().getDarkBorderColor ();
     }
 
-    public void setDarkBorderColor ( Color darkBorderColor )
+    public void setDarkBorderColor ( final Color darkBorderColor )
     {
         getWebUI ().setDarkBorderColor ( darkBorderColor );
     }
@@ -222,7 +223,7 @@ public class WebRadioButton extends JRadioButton
         return getWebUI ().getDisabledBorderColor ();
     }
 
-    public void setDisabledBorderColor ( Color disabledBorderColor )
+    public void setDisabledBorderColor ( final Color disabledBorderColor )
     {
         getWebUI ().setDisabledBorderColor ( disabledBorderColor );
     }
@@ -232,7 +233,7 @@ public class WebRadioButton extends JRadioButton
         return getWebUI ().getTopBgColor ();
     }
 
-    public void setTopBgColor ( Color topBgColor )
+    public void setTopBgColor ( final Color topBgColor )
     {
         getWebUI ().setTopBgColor ( topBgColor );
     }
@@ -242,7 +243,7 @@ public class WebRadioButton extends JRadioButton
         return getWebUI ().getBottomBgColor ();
     }
 
-    public void setBottomBgColor ( Color bottomBgColor )
+    public void setBottomBgColor ( final Color bottomBgColor )
     {
         getWebUI ().setBottomBgColor ( bottomBgColor );
     }
@@ -252,7 +253,7 @@ public class WebRadioButton extends JRadioButton
         return getWebUI ().getTopSelectedBgColor ();
     }
 
-    public void setTopSelectedBgColor ( Color topSelectedBgColor )
+    public void setTopSelectedBgColor ( final Color topSelectedBgColor )
     {
         getWebUI ().setTopSelectedBgColor ( topSelectedBgColor );
     }
@@ -262,7 +263,7 @@ public class WebRadioButton extends JRadioButton
         return getWebUI ().getBottomSelectedBgColor ();
     }
 
-    public void setBottomSelectedBgColor ( Color bottomSelectedBgColor )
+    public void setBottomSelectedBgColor ( final Color bottomSelectedBgColor )
     {
         getWebUI ().setBottomSelectedBgColor ( bottomSelectedBgColor );
     }
@@ -272,7 +273,7 @@ public class WebRadioButton extends JRadioButton
         return getWebUI ().getShadeWidth ();
     }
 
-    public void setShadeWidth ( int shadeWidth )
+    public void setShadeWidth ( final int shadeWidth )
     {
         getWebUI ().setShadeWidth ( shadeWidth );
     }
@@ -282,7 +283,7 @@ public class WebRadioButton extends JRadioButton
         return getWebUI ().getIconWidth ();
     }
 
-    public void setIconWidth ( int iconWidth )
+    public void setIconWidth ( final int iconWidth )
     {
         getWebUI ().setIconWidth ( iconWidth );
     }
@@ -292,20 +293,20 @@ public class WebRadioButton extends JRadioButton
         return getWebUI ().getIconHeight ();
     }
 
-    public void setIconHeight ( int iconHeight )
+    public void setIconHeight ( final int iconHeight )
     {
         getWebUI ().setIconHeight ( iconHeight );
     }
 
     @Override
-    public void setSelected ( boolean b )
+    public void setSelected ( final boolean b )
     {
         setSelected ( b, isShowing () );
     }
 
-    public void setSelected ( boolean b, boolean withAnimation )
+    public void setSelected ( final boolean b, final boolean withAnimation )
     {
-        boolean animated = isAnimated ();
+        final boolean animated = isAnimated ();
         if ( !withAnimation && animated )
         {
             setAnimated ( false );
@@ -337,9 +338,9 @@ public class WebRadioButton extends JRadioButton
             {
                 setUI ( ( WebRadioButtonUI ) ReflectUtils.createInstance ( WebLookAndFeel.radioButtonUI ) );
             }
-            catch ( Throwable e )
+            catch ( final Throwable e )
             {
-                e.printStackTrace ();
+                Log.error ( this, e );
                 setUI ( new WebRadioButtonUI () );
             }
         }
@@ -357,7 +358,7 @@ public class WebRadioButton extends JRadioButton
      * {@inheritDoc}
      */
     @Override
-    public void setLanguage ( String key, Object... data )
+    public void setLanguage ( final String key, final Object... data )
     {
         LanguageManager.registerComponent ( this, key, data );
     }
@@ -366,7 +367,7 @@ public class WebRadioButton extends JRadioButton
      * {@inheritDoc}
      */
     @Override
-    public void updateLanguage ( Object... data )
+    public void updateLanguage ( final Object... data )
     {
         LanguageManager.updateComponent ( this, data );
     }
@@ -375,7 +376,7 @@ public class WebRadioButton extends JRadioButton
      * {@inheritDoc}
      */
     @Override
-    public void updateLanguage ( String key, Object... data )
+    public void updateLanguage ( final String key, final Object... data )
     {
         LanguageManager.updateComponent ( this, key, data );
     }
@@ -402,7 +403,7 @@ public class WebRadioButton extends JRadioButton
      * {@inheritDoc}
      */
     @Override
-    public void setLanguageUpdater ( LanguageUpdater updater )
+    public void setLanguageUpdater ( final LanguageUpdater updater )
     {
         LanguageManager.registerLanguageUpdater ( this, updater );
     }
@@ -424,7 +425,7 @@ public class WebRadioButton extends JRadioButton
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String key )
+    public void registerSettings ( final String key )
     {
         SettingsManager.registerComponent ( this, key );
     }
@@ -433,7 +434,7 @@ public class WebRadioButton extends JRadioButton
      * {@inheritDoc}
      */
     @Override
-    public <T extends DefaultValue> void registerSettings ( String key, Class<T> defaultValueClass )
+    public <T extends DefaultValue> void registerSettings ( final String key, final Class<T> defaultValueClass )
     {
         SettingsManager.registerComponent ( this, key, defaultValueClass );
     }
@@ -442,7 +443,7 @@ public class WebRadioButton extends JRadioButton
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String key, Object defaultValue )
+    public void registerSettings ( final String key, final Object defaultValue )
     {
         SettingsManager.registerComponent ( this, key, defaultValue );
     }
@@ -451,7 +452,7 @@ public class WebRadioButton extends JRadioButton
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String group, String key )
+    public void registerSettings ( final String group, final String key )
     {
         SettingsManager.registerComponent ( this, group, key );
     }
@@ -460,7 +461,7 @@ public class WebRadioButton extends JRadioButton
      * {@inheritDoc}
      */
     @Override
-    public <T extends DefaultValue> void registerSettings ( String group, String key, Class<T> defaultValueClass )
+    public <T extends DefaultValue> void registerSettings ( final String group, final String key, final Class<T> defaultValueClass )
     {
         SettingsManager.registerComponent ( this, group, key, defaultValueClass );
     }
@@ -469,7 +470,7 @@ public class WebRadioButton extends JRadioButton
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String group, String key, Object defaultValue )
+    public void registerSettings ( final String group, final String key, final Object defaultValue )
     {
         SettingsManager.registerComponent ( this, group, key, defaultValue );
     }
@@ -478,7 +479,7 @@ public class WebRadioButton extends JRadioButton
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String key, boolean loadInitialSettings, boolean applySettingsChanges )
+    public void registerSettings ( final String key, final boolean loadInitialSettings, final boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, key, loadInitialSettings, applySettingsChanges );
     }
@@ -487,8 +488,8 @@ public class WebRadioButton extends JRadioButton
      * {@inheritDoc}
      */
     @Override
-    public <T extends DefaultValue> void registerSettings ( String key, Class<T> defaultValueClass, boolean loadInitialSettings,
-                                                            boolean applySettingsChanges )
+    public <T extends DefaultValue> void registerSettings ( final String key, final Class<T> defaultValueClass,
+                                                            final boolean loadInitialSettings, final boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, key, defaultValueClass, loadInitialSettings, applySettingsChanges );
     }
@@ -497,7 +498,8 @@ public class WebRadioButton extends JRadioButton
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String key, Object defaultValue, boolean loadInitialSettings, boolean applySettingsChanges )
+    public void registerSettings ( final String key, final Object defaultValue, final boolean loadInitialSettings,
+                                   final boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, key, defaultValue, loadInitialSettings, applySettingsChanges );
     }
@@ -506,8 +508,8 @@ public class WebRadioButton extends JRadioButton
      * {@inheritDoc}
      */
     @Override
-    public <T extends DefaultValue> void registerSettings ( String group, String key, Class<T> defaultValueClass,
-                                                            boolean loadInitialSettings, boolean applySettingsChanges )
+    public <T extends DefaultValue> void registerSettings ( final String group, final String key, final Class<T> defaultValueClass,
+                                                            final boolean loadInitialSettings, final boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, group, key, defaultValueClass, loadInitialSettings, applySettingsChanges );
     }
@@ -516,8 +518,8 @@ public class WebRadioButton extends JRadioButton
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String group, String key, Object defaultValue, boolean loadInitialSettings,
-                                   boolean applySettingsChanges )
+    public void registerSettings ( final String group, final String key, final Object defaultValue, final boolean loadInitialSettings,
+                                   final boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, group, key, defaultValue, loadInitialSettings, applySettingsChanges );
     }
@@ -526,7 +528,7 @@ public class WebRadioButton extends JRadioButton
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( SettingsProcessor settingsProcessor )
+    public void registerSettings ( final SettingsProcessor settingsProcessor )
     {
         SettingsManager.registerComponent ( this, settingsProcessor );
     }
@@ -575,7 +577,7 @@ public class WebRadioButton extends JRadioButton
      * {@inheritDoc}
      */
     @Override
-    public WebRadioButton setPlainFont ( boolean apply )
+    public WebRadioButton setPlainFont ( final boolean apply )
     {
         return SwingUtils.setPlainFont ( this, apply );
     }
@@ -602,7 +604,7 @@ public class WebRadioButton extends JRadioButton
      * {@inheritDoc}
      */
     @Override
-    public WebRadioButton setBoldFont ( boolean apply )
+    public WebRadioButton setBoldFont ( final boolean apply )
     {
         return SwingUtils.setBoldFont ( this, apply );
     }
@@ -629,7 +631,7 @@ public class WebRadioButton extends JRadioButton
      * {@inheritDoc}
      */
     @Override
-    public WebRadioButton setItalicFont ( boolean apply )
+    public WebRadioButton setItalicFont ( final boolean apply )
     {
         return SwingUtils.setItalicFont ( this, apply );
     }
@@ -647,7 +649,7 @@ public class WebRadioButton extends JRadioButton
      * {@inheritDoc}
      */
     @Override
-    public WebRadioButton setFontStyle ( boolean bold, boolean italic )
+    public WebRadioButton setFontStyle ( final boolean bold, final boolean italic )
     {
         return SwingUtils.setFontStyle ( this, bold, italic );
     }
@@ -656,7 +658,7 @@ public class WebRadioButton extends JRadioButton
      * {@inheritDoc}
      */
     @Override
-    public WebRadioButton setFontStyle ( int style )
+    public WebRadioButton setFontStyle ( final int style )
     {
         return SwingUtils.setFontStyle ( this, style );
     }
@@ -665,7 +667,7 @@ public class WebRadioButton extends JRadioButton
      * {@inheritDoc}
      */
     @Override
-    public WebRadioButton setFontSize ( int fontSize )
+    public WebRadioButton setFontSize ( final int fontSize )
     {
         return SwingUtils.setFontSize ( this, fontSize );
     }
@@ -674,7 +676,7 @@ public class WebRadioButton extends JRadioButton
      * {@inheritDoc}
      */
     @Override
-    public WebRadioButton changeFontSize ( int change )
+    public WebRadioButton changeFontSize ( final int change )
     {
         return SwingUtils.changeFontSize ( this, change );
     }
@@ -692,7 +694,7 @@ public class WebRadioButton extends JRadioButton
      * {@inheritDoc}
      */
     @Override
-    public WebRadioButton setFontSizeAndStyle ( int fontSize, boolean bold, boolean italic )
+    public WebRadioButton setFontSizeAndStyle ( final int fontSize, final boolean bold, final boolean italic )
     {
         return SwingUtils.setFontSizeAndStyle ( this, fontSize, bold, italic );
     }
@@ -701,7 +703,7 @@ public class WebRadioButton extends JRadioButton
      * {@inheritDoc}
      */
     @Override
-    public WebRadioButton setFontSizeAndStyle ( int fontSize, int style )
+    public WebRadioButton setFontSizeAndStyle ( final int fontSize, final int style )
     {
         return SwingUtils.setFontSizeAndStyle ( this, fontSize, style );
     }
@@ -710,7 +712,7 @@ public class WebRadioButton extends JRadioButton
      * {@inheritDoc}
      */
     @Override
-    public WebRadioButton setFontName ( String fontName )
+    public WebRadioButton setFontName ( final String fontName )
     {
         return SwingUtils.setFontName ( this, fontName );
     }
@@ -741,7 +743,7 @@ public class WebRadioButton extends JRadioButton
      * {@inheritDoc}
      */
     @Override
-    public WebRadioButton setPreferredWidth ( int preferredWidth )
+    public WebRadioButton setPreferredWidth ( final int preferredWidth )
     {
         return SizeUtils.setPreferredWidth ( this, preferredWidth );
     }
@@ -759,7 +761,7 @@ public class WebRadioButton extends JRadioButton
      * {@inheritDoc}
      */
     @Override
-    public WebRadioButton setPreferredHeight ( int preferredHeight )
+    public WebRadioButton setPreferredHeight ( final int preferredHeight )
     {
         return SizeUtils.setPreferredHeight ( this, preferredHeight );
     }
@@ -777,7 +779,7 @@ public class WebRadioButton extends JRadioButton
      * {@inheritDoc}
      */
     @Override
-    public WebRadioButton setMinimumWidth ( int minimumWidth )
+    public WebRadioButton setMinimumWidth ( final int minimumWidth )
     {
         return SizeUtils.setMinimumWidth ( this, minimumWidth );
     }
@@ -795,7 +797,7 @@ public class WebRadioButton extends JRadioButton
      * {@inheritDoc}
      */
     @Override
-    public WebRadioButton setMinimumHeight ( int minimumHeight )
+    public WebRadioButton setMinimumHeight ( final int minimumHeight )
     {
         return SizeUtils.setMinimumHeight ( this, minimumHeight );
     }

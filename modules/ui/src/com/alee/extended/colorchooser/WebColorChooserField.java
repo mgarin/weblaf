@@ -32,6 +32,7 @@ import com.alee.laf.text.WebTextField;
 import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.hotkey.HotkeyManager;
 import com.alee.managers.hotkey.HotkeyRunnable;
+import com.alee.managers.log.Log;
 import com.alee.utils.ColorUtils;
 import com.alee.utils.ImageUtils;
 import com.alee.utils.SwingUtils;
@@ -297,7 +298,7 @@ public class WebColorChooserField extends WebTextField
             }
             catch ( final AWTException e )
             {
-                e.printStackTrace ();
+                Log.error ( this, e );
             }
             if ( robot != null )
             {

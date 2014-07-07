@@ -20,6 +20,7 @@ package com.alee.laf.menu;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.language.LanguageContainerMethods;
 import com.alee.managers.language.LanguageManager;
+import com.alee.managers.log.Log;
 import com.alee.managers.style.StyleManager;
 import com.alee.managers.style.skin.web.PopupStyle;
 import com.alee.managers.style.skin.web.WebPopupMenuPainter;
@@ -537,7 +538,7 @@ public class WebPopupMenu extends JPopupMenu implements Styleable, ShapeProvider
             }
             catch ( final Throwable e )
             {
-                e.printStackTrace ();
+                Log.error ( this, e );
                 setUI ( new WebPopupMenuUI () );
             }
         }

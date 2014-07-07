@@ -19,6 +19,7 @@ package com.alee.laf.slider;
 
 import com.alee.extended.painter.Painter;
 import com.alee.laf.WebLookAndFeel;
+import com.alee.managers.log.Log;
 import com.alee.managers.settings.DefaultValue;
 import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.settings.SettingsMethods;
@@ -316,7 +317,7 @@ public class WebSlider extends JSlider implements SettingsMethods, FontMethods<W
             }
             catch ( final Throwable e )
             {
-                e.printStackTrace ();
+                Log.error ( this, e );
                 setUI ( new WebSliderUI ( this ) );
             }
         }
