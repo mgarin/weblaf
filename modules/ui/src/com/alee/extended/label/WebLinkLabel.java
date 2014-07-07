@@ -20,8 +20,10 @@ package com.alee.extended.label;
 import com.alee.laf.label.WebLabel;
 import com.alee.managers.language.LanguageMethods;
 import com.alee.utils.*;
+import com.alee.utils.swing.AncestorAdapter;
 
 import javax.swing.*;
+import javax.swing.event.AncestorEvent;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -128,10 +130,10 @@ public class WebLinkLabel extends WebLabel implements LanguageMethods
         setCursor ( Cursor.getPredefinedCursor ( Cursor.HAND_CURSOR ) );
         updateForeground ();
 
-        MouseAdapter mouseAdapter = new MouseAdapter ()
+        final MouseAdapter mouseAdapter = new MouseAdapter ()
         {
             @Override
-            public void mousePressed ( MouseEvent e )
+            public void mousePressed ( final MouseEvent e )
             {
                 if ( onPressAction )
                 {
@@ -167,35 +169,64 @@ public class WebLinkLabel extends WebLabel implements LanguageMethods
             @Override
             public void mouseEntered ( final MouseEvent e )
             {
-                if ( isEnabled () )
-                {
-                    mouseover = true;
-                    updateText ();
-                }
+                setMouseover ( true );
             }
 
             @Override
             public void mouseExited ( final MouseEvent e )
             {
-                if ( highlight )
-                {
-                    mouseover = false;
-                    updateText ();
-                }
+                setMouseover ( false );
             }
 
             @Override
             public void mouseDragged ( final MouseEvent e )
             {
-                if ( highlight )
-                {
-                    mouseover = false;
-                    updateText ();
-                }
+                setMouseover ( false );
             }
         };
         addMouseListener ( mouseAdapter );
         addMouseMotionListener ( mouseAdapter );
+
+        addAncestorListener ( new AncestorAdapter ()
+        {
+            @Override
+            public void ancestorRemoved ( final AncestorEvent event )
+            {
+                setMouseover ( false );
+            }
+
+            @Override
+            public void ancestorAdded ( final AncestorEvent event )
+            {
+                setMouseover ( false );
+            }
+
+            @Override
+            public void ancestorMoved ( final AncestorEvent event )
+            {
+                setMouseover ( false );
+            }
+        } );
+    }
+
+    protected void setMouseover ( final boolean mouseover )
+    {
+        if ( mouseover )
+        {
+            if ( isEnabled () && highlight && !this.mouseover )
+            {
+                this.mouseover = true;
+                updateText ();
+            }
+        }
+        else
+        {
+            if ( this.mouseover )
+            {
+                this.mouseover = false;
+                updateText ();
+            }
+        }
     }
 
     /**
@@ -409,12 +440,12 @@ public class WebLinkLabel extends WebLabel implements LanguageMethods
      * Link action listeners
      */
 
-    public void addActionListener ( ActionListener actionListener )
+    public void addActionListener ( final ActionListener actionListener )
     {
         actionListeners.add ( actionListener );
     }
 
-    public void removeActionListener ( ActionListener actionListener )
+    public void removeActionListener ( final ActionListener actionListener )
     {
         actionListeners.remove ( actionListener );
     }
@@ -422,7 +453,7 @@ public class WebLinkLabel extends WebLabel implements LanguageMethods
     protected void fireActionPerformed ()
     {
         final ActionEvent event = new ActionEvent ( this, 0, "Link opened" );
-        for ( ActionListener actionListener : CollectionUtils.copy ( actionListeners ) )
+        for ( final ActionListener actionListener : CollectionUtils.copy ( actionListeners ) )
         {
             actionListener.actionPerformed ( event );
         }
