@@ -199,21 +199,21 @@ public class WebFileChooser extends JFileChooser implements LanguageMethods, Lan
     /**
      * Sets currently displayed directory.
      *
-     * @param directoryPath directory to display
+     * @param path directory to display
      */
-    public void setCurrentDirectory ( final String directoryPath )
+    public void setCurrentDirectory ( final String path )
     {
-        setCurrentDirectory ( new File ( directoryPath ) );
+        setCurrentDirectory ( path != null ? new File ( path ) : null );
     }
 
     /**
      * Sets currently selected file.
      *
-     * @param filePath file to select
+     * @param path file to select
      */
-    public void setSelectedFile ( final String filePath )
+    public void setSelectedFile ( final String path )
     {
-        setSelectedFile ( new File ( filePath ) );
+        setSelectedFile ( path != null ? new File ( path ) : null );
     }
 
     /**

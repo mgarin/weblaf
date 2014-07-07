@@ -125,7 +125,7 @@ public class WebFileTable extends WebTable implements WebFileTableColumns
      *
      * @param fileFilter new file filter
      */
-    public void setFileFilter ( AbstractFileFilter fileFilter )
+    public void setFileFilter ( final AbstractFileFilter fileFilter )
     {
         this.fileFilter = fileFilter;
         reloadFiles ();
@@ -156,7 +156,7 @@ public class WebFileTable extends WebTable implements WebFileTableColumns
      *
      * @param file new displayed directory
      */
-    public void setDisplayedDirectory ( File file )
+    public void setDisplayedDirectory ( final File file )
     {
         // Stop cell editing
         stopCellEditing ();
@@ -183,7 +183,7 @@ public class WebFileTable extends WebTable implements WebFileTableColumns
      *
      * @param files files to display
      */
-    public void setFiles ( Collection<File> files )
+    public void setFiles ( final Collection<File> files )
     {
         displayedDirectory = null;
         getFileTableModel ().setFiles ( files );
@@ -194,7 +194,7 @@ public class WebFileTable extends WebTable implements WebFileTableColumns
      *
      * @param files files to display
      */
-    public void addFiles ( Collection<File> files )
+    public void addFiles ( final Collection<File> files )
     {
         getFileTableModel ().addFiles ( files );
     }
@@ -204,7 +204,7 @@ public class WebFileTable extends WebTable implements WebFileTableColumns
      *
      * @param columns displayed column ids
      */
-    public void setColumns ( String... columns )
+    public void setColumns ( final String... columns )
     {
         setColumns ( Arrays.asList ( columns ) );
     }
@@ -214,7 +214,7 @@ public class WebFileTable extends WebTable implements WebFileTableColumns
      *
      * @param columns displayed column ids list
      */
-    public void setColumns ( List<String> columns )
+    public void setColumns ( final List<String> columns )
     {
         getFileTableModel ().setColumns ( columns );
         updateColumnSizes ();
@@ -240,7 +240,7 @@ public class WebFileTable extends WebTable implements WebFileTableColumns
     {
         final int[] selectedRows = getSelectedRows ();
         final List<File> selectedFiles = new ArrayList<File> ( selectedRows.length );
-        for ( int row : selectedRows )
+        for ( final int row : selectedRows )
         {
             selectedFiles.add ( getFileAtRow ( row ) );
         }
@@ -253,7 +253,7 @@ public class WebFileTable extends WebTable implements WebFileTableColumns
      * @param row row to process
      * @return file for the specified row
      */
-    private File getFileAtRow ( int row )
+    private File getFileAtRow ( final int row )
     {
         return getFileTableModel ().getFileAtRow ( row );
     }
@@ -263,7 +263,7 @@ public class WebFileTable extends WebTable implements WebFileTableColumns
      *
      * @param file file to select
      */
-    public void setSelectedFile ( File file )
+    public void setSelectedFile ( final File file )
     {
         setSelectedFile ( file, true );
     }
@@ -273,7 +273,7 @@ public class WebFileTable extends WebTable implements WebFileTableColumns
      *
      * @param file file to select
      */
-    public void setSelectedFile ( File file, boolean shouldScroll )
+    public void setSelectedFile ( final File file, final boolean shouldScroll )
     {
         setSelectedRow ( getFileTableModel ().getFileRow ( file ), shouldScroll );
     }
@@ -283,10 +283,10 @@ public class WebFileTable extends WebTable implements WebFileTableColumns
      *
      * @param files files to select
      */
-    public void setSelectedFiles ( File[] files )
+    public void setSelectedFiles ( final File[] files )
     {
         clearSelection ();
-        for ( File file : files )
+        for ( final File file : files )
         {
             addSelectedRow ( getFileTableModel ().getFileRow ( file ) );
         }
@@ -298,7 +298,7 @@ public class WebFileTable extends WebTable implements WebFileTableColumns
      * @param column column to process
      * @return true if the specified column is displayed, false otherwise
      */
-    public boolean isColumnDisplayed ( String column )
+    public boolean isColumnDisplayed ( final String column )
     {
         return getFileTableModel ().isColumnDisplayed ( column );
     }
@@ -308,10 +308,10 @@ public class WebFileTable extends WebTable implements WebFileTableColumns
      *
      * @param files files to select
      */
-    public void setSelectedFiles ( Collection<File> files )
+    public void setSelectedFiles ( final Collection<File> files )
     {
         clearSelection ();
-        for ( File file : files )
+        for ( final File file : files )
         {
             addSelectedRow ( getFileTableModel ().getFileRow ( file ) );
         }
@@ -333,7 +333,7 @@ public class WebFileTable extends WebTable implements WebFileTableColumns
      * @param file file to edit
      * @return true if cell editing started, false otherwise
      */
-    public boolean editFileName ( File file )
+    public boolean editFileName ( final File file )
     {
         return editFileNameAt ( getFileTableModel ().getFileRow ( file ) );
     }
@@ -344,7 +344,7 @@ public class WebFileTable extends WebTable implements WebFileTableColumns
      * @param row file row
      * @return true if cell editing started, false otherwise
      */
-    public boolean editFileNameAt ( int row )
+    public boolean editFileNameAt ( final int row )
     {
         return isColumnDisplayed ( NAME_COLUMN ) && editCellAt ( row, getColumnModel ().getColumnIndex ( NAME_COLUMN ) );
     }

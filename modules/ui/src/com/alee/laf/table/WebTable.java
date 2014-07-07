@@ -87,7 +87,7 @@ public class WebTable extends JTable implements FontMethods<WebTable>
     {
         clearSelection ();
         addSelectedRow ( row );
-        if ( shouldScroll )
+        if ( row != -1 && shouldScroll )
         {
             scrollToRow ( row );
         }

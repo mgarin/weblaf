@@ -71,9 +71,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.FileFilter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
+import java.util.*;
 import java.util.List;
 
 /**
@@ -1230,9 +1228,13 @@ public class WebFileChooserPanel extends WebPanel
         {
             fileTable.setSelectedFile ( file );
         }
-        if ( !file.exists () )
+        if ( file != null && !file.exists () )
         {
             updateSelectedFilesFieldImpl ( Arrays.asList ( file ) );
+        }
+        else
+        {
+            updateSelectedFilesFieldImpl ( Collections.EMPTY_LIST );
         }
     }
 

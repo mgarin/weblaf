@@ -59,7 +59,7 @@ public class WebFileTableModel extends AbstractTableModel implements WebFileTabl
      *
      * @param columns columns to display
      */
-    public WebFileTableModel ( String... columns )
+    public WebFileTableModel ( final String... columns )
     {
         this ( new ArrayList<File> (), Arrays.asList ( columns ) );
     }
@@ -69,7 +69,7 @@ public class WebFileTableModel extends AbstractTableModel implements WebFileTabl
      *
      * @param columns columns to display
      */
-    public WebFileTableModel ( List<String> columns )
+    public WebFileTableModel ( final List<String> columns )
     {
         this ( new ArrayList<File> (), columns );
     }
@@ -80,7 +80,7 @@ public class WebFileTableModel extends AbstractTableModel implements WebFileTabl
      * @param files   files to display
      * @param columns columns to display
      */
-    public WebFileTableModel ( Collection<File> files, String... columns )
+    public WebFileTableModel ( final Collection<File> files, final String... columns )
     {
         this ( files, Arrays.asList ( columns ) );
     }
@@ -91,7 +91,7 @@ public class WebFileTableModel extends AbstractTableModel implements WebFileTabl
      * @param files   files to display
      * @param columns columns to display
      */
-    public WebFileTableModel ( Collection<File> files, List<String> columns )
+    public WebFileTableModel ( final Collection<File> files, final List<String> columns )
     {
         super ();
         this.columns = columns;
@@ -103,7 +103,7 @@ public class WebFileTableModel extends AbstractTableModel implements WebFileTabl
      *
      * @param files files to display
      */
-    public void setFiles ( Collection<File> files )
+    public void setFiles ( final Collection<File> files )
     {
         this.files.clear ();
         this.files.addAll ( files );
@@ -115,11 +115,11 @@ public class WebFileTableModel extends AbstractTableModel implements WebFileTabl
      *
      * @param files files to display
      */
-    public void addFiles ( Collection<File> files )
+    public void addFiles ( final Collection<File> files )
     {
         if ( files.size () > 0 )
         {
-            int lastIndex = this.files.size ();
+            final int lastIndex = this.files.size ();
             this.files.addAll ( files );
             fireTableRowsInserted ( lastIndex, lastIndex + files.size () - 1 );
         }
@@ -131,7 +131,7 @@ public class WebFileTableModel extends AbstractTableModel implements WebFileTabl
      * @param file file to find
      * @return index of row with the specified file
      */
-    public int getFileRow ( File file )
+    public int getFileRow ( final File file )
     {
         return files.indexOf ( file );
     }
@@ -142,7 +142,7 @@ public class WebFileTableModel extends AbstractTableModel implements WebFileTabl
      * @param row row to process
      * @return file for the specified row
      */
-    public File getFileAtRow ( int row )
+    public File getFileAtRow ( final int row )
     {
         return files.get ( row );
     }
@@ -152,7 +152,7 @@ public class WebFileTableModel extends AbstractTableModel implements WebFileTabl
      *
      * @param columns displayed column ids list
      */
-    public void setColumns ( List<String> columns )
+    public void setColumns ( final List<String> columns )
     {
         this.columns = columns;
         fireTableStructureChanged ();
@@ -164,7 +164,7 @@ public class WebFileTableModel extends AbstractTableModel implements WebFileTabl
      * @param column column index
      * @return column id at the specified index
      */
-    public String getColumnId ( int column )
+    public String getColumnId ( final int column )
     {
         return columns.get ( column );
     }
@@ -175,7 +175,7 @@ public class WebFileTableModel extends AbstractTableModel implements WebFileTabl
      * @param column column to process
      * @return true if the specified column is displayed, false otherwise
      */
-    public boolean isColumnDisplayed ( String column )
+    public boolean isColumnDisplayed ( final String column )
     {
         return columns.contains ( column );
     }
@@ -186,7 +186,7 @@ public class WebFileTableModel extends AbstractTableModel implements WebFileTabl
      * @param column column to process
      * @return index of the specified column
      */
-    public int getColumnIndex ( String column )
+    public int getColumnIndex ( final String column )
     {
         return columns.indexOf ( column );
     }
@@ -195,7 +195,7 @@ public class WebFileTableModel extends AbstractTableModel implements WebFileTabl
      * {@inheritDoc}
      */
     @Override
-    public String getColumnName ( int column )
+    public String getColumnName ( final int column )
     {
         return LanguageManager.get ( columns.get ( column ) );
     }
@@ -222,7 +222,7 @@ public class WebFileTableModel extends AbstractTableModel implements WebFileTabl
      * {@inheritDoc}
      */
     @Override
-    public Object getValueAt ( int rowIndex, int columnIndex )
+    public Object getValueAt ( final int rowIndex, final int columnIndex )
     {
         return files.get ( rowIndex );
     }
@@ -231,7 +231,7 @@ public class WebFileTableModel extends AbstractTableModel implements WebFileTabl
      * {@inheritDoc}
      */
     @Override
-    public void setValueAt ( Object aValue, int rowIndex, int columnIndex )
+    public void setValueAt ( final Object aValue, final int rowIndex, final int columnIndex )
     {
         files.set ( rowIndex, ( File ) aValue );
     }
@@ -240,7 +240,7 @@ public class WebFileTableModel extends AbstractTableModel implements WebFileTabl
      * {@inheritDoc}
      */
     @Override
-    public Class<?> getColumnClass ( int columnIndex )
+    public Class<?> getColumnClass ( final int columnIndex )
     {
         return File.class;
     }
@@ -249,7 +249,7 @@ public class WebFileTableModel extends AbstractTableModel implements WebFileTabl
      * {@inheritDoc}
      */
     @Override
-    public boolean isCellEditable ( int rowIndex, int columnIndex )
+    public boolean isCellEditable ( final int rowIndex, final int columnIndex )
     {
         return getColumnId ( columnIndex ).equals ( NAME_COLUMN ) && FileUtils.isNameEditable ( getFileAtRow ( rowIndex ) );
     }
