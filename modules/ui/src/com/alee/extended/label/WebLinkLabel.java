@@ -66,7 +66,7 @@ public class WebLinkLabel extends WebLabel implements LanguageMethods
      */
     protected boolean highlight = WebLinkLabelStyle.highlight;
     protected boolean onPressAction = WebLinkLabelStyle.onPressAction;
-    protected boolean colorVisited = WebLinkLabelStyle.colorVisited;
+    protected boolean highlightVisited = WebLinkLabelStyle.highlightVisited;
     protected Color foreground = WebLinkLabelStyle.foreground;
     protected Color visitedForeground = WebLinkLabelStyle.visitedForeground;
 
@@ -263,7 +263,7 @@ public class WebLinkLabel extends WebLabel implements LanguageMethods
 
     protected void updateForeground ()
     {
-        WebLinkLabel.super.setForeground ( colorVisited && visitedOnce ? visitedForeground : foreground );
+        WebLinkLabel.super.setForeground ( highlightVisited && visitedOnce ? visitedForeground : foreground );
     }
 
     /**
@@ -424,6 +424,17 @@ public class WebLinkLabel extends WebLabel implements LanguageMethods
     {
         this.highlight = highlight;
         updateText ();
+    }
+
+    public boolean isHighlightVisited ()
+    {
+        return highlightVisited;
+    }
+
+    public void setHighlightVisited ( final boolean highlightVisited )
+    {
+        this.highlightVisited = highlightVisited;
+        updateForeground ();
     }
 
     public boolean isOnPressAction ()

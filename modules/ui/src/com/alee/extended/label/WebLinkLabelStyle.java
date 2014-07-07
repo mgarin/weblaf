@@ -38,7 +38,7 @@ public final class WebLinkLabelStyle
     /**
      * Colorize link that was visited once already
      */
-    public static boolean colorVisited = true;
+    public static boolean highlightVisited = true;
 
     /**
      * Link foreground
