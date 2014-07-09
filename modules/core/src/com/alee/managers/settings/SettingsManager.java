@@ -917,12 +917,26 @@ public class SettingsManager
 
     /**
      * Resets all settings within the specified settings group.
+     * This will also reset saved settings to ensure they won't be read again.
      *
      * @param group settings group
      */
     public static void resetGroup ( final String group )
     {
-        // todo
+        // Removing group file if it exists
+        final File dir = new File ( getGroupFilePath ( group ) );
+        if ( dir.exists () && dir.isDirectory () )
+        {
+            final File file = getGroupFile ( group, dir );
+            final File backupFile = getGroupBackupFile ( group, dir );
+            FileUtils.deleteFiles ( file, backupFile );
+        }
+
+        // Resetting group if it was already loaded
+        if ( groups.containsKey ( group ) )
+        {
+            groups.remove ( group );
+        }
     }
 
     /**
@@ -930,9 +944,9 @@ public class SettingsManager
      *
      * @param key settings key to reset
      */
-    public static void resetKey ( final String key )
+    public static void resetValue ( final String key )
     {
-        resetKey ( defaultSettingsGroup, key );
+        resetValue ( defaultSettingsGroup, key );
     }
 
     /**
@@ -941,9 +955,24 @@ public class SettingsManager
      * @param group settings group
      * @param key   settings key to reset
      */
-    public static void resetKey ( final String group, final String key )
+    public static <T> T resetValue ( final String group, final String key )
     {
-        // todo
+        Object oldValue = null;
+
+        // Resetting settings under the specified key in the group
+        final SettingsGroup settingsGroup = getSettingsGroup ( group );
+        if ( settingsGroup != null )
+        {
+            oldValue = settingsGroup.remove ( key );
+        }
+
+        // Forcing settings group save in case value was resetted
+        if ( oldValue != null )
+        {
+            saveSettingsGroup ( group );
+        }
+
+        return ( T ) oldValue;
     }
 
     /**
