@@ -20,6 +20,7 @@ package com.alee.extended.panel;
 import com.alee.extended.layout.HorizontalFlowLayout;
 import com.alee.extended.layout.VerticalFlowLayout;
 import com.alee.extended.painter.Painter;
+import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.button.WebButtonUI;
 import com.alee.laf.panel.WebPanel;
@@ -30,6 +31,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ContainerAdapter;
 import java.awt.event.ContainerEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 /**
  * This component allows quick visual web-styled buttons grouping. It also contains all UI methods from the buttons.
@@ -50,6 +53,7 @@ public class WebButtonGroup extends WebPanel implements SwingConstants
      * Runtime variables.
      */
     protected UnselectableButtonGroup buttonGroup;
+    protected PropertyChangeListener enabledStateListener;
 
     public WebButtonGroup ( final JComponent... component )
     {
@@ -106,6 +110,32 @@ public class WebButtonGroup extends WebPanel implements SwingConstants
                 updateButtonsStyling ();
             }
         } );
+
+        // Buttons enabled state listener
+        enabledStateListener = new PropertyChangeListener ()
+        {
+            @Override
+            public void propertyChange ( final PropertyChangeEvent evt )
+            {
+                final Object source = evt.getSource ();
+                if ( source instanceof JButton )
+                {
+                    final JButton src = ( JButton ) source;
+                    final int zOrder = getComponentZOrder ( src );
+                    if ( zOrder != -1 )
+                    {
+                        if ( zOrder > 0 )
+                        {
+                            getComponent ( zOrder - 1 ).repaint ();
+                        }
+                        if ( zOrder < getComponentCount () - 1 )
+                        {
+                            getComponent ( zOrder + 1 ).repaint ();
+                        }
+                    }
+                }
+            }
+        };
 
         // Adding component to panel
         add ( components );
@@ -329,6 +359,20 @@ public class WebButtonGroup extends WebPanel implements SwingConstants
                 lastWasButton = false;
             }
         }
+    }
+
+    @Override
+    protected void addImpl ( final Component comp, final Object constraints, final int index )
+    {
+        super.addImpl ( comp, constraints, index );
+        comp.addPropertyChangeListener ( WebLookAndFeel.ENABLED_PROPERTY, enabledStateListener );
+    }
+
+    @Override
+    public void remove ( final int index )
+    {
+        getComponent ( index ).removePropertyChangeListener ( WebLookAndFeel.ENABLED_PROPERTY, enabledStateListener );
+        super.remove ( index );
     }
 
     protected boolean isButton ( final Component component )

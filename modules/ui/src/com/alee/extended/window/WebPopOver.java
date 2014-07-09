@@ -27,10 +27,12 @@ import com.alee.managers.style.skin.web.WebPopupPainter;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.laf.Styleable;
+import com.alee.utils.swing.AncestorAdapter;
 import com.alee.utils.swing.DataProvider;
 import com.alee.utils.swing.WindowFollowAdapter;
 
 import javax.swing.*;
+import javax.swing.event.AncestorEvent;
 import java.awt.*;
 import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
@@ -1137,6 +1139,35 @@ public class WebPopOver extends WebDialog implements Styleable
         };
         invoker.addComponentListener ( invokerAdapter );
 
+        final AncestorAdapter ancestorAdapter;
+        if ( invoker instanceof JComponent )
+        {
+            ancestorAdapter = new AncestorAdapter ()
+            {
+                @Override
+                public void ancestorMoved ( final AncestorEvent event )
+                {
+                    if ( attached )
+                    {
+                        updatePopOverLocation ( invoker, invokerBoundsProvider );
+                        windowFollowAdapter.updateLastLocation ();
+                    }
+                }
+
+                // todo Probably hide WebPopOver in some cases here?
+                //                @Override
+                //                public void ancestorRemoved ( final AncestorEvent event )
+                //                {
+                //                    super.ancestorRemoved ( event );
+                //                }
+            };
+            ( ( JComponent ) invoker ).addAncestorListener ( ancestorAdapter );
+        }
+        else
+        {
+            ancestorAdapter = null;
+        }
+
         // WebPopOver orientation change listener
         final PropertyChangeListener orientationListener = new PropertyChangeListener ()
         {
@@ -1159,6 +1190,10 @@ public class WebPopOver extends WebDialog implements Styleable
                 invokerWindow.removeComponentListener ( invokerWindowAdapter );
                 invokerWindow.removeComponentListener ( windowFollowAdapter );
                 invoker.removeComponentListener ( invokerAdapter );
+                if ( invoker instanceof JComponent )
+                {
+                    ( ( JComponent ) invoker ).removeAncestorListener ( ancestorAdapter );
+                }
                 removePropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, orientationListener );
             }
         } );

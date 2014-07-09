@@ -41,7 +41,56 @@ public class DynamicMenuLayout extends AbstractLayoutManager
     {
         final WebDynamicMenu menu = ( WebDynamicMenu ) parent;
         final float displayProgress = MathUtils.sqr ( menu.getDisplayProgress () );
+        final DynamicMenuType type = !menu.isHiding () ? menu.getType () : menu.getHideType ();
 
+        if ( type.isRoundMenu () )
+        {
+            layoutRoundMenu ( menu, displayProgress, type );
+        }
+        else
+        {
+            layoutPlainMenu ( menu, displayProgress, type );
+        }
+    }
+
+    protected void layoutPlainMenu ( final WebDynamicMenu menu, final float displayProgress, final DynamicMenuType type )
+    {
+        final Dimension max = SwingUtils.max ( menu.getComponents () );
+        final int itemsCount = menu.getComponentCount ();
+
+        switch ( type )
+        {
+            case list:
+            {
+                final int x = 0;
+                int y = 0;
+                for ( int i = 0; i < itemsCount; i++ )
+                {
+                    placePlainElement ( menu, i, x, y );
+                    y += max.height * displayProgress;
+                }
+            }
+            break;
+        }
+    }
+
+    /**
+     * Places single plain menu item into its current position.
+     *
+     * @param menu processed menu
+     * @param i    menu item index
+     * @param x    menu item X coordinate
+     * @param y    menu item Y coordinate
+     */
+    protected void placePlainElement ( final WebDynamicMenu menu, final int i, final int x, final int y )
+    {
+        final Component menuItem = menu.getComponent ( i );
+        final Dimension ps = menuItem.getPreferredSize ();
+        menuItem.setBounds ( x, y, ps.width, ps.height );
+    }
+
+    protected void layoutRoundMenu ( final WebDynamicMenu menu, final float displayProgress, final DynamicMenuType type )
+    {
         final Dimension max = SwingUtils.max ( menu.getComponents () );
         final Point center = new Point ( menu.getRadius (), menu.getRadius () );
         final int itemSide = Math.max ( max.width, max.height );
@@ -52,7 +101,6 @@ public class DynamicMenuLayout extends AbstractLayoutManager
         final double singleComponentSpacing = getSingleComponentSpacing ( menu );
         final double startingAngle = getStartingAngle ( menu );
 
-        final DynamicMenuType type = !menu.isHiding () ? menu.getType () : menu.getHideType ();
         final int cwSign = menu.isClockwise () ? 1 : -1;
         final int itemsCount = menu.getComponentCount ();
 
@@ -68,10 +116,11 @@ public class DynamicMenuLayout extends AbstractLayoutManager
                     final double angle = startingAngle + hidingCauseIndex * singleComponentSpacing + oneAngle * i * cwSign;
                     final int x = ( int ) Math.round ( center.x + radius * Math.cos ( angle ) );
                     final int y = ( int ) Math.round ( center.y + radius * Math.sin ( angle ) );
-                    placeElement ( menu, ci, x, y );
+                    placeRoundElement ( menu, ci, x, y );
                 }
-                break;
             }
+            break;
+
             case star:
             {
                 final int cradius = Math.round ( radius * displayProgress );
@@ -81,10 +130,11 @@ public class DynamicMenuLayout extends AbstractLayoutManager
                     final int r = i == hidingCause ? radius : cradius;
                     final int x = ( int ) Math.round ( center.x + r * Math.cos ( angle ) );
                     final int y = ( int ) Math.round ( center.y + r * Math.sin ( angle ) );
-                    placeElement ( menu, i, x, y );
+                    placeRoundElement ( menu, i, x, y );
                 }
-                break;
             }
+            break;
+
             case shutter:
             {
                 // todo Catch angle if was half-opened and continue hiding from there
@@ -98,10 +148,11 @@ public class DynamicMenuLayout extends AbstractLayoutManager
                     final int r = i == hidingCause ? radius : cradius;
                     final int x = ( int ) Math.round ( center.x + r * Math.cos ( angle ) );
                     final int y = ( int ) Math.round ( center.y + r * Math.sin ( angle ) );
-                    placeElement ( menu, i, x, y );
+                    placeRoundElement ( menu, i, x, y );
                 }
-                break;
             }
+            break;
+
             case fade:
             {
                 for ( int i = 0; i < itemsCount; i++ )
@@ -109,10 +160,10 @@ public class DynamicMenuLayout extends AbstractLayoutManager
                     final double angle = startingAngle + singleComponentSpacing * i * cwSign;
                     final int x = ( int ) Math.round ( center.x + radius * Math.cos ( angle ) );
                     final int y = ( int ) Math.round ( center.y + radius * Math.sin ( angle ) );
-                    placeElement ( menu, i, x, y );
+                    placeRoundElement ( menu, i, x, y );
                 }
-                break;
             }
+            break;
         }
     }
 
@@ -165,14 +216,14 @@ public class DynamicMenuLayout extends AbstractLayoutManager
     }
 
     /**
-     * Places single menu item into its current position.
+     * Places single round menu item into its current position.
      *
      * @param menu processed menu
      * @param i    menu item index
      * @param x    menu item center X coordinate
      * @param y    menu item center Y coordinate
      */
-    protected void placeElement ( final WebDynamicMenu menu, final int i, final int x, final int y )
+    protected void placeRoundElement ( final WebDynamicMenu menu, final int i, final int x, final int y )
     {
         final Component menuItem = menu.getComponent ( i );
         final Dimension ps = menuItem.getPreferredSize ();
@@ -192,10 +243,39 @@ public class DynamicMenuLayout extends AbstractLayoutManager
             case star:
             case shutter:
             case fade:
-            default:
             {
                 final int radius = menu.getRadius ();
                 return new Dimension ( radius * 2, radius * 2 );
+            }
+            case list:
+            {
+                final Dimension max = SwingUtils.max ( menu.getComponents () );
+                final int itemsCount = menu.getComponentCount ();
+                return new Dimension ( max.width, max.height * itemsCount );
+            }
+            default:
+            {
+                return new Dimension ( 0, 0 );
+            }
+        }
+    }
+
+    public Point getDisplayPoint ( final WebDynamicMenu menu, final int x, final int y )
+    {
+        switch ( menu.getType () )
+        {
+            case roll:
+            case star:
+            case shutter:
+            case fade:
+            {
+                final Dimension size = preferredLayoutSize ( menu );
+                return new Point ( x - size.width / 2, y - size.height / 2 );
+            }
+            case list:
+            default:
+            {
+                return new Point ( x, y );
             }
         }
     }

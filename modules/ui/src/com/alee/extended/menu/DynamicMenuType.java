@@ -24,6 +24,10 @@ package com.alee.extended.menu;
 public enum DynamicMenuType
 {
     /**
+     * Round menus.
+     */
+
+    /**
      * Roll components to their positions.
      */
     roll,
@@ -41,5 +45,24 @@ public enum DynamicMenuType
     /**
      * Components fade in and fade out.
      */
-    fade
+    fade,
+
+    /**
+     * Linear menus.
+     */
+
+    /**
+     * Simple list-like menu
+     */
+    list;
+
+    public boolean isRoundMenu ()
+    {
+        return this == roll || this == star || this == shutter || this == fade;
+    }
+
+    public boolean isPlainMenu ()
+    {
+        return this == list;
+    }
 }

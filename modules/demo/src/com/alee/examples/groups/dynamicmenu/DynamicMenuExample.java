@@ -153,7 +153,7 @@ public class DynamicMenuExample extends DefaultExample
                 }
             } );
             item.setMargin ( new Insets ( 8, 8, 8, 8 ) );
-            item.setDrawBorder ( drawBorder.isSelected () );
+            item.setPaintBorder ( drawBorder.isSelected () );
             menu.addItem ( item );
         }
 

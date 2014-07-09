@@ -17,19 +17,15 @@
 
 package com.alee.extended.menu;
 
-import com.alee.extended.image.WebImage;
 import com.alee.laf.rootpane.WebWindow;
 import com.alee.managers.focus.GlobalFocusListener;
 import com.alee.utils.GeometryUtils;
-import com.alee.utils.GraphicsUtils;
 import com.alee.utils.swing.WebHeavyWeightPopup;
 import com.alee.utils.swing.WindowFollowAdapter;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.geom.Area;
-import java.awt.geom.Ellipse2D;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -192,55 +188,55 @@ public class WebDynamicMenu extends WebHeavyWeightPopup
         return items;
     }
 
-    public WebImage addItem ( final ImageIcon icon )
+    public WebDynamicMenuItem addItem ( final ImageIcon icon )
     {
         return addItem ( icon, null );
     }
 
-    public WebImage addItem ( final ImageIcon icon, final ActionListener action )
+    public WebDynamicMenuItem addItem ( final ImageIcon icon, final ActionListener action )
     {
         return addItem ( new WebDynamicMenuItem ( icon, action ) );
     }
 
-    public WebImage addItem ( final WebDynamicMenuItem item )
+    public WebDynamicMenuItem addItem ( final WebDynamicMenuItem menuItem )
     {
-        items.add ( item );
+        items.add ( menuItem );
 
-        final WebImage menuItem = new WebImage ( item.getIcon () )
-        {
-            @Override
-            protected void paintComponent ( final Graphics g )
-            {
-                if ( item.isDrawBorder () )
-                {
-                    final Graphics2D g2d = ( Graphics2D ) g;
-                    final Object aa = GraphicsUtils.setupAntialias ( g2d );
-
-                    final Area outer = new Area ( new Ellipse2D.Double ( 0, 0, getWidth (), getHeight () ) );
-                    final Ellipse2D.Double inner = new Ellipse2D.Double ( 2, 2, getWidth () - 4, getHeight () - 4 );
-                    outer.exclusiveOr ( new Area ( inner ) );
-
-                    g2d.setPaint ( isEnabled () ? item.getBorderColor () : item.getDisabledBorderColor () );
-                    g2d.fill ( outer );
-
-                    g2d.setColor ( Color.WHITE );
-                    g2d.fill ( inner );
-
-                    GraphicsUtils.restoreAntialias ( g2d, aa );
-                }
-
-                super.paintComponent ( g );
-            }
-        };
-        menuItem.setEnabled ( item.getAction () != null );
-        menuItem.setMargin ( item.getMargin () );
+        //        final WebImage menuItem = new WebImage ( item.getIcon () )
+        //        {
+        //            @Override
+        //            protected void paintComponent ( final Graphics g )
+        //            {
+        //                if ( item.isDrawBorder () )
+        //                {
+        //                    final Graphics2D g2d = ( Graphics2D ) g;
+        //                    final Object aa = GraphicsUtils.setupAntialias ( g2d );
+        //
+        //                    final Area outer = new Area ( new Ellipse2D.Double ( 0, 0, getWidth (), getHeight () ) );
+        //                    final Ellipse2D.Double inner = new Ellipse2D.Double ( 2, 2, getWidth () - 4, getHeight () - 4 );
+        //                    outer.exclusiveOr ( new Area ( inner ) );
+        //
+        //                    g2d.setPaint ( isEnabled () ? item.getBorderColor () : item.getDisabledBorderColor () );
+        //                    g2d.fill ( outer );
+        //
+        //                    g2d.setColor ( Color.WHITE );
+        //                    g2d.fill ( inner );
+        //
+        //                    GraphicsUtils.restoreAntialias ( g2d, aa );
+        //                }
+        //
+        //                super.paintComponent ( g );
+        //            }
+        //        };
+        menuItem.setEnabled ( menuItem.getAction () != null );
+        menuItem.setMargin ( menuItem.getMargin () );
 
         menuItem.addMouseListener ( new MouseAdapter ()
         {
             @Override
             public void mousePressed ( final MouseEvent e )
             {
-                final ActionListener action = item.getAction ();
+                final ActionListener action = menuItem.getAction ();
                 if ( action != null )
                 {
                     action.actionPerformed ( new ActionEvent ( e.getSource (), 0, "Action performed" ) );
@@ -296,8 +292,8 @@ public class WebDynamicMenu extends WebHeavyWeightPopup
         synchronized ( sync )
         {
             // Displaying menu
-            final Dimension size = getPreferredSize ();
-            super.showPopup ( invoker, x - size.width / 2, y - size.height / 2 );
+            final Point displayPoint = getActualLayout ().getDisplayPoint ( this, x, y );
+            super.showPopup ( invoker, displayPoint.x, displayPoint.y );
         }
     }
 
