@@ -73,9 +73,19 @@ public class WebDynamicMenuItem extends JComponent
     protected Color borderColor = new Color ( 89, 122, 222 );
 
     /**
+     * Border background color.
+     */
+    protected Color borderBackground = new Color ( 255, 255, 255, 220 );
+
+    /**
      * Disabled border color.
      */
     protected Color disabledBorderColor = new Color ( 149, 151, 170 );
+
+    /**
+     * Disabled border background color.
+     */
+    protected Color disabledBorderBackground = new Color ( 255, 255, 255, 180 );
 
     /**
      * Rollover background color.
@@ -129,14 +139,14 @@ public class WebDynamicMenuItem extends JComponent
             public void mouseEntered ( final MouseEvent e )
             {
                 rollover = true;
-                repaint (  );
+                repaint ();
             }
 
             @Override
             public void mouseExited ( final MouseEvent e )
             {
                 rollover = false;
-                repaint (  );
+                repaint ();
             }
         };
         addMouseListener ( mouseAdapter );
@@ -208,9 +218,19 @@ public class WebDynamicMenuItem extends JComponent
         return borderColor;
     }
 
-    public void setBorderColor ( final Color borderColor )
+    public void setBorderColor ( final Color color )
     {
-        this.borderColor = borderColor;
+        this.borderColor = color;
+    }
+
+    public Color getBorderBackground ()
+    {
+        return borderBackground;
+    }
+
+    public void setBorderBackground ( final Color color )
+    {
+        this.borderBackground = color;
     }
 
     public Color getDisabledBorderColor ()
@@ -218,9 +238,19 @@ public class WebDynamicMenuItem extends JComponent
         return disabledBorderColor;
     }
 
-    public void setDisabledBorderColor ( final Color disabledBorderColor )
+    public void setDisabledBorderColor ( final Color color )
     {
-        this.disabledBorderColor = disabledBorderColor;
+        this.disabledBorderColor = color;
+    }
+
+    public Color getDisabledBorderBackground ()
+    {
+        return disabledBorderBackground;
+    }
+
+    public void setDisabledBorderBackground ( final Color color )
+    {
+        this.disabledBorderBackground = color;
     }
 
     public Color getRolloverBackground ()
@@ -228,9 +258,9 @@ public class WebDynamicMenuItem extends JComponent
         return rolloverBackground;
     }
 
-    public void setRolloverBackground ( final Color rolloverBackground )
+    public void setRolloverBackground ( final Color color )
     {
-        this.rolloverBackground = rolloverBackground;
+        this.rolloverBackground = color;
     }
 
     @Override
@@ -238,7 +268,7 @@ public class WebDynamicMenuItem extends JComponent
     {
         super.paintComponent ( g );
 
-        final Graphics2D g2d = (Graphics2D )g;
+        final Graphics2D g2d = ( Graphics2D ) g;
         final Object aa = GraphicsUtils.setupAntialias ( g2d );
 
         // final int w = getWidth ();
@@ -255,10 +285,10 @@ public class WebDynamicMenuItem extends JComponent
                 final Ellipse2D.Double inner = new Ellipse2D.Double ( 2, 2, h - 4, h - 4 );
                 outer.exclusiveOr ( new Area ( inner ) );
 
-                g2d.setPaint ( isEnabled () ? getBorderColor () : getDisabledBorderColor () );
+                g2d.setColor ( isEnabled () ? getBorderColor () : getDisabledBorderColor () );
                 g2d.fill ( outer );
 
-                g2d.setColor ( getBackground () );
+                g2d.setPaint ( isEnabled () ? getBorderBackground () : getDisabledBorderBackground () );
                 g2d.fill ( inner );
             }
 
@@ -302,6 +332,7 @@ public class WebDynamicMenuItem extends JComponent
         if ( icon != null )
         {
             size.width += icon.getIconWidth ();
+            size.height = icon.getIconHeight ();
         }
         if ( icon != null && text != null )
         {
@@ -313,7 +344,7 @@ public class WebDynamicMenuItem extends JComponent
             final int tw = fm.stringWidth ( text );
             final int th = fm.getHeight ();
             size.width += textMargin.left + tw + textMargin.right;
-            size.height = Math.max ( size.height, textMargin.top + th + textMargin.bottom );
+            size.height = Math.max ( size.height, th );
         }
 
         size.width += margin.left + margin.right;

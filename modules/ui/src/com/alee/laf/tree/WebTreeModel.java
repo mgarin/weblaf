@@ -20,6 +20,7 @@ package com.alee.laf.tree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.MutableTreeNode;
+import javax.swing.tree.TreePath;
 import java.util.List;
 
 /**
@@ -166,6 +167,17 @@ public class WebTreeModel<E extends DefaultMutableTreeNode> extends DefaultTreeM
         {
             removeNodeFromParent ( node );
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void valueForPathChanged ( final TreePath path, final Object newValue )
+    {
+        final MutableTreeNode aNode = ( MutableTreeNode ) path.getLastPathComponent ();
+        // aNode.setUserObject ( newValue ); // Hidden to avoid problems
+        nodeChanged ( aNode );
     }
 
     /**

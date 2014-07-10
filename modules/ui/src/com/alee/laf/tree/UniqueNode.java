@@ -135,6 +135,6 @@ public class UniqueNode extends DefaultMutableTreeNode implements Serializable
     @Override
     public String toString ()
     {
-        return userObject == null ? ReflectUtils.getClassName ( this.getClass () ) : userObject.toString ();
+        return userObject != null && userObject != this ? userObject.toString () : ReflectUtils.getClassName ( this.getClass () );
     }
 }

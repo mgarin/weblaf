@@ -107,6 +107,9 @@ public class DynamicMenuExample extends DefaultExample
         drawBorder = new WebCheckBox ( "Show custom border", true );
 
         final WebPanel clickPanel = new WebPanel ( true );
+        clickPanel.setWebColoredBackground ( false );
+        clickPanel.setShadeWidth ( 20 );
+        clickPanel.setBackground ( Color.WHITE );
         clickPanel.add ( new WebLabel ( "Click with left mouse button here to show menu", WebLabel.CENTER ) );
         clickPanel.addMouseListener ( new MouseAdapter ()
         {
@@ -149,7 +152,7 @@ public class DynamicMenuExample extends DefaultExample
                 public void actionPerformed ( final ActionEvent e )
                 {
                     final WebLookAndFeelDemo p = WebLookAndFeelDemo.getInstance ();
-                    NotificationManager.showNotification ( p, "Menu #" + number + " clicked", icon ).setDisplayTime ( 3000 );
+                    NotificationManager.showInnerNotification ( p, "Menu #" + number + " clicked", icon ).setDisplayTime ( 3000 );
                 }
             } );
             item.setMargin ( new Insets ( 8, 8, 8, 8 ) );
