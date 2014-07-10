@@ -130,8 +130,8 @@ public abstract class PluginManager<T extends Plugin>
     protected FileFilter fileFilter;
 
     /**
-     * Whether should create new class loader for each loaded plugin or not.
-     * Be aware that you might experience various issues with separate class loaders.
+     * Whether should create exclusive class loader for each plugin or not.
+     * Be aware that you might experience various classpath issues with exclusive class loaders unless you know what you are doing.
      */
     protected boolean createNewClassLoader = false;
 
@@ -935,7 +935,7 @@ public abstract class PluginManager<T extends Plugin>
      */
     public List<DetectedPlugin<T>> getDetectedPlugins ()
     {
-        return detectedPlugins;
+        return CollectionUtils.copy ( detectedPlugins );
     }
 
     /**
@@ -945,7 +945,7 @@ public abstract class PluginManager<T extends Plugin>
      */
     public List<T> getAvailablePlugins ()
     {
-        return availablePlugins;
+        return CollectionUtils.copy ( availablePlugins );
     }
 
     /**
