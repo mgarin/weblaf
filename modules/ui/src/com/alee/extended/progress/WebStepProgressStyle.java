@@ -22,88 +22,97 @@ import com.alee.global.StyleConstants;
 import java.awt.*;
 
 /**
- * User: mgarin Date: 21.01.13 Time: 14:22
+ * WebStepProgress style class.
+ *
+ * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebStepProgress">How to use WebStepProgress</a>
+ * @see com.alee.extended.progress.WebStepProgress
  */
 
 public final class WebStepProgressStyle
 {
     /**
-     * Default progress margin
+     * Progress sides margin.
      */
     public static Insets margin = new Insets ( 5, 5, 5, 5 );
 
     /**
-     * Decoration shade width
+     * Decoration shade width.
      */
     public static int shadeWidth = StyleConstants.shadeWidth;
 
     /**
-     * Step control size
+     * Step control size.
      */
-    public static int stepControlSize = 14;
+    public static int stepControlWidth = 14;
 
     /**
-     * Step control round
+     * Step control round.
      */
     public static int stepControlRound = 7;
 
     /**
-     * Inner step control size
+     * Inner step control size.
      */
-    public static int stepControlFillSize = 9;
+    public static int stepControlFillWidth = 9;
 
     /**
-     * Inner step control round
+     * Inner step control round.
      */
     public static int stepControlFillRound = 4;
 
     /**
-     * Progress path size
+     * Progress path size.
      */
-    public static int pathSize = 8;
+    public static int pathWidth = 8;
 
     /**
-     * Inner progress path size
+     * Inner progress path size.
      */
-    public static int fillPathSize = 3;
+    public static int pathFillWidth = 3;
 
     /**
-     * Progress bar color
+     * Progress bar color.
      */
     public static Color progressColor = Color.GRAY;
 
     /**
-     * Disabled progress bar color
+     * Disabled progress bar color.
      */
     public static Color disabledProgressColor = Color.LIGHT_GRAY;
 
     /**
-     * Display progress labels
+     * Whether should display progress labels or not.
      */
-    public static boolean showLabels = true;
+    public static boolean displayLabels = true;
 
     /**
-     * Progress orientation
+     * Progress orientation.
      */
     public static int orientation = WebStepProgress.HORIZONTAL;
 
     /**
-     * Labels position relative to progress bar
+     * Labels position relative to progress bar.
      */
     public static int labelsPosition = WebStepProgress.LEADING;
 
     /**
-     * Spacing between progress bar and labels
+     * Spacing between progress bar and labels.
      */
     public static int spacing = 4;
 
     /**
-     * Allow steps and progress selection by default
+     * Minimum spacing between steps.
+     */
+    public static int stepsSpacing = 10;
+
+    /**
+     * Whether should allow steps and progress selection or not.
      */
     public static boolean selectionEnabled = true;
 
     /**
-     * Default selection mode
+     * Selection mode.
      */
-    public static int selectionMode = WebStepProgress.STEP_SELECTION;
+    public static StepSelectionMode selectionMode = StepSelectionMode.step;
 }

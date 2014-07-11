@@ -24,6 +24,7 @@ import com.alee.extended.image.DisplayType;
 import com.alee.extended.image.WebImage;
 import com.alee.extended.layout.TableLayout;
 import com.alee.extended.panel.GroupPanel;
+import com.alee.extended.progress.StepSelectionMode;
 import com.alee.extended.progress.WebStepProgress;
 import com.alee.laf.panel.WebPanel;
 
@@ -54,41 +55,41 @@ public class StepProgressExample extends DefaultExample
     }
 
     @Override
-    public Component getPreview ( WebLookAndFeelDemo owner )
+    public Component getPreview ( final WebLookAndFeelDemo owner )
     {
         final WebStepProgress wsp1 = new WebStepProgress ( 6 );
 
         final WebStepProgress wsp2 = new WebStepProgress ( "Step 1", "Step 2", "Step 3" );
-        wsp2.setSelectedStep ( 0 );
+        wsp2.setSelectedStepIndex ( 0 );
         wsp2.setLabelsPosition ( WebStepProgress.LEADING );
 
         final WebStepProgress wsp3 = new WebStepProgress ( 3 );
-        wsp3.setSelectedStep ( 1 );
-        wsp3.setSelectionMode ( WebStepProgress.PROGRESS_SELECTION );
+        wsp3.setSelectedStepIndex ( 1 );
+        wsp3.setSelectionMode ( StepSelectionMode.progress );
 
         final WebStepProgress wsp4 = new WebStepProgress ( "Step 1", "Step 2", "Step 3" );
-        wsp4.setSelectedStep ( 2 );
+        wsp4.setSelectedStepIndex ( 2 );
         wsp4.setLabelsPosition ( WebStepProgress.TRAILING );
 
         final WebStepProgress wsp5 = new WebStepProgress ( "Step 1", "Long step 2", "Step 3" );
-        wsp5.setSelectedStep ( 0 );
+        wsp5.setSelectedStepIndex ( 0 );
         wsp5.setLabelsPosition ( WebStepProgress.LEADING );
         wsp5.setOrientation ( WebStepProgress.VERTICAL );
         wsp5.setStepControlRound ( 2 );
         wsp5.setStepControlFillRound ( 0 );
 
         final WebStepProgress wsp6 = new WebStepProgress ( "Step 1", "Long step 2", "Step 3" );
-        wsp6.setSelectedStep ( 1 );
+        wsp6.setSelectedStepIndex ( 1 );
         wsp6.setLabelsPosition ( WebStepProgress.TRAILING );
         wsp6.setOrientation ( WebStepProgress.VERTICAL );
         wsp6.setStepControlRound ( 2 );
         wsp6.setStepControlFillRound ( 0 );
-        wsp6.setSelectionMode ( WebStepProgress.PROGRESS_SELECTION );
+        wsp6.setSelectionMode ( StepSelectionMode.progress );
 
         final WebStepProgress wsp7 = new WebStepProgress ( createProgressIcon ( "ava1.jpg" ), createProgressIcon ( "ava2.jpg" ),
                 createProgressIcon ( "ava3.png" ), createProgressIcon ( "ava4.jpg" ) );
         wsp7.setLabelsPosition ( WebStepProgress.TRAILING );
-        wsp7.setSelectionMode ( WebStepProgress.PROGRESS_SELECTION );
+        wsp7.setSelectionMode ( StepSelectionMode.progress );
 
         final WebPanel container = new WebPanel ( new TableLayout ( new double[][]{ { TableLayout.PREFERRED, 150, TableLayout.PREFERRED },
                 { TableLayout.PREFERRED, TableLayout.PREFERRED, TableLayout.PREFERRED, TableLayout.PREFERRED, TableLayout.PREFERRED } } ) );
@@ -103,7 +104,7 @@ public class StepProgressExample extends DefaultExample
         return new GroupPanel ( container );
     }
 
-    private WebImage createProgressIcon ( String path )
+    private WebImage createProgressIcon ( final String path )
     {
         final WebImage image = new WebImage ( loadIcon ( path ) );
         image.setPreferredSize ( new Dimension ( 24, 24 ) );
