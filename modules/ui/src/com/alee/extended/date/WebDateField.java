@@ -29,6 +29,7 @@ import com.alee.utils.CompareUtils;
 import com.alee.utils.SizeUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.laf.ShapeProvider;
+import com.alee.utils.swing.Customizer;
 import com.alee.utils.swing.SizeMethods;
 
 import javax.swing.*;
@@ -75,6 +76,11 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
      * Currently selected date.
      */
     protected Date date = null;
+
+    /**
+     * Calendar component customizer.
+     */
+    protected Customizer<WebCalendar> calendarCustomizer = null;
 
     /**
      * UI components.
@@ -257,6 +263,30 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
     }
 
     /**
+     * Returns calendar component customizer.
+     *
+     * @return calendar component customizer
+     */
+    public Customizer<WebCalendar> getCalendarCustomizer ()
+    {
+        return calendarCustomizer;
+    }
+
+    /**
+     * Sets calendar component customizer.
+     *
+     * @param customizer new calendar component customizer
+     */
+    public void setCalendarCustomizer ( final Customizer<WebCalendar> customizer )
+    {
+        this.calendarCustomizer = customizer;
+        if ( customizer != null && calendar != null )
+        {
+            customizer.customize ( calendar );
+        }
+    }
+
+    /**
      * Updates field margin.
      */
     protected void updateMargin ()
@@ -290,6 +320,12 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
             calendar.setPaintFocus ( false );
             calendar.setRound ( StyleConstants.smallRound );
             calendar.setShadeWidth ( 0 );
+
+            // Customizing calendar
+            if ( calendarCustomizer != null )
+            {
+                calendarCustomizer.customize ( calendar );
+            }
 
             // Popup window
             popup = new WebWindow ( ancestor );
