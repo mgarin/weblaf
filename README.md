@@ -67,6 +67,10 @@ https://github.com/mgarin/weblaf/releases
 
 Here are the direct links for the latest release artifacts:
 
+**Complete WebLaF binary with dependencies**
+
+- [**weblaf-complete-1.28.jar**](https://github.com/mgarin/weblaf/releases/download/v1.28/weblaf-complete-1.28.jar) - library complete jar, contains WebLaF classes and all dependencies
+
 **WebLaF binary without dependencies**
 
 - [**weblaf-1.28.jar**](https://github.com/mgarin/weblaf/releases/download/v1.28/weblaf-1.28.jar) - library jar, contains only WebLaF classes
@@ -75,10 +79,6 @@ Here are the direct links for the latest release artifacts:
 
 - [**weblaf-core-1.28.jar**](https://github.com/mgarin/weblaf/releases/download/v1.28/weblaf-core-1.28.jar) - library core part jar, contains only WebLaF core classes
 - [**weblaf-ui-1.28.jar**](https://github.com/mgarin/weblaf/releases/download/v1.28/weblaf-ui-1.28.jar) - library UI part jar, contains only WebLaF UI classes
-
-**Complete WebLaF binary with dependencies**
-
-- [**weblaf-complete-1.28.jar**](https://github.com/mgarin/weblaf/releases/download/v1.28/weblaf-complete-1.28.jar) - library complete jar, contains WebLaF classes and all dependencies
 
 **Core dependencies**
 

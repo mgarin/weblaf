@@ -452,7 +452,7 @@ public class WebCalendar extends WebPanel
         weekHeaders.removeAll ();
         for ( int i = 1; i <= 7; i++ )
         {
-            final int day = startWeekFromSunday ? ( i == 1 ? 7 : i - 1 ) : i;
+            final int day = !startWeekFromSunday ? i : i == 1 ? 7 : i - 1;
 
             final WebLabel dayOfWeekLabel = new WebLabel ();
             dayOfWeekLabel.setLanguage ( "weblaf.ex.calendar.dayOfWeek." + day );

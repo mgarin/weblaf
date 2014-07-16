@@ -22,6 +22,7 @@ import com.alee.laf.button.WebButton;
 import com.alee.laf.menu.PopupMenuWay;
 import com.alee.laf.menu.WebPopupMenuUI;
 import com.alee.managers.log.Log;
+import com.alee.managers.style.SupportedComponent;
 import com.alee.utils.ReflectUtils;
 
 import javax.swing.*;
@@ -41,13 +42,6 @@ import java.io.Serializable;
 
 public class WebSplitButton extends WebButton implements MouseMotionListener, MouseListener, ActionListener, Serializable
 {
-    /**
-     * Unique UI class ID.
-     *
-     * @see #getUIClassID
-     */
-    private static final String uiClassID = "SplitButtonUI";
-
     /**
      * Whether should always display popup menu when button is clicked or not.
      * If set to false popup menu will only be displayed when split button part is clicked.
@@ -554,6 +548,6 @@ public class WebSplitButton extends WebButton implements MouseMotionListener, Mo
     @Override
     public String getUIClassID ()
     {
-        return uiClassID;
+        return SupportedComponent.splitButton.getUIClassID ();
     }
 }
