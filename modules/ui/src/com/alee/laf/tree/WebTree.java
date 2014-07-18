@@ -49,6 +49,24 @@ import java.util.Vector;
 public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements FontMethods<WebTree<E>>
 {
     /**
+     * Bound property name for tree data provider.
+     * Data provider is not supported by WebTree, but it is a base for various extensions so property is located here.
+     */
+    public final static String TREE_DATA_PROVIDER_PROPERTY = "dataProvider";
+
+    /**
+     * Bound property name for tree filter.
+     * Filtering is not supported by WebTree, but it is a base for various extensions so property is located here.
+     */
+    public final static String TREE_FILTER_PROPERTY = "filter";
+
+    /**
+     * Bound property name for tree comparator.
+     * Sorting is not supported by WebTree, but it is a base for various extensions so property is located here.
+     */
+    public final static String TREE_COMPARATOR_PROPERTY = "comparator";
+
+    /**
      * Single selection mode.
      * Only one node can be selected.
      */

@@ -91,7 +91,8 @@ public class WebExTree<E extends UniqueNode> extends WebTree<E>
      */
     public ExTreeDataProvider<E> getDataProvider ()
     {
-        return getExModel ().getDataProvider ();
+        final TreeModel model = getModel ();
+        return model != null && model instanceof ExTreeModel ? getExModel ().getDataProvider () : null;
     }
 
     /**
@@ -103,12 +104,16 @@ public class WebExTree<E extends UniqueNode> extends WebTree<E>
     {
         if ( dataProvider != null )
         {
+            final ExTreeDataProvider<E> oldDataProvider = getDataProvider ();
+
             // Updating model
             final ExTreeModel<E> model = new ExTreeModel<E> ( this, dataProvider );
             setModel ( model );
 
             // Forcing model to cache the whole structure
             loadTreeData ( model.getRoot (), model );
+
+            firePropertyChange ( TREE_DATA_PROVIDER_PROPERTY, oldDataProvider, dataProvider );
         }
     }
 
@@ -144,6 +149,7 @@ public class WebExTree<E extends UniqueNode> extends WebTree<E>
      */
     public void setComparator ( final Comparator<E> comparator )
     {
+        final Comparator<E> oldComparator = this.comparator;
         this.comparator = comparator;
 
         final ExTreeDataProvider dataProvider = getDataProvider ();
@@ -152,6 +158,8 @@ public class WebExTree<E extends UniqueNode> extends WebTree<E>
             ( ( AbstractExTreeDataProvider ) dataProvider ).setChildsComparator ( comparator );
             updateSortingAndFiltering ();
         }
+
+        firePropertyChange ( TREE_COMPARATOR_PROPERTY, oldComparator, comparator );
     }
 
     /**
@@ -180,6 +188,7 @@ public class WebExTree<E extends UniqueNode> extends WebTree<E>
      */
     public void setFilter ( final Filter<E> filter )
     {
+        final Filter<E> oldFilter = this.filter;
         this.filter = filter;
 
         final ExTreeDataProvider dataProvider = getDataProvider ();
@@ -188,6 +197,8 @@ public class WebExTree<E extends UniqueNode> extends WebTree<E>
             ( ( AbstractExTreeDataProvider ) dataProvider ).setChildsFilter ( filter );
             updateSortingAndFiltering ();
         }
+
+        firePropertyChange ( TREE_FILTER_PROPERTY, oldFilter, filter );
     }
 
     /**

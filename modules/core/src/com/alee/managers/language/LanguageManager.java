@@ -280,6 +280,11 @@ public class LanguageManager implements LanguageConstants
     protected static TooltipLanguageSupport tooltipLanguageSupport;
 
     /**
+     * Whether or not components should check that text passed into their constructors is a translation key or not.
+     */
+    protected static boolean checkComponentsTextForTranslations = true;
+
+    /**
      * Manager initialization mark.
      */
     protected static boolean initialized = false;
@@ -366,7 +371,7 @@ public class LanguageManager implements LanguageConstants
                 private void updateSmart ( final Dictionary dictionary )
                 {
                     // Gathering all changed keys
-                    final List<String> relevantKeys = gatherKeys ( dictionary );
+                    final List<String> relevantKeys = LanguageUtils.gatherKeys ( dictionary );
 
                     // Notifying registered key listeners
                     if ( languageKeyListeners.size () > 0 )
@@ -380,31 +385,6 @@ public class LanguageManager implements LanguageConstants
                     // Updating relevant components
                     updateComponents ( relevantKeys );
                 }
-
-                private List<String> gatherKeys ( final Dictionary dictionary )
-                {
-                    final List<String> relevantKeys = new ArrayList<String> ();
-                    gatherKeys ( dictionary, relevantKeys );
-                    return relevantKeys;
-                }
-
-                private void gatherKeys ( final Dictionary dictionary, final List<String> relevantKeys )
-                {
-                    if ( dictionary.getRecords () != null )
-                    {
-                        for ( final Record record : dictionary.getRecords () )
-                        {
-                            relevantKeys.add ( record.getKey () );
-                        }
-                    }
-                    if ( dictionary.getSubdictionaries () != null )
-                    {
-                        for ( final Dictionary subDictionary : dictionary.getSubdictionaries () )
-                        {
-                            gatherKeys ( subDictionary, relevantKeys );
-                        }
-                    }
-                }
             } );
 
             // Default WebLaF dictionary
@@ -417,6 +397,7 @@ public class LanguageManager implements LanguageConstants
      */
     public static void loadDefaultDictionary ()
     {
+        // todo Separate core and ui languages
         LanguageManager.addDictionary ( LanguageManager.class, "resources/language.xml" );
     }
 
@@ -1110,7 +1091,7 @@ public class LanguageManager implements LanguageConstants
         // Proper locale for language
         Locale.setDefault ( getLocale ( language ) );
 
-        // todo In future, with JDK7+
+        // todo Use this one instead after switching to JDK8+ support
         // Locale.setDefault ( Locale.forLanguageTag ( language ) );
     }
 
@@ -1271,7 +1252,7 @@ public class LanguageManager implements LanguageConstants
         dictionaries.add ( dictionary );
 
         // Updating global dictionary
-        mergeDictionary ( dictionary );
+        LanguageUtils.mergeDictionary ( dictionary, globalDictionary );
 
         // Updating global cache
         updateCache ( dictionary );
@@ -1312,7 +1293,7 @@ public class LanguageManager implements LanguageConstants
             dictionaries.remove ( dictionary );
             for ( final Dictionary d : dictionaries )
             {
-                mergeDictionary ( d );
+                LanguageUtils.mergeDictionary ( d, globalDictionary );
             }
 
             // Updating global cache
@@ -1374,59 +1355,6 @@ public class LanguageManager implements LanguageConstants
             }
         }
         return null;
-    }
-
-    /**
-     * Merges specified dictionary with the global dictionary.
-     *
-     * @param dictionary dictionary to merge
-     */
-    protected static void mergeDictionary ( final Dictionary dictionary )
-    {
-        mergeDictionary ( dictionary.getPrefix (), dictionary );
-    }
-
-    /**
-     * Merges specified dictionary with the global dictionary.
-     *
-     * @param prefix     dictionary prefix
-     * @param dictionary dictionary to merge
-     */
-    protected static void mergeDictionary ( String prefix, final Dictionary dictionary )
-    {
-        // Determining prefix
-        prefix = prefix != null && !prefix.equals ( "" ) ? prefix + "." : "";
-
-        // Merging current level records
-        if ( dictionary.getRecords () != null )
-        {
-            for ( final Record record : dictionary.getRecords () )
-            {
-                final Record clone = record.clone ();
-                clone.setKey ( prefix + clone.getKey () );
-                globalDictionary.addRecord ( clone );
-            }
-        }
-
-        // Merging language information data
-        if ( dictionary.getLanguageInfos () != null )
-        {
-            for ( final LanguageInfo info : dictionary.getLanguageInfos () )
-            {
-                globalDictionary.addLanguageInfo ( info );
-            }
-        }
-
-        // Parsing subdictionaries
-        if ( dictionary.getSubdictionaries () != null )
-        {
-            for ( final Dictionary subDictionary : dictionary.getSubdictionaries () )
-            {
-                final String sp = subDictionary.getPrefix ();
-                final String subPrefix = prefix + ( sp != null && !sp.equals ( "" ) ? sp : "" );
-                mergeDictionary ( subPrefix, subDictionary );
-            }
-        }
     }
 
     /**
@@ -1767,6 +1695,26 @@ public class LanguageManager implements LanguageConstants
                 updateCache ( subPrefix, subDictionary );
             }
         }
+    }
+
+    /**
+     * Returns whether or not components should check that text passed into their constructors is a translation key or not.
+     *
+     * @return true if components should check that text passed into their constructor is a translation key or not, false otherwise
+     */
+    public static boolean isCheckComponentsTextForTranslations ()
+    {
+        return checkComponentsTextForTranslations;
+    }
+
+    /**
+     * Sets whether or not components should check that text passed into their constructors is a translation key or not.
+     *
+     * @param check whether or not components should check that text passed into their constructors is a translation key or not
+     */
+    public static void setCheckComponentsTextForTranslations ( final boolean check )
+    {
+        checkComponentsTextForTranslations = check;
     }
 
     /**

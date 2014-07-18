@@ -25,6 +25,7 @@ import com.alee.laf.text.WebTextField;
 import com.alee.laf.tree.UniqueNode;
 import com.alee.laf.tree.WebTree;
 import com.alee.managers.hotkey.Hotkey;
+import com.alee.utils.compare.Filter;
 import com.alee.utils.swing.StringDocumentChangeListener;
 import com.alee.utils.text.TextProvider;
 
@@ -47,10 +48,6 @@ import java.lang.ref.WeakReference;
 
 public class WebTreeFilterField<E extends UniqueNode> extends WebTextField
 {
-    /**
-     * todo 1. Listen to tree model changes and update filtering appropriately
-     */
-
     /**
      * Used icons.
      */
@@ -80,6 +77,16 @@ public class WebTreeFilterField<E extends UniqueNode> extends WebTextField
      * Special document listener that notifies about filter changes.
      */
     protected DocumentListener documentListener;
+
+    /**
+     * Data provider change listener.
+     */
+    protected PropertyChangeListener dataProviderChangeListener;
+
+    /**
+     * Tree filter change listener.
+     */
+    protected PropertyChangeListener filterChangeListener;
 
     /**
      * UI elements.
@@ -127,23 +134,45 @@ public class WebTreeFilterField<E extends UniqueNode> extends WebTextField
     public WebTreeFilterField ( final WebTree<E> tree, final TextProvider<E> textProvider )
     {
         super ();
+        checkTree ( tree );
+        initDefaultFilter ();
         setTree ( tree );
-        setFilter ( new StructuredTreeNodesFilter () );
         setTextProvider ( textProvider );
-        init ();
+        initField ();
+    }
+
+    /**
+     * Checks whether provided tree type is correct or not.
+     *
+     * @param tree tree to check
+     */
+    protected void checkTree ( final WebTree<E> tree )
+    {
+        if ( !( tree instanceof WebAsyncTree || tree instanceof WebExTree ) )
+        {
+            throw new RuntimeException ( "WebTreeFilterField is only usable with WebAsyncTree and WebExTree" );
+        }
+    }
+
+    /**
+     * Initializes default field tree filter.
+     */
+    protected void initDefaultFilter ()
+    {
+        this.filter = new StructuredTreeNodesFilter ();
     }
 
     /**
      * Initializes filter field.
      */
-    protected void init ()
+    protected void initField ()
     {
         setLanguage ( "weblaf.ex.treefilter.inputprompt" );
         setHideInputPromptOnFocus ( false );
 
         initFilterIcon ();
         initSettingsMenu ();
-        initFieldListeners ();
+        initListeners ();
     }
 
     /**
@@ -213,9 +242,9 @@ public class WebTreeFilterField<E extends UniqueNode> extends WebTextField
     }
 
     /**
-     * Initializes field listeners.
+     * Initializes listeners.
      */
-    protected void initFieldListeners ()
+    protected void initListeners ()
     {
         // Field changes listener
         documentListener = new StringDocumentChangeListener ()
@@ -247,10 +276,35 @@ public class WebTreeFilterField<E extends UniqueNode> extends WebTextField
             {
                 if ( Hotkey.ESCAPE.isTriggered ( e ) )
                 {
-                    WebTreeFilterField.this.clear ();
+                    // Clearing filter field on ESCAPE press
+                    clear ();
                 }
             }
         } );
+
+        // Model change listener to properly update field filter
+        dataProviderChangeListener = new PropertyChangeListener ()
+        {
+            @Override
+            public void propertyChange ( final PropertyChangeEvent evt )
+            {
+                // Reapplying field filter on model change
+                applyFieldFilter ();
+            }
+        };
+        getTree ().addPropertyChangeListener ( WebTree.TREE_DATA_PROVIDER_PROPERTY, dataProviderChangeListener );
+
+        // Filter change listener to properly update field filter
+        filterChangeListener = new PropertyChangeListener ()
+        {
+            @Override
+            public void propertyChange ( final PropertyChangeEvent evt )
+            {
+                // Reapplying field filter on filter change
+                applyFieldFilter ();
+            }
+        };
+        getTree ().addPropertyChangeListener ( WebTree.TREE_FILTER_PROPERTY, dataProviderChangeListener );
     }
 
     /**
@@ -270,25 +324,34 @@ public class WebTreeFilterField<E extends UniqueNode> extends WebTextField
     }
 
     /**
-     * Returns tree to which this field applies filtering.
-     *
-     * @return tree to which this field applies filtering
-     */
-    public WebTree<E> getTree ()
-    {
-        return tree != null ? tree.get () : null;
-    }
-
-    /**
      * Sets tree to which this field applies filtering.
      *
      * @param tree tree to which this field applies filtering
      */
     public void setTree ( final WebTree<E> tree )
     {
-        clearFilter ();
-        this.tree = new WeakReference<WebTree<E>> ( tree );
-        applyFilter ();
+        // Cleanup the mess we made in previous tree
+        final WebTree<E> previousTree = getTree ();
+        if ( previousTree != null )
+        {
+            // Removing listener from previous tree
+            previousTree.removePropertyChangeListener ( WebTree.TREE_MODEL_PROPERTY, dataProviderChangeListener );
+
+            // Removing filter from previous tree
+            removeFieldFilter ();
+        }
+
+        // Installing filtering into new tree
+        {
+            // Saving reference to new tree
+            this.tree = new WeakReference<WebTree<E>> ( tree );
+
+            // Updating filter in current tree
+            applyFieldFilter ();
+
+            // Adding listener into current tree
+            tree.addPropertyChangeListener ( WebTree.TREE_MODEL_PROPERTY, dataProviderChangeListener );
+        }
     }
 
     /**
@@ -308,45 +371,73 @@ public class WebTreeFilterField<E extends UniqueNode> extends WebTextField
      */
     public void setFilter ( final StructuredTreeNodesFilter<E> filter )
     {
+        removeFieldFilter ();
         this.filter = filter;
-        applyFilter ();
+        applyFieldFilter ();
     }
 
     /**
-     * Applies tree filter.
+     * Applies field tree filter.
      */
-    protected void applyFilter ()
+    protected void applyFieldFilter ()
     {
+        // Updating tree filter if possible
         final WebTree<E> tree = getTree ();
         if ( tree != null )
         {
             if ( tree instanceof WebAsyncTree )
             {
-                ( ( WebAsyncTree ) tree ).setFilter ( filter );
+                final WebAsyncTree asyncTree = ( WebAsyncTree ) tree;
+
+                // Cleaning up filter cache
+                filter.clearCache ();
+
+                // Saving original filter
+                // Note that we have to check whether field filter is already installed or not here
+                final Filter originalFilter = asyncTree.getFilter ();
+                filter.setOriginalFilter ( originalFilter instanceof StructuredTreeNodesFilter ?
+                        ( ( StructuredTreeNodesFilter ) originalFilter ).getOriginalFilter () : originalFilter );
+
+                // Updating field tree filter
+                asyncTree.setFilter ( filter );
             }
             else if ( tree instanceof WebExTree )
             {
-                ( ( WebExTree ) tree ).setFilter ( filter );
+                final WebExTree exTree = ( WebExTree ) tree;
+
+                // Cleaning up filter cache
+                filter.clearCache ();
+
+                // Saving original filter
+                // Note that we have to check whether field filter is already installed or not here
+                final Filter originalFilter = exTree.getFilter ();
+                filter.setOriginalFilter ( originalFilter instanceof StructuredTreeNodesFilter ?
+                        ( ( StructuredTreeNodesFilter ) originalFilter ).getOriginalFilter () : originalFilter );
+
+                // Updating field tree filter
+                exTree.setFilter ( filter );
             }
         }
     }
 
     /**
-     * Clears tree filter.
+     * Removes field tree filter.
      */
-    protected void clearFilter ()
+    protected void removeFieldFilter ()
     {
         final WebTree<E> tree = getTree ();
         if ( tree != null )
         {
+            final Filter<E> originalFilter = filter.getOriginalFilter ();
             if ( tree instanceof WebAsyncTree )
             {
-                ( ( WebAsyncTree ) tree ).clearFilter ();
+                ( ( WebAsyncTree ) tree ).setFilter ( originalFilter );
             }
             else if ( tree instanceof WebExTree )
             {
-                ( ( WebExTree ) tree ).clearFilter ();
+                ( ( WebExTree ) tree ).setFilter ( originalFilter );
             }
+            filter.setOriginalFilter ( null );
         }
     }
 
@@ -376,19 +467,24 @@ public class WebTreeFilterField<E extends UniqueNode> extends WebTextField
      */
     public void updateFiltering ()
     {
-        // Cleaning up filter cache
-        filter.clearCache ();
-
         // Updating tree filtering if possible
         final WebTree<E> tree = getTree ();
         if ( tree != null )
         {
             if ( tree instanceof WebAsyncTree )
             {
+                // Cleaning up filter cache
+                filter.clearCache ();
+
+                // Updating tree filtering
                 ( ( WebAsyncTree ) tree ).updateSortingAndFiltering ();
             }
             else if ( tree instanceof WebExTree )
             {
+                // Cleaning up filter cache
+                filter.clearCache ();
+
+                // Updating tree filtering
                 ( ( WebExTree ) tree ).updateSortingAndFiltering ();
             }
         }
@@ -402,21 +498,36 @@ public class WebTreeFilterField<E extends UniqueNode> extends WebTextField
      */
     public void updateNodeAcceptance ( final E node )
     {
-        // Cleaning up filter cache
-        filter.clearCache ( node );
-
         // Updating tree filtering
         final WebTree<E> tree = getTree ();
         if ( tree != null )
         {
             if ( tree instanceof WebAsyncTree )
             {
+                // Cleaning up filter cache
+                filter.clearCache ( node );
+
+                // Updating tree node filtering
                 ( ( WebAsyncTree ) tree ).updateSortingAndFiltering ( ( AsyncUniqueNode ) node.getParent () );
             }
             else if ( tree instanceof WebExTree )
             {
+                // Cleaning up filter cache
+                filter.clearCache ( node );
+
+                // Updating tree node filtering
                 ( ( WebExTree ) tree ).updateSortingAndFiltering ( node.getParent () );
             }
         }
+    }
+
+    /**
+     * Returns tree to which this field applies filtering.
+     *
+     * @return tree to which this field applies filtering
+     */
+    public WebTree<E> getTree ()
+    {
+        return tree != null ? tree.get () : null;
     }
 }

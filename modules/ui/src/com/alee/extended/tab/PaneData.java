@@ -29,7 +29,6 @@ import com.alee.managers.focus.FocusManager;
 import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.hotkey.HotkeyManager;
 import com.alee.managers.hotkey.HotkeyRunnable;
-import com.alee.managers.language.LM;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.Customizer;
@@ -217,7 +216,7 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
                     } );
 
                     // Displaying popup menu
-                    final WebPopupMenu menu = pmg.getPopupMenu ();
+                    final WebPopupMenu menu = pmg.getMenu ();
                     final Dimension mps = menu.getPreferredSize ();
                     final Rectangle bounds = tabbedPane.getBoundsAt ( index );
                     menu.show ( tabbedPane, bounds.x + bounds.width / 2 - mps.width / 2,
@@ -382,16 +381,8 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
         final String title = document.getTitle ();
         if ( title != null )
         {
-            if ( LM.contains ( title ) )
-            {
-                // Tab with translated title and icon
-                tabPanel.add ( WebLabel.createTranslatedLabel ( document.getIcon (), title ), BorderLayout.CENTER );
-            }
-            else
-            {
-                // Tab with simple title and icon
-                tabPanel.add ( new WebLabel ( title, document.getIcon () ), BorderLayout.CENTER );
-            }
+            // Tab with title and icon
+            tabPanel.add ( new WebLabel ( title, document.getIcon () ), BorderLayout.CENTER );
         }
         else
         {

@@ -253,6 +253,30 @@ public final class LafUtils
     }
 
     /**
+     * Returns preferred size for component UI.
+     *
+     * @param component component to compute preferred size for
+     * @param painter   component painter, or null if it doesn't have one
+     * @return preferred size
+     */
+    public static Dimension getPreferredSize ( final JComponent component, final Painter painter )
+    {
+        Dimension ps;
+
+        // Checking painter's preferred size
+        ps = painter != null ? painter.getPreferredSize ( component ) : new Dimension ( 0, 0 );
+
+        // Checking layout preferred size
+        final LayoutManager layout = component.getLayout ();
+        if ( layout != null )
+        {
+            ps = SwingUtils.max ( ps, layout.preferredLayoutSize ( component ) );
+        }
+
+        return ps;
+    }
+
+    /**
      * Fills either clipped or visible rect with component background color if its opaque
      */
 

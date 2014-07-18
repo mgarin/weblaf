@@ -17,41 +17,31 @@
 
 package com.alee.utils.swing.menu;
 
-import com.alee.laf.menu.WebPopupMenu;
+import com.alee.laf.menu.WebMenu;
 
 /**
- * Special generator that simplifies and shortens popup menu creation code.
+ * Special generator that simplifies and shortens menu creation code.
  *
  * @author Mikle Garin
  * @see com.alee.utils.swing.menu.AbstractMenuGenerator
  */
 
-public class PopupMenuGenerator extends AbstractMenuGenerator<WebPopupMenu>
+public class MenuGenerator extends AbstractMenuGenerator<WebMenu>
 {
     /**
-     * Constructs new popup menu generator using default popup menu.
+     * Constructs new menu generator using default menu.
      */
-    public PopupMenuGenerator ()
+    public MenuGenerator ()
     {
-        super ( new WebPopupMenu () );
+        super ( new WebMenu () );
     }
 
     /**
-     * Constructs new popup menu generator using default popup menu using the specified style ID.
+     * Constructs new menu generator using the specified menu.
      *
-     * @param styleId popup menu style ID
+     * @param menu menu
      */
-    public PopupMenuGenerator ( final String styleId )
-    {
-        super ( new WebPopupMenu ( styleId ) );
-    }
-
-    /**
-     * Constructs new popup menu generator using the specified popup menu.
-     *
-     * @param menu popup menu
-     */
-    public PopupMenuGenerator ( final WebPopupMenu menu )
+    public MenuGenerator ( final WebMenu menu )
     {
         super ( menu );
     }

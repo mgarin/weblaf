@@ -18,7 +18,6 @@
 package com.alee.extended.progress;
 
 import com.alee.laf.label.WebLabel;
-import com.alee.managers.language.LanguageManager;
 
 import java.awt.*;
 
@@ -53,7 +52,7 @@ public class StepData
      */
     public StepData ( final String label )
     {
-        this ( LanguageManager.contains ( label ) ? WebLabel.createTranslatedLabel ( label ) : new WebLabel ( label ) );
+        this ( new WebLabel ( label ) );
     }
 
     /**

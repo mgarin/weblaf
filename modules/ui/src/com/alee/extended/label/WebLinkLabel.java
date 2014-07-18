@@ -46,6 +46,10 @@ import java.util.concurrent.Executors;
 public class WebLinkLabel extends WebLabel implements LanguageMethods
 {
     /**
+     * todo 1. Remodel WebLinkLabel to extend WebStyledLabel
+     */
+
+    /**
      * Used icons.
      */
     public static final ImageIcon LINK_ICON = new ImageIcon ( WebLinkLabel.class.getResource ( "icons/link.png" ) );

@@ -131,23 +131,6 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
     }
 
     /**
-     * Costructs asynchronous tree using the specified tree model.
-     *
-     * @param newModel custom tree model
-     */
-    public WebAsyncTree ( final AsyncTreeModel newModel )
-    {
-        super ( newModel );
-
-        // Installing tree model
-        setModel ( newModel );
-
-        // Tree cell renderer & editor
-        setCellRenderer ( new WebAsyncTreeCellRenderer () );
-        setCellEditor ( new WebTreeCellEditor () );
-    }
-
-    /**
      * Returns whether childs are loaded asynchronously or not.
      *
      * @return true if childs are loaded asynchronously, false otherwise
@@ -181,7 +164,8 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
      */
     public AsyncTreeDataProvider<E> getDataProvider ()
     {
-        return getAsyncModel ().getDataProvider ();
+        final TreeModel model = getModel ();
+        return model != null && model instanceof AsyncTreeModel ? getAsyncModel ().getDataProvider () : null;
     }
 
     /**
@@ -193,7 +177,9 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
     {
         if ( dataProvider != null )
         {
+            final AsyncTreeDataProvider<E> oldDataProvider = getDataProvider ();
             setModel ( new AsyncTreeModel<E> ( this, dataProvider ) );
+            firePropertyChange ( TREE_DATA_PROVIDER_PROPERTY, oldDataProvider, dataProvider );
         }
     }
 
@@ -215,6 +201,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
      */
     public void setComparator ( final Comparator<E> comparator )
     {
+        final Comparator<E> oldComparator = this.comparator;
         this.comparator = comparator;
 
         final AsyncTreeDataProvider dataProvider = getDataProvider ();
@@ -223,6 +210,8 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
             ( ( AbstractAsyncTreeDataProvider ) dataProvider ).setChildsComparator ( comparator );
             updateSortingAndFiltering ();
         }
+
+        firePropertyChange ( TREE_COMPARATOR_PROPERTY, oldComparator, comparator );
     }
 
     /**
@@ -251,6 +240,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
      */
     public void setFilter ( final Filter<E> filter )
     {
+        final Filter<E> oldFilter = this.filter;
         this.filter = filter;
 
         final AsyncTreeDataProvider dataProvider = getDataProvider ();
@@ -259,6 +249,8 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
             ( ( AbstractAsyncTreeDataProvider ) dataProvider ).setChildsFilter ( filter );
             updateSortingAndFiltering ();
         }
+
+        firePropertyChange ( TREE_FILTER_PROPERTY, oldFilter, filter );
     }
 
     /**

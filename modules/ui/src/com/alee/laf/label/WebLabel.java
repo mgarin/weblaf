@@ -21,6 +21,7 @@ import com.alee.extended.painter.Painter;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.language.LanguageMethods;
+import com.alee.managers.language.LanguageUtils;
 import com.alee.managers.language.updaters.LanguageUpdater;
 import com.alee.managers.log.Log;
 import com.alee.managers.style.StyleManager;
@@ -46,34 +47,64 @@ import java.awt.*;
 
 public class WebLabel extends JLabel implements Styleable, LanguageMethods, FontMethods<WebLabel>, SizeMethods<WebLabel>
 {
+    /**
+     * Constructs empty label.
+     */
     public WebLabel ()
     {
         super ();
     }
 
+    /**
+     * Constructs label with the specified preferences.
+     *
+     * @param margin label margin
+     */
     public WebLabel ( final Insets margin )
     {
         super ();
         setMargin ( margin );
     }
 
-    public WebLabel ( final Icon image )
+    /**
+     * Constructs label with the specified preferences.
+     *
+     * @param icon icon
+     */
+    public WebLabel ( final Icon icon )
     {
-        super ( image );
+        super ( icon );
     }
 
-    public WebLabel ( final Icon image, final Insets margin )
+    /**
+     * Constructs label with the specified preferences.
+     *
+     * @param icon   label icon
+     * @param margin label margin
+     */
+    public WebLabel ( final Icon icon, final Insets margin )
     {
-        super ( image );
+        super ( icon );
         setMargin ( margin );
     }
 
+    /**
+     * Constructs label with the specified preferences.
+     *
+     * @param horizontalAlignment horizontal alignment
+     */
     public WebLabel ( final int horizontalAlignment )
     {
         super ();
         setHorizontalAlignment ( horizontalAlignment );
     }
 
+    /**
+     * Constructs label with the specified preferences.
+     *
+     * @param horizontalAlignment horizontal alignment
+     * @param margin              label margin
+     */
     public WebLabel ( final int horizontalAlignment, final Insets margin )
     {
         super ();
@@ -81,120 +112,270 @@ public class WebLabel extends JLabel implements Styleable, LanguageMethods, Font
         setMargin ( margin );
     }
 
-    public WebLabel ( final Icon image, final int horizontalAlignment )
+    /**
+     * Constructs label with the specified preferences.
+     *
+     * @param icon                label icon
+     * @param horizontalAlignment horizontal alignment
+     */
+    public WebLabel ( final Icon icon, final int horizontalAlignment )
     {
-        super ( image, horizontalAlignment );
+        super ( icon, horizontalAlignment );
     }
 
-    public WebLabel ( final Icon image, final int horizontalAlignment, final Insets margin )
+    /**
+     * Constructs label with the specified preferences.
+     *
+     * @param icon                label icon
+     * @param horizontalAlignment horizontal alignment
+     * @param margin              label margin
+     */
+    public WebLabel ( final Icon icon, final int horizontalAlignment, final Insets margin )
     {
-        super ( image, horizontalAlignment );
+        super ( icon, horizontalAlignment );
         setMargin ( margin );
     }
 
-    public WebLabel ( final String text )
+    /**
+     * Constructs label with the specified preferences.
+     *
+     * @param text text or translation key
+     * @param data language data, may not be passed
+     */
+    public WebLabel ( final String text, final Object... data )
     {
-        super ( text );
+        super ( LanguageUtils.getInitialText ( text, data ) );
+        LanguageUtils.registerInitialLanguage ( this, text, data );
     }
 
-    public WebLabel ( final String text, final Insets margin )
+    /**
+     * Constructs label with the specified preferences.
+     *
+     * @param text   text or translation key
+     * @param margin label margin
+     * @param data   language data, may not be passed
+     */
+    public WebLabel ( final String text, final Insets margin, final Object... data )
     {
-        super ( text );
+        super ( LanguageUtils.getInitialText ( text, data ) );
+        LanguageUtils.registerInitialLanguage ( this, text, data );
         setMargin ( margin );
     }
 
-    public WebLabel ( final String text, final int horizontalAlignment )
+    /**
+     * Constructs label with the specified preferences.
+     *
+     * @param text                text or translation key
+     * @param horizontalAlignment horizontal alignment
+     * @param data                language data, may not be passed
+     */
+    public WebLabel ( final String text, final int horizontalAlignment, final Object... data )
     {
-        super ( text, horizontalAlignment );
+        super ( LanguageUtils.getInitialText ( text, data ), horizontalAlignment );
+        LanguageUtils.registerInitialLanguage ( this, text, data );
     }
 
-    public WebLabel ( final String text, final int horizontalAlignment, final Insets margin )
+    /**
+     * Constructs label with the specified preferences.
+     *
+     * @param text                text or translation key
+     * @param horizontalAlignment horizontal alignment
+     * @param margin              label margin
+     * @param data                language data, may not be passed
+     */
+    public WebLabel ( final String text, final int horizontalAlignment, final Insets margin, final Object... data )
     {
-        super ( text, horizontalAlignment );
+        super ( LanguageUtils.getInitialText ( text, data ), horizontalAlignment );
+        LanguageUtils.registerInitialLanguage ( this, text, data );
         setMargin ( margin );
     }
 
-    public WebLabel ( final String text, final Icon icon )
+    /**
+     * Constructs label with the specified preferences.
+     *
+     * @param text text or translation key
+     * @param icon label icon
+     * @param data language data, may not be passed
+     */
+    public WebLabel ( final String text, final Icon icon, final Object... data )
     {
-        super ( text, icon, LEADING );
+        super ( LanguageUtils.getInitialText ( text, data ), icon, LEADING );
+        LanguageUtils.registerInitialLanguage ( this, text, data );
     }
 
-    public WebLabel ( final String text, final Icon icon, final Insets margin )
+    /**
+     * Constructs label with the specified preferences.
+     *
+     * @param text   text or translation key
+     * @param icon   label icon
+     * @param margin label margin
+     * @param data   language data, may not be passed
+     */
+    public WebLabel ( final String text, final Icon icon, final Insets margin, final Object... data )
     {
-        super ( text, icon, LEADING );
+        super ( LanguageUtils.getInitialText ( text, data ), icon, LEADING );
+        LanguageUtils.registerInitialLanguage ( this, text, data );
         setMargin ( margin );
     }
 
-    public WebLabel ( final String text, final Icon icon, final int horizontalAlignment )
+    /**
+     * Constructs label with the specified preferences.
+     *
+     * @param text                text or translation key
+     * @param icon                label icon
+     * @param horizontalAlignment horizontal alignment
+     * @param data                language data, may not be passed
+     */
+    public WebLabel ( final String text, final Icon icon, final int horizontalAlignment, final Object... data )
     {
-        super ( text, icon, horizontalAlignment );
+        super ( LanguageUtils.getInitialText ( text, data ), icon, horizontalAlignment );
+        LanguageUtils.registerInitialLanguage ( this, text, data );
     }
 
-    public WebLabel ( final String text, final Icon icon, final int horizontalAlignment, final Insets margin )
+    /**
+     * Constructs label with the specified preferences.
+     *
+     * @param text                text or translation key
+     * @param icon                label icon
+     * @param horizontalAlignment horizontal alignment
+     * @param margin              label margin
+     * @param data                language data, may not be passed
+     */
+    public WebLabel ( final String text, final Icon icon, final int horizontalAlignment, final Insets margin, final Object... data )
     {
-        super ( text, icon, horizontalAlignment );
+        super ( LanguageUtils.getInitialText ( text, data ), icon, horizontalAlignment );
+        LanguageUtils.registerInitialLanguage ( this, text, data );
         setMargin ( margin );
     }
 
+    /**
+     * Returns label margin.
+     *
+     * @return label margin
+     */
     public Insets getMargin ()
     {
         return getWebUI ().getMargin ();
     }
 
-    public void setMargin ( final Insets margin )
+    /**
+     * Sets label margin.
+     *
+     * @param margin new label margin
+     * @return this label
+     */
+    public WebLabel setMargin ( final Insets margin )
     {
         getWebUI ().setMargin ( margin );
+        return this;
     }
 
+    /**
+     * Sets label margin.
+     *
+     * @param top    top label margin
+     * @param left   left label margin
+     * @param bottom bottom label margin
+     * @param right  right label margin
+     * @return this label
+     */
     public WebLabel setMargin ( final int top, final int left, final int bottom, final int right )
     {
         setMargin ( new Insets ( top, left, bottom, right ) );
         return this;
     }
 
+    /**
+     * Sets label margin.
+     *
+     * @param spacing label margin
+     * @return this label
+     */
     public WebLabel setMargin ( final int spacing )
     {
         return setMargin ( spacing, spacing, spacing, spacing );
     }
 
+    /**
+     * Returns label painter.
+     *
+     * @return label painter
+     */
     public Painter getPainter ()
     {
         return StyleManager.getPainter ( this );
     }
 
+    /**
+     * Sets label painter.
+     * Pass null to remove label painter.
+     *
+     * @param painter new label painter
+     * @return this label
+     */
     public WebLabel setPainter ( final Painter painter )
     {
         StyleManager.setCustomPainter ( this, painter );
         return this;
     }
 
+    /**
+     * Returns whether text shade is displayed or not.
+     *
+     * @return true if text shade is displayed, false otherwise
+     */
     public boolean isDrawShade ()
     {
         return getWebUI ().isDrawShade ();
     }
 
+    /**
+     * Sets whether text shade should be displayed or not.
+     *
+     * @param drawShade whether text shade should be displayed or not
+     */
     public WebLabel setDrawShade ( final boolean drawShade )
     {
         getWebUI ().setDrawShade ( drawShade );
         return this;
     }
 
+    /**
+     * Returns text shade color.
+     *
+     * @return text shade color
+     */
     public Color getShadeColor ()
     {
         return getWebUI ().getShadeColor ();
     }
 
+    /**
+     * Sets text shade color.
+     *
+     * @param shadeColor text shade color
+     */
     public WebLabel setShadeColor ( final Color shadeColor )
     {
         getWebUI ().setShadeColor ( shadeColor );
         return this;
     }
 
+    /**
+     * Returns label transparency.
+     *
+     * @return label transparency
+     */
     public Float getTransparency ()
     {
         return getWebUI ().getTransparency ();
     }
 
+    /**
+     * Sets label transparency.
+     *
+     * @param transparency label transparency
+     */
     public WebLabel setTransparency ( final Float transparency )
     {
         getWebUI ().setTransparency ( transparency );
@@ -557,121 +738,5 @@ public class WebLabel extends JLabel implements Styleable, LanguageMethods, Font
     public Dimension getPreferredSize ()
     {
         return SizeUtils.getPreferredSize ( this, super.getPreferredSize () );
-    }
-
-    /**
-     * Creates and returns new label with the specified preferences.
-     *
-     * @param key label language key
-     * @return created label
-     */
-    public static WebLabel createTranslatedLabel ( final String key )
-    {
-        final WebLabel label = new WebLabel ();
-        label.setLanguage ( key );
-        return label;
-    }
-
-    /**
-     * Creates and returns new label with the specified preferences.
-     *
-     * @param key  label language key
-     * @param data label language data
-     * @return created label
-     */
-    public static WebLabel createTranslatedLabel ( final String key, final Object... data )
-    {
-        final WebLabel label = new WebLabel ();
-        label.setLanguage ( key, data );
-        return label;
-    }
-
-    /**
-     * Creates and returns new label with the specified preferences.
-     *
-     * @param halign horizontal alignment
-     * @param key    label language key
-     * @return created label
-     */
-    public static WebLabel createTranslatedLabel ( final int halign, final String key )
-    {
-        final WebLabel label = new WebLabel ( halign );
-        label.setLanguage ( key );
-        return label;
-    }
-
-    /**
-     * Creates and returns new label with the specified preferences.
-     *
-     * @param halign horizontal alignment
-     * @param key    label language key
-     * @param data   label language data
-     * @return created label
-     */
-    public static WebLabel createTranslatedLabel ( final int halign, final String key, final Object... data )
-    {
-        final WebLabel label = new WebLabel ( halign );
-        label.setLanguage ( key, data );
-        return label;
-    }
-
-    /**
-     * Creates and returns new label with the specified preferences.
-     *
-     * @param icon label icon
-     * @param key  label language key
-     * @return created label
-     */
-    public static WebLabel createTranslatedLabel ( final Icon icon, final String key )
-    {
-        final WebLabel label = new WebLabel ( icon );
-        label.setLanguage ( key );
-        return label;
-    }
-
-    /**
-     * Creates and returns new label with the specified preferences.
-     *
-     * @param icon label icon
-     * @param key  label language key
-     * @param data label language data
-     * @return created label
-     */
-    public static WebLabel createTranslatedLabel ( final Icon icon, final String key, final Object... data )
-    {
-        final WebLabel label = new WebLabel ( icon );
-        label.setLanguage ( key, data );
-        return label;
-    }
-
-    /**
-     * Creates and returns new label with the specified preferences.
-     *
-     * @param halign horizontal alignment
-     * @param icon   label icon
-     * @param key    label language key
-     * @return created label
-     */
-    public static WebLabel createTranslatedLabel ( final int halign, final Icon icon, final String key )
-    {
-        final WebLabel label = new WebLabel ( icon, halign );
-        label.setLanguage ( key );
-        return label;
-    }
-
-    /**
-     * Creates and returns new label with the specified preferences.
-     *
-     * @param halign horizontal alignment
-     * @param icon   label icon
-     * @param key    label language key
-     * @param data   label language data
-     * @return created label
-     */
-    public static WebLabel createTranslatedLabel ( final int halign, final Icon icon, final String key, final Object... data )
-    {
-        final WebLabel label = new WebLabel ( icon, halign );
-        label.setLanguage ( key, data );
-        return label;
     }
 }

@@ -26,6 +26,17 @@
         </painter>
     </style>
 
+    <!-- WebStyledLabel styling -->
+    <style type="styledLabel" id="default">
+        <component>
+            <foreground>black</foreground>
+            <background>237,237,237</background>
+        </component>
+        <painter id="painter" class="com.alee.extended.label.WebStyledLabelPainter">
+            <drawShade>false</drawShade>
+        </painter>
+    </style>
+
     <!-- JComboBox value and list element renderers styling -->
     <style type="label" id="combo-box-box" extends="default">
         <painter id="painter" class="com.alee.managers.style.skin.web.WebComboBoxElementPainter">

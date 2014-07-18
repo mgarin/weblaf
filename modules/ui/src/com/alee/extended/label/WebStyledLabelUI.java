@@ -15,7 +15,7 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.laf.label;
+package com.alee.extended.label;
 
 import com.alee.extended.painter.Painter;
 import com.alee.extended.painter.PainterSupport;
@@ -33,24 +33,21 @@ import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-/**
- * Custom UI for JLabel component.
- *
- * @author Mikle Garin
- */
-
-public class WebLabelUI extends BasicLabelUI implements Styleable, BorderMethods
+public class WebStyledLabelUI extends BasicLabelUI implements Styleable, BorderMethods, SwingConstants
 {
     /**
      * Style settings.
      */
-    protected Insets margin = WebLabelStyle.margin;
-    protected boolean drawShade = WebLabelStyle.drawShade;
+    protected Insets margin = WebStyledLabelStyle.margin;
+    protected int preferredRowCount = WebStyledLabelStyle.preferredRowCount;
+    protected boolean ignoreColorSettings = WebStyledLabelStyle.ignoreColorSettings;
+    protected float scriptFontRatio = WebStyledLabelStyle.scriptFontRatio;
+    protected String truncatedTextSuffix = WebStyledLabelStyle.truncatedTextSuffix;
 
     /**
      * Component painter.
      */
-    protected LabelPainter painter;
+    protected StyledLabelPainter painter;
 
     /**
      * Label listeners.
@@ -61,19 +58,19 @@ public class WebLabelUI extends BasicLabelUI implements Styleable, BorderMethods
      * Runtime variables.
      */
     protected String styleId = null;
-    protected JLabel label;
+    protected WebStyledLabel label;
 
     /**
-     * Returns an instance of the WebLabelUI for the specified component.
+     * Returns an instance of the WebStyledLabelUI for the specified component.
      * This tricky method is used by UIManager to create component UIs when needed.
      *
      * @param c component that will use UI instance
-     * @return instance of the WebLabelUI
+     * @return instance of the WebStyledLabelUI
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( { "UnusedDeclaration" } )
     public static ComponentUI createUI ( final JComponent c )
     {
-        return new WebLabelUI ();
+        return new WebStyledLabelUI ();
     }
 
     /**
@@ -87,10 +84,11 @@ public class WebLabelUI extends BasicLabelUI implements Styleable, BorderMethods
         super.installUI ( c );
 
         // Saving label to local variable
-        label = ( JLabel ) c;
+        label = ( WebStyledLabel ) c;
 
         // Default settings
         SwingUtils.setOrientation ( label );
+        label.setMaximumSize ( null );
 
         // Applying skin
         StyleManager.applySkin ( label );
@@ -129,6 +127,24 @@ public class WebLabelUI extends BasicLabelUI implements Styleable, BorderMethods
      * {@inheritDoc}
      */
     @Override
+    public void propertyChange ( final PropertyChangeEvent e )
+    {
+        super.propertyChange ( e );
+
+        // Updating text ranges
+        if ( WebStyledLabel.PROPERTY_STYLE_RANGE.equals ( e.getPropertyName () ) )
+        {
+            if ( painter != null )
+            {
+                painter.updateTextRanges ();
+            }
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public String getStyleId ()
     {
         return styleId;
@@ -150,31 +166,7 @@ public class WebLabelUI extends BasicLabelUI implements Styleable, BorderMethods
     @Override
     public void updateBorder ()
     {
-        LafUtils.updateBorder ( label, margin, painter );
-    }
-
-    /**
-     * Returns whether text shade is displayed or not.
-     *
-     * @return true if text shade is displayed, false otherwise
-     */
-    public boolean isDrawShade ()
-    {
-        return drawShade;
-    }
-
-    /**
-     * Sets whether text shade should be displayed or not.
-     *
-     * @param drawShade whether text shade should be displayed or not
-     */
-    public void setDrawShade ( final boolean drawShade )
-    {
-        this.drawShade = drawShade;
-        if ( painter != null )
-        {
-            painter.setDrawShade ( drawShade );
-        }
+        LafUtils.updateBorder ( label, margin, null );
     }
 
     /**
@@ -199,45 +191,99 @@ public class WebLabelUI extends BasicLabelUI implements Styleable, BorderMethods
     }
 
     /**
-     * Returns text shade color.
+     * Returns preferred row count.
      *
-     * @return text shade color
+     * @return preferred row count
      */
-    public Color getShadeColor ()
+    public int getPreferredRowCount ()
     {
-        final Color shadeColor = StyleManager.getPainterPropertyValue ( label, "shadeColor" );
-        return shadeColor != null ? shadeColor : WebLabelStyle.shadeColor;
+        return preferredRowCount;
     }
 
     /**
-     * Sets text shade color.
+     * Sets preferred row count.
      *
-     * @param shadeColor text shade color
+     * @param rows new preferred row count
      */
-    public void setShadeColor ( final Color shadeColor )
+    public void setPreferredRowCount ( final int rows )
     {
-        StyleManager.setCustomPainterProperty ( label, "shadeColor", shadeColor );
+        this.preferredRowCount = rows;
+        if ( painter != null )
+        {
+            painter.setPreferredRowCount ( rows );
+        }
     }
 
     /**
-     * Returns label transparency.
+     * Returns whether color settings should be ignored or not.
      *
-     * @return label transparency
+     * @return true if color settings should be ignored, false otherwise
      */
-    public Float getTransparency ()
+    public boolean isIgnoreColorSettings ()
     {
-        final Float transparency = StyleManager.getPainterPropertyValue ( label, "transparency" );
-        return transparency != null ? transparency : WebLabelStyle.transparency;
+        return ignoreColorSettings;
     }
 
     /**
-     * Sets label transparency.
+     * Sets whether color settings should be ignored or not.
      *
-     * @param transparency label transparency
+     * @param ignore whether color settings should be ignored or not
      */
-    public void setTransparency ( final Float transparency )
+    public void setIgnoreColorSettings ( final boolean ignore )
     {
-        StyleManager.setCustomPainterProperty ( label, "transparency", transparency );
+        this.ignoreColorSettings = ignore;
+        if ( painter != null )
+        {
+            painter.setIgnoreColorSettings ( ignore );
+        }
+    }
+
+    /**
+     * Returns subscript and superscript font ratio.
+     *
+     * @return subscript and superscript font ratio
+     */
+    public float getScriptFontRatio ()
+    {
+        return scriptFontRatio;
+    }
+
+    /**
+     * Sets subscript and superscript font ratio.
+     *
+     * @param ratio new subscript and superscript font ratio
+     */
+    public void setScriptFontRatio ( final float ratio )
+    {
+        this.scriptFontRatio = ratio;
+        if ( painter != null )
+        {
+            painter.setScriptFontRatio ( ratio );
+        }
+    }
+
+    /**
+     * Returns truncated text suffix.
+     *
+     * @return truncated text suffix
+     */
+    public String getTruncatedTextSuffix ()
+    {
+        return truncatedTextSuffix;
+    }
+
+    /**
+     * Sets truncated text suffix.
+     *
+     * @param suffix new truncated text suffix
+     */
+    public void setTruncatedTextSuffix ( final String suffix )
+    {
+        this.truncatedTextSuffix = suffix;
+        if ( painter != null )
+        {
+            painter.setTruncatedTextSuffix ( suffix );
+        }
     }
 
     /**
@@ -259,7 +305,8 @@ public class WebLabelUI extends BasicLabelUI implements Styleable, BorderMethods
     public void setPainter ( final Painter painter )
     {
         // Creating adaptive painter if required
-        final LabelPainter properPainter = LafUtils.getProperPainter ( painter, LabelPainter.class, AdaptiveLabelPainter.class );
+        final StyledLabelPainter properPainter =
+                LafUtils.getProperPainter ( painter, StyledLabelPainter.class, AdaptiveStyledLabelPainter.class );
 
         // Properly updating painter
         PainterSupport.uninstallPainter ( label, this.painter );
@@ -278,12 +325,15 @@ public class WebLabelUI extends BasicLabelUI implements Styleable, BorderMethods
      *
      * @param painter label painter
      */
-    protected void applyPainterSettings ( final LabelPainter painter )
+    protected void applyPainterSettings ( final StyledLabelPainter painter )
     {
         if ( painter != null )
         {
             // UI settings
-            painter.setDrawShade ( drawShade );
+            painter.setPreferredRowCount ( preferredRowCount );
+            painter.setIgnoreColorSettings ( ignoreColorSettings );
+            painter.setScriptFontRatio ( scriptFontRatio );
+            painter.setTruncatedTextSuffix ( truncatedTextSuffix );
         }
     }
 

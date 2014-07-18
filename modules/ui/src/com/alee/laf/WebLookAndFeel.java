@@ -22,6 +22,7 @@ import com.alee.extended.checkbox.WebTristateCheckBoxUI;
 import com.alee.extended.colorchooser.GradientColorData;
 import com.alee.extended.colorchooser.GradientData;
 import com.alee.extended.label.WebMultiLineLabelUI;
+import com.alee.extended.label.WebStyledLabelUI;
 import com.alee.extended.label.WebVerticalLabelUI;
 import com.alee.global.StyleConstants;
 import com.alee.laf.button.WebButtonUI;
@@ -188,6 +189,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
     public static String labelUI = WebLabelUI.class.getCanonicalName ();
     public static String verticalLabelUI = WebVerticalLabelUI.class.getCanonicalName ();
     public static String multiLineLabelUI = WebMultiLineLabelUI.class.getCanonicalName ();
+    public static String styledLabelUI = WebStyledLabelUI.class.getCanonicalName ();
     public static String toolTipUI = WebToolTipUI.class.getCanonicalName ();
 
     /**
@@ -422,6 +424,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
         table.put ( "LabelUI", labelUI );
         table.put ( "VerticalLabelUI", verticalLabelUI );
         table.put ( "MultiLineLabelUI", multiLineLabelUI );
+        table.put ( "StyledLabelUI", styledLabelUI );
         table.put ( "ToolTipUI", toolTipUI );
 
         // Button

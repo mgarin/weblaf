@@ -36,6 +36,11 @@ import java.util.StringTokenizer;
 public class StructuredTreeNodesFilter<E extends UniqueNode> implements Filter<E>
 {
     /**
+     * Original tree filter.
+     */
+    protected Filter<E> originalFilter;
+
+    /**
      * Nodes text provider.
      */
     protected TextProvider<E> textProvider;
@@ -64,6 +69,26 @@ public class StructuredTreeNodesFilter<E extends UniqueNode> implements Filter<E
      * Search request text.
      */
     protected String searchText = "";
+
+    /**
+     * Returns original tree filter.
+     *
+     * @return original tree filter
+     */
+    public Filter<E> getOriginalFilter ()
+    {
+        return originalFilter;
+    }
+
+    /**
+     * Sets original tree filter.
+     *
+     * @param filter original tree filter
+     */
+    public void setOriginalFilter ( final Filter<E> filter )
+    {
+        this.originalFilter = filter;
+    }
 
     /**
      * Returns nodes text provider.
@@ -196,8 +221,16 @@ public class StructuredTreeNodesFilter<E extends UniqueNode> implements Filter<E
     @Override
     public boolean accept ( final E node )
     {
-        final String searchRequest = matchCase ? searchText : searchText.toLowerCase ();
-        return searchRequest.equals ( "" ) || acceptIncludingChilds ( node, searchRequest );
+        if ( originalFilter == null || originalFilter.accept ( node ) )
+        {
+            // Structured nodes filtering
+            final String searchRequest = matchCase ? searchText : searchText.toLowerCase ();
+            return searchRequest.equals ( "" ) || acceptIncludingChilds ( node, searchRequest );
+        }
+        else
+        {
+            return false;
+        }
     }
 
     /**
