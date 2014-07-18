@@ -506,11 +506,13 @@ public class WebLookAndFeel extends BasicLookAndFeel
     {
         super.initSystemColorDefaults ( table );
 
-        final String textColor = "#" + ColorUtils.getHexColor ( StyleConstants.textColor );
+        final String textColor = ColorUtils.getHexColor ( StyleConstants.textColor );
+        final String textHighlightColor = ColorUtils.getHexColor ( StyleConstants.textSelectionColor );
+        final String inactiveTextColor = ColorUtils.getHexColor ( StyleConstants.disabledTextColor );
 
-        final String[] defaultSystemColors = { "menu", "#ffffff", "menuText", textColor, "textHighlight",
-                "#" + ColorUtils.getHexColor ( StyleConstants.textSelectionColor ), "textHighlightText", textColor, "textInactiveText",
-                "#" + ColorUtils.getHexColor ( StyleConstants.disabledTextColor ), "controlText", textColor, };
+        final String[] defaultSystemColors =
+                { "menu", "#ffffff", "menuText", textColor, "textHighlight", textHighlightColor, "textHighlightText", textColor,
+                        "textInactiveText", inactiveTextColor, "controlText", textColor, };
 
         loadSystemColors ( table, defaultSystemColors, isNativeLookAndFeel () );
     }

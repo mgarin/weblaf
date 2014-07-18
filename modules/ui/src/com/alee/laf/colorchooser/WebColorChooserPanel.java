@@ -520,7 +520,8 @@ public class WebColorChooserPanel extends WebPanel implements DialogOptions
 
     private void updateHexField ( final Color color )
     {
-        hexColor.setText ( ColorUtils.getHexColor ( color ) );
+        // Substring removes first # symbol
+        hexColor.setText ( ColorUtils.getHexColor ( color ).substring ( 1 ) );
     }
 
     private void updateRGBFields ( final Color color )

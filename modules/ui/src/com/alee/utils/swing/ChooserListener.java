@@ -15,14 +15,24 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.extended.colorchooser;
+package com.alee.utils.swing;
+
+import java.util.EventListener;
 
 /**
- * User: mgarin Date: 05.02.13 Time: 12:22
+ * Base listener for any chooser component.
+ *
+ * @param <T> chooser data type
+ * @author Mikle Garin
  */
 
-public enum ColorChooserFieldType
+public interface ChooserListener<T> extends EventListener
 {
-    rgb,
-    hex
+    /**
+     * Informs that chooser's selected data has changed.
+     *
+     * @param oldData previously selected data
+     * @param newData new selected data
+     */
+    public void selected ( T oldData, T newData );
 }

@@ -19,14 +19,15 @@ package com.alee.extended.colorchooser;
 
 import com.alee.extended.image.WebImage;
 import com.alee.extended.painter.AbstractPainter;
-import com.alee.global.StyleConstants;
+import com.alee.extended.window.PopOverAlignment;
+import com.alee.extended.window.PopOverDirection;
+import com.alee.extended.window.WebPopOver;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.colorchooser.ColorChooserListener;
 import com.alee.laf.colorchooser.WebColorChooserPanel;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
-import com.alee.laf.rootpane.WebDialog;
 import com.alee.laf.rootpane.WebWindow;
 import com.alee.laf.text.WebTextField;
 import com.alee.managers.hotkey.Hotkey;
@@ -36,6 +37,7 @@ import com.alee.managers.log.Log;
 import com.alee.utils.ColorUtils;
 import com.alee.utils.ImageUtils;
 import com.alee.utils.SwingUtils;
+import com.alee.utils.swing.ChooserListener;
 
 import javax.swing.*;
 import java.awt.*;
@@ -45,29 +47,64 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 /**
- * User: mgarin Date: 21.12.12 Time: 15:38
+ * Custom field that offers various ways to select Color.
+ * Color can be typed, selected from popup palette or using eyedropper tool.
+ *
+ * @author Mikle Garin
  */
 
 public class WebColorChooserField extends WebTextField
 {
-    public static final ImageIcon pipetteIcon = new ImageIcon ( WebColorChooserField.class.getResource ( "icons/eyedropper.png" ) );
+    /**
+     * todo 1. Make possible color's alpha channel selection
+     */
 
-    private Color color;
-    private ColorChooserFieldType fieldType;
-    private boolean pipetteEnabled = true;
+    /**
+     * Used icons.
+     */
+    public static final ImageIcon eyedropperIcon = new ImageIcon ( WebColorChooserField.class.getResource ( "icons/eyedropper.png" ) );
 
-    private final int pipettePixels = 9;
-    private final int pixelSize = 11;
+    /**
+     * Color display type.
+     *
+     * @see com.alee.extended.colorchooser.ColorDisplayType
+     */
+    protected ColorDisplayType colorDisplayType;
 
-    private String last = "";
+    /**
+     * Whether should display eyedropper tool or not.
+     */
+    protected boolean displayEyedropper = true;
 
-    private final WebButton colorButton;
-    private Robot robot;
-    private WebImage pipettePicker;
-    private WebWindow popup;
-    private WebColorChooserPanel colorChooserPanel;
+    /**
+     * Size of the eyedropper image side displayed within popup in pixels.
+     * Each of these pixels will also be enlarged according to eyedropperImagePixelSize value.
+     */
+    protected final int eyedropperImageSide = 9;
 
-    // todo Make possible color's alpha channel selection
+    /**
+     * Size of each pixel of eyedropper image displayed within popup.
+     */
+    protected final int eyedropperImagePixelSize = 11;
+
+    /**
+     * Most recent valid color text.
+     */
+    protected String lastCorrectColorText = "";
+
+    /**
+     * Currently selected color.
+     */
+    protected Color color;
+
+    /**
+     * UI elements.
+     */
+    protected final WebButton colorButton;
+    protected Robot robot;
+    protected WebImage eyedropperPicker;
+    protected WebPopOver popup;
+    protected WebColorChooserPanel colorChooserPanel;
 
     public WebColorChooserField ()
     {
@@ -78,8 +115,12 @@ public class WebColorChooserField extends WebTextField
     {
         super ();
 
-        // Pipette color picker
-        updatePipette ();
+        // Field settings
+        updateMargin ();
+        setHorizontalAlignment ( CENTER );
+
+        // Eyedropper tool
+        updateEyedropper ();
 
         // Trailing color choose button
         colorButton = new WebButton ( ImageUtils.createColorChooserIcon ( color ) );
@@ -98,7 +139,7 @@ public class WebColorChooserField extends WebTextField
         } );
         setTrailingComponent ( colorButton );
 
-        // Actions
+        // Color update lsiteners
         addActionListener ( new ActionListener ()
         {
             @Override
@@ -107,6 +148,16 @@ public class WebColorChooserField extends WebTextField
                 updateColorFromField ();
             }
         } );
+        addFocusListener ( new FocusAdapter ()
+        {
+            @Override
+            public void focusLost ( final FocusEvent e )
+            {
+                updateColorFromField ();
+            }
+        } );
+
+        // Popup display listeners
         addMouseListener ( new MouseAdapter ()
         {
             @Override
@@ -116,14 +167,6 @@ public class WebColorChooserField extends WebTextField
                 {
                     showColorChooserPopup ();
                 }
-            }
-        } );
-        addFocusListener ( new FocusAdapter ()
-        {
-            @Override
-            public void focusLost ( final FocusEvent e )
-            {
-                updateColorFromField ();
             }
         } );
         addKeyListener ( new KeyAdapter ()
@@ -146,23 +189,19 @@ public class WebColorChooserField extends WebTextField
         } );
 
         // Initial data
-        setFieldType ( ColorChooserFieldType.rgb );
-        setColor ( color );
-
-        // Initial styling settings
-        updateMargin ();
-        setHorizontalAlignment ( CENTER );
+        setColorDisplayType ( ColorDisplayType.rgb );
+        setColorImpl ( color );
     }
 
-    public boolean isPipetteEnabled ()
+    public boolean isDisplayEyedropper ()
     {
-        return pipetteEnabled;
+        return displayEyedropper;
     }
 
-    public void setPipetteEnabled ( final boolean pipetteEnabled )
+    public void setDisplayEyedropper ( final boolean displayEyedropper )
     {
-        this.pipetteEnabled = pipetteEnabled;
-        updatePipette ();
+        this.displayEyedropper = displayEyedropper;
+        updateEyedropper ();
     }
 
     public Color getColor ()
@@ -172,18 +211,25 @@ public class WebColorChooserField extends WebTextField
 
     public void setColor ( final Color color )
     {
+        setColorImpl ( color );
+    }
+
+    protected void setColorImpl ( final Color color )
+    {
+        final Color oldColor = this.color;
         this.color = color;
         updateViewFromColor ();
+        fireColorSelected ( oldColor, color );
     }
 
-    public ColorChooserFieldType getFieldType ()
+    public ColorDisplayType getColorDisplayType ()
     {
-        return fieldType;
+        return colorDisplayType;
     }
 
-    public void setFieldType ( final ColorChooserFieldType fieldType )
+    public void setColorDisplayType ( final ColorDisplayType colorDisplayType )
     {
-        this.fieldType = fieldType;
+        this.colorDisplayType = colorDisplayType;
         updateFieldType ();
     }
 
@@ -195,23 +241,23 @@ public class WebColorChooserField extends WebTextField
     }
 
     /**
-     * Private update methods
+     * protected update methods
      */
 
-    private void updateViewFromColor ()
+    protected void updateViewFromColor ()
     {
         colorButton.setIcon ( ImageUtils.createColorChooserIcon ( color ) );
         updateText ();
     }
 
-    private void updateColorFromField ()
+    protected void updateColorFromField ()
     {
         final String current = getText ();
-        if ( !current.equals ( last ) )
+        if ( !current.equals ( lastCorrectColorText ) )
         {
             try
             {
-                final boolean hex = fieldType.equals ( ColorChooserFieldType.hex );
+                final boolean hex = colorDisplayType.equals ( ColorDisplayType.hex );
                 Color newColor = hex ? ColorUtils.parseHexColor ( current ) : ColorUtils.parseRgbColor ( current );
                 if ( newColor != null )
                 {
@@ -219,7 +265,7 @@ public class WebColorChooserField extends WebTextField
                     newColor = ColorUtils.removeAlpha ( newColor );
 
                     // Apply new value
-                    setColor ( newColor );
+                    setColorImpl ( newColor );
                 }
                 else
                 {
@@ -235,63 +281,63 @@ public class WebColorChooserField extends WebTextField
         }
     }
 
-    private void updateFieldType ()
+    protected void updateFieldType ()
     {
-        if ( fieldType != null )
+        if ( colorDisplayType != null )
         {
-            final boolean hex = fieldType.equals ( ColorChooserFieldType.hex );
+            final boolean hex = colorDisplayType.equals ( ColorDisplayType.hex );
             setColumns ( hex ? 6 : 9 );
             updateText ();
         }
     }
 
-    private void updateText ()
+    protected void updateText ()
     {
         if ( color != null )
         {
             final String text = getColorText ( color );
             setText ( text );
-            last = text;
+            lastCorrectColorText = text;
         }
     }
 
-    private String getColorText ( final Color color )
+    protected String getColorText ( final Color color )
     {
-        final boolean hex = fieldType.equals ( ColorChooserFieldType.hex );
+        final boolean hex = colorDisplayType.equals ( ColorDisplayType.hex );
         return hex ? ColorUtils.getHexColor ( color ) : color.getRed () + "," + color.getGreen () + "," + color.getBlue ();
     }
 
-    private void updateMargin ()
+    protected void updateMargin ()
     {
         setMargin ( isDrawBorder () ? new Insets ( -1, 0, -1, -1 ) : new Insets ( 0, 0, 0, 0 ) );
     }
 
     /**
-     * Pipette chooser
+     * Eyedropper chooser
      */
 
-    private void updatePipette ()
+    protected void updateEyedropper ()
     {
-        if ( pipetteEnabled )
+        if ( displayEyedropper )
         {
-            installPipette ();
+            installEyedropper ();
         }
         else
         {
-            uninstallPipette ();
+            uninstallEyedropper ();
         }
         revalidate ();
     }
 
-    private void installPipette ()
+    protected void installEyedropper ()
     {
-        if ( pipettePicker == null )
+        if ( eyedropperPicker == null )
         {
-            // Pipette picker icon
-            pipettePicker = new WebImage ( pipetteIcon );
-            //            pipettePicker.setMargin ( 0, 2, 0, 2 );
+            // Eyedropper picker icon
+            eyedropperPicker = new WebImage ( eyedropperIcon );
+            //            eyedropperPicker.setMargin ( 0, 2, 0, 2 );
 
-            // Pipette picker actions
+            // Eyedropper picker actions
             try
             {
                 robot = new Robot ();
@@ -306,7 +352,7 @@ public class WebColorChooserField extends WebTextField
                 {
                     private boolean shouldUpdateColor;
 
-                    private WebDialog window;
+                    private WebWindow window;
                     private WebPanel screen;
                     private WebLabel info;
 
@@ -317,7 +363,7 @@ public class WebColorChooserField extends WebTextField
                     @Override
                     public void mousePressed ( final MouseEvent e )
                     {
-                        if ( pipetteEnabled && SwingUtils.isLeftMouseButton ( e ) )
+                        if ( displayEyedropper && SwingUtils.isLeftMouseButton ( e ) )
                         {
                             // Resetting color update mark
                             shouldUpdateColor = true;
@@ -341,7 +387,7 @@ public class WebColorChooserField extends WebTextField
                     @Override
                     public void mouseDragged ( final MouseEvent e )
                     {
-                        if ( pipetteEnabled && SwingUtils.isLeftMouseButton ( e ) && window != null )
+                        if ( displayEyedropper && SwingUtils.isLeftMouseButton ( e ) && window != null )
                         {
                             // Updating preview window location
                             updateWindowLocation ();
@@ -354,7 +400,7 @@ public class WebColorChooserField extends WebTextField
                     @Override
                     public void mouseReleased ( final MouseEvent e )
                     {
-                        if ( pipetteEnabled && SwingUtils.isLeftMouseButton ( e ) && window != null )
+                        if ( displayEyedropper && SwingUtils.isLeftMouseButton ( e ) && window != null )
                         {
                             // Closing preview window
                             window.dispose ();
@@ -377,10 +423,10 @@ public class WebColorChooserField extends WebTextField
                                     {
                                         final Point p = MouseInfo.getPointerInfo ().getLocation ();
                                         screenshot = robot.createScreenCapture (
-                                                new Rectangle ( p.x - pipettePixels / 2, p.y - pipettePixels / 2, pipettePixels,
-                                                        pipettePixels )
+                                                new Rectangle ( p.x - eyedropperImageSide / 2, p.y - eyedropperImageSide / 2,
+                                                        eyedropperImageSide, eyedropperImageSide )
                                         );
-                                        color = new Color ( screenshot.getRGB ( pipettePixels / 2, pipettePixels / 2 ) );
+                                        color = new Color ( screenshot.getRGB ( eyedropperImageSide / 2, eyedropperImageSide / 2 ) );
                                         if ( screen != null )
                                         {
                                             screen.repaint ();
@@ -401,10 +447,10 @@ public class WebColorChooserField extends WebTextField
 
                     private void createPreviewWindow ()
                     {
-                        window = new WebDialog ( pipettePicker );
+                        window = new WebWindow ( eyedropperPicker );
                         window.setLayout ( new BorderLayout () );
-                        window.setUndecorated ( true );
                         window.setAlwaysOnTop ( true );
+                        window.setFocusableWindowState ( false );
 
                         window.addWindowListener ( new WindowAdapter ()
                         {
@@ -415,7 +461,7 @@ public class WebColorChooserField extends WebTextField
                                 {
                                     if ( shouldUpdateColor )
                                     {
-                                        setColor ( color );
+                                        setColorImpl ( color );
                                     }
                                     screenshot.flush ();
                                     screenshot = null;
@@ -462,7 +508,8 @@ public class WebColorChooserField extends WebTextField
 
                         screen = new WebPanel ( screenPainter );
                         screen.setFocusable ( true );
-                        screen.setPreferredSize ( new Dimension ( pipettePixels * pixelSize + 4, pipettePixels * pixelSize + 4 ) );
+                        screen.setPreferredSize ( new Dimension ( eyedropperImageSide * eyedropperImagePixelSize + 4,
+                                eyedropperImageSide * eyedropperImagePixelSize + 4 ) );
                         window.add ( screen, BorderLayout.CENTER );
 
                         info = new WebLabel ( WebLabel.LEADING );
@@ -544,17 +591,17 @@ public class WebColorChooserField extends WebTextField
                         window.setLocation ( x, y );
                     }
                 };
-                pipettePicker.addMouseListener ( mouseAdapter );
-                pipettePicker.addMouseMotionListener ( mouseAdapter );
-                pipettePicker.setCursor ( Cursor.getDefaultCursor () );
+                eyedropperPicker.addMouseListener ( mouseAdapter );
+                eyedropperPicker.addMouseMotionListener ( mouseAdapter );
+                eyedropperPicker.setCursor ( Cursor.getDefaultCursor () );
             }
         }
 
         // Adding field leading component
-        setLeadingComponent ( pipettePicker );
+        setLeadingComponent ( eyedropperPicker );
     }
 
-    private void uninstallPipette ()
+    protected void uninstallEyedropper ()
     {
         // Removing field leading component
         setLeadingComponent ( null );
@@ -564,7 +611,7 @@ public class WebColorChooserField extends WebTextField
      * Color chooser popup
      */
 
-    private void showColorChooserPopup ()
+    protected void showColorChooserPopup ()
     {
         // Checking that component is eligable for focus request
         if ( !requestFocusInWindow () && !isFocusOwner () )
@@ -585,18 +632,12 @@ public class WebColorChooserField extends WebTextField
             // Color chooser
             colorChooserPanel = new WebColorChooserPanel ( true );
             colorChooserPanel.setColor ( color );
-            colorChooserPanel.setUndecorated ( false );
-            colorChooserPanel.setPaintFocus ( false );
-            colorChooserPanel.setRound ( StyleConstants.smallRound );
-            colorChooserPanel.setShadeWidth ( 0 );
 
             // Popup window
-            popup = new WebWindow ( ancestor );
-            popup.setLayout ( new BorderLayout () );
+            popup = new WebPopOver ( ancestor );
+            popup.setMargin ( 5 );
             popup.setCloseOnFocusLoss ( true );
-            popup.setWindowOpaque ( false );
             popup.add ( colorChooserPanel );
-            popup.pack ();
 
             // Correct popup positioning
             updatePopupLocation ();
@@ -637,7 +678,7 @@ public class WebColorChooserField extends WebTextField
                 @Override
                 public void okPressed ( final ActionEvent e )
                 {
-                    setColor ( colorChooserPanel.getColor () );
+                    setColorImpl ( colorChooserPanel.getColor () );
                     popup.setVisible ( false );
                 }
 
@@ -667,11 +708,12 @@ public class WebColorChooserField extends WebTextField
         SwingUtils.copyOrientation ( WebColorChooserField.this, popup );
 
         // Showing popup and changing focus
-        popup.setVisible ( true );
+        // popup.setVisible ( true );
+        popup.show ( this, PopOverDirection.down, PopOverAlignment.centered );
         colorChooserPanel.requestFocusInWindow ();
     }
 
-    private void updatePopupLocation ()
+    protected void updatePopupLocation ()
     {
         final Point los = WebColorChooserField.this.getLocationOnScreen ();
         final Rectangle gb = popup.getGraphicsConfiguration ().getBounds ();
@@ -715,5 +757,39 @@ public class WebColorChooserField extends WebTextField
         }
 
         popup.setLocation ( x, y );
+    }
+
+    /**
+     * Adds new color selection listener.
+     *
+     * @param listener new color selection listener
+     */
+    public void addColorListener ( final ChooserListener<Color> listener )
+    {
+        listenerList.add ( ChooserListener.class, listener );
+    }
+
+    /**
+     * Removes color selection listener.
+     *
+     * @param listener color selection listener to remove
+     */
+    public void removeColorListener ( final ChooserListener<Color> listener )
+    {
+        listenerList.remove ( ChooserListener.class, listener );
+    }
+
+    /**
+     * Informs about color selection.
+     *
+     * @param oldColor previously selected Color
+     * @param newColor new selected Color
+     */
+    public void fireColorSelected ( final Color oldColor, final Color newColor )
+    {
+        for ( final ChooserListener listener : listenerList.getListeners ( ChooserListener.class ) )
+        {
+            listener.selected ( oldColor, newColor );
+        }
     }
 }
