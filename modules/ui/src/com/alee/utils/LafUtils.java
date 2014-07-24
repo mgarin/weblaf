@@ -117,8 +117,8 @@ public final class LafUtils
      */
     public static <T extends Painter> T getProperPainter ( final Painter painter, final Class properClass, final Class adapterClass )
     {
-        return painter == null ? null : ( ReflectUtils.isAssignable ( properClass, painter.getClass () ) ? ( T ) painter :
-                ( T ) ReflectUtils.createInstanceSafely ( adapterClass, painter ) );
+        return painter == null ? null : ReflectUtils.isAssignable ( properClass, painter.getClass () ) ? ( T ) painter :
+                ( T ) ReflectUtils.createInstanceSafely ( adapterClass, painter );
     }
 
     /**
@@ -1251,7 +1251,7 @@ public final class LafUtils
                 float alpha = opacity;
                 if ( distance > 0.0d )
                 {
-                    alpha = ( float ) ( 1.0f / ( ( distance * size ) * opacity ) );
+                    alpha = ( float ) ( 1.0f / ( distance * size * opacity ) );
                 }
                 alpha *= preAlpha;
                 if ( alpha > 1.0f )

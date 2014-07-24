@@ -303,7 +303,7 @@ public class FormLayout extends AbstractLayoutManager
     public void addComponent ( final Component component, final Object constraints )
     {
         // Adding default constraints if needed (left side components aligned to right, right side components fill the space)
-        final String halign = constraints != null ? "" + constraints : ( layoutConstraints.size () % 2 == 0 ? RIGHT : FILL );
+        final String halign = constraints != null ? "" + constraints : layoutConstraints.size () % 2 == 0 ? RIGHT : FILL;
         layoutConstraints.put ( component, halign );
     }
 

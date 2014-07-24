@@ -689,7 +689,7 @@ public final class SwingUtils
      * @param <T>         parent component class type
      * @return first parent which is instance of specified class type or null if none found
      */
-    public static <T> T getFirstParent ( final Component component, final Class<T> parentClass )
+    public static <T extends Container> T getFirstParent ( final Component component, final Class<T> parentClass )
     {
         Component parent = component.getParent ();
         while ( !parentClass.isInstance ( parent ) && parent != null )
@@ -697,6 +697,27 @@ public final class SwingUtils
             parent = parent.getParent ();
         }
         return ( T ) parent;
+    }
+
+    /**
+     * Returns first component placed in the specified container which is instance of specified class type or null if none found.
+     *
+     * @param container      container to look for component in
+     * @param componentClass component class
+     * @param <T>            component class type
+     * @return first component placed in the specified container which is instance of specified class type or null if none found
+     */
+    public static <T extends Component> T getFirst ( final Container container, final Class<T> componentClass )
+    {
+        for ( int i = 0; i < container.getComponentCount (); i++ )
+        {
+            final Component component = container.getComponent ( i );
+            if ( componentClass.isInstance ( component ) )
+            {
+                return ( T ) component;
+            }
+        }
+        return null;
     }
 
     /**

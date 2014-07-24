@@ -36,7 +36,7 @@ import java.awt.*;
 import java.util.List;
 
 /**
- * User: mgarin Date: 23.08.11 Time: 16:15
+ * @author Mikle Garin
  */
 
 public class WebToolBar extends JToolBar implements ShapeProvider, SizeMethods<WebToolBar>, LanguageContainerMethods
@@ -59,6 +59,18 @@ public class WebToolBar extends JToolBar implements ShapeProvider, SizeMethods<W
     public WebToolBar ( final int orientation )
     {
         super ( orientation );
+    }
+
+    public WebToolBar ( final ToolbarStyle style )
+    {
+        super ();
+        setToolbarStyle ( style );
+    }
+
+    public WebToolBar ( final int orientation, final ToolbarStyle style )
+    {
+        super ( orientation );
+        setToolbarStyle ( style );
     }
 
     /**
