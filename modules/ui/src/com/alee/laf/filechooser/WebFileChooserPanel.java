@@ -1014,6 +1014,7 @@ public class WebFileChooserPanel extends WebPanel
         this.viewType = viewType;
 
         // Updating view component and selection
+        final int dividerLocation = centralSplit.getDividerLocation ();
         switch ( viewType )
         {
             case icons:
@@ -1053,6 +1054,7 @@ public class WebFileChooserPanel extends WebPanel
                 break;
             }
         }
+        centralSplit.setDividerLocation ( dividerLocation );
         centralSplit.revalidate ();
     }
 
@@ -1895,7 +1897,7 @@ public class WebFileChooserPanel extends WebPanel
         if ( text == null )
         {
             setApproveButtonText ( chooserType == FileChooserType.save ? FileApproveText.save :
-                    ( chooserType == FileChooserType.open ? FileApproveText.open : FileApproveText.choose ) );
+                    chooserType == FileChooserType.open ? FileApproveText.open : FileApproveText.choose );
         }
         else
         {
