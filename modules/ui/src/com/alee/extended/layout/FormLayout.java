@@ -445,17 +445,18 @@ public class FormLayout extends AbstractLayoutManager
                     // First column
                     final int cy = fillLeftSideHeight ? y : getSideY ( true, y, rh, ps.height );
                     final int ch = fillLeftSideHeight ? rh : ps.height;
+                    final int aw = Math.min ( ps.width, lpw );
                     if ( pos.equals ( LEFT ) )
                     {
-                        component.setBounds ( x1, cy, ps.width, ch );
+                        component.setBounds ( x1, cy, aw, ch );
                     }
                     else if ( pos.equals ( CENTER ) )
                     {
-                        component.setBounds ( x1 + lpw / 2 - ps.width / 2, cy, ps.width, ch );
+                        component.setBounds ( x1 + lpw / 2 - aw / 2, cy, aw, ch );
                     }
                     else if ( pos.equals ( RIGHT ) )
                     {
-                        component.setBounds ( x1 + lpw - ps.width, cy, ps.width, ch );
+                        component.setBounds ( x1 + lpw - aw, cy, aw, ch );
                     }
                     else if ( pos.equals ( FILL ) )
                     {
@@ -471,17 +472,18 @@ public class FormLayout extends AbstractLayoutManager
                     // Second column
                     final int cy = fillRightSideHeight ? y : getSideY ( false, y, rh, ps.height );
                     final int ch = fillRightSideHeight ? rh : ps.height;
+                    final int aw = Math.min ( ps.width, rpw );
                     if ( pos.equals ( LEFT ) )
                     {
-                        component.setBounds ( x2, cy, ps.width, ch );
+                        component.setBounds ( x2, cy, aw, ch );
                     }
                     else if ( pos.equals ( CENTER ) )
                     {
-                        component.setBounds ( x2 + rpw / 2 - ps.width / 2, cy, ps.width, ch );
+                        component.setBounds ( x2 + rpw / 2 - aw / 2, cy, aw, ch );
                     }
                     else if ( pos.equals ( RIGHT ) )
                     {
-                        component.setBounds ( x2 + rpw - ps.width, cy, ps.width, ch );
+                        component.setBounds ( x2 + rpw - aw, cy, aw, ch );
                     }
                     else if ( pos.equals ( FILL ) )
                     {
