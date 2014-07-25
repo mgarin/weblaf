@@ -49,7 +49,37 @@ import java.util.zip.ZipInputStream;
 
 public final class ReflectUtils
 {
+    /**
+     * Whether should allow safe methods to log errors or not.
+     * By default it is disabled to hide some WebLaF exceptions which occur due to various method checks.
+     * You can enable it in case you need a depper look into whats happening here.
+     */
+    private static boolean safeMethodsLoggingEnabled = false;
+
+    /**
+     * Methods lookup cache.
+     */
     private static final Map<Class, Map<String, Method>> methodsLookupCache = new HashMap<Class, Map<String, Method>> ();
+
+    /**
+     * Returns whether should allow safe methods to log errors or not.
+     *
+     * @return true if should allow safe methods to log errors, false otherwise
+     */
+    public static boolean isSafeMethodsLoggingEnabled ()
+    {
+        return safeMethodsLoggingEnabled;
+    }
+
+    /**
+     * Sets whether should allow safe methods to log errors or not.
+     *
+     * @param enabled whether should allow safe methods to log errors or not
+     */
+    public static void setSafeMethodsLoggingEnabled ( final boolean enabled )
+    {
+        ReflectUtils.safeMethodsLoggingEnabled = enabled;
+    }
 
     /**
      * Returns specified class field's type.
@@ -67,6 +97,10 @@ public final class ReflectUtils
         }
         catch ( final NoSuchFieldException e )
         {
+            if ( safeMethodsLoggingEnabled )
+            {
+                Log.warn ( "ReflectionUtils method failed: getFieldTypeSafely", e );
+            }
             return null;
         }
     }
@@ -102,6 +136,10 @@ public final class ReflectUtils
         }
         catch ( final NoSuchFieldException e )
         {
+            if ( safeMethodsLoggingEnabled )
+            {
+                Log.warn ( "ReflectionUtils method failed: getFieldSafely", e );
+            }
             return null;
         }
     }
@@ -168,12 +206,12 @@ public final class ReflectUtils
             setFieldValue ( object, field, value );
             return true;
         }
-        catch ( final NoSuchFieldException e )
+        catch ( final Throwable e )
         {
-            return false;
-        }
-        catch ( final IllegalAccessException e )
-        {
+            if ( safeMethodsLoggingEnabled )
+            {
+                Log.warn ( "ReflectionUtils method failed: setFieldValueSafely", e );
+            }
             return false;
         }
     }
@@ -210,6 +248,10 @@ public final class ReflectUtils
         }
         catch ( final ClassNotFoundException e )
         {
+            if ( safeMethodsLoggingEnabled )
+            {
+                Log.warn ( "ReflectionUtils method failed: getClassSafely", e );
+            }
             return null;
         }
     }
@@ -632,12 +674,12 @@ public final class ReflectUtils
         {
             return getStaticFieldValue ( classType, fieldName );
         }
-        catch ( final IllegalAccessException e )
+        catch ( final Throwable e )
         {
-            return null;
-        }
-        catch ( final NoSuchFieldException e )
-        {
+            if ( safeMethodsLoggingEnabled )
+            {
+                Log.warn ( "ReflectionUtils method failed: getStaticFieldValueSafely", e );
+            }
             return null;
         }
     }
@@ -691,6 +733,10 @@ public final class ReflectUtils
         }
         catch ( final Throwable e )
         {
+            if ( safeMethodsLoggingEnabled )
+            {
+                Log.warn ( "ReflectionUtils method failed: createInstanceSafely", e );
+            }
             return null;
         }
     }
@@ -728,6 +774,10 @@ public final class ReflectUtils
         }
         catch ( final Throwable e )
         {
+            if ( safeMethodsLoggingEnabled )
+            {
+                Log.warn ( "ReflectionUtils method failed: createInstanceSafely", e );
+            }
             return null;
         }
     }
@@ -831,6 +881,10 @@ public final class ReflectUtils
         }
         catch ( final Throwable e )
         {
+            if ( safeMethodsLoggingEnabled )
+            {
+                Log.warn ( "ReflectionUtils method failed: callStaticMethodSafely", e );
+            }
             return null;
         }
     }
@@ -871,6 +925,10 @@ public final class ReflectUtils
         }
         catch ( final Throwable e )
         {
+            if ( safeMethodsLoggingEnabled )
+            {
+                Log.warn ( "ReflectionUtils method failed: callStaticMethodSafely", e );
+            }
             return null;
         }
     }
@@ -910,6 +968,10 @@ public final class ReflectUtils
         }
         catch ( final Throwable e )
         {
+            if ( safeMethodsLoggingEnabled )
+            {
+                Log.warn ( "ReflectionUtils method failed: callMethodsSafely", e );
+            }
             return null;
         }
     }
@@ -952,6 +1014,10 @@ public final class ReflectUtils
         }
         catch ( final Throwable e )
         {
+            if ( safeMethodsLoggingEnabled )
+            {
+                Log.warn ( "ReflectionUtils method failed: callMethodsSafely", e );
+            }
             return null;
         }
     }
@@ -994,6 +1060,10 @@ public final class ReflectUtils
         }
         catch ( final Throwable e )
         {
+            if ( safeMethodsLoggingEnabled )
+            {
+                Log.warn ( "ReflectionUtils method failed: callMethodSafely", e );
+            }
             return null;
         }
     }
@@ -1120,6 +1190,10 @@ public final class ReflectUtils
         }
         catch ( final Throwable e )
         {
+            if ( safeMethodsLoggingEnabled )
+            {
+                Log.warn ( "ReflectionUtils method failed: getMethodSafely", e );
+            }
             return null;
         }
     }
@@ -1203,20 +1277,19 @@ public final class ReflectUtils
     protected static Method getMethodImpl ( final Class aClass, final String methodName, final Object[] arguments )
             throws NoSuchMethodException, IllegalAccessException, InvocationTargetException
     {
-        final Method method;
-        if ( arguments.length == 0 )
-        {
-            // Searching simple method w/o arguments
-            method = aClass.getMethod ( methodName );
-            method.setAccessible ( true );
-        }
-        else
-        {
-            // Searching for more complex method
-            final Class[] types = getClassTypes ( arguments );
-            method = getMethod ( aClass, aClass, methodName, types );
-            method.setAccessible ( true );
-        }
+        // This enhancement was a bad idea and was disabled
+        // In case method is protected/private or located in one of superclasses it won't be found
+        //        if ( arguments.length == 0 )
+        //        {
+        //            // Searching simple method w/o arguments
+        //            method = aClass.getMethod ( methodName );
+        //            method.setAccessible ( true );
+        //        }
+
+        // Searching for more complex method
+        final Class[] types = getClassTypes ( arguments );
+        final Method method = getMethod ( aClass, aClass, methodName, types );
+        method.setAccessible ( true );
         return method;
     }
 

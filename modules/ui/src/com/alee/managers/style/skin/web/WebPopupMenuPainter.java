@@ -282,7 +282,7 @@ public class WebPopupMenuPainter<E extends JPopupMenu> extends WebPopupPainter<E
                                 case aboveStart:
                                 {
                                     x = ( ltr ? los.x : los.x + is.width - ps.width ) +
-                                            ( transparent ? ( ltr ? -sideWidth : sideWidth ) : 0 );
+                                            ( transparent ? ltr ? -sideWidth : sideWidth : 0 );
                                     y = los.y - ps.height + cornerShear;
                                     relativeCorner = ltr ? 0 : Integer.MAX_VALUE;
                                     break;
@@ -297,7 +297,7 @@ public class WebPopupMenuPainter<E extends JPopupMenu> extends WebPopupPainter<E
                                 case aboveEnd:
                                 {
                                     x = ( ltr ? los.x + is.width - ps.width : los.x ) +
-                                            ( transparent ? ( ltr ? sideWidth : -sideWidth ) : 0 );
+                                            ( transparent ? ltr ? sideWidth : -sideWidth : 0 );
                                     y = los.y - ps.height + cornerShear;
                                     relativeCorner = ltr ? Integer.MAX_VALUE : 0;
                                     break;
@@ -305,7 +305,7 @@ public class WebPopupMenuPainter<E extends JPopupMenu> extends WebPopupPainter<E
                                 case belowStart:
                                 {
                                     x = ( ltr ? los.x : los.x + is.width - ps.width ) +
-                                            ( transparent ? ( ltr ? -sideWidth : sideWidth ) : 0 );
+                                            ( transparent ? ltr ? -sideWidth : sideWidth : 0 );
                                     y = los.y + is.height - cornerShear;
                                     relativeCorner = ltr ? 0 : Integer.MAX_VALUE;
                                     break;
@@ -320,7 +320,7 @@ public class WebPopupMenuPainter<E extends JPopupMenu> extends WebPopupPainter<E
                                 case belowEnd:
                                 {
                                     x = ( ltr ? los.x + is.width - ps.width : los.x ) +
-                                            ( transparent ? ( ltr ? sideWidth : -sideWidth ) : 0 );
+                                            ( transparent ? ltr ? sideWidth : -sideWidth : 0 );
                                     y = los.y + is.height - cornerShear;
                                     relativeCorner = ltr ? Integer.MAX_VALUE : 0;
                                     break;
