@@ -419,7 +419,7 @@ public class FormLayout extends AbstractLayoutManager
                     lpw = parentSize.width - i.left - i.right;
                 }
             }
-            else if ( fillRightSide )
+            else
             {
                 if ( cc > 1 )
                 {
