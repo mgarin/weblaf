@@ -1495,6 +1495,16 @@
                 <value lang="pt">Perto</value>
                 <value lang="de">Schließen</value>
             </record>
+            <record key="closeOthers">
+                <value lang="en">Close others</value>
+                <value lang="ru">Закрыть остальные</value>
+                <value lang="pl">Zamknij inne</value>
+                <value lang="ar">وثيقة أخرى</value>
+                <value lang="es">Cerrar demás</value>
+                <value lang="fr">Fermer les autres</value>
+                <value lang="pt">Fechar os outros</value>
+                <value lang="de">Schließen andere</value>
+            </record>
             <record key="left">
                 <value lang="en">Move to left group</value>
                 <value lang="ru">Переместить в левую группу</value>

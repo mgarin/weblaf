@@ -141,6 +141,7 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
                     // Variables
                     final T document = get ( index );
                     final boolean csb = documentPane.isCloseable () && document.isCloseable ();
+                    final boolean ocsb = documentPane.isCloseable ();
                     final boolean spb = data.size () > 1 && documentPane.isSplitEnabled ();
                     final boolean spl = tabbedPane.getParent () instanceof WebSplitPane;
 
@@ -154,6 +155,14 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
                         public void actionPerformed ( final ActionEvent e )
                         {
                             close ( get ( index ) );
+                        }
+                    } );
+                    pmg.addItem ( "closeOthers", "closeOthers", ocsb, new ActionListener ()
+                    {
+                        @Override
+                        public void actionPerformed ( final ActionEvent e )
+                        {
+                            closeOthers ( get ( index ) );
                         }
                     } );
                     pmg.addSeparator ();
@@ -221,6 +230,7 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
                     final Rectangle bounds = tabbedPane.getBoundsAt ( index );
                     menu.show ( tabbedPane, bounds.x + bounds.width / 2 - mps.width / 2,
                             bounds.y + bounds.height - menu.getShadeWidth () + 5 );
+                    //                    menu.showBelowMiddle ( tabbedPane.getTabComponentAt ( index ) );
                 }
             }
         } );
@@ -619,6 +629,22 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
         else
         {
             return false;
+        }
+    }
+
+    /**
+     * Closes all documents except the specified one.
+     *
+     * @param document document to keep opened
+     */
+    public void closeOthers ( final T document )
+    {
+        for ( final T doc : CollectionUtils.copy ( data ) )
+        {
+            if ( doc != document && doc.isCloseable () )
+            {
+                close ( doc );
+            }
         }
     }
 
