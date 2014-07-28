@@ -126,9 +126,8 @@ public final class ReflectUtils
      * @param classType type of the class where field can be located
      * @param fieldName field name
      * @return specified class field
-     * @throws NoSuchFieldException
      */
-    public static Field getFieldSafely ( final Class classType, final String fieldName ) throws NoSuchFieldException
+    public static Field getFieldSafely ( final Class classType, final String fieldName )
     {
         try
         {
