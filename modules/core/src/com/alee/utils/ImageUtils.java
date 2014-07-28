@@ -20,6 +20,7 @@ package com.alee.utils;
 import com.alee.global.GlobalConstants;
 import com.alee.global.StyleConstants;
 import com.alee.graphics.filters.ShadowFilter;
+import com.alee.managers.log.Log;
 import com.mortennobel.imagescaling.ResampleOp;
 
 import javax.imageio.ImageIO;
@@ -28,9 +29,7 @@ import java.awt.*;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -1317,7 +1316,7 @@ public final class ImageUtils
     {
         // todo Properly use height
         final int width = shadeWidth * 2 + w;
-        @SuppressWarnings ( "UnusedDeclaration" ) final int height = shadeWidth * 2 + h;
+        @SuppressWarnings ("UnusedDeclaration") final int height = shadeWidth * 2 + h;
 
         // Creating template image
         final BufferedImage bi = createCompatibleImage ( width, width, Transparency.TRANSLUCENT );
@@ -1521,5 +1520,63 @@ public final class ImageUtils
         g2d.draw ( border );
         g2d.dispose ();
         return image;
+    }
+
+    public static BufferedImage decodeImage ( final String imageString )
+    {
+        BufferedImage image = null;
+        if ( imageString == null || imageString.equals ( "" ) )
+        {
+            return image;
+        }
+        final byte[] bytes = EncryptionUtils.base64decode ( imageString ).getBytes ();
+        final ByteArrayInputStream bis = new ByteArrayInputStream ( bytes );
+        try
+        {
+            image = ImageIO.read ( bis );
+            bis.close ();
+        }
+        catch ( final Exception ex )
+        {
+            Log.error ( "Unable to decode image icon", ex );
+            try
+            {
+                bis.close ();
+            }
+            catch ( final IOException ignored )
+            {
+                //
+            }
+        }
+        return image;
+    }
+
+    public static String encodeImage ( final BufferedImage image )
+    {
+        String imageString = null;
+        if ( image == null )
+        {
+            return imageString;
+        }
+        final ByteArrayOutputStream bos = new ByteArrayOutputStream ();
+        try
+        {
+            ImageIO.write ( image, "png", bos );
+            imageString = EncryptionUtils.base64encode ( new String ( bos.toByteArray () ) );
+            bos.close ();
+        }
+        catch ( final IOException ex )
+        {
+            Log.error ( "Unable to encode image icon", ex );
+            try
+            {
+                bos.close ();
+            }
+            catch ( final IOException ignored )
+            {
+                //
+            }
+        }
+        return imageString;
     }
 }

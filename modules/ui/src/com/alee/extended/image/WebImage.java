@@ -250,6 +250,38 @@ public class WebImage extends JComponent implements SwingConstants
     }
 
     /**
+     * Returns icon representing current image.
+     *
+     * @return icon representing current image
+     */
+    public ImageIcon geIcon ()
+    {
+        return new ImageIcon ( image );
+    }
+
+    /**
+     * Returns last image preview.
+     * This image might be the modified version of original image set into this component.
+     *
+     * @return last image preview
+     */
+    public BufferedImage getPreviewImage ()
+    {
+        return lastPreviewImage;
+    }
+
+    /**
+     * Returns icon representing last image preview.
+     * This image icon might contain modified version of original image set into this component.
+     *
+     * @return icon representing last image preview
+     */
+    public ImageIcon getPreviewIcon ()
+    {
+        return lastPreviewImage != null ? new ImageIcon ( lastPreviewImage ) : null;
+    }
+
+    /**
      * Changes image to new one taken from specified icon.
      *
      * @param icon icon to process
