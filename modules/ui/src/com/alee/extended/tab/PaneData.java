@@ -392,12 +392,16 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
         if ( title != null )
         {
             // Tab with title and icon
-            tabPanel.add ( new WebLabel ( title, document.getIcon () ), BorderLayout.CENTER );
+            final WebLabel titleLabel = new WebLabel ( title, document.getIcon () );
+            titleLabel.setForeground ( document.getForeground () );
+            tabPanel.add ( titleLabel, BorderLayout.CENTER );
         }
         else
         {
             // Tab with icon only
-            tabPanel.add ( new WebLabel ( document.getIcon () ), BorderLayout.CENTER );
+            final WebLabel titleLabel = new WebLabel ( document.getIcon () );
+            titleLabel.setForeground ( document.getForeground () );
+            tabPanel.add ( titleLabel, BorderLayout.CENTER );
         }
 
         if ( getDocumentPane ().isCloseable () && document.isCloseable () )

@@ -57,6 +57,12 @@ public class DocumentData<C extends Component>
     protected String title;
 
     /**
+     * Document title foreground color.
+     * Used to color tab title text.
+     */
+    protected Color foreground;
+
+    /**
      * Document tab background color.
      * Used to color tab and tab content background.
      */
@@ -161,10 +167,29 @@ public class DocumentData<C extends Component>
     public DocumentData ( final String id, final Icon icon, final String title, final Color background, final boolean closeable,
                           final boolean draggable, final C component )
     {
+        this ( id, icon, title, Color.BLACK, background, closeable, draggable, component );
+    }
+
+    /**
+     * Constructs new document.
+     *
+     * @param id         document ID
+     * @param icon       document icon
+     * @param title      document title
+     * @param foreground document title foreground color
+     * @param background document tab background color
+     * @param closeable  whether document is closeable or not
+     * @param draggable  whether document is draggable or not
+     * @param component  document content
+     */
+    public DocumentData ( final String id, final Icon icon, final String title, final Color foreground, final Color background,
+                          final boolean closeable, final boolean draggable, final C component )
+    {
         super ();
         this.id = id;
         this.icon = icon;
         this.title = title;
+        this.foreground = foreground;
         this.background = background;
         this.closeable = closeable;
         this.draggable = draggable;
@@ -239,6 +264,26 @@ public class DocumentData<C extends Component>
     public void setTitle ( final String title )
     {
         this.title = title;
+    }
+
+    /**
+     * Returns document title text foreground color.
+     *
+     * @return document title text foreground color
+     */
+    public Color getForeground ()
+    {
+        return foreground;
+    }
+
+    /**
+     * Sets document title text foreground color
+     *
+     * @param foreground document title text foreground color
+     */
+    public void setForeground ( final Color foreground )
+    {
+        this.foreground = foreground;
     }
 
     /**
