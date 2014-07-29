@@ -5,7 +5,6 @@
         <component>
             <foreground>black</foreground>
             <background>237,237,237</background>
-            <boldFont>true</boldFont>
         </component>
         <ui>
             <drawShade>false</drawShade>
