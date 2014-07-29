@@ -213,7 +213,14 @@ public class StyleManager
      */
     public static WebLafSkin createSkin ( final Class skinClass )
     {
-        return ( WebLafSkin ) ReflectUtils.createInstanceSafely ( skinClass );
+        try
+        {
+            return ( WebLafSkin ) ReflectUtils.createInstance ( skinClass );
+        }
+        catch ( final Throwable e )
+        {
+            throw new StyleException ( "Unable to initialize skin from its class", e );
+        }
     }
 
     /**
