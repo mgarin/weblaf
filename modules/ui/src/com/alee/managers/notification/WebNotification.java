@@ -217,7 +217,6 @@ public class WebNotification extends WebHeavyWeightPopup
             @Override
             public void popupWillBeClosed ()
             {
-                stopDelayedClose ();
                 if ( accepted )
                 {
                     fireAccepted ();
