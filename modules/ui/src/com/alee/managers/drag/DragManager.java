@@ -87,6 +87,8 @@ public class DragManager
 
                 protected void actualDragEnter ( final DragSourceDragEvent dsde )
                 {
+                    // todo Do not recreate view few times while dragging
+
                     // Save drop location component
                     final DragSourceContext dsc = dsde.getDragSourceContext ();
                     dropLocation = dsc.getComponent ();
@@ -102,10 +104,10 @@ public class DragManager
                             {
                                 data = transferable.getTransferData ( flavor );
                                 dragViewHandler = viewHandlers.get ( flavor );
-                                view = dragViewHandler.getView ( data );
+                                view = dragViewHandler.getView ( data, dsde );
 
                                 glassPane = GlassPaneManager.getGlassPane ( dsc.getComponent () );
-                                glassPane.setPaintedImage ( view, getLocation ( glassPane ) );
+                                glassPane.setPaintedImage ( view, getLocation ( glassPane, dsde ) );
 
                                 break;
                             }
@@ -135,14 +137,14 @@ public class DragManager
                             glassPane.clearPaintedImage ();
                             glassPane = gp;
                         }
-                        gp.setPaintedImage ( view, getLocation ( gp ) );
+                        gp.setPaintedImage ( view, getLocation ( gp, dsde ) );
                     }
                 }
 
-                public Point getLocation ( final WebGlassPane gp )
+                public Point getLocation ( final WebGlassPane gp, final DragSourceDragEvent dsde )
                 {
                     final Point mp = SwingUtils.getMousePoint ( gp );
-                    final Point vp = dragViewHandler.getViewRelativeLocation ( data );
+                    final Point vp = dragViewHandler.getViewRelativeLocation ( data, dsde );
                     return new Point ( mp.x + vp.x, mp.y + vp.y );
                 }
 
@@ -155,6 +157,7 @@ public class DragManager
                     // Cleanup displayed data
                     if ( view != null )
                     {
+                        dragViewHandler.dragEnded ( data, dsde );
                         glassPane.clearPaintedImage ();
                         glassPane = null;
                         data = null;

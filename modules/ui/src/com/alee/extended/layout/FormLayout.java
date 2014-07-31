@@ -320,53 +320,6 @@ public class FormLayout extends AbstractLayoutManager
      * {@inheritDoc}
      */
     @Override
-    public Dimension preferredLayoutSize ( final Container parent )
-    {
-        final int cc = parent.getComponentCount ();
-        final Insets i = parent.getInsets ();
-        if ( cc > 0 )
-        {
-            // Pre-calculating childs preferred sizes
-            final Map<Component, Dimension> cps = SwingUtils.getChildPreferredSizes ( parent );
-
-            int lpw = 0;
-            int rpw = 0;
-            int ph = 0;
-            for ( int j = 0; j < cc; j++ )
-            {
-                final Dimension ps = cps.get ( parent.getComponent ( j ) );
-                if ( j % 2 == 0 )
-                {
-                    // First column
-                    lpw = Math.max ( lpw, ps.width );
-
-                    // Row preferred height
-                    final int next = cc > j + 1 ? cps.get ( parent.getComponent ( j + 1 ) ).height : 0;
-                    ph += Math.max ( ps.height, next );
-                }
-                else
-                {
-                    // Second column
-                    rpw = Math.max ( rpw, ps.width );
-                }
-            }
-            if ( fillLeftSide && fillRightSide )
-            {
-                lpw = Math.max ( lpw, rpw );
-                rpw = lpw;
-            }
-            return new Dimension ( i.left + lpw + horizontalGap + rpw + i.right, i.top + ph + verticalGap * ( ( cc - 1 ) / 2 ) + i.bottom );
-        }
-        else
-        {
-            return new Dimension ( i.left + i.right, i.top + i.bottom );
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public void layoutContainer ( final Container parent )
     {
         final int cc = parent.getComponentCount ();
@@ -521,5 +474,52 @@ public class FormLayout extends AbstractLayoutManager
             return rowY + rowHeight - componentHeight;
         }
         return rowY;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Dimension preferredLayoutSize ( final Container parent )
+    {
+        final int cc = parent.getComponentCount ();
+        final Insets i = parent.getInsets ();
+        if ( cc > 0 )
+        {
+            // Pre-calculating childs preferred sizes
+            final Map<Component, Dimension> cps = SwingUtils.getChildPreferredSizes ( parent );
+
+            int lpw = 0;
+            int rpw = 0;
+            int ph = 0;
+            for ( int j = 0; j < cc; j++ )
+            {
+                final Dimension ps = cps.get ( parent.getComponent ( j ) );
+                if ( j % 2 == 0 )
+                {
+                    // First column
+                    lpw = Math.max ( lpw, ps.width );
+
+                    // Row preferred height
+                    final int next = cc > j + 1 ? cps.get ( parent.getComponent ( j + 1 ) ).height : 0;
+                    ph += Math.max ( ps.height, next );
+                }
+                else
+                {
+                    // Second column
+                    rpw = Math.max ( rpw, ps.width );
+                }
+            }
+            if ( fillLeftSide && fillRightSide )
+            {
+                lpw = Math.max ( lpw, rpw );
+                rpw = lpw;
+            }
+            return new Dimension ( i.left + lpw + horizontalGap + rpw + i.right, i.top + ph + verticalGap * ( ( cc - 1 ) / 2 ) + i.bottom );
+        }
+        else
+        {
+            return new Dimension ( i.left + i.right, i.top + i.bottom );
+        }
     }
 }

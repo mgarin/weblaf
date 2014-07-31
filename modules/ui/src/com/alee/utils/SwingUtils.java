@@ -721,6 +721,27 @@ public final class SwingUtils
     }
 
     /**
+     * Returns first parent component which supports dran and drop actions.
+     *
+     * @param component component to look parent supporting drop for
+     * @param <T>       parent supporting drop component class type
+     * @return first parent component which supports dran and drop actions
+     */
+    public static <T extends JComponent> T getFirstParentSupportingDrop ( final Component component )
+    {
+        final Container parent = component.getParent ();
+        if ( parent instanceof JComponent )
+        {
+            final JComponent c = ( JComponent ) parent;
+            if ( c.getTransferHandler () != null )
+            {
+                return ( T ) c;
+            }
+        }
+        return getFirstParentSupportingDrop ( parent );
+    }
+
+    /**
      * Returns window ancestor for specified component or null if it doesn't exist.
      *
      * @param component component to process
@@ -1732,6 +1753,19 @@ public final class SwingUtils
     }
 
     /**
+     * Returns component snapshot image.
+     * Component must be showing to render properly using this method.
+     *
+     * @param content      component for snapshot
+     * @param transparency snapshot transparency
+     * @return component snapshot image
+     */
+    public static BufferedImage createComponentSnapshot ( final Component content, final float transparency )
+    {
+        return createComponentSnapshot ( content, content.getWidth (), content.getHeight (), transparency );
+    }
+
+    /**
      * Returns component snapshot image of specified size.
      * Component must be showing to render properly using this method.
      *
@@ -1742,10 +1776,27 @@ public final class SwingUtils
      */
     public static BufferedImage createComponentSnapshot ( final Component content, final int width, final int height )
     {
+        return createComponentSnapshot ( content, width, height, 1f );
+    }
+
+    /**
+     * Returns component snapshot image of specified size.
+     * Component must be showing to render properly using this method.
+     *
+     * @param content      component for snapshot
+     * @param width        snapshot image width
+     * @param height       snapshot image height
+     * @param transparency snapshot transparency
+     * @return component snapshot image
+     */
+    public static BufferedImage createComponentSnapshot ( final Component content, final int width, final int height,
+                                                          final float transparency )
+    {
         final BufferedImage bi = ImageUtils.createCompatibleImage ( width, height, Transparency.TRANSLUCENT );
         if ( content != null )
         {
             final Graphics2D g2d = bi.createGraphics ();
+            GraphicsUtils.setupAlphaComposite ( g2d, transparency, transparency < 1f );
             content.setSize ( width, height );
             content.paintAll ( g2d );
             g2d.dispose ();

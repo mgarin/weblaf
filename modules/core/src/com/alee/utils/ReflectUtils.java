@@ -228,9 +228,90 @@ public final class ReflectUtils
     public static void setFieldValue ( final Object object, final String field, final Object value )
             throws IllegalAccessException, NoSuchFieldException
     {
-        final Field actualField = object.getClass ().getDeclaredField ( field );
+        final Field actualField = getField ( object.getClass (), field );
         actualField.setAccessible ( true );
         actualField.set ( object, value );
+    }
+
+    /**
+     * Returns object field value.
+     * This method allows to access even private object fields.
+     *
+     * @param object object instance
+     * @param field  object field
+     * @param <T>    field value type
+     * @return object field value
+     */
+    public static <T> T getFieldValueSafely ( final Object object, final String field )
+    {
+        try
+        {
+            return getFieldValue ( object, field );
+        }
+        catch ( final Throwable e )
+        {
+            if ( safeMethodsLoggingEnabled )
+            {
+                Log.warn ( "ReflectionUtils method failed: getFieldValueSafely", e );
+            }
+            return null;
+        }
+    }
+
+    /**
+     * Returns object field value.
+     * This method allows to access even private object fields.
+     *
+     * @param object object instance
+     * @param field  object field
+     * @param <T>    field value type
+     * @return object field value
+     * @throws NoSuchFieldException
+     * @throws IllegalAccessException
+     */
+    public static <T> T getFieldValue ( final Object object, final String field ) throws NoSuchFieldException, IllegalAccessException
+    {
+        final Field actualField = getField ( object.getClass (), field );
+        actualField.setAccessible ( true );
+        return ( T ) actualField.get ( object );
+    }
+
+    /**
+     * Returns static field value from the specified class.
+     *
+     * @param classType class type
+     * @param fieldName class field name
+     * @return static field value from the specified class
+     */
+    public static <T> T getStaticFieldValueSafely ( final Class classType, final String fieldName )
+    {
+        try
+        {
+            return getStaticFieldValue ( classType, fieldName );
+        }
+        catch ( final Throwable e )
+        {
+            if ( safeMethodsLoggingEnabled )
+            {
+                Log.warn ( "ReflectionUtils method failed: getStaticFieldValueSafely", e );
+            }
+            return null;
+        }
+    }
+
+    /**
+     * Returns static field value from the specified class.
+     *
+     * @param classType class type
+     * @param fieldName class field name
+     * @return static field value from the specified class
+     * @throws NoSuchFieldException
+     * @throws IllegalAccessException
+     */
+    public static <T> T getStaticFieldValue ( final Class classType, final String fieldName )
+            throws NoSuchFieldException, IllegalAccessException
+    {
+        return ( T ) classType.getField ( fieldName ).get ( null );
     }
 
     /**
@@ -658,44 +739,6 @@ public final class ReflectUtils
     public static String[] getPackages ( final String packageName )
     {
         return packageName.split ( "\\." );
-    }
-
-    /**
-     * Returns static field value from the specified class.
-     *
-     * @param classType class type
-     * @param fieldName class field name
-     * @return static field value from the specified class
-     */
-    public static <T> T getStaticFieldValueSafely ( final Class classType, final String fieldName )
-    {
-        try
-        {
-            return getStaticFieldValue ( classType, fieldName );
-        }
-        catch ( final Throwable e )
-        {
-            if ( safeMethodsLoggingEnabled )
-            {
-                Log.warn ( "ReflectionUtils method failed: getStaticFieldValueSafely", e );
-            }
-            return null;
-        }
-    }
-
-    /**
-     * Returns static field value from the specified class.
-     *
-     * @param classType class type
-     * @param fieldName class field name
-     * @return static field value from the specified class
-     * @throws NoSuchFieldException
-     * @throws IllegalAccessException
-     */
-    public static <T> T getStaticFieldValue ( final Class classType, final String fieldName )
-            throws NoSuchFieldException, IllegalAccessException
-    {
-        return ( T ) classType.getField ( fieldName ).get ( null );
     }
 
     /**

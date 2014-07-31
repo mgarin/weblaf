@@ -24,6 +24,8 @@ import com.alee.utils.SwingUtils;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.dnd.DragSourceDragEvent;
+import java.awt.dnd.DragSourceDropEvent;
 import java.awt.image.BufferedImage;
 
 /**
@@ -71,7 +73,7 @@ public abstract class SimpleDragViewHandler<T> implements DragViewHandler<T>
      * {@inheritDoc}
      */
     @Override
-    public BufferedImage getView ( final T object )
+    public BufferedImage getView ( final T object, final DragSourceDragEvent event )
     {
         final Icon icon = getIcon ( object );
         final String title = getText ( object );
@@ -105,8 +107,17 @@ public abstract class SimpleDragViewHandler<T> implements DragViewHandler<T>
      * {@inheritDoc}
      */
     @Override
-    public Point getViewRelativeLocation ( final T document )
+    public Point getViewRelativeLocation ( final T document, final DragSourceDragEvent event )
     {
         return new Point ( 25, 5 );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void dragEnded ( final T object, final DragSourceDropEvent event )
+    {
+        // Do nothing here
     }
 }
