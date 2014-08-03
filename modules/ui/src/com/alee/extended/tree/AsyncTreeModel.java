@@ -773,6 +773,7 @@ public class AsyncTreeModel<E extends AsyncUniqueNode> extends WebTreeModel<E>
                 rawNodeChildsCache.put ( parentNode.getId (), childs );
             }
             childs.add ( childNode );
+            cacheNodeById ( childNode );
         }
 
         // Clearing node cache
@@ -812,6 +813,7 @@ public class AsyncTreeModel<E extends AsyncUniqueNode> extends WebTreeModel<E>
                 rawNodeChildsCache.put ( parent.getId (), childs );
             }
             childs.addAll ( index, children );
+            cacheNodesById ( children );
         }
 
         // Clearing nodes cache
@@ -854,6 +856,7 @@ public class AsyncTreeModel<E extends AsyncUniqueNode> extends WebTreeModel<E>
             {
                 childs.add ( index, children[ i ] );
             }
+            cacheNodesById ( Arrays.asList ( children ) );
         }
 
         // Clearing nodes cache

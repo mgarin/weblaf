@@ -141,7 +141,7 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
                     // Variables
                     final T document = get ( index );
                     final boolean csb = documentPane.isCloseable () && document.isCloseable ();
-                    final boolean ocsb = documentPane.isCloseable ();
+                    final boolean ocsb = documentPane.isCloseable () && data.size () > 1;
                     final boolean spb = data.size () > 1 && documentPane.isSplitEnabled ();
                     final boolean spl = tabbedPane.getParent () instanceof WebSplitPane;
 

@@ -491,6 +491,7 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
                 rawNodeChildsCache.put ( parentNode.getId (), childs );
             }
             childs.add ( childNode );
+            cacheNodeById ( childNode );
         }
 
         // Clearing node cache
@@ -524,6 +525,7 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
                 rawNodeChildsCache.put ( parent.getId (), childs );
             }
             childs.addAll ( index, children );
+            cacheNodesById ( children );
         }
 
         // Clearing nodes cache
@@ -560,6 +562,7 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
             {
                 childs.add ( index, children[ i ] );
             }
+            cacheNodesById ( Arrays.asList ( children ) );
         }
 
         // Clearing nodes cache

@@ -461,6 +461,19 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
     }
 
     /**
+     * Inserts child node into parent node.
+     * This method might be used to manually change tree node childs without causing any structure corruptions.
+     *
+     * @param child  new child node
+     * @param parent parent node
+     * @param index  insert index
+     */
+    public void insertChildNode ( final E child, final E parent, final int index )
+    {
+        getAsyncModel ().insertNodeInto ( child, parent, index );
+    }
+
+    /**
      * Removes node with the specified ID from tree structure.
      * This method will have effect only if node exists.
      *
