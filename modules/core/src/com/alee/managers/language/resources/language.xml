@@ -1649,7 +1649,7 @@
                 <value lang="fr">Fermer les autres</value>
                 <value lang="pt">Fechar os outros</value>
                 <value lang="de">Schließen andere</value>
-                <value lang="it">Chiudere gli altri</value>
+                <value lang="it">Chiudi gli altri</value>
             </record>
             <record key="left">
                 <value lang="en">Move to left group</value>
@@ -1660,7 +1660,7 @@
                 <value lang="fr">Déplacez à gauche groupe</value>
                 <value lang="pt">Mover para grupo deixou</value>
                 <value lang="de">Nach links Gruppe</value>
-                <value lang="it">Sposta gruppo di sinistra</value>
+                <value lang="it">Sposta nel gruppo di sinistra</value>
             </record>
             <record key="right">
                 <value lang="en">Move to right group</value>
@@ -1671,7 +1671,7 @@
                 <value lang="fr">Déplacez-vous bon groupe</value>
                 <value lang="pt">Mover para grupo certo</value>
                 <value lang="de">Bewegen nach rechts-Gruppe</value>
-                <value lang="it">Sposta gruppo di destra</value>
+                <value lang="it">Sposta nel gruppo di destra</value>
             </record>
             <record key="top">
                 <value lang="en">Move to top group</value>
@@ -1682,7 +1682,7 @@
                 <value lang="fr">Monter en haut groupe</value>
                 <value lang="pt">Mover para o início do grupo</value>
                 <value lang="de">Gehen Sie zu Top-Gruppe</value>
-                <value lang="it">Sposta gruppo di testa</value>
+                <value lang="it">Sposta nel gruppo in alto</value>
             </record>
             <record key="bottom">
                 <value lang="en">Move to bottom group</value>
@@ -1693,7 +1693,7 @@
                 <value lang="fr">Déplacer vers le groupe inférieur</value>
                 <value lang="pt">Mover para grupo inferior</value>
                 <value lang="de">Nach ganz unten Gruppe</value>
-                <value lang="it"></value>
+                <value lang="it">Sposta nel gruppo in basso</value>
             </record>
             <record key="rotate">
                 <value lang="en">Change split orientation</value>
@@ -1704,7 +1704,7 @@
                 <value lang="fr">Changer l'orientation scission</value>
                 <value lang="pt">Altere a orientação de divisão</value>
                 <value lang="de">Ändern Sie Split-Orientierung</value>
-                <value lang="it">Sposta in gruppo inferiore</value>
+                <value lang="it">Cambia orientamento divisore</value>
             </record>
             <record key="unsplit">
                 <value lang="en">Combine groups</value>
@@ -1715,7 +1715,7 @@
                 <value lang="fr">Combiner des groupes</value>
                 <value lang="pt">Combine grupos</value>
                 <value lang="de">Kombinieren Sie Gruppen</value>
-                <value lang="it">Combina gruppi</value>
+                <value lang="it">Unisci gruppi</value>
             </record>
             <record key="unsplitall">
                 <value lang="en">Combine all groups</value>
@@ -1726,7 +1726,7 @@
                 <value lang="fr">Mélanger tous les groupes</value>
                 <value lang="pt">Misture todos os grupos</value>
                 <value lang="de">Kombinieren Sie alle Gruppen</value>
-                <value lang="it">Unire tutti i gruppi</value>
+                <value lang="it">Unisci tutti i gruppi</value>
             </record>
         </Dictionary>
     </Dictionary>
