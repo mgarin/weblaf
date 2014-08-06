@@ -838,6 +838,7 @@ public class WebRootPaneUI extends BasicRootPaneUI implements SwingConstants
             final WebButton minimize = new WebButton ( minimizeIcon );
             minimize.setName ( "minimize" );
             minimize.setRolloverIcon ( minimizeActiveIcon );
+            minimize.setFocusable ( false );
             minimize.addActionListener ( new ActionListener ()
             {
                 @Override
@@ -866,6 +867,7 @@ public class WebRootPaneUI extends BasicRootPaneUI implements SwingConstants
             };
             maximize.setName ( "maximize" );
             maximize.setRolloverIcon ( maximizeActiveIcon );
+            maximize.setFocusable ( false );
             maximize.addActionListener ( new ActionListener ()
             {
                 @Override
@@ -891,6 +893,7 @@ public class WebRootPaneUI extends BasicRootPaneUI implements SwingConstants
             final WebButton close = new WebButton ( closeIcon );
             close.setName ( "close" );
             close.setRolloverIcon ( closeActiveIcon );
+            close.setFocusable ( false );
             close.addActionListener ( new ActionListener ()
             {
                 @Override
