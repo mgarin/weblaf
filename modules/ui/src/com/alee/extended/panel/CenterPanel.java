@@ -28,12 +28,12 @@ import java.awt.*;
 
 public class CenterPanel extends WebPanel
 {
-    public CenterPanel ( Component component )
+    public CenterPanel ( final Component component )
     {
         this ( component, true, true );
     }
 
-    public CenterPanel ( Component component, boolean centerHor, boolean centerVer )
+    public CenterPanel ( final Component component, final boolean centerHor, final boolean centerVer )
     {
         super ();
         setOpaque ( false );

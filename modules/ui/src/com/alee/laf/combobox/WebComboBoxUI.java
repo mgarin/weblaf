@@ -392,9 +392,6 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider, Bor
                 // Button updater
                 addPopupMenuListener ( new PopupMenuListener ()
                 {
-                    /**
-                     * {@inheritDoc}
-                     */
                     @Override
                     public void popupMenuWillBecomeVisible ( final PopupMenuEvent e )
                     {
@@ -404,18 +401,12 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider, Bor
                         comboBox.repaint ();
                     }
 
-                    /**
-                     * {@inheritDoc}
-                     */
                     @Override
                     public void popupMenuWillBecomeInvisible ( final PopupMenuEvent e )
                     {
                         arrow.setIcon ( expandIcon );
                     }
 
-                    /**
-                     * {@inheritDoc}
-                     */
                     @Override
                     public void popupMenuCanceled ( final PopupMenuEvent e )
                     {
