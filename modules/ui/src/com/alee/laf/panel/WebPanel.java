@@ -370,6 +370,48 @@ public class WebPanel extends JPanel implements Styleable, ShapeProvider, Partia
     }
 
     /**
+     * Removes all components from the list from the panel.
+     *
+     * @param components components to remove from panel
+     * @return this panel
+     */
+    public WebPanel remove ( final List<? extends Component> components )
+    {
+        if ( components != null )
+        {
+            for ( final Component component : components )
+            {
+                if ( component != null )
+                {
+                    remove ( component );
+                }
+            }
+        }
+        return this;
+    }
+
+    /**
+     * Removes all specified components from the panel.
+     *
+     * @param components components to remove from panel
+     * @return this panel
+     */
+    public WebPanel remove ( final Component... components )
+    {
+        if ( components != null && components.length > 0 )
+        {
+            for ( final Component component : components )
+            {
+                if ( component != null )
+                {
+                    remove ( component );
+                }
+            }
+        }
+        return this;
+    }
+
+    /**
      * Returns first component contained in this panel.
      *
      * @return first component contained in this panel

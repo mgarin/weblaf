@@ -77,8 +77,8 @@ public final class BreadcrumbUtils
             final WebBreadcrumb wbc = ( WebBreadcrumb ) container;
             final BreadcrumbElementType type = BreadcrumbElementType.getType ( element, wbc );
             final boolean isNone = type.equals ( BreadcrumbElementType.none );
-            left = isNone ? 0 : ( type.equals ( BreadcrumbElementType.start ) ? 0 : wbc.getElementOverlap () );
-            right = isNone ? 0 : ( type.equals ( BreadcrumbElementType.end ) ? 0 : wbc.getElementOverlap () + wbc.getShadeWidth () );
+            left = isNone ? 0 : type.equals ( BreadcrumbElementType.start ) ? 0 : wbc.getElementOverlap ();
+            right = isNone ? 0 : type.equals ( BreadcrumbElementType.end ) ? 0 : wbc.getElementOverlap () + wbc.getShadeWidth ();
         }
         else
         {

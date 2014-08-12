@@ -197,6 +197,62 @@ public final class GraphicsUtils
     }
 
     /**
+     * Setting new clip shape
+     */
+
+    public static Shape setupClip ( final Graphics2D g2d, final Shape clip )
+    {
+        return setupClip ( g2d, clip, true );
+    }
+
+    public static Shape setupClip ( final Graphics2D g2d, final Shape clip, final boolean shouldSetup )
+    {
+        if ( shouldSetup && clip != null )
+        {
+            final Shape old = g2d.getClip ();
+            g2d.setClip ( clip );
+            return old;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    public static Shape setupClip ( final Graphics2D g2d, final int x, final int y, final int width, final int height )
+    {
+        return setupClip ( g2d, x, y, width, height, true );
+    }
+
+    public static Shape setupClip ( final Graphics2D g2d, final int x, final int y, final int width, final int height,
+                                    final boolean shouldSetup )
+    {
+        if ( shouldSetup )
+        {
+            final Shape old = g2d.getClip ();
+            g2d.setClip ( x, y, width, height );
+            return old;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    public static void restoreClip ( final Graphics2D g2d, final Shape clip )
+    {
+        restoreClip ( g2d, clip, true );
+    }
+
+    public static void restoreClip ( final Graphics2D g2d, final Shape clip, final boolean shouldRestore )
+    {
+        if ( shouldRestore && clip != null )
+        {
+            g2d.setClip ( clip );
+        }
+    }
+
+    /**
      * Setting image quality on
      */
 
