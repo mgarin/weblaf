@@ -23,6 +23,7 @@ import com.alee.extended.painter.TexturePainter;
 import com.alee.global.StyleConstants;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.label.WebLabel;
+import com.alee.laf.panel.WebPanel;
 import com.alee.laf.scroll.WebScrollBarUI;
 import com.alee.laf.text.WebTextField;
 import com.alee.managers.log.Log;
@@ -1445,6 +1446,39 @@ public final class LafUtils
     {
         editor.setFieldMargin ( 0, label.getIcon () != null ? label.getIconTextGap () : 0, 0, 0 );
 
+        // Bounds
+        final Rectangle bounds = new Rectangle ( 0, 0, label.getWidth (), label.getHeight () );
+
+        // Label settings
+        final Insets lm = label.getInsets ();
+        bounds.x += lm.left;
+        bounds.y += lm.top;
+        bounds.width -= lm.left + lm.right;
+        bounds.height -= lm.top + lm.bottom;
+
+        // Field settings
+        final Insets fm = editor.getMargin ();
+        final int dm = 1 + editor.getShadeWidth ();
+        bounds.x -= fm.left + dm;
+        bounds.y -= fm.top + dm;
+        bounds.width += fm.left + fm.right + dm * 2;
+        bounds.height += fm.top + fm.bottom + dm * 2;
+
+        // Additional pixel for field size
+        bounds.width += 1;
+
+        return bounds;
+    }
+
+    /**
+     * Returns bounds for editor display atop of the label.
+     *
+     * @param label  edited label
+     * @param editor label editor field
+     * @return bounds for editor display atop of the label
+     */
+    public static Rectangle getPanelEditorBounds ( final WebLabel label, final WebPanel editor )
+    {
         // Bounds
         final Rectangle bounds = new Rectangle ( 0, 0, label.getWidth (), label.getHeight () );
 

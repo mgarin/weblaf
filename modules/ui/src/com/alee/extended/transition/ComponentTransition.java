@@ -109,7 +109,7 @@ public class ComponentTransition extends WebPanel
      * Instant transition
      */
 
-    public synchronized void performTransition ( final Component content )
+    public void performTransition ( final Component content )
     {
         SwingUtils.invokeLater ( new Runnable ()
         {
