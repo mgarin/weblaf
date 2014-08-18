@@ -174,16 +174,6 @@ public class SettingsManager
 
             // Initializing sub-manager
             ComponentSettingsManager.initializeManager ();
-
-            // JVM shutdown hook for settings save
-            Runtime.getRuntime ().addShutdownHook ( new Thread ( new Runnable ()
-            {
-                @Override
-                public void run ()
-                {
-                    saveSettings ();
-                }
-            } ) );
         }
     }
 
