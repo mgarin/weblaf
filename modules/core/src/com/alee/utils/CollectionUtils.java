@@ -31,6 +31,20 @@ import java.util.*;
 public final class CollectionUtils
 {
     /**
+     * Returns data converted into list.
+     *
+     * @param data data
+     * @param <T>  data type
+     * @return data list
+     */
+    public static <T> List<T> asList ( final T... data )
+    {
+        final List<T> list = new ArrayList<T> ( data.length );
+        Collections.addAll ( list, data );
+        return list;
+    }
+
+    /**
      * Adds all objects into specified list.
      *
      * @param collection list to fill
