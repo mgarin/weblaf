@@ -302,6 +302,26 @@ public class Log
     }
 
     /**
+     * Returns logger for the requesting class.
+     *
+     * @return logger for the requesting class
+     */
+    public static Logger get ()
+    {
+        return getLogger ( ReflectUtils.getCallerClass () );
+    }
+
+    /**
+     * Returns logger for the requesting class.
+     *
+     * @return logger for the requesting class
+     */
+    public static Logger getLogger ()
+    {
+        return getLogger ( ReflectUtils.getCallerClass () );
+    }
+
+    /**
      * Returns logger for the specified class type.
      *
      * @param object class type or object type
