@@ -19,6 +19,7 @@ package com.alee.extended.tree;
 
 import com.alee.laf.tree.TreeState;
 import com.alee.laf.tree.UniqueNode;
+import com.alee.laf.tree.WebTree;
 import com.alee.laf.tree.WebTreeModel;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.MapUtils;
@@ -39,7 +40,7 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
     /**
      * Ex tree that uses this model.
      */
-    protected final WebExTree<E> tree;
+    protected final WebTree<E> tree;
 
     /**
      * Ex tree data provider.
@@ -82,7 +83,7 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
      * @param tree         asynchronous tree
      * @param dataProvider data provider
      */
-    public ExTreeModel ( final WebExTree<E> tree, final ExTreeDataProvider<E> dataProvider )
+    public ExTreeModel ( final WebTree<E> tree, final ExTreeDataProvider<E> dataProvider )
     {
         super ( null );
         this.tree = tree;
@@ -432,7 +433,7 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
         final E parentNode = ( E ) childNode.getParent ();
 
         // Simply ignore if parent node is null
-        if ( parentNode == null  )
+        if ( parentNode == null )
         {
             return;
         }

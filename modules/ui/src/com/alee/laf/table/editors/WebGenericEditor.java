@@ -29,7 +29,7 @@ import java.lang.reflect.Constructor;
 
 public class WebGenericEditor extends WebDefaultCellEditor
 {
-    private Class[] argTypes = new Class[]{ String.class };
+    private final Class[] argTypes = new Class[]{ String.class };
     private Constructor constructor;
     private Object value;
 
@@ -42,14 +42,14 @@ public class WebGenericEditor extends WebDefaultCellEditor
     @Override
     public boolean stopCellEditing ()
     {
-        Component component = getComponent ();
+        final Component component = getComponent ();
         try
         {
             value = constructor.newInstance ( super.getCellEditorValue () );
             updateValidationState ( component, true );
             return super.stopCellEditing ();
         }
-        catch ( Exception e )
+        catch ( final Exception e )
         {
             updateValidationState ( component, false );
             return false;
@@ -57,7 +57,8 @@ public class WebGenericEditor extends WebDefaultCellEditor
     }
 
     @Override
-    public Component getTableCellEditorComponent ( JTable table, Object value, boolean isSelected, int row, int column )
+    public Component getTableCellEditorComponent ( final JTable table, final Object value, final boolean isSelected, final int row,
+                                                   final int column )
     {
         this.value = null;
         try
@@ -69,17 +70,17 @@ public class WebGenericEditor extends WebDefaultCellEditor
             }
             constructor = type.getConstructor ( argTypes );
         }
-        catch ( Exception e )
+        catch ( final Exception e )
         {
             return null;
         }
 
-        Component cellEditorComponent = super.getTableCellEditorComponent ( table, value, isSelected, row, column );
+        final Component cellEditorComponent = super.getTableCellEditorComponent ( table, value, isSelected, row, column );
         updateValidationState ( cellEditorComponent, true );
         return cellEditorComponent;
     }
 
-    private void updateValidationState ( Component component, boolean valid )
+    private void updateValidationState ( final Component component, final boolean valid )
     {
         if ( component instanceof GenericCellEditor )
         {

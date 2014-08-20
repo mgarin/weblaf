@@ -21,7 +21,6 @@ import com.alee.extended.tree.sample.SampleExDataProvider;
 import com.alee.extended.tree.sample.SampleTreeCellEditor;
 import com.alee.extended.tree.sample.SampleTreeCellRenderer;
 import com.alee.laf.tree.UniqueNode;
-import com.alee.laf.tree.WebTree;
 import com.alee.laf.tree.WebTreeCellEditor;
 import com.alee.laf.tree.WebTreeCellRenderer;
 import com.alee.utils.CollectionUtils;
@@ -35,13 +34,14 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * WebTree extension that provides simple and convenient way to load tree data.
- * Simply implement ExTreeDataProvider interface and pass it into the tree to create its structure.
+ * This tree is a hybrid of WebCheckBoxTree and WebExTree.
+ * Checking model from WebCheckBoxTree provides node checking feature.
+ * ExTreeModel from WebExTree provides tree with structure data.
  *
  * @author Mikle Garin
  */
 
-public class WebExTree<E extends UniqueNode> extends WebTree<E>
+public class WebExCheckBoxTree<E extends UniqueNode> extends WebCheckBoxTree<E>
 {
     /**
      * Tree nodes comparator.
@@ -54,9 +54,9 @@ public class WebExTree<E extends UniqueNode> extends WebTree<E>
     protected Filter<E> filter;
 
     /**
-     * Constructs sample ex tree.
+     * Constructs sample ex checkbox tree.
      */
-    public WebExTree ()
+    public WebExCheckBoxTree ()
     {
         super ();
 
@@ -69,11 +69,11 @@ public class WebExTree<E extends UniqueNode> extends WebTree<E>
     }
 
     /**
-     * Costructs ex tree using data from the custom data provider.
+     * Costructs ex checkbox tree using data from the custom data provider.
      *
      * @param dataProvider custom data provider
      */
-    public WebExTree ( final ExTreeDataProvider dataProvider )
+    public WebExCheckBoxTree ( final ExTreeDataProvider dataProvider )
     {
         super ();
 
