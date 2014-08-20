@@ -18,6 +18,7 @@
 package com.alee.utils;
 
 import com.alee.managers.log.Log;
+import com.alee.managers.plugin.data.PluginDependency;
 import com.alee.managers.plugin.data.PluginInformation;
 import com.alee.managers.plugin.data.PluginLibrary;
 import com.alee.managers.plugin.data.PluginVersion;
@@ -123,6 +124,7 @@ public final class XmlUtils
             // Plugin manager classes aliases
             xStream.processAnnotations ( PluginInformation.class );
             xStream.processAnnotations ( PluginVersion.class );
+            xStream.processAnnotations ( PluginDependency.class );
             xStream.processAnnotations ( PluginLibrary.class );
         }
         catch ( final Throwable e )

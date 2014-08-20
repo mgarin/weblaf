@@ -207,6 +207,16 @@ public abstract class Plugin<T extends Plugin<T>>
     }
 
     /**
+     * Returns plugins required to run this one.
+     *
+     * @return plugins required to run this one
+     */
+    public List<PluginDependency> getDependencies ()
+    {
+        return getPluginInformation ().getDependencies ();
+    }
+
+    /**
      * Returns plugin initialization strategy.
      * It will determine order in which plugins are sorted for futher usage.
      *

@@ -18,6 +18,9 @@
 package com.alee.utils;
 
 import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * This class provides a set of utilities to work with arrays.
@@ -27,6 +30,20 @@ import java.lang.reflect.Array;
 
 public final class ArrayUtils
 {
+    /**
+     * Returns data converted into list.
+     *
+     * @param data data
+     * @param <T>  data type
+     * @return data list
+     */
+    public static <T> List<T> asList ( final T... data )
+    {
+        final List<T> list = new ArrayList<T> ( data.length );
+        Collections.addAll ( list, data );
+        return list;
+    }
+
     /**
      * Returns whether array contains the specified number or not.
      *

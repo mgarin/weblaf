@@ -379,8 +379,6 @@ public abstract class PluginManager<T extends Plugin>
             // Informing about plugins check start
             firePluginsCheckStarted ( pluginsDirectoryPath, checkRecursively );
 
-            Log.info ( this, "Scanning plugins directory" + ( checkRecursively ? " recursively" : "" ) + ": " + pluginsDirectoryPath );
-
             // Resetting recently detected plugins list
             recentlyDetected = new ArrayList<DetectedPlugin<T>> ();
 
@@ -405,12 +403,12 @@ public abstract class PluginManager<T extends Plugin>
     {
         if ( pluginsDirectoryPath != null )
         {
-            Log.info ( this, "Collecting plugins information..." );
+            Log.info ( this, "Scanning plugins directory" + ( checkRecursively ? " recursively" : "" ) + ": " + pluginsDirectoryPath );
             return collectPluginsInformationImpl ( new File ( pluginsDirectoryPath ), checkRecursively );
         }
         else
         {
-            Log.error ( this, "Plugins directory is not yet specified" );
+            Log.warn ( this, "Plugins directory is not yet specified" );
             return false;
         }
     }
@@ -536,33 +534,40 @@ public abstract class PluginManager<T extends Plugin>
      */
     protected void initializeDetectedPlugins ()
     {
-        // Informing about newly detected plugins
-        firePluginsDetected ( recentlyDetected );
-
-        Log.info ( this, "Initializing plugins..." );
-
-        // Initializing plugins
-        initializeDetectedPluginsImpl ();
-
-        // Sorting plugins according to their initialization strategies
-        applyInitializationStrategy ();
-
-        // Properly sorting recently initialized plugins
-        Collections.sort ( recentlyInitialized, new Comparator<T> ()
+        if ( !recentlyDetected.isEmpty () )
         {
-            @Override
-            public int compare ( final T o1, final T o2 )
+            // Informing about newly detected plugins
+            firePluginsDetected ( recentlyDetected );
+
+            Log.info ( this, "Initializing plugins..." );
+
+            // Initializing plugins
+            initializeDetectedPluginsImpl ();
+
+            // Sorting plugins according to their initialization strategies
+            applyInitializationStrategy ();
+
+            // Properly sorting recently initialized plugins
+            Collections.sort ( recentlyInitialized, new Comparator<T> ()
             {
-                final Integer i1 = availablePlugins.indexOf ( o1 );
-                final Integer i2 = availablePlugins.indexOf ( o2 );
-                return i1.compareTo ( i2 );
-            }
-        } );
+                @Override
+                public int compare ( final T o1, final T o2 )
+                {
+                    final Integer i1 = availablePlugins.indexOf ( o1 );
+                    final Integer i2 = availablePlugins.indexOf ( o2 );
+                    return i1.compareTo ( i2 );
+                }
+            } );
 
-        // Informing about new plugins initialization
-        firePluginsInitialized ( recentlyInitialized );
+            // Informing about new plugins initialization
+            firePluginsInitialized ( recentlyInitialized );
 
-        Log.info ( this, "Plugins initialization finished" );
+            Log.info ( this, "Plugins initialization finished" );
+        }
+        else
+        {
+            Log.info ( this, "No new plugins found" );
+        }
     }
 
     /**
@@ -826,6 +831,8 @@ public abstract class PluginManager<T extends Plugin>
         {
             return;
         }
+
+        // todo Take plugin dependencies into account with top priority here
 
         // Splitting plugins by initial groups
         final List<T> beforeAll = new ArrayList<T> ( availablePlugins.size () );
