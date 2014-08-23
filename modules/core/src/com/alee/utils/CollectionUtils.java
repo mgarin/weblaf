@@ -31,6 +31,39 @@ import java.util.*;
 public final class CollectionUtils
 {
     /**
+     * Returns sub list with copied values.
+     *
+     * @param list      source list
+     * @param fromIndex start index
+     * @param toIndex   end index
+     * @param <T>       data type
+     * @return sub list with copied values
+     */
+    public static <T> List<T> copySubList ( final List<T> list, final int fromIndex, final int toIndex )
+    {
+        return new ArrayList<T> ( list.subList ( fromIndex, toIndex ) );
+    }
+
+    /**
+     * Returns sub list with cloned values.
+     *
+     * @param list      source list
+     * @param fromIndex start index
+     * @param toIndex   end index
+     * @param <T>       data type
+     * @return sub list with cloned values
+     */
+    public static <T extends Cloneable> List<T> cloneSubList ( final List<T> list, final int fromIndex, final int toIndex )
+    {
+        final ArrayList<T> clone = new ArrayList<T> ( toIndex - fromIndex );
+        for ( int i = fromIndex; i < toIndex; i++ )
+        {
+            clone.add ( ReflectUtils.cloneSafely ( list.get ( i ) ) );
+        }
+        return clone;
+    }
+
+    /**
      * Returns data converted into list.
      *
      * @param data data

@@ -24,7 +24,7 @@ import javax.swing.table.TableCellRenderer;
 import java.awt.*;
 
 /**
- * User: mgarin Date: 31.10.12 Time: 16:02
+ * @author Mikle Garin
  */
 
 public class WebTableCellRenderer extends WebLabel implements TableCellRenderer
@@ -41,14 +41,14 @@ public class WebTableCellRenderer extends WebLabel implements TableCellRenderer
     }
 
     @Override
-    public void setForeground ( Color c )
+    public void setForeground ( final Color c )
     {
         super.setForeground ( c );
         unselectedForeground = c;
     }
 
     @Override
-    public void setBackground ( Color c )
+    public void setBackground ( final Color c )
     {
         super.setBackground ( c );
         unselectedBackground = c;
@@ -66,10 +66,11 @@ public class WebTableCellRenderer extends WebLabel implements TableCellRenderer
      * {@inheritDoc}
      */
     @Override
-    public Component getTableCellRendererComponent ( JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column )
+    public Component getTableCellRendererComponent ( final JTable table, final Object value, final boolean isSelected,
+                                                     final boolean hasFocus, final int row, final int column )
     {
-        Color fg = null;
-        Color bg = null;
+        final Color fg = null;
+        final Color bg = null;
 
         // todo Drop indication
         //        JTable.DropLocation dropLocation = table.getDropLocation ();
@@ -92,7 +93,7 @@ public class WebTableCellRenderer extends WebLabel implements TableCellRenderer
             Color background = unselectedBackground != null ? unselectedBackground : table.getBackground ();
             if ( background == null || background instanceof javax.swing.plaf.UIResource )
             {
-                Color alternateColor = UIManager.getColor ( "Table.alternateRowColor" );
+                final Color alternateColor = UIManager.getColor ( "Table.alternateRowColor" );
                 if ( alternateColor != null && row % 2 == 0 )
                 {
                     background = alternateColor;
@@ -112,7 +113,7 @@ public class WebTableCellRenderer extends WebLabel implements TableCellRenderer
     @Override
     public boolean isOpaque ()
     {
-        Color back = getBackground ();
+        final Color back = getBackground ();
         Component p = getParent ();
         if ( p != null )
         {
@@ -120,11 +121,11 @@ public class WebTableCellRenderer extends WebLabel implements TableCellRenderer
         }
 
         // p should now be the JTable.
-        boolean colorMatch = ( back != null ) && ( p != null ) && back.equals ( p.getBackground () ) && p.isOpaque ();
+        final boolean colorMatch = ( back != null ) && ( p != null ) && back.equals ( p.getBackground () ) && p.isOpaque ();
         return !colorMatch && super.isOpaque ();
     }
 
-    protected void setValue ( Object value )
+    protected void setValue ( final Object value )
     {
         setText ( ( value == null ) ? "" : value.toString () );
     }
