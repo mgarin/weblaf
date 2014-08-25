@@ -24,6 +24,7 @@ import com.alee.laf.label.WebLabel;
 import com.alee.laf.list.WebListCellRenderer;
 import com.alee.utils.FileUtils;
 import com.alee.utils.ImageUtils;
+import com.alee.utils.concurrent.DaemonThreadFactory;
 import com.alee.utils.file.FileDescription;
 
 import javax.swing.*;
@@ -103,7 +104,7 @@ public class WebFileListCellRenderer extends WebListCellRenderer
     /**
      * Executor service for thumbnails generation.
      */
-    protected ExecutorService executorService = Executors.newSingleThreadExecutor ();
+    protected ExecutorService executorService = Executors.newSingleThreadExecutor ( new DaemonThreadFactory() );
 
     /**
      * Constructs cell renderer for the specified file list.
