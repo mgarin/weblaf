@@ -104,7 +104,7 @@ public class WebFileListCellRenderer extends WebListCellRenderer
     /**
      * Executor service for thumbnails generation.
      */
-    protected ExecutorService executorService = Executors.newSingleThreadExecutor ( new DaemonThreadFactory() );
+    protected ExecutorService executorService = Executors.newSingleThreadExecutor ( new DaemonThreadFactory () );
 
     /**
      * Constructs cell renderer for the specified file list.

@@ -39,6 +39,9 @@ public class ComponentTransition extends WebPanel
     // Transition listeners
     protected List<TransitionListener> transitionListeners = new ArrayList<TransitionListener> ( 1 );
 
+    // Whether should restore focus after transition or not
+    protected boolean restoreFocus = true;
+
     // Variables
     protected boolean animating = false;
 
@@ -82,6 +85,16 @@ public class ComponentTransition extends WebPanel
         {
             add ( content );
         }
+    }
+
+    public boolean isRestoreFocus ()
+    {
+        return restoreFocus;
+    }
+
+    public void setRestoreFocus ( final boolean restoreFocus )
+    {
+        this.restoreFocus = restoreFocus;
     }
 
     /**
@@ -198,7 +211,7 @@ public class ComponentTransition extends WebPanel
         setFocusable ( true );
 
         // Passing the focus from subcomponents onto the transition panel
-        if ( SwingUtils.hasFocusOwner ( ComponentTransition.this ) )
+        if ( restoreFocus && SwingUtils.hasFocusOwner ( ComponentTransition.this ) )
         {
             // Focus handler required to wait for focus change
             // This is required to handle focus properly and have atleast one component focused withing window of calendar

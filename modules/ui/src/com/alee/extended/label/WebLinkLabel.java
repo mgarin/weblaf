@@ -18,6 +18,7 @@
 package com.alee.extended.label;
 
 import com.alee.laf.label.WebLabel;
+import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.language.LanguageMethods;
 import com.alee.utils.*;
 import com.alee.utils.swing.AncestorAdapter;
@@ -25,10 +26,7 @@ import com.alee.utils.swing.AncestorAdapter;
 import javax.swing.*;
 import javax.swing.event.AncestorEvent;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -118,6 +116,13 @@ public class WebLinkLabel extends WebLabel implements LanguageMethods
         initializeSettings ();
     }
 
+    public WebLinkLabel ( final String text, final Icon icon )
+    {
+        super ( text, icon );
+        setText ( text );
+        initializeSettings ();
+    }
+
     public WebLinkLabel ( final String text, final Icon icon, final int horizontalAlignment )
     {
         super ( text, icon, horizontalAlignment );
@@ -158,15 +163,7 @@ public class WebLinkLabel extends WebLabel implements LanguageMethods
             {
                 if ( isEnabled () && SwingUtilities.isLeftMouseButton ( e ) )
                 {
-                    visitedOnce = true;
-                    updateForeground ();
-
-                    if ( link != null )
-                    {
-                        link.run ();
-                    }
-
-                    fireActionPerformed ();
+                    doClick ();
                 }
             }
 
@@ -209,6 +206,18 @@ public class WebLinkLabel extends WebLabel implements LanguageMethods
             public void ancestorMoved ( final AncestorEvent event )
             {
                 setMouseover ( false );
+            }
+        } );
+
+        addKeyListener ( new KeyAdapter ()
+        {
+            @Override
+            public void keyReleased ( final KeyEvent e )
+            {
+                if ( Hotkey.ENTER.isTriggered ( e ) || Hotkey.SPACE.isTriggered ( e ) )
+                {
+                    doClick ();
+                }
             }
         } );
     }
@@ -463,6 +472,19 @@ public class WebLinkLabel extends WebLabel implements LanguageMethods
     public void removeActionListener ( final ActionListener actionListener )
     {
         actionListeners.remove ( actionListener );
+    }
+
+    public void doClick ()
+    {
+        visitedOnce = true;
+        updateForeground ();
+
+        if ( link != null )
+        {
+            link.run ();
+        }
+
+        fireActionPerformed ();
     }
 
     protected void fireActionPerformed ()
