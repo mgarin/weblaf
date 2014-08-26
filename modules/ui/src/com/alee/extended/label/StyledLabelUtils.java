@@ -592,11 +592,11 @@ public final class StyledLabelUtils implements SwingConstants
                     {
                         customStyles.add ( CustomStyle.underlined );
                     }
-                    else if ( token.equals ( "sp" ) || token.equals ( "superscript" ) )
+                    else if ( token.equals ( "sp" ) || token.equals ( "sup" ) || token.equals ( "superscript" ) )
                     {
                         customStyles.add ( CustomStyle.superscript );
                     }
-                    else if ( token.equals ( "sb" ) || token.equals ( "subscript" ) )
+                    else if ( token.equals ( "sb" ) || token.equals ( "sub" ) || token.equals ( "subscript" ) )
                     {
                         customStyles.add ( CustomStyle.subscript );
                     }

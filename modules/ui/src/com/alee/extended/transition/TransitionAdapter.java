@@ -18,20 +18,26 @@
 package com.alee.extended.transition;
 
 /**
- * User: mgarin Date: 08.11.12 Time: 20:03
+ * @author Mikle Garin
  */
 
-public class TransitionAdapter implements TransitionListener
+public abstract class TransitionAdapter implements TransitionListener
 {
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void transitionStarted ()
     {
-        //
+        // Do nothing by default
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void transitionFinished ()
     {
-        //
+        // Do nothing by default
     }
 }

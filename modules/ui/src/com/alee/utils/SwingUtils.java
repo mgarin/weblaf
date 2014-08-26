@@ -1514,6 +1514,10 @@ public final class SwingUtils
      */
     public static void setEnabledRecursively ( final Component component, final boolean enabled, final boolean startFromChilds )
     {
+        if ( component == null )
+        {
+            return;
+        }
         if ( !startFromChilds )
         {
             component.setEnabled ( enabled );

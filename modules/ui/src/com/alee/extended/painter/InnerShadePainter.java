@@ -182,9 +182,9 @@ public class InnerShadePainter<E extends JComponent> extends NinePatchIconPainte
         if ( icon != null )
         {
             icon.setComponent ( c );
-            icon.paintIcon ( g2d, bounds.x - ( drawLeft ? 0 : 10 ), bounds.y - ( drawTop ? 0 : 10 ),
-                    bounds.width + ( drawLeft ? 0 : 10 ) + ( drawRight ? 0 : 10 ),
-                    bounds.height + ( drawTop ? 0 : 10 ) + ( drawBottom ? 0 : 10 ) );
+            icon.paintIcon ( g2d, bounds.x - ( drawLeft ? 0 : shadeWidth ), bounds.y - ( drawTop ? 0 : shadeWidth ),
+                    bounds.width + ( drawLeft ? 0 : shadeWidth ) + ( drawRight ? 0 : shadeWidth ),
+                    bounds.height + ( drawTop ? 0 : shadeWidth ) + ( drawBottom ? 0 : shadeWidth ) );
         }
     }
 }
