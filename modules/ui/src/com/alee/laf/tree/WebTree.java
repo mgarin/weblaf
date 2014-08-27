@@ -1263,6 +1263,16 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
     }
 
     /**
+     * Returns tree cell renderer pane.
+     *
+     * @return tree cell renderer pane
+     */
+    public CellRendererPane getCellRendererPane ()
+    {
+        return getWebUI ().getCellRendererPane ();
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override

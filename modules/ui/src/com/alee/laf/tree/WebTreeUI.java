@@ -115,7 +115,7 @@ public class WebTreeUI extends BasicTreeUI
      * @param c component that will use UI instance
      * @return instance of the WebTreeUI
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebTreeUI ();
@@ -1179,8 +1179,7 @@ public class WebTreeUI extends BasicTreeUI
                 LafUtils.drawCustomWebBorder ( g2d, tree,
                         new RoundRectangle2D.Double ( rect.x + selectionShadeWidth, rect.y + selectionShadeWidth,
                                 rect.width - selectionShadeWidth * 2 - 1, rect.height - selectionShadeWidth * 2 - 1, selectionRound * 2,
-                                selectionRound * 2 ), StyleConstants.shadeColor, selectionShadeWidth, true, true
-                );
+                                selectionRound * 2 ), StyleConstants.shadeColor, selectionShadeWidth, true, true );
             }
         }
     }
@@ -1396,6 +1395,7 @@ public class WebTreeUI extends BasicTreeUI
      * @param loc drop location
      * @return true if the specified drop location should be displayed as line, false otherwise
      */
+    @Override
     protected boolean isDropLine ( final JTree.DropLocation loc )
     {
         return loc != null && loc.getPath () != null && loc.getChildIndex () != -1;
@@ -1407,6 +1407,7 @@ public class WebTreeUI extends BasicTreeUI
      * @param loc drop location
      * @return drop line rectangle
      */
+    @Override
     protected Rectangle getDropLineRect ( final JTree.DropLocation loc )
     {
         final Rectangle rect;
@@ -1516,5 +1517,15 @@ public class WebTreeUI extends BasicTreeUI
         {
             return new Rectangle2D.Double ( sb.x + shear, sb.y + shear, sb.width - shear, sb.height - shear );
         }
+    }
+
+    /**
+     * Returns tree cell renderer pane.
+     *
+     * @return tree cell renderer pane
+     */
+    public CellRendererPane getCellRendererPane ()
+    {
+        return rendererPane;
     }
 }

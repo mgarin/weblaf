@@ -210,6 +210,7 @@ public abstract class AsyncTreeTransferHandler<N extends AsyncUniqueNode, T exte
             // Saving list of nodes to be deleted if operation succeed
             nodesToRemove = nodes;
 
+            // todo Do not correct for COPY
             // Collecting removed node indices under their parent nodes
             removedUnder = new HashMap<String, List<Integer>> ( 1 );
             for ( final N node : nodesToRemove )
@@ -233,6 +234,7 @@ public abstract class AsyncTreeTransferHandler<N extends AsyncUniqueNode, T exte
     /**
      * Invoked after data has been exported.
      * This method should remove the data that was transferred if the action was MOVE.
+     * This method is invoked from EDT so it is safe to perform tree operations.
      *
      * @param source the component that was the source of the data
      * @param data   the data that was transferred or possibly null if the action is NONE
@@ -241,13 +243,24 @@ public abstract class AsyncTreeTransferHandler<N extends AsyncUniqueNode, T exte
     @Override
     protected void exportDone ( final JComponent source, final Transferable data, final int action )
     {
-        if ( ( action & MOVE ) == MOVE )
+        if ( isMoveAction ( action ) )
         {
             // Removing nodes saved in nodesToRemove in createTransferable
             final T tree = ( T ) source;
             tree.removeNodes ( nodesToRemove );
             nodesToRemove = null;
         }
+    }
+
+    /**
+     * Returns whether action is MOVE or not.
+     *
+     * @param action drag action
+     * @return true if action is MOVE, false otherwise
+     */
+    protected boolean isMoveAction ( final int action )
+    {
+        return ( action & MOVE ) == MOVE;
     }
 
     /**
@@ -373,6 +386,7 @@ public abstract class AsyncTreeTransferHandler<N extends AsyncUniqueNode, T exte
      */
     protected int getAdjustedDropIndex ( final int dropIndex, final N parent )
     {
+        // todo Do not correct for COPY
         // Adjusting drop index
         int adjustedDropIndex = dropIndex == -1 ? parent.getChildCount () : dropIndex;
         if ( removedUnder.containsKey ( parent.getId () ) )
