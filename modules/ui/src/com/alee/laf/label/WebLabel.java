@@ -140,13 +140,29 @@ public class WebLabel extends JLabel implements Styleable, LanguageMethods, Font
      * Constructs label with the specified preferences.
      *
      * @param text text or translation key
-     * @param data language data, may not be passed
      */
-    public WebLabel ( final String text, final Object... data )
+    public WebLabel ( final String text )
     {
-        super ( LanguageUtils.getInitialText ( text, data ) );
-        LanguageUtils.registerInitialLanguage ( this, text, data );
+        super ( LanguageUtils.getInitialText ( text ) );
+        LanguageUtils.registerInitialLanguage ( this, text );
     }
+
+    /**
+     * todo This constructor causes compile-time issues on JDK7 and replaced with its simple version.
+     * todo Reference to the issue: https://github.com/mgarin/weblaf/issues/175
+     * todo Return better constructor when fully switched to JDK8+ support only
+     */
+    //    /**
+    //     * Constructs label with the specified preferences.
+    //     *
+    //     * @param text text or translation key
+    //     * @param data language data, may not be passed
+    //     */
+    //    public WebLabel ( final String text, final Object... data )
+    //    {
+    //        super ( LanguageUtils.getInitialText ( text, data ) );
+    //        LanguageUtils.registerInitialLanguage ( this, text, data );
+    //    }
 
     /**
      * Constructs label with the specified preferences.
@@ -195,13 +211,30 @@ public class WebLabel extends JLabel implements Styleable, LanguageMethods, Font
      *
      * @param text text or translation key
      * @param icon label icon
-     * @param data language data, may not be passed
      */
-    public WebLabel ( final String text, final Icon icon, final Object... data )
+    public WebLabel ( final String text, final Icon icon )
     {
-        super ( LanguageUtils.getInitialText ( text, data ), icon, LEADING );
-        LanguageUtils.registerInitialLanguage ( this, text, data );
+        super ( LanguageUtils.getInitialText ( text ), icon, LEADING );
+        LanguageUtils.registerInitialLanguage ( this, text );
     }
+
+    /**
+     * todo This constructor causes compile-time issues on JDK7 and replaced with its simple version.
+     * todo Reference to the issue: https://github.com/mgarin/weblaf/issues/175
+     * todo Return better constructor when fully switched to JDK8+ support only
+     */
+    //    /**
+    //     * Constructs label with the specified preferences.
+    //     *
+    //     * @param text text or translation key
+    //     * @param icon label icon
+    //     * @param data language data, may not be passed
+    //     */
+    //    public WebLabel ( final String text, final Icon icon, final Object... data )
+    //    {
+    //        super ( LanguageUtils.getInitialText ( text, data ), icon, LEADING );
+    //        LanguageUtils.registerInitialLanguage ( this, text, data );
+    //    }
 
     /**
      * Constructs label with the specified preferences.
