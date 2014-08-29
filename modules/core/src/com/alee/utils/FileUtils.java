@@ -22,6 +22,7 @@ import com.alee.global.StyleConstants;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.log.Log;
 import com.alee.managers.proxy.ProxyManager;
+import com.alee.utils.compare.Filter;
 import com.alee.utils.file.FileDescription;
 import com.alee.utils.file.FileDownloadListener;
 import com.alee.utils.filefilter.AbstractFileFilter;
@@ -395,6 +396,25 @@ public final class FileUtils
             }
         }
         return properRoots;
+    }
+
+    /**
+     * Returns directory files array or empty array (instead of null) if no files present.
+     *
+     * @param directory  directory to look into
+     * @param fileFilter file filter
+     * @return directory files array or empty array (instead of null) if no files present
+     */
+    public static File[] listFiles ( final File directory, final Filter<File> fileFilter )
+    {
+        return listFiles ( directory, new FileFilter ()
+        {
+            @Override
+            public boolean accept ( final File file )
+            {
+                return fileFilter.accept ( file );
+            }
+        } );
     }
 
     /**

@@ -24,6 +24,7 @@ import com.alee.utils.filefilter.AbstractFileFilter;
 import javax.swing.table.TableColumn;
 import java.awt.*;
 import java.io.File;
+import java.io.FileFilter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -165,7 +166,8 @@ public class WebFileTable extends WebTable implements WebFileTableColumns
         final List<File> oldSelection = getSelectedFiles ();
 
         // Update files data
-        final File[] files = file != null ? FileUtils.sortFiles ( FileUtils.listFiles ( file, fileFilter ) ) : FileUtils.getDiskRoots ();
+        final File[] listedFiles = FileUtils.listFiles ( file, ( FileFilter ) fileFilter );
+        final File[] files = file != null ? FileUtils.sortFiles ( listedFiles ) : FileUtils.getDiskRoots ();
         getFileTableModel ().setFiles ( Arrays.asList ( files ) );
 
         // Restoring selection if its same folder

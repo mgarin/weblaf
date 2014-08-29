@@ -422,7 +422,7 @@ public abstract class PluginManager<T extends Plugin>
     protected boolean collectPluginsInformationImpl ( final File dir, final boolean checkRecursively )
     {
         // Checking all files
-        final File[] files = dir.listFiles ( fileFilter );
+        final File[] files = dir.listFiles ( getFileFilter () );
         if ( files != null )
         {
             for ( final File file : files )

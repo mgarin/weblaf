@@ -30,6 +30,8 @@ import net.htmlparser.jericho.Tag;
 
 public final class HtmlUtils
 {
+    public static final String DEFAULT_LINE_SEPARATOR = "\n";
+
     /**
      * Returns plain text extracted from the specified HTML.
      *
@@ -37,6 +39,18 @@ public final class HtmlUtils
      * @return plain text
      */
     public static String getPlainText ( final String html )
+    {
+        return getPlainText ( html, DEFAULT_LINE_SEPARATOR );
+    }
+
+    /**
+     * Returns plain text extracted from the specified HTML.
+     *
+     * @param html          HTML
+     * @param lineSeparator line separator
+     * @return plain text
+     */
+    public static String getPlainText ( final String html, final String lineSeparator )
     {
         final Source source = new Source ( html );
         final Tag[] tags = source.fullSequentialParse ();
@@ -49,7 +63,7 @@ public final class HtmlUtils
             renderer.setMaxLineLength ( Integer.MAX_VALUE );
             renderer.setBlockIndentSize ( 4 );
             renderer.setConvertNonBreakingSpaces ( false );
-            renderer.setNewLine ( "\n" );
+            renderer.setNewLine ( lineSeparator );
             return renderer.toString ();
         }
         else

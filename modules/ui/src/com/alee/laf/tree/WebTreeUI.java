@@ -1395,7 +1395,6 @@ public class WebTreeUI extends BasicTreeUI
      * @param loc drop location
      * @return true if the specified drop location should be displayed as line, false otherwise
      */
-    @Override
     protected boolean isDropLine ( final JTree.DropLocation loc )
     {
         return loc != null && loc.getPath () != null && loc.getChildIndex () != -1;
@@ -1407,7 +1406,6 @@ public class WebTreeUI extends BasicTreeUI
      * @param loc drop location
      * @return drop line rectangle
      */
-    @Override
     protected Rectangle getDropLineRect ( final JTree.DropLocation loc )
     {
         final Rectangle rect;
