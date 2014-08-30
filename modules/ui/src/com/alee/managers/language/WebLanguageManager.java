@@ -55,6 +55,8 @@ public class WebLanguageManager
             LanguageManager.registerLanguageUpdater ( new WebFileDropLU () );
             LanguageManager.registerLanguageUpdater ( new WebCollapsiblePaneLU () );
             LanguageManager.registerLanguageUpdater ( new WebDockableFrameLU () );
+            LanguageManager.registerLanguageUpdater ( new WebFrameLU () );
+            LanguageManager.registerLanguageUpdater ( new WebDialogLU () );
 
             // Tooltip support
             LanguageManager.setTooltipLanguageSupport ( new WeblafTooltipLanguageSupport () );

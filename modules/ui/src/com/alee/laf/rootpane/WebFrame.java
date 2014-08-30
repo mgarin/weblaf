@@ -23,6 +23,7 @@ import com.alee.managers.focus.FocusManager;
 import com.alee.managers.language.LanguageContainerMethods;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.language.LanguageMethods;
+import com.alee.managers.language.LanguageUtils;
 import com.alee.managers.language.updaters.LanguageUpdater;
 import com.alee.managers.settings.DefaultValue;
 import com.alee.managers.settings.SettingsManager;
@@ -67,13 +68,15 @@ public class WebFrame extends JFrame implements LanguageMethods, LanguageContain
 
     public WebFrame ( final String title )
     {
-        super ( title );
+        super ( LanguageUtils.getInitialText ( title ) );
+        LanguageUtils.registerInitialLanguage ( this, title );
         initialize ();
     }
 
     public WebFrame ( final String title, final GraphicsConfiguration gc )
     {
-        super ( title, gc );
+        super ( LanguageUtils.getInitialText ( title ) , gc );
+        LanguageUtils.registerInitialLanguage ( this, title );
         initialize ();
     }
 

@@ -253,9 +253,7 @@ public final class FileUtils
      */
     public static String getRelativePath ( final File file, final File folder )
     {
-        final String filePath = canonicalPath ( file );
-        final String folderPath = canonicalPath ( folder );
-        return filePath.startsWith ( folderPath ) ? filePath.substring ( folderPath.length () + 1 ) : filePath;
+        return folder.toURI ().relativize ( file.toURI () ).getPath ();
     }
 
     /**

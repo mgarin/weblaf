@@ -23,6 +23,7 @@ import com.alee.managers.focus.FocusManager;
 import com.alee.managers.language.LanguageContainerMethods;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.language.LanguageMethods;
+import com.alee.managers.language.LanguageUtils;
 import com.alee.managers.language.updaters.LanguageUpdater;
 import com.alee.managers.settings.DefaultValue;
 import com.alee.managers.settings.SettingsManager;
@@ -73,19 +74,22 @@ public class WebDialog extends JDialog implements LanguageMethods, LanguageConta
 
     public WebDialog ( final Frame owner, final String title )
     {
-        super ( owner, title );
+        super ( owner, LanguageUtils.getInitialText ( title ) );
+        LanguageUtils.registerInitialLanguage ( this, title );
         initialize ();
     }
 
     public WebDialog ( final Frame owner, final String title, final boolean modal )
     {
-        super ( owner, title, modal );
+        super ( owner, LanguageUtils.getInitialText ( title ), modal );
+        LanguageUtils.registerInitialLanguage ( this, title );
         initialize ();
     }
 
     public WebDialog ( final Frame owner, final String title, final boolean modal, final GraphicsConfiguration gc )
     {
-        super ( owner, title, modal, gc );
+        super ( owner, LanguageUtils.getInitialText ( title ), modal, gc );
+        LanguageUtils.registerInitialLanguage ( this, title );
         initialize ();
     }
 
@@ -103,19 +107,22 @@ public class WebDialog extends JDialog implements LanguageMethods, LanguageConta
 
     public WebDialog ( final Dialog owner, final String title )
     {
-        super ( owner, title );
+        super ( owner, LanguageUtils.getInitialText ( title ) );
+        LanguageUtils.registerInitialLanguage ( this, title );
         initialize ();
     }
 
     public WebDialog ( final Dialog owner, final String title, final boolean modal )
     {
-        super ( owner, title, modal );
+        super ( owner, LanguageUtils.getInitialText ( title ), modal );
+        LanguageUtils.registerInitialLanguage ( this, title );
         initialize ();
     }
 
     public WebDialog ( final Dialog owner, final String title, final boolean modal, final GraphicsConfiguration gc )
     {
-        super ( owner, title, modal, gc );
+        super ( owner, LanguageUtils.getInitialText ( title ), modal, gc );
+        LanguageUtils.registerInitialLanguage ( this, title );
         initialize ();
     }
 
@@ -127,7 +134,8 @@ public class WebDialog extends JDialog implements LanguageMethods, LanguageConta
 
     public WebDialog ( final Component owner, final String title )
     {
-        super ( SwingUtils.getWindowAncestor ( owner ), title );
+        super ( SwingUtils.getWindowAncestor ( owner ), LanguageUtils.getInitialText ( title ) );
+        LanguageUtils.registerInitialLanguage ( this, title );
         initialize ();
     }
 
@@ -145,19 +153,22 @@ public class WebDialog extends JDialog implements LanguageMethods, LanguageConta
 
     public WebDialog ( final Window owner, final String title )
     {
-        super ( owner, title );
+        super ( owner, LanguageUtils.getInitialText ( title ) );
+        LanguageUtils.registerInitialLanguage ( this, title );
         initialize ();
     }
 
     public WebDialog ( final Window owner, final String title, final ModalityType modalityType )
     {
-        super ( owner, title, modalityType );
+        super ( owner, LanguageUtils.getInitialText ( title ), modalityType );
+        LanguageUtils.registerInitialLanguage ( this, title );
         initialize ();
     }
 
     public WebDialog ( final Window owner, final String title, final ModalityType modalityType, final GraphicsConfiguration gc )
     {
-        super ( owner, title, modalityType, gc );
+        super ( owner, LanguageUtils.getInitialText ( title ), modalityType, gc );
+        LanguageUtils.registerInitialLanguage ( this, title );
         initialize ();
     }
 
