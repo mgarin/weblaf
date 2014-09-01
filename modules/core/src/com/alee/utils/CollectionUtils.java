@@ -39,7 +39,7 @@ public final class CollectionUtils
      * @param <T>       data type
      * @return sub list with copied values
      */
-    public static <T> List<T> copySubList ( final List<T> list, final int fromIndex, final int toIndex )
+    public static <T> ArrayList<T> copySubList ( final List<T> list, final int fromIndex, final int toIndex )
     {
         return new ArrayList<T> ( list.subList ( fromIndex, toIndex ) );
     }
@@ -53,7 +53,7 @@ public final class CollectionUtils
      * @param <T>       data type
      * @return sub list with cloned values
      */
-    public static <T extends Cloneable> List<T> cloneSubList ( final List<T> list, final int fromIndex, final int toIndex )
+    public static <T extends Cloneable> ArrayList<T> cloneSubList ( final List<T> list, final int fromIndex, final int toIndex )
     {
         final ArrayList<T> clone = new ArrayList<T> ( toIndex - fromIndex );
         for ( int i = fromIndex; i < toIndex; i++ )
@@ -70,9 +70,9 @@ public final class CollectionUtils
      * @param <T>  data type
      * @return data list
      */
-    public static <T> List<T> asList ( final T... data )
+    public static <T> ArrayList<T> asList ( final T... data )
     {
-        final List<T> list = new ArrayList<T> ( data.length );
+        final ArrayList<T> list = new ArrayList<T> ( data.length );
         Collections.addAll ( list, data );
         return list;
     }
@@ -103,7 +103,7 @@ public final class CollectionUtils
      * @param <T>        list type
      * @return copy of the specified list
      */
-    public static <T> List<T> copy ( final Collection<T> collection )
+    public static <T> ArrayList<T> copy ( final Collection<T> collection )
     {
         if ( collection == null )
         {
@@ -120,13 +120,13 @@ public final class CollectionUtils
      * @param <T>        list type
      * @return clone of the specified list
      */
-    public static <T extends Cloneable> List<T> clone ( final Collection<T> collection )
+    public static <T extends Cloneable> ArrayList<T> clone ( final Collection<T> collection )
     {
         if ( collection == null )
         {
             return null;
         }
-        final List<T> cloned = new ArrayList<T> ( collection.size () );
+        final ArrayList<T> cloned = new ArrayList<T> ( collection.size () );
         for ( final T value : collection )
         {
             cloned.add ( ReflectUtils.cloneSafely ( value ) );
@@ -141,9 +141,9 @@ public final class CollectionUtils
      * @param <T>  data type
      * @return data list
      */
-    public static <T> List<T> copy ( final T... data )
+    public static <T> ArrayList<T> copy ( final T... data )
     {
-        final List<T> list = new ArrayList<T> ( data.length );
+        final ArrayList<T> list = new ArrayList<T> ( data.length );
         Collections.addAll ( list, data );
         return list;
     }
@@ -216,9 +216,9 @@ public final class CollectionUtils
      * @param <T>          elements type
      * @return list of strings extracted from the specified elements list
      */
-    public static <T> List<String> toStringList ( final List<T> list, final TextProvider<T> textProvider )
+    public static <T> ArrayList<String> toStringList ( final List<T> list, final TextProvider<T> textProvider )
     {
-        final List<String> stringList = new ArrayList<String> ( list.size () );
+        final ArrayList<String> stringList = new ArrayList<String> ( list.size () );
         for ( final T element : list )
         {
             stringList.add ( textProvider.provide ( element ) );
@@ -250,9 +250,9 @@ public final class CollectionUtils
      * @param <T>   data type
      * @return data list
      */
-    public static <T> List<T> toList ( final T[] array )
+    public static <T> ArrayList<T> toList ( final T[] array )
     {
-        final List<T> list = new ArrayList<T> ( array.length );
+        final ArrayList<T> list = new ArrayList<T> ( array.length );
         Collections.addAll ( list, array );
         return list;
     }
@@ -264,7 +264,7 @@ public final class CollectionUtils
      * @param <T>   data type
      * @return data list
      */
-    public static <T> List<T> toList ( final Deque<T> deque )
+    public static <T> ArrayList<T> toList ( final Deque<T> deque )
     {
         return new ArrayList<T> ( deque );
     }
@@ -277,9 +277,9 @@ public final class CollectionUtils
      * @param <T>        elements type
      * @return list of elements filtered from collection
      */
-    public static <T> List<T> filter ( final Collection<T> collection, final Filter<T> filter )
+    public static <T> ArrayList<T> filter ( final Collection<T> collection, final Filter<T> filter )
     {
-        final List<T> filtered = new ArrayList<T> ( collection.size () );
+        final ArrayList<T> filtered = new ArrayList<T> ( collection.size () );
         for ( final T element : collection )
         {
             if ( filter.accept ( element ) )
@@ -298,7 +298,7 @@ public final class CollectionUtils
      * @param <V> value object type
      * @return map keys list
      */
-    public static <K, V> List<K> keysList ( final Map<K, V> map )
+    public static <K, V> ArrayList<K> keysList ( final Map<K, V> map )
     {
         return new ArrayList<K> ( map.keySet () );
     }
@@ -311,7 +311,7 @@ public final class CollectionUtils
      * @param <V> value object type
      * @return map values list
      */
-    public static <K, V> List<V> valuesList ( final Map<K, V> map )
+    public static <K, V> ArrayList<V> valuesList ( final Map<K, V> map )
     {
         return new ArrayList<V> ( map.values () );
     }
@@ -324,7 +324,7 @@ public final class CollectionUtils
      * @param <V> value object type
      * @return map values summary list with unique elements only
      */
-    public static <K, V> List<V> valuesSummaryList ( final Map<K, List<V>> map )
+    public static <K, V> ArrayList<V> valuesSummaryList ( final Map<K, List<V>> map )
     {
         final ArrayList<V> summary = new ArrayList<V> ( 0 );
         for ( final Map.Entry<K, List<V>> entry : map.entrySet () )
