@@ -166,7 +166,7 @@ public class WebFileTable extends WebTable implements WebFileTableColumns
         final List<File> oldSelection = getSelectedFiles ();
 
         // Update files data
-        final File[] listedFiles = FileUtils.listFiles ( file, ( FileFilter ) fileFilter );
+        final File[] listedFiles = file != null ? FileUtils.listFiles ( file, ( FileFilter ) fileFilter ) : null;
         final File[] files = file != null ? FileUtils.sortFiles ( listedFiles ) : FileUtils.getDiskRoots ();
         getFileTableModel ().setFiles ( Arrays.asList ( files ) );
 
