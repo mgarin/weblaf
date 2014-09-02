@@ -25,12 +25,16 @@ import com.alee.managers.proxy.ProxyManager;
 import com.alee.utils.compare.Filter;
 import com.alee.utils.file.FileDescription;
 import com.alee.utils.file.FileDownloadListener;
+import com.alee.utils.file.SystemFileListener;
 import com.alee.utils.filefilter.AbstractFileFilter;
 import com.alee.utils.filefilter.CustomFileFilter;
+import com.alee.utils.swing.WebTimer;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileSystemView;
 import javax.swing.text.JTextComponent;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.*;
 import java.math.BigInteger;
 import java.net.URL;
@@ -54,7 +58,6 @@ public final class FileUtils
 {
     /**
      * todo 1. File.exists doesn't work in JDK7? Probably should add workaround for that?
-     *
      */
 
     /**
@@ -178,6 +181,11 @@ public final class FileUtils
      * Resource icons cache.
      */
     private static final Map<String, ImageIcon> resourceIconsCache = new HashMap<String, ImageIcon> ();
+
+    /**
+     * Default file tracking updates delay.
+     */
+    private static final int FILE_TRACKING_DELAY = 5000;
 
     /**
      * Clears all caches for specified files.
@@ -2811,5 +2819,51 @@ public final class FileUtils
             resourceIconsCache.put ( key, icon );
             return icon;
         }
+    }
+
+    /**
+     * Starts tracking file for possible changes.
+     *
+     * @param listener system file listener
+     */
+    public static WebTimer trackFile ( final File file, final SystemFileListener listener )
+    {
+        return trackFile ( file, listener, FILE_TRACKING_DELAY );
+    }
+
+    /**
+     * Starts tracking file for possible changes.
+     *
+     * @param listener system file listener
+     * @param delay    delay between checks for changes
+     */
+    public static WebTimer trackFile ( final File file, final SystemFileListener listener, final long delay )
+    {
+        final WebTimer tracker = new WebTimer ( "File tracker - " + file.getName (), delay, 0 );
+        tracker.addActionListener ( new ActionListener ()
+        {
+            private Long lastModified = null;
+
+            @Override
+            public void actionPerformed ( final ActionEvent e )
+            {
+                if ( file.exists () )
+                {
+                    final long lm = file.lastModified ();
+                    if ( lastModified != lm )
+                    {
+                        listener.modified ( file );
+                        lastModified = lm;
+                    }
+                }
+                else
+                {
+                    listener.unbound ( file );
+                    tracker.stop ();
+                }
+            }
+        } );
+        tracker.setUseDaemonThread ( true );
+        return tracker;
     }
 }

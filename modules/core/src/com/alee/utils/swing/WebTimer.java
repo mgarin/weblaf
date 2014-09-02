@@ -135,6 +135,13 @@ public class WebTimer
     protected boolean useEventDispatchThread = true;
 
     /**
+     * Whether should use daemon thread instead of user one or not.
+     * Daemon thread will allow JVM to shutdown even if timer is still running.
+     * This option should be set before starting timer to have any effect.
+     */
+    protected boolean useDaemonThread = false;
+
+    /**
      * Action command for fired events.
      */
     protected String actionCommand = "";
@@ -477,6 +484,29 @@ public class WebTimer
     }
 
     /**
+     * Returns whether should use daemon thread instead of user one or not.
+     *
+     * @return true if should use daemon thread instead of user one, false otherwise
+     */
+    public boolean isUseDaemonThread ()
+    {
+        return useDaemonThread;
+    }
+
+    /**
+     * Returns whether should use daemon thread instead of user one or not.
+     * If set to true it will allow JVM to shutdown even if timer is still running.
+     * This option should be set before starting timer to have any effect.
+     *
+     * @param useDaemonThread whether should use daemon thread instead of user one or not
+     */
+    public WebTimer setUseDaemonThread ( final boolean useDaemonThread )
+    {
+        this.useDaemonThread = useDaemonThread;
+        return this;
+    }
+
+    /**
      * Returns action command for fired events.
      *
      * @return action command for fired events
@@ -795,6 +825,7 @@ public class WebTimer
                 cleanUp ( currentId );
             }
         }, name );
+        exec.setDaemon ( useDaemonThread );
         exec.start ();
     }
 

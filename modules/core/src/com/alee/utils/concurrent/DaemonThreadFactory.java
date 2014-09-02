@@ -3,8 +3,7 @@ package com.alee.utils.concurrent;
 import java.util.concurrent.ThreadFactory;
 
 /**
- * A thread factory that only produces
- * daemon threads.
+ * A thread factory that only produces daemon threads.
  *
  * @author Adolph C.
  */

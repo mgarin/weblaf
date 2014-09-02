@@ -17,6 +17,8 @@
 
 package com.alee.extended.tree;
 
+import com.alee.utils.concurrent.DaemonThreadFactory;
+
 import java.util.Map;
 import java.util.WeakHashMap;
 import java.util.concurrent.ExecutorService;
@@ -44,7 +46,7 @@ public final class AsyncTreeQueue
     /**
      * Currently cached queues list.
      */
-    private static Map<WebAsyncTree, AsyncTreeQueue> queues = new WeakHashMap<WebAsyncTree, AsyncTreeQueue> ();
+    private static final Map<WebAsyncTree, AsyncTreeQueue> queues = new WeakHashMap<WebAsyncTree, AsyncTreeQueue> ();
 
     /**
      * Lock for ExecutorService calls synchronization.
@@ -54,7 +56,7 @@ public final class AsyncTreeQueue
     /**
      * ExecutorService to limit simultaneously running threads.
      */
-    private ExecutorService executorService = Executors.newFixedThreadPool ( threadsAmount );
+    private ExecutorService executorService = Executors.newFixedThreadPool ( threadsAmount, new DaemonThreadFactory () );
 
     /**
      * Sets maximum threads amount for the specified asynchronous tree.
@@ -155,7 +157,7 @@ public final class AsyncTreeQueue
             }
             if ( amount > 0 )
             {
-                executorService = Executors.newFixedThreadPool ( amount );
+                executorService = Executors.newFixedThreadPool ( amount, new DaemonThreadFactory () );
             }
             else
             {
