@@ -68,6 +68,11 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
     protected List<DateSelectionListener> dateSelectionListeners = new ArrayList<DateSelectionListener> ( 1 );
 
     /**
+     * Whether or not selection events must be fired whenever selection occured even if same date is selected.
+     */
+    protected boolean fireSelectionWithoutChanges = true;
+
+    /**
      * Date display format.
      */
     protected SimpleDateFormat dateFormat = new SimpleDateFormat ( "dd.MM.yyyy" );
@@ -161,7 +166,7 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
             @Override
             public void actionPerformed ( final ActionEvent e )
             {
-                setDateFromField ();
+                setDateFromField ( true );
             }
         } );
         addMouseListener ( new MouseAdapter ()
@@ -182,7 +187,7 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
             {
                 if ( !SwingUtils.isEqualOrChild ( popup, e.getOppositeComponent () ) )
                 {
-                    setDateFromField ();
+                    setDateFromField ( true );
                 }
             }
         } );
@@ -240,6 +245,16 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
         setDrawBorder ( drawBorder );
         setRound ( WebDateFieldStyle.round );
         setShadeWidth ( WebDateFieldStyle.shadeWidth );
+    }
+
+    /**
+     * Returns popup button.
+     *
+     * @return popup button
+     */
+    public WebButton getPopupButton ()
+    {
+        return popupButton;
     }
 
     /**
@@ -308,7 +323,7 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
         }
 
         // Updating date from field
-        setDateFromField ();
+        setDateFromField ( false );
 
         // Create popup if it doesn't exist
         if ( popup == null || calendar == null )
@@ -357,7 +372,7 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
                 public void dateSelected ( final Date date )
                 {
                     hideCalendarPopup ();
-                    setDateFromCalendar ();
+                    setDateFromCalendar ( true );
                     requestFocusInWindow ();
                 }
             };
@@ -377,7 +392,7 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
         calendar.transferFocus ();
     }
 
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     protected void customizePopup ( final WebWindow popup )
     {
         // You can customize date field popup window here
@@ -495,23 +510,33 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
      */
     public void setDate ( final Date date )
     {
-        setDateImpl ( date, UpdateSource.other );
+        setDateImpl ( date, UpdateSource.other, true );
+    }
+
+    /**
+     * Forces date to be updated with valid value.
+     * In case field contains valid date in its text it will be used, otherwise old date will be applied.
+     */
+    public void updateDateFromField ( final boolean fireEvent )
+    {
+        setDateFromField ( fireEvent );
     }
 
     /**
      * Updates date using the value from field.
      */
-    protected void setDateFromField ()
+    protected void setDateFromField ( final boolean fireEvent )
     {
-        setDateImpl ( getDateFromField (), UpdateSource.field );
+        setDateImpl ( getDateFromField (), UpdateSource.field, fireEvent );
     }
 
     /**
      * Updates date using the value from calendar.
      */
-    protected void setDateFromCalendar ()
+    protected void setDateFromCalendar ( final boolean fireEvent )
     {
-        setDateImpl ( calendar.getDate (), UpdateSource.calendar );
+        System.out.println ( calendar.getDate () );
+        setDateImpl ( calendar.getDate (), UpdateSource.calendar, fireEvent );
     }
 
     /**
@@ -519,7 +544,7 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
      *
      * @param date new selected date
      */
-    protected void setDateImpl ( final Date date, final UpdateSource source )
+    protected void setDateImpl ( final Date date, final UpdateSource source, final boolean fireEvent )
     {
         final boolean changed = !CompareUtils.equals ( this.date, date );
         this.date = date;
@@ -528,7 +553,7 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
         // Text still might change due to formatting pattern
         updateFieldFromDate ();
 
-        if ( changed )
+        if ( fireSelectionWithoutChanges || changed )
         {
             // Updating calendar date
             if ( source != UpdateSource.calendar && calendar != null )
@@ -537,7 +562,10 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
             }
 
             // Informing about date selection changes
-            fireDateSelected ( date );
+            if ( fireEvent )
+            {
+                fireDateSelected ( date );
+            }
         }
     }
 
@@ -547,6 +575,7 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
     protected void updateFieldFromDate ()
     {
         setText ( getTextDate () );
+        setCaretPosition ( 0 );
     }
 
     /**
@@ -590,6 +619,26 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
     {
         super.setEnabled ( enabled );
         popupButton.setEnabled ( enabled );
+    }
+
+    /**
+     * Returns whether or not selection events must be fired whenever selection occured even if same date is selected.
+     *
+     * @return true if selection events must be fired whenever selection occured even if same date is selected, false otherwise
+     */
+    public boolean isFireSelectionWithoutChanges ()
+    {
+        return fireSelectionWithoutChanges;
+    }
+
+    /**
+     * Sets whether or not selection events must be fired whenever selection occured even if same date is selected.
+     *
+     * @param fire whether or not selection events must be fired whenever selection occured even if same date is selected
+     */
+    public void setFireSelectionWithoutChanges ( final boolean fire )
+    {
+        this.fireSelectionWithoutChanges = fire;
     }
 
     /**
