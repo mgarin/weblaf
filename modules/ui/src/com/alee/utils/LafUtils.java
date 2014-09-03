@@ -1491,7 +1491,7 @@ public final class LafUtils
 
         // Field settings
         final Insets fm = editor.getMargin ();
-        final int dm = 1 + editor.getShadeWidth ();
+        final int dm = 2 + editor.getShadeWidth ();
         bounds.x -= fm.left + dm;
         bounds.y -= fm.top + dm;
         bounds.width += fm.left + fm.right + dm * 2;

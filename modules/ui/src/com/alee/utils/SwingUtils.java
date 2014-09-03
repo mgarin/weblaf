@@ -709,12 +709,37 @@ public final class SwingUtils
      */
     public static <T extends Component> T getFirst ( final Container container, final Class<T> componentClass )
     {
+        return getFirst ( container, componentClass, false );
+    }
+
+    /**
+     * Returns first component placed in the specified container which is instance of specified class type or null if none found.
+     *
+     * @param container      container to look for component in
+     * @param componentClass component class
+     * @param recursive      whether to check all subcontainers or not
+     * @param <T>            component class type
+     * @return first component placed in the specified container which is instance of specified class type or null if none found
+     */
+    public static <T extends Component> T getFirst ( final Container container, final Class<T> componentClass, final boolean recursive )
+    {
         for ( int i = 0; i < container.getComponentCount (); i++ )
         {
             final Component component = container.getComponent ( i );
             if ( componentClass.isInstance ( component ) )
             {
                 return ( T ) component;
+            }
+            if ( recursive )
+            {
+                if ( component instanceof Container )
+                {
+                    final T first = getFirst ( ( Container ) component, componentClass, recursive );
+                    if ( first != null )
+                    {
+                        return first;
+                    }
+                }
             }
         }
         return null;
