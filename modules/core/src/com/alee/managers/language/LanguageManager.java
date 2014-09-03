@@ -506,12 +506,16 @@ public class LanguageManager implements LanguageConstants
      */
     public static void registerComponent ( final Component component, final String key, Object... data )
     {
+        // Properly remove previously installed language
+        unregisterComponent ( component );
+
         // Nullifying data if it has no values
         if ( data != null && data.length == 0 )
         {
             data = null;
         }
 
+        // Saving component
         synchronized ( componentsLock )
         {
             components.put ( component, key );
@@ -521,7 +525,10 @@ public class LanguageManager implements LanguageConstants
             }
         }
 
+        // Updating component language
         updateComponent ( component, key );
+
+        // Registering component listener
         synchronized ( componentsLock )
         {
             if ( component instanceof JComponent )
@@ -586,14 +593,18 @@ public class LanguageManager implements LanguageConstants
     {
         synchronized ( componentsLock )
         {
-            components.remove ( component );
-            componentsData.remove ( component );
-            if ( component instanceof JComponent )
+            if ( components.containsKey ( component ) )
             {
-                final JComponent jComponent = ( JComponent ) component;
-                final AncestorListener listener = componentsListeners.get ( jComponent );
-                jComponent.removeAncestorListener ( listener );
-                componentsListeners.remove ( component );
+                components.remove ( component );
+                componentsData.remove ( component );
+                componentKeysCache.remove ( component );
+                if ( component instanceof JComponent )
+                {
+                    final JComponent jComponent = ( JComponent ) component;
+                    final AncestorListener listener = componentsListeners.get ( jComponent );
+                    jComponent.removeAncestorListener ( listener );
+                    componentsListeners.remove ( component );
+                }
             }
         }
     }
