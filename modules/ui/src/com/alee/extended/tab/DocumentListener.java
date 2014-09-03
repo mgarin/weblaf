@@ -37,6 +37,16 @@ public interface DocumentListener<T extends DocumentData>
     public void opened ( T document, PaneData<T> pane, int index );
 
     /**
+     * Informs that provided document was selected inside document pane.
+     * This will also occur when changing focus between panes in split mode as there is only one selected document at a time.
+     *
+     * @param document document data
+     * @param pane     specific document pane
+     * @param index    document tab index
+     */
+    public void selected ( T document, PaneData<T> pane, int index );
+
+    /**
      * Informs that provided document is being closed.
      * Returns whether document is allowed to close or not.
      *

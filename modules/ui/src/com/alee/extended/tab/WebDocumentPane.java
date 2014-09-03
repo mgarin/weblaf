@@ -629,9 +629,10 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel implements
      */
     protected void activate ( final PaneData<T> paneData )
     {
-        if ( paneData != null )
+        if ( paneData != null && paneData != activePane )
         {
             activePane = paneData;
+            fireDocumentSelected ( activePane.getSelected (), activePane, activePane.getSelectedIndex () );
         }
     }
 
@@ -979,6 +980,21 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel implements
         for ( final DocumentListener<T> listener : CollectionUtils.copy ( listeners ) )
         {
             listener.opened ( document, pane, index );
+        }
+    }
+
+    /**
+     * Fires document selected event.
+     *
+     * @param document selected document
+     * @param pane     document's pane
+     * @param index    document's index
+     */
+    public void fireDocumentSelected ( final T document, final PaneData<T> pane, final int index )
+    {
+        for ( final DocumentListener<T> listener : CollectionUtils.copy ( listeners ) )
+        {
+            listener.selected ( document, pane, index );
         }
     }
 

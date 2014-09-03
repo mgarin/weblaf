@@ -35,6 +35,8 @@ import com.alee.utils.swing.Customizer;
 import com.alee.utils.swing.menu.PopupMenuGenerator;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
@@ -100,6 +102,19 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
 
         // Tab drag
         DocumentDragHandler.install ( this );
+
+        // Document selection
+        tabbedPane.addChangeListener ( new ChangeListener ()
+        {
+            @Override
+            public void stateChanged ( final ChangeEvent e )
+            {
+                if ( SwingUtils.hasFocusOwner ( tabbedPane ) )
+                {
+                    getDocumentPane ().fireDocumentSelected ( getSelected (), PaneData.this, getSelectedIndex () );
+                }
+            }
+        } );
 
         // Tab menu
         tabbedPane.addMouseListener ( new MouseAdapter ()
@@ -476,6 +491,16 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
     {
         final int index = tabbedPane.getSelectedIndex ();
         return index != -1 ? data.get ( index ) : null;
+    }
+
+    /**
+     * Returns pane's selected document index.
+     *
+     * @return pane's selected document index
+     */
+    public int getSelectedIndex ()
+    {
+        return tabbedPane.getSelectedIndex ();
     }
 
     /**
