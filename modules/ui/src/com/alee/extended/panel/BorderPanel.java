@@ -28,22 +28,22 @@ import java.awt.*;
 
 public class BorderPanel extends WebPanel
 {
-    public BorderPanel ( Component component )
+    public BorderPanel ( final Component component )
     {
         this ( component, 0 );
     }
 
-    public BorderPanel ( Component component, int border )
+    public BorderPanel ( final Component component, final int border )
     {
         this ( component, border, border, border, border );
     }
 
-    public BorderPanel ( Component component, int top, int left, int bottom, int right )
+    public BorderPanel ( final Component component, final int top, final int left, final int bottom, final int right )
     {
         this ( component, new Insets ( top, left, bottom, right ) );
     }
 
-    public BorderPanel ( Component component, Insets margin )
+    public BorderPanel ( final Component component, final Insets margin )
     {
         super ();
         setMargin ( margin );

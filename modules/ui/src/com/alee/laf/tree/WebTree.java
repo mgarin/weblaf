@@ -22,6 +22,7 @@ import com.alee.managers.log.Log;
 import com.alee.utils.GeometryUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SwingUtils;
+import com.alee.utils.compare.Filter;
 import com.alee.utils.swing.FontMethods;
 
 import javax.swing.*;
@@ -238,15 +239,11 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
      */
     public void expandRoot ()
     {
-        final TreeModel model = getModel ();
-        if ( model != null && model.getRoot () != null )
-        {
-            expandPath ( new TreePath ( model.getRoot () ) );
-        }
+        expandNode ( getRootNode () );
     }
 
     /**
-     * Expands all tree rows in a single call.
+     * Expands all tree nodes in a single call.
      * It is not recommended to expand large trees this way since that might cause huge interface lags.
      */
     public void expandAll ()
@@ -256,6 +253,43 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
         {
             expandRow ( i );
             i++;
+        }
+    }
+
+    /**
+     * Expands all tree nodes accepted by filter in a single call.
+     * It is not recommended to expand large trees this way since that might cause huge interface lags.
+     *
+     * @param shouldExpand expand filter
+     */
+    public void expandAll ( final Filter<E> shouldExpand )
+    {
+        if ( shouldExpand == null )
+        {
+            expandAll ();
+        }
+        else
+        {
+            final E rootNode = getRootNode ();
+            expandAll ( rootNode, shouldExpand );
+        }
+    }
+
+    /**
+     * Expands all child nodes accepted by filter in a single call.
+     *
+     * @param node         node to expand
+     * @param shouldExpand expand filter
+     */
+    protected void expandAll ( final E node, final Filter<E> shouldExpand )
+    {
+        if ( shouldExpand.accept ( node ) )
+        {
+            expandNode ( node );
+            for ( int i = 0; i < node.getChildCount (); i++ )
+            {
+                expandAll ( ( E ) node.getChildAt ( i ), shouldExpand );
+            }
         }
     }
 

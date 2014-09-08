@@ -107,6 +107,7 @@ public class DocumentDragHandler extends TransferHandler
                     documentIndex = index;
                     document = documentData;
                     super.exportAsDrag ( comp, e, action );
+                    paneData.getDocumentPane ().checkSelection ();
                 }
             }
         }
@@ -203,6 +204,7 @@ public class DocumentDragHandler extends TransferHandler
                 final int di = dp.x < tb.x + tb.width / 2 ? index : index + 1;
                 paneData.add ( document, di );
                 paneData.setSelected ( document );
+                checkFocusState ( paneData );
             }
             else
             {
@@ -232,22 +234,56 @@ public class DocumentDragHandler extends TransferHandler
                 if ( dropSide != -1 )
                 {
                     // Dropped on the side of tabbed pane, splitting
-                    final PaneData otherSplit = paneData.getDocumentPane ().split ( paneData, document, dropSide );
-                    otherSplit.setSelected ( document );
+                    final PaneData otherPane = paneData.getDocumentPane ().split ( paneData, document, dropSide );
+                    otherPane.setSelected ( document );
+                    checkFocusState ( otherPane );
                 }
                 else
                 {
                     // Dropped somewhere in the middle of tabbed pane, adding
                     paneData.add ( document );
                     paneData.setSelected ( document );
+                    checkFocusState ( paneData );
                 }
             }
+            return true;
         }
         catch ( final Throwable e )
         {
             Log.error ( this, e );
+            return false;
         }
-        return false;
+    }
+
+    /**
+     * Special method to transfer focus properly after drag finishes.
+     *
+     * @param paneData pane to transfer focus into
+     */
+    protected void checkFocusState ( final PaneData paneData )
+    {
+        // We have to perform focus transfer AFTER the drag ends, otherwise focus may be lost again
+        // That happens due to splits/tabbed panes removal in the process
+        SwingUtilities.invokeLater ( new Runnable ()
+        {
+            @Override
+            public void run ()
+            {
+                final WebTabbedPane pane = paneData.getTabbedPane ();
+                if ( !SwingUtils.hasFocusOwner ( pane ) )
+                {
+                    final Component c = pane.getSelectedComponent ();
+                    if ( c.isFocusable () || c instanceof Container && SwingUtils.hasFocusableComponent ( ( Container ) c ) )
+                    {
+                        pane.transferFocus ();
+                    }
+                    else
+                    {
+                        pane.requestFocusInWindow ();
+                    }
+                }
+            }
+        } );
     }
 
     /**

@@ -103,16 +103,13 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
         // Tab drag
         DocumentDragHandler.install ( this );
 
-        // Document selection
+        // Activating document pane on
         tabbedPane.addChangeListener ( new ChangeListener ()
         {
             @Override
             public void stateChanged ( final ChangeEvent e )
             {
-                if ( SwingUtils.hasFocusOwner ( tabbedPane ) )
-                {
-                    getDocumentPane ().fireDocumentSelected ( getSelected (), PaneData.this, getSelectedIndex () );
-                }
+                checkSelection ();
             }
         } );
 
@@ -245,7 +242,6 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
                     final Rectangle bounds = tabbedPane.getBoundsAt ( index );
                     menu.show ( tabbedPane, bounds.x + bounds.width / 2 - mps.width / 2,
                             bounds.y + bounds.height - menu.getShadeWidth () + 5 );
-                    //                    menu.showBelowMiddle ( tabbedPane.getTabComponentAt ( index ) );
                 }
             }
         } );
@@ -260,9 +256,22 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
                 {
                     activate ();
                 }
+                checkSelection ();
             }
         };
         FocusManager.addFocusTracker ( tabbedPane, focusTracker );
+    }
+
+    /**
+     * Checks document pane selection.
+     */
+    public void checkSelection ()
+    {
+        final WebDocumentPane documentPane = getDocumentPane ();
+        if ( documentPane != null )
+        {
+            documentPane.checkSelection ();
+        }
     }
 
     /**
@@ -389,6 +398,9 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
         tabbedPane.insertTab ( "", document.getIcon (), document.getComponent (), null, i );
         tabbedPane.setBackgroundAt ( i, document.getBackground () );
         tabbedPane.setTabComponentAt ( i, createTabComponent ( document ) );
+
+        // Listening to document data changes
+        document.addListener ( new PaneDataAdapter<T> ( this ) );
     }
 
     /**
@@ -587,12 +599,36 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
             final int index = indexOf ( document );
             if ( index != -1 )
             {
+                document.removeListener ( findDocumentListener ( document ) );
                 tabbedPane.remove ( index );
                 data.remove ( document );
                 return true;
             }
         }
         return false;
+    }
+
+    /**
+     * Returns document listener attached by this pane data class.
+     *
+     * @param document listened document
+     * @return document listener attached by this pane data class
+     */
+    protected DocumentDataListener<T> findDocumentListener ( final T document )
+    {
+        final List<DocumentDataListener<T>> listeners = document.getListeners ();
+        for ( final DocumentDataListener<T> listener : listeners )
+        {
+            if ( listener instanceof PaneDataAdapter )
+            {
+                final PaneData paneData = ( ( PaneDataAdapter ) listener ).getPaneData ();
+                if ( paneData == this )
+                {
+                    return listener;
+                }
+            }
+        }
+        return null;
     }
 
     /**
@@ -699,6 +735,16 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
         {
             pane.activate ( PaneData.this );
         }
+    }
+
+    /**
+     * Returns whether this pane is active one within WebDocumentPane or not.
+     *
+     * @return true if this pane is active one within WebDocumentPane, false otherwise
+     */
+    public boolean isActive ()
+    {
+        return getDocumentPane ().getActivePane () == this;
     }
 
     /**

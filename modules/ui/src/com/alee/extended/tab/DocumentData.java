@@ -18,9 +18,12 @@
 package com.alee.extended.tab;
 
 import com.alee.managers.language.LM;
+import com.alee.utils.CollectionUtils;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class represents basic data for single document opened in WebDocumentPane.
@@ -34,8 +37,10 @@ import java.awt.*;
 public class DocumentData<C extends Component>
 {
     /**
-     * todo 1. DocumentData listeners to update view properly
+     * Document data listeners.
+     * Used to properly update WebDocumentPane view on document changes.
      */
+    protected transient List<DocumentDataListener> listeners = new ArrayList<DocumentDataListener> ( 1 );
 
     /**
      * Document ID.
@@ -234,6 +239,7 @@ public class DocumentData<C extends Component>
     public void setIcon ( final Icon icon )
     {
         this.icon = icon;
+        fireTitleChanged ();
     }
 
     /**
@@ -264,6 +270,7 @@ public class DocumentData<C extends Component>
     public void setTitle ( final String title )
     {
         this.title = title;
+        fireTitleChanged ();
     }
 
     /**
@@ -284,6 +291,7 @@ public class DocumentData<C extends Component>
     public void setForeground ( final Color foreground )
     {
         this.foreground = foreground;
+        fireTitleChanged ();
     }
 
     /**
@@ -303,7 +311,9 @@ public class DocumentData<C extends Component>
      */
     public void setBackground ( final Color background )
     {
+        final Color old = this.background;
         this.background = background;
+        fireBackgroundChanged ( old, background );
     }
 
     /**
@@ -324,6 +334,7 @@ public class DocumentData<C extends Component>
     public void setCloseable ( final boolean closeable )
     {
         this.closeable = closeable;
+        fireTitleChanged ();
     }
 
     /**
@@ -363,6 +374,77 @@ public class DocumentData<C extends Component>
      */
     public void setComponent ( final C component )
     {
+        final Component old = this.component;
         this.component = component;
+        fireContentChanged ( old, component );
+    }
+
+    /**
+     * Returns available document data listeners.
+     *
+     * @return available document data listeners
+     */
+    public List<DocumentDataListener> getListeners ()
+    {
+        return CollectionUtils.copy ( listeners );
+    }
+
+    /**
+     * Adds document data listener.
+     *
+     * @param listener document data listener to add
+     */
+    public void addListener ( final DocumentDataListener listener )
+    {
+        listeners.add ( listener );
+    }
+
+    /**
+     * Removes document data listener.
+     *
+     * @param listener document data listener to remove
+     */
+    public void removeListener ( final DocumentDataListener listener )
+    {
+        listeners.remove ( listener );
+    }
+
+    /**
+     * Informs about data changes which affects document tab view.
+     */
+    public void fireTitleChanged ()
+    {
+        for ( final DocumentDataListener listener : CollectionUtils.copy ( listeners ) )
+        {
+            listener.titleChanged ( this );
+        }
+    }
+
+    /**
+     * Inform about tab background changes.
+     *
+     * @param oldBackground previous background color
+     * @param newBackground new background color
+     */
+    public void fireBackgroundChanged ( final Color oldBackground, final Color newBackground )
+    {
+        for ( final DocumentDataListener listener : CollectionUtils.copy ( listeners ) )
+        {
+            listener.backgroundChanged ( this, oldBackground, newBackground );
+        }
+    }
+
+    /**
+     * Informs about tab component changes.
+     *
+     * @param oldComponent previous tab content
+     * @param newComponent new tab content
+     */
+    public void fireContentChanged ( final Component oldComponent, final Component newComponent )
+    {
+        for ( final DocumentDataListener listener : CollectionUtils.copy ( listeners ) )
+        {
+            listener.contentChanged ( this, oldComponent, newComponent );
+        }
     }
 }

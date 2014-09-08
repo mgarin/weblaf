@@ -29,6 +29,7 @@ import com.alee.utils.swing.Customizer;
 import javax.swing.*;
 import javax.swing.event.AncestorEvent;
 import java.awt.*;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -114,6 +115,11 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel implements
      * Whether tab menu is enabled or not.
      */
     protected boolean tabMenuEnabled = true;
+
+    /**
+     * Previously selected document.
+     */
+    protected WeakReference<T> previouslySelected = new WeakReference<T> ( null );
 
     /**
      * Constructs new document pane.
@@ -483,6 +489,10 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel implements
             // Updating document pane view
             revalidate ();
             repaint ();
+
+            // Activating other split
+            otherPane.getTabbedPane ().requestFocusInWindow ();
+            otherPane.activate ();
         }
         else
         {
@@ -529,6 +539,9 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel implements
             revalidate ();
             repaint ();
         }
+
+        // Checking selection state
+        checkSelection ();
     }
 
     /**
@@ -632,7 +645,7 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel implements
         if ( paneData != null && paneData != activePane )
         {
             activePane = paneData;
-            fireDocumentSelected ( activePane.getSelected (), activePane, activePane.getSelectedIndex () );
+            checkSelection ();
         }
     }
 
@@ -891,6 +904,7 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel implements
         else if ( activePane != null )
         {
             activePane.open ( document );
+            activePane.setSelected ( document );
         }
     }
 
@@ -945,6 +959,22 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel implements
         for ( final PaneData<T> paneData : getAllPanes () )
         {
             paneData.closeAll ();
+        }
+    }
+
+    /**
+     * Checks selection state and fires selection event if required.
+     * This method is separated from actual selection due to various difficulties implementing it on-place.
+     * Selection is checked on pane activation, documents tab changes.
+     */
+    protected void checkSelection ()
+    {
+        final T selected = getSelectedDocument ();
+        if ( selected != null && previouslySelected.get () != selected )
+        {
+            previouslySelected = new WeakReference<T> ( selected );
+            final PaneData<T> pane = getPane ( selected );
+            fireDocumentSelected ( selected, pane, pane.indexOf ( selected ) );
         }
     }
 
