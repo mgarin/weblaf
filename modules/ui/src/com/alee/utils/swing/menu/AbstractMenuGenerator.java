@@ -154,7 +154,7 @@ public abstract class AbstractMenuGenerator<E extends JComponent>
      */
     public void setExtension ( final String extension )
     {
-        this.extension = extension.startsWith ( "." ) ? extension : "." + extension;
+        this.extension = extension == null ? null : extension.startsWith ( "." ) ? extension : "." + extension;
     }
 
     /**
