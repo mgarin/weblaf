@@ -22,6 +22,7 @@ import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.menu.WebCheckBoxMenuItem;
 import com.alee.laf.menu.WebPopupMenu;
 import com.alee.laf.text.WebTextField;
+import com.alee.laf.tree.TreeState;
 import com.alee.laf.tree.UniqueNode;
 import com.alee.laf.tree.WebTree;
 import com.alee.managers.hotkey.Hotkey;
@@ -87,6 +88,17 @@ public class WebTreeFilterField<E extends UniqueNode> extends WebTextField
      * Tree filter change listener.
      */
     protected PropertyChangeListener filterChangeListener;
+
+    /**
+     * Whether should automatically handle tree state on filter changes or not.
+     */
+    protected boolean defaultTreeStateBehavior = true;
+
+    /**
+     * Last saved tree state.
+     */
+    protected TreeState treeState = null;
+    protected Rectangle visibleRect = null;
 
     /**
      * UI elements.
@@ -463,6 +475,26 @@ public class WebTreeFilterField<E extends UniqueNode> extends WebTextField
     }
 
     /**
+     * Returns whether should automatically handle tree state on filter changes or not.
+     *
+     * @return true if should automatically handle tree state on filter changes, false otherwise
+     */
+    public boolean isDefaultTreeStateBehavior ()
+    {
+        return defaultTreeStateBehavior;
+    }
+
+    /**
+     * Sets whether should automatically handle tree state on filter changes or not.
+     *
+     * @param defaultTreeStateBehavior whether should automatically handle tree state on filter changes or not
+     */
+    public void setDefaultTreeStateBehavior ( final boolean defaultTreeStateBehavior )
+    {
+        this.defaultTreeStateBehavior = defaultTreeStateBehavior;
+    }
+
+    /**
      * Updates tree filtering.
      */
     public void updateFiltering ()
@@ -473,6 +505,8 @@ public class WebTreeFilterField<E extends UniqueNode> extends WebTextField
         {
             if ( tree instanceof WebAsyncTree )
             {
+                // todo Restore/expand behavior
+
                 // Cleaning up filter cache
                 filter.clearCache ();
 
@@ -481,11 +515,42 @@ public class WebTreeFilterField<E extends UniqueNode> extends WebTextField
             }
             else if ( tree instanceof WebExTree )
             {
+                // Save tree state before filtering
+                if ( defaultTreeStateBehavior )
+                {
+                    if ( !isEmpty () && treeState == null )
+                    {
+                        treeState = tree.getTreeState ();
+                        visibleRect = tree.getVisibleRect ();
+                    }
+                }
+
                 // Cleaning up filter cache
                 filter.clearCache ();
 
                 // Updating tree filtering
                 ( ( WebExTree ) tree ).updateSortingAndFiltering ();
+
+                // Restore tree state or expand tree
+                if ( defaultTreeStateBehavior )
+                {
+                    if ( isEmpty () )
+                    {
+                        // Restore tree state
+                        if ( treeState != null )
+                        {
+                            tree.setTreeState ( treeState );
+                            tree.scrollRectToVisible ( visibleRect );
+                            treeState = null;
+                            visibleRect = null;
+                        }
+                    }
+                    else
+                    {
+                        // Expand all
+                        tree.expandAll ();
+                    }
+                }
             }
         }
     }
@@ -529,5 +594,16 @@ public class WebTreeFilterField<E extends UniqueNode> extends WebTextField
     public WebTree<E> getTree ()
     {
         return tree != null ? tree.get () : null;
+    }
+
+    /**
+     * Returns whether this tree filter field is empty or not.
+     *
+     * @return true if this tree filter field is empty, false otherwise
+     */
+    public boolean isEmpty ()
+    {
+        final String text = getText ();
+        return text == null || text.equals ( "" );
     }
 }

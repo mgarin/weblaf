@@ -67,6 +67,11 @@ public abstract class PluginManager<T extends Plugin>
     protected List<DetectedPlugin<T>> detectedPlugins;
 
     /**
+     * Detected plugins cached by plugin file path.
+     */
+    protected Map<String, DetectedPlugin<T>> detectedPluginsByPath = new HashMap<String, DetectedPlugin<T>> ();
+
+    /**
      * Recently detected plugins list.
      * Contains plugins detected while last plugins check.
      */
@@ -456,6 +461,29 @@ public abstract class PluginManager<T extends Plugin>
      */
     protected boolean collectPluginInformation ( final File file )
     {
+        final DetectedPlugin<T> plugin = getPluginInformation ( file );
+        if ( plugin != null )
+        {
+            detectedPlugins.add ( plugin );
+            recentlyDetected.add ( plugin );
+            Log.info ( this, "Plugin detected: " + plugin );
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    /**
+     * Returns plugin information from the specified plugin file.
+     * Returns null in case plugin file cannot be read or if it is incorrect.
+     *
+     * @param file plugin file to process
+     * @return plugin information from the specified plugin file or null
+     */
+    protected DetectedPlugin<T> getPluginInformation ( final File file )
+    {
         try
         {
             final String pluginDescriptor = getPluginDescriptorFile ();
@@ -489,11 +517,11 @@ public abstract class PluginManager<T extends Plugin>
                     // Checking whether we have already detected this plugin or not
                     if ( !wasDetected ( file.getParent (), file.getName () ) )
                     {
+                        // Cache and return new plugin information
+                        // This cache map is filled here since it has different usage cases
                         final DetectedPlugin<T> plugin = new DetectedPlugin<T> ( file.getParent (), file.getName (), info, logo );
-                        detectedPlugins.add ( plugin );
-                        recentlyDetected.add ( plugin );
-                        Log.info ( this, "Plugin detected: " + info );
-                        return true;
+                        detectedPluginsByPath.put ( FileUtils.canonicalPath ( file ), plugin );
+                        return plugin;
                     }
 
                     break;
@@ -505,7 +533,32 @@ public abstract class PluginManager<T extends Plugin>
         {
             Log.error ( this, e );
         }
-        return false;
+        return null;
+    }
+
+    /**
+     * Returns plugin information from the specified plugin file.
+     *
+     * @param file plugin file to process
+     * @return plugin information from the specified plugin file
+     */
+    public DetectedPlugin<T> getDetectedPlugin ( final File file )
+    {
+        if ( file == null )
+        {
+            return null;
+        }
+        final String path = FileUtils.canonicalPath ( file );
+        if ( detectedPluginsByPath.containsKey ( path ) )
+        {
+            // Cached plugin information
+            return detectedPluginsByPath.get ( path );
+        }
+        else
+        {
+            // Loading plugin information
+            return getPluginInformation ( file );
+        }
     }
 
     /**
@@ -519,8 +572,8 @@ public abstract class PluginManager<T extends Plugin>
     {
         for ( final DetectedPlugin<T> plugin : detectedPlugins )
         {
-            if ( plugin.getPluginFile () != null && plugin.getPluginFolder ().equals ( pluginFolder ) &&
-                    plugin.getPluginFile ().equals ( pluginFile ) )
+            if ( plugin.getPluginFileName () != null && plugin.getPluginFolder ().equals ( pluginFolder ) &&
+                    plugin.getPluginFileName ().equals ( pluginFile ) )
             {
                 return true;
             }
@@ -593,7 +646,7 @@ public abstract class PluginManager<T extends Plugin>
                 continue;
             }
 
-            final File pluginFile = new File ( dp.getPluginFolder (), dp.getPluginFile () );
+            final File pluginFile = dp.getFile ();
             final PluginInformation info = dp.getInformation ();
             final String prefix = "[" + FileUtils.getRelativePath ( pluginFile, new File ( pluginsDirectoryPath ) ) + "] [" + info + "] ";
             try

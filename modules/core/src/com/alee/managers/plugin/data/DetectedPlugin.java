@@ -20,6 +20,7 @@ package com.alee.managers.plugin.data;
 import com.alee.managers.plugin.Plugin;
 
 import javax.swing.*;
+import java.io.File;
 
 /**
  * Initial information gathered about existing plugin.
@@ -39,7 +40,7 @@ public class DetectedPlugin<T extends Plugin>
     /**
      * Plugin file name.
      */
-    private final String pluginFile;
+    private final String pluginFileName;
 
     /**
      * Plugin class.
@@ -79,16 +80,17 @@ public class DetectedPlugin<T extends Plugin>
     /**
      * Constructs new information object about existing plugin.
      *
-     * @param pluginFolder path to plugin file folder
-     * @param pluginFile   plugin file name
-     * @param information  plugin information
-     * @param logo         plugin logo
+     * @param pluginFolder   path to plugin file folder
+     * @param pluginFileName plugin file name
+     * @param information    plugin information
+     * @param logo           plugin logo
      */
-    public DetectedPlugin ( final String pluginFolder, final String pluginFile, final PluginInformation information, final ImageIcon logo )
+    public DetectedPlugin ( final String pluginFolder, final String pluginFileName, final PluginInformation information,
+                            final ImageIcon logo )
     {
         super ();
         this.pluginFolder = pluginFolder;
-        this.pluginFile = pluginFile;
+        this.pluginFileName = pluginFileName;
         this.information = information;
         this.logo = logo;
         this.status = PluginStatus.detected;
@@ -109,9 +111,19 @@ public class DetectedPlugin<T extends Plugin>
      *
      * @return plugin file name
      */
-    public String getPluginFile ()
+    public String getPluginFileName ()
     {
-        return pluginFile;
+        return pluginFileName;
+    }
+
+    /**
+     * Returns plugin file.
+     *
+     * @return plugin file
+     */
+    public File getFile ()
+    {
+        return new File ( pluginFolder, pluginFileName );
     }
 
     /**

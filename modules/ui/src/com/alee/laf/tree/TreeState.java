@@ -55,7 +55,7 @@ public class TreeState implements Serializable, Cloneable
      *
      * @param states node states
      */
-    public TreeState ( Map<String, NodeState> states )
+    public TreeState ( final Map<String, NodeState> states )
     {
         super ();
         if ( states != null )
@@ -79,7 +79,7 @@ public class TreeState implements Serializable, Cloneable
      *
      * @param states all node states
      */
-    public void setStates ( Map<String, NodeState> states )
+    public void setStates ( final Map<String, NodeState> states )
     {
         this.states = states;
     }
@@ -91,7 +91,7 @@ public class TreeState implements Serializable, Cloneable
      * @param expanded expansion state
      * @param selected selection state
      */
-    public void addState ( String nodeId, boolean expanded, boolean selected )
+    public void addState ( final String nodeId, final boolean expanded, final boolean selected )
     {
         states.put ( nodeId, new NodeState ( expanded, selected ) );
     }
@@ -102,7 +102,7 @@ public class TreeState implements Serializable, Cloneable
      * @param nodeId node ID
      * @return true if node with the specified ID is expanded, false otherwise
      */
-    public boolean isExpanded ( String nodeId )
+    public boolean isExpanded ( final String nodeId )
     {
         final NodeState state = states.get ( nodeId );
         return state != null && state.isExpanded ();
@@ -114,7 +114,7 @@ public class TreeState implements Serializable, Cloneable
      * @param nodeId node ID
      * @return true if node with the specified ID is expanded, false otherwise
      */
-    public boolean isSelected ( String nodeId )
+    public boolean isSelected ( final String nodeId )
     {
         final NodeState state = states.get ( nodeId );
         return state != null && state.isSelected ();
