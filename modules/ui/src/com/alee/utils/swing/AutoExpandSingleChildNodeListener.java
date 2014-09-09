@@ -25,6 +25,7 @@ import java.util.Arrays;
 
 /**
  * Tree expansion listener that automatically expands node futher if it has only one child.
+ * Actual expand operation occurs right after node expand event and works only on its childs.
  * Be aware that this listener is not suited for async trees.
  *
  * @author Mikle Garin
@@ -57,5 +58,56 @@ public class AutoExpandSingleChildNodeListener implements TreeExpansionListener
     public void treeCollapsed ( final TreeExpansionEvent event )
     {
         // Do nothing
+    }
+
+    /**
+     * Installs listener into tree and ensures that it is the only one installed.
+     *
+     * @param tree tree to modify
+     * @return installed listener
+     */
+    public static AutoExpandSingleChildNodeListener install ( final JTree tree )
+    {
+        // Uninstall old listeners first
+        uninstall ( tree );
+
+        // Add new adapter
+        final AutoExpandSingleChildNodeListener adapter = new AutoExpandSingleChildNodeListener ();
+        tree.addTreeExpansionListener ( adapter );
+        return adapter;
+    }
+
+    /**
+     * Uninstalls all listeners from the specified tree.
+     *
+     * @param tree tree to modify
+     */
+    public static void uninstall ( final JTree tree )
+    {
+        for ( final TreeExpansionListener listener : tree.getTreeExpansionListeners () )
+        {
+            if ( listener instanceof AutoExpandSingleChildNodeListener )
+            {
+                tree.removeTreeExpansionListener ( listener );
+            }
+        }
+    }
+
+    /**
+     * Returns whether the specified tree has any listeners installed or not.
+     *
+     * @param tree tree to process
+     * @return true if the specified tree has any listeners installed, false otherwise
+     */
+    public static boolean isInstalled ( final JTree tree )
+    {
+        for ( final TreeExpansionListener listener : tree.getTreeExpansionListeners () )
+        {
+            if ( listener instanceof AutoExpandSingleChildNodeListener )
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }

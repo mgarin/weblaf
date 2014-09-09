@@ -23,6 +23,7 @@ import com.alee.utils.GeometryUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.compare.Filter;
+import com.alee.utils.swing.AutoExpandSingleChildNodeListener;
 import com.alee.utils.swing.FontMethods;
 
 import javax.swing.*;
@@ -907,9 +908,9 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
     }
 
     /**
-     * Returns whether tree should expand nodes on selection or not.
+     * Returns whether tree should auto-expand nodes on selection or not.
      *
-     * @return true if tree should expand nodes on selection, false otherwise
+     * @return true if tree should auto-expand nodes on selection, false otherwise
      */
     public boolean isAutoExpandSelectedNode ()
     {
@@ -917,13 +918,48 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
     }
 
     /**
-     * Sets whether tree should expand nodes on selection or not.
+     * Sets whether tree should auto-expand nodes on selection or not.
      *
-     * @param autoExpandSelectedNode whether tree should expand nodes on selection or not
+     * @param autoExpand whether tree should auto-expand nodes on selection or not
      */
-    public void setAutoExpandSelectedNode ( final boolean autoExpandSelectedNode )
+    public void setAutoExpandSelectedNode ( final boolean autoExpand )
     {
-        getWebUI ().setAutoExpandSelectedNode ( autoExpandSelectedNode );
+        getWebUI ().setAutoExpandSelectedNode ( autoExpand );
+    }
+
+    /**
+     * Returns whether tree should auto-expand single child nodes or not.
+     * If set to true when any node is expanded and there is only one single child node in it - it will be automatically expanded.
+     *
+     * @return true if tree should auto-expand single child nodes, false otherwise
+     */
+    public boolean isAutoExpandSingleChildNode ()
+    {
+        return AutoExpandSingleChildNodeListener.isInstalled ( this );
+    }
+
+    /**
+     * Sets whether tree should auto-expand single child nodes or not.
+     * If set to true when any node is expanded and there is only one single child node in it - it will be automatically expanded.
+     *
+     * @param autoExpand whether tree should auto-expand single child nodes or not
+     */
+    public void setAutoExpandSingleChildNode ( final boolean autoExpand )
+    {
+        if ( autoExpand )
+        {
+            if ( !isAutoExpandSingleChildNode () )
+            {
+                TreeRolloverSelectionAdapter.install ( this );
+            }
+        }
+        else
+        {
+            if ( isAutoExpandSingleChildNode () )
+            {
+                TreeRolloverSelectionAdapter.uninstall ( this );
+            }
+        }
     }
 
     /**
