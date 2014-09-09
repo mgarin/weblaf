@@ -1484,6 +1484,58 @@ public class WebTimer
     }
 
     /**
+     * Returns newly created and started timer that repeats and has the specified delay, initial delay and action listener.
+     *
+     * @param useDaemonThread whether should use daemon thread instead of user one or not
+     * @param name            thread name
+     * @param delay           delay between timer cycles in milliseconds
+     * @param listener        action listener
+     * @return newly created and started timer
+     */
+    public static WebTimer repeat ( final boolean useDaemonThread, final String name, final long delay, final ActionListener listener )
+    {
+        return repeat ( useDaemonThread, name, delay, delay, listener );
+    }
+
+    /**
+     * Returns newly created and started timer that repeats and has the specified delay, initial delay and action listener.
+     *
+     * @param useDaemonThread whether should use daemon thread instead of user one or not
+     * @param name            thread name
+     * @param delay           delay between timer cycles in milliseconds
+     * @param initialDelay    delay before the first timer cycle run in milliseconds
+     * @param listener        action listener
+     * @return newly created and started timer
+     */
+    public static WebTimer repeat ( final boolean useDaemonThread, final String name, final long delay, final long initialDelay,
+                                    final ActionListener listener )
+    {
+        return repeat ( useDaemonThread, name, delay, initialDelay, defaultCyclesLimit, listener );
+    }
+
+    /**
+     * Returns newly created and started timer that repeats and has the specified delay, initial delay and action listener.
+     *
+     * @param useDaemonThread whether should use daemon thread instead of user one or not
+     * @param name            thread name
+     * @param delay           delay between timer cycles in milliseconds
+     * @param initialDelay    delay before the first timer cycle run in milliseconds
+     * @param cyclesLimit     timer cycles execution limit
+     * @param listener        action listener
+     * @return newly created and started timer
+     */
+    public static WebTimer repeat ( final boolean useDaemonThread, final String name, final long delay, final long initialDelay,
+                                    final int cyclesLimit, final ActionListener listener )
+    {
+        final WebTimer repeat = new WebTimer ( name, delay, initialDelay, listener );
+        repeat.setRepeats ( true );
+        repeat.setUseDaemonThread ( useDaemonThread );
+        repeat.setCyclesLimit ( cyclesLimit );
+        repeat.start ();
+        return repeat;
+    }
+
+    /**
      * Either returns delay retrieved from string or throws an exception if it cannot be parsed.
      * Full string format is "Xd Yh Zm s ms" but you can skip any part of it. Yet you must specify atleast one value.
      * For example string "2h 5s" will be a valid delay declaration and will be converted into (2*60*60*1000+5*1000) long value.

@@ -31,8 +31,10 @@ package com.alee.utils.swing;
  * @see com.alee.utils.swing.FontMethods
  * @see com.alee.utils.swing.BorderMethods
  * @see com.alee.utils.swing.WindowMethods
+ * @see com.alee.utils.swing.EventMethods
  */
 
+@SuppressWarnings ( "JavadocReference" )
 public interface SwingMethods
 {
     /**
@@ -43,5 +45,6 @@ public interface SwingMethods
      * todo To modify:
      * todo SizeMethods - add into all available components
      * todo Move font methods from SwingUtils to FontUtils
+     * todo EventMethods - add more methods and inject them into various components
      */
 }

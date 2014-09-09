@@ -21,17 +21,16 @@ import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.list.editor.DefaultListCellEditor;
 import com.alee.laf.list.editor.ListCellEditor;
 import com.alee.laf.list.editor.ListEditListener;
+import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.log.Log;
-import com.alee.utils.CollectionUtils;
-import com.alee.utils.ReflectUtils;
-import com.alee.utils.SizeUtils;
-import com.alee.utils.SwingUtils;
-import com.alee.utils.swing.FontMethods;
-import com.alee.utils.swing.SizeMethods;
+import com.alee.utils.*;
+import com.alee.utils.swing.*;
 
 import javax.swing.*;
 import javax.swing.event.ListDataListener;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.MouseAdapter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -47,7 +46,7 @@ import java.util.Vector;
  * @author Mikle Garin
  */
 
-public class WebList extends JList implements FontMethods<WebList>, SizeMethods<WebList>
+public class WebList extends JList implements EventMethods, FontMethods<WebList>, SizeMethods<WebList>
 {
     /**
      * List edit lsiteners.
@@ -701,6 +700,33 @@ public class WebList extends JList implements FontMethods<WebList>, SizeMethods<
         {
             listener.editCancelled ( index );
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MouseAdapter onDoubleClick ( final MouseEventRunnable runnable )
+    {
+        return EventUtils.onDoubleClick ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public KeyAdapter onKeyPress ( final KeyEventRunnable runnable )
+    {
+        return EventUtils.onKeyPress ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public KeyAdapter onKeyPress ( final HotkeyData hotkey, final KeyEventRunnable runnable )
+    {
+        return EventUtils.onKeyPress ( this, hotkey, runnable );
     }
 
     /**

@@ -18,13 +18,14 @@
 package com.alee.laf.tree;
 
 import com.alee.laf.WebLookAndFeel;
+import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.log.Log;
+import com.alee.utils.EventUtils;
 import com.alee.utils.GeometryUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.compare.Filter;
-import com.alee.utils.swing.AutoExpandSingleChildNodeListener;
-import com.alee.utils.swing.FontMethods;
+import com.alee.utils.swing.*;
 
 import javax.swing.*;
 import javax.swing.event.CellEditorListener;
@@ -32,6 +33,8 @@ import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.*;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.MouseAdapter;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
@@ -48,7 +51,7 @@ import java.util.Vector;
  * @author Mikle Garin
  */
 
-public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements FontMethods<WebTree<E>>
+public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements EventMethods, FontMethods<WebTree<E>>
 {
     /**
      * Bound property name for tree data provider.
@@ -950,14 +953,14 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
         {
             if ( !isAutoExpandSingleChildNode () )
             {
-                TreeRolloverSelectionAdapter.install ( this );
+                AutoExpandSingleChildNodeListener.install ( this );
             }
         }
         else
         {
             if ( isAutoExpandSingleChildNode () )
             {
-                TreeRolloverSelectionAdapter.uninstall ( this );
+                AutoExpandSingleChildNodeListener.uninstall ( this );
             }
         }
     }
@@ -1340,6 +1343,33 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
     public CellRendererPane getCellRendererPane ()
     {
         return getWebUI ().getCellRendererPane ();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MouseAdapter onDoubleClick ( final MouseEventRunnable runnable )
+    {
+        return EventUtils.onDoubleClick ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public KeyAdapter onKeyPress ( final KeyEventRunnable runnable )
+    {
+        return EventUtils.onKeyPress ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public KeyAdapter onKeyPress ( final HotkeyData hotkey, final KeyEventRunnable runnable )
+    {
+        return EventUtils.onKeyPress ( this, hotkey, runnable );
     }
 
     /**

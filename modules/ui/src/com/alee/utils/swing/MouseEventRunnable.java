@@ -15,38 +15,22 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.managers.hotkey;
+package com.alee.utils.swing;
 
-import com.alee.utils.swing.KeyEventRunnable;
-
-import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 
 /**
- * This interface allows you to create action for hotkey events which can be used together with HotkeyManager methods.
- * Unlike Runnable this interface provides KeyEvent as action source.
+ * Custom runnable that provides MouseEvent.
  *
  * @author Mikle Garin
  */
 
-public interface HotkeyRunnable extends KeyEventRunnable
+public interface MouseEventRunnable
 {
     /**
-     * Simple runnable that doesn't perform any actions.
-     */
-    public static final HotkeyRunnable NONE = new HotkeyRunnable ()
-    {
-        @Override
-        public void run ( final KeyEvent e )
-        {
-            // Do nothing
-        }
-    };
-
-    /**
-     * Performs hotkey action.
+     * Performs action according to mouse event.
      *
-     * @param e occured key event
+     * @param e occured mouse event
      */
-    @Override
-    public void run ( KeyEvent e );
+    public void run ( MouseEvent e );
 }
