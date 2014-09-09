@@ -21,6 +21,7 @@ import javax.swing.*;
 import javax.swing.event.TreeExpansionEvent;
 import javax.swing.event.TreeExpansionListener;
 import javax.swing.tree.TreePath;
+import java.util.Arrays;
 
 /**
  * Tree expansion listener that automatically expands node futher if it has only one child.
@@ -40,11 +41,12 @@ public class AutoExpandSingleChildNodeListener implements TreeExpansionListener
         final JTree tree = ( JTree ) event.getSource ();
         final TreePath expandedPath = event.getPath ();
         final Object expandedObject = expandedPath.getLastPathComponent ();
-        final int childCount = tree.getModel ().getChildCount ( expandedObject );
-        if ( childCount == 1 )
+        if ( tree.getModel ().getChildCount ( expandedObject ) == 1 )
         {
-            final Object child = tree.getModel ().getChild ( expandedObject, 0 );
-            tree.expandPath ( new TreePath ( child ) );
+            final Object[] parentPath = expandedPath.getPath ();
+            final Object[] path = Arrays.copyOf ( parentPath, parentPath.length + 1 );
+            path[ parentPath.length ] = tree.getModel ().getChild ( expandedObject, 0 );
+            tree.expandPath ( new TreePath ( path ) );
         }
     }
 
