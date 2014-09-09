@@ -42,6 +42,11 @@ import java.util.Map;
 public abstract class ExTreeTransferHandler<N extends UniqueNode, T extends WebExTree<N>> extends TransferHandler
 {
     /**
+     * Whether or not should optimize dragged nodes list to minimum.
+     */
+    protected boolean optimizeDraggedNodes = true;
+
+    /**
      * Nodes flavor.
      */
     protected DataFlavor nodesFlavor;
@@ -77,6 +82,26 @@ public abstract class ExTreeTransferHandler<N extends UniqueNode, T extends WebE
         {
             Log.error ( this, e );
         }
+    }
+
+    /**
+     * Return whether or not should optimize dragged nodes list to minimum.
+     *
+     * @return true if should optimize dragged nodes list to minimum, false otherwise
+     */
+    public boolean isOptimizeDraggedNodes ()
+    {
+        return optimizeDraggedNodes;
+    }
+
+    /**
+     * Sets whether or not should optimize dragged nodes list to minimum.
+     *
+     * @param optimize whether or not should optimize dragged nodes list to minimum
+     */
+    public void setOptimizeDraggedNodes ( final boolean optimize )
+    {
+        this.optimizeDraggedNodes = optimize;
     }
 
     /**
@@ -164,7 +189,10 @@ public abstract class ExTreeTransferHandler<N extends UniqueNode, T extends WebE
             }
 
             // Optimizing dragged nodes
-            TreeUtils.optimizeNodes ( nodes );
+            if ( optimizeDraggedNodes )
+            {
+                TreeUtils.optimizeNodes ( nodes );
+            }
 
             if ( !canBeDragged ( nodes ) )
             {

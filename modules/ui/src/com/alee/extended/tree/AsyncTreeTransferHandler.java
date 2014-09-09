@@ -48,6 +48,11 @@ public abstract class AsyncTreeTransferHandler<N extends AsyncUniqueNode, T exte
     protected boolean allowUncheckedDrop = false;
 
     /**
+     * Whether or not should optimize dragged nodes list to minimum.
+     */
+    protected boolean optimizeDraggedNodes = true;
+
+    /**
      * Nodes flavor.
      */
     protected DataFlavor nodesFlavor;
@@ -83,6 +88,26 @@ public abstract class AsyncTreeTransferHandler<N extends AsyncUniqueNode, T exte
         {
             Log.error ( this, e );
         }
+    }
+
+    /**
+     * Return whether or not should optimize dragged nodes list to minimum.
+     *
+     * @return true if should optimize dragged nodes list to minimum, false otherwise
+     */
+    public boolean isOptimizeDraggedNodes ()
+    {
+        return optimizeDraggedNodes;
+    }
+
+    /**
+     * Sets whether or not should optimize dragged nodes list to minimum.
+     *
+     * @param optimize whether or not should optimize dragged nodes list to minimum
+     */
+    public void setOptimizeDraggedNodes ( final boolean optimize )
+    {
+        this.optimizeDraggedNodes = optimize;
     }
 
     /**
@@ -193,7 +218,10 @@ public abstract class AsyncTreeTransferHandler<N extends AsyncUniqueNode, T exte
             }
 
             // Optimizing dragged nodes
-            TreeUtils.optimizeNodes ( nodes );
+            if ( optimizeDraggedNodes )
+            {
+                TreeUtils.optimizeNodes ( nodes );
+            }
 
             if ( !canBeDragged ( nodes ) )
             {
