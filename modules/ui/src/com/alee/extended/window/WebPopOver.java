@@ -25,6 +25,7 @@ import com.alee.managers.style.skin.web.PopupStyle;
 import com.alee.managers.style.skin.web.WebPopOverPainter;
 import com.alee.managers.style.skin.web.WebPopupPainter;
 import com.alee.utils.CollectionUtils;
+import com.alee.utils.EventUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.laf.Styleable;
 import com.alee.utils.swing.AncestorAdapter;
@@ -52,7 +53,7 @@ import java.util.List;
  * @see PopOverAlignment
  */
 
-public class WebPopOver extends WebDialog implements Styleable
+public class WebPopOver extends WebDialog implements Styleable, PopOverEventMethods
 {
     /**
      * todo 1. Fix directional WebPopOver location when dragged to/from secondary screen
@@ -1534,5 +1535,23 @@ public class WebPopOver extends WebDialog implements Styleable
         {
             listener.popOverClosed ();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public PopOverAdapter onDetach ( final Runnable runnable )
+    {
+        return EventUtils.onDetach ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public PopOverAdapter onClose ( final Runnable runnable )
+    {
+        return EventUtils.onClose ( this, runnable );
     }
 }

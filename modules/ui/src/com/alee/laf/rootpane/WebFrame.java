@@ -29,12 +29,17 @@ import com.alee.managers.settings.DefaultValue;
 import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.settings.SettingsMethods;
 import com.alee.managers.settings.SettingsProcessor;
+import com.alee.utils.EventUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.WindowUtils;
-import com.alee.utils.swing.WindowMethods;
+import com.alee.utils.swing.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This JFrame extenstion class provides some additional methods and options to manipulate frame behavior.
@@ -42,12 +47,18 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public class WebFrame extends JFrame implements LanguageMethods, LanguageContainerMethods, SettingsMethods, WindowMethods<WebFrame>
+public class WebFrame extends JFrame
+        implements WindowEventMethods, LanguageMethods, LanguageContainerMethods, SettingsMethods, WindowMethods<WebFrame>
 {
     /**
      * Whether should close frame on focus loss or not.
      */
     protected boolean closeOnFocusLoss = false;
+
+    /**
+     * Focusable childs that don't force frame to close even if it set to close on focus loss.
+     */
+    protected List<WeakReference<Component>> focusableChilds = new ArrayList<WeakReference<Component>> ();
 
     /**
      * Window focus tracker.
@@ -75,7 +86,7 @@ public class WebFrame extends JFrame implements LanguageMethods, LanguageContain
 
     public WebFrame ( final String title, final GraphicsConfiguration gc )
     {
-        super ( LanguageUtils.getInitialText ( title ) , gc );
+        super ( LanguageUtils.getInitialText ( title ), gc );
         LanguageUtils.registerInitialLanguage ( this, title );
         initialize ();
     }
@@ -100,7 +111,7 @@ public class WebFrame extends JFrame implements LanguageMethods, LanguageContain
             @Override
             public void focusChanged ( final boolean focused )
             {
-                if ( closeOnFocusLoss && WebFrame.this.isShowing () && !focused )
+                if ( closeOnFocusLoss && WebFrame.this.isShowing () && !focused && !isChildFocused () )
                 {
                     setVisible ( false );
                 }
@@ -127,6 +138,66 @@ public class WebFrame extends JFrame implements LanguageMethods, LanguageContain
     public void setCloseOnFocusLoss ( final boolean closeOnFocusLoss )
     {
         this.closeOnFocusLoss = closeOnFocusLoss;
+    }
+
+    /**
+     * Returns focusable childs that don't force dialog to close even if it set to close on focus loss.
+     *
+     * @return focusable childs that don't force dialog to close even if it set to close on focus loss
+     */
+    public List<Component> getFocusableChilds ()
+    {
+        final List<Component> actualFocusableChilds = new ArrayList<Component> ( focusableChilds.size () );
+        for ( final WeakReference<Component> focusableChild : focusableChilds )
+        {
+            final Component component = focusableChild.get ();
+            if ( component != null )
+            {
+                actualFocusableChilds.add ( component );
+            }
+        }
+        return actualFocusableChilds;
+    }
+
+    /**
+     * Adds focusable child that won't force dialog to close even if it set to close on focus loss.
+     *
+     * @param child focusable child that won't force dialog to close even if it set to close on focus loss
+     */
+    public void addFocusableChild ( final Component child )
+    {
+        focusableChilds.add ( new WeakReference<Component> ( child ) );
+    }
+
+    /**
+     * Removes focusable child that doesn't force dialog to close even if it set to close on focus loss.
+     *
+     * @param child focusable child that doesn't force dialog to close even if it set to close on focus loss
+     */
+    public void removeFocusableChild ( final Component child )
+    {
+        focusableChilds.remove ( child );
+    }
+
+    /**
+     * Returns whether one of focusable childs is focused or not.
+     *
+     * @return true if one of focusable childs is focused, false otherwise
+     */
+    public boolean isChildFocused ()
+    {
+        for ( final WeakReference<Component> focusableChild : focusableChilds )
+        {
+            final Component component = focusableChild.get ();
+            if ( component != null )
+            {
+                if ( SwingUtils.hasFocusOwner ( component ) )
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     public Color getTopBg ()
@@ -332,6 +403,24 @@ public class WebFrame extends JFrame implements LanguageMethods, LanguageContain
     public WebRootPaneUI getWebRootPaneUI ()
     {
         return ( WebRootPaneUI ) super.getRootPane ().getUI ();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WindowAdapter onClosing ( final WindowEventRunnable runnable )
+    {
+        return EventUtils.onClosing ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WindowCloseAdapter onClose ( final ComponentEventRunnable runnable )
+    {
+        return EventUtils.onClose ( this, runnable );
     }
 
     /**

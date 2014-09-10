@@ -22,6 +22,7 @@ import com.alee.laf.splitpane.WebSplitPane;
 import com.alee.laf.tabbedpane.WebTabbedPane;
 import com.alee.managers.drag.DragManager;
 import com.alee.utils.CollectionUtils;
+import com.alee.utils.EventUtils;
 import com.alee.utils.TextUtils;
 import com.alee.utils.swing.AncestorAdapter;
 import com.alee.utils.swing.Customizer;
@@ -48,7 +49,7 @@ import java.util.List;
  * @see com.alee.extended.tab.DocumentData
  */
 
-public class WebDocumentPane<T extends DocumentData> extends WebPanel implements SwingConstants
+public class WebDocumentPane<T extends DocumentData> extends WebPanel implements DocumentPaneEventMethods<T>, SwingConstants
 {
     /**
      * todo 1. Possibility to save/restore documents positions and splits
@@ -996,6 +997,42 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel implements
     public void removeDocumentListener ( final DocumentListener<T> listener )
     {
         listeners.remove ( listener );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public DocumentAdapter<T> onDocumentOpen ( final DocumentDataRunnable<T> runnable )
+    {
+        return EventUtils.onDocumentOpen ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public DocumentAdapter<T> onDocumentSelection ( final DocumentDataRunnable<T> runnable )
+    {
+        return EventUtils.onDocumentSelection ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public DocumentAdapter<T> onDocumentClosing ( final DocumentDataCancellableRunnable<T> runnable )
+    {
+        return EventUtils.onDocumentClosing ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public DocumentAdapter<T> onDocumentClose ( final DocumentDataRunnable<T> runnable )
+    {
+        return EventUtils.onDocumentClose ( this, runnable );
     }
 
     /**

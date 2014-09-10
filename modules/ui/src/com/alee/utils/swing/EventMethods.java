@@ -19,6 +19,7 @@ package com.alee.utils.swing;
 
 import com.alee.managers.hotkey.HotkeyData;
 
+import java.awt.event.FocusAdapter;
 import java.awt.event.KeyAdapter;
 import java.awt.event.MouseAdapter;
 
@@ -33,16 +34,43 @@ import java.awt.event.MouseAdapter;
 public interface EventMethods extends SwingMethods
 {
     /**
+     * Shortcut method for mouse press event.
+     *
+     * @param runnable mouse event runnable
+     * @return used mouse adapter
+     */
+    public MouseAdapter onMousePress ( final MouseEventRunnable runnable );
+
+    /**
+     * Shortcut method for mouse press event.
+     *
+     * @param mouseButton mouse button filter
+     * @param runnable    mouse event runnable
+     * @return used mouse adapter
+     */
+    public MouseAdapter onMousePress ( MouseButton mouseButton, final MouseEventRunnable runnable );
+
+    /**
      * Shortcut method for double-click mouse event.
      *
      * @param runnable mouse event runnable
+     * @return used mouse adapter
      */
     public MouseAdapter onDoubleClick ( final MouseEventRunnable runnable );
+
+    /**
+     * Shortcut method for mouse event triggering popup menu.
+     *
+     * @param runnable mouse event runnable
+     * @return used mouse adapter
+     */
+    public MouseAdapter onMenuTrigger ( final MouseEventRunnable runnable );
 
     /**
      * Shortcut method for key press event.
      *
      * @param runnable key event runnable
+     * @return used key adapter
      */
     public KeyAdapter onKeyPress ( final KeyEventRunnable runnable );
 
@@ -51,6 +79,23 @@ public interface EventMethods extends SwingMethods
      *
      * @param hotkey   hotkey filter
      * @param runnable key event runnable
+     * @return used key adapter
      */
     public KeyAdapter onKeyPress ( final HotkeyData hotkey, final KeyEventRunnable runnable );
+
+    /**
+     * Shortcut method for focus gain event.
+     *
+     * @param runnable focus event runnable
+     * @return used focus adapter
+     */
+    public FocusAdapter onFocusGain ( final FocusEventRunnable runnable );
+
+    /**
+     * Shortcut method for focus loss event.
+     *
+     * @param runnable focus event runnable
+     * @return used focus adapter
+     */
+    public FocusAdapter onFocusLoss ( final FocusEventRunnable runnable );
 }

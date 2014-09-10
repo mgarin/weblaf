@@ -18,12 +18,18 @@
 package com.alee.extended.image;
 
 import com.alee.laf.WebLookAndFeel;
+import com.alee.managers.hotkey.HotkeyData;
+import com.alee.utils.EventUtils;
 import com.alee.utils.GraphicsUtils;
 import com.alee.utils.ImageUtils;
 import com.alee.utils.SwingUtils;
+import com.alee.utils.swing.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.FocusAdapter;
+import java.awt.event.KeyAdapter;
+import java.awt.event.MouseAdapter;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
@@ -37,7 +43,7 @@ import java.net.URL;
  * @author Mikle Garin
  */
 
-public class WebImage extends JComponent implements SwingConstants
+public class WebImage extends JComponent implements EventMethods, SwingConstants
 {
     /**
      * Image source.
@@ -537,11 +543,11 @@ public class WebImage extends JComponent implements SwingConstants
                     {
                         // Drawing preferred sized image at specified side
                         final int x = horizontalAlignment == LEFT ? insets.left :
-                                ( horizontalAlignment == RIGHT ? getWidth () - currentImage.getWidth () - insets.right :
-                                        getCenterX ( insets ) - currentImage.getWidth () / 2 );
+                                horizontalAlignment == RIGHT ? getWidth () - currentImage.getWidth () - insets.right :
+                                        getCenterX ( insets ) - currentImage.getWidth () / 2;
                         final int y = verticalAlignment == TOP ? insets.top :
-                                ( verticalAlignment == BOTTOM ? getHeight () - currentImage.getHeight () - insets.bottom :
-                                        getCenterY ( insets ) - currentImage.getHeight () / 2 );
+                                verticalAlignment == BOTTOM ? getHeight () - currentImage.getHeight () - insets.bottom :
+                                        getCenterY ( insets ) - currentImage.getHeight () / 2;
                         g2d.drawImage ( currentImage, x, y, null );
                         break;
                     }
@@ -557,11 +563,11 @@ public class WebImage extends JComponent implements SwingConstants
                     {
                         // Drawing repeated in background image
                         final int x = horizontalAlignment == LEFT ? insets.left :
-                                ( horizontalAlignment == RIGHT ? getWidth () - currentImage.getWidth () - insets.right :
-                                        getCenterX ( insets ) - currentImage.getWidth () / 2 );
+                                horizontalAlignment == RIGHT ? getWidth () - currentImage.getWidth () - insets.right :
+                                        getCenterX ( insets ) - currentImage.getWidth () / 2;
                         final int y = verticalAlignment == TOP ? insets.top :
-                                ( verticalAlignment == BOTTOM ? getHeight () - currentImage.getHeight () - insets.bottom :
-                                        getCenterY ( insets ) - currentImage.getHeight () / 2 );
+                                verticalAlignment == BOTTOM ? getHeight () - currentImage.getHeight () - insets.bottom :
+                                        getCenterY ( insets ) - currentImage.getHeight () / 2;
                         g2d.setPaint ( new TexturePaint ( currentImage,
                                 new Rectangle2D.Double ( x, y, currentImage.getWidth (), currentImage.getHeight () ) ) );
                         g2d.fillRect ( insets.left, insets.top, getWidth () - insets.left - insets.right,
@@ -665,5 +671,77 @@ public class WebImage extends JComponent implements SwingConstants
         final Insets insets = getInsets ();
         return new Dimension ( insets.left + ( image != null ? image.getWidth () : 0 ) + insets.right,
                 insets.top + ( image != null ? image.getHeight () : 0 ) + insets.bottom );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MouseAdapter onMousePress ( final MouseEventRunnable runnable )
+    {
+        return EventUtils.onMousePress ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MouseAdapter onMousePress ( final MouseButton mouseButton, final MouseEventRunnable runnable )
+    {
+        return EventUtils.onMousePress ( this, mouseButton, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MouseAdapter onDoubleClick ( final MouseEventRunnable runnable )
+    {
+        return EventUtils.onDoubleClick ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MouseAdapter onMenuTrigger ( final MouseEventRunnable runnable )
+    {
+        return EventUtils.onMenuTrigger ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public KeyAdapter onKeyPress ( final KeyEventRunnable runnable )
+    {
+        return EventUtils.onKeyPress ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public KeyAdapter onKeyPress ( final HotkeyData hotkey, final KeyEventRunnable runnable )
+    {
+        return EventUtils.onKeyPress ( this, hotkey, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public FocusAdapter onFocusGain ( final FocusEventRunnable runnable )
+    {
+        return EventUtils.onFocusGain ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public FocusAdapter onFocusLoss ( final FocusEventRunnable runnable )
+    {
+        return EventUtils.onFocusLoss ( this, runnable );
     }
 }

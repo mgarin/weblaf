@@ -31,6 +31,7 @@ import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
 import java.awt.*;
 import java.awt.event.*;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,7 +56,7 @@ public class WebPopup extends WebPanel
     protected boolean closeOnFocusLoss = false;
     protected boolean requestFocusOnShow = true;
     protected Component defaultFocusComponent = null;
-    protected List<Component> focusableChilds = new ArrayList<Component> ();
+    protected List<WeakReference<Component>> focusableChilds = new ArrayList<WeakReference<Component>> ();
 
     protected Component lastComponent = null;
     protected ComponentListener lastComponentListener = null;
@@ -282,31 +283,60 @@ public class WebPopup extends WebPanel
     }
 
     /**
-     * Focusable components which will not force popup to close
+     * Returns focusable childs that don't force dialog to close even if it set to close on focus loss.
+     *
+     * @return focusable childs that don't force dialog to close even if it set to close on focus loss
      */
-
     public List<Component> getFocusableChilds ()
     {
-        return focusableChilds;
+        final List<Component> actualFocusableChilds = new ArrayList<Component> ( focusableChilds.size () );
+        for ( final WeakReference<Component> focusableChild : focusableChilds )
+        {
+            final Component component = focusableChild.get ();
+            if ( component != null )
+            {
+                actualFocusableChilds.add ( component );
+            }
+        }
+        return actualFocusableChilds;
     }
 
+    /**
+     * Adds focusable child that won't force dialog to close even if it set to close on focus loss.
+     *
+     * @param child focusable child that won't force dialog to close even if it set to close on focus loss
+     */
     public void addFocusableChild ( final Component child )
     {
-        focusableChilds.add ( child );
+        focusableChilds.add ( new WeakReference<Component> ( child ) );
     }
 
+    /**
+     * Removes focusable child that doesn't force dialog to close even if it set to close on focus loss.
+     *
+     * @param child focusable child that doesn't force dialog to close even if it set to close on focus loss
+     */
     public void removeFocusableChild ( final Component child )
     {
         focusableChilds.remove ( child );
     }
 
+    /**
+     * Returns whether one of focusable childs is focused or not.
+     *
+     * @return true if one of focusable childs is focused, false otherwise
+     */
     public boolean isChildFocused ()
     {
-        for ( final Component child : focusableChilds )
+        for ( final WeakReference<Component> focusableChild : focusableChilds )
         {
-            if ( SwingUtils.hasFocusOwner ( child ) )
+            final Component component = focusableChild.get ();
+            if ( component != null )
             {
-                return true;
+                if ( SwingUtils.hasFocusOwner ( component ) )
+                {
+                    return true;
+                }
             }
         }
         return false;

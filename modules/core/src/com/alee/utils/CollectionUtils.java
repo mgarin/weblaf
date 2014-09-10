@@ -244,27 +244,6 @@ public final class CollectionUtils
     }
 
     /**
-     * Returns array of list values.
-     *
-     * @param list values list
-     * @return array of list values
-     */
-    public static <T> T[] toArray ( final List<T> list )
-    {
-        if ( list.size () > 0 )
-        {
-            final Class<T> arrayClass = ( Class<T> ) list.get ( 0 ).getClass ();
-            final T[] array = ArrayUtils.createArray ( arrayClass, list.size () );
-            return list.toArray ( array );
-        }
-        else
-        {
-            // There is no correct way to create array without specific class type
-            return null;
-        }
-    }
-
-    /**
      * Returns a list of objects converted from array.
      *
      * @param array data array
