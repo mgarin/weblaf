@@ -107,6 +107,9 @@ public class WebNotification extends WebHeavyWeightPopup
     protected WebImage iconImage;
     protected WebPanel contentPanel;
     protected WebPanel optionsPanel;
+    protected AlignPanel westPanel;
+    protected AlignPanel centerPanel;
+    protected AlignPanel southPanel;
 
     /**
      * Constructs new notification popup.
@@ -169,17 +172,17 @@ public class WebNotification extends WebHeavyWeightPopup
         setLayout ( new BorderLayout ( 15, 5 ) );
 
         iconImage = new WebImage ();
-        add ( new AlignPanel ( iconImage, SwingConstants.CENTER, SwingConstants.CENTER ), BorderLayout.WEST );
+        westPanel = new AlignPanel ( iconImage, SwingConstants.CENTER, SwingConstants.CENTER );
         updateIcon ();
 
         contentPanel = new WebPanel ();
         contentPanel.setOpaque ( false );
-        add ( new AlignPanel ( contentPanel, SwingConstants.CENTER, SwingConstants.CENTER ), BorderLayout.CENTER );
+        centerPanel = new AlignPanel ( contentPanel, SwingConstants.CENTER, SwingConstants.CENTER );
         updateContent ();
 
         optionsPanel = new WebPanel ( new HorizontalFlowLayout ( 4, false ) );
         optionsPanel.setOpaque ( false );
-        add ( new AlignPanel ( optionsPanel, SwingConstants.RIGHT, SwingConstants.CENTER ), BorderLayout.SOUTH );
+        southPanel = new AlignPanel ( optionsPanel, SwingConstants.RIGHT, SwingConstants.CENTER );
         updateOptions ();
 
         addMouseListener ( new MouseAdapter ()
@@ -295,6 +298,20 @@ public class WebNotification extends WebHeavyWeightPopup
     protected void updateIcon ()
     {
         iconImage.setIcon ( icon );
+        if ( icon != null )
+        {
+            if ( !contains ( westPanel ) )
+            {
+                add ( westPanel, BorderLayout.WEST );
+            }
+        }
+        else
+        {
+            if ( contains ( westPanel ) )
+            {
+                remove ( westPanel );
+            }
+        }
         revalidate ();
     }
 
@@ -334,12 +351,24 @@ public class WebNotification extends WebHeavyWeightPopup
      */
     protected void updateContent ()
     {
-        contentPanel.removeAll ();
         if ( content != null )
         {
+            contentPanel.removeAll ();
             contentPanel.add ( content );
+            if ( !contains ( centerPanel ) )
+            {
+                add ( centerPanel, BorderLayout.CENTER );
+            }
         }
-        contentPanel.revalidate ();
+        else
+        {
+            contentPanel.removeAll ();
+            if ( contains ( centerPanel ) )
+            {
+                remove ( centerPanel );
+            }
+        }
+        revalidate ();
     }
 
     /**
@@ -398,10 +427,18 @@ public class WebNotification extends WebHeavyWeightPopup
                 } );
                 optionsPanel.add ( optionButton );
             }
+            if ( !contains ( southPanel ) )
+            {
+                add ( southPanel, BorderLayout.SOUTH );
+            }
         }
         else
         {
             optionsPanel.removeAll ();
+            if ( contains ( southPanel ) )
+            {
+                remove ( southPanel );
+            }
         }
         revalidate ();
     }
