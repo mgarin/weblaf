@@ -811,7 +811,26 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
         final Rectangle bounds = getPathBounds ( getSelectionPath () );
         if ( bounds != null )
         {
-            scrollRectToVisible ( bounds );
+            // Ignore scroll action if node is already fully visible
+            final Rectangle vr = getVisibleRect ();
+            if ( !vr.contains ( bounds ) )
+            {
+                // Leave additional 1/2 of visible height on top of the node
+                // Otherwise it is hard to look where this node is located
+                bounds.y = bounds.y + bounds.height / 2 - vr.height / 2;
+
+                // Put node into the middle of visible area
+                if ( vr.width > bounds.width )
+                {
+                    bounds.x = bounds.x + bounds.width / 2 - vr.width / 2;
+                }
+
+                // Setup width and height we want to see
+                bounds.width = vr.width;
+                bounds.height = vr.height;
+
+                scrollRectToVisible ( bounds );
+            }
         }
     }
 
@@ -1362,6 +1381,24 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
     public MouseAdapter onMousePress ( final MouseButton mouseButton, final MouseEventRunnable runnable )
     {
         return EventUtils.onMousePress ( this, mouseButton, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MouseAdapter onMouseEnter ( final MouseEventRunnable runnable )
+    {
+        return EventUtils.onMouseEnter ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MouseAdapter onMouseExit ( final MouseEventRunnable runnable )
+    {
+        return EventUtils.onMouseExit ( this, runnable );
     }
 
     /**

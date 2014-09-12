@@ -44,7 +44,7 @@ import java.awt.event.MouseAdapter;
 import java.util.List;
 
 /**
- * User: mgarin Date: 28.06.11 Time: 0:43
+ * @author Mikle Garin
  */
 
 public class WebButton extends JButton
@@ -604,6 +604,24 @@ public class WebButton extends JButton
     public MouseAdapter onMousePress ( final MouseButton mouseButton, final MouseEventRunnable runnable )
     {
         return EventUtils.onMousePress ( this, mouseButton, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MouseAdapter onMouseEnter ( final MouseEventRunnable runnable )
+    {
+        return EventUtils.onMouseEnter ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MouseAdapter onMouseExit ( final MouseEventRunnable runnable )
+    {
+        return EventUtils.onMouseExit ( this, runnable );
     }
 
     /**

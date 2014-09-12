@@ -81,6 +81,48 @@ public class EventUtils
     }
 
     /**
+     * Shortcut method for mouse enter event.
+     *
+     * @param component component to handle events for
+     * @param runnable  mouse event runnable
+     * @return used mouse adapter
+     */
+    public static MouseAdapter onMouseEnter ( final Component component, final MouseEventRunnable runnable )
+    {
+        final MouseAdapter mouseAdapter = new MouseAdapter ()
+        {
+            @Override
+            public void mouseEntered ( final MouseEvent e )
+            {
+                runnable.run ( e );
+            }
+        };
+        component.addMouseListener ( mouseAdapter );
+        return mouseAdapter;
+    }
+
+    /**
+     * Shortcut method for mouse exit event.
+     *
+     * @param component component to handle events for
+     * @param runnable  mouse event runnable
+     * @return used mouse adapter
+     */
+    public static MouseAdapter onMouseExit ( final Component component, final MouseEventRunnable runnable )
+    {
+        final MouseAdapter mouseAdapter = new MouseAdapter ()
+        {
+            @Override
+            public void mouseExited ( final MouseEvent e )
+            {
+                runnable.run ( e );
+            }
+        };
+        component.addMouseListener ( mouseAdapter );
+        return mouseAdapter;
+    }
+
+    /**
      * Shortcut method for double-click mouse event.
      *
      * @param component component to handle events for
@@ -321,7 +363,7 @@ public class EventUtils
      * @return used document adapter
      */
     public static <T extends DocumentData> DocumentAdapter<T> onDocumentOpen ( final WebDocumentPane<T> documentPane,
-                                                                        final DocumentDataRunnable<T> runnable )
+                                                                               final DocumentDataRunnable<T> runnable )
     {
         final DocumentAdapter<T> documentAdapter = new DocumentAdapter<T> ()
         {
@@ -343,7 +385,7 @@ public class EventUtils
      * @return used document adapter
      */
     public static <T extends DocumentData> DocumentAdapter<T> onDocumentSelection ( final WebDocumentPane<T> documentPane,
-                                                                             final DocumentDataRunnable<T> runnable )
+                                                                                    final DocumentDataRunnable<T> runnable )
     {
         final DocumentAdapter<T> documentAdapter = new DocumentAdapter<T> ()
         {
@@ -365,7 +407,7 @@ public class EventUtils
      * @return used document adapter
      */
     public static <T extends DocumentData> DocumentAdapter<T> onDocumentClosing ( final WebDocumentPane<T> documentPane,
-                                                                           final DocumentDataCancellableRunnable<T> runnable )
+                                                                                  final DocumentDataCancellableRunnable<T> runnable )
     {
         final DocumentAdapter<T> documentAdapter = new DocumentAdapter<T> ()
         {
@@ -387,7 +429,7 @@ public class EventUtils
      * @return used document adapter
      */
     public static <T extends DocumentData> DocumentAdapter<T> onDocumentClose ( final WebDocumentPane<T> documentPane,
-                                                                         final DocumentDataRunnable<T> runnable )
+                                                                                final DocumentDataRunnable<T> runnable )
     {
         final DocumentAdapter<T> documentAdapter = new DocumentAdapter<T> ()
         {

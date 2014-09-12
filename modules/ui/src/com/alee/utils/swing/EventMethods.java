@@ -39,7 +39,7 @@ public interface EventMethods extends SwingMethods
      * @param runnable mouse event runnable
      * @return used mouse adapter
      */
-    public MouseAdapter onMousePress ( final MouseEventRunnable runnable );
+    public MouseAdapter onMousePress ( MouseEventRunnable runnable );
 
     /**
      * Shortcut method for mouse press event.
@@ -48,7 +48,23 @@ public interface EventMethods extends SwingMethods
      * @param runnable    mouse event runnable
      * @return used mouse adapter
      */
-    public MouseAdapter onMousePress ( MouseButton mouseButton, final MouseEventRunnable runnable );
+    public MouseAdapter onMousePress ( MouseButton mouseButton, MouseEventRunnable runnable );
+
+    /**
+     * Shortcut method for mouse enter event.
+     *
+     * @param runnable mouse event runnable
+     * @return used mouse adapter
+     */
+    public MouseAdapter onMouseEnter ( MouseEventRunnable runnable );
+
+    /**
+     * Shortcut method for mouse exit event.
+     *
+     * @param runnable mouse event runnable
+     * @return used mouse adapter
+     */
+    public MouseAdapter onMouseExit ( MouseEventRunnable runnable );
 
     /**
      * Shortcut method for double-click mouse event.
@@ -56,7 +72,7 @@ public interface EventMethods extends SwingMethods
      * @param runnable mouse event runnable
      * @return used mouse adapter
      */
-    public MouseAdapter onDoubleClick ( final MouseEventRunnable runnable );
+    public MouseAdapter onDoubleClick ( MouseEventRunnable runnable );
 
     /**
      * Shortcut method for mouse event triggering popup menu.
@@ -64,7 +80,7 @@ public interface EventMethods extends SwingMethods
      * @param runnable mouse event runnable
      * @return used mouse adapter
      */
-    public MouseAdapter onMenuTrigger ( final MouseEventRunnable runnable );
+    public MouseAdapter onMenuTrigger ( MouseEventRunnable runnable );
 
     /**
      * Shortcut method for key press event.
@@ -72,7 +88,7 @@ public interface EventMethods extends SwingMethods
      * @param runnable key event runnable
      * @return used key adapter
      */
-    public KeyAdapter onKeyPress ( final KeyEventRunnable runnable );
+    public KeyAdapter onKeyPress ( KeyEventRunnable runnable );
 
     /**
      * Shortcut method for key press event.
@@ -81,7 +97,7 @@ public interface EventMethods extends SwingMethods
      * @param runnable key event runnable
      * @return used key adapter
      */
-    public KeyAdapter onKeyPress ( final HotkeyData hotkey, final KeyEventRunnable runnable );
+    public KeyAdapter onKeyPress ( HotkeyData hotkey, KeyEventRunnable runnable );
 
     /**
      * Shortcut method for focus gain event.
@@ -89,7 +105,7 @@ public interface EventMethods extends SwingMethods
      * @param runnable focus event runnable
      * @return used focus adapter
      */
-    public FocusAdapter onFocusGain ( final FocusEventRunnable runnable );
+    public FocusAdapter onFocusGain ( FocusEventRunnable runnable );
 
     /**
      * Shortcut method for focus loss event.
@@ -97,5 +113,5 @@ public interface EventMethods extends SwingMethods
      * @param runnable focus event runnable
      * @return used focus adapter
      */
-    public FocusAdapter onFocusLoss ( final FocusEventRunnable runnable );
+    public FocusAdapter onFocusLoss ( FocusEventRunnable runnable );
 }
