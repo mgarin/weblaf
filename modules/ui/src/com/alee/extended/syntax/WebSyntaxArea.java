@@ -17,13 +17,16 @@
 
 package com.alee.extended.syntax;
 
+import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.utils.EventUtils;
 import com.alee.utils.swing.*;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
+import org.fife.ui.rtextarea.RUndoManager;
 
 import java.awt.event.FocusAdapter;
 import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.util.List;
 
@@ -36,8 +39,19 @@ import java.util.List;
  * @see com.alee.extended.syntax.SyntaxTheme
  */
 
-public class WebSyntaxArea extends RSyntaxTextArea implements EventMethods
+public class WebSyntaxArea extends RSyntaxTextArea implements DocumentEventMethods, EventMethods
 {
+    /**
+     * Document history manager.
+     */
+    protected RUndoManager undoManager;
+
+    /**
+     * Theme preset.
+     * Saved separately for usage when editor scroll being created.
+     */
+    protected SyntaxPreset themePreset;
+
     /**
      * Constructs new WebSyntaxArea.
      *
@@ -47,6 +61,8 @@ public class WebSyntaxArea extends RSyntaxTextArea implements EventMethods
     {
         super ();
         applyPresets ( presets );
+        applyPresets ( SyntaxPreset.ideaTheme );
+        initialize ();
     }
 
     /**
@@ -59,6 +75,9 @@ public class WebSyntaxArea extends RSyntaxTextArea implements EventMethods
     {
         super ( text );
         applyPresets ( presets );
+        applyPresets ( SyntaxPreset.ideaTheme );
+        clearHistory ();
+        initialize ();
     }
 
     /**
@@ -72,6 +91,8 @@ public class WebSyntaxArea extends RSyntaxTextArea implements EventMethods
     {
         super ( rows, cols );
         applyPresets ( presets );
+        applyPresets ( SyntaxPreset.ideaTheme );
+        initialize ();
     }
 
     /**
@@ -86,6 +107,9 @@ public class WebSyntaxArea extends RSyntaxTextArea implements EventMethods
     {
         super ( text, rows, cols );
         applyPresets ( presets );
+        applyPresets ( SyntaxPreset.ideaTheme );
+        clearHistory ();
+        initialize ();
     }
 
     /**
@@ -98,6 +122,105 @@ public class WebSyntaxArea extends RSyntaxTextArea implements EventMethods
     {
         super ( textMode );
         applyPresets ( presets );
+        applyPresets ( SyntaxPreset.ideaTheme );
+        initialize ();
+    }
+
+    /**
+     * Initializes additional custom settings.
+     */
+    protected void initialize ()
+    {
+        onKeyPress ( Hotkey.CTRL_SHIFT_Z, new KeyEventRunnable ()
+        {
+            @Override
+            public void run ( final KeyEvent e )
+            {
+                redoLastAction ();
+            }
+        } );
+    }
+
+    /**
+     * Creates document history manager.
+     *
+     * @return document history manager
+     */
+    @Override
+    protected RUndoManager createUndoManager ()
+    {
+        undoManager = super.createUndoManager ();
+        return undoManager;
+    }
+
+    /**
+     * Returns document history manager.
+     *
+     * @return document history manager
+     */
+    public RUndoManager getUndoManager ()
+    {
+        return undoManager;
+    }
+
+    /**
+     * Clears document history.
+     */
+    public void clearHistory ()
+    {
+        undoManager.discardAllEdits ();
+    }
+
+    /**
+     * Returns properly styled and configured scroll.
+     *
+     * @return properly styled and configured scroll
+     */
+    public WebSyntaxScrollPane createScroll ()
+    {
+        return createScroll ( true, true );
+    }
+
+    /**
+     * Returns properly styled and configured scroll.
+     *
+     * @param drawBorder whether should draw outer scrollpane border or not
+     * @return properly styled and configured scroll
+     */
+    public WebSyntaxScrollPane createScroll ( final boolean drawBorder )
+    {
+        return createScroll ( drawBorder, true );
+    }
+
+    /**
+     * Returns properly styled and configured scroll.
+     *
+     * @param drawBorder      whether should draw outer scrollpane border or not
+     * @param drawInnerBorder whether should draw inner scrollpane border or not
+     * @return properly styled and configured scroll
+     */
+    public WebSyntaxScrollPane createScroll ( final boolean drawBorder, final boolean drawInnerBorder )
+    {
+        // Creating editor scroll with preferred settings
+        final WebSyntaxScrollPane scrollPane = new WebSyntaxScrollPane ( this, drawBorder, drawInnerBorder );
+
+        // Applying theme
+        if ( themePreset != null )
+        {
+            themePreset.apply ( this );
+        }
+
+        return scrollPane;
+    }
+
+    /**
+     * Returns currently used theme preset.
+     *
+     * @return currently used theme preset
+     */
+    public SyntaxPreset getThemePreset ()
+    {
+        return themePreset;
     }
 
     /**
@@ -109,7 +232,7 @@ public class WebSyntaxArea extends RSyntaxTextArea implements EventMethods
     {
         for ( final SyntaxPreset preset : presets )
         {
-            preset.apply ( this );
+            applyPresetImpl ( preset );
         }
     }
 
@@ -122,8 +245,31 @@ public class WebSyntaxArea extends RSyntaxTextArea implements EventMethods
     {
         for ( final SyntaxPreset preset : presets )
         {
-            preset.apply ( this );
+            applyPresetImpl ( preset );
         }
+    }
+
+    /**
+     * Applies preset to this WebSyntaxArea.
+     *
+     * @param preset preset to apply
+     */
+    protected void applyPresetImpl ( final SyntaxPreset preset )
+    {
+        preset.apply ( this );
+        if ( preset.getType () == PresetType.theme )
+        {
+            this.themePreset = preset;
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public DocumentChangeListener onChange ( final DocumentEventRunnable runnable )
+    {
+        return EventUtils.onChange ( this, runnable );
     }
 
     /**

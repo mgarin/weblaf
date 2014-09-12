@@ -45,13 +45,6 @@
         </ui>
     </style>
 
-    <!-- Custom editor gutter panel styling -->
-    <style type="panel" id="editor-gutter" extends="default">
-        <component>
-            <background>white</background>
-        </component>
-    </style>
-
     <!-- Custom WebPopOver styling -->
     <style type="panel" id="editor-pop-over" extends="pop-over">
         <painter id="painter" class="com.alee.managers.style.skin.web.WebPopOverPainter">

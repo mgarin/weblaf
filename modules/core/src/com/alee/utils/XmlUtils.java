@@ -90,6 +90,7 @@ public final class XmlUtils
         {
             // XStream instnce initialization
             xStream = new XStream ( new DomDriver () );
+            // xStream.setMode ( XStream.ID_REFERENCES );
 
             // Standart Java-classes aliases
             if ( aliasJdkClasses )

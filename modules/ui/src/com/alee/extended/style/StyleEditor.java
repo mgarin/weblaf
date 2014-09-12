@@ -28,6 +28,9 @@ import com.alee.extended.panel.GroupingType;
 import com.alee.extended.panel.WebButtonGroup;
 import com.alee.extended.statusbar.WebMemoryBar;
 import com.alee.extended.statusbar.WebStatusBar;
+import com.alee.extended.syntax.SyntaxPreset;
+import com.alee.extended.syntax.WebSyntaxArea;
+import com.alee.extended.syntax.WebSyntaxScrollPane;
 import com.alee.global.StyleConstants;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
@@ -37,11 +40,9 @@ import com.alee.laf.label.WebLabel;
 import com.alee.laf.menu.WebMenuItem;
 import com.alee.laf.menu.WebPopupMenu;
 import com.alee.laf.panel.WebPanel;
-import com.alee.laf.panel.WebPanelUI;
 import com.alee.laf.rootpane.WebFrame;
 import com.alee.laf.scroll.WebScrollBar;
 import com.alee.laf.scroll.WebScrollPane;
-import com.alee.laf.scroll.WebScrollPaneUI;
 import com.alee.laf.splitpane.WebSplitPane;
 import com.alee.laf.tabbedpane.TabbedPaneStyle;
 import com.alee.laf.tabbedpane.WebTabbedPane;
@@ -61,7 +62,7 @@ import com.alee.managers.style.data.SkinInfoConverter;
 import com.alee.managers.style.skin.CustomSkin;
 import com.alee.managers.tooltip.TooltipManager;
 import com.alee.utils.*;
-import com.alee.utils.swing.DocumentChangeListener;
+import com.alee.utils.swing.DocumentEventRunnable;
 import com.alee.utils.swing.IntDocumentChangeListener;
 import com.alee.utils.swing.IntTextDocument;
 import com.alee.utils.swing.WebTimer;
@@ -70,11 +71,7 @@ import com.alee.utils.xml.ResourceLocation;
 import com.thoughtworks.xstream.converters.ConversionException;
 import net.htmlparser.jericho.Element;
 import net.htmlparser.jericho.Source;
-import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
-import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import org.fife.ui.rsyntaxtextarea.Theme;
-import org.fife.ui.rtextarea.RTextScrollPane;
-import org.fife.ui.rtextarea.RUndoManager;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -128,7 +125,7 @@ public class StyleEditor extends WebFrame
     private boolean enabled = true;
 
     private final ResourceFile baseSkinFile;
-    private List<RSyntaxTextArea> editors;
+    private List<WebSyntaxArea> editors;
 
     public StyleEditor ( final ResourceFile editedSkinFile )
     {
@@ -442,7 +439,7 @@ public class StyleEditor extends WebFrame
         loadSkinSources ( xmlContent, xmlNames, xmlFiles );
 
         // Creating editor tabs
-        editors = new ArrayList<RSyntaxTextArea> ( xmlContent.size () );
+        editors = new ArrayList<WebSyntaxArea> ( xmlContent.size () );
         for ( int i = 0; i < xmlContent.size (); i++ )
         {
             final WebPanel tabContent = new WebPanel ();
@@ -456,30 +453,14 @@ public class StyleEditor extends WebFrame
         split.setRightComponent ( editorsContainer );
     }
 
-    private RTextScrollPane createSingleXmlEditor ( final Theme theme, final String xml, final ResourceFile xmlFile )
+    private Component createSingleXmlEditor ( final Theme theme, final String xml, final ResourceFile xmlFile )
     {
-        final RUndoManager[] xmlEditorHistory = new RUndoManager[ 1 ];
-        final RSyntaxTextArea xmlEditor = new RSyntaxTextArea ()
-        {
-            @Override
-            protected RUndoManager createUndoManager ()
-            {
-                xmlEditorHistory[ 0 ] = super.createUndoManager ();
-                xmlEditorHistory[ 0 ].setLimit ( 50 );
-                return xmlEditorHistory[ 0 ];
-            }
-        };
-        xmlEditor.setSyntaxEditingStyle ( SyntaxConstants.SYNTAX_STYLE_XML );
-        xmlEditor.setMargin ( new Insets ( 0, 5, 0, 0 ) );
-        xmlEditor.setAntiAliasingEnabled ( true );
-        xmlEditor.setUseFocusableTips ( true );
-        xmlEditor.setTabSize ( 4 );
-        xmlEditor.setCodeFoldingEnabled ( true );
-        xmlEditor.setPaintTabLines ( false );
-        xmlEditor.setWhitespaceVisible ( false );
-        xmlEditor.setEOLMarkersVisible ( false );
+        final WebSyntaxArea xmlEditor = new WebSyntaxArea ( xml, SyntaxPreset.xml );
+        xmlEditor.applyPresets ( SyntaxPreset.base );
+        xmlEditor.applyPresets ( SyntaxPreset.margin );
+        xmlEditor.applyPresets ( SyntaxPreset.size );
+        xmlEditor.applyPresets ( SyntaxPreset.historyLimit );
 
-        xmlEditor.setText ( xml );
         xmlEditor.setCaretPosition ( 0 );
 
         xmlEditor.setHyperlinksEnabled ( true );
@@ -495,19 +476,13 @@ public class StyleEditor extends WebFrame
         } );
 
         // Creating editor scroll with preferred settings
-        final RTextScrollPane xmlEditorScroll = new RTextScrollPane ( xmlEditor );
-        xmlEditorScroll.setVerticalScrollBarPolicy ( WebScrollPane.VERTICAL_SCROLLBAR_ALWAYS );
-        ( ( WebScrollPaneUI ) xmlEditorScroll.getUI () ).setDrawBorder ( false );
-        ( ( WebPanelUI ) xmlEditorScroll.getGutter ().getUI () ).setStyleId ( "editor-gutter" );
+        final WebSyntaxScrollPane xmlEditorScroll = new WebSyntaxScrollPane ( xmlEditor, false );
 
         // Applying editor theme after scroll creation
         theme.apply ( xmlEditor );
 
-        // Cleaning initial history
-        xmlEditorHistory[ 0 ].discardAllEdits ();
-
         // Start listening edits
-        xmlEditor.getDocument ().addDocumentListener ( new DocumentChangeListener ()
+        xmlEditor.onChange ( new DocumentEventRunnable ()
         {
             private final WebTimer updateTimer = new WebTimer ( updateDelay, new ActionListener ()
             {
@@ -522,7 +497,7 @@ public class StyleEditor extends WebFrame
             } ).setRepeats ( false );
 
             @Override
-            public void documentChanged ( final DocumentEvent e )
+            public void run ( final DocumentEvent e )
             {
                 updateTimer.restart ( updateDelay );
             }

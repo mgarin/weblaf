@@ -32,7 +32,7 @@ import java.io.File;
 
 public enum SyntaxPreset
 {
-    base
+    base ( PresetType.settings )
             {
                 @Override
                 public void apply ( final WebSyntaxArea syntaxArea )
@@ -47,7 +47,35 @@ public enum SyntaxPreset
                 }
             },
 
-    viewable
+    size ( PresetType.style )
+            {
+                @Override
+                public void apply ( final WebSyntaxArea syntaxArea )
+                {
+                    syntaxArea.setRows ( 4 );
+                    syntaxArea.setColumns ( 1 );
+                }
+            },
+
+    margin ( PresetType.style )
+            {
+                @Override
+                public void apply ( final WebSyntaxArea syntaxArea )
+                {
+                    syntaxArea.setMargin ( new Insets ( 5, 5, 5, 5 ) );
+                }
+            },
+
+    historyLimit ( PresetType.settings )
+            {
+                @Override
+                public void apply ( final WebSyntaxArea syntaxArea )
+                {
+                    syntaxArea.getUndoManager ().setLimit ( 50 );
+                }
+            },
+
+    viewable ( PresetType.settings )
             {
                 @Override
                 public void apply ( final WebSyntaxArea syntaxArea )
@@ -55,7 +83,7 @@ public enum SyntaxPreset
                     syntaxArea.setEditable ( false );
                 }
             },
-    editable
+    editable ( PresetType.settings )
             {
                 @Override
                 public void apply ( final WebSyntaxArea syntaxArea )
@@ -64,7 +92,7 @@ public enum SyntaxPreset
                 }
             },
 
-    hideMenu
+    hideMenu ( PresetType.settings )
             {
                 @Override
                 public void apply ( final WebSyntaxArea syntaxArea )
@@ -73,7 +101,7 @@ public enum SyntaxPreset
                 }
             },
 
-    transparent
+    transparent ( PresetType.style )
             {
                 @Override
                 public void apply ( final WebSyntaxArea syntaxArea )
@@ -82,7 +110,7 @@ public enum SyntaxPreset
                     syntaxArea.setOpaque ( false );
                 }
             },
-    opaque
+    opaque ( PresetType.style )
             {
                 @Override
                 public void apply ( final WebSyntaxArea syntaxArea )
@@ -92,7 +120,7 @@ public enum SyntaxPreset
                 }
             },
 
-    java
+    java ( PresetType.syntax )
             {
                 @Override
                 public void apply ( final WebSyntaxArea syntaxArea )
@@ -100,7 +128,7 @@ public enum SyntaxPreset
                     syntaxArea.setSyntaxEditingStyle ( SyntaxConstants.SYNTAX_STYLE_JAVA );
                 }
             },
-    xml
+    xml ( PresetType.syntax )
             {
                 @Override
                 public void apply ( final WebSyntaxArea syntaxArea )
@@ -108,7 +136,7 @@ public enum SyntaxPreset
                     syntaxArea.setSyntaxEditingStyle ( SyntaxConstants.SYNTAX_STYLE_XML );
                 }
             },
-    html
+    html ( PresetType.syntax )
             {
                 @Override
                 public void apply ( final WebSyntaxArea syntaxArea )
@@ -116,7 +144,7 @@ public enum SyntaxPreset
                     syntaxArea.setSyntaxEditingStyle ( SyntaxConstants.SYNTAX_STYLE_HTML );
                 }
             },
-    css
+    css ( PresetType.syntax )
             {
                 @Override
                 public void apply ( final WebSyntaxArea syntaxArea )
@@ -124,7 +152,7 @@ public enum SyntaxPreset
                     syntaxArea.setSyntaxEditingStyle ( SyntaxConstants.SYNTAX_STYLE_CSS );
                 }
             },
-    js
+    js ( PresetType.syntax )
             {
                 @Override
                 public void apply ( final WebSyntaxArea syntaxArea )
@@ -132,7 +160,7 @@ public enum SyntaxPreset
                     syntaxArea.setSyntaxEditingStyle ( SyntaxConstants.SYNTAX_STYLE_JAVASCRIPT );
                 }
             },
-    php
+    php ( PresetType.syntax )
             {
                 @Override
                 public void apply ( final WebSyntaxArea syntaxArea )
@@ -140,35 +168,32 @@ public enum SyntaxPreset
                     syntaxArea.setSyntaxEditingStyle ( SyntaxConstants.SYNTAX_STYLE_PHP );
                 }
             },
-    sql
+    sql ( PresetType.syntax )
             {
                 @Override
                 public void apply ( final WebSyntaxArea syntaxArea )
                 {
                     syntaxArea.setSyntaxEditingStyle ( SyntaxConstants.SYNTAX_STYLE_SQL );
-
                 }
             },
-    none
+    none ( PresetType.syntax )
             {
                 @Override
                 public void apply ( final WebSyntaxArea syntaxArea )
                 {
                     syntaxArea.setSyntaxEditingStyle ( SyntaxConstants.SYNTAX_STYLE_NONE );
-
                 }
             },
 
-    ideaTheme
+    ideaTheme ( PresetType.theme )
             {
                 @Override
                 public void apply ( final WebSyntaxArea syntaxArea )
                 {
                     SyntaxTheme.idea.apply ( syntaxArea );
-
                 }
             },
-    darkTheme
+    darkTheme ( PresetType.theme )
             {
                 @Override
                 public void apply ( final WebSyntaxArea syntaxArea )
@@ -176,7 +201,7 @@ public enum SyntaxPreset
                     SyntaxTheme.dark.apply ( syntaxArea );
                 }
             },
-    vsTheme
+    vsTheme ( PresetType.theme )
             {
                 @Override
                 public void apply ( final WebSyntaxArea syntaxArea )
@@ -184,7 +209,7 @@ public enum SyntaxPreset
                     SyntaxTheme.vs.apply ( syntaxArea );
                 }
             },
-    eclipseTheme
+    eclipseTheme ( PresetType.theme )
             {
                 @Override
                 public void apply ( final WebSyntaxArea syntaxArea )
@@ -192,6 +217,31 @@ public enum SyntaxPreset
                     SyntaxTheme.eclipse.apply ( syntaxArea );
                 }
             };
+
+    /**
+     * SyntaxPreset type.
+     */
+    private final PresetType type;
+
+    /**
+     * Constructs new enumeration.
+     *
+     * @param type SyntaxPreset type
+     */
+    private SyntaxPreset ( final PresetType type )
+    {
+        this.type = type;
+    }
+
+    /**
+     * Returns SyntaxPreset type.
+     *
+     * @return SyntaxPreset type
+     */
+    public PresetType getType ()
+    {
+        return type;
+    }
 
     /**
      * Applies syntax preset to the specified WebSyntaxArea.
@@ -221,7 +271,7 @@ public enum SyntaxPreset
     {
         final String fe = FileUtils.getFileExtPart ( file, false );
         final String ext = fe.length () > 0 ? fe.toLowerCase () : file;
-        if ( ext.contains ( "java" ) || ext.contains ( "class" ) )
+        if ( ext.contains ( "java" ) )
         {
             return java;
         }
@@ -229,7 +279,7 @@ public enum SyntaxPreset
         {
             return xml;
         }
-        else if ( ext.contains ( "html" ) )
+        else if ( ext.contains ( "htm" ) )
         {
             return html;
         }
@@ -237,7 +287,7 @@ public enum SyntaxPreset
         {
             return css;
         }
-        else if ( ext.contains ( "js" ) )
+        else if ( ext.contains ( "js" ) || ext.contains ( "javascript" ) )
         {
             return js;
         }

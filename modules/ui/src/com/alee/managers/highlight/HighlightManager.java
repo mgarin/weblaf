@@ -206,4 +206,50 @@ public class HighlightManager
             wgp.setHighlightBase ( highlightBase );
         }
     }
+
+    /**
+     * Circle zone highlight.
+     */
+
+    //    private static final BufferedImage noise = ImageUtils.getBufferedImage ( HighlightManager.class.getResource ( "icons/noise.jpg" ) );
+    //
+    //    public static void highlightZone ( final Window window, final Point point )
+    //    {
+    //        final BufferedImage img = ImageUtils.createCompatibleImage ( 400, 300, Transparency.TRANSLUCENT );
+    //        final Graphics2D g2d = img.createGraphics ();
+    //        GraphicsUtils.setupAntialias ( g2d );
+    //
+    //        final Area shape = new Area ( new Ellipse2D.Double ( 0, 0, 399, 299 ) );
+    //        shape.exclusiveOr ( new Area ( new Ellipse2D.Double ( 10, 20, 380, 260 ) ) );
+    //
+    //        g2d.setPaint ( new TexturePaint ( noise, new Rectangle ( 0, 0, 400, 300 ) ) );
+    //        g2d.fill ( shape );
+    //
+    ////        g2d.setPaint ( new Color ( 99, 47, 8 ) );
+    ////        g2d.draw ( shape );
+    //
+    //        g2d.dispose ();
+    //
+    //        final WebGlassPane wgp = GlassPaneManager.getGlassPane ( window );
+    //        wgp.setPaintedImage ( img, new Point ( point.x - 200, point.y - 150 ) );
+    //
+    //    }
+    //
+    //    public static void main ( final String[] args )
+    //    {
+    //        WebLookAndFeel.install ();
+    //
+    //        final WebPanel panel = new WebPanel ();
+    //        panel.setPreferredSize ( new Dimension ( 600, 600 ) );
+    //        panel.onMousePress ( new MouseEventRunnable ()
+    //        {
+    //            @Override
+    //            public void run ( final MouseEvent e )
+    //            {
+    //                highlightZone ( SwingUtils.getWindowAncestor ( panel ), e.getPoint () );
+    //            }
+    //        } );
+    //
+    //        TestFrame.show ( panel );
+    //    }
 }
