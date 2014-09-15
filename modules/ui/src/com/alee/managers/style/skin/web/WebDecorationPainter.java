@@ -611,7 +611,7 @@ public class WebDecorationPainter<E extends JComponent> extends AbstractPainter<
      * {@inheritDoc}
      */
     @Override
-    public Insets getMargin ( final E scrollbar )
+    public Insets getMargin ( final E c )
     {
         if ( undecorated )
         {
