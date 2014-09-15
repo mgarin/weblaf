@@ -835,6 +835,28 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel implements
     }
 
     /**
+     * Decrements selected document index inside the active pane.
+     */
+    public void selectPrevious ()
+    {
+        if ( activePane != null )
+        {
+            activePane.selectPrevious ();
+        }
+    }
+
+    /**
+     * Increments selected document index inside the active pane.
+     */
+    public void selectNext ()
+    {
+        if ( activePane != null )
+        {
+            activePane.selectNext ();
+        }
+    }
+
+    /**
      * Sets document selected inside its pane.
      *
      * @param document document to select

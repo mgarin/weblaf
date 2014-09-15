@@ -546,6 +546,32 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
     }
 
     /**
+     * Decrements selected document index inside the active pane.
+     */
+    public void selectPrevious ()
+    {
+        final int count = count ();
+        if ( count > 1 )
+        {
+            final int selected = getSelectedIndex () - 1;
+            setSelected ( selected == -1 ? count - 1 : selected );
+        }
+    }
+
+    /**
+     * Increments selected document index inside the active pane.
+     */
+    public void selectNext ()
+    {
+        final int count = count ();
+        if ( count > 1 )
+        {
+            final int selected = getSelectedIndex () + 1;
+            setSelected ( selected == count ? 0 : selected );
+        }
+    }
+
+    /**
      * Returns index of the document with the specified ID.
      *
      * @param id document ID

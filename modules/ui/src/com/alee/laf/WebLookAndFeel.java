@@ -535,6 +535,9 @@ public class WebLookAndFeel extends BasicLookAndFeel
         // Fonts
         initializeFonts ( table );
 
+        // Mnemonics
+        table.put ( "Button.showMnemonics", Boolean.TRUE );
+
         // JLabels
         final Color controlText = table.getColor ( "controlText" );
         table.put ( "Label.foreground", controlText );
@@ -655,8 +658,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
                         DefaultEditorKit.deletePrevWordAction, "RIGHT", DefaultEditorKit.forwardAction, "LEFT",
                         DefaultEditorKit.backwardAction, "KP_RIGHT", DefaultEditorKit.forwardAction, "KP_LEFT",
                         DefaultEditorKit.backwardAction, "ENTER", JTextField.notifyAction, "control shift O", "toggle-componentOrientation"
-                        /*DefaultEditorKit.toggleComponentOrientation*/ }
-        ) );
+                        /*DefaultEditorKit.toggleComponentOrientation*/ } ) );
 
         // WebPasswordField actions
         table.put ( "PasswordField.focusInputMap", new UIDefaults.LazyInputMap (
@@ -675,8 +677,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
                         DefaultEditorKit.deleteNextCharAction, "RIGHT", DefaultEditorKit.forwardAction, "LEFT",
                         DefaultEditorKit.backwardAction, "KP_RIGHT", DefaultEditorKit.forwardAction, "KP_LEFT",
                         DefaultEditorKit.backwardAction, "ENTER", JTextField.notifyAction, "control shift O", "toggle-componentOrientation"
-                        /*DefaultEditorKit.toggleComponentOrientation*/ }
-        ) );
+                        /*DefaultEditorKit.toggleComponentOrientation*/ } ) );
 
         // WebFormattedTextField actions
         table.put ( "FormattedTextField.focusInputMap", new UIDefaults.LazyInputMap (
@@ -699,8 +700,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
                         DefaultEditorKit.forwardAction, "LEFT", DefaultEditorKit.backwardAction, "KP_RIGHT", DefaultEditorKit.forwardAction,
                         "KP_LEFT", DefaultEditorKit.backwardAction, "ENTER", JTextField.notifyAction, "ctrl BACK_SLASH", "unselect",
                         "control shift O", "toggle-componentOrientation", "ESCAPE", "reset-field-edit", "UP", "increment", "KP_UP",
-                        "increment", "DOWN", "decrement", "KP_DOWN", "decrement", }
-        ) );
+                        "increment", "DOWN", "decrement", "KP_DOWN", "decrement", } ) );
 
         // Multiline areas actions
         final Object multilineInputMap = new UIDefaults.LazyInputMap (
@@ -728,8 +728,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
                         DefaultEditorKit.insertBreakAction, "TAB", DefaultEditorKit.insertTabAction, "control T", "next-link-action",
                         "control shift T", "previous-link-action", "control SPACE", "activate-link-action", "control shift O",
                         "toggle-componentOrientation"
-                        /*DefaultEditorKit.toggleComponentOrientation*/ }
-        );
+                        /*DefaultEditorKit.toggleComponentOrientation*/ } );
         table.put ( "TextArea.focusInputMap", multilineInputMap );
         table.put ( "TextPane.focusInputMap", multilineInputMap );
         table.put ( "EditorPane.focusInputMap", multilineInputMap );
@@ -739,14 +738,12 @@ public class WebLookAndFeel extends BasicLookAndFeel
                 new Object[]{ "ESCAPE", "hidePopup", "PAGE_UP", "pageUpPassThrough", "PAGE_DOWN", "pageDownPassThrough", "HOME",
                         "homePassThrough", "END", "endPassThrough", "DOWN", "selectNext", "KP_DOWN", "selectNext", "alt DOWN",
                         "togglePopup", "alt KP_DOWN", "togglePopup", "alt UP", "togglePopup", "alt KP_UP", "togglePopup", "SPACE",
-                        "spacePopup", "ENTER", "enterPressed", "UP", "selectPrevious", "KP_UP", "selectPrevious" }
-        ) );
+                        "spacePopup", "ENTER", "enterPressed", "UP", "selectPrevious", "KP_UP", "selectPrevious" } ) );
 
         // WebFileChooser actions
         table.put ( "FileChooser.ancestorInputMap", new UIDefaults.LazyInputMap (
                 new Object[]{ "ESCAPE", "cancelSelection", "F2", "editFileName", "F5", "refresh", "BACK_SPACE", "Go Up", "ENTER",
-                        "approveSelection", "ctrl ENTER", "approveSelection" }
-        ) );
+                        "approveSelection", "ctrl ENTER", "approveSelection" } ) );
     }
 
     /**
