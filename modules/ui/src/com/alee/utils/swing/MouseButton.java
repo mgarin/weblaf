@@ -17,6 +17,8 @@
 
 package com.alee.utils.swing;
 
+import com.alee.utils.SwingUtils;
+
 import java.awt.event.MouseEvent;
 
 /**
@@ -64,7 +66,18 @@ public enum MouseButton
      */
     public static MouseButton get ( final MouseEvent event )
     {
-        return get ( event.getButton () );
+        if ( SwingUtils.isRightMouseButton ( event ) )
+        {
+            return right;
+        }
+        else if ( SwingUtils.isMiddleMouseButton ( event ) )
+        {
+            return middle;
+        }
+        else
+        {
+            return left;
+        }
     }
 
     /**

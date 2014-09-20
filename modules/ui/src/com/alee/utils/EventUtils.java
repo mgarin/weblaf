@@ -123,6 +123,43 @@ public class EventUtils
     }
 
     /**
+     * Shortcut method for mouse drag event.
+     *
+     * @param component component to handle events for
+     * @param runnable  mouse event runnable
+     * @return used mouse adapter
+     */
+    public static MouseAdapter onMouseDrag ( final Component component, final MouseEventRunnable runnable )
+    {
+        return onMouseDrag ( component, null, runnable );
+    }
+
+    /**
+     * Shortcut method for mouse drag event.
+     *
+     * @param component   component to handle events for
+     * @param mouseButton mouse button filter
+     * @param runnable    mouse event runnable
+     * @return used mouse adapter
+     */
+    public static MouseAdapter onMouseDrag ( final Component component, final MouseButton mouseButton, final MouseEventRunnable runnable )
+    {
+        final MouseAdapter mouseAdapter = new MouseAdapter ()
+        {
+            @Override
+            public void mouseDragged ( final MouseEvent e )
+            {
+                if ( mouseButton == null || mouseButton == MouseButton.get ( e ) )
+                {
+                    runnable.run ( e );
+                }
+            }
+        };
+        component.addMouseMotionListener ( mouseAdapter );
+        return mouseAdapter;
+    }
+
+    /**
      * Shortcut method for double-click mouse event.
      *
      * @param component component to handle events for

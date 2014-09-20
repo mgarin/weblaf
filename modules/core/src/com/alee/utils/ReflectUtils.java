@@ -1428,6 +1428,10 @@ public final class ReflectUtils
     public static <T extends Cloneable> T clone ( final T object )
             throws NoSuchMethodException, IllegalAccessException, InvocationTargetException
     {
+        if ( object == null )
+        {
+            return null;
+        }
         return ReflectUtils.callMethod ( object, "clone" );
     }
 
@@ -1440,6 +1444,10 @@ public final class ReflectUtils
      */
     public static <T extends Cloneable> T cloneSafely ( final T object )
     {
+        if ( object == null )
+        {
+            return null;
+        }
         return ReflectUtils.callMethodSafely ( object, "clone" );
     }
 

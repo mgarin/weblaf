@@ -67,6 +67,23 @@ public interface EventMethods extends SwingMethods
     public MouseAdapter onMouseExit ( MouseEventRunnable runnable );
 
     /**
+     * Shortcut method for mouse drag event.
+     *
+     * @param runnable mouse event runnable
+     * @return used mouse adapter
+     */
+    public MouseAdapter onMouseDrag ( MouseEventRunnable runnable );
+
+    /**
+     * Shortcut method for mouse drag event.
+     *
+     * @param mouseButton mouse button filter
+     * @param runnable    mouse event runnable
+     * @return used mouse adapter
+     */
+    public MouseAdapter onMouseDrag ( MouseButton mouseButton, MouseEventRunnable runnable );
+
+    /**
      * Shortcut method for double-click mouse event.
      *
      * @param runnable mouse event runnable

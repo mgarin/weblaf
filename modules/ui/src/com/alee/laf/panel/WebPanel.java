@@ -429,6 +429,28 @@ public class WebPanel extends JPanel
     }
 
     /**
+     * Removes all children with the specified component class type.
+     *
+     * @param componentClass class type of child components to be removed
+     * @return this panel
+     */
+    public WebPanel removeAll ( final Class<? extends Component> componentClass )
+    {
+        if ( componentClass != null )
+        {
+            for ( int i = 0; i < getComponentCount (); i++ )
+            {
+                final Component component = getComponent ( i );
+                if ( componentClass.isAssignableFrom ( component.getClass () ) )
+                {
+                    remove ( component );
+                }
+            }
+        }
+        return this;
+    }
+
+    /**
      * Returns first component contained in this panel.
      *
      * @return first component contained in this panel
@@ -1018,6 +1040,24 @@ public class WebPanel extends JPanel
     public MouseAdapter onMouseExit ( final MouseEventRunnable runnable )
     {
         return EventUtils.onMouseExit ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MouseAdapter onMouseDrag ( final MouseEventRunnable runnable )
+    {
+        return EventUtils.onMouseDrag ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MouseAdapter onMouseDrag ( final MouseButton mouseButton, final MouseEventRunnable runnable )
+    {
+        return EventUtils.onMouseDrag ( this, mouseButton, runnable );
     }
 
     /**

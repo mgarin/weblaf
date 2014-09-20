@@ -27,6 +27,7 @@ import com.alee.utils.xml.*;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.converters.Converter;
 import com.thoughtworks.xstream.converters.SingleValueConverter;
+import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
 import javax.swing.*;
@@ -296,6 +297,17 @@ public final class XmlUtils
     public static void toXML ( final Object obj, final OutputStream out )
     {
         getXStream ().toXML ( obj, out );
+    }
+
+    /**
+     * Serializes Object into XML and writes it using a specified HierarchicalStreamWriter
+     *
+     * @param obj    object to serialize
+     * @param writer hierarchical stream writer
+     */
+    public static void toXML ( final Object obj, final HierarchicalStreamWriter writer )
+    {
+        getXStream ().marshal ( obj, writer );
     }
 
     /**

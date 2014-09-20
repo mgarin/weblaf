@@ -37,7 +37,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * User: mgarin Date: 05.07.11 Time: 13:22
+ * @author Mikle Garin
  */
 
 public final class ImageUtils

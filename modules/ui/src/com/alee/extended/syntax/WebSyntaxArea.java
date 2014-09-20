@@ -312,6 +312,24 @@ public class WebSyntaxArea extends RSyntaxTextArea implements DocumentEventMetho
      * {@inheritDoc}
      */
     @Override
+    public MouseAdapter onMouseDrag ( final MouseEventRunnable runnable )
+    {
+        return EventUtils.onMouseDrag ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MouseAdapter onMouseDrag ( final MouseButton mouseButton, final MouseEventRunnable runnable )
+    {
+        return EventUtils.onMouseDrag ( this, mouseButton, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public MouseAdapter onDoubleClick ( final MouseEventRunnable runnable )
     {
         return EventUtils.onDoubleClick ( this, runnable );

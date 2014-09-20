@@ -59,7 +59,18 @@ public abstract class ComponentDragViewHandler<T extends JComponent> implements 
         }
 
         // Returning component snapshot
-        return SwingUtils.createComponentSnapshot ( object, 0.8f );
+        return SwingUtils.createComponentSnapshot ( object, getSnapshotTransparency () );
+    }
+
+    /**
+     * Returns component snapshot transparency.
+     * By default snapshot is semi-transparent for usability purposes.
+     *
+     * @return component snapshot transparency
+     */
+    public float getSnapshotTransparency ()
+    {
+        return 0.8f;
     }
 
     /**

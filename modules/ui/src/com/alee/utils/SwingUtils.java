@@ -1821,16 +1821,30 @@ public final class SwingUtils
     public static BufferedImage createComponentSnapshot ( final Component content, final int width, final int height,
                                                           final float transparency )
     {
+        // Creating snapshot
         final BufferedImage bi = ImageUtils.createCompatibleImage ( width, height, Transparency.TRANSLUCENT );
         if ( content != null )
         {
             final Graphics2D g2d = bi.createGraphics ();
-            GraphicsUtils.setupAlphaComposite ( g2d, transparency, transparency < 1f );
             content.setSize ( width, height );
             content.paintAll ( g2d );
             g2d.dispose ();
         }
-        return bi;
+
+        // Making it transparent if needed
+        if ( transparency < 1f )
+        {
+            final BufferedImage transparent = ImageUtils.createCompatibleImage ( width, height, Transparency.TRANSLUCENT );
+            final Graphics2D g2d = transparent.createGraphics ();
+            GraphicsUtils.setupAlphaComposite ( g2d, transparency );
+            g2d.drawImage ( bi, 0, 0, null );
+            g2d.dispose ();
+            return transparent;
+        }
+        else
+        {
+            return bi;
+        }
     }
 
     /**
