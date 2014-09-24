@@ -187,6 +187,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
      * Label-related components.
      */
     public static String labelUI = WebLabelUI.class.getCanonicalName ();
+    // public static String linkLabelUI = WebLabelUI.class.getCanonicalName ();
     public static String verticalLabelUI = WebVerticalLabelUI.class.getCanonicalName ();
     public static String multiLineLabelUI = WebMultiLineLabelUI.class.getCanonicalName ();
     public static String styledLabelUI = WebStyledLabelUI.class.getCanonicalName ();
@@ -422,6 +423,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
     {
         // Label
         table.put ( "LabelUI", labelUI );
+        // table.put ( "LinkLabelUI", linkLabelUI );
         table.put ( "VerticalLabelUI", verticalLabelUI );
         table.put ( "MultiLineLabelUI", multiLineLabelUI );
         table.put ( "StyledLabelUI", styledLabelUI );

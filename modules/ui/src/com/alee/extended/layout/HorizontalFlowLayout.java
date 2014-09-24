@@ -29,7 +29,7 @@ public class HorizontalFlowLayout extends AbstractLayoutManager
      * todo 1. Alignment
      */
 
-    protected int horizGap;
+    protected int gap;
     protected boolean fillLast;
 
     public HorizontalFlowLayout ()
@@ -44,13 +44,28 @@ public class HorizontalFlowLayout extends AbstractLayoutManager
 
     public HorizontalFlowLayout ( final int gap, final boolean fillLast )
     {
-        this.horizGap = gap;
+        this.gap = gap;
         this.fillLast = fillLast;
     }
 
     public int getHorizontalGap ()
     {
-        return horizGap;
+        return gap;
+    }
+
+    public void setHorizGap ( final int gap )
+    {
+        this.gap = gap;
+    }
+
+    public boolean isFillLast ()
+    {
+        return fillLast;
+    }
+
+    public void setFillLast ( final boolean fill )
+    {
+        this.fillLast = fill;
     }
 
     /**

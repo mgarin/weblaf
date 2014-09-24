@@ -137,7 +137,7 @@ public class DragManager
                             glassPane.clearPaintedImage ();
                             glassPane = gp;
                         }
-                        gp.setPaintedImage ( view, getLocation ( gp, dsde ) );
+                        glassPane.setPaintedImage ( view, getLocation ( glassPane, dsde ) );
                     }
                 }
 

@@ -19,7 +19,6 @@ package com.alee.extended.label;
 
 import com.alee.laf.label.WebLabel;
 import com.alee.managers.hotkey.Hotkey;
-import com.alee.managers.language.LanguageMethods;
 import com.alee.utils.*;
 import com.alee.utils.swing.AncestorAdapter;
 
@@ -41,7 +40,7 @@ import java.util.concurrent.Executors;
  * @author Mikle Garin
  */
 
-public class WebLinkLabel extends WebLabel implements LanguageMethods
+public class WebLinkLabel extends WebLabel
 {
     /**
      * todo 1. Remodel WebLinkLabel to extend WebStyledLabel

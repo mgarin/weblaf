@@ -698,7 +698,7 @@ public final class ImageUtils
                 final int rgb = bi.getRGB ( i, j );
                 red += ( rgb >> 16 ) & 0xFF;
                 green += ( rgb >> 8 ) & 0xFF;
-                blue += ( rgb ) & 0xFF;
+                blue += rgb & 0xFF;
             }
         }
         final int count = icon.getIconWidth () * icon.getIconHeight ();
