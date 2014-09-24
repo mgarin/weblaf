@@ -44,11 +44,11 @@ public interface SwingMethods
     /**
      * todo To add:
      * todo HotkeyMethods, ButtonHotkeyMethods - add and replace all workarounds
-     * todo TooltipMethods, OrientationMethods - add
+     * todo OrientationMethods - add
      *
      * todo To modify:
      * todo SizeMethods - add into all available components
      * todo Move font methods from SwingUtils to FontUtils
-     * todo EventMethods - add more methods and inject them into various components
+     * todo TooltipMethods, EventMethods - add more methods and inject them into various components
      */
 }

@@ -493,7 +493,7 @@ public class WebMemoryBar extends WebLabel implements ShapeProvider, SizeMethods
 
     private Shape getProgressShape ( final long progress, final boolean fill )
     {
-        final int arcRound = ( Math.max ( 0, round - 1 ) ) * 2;
+        final int arcRound = Math.max ( 0, round - 1 ) * 2;
         if ( drawBorder )
         {
             return new RoundRectangle2D.Double ( shadeWidth + 2, shadeWidth + 2, getProgressWidth ( progress, fill ),
@@ -612,6 +612,42 @@ public class WebMemoryBar extends WebLabel implements ShapeProvider, SizeMethods
     public WebMemoryBar setMinimumHeight ( final int minimumHeight )
     {
         return SizeUtils.setMinimumHeight ( this, minimumHeight );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int getMaximumWidth ()
+    {
+        return SizeUtils.getMaximumWidth ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebMemoryBar setMaximumWidth ( final int maximumWidth )
+    {
+        return SizeUtils.setMaximumWidth ( this, maximumWidth );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int getMaximumHeight ()
+    {
+        return SizeUtils.getMaximumHeight ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebMemoryBar setMaximumHeight ( final int maximumHeight )
+    {
+        return SizeUtils.setMaximumHeight ( this, maximumHeight );
     }
 
     /**
