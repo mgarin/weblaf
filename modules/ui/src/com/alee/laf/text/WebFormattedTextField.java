@@ -22,12 +22,16 @@ import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.language.LanguageMethods;
+import com.alee.managers.language.data.TooltipWay;
 import com.alee.managers.language.updaters.LanguageUpdater;
 import com.alee.managers.log.Log;
 import com.alee.managers.settings.DefaultValue;
 import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.settings.SettingsMethods;
 import com.alee.managers.settings.SettingsProcessor;
+import com.alee.managers.tooltip.ToolTipMethods;
+import com.alee.managers.tooltip.TooltipManager;
+import com.alee.managers.tooltip.WebCustomTooltip;
 import com.alee.utils.EventUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SizeUtils;
@@ -43,12 +47,12 @@ import java.awt.event.MouseAdapter;
 import java.text.Format;
 
 /**
- * User: mgarin Date: 24.08.11 Time: 15:51
+ * @author Mikle Garin
  */
 
 public class WebFormattedTextField extends JFormattedTextField
-        implements ShapeProvider, DocumentEventMethods, EventMethods, LanguageMethods, SettingsMethods, FontMethods<WebFormattedTextField>,
-        SizeMethods<WebFormattedTextField>
+        implements ShapeProvider, DocumentEventMethods, EventMethods, ToolTipMethods, LanguageMethods, SettingsMethods,
+        FontMethods<WebFormattedTextField>, SizeMethods<WebFormattedTextField>
 {
     public WebFormattedTextField ()
     {
@@ -424,8 +428,184 @@ public class WebFormattedTextField extends JFormattedTextField
     }
 
     /**
-     * Language methods
+     * {@inheritDoc}
      */
+    @Override
+    public WebCustomTooltip setToolTip ( final String tooltip )
+    {
+        return TooltipManager.setTooltip ( this, tooltip );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip setToolTip ( final Icon icon, final String tooltip )
+    {
+        return TooltipManager.setTooltip ( this, icon, tooltip );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip setToolTip ( final String tooltip, final TooltipWay tooltipWay )
+    {
+        return TooltipManager.setTooltip ( this, tooltip, tooltipWay );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip setToolTip ( final Icon icon, final String tooltip, final TooltipWay tooltipWay )
+    {
+        return TooltipManager.setTooltip ( this, icon, tooltip, tooltipWay );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip setToolTip ( final String tooltip, final TooltipWay tooltipWay, final int delay )
+    {
+        return TooltipManager.setTooltip ( this, tooltip, tooltipWay, delay );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip setToolTip ( final Icon icon, final String tooltip, final TooltipWay tooltipWay, final int delay )
+    {
+        return TooltipManager.setTooltip ( this, icon, tooltip, tooltipWay, delay );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip setToolTip ( final JComponent tooltip )
+    {
+        return TooltipManager.setTooltip ( this, tooltip );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip setToolTip ( final JComponent tooltip, final int delay )
+    {
+        return TooltipManager.setTooltip ( this, tooltip, delay );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip setToolTip ( final JComponent tooltip, final TooltipWay tooltipWay )
+    {
+        return TooltipManager.setTooltip ( this, tooltip, tooltipWay );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip setToolTip ( final JComponent tooltip, final TooltipWay tooltipWay, final int delay )
+    {
+        return TooltipManager.setTooltip ( this, tooltip, tooltipWay, delay );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip addToolTip ( final String tooltip )
+    {
+        return TooltipManager.addTooltip ( this, tooltip );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip addToolTip ( final Icon icon, final String tooltip )
+    {
+        return TooltipManager.addTooltip ( this, icon, tooltip );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip addToolTip ( final String tooltip, final TooltipWay tooltipWay )
+    {
+        return TooltipManager.addTooltip ( this, tooltip, tooltipWay );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip addToolTip ( final Icon icon, final String tooltip, final TooltipWay tooltipWay )
+    {
+        return TooltipManager.addTooltip ( this, icon, tooltip, tooltipWay );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip addToolTip ( final String tooltip, final TooltipWay tooltipWay, final int delay )
+    {
+        return TooltipManager.addTooltip ( this, tooltip, tooltipWay, delay );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip addToolTip ( final Icon icon, final String tooltip, final TooltipWay tooltipWay, final int delay )
+    {
+        return TooltipManager.addTooltip ( this, icon, tooltip, tooltipWay, delay );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip addToolTip ( final JComponent tooltip )
+    {
+        return TooltipManager.addTooltip ( this, tooltip );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip addToolTip ( final JComponent tooltip, final int delay )
+    {
+        return TooltipManager.addTooltip ( this, tooltip, delay );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip addToolTip ( final JComponent tooltip, final TooltipWay tooltipWay )
+    {
+        return TooltipManager.addTooltip ( this, tooltip, tooltipWay );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip addToolTip ( final JComponent tooltip, final TooltipWay tooltipWay, final int delay )
+    {
+        return TooltipManager.addTooltip ( this, tooltip, tooltipWay, delay );
+    }
 
     /**
      * {@inheritDoc}
@@ -489,10 +669,6 @@ public class WebFormattedTextField extends JFormattedTextField
     {
         LanguageManager.unregisterLanguageUpdater ( this );
     }
-
-    /**
-     * Settings methods
-     */
 
     /**
      * {@inheritDoc}
@@ -632,10 +808,6 @@ public class WebFormattedTextField extends JFormattedTextField
     {
         SettingsManager.saveComponentSettings ( this );
     }
-
-    /**
-     * Font methods
-     */
 
     /**
      * {@inheritDoc}
@@ -798,10 +970,6 @@ public class WebFormattedTextField extends JFormattedTextField
     {
         return SwingUtils.getFontName ( this );
     }
-
-    /**
-     * Size methods.
-     */
 
     /**
      * {@inheritDoc}

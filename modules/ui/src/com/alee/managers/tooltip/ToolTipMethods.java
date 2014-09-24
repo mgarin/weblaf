@@ -17,7 +17,10 @@
 
 package com.alee.managers.tooltip;
 
+import com.alee.managers.language.data.TooltipWay;
 import com.alee.utils.swing.SwingMethods;
+
+import javax.swing.*;
 
 /**
  * This interface provides a set of methods that should be added into components to support custom WebLaF tooltips.
@@ -30,4 +33,189 @@ import com.alee.utils.swing.SwingMethods;
 
 public interface ToolTipMethods extends SwingMethods
 {
+    /**
+     * Sets single custom WebLaF tooltip into the component.
+     *
+     * @param tooltip tooltip text
+     * @return created custom WebLaF tooltip
+     */
+    public WebCustomTooltip setToolTip ( final String tooltip );
+
+    /**
+     * Sets single custom WebLaF tooltip into the component.
+     *
+     * @param icon    tooltip icon
+     * @param tooltip tooltip text
+     * @return created custom WebLaF tooltip
+     */
+    public WebCustomTooltip setToolTip ( final Icon icon, final String tooltip );
+
+    /**
+     * Sets single custom WebLaF tooltip into the component.
+     *
+     * @param tooltip    tooltip text
+     * @param tooltipWay tooltip display direction
+     * @return created custom WebLaF tooltip
+     */
+    public WebCustomTooltip setToolTip ( final String tooltip, final TooltipWay tooltipWay );
+
+    /**
+     * Sets single custom WebLaF tooltip into the component.
+     *
+     * @param icon       tooltip icon
+     * @param tooltip    tooltip text
+     * @param tooltipWay tooltip display direction
+     * @return created custom WebLaF tooltip
+     */
+    public WebCustomTooltip setToolTip ( final Icon icon, final String tooltip, final TooltipWay tooltipWay );
+
+    /**
+     * Sets single custom WebLaF tooltip into the component.
+     *
+     * @param tooltip    tooltip text
+     * @param tooltipWay tooltip display direction
+     * @param delay      tooltip display delay
+     * @return created custom WebLaF tooltip
+     */
+    public WebCustomTooltip setToolTip ( final String tooltip, final TooltipWay tooltipWay, final int delay );
+
+    /**
+     * Sets single custom WebLaF tooltip into the component.
+     *
+     * @param icon       tooltip icon
+     * @param tooltip    tooltip text
+     * @param tooltipWay tooltip display direction
+     * @param delay      tooltip display delay
+     * @return created custom WebLaF tooltip
+     */
+    public WebCustomTooltip setToolTip ( final Icon icon, final String tooltip, final TooltipWay tooltipWay, final int delay );
+
+    /**
+     * Sets single custom WebLaF tooltip into the component.
+     *
+     * @param tooltip custom tooltip component
+     * @return created custom WebLaF tooltip
+     */
+    public WebCustomTooltip setToolTip ( final JComponent tooltip );
+
+    /**
+     * Sets single custom WebLaF tooltip into the component.
+     *
+     * @param tooltip custom tooltip component
+     * @param delay   tooltip display delay
+     * @return created custom WebLaF tooltip
+     */
+    public WebCustomTooltip setToolTip ( final JComponent tooltip, final int delay );
+
+    /**
+     * Sets single custom WebLaF tooltip into the component.
+     *
+     * @param tooltip    custom tooltip component
+     * @param tooltipWay tooltip display direction
+     * @return created custom WebLaF tooltip
+     */
+    public WebCustomTooltip setToolTip ( final JComponent tooltip, final TooltipWay tooltipWay );
+
+    /**
+     * Sets single custom WebLaF tooltip into the component.
+     *
+     * @param tooltip    custom tooltip component
+     * @param tooltipWay tooltip display direction
+     * @param delay      tooltip display delay
+     * @return created custom WebLaF tooltip
+     */
+    public WebCustomTooltip setToolTip ( final JComponent tooltip, final TooltipWay tooltipWay, final int delay );
+
+    /**
+     * Adds custom WebLaF tooltip to the component.
+     *
+     * @param tooltip tooltip text
+     * @return created custom WebLaF tooltip
+     */
+    public WebCustomTooltip addToolTip ( final String tooltip );
+
+    /**
+     * Adds custom WebLaF tooltip to the component.
+     *
+     * @param icon    tooltip icon
+     * @param tooltip tooltip text
+     * @return created custom WebLaF tooltip
+     */
+    public WebCustomTooltip addToolTip ( final Icon icon, final String tooltip );
+
+    /**
+     * Adds custom WebLaF tooltip to the component.
+     *
+     * @param tooltip    tooltip text
+     * @param tooltipWay tooltip display direction
+     * @return created custom WebLaF tooltip
+     */
+    public WebCustomTooltip addToolTip ( final String tooltip, final TooltipWay tooltipWay );
+
+    /**
+     * Adds custom WebLaF tooltip to the component.
+     *
+     * @param icon       tooltip icon
+     * @param tooltip    tooltip text
+     * @param tooltipWay tooltip display direction
+     * @return created custom WebLaF tooltip
+     */
+    public WebCustomTooltip addToolTip ( final Icon icon, final String tooltip, final TooltipWay tooltipWay );
+
+    /**
+     * Adds custom WebLaF tooltip to the component.
+     *
+     * @param tooltip    tooltip text
+     * @param tooltipWay tooltip display direction
+     * @param delay      tooltip display delay
+     * @return created custom WebLaF tooltip
+     */
+    public WebCustomTooltip addToolTip ( final String tooltip, final TooltipWay tooltipWay, final int delay );
+
+    /**
+     * Adds custom WebLaF tooltip to the component.
+     *
+     * @param icon       tooltip icon
+     * @param tooltip    tooltip text
+     * @param tooltipWay tooltip display direction
+     * @param delay      tooltip display delay
+     * @return created custom WebLaF tooltip
+     */
+    public WebCustomTooltip addToolTip ( final Icon icon, final String tooltip, final TooltipWay tooltipWay, final int delay );
+
+    /**
+     * Adds custom WebLaF tooltip to the component.
+     *
+     * @param tooltip custom tooltip component
+     * @return created custom WebLaF tooltip
+     */
+    public WebCustomTooltip addToolTip ( final JComponent tooltip );
+
+    /**
+     * Adds custom WebLaF tooltip to the component.
+     *
+     * @param tooltip custom tooltip component
+     * @param delay   tooltip display delay
+     * @return created custom WebLaF tooltip
+     */
+    public WebCustomTooltip addToolTip ( final JComponent tooltip, final int delay );
+
+    /**
+     * Adds custom WebLaF tooltip to the component.
+     *
+     * @param tooltip    custom tooltip component
+     * @param tooltipWay tooltip display direction
+     * @return created custom WebLaF tooltip
+     */
+    public WebCustomTooltip addToolTip ( final JComponent tooltip, final TooltipWay tooltipWay );
+
+    /**
+     * Adds custom WebLaF tooltip to the component.
+     *
+     * @param tooltip    custom tooltip component
+     * @param tooltipWay tooltip display direction
+     * @param delay      tooltip display delay
+     * @return created custom WebLaF tooltip
+     */
+    public WebCustomTooltip addToolTip ( final JComponent tooltip, final TooltipWay tooltipWay, final int delay );
 }

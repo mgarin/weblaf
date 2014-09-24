@@ -38,7 +38,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * User: mgarin Date: 10.10.11 Time: 17:51
+ * @author Mikle Garin
  */
 
 public class WebMemoryBar extends WebLabel implements ShapeProvider, SizeMethods<WebLabel>

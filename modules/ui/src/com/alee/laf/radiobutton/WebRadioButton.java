@@ -30,6 +30,9 @@ import com.alee.managers.settings.DefaultValue;
 import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.settings.SettingsMethods;
 import com.alee.managers.settings.SettingsProcessor;
+import com.alee.managers.tooltip.ToolTipMethods;
+import com.alee.managers.tooltip.TooltipManager;
+import com.alee.managers.tooltip.WebCustomTooltip;
 import com.alee.utils.EventUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SizeUtils;
@@ -45,11 +48,12 @@ import java.awt.event.MouseAdapter;
 import java.util.List;
 
 /**
- * User: mgarin Date: 28.06.11 Time: 0:51
+ * @author Mikle Garin
  */
 
 public class WebRadioButton extends JRadioButton
-        implements ShapeProvider, EventMethods, LanguageMethods, SettingsMethods, FontMethods<WebRadioButton>, SizeMethods<WebRadioButton>
+        implements ShapeProvider, EventMethods, ToolTipMethods, LanguageMethods, SettingsMethods, FontMethods<WebRadioButton>,
+        SizeMethods<WebRadioButton>
 {
     public WebRadioButton ()
     {
@@ -462,8 +466,184 @@ public class WebRadioButton extends JRadioButton
     }
 
     /**
-     * Language methods
+     * {@inheritDoc}
      */
+    @Override
+    public WebCustomTooltip setToolTip ( final String tooltip )
+    {
+        return TooltipManager.setTooltip ( this, tooltip );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip setToolTip ( final Icon icon, final String tooltip )
+    {
+        return TooltipManager.setTooltip ( this, icon, tooltip );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip setToolTip ( final String tooltip, final TooltipWay tooltipWay )
+    {
+        return TooltipManager.setTooltip ( this, tooltip, tooltipWay );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip setToolTip ( final Icon icon, final String tooltip, final TooltipWay tooltipWay )
+    {
+        return TooltipManager.setTooltip ( this, icon, tooltip, tooltipWay );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip setToolTip ( final String tooltip, final TooltipWay tooltipWay, final int delay )
+    {
+        return TooltipManager.setTooltip ( this, tooltip, tooltipWay, delay );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip setToolTip ( final Icon icon, final String tooltip, final TooltipWay tooltipWay, final int delay )
+    {
+        return TooltipManager.setTooltip ( this, icon, tooltip, tooltipWay, delay );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip setToolTip ( final JComponent tooltip )
+    {
+        return TooltipManager.setTooltip ( this, tooltip );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip setToolTip ( final JComponent tooltip, final int delay )
+    {
+        return TooltipManager.setTooltip ( this, tooltip, delay );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip setToolTip ( final JComponent tooltip, final TooltipWay tooltipWay )
+    {
+        return TooltipManager.setTooltip ( this, tooltip, tooltipWay );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip setToolTip ( final JComponent tooltip, final TooltipWay tooltipWay, final int delay )
+    {
+        return TooltipManager.setTooltip ( this, tooltip, tooltipWay, delay );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip addToolTip ( final String tooltip )
+    {
+        return TooltipManager.addTooltip ( this, tooltip );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip addToolTip ( final Icon icon, final String tooltip )
+    {
+        return TooltipManager.addTooltip ( this, icon, tooltip );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip addToolTip ( final String tooltip, final TooltipWay tooltipWay )
+    {
+        return TooltipManager.addTooltip ( this, tooltip, tooltipWay );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip addToolTip ( final Icon icon, final String tooltip, final TooltipWay tooltipWay )
+    {
+        return TooltipManager.addTooltip ( this, icon, tooltip, tooltipWay );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip addToolTip ( final String tooltip, final TooltipWay tooltipWay, final int delay )
+    {
+        return TooltipManager.addTooltip ( this, tooltip, tooltipWay, delay );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip addToolTip ( final Icon icon, final String tooltip, final TooltipWay tooltipWay, final int delay )
+    {
+        return TooltipManager.addTooltip ( this, icon, tooltip, tooltipWay, delay );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip addToolTip ( final JComponent tooltip )
+    {
+        return TooltipManager.addTooltip ( this, tooltip );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip addToolTip ( final JComponent tooltip, final int delay )
+    {
+        return TooltipManager.addTooltip ( this, tooltip, delay );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip addToolTip ( final JComponent tooltip, final TooltipWay tooltipWay )
+    {
+        return TooltipManager.addTooltip ( this, tooltip, tooltipWay );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip addToolTip ( final JComponent tooltip, final TooltipWay tooltipWay, final int delay )
+    {
+        return TooltipManager.addTooltip ( this, tooltip, tooltipWay, delay );
+    }
 
     /**
      * {@inheritDoc}
@@ -527,10 +707,6 @@ public class WebRadioButton extends JRadioButton
     {
         LanguageManager.unregisterLanguageUpdater ( this );
     }
-
-    /**
-     * Settings methods
-     */
 
     /**
      * {@inheritDoc}
@@ -670,10 +846,6 @@ public class WebRadioButton extends JRadioButton
     {
         SettingsManager.saveComponentSettings ( this );
     }
-
-    /**
-     * Font methods
-     */
 
     /**
      * {@inheritDoc}
@@ -836,10 +1008,6 @@ public class WebRadioButton extends JRadioButton
     {
         return SwingUtils.getFontName ( this );
     }
-
-    /**
-     * Size methods.
-     */
 
     /**
      * {@inheritDoc}

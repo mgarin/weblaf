@@ -27,6 +27,7 @@ package com.alee.utils.swing;
  * @see com.alee.managers.language.LanguageContainerMethods
  * @see com.alee.managers.hotkey.HotkeyMethods
  * @see com.alee.managers.hotkey.ButtonHotkeyMethods
+ * @see com.alee.managers.tooltip.ToolTipMethods
  * @see com.alee.utils.swing.SizeMethods
  * @see com.alee.utils.swing.FontMethods
  * @see com.alee.utils.swing.BorderMethods
@@ -38,7 +39,7 @@ package com.alee.utils.swing;
  * @see com.alee.extended.tab.DocumentPaneEventMethods
  */
 
-@SuppressWarnings ( "JavadocReference" )
+@SuppressWarnings ("JavadocReference")
 public interface SwingMethods
 {
     /**
