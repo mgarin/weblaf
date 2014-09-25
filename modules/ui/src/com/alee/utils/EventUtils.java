@@ -160,6 +160,42 @@ public class EventUtils
     }
 
     /**
+     * Shortcut method for mouse click event.
+     *
+     * @param component component to handle events for
+     * @param runnable  mouse event runnable
+     * @return used mouse adapter
+     */
+    public static MouseAdapter onMouseClick ( final Component component, final MouseEventRunnable runnable )
+    {
+        return onMouseClick ( component, null, runnable );
+    }
+
+    /**
+     * Shortcut method for mouse click event.
+     *
+     * @param component component to handle events for
+     * @param runnable  mouse event runnable
+     * @return used mouse adapter
+     */
+    public static MouseAdapter onMouseClick ( final Component component, final MouseButton mouseButton, final MouseEventRunnable runnable )
+    {
+        final MouseAdapter mouseAdapter = new MouseAdapter ()
+        {
+            @Override
+            public void mouseClicked ( final MouseEvent e )
+            {
+                if ( mouseButton == null || mouseButton == MouseButton.get ( e ) )
+                {
+                    runnable.run ( e );
+                }
+            }
+        };
+        component.addMouseListener ( mouseAdapter );
+        return mouseAdapter;
+    }
+
+    /**
      * Shortcut method for double-click mouse event.
      *
      * @param component component to handle events for
@@ -208,6 +244,43 @@ public class EventUtils
     }
 
     /**
+     * Shortcut method for key type event.
+     *
+     * @param component component to handle events for
+     * @param runnable  key event runnable
+     * @return used key adapter
+     */
+    public static KeyAdapter onKeyType ( final Component component, final KeyEventRunnable runnable )
+    {
+        return onKeyType ( component, null, runnable );
+    }
+
+    /**
+     * Shortcut method for key type event.
+     *
+     * @param component component to handle events for
+     * @param hotkey    hotkey filter
+     * @param runnable  key event runnable
+     * @return used key adapter
+     */
+    public static KeyAdapter onKeyType ( final Component component, final HotkeyData hotkey, final KeyEventRunnable runnable )
+    {
+        final KeyAdapter keyAdapter = new KeyAdapter ()
+        {
+            @Override
+            public void keyTyped ( final KeyEvent e )
+            {
+                if ( hotkey == null || hotkey.isTriggered ( e ) )
+                {
+                    runnable.run ( e );
+                }
+            }
+        };
+        component.addKeyListener ( keyAdapter );
+        return keyAdapter;
+    }
+
+    /**
      * Shortcut method for key press event.
      *
      * @param component component to handle events for
@@ -233,6 +306,43 @@ public class EventUtils
         {
             @Override
             public void keyPressed ( final KeyEvent e )
+            {
+                if ( hotkey == null || hotkey.isTriggered ( e ) )
+                {
+                    runnable.run ( e );
+                }
+            }
+        };
+        component.addKeyListener ( keyAdapter );
+        return keyAdapter;
+    }
+
+    /**
+     * Shortcut method for key release event.
+     *
+     * @param component component to handle events for
+     * @param runnable  key event runnable
+     * @return used key adapter
+     */
+    public static KeyAdapter onKeyRelease ( final Component component, final KeyEventRunnable runnable )
+    {
+        return onKeyRelease ( component, null, runnable );
+    }
+
+    /**
+     * Shortcut method for key release event.
+     *
+     * @param component component to handle events for
+     * @param hotkey    hotkey filter
+     * @param runnable  key event runnable
+     * @return used key adapter
+     */
+    public static KeyAdapter onKeyRelease ( final Component component, final HotkeyData hotkey, final KeyEventRunnable runnable )
+    {
+        final KeyAdapter keyAdapter = new KeyAdapter ()
+        {
+            @Override
+            public void keyReleased ( final KeyEvent e )
             {
                 if ( hotkey == null || hotkey.isTriggered ( e ) )
                 {

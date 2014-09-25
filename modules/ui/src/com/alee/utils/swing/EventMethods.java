@@ -84,6 +84,23 @@ public interface EventMethods extends SwingMethods
     public MouseAdapter onMouseDrag ( MouseButton mouseButton, MouseEventRunnable runnable );
 
     /**
+     * Shortcut method for mouse click event.
+     *
+     * @param runnable mouse event runnable
+     * @return used mouse adapter
+     */
+    public MouseAdapter onMouseClick ( MouseEventRunnable runnable );
+
+    /**
+     * Shortcut method for mouse click event.
+     *
+     * @param mouseButton mouse button filter
+     * @param runnable    mouse event runnable
+     * @return used mouse adapter
+     */
+    public MouseAdapter onMouseClick ( MouseButton mouseButton, MouseEventRunnable runnable );
+
+    /**
      * Shortcut method for double-click mouse event.
      *
      * @param runnable mouse event runnable
@@ -98,6 +115,23 @@ public interface EventMethods extends SwingMethods
      * @return used mouse adapter
      */
     public MouseAdapter onMenuTrigger ( MouseEventRunnable runnable );
+
+    /**
+     * Shortcut method for key type event.
+     *
+     * @param runnable key event runnable
+     * @return used key adapter
+     */
+    public KeyAdapter onKeyType ( KeyEventRunnable runnable );
+
+    /**
+     * Shortcut method for key type event.
+     *
+     * @param hotkey   hotkey filter
+     * @param runnable key event runnable
+     * @return used key adapter
+     */
+    public KeyAdapter onKeyType ( HotkeyData hotkey, KeyEventRunnable runnable );
 
     /**
      * Shortcut method for key press event.
@@ -115,6 +149,23 @@ public interface EventMethods extends SwingMethods
      * @return used key adapter
      */
     public KeyAdapter onKeyPress ( HotkeyData hotkey, KeyEventRunnable runnable );
+
+    /**
+     * Shortcut method for key release event.
+     *
+     * @param runnable key event runnable
+     * @return used key adapter
+     */
+    public KeyAdapter onKeyRelease ( KeyEventRunnable runnable );
+
+    /**
+     * Shortcut method for key release event.
+     *
+     * @param hotkey   hotkey filter
+     * @param runnable key event runnable
+     * @return used key adapter
+     */
+    public KeyAdapter onKeyRelease ( HotkeyData hotkey, KeyEventRunnable runnable );
 
     /**
      * Shortcut method for focus gain event.
