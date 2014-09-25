@@ -37,7 +37,7 @@ public interface ToolTipMethods extends SwingMethods
     /**
      * Sets single custom WebLaF tooltip into the component.
      *
-     * @param tooltip tooltip text
+     * @param tooltip tooltip text or language key
      * @return created custom WebLaF tooltip
      */
     public WebCustomTooltip setToolTip ( final String tooltip );
@@ -46,7 +46,7 @@ public interface ToolTipMethods extends SwingMethods
      * Sets single custom WebLaF tooltip into the component.
      *
      * @param icon    tooltip icon
-     * @param tooltip tooltip text
+     * @param tooltip tooltip text or language key
      * @return created custom WebLaF tooltip
      */
     public WebCustomTooltip setToolTip ( final Icon icon, final String tooltip );
@@ -54,7 +54,7 @@ public interface ToolTipMethods extends SwingMethods
     /**
      * Sets single custom WebLaF tooltip into the component.
      *
-     * @param tooltip    tooltip text
+     * @param tooltip    tooltip text or language key
      * @param tooltipWay tooltip display direction
      * @return created custom WebLaF tooltip
      */
@@ -64,7 +64,7 @@ public interface ToolTipMethods extends SwingMethods
      * Sets single custom WebLaF tooltip into the component.
      *
      * @param icon       tooltip icon
-     * @param tooltip    tooltip text
+     * @param tooltip    tooltip text or language key
      * @param tooltipWay tooltip display direction
      * @return created custom WebLaF tooltip
      */
@@ -73,7 +73,7 @@ public interface ToolTipMethods extends SwingMethods
     /**
      * Sets single custom WebLaF tooltip into the component.
      *
-     * @param tooltip    tooltip text
+     * @param tooltip    tooltip text or language key
      * @param tooltipWay tooltip display direction
      * @param delay      tooltip display delay
      * @return created custom WebLaF tooltip
@@ -84,7 +84,7 @@ public interface ToolTipMethods extends SwingMethods
      * Sets single custom WebLaF tooltip into the component.
      *
      * @param icon       tooltip icon
-     * @param tooltip    tooltip text
+     * @param tooltip    tooltip text or language key
      * @param tooltipWay tooltip display direction
      * @param delay      tooltip display delay
      * @return created custom WebLaF tooltip
@@ -130,7 +130,7 @@ public interface ToolTipMethods extends SwingMethods
     /**
      * Adds custom WebLaF tooltip to the component.
      *
-     * @param tooltip tooltip text
+     * @param tooltip tooltip text or language key
      * @return created custom WebLaF tooltip
      */
     public WebCustomTooltip addToolTip ( final String tooltip );
@@ -139,7 +139,7 @@ public interface ToolTipMethods extends SwingMethods
      * Adds custom WebLaF tooltip to the component.
      *
      * @param icon    tooltip icon
-     * @param tooltip tooltip text
+     * @param tooltip tooltip text or language key
      * @return created custom WebLaF tooltip
      */
     public WebCustomTooltip addToolTip ( final Icon icon, final String tooltip );
@@ -147,7 +147,7 @@ public interface ToolTipMethods extends SwingMethods
     /**
      * Adds custom WebLaF tooltip to the component.
      *
-     * @param tooltip    tooltip text
+     * @param tooltip    tooltip text or language key
      * @param tooltipWay tooltip display direction
      * @return created custom WebLaF tooltip
      */
@@ -157,7 +157,7 @@ public interface ToolTipMethods extends SwingMethods
      * Adds custom WebLaF tooltip to the component.
      *
      * @param icon       tooltip icon
-     * @param tooltip    tooltip text
+     * @param tooltip    tooltip text or language key
      * @param tooltipWay tooltip display direction
      * @return created custom WebLaF tooltip
      */
@@ -166,7 +166,7 @@ public interface ToolTipMethods extends SwingMethods
     /**
      * Adds custom WebLaF tooltip to the component.
      *
-     * @param tooltip    tooltip text
+     * @param tooltip    tooltip text or language key
      * @param tooltipWay tooltip display direction
      * @param delay      tooltip display delay
      * @return created custom WebLaF tooltip
@@ -177,7 +177,7 @@ public interface ToolTipMethods extends SwingMethods
      * Adds custom WebLaF tooltip to the component.
      *
      * @param icon       tooltip icon
-     * @param tooltip    tooltip text
+     * @param tooltip    tooltip text or language key
      * @param tooltipWay tooltip display direction
      * @param delay      tooltip display delay
      * @return created custom WebLaF tooltip
