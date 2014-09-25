@@ -46,6 +46,7 @@ import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.KeyAdapter;
 import java.awt.event.MouseAdapter;
+import java.util.List;
 
 /**
  * @author Mikle Garin
@@ -631,6 +632,42 @@ public class WebTextField extends JTextField
     public WebCustomTooltip addToolTip ( final JComponent tooltip, final TooltipWay tooltipWay, final int delay )
     {
         return TooltipManager.addTooltip ( this, tooltip, tooltipWay, delay );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void removeToolTip ( final WebCustomTooltip tooltip )
+    {
+        TooltipManager.removeTooltip ( this, tooltip );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void removeToolTips ()
+    {
+        TooltipManager.removeTooltips ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void removeToolTips ( final WebCustomTooltip... tooltips )
+    {
+        TooltipManager.removeTooltips ( this, tooltips );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void removeToolTips ( final List<WebCustomTooltip> tooltips )
+    {
+        TooltipManager.removeTooltips ( this, tooltips );
     }
 
     /**

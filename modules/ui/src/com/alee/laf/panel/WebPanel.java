@@ -1303,6 +1303,42 @@ public class WebPanel extends JPanel
      * {@inheritDoc}
      */
     @Override
+    public void removeToolTip ( final WebCustomTooltip tooltip )
+    {
+        TooltipManager.removeTooltip ( this, tooltip );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void removeToolTips ()
+    {
+        TooltipManager.removeTooltips ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void removeToolTips ( final WebCustomTooltip... tooltips )
+    {
+        TooltipManager.removeTooltips ( this, tooltips );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void removeToolTips ( final List<WebCustomTooltip> tooltips )
+    {
+        TooltipManager.removeTooltips ( this, tooltips );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public int getPreferredWidth ()
     {
         return SizeUtils.getPreferredWidth ( this );

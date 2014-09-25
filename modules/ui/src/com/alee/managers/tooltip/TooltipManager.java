@@ -491,6 +491,14 @@ public class TooltipManager
         }
     }
 
+    public static void removeTooltips ( final Component component, final WebCustomTooltip... tooltips )
+    {
+        for ( final WebCustomTooltip tooltip : tooltips )
+        {
+            removeTooltip ( component, tooltip );
+        }
+    }
+
     public static void removeTooltips ( final Component component, final List<WebCustomTooltip> tooltips )
     {
         for ( final WebCustomTooltip tooltip : tooltips )

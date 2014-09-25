@@ -21,6 +21,7 @@ import com.alee.managers.language.data.TooltipWay;
 import com.alee.utils.swing.SwingMethods;
 
 import javax.swing.*;
+import java.util.List;
 
 /**
  * This interface provides a set of methods that should be added into components to support custom WebLaF tooltips.
@@ -218,4 +219,30 @@ public interface ToolTipMethods extends SwingMethods
      * @return created custom WebLaF tooltip
      */
     public WebCustomTooltip addToolTip ( final JComponent tooltip, final TooltipWay tooltipWay, final int delay );
+
+    /**
+     * Removes specified custom WebLaF tooltip from the component.
+     *
+     * @param tooltip custom WebLaF tooltip to remove
+     */
+    public void removeToolTip ( final WebCustomTooltip tooltip );
+
+    /**
+     * Removes all custom WebLaF tooltips from the component.
+     */
+    public void removeToolTips ();
+
+    /**
+     * Removes specified custom WebLaF tooltips from the component.
+     *
+     * @param tooltips custom WebLaF tooltips to remove
+     */
+    public void removeToolTips ( final WebCustomTooltip... tooltips );
+
+    /**
+     * Removes specified custom WebLaF tooltips from the component.
+     *
+     * @param tooltips custom WebLaF tooltips to remove
+     */
+    public void removeToolTips ( final List<WebCustomTooltip> tooltips );
 }
