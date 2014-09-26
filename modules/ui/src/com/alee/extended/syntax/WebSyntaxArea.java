@@ -20,6 +20,7 @@ package com.alee.extended.syntax;
 import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.utils.EventUtils;
+import com.alee.utils.general.Pair;
 import com.alee.utils.swing.*;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rtextarea.RUndoManager;
@@ -28,6 +29,7 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
+import java.beans.PropertyChangeListener;
 import java.util.List;
 
 /**
@@ -267,7 +269,7 @@ public class WebSyntaxArea extends RSyntaxTextArea implements DocumentEventMetho
      * {@inheritDoc}
      */
     @Override
-    public DocumentChangeListener onChange ( final DocumentEventRunnable runnable )
+    public Pair<DocumentChangeListener, PropertyChangeListener> onChange ( final DocumentEventRunnable runnable )
     {
         return EventUtils.onChange ( this, runnable );
     }

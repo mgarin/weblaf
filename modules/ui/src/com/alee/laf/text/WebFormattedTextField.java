@@ -36,6 +36,7 @@ import com.alee.utils.EventUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SizeUtils;
 import com.alee.utils.SwingUtils;
+import com.alee.utils.general.Pair;
 import com.alee.utils.laf.ShapeProvider;
 import com.alee.utils.swing.*;
 
@@ -44,6 +45,7 @@ import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.KeyAdapter;
 import java.awt.event.MouseAdapter;
+import java.beans.PropertyChangeListener;
 import java.text.Format;
 import java.util.List;
 
@@ -315,7 +317,7 @@ public class WebFormattedTextField extends JFormattedTextField
      * {@inheritDoc}
      */
     @Override
-    public DocumentChangeListener onChange ( final DocumentEventRunnable runnable )
+    public Pair<DocumentChangeListener, PropertyChangeListener> onChange ( final DocumentEventRunnable runnable )
     {
         return EventUtils.onChange ( this, runnable );
     }

@@ -20,13 +20,18 @@ package com.alee.utils;
 import com.alee.extended.tab.*;
 import com.alee.extended.window.PopOverAdapter;
 import com.alee.extended.window.WebPopOver;
+import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.hotkey.HotkeyData;
+import com.alee.utils.general.Pair;
 import com.alee.utils.swing.*;
 
 import javax.swing.event.DocumentEvent;
+import javax.swing.text.Document;
 import javax.swing.text.JTextComponent;
 import java.awt.*;
 import java.awt.event.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 /**
  * This class provides a set of utilities to work with various Swing events.
@@ -444,11 +449,13 @@ public class EventUtils
      *
      * @param textComponent text component to handle events for
      * @param runnable      document event runnable
-     * @return used document change listener
+     * @return used document change and property change listeners
      */
-    public static DocumentChangeListener onChange ( final JTextComponent textComponent, final DocumentEventRunnable runnable )
+    public static Pair<DocumentChangeListener, PropertyChangeListener> onChange ( final JTextComponent textComponent,
+                                                                                  final DocumentEventRunnable runnable )
     {
-        final DocumentChangeListener changeListener = new DocumentChangeListener ()
+        // Listening to document content changes
+        final DocumentChangeListener documentChangeListener = new DocumentChangeListener ()
         {
             @Override
             public void documentChanged ( final DocumentEvent e )
@@ -456,8 +463,29 @@ public class EventUtils
                 runnable.run ( e );
             }
         };
-        textComponent.getDocument ().addDocumentListener ( changeListener );
-        return changeListener;
+        textComponent.getDocument ().addDocumentListener ( documentChangeListener );
+
+        // Listening to component document changes
+        final PropertyChangeListener propertyChangeListener = new PropertyChangeListener ()
+        {
+            @Override
+            public void propertyChange ( final PropertyChangeEvent e )
+            {
+                final Object oldDocument = e.getOldValue ();
+                if ( oldDocument != null && oldDocument instanceof Document )
+                {
+                    ( ( Document ) oldDocument ).removeDocumentListener ( documentChangeListener );
+                }
+                final Object newDocument = e.getNewValue ();
+                if ( newDocument != null && newDocument instanceof Document )
+                {
+                    ( ( Document ) newDocument ).addDocumentListener ( documentChangeListener );
+                }
+            }
+        };
+        textComponent.addPropertyChangeListener ( WebLookAndFeel.DOCUMENT_PROPERTY, propertyChangeListener );
+
+        return new Pair<DocumentChangeListener, PropertyChangeListener> ( documentChangeListener, propertyChangeListener );
     }
 
     /**

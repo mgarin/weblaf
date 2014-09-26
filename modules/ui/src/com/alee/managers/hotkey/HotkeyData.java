@@ -32,36 +32,36 @@ import java.io.Serializable;
  */
 
 @XStreamAlias ("HotkeyData")
-public class HotkeyData implements Serializable
+public class HotkeyData implements Serializable, Cloneable
 {
     /**
      * Whether hotkey activation requires CTRL modifier or not.
      */
     @XStreamAsAttribute
-    private boolean isCtrl;
+    protected boolean isCtrl;
 
     /**
      * Whether hotkey activation requires ALT modifier or not.
      */
     @XStreamAsAttribute
-    private boolean isAlt;
+    protected boolean isAlt;
 
     /**
      * Whether hotkey activation requires SHIFT modifier or not.
      */
     @XStreamAsAttribute
-    private boolean isShift;
+    protected boolean isShift;
 
     /**
      * Key code required for the hotkey activation.
      */
     @XStreamAsAttribute
-    private Integer keyCode;
+    protected Integer keyCode;
 
     /**
      * Kept in runtime hotkey hash code.
      */
-    private transient Integer hashCode;
+    protected transient Integer hashCode;
 
     /**
      * Constructs empty hotkey data.
@@ -81,7 +81,7 @@ public class HotkeyData implements Serializable
      *
      * @param keyEvent KeyEvent to convert
      */
-    public HotkeyData ( KeyEvent keyEvent )
+    public HotkeyData ( final KeyEvent keyEvent )
     {
         super ();
         this.isCtrl = SwingUtils.isCtrl ( keyEvent );
@@ -96,7 +96,7 @@ public class HotkeyData implements Serializable
      *
      * @param keyCode key code required for the hotkey activation
      */
-    public HotkeyData ( Integer keyCode )
+    public HotkeyData ( final Integer keyCode )
     {
         super ();
         this.isCtrl = false;
@@ -114,7 +114,7 @@ public class HotkeyData implements Serializable
      * @param isShift whether hotkey activation requires SHIFT modifier or not
      * @param keyCode key code required for the hotkey activation
      */
-    public HotkeyData ( boolean isCtrl, boolean isAlt, boolean isShift, Integer keyCode )
+    public HotkeyData ( final boolean isCtrl, final boolean isAlt, final boolean isShift, final Integer keyCode )
     {
         super ();
         this.isCtrl = isCtrl;
@@ -129,7 +129,7 @@ public class HotkeyData implements Serializable
      *
      * @param keyStroke key stroke
      */
-    public HotkeyData ( KeyStroke keyStroke )
+    public HotkeyData ( final KeyStroke keyStroke )
     {
         super ();
         setModifiers ( keyStroke.getModifiers () );
@@ -152,7 +152,7 @@ public class HotkeyData implements Serializable
      *
      * @param ctrl whether hotkey activation should require CTRL modifier or not
      */
-    public void setCtrl ( boolean ctrl )
+    public void setCtrl ( final boolean ctrl )
     {
         isCtrl = ctrl;
         this.hashCode = null;
@@ -173,7 +173,7 @@ public class HotkeyData implements Serializable
      *
      * @param alt whether hotkey activation should require ALT modifier or not
      */
-    public void setAlt ( boolean alt )
+    public void setAlt ( final boolean alt )
     {
         isAlt = alt;
         this.hashCode = null;
@@ -194,7 +194,7 @@ public class HotkeyData implements Serializable
      *
      * @param shift whether hotkey activation should require SHIFT modifier or not
      */
-    public void setShift ( boolean shift )
+    public void setShift ( final boolean shift )
     {
         isShift = shift;
         this.hashCode = null;
@@ -215,7 +215,7 @@ public class HotkeyData implements Serializable
      *
      * @param keyCode key code required for the hotkey activation
      */
-    public void setKeyCode ( Integer keyCode )
+    public void setKeyCode ( final Integer keyCode )
     {
         this.keyCode = keyCode;
         this.hashCode = null;
@@ -237,7 +237,7 @@ public class HotkeyData implements Serializable
      * @param event processed key event
      * @return true if hotkey is triggered by the key event, false otherwise
      */
-    public boolean isTriggered ( KeyEvent event )
+    public boolean isTriggered ( final KeyEvent event )
     {
         return areControlsTriggered ( event ) && isKeyTriggered ( event );
     }
@@ -248,7 +248,7 @@ public class HotkeyData implements Serializable
      * @param event processed key event
      * @return true if hotkey controls are triggered by the key event, false otherwise
      */
-    public boolean areControlsTriggered ( KeyEvent event )
+    public boolean areControlsTriggered ( final KeyEvent event )
     {
         return SwingUtils.isShortcut ( event ) == isCtrl && SwingUtils.isAlt ( event ) == isAlt && SwingUtils.isShift ( event ) == isShift;
     }
@@ -259,7 +259,7 @@ public class HotkeyData implements Serializable
      * @param event processed key event
      * @return true if key is triggered by the key event, false otherwise
      */
-    public boolean isKeyTriggered ( KeyEvent event )
+    public boolean isKeyTriggered ( final KeyEvent event )
     {
         // todo Fix for other command keys (like cmd on Mac OS X)
         return event.getKeyCode () == keyCode;
@@ -289,9 +289,9 @@ public class HotkeyData implements Serializable
     /**
      * Sets hotkey modifiers.
      *
-     * @param modifiers
+     * @param modifiers modifiers
      */
-    public void setModifiers ( int modifiers )
+    public void setModifiers ( final int modifiers )
     {
         isCtrl = SwingUtils.isCtrl ( modifiers );
         isAlt = SwingUtils.isAlt ( modifiers );
@@ -304,7 +304,8 @@ public class HotkeyData implements Serializable
      * @param obj other hotkey
      * @return true if other hotkey is equal to this one, false otherwise
      */
-    public boolean equals ( Object obj )
+    @Override
+    public boolean equals ( final Object obj )
     {
         return obj != null && obj instanceof HotkeyData && obj.hashCode () == hashCode ();
     }
@@ -314,6 +315,7 @@ public class HotkeyData implements Serializable
      *
      * @return hotkey text representation
      */
+    @Override
     public String toString ()
     {
         return SwingUtils.hotkeyToString ( this );
@@ -324,6 +326,7 @@ public class HotkeyData implements Serializable
      *
      * @return hotkey hash code
      */
+    @Override
     public int hashCode ()
     {
         if ( hashCode == null )
@@ -331,5 +334,16 @@ public class HotkeyData implements Serializable
             hashCode = toString ().hashCode ();
         }
         return hashCode;
+    }
+
+    /**
+     * Returns cloned HotkeyData instance.
+     *
+     * @return cloned HotkeyData instance
+     */
+    @Override
+    protected HotkeyData clone ()
+    {
+        return new HotkeyData ( isCtrl (), isAlt (), isShift (), getKeyCode () );
     }
 }

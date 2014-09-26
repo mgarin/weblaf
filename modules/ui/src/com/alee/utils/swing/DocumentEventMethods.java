@@ -17,6 +17,10 @@
 
 package com.alee.utils.swing;
 
+import com.alee.utils.general.Pair;
+
+import java.beans.PropertyChangeListener;
+
 /**
  * This interface provides a set of methods that should be added into text components that supports custom WebLaF events.
  * Basically all these methods are already implemented in EventUtils but it is much easier to call them directly from text component.
@@ -30,7 +34,7 @@ public interface DocumentEventMethods extends SwingMethods
      * Shortcut method for document change event.
      *
      * @param runnable document event runnable
-     * @return used document change listener
+     * @return used document change and property change listeners
      */
-    public DocumentChangeListener onChange ( final DocumentEventRunnable runnable );
+    public Pair<DocumentChangeListener, PropertyChangeListener> onChange ( final DocumentEventRunnable runnable );
 }

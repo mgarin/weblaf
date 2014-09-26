@@ -30,12 +30,14 @@ import com.alee.managers.settings.SettingsProcessor;
 import com.alee.utils.EventUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SwingUtils;
+import com.alee.utils.general.Pair;
 import com.alee.utils.swing.*;
 
 import javax.swing.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.KeyAdapter;
 import java.awt.event.MouseAdapter;
+import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.net.URL;
 
@@ -110,7 +112,7 @@ public class WebEditorPane extends JEditorPane
      * {@inheritDoc}
      */
     @Override
-    public DocumentChangeListener onChange ( final DocumentEventRunnable runnable )
+    public Pair<DocumentChangeListener, PropertyChangeListener> onChange ( final DocumentEventRunnable runnable )
     {
         return EventUtils.onChange ( this, runnable );
     }
