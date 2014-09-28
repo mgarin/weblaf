@@ -59,7 +59,7 @@ public class PaneDataAdapter<T extends DocumentData> implements DocumentDataList
     @Override
     public void titleChanged ( final T document )
     {
-        paneData.getTabbedPane ().setTabComponentAt ( paneData.indexOf ( document ), paneData.createTabComponent ( document ) );
+        paneData.updateTabTitleComponent ( document );
     }
 
     /**
@@ -68,7 +68,7 @@ public class PaneDataAdapter<T extends DocumentData> implements DocumentDataList
     @Override
     public void backgroundChanged ( final T document, final Color oldBackground, final Color newBackground )
     {
-        paneData.getTabbedPane ().setBackgroundAt ( paneData.indexOf ( document ), newBackground );
+        paneData.updateTabBackground ( document );
     }
 
     /**
@@ -77,6 +77,6 @@ public class PaneDataAdapter<T extends DocumentData> implements DocumentDataList
     @Override
     public void contentChanged ( final T document, final Component oldComponent, final Component newComponent )
     {
-        paneData.getTabbedPane ().setComponentAt ( paneData.indexOf ( document ), newComponent );
+        paneData.updateTabComponent ( document );
     }
 }

@@ -309,8 +309,8 @@ public class DocumentDragHandler extends TransferHandler
             {
                 if ( readyToDrag )
                 {
-                    tabbedPane.getTransferHandler ().exportAsDrag ( tabbedPane, e, TransferHandler.MOVE );
                     readyToDrag = false;
+                    tabbedPane.getTransferHandler ().exportAsDrag ( tabbedPane, e, TransferHandler.MOVE );
                 }
             }
 

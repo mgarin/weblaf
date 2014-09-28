@@ -53,7 +53,14 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel implements
 {
     /**
      * todo 1. Possibility to save/restore documents positions and splits
+     * todo 2. Possibility to edit tab title
      */
+
+    /**
+     * Used icons.
+     */
+    public static final ImageIcon closeTabIcon = new ImageIcon ( PaneData.class.getResource ( "icons/close.png" ) );
+    public static final ImageIcon closeTabRolloverIcon = new ImageIcon ( PaneData.class.getResource ( "icons/close-rollover.png" ) );
 
     /**
      * Constant key used to put pane element data into the UI component.
@@ -86,6 +93,11 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel implements
      * Tabbed panes customizer.
      */
     protected Customizer<WebTabbedPane> tabbedPaneCustomizer;
+
+    /**
+     * Document tab title view customizer.
+     */
+    protected TabTitleComponentProvider<T> tabTitleComponentProvider;
 
     /**
      * Document customizer.
@@ -127,19 +139,71 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel implements
      */
     public WebDocumentPane ()
     {
-        this ( null, null );
+        this ( null, null, null );
     }
 
     /**
      * Constructs new document pane.
+     *
+     * @param tabbedPaneCustomizer tabbed pane customizer
      */
-    public WebDocumentPane ( final Customizer<WebTabbedPane> tabbedPaneCustomizer, final Customizer<WebSplitPane> splitPaneCustomizer )
+    public WebDocumentPane ( final Customizer<WebTabbedPane> tabbedPaneCustomizer )
+    {
+        this ( null, tabbedPaneCustomizer, null );
+    }
+
+    /**
+     * Constructs new document pane.
+     *
+     * @param tabTitleComponentProvider tab title component customizer
+     */
+    public WebDocumentPane ( final TabTitleComponentProvider<T> tabTitleComponentProvider )
+    {
+        this ( null, null, tabTitleComponentProvider );
+    }
+
+    /**
+     * Constructs new document pane.
+     *
+     * @param tabbedPaneCustomizer      tabbed pane customizer
+     * @param tabTitleComponentProvider tab title component customizer
+     */
+    public WebDocumentPane ( final Customizer<WebTabbedPane> tabbedPaneCustomizer,
+                             final TabTitleComponentProvider<T> tabTitleComponentProvider )
+    {
+        this ( null, tabbedPaneCustomizer, tabTitleComponentProvider );
+    }
+
+    /**
+     * Constructs new document pane.
+     *
+     * @param splitPaneCustomizer  split pane customizer
+     * @param tabbedPaneCustomizer tabbed pane customizer
+     */
+    public WebDocumentPane ( final Customizer<WebSplitPane> splitPaneCustomizer, final Customizer<WebTabbedPane> tabbedPaneCustomizer )
+    {
+        this ( splitPaneCustomizer, tabbedPaneCustomizer, null );
+    }
+
+    /**
+     * Constructs new document pane.
+     *
+     * @param splitPaneCustomizer       split pane customizer
+     * @param tabbedPaneCustomizer      tabbed pane customizer
+     * @param tabTitleComponentProvider tab title component customizer
+     */
+    public WebDocumentPane ( final Customizer<WebSplitPane> splitPaneCustomizer, final Customizer<WebTabbedPane> tabbedPaneCustomizer,
+                             final TabTitleComponentProvider<T> tabTitleComponentProvider )
     {
         super ( "document-pane" );
 
         // Customizers
         this.tabbedPaneCustomizer = tabbedPaneCustomizer;
         this.splitPaneCustomizer = splitPaneCustomizer;
+
+        // Tab title component provider
+        this.tabTitleComponentProvider =
+                tabTitleComponentProvider != null ? tabTitleComponentProvider : createDefaultTabTitleComponentProvider ();
 
         // Generating unique document pane ID
         this.id = TextUtils.generateId ( "WDP" );
@@ -163,6 +227,16 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel implements
                 DragManager.unregisterViewHandler ( dragViewHandler );
             }
         } );
+    }
+
+    /**
+     * Returns default tab title component provider.
+     *
+     * @return default tab title component provider
+     */
+    protected TabTitleComponentProvider<T> createDefaultTabTitleComponentProvider ()
+    {
+        return new DefaultTabTitleComponentProvider<T> ();
     }
 
     /**
@@ -199,6 +273,30 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel implements
         for ( final PaneData<T> paneData : getAllPanes () )
         {
             paneData.updateTabbedPaneCustomizer ( this );
+        }
+    }
+
+    /**
+     * Returns document tab title view customizer.
+     *
+     * @return document tab title view customizer
+     */
+    public TabTitleComponentProvider<T> getTabTitleComponentProvider ()
+    {
+        return tabTitleComponentProvider;
+    }
+
+    /**
+     * Sets document tab title component provider.
+     *
+     * @param provider new document tab title component provider
+     */
+    public void setTabTitleComponentProvider ( final TabTitleComponentProvider<T> provider )
+    {
+        this.tabTitleComponentProvider = provider != null ? provider : createDefaultTabTitleComponentProvider ();
+        for ( final PaneData<T> paneData : getAllPanes () )
+        {
+            paneData.updateTabTitleComponents ();
         }
     }
 

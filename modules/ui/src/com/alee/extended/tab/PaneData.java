@@ -17,10 +17,7 @@
 
 package com.alee.extended.tab;
 
-import com.alee.laf.button.WebButton;
-import com.alee.laf.label.WebLabel;
 import com.alee.laf.menu.WebPopupMenu;
-import com.alee.laf.panel.WebPanel;
 import com.alee.laf.splitpane.WebSplitPane;
 import com.alee.laf.tabbedpane.TabbedPaneStyle;
 import com.alee.laf.tabbedpane.WebTabbedPane;
@@ -54,10 +51,10 @@ import java.util.List;
 public final class PaneData<T extends DocumentData> implements StructureData<T>, SwingConstants
 {
     /**
-     * Close icons.
+     * WebDocumentPane this PaneData belongs to.
+     * Referenced to properly act when WebDocumentPane is required to retrieve customizers or perform any operation.
      */
-    private static final ImageIcon closeTabIcon = new ImageIcon ( PaneData.class.getResource ( "icons/close.png" ) );
-    private static final ImageIcon closeTabRolloverIcon = new ImageIcon ( PaneData.class.getResource ( "icons/close-rollover.png" ) );
+    protected WebDocumentPane<T> documentPane;
 
     /**
      * Actual tabbed pane component.
@@ -82,6 +79,9 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
     public PaneData ( final WebDocumentPane<T> documentPane )
     {
         super ();
+
+        // Parent document pane reference
+        this.documentPane = documentPane;
 
         // Creating tabbed pane
         tabbedPane = new WebTabbedPane ( TabbedPaneStyle.attached );
@@ -313,7 +313,19 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
      */
     public WebDocumentPane getDocumentPane ()
     {
-        return SwingUtils.getFirstParent ( tabbedPane, WebDocumentPane.class );
+        return documentPane;
+    }
+
+    /**
+     * Sets parent WebDocumentPane reference.
+     *
+     * @param documentPane parent WebDocumentPane reference
+     */
+    public void setDocumentPane ( final WebDocumentPane<T> documentPane )
+    {
+        this.documentPane = documentPane;
+        updateTabbedPaneCustomizer ( documentPane );
+        updateTabTitleComponents ();
     }
 
     /**
@@ -411,43 +423,48 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
      */
     protected JComponent createTabComponent ( final T document )
     {
-        final WebPanel tabPanel = new WebPanel ( new BorderLayout ( 2, 0 ) );
-        tabPanel.setOpaque ( false );
+        return getDocumentPane ().getTabTitleComponentProvider ().createTabTitleComponent ( this, document );
+    }
 
-        // Creating title component
-        final String title = document.getTitle ();
-        if ( title != null )
+    /**
+     * Updates all tab title components.
+     */
+    public void updateTabTitleComponents ()
+    {
+        for ( final T document : getData () )
         {
-            // Tab with title and icon
-            final WebLabel titleLabel = new WebLabel ( title, document.getIcon () );
-            titleLabel.setForeground ( document.getForeground () );
-            tabPanel.add ( titleLabel, BorderLayout.CENTER );
+            updateTabTitleComponent ( document );
         }
-        else
-        {
-            // Tab with icon only
-            final WebLabel titleLabel = new WebLabel ( document.getIcon () );
-            titleLabel.setForeground ( document.getForeground () );
-            tabPanel.add ( titleLabel, BorderLayout.CENTER );
-        }
+    }
 
-        if ( getDocumentPane ().isCloseable () && document.isCloseable () )
-        {
-            final WebButton closeButton = new WebButton ( closeTabIcon, closeTabRolloverIcon );
-            closeButton.setUndecorated ( true );
-            closeButton.setFocusable ( false );
-            closeButton.addActionListener ( new ActionListener ()
-            {
-                @Override
-                public void actionPerformed ( final ActionEvent e )
-                {
-                    close ( document );
-                }
-            } );
-            tabPanel.add ( closeButton, BorderLayout.LINE_END );
-        }
+    /**
+     * Updates tab title component for the specified document.
+     *
+     * @param document document to update tab title component for
+     */
+    public void updateTabTitleComponent ( final T document )
+    {
+        getTabbedPane ().setTabComponentAt ( indexOf ( document ), createTabComponent ( document ) );
+    }
 
-        return tabPanel;
+    /**
+     * Updates tab background for the specified document.
+     *
+     * @param document document to update tab background for
+     */
+    public void updateTabBackground ( final T document )
+    {
+        getTabbedPane ().setBackgroundAt ( indexOf ( document ), document.getBackground () );
+    }
+
+    /**
+     * Updates tab view for the specified document.
+     *
+     * @param document document to update tab view for
+     */
+    public void updateTabComponent ( final T document )
+    {
+        getTabbedPane ().setComponentAt ( indexOf ( document ), document.getComponent () );
     }
 
     /**
