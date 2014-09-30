@@ -18,38 +18,17 @@
 package com.alee.extended.window;
 
 /**
- * Custom listener for WebPopOver state listening.
+ * Custom runnable that provides ComponentEvent.
  *
  * @author Mikle Garin
  */
 
-public interface PopOverListener
+public interface PopOverEventRunnable
 {
     /**
-     * Informs that WebPopOver was opened.
+     * Performs action according to component event.
      *
      * @param popOver event source
      */
-    public void opened ( final WebPopOver popOver );
-
-    /**
-     * Informs that WebPopOver.show was called while it was opened forcing it to update location.
-     *
-     * @param popOver event source
-     */
-    public void reopened ( final WebPopOver popOver );
-
-    /**
-     * Informs that user dragged WebPopOver so that it became unattached from invoker component.
-     *
-     * @param popOver event source
-     */
-    public void detached ( WebPopOver popOver );
-
-    /**
-     * Informs that WebPopOver was closed due to losing focus or some other cause.
-     *
-     * @param popOver event source
-     */
-    public void closedWebPopOver ( WebPopOver popOver );
+    public void run ( WebPopOver popOver );
 }

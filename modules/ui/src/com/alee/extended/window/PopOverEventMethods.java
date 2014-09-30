@@ -29,18 +29,34 @@ import com.alee.utils.swing.SwingMethods;
 public interface PopOverEventMethods extends SwingMethods
 {
     /**
-     * Shortcut method for popover detach event.
+     * Shortcut method for popover open event.
      *
-     * @param runnable popover runnable
+     * @param runnable popover event runnable
      * @return used popover adapter
      */
-    public PopOverAdapter onDetach ( final Runnable runnable );
+    public PopOverAdapter onOpen ( final PopOverEventRunnable runnable );
+
+    /**
+     * Shortcut method for popover reopen event.
+     *
+     * @param runnable popover event runnable
+     * @return used popover adapter
+     */
+    public PopOverAdapter onReopen ( final PopOverEventRunnable runnable );
+
+    /**
+     * Shortcut method for popover detach event.
+     *
+     * @param runnable popover event runnable
+     * @return used popover adapter
+     */
+    public PopOverAdapter onDetach ( final PopOverEventRunnable runnable );
 
     /**
      * Shortcut method for popover close event.
      *
-     * @param runnable popover runnable
+     * @param runnable popover event runnable
      * @return used popover adapter
      */
-    public PopOverAdapter onClose ( final Runnable runnable );
+    public PopOverAdapter onClose ( final PopOverEventRunnable runnable );
 }

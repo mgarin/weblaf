@@ -19,6 +19,7 @@ package com.alee.utils;
 
 import com.alee.extended.tab.*;
 import com.alee.extended.window.PopOverAdapter;
+import com.alee.extended.window.PopOverEventRunnable;
 import com.alee.extended.window.WebPopOver;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.hotkey.HotkeyData;
@@ -489,20 +490,62 @@ public class EventUtils
     }
 
     /**
-     * Shortcut method for popover detach event.
+     * Shortcut method for popover open event.
      *
      * @param popOver  popover to handle events for
-     * @param runnable popover runnable
+     * @param runnable popover event runnable
      * @return used popover adapter
      */
-    public static PopOverAdapter onDetach ( final WebPopOver popOver, final Runnable runnable )
+    public static PopOverAdapter onOpen ( final WebPopOver popOver, final PopOverEventRunnable runnable )
     {
         final PopOverAdapter popOverAdapter = new PopOverAdapter ()
         {
             @Override
-            public void popOverDetached ()
+            public void opened ( final WebPopOver popOver )
             {
-                runnable.run ();
+                runnable.run ( popOver );
+            }
+        };
+        popOver.addPopOverListener ( popOverAdapter );
+        return popOverAdapter;
+    }
+
+    /**
+     * Shortcut method for popover reopen event.
+     *
+     * @param popOver  popover to handle events for
+     * @param runnable popover event runnable
+     * @return used popover adapter
+     */
+    public static PopOverAdapter onReopen ( final WebPopOver popOver, final PopOverEventRunnable runnable )
+    {
+        final PopOverAdapter popOverAdapter = new PopOverAdapter ()
+        {
+            @Override
+            public void reopened ( final WebPopOver popOver )
+            {
+                runnable.run ( popOver );
+            }
+        };
+        popOver.addPopOverListener ( popOverAdapter );
+        return popOverAdapter;
+    }
+
+    /**
+     * Shortcut method for popover detach event.
+     *
+     * @param popOver  popover to handle events for
+     * @param runnable popover event runnable
+     * @return used popover adapter
+     */
+    public static PopOverAdapter onDetach ( final WebPopOver popOver, final PopOverEventRunnable runnable )
+    {
+        final PopOverAdapter popOverAdapter = new PopOverAdapter ()
+        {
+            @Override
+            public void detached ( final WebPopOver popOver )
+            {
+                runnable.run ( popOver );
             }
         };
         popOver.addPopOverListener ( popOverAdapter );
@@ -513,17 +556,17 @@ public class EventUtils
      * Shortcut method for popover close event.
      *
      * @param popOver  popover to handle events for
-     * @param runnable popover runnable
+     * @param runnable popover event runnable
      * @return used popover adapter
      */
-    public static PopOverAdapter onClose ( final WebPopOver popOver, final Runnable runnable )
+    public static PopOverAdapter onClose ( final WebPopOver popOver, final PopOverEventRunnable runnable )
     {
         final PopOverAdapter popOverAdapter = new PopOverAdapter ()
         {
             @Override
-            public void popOverClosed ()
+            public void closedWebPopOver ( final WebPopOver popOver )
             {
-                runnable.run ();
+                runnable.run ( popOver );
             }
         };
         popOver.addPopOverListener ( popOverAdapter );
