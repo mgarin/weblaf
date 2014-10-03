@@ -535,7 +535,6 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
      */
     protected void setDateFromCalendar ( final boolean fireEvent )
     {
-        System.out.println ( calendar.getDate () );
         setDateImpl ( calendar.getDate (), UpdateSource.calendar, fireEvent );
     }
 
