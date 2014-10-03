@@ -21,6 +21,10 @@ import com.alee.laf.panel.WebPanel;
 import com.alee.laf.splitpane.WebSplitPane;
 import com.alee.laf.tabbedpane.WebTabbedPane;
 import com.alee.managers.drag.DragManager;
+import com.alee.managers.settings.DefaultValue;
+import com.alee.managers.settings.SettingsManager;
+import com.alee.managers.settings.SettingsMethods;
+import com.alee.managers.settings.SettingsProcessor;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.EventUtils;
 import com.alee.utils.TextUtils;
@@ -54,7 +58,8 @@ import java.util.Map;
  * @see com.alee.extended.tab.DocumentData
  */
 
-public class WebDocumentPane<T extends DocumentData> extends WebPanel implements DocumentPaneEventMethods<T>, SwingConstants
+public class WebDocumentPane<T extends DocumentData> extends WebPanel
+        implements DocumentPaneEventMethods<T>, SettingsMethods, SwingConstants
 {
     /**
      * todo 1. Possibility to edit tab title
@@ -1512,6 +1517,145 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel implements
     public DocumentAdapter<T> onDocumentClose ( final DocumentDataRunnable<T> runnable )
     {
         return EventUtils.onDocumentClose ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void registerSettings ( final String key )
+    {
+        SettingsManager.registerComponent ( this, key );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <V extends DefaultValue> void registerSettings ( final String key, final Class<V> defaultValueClass )
+    {
+        SettingsManager.registerComponent ( this, key, defaultValueClass );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void registerSettings ( final String key, final Object defaultValue )
+    {
+        SettingsManager.registerComponent ( this, key, defaultValue );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void registerSettings ( final String group, final String key )
+    {
+        SettingsManager.registerComponent ( this, group, key );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <V extends DefaultValue> void registerSettings ( final String group, final String key, final Class<V> defaultValueClass )
+    {
+        SettingsManager.registerComponent ( this, group, key, defaultValueClass );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void registerSettings ( final String group, final String key, final Object defaultValue )
+    {
+        SettingsManager.registerComponent ( this, group, key, defaultValue );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void registerSettings ( final String key, final boolean loadInitialSettings, final boolean applySettingsChanges )
+    {
+        SettingsManager.registerComponent ( this, key, loadInitialSettings, applySettingsChanges );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <V extends DefaultValue> void registerSettings ( final String key, final Class<V> defaultValueClass,
+                                                            final boolean loadInitialSettings, final boolean applySettingsChanges )
+    {
+        SettingsManager.registerComponent ( this, key, defaultValueClass, loadInitialSettings, applySettingsChanges );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void registerSettings ( final String key, final Object defaultValue, final boolean loadInitialSettings,
+                                   final boolean applySettingsChanges )
+    {
+        SettingsManager.registerComponent ( this, key, defaultValue, loadInitialSettings, applySettingsChanges );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <V extends DefaultValue> void registerSettings ( final String group, final String key, final Class<V> defaultValueClass,
+                                                            final boolean loadInitialSettings, final boolean applySettingsChanges )
+    {
+        SettingsManager.registerComponent ( this, group, key, defaultValueClass, loadInitialSettings, applySettingsChanges );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void registerSettings ( final String group, final String key, final Object defaultValue, final boolean loadInitialSettings,
+                                   final boolean applySettingsChanges )
+    {
+        SettingsManager.registerComponent ( this, group, key, defaultValue, loadInitialSettings, applySettingsChanges );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void registerSettings ( final SettingsProcessor settingsProcessor )
+    {
+        SettingsManager.registerComponent ( this, settingsProcessor );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void unregisterSettings ()
+    {
+        SettingsManager.unregisterComponent ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void loadSettings ()
+    {
+        SettingsManager.loadComponentSettings ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void saveSettings ()
+    {
+        SettingsManager.saveComponentSettings ( this );
     }
 
     /**
