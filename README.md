@@ -19,6 +19,25 @@ You can find more information about the library on official site:<br>
 http://weblookandfeel.com
 
 
+Delayed v1.29 update
+---------
+Due to the large amount of features, fixes and improvements coming with this update - I have already delayed it a few times but it still requires a lot of work to do. So I have made some changes that might clarify what is happening with WebLaF right now.
+
+First of all - I have published pre-release artifacts on the site and updating them with each major feature or fix made. You can find all standard artifacts (except JavaDoc HTML version) here:<br>
+http://weblookandfeel.com/downloads/prerelease/<br>
+These pre-release artifacts should usually be more stable than previous versions, but might contain some minor bugs which will be quickly patched up. It is up to you to decide whether you want to use those or not.
+
+One more important change was made to milestones in issue tracker here on GitHub:<br>
+https://github.com/mgarin/weblaf/milestones<br>
+I have removed old uncertain milestones (which weren't milestones actually) and have added understandable versions there. I have already sorted out all features and fixes planned for v1.29 and I will sort others after this release. I have also added approximate release dates into those milestones - they aren't set in stone, but I hope these won't be too different from actual release dates since now I can clearly see what is left for that version and how long it should take to release.
+
+Issues solved for v1.29 version aren't yet closed, but with next versions I will be closing those right away as soon as the fix is available in GIT repository so you will be able to track milestone progress.
+
+I am also trying to prioritize user requests over planned features in case that is possible at the moment request is made. Usually I would add small features right away and postpone large ones till the next update in case those doesn't fit into current update. So don't hesitate to [post requests](https://github.com/mgarin/weblaf/issues), even small ones.
+
+More changes are coming and I will make additional notes here later as soon as those are made.
+
+
 Important v1.28 changes
 ---------
 There were a lot of internal changes in v1.28 update - library separation, build improvements, new features and major code cleanup.
