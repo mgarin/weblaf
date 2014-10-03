@@ -86,6 +86,7 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
         // Creating tabbed pane
         tabbedPane = new WebTabbedPane ( TabbedPaneStyle.attached );
         tabbedPane.putClientProperty ( WebDocumentPane.DATA_KEY, this );
+//        tabbedPane.setMinimumSize ( new Dimension ( 0, 0 ) );
 
         // Customizing tabbed pane
         updateTabbedPaneCustomizer ( documentPane );
@@ -156,6 +157,8 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
                     final boolean ocsb = documentPane.isCloseable () && data.size () > 1;
                     final boolean spb = data.size () > 1 && documentPane.isSplitEnabled ();
                     final boolean spl = tabbedPane.getParent () instanceof WebSplitPane;
+                    final boolean hor =
+                            spl && ( ( WebSplitPane ) tabbedPane.getParent () ).getOrientation () == WebSplitPane.HORIZONTAL_SPLIT;
 
                     // Creating popup menu
                     final PopupMenuGenerator pmg = new PopupMenuGenerator ( "document-pane-menu" );
@@ -219,7 +222,15 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
                             rotate ();
                         }
                     } );
-                    pmg.addItem ( "unsplit", "unsplit", spl, new ActionListener ()
+                    pmg.addItem ( hor ? "swapHor" : "swapVer", "swap", spl, new ActionListener ()
+                    {
+                        @Override
+                        public void actionPerformed ( final ActionEvent e )
+                        {
+                            swap ();
+                        }
+                    } );
+                    pmg.addItem ( hor ? "unsplitHor" : "unsplitVer", "unsplit", spl, new ActionListener ()
                     {
                         @Override
                         public void actionPerformed ( final ActionEvent e )
@@ -346,6 +357,21 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
     public List<T> getData ()
     {
         return data;
+    }
+
+    /**
+     * Returns pane document IDs.
+     *
+     * @return pane document IDs
+     */
+    public List<String> getDocumentIds ()
+    {
+        final List<String> ids = new ArrayList<String> ( data.size () );
+        for ( final T document : data )
+        {
+            ids.add ( document.getId () );
+        }
+        return ids;
     }
 
     /**
@@ -825,7 +851,20 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
         if ( parent instanceof WebSplitPane )
         {
             final SplitData<T> splitData = WebDocumentPane.getData ( ( WebSplitPane ) parent );
-            splitData.changeSplitOrientation ();
+            splitData.changeOrientation ();
+        }
+    }
+
+    /**
+     * Changes parent split sides if this pane is located within a split.
+     */
+    public void swap ()
+    {
+        final Container parent = tabbedPane.getParent ();
+        if ( parent instanceof WebSplitPane )
+        {
+            final SplitData<T> splitData = WebDocumentPane.getData ( ( WebSplitPane ) parent );
+            splitData.swapSides ();
         }
     }
 

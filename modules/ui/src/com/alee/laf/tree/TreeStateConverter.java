@@ -42,7 +42,7 @@ public class TreeStateConverter extends ReflectionConverter
      * @param mapper             mapper
      * @param reflectionProvider reflection provider
      */
-    public TreeStateConverter ( Mapper mapper, ReflectionProvider reflectionProvider )
+    public TreeStateConverter ( final Mapper mapper, final ReflectionProvider reflectionProvider )
     {
         super ( mapper, reflectionProvider );
     }
@@ -51,7 +51,7 @@ public class TreeStateConverter extends ReflectionConverter
      * {@inheritDoc}
      */
     @Override
-    public boolean canConvert ( Class type )
+    public boolean canConvert ( final Class type )
     {
         return type.equals ( TreeState.class );
     }
@@ -60,13 +60,13 @@ public class TreeStateConverter extends ReflectionConverter
      * {@inheritDoc}
      */
     @Override
-    public void marshal ( Object source, HierarchicalStreamWriter writer, MarshallingContext context )
+    public void marshal ( final Object source, final HierarchicalStreamWriter writer, final MarshallingContext context )
     {
-        TreeState treeState = ( TreeState ) source;
-        for ( Map.Entry<String, NodeState> entry : treeState.getStates ().entrySet () )
+        final TreeState treeState = ( TreeState ) source;
+        for ( final Map.Entry<String, NodeState> entry : treeState.getStates ().entrySet () )
         {
-            String nodeId = entry.getKey ();
-            NodeState nodeState = entry.getValue ();
+            final String nodeId = entry.getKey ();
+            final NodeState nodeState = entry.getValue ();
             writer.startNode ( "node" );
             writer.addAttribute ( "id", nodeId );
             writer.addAttribute ( "expanded", "" + nodeState.isExpanded () );
@@ -79,18 +79,18 @@ public class TreeStateConverter extends ReflectionConverter
      * {@inheritDoc}
      */
     @Override
-    public Object unmarshal ( HierarchicalStreamReader reader, UnmarshallingContext context )
+    public Object unmarshal ( final HierarchicalStreamReader reader, final UnmarshallingContext context )
     {
-        Map<String, NodeState> states = new LinkedHashMap<String, NodeState> ();
+        final Map<String, NodeState> states = new LinkedHashMap<String, NodeState> ();
         while ( reader.hasMoreChildren () )
         {
             reader.moveDown ();
-            String nodeIdAttribue = reader.getAttribute ( "id" );
-            String nodeId = nodeIdAttribue != null ? nodeIdAttribue : reader.getNodeName ();
-            String expandedAttribue = reader.getAttribute ( "expanded" );
-            String expanded = expandedAttribue != null ? expandedAttribue : "false";
-            String selectedAttribue = reader.getAttribute ( "selected" );
-            String selected = selectedAttribue != null ? selectedAttribue : "false";
+            final String nodeIdAttribue = reader.getAttribute ( "id" );
+            final String nodeId = nodeIdAttribue != null ? nodeIdAttribue : reader.getNodeName ();
+            final String expandedAttribue = reader.getAttribute ( "expanded" );
+            final String expanded = expandedAttribue != null ? expandedAttribue : "false";
+            final String selectedAttribue = reader.getAttribute ( "selected" );
+            final String selected = selectedAttribue != null ? selectedAttribue : "false";
             states.put ( nodeId, new NodeState ( Boolean.parseBoolean ( expanded ), Boolean.parseBoolean ( selected ) ) );
             reader.moveUp ();
         }

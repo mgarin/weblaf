@@ -24,6 +24,7 @@ import com.alee.extended.colorchooser.GradientData;
 import com.alee.extended.label.WebMultiLineLabelUI;
 import com.alee.extended.label.WebStyledLabelUI;
 import com.alee.extended.label.WebVerticalLabelUI;
+import com.alee.extended.tab.DocumentPaneState;
 import com.alee.global.StyleConstants;
 import com.alee.laf.button.WebButtonUI;
 import com.alee.laf.button.WebToggleButtonUI;
@@ -848,6 +849,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
                         JDialog.setDefaultLookAndFeelDecorated ( decorateDialogs );
 
                         // Custom WebLaF data aliases
+                        XmlUtils.processAnnotations ( DocumentPaneState.class );
                         XmlUtils.processAnnotations ( TreeState.class );
                         XmlUtils.processAnnotations ( NodeState.class );
                         XmlUtils.processAnnotations ( GradientData.class );

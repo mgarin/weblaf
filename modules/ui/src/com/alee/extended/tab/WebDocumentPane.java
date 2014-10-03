@@ -24,15 +24,20 @@ import com.alee.managers.drag.DragManager;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.EventUtils;
 import com.alee.utils.TextUtils;
+import com.alee.utils.general.Pair;
 import com.alee.utils.swing.AncestorAdapter;
 import com.alee.utils.swing.Customizer;
 
 import javax.swing.*;
 import javax.swing.event.AncestorEvent;
 import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This component is basically a special container for customizable documents described by DocumentData class.
@@ -52,8 +57,7 @@ import java.util.List;
 public class WebDocumentPane<T extends DocumentData> extends WebPanel implements DocumentPaneEventMethods<T>, SwingConstants
 {
     /**
-     * todo 1. Possibility to save/restore documents positions and splits
-     * todo 2. Possibility to edit tab title
+     * todo 1. Possibility to edit tab title
      */
 
     /**
@@ -68,9 +72,14 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel implements
     protected static final String DATA_KEY = "document.pane.data";
 
     /**
-     * Document listeners.
+     * Document event listeners.
      */
-    protected List<DocumentListener<T>> listeners = new ArrayList<DocumentListener<T>> ( 1 );
+    protected List<DocumentListener<T>> documentListeners = new ArrayList<DocumentListener<T>> ( 1 );
+
+    /**
+     * Document pane event listeners.
+     */
+    protected List<DocumentPaneListener<T>> documentPaneListeners = new ArrayList<DocumentPaneListener<T>> ( 1 );
 
     /**
      * Unique document pane ID.
@@ -133,6 +142,11 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel implements
      * Previously selected document.
      */
     protected WeakReference<T> previouslySelected = new WeakReference<T> ( null );
+
+    /**
+     * Documents data provider.
+     */
+    protected DocumentDataProvider<T> documentsProvider = null;
 
     /**
      * Constructs new document pane.
@@ -519,6 +533,7 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel implements
             // Choosing course of action depending on splitted pane parent
             final boolean ltr = direction == RIGHT || direction == BOTTOM;
             final int orientation = direction == LEFT || direction == RIGHT ? VERTICAL : HORIZONTAL;
+            final SplitData<T> splitData;
             if ( splittedPane.getTabbedPane ().getParent () == WebDocumentPane.this )
             {
                 // Creating data for new pane
@@ -530,7 +545,7 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel implements
                 // Adding root split
                 final PaneData<T> first = ltr ? splittedPane : otherPane;
                 final PaneData<T> last = ltr ? otherPane : splittedPane;
-                final SplitData<T> splitData = new SplitData<T> ( WebDocumentPane.this, orientation, first, last );
+                splitData = new SplitData<T> ( WebDocumentPane.this, orientation, first, last );
                 remove ( splittedPane.getTabbedPane () );
                 add ( splitData.getSplitPane (), BorderLayout.CENTER );
 
@@ -549,12 +564,14 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel implements
                         parentSplitData.getLast () instanceof PaneData )
                 {
                     // Using existing split and pane
+                    splitData = parentSplitData;
                     otherPane = ( PaneData<T> ) parentSplitData.getLast ();
                 }
                 else if ( parentSplitData.getOrientation () == orientation && !ltr && parentSplitData.getLast () == splittedPane &&
                         parentSplitData.getFirst () instanceof PaneData )
                 {
                     // Using existing split and pane
+                    splitData = parentSplitData;
                     otherPane = ( PaneData<T> ) parentSplitData.getFirst ();
                 }
                 else
@@ -569,7 +586,7 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel implements
                     // Adding inner split
                     final PaneData<T> first = ltr ? splittedPane : otherPane;
                     final PaneData<T> last = ltr ? otherPane : splittedPane;
-                    final SplitData<T> splitData = new SplitData<T> ( WebDocumentPane.this, orientation, first, last );
+                    splitData = new SplitData<T> ( WebDocumentPane.this, orientation, first, last );
                     parentSplitData.replace ( splittedPane, splitData );
 
                     // Restoring split locations
@@ -592,6 +609,9 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel implements
             // Activating other split
             otherPane.getTabbedPane ().requestFocusInWindow ();
             otherPane.activate ();
+
+            // Firing splitted event
+            fireSplitted ( splittedPane, splitData );
         }
         else
         {
@@ -650,8 +670,8 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel implements
      */
     protected void mergeImpl ( final SplitData<T> splitData )
     {
-        final StructureData first = splitData.getFirst ();
-        final StructureData last = splitData.getLast ();
+        StructureData first = splitData.getFirst ();
+        StructureData last = splitData.getLast ();
 
         // Determining the resulting element
         final StructureData<T> result;
@@ -665,10 +685,12 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel implements
             if ( first instanceof SplitData )
             {
                 mergeImpl ( ( SplitData<T> ) first );
+                first = splitData.getFirst ();
             }
             if ( last instanceof SplitData )
             {
                 mergeImpl ( ( SplitData<T> ) last );
+                last = splitData.getLast ();
             }
 
             // Moving all documents from second pane to first
@@ -721,6 +743,9 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel implements
             // Restoring divider location
             parentSplit.setDividerLocation ( dividerLocation );
         }
+
+        // Firing merged event
+        fireMerged ( splitData, result );
     }
 
     /**
@@ -1100,13 +1125,283 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel implements
     }
 
     /**
+     * Returns custom documents provider.
+     * This may be used in to open documents by ID instead of document references.
+     * It may also be used for state restoration method.
+     *
+     * @return custom documents provider
+     */
+    public DocumentDataProvider<T> getDocumentsProvider ()
+    {
+        return documentsProvider;
+    }
+
+    /**
+     * Sets custom documents provider.
+     * This may be used in to open documents by ID instead of document references.
+     * It may also be used for state restoration method.
+     *
+     * @param provider custom documents provider
+     */
+    public void setDocumentsProvider ( final DocumentDataProvider<T> provider )
+    {
+        this.documentsProvider = provider;
+    }
+
+    /**
+     * Returns current document pane state.
+     * This state contains opened document IDs references and structure composition.
+     * It might basically be used to save/restore document pane documents structure.
+     *
+     * @return current document pane state
+     * @see DocumentPaneState
+     * @see #setDocumentPaneState(DocumentPaneState)
+     */
+    public DocumentPaneState getDocumentPaneState ()
+    {
+        return getDocumentPaneStateImpl ( root );
+    }
+
+    /**
+     * Returns document pane state starting from the specified structure.
+     * This state contains opened document IDs references and structure composition.
+     * It might basically be used to save/restore document pane documents structure.
+     *
+     * @param structure structure level to start retrieving document pane state from
+     * @return document pane state starting from the specified structure
+     */
+    protected DocumentPaneState getDocumentPaneStateImpl ( final StructureData structure )
+    {
+        if ( structure != null )
+        {
+            // Provide proper according to structure type
+            if ( structure instanceof PaneData )
+            {
+                final PaneData<T> paneData = ( PaneData<T> ) structure;
+                final T selected = paneData.getSelected ();
+                return new DocumentPaneState ( selected != null ? selected.getId () : null, paneData.getDocumentIds () );
+            }
+            else
+            {
+                final SplitData<T> splitData = ( SplitData<T> ) structure;
+                final DocumentPaneState first = getDocumentPaneStateImpl ( splitData.getFirst () );
+                final DocumentPaneState last = getDocumentPaneStateImpl ( splitData.getLast () );
+                final Pair<DocumentPaneState, DocumentPaneState> splitState =
+                        new Pair<DocumentPaneState, DocumentPaneState> ( first, last );
+                return new DocumentPaneState ( splitData.getOrientation (), splitData.getDividerLocation (), splitState );
+            }
+        }
+        else
+        {
+            // This null case might occur in case one of split sides doesn't have child
+            // That is the case when last side's document is dragged or moved
+            // Or in case something is splitted/merged
+            // We just pass null state in this case as a workaround
+            return null;
+        }
+    }
+
+    /**
+     * Restores document pane state.
+     * <p/>
+     * This will remove all added documents and reopen them according to restored state.
+     * Make sure that you add all required documents before loading restoring the state.
+     * Otherwise in some cases you might get unwanted effect like lost structure parts.
+     * <p/>
+     * Also be aware that this call might generate some unwanted events like documents close and such.
+     * So make sure to add your listeners after this call in case you don't want to listen to initial state restore events.
+     *
+     * @param state document pane state to restore
+     * @see DocumentPaneState
+     * @see #getDocumentPaneState()
+     */
+    public void setDocumentPaneState ( final DocumentPaneState state )
+    {
+        // Mapping all opened documents
+        // In case some are missing they can be filled-in later using document provider
+        // It doesn't really matter where these documents come from but we assume that they might already be opened
+        final List<T> openedDocuments = getDocuments ();
+        final Map<String, T> documents = new HashMap<String, T> ( openedDocuments.size () );
+        for ( final T document : openedDocuments )
+        {
+            documents.put ( document.getId (), document );
+        }
+
+        // Temporarily removing all documents to place them properly after
+        closeAll ();
+
+        // Restoring document pane state
+        setStructureRoot ( restoreStructureStateImpl ( state, documents ) );
+    }
+
+    /**
+     * Restores document pane state starting from the specified structure.
+     * If null structure is provided restore operation will be started from root.
+     *
+     * @param state     document pane state to restore
+     * @param documents existing documents
+     */
+    protected StructureData<T> restoreStructureStateImpl ( final DocumentPaneState state, final Map<String, T> documents )
+    {
+        final StructureData<T> restored;
+        if ( state.isSplit () )
+        {
+            // Restoring split data
+            final Pair<DocumentPaneState, DocumentPaneState> splitState = state.getSplitState ();
+            final StructureData<T> first = restoreStructureStateImpl ( splitState.getKey (), documents );
+            final StructureData<T> last = restoreStructureStateImpl ( splitState.getValue (), documents );
+            final SplitData<T> splitData = new SplitData<T> ( this, state.getSplitOrientation (), first, last );
+
+            // todo Location updates should be queued and performed 1 by 1 from top to bottom to avoid incorrect layouting
+            // We have to wait until split is properly sized before restoring divider location
+            splitData.getSplitPane ().addComponentListener ( new ComponentAdapter ()
+            {
+                @Override
+                public void componentResized ( final ComponentEvent e )
+                {
+                    // Waiting until split is properly sized
+                    final WebSplitPane splitPane = splitData.getSplitPane ();
+                    if ( splitPane.getWidth () > 0 || splitPane.getHeight () > 0 )
+                    {
+                        // Updating proportional divider location
+                        splitData.setDividerLocation ( state.getDividerLocation () );
+                        splitPane.removeComponentListener ( this );
+                    }
+                }
+            } );
+
+            restored = splitData;
+        }
+        else
+        {
+            // Restoring pane data
+            final PaneData<T> paneData = new PaneData<T> ( this );
+            for ( final String id : state.getDocumentIds () )
+            {
+                // In case document doesn't exist, try requesting it from provider if we have one
+                if ( documentsProvider != null && !documents.containsKey ( id ) )
+                {
+                    documents.put ( id, documentsProvider.provide ( id ) );
+                }
+
+                // Simply open document if it exists
+                if ( documents.containsKey ( id ) )
+                {
+                    final T document = documents.get ( id );
+                    if ( document != null )
+                    {
+                        paneData.open ( document );
+                    }
+                }
+            }
+
+            // Update selected document
+            final String selectedId = state.getSelectedId ();
+            if ( selectedId != null && documents.containsKey ( selectedId ) )
+            {
+                paneData.setSelected ( documents.get ( selectedId ) );
+            }
+
+            restored = paneData;
+        }
+        return restored;
+    }
+
+    /**
+     * Adds document pane listener.
+     *
+     * @param listener new document pane listener
+     */
+    public void addDocumentPaneListener ( final DocumentPaneListener<T> listener )
+    {
+        documentPaneListeners.add ( listener );
+    }
+
+    /**
+     * Removes document pane listener.
+     *
+     * @param listener document pane listener
+     */
+    public void removeDocumentPaneListener ( final DocumentPaneListener<T> listener )
+    {
+        documentPaneListeners.remove ( listener );
+    }
+
+    /**
+     * Fires PaneData split event.
+     *
+     * @param splittedPane splitted PaneData
+     * @param newSplitData newly created SplitData
+     */
+    public void fireSplitted ( final PaneData<T> splittedPane, final SplitData<T> newSplitData )
+    {
+        for ( final DocumentPaneListener<T> listener : CollectionUtils.copy ( documentPaneListeners ) )
+        {
+            listener.splitted ( this, splittedPane, newSplitData );
+        }
+    }
+
+    /**
+     * Fires SplitData merge event.
+     *
+     * @param mergedSplit      merged SplitData
+     * @param newStructureData newly created StructureData
+     */
+    public void fireMerged ( final SplitData<T> mergedSplit, final StructureData<T> newStructureData )
+    {
+        for ( final DocumentPaneListener<T> listener : CollectionUtils.copy ( documentPaneListeners ) )
+        {
+            listener.merged ( this, mergedSplit, newStructureData );
+        }
+    }
+
+    /**
+     * Fires SplitData orientation change event.
+     *
+     * @param splitData SplitData which orientation has changed
+     */
+    public void fireOrientationChanged ( final SplitData<T> splitData )
+    {
+        for ( final DocumentPaneListener<T> listener : CollectionUtils.copy ( documentPaneListeners ) )
+        {
+            listener.orientationChanged ( this, splitData );
+        }
+    }
+
+    /**
+     * Fires SplitData sides swap event.
+     *
+     * @param splitData SplitData which sides were swapped
+     */
+    public void fireSidesSwapped ( final SplitData<T> splitData )
+    {
+        for ( final DocumentPaneListener<T> listener : CollectionUtils.copy ( documentPaneListeners ) )
+        {
+            listener.sidesSwapped ( this, splitData );
+        }
+    }
+
+    /**
+     * Fires SplitData divider location change event.
+     *
+     * @param splitData SplitData which divider location has changed
+     */
+    public void fireDividerLocationChanged ( final SplitData<T> splitData )
+    {
+        for ( final DocumentPaneListener<T> listener : CollectionUtils.copy ( documentPaneListeners ) )
+        {
+            listener.dividerLocationChanged ( this, splitData );
+        }
+    }
+
+    /**
      * Adds document listener.
      *
      * @param listener new document listener
      */
     public void addDocumentListener ( final DocumentListener<T> listener )
     {
-        listeners.add ( listener );
+        documentListeners.add ( listener );
     }
 
     /**
@@ -1116,7 +1411,71 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel implements
      */
     public void removeDocumentListener ( final DocumentListener<T> listener )
     {
-        listeners.remove ( listener );
+        documentListeners.remove ( listener );
+    }
+
+    /**
+     * Fires document opened event.
+     *
+     * @param document opened document
+     * @param pane     document's pane
+     * @param index    document's index
+     */
+    public void fireDocumentOpened ( final T document, final PaneData<T> pane, final int index )
+    {
+        for ( final DocumentListener<T> listener : CollectionUtils.copy ( documentListeners ) )
+        {
+            listener.opened ( document, pane, index );
+        }
+    }
+
+    /**
+     * Fires document selected event.
+     *
+     * @param document selected document
+     * @param pane     document's pane
+     * @param index    document's index
+     */
+    public void fireDocumentSelected ( final T document, final PaneData<T> pane, final int index )
+    {
+        for ( final DocumentListener<T> listener : CollectionUtils.copy ( documentListeners ) )
+        {
+            listener.selected ( document, pane, index );
+        }
+    }
+
+    /**
+     * Fires document closing event.
+     * Returns whether document is allowed to close or not.
+     *
+     * @param document closing document
+     * @param pane     document's pane
+     * @param index    document's index
+     * @return true if document is allowed to close, false otherwise
+     */
+    public boolean fireDocumentClosing ( final T document, final PaneData<T> pane, final int index )
+    {
+        boolean allow = true;
+        for ( final DocumentListener<T> listener : CollectionUtils.copy ( documentListeners ) )
+        {
+            allow = allow && listener.closing ( document, pane, index );
+        }
+        return allow;
+    }
+
+    /**
+     * Fires document closed event.
+     *
+     * @param document closed document
+     * @param pane     document's pane
+     * @param index    document's index
+     */
+    public void fireDocumentClosed ( final T document, final PaneData<T> pane, final int index )
+    {
+        for ( final DocumentListener<T> listener : CollectionUtils.copy ( documentListeners ) )
+        {
+            listener.closed ( document, pane, index );
+        }
     }
 
     /**
@@ -1153,70 +1512,6 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel implements
     public DocumentAdapter<T> onDocumentClose ( final DocumentDataRunnable<T> runnable )
     {
         return EventUtils.onDocumentClose ( this, runnable );
-    }
-
-    /**
-     * Fires document opened event.
-     *
-     * @param document opened document
-     * @param pane     document's pane
-     * @param index    document's index
-     */
-    public void fireDocumentOpened ( final T document, final PaneData<T> pane, final int index )
-    {
-        for ( final DocumentListener<T> listener : CollectionUtils.copy ( listeners ) )
-        {
-            listener.opened ( document, pane, index );
-        }
-    }
-
-    /**
-     * Fires document selected event.
-     *
-     * @param document selected document
-     * @param pane     document's pane
-     * @param index    document's index
-     */
-    public void fireDocumentSelected ( final T document, final PaneData<T> pane, final int index )
-    {
-        for ( final DocumentListener<T> listener : CollectionUtils.copy ( listeners ) )
-        {
-            listener.selected ( document, pane, index );
-        }
-    }
-
-    /**
-     * Fires document closing event.
-     * Returns whether document is allowed to close or not.
-     *
-     * @param document closing document
-     * @param pane     document's pane
-     * @param index    document's index
-     * @return true if document is allowed to close, false otherwise
-     */
-    public boolean fireDocumentClosing ( final T document, final PaneData<T> pane, final int index )
-    {
-        boolean allow = true;
-        for ( final DocumentListener<T> listener : CollectionUtils.copy ( listeners ) )
-        {
-            allow = allow && listener.closing ( document, pane, index );
-        }
-        return allow;
-    }
-
-    /**
-     * Fires document closed event.
-     *
-     * @param document closed document
-     * @param pane     document's pane
-     * @param index    document's index
-     */
-    public void fireDocumentClosed ( final T document, final PaneData<T> pane, final int index )
-    {
-        for ( final DocumentListener<T> listener : CollectionUtils.copy ( listeners ) )
-        {
-            listener.closed ( document, pane, index );
-        }
     }
 
     /**

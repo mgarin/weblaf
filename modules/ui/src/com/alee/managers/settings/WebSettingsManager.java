@@ -21,10 +21,9 @@ import com.alee.extended.colorchooser.WebGradientColorChooser;
 import com.alee.extended.date.WebDateField;
 import com.alee.extended.panel.WebAccordion;
 import com.alee.extended.panel.WebCollapsiblePane;
-import com.alee.managers.settings.processors.WebAccordionSettingsProcessor;
-import com.alee.managers.settings.processors.WebCollapsiblePaneSettingsProcessor;
-import com.alee.managers.settings.processors.WebDateFieldSettingsProcessor;
-import com.alee.managers.settings.processors.WebGradientColorChooserSettingsProcessor;
+import com.alee.extended.tab.WebDocumentPane;
+import com.alee.laf.tree.WebTree;
+import com.alee.managers.settings.processors.*;
 
 /**
  * Minor additions over core SettingsManager.
@@ -52,6 +51,8 @@ public class WebSettingsManager
             SettingsManager.initialize ();
 
             // Register additional component settings processors
+            ComponentSettingsManager.registerSettingsProcessor ( WebDocumentPane.class, WebDocumentPaneSettingsProcessor.class );
+            ComponentSettingsManager.registerSettingsProcessor ( WebTree.class, WebTreeSettingsProcessor.class );
             ComponentSettingsManager.registerSettingsProcessor ( WebDateField.class, WebDateFieldSettingsProcessor.class );
             ComponentSettingsManager.registerSettingsProcessor ( WebCollapsiblePane.class, WebCollapsiblePaneSettingsProcessor.class );
             ComponentSettingsManager.registerSettingsProcessor ( WebAccordion.class, WebAccordionSettingsProcessor.class );

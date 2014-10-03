@@ -141,6 +141,17 @@ public class WebSplitPane extends JSplitPane
         return this;
     }
 
+    /**
+     * Returns proportional split divider location.
+     *
+     * @return proportional split divider location
+     */
+    public double getProportionalDividerLocation ()
+    {
+        final int l = getOrientation () == WebSplitPane.HORIZONTAL_SPLIT ? getWidth () : getHeight ();
+        return Math.max ( 0.0, Math.min ( ( double ) getDividerLocation () / ( l - getDividerSize () ), 1.0 ) );
+    }
+
     public WebSplitPaneUI getWebUI ()
     {
         return ( WebSplitPaneUI ) getUI ();

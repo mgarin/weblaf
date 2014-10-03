@@ -23,6 +23,7 @@ import com.alee.managers.plugin.data.PluginInformation;
 import com.alee.managers.plugin.data.PluginLibrary;
 import com.alee.managers.plugin.data.PluginVersion;
 import com.alee.utils.collection.ValuesTable;
+import com.alee.utils.general.Pair;
 import com.alee.utils.xml.*;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.converters.Converter;
@@ -122,6 +123,7 @@ public final class XmlUtils
 
             // Additional WebLaF data classes aliases
             xStream.processAnnotations ( ValuesTable.class );
+            xStream.processAnnotations ( Pair.class );
 
             // Plugin manager classes aliases
             xStream.processAnnotations ( PluginInformation.class );

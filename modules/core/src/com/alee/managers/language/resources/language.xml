@@ -1706,6 +1706,17 @@
                 <value lang="de">Ändern Sie Split-Orientierung</value>
                 <value lang="it">Cambia orientamento divisore</value>
             </record>
+            <record key="swap">
+                <value lang="en">Swap groups</value>
+                <value lang="ru">Поменять группы местами</value>
+                <value lang="pl">Grupy swapowe</value>
+                <value lang="ar">مجموعات تبادل</value>
+                <value lang="es">Grupos de swap</value>
+                <value lang="fr">Des groupes d'échange</value>
+                <value lang="pt">Grupos de swap</value>
+                <value lang="de">Swap-Gruppen</value>
+                <value lang="it">Gruppi swap</value>
+            </record>
             <record key="unsplit">
                 <value lang="en">Combine groups</value>
                 <value lang="ru">Объединить группы</value>

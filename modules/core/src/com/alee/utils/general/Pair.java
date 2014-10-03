@@ -18,6 +18,10 @@
 package com.alee.utils.general;
 
 
+import com.alee.utils.ReflectUtils;
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
+
 import java.io.Serializable;
 
 /**
@@ -26,16 +30,19 @@ import java.io.Serializable;
  * @author Mikle Garin
  */
 
-public class Pair<K, V> implements Serializable
+@XStreamAlias ( "Pair" )
+public class Pair<K, V> implements Serializable, Cloneable
 {
     /**
      * Key of this {@code Pair}.
      */
+    @XStreamAsAttribute
     public final K key;
 
     /**
      * Value of this this {@code Pair}.
      */
+    @XStreamAsAttribute
     public final V value;
 
     /**
@@ -116,5 +123,22 @@ public class Pair<K, V> implements Serializable
                     !( value != null ? !value.equals ( pair.value ) : pair.value != null );
         }
         return false;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Pair<K, V> clone ()
+    {
+        if ( getKey () instanceof Cloneable && getValue () instanceof Cloneable )
+        {
+            return ( Pair<K, V> ) new Pair ( ReflectUtils.cloneSafely ( ( Cloneable ) getKey () ),
+                    ReflectUtils.cloneSafely ( ( Cloneable ) getValue () ) );
+        }
+        else
+        {
+            throw new RuntimeException ( "Both key and value should implement Cloneable!" );
+        }
     }
 }
