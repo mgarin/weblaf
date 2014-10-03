@@ -1042,6 +1042,20 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel
     }
 
     /**
+     * Opens document with the specified ID in this document pane.
+     * This method won't work in case you didn't set custom DocumentDataProvider.
+     *
+     * @param documentId ID of the document to open
+     */
+    public void openDocument ( final String documentId )
+    {
+        if ( documentsProvider != null )
+        {
+            openDocument ( documentsProvider.provide ( documentId ) );
+        }
+    }
+
+    /**
      * Opens document in this document pane.
      *
      * @param document document to open
