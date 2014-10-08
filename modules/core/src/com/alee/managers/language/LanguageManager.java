@@ -20,10 +20,7 @@ package com.alee.managers.language;
 import com.alee.managers.language.data.Dictionary;
 import com.alee.managers.language.data.*;
 import com.alee.managers.language.updaters.*;
-import com.alee.utils.CollectionUtils;
-import com.alee.utils.CompareUtils;
-import com.alee.utils.MapUtils;
-import com.alee.utils.XmlUtils;
+import com.alee.utils.*;
 import com.alee.utils.swing.AncestorAdapter;
 import com.alee.utils.swing.DataProvider;
 
@@ -168,6 +165,12 @@ public class LanguageManager implements LanguageConstants
      * @see #getDictionaries()
      */
     protected static final List<Dictionary> dictionaries = new ArrayList<Dictionary> ();
+
+    /**
+     * All dictionaries cached by their special source ID.
+     * Used to track already added dictionaries and avoid their duplicate versions.
+     */
+    protected static final Map<String, Dictionary> dictionariesCache = new HashMap<String, Dictionary> ();
 
     /**
      * Component operations synchronization object.
@@ -1146,6 +1149,37 @@ public class LanguageManager implements LanguageConstants
     }
 
     /**
+     * Adds new language dictionary into LanguageManager.
+     * This method call may cause a lot of UI updates depending on amount of translations contained.
+     * If added dictionary contains records with existing keys they will override previously added ones.
+     *
+     * @param nearClass class to look near for the dictionary file
+     * @param resource  path to dictionary file
+     * @return newly added dictionary
+     */
+    public static Dictionary addDictionary ( final Class nearClass, final String resource )
+    {
+        final String cacheKey = getDictionaryCacheKey ( nearClass, resource );
+        if ( dictionariesCache.containsKey ( cacheKey ) )
+        {
+            return dictionariesCache.get ( cacheKey );
+        }
+        return addDictionary ( cacheKey, loadDictionary ( nearClass, resource ) );
+    }
+
+    /**
+     * Returns dictionary cache key.
+     *
+     * @param nearClass class to look near for the dictionary file
+     * @param resource  path to dictionary file
+     * @return dictionary cache key
+     */
+    public static String getDictionaryCacheKey ( final Class nearClass, final String resource )
+    {
+        return NetUtils.getAddress ( nearClass.getResource ( resource ) );
+    }
+
+    /**
      * Returns dictionary loaded from the specified location near class.
      *
      * @param nearClass class near which dictionary XML is located
@@ -1155,6 +1189,35 @@ public class LanguageManager implements LanguageConstants
     public static Dictionary loadDictionary ( final Class nearClass, final String resource )
     {
         return loadDictionary ( nearClass.getResource ( resource ) );
+    }
+
+    /**
+     * Adds new language dictionary into LanguageManager.
+     * This method call may cause a lot of UI updates depending on amount of translations contained.
+     * If added dictionary contains records with existing keys they will override previously added ones.
+     *
+     * @param url dictionary file url
+     * @return newly added dictionary
+     */
+    public static Dictionary addDictionary ( final URL url )
+    {
+        final String cacheKey = getDictionaryCacheKey ( url );
+        if ( dictionariesCache.containsKey ( cacheKey ) )
+        {
+            return dictionariesCache.get ( cacheKey );
+        }
+        return addDictionary ( cacheKey, loadDictionary ( url ) );
+    }
+
+    /**
+     * Returns dictionary cache key.
+     *
+     * @param url dictionary file url
+     * @return dictionary cache key
+     */
+    public static String getDictionaryCacheKey ( final URL url )
+    {
+        return NetUtils.getAddress ( url );
     }
 
     /**
@@ -1169,6 +1232,35 @@ public class LanguageManager implements LanguageConstants
     }
 
     /**
+     * Adds new language dictionary into LanguageManager.
+     * This method call may cause a lot of UI updates depending on amount of translations contained.
+     * If added dictionary contains records with existing keys they will override previously added ones.
+     *
+     * @param path path to dictionary file
+     * @return newly added dictionary
+     */
+    public static Dictionary addDictionary ( final String path )
+    {
+        final String cacheKey = getDictionaryCacheKey ( path );
+        if ( dictionariesCache.containsKey ( cacheKey ) )
+        {
+            return dictionariesCache.get ( cacheKey );
+        }
+        return addDictionary ( cacheKey, loadDictionary ( path ) );
+    }
+
+    /**
+     * Returns dictionary cache key.
+     *
+     * @param path path to dictionary file
+     * @return dictionary cache key
+     */
+    public static String getDictionaryCacheKey ( final String path )
+    {
+        return path;
+    }
+
+    /**
      * Returns dictionary loaded from the specified file path.
      *
      * @param path file path to load dictionary from
@@ -1177,6 +1269,35 @@ public class LanguageManager implements LanguageConstants
     public static Dictionary loadDictionary ( final String path )
     {
         return loadDictionary ( new File ( path ) );
+    }
+
+    /**
+     * Adds new language dictionary into LanguageManager.
+     * This method call may cause a lot of UI updates depending on amount of translations contained.
+     * If added dictionary contains records with existing keys they will override previously added ones.
+     *
+     * @param file dictionary file
+     * @return newly added dictionary
+     */
+    public static Dictionary addDictionary ( final File file )
+    {
+        final String cacheKey = getDictionaryCacheKey ( file );
+        if ( dictionariesCache.containsKey ( cacheKey ) )
+        {
+            return dictionariesCache.get ( cacheKey );
+        }
+        return addDictionary ( cacheKey, loadDictionary ( file ) );
+    }
+
+    /**
+     * Returns dictionary cache key.
+     *
+     * @param file dictionary file
+     * @return dictionary cache key
+     */
+    public static String getDictionaryCacheKey ( final File file )
+    {
+        return file.getAbsolutePath ();
     }
 
     /**
@@ -1195,64 +1316,31 @@ public class LanguageManager implements LanguageConstants
      * This method call may cause a lot of UI updates depending on amount of translations contained.
      * If added dictionary contains records with existing keys they will override previously added ones.
      *
-     * @param nearClass class to look near for the dictionary file
-     * @param resource  path to dictionary file
-     * @return newly added dictionary
-     */
-    public static Dictionary addDictionary ( final Class nearClass, final String resource )
-    {
-        return addDictionary ( loadDictionary ( nearClass, resource ) );
-    }
-
-    /**
-     * Adds new language dictionary into LanguageManager.
-     * This method call may cause a lot of UI updates depending on amount of translations contained.
-     * If added dictionary contains records with existing keys they will override previously added ones.
-     *
-     * @param url dictionary file url
-     * @return newly added dictionary
-     */
-    public static Dictionary addDictionary ( final URL url )
-    {
-        return addDictionary ( loadDictionary ( url ) );
-    }
-
-    /**
-     * Adds new language dictionary into LanguageManager.
-     * This method call may cause a lot of UI updates depending on amount of translations contained.
-     * If added dictionary contains records with existing keys they will override previously added ones.
-     *
-     * @param path path to dictionary file
-     * @return newly added dictionary
-     */
-    public static Dictionary addDictionary ( final String path )
-    {
-        return addDictionary ( loadDictionary ( path ) );
-    }
-
-    /**
-     * Adds new language dictionary into LanguageManager.
-     * This method call may cause a lot of UI updates depending on amount of translations contained.
-     * If added dictionary contains records with existing keys they will override previously added ones.
-     *
-     * @param file dictionary file
-     * @return newly added dictionary
-     */
-    public static Dictionary addDictionary ( final File file )
-    {
-        return addDictionary ( loadDictionary ( file ) );
-    }
-
-    /**
-     * Adds new language dictionary into LanguageManager.
-     * This method call may cause a lot of UI updates depending on amount of translations contained.
-     * If added dictionary contains records with existing keys they will override previously added ones.
-     *
      * @param dictionary dictionary to add
      * @return newly added dictionary
      */
     public static Dictionary addDictionary ( final Dictionary dictionary )
     {
+        return addDictionary ( null, dictionary );
+    }
+
+    /**
+     * Adds new language dictionary into LanguageManager.
+     * This method call may cause a lot of UI updates depending on amount of translations contained.
+     * If added dictionary contains records with existing keys they will override previously added ones.
+     *
+     * @param cacheKey   dictionary cache key
+     * @param dictionary dictionary to add
+     * @return newly added dictionary
+     */
+    public static Dictionary addDictionary ( final String cacheKey, final Dictionary dictionary )
+    {
+        // Return cached dictionary if one exists
+        if ( dictionariesCache.containsKey ( cacheKey ) )
+        {
+            return dictionariesCache.get ( cacheKey );
+        }
+
         // Removing dictionary with the same ID first
         if ( isDictionaryAdded ( dictionary ) )
         {
@@ -1267,6 +1355,12 @@ public class LanguageManager implements LanguageConstants
 
         // Updating global cache
         updateCache ( dictionary );
+
+        // Caching dictinary by its cache key
+        if ( cacheKey != null )
+        {
+            dictionariesCache.put ( cacheKey, dictionary );
+        }
 
         // Firing add event
         fireDictionaryAdded ( dictionary );
@@ -1300,8 +1394,13 @@ public class LanguageManager implements LanguageConstants
             // Clearing global dictionaries storage
             globalDictionary.clear ();
 
-            // Updating dictionaries
+            // Removing dictionary
             dictionaries.remove ( dictionary );
+
+            // Removing dictionary from cache
+            MapUtils.removeAllValues ( dictionariesCache, dictionary );
+
+            // Updating dictionaries
             for ( final Dictionary d : dictionaries )
             {
                 LanguageUtils.mergeDictionary ( d, globalDictionary );

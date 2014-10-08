@@ -20,6 +20,7 @@ package com.alee.utils;
 import com.alee.utils.collection.DoubleMap;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -185,5 +186,26 @@ public final class MapUtils
         final LinkedHashMap<K, V> map = new LinkedHashMap<K, V> ( 1 );
         map.put ( key, value );
         return map;
+    }
+
+    /**
+     * Removes all map entries where value is the same as the specified one.
+     *
+     * @param map   map to remove entries from
+     * @param value value for which entries should be removed
+     * @param <K>   key type
+     * @param <V>   value type
+     */
+    public static <K, V> void removeAllValues ( final Map<K, V> map, final V value )
+    {
+        final Iterator<Map.Entry<K, V>> iterator = map.entrySet ().iterator ();
+        while ( iterator.hasNext () )
+        {
+            final Map.Entry<K, V> entry = iterator.next ();
+            if ( CompareUtils.equals ( entry.getValue (), value ) )
+            {
+                iterator.remove ();
+            }
+        }
     }
 }

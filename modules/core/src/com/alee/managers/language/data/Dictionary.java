@@ -406,6 +406,12 @@ public final class Dictionary implements Serializable
     }
 
     @Override
+    public boolean equals ( final Object obj )
+    {
+        return obj != null && obj instanceof Dictionary && ( ( Dictionary ) obj ).getId ().equals ( getId () );
+    }
+
+    @Override
     public String toString ()
     {
         return ( name != null ? name + " " : "" ) +
