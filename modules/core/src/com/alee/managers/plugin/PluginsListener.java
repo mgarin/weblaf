@@ -29,7 +29,7 @@ import java.util.List;
  * @see com.alee.managers.plugin.PluginManager
  */
 
-public interface PluginsListener<T extends Plugin<T>>
+public interface PluginsListener<T extends Plugin>
 {
     /**
      * Called when plugins check starts.

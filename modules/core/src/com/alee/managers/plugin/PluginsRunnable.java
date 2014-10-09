@@ -25,7 +25,7 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public interface PluginsRunnable<T extends Plugin<T>>
+public interface PluginsRunnable<T extends Plugin>
 {
     /**
      * Performed operation.
