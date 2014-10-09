@@ -37,13 +37,13 @@ public class Pair<K, V> implements Serializable, Cloneable
      * Key of this {@code Pair}.
      */
     @XStreamAsAttribute
-    public final K key;
+    public K key;
 
     /**
      * Value of this this {@code Pair}.
      */
     @XStreamAsAttribute
-    public final V value;
+    public V value;
 
     /**
      * Constructs a new pair with {@code null} key and value.
@@ -87,6 +87,16 @@ public class Pair<K, V> implements Serializable, Cloneable
     }
 
     /**
+     * Sets the key for this pair.
+     *
+     * @param key new key for this pair
+     */
+    public void setKey ( final K key )
+    {
+        this.key = key;
+    }
+
+    /**
      * Gets the value for this pair.
      *
      * @return value for this pair
@@ -94,6 +104,16 @@ public class Pair<K, V> implements Serializable, Cloneable
     public V getValue ()
     {
         return value;
+    }
+
+    /**
+     * Sets the value for this pair.
+     *
+     * @param value new value for this pair
+     */
+    public void setValue ( final V value )
+    {
+        this.value = value;
     }
 
     /**

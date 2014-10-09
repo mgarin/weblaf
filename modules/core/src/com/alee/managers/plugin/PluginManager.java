@@ -44,7 +44,7 @@ import java.util.zip.ZipFile;
  * @see com.alee.managers.plugin.Plugin
  */
 
-public abstract class PluginManager<T extends Plugin<T>>
+public abstract class PluginManager<T extends Plugin>
 {
     /**
      * todo 1. PluginManager -> Plugin -> dependencies on other plugins? or not
