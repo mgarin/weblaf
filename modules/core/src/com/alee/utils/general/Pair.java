@@ -46,7 +46,15 @@ public class Pair<K, V> implements Serializable, Cloneable
     public final V value;
 
     /**
-     * Creates a new pair with {@code null} value.
+     * Constructs a new pair with {@code null} key and value.
+     */
+    public Pair ()
+    {
+        this ( null, null );
+    }
+
+    /**
+     * Constructs a new pair with {@code null} value.
      *
      * @param key The key for this pair
      */
@@ -56,7 +64,7 @@ public class Pair<K, V> implements Serializable, Cloneable
     }
 
     /**
-     * Creates a new pair
+     * Constructs a new pair
      *
      * @param key   The key for this pair
      * @param value The value to use for this pair
