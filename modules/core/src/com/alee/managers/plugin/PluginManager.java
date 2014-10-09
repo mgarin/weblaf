@@ -44,7 +44,7 @@ import java.util.zip.ZipFile;
  * @see com.alee.managers.plugin.Plugin
  */
 
-public abstract class PluginManager<T extends Plugin>
+public abstract class PluginManager<T extends Plugin<T>>
 {
     /**
      * todo 1. PluginManager -> Plugin -> dependencies on other plugins? or not
@@ -1212,6 +1212,86 @@ public abstract class PluginManager<T extends Plugin>
     public void addPluginsListener ( final PluginsListener<T> listener )
     {
         listeners.add ( listener );
+    }
+
+    /**
+     * Adds plugins scan start event action.
+     *
+     * @param runnable action to perform
+     * @return added plugins listener
+     */
+    public PluginsAdapter<T> onPluginsScanStart ( final DirectoryRunnable runnable )
+    {
+        final PluginsAdapter<T> listener = new PluginsAdapter<T> ()
+        {
+            @Override
+            public void pluginsCheckStarted ( final String directory, final boolean recursive )
+            {
+                runnable.run ( directory, recursive );
+            }
+        };
+        addPluginsListener ( listener );
+        return listener;
+    }
+
+    /**
+     * Adds plugins scan end event action.
+     *
+     * @param runnable action to perform
+     * @return added plugins listener
+     */
+    public PluginsAdapter<T> onPluginsScanEnd ( final DirectoryRunnable runnable )
+    {
+        final PluginsAdapter<T> listener = new PluginsAdapter<T> ()
+        {
+            @Override
+            public void pluginsCheckEnded ( final String directory, final boolean recursive )
+            {
+                runnable.run ( directory, recursive );
+            }
+        };
+        addPluginsListener ( listener );
+        return listener;
+    }
+
+    /**
+     * Adds plugins detection event action.
+     *
+     * @param runnable action to perform
+     * @return added plugins listener
+     */
+    public PluginsAdapter<T> onPluginsDetection ( final DetectedPluginsRunnable<T> runnable )
+    {
+        final PluginsAdapter<T> listener = new PluginsAdapter<T> ()
+        {
+            @Override
+            public void pluginsDetected ( final List<DetectedPlugin<T>> detectedPlugins )
+            {
+                runnable.run ( detectedPlugins );
+            }
+        };
+        addPluginsListener ( listener );
+        return listener;
+    }
+
+    /**
+     * Adds plugins initialization end event action.
+     *
+     * @param runnable action to perform
+     * @return added plugins listener
+     */
+    public PluginsAdapter<T> onPluginsInitialization ( final PluginsRunnable<T> runnable )
+    {
+        final PluginsAdapter<T> listener = new PluginsAdapter<T> ()
+        {
+            @Override
+            public void pluginsInitialized ( final List<T> plugins )
+            {
+                runnable.run ( plugins );
+            }
+        };
+        addPluginsListener ( listener );
+        return listener;
     }
 
     /**

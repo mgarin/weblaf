@@ -103,6 +103,11 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
     protected TreeSelectionListener scrollToSelectionListener = null;
 
     /**
+     * Special state provider that can be set to check whether or not specific nodes are editable.
+     */
+    protected StateProvider<E> editableStateProvider = null;
+
+    /**
      * Constructs tree with default sample model.
      */
     public WebTree ()
@@ -223,6 +228,50 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
         {
             cellEditor.addCellEditorListener ( listener );
         }
+    }
+
+    /**
+     * Returns special state provider that can be set to check whether or not specific nodes are editable.
+     * By default this provider is not specified and simply ignored by the tree.
+     *
+     * @return special state provider that can be set to check whether or not specific nodes are editable
+     */
+    public StateProvider<E> getEditableStateProvider ()
+    {
+        return editableStateProvider;
+    }
+
+    /**
+     * Sets special state provider that can be set to check whether or not specific nodes are editable.
+     * You can provide null to disable this state check at all.
+     *
+     * @param stateProvider special state provider that can be set to check whether or not specific nodes are editable
+     */
+    public void setEditableStateProvider ( final StateProvider<E> stateProvider )
+    {
+        this.editableStateProvider = stateProvider;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isPathEditable ( final TreePath path )
+    {
+        return super.isPathEditable ( path ) && isNodeEditable ( ( E ) path.getLastPathComponent () );
+    }
+
+    /**
+     * Returns whether the specified tree node is editable or not.
+     * This method is an improved version of default JTree method isPathEditable.
+     *
+     * @param node node to check editable state for
+     * @return true if the specified tree node is editable, false otherwise
+     * @see #isPathEditable(javax.swing.tree.TreePath)
+     */
+    public boolean isNodeEditable ( final E node )
+    {
+        return editableStateProvider == null || editableStateProvider.provide ( node );
     }
 
     /**

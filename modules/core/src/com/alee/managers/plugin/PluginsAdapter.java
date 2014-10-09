@@ -29,7 +29,7 @@ import java.util.List;
  * @see com.alee.managers.plugin.PluginManager
  */
 
-public abstract class PluginsAdapter<T extends Plugin> implements PluginsListener<T>
+public abstract class PluginsAdapter<T extends Plugin<T>> implements PluginsListener<T>
 {
     /**
      * {@inheritDoc}
