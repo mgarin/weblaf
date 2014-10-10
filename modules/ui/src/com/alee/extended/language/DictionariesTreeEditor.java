@@ -37,7 +37,7 @@ public class DictionariesTreeEditor extends WebTreeCellEditor
     /**
      * Dictionaries tree for this editor.
      */
-    private DictionariesTree tree;
+    private final DictionariesTree tree;
 
     /**
      * Last editor's value.
@@ -49,7 +49,7 @@ public class DictionariesTreeEditor extends WebTreeCellEditor
      *
      * @param tree dictionaries tree
      */
-    public DictionariesTreeEditor ( DictionariesTree tree )
+    public DictionariesTreeEditor ( final DictionariesTree tree )
     {
         super ();
         this.tree = tree;
@@ -67,12 +67,13 @@ public class DictionariesTreeEditor extends WebTreeCellEditor
      * @return cell editor component
      */
     @Override
-    public Component getTreeCellEditorComponent ( JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row )
+    public Component getTreeCellEditorComponent ( final JTree tree, final Object value, final boolean isSelected, final boolean expanded,
+                                                  final boolean leaf, final int row )
     {
-        WebTextField editor = ( WebTextField ) super.getTreeCellEditorComponent ( tree, value, isSelected, expanded, leaf, row );
+        final WebTextField editor = ( WebTextField ) super.getTreeCellEditorComponent ( tree, value, isSelected, expanded, leaf, row );
 
         lastValue = ( DefaultMutableTreeNode ) value;
-        Object val = lastValue.getUserObject ();
+        final Object val = lastValue.getUserObject ();
         if ( val instanceof Dictionary )
         {
             editor.setText ( ( ( Dictionary ) val ).getPrefix () );
@@ -105,8 +106,8 @@ public class DictionariesTreeEditor extends WebTreeCellEditor
     @Override
     public Object getCellEditorValue ()
     {
-        String editorValue = ( String ) super.getCellEditorValue ();
-        Object val = lastValue.getUserObject ();
+        final String editorValue = ( String ) super.getCellEditorValue ();
+        final Object val = lastValue.getUserObject ();
         if ( val instanceof Dictionary )
         {
             ( ( Dictionary ) val ).setPrefix ( editorValue );
@@ -137,9 +138,9 @@ public class DictionariesTreeEditor extends WebTreeCellEditor
      * @return true if cell is editable, false otherwise
      */
     @Override
-    public boolean isCellEditable ( EventObject event )
+    public boolean isCellEditable ( final EventObject event )
     {
-        Object value = tree.getSelectedValue ();
+        final Object value = tree.getSelectedValue ();
         return value != null &&
                 ( value instanceof Dictionary || value instanceof Record || value instanceof Value || value instanceof Text ||
                         value instanceof Tooltip ) && super.isCellEditable ( event );

@@ -115,7 +115,7 @@ public class WebTreeUI extends BasicTreeUI
      * @param c component that will use UI instance
      * @return instance of the WebTreeUI
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebTreeUI ();
@@ -146,6 +146,9 @@ public class WebTreeUI extends BasicTreeUI
         // Use a moderate amount of visible rows by default
         // BasicTreeUI uses 20 rows by default which is too much
         tree.setVisibleRowCount ( 10 );
+
+        // Forces tree to save changes when another tree node is selected instead of cancelling them
+        tree.setInvokesStopCellEditing ( true );
 
         // Orientation change listener
         orientationChangeListener = new PropertyChangeListener ()
