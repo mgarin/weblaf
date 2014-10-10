@@ -105,8 +105,12 @@ public class WebTreeCellEditor<C extends JComponent> extends WebDefaultCellEdito
     public boolean stopCellEditing ()
     {
         // Properly remove focus listener to avoid incorrect stop edit calls
-        editorComponent.removeFocusListener ( this );
-        return super.stopCellEditing ();
+        final boolean stopped = super.stopCellEditing ();
+        if ( stopped )
+        {
+            editorComponent.removeFocusListener ( this );
+        }
+        return stopped;
     }
 
     /**
