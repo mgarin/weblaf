@@ -20,20 +20,16 @@ package com.alee.extended.tree;
 import com.alee.extended.tree.sample.SampleExDataProvider;
 import com.alee.extended.tree.sample.SampleTreeCellEditor;
 import com.alee.extended.tree.sample.SampleTreeCellRenderer;
-import com.alee.extended.window.TestFrame;
 import com.alee.laf.tree.UniqueNode;
 import com.alee.laf.tree.WebTree;
 import com.alee.laf.tree.WebTreeCellEditor;
 import com.alee.laf.tree.WebTreeCellRenderer;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.compare.Filter;
-import com.alee.utils.swing.MouseButton;
-import com.alee.utils.swing.MouseEventRunnable;
 
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 import java.awt.*;
-import java.awt.event.MouseEvent;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
@@ -49,20 +45,6 @@ import java.util.List;
 
 public class WebExTree<E extends UniqueNode> extends WebTree<E>
 {
-    public static void main ( final String[] args )
-    {
-        final WebExTree tree = new WebExTree ();
-        tree.onMousePress ( MouseButton.right, new MouseEventRunnable ()
-        {
-            @Override
-            public void run ( final MouseEvent e )
-            {
-                tree.reloadSelectedNodes ();
-            }
-        } );
-        TestFrame.show ( tree );
-    }
-
     /**
      * Tree nodes comparator.
      */
