@@ -680,4 +680,14 @@ public abstract class AbstractMenuGenerator<E extends JComponent>
     {
         return menu;
     }
+
+    /**
+     * Returns whether menu is empty or not.
+     *
+     * @return true if menu is empty, false otherwise
+     */
+    public boolean isEmpty ()
+    {
+        return menu.getComponentCount () == 0;
+    }
 }

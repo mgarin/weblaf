@@ -208,17 +208,23 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
     @Override
     public void reload ( final TreeNode node )
     {
+        final E reloadedNode = ( E ) node;
+
         // Cancels tree editing
         tree.cancelEditing ();
 
         // Cleaning up nodes cache
-        clearNodeChildsCache ( ( E ) node, false );
+        clearNodeChildsCache ( reloadedNode, false );
+
+        // Removing all old childs if such exist
+        // We don't need to inform about child nodes removal here due to later structural update call
+        reloadedNode.removeAllChildren ();
 
         // Forcing childs reload
-        super.reload ( node );
+        super.reload ( reloadedNode );
 
         // Forcing structure reload
-        loadTreeData ( ( E ) node );
+        loadTreeData ( reloadedNode );
     }
 
     /**

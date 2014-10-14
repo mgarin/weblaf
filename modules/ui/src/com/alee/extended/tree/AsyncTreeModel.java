@@ -409,6 +409,7 @@ public class AsyncTreeModel<E extends AsyncUniqueNode> extends WebTreeModel<E>
         // Firing load started event
         fireChildsLoadStarted ( parent );
 
+        // todo This should actually be called on node reload?
         // Removing all old childs if such exist
         final int childCount = parent.getChildCount ();
         if ( childCount > 0 )
