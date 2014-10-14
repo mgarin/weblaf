@@ -26,6 +26,8 @@ import java.util.Comparator;
  *
  * @param <E> custom node type
  * @author Mikle Garin
+ * @see com.alee.extended.tree.WebAsyncTree
+ * @see com.alee.extended.tree.AsyncTreeModel
  */
 
 public interface AsyncTreeDataProvider<E extends AsyncUniqueNode>

@@ -28,6 +28,8 @@ import java.util.List;
  *
  * @param <E> custom node type
  * @author Mikle Garin
+ * @see com.alee.extended.tree.WebExTree
+ * @see com.alee.extended.tree.ExTreeModel
  */
 
 public interface ExTreeDataProvider<E extends UniqueNode>

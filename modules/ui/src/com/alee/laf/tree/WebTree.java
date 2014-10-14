@@ -902,11 +902,7 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
      */
     public void startEditingSelectedNode ()
     {
-        final TreePath path = getSelectionPath ();
-        if ( path != null )
-        {
-            startEditingAtPath ( path );
-        }
+        startEditingNode ( getSelectedNode () );
     }
 
     /**
@@ -916,10 +912,17 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
      */
     public void startEditingNode ( final E node )
     {
-        final TreePath path = getPathForNode ( node );
-        if ( path != null )
+        if ( node != null )
         {
-            startEditingAtPath ( path );
+            final TreePath path = getPathForNode ( node );
+            if ( path != null )
+            {
+                if ( !isVisible ( path ) )
+                {
+                    expandPath ( path );
+                }
+                startEditingAtPath ( path );
+            }
         }
     }
 

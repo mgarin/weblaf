@@ -36,6 +36,8 @@ import java.util.*;
  *
  * @param <E> custom node type
  * @author Mikle Garin
+ * @see com.alee.extended.tree.WebAsyncTree
+ * @see com.alee.extended.tree.AsyncTreeDataProvider
  */
 
 public class AsyncTreeModel<E extends AsyncUniqueNode> extends WebTreeModel<E>

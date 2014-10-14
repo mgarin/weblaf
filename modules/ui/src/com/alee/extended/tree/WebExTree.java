@@ -39,6 +39,8 @@ import java.util.List;
  * Simply implement ExTreeDataProvider interface and pass it into the tree to create its structure.
  *
  * @author Mikle Garin
+ * @see com.alee.extended.tree.ExTreeModel
+ * @see com.alee.extended.tree.ExTreeDataProvider
  */
 
 public class WebExTree<E extends UniqueNode> extends WebTree<E>
@@ -108,27 +110,11 @@ public class WebExTree<E extends UniqueNode> extends WebTree<E>
             final ExTreeDataProvider<E> oldDataProvider = getDataProvider ();
 
             // Updating model
-            final ExTreeModel<E> model = new ExTreeModel<E> ( this, dataProvider );
-            setModel ( model );
+            // Be aware that all the data will be loaded right away
+            setModel ( new ExTreeModel<E> ( this, dataProvider ) );
 
-            // Forcing model to cache the whole structure
-            loadTreeData ( model.getRoot (), model );
-
+            // Informing about data provider change
             firePropertyChange ( TREE_DATA_PROVIDER_PROPERTY, oldDataProvider, dataProvider );
-        }
-    }
-
-    /**
-     * Forces model to cache the whole structure so any node can be accessed right away.
-     * Note that this might take some time in case tree structure is large.
-     * Though this doesn't force any repaints or other visual updates, so the speed depends only on ExTreeDataProvider.
-     */
-    protected void loadTreeData ( final E node, final ExTreeModel<E> model )
-    {
-        final int childCount = model.getChildCount ( node );
-        for ( int i = 0; i < childCount; i++ )
-        {
-            loadTreeData ( model.getChild ( node, i ), model );
         }
     }
 

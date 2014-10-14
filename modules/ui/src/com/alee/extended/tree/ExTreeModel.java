@@ -33,6 +33,8 @@ import java.util.*;
 
 /**
  * @author Mikle Garin
+ * @see com.alee.extended.tree.WebExTree
+ * @see com.alee.extended.tree.ExTreeDataProvider
  */
 
 public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
@@ -88,6 +90,7 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
         super ( null );
         this.tree = tree;
         this.dataProvider = dataProvider;
+        loadTreeData ( getRootNode () );
     }
 
     /**
@@ -184,6 +187,20 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
     }
 
     /**
+     * Forces model to cache the whole structure so any node can be accessed right away.
+     * Note that this might take some time in case tree structure is large.
+     * Though this doesn't force any repaints or other visual updates, so the speed depends only on ExTreeDataProvider.
+     */
+    protected void loadTreeData ( final E node )
+    {
+        final int childCount = getChildCount ( node );
+        for ( int i = 0; i < childCount; i++ )
+        {
+            loadTreeData ( getChild ( node, i ) );
+        }
+    }
+
+    /**
      * Reloads node childs.
      *
      * @param node node
@@ -199,6 +216,9 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
 
         // Forcing childs reload
         super.reload ( node );
+
+        // Forcing structure reload
+        loadTreeData ( ( E ) node );
     }
 
     /**

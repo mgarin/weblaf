@@ -43,11 +43,8 @@ import java.util.List;
  * @param <E> tree nodes type
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebAsyncTree">How to use WebAsyncTree</a>
- * @see WebTree
- * @see AsyncTreeModel
- * @see AsyncTreeDataProvider
- * @see AsyncTreeListener
- * @see WebAsyncTreeCellRenderer
+ * @see com.alee.extended.tree.AsyncTreeModel
+ * @see com.alee.extended.tree.AsyncTreeDataProvider
  */
 
 public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implements AsyncTreeModelListener<E>
