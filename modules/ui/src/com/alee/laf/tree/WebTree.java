@@ -36,10 +36,8 @@ import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.KeyAdapter;
 import java.awt.event.MouseAdapter;
-import java.util.ArrayList;
-import java.util.Hashtable;
+import java.util.*;
 import java.util.List;
-import java.util.Vector;
 
 /**
  * This JTree extension class provides a direct access to WebTreeUI methods.
@@ -581,6 +579,28 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
             for ( final TreePath path : selectionPaths )
             {
                 selectedNodes.add ( getNodeForPath ( path ) );
+            }
+        }
+        return selectedNodes;
+    }
+
+    /**
+     * Returns only selected nodes which are currently visible in tree area.
+     * This will include nodes which are fully and partially visible in tree area.
+     *
+     * @return selected nodes which are currently visible in tree area
+     */
+    public List<E> getVisibleSelectedNodes ()
+    {
+        final List<E> selectedNodes = getSelectedNodes ();
+        final Rectangle vr = getVisibleRect ();
+        final Iterator<E> iterator = selectedNodes.iterator ();
+        while ( iterator.hasNext () )
+        {
+            final E node = iterator.next ();
+            if ( !vr.intersects ( getNodeBounds ( node ) ) )
+            {
+                iterator.remove ();
             }
         }
         return selectedNodes;
