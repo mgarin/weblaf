@@ -1062,14 +1062,17 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel
      */
     public void openDocument ( final T document )
     {
-        if ( isDocumentOpened ( document ) )
+        if ( document != null )
         {
-            setSelected ( document );
-        }
-        else if ( activePane != null )
-        {
-            activePane.open ( document );
-            activePane.setSelected ( document );
+            if ( isDocumentOpened ( document ) )
+            {
+                setSelected ( document );
+            }
+            else if ( activePane != null )
+            {
+                activePane.open ( document );
+                activePane.setSelected ( document );
+            }
         }
     }
 
@@ -1295,21 +1298,24 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel
         {
             // Restoring pane data
             final PaneData<T> paneData = new PaneData<T> ( this );
-            for ( final String id : state.getDocumentIds () )
+            if ( state.getDocumentIds () != null )
             {
-                // In case document doesn't exist, try requesting it from provider if we have one
-                if ( documentsProvider != null && !documents.containsKey ( id ) )
+                for ( final String id : state.getDocumentIds () )
                 {
-                    documents.put ( id, documentsProvider.provide ( id ) );
-                }
-
-                // Simply open document if it exists
-                if ( documents.containsKey ( id ) )
-                {
-                    final T document = documents.get ( id );
-                    if ( document != null )
+                    // In case document doesn't exist, try requesting it from provider if we have one
+                    if ( documentsProvider != null && !documents.containsKey ( id ) )
                     {
-                        paneData.open ( document );
+                        documents.put ( id, documentsProvider.provide ( id ) );
+                    }
+
+                    // Simply open document if it exists
+                    if ( documents.containsKey ( id ) )
+                    {
+                        final T document = documents.get ( id );
+                        if ( document != null )
+                        {
+                            paneData.open ( document );
+                        }
                     }
                 }
             }

@@ -392,6 +392,10 @@ public class AsyncTreeModel<E extends AsyncUniqueNode> extends WebTreeModel<E>
      */
     protected int loadChildsCount ( final E parent )
     {
+        // todo Use when moved to JDK8
+        // final SecondaryLoop loop = Toolkit.getDefaultToolkit ().getSystemEventQueue ().createSecondaryLoop ();
+        // loop.enter/exit
+
         // Checking if the node is busy already
         synchronized ( busyLock )
         {
