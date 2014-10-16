@@ -121,10 +121,13 @@ public abstract class AbstractListCellEditor<E extends Component, T> implements 
                 {
                     final Point point = e.getPoint ();
                     final int index = list.getUI ().locationToIndex ( list, point );
-                    final Rectangle cell = list.getCellBounds ( index, index );
-                    if ( cell.contains ( point ) )
+                    if ( index >= 0 && index < list.getModel ().getSize () )
                     {
-                        startEdit ( list, index );
+                        final Rectangle cell = list.getCellBounds ( index, index );
+                        if ( cell.contains ( point ) )
+                        {
+                            startEdit ( list, index );
+                        }
                     }
                 }
             }
@@ -220,7 +223,7 @@ public abstract class AbstractListCellEditor<E extends Component, T> implements 
      * @param index cell index
      * @param value cell value
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     protected void createCellEditorListeners ( final JList list, final int index, final T value )
     {
         // Editing stop on focus loss event
