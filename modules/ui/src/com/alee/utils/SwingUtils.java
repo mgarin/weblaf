@@ -2491,6 +2491,10 @@ public final class SwingUtils
         {
             return true;
         }
+        else if ( component1 == null && component2 != null || component1 != null && component2 == null )
+        {
+            return false;
+        }
         else
         {
             if ( component1 instanceof Container )

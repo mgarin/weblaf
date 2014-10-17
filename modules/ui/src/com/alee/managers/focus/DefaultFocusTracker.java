@@ -17,6 +17,14 @@
 
 package com.alee.managers.focus;
 
+import com.alee.utils.SwingUtils;
+
+import java.awt.*;
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 /**
  * Small extension class for FocusTracker that simplifies its creation.
  *
@@ -36,6 +44,11 @@ public abstract class DefaultFocusTracker implements FocusTracker
     private boolean uniteWithChilds;
 
     /**
+     * Custom childs which should be tracked together with this component.
+     */
+    private List<WeakReference<Component>> customChildren;
+
+    /**
      * Constructs new tracker with the specified tracked component.
      */
     public DefaultFocusTracker ()
@@ -48,7 +61,7 @@ public abstract class DefaultFocusTracker implements FocusTracker
      *
      * @param uniteWithChilds whether component and its childs in components tree should be counted as a single component or not
      */
-    public DefaultFocusTracker ( boolean uniteWithChilds )
+    public DefaultFocusTracker ( final boolean uniteWithChilds )
     {
         super ();
         this.enabled = true;
@@ -69,7 +82,7 @@ public abstract class DefaultFocusTracker implements FocusTracker
      *
      * @param enabled whether tracking is currently enabled or not
      */
-    public void setTrackingEnabled ( boolean enabled )
+    public void setTrackingEnabled ( final boolean enabled )
     {
         this.enabled = enabled;
     }
@@ -78,6 +91,71 @@ public abstract class DefaultFocusTracker implements FocusTracker
      * {@inheritDoc}
      */
     @Override
+    public boolean isInvolved ( final Component component, final Component tracked )
+    {
+        if ( isUniteWithChilds () )
+        {
+            if ( SwingUtils.isEqualOrChild ( tracked, component ) )
+            {
+                return true;
+            }
+            if ( customChildren != null )
+            {
+                final Iterator<WeakReference<Component>> iterator = customChildren.iterator ();
+                while ( iterator.hasNext () )
+                {
+                    final WeakReference<Component> next = iterator.next ();
+                    final Component customChild = next.get ();
+                    if ( customChild == null )
+                    {
+                        iterator.remove ();
+                    }
+                    else
+                    {
+                        if ( SwingUtils.isEqualOrChild ( customChild, component ) )
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        else
+        {
+            if ( tracked == component )
+            {
+                return true;
+            }
+            if ( customChildren != null )
+            {
+                final Iterator<WeakReference<Component>> iterator = customChildren.iterator ();
+                while ( iterator.hasNext () )
+                {
+                    final WeakReference<Component> next = iterator.next ();
+                    final Component customChild = next.get ();
+                    if ( customChild == null )
+                    {
+                        iterator.remove ();
+                    }
+                    else
+                    {
+                        if ( customChild == component )
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns whether component and its childs in components tree should be counted as a single component or not.
+     * In case component and its childs are counted as one focus changes within them will be ignored by tracker.
+     *
+     * @return true if component and its childs in components tree should be counted as a single component, false otherwise
+     */
     public boolean isUniteWithChilds ()
     {
         return uniteWithChilds;
@@ -88,8 +166,93 @@ public abstract class DefaultFocusTracker implements FocusTracker
      *
      * @param uniteWithChilds whether component and its childs in components tree should be counted as a single component or not
      */
-    public void setUniteWithChilds ( boolean uniteWithChilds )
+    public void setUniteWithChilds ( final boolean uniteWithChilds )
     {
         this.uniteWithChilds = uniteWithChilds;
+    }
+
+    /**
+     * Returns custom childs which should be tracked together with this component.
+     * Note that `isUniteWithChilds` value will also affect how these childs focus is checked.
+     *
+     * @return custom childs which should be tracked together with this component
+     */
+    public List<Component> getCustomChildren ()
+    {
+        final List<Component> children = new ArrayList<Component> ( customChildren.size () );
+        final Iterator<WeakReference<Component>> iterator = customChildren.iterator ();
+        while ( iterator.hasNext () )
+        {
+            final WeakReference<Component> next = iterator.next ();
+            final Component component = next.get ();
+            if ( component == null )
+            {
+                iterator.remove ();
+            }
+            else
+            {
+                children.add ( component );
+            }
+        }
+        return children;
+    }
+
+    /**
+     * Returns weakly-referenced custom children.
+     *
+     * @return weakly-referenced custom children
+     */
+    public List<WeakReference<Component>> getWeakCustomChildren ()
+    {
+        return customChildren;
+    }
+
+    /**
+     * Sets custom childs which should be tracked together with this component.
+     *
+     * @param customChildren custom childs which should be tracked together with this component
+     */
+    public void setCustomChildren ( final List<Component> customChildren )
+    {
+        for ( final Component customChild : customChildren )
+        {
+            addCustomChild ( customChild );
+        }
+    }
+
+    /**
+     * Adds new custom child.
+     *
+     * @param customChild custom child to add
+     */
+    public void addCustomChild ( final Component customChild )
+    {
+        if ( customChildren == null )
+        {
+            customChildren = new ArrayList<WeakReference<Component>> ( 1 );
+        }
+        customChildren.add ( new WeakReference<Component> ( customChild ) );
+    }
+
+    /**
+     * Removes custom child.
+     *
+     * @param customChild custom child to remove
+     */
+    public void removeCustomChild ( final Component customChild )
+    {
+        if ( customChildren != null )
+        {
+            final Iterator<WeakReference<Component>> iterator = customChildren.iterator ();
+            while ( iterator.hasNext () )
+            {
+                final WeakReference<Component> next = iterator.next ();
+                final Component component = next.get ();
+                if ( component == null || component == customChild )
+                {
+                    iterator.remove ();
+                }
+            }
+        }
     }
 }

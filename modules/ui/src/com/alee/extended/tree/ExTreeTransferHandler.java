@@ -23,11 +23,9 @@ import com.alee.managers.log.Log;
 
 import javax.swing.*;
 import javax.swing.tree.TreePath;
-import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -39,22 +37,12 @@ import java.util.Map;
  * @author Mikle Garin
  */
 
-public abstract class ExTreeTransferHandler<N extends UniqueNode, T extends WebExTree<N>> extends TransferHandler
+public abstract class ExTreeTransferHandler<N extends UniqueNode, T extends WebExTree<N>> extends AbstractTreeTransferHandler<N, T>
 {
     /**
      * Whether or not should optimize dragged nodes list to minimum.
      */
     protected boolean optimizeDraggedNodes = true;
-
-    /**
-     * Nodes flavor.
-     */
-    protected DataFlavor nodesFlavor;
-
-    /**
-     * Nodes flavor array.
-     */
-    protected DataFlavor[] flavors = new DataFlavor[ 1 ];
 
     /**
      * Array of dragged nodes that should be removed at the end of DnD operation.
@@ -66,23 +54,6 @@ public abstract class ExTreeTransferHandler<N extends UniqueNode, T extends WebE
      * This map is used to properly adjust drop index in the destination node if D&D performed within one tree.
      */
     protected Map<String, List<Integer>> removedUnder;
-
-    /**
-     * Constructs new async tree transfer handler.
-     */
-    public ExTreeTransferHandler ()
-    {
-        super ();
-        try
-        {
-            nodesFlavor = new DataFlavor ( DataFlavor.javaJVMLocalObjectMimeType + ";class=\"" + List.class.getName () + "\"" );
-            flavors[ 0 ] = nodesFlavor;
-        }
-        catch ( final ClassNotFoundException e )
-        {
-            Log.error ( this, e );
-        }
-    }
 
     /**
      * Return whether or not should optimize dragged nodes list to minimum.
@@ -424,58 +395,5 @@ public abstract class ExTreeTransferHandler<N extends UniqueNode, T extends WebE
     public String toString ()
     {
         return getClass ().getName ();
-    }
-
-    /**
-     * Custom nodes transferable used for D&D operation.
-     */
-    public class NodesTransferable implements Transferable, Serializable
-    {
-        /**
-         * Transferred nodes.
-         */
-        protected final List<N> nodes;
-
-        /**
-         * Constructs new nodes transferable with the specified nodes as data.
-         *
-         * @param nodes transferred nodes
-         */
-        public NodesTransferable ( final List<N> nodes )
-        {
-            super ();
-            this.nodes = nodes;
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public Object getTransferData ( final DataFlavor flavor ) throws UnsupportedFlavorException
-        {
-            if ( !isDataFlavorSupported ( flavor ) )
-            {
-                throw new UnsupportedFlavorException ( flavor );
-            }
-            return nodes;
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public DataFlavor[] getTransferDataFlavors ()
-        {
-            return flavors;
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public boolean isDataFlavorSupported ( final DataFlavor flavor )
-        {
-            return nodesFlavor.equals ( flavor );
-        }
     }
 }

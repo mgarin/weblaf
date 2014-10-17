@@ -20,7 +20,6 @@ package com.alee.managers.focus;
 import com.alee.global.GlobalConstants;
 import com.alee.managers.log.Log;
 import com.alee.utils.CollectionUtils;
-import com.alee.utils.SwingUtils;
 
 import java.awt.*;
 import java.awt.event.AWTEventListener;
@@ -132,40 +131,40 @@ public class FocusManager
                     // Iterating through registered components
                     for ( final Map.Entry<Component, Map<FocusTracker, Boolean>> entry : getTrackersCopy ().entrySet () )
                     {
-                        // Retrieving tracked component and its trackers
+                        // Retrieving tracked component
                         final Component tracked = entry.getKey ();
-                        final Map<FocusTracker, Boolean> componentTrackers = entry.getValue ();
-
-                        // Iterating through registered component trackers
-                        for ( final Map.Entry<FocusTracker, Boolean> innerEntry : componentTrackers.entrySet () )
+                        if ( tracked != null )
                         {
-                            // Retrieving tracker and its last state
-                            final FocusTracker focusTracker = innerEntry.getKey ();
-                            final Boolean trackerStateCache = innerEntry.getValue ();
-
-                            // Checking state change
-                            if ( tracked != null )
+                            // Iterating through registered component trackers
+                            for ( final Map.Entry<FocusTracker, Boolean> innerEntry : entry.getValue ().entrySet () )
                             {
                                 // Skip if tracker is disabled
+                                final FocusTracker focusTracker = innerEntry.getKey ();
                                 if ( focusTracker.isTrackingEnabled () )
                                 {
-                                    // Determining component is focused or not
-                                    final boolean unite = focusTracker.isUniteWithChilds ();
-                                    final boolean focused = unite ? SwingUtils.isEqualOrChild ( tracked, newFocus ) : tracked == newFocus;
+                                    // Checking whether or not component is related to this focus change
+                                    final boolean isOldFocused = focusTracker.isInvolved ( oldFocus, tracked );
+                                    final boolean isNewFocused = focusTracker.isInvolved ( newFocus, tracked );
 
-                                    // Informing about focus changes if needed
-                                    if ( trackerStateCache != focused )
+                                    // Informing object only if it is involved in changes
+                                    if ( isOldFocused || isNewFocused )
                                     {
-                                        focusTracker.focusChanged ( focused );
-                                    }
-
-                                    // Caching focus state
-                                    synchronized ( trackersLock )
-                                    {
-                                        final Map<FocusTracker, Boolean> ct = trackers.get ( tracked );
-                                        if ( ct != null && ct.containsKey ( focusTracker ) )
+                                        // Informing about focus changes if needed
+                                        final Boolean trackerStateCache = innerEntry.getValue ();
+                                        if ( trackerStateCache == null || trackerStateCache != isNewFocused )
                                         {
-                                            ct.put ( focusTracker, focused );
+                                            // Informing tracker about focus change
+                                            focusTracker.focusChanged ( isNewFocused );
+
+                                            // Caching focus state
+                                            synchronized ( trackersLock )
+                                            {
+                                                final Map<FocusTracker, Boolean> ct = trackers.get ( tracked );
+                                                if ( ct != null && ct.containsKey ( focusTracker ) )
+                                                {
+                                                    ct.put ( focusTracker, isNewFocused );
+                                                }
+                                            }
                                         }
                                     }
                                 }
@@ -209,7 +208,7 @@ public class FocusManager
      */
     public static Component getFocusOwner ()
     {
-        return focusOwner.get ();
+        return focusOwner != null ? focusOwner.get () : null;
     }
 
     /**
@@ -287,8 +286,7 @@ public class FocusManager
                 componentTrackers = new WeakHashMap<FocusTracker, Boolean> ();
                 trackers.put ( component, componentTrackers );
             }
-            componentTrackers.put ( focusTracker,
-                    focusTracker.isUniteWithChilds () ? SwingUtils.hasFocusOwner ( component ) : component.isFocusOwner () );
+            componentTrackers.put ( focusTracker, focusTracker.isInvolved ( getFocusOwner (), component ) );
         }
     }
 
