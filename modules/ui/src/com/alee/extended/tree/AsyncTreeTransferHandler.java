@@ -62,6 +62,8 @@ public abstract class AsyncTreeTransferHandler<N extends AsyncUniqueNode, T exte
     @Override
     protected boolean canDropTo ( final N dropLocation )
     {
+        // Do not allow a drop on busy node as that might break tree model
+        // Do not allow a drop on a failed node as it is already messed
         return super.canDropTo ( dropLocation ) && !dropLocation.isLoading () && !dropLocation.isFailed ();
     }
 

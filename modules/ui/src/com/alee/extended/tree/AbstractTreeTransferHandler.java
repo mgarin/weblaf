@@ -209,8 +209,7 @@ public abstract class AbstractTreeTransferHandler<N extends UniqueNode, T extend
             return false;
         }
 
-        // Do not allow a drop on busy node as that might break tree model
-        // Do not allow a drop on a failed node as it is already messed
+        // Do not allow drop onto null path
         final JTree.DropLocation dl = ( JTree.DropLocation ) support.getDropLocation ();
         final TreePath path = dl.getPath ();
         if ( path == null )
@@ -220,21 +219,25 @@ public abstract class AbstractTreeTransferHandler<N extends UniqueNode, T extend
 
         try
         {
+            // Check whether actual TransferHandler accepts drop to this location
             final N target = ( N ) path.getLastPathComponent ();
             if ( !canDropTo ( target ) )
             {
                 return false;
             }
 
-            // Do not allow drop inside one of dragged elements
+            // Do not allow drop inside one of dragged elements if this is a MOVE operation
             // Will not work when dragged to another tree, but it doesn't matter in that case
-            if ( draggedNodes != null )
+            if ( isMoveAction ( support.getDropAction () ) )
             {
-                for ( final N node : draggedNodes )
+                if ( draggedNodes != null )
                 {
-                    if ( node == target || node.isNodeDescendant ( target ) )
+                    for ( final N node : draggedNodes )
                     {
-                        return false;
+                        if ( node == target || node.isNodeDescendant ( target ) )
+                        {
+                            return false;
+                        }
                     }
                 }
             }
@@ -334,28 +337,24 @@ public abstract class AbstractTreeTransferHandler<N extends UniqueNode, T extend
      */
     protected int getAdjustedDropIndex ( final int dropIndex, final int dropAction, final N parent )
     {
-        if ( dropAction == COPY || draggedNodeIndices == null )
+        // Fixing drop index for case when dropped to non-leaf element
+        int adjustedDropIndex = dropIndex == -1 ? parent.getChildCount () : dropIndex;
+
+        // Adjusting drop index for MOVE operation
+        if ( isMoveAction ( dropAction ) && draggedNodeIndices != null && draggedNodeIndices.containsKey ( parent.getId () ) )
         {
-            return dropIndex;
-        }
-        else
-        {
-            // Adjusting drop index
-            int adjustedDropIndex = dropIndex == -1 ? parent.getChildCount () : dropIndex;
-            if ( draggedNodeIndices.containsKey ( parent.getId () ) )
+            for ( final Integer index : draggedNodeIndices.get ( parent.getId () ) )
             {
-                for ( final Integer index : draggedNodeIndices.get ( parent.getId () ) )
+                if ( index < adjustedDropIndex )
                 {
-                    if ( index < adjustedDropIndex )
-                    {
-                        // We simply decrement inserted index in case some node which was higher than this one was deleted
-                        // That allows us to have index that is correct when dragged nodes are already removed from the tree
-                        adjustedDropIndex--;
-                    }
+                    // We simply decrement inserted index in case some node which was higher than this one was deleted
+                    // That allows us to have index that is correct when dragged nodes are already removed from the tree
+                    adjustedDropIndex--;
                 }
             }
-            return adjustedDropIndex;
         }
+
+        return adjustedDropIndex;
     }
 
     /**

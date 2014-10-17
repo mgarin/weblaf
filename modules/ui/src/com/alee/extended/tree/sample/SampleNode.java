@@ -119,6 +119,7 @@ public class SampleNode extends AsyncUniqueNode
     /**
      * {@inheritDoc}
      */
+    @Override
     public String toString ()
     {
         return name + " (" + type + ")";
