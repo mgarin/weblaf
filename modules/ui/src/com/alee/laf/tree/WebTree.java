@@ -328,14 +328,24 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
     }
 
     /**
+     * Expands all child nodes of the specified node.
+     *
+     * @param node node to expand
+     */
+    public void expandAll ( final E node )
+    {
+        expandAll ( node, null );
+    }
+
+    /**
      * Expands all child nodes accepted by filter in a single call.
      *
      * @param node         node to expand
      * @param shouldExpand expand filter
      */
-    protected void expandAll ( final E node, final Filter<E> shouldExpand )
+    public void expandAll ( final E node, final Filter<E> shouldExpand )
     {
-        if ( shouldExpand.accept ( node ) )
+        if ( shouldExpand == null || shouldExpand.accept ( node ) )
         {
             expandNode ( node );
             for ( int i = 0; i < node.getChildCount (); i++ )
