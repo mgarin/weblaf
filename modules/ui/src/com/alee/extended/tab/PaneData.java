@@ -86,7 +86,7 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
         // Creating tabbed pane
         tabbedPane = new WebTabbedPane ( TabbedPaneStyle.attached );
         tabbedPane.putClientProperty ( WebDocumentPane.DATA_KEY, this );
-//        tabbedPane.setMinimumSize ( new Dimension ( 0, 0 ) );
+        //        tabbedPane.setMinimumSize ( new Dimension ( 0, 0 ) );
 
         // Customizing tabbed pane
         updateTabbedPaneCustomizer ( documentPane );
@@ -585,7 +585,14 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
      */
     public void setSelected ( final int index )
     {
-        tabbedPane.setSelectedIndex ( index );
+        if ( 0 <= index && index < tabbedPane.getTabCount () )
+        {
+            tabbedPane.setSelectedIndex ( index );
+        }
+        else if ( tabbedPane.getTabCount () > 0 )
+        {
+            tabbedPane.setSelectedIndex ( 0 );
+        }
     }
 
     /**
