@@ -312,7 +312,7 @@ public class NotificationManager implements SwingConstants
      */
     public static WebNotification showNotification ( final String content )
     {
-        return showNotification (null, new WebLabel ( content ), NotificationIcon.information.getIcon () );
+        return showNotification ( null, new WebLabel ( content ), NotificationIcon.information.getIcon () );
     }
 
     /**
@@ -561,7 +561,8 @@ public class NotificationManager implements SwingConstants
      */
     public static WebInnerNotification showInnerNotification ( final String content )
     {
-        return showInnerNotification ( findSuitableParentWindow (), new WebLabel ( content ), NotificationIcon.information.getIcon () );
+        return showInnerNotification ( SwingUtils.getAvailableWindow (), new WebLabel ( content ),
+                NotificationIcon.information.getIcon () );
     }
 
     /**
@@ -573,7 +574,7 @@ public class NotificationManager implements SwingConstants
      */
     public static WebInnerNotification showInnerNotification ( final String content, final Icon icon )
     {
-        return showInnerNotification ( findSuitableParentWindow (), new WebLabel ( content ), icon );
+        return showInnerNotification ( SwingUtils.getAvailableWindow (), new WebLabel ( content ), icon );
     }
 
     /**
@@ -609,7 +610,7 @@ public class NotificationManager implements SwingConstants
      */
     public static WebInnerNotification showInnerNotification ( final Component content )
     {
-        return showInnerNotification ( findSuitableParentWindow (), content, NotificationIcon.information.getIcon () );
+        return showInnerNotification ( SwingUtils.getAvailableWindow (), content, NotificationIcon.information.getIcon () );
     }
 
     /**
@@ -621,7 +622,7 @@ public class NotificationManager implements SwingConstants
      */
     public static WebInnerNotification showInnerNotification ( final Component content, final Icon icon )
     {
-        return showInnerNotification ( findSuitableParentWindow (), content, icon );
+        return showInnerNotification ( SwingUtils.getAvailableWindow (), content, icon );
     }
 
     /**
@@ -661,7 +662,7 @@ public class NotificationManager implements SwingConstants
      */
     public static WebInnerNotification showInnerNotification ( final String content, final NotificationOption... options )
     {
-        return showInnerNotification ( findSuitableParentWindow (), new WebLabel ( content ), NotificationIcon.information.getIcon (),
+        return showInnerNotification ( SwingUtils.getAvailableWindow (), new WebLabel ( content ), NotificationIcon.information.getIcon (),
                 options );
     }
 
@@ -675,7 +676,7 @@ public class NotificationManager implements SwingConstants
      */
     public static WebInnerNotification showInnerNotification ( final String content, final Icon icon, final NotificationOption... options )
     {
-        return showInnerNotification ( findSuitableParentWindow (), new WebLabel ( content ), icon, options );
+        return showInnerNotification ( SwingUtils.getAvailableWindow (), new WebLabel ( content ), icon, options );
     }
 
     /**
@@ -716,7 +717,7 @@ public class NotificationManager implements SwingConstants
      */
     public static WebInnerNotification showInnerNotification ( final Component content, final NotificationOption... options )
     {
-        return showInnerNotification ( findSuitableParentWindow (), content, NotificationIcon.information.getIcon (), options );
+        return showInnerNotification ( SwingUtils.getAvailableWindow (), content, NotificationIcon.information.getIcon (), options );
     }
 
     /**
@@ -730,7 +731,7 @@ public class NotificationManager implements SwingConstants
     public static WebInnerNotification showInnerNotification ( final Component content, final Icon icon,
                                                                final NotificationOption... options )
     {
-        return showInnerNotification ( findSuitableParentWindow (), content, icon, options );
+        return showInnerNotification ( SwingUtils.getAvailableWindow (), content, icon, options );
     }
 
     /**
@@ -773,7 +774,7 @@ public class NotificationManager implements SwingConstants
      */
     public static WebInnerNotification showInnerNotification ( final WebInnerNotification notification )
     {
-        return showInnerNotification ( findSuitableParentWindow (), notification );
+        return showInnerNotification ( SwingUtils.getAvailableWindow (), notification );
     }
 
     /**
@@ -814,41 +815,5 @@ public class NotificationManager implements SwingConstants
         notification.showPopup ( showFor );
 
         return notification;
-    }
-
-    /**
-     * Returns default window where notification should be displayed.
-     * Make sure non-inner popups do not use this method to get parent window as it might be another popup.
-     *
-     * @return default window where notification should be displayed
-     * @throws RuntimeException in case there is no displayed windows in this application
-     */
-    protected static Window findSuitableParentWindow ()
-    {
-        final Window activeWindow = SwingUtils.getActiveWindow ();
-        if ( activeWindow != null )
-        {
-            if ( activeWindow instanceof JFrame || activeWindow instanceof JDialog || activeWindow instanceof JWindow )
-            {
-                // todo Ignore notification popup windows
-                return activeWindow;
-            }
-        }
-        final Window[] allWindows = Window.getWindows ();
-        if ( allWindows != null && allWindows.length > 0 )
-        {
-            for ( final Window window : allWindows )
-            {
-                if ( window.isShowing () )
-                {
-                    if ( window instanceof JFrame || window instanceof JDialog || window instanceof JWindow )
-                    {
-                        // todo Ignore notification popup windows
-                        return window;
-                    }
-                }
-            }
-        }
-        return null;
     }
 }

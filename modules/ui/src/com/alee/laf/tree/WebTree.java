@@ -356,6 +356,38 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
     }
 
     /**
+     * Expands all child nodes until the specified structure depth is reached.
+     * Depth == 1 will force tree to expand all nodes under the root.
+     *
+     * @param depth max structure depth to be expanded
+     */
+    public void expandAll ( final int depth )
+    {
+        expandAllImpl ( getRootNode (), 0, depth );
+    }
+
+    /**
+     * Expands all child nodes until the specified max structure depth is reached.
+     *
+     * @param node         current level parent node
+     * @param currentDepth current depth level
+     * @param maxDepth     max depth level
+     */
+    private void expandAllImpl ( final E node, final int currentDepth, final int maxDepth )
+    {
+        final int depth = currentDepth + 1;
+        for ( int i = 0; i < node.getChildCount (); i++ )
+        {
+            final E child = ( E ) node.getChildAt ( i );
+            expandNode ( child );
+            if ( depth < maxDepth )
+            {
+                expandAllImpl ( child, depth, maxDepth );
+            }
+        }
+    }
+
+    /**
      * Expands the specified node.
      *
      * @param node node to expand

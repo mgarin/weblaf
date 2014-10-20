@@ -831,6 +831,40 @@ public final class SwingUtils
     }
 
     /**
+     * Returns first available visible application window.
+     *
+     * @return first available visible application window
+     */
+    public static Window getAvailableWindow ()
+    {
+        final Window activeWindow = SwingUtils.getActiveWindow ();
+        if ( activeWindow != null )
+        {
+            if ( activeWindow instanceof JFrame || activeWindow instanceof JDialog || activeWindow instanceof JWindow )
+            {
+                // todo Ignore notification popup windows
+                return activeWindow;
+            }
+        }
+        final Window[] allWindows = Window.getWindows ();
+        if ( allWindows != null && allWindows.length > 0 )
+        {
+            for ( final Window window : allWindows )
+            {
+                if ( window.isShowing () )
+                {
+                    if ( window instanceof JFrame || window instanceof JDialog || window instanceof JWindow )
+                    {
+                        // todo Ignore notification popup windows
+                        return window;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
      * Returns content pane for the specified component or null if it doesn't exist.
      *
      * @param component component to look under

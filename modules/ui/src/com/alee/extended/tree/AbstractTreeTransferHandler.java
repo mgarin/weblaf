@@ -242,9 +242,28 @@ public abstract class AbstractTreeTransferHandler<N extends UniqueNode, T extend
                 }
             }
 
+            // This is not recommended due to crossing with other cases
+            // This should be checked inside specific TransferHandler with its own checks
+            //            // Do not allow drop into old location of one of the dragged nodes
+            //            if ( isMoveAction ( support.getDropAction () ) )
+            //            {
+            //                final int index = dl.getChildIndex ();
+            //                if ( index == -1 )
+            //                {
+            //                    for ( final N node : draggedNodes )
+            //                    {
+            //                        if ( node.getParent ().equals ( target ) )
+            //                        {
+            //                            return false;
+            //                        }
+            //                    }
+            //                }
+            //            }
+
             // Perform the actual drop check
             final List<N> nodes = ( List<N> ) support.getTransferable ().getTransferData ( nodesFlavor );
-            final boolean canBeDropped = canBeDropped ( nodes, target, dl.getChildIndex () );
+            final int index = dl.getChildIndex ();
+            final boolean canBeDropped = canBeDropped ( nodes, target, index );
 
             // Displaying drop location
             support.setShowDropLocation ( canBeDropped );
@@ -269,12 +288,6 @@ public abstract class AbstractTreeTransferHandler<N extends UniqueNode, T extend
     @Override
     public boolean importData ( final TransferHandler.TransferSupport support )
     {
-        // Checking whether we can perform the import or not
-        if ( !canImport ( support ) )
-        {
-            return false;
-        }
-
         // Extracting transfer data.
         final List<N> nodes;
         try
