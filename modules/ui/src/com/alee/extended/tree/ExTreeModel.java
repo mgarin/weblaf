@@ -517,7 +517,7 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
                 childs = new ArrayList<E> ( 1 );
                 rawNodeChildsCache.put ( parentNode.getId (), childs );
             }
-            childs.add ( childNode );
+            childs.add ( index, childNode );
             cacheNodeById ( childNode );
         }
 

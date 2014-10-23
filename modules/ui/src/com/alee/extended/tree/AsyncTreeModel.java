@@ -779,7 +779,7 @@ public class AsyncTreeModel<E extends AsyncUniqueNode> extends WebTreeModel<E>
                 childs = new ArrayList<E> ( 1 );
                 rawNodeChildsCache.put ( parentNode.getId (), childs );
             }
-            childs.add ( childNode );
+            childs.add ( index, childNode );
             cacheNodeById ( childNode );
         }
 
