@@ -252,10 +252,7 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
             // Clears chld nodes cache
             if ( childs != null )
             {
-                for ( final E child : childs )
-                {
-                    clearNodeChildsCache ( child, true );
-                }
+                clearNodeChildsCache ( childs, true );
             }
         }
     }

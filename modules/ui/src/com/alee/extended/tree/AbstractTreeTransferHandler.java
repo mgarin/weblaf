@@ -58,6 +58,16 @@ public abstract class AbstractTreeTransferHandler<N extends UniqueNode, T extend
     protected boolean optimizeDraggedNodes = true;
 
     /**
+     * Whether or not should expand single dragged node when it is dropped onto the tree.
+     */
+    protected boolean expandSingleNode = true;
+
+    /**
+     * Whether or not should expand multiply dragged nodes when they are dropped onto the tree.
+     */
+    protected boolean expandMultiplyNodes = false;
+
+    /**
      * Array of dragged nodes.
      */
     protected List<N> draggedNodes;
@@ -114,6 +124,46 @@ public abstract class AbstractTreeTransferHandler<N extends UniqueNode, T extend
     public void setOptimizeDraggedNodes ( final boolean optimize )
     {
         this.optimizeDraggedNodes = optimize;
+    }
+
+    /**
+     * Returns whether should expand single dragged node when it is dropped onto the tree or not.
+     *
+     * @return true if should expand single dragged node when it is dropped onto the tree, false otherwise
+     */
+    public boolean isExpandSingleNode ()
+    {
+        return expandSingleNode;
+    }
+
+    /**
+     * Sets whether should expand single dragged node when it is dropped onto the tree or not.
+     *
+     * @param expand whether should expand single dragged node when it is dropped onto the tree or not
+     */
+    public void setExpandSingleNode ( final boolean expand )
+    {
+        this.expandSingleNode = expand;
+    }
+
+    /**
+     * Returns whether or not should expand multiply dragged nodes when they are dropped onto the tree.
+     *
+     * @return true if should expand multiply dragged nodes when they are dropped onto the tree, false otherwise
+     */
+    public boolean isExpandMultiplyNodes ()
+    {
+        return expandMultiplyNodes;
+    }
+
+    /**
+     * Sets whether or not should expand multiply dragged nodes when they are dropped onto the tree.
+     *
+     * @param expand whether or not should expand multiply dragged nodes when they are dropped onto the tree
+     */
+    public void setExpandMultiplyNodes ( final boolean expand )
+    {
+        this.expandMultiplyNodes = expand;
     }
 
     /**

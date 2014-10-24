@@ -68,6 +68,19 @@ public abstract class ExTreeTransferHandler<N extends UniqueNode, T extends WebE
                 // Adding data to model
                 model.insertNodesInto ( nodes, parent, index );
 
+                // Expanding nodes after drop operation
+                if ( expandSingleNode && nodes.size () == 1 )
+                {
+                    tree.expandNode ( nodes.get ( 0 ) );
+                }
+                else if ( expandMultiplyNodes )
+                {
+                    for ( final N node : nodes )
+                    {
+                        tree.expandNode ( node );
+                    }
+                }
+
                 // Selecting inserted nodes
                 tree.setSelectedNodes ( nodes );
 
