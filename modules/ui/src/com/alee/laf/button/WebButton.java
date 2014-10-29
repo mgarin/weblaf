@@ -359,6 +359,17 @@ public class WebButton extends JButton
         return this;
     }
 
+    public Color getDefaultButtonShadeColor ()
+    {
+        return getWebUI ().getDefaultButtonShadeColor ();
+    }
+
+    public WebButton setDefaultButtonShadeColor ( final Color defaultButtonShadeColor )
+    {
+        getWebUI ().setDefaultButtonShadeColor ( defaultButtonShadeColor );
+        return this;
+    }
+
     public int getLeftRightSpacing ()
     {
         return getWebUI ().getLeftRightSpacing ();

@@ -67,7 +67,6 @@ import com.alee.laf.tree.WebTreeUI;
 import com.alee.laf.viewport.WebViewportStyle;
 import com.alee.laf.viewport.WebViewportUI;
 import com.alee.managers.WebLafManagers;
-import com.alee.managers.log.Log;
 import com.alee.utils.*;
 import com.alee.utils.swing.SwingLazyValue;
 
@@ -541,6 +540,9 @@ public class WebLookAndFeel extends BasicLookAndFeel
         // Mnemonics
         table.put ( "Button.showMnemonics", Boolean.TRUE );
 
+        // Whether focused button should become default in frame or not
+        table.put ( "Button.defaultButtonFollowsFocus", Boolean.FALSE );
+
         // JLabels
         final Color controlText = table.getColor ( "controlText" );
         table.put ( "Label.foreground", controlText );
@@ -924,11 +926,9 @@ public class WebLookAndFeel extends BasicLookAndFeel
      */
     public static boolean install ( final boolean updateExistingComponents )
     {
-        try
+        // Installing LookAndFeel
+        if ( LafUtils.setupLookAndFeelSafely ( WebLookAndFeel.class ) )
         {
-            // Installing LookAndFeel
-            UIManager.setLookAndFeel ( new WebLookAndFeel () );
-
             // Updating already created components tree
             if ( updateExistingComponents )
             {
@@ -938,11 +938,8 @@ public class WebLookAndFeel extends BasicLookAndFeel
             // LookAndFeel installed sucessfully
             return true;
         }
-        catch ( final Throwable e )
+        else
         {
-            // Printing exception
-            Log.error ( WebLookAndFeel.class, e );
-
             // LookAndFeel installation failed
             return false;
         }

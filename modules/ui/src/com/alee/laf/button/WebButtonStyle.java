@@ -121,6 +121,11 @@ public final class WebButtonStyle
     public static Color innerShadeColor = StyleConstants.innerShadeColor;
 
     /**
+     * Default button inner shade color.
+     */
+    public static Color defaultButtonShadeColor = new Color ( 180, 180, 180 );
+
+    /**
      * Left and right button content spacing.
      */
     public static int leftRightSpacing = StyleConstants.leftRightSpacing;

@@ -44,7 +44,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * User: mgarin Date: 10.12.10 Time: 20:47
+ * @author Mikle Garin
  */
 
 public class WebCustomTooltip extends JComponent implements ShapeProvider
