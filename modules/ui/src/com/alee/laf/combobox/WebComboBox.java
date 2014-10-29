@@ -182,6 +182,26 @@ public class WebComboBox extends JComboBox
         getWebUI ().setDrawBorder ( drawBorder );
     }
 
+    public boolean isWebColoredBackground ()
+    {
+        return getWebUI ().isWebColoredBackground ();
+    }
+
+    public void setWebColoredBackground ( final boolean webColored )
+    {
+        getWebUI ().setWebColoredBackground ( webColored );
+    }
+
+    public Color getExpandedBgColor ()
+    {
+        return getWebUI ().getExpandedBgColor ();
+    }
+
+    public void setExpandedBgColor ( final Color color )
+    {
+        getWebUI ().setExpandedBgColor ( color );
+    }
+
     public boolean isDrawFocus ()
     {
         return getWebUI ().isDrawFocus ();
