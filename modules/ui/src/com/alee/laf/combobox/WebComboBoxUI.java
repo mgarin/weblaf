@@ -650,8 +650,9 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider, Bor
         {
             // Border and background
             final Color shadeColor = drawFocus && isFocused () ? StyleConstants.fieldFocusColor : StyleConstants.shadeColor;
-            final Color backgroundColor = !isPopupVisible ( comboBox ) ? comboBox.getBackground () : expandedBgColor;
-            LafUtils.drawWebStyle ( g2d, comboBox, shadeColor, shadeWidth, round, true, webColoredBackground,
+            final boolean popupVisible = isPopupVisible ( comboBox );
+            final Color backgroundColor = !popupVisible ? comboBox.getBackground () : expandedBgColor;
+            LafUtils.drawWebStyle ( g2d, comboBox, shadeColor, shadeWidth, round, true, webColoredBackground && !popupVisible,
                     StyleConstants.darkBorderColor, StyleConstants.disabledBorderColor, backgroundColor, 1f );
         }
         else
