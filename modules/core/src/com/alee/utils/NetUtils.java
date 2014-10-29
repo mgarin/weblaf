@@ -131,4 +131,30 @@ public class NetUtils
         final URL url = getURL ( address );
         return url != null ? ( url.getHost () + ( url.getPort () != 80 && url.getPort () != -1 ? ":" + url.getPort () : "" ) ) : null;
     }
+
+    /**
+     * Joins two url paths without leaving any unnecessary path separators.
+     *
+     * @param part1 first url path
+     * @param part2 second url path
+     * @return properly joined url paths
+     */
+    public static String joinUrlPaths ( final String part1, final String part2 )
+    {
+        final String separator = "/";
+        final boolean p1s = part1.endsWith ( separator );
+        final boolean p2s = part2.startsWith ( separator );
+        if ( p1s && p2s )
+        {
+            return part1 + part2.substring ( 1 );
+        }
+        else if ( !p1s && !p2s )
+        {
+            return part1 + separator + part2;
+        }
+        else
+        {
+            return part1 + part2;
+        }
+    }
 }
