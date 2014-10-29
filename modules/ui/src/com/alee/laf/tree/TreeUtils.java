@@ -18,8 +18,7 @@
 package com.alee.laf.tree;
 
 import javax.swing.*;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreePath;
+import javax.swing.tree.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -173,6 +172,26 @@ public final class TreeUtils
                     break;
                 }
             }
+        }
+    }
+
+    /**
+     * Updates visual representation of all visible tree nodes.
+     * This will forces renderer to iterate through all those nodes and update the view appropriately.
+     *
+     * @param tree tree to update visible nodes for
+     */
+    public static void updateAllVisibleNodes ( final JTree tree )
+    {
+        final TreeModel model = tree.getModel ();
+        if ( model instanceof DefaultTreeModel )
+        {
+            ( ( DefaultTreeModel ) model ).nodeStructureChanged ( ( TreeNode ) model.getRoot () );
+        }
+        else
+        {
+            tree.revalidate ();
+            tree.repaint ();
         }
     }
 }

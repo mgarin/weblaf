@@ -1358,6 +1358,70 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
     }
 
     /**
+     * Returns whether selection should be web-colored or not.
+     * In case it is not web-colored selectionBackgroundColor value will be used as background color.
+     *
+     * @return true if selection should be web-colored, false otherwise
+     */
+    public boolean isWebColoredSelection ()
+    {
+        return getWebUI ().isWebColoredSelection ();
+    }
+
+    /**
+     * Sets whether selection should be web-colored or not.
+     * In case it is not web-colored selectionBackgroundColor value will be used as background color.
+     *
+     * @param webColored whether selection should be web-colored or not
+     */
+    public void setWebColoredSelection ( final boolean webColored )
+    {
+        getWebUI ().setWebColoredSelection ( webColored );
+    }
+
+    /**
+     * Returns selection border color.
+     *
+     * @return selection border color
+     */
+    public Color getSelectionBorderColor ()
+    {
+        return getWebUI ().getSelectionBorderColor ();
+    }
+
+    /**
+     * Sets selection border color.
+     *
+     * @param color selection border color
+     */
+    public void setSelectionBorderColor ( final Color color )
+    {
+        getWebUI ().setSelectionBorderColor ( color );
+    }
+
+    /**
+     * Returns selection background color.
+     * It is used only when webColoredSelection is set to false.
+     *
+     * @return selection background color
+     */
+    public Color getSelectionBackgroundColor ()
+    {
+        return getWebUI ().getSelectionBackgroundColor ();
+    }
+
+    /**
+     * Sets selection background color.
+     * It is used only when webColoredSelection is set to false.
+     *
+     * @param color selection background color
+     */
+    public void setSelectionBackgroundColor ( final Color color )
+    {
+        getWebUI ().setSelectionBackgroundColor ( color );
+    }
+
+    /**
      * Returns drop cell highlight shade width.
      *
      * @return drop cell highlight shade width

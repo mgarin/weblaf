@@ -657,6 +657,15 @@ public final class LafUtils
                                              final Color shadeColor, final int shadeWidth, final boolean fillBackground,
                                              final boolean webColored, final Color border, final Color disabledBorder )
     {
+        drawCustomWebBorder ( g2d, component, borderShape, shadeColor, shadeWidth, fillBackground, webColored, border, disabledBorder,
+                component.getBackground () );
+    }
+
+    public static void drawCustomWebBorder ( final Graphics2D g2d, final JComponent component, final Shape borderShape,
+                                             final Color shadeColor, final int shadeWidth, final boolean fillBackground,
+                                             final boolean webColored, final Color border, final Color disabledBorder,
+                                             final Color backgroundColor )
+    {
         final Object aa = GraphicsUtils.setupAntialias ( g2d );
 
         // Outer shadow
@@ -677,7 +686,7 @@ public final class LafUtils
             }
             else
             {
-                g2d.setPaint ( component.getBackground () );
+                g2d.setPaint ( backgroundColor );
                 g2d.fill ( borderShape );
             }
         }
