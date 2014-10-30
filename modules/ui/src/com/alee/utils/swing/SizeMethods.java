@@ -132,4 +132,14 @@ public interface SizeMethods<C extends Component> extends SwingMethods
      * @return component preferred size
      */
     public Dimension getPreferredSize ();
+
+    /**
+     * Sets component preferred size.
+     * This method is a simple bridge for JComponent#setPreferredSize method.
+     *
+     * @param width  component preferred width
+     * @param height component preferred height
+     * @return modified component
+     */
+    public C setPreferredSize ( int width, int height );
 }

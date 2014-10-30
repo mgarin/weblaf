@@ -65,6 +65,11 @@ public class WebList extends JList implements EventMethods, FontMethods<WebList>
     protected ListCellEditor listCellEditor = null;
 
     /**
+     * Custom WebLaF tooltip provider.
+     */
+    protected ListToolTipProvider toolTipProvider = null;
+
+    /**
      * Currently edited cell index or -1 if none edited at the moment.
      */
     protected int editedCell = -1;
@@ -357,6 +362,26 @@ public class WebList extends JList implements EventMethods, FontMethods<WebList>
     {
         final ListCellEditor cellEditor = getCellEditor ();
         return cellEditor != null && cellEditor.isEditing ();
+    }
+
+    /**
+     * Returns custom WebLaF tooltip provider.
+     *
+     * @return custom WebLaF tooltip provider
+     */
+    public ListToolTipProvider getToolTipProvider ()
+    {
+        return toolTipProvider;
+    }
+
+    /**
+     * Sets custom WebLaF tooltip provider.
+     *
+     * @param provider custom WebLaF tooltip provider
+     */
+    public void setToolTipProvider ( final ListToolTipProvider provider )
+    {
+        this.toolTipProvider = provider;
     }
 
     /**
@@ -1142,5 +1167,14 @@ public class WebList extends JList implements EventMethods, FontMethods<WebList>
     public Dimension getPreferredSize ()
     {
         return SizeUtils.getPreferredSize ( this, super.getPreferredSize () );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebList setPreferredSize ( final int width, final int height )
+    {
+        return SizeUtils.setPreferredSize ( this, width, height );
     }
 }

@@ -308,4 +308,19 @@ public final class SizeUtils
         }
         return preferredSize;
     }
+
+    /**
+     * Sets component preferred size.
+     * This method is a simple bridge for JComponent#setPreferredSize method.
+     *
+     * @param component component to process
+     * @param width     component preferred width
+     * @param height    component preferred height
+     * @return modified component
+     */
+    public static <C extends Component> C setPreferredSize ( final C component, final int width, final int height )
+    {
+        component.setPreferredSize ( new Dimension ( width, height ) );
+        return component;
+    }
 }

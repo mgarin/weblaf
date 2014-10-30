@@ -850,4 +850,13 @@ public class WebGradientColorChooser extends JComponent
 
         return SizeUtils.getPreferredSize ( this, ps );
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebGradientColorChooser setPreferredSize ( final int width, final int height )
+    {
+        return SizeUtils.setPreferredSize ( this, width, height );
+    }
 }

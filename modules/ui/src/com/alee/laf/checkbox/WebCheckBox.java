@@ -1225,4 +1225,13 @@ public class WebCheckBox extends JCheckBox
     {
         return SizeUtils.getPreferredSize ( this, super.getPreferredSize () );
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCheckBox setPreferredSize ( final int width, final int height )
+    {
+        return SizeUtils.setPreferredSize ( this, width, height );
+    }
 }

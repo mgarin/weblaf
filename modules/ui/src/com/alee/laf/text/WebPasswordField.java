@@ -1179,4 +1179,13 @@ public class WebPasswordField extends JPasswordField
     {
         return SizeUtils.getPreferredSize ( this, super.getPreferredSize () );
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebPasswordField setPreferredSize ( final int width, final int height )
+    {
+        return SizeUtils.setPreferredSize ( this, width, height );
+    }
 }

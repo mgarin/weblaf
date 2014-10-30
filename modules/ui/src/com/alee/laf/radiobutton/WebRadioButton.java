@@ -1215,4 +1215,13 @@ public class WebRadioButton extends JRadioButton
     {
         return SizeUtils.getPreferredSize ( this, super.getPreferredSize () );
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebRadioButton setPreferredSize ( final int width, final int height )
+    {
+        return SizeUtils.setPreferredSize ( this, width, height );
+    }
 }

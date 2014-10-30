@@ -368,6 +368,15 @@ public class WebScrollPane extends JScrollPane implements ShapeProvider, SizeMet
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebScrollPane setPreferredSize ( final int width, final int height )
+    {
+        return SizeUtils.setPreferredSize ( this, width, height );
+    }
+
+    /**
      * Language container methods
      */
 

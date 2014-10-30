@@ -658,4 +658,13 @@ public class WebMemoryBar extends WebLabel implements ShapeProvider, SizeMethods
     {
         return SizeUtils.getPreferredSize ( this, super.getPreferredSize () );
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebMemoryBar setPreferredSize ( final int width, final int height )
+    {
+        return SizeUtils.setPreferredSize ( this, width, height );
+    }
 }

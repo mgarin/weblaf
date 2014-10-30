@@ -1208,6 +1208,15 @@ public class WebTextField extends JTextField
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebTextField setPreferredSize ( final int width, final int height )
+    {
+        return SizeUtils.setPreferredSize ( this, width, height );
+    }
+
+    /**
      * Styled field short creation methods
      */
 

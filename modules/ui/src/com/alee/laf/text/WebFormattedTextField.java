@@ -1180,4 +1180,13 @@ public class WebFormattedTextField extends JFormattedTextField
     {
         return SizeUtils.getPreferredSize ( this, super.getPreferredSize () );
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebFormattedTextField setPreferredSize ( final int width, final int height )
+    {
+        return SizeUtils.setPreferredSize ( this, width, height );
+    }
 }

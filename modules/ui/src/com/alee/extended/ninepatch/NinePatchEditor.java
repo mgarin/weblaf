@@ -2045,8 +2045,18 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
         return SizeUtils.getPreferredSize ( this, getActualPreferredSize () );
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public NinePatchEditor setPreferredSize ( final int width, final int height )
+    {
+        return SizeUtils.setPreferredSize ( this, width, height );
+    }
+
     public Dimension getActualPreferredSize ()
     {
+        // todo Should be in L&F for NinePatchEditor
         final boolean imageExists = ninePatchImage != null;
         final int iw = imageExists ? ( ninePatchImage.getWidth () + 2 ) * zoom : 400;
         final int ih = imageExists ? ( ninePatchImage.getHeight () + 2 ) * zoom : 400;

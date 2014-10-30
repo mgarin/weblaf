@@ -1519,6 +1519,15 @@ public class WebPanel extends JPanel
      * {@inheritDoc}
      */
     @Override
+    public WebPanel setPreferredSize ( final int width, final int height )
+    {
+        return SizeUtils.setPreferredSize ( this, width, height );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void setLanguageContainerKey ( final String key )
     {
         LanguageManager.registerLanguageContainer ( this, key );

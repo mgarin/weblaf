@@ -1411,6 +1411,15 @@ public class WebStepProgress extends JComponent implements SwingConstants, Shape
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebStepProgress setPreferredSize ( final int width, final int height )
+    {
+        return SizeUtils.setPreferredSize ( this, width, height );
+    }
+
+    /**
      * Custom mouse adapter that handles steps and progress changes.
      */
     protected class ProgressMouseAdapter extends MouseAdapter

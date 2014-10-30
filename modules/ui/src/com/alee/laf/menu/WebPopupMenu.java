@@ -669,6 +669,15 @@ public class WebPopupMenu extends JPopupMenu implements Styleable, ShapeProvider
      * {@inheritDoc}
      */
     @Override
+    public WebPopupMenu setPreferredSize ( final int width, final int height )
+    {
+        return SizeUtils.setPreferredSize ( this, width, height );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void setLanguageContainerKey ( final String key )
     {
         LanguageManager.registerLanguageContainer ( this, key );

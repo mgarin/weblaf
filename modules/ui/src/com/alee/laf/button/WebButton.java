@@ -1323,6 +1323,15 @@ public class WebButton extends JButton
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebButton setPreferredSize ( final int width, final int height )
+    {
+        return SizeUtils.setPreferredSize ( this, width, height );
+    }
+
+    /**
      * Styled button short creation methods
      */
 

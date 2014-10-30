@@ -23,7 +23,7 @@ import com.alee.managers.style.skin.web.WebBreadcrumbToggleButtonPainter;
 import javax.swing.*;
 
 /**
- * User: mgarin Date: 02.03.12 Time: 12:20
+ * @author Mikle Garin
  */
 
 public class WebBreadcrumbToggleButton extends WebToggleButton implements BreadcrumbElement

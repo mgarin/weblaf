@@ -532,6 +532,15 @@ public class WebToolBar extends JToolBar implements ShapeProvider, SizeMethods<W
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebToolBar setPreferredSize ( final int width, final int height )
+    {
+        return SizeUtils.setPreferredSize ( this, width, height );
+    }
+
+    /**
      * Language container methods
      */
 

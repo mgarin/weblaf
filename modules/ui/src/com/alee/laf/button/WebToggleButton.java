@@ -1486,6 +1486,15 @@ public class WebToggleButton extends JToggleButton
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebToggleButton setPreferredSize ( final int width, final int height )
+    {
+        return SizeUtils.setPreferredSize ( this, width, height );
+    }
+
+    /**
      * Styled toggle button short creation methods
      */
 

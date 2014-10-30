@@ -791,6 +791,15 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebDateField setPreferredSize ( final int width, final int height )
+    {
+        return SizeUtils.setPreferredSize ( this, width, height );
+    }
+
+    /**
      * This enumeration represents the type of source that caused view update.
      */
     protected enum UpdateSource
