@@ -49,6 +49,11 @@ public final class ProprietaryUtils
     public static final int HEAVY_WEIGHT_POPUP = 2;
 
     /**
+     * Whether or not window transparency is allowed globally or not.
+     */
+    private static boolean windowTransparencyAllowed = true;
+
+    /**
      * Allow per-pixel transparent windows usage on Linux systems.
      * This might be an unstable feature so it is disabled by default.
      */
@@ -118,23 +123,35 @@ public final class ProprietaryUtils
     }
 
     /**
-     * Returns whether window transparency is supported on current OS or not.
+     * Returns whether window transparency is allowed globally or not.
+     * Whether or not it is allowed depends on the settings and current OS type.
      *
-     * @return true if window transparency is supported on current OS; false otherwise
+     * @return true if window transparency is allowed globally, false otherwise
      */
     public static boolean isWindowTransparencyAllowed ()
     {
         try
         {
             // Replace when Unix-systems will have proper support for transparency
+            // Also on Windows systems fonts of all components on transparent windows is not the same, which becomes a real issue sometimes
             // com.sun.awt.AWTUtilities.isTranslucencySupported ( com.sun.awt.AWTUtilities.Translucency.PERPIXEL_TRANSPARENT )
-            return SystemUtils.isWindows () || SystemUtils.isMac () || SystemUtils.isSolaris () ||
-                    SystemUtils.isUnix () && allowLinuxTransparency;
+            return windowTransparencyAllowed && ( SystemUtils.isWindows () || SystemUtils.isMac () || SystemUtils.isSolaris () ||
+                    SystemUtils.isUnix () && allowLinuxTransparency );
         }
         catch ( final Throwable e )
         {
             return false;
         }
+    }
+
+    /**
+     * Sets whether window transparency is allowed globally or not.
+     *
+     * @param allowed whether window transparency is allowed globally or not
+     */
+    public static void setWindowTransparencyAllowed ( final boolean allowed )
+    {
+        windowTransparencyAllowed = allowed;
     }
 
     /**
