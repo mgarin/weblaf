@@ -22,6 +22,7 @@ import com.alee.managers.log.Log;
 import com.alee.managers.plugin.data.*;
 import com.alee.utils.*;
 import com.alee.utils.compare.Filter;
+import com.alee.utils.sort.GraphDataProvider;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -46,10 +47,6 @@ import java.util.zip.ZipFile;
 
 public abstract class PluginManager<T extends Plugin>
 {
-    /**
-     * todo 1. PluginManager -> Plugin -> dependencies on other plugins? or not
-     */
-
     /**
      * Plugins listeners.
      */
@@ -409,7 +406,12 @@ public abstract class PluginManager<T extends Plugin>
         if ( pluginsDirectoryPath != null )
         {
             Log.info ( this, "Scanning plugins directory" + ( checkRecursively ? " recursively" : "" ) + ": " + pluginsDirectoryPath );
-            return collectPluginsInformationImpl ( new File ( pluginsDirectoryPath ), checkRecursively );
+            collectPluginsInformationImpl ( new File ( pluginsDirectoryPath ), checkRecursively );
+
+            Log.info ( this, "Sorting detected plugins according to known dependencies" );
+            sortRecentlyDetectedPluginsByDependencies ();
+
+            return true;
         }
         else
         {
@@ -422,9 +424,8 @@ public abstract class PluginManager<T extends Plugin>
      * Collects information about available plugins.
      *
      * @param dir plugins directory
-     * @return true if operation succeeded, false otherwise
      */
-    protected boolean collectPluginsInformationImpl ( final File dir, final boolean checkRecursively )
+    protected void collectPluginsInformationImpl ( final File dir, final boolean checkRecursively )
     {
         // Checking all files
         final File[] files = dir.listFiles ( getFileFilter () );
@@ -448,8 +449,6 @@ public abstract class PluginManager<T extends Plugin>
                 }
             }
         }
-
-        return true;
     }
 
     /**
@@ -464,7 +463,6 @@ public abstract class PluginManager<T extends Plugin>
         final DetectedPlugin<T> plugin = getPluginInformation ( file );
         if ( plugin != null )
         {
-            detectedPlugins.add ( plugin );
             recentlyDetected.add ( plugin );
             Log.info ( this, "Plugin detected: " + plugin );
             return true;
@@ -472,6 +470,114 @@ public abstract class PluginManager<T extends Plugin>
         else
         {
             return false;
+        }
+    }
+
+    /**
+     * Tries to sort recently detected plugins list by known plugin dependencies.
+     * This sorting will have effect only if dependencies are pointing at plugins of the same type.
+     * <p/>
+     * In case you setup dependencies on other type of plugin you will have to manually check whether those are loaded or not.
+     * That can be done by setting plugin filter into this manager and checking dependencies there.
+     */
+    protected void sortRecentlyDetectedPluginsByDependencies ()
+    {
+        if ( recentlyDetected.size () > 1 )
+        {
+            try
+            {
+                // Collecting plugins that doesn't have any dependencies or their dependencies are loaded
+                // Also mapping dependencies for quick access later
+                final int s = recentlyDetected.size ();
+                final List<DetectedPlugin<T>> root = new ArrayList<DetectedPlugin<T>> ( s );
+                final Map<String, List<DetectedPlugin<T>>> references = new HashMap<String, List<DetectedPlugin<T>>> ();
+                for ( final DetectedPlugin<T> plugin : recentlyDetected )
+                {
+                    final List<PluginDependency> dependencies = plugin.getInformation ().getDependencies ();
+                    if ( dependencies != null )
+                    {
+                        // Iterating through detected plugin dependencies
+                        boolean dependenciesMet = true;
+                        for ( final PluginDependency dependency : dependencies )
+                        {
+                            // Checking whether or not each dependency is met
+                            boolean met = false;
+                            for ( final T availablePlugin : availablePlugins )
+                            {
+                                if ( dependency.accept ( availablePlugin ) )
+                                {
+                                    met = true;
+                                }
+                            }
+                            if ( !met )
+                            {
+                                dependenciesMet = false;
+                            }
+
+                            // Saving dependency reference
+                            final String id = dependency.getPluginId ();
+                            List<DetectedPlugin<T>> ref = references.get ( id );
+                            if ( ref == null )
+                            {
+                                ref = new ArrayList<DetectedPlugin<T>> ( 1 );
+                                references.put ( id, ref );
+                            }
+                            ref.add ( plugin );
+                        }
+
+                        // Adding plugin into root plugins list if its dependencies are met
+                        if ( dependenciesMet )
+                        {
+                            root.add ( plugin );
+                        }
+                    }
+                    else
+                    {
+                        // Adding plugin into root plugins list as it doesn't have any dependencies
+                        root.add ( plugin );
+                    }
+                }
+
+                // Creating graph provider for futher topological sorting
+                final GraphDataProvider<DetectedPlugin<T>> graphDataProvider = new GraphDataProvider<DetectedPlugin<T>> ()
+                {
+                    @Override
+                    public List<DetectedPlugin<T>> getRoots ()
+                    {
+                        return root;
+                    }
+
+                    @Override
+                    public List<DetectedPlugin<T>> getChildren ( final DetectedPlugin<T> data )
+                    {
+                        final List<DetectedPlugin<T>> children = references.get ( data.getInformation ().getId () );
+                        return children != null ? children : Collections.EMPTY_LIST;
+                    }
+                };
+
+                // Performing topological sorting
+                // Saving result as new recently detected plugins list
+                final List<DetectedPlugin<T>> sorted = SortUtils.doTopologicalSort ( graphDataProvider );
+
+
+                // Adding plugins which didn't get into graph into the end
+                // There might be such plugin for example in case it has some side dependencies
+                // It might still be properly initialized, we just don't know anything about its dependencies
+                // Such plugins should be initialized after anything else to increase their chances
+                for ( final DetectedPlugin<T> plugin : recentlyDetected )
+                {
+                    if ( !sorted.contains ( plugin ) )
+                    {
+                        sorted.add ( plugin );
+                    }
+                }
+
+                recentlyDetected = sorted;
+            }
+            catch ( final Throwable e )
+            {
+                Log.warn ( this, "Unable to perform proper dependencies sorting", e );
+            }
         }
     }
 
@@ -635,6 +741,9 @@ public abstract class PluginManager<T extends Plugin>
         // List to collect newly initialized plugins
         // This is required to properly inform about newly loaded plugins later
         recentlyInitialized = new ArrayList<T> ();
+
+        // Adding recently detected into the end of the detected plugins list
+        detectedPlugins.addAll ( recentlyDetected );
 
         // Initializing detected plugins
         final String acceptedPluginType = getAcceptedPluginType ();
