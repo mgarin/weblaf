@@ -78,7 +78,7 @@ public final class CollectionUtils
     }
 
     /**
-     * Adds all objects into specified list.
+     * Adds all objects into the specified list.
      *
      * @param collection list to fill
      * @param objects    objects
@@ -91,6 +91,24 @@ public final class CollectionUtils
         for ( final T object : objects )
         {
             result |= collection.add ( object );
+        }
+        return result;
+    }
+
+    /**
+     * Removes all objects from the specified list.
+     *
+     * @param collection list to fill
+     * @param objects    objects
+     * @param <T>        objects type
+     * @return true if list changed as the result of this operation, false otherwise
+     */
+    public static <T> boolean removeAll ( final Collection<T> collection, final T... objects )
+    {
+        boolean result = false;
+        for ( final T object : objects )
+        {
+            result |= collection.remove ( object );
         }
         return result;
     }
