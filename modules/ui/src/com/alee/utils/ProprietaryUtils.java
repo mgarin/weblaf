@@ -132,15 +132,28 @@ public final class ProprietaryUtils
     {
         try
         {
-            // Replace when Unix-systems will have proper support for transparency
-            // Also on Windows systems fonts of all components on transparent windows is not the same, which becomes a real issue sometimes
-            // com.sun.awt.AWTUtilities.isTranslucencySupported ( com.sun.awt.AWTUtilities.Translucency.PERPIXEL_TRANSPARENT )
-            return windowTransparencyAllowed && ( SystemUtils.isWindows () || SystemUtils.isMac () || SystemUtils.isSolaris () ||
-                    SystemUtils.isUnix () && allowLinuxTransparency );
+            if ( windowTransparencyAllowed )
+            {
+                // Replace when Unix-systems will have proper support for transparency
+                // Also on Windows systems fonts of all components on transparent windows is not the same, which becomes a real issue sometimes
+                final Class au = ReflectUtils.getClass ( "com.sun.awt.AWTUtilities" );
+                final Class t = ReflectUtils.getInnerClass ( au, "Translucency" );
+                final Object ppt = ReflectUtils.getStaticFieldValue ( t, "PERPIXEL_TRANSPARENT" );
+                final Boolean wts = ReflectUtils.callStaticMethod ( au, "isWindowTranslucencySupported" );
+                final Boolean tc = ReflectUtils.callStaticMethod ( au, "isTranslucencyCapable", SystemUtils.getGraphicsConfiguration () );
+                final Boolean ppts = ReflectUtils.callStaticMethod ( au, "isTranslucencySupported", ppt );
+                return wts && tc && ppts && ( SystemUtils.isWindows () || SystemUtils.isMac () || SystemUtils.isSolaris () ||
+                        SystemUtils.isUnix () && allowLinuxTransparency );
+            }
+            else
+            {
+                return false;
+            }
         }
         catch ( final Throwable e )
         {
-            return false;
+            return SystemUtils.isWindows () || SystemUtils.isMac () || SystemUtils.isSolaris () ||
+                    SystemUtils.isUnix () && allowLinuxTransparency;
         }
     }
 

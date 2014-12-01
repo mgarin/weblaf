@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * User: mgarin Date: 15.06.11 Time: 15:48
+ * @author Mikle Garin
  */
 
 public class UnselectableButtonGroup extends ButtonGroup
