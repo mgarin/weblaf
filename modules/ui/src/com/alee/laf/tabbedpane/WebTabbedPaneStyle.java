@@ -119,5 +119,5 @@ public final class WebTabbedPaneStyle
     /**
      * If true, the selected tab background colors will be used in every case.
      */
-    public static boolean forceUseSelectedTabBgColors = true;
+    public static boolean forceUseSelectedTabBgColors = false;
 }
