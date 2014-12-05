@@ -65,6 +65,7 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider,
     private Color contentBorderColor = WebTabbedPaneStyle.contentBorderColor;
     private boolean paintBorderOnlyOnSelectedTab = WebTabbedPaneStyle.paintBorderOnlyOnSelectedTab;
     private boolean forceUseSelectedTabBgColors = WebTabbedPaneStyle.forceUseSelectedTabBgColors;
+    private Color backgroundColor = WebTabbedPaneStyle.backgroundColor;
 
     private final Map<Integer, Color> selectedForegroundAt = new HashMap<Integer, Color> ();
     private final Map<Integer, Painter> backgroundPainterAt = new HashMap<Integer, Painter> ();
@@ -86,7 +87,7 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider,
 
         // Default settings
         SwingUtils.setOrientation ( tabPane );
-        tabPane.setBackground ( StyleConstants.backgroundColor );
+        tabPane.setBackground ( backgroundColor );
         PainterSupport.installPainter ( tabPane, this.painter );
 
         // Updating border
