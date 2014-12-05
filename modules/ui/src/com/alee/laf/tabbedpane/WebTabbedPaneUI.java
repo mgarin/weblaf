@@ -544,7 +544,7 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider,
             {
                 if (forceUseSelectedTabBgColors)
                 {
-                    g2d.setPaint(new GradientPaint(topPoint.x, topPoint.y, selectedTopBg, bottomPoint.x, bottomPoint.y, selectedTopBg));
+                    g2d.setPaint(new GradientPaint(topPoint.x, topPoint.y, selectedTopBg, bottomPoint.x, bottomPoint.y, selectedBottomBg));
                 }
                 else
                 {
@@ -654,11 +654,11 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider,
 
         if ( tabPlacement == JTabbedPane.TOP )
         {
-            bgShape.moveTo ( x, y + h + getChange ( tabShapeType ) );
-            bgShape.lineTo ( x, y + actualRound );
-            bgShape.quadTo ( x, y, x + actualRound, y );
-            bgShape.lineTo ( x + w - actualRound, y );
-            bgShape.quadTo ( x + w, y, x + w, y + actualRound );
+            bgShape.moveTo(x, y + h + getChange(tabShapeType));
+            bgShape.lineTo(x, y + actualRound);
+            bgShape.quadTo(x, y, x + actualRound, y);
+            bgShape.lineTo(x + w - actualRound, y);
+            bgShape.quadTo(x + w, y, x + w, y + actualRound);
             bgShape.lineTo ( x + w, y + h + getChange ( tabShapeType ) );
         }
         else if ( tabPlacement == JTabbedPane.BOTTOM )
