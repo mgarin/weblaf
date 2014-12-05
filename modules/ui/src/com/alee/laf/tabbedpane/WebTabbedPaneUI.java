@@ -66,6 +66,7 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider,
     private boolean paintBorderOnlyOnSelectedTab = WebTabbedPaneStyle.paintBorderOnlyOnSelectedTab;
     private boolean forceUseSelectedTabBgColors = WebTabbedPaneStyle.forceUseSelectedTabBgColors;
     private Color backgroundColor = WebTabbedPaneStyle.backgroundColor;
+    private boolean paintOnlyTopBorder = WebTabbedPaneStyle.paintOnlyTopBorder;
 
     private final Map<Integer, Color> selectedForegroundAt = new HashMap<Integer, Color> ();
     private final Map<Integer, Painter> backgroundPainterAt = new HashMap<Integer, Painter> ();
@@ -834,7 +835,7 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider,
             }
 
             // Area border
-            g2d.setPaint ( StyleConstants.darkBorderColor );
+            g2d.setPaint ( contentBorderColor );
             g2d.draw ( bs );
 
             // Area focus
@@ -930,8 +931,16 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider,
                     }
                     else
                     {
-                        gp.lineTo ( bi.left, tabPane.getHeight () - bi.bottom );
-                        gp.lineTo ( tabPane.getWidth () - bi.right, tabPane.getHeight () - bi.bottom );
+                        if ( paintOnlyTopBorder )
+                        {
+                            gp.moveTo(bi.left, tabPane.getHeight() - bi.bottom);
+                            gp.moveTo(tabPane.getWidth() - bi.right, tabPane.getHeight() - bi.bottom);
+                        }
+                        else
+                        {
+                            gp.lineTo(bi.left, tabPane.getHeight() - bi.bottom);
+                            gp.lineTo(tabPane.getWidth() - bi.right, tabPane.getHeight() - bi.bottom);
+                        }
                     }
                     if ( selected.x + selected.width < tabPane.getWidth () - bi.right - round && round > 0 )
                     {
@@ -940,7 +949,15 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider,
                     }
                     else
                     {
-                        gp.lineTo ( tabPane.getWidth () - bi.right, topY );
+                        if (paintOnlyTopBorder)
+                        {
+                            gp.moveTo ( tabPane.getWidth () - bi.right, topY );
+
+                        }
+                        else
+                        {
+                            gp.lineTo ( tabPane.getWidth () - bi.right, topY );
+                        }
                     }
                     gp.lineTo ( selected.x + selected.width, topY );
                 }

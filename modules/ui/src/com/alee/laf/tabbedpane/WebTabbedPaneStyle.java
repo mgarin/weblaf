@@ -125,4 +125,9 @@ public final class WebTabbedPaneStyle
      * Default background color.
      */
     public static Color backgroundColor = StyleConstants.backgroundColor;
+
+    /**
+     * If true, only the top border is painted.
+     */
+    public static boolean paintOnlyTopBorder = false;
 }
