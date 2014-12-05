@@ -21,6 +21,7 @@ import com.alee.extended.painter.Painter;
 import com.alee.global.StyleConstants;
 
 import java.awt.*;
+import javax.swing.text.Style;
 
 /**
  * WebTabbedPane style class.
@@ -100,4 +101,19 @@ public final class WebTabbedPaneStyle
      * Tabs stretch type.
      */
     public static TabStretchType tabStretchType = TabStretchType.multiline;
+
+    /**
+     * Color of the tab border.
+     */
+    public static Color tabBorderColor = StyleConstants.darkBorderColor;
+
+    /**
+     * Color of the content border.
+     */
+    public static Color contentBorderColor = Color.GRAY;
+
+    /**
+     * If true, only the selected tab gets a border.
+     */
+    public static boolean paintBorderOnlyOnSelectedTab = false;
 }

@@ -61,6 +61,9 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider,
     private int tabRunIndent = WebTabbedPaneStyle.tabRunIndent;
     private int tabOverlay = WebTabbedPaneStyle.tabOverlay;
     private TabStretchType tabStretchType = WebTabbedPaneStyle.tabStretchType;
+    private Color tabBorderColor = WebTabbedPaneStyle.tabBorderColor;
+    private Color contentBorderColor = WebTabbedPaneStyle.contentBorderColor;
+    private boolean paintBorderOnlyOnSelectedTab = WebTabbedPaneStyle.paintBorderOnlyOnSelectedTab;
 
     private final Map<Integer, Color> selectedForegroundAt = new HashMap<Integer, Color> ();
     private final Map<Integer, Painter> backgroundPainterAt = new HashMap<Integer, Painter> ();
@@ -550,7 +553,7 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider,
         }
 
         // Tab border
-        g2d.setPaint ( StyleConstants.darkBorderColor );
+        g2d.setPaint ( tabBorderColor );
         g2d.draw ( borderShape );
 
         // Tab focus
@@ -636,6 +639,11 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider,
 
         final int actualRound = tabbedPaneStyle.equals ( TabbedPaneStyle.standalone ) ? round : 0;
         final GeneralPath bgShape = new GeneralPath ( GeneralPath.WIND_EVEN_ODD );
+
+        if (!isSelected && paintBorderOnlyOnSelectedTab) {
+            return bgShape;
+        }
+
         if ( tabPlacement == JTabbedPane.TOP )
         {
             bgShape.moveTo ( x, y + h + getChange ( tabShapeType ) );
@@ -839,7 +847,7 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider,
 
             // todo draw for other tabPlacement values aswell
             // Area border
-            g2d.setPaint ( Color.GRAY );
+            g2d.setPaint ( contentBorderColor );
             if ( tabPlacement == JTabbedPane.TOP )
             {
                 if ( selected != null )
