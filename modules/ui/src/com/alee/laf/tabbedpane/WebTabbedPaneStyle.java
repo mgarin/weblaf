@@ -115,4 +115,9 @@ public final class WebTabbedPaneStyle
      * If true, only the selected tab gets a border.
      */
     public static boolean paintBorderOnlyOnSelectedTab = false;
+
+    /**
+     * If true, the selected tab background colors will be used in every case.
+     */
+    public static boolean forceUseSelectedTabBgColors = true;
 }

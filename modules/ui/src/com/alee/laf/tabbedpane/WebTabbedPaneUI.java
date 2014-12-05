@@ -64,6 +64,7 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider,
     private Color tabBorderColor = WebTabbedPaneStyle.tabBorderColor;
     private Color contentBorderColor = WebTabbedPaneStyle.contentBorderColor;
     private boolean paintBorderOnlyOnSelectedTab = WebTabbedPaneStyle.paintBorderOnlyOnSelectedTab;
+    private boolean forceUseSelectedTabBgColors = WebTabbedPaneStyle.forceUseSelectedTabBgColors;
 
     private final Map<Integer, Color> selectedForegroundAt = new HashMap<Integer, Color> ();
     private final Map<Integer, Painter> backgroundPainterAt = new HashMap<Integer, Painter> ();
@@ -541,9 +542,16 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider,
             final Point bottomPoint = getBottomTabBgPoint ( tabPlacement, x, y, w, h );
             if ( isSelected )
             {
-                Color bg = tabPane.getBackgroundAt ( tabIndex );
-                bg = bg != null ? bg : tabPane.getBackground ();
-                g2d.setPaint ( new GradientPaint ( topPoint.x, topPoint.y, selectedTopBg, bottomPoint.x, bottomPoint.y, bg ) );
+                if (forceUseSelectedTabBgColors)
+                {
+                    g2d.setPaint(new GradientPaint(topPoint.x, topPoint.y, selectedTopBg, bottomPoint.x, bottomPoint.y, selectedTopBg));
+                }
+                else
+                {
+                    Color bg = tabPane.getBackgroundAt(tabIndex);
+                    bg = bg != null ? bg : tabPane.getBackground();
+                    g2d.setPaint(new GradientPaint(topPoint.x, topPoint.y, selectedTopBg, bottomPoint.x, bottomPoint.y, bg));
+                }
             }
             else
             {
