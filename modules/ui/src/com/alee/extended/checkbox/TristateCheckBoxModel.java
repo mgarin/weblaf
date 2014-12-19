@@ -177,7 +177,7 @@ public class TristateCheckBoxModel extends JToggleButton.ToggleButtonModel
      */
     public void setMixed ( final boolean mixed )
     {
-        if ( ( isMixed () == mixed ) )
+        if ( isMixed () == mixed )
         {
             return;
         }

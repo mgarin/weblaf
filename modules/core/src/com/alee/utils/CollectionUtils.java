@@ -90,7 +90,31 @@ public final class CollectionUtils
         boolean result = false;
         for ( final T object : objects )
         {
-            result |= collection.add ( object );
+            if ( !collection.contains ( object ) )
+            {
+                result |= collection.add ( object );
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Adds all non-null objects into the specified list.
+     *
+     * @param collection list to fill
+     * @param objects    objects
+     * @param <T>        objects type
+     * @return true if list changed as the result of this operation, false otherwise
+     */
+    public static <T> boolean addAllNonNull ( final Collection<T> collection, final T... objects )
+    {
+        boolean result = false;
+        for ( final T object : objects )
+        {
+            if ( !collection.contains ( object ) && object != null )
+            {
+                result |= collection.add ( object );
+            }
         }
         return result;
     }

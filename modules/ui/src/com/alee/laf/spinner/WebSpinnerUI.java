@@ -29,12 +29,13 @@ import com.alee.utils.swing.BorderMethods;
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicSpinnerUI;
+import javax.swing.text.JTextComponent;
 import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 
 /**
- * User: mgarin Date: 25.07.11 Time: 17:10
+ * @author Mikle Garin
  */
 
 public class WebSpinnerUI extends BasicSpinnerUI implements ShapeProvider, BorderMethods
@@ -47,7 +48,7 @@ public class WebSpinnerUI extends BasicSpinnerUI implements ShapeProvider, Borde
     private int round = WebSpinnerStyle.round;
     private int shadeWidth = WebSpinnerStyle.shadeWidth;
 
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebSpinnerUI ();
@@ -181,17 +182,26 @@ public class WebSpinnerUI extends BasicSpinnerUI implements ShapeProvider, Borde
     protected JComponent createEditor ()
     {
         final JComponent editor = super.createEditor ();
-        installFieldUI ( ( ( JSpinner.DefaultEditor ) editor ).getTextField (), spinner );
+        if ( editor instanceof JTextComponent )
+        {
+            installFieldUI ( ( JTextComponent ) editor, spinner );
+        }
+        else
+        {
+            installFieldUI ( ( ( JSpinner.DefaultEditor ) editor ).getTextField (), spinner );
+        }
         return editor;
     }
 
-    public static void installFieldUI ( final JFormattedTextField field, final JSpinner spinner )
+    public static void installFieldUI ( final JTextComponent field, final JSpinner spinner )
     {
         field.setMargin ( new Insets ( 0, 0, 0, 0 ) );
         field.setBorder ( BorderFactory.createEmptyBorder ( 0, 0, 0, 0 ) );
+
         final WebTextFieldUI textFieldUI = new WebTextFieldUI ();
         textFieldUI.setDrawBorder ( false );
         field.setUI ( textFieldUI );
+
         field.setOpaque ( true );
         field.setBackground ( Color.WHITE );
         field.addFocusListener ( new FocusAdapter ()
