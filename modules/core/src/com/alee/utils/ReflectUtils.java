@@ -1452,6 +1452,45 @@ public final class ReflectUtils
     }
 
     /**
+     * Returns cloned object.
+     *
+     * @param object object to clone
+     * @param <T>    cloned object type
+     * @return cloned object
+     * @throws NoSuchMethodException
+     * @throws IllegalAccessException
+     * @throws InvocationTargetException
+     */
+    public static <T> T cloneObject ( final T object ) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException
+    {
+        if ( object == null )
+        {
+            return null;
+        }
+        return ReflectUtils.callMethod ( object, "clone" );
+    }
+
+    /**
+     * Returns cloned object.
+     *
+     * @param object object to clone
+     * @param <T>    cloned object type
+     * @return cloned object
+     */
+    public static <T> T cloneObjectSafely ( final T object )
+    {
+        if ( object == null )
+        {
+            return null;
+        }
+        else if ( object.getClass ().isPrimitive () )
+        {
+            return object;
+        }
+        return ReflectUtils.callMethodSafely ( object, "clone" );
+    }
+
+    /**
      * Returns class loaded for the specified canonical class name.
      *
      * @param canonicalClassName canonical class name

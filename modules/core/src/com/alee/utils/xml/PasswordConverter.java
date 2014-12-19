@@ -21,19 +21,19 @@ import com.alee.utils.EncryptionUtils;
 import com.thoughtworks.xstream.converters.basic.StringConverter;
 
 /**
- * User: mgarin Date: 05.05.12 Time: 16:15
+ * @author Mikle Garin
  */
 
 public class PasswordConverter extends StringConverter
 {
     @Override
-    public Object fromString ( String str )
+    public Object fromString ( final String str )
     {
         return EncryptionUtils.decrypt ( ( String ) super.fromString ( str ) );
     }
 
     @Override
-    public String toString ( Object obj )
+    public String toString ( final Object obj )
     {
         return EncryptionUtils.encrypt ( super.toString ( obj ) );
     }
