@@ -17,12 +17,18 @@
 
 package com.alee.managers.popup;
 
+import com.alee.extended.painter.NinePatchIconPainter;
+import com.alee.extended.painter.Painter;
+
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * This enumeration represents predefined available popup styles.
  *
  * @author Mikle Garin
- * @see PopupManager
- * @see WebPopup
+ * @see com.alee.managers.popup.PopupManager
+ * @see com.alee.managers.popup.WebPopup
  */
 
 public enum PopupStyle
@@ -80,5 +86,33 @@ public enum PopupStyle
     /**
      * Dark-colored popup.
      */
-    dark
+    dark;
+
+    /**
+     * Style painters cache.
+     */
+    private static final Map<PopupStyle, Painter> stylePainters = new HashMap<PopupStyle, Painter> ();
+
+    /**
+     * Returns popup painter for this popup style.
+     *
+     * @return popup painter for this popup style
+     */
+    public synchronized Painter getPainter ()
+    {
+        Painter painter = stylePainters.get ( this );
+        if ( painter == null )
+        {
+            if ( this == PopupStyle.none )
+            {
+                painter = null;
+            }
+            else
+            {
+                painter = new NinePatchIconPainter ( PopupManager.class.getResource ( "icons/popup/" + this + ".9.png" ) );
+            }
+            stylePainters.put ( this, painter );
+        }
+        return painter;
+    }
 }

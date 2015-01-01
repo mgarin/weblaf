@@ -17,6 +17,7 @@
 
 package com.alee.utils;
 
+import com.alee.managers.log.Log;
 import com.alee.utils.file.FileDownloadListener;
 import com.alee.utils.reflection.JarEntry;
 import com.alee.utils.reflection.JarEntryType;
@@ -48,7 +49,37 @@ import java.util.zip.ZipInputStream;
 
 public final class ReflectUtils
 {
+    /**
+     * Whether should allow safe methods to log errors or not.
+     * By default it is disabled to hide some WebLaF exceptions which occur due to various method checks.
+     * You can enable it in case you need a depper look into whats happening here.
+     */
+    private static boolean safeMethodsLoggingEnabled = false;
+
+    /**
+     * Methods lookup cache.
+     */
     private static final Map<Class, Map<String, Method>> methodsLookupCache = new HashMap<Class, Map<String, Method>> ();
+
+    /**
+     * Returns whether should allow safe methods to log errors or not.
+     *
+     * @return true if should allow safe methods to log errors, false otherwise
+     */
+    public static boolean isSafeMethodsLoggingEnabled ()
+    {
+        return safeMethodsLoggingEnabled;
+    }
+
+    /**
+     * Sets whether should allow safe methods to log errors or not.
+     *
+     * @param enabled whether should allow safe methods to log errors or not
+     */
+    public static void setSafeMethodsLoggingEnabled ( final boolean enabled )
+    {
+        ReflectUtils.safeMethodsLoggingEnabled = enabled;
+    }
 
     /**
      * Returns specified class field's type.
@@ -66,6 +97,10 @@ public final class ReflectUtils
         }
         catch ( final NoSuchFieldException e )
         {
+            if ( safeMethodsLoggingEnabled )
+            {
+                Log.warn ( "ReflectionUtils method failed: getFieldTypeSafely", e );
+            }
             return null;
         }
     }
@@ -91,9 +126,8 @@ public final class ReflectUtils
      * @param classType type of the class where field can be located
      * @param fieldName field name
      * @return specified class field
-     * @throws NoSuchFieldException
      */
-    public static Field getFieldSafely ( final Class classType, final String fieldName ) throws NoSuchFieldException
+    public static Field getFieldSafely ( final Class classType, final String fieldName )
     {
         try
         {
@@ -101,6 +135,10 @@ public final class ReflectUtils
         }
         catch ( final NoSuchFieldException e )
         {
+            if ( safeMethodsLoggingEnabled )
+            {
+                Log.warn ( "ReflectionUtils method failed: getFieldSafely", e );
+            }
             return null;
         }
     }
@@ -160,19 +198,19 @@ public final class ReflectUtils
      * @param value  field value
      * @return true if value was applied successfully, false otherwise
      */
-    public static boolean applyFieldValueSafely ( final Object object, final String field, final Object value )
+    public static boolean setFieldValueSafely ( final Object object, final String field, final Object value )
     {
         try
         {
-            applyFieldValue ( object, field, value );
+            setFieldValue ( object, field, value );
             return true;
         }
-        catch ( final NoSuchFieldException e )
+        catch ( final Throwable e )
         {
-            return false;
-        }
-        catch ( final IllegalAccessException e )
-        {
+            if ( safeMethodsLoggingEnabled )
+            {
+                Log.warn ( "ReflectionUtils method failed: setFieldValueSafely", e );
+            }
             return false;
         }
     }
@@ -187,12 +225,93 @@ public final class ReflectUtils
      * @throws IllegalAccessException
      * @throws NoSuchFieldException
      */
-    public static void applyFieldValue ( final Object object, final String field, final Object value )
+    public static void setFieldValue ( final Object object, final String field, final Object value )
             throws IllegalAccessException, NoSuchFieldException
     {
-        final Field actualField = object.getClass ().getDeclaredField ( field );
+        final Field actualField = getField ( object.getClass (), field );
         actualField.setAccessible ( true );
         actualField.set ( object, value );
+    }
+
+    /**
+     * Returns object field value.
+     * This method allows to access even private object fields.
+     *
+     * @param object object instance
+     * @param field  object field
+     * @param <T>    field value type
+     * @return object field value
+     */
+    public static <T> T getFieldValueSafely ( final Object object, final String field )
+    {
+        try
+        {
+            return getFieldValue ( object, field );
+        }
+        catch ( final Throwable e )
+        {
+            if ( safeMethodsLoggingEnabled )
+            {
+                Log.warn ( "ReflectionUtils method failed: getFieldValueSafely", e );
+            }
+            return null;
+        }
+    }
+
+    /**
+     * Returns object field value.
+     * This method allows to access even private object fields.
+     *
+     * @param object object instance
+     * @param field  object field
+     * @param <T>    field value type
+     * @return object field value
+     * @throws NoSuchFieldException
+     * @throws IllegalAccessException
+     */
+    public static <T> T getFieldValue ( final Object object, final String field ) throws NoSuchFieldException, IllegalAccessException
+    {
+        final Field actualField = getField ( object.getClass (), field );
+        actualField.setAccessible ( true );
+        return ( T ) actualField.get ( object );
+    }
+
+    /**
+     * Returns static field value from the specified class.
+     *
+     * @param classType class type
+     * @param fieldName class field name
+     * @return static field value from the specified class
+     */
+    public static <T> T getStaticFieldValueSafely ( final Class classType, final String fieldName )
+    {
+        try
+        {
+            return getStaticFieldValue ( classType, fieldName );
+        }
+        catch ( final Throwable e )
+        {
+            if ( safeMethodsLoggingEnabled )
+            {
+                Log.warn ( "ReflectionUtils method failed: getStaticFieldValueSafely", e );
+            }
+            return null;
+        }
+    }
+
+    /**
+     * Returns static field value from the specified class.
+     *
+     * @param classType class type
+     * @param fieldName class field name
+     * @return static field value from the specified class
+     * @throws NoSuchFieldException
+     * @throws IllegalAccessException
+     */
+    public static <T> T getStaticFieldValue ( final Class classType, final String fieldName )
+            throws NoSuchFieldException, IllegalAccessException
+    {
+        return ( T ) classType.getField ( fieldName ).get ( null );
     }
 
     /**
@@ -209,6 +328,10 @@ public final class ReflectUtils
         }
         catch ( final ClassNotFoundException e )
         {
+            if ( safeMethodsLoggingEnabled )
+            {
+                Log.warn ( "ReflectionUtils method failed: getClassSafely", e );
+            }
             return null;
         }
     }
@@ -311,11 +434,11 @@ public final class ReflectUtils
         }
         catch ( final IOException e )
         {
-            e.printStackTrace ();
+            Log.error ( ReflectUtils.class, e );
         }
         catch ( final URISyntaxException e )
         {
-            e.printStackTrace ();
+            Log.error ( ReflectUtils.class, e );
         }
         return null;
     }
@@ -356,7 +479,7 @@ public final class ReflectUtils
         }
         catch ( final URISyntaxException e )
         {
-            e.printStackTrace ();
+            Log.error ( ReflectUtils.class, e );
         }
         return null;
     }
@@ -477,16 +600,42 @@ public final class ReflectUtils
      */
     public static Class getCallerClass ()
     {
+        // We have to add one to depth since this method call is increasing it
+        return getCallerClass ( 1 );
+    }
+
+    /**
+     * Returns method caller class.
+     * It is not recommended to use this method anywhere but in debugging.
+     *
+     * @param additionalDepth additional methods depth
+     * @return method caller class
+     */
+    public static Class getCallerClass ( final int additionalDepth )
+    {
+        // Depth explaination:
+        // 0 - this method class
+        // 1 - this method caller class
+        // 2 - caller's class caller
+        // additionalDepth - in case call goes through additional methods this is required
+        final int depth = 2 + additionalDepth;
+
         try
         {
-            // 0 - this method class
-            // 1 - this method caller class
-            // 2 - caller's class caller
-            return Class.forName ( new Throwable ().getStackTrace ()[ 2 ].getClassName () );
+            // We add additional 3 levels of depth due to reflection calls here
+            return callStaticMethod ( "sun.reflect.Reflection", "getCallerClass", depth + 3 );
         }
         catch ( final Throwable e )
         {
-            return null;
+            try
+            {
+                // Simply use determined depth
+                return Class.forName ( new Throwable ().getStackTrace ()[ depth ].getClassName () );
+            }
+            catch ( final ClassNotFoundException ex )
+            {
+                return null;
+            }
         }
     }
 
@@ -593,44 +742,6 @@ public final class ReflectUtils
     }
 
     /**
-     * Returns static field value from the specified class.
-     *
-     * @param classType class type
-     * @param fieldName class field name
-     * @return static field value from the specified class
-     */
-    public static <T> T getStaticFieldValueSafely ( final Class classType, final String fieldName )
-    {
-        try
-        {
-            return getStaticFieldValue ( classType, fieldName );
-        }
-        catch ( final IllegalAccessException e )
-        {
-            return null;
-        }
-        catch ( final NoSuchFieldException e )
-        {
-            return null;
-        }
-    }
-
-    /**
-     * Returns static field value from the specified class.
-     *
-     * @param classType class type
-     * @param fieldName class field name
-     * @return static field value from the specified class
-     * @throws NoSuchFieldException
-     * @throws IllegalAccessException
-     */
-    public static <T> T getStaticFieldValue ( final Class classType, final String fieldName )
-            throws NoSuchFieldException, IllegalAccessException
-    {
-        return ( T ) classType.getField ( fieldName ).get ( null );
-    }
-
-    /**
      * Returns inner class with the specified name.
      *
      * @param fromClass      class to look for the inner class
@@ -664,6 +775,10 @@ public final class ReflectUtils
         }
         catch ( final Throwable e )
         {
+            if ( safeMethodsLoggingEnabled )
+            {
+                Log.warn ( "ReflectionUtils method failed: createInstanceSafely", e );
+            }
             return null;
         }
     }
@@ -701,6 +816,10 @@ public final class ReflectUtils
         }
         catch ( final Throwable e )
         {
+            if ( safeMethodsLoggingEnabled )
+            {
+                Log.warn ( "ReflectionUtils method failed: createInstanceSafely", e );
+            }
             return null;
         }
     }
@@ -804,6 +923,10 @@ public final class ReflectUtils
         }
         catch ( final Throwable e )
         {
+            if ( safeMethodsLoggingEnabled )
+            {
+                Log.warn ( "ReflectionUtils method failed: callStaticMethodSafely", e );
+            }
             return null;
         }
     }
@@ -844,6 +967,10 @@ public final class ReflectUtils
         }
         catch ( final Throwable e )
         {
+            if ( safeMethodsLoggingEnabled )
+            {
+                Log.warn ( "ReflectionUtils method failed: callStaticMethodSafely", e );
+            }
             return null;
         }
     }
@@ -883,6 +1010,10 @@ public final class ReflectUtils
         }
         catch ( final Throwable e )
         {
+            if ( safeMethodsLoggingEnabled )
+            {
+                Log.warn ( "ReflectionUtils method failed: callMethodsSafely", e );
+            }
             return null;
         }
     }
@@ -925,6 +1056,10 @@ public final class ReflectUtils
         }
         catch ( final Throwable e )
         {
+            if ( safeMethodsLoggingEnabled )
+            {
+                Log.warn ( "ReflectionUtils method failed: callMethodsSafely", e );
+            }
             return null;
         }
     }
@@ -967,6 +1102,10 @@ public final class ReflectUtils
         }
         catch ( final Throwable e )
         {
+            if ( safeMethodsLoggingEnabled )
+            {
+                Log.warn ( "ReflectionUtils method failed: callMethodSafely", e );
+            }
             return null;
         }
     }
@@ -1093,6 +1232,10 @@ public final class ReflectUtils
         }
         catch ( final Throwable e )
         {
+            if ( safeMethodsLoggingEnabled )
+            {
+                Log.warn ( "ReflectionUtils method failed: getMethodSafely", e );
+            }
             return null;
         }
     }
@@ -1176,20 +1319,19 @@ public final class ReflectUtils
     protected static Method getMethodImpl ( final Class aClass, final String methodName, final Object[] arguments )
             throws NoSuchMethodException, IllegalAccessException, InvocationTargetException
     {
-        final Method method;
-        if ( arguments.length == 0 )
-        {
-            // Searching simple method w/o arguments
-            method = aClass.getMethod ( methodName );
-            method.setAccessible ( true );
-        }
-        else
-        {
-            // Searching for more complex method
-            final Class[] types = getClassTypes ( arguments );
-            method = getMethod ( aClass, aClass, methodName, types );
-            method.setAccessible ( true );
-        }
+        // This enhancement was a bad idea and was disabled
+        // In case method is protected/private or located in one of superclasses it won't be found
+        //        if ( arguments.length == 0 )
+        //        {
+        //            // Searching simple method w/o arguments
+        //            method = aClass.getMethod ( methodName );
+        //            method.setAccessible ( true );
+        //        }
+
+        // Searching for more complex method
+        final Class[] types = getClassTypes ( arguments );
+        final Method method = getMethod ( aClass, aClass, methodName, types );
+        method.setAccessible ( true );
         return method;
     }
 
@@ -1286,6 +1428,10 @@ public final class ReflectUtils
     public static <T extends Cloneable> T clone ( final T object )
             throws NoSuchMethodException, IllegalAccessException, InvocationTargetException
     {
+        if ( object == null )
+        {
+            return null;
+        }
         return ReflectUtils.callMethod ( object, "clone" );
     }
 
@@ -1298,6 +1444,49 @@ public final class ReflectUtils
      */
     public static <T extends Cloneable> T cloneSafely ( final T object )
     {
+        if ( object == null )
+        {
+            return null;
+        }
+        return ReflectUtils.callMethodSafely ( object, "clone" );
+    }
+
+    /**
+     * Returns cloned object.
+     *
+     * @param object object to clone
+     * @param <T>    cloned object type
+     * @return cloned object
+     * @throws NoSuchMethodException
+     * @throws IllegalAccessException
+     * @throws InvocationTargetException
+     */
+    public static <T> T cloneObject ( final T object ) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException
+    {
+        if ( object == null )
+        {
+            return null;
+        }
+        return ReflectUtils.callMethod ( object, "clone" );
+    }
+
+    /**
+     * Returns cloned object.
+     *
+     * @param object object to clone
+     * @param <T>    cloned object type
+     * @return cloned object
+     */
+    public static <T> T cloneObjectSafely ( final T object )
+    {
+        if ( object == null )
+        {
+            return null;
+        }
+        else if ( object.getClass ().isPrimitive () )
+        {
+            return object;
+        }
         return ReflectUtils.callMethodSafely ( object, "clone" );
     }
 

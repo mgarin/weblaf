@@ -21,6 +21,8 @@ import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.menu.PopupMenuWay;
 import com.alee.laf.menu.WebPopupMenuUI;
+import com.alee.managers.log.Log;
+import com.alee.managers.style.SupportedComponent;
 import com.alee.utils.ReflectUtils;
 
 import javax.swing.*;
@@ -40,13 +42,6 @@ import java.io.Serializable;
 
 public class WebSplitButton extends WebButton implements MouseMotionListener, MouseListener, ActionListener, Serializable
 {
-    /**
-     * Unique UI class ID.
-     *
-     * @see #getUIClassID
-     */
-    private static final String uiClassID = "SplitButtonUI";
-
     /**
      * Whether should always display popup menu when button is clicked or not.
      * If set to false popup menu will only be displayed when split button part is clicked.
@@ -445,10 +440,10 @@ public class WebSplitButton extends WebButton implements MouseMotionListener, Mo
     /**
      * Notifies all listeners that have registered interest for
      * notification on this event type.  The event instance
-     * is lazily created using the <code>event</code>
+     * is lazily created using the {@code event}
      * parameter.
      *
-     * @param event the <code>ActionEvent</code> object
+     * @param event the {@code ActionEvent} object
      * @see javax.swing.event.EventListenerList
      */
     protected void fireButtonClicked ( final ActionEvent event )
@@ -481,10 +476,10 @@ public class WebSplitButton extends WebButton implements MouseMotionListener, Mo
     /**
      * Notifies all listeners that have registered interest for
      * notification on this event type.  The event instance
-     * is lazily created using the <code>event</code>
+     * is lazily created using the {@code event}
      * parameter.
      *
-     * @param event the <code>ActionEvent</code> object
+     * @param event the {@code ActionEvent} object
      * @see javax.swing.event.EventListenerList
      */
     protected void fireSplitbuttonClicked ( final ActionEvent event )
@@ -535,9 +530,9 @@ public class WebSplitButton extends WebButton implements MouseMotionListener, Mo
             {
                 setUI ( ( WebSplitButtonUI ) ReflectUtils.createInstance ( WebLookAndFeel.splitButtonUI ) );
             }
-            catch ( Throwable e )
+            catch ( final Throwable e )
             {
-                e.printStackTrace ();
+                Log.error ( this, e );
                 setUI ( new WebSplitButtonUI () );
             }
         }
@@ -553,6 +548,6 @@ public class WebSplitButton extends WebButton implements MouseMotionListener, Mo
     @Override
     public String getUIClassID ()
     {
-        return uiClassID;
+        return SupportedComponent.splitButton.getUIClassID ();
     }
 }

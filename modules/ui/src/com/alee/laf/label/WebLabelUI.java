@@ -278,7 +278,7 @@ public class WebLabelUI extends BasicLabelUI implements Styleable, BorderMethods
      *
      * @param painter label painter
      */
-    private void applyPainterSettings ( final LabelPainter painter )
+    protected void applyPainterSettings ( final LabelPainter painter )
     {
         if ( painter != null )
         {
@@ -308,19 +308,6 @@ public class WebLabelUI extends BasicLabelUI implements Styleable, BorderMethods
     @Override
     public Dimension getPreferredSize ( final JComponent c )
     {
-        Dimension ps;
-        if ( painter != null )
-        {
-            ps = painter.getPreferredSize ( c );
-            if ( c.getLayout () != null )
-            {
-                ps = SwingUtils.max ( ps, c.getLayout ().preferredLayoutSize ( c ) );
-            }
-        }
-        else
-        {
-            ps = new Dimension ( 0, 0 );
-        }
-        return ps;
+        return LafUtils.getPreferredSize ( c, painter );
     }
 }

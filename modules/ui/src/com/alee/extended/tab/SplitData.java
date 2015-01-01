@@ -21,7 +21,10 @@ import com.alee.laf.splitpane.WebSplitPane;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.Customizer;
 
+import javax.swing.*;
 import java.awt.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 /**
  * Data for single split pane within document pane.
@@ -81,8 +84,7 @@ public final class SplitData<T extends DocumentData> implements StructureData<T>
      *
      * @param orientation split orientation
      * @param first       first split element
-     * @param last        last split element
-     * @return new split component
+     * @param last        last split element   @return new split component
      */
     protected WebSplitPane createSplit ( final int orientation, final StructureData first, final StructureData last )
     {
@@ -91,17 +93,23 @@ public final class SplitData<T extends DocumentData> implements StructureData<T>
         splitPane.setContinuousLayout ( true );
         splitPane.setDrawDividerBorder ( true );
         splitPane.setDividerSize ( 8 );
-        splitPane.setResizeWeight ( 0.5f );
+        splitPane.setResizeWeight ( 0.5 );
+        splitPane.addPropertyChangeListener ( JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener ()
+        {
+            @Override
+            public void propertyChange ( final PropertyChangeEvent evt )
+            {
+                SwingUtilities.invokeLater ( new Runnable ()
+                {
+                    @Override
+                    public void run ()
+                    {
+                        getDocumentPane ().fireDividerLocationChanged ( SplitData.this );
+                    }
+                } );
+            }
+        } );
         return splitPane;
-    }
-
-    /**
-     * Changes split orientation.
-     */
-    protected void changeSplitOrientation ()
-    {
-        orientation = orientation == WebSplitPane.HORIZONTAL_SPLIT ? WebSplitPane.VERTICAL_SPLIT : WebSplitPane.HORIZONTAL_SPLIT;
-        splitPane.setOrientation ( orientation );
     }
 
     /**
@@ -143,6 +151,7 @@ public final class SplitData<T extends DocumentData> implements StructureData<T>
      */
     public WebDocumentPane getDocumentPane ()
     {
+        // todo Replace with saved WebDocumentPane reference
         return SwingUtils.getFirstParent ( splitPane, WebDocumentPane.class );
     }
 
@@ -174,6 +183,67 @@ public final class SplitData<T extends DocumentData> implements StructureData<T>
     public void setOrientation ( final int orientation )
     {
         this.orientation = orientation;
+        splitPane.setOrientation ( orientation );
+
+        // Firing orientation change event
+        getDocumentPane ().fireOrientationChanged ( this );
+    }
+
+    /**
+     * Changes split orientation.
+     */
+    public void changeOrientation ()
+    {
+        setOrientation ( orientation == WebSplitPane.HORIZONTAL_SPLIT ? WebSplitPane.VERTICAL_SPLIT : WebSplitPane.HORIZONTAL_SPLIT );
+    }
+
+    /**
+     * Swaps side components.
+     */
+    public void swapSides ()
+    {
+        // Remembering components and split location
+        final StructureData first = this.last;
+        final StructureData last = this.first;
+        final double location = getDividerLocation ();
+
+        // Clearing components first to avoid exceptions
+        splitPane.setLeftComponent ( null );
+        splitPane.setRightComponent ( null );
+
+        // Changing component sides
+        this.first = first;
+        this.last = last;
+        splitPane.setLeftComponent ( first.getComponent () );
+        splitPane.setRightComponent ( last.getComponent () );
+        splitPane.revalidate ();
+        splitPane.repaint ();
+
+        // Restoring opposite divider location
+        setDividerLocation ( 1.0 - location );
+
+        // Firing sides swap event
+        getDocumentPane ().fireSidesSwapped ( this );
+    }
+
+    /**
+     * Returns proportional split divider location.
+     *
+     * @return proportional split divider location
+     */
+    public double getDividerLocation ()
+    {
+        return splitPane.getProportionalDividerLocation ();
+    }
+
+    /**
+     * Sets proportional split divider location.
+     *
+     * @param location new proportional split divider location
+     */
+    public void setDividerLocation ( final double location )
+    {
+        splitPane.setDividerLocation ( Math.max ( 0.0, Math.min ( location, 1.0 ) ) );
     }
 
     /**

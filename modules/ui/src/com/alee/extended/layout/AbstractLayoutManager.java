@@ -55,7 +55,7 @@ public abstract class AbstractLayoutManager implements LayoutManager2
     }
 
     /**
-     * Caled when component added into container with this layout.
+     * Called when component added into container with this layout.
      *
      * @param component   added component
      * @param constraints component constraints

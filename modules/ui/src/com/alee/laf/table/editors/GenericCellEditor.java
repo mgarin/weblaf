@@ -40,7 +40,7 @@ public class GenericCellEditor extends WebTextField
         return invalidValue;
     }
 
-    public void setInvalidValue ( boolean invalidValue )
+    public void setInvalidValue ( final boolean invalidValue )
     {
         this.invalidValue = invalidValue;
         repaint ();

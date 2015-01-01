@@ -10,7 +10,7 @@
             <drawShade>false</drawShade>
         </ui>
         <painter id="painter" class="com.alee.managers.style.skin.web.WebLabelPainter">
-            <shadeColor>200,200,200</shadeColor>
+            <shadeColor>230,230,230</shadeColor>
         </painter>
     </style>
 
@@ -22,19 +22,30 @@
         </component>
         <painter id="painter" class="com.alee.managers.style.skin.web.WebVerticalLabelPainter">
             <drawShade>false</drawShade>
-            <shadeColor>200,200,200</shadeColor>
+            <shadeColor>230,230,230</shadeColor>
+        </painter>
+    </style>
+
+    <!-- WebStyledLabel styling -->
+    <style type="styledLabel" id="default">
+        <component>
+            <foreground>black</foreground>
+            <background>237,237,237</background>
+        </component>
+        <painter id="painter" class="com.alee.extended.label.WebStyledLabelPainter">
+            <drawShade>false</drawShade>
         </painter>
     </style>
 
     <!-- JComboBox value and list element renderers styling -->
-    <style type="label" id="combo-box-value" extends="default">
+    <style type="label" id="combo-box-box" extends="default">
         <painter id="painter" class="com.alee.managers.style.skin.web.WebComboBoxElementPainter">
-            <margin>2,2,2,2</margin>
+        <margin>2,2,2,2</margin>
         </painter>
     </style>
-    <style type="label" id="combo-box-element" extends="default">
+    <style type="label" id="combo-box-list" extends="default">
         <painter id="painter" class="com.alee.managers.style.skin.web.WebComboBoxElementPainter">
-            <margin>4,6,4,6</margin>
+        <margin>4,6,4,6</margin>
             <topSelectedBackgroundColor>208,208,198</topSelectedBackgroundColor>
             <bottomSelectedBackgroundColor>196,196,186</bottomSelectedBackgroundColor>
         </painter>

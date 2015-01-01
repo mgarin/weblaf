@@ -59,33 +59,33 @@ public class TextNotificationsExample extends DefaultExample
      * {@inheritDoc}
      */
     @Override
-    public Component getPreview ( WebLookAndFeelDemo owner )
+    public Component getPreview ( final WebLookAndFeelDemo owner )
     {
-        WebButton notification1 = new WebButton ( "Simple text notification" );
+        final WebButton notification1 = new WebButton ( "Simple text notification" );
         notification1.addActionListener ( new ActionListener ()
         {
             @Override
-            public void actionPerformed ( ActionEvent e )
+            public void actionPerformed ( final ActionEvent e )
             {
                 NotificationManager.showNotification ( "Simple notification" );
             }
         } );
 
-        WebButton notification2 = new WebButton ( "Notification with custom icon" );
+        final WebButton notification2 = new WebButton ( "Notification with custom icon" );
         notification2.addActionListener ( new ActionListener ()
         {
             @Override
-            public void actionPerformed ( ActionEvent e )
+            public void actionPerformed ( final ActionEvent e )
             {
                 NotificationManager.showNotification ( "Custom notification icon", NotificationIcon.tip.getIcon () );
             }
         } );
 
-        WebButton notification3 = new WebButton ( "Notification with options" );
+        final WebButton notification3 = new WebButton ( "Notification with options" );
         notification3.addActionListener ( new ActionListener ()
         {
             @Override
-            public void actionPerformed ( ActionEvent e )
+            public void actionPerformed ( final ActionEvent e )
             {
                 NotificationManager.showNotification ( "Choose one of available options...", NotificationIcon.database.getIcon (),
                         NotificationOption.apply, NotificationOption.discard );

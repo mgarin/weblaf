@@ -17,7 +17,7 @@
 
 package com.alee.utils.ninepatch;
 
-import com.alee.log.Log;
+import com.alee.managers.log.Log;
 import com.alee.managers.style.data.ComponentStyleConverter;
 import com.alee.utils.ReflectUtils;
 import com.thoughtworks.xstream.converters.UnmarshallingContext;

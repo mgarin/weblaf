@@ -33,12 +33,12 @@ public class WebLanguageManager
     /**
      * Manager initialization mark.
      */
-    private static boolean initialized = false;
+    protected static boolean initialized = false;
 
     /**
      * Initializes LanguageManager settings.
      */
-    public static void initialize ()
+    public static synchronized void initialize ()
     {
         if ( !initialized )
         {
@@ -55,6 +55,8 @@ public class WebLanguageManager
             LanguageManager.registerLanguageUpdater ( new WebFileDropLU () );
             LanguageManager.registerLanguageUpdater ( new WebCollapsiblePaneLU () );
             LanguageManager.registerLanguageUpdater ( new WebDockableFrameLU () );
+            LanguageManager.registerLanguageUpdater ( new WebFrameLU () );
+            LanguageManager.registerLanguageUpdater ( new WebDialogLU () );
 
             // Tooltip support
             LanguageManager.setTooltipLanguageSupport ( new WeblafTooltipLanguageSupport () );

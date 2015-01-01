@@ -611,7 +611,7 @@ public class WebDecorationPainter<E extends JComponent> extends AbstractPainter<
      * {@inheritDoc}
      */
     @Override
-    public Insets getMargin ( final E scrollbar )
+    public Insets getMargin ( final E c )
     {
         if ( undecorated )
         {
@@ -622,10 +622,10 @@ public class WebDecorationPainter<E extends JComponent> extends AbstractPainter<
         {
             // Decoration border margin
             final int spacing = shadeWidth + 1;
-            final int top = paintTop ? spacing : ( paintTopLine ? 1 : 0 );
-            final int left = paintLeft ? spacing : ( paintLeftLine ? 1 : 0 );
-            final int bottom = paintBottom ? spacing : ( paintBottomLine ? 1 : 0 );
-            final int right = paintRight ? spacing : ( paintRightLine ? 1 : 0 );
+            final int top = paintTop ? spacing : paintTopLine ? 1 : 0;
+            final int left = paintLeft ? spacing : paintLeftLine ? 1 : 0;
+            final int bottom = paintBottom ? spacing : paintBottomLine ? 1 : 0;
+            final int right = paintRight ? spacing : paintRightLine ? 1 : 0;
             return new Insets ( top, left, bottom, right );
         }
     }

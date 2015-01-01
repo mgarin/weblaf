@@ -33,13 +33,13 @@ import com.alee.laf.tabbedpane.TabbedPaneStyle;
 import com.alee.laf.tabbedpane.WebTabbedPane;
 import com.alee.laf.table.WebTable;
 import com.alee.laf.text.WebTextArea;
-import com.alee.log.Log;
 import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.hotkey.HotkeyManager;
 import com.alee.managers.hotkey.HotkeyRunnable;
 import com.alee.managers.language.LM;
 import com.alee.managers.language.LanguageAdapter;
 import com.alee.managers.language.LanguageManager;
+import com.alee.managers.log.Log;
 import com.alee.managers.popup.WebPopup;
 import com.alee.managers.version.VersionInfo;
 import com.alee.managers.version.VersionManager;
@@ -318,7 +318,7 @@ public class LibraryInfoDialog extends WebFrame
                             }
                             catch ( final IOException e )
                             {
-                                e.printStackTrace ();
+                                Log.error ( this, e );
                             }
                         }
                     } );

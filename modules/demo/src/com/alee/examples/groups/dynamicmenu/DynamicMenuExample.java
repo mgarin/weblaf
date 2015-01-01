@@ -23,8 +23,10 @@ import com.alee.examples.content.FeatureState;
 import com.alee.extended.menu.DynamicMenuType;
 import com.alee.extended.menu.WebDynamicMenu;
 import com.alee.extended.menu.WebDynamicMenuItem;
+import com.alee.extended.panel.AlignPanel;
 import com.alee.extended.panel.GroupPanel;
 import com.alee.extended.panel.GroupingType;
+import com.alee.laf.checkbox.WebCheckBox;
 import com.alee.laf.combobox.WebComboBox;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
@@ -55,6 +57,7 @@ public class DynamicMenuExample extends DefaultExample
     private WebComboBox hidingType;
     private WebTextField radius;
     private WebTextField itemsAmount;
+    private WebCheckBox drawBorder;
 
     /**
      * {@inheritDoc}
@@ -101,7 +104,12 @@ public class DynamicMenuExample extends DefaultExample
         itemsAmount = new WebTextField ( new IntTextDocument (), "5", 4 );
         final GroupPanel iag = new GroupPanel ( 5, new WebLabel ( "Items amount:" ), itemsAmount );
 
+        drawBorder = new WebCheckBox ( "Show custom border", true );
+
         final WebPanel clickPanel = new WebPanel ( true );
+        clickPanel.setWebColoredBackground ( false );
+        clickPanel.setShadeWidth ( 20 );
+        clickPanel.setBackground ( Color.WHITE );
         clickPanel.add ( new WebLabel ( "Click with left mouse button here to show menu", WebLabel.CENTER ) );
         clickPanel.addMouseListener ( new MouseAdapter ()
         {
@@ -115,8 +123,9 @@ public class DynamicMenuExample extends DefaultExample
             }
         } );
 
-        final GroupPanel controls = new GroupPanel ( 15, tg, htg, rg, iag );
-        return new GroupPanel ( GroupingType.fillLast, 10, false, controls, clickPanel ).setMargin ( 10 );
+        final GroupPanel controls = new GroupPanel ( 15, tg, htg, rg, iag, drawBorder );
+        final AlignPanel alignPanel = new AlignPanel ( controls, SwingConstants.CENTER, SwingConstants.CENTER );
+        return new GroupPanel ( GroupingType.fillLast, 10, false, alignPanel, clickPanel ).setMargin ( 10 );
     }
 
     /**
@@ -143,10 +152,11 @@ public class DynamicMenuExample extends DefaultExample
                 public void actionPerformed ( final ActionEvent e )
                 {
                     final WebLookAndFeelDemo p = WebLookAndFeelDemo.getInstance ();
-                    NotificationManager.showNotification ( p, "Menu #" + number + " clicked", icon ).setDisplayTime ( 3000 );
+                    NotificationManager.showInnerNotification ( p, "Menu #" + number + " clicked", icon ).setDisplayTime ( 3000 );
                 }
             } );
             item.setMargin ( new Insets ( 8, 8, 8, 8 ) );
+            item.setPaintBorder ( drawBorder.isSelected () );
             menu.addItem ( item );
         }
 

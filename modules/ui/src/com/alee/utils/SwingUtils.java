@@ -689,7 +689,7 @@ public final class SwingUtils
      * @param <T>         parent component class type
      * @return first parent which is instance of specified class type or null if none found
      */
-    public static <T> T getFirstParent ( final Component component, final Class<T> parentClass )
+    public static <T extends Container> T getFirstParent ( final Component component, final Class<T> parentClass )
     {
         Component parent = component.getParent ();
         while ( !parentClass.isInstance ( parent ) && parent != null )
@@ -697,6 +697,73 @@ public final class SwingUtils
             parent = parent.getParent ();
         }
         return ( T ) parent;
+    }
+
+    /**
+     * Returns first component placed in the specified container which is instance of specified class type or null if none found.
+     *
+     * @param container      container to look for component in
+     * @param componentClass component class
+     * @param <T>            component class type
+     * @return first component placed in the specified container which is instance of specified class type or null if none found
+     */
+    public static <T extends Component> T getFirst ( final Container container, final Class<T> componentClass )
+    {
+        return getFirst ( container, componentClass, false );
+    }
+
+    /**
+     * Returns first component placed in the specified container which is instance of specified class type or null if none found.
+     *
+     * @param container      container to look for component in
+     * @param componentClass component class
+     * @param recursive      whether to check all subcontainers or not
+     * @param <T>            component class type
+     * @return first component placed in the specified container which is instance of specified class type or null if none found
+     */
+    public static <T extends Component> T getFirst ( final Container container, final Class<T> componentClass, final boolean recursive )
+    {
+        for ( int i = 0; i < container.getComponentCount (); i++ )
+        {
+            final Component component = container.getComponent ( i );
+            if ( componentClass.isInstance ( component ) )
+            {
+                return ( T ) component;
+            }
+            if ( recursive )
+            {
+                if ( component instanceof Container )
+                {
+                    final T first = getFirst ( ( Container ) component, componentClass, recursive );
+                    if ( first != null )
+                    {
+                        return first;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Returns first parent component which supports dran and drop actions.
+     *
+     * @param component component to look parent supporting drop for
+     * @param <T>       parent supporting drop component class type
+     * @return first parent component which supports dran and drop actions
+     */
+    public static <T extends JComponent> T getFirstParentSupportingDrop ( final Component component )
+    {
+        final Container parent = component.getParent ();
+        if ( parent instanceof JComponent )
+        {
+            final JComponent c = ( JComponent ) parent;
+            if ( c.getTransferHandler () != null )
+            {
+                return ( T ) c;
+            }
+        }
+        return getFirstParentSupportingDrop ( parent );
     }
 
     /**
@@ -761,6 +828,40 @@ public final class SwingUtils
         {
             return getRootPane ( component.getParent () );
         }
+    }
+
+    /**
+     * Returns first available visible application window.
+     *
+     * @return first available visible application window
+     */
+    public static Window getAvailableWindow ()
+    {
+        final Window activeWindow = SwingUtils.getActiveWindow ();
+        if ( activeWindow != null )
+        {
+            if ( activeWindow instanceof JFrame || activeWindow instanceof JDialog || activeWindow instanceof JWindow )
+            {
+                // todo Ignore notification popup windows
+                return activeWindow;
+            }
+        }
+        final Window[] allWindows = Window.getWindows ();
+        if ( allWindows != null && allWindows.length > 0 )
+        {
+            for ( final Window window : allWindows )
+            {
+                if ( window.isShowing () )
+                {
+                    if ( window instanceof JFrame || window instanceof JDialog || window instanceof JWindow )
+                    {
+                        // todo Ignore notification popup windows
+                        return window;
+                    }
+                }
+            }
+        }
+        return null;
     }
 
     /**
@@ -1023,7 +1124,7 @@ public final class SwingUtils
      */
     public static <C extends Component> C setFontStyle ( final C component, final boolean bold, final boolean italic )
     {
-        final int style = bold && italic ? Font.BOLD | Font.ITALIC : ( bold ? Font.BOLD : ( italic ? Font.ITALIC : Font.PLAIN ) );
+        final int style = bold && italic ? Font.BOLD | Font.ITALIC : bold ? Font.BOLD : italic ? Font.ITALIC : Font.PLAIN;
         return setFontStyle ( component, style );
     }
 
@@ -1057,7 +1158,7 @@ public final class SwingUtils
     public static <C extends Component> C setFontSizeAndStyle ( final C component, final int fontSize, final boolean bold,
                                                                 final boolean italic )
     {
-        final int style = bold && italic ? Font.BOLD | Font.ITALIC : ( bold ? Font.BOLD : ( italic ? Font.ITALIC : Font.PLAIN ) );
+        final int style = bold && italic ? Font.BOLD | Font.ITALIC : bold ? Font.BOLD : italic ? Font.ITALIC : Font.PLAIN;
         return setFontSizeAndStyle ( component, fontSize, style );
     }
 
@@ -1472,6 +1573,10 @@ public final class SwingUtils
      */
     public static void setEnabledRecursively ( final Component component, final boolean enabled, final boolean startFromChilds )
     {
+        if ( component == null )
+        {
+            return;
+        }
         if ( !startFromChilds )
         {
             component.setEnabled ( enabled );
@@ -1711,6 +1816,19 @@ public final class SwingUtils
     }
 
     /**
+     * Returns component snapshot image.
+     * Component must be showing to render properly using this method.
+     *
+     * @param content      component for snapshot
+     * @param transparency snapshot transparency
+     * @return component snapshot image
+     */
+    public static BufferedImage createComponentSnapshot ( final Component content, final float transparency )
+    {
+        return createComponentSnapshot ( content, content.getWidth (), content.getHeight (), transparency );
+    }
+
+    /**
      * Returns component snapshot image of specified size.
      * Component must be showing to render properly using this method.
      *
@@ -1721,6 +1839,23 @@ public final class SwingUtils
      */
     public static BufferedImage createComponentSnapshot ( final Component content, final int width, final int height )
     {
+        return createComponentSnapshot ( content, width, height, 1f );
+    }
+
+    /**
+     * Returns component snapshot image of specified size.
+     * Component must be showing to render properly using this method.
+     *
+     * @param content      component for snapshot
+     * @param width        snapshot image width
+     * @param height       snapshot image height
+     * @param transparency snapshot transparency
+     * @return component snapshot image
+     */
+    public static BufferedImage createComponentSnapshot ( final Component content, final int width, final int height,
+                                                          final float transparency )
+    {
+        // Creating snapshot
         final BufferedImage bi = ImageUtils.createCompatibleImage ( width, height, Transparency.TRANSLUCENT );
         if ( content != null )
         {
@@ -1729,7 +1864,21 @@ public final class SwingUtils
             content.paintAll ( g2d );
             g2d.dispose ();
         }
-        return bi;
+
+        // Making it transparent if needed
+        if ( transparency < 1f )
+        {
+            final BufferedImage transparent = ImageUtils.createCompatibleImage ( width, height, Transparency.TRANSLUCENT );
+            final Graphics2D g2d = transparent.createGraphics ();
+            GraphicsUtils.setupAlphaComposite ( g2d, transparency );
+            g2d.drawImage ( bi, 0, 0, null );
+            g2d.dispose ();
+            return transparent;
+        }
+        else
+        {
+            return bi;
+        }
     }
 
     /**
@@ -1760,7 +1909,7 @@ public final class SwingUtils
         Window window = null;
         for ( final Window w : windows )
         {
-            if ( w.isVisible () && w.isActive () && w.isFocused () )
+            if ( w.isShowing () && w.isActive () && w.isFocused () )
             {
                 window = w;
                 break;
@@ -1937,6 +2086,21 @@ public final class SwingUtils
             label = new JLabel ();
         }
         return label.getFont ();
+    }
+
+    /**
+     * Returns default label font metrics.
+     * This method might be used as a hack with other L&amp;Fs to retrieve system default font metrics for simple text.
+     *
+     * @return default label font metrics
+     */
+    public static FontMetrics getDefaultLabelFontMetrics ()
+    {
+        if ( label == null )
+        {
+            label = new JLabel ();
+        }
+        return label.getFontMetrics ( label.getFont () );
     }
 
     /**
@@ -2360,6 +2524,10 @@ public final class SwingUtils
         if ( component1 == component2 )
         {
             return true;
+        }
+        else if ( component1 == null && component2 != null || component1 != null && component2 == null )
+        {
+            return false;
         }
         else
         {
@@ -3063,7 +3231,7 @@ public final class SwingUtils
             this.font = fontMetrics.getFont ();
             this.frc = fontMetrics.getFontRenderContext ();
             this.cache = new HashMap<Character, Short> ();
-            assert ( font != null && frc != null );
+            assert font != null && frc != null;
         }
 
         public int getLeftSideBearing ( final char aChar )
@@ -3138,7 +3306,7 @@ public final class SwingUtils
                 rsb = 0;
             }
 
-            final int bearing = ( ( lsb + 127 ) << 8 ) + ( rsb + 127 );
+            final int bearing = ( ( lsb + 127 ) << 8 ) + rsb + 127;
             return ( short ) bearing;
         }
 
@@ -3157,7 +3325,7 @@ public final class SwingUtils
                 return false;
             }
             final BearingCacheEntry oEntry = ( BearingCacheEntry ) entry;
-            return ( font.equals ( oEntry.font ) && frc.equals ( oEntry.frc ) );
+            return font.equals ( oEntry.font ) && frc.equals ( oEntry.frc );
         }
 
         /**

@@ -183,6 +183,7 @@ public class WebLabelPainter<E extends JLabel> extends AbstractPainter<E> implem
         final Map textHints = drawShade ? StyleConstants.defaultTextRenderingHints : StyleConstants.textRenderingHints;
         final Font oldFont = GraphicsUtils.setupFont ( g2d, label.getFont () );
         final Map oldHints = SwingUtils.setupTextAntialias ( g2d, textHints );
+        final Paint oldPaint = g2d.getPaint ();
 
         // Retrieving icon & text
         final String text = label.getText ();
@@ -232,6 +233,7 @@ public class WebLabelPainter<E extends JLabel> extends AbstractPainter<E> implem
             }
         }
 
+        g2d.setPaint ( oldPaint );
         SwingUtils.restoreTextAntialias ( g2d, oldHints );
         GraphicsUtils.restoreFont ( g2d, oldFont );
         GraphicsUtils.restoreComposite ( g2d, oc, transparency != null );

@@ -17,6 +17,7 @@
 
 package com.alee.utils.swing;
 
+import com.alee.managers.log.Log;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.TimeUtils;
 
@@ -132,6 +133,13 @@ public class WebTimer
      * This might be useful if operations you want to perform within timer cycles have nothing to do with Event Dispatch Thread.
      */
     protected boolean useEventDispatchThread = true;
+
+    /**
+     * Whether should use daemon thread instead of user one or not.
+     * Daemon thread will allow JVM to shutdown even if timer is still running.
+     * This option should be set before starting timer to have any effect.
+     */
+    protected boolean useDaemonThread = false;
 
     /**
      * Action command for fired events.
@@ -476,6 +484,29 @@ public class WebTimer
     }
 
     /**
+     * Returns whether should use daemon thread instead of user one or not.
+     *
+     * @return true if should use daemon thread instead of user one, false otherwise
+     */
+    public boolean isUseDaemonThread ()
+    {
+        return useDaemonThread;
+    }
+
+    /**
+     * Returns whether should use daemon thread instead of user one or not.
+     * If set to true it will allow JVM to shutdown even if timer is still running.
+     * This option should be set before starting timer to have any effect.
+     *
+     * @param useDaemonThread whether should use daemon thread instead of user one or not
+     */
+    public WebTimer setUseDaemonThread ( final boolean useDaemonThread )
+    {
+        this.useDaemonThread = useDaemonThread;
+        return this;
+    }
+
+    /**
      * Returns action command for fired events.
      *
      * @return action command for fired events
@@ -794,6 +825,7 @@ public class WebTimer
                 cleanUp ( currentId );
             }
         }, name );
+        exec.setDaemon ( useDaemonThread );
         exec.start ();
     }
 
@@ -850,7 +882,7 @@ public class WebTimer
             }
             catch ( final InterruptedException e )
             {
-                e.printStackTrace ();
+                Log.error ( this, e );
             }
         }
     }
@@ -1446,6 +1478,58 @@ public class WebTimer
         final WebTimer repeat = new WebTimer ( name, delay, initialDelay, listener );
         repeat.setRepeats ( true );
         repeat.setUseEventDispatchThread ( useEventDispatchThread );
+        repeat.setCyclesLimit ( cyclesLimit );
+        repeat.start ();
+        return repeat;
+    }
+
+    /**
+     * Returns newly created and started timer that repeats and has the specified delay, initial delay and action listener.
+     *
+     * @param useDaemonThread whether should use daemon thread instead of user one or not
+     * @param name            thread name
+     * @param delay           delay between timer cycles in milliseconds
+     * @param listener        action listener
+     * @return newly created and started timer
+     */
+    public static WebTimer repeat ( final boolean useDaemonThread, final String name, final long delay, final ActionListener listener )
+    {
+        return repeat ( useDaemonThread, name, delay, delay, listener );
+    }
+
+    /**
+     * Returns newly created and started timer that repeats and has the specified delay, initial delay and action listener.
+     *
+     * @param useDaemonThread whether should use daemon thread instead of user one or not
+     * @param name            thread name
+     * @param delay           delay between timer cycles in milliseconds
+     * @param initialDelay    delay before the first timer cycle run in milliseconds
+     * @param listener        action listener
+     * @return newly created and started timer
+     */
+    public static WebTimer repeat ( final boolean useDaemonThread, final String name, final long delay, final long initialDelay,
+                                    final ActionListener listener )
+    {
+        return repeat ( useDaemonThread, name, delay, initialDelay, defaultCyclesLimit, listener );
+    }
+
+    /**
+     * Returns newly created and started timer that repeats and has the specified delay, initial delay and action listener.
+     *
+     * @param useDaemonThread whether should use daemon thread instead of user one or not
+     * @param name            thread name
+     * @param delay           delay between timer cycles in milliseconds
+     * @param initialDelay    delay before the first timer cycle run in milliseconds
+     * @param cyclesLimit     timer cycles execution limit
+     * @param listener        action listener
+     * @return newly created and started timer
+     */
+    public static WebTimer repeat ( final boolean useDaemonThread, final String name, final long delay, final long initialDelay,
+                                    final int cyclesLimit, final ActionListener listener )
+    {
+        final WebTimer repeat = new WebTimer ( name, delay, initialDelay, listener );
+        repeat.setRepeats ( true );
+        repeat.setUseDaemonThread ( useDaemonThread );
         repeat.setCyclesLimit ( cyclesLimit );
         repeat.start ();
         return repeat;

@@ -18,6 +18,7 @@
 package com.alee.utils;
 
 import com.alee.global.StyleConstants;
+import com.alee.managers.log.Log;
 
 import javax.swing.*;
 import java.awt.*;
@@ -46,6 +47,11 @@ public final class ProprietaryUtils
      * Key used to indicate a heavy weight Popup should be used.
      */
     public static final int HEAVY_WEIGHT_POPUP = 2;
+
+    /**
+     * Whether or not window transparency is allowed globally or not.
+     */
+    private static boolean windowTransparencyAllowed = true;
 
     /**
      * Allow per-pixel transparent windows usage on Linux systems.
@@ -96,44 +102,69 @@ public final class ProprietaryUtils
         }
         catch ( final ClassNotFoundException e )
         {
-            e.printStackTrace ();
+            Log.error ( ProprietaryUtils.class, e );
         }
         catch ( final NoSuchFieldException e )
         {
-            e.printStackTrace ();
+            Log.error ( ProprietaryUtils.class, e );
         }
         catch ( final IllegalAccessException e )
         {
-            e.printStackTrace ();
+            Log.error ( ProprietaryUtils.class, e );
         }
         catch ( final NoSuchMethodException e )
         {
-            e.printStackTrace ();
+            Log.error ( ProprietaryUtils.class, e );
         }
         catch ( final InvocationTargetException e )
         {
-            e.printStackTrace ();
+            Log.error ( ProprietaryUtils.class, e );
         }
     }
 
     /**
-     * Returns whether window transparency is supported on current OS or not.
+     * Returns whether window transparency is allowed globally or not.
+     * Whether or not it is allowed depends on the settings and current OS type.
      *
-     * @return true if window transparency is supported on current OS; false otherwise
+     * @return true if window transparency is allowed globally, false otherwise
      */
     public static boolean isWindowTransparencyAllowed ()
     {
         try
         {
-            // Replace when Unix-systems will have proper support for transparency
-            // com.sun.awt.AWTUtilities.isTranslucencySupported ( com.sun.awt.AWTUtilities.Translucency.PERPIXEL_TRANSPARENT )
-            return SystemUtils.isWindows () || SystemUtils.isMac () || SystemUtils.isSolaris () ||
-                    SystemUtils.isUnix () && allowLinuxTransparency;
+            if ( windowTransparencyAllowed )
+            {
+                // Replace when Unix-systems will have proper support for transparency
+                // Also on Windows systems fonts of all components on transparent windows is not the same, which becomes a real issue sometimes
+                final Class au = ReflectUtils.getClass ( "com.sun.awt.AWTUtilities" );
+                final Class t = ReflectUtils.getInnerClass ( au, "Translucency" );
+                final Object ppt = ReflectUtils.getStaticFieldValue ( t, "PERPIXEL_TRANSPARENT" );
+                final Boolean wts = ReflectUtils.callStaticMethod ( au, "isWindowTranslucencySupported" );
+                final Boolean tc = ReflectUtils.callStaticMethod ( au, "isTranslucencyCapable", SystemUtils.getGraphicsConfiguration () );
+                final Boolean ppts = ReflectUtils.callStaticMethod ( au, "isTranslucencySupported", ppt );
+                return wts && tc && ppts && ( SystemUtils.isWindows () || SystemUtils.isMac () || SystemUtils.isSolaris () ||
+                        SystemUtils.isUnix () && allowLinuxTransparency );
+            }
+            else
+            {
+                return false;
+            }
         }
         catch ( final Throwable e )
         {
-            return false;
+            return SystemUtils.isWindows () || SystemUtils.isMac () || SystemUtils.isSolaris () ||
+                    SystemUtils.isUnix () && allowLinuxTransparency;
         }
+    }
+
+    /**
+     * Sets whether window transparency is allowed globally or not.
+     *
+     * @param allowed whether window transparency is allowed globally or not
+     */
+    public static void setWindowTransparencyAllowed ( final boolean allowed )
+    {
+        windowTransparencyAllowed = allowed;
     }
 
     /**
@@ -188,7 +219,7 @@ public final class ProprietaryUtils
             {
                 // Ignore any exceptions this native feature might cause
                 // Still, should inform that such actions cause an exception on the underlying system
-                e.printStackTrace ();
+                Log.error ( ProprietaryUtils.class, e );
             }
         }
     }
@@ -239,7 +270,7 @@ public final class ProprietaryUtils
             {
                 // Ignore any exceptions this native feature might cause
                 // Still, should inform that such actions cause an exception on the underlying system
-                e.printStackTrace ();
+                Log.error ( ProprietaryUtils.class, e );
             }
         }
         return true;
@@ -272,7 +303,7 @@ public final class ProprietaryUtils
             {
                 // Ignore any exceptions this native feature might cause
                 // Still, should inform that such actions cause an exception on the underlying system
-                e.printStackTrace ();
+                Log.error ( ProprietaryUtils.class, e );
             }
         }
     }
@@ -306,7 +337,7 @@ public final class ProprietaryUtils
             {
                 // Ignore any exceptions this native feature might cause
                 // Still, should inform that such actions cause an exception on the underlying system
-                e.printStackTrace ();
+                Log.error ( ProprietaryUtils.class, e );
             }
         }
         return 1f;

@@ -24,21 +24,20 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * User: mgarin Date: 31.10.12 Time: 15:36
+ * @author Mikle Garin
  */
 
-public class WebBooleanEditor extends WebDefaultCellEditor
+public class WebBooleanEditor extends WebDefaultCellEditor<WebCheckBox>
 {
     public WebBooleanEditor ()
     {
         super ( createEditorComponent () );
-        JCheckBox checkBox = ( JCheckBox ) getComponent ();
-        checkBox.setHorizontalAlignment ( JCheckBox.CENTER );
         setClickCountToStart ( 1 );
     }
 
     @Override
-    public Component getTableCellEditorComponent ( JTable table, Object value, boolean isSelected, int row, int column )
+    public Component getTableCellEditorComponent ( final JTable table, final Object value, final boolean isSelected, final int row,
+                                                   final int column )
     {
         final Component editor = super.getTableCellEditorComponent ( table, value, isSelected, row, column );
         editor.setBackground ( table.getSelectionBackground () );
@@ -47,7 +46,8 @@ public class WebBooleanEditor extends WebDefaultCellEditor
 
     private static WebCheckBox createEditorComponent ()
     {
-        WebCheckBox editor = new WebCheckBox ();
+        final WebCheckBox editor = new WebCheckBox ();
+        editor.setHorizontalAlignment ( JCheckBox.CENTER );
         editor.setAnimated ( false );
         editor.setOpaque ( true );
         editor.setFocusable ( false );

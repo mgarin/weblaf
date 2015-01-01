@@ -20,11 +20,21 @@ package com.alee.laf.combobox;
 import com.alee.laf.label.WebLabel;
 
 /**
- * User: mgarin Date: 27.07.12 Time: 19:17
+ * Default combobox elements renderer.
+ * It uses custom painter to display selected background for list-type elements.
+ *
+ * @author Mikle Garin
+ * @see com.alee.laf.combobox.WebComboBoxCellRenderer
+ * @see com.alee.managers.style.skin.web.WebComboBoxElementPainter
  */
 
 public class WebComboBoxElement extends WebLabel
 {
+    /**
+     * Element type.
+     */
+    private final ComboBoxElementType type;
+
     /**
      * Runtime variables.
      */
@@ -32,10 +42,17 @@ public class WebComboBoxElement extends WebLabel
     protected int index;
     protected boolean selected;
 
-    public WebComboBoxElement ()
+    public WebComboBoxElement ( final ComboBoxElementType type )
     {
         super ();
+        this.type = type;
         setName ( "List.cellRenderer" );
+        setStyleId ( type == ComboBoxElementType.box ? "combo-box-box" : "combo-box-list" );
+    }
+
+    public ComboBoxElementType getType ()
+    {
+        return type;
     }
 
     public int getTotalElements ()

@@ -18,26 +18,37 @@
 package com.alee.laf.spinner;
 
 import com.alee.laf.WebLookAndFeel;
+import com.alee.managers.hotkey.HotkeyData;
+import com.alee.managers.language.data.TooltipWay;
+import com.alee.managers.log.Log;
+import com.alee.managers.tooltip.ToolTipMethods;
+import com.alee.managers.tooltip.TooltipManager;
+import com.alee.managers.tooltip.WebCustomTooltip;
+import com.alee.utils.EventUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.laf.ShapeProvider;
-import com.alee.utils.swing.FontMethods;
+import com.alee.utils.swing.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.FocusAdapter;
+import java.awt.event.KeyAdapter;
+import java.awt.event.MouseAdapter;
+import java.util.List;
 
 /**
- * User: mgarin Date: 25.07.11 Time: 17:10
+ * @author Mikle Garin
  */
 
-public class WebSpinner extends JSpinner implements ShapeProvider, FontMethods<WebSpinner>
+public class WebSpinner extends JSpinner implements EventMethods, ToolTipMethods, ShapeProvider, FontMethods<WebSpinner>
 {
     public WebSpinner ()
     {
         super ();
     }
 
-    public WebSpinner ( SpinnerModel model )
+    public WebSpinner ( final SpinnerModel model )
     {
         super ( model );
     }
@@ -47,7 +58,7 @@ public class WebSpinner extends JSpinner implements ShapeProvider, FontMethods<W
         return getWebUI ().getShadeWidth ();
     }
 
-    public void setShadeWidth ( int shadeWidth )
+    public void setShadeWidth ( final int shadeWidth )
     {
         getWebUI ().setShadeWidth ( shadeWidth );
     }
@@ -57,7 +68,7 @@ public class WebSpinner extends JSpinner implements ShapeProvider, FontMethods<W
         return getWebUI ().getRound ();
     }
 
-    public void setRound ( int round )
+    public void setRound ( final int round )
     {
         getWebUI ().setRound ( round );
     }
@@ -67,7 +78,7 @@ public class WebSpinner extends JSpinner implements ShapeProvider, FontMethods<W
         return getWebUI ().isDrawBorder ();
     }
 
-    public void setDrawBorder ( boolean drawBorder )
+    public void setDrawBorder ( final boolean drawBorder )
     {
         getWebUI ().setDrawBorder ( drawBorder );
     }
@@ -77,35 +88,35 @@ public class WebSpinner extends JSpinner implements ShapeProvider, FontMethods<W
         return getWebUI ().isDrawFocus ();
     }
 
-    public void setDrawFocus ( boolean drawFocus )
+    public void setDrawFocus ( final boolean drawFocus )
     {
         getWebUI ().setDrawFocus ( drawFocus );
     }
 
     @Override
-    protected JComponent createEditor ( SpinnerModel model )
+    protected JComponent createEditor ( final SpinnerModel model )
     {
         if ( model instanceof SpinnerDateModel )
         {
-            DateEditor dateEditor = new DateEditor ( this );
+            final DateEditor dateEditor = new DateEditor ( this );
             WebSpinnerUI.installFieldUI ( dateEditor.getTextField (), WebSpinner.this );
             return dateEditor;
         }
         else if ( model instanceof SpinnerListModel )
         {
-            ListEditor listEditor = new ListEditor ( this );
+            final ListEditor listEditor = new ListEditor ( this );
             WebSpinnerUI.installFieldUI ( listEditor.getTextField (), WebSpinner.this );
             return listEditor;
         }
         else if ( model instanceof SpinnerNumberModel )
         {
-            NumberEditor numberEditor = new NumberEditor ( this );
+            final NumberEditor numberEditor = new NumberEditor ( this );
             WebSpinnerUI.installFieldUI ( numberEditor.getTextField (), WebSpinner.this );
             return numberEditor;
         }
         else
         {
-            DefaultEditor defaultEditor = new DefaultEditor ( this );
+            final DefaultEditor defaultEditor = new DefaultEditor ( this );
             WebSpinnerUI.installFieldUI ( defaultEditor.getTextField (), WebSpinner.this );
             return defaultEditor;
         }
@@ -131,9 +142,9 @@ public class WebSpinner extends JSpinner implements ShapeProvider, FontMethods<W
             {
                 setUI ( ( WebSpinnerUI ) ReflectUtils.createInstance ( WebLookAndFeel.spinnerUI ) );
             }
-            catch ( Throwable e )
+            catch ( final Throwable e )
             {
-                e.printStackTrace ();
+                Log.error ( this, e );
                 setUI ( new WebSpinnerUI () );
             }
         }
@@ -145,8 +156,382 @@ public class WebSpinner extends JSpinner implements ShapeProvider, FontMethods<W
     }
 
     /**
-     * Font methods
+     * {@inheritDoc}
      */
+    @Override
+    public MouseAdapter onMousePress ( final MouseEventRunnable runnable )
+    {
+        return EventUtils.onMousePress ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MouseAdapter onMousePress ( final MouseButton mouseButton, final MouseEventRunnable runnable )
+    {
+        return EventUtils.onMousePress ( this, mouseButton, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MouseAdapter onMouseEnter ( final MouseEventRunnable runnable )
+    {
+        return EventUtils.onMouseEnter ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MouseAdapter onMouseExit ( final MouseEventRunnable runnable )
+    {
+        return EventUtils.onMouseExit ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MouseAdapter onMouseDrag ( final MouseEventRunnable runnable )
+    {
+        return EventUtils.onMouseDrag ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MouseAdapter onMouseDrag ( final MouseButton mouseButton, final MouseEventRunnable runnable )
+    {
+        return EventUtils.onMouseDrag ( this, mouseButton, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MouseAdapter onMouseClick ( final MouseEventRunnable runnable )
+    {
+        return EventUtils.onMouseClick ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MouseAdapter onMouseClick ( final MouseButton mouseButton, final MouseEventRunnable runnable )
+    {
+        return EventUtils.onMouseClick ( this, mouseButton, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MouseAdapter onDoubleClick ( final MouseEventRunnable runnable )
+    {
+        return EventUtils.onDoubleClick ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MouseAdapter onMenuTrigger ( final MouseEventRunnable runnable )
+    {
+        return EventUtils.onMenuTrigger ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public KeyAdapter onKeyType ( final KeyEventRunnable runnable )
+    {
+        return EventUtils.onKeyType ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public KeyAdapter onKeyType ( final HotkeyData hotkey, final KeyEventRunnable runnable )
+    {
+        return EventUtils.onKeyType ( this, hotkey, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public KeyAdapter onKeyPress ( final KeyEventRunnable runnable )
+    {
+        return EventUtils.onKeyPress ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public KeyAdapter onKeyPress ( final HotkeyData hotkey, final KeyEventRunnable runnable )
+    {
+        return EventUtils.onKeyPress ( this, hotkey, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public KeyAdapter onKeyRelease ( final KeyEventRunnable runnable )
+    {
+        return EventUtils.onKeyRelease ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public KeyAdapter onKeyRelease ( final HotkeyData hotkey, final KeyEventRunnable runnable )
+    {
+        return EventUtils.onKeyRelease ( this, hotkey, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public FocusAdapter onFocusGain ( final FocusEventRunnable runnable )
+    {
+        return EventUtils.onFocusGain ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public FocusAdapter onFocusLoss ( final FocusEventRunnable runnable )
+    {
+        return EventUtils.onFocusLoss ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip setToolTip ( final String tooltip )
+    {
+        return TooltipManager.setTooltip ( this, tooltip );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip setToolTip ( final Icon icon, final String tooltip )
+    {
+        return TooltipManager.setTooltip ( this, icon, tooltip );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip setToolTip ( final String tooltip, final TooltipWay tooltipWay )
+    {
+        return TooltipManager.setTooltip ( this, tooltip, tooltipWay );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip setToolTip ( final Icon icon, final String tooltip, final TooltipWay tooltipWay )
+    {
+        return TooltipManager.setTooltip ( this, icon, tooltip, tooltipWay );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip setToolTip ( final String tooltip, final TooltipWay tooltipWay, final int delay )
+    {
+        return TooltipManager.setTooltip ( this, tooltip, tooltipWay, delay );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip setToolTip ( final Icon icon, final String tooltip, final TooltipWay tooltipWay, final int delay )
+    {
+        return TooltipManager.setTooltip ( this, icon, tooltip, tooltipWay, delay );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip setToolTip ( final JComponent tooltip )
+    {
+        return TooltipManager.setTooltip ( this, tooltip );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip setToolTip ( final JComponent tooltip, final int delay )
+    {
+        return TooltipManager.setTooltip ( this, tooltip, delay );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip setToolTip ( final JComponent tooltip, final TooltipWay tooltipWay )
+    {
+        return TooltipManager.setTooltip ( this, tooltip, tooltipWay );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip setToolTip ( final JComponent tooltip, final TooltipWay tooltipWay, final int delay )
+    {
+        return TooltipManager.setTooltip ( this, tooltip, tooltipWay, delay );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip addToolTip ( final String tooltip )
+    {
+        return TooltipManager.addTooltip ( this, tooltip );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip addToolTip ( final Icon icon, final String tooltip )
+    {
+        return TooltipManager.addTooltip ( this, icon, tooltip );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip addToolTip ( final String tooltip, final TooltipWay tooltipWay )
+    {
+        return TooltipManager.addTooltip ( this, tooltip, tooltipWay );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip addToolTip ( final Icon icon, final String tooltip, final TooltipWay tooltipWay )
+    {
+        return TooltipManager.addTooltip ( this, icon, tooltip, tooltipWay );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip addToolTip ( final String tooltip, final TooltipWay tooltipWay, final int delay )
+    {
+        return TooltipManager.addTooltip ( this, tooltip, tooltipWay, delay );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip addToolTip ( final Icon icon, final String tooltip, final TooltipWay tooltipWay, final int delay )
+    {
+        return TooltipManager.addTooltip ( this, icon, tooltip, tooltipWay, delay );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip addToolTip ( final JComponent tooltip )
+    {
+        return TooltipManager.addTooltip ( this, tooltip );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip addToolTip ( final JComponent tooltip, final int delay )
+    {
+        return TooltipManager.addTooltip ( this, tooltip, delay );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip addToolTip ( final JComponent tooltip, final TooltipWay tooltipWay )
+    {
+        return TooltipManager.addTooltip ( this, tooltip, tooltipWay );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip addToolTip ( final JComponent tooltip, final TooltipWay tooltipWay, final int delay )
+    {
+        return TooltipManager.addTooltip ( this, tooltip, tooltipWay, delay );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void removeToolTip ( final WebCustomTooltip tooltip )
+    {
+        TooltipManager.removeTooltip ( this, tooltip );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void removeToolTips ()
+    {
+        TooltipManager.removeTooltips ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void removeToolTips ( final WebCustomTooltip... tooltips )
+    {
+        TooltipManager.removeTooltips ( this, tooltips );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void removeToolTips ( final List<WebCustomTooltip> tooltips )
+    {
+        TooltipManager.removeTooltips ( this, tooltips );
+    }
 
     /**
      * {@inheritDoc}
@@ -161,7 +546,7 @@ public class WebSpinner extends JSpinner implements ShapeProvider, FontMethods<W
      * {@inheritDoc}
      */
     @Override
-    public WebSpinner setPlainFont ( boolean apply )
+    public WebSpinner setPlainFont ( final boolean apply )
     {
         return SwingUtils.setPlainFont ( this, apply );
     }
@@ -188,7 +573,7 @@ public class WebSpinner extends JSpinner implements ShapeProvider, FontMethods<W
      * {@inheritDoc}
      */
     @Override
-    public WebSpinner setBoldFont ( boolean apply )
+    public WebSpinner setBoldFont ( final boolean apply )
     {
         return SwingUtils.setBoldFont ( this, apply );
     }
@@ -215,7 +600,7 @@ public class WebSpinner extends JSpinner implements ShapeProvider, FontMethods<W
      * {@inheritDoc}
      */
     @Override
-    public WebSpinner setItalicFont ( boolean apply )
+    public WebSpinner setItalicFont ( final boolean apply )
     {
         return SwingUtils.setItalicFont ( this, apply );
     }
@@ -233,7 +618,7 @@ public class WebSpinner extends JSpinner implements ShapeProvider, FontMethods<W
      * {@inheritDoc}
      */
     @Override
-    public WebSpinner setFontStyle ( boolean bold, boolean italic )
+    public WebSpinner setFontStyle ( final boolean bold, final boolean italic )
     {
         return SwingUtils.setFontStyle ( this, bold, italic );
     }
@@ -242,7 +627,7 @@ public class WebSpinner extends JSpinner implements ShapeProvider, FontMethods<W
      * {@inheritDoc}
      */
     @Override
-    public WebSpinner setFontStyle ( int style )
+    public WebSpinner setFontStyle ( final int style )
     {
         return SwingUtils.setFontStyle ( this, style );
     }
@@ -251,7 +636,7 @@ public class WebSpinner extends JSpinner implements ShapeProvider, FontMethods<W
      * {@inheritDoc}
      */
     @Override
-    public WebSpinner setFontSize ( int fontSize )
+    public WebSpinner setFontSize ( final int fontSize )
     {
         return SwingUtils.setFontSize ( this, fontSize );
     }
@@ -260,7 +645,7 @@ public class WebSpinner extends JSpinner implements ShapeProvider, FontMethods<W
      * {@inheritDoc}
      */
     @Override
-    public WebSpinner changeFontSize ( int change )
+    public WebSpinner changeFontSize ( final int change )
     {
         return SwingUtils.changeFontSize ( this, change );
     }
@@ -278,7 +663,7 @@ public class WebSpinner extends JSpinner implements ShapeProvider, FontMethods<W
      * {@inheritDoc}
      */
     @Override
-    public WebSpinner setFontSizeAndStyle ( int fontSize, boolean bold, boolean italic )
+    public WebSpinner setFontSizeAndStyle ( final int fontSize, final boolean bold, final boolean italic )
     {
         return SwingUtils.setFontSizeAndStyle ( this, fontSize, bold, italic );
     }
@@ -287,7 +672,7 @@ public class WebSpinner extends JSpinner implements ShapeProvider, FontMethods<W
      * {@inheritDoc}
      */
     @Override
-    public WebSpinner setFontSizeAndStyle ( int fontSize, int style )
+    public WebSpinner setFontSizeAndStyle ( final int fontSize, final int style )
     {
         return SwingUtils.setFontSizeAndStyle ( this, fontSize, style );
     }
@@ -296,7 +681,7 @@ public class WebSpinner extends JSpinner implements ShapeProvider, FontMethods<W
      * {@inheritDoc}
      */
     @Override
-    public WebSpinner setFontName ( String fontName )
+    public WebSpinner setFontName ( final String fontName )
     {
         return SwingUtils.setFontName ( this, fontName );
     }

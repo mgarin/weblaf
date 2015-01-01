@@ -26,12 +26,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * User: mgarin Date: 05.10.11 Time: 19:50
- * <p/>
  * This manager allows you to quickly highlight multiply visual Swing components in any window
+ *
+ * @author Mikle Garin
  */
 
-public final class HighlightManager
+public class HighlightManager
 {
     /**
      * HighlightManager initialization
@@ -60,9 +60,9 @@ public final class HighlightManager
      * Highlights components with specified text on window
      */
 
-    public static List<Component> highlightComponentsWithText ( String text, Component highlightBase )
+    public static List<Component> highlightComponentsWithText ( final String text, final Component highlightBase )
     {
-        List<Component> found = SwingUtils.findComponentsWithText ( text, highlightBase );
+        final List<Component> found = SwingUtils.findComponentsWithText ( text, highlightBase );
         if ( found.size () > 0 )
         {
             setHiglightedComponents ( found, highlightBase );
@@ -78,16 +78,16 @@ public final class HighlightManager
      * Sets highlighted component for its ancestor window
      */
 
-    public static void setHiglightedComponent ( Component highlight )
+    public static void setHiglightedComponent ( final Component highlight )
     {
         setHiglightedComponent ( highlight, null );
     }
 
-    public static void setHiglightedComponent ( Component highlight, Component highlightBase )
+    public static void setHiglightedComponent ( final Component highlight, final Component highlightBase )
     {
         if ( highlight != null )
         {
-            WebGlassPane wgp = GlassPaneManager.getGlassPane ( SwingUtils.getWindowAncestor ( highlight ) );
+            final WebGlassPane wgp = GlassPaneManager.getGlassPane ( SwingUtils.getWindowAncestor ( highlight ) );
             if ( wgp != null )
             {
                 wgp.clearHighlights ();
@@ -101,19 +101,19 @@ public final class HighlightManager
      * Sets highlighted components for their ancestor windows
      */
 
-    public static void setHiglightedComponents ( List<Component> highlights )
+    public static void setHiglightedComponents ( final List<Component> highlights )
     {
         setHiglightedComponents ( highlights, null );
     }
 
-    public static void setHiglightedComponents ( List<Component> highlights, Component highlightBase )
+    public static void setHiglightedComponents ( final List<Component> highlights, final Component highlightBase )
     {
         if ( highlights != null && highlights.size () > 0 )
         {
-            List<String> clearedIds = new ArrayList<String> ();
-            for ( Component component : highlights )
+            final List<String> clearedIds = new ArrayList<String> ();
+            for ( final Component component : highlights )
             {
-                WebGlassPane wgp = GlassPaneManager.getGlassPane ( SwingUtils.getWindowAncestor ( component ) );
+                final WebGlassPane wgp = GlassPaneManager.getGlassPane ( SwingUtils.getWindowAncestor ( component ) );
                 if ( wgp != null )
                 {
                     if ( !clearedIds.contains ( wgp.getId () ) )
@@ -132,11 +132,11 @@ public final class HighlightManager
      * Removes component highlight from its ancestor window
      */
 
-    public static void removeHigligtedComponent ( Component highlight )
+    public static void removeHigligtedComponent ( final Component highlight )
     {
         if ( highlight != null )
         {
-            WebGlassPane wgp = GlassPaneManager.getGlassPane ( SwingUtils.getWindowAncestor ( highlight ) );
+            final WebGlassPane wgp = GlassPaneManager.getGlassPane ( SwingUtils.getWindowAncestor ( highlight ) );
             if ( wgp != null )
             {
                 wgp.removeHighlightedComponents ( highlight );
@@ -148,13 +148,13 @@ public final class HighlightManager
      * Removes components highlight from their ancestor windows
      */
 
-    public static void removeHiglightedComponents ( List<Component> highlights )
+    public static void removeHiglightedComponents ( final List<Component> highlights )
     {
         if ( highlights != null && highlights.size () > 0 )
         {
-            for ( Component component : highlights )
+            for ( final Component component : highlights )
             {
-                WebGlassPane wgp = GlassPaneManager.getGlassPane ( SwingUtils.getWindowAncestor ( component ) );
+                final WebGlassPane wgp = GlassPaneManager.getGlassPane ( SwingUtils.getWindowAncestor ( component ) );
                 if ( wgp != null )
                 {
                     wgp.removeHighlightedComponents ( component );
@@ -167,7 +167,7 @@ public final class HighlightManager
      * Removes all highlights from component ancestor window
      */
 
-    public static void clearHighlightedComponents ( Component component )
+    public static void clearHighlightedComponents ( final Component component )
     {
         clearHighlightedComponents ( SwingUtils.getWindowAncestor ( component ) );
     }
@@ -176,9 +176,9 @@ public final class HighlightManager
      * Removes all highlights from window
      */
 
-    public static void clearHighlightedComponents ( Window window )
+    public static void clearHighlightedComponents ( final Window window )
     {
-        WebGlassPane wgp = GlassPaneManager.getGlassPane ( window );
+        final WebGlassPane wgp = GlassPaneManager.getGlassPane ( window );
         if ( wgp != null )
         {
             wgp.clearHighlights ();
@@ -189,7 +189,7 @@ public final class HighlightManager
      * Sets component as higlight base for its window
      */
 
-    public static void setHighlightBase ( Component highlightBase )
+    public static void setHighlightBase ( final Component highlightBase )
     {
         setHighlightBase ( SwingUtils.getWindowAncestor ( highlightBase ), highlightBase );
     }
@@ -198,12 +198,58 @@ public final class HighlightManager
      * Sets highlight base for window
      */
 
-    public static void setHighlightBase ( Window window, Component highlightBase )
+    public static void setHighlightBase ( final Window window, final Component highlightBase )
     {
-        WebGlassPane wgp = GlassPaneManager.getGlassPane ( window );
+        final WebGlassPane wgp = GlassPaneManager.getGlassPane ( window );
         if ( wgp != null )
         {
             wgp.setHighlightBase ( highlightBase );
         }
     }
+
+    /**
+     * Circle zone highlight.
+     */
+
+    //    private static final BufferedImage noise = ImageUtils.getBufferedImage ( HighlightManager.class.getResource ( "icons/noise.jpg" ) );
+    //
+    //    public static void highlightZone ( final Window window, final Point point )
+    //    {
+    //        final BufferedImage img = ImageUtils.createCompatibleImage ( 400, 300, Transparency.TRANSLUCENT );
+    //        final Graphics2D g2d = img.createGraphics ();
+    //        GraphicsUtils.setupAntialias ( g2d );
+    //
+    //        final Area shape = new Area ( new Ellipse2D.Double ( 0, 0, 399, 299 ) );
+    //        shape.exclusiveOr ( new Area ( new Ellipse2D.Double ( 10, 20, 380, 260 ) ) );
+    //
+    //        g2d.setPaint ( new TexturePaint ( noise, new Rectangle ( 0, 0, 400, 300 ) ) );
+    //        g2d.fill ( shape );
+    //
+    ////        g2d.setPaint ( new Color ( 99, 47, 8 ) );
+    ////        g2d.draw ( shape );
+    //
+    //        g2d.dispose ();
+    //
+    //        final WebGlassPane wgp = GlassPaneManager.getGlassPane ( window );
+    //        wgp.setPaintedImage ( img, new Point ( point.x - 200, point.y - 150 ) );
+    //
+    //    }
+    //
+    //    public static void main ( final String[] args )
+    //    {
+    //        WebLookAndFeel.install ();
+    //
+    //        final WebPanel panel = new WebPanel ();
+    //        panel.setPreferredSize ( new Dimension ( 600, 600 ) );
+    //        panel.onMousePress ( new MouseEventRunnable ()
+    //        {
+    //            @Override
+    //            public void run ( final MouseEvent e )
+    //            {
+    //                highlightZone ( SwingUtils.getWindowAncestor ( panel ), e.getPoint () );
+    //            }
+    //        } );
+    //
+    //        TestFrame.show ( panel );
+    //    }
 }

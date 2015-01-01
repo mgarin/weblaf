@@ -17,16 +17,18 @@
 
 package com.alee.managers.hotkey;
 
+import com.alee.utils.swing.KeyEventRunnable;
+
 import java.awt.event.KeyEvent;
 
 /**
- * This interface allows you to create action for hotkey events which can be used together with HotkeyManager methods. Unlike Runnable this
- * interface provides KeyEvent as action source.
+ * This interface allows you to create action for hotkey events which can be used together with HotkeyManager methods.
+ * Unlike Runnable this interface provides KeyEvent as action source.
  *
  * @author Mikle Garin
  */
 
-public interface HotkeyRunnable
+public interface HotkeyRunnable extends KeyEventRunnable
 {
     /**
      * Simple runnable that doesn't perform any actions.
@@ -45,5 +47,6 @@ public interface HotkeyRunnable
      *
      * @param e occured key event
      */
+    @Override
     public void run ( KeyEvent e );
 }

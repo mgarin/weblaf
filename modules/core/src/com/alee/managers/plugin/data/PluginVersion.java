@@ -31,7 +31,7 @@ import java.io.Serializable;
  * @see com.alee.managers.plugin.PluginManager
  */
 
-@XStreamAlias ( "PluginVersion" )
+@XStreamAlias ("PluginVersion")
 public class PluginVersion implements Serializable
 {
     /**
@@ -174,6 +174,17 @@ public class PluginVersion implements Serializable
     }
 
     /**
+     * Returns whether this plugin version is newer or the same as the specified one or not.
+     *
+     * @param ov other plugin version
+     * @return true if this plugin version is newer or the same as the specified one, false otherwise
+     */
+    public boolean isNewerOrSame ( final PluginVersion ov )
+    {
+        return isSame ( ov ) || isNewerThan ( ov );
+    }
+
+    /**
      * Returns whether this plugin version is older than the specified one or not.
      *
      * @param ov other plugin version
@@ -185,6 +196,17 @@ public class PluginVersion implements Serializable
                 ov.major == this.major && ov.minor > this.minor ||
                 ov.major == this.major && ov.minor == this.minor && ov.build != null && this.build == null ||
                 ov.major == this.major && ov.minor == this.minor && ov.build != null && this.build != null && ov.build > this.build;
+    }
+
+    /**
+     * Returns whether this plugin version is older or the same as the specified one or not.
+     *
+     * @param ov other plugin version
+     * @return true if this plugin version is older or the same as the specified one, false otherwise
+     */
+    public boolean isOlderOrSame ( final PluginVersion ov )
+    {
+        return isSame ( ov ) || isOlderThan ( ov );
     }
 
     /**

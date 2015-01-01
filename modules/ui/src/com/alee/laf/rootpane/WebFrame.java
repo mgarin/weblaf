@@ -23,17 +23,21 @@ import com.alee.managers.focus.FocusManager;
 import com.alee.managers.language.LanguageContainerMethods;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.language.LanguageMethods;
+import com.alee.managers.language.LanguageUtils;
 import com.alee.managers.language.updaters.LanguageUpdater;
 import com.alee.managers.settings.DefaultValue;
 import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.settings.SettingsMethods;
 import com.alee.managers.settings.SettingsProcessor;
+import com.alee.utils.EventUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.WindowUtils;
-import com.alee.utils.swing.WindowMethods;
+import com.alee.utils.swing.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.util.List;
 
 /**
  * This JFrame extenstion class provides some additional methods and options to manipulate frame behavior.
@@ -41,7 +45,8 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public class WebFrame extends JFrame implements LanguageMethods, LanguageContainerMethods, SettingsMethods, WindowMethods<WebFrame>
+public class WebFrame extends JFrame
+        implements WindowEventMethods, LanguageMethods, LanguageContainerMethods, SettingsMethods, WindowMethods<WebFrame>
 {
     /**
      * Whether should close frame on focus loss or not.
@@ -67,13 +72,15 @@ public class WebFrame extends JFrame implements LanguageMethods, LanguageContain
 
     public WebFrame ( final String title )
     {
-        super ( title );
+        super ( LanguageUtils.getInitialText ( title ) );
+        LanguageUtils.registerInitialLanguage ( this, title );
         initialize ();
     }
 
     public WebFrame ( final String title, final GraphicsConfiguration gc )
     {
-        super ( title, gc );
+        super ( LanguageUtils.getInitialText ( title ), gc );
+        LanguageUtils.registerInitialLanguage ( this, title );
         initialize ();
     }
 
@@ -124,6 +131,36 @@ public class WebFrame extends JFrame implements LanguageMethods, LanguageContain
     public void setCloseOnFocusLoss ( final boolean closeOnFocusLoss )
     {
         this.closeOnFocusLoss = closeOnFocusLoss;
+    }
+
+    /**
+     * Returns focusable childs that don't force frame to close even if it set to close on focus loss.
+     *
+     * @return focusable childs that don't force frame to close even if it set to close on focus loss
+     */
+    public List<Component> getFocusableChilds ()
+    {
+        return focusTracker.getCustomChildren ();
+    }
+
+    /**
+     * Adds focusable child that won't force frame to close even if it set to close on focus loss.
+     *
+     * @param child focusable child that won't force frame to close even if it set to close on focus loss
+     */
+    public void addFocusableChild ( final Component child )
+    {
+        focusTracker.addCustomChild ( child );
+    }
+
+    /**
+     * Removes focusable child that doesn't force frame to close even if it set to close on focus loss.
+     *
+     * @param child focusable child that doesn't force frame to close even if it set to close on focus loss
+     */
+    public void removeFocusableChild ( final Component child )
+    {
+        focusTracker.removeCustomChild ( child );
     }
 
     public Color getTopBg ()
@@ -329,6 +366,24 @@ public class WebFrame extends JFrame implements LanguageMethods, LanguageContain
     public WebRootPaneUI getWebRootPaneUI ()
     {
         return ( WebRootPaneUI ) super.getRootPane ().getUI ();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WindowAdapter onClosing ( final WindowEventRunnable runnable )
+    {
+        return EventUtils.onClosing ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WindowCloseAdapter onClose ( final ComponentEventRunnable runnable )
+    {
+        return EventUtils.onClose ( this, runnable );
     }
 
     /**

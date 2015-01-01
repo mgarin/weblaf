@@ -21,6 +21,8 @@ package com.alee.managers.proxy;
  * System proxy detection confirm dialog support.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-ProxyManager">How to use ProxyManager</a>
+ * @see com.alee.managers.proxy.ProxyManager
  */
 
 public interface SystemProxyConfirmationSupport

@@ -42,6 +42,7 @@ import com.alee.laf.toolbar.WebToolBar;
 import com.alee.laf.tree.TreeSelectionStyle;
 import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.language.LanguageManager;
+import com.alee.managers.log.Log;
 import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.style.skin.ninepatch.NPLabelPainter;
 import com.alee.utils.*;
@@ -293,7 +294,7 @@ public class NinePatchEditorPanel extends WebPanel
                     }
                     catch ( final IOException e1 )
                     {
-                        e1.printStackTrace ();
+                        Log.error ( this, e1 );
                     }
                 }
             }
@@ -330,7 +331,7 @@ public class NinePatchEditorPanel extends WebPanel
                     }
                     catch ( final IOException e1 )
                     {
-                        e1.printStackTrace ();
+                        Log.error ( this, e1 );
                     }
                 }
             }
@@ -677,7 +678,7 @@ public class NinePatchEditorPanel extends WebPanel
         try
         {
             // Ignore same file opening
-            if ( imageSrc != null && ( file.getAbsolutePath ().equals ( imageSrc ) ) )
+            if ( imageSrc != null && file.getAbsolutePath ().equals ( imageSrc ) )
             {
                 return;
             }
@@ -769,20 +770,11 @@ public class NinePatchEditorPanel extends WebPanel
 
     private WebPanel createPreviewPanel ()
     {
-        previewPanel = new WebPanel ()
-        {
-            @Override
-            public Dimension getPreferredSize ()
-            {
-                final Dimension ps = super.getPreferredSize ();
-                ps.width = Math.max ( 230, ps.width );
-                ps.height = 400;
-                return ps;
-            }
-        };
-        previewPanel.setLayout ( new TableLayout ( new double[][]{ { TableLayout.FILL, TableLayout.PREFERRED, TableLayout.FILL },
-                { TableLayout.PREFERRED, TableLayout.FILL, TableLayout.PREFERRED, TableLayout.FILL } } ) );
-        previewPanel.setPainter ( abp );
+        final double[] cols = { TableLayout.FILL, TableLayout.PREFERRED, TableLayout.FILL };
+        final double[] rows = { TableLayout.PREFERRED, TableLayout.FILL, TableLayout.PREFERRED, TableLayout.FILL };
+        previewPanel = new WebPanel ( new TableLayout ( new double[][]{ cols, rows } ), abp );
+        previewPanel.setMinimumWidth ( 230 );
+        previewPanel.setPreferredHeight ( 400 );
 
         preview = new WebLabel ( "", WebLabel.CENTER );
         previewPanel.add ( new ResizablePanel ( preview ), "1,2" );

@@ -84,8 +84,6 @@ public class WebFileDrop extends WebPanel implements LanguageMethods
     public WebFileDrop ()
     {
         super ( "file-drop", new WrapFlowLayout ( true ) );
-        setUndecorated ( false );
-        setShadeWidth ( 25 );
 
         // Default visual settings
         setFont ( SwingUtils.getDefaultLabelFont ().deriveFont ( Font.BOLD ).deriveFont ( 20f ) );

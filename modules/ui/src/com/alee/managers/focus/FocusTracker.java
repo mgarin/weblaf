@@ -17,6 +17,8 @@
 
 package com.alee.managers.focus;
 
+import java.awt.*;
+
 /**
  * Advanced interface that allows you to track focus behavior within component and its childs.
  * Note that method names are made longer to avoid clashing with other component methods in case you implement tracker interface.
@@ -34,12 +36,14 @@ public interface FocusTracker
     public boolean isTrackingEnabled ();
 
     /**
-     * Returns whether component and its childs in components tree should be counted as a single component or not.
-     * In case component and its childs are counted as one focus changes within them will be ignored by tracker.
+     * Returns whether specified component is involved with this tracker or not.
+     * This basically asks whether this object counts towards this tracker focus changes or not.
      *
-     * @return true if component and its childs in components tree should be counted as a single component, false otherwise
+     * @param component component to check for involvement
+     * @param tracked   tracked component
+     * @return true if the specified component is involved with this tracker, false otherwise
      */
-    public boolean isUniteWithChilds ();
+    public boolean isInvolved ( Component component, Component tracked );
 
     /**
      * Informs about component(s) focus changes depending on tracker settings.

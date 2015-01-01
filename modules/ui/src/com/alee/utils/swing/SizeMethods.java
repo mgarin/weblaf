@@ -31,10 +31,6 @@ import java.awt.*;
 public interface SizeMethods<C extends Component> extends SwingMethods
 {
     /**
-     * todo 1. Add maximum size methods
-     */
-
-    /**
      * Returns component preferred width.
      *
      * @return component preferred width
@@ -99,9 +95,51 @@ public interface SizeMethods<C extends Component> extends SwingMethods
     public C setMinimumHeight ( int minimumHeight );
 
     /**
+     * Returns component maximum width.
+     *
+     * @return component maximum width
+     */
+    public int getMaximumWidth ();
+
+    /**
+     * Sets component maximum width.
+     * Pass -1 to let component choose maximum width on its own.
+     *
+     * @param maximumWidth new component maximum width
+     * @return modified component
+     */
+    public C setMaximumWidth ( int maximumWidth );
+
+    /**
+     * Returns component maximum height.
+     *
+     * @return component maximum height
+     */
+    public int getMaximumHeight ();
+
+    /**
+     * Sets component maximum height.
+     * Pass -1 to let component choose maximum height on its own.
+     *
+     * @param maximumHeight new component maximum height
+     * @return modified component
+     */
+    public C setMaximumHeight ( int maximumHeight );
+
+    /**
      * Returns component preferred size.
      *
      * @return component preferred size
      */
     public Dimension getPreferredSize ();
+
+    /**
+     * Sets component preferred size.
+     * This method is a simple bridge for JComponent#setPreferredSize method.
+     *
+     * @param width  component preferred width
+     * @param height component preferred height
+     * @return modified component
+     */
+    public C setPreferredSize ( int width, int height );
 }

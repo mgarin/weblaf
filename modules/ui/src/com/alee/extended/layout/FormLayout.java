@@ -37,6 +37,7 @@ public class FormLayout extends AbstractLayoutManager
     public static final String CENTER = "center";
     public static final String RIGHT = "right";
     public static final String FILL = "fill";
+    public static final String LINE = "line";
 
     /**
      * Whether left side of the form should fill all the free space given by container or not.
@@ -303,8 +304,24 @@ public class FormLayout extends AbstractLayoutManager
     public void addComponent ( final Component component, final Object constraints )
     {
         // Adding default constraints if needed (left side components aligned to right, right side components fill the space)
-        final String halign = constraints != null ? "" + constraints : ( layoutConstraints.size () % 2 == 0 ? RIGHT : FILL );
-        layoutConstraints.put ( component, halign );
+        final Container parent = component.getParent ();
+        final int cc = parent.getComponentCount ();
+        boolean wasFirstColumn = false;
+        for ( int j = 0; j < cc; j++ )
+        {
+            final Component c = parent.getComponent ( j );
+            final String lc = layoutConstraints.get ( c );
+            if ( lc != null )
+            {
+                wasFirstColumn = !wasFirstColumn && !lc.equals ( LINE );
+            }
+            if ( c == component )
+            {
+                final String halign = constraints != null ? "" + constraints : wasFirstColumn ? FILL : RIGHT;
+                layoutConstraints.put ( component, halign );
+                break;
+            }
+        }
     }
 
     /**
@@ -314,53 +331,6 @@ public class FormLayout extends AbstractLayoutManager
     public void removeComponent ( final Component component )
     {
         layoutConstraints.remove ( component );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Dimension preferredLayoutSize ( final Container parent )
-    {
-        final int cc = parent.getComponentCount ();
-        final Insets i = parent.getInsets ();
-        if ( cc > 0 )
-        {
-            // Pre-calculating childs preferred sizes
-            final Map<Component, Dimension> cps = SwingUtils.getChildPreferredSizes ( parent );
-
-            int lpw = 0;
-            int rpw = 0;
-            int ph = 0;
-            for ( int j = 0; j < cc; j++ )
-            {
-                final Dimension ps = cps.get ( parent.getComponent ( j ) );
-                if ( j % 2 == 0 )
-                {
-                    // First column
-                    lpw = Math.max ( lpw, ps.width );
-
-                    // Row preferred height
-                    final int next = cc > j + 1 ? cps.get ( parent.getComponent ( j + 1 ) ).height : 0;
-                    ph += Math.max ( ps.height, next );
-                }
-                else
-                {
-                    // Second column
-                    rpw = Math.max ( rpw, ps.width );
-                }
-            }
-            if ( fillLeftSide && fillRightSide )
-            {
-                lpw = Math.max ( lpw, rpw );
-                rpw = lpw;
-            }
-            return new Dimension ( i.left + lpw + horizontalGap + rpw + i.right, i.top + ph + verticalGap * ( ( cc - 1 ) / 2 ) + i.bottom );
-        }
-        else
-        {
-            return new Dimension ( i.left + i.right, i.top + i.bottom );
-        }
     }
 
     /**
@@ -378,18 +348,34 @@ public class FormLayout extends AbstractLayoutManager
             // Calculating preferred column widths
             int lpw = 0;
             int rpw = 0;
+            boolean wasFirstColumn = false;
             for ( int j = 0; j < cc; j++ )
             {
-                final Dimension ps = cps.get ( parent.getComponent ( j ) );
-                if ( j % 2 == 0 )
+                final Component component = parent.getComponent ( j );
+                final Dimension ps = cps.get ( component );
+                if ( !wasFirstColumn )
                 {
-                    // First column
-                    lpw = Math.max ( lpw, ps.width );
+                    if ( layoutConstraints.get ( component ).equals ( LINE ) )
+                    {
+                        // Skipping to next line
+                        wasFirstColumn = false;
+                    }
+                    else
+                    {
+                        // First column
+                        lpw = Math.max ( lpw, ps.width );
+
+                        // Taking second column into account
+                        wasFirstColumn = true;
+                    }
                 }
                 else
                 {
                     // Second column
                     rpw = Math.max ( lpw, ps.width );
+
+                    // Going to next line
+                    wasFirstColumn = false;
                 }
             }
 
@@ -419,7 +405,7 @@ public class FormLayout extends AbstractLayoutManager
                     lpw = parentSize.width - i.left - i.right;
                 }
             }
-            else if ( fillRightSide )
+            else
             {
                 if ( cc > 1 )
                 {
@@ -430,36 +416,57 @@ public class FormLayout extends AbstractLayoutManager
             // Layouting components
             final int x1 = i.left;
             final int x2 = i.left + lpw + horizontalGap;
+            final int w = parentSize.width - i.left - i.right;
             int y = i.top;
+            wasFirstColumn = false;
             for ( int j = 0; j < cc; j++ )
             {
                 final Component component = parent.getComponent ( j );
                 final Dimension ps = cps.get ( component );
                 final String pos = layoutConstraints.get ( component );
-                if ( j % 2 == 0 )
+                if ( !wasFirstColumn )
                 {
-                    // Row preferred height
-                    final int next = cc > j + 1 ? cps.get ( parent.getComponent ( j + 1 ) ).height : 0;
-                    final int rh = Math.max ( ps.height, next );
+                    if ( pos.equals ( LINE ) )
+                    {
+                        // Full line column
+                        final int rh = ps.height;
+                        component.setBounds ( x1, y, w, rh );
 
-                    // First column
-                    final int cy = fillLeftSideHeight ? y : getSideY ( true, y, rh, ps.height );
-                    final int ch = fillLeftSideHeight ? rh : ps.height;
-                    if ( pos.equals ( LEFT ) )
-                    {
-                        component.setBounds ( x1, cy, ps.width, ch );
+                        // Incrementing Y position
+                        y += rh + verticalGap;
+
+                        // Skipping to next line
+                        wasFirstColumn = false;
                     }
-                    else if ( pos.equals ( CENTER ) )
+                    else
                     {
-                        component.setBounds ( x1 + lpw / 2 - ps.width / 2, cy, ps.width, ch );
-                    }
-                    else if ( pos.equals ( RIGHT ) )
-                    {
-                        component.setBounds ( x1 + lpw - ps.width, cy, ps.width, ch );
-                    }
-                    else if ( pos.equals ( FILL ) )
-                    {
-                        component.setBounds ( x1, cy, lpw, ch );
+                        // Row preferred height
+                        final int next = cc > j + 1 ? cps.get ( parent.getComponent ( j + 1 ) ).height : 0;
+                        final int rh = Math.max ( ps.height, next );
+
+                        // First column
+                        final int cy = fillLeftSideHeight ? y : getSideY ( true, y, rh, ps.height );
+                        final int ch = fillLeftSideHeight ? rh : ps.height;
+                        final int aw = Math.min ( ps.width, lpw );
+                        if ( pos.equals ( LEFT ) )
+                        {
+                            component.setBounds ( x1, cy, aw, ch );
+                        }
+                        else if ( pos.equals ( CENTER ) )
+                        {
+                            component.setBounds ( x1 + lpw / 2 - aw / 2, cy, aw, ch );
+                        }
+                        else if ( pos.equals ( RIGHT ) )
+                        {
+                            component.setBounds ( x1 + lpw - aw, cy, aw, ch );
+                        }
+                        else if ( pos.equals ( FILL ) )
+                        {
+                            component.setBounds ( x1, cy, lpw, ch );
+                        }
+
+                        // Going for second column
+                        wasFirstColumn = true;
                     }
                 }
                 else
@@ -471,17 +478,18 @@ public class FormLayout extends AbstractLayoutManager
                     // Second column
                     final int cy = fillRightSideHeight ? y : getSideY ( false, y, rh, ps.height );
                     final int ch = fillRightSideHeight ? rh : ps.height;
+                    final int aw = Math.min ( ps.width, rpw );
                     if ( pos.equals ( LEFT ) )
                     {
-                        component.setBounds ( x2, cy, ps.width, ch );
+                        component.setBounds ( x2, cy, aw, ch );
                     }
                     else if ( pos.equals ( CENTER ) )
                     {
-                        component.setBounds ( x2 + rpw / 2 - ps.width / 2, cy, ps.width, ch );
+                        component.setBounds ( x2 + rpw / 2 - aw / 2, cy, aw, ch );
                     }
                     else if ( pos.equals ( RIGHT ) )
                     {
-                        component.setBounds ( x2 + rpw - ps.width, cy, ps.width, ch );
+                        component.setBounds ( x2 + rpw - aw, cy, aw, ch );
                     }
                     else if ( pos.equals ( FILL ) )
                     {
@@ -490,6 +498,9 @@ public class FormLayout extends AbstractLayoutManager
 
                     // Incrementing Y position
                     y += rh + verticalGap;
+
+                    // Going to next line
+                    wasFirstColumn = false;
                 }
             }
         }
@@ -519,5 +530,76 @@ public class FormLayout extends AbstractLayoutManager
             return rowY + rowHeight - componentHeight;
         }
         return rowY;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Dimension preferredLayoutSize ( final Container parent )
+    {
+        final int cc = parent.getComponentCount ();
+        final Insets i = parent.getInsets ();
+        if ( cc > 0 )
+        {
+            // Pre-calculating childs preferred sizes
+            final Map<Component, Dimension> cps = SwingUtils.getChildPreferredSizes ( parent );
+
+            int pw = 0;
+            int lpw = 0;
+            int rpw = 0;
+            int ph = 0;
+            boolean wasFirstColumn = false;
+            for ( int j = 0; j < cc; j++ )
+            {
+                final Component thisComponent = parent.getComponent ( j );
+                final Dimension ps = cps.get ( thisComponent );
+                if ( !wasFirstColumn )
+                {
+                    if ( layoutConstraints.get ( thisComponent ).equals ( LINE ) )
+                    {
+                        // Single column line
+                        pw = Math.max ( pw, ps.width );
+
+                        // Row preferred height
+                        ph += ps.height + verticalGap;
+
+                        // Skipping to next row
+                        wasFirstColumn = false;
+                    }
+                    else
+                    {
+                        // First column
+                        lpw = Math.max ( lpw, ps.width );
+
+                        // Row preferred height
+                        final int next = cc > j + 1 ? cps.get ( parent.getComponent ( j + 1 ) ).height : 0;
+                        ph += Math.max ( ps.height, next ) + verticalGap;
+
+                        // Remembering that this was first column
+                        wasFirstColumn = true;
+                    }
+                }
+                else
+                {
+                    // Second column
+                    rpw = Math.max ( rpw, ps.width );
+
+                    // Going to next row
+                    wasFirstColumn = false;
+                }
+            }
+            ph -= verticalGap;
+            if ( fillLeftSide && fillRightSide )
+            {
+                lpw = Math.max ( lpw, rpw );
+                rpw = lpw;
+            }
+            return new Dimension ( i.left + Math.max ( lpw + horizontalGap + rpw, pw ) + i.right, i.top + ph + i.bottom );
+        }
+        else
+        {
+            return new Dimension ( i.left + i.right, i.top + i.bottom );
+        }
     }
 }

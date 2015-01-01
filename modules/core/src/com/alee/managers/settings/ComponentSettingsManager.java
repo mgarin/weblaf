@@ -40,27 +40,33 @@ import java.util.WeakHashMap;
  * @see com.alee.managers.settings.SettingsManager
  */
 
-public final class ComponentSettingsManager
+public class ComponentSettingsManager
 {
+    /**
+     * todo 1. JListSettingsProcessor
+     * todo 2. JTableSettingsProcessor
+     * todo 3. JScrollPaneSettingsProcessor
+     */
+
     /**
      * Registered settings processor classes.
      */
-    private static final Map<Class, Class> settingsProcessorClasses = new LinkedHashMap<Class, Class> ();
+    protected static final Map<Class, Class> settingsProcessorClasses = new LinkedHashMap<Class, Class> ();
 
     /**
      * Registered component settings processors.
      */
-    private static final Map<Component, SettingsProcessor> settingsProcessors = new WeakHashMap<Component, SettingsProcessor> ();
+    protected static final Map<Component, SettingsProcessor> settingsProcessors = new WeakHashMap<Component, SettingsProcessor> ();
 
     /**
      * Whether throw exceptions on inappropriate actions or not.
      */
-    private static boolean throwExceptions = true;
+    protected static boolean throwExceptions = true;
 
     /**
      * Whether ComponentSettingsManager is initialized or not.
      */
-    private static boolean initialized = false;
+    protected static boolean initialized = false;
 
     /**
      * Initializes ComponentSettingsManager.
@@ -146,7 +152,7 @@ public final class ComponentSettingsManager
      * @param componentType component type
      * @return settings processor class for the specified component type
      */
-    private static Class findSuitableSettingsProcessor ( final Class componentType )
+    protected static Class findSuitableSettingsProcessor ( final Class componentType )
     {
         // Looking through map with strict elements order for proper settings processor
         for ( final Class type : settingsProcessorClasses.keySet () )
@@ -165,7 +171,7 @@ public final class ComponentSettingsManager
      * @param data SettingsProcessorData
      * @return new SettingsProcessor instance for the specified SettingsProcessorData
      */
-    private static SettingsProcessor createSettingsProcessor ( final SettingsProcessorData data )
+    protected static SettingsProcessor createSettingsProcessor ( final SettingsProcessorData data )
     {
         // Creating new settings processor from registered class
         final Class settingsProcessorClass = findSuitableSettingsProcessor ( data.getComponent ().getClass () );

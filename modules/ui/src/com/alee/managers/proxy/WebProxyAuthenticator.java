@@ -44,6 +44,9 @@ import java.net.PasswordAuthentication;
  * It will also remember entered proxy settings if user asks to.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-ProxyManager">How to use ProxyManager</a>
+ * @see com.alee.managers.proxy.WebProxyManager
+ * @see com.alee.managers.proxy.ProxyManager
  */
 
 public class WebProxyAuthenticator extends Authenticator

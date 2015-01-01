@@ -67,6 +67,8 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider, Bor
     private ImageIcon collapseIcon = WebComboBoxStyle.collapseIcon;
     private int iconSpacing = WebComboBoxStyle.iconSpacing;
     private boolean drawBorder = WebComboBoxStyle.drawBorder;
+    private boolean webColoredBackground = WebComboBoxStyle.webColoredBackground;
+    private Color expandedBgColor = WebComboBoxStyle.expandedBgColor;
     private int round = WebComboBoxStyle.round;
     private int shadeWidth = WebComboBoxStyle.shadeWidth;
     private boolean drawFocus = WebComboBoxStyle.drawFocus;
@@ -93,8 +95,6 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider, Bor
     {
         super.installUI ( c );
 
-        final JComboBox comboBox = ( JComboBox ) c;
-
         // Default settings
         SwingUtils.setOrientation ( comboBox );
         comboBox.setFocusable ( true );
@@ -115,7 +115,7 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider, Bor
             @Override
             public void mouseWheelMoved ( final MouseWheelEvent e )
             {
-                if ( mouseWheelScrollingEnabled && comboBox.isEnabled () && SwingUtils.hasFocusOwner ( comboBox ) )
+                if ( mouseWheelScrollingEnabled && comboBox.isEnabled () && isFocused () )
                 {
                     // Changing selection in case index actually changed
                     final int index = comboBox.getSelectedIndex ();
@@ -392,9 +392,6 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider, Bor
                 // Button updater
                 addPopupMenuListener ( new PopupMenuListener ()
                 {
-                    /**
-                     * {@inheritDoc}
-                     */
                     @Override
                     public void popupMenuWillBecomeVisible ( final PopupMenuEvent e )
                     {
@@ -404,18 +401,12 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider, Bor
                         comboBox.repaint ();
                     }
 
-                    /**
-                     * {@inheritDoc}
-                     */
                     @Override
                     public void popupMenuWillBecomeInvisible ( final PopupMenuEvent e )
                     {
                         arrow.setIcon ( expandIcon );
                     }
 
-                    /**
-                     * {@inheritDoc}
-                     */
                     @Override
                     public void popupMenuCanceled ( final PopupMenuEvent e )
                     {
@@ -567,6 +558,26 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider, Bor
         updateBorder ();
     }
 
+    public boolean isWebColoredBackground ()
+    {
+        return webColoredBackground;
+    }
+
+    public void setWebColoredBackground ( final boolean webColored )
+    {
+        this.webColoredBackground = webColored;
+    }
+
+    public Color getExpandedBgColor ()
+    {
+        return expandedBgColor;
+    }
+
+    public void setExpandedBgColor ( final Color color )
+    {
+        this.expandedBgColor = color;
+    }
+
     public boolean isDrawFocus ()
     {
         return drawFocus;
@@ -638,10 +649,11 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider, Bor
         if ( drawBorder )
         {
             // Border and background
-            comboBox.setBackground ( StyleConstants.selectedBgColor );
-            LafUtils.drawWebStyle ( g2d, comboBox,
-                    drawFocus && SwingUtils.hasFocusOwner ( comboBox ) ? StyleConstants.fieldFocusColor : StyleConstants.shadeColor,
-                    shadeWidth, round, true, !isPopupVisible ( comboBox ) );
+            final Color shadeColor = drawFocus && isFocused () ? StyleConstants.fieldFocusColor : StyleConstants.shadeColor;
+            final boolean popupVisible = isPopupVisible ( comboBox );
+            final Color backgroundColor = !popupVisible ? comboBox.getBackground () : expandedBgColor;
+            LafUtils.drawWebStyle ( g2d, comboBox, shadeColor, shadeWidth, round, true, webColoredBackground && !popupVisible,
+                    StyleConstants.darkBorderColor, StyleConstants.disabledBorderColor, backgroundColor, 1f );
         }
         else
         {
@@ -663,6 +675,16 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider, Bor
             g2d.setPaint ( comboBox.isEnabled () ? StyleConstants.borderColor : StyleConstants.disabledBorderColor );
             g2d.drawLine ( lx, insets.top + 1, lx, comboBox.getHeight () - insets.bottom - 2 );
         }
+    }
+
+    /**
+     * Returns whether combobox or one of its children is focused or not.
+     *
+     * @return true if combobox or one of its children is focused, false otherwise
+     */
+    protected boolean isFocused ()
+    {
+        return SwingUtils.hasFocusOwner ( comboBox );
     }
 
     /**

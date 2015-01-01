@@ -19,6 +19,7 @@ package com.alee.laf.scroll;
 
 import com.alee.extended.painter.Painter;
 import com.alee.laf.WebLookAndFeel;
+import com.alee.managers.log.Log;
 import com.alee.managers.style.StyleManager;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SizeUtils;
@@ -272,7 +273,7 @@ public class WebScrollBar extends JScrollBar implements Styleable, SizeMethods<W
             }
             catch ( final Throwable e )
             {
-                e.printStackTrace ();
+                Log.error ( this, e );
                 setUI ( new WebScrollBarUI () );
             }
         }
@@ -358,8 +359,53 @@ public class WebScrollBar extends JScrollBar implements Styleable, SizeMethods<W
      * {@inheritDoc}
      */
     @Override
+    public int getMaximumWidth ()
+    {
+        return SizeUtils.getMaximumWidth ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebScrollBar setMaximumWidth ( final int maximumWidth )
+    {
+        return SizeUtils.setMaximumWidth ( this, maximumWidth );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int getMaximumHeight ()
+    {
+        return SizeUtils.getMaximumHeight ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebScrollBar setMaximumHeight ( final int maximumHeight )
+    {
+        return SizeUtils.setMaximumHeight ( this, maximumHeight );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Dimension getPreferredSize ()
     {
         return SizeUtils.getPreferredSize ( this, super.getPreferredSize () );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebScrollBar setPreferredSize ( final int width, final int height )
+    {
+        return SizeUtils.setPreferredSize ( this, width, height );
     }
 }

@@ -804,6 +804,42 @@ public class WebGradientColorChooser extends JComponent
      * {@inheritDoc}
      */
     @Override
+    public int getMaximumWidth ()
+    {
+        return SizeUtils.getMaximumWidth ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebGradientColorChooser setMaximumWidth ( final int maximumWidth )
+    {
+        return SizeUtils.setMaximumWidth ( this, maximumWidth );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int getMaximumHeight ()
+    {
+        return SizeUtils.getMaximumHeight ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebGradientColorChooser setMaximumHeight ( final int maximumHeight )
+    {
+        return SizeUtils.setMaximumHeight ( this, maximumHeight );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Dimension getPreferredSize ()
     {
         // todo Move to custom UI
@@ -813,5 +849,14 @@ public class WebGradientColorChooser extends JComponent
         final Dimension ps = new Dimension ( width, height );
 
         return SizeUtils.getPreferredSize ( this, ps );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebGradientColorChooser setPreferredSize ( final int width, final int height )
+    {
+        return SizeUtils.setPreferredSize ( this, width, height );
     }
 }

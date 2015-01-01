@@ -20,6 +20,7 @@ package com.alee.laf.table;
 import com.alee.global.StyleConstants;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.table.renderers.WebTableHeaderCellRenderer;
+import com.alee.utils.CompareUtils;
 import com.alee.utils.SwingUtils;
 
 import javax.swing.*;
@@ -36,10 +37,10 @@ import java.awt.*;
 
 public class WebTableHeaderUI extends BasicTableHeaderUI
 {
-    public static final Color topLineColor = new Color ( 232, 234, 235 );
-    public static final Color topBgColor = new Color ( 226, 226, 226 );
-    public static final Color bottomBgColor = new Color ( 201, 201, 201 );
-    public static final Color bottomLineColor = new Color ( 104, 104, 104 );
+    public static final Color topLineColor = WebTableStyle.headerTopLineColor;
+    public static final Color bottomLineColor = WebTableStyle.headerBottomLineColor;
+    public static final Color topBgColor = WebTableStyle.headerTopBgColor;
+    public static final Color bottomBgColor = WebTableStyle.headerBottomBgColor;
 
     @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
@@ -76,7 +77,7 @@ public class WebTableHeaderUI extends BasicTableHeaderUI
         final Graphics2D g2d = ( Graphics2D ) g;
 
         // Table header background
-        final GradientPaint bgPaint = createBackgroundPaint ( 0, 1, 0, header.getHeight () - 1 );
+        final Paint bgPaint = createBackgroundPaint ( 0, 1, 0, header.getHeight () - 1 );
         g2d.setPaint ( bgPaint );
         g2d.fillRect ( 0, 1, header.getWidth (), header.getHeight () - 1 );
 
@@ -164,9 +165,16 @@ public class WebTableHeaderUI extends BasicTableHeaderUI
         }
     }
 
-    public static GradientPaint createBackgroundPaint ( final int x1, final int y1, final int x2, final int y2 )
+    public static Paint createBackgroundPaint ( final int x1, final int y1, final int x2, final int y2 )
     {
-        return new GradientPaint ( x1, y1, topBgColor, x2, y2, bottomBgColor );
+        if ( bottomBgColor == null || CompareUtils.equals ( topBgColor, bottomBgColor ) )
+        {
+            return topBgColor;
+        }
+        else
+        {
+            return new GradientPaint ( x1, y1, topBgColor, x2, y2, bottomBgColor );
+        }
     }
 
     private void paintCell ( final Graphics g, final Rectangle rect, final int columnIndex, final TableColumn tc, final TableColumn dc,

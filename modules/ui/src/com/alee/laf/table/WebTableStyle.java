@@ -38,6 +38,26 @@ public final class WebTableStyle
     public static Insets headerMargin = new Insets ( 0, 10, 1, 10 );
 
     /**
+     * Default top header line color.
+     */
+    public static Color headerTopLineColor = new Color ( 232, 234, 235 );
+
+    /**
+     * Default bottom header line color.
+     */
+    public static Color headerBottomLineColor = new Color ( 104, 104, 104 );
+
+    /**
+     * Default top header background color.
+     */
+    public static Color headerTopBgColor = new Color ( 226, 226, 226 );
+
+    /**
+     * Default bottom header background color.
+     */
+    public static Color headerBottomBgColor = new Color ( 201, 201, 201 );
+
+    /**
      * Default row height.
      */
     public static int rowHeight = 18;

@@ -22,6 +22,7 @@ import com.alee.managers.language.LanguageContainerMethods;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.language.LanguageMethods;
 import com.alee.managers.language.updaters.LanguageUpdater;
+import com.alee.managers.log.Log;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.ImageUtils;
 import com.alee.utils.ReflectUtils;
@@ -198,21 +199,21 @@ public class WebFileChooser extends JFileChooser implements LanguageMethods, Lan
     /**
      * Sets currently displayed directory.
      *
-     * @param directoryPath directory to display
+     * @param path directory to display
      */
-    public void setCurrentDirectory ( final String directoryPath )
+    public void setCurrentDirectory ( final String path )
     {
-        setCurrentDirectory ( new File ( directoryPath ) );
+        setCurrentDirectory ( path != null ? new File ( path ) : null );
     }
 
     /**
      * Sets currently selected file.
      *
-     * @param filePath file to select
+     * @param path file to select
      */
-    public void setSelectedFile ( final String filePath )
+    public void setSelectedFile ( final String path )
     {
-        setSelectedFile ( new File ( filePath ) );
+        setSelectedFile ( path != null ? new File ( path ) : null );
     }
 
     /**
@@ -301,6 +302,13 @@ public class WebFileChooser extends JFileChooser implements LanguageMethods, Lan
     @Override
     public void updateUI ()
     {
+        // Removing all files filter
+        if ( isAcceptAllFileFilterUsed () )
+        {
+            removeChoosableFileFilter ( getAcceptAllFileFilter () );
+        }
+
+        // Updating the UI itself
         if ( getUI () == null || !( getUI () instanceof WebFileChooserUI ) )
         {
             try
@@ -309,13 +317,28 @@ public class WebFileChooser extends JFileChooser implements LanguageMethods, Lan
             }
             catch ( final Throwable e )
             {
-                e.printStackTrace ();
+                Log.error ( this, e );
                 setUI ( new WebFileChooserUI () );
             }
         }
         else
         {
             setUI ( getUI () );
+        }
+
+        // Update file view as file chooser was probably deserialized
+        if ( getFileSystemView () == null )
+        {
+            setFileSystemView ( FileSystemView.getFileSystemView () );
+        }
+
+        // Updating UI file view for this file chooser
+        ReflectUtils.setFieldValueSafely ( this, "uiFileView", getUI ().getFileView ( this ) );
+
+        // Adding all files filter
+        if ( isAcceptAllFileFilterUsed () )
+        {
+            addChoosableFileFilter ( getAcceptAllFileFilter () );
         }
     }
 

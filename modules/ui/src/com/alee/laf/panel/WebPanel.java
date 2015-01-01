@@ -20,18 +20,28 @@ package com.alee.laf.panel;
 import com.alee.extended.painter.Painter;
 import com.alee.extended.painter.PartialDecoration;
 import com.alee.laf.WebLookAndFeel;
+import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.language.LanguageContainerMethods;
 import com.alee.managers.language.LanguageManager;
+import com.alee.managers.language.data.TooltipWay;
+import com.alee.managers.log.Log;
 import com.alee.managers.style.StyleManager;
+import com.alee.managers.tooltip.ToolTipMethods;
+import com.alee.managers.tooltip.TooltipManager;
+import com.alee.managers.tooltip.WebCustomTooltip;
+import com.alee.utils.EventUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SizeUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.laf.ShapeProvider;
 import com.alee.utils.laf.Styleable;
-import com.alee.utils.swing.SizeMethods;
+import com.alee.utils.swing.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.FocusAdapter;
+import java.awt.event.KeyAdapter;
+import java.awt.event.MouseAdapter;
 import java.util.List;
 
 /**
@@ -44,7 +54,9 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public class WebPanel extends JPanel implements Styleable, ShapeProvider, PartialDecoration, SizeMethods<WebPanel>, LanguageContainerMethods
+public class WebPanel extends JPanel
+        implements Styleable, ShapeProvider, PartialDecoration, EventMethods, ToolTipMethods, SizeMethods<WebPanel>,
+        LanguageContainerMethods
 {
     /**
      * Constructs new panel.
@@ -225,6 +237,17 @@ public class WebPanel extends JPanel implements Styleable, ShapeProvider, Partia
     }
 
     /**
+     * Returns whether the specified component belongs to this container or not.
+     *
+     * @param component component to process
+     * @return true if the specified component belongs to this container, false otherwise
+     */
+    public boolean contains ( final Component component )
+    {
+        return component != null && component.getParent () == this;
+    }
+
+    /**
      * Adds all components from the list into the panel under the specified index.
      *
      * @param components components to add into panel
@@ -362,6 +385,70 @@ public class WebPanel extends JPanel implements Styleable, ShapeProvider, Partia
                 if ( component != null )
                 {
                     add ( component );
+                }
+            }
+        }
+        return this;
+    }
+
+    /**
+     * Removes all components from the list from the panel.
+     *
+     * @param components components to remove from panel
+     * @return this panel
+     */
+    public WebPanel remove ( final List<? extends Component> components )
+    {
+        if ( components != null )
+        {
+            for ( final Component component : components )
+            {
+                if ( component != null )
+                {
+                    remove ( component );
+                }
+            }
+        }
+        return this;
+    }
+
+    /**
+     * Removes all specified components from the panel.
+     *
+     * @param components components to remove from panel
+     * @return this panel
+     */
+    public WebPanel remove ( final Component... components )
+    {
+        if ( components != null && components.length > 0 )
+        {
+            for ( final Component component : components )
+            {
+                if ( component != null )
+                {
+                    remove ( component );
+                }
+            }
+        }
+        return this;
+    }
+
+    /**
+     * Removes all children with the specified component class type.
+     *
+     * @param componentClass class type of child components to be removed
+     * @return this panel
+     */
+    public WebPanel removeAll ( final Class<? extends Component> componentClass )
+    {
+        if ( componentClass != null )
+        {
+            for ( int i = 0; i < getComponentCount (); i++ )
+            {
+                final Component component = getComponent ( i );
+                if ( componentClass.isAssignableFrom ( component.getClass () ) )
+                {
+                    remove ( component );
                 }
             }
         }
@@ -914,7 +1001,7 @@ public class WebPanel extends JPanel implements Styleable, ShapeProvider, Partia
             }
             catch ( final Throwable e )
             {
-                e.printStackTrace ();
+                Log.error ( this, e );
                 setUI ( new WebPanelUI () );
             }
         }
@@ -922,6 +1009,384 @@ public class WebPanel extends JPanel implements Styleable, ShapeProvider, Partia
         {
             setUI ( getUI () );
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MouseAdapter onMousePress ( final MouseEventRunnable runnable )
+    {
+        return EventUtils.onMousePress ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MouseAdapter onMousePress ( final MouseButton mouseButton, final MouseEventRunnable runnable )
+    {
+        return EventUtils.onMousePress ( this, mouseButton, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MouseAdapter onMouseEnter ( final MouseEventRunnable runnable )
+    {
+        return EventUtils.onMouseEnter ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MouseAdapter onMouseExit ( final MouseEventRunnable runnable )
+    {
+        return EventUtils.onMouseExit ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MouseAdapter onMouseDrag ( final MouseEventRunnable runnable )
+    {
+        return EventUtils.onMouseDrag ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MouseAdapter onMouseDrag ( final MouseButton mouseButton, final MouseEventRunnable runnable )
+    {
+        return EventUtils.onMouseDrag ( this, mouseButton, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MouseAdapter onMouseClick ( final MouseEventRunnable runnable )
+    {
+        return EventUtils.onMouseClick ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MouseAdapter onMouseClick ( final MouseButton mouseButton, final MouseEventRunnable runnable )
+    {
+        return EventUtils.onMouseClick ( this, mouseButton, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MouseAdapter onDoubleClick ( final MouseEventRunnable runnable )
+    {
+        return EventUtils.onDoubleClick ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MouseAdapter onMenuTrigger ( final MouseEventRunnable runnable )
+    {
+        return EventUtils.onMenuTrigger ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public KeyAdapter onKeyType ( final KeyEventRunnable runnable )
+    {
+        return EventUtils.onKeyType ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public KeyAdapter onKeyType ( final HotkeyData hotkey, final KeyEventRunnable runnable )
+    {
+        return EventUtils.onKeyType ( this, hotkey, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public KeyAdapter onKeyPress ( final KeyEventRunnable runnable )
+    {
+        return EventUtils.onKeyPress ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public KeyAdapter onKeyPress ( final HotkeyData hotkey, final KeyEventRunnable runnable )
+    {
+        return EventUtils.onKeyPress ( this, hotkey, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public KeyAdapter onKeyRelease ( final KeyEventRunnable runnable )
+    {
+        return EventUtils.onKeyRelease ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public KeyAdapter onKeyRelease ( final HotkeyData hotkey, final KeyEventRunnable runnable )
+    {
+        return EventUtils.onKeyRelease ( this, hotkey, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public FocusAdapter onFocusGain ( final FocusEventRunnable runnable )
+    {
+        return EventUtils.onFocusGain ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public FocusAdapter onFocusLoss ( final FocusEventRunnable runnable )
+    {
+        return EventUtils.onFocusLoss ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip setToolTip ( final String tooltip )
+    {
+        return TooltipManager.setTooltip ( this, tooltip );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip setToolTip ( final Icon icon, final String tooltip )
+    {
+        return TooltipManager.setTooltip ( this, icon, tooltip );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip setToolTip ( final String tooltip, final TooltipWay tooltipWay )
+    {
+        return TooltipManager.setTooltip ( this, tooltip, tooltipWay );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip setToolTip ( final Icon icon, final String tooltip, final TooltipWay tooltipWay )
+    {
+        return TooltipManager.setTooltip ( this, icon, tooltip, tooltipWay );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip setToolTip ( final String tooltip, final TooltipWay tooltipWay, final int delay )
+    {
+        return TooltipManager.setTooltip ( this, tooltip, tooltipWay, delay );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip setToolTip ( final Icon icon, final String tooltip, final TooltipWay tooltipWay, final int delay )
+    {
+        return TooltipManager.setTooltip ( this, icon, tooltip, tooltipWay, delay );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip setToolTip ( final JComponent tooltip )
+    {
+        return TooltipManager.setTooltip ( this, tooltip );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip setToolTip ( final JComponent tooltip, final int delay )
+    {
+        return TooltipManager.setTooltip ( this, tooltip, delay );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip setToolTip ( final JComponent tooltip, final TooltipWay tooltipWay )
+    {
+        return TooltipManager.setTooltip ( this, tooltip, tooltipWay );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip setToolTip ( final JComponent tooltip, final TooltipWay tooltipWay, final int delay )
+    {
+        return TooltipManager.setTooltip ( this, tooltip, tooltipWay, delay );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip addToolTip ( final String tooltip )
+    {
+        return TooltipManager.addTooltip ( this, tooltip );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip addToolTip ( final Icon icon, final String tooltip )
+    {
+        return TooltipManager.addTooltip ( this, icon, tooltip );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip addToolTip ( final String tooltip, final TooltipWay tooltipWay )
+    {
+        return TooltipManager.addTooltip ( this, tooltip, tooltipWay );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip addToolTip ( final Icon icon, final String tooltip, final TooltipWay tooltipWay )
+    {
+        return TooltipManager.addTooltip ( this, icon, tooltip, tooltipWay );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip addToolTip ( final String tooltip, final TooltipWay tooltipWay, final int delay )
+    {
+        return TooltipManager.addTooltip ( this, tooltip, tooltipWay, delay );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip addToolTip ( final Icon icon, final String tooltip, final TooltipWay tooltipWay, final int delay )
+    {
+        return TooltipManager.addTooltip ( this, icon, tooltip, tooltipWay, delay );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip addToolTip ( final JComponent tooltip )
+    {
+        return TooltipManager.addTooltip ( this, tooltip );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip addToolTip ( final JComponent tooltip, final int delay )
+    {
+        return TooltipManager.addTooltip ( this, tooltip, delay );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip addToolTip ( final JComponent tooltip, final TooltipWay tooltipWay )
+    {
+        return TooltipManager.addTooltip ( this, tooltip, tooltipWay );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip addToolTip ( final JComponent tooltip, final TooltipWay tooltipWay, final int delay )
+    {
+        return TooltipManager.addTooltip ( this, tooltip, tooltipWay, delay );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void removeToolTip ( final WebCustomTooltip tooltip )
+    {
+        TooltipManager.removeTooltip ( this, tooltip );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void removeToolTips ()
+    {
+        TooltipManager.removeTooltips ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void removeToolTips ( final WebCustomTooltip... tooltips )
+    {
+        TooltipManager.removeTooltips ( this, tooltips );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void removeToolTips ( final List<WebCustomTooltip> tooltips )
+    {
+        TooltipManager.removeTooltips ( this, tooltips );
     }
 
     /**
@@ -1000,6 +1465,42 @@ public class WebPanel extends JPanel implements Styleable, ShapeProvider, Partia
      * {@inheritDoc}
      */
     @Override
+    public int getMaximumWidth ()
+    {
+        return SizeUtils.getMaximumWidth ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebPanel setMaximumWidth ( final int maximumWidth )
+    {
+        return SizeUtils.setMaximumWidth ( this, maximumWidth );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int getMaximumHeight ()
+    {
+        return SizeUtils.getMaximumHeight ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebPanel setMaximumHeight ( final int maximumHeight )
+    {
+        return SizeUtils.setMaximumHeight ( this, maximumHeight );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Dimension getPreferredSize ()
     {
         Dimension ps = SizeUtils.getPreferredSize ( this, super.getPreferredSize () );
@@ -1012,6 +1513,15 @@ public class WebPanel extends JPanel implements Styleable, ShapeProvider, Partia
         }
 
         return ps;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebPanel setPreferredSize ( final int width, final int height )
+    {
+        return SizeUtils.setPreferredSize ( this, width, height );
     }
 
     /**

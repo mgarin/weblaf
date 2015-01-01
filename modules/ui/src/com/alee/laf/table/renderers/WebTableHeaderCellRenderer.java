@@ -28,7 +28,7 @@ import java.awt.*;
 import java.util.List;
 
 /**
- * User: mgarin Date: 01.11.12 Time: 12:30
+ * @author Mikle Garin
  */
 
 public class WebTableHeaderCellRenderer extends WebLabel implements TableCellRenderer, UIResource
@@ -44,14 +44,15 @@ public class WebTableHeaderCellRenderer extends WebLabel implements TableCellRen
     }
 
     @Override
-    public void setHorizontalTextPosition ( int textPosition )
+    public void setHorizontalTextPosition ( final int textPosition )
     {
         horizontalTextPositionSet = true;
         super.setHorizontalTextPosition ( textPosition );
     }
 
     @Override
-    public Component getTableCellRendererComponent ( JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column )
+    public Component getTableCellRendererComponent ( final JTable table, final Object value, final boolean isSelected,
+                                                     final boolean hasFocus, final int row, final int column )
     {
         // Whether we are printing the result or not
         boolean isPaintingForPrint = false;
@@ -60,7 +61,7 @@ public class WebTableHeaderCellRenderer extends WebLabel implements TableCellRen
         Icon sortIcon = null;
         if ( table != null )
         {
-            JTableHeader header = table.getTableHeader ();
+            final JTableHeader header = table.getTableHeader ();
             if ( header != null )
             {
                 Color fgColor = null;
@@ -94,7 +95,7 @@ public class WebTableHeaderCellRenderer extends WebLabel implements TableCellRen
                     // set a text position, change to leading.
                     setHorizontalTextPosition ( JLabel.LEADING );
                 }
-                List<? extends RowSorter.SortKey> sortKeys = table.getRowSorter ().getSortKeys ();
+                final List<? extends RowSorter.SortKey> sortKeys = table.getRowSorter ().getSortKeys ();
                 if ( sortKeys.size () > 0 && sortKeys.get ( 0 ).getColumn () == table.convertColumnIndexToModel ( column ) )
                 {
                     switch ( sortKeys.get ( 0 ).getSortOrder () )

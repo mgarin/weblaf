@@ -31,7 +31,7 @@ import java.util.WeakHashMap;
  * @author Mikle Garin
  */
 
-public class ShapeCache
+public final class ShapeCache
 {
     /**
      * todo 1. Improve shape settings key generation/usage performance
@@ -45,7 +45,7 @@ public class ShapeCache
     /**
      * Shapes cache map.
      */
-    private static final Map<Component, Map<String, CachedShape>> shapeCache = new WeakHashMap<Component, Map<String, CachedShape>> ( 10 );
+    private static final Map<Component, Map<String, CachedShape>> shapeCache = new WeakHashMap<Component, Map<String, CachedShape>> ();
 
     /**
      * Returns cached component shape.

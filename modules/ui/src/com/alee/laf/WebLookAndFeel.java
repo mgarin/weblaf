@@ -22,7 +22,9 @@ import com.alee.extended.checkbox.WebTristateCheckBoxUI;
 import com.alee.extended.colorchooser.GradientColorData;
 import com.alee.extended.colorchooser.GradientData;
 import com.alee.extended.label.WebMultiLineLabelUI;
+import com.alee.extended.label.WebStyledLabelUI;
 import com.alee.extended.label.WebVerticalLabelUI;
+import com.alee.extended.tab.DocumentPaneState;
 import com.alee.global.StyleConstants;
 import com.alee.laf.button.WebButtonUI;
 import com.alee.laf.button.WebToggleButtonUI;
@@ -64,16 +66,7 @@ import com.alee.laf.tree.TreeState;
 import com.alee.laf.tree.WebTreeUI;
 import com.alee.laf.viewport.WebViewportStyle;
 import com.alee.laf.viewport.WebViewportUI;
-import com.alee.log.Log;
-import com.alee.managers.drag.DragManager;
-import com.alee.managers.focus.FocusManager;
-import com.alee.managers.hotkey.HotkeyManager;
-import com.alee.managers.language.WebLanguageManager;
-import com.alee.managers.proxy.WebProxyManager;
-import com.alee.managers.settings.WebSettingsManager;
-import com.alee.managers.style.StyleManager;
-import com.alee.managers.tooltip.TooltipManager;
-import com.alee.managers.version.VersionManager;
+import com.alee.managers.WebLafManagers;
 import com.alee.utils.*;
 import com.alee.utils.swing.SwingLazyValue;
 
@@ -194,8 +187,10 @@ public class WebLookAndFeel extends BasicLookAndFeel
      * Label-related components.
      */
     public static String labelUI = WebLabelUI.class.getCanonicalName ();
+    // public static String linkLabelUI = WebLabelUI.class.getCanonicalName ();
     public static String verticalLabelUI = WebVerticalLabelUI.class.getCanonicalName ();
     public static String multiLineLabelUI = WebMultiLineLabelUI.class.getCanonicalName ();
+    public static String styledLabelUI = WebStyledLabelUI.class.getCanonicalName ();
     public static String toolTipUI = WebToolTipUI.class.getCanonicalName ();
 
     /**
@@ -428,8 +423,10 @@ public class WebLookAndFeel extends BasicLookAndFeel
     {
         // Label
         table.put ( "LabelUI", labelUI );
+        // table.put ( "LinkLabelUI", linkLabelUI );
         table.put ( "VerticalLabelUI", verticalLabelUI );
         table.put ( "MultiLineLabelUI", multiLineLabelUI );
+        table.put ( "StyledLabelUI", styledLabelUI );
         table.put ( "ToolTipUI", toolTipUI );
 
         // Button
@@ -511,11 +508,13 @@ public class WebLookAndFeel extends BasicLookAndFeel
     {
         super.initSystemColorDefaults ( table );
 
-        final String textColor = "#" + ColorUtils.getHexColor ( StyleConstants.textColor );
+        final String textColor = ColorUtils.getHexColor ( StyleConstants.textColor );
+        final String textHighlightColor = ColorUtils.getHexColor ( StyleConstants.textSelectionColor );
+        final String inactiveTextColor = ColorUtils.getHexColor ( StyleConstants.disabledTextColor );
 
-        final String[] defaultSystemColors = { "menu", "#ffffff", "menuText", textColor, "textHighlight",
-                "#" + ColorUtils.getHexColor ( StyleConstants.textSelectionColor ), "textHighlightText", textColor, "textInactiveText",
-                "#" + ColorUtils.getHexColor ( StyleConstants.disabledTextColor ), "controlText", textColor, };
+        final String[] defaultSystemColors =
+                { "menu", "#ffffff", "menuText", textColor, "textHighlight", textHighlightColor, "textHighlightText", textColor,
+                        "textInactiveText", inactiveTextColor, "controlText", textColor, };
 
         loadSystemColors ( table, defaultSystemColors, isNativeLookAndFeel () );
     }
@@ -537,6 +536,12 @@ public class WebLookAndFeel extends BasicLookAndFeel
 
         // Fonts
         initializeFonts ( table );
+
+        // Mnemonics
+        table.put ( "Button.showMnemonics", Boolean.TRUE );
+
+        // Whether focused button should become default in frame or not
+        table.put ( "Button.defaultButtonFollowsFocus", Boolean.FALSE );
 
         // JLabels
         final Color controlText = table.getColor ( "controlText" );
@@ -658,8 +663,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
                         DefaultEditorKit.deletePrevWordAction, "RIGHT", DefaultEditorKit.forwardAction, "LEFT",
                         DefaultEditorKit.backwardAction, "KP_RIGHT", DefaultEditorKit.forwardAction, "KP_LEFT",
                         DefaultEditorKit.backwardAction, "ENTER", JTextField.notifyAction, "control shift O", "toggle-componentOrientation"
-                        /*DefaultEditorKit.toggleComponentOrientation*/ }
-        ) );
+                        /*DefaultEditorKit.toggleComponentOrientation*/ } ) );
 
         // WebPasswordField actions
         table.put ( "PasswordField.focusInputMap", new UIDefaults.LazyInputMap (
@@ -678,8 +682,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
                         DefaultEditorKit.deleteNextCharAction, "RIGHT", DefaultEditorKit.forwardAction, "LEFT",
                         DefaultEditorKit.backwardAction, "KP_RIGHT", DefaultEditorKit.forwardAction, "KP_LEFT",
                         DefaultEditorKit.backwardAction, "ENTER", JTextField.notifyAction, "control shift O", "toggle-componentOrientation"
-                        /*DefaultEditorKit.toggleComponentOrientation*/ }
-        ) );
+                        /*DefaultEditorKit.toggleComponentOrientation*/ } ) );
 
         // WebFormattedTextField actions
         table.put ( "FormattedTextField.focusInputMap", new UIDefaults.LazyInputMap (
@@ -702,8 +705,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
                         DefaultEditorKit.forwardAction, "LEFT", DefaultEditorKit.backwardAction, "KP_RIGHT", DefaultEditorKit.forwardAction,
                         "KP_LEFT", DefaultEditorKit.backwardAction, "ENTER", JTextField.notifyAction, "ctrl BACK_SLASH", "unselect",
                         "control shift O", "toggle-componentOrientation", "ESCAPE", "reset-field-edit", "UP", "increment", "KP_UP",
-                        "increment", "DOWN", "decrement", "KP_DOWN", "decrement", }
-        ) );
+                        "increment", "DOWN", "decrement", "KP_DOWN", "decrement", } ) );
 
         // Multiline areas actions
         final Object multilineInputMap = new UIDefaults.LazyInputMap (
@@ -731,8 +733,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
                         DefaultEditorKit.insertBreakAction, "TAB", DefaultEditorKit.insertTabAction, "control T", "next-link-action",
                         "control shift T", "previous-link-action", "control SPACE", "activate-link-action", "control shift O",
                         "toggle-componentOrientation"
-                        /*DefaultEditorKit.toggleComponentOrientation*/ }
-        );
+                        /*DefaultEditorKit.toggleComponentOrientation*/ } );
         table.put ( "TextArea.focusInputMap", multilineInputMap );
         table.put ( "TextPane.focusInputMap", multilineInputMap );
         table.put ( "EditorPane.focusInputMap", multilineInputMap );
@@ -742,14 +743,12 @@ public class WebLookAndFeel extends BasicLookAndFeel
                 new Object[]{ "ESCAPE", "hidePopup", "PAGE_UP", "pageUpPassThrough", "PAGE_DOWN", "pageDownPassThrough", "HOME",
                         "homePassThrough", "END", "endPassThrough", "DOWN", "selectNext", "KP_DOWN", "selectNext", "alt DOWN",
                         "togglePopup", "alt KP_DOWN", "togglePopup", "alt UP", "togglePopup", "alt KP_UP", "togglePopup", "SPACE",
-                        "spacePopup", "ENTER", "enterPressed", "UP", "selectPrevious", "KP_UP", "selectPrevious" }
-        ) );
+                        "spacePopup", "ENTER", "enterPressed", "UP", "selectPrevious", "KP_UP", "selectPrevious" } ) );
 
         // WebFileChooser actions
         table.put ( "FileChooser.ancestorInputMap", new UIDefaults.LazyInputMap (
                 new Object[]{ "ESCAPE", "cancelSelection", "F2", "editFileName", "F5", "refresh", "BACK_SPACE", "Go Up", "ENTER",
-                        "approveSelection", "ctrl ENTER", "approveSelection" }
-        ) );
+                        "approveSelection", "ctrl ENTER", "approveSelection" } ) );
     }
 
     /**
@@ -852,6 +851,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
                         JDialog.setDefaultLookAndFeelDecorated ( decorateDialogs );
 
                         // Custom WebLaF data aliases
+                        XmlUtils.processAnnotations ( DocumentPaneState.class );
                         XmlUtils.processAnnotations ( TreeState.class );
                         XmlUtils.processAnnotations ( NodeState.class );
                         XmlUtils.processAnnotations ( GradientData.class );
@@ -926,11 +926,9 @@ public class WebLookAndFeel extends BasicLookAndFeel
      */
     public static boolean install ( final boolean updateExistingComponents )
     {
-        try
+        // Installing LookAndFeel
+        if ( LafUtils.setupLookAndFeelSafely ( WebLookAndFeel.class ) )
         {
-            // Installing LookAndFeel
-            UIManager.setLookAndFeel ( new WebLookAndFeel () );
-
             // Updating already created components tree
             if ( updateExistingComponents )
             {
@@ -940,11 +938,8 @@ public class WebLookAndFeel extends BasicLookAndFeel
             // LookAndFeel installed sucessfully
             return true;
         }
-        catch ( final Throwable e )
+        else
         {
-            // Printing exception
-            e.printStackTrace ();
-
             // LookAndFeel installation failed
             return false;
         }
@@ -966,16 +961,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
      */
     public static void initializeManagers ()
     {
-        Log.initialize ();
-        VersionManager.initialize ();
-        WebLanguageManager.initialize ();
-        WebSettingsManager.initialize ();
-        HotkeyManager.initialize ();
-        FocusManager.initialize ();
-        TooltipManager.initialize ();
-        WebProxyManager.initialize ();
-        StyleManager.initialize ();
-        DragManager.initialize ();
+        WebLafManagers.initialize ();
     }
 
     /**

@@ -17,7 +17,7 @@
 
 package com.alee.utils;
 
-import com.alee.log.Log;
+import com.alee.managers.log.Log;
 
 import java.util.Calendar;
 import java.util.Date;

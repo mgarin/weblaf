@@ -52,6 +52,16 @@ public final class WebComboBoxStyle
     public static boolean drawBorder = StyleConstants.drawBorder;
 
     /**
+     * Whether should paint web-styled background or not.
+     */
+    public static boolean webColoredBackground = true;
+
+    /**
+     * Expanded combobox background color.
+     */
+    public static Color expandedBgColor = new Color ( 223, 220, 213 );
+
+    /**
      * Draw combobox focus.
      */
     public static boolean drawFocus = true;

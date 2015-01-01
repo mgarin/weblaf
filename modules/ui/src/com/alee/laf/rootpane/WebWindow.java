@@ -25,12 +25,15 @@ import com.alee.managers.settings.DefaultValue;
 import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.settings.SettingsMethods;
 import com.alee.managers.settings.SettingsProcessor;
+import com.alee.utils.EventUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.WindowUtils;
-import com.alee.utils.swing.WindowMethods;
+import com.alee.utils.swing.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.util.List;
 
 /**
  * This JWindow extenstion class provides some additional methods and options to manipulate window behavior.
@@ -38,7 +41,7 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public class WebWindow extends JWindow implements LanguageContainerMethods, SettingsMethods, WindowMethods<WebWindow>
+public class WebWindow extends JWindow implements WindowEventMethods, LanguageContainerMethods, SettingsMethods, WindowMethods<WebWindow>
 {
     /**
      * Whether should close window on focus loss or not.
@@ -151,15 +154,15 @@ public class WebWindow extends JWindow implements LanguageContainerMethods, Sett
             @Override
             public boolean isTrackingEnabled ()
             {
-                return closeOnFocusLoss;
+                return isShowing () && closeOnFocusLoss;
             }
 
             @Override
             public void focusChanged ( final boolean focused )
             {
-                if ( closeOnFocusLoss && WebWindow.this.isShowing () && !focused )
+                if ( closeOnFocusLoss && isShowing () && !focused )
                 {
-                    setVisible ( false );
+                    dispose ();
                 }
             }
         };
@@ -184,6 +187,54 @@ public class WebWindow extends JWindow implements LanguageContainerMethods, Sett
     public void setCloseOnFocusLoss ( final boolean closeOnFocusLoss )
     {
         this.closeOnFocusLoss = closeOnFocusLoss;
+    }
+
+    /**
+     * Returns focusable childs that don't force window to close even if it set to close on focus loss.
+     *
+     * @return focusable childs that don't force window to close even if it set to close on focus loss
+     */
+    public List<Component> getFocusableChilds ()
+    {
+        return focusTracker.getCustomChildren ();
+    }
+
+    /**
+     * Adds focusable child that won't force window to close even if it set to close on focus loss.
+     *
+     * @param child focusable child that won't force window to close even if it set to close on focus loss
+     */
+    public void addFocusableChild ( final Component child )
+    {
+        focusTracker.addCustomChild ( child );
+    }
+
+    /**
+     * Removes focusable child that doesn't force window to close even if it set to close on focus loss.
+     *
+     * @param child focusable child that doesn't force window to close even if it set to close on focus loss
+     */
+    public void removeFocusableChild ( final Component child )
+    {
+        focusTracker.removeCustomChild ( child );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WindowAdapter onClosing ( final WindowEventRunnable runnable )
+    {
+        return EventUtils.onClosing ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WindowCloseAdapter onClose ( final ComponentEventRunnable runnable )
+    {
+        return EventUtils.onClose ( this, runnable );
     }
 
     /**

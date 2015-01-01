@@ -18,6 +18,7 @@
 package com.alee.laf.optionpane;
 
 import com.alee.laf.WebLookAndFeel;
+import com.alee.managers.log.Log;
 import com.alee.utils.ReflectUtils;
 
 import javax.swing.*;
@@ -33,32 +34,33 @@ public class WebOptionPane extends JOptionPane
         super ();
     }
 
-    public WebOptionPane ( Object message )
+    public WebOptionPane ( final Object message )
     {
         super ( message );
     }
 
-    public WebOptionPane ( Object message, int messageType )
+    public WebOptionPane ( final Object message, final int messageType )
     {
         super ( message, messageType );
     }
 
-    public WebOptionPane ( Object message, int messageType, int optionType )
+    public WebOptionPane ( final Object message, final int messageType, final int optionType )
     {
         super ( message, messageType, optionType );
     }
 
-    public WebOptionPane ( Object message, int messageType, int optionType, Icon icon )
+    public WebOptionPane ( final Object message, final int messageType, final int optionType, final Icon icon )
     {
         super ( message, messageType, optionType, icon );
     }
 
-    public WebOptionPane ( Object message, int messageType, int optionType, Icon icon, Object[] options )
+    public WebOptionPane ( final Object message, final int messageType, final int optionType, final Icon icon, final Object[] options )
     {
         super ( message, messageType, optionType, icon, options );
     }
 
-    public WebOptionPane ( Object message, int messageType, int optionType, Icon icon, Object[] options, Object initialValue )
+    public WebOptionPane ( final Object message, final int messageType, final int optionType, final Icon icon, final Object[] options,
+                           final Object initialValue )
     {
         super ( message, messageType, optionType, icon, options, initialValue );
     }
@@ -77,9 +79,9 @@ public class WebOptionPane extends JOptionPane
             {
                 setUI ( ( WebOptionPaneUI ) ReflectUtils.createInstance ( WebLookAndFeel.optionPaneUI ) );
             }
-            catch ( Throwable e )
+            catch ( final Throwable e )
             {
-                e.printStackTrace ();
+                Log.error ( this, e );
                 setUI ( new WebOptionPaneUI () );
             }
         }

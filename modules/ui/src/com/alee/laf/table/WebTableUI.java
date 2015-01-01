@@ -19,6 +19,7 @@ package com.alee.laf.table;
 
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.table.editors.WebBooleanEditor;
+import com.alee.laf.table.editors.WebDateEditor;
 import com.alee.laf.table.editors.WebGenericEditor;
 import com.alee.laf.table.editors.WebNumberEditor;
 import com.alee.laf.table.renderers.*;
@@ -101,10 +102,10 @@ public class WebTableUI extends BasicTableUI
         table.setDefaultEditor ( Object.class, new WebGenericEditor () );
         table.setDefaultEditor ( Number.class, new WebNumberEditor () );
         table.setDefaultEditor ( Boolean.class, new WebBooleanEditor () );
+        table.setDefaultEditor ( Date.class, new WebDateEditor () );
         // todo Additional editors:
         // table.setDefaultEditor ( Dimension.class,  );
         // table.setDefaultEditor ( Point.class,  );
-        // table.setDefaultEditor ( Date.class,  );
         // table.setDefaultEditor ( File.class,  );
         // table.setDefaultEditor ( Color.class,  );
         // table.setDefaultEditor ( List.class,  );

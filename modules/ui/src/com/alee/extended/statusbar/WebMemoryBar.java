@@ -38,7 +38,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * User: mgarin Date: 10.10.11 Time: 17:51
+ * @author Mikle Garin
  */
 
 public class WebMemoryBar extends WebLabel implements ShapeProvider, SizeMethods<WebLabel>
@@ -493,7 +493,7 @@ public class WebMemoryBar extends WebLabel implements ShapeProvider, SizeMethods
 
     private Shape getProgressShape ( final long progress, final boolean fill )
     {
-        final int arcRound = ( Math.max ( 0, round - 1 ) ) * 2;
+        final int arcRound = Math.max ( 0, round - 1 ) * 2;
         if ( drawBorder )
         {
             return new RoundRectangle2D.Double ( shadeWidth + 2, shadeWidth + 2, getProgressWidth ( progress, fill ),
@@ -618,8 +618,53 @@ public class WebMemoryBar extends WebLabel implements ShapeProvider, SizeMethods
      * {@inheritDoc}
      */
     @Override
+    public int getMaximumWidth ()
+    {
+        return SizeUtils.getMaximumWidth ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebMemoryBar setMaximumWidth ( final int maximumWidth )
+    {
+        return SizeUtils.setMaximumWidth ( this, maximumWidth );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int getMaximumHeight ()
+    {
+        return SizeUtils.getMaximumHeight ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebMemoryBar setMaximumHeight ( final int maximumHeight )
+    {
+        return SizeUtils.setMaximumHeight ( this, maximumHeight );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Dimension getPreferredSize ()
     {
         return SizeUtils.getPreferredSize ( this, super.getPreferredSize () );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebMemoryBar setPreferredSize ( final int width, final int height )
+    {
+        return SizeUtils.setPreferredSize ( this, width, height );
     }
 }

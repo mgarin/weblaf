@@ -103,14 +103,14 @@ public class WebTreeCellRenderer extends WebTreeElement implements TreeCellRende
         setEnabled ( enabled );
 
         // Icon
-        final ImageIcon icon = leaf ? leafIcon : ( tree.getModel ().getRoot () == value ? rootIcon : ( expanded ? openIcon : closedIcon ) );
+        final ImageIcon icon = leaf ? leafIcon : tree.getModel ().getRoot () == value ? rootIcon : expanded ? openIcon : closedIcon;
         if ( enabled )
         {
             setIcon ( icon );
         }
         else
         {
-            final String type = leaf ? "leaf" : ( tree.getModel ().getRoot () == value ? "root" : ( expanded ? "open" : "closed" ) );
+            final String type = leaf ? "leaf" : tree.getModel ().getRoot () == value ? "root" : expanded ? "open" : "closed";
             setIcon ( ImageUtils.getDisabledCopy ( getIconTypeKey ( type ), icon ) );
         }
 

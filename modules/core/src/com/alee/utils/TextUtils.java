@@ -485,7 +485,7 @@ public final class TextUtils
                     break;
                 }
             }
-            stringBuilder.append ( ( char ) ( ( MathUtils.random ( range ) ) + next ) );
+            stringBuilder.append ( ( char ) ( MathUtils.random ( range ) + next ) );
         }
         return stringBuilder.toString ();
     }

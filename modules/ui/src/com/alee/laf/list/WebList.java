@@ -21,16 +21,17 @@ import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.list.editor.DefaultListCellEditor;
 import com.alee.laf.list.editor.ListCellEditor;
 import com.alee.laf.list.editor.ListEditListener;
-import com.alee.utils.CollectionUtils;
-import com.alee.utils.ReflectUtils;
-import com.alee.utils.SizeUtils;
-import com.alee.utils.SwingUtils;
-import com.alee.utils.swing.FontMethods;
-import com.alee.utils.swing.SizeMethods;
+import com.alee.managers.hotkey.HotkeyData;
+import com.alee.managers.log.Log;
+import com.alee.utils.*;
+import com.alee.utils.swing.*;
 
 import javax.swing.*;
 import javax.swing.event.ListDataListener;
 import java.awt.*;
+import java.awt.event.FocusAdapter;
+import java.awt.event.KeyAdapter;
+import java.awt.event.MouseAdapter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -46,7 +47,7 @@ import java.util.Vector;
  * @author Mikle Garin
  */
 
-public class WebList extends JList implements FontMethods<WebList>, SizeMethods<WebList>
+public class WebList extends JList implements EventMethods, FontMethods<WebList>, SizeMethods<WebList>
 {
     /**
      * List edit lsiteners.
@@ -62,6 +63,11 @@ public class WebList extends JList implements FontMethods<WebList>, SizeMethods<
      * List cell editor.
      */
     protected ListCellEditor listCellEditor = null;
+
+    /**
+     * Custom WebLaF tooltip provider.
+     */
+    protected ListToolTipProvider toolTipProvider = null;
 
     /**
      * Currently edited cell index or -1 if none edited at the moment.
@@ -359,6 +365,26 @@ public class WebList extends JList implements FontMethods<WebList>, SizeMethods<
     }
 
     /**
+     * Returns custom WebLaF tooltip provider.
+     *
+     * @return custom WebLaF tooltip provider
+     */
+    public ListToolTipProvider getToolTipProvider ()
+    {
+        return toolTipProvider;
+    }
+
+    /**
+     * Sets custom WebLaF tooltip provider.
+     *
+     * @param provider custom WebLaF tooltip provider
+     */
+    public void setToolTipProvider ( final ListToolTipProvider provider )
+    {
+        this.toolTipProvider = provider;
+    }
+
+    /**
      * Returns whether list allows an empty selection or not.
      *
      * @return true if list allows an empty selection, false otherwise
@@ -525,6 +551,70 @@ public class WebList extends JList implements FontMethods<WebList>, SizeMethods<
     }
 
     /**
+     * Returns whether selection should be web-colored or not.
+     * In case it is not web-colored selectionBackgroundColor value will be used as background color.
+     *
+     * @return true if selection should be web-colored, false otherwise
+     */
+    public boolean isWebColoredSelection ()
+    {
+        return getWebUI ().isWebColoredSelection ();
+    }
+
+    /**
+     * Sets whether selection should be web-colored or not.
+     * In case it is not web-colored selectionBackgroundColor value will be used as background color.
+     *
+     * @param webColored whether selection should be web-colored or not
+     */
+    public void setWebColoredSelection ( final boolean webColored )
+    {
+        getWebUI ().setWebColoredSelection ( webColored );
+    }
+
+    /**
+     * Returns selection border color.
+     *
+     * @return selection border color
+     */
+    public Color getSelectionBorderColor ()
+    {
+        return getWebUI ().getSelectionBorderColor ();
+    }
+
+    /**
+     * Sets selection border color.
+     *
+     * @param color selection border color
+     */
+    public void setSelectionBorderColor ( final Color color )
+    {
+        getWebUI ().setSelectionBorderColor ( color );
+    }
+
+    /**
+     * Returns selection background color.
+     * It is used only when webColoredSelection is set to false.
+     *
+     * @return selection background color
+     */
+    public Color getSelectionBackgroundColor ()
+    {
+        return getWebUI ().getSelectionBackgroundColor ();
+    }
+
+    /**
+     * Sets selection background color.
+     * It is used only when webColoredSelection is set to false.
+     *
+     * @param color selection background color
+     */
+    public void setSelectionBackgroundColor ( final Color color )
+    {
+        getWebUI ().setSelectionBackgroundColor ( color );
+    }
+
+    /**
      * Returns whether to scroll list down to selection automatically or not.
      *
      * @return true if list is being automatically scrolled to selection, false otherwise
@@ -568,7 +658,7 @@ public class WebList extends JList implements FontMethods<WebList>, SizeMethods<
             }
             catch ( final Throwable e )
             {
-                e.printStackTrace ();
+                Log.error ( this, e );
                 setUI ( new WebListUI () );
             }
         }
@@ -700,6 +790,168 @@ public class WebList extends JList implements FontMethods<WebList>, SizeMethods<
         {
             listener.editCancelled ( index );
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MouseAdapter onMousePress ( final MouseEventRunnable runnable )
+    {
+        return EventUtils.onMousePress ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MouseAdapter onMousePress ( final MouseButton mouseButton, final MouseEventRunnable runnable )
+    {
+        return EventUtils.onMousePress ( this, mouseButton, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MouseAdapter onMouseEnter ( final MouseEventRunnable runnable )
+    {
+        return EventUtils.onMouseEnter ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MouseAdapter onMouseExit ( final MouseEventRunnable runnable )
+    {
+        return EventUtils.onMouseExit ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MouseAdapter onMouseDrag ( final MouseEventRunnable runnable )
+    {
+        return EventUtils.onMouseDrag ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MouseAdapter onMouseDrag ( final MouseButton mouseButton, final MouseEventRunnable runnable )
+    {
+        return EventUtils.onMouseDrag ( this, mouseButton, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MouseAdapter onMouseClick ( final MouseEventRunnable runnable )
+    {
+        return EventUtils.onMouseClick ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MouseAdapter onMouseClick ( final MouseButton mouseButton, final MouseEventRunnable runnable )
+    {
+        return EventUtils.onMouseClick ( this, mouseButton, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MouseAdapter onDoubleClick ( final MouseEventRunnable runnable )
+    {
+        return EventUtils.onDoubleClick ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MouseAdapter onMenuTrigger ( final MouseEventRunnable runnable )
+    {
+        return EventUtils.onMenuTrigger ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public KeyAdapter onKeyType ( final KeyEventRunnable runnable )
+    {
+        return EventUtils.onKeyType ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public KeyAdapter onKeyType ( final HotkeyData hotkey, final KeyEventRunnable runnable )
+    {
+        return EventUtils.onKeyType ( this, hotkey, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public KeyAdapter onKeyPress ( final KeyEventRunnable runnable )
+    {
+        return EventUtils.onKeyPress ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public KeyAdapter onKeyPress ( final HotkeyData hotkey, final KeyEventRunnable runnable )
+    {
+        return EventUtils.onKeyPress ( this, hotkey, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public KeyAdapter onKeyRelease ( final KeyEventRunnable runnable )
+    {
+        return EventUtils.onKeyRelease ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public KeyAdapter onKeyRelease ( final HotkeyData hotkey, final KeyEventRunnable runnable )
+    {
+        return EventUtils.onKeyRelease ( this, hotkey, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public FocusAdapter onFocusGain ( final FocusEventRunnable runnable )
+    {
+        return EventUtils.onFocusGain ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public FocusAdapter onFocusLoss ( final FocusEventRunnable runnable )
+    {
+        return EventUtils.onFocusLoss ( this, runnable );
     }
 
     /**
@@ -940,8 +1192,53 @@ public class WebList extends JList implements FontMethods<WebList>, SizeMethods<
      * {@inheritDoc}
      */
     @Override
+    public int getMaximumWidth ()
+    {
+        return SizeUtils.getMaximumWidth ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebList setMaximumWidth ( final int maximumWidth )
+    {
+        return SizeUtils.setMaximumWidth ( this, maximumWidth );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int getMaximumHeight ()
+    {
+        return SizeUtils.getMaximumHeight ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebList setMaximumHeight ( final int maximumHeight )
+    {
+        return SizeUtils.setMaximumHeight ( this, maximumHeight );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Dimension getPreferredSize ()
     {
         return SizeUtils.getPreferredSize ( this, super.getPreferredSize () );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebList setPreferredSize ( final int width, final int height )
+    {
+        return SizeUtils.setPreferredSize ( this, width, height );
     }
 }

@@ -20,10 +20,7 @@ package com.alee.managers.language;
 import com.alee.managers.language.data.Dictionary;
 import com.alee.managers.language.data.*;
 import com.alee.managers.language.updaters.*;
-import com.alee.utils.CollectionUtils;
-import com.alee.utils.CompareUtils;
-import com.alee.utils.MapUtils;
-import com.alee.utils.XmlUtils;
+import com.alee.utils.*;
 import com.alee.utils.swing.AncestorAdapter;
 import com.alee.utils.swing.DataProvider;
 
@@ -48,7 +45,7 @@ import java.util.List;
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-LanguageManager">How to use LanguageManager</a>
  */
 
-public final class LanguageManager implements LanguageConstants
+public class LanguageManager implements LanguageConstants
 {
     /**
      * Unknown language icon.
@@ -58,7 +55,7 @@ public final class LanguageManager implements LanguageConstants
     /**
      * Supported languages operations synchronization object.
      */
-    private static final Object supportedLanguagesLock = new Object ();
+    protected static final Object supportedLanguagesLock = new Object ();
 
     /**
      * Predefined list of languages supported by WebLaF.
@@ -71,8 +68,8 @@ public final class LanguageManager implements LanguageConstants
      * @see #setSupportedLanguages(java.util.Collection)
      * @see #setSupportedLanguages(String...)
      */
-    private static final List<String> supportedLanguages =
-            CollectionUtils.copy ( ENGLISH, RUSSIAN, POLISH, ARABIC, SPANISH, FRENCH, PORTUGUESE, GERMAN );
+    protected static final List<String> supportedLanguages =
+            CollectionUtils.copy ( ENGLISH, RUSSIAN, POLISH, ARABIC, SPANISH, FRENCH, PORTUGUESE, GERMAN, ITALIAN );
 
     /**
      * Default WebLaF language.
@@ -82,7 +79,7 @@ public final class LanguageManager implements LanguageConstants
      * @see #setDefaultLanguage(String)
      * @see #getDefaultLanguage()
      */
-    private static String DEFAULT = getDefaultLanguageKey ();
+    protected static String DEFAULT = getDefaultLanguageKey ();
 
     /**
      * Currently used language.
@@ -90,7 +87,7 @@ public final class LanguageManager implements LanguageConstants
      * @see #getLanguage()
      * @see #setLanguage(String)
      */
-    private static String language = DEFAULT;
+    protected static String language = DEFAULT;
 
     /**
      * Default tooltip type used to display tooltips provided inside language files.
@@ -99,12 +96,12 @@ public final class LanguageManager implements LanguageConstants
      * @see #getDefaultTooltipType()
      * @see #setDefaultTooltipType(com.alee.managers.language.data.TooltipType)
      */
-    private static TooltipType defaultTooltipType = TooltipType.weblaf;
+    protected static TooltipType defaultTooltipType = TooltipType.weblaf;
 
     /**
      * Language listeners operations synchronization object.
      */
-    private static final Object languageListenersLock = new Object ();
+    protected static final Object languageListenersLock = new Object ();
 
     /**
      * Language changes listeners.
@@ -114,7 +111,7 @@ public final class LanguageManager implements LanguageConstants
      * @see #addLanguageListener(LanguageListener)
      * @see #removeLanguageListener(LanguageListener)
      */
-    private static final List<LanguageListener> languageListeners = new ArrayList<LanguageListener> ();
+    protected static final List<LanguageListener> languageListeners = new ArrayList<LanguageListener> ();
 
     /**
      * Language changes listeners.
@@ -124,12 +121,12 @@ public final class LanguageManager implements LanguageConstants
      * @see #addLanguageListener(LanguageListener)
      * @see #removeLanguageListener(LanguageListener)
      */
-    private static final Map<Component, LanguageListener> componentLanguageListeners = new WeakHashMap<Component, LanguageListener> ();
+    protected static final Map<Component, LanguageListener> componentLanguageListeners = new WeakHashMap<Component, LanguageListener> ();
 
     /**
      * Language key listeners operations synchronization object.
      */
-    private static final Object languageKeyListenersLock = new Object ();
+    protected static final Object languageKeyListenersLock = new Object ();
 
     /**
      * Language key changes listeners.
@@ -141,19 +138,19 @@ public final class LanguageManager implements LanguageConstants
      * @see #removeLanguageKeyListener(LanguageKeyListener)
      * @see #removeLanguageKeyListeners(String)
      */
-    private static final Map<String, List<LanguageKeyListener>> languageKeyListeners = new HashMap<String, List<LanguageKeyListener>> ();
+    protected static final Map<String, List<LanguageKeyListener>> languageKeyListeners = new HashMap<String, List<LanguageKeyListener>> ();
 
     /**
      * Global dictionary merged from all added dictionaries.
      * Used to store current dictionaries merge result and as a result improve translations retrieval speed.
      */
-    private static Dictionary globalDictionary;
+    protected static Dictionary globalDictionary;
 
     /**
      * Global values map that contains merged translations for currently selected language.
      * It gets updated on any dictionaries change or global language change.
      */
-    private static final Map<String, Value> globalCache = new HashMap<String, Value> ();
+    protected static final Map<String, Value> globalCache = new HashMap<String, Value> ();
 
     /**
      * List of all added dictionaries.
@@ -167,12 +164,18 @@ public final class LanguageManager implements LanguageConstants
      * @see #removeDictionary(com.alee.managers.language.data.Dictionary)
      * @see #getDictionaries()
      */
-    private static final List<Dictionary> dictionaries = new ArrayList<Dictionary> ();
+    protected static final List<Dictionary> dictionaries = new ArrayList<Dictionary> ();
+
+    /**
+     * All dictionaries cached by their special source ID.
+     * Used to track already added dictionaries and avoid their duplicate versions.
+     */
+    protected static final Map<String, Dictionary> dictionariesCache = new HashMap<String, Dictionary> ();
 
     /**
      * Component operations synchronization object.
      */
-    private static final Object componentsLock = new Object ();
+    protected static final Object componentsLock = new Object ();
 
     /**
      * Components registered for auto-translation.
@@ -184,7 +187,7 @@ public final class LanguageManager implements LanguageConstants
      * @see #unregisterComponent(java.awt.Component)
      * @see #isRegisteredComponent(java.awt.Component)
      */
-    private static final Map<Component, String> components = new WeakHashMap<Component, String> ();
+    protected static final Map<Component, String> components = new WeakHashMap<Component, String> ();
 
     /**
      * Object data provided with component language key.
@@ -195,7 +198,7 @@ public final class LanguageManager implements LanguageConstants
      * @see #updateComponent(java.awt.Component, Object...)
      * @see #updateComponent(java.awt.Component, String, Object...)
      */
-    private static final Map<Component, Object[]> componentsData = new WeakHashMap<Component, Object[]> ();
+    protected static final Map<Component, Object[]> componentsData = new WeakHashMap<Component, Object[]> ();
 
     /**
      * Calculated components cache map.
@@ -203,17 +206,17 @@ public final class LanguageManager implements LanguageConstants
      *
      * @see #updateComponentKey(java.awt.Component)
      */
-    private static final Map<Component, String> componentKeysCache = new WeakHashMap<Component, String> ();
+    protected static final Map<Component, String> componentKeysCache = new WeakHashMap<Component, String> ();
 
     /**
      * Components ancestor listeners used to update component keys cache.
      */
-    private static final Map<Component, AncestorListener> componentsListeners = new WeakHashMap<Component, AncestorListener> ();
+    protected static final Map<Component, AncestorListener> componentsListeners = new WeakHashMap<Component, AncestorListener> ();
 
     /**
      * Language container operations synchronization object.
      */
-    private static final Object languageContainersLock = new Object ();
+    protected static final Object languageContainersLock = new Object ();
 
     /**
      * Registered language containers.
@@ -225,17 +228,17 @@ public final class LanguageManager implements LanguageConstants
      * @see #unregisterLanguageContainer(java.awt.Container)
      * @see #combineWithContainerKeys(java.awt.Component, String)
      */
-    private static final Map<Container, String> languageContainers = new WeakHashMap<Container, String> ();
+    protected static final Map<Container, String> languageContainers = new WeakHashMap<Container, String> ();
 
     /**
      * LanguageUpdater operations synchronization object.
      */
-    private static final Object updatersLock = new Object ();
+    protected static final Object updatersLock = new Object ();
 
     /**
      * Special comparator for sorting LanguageUpdaters list.
      */
-    private static final LanguageUpdaterComparator languageUpdaterComparator = new LanguageUpdaterComparator ();
+    protected static final LanguageUpdaterComparator languageUpdaterComparator = new LanguageUpdaterComparator ();
 
     /**
      * Registered language updaters.
@@ -245,7 +248,7 @@ public final class LanguageManager implements LanguageConstants
      * @see #registerLanguageUpdater(com.alee.managers.language.updaters.LanguageUpdater)
      * @see #unregisterLanguageUpdater(com.alee.managers.language.updaters.LanguageUpdater)
      */
-    private static final List<LanguageUpdater> updaters = new ArrayList<LanguageUpdater> ();
+    protected static final List<LanguageUpdater> updaters = new ArrayList<LanguageUpdater> ();
 
     /**
      * Component-specific language updaters.
@@ -255,14 +258,14 @@ public final class LanguageManager implements LanguageConstants
      * @see #registerLanguageUpdater(java.awt.Component, com.alee.managers.language.updaters.LanguageUpdater)
      * @see #unregisterLanguageUpdater(java.awt.Component)
      */
-    private static final Map<Component, LanguageUpdater> customUpdaters = new WeakHashMap<Component, LanguageUpdater> ();
+    protected static final Map<Component, LanguageUpdater> customUpdaters = new WeakHashMap<Component, LanguageUpdater> ();
 
     /**
      * Language updaters cache by specific class types.
      * Used to improve LanguageUpdater retrieval speed for language requests.
      * This cache gets fully updated when any language updater is added or removed.
      */
-    private static final Map<Class, LanguageUpdater> updatersCache = new HashMap<Class, LanguageUpdater> ();
+    protected static final Map<Class, LanguageUpdater> updatersCache = new HashMap<Class, LanguageUpdater> ();
 
     /**
      * Language icons.
@@ -271,23 +274,28 @@ public final class LanguageManager implements LanguageConstants
      *
      * @see #setLanguageIcon(String, javax.swing.ImageIcon)
      */
-    private static final Map<String, ImageIcon> languageIcons = new HashMap<String, ImageIcon> ();
+    protected static final Map<String, ImageIcon> languageIcons = new HashMap<String, ImageIcon> ();
 
     /**
      * Currrent tooltip support.
      * This is a custom support object that provides tooltips according to language files.
      */
-    private static TooltipLanguageSupport tooltipLanguageSupport;
+    protected static TooltipLanguageSupport tooltipLanguageSupport;
+
+    /**
+     * Whether or not components should check that text passed into their constructors is a translation key or not.
+     */
+    protected static boolean checkComponentsTextForTranslations = true;
 
     /**
      * Manager initialization mark.
      */
-    private static boolean initialized = false;
+    protected static boolean initialized = false;
 
     /**
      * Initializes LanguageManager settings.
      */
-    public static void initialize ()
+    public static synchronized void initialize ()
     {
         if ( !initialized )
         {
@@ -366,7 +374,7 @@ public final class LanguageManager implements LanguageConstants
                 private void updateSmart ( final Dictionary dictionary )
                 {
                     // Gathering all changed keys
-                    final List<String> relevantKeys = gatherKeys ( dictionary );
+                    final List<String> relevantKeys = LanguageUtils.gatherKeys ( dictionary );
 
                     // Notifying registered key listeners
                     if ( languageKeyListeners.size () > 0 )
@@ -380,31 +388,6 @@ public final class LanguageManager implements LanguageConstants
                     // Updating relevant components
                     updateComponents ( relevantKeys );
                 }
-
-                private List<String> gatherKeys ( final Dictionary dictionary )
-                {
-                    final List<String> relevantKeys = new ArrayList<String> ();
-                    gatherKeys ( dictionary, relevantKeys );
-                    return relevantKeys;
-                }
-
-                private void gatherKeys ( final Dictionary dictionary, final List<String> relevantKeys )
-                {
-                    if ( dictionary.getRecords () != null )
-                    {
-                        for ( final Record record : dictionary.getRecords () )
-                        {
-                            relevantKeys.add ( record.getKey () );
-                        }
-                    }
-                    if ( dictionary.getSubdictionaries () != null )
-                    {
-                        for ( final Dictionary subDictionary : dictionary.getSubdictionaries () )
-                        {
-                            gatherKeys ( subDictionary, relevantKeys );
-                        }
-                    }
-                }
             } );
 
             // Default WebLaF dictionary
@@ -417,6 +400,7 @@ public final class LanguageManager implements LanguageConstants
      */
     public static void loadDefaultDictionary ()
     {
+        // todo Separate core and ui languages
         LanguageManager.addDictionary ( LanguageManager.class, "resources/language.xml" );
     }
 
@@ -525,12 +509,16 @@ public final class LanguageManager implements LanguageConstants
      */
     public static void registerComponent ( final Component component, final String key, Object... data )
     {
+        // Properly remove previously installed language
+        unregisterComponent ( component );
+
         // Nullifying data if it has no values
         if ( data != null && data.length == 0 )
         {
             data = null;
         }
 
+        // Saving component
         synchronized ( componentsLock )
         {
             components.put ( component, key );
@@ -540,7 +528,10 @@ public final class LanguageManager implements LanguageConstants
             }
         }
 
+        // Updating component language
         updateComponent ( component, key );
+
+        // Registering component listener
         synchronized ( componentsLock )
         {
             if ( component instanceof JComponent )
@@ -582,7 +573,7 @@ public final class LanguageManager implements LanguageConstants
      *
      * @param component component to update
      */
-    private static void updateComponentKey ( final Component component )
+    protected static void updateComponentKey ( final Component component )
     {
         final String key = getComponentKey ( component );
         if ( key != null )
@@ -605,14 +596,18 @@ public final class LanguageManager implements LanguageConstants
     {
         synchronized ( componentsLock )
         {
-            components.remove ( component );
-            componentsData.remove ( component );
-            if ( component instanceof JComponent )
+            if ( components.containsKey ( component ) )
             {
-                final JComponent jComponent = ( JComponent ) component;
-                final AncestorListener listener = componentsListeners.get ( jComponent );
-                jComponent.removeAncestorListener ( listener );
-                componentsListeners.remove ( component );
+                components.remove ( component );
+                componentsData.remove ( component );
+                componentKeysCache.remove ( component );
+                if ( component instanceof JComponent )
+                {
+                    final JComponent jComponent = ( JComponent ) component;
+                    final AncestorListener listener = componentsListeners.get ( jComponent );
+                    jComponent.removeAncestorListener ( listener );
+                    componentsListeners.remove ( component );
+                }
             }
         }
     }
@@ -1105,12 +1100,12 @@ public final class LanguageManager implements LanguageConstants
     /**
      * Updates Locale according to currently used language.
      */
-    private static void updateLocale ()
+    protected static void updateLocale ()
     {
         // Proper locale for language
         Locale.setDefault ( getLocale ( language ) );
 
-        // todo In future, with JDK7+
+        // todo Use this one instead after switching to JDK8+ support
         // Locale.setDefault ( Locale.forLanguageTag ( language ) );
     }
 
@@ -1154,6 +1149,37 @@ public final class LanguageManager implements LanguageConstants
     }
 
     /**
+     * Adds new language dictionary into LanguageManager.
+     * This method call may cause a lot of UI updates depending on amount of translations contained.
+     * If added dictionary contains records with existing keys they will override previously added ones.
+     *
+     * @param nearClass class to look near for the dictionary file
+     * @param resource  path to dictionary file
+     * @return newly added dictionary
+     */
+    public static Dictionary addDictionary ( final Class nearClass, final String resource )
+    {
+        final String cacheKey = getDictionaryCacheKey ( nearClass, resource );
+        if ( dictionariesCache.containsKey ( cacheKey ) )
+        {
+            return dictionariesCache.get ( cacheKey );
+        }
+        return addDictionary ( cacheKey, loadDictionary ( nearClass, resource ) );
+    }
+
+    /**
+     * Returns dictionary cache key.
+     *
+     * @param nearClass class to look near for the dictionary file
+     * @param resource  path to dictionary file
+     * @return dictionary cache key
+     */
+    public static String getDictionaryCacheKey ( final Class nearClass, final String resource )
+    {
+        return NetUtils.getAddress ( nearClass.getResource ( resource ) );
+    }
+
+    /**
      * Returns dictionary loaded from the specified location near class.
      *
      * @param nearClass class near which dictionary XML is located
@@ -1163,6 +1189,35 @@ public final class LanguageManager implements LanguageConstants
     public static Dictionary loadDictionary ( final Class nearClass, final String resource )
     {
         return loadDictionary ( nearClass.getResource ( resource ) );
+    }
+
+    /**
+     * Adds new language dictionary into LanguageManager.
+     * This method call may cause a lot of UI updates depending on amount of translations contained.
+     * If added dictionary contains records with existing keys they will override previously added ones.
+     *
+     * @param url dictionary file url
+     * @return newly added dictionary
+     */
+    public static Dictionary addDictionary ( final URL url )
+    {
+        final String cacheKey = getDictionaryCacheKey ( url );
+        if ( dictionariesCache.containsKey ( cacheKey ) )
+        {
+            return dictionariesCache.get ( cacheKey );
+        }
+        return addDictionary ( cacheKey, loadDictionary ( url ) );
+    }
+
+    /**
+     * Returns dictionary cache key.
+     *
+     * @param url dictionary file url
+     * @return dictionary cache key
+     */
+    public static String getDictionaryCacheKey ( final URL url )
+    {
+        return NetUtils.getAddress ( url );
     }
 
     /**
@@ -1177,6 +1232,35 @@ public final class LanguageManager implements LanguageConstants
     }
 
     /**
+     * Adds new language dictionary into LanguageManager.
+     * This method call may cause a lot of UI updates depending on amount of translations contained.
+     * If added dictionary contains records with existing keys they will override previously added ones.
+     *
+     * @param path path to dictionary file
+     * @return newly added dictionary
+     */
+    public static Dictionary addDictionary ( final String path )
+    {
+        final String cacheKey = getDictionaryCacheKey ( path );
+        if ( dictionariesCache.containsKey ( cacheKey ) )
+        {
+            return dictionariesCache.get ( cacheKey );
+        }
+        return addDictionary ( cacheKey, loadDictionary ( path ) );
+    }
+
+    /**
+     * Returns dictionary cache key.
+     *
+     * @param path path to dictionary file
+     * @return dictionary cache key
+     */
+    public static String getDictionaryCacheKey ( final String path )
+    {
+        return path;
+    }
+
+    /**
      * Returns dictionary loaded from the specified file path.
      *
      * @param path file path to load dictionary from
@@ -1185,6 +1269,35 @@ public final class LanguageManager implements LanguageConstants
     public static Dictionary loadDictionary ( final String path )
     {
         return loadDictionary ( new File ( path ) );
+    }
+
+    /**
+     * Adds new language dictionary into LanguageManager.
+     * This method call may cause a lot of UI updates depending on amount of translations contained.
+     * If added dictionary contains records with existing keys they will override previously added ones.
+     *
+     * @param file dictionary file
+     * @return newly added dictionary
+     */
+    public static Dictionary addDictionary ( final File file )
+    {
+        final String cacheKey = getDictionaryCacheKey ( file );
+        if ( dictionariesCache.containsKey ( cacheKey ) )
+        {
+            return dictionariesCache.get ( cacheKey );
+        }
+        return addDictionary ( cacheKey, loadDictionary ( file ) );
+    }
+
+    /**
+     * Returns dictionary cache key.
+     *
+     * @param file dictionary file
+     * @return dictionary cache key
+     */
+    public static String getDictionaryCacheKey ( final File file )
+    {
+        return file.getAbsolutePath ();
     }
 
     /**
@@ -1203,64 +1316,31 @@ public final class LanguageManager implements LanguageConstants
      * This method call may cause a lot of UI updates depending on amount of translations contained.
      * If added dictionary contains records with existing keys they will override previously added ones.
      *
-     * @param nearClass class to look near for the dictionary file
-     * @param resource  path to dictionary file
-     * @return newly added dictionary
-     */
-    public static Dictionary addDictionary ( final Class nearClass, final String resource )
-    {
-        return addDictionary ( loadDictionary ( nearClass, resource ) );
-    }
-
-    /**
-     * Adds new language dictionary into LanguageManager.
-     * This method call may cause a lot of UI updates depending on amount of translations contained.
-     * If added dictionary contains records with existing keys they will override previously added ones.
-     *
-     * @param url dictionary file url
-     * @return newly added dictionary
-     */
-    public static Dictionary addDictionary ( final URL url )
-    {
-        return addDictionary ( loadDictionary ( url ) );
-    }
-
-    /**
-     * Adds new language dictionary into LanguageManager.
-     * This method call may cause a lot of UI updates depending on amount of translations contained.
-     * If added dictionary contains records with existing keys they will override previously added ones.
-     *
-     * @param path path to dictionary file
-     * @return newly added dictionary
-     */
-    public static Dictionary addDictionary ( final String path )
-    {
-        return addDictionary ( loadDictionary ( path ) );
-    }
-
-    /**
-     * Adds new language dictionary into LanguageManager.
-     * This method call may cause a lot of UI updates depending on amount of translations contained.
-     * If added dictionary contains records with existing keys they will override previously added ones.
-     *
-     * @param file dictionary file
-     * @return newly added dictionary
-     */
-    public static Dictionary addDictionary ( final File file )
-    {
-        return addDictionary ( loadDictionary ( file ) );
-    }
-
-    /**
-     * Adds new language dictionary into LanguageManager.
-     * This method call may cause a lot of UI updates depending on amount of translations contained.
-     * If added dictionary contains records with existing keys they will override previously added ones.
-     *
      * @param dictionary dictionary to add
      * @return newly added dictionary
      */
     public static Dictionary addDictionary ( final Dictionary dictionary )
     {
+        return addDictionary ( null, dictionary );
+    }
+
+    /**
+     * Adds new language dictionary into LanguageManager.
+     * This method call may cause a lot of UI updates depending on amount of translations contained.
+     * If added dictionary contains records with existing keys they will override previously added ones.
+     *
+     * @param cacheKey   dictionary cache key
+     * @param dictionary dictionary to add
+     * @return newly added dictionary
+     */
+    public static Dictionary addDictionary ( final String cacheKey, final Dictionary dictionary )
+    {
+        // Return cached dictionary if one exists
+        if ( dictionariesCache.containsKey ( cacheKey ) )
+        {
+            return dictionariesCache.get ( cacheKey );
+        }
+
         // Removing dictionary with the same ID first
         if ( isDictionaryAdded ( dictionary ) )
         {
@@ -1271,10 +1351,16 @@ public final class LanguageManager implements LanguageConstants
         dictionaries.add ( dictionary );
 
         // Updating global dictionary
-        mergeDictionary ( dictionary );
+        LanguageUtils.mergeDictionary ( dictionary, globalDictionary );
 
         // Updating global cache
         updateCache ( dictionary );
+
+        // Caching dictinary by its cache key
+        if ( cacheKey != null )
+        {
+            dictionariesCache.put ( cacheKey, dictionary );
+        }
 
         // Firing add event
         fireDictionaryAdded ( dictionary );
@@ -1308,11 +1394,16 @@ public final class LanguageManager implements LanguageConstants
             // Clearing global dictionaries storage
             globalDictionary.clear ();
 
-            // Updating dictionaries
+            // Removing dictionary
             dictionaries.remove ( dictionary );
+
+            // Removing dictionary from cache
+            MapUtils.removeAllValues ( dictionariesCache, dictionary );
+
+            // Updating dictionaries
             for ( final Dictionary d : dictionaries )
             {
-                mergeDictionary ( d );
+                LanguageUtils.mergeDictionary ( d, globalDictionary );
             }
 
             // Updating global cache
@@ -1374,59 +1465,6 @@ public final class LanguageManager implements LanguageConstants
             }
         }
         return null;
-    }
-
-    /**
-     * Merges specified dictionary with the global dictionary.
-     *
-     * @param dictionary dictionary to merge
-     */
-    private static void mergeDictionary ( final Dictionary dictionary )
-    {
-        mergeDictionary ( dictionary.getPrefix (), dictionary );
-    }
-
-    /**
-     * Merges specified dictionary with the global dictionary.
-     *
-     * @param prefix     dictionary prefix
-     * @param dictionary dictionary to merge
-     */
-    private static void mergeDictionary ( String prefix, final Dictionary dictionary )
-    {
-        // Determining prefix
-        prefix = prefix != null && !prefix.equals ( "" ) ? prefix + "." : "";
-
-        // Merging current level records
-        if ( dictionary.getRecords () != null )
-        {
-            for ( final Record record : dictionary.getRecords () )
-            {
-                final Record clone = record.clone ();
-                clone.setKey ( prefix + clone.getKey () );
-                globalDictionary.addRecord ( clone );
-            }
-        }
-
-        // Merging language information data
-        if ( dictionary.getLanguageInfos () != null )
-        {
-            for ( final LanguageInfo info : dictionary.getLanguageInfos () )
-            {
-                globalDictionary.addLanguageInfo ( info );
-            }
-        }
-
-        // Parsing subdictionaries
-        if ( dictionary.getSubdictionaries () != null )
-        {
-            for ( final Dictionary subDictionary : dictionary.getSubdictionaries () )
-            {
-                final String sp = subDictionary.getPrefix ();
-                final String subPrefix = prefix + ( sp != null && !sp.equals ( "" ) ? sp : "" );
-                mergeDictionary ( subPrefix, subDictionary );
-            }
-        }
     }
 
     /**
@@ -1642,7 +1680,7 @@ public final class LanguageManager implements LanguageConstants
      * @param key       component language key
      * @return component language key combined with its containers keys
      */
-    private static String combineWithContainerKeysImpl ( final Component component, final String key )
+    protected static String combineWithContainerKeysImpl ( final Component component, final String key )
     {
         final StringBuilder sb = new StringBuilder ( key );
         if ( component != null )
@@ -1708,7 +1746,7 @@ public final class LanguageManager implements LanguageConstants
      * Rebuilds global dictionaries cache from a scratch.
      * This is required for cases when dictionary changes cannot be tracked or when current language changes.
      */
-    private static void rebuildCache ()
+    protected static void rebuildCache ()
     {
         clearCache ();
         updateCache ( globalDictionary );
@@ -1717,7 +1755,7 @@ public final class LanguageManager implements LanguageConstants
     /**
      * Clears global dictionaries cache.
      */
-    private static void clearCache ()
+    protected static void clearCache ()
     {
         globalCache.clear ();
     }
@@ -1727,7 +1765,7 @@ public final class LanguageManager implements LanguageConstants
      *
      * @param dictionary dictionary to update cache with
      */
-    private static void updateCache ( final Dictionary dictionary )
+    protected static void updateCache ( final Dictionary dictionary )
     {
         updateCache ( dictionary.getPrefix (), dictionary );
     }
@@ -1738,7 +1776,7 @@ public final class LanguageManager implements LanguageConstants
      * @param prefix     dictionary prefix
      * @param dictionary dictionary to update cache with
      */
-    private static void updateCache ( String prefix, final Dictionary dictionary )
+    protected static void updateCache ( String prefix, final Dictionary dictionary )
     {
         // Determining prefix
         prefix = prefix != null && !prefix.equals ( "" ) ? prefix + "." : "";
@@ -1767,6 +1805,26 @@ public final class LanguageManager implements LanguageConstants
                 updateCache ( subPrefix, subDictionary );
             }
         }
+    }
+
+    /**
+     * Returns whether or not components should check that text passed into their constructors is a translation key or not.
+     *
+     * @return true if components should check that text passed into their constructor is a translation key or not, false otherwise
+     */
+    public static boolean isCheckComponentsTextForTranslations ()
+    {
+        return checkComponentsTextForTranslations;
+    }
+
+    /**
+     * Sets whether or not components should check that text passed into their constructors is a translation key or not.
+     *
+     * @param check whether or not components should check that text passed into their constructors is a translation key or not
+     */
+    public static void setCheckComponentsTextForTranslations ( final boolean check )
+    {
+        checkComponentsTextForTranslations = check;
     }
 
     /**
@@ -1875,7 +1933,7 @@ public final class LanguageManager implements LanguageConstants
      * @param oldLang old language
      * @param newLang new language
      */
-    private static void fireLanguageChanged ( final String oldLang, final String newLang )
+    protected static void fireLanguageChanged ( final String oldLang, final String newLang )
     {
         synchronized ( languageListenersLock )
         {
@@ -1903,7 +1961,7 @@ public final class LanguageManager implements LanguageConstants
      *
      * @param dictionary new dictionary
      */
-    private static void fireDictionaryAdded ( final Dictionary dictionary )
+    protected static void fireDictionaryAdded ( final Dictionary dictionary )
     {
         synchronized ( languageListenersLock )
         {
@@ -1931,7 +1989,7 @@ public final class LanguageManager implements LanguageConstants
      *
      * @param dictionary removed dictionary
      */
-    private static void fireDictionaryRemoved ( final Dictionary dictionary )
+    protected static void fireDictionaryRemoved ( final Dictionary dictionary )
     {
         synchronized ( languageListenersLock )
         {
@@ -1957,7 +2015,7 @@ public final class LanguageManager implements LanguageConstants
     /**
      * Fires dictionaries cleared event whenever all dictionaries are removed from LanguageManager.
      */
-    private static void fireDictionariesCleared ()
+    protected static void fireDictionariesCleared ()
     {
         synchronized ( languageListenersLock )
         {
@@ -2044,7 +2102,7 @@ public final class LanguageManager implements LanguageConstants
      *
      * @param key updated language key
      */
-    private static void fireLanguageKeyUpdated ( final String key )
+    protected static void fireLanguageKeyUpdated ( final String key )
     {
         synchronized ( languageKeyListenersLock )
         {
@@ -2063,7 +2121,7 @@ public final class LanguageManager implements LanguageConstants
     /**
      * Fires language key updated event for all language keys.
      */
-    private static void fireAllLanguageKeysUpdated ()
+    protected static void fireAllLanguageKeysUpdated ()
     {
         synchronized ( languageKeyListenersLock )
         {

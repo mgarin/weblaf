@@ -56,6 +56,8 @@ public class WebButtonUI extends BasicButtonUI implements ShapeProvider, SwingCo
      * todo 2. Properly paint side-borders when grouped buttons are rollover decorated only
      */
 
+    protected static final Stroke defaultInnerShade = new BasicStroke ( 3f );
+
     protected Color topBgColor = WebButtonStyle.topBgColor;
     protected Color bottomBgColor = WebButtonStyle.bottomBgColor;
     protected Color topSelectedBgColor = WebButtonStyle.topSelectedBgColor;
@@ -73,6 +75,7 @@ public class WebButtonUI extends BasicButtonUI implements ShapeProvider, SwingCo
     protected Color shadeColor = WebButtonStyle.shadeColor;
     protected int innerShadeWidth = WebButtonStyle.innerShadeWidth;
     protected Color innerShadeColor = WebButtonStyle.innerShadeColor;
+    protected Color defaultButtonShadeColor = WebButtonStyle.defaultButtonShadeColor;
     protected int leftRightSpacing = WebButtonStyle.leftRightSpacing;
     protected boolean shadeToggleIcon = WebButtonStyle.shadeToggleIcon;
     protected float shadeToggleIconTransparency = WebButtonStyle.shadeToggleIconTransparency;
@@ -112,7 +115,7 @@ public class WebButtonUI extends BasicButtonUI implements ShapeProvider, SwingCo
     protected AncestorListener ancestorListener;
     protected PropertyChangeListener propertyChangeListener;
 
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebButtonUI ();
@@ -486,10 +489,10 @@ public class WebButtonUI extends BasicButtonUI implements ShapeProvider, SwingCo
             final boolean actualDrawLeftLine = ltr ? drawLeftLine : drawRightLine;
             final boolean actualDrawRight = ltr ? drawRight : drawLeft;
             final boolean actualDrawRightLine = ltr ? drawRightLine : drawLeftLine;
-            m.top += ( drawTop ? ( shadeWidth + 1 ) : ( drawTopLine ? 1 : 0 ) ) + innerShadeWidth;
-            m.left += ( actualDrawLeft ? ( shadeWidth + 1 ) : ( actualDrawLeftLine ? 1 : 0 ) ) + innerShadeWidth;
-            m.bottom += ( drawBottom ? ( shadeWidth + 1 ) : ( drawBottomLine ? 1 : 0 ) ) + innerShadeWidth;
-            m.right += ( actualDrawRight ? ( shadeWidth + 1 ) : ( actualDrawRightLine ? 1 : 0 ) ) + innerShadeWidth;
+            m.top += ( drawTop ? ( shadeWidth + 1 ) : drawTopLine ? 1 : 0 ) + innerShadeWidth;
+            m.left += ( actualDrawLeft ? ( shadeWidth + 1 ) : actualDrawLeftLine ? 1 : 0 ) + innerShadeWidth;
+            m.bottom += ( drawBottom ? ( shadeWidth + 1 ) : drawBottomLine ? 1 : 0 ) + innerShadeWidth;
+            m.right += ( actualDrawRight ? ( shadeWidth + 1 ) : actualDrawRightLine ? 1 : 0 ) + innerShadeWidth;
         }
 
         return m;
@@ -576,6 +579,16 @@ public class WebButtonUI extends BasicButtonUI implements ShapeProvider, SwingCo
     public void setInnerShadeColor ( final Color innerShadeColor )
     {
         this.innerShadeColor = innerShadeColor;
+    }
+
+    public Color getDefaultButtonShadeColor ()
+    {
+        return defaultButtonShadeColor;
+    }
+
+    public void setDefaultButtonShadeColor ( final Color defaultButtonShadeColor )
+    {
+        this.defaultButtonShadeColor = defaultButtonShadeColor;
     }
 
     public int getLeftRightSpacing ()
@@ -814,9 +827,7 @@ public class WebButtonUI extends BasicButtonUI implements ShapeProvider, SwingCo
             else if ( !undecorated )
             {
                 final boolean pressed = buttonModel.isPressed () || buttonModel.isSelected ();
-
                 final Shape borderShape = getButtonShape ( button, true );
-
                 if ( isDrawButton ( c, buttonModel ) )
                 {
                     // Rollover decorated only transparency
@@ -859,8 +870,8 @@ public class WebButtonUI extends BasicButtonUI implements ShapeProvider, SwingCo
                     }
 
                     // Background
-                    g2d.setPaint ( new GradientPaint ( 0, drawTop ? shadeWidth : 0, pressed ? topSelectedBgColor : topBgColor, 0,
-                            button.getHeight () - ( drawBottom ? shadeWidth : 0 ), pressed ? bottomSelectedBgColor : bottomBgColor ) );
+                    g2d.setPaint ( new GradientPaint ( 0, drawTop ? shadeWidth : 0, getCurrentTopBgColor ( pressed ), 0,
+                            button.getHeight () - ( drawBottom ? shadeWidth : 0 ), getCurrentBottomBgColor ( pressed ) ) );
                     g2d.fill ( getButtonShape ( button, false ) );
 
                     // Cursor-following highlight
@@ -879,9 +890,20 @@ public class WebButtonUI extends BasicButtonUI implements ShapeProvider, SwingCo
                         GraphicsUtils.drawShade ( g2d, borderShape, innerShadeColor, innerShadeWidth, borderShape );
                     }
 
+                    // Default button inner shade
+                    if ( isDefaultButton () )
+                    {
+                        final Shape oldClip = GraphicsUtils.setupClip ( g2d, borderShape );
+                        final Stroke stroke = GraphicsUtils.setupStroke ( g2d, defaultInnerShade );
+                        g2d.setPaint ( defaultButtonShadeColor );
+                        g2d.draw ( borderShape );
+                        GraphicsUtils.restoreStroke ( g2d, stroke );
+                        GraphicsUtils.restoreClip ( g2d, oldClip );
+                    }
+
                     // Border
-                    g2d.setPaint ( c.isEnabled () ? ( rolloverDarkBorderOnly && rollover ? getBorderColor () :
-                            ( !rolloverDarkBorderOnly ? StyleConstants.darkBorderColor : StyleConstants.borderColor ) ) :
+                    g2d.setPaint ( c.isEnabled () ? rolloverDarkBorderOnly && rollover ? getBorderColor () :
+                            !rolloverDarkBorderOnly ? StyleConstants.darkBorderColor : StyleConstants.borderColor :
                             StyleConstants.disabledBorderColor );
                     g2d.draw ( borderShape );
 
@@ -943,6 +965,38 @@ public class WebButtonUI extends BasicButtonUI implements ShapeProvider, SwingCo
         final Map hints = SwingUtils.setupTextAntialias ( g2d );
         super.paint ( g, c );
         SwingUtils.restoreTextAntialias ( g2d, hints );
+    }
+
+    /**
+     * Returns whether this button is default within its root pane or not.
+     *
+     * @return true if this button is default within its root pane, false otherwise
+     */
+    protected boolean isDefaultButton ()
+    {
+        return button instanceof JButton && ( ( JButton ) button ).isDefaultButton ();
+    }
+
+    /**
+     * Returns current top background color.
+     *
+     * @param pressed whether button is pressed or not
+     * @return current top background color
+     */
+    protected Color getCurrentTopBgColor ( final boolean pressed )
+    {
+        return pressed ? topSelectedBgColor : topBgColor;
+    }
+
+    /**
+     * Returns current bottom background color.
+     *
+     * @param pressed whether button is pressed or not
+     * @return current bottom background color
+     */
+    protected Color getCurrentBottomBgColor ( final boolean pressed )
+    {
+        return pressed ? bottomSelectedBgColor : bottomBgColor;
     }
 
     /**

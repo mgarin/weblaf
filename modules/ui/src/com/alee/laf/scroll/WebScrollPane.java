@@ -20,6 +20,7 @@ package com.alee.laf.scroll;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.language.LanguageContainerMethods;
 import com.alee.managers.language.LanguageManager;
+import com.alee.managers.log.Log;
 import com.alee.utils.LafUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SizeUtils;
@@ -235,7 +236,7 @@ public class WebScrollPane extends JScrollPane implements ShapeProvider, SizeMet
             }
             catch ( final Throwable e )
             {
-                e.printStackTrace ();
+                Log.error ( this, e );
                 setUI ( new WebScrollPaneUI () );
             }
         }
@@ -325,9 +326,54 @@ public class WebScrollPane extends JScrollPane implements ShapeProvider, SizeMet
      * {@inheritDoc}
      */
     @Override
+    public int getMaximumWidth ()
+    {
+        return SizeUtils.getMaximumWidth ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebScrollPane setMaximumWidth ( final int maximumWidth )
+    {
+        return SizeUtils.setMaximumWidth ( this, maximumWidth );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int getMaximumHeight ()
+    {
+        return SizeUtils.getMaximumHeight ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebScrollPane setMaximumHeight ( final int maximumHeight )
+    {
+        return SizeUtils.setMaximumHeight ( this, maximumHeight );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Dimension getPreferredSize ()
     {
         return SizeUtils.getPreferredSize ( this, super.getPreferredSize () );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebScrollPane setPreferredSize ( final int width, final int height )
+    {
+        return SizeUtils.setPreferredSize ( this, width, height );
     }
 
     /**

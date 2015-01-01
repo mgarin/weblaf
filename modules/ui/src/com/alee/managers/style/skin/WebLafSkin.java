@@ -18,6 +18,7 @@
 package com.alee.managers.style.skin;
 
 import com.alee.extended.painter.Painter;
+import com.alee.managers.log.Log;
 import com.alee.managers.style.StyleException;
 import com.alee.managers.style.StyleManager;
 import com.alee.managers.style.SupportedComponent;
@@ -264,7 +265,7 @@ public abstract class WebLafSkin
         }
         catch ( final Throwable e )
         {
-            e.printStackTrace ();
+            Log.error ( this, e );
             return false;
         }
     }
@@ -305,7 +306,7 @@ public abstract class WebLafSkin
         }
         catch ( final Throwable e )
         {
-            e.printStackTrace ();
+            Log.error ( this, e );
             return false;
         }
     }
@@ -466,15 +467,15 @@ public abstract class WebLafSkin
         }
         catch ( final NoSuchMethodException e )
         {
-            e.printStackTrace ();
+            Log.error ( WebLafSkin.class, e );
         }
         catch ( final InvocationTargetException e )
         {
-            e.printStackTrace ();
+            Log.error ( WebLafSkin.class, e );
         }
         catch ( final IllegalAccessException e )
         {
-            e.printStackTrace ();
+            Log.error ( WebLafSkin.class, e );
         }
 
         // Applying field value directly
@@ -487,12 +488,12 @@ public abstract class WebLafSkin
         }
         catch ( final NoSuchFieldException e )
         {
-            e.printStackTrace ();
+            Log.error ( WebLafSkin.class, e );
             return false;
         }
         catch ( final IllegalAccessException e )
         {
-            e.printStackTrace ();
+            Log.error ( WebLafSkin.class, e );
             return false;
         }
     }
@@ -521,11 +522,11 @@ public abstract class WebLafSkin
         }
         catch ( final InvocationTargetException e )
         {
-            e.printStackTrace ();
+            Log.error ( WebLafSkin.class, e );
         }
         catch ( final IllegalAccessException e )
         {
-            e.printStackTrace ();
+            Log.error ( WebLafSkin.class, e );
         }
 
         // Retrieving field value directly
@@ -538,12 +539,12 @@ public abstract class WebLafSkin
         }
         catch ( final NoSuchFieldException e )
         {
-            e.printStackTrace ();
+            Log.error ( WebLafSkin.class, e );
             return null;
         }
         catch ( final IllegalAccessException e )
         {
-            e.printStackTrace ();
+            Log.error ( WebLafSkin.class, e );
             return null;
         }
     }

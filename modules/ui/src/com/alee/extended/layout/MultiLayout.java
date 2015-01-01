@@ -25,6 +25,8 @@ import java.util.List;
 
 /**
  * Custom layout that allows multiply layout strategies to be applied to single container.
+ * Be aware that standard Swing layouts aren't developed to be used together so they aren't suitable for this layout.
+ * You will need custom layouts which work only with specific components and won't affect the same components.
  *
  * @author Mikle Garin
  */
@@ -60,7 +62,7 @@ public class MultiLayout extends AbstractLayoutManager
      *
      * @param layoutManagers new applied layout managers
      */
-    public void setLayoutManagers ( List<LayoutManager> layoutManagers )
+    public void setLayoutManagers ( final List<LayoutManager> layoutManagers )
     {
         this.layoutManagers = layoutManagers;
     }
@@ -70,7 +72,7 @@ public class MultiLayout extends AbstractLayoutManager
      *
      * @param layoutManager applied layout manager to add
      */
-    public void addLayoutManager ( LayoutManager layoutManager )
+    public void addLayoutManager ( final LayoutManager layoutManager )
     {
         this.layoutManagers.add ( layoutManager );
     }
@@ -80,7 +82,7 @@ public class MultiLayout extends AbstractLayoutManager
      *
      * @param layoutManager applied layout manager to remove
      */
-    public void removeLayoutManager ( LayoutManager layoutManager )
+    public void removeLayoutManager ( final LayoutManager layoutManager )
     {
         this.layoutManagers.remove ( layoutManager );
     }
@@ -89,9 +91,9 @@ public class MultiLayout extends AbstractLayoutManager
      * {@inheritDoc}
      */
     @Override
-    public void addLayoutComponent ( Component comp, Object constraints )
+    public void addLayoutComponent ( final Component comp, final Object constraints )
     {
-        for ( LayoutManager layoutManager : layoutManagers )
+        for ( final LayoutManager layoutManager : layoutManagers )
         {
             if ( layoutManager instanceof LayoutManager2 )
             {
@@ -104,9 +106,9 @@ public class MultiLayout extends AbstractLayoutManager
      * {@inheritDoc}
      */
     @Override
-    public void addLayoutComponent ( String name, Component comp )
+    public void addLayoutComponent ( final String name, final Component comp )
     {
-        for ( LayoutManager layoutManager : layoutManagers )
+        for ( final LayoutManager layoutManager : layoutManagers )
         {
             layoutManager.addLayoutComponent ( name, comp );
         }
@@ -116,9 +118,9 @@ public class MultiLayout extends AbstractLayoutManager
      * {@inheritDoc}
      */
     @Override
-    public void removeLayoutComponent ( Component comp )
+    public void removeLayoutComponent ( final Component comp )
     {
-        for ( LayoutManager layoutManager : layoutManagers )
+        for ( final LayoutManager layoutManager : layoutManagers )
         {
             layoutManager.removeLayoutComponent ( comp );
         }
@@ -128,9 +130,9 @@ public class MultiLayout extends AbstractLayoutManager
      * {@inheritDoc}
      */
     @Override
-    public void addComponent ( Component component, Object constraints )
+    public void addComponent ( final Component component, final Object constraints )
     {
-        for ( LayoutManager layoutManager : layoutManagers )
+        for ( final LayoutManager layoutManager : layoutManagers )
         {
             if ( layoutManager instanceof LayoutManager2 )
             {
@@ -147,9 +149,9 @@ public class MultiLayout extends AbstractLayoutManager
      * {@inheritDoc}
      */
     @Override
-    public void removeComponent ( Component component )
+    public void removeComponent ( final Component component )
     {
-        for ( LayoutManager layoutManager : layoutManagers )
+        for ( final LayoutManager layoutManager : layoutManagers )
         {
             layoutManager.removeLayoutComponent ( component );
         }
@@ -159,10 +161,10 @@ public class MultiLayout extends AbstractLayoutManager
      * {@inheritDoc}
      */
     @Override
-    public Dimension preferredLayoutSize ( Container parent )
+    public Dimension preferredLayoutSize ( final Container parent )
     {
         Dimension ps = new Dimension ( 0, 0 );
-        for ( LayoutManager layoutManager : layoutManagers )
+        for ( final LayoutManager layoutManager : layoutManagers )
         {
             ps = SwingUtils.max ( ps, layoutManager.preferredLayoutSize ( parent ) );
         }
@@ -173,10 +175,10 @@ public class MultiLayout extends AbstractLayoutManager
      * {@inheritDoc}
      */
     @Override
-    public Dimension minimumLayoutSize ( Container parent )
+    public Dimension minimumLayoutSize ( final Container parent )
     {
         Dimension ms = new Dimension ( 0, 0 );
-        for ( LayoutManager layoutManager : layoutManagers )
+        for ( final LayoutManager layoutManager : layoutManagers )
         {
             ms = SwingUtils.max ( ms, layoutManager.minimumLayoutSize ( parent ) );
         }
@@ -187,10 +189,10 @@ public class MultiLayout extends AbstractLayoutManager
      * {@inheritDoc}
      */
     @Override
-    public Dimension maximumLayoutSize ( Container parent )
+    public Dimension maximumLayoutSize ( final Container parent )
     {
         Dimension ms = new Dimension ( Integer.MAX_VALUE, Integer.MAX_VALUE );
-        for ( LayoutManager layoutManager : layoutManagers )
+        for ( final LayoutManager layoutManager : layoutManagers )
         {
             if ( layoutManager instanceof LayoutManager2 )
             {
@@ -204,9 +206,9 @@ public class MultiLayout extends AbstractLayoutManager
      * {@inheritDoc}
      */
     @Override
-    public void invalidateLayout ( Container parent )
+    public void invalidateLayout ( final Container parent )
     {
-        for ( LayoutManager layoutManager : layoutManagers )
+        for ( final LayoutManager layoutManager : layoutManagers )
         {
             if ( layoutManager instanceof LayoutManager2 )
             {
@@ -219,9 +221,9 @@ public class MultiLayout extends AbstractLayoutManager
      * {@inheritDoc}
      */
     @Override
-    public void layoutContainer ( Container parent )
+    public void layoutContainer ( final Container parent )
     {
-        for ( LayoutManager layoutManager : layoutManagers )
+        for ( final LayoutManager layoutManager : layoutManagers )
         {
             layoutManager.layoutContainer ( parent );
         }

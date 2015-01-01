@@ -21,6 +21,7 @@ import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
 import com.alee.laf.progressbar.WebProgressBar;
 import com.alee.laf.rootpane.WebDialog;
+import com.alee.managers.language.LanguageManager;
 import com.alee.utils.SwingUtils;
 
 import javax.swing.*;
@@ -38,10 +39,10 @@ public class WebProgressDialog extends WebDialog
     private int preferredProgressWidth = 0;
     private boolean shownOnce = false;
 
-    private WebPanel container;
-    private WebLabel titleText;
+    private final WebPanel container;
+    private final WebLabel titleText;
+    private final WebProgressBar progressBar;
     private Component middleComponent = null;
-    private WebProgressBar progressBar;
 
     public WebProgressDialog ( final String title )
     {
@@ -50,8 +51,17 @@ public class WebProgressDialog extends WebDialog
 
     public WebProgressDialog ( final Window owner, final String title )
     {
-        super ( owner, title );
+        super ( owner );
         setLayout ( new BorderLayout () );
+
+        if ( LanguageManager.contains ( title ) )
+        {
+            setLanguage ( title );
+        }
+        else
+        {
+            setTitle ( title );
+        }
 
         container = new WebPanel ( new BorderLayout ( 5, 5 ) );
         container.setMargin ( 10, 10, 10, 10 );
@@ -105,6 +115,18 @@ public class WebProgressDialog extends WebDialog
             public void run ()
             {
                 titleText.setText ( text );
+            }
+        } );
+    }
+
+    public void setTextKey ( final String key )
+    {
+        SwingUtils.invokeLater ( new Runnable ()
+        {
+            @Override
+            public void run ()
+            {
+                titleText.setLanguage ( key );
             }
         } );
     }

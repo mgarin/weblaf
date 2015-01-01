@@ -19,10 +19,13 @@ package com.alee.laf.list;
 
 import com.alee.global.StyleConstants;
 import com.alee.laf.WebLookAndFeel;
+import com.alee.managers.tooltip.TooltipManager;
+import com.alee.managers.tooltip.WebCustomTooltip;
 import com.alee.utils.GeometryUtils;
 import com.alee.utils.GraphicsUtils;
 import com.alee.utils.LafUtils;
 import com.alee.utils.SwingUtils;
+import com.alee.utils.swing.WebTimer;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -31,6 +34,8 @@ import javax.swing.plaf.ColorUIResource;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicListUI;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.RoundRectangle2D;
@@ -44,24 +49,32 @@ import java.awt.geom.RoundRectangle2D;
 public class WebListUI extends BasicListUI
 {
     /**
+     * todo 1. Visual shade effect on sides when scrollable
+     * todo 2. Even-odd cells highlight
+     */
+
+    /**
      * Style settings.
      */
-    private boolean decorateSelection = WebListStyle.decorateSelection;
-    private boolean highlightRolloverCell = WebListStyle.highlightRolloverCell;
-    private int selectionRound = WebListStyle.selectionRound;
-    private int selectionShadeWidth = WebListStyle.selectionShadeWidth;
-    private boolean autoScrollToSelection = WebListStyle.autoScrollToSelection;
+    protected boolean decorateSelection = WebListStyle.decorateSelection;
+    protected boolean highlightRolloverCell = WebListStyle.highlightRolloverCell;
+    protected int selectionRound = WebListStyle.selectionRound;
+    protected int selectionShadeWidth = WebListStyle.selectionShadeWidth;
+    protected boolean webColoredSelection = WebListStyle.webColoredSelection;
+    protected Color selectionBorderColor = WebListStyle.selectionBorderColor;
+    protected Color selectionBackgroundColor = WebListStyle.selectionBackgroundColor;
+    protected boolean autoScrollToSelection = WebListStyle.autoScrollToSelection;
 
     /**
      * List listeners.
      */
-    private MouseAdapter mouseoverAdapter;
-    private ListSelectionListener selectionListener;
+    protected MouseAdapter mouseoverAdapter;
+    protected ListSelectionListener selectionListener;
 
     /**
      * Runtime variables.
      */
-    private int rolloverIndex = -1;
+    protected int rolloverIndex = -1;
 
     /**
      * Returns an instance of the WebListUI for the specified component.
@@ -70,7 +83,7 @@ public class WebListUI extends BasicListUI
      * @param c component that will use UI instance
      * @return instance of the WebListUI
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebListUI ();
@@ -95,6 +108,9 @@ public class WebListUI extends BasicListUI
         // Rollover listener
         mouseoverAdapter = new MouseAdapter ()
         {
+            private WebCustomTooltip tooltip = null;
+            private WebTimer delayTimer = null;
+
             @Override
             public void mouseMoved ( final MouseEvent e )
             {
@@ -109,12 +125,6 @@ public class WebListUI extends BasicListUI
 
             private void updateMouseover ( final MouseEvent e )
             {
-                // Ignore events if rollover highlight is disabled
-                if ( !decorateSelection || !highlightRolloverCell )
-                {
-                    return;
-                }
-
                 // Determining highlighted cell index
                 int index = list.locationToIndex ( e.getPoint () );
                 final Rectangle bounds = list.getCellBounds ( index, index );
@@ -128,7 +138,7 @@ public class WebListUI extends BasicListUI
                 {
                     final int oldIndex = rolloverIndex;
                     rolloverIndex = index;
-                    repaintChange ( oldIndex, rolloverIndex );
+                    rolloverIndexChanged ( oldIndex, rolloverIndex );
                 }
             }
 
@@ -140,19 +150,75 @@ public class WebListUI extends BasicListUI
                 {
                     final int oldIndex = rolloverIndex;
                     rolloverIndex = -1;
-                    repaintChange ( oldIndex, rolloverIndex );
+                    rolloverIndexChanged ( oldIndex, rolloverIndex );
                 }
             }
 
-            private void repaintChange ( final int oldIndex, final int newIndex )
+            private void rolloverIndexChanged ( final int oldIndex, final int newIndex )
             {
-                final Rectangle oldBounds = list.getCellBounds ( oldIndex, oldIndex );
-                final Rectangle newBounds = list.getCellBounds ( newIndex, newIndex );
-                final Rectangle rect = GeometryUtils.getContainingRect ( oldBounds, newBounds );
-                if ( rect != null )
+                // Destroy old tooltip
+                if ( oldIndex != -1 )
                 {
-                    list.repaint ( rect );
+                    if ( tooltip != null )
+                    {
+                        tooltip.closeTooltip ();
+                    }
                 }
+
+                // Repaint list only if rollover index is used
+                if ( decorateSelection && highlightRolloverCell )
+                {
+                    final Rectangle oldBounds = list.getCellBounds ( oldIndex, oldIndex );
+                    final Rectangle newBounds = list.getCellBounds ( newIndex, newIndex );
+                    final Rectangle rect = GeometryUtils.getContainingRect ( oldBounds, newBounds );
+                    if ( rect != null )
+                    {
+                        list.repaint ( rect );
+                    }
+                }
+
+                // Close previously displayed tooltip
+                // Display or delay new tooltip if needed
+                if ( delayTimer != null )
+                {
+                    delayTimer.stop ();
+                }
+                if ( tooltip != null )
+                {
+                    tooltip.closeTooltip ();
+                }
+                if ( newIndex != -1 )
+                {
+                    final ListToolTipProvider provider = getToolTipProvider ();
+                    if ( provider != null )
+                    {
+                        final long delay = provider.getDelay ();
+                        if ( delay <= 0 )
+                        {
+                            showTooltip ( newIndex, provider );
+                        }
+                        else
+                        {
+                            delayTimer = WebTimer.delay ( delay, new ActionListener ()
+                            {
+                                @Override
+                                public void actionPerformed ( final ActionEvent e )
+                                {
+                                    showTooltip ( newIndex, provider );
+                                }
+                            } );
+                        }
+                    }
+                }
+            }
+
+            private void showTooltip ( final int index, final ListToolTipProvider provider )
+            {
+                final Object value = list.getModel ().getElementAt ( index );
+                final boolean selected = list.isSelectedIndex ( index );
+                tooltip = provider.getListCellToolTip ( list, value, index, selected );
+                tooltip.setRelativeToBounds ( provider.getTooltipSourceBounds ( list, value, index, selected ) );
+                TooltipManager.showOneTimeTooltip ( tooltip );
             }
         };
         list.addMouseListener ( mouseoverAdapter );
@@ -182,6 +248,16 @@ public class WebListUI extends BasicListUI
     }
 
     /**
+     * Returns custom WebLaF tooltip provider.
+     *
+     * @return custom WebLaF tooltip provider
+     */
+    protected ListToolTipProvider getToolTipProvider ()
+    {
+        return list != null && list instanceof WebList ? ( ( WebList ) list ).getToolTipProvider () : null;
+    }
+
+    /**
      * Uninstalls UI from the specified component.
      *
      * @param c component with this UI
@@ -192,7 +268,6 @@ public class WebListUI extends BasicListUI
         list.removeMouseListener ( mouseoverAdapter );
         list.removeMouseMotionListener ( mouseoverAdapter );
         list.removeListSelectionListener ( selectionListener );
-
         super.uninstallUI ( c );
     }
 
@@ -277,6 +352,70 @@ public class WebListUI extends BasicListUI
     }
 
     /**
+     * Returns whether selection should be web-colored or not.
+     * In case it is not web-colored selectionBackgroundColor value will be used as background color.
+     *
+     * @return true if selection should be web-colored, false otherwise
+     */
+    public boolean isWebColoredSelection ()
+    {
+        return webColoredSelection;
+    }
+
+    /**
+     * Sets whether selection should be web-colored or not.
+     * In case it is not web-colored selectionBackgroundColor value will be used as background color.
+     *
+     * @param webColored whether selection should be web-colored or not
+     */
+    public void setWebColoredSelection ( final boolean webColored )
+    {
+        this.webColoredSelection = webColored;
+    }
+
+    /**
+     * Returns selection border color.
+     *
+     * @return selection border color
+     */
+    public Color getSelectionBorderColor ()
+    {
+        return selectionBorderColor;
+    }
+
+    /**
+     * Sets selection border color.
+     *
+     * @param color selection border color
+     */
+    public void setSelectionBorderColor ( final Color color )
+    {
+        this.selectionBorderColor = color;
+    }
+
+    /**
+     * Returns selection background color.
+     * It is used only when webColoredSelection is set to false.
+     *
+     * @return selection background color
+     */
+    public Color getSelectionBackgroundColor ()
+    {
+        return selectionBackgroundColor;
+    }
+
+    /**
+     * Sets selection background color.
+     * It is used only when webColoredSelection is set to false.
+     *
+     * @param color selection background color
+     */
+    public void setSelectionBackgroundColor ( final Color color )
+    {
+        this.selectionBackgroundColor = color;
+    }
+
+    /**
      * Returns whether to scroll list down to selection automatically or not.
      *
      * @return true if list is being automatically scrolled to selection, false otherwise
@@ -296,28 +435,27 @@ public class WebListUI extends BasicListUI
         this.autoScrollToSelection = autoScrollToSelection;
     }
 
-    /**
-     * Paints list content.
-     *
-     * @param g graphics context
-     * @param c painted component
-     */
-    @Override
-    public void paint ( final Graphics g, final JComponent c )
-    {
-        super.paint ( g, c );
-
-        // todo Visual shade effect
-        //        Rectangle vr = c.getVisibleRect ();
-        //        if ( vr.y > 0 )
-        //        {
-        //            final int shadeWidth = 10;
-        //            float opacity = shadeWidth > vr.y ? 1f - ( float ) ( shadeWidth - vr.y ) / shadeWidth : 1f;
-        //            NinePatchIcon npi = NinePatchUtils.getShadeIcon ( shadeWidth, 0, opacity );
-        //            Dimension ps = npi.getPreferredSize ();
-        //            npi.paintIcon ( ( Graphics2D ) g, vr.x - shadeWidth, vr.y + shadeWidth - ps.height, vr.width + shadeWidth * 2, ps.height );
-        //        }
-    }
+    //    /**
+    //     * Paints list content.
+    //     *
+    //     * @param g graphics context
+    //     * @param c painted component
+    //     */
+    //    @Override
+    //    public void paint ( final Graphics g, final JComponent c )
+    //    {
+    //        super.paint ( g, c );
+    //
+    //        Rectangle vr = c.getVisibleRect ();
+    //        if ( vr.y > 0 )
+    //        {
+    //            final int shadeWidth = 10;
+    //            float opacity = shadeWidth > vr.y ? 1f - ( float ) ( shadeWidth - vr.y ) / shadeWidth : 1f;
+    //            NinePatchIcon npi = NinePatchUtils.getShadeIcon ( shadeWidth, 0, opacity );
+    //            Dimension ps = npi.getPreferredSize ();
+    //            npi.paintIcon ( ( Graphics2D ) g, vr.x - shadeWidth, vr.y + shadeWidth - ps.height, vr.width + shadeWidth * 2, ps.height );
+    //        }
+    //    }
 
     /**
      * Paint one List cell: compute the relevant state, get the "rubber stamp" cell renderer component, and then use the CellRendererPane
@@ -336,7 +474,6 @@ public class WebListUI extends BasicListUI
     protected void paintCell ( final Graphics g, final int index, final Rectangle rowBounds, final ListCellRenderer cellRenderer,
                                final ListModel dataModel, final ListSelectionModel selModel, final int leadIndex )
     {
-        // todo Even-odd cells highlight
         //        if ( list.getLayoutOrientation () == WebList.VERTICAL && ( evenLineColor != null || oddLineColor != null ) )
         //        {
         //            boolean even = index % 2 == 0;
@@ -360,11 +497,16 @@ public class WebListUI extends BasicListUI
             final Graphics2D g2d = ( Graphics2D ) g;
             final Composite oc = GraphicsUtils.setupAlphaComposite ( g2d, 0.35f, !isSelected );
 
+            final Rectangle rect = new Rectangle ( rowBounds );
+            rect.x += selectionShadeWidth;
+            rect.y += selectionShadeWidth;
+            rect.width -= selectionShadeWidth * 2 + ( selectionBorderColor != null ? 1 : 0 );
+            rect.height -= selectionShadeWidth * 2 + ( selectionBorderColor != null ? 1 : 0 );
+
             LafUtils.drawCustomWebBorder ( g2d, list,
-                    new RoundRectangle2D.Double ( rowBounds.x + selectionShadeWidth, rowBounds.y + selectionShadeWidth,
-                            rowBounds.width - selectionShadeWidth * 2 - 1, rowBounds.height - selectionShadeWidth * 2 - 1,
-                            selectionRound * 2, selectionRound * 2 ), StyleConstants.shadeColor, selectionShadeWidth, true, true
-            );
+                    new RoundRectangle2D.Double ( rect.x, rect.y, rect.width, rect.height, selectionRound * 2, selectionRound * 2 ),
+                    StyleConstants.shadeColor, selectionShadeWidth, true, webColoredSelection, selectionBorderColor, selectionBorderColor,
+                    selectionBackgroundColor );
 
             GraphicsUtils.restoreComposite ( g2d, oc, !isSelected );
         }

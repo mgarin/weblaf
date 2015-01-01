@@ -50,6 +50,23 @@ public final class WebListStyle
     public static int selectionShadeWidth = StyleConstants.shadeWidth;
 
     /**
+     * Whether selection should be web-colored or not.
+     * In case it is not web-colored selectionBackgroundColor value will be used as background color.
+     */
+    public static boolean webColoredSelection = true;
+
+    /**
+     * Selection border color.
+     */
+    public static Color selectionBorderColor = Color.GRAY;
+
+    /**
+     * Selection background color.
+     * It is used only when webColoredSelection is set to false.
+     */
+    public static Color selectionBackgroundColor = StyleConstants.bottomBgColor;
+
+    /**
      * Whether should scroll list down to selection automatically or not.
      */
     public static boolean autoScrollToSelection = true;

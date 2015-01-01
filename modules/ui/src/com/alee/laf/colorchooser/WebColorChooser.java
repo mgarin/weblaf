@@ -18,6 +18,7 @@
 package com.alee.laf.colorchooser;
 
 import com.alee.laf.WebLookAndFeel;
+import com.alee.managers.log.Log;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.swing.DialogOptions;
 
@@ -36,12 +37,12 @@ public class WebColorChooser extends JColorChooser implements DialogOptions
         super ();
     }
 
-    public WebColorChooser ( Color initialColor )
+    public WebColorChooser ( final Color initialColor )
     {
         super ( initialColor );
     }
 
-    public WebColorChooser ( ColorSelectionModel model )
+    public WebColorChooser ( final ColorSelectionModel model )
     {
         super ( model );
     }
@@ -51,7 +52,7 @@ public class WebColorChooser extends JColorChooser implements DialogOptions
         return getWebUI ().isShowButtonsPanel ();
     }
 
-    public void setShowButtonsPanel ( boolean showButtonsPanel )
+    public void setShowButtonsPanel ( final boolean showButtonsPanel )
     {
         getWebUI ().setShowButtonsPanel ( showButtonsPanel );
     }
@@ -61,7 +62,7 @@ public class WebColorChooser extends JColorChooser implements DialogOptions
         return getWebUI ().isWebOnlyColors ();
     }
 
-    public void setWebOnlyColors ( boolean webOnlyColors )
+    public void setWebOnlyColors ( final boolean webOnlyColors )
     {
         getWebUI ().setWebOnlyColors ( webOnlyColors );
     }
@@ -71,7 +72,7 @@ public class WebColorChooser extends JColorChooser implements DialogOptions
         return getWebUI ().getOldColor ();
     }
 
-    public void setOldColor ( Color oldColor )
+    public void setOldColor ( final Color oldColor )
     {
         getWebUI ().setOldColor ( oldColor );
     }
@@ -81,7 +82,7 @@ public class WebColorChooser extends JColorChooser implements DialogOptions
         getWebUI ().resetResult ();
     }
 
-    public void setResult ( int result )
+    public void setResult ( final int result )
     {
         getWebUI ().setResult ( result );
     }
@@ -91,12 +92,12 @@ public class WebColorChooser extends JColorChooser implements DialogOptions
         return getWebUI ().getResult ();
     }
 
-    public void addColorChooserListener ( ColorChooserListener colorChooserListener )
+    public void addColorChooserListener ( final ColorChooserListener colorChooserListener )
     {
         getWebUI ().addColorChooserListener ( colorChooserListener );
     }
 
-    public void removeColorChooserListener ( ColorChooserListener colorChooserListener )
+    public void removeColorChooserListener ( final ColorChooserListener colorChooserListener )
     {
         getWebUI ().removeColorChooserListener ( colorChooserListener );
     }
@@ -115,9 +116,9 @@ public class WebColorChooser extends JColorChooser implements DialogOptions
             {
                 setUI ( ( WebColorChooserUI ) ReflectUtils.createInstance ( WebLookAndFeel.colorChooserUI ) );
             }
-            catch ( Throwable e )
+            catch ( final Throwable e )
             {
-                e.printStackTrace ();
+                Log.error ( this, e );
                 setUI ( new WebColorChooserUI () );
             }
         }
@@ -127,24 +128,24 @@ public class WebColorChooser extends JColorChooser implements DialogOptions
         }
     }
 
-    public static Color showDialog ( Component parent )
+    public static Color showDialog ( final Component parent )
     {
         return showDialog ( parent, null, null );
     }
 
-    public static Color showDialog ( Component parent, String title )
+    public static Color showDialog ( final Component parent, final String title )
     {
         return showDialog ( parent, title, null );
     }
 
-    public static Color showDialog ( Component parent, Color color )
+    public static Color showDialog ( final Component parent, final Color color )
     {
         return showDialog ( parent, null, color );
     }
 
-    public static Color showDialog ( Component parent, String title, Color color )
+    public static Color showDialog ( final Component parent, final String title, final Color color )
     {
-        WebColorChooserDialog wcc = new WebColorChooserDialog ( parent, title );
+        final WebColorChooserDialog wcc = new WebColorChooserDialog ( parent, title );
         if ( color != null )
         {
             wcc.setColor ( color );

@@ -47,6 +47,7 @@ import com.alee.managers.focus.FocusManager;
 import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.hotkey.HotkeyManager;
 import com.alee.managers.hotkey.HotkeyRunnable;
+import com.alee.managers.log.Log;
 import com.alee.managers.popup.PopupAdapter;
 import com.alee.managers.popup.PopupWay;
 import com.alee.managers.popup.WebButtonPopup;
@@ -759,7 +760,7 @@ public class SourceViewer extends WebPanel
                         }
                         catch ( final Throwable ex )
                         {
-                            ex.printStackTrace ();
+                            Log.error ( this, ex );
                         }
                     }
                 } );
@@ -986,7 +987,7 @@ public class SourceViewer extends WebPanel
             }
             catch ( final IOException e )
             {
-                e.printStackTrace ();
+                Log.error ( this, e );
                 themesCache.put ( themeName, null );
             }
         }
@@ -1025,7 +1026,7 @@ public class SourceViewer extends WebPanel
         }
         catch ( final IOException e )
         {
-            e.printStackTrace ();
+            Log.error ( this, e );
             return null;
         }
     }

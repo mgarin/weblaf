@@ -23,17 +23,22 @@ import com.alee.managers.focus.FocusManager;
 import com.alee.managers.language.LanguageContainerMethods;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.language.LanguageMethods;
+import com.alee.managers.language.LanguageUtils;
 import com.alee.managers.language.updaters.LanguageUpdater;
 import com.alee.managers.settings.DefaultValue;
 import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.settings.SettingsMethods;
 import com.alee.managers.settings.SettingsProcessor;
+import com.alee.utils.EventUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.WindowUtils;
-import com.alee.utils.swing.WindowMethods;
+import com.alee.utils.swing.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.util.List;
 
 /**
  * This JDialog extenstion class provides some additional methods and options to manipulate dialog behavior.
@@ -41,7 +46,8 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public class WebDialog extends JDialog implements LanguageMethods, LanguageContainerMethods, SettingsMethods, WindowMethods<WebDialog>
+public class WebDialog extends JDialog
+        implements WindowEventMethods, LanguageMethods, LanguageContainerMethods, SettingsMethods, WindowMethods<WebDialog>
 {
     /**
      * Whether should close dialog on focus loss or not.
@@ -73,19 +79,22 @@ public class WebDialog extends JDialog implements LanguageMethods, LanguageConta
 
     public WebDialog ( final Frame owner, final String title )
     {
-        super ( owner, title );
+        super ( owner, LanguageUtils.getInitialText ( title ) );
+        LanguageUtils.registerInitialLanguage ( this, title );
         initialize ();
     }
 
     public WebDialog ( final Frame owner, final String title, final boolean modal )
     {
-        super ( owner, title, modal );
+        super ( owner, LanguageUtils.getInitialText ( title ), modal );
+        LanguageUtils.registerInitialLanguage ( this, title );
         initialize ();
     }
 
     public WebDialog ( final Frame owner, final String title, final boolean modal, final GraphicsConfiguration gc )
     {
-        super ( owner, title, modal, gc );
+        super ( owner, LanguageUtils.getInitialText ( title ), modal, gc );
+        LanguageUtils.registerInitialLanguage ( this, title );
         initialize ();
     }
 
@@ -103,19 +112,22 @@ public class WebDialog extends JDialog implements LanguageMethods, LanguageConta
 
     public WebDialog ( final Dialog owner, final String title )
     {
-        super ( owner, title );
+        super ( owner, LanguageUtils.getInitialText ( title ) );
+        LanguageUtils.registerInitialLanguage ( this, title );
         initialize ();
     }
 
     public WebDialog ( final Dialog owner, final String title, final boolean modal )
     {
-        super ( owner, title, modal );
+        super ( owner, LanguageUtils.getInitialText ( title ), modal );
+        LanguageUtils.registerInitialLanguage ( this, title );
         initialize ();
     }
 
     public WebDialog ( final Dialog owner, final String title, final boolean modal, final GraphicsConfiguration gc )
     {
-        super ( owner, title, modal, gc );
+        super ( owner, LanguageUtils.getInitialText ( title ), modal, gc );
+        LanguageUtils.registerInitialLanguage ( this, title );
         initialize ();
     }
 
@@ -127,7 +139,8 @@ public class WebDialog extends JDialog implements LanguageMethods, LanguageConta
 
     public WebDialog ( final Component owner, final String title )
     {
-        super ( SwingUtils.getWindowAncestor ( owner ), title );
+        super ( SwingUtils.getWindowAncestor ( owner ), LanguageUtils.getInitialText ( title ) );
+        LanguageUtils.registerInitialLanguage ( this, title );
         initialize ();
     }
 
@@ -145,19 +158,22 @@ public class WebDialog extends JDialog implements LanguageMethods, LanguageConta
 
     public WebDialog ( final Window owner, final String title )
     {
-        super ( owner, title );
+        super ( owner, LanguageUtils.getInitialText ( title ) );
+        LanguageUtils.registerInitialLanguage ( this, title );
         initialize ();
     }
 
     public WebDialog ( final Window owner, final String title, final ModalityType modalityType )
     {
-        super ( owner, title, modalityType );
+        super ( owner, LanguageUtils.getInitialText ( title ), modalityType );
+        LanguageUtils.registerInitialLanguage ( this, title );
         initialize ();
     }
 
     public WebDialog ( final Window owner, final String title, final ModalityType modalityType, final GraphicsConfiguration gc )
     {
-        super ( owner, title, modalityType, gc );
+        super ( owner, LanguageUtils.getInitialText ( title ), modalityType, gc );
+        LanguageUtils.registerInitialLanguage ( this, title );
         initialize ();
     }
 
@@ -167,6 +183,7 @@ public class WebDialog extends JDialog implements LanguageMethods, LanguageConta
     protected void initialize ()
     {
         SwingUtils.setOrientation ( this );
+        setDefaultCloseOperation ( DISPOSE_ON_CLOSE );
 
         // Adding focus tracker for this dialog
         // It is stored into a separate field to avoid its disposal from memory
@@ -175,15 +192,15 @@ public class WebDialog extends JDialog implements LanguageMethods, LanguageConta
             @Override
             public boolean isTrackingEnabled ()
             {
-                return closeOnFocusLoss;
+                return isShowing () && closeOnFocusLoss;
             }
 
             @Override
             public void focusChanged ( final boolean focused )
             {
-                if ( closeOnFocusLoss && WebDialog.this.isShowing () && !focused )
+                if ( closeOnFocusLoss && isShowing () && !focused )
                 {
-                    setVisible ( false );
+                    processWindowEvent ( new WindowEvent ( WebDialog.this, WindowEvent.WINDOW_CLOSING ) );
                 }
             }
         };
@@ -208,6 +225,36 @@ public class WebDialog extends JDialog implements LanguageMethods, LanguageConta
     public void setCloseOnFocusLoss ( final boolean closeOnFocusLoss )
     {
         this.closeOnFocusLoss = closeOnFocusLoss;
+    }
+
+    /**
+     * Returns focusable childs that don't force dialog to close even if it set to close on focus loss.
+     *
+     * @return focusable childs that don't force dialog to close even if it set to close on focus loss
+     */
+    public List<Component> getFocusableChilds ()
+    {
+        return focusTracker.getCustomChildren ();
+    }
+
+    /**
+     * Adds focusable child that won't force dialog to close even if it set to close on focus loss.
+     *
+     * @param child focusable child that won't force dialog to close even if it set to close on focus loss
+     */
+    public void addFocusableChild ( final Component child )
+    {
+        focusTracker.addCustomChild ( child );
+    }
+
+    /**
+     * Removes focusable child that doesn't force dialog to close even if it set to close on focus loss.
+     *
+     * @param child focusable child that doesn't force dialog to close even if it set to close on focus loss
+     */
+    public void removeFocusableChild ( final Component child )
+    {
+        focusTracker.removeCustomChild ( child );
     }
 
     public Color getTopBg ()
@@ -413,6 +460,24 @@ public class WebDialog extends JDialog implements LanguageMethods, LanguageConta
     public WebRootPaneUI getWebRootPaneUI ()
     {
         return ( WebRootPaneUI ) super.getRootPane ().getUI ();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WindowAdapter onClosing ( final WindowEventRunnable runnable )
+    {
+        return EventUtils.onClosing ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WindowCloseAdapter onClose ( final ComponentEventRunnable runnable )
+    {
+        return EventUtils.onClose ( this, runnable );
     }
 
     /**

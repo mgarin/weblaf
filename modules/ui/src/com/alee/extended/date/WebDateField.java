@@ -29,6 +29,7 @@ import com.alee.utils.CompareUtils;
 import com.alee.utils.SizeUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.laf.ShapeProvider;
+import com.alee.utils.swing.Customizer;
 import com.alee.utils.swing.SizeMethods;
 
 import javax.swing.*;
@@ -67,6 +68,11 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
     protected List<DateSelectionListener> dateSelectionListeners = new ArrayList<DateSelectionListener> ( 1 );
 
     /**
+     * Whether or not selection events must be fired whenever selection occured even if same date is selected.
+     */
+    protected boolean fireSelectionWithoutChanges = true;
+
+    /**
      * Date display format.
      */
     protected SimpleDateFormat dateFormat = new SimpleDateFormat ( "dd.MM.yyyy" );
@@ -75,6 +81,11 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
      * Currently selected date.
      */
     protected Date date = null;
+
+    /**
+     * Calendar component customizer.
+     */
+    protected Customizer<WebCalendar> calendarCustomizer = null;
 
     /**
      * UI components.
@@ -155,7 +166,7 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
             @Override
             public void actionPerformed ( final ActionEvent e )
             {
-                setDateFromField ();
+                setDateFromField ( true );
             }
         } );
         addMouseListener ( new MouseAdapter ()
@@ -176,7 +187,7 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
             {
                 if ( !SwingUtils.isEqualOrChild ( popup, e.getOppositeComponent () ) )
                 {
-                    setDateFromField ();
+                    setDateFromField ( true );
                 }
             }
         } );
@@ -237,6 +248,16 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
     }
 
     /**
+     * Returns popup button.
+     *
+     * @return popup button
+     */
+    public WebButton getPopupButton ()
+    {
+        return popupButton;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -254,6 +275,30 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
     {
         super.setDrawBorder ( drawBorder );
         updateMargin ();
+    }
+
+    /**
+     * Returns calendar component customizer.
+     *
+     * @return calendar component customizer
+     */
+    public Customizer<WebCalendar> getCalendarCustomizer ()
+    {
+        return calendarCustomizer;
+    }
+
+    /**
+     * Sets calendar component customizer.
+     *
+     * @param customizer new calendar component customizer
+     */
+    public void setCalendarCustomizer ( final Customizer<WebCalendar> customizer )
+    {
+        this.calendarCustomizer = customizer;
+        if ( customizer != null && calendar != null )
+        {
+            customizer.customize ( calendar );
+        }
     }
 
     /**
@@ -278,7 +323,7 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
         }
 
         // Updating date from field
-        setDateFromField ();
+        setDateFromField ( false );
 
         // Create popup if it doesn't exist
         if ( popup == null || calendar == null )
@@ -290,6 +335,12 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
             calendar.setPaintFocus ( false );
             calendar.setRound ( StyleConstants.smallRound );
             calendar.setShadeWidth ( 0 );
+
+            // Customizing calendar
+            if ( calendarCustomizer != null )
+            {
+                calendarCustomizer.customize ( calendar );
+            }
 
             // Popup window
             popup = new WebWindow ( ancestor );
@@ -321,7 +372,7 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
                 public void dateSelected ( final Date date )
                 {
                     hideCalendarPopup ();
-                    setDateFromCalendar ();
+                    setDateFromCalendar ( true );
                     requestFocusInWindow ();
                 }
             };
@@ -341,7 +392,7 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
         calendar.transferFocus ();
     }
 
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     protected void customizePopup ( final WebWindow popup )
     {
         // You can customize date field popup window here
@@ -459,23 +510,32 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
      */
     public void setDate ( final Date date )
     {
-        setDateImpl ( date, UpdateSource.other );
+        setDateImpl ( date, UpdateSource.other, true );
+    }
+
+    /**
+     * Forces date to be updated with valid value.
+     * In case field contains valid date in its text it will be used, otherwise old date will be applied.
+     */
+    public void updateDateFromField ( final boolean fireEvent )
+    {
+        setDateFromField ( fireEvent );
     }
 
     /**
      * Updates date using the value from field.
      */
-    protected void setDateFromField ()
+    protected void setDateFromField ( final boolean fireEvent )
     {
-        setDateImpl ( getDateFromField (), UpdateSource.field );
+        setDateImpl ( getDateFromField (), UpdateSource.field, fireEvent );
     }
 
     /**
      * Updates date using the value from calendar.
      */
-    protected void setDateFromCalendar ()
+    protected void setDateFromCalendar ( final boolean fireEvent )
     {
-        setDateImpl ( calendar.getDate (), UpdateSource.calendar );
+        setDateImpl ( calendar.getDate (), UpdateSource.calendar, fireEvent );
     }
 
     /**
@@ -483,7 +543,7 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
      *
      * @param date new selected date
      */
-    protected void setDateImpl ( final Date date, final UpdateSource source )
+    protected void setDateImpl ( final Date date, final UpdateSource source, final boolean fireEvent )
     {
         final boolean changed = !CompareUtils.equals ( this.date, date );
         this.date = date;
@@ -492,7 +552,7 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
         // Text still might change due to formatting pattern
         updateFieldFromDate ();
 
-        if ( changed )
+        if ( fireSelectionWithoutChanges || changed )
         {
             // Updating calendar date
             if ( source != UpdateSource.calendar && calendar != null )
@@ -501,7 +561,10 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
             }
 
             // Informing about date selection changes
-            fireDateSelected ( date );
+            if ( fireEvent )
+            {
+                fireDateSelected ( date );
+            }
         }
     }
 
@@ -511,6 +574,7 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
     protected void updateFieldFromDate ()
     {
         setText ( getTextDate () );
+        setCaretPosition ( 0 );
     }
 
     /**
@@ -554,6 +618,26 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
     {
         super.setEnabled ( enabled );
         popupButton.setEnabled ( enabled );
+    }
+
+    /**
+     * Returns whether or not selection events must be fired whenever selection occured even if same date is selected.
+     *
+     * @return true if selection events must be fired whenever selection occured even if same date is selected, false otherwise
+     */
+    public boolean isFireSelectionWithoutChanges ()
+    {
+        return fireSelectionWithoutChanges;
+    }
+
+    /**
+     * Sets whether or not selection events must be fired whenever selection occured even if same date is selected.
+     *
+     * @param fire whether or not selection events must be fired whenever selection occured even if same date is selected
+     */
+    public void setFireSelectionWithoutChanges ( final boolean fire )
+    {
+        this.fireSelectionWithoutChanges = fire;
     }
 
     /**
@@ -665,9 +749,54 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
      * {@inheritDoc}
      */
     @Override
+    public int getMaximumWidth ()
+    {
+        return SizeUtils.getMaximumWidth ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebDateField setMaximumWidth ( final int maximumWidth )
+    {
+        return SizeUtils.setMaximumWidth ( this, maximumWidth );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int getMaximumHeight ()
+    {
+        return SizeUtils.getMaximumHeight ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebDateField setMaximumHeight ( final int maximumHeight )
+    {
+        return SizeUtils.setMaximumHeight ( this, maximumHeight );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Dimension getPreferredSize ()
     {
         return SizeUtils.getPreferredSize ( this, super.getPreferredSize () );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebDateField setPreferredSize ( final int width, final int height )
+    {
+        return SizeUtils.setPreferredSize ( this, width, height );
     }
 
     /**

@@ -22,35 +22,66 @@ import com.alee.laf.label.WebLabel;
 import java.awt.*;
 
 /**
- * User: mgarin Date: 15.01.13 Time: 14:36
+ * This class represents single step within WebStepProgress component.
+ *
+ * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebStepProgress">How to use WebStepProgress</a>
+ * @see com.alee.extended.progress.WebStepProgress
  */
 
 public class StepData
 {
+    /**
+     * Step label component.
+     * This component is displayed near step visual representation similar to JSlider.
+     */
     private Component label;
 
+    /**
+     * Constructs new step with empty label component.
+     */
     public StepData ()
     {
         this ( ( Component ) null );
     }
 
-    public StepData ( String label )
+    /**
+     * Constructs new step with WebLabel component using the specified text.
+     *
+     * @param label label text
+     */
+    public StepData ( final String label )
     {
         this ( new WebLabel ( label ) );
     }
 
-    public StepData ( Component label )
+    /**
+     * Constructs new step with the specified label component.
+     *
+     * @param label label component
+     */
+    public StepData ( final Component label )
     {
         super ();
         setLabel ( label );
     }
 
+    /**
+     * Returns label component.
+     *
+     * @return label component
+     */
     public Component getLabel ()
     {
         return label;
     }
 
-    public void setLabel ( Component label )
+    /**
+     * Sets label component.
+     *
+     * @param label new label component
+     */
+    public void setLabel ( final Component label )
     {
         this.label = label;
     }

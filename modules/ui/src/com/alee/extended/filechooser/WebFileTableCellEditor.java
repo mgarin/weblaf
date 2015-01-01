@@ -39,10 +39,13 @@ public class WebFileTableCellEditor extends WebDefaultCellEditor<WebTextField>
     {
         super ();
         clickCountToStart = 3;
+
         editorComponent = new WebTextField ( false );
         editorComponent.setMargin ( 2 );
         editorComponent.setFieldMargin ( 0, 4, 0, 0 );
+
         delegate = new FileNameEditorDelegate ();
+        editorComponent.addActionListener ( delegate );
     }
 
     /**
@@ -54,7 +57,7 @@ public class WebFileTableCellEditor extends WebDefaultCellEditor<WebTextField>
          * {@inheritDoc}
          */
         @Override
-        public void setValue ( File file )
+        public void setValue ( final File file )
         {
             editorComponent.setLeadingComponent ( new WebImage ( FileUtils.getFileIcon ( file ) ) );
             FileUtils.displayFileName ( editorComponent, file );

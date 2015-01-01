@@ -40,6 +40,15 @@ public abstract class DocumentAdapter<T extends DocumentData> implements Documen
      * {@inheritDoc}
      */
     @Override
+    public void selected ( final T document, final PaneData<T> pane, final int index )
+    {
+        // Do nothing by default
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public boolean closing ( final T document, final PaneData<T> pane, final int index )
     {
         // Return true by default

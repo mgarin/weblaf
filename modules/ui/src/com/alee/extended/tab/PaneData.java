@@ -17,10 +17,7 @@
 
 package com.alee.extended.tab;
 
-import com.alee.laf.button.WebButton;
-import com.alee.laf.label.WebLabel;
 import com.alee.laf.menu.WebPopupMenu;
-import com.alee.laf.panel.WebPanel;
 import com.alee.laf.splitpane.WebSplitPane;
 import com.alee.laf.tabbedpane.TabbedPaneStyle;
 import com.alee.laf.tabbedpane.WebTabbedPane;
@@ -29,13 +26,14 @@ import com.alee.managers.focus.FocusManager;
 import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.hotkey.HotkeyManager;
 import com.alee.managers.hotkey.HotkeyRunnable;
-import com.alee.managers.language.LM;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.Customizer;
 import com.alee.utils.swing.menu.PopupMenuGenerator;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
@@ -53,10 +51,10 @@ import java.util.List;
 public final class PaneData<T extends DocumentData> implements StructureData<T>, SwingConstants
 {
     /**
-     * Close icons.
+     * WebDocumentPane this PaneData belongs to.
+     * Referenced to properly act when WebDocumentPane is required to retrieve customizers or perform any operation.
      */
-    private static final ImageIcon closeTabIcon = new ImageIcon ( PaneData.class.getResource ( "icons/close.png" ) );
-    private static final ImageIcon closeTabRolloverIcon = new ImageIcon ( PaneData.class.getResource ( "icons/close-rollover.png" ) );
+    protected WebDocumentPane<T> documentPane;
 
     /**
      * Actual tabbed pane component.
@@ -82,9 +80,13 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
     {
         super ();
 
+        // Parent document pane reference
+        this.documentPane = documentPane;
+
         // Creating tabbed pane
         tabbedPane = new WebTabbedPane ( TabbedPaneStyle.attached );
         tabbedPane.putClientProperty ( WebDocumentPane.DATA_KEY, this );
+        //        tabbedPane.setMinimumSize ( new Dimension ( 0, 0 ) );
 
         // Customizing tabbed pane
         updateTabbedPaneCustomizer ( documentPane );
@@ -101,6 +103,16 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
 
         // Tab drag
         DocumentDragHandler.install ( this );
+
+        // Activating document pane on
+        tabbedPane.addChangeListener ( new ChangeListener ()
+        {
+            @Override
+            public void stateChanged ( final ChangeEvent e )
+            {
+                checkSelection ();
+            }
+        } );
 
         // Tab menu
         tabbedPane.addMouseListener ( new MouseAdapter ()
@@ -142,8 +154,11 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
                     // Variables
                     final T document = get ( index );
                     final boolean csb = documentPane.isCloseable () && document.isCloseable ();
+                    final boolean ocsb = documentPane.isCloseable () && data.size () > 1;
                     final boolean spb = data.size () > 1 && documentPane.isSplitEnabled ();
                     final boolean spl = tabbedPane.getParent () instanceof WebSplitPane;
+                    final boolean hor =
+                            spl && ( ( WebSplitPane ) tabbedPane.getParent () ).getOrientation () == WebSplitPane.HORIZONTAL_SPLIT;
 
                     // Creating popup menu
                     final PopupMenuGenerator pmg = new PopupMenuGenerator ( "document-pane-menu" );
@@ -155,6 +170,14 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
                         public void actionPerformed ( final ActionEvent e )
                         {
                             close ( get ( index ) );
+                        }
+                    } );
+                    pmg.addItem ( "closeOthers", "closeOthers", ocsb, new ActionListener ()
+                    {
+                        @Override
+                        public void actionPerformed ( final ActionEvent e )
+                        {
+                            closeOthers ( get ( index ) );
                         }
                     } );
                     pmg.addSeparator ();
@@ -199,7 +222,15 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
                             rotate ();
                         }
                     } );
-                    pmg.addItem ( "unsplit", "unsplit", spl, new ActionListener ()
+                    pmg.addItem ( hor ? "swapHor" : "swapVer", "swap", spl, new ActionListener ()
+                    {
+                        @Override
+                        public void actionPerformed ( final ActionEvent e )
+                        {
+                            swap ();
+                        }
+                    } );
+                    pmg.addItem ( hor ? "unsplitHor" : "unsplitVer", "unsplit", spl, new ActionListener ()
                     {
                         @Override
                         public void actionPerformed ( final ActionEvent e )
@@ -217,7 +248,7 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
                     } );
 
                     // Displaying popup menu
-                    final WebPopupMenu menu = pmg.getPopupMenu ();
+                    final WebPopupMenu menu = pmg.getMenu ();
                     final Dimension mps = menu.getPreferredSize ();
                     final Rectangle bounds = tabbedPane.getBoundsAt ( index );
                     menu.show ( tabbedPane, bounds.x + bounds.width / 2 - mps.width / 2,
@@ -236,9 +267,22 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
                 {
                     activate ();
                 }
+                checkSelection ();
             }
         };
         FocusManager.addFocusTracker ( tabbedPane, focusTracker );
+    }
+
+    /**
+     * Checks document pane selection.
+     */
+    public void checkSelection ()
+    {
+        final WebDocumentPane documentPane = getDocumentPane ();
+        if ( documentPane != null )
+        {
+            documentPane.checkSelection ();
+        }
     }
 
     /**
@@ -280,7 +324,19 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
      */
     public WebDocumentPane getDocumentPane ()
     {
-        return SwingUtils.getFirstParent ( tabbedPane, WebDocumentPane.class );
+        return documentPane;
+    }
+
+    /**
+     * Sets parent WebDocumentPane reference.
+     *
+     * @param documentPane parent WebDocumentPane reference
+     */
+    public void setDocumentPane ( final WebDocumentPane<T> documentPane )
+    {
+        this.documentPane = documentPane;
+        updateTabbedPaneCustomizer ( documentPane );
+        updateTabTitleComponents ();
     }
 
     /**
@@ -301,6 +357,21 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
     public List<T> getData ()
     {
         return data;
+    }
+
+    /**
+     * Returns pane document IDs.
+     *
+     * @return pane document IDs
+     */
+    public List<String> getDocumentIds ()
+    {
+        final List<String> ids = new ArrayList<String> ( data.size () );
+        for ( final T document : data )
+        {
+            ids.add ( document.getId () );
+        }
+        return ids;
     }
 
     /**
@@ -365,6 +436,9 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
         tabbedPane.insertTab ( "", document.getIcon (), document.getComponent (), null, i );
         tabbedPane.setBackgroundAt ( i, document.getBackground () );
         tabbedPane.setTabComponentAt ( i, createTabComponent ( document ) );
+
+        // Listening to document data changes
+        document.addListener ( new PaneDataAdapter<T> ( this ) );
     }
 
     /**
@@ -375,47 +449,48 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
      */
     protected JComponent createTabComponent ( final T document )
     {
-        final WebPanel tabPanel = new WebPanel ( new BorderLayout ( 2, 0 ) );
-        tabPanel.setOpaque ( false );
+        return getDocumentPane ().getTabTitleComponentProvider ().createTabTitleComponent ( this, document );
+    }
 
-        // Creating title component
-        final String title = document.getTitle ();
-        if ( title != null )
+    /**
+     * Updates all tab title components.
+     */
+    public void updateTabTitleComponents ()
+    {
+        for ( final T document : getData () )
         {
-            if ( LM.contains ( title ) )
-            {
-                // Tab with translated title and icon
-                tabPanel.add ( WebLabel.createTranslatedLabel ( document.getIcon (), title ), BorderLayout.CENTER );
-            }
-            else
-            {
-                // Tab with simple title and icon
-                tabPanel.add ( new WebLabel ( title, document.getIcon () ), BorderLayout.CENTER );
-            }
+            updateTabTitleComponent ( document );
         }
-        else
-        {
-            // Tab with icon only
-            tabPanel.add ( new WebLabel ( document.getIcon () ), BorderLayout.CENTER );
-        }
+    }
 
-        if ( getDocumentPane ().isCloseable () && document.isCloseable () )
-        {
-            final WebButton closeButton = new WebButton ( closeTabIcon, closeTabRolloverIcon );
-            closeButton.setUndecorated ( true );
-            closeButton.setFocusable ( false );
-            closeButton.addActionListener ( new ActionListener ()
-            {
-                @Override
-                public void actionPerformed ( final ActionEvent e )
-                {
-                    close ( document );
-                }
-            } );
-            tabPanel.add ( closeButton, BorderLayout.LINE_END );
-        }
+    /**
+     * Updates tab title component for the specified document.
+     *
+     * @param document document to update tab title component for
+     */
+    public void updateTabTitleComponent ( final T document )
+    {
+        getTabbedPane ().setTabComponentAt ( indexOf ( document ), createTabComponent ( document ) );
+    }
 
-        return tabPanel;
+    /**
+     * Updates tab background for the specified document.
+     *
+     * @param document document to update tab background for
+     */
+    public void updateTabBackground ( final T document )
+    {
+        getTabbedPane ().setBackgroundAt ( indexOf ( document ), document.getBackground () );
+    }
+
+    /**
+     * Updates tab view for the specified document.
+     *
+     * @param document document to update tab view for
+     */
+    public void updateTabComponent ( final T document )
+    {
+        getTabbedPane ().setComponentAt ( indexOf ( document ), document.getComponent () );
     }
 
     /**
@@ -474,6 +549,16 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
     }
 
     /**
+     * Returns pane's selected document index.
+     *
+     * @return pane's selected document index
+     */
+    public int getSelectedIndex ()
+    {
+        return tabbedPane.getSelectedIndex ();
+    }
+
+    /**
      * Sets pane's selected document ID.
      *
      * @param id ID of the document to select
@@ -500,7 +585,40 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
      */
     public void setSelected ( final int index )
     {
-        tabbedPane.setSelectedIndex ( index );
+        if ( 0 <= index && index < tabbedPane.getTabCount () )
+        {
+            tabbedPane.setSelectedIndex ( index );
+        }
+        else if ( tabbedPane.getTabCount () > 0 )
+        {
+            tabbedPane.setSelectedIndex ( 0 );
+        }
+    }
+
+    /**
+     * Decrements selected document index inside the active pane.
+     */
+    public void selectPrevious ()
+    {
+        final int count = count ();
+        if ( count > 1 )
+        {
+            final int selected = getSelectedIndex () - 1;
+            setSelected ( selected == -1 ? count - 1 : selected );
+        }
+    }
+
+    /**
+     * Increments selected document index inside the active pane.
+     */
+    public void selectNext ()
+    {
+        final int count = count ();
+        if ( count > 1 )
+        {
+            final int selected = getSelectedIndex () + 1;
+            setSelected ( selected == count ? 0 : selected );
+        }
     }
 
     /**
@@ -557,12 +675,36 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
             final int index = indexOf ( document );
             if ( index != -1 )
             {
+                document.removeListener ( findDocumentListener ( document ) );
                 tabbedPane.remove ( index );
                 data.remove ( document );
                 return true;
             }
         }
         return false;
+    }
+
+    /**
+     * Returns document listener attached by this pane data class.
+     *
+     * @param document listened document
+     * @return document listener attached by this pane data class
+     */
+    protected DocumentDataListener<T> findDocumentListener ( final T document )
+    {
+        final List<DocumentDataListener<T>> listeners = document.getListeners ();
+        for ( final DocumentDataListener<T> listener : listeners )
+        {
+            if ( listener instanceof PaneDataAdapter )
+            {
+                final PaneData paneData = ( ( PaneDataAdapter ) listener ).getPaneData ();
+                if ( paneData == this )
+                {
+                    return listener;
+                }
+            }
+        }
+        return null;
     }
 
     /**
@@ -632,6 +774,22 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
     }
 
     /**
+     * Closes all documents except the specified one.
+     *
+     * @param document document to keep opened
+     */
+    public void closeOthers ( final T document )
+    {
+        for ( final T doc : CollectionUtils.copy ( data ) )
+        {
+            if ( doc != document && doc.isCloseable () )
+            {
+                close ( doc );
+            }
+        }
+    }
+
+    /**
      * Closes selected document.
      */
     public void closeSelected ()
@@ -653,6 +811,16 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
         {
             pane.activate ( PaneData.this );
         }
+    }
+
+    /**
+     * Returns whether this pane is active one within WebDocumentPane or not.
+     *
+     * @return true if this pane is active one within WebDocumentPane, false otherwise
+     */
+    public boolean isActive ()
+    {
+        return getDocumentPane ().getActivePane () == this;
     }
 
     /**
@@ -690,7 +858,20 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
         if ( parent instanceof WebSplitPane )
         {
             final SplitData<T> splitData = WebDocumentPane.getData ( ( WebSplitPane ) parent );
-            splitData.changeSplitOrientation ();
+            splitData.changeOrientation ();
+        }
+    }
+
+    /**
+     * Changes parent split sides if this pane is located within a split.
+     */
+    public void swap ()
+    {
+        final Container parent = tabbedPane.getParent ();
+        if ( parent instanceof WebSplitPane )
+        {
+            final SplitData<T> splitData = WebDocumentPane.getData ( ( WebSplitPane ) parent );
+            splitData.swapSides ();
         }
     }
 

@@ -18,6 +18,9 @@
 package com.alee.utils;
 
 import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * This class provides a set of utilities to work with arrays.
@@ -28,6 +31,116 @@ import java.lang.reflect.Array;
 public final class ArrayUtils
 {
     /**
+     * Returns data converted into list.
+     *
+     * @param data data
+     * @param <T>  data type
+     * @return data list
+     */
+    public static <T> List<T> asList ( final T... data )
+    {
+        final List<T> list = new ArrayList<T> ( data.length );
+        Collections.addAll ( list, data );
+        return list;
+    }
+
+    /**
+     * Returns whether array contains the specified number or not.
+     *
+     * @param number number to find
+     * @param array  array to process
+     * @return true if array contains the specified number, false otherwise
+     */
+    public static boolean contains ( final int number, final int[] array )
+    {
+        return indexOf ( number, array ) != -1;
+    }
+
+    /**
+     * Returns whether array contains the specified number or not.
+     *
+     * @param number number to find
+     * @param array  array to process
+     * @return true if array contains the specified number, false otherwise
+     */
+    public static boolean contains ( final long number, final long[] array )
+    {
+        return indexOf ( number, array ) != -1;
+    }
+
+    /**
+     * Returns whether array contains the specified number or not.
+     *
+     * @param number number to find
+     * @param array  array to process
+     * @return true if array contains the specified number, false otherwise
+     */
+    public static boolean contains ( final float number, final float[] array )
+    {
+        return indexOf ( number, array ) != -1;
+    }
+
+    /**
+     * Returns whether array contains the specified number or not.
+     *
+     * @param number number to find
+     * @param array  array to process
+     * @return true if array contains the specified number, false otherwise
+     */
+    public static boolean contains ( final double number, final double[] array )
+    {
+        return indexOf ( number, array ) != -1;
+    }
+
+    /**
+     * Returns whether array contains the specified character or not.
+     *
+     * @param number character to find
+     * @param array  array to process
+     * @return true if array contains the specified character, false otherwise
+     */
+    public static boolean contains ( final char number, final char[] array )
+    {
+        return indexOf ( number, array ) != -1;
+    }
+
+    /**
+     * Returns whether array contains the specified byte or not.
+     *
+     * @param number byte to find
+     * @param array  array to process
+     * @return true if array contains the specified byte, false otherwise
+     */
+    public static boolean contains ( final byte number, final byte[] array )
+    {
+        return indexOf ( number, array ) != -1;
+    }
+
+    /**
+     * Returns whether array contains the specified text or not.
+     *
+     * @param number text to find
+     * @param array  array to process
+     * @return true if array contains the specified text, false otherwise
+     */
+    public static boolean contains ( final String number, final String[] array )
+    {
+        return indexOf ( number, array ) != -1;
+    }
+
+    /**
+     * Returns whether array contains the specified object or not.
+     *
+     * @param object object to find
+     * @param array  array to process
+     * @return true if array contains the specified object, false otherwise
+     */
+    public static boolean contains ( final Object object, final Object[] array )
+    {
+        return indexOf ( object, array ) != -1;
+    }
+
+    /**
      * Returns index of specified int in array.
      *
      * @param number int to find
@@ -35,6 +148,25 @@ public final class ArrayUtils
      * @return index of specified int in array
      */
     public static int indexOf ( final int number, final int[] array )
+    {
+        for ( int i = 0; i < array.length; i++ )
+        {
+            if ( array[ i ] == number )
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    /**
+     * Returns index of specified long in array.
+     *
+     * @param number long to find
+     * @param array  array to process
+     * @return index of specified long in array
+     */
+    public static int indexOf ( final long number, final long[] array )
     {
         for ( int i = 0; i < array.length; i++ )
         {

@@ -119,7 +119,7 @@
 
     <!-- Assemble library core jar -->
     <target name="build.core.jar" description="Build ${library.core.jar}" depends="clean.dist.dir,compile.core,copy.core.res,copy.lic,create.artifacts.dir">
-    <jar destfile="${library.core.jar}">
+        <jar destfile="${library.core.jar}">
             <fileset dir="${dist.dir}" includes="licenses/**" />
             <fileset dir="${library.core.dist.dir}" />
             <manifest>
@@ -134,7 +134,7 @@
 
     <!-- Assemble library ui jar -->
     <target name="build.ui.jar" description="Build ${library.ui.jar}" depends="clean.dist.dir,compile.ui,copy.ui.res,copy.lic,create.artifacts.dir">
-    <jar destfile="${library.ui.jar}">
+        <jar destfile="${library.ui.jar}">
             <fileset dir="${dist.dir}" includes="licenses/**" />
             <fileset dir="${library.ui.dist.dir}" />
             <manifest>
@@ -169,7 +169,7 @@
 
     <!-- Assemble library binary -->
     <target name="build.weblaf.jar" description="Build ${library.jar}" depends="clean.dist.dir,compile.ui,copy.ui.res,copy.lic,create.artifacts.dir">
-    <jar destfile="${library.jar}">
+        <jar destfile="${library.jar}">
             <fileset dir="${dist.dir}" includes="licenses/**" />
             <fileset dir="${library.core.dist.dir}" />
             <fileset dir="${library.ui.dist.dir}" />
@@ -186,7 +186,7 @@
 
     <!-- Assemble complete library binary -->
     <target name="build.weblaf.complete.jar" description="Build ${library.complete.jar}" depends="clean.dist.dir,compile.ui,copy.ui.res,copy.lic,create.artifacts.dir">
-    <jar destfile="${library.complete.jar}">
+        <jar destfile="${library.complete.jar}">
             <zipfileset src="${lib.dir}/${rsyntaxtextarea.jar}" />
             <zipfileset src="${lib.dir}/${slf4j.api.jar}" />
             <zipfileset src="${lib.dir}/${slf4j.binding.jar}" />
@@ -210,7 +210,7 @@
 
     <!-- Assemble library demo -->
     <target name="build.weblaf.demo.jar" description="Build ${demo.jar}" depends="clean.dist.dir,compile.demo,copy.demo.res,copy.lic,create.artifacts.dir">
-    <jar destfile="${demo.jar}">
+        <jar destfile="${demo.jar}">
             <zipfileset src="${lib.dir}/${rsyntaxtextarea.jar}" />
             <zipfileset src="${lib.dir}/${slf4j.api.jar}" />
             <zipfileset src="${lib.dir}/${slf4j.binding.jar}" />
@@ -219,8 +219,11 @@
             <zipfileset src="${lib.dir}/${xstream.jar}" />
             <fileset dir="${dist.dir}" includes="licenses/**" />
             <fileset dir="${library.core.dist.dir}" />
+            <fileset dir="${library.core.src.dir}" includes="**/*.java" />
             <fileset dir="${library.ui.dist.dir}" />
+            <fileset dir="${library.ui.src.dir}" includes="**/*.java" />
             <fileset dir="${library.demo.dist.dir}" />
+            <fileset dir="${library.demo.src.dir}" includes="**/*.java" />
             <manifest>
                 <attribute name="Package-Title" value="${package}" />
                 <attribute name="Package-Vendor" value="${dev}" />
@@ -233,7 +236,7 @@
 
     <!-- Assemble nine-patch editor jar -->
     <target name="build.npe.jar" description="Build ${npe.jar}" depends="clean.dist.dir,compile.ui,copy.ui.res,copy.lic,create.artifacts.dir">
-    <jar destfile="${npe.jar}">
+        <jar destfile="${npe.jar}">
             <zipfileset src="${lib.dir}/${rsyntaxtextarea.jar}" />
             <zipfileset src="${lib.dir}/${slf4j.api.jar}" />
             <zipfileset src="${lib.dir}/${slf4j.binding.jar}" />
@@ -257,7 +260,7 @@
 
     <!-- Assemble library sources ZIP archive -->
     <target name="build.sources.zip" description="Build ${sources.zip}" depends="clean.dist.dir,create.dist.dir,create.artifacts.dir">
-    <copy todir="${dist.dir}/build">
+        <copy todir="${dist.dir}/build">
             <fileset dir="${build.dir}" />
         </copy>
         <copy todir="${dist.dir}/lib">
@@ -278,7 +281,7 @@
 
     <!-- Assemble library sources JAR -->
     <target name="build.sources.jar" description="Build ${sources.jar}" depends="clean.dist.dir,create.dist.dir,create.artifacts.dir">
-    <copy todir="${dist.dir}/licenses">
+        <copy todir="${dist.dir}/licenses">
             <fileset dir="${lic.dir}" />
         </copy>
         <copy todir="${dist.dir}">
@@ -301,7 +304,7 @@
 
     <!-- Assemble JavaDoc JAR -->
     <target name="build.javadoc.jar" description="Build ${javadoc.jar}" depends="create.artifacts.dir">
-    <javadoc destdir="${javadoc.dir}" author="true" version="true" use="true">
+        <javadoc destdir="${javadoc.dir}" author="true" version="true" use="true">
             <packageset dir="${library.core.src.dir}" defaultexcludes="yes" />
             <packageset dir="${library.ui.src.dir}" defaultexcludes="yes" />
             <packageset dir="${library.demo.src.dir}" defaultexcludes="yes" />
@@ -346,7 +349,7 @@
 
     <!-- Assemble separate and complete artifacts -->
     <target name="build.common.artifacts" description="Build common WebLaF binaries">
-    <antcall target="clean.artifacts.dir" />
+        <antcall target="clean.artifacts.dir" />
         <antcall target="build.base.impl" />
         <antcall target="build.complete.impl" />
         <antcall target="clean.dist.dir" />
@@ -354,7 +357,7 @@
 
     <!-- Assemble release artifacts -->
     <target name="build.release.artifacts" description="Build release WebLaF binaries">
-    <antcall target="clean.artifacts.dir" />
+        <antcall target="clean.artifacts.dir" />
         <antcall target="copy.lib" />
         <antcall target="build.base.impl" />
         <antcall target="build.complete.impl" />
@@ -367,22 +370,22 @@
 
     <!-- Single assembled builds -->
     <target name="build.base.artifacts" description="Build separate WebLaF binaries">
-    <antcall target="clean.artifacts.dir" />
+        <antcall target="clean.artifacts.dir" />
         <antcall target="build.base.impl" />
         <antcall target="clean.dist.dir" />
     </target>
     <target name="build.complete.artifacts" description="Build single WebLaF binaries">
-    <antcall target="clean.artifacts.dir" />
+        <antcall target="clean.artifacts.dir" />
         <antcall target="build.complete.impl" />
         <antcall target="clean.dist.dir" />
     </target>
     <target name="build.featured.artifacts" description="Build featured WebLaF binaries">
-    <antcall target="clean.artifacts.dir" />
+        <antcall target="clean.artifacts.dir" />
         <antcall target="build.featured.impl" />
         <antcall target="clean.dist.dir" />
     </target>
     <target name="build.misc.artifacts" description="Build miscellaneous WebLAF binaries">
-    <antcall target="clean.artifacts.dir" />
+        <antcall target="clean.artifacts.dir" />
         <antcall target="build.misc.impl" />
         <antcall target="clean.dist.dir" />
     </target>
@@ -410,15 +413,15 @@
     <!-- =========================== Run targets ============================ -->
 
     <target name="run.weblaf" description="Display WebLaF information dialog" depends="build.weblaf.complete.jar">
-    <java jar="${library.complete.jar}" fork="true" />
+        <java jar="${library.complete.jar}" fork="true" />
     </target>
 
     <target name="run.weblaf.demo" description="Run WebLaF demo application" depends="build.weblaf.demo.jar">
-    <java jar="${demo.jar}" fork="true" />
+        <java jar="${demo.jar}" fork="true" />
     </target>
 
     <target name="run.npe" description="Run Nine-Patch Editor" depends="build.npe.jar">
-    <java jar="${npe.jar}" fork="true" />
+        <java jar="${npe.jar}" fork="true" />
     </target>
 
 </project>

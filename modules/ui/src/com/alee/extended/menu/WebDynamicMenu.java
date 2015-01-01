@@ -17,14 +17,10 @@
 
 package com.alee.extended.menu;
 
-import com.alee.extended.image.WebImage;
-import com.alee.global.StyleConstants;
 import com.alee.laf.rootpane.WebWindow;
 import com.alee.managers.focus.GlobalFocusListener;
 import com.alee.utils.GeometryUtils;
-import com.alee.utils.GraphicsUtils;
 import com.alee.utils.swing.WebHeavyWeightPopup;
-import com.alee.utils.swing.WebTimer;
 import com.alee.utils.swing.WindowFollowAdapter;
 
 import javax.swing.*;
@@ -63,12 +59,6 @@ public class WebDynamicMenu extends WebHeavyWeightPopup
     protected double angleRange;
 
     /**
-     * Single animation step progress.
-     * Making this value bigger will speedup the animation, reduce required resources but will also make it less soft.
-     */
-    protected float stepProgress;
-
-    /**
      * Menu animation type.
      */
     protected DynamicMenuType type;
@@ -89,34 +79,9 @@ public class WebDynamicMenu extends WebHeavyWeightPopup
     protected List<WebDynamicMenuItem> items = new ArrayList<WebDynamicMenuItem> ();
 
     /**
-     * Menu display progress.
-     */
-    protected float currentProgress = 0f;
-
-    /**
-     * Actions synchronization object.
-     */
-    protected final Object sync = new Object ();
-
-    /**
-     * Animation timer.
-     */
-    protected WebTimer animator = null;
-
-    /**
      * Invoker window follow adapter.
      */
     protected WindowFollowAdapter followAdapter;
-
-    /**
-     * Whether menu is being displayed or not.
-     */
-    protected boolean displaying = false;
-
-    /**
-     * Whether menu is being hidden or not.
-     */
-    protected boolean hiding = false;
 
     /**
      * Index of menu item that caused menu to close.
@@ -135,35 +100,27 @@ public class WebDynamicMenu extends WebHeavyWeightPopup
     protected GlobalFocusListener focusListener;
 
     /**
-     * Listeners synchronization object.
-     */
-    protected final Object lsync = new Object ();
-
-    /**
-     * Actions to perform on full display.
-     */
-    protected final List<Runnable> onFullDisplay = new ArrayList<Runnable> ();
-
-    /**
-     * Actions to perform on full hide.
-     */
-    protected final List<Runnable> onFullHide = new ArrayList<Runnable> ();
-
-    /**
      * Constructs new dynamic menu.
      */
     public WebDynamicMenu ()
     {
         super ( "transparent", new DynamicMenuLayout () );
+
+        // Popup settings
+        setAnimate ( true );
+        setStepProgress ( 0.04f );
+        setWindowOpaque ( false );
+        setWindowOpacity ( 0f );
+        setFollowInvoker ( true );
+        setCloseOnOuterAction ( true );
+
+        // Menu settings
         setRadius ( 60 );
         setStartingAngle ( 0 );
         setAngleRange ( 360 );
-        setStepProgress ( 0.04f );
         setType ( DynamicMenuType.shutter );
         setHideType ( null );
         setClockwise ( true );
-        setWindowOpaque ( false );
-        setFollowInvoker ( true );
     }
 
     public int getRadius ()
@@ -194,16 +151,6 @@ public class WebDynamicMenu extends WebHeavyWeightPopup
     public void setAngleRange ( final double angleRange )
     {
         this.angleRange = angleRange;
-    }
-
-    public float getStepProgress ()
-    {
-        return stepProgress;
-    }
-
-    public void setStepProgress ( final float stepProgress )
-    {
-        this.stepProgress = stepProgress;
     }
 
     public DynamicMenuType getType ()
@@ -241,48 +188,55 @@ public class WebDynamicMenu extends WebHeavyWeightPopup
         return items;
     }
 
-    public WebImage addItem ( final ImageIcon icon )
+    public WebDynamicMenuItem addItem ( final ImageIcon icon )
     {
         return addItem ( icon, null );
     }
 
-    public WebImage addItem ( final ImageIcon icon, final ActionListener action )
+    public WebDynamicMenuItem addItem ( final ImageIcon icon, final ActionListener action )
     {
         return addItem ( new WebDynamicMenuItem ( icon, action ) );
     }
 
-    public WebImage addItem ( final WebDynamicMenuItem item )
+    public WebDynamicMenuItem addItem ( final WebDynamicMenuItem menuItem )
     {
-        items.add ( item );
+        items.add ( menuItem );
 
-        final WebImage menuItem = new WebImage ( item.getIcon () )
-        {
-            @Override
-            protected void paintComponent ( final Graphics g )
-            {
-                if ( item.isDrawBorder () )
-                {
-                    final Graphics2D g2d = ( Graphics2D ) g;
-                    final Object aa = GraphicsUtils.setupAntialias ( g2d );
-                    g2d.setPaint ( isEnabled () ? item.getBorderColor () : item.getDisabledBorderColor () );
-                    g2d.fillOval ( 0, 0, getWidth (), getHeight () );
-                    g2d.setColor ( Color.WHITE );
-                    g2d.fillOval ( 2, 2, getWidth () - 4, getHeight () - 4 );
-                    GraphicsUtils.restoreAntialias ( g2d, aa );
-                }
-
-                super.paintComponent ( g );
-            }
-        };
-        menuItem.setEnabled ( item.getAction () != null );
-        menuItem.setMargin ( item.getMargin () );
+        //        final WebImage menuItem = new WebImage ( item.getIcon () )
+        //        {
+        //            @Override
+        //            protected void paintComponent ( final Graphics g )
+        //            {
+        //                if ( item.isDrawBorder () )
+        //                {
+        //                    final Graphics2D g2d = ( Graphics2D ) g;
+        //                    final Object aa = GraphicsUtils.setupAntialias ( g2d );
+        //
+        //                    final Area outer = new Area ( new Ellipse2D.Double ( 0, 0, getWidth (), getHeight () ) );
+        //                    final Ellipse2D.Double inner = new Ellipse2D.Double ( 2, 2, getWidth () - 4, getHeight () - 4 );
+        //                    outer.exclusiveOr ( new Area ( inner ) );
+        //
+        //                    g2d.setPaint ( isEnabled () ? item.getBorderColor () : item.getDisabledBorderColor () );
+        //                    g2d.fill ( outer );
+        //
+        //                    g2d.setColor ( Color.WHITE );
+        //                    g2d.fill ( inner );
+        //
+        //                    GraphicsUtils.restoreAntialias ( g2d, aa );
+        //                }
+        //
+        //                super.paintComponent ( g );
+        //            }
+        //        };
+        menuItem.setEnabled ( menuItem.getAction () != null );
+        menuItem.setMargin ( menuItem.getMargin () );
 
         menuItem.addMouseListener ( new MouseAdapter ()
         {
             @Override
             public void mousePressed ( final MouseEvent e )
             {
-                final ActionListener action = item.getAction ();
+                final ActionListener action = menuItem.getAction ();
                 if ( action != null )
                 {
                     action.actionPerformed ( new ActionEvent ( e.getSource (), 0, "Action performed" ) );
@@ -293,26 +247,6 @@ public class WebDynamicMenu extends WebHeavyWeightPopup
         add ( menuItem );
 
         return menuItem;
-    }
-
-    public float getCurrentProgress ()
-    {
-        return currentProgress;
-    }
-
-    public WebTimer getAnimator ()
-    {
-        return animator;
-    }
-
-    public boolean isDisplaying ()
-    {
-        return displaying;
-    }
-
-    public boolean isHiding ()
-    {
-        return hiding;
     }
 
     /**
@@ -326,6 +260,16 @@ public class WebDynamicMenu extends WebHeavyWeightPopup
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebDynamicMenu showPopup ( final Component invoker, final int x, final int y )
+    {
+        showMenu ( invoker, x, y );
+        return this;
+    }
+
+    /**
      * Displays dynamic menu for the specified invoker location.
      *
      * @param invoker  menu invoker
@@ -333,70 +277,33 @@ public class WebDynamicMenu extends WebHeavyWeightPopup
      */
     public void showMenu ( final Component invoker, final Point location )
     {
+        showMenu ( invoker, location.x, location.y );
+    }
+
+    /**
+     * Displays dynamic menu for the specified invoker location.
+     *
+     * @param invoker menu invoker
+     * @param x       menu location X coordinate
+     * @param y       menu location Y coordinate
+     */
+    public void showMenu ( final Component invoker, final int x, final int y )
+    {
         synchronized ( sync )
         {
-            if ( displaying || window != null || getComponentCount () == 0 )
-            {
-                return;
-            }
-
-            displaying = true;
-
-            // Stop displaying if we were
-            if ( hiding )
-            {
-                if ( animator != null )
-                {
-                    animator.stop ();
-                }
-                hiding = false;
-                hidingCause = -1;
-            }
-
-            // Creating menu and displaying it
-            displayMenuWindow ( invoker, location );
-
-            // Displaying menu softly
-            animator = WebTimer.repeat ( StyleConstants.fastAnimationDelay, 0L, new ActionListener ()
-            {
-                @Override
-                public void actionPerformed ( final ActionEvent e )
-                {
-                    synchronized ( sync )
-                    {
-                        if ( currentProgress < 1f )
-                        {
-                            currentProgress = Math.min ( currentProgress + stepProgress, 1f );
-                            revalidate ();
-                            setWindowOpacity ( currentProgress );
-                        }
-                        else
-                        {
-                            animator.stop ();
-                            animator = null;
-                            displaying = false;
-                            fullyDisplayed ();
-                        }
-                    }
-                }
-            } );
+            // Displaying menu
+            final Point displayPoint = getActualLayout ().getDisplayPoint ( this, x, y );
+            super.showPopup ( invoker, displayPoint.x, displayPoint.y );
         }
     }
 
     /**
-     * Creates new menu window.
-     *
-     * @param invoker  menu invoker
-     * @param location menu location
+     * {@inheritDoc}
      */
-    protected void displayMenuWindow ( final Component invoker, final Point location )
+    @Override
+    protected void showAnimationStepPerformed ()
     {
-        // Updating opacity
-        setWindowOpacity ( currentProgress );
-
-        // Displaying popup
-        final Dimension size = getPreferredSize ();
-        showPopup ( invoker, location.x - size.width / 2, location.y - size.height / 2 );
+        revalidate ();
     }
 
     /**
@@ -424,134 +331,28 @@ public class WebDynamicMenu extends WebHeavyWeightPopup
      */
     public void hideMenu ( final int index )
     {
-        synchronized ( sync )
-        {
-            if ( hiding )
-            {
-                return;
-            }
+        // Sets hiding cause
+        this.hidingCause = index;
 
-            hiding = true;
-            hidingCause = index;
-
-            // Stop displaying if we were
-            if ( displaying )
-            {
-                if ( animator != null )
-                {
-                    animator.stop ();
-                }
-                displaying = false;
-            }
-
-            // Hiding menu softly
-            animator = WebTimer.repeat ( StyleConstants.fastAnimationDelay, 0L, new ActionListener ()
-            {
-                @Override
-                public void actionPerformed ( final ActionEvent e )
-                {
-                    synchronized ( sync )
-                    {
-                        if ( currentProgress > 0f )
-                        {
-                            currentProgress = Math.max ( currentProgress - stepProgress, 0f );
-                            revalidate ();
-                            setWindowOpacity ( currentProgress );
-                        }
-                        else
-                        {
-                            destroyMenuWindow ();
-                            animator.stop ();
-                            animator = null;
-                            hiding = false;
-                            hidingCause = -1;
-                            fullyHidden ();
-                        }
-                    }
-                }
-            } );
-        }
-    }
-
-    /**
-     * Disposes old menu window.
-     */
-    protected void destroyMenuWindow ()
-    {
-        // Disposing of menu window
+        // Start hiding menu
         super.hidePopup ();
     }
 
     /**
-     * Performs provided action when menu is fully displayed.
-     * Might be useful to display sub-menus or perform some other actions.
-     * Be aware that this action will be performed only once and then removed from the actions list.
-     *
-     * @param action action to perform
+     * {@inheritDoc}
      */
-    public void onFullDisplay ( final Runnable action )
+    @Override
+    protected void hideAnimationStepPerformed ()
     {
-        synchronized ( lsync )
+        if ( displayProgress > 0f )
         {
-            if ( !isShowing () || isDisplaying () )
-            {
-                onFullDisplay.add ( action );
-            }
-            else if ( isShowing () && !isHiding () )
-            {
-                action.run ();
-            }
+            revalidate ();
         }
-    }
-
-    /**
-     * Performs actions waiting for menu display animation finish.
-     */
-    public void fullyDisplayed ()
-    {
-        synchronized ( lsync )
+        else
         {
-            for ( final Runnable runnable : onFullDisplay )
-            {
-                runnable.run ();
-            }
-            onFullDisplay.clear ();
-        }
-    }
-
-    /**
-     * Performs provided action when menu is fully hidden.
-     * Be aware that this action will be performed only once and then removed from the actions list.
-     *
-     * @param action action to perform
-     */
-    public void onFullHide ( final Runnable action )
-    {
-        synchronized ( lsync )
-        {
-            if ( isShowing () )
-            {
-                onFullHide.add ( action );
-            }
-            else
-            {
-                action.run ();
-            }
-        }
-    }
-
-    /**
-     * Performs actions waiting for menu hide animation finish.
-     */
-    public void fullyHidden ()
-    {
-        synchronized ( lsync )
-        {
-            for ( final Runnable runnable : onFullHide )
-            {
-                runnable.run ();
-            }
-            onFullHide.clear ();
+            hidingCause = -1;
+            revalidate ();
+            fullyHidden ();
         }
     }
 

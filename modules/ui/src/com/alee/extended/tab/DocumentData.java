@@ -18,9 +18,12 @@
 package com.alee.extended.tab;
 
 import com.alee.managers.language.LM;
+import com.alee.utils.CollectionUtils;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class represents basic data for single document opened in WebDocumentPane.
@@ -31,11 +34,13 @@ import java.awt.*;
  * @see com.alee.extended.tab.PaneData
  */
 
-public class DocumentData
+public class DocumentData<C extends Component>
 {
     /**
-     * todo 1. DocumentData listeners to update view properly
+     * Document data listeners.
+     * Used to properly update WebDocumentPane view on document changes.
      */
+    protected transient List<DocumentDataListener> listeners = new ArrayList<DocumentDataListener> ( 1 );
 
     /**
      * Document ID.
@@ -55,6 +60,12 @@ public class DocumentData
      * Whether this is a plain text or a language key will be determined automatically, you only have to provide it.
      */
     protected String title;
+
+    /**
+     * Document title foreground color.
+     * Used to color tab title text.
+     */
+    protected Color foreground;
 
     /**
      * Document tab background color.
@@ -78,7 +89,7 @@ public class DocumentData
      * Document content.
      * A component that represents document tab content.
      */
-    protected Component component;
+    protected C component;
 
     /**
      * Constructs new document.
@@ -87,7 +98,7 @@ public class DocumentData
      * @param title     document title
      * @param component document content
      */
-    public DocumentData ( final String id, final String title, final Component component )
+    public DocumentData ( final String id, final String title, final C component )
     {
         this ( id, null, title, null, component );
     }
@@ -99,7 +110,7 @@ public class DocumentData
      * @param icon      document icon
      * @param component document content
      */
-    public DocumentData ( final String id, final Icon icon, final Component component )
+    public DocumentData ( final String id, final Icon icon, final C component )
     {
         this ( id, icon, null, null, component );
     }
@@ -112,7 +123,7 @@ public class DocumentData
      * @param title     document title
      * @param component document content
      */
-    public DocumentData ( final String id, final Icon icon, final String title, final Component component )
+    public DocumentData ( final String id, final Icon icon, final String title, final C component )
     {
         this ( id, icon, title, null, component );
     }
@@ -126,7 +137,7 @@ public class DocumentData
      * @param background document tab background color
      * @param component  document content
      */
-    public DocumentData ( final String id, final Icon icon, final String title, final Color background, final Component component )
+    public DocumentData ( final String id, final Icon icon, final String title, final Color background, final C component )
     {
         this ( id, icon, title, background, true, component );
     }
@@ -142,7 +153,7 @@ public class DocumentData
      * @param component  document content
      */
     public DocumentData ( final String id, final Icon icon, final String title, final Color background, final boolean closeable,
-                          final Component component )
+                          final C component )
     {
         this ( id, icon, title, background, closeable, true, component );
     }
@@ -159,12 +170,31 @@ public class DocumentData
      * @param component  document content
      */
     public DocumentData ( final String id, final Icon icon, final String title, final Color background, final boolean closeable,
-                          final boolean draggable, final Component component )
+                          final boolean draggable, final C component )
+    {
+        this ( id, icon, title, Color.BLACK, background, closeable, draggable, component );
+    }
+
+    /**
+     * Constructs new document.
+     *
+     * @param id         document ID
+     * @param icon       document icon
+     * @param title      document title
+     * @param foreground document title foreground color
+     * @param background document tab background color
+     * @param closeable  whether document is closeable or not
+     * @param draggable  whether document is draggable or not
+     * @param component  document content
+     */
+    public DocumentData ( final String id, final Icon icon, final String title, final Color foreground, final Color background,
+                          final boolean closeable, final boolean draggable, final C component )
     {
         super ();
         this.id = id;
         this.icon = icon;
         this.title = title;
+        this.foreground = foreground;
         this.background = background;
         this.closeable = closeable;
         this.draggable = draggable;
@@ -209,6 +239,7 @@ public class DocumentData
     public void setIcon ( final Icon icon )
     {
         this.icon = icon;
+        fireTitleChanged ();
     }
 
     /**
@@ -239,6 +270,28 @@ public class DocumentData
     public void setTitle ( final String title )
     {
         this.title = title;
+        fireTitleChanged ();
+    }
+
+    /**
+     * Returns document title text foreground color.
+     *
+     * @return document title text foreground color
+     */
+    public Color getForeground ()
+    {
+        return foreground;
+    }
+
+    /**
+     * Sets document title text foreground color
+     *
+     * @param foreground document title text foreground color
+     */
+    public void setForeground ( final Color foreground )
+    {
+        this.foreground = foreground;
+        fireTitleChanged ();
     }
 
     /**
@@ -258,7 +311,9 @@ public class DocumentData
      */
     public void setBackground ( final Color background )
     {
+        final Color old = this.background;
         this.background = background;
+        fireBackgroundChanged ( old, background );
     }
 
     /**
@@ -279,6 +334,7 @@ public class DocumentData
     public void setCloseable ( final boolean closeable )
     {
         this.closeable = closeable;
+        fireTitleChanged ();
     }
 
     /**
@@ -306,7 +362,7 @@ public class DocumentData
      *
      * @return document content
      */
-    public Component getComponent ()
+    public C getComponent ()
     {
         return component;
     }
@@ -316,8 +372,79 @@ public class DocumentData
      *
      * @param component new document content
      */
-    public void setComponent ( final Component component )
+    public void setComponent ( final C component )
     {
+        final Component old = this.component;
         this.component = component;
+        fireContentChanged ( old, component );
+    }
+
+    /**
+     * Returns available document data listeners.
+     *
+     * @return available document data listeners
+     */
+    public List<DocumentDataListener> getListeners ()
+    {
+        return CollectionUtils.copy ( listeners );
+    }
+
+    /**
+     * Adds document data listener.
+     *
+     * @param listener document data listener to add
+     */
+    public void addListener ( final DocumentDataListener listener )
+    {
+        listeners.add ( listener );
+    }
+
+    /**
+     * Removes document data listener.
+     *
+     * @param listener document data listener to remove
+     */
+    public void removeListener ( final DocumentDataListener listener )
+    {
+        listeners.remove ( listener );
+    }
+
+    /**
+     * Informs about data changes which affects document tab view.
+     */
+    public void fireTitleChanged ()
+    {
+        for ( final DocumentDataListener listener : CollectionUtils.copy ( listeners ) )
+        {
+            listener.titleChanged ( this );
+        }
+    }
+
+    /**
+     * Inform about tab background changes.
+     *
+     * @param oldBackground previous background color
+     * @param newBackground new background color
+     */
+    public void fireBackgroundChanged ( final Color oldBackground, final Color newBackground )
+    {
+        for ( final DocumentDataListener listener : CollectionUtils.copy ( listeners ) )
+        {
+            listener.backgroundChanged ( this, oldBackground, newBackground );
+        }
+    }
+
+    /**
+     * Informs about tab component changes.
+     *
+     * @param oldComponent previous tab content
+     * @param newComponent new tab content
+     */
+    public void fireContentChanged ( final Component oldComponent, final Component newComponent )
+    {
+        for ( final DocumentDataListener listener : CollectionUtils.copy ( listeners ) )
+        {
+            listener.contentChanged ( this, oldComponent, newComponent );
+        }
     }
 }

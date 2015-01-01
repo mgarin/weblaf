@@ -38,9 +38,19 @@ public class WebFileTreeCellEditor extends WebTreeCellEditor<WebTextField>
     public WebFileTreeCellEditor ()
     {
         super ();
-        clickCountToStart = 3;
-        autoUpdateLeadingIcon = false;
-        delegate = new FileNameEditorDelegate ();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void initialize ( final WebTextField editor )
+    {
+        this.editorComponent = editor;
+        this.clickCountToStart = 3;
+        this.autoUpdateLeadingIcon = false;
+        this.delegate = new FileNameEditorDelegate ();
+        editor.addActionListener ( delegate );
     }
 
     /**

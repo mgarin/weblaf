@@ -18,43 +18,52 @@
 package com.alee.laf.text;
 
 import com.alee.laf.WebLookAndFeel;
+import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.language.LanguageMethods;
 import com.alee.managers.language.updaters.LanguageUpdater;
+import com.alee.managers.log.Log;
 import com.alee.managers.settings.DefaultValue;
 import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.settings.SettingsMethods;
 import com.alee.managers.settings.SettingsProcessor;
+import com.alee.utils.EventUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SwingUtils;
-import com.alee.utils.swing.FontMethods;
+import com.alee.utils.general.Pair;
+import com.alee.utils.swing.*;
 
 import javax.swing.*;
+import java.awt.event.FocusAdapter;
+import java.awt.event.KeyAdapter;
+import java.awt.event.MouseAdapter;
+import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.net.URL;
 
 /**
- * User: mgarin Date: 22.08.11 Time: 13:00
+ * @author Mikle Garin
  */
 
-public class WebEditorPane extends JEditorPane implements LanguageMethods, SettingsMethods, FontMethods<WebEditorPane>
+public class WebEditorPane extends JEditorPane
+        implements DocumentEventMethods, EventMethods, LanguageMethods, SettingsMethods, FontMethods<WebEditorPane>
 {
     public WebEditorPane ()
     {
         super ();
     }
 
-    public WebEditorPane ( URL initialPage ) throws IOException
+    public WebEditorPane ( final URL initialPage ) throws IOException
     {
         super ( initialPage );
     }
 
-    public WebEditorPane ( String type, String text )
+    public WebEditorPane ( final String type, final String text )
     {
         super ( type, text );
     }
 
-    public WebEditorPane ( String url ) throws IOException
+    public WebEditorPane ( final String url ) throws IOException
     {
         super ( url );
     }
@@ -86,9 +95,9 @@ public class WebEditorPane extends JEditorPane implements LanguageMethods, Setti
             {
                 setUI ( ( WebEditorPaneUI ) ReflectUtils.createInstance ( WebLookAndFeel.editorPaneUI ) );
             }
-            catch ( Throwable e )
+            catch ( final Throwable e )
             {
-                e.printStackTrace ();
+                Log.error ( this, e );
                 setUI ( new WebEditorPaneUI () );
             }
         }
@@ -100,6 +109,177 @@ public class WebEditorPane extends JEditorPane implements LanguageMethods, Setti
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Pair<DocumentChangeListener, PropertyChangeListener> onChange ( final DocumentEventRunnable runnable )
+    {
+        return EventUtils.onChange ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MouseAdapter onMousePress ( final MouseEventRunnable runnable )
+    {
+        return EventUtils.onMousePress ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MouseAdapter onMousePress ( final MouseButton mouseButton, final MouseEventRunnable runnable )
+    {
+        return EventUtils.onMousePress ( this, mouseButton, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MouseAdapter onMouseEnter ( final MouseEventRunnable runnable )
+    {
+        return EventUtils.onMouseEnter ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MouseAdapter onMouseExit ( final MouseEventRunnable runnable )
+    {
+        return EventUtils.onMouseExit ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MouseAdapter onMouseDrag ( final MouseEventRunnable runnable )
+    {
+        return EventUtils.onMouseDrag ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MouseAdapter onMouseDrag ( final MouseButton mouseButton, final MouseEventRunnable runnable )
+    {
+        return EventUtils.onMouseDrag ( this, mouseButton, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MouseAdapter onMouseClick ( final MouseEventRunnable runnable )
+    {
+        return EventUtils.onMouseClick ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MouseAdapter onMouseClick ( final MouseButton mouseButton, final MouseEventRunnable runnable )
+    {
+        return EventUtils.onMouseClick ( this, mouseButton, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MouseAdapter onDoubleClick ( final MouseEventRunnable runnable )
+    {
+        return EventUtils.onDoubleClick ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MouseAdapter onMenuTrigger ( final MouseEventRunnable runnable )
+    {
+        return EventUtils.onMenuTrigger ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public KeyAdapter onKeyType ( final KeyEventRunnable runnable )
+    {
+        return EventUtils.onKeyType ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public KeyAdapter onKeyType ( final HotkeyData hotkey, final KeyEventRunnable runnable )
+    {
+        return EventUtils.onKeyType ( this, hotkey, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public KeyAdapter onKeyPress ( final KeyEventRunnable runnable )
+    {
+        return EventUtils.onKeyPress ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public KeyAdapter onKeyPress ( final HotkeyData hotkey, final KeyEventRunnable runnable )
+    {
+        return EventUtils.onKeyPress ( this, hotkey, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public KeyAdapter onKeyRelease ( final KeyEventRunnable runnable )
+    {
+        return EventUtils.onKeyRelease ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public KeyAdapter onKeyRelease ( final HotkeyData hotkey, final KeyEventRunnable runnable )
+    {
+        return EventUtils.onKeyRelease ( this, hotkey, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public FocusAdapter onFocusGain ( final FocusEventRunnable runnable )
+    {
+        return EventUtils.onFocusGain ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public FocusAdapter onFocusLoss ( final FocusEventRunnable runnable )
+    {
+        return EventUtils.onFocusLoss ( this, runnable );
+    }
+
+    /**
      * Language methods
      */
 
@@ -107,7 +287,7 @@ public class WebEditorPane extends JEditorPane implements LanguageMethods, Setti
      * {@inheritDoc}
      */
     @Override
-    public void setLanguage ( String key, Object... data )
+    public void setLanguage ( final String key, final Object... data )
     {
         LanguageManager.registerComponent ( this, key, data );
     }
@@ -116,7 +296,7 @@ public class WebEditorPane extends JEditorPane implements LanguageMethods, Setti
      * {@inheritDoc}
      */
     @Override
-    public void updateLanguage ( Object... data )
+    public void updateLanguage ( final Object... data )
     {
         LanguageManager.updateComponent ( this, data );
     }
@@ -125,7 +305,7 @@ public class WebEditorPane extends JEditorPane implements LanguageMethods, Setti
      * {@inheritDoc}
      */
     @Override
-    public void updateLanguage ( String key, Object... data )
+    public void updateLanguage ( final String key, final Object... data )
     {
         LanguageManager.updateComponent ( this, key, data );
     }
@@ -152,7 +332,7 @@ public class WebEditorPane extends JEditorPane implements LanguageMethods, Setti
      * {@inheritDoc}
      */
     @Override
-    public void setLanguageUpdater ( LanguageUpdater updater )
+    public void setLanguageUpdater ( final LanguageUpdater updater )
     {
         LanguageManager.registerLanguageUpdater ( this, updater );
     }
@@ -174,7 +354,7 @@ public class WebEditorPane extends JEditorPane implements LanguageMethods, Setti
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String key )
+    public void registerSettings ( final String key )
     {
         SettingsManager.registerComponent ( this, key );
     }
@@ -183,7 +363,7 @@ public class WebEditorPane extends JEditorPane implements LanguageMethods, Setti
      * {@inheritDoc}
      */
     @Override
-    public <T extends DefaultValue> void registerSettings ( String key, Class<T> defaultValueClass )
+    public <T extends DefaultValue> void registerSettings ( final String key, final Class<T> defaultValueClass )
     {
         SettingsManager.registerComponent ( this, key, defaultValueClass );
     }
@@ -192,7 +372,7 @@ public class WebEditorPane extends JEditorPane implements LanguageMethods, Setti
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String key, Object defaultValue )
+    public void registerSettings ( final String key, final Object defaultValue )
     {
         SettingsManager.registerComponent ( this, key, defaultValue );
     }
@@ -201,7 +381,7 @@ public class WebEditorPane extends JEditorPane implements LanguageMethods, Setti
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String group, String key )
+    public void registerSettings ( final String group, final String key )
     {
         SettingsManager.registerComponent ( this, group, key );
     }
@@ -210,7 +390,7 @@ public class WebEditorPane extends JEditorPane implements LanguageMethods, Setti
      * {@inheritDoc}
      */
     @Override
-    public <T extends DefaultValue> void registerSettings ( String group, String key, Class<T> defaultValueClass )
+    public <T extends DefaultValue> void registerSettings ( final String group, final String key, final Class<T> defaultValueClass )
     {
         SettingsManager.registerComponent ( this, group, key, defaultValueClass );
     }
@@ -219,7 +399,7 @@ public class WebEditorPane extends JEditorPane implements LanguageMethods, Setti
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String group, String key, Object defaultValue )
+    public void registerSettings ( final String group, final String key, final Object defaultValue )
     {
         SettingsManager.registerComponent ( this, group, key, defaultValue );
     }
@@ -228,7 +408,7 @@ public class WebEditorPane extends JEditorPane implements LanguageMethods, Setti
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String key, boolean loadInitialSettings, boolean applySettingsChanges )
+    public void registerSettings ( final String key, final boolean loadInitialSettings, final boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, key, loadInitialSettings, applySettingsChanges );
     }
@@ -237,8 +417,8 @@ public class WebEditorPane extends JEditorPane implements LanguageMethods, Setti
      * {@inheritDoc}
      */
     @Override
-    public <T extends DefaultValue> void registerSettings ( String key, Class<T> defaultValueClass, boolean loadInitialSettings,
-                                                            boolean applySettingsChanges )
+    public <T extends DefaultValue> void registerSettings ( final String key, final Class<T> defaultValueClass,
+                                                            final boolean loadInitialSettings, final boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, key, defaultValueClass, loadInitialSettings, applySettingsChanges );
     }
@@ -247,7 +427,8 @@ public class WebEditorPane extends JEditorPane implements LanguageMethods, Setti
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String key, Object defaultValue, boolean loadInitialSettings, boolean applySettingsChanges )
+    public void registerSettings ( final String key, final Object defaultValue, final boolean loadInitialSettings,
+                                   final boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, key, defaultValue, loadInitialSettings, applySettingsChanges );
     }
@@ -256,8 +437,8 @@ public class WebEditorPane extends JEditorPane implements LanguageMethods, Setti
      * {@inheritDoc}
      */
     @Override
-    public <T extends DefaultValue> void registerSettings ( String group, String key, Class<T> defaultValueClass,
-                                                            boolean loadInitialSettings, boolean applySettingsChanges )
+    public <T extends DefaultValue> void registerSettings ( final String group, final String key, final Class<T> defaultValueClass,
+                                                            final boolean loadInitialSettings, final boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, group, key, defaultValueClass, loadInitialSettings, applySettingsChanges );
     }
@@ -266,8 +447,8 @@ public class WebEditorPane extends JEditorPane implements LanguageMethods, Setti
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( String group, String key, Object defaultValue, boolean loadInitialSettings,
-                                   boolean applySettingsChanges )
+    public void registerSettings ( final String group, final String key, final Object defaultValue, final boolean loadInitialSettings,
+                                   final boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, group, key, defaultValue, loadInitialSettings, applySettingsChanges );
     }
@@ -276,7 +457,7 @@ public class WebEditorPane extends JEditorPane implements LanguageMethods, Setti
      * {@inheritDoc}
      */
     @Override
-    public void registerSettings ( SettingsProcessor settingsProcessor )
+    public void registerSettings ( final SettingsProcessor settingsProcessor )
     {
         SettingsManager.registerComponent ( this, settingsProcessor );
     }
@@ -325,7 +506,7 @@ public class WebEditorPane extends JEditorPane implements LanguageMethods, Setti
      * {@inheritDoc}
      */
     @Override
-    public WebEditorPane setPlainFont ( boolean apply )
+    public WebEditorPane setPlainFont ( final boolean apply )
     {
         return SwingUtils.setPlainFont ( this, apply );
     }
@@ -352,7 +533,7 @@ public class WebEditorPane extends JEditorPane implements LanguageMethods, Setti
      * {@inheritDoc}
      */
     @Override
-    public WebEditorPane setBoldFont ( boolean apply )
+    public WebEditorPane setBoldFont ( final boolean apply )
     {
         return SwingUtils.setBoldFont ( this, apply );
     }
@@ -379,7 +560,7 @@ public class WebEditorPane extends JEditorPane implements LanguageMethods, Setti
      * {@inheritDoc}
      */
     @Override
-    public WebEditorPane setItalicFont ( boolean apply )
+    public WebEditorPane setItalicFont ( final boolean apply )
     {
         return SwingUtils.setItalicFont ( this, apply );
     }
@@ -397,7 +578,7 @@ public class WebEditorPane extends JEditorPane implements LanguageMethods, Setti
      * {@inheritDoc}
      */
     @Override
-    public WebEditorPane setFontStyle ( boolean bold, boolean italic )
+    public WebEditorPane setFontStyle ( final boolean bold, final boolean italic )
     {
         return SwingUtils.setFontStyle ( this, bold, italic );
     }
@@ -406,7 +587,7 @@ public class WebEditorPane extends JEditorPane implements LanguageMethods, Setti
      * {@inheritDoc}
      */
     @Override
-    public WebEditorPane setFontStyle ( int style )
+    public WebEditorPane setFontStyle ( final int style )
     {
         return SwingUtils.setFontStyle ( this, style );
     }
@@ -415,7 +596,7 @@ public class WebEditorPane extends JEditorPane implements LanguageMethods, Setti
      * {@inheritDoc}
      */
     @Override
-    public WebEditorPane setFontSize ( int fontSize )
+    public WebEditorPane setFontSize ( final int fontSize )
     {
         return SwingUtils.setFontSize ( this, fontSize );
     }
@@ -424,7 +605,7 @@ public class WebEditorPane extends JEditorPane implements LanguageMethods, Setti
      * {@inheritDoc}
      */
     @Override
-    public WebEditorPane changeFontSize ( int change )
+    public WebEditorPane changeFontSize ( final int change )
     {
         return SwingUtils.changeFontSize ( this, change );
     }
@@ -442,7 +623,7 @@ public class WebEditorPane extends JEditorPane implements LanguageMethods, Setti
      * {@inheritDoc}
      */
     @Override
-    public WebEditorPane setFontSizeAndStyle ( int fontSize, boolean bold, boolean italic )
+    public WebEditorPane setFontSizeAndStyle ( final int fontSize, final boolean bold, final boolean italic )
     {
         return SwingUtils.setFontSizeAndStyle ( this, fontSize, bold, italic );
     }
@@ -451,7 +632,7 @@ public class WebEditorPane extends JEditorPane implements LanguageMethods, Setti
      * {@inheritDoc}
      */
     @Override
-    public WebEditorPane setFontSizeAndStyle ( int fontSize, int style )
+    public WebEditorPane setFontSizeAndStyle ( final int fontSize, final int style )
     {
         return SwingUtils.setFontSizeAndStyle ( this, fontSize, style );
     }
@@ -460,7 +641,7 @@ public class WebEditorPane extends JEditorPane implements LanguageMethods, Setti
      * {@inheritDoc}
      */
     @Override
-    public WebEditorPane setFontName ( String fontName )
+    public WebEditorPane setFontName ( final String fontName )
     {
         return SwingUtils.setFontName ( this, fontName );
     }

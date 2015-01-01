@@ -20,6 +20,7 @@ package com.alee.utils;
 import com.alee.utils.collection.DoubleMap;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -172,6 +173,38 @@ public final class MapUtils
     }
 
     /**
+     * Returns newly created HashMap with the specified key and value pairs added.
+     *
+     * @param objects key-value pairs
+     * @param <K>     key type
+     * @param <V>     value type
+     * @return newly created HashMap
+     */
+    public static <K, V> HashMap<K, V> newHashMap ( final Object... objects )
+    {
+        if ( objects != null && objects.length > 0 )
+        {
+            if ( objects.length % 2 == 0 )
+            {
+                final HashMap<K, V> map = new HashMap<K, V> ( 1 );
+                for ( int i = 0; i < objects.length; i += 2 )
+                {
+                    map.put ( ( K ) objects[ i ], ( V ) objects[ i + 1 ] );
+                }
+                return map;
+            }
+            else
+            {
+                throw new RuntimeException ( "Amount of key-value objects must be even" );
+            }
+        }
+        else
+        {
+            return new HashMap<K, V> ( 0 );
+        }
+    }
+
+    /**
      * Returns newly created LinkedHashMap with the specified key and value pair added.
      *
      * @param key   key to add
@@ -180,10 +213,63 @@ public final class MapUtils
      * @param <V>   value type
      * @return newly created LinkedHashMap
      */
-    public static <K, V> HashMap<K, V> newLinkedHashMap ( final K key, final V value )
+    public static <K, V> LinkedHashMap<K, V> newLinkedHashMap ( final K key, final V value )
     {
         final LinkedHashMap<K, V> map = new LinkedHashMap<K, V> ( 1 );
         map.put ( key, value );
         return map;
+    }
+
+    /**
+     * Returns newly created LinkedHashMap with the specified key and value pairs added.
+     *
+     * @param objects key-value pairs
+     * @param <K>     key type
+     * @param <V>     value type
+     * @return newly created LinkedHashMap
+     */
+    public static <K, V> LinkedHashMap<K, V> newLinkedHashMap ( final Object... objects )
+    {
+        if ( objects != null && objects.length > 0 )
+        {
+            if ( objects.length % 2 == 0 )
+            {
+                final LinkedHashMap<K, V> map = new LinkedHashMap<K, V> ( 1 );
+                for ( int i = 0; i < objects.length; i += 2 )
+                {
+                    map.put ( ( K ) objects[ i ], ( V ) objects[ i + 1 ] );
+                }
+                return map;
+            }
+            else
+            {
+                throw new RuntimeException ( "Amount of key-value objects must be even" );
+            }
+        }
+        else
+        {
+            return new LinkedHashMap<K, V> ( 0 );
+        }
+    }
+
+    /**
+     * Removes all map entries where value is the same as the specified one.
+     *
+     * @param map   map to remove entries from
+     * @param value value for which entries should be removed
+     * @param <K>   key type
+     * @param <V>   value type
+     */
+    public static <K, V> void removeAllValues ( final Map<K, V> map, final V value )
+    {
+        final Iterator<Map.Entry<K, V>> iterator = map.entrySet ().iterator ();
+        while ( iterator.hasNext () )
+        {
+            final Map.Entry<K, V> entry = iterator.next ();
+            if ( CompareUtils.equals ( entry.getValue (), value ) )
+            {
+                iterator.remove ();
+            }
+        }
     }
 }

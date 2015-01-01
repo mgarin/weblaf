@@ -27,21 +27,29 @@ package com.alee.utils.swing;
  * @see com.alee.managers.language.LanguageContainerMethods
  * @see com.alee.managers.hotkey.HotkeyMethods
  * @see com.alee.managers.hotkey.ButtonHotkeyMethods
+ * @see com.alee.managers.tooltip.ToolTipMethods
  * @see com.alee.utils.swing.SizeMethods
  * @see com.alee.utils.swing.FontMethods
  * @see com.alee.utils.swing.BorderMethods
  * @see com.alee.utils.swing.WindowMethods
+ * @see com.alee.utils.swing.EventMethods
+ * @see com.alee.utils.swing.WindowEventMethods
+ * @see com.alee.utils.swing.DocumentEventMethods
+ * @see com.alee.extended.window.PopOverEventMethods
+ * @see com.alee.extended.tab.DocumentPaneEventMethods
  */
 
+@SuppressWarnings ("JavadocReference")
 public interface SwingMethods
 {
     /**
      * todo To add:
      * todo HotkeyMethods, ButtonHotkeyMethods - add and replace all workarounds
-     * todo TooltipMethods, OrientationMethods - add
+     * todo OrientationMethods - add
      *
      * todo To modify:
      * todo SizeMethods - add into all available components
      * todo Move font methods from SwingUtils to FontUtils
+     * todo TooltipMethods, EventMethods - add more methods and inject them into various components
      */
 }

@@ -163,12 +163,12 @@ public final class ColorUtils
     {
         if ( rgb == 0 )
         {
-            return "000000";
+            return "#000000";
         }
         else
         {
             final String hex = Integer.toHexString ( rgb ).toUpperCase ();
-            return hex.substring ( 2, hex.length () );
+            return "#" + hex.substring ( 2, hex.length () );
         }
     }
 

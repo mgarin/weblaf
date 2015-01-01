@@ -26,6 +26,8 @@ import java.util.Comparator;
  *
  * @param <E> custom node type
  * @author Mikle Garin
+ * @see com.alee.extended.tree.WebAsyncTree
+ * @see com.alee.extended.tree.AsyncTreeModel
  */
 
 public interface AsyncTreeDataProvider<E extends AsyncUniqueNode>
@@ -69,7 +71,7 @@ public interface AsyncTreeDataProvider<E extends AsyncUniqueNode>
     /**
      * Returns whether the specified node is leaf (doesn't have any childs) or not.
      * This request uses the EDT and should be processed quickly.
-     * If you cannot be sure if the node is leaf or not - simply return false, that will allow the tree to expand this node on request.
+     * If you are not sure if the node is leaf or not - simply return false, that will allow the tree to expand this node on request.
      *
      * @param node node
      * @return true if the specified node is leaf, false otherwise

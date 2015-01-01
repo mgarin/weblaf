@@ -17,7 +17,6 @@
 
 package com.alee.managers.notification;
 
-import com.alee.extended.layout.NotificationsLayout;
 import com.alee.laf.label.WebLabel;
 import com.alee.managers.popup.PopupAdapter;
 import com.alee.managers.popup.PopupLayer;
@@ -36,51 +35,66 @@ import java.util.WeakHashMap;
  * You can also add custom actions, set their duration, modify popup styling and use some other advanced features.
  *
  * @author Mikle Garin
- * @see WebNotificationPopup
+ * @see WebInnerNotification
  * @see DisplayType
  */
 
-public final class NotificationManager implements SwingConstants
+public class NotificationManager implements SwingConstants
 {
     /**
      * Notifications display location.
      */
-    private static int location = SOUTH_EAST;
+    protected static int location = SOUTH_EAST;
 
     /**
      * Notifications display type.
      */
-    private static DisplayType displayType = DisplayType.stack;
+    protected static DisplayType displayType = DisplayType.stack;
 
     /**
      * Notifications side margin.
      */
-    private static Insets margin = new Insets ( 0, 0, 0, 0 );
+    protected static Insets margin = new Insets ( 0, 0, 0, 0 );
 
     /**
      * Gap between notifications.
      */
-    private static int gap = 10;
+    protected static int gap = 10;
 
     /**
      * Whether popups should be cascaded or not.
      */
-    private static boolean cascade = true;
+    protected static boolean cascade = true;
 
     /**
      * Amount of cascaded in a row popups.
      */
-    private static int cascadeAmount = 4;
+    protected static int cascadeAmount = 4;
+
+    /**
+     * Whether notifications displayed in separate windows should avoid overlapping system toolbar or not.
+     */
+    protected static boolean avoidOverlappingSystemToolbar = true;
 
     /**
      * Cached notification layouts.
      */
-    private static final Map<PopupLayer, NotificationsLayout> notificationsLayouts = new WeakHashMap<PopupLayer, NotificationsLayout> ();
+    protected static final Map<PopupLayer, NotificationsLayout> notificationsLayouts = new WeakHashMap<PopupLayer, NotificationsLayout> ();
 
     /**
-     * Cached notifications.
+     * Cached notification popups.
      */
-    private static final Map<WebNotificationPopup, PopupLayer> notifications = new WeakHashMap<WebNotificationPopup, PopupLayer> ();
+    protected static final Map<WebInnerNotification, PopupLayer> notificationPopups = new WeakHashMap<WebInnerNotification, PopupLayer> ();
+
+    /**
+     * Special layout for notification windows.
+     */
+    protected static final NotificationsScreenLayout screenLayout = new NotificationsScreenLayout ();
+
+    /**
+     * Cached notification windows.
+     */
+    protected static final Map<WebNotification, Window> notificationWindows = new WeakHashMap<WebNotification, Window> ();
 
     /**
      * Returns notifications display location.
@@ -235,12 +249,33 @@ public final class NotificationManager implements SwingConstants
     }
 
     /**
+     * Returns whether notifications displayed in separate windows should avoid overlapping system toolbar or not.
+     *
+     * @return true if notifications displayed in separate windows should avoid overlapping system toolbar, false otherwise
+     */
+    public static boolean isAvoidOverlappingSystemToolbar ()
+    {
+        return avoidOverlappingSystemToolbar;
+    }
+
+    /**
+     * Sets whether notifications displayed in separate windows should avoid overlapping system toolbar or not.
+     *
+     * @param avoid whether notifications displayed in separate windows should avoid overlapping system toolbar or not
+     */
+    public static void setAvoidOverlappingSystemToolbar ( final boolean avoid )
+    {
+        NotificationManager.avoidOverlappingSystemToolbar = avoid;
+    }
+
+    /**
      * Optimized layout updates for all visible notifications.
      */
     public static void updateNotificationLayouts ()
     {
+        // Updating popup notifications layouts
         final List<PopupLayer> layers = new ArrayList<PopupLayer> ();
-        for ( final Map.Entry<WebNotificationPopup, PopupLayer> entry : notifications.entrySet () )
+        for ( final Map.Entry<WebInnerNotification, PopupLayer> entry : notificationPopups.entrySet () )
         {
             final PopupLayer popupLayer = entry.getValue ();
             if ( !layers.contains ( popupLayer ) )
@@ -249,6 +284,9 @@ public final class NotificationManager implements SwingConstants
                 popupLayer.revalidate ();
             }
         }
+
+        // Updating window notifications layout
+        screenLayout.layoutScreen ();
     }
 
     /**
@@ -256,7 +294,11 @@ public final class NotificationManager implements SwingConstants
      */
     public static void hideAllNotifications ()
     {
-        for ( final Map.Entry<WebNotificationPopup, PopupLayer> entry : notifications.entrySet () )
+        for ( final Map.Entry<WebInnerNotification, PopupLayer> entry : notificationPopups.entrySet () )
+        {
+            entry.getKey ().hidePopup ();
+        }
+        for ( final Map.Entry<WebNotification, Window> entry : notificationWindows.entrySet () )
         {
             entry.getKey ().hidePopup ();
         }
@@ -268,9 +310,9 @@ public final class NotificationManager implements SwingConstants
      * @param content notification text content
      * @return displayed notification
      */
-    public static WebNotificationPopup showNotification ( final String content )
+    public static WebNotification showNotification ( final String content )
     {
-        return showNotification ( getDefaulShowForWindow (), new WebLabel ( content ), NotificationIcon.information.getIcon () );
+        return showNotification ( null, new WebLabel ( content ), NotificationIcon.information.getIcon () );
     }
 
     /**
@@ -280,19 +322,19 @@ public final class NotificationManager implements SwingConstants
      * @param icon    notification icon
      * @return displayed notification
      */
-    public static WebNotificationPopup showNotification ( final String content, final Icon icon )
+    public static WebNotification showNotification ( final String content, final Icon icon )
     {
-        return showNotification ( getDefaulShowForWindow (), new WebLabel ( content ), icon );
+        return showNotification ( null, new WebLabel ( content ), icon );
     }
 
     /**
      * Returns displayed notification.
      *
-     * @param showFor component used to determine window where notification should be displayed
+     * @param showFor component used to determine notification parent window
      * @param content notification text content
      * @return displayed notification
      */
-    public static WebNotificationPopup showNotification ( final Component showFor, final String content )
+    public static WebNotification showNotification ( final Component showFor, final String content )
     {
         return showNotification ( showFor, new WebLabel ( content ), NotificationIcon.information.getIcon () );
     }
@@ -300,12 +342,12 @@ public final class NotificationManager implements SwingConstants
     /**
      * Returns displayed notification.
      *
-     * @param showFor component used to determine window where notification should be displayed
+     * @param showFor component used to determine notification parent window
      * @param content notification text content
      * @param icon    notification icon
      * @return displayed notification
      */
-    public static WebNotificationPopup showNotification ( final Component showFor, final String content, final Icon icon )
+    public static WebNotification showNotification ( final Component showFor, final String content, final Icon icon )
     {
         return showNotification ( showFor, new WebLabel ( content ), icon );
     }
@@ -316,9 +358,9 @@ public final class NotificationManager implements SwingConstants
      * @param content notification content
      * @return displayed notification
      */
-    public static WebNotificationPopup showNotification ( final Component content )
+    public static WebNotification showNotification ( final Component content )
     {
-        return showNotification ( getDefaulShowForWindow (), content, NotificationIcon.information.getIcon () );
+        return showNotification ( null, content, NotificationIcon.information.getIcon () );
     }
 
     /**
@@ -328,19 +370,19 @@ public final class NotificationManager implements SwingConstants
      * @param icon    notification icon
      * @return displayed notification
      */
-    public static WebNotificationPopup showNotification ( final Component content, final Icon icon )
+    public static WebNotification showNotification ( final Component content, final Icon icon )
     {
-        return showNotification ( getDefaulShowForWindow (), content, icon );
+        return showNotification ( null, content, icon );
     }
 
     /**
      * Returns displayed notification.
      *
-     * @param showFor component used to determine window where notification should be displayed
+     * @param showFor component used to determine notification parent window
      * @param content notification content
      * @return displayed notification
      */
-    public static WebNotificationPopup showNotification ( final Component showFor, final Component content )
+    public static WebNotification showNotification ( final Component showFor, final Component content )
     {
         return showNotification ( showFor, content, NotificationIcon.information.getIcon () );
     }
@@ -348,17 +390,17 @@ public final class NotificationManager implements SwingConstants
     /**
      * Returns displayed notification.
      *
-     * @param showFor component used to determine window where notification should be displayed
+     * @param showFor component used to determine notification parent window
      * @param content notification content
      * @param icon    notification icon
      * @return displayed notification
      */
-    public static WebNotificationPopup showNotification ( final Component showFor, final Component content, final Icon icon )
+    public static WebNotification showNotification ( final Component showFor, final Component content, final Icon icon )
     {
-        final WebNotificationPopup notificationPopup = new WebNotificationPopup ();
-        notificationPopup.setIcon ( icon );
-        notificationPopup.setContent ( content );
-        return showNotification ( showFor, notificationPopup );
+        final WebNotification notificationWindow = new WebNotification ();
+        notificationWindow.setIcon ( icon );
+        notificationWindow.setContent ( content );
+        return showNotification ( showFor, notificationWindow );
     }
 
     /**
@@ -368,9 +410,9 @@ public final class NotificationManager implements SwingConstants
      * @param options notification selectable options
      * @return displayed notification
      */
-    public static WebNotificationPopup showNotification ( final String content, final NotificationOption... options )
+    public static WebNotification showNotification ( final String content, final NotificationOption... options )
     {
-        return showNotification ( getDefaulShowForWindow (), new WebLabel ( content ), NotificationIcon.information.getIcon (), options );
+        return showNotification ( null, new WebLabel ( content ), NotificationIcon.information.getIcon (), options );
     }
 
     /**
@@ -381,21 +423,20 @@ public final class NotificationManager implements SwingConstants
      * @param options notification selectable options
      * @return displayed notification
      */
-    public static WebNotificationPopup showNotification ( final String content, final Icon icon, final NotificationOption... options )
+    public static WebNotification showNotification ( final String content, final Icon icon, final NotificationOption... options )
     {
-        return showNotification ( getDefaulShowForWindow (), new WebLabel ( content ), icon, options );
+        return showNotification ( null, new WebLabel ( content ), icon, options );
     }
 
     /**
      * Returns displayed notification.
      *
-     * @param showFor component used to determine window where notification should be displayed
+     * @param showFor component used to determine notification parent window
      * @param content notification text content
      * @param options notification selectable options
      * @return displayed notification
      */
-    public static WebNotificationPopup showNotification ( final Component showFor, final String content,
-                                                          final NotificationOption... options )
+    public static WebNotification showNotification ( final Component showFor, final String content, final NotificationOption... options )
     {
         return showNotification ( showFor, new WebLabel ( content ), NotificationIcon.information.getIcon (), options );
     }
@@ -403,14 +444,14 @@ public final class NotificationManager implements SwingConstants
     /**
      * Returns displayed notification.
      *
-     * @param showFor component used to determine window where notification should be displayed
+     * @param showFor component used to determine notification parent window
      * @param content notification text content
      * @param icon    notification icon
      * @param options notification selectable options
      * @return displayed notification
      */
-    public static WebNotificationPopup showNotification ( final Component showFor, final String content, final Icon icon,
-                                                          final NotificationOption... options )
+    public static WebNotification showNotification ( final Component showFor, final String content, final Icon icon,
+                                                     final NotificationOption... options )
     {
         return showNotification ( showFor, new WebLabel ( content ), icon, options );
     }
@@ -422,9 +463,9 @@ public final class NotificationManager implements SwingConstants
      * @param options notification selectable options
      * @return displayed notification
      */
-    public static WebNotificationPopup showNotification ( final Component content, final NotificationOption... options )
+    public static WebNotification showNotification ( final Component content, final NotificationOption... options )
     {
-        return showNotification ( getDefaulShowForWindow (), content, NotificationIcon.information.getIcon (), options );
+        return showNotification ( null, content, NotificationIcon.information.getIcon (), options );
     }
 
     /**
@@ -435,21 +476,20 @@ public final class NotificationManager implements SwingConstants
      * @param options notification selectable options
      * @return displayed notification
      */
-    public static WebNotificationPopup showNotification ( final Component content, final Icon icon, final NotificationOption... options )
+    public static WebNotification showNotification ( final Component content, final Icon icon, final NotificationOption... options )
     {
-        return showNotification ( getDefaulShowForWindow (), content, icon, options );
+        return showNotification ( null, content, icon, options );
     }
 
     /**
      * Returns displayed notification.
      *
-     * @param showFor component used to determine window where notification should be displayed
+     * @param showFor component used to determine notification parent window
      * @param content notification content
      * @param options notification selectable options
      * @return displayed notification
      */
-    public static WebNotificationPopup showNotification ( final Component showFor, final Component content,
-                                                          final NotificationOption... options )
+    public static WebNotification showNotification ( final Component showFor, final Component content, final NotificationOption... options )
     {
         return showNotification ( showFor, content, NotificationIcon.information.getIcon (), options );
     }
@@ -457,16 +497,16 @@ public final class NotificationManager implements SwingConstants
     /**
      * Returns displayed notification.
      *
-     * @param showFor component used to determine window where notification should be displayed
+     * @param showFor component used to determine notification parent window
      * @param content notification content
      * @param icon    notification icon
      * @param options notification selectable options
      * @return displayed notification
      */
-    public static WebNotificationPopup showNotification ( final Component showFor, final Component content, final Icon icon,
-                                                          final NotificationOption... options )
+    public static WebNotification showNotification ( final Component showFor, final Component content, final Icon icon,
+                                                     final NotificationOption... options )
     {
-        final WebNotificationPopup notificationPopup = new WebNotificationPopup ();
+        final WebNotification notificationPopup = new WebNotification ();
         notificationPopup.setIcon ( icon );
         notificationPopup.setContent ( content );
         notificationPopup.setOptions ( options );
@@ -474,13 +514,267 @@ public final class NotificationManager implements SwingConstants
     }
 
     /**
+     * Displays notification in window.
+     *
+     * @param notification notification to display
+     */
+    public static WebNotification showNotification ( final WebNotification notification )
+    {
+        return showNotification ( null, notification );
+    }
+
+    /**
+     * Displays notification in window.
+     *
+     * @param showFor      component used to determine notification parent window
+     * @param notification notification to display
+     */
+    public static WebNotification showNotification ( final Component showFor, final WebNotification notification )
+    {
+        // Notifications caching
+        notificationWindows.put ( notification, SwingUtils.getWindowAncestor ( showFor ) );
+        notification.addPopupListener ( new PopupAdapter ()
+        {
+            @Override
+            public void popupWillBeClosed ()
+            {
+                notificationWindows.remove ( notification );
+                screenLayout.removeWindow ( notification.getWindow () );
+                notification.removePopupListener ( this );
+            }
+        } );
+
+        // Displaying popup
+        notification.showPopup ( showFor, 0, 0 );
+
+        // Adding notification into screen layout
+        screenLayout.addWindow ( notification.getWindow () );
+
+        return notification;
+    }
+
+    /**
+     * Returns displayed notification.
+     *
+     * @param content notification text content
+     * @return displayed notification
+     */
+    public static WebInnerNotification showInnerNotification ( final String content )
+    {
+        return showInnerNotification ( SwingUtils.getAvailableWindow (), new WebLabel ( content ),
+                NotificationIcon.information.getIcon () );
+    }
+
+    /**
+     * Returns displayed notification.
+     *
+     * @param content notification text content
+     * @param icon    notification icon
+     * @return displayed notification
+     */
+    public static WebInnerNotification showInnerNotification ( final String content, final Icon icon )
+    {
+        return showInnerNotification ( SwingUtils.getAvailableWindow (), new WebLabel ( content ), icon );
+    }
+
+    /**
+     * Returns displayed notification.
+     *
+     * @param showFor component used to determine window where notification should be displayed
+     * @param content notification text content
+     * @return displayed notification
+     */
+    public static WebInnerNotification showInnerNotification ( final Component showFor, final String content )
+    {
+        return showInnerNotification ( showFor, new WebLabel ( content ), NotificationIcon.information.getIcon () );
+    }
+
+    /**
+     * Returns displayed notification.
+     *
+     * @param showFor component used to determine window where notification should be displayed
+     * @param content notification text content
+     * @param icon    notification icon
+     * @return displayed notification
+     */
+    public static WebInnerNotification showInnerNotification ( final Component showFor, final String content, final Icon icon )
+    {
+        return showInnerNotification ( showFor, new WebLabel ( content ), icon );
+    }
+
+    /**
+     * Returns displayed notification.
+     *
+     * @param content notification content
+     * @return displayed notification
+     */
+    public static WebInnerNotification showInnerNotification ( final Component content )
+    {
+        return showInnerNotification ( SwingUtils.getAvailableWindow (), content, NotificationIcon.information.getIcon () );
+    }
+
+    /**
+     * Returns displayed notification.
+     *
+     * @param content notification content
+     * @param icon    notification icon
+     * @return displayed notification
+     */
+    public static WebInnerNotification showInnerNotification ( final Component content, final Icon icon )
+    {
+        return showInnerNotification ( SwingUtils.getAvailableWindow (), content, icon );
+    }
+
+    /**
+     * Returns displayed notification.
+     *
+     * @param showFor component used to determine window where notification should be displayed
+     * @param content notification content
+     * @return displayed notification
+     */
+    public static WebInnerNotification showInnerNotification ( final Component showFor, final Component content )
+    {
+        return showInnerNotification ( showFor, content, NotificationIcon.information.getIcon () );
+    }
+
+    /**
+     * Returns displayed notification.
+     *
+     * @param showFor component used to determine window where notification should be displayed
+     * @param content notification content
+     * @param icon    notification icon
+     * @return displayed notification
+     */
+    public static WebInnerNotification showInnerNotification ( final Component showFor, final Component content, final Icon icon )
+    {
+        final WebInnerNotification notificationPopup = new WebInnerNotification ();
+        notificationPopup.setIcon ( icon );
+        notificationPopup.setContent ( content );
+        return showInnerNotification ( showFor, notificationPopup );
+    }
+
+    /**
+     * Returns displayed notification.
+     *
+     * @param content notification text content
+     * @param options notification selectable options
+     * @return displayed notification
+     */
+    public static WebInnerNotification showInnerNotification ( final String content, final NotificationOption... options )
+    {
+        return showInnerNotification ( SwingUtils.getAvailableWindow (), new WebLabel ( content ), NotificationIcon.information.getIcon (),
+                options );
+    }
+
+    /**
+     * Returns displayed notification.
+     *
+     * @param content notification text content
+     * @param icon    notification icon
+     * @param options notification selectable options
+     * @return displayed notification
+     */
+    public static WebInnerNotification showInnerNotification ( final String content, final Icon icon, final NotificationOption... options )
+    {
+        return showInnerNotification ( SwingUtils.getAvailableWindow (), new WebLabel ( content ), icon, options );
+    }
+
+    /**
+     * Returns displayed notification.
+     *
+     * @param showFor component used to determine window where notification should be displayed
+     * @param content notification text content
+     * @param options notification selectable options
+     * @return displayed notification
+     */
+    public static WebInnerNotification showInnerNotification ( final Component showFor, final String content,
+                                                               final NotificationOption... options )
+    {
+        return showInnerNotification ( showFor, new WebLabel ( content ), NotificationIcon.information.getIcon (), options );
+    }
+
+    /**
+     * Returns displayed notification.
+     *
+     * @param showFor component used to determine window where notification should be displayed
+     * @param content notification text content
+     * @param icon    notification icon
+     * @param options notification selectable options
+     * @return displayed notification
+     */
+    public static WebInnerNotification showInnerNotification ( final Component showFor, final String content, final Icon icon,
+                                                               final NotificationOption... options )
+    {
+        return showInnerNotification ( showFor, new WebLabel ( content ), icon, options );
+    }
+
+    /**
+     * Returns displayed notification.
+     *
+     * @param content notification content
+     * @param options notification selectable options
+     * @return displayed notification
+     */
+    public static WebInnerNotification showInnerNotification ( final Component content, final NotificationOption... options )
+    {
+        return showInnerNotification ( SwingUtils.getAvailableWindow (), content, NotificationIcon.information.getIcon (), options );
+    }
+
+    /**
+     * Returns displayed notification.
+     *
+     * @param content notification content
+     * @param icon    notification icon
+     * @param options notification selectable options
+     * @return displayed notification
+     */
+    public static WebInnerNotification showInnerNotification ( final Component content, final Icon icon,
+                                                               final NotificationOption... options )
+    {
+        return showInnerNotification ( SwingUtils.getAvailableWindow (), content, icon, options );
+    }
+
+    /**
+     * Returns displayed notification.
+     *
+     * @param showFor component used to determine window where notification should be displayed
+     * @param content notification content
+     * @param options notification selectable options
+     * @return displayed notification
+     */
+    public static WebInnerNotification showInnerNotification ( final Component showFor, final Component content,
+                                                               final NotificationOption... options )
+    {
+        return showInnerNotification ( showFor, content, NotificationIcon.information.getIcon (), options );
+    }
+
+    /**
+     * Returns displayed notification.
+     *
+     * @param showFor component used to determine window where notification should be displayed
+     * @param content notification content
+     * @param icon    notification icon
+     * @param options notification selectable options
+     * @return displayed notification
+     */
+    public static WebInnerNotification showInnerNotification ( final Component showFor, final Component content, final Icon icon,
+                                                               final NotificationOption... options )
+    {
+        final WebInnerNotification notificationPopup = new WebInnerNotification ();
+        notificationPopup.setIcon ( icon );
+        notificationPopup.setContent ( content );
+        notificationPopup.setOptions ( options );
+        return showInnerNotification ( showFor, notificationPopup );
+    }
+
+    /**
      * Displays notification on popup layer.
      *
      * @param notification notification to display
      */
-    public static WebNotificationPopup showNotification ( final WebNotificationPopup notification )
+    public static WebInnerNotification showInnerNotification ( final WebInnerNotification notification )
     {
-        return showNotification ( getDefaulShowForWindow (), notification );
+        return showInnerNotification ( SwingUtils.getAvailableWindow (), notification );
     }
 
     /**
@@ -489,8 +783,14 @@ public final class NotificationManager implements SwingConstants
      * @param showFor      component used to determine window where notification should be displayed
      * @param notification notification to display
      */
-    public static WebNotificationPopup showNotification ( final Component showFor, final WebNotificationPopup notification )
+    public static WebInnerNotification showInnerNotification ( final Component showFor, final WebInnerNotification notification )
     {
+        // Do not allow notification display without window
+        if ( showFor == null )
+        {
+            throw new RuntimeException ( "There is no visible windows to display inner notification!" );
+        }
+
         // Adding custom layout into notifications
         final PopupLayer popupLayer = PopupManager.getPopupLayer ( showFor );
         if ( !notificationsLayouts.containsKey ( popupLayer ) )
@@ -501,13 +801,13 @@ public final class NotificationManager implements SwingConstants
         }
 
         // Notifications caching
-        notifications.put ( notification, popupLayer );
+        notificationPopups.put ( notification, popupLayer );
         notification.addPopupListener ( new PopupAdapter ()
         {
             @Override
             public void popupWillBeClosed ()
             {
-                notifications.remove ( notification );
+                notificationPopups.remove ( notification );
             }
         } );
 
@@ -515,26 +815,5 @@ public final class NotificationManager implements SwingConstants
         notification.showPopup ( showFor );
 
         return notification;
-    }
-
-    /**
-     * Returns default window where notification should be displayed.
-     *
-     * @return default window where notification should be displayed
-     * @throws RuntimeException in case there is no displayed windows in this application
-     */
-    private static Window getDefaulShowForWindow ()
-    {
-        final Window activeWindow = SwingUtils.getActiveWindow ();
-        if ( activeWindow != null )
-        {
-            return activeWindow;
-        }
-        final Window[] allWindows = Window.getWindows ();
-        if ( allWindows != null && allWindows.length > 0 )
-        {
-            return allWindows[ 0 ];
-        }
-        throw new RuntimeException ( "There is no visible windows to display notification" );
     }
 }

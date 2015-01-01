@@ -36,6 +36,8 @@ import java.util.*;
  *
  * @param <E> custom node type
  * @author Mikle Garin
+ * @see com.alee.extended.tree.WebAsyncTree
+ * @see com.alee.extended.tree.AsyncTreeDataProvider
  */
 
 public class AsyncTreeModel<E extends AsyncUniqueNode> extends WebTreeModel<E>
@@ -43,11 +45,6 @@ public class AsyncTreeModel<E extends AsyncUniqueNode> extends WebTreeModel<E>
     /**
      * todo 1. Add AsyncTreeDataUpdater support
      */
-
-    /**
-     * Cache key for root node.
-     */
-    protected static final String ROOT_CACHE = "root";
 
     /**
      * Lock object for asynchronous tree listeners.
@@ -62,17 +59,17 @@ public class AsyncTreeModel<E extends AsyncUniqueNode> extends WebTreeModel<E>
     /**
      * Asynchronous tree that uses this model.
      */
-    protected WebAsyncTree<E> tree;
+    protected final WebAsyncTree<E> tree;
+
+    /**
+     * Asynchronous tree data provider.
+     */
+    protected final AsyncTreeDataProvider<E> dataProvider;
 
     /**
      * Whether to load childs asynchronously or not.
      */
     protected boolean asyncLoading = true;
-
-    /**
-     * Asynchronous tree data provider.
-     */
-    protected AsyncTreeDataProvider<E> dataProvider;
 
     //    /**
     //     * Data updater for this asynchronous tree.
@@ -314,10 +311,7 @@ public class AsyncTreeModel<E extends AsyncUniqueNode> extends WebTreeModel<E>
             // Clears chld nodes cache
             if ( childs != null )
             {
-                for ( final E child : childs )
-                {
-                    clearNodeChildsCache ( child, true );
-                }
+                clearNodeChildsCache ( childs, true );
             }
         }
     }
@@ -395,6 +389,10 @@ public class AsyncTreeModel<E extends AsyncUniqueNode> extends WebTreeModel<E>
      */
     protected int loadChildsCount ( final E parent )
     {
+        // todo Use when moved to JDK8
+        // final SecondaryLoop loop = Toolkit.getDefaultToolkit ().getSystemEventQueue ().createSecondaryLoop ();
+        // loop.enter/exit
+
         // Checking if the node is busy already
         synchronized ( busyLock )
         {
@@ -412,6 +410,7 @@ public class AsyncTreeModel<E extends AsyncUniqueNode> extends WebTreeModel<E>
         // Firing load started event
         fireChildsLoadStarted ( parent );
 
+        // todo This should actually be called on node reload?
         // Removing all old childs if such exist
         final int childCount = parent.getChildCount ();
         if ( childCount > 0 )
@@ -777,7 +776,8 @@ public class AsyncTreeModel<E extends AsyncUniqueNode> extends WebTreeModel<E>
                 childs = new ArrayList<E> ( 1 );
                 rawNodeChildsCache.put ( parentNode.getId (), childs );
             }
-            childs.add ( childNode );
+            childs.add ( index, childNode );
+            cacheNodeById ( childNode );
         }
 
         // Clearing node cache
@@ -785,10 +785,7 @@ public class AsyncTreeModel<E extends AsyncUniqueNode> extends WebTreeModel<E>
         clearNodeChildsCache ( childNode, false );
 
         // Inserting node
-        super.insertNodeInto ( newChild, parent, index );
-
-        // Adding image observer
-        registerObserver ( childNode );
+        insertNodeIntoImpl ( childNode, parentNode, index );
 
         // Updating parent node sorting and filtering
         updateSortingAndFiltering ( parentNode );
@@ -820,6 +817,7 @@ public class AsyncTreeModel<E extends AsyncUniqueNode> extends WebTreeModel<E>
                 rawNodeChildsCache.put ( parent.getId (), childs );
             }
             childs.addAll ( index, children );
+            cacheNodesById ( children );
         }
 
         // Clearing nodes cache
@@ -831,22 +829,6 @@ public class AsyncTreeModel<E extends AsyncUniqueNode> extends WebTreeModel<E>
 
         // Updating parent node sorting and filtering
         updateSortingAndFiltering ( parent );
-    }
-
-    /**
-     * Inserts a list of child nodes into parent node.
-     * This method is used by model itself to add nodes when they are loaded so it doesn't update raw nodes cache.
-     *
-     * @param children list of new child nodes
-     * @param parent   parent node
-     * @param index    insert index
-     */
-    protected void insertNodesIntoImpl ( final List<E> children, final E parent, final int index )
-    {
-        super.insertNodesInto ( children, parent, index );
-
-        // Adding image observers
-        registerObservers ( children );
     }
 
     /**
@@ -878,6 +860,7 @@ public class AsyncTreeModel<E extends AsyncUniqueNode> extends WebTreeModel<E>
             {
                 childs.add ( index, children[ i ] );
             }
+            cacheNodesById ( Arrays.asList ( children ) );
         }
 
         // Clearing nodes cache
@@ -885,13 +868,55 @@ public class AsyncTreeModel<E extends AsyncUniqueNode> extends WebTreeModel<E>
         clearNodeChildsCache ( children, false );
 
         // Inserting nodes
+        insertNodesIntoImpl ( children, parent, index );
+
+        // Updating parent node sorting and filtering
+        updateSortingAndFiltering ( parent );
+    }
+
+    /**
+     * Inserts a child node into parent node.
+     *
+     * @param child  new child node
+     * @param parent parent node
+     * @param index  insert index
+     */
+    protected void insertNodeIntoImpl ( final E child, final E parent, final int index )
+    {
+        super.insertNodeInto ( child, parent, index );
+
+        // Adding image observers
+        registerObserver ( child );
+    }
+
+    /**
+     * Inserts a list of child nodes into parent node.
+     *
+     * @param children list of new child nodes
+     * @param parent   parent node
+     * @param index    insert index
+     */
+    protected void insertNodesIntoImpl ( final List<E> children, final E parent, final int index )
+    {
         super.insertNodesInto ( children, parent, index );
 
         // Adding image observers
         registerObservers ( children );
+    }
 
-        // Updating parent node sorting and filtering
-        updateSortingAndFiltering ( parent );
+    /**
+     * Inserts an array of child nodes into parent node.
+     *
+     * @param children array of new child nodes
+     * @param parent   parent node
+     * @param index    insert index
+     */
+    protected void insertNodesIntoImpl ( final E[] children, final E parent, final int index )
+    {
+        super.insertNodesInto ( children, parent, index );
+
+        // Adding image observers
+        registerObservers ( children );
     }
 
     /**

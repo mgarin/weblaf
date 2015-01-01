@@ -20,11 +20,16 @@ package com.alee.extended.layout;
 import java.awt.*;
 
 /**
- * User: mgarin Date: 16.05.11 Time: 13:10
+ * @author Mikle Garin
  */
 
-public class VerticalFlowLayout extends FlowLayout
+public class VerticalFlowLayout extends AbstractLayoutManager
 {
+    /**
+     * todo 1. Return possibility to wrap columns?
+     * todo 2. Vertical alignment (in column)?
+     */
+
     /**
      * Description of the Field
      */
@@ -32,6 +37,7 @@ public class VerticalFlowLayout extends FlowLayout
     public final static int MIDDLE = 1;
     public final static int BOTTOM = 2;
 
+    protected int align;
     protected int hgap;
     protected int vgap;
     protected boolean hfill;
@@ -88,9 +94,18 @@ public class VerticalFlowLayout extends FlowLayout
     /**
      * Construct a new VerticalFlowLayout.
      */
+    public VerticalFlowLayout ( final int hgap, final int vgap, final boolean hfill, final boolean vfill )
+    {
+        this ( TOP, hgap, vgap, hfill, vfill );
+    }
+
+    /**
+     * Construct a new VerticalFlowLayout.
+     */
     public VerticalFlowLayout ( final int align, final int hgap, final int vgap, final boolean hfill, final boolean vfill )
     {
-        setAlignment ( align );
+        super ();
+        this.align = align;
         this.hgap = hgap;
         this.vgap = vgap;
         this.hfill = hfill;
@@ -100,20 +115,16 @@ public class VerticalFlowLayout extends FlowLayout
     /**
      * {@inheritDoc}
      */
-    @Override
     public void setHgap ( final int hgap )
     {
-        super.setHgap ( hgap );
         this.hgap = hgap;
     }
 
     /**
      * {@inheritDoc}
      */
-    @Override
     public void setVgap ( final int vgap )
     {
-        super.setVgap ( vgap );
         this.vgap = vgap;
     }
 
@@ -136,7 +147,6 @@ public class VerticalFlowLayout extends FlowLayout
     /**
      * {@inheritDoc}
      */
-    @Override
     public int getHgap ()
     {
         return hgap;
@@ -145,7 +155,6 @@ public class VerticalFlowLayout extends FlowLayout
     /**
      * {@inheritDoc}
      */
-    @Override
     public int getVgap ()
     {
         return vgap;
@@ -166,6 +175,7 @@ public class VerticalFlowLayout extends FlowLayout
     {
         return hfill;
     }
+
 
     /**
      * {@inheritDoc}
@@ -201,7 +211,6 @@ public class VerticalFlowLayout extends FlowLayout
     public Dimension minimumLayoutSize ( final Container target )
     {
         final Dimension tarsiz = new Dimension ( 0, 0 );
-
         for ( int i = 0; i < target.getComponentCount (); i++ )
         {
             final Component m = target.getComponent ( i );
@@ -229,87 +238,68 @@ public class VerticalFlowLayout extends FlowLayout
     public void layoutContainer ( final Container target )
     {
         final Insets insets = target.getInsets ();
-        final int maxheight = target.getSize ().height - ( insets.top + insets.bottom );
-        final int maxwidth = target.getSize ().width - ( insets.left + insets.right );
+        final Dimension size = target.getSize ();
+        final int maxwidth = size.width - ( insets.left + insets.right );
+        final int maxheight = size.height - ( insets.top + insets.bottom );
         final int numcomp = target.getComponentCount ();
-        int x = insets.left;
-        int y = 0;
-        int colw = 0;
-        int start = 0;
+        final int pheight = !vfill && align != TOP ? calculatePreferredHeight ( target ) : 0;
 
+        int y = 0;
         for ( int i = 0; i < numcomp; i++ )
         {
-            final Component m = target.getComponent ( i );
-            if ( m.isVisible () )
+            final Component component = target.getComponent ( i );
+            if ( component.isVisible () )
             {
-                final Dimension d = m.getPreferredSize ();
-                // fit last component to remaining height
-                if ( ( this.vfill ) && ( i == ( numcomp - 1 ) ) )
+                final Dimension ps = component.getPreferredSize ();
+                final int w = hfill ? maxwidth : Math.min ( maxwidth, ps.width );
+                final int h = vfill && i == numcomp - 1 ? maxheight - y : ps.height;
+                if ( vfill )
                 {
-                    d.height = Math.max ( ( maxheight - y ), m.getPreferredSize ().
-                            height );
-                }
-                // fit componenent size to container width
-                if ( this.hfill )
-                {
-                    m.setSize ( maxwidth, d.height );
-                    d.width = maxwidth;
+                    component.setBounds ( insets.left, insets.top + y, w, h );
                 }
                 else
                 {
-                    m.setSize ( d.width, d.height );
-                }
-
-                if ( this.vfill && y + d.height > maxheight )
-                {
-                    placeThem ( target, x, insets.top, colw, maxheight - y, start, i );
-                    y = d.height;
-                    x += hgap + colw;
-                    colw = d.width;
-                    start = i;
-                }
-                else
-                {
-                    if ( y > 0 )
+                    switch ( align )
                     {
-                        y += vgap;
+                        case MIDDLE:
+                        {
+                            component.setBounds ( insets.left, insets.top + maxheight / 2 - pheight / 2 + y, w, ps.height );
+                            break;
+                        }
+                        case BOTTOM:
+                        {
+                            component.setBounds ( insets.left, size.height - insets.bottom - pheight + y, w, ps.height );
+                            break;
+                        }
+                        default:
+                        {
+                            component.setBounds ( insets.left, insets.top + y, w, ps.height );
+                            break;
+                        }
                     }
-                    y += d.height;
-                    colw = Math.max ( colw, d.width );
                 }
+                y += h + vgap;
             }
         }
-        placeThem ( target, x, insets.top, colw, maxheight - y, start, numcomp );
     }
 
     /**
-     * places the components defined by first to last within the target container using the bounds box defined
+     * Calculates preferred height required for components within this layout.
+     *
+     * @param target container to calculate components preferred height for
+     * @return preferred height required for components within this layout
      */
-    protected void placeThem ( final Container target, final int x, int y, final int width, final int height, final int first,
-                               final int last )
+    protected int calculatePreferredHeight ( final Container target )
     {
-        final int align = getAlignment ();
-        //if ( align == this.TOP )
-        //  y = 0;
-        if ( align == MIDDLE )
+        int ph = 0;
+        for ( int i = 0; i < target.getComponentCount (); i++ )
         {
-            y += height / 2;
-        }
-        if ( align == BOTTOM )
-        {
-            y += height;
-        }
-
-        for ( int i = first; i < last; i++ )
-        {
-            final Component m = target.getComponent ( i );
-            final Dimension md = m.getSize ();
-            if ( m.isVisible () )
+            ph += target.getComponent ( i ).getPreferredSize ().height;
+            if ( i < target.getComponentCount () - 1 )
             {
-                final int px = x + ( width - md.width ) / 2;
-                m.setLocation ( px, y );
-                y += vgap + md.height;
+                ph += vgap;
             }
         }
+        return ph;
     }
 }

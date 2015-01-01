@@ -87,6 +87,9 @@ public class WebTreeUI extends BasicTreeUI
     protected Color selectorBorderColor = WebTreeStyle.selectorBorderColor;
     protected int selectorRound = WebTreeStyle.selectorRound;
     protected BasicStroke selectorStroke = WebTreeStyle.selectorStroke;
+    protected boolean webColoredSelection = WebTreeStyle.webColoredSelection;
+    protected Color selectionBorderColor = WebTreeStyle.selectionBorderColor;
+    protected Color selectionBackgroundColor = WebTreeStyle.selectionBackgroundColor;
     protected int dropCellShadeWidth = WebTreeStyle.dropCellShadeWidth;
 
     /**
@@ -115,7 +118,7 @@ public class WebTreeUI extends BasicTreeUI
      * @param c component that will use UI instance
      * @return instance of the WebTreeUI
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebTreeUI ();
@@ -146,6 +149,9 @@ public class WebTreeUI extends BasicTreeUI
         // Use a moderate amount of visible rows by default
         // BasicTreeUI uses 20 rows by default which is too much
         tree.setVisibleRowCount ( 10 );
+
+        // Forces tree to save changes when another tree node is selected instead of cancelling them
+        tree.setInvokesStopCellEditing ( true );
 
         // Orientation change listener
         orientationChangeListener = new PropertyChangeListener ()
@@ -678,7 +684,14 @@ public class WebTreeUI extends BasicTreeUI
      */
     public void setSelectionShadeWidth ( final int shadeWidth )
     {
-        this.selectionShadeWidth = shadeWidth;
+        if ( this.selectionShadeWidth != shadeWidth )
+        {
+            // Saving new selection shade width
+            this.selectionShadeWidth = shadeWidth;
+
+            // Properly updating the whole tree structure since this value might affect renderer's size
+            TreeUtils.updateAllVisibleNodes ( tree );
+        }
     }
 
     /**
@@ -779,6 +792,70 @@ public class WebTreeUI extends BasicTreeUI
     public void setSelectorStroke ( final BasicStroke stroke )
     {
         this.selectorStroke = stroke;
+    }
+
+    /**
+     * Returns whether selection should be web-colored or not.
+     * In case it is not web-colored selectionBackgroundColor value will be used as background color.
+     *
+     * @return true if selection should be web-colored, false otherwise
+     */
+    public boolean isWebColoredSelection ()
+    {
+        return webColoredSelection;
+    }
+
+    /**
+     * Sets whether selection should be web-colored or not.
+     * In case it is not web-colored selectionBackgroundColor value will be used as background color.
+     *
+     * @param webColored whether selection should be web-colored or not
+     */
+    public void setWebColoredSelection ( final boolean webColored )
+    {
+        this.webColoredSelection = webColored;
+    }
+
+    /**
+     * Returns selection border color.
+     *
+     * @return selection border color
+     */
+    public Color getSelectionBorderColor ()
+    {
+        return selectionBorderColor;
+    }
+
+    /**
+     * Sets selection border color.
+     *
+     * @param color selection border color
+     */
+    public void setSelectionBorderColor ( final Color color )
+    {
+        this.selectionBorderColor = color;
+    }
+
+    /**
+     * Returns selection background color.
+     * It is used only when webColoredSelection is set to false.
+     *
+     * @return selection background color
+     */
+    public Color getSelectionBackgroundColor ()
+    {
+        return selectionBackgroundColor;
+    }
+
+    /**
+     * Sets selection background color.
+     * It is used only when webColoredSelection is set to false.
+     *
+     * @param color selection background color
+     */
+    public void setSelectionBackgroundColor ( final Color color )
+    {
+        this.selectionBackgroundColor = color;
     }
 
     /**
@@ -1176,11 +1253,17 @@ public class WebTreeUI extends BasicTreeUI
             final List<Rectangle> selections = getSelectionRects ();
             for ( final Rectangle rect : selections )
             {
+                // Bounds fix
+                rect.x += selectionShadeWidth;
+                rect.y += selectionShadeWidth;
+                rect.width -= selectionShadeWidth * 2 + ( selectionBorderColor != null ? 1 : 0 );
+                rect.height -= selectionShadeWidth * 2 + ( selectionBorderColor != null ? 1 : 0 );
+
+                // Painting selection
                 LafUtils.drawCustomWebBorder ( g2d, tree,
-                        new RoundRectangle2D.Double ( rect.x + selectionShadeWidth, rect.y + selectionShadeWidth,
-                                rect.width - selectionShadeWidth * 2 - 1, rect.height - selectionShadeWidth * 2 - 1, selectionRound * 2,
-                                selectionRound * 2 ), StyleConstants.shadeColor, selectionShadeWidth, true, true
-                );
+                        new RoundRectangle2D.Double ( rect.x, rect.y, rect.width, rect.height, selectionRound * 2, selectionRound * 2 ),
+                        StyleConstants.shadeColor, selectionShadeWidth, true, webColoredSelection, selectionBorderColor,
+                        selectionBorderColor, selectionBackgroundColor );
             }
         }
     }
@@ -1197,15 +1280,18 @@ public class WebTreeUI extends BasicTreeUI
             final Rectangle rect = isFullLineSelection () ? getFullRowBounds ( rolloverRow ) : tree.getRowBounds ( rolloverRow );
             if ( rect != null )
             {
+                // Bounds fix
                 rect.x += selectionShadeWidth;
                 rect.y += selectionShadeWidth;
-                rect.width -= selectionShadeWidth * 2 + 1;
-                rect.height -= selectionShadeWidth * 2 + 1;
+                rect.width -= selectionShadeWidth * 2 + ( selectionBorderColor != null ? 1 : 0 );
+                rect.height -= selectionShadeWidth * 2 + ( selectionBorderColor != null ? 1 : 0 );
 
+                // Painting transparent node selection
                 final Composite old = GraphicsUtils.setupAlphaComposite ( g2d, 0.35f );
                 LafUtils.drawCustomWebBorder ( g2d, tree,
                         new RoundRectangle2D.Double ( rect.x, rect.y, rect.width, rect.height, selectionRound * 2, selectionRound * 2 ),
-                        StyleConstants.shadeColor, selectionShadeWidth, true, true );
+                        StyleConstants.shadeColor, selectionShadeWidth, true, webColoredSelection, selectionBorderColor,
+                        selectionBorderColor, selectionBackgroundColor );
                 GraphicsUtils.restoreComposite ( g2d, old );
             }
         }
@@ -1516,5 +1602,15 @@ public class WebTreeUI extends BasicTreeUI
         {
             return new Rectangle2D.Double ( sb.x + shear, sb.y + shear, sb.width - shear, sb.height - shear );
         }
+    }
+
+    /**
+     * Returns tree cell renderer pane.
+     *
+     * @return tree cell renderer pane
+     */
+    public CellRendererPane getCellRendererPane ()
+    {
+        return rendererPane;
     }
 }

@@ -20,15 +20,21 @@ package com.alee.utils;
 import com.alee.global.GlobalConstants;
 import com.alee.global.StyleConstants;
 import com.alee.managers.language.LanguageManager;
+import com.alee.managers.log.Log;
 import com.alee.managers.proxy.ProxyManager;
+import com.alee.utils.compare.Filter;
 import com.alee.utils.file.FileDescription;
 import com.alee.utils.file.FileDownloadListener;
+import com.alee.utils.file.SystemFileListener;
 import com.alee.utils.filefilter.AbstractFileFilter;
 import com.alee.utils.filefilter.CustomFileFilter;
+import com.alee.utils.swing.WebTimer;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileSystemView;
 import javax.swing.text.JTextComponent;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.*;
 import java.math.BigInteger;
 import java.net.URL;
@@ -52,7 +58,6 @@ public final class FileUtils
 {
     /**
      * todo 1. File.exists doesn't work in JDK7? Probably should add workaround for that?
-     *
      */
 
     /**
@@ -178,6 +183,11 @@ public final class FileUtils
     private static final Map<String, ImageIcon> resourceIconsCache = new HashMap<String, ImageIcon> ();
 
     /**
+     * Default file tracking updates delay.
+     */
+    private static final int FILE_TRACKING_DELAY = 5000;
+
+    /**
      * Clears all caches for specified files.
      *
      * @param files files to process
@@ -251,9 +261,7 @@ public final class FileUtils
      */
     public static String getRelativePath ( final File file, final File folder )
     {
-        final String filePath = canonicalPath ( file );
-        final String folderPath = canonicalPath ( folder );
-        return filePath.startsWith ( folderPath ) ? filePath.substring ( folderPath.length () + 1 ) : filePath;
+        return folder.toURI ().relativize ( file.toURI () ).getPath ();
     }
 
     /**
@@ -315,7 +323,7 @@ public final class FileUtils
         }
         catch ( final Throwable e )
         {
-            e.printStackTrace ();
+            Log.error ( FileUtils.class, e );
             return false;
         }
     }
@@ -394,6 +402,25 @@ public final class FileUtils
             }
         }
         return properRoots;
+    }
+
+    /**
+     * Returns directory files array or empty array (instead of null) if no files present.
+     *
+     * @param directory  directory to look into
+     * @param fileFilter file filter
+     * @return directory files array or empty array (instead of null) if no files present
+     */
+    public static File[] listFiles ( final File directory, final Filter<File> fileFilter )
+    {
+        return listFiles ( directory, new FileFilter ()
+        {
+            @Override
+            public boolean accept ( final File file )
+            {
+                return fileFilter.accept ( file );
+            }
+        } );
     }
 
     /**
@@ -1604,11 +1631,11 @@ public final class FileUtils
         }
         catch ( final FileNotFoundException e )
         {
-            e.printStackTrace ();
+            Log.error ( FileUtils.class, e );
         }
         catch ( final UnsupportedEncodingException e )
         {
-            e.printStackTrace ();
+            Log.error ( FileUtils.class, e );
         }
         finally
         {
@@ -1885,7 +1912,7 @@ public final class FileUtils
         }
         catch ( final Throwable e )
         {
-            e.printStackTrace ();
+            Log.error ( FileUtils.class, e );
             return -1;
         }
     }
@@ -1909,7 +1936,7 @@ public final class FileUtils
         }
         catch ( final Throwable e )
         {
-            e.printStackTrace ();
+            Log.error ( FileUtils.class, e );
             return -1;
         }
     }
@@ -2792,5 +2819,51 @@ public final class FileUtils
             resourceIconsCache.put ( key, icon );
             return icon;
         }
+    }
+
+    /**
+     * Starts tracking file for possible changes.
+     *
+     * @param listener system file listener
+     */
+    public static WebTimer trackFile ( final File file, final SystemFileListener listener )
+    {
+        return trackFile ( file, listener, FILE_TRACKING_DELAY );
+    }
+
+    /**
+     * Starts tracking file for possible changes.
+     *
+     * @param listener system file listener
+     * @param delay    delay between checks for changes
+     */
+    public static WebTimer trackFile ( final File file, final SystemFileListener listener, final long delay )
+    {
+        final WebTimer tracker = new WebTimer ( "File tracker - " + file.getName (), delay, 0 );
+        tracker.addActionListener ( new ActionListener ()
+        {
+            private Long lastModified = null;
+
+            @Override
+            public void actionPerformed ( final ActionEvent e )
+            {
+                if ( file.exists () )
+                {
+                    final long lm = file.lastModified ();
+                    if ( lastModified != lm )
+                    {
+                        listener.modified ( file );
+                        lastModified = lm;
+                    }
+                }
+                else
+                {
+                    listener.unbound ( file );
+                    tracker.stop ();
+                }
+            }
+        } );
+        tracker.setUseDaemonThread ( true );
+        return tracker;
     }
 }

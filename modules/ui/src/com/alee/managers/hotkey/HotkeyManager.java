@@ -45,7 +45,7 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public final class HotkeyManager
+public class HotkeyManager
 {
     /**
      * Synchronization object.
@@ -80,7 +80,7 @@ public final class HotkeyManager
     /**
      * Initializes hotkey manager.
      */
-    public static void initialize ()
+    public static synchronized void initialize ()
     {
         if ( !initialized )
         {

@@ -24,13 +24,24 @@ import com.alee.managers.language.LanguageManager;
 import com.alee.utils.SwingUtils;
 
 /**
+ * Default WebLaF system proxy detection confirm dialog support.
+ *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-ProxyManager">How to use ProxyManager</a>
+ * @see com.alee.managers.proxy.ProxyManager
+ * @see com.alee.managers.proxy.SystemProxyConfirmationSupport
  */
 
 public class WebSystemProxyConfirmationSupport implements SystemProxyConfirmationSupport
 {
+    /**
+     * UI elements.
+     */
     private WebCheckBox alwaysDoTheSame;
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean shouldUseSystemProxy ()
     {
@@ -51,6 +62,9 @@ public class WebSystemProxyConfirmationSupport implements SystemProxyConfirmatio
         return dialog.getResult () == WebOptionPane.YES_OPTION;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean alwaysDoTheSame ()
     {

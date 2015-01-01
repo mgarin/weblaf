@@ -91,6 +91,23 @@ public final class WebTreeStyle
             new BasicStroke ( 1, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 0f, new float[]{ 3f, 3f }, 0f );
 
     /**
+     * Whether selection should be web-colored or not.
+     * In case it is not web-colored selectionBackgroundColor value will be used as background color.
+     */
+    public static boolean webColoredSelection = true;
+
+    /**
+     * Selection border color.
+     */
+    public static Color selectionBorderColor = Color.GRAY;
+
+    /**
+     * Selection background color.
+     * It is used only when webColoredSelection is set to false.
+     */
+    public static Color selectionBackgroundColor = StyleConstants.bottomBgColor;
+
+    /**
      * Drop cell highlight shade width.
      */
     public static int dropCellShadeWidth = 8;

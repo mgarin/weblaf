@@ -18,6 +18,7 @@
 package com.alee.laf.rootpane;
 
 import com.alee.laf.WebLookAndFeel;
+import com.alee.managers.log.Log;
 import com.alee.utils.ReflectUtils;
 
 import javax.swing.*;
@@ -47,9 +48,9 @@ public class WebRootPane extends JRootPane
             {
                 setUI ( ( WebRootPaneUI ) ReflectUtils.createInstance ( WebLookAndFeel.rootPaneUI ) );
             }
-            catch ( Throwable e )
+            catch ( final Throwable e )
             {
-                e.printStackTrace ();
+                Log.error ( this, e );
                 setUI ( new WebRootPaneUI () );
             }
         }

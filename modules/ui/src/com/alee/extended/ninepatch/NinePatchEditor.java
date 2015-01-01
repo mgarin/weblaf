@@ -2004,13 +2004,59 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
      * {@inheritDoc}
      */
     @Override
+    public int getMaximumWidth ()
+    {
+        return SizeUtils.getMaximumWidth ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public NinePatchEditor setMaximumWidth ( final int maximumWidth )
+    {
+        return SizeUtils.setMaximumWidth ( this, maximumWidth );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int getMaximumHeight ()
+    {
+        return SizeUtils.getMaximumHeight ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public NinePatchEditor setMaximumHeight ( final int maximumHeight )
+    {
+        return SizeUtils.setMaximumHeight ( this, maximumHeight );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Dimension getPreferredSize ()
     {
         return SizeUtils.getPreferredSize ( this, getActualPreferredSize () );
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public NinePatchEditor setPreferredSize ( final int width, final int height )
+    {
+        return SizeUtils.setPreferredSize ( this, width, height );
+    }
+
     public Dimension getActualPreferredSize ()
     {
+        // todo Should be in L&F for NinePatchEditor
         final boolean imageExists = ninePatchImage != null;
         final int iw = imageExists ? ( ninePatchImage.getWidth () + 2 ) * zoom : 400;
         final int ih = imageExists ? ( ninePatchImage.getHeight () + 2 ) * zoom : 400;

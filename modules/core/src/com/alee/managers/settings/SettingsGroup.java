@@ -166,6 +166,17 @@ public class SettingsGroup implements Serializable
     }
 
     /**
+     * Removes settings saved under the specified key.
+     *
+     * @param key settings key
+     * @return settings previously saved under the specified key
+     */
+    public Object remove ( final String key )
+    {
+        return getSettings ().remove ( key );
+    }
+
+    /**
      * Puts value under the specified key.
      *
      * @param key    key

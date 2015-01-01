@@ -25,12 +25,15 @@ import com.alee.managers.style.skin.web.PopupStyle;
 import com.alee.managers.style.skin.web.WebPopOverPainter;
 import com.alee.managers.style.skin.web.WebPopupPainter;
 import com.alee.utils.CollectionUtils;
+import com.alee.utils.EventUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.laf.Styleable;
+import com.alee.utils.swing.AncestorAdapter;
 import com.alee.utils.swing.DataProvider;
 import com.alee.utils.swing.WindowFollowAdapter;
 
 import javax.swing.*;
+import javax.swing.event.AncestorEvent;
 import java.awt.*;
 import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
@@ -50,7 +53,7 @@ import java.util.List;
  * @see PopOverAlignment
  */
 
-public class WebPopOver extends WebDialog implements Styleable
+public class WebPopOver extends WebDialog implements Styleable, PopOverEventMethods
 {
     /**
      * todo 1. Fix directional WebPopOver location when dragged to/from secondary screen
@@ -248,7 +251,7 @@ public class WebPopOver extends WebDialog implements Styleable
                     attached = false;
                     preferredDirection = null;
                     setPopupStyle ( PopupStyle.simple );
-                    firePopOverDetached ();
+                    fireDetached ();
                 }
 
                 super.mouseDragged ( e );
@@ -278,7 +281,7 @@ public class WebPopOver extends WebDialog implements Styleable
             @Override
             public void popOverClosed ()
             {
-                firePopOverClosed ();
+                fireClosed ();
             }
         };
         addComponentListener ( closeListener );
@@ -771,7 +774,7 @@ public class WebPopOver extends WebDialog implements Styleable
      */
     public WebPopOver show ( final Component invoker )
     {
-        return show ( invoker, PopOverDirection.down );
+        return show ( invoker, preferredDirection );
     }
 
     /**
@@ -814,7 +817,7 @@ public class WebPopOver extends WebDialog implements Styleable
      */
     public WebPopOver show ( final Component invoker, final int x, final int y )
     {
-        return show ( invoker, x, y, PopOverDirection.down );
+        return show ( invoker, x, y, preferredDirection );
     }
 
     /**
@@ -865,7 +868,7 @@ public class WebPopOver extends WebDialog implements Styleable
      */
     public WebPopOver show ( final Component invoker, final int x, final int y, final int w, final int h )
     {
-        return show ( invoker, x, y, w, h, PopOverDirection.down );
+        return show ( invoker, x, y, w, h, preferredDirection );
     }
 
     /**
@@ -925,7 +928,7 @@ public class WebPopOver extends WebDialog implements Styleable
      */
     public WebPopOver show ( final Component invoker, final DataProvider<Rectangle> boundsProvider )
     {
-        return show ( invoker, boundsProvider, PopOverDirection.down );
+        return show ( invoker, boundsProvider, preferredDirection );
     }
 
     /**
@@ -957,6 +960,13 @@ public class WebPopOver extends WebDialog implements Styleable
     public WebPopOver show ( final Component invoker, final DataProvider<Rectangle> boundsProvider, final PopOverDirection direction,
                              final PopOverAlignment alignment )
     {
+        // Fire reopened event
+        // This event is fired before any show operation repeated
+        if ( isShowing () )
+        {
+            fireReopened ();
+        }
+
         // Translating coordinates into screen coordinates system
         final DataProvider<Rectangle> actualBoundsProvider = boundsProvider == null ? null : new DataProvider<Rectangle> ()
         {
@@ -980,7 +990,7 @@ public class WebPopOver extends WebDialog implements Styleable
 
         // Updating WebPopOver variables
         attached = true;
-        preferredDirection = direction;
+        preferredDirection = direction != null ? direction : PopOverDirection.down;
         preferredAlignment = alignment;
 
         // Updating dialog location on screen and size
@@ -990,6 +1000,12 @@ public class WebPopOver extends WebDialog implements Styleable
 
         // Displaying dialog
         setVisible ( true );
+
+        // Fire opened event
+        // Note that if this pop-over is modal this event will be fired only after it is closed
+        // Unfortunately there is no good way to provide this event after dialog is opened but before it is closed in that case
+        fireOpened ();
+
         return this;
     }
 
@@ -1137,6 +1153,35 @@ public class WebPopOver extends WebDialog implements Styleable
         };
         invoker.addComponentListener ( invokerAdapter );
 
+        final AncestorAdapter ancestorAdapter;
+        if ( invoker instanceof JComponent )
+        {
+            ancestorAdapter = new AncestorAdapter ()
+            {
+                @Override
+                public void ancestorMoved ( final AncestorEvent event )
+                {
+                    if ( attached )
+                    {
+                        updatePopOverLocation ( invoker, invokerBoundsProvider );
+                        windowFollowAdapter.updateLastLocation ();
+                    }
+                }
+
+                // todo Probably hide WebPopOver in some cases here?
+                //                @Override
+                //                public void ancestorRemoved ( final AncestorEvent event )
+                //                {
+                //                    super.ancestorRemoved ( event );
+                //                }
+            };
+            ( ( JComponent ) invoker ).addAncestorListener ( ancestorAdapter );
+        }
+        else
+        {
+            ancestorAdapter = null;
+        }
+
         // WebPopOver orientation change listener
         final PropertyChangeListener orientationListener = new PropertyChangeListener ()
         {
@@ -1153,12 +1198,27 @@ public class WebPopOver extends WebDialog implements Styleable
         addPopOverListener ( new PopOverAdapter ()
         {
             @Override
-            public void popOverClosed ()
+            public void reopened ( final WebPopOver popOver )
+            {
+                destroy ();
+            }
+
+            @Override
+            public void closedWebPopOver ( final WebPopOver popOver )
+            {
+                destroy ();
+            }
+
+            protected void destroy ()
             {
                 removePopOverListener ( this );
                 invokerWindow.removeComponentListener ( invokerWindowAdapter );
                 invokerWindow.removeComponentListener ( windowFollowAdapter );
                 invoker.removeComponentListener ( invokerAdapter );
+                if ( invoker instanceof JComponent )
+                {
+                    ( ( JComponent ) invoker ).removeAncestorListener ( ancestorAdapter );
+                }
                 removePropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, orientationListener );
             }
         } );
@@ -1480,24 +1540,82 @@ public class WebPopOver extends WebDialog implements Styleable
     }
 
     /**
-     * Informs that this pop-over was detached from invoker component.
+     * Informs that WebPopOver was opened.
      */
-    public void firePopOverDetached ()
+    public void fireOpened ()
     {
         for ( final PopOverListener listener : CollectionUtils.copy ( popOverListeners ) )
         {
-            listener.popOverDetached ();
+            listener.opened ( this );
         }
     }
 
     /**
-     * Informs that this pop-over was closed.
+     * Informs that WebPopOver.show was called while it was opened forcing it to update location.
      */
-    public void firePopOverClosed ()
+    public void fireReopened ()
     {
         for ( final PopOverListener listener : CollectionUtils.copy ( popOverListeners ) )
         {
-            listener.popOverClosed ();
+            listener.reopened ( this );
         }
+    }
+
+    /**
+     * Informs that user dragged WebPopOver so that it became unattached from invoker component.
+     */
+    public void fireDetached ()
+    {
+        for ( final PopOverListener listener : CollectionUtils.copy ( popOverListeners ) )
+        {
+            listener.detached ( this );
+        }
+    }
+
+    /**
+     * Informs that WebPopOver was closed due to losing focus or some other cause.
+     */
+    public void fireClosed ()
+    {
+        for ( final PopOverListener listener : CollectionUtils.copy ( popOverListeners ) )
+        {
+            listener.closedWebPopOver ( this );
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public PopOverAdapter onOpen ( final PopOverEventRunnable runnable )
+    {
+        return EventUtils.onOpen ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public PopOverAdapter onReopen ( final PopOverEventRunnable runnable )
+    {
+        return EventUtils.onReopen ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public PopOverAdapter onDetach ( final PopOverEventRunnable runnable )
+    {
+        return EventUtils.onDetach ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public PopOverAdapter onClose ( final PopOverEventRunnable runnable )
+    {
+        return EventUtils.onClose ( this, runnable );
     }
 }

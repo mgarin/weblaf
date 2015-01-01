@@ -75,7 +75,7 @@ public class WebTextFieldUI extends BasicTextFieldUI implements ShapeProvider, S
     private PropertyChangeListener marginChangeListener;
     private ComponentAdapter componentResizeListener;
 
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebTextFieldUI ();
@@ -180,6 +180,18 @@ public class WebTextFieldUI extends BasicTextFieldUI implements ShapeProvider, S
         this.textField = null;
 
         super.uninstallUI ( c );
+    }
+
+    @Override
+    protected void propertyChange ( final PropertyChangeEvent evt )
+    {
+        super.propertyChange ( evt );
+
+        if ( evt.getPropertyName ().equals ( WebLookAndFeel.ENABLED_PROPERTY ) )
+        {
+            SwingUtils.setEnabledRecursively ( leadingComponent, textField.isEnabled () );
+            SwingUtils.setEnabledRecursively ( trailingComponent, textField.isEnabled () );
+        }
     }
 
     @Override

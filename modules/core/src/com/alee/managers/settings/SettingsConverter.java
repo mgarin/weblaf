@@ -17,7 +17,7 @@
 
 package com.alee.managers.settings;
 
-import com.alee.log.Log;
+import com.alee.managers.log.Log;
 import com.alee.utils.xml.XMLChar;
 import com.thoughtworks.xstream.converters.MarshallingContext;
 import com.thoughtworks.xstream.converters.UnmarshallingContext;
@@ -179,7 +179,7 @@ public class SettingsConverter extends ReflectionConverter
                 }
                 catch ( final Throwable e )
                 {
-                    if ( SettingsManager.isDisplayExceptions () )
+                    if ( SettingsManager.isLoggingEnabled () )
                     {
                         Log.error ( this, "Unable to load settings entry for group \"" +
                                 settingsGroup.getName () + "\" under key \"" + key + "\" due to unexpected exception:", e );

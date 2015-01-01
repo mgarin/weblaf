@@ -45,7 +45,7 @@ import java.util.WeakHashMap;
  * @see com.alee.managers.style.data.SkinInfo
  */
 
-public final class StyleManager
+public class StyleManager
 {
     /**
      * todo 1. Probably add "setCustomUIStyle" to override settings provided by skin
@@ -73,14 +73,14 @@ public final class StyleManager
      * Used to determine skinnable components, update them properly and detect their current skin.
      * Map structure: JComponent -> WebLafSkin
      */
-    private static final Map<JComponent, WebLafSkin> appliedSkins = new WeakHashMap<JComponent, WebLafSkin> ();
+    protected static final Map<JComponent, WebLafSkin> appliedSkins = new WeakHashMap<JComponent, WebLafSkin> ();
 
     /**
      * Custom painter properties.
      * These properties may be specified for each separate component.
      * Map structure: JComponent -> painterId -> propertyName -> propertyValue
      */
-    private static final Map<JComponent, Map<String, Map<String, Object>>> customPainterProperties =
+    protected static final Map<JComponent, Map<String, Map<String, Object>>> customPainterProperties =
             new WeakHashMap<JComponent, Map<String, Map<String, Object>>> ();
 
     /**
@@ -88,20 +88,20 @@ public final class StyleManager
      * These are the painters set from the code and they replace default painters provided by skin.
      * Map structure: JComponent -> Painter ID -> Painter
      */
-    private static final Map<JComponent, Map<String, Painter>> customPainters = new WeakHashMap<JComponent, Map<String, Painter>> ();
+    protected static final Map<JComponent, Map<String, Painter>> customPainters = new WeakHashMap<JComponent, Map<String, Painter>> ();
 
     /**
      * Default WebLaF skin.
      * Skin used by default when no other skins provided.
      * This skin can be set before WebLaF initialization to avoid unnecessary UI updates afterwards.
      */
-    private static WebLafSkin defaultSkin = null;
+    protected static WebLafSkin defaultSkin = null;
 
     /**
      * Currently used skin.
      * This skin is applied to all newly created components styled by WebLaF except customized ones.
      */
-    private static WebLafSkin currentSkin = null;
+    protected static WebLafSkin currentSkin = null;
 
     /**
      * Whether strict style checks are enabled or not.
@@ -111,17 +111,17 @@ public final class StyleManager
      * <p/>
      * It is highly recommended to keep this property enabled to see and fix all problems right away.
      */
-    private static boolean strictStyleChecks = true;
+    protected static boolean strictStyleChecks = true;
 
     /**
      * Manager initialization mark.
      */
-    private static boolean initialized = false;
+    protected static boolean initialized = false;
 
     /**
      * Initializes StyleManager settings.
      */
-    public static void initialize ()
+    public static synchronized void initialize ()
     {
         if ( !initialized )
         {
@@ -157,7 +157,7 @@ public final class StyleManager
      *
      * @param skin skin to check
      */
-    private static void checkSupport ( final WebLafSkin skin )
+    protected static void checkSupport ( final WebLafSkin skin )
     {
         if ( skin == null )
         {
@@ -213,7 +213,14 @@ public final class StyleManager
      */
     public static WebLafSkin createSkin ( final Class skinClass )
     {
-        return ( WebLafSkin ) ReflectUtils.createInstanceSafely ( skinClass );
+        try
+        {
+            return ( WebLafSkin ) ReflectUtils.createInstance ( skinClass );
+        }
+        catch ( final Throwable e )
+        {
+            throw new StyleException ( "Unable to initialize skin from its class", e );
+        }
     }
 
     /**

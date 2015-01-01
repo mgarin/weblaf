@@ -19,6 +19,8 @@ package com.alee.managers.drag;
 
 import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
+import java.awt.dnd.DragSourceDragEvent;
+import java.awt.dnd.DragSourceDropEvent;
 import java.awt.image.BufferedImage;
 
 /**
@@ -39,17 +41,30 @@ public interface DragViewHandler<T>
 
     /**
      * Returns image object representation.
+     * This method is called once per drag operation to initialize dragged object view.
      *
      * @param object object to create image representation for
+     * @param event  drag source drag event
      * @return image object representation
      */
-    public BufferedImage getView ( T object );
+    public BufferedImage getView ( T object, DragSourceDragEvent event );
 
     /**
      * Returns image object representation location relative to mouse location.
+     * This method is called each time image location should be updated.
      *
      * @param object object return image representation location for
+     * @param event  drag source drag event
      * @return image object representation location relative to mouse location
      */
-    public Point getViewRelativeLocation ( T object );
+    public Point getViewRelativeLocation ( T object, DragSourceDragEvent event );
+
+    /**
+     * Notifies about drag operation end.
+     * This method is called once per drag operation.
+     *
+     * @param object dragged object
+     * @param event  drag source drop event
+     */
+    public void dragEnded ( T object, DragSourceDropEvent event );
 }

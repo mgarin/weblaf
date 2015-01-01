@@ -19,6 +19,7 @@ package com.alee.extended.checkbox;
 
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.checkbox.WebCheckBox;
+import com.alee.managers.log.Log;
 import com.alee.utils.ReflectUtils;
 
 import javax.swing.*;
@@ -336,7 +337,7 @@ public class WebTristateCheckBox extends WebCheckBox
             }
             catch ( final Throwable e )
             {
-                e.printStackTrace ();
+                Log.error ( this, e );
                 setUI ( new WebTristateCheckBoxUI () );
             }
         }

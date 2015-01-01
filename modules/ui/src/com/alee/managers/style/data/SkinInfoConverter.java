@@ -17,6 +17,7 @@
 
 package com.alee.managers.style.data;
 
+import com.alee.managers.log.Log;
 import com.alee.managers.style.StyleException;
 import com.alee.managers.style.StyleManager;
 import com.alee.managers.style.SupportedComponent;
@@ -223,6 +224,7 @@ public class SkinInfoConverter extends ReflectionConverter
      */
     protected SkinInfo loadSkinInfo ( final ResourceFile resourceFile )
     {
+        // todo Exceptions are not caught here for some reason (probably XStream blocks this somehow)
         try
         {
             final Map<String, String> nearClassMap = resourceMap.get ( resourceFile.getClassName () );
@@ -245,8 +247,7 @@ public class SkinInfoConverter extends ReflectionConverter
         }
         catch ( final Throwable e )
         {
-            // todo Exceptions are not caught here for some reason (probably XStream blocks this somehow)
-            e.printStackTrace ();
+            Log.error ( this, e );
             return null;
         }
     }

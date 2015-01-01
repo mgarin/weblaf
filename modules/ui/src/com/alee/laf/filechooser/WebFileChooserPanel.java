@@ -71,9 +71,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.FileFilter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
+import java.util.*;
 import java.util.List;
 
 /**
@@ -1016,6 +1014,7 @@ public class WebFileChooserPanel extends WebPanel
         this.viewType = viewType;
 
         // Updating view component and selection
+        final int dividerLocation = centralSplit.getDividerLocation ();
         switch ( viewType )
         {
             case icons:
@@ -1055,6 +1054,7 @@ public class WebFileChooserPanel extends WebPanel
                 break;
             }
         }
+        centralSplit.setDividerLocation ( dividerLocation );
         centralSplit.revalidate ();
     }
 
@@ -1230,9 +1230,13 @@ public class WebFileChooserPanel extends WebPanel
         {
             fileTable.setSelectedFile ( file );
         }
-        if ( !file.exists () )
+        if ( file != null && !file.exists () )
         {
             updateSelectedFilesFieldImpl ( Arrays.asList ( file ) );
+        }
+        else
+        {
+            updateSelectedFilesFieldImpl ( Collections.EMPTY_LIST );
         }
     }
 
@@ -1893,7 +1897,7 @@ public class WebFileChooserPanel extends WebPanel
         if ( text == null )
         {
             setApproveButtonText ( chooserType == FileChooserType.save ? FileApproveText.save :
-                    ( chooserType == FileChooserType.open ? FileApproveText.open : FileApproveText.choose ) );
+                    chooserType == FileChooserType.open ? FileApproveText.open : FileApproveText.choose );
         }
         else
         {

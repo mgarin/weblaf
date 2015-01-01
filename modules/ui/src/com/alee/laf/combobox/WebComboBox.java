@@ -18,27 +18,34 @@
 package com.alee.laf.combobox;
 
 import com.alee.laf.WebLookAndFeel;
+import com.alee.managers.hotkey.HotkeyData;
+import com.alee.managers.language.data.TooltipWay;
+import com.alee.managers.log.Log;
 import com.alee.managers.settings.DefaultValue;
 import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.settings.SettingsMethods;
 import com.alee.managers.settings.SettingsProcessor;
-import com.alee.utils.CompareUtils;
-import com.alee.utils.ReflectUtils;
-import com.alee.utils.SizeUtils;
-import com.alee.utils.SwingUtils;
+import com.alee.managers.tooltip.ToolTipMethods;
+import com.alee.managers.tooltip.TooltipManager;
+import com.alee.managers.tooltip.WebCustomTooltip;
+import com.alee.utils.*;
 import com.alee.utils.laf.ShapeProvider;
-import com.alee.utils.swing.FontMethods;
-import com.alee.utils.swing.SizeMethods;
+import com.alee.utils.swing.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.FocusAdapter;
+import java.awt.event.KeyAdapter;
+import java.awt.event.MouseAdapter;
+import java.util.List;
 import java.util.Vector;
 
 /**
- * User: mgarin Date: 28.06.11 Time: 1:11
+ * @author Mikle Garin
  */
 
-public class WebComboBox extends JComboBox implements ShapeProvider, SettingsMethods, FontMethods<WebComboBox>, SizeMethods<WebComboBox>
+public class WebComboBox extends JComboBox
+        implements ShapeProvider, EventMethods, ToolTipMethods, SettingsMethods, FontMethods<WebComboBox>, SizeMethods<WebComboBox>
 {
     public WebComboBox ()
     {
@@ -175,6 +182,26 @@ public class WebComboBox extends JComboBox implements ShapeProvider, SettingsMet
         getWebUI ().setDrawBorder ( drawBorder );
     }
 
+    public boolean isWebColoredBackground ()
+    {
+        return getWebUI ().isWebColoredBackground ();
+    }
+
+    public void setWebColoredBackground ( final boolean webColored )
+    {
+        getWebUI ().setWebColoredBackground ( webColored );
+    }
+
+    public Color getExpandedBgColor ()
+    {
+        return getWebUI ().getExpandedBgColor ();
+    }
+
+    public void setExpandedBgColor ( final Color color )
+    {
+        getWebUI ().setExpandedBgColor ( color );
+    }
+
     public boolean isDrawFocus ()
     {
         return getWebUI ().isDrawFocus ();
@@ -242,7 +269,7 @@ public class WebComboBox extends JComboBox implements ShapeProvider, SettingsMet
             }
             catch ( final Throwable e )
             {
-                e.printStackTrace ();
+                Log.error ( this, e );
                 setUI ( new WebComboBoxUI () );
             }
         }
@@ -253,8 +280,382 @@ public class WebComboBox extends JComboBox implements ShapeProvider, SettingsMet
     }
 
     /**
-     * Settings methods
+     * {@inheritDoc}
      */
+    @Override
+    public MouseAdapter onMousePress ( final MouseEventRunnable runnable )
+    {
+        return EventUtils.onMousePress ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MouseAdapter onMousePress ( final MouseButton mouseButton, final MouseEventRunnable runnable )
+    {
+        return EventUtils.onMousePress ( this, mouseButton, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MouseAdapter onMouseEnter ( final MouseEventRunnable runnable )
+    {
+        return EventUtils.onMouseEnter ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MouseAdapter onMouseExit ( final MouseEventRunnable runnable )
+    {
+        return EventUtils.onMouseExit ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MouseAdapter onMouseDrag ( final MouseEventRunnable runnable )
+    {
+        return EventUtils.onMouseDrag ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MouseAdapter onMouseDrag ( final MouseButton mouseButton, final MouseEventRunnable runnable )
+    {
+        return EventUtils.onMouseDrag ( this, mouseButton, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MouseAdapter onMouseClick ( final MouseEventRunnable runnable )
+    {
+        return EventUtils.onMouseClick ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MouseAdapter onMouseClick ( final MouseButton mouseButton, final MouseEventRunnable runnable )
+    {
+        return EventUtils.onMouseClick ( this, mouseButton, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MouseAdapter onDoubleClick ( final MouseEventRunnable runnable )
+    {
+        return EventUtils.onDoubleClick ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MouseAdapter onMenuTrigger ( final MouseEventRunnable runnable )
+    {
+        return EventUtils.onMenuTrigger ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public KeyAdapter onKeyType ( final KeyEventRunnable runnable )
+    {
+        return EventUtils.onKeyType ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public KeyAdapter onKeyType ( final HotkeyData hotkey, final KeyEventRunnable runnable )
+    {
+        return EventUtils.onKeyType ( this, hotkey, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public KeyAdapter onKeyPress ( final KeyEventRunnable runnable )
+    {
+        return EventUtils.onKeyPress ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public KeyAdapter onKeyPress ( final HotkeyData hotkey, final KeyEventRunnable runnable )
+    {
+        return EventUtils.onKeyPress ( this, hotkey, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public KeyAdapter onKeyRelease ( final KeyEventRunnable runnable )
+    {
+        return EventUtils.onKeyRelease ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public KeyAdapter onKeyRelease ( final HotkeyData hotkey, final KeyEventRunnable runnable )
+    {
+        return EventUtils.onKeyRelease ( this, hotkey, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public FocusAdapter onFocusGain ( final FocusEventRunnable runnable )
+    {
+        return EventUtils.onFocusGain ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public FocusAdapter onFocusLoss ( final FocusEventRunnable runnable )
+    {
+        return EventUtils.onFocusLoss ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip setToolTip ( final String tooltip )
+    {
+        return TooltipManager.setTooltip ( this, tooltip );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip setToolTip ( final Icon icon, final String tooltip )
+    {
+        return TooltipManager.setTooltip ( this, icon, tooltip );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip setToolTip ( final String tooltip, final TooltipWay tooltipWay )
+    {
+        return TooltipManager.setTooltip ( this, tooltip, tooltipWay );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip setToolTip ( final Icon icon, final String tooltip, final TooltipWay tooltipWay )
+    {
+        return TooltipManager.setTooltip ( this, icon, tooltip, tooltipWay );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip setToolTip ( final String tooltip, final TooltipWay tooltipWay, final int delay )
+    {
+        return TooltipManager.setTooltip ( this, tooltip, tooltipWay, delay );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip setToolTip ( final Icon icon, final String tooltip, final TooltipWay tooltipWay, final int delay )
+    {
+        return TooltipManager.setTooltip ( this, icon, tooltip, tooltipWay, delay );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip setToolTip ( final JComponent tooltip )
+    {
+        return TooltipManager.setTooltip ( this, tooltip );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip setToolTip ( final JComponent tooltip, final int delay )
+    {
+        return TooltipManager.setTooltip ( this, tooltip, delay );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip setToolTip ( final JComponent tooltip, final TooltipWay tooltipWay )
+    {
+        return TooltipManager.setTooltip ( this, tooltip, tooltipWay );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip setToolTip ( final JComponent tooltip, final TooltipWay tooltipWay, final int delay )
+    {
+        return TooltipManager.setTooltip ( this, tooltip, tooltipWay, delay );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip addToolTip ( final String tooltip )
+    {
+        return TooltipManager.addTooltip ( this, tooltip );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip addToolTip ( final Icon icon, final String tooltip )
+    {
+        return TooltipManager.addTooltip ( this, icon, tooltip );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip addToolTip ( final String tooltip, final TooltipWay tooltipWay )
+    {
+        return TooltipManager.addTooltip ( this, tooltip, tooltipWay );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip addToolTip ( final Icon icon, final String tooltip, final TooltipWay tooltipWay )
+    {
+        return TooltipManager.addTooltip ( this, icon, tooltip, tooltipWay );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip addToolTip ( final String tooltip, final TooltipWay tooltipWay, final int delay )
+    {
+        return TooltipManager.addTooltip ( this, tooltip, tooltipWay, delay );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip addToolTip ( final Icon icon, final String tooltip, final TooltipWay tooltipWay, final int delay )
+    {
+        return TooltipManager.addTooltip ( this, icon, tooltip, tooltipWay, delay );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip addToolTip ( final JComponent tooltip )
+    {
+        return TooltipManager.addTooltip ( this, tooltip );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip addToolTip ( final JComponent tooltip, final int delay )
+    {
+        return TooltipManager.addTooltip ( this, tooltip, delay );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip addToolTip ( final JComponent tooltip, final TooltipWay tooltipWay )
+    {
+        return TooltipManager.addTooltip ( this, tooltip, tooltipWay );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebCustomTooltip addToolTip ( final JComponent tooltip, final TooltipWay tooltipWay, final int delay )
+    {
+        return TooltipManager.addTooltip ( this, tooltip, tooltipWay, delay );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void removeToolTip ( final WebCustomTooltip tooltip )
+    {
+        TooltipManager.removeTooltip ( this, tooltip );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void removeToolTips ()
+    {
+        TooltipManager.removeTooltips ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void removeToolTips ( final WebCustomTooltip... tooltips )
+    {
+        TooltipManager.removeTooltips ( this, tooltips );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void removeToolTips ( final List<WebCustomTooltip> tooltips )
+    {
+        TooltipManager.removeTooltips ( this, tooltips );
+    }
 
     /**
      * {@inheritDoc}
@@ -394,10 +795,6 @@ public class WebComboBox extends JComboBox implements ShapeProvider, SettingsMet
     {
         SettingsManager.saveComponentSettings ( this );
     }
-
-    /**
-     * Font methods
-     */
 
     /**
      * {@inheritDoc}
@@ -562,10 +959,6 @@ public class WebComboBox extends JComboBox implements ShapeProvider, SettingsMet
     }
 
     /**
-     * Size methods.
-     */
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -641,8 +1034,53 @@ public class WebComboBox extends JComboBox implements ShapeProvider, SettingsMet
      * {@inheritDoc}
      */
     @Override
+    public int getMaximumWidth ()
+    {
+        return SizeUtils.getMaximumWidth ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebComboBox setMaximumWidth ( final int maximumWidth )
+    {
+        return SizeUtils.setMaximumWidth ( this, maximumWidth );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int getMaximumHeight ()
+    {
+        return SizeUtils.getMaximumHeight ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebComboBox setMaximumHeight ( final int maximumHeight )
+    {
+        return SizeUtils.setMaximumHeight ( this, maximumHeight );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Dimension getPreferredSize ()
     {
         return SizeUtils.getPreferredSize ( this, super.getPreferredSize () );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebComboBox setPreferredSize ( final int width, final int height )
+    {
+        return SizeUtils.setPreferredSize ( this, width, height );
     }
 }

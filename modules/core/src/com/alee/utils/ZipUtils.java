@@ -17,6 +17,7 @@
 
 package com.alee.utils;
 
+import com.alee.managers.log.Log;
 import com.alee.utils.zip.UnzipListener;
 
 import java.io.*;
@@ -131,7 +132,7 @@ public final class ZipUtils
         }
         catch ( final Throwable e )
         {
-            e.printStackTrace ();
+            Log.error ( ZipUtils.class, e );
             return false;
         }
     }

@@ -28,7 +28,7 @@ public class WebNumberEditor extends WebGenericEditor
     public WebNumberEditor ()
     {
         super ();
-        JTextField editor = ( JTextField ) getComponent ();
+        final JTextField editor = ( JTextField ) getComponent ();
         editor.setHorizontalAlignment ( JTextField.RIGHT );
     }
 }

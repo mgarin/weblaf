@@ -90,5 +90,24 @@
         </ui>
     </style>
 
+    <!-- WebSyntaxLabel styling -->
+    <style type="panel" id="syntax-panel" extends="default">
+        <component>
+            <opaque>false</opaque>
+        </component>
+        <ui>
+            <margin>2,4,2,4</margin>
+        </ui>
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebSyntaxPanelPainter">
+            <style>thick</style>
+        </painter>
+    </style>
+
+    <!-- Custom editor gutter panel styling -->
+    <style type="panel" id="editor-gutter" extends="default">
+        <component>
+            <background>white</background>
+        </component>
+    </style>
 
 </skin>

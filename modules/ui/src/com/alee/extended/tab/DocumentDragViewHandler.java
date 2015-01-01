@@ -17,15 +17,11 @@
 
 package com.alee.extended.tab;
 
-import com.alee.managers.drag.DragViewHandler;
-import com.alee.utils.GraphicsUtils;
-import com.alee.utils.ImageUtils;
-import com.alee.utils.LafUtils;
+import com.alee.managers.drag.SimpleDragViewHandler;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
-import java.awt.image.BufferedImage;
 
 /**
  * Custom DragViewHandler for WebDocumentPane document.
@@ -36,13 +32,8 @@ import java.awt.image.BufferedImage;
  * @see com.alee.managers.drag.DragManager
  */
 
-public class DocumentDragViewHandler<T extends DocumentData> implements DragViewHandler<T>
+public class DocumentDragViewHandler<T extends DocumentData> extends SimpleDragViewHandler<T>
 {
-    /**
-     * Document description margin.
-     */
-    protected static final Insets margin = new Insets ( 6, 6, 6, 6 );
-
     /**
      * Document pane which provides this DragViewHandler.
      */
@@ -72,42 +63,26 @@ public class DocumentDragViewHandler<T extends DocumentData> implements DragView
      * {@inheritDoc}
      */
     @Override
-    public BufferedImage getView ( final T document )
+    protected FontMetrics getFontMetrics ( final T document )
     {
-        final Icon icon = document.getIcon ();
-        final String title = document.getActualTitle ();
-
-        final FontMetrics fm = documentPane.getFontMetrics ( documentPane.getFont () );
-        final int tm = margin.left + ( icon != null ? icon.getIconWidth () + 4 : 5 );
-        final int em = margin.right + 5;
-        final int w = tm + fm.stringWidth ( title ) + em;
-        final int h = margin.top + Math.max ( ( icon != null ? icon.getIconHeight () : 0 ), fm.getHeight () ) + margin.bottom;
-
-        final BufferedImage image = ImageUtils.createCompatibleImage ( w, h, Transparency.TRANSLUCENT );
-        final Graphics2D g2d = image.createGraphics ();
-        GraphicsUtils.setupAlphaComposite ( g2d, 0.8f );
-        GraphicsUtils.setupFont ( g2d, documentPane.getFont () );
-        GraphicsUtils.setupSystemTextHints ( g2d );
-        g2d.setPaint ( Color.WHITE );
-        g2d.fillRect ( 0, 0, w, h );
-        g2d.setPaint ( Color.LIGHT_GRAY );
-        g2d.drawRect ( 0, 0, w - 1, h - 1 );
-        if ( icon != null )
-        {
-            icon.paintIcon ( null, g2d, margin.left, margin.top );
-        }
-        g2d.setPaint ( Color.BLACK );
-        g2d.drawString ( title, tm, margin.top + ( h - margin.top - margin.bottom ) / 2 + LafUtils.getTextCenterShearY ( fm ) );
-        g2d.dispose ();
-        return image;
+        return documentPane.getFontMetrics ( documentPane.getFont () );
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Point getViewRelativeLocation ( final T document )
+    protected Icon getIcon ( final T document )
     {
-        return new Point ( 25, 5 );
+        return document.getIcon ();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected String getText ( final T document )
+    {
+        return document.getActualTitle ();
     }
 }

@@ -26,13 +26,30 @@ package com.alee.extended.window;
 public interface PopOverListener
 {
     /**
-     * This event occurs when user drags WebPopOver so it becomes unattached from invoker component.
-     * Might probably be useful in some cases when you want to track that specific event.
+     * Informs that WebPopOver was opened.
+     *
+     * @param popOver event source
      */
-    public void popOverDetached ();
+    public void opened ( final WebPopOver popOver );
 
     /**
-     * This event occurs when WebPopOver is closed by user, due to losing focus or some other cause.
+     * Informs that WebPopOver.show was called while it was opened forcing it to update location.
+     *
+     * @param popOver event source
      */
-    public void popOverClosed ();
+    public void reopened ( final WebPopOver popOver );
+
+    /**
+     * Informs that user dragged WebPopOver so that it became unattached from invoker component.
+     *
+     * @param popOver event source
+     */
+    public void detached ( WebPopOver popOver );
+
+    /**
+     * Informs that WebPopOver was closed due to losing focus or some other cause.
+     *
+     * @param popOver event source
+     */
+    public void closedWebPopOver ( WebPopOver popOver );
 }

@@ -18,6 +18,7 @@
 package com.alee.laf.separator;
 
 import com.alee.laf.WebLookAndFeel;
+import com.alee.managers.log.Log;
 import com.alee.utils.ReflectUtils;
 
 import javax.swing.*;
@@ -34,51 +35,52 @@ public class WebSeparator extends JSeparator
         super ();
     }
 
-    public WebSeparator ( int orientation )
+    public WebSeparator ( final int orientation )
     {
         super ( orientation );
     }
 
-    public WebSeparator ( boolean reversedColors )
+    public WebSeparator ( final boolean reversedColors )
     {
         super ();
         setReversedColors ( reversedColors );
     }
 
-    public WebSeparator ( int orientation, boolean reversedColors )
+    public WebSeparator ( final int orientation, final boolean reversedColors )
     {
         super ( orientation );
         setReversedColors ( reversedColors );
     }
 
-    public WebSeparator ( boolean drawSideLines, int orientation )
+    public WebSeparator ( final boolean drawSideLines, final int orientation )
     {
         super ( orientation );
         setDrawSideLines ( drawSideLines );
     }
 
-    public WebSeparator ( boolean drawSideLines, int orientation, boolean reversedColors )
+    public WebSeparator ( final boolean drawSideLines, final int orientation, final boolean reversedColors )
     {
         super ( orientation );
         setDrawSideLines ( drawSideLines );
         setReversedColors ( reversedColors );
     }
 
-    public WebSeparator ( boolean drawLeadingLine, boolean drawTrailingLine )
+    public WebSeparator ( final boolean drawLeadingLine, final boolean drawTrailingLine )
     {
         super ();
         setDrawLeadingLine ( drawLeadingLine );
         setDrawTrailingLine ( drawTrailingLine );
     }
 
-    public WebSeparator ( boolean drawLeadingLine, boolean drawTrailingLine, int orientation )
+    public WebSeparator ( final boolean drawLeadingLine, final boolean drawTrailingLine, final int orientation )
     {
         super ( orientation );
         setDrawLeadingLine ( drawLeadingLine );
         setDrawTrailingLine ( drawTrailingLine );
     }
 
-    public WebSeparator ( boolean drawLeadingLine, boolean drawTrailingLine, int orientation, boolean reversedColors )
+    public WebSeparator ( final boolean drawLeadingLine, final boolean drawTrailingLine, final int orientation,
+                          final boolean reversedColors )
     {
         super ( orientation );
         setDrawLeadingLine ( drawLeadingLine );
@@ -91,7 +93,7 @@ public class WebSeparator extends JSeparator
         return getWebUI ().getSeparatorColor ();
     }
 
-    public void setSeparatorColor ( Color separatorColor )
+    public void setSeparatorColor ( final Color separatorColor )
     {
         getWebUI ().setSeparatorColor ( separatorColor );
     }
@@ -101,7 +103,7 @@ public class WebSeparator extends JSeparator
         return getWebUI ().getSeparatorUpperColor ();
     }
 
-    public void setSeparatorUpperColor ( Color separatorUpperColor )
+    public void setSeparatorUpperColor ( final Color separatorUpperColor )
     {
         getWebUI ().setSeparatorUpperColor ( separatorUpperColor );
     }
@@ -111,7 +113,7 @@ public class WebSeparator extends JSeparator
         return getWebUI ().getSeparatorLightColor ();
     }
 
-    public void setSeparatorLightColor ( Color separatorLightColor )
+    public void setSeparatorLightColor ( final Color separatorLightColor )
     {
         getWebUI ().setSeparatorLightColor ( separatorLightColor );
     }
@@ -121,7 +123,7 @@ public class WebSeparator extends JSeparator
         return getWebUI ().getSeparatorLightUpperColor ();
     }
 
-    public void setSeparatorLightUpperColor ( Color separatorLightUpperColor )
+    public void setSeparatorLightUpperColor ( final Color separatorLightUpperColor )
     {
         getWebUI ().setSeparatorLightUpperColor ( separatorLightUpperColor );
     }
@@ -131,12 +133,12 @@ public class WebSeparator extends JSeparator
         return getWebUI ().isReversedColors ();
     }
 
-    public void setReversedColors ( boolean reversedColors )
+    public void setReversedColors ( final boolean reversedColors )
     {
         getWebUI ().setReversedColors ( reversedColors );
     }
 
-    public void setDrawSideLines ( boolean drawSideLines )
+    public void setDrawSideLines ( final boolean drawSideLines )
     {
         setDrawLeadingLine ( drawSideLines );
         setDrawTrailingLine ( drawSideLines );
@@ -147,7 +149,7 @@ public class WebSeparator extends JSeparator
         return getWebUI ().isDrawLeadingLine ();
     }
 
-    public void setDrawLeadingLine ( boolean drawLeadingLine )
+    public void setDrawLeadingLine ( final boolean drawLeadingLine )
     {
         getWebUI ().setDrawLeadingLine ( drawLeadingLine );
     }
@@ -157,7 +159,7 @@ public class WebSeparator extends JSeparator
         return getWebUI ().isDrawTrailingLine ();
     }
 
-    public void setDrawTrailingLine ( boolean drawTrailingLine )
+    public void setDrawTrailingLine ( final boolean drawTrailingLine )
     {
         getWebUI ().setDrawTrailingLine ( drawTrailingLine );
     }
@@ -167,18 +169,18 @@ public class WebSeparator extends JSeparator
         return getWebUI ().getMargin ();
     }
 
-    public void setMargin ( Insets margin )
+    public void setMargin ( final Insets margin )
     {
         getWebUI ().setMargin ( margin );
     }
 
-    public WebSeparator setMargin ( int top, int left, int bottom, int right )
+    public WebSeparator setMargin ( final int top, final int left, final int bottom, final int right )
     {
         setMargin ( new Insets ( top, left, bottom, right ) );
         return this;
     }
 
-    public WebSeparator setMargin ( int spacing )
+    public WebSeparator setMargin ( final int spacing )
     {
         return setMargin ( spacing, spacing, spacing, spacing );
     }
@@ -197,9 +199,9 @@ public class WebSeparator extends JSeparator
             {
                 setUI ( ( WebSeparatorUI ) ReflectUtils.createInstance ( WebLookAndFeel.separatorUI ) );
             }
-            catch ( Throwable e )
+            catch ( final Throwable e )
             {
-                e.printStackTrace ();
+                Log.error ( this, e );
                 setUI ( new WebSeparatorUI () );
             }
         }

@@ -17,14 +17,18 @@
 
 package com.alee.utils;
 
+import com.alee.managers.log.Log;
+import com.alee.managers.plugin.data.PluginDependency;
 import com.alee.managers.plugin.data.PluginInformation;
 import com.alee.managers.plugin.data.PluginLibrary;
 import com.alee.managers.plugin.data.PluginVersion;
 import com.alee.utils.collection.ValuesTable;
+import com.alee.utils.general.Pair;
 import com.alee.utils.xml.*;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.converters.Converter;
 import com.thoughtworks.xstream.converters.SingleValueConverter;
+import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
 import javax.swing.*;
@@ -88,6 +92,7 @@ public final class XmlUtils
         {
             // XStream instnce initialization
             xStream = new XStream ( new DomDriver () );
+            // xStream.setMode ( XStream.ID_REFERENCES );
 
             // Standart Java-classes aliases
             if ( aliasJdkClasses )
@@ -118,15 +123,17 @@ public final class XmlUtils
 
             // Additional WebLaF data classes aliases
             xStream.processAnnotations ( ValuesTable.class );
+            xStream.processAnnotations ( Pair.class );
 
             // Plugin manager classes aliases
             xStream.processAnnotations ( PluginInformation.class );
             xStream.processAnnotations ( PluginVersion.class );
+            xStream.processAnnotations ( PluginDependency.class );
             xStream.processAnnotations ( PluginLibrary.class );
         }
         catch ( final Throwable e )
         {
-            e.printStackTrace ();
+            Log.error ( XmlUtils.class, e );
         }
     }
 
@@ -257,7 +264,7 @@ public final class XmlUtils
         }
         catch ( final IOException e )
         {
-            e.printStackTrace ();
+            Log.error ( XmlUtils.class, e );
         }
     }
 
@@ -292,6 +299,17 @@ public final class XmlUtils
     public static void toXML ( final Object obj, final OutputStream out )
     {
         getXStream ().toXML ( obj, out );
+    }
+
+    /**
+     * Serializes Object into XML and writes it using a specified HierarchicalStreamWriter
+     *
+     * @param obj    object to serialize
+     * @param writer hierarchical stream writer
+     */
+    public static void toXML ( final Object obj, final HierarchicalStreamWriter writer )
+    {
+        getXStream ().marshal ( obj, writer );
     }
 
     /**
@@ -408,7 +426,7 @@ public final class XmlUtils
                 }
                 catch ( final MalformedURLException e )
                 {
-                    e.printStackTrace ();
+                    Log.error ( XmlUtils.class, e );
                     return null;
                 }
             }
@@ -432,12 +450,12 @@ public final class XmlUtils
                 }
                 catch ( final ClassNotFoundException e )
                 {
-                    e.printStackTrace ();
+                    Log.error ( XmlUtils.class, e );
                     return null;
                 }
                 catch ( final Throwable e )
                 {
-                    e.printStackTrace ();
+                    Log.error ( XmlUtils.class, e );
                     return null;
                 }
                 finally
@@ -451,7 +469,7 @@ public final class XmlUtils
                     }
                     catch ( final Throwable e )
                     {
-                        e.printStackTrace ();
+                        Log.error ( XmlUtils.class, e );
                     }
                 }
             }
@@ -490,7 +508,7 @@ public final class XmlUtils
             }
             catch ( final IOException e )
             {
-                e.printStackTrace ();
+                Log.error ( XmlUtils.class, e );
                 return null;
             }
         }
@@ -506,7 +524,7 @@ public final class XmlUtils
             }
             catch ( final ClassNotFoundException e )
             {
-                e.printStackTrace ();
+                Log.error ( XmlUtils.class, e );
                 return null;
             }
         }
@@ -543,7 +561,7 @@ public final class XmlUtils
             }
             catch ( final MalformedURLException e )
             {
-                e.printStackTrace ();
+                Log.error ( XmlUtils.class, e );
                 return null;
             }
         }
@@ -555,7 +573,7 @@ public final class XmlUtils
             }
             catch ( final IOException e )
             {
-                e.printStackTrace ();
+                Log.error ( XmlUtils.class, e );
                 return null;
             }
         }
@@ -567,7 +585,7 @@ public final class XmlUtils
             }
             catch ( final ClassNotFoundException e )
             {
-                e.printStackTrace ();
+                Log.error ( XmlUtils.class, e );
                 return null;
             }
         }

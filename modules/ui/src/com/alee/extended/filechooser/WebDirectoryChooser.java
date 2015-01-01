@@ -306,7 +306,7 @@ public class WebDirectoryChooser extends WebDialog implements DialogOptions
      */
     public static File showDialog ( final Window parent )
     {
-        return showDialog ( parent, null );
+        return showDialog ( parent, null, null );
     }
 
     /**
@@ -319,7 +319,38 @@ public class WebDirectoryChooser extends WebDialog implements DialogOptions
      */
     public static File showDialog ( final Window parent, final String title )
     {
+        return showDialog ( parent, title, null );
+    }
+
+    /**
+     * Displays directory chooser dialog with the specified parent window and title.
+     * Returns selected directory as a result.
+     *
+     * @param parent    parent window
+     * @param directory initially selected directory
+     * @return selected directory
+     */
+    public static File showDialog ( final Window parent, final File directory )
+    {
+        return showDialog ( parent, null, directory );
+    }
+
+    /**
+     * Displays directory chooser dialog with the specified parent window and title.
+     * Returns selected directory as a result.
+     *
+     * @param parent    parent window
+     * @param title     dialog title
+     * @param directory initially selected directory
+     * @return selected directory
+     */
+    public static File showDialog ( final Window parent, final String title, final File directory )
+    {
         final WebDirectoryChooser wdc = new WebDirectoryChooser ( parent, title );
+        if ( directory != null )
+        {
+            wdc.setSelectedDirectory ( directory );
+        }
         wdc.setVisible ( true );
         return wdc.getResult () == OK_OPTION ? wdc.getSelectedDirectory () : null;
     }

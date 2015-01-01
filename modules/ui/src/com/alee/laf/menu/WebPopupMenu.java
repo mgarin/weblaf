@@ -20,6 +20,7 @@ package com.alee.laf.menu;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.language.LanguageContainerMethods;
 import com.alee.managers.language.LanguageManager;
+import com.alee.managers.log.Log;
 import com.alee.managers.style.StyleManager;
 import com.alee.managers.style.skin.web.PopupStyle;
 import com.alee.managers.style.skin.web.WebPopupMenuPainter;
@@ -537,7 +538,7 @@ public class WebPopupMenu extends JPopupMenu implements Styleable, ShapeProvider
             }
             catch ( final Throwable e )
             {
-                e.printStackTrace ();
+                Log.error ( this, e );
                 setUI ( new WebPopupMenuUI () );
             }
         }
@@ -623,9 +624,54 @@ public class WebPopupMenu extends JPopupMenu implements Styleable, ShapeProvider
      * {@inheritDoc}
      */
     @Override
+    public int getMaximumWidth ()
+    {
+        return SizeUtils.getMaximumWidth ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebPopupMenu setMaximumWidth ( final int maximumWidth )
+    {
+        return SizeUtils.setMaximumWidth ( this, maximumWidth );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int getMaximumHeight ()
+    {
+        return SizeUtils.getMaximumHeight ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebPopupMenu setMaximumHeight ( final int maximumHeight )
+    {
+        return SizeUtils.setMaximumHeight ( this, maximumHeight );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Dimension getPreferredSize ()
     {
         return SizeUtils.getPreferredSize ( this, super.getPreferredSize () );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebPopupMenu setPreferredSize ( final int width, final int height )
+    {
+        return SizeUtils.setPreferredSize ( this, width, height );
     }
 
     /**

@@ -65,7 +65,7 @@ public class NotificationsGroup extends DefaultExampleGroup
     @Override
     public List<Example> getGroupExamples ()
     {
-        List<Example> examples = new ArrayList<Example> ();
+        final List<Example> examples = new ArrayList<Example> ();
         examples.add ( new TextNotificationsExample () );
         examples.add ( new CustomNotificationsExample () );
         return examples;

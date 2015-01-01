@@ -18,15 +18,14 @@
 package com.alee.extended.label;
 
 import com.alee.laf.label.WebLabel;
-import com.alee.managers.language.LanguageMethods;
+import com.alee.managers.hotkey.Hotkey;
 import com.alee.utils.*;
+import com.alee.utils.swing.AncestorAdapter;
 
 import javax.swing.*;
+import javax.swing.event.AncestorEvent;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,8 +40,12 @@ import java.util.concurrent.Executors;
  * @author Mikle Garin
  */
 
-public class WebLinkLabel extends WebLabel implements LanguageMethods
+public class WebLinkLabel extends WebLabel
 {
+    /**
+     * todo 1. Remodel WebLinkLabel to extend WebStyledLabel
+     */
+
     /**
      * Used icons.
      */
@@ -64,7 +67,7 @@ public class WebLinkLabel extends WebLabel implements LanguageMethods
      */
     protected boolean highlight = WebLinkLabelStyle.highlight;
     protected boolean onPressAction = WebLinkLabelStyle.onPressAction;
-    protected boolean colorVisited = WebLinkLabelStyle.colorVisited;
+    protected boolean highlightVisited = WebLinkLabelStyle.highlightVisited;
     protected Color foreground = WebLinkLabelStyle.foreground;
     protected Color visitedForeground = WebLinkLabelStyle.visitedForeground;
 
@@ -112,6 +115,13 @@ public class WebLinkLabel extends WebLabel implements LanguageMethods
         initializeSettings ();
     }
 
+    public WebLinkLabel ( final String text, final Icon icon )
+    {
+        super ( text, icon );
+        setText ( text );
+        initializeSettings ();
+    }
+
     public WebLinkLabel ( final String text, final Icon icon, final int horizontalAlignment )
     {
         super ( text, icon, horizontalAlignment );
@@ -128,10 +138,10 @@ public class WebLinkLabel extends WebLabel implements LanguageMethods
         setCursor ( Cursor.getPredefinedCursor ( Cursor.HAND_CURSOR ) );
         updateForeground ();
 
-        MouseAdapter mouseAdapter = new MouseAdapter ()
+        final MouseAdapter mouseAdapter = new MouseAdapter ()
         {
             @Override
-            public void mousePressed ( MouseEvent e )
+            public void mousePressed ( final MouseEvent e )
             {
                 if ( onPressAction )
                 {
@@ -152,50 +162,83 @@ public class WebLinkLabel extends WebLabel implements LanguageMethods
             {
                 if ( isEnabled () && SwingUtilities.isLeftMouseButton ( e ) )
                 {
-                    visitedOnce = true;
-                    updateForeground ();
-
-                    if ( link != null )
-                    {
-                        link.run ();
-                    }
-
-                    fireActionPerformed ();
+                    doClick ();
                 }
             }
 
             @Override
             public void mouseEntered ( final MouseEvent e )
             {
-                if ( isEnabled () )
-                {
-                    mouseover = true;
-                    updateText ();
-                }
+                setMouseover ( true );
             }
 
             @Override
             public void mouseExited ( final MouseEvent e )
             {
-                if ( highlight )
-                {
-                    mouseover = false;
-                    updateText ();
-                }
+                setMouseover ( false );
             }
 
             @Override
             public void mouseDragged ( final MouseEvent e )
             {
-                if ( highlight )
-                {
-                    mouseover = false;
-                    updateText ();
-                }
+                setMouseover ( false );
             }
         };
         addMouseListener ( mouseAdapter );
         addMouseMotionListener ( mouseAdapter );
+
+        addAncestorListener ( new AncestorAdapter ()
+        {
+            @Override
+            public void ancestorRemoved ( final AncestorEvent event )
+            {
+                setMouseover ( false );
+            }
+
+            @Override
+            public void ancestorAdded ( final AncestorEvent event )
+            {
+                setMouseover ( false );
+            }
+
+            @Override
+            public void ancestorMoved ( final AncestorEvent event )
+            {
+                setMouseover ( false );
+            }
+        } );
+
+        addKeyListener ( new KeyAdapter ()
+        {
+            @Override
+            public void keyReleased ( final KeyEvent e )
+            {
+                if ( Hotkey.ENTER.isTriggered ( e ) || Hotkey.SPACE.isTriggered ( e ) )
+                {
+                    doClick ();
+                }
+            }
+        } );
+    }
+
+    protected void setMouseover ( final boolean mouseover )
+    {
+        if ( mouseover )
+        {
+            if ( isEnabled () && highlight && !this.mouseover )
+            {
+                this.mouseover = true;
+                updateText ();
+            }
+        }
+        else
+        {
+            if ( this.mouseover )
+            {
+                this.mouseover = false;
+                updateText ();
+            }
+        }
     }
 
     /**
@@ -232,7 +275,7 @@ public class WebLinkLabel extends WebLabel implements LanguageMethods
 
     protected void updateForeground ()
     {
-        WebLinkLabel.super.setForeground ( colorVisited && visitedOnce ? visitedForeground : foreground );
+        WebLinkLabel.super.setForeground ( highlightVisited && visitedOnce ? visitedForeground : foreground );
     }
 
     /**
@@ -395,6 +438,17 @@ public class WebLinkLabel extends WebLabel implements LanguageMethods
         updateText ();
     }
 
+    public boolean isHighlightVisited ()
+    {
+        return highlightVisited;
+    }
+
+    public void setHighlightVisited ( final boolean highlightVisited )
+    {
+        this.highlightVisited = highlightVisited;
+        updateForeground ();
+    }
+
     public boolean isOnPressAction ()
     {
         return onPressAction;
@@ -409,20 +463,33 @@ public class WebLinkLabel extends WebLabel implements LanguageMethods
      * Link action listeners
      */
 
-    public void addActionListener ( ActionListener actionListener )
+    public void addActionListener ( final ActionListener actionListener )
     {
         actionListeners.add ( actionListener );
     }
 
-    public void removeActionListener ( ActionListener actionListener )
+    public void removeActionListener ( final ActionListener actionListener )
     {
         actionListeners.remove ( actionListener );
+    }
+
+    public void doClick ()
+    {
+        visitedOnce = true;
+        updateForeground ();
+
+        if ( link != null )
+        {
+            link.run ();
+        }
+
+        fireActionPerformed ();
     }
 
     protected void fireActionPerformed ()
     {
         final ActionEvent event = new ActionEvent ( this, 0, "Link opened" );
-        for ( ActionListener actionListener : CollectionUtils.copy ( actionListeners ) )
+        for ( final ActionListener actionListener : CollectionUtils.copy ( actionListeners ) )
         {
             actionListener.actionPerformed ( event );
         }

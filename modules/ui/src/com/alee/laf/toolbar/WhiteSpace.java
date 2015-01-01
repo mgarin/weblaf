@@ -25,24 +25,49 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * User: mgarin Date: 17.01.12 Time: 17:17
+ * Custom component to create spacings where layout can't do the stuff you need.
+ * It is basically better to use this, instead of combining two containers with two layouts.
+ * The best case is of course when layout handles the spacing, but its not always that easy.
+ *
+ * @author Mikle Garin
  */
 
 public class WhiteSpace extends JComponent implements SwingConstants
 {
+    /**
+     * Spacing amount in px.
+     */
     private int spacing;
+
+    /**
+     * Spacing orientation.
+     */
     private int orientation;
 
+    /**
+     * Constructs new spacer.
+     */
     public WhiteSpace ()
     {
         this ( StyleConstants.contentSpacing );
     }
 
+    /**
+     * Constructs new spacer.
+     *
+     * @param spacing space amount
+     */
     public WhiteSpace ( final int spacing )
     {
         this ( spacing, -1 );
     }
 
+    /**
+     * Constructs new spacer.
+     *
+     * @param spacing     space amount
+     * @param orientation space orientation
+     */
     public WhiteSpace ( final int spacing, final int orientation )
     {
         super ();
@@ -51,26 +76,50 @@ public class WhiteSpace extends JComponent implements SwingConstants
         setOrientation ( orientation );
     }
 
+    /**
+     * Returns spacing orientation.
+     *
+     * @return spacing orientation
+     */
     public int getOrientation ()
     {
         return orientation;
     }
 
+    /**
+     * Sets spacing orientation.
+     * Specify {@code -1} to have spacing for both orientations.
+     *
+     * @param orientation new spacing orientation
+     */
     public void setOrientation ( final int orientation )
     {
         this.orientation = orientation;
     }
 
+    /**
+     * Returns spacing amount in px.
+     *
+     * @return spacing amount in px
+     */
     public int getSpacing ()
     {
         return spacing;
     }
 
+    /**
+     * Sets spacing amount in px.
+     *
+     * @param spacing new spacing amount in px
+     */
     public void setSpacing ( final int spacing )
     {
         this.spacing = spacing;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Dimension getPreferredSize ()
     {

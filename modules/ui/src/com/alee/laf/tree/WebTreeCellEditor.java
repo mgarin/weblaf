@@ -26,8 +26,8 @@ import com.alee.utils.swing.WebDefaultCellEditor;
 import javax.swing.*;
 import javax.swing.plaf.TreeUI;
 import java.awt.*;
-import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 
 /**
  * This class provides a styled default cell editor for trees.
@@ -35,7 +35,7 @@ import java.awt.event.FocusEvent;
  * @author Mikle Garin
  */
 
-public class WebTreeCellEditor<C extends JComponent> extends WebDefaultCellEditor<C>
+public class WebTreeCellEditor<C extends JComponent> extends WebDefaultCellEditor<C> implements FocusListener
 {
     /**
      * Whether should update editor's leading icon automatically when it is possible or not.
@@ -58,16 +58,6 @@ public class WebTreeCellEditor<C extends JComponent> extends WebDefaultCellEdito
     public WebTreeCellEditor ( final WebTextField textField )
     {
         super ( textField );
-
-        // Focus listener to stop editing on focus loss event
-        textField.addFocusListener ( new FocusAdapter ()
-        {
-            @Override
-            public void focusLost ( final FocusEvent e )
-            {
-                stopCellEditing ();
-            }
-        } );
     }
 
     /**
@@ -78,16 +68,6 @@ public class WebTreeCellEditor<C extends JComponent> extends WebDefaultCellEdito
     public WebTreeCellEditor ( final WebCheckBox checkBox )
     {
         super ( checkBox );
-
-        // Focus listener to stop editing on focus loss event
-        checkBox.addFocusListener ( new FocusAdapter ()
-        {
-            @Override
-            public void focusLost ( final FocusEvent e )
-            {
-                stopCellEditing ();
-            }
-        } );
     }
 
     /**
@@ -98,16 +78,50 @@ public class WebTreeCellEditor<C extends JComponent> extends WebDefaultCellEdito
     public WebTreeCellEditor ( final WebComboBox comboBox )
     {
         super ( comboBox );
+    }
 
-        // Focus listener to stop editing on focus loss event
-        comboBox.addFocusListener ( new FocusAdapter ()
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void focusGained ( final FocusEvent e )
+    {
+        // Do nothing
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void focusLost ( final FocusEvent e )
+    {
+        stopCellEditing ();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean stopCellEditing ()
+    {
+        // Properly remove focus listener to avoid incorrect stop edit calls
+        final boolean stopped = super.stopCellEditing ();
+        if ( stopped )
         {
-            @Override
-            public void focusLost ( final FocusEvent e )
-            {
-                stopCellEditing ();
-            }
-        } );
+            editorComponent.removeFocusListener ( this );
+        }
+        return stopped;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void cancelCellEditing ()
+    {
+        // Properly remove focus listener to avoid incorrect stop edit calls
+        editorComponent.removeFocusListener ( this );
+        super.cancelCellEditing ();
     }
 
     /**
@@ -126,6 +140,9 @@ public class WebTreeCellEditor<C extends JComponent> extends WebDefaultCellEdito
                                                   final boolean leaf, final int row )
     {
         final Component cellEditor = super.getTreeCellEditorComponent ( tree, value, isSelected, expanded, leaf, row );
+
+        // Focus listener to stop editing on focus loss event
+        cellEditor.addFocusListener ( this );
 
         // Copying editor size from cell renderer size
         final Component component =

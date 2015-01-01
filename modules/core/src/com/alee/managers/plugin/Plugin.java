@@ -17,7 +17,7 @@
 
 package com.alee.managers.plugin;
 
-import com.alee.log.Log;
+import com.alee.managers.log.Log;
 import com.alee.managers.plugin.data.*;
 
 import javax.swing.*;
@@ -207,12 +207,22 @@ public abstract class Plugin<T extends Plugin<T>>
     }
 
     /**
+     * Returns plugins required to run this one.
+     *
+     * @return plugins required to run this one
+     */
+    public List<PluginDependency> getDependencies ()
+    {
+        return getPluginInformation ().getDependencies ();
+    }
+
+    /**
      * Returns plugin initialization strategy.
-     * It will determine sequence in which plugins are initialized.
+     * It will determine order in which plugins are sorted for futher usage.
      *
      * @return plugin initialization strategy
      */
-    public InitializationStrategy getInitializationStrategy ()
+    public final InitializationStrategy getInitializationStrategy ()
     {
         if ( initializationStrategy == null )
         {
@@ -223,6 +233,7 @@ public abstract class Plugin<T extends Plugin<T>>
 
     /**
      * Creates and returns plugin initialization strategy.
+     * It will determine order in which plugins are sorted for futher usage.
      *
      * @return plugin initialization strategy
      */

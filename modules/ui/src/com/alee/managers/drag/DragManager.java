@@ -17,18 +17,15 @@
 
 package com.alee.managers.drag;
 
-import com.alee.log.Log;
 import com.alee.managers.glasspane.GlassPaneManager;
 import com.alee.managers.glasspane.WebGlassPane;
+import com.alee.managers.log.Log;
 import com.alee.utils.SwingUtils;
 
 import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
-import java.awt.dnd.DragSource;
-import java.awt.dnd.DragSourceAdapter;
-import java.awt.dnd.DragSourceDragEvent;
-import java.awt.dnd.DragSourceDropEvent;
+import java.awt.dnd.*;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
@@ -41,7 +38,7 @@ import java.util.Map;
  * @author Mikle Garin
  */
 
-public final class DragManager
+public class DragManager
 {
     /**
      * todo 1. Move dragged object display to a separate transparent non-focusable window
@@ -50,25 +47,26 @@ public final class DragManager
     /**
      * Drag view handlers map.
      */
-    private static Map<DataFlavor, DragViewHandler> viewHandlers;
+    protected static Map<DataFlavor, DragViewHandler> viewHandlers;
 
     /**
      * Dragged object representation variables.
      */
-    private static WebGlassPane glassPane;
-    private static Object data;
-    private static BufferedImage view;
-    private static DragViewHandler dragViewHandler;
+    protected static WebGlassPane glassPane;
+    protected static Object data;
+    protected static BufferedImage view;
+    protected static Component dropLocation;
+    protected static DragViewHandler dragViewHandler;
 
     /**
      * Whether manager is initialized or not.
      */
-    private static boolean initialized = false;
+    protected static boolean initialized = false;
 
     /**
      * Initializes manager if it wasn't already initialized.
      */
-    public static void initialize ()
+    public static synchronized void initialize ()
     {
         // To avoid more than one initialization
         if ( !initialized )
@@ -84,8 +82,19 @@ public final class DragManager
                 @Override
                 public void dragEnter ( final DragSourceDragEvent dsde )
                 {
+                    actualDragEnter ( dsde );
+                }
+
+                protected void actualDragEnter ( final DragSourceDragEvent dsde )
+                {
+                    // todo Do not recreate view few times while dragging
+
+                    // Save drop location component
+                    final DragSourceContext dsc = dsde.getDragSourceContext ();
+                    dropLocation = dsc.getComponent ();
+
                     // Deciding on enter what to display for this kind of data
-                    final Transferable transferable = dsde.getDragSourceContext ().getTransferable ();
+                    final Transferable transferable = dsc.getTransferable ();
                     final DataFlavor[] flavors = transferable.getTransferDataFlavors ();
                     for ( final DataFlavor flavor : flavors )
                     {
@@ -95,10 +104,10 @@ public final class DragManager
                             {
                                 data = transferable.getTransferData ( flavor );
                                 dragViewHandler = viewHandlers.get ( flavor );
-                                view = dragViewHandler.getView ( data );
+                                view = dragViewHandler.getView ( data, dsde );
 
-                                glassPane = GlassPaneManager.getGlassPane ( dsde.getDragSourceContext ().getComponent () );
-                                glassPane.setPaintedImage ( view, getLocation ( glassPane ) );
+                                glassPane = GlassPaneManager.getGlassPane ( dsc.getComponent () );
+                                glassPane.setPaintedImage ( view, getLocation ( glassPane, dsde ) );
 
                                 break;
                             }
@@ -113,6 +122,12 @@ public final class DragManager
                 @Override
                 public void dragMouseMoved ( final DragSourceDragEvent dsde )
                 {
+                    final DragSourceContext dsc = dsde.getDragSourceContext ();
+                    if ( dsc.getComponent () != dropLocation )
+                    {
+                        actualDragEnter ( dsde );
+                    }
+
                     // Move displayed data
                     if ( view != null )
                     {
@@ -122,23 +137,27 @@ public final class DragManager
                             glassPane.clearPaintedImage ();
                             glassPane = gp;
                         }
-                        gp.setPaintedImage ( view, getLocation ( gp ) );
+                        glassPane.setPaintedImage ( view, getLocation ( glassPane, dsde ) );
                     }
                 }
 
-                public Point getLocation ( final WebGlassPane gp )
+                public Point getLocation ( final WebGlassPane gp, final DragSourceDragEvent dsde )
                 {
                     final Point mp = SwingUtils.getMousePoint ( gp );
-                    final Point vp = dragViewHandler.getViewRelativeLocation ( data );
+                    final Point vp = dragViewHandler.getViewRelativeLocation ( data, dsde );
                     return new Point ( mp.x + vp.x, mp.y + vp.y );
                 }
 
                 @Override
                 public void dragDropEnd ( final DragSourceDropEvent dsde )
                 {
+                    // Cleanup drop location component
+                    dropLocation = null;
+
                     // Cleanup displayed data
                     if ( view != null )
                     {
+                        dragViewHandler.dragEnded ( data, dsde );
                         glassPane.clearPaintedImage ();
                         glassPane = null;
                         data = null;

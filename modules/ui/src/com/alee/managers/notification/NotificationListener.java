@@ -21,7 +21,7 @@ package com.alee.managers.notification;
  * Special listener for WebNotificationPopup component.
  *
  * @author Mikle Garin
- * @see WebNotificationPopup
+ * @see WebInnerNotification
  */
 
 public interface NotificationListener

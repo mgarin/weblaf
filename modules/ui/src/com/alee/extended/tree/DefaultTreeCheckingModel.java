@@ -49,7 +49,7 @@ public class DefaultTreeCheckingModel<E extends DefaultMutableTreeNode> implemen
     protected List<CheckStateChangeListener<E>> checkStateChangeListeners = new ArrayList<CheckStateChangeListener<E>> ( 1 );
 
     /**
-     * @param checkBoxTree
+     * @param checkBoxTree checkbox tree which uses this checking model.
      */
     public DefaultTreeCheckingModel ( final WebCheckBoxTree<E> checkBoxTree )
     {
@@ -102,7 +102,7 @@ public class DefaultTreeCheckingModel<E extends DefaultMutableTreeNode> implemen
      * For a reasonable cause this will not work for unchecked state.
      *
      * @param state    check state
-     * @param optimize
+     * @param optimize whether should optimize selected nodes or not
      * @return list of nodes for the specified state
      */
     protected List<E> getAllNodesForState ( final CheckState state, final boolean optimize )
@@ -187,7 +187,7 @@ public class DefaultTreeCheckingModel<E extends DefaultMutableTreeNode> implemen
      * @param node     tree node to process
      * @param checked  whether the specified tree node is checked or not
      * @param toUpdate list of nodes for later update
-     * @param changes
+     * @param changes  list to collect state changes into
      */
     protected void setCheckedImpl ( final E node, final boolean checked, final List<E> toUpdate, final List<CheckStateChange<E>> changes )
     {
@@ -221,7 +221,7 @@ public class DefaultTreeCheckingModel<E extends DefaultMutableTreeNode> implemen
      *
      * @param node     node to start checking parents from
      * @param toUpdate list of nodes for later update
-     * @param changes
+     * @param changes  list to collect state changes into
      */
     protected void updateParentStates ( final E node, final List<E> toUpdate, final List<CheckStateChange<E>> changes )
     {
@@ -293,7 +293,7 @@ public class DefaultTreeCheckingModel<E extends DefaultMutableTreeNode> implemen
      * @param node     parent node
      * @param newState new check state
      * @param toUpdate list of nodes for later update
-     * @param changes
+     * @param changes  list to collect state changes into
      */
     protected void updateChildNodesState ( final E node, final CheckState newState, final List<E> toUpdate,
                                            final List<CheckStateChange<E>> changes )

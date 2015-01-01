@@ -20,6 +20,7 @@ package com.alee.managers.style;
 import com.alee.extended.button.WebSplitButton;
 import com.alee.extended.checkbox.WebTristateCheckBox;
 import com.alee.extended.label.WebMultiLineLabel;
+import com.alee.extended.label.WebStyledLabel;
 import com.alee.extended.label.WebVerticalLabel;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.style.data.ComponentStyleConverter;
@@ -48,8 +49,10 @@ public enum SupportedComponent
      * Label-related components.
      */
     label ( true, JLabel.class, "LabelUI", WebLookAndFeel.labelUI ),
+    // linkLabel ( true, WebLinkLabel.class, "LinkLabelUI", WebLookAndFeel.linkLabelUI ),
     verticalLabel ( true, WebVerticalLabel.class, "VerticalLabelUI", WebLookAndFeel.verticalLabelUI ),
     multiLineLabel ( false, WebMultiLineLabel.class, "MultiLineLabelUI", WebLookAndFeel.multiLineLabelUI ),
+    styledLabel ( true, WebStyledLabel.class, "StyledLabelUI", WebLookAndFeel.styledLabelUI ),
     toolTip ( false, JToolTip.class, "ToolTipUI", WebLookAndFeel.toolTipUI ),
 
     /**

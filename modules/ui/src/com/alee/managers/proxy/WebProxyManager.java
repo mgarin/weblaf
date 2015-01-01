@@ -18,7 +18,11 @@
 package com.alee.managers.proxy;
 
 /**
+ * ProxyManager extension that provides basic visualization for proxy setup.
+ *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-ProxyManager">How to use ProxyManager</a>
+ * @see com.alee.managers.proxy.ProxyManager
  */
 
 public class WebProxyManager
@@ -26,12 +30,12 @@ public class WebProxyManager
     /**
      * Whether manager is initialized or not.
      */
-    private static boolean initialized = false;
+    protected static boolean initialized = false;
 
     /**
      * Initializes manager if it wasn't already initialized.
      */
-    public static void initialize ()
+    public static synchronized void initialize ()
     {
         if ( !initialized )
         {

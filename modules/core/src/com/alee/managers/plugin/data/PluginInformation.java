@@ -34,7 +34,7 @@ import java.util.List;
  * @see com.alee.managers.plugin.PluginManager
  */
 
-@XStreamAlias ( "PluginInformation" )
+@XStreamAlias ("PluginInformation")
 public class PluginInformation implements Serializable
 {
     /**
@@ -93,6 +93,13 @@ public class PluginInformation implements Serializable
     private List<PluginLibrary> libraries;
 
     /**
+     * Other plugins used required to run this one.
+     * Other plugins must be loaded first so this can initialize properly.
+     */
+    @XStreamImplicit
+    private List<PluginDependency> dependencies;
+
+    /**
      * Constructs new plugin information data object.
      * This constuctor might be used by XStream in some cases to create information instance from plugin XML descriptor.
      */
@@ -114,7 +121,7 @@ public class PluginInformation implements Serializable
     public PluginInformation ( final String id, final boolean disableable, final String mainClass, final String title,
                                final String description )
     {
-        this ( id, null, null, disableable, mainClass, title, description, PluginVersion.DEFAULT, null );
+        this ( id, null, null, disableable, mainClass, title, description, PluginVersion.DEFAULT, null, null );
     }
 
     /**
@@ -131,7 +138,7 @@ public class PluginInformation implements Serializable
     public PluginInformation ( final String id, final boolean disableable, final String mainClass, final String title,
                                final String description, final PluginVersion version )
     {
-        this ( id, null, null, disableable, mainClass, title, description, version, null );
+        this ( id, null, null, disableable, mainClass, title, description, version, null, null );
     }
 
     /**
@@ -152,6 +159,28 @@ public class PluginInformation implements Serializable
                                final String title, final String description, final PluginVersion version,
                                final List<PluginLibrary> libraries )
     {
+        this ( id, type, types, disableable, mainClass, title, description, version, libraries, null );
+    }
+
+    /**
+     * Constructs new plugin information data object with the specified values.
+     * This constructor can be used to create programmatical plugin information.
+     *
+     * @param id           plugin ID
+     * @param type         plugin type
+     * @param types        available plugin types
+     * @param disableable  whether plugin can be disabled or not
+     * @param mainClass    plugin main class
+     * @param title        plugin title
+     * @param description  plugin short description
+     * @param version      plugin version data
+     * @param libraries    plugin libraries
+     * @param dependencies plugin dependencies
+     */
+    public PluginInformation ( final String id, final String type, final String types, final boolean disableable, final String mainClass,
+                               final String title, final String description, final PluginVersion version,
+                               final List<PluginLibrary> libraries, final List<PluginDependency> dependencies )
+    {
         super ();
         this.id = id;
         this.type = type;
@@ -162,6 +191,7 @@ public class PluginInformation implements Serializable
         this.description = description;
         this.version = version;
         this.libraries = libraries;
+        this.dependencies = dependencies;
     }
 
     /**
@@ -382,6 +412,46 @@ public class PluginInformation implements Serializable
     public int getLibrariesCount ()
     {
         return libraries != null && libraries.size () > 0 ? libraries.size () : 0;
+    }
+
+    /**
+     * Returns plugins required to run this one.
+     *
+     * @return plugins required to run this one
+     */
+    public List<PluginDependency> getDependencies ()
+    {
+        return dependencies;
+    }
+
+    /**
+     * Sets plugins required to run this one.
+     *
+     * @param dependencies plugins required to run this one
+     */
+    public void setDependencies ( final List<PluginDependency> dependencies )
+    {
+        this.dependencies = dependencies;
+    }
+
+    /**
+     * Returns whether plugin has any plugin dependencies or not.
+     *
+     * @return true if plugin has any plugin dependencies, false otherwise
+     */
+    public boolean hasDependencies ()
+    {
+        return dependencies != null && dependencies.size () > 0;
+    }
+
+    /**
+     * Returns plugin dependencies count.
+     *
+     * @return plugin dependencies count
+     */
+    public int getDependencieCount ()
+    {
+        return dependencies != null && dependencies.size () > 0 ? dependencies.size () : 0;
     }
 
     /**

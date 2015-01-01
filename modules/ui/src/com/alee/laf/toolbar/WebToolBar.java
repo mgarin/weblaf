@@ -24,6 +24,7 @@ import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.separator.WebSeparator;
 import com.alee.managers.language.LanguageContainerMethods;
 import com.alee.managers.language.LanguageManager;
+import com.alee.managers.log.Log;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SizeUtils;
 import com.alee.utils.SwingUtils;
@@ -35,7 +36,7 @@ import java.awt.*;
 import java.util.List;
 
 /**
- * User: mgarin Date: 23.08.11 Time: 16:15
+ * @author Mikle Garin
  */
 
 public class WebToolBar extends JToolBar implements ShapeProvider, SizeMethods<WebToolBar>, LanguageContainerMethods
@@ -58,6 +59,18 @@ public class WebToolBar extends JToolBar implements ShapeProvider, SizeMethods<W
     public WebToolBar ( final int orientation )
     {
         super ( orientation );
+    }
+
+    public WebToolBar ( final ToolbarStyle style )
+    {
+        super ();
+        setToolbarStyle ( style );
+    }
+
+    public WebToolBar ( final int orientation, final ToolbarStyle style )
+    {
+        super ( orientation );
+        setToolbarStyle ( style );
     }
 
     /**
@@ -382,7 +395,7 @@ public class WebToolBar extends JToolBar implements ShapeProvider, SizeMethods<W
             }
             catch ( final Throwable e )
             {
-                e.printStackTrace ();
+                Log.error ( this, e );
                 setUI ( new WebToolBarUI () );
             }
         }
@@ -468,6 +481,42 @@ public class WebToolBar extends JToolBar implements ShapeProvider, SizeMethods<W
      * {@inheritDoc}
      */
     @Override
+    public int getMaximumWidth ()
+    {
+        return SizeUtils.getMaximumWidth ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebToolBar setMaximumWidth ( final int maximumWidth )
+    {
+        return SizeUtils.setMaximumWidth ( this, maximumWidth );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int getMaximumHeight ()
+    {
+        return SizeUtils.getMaximumHeight ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebToolBar setMaximumHeight ( final int maximumHeight )
+    {
+        return SizeUtils.setMaximumHeight ( this, maximumHeight );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Dimension getPreferredSize ()
     {
         Dimension ps = SizeUtils.getPreferredSize ( this, super.getPreferredSize () );
@@ -480,6 +529,15 @@ public class WebToolBar extends JToolBar implements ShapeProvider, SizeMethods<W
         }
 
         return ps;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebToolBar setPreferredSize ( final int width, final int height )
+    {
+        return SizeUtils.setPreferredSize ( this, width, height );
     }
 
     /**

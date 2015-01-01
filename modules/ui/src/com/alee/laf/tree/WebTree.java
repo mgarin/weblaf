@@ -18,10 +18,18 @@
 package com.alee.laf.tree;
 
 import com.alee.laf.WebLookAndFeel;
+import com.alee.managers.hotkey.HotkeyData;
+import com.alee.managers.log.Log;
+import com.alee.managers.settings.DefaultValue;
+import com.alee.managers.settings.SettingsManager;
+import com.alee.managers.settings.SettingsMethods;
+import com.alee.managers.settings.SettingsProcessor;
+import com.alee.utils.EventUtils;
 import com.alee.utils.GeometryUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SwingUtils;
-import com.alee.utils.swing.FontMethods;
+import com.alee.utils.compare.Filter;
+import com.alee.utils.swing.*;
 
 import javax.swing.*;
 import javax.swing.event.CellEditorListener;
@@ -29,10 +37,11 @@ import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.*;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Hashtable;
+import java.awt.event.FocusAdapter;
+import java.awt.event.KeyAdapter;
+import java.awt.event.MouseAdapter;
+import java.util.*;
 import java.util.List;
-import java.util.Vector;
 
 /**
  * This JTree extension class provides a direct access to WebTreeUI methods.
@@ -45,8 +54,26 @@ import java.util.Vector;
  * @author Mikle Garin
  */
 
-public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements FontMethods<WebTree<E>>
+public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements EventMethods, SettingsMethods, FontMethods<WebTree<E>>
 {
+    /**
+     * Bound property name for tree data provider.
+     * Data provider is not supported by WebTree, but it is a base for various extensions so property is located here.
+     */
+    public final static String TREE_DATA_PROVIDER_PROPERTY = "dataProvider";
+
+    /**
+     * Bound property name for tree filter.
+     * Filtering is not supported by WebTree, but it is a base for various extensions so property is located here.
+     */
+    public final static String TREE_FILTER_PROPERTY = "filter";
+
+    /**
+     * Bound property name for tree comparator.
+     * Sorting is not supported by WebTree, but it is a base for various extensions so property is located here.
+     */
+    public final static String TREE_COMPARATOR_PROPERTY = "comparator";
+
     /**
      * Single selection mode.
      * Only one node can be selected.
@@ -76,6 +103,11 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
      * It is disabled by default and null in that case.
      */
     protected TreeSelectionListener scrollToSelectionListener = null;
+
+    /**
+     * Special state provider that can be set to check whether or not specific nodes are editable.
+     */
+    protected StateProvider<E> editableStateProvider = null;
 
     /**
      * Constructs tree with default sample model.
@@ -201,6 +233,50 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
     }
 
     /**
+     * Returns special state provider that can be set to check whether or not specific nodes are editable.
+     * By default this provider is not specified and simply ignored by the tree.
+     *
+     * @return special state provider that can be set to check whether or not specific nodes are editable
+     */
+    public StateProvider<E> getEditableStateProvider ()
+    {
+        return editableStateProvider;
+    }
+
+    /**
+     * Sets special state provider that can be set to check whether or not specific nodes are editable.
+     * You can provide null to disable this state check at all.
+     *
+     * @param stateProvider special state provider that can be set to check whether or not specific nodes are editable
+     */
+    public void setEditableStateProvider ( final StateProvider<E> stateProvider )
+    {
+        this.editableStateProvider = stateProvider;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isPathEditable ( final TreePath path )
+    {
+        return super.isPathEditable ( path ) && isNodeEditable ( ( E ) path.getLastPathComponent () );
+    }
+
+    /**
+     * Returns whether the specified tree node is editable or not.
+     * This method is an improved version of default JTree method isPathEditable.
+     *
+     * @param node node to check editable state for
+     * @return true if the specified tree node is editable, false otherwise
+     * @see #isPathEditable(javax.swing.tree.TreePath)
+     */
+    public boolean isNodeEditable ( final E node )
+    {
+        return editableStateProvider == null || editableStateProvider.provide ( node );
+    }
+
+    /**
      * Removes tree cell editor listener.
      *
      * @param listener cell editor listener to remove
@@ -219,15 +295,11 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
      */
     public void expandRoot ()
     {
-        final TreeModel model = getModel ();
-        if ( model != null && model.getRoot () != null )
-        {
-            expandPath ( new TreePath ( model.getRoot () ) );
-        }
+        expandNode ( getRootNode () );
     }
 
     /**
-     * Expands all tree rows in a single call.
+     * Expands all tree nodes in a single call.
      * It is not recommended to expand large trees this way since that might cause huge interface lags.
      */
     public void expandAll ()
@@ -237,6 +309,85 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
         {
             expandRow ( i );
             i++;
+        }
+    }
+
+    /**
+     * Expands all tree nodes accepted by filter in a single call.
+     * It is not recommended to expand large trees this way since that might cause huge interface lags.
+     *
+     * @param shouldExpand expand filter
+     */
+    public void expandAll ( final Filter<E> shouldExpand )
+    {
+        if ( shouldExpand == null )
+        {
+            expandAll ();
+        }
+        else
+        {
+            final E rootNode = getRootNode ();
+            expandAll ( rootNode, shouldExpand );
+        }
+    }
+
+    /**
+     * Expands all child nodes of the specified node.
+     *
+     * @param node node to expand
+     */
+    public void expandAll ( final E node )
+    {
+        expandAll ( node, null );
+    }
+
+    /**
+     * Expands all child nodes accepted by filter in a single call.
+     *
+     * @param node         node to expand
+     * @param shouldExpand expand filter
+     */
+    public void expandAll ( final E node, final Filter<E> shouldExpand )
+    {
+        if ( shouldExpand == null || shouldExpand.accept ( node ) )
+        {
+            expandNode ( node );
+            for ( int i = 0; i < node.getChildCount (); i++ )
+            {
+                expandAll ( ( E ) node.getChildAt ( i ), shouldExpand );
+            }
+        }
+    }
+
+    /**
+     * Expands all child nodes until the specified structure depth is reached.
+     * Depth == 1 will force tree to expand all nodes under the root.
+     *
+     * @param depth max structure depth to be expanded
+     */
+    public void expandAll ( final int depth )
+    {
+        expandAllImpl ( getRootNode (), 0, depth );
+    }
+
+    /**
+     * Expands all child nodes until the specified max structure depth is reached.
+     *
+     * @param node         current level parent node
+     * @param currentDepth current depth level
+     * @param maxDepth     max depth level
+     */
+    private void expandAllImpl ( final E node, final int currentDepth, final int maxDepth )
+    {
+        final int depth = currentDepth + 1;
+        for ( int i = 0; i < node.getChildCount (); i++ )
+        {
+            final E child = ( E ) node.getChildAt ( i );
+            expandNode ( child );
+            if ( depth < maxDepth )
+            {
+                expandAllImpl ( child, depth, maxDepth );
+            }
         }
     }
 
@@ -259,6 +410,16 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
     public boolean isExpanded ( final E node )
     {
         return isExpanded ( getPathForNode ( node ) );
+    }
+
+    /**
+     * Returns selected node bounds.
+     *
+     * @return selected node bounds
+     */
+    public Rectangle getSelectedNodeBounds ()
+    {
+        return getNodeBounds ( getSelectedNode () );
     }
 
     /**
@@ -293,6 +454,39 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
             }
             return combined;
         }
+    }
+
+    /**
+     * Returns full row bounds including the space before the node and after the node.
+     *
+     * @param node node to retrieve full row bounds for
+     * @return full row bounds including the space before the node and after the node
+     */
+    public Rectangle getFullRowBounds ( final E node )
+    {
+        return getFullRowBounds ( getRowForNode ( node ) );
+    }
+
+    /**
+     * Returns full row bounds including the space before the node and after the node.
+     *
+     * @param row row to retrieve full bounds for
+     * @return full row bounds including the space before the node and after the node
+     */
+    public Rectangle getFullRowBounds ( final int row )
+    {
+        return getWebUI ().getFullRowBounds ( row );
+    }
+
+    /**
+     * Returns row of the specified node.
+     *
+     * @param node node to find row for
+     * @return row of the specified node
+     */
+    public int getRowForNode ( final E node )
+    {
+        return getRowForPath ( getPathForNode ( node ) );
     }
 
     /**
@@ -431,6 +625,28 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
             for ( final TreePath path : selectionPaths )
             {
                 selectedNodes.add ( getNodeForPath ( path ) );
+            }
+        }
+        return selectedNodes;
+    }
+
+    /**
+     * Returns only selected nodes which are currently visible in tree area.
+     * This will include nodes which are fully and partially visible in tree area.
+     *
+     * @return selected nodes which are currently visible in tree area
+     */
+    public List<E> getVisibleSelectedNodes ()
+    {
+        final List<E> selectedNodes = getSelectedNodes ();
+        final Rectangle vr = getVisibleRect ();
+        final Iterator<E> iterator = selectedNodes.iterator ();
+        while ( iterator.hasNext () )
+        {
+            final E node = iterator.next ();
+            if ( !vr.intersects ( getNodeBounds ( node ) ) )
+            {
+                iterator.remove ();
             }
         }
         return selectedNodes;
@@ -710,7 +926,26 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
         final Rectangle bounds = getPathBounds ( getSelectionPath () );
         if ( bounds != null )
         {
-            scrollRectToVisible ( bounds );
+            // Ignore scroll action if node is already fully visible
+            final Rectangle vr = getVisibleRect ();
+            if ( !vr.contains ( bounds ) )
+            {
+                // Leave additional 1/2 of visible height on top of the node
+                // Otherwise it is hard to look where this node is located
+                bounds.y = bounds.y + bounds.height / 2 - vr.height / 2;
+
+                // Put node into the middle of visible area
+                if ( vr.width > bounds.width )
+                {
+                    bounds.x = bounds.x + bounds.width / 2 - vr.width / 2;
+                }
+
+                // Setup width and height we want to see
+                bounds.width = vr.width;
+                bounds.height = vr.height;
+
+                scrollRectToVisible ( bounds );
+            }
         }
     }
 
@@ -733,11 +968,7 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
      */
     public void startEditingSelectedNode ()
     {
-        final TreePath path = getSelectionPath ();
-        if ( path != null )
-        {
-            startEditingAtPath ( path );
-        }
+        startEditingNode ( getSelectedNode () );
     }
 
     /**
@@ -747,10 +978,17 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
      */
     public void startEditingNode ( final E node )
     {
-        final TreePath path = getPathForNode ( node );
-        if ( path != null )
+        if ( node != null )
         {
-            startEditingAtPath ( path );
+            final TreePath path = getPathForNode ( node );
+            if ( path != null )
+            {
+                if ( !isVisible ( path ) )
+                {
+                    expandPath ( path );
+                }
+                startEditingAtPath ( path );
+            }
         }
     }
 
@@ -811,9 +1049,9 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
     }
 
     /**
-     * Returns whether tree should expand nodes on selection or not.
+     * Returns whether tree should auto-expand nodes on selection or not.
      *
-     * @return true if tree should expand nodes on selection, false otherwise
+     * @return true if tree should auto-expand nodes on selection, false otherwise
      */
     public boolean isAutoExpandSelectedNode ()
     {
@@ -821,13 +1059,48 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
     }
 
     /**
-     * Sets whether tree should expand nodes on selection or not.
+     * Sets whether tree should auto-expand nodes on selection or not.
      *
-     * @param autoExpandSelectedNode whether tree should expand nodes on selection or not
+     * @param autoExpand whether tree should auto-expand nodes on selection or not
      */
-    public void setAutoExpandSelectedNode ( final boolean autoExpandSelectedNode )
+    public void setAutoExpandSelectedNode ( final boolean autoExpand )
     {
-        getWebUI ().setAutoExpandSelectedNode ( autoExpandSelectedNode );
+        getWebUI ().setAutoExpandSelectedNode ( autoExpand );
+    }
+
+    /**
+     * Returns whether tree should auto-expand single child nodes or not.
+     * If set to true when any node is expanded and there is only one single child node in it - it will be automatically expanded.
+     *
+     * @return true if tree should auto-expand single child nodes, false otherwise
+     */
+    public boolean isAutoExpandSingleChildNode ()
+    {
+        return AutoExpandSingleChildNodeListener.isInstalled ( this );
+    }
+
+    /**
+     * Sets whether tree should auto-expand single child nodes or not.
+     * If set to true when any node is expanded and there is only one single child node in it - it will be automatically expanded.
+     *
+     * @param autoExpand whether tree should auto-expand single child nodes or not
+     */
+    public void setAutoExpandSingleChildNode ( final boolean autoExpand )
+    {
+        if ( autoExpand )
+        {
+            if ( !isAutoExpandSingleChildNode () )
+            {
+                AutoExpandSingleChildNodeListener.install ( this );
+            }
+        }
+        else
+        {
+            if ( isAutoExpandSingleChildNode () )
+            {
+                AutoExpandSingleChildNodeListener.uninstall ( this );
+            }
+        }
     }
 
     /**
@@ -1085,6 +1358,70 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
     }
 
     /**
+     * Returns whether selection should be web-colored or not.
+     * In case it is not web-colored selectionBackgroundColor value will be used as background color.
+     *
+     * @return true if selection should be web-colored, false otherwise
+     */
+    public boolean isWebColoredSelection ()
+    {
+        return getWebUI ().isWebColoredSelection ();
+    }
+
+    /**
+     * Sets whether selection should be web-colored or not.
+     * In case it is not web-colored selectionBackgroundColor value will be used as background color.
+     *
+     * @param webColored whether selection should be web-colored or not
+     */
+    public void setWebColoredSelection ( final boolean webColored )
+    {
+        getWebUI ().setWebColoredSelection ( webColored );
+    }
+
+    /**
+     * Returns selection border color.
+     *
+     * @return selection border color
+     */
+    public Color getSelectionBorderColor ()
+    {
+        return getWebUI ().getSelectionBorderColor ();
+    }
+
+    /**
+     * Sets selection border color.
+     *
+     * @param color selection border color
+     */
+    public void setSelectionBorderColor ( final Color color )
+    {
+        getWebUI ().setSelectionBorderColor ( color );
+    }
+
+    /**
+     * Returns selection background color.
+     * It is used only when webColoredSelection is set to false.
+     *
+     * @return selection background color
+     */
+    public Color getSelectionBackgroundColor ()
+    {
+        return getWebUI ().getSelectionBackgroundColor ();
+    }
+
+    /**
+     * Sets selection background color.
+     * It is used only when webColoredSelection is set to false.
+     *
+     * @param color selection background color
+     */
+    public void setSelectionBackgroundColor ( final Color color )
+    {
+        getWebUI ().setSelectionBackgroundColor ( color );
+    }
+
+    /**
      * Returns drop cell highlight shade width.
      *
      * @return drop cell highlight shade width
@@ -1128,7 +1465,7 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
             }
             catch ( final Throwable e )
             {
-                e.printStackTrace ();
+                Log.error ( this, e );
                 setUI ( new WebTreeUI () );
             }
         }
@@ -1198,6 +1535,317 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
                 repaint ( summ );
             }
         }
+    }
+
+    /**
+     * Returns tree cell renderer pane.
+     *
+     * @return tree cell renderer pane
+     */
+    public CellRendererPane getCellRendererPane ()
+    {
+        return getWebUI ().getCellRendererPane ();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MouseAdapter onMousePress ( final MouseEventRunnable runnable )
+    {
+        return EventUtils.onMousePress ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MouseAdapter onMousePress ( final MouseButton mouseButton, final MouseEventRunnable runnable )
+    {
+        return EventUtils.onMousePress ( this, mouseButton, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MouseAdapter onMouseEnter ( final MouseEventRunnable runnable )
+    {
+        return EventUtils.onMouseEnter ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MouseAdapter onMouseExit ( final MouseEventRunnable runnable )
+    {
+        return EventUtils.onMouseExit ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MouseAdapter onMouseDrag ( final MouseEventRunnable runnable )
+    {
+        return EventUtils.onMouseDrag ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MouseAdapter onMouseDrag ( final MouseButton mouseButton, final MouseEventRunnable runnable )
+    {
+        return EventUtils.onMouseDrag ( this, mouseButton, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MouseAdapter onMouseClick ( final MouseEventRunnable runnable )
+    {
+        return EventUtils.onMouseClick ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MouseAdapter onMouseClick ( final MouseButton mouseButton, final MouseEventRunnable runnable )
+    {
+        return EventUtils.onMouseClick ( this, mouseButton, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MouseAdapter onDoubleClick ( final MouseEventRunnable runnable )
+    {
+        return EventUtils.onDoubleClick ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MouseAdapter onMenuTrigger ( final MouseEventRunnable runnable )
+    {
+        return EventUtils.onMenuTrigger ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public KeyAdapter onKeyType ( final KeyEventRunnable runnable )
+    {
+        return EventUtils.onKeyType ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public KeyAdapter onKeyType ( final HotkeyData hotkey, final KeyEventRunnable runnable )
+    {
+        return EventUtils.onKeyType ( this, hotkey, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public KeyAdapter onKeyPress ( final KeyEventRunnable runnable )
+    {
+        return EventUtils.onKeyPress ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public KeyAdapter onKeyPress ( final HotkeyData hotkey, final KeyEventRunnable runnable )
+    {
+        return EventUtils.onKeyPress ( this, hotkey, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public KeyAdapter onKeyRelease ( final KeyEventRunnable runnable )
+    {
+        return EventUtils.onKeyRelease ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public KeyAdapter onKeyRelease ( final HotkeyData hotkey, final KeyEventRunnable runnable )
+    {
+        return EventUtils.onKeyRelease ( this, hotkey, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public FocusAdapter onFocusGain ( final FocusEventRunnable runnable )
+    {
+        return EventUtils.onFocusGain ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public FocusAdapter onFocusLoss ( final FocusEventRunnable runnable )
+    {
+        return EventUtils.onFocusLoss ( this, runnable );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void registerSettings ( final String key )
+    {
+        SettingsManager.registerComponent ( this, key );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <V extends DefaultValue> void registerSettings ( final String key, final Class<V> defaultValueClass )
+    {
+        SettingsManager.registerComponent ( this, key, defaultValueClass );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void registerSettings ( final String key, final Object defaultValue )
+    {
+        SettingsManager.registerComponent ( this, key, defaultValue );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void registerSettings ( final String group, final String key )
+    {
+        SettingsManager.registerComponent ( this, group, key );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <V extends DefaultValue> void registerSettings ( final String group, final String key, final Class<V> defaultValueClass )
+    {
+        SettingsManager.registerComponent ( this, group, key, defaultValueClass );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void registerSettings ( final String group, final String key, final Object defaultValue )
+    {
+        SettingsManager.registerComponent ( this, group, key, defaultValue );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void registerSettings ( final String key, final boolean loadInitialSettings, final boolean applySettingsChanges )
+    {
+        SettingsManager.registerComponent ( this, key, loadInitialSettings, applySettingsChanges );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <V extends DefaultValue> void registerSettings ( final String key, final Class<V> defaultValueClass,
+                                                            final boolean loadInitialSettings, final boolean applySettingsChanges )
+    {
+        SettingsManager.registerComponent ( this, key, defaultValueClass, loadInitialSettings, applySettingsChanges );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void registerSettings ( final String key, final Object defaultValue, final boolean loadInitialSettings,
+                                   final boolean applySettingsChanges )
+    {
+        SettingsManager.registerComponent ( this, key, defaultValue, loadInitialSettings, applySettingsChanges );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <V extends DefaultValue> void registerSettings ( final String group, final String key, final Class<V> defaultValueClass,
+                                                            final boolean loadInitialSettings, final boolean applySettingsChanges )
+    {
+        SettingsManager.registerComponent ( this, group, key, defaultValueClass, loadInitialSettings, applySettingsChanges );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void registerSettings ( final String group, final String key, final Object defaultValue, final boolean loadInitialSettings,
+                                   final boolean applySettingsChanges )
+    {
+        SettingsManager.registerComponent ( this, group, key, defaultValue, loadInitialSettings, applySettingsChanges );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void registerSettings ( final SettingsProcessor settingsProcessor )
+    {
+        SettingsManager.registerComponent ( this, settingsProcessor );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void unregisterSettings ()
+    {
+        SettingsManager.unregisterComponent ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void loadSettings ()
+    {
+        SettingsManager.loadComponentSettings ( this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void saveSettings ()
+    {
+        SettingsManager.saveComponentSettings ( this );
     }
 
     /**

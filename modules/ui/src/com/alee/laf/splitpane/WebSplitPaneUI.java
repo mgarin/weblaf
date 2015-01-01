@@ -238,31 +238,32 @@ public class WebSplitPaneUI extends BasicSplitPaneUI implements BorderMethods
             @Override
             protected JButton createLeftOneTouchButton ()
             {
-                final WebButton iconWebButton = WebButton.createIconWebButton ( new ImageIcon ( WebSplitPaneUI.class
-                                .getResource ( orientation == JSplitPane.HORIZONTAL_SPLIT ? "icons/left.png" : "icons/up.png" ) ), 0, 0, 0,
-                        false, true, false
-                );
+                final boolean hor = orientation == JSplitPane.HORIZONTAL_SPLIT;
+                final ImageIcon icon = new ImageIcon ( WebSplitPaneUI.class.getResource ( hor ? "icons/left.png" : "icons/up.png" ) );
+                final WebButton iconWebButton = WebButton.createIconWebButton ( icon, 0, 0, 0, false, true, false );
                 iconWebButton.setBorder ( BorderFactory.createEmptyBorder ( 0, 0, 0, 0 ) );
                 iconWebButton.setCursor ( Cursor.getDefaultCursor () );
-                iconWebButton
-                        .setPreferredSize ( orientation == JSplitPane.HORIZONTAL_SPLIT ? new Dimension ( 6, 7 ) : new Dimension ( 7, 6 ) );
+                iconWebButton.setPreferredSize ( hor ? new Dimension ( 6, 7 ) : new Dimension ( 7, 6 ) );
+                iconWebButton.setFocusable ( false );
                 return iconWebButton;
             }
 
             @Override
             protected JButton createRightOneTouchButton ()
             {
-                final JButton iconWebButton = WebButton.createIconWebButton ( new ImageIcon ( WebSplitPaneUI.class
-                                .getResource ( orientation == JSplitPane.HORIZONTAL_SPLIT ? "icons/right.png" : "icons/down.png" ) ), 0, 0,
-                        0, false, true, false
-                );
+                final boolean hor = orientation == JSplitPane.HORIZONTAL_SPLIT;
+                final ImageIcon icon = new ImageIcon ( WebSplitPaneUI.class.getResource ( hor ? "icons/right.png" : "icons/down.png" ) );
+                final JButton iconWebButton = WebButton.createIconWebButton ( icon, 0, 0, 0, false, true, false );
                 iconWebButton.setBorder ( BorderFactory.createEmptyBorder ( 0, 0, 0, 0 ) );
                 iconWebButton.setCursor ( Cursor.getDefaultCursor () );
-                iconWebButton
-                        .setPreferredSize ( orientation == JSplitPane.HORIZONTAL_SPLIT ? new Dimension ( 6, 7 ) : new Dimension ( 7, 6 ) );
+                iconWebButton.setPreferredSize ( hor ? new Dimension ( 6, 7 ) : new Dimension ( 7, 6 ) );
+                iconWebButton.setFocusable ( false );
                 return iconWebButton;
             }
 
+            /**
+             * todo Replace with paintComponent?
+             */
             @Override
             public void paint ( final Graphics g )
             {
