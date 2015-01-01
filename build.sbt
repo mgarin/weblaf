@@ -14,6 +14,8 @@ lazy val fullDescr = "WebLaf is a Java Swing Look and Feel and extended componen
 
 lazy val rSyntaxVersion = "2.5.6"
 
+lazy val baseDir = file("build-sbt")
+
 def mkVersion(base: File): String = {
   val propF = base / ".." / "build" / "version.properties"
   val prop  = new java.util.Properties()
@@ -69,7 +71,7 @@ lazy val commonSettings = Project.defaultSettings ++ Seq(
 
 lazy val full = Project(
   id            = baseNameL,
-  base          = file("."),
+  base          = baseDir,
   aggregate     = Seq(core, ui),  // exclude `demo` here
   dependencies  = Seq(core, ui),  // exclude `demo` here
   settings      = commonSettings ++ Seq(
@@ -85,7 +87,7 @@ lazy val full = Project(
 
 lazy val core: Project = Project(
   id        = s"$baseNameL-core",
-  base      = file("core"),
+  base      = baseDir / "core",
   settings  = commonSettings ++ Seq(
     name        := s"$baseName-core",
     description := "Core components for WebLaf",
@@ -106,7 +108,7 @@ lazy val core: Project = Project(
 
 lazy val ui = Project(
   id        = s"$baseNameL-ui",
-  base      = file("ui"),
+  base      = baseDir / "ui",
   dependencies = Seq(core),
   settings  = commonSettings ++ Seq(
     name        := s"$baseName-ui",
@@ -125,7 +127,7 @@ lazy val ui = Project(
 
 lazy val demo = Project(
   id        = s"$baseNameL-demo",
-  base      = file("demo"),
+  base      = baseDir / "demo",
   dependencies = Seq(core, ui),
   settings  = commonSettings ++ Seq(
     name        := s"$baseName-demo",
