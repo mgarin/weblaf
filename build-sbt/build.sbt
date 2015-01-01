@@ -3,7 +3,7 @@ lazy val baseName = "WebLaF"
 lazy val baseNameL = baseName.toLowerCase
 
 // version       := "1.27.0"
-lazy val isSnapshotVersion = false
+lazy val isSnapshotVersion = true
 
 // - generate debugging symbols
 // - compile to 1.6 compatible class files
@@ -11,6 +11,8 @@ lazy val isSnapshotVersion = false
 lazy val commonJavaOptions = Seq("-source", "1.6")
 
 lazy val fullDescr = "WebLaf is a Java Swing Look and Feel and extended components library for cross-platform applications"
+
+lazy val rSyntaxVersion = "2.5.6"
 
 def mkVersion(base: File): String = {
   val propF = base / ".." / "build" / "version.properties"
@@ -27,7 +29,7 @@ lazy val commonSettings = Project.defaultSettings ++ Seq(
   // organization  := "com.alee"
   // we use this organization in order to publish to Sonatype Nexus (Maven Central)
   organization      := "de.sciss",
-  scalaVersion      := "2.11.1",  // not used
+  scalaVersion      := "2.11.4",  // not used
   homepage          := Some(url("http://weblookandfeel.com")),
   licenses          := Seq("GPL v3+" -> url("http://www.gnu.org/licenses/gpl-3.0.txt")),
   crossPaths        := false,   // this is just a Java project
@@ -68,8 +70,8 @@ lazy val commonSettings = Project.defaultSettings ++ Seq(
 lazy val full = Project(
   id            = baseNameL,
   base          = file("."),
-  aggregate     = Seq(core, ui),
-  dependencies  = Seq(core, ui),
+  aggregate     = Seq(core, ui),  // exclude `demo` here
+  dependencies  = Seq(core, ui),  // exclude `demo` here
   settings      = commonSettings ++ Seq(
     name := baseName,
     description := fullDescr,
@@ -97,7 +99,7 @@ lazy val core: Project = Project(
     ),
     javaSource        in Compile := baseDirectory.value / ".." / ".." / "modules" / "core" / "src",
     resourceDirectory in Compile := baseDirectory.value / ".." / ".." / "modules" / "core" / "src",
-    excludeFilter in (Compile, unmanagedSources)   := new SimpleFileFilter(_.getPath.contains("/examples/")),
+    // excludeFilter in (Compile, unmanagedSources)   := new SimpleFileFilter(_.getPath.contains("/examples/")),
     excludeFilter in (Compile, unmanagedResources) := "*.java"
   )
 )
@@ -111,12 +113,31 @@ lazy val ui = Project(
     description := fullDescr,
     version     := mkVersion(baseDirectory.value / ".."),
     libraryDependencies ++= Seq(
-      "com.fifesoft" % "rsyntaxtextarea" % "2.5.0" % "provided"  // we don't want to drag this under in 99% of cases
+      "com.fifesoft" % "rsyntaxtextarea" % rSyntaxVersion % "provided"  // we don't want to drag this under in 99% of cases
     ),
     mainClass in (Compile,run) := Some("com.alee.laf.LibraryInfoDialog"),
     javaSource        in Compile := baseDirectory.value / ".." / ".." / "modules" / "ui" / "src",
     resourceDirectory in Compile := baseDirectory.value / ".." / ".." / "modules" / "ui" / "src",
-    excludeFilter in (Compile, unmanagedSources)   := new SimpleFileFilter(_.getPath.contains("/examples/")),
+    // excludeFilter in (Compile, unmanagedSources)   := new SimpleFileFilter(_.getPath.contains("/examples/")),
+    excludeFilter in (Compile, unmanagedResources) := "*.java"
+  )
+)
+
+lazy val demo = Project(
+  id        = s"$baseNameL-demo",
+  base      = file("demo"),
+  dependencies = Seq(core, ui),
+  settings  = commonSettings ++ Seq(
+    name        := s"$baseName-demo",
+    description := "Demo examples for WebLaf",
+    version     := mkVersion(baseDirectory.value / ".."),
+    libraryDependencies ++= Seq(
+      "com.fifesoft" % "rsyntaxtextarea" % rSyntaxVersion
+    ),
+    mainClass in (Compile,run) := Some("com.alee.examples.WebLookAndFeelDemo"),
+    javaSource        in Compile := baseDirectory.value / ".." / ".." / "modules" / "demo" / "src",
+    resourceDirectory in Compile := baseDirectory.value / ".." / ".." / "modules" / "demo" / "src",
+    // excludeFilter in (Compile, unmanagedSources)   := new SimpleFileFilter(_.getPath.contains("/examples/")),
     excludeFilter in (Compile, unmanagedResources) := "*.java"
   )
 )
