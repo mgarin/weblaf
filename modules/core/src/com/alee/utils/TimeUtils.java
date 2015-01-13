@@ -19,6 +19,7 @@ package com.alee.utils;
 
 import com.alee.managers.log.Log;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -429,5 +430,28 @@ public final class TimeUtils
     public static void changeByDays ( final Calendar calendar, final int days )
     {
         calendar.set ( Calendar.DAY_OF_MONTH, calendar.get ( Calendar.DAY_OF_MONTH ) + days );
+    }
+
+    /**
+     * Returns formatted representation of current date.
+     *
+     * @param format date format to use
+     * @return formatted representation of current date
+     */
+    public static String formatCurrentDate ( final String format )
+    {
+        return formatDate ( format, new Date () );
+    }
+
+    /**
+     * Returns formatted representation of specified date.
+     *
+     * @param format date format to use
+     * @param date   date to format
+     * @return formatted representation of specified date
+     */
+    public static String formatDate ( final String format, final Date date )
+    {
+        return new SimpleDateFormat ( format ).format ( date );
     }
 }
