@@ -28,6 +28,30 @@ import java.util.List;
 public final class CompareUtils
 {
     /**
+     * Returns whether the first Object equals to any Object from the specified array.
+     * This method will compare objects even if they are null without throwing any exceptions.
+     * This method should not be called from any method that overrides object default "equals" method.
+     *
+     * @param object      object to compare
+     * @param compareWith objects to compare with
+     * @return true if the first Object equals to any Object from the specified array, false otherwise
+     */
+    public static boolean equals ( final Object object, final Object... compareWith )
+    {
+        if ( compareWith != null && compareWith.length > 0 )
+        {
+            for ( final Object o : compareWith )
+            {
+                if ( equalsImpl ( object, o ) )
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
      * Returns whether the first Object equals to the second Object or not.
      * This method will compare two objects even if they are null without throwing any exceptions.
      * This method should not be called from any method that overrides object default "equals" method.
@@ -36,7 +60,7 @@ public final class CompareUtils
      * @param o2 second Object
      * @return true if the first Object equals to the second Object, false otherwise
      */
-    public static boolean equals ( final Object o1, final Object o2 )
+    private static boolean equalsImpl ( final Object o1, final Object o2 )
     {
         return o1 == null && o2 == null || o1 != null && o2 != null && o1.equals ( o2 );
     }
