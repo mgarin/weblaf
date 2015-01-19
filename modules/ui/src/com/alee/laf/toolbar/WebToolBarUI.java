@@ -289,7 +289,7 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeProvider, Borde
     public void setSpacing ( final int spacing )
     {
         this.spacing = spacing;
-        updateLayout ( toolBar );
+        updateLayout ( toolBar, false );
     }
 
     /**
@@ -368,7 +368,7 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeProvider, Borde
     {
         final boolean installed = ( c.getLayout () instanceof ToolbarLayout );
         
-        if (!install && !installed) return;
+        if ( !install && !installed ) return;
         
         final ToolbarLayout layout = new ToolbarLayout ( spacing, toolBar.getOrientation () );
         if ( installed )
