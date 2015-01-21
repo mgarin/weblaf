@@ -89,7 +89,7 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeProvider, Borde
 
         // Updating border and layout
         updateBorder ();
-        updateLayout ( toolBar );
+        updateLayout ( toolBar, true );
 
         // Border and layout update listeners
         ancestorListener = new AncestorAdapter ()
@@ -98,7 +98,7 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeProvider, Borde
             public void ancestorAdded ( final AncestorEvent event )
             {
                 updateBorder ();
-                updateLayout ( toolBar );
+                updateLayout ( toolBar, false );
             }
         };
         toolBar.addAncestorListener ( ancestorListener );
@@ -108,7 +108,7 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeProvider, Borde
             public void propertyChange ( final PropertyChangeEvent evt )
             {
                 updateBorder ();
-                updateLayout ( toolBar );
+                updateLayout ( toolBar, false );
             }
         };
         toolBar.addPropertyChangeListener ( WebLookAndFeel.TOOLBAR_FLOATABLE_PROPERTY, propertyChangeListener );
@@ -289,7 +289,7 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeProvider, Borde
     public void setSpacing ( final int spacing )
     {
         this.spacing = spacing;
-        updateLayout ( toolBar );
+        updateLayout ( toolBar, false );
     }
 
     /**
@@ -364,10 +364,14 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeProvider, Borde
         }
     }
 
-    private void updateLayout ( final JComponent c )
+    private void updateLayout ( final JComponent c, final boolean install )
     {
+        final boolean installed = ( c.getLayout () instanceof ToolbarLayout );
+        
+        if ( !install && !installed ) return;
+        
         final ToolbarLayout layout = new ToolbarLayout ( spacing, toolBar.getOrientation () );
-        if ( c.getLayout () instanceof ToolbarLayout )
+        if ( installed )
         {
             final ToolbarLayout old = ( ToolbarLayout ) c.getLayout ();
             layout.setConstraints ( old.getConstraints () );
