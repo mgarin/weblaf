@@ -194,9 +194,12 @@ public final class FileUtils
      */
     public static void clearFilesCaches ( final File... files )
     {
-        for ( final File file : files )
+        if ( files != null && files.length > 0 )
         {
-            clearFileCaches ( file );
+            for ( final File file : files )
+            {
+                clearFileCaches ( file );
+            }
         }
     }
 
@@ -207,7 +210,10 @@ public final class FileUtils
      */
     public static void clearFileCaches ( final File file )
     {
-        clearFileCaches ( file.getAbsolutePath () );
+        if ( file != null )
+        {
+            clearFileCaches ( file.getAbsolutePath () );
+        }
     }
 
     /**
