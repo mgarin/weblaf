@@ -25,10 +25,7 @@ import com.alee.utils.reflection.JarStructure;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import java.lang.reflect.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -79,6 +76,117 @@ public final class ReflectUtils
     public static void setSafeMethodsLoggingEnabled ( final boolean enabled )
     {
         ReflectUtils.safeMethodsLoggingEnabled = enabled;
+    }
+
+    /**
+     * Returns cloned object instance.
+     * This method will clone fields directly instead of calling clone method on the object.
+     * Object fields will be cloned normally through clone method if they implement Cloneable interface.
+     *
+     * @param object object to clone
+     * @param <T>    cloned object type
+     * @return cloned object instance
+     */
+    public static <T> T cloneByFieldsSafely ( final T object )
+    {
+        try
+        {
+            return cloneByFields ( object );
+        }
+        catch ( final Throwable e )
+        {
+            if ( safeMethodsLoggingEnabled )
+            {
+                Log.warn ( "ReflectionUtils method failed: cloneByFieldsSafely", e );
+            }
+            return null;
+        }
+
+    }
+
+    /**
+     * Returns cloned object instance.
+     * This method will clone fields directly instead of calling clone method on the object.
+     * Object fields will be cloned normally through clone method if they implement Cloneable interface.
+     *
+     * @param object object to clone
+     * @param <T>    cloned object type
+     * @return cloned object instance
+     * @throws InvocationTargetException
+     * @throws NoSuchMethodException
+     * @throws InstantiationException
+     * @throws IllegalAccessException
+     */
+    public static <T> T cloneByFields ( final T object )
+            throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException
+    {
+        final T copy = ReflectUtils.createInstance ( object.getClass () );
+        final List<Field> fields = getFields ( object );
+        for ( final Field field : fields )
+        {
+            // Making field accessible
+            // Otherwise final or non-public fields won't allow any operations on them
+            field.setAccessible ( true );
+
+            // Retrieving original object field value
+            final Object value = field.get ( object );
+
+            // Updating field
+            final Object v = value instanceof Cloneable ? clone ( ( Cloneable ) value ) : value;
+            field.set ( copy, v );
+        }
+        return copy;
+    }
+
+    /**
+     * Returns all non-static fields declared in the specified class and all of its superclasses.
+     *
+     * @param object object or class to find declared non-static fields for
+     * @return all non-static fields declared in the specified class and all of its superclasses
+     */
+    public static List<Field> getFields ( final Object object )
+    {
+        return getFields ( object, new ArrayList<String> () );
+    }
+
+    /**
+     * Returns all non-static fields declared in the specified class and all of its superclasses.
+     *
+     * @param object object or class to find declared non-static fields for
+     * @param found  found field names
+     * @return all non-static fields declared in the specified class and all of its superclasses
+     */
+    public static List<Field> getFields ( final Object object, final List<String> found )
+    {
+        if ( object instanceof Class )
+        {
+            // Find all current-level fields
+            final Class clazz = ( Class ) object;
+            final Field[] fields = clazz.getDeclaredFields ();
+            final List<Field> filtered = new ArrayList<Field> ( fields.length );
+            for ( final Field field : fields )
+            {
+                final int modifiers = field.getModifiers ();
+                if ( !found.contains ( field.getName () ) && !Modifier.isStatic ( modifiers ) )
+                {
+                    filtered.add ( field );
+                    found.add ( field.getName () );
+                }
+            }
+
+            // Find all superclass fields
+            final Class superclass = clazz.getSuperclass ();
+            if ( superclass != null )
+            {
+                filtered.addAll ( getFields ( superclass ) );
+            }
+
+            return filtered;
+        }
+        else
+        {
+            return getFields ( object.getClass () );
+        }
     }
 
     /**

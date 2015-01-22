@@ -17,6 +17,7 @@
 
 package com.alee.utils;
 
+import com.alee.utils.collection.IndexedSupplier;
 import com.alee.utils.compare.Filter;
 import com.alee.utils.text.TextProvider;
 
@@ -74,6 +75,23 @@ public final class CollectionUtils
     {
         final ArrayList<T> list = new ArrayList<T> ( data.length );
         Collections.addAll ( list, data );
+        return list;
+    }
+
+    /**
+     * Returns data converted into list.
+     *
+     * @param data data
+     * @param <T>  data type
+     * @return data list
+     */
+    public static <T> ArrayList<T> asList ( final Iterator<T> data )
+    {
+        final ArrayList<T> list = new ArrayList<T> ();
+        while ( data.hasNext () )
+        {
+            list.add ( data.next () );
+        }
         return list;
     }
 
@@ -382,5 +400,23 @@ public final class CollectionUtils
             }
         }
         return summary;
+    }
+
+    /**
+     * Fills and returns list with data provided by supplier interface implementation.
+     *
+     * @param amount   amount of list elements
+     * @param supplier data provider
+     * @param <T>      data type
+     * @return list filled with data provided by supplier interface implementation
+     */
+    public static <T> List<T> fillList ( final int amount, final IndexedSupplier<T> supplier )
+    {
+        final List<T> list = new ArrayList<T> ( amount );
+        for ( int i = 0; i < amount; i++ )
+        {
+            list.add ( supplier.get ( i ) );
+        }
+        return list;
     }
 }
