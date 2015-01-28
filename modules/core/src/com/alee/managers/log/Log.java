@@ -33,7 +33,8 @@ import java.util.WeakHashMap;
 public class Log
 {
     /**
-     * todo 1. Add option to log within a separate thread to improve overall performance
+     * todo 1. Replace "get()" with inner caller resolvers
+     * todo 2. Add option to log within a separate thread to improve overall performance
      */
 
     /**

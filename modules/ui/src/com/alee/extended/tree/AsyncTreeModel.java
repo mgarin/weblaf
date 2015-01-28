@@ -306,12 +306,12 @@ public class AsyncTreeModel<E extends AsyncUniqueNode> extends WebTreeModel<E>
             nodeCached.remove ( node.getId () );
 
             // Clears node raw childs cache
-            final List<E> childs = rawNodeChildsCache.remove ( node.getId () );
+            final List<E> children = rawNodeChildsCache.remove ( node.getId () );
 
             // Clears chld nodes cache
-            if ( childs != null )
+            if ( children != null )
             {
-                clearNodeChildsCache ( childs, true );
+                clearNodeChildsCache ( children, true );
             }
         }
     }
@@ -729,6 +729,9 @@ public class AsyncTreeModel<E extends AsyncUniqueNode> extends WebTreeModel<E>
 
         // Clearing node cache
         clearNodeChildsCache ( childNode, true );
+
+        // Removing node childs so they won't mess up anything when we place node back into tree
+        childNode.removeAllChildren ();
 
         // Removing node from parent
         super.removeNodeFromParent ( node );

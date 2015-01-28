@@ -321,7 +321,7 @@ public final class SystemUtils
      *
      * @return true if current OS is windows, false otherwise
      */
-    @SuppressWarnings ("StringEquality")
+    @SuppressWarnings ( "StringEquality" )
     public static boolean isWindows ()
     {
         return shortOsName == WINDOWS;
@@ -380,6 +380,11 @@ public final class SystemUtils
         return osName;
     }
 
+    /**
+     * Returns OS vendor site address.
+     *
+     * @return OS vendor site address
+     */
     public static String getOsSite ()
     {
         if ( isWindows () )
@@ -526,6 +531,11 @@ public final class SystemUtils
         return devices;
     }
 
+    /**
+     * Returns fully transparent cursor.
+     *
+     * @return fully transparent cursor
+     */
     public static Cursor getTransparentCursor ()
     {
         if ( transparentCursor == null )
