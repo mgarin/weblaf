@@ -40,7 +40,7 @@ public final class MapUtils
      * @param <V> Map value type
      * @return copied Map
      */
-    public static <K, V> Map<K, V> copyMap ( final Map<K, V> map )
+    public static <K, V> HashMap<K, V> copyMap ( final Map<K, V> map )
     {
         return new HashMap<K, V> ( map );
     }
@@ -92,9 +92,9 @@ public final class MapUtils
      * @param <V> Map value type
      * @return cloned Map
      */
-    public static <K, V extends Cloneable> Map<K, V> cloneMap ( final Map<K, V> map )
+    public static <K, V extends Cloneable> HashMap<K, V> cloneMap ( final Map<K, V> map )
     {
-        final Map<K, V> clone = new HashMap<K, V> ( map.size () );
+        final HashMap<K, V> clone = new HashMap<K, V> ( map.size () );
         for ( final Map.Entry<K, V> entry : map.entrySet () )
         {
             clone.put ( entry.getKey (), ReflectUtils.cloneSafely ( entry.getValue () ) );

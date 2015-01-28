@@ -30,10 +30,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.security.CodeSource;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -132,7 +129,19 @@ public final class ReflectUtils
             final Object value = field.get ( object );
 
             // Updating field
-            final Object v = value instanceof Cloneable ? clone ( ( Cloneable ) value ) : value;
+            final Object v;
+            if ( value instanceof Collection )
+            {
+                v = CollectionUtils.cloneOrCopy ( ( Collection ) value );
+            }
+            else if ( value instanceof Cloneable )
+            {
+                v = clone ( ( Cloneable ) value );
+            }
+            else
+            {
+                v = value;
+            }
             field.set ( copy, v );
         }
         return copy;

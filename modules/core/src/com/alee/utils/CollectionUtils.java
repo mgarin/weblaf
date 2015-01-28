@@ -173,11 +173,11 @@ public final class CollectionUtils
     }
 
     /**
-     * Returns clone of the specified list.
+     * Returns clone of the specified collection.
      * Note that this method will clone all values into new list.
      *
-     * @param collection list to clone
-     * @param <T>        list type
+     * @param collection collection to clone
+     * @param <T>        collection objects type
      * @return clone of the specified list
      */
     public static <T extends Cloneable> ArrayList<T> clone ( final Collection<T> collection )
@@ -206,6 +206,38 @@ public final class CollectionUtils
         final ArrayList<T> list = new ArrayList<T> ( data.length );
         Collections.addAll ( list, data );
         return list;
+    }
+
+    /**
+     * Returns collection with clonable values being cloned and non-clonable values simply copied from source collection.
+     *
+     * @param collection collection to perform action for
+     * @param <T>        collection objects type
+     * @return collection with clonable values being cloned and non-clonable values simply copied from source collection
+     */
+    public static <T> ArrayList<T> cloneOrCopy ( final Collection<T> collection )
+    {
+        if ( collection == null )
+        {
+            return null;
+        }
+        final ArrayList<T> cloned = new ArrayList<T> ( collection.size () );
+        for ( final T value : collection )
+        {
+            if ( value instanceof Collection )
+            {
+                cloned.add ( ( T ) cloneOrCopy ( ( Collection ) value ) );
+            }
+            else if ( value instanceof Cloneable )
+            {
+                cloned.add ( ( T ) ReflectUtils.cloneSafely ( ( Cloneable ) value ) );
+            }
+            else
+            {
+                cloned.add ( value );
+            }
+        }
+        return cloned;
     }
 
     /**
