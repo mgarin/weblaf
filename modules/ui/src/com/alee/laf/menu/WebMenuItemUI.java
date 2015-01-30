@@ -495,6 +495,8 @@ public class WebMenuItemUI extends BasicMenuItemUI implements BorderMethods
                 final FontMetrics afm = menuItem.getFontMetrics ( acceleratorFont );
                 final int aw = afm.stringWidth ( accText );
 
+                GraphicsUtils.setupFont ( g, acceleratorFont );
+
                 x = ltr ? w - bi.right - aw : bi.left;
                 paintAcceleratorText ( g2d, menuItem, accText, afm, x, y, aw, ih, selected, ltr );
             }
