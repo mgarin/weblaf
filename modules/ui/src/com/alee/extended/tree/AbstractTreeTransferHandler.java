@@ -406,9 +406,10 @@ public abstract class AbstractTreeTransferHandler<N extends UniqueNode, T extend
         // Adjusting drop index for MOVE operation
         if ( isMoveAction ( dropAction ) && draggedNodeIndices != null && draggedNodeIndices.containsKey ( parent.getId () ) )
         {
+            final int initialIndex = adjustedDropIndex;
             for ( final Integer index : draggedNodeIndices.get ( parent.getId () ) )
             {
-                if ( index < adjustedDropIndex )
+                if ( index < initialIndex )
                 {
                     // We simply decrement inserted index in case some node which was higher than this one was deleted
                     // That allows us to have index that is correct when dragged nodes are already removed from the tree

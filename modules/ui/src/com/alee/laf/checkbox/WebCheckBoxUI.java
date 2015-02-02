@@ -814,8 +814,8 @@ public class WebCheckBoxUI extends BasicCheckBoxUI implements ShapeProvider
         // Border
         final Stroke os = GraphicsUtils.setupStroke ( g2d, borderStroke );
         g2d.setPaint ( enabled ?
-                ( rolloverDarkBorderOnly ? ColorUtils.getIntermediateColor ( borderColor, darkBorderColor, getBgDarkness () ) :
-                        darkBorderColor ) : disabledBorderColor );
+                rolloverDarkBorderOnly ? ColorUtils.getIntermediateColor ( borderColor, darkBorderColor, getBgDarkness () ) :
+                        darkBorderColor : disabledBorderColor );
         g2d.draw ( shape );
         GraphicsUtils.restoreStroke ( g2d, os );
     }

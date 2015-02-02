@@ -443,10 +443,10 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider, Bor
             private Point getPopupLocation ()
             {
                 final Dimension comboSize = comboBox.getSize ();
-                if (widerPopupAllowed)
+                if ( widerPopupAllowed )
                 {
                     final Dimension prefSize = comboBox.getPreferredSize ();
-                    if (prefSize.width > comboSize.width)
+                    if ( prefSize.width > comboSize.width )
                     {
                         comboSize.width = prefSize.width;
                     }
