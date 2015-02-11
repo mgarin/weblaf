@@ -47,7 +47,17 @@ public abstract class ExTreeTransferHandler<N extends UniqueNode, T extends WebE
     protected boolean prepareDropOperation ( final TransferSupport support, final List<N> nodes, final int dropIndex, final N parent,
                                              final T tree, final ExTreeModel<N> model )
     {
-        return performDropOperation ( nodes, parent, tree, model, getAdjustedDropIndex ( dropIndex, support.getDropAction (), parent ) );
+        // Expanding parent first
+        if ( !tree.isExpanded ( parent ) )
+        {
+            tree.expandNode ( parent );
+        }
+
+        // Adjust drop index after we ensure parent is expanded
+        final int adjustedDropIndex = getAdjustedDropIndex ( dropIndex, support.getDropAction (), parent );
+
+        // Now we can perform drop
+        return performDropOperation ( nodes, parent, tree, model, adjustedDropIndex );
     }
 
     /**

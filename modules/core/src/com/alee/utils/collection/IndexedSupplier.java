@@ -15,16 +15,19 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.utils.swing;
+package com.alee.utils.collection;
 
 /**
  * @author Mikle Garin
  */
 
-public class DelayFormatException extends IllegalArgumentException
+public interface IndexedSupplier<T>
 {
-    public DelayFormatException ( final Throwable cause )
-    {
-        super ( cause );
-    }
+    /**
+     * Returns a result.
+     *
+     * @param index object index
+     * @return a result
+     */
+    public T get ( int index );
 }

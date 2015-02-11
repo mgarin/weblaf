@@ -117,7 +117,7 @@ public class WebRootPaneUI extends BasicRootPaneUI implements SwingConstants
      * @param c component that will use UI instance
      * @return instance of the WebRootPaneUI
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebRootPaneUI ();
@@ -537,11 +537,7 @@ public class WebRootPaneUI extends BasicRootPaneUI implements SwingConstants
 
     protected void installProperties ()
     {
-        if ( isFrame () )
-        {
-            // Maximum frame size
-            frame.setMaximizedBounds ( GraphicsEnvironment.getLocalGraphicsEnvironment ().getMaximumWindowBounds () );
-        }
+        //
     }
 
     protected void uninstallProperties ()
@@ -1063,6 +1059,40 @@ public class WebRootPaneUI extends BasicRootPaneUI implements SwingConstants
     {
         if ( frame != null )
         {
+            // Determining screen our frame placed on currently
+            final GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment ();
+            final GraphicsDevice[] screenDevices = ge.getScreenDevices ();
+            final Rectangle fb = frame.getBounds ();
+            GraphicsConfiguration fit = null;
+            int maxArea = 0;
+            for ( final GraphicsDevice gd : screenDevices )
+            {
+                final GraphicsConfiguration gc = gd.getDefaultConfiguration ();
+                final Rectangle sb = gc.getBounds ();
+                final Rectangle intersection = fb.intersection ( sb );
+                final int s = intersection.width * intersection.height;
+                if ( maxArea < s )
+                {
+                    fit = gc;
+                    maxArea = s;
+                }
+            }
+
+            // Updating maximized bounds for the frame
+            if ( fit != null )
+            {
+                // Screen-based bounds
+                final Insets si = Toolkit.getDefaultToolkit ().getScreenInsets ( fit );
+                final Rectangle b = fit.getBounds ();
+                frame.setMaximizedBounds (
+                        new Rectangle ( b.x + si.left, b.y + si.top, b.width - si.left - si.right, b.height - si.top - si.bottom ) );
+            }
+            else
+            {
+                // Default GE bounds
+                frame.setMaximizedBounds ( GraphicsEnvironment.getLocalGraphicsEnvironment ().getMaximumWindowBounds () );
+            }
+
             frame.setExtendedState ( Frame.MAXIMIZED_BOTH );
         }
     }

@@ -559,7 +559,6 @@ public abstract class PluginManager<T extends Plugin>
                 // Saving result as new recently detected plugins list
                 final List<DetectedPlugin<T>> sorted = SortUtils.doTopologicalSort ( graphDataProvider );
 
-
                 // Adding plugins which didn't get into graph into the end
                 // There might be such plugin for example in case it has some side dependencies
                 // It might still be properly initialized, we just don't know anything about its dependencies
@@ -844,6 +843,7 @@ public abstract class PluginManager<T extends Plugin>
                     final ClassLoader classLoader;
                     if ( createNewClassLoader || !( cl instanceof URLClassLoader ) )
                     {
+                        // todo Use single class loader for all plugins within this manager (or all managers?)
                         // Create new class loader
                         classLoader = URLClassLoader.newInstance ( jarPaths.toArray ( new URL[ jarPaths.size () ] ), cl );
                     }

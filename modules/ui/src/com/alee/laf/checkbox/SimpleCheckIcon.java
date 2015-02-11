@@ -121,7 +121,9 @@ public class SimpleCheckIcon extends CheckIcon
         if ( step > -1 )
         {
             final ImageIcon icon = enabled ? CHECK_STATES.get ( step ) : DISABLED_CHECK_STATES.get ( step );
-            g2d.drawImage ( icon.getImage (), x + w / 2 - getIconWidth () / 2, y + h / 2 - getIconHeight () / 2, null );
+            final int xofs = ( w - getIconWidth () ) / 2 + ( ( w & 1 ) == 1 ? 1 : 0 );
+            final int yofs = ( h - getIconHeight () ) / 2 + ( h > 16 ? ( h & 1 ) == 1 && h > 18 ? 2 : 1 : 0 );
+            g2d.drawImage ( icon.getImage (), x + xofs, y + yofs, null );
         }
     }
 }

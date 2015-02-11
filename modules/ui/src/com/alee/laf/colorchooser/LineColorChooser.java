@@ -40,17 +40,17 @@ public class LineColorChooser extends WebPanel
     public static final ImageIcon LEFT_ICON = new ImageIcon ( LineColorChooser.class.getResource ( "icons/left.png" ) );
     public static final ImageIcon RIGHT_ICON = new ImageIcon ( LineColorChooser.class.getResource ( "icons/right.png" ) );
 
-    private List<ChangeListener> changeListeners = new ArrayList<ChangeListener> ( 1 );
+    private final List<ChangeListener> changeListeners = new ArrayList<ChangeListener> ( 1 );
+
+    // Color line painter and component
+    private final LineColorChooserPaint lineColorChooserPaint = new LineColorChooserPaint ( 2, 256 );
+    private final LinePalette colorLine;
 
     // Hue (H -> HSB) (0 to 360)
     private int hue = 0;
 
     // Show only web-safe colors
     private boolean webOnlyColors = false;
-
-    // Color line painter and component
-    private LineColorChooserPaint lineColorChooserPaint = new LineColorChooserPaint ( 2, 256 );
-    private LinePalette colorLine;
 
     public LineColorChooser ()
     {
@@ -61,7 +61,7 @@ public class LineColorChooser extends WebPanel
         colorLine = new LinePalette ();
         add ( colorLine, "1,1" );
 
-        ColorLineMouseAdapter adapter = new ColorLineMouseAdapter ();
+        final ColorLineMouseAdapter adapter = new ColorLineMouseAdapter ();
         addMouseListener ( adapter );
         addMouseMotionListener ( adapter );
     }
@@ -75,11 +75,11 @@ public class LineColorChooser extends WebPanel
         }
 
         @Override
-        public void paint ( Graphics g )
+        public void paint ( final Graphics g )
         {
             super.paint ( g );
 
-            Graphics2D g2d = ( Graphics2D ) g;
+            final Graphics2D g2d = ( Graphics2D ) g;
 
             g2d.setPaint ( Color.GRAY );
             g2d.drawRect ( 0, 0, getWidth () - 1, getHeight () - 1 );
@@ -100,24 +100,24 @@ public class LineColorChooser extends WebPanel
     private class ColorLineMouseAdapter extends MouseAdapter
     {
         @Override
-        public void mousePressed ( MouseEvent e )
+        public void mousePressed ( final MouseEvent e )
         {
             updateHue ( e.getY () );
         }
 
         @Override
-        public void mouseDragged ( MouseEvent e )
+        public void mouseDragged ( final MouseEvent e )
         {
             updateHue ( e.getY () );
         }
 
-        private void updateHue ( int yCoordinate )
+        private void updateHue ( final int yCoordinate )
         {
             setHue ( Math.round ( ( float ) 360 * ( ( float ) ( yCoordinate - 5 ) / ( float ) ( colorLine.getHeight () - 4 ) ) ), true );
         }
     }
 
-    private void setHue ( int hue, boolean fireEvent )
+    private void setHue ( int hue, final boolean fireEvent )
     {
         // To filter needless actions
         if ( this.hue == hue )
@@ -151,7 +151,7 @@ public class LineColorChooser extends WebPanel
         return 360 - hue;
     }
 
-    public void setColor ( Color color )
+    public void setColor ( final Color color )
     {
         // Retrieving hue from Color
         setHue ( 360 - Math.round ( ( float ) 360 * Color.RGBtoHSB ( color.getRed (), color.getGreen (), color.getBlue (), null )[ 0 ] ),
@@ -164,7 +164,7 @@ public class LineColorChooser extends WebPanel
     }
 
     @Override
-    public void paint ( Graphics g )
+    public void paint ( final Graphics g )
     {
         super.paint ( g );
 
@@ -180,7 +180,7 @@ public class LineColorChooser extends WebPanel
         return webOnlyColors;
     }
 
-    public void setWebOnlyColors ( boolean webOnlyColors )
+    public void setWebOnlyColors ( final boolean webOnlyColors )
     {
         this.webOnlyColors = webOnlyColors;
         lineColorChooserPaint.setWebSafe ( webOnlyColors );
@@ -188,20 +188,20 @@ public class LineColorChooser extends WebPanel
         firePropertyChanged ();
     }
 
-    public void addChangeListener ( ChangeListener listener )
+    public void addChangeListener ( final ChangeListener listener )
     {
         changeListeners.add ( listener );
     }
 
-    public void removeChangeListener ( ChangeListener listener )
+    public void removeChangeListener ( final ChangeListener listener )
     {
         changeListeners.remove ( listener );
     }
 
     private void firePropertyChanged ()
     {
-        ChangeEvent changeEvent = new ChangeEvent ( LineColorChooser.this );
-        for ( ChangeListener changeListener : CollectionUtils.copy ( changeListeners ) )
+        final ChangeEvent changeEvent = new ChangeEvent ( LineColorChooser.this );
+        for ( final ChangeListener changeListener : CollectionUtils.copy ( changeListeners ) )
         {
             changeListener.stateChanged ( changeEvent );
         }

@@ -283,6 +283,66 @@ public class WebTabbedPane extends JTabbedPane
         getWebUI ().setTabStretchType ( tabStretchType );
     }
 
+    public Color getTabBorderColor ()
+    {
+        return getWebUI ().getTabBorderColor ();
+    }
+
+    public void setTabBorderColor ( final Color tabBorderColor )
+    {
+        getWebUI ().setTabBorderColor ( tabBorderColor );
+    }
+
+    public Color getContentBorderColor ()
+    {
+        return getWebUI ().getContentBorderColor ();
+    }
+
+    public void setContentBorderColor ( final Color contentBorderColor )
+    {
+        getWebUI ().setContentBorderColor ( contentBorderColor );
+    }
+
+    public boolean isPaintBorderOnlyOnSelectedTab ()
+    {
+        return getWebUI ().isPaintBorderOnlyOnSelectedTab ();
+    }
+
+    public void setPaintBorderOnlyOnSelectedTab ( final boolean paintBorderOnlyOnSelectedTab )
+    {
+        getWebUI ().setPaintBorderOnlyOnSelectedTab ( paintBorderOnlyOnSelectedTab );
+    }
+
+    public boolean isForceUseSelectedTabBgColors ()
+    {
+        return getWebUI ().isForceUseSelectedTabBgColors ();
+    }
+
+    public void setForceUseSelectedTabBgColors ( final boolean forceUseSelectedTabBgColors )
+    {
+        getWebUI ().setForceUseSelectedTabBgColors ( forceUseSelectedTabBgColors );
+    }
+
+    public Color getBackgroundColor ()
+    {
+        return getWebUI ().getBackgroundColor ();
+    }
+
+    public void setBackgroundColor ( final Color backgroundColor )
+    {
+        getWebUI ().setBackgroundColor ( backgroundColor );
+    }
+
+    public boolean isPaintOnlyTopBorder ()
+    {
+        return getWebUI ().isPaintOnlyTopBorder ();
+    }
+
+    public void setPaintOnlyTopBorder ( final boolean paintOnlyTopBorder )
+    {
+        getWebUI ().setPaintOnlyTopBorder ( paintOnlyTopBorder );
+    }
+
     @Override
     public Shape provideShape ()
     {

@@ -41,7 +41,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * User: mgarin Date: 27.04.11 Time: 18:39
+ * @author Mikle Garin
  */
 
 public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider, BorderMethods
@@ -61,6 +61,12 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider,
     private int tabRunIndent = WebTabbedPaneStyle.tabRunIndent;
     private int tabOverlay = WebTabbedPaneStyle.tabOverlay;
     private TabStretchType tabStretchType = WebTabbedPaneStyle.tabStretchType;
+    private Color tabBorderColor = WebTabbedPaneStyle.tabBorderColor;
+    private Color contentBorderColor = WebTabbedPaneStyle.contentBorderColor;
+    private boolean paintBorderOnlyOnSelectedTab = WebTabbedPaneStyle.paintBorderOnlyOnSelectedTab;
+    private boolean forceUseSelectedTabBgColors = WebTabbedPaneStyle.forceUseSelectedTabBgColors;
+    private Color backgroundColor = WebTabbedPaneStyle.backgroundColor;
+    private boolean paintOnlyTopBorder = WebTabbedPaneStyle.paintOnlyTopBorder;
 
     private final Map<Integer, Color> selectedForegroundAt = new HashMap<Integer, Color> ();
     private final Map<Integer, Painter> backgroundPainterAt = new HashMap<Integer, Painter> ();
@@ -82,7 +88,7 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider,
 
         // Default settings
         SwingUtils.setOrientation ( tabPane );
-        tabPane.setBackground ( StyleConstants.backgroundColor );
+        tabPane.setBackground ( backgroundColor );
         PainterSupport.installPainter ( tabPane, this.painter );
 
         // Updating border
@@ -368,6 +374,66 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider,
         this.tabStretchType = tabStretchType;
     }
 
+    public Color getTabBorderColor ()
+    {
+        return tabBorderColor;
+    }
+
+    public void setTabBorderColor ( final Color tabBorderColor )
+    {
+        this.tabBorderColor = tabBorderColor;
+    }
+
+    public Color getContentBorderColor ()
+    {
+        return contentBorderColor;
+    }
+
+    public void setContentBorderColor ( final Color contentBorderColor )
+    {
+        this.contentBorderColor = contentBorderColor;
+    }
+
+    public boolean isPaintBorderOnlyOnSelectedTab ()
+    {
+        return paintBorderOnlyOnSelectedTab;
+    }
+
+    public void setPaintBorderOnlyOnSelectedTab ( final boolean paintBorderOnlyOnSelectedTab )
+    {
+        this.paintBorderOnlyOnSelectedTab = paintBorderOnlyOnSelectedTab;
+    }
+
+    public boolean isForceUseSelectedTabBgColors ()
+    {
+        return forceUseSelectedTabBgColors;
+    }
+
+    public void setForceUseSelectedTabBgColors ( final boolean forceUseSelectedTabBgColors )
+    {
+        this.forceUseSelectedTabBgColors = forceUseSelectedTabBgColors;
+    }
+
+    public Color getBackgroundColor ()
+    {
+        return backgroundColor;
+    }
+
+    public void setBackgroundColor ( final Color backgroundColor )
+    {
+        this.backgroundColor = backgroundColor;
+    }
+
+    public boolean isPaintOnlyTopBorder ()
+    {
+        return paintOnlyTopBorder;
+    }
+
+    public void setPaintOnlyTopBorder ( final boolean paintOnlyTopBorder )
+    {
+        this.paintOnlyTopBorder = paintOnlyTopBorder;
+    }
+
     @Override
     protected int getTabRunIndent ( final int tabPlacement, final int run )
     {
@@ -538,9 +604,17 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider,
             final Point bottomPoint = getBottomTabBgPoint ( tabPlacement, x, y, w, h );
             if ( isSelected )
             {
-                Color bg = tabPane.getBackgroundAt ( tabIndex );
-                bg = bg != null ? bg : tabPane.getBackground ();
-                g2d.setPaint ( new GradientPaint ( topPoint.x, topPoint.y, selectedTopBg, bottomPoint.x, bottomPoint.y, bg ) );
+                if ( forceUseSelectedTabBgColors )
+                {
+                    g2d.setPaint (
+                            new GradientPaint ( topPoint.x, topPoint.y, selectedTopBg, bottomPoint.x, bottomPoint.y, selectedBottomBg ) );
+                }
+                else
+                {
+                    Color bg = tabPane.getBackgroundAt ( tabIndex );
+                    bg = bg != null ? bg : tabPane.getBackground ();
+                    g2d.setPaint ( new GradientPaint ( topPoint.x, topPoint.y, selectedTopBg, bottomPoint.x, bottomPoint.y, bg ) );
+                }
             }
             else
             {
@@ -550,7 +624,7 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider,
         }
 
         // Tab border
-        g2d.setPaint ( StyleConstants.darkBorderColor );
+        g2d.setPaint ( tabBorderColor );
         g2d.draw ( borderShape );
 
         // Tab focus
@@ -636,6 +710,12 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider,
 
         final int actualRound = tabbedPaneStyle.equals ( TabbedPaneStyle.standalone ) ? round : 0;
         final GeneralPath bgShape = new GeneralPath ( GeneralPath.WIND_EVEN_ODD );
+
+        if ( !isSelected && paintBorderOnlyOnSelectedTab )
+        {
+            return bgShape;
+        }
+
         if ( tabPlacement == JTabbedPane.TOP )
         {
             bgShape.moveTo ( x, y + h + getChange ( tabShapeType ) );
@@ -817,7 +897,7 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider,
             }
 
             // Area border
-            g2d.setPaint ( StyleConstants.darkBorderColor );
+            g2d.setPaint ( contentBorderColor );
             g2d.draw ( bs );
 
             // Area focus
@@ -839,7 +919,7 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider,
 
             // todo draw for other tabPlacement values aswell
             // Area border
-            g2d.setPaint ( Color.GRAY );
+            g2d.setPaint ( contentBorderColor );
             if ( tabPlacement == JTabbedPane.TOP )
             {
                 if ( selected != null )
@@ -913,8 +993,15 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider,
                     }
                     else
                     {
-                        gp.lineTo ( bi.left, tabPane.getHeight () - bi.bottom );
-                        gp.lineTo ( tabPane.getWidth () - bi.right, tabPane.getHeight () - bi.bottom );
+                        if ( paintOnlyTopBorder )
+                        {
+                            gp.moveTo ( tabPane.getWidth () - bi.right, tabPane.getHeight () - bi.bottom );
+                        }
+                        else
+                        {
+                            gp.lineTo ( bi.left, tabPane.getHeight () - bi.bottom );
+                            gp.lineTo ( tabPane.getWidth () - bi.right, tabPane.getHeight () - bi.bottom );
+                        }
                     }
                     if ( selected.x + selected.width < tabPane.getWidth () - bi.right - round && round > 0 )
                     {
@@ -923,7 +1010,14 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider,
                     }
                     else
                     {
-                        gp.lineTo ( tabPane.getWidth () - bi.right, topY );
+                        if ( paintOnlyTopBorder )
+                        {
+                            gp.moveTo ( tabPane.getWidth () - bi.right, topY );
+                        }
+                        else
+                        {
+                            gp.lineTo ( tabPane.getWidth () - bi.right, topY );
+                        }
                     }
                     gp.lineTo ( selected.x + selected.width, topY );
                 }
@@ -1047,8 +1141,7 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider,
                 return new RoundRectangle2D.Double ( bi.left + ( left ? tabAreaSize : 0 ), bi.top + ( top ? tabAreaSize : 0 ),
                         tabPane.getWidth () - bi.left - bi.right -
                                 ( left || right ? tabAreaSize : 0 ), tabPane.getHeight () - bi.top - bi.bottom -
-                        ( top || bottom ? tabAreaSize : 0 ), round * 2, round * 2
-                );
+                        ( top || bottom ? tabAreaSize : 0 ), round * 2, round * 2 );
             }
         }
         else

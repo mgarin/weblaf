@@ -58,9 +58,9 @@ public class StackLayout extends AbstractLayoutManager
      * {@inheritDoc}
      */
     @Override
-    public void addComponent ( Component component, Object constraints )
+    public void addComponent ( final Component component, final Object constraints )
     {
-        String value = ( String ) constraints;
+        final String value = ( String ) constraints;
         if ( value != null && !value.trim ().equals ( "" ) && !value.equals ( CONTENT ) && !value.equals ( HIDDEN ) )
         {
             throw new IllegalArgumentException ( "Cannot add to layout: constraint must be null or an empty/'CONTENT'/'HIDDEN' string" );
@@ -72,7 +72,7 @@ public class StackLayout extends AbstractLayoutManager
      * {@inheritDoc}
      */
     @Override
-    public void removeComponent ( Component component )
+    public void removeComponent ( final Component component )
     {
         this.constraints.remove ( component );
     }
@@ -81,15 +81,15 @@ public class StackLayout extends AbstractLayoutManager
      * {@inheritDoc}
      */
     @Override
-    public Dimension preferredLayoutSize ( Container parent )
+    public Dimension preferredLayoutSize ( final Container parent )
     {
-        Insets insets = parent.getInsets ();
-        Dimension ps = new Dimension ( 0, 0 );
-        for ( Component component : parent.getComponents () )
+        final Insets insets = parent.getInsets ();
+        final Dimension ps = new Dimension ( 0, 0 );
+        for ( final Component component : parent.getComponents () )
         {
             if ( constraints.get ( component ) == null || !constraints.get ( component ).equals ( HIDDEN ) )
             {
-                Dimension cps = component.getPreferredSize ();
+                final Dimension cps = component.getPreferredSize ();
                 ps.width = Math.max ( ps.width, cps.width );
                 ps.height = Math.max ( ps.height, cps.height );
             }
@@ -101,10 +101,10 @@ public class StackLayout extends AbstractLayoutManager
      * {@inheritDoc}
      */
     @Override
-    public void layoutContainer ( Container parent )
+    public void layoutContainer ( final Container parent )
     {
-        Insets insets = parent.getInsets ();
-        for ( Component component : parent.getComponents () )
+        final Insets insets = parent.getInsets ();
+        for ( final Component component : parent.getComponents () )
         {
             if ( constraints.get ( component ) == null || !constraints.get ( component ).equals ( HIDDEN ) )
             {

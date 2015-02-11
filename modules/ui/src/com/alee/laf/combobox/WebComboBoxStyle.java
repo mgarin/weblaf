@@ -101,4 +101,9 @@ public final class WebComboBoxStyle
      * Whether should display scroll bar track or not.
      */
     public static boolean scrollBarTrackVisible = false;
+    
+    /**
+     * Whether the popup is allowed to be wider than the combobox or not.
+     */
+    public static boolean widerPopupAllowed = false;
 }

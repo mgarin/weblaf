@@ -476,30 +476,23 @@ public class WebMenuItemUI extends BasicMenuItemUI implements BorderMethods
         if ( hasText || hasAccelerator )
         {
             final Map hints = SwingUtils.setupTextAntialias ( g2d );
-            final Font oldFont = GraphicsUtils.setupFont ( g, menuItem.getFont () );
-
-            // Painting text
             if ( hasText )
             {
+                // Painting text
                 final FontMetrics fm = menuItem.getFontMetrics ( menuItem.getFont () );
                 final View html = ( View ) menuItem.getClientProperty ( BasicHTML.propertyKey );
                 final int tw = html != null ? ( int ) html.getPreferredSpan ( View.X_AXIS ) : fm.stringWidth ( text );
-
                 x -= ltr ? 0 : tw;
                 paintText ( g2d, menuItem, fm, x, y, tw, ih, selected, ltr );
             }
-
-            // Painting accelerator text
             if ( hasAccelerator )
             {
+                // Painting accelerator text
                 final FontMetrics afm = menuItem.getFontMetrics ( acceleratorFont );
                 final int aw = afm.stringWidth ( accText );
-
                 x = ltr ? w - bi.right - aw : bi.left;
                 paintAcceleratorText ( g2d, menuItem, accText, afm, x, y, aw, ih, selected, ltr );
             }
-
-            GraphicsUtils.restoreFont ( g, oldFont );
             SwingUtils.restoreTextAntialias ( g2d, hints );
         }
 
@@ -554,8 +547,8 @@ public class WebMenuItemUI extends BasicMenuItemUI implements BorderMethods
     {
         final boolean enabled = menuItem.isEnabled ();
         final Icon icon = menuItem.isSelected () && menuItem.getSelectedIcon () != null ?
-                ( enabled ? menuItem.getSelectedIcon () : menuItem.getDisabledSelectedIcon () ) :
-                ( enabled ? menuItem.getIcon () : menuItem.getDisabledIcon () );
+                enabled ? menuItem.getSelectedIcon () : menuItem.getDisabledSelectedIcon () :
+                enabled ? menuItem.getIcon () : menuItem.getDisabledIcon ();
         if ( icon != null )
         {
             final boolean left = ltr ? ( iconAlignment == SwingConstants.LEFT || iconAlignment == SwingConstants.LEADING ) :
@@ -585,6 +578,7 @@ public class WebMenuItemUI extends BasicMenuItemUI implements BorderMethods
     {
         g2d.setPaint ( menuItem.isEnabled () ? menuItem.getForeground () : disabledFg );
 
+        final Font oldFont = GraphicsUtils.setupFont ( g2d, menuItem.getFont () );
         final View html = ( View ) menuItem.getClientProperty ( BasicHTML.propertyKey );
         if ( html != null )
         {
@@ -595,6 +589,7 @@ public class WebMenuItemUI extends BasicMenuItemUI implements BorderMethods
             final int mnem = WebLookAndFeel.isMnemonicHidden () ? -1 : menuItem.getDisplayedMnemonicIndex ();
             SwingUtils.drawStringUnderlineCharAt ( g2d, menuItem.getText (), mnem, x, y + h / 2 + LafUtils.getTextCenterShearY ( fm ) );
         }
+        GraphicsUtils.restoreFont ( g2d, oldFont );
     }
 
     /**
@@ -622,8 +617,10 @@ public class WebMenuItemUI extends BasicMenuItemUI implements BorderMethods
             g2d.fillRoundRect ( x - 3, y + h / 2 - th / 2, w + 6, th, 4, 4 );
         }
 
+        final Font oldFont = GraphicsUtils.setupFont ( g2d, acceleratorFont );
         g2d.setPaint ( menuItem.isEnabled () ? acceleratorFg : acceleratorDisabledFg );
         g2d.drawString ( accText, x, y + h / 2 + LafUtils.getTextCenterShearY ( fm ) );
+        GraphicsUtils.restoreFont ( g2d, oldFont );
     }
 
     /**

@@ -17,6 +17,7 @@
 
 package com.alee.utils;
 
+import com.alee.utils.collection.IndexedSupplier;
 import com.alee.utils.compare.Filter;
 import com.alee.utils.text.TextProvider;
 
@@ -74,6 +75,23 @@ public final class CollectionUtils
     {
         final ArrayList<T> list = new ArrayList<T> ( data.length );
         Collections.addAll ( list, data );
+        return list;
+    }
+
+    /**
+     * Returns data converted into list.
+     *
+     * @param data data
+     * @param <T>  data type
+     * @return data list
+     */
+    public static <T> ArrayList<T> asList ( final Iterator<T> data )
+    {
+        final ArrayList<T> list = new ArrayList<T> ();
+        while ( data.hasNext () )
+        {
+            list.add ( data.next () );
+        }
         return list;
     }
 
@@ -155,11 +173,11 @@ public final class CollectionUtils
     }
 
     /**
-     * Returns clone of the specified list.
+     * Returns clone of the specified collection.
      * Note that this method will clone all values into new list.
      *
-     * @param collection list to clone
-     * @param <T>        list type
+     * @param collection collection to clone
+     * @param <T>        collection objects type
      * @return clone of the specified list
      */
     public static <T extends Cloneable> ArrayList<T> clone ( final Collection<T> collection )
@@ -188,6 +206,38 @@ public final class CollectionUtils
         final ArrayList<T> list = new ArrayList<T> ( data.length );
         Collections.addAll ( list, data );
         return list;
+    }
+
+    /**
+     * Returns collection with clonable values being cloned and non-clonable values simply copied from source collection.
+     *
+     * @param collection collection to perform action for
+     * @param <T>        collection objects type
+     * @return collection with clonable values being cloned and non-clonable values simply copied from source collection
+     */
+    public static <T> ArrayList<T> cloneOrCopy ( final Collection<T> collection )
+    {
+        if ( collection == null )
+        {
+            return null;
+        }
+        final ArrayList<T> cloned = new ArrayList<T> ( collection.size () );
+        for ( final T value : collection )
+        {
+            if ( value instanceof Collection )
+            {
+                cloned.add ( ( T ) cloneOrCopy ( ( Collection ) value ) );
+            }
+            else if ( value instanceof Cloneable )
+            {
+                cloned.add ( ( T ) ReflectUtils.cloneSafely ( ( Cloneable ) value ) );
+            }
+            else
+            {
+                cloned.add ( value );
+            }
+        }
+        return cloned;
     }
 
     /**
@@ -382,5 +432,23 @@ public final class CollectionUtils
             }
         }
         return summary;
+    }
+
+    /**
+     * Fills and returns list with data provided by supplier interface implementation.
+     *
+     * @param amount   amount of list elements
+     * @param supplier data provider
+     * @param <T>      data type
+     * @return list filled with data provided by supplier interface implementation
+     */
+    public static <T> List<T> fillList ( final int amount, final IndexedSupplier<T> supplier )
+    {
+        final List<T> list = new ArrayList<T> ( amount );
+        for ( int i = 0; i < amount; i++ )
+        {
+            list.add ( supplier.get ( i ) );
+        }
+        return list;
     }
 }

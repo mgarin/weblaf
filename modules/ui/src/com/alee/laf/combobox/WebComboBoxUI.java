@@ -73,6 +73,7 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider, Bor
     private int shadeWidth = WebComboBoxStyle.shadeWidth;
     private boolean drawFocus = WebComboBoxStyle.drawFocus;
     private boolean mouseWheelScrollingEnabled = WebComboBoxStyle.mouseWheelScrollingEnabled;
+    private boolean widerPopupAllowed = WebComboBoxStyle.widerPopupAllowed;
     private boolean useFirstValueAsPrototype = false;
 
     private WebButton arrow = null;
@@ -442,6 +443,14 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider, Bor
             private Point getPopupLocation ()
             {
                 final Dimension comboSize = comboBox.getSize ();
+                if ( widerPopupAllowed )
+                {
+                    final Dimension prefSize = comboBox.getPreferredSize ();
+                    if ( prefSize.width > comboSize.width )
+                    {
+                        comboSize.width = prefSize.width;
+                    }
+                }
                 comboSize.setSize ( comboSize.width - 2, getPopupHeightForRowCount ( comboBox.getMaximumRowCount () ) );
                 final Rectangle popupBounds = computePopupBounds ( 0, comboBox.getBounds ().height, comboSize.width, comboSize.height );
 
@@ -617,6 +626,16 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider, Bor
     public void setMouseWheelScrollingEnabled ( final boolean enabled )
     {
         this.mouseWheelScrollingEnabled = enabled;
+    }
+
+    public boolean isWiderPopupAllowed ()
+    {
+        return widerPopupAllowed;
+    }
+
+    public void setWiderPopupAllowed ( final boolean allowed )
+    {
+        this.widerPopupAllowed = allowed;
     }
 
     /**

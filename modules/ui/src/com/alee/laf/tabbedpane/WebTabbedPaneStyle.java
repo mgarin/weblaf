@@ -100,4 +100,34 @@ public final class WebTabbedPaneStyle
      * Tabs stretch type.
      */
     public static TabStretchType tabStretchType = TabStretchType.multiline;
+
+    /**
+     * Color of the tab border.
+     */
+    public static Color tabBorderColor = StyleConstants.darkBorderColor;
+
+    /**
+     * Color of the content border.
+     */
+    public static Color contentBorderColor = Color.GRAY;
+
+    /**
+     * If true, only the selected tab gets a border.
+     */
+    public static boolean paintBorderOnlyOnSelectedTab = false;
+
+    /**
+     * If true, the selected tab background colors will be used in every case.
+     */
+    public static boolean forceUseSelectedTabBgColors = false;
+
+    /**
+     * Default background color.
+     */
+    public static Color backgroundColor = StyleConstants.backgroundColor;
+
+    /**
+     * If true, only the top border is painted.
+     */
+    public static boolean paintOnlyTopBorder = false;
 }
