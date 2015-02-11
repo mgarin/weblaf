@@ -31,7 +31,7 @@ lazy val commonSettings = Project.defaultSettings ++ Seq(
   // organization  := "com.alee"
   // we use this organization in order to publish to Sonatype Nexus (Maven Central)
   organization      := "de.sciss",
-  scalaVersion      := "2.11.4",  // not used
+  scalaVersion      := "2.11.5",  // not used
   homepage          := Some(url("http://weblookandfeel.com")),
   licenses          := Seq("GPL v3+" -> url("http://www.gnu.org/licenses/gpl-3.0.txt")),
   crossPaths        := false,   // this is just a Java project
