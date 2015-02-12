@@ -19,6 +19,7 @@ package com.alee.laf.checkbox;
 
 import com.alee.extended.checkbox.CheckState;
 import com.alee.global.StyleConstants;
+import com.alee.global.StyleConstants.BorderStyle;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.list.WebListElement;
 import com.alee.utils.*;
@@ -74,7 +75,7 @@ public class WebCheckBoxUI extends BasicCheckBoxUI implements ShapeProvider
     protected Insets margin = WebCheckBoxStyle.margin;
     protected boolean animated = WebCheckBoxStyle.animated;
     protected boolean rolloverDarkBorderOnly = WebCheckBoxStyle.rolloverDarkBorderOnly;
-    protected Stroke borderStroke = WebCheckBoxStyle.borderStroke;
+    protected BorderStyle borderStyle = WebCheckBoxStyle.borderStyle;
     protected int iconWidth = WebCheckBoxStyle.iconWidth;
     protected int iconHeight = WebCheckBoxStyle.iconHeight;
 
@@ -475,6 +476,26 @@ public class WebCheckBoxUI extends BasicCheckBoxUI implements ShapeProvider
     }
 
     /**
+     * Returns the style of the border (bold or normal).
+     *
+     * @return border style of the checkbox
+     */
+    public BorderStyle getBorderStyle() 
+    {
+        return borderStyle;
+    }
+
+    /**
+     * Sets the border style of the checkbox (bold or normal).
+     *
+     * @param borderStyle border style of the checkbox
+     */
+    public void setBorderStyle(BorderStyle borderStyle) 
+    {
+        this.borderStyle = borderStyle;
+    }
+
+    /**
      * Returns border color.
      *
      * @return border color
@@ -812,7 +833,7 @@ public class WebCheckBoxUI extends BasicCheckBoxUI implements ShapeProvider
         g2d.fill ( shape );
 
         // Border
-        final Stroke os = GraphicsUtils.setupStroke ( g2d, borderStroke );
+        final Stroke os = GraphicsUtils.setupStroke ( g2d, borderStyle == BorderStyle.bold ? StyleConstants.boldBorderStroke : StyleConstants.borderStroke );
         g2d.setPaint ( enabled ?
                 rolloverDarkBorderOnly ? ColorUtils.getIntermediateColor ( borderColor, darkBorderColor, getBgDarkness () ) :
                         darkBorderColor : disabledBorderColor );
