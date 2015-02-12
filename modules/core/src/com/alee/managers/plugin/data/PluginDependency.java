@@ -29,7 +29,7 @@ import java.io.Serializable;
  * @author Mikle Garin
  */
 
-@XStreamAlias ( "PluginDependency" )
+@XStreamAlias ("PluginDependency")
 public class PluginDependency implements Serializable
 {
     /**
@@ -50,6 +50,12 @@ public class PluginDependency implements Serializable
     private PluginVersion maxVersion;
 
     /**
+     * Whether this dependency is mandatory or not.
+     * If this dependency is mandatory then plugin will not be loaded unless dependency is provided.
+     */
+    private Boolean optional;
+
+    /**
      * Constructs new empty dependency.
      */
     public PluginDependency ()
@@ -58,6 +64,7 @@ public class PluginDependency implements Serializable
         this.pluginId = null;
         this.minVersion = null;
         this.maxVersion = null;
+        this.optional = null;
     }
 
     /**
@@ -71,6 +78,7 @@ public class PluginDependency implements Serializable
         this.pluginId = pluginId;
         this.minVersion = null;
         this.maxVersion = null;
+        this.optional = null;
     }
 
     /**
@@ -85,6 +93,7 @@ public class PluginDependency implements Serializable
         this.pluginId = pluginId;
         this.minVersion = minVersion;
         this.maxVersion = null;
+        this.optional = null;
     }
 
     /**
@@ -100,6 +109,25 @@ public class PluginDependency implements Serializable
         this.pluginId = pluginId;
         this.minVersion = minVersion;
         this.maxVersion = maxVersion;
+        this.optional = null;
+    }
+
+    /**
+     * Constructs new dependency.
+     *
+     * @param pluginId   plugin ID
+     * @param minVersion minimum plugin version
+     * @param maxVersion maximum plugin version
+     * @param optional   whether this dependency is mandatory or not
+     */
+    public PluginDependency ( final String pluginId, final PluginVersion minVersion, final PluginVersion maxVersion,
+                              final Boolean optional )
+    {
+        super ();
+        this.pluginId = pluginId;
+        this.minVersion = minVersion;
+        this.maxVersion = maxVersion;
+        this.optional = optional;
     }
 
     /**
@@ -160,6 +188,36 @@ public class PluginDependency implements Serializable
     public void setMaxVersion ( final PluginVersion maxVersion )
     {
         this.maxVersion = maxVersion;
+    }
+
+    /**
+     * Returns whether this dependency is mandatory or not.
+     *
+     * @return true or null if this dependency is mandatory, false otherwise
+     */
+    public Boolean getOptional ()
+    {
+        return optional;
+    }
+
+    /**
+     * Returns whether this dependency is mandatory or not.
+     *
+     * @return true if this dependency is mandatory, false otherwise
+     */
+    public boolean isOptional ()
+    {
+        return optional != null && optional;
+    }
+
+    /**
+     * Sets whether this dependency is mandatory or not.
+     *
+     * @param optional whether this dependency is mandatory or not
+     */
+    public void setOptional ( final Boolean optional )
+    {
+        this.optional = optional;
     }
 
     /**
