@@ -437,7 +437,7 @@ public class WebRadioButtonUI extends BasicRadioButtonUI implements ShapeProvide
                 g2d.fill ( shape );
 
                 // Border
-                final Stroke os = GraphicsUtils.setupStroke ( g2d, borderStyle == BorderStyle.bold ? StyleConstants.boldBorderStroke : StyleConstants.borderStroke );
+                final Stroke os = GraphicsUtils.setupStroke ( g2d, borderStyle.getStroke() );
                 g2d.setPaint ( c.isEnabled () ?
                         rolloverDarkBorderOnly ? ColorUtils.getIntermediateColor ( borderColor, darkBorderColor, getProgress () ) :
                                 darkBorderColor : disabledBorderColor );
