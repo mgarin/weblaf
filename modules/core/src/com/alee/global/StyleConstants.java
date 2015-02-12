@@ -271,7 +271,19 @@ public class StyleConstants
      */
     public enum BorderStyle 
     {
-        normal,
-        bold
+        normal (StyleConstants.borderStroke),
+        bold   (StyleConstants.boldBorderStroke);
+
+        private Stroke stroke;
+
+        private BorderStyle(Stroke stroke) 
+        {
+            this.stroke = stroke;
+        }
+
+        public Stroke getStroke()
+        {
+            return stroke;
+        }
     }
 }
