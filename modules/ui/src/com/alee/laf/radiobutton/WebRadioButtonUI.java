@@ -18,6 +18,7 @@
 package com.alee.laf.radiobutton;
 
 import com.alee.global.StyleConstants;
+import com.alee.global.StyleConstants.BorderStyle;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.list.WebListElement;
 import com.alee.laf.tree.WebTreeElement;
@@ -71,8 +72,7 @@ public class WebRadioButtonUI extends BasicRadioButtonUI implements ShapeProvide
 
     private boolean animated = WebRadioButtonStyle.animated;
     private boolean rolloverDarkBorderOnly = WebRadioButtonStyle.rolloverDarkBorderOnly;
-
-    public Stroke borderStroke = new BasicStroke ( 1.5f );
+    private BorderStyle borderStyle = WebRadioButtonStyle.borderStyle;
 
     private int iconWidth = 16;
     private int iconHeight = 16;
@@ -289,6 +289,16 @@ public class WebRadioButtonUI extends BasicRadioButtonUI implements ShapeProvide
         this.rolloverDarkBorderOnly = rolloverDarkBorderOnly;
     }
 
+    public BorderStyle getBorderStyle() 
+    {
+        return borderStyle;
+    }
+
+    public void setBorderStyle(BorderStyle borderStyle) 
+    {
+        this.borderStyle = borderStyle;
+    }
+
     public Color getBorderColor ()
     {
         return borderColor;
@@ -427,7 +437,7 @@ public class WebRadioButtonUI extends BasicRadioButtonUI implements ShapeProvide
                 g2d.fill ( shape );
 
                 // Border
-                final Stroke os = GraphicsUtils.setupStroke ( g2d, borderStroke );
+                final Stroke os = GraphicsUtils.setupStroke ( g2d, borderStyle == BorderStyle.bold ? StyleConstants.boldBorderStroke : StyleConstants.borderStroke );
                 g2d.setPaint ( c.isEnabled () ?
                         rolloverDarkBorderOnly ? ColorUtils.getIntermediateColor ( borderColor, darkBorderColor, getProgress () ) :
                                 darkBorderColor : disabledBorderColor );
