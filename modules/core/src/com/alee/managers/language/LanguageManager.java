@@ -29,6 +29,7 @@ import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
 import java.awt.*;
 import java.io.File;
+import java.lang.ref.WeakReference;
 import java.net.URL;
 import java.util.*;
 import java.util.List;
@@ -537,12 +538,13 @@ public class LanguageManager implements LanguageConstants
             if ( component instanceof JComponent )
             {
                 final JComponent jComponent = ( JComponent ) component;
+                final WeakReference<JComponent> ref = new WeakReference<JComponent>( jComponent );
                 final AncestorAdapter listener = new AncestorAdapter ()
                 {
                     @Override
                     public void ancestorAdded ( final AncestorEvent event )
                     {
-                        updateComponentKey ( component );
+                        updateComponentKey ( ref.get () );
                     }
                 };
                 jComponent.addAncestorListener ( listener );

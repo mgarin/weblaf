@@ -118,7 +118,7 @@ public class WebTreeUI extends BasicTreeUI
      * @param c component that will use UI instance
      * @return instance of the WebTreeUI
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebTreeUI ();
@@ -145,6 +145,10 @@ public class WebTreeUI extends BasicTreeUI
 
         // Allow each cell to choose its own preferred height
         tree.setRowHeight ( -1 );
+
+        // Modifying default drop mode
+        // USE_SELECTION mode is not preferred since WebLaF provides a better visual drop representation
+        tree.setDropMode ( DropMode.ON );
 
         // Use a moderate amount of visible rows by default
         // BasicTreeUI uses 20 rows by default which is too much
@@ -435,7 +439,7 @@ public class WebTreeUI extends BasicTreeUI
                 //                // Calculating selector pervious and current rects
                 //                final Rectangle sb1 = GeometryUtils.getContainingRect ( selectionStart, selectionPrevEnd );
                 //                final Rectangle sb2 = GeometryUtils.getContainingRect ( selectionStart, selectionEnd );
-                //
+
                 //                // Repainting final rect
                 //                repaintSelector ( GeometryUtils.getContainingRect ( sb1, sb2 ) );
 

@@ -58,6 +58,12 @@ public abstract class PluginManager<T extends Plugin>
     protected final Object checkLock = new Object ();
 
     /**
+     * Related plugin managers list.
+     * These managers are used to check dependencies load state and some other information later on.
+     */
+    protected final List<PluginManager> relatedManagers = new ArrayList<PluginManager> ();
+
+    /**
      * Detected plugins list.
      * All plugins with available descriptions will get into this list.
      */
@@ -216,6 +222,35 @@ public abstract class PluginManager<T extends Plugin>
     protected String getAcceptedPluginType ()
     {
         return null;
+    }
+
+    /**
+     * Adds plugin manager into related managers list.
+     * These managers are used to check dependencies load state and some other information later on.
+     *
+     * @param manager plugin manager to add into related managers list
+     */
+    public void addRelatedManager ( final PluginManager manager )
+    {
+        if ( !relatedManagers.contains ( manager ) )
+        {
+            relatedManagers.add ( manager );
+        }
+        else
+        {
+            Log.get ().warn ( ReflectUtils.getClassName ( manager.getClass () ) + " is already added into related managers list" );
+        }
+    }
+
+    /**
+     * Removes plugin manager from related managers list.
+     * These managers are used to check dependencies load state and some other information later on.
+     *
+     * @param manager plugin manager to add into related managers list
+     */
+    public void removeRelatedManager ( final PluginManager manager )
+    {
+        relatedManagers.remove ( manager );
     }
 
     /**
@@ -504,7 +539,7 @@ public abstract class PluginManager<T extends Plugin>
                             boolean met = false;
                             for ( final T availablePlugin : availablePlugins )
                             {
-                                if ( dependency.accept ( availablePlugin ) )
+                                if ( dependency.isOptional () || dependency.accept ( availablePlugin ) )
                                 {
                                     met = true;
                                 }
@@ -514,7 +549,7 @@ public abstract class PluginManager<T extends Plugin>
                                 dependenciesMet = false;
                             }
 
-                            // Saving dependency reference
+                            // Mapping dependency references
                             final String id = dependency.getPluginId ();
                             List<DetectedPlugin<T>> ref = references.get ( id );
                             if ( ref == null )
@@ -759,10 +794,14 @@ public abstract class PluginManager<T extends Plugin>
             final String prefix = "[" + FileUtils.getRelativePath ( pluginFile, new File ( pluginsDirectoryPath ) ) + "] [" + info + "] ";
             try
             {
+                // Srating to load plugin now
+                Log.info ( this, prefix + "Initializing plugin..." );
+                dp.setStatus ( PluginStatus.loading );
+
                 // Checking plugin type as we don't want (for example) to load server plugins on client side
                 if ( acceptedPluginType != null && ( info.getType () == null || !info.getType ().equals ( acceptedPluginType ) ) )
                 {
-                    Log.warn ( this, prefix + "Plugin of type \"" + info.getType () + "\" cannot be loaded, " +
+                    Log.error ( this, prefix + "Plugin of type \"" + info.getType () + "\" cannot be loaded, " +
                             "required plugin type is \"" + acceptedPluginType + "\"" );
                     dp.setStatus ( PluginStatus.failed );
                     dp.setFailureCause ( "Wrong type" );
@@ -803,9 +842,41 @@ public abstract class PluginManager<T extends Plugin>
                     continue;
                 }
 
-                // Srating to load plugin now
-                Log.info ( this, prefix + "Initializing plugin..." );
-                dp.setStatus ( PluginStatus.loading );
+                // Checking plugin dependencies
+                final List<PluginDependency> dependencies = dp.getInformation ().getDependencies ();
+                if ( dependencies != null )
+                {
+                    for ( final PluginDependency dependency : dependencies )
+                    {
+                        // Checking whether or not dependency is mandatory and whether or not it is available
+                        final String did = dependency.getPluginId ();
+                        if ( !dependency.isOptional () && !isPluginAvailable ( did ) )
+                        {
+                            // If it is mandatory and not available - check related managers for that dependency
+                            boolean available = false;
+                            for ( final PluginManager relatedManager : relatedManagers )
+                            {
+                                if ( relatedManager.isPluginAvailable ( did ) )
+                                {
+                                    available = true;
+                                    break;
+                                }
+                            }
+                            if ( !available )
+                            {
+                                Log.error ( this, prefix + "Mandatory plugin dependency was not found: " + did );
+                                dp.setStatus ( PluginStatus.failed );
+                                dp.setFailureCause ( "Incomplete" );
+                                dp.setExceptionMessage ( "Mandatory plugin dependency was not found: " + did );
+                                break;
+                            }
+                        }
+                    }
+                    if ( dp.getStatus () == PluginStatus.failed )
+                    {
+                        continue;
+                    }
+                }
 
                 // Collecting plugin and its libraries JAR paths
                 final List<URL> jarPaths = new ArrayList<URL> ( 1 + info.getLibrariesCount () );
@@ -831,8 +902,16 @@ public abstract class PluginManager<T extends Plugin>
                         }
                         else
                         {
-                            Log.warn ( this, prefix + "Unable to locate library: " + library.getFile () );
+                            Log.error ( this, prefix + "Plugin library was not found: " + file.getAbsolutePath () );
+                            dp.setStatus ( PluginStatus.failed );
+                            dp.setFailureCause ( "Incomplete" );
+                            dp.setExceptionMessage ( "Plugin library was not found: " + file.getAbsolutePath () );
+                            break;
                         }
+                    }
+                    if ( dp.getStatus () == PluginStatus.failed )
+                    {
+                        continue;
                     }
                 }
 
@@ -1126,6 +1205,17 @@ public abstract class PluginManager<T extends Plugin>
     public <P extends T> P getPlugin ( final String pluginId )
     {
         return ( P ) availablePluginsById.get ( pluginId );
+    }
+
+    /**
+     * Returns whether plugin is available or not.
+     *
+     * @param pluginId plugin ID
+     * @return true if plugin is available, false otherwise
+     */
+    public boolean isPluginAvailable ( final String pluginId )
+    {
+        return getPlugin ( pluginId ) != null;
     }
 
     /**
