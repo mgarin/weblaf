@@ -104,8 +104,8 @@ public class StyleConstants
     public static Color darkBorderColor = Color.GRAY;
     public static Color averageBorderColor = ColorUtils.getIntermediateColor ( borderColor, darkBorderColor, 0.5f );
     public static Color disabledBorderColor = Color.LIGHT_GRAY;
-    public static Stroke borderStroke = new BasicStroke(1.0f);
-    public static Stroke boldBorderStroke = new BasicStroke(1.5f);
+    public static Stroke borderStroke = new BasicStroke ( 1.0f );
+    public static Stroke boldBorderStroke = new BasicStroke ( 1.5f );
 
     /**
      * Components focus settings.
@@ -271,17 +271,17 @@ public class StyleConstants
      */
     public enum BorderStyle 
     {
-        normal (StyleConstants.borderStroke),
-        bold   (StyleConstants.boldBorderStroke);
+        normal ( StyleConstants.borderStroke ),
+        bold   ( StyleConstants.boldBorderStroke );
 
         private Stroke stroke;
 
-        private BorderStyle(Stroke stroke) 
+        private BorderStyle ( Stroke stroke ) 
         {
             this.stroke = stroke;
         }
 
-        public Stroke getStroke()
+        public Stroke getStroke ()
         {
             return stroke;
         }
