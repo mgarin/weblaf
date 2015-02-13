@@ -289,12 +289,12 @@ public class WebRadioButtonUI extends BasicRadioButtonUI implements ShapeProvide
         this.rolloverDarkBorderOnly = rolloverDarkBorderOnly;
     }
 
-    public BorderStyle getBorderStyle() 
+    public BorderStyle getBorderStyle () 
     {
         return borderStyle;
     }
 
-    public void setBorderStyle(BorderStyle borderStyle) 
+    public void setBorderStyle ( final BorderStyle borderStyle ) 
     {
         this.borderStyle = borderStyle;
     }
@@ -437,7 +437,7 @@ public class WebRadioButtonUI extends BasicRadioButtonUI implements ShapeProvide
                 g2d.fill ( shape );
 
                 // Border
-                final Stroke os = GraphicsUtils.setupStroke ( g2d, borderStyle.getStroke() );
+                final Stroke os = GraphicsUtils.setupStroke ( g2d, borderStyle.getStroke () );
                 g2d.setPaint ( c.isEnabled () ?
                         rolloverDarkBorderOnly ? ColorUtils.getIntermediateColor ( borderColor, darkBorderColor, getProgress () ) :
                                 darkBorderColor : disabledBorderColor );
