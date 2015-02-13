@@ -480,7 +480,7 @@ public class WebCheckBoxUI extends BasicCheckBoxUI implements ShapeProvider
      *
      * @return border style of the checkbox
      */
-    public BorderStyle getBorderStyle() 
+    public BorderStyle getBorderStyle () 
     {
         return borderStyle;
     }
@@ -490,7 +490,7 @@ public class WebCheckBoxUI extends BasicCheckBoxUI implements ShapeProvider
      *
      * @param borderStyle border style of the checkbox
      */
-    public void setBorderStyle(BorderStyle borderStyle) 
+    public void setBorderStyle ( final BorderStyle borderStyle ) 
     {
         this.borderStyle = borderStyle;
     }
@@ -833,7 +833,7 @@ public class WebCheckBoxUI extends BasicCheckBoxUI implements ShapeProvider
         g2d.fill ( shape );
 
         // Border
-        final Stroke os = GraphicsUtils.setupStroke ( g2d, borderStyle.getStroke() );
+        final Stroke os = GraphicsUtils.setupStroke ( g2d, borderStyle.getStroke () );
         g2d.setPaint ( enabled ?
                 rolloverDarkBorderOnly ? ColorUtils.getIntermediateColor ( borderColor, darkBorderColor, getBgDarkness () ) :
                         darkBorderColor : disabledBorderColor );
