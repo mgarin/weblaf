@@ -1279,7 +1279,7 @@
                 <value lang="pt">de</value>
                 <value lang="de">von</value>
                 <value lang="it">di</value>
-                <value lang="tr”>/</value>
+                <value lang="tr">/</value>
             </record>
             <record key="alloc">
                 <value lang="en">Allocated memory:</value>
