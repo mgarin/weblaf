@@ -30,7 +30,11 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.security.CodeSource;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -1292,7 +1296,7 @@ public final class ReflectUtils
      */
     public static String getSetterMethodName ( final String field )
     {
-        return "set" + field.substring ( 0, 1 ).toUpperCase () + field.substring ( 1 );
+        return "set" + field.substring ( 0, 1 ).toUpperCase ( Locale.ENGLISH ) + field.substring ( 1 );
     }
 
     /**
@@ -1303,7 +1307,7 @@ public final class ReflectUtils
      */
     public static String getGetterMethodName ( final String field )
     {
-        return "get" + field.substring ( 0, 1 ).toUpperCase () + field.substring ( 1 );
+        return "get" + field.substring ( 0, 1 ).toUpperCase ( Locale.ENGLISH ) + field.substring ( 1 );
     }
 
     /**
@@ -1314,7 +1318,7 @@ public final class ReflectUtils
      */
     public static String getIsGetterMethodName ( final String field )
     {
-        return "is" + field.substring ( 0, 1 ).toUpperCase () + field.substring ( 1 );
+        return "is" + field.substring ( 0, 1 ).toUpperCase ( Locale.ENGLISH ) + field.substring ( 1 );
     }
 
     /**
