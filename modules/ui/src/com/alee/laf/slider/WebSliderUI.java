@@ -52,6 +52,9 @@ public class WebSliderUI extends BasicSliderUI implements BorderMethods
 
     protected Color trackBgTop = WebSliderStyle.trackBgTop;
     protected Color trackBgBottom = WebSliderStyle.trackBgBottom;
+    protected Color progressTrackBgTop = WebSliderStyle.progressTrackBgTop;
+    protected Color progressTrackBgBottom = WebSliderStyle.progressTrackBgBottom;
+    protected Color progressShadeColor = WebSliderStyle.progressShadeColor;
     protected int trackHeight = WebSliderStyle.trackHeight;
     protected int trackRound = WebSliderStyle.trackRound;
     protected int trackShadeWidth = WebSliderStyle.trackShadeWidth;
@@ -312,6 +315,36 @@ public class WebSliderUI extends BasicSliderUI implements BorderMethods
     public void setTrackBgTop ( final Color trackBgTop )
     {
         this.trackBgTop = trackBgTop;
+    }
+
+    public Color getProgressTrackBgTop ()
+    {
+        return progressTrackBgTop;
+    }
+
+    public void setProgressTrackBgTop ( final Color progressTrackBgTop )
+    {
+        this.progressTrackBgTop = progressTrackBgTop;
+    }
+
+    public Color getProgressTrackBgBottom ()
+    {
+        return progressTrackBgBottom;
+    }
+
+    public void setProgressTrackBgBottom ( final Color progressTrackBgBottom )
+    {
+        this.progressTrackBgBottom = progressTrackBgBottom;
+    }
+
+    public Color getProgressShadeColor ()
+    {
+        return progressShadeColor;
+    }
+
+    public void setProgressShadeColor ( final Color progressShadeColor )
+    {
+        this.progressShadeColor = progressShadeColor;
     }
 
     public Color getTrackBgBottom ()
@@ -717,19 +750,19 @@ public class WebSliderUI extends BasicSliderUI implements BorderMethods
             if ( slider.getOrientation () == JSlider.HORIZONTAL )
             {
                 g2d.setPaint (
-                        new GradientPaint ( 0, bounds.y + progressShadeWidth, Color.WHITE, 0, bounds.y + bounds.height - progressShadeWidth,
-                                new Color ( 223, 223, 223 ) ) );
+                        new GradientPaint ( 0, bounds.y + progressShadeWidth, progressTrackBgTop, 0,
+                            bounds.y + bounds.height - progressShadeWidth, progressTrackBgBottom ) );
             }
             else
             {
                 g2d.setPaint (
-                        new GradientPaint ( bounds.x + progressShadeWidth, 0, Color.WHITE, bounds.x + bounds.width - progressShadeWidth, 0,
-                                new Color ( 223, 223, 223 ) ) );
+                        new GradientPaint ( bounds.x + progressShadeWidth, 0, progressTrackBgTop,
+                            bounds.x + bounds.width - progressShadeWidth, 0, progressTrackBgBottom ) );
             }
             g2d.fill ( ps );
 
             // Progress border
-            g2d.setPaint ( slider.isEnabled () ? StyleConstants.darkBorderColor : StyleConstants.disabledBorderColor );
+            g2d.setPaint ( slider.isEnabled () ? progressShadeColor : StyleConstants.disabledBorderColor );
             g2d.draw ( ps );
         }
 

@@ -38,6 +38,21 @@ public final class WebSliderStyle
     public static Color trackBgBottom = StyleConstants.bottomBgColor;
 
     /**
+     * Top track progress background color
+     */
+    public static Color progressTrackBgTop = Color.WHITE;
+
+    /**
+     * Bottom track progress background color
+     */
+    public static Color progressTrackBgBottom = new Color ( 223, 223, 223 );
+
+    /**
+     * Progress shade color
+     */
+    public static Color progressShadeColor = StyleConstants.darkBorderColor;
+
+    /**
      * Track height
      */
     public static int trackHeight = 9;
