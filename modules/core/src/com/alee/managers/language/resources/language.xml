@@ -762,8 +762,8 @@
                 <value lang="fr">#</value>
                 <value lang="pt">#</value>
                 <value lang="de">#</value>
-            	  <value lang="it">#</value>
-            	  <value lang="tr">#</value>
+                <value lang="it">#</value>
+                <value lang="tr">#</value>
             </record>
             <record key="name">
                 <value lang="en">Name</value>
@@ -774,8 +774,8 @@
                 <value lang="fr">Nom</value>
                 <value lang="pt">Nome</value>
                 <value lang="de">Name</value>
-            	  <value lang="it">Nome</value>
-            	  <value lang="tr">İsim</value>
+                <value lang="it">Nome</value>
+                <value lang="tr">İsim</value>
             </record>
             <record key="size">
                 <value lang="en">Size</value>
@@ -786,8 +786,8 @@
                 <value lang="fr">Taille</value>
                 <value lang="pt">Tamanho</value>
                 <value lang="de">Größe</value>
-            	  <value lang="it">Dimensione</value>
-            	  <value lang="tr">Boyut</value>
+                <value lang="it">Dimensione</value>
+                <value lang="tr">Boyut</value>
             </record>
             <record key="extension">
                 <value lang="en">Extension</value>
@@ -798,8 +798,8 @@
                 <value lang="fr">Extension</value>
                 <value lang="pt">Extensão</value>
                 <value lang="de">Erweiterung</value>
-            	  <value lang="it">Estensione</value>
-            	  <value lang="tr">Uzantı</value>
+                <value lang="it">Estensione</value>
+                <value lang="tr">Uzantı</value>
             </record>
             <record key="creation.date">
                 <value lang="en">Created</value>
@@ -810,8 +810,8 @@
                 <value lang="fr">établi</value>
                 <value lang="pt">Criado</value>
                 <value lang="de">Erstellt</value>
-            	  <value lang="it">Creato</value>
-            	  <value lang="tr">Oluşturma tarihi</value>
+                <value lang="it">Creato</value>
+                <value lang="tr">Oluşturma tarihi</value>
             </record>
             <record key="modification.date">
                 <value lang="en">Modified</value>
@@ -822,8 +822,8 @@
                 <value lang="fr">Modifié</value>
                 <value lang="pt">Modificado</value>
                 <value lang="de">Geändert</value>
-            	  <value lang="it">Modificato</value>
-            	  <value lang="tr">Değiştirme tarihi</value>
+                <value lang="it">Modificato</value>
+                <value lang="tr">Değiştirme tarihi</value>
             </record>
         </Dictionary>
     </Dictionary>
@@ -962,8 +962,8 @@
                 <value lang="fr">Oui</value>
                 <value lang="pt">Sim</value>
                 <value lang="de">Ja</value>
-            	  <value lang="it">Si</value>
-            	  <value lang="tr">Evet</value>
+                <value lang="it">Si</value>
+                <value lang="tr">Evet</value>
             </record>
             <record key="no">
                 <value lang="en">No</value>
@@ -974,8 +974,8 @@
                 <value lang="fr">Non</value>
                 <value lang="pt">Não</value>
                 <value lang="de">Nein</value>
-            	  <value lang="it">No</value>
-            	  <value lang="tr">Hayır</value>
+                <value lang="it">No</value>
+                <value lang="tr">Hayır</value>
             </record>
             <record key="cancel">
                 <value lang="en">Cancel</value>
@@ -986,8 +986,8 @@
                 <value lang="fr">Annuler</value>
                 <value lang="pt">Cancelar</value>
                 <value lang="de">Abbrechen</value>
-            	  <value lang="it">Annulla</value>
-            	  <value lang="tr">İptal</value>
+                <value lang="it">Annulla</value>
+                <value lang="tr">İptal</value>
             </record>
             <record key="choose">
                 <value lang="en">Choose</value>
@@ -998,8 +998,8 @@
                 <value lang="fr">Choisir</value>
                 <value lang="pt">Escolher</value>
                 <value lang="de">Auswählen</value>
-            	  <value lang="it">Scegli</value>
-            	  <value lang="tr">Seç</value>
+                <value lang="it">Scegli</value>
+                <value lang="tr">Seç</value>
             </record>
             <record key="accept">
                 <value lang="en">Accept</value>
@@ -1010,8 +1010,8 @@
                 <value lang="fr">Accepter</value>
                 <value lang="pt">Aceitar</value>
                 <value lang="de">Akzeptieren</value>
-            	  <value lang="it">Accetta</value>
-            	  <value lang="tr">Kabul et</value>
+                <value lang="it">Accetta</value>
+                <value lang="tr">Kabul et</value>
             </record>
             <record key="decline">
                 <value lang="en">Decline</value>
@@ -1022,8 +1022,8 @@
                 <value lang="fr">Refuser</value>
                 <value lang="pt">Recusar</value>
                 <value lang="de">Ablehnen</value>
-            	  <value lang="it">Rifiuta</value>
-            	  <value lang="tr">Reddet</value>
+                <value lang="it">Rifiuta</value>
+                <value lang="tr">Reddet</value>
             </record>
             <record key="apply">
                 <value lang="en">Apply</value>
@@ -1034,8 +1034,8 @@
                 <value lang="fr">Appliquer</value>
                 <value lang="pt">Aplicar</value>
                 <value lang="de">Anwenden</value>
-            	  <value lang="it">Applica</value>
-            	  <value lang="tr">Uygula</value>
+                <value lang="it">Applica</value>
+                <value lang="tr">Uygula</value>
             </record>
             <record key="commit">
                 <value lang="en">Commit</value>
@@ -1046,8 +1046,8 @@
                 <value lang="fr">Commit</value>
                 <value lang="pt">Cometer</value>
                 <value lang="de">Verpflichten</value>
-            	  <value lang="it">Commissiona</value>
-            	  <value lang="tr">İşle</value>
+                <value lang="it">Commissiona</value>
+                <value lang="tr">İşle</value>
             </record>
             <record key="discard">
                 <value lang="en">Discard</value>
@@ -1058,8 +1058,8 @@
                 <value lang="fr">Abandonner</value>
                 <value lang="pt">Descartar</value>
                 <value lang="de">Verwerfen</value>
-            	  <value lang="it">Ignora modifiche</value>
-            	  <value lang="tr">Sil</value>
+                <value lang="it">Ignora modifiche</value>
+                <value lang="tr">Sil</value>
             </record>
             <record key="reset">
                 <value lang="en">Reset</value>
@@ -1070,8 +1070,8 @@
                 <value lang="fr">Réinitialiser</value>
                 <value lang="pt">Repor</value>
                 <value lang="de">Zurücksetzen</value>
-            	  <value lang="it">Reset</value>
-            	  <value lang="tr">Sıfırla</value>
+                <value lang="it">Reset</value>
+                <value lang="tr">Sıfırla</value>
             </record>
             <record key="retry">
                 <value lang="en">Retry</value>
@@ -1082,8 +1082,8 @@
                 <value lang="fr">Réessayez</value>
                 <value lang="pt">Tentar novamente</value>
                 <value lang="de">Wiederholen</value>
-            	  <value lang="it">Riprova</value>
-            	  <value lang="tr">Yeniden dene</value>
+                <value lang="it">Riprova</value>
+                <value lang="tr">Yeniden dene</value>
             </record>
             <record key="save">
                 <value lang="en">Save</value>
@@ -1094,8 +1094,8 @@
                 <value lang="fr">Sauvegarder</value>
                 <value lang="pt">Salvar</value>
                 <value lang="de">Speichern</value>
-            	  <value lang="it">Salva</value>
-            	  <value lang="tr">Kaydet</value>
+                <value lang="it">Salva</value>
+                <value lang="tr">Kaydet</value>
             </record>
             <record key="open">
                 <value lang="en">Open</value>
@@ -1106,8 +1106,8 @@
                 <value lang="fr">Ouvrir</value>
                 <value lang="pt">Abrir</value>
                 <value lang="de">Öffnen</value>
-            	  <value lang="it">Apri</value>
-            	  <value lang="en">Aç</value>
+                <value lang="it">Apri</value>
+                <value lang="en">Aç</value>
             </record>
         </Dictionary>
         <Dictionary name="WebDirectoryChooser language" prefix="dirchooser">
@@ -1120,8 +1120,8 @@
                 <value lang="fr">Choisissez un dossier</value>
                 <value lang="pt">Escolher uma pasta</value>
                 <value lang="de">Verzeichnis auswählen</value>
-            	  <value lang="it">Scegli directory</value>
-            	  <value lang="tr">Dizin seç</value>
+                <value lang="it">Scegli directory</value>
+                <value lang="tr">Dizin seç</value>
             </record>
             <record key="folderup">
                 <value lang="en" way="down" state="tooltip">Folder up</value>
