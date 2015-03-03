@@ -15,23 +15,39 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.managers.hotkey;
+package com.alee.utils;
 
 import java.awt.*;
 
 /**
- *
- *
  * @author Mikle Garin
  */
 
-public interface HotkeyCondition
+public class CoreSwingUtils
 {
     /**
-     * Returns whether component meets hotkey condition or not.
+     * Returns window ancestor for specified component or null if it doesn't exist.
      *
-     * @param component component to check condition for
-     * @return true if component meets hotkey condition, false otherwise
+     * @param component component to process
+     * @return window ancestor for specified component or null if it doesn't exist
      */
-    public boolean checkCondition ( Component component );
+    public static Window getWindowAncestor ( final Component component )
+    {
+        if ( component == null )
+        {
+            return null;
+        }
+        if ( component instanceof Window )
+        {
+            return ( Window ) component;
+        }
+        for ( Container p = component.getParent (); p != null; p = p.getParent () )
+        {
+            if ( p instanceof Window )
+            {
+                return ( Window ) p;
+            }
+        }
+        return null;
+    }
 }

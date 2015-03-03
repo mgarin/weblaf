@@ -774,22 +774,7 @@ public final class SwingUtils
      */
     public static Window getWindowAncestor ( final Component component )
     {
-        if ( component == null )
-        {
-            return null;
-        }
-        if ( component instanceof Window )
-        {
-            return ( Window ) component;
-        }
-        for ( Container p = component.getParent (); p != null; p = p.getParent () )
-        {
-            if ( p instanceof Window )
-            {
-                return ( Window ) p;
-            }
-        }
-        return null;
+        return CoreSwingUtils.getWindowAncestor ( component );
     }
 
     /**

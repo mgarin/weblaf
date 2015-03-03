@@ -19,39 +19,44 @@ package com.alee.managers.language.updaters;
 
 import com.alee.laf.rootpane.WebRootPaneUI;
 import com.alee.managers.language.data.Value;
+import com.alee.utils.CoreSwingUtils;
 
 import javax.swing.*;
 import java.awt.*;
 
 /**
- * This class provides language default updates for Frame component.
- *
  * @author Mikle Garin
  */
 
-public class WebFrameLU extends DefaultLanguageUpdater<Frame>
+public class WebRootPaneLU extends DefaultLanguageUpdater<JRootPane>
 {
     /**
      * {@inheritDoc}
      */
     @Override
-    public void update ( final Frame c, final String key, final Value value, final Object... data )
+    public void update ( final JRootPane c, final String key, final Value value, final Object... data )
     {
-        if ( c instanceof JFrame )
-        {
-            final JRootPane rootPane = ( ( JFrame ) c ).getRootPane ();
-            if ( rootPane.getUI () instanceof WebRootPaneUI )
-            {
-                final JComponent titleComponent = ( ( WebRootPaneUI ) rootPane.getUI () ).getTitleComponent ();
-                if ( titleComponent != null )
-                {
-                    titleComponent.repaint ();
+        final Window window = CoreSwingUtils.getWindowAncestor ( c );
 
-                    // final JLabel title = SwingUtils.getFirst ( titleComponent, JLabel.class );
-                    // title.setText ( getDefaultText ( value, data ) );
-                }
+        // Updating title
+        if ( window instanceof Frame )
+        {
+            ( ( Frame ) window ).setTitle ( getDefaultText ( value, data ) );
+        }
+        else if ( window instanceof Dialog )
+        {
+            ( ( Dialog ) window ).setTitle ( getDefaultText ( value, data ) );
+        }
+
+        // todo This should be replaced by proper UI inner updates
+        // Updating title pane
+        if ( c.getUI () instanceof WebRootPaneUI )
+        {
+            final JComponent titleComponent = ( ( WebRootPaneUI ) c.getUI () ).getTitleComponent ();
+            if ( titleComponent != null )
+            {
+                titleComponent.repaint ();
             }
         }
-        c.setTitle ( getDefaultText ( value, data ) );
     }
 }

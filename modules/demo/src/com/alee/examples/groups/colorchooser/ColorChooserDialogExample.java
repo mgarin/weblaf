@@ -32,7 +32,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
- * User: mgarin Date: 16.02.12 Time: 18:18
+ * @author Mikle Garin
  */
 
 public class ColorChooserDialogExample extends DefaultExample
@@ -71,7 +71,7 @@ public class ColorChooserDialogExample extends DefaultExample
             private Color lastColor = initialColor;
 
             @Override
-            public void actionPerformed ( ActionEvent e )
+            public void actionPerformed ( final ActionEvent e )
             {
                 if ( colorChooser == null )
                 {
@@ -82,7 +82,7 @@ public class ColorChooserDialogExample extends DefaultExample
 
                 if ( colorChooser.getResult () == DialogOptions.OK_OPTION )
                 {
-                    Color color = colorChooser.getColor ();
+                    final Color color = colorChooser.getColor ();
                     lastColor = color;
 
                     colorChooserButton.setIcon ( ImageUtils.createColorIcon ( color ) );
@@ -94,7 +94,7 @@ public class ColorChooserDialogExample extends DefaultExample
         return new GroupPanel ( colorChooserButton );
     }
 
-    private String getColorText ( Color color )
+    private String getColorText ( final Color color )
     {
         return color.getRed () + ", " + color.getGreen () + ", " + color.getBlue ();
     }

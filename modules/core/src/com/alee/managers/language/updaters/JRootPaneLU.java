@@ -17,41 +17,34 @@
 
 package com.alee.managers.language.updaters;
 
-import com.alee.laf.rootpane.WebRootPaneUI;
 import com.alee.managers.language.data.Value;
+import com.alee.utils.CoreSwingUtils;
 
 import javax.swing.*;
 import java.awt.*;
 
 /**
- * This class provides language default updates for Dialog component.
+ * This class provides default language updates for Frame and Dialog components which has this root pane.
  *
  * @author Mikle Garin
  */
 
-public class WebDialogLU extends DefaultLanguageUpdater<Dialog>
+public class JRootPaneLU extends DefaultLanguageUpdater<JRootPane>
 {
     /**
      * {@inheritDoc}
      */
     @Override
-    public void update ( final Dialog c, final String key, final Value value, final Object... data )
+    public void update ( final JRootPane c, final String key, final Value value, final Object... data )
     {
-        if ( c instanceof JDialog )
+        final Window window = CoreSwingUtils.getWindowAncestor ( c );
+        if ( window instanceof Frame )
         {
-            final JRootPane rootPane = ( ( JDialog ) c ).getRootPane ();
-            if ( rootPane.getUI () instanceof WebRootPaneUI )
-            {
-                final JComponent titleComponent = ( ( WebRootPaneUI ) rootPane.getUI () ).getTitleComponent ();
-                if ( titleComponent != null )
-                {
-                    titleComponent.repaint ();
-
-                    // final JLabel title = SwingUtils.getFirst ( titleComponent, JLabel.class );
-                    // title.setText ( getDefaultText ( value, data ) );
-                }
-            }
+            ( ( Frame ) window ).setTitle ( getDefaultText ( value, data ) );
         }
-        c.setTitle ( getDefaultText ( value, data ) );
+        else if ( window instanceof Dialog )
+        {
+            ( ( Dialog ) window ).setTitle ( getDefaultText ( value, data ) );
+        }
     }
 }

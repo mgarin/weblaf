@@ -17,7 +17,8 @@
 
 package com.alee.managers.settings;
 
-import java.awt.*;
+import javax.swing.*;
+import java.lang.ref.WeakReference;
 
 /**
  * Base data class for any SettingsProcessor.
@@ -34,7 +35,7 @@ public class SettingsProcessorData
     /**
      * Component which settings are being managed.
      */
-    private Component component;
+    private WeakReference<JComponent> component;
 
     /**
      * Component settings group.
@@ -79,7 +80,7 @@ public class SettingsProcessorData
      * @param loadInitialSettings  whether to load initial available settings into the component or not
      * @param applySettingsChanges whether to apply settings changes to the component or not
      */
-    public SettingsProcessorData ( final Component component, final String group, final String key, final Object defaultValue,
+    public SettingsProcessorData ( final JComponent component, final String group, final String key, final Object defaultValue,
                                    final boolean loadInitialSettings, final boolean applySettingsChanges )
     {
         super ();
@@ -96,9 +97,9 @@ public class SettingsProcessorData
      *
      * @return component which settings are being managed
      */
-    public Component getComponent ()
+    public JComponent getComponent ()
     {
-        return component;
+        return component.get ();
     }
 
     /**
@@ -106,9 +107,9 @@ public class SettingsProcessorData
      *
      * @param component component which settings are being managed
      */
-    public void setComponent ( final Component component )
+    public void setComponent ( final JComponent component )
     {
-        this.component = component;
+        this.component = new WeakReference<JComponent> ( component );
     }
 
     /**

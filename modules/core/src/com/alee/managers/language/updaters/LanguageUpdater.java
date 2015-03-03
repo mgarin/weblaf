@@ -19,7 +19,7 @@ package com.alee.managers.language.updaters;
 
 import com.alee.managers.language.data.Value;
 
-import java.awt.*;
+import javax.swing.*;
 
 /**
  * This interface provides basic methods required for updating component language-dependant variables.
@@ -28,7 +28,7 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public interface LanguageUpdater<E extends Component>
+public interface LanguageUpdater<E extends JComponent>
 {
     /**
      * Returns class which instance should be updated using this LanguageUpdater.

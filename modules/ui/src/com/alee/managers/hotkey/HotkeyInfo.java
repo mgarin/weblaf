@@ -20,11 +20,12 @@ package com.alee.managers.hotkey;
 import com.alee.managers.language.data.TooltipWay;
 import com.alee.utils.TextUtils;
 
+import javax.swing.*;
 import java.awt.*;
 import java.lang.ref.WeakReference;
 
 /**
- * User: mgarin Date: 11.07.11 Time: 12:57
+ * @author Mikle Garin
  */
 
 public class HotkeyInfo
@@ -41,7 +42,7 @@ public class HotkeyInfo
     private WeakReference<Component> topComponent = null;
 
     // Component that listens for hotkey, if this and "topComponent" are null then hotkey counts as global
-    private WeakReference<Component> forComponent = null;
+    private WeakReference<JComponent> forComponent = null;
 
     // Actual hotkey data
     private HotkeyData hotkeyData = null;
@@ -66,7 +67,7 @@ public class HotkeyInfo
         return id;
     }
 
-    public void setId ( String id )
+    public void setId ( final String id )
     {
         this.id = id;
     }
@@ -81,7 +82,7 @@ public class HotkeyInfo
         return hidden;
     }
 
-    public HotkeyInfo setHidden ( boolean hidden )
+    public HotkeyInfo setHidden ( final boolean hidden )
     {
         this.hidden = hidden;
         return this;
@@ -92,20 +93,20 @@ public class HotkeyInfo
         return topComponent != null ? topComponent.get () : null;
     }
 
-    public HotkeyInfo setTopComponent ( Component topComponent )
+    public HotkeyInfo setTopComponent ( final Component topComponent )
     {
         this.topComponent = new WeakReference<Component> ( topComponent );
         return this;
     }
 
-    public Component getForComponent ()
+    public JComponent getForComponent ()
     {
         return forComponent != null ? forComponent.get () : null;
     }
 
-    public HotkeyInfo setForComponent ( Component forComponent )
+    public HotkeyInfo setForComponent ( final JComponent forComponent )
     {
-        this.forComponent = new WeakReference<Component> ( forComponent );
+        this.forComponent = new WeakReference<JComponent> ( forComponent );
         return this;
     }
 
@@ -114,7 +115,7 @@ public class HotkeyInfo
         return hotkeyData;
     }
 
-    public HotkeyInfo setHotkeyData ( HotkeyData hotkeyData )
+    public HotkeyInfo setHotkeyData ( final HotkeyData hotkeyData )
     {
         this.hotkeyData = hotkeyData;
         return this;
@@ -125,7 +126,7 @@ public class HotkeyInfo
         return hotkeyDisplayWay;
     }
 
-    public HotkeyInfo setHotkeyDisplayWay ( TooltipWay hotkeyDisplayWay )
+    public HotkeyInfo setHotkeyDisplayWay ( final TooltipWay hotkeyDisplayWay )
     {
         this.hotkeyDisplayWay = hotkeyDisplayWay;
         return this;
@@ -136,7 +137,7 @@ public class HotkeyInfo
         return action;
     }
 
-    public HotkeyInfo setAction ( HotkeyRunnable action )
+    public HotkeyInfo setAction ( final HotkeyRunnable action )
     {
         this.action = action;
         return this;

@@ -19,7 +19,7 @@ package com.alee.managers.settings;
 
 import com.alee.managers.log.Log;
 
-import java.awt.*;
+import javax.swing.*;
 import java.io.Serializable;
 
 /**
@@ -39,7 +39,7 @@ import java.io.Serializable;
  * @see com.alee.managers.settings.ComponentSettingsManager
  * @see com.alee.managers.settings.ComponentSettingsManager#registerSettingsProcessor(Class, Class)
  */
-public abstract class SettingsProcessor<C extends Component, V extends Serializable>
+public abstract class SettingsProcessor<C extends JComponent, V extends Serializable>
 {
     /**
      * Whether this settings processor is currently loading settings or not.
@@ -66,7 +66,7 @@ public abstract class SettingsProcessor<C extends Component, V extends Serializa
      * @param loadInitialSettings  whether to load initial available settings into the component or not
      * @param applySettingsChanges whether to apply settings changes to the component or not
      */
-    public SettingsProcessor ( final Component component, final String group, final String key, final Object defaultValue,
+    public SettingsProcessor ( final JComponent component, final String group, final String key, final Object defaultValue,
                                final boolean loadInitialSettings, final boolean applySettingsChanges )
     {
         this ( new SettingsProcessorData ( component, group, key, defaultValue, loadInitialSettings, applySettingsChanges ) );

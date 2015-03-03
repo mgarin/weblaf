@@ -22,7 +22,7 @@ import com.alee.utils.ReflectUtils;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
-import java.awt.*;
+import java.lang.ref.WeakReference;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.WeakHashMap;
@@ -49,6 +49,11 @@ public class ComponentSettingsManager
      */
 
     /**
+     * Keys used to store custom data in JComponent.
+     */
+    public static final String COMPONENT_SETTINGS_PROCESSOR_KEY = "settings.processor";
+
+    /**
      * Registered settings processor classes.
      */
     protected static final Map<Class, Class> settingsProcessorClasses = new LinkedHashMap<Class, Class> ();
@@ -56,7 +61,8 @@ public class ComponentSettingsManager
     /**
      * Registered component settings processors.
      */
-    protected static final Map<Component, SettingsProcessor> settingsProcessors = new WeakHashMap<Component, SettingsProcessor> ();
+    protected static final Map<JComponent, WeakReference<SettingsProcessor>> settingsProcessors =
+            new WeakHashMap<JComponent, WeakReference<SettingsProcessor>> ();
 
     /**
      * Whether throw exceptions on inappropriate actions or not.
@@ -85,7 +91,7 @@ public class ComponentSettingsManager
             registerSettingsProcessor ( JTextComponent.class, JTextComponentSettingsProcessor.class );
             registerSettingsProcessor ( JScrollBar.class, JScrollBarSettingsProcessor.class );
             registerSettingsProcessor ( JTabbedPane.class, JTabbedPaneSettingsProcessor.class );
-            registerSettingsProcessor ( Window.class, WindowSettingsProcessor.class );
+            registerSettingsProcessor ( JRootPane.class, JRootPaneSettingsProcessor.class );
         }
     }
 
@@ -115,7 +121,7 @@ public class ComponentSettingsManager
      * @param component component
      * @return true if the specified component is supported, false otherwise
      */
-    public static boolean isComponentSupported ( final Component component )
+    public static boolean isComponentSupported ( final JComponent component )
     {
         return isComponentSupported ( component.getClass () );
     }
@@ -126,7 +132,7 @@ public class ComponentSettingsManager
      * @param componentType component type
      * @return true if the specified component is supported, false otherwise
      */
-    public static boolean isComponentSupported ( final Class componentType )
+    public static boolean isComponentSupported ( final Class<? extends JComponent> componentType )
     {
         // Checking if a suitable component processor exists
         return findSuitableSettingsProcessor ( componentType ) != null;
@@ -139,7 +145,7 @@ public class ComponentSettingsManager
      * @param settingsProcessor settings processor class
      * @param <T>               settings processor type
      */
-    public static <T extends SettingsProcessor> void registerSettingsProcessor ( final Class componentType,
+    public static <T extends SettingsProcessor> void registerSettingsProcessor ( final Class<? extends JComponent> componentType,
                                                                                  final Class<T> settingsProcessor )
     {
         // Saving settings processor under component type
@@ -230,13 +236,14 @@ public class ComponentSettingsManager
      * @param component         component to register
      * @param settingsProcessor component settings processor
      */
-    public static void registerComponent ( final Component component, final SettingsProcessor settingsProcessor )
+    public static void registerComponent ( final JComponent component, final SettingsProcessor settingsProcessor )
     {
         // Ensure that there is not registered processor for this component
         unregisterComponent ( component );
 
         // Saving new settings processor for the specified component
-        settingsProcessors.put ( component, settingsProcessor );
+        component.putClientProperty ( COMPONENT_SETTINGS_PROCESSOR_KEY, settingsProcessor );
+        settingsProcessors.put ( component, new WeakReference<SettingsProcessor> ( settingsProcessor ) );
     }
 
     /**
@@ -244,10 +251,11 @@ public class ComponentSettingsManager
      *
      * @param component component registered for settings auto-save
      */
-    public static void loadSettings ( final Component component )
+    public static void loadSettings ( final JComponent component )
     {
         // Retrieving component settings processor
-        final SettingsProcessor settingsProcessor = settingsProcessors.get ( component );
+        final WeakReference<SettingsProcessor> reference = settingsProcessors.get ( component );
+        final SettingsProcessor settingsProcessor = reference != null ? reference.get () : null;
         if ( settingsProcessor != null )
         {
             // Reloading saved settings into component
@@ -265,7 +273,7 @@ public class ComponentSettingsManager
      */
     public static void saveSettings ()
     {
-        for ( final Map.Entry<Component, SettingsProcessor> entry : settingsProcessors.entrySet () )
+        for ( final Map.Entry<JComponent, WeakReference<SettingsProcessor>> entry : settingsProcessors.entrySet () )
         {
             saveSettings ( entry.getKey () );
         }
@@ -276,10 +284,11 @@ public class ComponentSettingsManager
      *
      * @param component component registered for settings auto-save
      */
-    public static void saveSettings ( final Component component )
+    public static void saveSettings ( final JComponent component )
     {
         // Retrieving component settings processor
-        final SettingsProcessor settingsProcessor = settingsProcessors.get ( component );
+        final WeakReference<SettingsProcessor> reference = settingsProcessors.get ( component );
+        final SettingsProcessor settingsProcessor = reference != null ? reference.get () : null;
         if ( settingsProcessor != null )
         {
             // Saving component settings
@@ -297,16 +306,18 @@ public class ComponentSettingsManager
      *
      * @param component component to unregister
      */
-    public static void unregisterComponent ( final Component component )
+    public static void unregisterComponent ( final JComponent component )
     {
         // Checking if component processor exists
-        final SettingsProcessor settingsProcessor = settingsProcessors.get ( component );
+        final WeakReference<SettingsProcessor> reference = settingsProcessors.get ( component );
+        final SettingsProcessor settingsProcessor = reference != null ? reference.get () : null;
         if ( settingsProcessor != null )
         {
             // Unregistering component listeners and actions
             settingsProcessor.destroy ();
 
             // Removing current component settings processor
+            component.putClientProperty ( COMPONENT_SETTINGS_PROCESSOR_KEY, null );
             settingsProcessors.remove ( component );
         }
         //        else if ( throwExceptions )

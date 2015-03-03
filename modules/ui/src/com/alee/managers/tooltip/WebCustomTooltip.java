@@ -49,22 +49,24 @@ import java.util.List;
 
 public class WebCustomTooltip extends JComponent implements ShapeProvider
 {
-    // ID
+    /**
+     * Tooltip constants.
+     */
     private static final String ID_PREFIX = "WCT";
-
-    // Tooltip constants
     private static final int fadeFps = WebCustomTooltipStyle.fadeFps;
     private static final long fadeTime = WebCustomTooltipStyle.fadeTime;
     private static final int cornerLength = WebCustomTooltipStyle.cornerLength;
     private static final int cornerSideX = WebCustomTooltipStyle.cornerSideX;
 
-    // Tooltip settings
-    private String id = null;
-    private JComponent tooltip = null;
-    private WeakReference<Component> component = null;
-    private Point displayLocation = null;
-    private Rectangle relativeToBounds = null;
-    private WeakReference<Component> relativeToComponent = null;
+    /**
+     * Tooltip settings.
+     */
+    private final String id;
+    private final WeakReference<Component> component;
+    private JComponent tooltip;
+    private Point displayLocation;
+    private Rectangle relativeToBounds;
+    private WeakReference<Component> relativeToComponent;
     private TooltipWay displayWay = WebCustomTooltipStyle.displayWay;
     private boolean showHotkey = WebCustomTooltipStyle.showHotkey;
     private int hotkeyLocation = WebCustomTooltipStyle.hotkeyLocation;
@@ -81,20 +83,28 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
     private Color textColor = WebCustomTooltipStyle.textColor;
     private float trasparency = WebCustomTooltipStyle.trasparency;
 
-    // Tooltip listeners
+    /**
+     * Tooltip listeners.
+     */
     private final List<TooltipListener> listeners = new ArrayList<TooltipListener> ( 2 );
 
-    // Tooltip variables
+    /**
+     * Component listeners.
+     */
+    private AncestorListener ancestorListener;
+
+    /**
+     * Tooltip variables.
+     */
     private final HotkeyTipLabel hotkey;
     private int cornerPeak = 0;
 
-    // Animation variables
+    /**
+     * Animation variables.
+     */
     private final WebTimer fadeTimer;
     private FadeStateType fadeStateType;
     private float fade = 0;
-
-    // Component listeners
-    private AncestorListener ancestorListener;
 
     public WebCustomTooltip ( final Component component, final String tooltip )
     {
@@ -297,24 +307,33 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
 
     private void updateHotkey ()
     {
-        final String hotkeyText = HotkeyManager.getComponentHotkeysString ( getComponent () );
-        if ( showHotkey && !hotkeyText.trim ().equals ( "" ) )
+        // Check various conditions of displaying hotkey
+        if ( showHotkey )
         {
-            // Updatings hotkey
-            hotkey.setText ( hotkeyText );
-
-            // Adding or re-adding hotkey label to tooltip
-            if ( WebCustomTooltip.this.getComponentZOrder ( hotkey ) != -1 )
+            final Component c = getComponent ();
+            if ( c instanceof JComponent )
             {
-                WebCustomTooltip.this.remove ( hotkey );
+                final String hotkeyText = HotkeyManager.getComponentHotkeysString ( ( JComponent ) c );
+                if ( !TextUtils.isEmpty ( hotkeyText ) )
+                {
+                    // Updatings hotkey
+                    hotkey.setText ( hotkeyText );
+
+                    // Adding or re-adding hotkey label to tooltip
+                    if ( WebCustomTooltip.this.getComponentZOrder ( hotkey ) != -1 )
+                    {
+                        WebCustomTooltip.this.remove ( hotkey );
+                    }
+                    WebCustomTooltip.this.add ( hotkey, getActualHotkeyLocation () );
+
+                    // Return to avoid hotkey removal
+                    return;
+                }
             }
-            WebCustomTooltip.this.add ( hotkey, getActualHotkeyLocation () );
         }
-        else
-        {
-            // Removing hotkey label from tooltip
-            WebCustomTooltip.this.remove ( hotkey );
-        }
+
+        // Removing hotkey label from tooltip if we reach this part
+        WebCustomTooltip.this.remove ( hotkey );
     }
 
     private String getActualHotkeyLocation ()

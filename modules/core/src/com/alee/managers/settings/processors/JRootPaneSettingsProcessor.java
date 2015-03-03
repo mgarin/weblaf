@@ -20,13 +20,16 @@ package com.alee.managers.settings.processors;
 import com.alee.managers.settings.SettingsProcessor;
 import com.alee.managers.settings.SettingsProcessorData;
 import com.alee.utils.CompareUtils;
+import com.alee.utils.CoreSwingUtils;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
 /**
- * Custom SettingsProcessor for Window component.
+ * Custom SettingsProcessor for JRootPane component.
+ * JRootPane used instead of Window since it is a JComponent, but this settings processor basically handles window state.
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-SettingsManager">How to use SettingsManager</a>
@@ -34,7 +37,7 @@ import java.awt.event.ComponentEvent;
  * @see com.alee.managers.settings.SettingsProcessor
  */
 
-public class WindowSettingsProcessor extends SettingsProcessor<Window, Rectangle>
+public class JRootPaneSettingsProcessor extends SettingsProcessor<JRootPane, Rectangle>
 {
     /**
      * todo 1. Save window normal/maximized window states, iconified should be converted into normal
@@ -51,7 +54,7 @@ public class WindowSettingsProcessor extends SettingsProcessor<Window, Rectangle
      *
      * @param data SettingsProcessorData
      */
-    public WindowSettingsProcessor ( final SettingsProcessorData data )
+    public JRootPaneSettingsProcessor ( final SettingsProcessorData data )
     {
         super ( data );
     }
@@ -60,8 +63,9 @@ public class WindowSettingsProcessor extends SettingsProcessor<Window, Rectangle
      * {@inheritDoc}
      */
     @Override
-    protected void doInit ( final Window window )
+    protected void doInit ( final JRootPane rootPane )
     {
+        final Window window = CoreSwingUtils.getWindowAncestor ( rootPane );
         componentAdapter = new ComponentAdapter ()
         {
             @Override
@@ -83,8 +87,9 @@ public class WindowSettingsProcessor extends SettingsProcessor<Window, Rectangle
      * {@inheritDoc}
      */
     @Override
-    protected void doDestroy ( final Window window )
+    protected void doDestroy ( final JRootPane rootPane )
     {
+        final Window window = CoreSwingUtils.getWindowAncestor ( rootPane );
         window.removeComponentListener ( componentAdapter );
         componentAdapter = null;
     }
@@ -93,8 +98,9 @@ public class WindowSettingsProcessor extends SettingsProcessor<Window, Rectangle
      * {@inheritDoc}
      */
     @Override
-    protected void doLoad ( final Window window )
+    protected void doLoad ( final JRootPane rootPane )
     {
+        final Window window = CoreSwingUtils.getWindowAncestor ( rootPane );
         final Rectangle bounds = loadValue ();
         if ( bounds != null && !CompareUtils.equals ( bounds, window.getBounds () ) )
         {
@@ -124,8 +130,9 @@ public class WindowSettingsProcessor extends SettingsProcessor<Window, Rectangle
      * {@inheritDoc}
      */
     @Override
-    protected void doSave ( final Window window )
+    protected void doSave ( final JRootPane rootPane )
     {
+        final Window window = CoreSwingUtils.getWindowAncestor ( rootPane );
         saveValue ( window.getBounds () );
     }
 }

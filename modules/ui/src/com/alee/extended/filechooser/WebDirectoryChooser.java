@@ -85,15 +85,11 @@ public class WebDirectoryChooser extends WebDialog implements DialogOptions
      */
     public WebDirectoryChooser ( final Window parent, final String title )
     {
-        super ( parent, title != null ? title : "" );
+        super ( parent, title != null ? title : "weblaf.ex.dirchooser.title" );
         setIconImage ( ICON.getImage () );
-        if ( title == null )
-        {
-            setLanguage ( "weblaf.ex.dirchooser.title" );
-        }
 
         // Hotkeys preview action
-        HotkeyManager.installShowAllHotkeysAction ( this, Hotkey.F1 );
+        HotkeyManager.installShowAllHotkeysAction ( getRootPane (), Hotkey.F1 );
 
         // Default container settings
         getContentPane ().setLayout ( new BorderLayout ( 0, 0 ) );
@@ -103,7 +99,7 @@ public class WebDirectoryChooser extends WebDialog implements DialogOptions
         getContentPane ().add ( directoryChooserPanel, BorderLayout.CENTER );
 
         // Hotkeys condition
-        HotkeyManager.addContainerHotkeyCondition ( this, new HotkeyCondition ()
+        HotkeyManager.addContainerHotkeyCondition ( getRootPane (), new HotkeyCondition ()
         {
             @Override
             public boolean checkCondition ( final Component component )

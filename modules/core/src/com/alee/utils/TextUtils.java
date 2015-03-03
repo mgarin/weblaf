@@ -17,6 +17,7 @@
 
 package com.alee.utils;
 
+import com.alee.utils.compare.Filter;
 import com.alee.utils.text.SimpleTextProvider;
 import com.alee.utils.text.TextProvider;
 
@@ -330,14 +331,36 @@ public final class TextUtils
      */
     public static <T> String listToString ( final List<T> list, final String separator, final TextProvider<T> textProvider )
     {
+        return listToString ( list, separator, textProvider, null );
+    }
+
+    /**
+     * Returns single text combined using list of strings and specified separator.
+     *
+     * @param list         list to combine into single text
+     * @param separator    text parts separator
+     * @param textProvider text provider
+     * @param filter       list elements filter
+     * @return single text
+     */
+    public static <T> String listToString ( final List<T> list, final String separator, final TextProvider<T> textProvider,
+                                            final Filter<T> filter )
+    {
         if ( list != null && list.size () > 0 )
         {
             final StringBuilder stringBuilder = new StringBuilder ();
-            final int end = list.size () - 1;
-            for ( int i = 0; i <= end; i++ )
+            boolean hasPreviouslyAccepted = false;
+            for ( final T object : list )
             {
-                stringBuilder.append ( textProvider.provide ( list.get ( i ) ) );
-                stringBuilder.append ( i != end ? separator : "" );
+                if ( filter == null || filter.accept ( object ) )
+                {
+                    if ( hasPreviouslyAccepted )
+                    {
+                        stringBuilder.append ( separator );
+                    }
+                    stringBuilder.append ( textProvider.provide ( object ) );
+                    hasPreviouslyAccepted = true;
+                }
             }
             return stringBuilder.toString ();
         }
@@ -398,6 +421,17 @@ public final class TextUtils
             enumerations = new ArrayList<E> ( 0 );
         }
         return enumerations;
+    }
+
+    /**
+     * Returns whether specified text is empty or not.
+     *
+     * @param text text to process
+     * @return true if specified text is empty, false otherwise
+     */
+    public static boolean isEmpty ( final String text )
+    {
+        return text == null || text.isEmpty () || text.trim ().isEmpty ();
     }
 
     /**

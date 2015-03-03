@@ -28,7 +28,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 /**
- * User: mgarin Date: 20.12.12 Time: 18:31
+ * @author Mikle Garin
  */
 
 public class WebColorChooserDialog extends WebDialog implements DialogOptions
@@ -36,47 +36,46 @@ public class WebColorChooserDialog extends WebDialog implements DialogOptions
     public static final ImageIcon COLOR_CHOOSER_ICON =
             new ImageIcon ( WebColorChooserDialog.class.getResource ( "icons/color_chooser.png" ) );
 
-    private WebColorChooser colorChooser;
+    private final WebColorChooser colorChooser;
 
     public WebColorChooserDialog ()
     {
         this ( new WebColorChooser () );
     }
 
-    public WebColorChooserDialog ( Component parent )
+    public WebColorChooserDialog ( final Component parent )
     {
         this ( new WebColorChooser (), parent );
     }
 
-    public WebColorChooserDialog ( String title )
+    public WebColorChooserDialog ( final String title )
     {
         this ( new WebColorChooser (), title );
     }
 
-    public WebColorChooserDialog ( Component parent, String title )
+    public WebColorChooserDialog ( final Component parent, final String title )
     {
         this ( new WebColorChooser (), parent, title );
     }
 
-    public WebColorChooserDialog ( WebColorChooser webColorChooser )
+    public WebColorChooserDialog ( final WebColorChooser webColorChooser )
     {
         this ( webColorChooser, null, null );
     }
 
-    public WebColorChooserDialog ( WebColorChooser webColorChooser, Component parent )
+    public WebColorChooserDialog ( final WebColorChooser webColorChooser, final Component parent )
     {
         this ( webColorChooser, parent, null );
     }
 
-    public WebColorChooserDialog ( WebColorChooser webColorChooser, String title )
+    public WebColorChooserDialog ( final WebColorChooser webColorChooser, final String title )
     {
         this ( webColorChooser, null, title );
     }
 
-    public WebColorChooserDialog ( WebColorChooser webColorChooser, Component parent, String title )
+    public WebColorChooserDialog ( final WebColorChooser webColorChooser, final Component parent, final String title )
     {
-        super ( SwingUtils.getWindowAncestor ( parent ) );
-        updateTitle ( title );
+        super ( SwingUtils.getWindowAncestor ( parent ), title != null ? title : "weblaf.colorchooser.title" );
         setIconImage ( COLOR_CHOOSER_ICON.getImage () );
         setLayout ( new BorderLayout ( 0, 0 ) );
 
@@ -88,7 +87,7 @@ public class WebColorChooserDialog extends WebDialog implements DialogOptions
         addWindowListener ( new WindowAdapter ()
         {
             @Override
-            public void windowClosed ( WindowEvent e )
+            public void windowClosed ( final WindowEvent e )
             {
                 colorChooser.setResult ( CLOSE_OPTION );
             }
@@ -97,19 +96,19 @@ public class WebColorChooserDialog extends WebDialog implements DialogOptions
         colorChooser.addColorChooserListener ( new ColorChooserListener ()
         {
             @Override
-            public void okPressed ( ActionEvent e )
+            public void okPressed ( final ActionEvent e )
             {
                 WebColorChooserDialog.this.dispose ();
             }
 
             @Override
-            public void resetPressed ( ActionEvent e )
+            public void resetPressed ( final ActionEvent e )
             {
                 //
             }
 
             @Override
-            public void cancelPressed ( ActionEvent e )
+            public void cancelPressed ( final ActionEvent e )
             {
                 WebColorChooserDialog.this.dispose ();
             }
@@ -119,19 +118,6 @@ public class WebColorChooserDialog extends WebDialog implements DialogOptions
         setModal ( true );
         pack ();
         setDefaultCloseOperation ( JDialog.DISPOSE_ON_CLOSE );
-    }
-
-    public void updateTitle ( String title )
-    {
-        if ( title == null )
-        {
-            setLanguage ( "weblaf.colorchooser.title" );
-        }
-        else
-        {
-            removeLanguage ();
-            setTitle ( title );
-        }
     }
 
     public int getResult ()
@@ -150,13 +136,13 @@ public class WebColorChooserDialog extends WebDialog implements DialogOptions
         return colorChooser.getColor ();
     }
 
-    public void setColor ( Color color )
+    public void setColor ( final Color color )
     {
         colorChooser.setColor ( color );
     }
 
     @Override
-    public void setVisible ( boolean b )
+    public void setVisible ( final boolean b )
     {
         if ( b )
         {

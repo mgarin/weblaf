@@ -31,7 +31,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 
 /**
- * User: mgarin Date: 16.02.12 Time: 18:07
+ * @author Mikle Garin
  */
 
 public class DirectoryChooserExample extends DefaultExample
@@ -58,17 +58,17 @@ public class DirectoryChooserExample extends DefaultExample
             private WebDirectoryChooser directoryChooser = null;
 
             @Override
-            public void actionPerformed ( ActionEvent e )
+            public void actionPerformed ( final ActionEvent e )
             {
                 if ( directoryChooser == null )
                 {
-                    directoryChooser = new WebDirectoryChooser ( owner, "Choose any directory" );
+                    directoryChooser = new WebDirectoryChooser ( owner );
                 }
                 directoryChooser.setVisible ( true );
 
                 if ( directoryChooser.getResult () == DialogOptions.OK_OPTION )
                 {
-                    File file = directoryChooser.getSelectedDirectory ();
+                    final File file = directoryChooser.getSelectedDirectory ();
                     directoryChooserButton.setIcon ( FileUtils.getFileIcon ( file ) );
                     directoryChooserButton.setText ( FileUtils.getDisplayFileName ( file ) );
                 }
