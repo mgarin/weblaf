@@ -125,10 +125,17 @@ public final class ReflectUtils
             // Otherwise final or non-public fields won't allow any operations on them
             field.setAccessible ( true );
 
+            // Skip transient fields
+            if ( Modifier.isTransient ( field.getModifiers () ) )
+            {
+                continue;
+            }
+
             // Retrieving original object field value
             final Object value = field.get ( object );
 
             // Updating field
+            // todo Try using setters?
             final Object v;
             if ( value instanceof Collection )
             {

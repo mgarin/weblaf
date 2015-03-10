@@ -26,6 +26,7 @@ import com.alee.utils.sort.GraphDataProvider;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import java.awt.*;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
@@ -34,6 +35,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.*;
+import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -262,7 +264,7 @@ public abstract class PluginManager<T extends Plugin>
      */
     public void registerPlugin ( final T plugin )
     {
-        registerPlugin ( plugin, plugin.getPluginInformation (), plugin.getPluginLogo () );
+        registerPlugin ( plugin, plugin.getPluginInformation (), GraphicsEnvironment.isHeadless () ? null : plugin.getPluginLogo () );
     }
 
     /**

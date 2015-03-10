@@ -424,6 +424,39 @@ public final class TextUtils
     }
 
     /**
+     * Converts and returns specified parts which are not null into single string.
+     *
+     * @param separator separator to place between parts
+     * @param parts     parts to unite
+     * @return united non-null parts
+     */
+    public static String unite ( final String separator, final String... parts )
+    {
+        if ( parts != null && parts.length > 0 )
+        {
+            final StringBuilder sb = new StringBuilder ();
+            boolean hasPrevious = false;
+            for ( final String part : parts )
+            {
+                if ( !isEmpty ( part ) )
+                {
+                    if ( hasPrevious )
+                    {
+                        sb.append ( separator );
+                    }
+                    sb.append ( part );
+                    hasPrevious = true;
+                }
+            }
+            return sb.toString ();
+        }
+        else
+        {
+            return "";
+        }
+    }
+
+    /**
      * Returns whether specified text is empty or not.
      *
      * @param text text to process
