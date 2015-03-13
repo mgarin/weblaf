@@ -442,12 +442,8 @@ public abstract class PluginManager<T extends Plugin>
     {
         if ( pluginsDirectoryPath != null )
         {
-            Log.info ( this, "Scanning plugins directory" + ( checkRecursively ? " recursively" : "" ) + ": " + pluginsDirectoryPath );
             collectPluginsInformationImpl ( new File ( pluginsDirectoryPath ), checkRecursively );
-
-            Log.info ( this, "Sorting detected plugins according to known dependencies" );
             sortRecentlyDetectedPluginsByDependencies ();
-
             return true;
         }
         else
@@ -464,6 +460,8 @@ public abstract class PluginManager<T extends Plugin>
      */
     protected void collectPluginsInformationImpl ( final File dir, final boolean checkRecursively )
     {
+        Log.info ( this, "Scanning plugins directory" + ( checkRecursively ? " recursively" : "" ) + ": " + pluginsDirectoryPath );
+
         // Checking all files
         final File[] files = dir.listFiles ( getFileFilter () );
         if ( files != null )
@@ -523,6 +521,8 @@ public abstract class PluginManager<T extends Plugin>
         {
             try
             {
+                Log.info ( this, "Sorting detected plugins according to known dependencies" );
+
                 // Collecting plugins that doesn't have any dependencies or their dependencies are loaded
                 // Also mapping dependencies for quick access later
                 final int s = recentlyDetected.size ();

@@ -80,15 +80,16 @@ public final class ReflectUtils
      * This method will clone fields directly instead of calling clone method on the object.
      * Object fields will be cloned normally through clone method if they implement Cloneable interface.
      *
-     * @param object object to clone
-     * @param <T>    cloned object type
+     * @param object    object to clone
+     * @param arguments class constructor arguments
+     * @param <T>       cloned object type
      * @return cloned object instance
      */
-    public static <T> T cloneByFieldsSafely ( final T object )
+    public static <T> T cloneByFieldsSafely ( final T object, final Object... arguments )
     {
         try
         {
-            return cloneByFields ( object );
+            return cloneByFields ( object, arguments );
         }
         catch ( final Throwable e )
         {
@@ -106,18 +107,19 @@ public final class ReflectUtils
      * This method will clone fields directly instead of calling clone method on the object.
      * Object fields will be cloned normally through clone method if they implement Cloneable interface.
      *
-     * @param object object to clone
-     * @param <T>    cloned object type
+     * @param object    object to clone
+     * @param arguments class constructor arguments
+     * @param <T>       cloned object type
      * @return cloned object instance
      * @throws InvocationTargetException
      * @throws NoSuchMethodException
      * @throws InstantiationException
      * @throws IllegalAccessException
      */
-    public static <T> T cloneByFields ( final T object )
+    public static <T> T cloneByFields ( final T object, final Object... arguments )
             throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException
     {
-        final T copy = ReflectUtils.createInstance ( object.getClass () );
+        final T copy = ReflectUtils.createInstance ( object.getClass (), arguments );
         final List<Field> fields = getFields ( object );
         for ( final Field field : fields )
         {
