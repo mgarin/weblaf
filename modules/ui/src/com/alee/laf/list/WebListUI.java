@@ -19,13 +19,11 @@ package com.alee.laf.list;
 
 import com.alee.global.StyleConstants;
 import com.alee.laf.WebLookAndFeel;
-import com.alee.managers.tooltip.TooltipManager;
-import com.alee.managers.tooltip.WebCustomTooltip;
+import com.alee.managers.tooltip.ToolTipProvider;
 import com.alee.utils.GeometryUtils;
 import com.alee.utils.GraphicsUtils;
 import com.alee.utils.LafUtils;
 import com.alee.utils.SwingUtils;
-import com.alee.utils.swing.WebTimer;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -34,8 +32,6 @@ import javax.swing.plaf.ColorUIResource;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicListUI;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.RoundRectangle2D;
@@ -68,7 +64,7 @@ public class WebListUI extends BasicListUI
     /**
      * List listeners.
      */
-    protected MouseAdapter mouseoverAdapter;
+    protected MouseAdapter mouseAdapter;
     protected ListSelectionListener selectionListener;
 
     /**
@@ -83,7 +79,7 @@ public class WebListUI extends BasicListUI
      * @param c component that will use UI instance
      * @return instance of the WebListUI
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebListUI ();
@@ -106,11 +102,8 @@ public class WebListUI extends BasicListUI
         list.setForeground ( new ColorUIResource ( WebListStyle.foreground ) );
 
         // Rollover listener
-        mouseoverAdapter = new MouseAdapter ()
+        mouseAdapter = new MouseAdapter ()
         {
-            private WebCustomTooltip tooltip = null;
-            private WebTimer delayTimer = null;
-
             @Override
             public void mouseMoved ( final MouseEvent e )
             {
@@ -123,47 +116,41 @@ public class WebListUI extends BasicListUI
                 updateMouseover ( e );
             }
 
-            private void updateMouseover ( final MouseEvent e )
-            {
-                // Determining highlighted cell index
-                int index = list.locationToIndex ( e.getPoint () );
-                final Rectangle bounds = list.getCellBounds ( index, index );
-                if ( bounds == null || !bounds.contains ( e.getPoint () ) || !list.isEnabled () )
-                {
-                    index = -1;
-                }
-
-                // Updating rollover cell
-                if ( rolloverIndex != index )
-                {
-                    final int oldIndex = rolloverIndex;
-                    rolloverIndex = index;
-                    rolloverIndexChanged ( oldIndex, rolloverIndex );
-                }
-            }
-
             @Override
             public void mouseExited ( final MouseEvent e )
             {
-                // Cleaning up rollover index
-                if ( rolloverIndex != -1 )
+                clearMouseover ();
+            }
+
+            private void updateMouseover ( final MouseEvent e )
+            {
+                final int index = list.locationToIndex ( e.getPoint () );
+                final Rectangle bounds = list.getCellBounds ( index, index );
+                if ( list.isEnabled () && bounds != null && bounds.contains ( e.getPoint () ) )
                 {
-                    final int oldIndex = rolloverIndex;
-                    rolloverIndex = -1;
-                    rolloverIndexChanged ( oldIndex, rolloverIndex );
+                    if ( rolloverIndex != index )
+                    {
+                        updateRolloverCell ( rolloverIndex, index );
+                    }
+                }
+                else
+                {
+                    clearMouseover ();
                 }
             }
 
-            private void rolloverIndexChanged ( final int oldIndex, final int newIndex )
+            private void clearMouseover ()
             {
-                // Destroy old tooltip
-                if ( oldIndex != -1 )
+                if ( rolloverIndex != -1 )
                 {
-                    if ( tooltip != null )
-                    {
-                        tooltip.closeTooltip ();
-                    }
+                    updateRolloverCell ( rolloverIndex, -1 );
                 }
+            }
+
+            private void updateRolloverCell ( final int oldIndex, final int newIndex )
+            {
+                // Updating rollover index
+                rolloverIndex = newIndex;
 
                 // Repaint list only if rollover index is used
                 if ( decorateSelection && highlightRolloverCell )
@@ -177,52 +164,16 @@ public class WebListUI extends BasicListUI
                     }
                 }
 
-                // Close previously displayed tooltip
-                // Display or delay new tooltip if needed
-                if ( delayTimer != null )
+                // Updating custom WebLaF tooltip display state
+                final ToolTipProvider provider = getToolTipProvider ();
+                if ( provider != null )
                 {
-                    delayTimer.stop ();
+                    provider.rolloverCellChanged ( list, oldIndex, 0, newIndex, 0 );
                 }
-                if ( tooltip != null )
-                {
-                    tooltip.closeTooltip ();
-                }
-                if ( newIndex != -1 )
-                {
-                    final ListToolTipProvider provider = getToolTipProvider ();
-                    if ( provider != null )
-                    {
-                        final long delay = provider.getDelay ();
-                        if ( delay <= 0 )
-                        {
-                            showTooltip ( newIndex, provider );
-                        }
-                        else
-                        {
-                            delayTimer = WebTimer.delay ( delay, new ActionListener ()
-                            {
-                                @Override
-                                public void actionPerformed ( final ActionEvent e )
-                                {
-                                    showTooltip ( newIndex, provider );
-                                }
-                            } );
-                        }
-                    }
-                }
-            }
-
-            private void showTooltip ( final int index, final ListToolTipProvider provider )
-            {
-                final Object value = list.getModel ().getElementAt ( index );
-                final boolean selected = list.isSelectedIndex ( index );
-                tooltip = provider.getListCellToolTip ( list, value, index, selected );
-                tooltip.setRelativeToBounds ( provider.getTooltipSourceBounds ( list, value, index, selected ) );
-                TooltipManager.showOneTimeTooltip ( tooltip );
             }
         };
-        list.addMouseListener ( mouseoverAdapter );
-        list.addMouseMotionListener ( mouseoverAdapter );
+        list.addMouseListener ( mouseAdapter );
+        list.addMouseMotionListener ( mouseAdapter );
 
         // Selection listener
         selectionListener = new ListSelectionListener ()
@@ -248,16 +199,6 @@ public class WebListUI extends BasicListUI
     }
 
     /**
-     * Returns custom WebLaF tooltip provider.
-     *
-     * @return custom WebLaF tooltip provider
-     */
-    protected ListToolTipProvider getToolTipProvider ()
-    {
-        return list != null && list instanceof WebList ? ( ( WebList ) list ).getToolTipProvider () : null;
-    }
-
-    /**
      * Uninstalls UI from the specified component.
      *
      * @param c component with this UI
@@ -265,10 +206,20 @@ public class WebListUI extends BasicListUI
     @Override
     public void uninstallUI ( final JComponent c )
     {
-        list.removeMouseListener ( mouseoverAdapter );
-        list.removeMouseMotionListener ( mouseoverAdapter );
+        list.removeMouseListener ( mouseAdapter );
+        list.removeMouseMotionListener ( mouseAdapter );
         list.removeListSelectionListener ( selectionListener );
         super.uninstallUI ( c );
+    }
+
+    /**
+     * Returns custom WebLaF tooltip provider.
+     *
+     * @return custom WebLaF tooltip provider
+     */
+    protected ToolTipProvider<? extends WebList> getToolTipProvider ()
+    {
+        return list != null && list instanceof WebList ? ( ( WebList ) list ).getToolTipProvider () : null;
     }
 
     /**

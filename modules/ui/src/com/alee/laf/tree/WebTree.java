@@ -24,6 +24,7 @@ import com.alee.managers.settings.DefaultValue;
 import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.settings.SettingsMethods;
 import com.alee.managers.settings.SettingsProcessor;
+import com.alee.managers.tooltip.ToolTipProvider;
 import com.alee.utils.EventUtils;
 import com.alee.utils.GeometryUtils;
 import com.alee.utils.ReflectUtils;
@@ -108,6 +109,11 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
      * Special state provider that can be set to check whether or not specific nodes are editable.
      */
     protected StateProvider<E> editableStateProvider = null;
+
+    /**
+     * Custom WebLaF tooltip provider.
+     */
+    protected ToolTipProvider<? extends WebTree> toolTipProvider = null;
 
     /**
      * Constructs tree with default sample model.
@@ -274,6 +280,26 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
     public boolean isNodeEditable ( final E node )
     {
         return editableStateProvider == null || editableStateProvider.provide ( node );
+    }
+
+    /**
+     * Returns custom WebLaF tooltip provider.
+     *
+     * @return custom WebLaF tooltip provider
+     */
+    public ToolTipProvider<? extends WebTree> getToolTipProvider ()
+    {
+        return toolTipProvider;
+    }
+
+    /**
+     * Sets custom WebLaF tooltip provider.
+     *
+     * @param provider custom WebLaF tooltip provider
+     */
+    public void setToolTipProvider ( final ToolTipProvider<? extends WebTree> provider )
+    {
+        this.toolTipProvider = provider;
     }
 
     /**

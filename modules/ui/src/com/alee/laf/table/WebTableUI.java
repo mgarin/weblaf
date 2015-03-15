@@ -23,6 +23,8 @@ import com.alee.laf.table.editors.WebDateEditor;
 import com.alee.laf.table.editors.WebGenericEditor;
 import com.alee.laf.table.editors.WebNumberEditor;
 import com.alee.laf.table.renderers.*;
+import com.alee.managers.tooltip.ToolTipProvider;
+import com.alee.utils.CompareUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.AncestorAdapter;
 
@@ -30,6 +32,9 @@ import javax.swing.*;
 import javax.swing.event.AncestorEvent;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicTableUI;
+import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.Date;
 
 /**
@@ -43,7 +48,13 @@ public class WebTableUI extends BasicTableUI
     /**
      * Table listeners.
      */
-    private AncestorAdapter ancestorAdapter;
+    protected AncestorAdapter ancestorAdapter;
+    protected MouseAdapter mouseAdapter;
+
+    /**
+     * Runtime variables.
+     */
+    protected Point rolloverCell;
 
     /**
      * Returns an instance of the WebTreeUI for the specified component.
@@ -121,6 +132,72 @@ public class WebTableUI extends BasicTableUI
             }
         };
         table.addAncestorListener ( ancestorAdapter );
+
+        // Rollover listener
+        mouseAdapter = new MouseAdapter ()
+        {
+            @Override
+            public void mouseMoved ( final MouseEvent e )
+            {
+                updateMouseover ( e );
+            }
+
+            @Override
+            public void mouseDragged ( final MouseEvent e )
+            {
+                updateMouseover ( e );
+            }
+
+            @Override
+            public void mouseExited ( final MouseEvent e )
+            {
+                clearMouseover ();
+            }
+
+            private void updateMouseover ( final MouseEvent e )
+            {
+                final Point point = e.getPoint ();
+                final Point cell = new Point ( table.columnAtPoint ( point ), table.rowAtPoint ( point ) );
+                if ( cell.x != -1 && cell.y != -1 )
+                {
+                    if ( !CompareUtils.equals ( rolloverCell, cell ) )
+                    {
+                        updateRolloverCell ( rolloverCell, cell );
+                    }
+                }
+                else
+                {
+                    clearMouseover ();
+                }
+            }
+
+            private void clearMouseover ()
+            {
+                if ( rolloverCell != null )
+                {
+                    updateRolloverCell ( rolloverCell, null );
+                }
+            }
+
+            private void updateRolloverCell ( final Point oldCell, final Point newCell )
+            {
+                // Updating rollover cell
+                rolloverCell = newCell;
+
+                // Updating custom WebLaF tooltip display state
+                final ToolTipProvider provider = getToolTipProvider ();
+                if ( provider != null )
+                {
+                    final int oldIndex = oldCell != null ? oldCell.y : -1;
+                    final int oldColumn = oldCell != null ? oldCell.x : -1;
+                    final int newIndex = newCell != null ? newCell.y : -1;
+                    final int newColumn = newCell != null ? newCell.x : -1;
+                    provider.rolloverCellChanged ( table, oldIndex, oldColumn, newIndex, newColumn );
+                }
+            }
+        };
+        table.addMouseListener ( mouseAdapter );
+        table.addMouseMotionListener ( mouseAdapter );
     }
 
     /**
@@ -131,9 +208,21 @@ public class WebTableUI extends BasicTableUI
     @Override
     public void uninstallUI ( final JComponent c )
     {
+        table.removeMouseListener ( mouseAdapter );
+        table.removeMouseMotionListener ( mouseAdapter );
         table.removeAncestorListener ( ancestorAdapter );
 
         super.uninstallUI ( c );
+    }
+
+    /**
+     * Returns custom WebLaF tooltip provider.
+     *
+     * @return custom WebLaF tooltip provider
+     */
+    protected ToolTipProvider<? extends WebTable> getToolTipProvider ()
+    {
+        return table != null && table instanceof WebTable ? ( ( WebTable ) table ).getToolTipProvider () : null;
     }
 
     /**
