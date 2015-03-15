@@ -1059,7 +1059,8 @@ public class WebRootPaneUI extends BasicRootPaneUI implements SwingConstants
     {
         if ( frame != null )
         {
-            // Determining screen our frame placed on currently
+            // Determining screen on which most part of our frame is currently placed
+            // This part of code will check intersection between frame and screen bounds and decide where to place window
             final GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment ();
             final GraphicsDevice[] screenDevices = ge.getScreenDevices ();
             final Rectangle fb = frame.getBounds ();
@@ -1069,23 +1070,33 @@ public class WebRootPaneUI extends BasicRootPaneUI implements SwingConstants
             {
                 final GraphicsConfiguration gc = gd.getDefaultConfiguration ();
                 final Rectangle sb = gc.getBounds ();
-                final Rectangle intersection = fb.intersection ( sb );
-                final int s = intersection.width * intersection.height;
-                if ( maxArea < s )
+                if ( fb.intersects ( sb ) )
                 {
-                    fit = gc;
-                    maxArea = s;
+                    final Rectangle intersection = fb.intersection ( sb );
+                    final int s = intersection.width * intersection.height;
+                    if ( maxArea < s )
+                    {
+                        fit = gc;
+                        maxArea = s;
+                    }
                 }
+            }
+
+            // Using first screen to maximize the window if it is not shown on any of the screens
+            if ( maxArea == 0 )
+            {
+                fit = screenDevices[ 0 ].getDefaultConfiguration ();
             }
 
             // Updating maximized bounds for the frame
             if ( fit != null )
             {
                 // Screen-based bounds
+                // Note that we don't have to specify x/y offset of the screen here
+                // It seems that maximized bounds require only bounds inside of the screen bounds, not bettween the screens overall
                 final Insets si = Toolkit.getDefaultToolkit ().getScreenInsets ( fit );
                 final Rectangle b = fit.getBounds ();
-                frame.setMaximizedBounds (
-                        new Rectangle ( b.x + si.left, b.y + si.top, b.width - si.left - si.right, b.height - si.top - si.bottom ) );
+                frame.setMaximizedBounds ( new Rectangle ( si.left, si.top, b.width - si.left - si.right, b.height - si.top - si.bottom ) );
             }
             else
             {
@@ -1093,6 +1104,7 @@ public class WebRootPaneUI extends BasicRootPaneUI implements SwingConstants
                 frame.setMaximizedBounds ( GraphicsEnvironment.getLocalGraphicsEnvironment ().getMaximumWindowBounds () );
             }
 
+            // Forcing window to go into maximized state
             frame.setExtendedState ( Frame.MAXIMIZED_BOTH );
         }
     }
