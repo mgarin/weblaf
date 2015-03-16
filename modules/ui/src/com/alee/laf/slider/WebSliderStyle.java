@@ -126,4 +126,9 @@ public final class WebSliderStyle
      * Dark component border only on mouseover
      */
     public static boolean rolloverDarkBorderOnly = StyleConstants.rolloverDarkBorderOnly;
+
+    /**
+     * Whether or not should invert direction in which slider is being scrolled by mouse wheel.
+     */
+    public static boolean invertMouseWheelDirection = false;
 }

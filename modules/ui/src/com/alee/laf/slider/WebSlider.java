@@ -99,6 +99,16 @@ public class WebSlider extends JSlider
         getWebUI ().setRolloverDarkBorderOnly ( rolloverDarkBorderOnly );
     }
 
+    public boolean isInvertMouseWheelDirection ()
+    {
+        return getWebUI ().isInvertMouseWheelDirection ();
+    }
+
+    public void setInvertMouseWheelDirection ( final boolean invert )
+    {
+        getWebUI ().setInvertMouseWheelDirection ( invert );
+    }
+
     public Color getTrackBgTop ()
     {
         return getWebUI ().getTrackBgTop ();
