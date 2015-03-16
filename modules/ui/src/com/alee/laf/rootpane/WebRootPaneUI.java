@@ -1059,50 +1059,11 @@ public class WebRootPaneUI extends BasicRootPaneUI implements SwingConstants
     {
         if ( frame != null )
         {
-            // Determining screen on which most part of our frame is currently placed
-            // This part of code will check intersection between frame and screen bounds and decide where to place window
-            final GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment ();
-            final GraphicsDevice[] screenDevices = ge.getScreenDevices ();
-            final Rectangle fb = frame.getBounds ();
-            GraphicsConfiguration fit = null;
-            int maxArea = 0;
-            for ( final GraphicsDevice gd : screenDevices )
-            {
-                final GraphicsConfiguration gc = gd.getDefaultConfiguration ();
-                final Rectangle sb = gc.getBounds ();
-                if ( fb.intersects ( sb ) )
-                {
-                    final Rectangle intersection = fb.intersection ( sb );
-                    final int s = intersection.width * intersection.height;
-                    if ( maxArea < s )
-                    {
-                        fit = gc;
-                        maxArea = s;
-                    }
-                }
-            }
-
-            // Using first screen to maximize the window if it is not shown on any of the screens
-            if ( maxArea == 0 )
-            {
-                fit = screenDevices[ 0 ].getDefaultConfiguration ();
-            }
+            // Retrieving screen device configuration
+            final GraphicsConfiguration gc = frame.getGraphicsConfiguration ().getDevice ().getDefaultConfiguration ();
 
             // Updating maximized bounds for the frame
-            if ( fit != null )
-            {
-                // Screen-based bounds
-                // Note that we don't have to specify x/y offset of the screen here
-                // It seems that maximized bounds require only bounds inside of the screen bounds, not bettween the screens overall
-                final Insets si = Toolkit.getDefaultToolkit ().getScreenInsets ( fit );
-                final Rectangle b = fit.getBounds ();
-                frame.setMaximizedBounds ( new Rectangle ( si.left, si.top, b.width - si.left - si.right, b.height - si.top - si.bottom ) );
-            }
-            else
-            {
-                // Default GE bounds
-                frame.setMaximizedBounds ( GraphicsEnvironment.getLocalGraphicsEnvironment ().getMaximumWindowBounds () );
-            }
+            frame.setMaximizedBounds ( SystemUtils.getMaxWindowBounds ( gc, true ) );
 
             // Forcing window to go into maximized state
             frame.setExtendedState ( Frame.MAXIMIZED_BOTH );
