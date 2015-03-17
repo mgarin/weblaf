@@ -55,7 +55,7 @@ public class TooltipManager
      */
 
     // Default settings
-    protected static int defaultDelay = 500;
+    protected static int defaultDelay = 400;
     protected static boolean allowMultiplyTooltips = true;
     protected static boolean showHotkeysInTooltips = true;
     protected static boolean showHotkeysInOneTimeTooltips = false;

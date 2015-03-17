@@ -33,6 +33,30 @@ import java.awt.*;
 
 public class NotificationsScreenLayout extends AbstractScreenLayout<Window, Object> implements SwingConstants
 {
+    /**
+     * Screen device this layout is attached to.
+     */
+    protected final GraphicsDevice device;
+
+    /**
+     * Constructing layout for default screen device.
+     */
+    public NotificationsScreenLayout ()
+    {
+        this ( GraphicsEnvironment.getLocalGraphicsEnvironment ().getDefaultScreenDevice () );
+    }
+
+    /**
+     * Constructing layout for specified screen device.
+     *
+     * @param device screen device to construct layout for
+     */
+    public NotificationsScreenLayout ( final GraphicsDevice device )
+    {
+        super ();
+        this.device = device;
+    }
+
     @Override
     public void layoutScreen ()
     {
@@ -40,18 +64,19 @@ public class NotificationsScreenLayout extends AbstractScreenLayout<Window, Obje
         {
             if ( windows.size () > 0 )
             {
-                // Screen settings
+                // Using screen bounds
                 final Rectangle bounds;
-                final GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment ();
+                final Rectangle b = device.getDefaultConfiguration ().getBounds ();
                 if ( NotificationManager.isAvoidOverlappingSystemToolbar () )
                 {
                     // Correcting bounds by taking system toolbar into account
-                    bounds = ge.getMaximumWindowBounds ();
+                    final Insets si = Toolkit.getDefaultToolkit ().getScreenInsets ( device.getDefaultConfiguration () );
+                    bounds = new Rectangle ( b.x + si.left, b.y + si.top, b.width - si.left - si.right, b.height - si.top - si.bottom );
                 }
                 else
                 {
-                    // Using default screen bounds
-                    bounds = ge.getDefaultScreenDevice ().getDefaultConfiguration ().getBounds ();
+                    // Using raw screen bounds
+                    bounds = b;
                 }
 
                 // Layout notifications

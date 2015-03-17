@@ -175,49 +175,6 @@ public class PopupManager
     }
 
     /**
-     * Returns cached popup layer for root pane containing specified component.
-     *
-     * @param component component used to determine root pane for popup layer
-     * @return cached popup layer for root pane containing specified component
-     */
-    public static PopupLayer getPopupLayer ( final Component component )
-    {
-        return getPopupLayer ( SwingUtils.getRootPane ( component ) );
-    }
-
-    /**
-     * Returns cached popup layer for the specified root pane.
-     *
-     * @param rootPane root pane for popup layer
-     * @return cached popup layer for the specified root pane
-     */
-    public static PopupLayer getPopupLayer ( final JRootPane rootPane )
-    {
-        if ( rootPane == null )
-        {
-            throw new RuntimeException ( "JRootPane for PopupLayer cannot be found" );
-        }
-        if ( popupLayers.containsKey ( rootPane ) )
-        {
-            return popupLayers.get ( rootPane );
-        }
-        else
-        {
-            final JLayeredPane layeredPane = rootPane.getLayeredPane ();
-            if ( layeredPane == null )
-            {
-                throw new RuntimeException ( "Popup layer can be installed only into window or applet with JLayeredPane" );
-            }
-
-            final PopupLayer popupLayer = new PopupLayer ();
-            installPopupLayer ( popupLayer, rootPane, layeredPane );
-            popupLayers.put ( rootPane, popupLayer );
-
-            return popupLayer;
-        }
-    }
-
-    /**
      * Displays popup as modal for the root pane containing specified component.
      *
      * @param component component used to determine root pane for which modal popup will be displayed
@@ -285,6 +242,48 @@ public class PopupManager
     }
 
     /**
+     * Returns cached popup layer for root pane containing specified component.
+     *
+     * @param component component used to determine root pane for popup layer
+     * @return cached popup layer for root pane containing specified component
+     */
+    public static PopupLayer getPopupLayer ( final Component component )
+    {
+        return getPopupLayer ( SwingUtils.getRootPane ( component ) );
+    }
+
+    /**
+     * Returns cached popup layer for the specified root pane.
+     *
+     * @param rootPane root pane for popup layer
+     * @return cached popup layer for the specified root pane
+     */
+    public static PopupLayer getPopupLayer ( final JRootPane rootPane )
+    {
+        if ( rootPane == null )
+        {
+            throw new RuntimeException ( "JRootPane for PopupLayer cannot be found" );
+        }
+        if ( popupLayers.containsKey ( rootPane ) )
+        {
+            return popupLayers.get ( rootPane );
+        }
+        else
+        {
+            final JLayeredPane layeredPane = rootPane.getLayeredPane ();
+            if ( layeredPane == null )
+            {
+                throw new RuntimeException ( "Popup layer can be installed only into window or applet with JLayeredPane" );
+            }
+
+            final PopupLayer popupLayer = new PopupLayer ();
+            installPopupLayer ( popupLayer, rootPane, layeredPane );
+            popupLayers.put ( rootPane, popupLayer );
+            return popupLayer;
+        }
+    }
+
+    /**
      * Returns cached shade layer for the specified root pane.
      *
      * @param rootPane root pane for the shade layer
@@ -311,7 +310,6 @@ public class PopupManager
             final ShadeLayer shadeLayer = new ShadeLayer ();
             installPopupLayer ( shadeLayer, rootPane, layeredPane );
             shadeLayers.put ( rootPane, shadeLayer );
-
             return shadeLayer;
         }
     }

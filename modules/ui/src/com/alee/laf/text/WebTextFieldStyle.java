@@ -67,6 +67,26 @@ public final class WebTextFieldStyle
     public static boolean webColored = false;
 
     /**
+     * Background color.
+     */
+    public static Color backgroundColor = Color.WHITE;
+
+    /**
+     * Foreground color.
+     */
+    public static Color foregroundColor = Color.BLACK;
+
+    /**
+     * Selected text color.
+     */
+    public static Color selectedTextColor = Color.BLACK;
+
+    /**
+     * Selected text color.
+     */
+    public static Color caretColor = Color.GRAY;
+
+    /**
      * Text field painter.
      * If set it will override WebLaF styling.
      */

@@ -416,6 +416,11 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
             }
 
             final Component glassPane = SwingUtilities.getRootPane ( component ).getGlassPane ();
+            if ( !glassPane.isShowing () )
+            {
+                return TooltipWay.down;
+            }
+
             final Dimension rootSize = glassPane.getSize ();
             final Rectangle componentBounds = SwingUtils.getRelativeBounds ( component, glassPane );
             final Dimension ps = WebCustomTooltip.this.getPreferredSize ();
