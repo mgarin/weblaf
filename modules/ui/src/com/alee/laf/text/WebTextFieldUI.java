@@ -94,11 +94,11 @@ public class WebTextFieldUI extends BasicTextFieldUI implements ShapeProvider, S
         textField.putClientProperty ( SwingUtils.HANDLES_ENABLE_STATE, true );
         textField.setFocusable ( true );
         textField.setMargin ( WebTextFieldStyle.margin );
-        textField.setBackground ( Color.WHITE );
+        textField.setBackground ( WebTextFieldStyle.backgroundColor );
         textField.setSelectionColor ( StyleConstants.textSelectionColor );
-        textField.setForeground ( Color.BLACK );
-        textField.setSelectedTextColor ( Color.BLACK );
-        textField.setCaretColor ( Color.GRAY );
+        textField.setForeground ( WebTextFieldStyle.foregroundColor );
+        textField.setSelectedTextColor ( WebTextFieldStyle.selectedTextColor );
+        textField.setCaretColor ( WebTextFieldStyle.caretColor );
         textField.setLayout ( new TextComponentLayout ( textField ) );
         PainterSupport.installPainter ( textField, this.painter );
 
