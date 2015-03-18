@@ -19,12 +19,14 @@ package com.alee.laf.desktoppane;
 
 import java.awt.*;
 
+/**
+ * @author iMichka
+ */
 
 public final class WebInternalFrameStyle
 {
     /**
      * Background color.
      */
-    public static Color backgroundColor = new Color(90, 90, 90, 220);
-
+    public static Color backgroundColor = new Color ( 90, 90, 90, 220 );
 }
