@@ -28,6 +28,16 @@ import java.awt.*;
 public final class WebMenuBarStyle
 {
     /**
+     * Top background color.
+     */
+    public static Color topBgColor = StyleConstants.topBgColor;
+
+    /**
+     * Bottom background color.
+     */
+    public static Color bottomBgColor = new Color ( 235, 235, 235 );
+
+    /**
      * Decorate panel with Web-styled background or not
      */
     public static boolean undecorated = false;
