@@ -73,11 +73,11 @@ public class WebTextAreaUI extends BasicTextAreaUI implements BorderMethods, Swi
         // Default settings
         SwingUtils.setOrientation ( textComponent );
         LookAndFeel.installProperty ( textComponent, WebLookAndFeel.OPAQUE_PROPERTY, Boolean.TRUE );
-        textComponent.setBackground ( Color.WHITE );
+        textComponent.setBackground ( WebTextAreaStyle.backgroundColor );
         textComponent.setSelectionColor ( StyleConstants.textSelectionColor );
-        textComponent.setForeground ( Color.BLACK );
-        textComponent.setSelectedTextColor ( Color.BLACK );
-        textComponent.setCaretColor ( Color.GRAY );
+        textComponent.setForeground ( WebTextAreaStyle.foregroundColor );
+        textComponent.setSelectedTextColor ( WebTextAreaStyle.selectedTextColor );
+        textComponent.setCaretColor ( WebTextAreaStyle.caretColor );
         textComponent.setMargin ( WebTextAreaStyle.margin );
         PainterSupport.installPainter ( textComponent, this.painter );
 
