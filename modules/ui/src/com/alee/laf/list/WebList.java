@@ -51,6 +51,10 @@ import java.util.Vector;
 public class WebList extends JList implements EventMethods, FontMethods<WebList>, SizeMethods<WebList>
 {
     /**
+     * todo 1. Generics usage when migrated to JDK8+
+     */
+
+    /**
      * List edit lsiteners.
      */
     protected List<ListEditListener> editListeners = new ArrayList<ListEditListener> ( 1 );
