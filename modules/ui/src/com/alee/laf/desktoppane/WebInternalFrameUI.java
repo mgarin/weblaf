@@ -41,6 +41,11 @@ import java.awt.geom.RoundRectangle2D;
 public class WebInternalFrameUI extends BasicInternalFrameUI
 {
     /**
+     * Frame backgroundColor.
+     */
+    protected Color backgroundColor = WebInternalFrameStyle.backgroundColor;
+
+    /**
      * Style settings.
      */
     protected int sideSpacing = 1;
@@ -54,6 +59,23 @@ public class WebInternalFrameUI extends BasicInternalFrameUI
      * Whether internal frame is focused or owns focused component or not.
      */
     protected boolean focused = false;
+
+    /**
+     * @return background color.
+     */
+    public Color getBackgroundColor ()
+    {
+        return backgroundColor;
+    }
+
+    /**
+     * Set background color.
+     * @param color
+     */
+    public void setBackgroundColor ( final Color color )
+    {
+        this.backgroundColor = color;
+    }
 
     /**
      * Constructs new internal frame UI.
@@ -90,7 +112,7 @@ public class WebInternalFrameUI extends BasicInternalFrameUI
         // Default settings
         SwingUtils.setOrientation ( frame );
         LookAndFeel.installProperty ( frame, WebLookAndFeel.OPAQUE_PROPERTY, Boolean.FALSE );
-        frame.setBackground ( new Color ( 90, 90, 90, 220 ) );
+        frame.setBackground ( backgroundColor );
         frame.setBorder ( LafUtils.createWebBorder ( 0, 0, 0, 0 ) );
 
         // Focus tracker for the panel content
