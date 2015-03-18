@@ -982,7 +982,6 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider, Bor
      * @param c renderer component
      * @return renderer component preferred size
      */
-    @Override
     protected Dimension getSizeForComponent ( final Component c )
     {
         currentValuePane.add ( c );
