@@ -22,7 +22,8 @@ import com.alee.global.StyleConstants;
 import java.awt.*;
 
 /**
- * User: mgarin Date: 11/15/11 Time: 1:46 PM
+ * @author Mikle Garin
+ * @author iMichka
  */
 
 public final class WebSliderStyle
@@ -36,21 +37,6 @@ public final class WebSliderStyle
      * Bottom track background color
      */
     public static Color trackBgBottom = StyleConstants.bottomBgColor;
-
-    /**
-     * Top track progress background color
-     */
-    public static Color progressTrackBgTop = Color.WHITE;
-
-    /**
-     * Bottom track progress background color
-     */
-    public static Color progressTrackBgBottom = new Color ( 223, 223, 223 );
-
-    /**
-     * Progress shade color
-     */
-    public static Color progressShadeColor = StyleConstants.darkBorderColor;
 
     /**
      * Track height
@@ -71,6 +57,21 @@ public final class WebSliderStyle
      * Should draw progress inside slider track
      */
     public static boolean drawProgress = true;
+
+    /**
+     * Top track progress background color
+     */
+    public static Color progressTrackBgTop = Color.WHITE;
+
+    /**
+     * Bottom track progress background color
+     */
+    public static Color progressTrackBgBottom = new Color ( 223, 223, 223 );
+
+    /**
+     * Progress track border color.
+     */
+    public static Color progressBorderColor = StyleConstants.darkBorderColor;
 
     /**
      * Progress round
