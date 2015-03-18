@@ -309,6 +309,33 @@ public class WebSplitPaneUI extends BasicSplitPaneUI implements BorderMethods
 
                 GraphicsUtils.restoreAntialias ( g2d, aa );
             }
+
+            /**
+             * Property change event, presumably from the JSplitPane, will message
+             * updateOrientation if necessary.
+             */
+            @Override
+            public void propertyChange ( PropertyChangeEvent e )
+            {
+                super.propertyChange ( e );
+
+                if ( e.getSource() == splitPane && e.getPropertyName() == JSplitPane.ORIENTATION_PROPERTY )
+                {
+                    final boolean hor = orientation == JSplitPane.HORIZONTAL_SPLIT;
+
+                    if ( leftButton != null )
+                    {
+                        leftButton.setIcon ( new ImageIcon ( WebSplitPaneUI.class.getResource(hor ? "icons/left.png" : "icons/up.png" ) ) );
+                        leftButton.setPreferredSize ( hor ? new Dimension ( 6, 7 ) : new Dimension ( 7, 6 ) );
+                    }
+
+                    if ( rightButton != null )
+                    {
+                        rightButton.setIcon ( new ImageIcon ( WebSplitPaneUI.class.getResource ( hor ? "icons/right.png" : "icons/down.png" ) ) );
+                        rightButton.setPreferredSize ( hor ? new Dimension ( 6, 7 ) : new Dimension ( 7, 6 ) );
+                    }
+                }
+            }
         };
     }
 

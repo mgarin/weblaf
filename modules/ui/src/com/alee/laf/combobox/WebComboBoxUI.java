@@ -689,7 +689,7 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider, Bor
         {
             final boolean ltr = comboBox.getComponentOrientation ().isLeftToRight ();
             final Insets insets = comboBox.getInsets ();
-            final int lx = ltr ? comboBox.getWidth () - insets.right - arrow.getWidth () - 1 : insets.left + arrow.getWidth ();
+            final int lx = ltr ? comboBox.getWidth () - insets.right - arrow.getWidth () : insets.left + arrow.getWidth () - 1;
 
             g2d.setPaint ( comboBox.isEnabled () ? StyleConstants.borderColor : StyleConstants.disabledBorderColor );
             g2d.drawLine ( lx, insets.top + 1, lx, comboBox.getHeight () - insets.bottom - 2 );
