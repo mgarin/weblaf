@@ -117,6 +117,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
     public static final String ENABLED_PROPERTY = "enabled";
     public static final String MODEL_PROPERTY = "model";
     public static final String TOOLBAR_FLOATABLE_PROPERTY = "floatable";
+    public static final String TOOLBAR_ORIENTATION_PROPERTY = "orientation";
     public static final String WINDOW_DECORATION_STYLE_PROPERTY = "windowDecorationStyle";
     public static final String WINDOW_RESIZABLE_PROPERTY = "resizable";
     public static final String WINDOW_ICON_PROPERTY = "iconImage";
