@@ -38,6 +38,8 @@ import java.awt.geom.Line2D;
 
 public class WebMenuBarUI extends BasicMenuBarUI implements ShapeProvider, BorderMethods
 {
+    private Color topBgColor = WebMenuBarStyle.topBgColor;
+    private Color bottomBgColor = WebMenuBarStyle.bottomBgColor;
     private boolean undecorated = WebMenuBarStyle.undecorated;
     private int round = WebMenuBarStyle.round;
     private int shadeWidth = WebMenuBarStyle.shadeWidth;
@@ -99,6 +101,26 @@ public class WebMenuBarUI extends BasicMenuBarUI implements ShapeProvider, Borde
             insets = new Insets ( 0, 0, 0, 0 );
         }
         menuBar.setBorder ( LafUtils.createWebBorder ( insets ) );
+    }
+
+    public Color getTopBgColor ()
+    {
+        return topBgColor;
+    }
+
+    public void setTopBgColor ( final Color topBgColor )
+    {
+        this.topBgColor = topBgColor;
+    }
+
+    public Color getBottomBgColor ()
+    {
+        return bottomBgColor;
+    }
+
+    public void setBottomBgColor ( final Color bottomBgColor )
+    {
+        this.bottomBgColor = bottomBgColor;
     }
 
     public boolean isUndecorated ()
@@ -168,7 +190,7 @@ public class WebMenuBarUI extends BasicMenuBarUI implements ShapeProvider, Borde
 
                 GraphicsUtils.drawShade ( g2d, border, StyleConstants.shadeColor, shadeWidth );
 
-                g2d.setPaint ( new GradientPaint ( 0, 0, StyleConstants.topBgColor, 0, c.getHeight (), new Color ( 235, 235, 235 ) ) );
+                g2d.setPaint ( new GradientPaint ( 0, 0, topBgColor, 0, c.getHeight (), bottomBgColor ) );
                 g2d.fillRect ( 0, 0, c.getWidth (), c.getHeight () - shadeWidth );
 
                 g2d.setPaint ( borderColor );

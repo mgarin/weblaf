@@ -67,6 +67,16 @@ public final class WebComboBoxStyle
     public static boolean drawFocus = true;
 
     /**
+     * Top background color for selected item.
+     */
+    public static Color selectedMenuTopBg = new Color ( 208, 208, 198 );
+
+    /**
+     * Bottom background color for selected item.
+     */
+    public static Color selectedMenuBottomBg = new Color ( 196, 196, 186 );
+
+    /**
      * Decoration rounding.
      */
     public static int round = StyleConstants.smallRound;

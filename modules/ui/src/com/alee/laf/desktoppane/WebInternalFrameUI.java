@@ -41,6 +41,11 @@ import java.awt.geom.RoundRectangle2D;
 public class WebInternalFrameUI extends BasicInternalFrameUI
 {
     /**
+     * Frame backgroundColor.
+     */
+    protected Color backgroundColor = WebInternalFrameStyle.backgroundColor;
+
+    /**
      * Style settings.
      */
     protected int sideSpacing = 1;
@@ -56,16 +61,6 @@ public class WebInternalFrameUI extends BasicInternalFrameUI
     protected boolean focused = false;
 
     /**
-     * Constructs new internal frame UI.
-     *
-     * @param b internal frame to which this UI will be applied
-     */
-    public WebInternalFrameUI ( final JInternalFrame b )
-    {
-        super ( b );
-    }
-
-    /**
      * Returns an instance of the WebInternalFrameUI for the specified component.
      * This tricky method is used by UIManager to create component UIs when needed.
      *
@@ -75,6 +70,16 @@ public class WebInternalFrameUI extends BasicInternalFrameUI
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebInternalFrameUI ( ( JInternalFrame ) c );
+    }
+
+    /**
+     * Constructs new internal frame UI.
+     *
+     * @param b internal frame to which this UI will be applied
+     */
+    public WebInternalFrameUI ( final JInternalFrame b )
+    {
+        super ( b );
     }
 
     /**
@@ -90,7 +95,7 @@ public class WebInternalFrameUI extends BasicInternalFrameUI
         // Default settings
         SwingUtils.setOrientation ( frame );
         LookAndFeel.installProperty ( frame, WebLookAndFeel.OPAQUE_PROPERTY, Boolean.FALSE );
-        frame.setBackground ( new Color ( 90, 90, 90, 220 ) );
+        frame.setBackground ( backgroundColor );
         frame.setBorder ( LafUtils.createWebBorder ( 0, 0, 0, 0 ) );
 
         // Focus tracker for the panel content
@@ -217,23 +222,19 @@ public class WebInternalFrameUI extends BasicInternalFrameUI
         final Graphics2D g2d = ( Graphics2D ) g;
         final Object aa = GraphicsUtils.setupAntialias ( g2d );
 
-        // Shape border = LafUtils.getWebBorderShape ( c, StyleConstants.shadeWidth, StyleConstants.round );
-
-        final Insets insets = c.getInsets ();
-        final RoundRectangle2D innerBorder =
-                new RoundRectangle2D.Double ( insets.left + 3 + sideSpacing, insets.top + titlePane.getHeight () - 1,
-                        c.getWidth () - 1 - insets.left - 3 - sideSpacing - insets.right - 3 - sideSpacing,
-                        c.getHeight () - 1 - insets.top - titlePane.getHeight () + 1 - insets.bottom - 3 -
-                                sideSpacing, ( StyleConstants.bigRound - 1 ) * 2, ( StyleConstants.bigRound - 1 ) * 2
-                );
-
         // Border and background
         LafUtils.drawWebStyle ( g2d, c, c.isEnabled () && focused ? StyleConstants.fieldFocusColor : StyleConstants.shadeColor,
                 StyleConstants.shadeWidth, StyleConstants.bigRound, true, false );
 
         // Inner border
+        final Insets insets = c.getInsets ();
+        final int x = insets.left + 3 + sideSpacing;
+        final int y = insets.top + titlePane.getHeight () - 1;
+        final int w = c.getWidth () - 1 - insets.left - 3 - sideSpacing - insets.right - 3 - sideSpacing;
+        final int h = c.getHeight () - 1 - insets.top - titlePane.getHeight () + 1 - insets.bottom - 3 - sideSpacing;
+        final int round = ( StyleConstants.bigRound - 1 ) * 2;
         g2d.setPaint ( Color.GRAY );
-        g2d.draw ( innerBorder );
+        g2d.draw ( new RoundRectangle2D.Double ( x, y, w, h, round, round ) );
 
         GraphicsUtils.restoreAntialias ( g2d, aa );
     }
