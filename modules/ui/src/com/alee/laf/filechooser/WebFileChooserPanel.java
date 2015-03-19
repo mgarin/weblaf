@@ -210,6 +210,8 @@ public class WebFileChooserPanel extends WebPanel
     /**
      * Center panel components.
      */
+    protected WebPanel centralContainer;
+    protected WebSplitPane centralSplit;
     protected WebFileTree fileTree;
     protected TreeSelectionListener fileTreeListener;
     protected WebScrollPane treeScroll;
@@ -217,7 +219,6 @@ public class WebFileChooserPanel extends WebPanel
     protected WebScrollPane fileListScroll;
     protected WebFileTable fileTable;
     protected WebScrollPane fileTableScroll;
-    protected WebSplitPane centralSplit;
 
     /**
      * South panel components.
@@ -229,6 +230,11 @@ public class WebFileChooserPanel extends WebPanel
     protected WebComboBox fileFilters;
     protected WebButton approveButton;
     protected WebButton cancelButton;
+
+    /**
+     * Accessory component
+     */
+    protected JComponent accessory;
 
     /**
      * Editing state provider.
@@ -682,8 +688,12 @@ public class WebFileChooserPanel extends WebPanel
         centralSplit.setLeftComponent ( treeScroll );
         centralSplit.setRightComponent ( fileListScroll );
         centralSplit.setDividerLocation ( dividerLocation );
-        centralSplit.setMargin ( 4, 4, 4, 4 );
-        return centralSplit;
+
+        centralContainer = new WebPanel ( new BorderLayout ( 4, 0 ) );
+        centralContainer.setMargin ( 4 );
+        centralContainer.add ( centralSplit );
+
+        return centralContainer;
     }
 
     /**
@@ -993,6 +1003,45 @@ public class WebFileChooserPanel extends WebPanel
         cancelButton.addPropertyChangeListener ( AbstractButton.TEXT_CHANGED_PROPERTY, pcl );
 
         return southPanel;
+    }
+
+    /**
+     * Sets accessory component.
+     *
+     * @param accessory new accessory component
+     */
+    public void setAccessory ( final JComponent accessory )
+    {
+        if ( this.accessory != accessory )
+        {
+            // Removing old accessory
+            if ( this.accessory != null )
+            {
+                centralContainer.remove ( this.accessory );
+            }
+
+            // Updating accessory reference
+            this.accessory = accessory;
+
+            // Adding accessory if it isn't null
+            if ( accessory != null )
+            {
+                centralContainer.add ( accessory, BorderLayout.LINE_END );
+            }
+
+            // Updating layout
+            centralContainer.revalidate ();
+        }
+    }
+
+    /**
+     * Returns accessory component.
+     *
+     * @return accessory component
+     */
+    public JComponent getAccessory ()
+    {
+        return accessory;
     }
 
     /**

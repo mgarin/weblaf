@@ -72,6 +72,17 @@ public final class TextUtils
     private static final String defaultIdSuffix = "ID";
 
     /**
+     * Returns text with all line breaks removed.
+     *
+     * @param text text to remove line breaks from
+     * @return text with all line breaks removed
+     */
+    public static String removeLineBreaks ( final String text )
+    {
+        return text.replaceAll ( "\\r\\n|\\r|\\n", "" );
+    }
+
+    /**
      * Returns first number found in text.
      *
      * @param text text to search through
