@@ -33,7 +33,7 @@ public final class WebFileChooserStyle
     public static final String defaultDirectory = FileUtils.getUserHomePath ();
 
     /**
-     * Preferred width of the tree on the left.
+     * Preferred width of the tree on the left and the default split divider location.
      */
     public static int dividerLocation = 160;
 }

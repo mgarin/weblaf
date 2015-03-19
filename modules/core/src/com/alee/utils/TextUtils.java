@@ -18,6 +18,7 @@
 package com.alee.utils;
 
 import com.alee.utils.compare.Filter;
+import com.alee.utils.text.DelayFormatException;
 import com.alee.utils.text.SimpleTextProvider;
 import com.alee.utils.text.TextProvider;
 
@@ -35,6 +36,14 @@ import java.util.StringTokenizer;
 
 public final class TextUtils
 {
+    /**
+     * Constants for time calculations.
+     */
+    private static final int msInDay = 86400000;
+    private static final int msInHour = 3600000;
+    private static final int msInMinute = 60000;
+    private static final int msInSecond = 1000;
+
     /**
      * Separators used to determine words in text.
      */
@@ -555,5 +564,103 @@ public final class TextUtils
             stringBuilder.append ( ( char ) ( MathUtils.random ( range ) + next ) );
         }
         return stringBuilder.toString ();
+    }
+
+    /**
+     * Either returns delay retrieved from string or throws an exception if it cannot be parsed.
+     * Full string format is "Xd Yh Zm s ms" but you can skip any part of it. Yet you must specify atleast one value.
+     * For example string "2h 5s" will be a valid delay declaration and will be converted into (2*60*60*1000+5*1000) long value.
+     *
+     * @param delay string delay
+     * @return delay retrieved from string
+     */
+    public static long parseDelay ( final String delay ) throws DelayFormatException
+    {
+        try
+        {
+            long summ = 0;
+            final String[] parts = delay.split ( " " );
+            for ( final String part : parts )
+            {
+                for ( int i = 0; i < part.length (); i++ )
+                {
+                    if ( !Character.isDigit ( part.charAt ( i ) ) )
+                    {
+                        final int time = Integer.parseInt ( part.substring ( 0, i ) );
+                        final PartType type = PartType.valueOf ( part.substring ( i ) );
+                        switch ( type )
+                        {
+                            case d:
+                                summ += time * msInDay;
+                                break;
+                            case h:
+                                summ += time * msInHour;
+                                break;
+                            case m:
+                                summ += time * msInMinute;
+                                break;
+                            case s:
+                                summ += time * msInSecond;
+                                break;
+                            case ms:
+                                summ += time;
+                                break;
+                        }
+                        break;
+                    }
+                }
+            }
+            return summ;
+        }
+        catch ( final Throwable e )
+        {
+            throw new DelayFormatException ( e );
+        }
+    }
+
+    /**
+     * Returns delay string representation.
+     *
+     * @param delay delay to process
+     * @return delay string representation
+     */
+    public static String toStringDelay ( final long delay )
+    {
+        if ( delay <= 0 )
+        {
+            throw new IllegalArgumentException ( "Invalid delay: " + delay );
+        }
+
+        long time = delay;
+
+        final long d = time / msInDay;
+        time = time - d * msInDay;
+
+        final long h = time / msInHour;
+        time = time - h * msInHour;
+
+        final long m = time / msInMinute;
+        time = time - m * msInMinute;
+
+        final long s = time / msInSecond;
+        time = time - s * msInSecond;
+
+        final long ms = time;
+
+        final String stringDelay = ( d > 0 ? d + "d " : "" ) +
+                ( h > 0 ? h + "h " : "" ) +
+                ( m > 0 ? m + "m " : "" ) +
+                ( s > 0 ? s + "s " : "" ) +
+                ( ms > 0 ? ms + "ms " : "" );
+
+        return stringDelay.trim ();
+    }
+
+    /**
+     * Time part type enumeration used to parse string delay.
+     */
+    protected static enum PartType
+    {
+        d, h, m, s, ms
     }
 }
