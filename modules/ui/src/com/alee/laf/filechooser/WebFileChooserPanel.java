@@ -188,6 +188,11 @@ public class WebFileChooserPanel extends WebPanel
     protected List<FileChooserListener> chooserListeners = new ArrayList<FileChooserListener> ( 1 );
 
     /**
+     * Preferred width of the tree on the left.
+     */
+    protected int dividerLocation = WebFileChooserStyle.dividerLocation;
+
+    /**
      * North panel components.
      */
     protected WebButton backward;
@@ -676,7 +681,7 @@ public class WebFileChooserPanel extends WebPanel
         centralSplit.setOneTouchExpandable ( true );
         centralSplit.setLeftComponent ( treeScroll );
         centralSplit.setRightComponent ( fileListScroll );
-        centralSplit.setDividerLocation ( 160 );
+        centralSplit.setDividerLocation ( dividerLocation );
         centralSplit.setMargin ( 4, 4, 4, 4 );
         return centralSplit;
     }
@@ -704,7 +709,7 @@ public class WebFileChooserPanel extends WebPanel
         fileTree.addTreeSelectionListener ( fileTreeListener );
 
         treeScroll = new WebScrollPane ( fileTree, true );
-        treeScroll.setPreferredSize ( new Dimension ( 160, 1 ) );
+        treeScroll.setPreferredSize ( new Dimension ( dividerLocation, 1 ) );
     }
 
     /**
