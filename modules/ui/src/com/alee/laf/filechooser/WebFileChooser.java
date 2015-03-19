@@ -267,6 +267,16 @@ public class WebFileChooser extends JFileChooser implements LanguageMethods, Lan
     }
 
     /**
+     * Set the accessory component.
+     *
+     * @param accessory component
+     */
+    @Override
+    public void setAccessory ( JComponent c ) {
+        getWebUI ().setAccessory ( c );
+    }
+
+    /**
      * Sets approve button text type.
      *
      * @param approveText approve button text type

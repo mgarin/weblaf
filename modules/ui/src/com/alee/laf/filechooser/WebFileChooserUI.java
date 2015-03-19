@@ -160,6 +160,15 @@ public class WebFileChooserUI extends FileChooserUI
     }
 
     /**
+     * Set the accessory component.
+     *
+     * @param accessory component
+     */
+    public void setAccessory ( JComponent c ) {
+        fileChooser.add ( c, BorderLayout.EAST );
+    }
+
+    /**
      * Uninstalls UI from the specified component.
      *
      * @param c component with this UI
