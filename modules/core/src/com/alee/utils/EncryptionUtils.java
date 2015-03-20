@@ -38,7 +38,7 @@ public final class EncryptionUtils
     /**
      * Encode and decode key.
      */
-    private static String key = "aZCVKk3mospdfm12pk4fcFD43d435ccCDgHKPQMQ23x7zkq03";
+    private static final String key = "aZCVKk3mospdfm12pk4fcFD43d435ccCDgHKPQMQ23x7zkq03";
 
     /**
      * Returns text enrypted through xor and encoded using base64.
@@ -46,9 +46,21 @@ public final class EncryptionUtils
      * @param text text to encrypt
      * @return encrypted text
      */
-    public static String encrypt ( String text )
+    public static String encrypt ( final String text )
     {
-        return base64encode ( xorText ( text ) );
+        return encrypt ( text, key );
+    }
+
+    /**
+     * Returns text enrypted through xor and encoded using base64.
+     *
+     * @param text text to encrypt
+     * @param key  xor key
+     * @return encrypted text
+     */
+    public static String encrypt ( final String text, final String key )
+    {
+        return base64encode ( xorText ( text, key ) );
     }
 
     /**
@@ -57,9 +69,21 @@ public final class EncryptionUtils
      * @param text text to decrypt
      * @return decrypted text
      */
-    public static String decrypt ( String text )
+    public static String decrypt ( final String text )
     {
-        return xorText ( base64decode ( text ) );
+        return decrypt ( text, key );
+    }
+
+    /**
+     * Returns text decoded using base64 and decrypted through xor.
+     *
+     * @param text text to decrypt
+     * @param key  xor key
+     * @return decrypted text
+     */
+    public static String decrypt ( final String text, final String key )
+    {
+        return xorText ( base64decode ( text ), key );
     }
 
     /**
@@ -68,18 +92,30 @@ public final class EncryptionUtils
      * @param text to encrypt
      * @return encrypted text
      */
-    public static String xorText ( String text )
+    public static String xorText ( final String text )
+    {
+        return xorText ( text, key );
+    }
+
+    /**
+     * Returns text encrypted using xor.
+     *
+     * @param text to encrypt
+     * @param key  xor key
+     * @return encrypted text
+     */
+    public static String xorText ( final String text, final String key )
     {
         if ( text == null )
         {
             return null;
         }
 
-        char[] keys = key.toCharArray ();
-        char[] mesg = text.toCharArray ();
-        int ml = mesg.length;
-        int kl = keys.length;
-        char[] newmsg = new char[ ml ];
+        final char[] keys = key.toCharArray ();
+        final char[] mesg = text.toCharArray ();
+        final int ml = mesg.length;
+        final int kl = keys.length;
+        final char[] newmsg = new char[ ml ];
         for ( int i = 0; i < ml; i++ )
         {
             newmsg[ i ] = ( char ) ( mesg[ i ] ^ keys[ i % kl ] );
@@ -93,13 +129,13 @@ public final class EncryptionUtils
      * @param text text to encode
      * @return text encoded with base64
      */
-    public static String base64encode ( String text )
+    public static String base64encode ( final String text )
     {
         try
         {
             return Base64.encode ( text.getBytes ( DEFAULT_ENCODING ) );
         }
-        catch ( UnsupportedEncodingException e )
+        catch ( final UnsupportedEncodingException e )
         {
             return null;
         }
@@ -111,13 +147,13 @@ public final class EncryptionUtils
      * @param text text to decoded
      * @return text decoded with base64
      */
-    public static String base64decode ( String text )
+    public static String base64decode ( final String text )
     {
         try
         {
             return new String ( Base64.decode ( text ), DEFAULT_ENCODING );
         }
-        catch ( IOException e )
+        catch ( final IOException e )
         {
             return null;
         }

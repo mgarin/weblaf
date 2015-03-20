@@ -20,7 +20,7 @@ package com.alee.laf.desktoppane;
 import java.awt.*;
 
 /**
- * @author iMichka
+ * @author Michka Popoff
  */
 
 public final class WebInternalFrameStyle

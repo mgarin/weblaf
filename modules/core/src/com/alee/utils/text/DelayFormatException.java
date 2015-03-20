@@ -15,26 +15,16 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.laf.filechooser;
-
-import com.alee.utils.FileUtils;
+package com.alee.utils.text;
 
 /**
- * WebFileChooser style class.
- *
  * @author Mikle Garin
- * @author Michka Popoff
  */
 
-public final class WebFileChooserStyle
+public class DelayFormatException extends IllegalArgumentException
 {
-    /**
-     * Default file chooser directory.
-     */
-    public static final String defaultDirectory = FileUtils.getUserHomePath ();
-
-    /**
-     * Preferred width of the tree on the left and the default split divider location.
-     */
-    public static int dividerLocation = 160;
+    public DelayFormatException ( final Throwable cause )
+    {
+        super ( cause );
+    }
 }

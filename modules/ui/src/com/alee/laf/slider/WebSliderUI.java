@@ -44,7 +44,7 @@ import java.beans.PropertyChangeListener;
 
 /**
  * @author Mikle Garin
- * @author iMichka
+ * @author Michka Popoff
  */
 
 public class WebSliderUI extends BasicSliderUI implements BorderMethods

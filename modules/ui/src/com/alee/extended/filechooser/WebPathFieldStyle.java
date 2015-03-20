@@ -15,16 +15,22 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.utils.swing;
+package com.alee.extended.filechooser;
+
+import com.alee.global.StyleConstants;
+
+import java.awt.*;
 
 /**
+ * WebPathField style class.
+ *
  * @author Mikle Garin
  */
 
-public class DelayFormatException extends IllegalArgumentException
+public final class WebPathFieldStyle
 {
-    public DelayFormatException ( final Throwable cause )
-    {
-        super ( cause );
-    }
+    /**
+     * Color of the path's text in rollover mode.
+     */
+    public static Color foreground = StyleConstants.textColor;
 }
