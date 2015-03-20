@@ -23,6 +23,7 @@ import com.alee.global.GlobalConstants;
 import com.alee.global.StyleConstants;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.button.WebToggleButton;
+import com.alee.laf.filechooser.WebFileChooserStyle;
 import com.alee.laf.list.WebList;
 import com.alee.laf.list.WebListCellRenderer;
 import com.alee.laf.menu.WebMenuItem;
@@ -55,7 +56,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * User: mgarin Date: 05.07.11 Time: 18:20
+ * WebFileChooser style class.
+ *
+ * @author Mikle Garin
+ * @author Michka Popoff
  */
 
 public class WebPathField extends WebPanel
@@ -97,6 +101,8 @@ public class WebPathField extends WebPanel
     protected WebToggleButton rootsArrowButton = null;
 
     protected final DefaultFocusTracker focusTracker;
+
+    protected Color rolloverPathForegroundColor = WebFileChooserStyle.rolloverPathForegroundColor;
 
     public WebPathField ()
     {
@@ -681,6 +687,7 @@ public class WebPathField extends WebPanel
                 wb.setRolloverDecoratedOnly ( true );
                 wb.setRolloverDarkBorderOnly ( false );
                 wb.setFocusable ( false );
+                wb.setForeground ( rolloverPathForegroundColor );
                 if ( !SystemUtils.isWindows () && first )
                 {
                     wb.setIcon ( FileUtils.getMyComputerIcon () );

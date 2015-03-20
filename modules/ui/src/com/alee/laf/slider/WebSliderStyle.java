@@ -23,7 +23,7 @@ import java.awt.*;
 
 /**
  * @author Mikle Garin
- * @author iMichka
+ * @author Michka Popoff
  */
 
 public final class WebSliderStyle
