@@ -15,26 +15,22 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.laf.filechooser;
+package com.alee.extended.filechooser;
 
-import com.alee.utils.FileUtils;
+import com.alee.global.StyleConstants;
+
+import java.awt.*;
 
 /**
- * WebFileChooser style class.
+ * WebPathField style class.
  *
  * @author Mikle Garin
- * @author Michka Popoff
  */
 
-public final class WebFileChooserStyle
+public final class WebPathFieldStyle
 {
     /**
-     * Default file chooser directory.
+     * Color of the path's text in rollover mode.
      */
-    public static final String defaultDirectory = FileUtils.getUserHomePath ();
-
-    /**
-     * Preferred width of the tree on the left and the default split divider location.
-     */
-    public static int dividerLocation = 160;
+    public static Color foreground = StyleConstants.textColor;
 }

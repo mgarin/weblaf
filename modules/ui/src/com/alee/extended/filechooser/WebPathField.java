@@ -23,7 +23,6 @@ import com.alee.global.GlobalConstants;
 import com.alee.global.StyleConstants;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.button.WebToggleButton;
-import com.alee.laf.filechooser.WebFileChooserStyle;
 import com.alee.laf.list.WebList;
 import com.alee.laf.list.WebListCellRenderer;
 import com.alee.laf.menu.WebMenuItem;
@@ -56,7 +55,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * WebFileChooser style class.
+ * Custom component which allows file system path selection.
  *
  * @author Mikle Garin
  * @author Michka Popoff
@@ -65,44 +64,67 @@ import java.util.List;
 public class WebPathField extends WebPanel
 {
     /**
+     * todo 1. Enhance path update method performance
+     * todo 2. While menu is opened - open other menus on simple rollover
+     * todo 3. Proper focus handling after finishing manual path editing
+     */
+
+    /**
      * Used icons.
      */
     protected static final ImageIcon down = new ImageIcon ( WebPathField.class.getResource ( "icons/down.png" ) );
     protected static final ImageIcon left = new ImageIcon ( WebPathField.class.getResource ( "icons/left.png" ) );
     protected static final ImageIcon right = new ImageIcon ( WebPathField.class.getResource ( "icons/right.png" ) );
 
+    /**
+     * Custom property used to store file icon into button.
+     */
     protected static final String FILE_ICON = "fileIcon";
 
-    protected List<PathFieldListener> listeners = new ArrayList<PathFieldListener> ( 1 );
-
-    protected boolean focusOwner = false;
-
+    /**
+     * File system view.
+     */
     protected static FileSystemView fsv = FileSystemView.getFileSystemView ();
 
-    protected AbstractFileFilter fileFilter = GlobalConstants.DIRECTORIES_FILTER;
+    /**
+     * Field listeners.
+     */
+    protected List<PathFieldListener> listeners = new ArrayList<PathFieldListener> ( 1 );
 
-    protected int preferredWidth = -1;
-    protected boolean filesDropEnabled = true;
+    /**
+     * UI components.
+     */
+    protected WebPanel contentPanel;
+    protected WebTextField pathField;
+    protected FocusAdapter pathFocusListener;
+    protected WebButton myComputer = null;
 
-    protected File selectedPath;
-
+    /**
+     * Autocomplete.
+     */
     protected boolean autocompleteEnabled = true;
     protected JWindow autocompleteDialog = null;
 
-    protected WebPanel contentPanel;
-
-    protected WebTextField pathField;
-    protected FocusAdapter pathFocusListener;
-
-    protected WebButton myComputer = null;
-
+    /**
+     * Root item menu.
+     */
     protected int rootsMenuItemsCount = 0;
     protected WebPopupMenu rootsMenu = null;
     protected WebToggleButton rootsArrowButton = null;
 
-    protected final DefaultFocusTracker focusTracker;
+    /**
+     * Field settings.
+     */
+    protected AbstractFileFilter fileFilter = GlobalConstants.DIRECTORIES_FILTER;
+    protected int preferredWidth = -1;
+    protected boolean filesDropEnabled = true;
+    protected File selectedPath;
 
-    protected Color rolloverPathForegroundColor = WebFileChooserStyle.rolloverPathForegroundColor;
+    /**
+     * Runtime variables.
+     */
+    protected final DefaultFocusTracker focusTracker;
+    protected boolean focusOwner = false;
 
     public WebPathField ()
     {
@@ -124,6 +146,7 @@ public class WebPathField extends WebPanel
         setPaintFocus ( true );
         setWebColoredBackground ( false );
         setBackground ( Color.WHITE );
+        setForeground ( WebPathFieldStyle.foreground );
 
         // Files TransferHandler
         setTransferHandler ( new FileDragAndDropHandler ()
@@ -172,6 +195,7 @@ public class WebPathField extends WebPanel
         //        add ( editImage,BorderLayout.EAST );
 
         pathField = WebTextField.createWebTextField ( false );
+        pathField.setForeground ( WebPathFieldStyle.foreground );
         pathField.setMargin ( 2 );
         pathField.addActionListener ( new ActionListener ()
         {
@@ -579,6 +603,17 @@ public class WebPathField extends WebPanel
         return pathField.isFocusOwner ();
     }
 
+    @Override
+    public void setForeground ( final Color foreground )
+    {
+        super.setForeground ( foreground );
+        if ( isShowing () )
+        {
+            SwingUtils.setForegroundRecursively ( contentPanel, foreground );
+            pathField.setForeground ( foreground );
+        }
+    }
+
     public boolean isAutocompleteEnabled ()
     {
         return autocompleteEnabled;
@@ -687,7 +722,7 @@ public class WebPathField extends WebPanel
                 wb.setRolloverDecoratedOnly ( true );
                 wb.setRolloverDarkBorderOnly ( false );
                 wb.setFocusable ( false );
-                wb.setForeground ( rolloverPathForegroundColor );
+                wb.setForeground ( WebPathField.this.getForeground () );
                 if ( !SystemUtils.isWindows () && first )
                 {
                     wb.setIcon ( FileUtils.getMyComputerIcon () );
