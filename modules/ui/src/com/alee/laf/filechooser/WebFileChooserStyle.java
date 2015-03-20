@@ -17,12 +17,16 @@
 
 package com.alee.laf.filechooser;
 
+import com.alee.global.StyleConstants;
 import com.alee.utils.FileUtils;
+
+import java.awt.*;
 
 /**
  * WebFileChooser style class.
  *
  * @author Mikle Garin
+ * @author Michka Popoff
  */
 
 public final class WebFileChooserStyle
@@ -36,4 +40,9 @@ public final class WebFileChooserStyle
      * Preferred width of the tree on the left and the default split divider location.
      */
     public static int dividerLocation = 160;
+
+    /**
+     * Color of the path's text in rollover mode.
+    */
+    public static Color rolloverPathForegroundColor = StyleConstants.textColor;
 }
