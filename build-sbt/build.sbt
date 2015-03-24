@@ -14,7 +14,7 @@ lazy val fullDescr = "WebLaf is a Java Swing Look and Feel and extended componen
 
 lazy val rSyntaxVersion = "2.5.6"
 
-lazy val baseDir = file("build-sbt")
+// lazy val baseDir = file("build-sbt")
 
 def mkVersion(base: File): String = {
   val propF = base / ".." / "build" / "version.properties"
@@ -40,7 +40,7 @@ lazy val commonSettings = Project.defaultSettings ++ Seq(
   javacOptions in doc := commonJavaOptions,  // cf. sbt issue #355
   // this is used by LibraryInfoDialog.java, however assuming a jar file,
   // so it is not found when using `sbt run`.
-  unmanagedResourceDirectories in Compile += baseDirectory.value / ".." / "licenses",
+//  unmanagedResourceDirectories in Compile += baseDirectory.value / ".." / "licenses",
   // ---- publishing to Maven Central ----
   publishMavenStyle := true,
   publishTo := {
@@ -71,7 +71,7 @@ lazy val commonSettings = Project.defaultSettings ++ Seq(
 
 lazy val full = Project(
   id            = baseNameL,
-  base          = baseDir,
+  base          = file("."),
   aggregate     = Seq(core, ui),  // exclude `demo` here
   dependencies  = Seq(core, ui),  // exclude `demo` here
   settings      = commonSettings ++ Seq(
@@ -87,7 +87,7 @@ lazy val full = Project(
 
 lazy val core: Project = Project(
   id        = s"$baseNameL-core",
-  base      = baseDir / "core",
+  base      = file("core"),
   settings  = commonSettings ++ Seq(
     name        := s"$baseName-core",
     description := "Core components for WebLaf",
@@ -99,8 +99,8 @@ lazy val core: Project = Project(
       "org.slf4j"                % "slf4j-api"          % "1.7.7",
       "org.slf4j"                % "slf4j-simple"       % "1.7.7"
     ),
-    javaSource        in Compile := baseDirectory.value / ".." / ".." / "modules" / "core" / "src",
-    resourceDirectory in Compile := baseDirectory.value / ".." / ".." / "modules" / "core" / "src",
+    // javaSource        in Compile := baseDirectory.value / ".." / ".." / "modules" / "core" / "src",
+    // resourceDirectory in Compile := baseDirectory.value / ".." / ".." / "modules" / "core" / "src",
     // excludeFilter in (Compile, unmanagedSources)   := new SimpleFileFilter(_.getPath.contains("/examples/")),
     excludeFilter in (Compile, unmanagedResources) := "*.java"
   )
@@ -108,7 +108,7 @@ lazy val core: Project = Project(
 
 lazy val ui = Project(
   id        = s"$baseNameL-ui",
-  base      = baseDir / "ui",
+  base      = file("ui"),
   dependencies = Seq(core),
   settings  = commonSettings ++ Seq(
     name        := s"$baseName-ui",
@@ -118,8 +118,8 @@ lazy val ui = Project(
       "com.fifesoft" % "rsyntaxtextarea" % rSyntaxVersion % "provided"  // we don't want to drag this under in 99% of cases
     ),
     mainClass in (Compile,run) := Some("com.alee.laf.LibraryInfoDialog"),
-    javaSource        in Compile := baseDirectory.value / ".." / ".." / "modules" / "ui" / "src",
-    resourceDirectory in Compile := baseDirectory.value / ".." / ".." / "modules" / "ui" / "src",
+    // javaSource        in Compile := baseDirectory.value / ".." / ".." / "modules" / "ui" / "src",
+    // resourceDirectory in Compile := baseDirectory.value / ".." / ".." / "modules" / "ui" / "src",
     // excludeFilter in (Compile, unmanagedSources)   := new SimpleFileFilter(_.getPath.contains("/examples/")),
     excludeFilter in (Compile, unmanagedResources) := "*.java"
   )
@@ -127,7 +127,7 @@ lazy val ui = Project(
 
 lazy val demo = Project(
   id        = s"$baseNameL-demo",
-  base      = baseDir / "demo",
+  base      = file("demo"),
   dependencies = Seq(core, ui),
   settings  = commonSettings ++ Seq(
     name        := s"$baseName-demo",
@@ -137,8 +137,8 @@ lazy val demo = Project(
       "com.fifesoft" % "rsyntaxtextarea" % rSyntaxVersion
     ),
     mainClass in (Compile,run) := Some("com.alee.examples.WebLookAndFeelDemo"),
-    javaSource        in Compile := baseDirectory.value / ".." / ".." / "modules" / "demo" / "src",
-    resourceDirectory in Compile := baseDirectory.value / ".." / ".." / "modules" / "demo" / "src",
+    // javaSource        in Compile := baseDirectory.value / ".." / ".." / "modules" / "demo" / "src",
+    // resourceDirectory in Compile := baseDirectory.value / ".." / ".." / "modules" / "demo" / "src",
     // excludeFilter in (Compile, unmanagedSources)   := new SimpleFileFilter(_.getPath.contains("/examples/")),
     excludeFilter in (Compile, unmanagedResources) := "*.java"
   )
