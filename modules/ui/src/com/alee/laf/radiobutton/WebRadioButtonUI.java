@@ -31,6 +31,8 @@ import javax.swing.plaf.basic.BasicRadioButtonUI;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.RoundRectangle2D;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -39,7 +41,7 @@ import java.util.Map;
  * User: mgarin Date: 28.04.11 Time: 14:55
  */
 
-public class WebRadioButtonUI extends BasicRadioButtonUI implements ShapeProvider
+public class WebRadioButtonUI extends BasicRadioButtonUI implements PropertyChangeListener, ShapeProvider
 {
     public static final int MAX_DARKNESS = 5;
 
@@ -181,12 +183,12 @@ public class WebRadioButtonUI extends BasicRadioButtonUI implements ShapeProvide
                 if ( checking && checkIcon < CHECK_STATES.size () - 1 )
                 {
                     checkIcon++;
-                    c.repaint ();
+                    radioButton.repaint ();
                 }
                 else if ( !checking && checkIcon > 0 )
                 {
                     checkIcon--;
-                    c.repaint ();
+                    radioButton.repaint ();
                 }
                 else
                 {
@@ -214,18 +216,21 @@ public class WebRadioButtonUI extends BasicRadioButtonUI implements ShapeProvide
                 }
                 else
                 {
-                    checkTimer.stop ();
-                    checkIcon = radioButton.isSelected () ? CHECK_STATES.size () - 1 : 0;
-                    c.repaint ();
+                    resetAnimationState ();
                 }
             }
         };
         radioButton.addItemListener ( itemListener );
+
+        // Listening to button model changes
+        radioButton.addPropertyChangeListener ( WebLookAndFeel.MODEL_PROPERTY, this );
     }
 
     @Override
     public void uninstallUI ( final JComponent c )
     {
+        radioButton.removePropertyChangeListener ( WebLookAndFeel.MODEL_PROPERTY, this );
+
         radioButton.removeMouseListener ( mouseAdapter );
         radioButton.removeItemListener ( itemListener );
 
@@ -233,6 +238,19 @@ public class WebRadioButtonUI extends BasicRadioButtonUI implements ShapeProvide
         radioButton = null;
 
         super.uninstallUI ( c );
+    }
+
+    @Override
+    public void propertyChange ( final PropertyChangeEvent e )
+    {
+        resetAnimationState ();
+    }
+
+    protected void resetAnimationState ()
+    {
+        checkTimer.stop ();
+        checkIcon = radioButton.isSelected () ? CHECK_STATES.size () - 1 : 0;
+        radioButton.repaint ();
     }
 
     @Override
