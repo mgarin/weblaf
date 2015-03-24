@@ -51,7 +51,9 @@ import com.alee.laf.splitpane.WebSplitPane;
 import com.alee.laf.text.WebTextField;
 import com.alee.laf.toolbar.ToolbarStyle;
 import com.alee.laf.toolbar.WebToolBar;
+import com.alee.managers.hotkey.ButtonHotkeyRunnable;
 import com.alee.managers.hotkey.Hotkey;
+import com.alee.managers.hotkey.HotkeyManager;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.language.data.TooltipWay;
 import com.alee.utils.*;
@@ -1018,7 +1020,8 @@ public class WebFileChooserPanel extends WebPanel
         } );
 
         approveButton = new WebButton ( "", APPROVE_ICON );
-        //        approveButton.addHotkey ( WebFileChooserPanel.this, Hotkey.CTRL_ENTER ).setHotkeyDisplayWay ( TooltipWay.up );
+        HotkeyManager.registerHotkey ( WebFileChooserPanel.this, approveButton, Hotkey.CTRL_ENTER,
+                new ButtonHotkeyRunnable ( approveButton, 200 ), false, TooltipWay.up );
         approveButton.setRolloverShine ( StyleConstants.highlightControlButtons );
         approveButton.setShineColor ( StyleConstants.greenHighlight );
         approveButton.putClientProperty ( GroupPanel.FILL_CELL, true );
@@ -1034,7 +1037,8 @@ public class WebFileChooserPanel extends WebPanel
 
         cancelButton = new WebButton ( "", CANCEL_ICON );
         cancelButton.setLanguage ( "weblaf.filechooser.cancel" );
-        //        cancelButton.addHotkey ( WebFileChooserPanel.this, Hotkey.ESCAPE ).setHotkeyDisplayWay ( TooltipWay.up );
+        HotkeyManager.registerHotkey ( WebFileChooserPanel.this, cancelButton, Hotkey.ESCAPE,
+                new ButtonHotkeyRunnable ( cancelButton, 200 ), false, TooltipWay.up );
         cancelButton.setRolloverShine ( StyleConstants.highlightControlButtons );
         cancelButton.setShineColor ( StyleConstants.redHighlight );
         cancelButton.putClientProperty ( GroupPanel.FILL_CELL, true );
@@ -1060,6 +1064,8 @@ public class WebFileChooserPanel extends WebPanel
             {
                 approveButton.setPreferredSize ( null );
                 cancelButton.setPreferredSize ( null );
+                approveButton.setToolTip ( approveButton.getText() );  // always the same as the label
+                cancelButton.setToolTip ( cancelButton.getText() );
                 SwingUtils.equalizeComponentsSize ( approveButton, cancelButton );
                 southPanel.revalidate ();
             }
