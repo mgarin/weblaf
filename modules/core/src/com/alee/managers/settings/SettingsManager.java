@@ -24,6 +24,7 @@ import com.alee.utils.ReflectUtils;
 import com.alee.utils.XmlUtils;
 import com.alee.utils.swing.WebTimer;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -208,7 +209,7 @@ public class SettingsManager
      * @param component component to register
      * @param key       component settings key
      */
-    public static void registerComponent ( final Component component, final String key )
+    public static void registerComponent ( final JComponent component, final String key )
     {
         registerComponent ( component, key, ( Object ) null );
     }
@@ -227,7 +228,7 @@ public class SettingsManager
      * @param <T>               default value type
      * @see DefaultValue
      */
-    public static <T extends DefaultValue> void registerComponent ( final Component component, final String key,
+    public static <T extends DefaultValue> void registerComponent ( final JComponent component, final String key,
                                                                     final Class<T> defaultValueClass )
     {
         registerComponent ( component, key, getDefaultValue ( defaultValueClass ) );
@@ -245,7 +246,7 @@ public class SettingsManager
      * @param key          component settings key
      * @param defaultValue component default value
      */
-    public static void registerComponent ( final Component component, final String key, final Object defaultValue )
+    public static void registerComponent ( final JComponent component, final String key, final Object defaultValue )
     {
         registerComponent ( component, defaultSettingsGroup, key, defaultValue );
     }
@@ -262,7 +263,7 @@ public class SettingsManager
      * @param group     component settings group
      * @param key       component settings key
      */
-    public static void registerComponent ( final Component component, final String group, final String key )
+    public static void registerComponent ( final JComponent component, final String group, final String key )
     {
         registerComponent ( component, group, key, ( Object ) null );
     }
@@ -282,7 +283,7 @@ public class SettingsManager
      * @param <T>               default value type
      * @see DefaultValue
      */
-    public static <T extends DefaultValue> void registerComponent ( final Component component, final String group, final String key,
+    public static <T extends DefaultValue> void registerComponent ( final JComponent component, final String group, final String key,
                                                                     final Class<T> defaultValueClass )
     {
         registerComponent ( component, group, key, getDefaultValue ( defaultValueClass ) );
@@ -301,7 +302,7 @@ public class SettingsManager
      * @param key          component settings key
      * @param defaultValue component default value
      */
-    public static void registerComponent ( final Component component, final String group, final String key, final Object defaultValue )
+    public static void registerComponent ( final JComponent component, final String group, final String key, final Object defaultValue )
     {
         registerComponent ( component, group, key, defaultValue, true, true );
     }
@@ -319,7 +320,7 @@ public class SettingsManager
      * @param loadInitialSettings  whether to load initial available settings into the component or not
      * @param applySettingsChanges whether to apply settings changes to the component or not
      */
-    public static void registerComponent ( final Component component, final String key, final boolean loadInitialSettings,
+    public static void registerComponent ( final JComponent component, final String key, final boolean loadInitialSettings,
                                            final boolean applySettingsChanges )
     {
         registerComponent ( component, key, null, loadInitialSettings, applySettingsChanges );
@@ -341,7 +342,7 @@ public class SettingsManager
      * @param <T>                  default value type
      * @see DefaultValue
      */
-    public static <T extends DefaultValue> void registerComponent ( final Component component, final String key,
+    public static <T extends DefaultValue> void registerComponent ( final JComponent component, final String key,
                                                                     final Class<T> defaultValueClass, final boolean loadInitialSettings,
                                                                     final boolean applySettingsChanges )
     {
@@ -362,7 +363,7 @@ public class SettingsManager
      * @param loadInitialSettings  whether to load initial available settings into the component or not
      * @param applySettingsChanges whether to apply settings changes to the component or not
      */
-    public static void registerComponent ( final Component component, final String key, final Object defaultValue,
+    public static void registerComponent ( final JComponent component, final String key, final Object defaultValue,
                                            final boolean loadInitialSettings, final boolean applySettingsChanges )
     {
         registerComponent ( component, defaultSettingsGroup, key, defaultValue, loadInitialSettings, applySettingsChanges );
@@ -385,7 +386,7 @@ public class SettingsManager
      * @param <T>                  default value type
      * @see DefaultValue
      */
-    public static <T extends DefaultValue> void registerComponent ( final Component component, final String group, final String key,
+    public static <T extends DefaultValue> void registerComponent ( final JComponent component, final String group, final String key,
                                                                     final Class<T> defaultValueClass, final boolean loadInitialSettings,
                                                                     final boolean applySettingsChanges )
     {
@@ -407,7 +408,7 @@ public class SettingsManager
      * @param loadInitialSettings  whether to load initial available settings into the component or not
      * @param applySettingsChanges whether to apply settings changes to the component or not
      */
-    public static void registerComponent ( final Component component, final String group, final String key, final Object defaultValue,
+    public static void registerComponent ( final JComponent component, final String group, final String key, final Object defaultValue,
                                            final boolean loadInitialSettings, final boolean applySettingsChanges )
     {
         ComponentSettingsManager.registerComponent (
@@ -425,7 +426,7 @@ public class SettingsManager
      * @param component         component to register
      * @param settingsProcessor component settings processor
      */
-    public static void registerComponent ( final Component component, final SettingsProcessor settingsProcessor )
+    public static void registerComponent ( final JComponent component, final SettingsProcessor settingsProcessor )
     {
         ComponentSettingsManager.registerComponent ( component, settingsProcessor );
     }
@@ -435,7 +436,7 @@ public class SettingsManager
      *
      * @param component component to unregister
      */
-    public static void unregisterComponent ( final Component component )
+    public static void unregisterComponent ( final JComponent component )
     {
         ComponentSettingsManager.unregisterComponent ( component );
     }
@@ -445,7 +446,7 @@ public class SettingsManager
      *
      * @param component component registered for settings auto-save
      */
-    public static void loadComponentSettings ( final Component component )
+    public static void loadComponentSettings ( final JComponent component )
     {
         ComponentSettingsManager.loadSettings ( component );
     }
@@ -455,7 +456,7 @@ public class SettingsManager
      *
      * @param component component registered for settings auto-save
      */
-    public static void saveComponentSettings ( final Component component )
+    public static void saveComponentSettings ( final JComponent component )
     {
         ComponentSettingsManager.saveSettings ( component );
     }
@@ -467,7 +468,7 @@ public class SettingsManager
      * @param settingsProcessor settings processor class
      * @param <T>               settings processor type
      */
-    public static <T extends SettingsProcessor> void registerSettingsProcessor ( final Class componentType,
+    public static <T extends SettingsProcessor> void registerSettingsProcessor ( final Class<? extends JComponent> componentType,
                                                                                  final Class<T> settingsProcessor )
     {
         ComponentSettingsManager.registerSettingsProcessor ( componentType, settingsProcessor );

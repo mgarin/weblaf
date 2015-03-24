@@ -20,6 +20,7 @@ package com.alee.laf.tree;
 import com.alee.extended.tree.WebCheckBoxTree;
 import com.alee.global.StyleConstants;
 import com.alee.laf.WebLookAndFeel;
+import com.alee.managers.tooltip.ToolTipProvider;
 import com.alee.utils.*;
 import com.alee.utils.ninepatch.NinePatchIcon;
 
@@ -118,7 +119,7 @@ public class WebTreeUI extends BasicTreeUI
      * @param c component that will use UI instance
      * @return instance of the WebTreeUI
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebTreeUI ();
@@ -436,34 +437,18 @@ public class WebTreeUI extends BasicTreeUI
 
             private void repaintSelector ()
             {
-                //                // Calculating selector pervious and current rects
-                //                final Rectangle sb1 = GeometryUtils.getContainingRect ( selectionStart, selectionPrevEnd );
-                //                final Rectangle sb2 = GeometryUtils.getContainingRect ( selectionStart, selectionEnd );
-
-                //                // Repainting final rect
-                //                repaintSelector ( GeometryUtils.getContainingRect ( sb1, sb2 ) );
-
                 // Replaced with full repaint due to strange tree lines painting bug
                 tree.repaint ( tree.getVisibleRect () );
             }
 
-            //            private void repaintSelector ( Rectangle fr )
-            //            {
-            //                //                // Expanding width and height to fully cover the selector
-            //                //                fr.x -= 1;
-            //                //                fr.y -= 1;
-            //                //                fr.width += 2;
-            //                //                fr.height += 2;
-            //                //
-            //                //                // Repainting selector area
-            //                //                tree.repaint ( fr );
-            //
-            //                // Replaced with full repaint due to strange tree lines painting bug
-            //                tree.repaint ();
-            //            }
-
             @Override
             public void mouseEntered ( final MouseEvent e )
+            {
+                updateMouseover ( e );
+            }
+
+            @Override
+            public void mouseMoved ( final MouseEvent e )
             {
                 updateMouseover ( e );
             }
@@ -474,23 +459,14 @@ public class WebTreeUI extends BasicTreeUI
                 clearMouseover ();
             }
 
-            @Override
-            public void mouseMoved ( final MouseEvent e )
-            {
-                updateMouseover ( e );
-            }
-
             private void updateMouseover ( final MouseEvent e )
             {
-                if ( tree.isEnabled () && highlightRolloverNode )
+                if ( tree.isEnabled () )
                 {
                     final int index = getRowForPoint ( e.getPoint () );
                     if ( rolloverRow != index )
                     {
-                        final int oldRollover = rolloverRow;
-                        rolloverRow = index;
-                        updateRow ( index );
-                        updateRow ( oldRollover );
+                        updateRolloverCell ( rolloverRow, index );
                     }
                 }
                 else
@@ -501,9 +477,30 @@ public class WebTreeUI extends BasicTreeUI
 
             private void clearMouseover ()
             {
-                final int oldRollover = rolloverRow;
-                rolloverRow = -1;
-                updateRow ( oldRollover );
+                if ( rolloverRow != -1 )
+                {
+                    updateRolloverCell ( rolloverRow, -1 );
+                }
+            }
+
+            private void updateRolloverCell ( final int oldIndex, final int newIndex )
+            {
+                // Updating rollover row
+                rolloverRow = newIndex;
+
+                // Updating rollover row display
+                if ( highlightRolloverNode )
+                {
+                    updateRow ( oldIndex );
+                    updateRow ( newIndex );
+                }
+
+                // Updating custom WebLaF tooltip display state
+                final ToolTipProvider provider = getToolTipProvider ();
+                if ( provider != null )
+                {
+                    provider.rolloverCellChanged ( tree, oldIndex, 0, newIndex, 0 );
+                }
             }
 
             private void updateRow ( final int row )
@@ -538,6 +535,16 @@ public class WebTreeUI extends BasicTreeUI
         tree.removeMouseMotionListener ( mouseAdapter );
 
         super.uninstallUI ( c );
+    }
+
+    /**
+     * Returns custom WebLaF tooltip provider.
+     *
+     * @return custom WebLaF tooltip provider
+     */
+    protected ToolTipProvider<? extends WebTree> getToolTipProvider ()
+    {
+        return tree != null && tree instanceof WebTree ? ( ( WebTree ) tree ).getToolTipProvider () : null;
     }
 
     /**

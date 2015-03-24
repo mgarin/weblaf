@@ -19,6 +19,7 @@ package com.alee.utils.swing;
 
 import com.alee.managers.log.Log;
 import com.alee.utils.CollectionUtils;
+import com.alee.utils.TextUtils;
 import com.alee.utils.TimeUtils;
 
 import javax.swing.*;
@@ -44,14 +45,6 @@ import java.util.Map;
  */
 public class WebTimer
 {
-    /**
-     * Timer constants for calculations.
-     */
-    public static final int msInDay = 86400000;
-    public static final int msInHour = 3600000;
-    public static final int msInMinute = 60000;
-    public static final int msInSecond = 1000;
-
     /**
      * Default name for timer thread.
      */
@@ -161,11 +154,10 @@ public class WebTimer
      * Constructs timer with specified delay.
      *
      * @param delay delay between timer cycles
-     * @see #parseDelay(String)
      */
     public WebTimer ( final String delay )
     {
-        this ( parseDelay ( delay ) );
+        this ( TextUtils.parseDelay ( delay ) );
     }
 
     /**
@@ -183,11 +175,10 @@ public class WebTimer
      *
      * @param name  internal thread name
      * @param delay delay between timer cycles
-     * @see #parseDelay(String)
      */
     public WebTimer ( final String name, final String delay )
     {
-        this ( name, parseDelay ( delay ) );
+        this ( name, TextUtils.parseDelay ( delay ) );
     }
 
     /**
@@ -229,11 +220,10 @@ public class WebTimer
      *
      * @param delay    delay between timer cycles
      * @param listener action listener
-     * @see #parseDelay(String)
      */
     public WebTimer ( final String delay, final ActionListener listener )
     {
-        this ( parseDelay ( delay ), listener );
+        this ( TextUtils.parseDelay ( delay ), listener );
     }
 
     /**
@@ -253,11 +243,10 @@ public class WebTimer
      * @param name     internal thread name
      * @param delay    delay between timer cycles
      * @param listener action listener
-     * @see #parseDelay(String)
      */
     public WebTimer ( final String name, final String delay, final ActionListener listener )
     {
-        this ( name, parseDelay ( delay ), listener );
+        this ( name, TextUtils.parseDelay ( delay ), listener );
     }
 
     /**
@@ -291,11 +280,10 @@ public class WebTimer
      * @param delay        delay between timer cycles
      * @param initialDelay delay before the first timer cycle run
      * @param listener     action listener
-     * @see #parseDelay(String)
      */
     public WebTimer ( final String name, final String delay, final String initialDelay, final ActionListener listener )
     {
-        this ( name, parseDelay ( delay ), parseDelay ( initialDelay ), listener );
+        this ( name, TextUtils.parseDelay ( delay ), TextUtils.parseDelay ( initialDelay ), listener );
     }
 
     /**
@@ -332,7 +320,7 @@ public class WebTimer
      */
     public String getInitialStringDelay ()
     {
-        return toStringDelay ( initialDelay );
+        return TextUtils.toStringDelay ( initialDelay );
     }
 
     /**
@@ -343,7 +331,7 @@ public class WebTimer
      */
     public WebTimer setInitialDelay ( final String initialDelay )
     {
-        setInitialDelay ( parseDelay ( initialDelay ) );
+        setInitialDelay ( TextUtils.parseDelay ( initialDelay ) );
         return this;
     }
 
@@ -383,7 +371,7 @@ public class WebTimer
      */
     public String getStringDelay ()
     {
-        return toStringDelay ( delay );
+        return TextUtils.toStringDelay ( delay );
     }
 
     /**
@@ -394,7 +382,7 @@ public class WebTimer
      */
     public WebTimer setDelay ( final String delay )
     {
-        setDelay ( parseDelay ( delay ) );
+        setDelay ( TextUtils.parseDelay ( delay ) );
         return this;
     }
 
@@ -1011,11 +999,10 @@ public class WebTimer
      * @param delay    delay between timer cycles
      * @param listener action listener
      * @return newly created and started timer
-     * @see #parseDelay(String)
      */
     public static WebTimer delay ( final String delay, final ActionListener listener )
     {
-        return delay ( parseDelay ( delay ), listener );
+        return delay ( TextUtils.parseDelay ( delay ), listener );
     }
 
     /**
@@ -1037,11 +1024,10 @@ public class WebTimer
      * @param delay    delay between timer cycles
      * @param listener action listener
      * @return newly created and started timer
-     * @see #parseDelay(String)
      */
     public static WebTimer delay ( final String name, final String delay, final ActionListener listener )
     {
-        return delay ( name, parseDelay ( delay ), listener );
+        return delay ( name, TextUtils.parseDelay ( delay ), listener );
     }
 
     /**
@@ -1064,11 +1050,10 @@ public class WebTimer
      * @param useEventDispatchThread whether actions should be fired from Event Dispatch Thread or not
      * @param listener               action listener
      * @return newly created and started timer
-     * @see #parseDelay(String)
      */
     public static WebTimer delay ( final String delay, final boolean useEventDispatchThread, final ActionListener listener )
     {
-        return delay ( parseDelay ( delay ), useEventDispatchThread, listener );
+        return delay ( TextUtils.parseDelay ( delay ), useEventDispatchThread, listener );
     }
 
     /**
@@ -1092,12 +1077,11 @@ public class WebTimer
      * @param useEventDispatchThread whether actions should be fired from Event Dispatch Thread or not
      * @param listener               action listener
      * @return newly created and started timer
-     * @see #parseDelay(String)
      */
     public static WebTimer delay ( final String name, final String delay, final boolean useEventDispatchThread,
                                    final ActionListener listener )
     {
-        return delay ( name, parseDelay ( delay ), useEventDispatchThread, listener );
+        return delay ( name, TextUtils.parseDelay ( delay ), useEventDispatchThread, listener );
     }
 
     /**
@@ -1125,11 +1109,10 @@ public class WebTimer
      * @param delay    delay between timer cycles
      * @param listener action listener
      * @return newly created and started timer
-     * @see #parseDelay(String)
      */
     public static WebTimer repeat ( final String delay, final ActionListener listener )
     {
-        final long pd = parseDelay ( delay );
+        final long pd = TextUtils.parseDelay ( delay );
         return repeat ( defaultThreadName, pd, pd, defaultCyclesLimit, useEdtByDefault, listener );
     }
 
@@ -1140,11 +1123,10 @@ public class WebTimer
      * @param cyclesLimit timer cycles execution limit
      * @param listener    action listener
      * @return newly created and started timer
-     * @see #parseDelay(String)
      */
     public static WebTimer repeat ( final String delay, final int cyclesLimit, final ActionListener listener )
     {
-        final long pd = parseDelay ( delay );
+        final long pd = TextUtils.parseDelay ( delay );
         return repeat ( defaultThreadName, pd, pd, cyclesLimit, useEdtByDefault, listener );
     }
 
@@ -1180,11 +1162,10 @@ public class WebTimer
      * @param delay    delay between timer cycles
      * @param listener action listener
      * @return newly created and started timer
-     * @see #parseDelay(String)
      */
     public static WebTimer repeat ( final String name, final String delay, final ActionListener listener )
     {
-        final long pd = parseDelay ( delay );
+        final long pd = TextUtils.parseDelay ( delay );
         return repeat ( name, pd, pd, defaultCyclesLimit, useEdtByDefault, listener );
     }
 
@@ -1196,11 +1177,10 @@ public class WebTimer
      * @param cyclesLimit timer cycles execution limit
      * @param listener    action listener
      * @return newly created and started timer
-     * @see #parseDelay(String)
      */
     public static WebTimer repeat ( final String name, final String delay, final int cyclesLimit, final ActionListener listener )
     {
-        final long pd = parseDelay ( delay );
+        final long pd = TextUtils.parseDelay ( delay );
         return repeat ( name, pd, pd, cyclesLimit, useEdtByDefault, listener );
     }
 
@@ -1238,11 +1218,10 @@ public class WebTimer
      * @param useEventDispatchThread whether actions should be fired from Event Dispatch Thread or not
      * @param listener               action listener
      * @return newly created and started timer
-     * @see #parseDelay(String)
      */
     public static WebTimer repeat ( final String delay, final boolean useEventDispatchThread, final ActionListener listener )
     {
-        final long pd = parseDelay ( delay );
+        final long pd = TextUtils.parseDelay ( delay );
         return repeat ( defaultThreadName, pd, pd, defaultCyclesLimit, useEventDispatchThread, listener );
     }
 
@@ -1254,12 +1233,11 @@ public class WebTimer
      * @param useEventDispatchThread whether actions should be fired from Event Dispatch Thread or not
      * @param listener               action listener
      * @return newly created and started timer
-     * @see #parseDelay(String)
      */
     public static WebTimer repeat ( final String delay, final int cyclesLimit, final boolean useEventDispatchThread,
                                     final ActionListener listener )
     {
-        final long pd = parseDelay ( delay );
+        final long pd = TextUtils.parseDelay ( delay );
         return repeat ( defaultThreadName, pd, pd, cyclesLimit, useEventDispatchThread, listener );
     }
 
@@ -1299,12 +1277,11 @@ public class WebTimer
      * @param useEventDispatchThread whether actions should be fired from Event Dispatch Thread or not
      * @param listener               action listener
      * @return newly created and started timer
-     * @see #parseDelay(String)
      */
     public static WebTimer repeat ( final String name, final String delay, final boolean useEventDispatchThread,
                                     final ActionListener listener )
     {
-        final long pd = parseDelay ( delay );
+        final long pd = TextUtils.parseDelay ( delay );
         return repeat ( name, pd, pd, defaultCyclesLimit, useEventDispatchThread, listener );
     }
 
@@ -1317,12 +1294,11 @@ public class WebTimer
      * @param useEventDispatchThread whether actions should be fired from Event Dispatch Thread or not
      * @param listener               action listener
      * @return newly created and started timer
-     * @see #parseDelay(String)
      */
     public static WebTimer repeat ( final String name, final String delay, final int cyclesLimit, final boolean useEventDispatchThread,
                                     final ActionListener listener )
     {
-        final long pd = parseDelay ( delay );
+        final long pd = TextUtils.parseDelay ( delay );
         return repeat ( name, pd, pd, cyclesLimit, useEventDispatchThread, listener );
     }
 
@@ -1533,104 +1509,6 @@ public class WebTimer
         repeat.setCyclesLimit ( cyclesLimit );
         repeat.start ();
         return repeat;
-    }
-
-    /**
-     * Either returns delay retrieved from string or throws an exception if it cannot be parsed.
-     * Full string format is "Xd Yh Zm s ms" but you can skip any part of it. Yet you must specify atleast one value.
-     * For example string "2h 5s" will be a valid delay declaration and will be converted into (2*60*60*1000+5*1000) long value.
-     *
-     * @param delay string delay
-     * @return delay retrieved from string
-     */
-    public static long parseDelay ( final String delay ) throws DelayFormatException
-    {
-        try
-        {
-            long summ = 0;
-            final String[] parts = delay.split ( " " );
-            for ( final String part : parts )
-            {
-                for ( int i = 0; i < part.length (); i++ )
-                {
-                    if ( !Character.isDigit ( part.charAt ( i ) ) )
-                    {
-                        final int time = Integer.parseInt ( part.substring ( 0, i ) );
-                        final PartType type = PartType.valueOf ( part.substring ( i ) );
-                        switch ( type )
-                        {
-                            case d:
-                                summ += time * msInDay;
-                                break;
-                            case h:
-                                summ += time * msInHour;
-                                break;
-                            case m:
-                                summ += time * msInMinute;
-                                break;
-                            case s:
-                                summ += time * msInSecond;
-                                break;
-                            case ms:
-                                summ += time;
-                                break;
-                        }
-                        break;
-                    }
-                }
-            }
-            return summ;
-        }
-        catch ( final Throwable e )
-        {
-            throw new DelayFormatException ( e );
-        }
-    }
-
-    /**
-     * Returns delay string representation.
-     *
-     * @param delay delay to process
-     * @return delay string representation
-     */
-    public static String toStringDelay ( final long delay )
-    {
-        if ( delay <= 0 )
-        {
-            throw new IllegalArgumentException ( "Invalid delay: " + delay );
-        }
-
-        long time = delay;
-
-        final long d = time / msInDay;
-        time = time - d * msInDay;
-
-        final long h = time / msInHour;
-        time = time - h * msInHour;
-
-        final long m = time / msInMinute;
-        time = time - m * msInMinute;
-
-        final long s = time / msInSecond;
-        time = time - s * msInSecond;
-
-        final long ms = time;
-
-        final String stringDelay = ( d > 0 ? d + "d " : "" ) +
-                ( h > 0 ? h + "h " : "" ) +
-                ( m > 0 ? m + "m " : "" ) +
-                ( s > 0 ? s + "s " : "" ) +
-                ( ms > 0 ? ms + "ms " : "" );
-
-        return stringDelay.trim ();
-    }
-
-    /**
-     * Time part type enumeration used to parse string delay.
-     */
-    protected static enum PartType
-    {
-        d, h, m, s, ms
     }
 
     /**

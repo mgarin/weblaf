@@ -23,6 +23,7 @@ import com.alee.laf.list.editor.ListCellEditor;
 import com.alee.laf.list.editor.ListEditListener;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.log.Log;
+import com.alee.managers.tooltip.ToolTipProvider;
 import com.alee.utils.*;
 import com.alee.utils.swing.*;
 
@@ -50,6 +51,10 @@ import java.util.Vector;
 public class WebList extends JList implements EventMethods, FontMethods<WebList>, SizeMethods<WebList>
 {
     /**
+     * todo 1. Generics usage when migrated to JDK8+
+     */
+
+    /**
      * List edit lsiteners.
      */
     protected List<ListEditListener> editListeners = new ArrayList<ListEditListener> ( 1 );
@@ -67,7 +72,7 @@ public class WebList extends JList implements EventMethods, FontMethods<WebList>
     /**
      * Custom WebLaF tooltip provider.
      */
-    protected ListToolTipProvider toolTipProvider = null;
+    protected ToolTipProvider<? extends WebList> toolTipProvider = null;
 
     /**
      * Currently edited cell index or -1 if none edited at the moment.
@@ -369,7 +374,7 @@ public class WebList extends JList implements EventMethods, FontMethods<WebList>
      *
      * @return custom WebLaF tooltip provider
      */
-    public ListToolTipProvider getToolTipProvider ()
+    public ToolTipProvider<? extends WebList> getToolTipProvider ()
     {
         return toolTipProvider;
     }
@@ -379,7 +384,7 @@ public class WebList extends JList implements EventMethods, FontMethods<WebList>
      *
      * @param provider custom WebLaF tooltip provider
      */
-    public void setToolTipProvider ( final ListToolTipProvider provider )
+    public void setToolTipProvider ( final ToolTipProvider<? extends WebList> provider )
     {
         this.toolTipProvider = provider;
     }

@@ -21,20 +21,20 @@ import javax.swing.*;
 import java.awt.event.KeyEvent;
 
 /**
- * User: mgarin Date: 30.11.12 Time: 17:15
+ * @author Mikle Garin
  */
 
 public class ButtonHotkeyRunnable implements HotkeyRunnable
 {
-    private AbstractButton button;
-    private int pressTime;
+    private final AbstractButton button;
+    private final int pressTime;
 
-    public ButtonHotkeyRunnable ( AbstractButton button )
+    public ButtonHotkeyRunnable ( final AbstractButton button )
     {
         this ( button, 0 );
     }
 
-    public ButtonHotkeyRunnable ( AbstractButton button, int pressTime )
+    public ButtonHotkeyRunnable ( final AbstractButton button, final int pressTime )
     {
         super ();
         this.button = button;
@@ -42,7 +42,7 @@ public class ButtonHotkeyRunnable implements HotkeyRunnable
     }
 
     @Override
-    public void run ( KeyEvent e )
+    public void run ( final KeyEvent e )
     {
         button.doClick ( pressTime );
     }

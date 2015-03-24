@@ -15,26 +15,23 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.managers.language.updaters;
-
-import com.alee.managers.language.data.Value;
-
-import java.awt.*;
+package com.alee.managers.log;
 
 /**
- * This class provides language default updates for Dialog component.
+ * Customized log message prefix supplier.
  *
  * @author Mikle Garin
  */
 
-public class DialogLU extends DefaultLanguageUpdater<Dialog>
+public interface LogPrefixSupplier
 {
     /**
-     * {@inheritDoc}
+     * Returns log message prefix.
+     *
+     * @param type      message type
+     * @param message   message
+     * @param throwable exception
+     * @return log message prefix
      */
-    @Override
-    public void update ( final Dialog c, final String key, final Value value, final Object... data )
-    {
-        c.setTitle ( getDefaultText ( value, data ) );
-    }
+    public String get ( final LogMessageType type, final String message, final Throwable throwable );
 }

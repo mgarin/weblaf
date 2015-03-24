@@ -15,26 +15,18 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.laf.filechooser;
+package com.alee.laf.desktoppane;
 
-import com.alee.utils.FileUtils;
+import java.awt.*;
 
 /**
- * WebFileChooser style class.
- *
- * @author Mikle Garin
  * @author Michka Popoff
  */
 
-public final class WebFileChooserStyle
+public final class WebInternalFrameStyle
 {
     /**
-     * Default file chooser directory.
+     * Background color.
      */
-    public static final String defaultDirectory = FileUtils.getUserHomePath ();
-
-    /**
-     * Preferred width of the tree on the left and the default split divider location.
-     */
-    public static int dividerLocation = 160;
+    public static Color backgroundColor = new Color ( 90, 90, 90, 220 );
 }

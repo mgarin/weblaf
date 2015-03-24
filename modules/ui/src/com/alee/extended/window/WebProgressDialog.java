@@ -21,17 +21,16 @@ import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
 import com.alee.laf.progressbar.WebProgressBar;
 import com.alee.laf.rootpane.WebDialog;
-import com.alee.managers.language.LanguageManager;
 import com.alee.utils.SwingUtils;
 
 import javax.swing.*;
 import java.awt.*;
 
 /**
- * User: mgarin Date: 14.02.12 Time: 12:08
- * <p/>
  * This class provides a quick way to display a progress dialog anywhere you need it and change the progress values without any additional
- * efforts like working with Swing thread to update progress
+ * efforts like working with Swing thread to update progress.
+ *
+ * @author Mikle Garin
  */
 
 public class WebProgressDialog extends WebDialog
@@ -51,17 +50,8 @@ public class WebProgressDialog extends WebDialog
 
     public WebProgressDialog ( final Window owner, final String title )
     {
-        super ( owner );
+        super ( owner, title );
         setLayout ( new BorderLayout () );
-
-        if ( LanguageManager.contains ( title ) )
-        {
-            setLanguage ( title );
-        }
-        else
-        {
-            setTitle ( title );
-        }
 
         container = new WebPanel ( new BorderLayout ( 5, 5 ) );
         container.setMargin ( 10, 10, 10, 10 );

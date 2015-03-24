@@ -54,6 +54,12 @@ public class LanguageManager implements LanguageConstants
     public static final ImageIcon other = new ImageIcon ( LanguageManager.class.getResource ( "icons/lang/other.png" ) );
 
     /**
+     * Keys used to store custom data in JComponent.
+     */
+    public static final String COMPONENT_UPDATER_KEY = "language.updater";
+    public static final String COMPONENT_LANGUAGE_LISTENER_KEY = "language.listener";
+
+    /**
      * Supported languages operations synchronization object.
      */
     protected static final Object supportedLanguagesLock = new Object ();
@@ -70,7 +76,7 @@ public class LanguageManager implements LanguageConstants
      * @see #setSupportedLanguages(String...)
      */
     protected static final List<String> supportedLanguages =
-            CollectionUtils.copy ( ENGLISH, RUSSIAN, POLISH, ARABIC, SPANISH, FRENCH, PORTUGUESE, GERMAN, ITALIAN );
+            CollectionUtils.copy ( ENGLISH, RUSSIAN, POLISH, ARABIC, SPANISH, FRENCH, PORTUGUESE, GERMAN, ITALIAN, TURKISH );
 
     /**
      * Default WebLaF language.
@@ -122,7 +128,8 @@ public class LanguageManager implements LanguageConstants
      * @see #addLanguageListener(LanguageListener)
      * @see #removeLanguageListener(LanguageListener)
      */
-    protected static final Map<Component, LanguageListener> componentLanguageListeners = new WeakHashMap<Component, LanguageListener> ();
+    protected static final Map<JComponent, WeakReference<LanguageListener>> componentLanguageListeners =
+            new WeakHashMap<JComponent, WeakReference<LanguageListener>> ();
 
     /**
      * Language key listeners operations synchronization object.
@@ -182,30 +189,30 @@ public class LanguageManager implements LanguageConstants
      * Components registered for auto-translation.
      * Specific implementations of LanguageUpdater interface used to translate them.
      *
-     * @see #registerComponent(java.awt.Component, String, Object...)
-     * @see #updateComponent(java.awt.Component, Object...)
-     * @see #updateComponent(java.awt.Component, String, Object...)
-     * @see #unregisterComponent(java.awt.Component)
-     * @see #isRegisteredComponent(java.awt.Component)
+     * @see #registerComponent(javax.swing.JComponent, String, Object...)
+     * @see #updateComponent(javax.swing.JComponent, Object...)
+     * @see #updateComponent(javax.swing.JComponent, String, Object...)
+     * @see #unregisterComponent(javax.swing.JComponent)
+     * @see #isRegisteredComponent(javax.swing.JComponent)
      */
-    protected static final Map<Component, String> components = new WeakHashMap<Component, String> ();
+    protected static final Map<JComponent, String> components = new WeakHashMap<JComponent, String> ();
 
     /**
      * Object data provided with component language key.
      * It is used to format the final translation string.
      *
-     * @see #registerComponent(java.awt.Component, String, Object...)
-     * @see #unregisterComponent(java.awt.Component)
-     * @see #updateComponent(java.awt.Component, Object...)
-     * @see #updateComponent(java.awt.Component, String, Object...)
+     * @see #registerComponent(javax.swing.JComponent, String, Object...)
+     * @see #unregisterComponent(javax.swing.JComponent)
+     * @see #updateComponent(javax.swing.JComponent, Object...)
+     * @see #updateComponent(javax.swing.JComponent, String, Object...)
      */
-    protected static final Map<Component, Object[]> componentsData = new WeakHashMap<Component, Object[]> ();
+    protected static final Map<JComponent, Object[]> componentsData = new WeakHashMap<JComponent, Object[]> ();
 
     /**
      * Calculated components cache map.
      * It is getting filled and updated automatically when key is requested.
      *
-     * @see #updateComponentKey(java.awt.Component)
+     * @see #updateComponentKey(javax.swing.JComponent)
      */
     protected static final Map<Component, String> componentKeysCache = new WeakHashMap<Component, String> ();
 
@@ -227,7 +234,7 @@ public class LanguageManager implements LanguageConstants
      * @see #getLanguageContainerKey(java.awt.Container)
      * @see #registerLanguageContainer(java.awt.Container, String)
      * @see #unregisterLanguageContainer(java.awt.Container)
-     * @see #combineWithContainerKeys(java.awt.Component, String)
+     * @see #combineWithContainerKeys(javax.swing.JComponent, String)
      */
     protected static final Map<Container, String> languageContainers = new WeakHashMap<Container, String> ();
 
@@ -245,7 +252,7 @@ public class LanguageManager implements LanguageConstants
      * Registered language updaters.
      * Language updaters are used to automatically update specific components translation when language changes occur.
      *
-     * @see #getLanguageUpdater(java.awt.Component)
+     * @see #getLanguageUpdater(javax.swing.JComponent)
      * @see #registerLanguageUpdater(com.alee.managers.language.updaters.LanguageUpdater)
      * @see #unregisterLanguageUpdater(com.alee.managers.language.updaters.LanguageUpdater)
      */
@@ -255,11 +262,12 @@ public class LanguageManager implements LanguageConstants
      * Component-specific language updaters.
      * These are used only for the components they are bound to.
      *
-     * @see #getLanguageUpdater(java.awt.Component)
-     * @see #registerLanguageUpdater(java.awt.Component, com.alee.managers.language.updaters.LanguageUpdater)
-     * @see #unregisterLanguageUpdater(java.awt.Component)
+     * @see #getLanguageUpdater(javax.swing.JComponent)
+     * @see #registerLanguageUpdater(javax.swing.JComponent, com.alee.managers.language.updaters.LanguageUpdater)
+     * @see #unregisterLanguageUpdater(javax.swing.JComponent)
      */
-    protected static final Map<Component, LanguageUpdater> customUpdaters = new WeakHashMap<Component, LanguageUpdater> ();
+    protected static final Map<JComponent, WeakReference<LanguageUpdater>> customUpdaters =
+            new WeakHashMap<JComponent, WeakReference<LanguageUpdater>> ();
 
     /**
      * Language updaters cache by specific class types.
@@ -326,8 +334,7 @@ public class LanguageManager implements LanguageConstants
             registerLanguageUpdater ( new JTabbedPaneLU () );
             registerLanguageUpdater ( new JProgressBarLU () );
             registerLanguageUpdater ( new JFileChooserLU () );
-            registerLanguageUpdater ( new FrameLU () );
-            registerLanguageUpdater ( new DialogLU () );
+            registerLanguageUpdater ( new JRootPaneLU () );
             registerLanguageUpdater ( new JInternalFrameLU () );
 
             // Tooltip support
@@ -508,7 +515,7 @@ public class LanguageManager implements LanguageConstants
      * @param data      component language data
      * @see com.alee.managers.language.updaters.LanguageUpdater
      */
-    public static void registerComponent ( final Component component, final String key, Object... data )
+    public static void registerComponent ( final JComponent component, final String key, Object... data )
     {
         // Properly remove previously installed language
         unregisterComponent ( component );
@@ -535,21 +542,17 @@ public class LanguageManager implements LanguageConstants
         // Registering component listener
         synchronized ( componentsLock )
         {
-            if ( component instanceof JComponent )
+            final WeakReference<JComponent> ref = new WeakReference<JComponent> ( component );
+            final AncestorAdapter listener = new AncestorAdapter ()
             {
-                final JComponent jComponent = ( JComponent ) component;
-                final WeakReference<JComponent> ref = new WeakReference<JComponent>( jComponent );
-                final AncestorAdapter listener = new AncestorAdapter ()
+                @Override
+                public void ancestorAdded ( final AncestorEvent event )
                 {
-                    @Override
-                    public void ancestorAdded ( final AncestorEvent event )
-                    {
-                        updateComponentKey ( ref.get () );
-                    }
-                };
-                jComponent.addAncestorListener ( listener );
-                componentsListeners.put ( component, listener );
-            }
+                    updateComponentKey ( ref.get () );
+                }
+            };
+            component.addAncestorListener ( listener );
+            componentsListeners.put ( component, listener );
         }
     }
 
@@ -558,14 +561,17 @@ public class LanguageManager implements LanguageConstants
      *
      * @param component component to update
      */
-    public static void updateComponentsTree ( final Component component )
+    public static void updateComponentsTree ( final JComponent component )
     {
         updateComponentKey ( component );
         if ( component instanceof Container )
         {
-            for ( final Component child : ( ( Container ) component ).getComponents () )
+            for ( final Component child : component.getComponents () )
             {
-                updateComponentsTree ( child );
+                if ( child instanceof JComponent )
+                {
+                    updateComponentsTree ( ( JComponent ) child );
+                }
             }
         }
     }
@@ -575,7 +581,7 @@ public class LanguageManager implements LanguageConstants
      *
      * @param component component to update
      */
-    protected static void updateComponentKey ( final Component component )
+    protected static void updateComponentKey ( final JComponent component )
     {
         final String key = getComponentKey ( component );
         if ( key != null )
@@ -594,7 +600,7 @@ public class LanguageManager implements LanguageConstants
      *
      * @param component component to unregister
      */
-    public static void unregisterComponent ( final Component component )
+    public static void unregisterComponent ( final JComponent component )
     {
         synchronized ( componentsLock )
         {
@@ -603,13 +609,10 @@ public class LanguageManager implements LanguageConstants
                 components.remove ( component );
                 componentsData.remove ( component );
                 componentKeysCache.remove ( component );
-                if ( component instanceof JComponent )
-                {
-                    final JComponent jComponent = ( JComponent ) component;
-                    final AncestorListener listener = componentsListeners.get ( jComponent );
-                    jComponent.removeAncestorListener ( listener );
-                    componentsListeners.remove ( component );
-                }
+
+                final AncestorListener listener = componentsListeners.get ( component );
+                component.removeAncestorListener ( listener );
+                componentsListeners.remove ( component );
             }
         }
     }
@@ -620,7 +623,7 @@ public class LanguageManager implements LanguageConstants
      * @param component component to check
      * @return true if component is registered for language updates, false otherwise
      */
-    public static boolean isRegisteredComponent ( final Component component )
+    public static boolean isRegisteredComponent ( final JComponent component )
     {
         synchronized ( componentsLock )
         {
@@ -636,7 +639,7 @@ public class LanguageManager implements LanguageConstants
      * @param component component to retrieve language key for
      * @return component language key
      */
-    public static String getComponentKey ( final Component component )
+    public static String getComponentKey ( final JComponent component )
     {
         synchronized ( componentsLock )
         {
@@ -692,11 +695,12 @@ public class LanguageManager implements LanguageConstants
      * @param component component to register LanguageUpdater for
      * @param updater   custom LanguageUpdater
      */
-    public static void registerLanguageUpdater ( final Component component, final LanguageUpdater updater )
+    public static void registerLanguageUpdater ( final JComponent component, final LanguageUpdater updater )
     {
         synchronized ( updatersLock )
         {
-            customUpdaters.put ( component, updater );
+            component.putClientProperty ( COMPONENT_UPDATER_KEY, updater );
+            customUpdaters.put ( component, new WeakReference<LanguageUpdater> ( updater ) );
         }
     }
 
@@ -705,10 +709,11 @@ public class LanguageManager implements LanguageConstants
      *
      * @param component component to unregister custom LanguageUpdater from
      */
-    public static void unregisterLanguageUpdater ( final Component component )
+    public static void unregisterLanguageUpdater ( final JComponent component )
     {
         synchronized ( updatersLock )
         {
+            component.putClientProperty ( COMPONENT_UPDATER_KEY, null );
             customUpdaters.remove ( component );
         }
     }
@@ -721,12 +726,13 @@ public class LanguageManager implements LanguageConstants
      * @param component component to retrieve LanguageUpdater for
      * @return LanguageUpdater currently used for the specified component
      */
-    public static LanguageUpdater getLanguageUpdater ( final Component component )
+    public static LanguageUpdater getLanguageUpdater ( final JComponent component )
     {
         synchronized ( updatersLock )
         {
             // Checking custom updaters first
-            final LanguageUpdater customUpdater = customUpdaters.get ( component );
+            final WeakReference<LanguageUpdater> updaterReference = customUpdaters.get ( component );
+            final LanguageUpdater customUpdater = updaterReference != null ? updaterReference.get () : null;
             if ( customUpdater != null )
             {
                 return customUpdater;
@@ -787,7 +793,7 @@ public class LanguageManager implements LanguageConstants
     {
         synchronized ( componentsLock )
         {
-            for ( final Map.Entry<Component, String> entry : components.entrySet () )
+            for ( final Map.Entry<JComponent, String> entry : components.entrySet () )
             {
                 updateComponent ( entry.getKey (), entry.getValue () );
             }
@@ -803,7 +809,7 @@ public class LanguageManager implements LanguageConstants
     {
         synchronized ( componentsLock )
         {
-            for ( final Map.Entry<Component, String> entry : components.entrySet () )
+            for ( final Map.Entry<JComponent, String> entry : components.entrySet () )
             {
                 if ( keys.contains ( entry.getValue () ) )
                 {
@@ -819,7 +825,7 @@ public class LanguageManager implements LanguageConstants
      * @param component component to update
      * @param data      component language data
      */
-    public static void updateComponent ( final Component component, final Object... data )
+    public static void updateComponent ( final JComponent component, final Object... data )
     {
         final String key = components.get ( component );
         if ( key != null )
@@ -835,7 +841,7 @@ public class LanguageManager implements LanguageConstants
      * @param key       component language key
      * @param data      component language data
      */
-    public static void updateComponent ( final Component component, final String key, Object... data )
+    public static void updateComponent ( final JComponent component, final String key, Object... data )
     {
         // Nullifying data if it has no values
         if ( data != null && data.length == 0 )
@@ -1595,7 +1601,7 @@ public class LanguageManager implements LanguageConstants
      * @param key       component language key
      * @return component translation
      */
-    public static String get ( final Component component, final String key )
+    public static String get ( final JComponent component, final String key )
     {
         return get ( combineWithContainerKeys ( component, key ) );
     }
@@ -1607,7 +1613,7 @@ public class LanguageManager implements LanguageConstants
      * @param key       component language key
      * @return component mnemonic
      */
-    public static Character getMnemonic ( final Component component, final String key )
+    public static Character getMnemonic ( final JComponent component, final String key )
     {
         return getMnemonic ( combineWithContainerKeys ( component, key ) );
     }
@@ -1619,7 +1625,7 @@ public class LanguageManager implements LanguageConstants
      * @param key       component language key
      * @return component language value
      */
-    public static Value getValue ( final Component component, final String key )
+    public static Value getValue ( final JComponent component, final String key )
     {
         return getValue ( combineWithContainerKeys ( component, key ) );
     }
@@ -1631,7 +1637,7 @@ public class LanguageManager implements LanguageConstants
      * @param key       component language key
      * @return non-null component language value
      */
-    public static Value getNotNullValue ( final Component component, final String key )
+    public static Value getNotNullValue ( final JComponent component, final String key )
     {
         return getNotNullValue ( combineWithContainerKeys ( component, key ) );
     }
@@ -1644,7 +1650,7 @@ public class LanguageManager implements LanguageConstants
      * @param additionalKey additional language key
      * @return component language value
      */
-    public static Value getValue ( final Component component, final String key, final String additionalKey )
+    public static Value getValue ( final JComponent component, final String key, final String additionalKey )
     {
         return getValue ( combineWithContainerKeys ( component, key ) + "." + additionalKey );
     }
@@ -1657,7 +1663,7 @@ public class LanguageManager implements LanguageConstants
      * @param additionalKey additional language key
      * @return non-null component language value
      */
-    public static Value getNotNullValue ( final Component component, final String key, final String additionalKey )
+    public static Value getNotNullValue ( final JComponent component, final String key, final String additionalKey )
     {
         return getNotNullValue ( combineWithContainerKeys ( component, key ) + "." + additionalKey );
     }
@@ -1669,7 +1675,7 @@ public class LanguageManager implements LanguageConstants
      * @param key       component language key
      * @return component language key combined with its containers keys
      */
-    public static String combineWithContainerKeys ( final Component component, final String key )
+    public static String combineWithContainerKeys ( final JComponent component, final String key )
     {
         final String cachedKey = componentKeysCache.get ( component );
         return cachedKey != null ? cachedKey : combineWithContainerKeysImpl ( component, key );
@@ -1682,7 +1688,7 @@ public class LanguageManager implements LanguageConstants
      * @param key       component language key
      * @return component language key combined with its containers keys
      */
-    protected static String combineWithContainerKeysImpl ( final Component component, final String key )
+    protected static String combineWithContainerKeysImpl ( final JComponent component, final String key )
     {
         final StringBuilder sb = new StringBuilder ( key );
         if ( component != null )
@@ -1898,7 +1904,22 @@ public class LanguageManager implements LanguageConstants
     {
         synchronized ( languageListenersLock )
         {
-            return MapUtils.copyMap ( componentLanguageListeners );
+            final Map<Component, LanguageListener> listeners =
+                    new HashMap<Component, LanguageListener> ( componentLanguageListeners.size () );
+            for ( final Map.Entry<JComponent, WeakReference<LanguageListener>> entry : componentLanguageListeners.entrySet () )
+            {
+                final JComponent component = entry.getKey ();
+                if ( component != null )
+                {
+                    final WeakReference<LanguageListener> listenerReference = entry.getValue ();
+                    final LanguageListener listener = listenerReference != null ? listenerReference.get () : null;
+                    if ( listener != null )
+                    {
+                        listeners.put ( component, listener );
+                    }
+                }
+            }
+            return listeners;
         }
     }
 
@@ -1908,11 +1929,12 @@ public class LanguageManager implements LanguageConstants
      * @param component component to add language listener for
      * @param listener  new language listener
      */
-    public static void addLanguageListener ( final Component component, final LanguageListener listener )
+    public static void addLanguageListener ( final JComponent component, final LanguageListener listener )
     {
         synchronized ( languageListenersLock )
         {
-            componentLanguageListeners.put ( component, listener );
+            component.putClientProperty ( COMPONENT_LANGUAGE_LISTENER_KEY, listener );
+            componentLanguageListeners.put ( component, new WeakReference<LanguageListener> ( listener ) );
         }
     }
 
@@ -1921,10 +1943,11 @@ public class LanguageManager implements LanguageConstants
      *
      * @param component component to remove language listener from
      */
-    public static void removeLanguageListener ( final Component component )
+    public static void removeLanguageListener ( final JComponent component )
     {
         synchronized ( languageListenersLock )
         {
+            component.putClientProperty ( COMPONENT_LANGUAGE_LISTENER_KEY, null );
             componentLanguageListeners.remove ( component );
         }
     }
@@ -1943,15 +1966,16 @@ public class LanguageManager implements LanguageConstants
             {
                 listener.languageChanged ( oldLang, newLang );
             }
-            for ( final Map.Entry<Component, LanguageListener> entry : componentLanguageListeners.entrySet () )
+            for ( final Map.Entry<JComponent, WeakReference<LanguageListener>> entry : componentLanguageListeners.entrySet () )
             {
-                final Component key = entry.getKey ();
+                final JComponent key = entry.getKey ();
                 if ( key != null )
                 {
-                    final LanguageListener value = entry.getValue ();
-                    if ( value != null )
+                    final WeakReference<LanguageListener> listenerReference = entry.getValue ();
+                    final LanguageListener listener = listenerReference != null ? listenerReference.get () : null;
+                    if ( listener != null )
                     {
-                        value.languageChanged ( oldLang, newLang );
+                        listener.languageChanged ( oldLang, newLang );
                     }
                 }
             }
@@ -1971,15 +1995,16 @@ public class LanguageManager implements LanguageConstants
             {
                 listener.dictionaryAdded ( dictionary );
             }
-            for ( final Map.Entry<Component, LanguageListener> entry : componentLanguageListeners.entrySet () )
+            for ( final Map.Entry<JComponent, WeakReference<LanguageListener>> entry : componentLanguageListeners.entrySet () )
             {
-                final Component key = entry.getKey ();
+                final JComponent key = entry.getKey ();
                 if ( key != null )
                 {
-                    final LanguageListener value = entry.getValue ();
-                    if ( value != null )
+                    final WeakReference<LanguageListener> listenerReference = entry.getValue ();
+                    final LanguageListener listener = listenerReference != null ? listenerReference.get () : null;
+                    if ( listener != null )
                     {
-                        value.dictionaryAdded ( dictionary );
+                        listener.dictionaryAdded ( dictionary );
                     }
                 }
             }
@@ -1999,15 +2024,16 @@ public class LanguageManager implements LanguageConstants
             {
                 listener.dictionaryRemoved ( dictionary );
             }
-            for ( final Map.Entry<Component, LanguageListener> entry : componentLanguageListeners.entrySet () )
+            for ( final Map.Entry<JComponent, WeakReference<LanguageListener>> entry : componentLanguageListeners.entrySet () )
             {
-                final Component key = entry.getKey ();
+                final JComponent key = entry.getKey ();
                 if ( key != null )
                 {
-                    final LanguageListener value = entry.getValue ();
-                    if ( value != null )
+                    final WeakReference<LanguageListener> listenerReference = entry.getValue ();
+                    final LanguageListener listener = listenerReference != null ? listenerReference.get () : null;
+                    if ( listener != null )
                     {
-                        value.dictionaryRemoved ( dictionary );
+                        listener.dictionaryRemoved ( dictionary );
                     }
                 }
             }
@@ -2025,15 +2051,16 @@ public class LanguageManager implements LanguageConstants
             {
                 listener.dictionariesCleared ();
             }
-            for ( final Map.Entry<Component, LanguageListener> entry : componentLanguageListeners.entrySet () )
+            for ( final Map.Entry<JComponent, WeakReference<LanguageListener>> entry : componentLanguageListeners.entrySet () )
             {
-                final Component key = entry.getKey ();
+                final JComponent key = entry.getKey ();
                 if ( key != null )
                 {
-                    final LanguageListener value = entry.getValue ();
-                    if ( value != null )
+                    final WeakReference<LanguageListener> listenerReference = entry.getValue ();
+                    final LanguageListener listener = listenerReference != null ? listenerReference.get () : null;
+                    if ( listener != null )
                     {
-                        value.dictionariesCleared ();
+                        listener.dictionariesCleared ();
                     }
                 }
             }

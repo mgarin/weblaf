@@ -76,6 +76,11 @@ public final class FileUtils
     private static final SimpleDateFormat sdf = new SimpleDateFormat ( "dd MMM yyyy HH:mm" );
 
     /**
+     * Default encoding used to read files.
+     */
+    private static final String defaultEncoding = "UTF-8";
+
+    /**
      * Buffer size for MD5 calculations.
      */
     private static final int MD5_BUFFER_LENGTH = 102400;
@@ -1469,27 +1474,22 @@ public final class FileUtils
      */
     public static String readToString ( final Class nearClass, final String resource )
     {
-        try
-        {
-            return readToString ( nearClass.getResourceAsStream ( resource ) );
-        }
-        catch ( final Throwable e )
-        {
-            return null;
-        }
+        return readToString ( nearClass, resource, defaultEncoding );
     }
 
     /**
-     * Returns text content read from the file at the specified url.
+     * Returns content read from the file located near specified class.
      *
-     * @param url text file url
-     * @return text file content
+     * @param nearClass class near which file is located
+     * @param resource  file location
+     * @param encoding  file encoding
+     * @return file content
      */
-    public static String readToString ( final URL url )
+    public static String readToString ( final Class nearClass, final String resource, final String encoding )
     {
         try
         {
-            return readToString ( url.openConnection ().getInputStream () );
+            return readToString ( nearClass.getResourceAsStream ( resource ), encoding );
         }
         catch ( final Throwable e )
         {
@@ -1498,18 +1498,97 @@ public final class FileUtils
     }
 
     /**
-     * Returns text content read from the input stream.
+     * Returns content read from the file at the specified url.
+     *
+     * @param url file url
+     * @return file content
+     */
+    public static String readToString ( final URL url )
+    {
+        return readToString ( url, defaultEncoding );
+    }
+
+    /**
+     * Returns content read from the file at the specified url.
+     *
+     * @param url      file url
+     * @param encoding file encoding
+     * @return file content
+     */
+    public static String readToString ( final URL url, final String encoding )
+    {
+        try
+        {
+            return readToString ( url.openStream (), encoding );
+        }
+        catch ( final Throwable e )
+        {
+            return null;
+        }
+    }
+
+    /**
+     * Returns content read from the specified file.
+     *
+     * @param file file to read
+     * @return file content
+     */
+    public static String readToString ( final File file )
+    {
+        return readToString ( file, defaultEncoding );
+    }
+
+    /**
+     * Returns content read from the specified file.
+     *
+     * @param file     file to read
+     * @param encoding file encoding
+     * @return file content
+     */
+    public static String readToString ( final File file, final String encoding )
+    {
+        try
+        {
+            if ( file != null && file.exists () && file.isFile () )
+            {
+                return readToString ( new FileInputStream ( file ), encoding );
+            }
+            else
+            {
+                return null;
+            }
+        }
+        catch ( final Throwable e )
+        {
+            return null;
+        }
+    }
+
+    /**
+     * Returns content read from the input stream.
      *
      * @param inputStream text content input stream
      * @return text content
      */
     public static String readToString ( final InputStream inputStream )
     {
+        return readToString ( inputStream, defaultEncoding );
+    }
+
+    /**
+     * Returns content read from the input stream.
+     *
+     * @param inputStream text content input stream
+     * @param encoding    stream data encoding
+     * @return content
+     */
+    public static String readToString ( final InputStream inputStream, final String encoding )
+    {
         try
         {
             if ( inputStream != null )
             {
-                return readToString ( new InputStreamReader ( inputStream, "UTF-8" ) );
+                return readToString ( new InputStreamReader ( inputStream, encoding ) );
             }
             else
             {
@@ -1534,35 +1613,10 @@ public final class FileUtils
     }
 
     /**
-     * Returns text content read from the specified file.
-     *
-     * @param file file to read
-     * @return text file content
-     */
-    public static String readToString ( final File file )
-    {
-        try
-        {
-            if ( file != null && file.exists () && file.isFile () )
-            {
-                return readToString ( new FileReader ( file ) );
-            }
-            else
-            {
-                return null;
-            }
-        }
-        catch ( final Throwable e )
-        {
-            return null;
-        }
-    }
-
-    /**
-     * Returns text content read from the specified reader.
+     * Returns content read from the specified reader.
      *
      * @param reader text content reader
-     * @return text content
+     * @return content
      */
     public static String readToString ( final Reader reader )
     {

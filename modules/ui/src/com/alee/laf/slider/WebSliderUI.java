@@ -43,7 +43,8 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 /**
- * User: mgarin Date: 26.05.11 Time: 18:03
+ * @author Mikle Garin
+ * @author Michka Popoff
  */
 
 public class WebSliderUI extends BasicSliderUI implements BorderMethods
@@ -57,6 +58,9 @@ public class WebSliderUI extends BasicSliderUI implements BorderMethods
     protected int trackShadeWidth = WebSliderStyle.trackShadeWidth;
 
     protected boolean drawProgress = WebSliderStyle.drawProgress;
+    protected Color progressTrackBgTop = WebSliderStyle.progressTrackBgTop;
+    protected Color progressTrackBgBottom = WebSliderStyle.progressTrackBgBottom;
+    protected Color progressBorderColor = WebSliderStyle.progressBorderColor;
     protected int progressRound = WebSliderStyle.progressRound;
     protected int progressShadeWidth = WebSliderStyle.progressShadeWidth;
 
@@ -77,6 +81,8 @@ public class WebSliderUI extends BasicSliderUI implements BorderMethods
 
     protected Insets margin = WebLabelStyle.margin;
     protected Painter painter = WebLabelStyle.painter;
+
+    protected boolean invertMouseWheelDirection = WebSliderStyle.invertMouseWheelDirection;
 
     /**
      * Slider listeners.
@@ -132,8 +138,8 @@ public class WebSliderUI extends BasicSliderUI implements BorderMethods
             @Override
             public void mouseWheelMoved ( final MouseWheelEvent e )
             {
-                slider.setValue (
-                        Math.min ( Math.max ( slider.getMinimum (), slider.getValue () + e.getWheelRotation () ), slider.getMaximum () ) );
+                final int v = slider.getValue () - e.getWheelRotation ();
+                slider.setValue ( Math.min ( Math.max ( slider.getMinimum (), v ), slider.getMaximum () ) );
             }
         };
         slider.addMouseWheelListener ( mouseWheelListener );
@@ -292,6 +298,16 @@ public class WebSliderUI extends BasicSliderUI implements BorderMethods
         this.rolloverDarkBorderOnly = rolloverDarkBorderOnly;
     }
 
+    public boolean isInvertMouseWheelDirection ()
+    {
+        return invertMouseWheelDirection;
+    }
+
+    public void setInvertMouseWheelDirection ( final boolean invert )
+    {
+        this.invertMouseWheelDirection = invert;
+    }
+
     public Color getTrackBgTop ()
     {
         return trackBgTop;
@@ -350,6 +366,36 @@ public class WebSliderUI extends BasicSliderUI implements BorderMethods
     public void setDrawProgress ( final boolean drawProgress )
     {
         this.drawProgress = drawProgress;
+    }
+
+    public Color getProgressTrackBgTop ()
+    {
+        return progressTrackBgTop;
+    }
+
+    public void setProgressTrackBgTop ( final Color progressTrackBgTop )
+    {
+        this.progressTrackBgTop = progressTrackBgTop;
+    }
+
+    public Color getProgressTrackBgBottom ()
+    {
+        return progressTrackBgBottom;
+    }
+
+    public void setProgressTrackBgBottom ( final Color progressTrackBgBottom )
+    {
+        this.progressTrackBgBottom = progressTrackBgBottom;
+    }
+
+    public Color getProgressBorderColor ()
+    {
+        return progressBorderColor;
+    }
+
+    public void setProgressBorderColor ( final Color progressBorderColor )
+    {
+        this.progressBorderColor = progressBorderColor;
     }
 
     public int getProgressRound ()
@@ -704,31 +750,27 @@ public class WebSliderUI extends BasicSliderUI implements BorderMethods
             final Rectangle bounds = ss.getBounds ();
             if ( slider.getOrientation () == JSlider.HORIZONTAL )
             {
-                g2d.setPaint (
-                        new GradientPaint ( 0, bounds.y + progressShadeWidth, Color.WHITE, 0, bounds.y + bounds.height - progressShadeWidth,
-                                new Color ( 223, 223, 223 ) )
-                );
+                g2d.setPaint ( new GradientPaint ( 0, bounds.y + progressShadeWidth, progressTrackBgTop, 0,
+                                bounds.y + bounds.height - progressShadeWidth, progressTrackBgBottom ) );
             }
             else
             {
-                g2d.setPaint (
-                        new GradientPaint ( bounds.x + progressShadeWidth, 0, Color.WHITE, bounds.x + bounds.width - progressShadeWidth, 0,
-                                new Color ( 223, 223, 223 ) )
-                );
+                g2d.setPaint ( new GradientPaint ( bounds.x + progressShadeWidth, 0, progressTrackBgTop,
+                                bounds.x + bounds.width - progressShadeWidth, 0, progressTrackBgBottom ) );
             }
             g2d.fill ( ps );
 
             // Progress border
-            g2d.setPaint ( slider.isEnabled () ? StyleConstants.darkBorderColor : StyleConstants.disabledBorderColor );
+            g2d.setPaint ( slider.isEnabled () ? progressBorderColor : StyleConstants.disabledBorderColor );
             g2d.draw ( ps );
         }
 
         // Track border & focus
         {
             // Track border
-            g2d.setPaint ( slider.isEnabled () ?
-                    ( rolloverDarkBorderOnly && !isDragging () ? getBorderColor () : StyleConstants.darkBorderColor ) :
-                    StyleConstants.disabledBorderColor );
+            g2d.setPaint (
+                    slider.isEnabled () ? rolloverDarkBorderOnly && !isDragging () ? getBorderColor () : StyleConstants.darkBorderColor :
+                            StyleConstants.disabledBorderColor );
             g2d.draw ( ss );
         }
 

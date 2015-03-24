@@ -15,26 +15,18 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.laf.filechooser;
-
-import com.alee.utils.FileUtils;
+package com.alee.managers.log;
 
 /**
- * WebFileChooser style class.
+ * Enumeration representing base log message types.
  *
  * @author Mikle Garin
- * @author Michka Popoff
  */
 
-public final class WebFileChooserStyle
+public enum LogMessageType
 {
-    /**
-     * Default file chooser directory.
-     */
-    public static final String defaultDirectory = FileUtils.getUserHomePath ();
-
-    /**
-     * Preferred width of the tree on the left and the default split divider location.
-     */
-    public static int dividerLocation = 160;
+    debug,
+    info,
+    warn,
+    error
 }

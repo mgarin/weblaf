@@ -270,7 +270,7 @@ public class WebWindow extends JWindow implements WindowEventMethods, LanguageCo
     @Override
     public void registerSettings ( final String key )
     {
-        SettingsManager.registerComponent ( this, key );
+        SettingsManager.registerComponent ( getRootPane (), key );
     }
 
     /**
@@ -279,7 +279,7 @@ public class WebWindow extends JWindow implements WindowEventMethods, LanguageCo
     @Override
     public <T extends DefaultValue> void registerSettings ( final String key, final Class<T> defaultValueClass )
     {
-        SettingsManager.registerComponent ( this, key, defaultValueClass );
+        SettingsManager.registerComponent ( getRootPane (), key, defaultValueClass );
     }
 
     /**
@@ -288,7 +288,7 @@ public class WebWindow extends JWindow implements WindowEventMethods, LanguageCo
     @Override
     public void registerSettings ( final String key, final Object defaultValue )
     {
-        SettingsManager.registerComponent ( this, key, defaultValue );
+        SettingsManager.registerComponent ( getRootPane (), key, defaultValue );
     }
 
     /**
@@ -297,7 +297,7 @@ public class WebWindow extends JWindow implements WindowEventMethods, LanguageCo
     @Override
     public void registerSettings ( final String group, final String key )
     {
-        SettingsManager.registerComponent ( this, group, key );
+        SettingsManager.registerComponent ( getRootPane (), group, key );
     }
 
     /**
@@ -306,7 +306,7 @@ public class WebWindow extends JWindow implements WindowEventMethods, LanguageCo
     @Override
     public <T extends DefaultValue> void registerSettings ( final String group, final String key, final Class<T> defaultValueClass )
     {
-        SettingsManager.registerComponent ( this, group, key, defaultValueClass );
+        SettingsManager.registerComponent ( getRootPane (), group, key, defaultValueClass );
     }
 
     /**
@@ -315,7 +315,7 @@ public class WebWindow extends JWindow implements WindowEventMethods, LanguageCo
     @Override
     public void registerSettings ( final String group, final String key, final Object defaultValue )
     {
-        SettingsManager.registerComponent ( this, group, key, defaultValue );
+        SettingsManager.registerComponent ( getRootPane (), group, key, defaultValue );
     }
 
     /**
@@ -324,7 +324,7 @@ public class WebWindow extends JWindow implements WindowEventMethods, LanguageCo
     @Override
     public void registerSettings ( final String key, final boolean loadInitialSettings, final boolean applySettingsChanges )
     {
-        SettingsManager.registerComponent ( this, key, loadInitialSettings, applySettingsChanges );
+        SettingsManager.registerComponent ( getRootPane (), key, loadInitialSettings, applySettingsChanges );
     }
 
     /**
@@ -334,7 +334,7 @@ public class WebWindow extends JWindow implements WindowEventMethods, LanguageCo
     public <T extends DefaultValue> void registerSettings ( final String key, final Class<T> defaultValueClass,
                                                             final boolean loadInitialSettings, final boolean applySettingsChanges )
     {
-        SettingsManager.registerComponent ( this, key, defaultValueClass, loadInitialSettings, applySettingsChanges );
+        SettingsManager.registerComponent ( getRootPane (), key, defaultValueClass, loadInitialSettings, applySettingsChanges );
     }
 
     /**
@@ -344,7 +344,7 @@ public class WebWindow extends JWindow implements WindowEventMethods, LanguageCo
     public void registerSettings ( final String key, final Object defaultValue, final boolean loadInitialSettings,
                                    final boolean applySettingsChanges )
     {
-        SettingsManager.registerComponent ( this, key, defaultValue, loadInitialSettings, applySettingsChanges );
+        SettingsManager.registerComponent ( getRootPane (), key, defaultValue, loadInitialSettings, applySettingsChanges );
     }
 
     /**
@@ -354,7 +354,7 @@ public class WebWindow extends JWindow implements WindowEventMethods, LanguageCo
     public <T extends DefaultValue> void registerSettings ( final String group, final String key, final Class<T> defaultValueClass,
                                                             final boolean loadInitialSettings, final boolean applySettingsChanges )
     {
-        SettingsManager.registerComponent ( this, group, key, defaultValueClass, loadInitialSettings, applySettingsChanges );
+        SettingsManager.registerComponent ( getRootPane (), group, key, defaultValueClass, loadInitialSettings, applySettingsChanges );
     }
 
     /**
@@ -364,7 +364,7 @@ public class WebWindow extends JWindow implements WindowEventMethods, LanguageCo
     public void registerSettings ( final String group, final String key, final Object defaultValue, final boolean loadInitialSettings,
                                    final boolean applySettingsChanges )
     {
-        SettingsManager.registerComponent ( this, group, key, defaultValue, loadInitialSettings, applySettingsChanges );
+        SettingsManager.registerComponent ( getRootPane (), group, key, defaultValue, loadInitialSettings, applySettingsChanges );
     }
 
     /**
@@ -373,7 +373,7 @@ public class WebWindow extends JWindow implements WindowEventMethods, LanguageCo
     @Override
     public void registerSettings ( final SettingsProcessor settingsProcessor )
     {
-        SettingsManager.registerComponent ( this, settingsProcessor );
+        SettingsManager.registerComponent ( getRootPane (), settingsProcessor );
     }
 
     /**
@@ -382,7 +382,7 @@ public class WebWindow extends JWindow implements WindowEventMethods, LanguageCo
     @Override
     public void unregisterSettings ()
     {
-        SettingsManager.unregisterComponent ( this );
+        SettingsManager.unregisterComponent ( getRootPane () );
     }
 
     /**
@@ -391,7 +391,7 @@ public class WebWindow extends JWindow implements WindowEventMethods, LanguageCo
     @Override
     public void loadSettings ()
     {
-        SettingsManager.loadComponentSettings ( this );
+        SettingsManager.loadComponentSettings ( getRootPane () );
     }
 
     /**
@@ -400,7 +400,7 @@ public class WebWindow extends JWindow implements WindowEventMethods, LanguageCo
     @Override
     public void saveSettings ()
     {
-        SettingsManager.saveComponentSettings ( this );
+        SettingsManager.saveComponentSettings ( getRootPane () );
     }
 
     /**

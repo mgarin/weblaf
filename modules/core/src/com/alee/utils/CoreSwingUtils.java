@@ -15,26 +15,39 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.laf.filechooser;
+package com.alee.utils;
 
-import com.alee.utils.FileUtils;
+import java.awt.*;
 
 /**
- * WebFileChooser style class.
- *
  * @author Mikle Garin
- * @author Michka Popoff
  */
 
-public final class WebFileChooserStyle
+public class CoreSwingUtils
 {
     /**
-     * Default file chooser directory.
+     * Returns window ancestor for specified component or null if it doesn't exist.
+     *
+     * @param component component to process
+     * @return window ancestor for specified component or null if it doesn't exist
      */
-    public static final String defaultDirectory = FileUtils.getUserHomePath ();
-
-    /**
-     * Preferred width of the tree on the left and the default split divider location.
-     */
-    public static int dividerLocation = 160;
+    public static Window getWindowAncestor ( final Component component )
+    {
+        if ( component == null )
+        {
+            return null;
+        }
+        if ( component instanceof Window )
+        {
+            return ( Window ) component;
+        }
+        for ( Container p = component.getParent (); p != null; p = p.getParent () )
+        {
+            if ( p instanceof Window )
+            {
+                return ( Window ) p;
+            }
+        }
+        return null;
+    }
 }

@@ -58,6 +58,11 @@ public class Log
     protected static boolean debugEnabled = false;
 
     /**
+     * Custom log messages prefix supplier.
+     */
+    protected static LogPrefixSupplier prefixSupplier = null;
+
+    /**
      * Whether Log is initialized or not.
      */
     protected static boolean initialized = false;
@@ -101,6 +106,29 @@ public class Log
     }
 
     /**
+     * Returns custom log prefix supplier.
+     *
+     * @return custom log prefix supplier
+     */
+    public static LogPrefixSupplier getPrefixSupplier ()
+    {
+        return prefixSupplier;
+    }
+
+    /**
+     * Sets custom log prefix supplier
+     *
+     * @param supplier custom log prefix supplier
+     */
+    public static void setPrefixSupplier ( final LogPrefixSupplier supplier )
+    {
+        synchronized ( logLock )
+        {
+            Log.prefixSupplier = supplier;
+        }
+    }
+
+    /**
      * Writes specified information message into log.
      *
      * @param message information message
@@ -125,7 +153,7 @@ public class Log
             if ( isLoggingEnabled ( logFor ) )
             {
                 final String msg = data == null || data.length == 0 ? message : String.format ( message, data );
-                getLogger ( logFor ).info ( msg );
+                getLogger ( logFor ).info ( getPrefix ( LogMessageType.info, msg ) + msg );
             }
         }
     }
@@ -157,7 +185,7 @@ public class Log
                 if ( isLoggingEnabled ( logFor ) )
                 {
                     final String msg = data == null || data.length == 0 ? message : String.format ( message, data );
-                    getLogger ( logFor ).debug ( msg );
+                    getLogger ( logFor ).debug ( getPrefix ( LogMessageType.debug, msg ) + msg );
                 }
             }
         }
@@ -185,7 +213,7 @@ public class Log
         {
             if ( isLoggingEnabled ( logFor ) )
             {
-                getLogger ( logFor ).warn ( message );
+                getLogger ( logFor ).warn ( getPrefix ( LogMessageType.warn, message ) + message );
             }
         }
     }
@@ -214,7 +242,7 @@ public class Log
         {
             if ( isLoggingEnabled ( logFor ) )
             {
-                getLogger ( logFor ).warn ( message, throwable );
+                getLogger ( logFor ).warn ( getPrefix ( LogMessageType.warn, message, throwable ) + message, throwable );
             }
         }
     }
@@ -241,7 +269,8 @@ public class Log
         {
             if ( isLoggingEnabled ( logFor ) )
             {
-                getLogger ( logFor ).error ( throwable.toString (), throwable );
+                final String msg = throwable.toString ();
+                getLogger ( logFor ).error ( getPrefix ( LogMessageType.info, msg, throwable ) + msg, throwable );
             }
         }
     }
@@ -270,7 +299,7 @@ public class Log
         {
             if ( isLoggingEnabled ( logFor ) )
             {
-                getLogger ( logFor ).error ( message, throwable );
+                getLogger ( logFor ).error ( getPrefix ( LogMessageType.info, message, throwable ) + message, throwable );
             }
         }
     }
@@ -297,8 +326,41 @@ public class Log
         {
             if ( isLoggingEnabled ( logFor ) )
             {
-                getLogger ( logFor ).error ( message );
+                getLogger ( logFor ).error ( getPrefix ( LogMessageType.info, message ) + message );
             }
+        }
+    }
+
+    /**
+     * Returns prefix for specific log message.
+     *
+     * @param type      message type
+     * @param message   message
+     * @return prefix for specific log message
+     */
+    public static String getPrefix ( final LogMessageType type, final String message )
+    {
+        return getPrefix ( type, message, null );
+    }
+
+    /**
+     * Returns prefix for specific log message.
+     *
+     * @param type      message type
+     * @param message   message
+     * @param throwable exception
+     * @return prefix for specific log message
+     */
+    public static String getPrefix ( final LogMessageType type, final String message, final Throwable throwable )
+    {
+        if ( prefixSupplier != null )
+        {
+            final String prefix = prefixSupplier.get ( type, message, throwable );
+            return prefix != null ? prefix : "";
+        }
+        else
+        {
+            return "";
         }
     }
 
