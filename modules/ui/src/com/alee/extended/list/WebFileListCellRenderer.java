@@ -32,6 +32,7 @@ import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
+import java.lang.NullPointerException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -105,6 +106,11 @@ public class WebFileListCellRenderer extends WebListCellRenderer
      * Executor service for thumbnails generation.
      */
     protected ExecutorService executorService = Executors.newSingleThreadExecutor ( new DaemonThreadFactory () );
+
+    /**
+     * A reference to interface used to create icons outside of weblaf.
+     */
+    protected ExternalIconInterface externalIconInterface;
 
     /**
      * Constructs cell renderer for the specified file list.
@@ -346,6 +352,24 @@ public class WebFileListCellRenderer extends WebListCellRenderer
     }
 
     /**
+     * Interface to set an external icon creator.
+     */
+    public interface ExternalIconInterface
+    {
+        Icon createIcon( File file );
+    }
+
+    /**
+     * Setter to define an external icon creation method.
+     * Can be accessed through getFileChooserPanel().getFileList().getWebFileListCellRenderer()
+     * @param externalInterface
+     */
+    public void setIconCreator ( ExternalIconInterface externalInterface )
+    {
+        this.externalIconInterface = externalInterface;
+    }
+
+    /**
      * Adds specified element into thumbnails queue.
      *
      * @param element element to add
@@ -385,10 +409,29 @@ public class WebFileListCellRenderer extends WebListCellRenderer
                 }
                 else
                 {
-                    element.setEnabledThumbnail ( FileUtils.getStandartFileIcon ( element.getFile (), true, true ) );
-                    if ( disabled )
+                    // Try to use the external createIcon() method (if it has been defined).
+                    Icon res;
+                    try
                     {
-                        element.setDisabledThumbnail ( FileUtils.getStandartFileIcon ( element.getFile (), true, false ) );
+                        res = externalIconInterface.createIcon ( new File ( absolutePath ) );
+                    }
+                    catch (NullPointerException e)
+                    {
+                        res = null;
+                    }
+
+                    if ( res == null )
+                    {
+                        // Use standard icons
+                        element.setEnabledThumbnail ( FileUtils.getStandartFileIcon ( element.getFile(), true, true) );
+                        if ( disabled )
+                        {
+                            element.setDisabledThumbnail ( FileUtils.getStandartFileIcon ( element.getFile(), true, false) );
+                        }
+                    } else
+                    {
+                        // We are using the externally created icon
+                        element.setEnabledThumbnail ( ImageUtils.getImageIcon( res ) );
                     }
                 }
                 if ( disabled != fileList.isEnabled () )
