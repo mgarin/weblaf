@@ -890,42 +890,55 @@ public class WebFileChooserPanel extends WebPanel
             }
         } );
 
-        final WebFileTableModel tableModel = fileTable.getFileTableModel();
+        final WebFileTableModel tableModel = fileTable.getFileTableModel ();
         final TableRowSorter<WebFileTableModel> rowSorter = new TableRowSorter<WebFileTableModel> ( tableModel );
-        for ( int i = 0; i < tableModel.getColumnCount(); i++ ) {
-            final String columnId = tableModel.getColumnId(i);
+        for ( int i = 0; i < tableModel.getColumnCount (); i++ ) {
+            final String columnId = tableModel.getColumnId ( i );
             final Comparator<File> comp;
-            if ( columnId.equals ( WebFileTableColumns.NAME_COLUMN ) ) {
+            if ( columnId.equals ( WebFileTableColumns.NAME_COLUMN ) )
+            {
                 comp = GlobalConstants.FILE_COMPARATOR;
-            } else if ( columnId.equals ( WebFileTableColumns.SIZE_COLUMN )) {
-                comp = new Comparator<File>() {
-                    public int compare(File a, File b) {
-                        final boolean ad = FileUtils.isDirectory( a );
-                        final boolean bd = FileUtils.isDirectory( b );
+            }
+            else if ( columnId.equals ( WebFileTableColumns.SIZE_COLUMN ))
+            {
+                comp = new Comparator<File> ()
+                {
+                    public int compare ( File a, File b )
+                    {
+                        final boolean ad = FileUtils.isDirectory ( a );
+                        final boolean bd = FileUtils.isDirectory ( b );
                         if ( ad && bd ) return  0;
                         if ( ad )       return -1;
                         if ( bd )       return +1;
                         final long al = a.length ();
                         final long bl = b.length ();
-                        return al < bl ? -1 : (al > bl ? +1 : 0);
+                        return al < bl ? -1 : ( al > bl ? +1 : 0 );
                     }
                 };
-            } else if ( columnId.equals ( WebFileTableColumns.EXTENSION_COLUMN )) {
-                comp = new Comparator<File>() {
-                    public int compare(File a, File b) {
+            }
+            else if ( columnId.equals ( WebFileTableColumns.EXTENSION_COLUMN ))
+            {
+                comp = new Comparator<File> ()
+                {
+                    public int compare ( File a, File b )
+                    {
                         final boolean af = FileUtils.isFile ( a );
                         final boolean bf = FileUtils.isFile ( b );
                         final String as = af ? FileUtils.getFileExtPart ( a.getName (), true ) : "";
                         final String bs = bf ? FileUtils.getFileExtPart ( b.getName (), true ) : "";
-                        return as.compareToIgnoreCase(bs);
+                        return as.compareToIgnoreCase ( bs );
                     }
                 };
-            } else if ( columnId.equals ( WebFileTableColumns.MODIFICATION_DATE_COLUMN )) {
-                comp = new Comparator<File>() {
-                    public int compare(File a, File b) {
-                        final long al = a.lastModified();
-                        final long bl = b.lastModified();
-                        return al < bl ? -1 : (al > bl ? +1 : 0);
+            }
+            else if ( columnId.equals ( WebFileTableColumns.MODIFICATION_DATE_COLUMN ))
+            {
+                comp = new Comparator<File> ()
+                {
+                    public int compare ( File a, File b )
+                    {
+                        final long al = a.lastModified ();
+                        final long bl = b.lastModified ();
+                        return al < bl ? -1 : ( al > bl ? +1 : 0 );
                     }
                 };
             } else {
@@ -935,9 +948,9 @@ public class WebFileChooserPanel extends WebPanel
             if ( comp == null )
                 rowSorter.setSortable ( i, false );
             else
-                rowSorter.setComparator(i, comp);
+                rowSorter.setComparator ( i, comp );
         }
-        fileTable.setRowSorter(rowSorter);
+        fileTable.setRowSorter ( rowSorter );
 
         fileTableScroll = new WebScrollPane ( fileTable, true );
         fileTableScroll.getViewport ().setOpaque ( true );
