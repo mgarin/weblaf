@@ -136,6 +136,7 @@ lazy val demo = Project(
     libraryDependencies ++= Seq(
       "com.fifesoft" % "rsyntaxtextarea" % rSyntaxVersion
     ),
+    fork in run := true,
     mainClass in (Compile,run) := Some("com.alee.examples.WebLookAndFeelDemo"),
     // javaSource        in Compile := baseDirectory.value / ".." / ".." / "modules" / "demo" / "src",
     // resourceDirectory in Compile := baseDirectory.value / ".." / ".." / "modules" / "demo" / "src",
