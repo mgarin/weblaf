@@ -484,7 +484,7 @@ public final class TextUtils
      */
     public static boolean isEmpty ( final String text )
     {
-        return text == null || text.isEmpty () || text.trim ().isEmpty ();
+        return text == null || text.trim ().isEmpty ();
     }
 
     /**
@@ -502,6 +502,53 @@ public final class TextUtils
             sb.append ( character );
         }
         return sb.toString ();
+    }
+
+    /**
+     * Replaces all occurences of str found in the specified text with provided text.
+     *
+     * @param text       text to replace string occurences in
+     * @param ignoreCase whether should ignore case while searching for occurences or not
+     * @param str        text to replace
+     * @param provider   text replacement
+     * @return text with replaced occurences of the specified str
+     */
+    public static String replaceAll ( final String text, final boolean ignoreCase, final String str, final TextProvider<String> provider )
+    {
+        final String exp = ignoreCase ? str.toLowerCase () : str;
+        int match = 0;
+        int prev = 0;
+        final StringBuilder builder = new StringBuilder ( text.length () );
+        for ( int i = 0; i < text.length (); i++ )
+        {
+            final char ch = text.charAt ( i );
+            if ( exp.charAt ( match ) == ( ignoreCase ? Character.toLowerCase ( ch ) : ch ) )
+            {
+                match++;
+            }
+            else if ( exp.charAt ( 0 ) == ( ignoreCase ? Character.toLowerCase ( ch ) : ch ) )
+            {
+                match = 1;
+            }
+            else
+            {
+                match = 0;
+            }
+            if ( match == exp.length () )
+            {
+                final int start = i - exp.length () + 1;
+                final String part = text.substring ( start, start + exp.length () );
+                builder.append ( text.substring ( prev, start ) );
+                builder.append ( provider.provide ( part ) );
+                prev = start + exp.length ();
+                match = 0;
+            }
+            else if ( i == text.length () - 1 )
+            {
+                builder.append ( text.substring ( prev ) );
+            }
+        }
+        return builder.toString ();
     }
 
     /**
