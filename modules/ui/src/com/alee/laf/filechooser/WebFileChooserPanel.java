@@ -1055,6 +1055,14 @@ public class WebFileChooserPanel extends WebPanel
     }
 
     /**
+     * Returns the file list
+     */
+    public WebFileList getFileList ()
+    {
+        return fileList;
+    }
+
+    /**
      * Sets directory files view type
      *
      * @param viewType directory files view type
