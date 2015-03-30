@@ -1035,6 +1035,26 @@ public class WebFileChooserPanel extends WebPanel
     }
 
     /**
+     * Returns file tree.
+     *
+     * @return file tree
+     */
+    public WebFileTree getFileTree ()
+    {
+        return fileTree;
+    }
+
+    /**
+     * Returns file list.
+     *
+     * @return file list
+     */
+    public WebFileList getFileList ()
+    {
+        return fileList;
+    }
+
+    /**
      * Returns accessory component.
      *
      * @return accessory component
@@ -1052,14 +1072,6 @@ public class WebFileChooserPanel extends WebPanel
     public FileChooserViewType getViewType ()
     {
         return viewType;
-    }
-
-    /**
-     * Returns the file list
-     */
-    public WebFileList getFileList ()
-    {
-        return fileList;
     }
 
     /**

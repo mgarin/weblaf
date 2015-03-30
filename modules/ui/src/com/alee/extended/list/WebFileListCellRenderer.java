@@ -18,13 +18,10 @@
 package com.alee.extended.list;
 
 import com.alee.extended.layout.AbstractLayoutManager;
-import com.alee.global.GlobalConstants;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.list.WebListCellRenderer;
 import com.alee.utils.FileUtils;
-import com.alee.utils.ImageUtils;
-import com.alee.utils.concurrent.DaemonThreadFactory;
 import com.alee.utils.file.FileDescription;
 
 import javax.swing.*;
@@ -32,9 +29,6 @@ import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
-import java.lang.NullPointerException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 /**
  * Custom list cell renderer for WebFileList component.
@@ -48,29 +42,29 @@ public class WebFileListCellRenderer extends WebListCellRenderer
     /**
      * Constant cell sizes.
      */
-    protected static final Dimension tileCellSize = new Dimension ( 220, 65 );
-    protected static final Dimension iconCellSize = new Dimension ( 90, 90 );
+    public static final Dimension tileCellSize = new Dimension ( 220, 65 );
+    public static final Dimension iconCellSize = new Dimension ( 90, 90 );
 
     /**
      * Constant cell margins.
      */
-    protected static final Insets tileCellMargin = new Insets ( 6, 6, 5, 8 );
-    protected static final Insets iconCellMargin = new Insets ( 5, 5, 8, 5 );
+    public static final Insets tileCellMargin = new Insets ( 6, 6, 5, 8 );
+    public static final Insets iconCellMargin = new Insets ( 5, 5, 8, 5 );
 
     /**
      * Image thumbnails size.
      */
-    protected static final int thumbSize = 50;
+    public static final int thumbSize = 50;
 
     /**
      * Image side length.
      */
-    protected static final int imageSide = 54;
+    public static final int imageSide = 54;
 
     /**
      * Gap between renderer elements.
      */
-    protected static final int gap = 4;
+    public static final int gap = 4;
 
     /**
      * File list in which this list cell renderer is used.
@@ -96,21 +90,6 @@ public class WebFileListCellRenderer extends WebListCellRenderer
      * File description label.
      */
     protected WebLabel descriptionLabel;
-
-    /**
-     * Thumbnails queue lock object.
-     */
-    protected final Object thumbnailsLock = new Object ();
-
-    /**
-     * Executor service for thumbnails generation.
-     */
-    protected ExecutorService executorService = Executors.newSingleThreadExecutor ( new DaemonThreadFactory () );
-
-    /**
-     * A reference to interface used to create icons outside of weblaf.
-     */
-    protected ExternalIconInterface externalIconInterface;
 
     /**
      * Constructs cell renderer for the specified file list.
@@ -270,11 +249,11 @@ public class WebFileListCellRenderer extends WebListCellRenderer
         if ( iconLabel.isEnabled () )
         {
             // Thumbnail loading
-            synchronized ( thumbnailsLock )
+            synchronized ( element.getLock () )
             {
                 if ( !element.isThumbnailQueued () && !element.isDisabledThumbnailQueued () )
                 {
-                    queueThumbnailLoad ( element, false );
+                    ThumbnailGenerator.queueThumbnailLoad ( fileList, element, false );
                 }
             }
 
@@ -291,11 +270,11 @@ public class WebFileListCellRenderer extends WebListCellRenderer
         else
         {
             // Disabled thumbnail loading
-            synchronized ( thumbnailsLock )
+            synchronized ( element.getLock () )
             {
                 if ( !element.isDisabledThumbnailQueued () )
                 {
-                    queueThumbnailLoad ( element, true );
+                    ThumbnailGenerator.queueThumbnailLoad ( fileList, element, true );
                 }
             }
 
@@ -349,97 +328,6 @@ public class WebFileListCellRenderer extends WebListCellRenderer
     protected boolean isTilesView ()
     {
         return fileList.getFileListViewType ().equals ( FileListViewType.tiles );
-    }
-
-    /**
-     * Interface to set an external icon creator.
-     */
-    public interface ExternalIconInterface
-    {
-        Icon createIcon( File file );
-    }
-
-    /**
-     * Setter to define an external icon creation method.
-     * Can be accessed through getFileChooserPanel().getFileList().getWebFileListCellRenderer()
-     * @param externalInterface
-     */
-    public void setIconCreator ( ExternalIconInterface externalInterface )
-    {
-        this.externalIconInterface = externalInterface;
-    }
-
-    /**
-     * Adds specified element into thumbnails queue.
-     *
-     * @param element element to add
-     */
-    protected void queueThumbnailLoad ( final FileElement element, final boolean disabled )
-    {
-        element.setThumbnailQueued ( true );
-        element.setDisabledThumbnailQueued ( disabled );
-
-        executorService.submit ( new Runnable ()
-        {
-            @Override
-            public void run ()
-            {
-                final String absolutePath = element.getFile ().getAbsolutePath ();
-                final String ext = FileUtils.getFileExtPart ( element.getFile ().getName (), false ).toLowerCase ();
-                if ( fileList.isGenerateThumbnails () && GlobalConstants.IMAGE_FORMATS.contains ( ext ) )
-                {
-                    final ImageIcon thumb = element.getEnabledThumbnail () != null ? element.getEnabledThumbnail () :
-                            ImageUtils.createThumbnailIcon ( absolutePath, thumbSize );
-                    if ( thumb != null )
-                    {
-                        element.setEnabledThumbnail ( thumb );
-                        if ( disabled )
-                        {
-                            element.setDisabledThumbnail ( ImageUtils.createDisabledCopy ( thumb ) );
-                        }
-                    }
-                    else
-                    {
-                        element.setEnabledThumbnail ( FileUtils.getStandartFileIcon ( element.getFile (), true, true ) );
-                        if ( disabled )
-                        {
-                            element.setDisabledThumbnail ( FileUtils.getStandartFileIcon ( element.getFile (), true, false ) );
-                        }
-                    }
-                }
-                else
-                {
-                    // Try to use the external createIcon() method (if it has been defined).
-                    Icon res;
-                    try
-                    {
-                        res = externalIconInterface.createIcon ( new File ( absolutePath ) );
-                    }
-                    catch (NullPointerException e)
-                    {
-                        res = null;
-                    }
-
-                    if ( res == null )
-                    {
-                        // Use standard icons
-                        element.setEnabledThumbnail ( FileUtils.getStandartFileIcon ( element.getFile(), true, true) );
-                        if ( disabled )
-                        {
-                            element.setDisabledThumbnail ( FileUtils.getStandartFileIcon ( element.getFile(), true, false) );
-                        }
-                    } else
-                    {
-                        // We are using the externally created icon
-                        element.setEnabledThumbnail ( ImageUtils.getImageIcon( res ) );
-                    }
-                }
-                if ( disabled != fileList.isEnabled () )
-                {
-                    fileList.repaint ( element );
-                }
-            }
-        } );
     }
 
     /**
