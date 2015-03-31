@@ -69,7 +69,7 @@ public class FileElement
     /**
      * Constructs element with specified file.
      */
-    public FileElement ( File file )
+    public FileElement ( final File file )
     {
         super ();
         this.file = file;
@@ -90,7 +90,7 @@ public class FileElement
      *
      * @param file new element file
      */
-    public void setFile ( File file )
+    public void setFile ( final File file )
     {
         synchronized ( lock )
         {
@@ -123,7 +123,7 @@ public class FileElement
      *
      * @param thumbnailQueued whether thumbnail load is queued or not
      */
-    public void setThumbnailQueued ( boolean thumbnailQueued )
+    public void setThumbnailQueued ( final boolean thumbnailQueued )
     {
         synchronized ( lock )
         {
@@ -152,7 +152,7 @@ public class FileElement
      *
      * @param disabledThumbnailQueued whether disabled thumbnail load is queued or not
      */
-    public void setDisabledThumbnailQueued ( boolean disabledThumbnailQueued )
+    public void setDisabledThumbnailQueued ( final boolean disabledThumbnailQueued )
     {
         synchronized ( lock )
         {
@@ -181,7 +181,7 @@ public class FileElement
      *
      * @param enabledThumbnail new cached element thumbnail icon for enabled state
      */
-    public void setEnabledThumbnail ( ImageIcon enabledThumbnail )
+    public void setEnabledThumbnail ( final ImageIcon enabledThumbnail )
     {
         synchronized ( lock )
         {
@@ -207,11 +207,21 @@ public class FileElement
      *
      * @param disabledThumbnail new cached element thumbnail icon for disabled state
      */
-    public void setDisabledThumbnail ( ImageIcon disabledThumbnail )
+    public void setDisabledThumbnail ( final ImageIcon disabledThumbnail )
     {
         synchronized ( lock )
         {
             this.disabledThumbnail = disabledThumbnail;
         }
+    }
+
+    /**
+     * Returns file element lock object.
+     *
+     * @return file element lock object
+     */
+    public Object getLock ()
+    {
+        return lock;
     }
 }

@@ -98,6 +98,10 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeProvider
             ui.setPaintTrack ( drawBorder );
         }
 
+        // Faster wheel scrolling by default
+        scrollpane.getVerticalScrollBar ().putClientProperty ( "JScrollBar.fastWheelScrolling", Boolean.TRUE );
+        scrollpane.getHorizontalScrollBar ().putClientProperty ( "JScrollBar.fastWheelScrolling", Boolean.TRUE );
+
         // Special
         LafUtils.setScrollBarStyleId ( scrollpane, "scroll-pane" );
 
