@@ -2768,7 +2768,7 @@ public final class SwingUtils
         final int xSign = hor.getValue () > x ? -1 : 1;
         final int ySign = ver.getValue () > y ? -1 : 1;
 
-        new Thread ( new Runnable ()
+        final Thread scroller1 = new Thread ( new Runnable ()
         {
             @Override
             public void run ()
@@ -2801,8 +2801,10 @@ public final class SwingUtils
                     ThreadUtils.sleepSafely ( 25 );
                 }
             }
-        } ).start ();
-        new Thread ( new Runnable ()
+        } );
+        scroller1.setDaemon ( true );
+
+        final Thread scroller2 = new Thread ( new Runnable ()
         {
             @Override
             public void run ()
@@ -2835,7 +2837,11 @@ public final class SwingUtils
                     ThreadUtils.sleepSafely ( 25 );
                 }
             }
-        } ).start ();
+        } );
+        scroller2.setDaemon ( true );
+
+        scroller1.start ();
+        scroller2.start ();
     }
 
     /**

@@ -184,7 +184,7 @@ public class HotkeyManager
                 final List<HotkeyInfo> hotkeys = value != null ? value.get () : null;
                 if ( component != null && hotkeys != null && !hotkeys.isEmpty () )
                 {
-                    copy.put ( component, hotkeys );
+                    copy.put ( component, CollectionUtils.copy ( hotkeys ) );
                 }
             }
             return copy;

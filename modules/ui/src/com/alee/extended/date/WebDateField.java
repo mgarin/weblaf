@@ -585,7 +585,7 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
     protected void updateCalendarFromDate ( final Date date )
     {
         calendar.removeDateSelectionListener ( dateSelectionListener );
-        calendar.setDate ( date, false );
+        calendar.setDate ( date );
         calendar.addDateSelectionListener ( dateSelectionListener );
     }
 
