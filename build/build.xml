@@ -363,18 +363,19 @@
         <antcall target="build.complete.impl" />
         <antcall target="build.featured.impl" />
         <antcall target="build.misc.impl" />
+        <antcall target="build.javadoc.impl" />
         <antcall target="copy.version.file" />
         <antcall target="update.library.version" />
         <antcall target="clean.dist.dir" />
     </target>
 
     <!-- Single assembled builds -->
-    <target name="build.base.artifacts" description="Build separate WebLaF binaries">
+    <target name="build.base.artifacts" description="Build base WebLaF binaries">
         <antcall target="clean.artifacts.dir" />
         <antcall target="build.base.impl" />
         <antcall target="clean.dist.dir" />
     </target>
-    <target name="build.complete.artifacts" description="Build single WebLaF binaries">
+    <target name="build.complete.artifacts" description="Build unified WebLaF binaries">
         <antcall target="clean.artifacts.dir" />
         <antcall target="build.complete.impl" />
         <antcall target="clean.dist.dir" />
@@ -384,9 +385,14 @@
         <antcall target="build.featured.impl" />
         <antcall target="clean.dist.dir" />
     </target>
-    <target name="build.misc.artifacts" description="Build miscellaneous WebLAF binaries">
+    <target name="build.misc.artifacts" description="Build miscellaneous WebLAF binaries" >
         <antcall target="clean.artifacts.dir" />
         <antcall target="build.misc.impl" />
+        <antcall target="clean.dist.dir" />
+    </target>
+    <target name="build.javadoc.artifacts" description="Build miscellaneous WebLAF binaries" >
+        <antcall target="clean.artifacts.dir" />
+        <antcall target="build.javadoc.impl" />
         <antcall target="clean.dist.dir" />
     </target>
 
@@ -394,7 +400,6 @@
     <target name="build.base.impl">
         <antcall target="build.core.jar" />
         <antcall target="build.ui.jar" />
-        <!-- <antcall target="build.demo.jar" /> -->
     </target>
     <target name="build.complete.impl">
         <antcall target="build.weblaf.jar" />
@@ -407,6 +412,8 @@
     <target name="build.misc.impl">
         <antcall target="build.sources.zip" />
         <antcall target="build.sources.jar" />
+    </target>
+    <target name="build.javadoc.impl">
         <antcall target="build.javadoc.jar" />
     </target>
 
