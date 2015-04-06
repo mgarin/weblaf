@@ -141,6 +141,7 @@ public abstract class DefaultExample implements Example
                 onPresentationEnd.run ();
             }
         } );
+        presentation.setDaemon ( true );
         presentation.start ();
     }
 

@@ -414,7 +414,7 @@ public class WebColorChooserField extends WebTextField
                         {
                             // Updating image in a separate thread to avoid UI freezing
                             updating = true;
-                            new Thread ( new Runnable ()
+                            final Thread updater = new Thread ( new Runnable ()
                             {
                                 @Override
                                 public void run ()
@@ -424,8 +424,7 @@ public class WebColorChooserField extends WebTextField
                                         final Point p = MouseInfo.getPointerInfo ().getLocation ();
                                         screenshot = robot.createScreenCapture (
                                                 new Rectangle ( p.x - eyedropperImageSide / 2, p.y - eyedropperImageSide / 2,
-                                                        eyedropperImageSide, eyedropperImageSide )
-                                        );
+                                                        eyedropperImageSide, eyedropperImageSide ) );
                                         color = new Color ( screenshot.getRGB ( eyedropperImageSide / 2, eyedropperImageSide / 2 ) );
                                         if ( screen != null )
                                         {
@@ -441,7 +440,9 @@ public class WebColorChooserField extends WebTextField
                                     }
                                     updating = false;
                                 }
-                            } ).start ();
+                            } );
+                            updater.setDaemon ( true );
+                            updater.start ();
                         }
                     }
 
