@@ -52,11 +52,6 @@ public class WebGlassPane extends WebPanel
     protected String id = null;
 
     /**
-     * JRootPane to which WebGlassPane is attached.
-     */
-    protected JRootPane rootPane = null;
-
-    /**
      * WebGlassPane mouse hit shape.
      */
     protected Shape hitShape = null;
@@ -93,14 +88,10 @@ public class WebGlassPane extends WebPanel
 
     /**
      * Constructs WebGlassPane for the specified JRootPane.
-     *
-     * @param rootPane JRootPane to process
      */
-    public WebGlassPane ( final JRootPane rootPane )
+    public WebGlassPane (  )
     {
         super ();
-        this.rootPane = rootPane;
-
         setOpaque ( false );
         setFocusable ( false );
         setLayout ( new MultiLayout () );
@@ -158,7 +149,7 @@ public class WebGlassPane extends WebPanel
     @Override
     public JRootPane getRootPane ()
     {
-        return rootPane;
+        return SwingUtils.getRootPane ( this );
     }
 
     /**

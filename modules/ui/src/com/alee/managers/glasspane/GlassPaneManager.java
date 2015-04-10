@@ -69,7 +69,7 @@ public class GlassPaneManager
             }
             else
             {
-                final WebGlassPane glassPane = new WebGlassPane ( rootPane );
+                final WebGlassPane glassPane = new WebGlassPane ();
                 rootPane.setGlassPane ( glassPane );
                 glassPane.setVisible ( true );
                 rootPane.invalidate ();
