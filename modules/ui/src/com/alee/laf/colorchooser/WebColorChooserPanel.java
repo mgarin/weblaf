@@ -510,6 +510,7 @@ public class WebColorChooserPanel extends WebPanel implements DialogOptions
     private void updateView ( final Color color )
     {
         lineColorChooser.setColor ( color );
+        palette.setSideColor ( color );
         palette.setColor ( color );
     }
 
