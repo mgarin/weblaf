@@ -363,7 +363,7 @@ public class WebColorChooserField extends WebTextField
                     @Override
                     public void mousePressed ( final MouseEvent e )
                     {
-                        if ( displayEyedropper && SwingUtils.isLeftMouseButton ( e ) )
+                        if ( displayEyedropper && SwingUtils.isLeftMouseButton ( e ) && isEnabled () )
                         {
                             // Resetting color update mark
                             shouldUpdateColor = true;
