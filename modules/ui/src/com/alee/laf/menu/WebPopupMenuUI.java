@@ -23,6 +23,7 @@ import com.alee.global.StyleConstants;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.style.StyleManager;
 import com.alee.managers.style.skin.web.PopupStyle;
+import com.alee.managers.style.skin.web.WebPopupPainter;
 import com.alee.utils.LafUtils;
 import com.alee.utils.ProprietaryUtils;
 import com.alee.utils.SwingUtils;
@@ -97,7 +98,7 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements SwingConstants, 
         super.installUI ( c );
 
         // Default settings
-        transparent = ProprietaryUtils.isWindowTransparencyAllowed ();
+        transparent = ProprietaryUtils.isWindowTransparencyAllowed () || ProprietaryUtils.isWindowShapeAllowed ();
         SwingUtils.setOrientation ( popupMenu );
         SwingUtils.setHandlesEnableStateMark ( popupMenu );
 
@@ -180,6 +181,12 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements SwingConstants, 
                         if ( SwingUtils.isHeavyWeightWindow ( ancestor ) )
                         {
                             ProprietaryUtils.setWindowOpaque ( ancestor, false );
+                            if ( painter instanceof WebPopupPainter && !ProprietaryUtils.isWindowTransparencyAllowed () )
+                            {
+                                Rectangle bounds = ancestor.getBounds(); ++bounds.width; ++bounds.height;
+                                Shape shape = ( ( WebPopupPainter ) painter ).provideShape ( popupMenu, bounds );
+                                ProprietaryUtils.setWindowShape ( ancestor, shape );
+                            }
                         }
                     }
                     else
@@ -188,6 +195,7 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements SwingConstants, 
                         if ( SwingUtils.isHeavyWeightWindow ( ancestor ) )
                         {
                             ProprietaryUtils.setWindowOpaque ( ancestor, true );
+                            ProprietaryUtils.setWindowShape ( ancestor, null );
                         }
                     }
                 }
