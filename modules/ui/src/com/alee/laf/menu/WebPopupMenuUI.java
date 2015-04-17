@@ -181,7 +181,7 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements SwingConstants, 
                         if ( SwingUtils.isHeavyWeightWindow ( ancestor ) )
                         {
                             ProprietaryUtils.setWindowOpaque ( ancestor, false );
-                            if ( painter instanceof WebPopupPainter && !ProprietaryUtils.isWindowTransparencyAllowed () )
+                            if ( painter instanceof WebPopupPainter && !ProprietaryUtils.isWindowTransparencyAllowed () && ProprietaryUtils.isWindowShapeAllowed () )
                             {
                                 Rectangle bounds = ancestor.getBounds(); ++bounds.width; ++bounds.height;
                                 Shape shape = ( ( WebPopupPainter ) painter ).provideShape ( popupMenu, bounds );
