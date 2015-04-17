@@ -190,7 +190,7 @@ public class WebPopOver extends WebDialog implements Styleable, PopOverEventMeth
      */
     public WebPopOver ( final Window owner, final String title )
     {
-        super(owner, title);
+        super ( owner, title );
     }
 
     /**
@@ -224,8 +224,8 @@ public class WebPopOver extends WebDialog implements Styleable, PopOverEventMeth
         //        painter.setPopupStyle ( PopupStyle.simple );
 
         container = new WebPanel ( /*painter*/ );
-        container.setStyleId("pop-over");
-        setContentPane(container);
+        container.setStyleId ( "pop-over" );
+        setContentPane ( container );
 
         if ( !ProprietaryUtils.isWindowTransparencyAllowed () && ProprietaryUtils.isWindowShapeAllowed () )
         {
