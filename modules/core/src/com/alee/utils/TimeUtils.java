@@ -99,10 +99,18 @@ public final class TimeUtils
      */
     public static long getPassedTime ( final boolean total )
     {
-        final long time = currentTime ();
-        final long passedTime = total ? time - pinnedTime : time - lastTime;
-        lastTime = time;
-        return passedTime;
+        if ( pinnedTime == null )
+        {
+            pinTime ();
+            return 0;
+        }
+        else
+        {
+            final long time = currentTime ();
+            final long passedTime = total ? time - pinnedTime : time - lastTime;
+            lastTime = time;
+            return passedTime;
+        }
     }
 
     /**
@@ -143,9 +151,17 @@ public final class TimeUtils
      */
     public static void showPassedTime ( final boolean total, final String prefix )
     {
-        final long time = currentTime ();
-        Log.info ( TimeUtils.class, prefix + ( total ? time - pinnedTime : time - lastTime ) );
-        lastTime = time;
+        if ( pinnedTime == null )
+        {
+            Log.info ( TimeUtils.class, prefix + "0" );
+            pinTime ();
+        }
+        else
+        {
+            final long time = currentTime ();
+            Log.info ( TimeUtils.class, prefix + ( total ? time - pinnedTime : time - lastTime ) );
+            lastTime = time;
+        }
     }
 
     /**
@@ -205,10 +221,18 @@ public final class TimeUtils
      */
     public static long getPassedNanoTime ( final boolean total )
     {
-        final long time = currentNanoTime ();
-        final long passedTime = total ? time - pinnedNanoTime : time - lastNanoTime;
-        lastNanoTime = time;
-        return passedTime;
+        if ( pinnedNanoTime == null )
+        {
+            pinNanoTime ();
+            return 0;
+        }
+        else
+        {
+            final long time = currentNanoTime ();
+            final long passedTime = total ? time - pinnedNanoTime : time - lastNanoTime;
+            lastNanoTime = time;
+            return passedTime;
+        }
     }
 
     /**
@@ -249,9 +273,17 @@ public final class TimeUtils
      */
     public static void showPassedNanoTime ( final boolean total, final String prefix )
     {
-        final long time = currentNanoTime ();
-        Log.info ( TimeUtils.class, prefix + ( total ? time - pinnedNanoTime : time - lastNanoTime ) );
-        lastNanoTime = time;
+        if ( pinnedNanoTime == null )
+        {
+            Log.info ( TimeUtils.class, prefix + "0" );
+            pinNanoTime ();
+        }
+        else
+        {
+            final long time = currentNanoTime ();
+            Log.info ( TimeUtils.class, prefix + ( total ? time - pinnedNanoTime : time - lastNanoTime ) );
+            lastNanoTime = time;
+        }
     }
 
     /**

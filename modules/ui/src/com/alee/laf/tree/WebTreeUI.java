@@ -119,7 +119,7 @@ public class WebTreeUI extends BasicTreeUI
      * @param c component that will use UI instance
      * @return instance of the WebTreeUI
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebTreeUI ();
@@ -237,12 +237,11 @@ public class WebTreeUI extends BasicTreeUI
                 // Only left mouse button events
                 if ( SwingUtilities.isLeftMouseButton ( e ) )
                 {
-                    // Check that mouse did not hit actuall tree cell
+                    // Check that mouse did not hit actual tree cell
                     if ( getRowForPoint ( e.getPoint (), false ) == -1 )
                     {
                         if ( isSelectorAvailable () )
                         {
-                            // todo Start DnD on selected row
                             // Avoiding selection start when pressed on tree expand handle
                             final TreePath path = getClosestPathForLocation ( tree, e.getX (), e.getY () );
                             if ( path == null || !isLocationInExpandControl ( path, e.getX (), e.getY () ) &&
@@ -250,8 +249,8 @@ public class WebTreeUI extends BasicTreeUI
                             {
                                 // Avoid starting multiselection if row is selected and drag is possible
                                 final int rowForPath = getRowForPath ( tree, path );
-                                if ( isDragAvailable () && getRowBounds ( rowForPath ).contains ( e.getX (), e.getY () ) &&
-                                        tree.isRowSelected ( rowForPath ) )
+                                if ( isDragAvailable () && rowForPath != -1 &&
+                                        getRowBounds ( rowForPath ).contains ( e.getX (), e.getY () ) && tree.isRowSelected ( rowForPath ) )
                                 {
                                     // Marking row to be dragged
                                     draggablePath = path;
@@ -297,6 +296,10 @@ public class WebTreeUI extends BasicTreeUI
                             }
                         }
                     }
+                    //                    else
+                    //                    {
+                    //                        // todo Start DnD on selected row
+                    //                    }
                 }
             }
 

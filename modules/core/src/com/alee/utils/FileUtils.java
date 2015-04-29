@@ -809,7 +809,7 @@ public final class FileUtils
      */
     public static String getFileNamePart ( final File file )
     {
-        return getFileNamePart ( file.getName () );
+        return file != null ? getFileNamePart ( file.getName () ) : "";
     }
 
     /**
@@ -820,8 +820,15 @@ public final class FileUtils
      */
     public static String getFileNamePart ( final String name )
     {
-        final int i = name.lastIndexOf ( "." );
-        return i == -1 ? name : name.substring ( 0, i );
+        if ( !TextUtils.isEmpty ( name ) )
+        {
+            final int i = name.lastIndexOf ( "." );
+            return i == -1 ? name : name.substring ( 0, i );
+        }
+        else
+        {
+            return "";
+        }
     }
 
     /**
@@ -831,10 +838,29 @@ public final class FileUtils
      * @param withDot whether return the extension with dot, or not
      * @return file extension
      */
-    public static String getFileExtPart ( final String file, final boolean withDot )
+    public static String getFileExtPart ( final File file, final boolean withDot )
     {
-        final int i = file.lastIndexOf ( "." );
-        return i == -1 ? "" : withDot ? file.substring ( i ) : file.substring ( i + 1 );
+        return file != null ? getFileExtPart ( file.getName (), withDot ) : "";
+    }
+
+    /**
+     * Returns file extension either with or without dot.
+     *
+     * @param name    file name to process
+     * @param withDot whether return the extension with dot, or not
+     * @return file extension
+     */
+    public static String getFileExtPart ( final String name, final boolean withDot )
+    {
+        if ( !TextUtils.isEmpty ( name ) )
+        {
+            final int i = name.lastIndexOf ( "." );
+            return i == -1 ? "" : withDot ? name.substring ( i ) : name.substring ( i + 1 );
+        }
+        else
+        {
+            return "";
+        }
     }
 
     /**
