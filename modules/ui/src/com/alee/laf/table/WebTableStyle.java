@@ -107,4 +107,14 @@ public final class WebTableStyle
      * Set to -1 to disable editing caused by mouse events.
      */
     public static int clickCountToStartEdit = 2;
+
+    /**
+     * Cell editor background.
+     */
+    public static Color cellEditorBackground = Color.WHITE;
+
+    /**
+     * Cell editor foreground.
+     */
+    public static Color cellEditorForeground = Color.BLACK;
 }

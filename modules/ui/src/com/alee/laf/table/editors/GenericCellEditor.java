@@ -18,6 +18,7 @@
 package com.alee.laf.table.editors;
 
 import com.alee.laf.text.WebTextField;
+import com.alee.laf.table.WebTableStyle;
 
 /**
  * User: mgarin Date: 28.11.12 Time: 14:19
@@ -32,6 +33,7 @@ public class GenericCellEditor extends WebTextField
         super ( false );
         setMargin ( 0 );
         setFieldMargin ( 0 );
+        setForeground( WebTableStyle.cellEditorForeground );
         setPainter ( new GenericCellEditorPainter () );
     }
 
