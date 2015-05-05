@@ -19,6 +19,7 @@ package com.alee.laf.table.editors;
 
 import com.alee.extended.painter.AbstractPainter;
 import com.alee.utils.GraphicsUtils;
+import com.alee.laf.table.WebTableStyle;
 
 import java.awt.*;
 
@@ -55,7 +56,7 @@ public class GenericCellEditorPainter extends AbstractPainter<GenericCellEditor>
     @Override
     public void paint ( final Graphics2D g2d, final Rectangle bounds, final GenericCellEditor c )
     {
-        g2d.setPaint ( Color.WHITE );
+        g2d.setPaint ( WebTableStyle.cellEditorBackground );
         g2d.fillRect ( bounds.x, bounds.y, bounds.width, bounds.height );
 
         if ( c.isInvalidValue () )
