@@ -287,8 +287,6 @@ public class WebCalendar extends WebPanel
      */
     protected void updateMonth ( final boolean animate )
     {
-        System.out.println ( "dates updated" );
-
         // Even if someone is asking to animate transition we have to honor calendar settings
         // If it isn't set to be animated then we should never animate any transitions within it
         if ( animate && isAnimate () )
@@ -736,8 +734,6 @@ public class WebCalendar extends WebPanel
         {
             date = new Date ();
         }
-
-        System.out.println ( "SHOWN:" + shownDate );
 
         this.oldShownDate = this.shownDate;
         this.shownDate = date;

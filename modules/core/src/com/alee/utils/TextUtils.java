@@ -591,7 +591,7 @@ public final class TextUtils
      * @param length part length in symbols
      * @return ID part
      */
-    private static String generateId ( final int length )
+    public static String generateId ( final int length )
     {
         final StringBuilder stringBuilder = new StringBuilder ( length );
         for ( int i = 0; i < length; i++ )

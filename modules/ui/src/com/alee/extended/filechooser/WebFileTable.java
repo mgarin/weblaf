@@ -33,7 +33,7 @@ import java.util.List;
 /**
  * File table component.
  * It can either display specified folder content or custom list of files.
- *
+ * <p/>
  * Note that row indices are always specified in terms of the table model
  * and not in terms of the table view (which may change due to sorting).
  *
@@ -233,7 +233,7 @@ public class WebFileTable extends WebTable implements WebFileTableColumns
     public File getSelectedFile ()
     {
         final int row = getSelectedRow ();
-        return row != -1 ? getFileAtRow ( convertRowIndexToModel( row )) : null;
+        return row != -1 ? getFileAtRow ( convertRowIndexToModel ( row ) ) : null;
     }
 
     /**
@@ -247,7 +247,7 @@ public class WebFileTable extends WebTable implements WebFileTableColumns
         final List<File> selectedFiles = new ArrayList<File> ( selectedRows.length );
         for ( final int row : selectedRows )
         {
-            selectedFiles.add ( getFileAtRow ( convertRowIndexToModel( row )) );
+            selectedFiles.add ( getFileAtRow ( convertRowIndexToModel ( row ) ) );
         }
         return selectedFiles;
     }
@@ -280,8 +280,8 @@ public class WebFileTable extends WebTable implements WebFileTableColumns
      */
     public void setSelectedFile ( final File file, final boolean shouldScroll )
     {
-        final int row = getFileTableModel ().getFileRow(file);
-        setSelectedRow ( row == -1 ? -1 : convertRowIndexToView( row ) , shouldScroll );
+        final int row = getFileTableModel ().getFileRow ( file );
+        setSelectedRow ( row == -1 ? -1 : convertRowIndexToView ( row ), shouldScroll );
     }
 
     /**
@@ -294,8 +294,11 @@ public class WebFileTable extends WebTable implements WebFileTableColumns
         clearSelection ();
         for ( final File file : files )
         {
-            final int row = getFileTableModel ().getFileRow(file);
-            if ( row != -1 ) addSelectedRow ( convertRowIndexToView( row ) );
+            final int row = getFileTableModel ().getFileRow ( file );
+            if ( row != -1 )
+            {
+                addSelectedRow ( convertRowIndexToView ( row ) );
+            }
         }
     }
 
@@ -321,7 +324,10 @@ public class WebFileTable extends WebTable implements WebFileTableColumns
         for ( final File file : files )
         {
             final int row = getFileTableModel ().getFileRow ( file );
-            if ( row != -1 ) addSelectedRow ( convertRowIndexToView( row ) );
+            if ( row != -1 )
+            {
+                addSelectedRow ( convertRowIndexToView ( row ) );
+            }
         }
     }
 
@@ -333,7 +339,7 @@ public class WebFileTable extends WebTable implements WebFileTableColumns
     public boolean editSelectedFileName ()
     {
         final int row = getSelectedRow ();
-        return row != -1 && editFileNameAt ( convertRowIndexToModel( row ) );
+        return row != -1 && editFileNameAt ( convertRowIndexToModel ( row ) );
     }
 
     /**
@@ -356,6 +362,6 @@ public class WebFileTable extends WebTable implements WebFileTableColumns
     public boolean editFileNameAt ( final int row )
     {
         return row != 1 && isColumnDisplayed ( NAME_COLUMN ) &&
-                editCellAt ( convertRowIndexToView( row ), getColumnModel ().getColumnIndex ( NAME_COLUMN ) );
+                editCellAt ( convertRowIndexToView ( row ), getColumnModel ().getColumnIndex ( NAME_COLUMN ) );
     }
 }

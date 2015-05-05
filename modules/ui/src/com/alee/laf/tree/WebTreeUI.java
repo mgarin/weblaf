@@ -39,9 +39,7 @@ import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Enumeration;
+import java.util.*;
 import java.util.List;
 
 /**
@@ -119,7 +117,7 @@ public class WebTreeUI extends BasicTreeUI
      * @param c component that will use UI instance
      * @return instance of the WebTreeUI
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebTreeUI ();
@@ -1148,25 +1146,30 @@ public class WebTreeUI extends BasicTreeUI
      */
     protected List<Rectangle> getSelectionRects ()
     {
-        final List<Rectangle> selections = new ArrayList<Rectangle> ();
+        // Return empty selection rects when custom selection painting is disabled
+        if ( selectionStyle == TreeSelectionStyle.none )
+        {
+            return Collections.emptyList ();
+        }
 
         // Checking that selection exists
         final int[] rows = tree.getSelectionRows ();
-        if ( rows == null )
+        if ( rows == null || rows.length == 0 )
         {
-            return selections;
+            return Collections.emptyList ();
         }
 
         // Sorting selected rows
         Arrays.sort ( rows );
 
         // Calculating selection rects
+        final List<Rectangle> selections = new ArrayList<Rectangle> ( tree.getSelectionCount () );
         final Insets insets = tree.getInsets ();
         Rectangle maxRect = null;
         int lastRow = -1;
         for ( final int row : rows )
         {
-            if ( selectionStyle.equals ( TreeSelectionStyle.single ) )
+            if ( selectionStyle == TreeSelectionStyle.single )
             {
                 // Required bounds
                 selections.add ( tree.getRowBounds ( row ) );
@@ -1289,7 +1292,8 @@ public class WebTreeUI extends BasicTreeUI
      */
     protected void paintRolloverNodeHighlight ( final Graphics2D g2d )
     {
-        if ( tree.isEnabled () && highlightRolloverNode && rolloverRow != -1 && !tree.isRowSelected ( rolloverRow ) )
+        if ( tree.isEnabled () && highlightRolloverNode && selectionStyle != TreeSelectionStyle.none && rolloverRow != -1 &&
+                !tree.isRowSelected ( rolloverRow ) )
         {
             final Rectangle rect = isFullLineSelection () ? getFullRowBounds ( rolloverRow ) : tree.getRowBounds ( rolloverRow );
             if ( rect != null )
@@ -1413,6 +1417,49 @@ public class WebTreeUI extends BasicTreeUI
 
         // Empty out the renderer pane, allowing renderers to be gc'ed.
         rendererPane.removeAll ();
+    }
+
+    /**
+     * Paints the horizontal part of the leg.
+     *
+     * @param g               graphics
+     * @param clipBounds      clip bounds
+     * @param insets          tree insets
+     * @param bounds          tree path bounds
+     * @param path            tree path
+     * @param row             row index
+     * @param isExpanded      whether row is expanded or not
+     * @param hasBeenExpanded whether row has been expanded once before or not
+     * @param isLeaf          whether node is leaf or not
+     */
+    @Override
+    protected void paintHorizontalPartOfLeg ( final Graphics g, final Rectangle clipBounds, final Insets insets, final Rectangle bounds,
+                                              final TreePath path, final int row, final boolean isExpanded, final boolean hasBeenExpanded,
+                                              final boolean isLeaf )
+    {
+        if ( !isPaintLines () )
+        {
+            return;
+        }
+        super.paintHorizontalPartOfLeg ( g, clipBounds, insets, bounds, path, row, isExpanded, hasBeenExpanded, isLeaf );
+    }
+
+    /**
+     * Paints the vertical part of the leg.
+     *
+     * @param g          graphics
+     * @param clipBounds clip bounds
+     * @param insets     tree insets
+     * @param path       tree path
+     */
+    @Override
+    protected void paintVerticalPartOfLeg ( final Graphics g, final Rectangle clipBounds, final Insets insets, final TreePath path )
+    {
+        if ( !isPaintLines () )
+        {
+            return;
+        }
+        super.paintVerticalPartOfLeg ( g, clipBounds, insets, path );
     }
 
     /**

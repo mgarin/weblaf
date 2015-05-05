@@ -40,7 +40,9 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 /**
- * User: mgarin Date: 28.04.11 Time: 15:05
+ * Custom UI extending BasicProgressBarUI.
+ *
+ * @author Mikle Garin
  */
 
 public class WebProgressBarUI extends BasicProgressBarUI implements ShapeProvider, BorderMethods
@@ -60,6 +62,9 @@ public class WebProgressBarUI extends BasicProgressBarUI implements ShapeProvide
 
     private Color progressTopColor = WebProgressBarStyle.progressTopColor;
     private Color progressBottomColor = WebProgressBarStyle.progressBottomColor;
+
+    private Color progressEnabledBorderColor = WebProgressBarStyle.progressEnabledBorderColor;
+    private Color progressDisabledBorderColor = WebProgressBarStyle.progressDisabledBorderColor;
 
     private Color indeterminateBorder = WebProgressBarStyle.indeterminateBorder;
 
@@ -249,6 +254,26 @@ public class WebProgressBarUI extends BasicProgressBarUI implements ShapeProvide
     public void setProgressBottomColor ( final Color progressBottomColor )
     {
         this.progressBottomColor = progressBottomColor;
+    }
+
+    public Color getProgressEnabledBorderColor ()
+    {
+        return progressEnabledBorderColor;
+    }
+
+    public void setProgressEnabledBorderColor ( final Color progressEnabledBorderColor )
+    {
+        this.progressEnabledBorderColor = progressEnabledBorderColor;
+    }
+
+    public Color getProgressDisabledBorderColor ()
+    {
+        return progressDisabledBorderColor;
+    }
+
+    public void setProgressDisabledBorderColor ( final Color progressDisabledBorderColor )
+    {
+        this.progressDisabledBorderColor = progressDisabledBorderColor;
     }
 
     public Color getIndeterminateBorder ()
@@ -450,7 +475,7 @@ public class WebProgressBarUI extends BasicProgressBarUI implements ShapeProvide
         {
             GraphicsUtils.drawShade ( g2d, is, StyleConstants.shadeColor, shadeWidth );
         }
-        g2d.setPaint ( c.isEnabled () ? Color.GRAY : Color.LIGHT_GRAY );
+        g2d.setPaint ( c.isEnabled () ? this.progressEnabledBorderColor : this.progressDisabledBorderColor );
         g2d.draw ( is );
 
         // Text
@@ -513,8 +538,7 @@ public class WebProgressBarUI extends BasicProgressBarUI implements ShapeProvide
                     {
                         g2d.setPaint ( new RadialGradientPaint ( c.getWidth () / 2, c.getHeight () - shadeWidth * 2 - animationLocation -
                                 determinateAnimationWidth / 2, determinateAnimationWidth / 2, new float[]{ 0f, 1f },
-                                new Color[]{ highlightDarkWhite, StyleConstants.transparent }
-                        ) );
+                                new Color[]{ highlightDarkWhite, StyleConstants.transparent } ) );
                     }
                     else
                     {
@@ -528,7 +552,7 @@ public class WebProgressBarUI extends BasicProgressBarUI implements ShapeProvide
             }
 
             // Border
-            g2d.setPaint ( c.isEnabled () ? Color.GRAY : Color.LIGHT_GRAY );
+            g2d.setPaint ( c.isEnabled () ? this.progressEnabledBorderColor : this.progressDisabledBorderColor );
             g2d.draw ( is );
         }
 
@@ -583,7 +607,7 @@ public class WebProgressBarUI extends BasicProgressBarUI implements ShapeProvide
         }
         g2d.fill ( bs );
 
-        g2d.setPaint ( c.isEnabled () ? Color.GRAY : Color.LIGHT_GRAY );
+        g2d.setPaint ( c.isEnabled () ? this.progressEnabledBorderColor : this.progressDisabledBorderColor );
         g2d.draw ( bs );
     }
 

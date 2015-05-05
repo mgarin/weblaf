@@ -41,7 +41,7 @@ public class FileListModel extends WebListModel<FileElement>
     /**
      * File elements cache.
      */
-    private Map<String, FileElement> elementsCache = new HashMap<String, FileElement> ();
+    private final Map<String, FileElement> elementsCache = new HashMap<String, FileElement> ();
 
     /**
      * Constructs empty file list model.
@@ -56,7 +56,7 @@ public class FileListModel extends WebListModel<FileElement>
      *
      * @param directoryPath directory path
      */
-    public FileListModel ( String directoryPath )
+    public FileListModel ( final String directoryPath )
     {
         super ();
         setData ( directoryPath );
@@ -67,7 +67,7 @@ public class FileListModel extends WebListModel<FileElement>
      *
      * @param directory directory
      */
-    public FileListModel ( File directory )
+    public FileListModel ( final File directory )
     {
         super ();
         setData ( directory );
@@ -78,7 +78,7 @@ public class FileListModel extends WebListModel<FileElement>
      *
      * @param data files array
      */
-    public FileListModel ( File[] data )
+    public FileListModel ( final File[] data )
     {
         super ();
         setData ( data );
@@ -89,7 +89,7 @@ public class FileListModel extends WebListModel<FileElement>
      *
      * @param data files list
      */
-    public FileListModel ( List<File> data )
+    public FileListModel ( final List<File> data )
     {
         super ();
         setData ( data );
@@ -102,7 +102,7 @@ public class FileListModel extends WebListModel<FileElement>
     {
         synchronized ( elementsCacheLock )
         {
-            for ( Map.Entry<String, FileElement> entry : elementsCache.entrySet () )
+            for ( final Map.Entry<String, FileElement> entry : elementsCache.entrySet () )
             {
                 entry.getValue ().setFile ( null );
             }
@@ -116,7 +116,7 @@ public class FileListModel extends WebListModel<FileElement>
      * @param file file to process
      * @return FileElement for the specified file or null if it is not in the list
      */
-    public FileElement getElement ( File file )
+    public FileElement getElement ( final File file )
     {
         return getElement ( file != null ? file.getAbsolutePath () : null );
     }
@@ -127,7 +127,7 @@ public class FileListModel extends WebListModel<FileElement>
      * @param path file path to process
      * @return FileElement for the file with specified path or null if it is not in the list
      */
-    public FileElement getElement ( String path )
+    public FileElement getElement ( final String path )
     {
         synchronized ( elementsCacheLock )
         {
@@ -140,7 +140,7 @@ public class FileListModel extends WebListModel<FileElement>
      *
      * @param directoryPath directory path to process
      */
-    public void setData ( String directoryPath )
+    public void setData ( final String directoryPath )
     {
         clearCache ();
         setElements ( toElementsList ( getData ( new File ( directoryPath ) ) ) );
@@ -151,7 +151,7 @@ public class FileListModel extends WebListModel<FileElement>
      *
      * @param directory directory to process
      */
-    public void setData ( File directory )
+    public void setData ( final File directory )
     {
         clearCache ();
         setElements ( toElementsList ( getData ( directory ) ) );
@@ -162,7 +162,7 @@ public class FileListModel extends WebListModel<FileElement>
      *
      * @param data files array
      */
-    public void setData ( File[] data )
+    public void setData ( final File[] data )
     {
         clearCache ();
         setElements ( toElementsList ( data ) );
@@ -173,7 +173,7 @@ public class FileListModel extends WebListModel<FileElement>
      *
      * @param data files list
      */
-    public void setData ( List<File> data )
+    public void setData ( final List<File> data )
     {
         clearCache ();
         setElements ( toElementsList ( data ) );
@@ -185,7 +185,7 @@ public class FileListModel extends WebListModel<FileElement>
      * @param directory directory to process
      * @return files array
      */
-    protected File[] getData ( File directory )
+    protected File[] getData ( final File directory )
     {
         if ( directory != null )
         {
@@ -203,12 +203,12 @@ public class FileListModel extends WebListModel<FileElement>
      * @param data File array to process
      * @return FileElement list
      */
-    protected List<FileElement> toElementsList ( File[] data )
+    protected List<FileElement> toElementsList ( final File[] data )
     {
-        List<FileElement> elements = new ArrayList<FileElement> ( data != null ? data.length : 0 );
+        final List<FileElement> elements = new ArrayList<FileElement> ( data != null ? data.length : 0 );
         if ( data != null )
         {
-            for ( File file : data )
+            for ( final File file : data )
             {
                 final FileElement element = new FileElement ( file );
                 elements.add ( element );
@@ -227,12 +227,12 @@ public class FileListModel extends WebListModel<FileElement>
      * @param data File list to process
      * @return FileElement list
      */
-    protected List<FileElement> toElementsList ( List<File> data )
+    protected List<FileElement> toElementsList ( final List<File> data )
     {
-        List<FileElement> elements = new ArrayList<FileElement> ( data != null ? data.size () : 0 );
+        final List<FileElement> elements = new ArrayList<FileElement> ( data != null ? data.size () : 0 );
         if ( data != null )
         {
-            for ( File file : data )
+            for ( final File file : data )
             {
                 final FileElement element = new FileElement ( file );
                 elements.add ( element );
