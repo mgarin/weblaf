@@ -39,9 +39,7 @@ import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Enumeration;
+import java.util.*;
 import java.util.List;
 
 /**
@@ -1148,25 +1146,30 @@ public class WebTreeUI extends BasicTreeUI
      */
     protected List<Rectangle> getSelectionRects ()
     {
-        final List<Rectangle> selections = new ArrayList<Rectangle> ();
+        // Return empty selection rects when custom selection painting is disabled
+        if ( selectionStyle == TreeSelectionStyle.none )
+        {
+            return Collections.emptyList ();
+        }
 
         // Checking that selection exists
         final int[] rows = tree.getSelectionRows ();
-        if ( rows == null )
+        if ( rows == null || rows.length == 0 )
         {
-            return selections;
+            return Collections.emptyList ();
         }
 
         // Sorting selected rows
         Arrays.sort ( rows );
 
         // Calculating selection rects
+        final List<Rectangle> selections = new ArrayList<Rectangle> ( tree.getSelectionCount () );
         final Insets insets = tree.getInsets ();
         Rectangle maxRect = null;
         int lastRow = -1;
         for ( final int row : rows )
         {
-            if ( selectionStyle.equals ( TreeSelectionStyle.single ) )
+            if ( selectionStyle == TreeSelectionStyle.single )
             {
                 // Required bounds
                 selections.add ( tree.getRowBounds ( row ) );
@@ -1289,7 +1292,8 @@ public class WebTreeUI extends BasicTreeUI
      */
     protected void paintRolloverNodeHighlight ( final Graphics2D g2d )
     {
-        if ( tree.isEnabled () && highlightRolloverNode && rolloverRow != -1 && !tree.isRowSelected ( rolloverRow ) )
+        if ( tree.isEnabled () && highlightRolloverNode && selectionStyle != TreeSelectionStyle.none && rolloverRow != -1 &&
+                !tree.isRowSelected ( rolloverRow ) )
         {
             final Rectangle rect = isFullLineSelection () ? getFullRowBounds ( rolloverRow ) : tree.getRowBounds ( rolloverRow );
             if ( rect != null )
