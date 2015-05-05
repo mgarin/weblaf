@@ -103,6 +103,11 @@ public final class WebTableStyle
     public static Color selectionBackground = new Color ( 59, 115, 175 );
 
     /**
+     * Scrollpane background.
+     */
+    public static Color scrollPaneBackgroundColor = Color.WHITE;
+
+    /**
      * Clicks required to start table cell editing.
      * Set to -1 to disable editing caused by mouse events.
      */
