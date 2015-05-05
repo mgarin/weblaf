@@ -119,7 +119,7 @@ public class WebTreeUI extends BasicTreeUI
      * @param c component that will use UI instance
      * @return instance of the WebTreeUI
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebTreeUI ();
@@ -1413,6 +1413,49 @@ public class WebTreeUI extends BasicTreeUI
 
         // Empty out the renderer pane, allowing renderers to be gc'ed.
         rendererPane.removeAll ();
+    }
+
+    /**
+     * Paints the horizontal part of the leg.
+     *
+     * @param g               graphics
+     * @param clipBounds      clip bounds
+     * @param insets          tree insets
+     * @param bounds          tree path bounds
+     * @param path            tree path
+     * @param row             row index
+     * @param isExpanded      whether row is expanded or not
+     * @param hasBeenExpanded whether row has been expanded once before or not
+     * @param isLeaf          whether node is leaf or not
+     */
+    @Override
+    protected void paintHorizontalPartOfLeg ( final Graphics g, final Rectangle clipBounds, final Insets insets, final Rectangle bounds,
+                                              final TreePath path, final int row, final boolean isExpanded, final boolean hasBeenExpanded,
+                                              final boolean isLeaf )
+    {
+        if ( !isPaintLines () )
+        {
+            return;
+        }
+        super.paintHorizontalPartOfLeg ( g, clipBounds, insets, bounds, path, row, isExpanded, hasBeenExpanded, isLeaf );
+    }
+
+    /**
+     * Paints the vertical part of the leg.
+     *
+     * @param g          graphics
+     * @param clipBounds clip bounds
+     * @param insets     tree insets
+     * @param path       tree path
+     */
+    @Override
+    protected void paintVerticalPartOfLeg ( final Graphics g, final Rectangle clipBounds, final Insets insets, final TreePath path )
+    {
+        if ( !isPaintLines () )
+        {
+            return;
+        }
+        super.paintVerticalPartOfLeg ( g, clipBounds, insets, path );
     }
 
     /**
