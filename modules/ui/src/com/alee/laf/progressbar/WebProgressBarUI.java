@@ -538,8 +538,7 @@ public class WebProgressBarUI extends BasicProgressBarUI implements ShapeProvide
                     {
                         g2d.setPaint ( new RadialGradientPaint ( c.getWidth () / 2, c.getHeight () - shadeWidth * 2 - animationLocation -
                                 determinateAnimationWidth / 2, determinateAnimationWidth / 2, new float[]{ 0f, 1f },
-                                new Color[]{ highlightDarkWhite, StyleConstants.transparent }
-                        ) );
+                                new Color[]{ highlightDarkWhite, StyleConstants.transparent } ) );
                     }
                     else
                     {

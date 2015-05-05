@@ -50,10 +50,11 @@ public final class NinePatchUtils
      */
 
     /**
-     * Shade prefixes.
+     * Constants used to form icons cache keys.
      */
-    public static final String OUTER_SHADE_PREFIX = "outer";
-    public static final String INNER_SHADE_PREFIX = "inner";
+    private static final String OUTER_SHADE_PREFIX = "outer";
+    private static final String INNER_SHADE_PREFIX = "inner";
+    private static final String SEPARATOR = ";";
 
     /**
      * Shade nine-patch icons cache.
@@ -70,15 +71,18 @@ public final class NinePatchUtils
      */
     public static NinePatchIcon getShadeIcon ( final int shadeWidth, final int round, final float shadeOpacity )
     {
-        final String key = OUTER_SHADE_PREFIX + ";" + shadeWidth + ";" + round + ";" + shadeOpacity;
-        NinePatchIcon icon = getNinePatchIconFromCache(key);
-        if (icon != null) {
+        final String key = OUTER_SHADE_PREFIX + SEPARATOR + shadeWidth + SEPARATOR + round + SEPARATOR + shadeOpacity;
+        final NinePatchIcon icon = getNinePatchIconFromCache ( key );
+        if ( icon != null )
+        {
             return icon;
         }
-
-        final NinePatchIcon ninePatchIcon = createShadeIcon(shadeWidth, round, shadeOpacity);
-        shadeIconCache.put ( key, new WeakReference<NinePatchIcon>(ninePatchIcon) );
-        return ninePatchIcon;
+        else
+        {
+            final NinePatchIcon ninePatchIcon = createShadeIcon ( shadeWidth, round, shadeOpacity );
+            shadeIconCache.put ( key, new WeakReference<NinePatchIcon> ( ninePatchIcon ) );
+            return ninePatchIcon;
+        }
     }
 
     /**
@@ -137,28 +141,29 @@ public final class NinePatchUtils
      */
     public static NinePatchIcon getInnerShadeIcon ( final int shadeWidth, final int round, final float shadeOpacity )
     {
-        final String key = INNER_SHADE_PREFIX + ";" + shadeWidth + ";" + round + ";" + shadeOpacity;
-        NinePatchIcon icon = getNinePatchIconFromCache(key);
-        if (icon != null) {
+        final String key = INNER_SHADE_PREFIX + SEPARATOR + shadeWidth + SEPARATOR + round + SEPARATOR + shadeOpacity;
+        final NinePatchIcon icon = getNinePatchIconFromCache ( key );
+        if ( icon != null )
+        {
             return icon;
         }
-
-        final NinePatchIcon ninePatchIcon = createInnerShadeIcon ( shadeWidth, round, shadeOpacity );
-        shadeIconCache.put ( key, new WeakReference<NinePatchIcon>(ninePatchIcon) );
-        return ninePatchIcon;
+        else
+        {
+            final NinePatchIcon ninePatchIcon = createInnerShadeIcon ( shadeWidth, round, shadeOpacity );
+            shadeIconCache.put ( key, new WeakReference<NinePatchIcon> ( ninePatchIcon ) );
+            return ninePatchIcon;
+        }
     }
 
     /**
      * Fetches the nine-patch icon from the cache.
+     *
      * @param key Cache key.
      * @return Nine-patch icon from the cache or null on cache miss.
      */
-    private static NinePatchIcon getNinePatchIconFromCache(String key) {
-        if ( shadeIconCache.containsKey ( key ) ) {
-            return shadeIconCache.get(key).get();
-        }
-
-        return null;
+    private static NinePatchIcon getNinePatchIconFromCache ( final String key )
+    {
+        return shadeIconCache.containsKey ( key ) ? shadeIconCache.get ( key ).get () : null;
     }
 
     /**
