@@ -1506,6 +1506,7 @@ public class WebTimer
         final WebTimer repeat = new WebTimer ( name, delay, initialDelay, listener );
         repeat.setRepeats ( true );
         repeat.setUseDaemonThread ( useDaemonThread );
+        repeat.setUseEventDispatchThread ( false );
         repeat.setCyclesLimit ( cyclesLimit );
         repeat.start ();
         return repeat;
