@@ -29,7 +29,7 @@ import java.util.*;
  * @author Mikle Garin
  */
 
-public class SortUtils
+public final class SortUtils
 {
     /**
      * Performs topological data sort using the graph data provider to build nodes graph and returns sorted data list.
