@@ -80,7 +80,7 @@ public enum SupportedComponent
     /**
      * Separator component.
      */
-    separator ( false, JSeparator.class, "SeparatorUI", WebLookAndFeel.separatorUI ),
+    separator ( true, JSeparator.class, "SeparatorUI", WebLookAndFeel.separatorUI ),
 
     /**
      * Scroll-related components.
