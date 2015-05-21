@@ -30,7 +30,8 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public class AdaptiveScrollBarPainter<E extends JScrollBar> extends AdaptivePainter<E> implements ScrollBarPainter<E>
+public class AdaptiveScrollBarPainter<E extends JScrollBar, U extends WebScrollBarUI> extends AdaptivePainter<E, U>
+        implements ScrollBarPainter<E, U>
 {
     /**
      * Constructs new AdaptiveScrollBarPainter for the specified painter.
@@ -40,24 +41,6 @@ public class AdaptiveScrollBarPainter<E extends JScrollBar> extends AdaptivePain
     public AdaptiveScrollBarPainter ( final Painter painter )
     {
         super ( painter );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setPaintButtons ( final boolean paint )
-    {
-        // Ignore this method in adaptive class
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setPaintTrack ( final boolean paint )
-    {
-        // Ignore this method in adaptive class
     }
 
     /**
