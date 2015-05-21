@@ -32,6 +32,7 @@ import com.alee.utils.ninepatch.NinePatchIcon;
 import com.alee.utils.swing.DataProvider;
 
 import javax.swing.*;
+import javax.swing.plaf.ComponentUI;
 import java.awt.*;
 import java.awt.geom.GeneralPath;
 
@@ -39,10 +40,13 @@ import java.awt.geom.GeneralPath;
  * Web-style background painter for any component.
  * Commonly used as a base painter class for various Swing components like JPanel, JButton and others.
  *
+ * @param <E> component type
+ * @param <U> component UI type
  * @author Mikle Garin
  */
 
-public class WebDecorationPainter<E extends JComponent> extends AbstractPainter<E> implements PainterShapeProvider<E>, PartialDecoration
+public class WebDecorationPainter<E extends JComponent, U extends ComponentUI> extends AbstractPainter<E, U>
+        implements PainterShapeProvider<E>, PartialDecoration
 {
     /**
      * todo 1. Border stroke -> create stroke format for XML and allow to specify it there (XStream converter for Stroke)
@@ -59,14 +63,14 @@ public class WebDecorationPainter<E extends JComponent> extends AbstractPainter<
     /**
      * Style settings.
      */
-    protected boolean undecorated = WebDecorationPainterStyle.undecorated;
-    protected boolean paintFocus = WebDecorationPainterStyle.paintFocus;
     protected int round = WebDecorationPainterStyle.round;
     protected int shadeWidth = WebDecorationPainterStyle.shadeWidth;
     protected float shadeTransparency = WebDecorationPainterStyle.shadeTransparency;
     protected Stroke borderStroke = WebDecorationPainterStyle.borderStroke;
     protected Color borderColor = WebDecorationPainterStyle.borderColor;
     protected Color disabledBorderColor = WebDecorationPainterStyle.disabledBorderColor;
+    protected boolean undecorated = WebDecorationPainterStyle.undecorated;
+    protected boolean paintFocus = WebDecorationPainterStyle.paintFocus;
     protected boolean paintBackground = WebDecorationPainterStyle.paintBackground;
     protected boolean webColoredBackground = WebDecorationPainterStyle.webColoredBackground;
     protected boolean paintTop = true;
@@ -79,9 +83,13 @@ public class WebDecorationPainter<E extends JComponent> extends AbstractPainter<
     protected boolean paintRightLine = false;
 
     /**
-     * Runtime variables.
+     * Listeners.
      */
     protected FocusTracker focusTracker;
+
+    /**
+     * Runtime variables.
+     */
     protected boolean focused = false;
 
     /**
@@ -97,9 +105,9 @@ public class WebDecorationPainter<E extends JComponent> extends AbstractPainter<
      * {@inheritDoc}
      */
     @Override
-    public void install ( final E c )
+    public void install ( final E c, final U ui )
     {
-        super.install ( c );
+        super.install ( c, ui );
 
         // Installing FocusTracker to keep an eye on focused state
         focusTracker = new DefaultFocusTracker ()
@@ -124,13 +132,22 @@ public class WebDecorationPainter<E extends JComponent> extends AbstractPainter<
      * {@inheritDoc}
      */
     @Override
-    public void uninstall ( final E c )
+    public void uninstall ( final E c, final U ui )
     {
-        // Removing FocusTracker
+        // Removing listeners
         FocusManager.removeFocusTracker ( focusTracker );
         focusTracker = null;
 
-        super.uninstall ( c );
+        super.uninstall ( c, ui );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void updateBorder ()
+    {
+        LafUtils.updateBorder ( component, margin, this );
     }
 
     /**
@@ -602,7 +619,7 @@ public class WebDecorationPainter<E extends JComponent> extends AbstractPainter<
      * {@inheritDoc}
      */
     @Override
-    public Boolean isOpaque ( final E c )
+    public Boolean isOpaque ()
     {
         return undecorated;
     }
@@ -611,7 +628,7 @@ public class WebDecorationPainter<E extends JComponent> extends AbstractPainter<
      * {@inheritDoc}
      */
     @Override
-    public Insets getMargin ( final E c )
+    public Insets getMargin ()
     {
         if ( undecorated )
         {
@@ -622,7 +639,7 @@ public class WebDecorationPainter<E extends JComponent> extends AbstractPainter<
         {
             // Decoration border margin
             final int spacing = shadeWidth + 1;
-            final boolean ltr = c.getComponentOrientation ().isLeftToRight ();
+            final boolean ltr = component.getComponentOrientation ().isLeftToRight ();
             final boolean actualPaintLeft = ltr ? paintLeft : paintRight;
             final boolean actualPaintLeftLine = ltr ? paintLeftLine : paintRightLine;
             final boolean actualPaintRight = ltr ? paintRight : paintLeft;
@@ -639,7 +656,7 @@ public class WebDecorationPainter<E extends JComponent> extends AbstractPainter<
      * {@inheritDoc}
      */
     @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c )
+    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
     {
         if ( !undecorated )
         {
@@ -812,7 +829,7 @@ public class WebDecorationPainter<E extends JComponent> extends AbstractPainter<
      * @param c painted component
      * @return an array of shape settings cached along with the shape
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     protected Object[] getCachedShapeSettings ( final E c )
     {
         return new Object[]{ w, h, ltr, round, shadeWidth, paintTop, paintLeft, paintBottom, paintRight, paintTopLine, paintLeftLine,

@@ -570,7 +570,7 @@ public class StyleEditor extends WebFrame
         try
         {
             long time = System.currentTimeMillis ();
-            StyleManager.applySkin ( new CustomSkin ( ( SkinInfo ) XmlUtils.fromXML ( editors.get ( 0 ).getText () ) ) );
+            StyleManager.installSkin ( new CustomSkin ( ( SkinInfo ) XmlUtils.fromXML ( editors.get ( 0 ).getText () ) ) );
             componentViewer.revalidate ();
 
             // Information in status bar

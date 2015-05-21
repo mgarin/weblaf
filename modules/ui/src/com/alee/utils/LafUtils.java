@@ -19,6 +19,7 @@ package com.alee.utils;
 
 import com.alee.extended.painter.AdaptivePainter;
 import com.alee.extended.painter.Painter;
+import com.alee.extended.painter.SpecificPainter;
 import com.alee.extended.painter.TexturePainter;
 import com.alee.global.StyleConstants;
 import com.alee.laf.WebLookAndFeel;
@@ -32,7 +33,6 @@ import com.alee.utils.laf.ShapeProvider;
 import com.alee.utils.laf.Styleable;
 import com.alee.utils.laf.WeblafBorder;
 import com.alee.utils.ninepatch.NinePatchIcon;
-import com.alee.utils.swing.BorderMethods;
 import com.alee.utils.xml.ResourceFile;
 
 import javax.swing.*;
@@ -103,64 +103,6 @@ public final class LafUtils
     public static Border createWebBorder ( final int margin )
     {
         return new WeblafBorder ( margin, margin, margin, margin );
-    }
-
-    /**
-     * Returns the specified painter if it can be assigned to proper painter type.
-     * Otherwise returns newly created adapter painter that wraps the specified painter.
-     * Used by component UIs to adapt general-type painters for their specific-type needs.
-     *
-     * @param painter      processed painter
-     * @param properClass  proper painter class
-     * @param adapterClass adapter painter class
-     * @param <T>          proper painter type
-     * @return specified painter if it can be assigned to proper painter type, new painter adapter if it cannot be assigned
-     */
-    public static <T extends Painter> T getProperPainter ( final Painter painter, final Class properClass, final Class adapterClass )
-    {
-        return painter == null ? null : ReflectUtils.isAssignable ( properClass, painter.getClass () ) ? ( T ) painter :
-                ( T ) ReflectUtils.createInstanceSafely ( adapterClass, painter );
-    }
-
-    /**
-     * Returns either the specified painter if it is not an adapted painter or the adapted painter.
-     * Used by component UIs to retrieve painters adapted for their specific needs.
-     *
-     * @param painter painter to process
-     * @param <T>     desired painter type
-     * @return either the specified painter if it is not an adapted painter or the adapted painter
-     */
-    public static <T extends Painter> T getAdaptedPainter ( final Painter painter )
-    {
-        return ( T ) ( painter != null && painter instanceof AdaptivePainter ? ( ( AdaptivePainter ) painter ).getPainter () : painter );
-    }
-
-    /**
-     * Fires painter property change event.
-     * This is a workaround since {@code firePropertyChange()} method is protected and cannot be called w/o using reflection.
-     *
-     * @param component  component to fire property change to
-     * @param oldPainter old painter
-     * @param newPainter new painter
-     */
-    public static void firePainterChanged ( final JComponent component, final Painter oldPainter, final Painter newPainter )
-    {
-        try
-        {
-            ReflectUtils.callMethod ( component, "firePropertyChange", WebLookAndFeel.PAINTER_PROPERTY, oldPainter, newPainter );
-        }
-        catch ( final NoSuchMethodException e )
-        {
-            Log.error ( LafUtils.class, e );
-        }
-        catch ( final InvocationTargetException e )
-        {
-            Log.error ( LafUtils.class, e );
-        }
-        catch ( final IllegalAccessException e )
-        {
-            Log.error ( LafUtils.class, e );
-        }
     }
 
     /**
@@ -238,7 +180,7 @@ public final class LafUtils
             if ( painter != null )
             {
                 // Painter borders
-                final Insets pi = painter.getMargin ( component );
+                final Insets pi = painter.getMargin ();
                 if ( pi != null )
                 {
                     m.top += pi.top;
@@ -265,7 +207,7 @@ public final class LafUtils
         Dimension ps;
 
         // Checking painter's preferred size
-        ps = painter != null ? painter.getPreferredSize ( component ) : new Dimension ( 0, 0 );
+        ps = painter != null ? painter.getPreferredSize () : new Dimension ( 0, 0 );
 
         // Checking layout preferred size
         final LayoutManager layout = component.getLayout ();
@@ -1350,50 +1292,6 @@ public final class LafUtils
     public static int getTextCenterShearY ( final FontMetrics fm )
     {
         return ( fm.getAscent () - fm.getLeading () - fm.getDescent () ) / 2;
-    }
-
-    /**
-     * Attempts to update component border if border methods are available for it.
-     * Returns whether attempt has succeed or not.
-     *
-     * @param component component which border should be updated
-     * @return true if attempt has succeed, false otherwise
-     */
-    public static boolean updateBorder ( final Component component )
-    {
-        final BorderMethods borderMethods = LafUtils.getBorderMethods ( component );
-        if ( borderMethods != null )
-        {
-            borderMethods.updateBorder ();
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-    /**
-     * Returns BorderMethods for the specified component or null if custom WebLaF border is not supported.
-     *
-     * @param component component to process
-     * @return BorderMethods for the specified component or null if custom WebLaF border is not supported
-     */
-    public static BorderMethods getBorderMethods ( final Component component )
-    {
-        if ( component instanceof BorderMethods )
-        {
-            return ( BorderMethods ) component;
-        }
-        else
-        {
-            final ComponentUI ui = getUI ( component );
-            if ( ui != null && ui instanceof BorderMethods )
-            {
-                return ( BorderMethods ) ui;
-            }
-        }
-        return null;
     }
 
     /**

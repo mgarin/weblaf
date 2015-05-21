@@ -248,7 +248,7 @@ public class StyleManager
      */
     public static WebLafSkin applyDefaultSkin ()
     {
-        return applySkin ( getDefaultSkin () );
+        return installSkin ( getDefaultSkin () );
     }
 
     /**
@@ -268,9 +268,9 @@ public class StyleManager
      * @param skinClassName class name of the skin to be applied
      * @return previously applied skin
      */
-    public static WebLafSkin applySkin ( final String skinClassName )
+    public static WebLafSkin installSkin ( final String skinClassName )
     {
-        return applySkin ( ReflectUtils.getClassSafely ( skinClassName ) );
+        return installSkin ( ReflectUtils.getClassSafely ( skinClassName ) );
     }
 
     /**
@@ -280,9 +280,9 @@ public class StyleManager
      * @param skinClass class of the skin to be applied
      * @return previously applied skin
      */
-    public static WebLafSkin applySkin ( final Class skinClass )
+    public static WebLafSkin installSkin ( final Class skinClass )
     {
-        return applySkin ( createSkin ( skinClass ) );
+        return installSkin ( createSkin ( skinClass ) );
     }
 
     /**
@@ -292,7 +292,7 @@ public class StyleManager
      * @param skin skin to be applied
      * @return previously applied skin
      */
-    public static WebLafSkin applySkin ( final WebLafSkin skin )
+    public static WebLafSkin installSkin ( final WebLafSkin skin )
     {
         // Checking skin support
         checkSupport ( skin );

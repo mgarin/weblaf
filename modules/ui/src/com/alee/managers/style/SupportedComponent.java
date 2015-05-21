@@ -59,9 +59,9 @@ public enum SupportedComponent
     /**
      * Button-related components.
      */
-    button ( false, JButton.class, "ButtonUI", WebLookAndFeel.buttonUI ),
-    splitButton ( false, WebSplitButton.class, "SplitButtonUI", WebLookAndFeel.splitButtonUI ),
-    toggleButton ( false, JToggleButton.class, "ToggleButtonUI", WebLookAndFeel.toggleButtonUI ),
+    button ( true, JButton.class, "ButtonUI", WebLookAndFeel.buttonUI ),
+    splitButton ( true, WebSplitButton.class, "SplitButtonUI", WebLookAndFeel.splitButtonUI ),
+    toggleButton ( true, JToggleButton.class, "ToggleButtonUI", WebLookAndFeel.toggleButtonUI ),
     checkBox ( false, JCheckBox.class, "CheckBoxUI", WebLookAndFeel.checkBoxUI ),
     tristateCheckBox ( false, WebTristateCheckBox.class, "TristateCheckBoxUI", WebLookAndFeel.tristateCheckBoxUI ),
     radioButton ( false, JRadioButton.class, "RadioButtonUI", WebLookAndFeel.radioButtonUI ),

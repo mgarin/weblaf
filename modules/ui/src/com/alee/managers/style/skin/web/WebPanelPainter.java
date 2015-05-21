@@ -18,6 +18,7 @@
 package com.alee.managers.style.skin.web;
 
 import com.alee.laf.panel.PanelPainter;
+import com.alee.laf.panel.WebPanelUI;
 
 import javax.swing.*;
 import java.awt.*;
@@ -26,16 +27,18 @@ import java.awt.*;
  * Web-style painter for JPanel component.
  * It is used as WebPanelUI default painter.
  *
+ * @param <E> component type
+ * @param <U> component UI type
  * @author Mikle Garin
  */
 
-public class WebPanelPainter<E extends JPanel> extends WebDecorationPainter<E> implements PanelPainter<E>
+public class WebPanelPainter<E extends JPanel, U extends WebPanelUI> extends WebDecorationPainter<E, U> implements PanelPainter<E, U>
 {
     /**
      * {@inheritDoc}
      */
     @Override
-    public Boolean isOpaque ( final E c )
+    public Boolean isOpaque ()
     {
         // Returns null to disable panel automatic panel opacity changes by default
         // You may still provide a non-null opacity in your own implementations of PanelPainter
@@ -46,7 +49,7 @@ public class WebPanelPainter<E extends JPanel> extends WebDecorationPainter<E> i
      * {@inheritDoc}
      */
     @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c )
+    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
     {
         // Paint simple background if undecorated & opaque
         if ( undecorated && c.isOpaque () )
@@ -56,6 +59,6 @@ public class WebPanelPainter<E extends JPanel> extends WebDecorationPainter<E> i
         }
 
         // Paint decoration if required
-        super.paint ( g2d, bounds, c );
+        super.paint ( g2d, bounds, c, ui );
     }
 }

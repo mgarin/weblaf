@@ -61,6 +61,11 @@ public class WebScrollBarPainter<E extends JScrollBar> extends AbstractPainter<E
     protected Color thumbPressedBackgroundColor = WebScrollBarStyle.thumbPressedBackgroundColor;
 
     /**
+     * Listeners.
+     */
+    protected MouseAdapter mouseAdapter;
+
+    /**
      * Runtime variables.
      */
     protected boolean animated;
@@ -71,14 +76,13 @@ public class WebScrollBarPainter<E extends JScrollBar> extends AbstractPainter<E
     protected boolean dragged;
     protected Rectangle trackBounds;
     protected Rectangle thumbBounds;
+
+    /**
+     * Painting variables.
+     */
     protected Insets thumbMarginR;
     protected Insets thumbMarginHL;
     protected Insets thumbMarginHR;
-
-    /**
-     * Listeners.
-     */
-    protected MouseAdapter mouseAdapter;
 
     /**
      * {@inheritDoc}

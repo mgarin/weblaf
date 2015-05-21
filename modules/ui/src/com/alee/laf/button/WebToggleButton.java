@@ -18,7 +18,6 @@
 package com.alee.laf.button;
 
 import com.alee.extended.painter.Painter;
-import com.alee.global.StyleConstants;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.hotkey.HotkeyInfo;
@@ -40,6 +39,7 @@ import com.alee.utils.ReflectUtils;
 import com.alee.utils.SizeUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.laf.ShapeProvider;
+import com.alee.utils.laf.Styleable;
 import com.alee.utils.swing.*;
 
 import javax.swing.*;
@@ -55,7 +55,7 @@ import java.util.List;
  */
 
 public class WebToggleButton extends JToggleButton
-        implements ShapeProvider, EventMethods, ToolTipMethods, LanguageMethods, SettingsMethods, FontMethods<WebToggleButton>,
+        implements Styleable, ShapeProvider, EventMethods, ToolTipMethods, LanguageMethods, SettingsMethods, FontMethods<WebToggleButton>,
         SizeMethods<WebToggleButton>
 {
     public WebToggleButton ()
@@ -66,8 +66,7 @@ public class WebToggleButton extends JToggleButton
     public WebToggleButton ( final Icon icon )
     {
         super ( icon );
-        setRound ( WebButtonStyle.iconRound );
-        setLeftRightSpacing ( WebButtonStyle.iconLeftRightSpacing );
+        setStyleId ( "icon-toggle-button" );
     }
 
     public WebToggleButton ( final Icon icon, final boolean selected )
@@ -104,8 +103,7 @@ public class WebToggleButton extends JToggleButton
     public WebToggleButton ( final Icon icon, final ActionListener listener )
     {
         super ( icon );
-        setRound ( WebButtonStyle.iconRound );
-        setLeftRightSpacing ( WebButtonStyle.iconLeftRightSpacing );
+        setStyleId ( "icon-toggle-button" );
         addActionListener ( listener );
     }
 
@@ -142,6 +140,89 @@ public class WebToggleButton extends JToggleButton
     public WebToggleButton ( final Action a )
     {
         super ( a );
+    }
+
+    public Painter getPainter ()
+    {
+        return getWebUI ().getPainter ();
+    }
+
+    public WebToggleButton setPainter ( final Painter painter )
+    {
+        getWebUI ().setPainter ( painter );
+        return this;
+    }
+
+    public WebToggleButton setMargin ( final int top, final int left, final int bottom, final int right )
+    {
+        setMargin ( new Insets ( top, left, bottom, right ) );
+        return this;
+    }
+
+    public WebToggleButton setMargin ( final int spacing )
+    {
+        return setMargin ( spacing, spacing, spacing, spacing );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getStyleId ()
+    {
+        return getWebUI ().getStyleId ();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setStyleId ( final String id )
+    {
+        getWebUI ().setStyleId ( id );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Shape provideShape ()
+    {
+        return getWebUI ().provideShape ();
+    }
+
+    /**
+     * Returns Web-UI applied to this class.
+     *
+     * @return Web-UI applied to this class
+     */
+    public WebToggleButtonUI getWebUI ()
+    {
+        return ( WebToggleButtonUI ) getUI ();
+    }
+
+    /**
+     * Installs a Web-UI into this component.
+     */
+    @Override
+    public void updateUI ()
+    {
+        if ( getUI () == null || !( getUI () instanceof WebToggleButtonUI ) )
+        {
+            try
+            {
+                setUI ( ( WebToggleButtonUI ) ReflectUtils.createInstance ( WebLookAndFeel.toggleButtonUI ) );
+            }
+            catch ( final Throwable e )
+            {
+                Log.error ( this, e );
+                setUI ( new WebToggleButtonUI () );
+            }
+        }
+        else
+        {
+            setUI ( getUI () );
+        }
     }
 
     /**
@@ -201,429 +282,6 @@ public class WebToggleButton extends JToggleButton
     public void removeHotkeys ()
     {
         HotkeyManager.unregisterHotkeys ( this );
-    }
-
-    /**
-     * UI methods
-     */
-
-    public Color getTopBgColor ()
-    {
-        return getWebUI ().getTopBgColor ();
-    }
-
-    public WebToggleButton setTopBgColor ( final Color topBgColor )
-    {
-        getWebUI ().setTopBgColor ( topBgColor );
-        return this;
-    }
-
-    public Color getBottomBgColor ()
-    {
-        return getWebUI ().getBottomBgColor ();
-    }
-
-    public WebToggleButton setBottomBgColor ( final Color bottomBgColor )
-    {
-        getWebUI ().setBottomBgColor ( bottomBgColor );
-        return this;
-    }
-
-    public Color getTopSelectedBgColor ()
-    {
-        return getWebUI ().getTopSelectedBgColor ();
-    }
-
-    public WebToggleButton setTopSelectedBgColor ( final Color topSelectedBgColor )
-    {
-        getWebUI ().setTopSelectedBgColor ( topSelectedBgColor );
-        return this;
-    }
-
-    public Color getBottomSelectedBgColor ()
-    {
-        return getWebUI ().getBottomSelectedBgColor ();
-    }
-
-    public WebToggleButton setBottomSelectedBgColor ( final Color bottomSelectedBgColor )
-    {
-        getWebUI ().setBottomSelectedBgColor ( bottomSelectedBgColor );
-        return this;
-    }
-
-    public Color getSelectedForeground ()
-    {
-        return getWebUI ().getSelectedForeground ();
-    }
-
-    public WebToggleButton setSelectedForeground ( final Color selectedForeground )
-    {
-        getWebUI ().setSelectedForeground ( selectedForeground );
-        return this;
-    }
-
-    public boolean isRolloverDarkBorderOnly ()
-    {
-        return getWebUI ().isRolloverDarkBorderOnly ();
-    }
-
-    public WebToggleButton setRolloverDarkBorderOnly ( final boolean rolloverDarkBorderOnly )
-    {
-        getWebUI ().setRolloverDarkBorderOnly ( rolloverDarkBorderOnly );
-        return this;
-    }
-
-    public boolean isRolloverShine ()
-    {
-        return getWebUI ().isRolloverShine ();
-    }
-
-    public WebToggleButton setRolloverShine ( final boolean rolloverShine )
-    {
-        getWebUI ().setRolloverShine ( rolloverShine );
-        return this;
-    }
-
-    public Color getShineColor ()
-    {
-        return getWebUI ().getShineColor ();
-    }
-
-    public WebToggleButton setShineColor ( final Color shineColor )
-    {
-        getWebUI ().setShineColor ( shineColor );
-        return this;
-    }
-
-    public int getRound ()
-    {
-        return getWebUI ().getRound ();
-    }
-
-    public WebToggleButton setRound ( final int round )
-    {
-        getWebUI ().setRound ( round );
-        return this;
-    }
-
-    public boolean isRolloverShadeOnly ()
-    {
-        return getWebUI ().isRolloverShadeOnly ();
-    }
-
-    public WebToggleButton setRolloverShadeOnly ( final boolean rolloverShadeOnly )
-    {
-        getWebUI ().setRolloverShadeOnly ( rolloverShadeOnly );
-        return this;
-    }
-
-    public boolean isShowDisabledShade ()
-    {
-        return getWebUI ().isShowDisabledShade ();
-    }
-
-    public WebToggleButton setShowDisabledShade ( final boolean showDisabledShade )
-    {
-        getWebUI ().setShowDisabledShade ( showDisabledShade );
-        return this;
-    }
-
-    public int getShadeWidth ()
-    {
-        return getWebUI ().getShadeWidth ();
-    }
-
-    public WebToggleButton setShadeWidth ( final int shadeWidth )
-    {
-        getWebUI ().setShadeWidth ( shadeWidth );
-        return this;
-    }
-
-    public Color getShadeColor ()
-    {
-        return getWebUI ().getShadeColor ();
-    }
-
-    public WebToggleButton setShadeColor ( final Color shadeColor )
-    {
-        getWebUI ().setShadeColor ( shadeColor );
-        return this;
-    }
-
-    public int getInnerShadeWidth ()
-    {
-        return getWebUI ().getInnerShadeWidth ();
-    }
-
-    public WebToggleButton setInnerShadeWidth ( final int innerShadeWidth )
-    {
-        getWebUI ().setInnerShadeWidth ( innerShadeWidth );
-        return this;
-    }
-
-    public Color getInnerShadeColor ()
-    {
-        return getWebUI ().getInnerShadeColor ();
-    }
-
-    public WebToggleButton setInnerShadeColor ( final Color innerShadeColor )
-    {
-        getWebUI ().setInnerShadeColor ( innerShadeColor );
-        return this;
-    }
-
-    public int getLeftRightSpacing ()
-    {
-        return getWebUI ().getLeftRightSpacing ();
-    }
-
-    public WebToggleButton setLeftRightSpacing ( final int leftRightSpacing )
-    {
-        getWebUI ().setLeftRightSpacing ( leftRightSpacing );
-        return this;
-    }
-
-    public boolean isRolloverDecoratedOnly ()
-    {
-        return getWebUI ().isRolloverDecoratedOnly ();
-    }
-
-    public WebToggleButton setRolloverDecoratedOnly ( final boolean rolloverDecoratedOnly )
-    {
-        getWebUI ().setRolloverDecoratedOnly ( rolloverDecoratedOnly );
-        return this;
-    }
-
-    public boolean isAnimate ()
-    {
-        return getWebUI ().isAnimate ();
-    }
-
-    public WebToggleButton setAnimate ( final boolean animate )
-    {
-        getWebUI ().setAnimate ( animate );
-        return this;
-    }
-
-    public boolean isUndecorated ()
-    {
-        return getWebUI ().isUndecorated ();
-    }
-
-    public WebToggleButton setUndecorated ( final boolean undecorated )
-    {
-        getWebUI ().setUndecorated ( undecorated );
-        return this;
-    }
-
-    public Painter getPainter ()
-    {
-        return getWebUI ().getPainter ();
-    }
-
-    public WebToggleButton setPainter ( final Painter painter )
-    {
-        getWebUI ().setPainter ( painter );
-        return this;
-    }
-
-    public boolean isMoveIconOnPress ()
-    {
-        return getWebUI ().isMoveIconOnPress ();
-    }
-
-    public WebToggleButton setMoveIconOnPress ( final boolean moveIconOnPress )
-    {
-        getWebUI ().setMoveIconOnPress ( moveIconOnPress );
-        return this;
-    }
-
-    public boolean isDrawFocus ()
-    {
-        return getWebUI ().isDrawFocus ();
-    }
-
-    public WebToggleButton setDrawFocus ( final boolean drawFocus )
-    {
-        getWebUI ().setDrawFocus ( drawFocus );
-        return this;
-    }
-
-    public boolean isShadeToggleIcon ()
-    {
-        return getWebUI ().isShadeToggleIcon ();
-    }
-
-    public WebToggleButton setShadeToggleIcon ( final boolean shadeToggleIcon )
-    {
-        getWebUI ().setShadeToggleIcon ( shadeToggleIcon );
-        return this;
-    }
-
-    public float getShadeToggleIconTransparency ()
-    {
-        return getWebUI ().getShadeToggleIconTransparency ();
-    }
-
-    public WebToggleButton setShadeToggleIconTransparency ( final float shadeToggleIconTransparency )
-    {
-        getWebUI ().setShadeToggleIconTransparency ( shadeToggleIconTransparency );
-        return this;
-    }
-
-    public boolean isDrawBottom ()
-    {
-        return getWebUI ().isDrawBottom ();
-    }
-
-    public WebToggleButton setDrawBottom ( final boolean drawBottom )
-    {
-        getWebUI ().setDrawBottom ( drawBottom );
-        return this;
-    }
-
-    public boolean isDrawLeft ()
-    {
-        return getWebUI ().isDrawLeft ();
-    }
-
-    public WebToggleButton setDrawLeft ( final boolean drawLeft )
-    {
-        getWebUI ().setDrawLeft ( drawLeft );
-        return this;
-    }
-
-    public boolean isDrawRight ()
-    {
-        return getWebUI ().isDrawRight ();
-    }
-
-    public WebToggleButton setDrawRight ( final boolean drawRight )
-    {
-        getWebUI ().setDrawRight ( drawRight );
-        return this;
-    }
-
-    public boolean isDrawTop ()
-    {
-        return getWebUI ().isDrawTop ();
-    }
-
-    public WebToggleButton setDrawTop ( final boolean drawTop )
-    {
-        getWebUI ().setDrawTop ( drawTop );
-        return this;
-    }
-
-    public WebToggleButton setDrawSides ( final boolean top, final boolean left, final boolean bottom, final boolean right )
-    {
-        getWebUI ().setDrawSides ( top, left, bottom, right );
-        return this;
-    }
-
-    public boolean isDrawTopLine ()
-    {
-        return getWebUI ().isDrawTopLine ();
-    }
-
-    public WebToggleButton setDrawTopLine ( final boolean drawTopLine )
-    {
-        getWebUI ().setDrawTopLine ( drawTopLine );
-        return this;
-    }
-
-    public boolean isDrawLeftLine ()
-    {
-        return getWebUI ().isDrawLeftLine ();
-    }
-
-    public WebToggleButton setDrawLeftLine ( final boolean drawLeftLine )
-    {
-        getWebUI ().setDrawLeftLine ( drawLeftLine );
-        return this;
-    }
-
-    public boolean isDrawBottomLine ()
-    {
-        return getWebUI ().isDrawBottomLine ();
-    }
-
-    public WebToggleButton setDrawBottomLine ( final boolean drawBottomLine )
-    {
-        getWebUI ().setDrawBottomLine ( drawBottomLine );
-        return this;
-    }
-
-    public boolean isDrawRightLine ()
-    {
-        return getWebUI ().isDrawRightLine ();
-    }
-
-    public WebToggleButton setDrawRightLine ( final boolean drawRightLine )
-    {
-        getWebUI ().setDrawRightLine ( drawRightLine );
-        return this;
-    }
-
-    public WebToggleButton setDrawLines ( final boolean top, final boolean left, final boolean bottom, final boolean right )
-    {
-        getWebUI ().setDrawLines ( top, left, bottom, right );
-        return this;
-    }
-
-    @Override
-    public Insets getMargin ()
-    {
-        return getWebUI ().getMargin ();
-    }
-
-    @Override
-    public void setMargin ( final Insets margin )
-    {
-        getWebUI ().setMargin ( margin );
-    }
-
-    public WebToggleButton setMargin ( final int top, final int left, final int bottom, final int right )
-    {
-        setMargin ( new Insets ( top, left, bottom, right ) );
-        return this;
-    }
-
-    public WebToggleButton setMargin ( final int spacing )
-    {
-        return setMargin ( spacing, spacing, spacing, spacing );
-    }
-
-    @Override
-    public Shape provideShape ()
-    {
-        return getWebUI ().provideShape ();
-    }
-
-    public WebToggleButtonUI getWebUI ()
-    {
-        return ( WebToggleButtonUI ) getUI ();
-    }
-
-    @Override
-    public void updateUI ()
-    {
-        if ( getUI () == null || !( getUI () instanceof WebToggleButtonUI ) )
-        {
-            try
-            {
-                setUI ( ( WebToggleButtonUI ) ReflectUtils.createInstance ( WebLookAndFeel.toggleButtonUI ) );
-            }
-            catch ( final Throwable e )
-            {
-                Log.error ( this, e );
-                setUI ( new WebToggleButtonUI () );
-            }
-        }
-        else
-        {
-            setUI ( getUI () );
-        }
     }
 
     /**
@@ -1492,68 +1150,5 @@ public class WebToggleButton extends JToggleButton
     public WebToggleButton setPreferredSize ( final int width, final int height )
     {
         return SizeUtils.setPreferredSize ( this, width, height );
-    }
-
-    /**
-     * Styled toggle button short creation methods
-     */
-
-    public static WebToggleButton createIconWebButton ( final ImageIcon imageIcon )
-    {
-        return createIconWebButton ( imageIcon, StyleConstants.smallRound );
-    }
-
-    public static WebToggleButton createIconWebButton ( final ImageIcon imageIcon, final int round )
-    {
-        return createIconWebButton ( imageIcon, round, StyleConstants.shadeWidth );
-    }
-
-    public static WebToggleButton createIconWebButton ( final ImageIcon imageIcon, final int round, final int shadeWidth )
-    {
-        return createIconWebButton ( imageIcon, round, shadeWidth, StyleConstants.innerShadeWidth );
-    }
-
-    public static WebToggleButton createIconWebButton ( final ImageIcon imageIcon, final int round, final int shadeWidth,
-                                                        final int innerShadeWidth )
-    {
-        return createIconWebButton ( imageIcon, round, shadeWidth, innerShadeWidth, StyleConstants.rolloverDecoratedOnly );
-    }
-
-    public static WebToggleButton createIconWebButton ( final ImageIcon imageIcon, final int round, final int shadeWidth,
-                                                        final int innerShadeWidth, final boolean rolloverDecoratedOnly )
-    {
-        return createIconWebButton ( imageIcon, round, shadeWidth, innerShadeWidth, rolloverDecoratedOnly, StyleConstants.undecorated );
-    }
-
-    public static WebToggleButton createIconWebButton ( final ImageIcon imageIcon, final int round, final int shadeWidth,
-                                                        final int innerShadeWidth, final boolean rolloverDecoratedOnly,
-                                                        final boolean undecorated )
-    {
-        return createIconWebButton ( imageIcon, round, shadeWidth, innerShadeWidth, rolloverDecoratedOnly, undecorated, true );
-    }
-
-    public static WebToggleButton createIconWebButton ( final ImageIcon imageIcon, final int round, final int shadeWidth,
-                                                        final int innerShadeWidth, final boolean rolloverDecoratedOnly,
-                                                        final boolean undecorated, final boolean drawFocus )
-    {
-        final WebToggleButton iconWebButton =
-                createWebButton ( round, shadeWidth, innerShadeWidth, 0, rolloverDecoratedOnly, undecorated, drawFocus );
-        iconWebButton.setIcon ( imageIcon );
-        return iconWebButton;
-    }
-
-    public static WebToggleButton createWebButton ( final int round, final int shadeWidth, final int innerShadeWidth,
-                                                    final int leftRightSpacing, final boolean rolloverDecoratedOnly,
-                                                    final boolean undecorated, final boolean drawFocus )
-    {
-        final WebToggleButton webButton = new WebToggleButton ();
-        webButton.setRound ( round );
-        webButton.setShadeWidth ( shadeWidth );
-        webButton.setInnerShadeWidth ( innerShadeWidth );
-        webButton.setLeftRightSpacing ( leftRightSpacing );
-        webButton.setRolloverDecoratedOnly ( rolloverDecoratedOnly );
-        webButton.setUndecorated ( undecorated );
-        webButton.setDrawFocus ( drawFocus );
-        return webButton;
     }
 }

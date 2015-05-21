@@ -17,10 +17,16 @@
 
 package com.alee.extended.painter;
 
+import com.alee.laf.WebLookAndFeel;
 import com.alee.utils.CollectionUtils;
+import com.alee.utils.SwingUtils;
+import com.alee.utils.swing.BorderMethods;
 
 import javax.swing.*;
+import javax.swing.plaf.ComponentUI;
 import java.awt.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,11 +35,12 @@ import java.util.List;
  * Usually this class is extended by various painters instead of implementing Painter interface directly.
  *
  * @param <E> component type
+ * @param <U> component UI type
  * @author Mikle Garin
  * @see Painter
  */
 
-public abstract class AbstractPainter<E extends JComponent> implements Painter<E>
+public abstract class AbstractPainter<E extends JComponent, U extends ComponentUI> implements Painter<E, U>, BorderMethods
 {
     /**
      * Whether visual data is opaque or not.
@@ -56,28 +63,58 @@ public abstract class AbstractPainter<E extends JComponent> implements Painter<E
     protected List<PainterListener> listeners = new ArrayList<PainterListener> ( 1 );
 
     /**
+     * Listeners.
+     */
+    protected PropertyChangeListener propertyChangeListener;
+
+    /**
+     * Component reference.
+     */
+    protected E component;
+
+    /**
      * {@inheritDoc}
      */
     @Override
-    public void install ( final E c )
+    public void install ( final E c, final U ui )
     {
-        // Simply do nothing by default
+        // Saving component reference
+        component = c;
+
+        // Default settings
+        SwingUtils.setOrientation ( c );
+
+        // Orientation change listener
+        propertyChangeListener = new PropertyChangeListener ()
+        {
+            @Override
+            public void propertyChange ( final PropertyChangeEvent evt )
+            {
+                revalidate ();
+                repaint ();
+            }
+        };
+        c.addPropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, propertyChangeListener );
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void uninstall ( final E c )
+    public void uninstall ( final E c, final U ui )
     {
-        // Simply do nothing by default
+        // Removing listeners
+        c.removePropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, propertyChangeListener );
+
+        // Cleaning up component reference
+        component = null;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Boolean isOpaque ( final E c )
+    public Boolean isOpaque ()
     {
         return opaque;
     }
@@ -97,7 +134,7 @@ public abstract class AbstractPainter<E extends JComponent> implements Painter<E
      * {@inheritDoc}
      */
     @Override
-    public Dimension getPreferredSize ( final E c )
+    public Dimension getPreferredSize ()
     {
         return preferredSize;
     }
@@ -117,7 +154,7 @@ public abstract class AbstractPainter<E extends JComponent> implements Painter<E
      * {@inheritDoc}
      */
     @Override
-    public Insets getMargin ( final E c )
+    public Insets getMargin ()
     {
         return margin;
     }
@@ -216,6 +253,10 @@ public abstract class AbstractPainter<E extends JComponent> implements Painter<E
      */
     public void revalidate ()
     {
+        // Updating border to have correct size
+        updateBorder ();
+
+        // Revalidating layout
         for ( final PainterListener listener : CollectionUtils.copy ( listeners ) )
         {
             listener.revalidate ();

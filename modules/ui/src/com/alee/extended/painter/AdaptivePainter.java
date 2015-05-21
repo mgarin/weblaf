@@ -18,6 +18,7 @@
 package com.alee.extended.painter;
 
 import javax.swing.*;
+import javax.swing.plaf.ComponentUI;
 import java.awt.*;
 
 /**
@@ -25,22 +26,26 @@ import java.awt.*;
  * To use it properly you should extend this class and implement UI painter interface methods.
  * In general cases those methods might have no effect since general-type painters do not know anything about component specifics.
  *
+ * @param <E> component type
+ * @param <U> component UI type
+ * @param <P> specific painter type
  * @author Mikle Garin
  */
 
-public abstract class AdaptivePainter<E extends JComponent> extends AbstractPainter<E>
+public abstract class AdaptivePainter<E extends JComponent, U extends ComponentUI, P extends Painter & SpecificPainter>
+        extends AbstractPainter<E, U>
 {
     /**
      * Adapted painter.
      */
-    private final Painter painter;
+    private final P painter;
 
     /**
      * Constructs new AdaptivePainter to adapt specified painter.
      *
      * @param painter painter to adapt
      */
-    public AdaptivePainter ( final Painter painter )
+    public AdaptivePainter ( final P painter )
     {
         super ();
         this.painter = painter;
@@ -60,45 +65,45 @@ public abstract class AdaptivePainter<E extends JComponent> extends AbstractPain
      * {@inheritDoc}
      */
     @Override
-    public void install ( final E c )
+    public void install ( final E c, final U ui )
     {
-        painter.install ( c );
+        painter.install ( c, ui );
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void uninstall ( final E c )
+    public void uninstall ( final E c, final U ui )
     {
-        painter.uninstall ( c );
+        painter.uninstall ( c, ui );
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Boolean isOpaque ( final E c )
+    public Boolean isOpaque ()
     {
-        return painter.isOpaque ( c );
+        return painter.isOpaque ();
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Dimension getPreferredSize ( final E c )
+    public Dimension getPreferredSize ()
     {
-        return painter.getPreferredSize ( c );
+        return painter.getPreferredSize ();
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Insets getMargin ( final E c )
+    public Insets getMargin ()
     {
-        return painter.getMargin ( c );
+        return painter.getMargin ();
     }
 
     /**
@@ -123,8 +128,8 @@ public abstract class AdaptivePainter<E extends JComponent> extends AbstractPain
      * {@inheritDoc}
      */
     @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c )
+    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
     {
-        painter.paint ( g2d, bounds, c );
+        painter.paint ( g2d, bounds, c, ui );
     }
 }
