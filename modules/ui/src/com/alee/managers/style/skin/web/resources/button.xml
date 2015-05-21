@@ -1,0 +1,16 @@
+<skin>
+
+    <!-- JButton styling -->
+    <style type="button" id="default">
+        <component>
+            <focusable>true</focusable>
+        </component>
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebButtonPainter">
+            <round>3</round>
+            <shadeWidth>2</shadeWidth>
+            <paintBackground>true</paintBackground>
+            <webColoredBackground>true</webColoredBackground>
+        </painter>
+    </style>
+
+</skin>

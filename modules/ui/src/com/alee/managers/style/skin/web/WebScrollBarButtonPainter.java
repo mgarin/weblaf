@@ -26,7 +26,6 @@ import com.alee.utils.ShapeCache;
 import com.alee.utils.swing.DataProvider;
 
 import javax.swing.*;
-import javax.swing.plaf.ButtonUI;
 import java.awt.*;
 import java.awt.geom.GeneralPath;
 
@@ -36,20 +35,23 @@ import java.awt.geom.GeneralPath;
  * @author Mikle Garin
  */
 
-public class WebScrollBarButtonPainter<E extends AbstractButton> extends AbstractPainter<E> implements ScrollBarButtonPainter<E>
+public class WebScrollBarButtonPainter<E extends JButton, U extends WebButtonUI> extends AbstractPainter<E, U>
+        implements ScrollBarButtonPainter<E, U>
 {
     /**
-     * todo 1. On rollover=false make the same animation scroll bar thumb has -> requires WebButtonUI full painter support
+     * todo 1. Make use of WebButtonPainter instead of custom painter (also animation doesn't work right now)
+     * todo 2. On rollover=false make the same animation scroll bar thumb has -> requires WebButtonUI full painter support
      */
 
     /**
      * Shape cache key.
      */
-    protected static final String ARROW_BUTTON_SHAPE = "arrow-button";
+    protected static final String ARROW_BUTTON_SHAPE_CACHE_ID = "arrow.button";
 
     /**
      * Style settings.
      */
+    protected ScrollBarButtonType buttonType;
     protected Color borderColor = WebScrollBarStyle.thumbBorderColor;
     protected Color backgroundColor = WebScrollBarStyle.thumbBackgroundColor;
     protected Color disabledBorderColor = WebScrollBarStyle.thumbDisabledBorderColor;
@@ -62,17 +64,12 @@ public class WebScrollBarButtonPainter<E extends AbstractButton> extends Abstrac
     /**
      * Runtime variables.
      */
-    protected ScrollBarButtonType buttonType;
-    protected JScrollBar scrollbar;
+    protected boolean rollover = false;
 
     /**
-     * Constructs new scroll bar button painter.
+     * Paint variables.
      */
-    public WebScrollBarButtonPainter ()
-    {
-        super ();
-        setPreferredSize ( new Dimension ( WebScrollBarStyle.buttonsSize ) );
-    }
+    protected boolean verticalScroll;
 
     /**
      * Returns button border color.
@@ -267,36 +264,13 @@ public class WebScrollBarButtonPainter<E extends AbstractButton> extends Abstrac
     }
 
     /**
-     * Sets scroll bar button type.
-     *
-     * @param type scroll bar button type
-     */
-    @Override
-    public void setButtonType ( final ScrollBarButtonType type )
-    {
-        this.buttonType = type;
-    }
-
-    /**
-     * Sets scroll bar which uses this button.
-     *
-     * @param scrollbar scroll bar which uses this button
-     */
-    @Override
-    public void setScrollbar ( final JScrollBar scrollbar )
-    {
-        this.scrollbar = scrollbar;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
-    public Insets getMargin ( final E button )
+    public Insets getMargin ()
     {
-        final boolean ver = scrollbar.getOrientation () == SwingConstants.VERTICAL;
         final boolean decr = buttonType == ScrollBarButtonType.decrease;
-        if ( ver )
+        if ( isVerticalScroll () )
         {
             return new Insets ( decr ? 1 : 0, 1, decr ? 0 : 1, 1 );
         }
@@ -310,17 +284,17 @@ public class WebScrollBarButtonPainter<E extends AbstractButton> extends Abstrac
      * {@inheritDoc}
      */
     @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E button )
+    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E button, final U ui )
     {
+        verticalScroll = isVerticalScroll ();
+
         // Button model state
         final ButtonModel model = button.getModel ();
-        final ButtonUI ui = button.getUI ();
         final boolean enabled = button.isEnabled ();
         final boolean pressed = model.isPressed () || model.isSelected ();
-        final boolean rollover = ui instanceof WebButtonUI ? ( ( WebButtonUI ) ui ).isRollover () : model.isRollover ();
 
         // Retrieving button shape
-        final Shape shape = getArrowButtonShape ( bounds, button );
+        final Shape shape = getArrowButtonShape ( button, bounds );
 
         // Painting button
         g2d.setPaint ( enabled ? ( pressed ? pressedBackgroundColor : ( rollover ? rolloverBackgroundColor : backgroundColor ) ) :
@@ -334,13 +308,13 @@ public class WebScrollBarButtonPainter<E extends AbstractButton> extends Abstrac
     /**
      * Returns popup border shape.
      *
-     * @param bounds button bounds
      * @param button button component
+     * @param bounds button bounds
      * @return popup border shape
      */
-    protected Shape getArrowButtonShape ( final Rectangle bounds, final E button )
+    protected Shape getArrowButtonShape ( final E button, final Rectangle bounds )
     {
-        return ShapeCache.getShape ( button, ARROW_BUTTON_SHAPE, new DataProvider<Shape> ()
+        return ShapeCache.getShape ( button, ARROW_BUTTON_SHAPE_CACHE_ID, new DataProvider<Shape> ()
         {
             @Override
             public Shape provide ()
@@ -358,8 +332,7 @@ public class WebScrollBarButtonPainter<E extends AbstractButton> extends Abstrac
      */
     protected Object[] getCachedShapeSettings ( final E button )
     {
-        return new Object[]{ button.getSize (), button.getInsets (), buttonType, button.getComponentOrientation ().isLeftToRight (),
-                scrollbar.getOrientation () };
+        return new Object[]{ button.getSize (), button.getInsets (), buttonType, isLtrScroll (), verticalScroll };
     }
 
     /**
@@ -371,7 +344,6 @@ public class WebScrollBarButtonPainter<E extends AbstractButton> extends Abstrac
      */
     protected Shape createArrowButtonShape ( final Rectangle bounds, final E button )
     {
-        final int orientation = scrollbar.getOrientation ();
         final Insets i = button.getInsets ();
         final int x = bounds.x + i.left;
         final int y = bounds.y + i.top;
@@ -379,7 +351,7 @@ public class WebScrollBarButtonPainter<E extends AbstractButton> extends Abstrac
         final int h = bounds.height - i.top - i.bottom - 1;
 
         final GeneralPath shape;
-        if ( orientation == SwingConstants.VERTICAL )
+        if ( verticalScroll )
         {
             if ( buttonType == ScrollBarButtonType.decrease )
             {
@@ -400,7 +372,7 @@ public class WebScrollBarButtonPainter<E extends AbstractButton> extends Abstrac
         }
         else
         {
-            final boolean ltr = scrollbar.getComponentOrientation ().isLeftToRight ();
+            final boolean ltr = isLtrScroll ();
             if ( ltr ? buttonType == ScrollBarButtonType.decrease : buttonType == ScrollBarButtonType.increase )
             {
                 shape = new GeneralPath ( GeneralPath.WIND_EVEN_ODD );
@@ -419,5 +391,36 @@ public class WebScrollBarButtonPainter<E extends AbstractButton> extends Abstrac
             }
         }
         return shape;
+    }
+
+    /**
+     * Returns whether or not scrollbar this button is attached to is vertical.
+     *
+     * @return returns true if scrollbar this button is attached to is vertical, false otherwise
+     */
+    protected boolean isVerticalScroll ()
+    {
+        final Container parent = component.getParent ();
+        return parent instanceof JScrollBar && ( ( JScrollBar ) parent ).getOrientation () == Adjustable.VERTICAL;
+    }
+
+    /**
+     * Returns preferred display orientation.
+     *
+     * @return preferred display orientation
+     */
+    protected boolean isLtrScroll ()
+    {
+        final Container parent = component.getParent ();
+        return !( parent instanceof JScrollBar ) || parent.getComponentOrientation ().isLeftToRight ();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Dimension getPreferredSize ()
+    {
+        return new Dimension ( WebScrollBarStyle.buttonsSize );
     }
 }

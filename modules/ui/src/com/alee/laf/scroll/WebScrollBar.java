@@ -114,53 +114,6 @@ public class WebScrollBar extends JScrollBar implements Styleable, SizeMethods<W
     }
 
     /**
-     * Returns scroll bar content margin.
-     *
-     * @return scroll bar content margin
-     */
-    public Insets getMargin ()
-    {
-        return getWebUI ().getMargin ();
-    }
-
-    /**
-     * Sets scroll bar content margin.
-     *
-     * @param margin new scroll bar content margin
-     * @return scroll bar
-     */
-    public WebScrollBar setMargin ( final Insets margin )
-    {
-        getWebUI ().setMargin ( margin );
-        return this;
-    }
-
-    /**
-     * Sets scroll bar content margin.
-     *
-     * @param top    new scroll bar content top margin
-     * @param left   new scroll bar content left margin
-     * @param bottom new scroll bar content bottom margin
-     * @param right  new scroll bar content right margin
-     * @return scroll bar
-     */
-    public WebScrollBar setMargin ( final int top, final int left, final int bottom, final int right )
-    {
-        return setMargin ( new Insets ( top, left, bottom, right ) );
-    }
-
-    /**
-     * Sets scroll bar content margin.
-     *
-     * @param spacing new scroll bar content margin
-     * @return scroll bar
-     */
-    public WebScrollBar setMargin ( final int spacing )
-    {
-        return setMargin ( spacing, spacing, spacing, spacing );
-    }
-
-    /**
      * Returns scroll bar painter.
      *
      * @return scroll bar painter
@@ -180,54 +133,6 @@ public class WebScrollBar extends JScrollBar implements Styleable, SizeMethods<W
     public WebScrollBar setPainter ( final Painter painter )
     {
         StyleManager.setCustomPainter ( this, painter );
-        return this;
-    }
-
-    /**
-     * Returns decrease button painter.
-     * This the button displayed at top or left side of the scroll bar.
-     *
-     * @return decrease button painter
-     */
-    public Painter getDecreaseButtonPainter ()
-    {
-        return getWebUI ().getDecreaseButtonPainter ();
-    }
-
-    /**
-     * Sets decrease button painter.
-     * This the button displayed at top or left side of the scroll bar.
-     *
-     * @param painter new decrease button painter
-     * @return scroll bar
-     */
-    public WebScrollBar setDecreaseButtonPainter ( final Painter painter )
-    {
-        getWebUI ().setDecreaseButtonPainter ( painter );
-        return this;
-    }
-
-    /**
-     * Returns increase button painter.
-     * This the button displayed at bottom or right side of the scroll bar.
-     *
-     * @return increase button painter
-     */
-    public Painter getIncreaseButtonPainter ()
-    {
-        return getWebUI ().getIncreaseButtonPainter ();
-    }
-
-    /**
-     * Sets increase button painter.
-     * This the button displayed at bottom or right side of the scroll bar.
-     *
-     * @param painter new increase button painter
-     * @return scroll bar
-     */
-    public WebScrollBar setIncreaseButtonPainter ( final Painter painter )
-    {
-        getWebUI ().setIncreaseButtonPainter ( painter );
         return this;
     }
 

@@ -21,6 +21,7 @@ import com.alee.extended.painter.AbstractPainter;
 import com.alee.global.StyleConstants;
 import com.alee.laf.scroll.ScrollBarPainter;
 import com.alee.laf.scroll.WebScrollBarStyle;
+import com.alee.laf.scroll.WebScrollBarUI;
 import com.alee.utils.ColorUtils;
 import com.alee.utils.GraphicsUtils;
 import com.alee.utils.MathUtils;
@@ -40,14 +41,14 @@ import java.awt.event.MouseEvent;
  * @author Mikle Garin
  */
 
-public class WebScrollBarPainter<E extends JScrollBar> extends AbstractPainter<E> implements ScrollBarPainter<E>
+public class WebScrollBarPainter<E extends JScrollBar, U extends WebScrollBarUI> extends AbstractPainter<E, U>
+        implements ScrollBarPainter<E, U>
 {
     /**
      * Style settings.
      */
-    protected boolean paintButtons = WebScrollBarStyle.paintButtons;
-    protected boolean paintTrack = WebScrollBarStyle.paintTrack;
     protected int thumbRound = WebScrollBarStyle.thumbRound;
+    protected int scrollBarWidth = WebScrollBarStyle.scrollBarWidth;
     protected Insets thumbMargin = WebScrollBarStyle.thumbMargin;
     protected Color trackBorderColor = WebScrollBarStyle.trackBorderColor;
     protected Color trackBackgroundColor = WebScrollBarStyle.trackBackgroundColor;
@@ -74,12 +75,12 @@ public class WebScrollBarPainter<E extends JScrollBar> extends AbstractPainter<E
     protected boolean rollover;
     protected boolean pressed;
     protected boolean dragged;
-    protected Rectangle trackBounds;
-    protected Rectangle thumbBounds;
 
     /**
      * Painting variables.
      */
+    protected Rectangle trackBounds;
+    protected Rectangle thumbBounds;
     protected Insets thumbMarginR;
     protected Insets thumbMarginHL;
     protected Insets thumbMarginHR;
@@ -88,9 +89,9 @@ public class WebScrollBarPainter<E extends JScrollBar> extends AbstractPainter<E
      * {@inheritDoc}
      */
     @Override
-    public void install ( final E scrollbar )
+    public void install ( final E scrollbar, final U ui )
     {
-        super.install ( scrollbar );
+        super.install ( scrollbar, ui );
 
         // This styling is animated
         animated = true;
@@ -136,60 +137,13 @@ public class WebScrollBarPainter<E extends JScrollBar> extends AbstractPainter<E
      * {@inheritDoc}
      */
     @Override
-    public void uninstall ( final E scrollbar )
+    public void uninstall ( final E scrollbar, final U ui )
     {
         // Removing listeners
         scrollbar.removeMouseListener ( mouseAdapter );
         scrollbar.removeMouseMotionListener ( mouseAdapter );
 
-        super.uninstall ( scrollbar );
-    }
-
-    /**
-     * Returns whether scroll bar arrow buttons are visible or not.
-     * Buttons are painted separately, this mark simply informs whether they are actually visible or not.
-     *
-     * @return true if scroll bar arrow buttons are visible, false otherwise
-     */
-    public boolean isPaintButtons ()
-    {
-        return paintButtons;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setPaintButtons ( final boolean paint )
-    {
-        if ( this.paintButtons != paint )
-        {
-            this.paintButtons = paint;
-            updateAll ();
-        }
-    }
-
-    /**
-     * Returns whether scroll bar track should be painted or not.
-     *
-     * @return true if scroll bar track should be painted, false otherwise
-     */
-    public boolean isPaintTrack ()
-    {
-        return paintTrack;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setPaintTrack ( final boolean paint )
-    {
-        if ( this.paintTrack != paint )
-        {
-            this.paintTrack = paint;
-            updateAll ();
-        }
+        super.uninstall ( scrollbar, ui );
     }
 
     /**
@@ -618,22 +572,22 @@ public class WebScrollBarPainter<E extends JScrollBar> extends AbstractPainter<E
      * {@inheritDoc}
      */
     @Override
-    public Boolean isOpaque ( final E scrollbar )
+    public Boolean isOpaque ()
     {
-        return paintTrack;
+        return ui.isPaintTrack ();
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Insets getMargin ( final E scrollbar )
+    public Insets getMargin ()
     {
-        if ( paintTrack )
+        if ( ui.isPaintTrack () )
         {
             // Additional 1px border at scroll bar side
             // Orientation will be taken into account by the UI itself
-            final boolean hor = scrollbar.getOrientation () == SwingConstants.HORIZONTAL;
+            final boolean hor = component.getOrientation () == Adjustable.HORIZONTAL;
             return new Insets ( hor ? 1 : 0, hor ? 0 : 1, 0, 0 );
         }
         else
@@ -646,7 +600,7 @@ public class WebScrollBarPainter<E extends JScrollBar> extends AbstractPainter<E
      * {@inheritDoc}
      */
     @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E scrollbar )
+    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E scrollbar, final U ui )
     {
         final Object aa = GraphicsUtils.setupAntialias ( g2d );
         paintBackground ( g2d, scrollbar, bounds );
@@ -663,10 +617,10 @@ public class WebScrollBarPainter<E extends JScrollBar> extends AbstractPainter<E
      * @param scrollbar scroll bar
      * @param bounds    scroll bar bounds
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     protected void paintBackground ( final Graphics2D g2d, final E scrollbar, final Rectangle bounds )
     {
-        if ( paintTrack )
+        if ( ui.isPaintTrack () )
         {
             g2d.setPaint ( trackBackgroundColor );
             g2d.fillRect ( bounds.x, bounds.y, bounds.width, bounds.height );
@@ -694,7 +648,7 @@ public class WebScrollBarPainter<E extends JScrollBar> extends AbstractPainter<E
      * @param scrollbar scroll bar
      * @param bounds    track bounds
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     protected void paintTrack ( final Graphics2D g2d, final E scrollbar, final Rectangle bounds )
     {
         // You can paint your own track decoration by overriding this method
@@ -708,7 +662,7 @@ public class WebScrollBarPainter<E extends JScrollBar> extends AbstractPainter<E
      * @param scrollbar scroll bar component
      * @param bounds    thumb bounds
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     protected void paintThumb ( final Graphics2D g2d, final E scrollbar, final Rectangle bounds )
     {
         final Insets m = getCurrentThumbMargin ( scrollbar );
@@ -741,7 +695,7 @@ public class WebScrollBarPainter<E extends JScrollBar> extends AbstractPainter<E
             {
                 updateThumbMargins ();
             }
-            final boolean ver = scrollbar.getOrientation () == SwingConstants.VERTICAL;
+            final boolean ver = scrollbar.getOrientation () == Adjustable.VERTICAL;
             final boolean ltr = scrollbar.getComponentOrientation ().isLeftToRight ();
             return ver ? ( ltr ? thumbMargin : thumbMarginR ) : ( ltr ? thumbMarginHL : thumbMarginHR );
         }
@@ -790,5 +744,17 @@ public class WebScrollBarPainter<E extends JScrollBar> extends AbstractPainter<E
         {
             repaint ();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Dimension getPreferredSize ()
+    {
+        final Insets i = component.getInsets ();
+        final boolean ver = component.getOrientation () == Adjustable.VERTICAL;
+        return ver ? new Dimension ( i.left + scrollBarWidth + i.right, i.top + 48 + i.bottom ) :
+                new Dimension ( i.left + 48 + i.right, i.top + scrollBarWidth + i.bottom );
     }
 }

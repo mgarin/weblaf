@@ -29,23 +29,8 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public interface ScrollBarPainter<E extends JScrollBar> extends Painter<E>, SpecificPainter
+public interface ScrollBarPainter<E extends JScrollBar, U extends WebScrollBarUI> extends Painter<E, U>, SpecificPainter
 {
-    /**
-     * Sets whether scroll bar arrow buttons are visible or not.
-     * Buttons are painted separately, this mark simply informs whether they are actually visible or not.
-     *
-     * @param paint whether scroll bar arrow buttons are visible or not
-     */
-    public void setPaintButtons ( boolean paint );
-
-    /**
-     * Sets whether scroll bar track should be painted or not.
-     *
-     * @param paint whether scroll bar track should be painted or not
-     */
-    public void setPaintTrack ( boolean paint );
-
     /**
      * Sets whether scroll bar thumb is being dragged or not.
      * This value is updated by WebScrollBarUI when drag event starts or ends.

@@ -145,15 +145,6 @@ public class WebDecorationPainter<E extends JComponent, U extends ComponentUI> e
      * {@inheritDoc}
      */
     @Override
-    public void updateBorder ()
-    {
-        LafUtils.updateBorder ( component, margin, this );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public Shape provideShape ( final E component, final Rectangle bounds )
     {
         return undecorated ? bounds : getShape ( component, true );

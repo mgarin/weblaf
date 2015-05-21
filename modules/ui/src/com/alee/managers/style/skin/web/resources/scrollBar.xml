@@ -21,7 +21,12 @@
             <thumbPressedBorderColor>126,126,126</thumbPressedBorderColor>
             <thumbPressedBackgroundColor>145,145,145</thumbPressedBackgroundColor>
         </painter>
-        <painter id="decreaseButtonPainter,increaseButtonPainter" class="com.alee.managers.style.skin.web.WebScrollBarButtonPainter">
+    </style>
+    <style type="button" id="scrollbar-button" extends="default">
+        <component>
+            <focusable>false</focusable>
+        </component>
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebScrollBarButtonPainter">
             <borderColor>189,189,189</borderColor>
             <backgroundColor>217,217,217</backgroundColor>
             <disabledBorderColor>210,210,210</disabledBorderColor>
@@ -30,6 +35,16 @@
             <rolloverBackgroundColor>194,194,194</rolloverBackgroundColor>
             <pressedBorderColor>126,126,126</pressedBorderColor>
             <pressedBackgroundColor>145,145,145</pressedBackgroundColor>
+        </painter>
+    </style>
+    <style type="button" id="scrollbar-decrease-button" extends="scrollbar-button">
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebScrollBarButtonPainter">
+            <buttonType>decrease</buttonType>
+        </painter>
+    </style>
+    <style type="button" id="scrollbar-increase-button" extends="scrollbar-button">
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebScrollBarButtonPainter">
+            <buttonType>increase</buttonType>
         </painter>
     </style>
 

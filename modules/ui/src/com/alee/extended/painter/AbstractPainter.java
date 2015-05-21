@@ -19,6 +19,7 @@ package com.alee.extended.painter;
 
 import com.alee.laf.WebLookAndFeel;
 import com.alee.utils.CollectionUtils;
+import com.alee.utils.LafUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.BorderMethods;
 
@@ -73,16 +74,25 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
     protected E component;
 
     /**
+     * Component UI reference.
+     */
+    protected U ui;
+
+    /**
      * {@inheritDoc}
      */
     @Override
     public void install ( final E c, final U ui )
     {
-        // Saving component reference
-        component = c;
+        // Saving references
+        this.component = c;
+        this.ui = ui;
 
         // Default settings
         SwingUtils.setOrientation ( c );
+
+        // Updating border
+        updateBorder ();
 
         // Orientation change listener
         propertyChangeListener = new PropertyChangeListener ()
@@ -106,8 +116,17 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
         // Removing listeners
         c.removePropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, propertyChangeListener );
 
-        // Cleaning up component reference
-        component = null;
+        // Cleaning up references
+        this.component = null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void updateBorder ()
+    {
+        LafUtils.updateBorder ( component, getMargin (), this );
     }
 
     /**

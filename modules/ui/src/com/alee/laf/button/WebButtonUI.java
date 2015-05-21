@@ -32,6 +32,8 @@ import javax.swing.plaf.basic.BasicButtonUI;
 import java.awt.*;
 
 /**
+ * Custom UI for JButton component.
+ *
  * @author Mikle Garin
  */
 
@@ -87,12 +89,6 @@ public class WebButtonUI extends BasicButtonUI implements Styleable, ShapeProvid
         oldContentAreaFilled = button.isContentAreaFilled ();
         oldBorderPainted = button.isBorderPainted ();
         oldFocusable = button.isFocusable ();
-
-        // todo Add to XML
-        //        button.setFocusPainted ( false );
-        //        button.setContentAreaFilled ( false );
-        //        button.setBorderPainted ( false );
-        //        button.setFocusable ( true );
 
         // Applying skin
         StyleManager.applySkin ( button );
@@ -174,6 +170,12 @@ public class WebButtonUI extends BasicButtonUI implements Styleable, ShapeProvid
         }, this.painter, painter, ButtonPainter.class, AdaptiveButtonPainter.class );
     }
 
+    /**
+     * Paints button.
+     *
+     * @param g graphics
+     * @param c component
+     */
     @Override
     public void paint ( final Graphics g, final JComponent c )
     {
@@ -512,6 +514,9 @@ public class WebButtonUI extends BasicButtonUI implements Styleable, ShapeProvid
     //        }
     //    }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Dimension getPreferredSize ( final JComponent c )
     {
