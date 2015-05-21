@@ -1,8 +1,8 @@
 ===================== WebButton:
 default
 - setFocusPainted ( false );
-+ setContentAreaFilled ( false );
-+ setBorderPainted ( false );
+- setContentAreaFilled ( false );
+- setBorderPainted ( false );
 + setFocusable ( true );
 
 icon-button
