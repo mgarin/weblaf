@@ -17,12 +17,14 @@
 
 package com.alee.laf.tooltip;
 
-import com.alee.laf.WebLookAndFeel;
+import com.alee.extended.painter.Painter;
+import com.alee.extended.painter.PainterSupport;
+import com.alee.managers.style.StyleManager;
 import com.alee.utils.GraphicsUtils;
-import com.alee.utils.LafUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.laf.ShapeProvider;
-import com.alee.utils.swing.BorderMethods;
+import com.alee.utils.laf.Styleable;
+import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
@@ -37,12 +39,18 @@ import java.util.Map;
  * @author Mikle Garin
  */
 
-public class WebToolTipUI extends BasicToolTipUI implements ShapeProvider, BorderMethods
+public class WebToolTipUI extends BasicToolTipUI implements Styleable, ShapeProvider
 {
     /**
-     * Tooltip instance.
+     * Component painter.
      */
-    private JComponent tooltip = null;
+    protected ToolTipPainter painter;
+
+    /**
+     * Runtime variables.
+     */
+    protected String styleId = null;
+    protected JComponent tooltip = null;
 
     /**
      * Returns an instance of the WebToolTipUI for the specified component.
@@ -67,16 +75,11 @@ public class WebToolTipUI extends BasicToolTipUI implements ShapeProvider, Borde
     {
         super.installUI ( c );
 
-        this.tooltip = c;
+        // Saving tooltip to local variable
+        tooltip = c;
 
-        // Default settings
-        SwingUtils.setOrientation ( tooltip );
-        LookAndFeel.installProperty ( tooltip, WebLookAndFeel.OPAQUE_PROPERTY, Boolean.FALSE );
-        tooltip.setBackground ( WebTooltipStyle.backgroundColor );
-        tooltip.setForeground ( WebTooltipStyle.textColor );
-
-        // Updating border
-        updateBorder ();
+        // Applying skin
+        StyleManager.applySkin ( tooltip );
     }
 
     /**
@@ -87,9 +90,33 @@ public class WebToolTipUI extends BasicToolTipUI implements ShapeProvider, Borde
     @Override
     public void uninstallUI ( final JComponent c )
     {
+        // Uninstalling applied skin
+        StyleManager.removeSkin ( tooltip );
+
+        // Cleaning up reference
         this.tooltip = null;
 
+        // Uninstalling UI
         super.uninstallUI ( c );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getStyleId ()
+    {
+        return styleId;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setStyleId ( final String id )
+    {
+        this.styleId = id;
+        StyleManager.applySkin ( tooltip );
     }
 
     /**
@@ -105,18 +132,31 @@ public class WebToolTipUI extends BasicToolTipUI implements ShapeProvider, Borde
     }
 
     /**
-     * {@inheritDoc}
+     * Returns tooltip painter.
+     *
+     * @return tooltip painter
      */
-    @Override
-    public void updateBorder ()
+    public Painter getPainter ()
     {
-        // Preserve old borders
-        if ( SwingUtils.isPreserveBorders ( tooltip ) )
-        {
-            return;
-        }
+        return PainterSupport.getAdaptedPainter ( painter );
+    }
 
-        tooltip.setBorder ( LafUtils.createWebBorder ( WebTooltipStyle.contentMargin ) );
+    /**
+     * Sets tooltip painter.
+     * Pass null to remove tooltip painter.
+     *
+     * @param painter new tooltip painter
+     */
+    public void setPainter ( final Painter painter )
+    {
+        PainterSupport.setPainter ( tooltip, new DataRunnable<ToolTipPainter> ()
+        {
+            @Override
+            public void run ( final ToolTipPainter newPainter )
+            {
+                WebToolTipUI.this.painter = newPainter;
+            }
+        }, this.painter, painter, ToolTipPainter.class, AdaptiveToolTipPainter.class );
     }
 
     /**
@@ -140,6 +180,7 @@ public class WebToolTipUI extends BasicToolTipUI implements ShapeProvider, Borde
         GraphicsUtils.restoreAntialias ( g2d, aa );
 
         final Map taa = SwingUtils.setupTextAntialias ( g2d );
+        // todo paint text from decorated painter
         super.paint ( g, c );
         SwingUtils.restoreTextAntialias ( g2d, taa );
     }

@@ -2,7 +2,6 @@ package com.alee.laf.separator;
 
 import com.alee.extended.painter.AdaptivePainter;
 import com.alee.extended.painter.Painter;
-import com.alee.extended.painter.SpecificPainter;
 
 import javax.swing.*;
 
@@ -13,15 +12,15 @@ import javax.swing.*;
  * @author Alexandr Zernov
  */
 
-public class AdaptiveSeparatorPainter<E extends JSeparator, U extends WebSeparatorUI, P extends Painter & SpecificPainter>
-        extends AdaptivePainter<E, U, P> implements SeparatorPainter<E, U>
+public class AdaptiveSeparatorPainter<E extends JSeparator, U extends WebSeparatorUI> extends AdaptivePainter<E, U>
+        implements SeparatorPainter<E, U>
 {
     /**
-     * Constructs new AdaptiveButtonPainter for the specified painter.
+     * Constructs new AdaptiveSeparatorPainter for the specified painter.
      *
      * @param painter painter to adapt
      */
-    public AdaptiveSeparatorPainter ( final P painter )
+    public AdaptiveSeparatorPainter ( final Painter painter )
     {
         super ( painter );
     }

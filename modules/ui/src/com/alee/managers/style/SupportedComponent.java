@@ -54,7 +54,7 @@ public enum SupportedComponent
     verticalLabel ( true, WebVerticalLabel.class, "VerticalLabelUI", WebLookAndFeel.verticalLabelUI ),
     multiLineLabel ( false, WebMultiLineLabel.class, "MultiLineLabelUI", WebLookAndFeel.multiLineLabelUI ),
     styledLabel ( true, WebStyledLabel.class, "StyledLabelUI", WebLookAndFeel.styledLabelUI ),
-    toolTip ( false, JToolTip.class, "ToolTipUI", WebLookAndFeel.toolTipUI ),
+    toolTip ( true, JToolTip.class, "ToolTipUI", WebLookAndFeel.toolTipUI ),
 
     /**
      * Button-related components.
@@ -87,7 +87,7 @@ public enum SupportedComponent
      */
     scrollBar ( true, JScrollBar.class, "ScrollBarUI", WebLookAndFeel.scrollBarUI ),
     scrollPane ( false, JScrollPane.class, "ScrollPaneUI", WebLookAndFeel.scrollPaneUI ),
-    viewport ( false, JViewport.class, "ViewportUI", WebLookAndFeel.viewportUI ),
+    viewport ( true, JViewport.class, "ViewportUI", WebLookAndFeel.viewportUI ),
 
     /**
      * Text-related components.
@@ -148,6 +148,16 @@ public enum SupportedComponent
     optionPane ( false, JOptionPane.class, "OptionPaneUI", WebLookAndFeel.optionPaneUI );
 
     /**
+     * Component type icons cache.
+     */
+    private static final Map<SupportedComponent, ImageIcon> componentIcons =
+            new EnumMap<SupportedComponent, ImageIcon> ( SupportedComponent.class );
+    /**
+     * Lazily initialized component types map by their UI class IDs.
+     */
+    private static final Map<String, SupportedComponent> componentByUIClassID =
+            new HashMap<String, SupportedComponent> ( values ().length );
+    /**
      * Enum constant settings.
      */
     protected final boolean supportsPainters;
@@ -170,6 +180,42 @@ public enum SupportedComponent
         this.componentClass = componentClass;
         this.uiClassID = uiClassID;
         this.defaultUIClass = defaultUIClass;
+    }
+
+    /**
+     * Returns supported component type by UI class ID.
+     *
+     * @param uiClassID UI class ID
+     * @return supported component type by UI class ID
+     */
+    public static SupportedComponent getComponentTypeByUIClassID ( final String uiClassID )
+    {
+        if ( componentByUIClassID.size () == 0 )
+        {
+            for ( final SupportedComponent supportedComponent : values () )
+            {
+                componentByUIClassID.put ( supportedComponent.getUIClassID (), supportedComponent );
+            }
+        }
+        return componentByUIClassID.get ( uiClassID );
+    }
+
+    /**
+     * Returns list of component types which supports painters.
+     *
+     * @return list of component types which supports painters
+     */
+    public static List<SupportedComponent> getPainterSupportedComponents ()
+    {
+        final List<SupportedComponent> supportedComponents = new ArrayList<SupportedComponent> ();
+        for ( final SupportedComponent sc : SupportedComponent.values () )
+        {
+            if ( sc.supportsPainters () )
+            {
+                supportedComponents.add ( sc );
+            }
+        }
+        return supportedComponents;
     }
 
     /**
@@ -241,12 +287,6 @@ public enum SupportedComponent
     }
 
     /**
-     * Component type icons cache.
-     */
-    private static final Map<SupportedComponent, ImageIcon> componentIcons =
-            new EnumMap<SupportedComponent, ImageIcon> ( SupportedComponent.class );
-
-    /**
      * Returns component type icon.
      *
      * @return component type icon
@@ -268,47 +308,5 @@ public enum SupportedComponent
             }
         }
         return icon;
-    }
-
-    /**
-     * Lazily initialized component types map by their UI class IDs.
-     */
-    private static final Map<String, SupportedComponent> componentByUIClassID =
-            new HashMap<String, SupportedComponent> ( values ().length );
-
-    /**
-     * Returns supported component type by UI class ID.
-     *
-     * @param uiClassID UI class ID
-     * @return supported component type by UI class ID
-     */
-    public static SupportedComponent getComponentTypeByUIClassID ( final String uiClassID )
-    {
-        if ( componentByUIClassID.size () == 0 )
-        {
-            for ( final SupportedComponent supportedComponent : values () )
-            {
-                componentByUIClassID.put ( supportedComponent.getUIClassID (), supportedComponent );
-            }
-        }
-        return componentByUIClassID.get ( uiClassID );
-    }
-
-    /**
-     * Returns list of component types which supports painters.
-     *
-     * @return list of component types which supports painters
-     */
-    public static List<SupportedComponent> getPainterSupportedComponents ()
-    {
-        final List<SupportedComponent> supportedComponents = new ArrayList<SupportedComponent> ();
-        for ( final SupportedComponent sc : SupportedComponent.values () )
-        {
-            if ( sc.supportsPainters () )
-            {
-                supportedComponents.add ( sc );
-            }
-        }
-        return supportedComponents;
     }
 }

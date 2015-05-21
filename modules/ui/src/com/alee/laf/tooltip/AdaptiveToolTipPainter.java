@@ -1,7 +1,7 @@
 package com.alee.laf.tooltip;
 
 import com.alee.extended.painter.AdaptivePainter;
-import com.alee.laf.separator.SeparatorPainter;
+import com.alee.extended.painter.Painter;
 
 import javax.swing.*;
 
@@ -12,7 +12,16 @@ import javax.swing.*;
  * @author Alexandr Zernov
  */
 
-public class AdaptiveToolTipPainter<E extends JSeparator, U extends WebSeparatorUI, P extends Painter & SpecificPainter>
-        extends AdaptivePainter<E, U, P> implements SeparatorPainter<E, U>
+public class AdaptiveToolTipPainter<E extends JComponent, U extends WebToolTipUI> extends AdaptivePainter<E, U>
+        implements ToolTipPainter<E, U>
 {
+    /**
+     * Constructs new AdaptiveToolTipPainter for the specified painter.
+     *
+     * @param painter painter to adapt
+     */
+    public AdaptiveToolTipPainter ( final Painter painter )
+    {
+        super ( painter );
+    }
 }

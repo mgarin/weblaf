@@ -17,9 +17,11 @@
 
 package com.alee.laf.viewport;
 
+import com.alee.extended.painter.Painter;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.log.Log;
 import com.alee.utils.ReflectUtils;
+import com.alee.utils.laf.Styleable;
 
 import javax.swing.*;
 
@@ -29,7 +31,7 @@ import javax.swing.*;
  * @author Mikle Garin
  */
 
-public class WebViewport extends JViewport
+public class WebViewport extends JViewport implements Styleable
 {
     /**
      * Constructs new viewport component.
@@ -37,6 +39,47 @@ public class WebViewport extends JViewport
     public WebViewport ()
     {
         super ();
+    }
+
+    /**
+     * Returns viewport painter.
+     *
+     * @return viewport painter
+     */
+    public Painter getPainter ()
+    {
+        return getWebUI ().getPainter ();
+    }
+
+    /**
+     * Sets viewport painter.
+     * Pass null to remove viewport painter.
+     *
+     * @param painter new viewport painter
+     * @return this viewport
+     */
+    public WebViewport setPainter ( final Painter painter )
+    {
+        getWebUI ().setPainter ( painter );
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getStyleId ()
+    {
+        return getWebUI ().getStyleId ();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setStyleId ( final String id )
+    {
+        getWebUI ().setStyleId ( id );
     }
 
     /**

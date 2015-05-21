@@ -1,7 +1,8 @@
 package com.alee.managers.style.skin.web;
 
-import com.alee.laf.tooltip.ToolTipPainter;
-import com.alee.laf.tooltip.WebToolTipUI;
+import com.alee.extended.painter.AbstractPainter;
+import com.alee.laf.viewport.ViewportPainter;
+import com.alee.laf.viewport.WebViewportUI;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,8 +11,7 @@ import java.awt.*;
  * @author Alexandr Zernov
  */
 
-public class WebTooltipPainter<E extends JComponent, U extends WebToolTipUI> extends WebDecorationPainter<E, U>
-        implements ToolTipPainter<E, U>
+public class WebViewportPainter<E extends JViewport, U extends WebViewportUI> extends AbstractPainter<E, U> implements ViewportPainter<E, U>
 {
     /**
      * {@inheritDoc}
@@ -19,6 +19,5 @@ public class WebTooltipPainter<E extends JComponent, U extends WebToolTipUI> ext
     @Override
     public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
     {
-
     }
 }

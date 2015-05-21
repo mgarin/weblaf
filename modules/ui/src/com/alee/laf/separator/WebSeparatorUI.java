@@ -37,6 +37,7 @@ import java.awt.*;
 
 public class WebSeparatorUI extends BasicSeparatorUI implements Styleable
 {
+
     /**
      * Component painter.
      */
@@ -46,7 +47,7 @@ public class WebSeparatorUI extends BasicSeparatorUI implements Styleable
      * Runtime variables.
      */
     protected String styleId = null;
-    protected JSeparator separator;
+    protected JSeparator separator = null;
 
     /**
      * Returns an instance of the WebSeparatorUI for the specified component.
@@ -78,12 +79,21 @@ public class WebSeparatorUI extends BasicSeparatorUI implements Styleable
         StyleManager.applySkin ( separator );
     }
 
+    /**
+     * Uninstalls UI from the specified component.
+     *
+     * @param c component with this UI
+     */
     @Override
     public void uninstallUI ( final JComponent c )
     {
         // Uninstalling applied skin
         StyleManager.removeSkin ( separator );
 
+        // Cleaning up reference
+        separator = null;
+
+        // Uninstalling UI
         super.uninstallUI ( c );
     }
 
@@ -107,9 +117,9 @@ public class WebSeparatorUI extends BasicSeparatorUI implements Styleable
     }
 
     /**
-     * Returns panel painter.
+     * Returns separator painter.
      *
-     * @return panel painter
+     * @return separator painter
      */
     public Painter getPainter ()
     {
