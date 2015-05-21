@@ -335,6 +335,7 @@ public class StyleManager
 
     /**
      * Applies specified skin to the skinnable component.
+     * todo This won't change component's styleId, add some fix?
      * todo Do not replace custom applied skins when current skin changed?
      *
      * @param component component to apply skin to
