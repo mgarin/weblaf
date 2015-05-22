@@ -19,19 +19,15 @@ package com.alee.laf.label;
 
 import com.alee.extended.painter.Painter;
 import com.alee.extended.painter.PainterSupport;
-import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.style.StyleManager;
-import com.alee.utils.LafUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.laf.Styleable;
-import com.alee.utils.swing.BorderMethods;
+import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicLabelUI;
 import java.awt.*;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 
 /**
  * Custom UI for JLabel component.
@@ -39,23 +35,12 @@ import java.beans.PropertyChangeListener;
  * @author Mikle Garin
  */
 
-public class WebLabelUI extends BasicLabelUI implements Styleable, BorderMethods
+public class WebLabelUI extends BasicLabelUI implements Styleable
 {
-    /**
-     * Style settings.
-     */
-    protected Insets margin = WebLabelStyle.margin;
-    protected boolean drawShade = WebLabelStyle.drawShade;
-
     /**
      * Component painter.
      */
     protected LabelPainter painter;
-
-    /**
-     * Label listeners.
-     */
-    protected PropertyChangeListener propertyChangeListener;
 
     /**
      * Runtime variables.
@@ -70,7 +55,7 @@ public class WebLabelUI extends BasicLabelUI implements Styleable, BorderMethods
      * @param c component that will use UI instance
      * @return instance of the WebLabelUI
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebLabelUI ();
@@ -86,25 +71,11 @@ public class WebLabelUI extends BasicLabelUI implements Styleable, BorderMethods
     {
         super.installUI ( c );
 
-        // Saving label to local variable
+        // Saving label reference
         label = ( JLabel ) c;
-
-        // Default settings
-        SwingUtils.setOrientation ( label );
 
         // Applying skin
         StyleManager.applySkin ( label );
-
-        // Orientation change listener
-        propertyChangeListener = new PropertyChangeListener ()
-        {
-            @Override
-            public void propertyChange ( final PropertyChangeEvent evt )
-            {
-                updateBorder ();
-            }
-        };
-        label.addPropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, propertyChangeListener );
     }
 
     /**
@@ -115,13 +86,10 @@ public class WebLabelUI extends BasicLabelUI implements Styleable, BorderMethods
     @Override
     public void uninstallUI ( final JComponent c )
     {
-        // Removing listeners
-        label.removePropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, propertyChangeListener );
-
         // Uninstalling applied skin
         StyleManager.removeSkin ( label );
 
-        // Cleaning up reference
+        // Removing label reference
         label = null;
 
         // Uninstalling UI
@@ -148,109 +116,13 @@ public class WebLabelUI extends BasicLabelUI implements Styleable, BorderMethods
     }
 
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void updateBorder ()
-    {
-        LafUtils.updateBorder ( label, margin, painter );
-    }
-
-    /**
-     * Returns whether text shade is displayed or not.
-     *
-     * @return true if text shade is displayed, false otherwise
-     */
-    public boolean isDrawShade ()
-    {
-        return drawShade;
-    }
-
-    /**
-     * Sets whether text shade should be displayed or not.
-     *
-     * @param drawShade whether text shade should be displayed or not
-     */
-    public void setDrawShade ( final boolean drawShade )
-    {
-        this.drawShade = drawShade;
-        if ( painter != null )
-        {
-            painter.setDrawShade ( drawShade );
-        }
-    }
-
-    /**
-     * Returns component margin.
-     *
-     * @return component margin
-     */
-    public Insets getMargin ()
-    {
-        return margin;
-    }
-
-    /**
-     * Sets component margin.
-     *
-     * @param margin component margin
-     */
-    public void setMargin ( final Insets margin )
-    {
-        this.margin = margin;
-        updateBorder ();
-    }
-
-    /**
-     * Returns text shade color.
-     *
-     * @return text shade color
-     */
-    public Color getShadeColor ()
-    {
-        final Color shadeColor = StyleManager.getPainterPropertyValue ( label, "shadeColor" );
-        return shadeColor != null ? shadeColor : WebLabelStyle.shadeColor;
-    }
-
-    /**
-     * Sets text shade color.
-     *
-     * @param shadeColor text shade color
-     */
-    public void setShadeColor ( final Color shadeColor )
-    {
-        StyleManager.setCustomPainterProperty ( label, "shadeColor", shadeColor );
-    }
-
-    /**
-     * Returns label transparency.
-     *
-     * @return label transparency
-     */
-    public Float getTransparency ()
-    {
-        final Float transparency = StyleManager.getPainterPropertyValue ( label, "transparency" );
-        return transparency != null ? transparency : WebLabelStyle.transparency;
-    }
-
-    /**
-     * Sets label transparency.
-     *
-     * @param transparency label transparency
-     */
-    public void setTransparency ( final Float transparency )
-    {
-        StyleManager.setCustomPainterProperty ( label, "transparency", transparency );
-    }
-
-    /**
      * Returns label painter.
      *
      * @return label painter
      */
     public Painter getPainter ()
     {
-        return LafUtils.getAdaptedPainter ( painter );
+        return PainterSupport.getAdaptedPainter ( painter );
     }
 
     /**
@@ -261,33 +133,14 @@ public class WebLabelUI extends BasicLabelUI implements Styleable, BorderMethods
      */
     public void setPainter ( final Painter painter )
     {
-        // Creating adaptive painter if required
-        final LabelPainter properPainter = LafUtils.getProperPainter ( painter, LabelPainter.class, AdaptiveLabelPainter.class );
-
-        // Properly updating painter
-        PainterSupport.uninstallPainter ( label, this.painter );
-        final Painter oldPainter = this.painter;
-        this.painter = properPainter;
-        applyPainterSettings ( properPainter );
-        PainterSupport.installPainter ( label, properPainter );
-
-        // Firing painter change event
-        // This is made using reflection because required method is protected within Component class
-        LafUtils.firePainterChanged ( label, oldPainter, properPainter );
-    }
-
-    /**
-     * Applies UI settings to this specific painter.
-     *
-     * @param painter label painter
-     */
-    protected void applyPainterSettings ( final LabelPainter painter )
-    {
-        if ( painter != null )
+        PainterSupport.setPainter ( label, new DataRunnable<LabelPainter> ()
         {
-            // UI settings
-            painter.setDrawShade ( drawShade );
-        }
+            @Override
+            public void run ( final LabelPainter newPainter )
+            {
+                WebLabelUI.this.painter = newPainter;
+            }
+        }, this.painter, painter, LabelPainter.class, AdaptiveLabelPainter.class );
     }
 
     /**
@@ -301,7 +154,7 @@ public class WebLabelUI extends BasicLabelUI implements Styleable, BorderMethods
     {
         if ( painter != null )
         {
-            painter.paint ( ( Graphics2D ) g, SwingUtils.size ( c ), c );
+            painter.paint ( ( Graphics2D ) g, SwingUtils.size ( c ), c, this );
         }
     }
 
@@ -311,6 +164,6 @@ public class WebLabelUI extends BasicLabelUI implements Styleable, BorderMethods
     @Override
     public Dimension getPreferredSize ( final JComponent c )
     {
-        return LafUtils.getPreferredSize ( c, painter );
+        return PainterSupport.getPreferredSize ( c, super.getPreferredSize ( c ), painter );
     }
 }

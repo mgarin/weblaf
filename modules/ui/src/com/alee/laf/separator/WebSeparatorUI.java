@@ -162,6 +162,6 @@ public class WebSeparatorUI extends BasicSeparatorUI implements Styleable
     @Override
     public Dimension getPreferredSize ( final JComponent c )
     {
-        return PainterSupport.getPreferredSize ( super.getPreferredSize ( c ), painter );
+        return PainterSupport.getPreferredSize ( c, super.getPreferredSize ( c ), painter );
     }
 }

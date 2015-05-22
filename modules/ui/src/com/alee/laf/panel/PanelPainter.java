@@ -29,7 +29,7 @@ import javax.swing.*;
  * @author Mikle Garin
  */
 
-public interface PanelPainter<E extends JPanel, U extends WebPanelUI> extends Painter<E, U>, PartialDecoration, SpecificPainter
+public interface PanelPainter<E extends JPanel, U extends WebPanelUI> extends Painter<E, U>, SpecificPainter
 {
     /**
      * Sets whether panel decoration should be painted or not.

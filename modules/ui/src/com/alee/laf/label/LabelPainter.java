@@ -28,12 +28,6 @@ import javax.swing.*;
  * @author Mikle Garin
  */
 
-public interface LabelPainter<E extends JLabel> extends Painter<E>, SpecificPainter
+public interface LabelPainter<E extends JLabel, U extends WebLabelUI> extends Painter<E, U>, SpecificPainter
 {
-    /**
-     * Sets whether text shade should be displayed or not.
-     *
-     * @param drawShade whether text shade should be displayed or not
-     */
-    public void setDrawShade ( final boolean drawShade );
 }

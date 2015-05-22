@@ -592,7 +592,7 @@ public class WebScrollBarPainter<E extends JScrollBar, U extends WebScrollBarUI>
         }
         else
         {
-            return null;
+            return super.getMargin ();
         }
     }
 

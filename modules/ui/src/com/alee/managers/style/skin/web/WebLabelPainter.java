@@ -22,6 +22,7 @@ import com.alee.extended.painter.Painter;
 import com.alee.global.StyleConstants;
 import com.alee.laf.label.LabelPainter;
 import com.alee.laf.label.WebLabelStyle;
+import com.alee.laf.label.WebLabelUI;
 import com.alee.utils.GraphicsUtils;
 import com.alee.utils.LafUtils;
 import com.alee.utils.SwingUtils;
@@ -39,7 +40,7 @@ import java.util.Map;
  * @author Mikle Garin
  */
 
-public class WebLabelPainter<E extends JLabel> extends AbstractPainter<E> implements LabelPainter<E>
+public class WebLabelPainter<E extends JLabel, U extends WebLabelUI> extends AbstractPainter<E, U> implements LabelPainter<E, U>
 {
     /**
      * Style settings.
@@ -87,7 +88,6 @@ public class WebLabelPainter<E extends JLabel> extends AbstractPainter<E> implem
     /**
      * {@inheritDoc}
      */
-    @Override
     public void setDrawShade ( final boolean drawShade )
     {
         this.drawShade = drawShade;
@@ -158,7 +158,7 @@ public class WebLabelPainter<E extends JLabel> extends AbstractPainter<E> implem
      * {@inheritDoc}
      */
     @Override
-    public Boolean isOpaque ( final E c )
+    public Boolean isOpaque ()
     {
         return null;
     }
@@ -167,16 +167,16 @@ public class WebLabelPainter<E extends JLabel> extends AbstractPainter<E> implem
      * {@inheritDoc}
      */
     @Override
-    public Insets getMargin ( final E label )
+    public Insets getMargin ()
     {
-        return backgroundPainter != null ? backgroundPainter.getMargin ( label ) : super.getMargin ( label );
+        return backgroundPainter != null ? backgroundPainter.getMargin () : super.getMargin ();
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E label )
+    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E label, final U ui )
     {
         // Applying graphics settings
         final Composite oc = GraphicsUtils.setupAlphaComposite ( g2d, transparency, transparency != null );
@@ -192,7 +192,7 @@ public class WebLabelPainter<E extends JLabel> extends AbstractPainter<E> implem
         // Painting background
         if ( backgroundPainter != null )
         {
-            backgroundPainter.paint ( g2d, bounds, label );
+            backgroundPainter.paint ( g2d, bounds, label, ui );
         }
 
         // We don't need to go futher if there is not icon/text
@@ -352,12 +352,12 @@ public class WebLabelPainter<E extends JLabel> extends AbstractPainter<E> implem
      * {@inheritDoc}
      */
     @Override
-    public Dimension getPreferredSize ( final E label )
+    public Dimension getPreferredSize ()
     {
-        final String text = label.getText ();
-        final Icon icon = ( label.isEnabled () ) ? label.getIcon () : label.getDisabledIcon ();
-        final Insets insets = label.getInsets ( null );
-        final Font font = label.getFont ();
+        final String text = component.getText ();
+        final Icon icon = ( component.isEnabled () ) ? component.getIcon () : component.getDisabledIcon ();
+        final Insets insets = component.getInsets ( null );
+        final Font font = component.getFont ();
 
         final int dx = insets.left + insets.right;
         final int dy = insets.top + insets.bottom;
@@ -372,7 +372,7 @@ public class WebLabelPainter<E extends JLabel> extends AbstractPainter<E> implem
         }
         else
         {
-            final FontMetrics fm = label.getFontMetrics ( font );
+            final FontMetrics fm = component.getFontMetrics ( font );
 
             final Rectangle iconR = new Rectangle ();
             final Rectangle textR = new Rectangle ();
@@ -383,7 +383,7 @@ public class WebLabelPainter<E extends JLabel> extends AbstractPainter<E> implem
             viewR.y = dy;
             viewR.width = viewR.height = Short.MAX_VALUE;
 
-            layoutCL ( label, fm, text, icon, viewR, iconR, textR );
+            layoutCL ( component, fm, text, icon, viewR, iconR, textR );
 
             final int x1 = Math.min ( iconR.x, textR.x );
             final int x2 = Math.max ( iconR.x + iconR.width, textR.x + textR.width );

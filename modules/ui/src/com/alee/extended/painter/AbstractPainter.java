@@ -19,7 +19,6 @@ package com.alee.extended.painter;
 
 import com.alee.laf.WebLookAndFeel;
 import com.alee.utils.CollectionUtils;
-import com.alee.utils.LafUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.BorderMethods;
 
@@ -126,7 +125,7 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
     @Override
     public void updateBorder ()
     {
-        LafUtils.updateBorder ( component, getMargin (), this );
+        PainterSupport.updateBorder ( component, null, this );
     }
 
     /**

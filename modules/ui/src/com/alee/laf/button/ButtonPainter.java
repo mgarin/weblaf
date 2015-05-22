@@ -1,7 +1,6 @@
 package com.alee.laf.button;
 
 import com.alee.extended.painter.Painter;
-import com.alee.extended.painter.PartialDecoration;
 import com.alee.extended.painter.SpecificPainter;
 
 import javax.swing.*;
@@ -13,7 +12,7 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public interface ButtonPainter<E extends JButton, U extends WebButtonUI> extends Painter<E, U>, PartialDecoration, SpecificPainter
+public interface ButtonPainter<E extends JButton, U extends WebButtonUI> extends Painter<E, U>, SpecificPainter
 {
     /**
      * Sets button view bounds.

@@ -105,48 +105,6 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeProvider
         // Special
         LafUtils.setScrollBarStyleId ( scrollpane, "scroll-pane" );
 
-        //        // Shade layer
-        //        final WebPanel shadeLayer = new WebPanel ( new AbstractPainter ()
-        //        {
-        //            final int shadeWidth = 15;
-        //            final float transparency = 0.7f;
-        //
-        //            @Override
-        //            public void paint ( final Graphics2D g2d, final Rectangle bounds, final Component c )
-        //            {
-        //                final JViewport viewport = scrollpane.getViewport ();
-        //                final Component vc = viewport.getView ();
-        //                if ( vc != null && vc instanceof JComponent )
-        //                {
-        //                    final JComponent view = ( JComponent ) vc;
-        //                    final Rectangle vr = view.getVisibleRect ();
-        //
-        //                    final int topY = vr.y;
-        //                    if ( topY > 0 )
-        //                    {
-        //                        final float max = topY / 2;
-        //                        final float opacity = ( shadeWidth < max ? 1f : ( 1f - ( shadeWidth - max ) / shadeWidth ) ) * transparency;
-        //                        final NinePatchIcon npi = NinePatchUtils.getShadeIcon ( shadeWidth, 0, opacity );
-        //                        final Dimension ps = npi.getPreferredSize ();
-        //                        npi.paintIcon ( g2d, -shadeWidth * 2, shadeWidth - ps.height, vr.width + shadeWidth * 4, ps.height );
-        //                    }
-        //
-        //                    final int bottomY = vr.y + vr.height;
-        //                    final int height = view.getHeight ();
-        //                    if ( bottomY < height )
-        //                    {
-        //                        final float max = ( height - bottomY ) / 2;
-        //                        final float opacity = ( shadeWidth < max ? 1f : ( 1f - ( shadeWidth - max ) / shadeWidth ) ) * transparency;
-        //                        final NinePatchIcon npi = NinePatchUtils.getShadeIcon ( shadeWidth, 0, opacity );
-        //                        final Dimension ps = npi.getPreferredSize ();
-        //                        npi.paintIcon ( g2d, -shadeWidth * 2, vr.height - shadeWidth, vr.width + shadeWidth * 4, ps.height );
-        //                    }
-        //                }
-        //            }
-        //        } );
-        //        scrollpane.add ( shadeLayer, scrollpane.getComponentCount () );
-        //        scrollpane.setLayout ( new WebScrollPaneLayout.UIResource ( shadeLayer ) );
-
         // Border
         updateBorder ();
 
