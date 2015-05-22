@@ -21,6 +21,7 @@ import com.alee.extended.painter.Painter;
 import com.alee.extended.painter.PainterSupport;
 import com.alee.managers.style.StyleManager;
 import com.alee.utils.SwingUtils;
+import com.alee.utils.laf.ShapeProvider;
 import com.alee.utils.laf.Styleable;
 import com.alee.utils.swing.DataRunnable;
 
@@ -35,7 +36,7 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public class WebSeparatorUI extends BasicSeparatorUI implements Styleable
+public class WebSeparatorUI extends BasicSeparatorUI implements Styleable, ShapeProvider
 {
 
     /**
@@ -56,7 +57,7 @@ public class WebSeparatorUI extends BasicSeparatorUI implements Styleable
      * @param c component that will use UI instance
      * @return instance of the WebSeparatorUI
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebSeparatorUI ();
@@ -114,6 +115,15 @@ public class WebSeparatorUI extends BasicSeparatorUI implements Styleable
     {
         this.styleId = id;
         StyleManager.applySkin ( separator );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Shape provideShape ()
+    {
+        return PainterSupport.getShape ( separator, painter );
     }
 
     /**

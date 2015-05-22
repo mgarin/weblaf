@@ -102,8 +102,8 @@ public enum SupportedComponent
     /**
      * Toolbar-related components.
      */
-    toolBar ( false, JToolBar.class, "ToolBarUI", WebLookAndFeel.toolBarUI ),
-    toolBarSeparator ( false, JToolBar.Separator.class, "ToolBarSeparatorUI", WebLookAndFeel.toolBarSeparatorUI ),
+    toolBar ( true, JToolBar.class, "ToolBarUI", WebLookAndFeel.toolBarUI ),
+    toolBarSeparator ( true, JToolBar.Separator.class, "ToolBarSeparatorUI", WebLookAndFeel.toolBarSeparatorUI ),
 
     /**
      * Table-related components.
@@ -128,7 +128,7 @@ public enum SupportedComponent
     /**
      * Other data-related components.
      */
-    progressBar ( false, JProgressBar.class, "ProgressBarUI", WebLookAndFeel.progressBarUI ),
+    progressBar ( true, JProgressBar.class, "ProgressBarUI", WebLookAndFeel.progressBarUI ),
     slider ( false, JSlider.class, "SliderUI", WebLookAndFeel.sliderUI ),
     spinner ( false, JSpinner.class, "SpinnerUI", WebLookAndFeel.spinnerUI ),
     tree ( false, JTree.class, "TreeUI", WebLookAndFeel.treeUI ),

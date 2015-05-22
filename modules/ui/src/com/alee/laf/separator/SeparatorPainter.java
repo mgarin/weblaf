@@ -1,6 +1,5 @@
 package com.alee.laf.separator;
 
-import com.alee.extended.painter.Painter;
 import com.alee.extended.painter.SpecificPainter;
 
 import javax.swing.*;
@@ -11,6 +10,6 @@ import javax.swing.*;
  * @author Alexandr Zernov
  */
 
-public interface SeparatorPainter<E extends JSeparator, U extends WebSeparatorUI> extends Painter<E, U>, SpecificPainter
+public interface SeparatorPainter<E extends JSeparator, U extends WebSeparatorUI> extends AbstractSeparatorPainter<E, U>, SpecificPainter
 {
 }
