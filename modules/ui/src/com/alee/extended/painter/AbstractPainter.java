@@ -78,6 +78,11 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
     protected U ui;
 
     /**
+     * Whether or not painted component has LTR orientation.
+     */
+    protected boolean ltr;
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -89,6 +94,7 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
 
         // Default settings
         SwingUtils.setOrientation ( c );
+        saveOrientation ();
 
         // Updating border
         updateBorder ();
@@ -99,11 +105,20 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
             @Override
             public void propertyChange ( final PropertyChangeEvent evt )
             {
+                saveOrientation ();
                 revalidate ();
                 repaint ();
             }
         };
         c.addPropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, propertyChangeListener );
+    }
+
+    /**
+     * Saves current component orientation state.
+     */
+    protected void saveOrientation ()
+    {
+        ltr = component.getComponentOrientation ().isLeftToRight ();
     }
 
     /**

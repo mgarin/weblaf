@@ -95,7 +95,6 @@ public class WebDecorationPainter<E extends JComponent, U extends ComponentUI> e
     /**
      * Painting variables.
      */
-    protected boolean ltr;
     protected boolean actualPaintLeft;
     protected boolean actualPaintRight;
     protected int w;
@@ -630,7 +629,6 @@ public class WebDecorationPainter<E extends JComponent, U extends ComponentUI> e
         {
             // Decoration border margin
             final int spacing = shadeWidth + 1;
-            final boolean ltr = component.getComponentOrientation ().isLeftToRight ();
             final boolean actualPaintLeft = ltr ? paintLeft : paintRight;
             final boolean actualPaintLeftLine = ltr ? paintLeftLine : paintRightLine;
             final boolean actualPaintRight = ltr ? paintRight : paintLeft;
@@ -651,7 +649,6 @@ public class WebDecorationPainter<E extends JComponent, U extends ComponentUI> e
     {
         if ( !undecorated )
         {
-            ltr = c.getComponentOrientation ().isLeftToRight ();
             actualPaintLeft = ltr ? paintLeft : paintRight;
             actualPaintRight = ltr ? paintRight : paintLeft;
             w = c.getWidth ();

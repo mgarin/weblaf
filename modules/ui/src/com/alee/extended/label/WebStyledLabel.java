@@ -546,7 +546,7 @@ public class WebStyledLabel extends JLabel implements EventMethods, ToolTipMetho
      *
      * @return Web-UI applied to this class
      */
-    public WebStyledLabelUI getWebUI ()
+    private WebStyledLabelUI getWebUI ()
     {
         return ( WebStyledLabelUI ) getUI ();
     }

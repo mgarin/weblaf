@@ -504,7 +504,7 @@ public class WebPanel extends JPanel
      *
      * @return Web-UI applied to this class
      */
-    public WebPanelUI getWebUI ()
+    private WebPanelUI getWebUI ()
     {
         return ( WebPanelUI ) getUI ();
     }

@@ -193,7 +193,7 @@ public class WebLabel extends JLabel
      *
      * @return Web-UI applied to this class
      */
-    public WebLabelUI getWebUI ()
+    private WebLabelUI getWebUI ()
     {
         return ( WebLabelUI ) getUI ();
     }

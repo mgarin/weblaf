@@ -171,7 +171,7 @@ public class WebButton extends JButton
      *
      * @return Web-UI applied to this class
      */
-    public WebButtonUI getWebUI ()
+    private WebButtonUI getWebUI ()
     {
         return ( WebButtonUI ) getUI ();
     }

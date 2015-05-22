@@ -38,3 +38,4 @@ NOTES:
 1. WebButtonUI - move calc methods into painter
 2. WebButtonPainter - missing border / overall animation
 3. WebScrollBarButtonPainter - broken animation due to missing timer now
+4. WebSplitButton - check functionality
