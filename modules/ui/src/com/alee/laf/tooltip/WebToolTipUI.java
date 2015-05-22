@@ -29,7 +29,6 @@ import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicToolTipUI;
 import java.awt.*;
-import java.awt.geom.RoundRectangle2D;
 
 /**
  * Custom UI for JTooltip component.
@@ -118,15 +117,12 @@ public class WebToolTipUI extends BasicToolTipUI implements Styleable, ShapeProv
     }
 
     /**
-     * Returns component shape.
-     *
-     * @return component shape
+     * {@inheritDoc}
      */
     @Override
     public Shape provideShape ()
     {
-        return new RoundRectangle2D.Double ( 0, 0, tooltip.getWidth (), tooltip.getHeight (), WebTooltipStyle.round * 2,
-                WebTooltipStyle.round * 2 );
+        return PainterSupport.getShape ( tooltip, painter );
     }
 
     /**
