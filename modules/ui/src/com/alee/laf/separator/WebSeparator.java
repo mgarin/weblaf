@@ -95,7 +95,7 @@ public class WebSeparator extends JSeparator implements Styleable
      *
      * @return Web-UI applied to this class
      */
-    public WebSeparatorUI getWebUI ()
+    private WebSeparatorUI getWebUI ()
     {
         return ( WebSeparatorUI ) getUI ();
     }
