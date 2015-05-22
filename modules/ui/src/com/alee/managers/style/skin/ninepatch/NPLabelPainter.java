@@ -17,6 +17,7 @@
 
 package com.alee.managers.style.skin.ninepatch;
 
+import com.alee.laf.label.WebLabelUI;
 import com.alee.managers.focus.DefaultFocusTracker;
 import com.alee.managers.focus.FocusManager;
 import com.alee.managers.focus.FocusTracker;
@@ -32,7 +33,7 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public class NPLabelPainter<E extends JLabel> extends WebLabelPainter<E>
+public class NPLabelPainter<E extends JLabel, U extends WebLabelUI> extends WebLabelPainter<E, U>
 {
     /**
      * Style settings.
@@ -90,9 +91,9 @@ public class NPLabelPainter<E extends JLabel> extends WebLabelPainter<E>
      * {@inheritDoc}
      */
     @Override
-    public void install ( final E c )
+    public void install ( final E c, final U ui )
     {
-        super.install ( c );
+        super.install ( c, ui );
 
         // Installing FocusTracker to keep an eye on focused state
         focusTracker = new DefaultFocusTracker ()
@@ -117,13 +118,13 @@ public class NPLabelPainter<E extends JLabel> extends WebLabelPainter<E>
      * {@inheritDoc}
      */
     @Override
-    public void uninstall ( final E c )
+    public void uninstall ( final E c, final U ui )
     {
         // Removing FocusTracker
         FocusManager.removeFocusTracker ( focusTracker );
         focusTracker = null;
 
-        super.uninstall ( c );
+        super.uninstall ( c, ui );
     }
 
     /**
@@ -226,17 +227,17 @@ public class NPLabelPainter<E extends JLabel> extends WebLabelPainter<E>
      * {@inheritDoc}
      */
     @Override
-    public Insets getMargin ( final E label )
+    public Insets getMargin ()
     {
         final NinePatchIcon backgroundIcon = getCurrentBackgroundIcon ();
-        return !undecorated && backgroundIcon != null ? backgroundIcon.getMargin () : super.getMargin ( label );
+        return !undecorated && backgroundIcon != null ? backgroundIcon.getMargin () : super.getMargin ();
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c )
+    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
     {
         // Paint simple background if undecorated & opaque
         if ( undecorated && c.isOpaque () )
@@ -256,7 +257,7 @@ public class NPLabelPainter<E extends JLabel> extends WebLabelPainter<E>
         }
 
         // Painting label
-        super.paint ( g2d, bounds, c );
+        super.paint ( g2d, bounds, c, ui );
     }
 
     /**

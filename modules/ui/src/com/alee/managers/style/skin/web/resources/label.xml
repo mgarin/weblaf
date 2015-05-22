@@ -13,6 +13,11 @@
             <shadeColor>230,230,230</shadeColor>
         </painter>
     </style>
+    <style type="label" id="shade-label" extends="default">
+        <ui>
+            <drawShade>true</drawShade>
+        </ui>
+    </style>
 
     <!-- WebVerticalLabel styling -->
     <style type="verticalLabel" id="default">
@@ -40,14 +45,24 @@
     <!-- JComboBox value and list element renderers styling -->
     <style type="label" id="combo-box-box" extends="default">
         <painter id="painter" class="com.alee.managers.style.skin.web.WebComboBoxElementPainter">
-        <margin>2,2,2,2</margin>
+            <margin>2,2,2,2</margin>
         </painter>
     </style>
     <style type="label" id="combo-box-list" extends="default">
         <painter id="painter" class="com.alee.managers.style.skin.web.WebComboBoxElementPainter">
-        <margin>4,6,4,6</margin>
+            <margin>4,6,4,6</margin>
             <topSelectedBackgroundColor>208,208,198</topSelectedBackgroundColor>
             <bottomSelectedBackgroundColor>196,196,186</bottomSelectedBackgroundColor>
+        </painter>
+    </style>
+
+    <!-- WebTable styling -->
+    <style type="label" id="table-cell-renderer" extends="default">
+        <component>
+            <opaque>true</opaque>
+        </component>
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebLabelPainter">
+            <margin>2,2,2,2</margin>
         </painter>
     </style>
 
@@ -92,15 +107,22 @@
         <ui>
             <margin>1,5,1,5</margin>
         </ui>
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebBreadcrumbLabelPainter" />
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebBreadcrumbLabelPainter">
+            <undecorated>false</undecorated>
+        </painter>
     </style>
 
     <!-- WebDockableFrame styling -->
-    <style type="label" id="dockable-frame-title" extends="default">
+    <style type="label" id="dockable-frame-title" extends="shade-label">
         <ui>
-            <drawShade>true</drawShade>
             <margin>3,3,3,10</margin>
         </ui>
     </style>
+
+    <!-- WebRootPane styling -->
+    <style type="label" id="window-title" extends="shade-label" />
+
+    <!-- WebColorChooser styling -->
+    <style type="label" id="colorchooser-label" extends="shade-label" />
 
 </skin>

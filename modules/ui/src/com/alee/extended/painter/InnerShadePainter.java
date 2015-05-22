@@ -20,13 +20,14 @@ package com.alee.extended.painter;
 import com.alee.utils.NinePatchUtils;
 
 import javax.swing.*;
+import javax.swing.plaf.ComponentUI;
 import java.awt.*;
 
 /**
  * @author Mikle Garin
  */
 
-public class InnerShadePainter<E extends JComponent> extends NinePatchIconPainter<E>
+public class InnerShadePainter<E extends JComponent, U extends ComponentUI> extends NinePatchIconPainter<E, U>
 {
     protected int shadeWidth = 10;
     protected int round = 0;
@@ -75,10 +76,9 @@ public class InnerShadePainter<E extends JComponent> extends NinePatchIconPainte
         return shadeWidth;
     }
 
-    public InnerShadePainter<E> setShadeWidth ( final int shadeWidth )
+    public void setShadeWidth ( final int shadeWidth )
     {
         this.shadeWidth = shadeWidth;
-        return this;
     }
 
     public int getRound ()
@@ -86,10 +86,9 @@ public class InnerShadePainter<E extends JComponent> extends NinePatchIconPainte
         return round;
     }
 
-    public InnerShadePainter<E> setRound ( final int round )
+    public void setRound ( final int round )
     {
         this.round = round;
-        return this;
     }
 
     public float getShadeOpacity ()
@@ -97,10 +96,9 @@ public class InnerShadePainter<E extends JComponent> extends NinePatchIconPainte
         return shadeOpacity;
     }
 
-    public InnerShadePainter<E> setShadeOpacity ( final float shadeOpacity )
+    public void setShadeOpacity ( final float shadeOpacity )
     {
         this.shadeOpacity = shadeOpacity;
-        return this;
     }
 
     public boolean isDrawTop ()
@@ -108,10 +106,9 @@ public class InnerShadePainter<E extends JComponent> extends NinePatchIconPainte
         return drawTop;
     }
 
-    public InnerShadePainter<E> setDrawTop ( final boolean drawTop )
+    public void setDrawTop ( final boolean drawTop )
     {
         this.drawTop = drawTop;
-        return this;
     }
 
     public boolean isDrawLeft ()
@@ -119,10 +116,9 @@ public class InnerShadePainter<E extends JComponent> extends NinePatchIconPainte
         return drawLeft;
     }
 
-    public InnerShadePainter<E> setDrawLeft ( final boolean drawLeft )
+    public void setDrawLeft ( final boolean drawLeft )
     {
         this.drawLeft = drawLeft;
-        return this;
     }
 
     public boolean isDrawBottom ()
@@ -130,10 +126,9 @@ public class InnerShadePainter<E extends JComponent> extends NinePatchIconPainte
         return drawBottom;
     }
 
-    public InnerShadePainter<E> setDrawBottom ( final boolean drawBottom )
+    public void setDrawBottom ( final boolean drawBottom )
     {
         this.drawBottom = drawBottom;
-        return this;
     }
 
     public boolean isDrawRight ()
@@ -141,27 +136,24 @@ public class InnerShadePainter<E extends JComponent> extends NinePatchIconPainte
         return drawRight;
     }
 
-    public InnerShadePainter<E> setDrawRight ( final boolean drawRight )
+    public void setDrawRight ( final boolean drawRight )
     {
         this.drawRight = drawRight;
-        return this;
     }
 
-    public InnerShadePainter<E> setDrawSides ( final boolean drawTop, final boolean drawLeft, final boolean drawBottom,
-                                               final boolean drawRight )
+    public void setDrawSides ( final boolean drawTop, final boolean drawLeft, final boolean drawBottom, final boolean drawRight )
     {
         this.drawTop = drawTop;
         this.drawLeft = drawLeft;
         this.drawBottom = drawBottom;
         this.drawRight = drawRight;
-        return this;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Insets getMargin ( final E c )
+    public Insets getMargin ()
     {
         return new Insets ( drawTop ? shadeWidth : 0, drawLeft ? shadeWidth : 0, drawBottom ? shadeWidth : 0, drawRight ? shadeWidth : 0 );
     }
@@ -170,7 +162,7 @@ public class InnerShadePainter<E extends JComponent> extends NinePatchIconPainte
      * {@inheritDoc}
      */
     @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c )
+    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
     {
         // Updating icon dynamically only when actually needed
         if ( cachedShadeWidth != shadeWidth || cachedRound != round || cachedShadeOpacity != shadeOpacity || icon == null )

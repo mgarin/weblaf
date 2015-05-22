@@ -1,11 +1,4 @@
-Update stages:
--> 1. Swing all components to be painter-based
-2. Remove all *Style classes and place all defaults into XML
-3. Improve XML features available
-4. Cleanup and polish StyleEditor for release
 
-
--------------------------------------------------------------------------
 
 ===================== WebButton:
 default
@@ -34,9 +27,30 @@ default
 - setMaximumSize ( null );
 
 
+-------------------------------------------------------------------------
+
+
 NOTES:
 1. WebButtonUI - move calc methods into painter
 2. WebButtonPainter - missing border / overall animation
 3. WebScrollBarButtonPainter - broken animation due to missing timer now
 4. WebSplitButton - check functionality
 5. WebScrollPane - check style reset, might throw exceptions (null styleId)
+6. WebComponentPanel - subpanels should have their own painter and updated styleId
+7. WebButtonPopup - requires a lot of changes
+8. HotkeyTipLabel - replace with simple label (just use styling)
+9. WebButtonGroup - requires rework now
+10. WebToolBarCornerPainter - requires style for it, now simply applies to any panel
+11. WebRootPaneUI - lost some window button options
+12. WebBreadcrumb - check whether has issues
+13. WebSplitPane - one-touch icons
+
+
+-------------------------------------------------------------------------
+
+
+Update stages:
+-> 1. Swing all components to be painter-based
+2. Remove all *Style classes and place all defaults into XML
+3. Improve XML features available
+4. Cleanup and polish StyleEditor for release

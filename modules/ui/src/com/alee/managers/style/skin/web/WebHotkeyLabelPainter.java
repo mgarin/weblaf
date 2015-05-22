@@ -17,6 +17,8 @@
 
 package com.alee.managers.style.skin.web;
 
+import com.alee.laf.label.WebLabelUI;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -29,7 +31,7 @@ import java.awt.*;
  * @see com.alee.extended.painter.Painter
  */
 
-public class WebHotkeyLabelPainter<E extends JLabel> extends WebLabelPainter<E>
+public class WebHotkeyLabelPainter<E extends JLabel, U extends WebLabelUI> extends WebLabelPainter<E, U>
 {
     /**
      * Used colors.
@@ -41,7 +43,7 @@ public class WebHotkeyLabelPainter<E extends JLabel> extends WebLabelPainter<E>
      * {@inheritDoc}
      */
     @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E label )
+    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E label, final U ui )
     {
         // White spacer
         g2d.setPaint ( Color.WHITE );
@@ -56,6 +58,6 @@ public class WebHotkeyLabelPainter<E extends JLabel> extends WebLabelPainter<E>
         g2d.drawRoundRect ( bounds.x, bounds.y, bounds.width - 1, bounds.height - 2, 6, 6 );
         g2d.drawRoundRect ( bounds.x, bounds.y, bounds.width - 1, bounds.height - 1, 6, 6 );
 
-        super.paint ( g2d, bounds, label );
+        super.paint ( g2d, bounds, label, ui );
     }
 }

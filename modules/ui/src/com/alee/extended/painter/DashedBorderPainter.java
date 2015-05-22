@@ -18,6 +18,7 @@
 package com.alee.extended.painter;
 
 import javax.swing.*;
+import javax.swing.plaf.ComponentUI;
 import java.awt.*;
 
 /**
@@ -30,7 +31,7 @@ import java.awt.*;
  * @see Painter
  */
 
-public class DashedBorderPainter<E extends JComponent> extends BorderPainter<E>
+public class DashedBorderPainter<E extends JComponent, U extends ComponentUI> extends BorderPainter<E, U>
 {
     /**
      * Array representing dashing pattern.

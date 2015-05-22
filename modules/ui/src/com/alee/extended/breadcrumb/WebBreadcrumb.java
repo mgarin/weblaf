@@ -38,36 +38,8 @@ public class WebBreadcrumb extends WebPanel
 
     public WebBreadcrumb ()
     {
-        this ( true );
-    }
-
-    public WebBreadcrumb ( final boolean decorated )
-    {
-        super ( decorated, createDefaultLayout () );
-
-        setPaintFocus ( true );
-
-        //        addContainerListener ( new ContainerListener ()
-        //        {
-        //            @Override
-        //            public void componentAdded ( final ContainerEvent e )
-        //            {
-        //                if ( autoUpdate )
-        //                {
-        //                    updateElement ( e.getChild () );
-        //                    updateElementTypes ();
-        //                }
-        //            }
-        //
-        //            @Override
-        //            public void componentRemoved ( final ContainerEvent e )
-        //            {
-        //                if ( autoUpdate )
-        //                {
-        //                    updateElementTypes ();
-        //                }
-        //            }
-        //        } );
+        super ( createDefaultLayout () );
+        setStyleId ( "breadcrumb" );
     }
 
     protected boolean isAutoUpdate ()

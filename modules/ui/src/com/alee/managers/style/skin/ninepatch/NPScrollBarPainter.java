@@ -17,6 +17,7 @@
 
 package com.alee.managers.style.skin.ninepatch;
 
+import com.alee.laf.scroll.WebScrollBarUI;
 import com.alee.managers.focus.DefaultFocusTracker;
 import com.alee.managers.focus.FocusManager;
 import com.alee.managers.focus.FocusTracker;
@@ -32,7 +33,7 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public class NPScrollBarPainter<E extends JScrollBar> extends WebScrollBarPainter<E>
+public class NPScrollBarPainter<E extends JScrollBar, U extends WebScrollBarUI> extends WebScrollBarPainter<E, U>
 {
     /**
      * Used 9-patch icons.
@@ -62,9 +63,9 @@ public class NPScrollBarPainter<E extends JScrollBar> extends WebScrollBarPainte
      * {@inheritDoc}
      */
     @Override
-    public void install ( final E c )
+    public void install ( final E c, final U ui )
     {
-        super.install ( c );
+        super.install ( c, ui );
 
         // Disable animation for this painter
         animated = false;
@@ -86,13 +87,13 @@ public class NPScrollBarPainter<E extends JScrollBar> extends WebScrollBarPainte
      * {@inheritDoc}
      */
     @Override
-    public void uninstall ( final E c )
+    public void uninstall ( final E c, final U ui )
     {
         // Removing FocusTracker
         FocusManager.removeFocusTracker ( focusTracker );
         focusTracker = null;
 
-        super.uninstall ( c );
+        super.uninstall ( c, ui );
     }
 
     /**
@@ -425,7 +426,7 @@ public class NPScrollBarPainter<E extends JScrollBar> extends WebScrollBarPainte
     @Override
     protected void paintBackground ( final Graphics2D g2d, final E scrollbar, final Rectangle b )
     {
-        if ( paintTrack )
+        if ( ui.isPaintTrack () )
         {
             final NinePatchIcon backgroundIcon = getCurrentBackgroundIcon ( scrollbar );
             if ( backgroundIcon != null )
@@ -459,7 +460,7 @@ public class NPScrollBarPainter<E extends JScrollBar> extends WebScrollBarPainte
     @Override
     protected void paintTrack ( final Graphics2D g2d, final E scrollbar, final Rectangle b )
     {
-        if ( paintTrack )
+        if ( ui.isPaintTrack () )
         {
             final NinePatchIcon backgroundIcon = getCurrentTrackIcon ( scrollbar );
             if ( backgroundIcon != null )

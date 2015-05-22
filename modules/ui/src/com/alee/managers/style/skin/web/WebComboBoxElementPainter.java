@@ -19,6 +19,7 @@ package com.alee.managers.style.skin.web;
 
 import com.alee.laf.combobox.ComboBoxElementType;
 import com.alee.laf.combobox.WebComboBoxElement;
+import com.alee.laf.label.WebLabelUI;
 import com.alee.laf.menu.WebMenuItemStyle;
 
 import java.awt.*;
@@ -33,7 +34,7 @@ import java.awt.*;
  * @see com.alee.extended.painter.Painter
  */
 
-public class WebComboBoxElementPainter<E extends WebComboBoxElement> extends WebLabelPainter<E>
+public class WebComboBoxElementPainter<E extends WebComboBoxElement, U extends WebLabelUI> extends WebLabelPainter<E, U>
 {
     /**
      * Style settings.
@@ -93,7 +94,7 @@ public class WebComboBoxElementPainter<E extends WebComboBoxElement> extends Web
      * {@inheritDoc}
      */
     @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E element )
+    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E element, final U ui )
     {
         // Painting background
         if ( element.getType () == ComboBoxElementType.box )
@@ -113,7 +114,7 @@ public class WebComboBoxElementPainter<E extends WebComboBoxElement> extends Web
         }
 
         // Painting label
-        super.paint ( g2d, bounds, element );
+        super.paint ( g2d, bounds, element, ui );
     }
 
     /**
@@ -123,7 +124,7 @@ public class WebComboBoxElementPainter<E extends WebComboBoxElement> extends Web
      * @param bounds  element bounds
      * @param element combobox element
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     protected void paintBoxBackground ( final Graphics2D g2d, final Rectangle bounds, final E element )
     {
         //
@@ -136,7 +137,7 @@ public class WebComboBoxElementPainter<E extends WebComboBoxElement> extends Web
      * @param b       element bounds
      * @param element combobox element
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     protected void paintListSelectedBackground ( final Graphics2D g2d, final Rectangle b, final E element )
     {
         g2d.setPaint ( new GradientPaint ( 0, b.y, topSelectedBackgroundColor, 0, b.y + b.height, bottomSelectedBackgroundColor ) );
@@ -150,7 +151,7 @@ public class WebComboBoxElementPainter<E extends WebComboBoxElement> extends Web
      * @param bounds  element bounds
      * @param element combobox element
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     protected void paintListDeselectedBackground ( final Graphics2D g2d, final Rectangle bounds, final E element )
     {
         // Doesn't paint anything by default

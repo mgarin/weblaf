@@ -1328,9 +1328,10 @@ public final class LafUtils
         bounds.width -= lm.left + lm.right;
         bounds.height -= lm.top + lm.bottom;
 
+        // todo Do something with shade width
         // Field settings
-        final Insets fm = editor.getMargin ();
-        final int dm = 2 + editor.getShadeWidth ();
+        final Insets fm = editor.getInsets ();
+        final int dm = 2 + StyleConstants.shadeWidth;
         bounds.x -= fm.left + dm;
         bounds.y -= fm.top + dm;
         bounds.width += fm.left + fm.right + dm * 2;

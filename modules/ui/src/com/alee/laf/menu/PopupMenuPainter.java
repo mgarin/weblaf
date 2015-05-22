@@ -29,7 +29,7 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public interface PopupMenuPainter<E extends JPopupMenu> extends Painter<E>, SpecificPainter
+public interface PopupMenuPainter<E extends JPopupMenu, U extends WebPopupMenuUI> extends Painter<E, U>, SpecificPainter
 {
     /**
      * Sets whether popup menu is transparent or not.

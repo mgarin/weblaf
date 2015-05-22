@@ -35,8 +35,7 @@ public class WebTableCellRenderer extends WebLabel implements TableCellRenderer
     public WebTableCellRenderer ()
     {
         super ();
-        setOpaque ( true );
-        setMargin ( 2 );
+        setStyleId ( "table-cell-renderer" );
         setName ( "Table.cellRenderer" );
     }
 

@@ -20,6 +20,7 @@ package com.alee.extended.painter;
 import com.alee.utils.GraphicsUtils;
 
 import javax.swing.*;
+import javax.swing.plaf.ComponentUI;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RectangularShape;
@@ -35,7 +36,7 @@ import java.awt.geom.RoundRectangle2D;
  * @see Painter
  */
 
-public class BorderPainter<E extends JComponent> extends AbstractPainter<E>
+public class BorderPainter<E extends JComponent, U extends ComponentUI> extends AbstractPainter<E, U>
 {
     /**
      * Border width.
@@ -209,7 +210,7 @@ public class BorderPainter<E extends JComponent> extends AbstractPainter<E>
      * @return preferred size required for proper painting of visual data provided by this painter
      */
     @Override
-    public Dimension getPreferredSize ( final E c )
+    public Dimension getPreferredSize ()
     {
         return new Dimension ( Math.max ( width * 2, round * 2 ), Math.max ( width * 2, round * 2 ) );
     }
@@ -218,13 +219,12 @@ public class BorderPainter<E extends JComponent> extends AbstractPainter<E>
      * Returns margin required for visual data provided by this painter.
      * This margin is usually added to component's margin when the final component border is calculated.
      *
-     * @param c component to process
      * @return margin required for visual data provided by this painter
      */
     @Override
-    public Insets getMargin ( final E c )
+    public Insets getMargin ()
     {
-        final Insets m = super.getMargin ( c );
+        final Insets m = super.getMargin ();
         return new Insets ( m.top + width, m.left + width, m.bottom + width, m.right + width );
     }
 
@@ -236,9 +236,10 @@ public class BorderPainter<E extends JComponent> extends AbstractPainter<E>
      * @param g2d    component graphics
      * @param bounds bounds for painter visual data
      * @param c      component to process
+     * @param ui     component UI
      */
     @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c )
+    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
     {
         if ( width > 0 && stroke != null && color != null )
         {

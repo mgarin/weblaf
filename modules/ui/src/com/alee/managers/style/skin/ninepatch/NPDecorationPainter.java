@@ -25,6 +25,7 @@ import com.alee.managers.focus.FocusTracker;
 import com.alee.utils.ninepatch.NinePatchIcon;
 
 import javax.swing.*;
+import javax.swing.plaf.ComponentUI;
 import java.awt.*;
 
 /**
@@ -36,8 +37,12 @@ import java.awt.*;
  * @see com.alee.managers.style.skin.web.WebDecorationPainter
  */
 
-public class NPDecorationPainter<E extends JComponent> extends AbstractPainter<E> implements PartialDecoration
+public class NPDecorationPainter<E extends JComponent, U extends ComponentUI> extends AbstractPainter<E, U> implements PartialDecoration
 {
+    /**
+     * todo 1. Extend WebDecorationPainter to take over variables part
+     */
+
     /**
      * Style settings.
      */
@@ -75,9 +80,9 @@ public class NPDecorationPainter<E extends JComponent> extends AbstractPainter<E
      * {@inheritDoc}
      */
     @Override
-    public void install ( final E c )
+    public void install ( final E c, final U ui )
     {
-        super.install ( c );
+        super.install ( c, ui );
 
         // Installing FocusTracker to keep an eye on focused state
         focusTracker = new DefaultFocusTracker ()
@@ -102,13 +107,13 @@ public class NPDecorationPainter<E extends JComponent> extends AbstractPainter<E
      * {@inheritDoc}
      */
     @Override
-    public void uninstall ( final E c )
+    public void uninstall ( final E c, final U ui )
     {
         // Removing FocusTracker
         FocusManager.removeFocusTracker ( focusTracker );
         focusTracker = null;
 
-        super.uninstall ( c );
+        super.uninstall ( c, ui );
     }
 
     /**
@@ -602,7 +607,7 @@ public class NPDecorationPainter<E extends JComponent> extends AbstractPainter<E
      * {@inheritDoc}
      */
     @Override
-    public Insets getMargin ( final E c )
+    public Insets getMargin ()
     {
         final NinePatchIcon backgroundIcon = getCurrentBackgroundIcon ();
         if ( !undecorated && backgroundIcon != null )
@@ -632,7 +637,7 @@ public class NPDecorationPainter<E extends JComponent> extends AbstractPainter<E
         }
         else
         {
-            return super.getMargin ( c );
+            return super.getMargin ();
         }
     }
 
@@ -640,7 +645,7 @@ public class NPDecorationPainter<E extends JComponent> extends AbstractPainter<E
      * {@inheritDoc}
      */
     @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c )
+    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
     {
         if ( !undecorated )
         {
@@ -802,7 +807,7 @@ public class NPDecorationPainter<E extends JComponent> extends AbstractPainter<E
      * @param c    component instance
      * @return bounds within which background 9-patch icon should be painted
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     protected Rectangle getBackgroundBounds ( final NinePatchIcon icon, final Rectangle b, final E c )
     {
         if ( !undecorated && icon != null )

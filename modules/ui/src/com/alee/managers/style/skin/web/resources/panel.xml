@@ -39,12 +39,20 @@
         </painter>
     </style>
 
-    <!-- WebBreadcrumbPanel styling -->
+    <!-- WebBreadcrumb styling -->
+    <style type="panel" id="breadcrumb" extends="default">
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebPanelPainter">
+            <undecorated>false</undecorated>
+            <paintFocus>true</paintFocus>
+        </painter>
+    </style>
     <style type="panel" id="breadcrumb-element" extends="default">
         <ui>
             <margin>1,5,1,5</margin>
         </ui>
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebBreadcrumbPanelPainter" />
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebBreadcrumbPanelPainter">
+            <undecorated>false</undecorated>
+        </painter>
     </style>
 
     <!-- WebDocumentPane styling -->
@@ -67,27 +75,22 @@
 
     <!-- WebDockableFrame styling -->
     <style type="panel" id="dockable-frame-title" extends="default">
-        <ui>
-            <undecorated>false</undecorated>
-            <paintTop>false</paintTop>
-            <paintLeft>false</paintLeft>
-            <paintBottom>true</paintBottom>
-            <paintRight>false</paintRight>
-        </ui>
         <painter id="painter" class="com.alee.managers.style.skin.web.WebPanelPainter">
+            <undecorated>false</undecorated>
             <round>0</round>
             <shadeWidth>0</shadeWidth>
             <paintBackground>true</paintBackground>
             <webColoredBackground>true</webColoredBackground>
+            <paintTop>false</paintTop>
+            <paintLeft>false</paintLeft>
+            <paintBottom>true</paintBottom>
+            <paintRight>false</paintRight>
         </painter>
     </style>
     <style type="panel" id="dockable-frame-buttons" extends="default">
         <component>
             <opaque>false</opaque>
         </component>
-        <ui>
-            <undecorated>true</undecorated>
-        </ui>
     </style>
 
     <!-- WebSyntaxLabel styling -->
@@ -108,6 +111,43 @@
         <component>
             <background>white</background>
         </component>
+    </style>
+
+    <!-- WebComponentPanel styling -->
+    <style type="panel" id="components-panel" extends="default">
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebPanelPainter">
+            <webColoredBackground>false</webColoredBackground>
+        </painter>
+    </style>
+
+    <!-- WebRootPane styling -->
+    <style type="panel" id="window-title-panel" extends="default">
+        <component>
+            <opaque>false</opaque>
+        </component>
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebPanelPainter">
+            <margin>4,5,4,10</margin>
+        </painter>
+    </style>
+
+    <!-- WebColorChooserPanel styling -->
+    <style type="panel" id="colorchooser" extends="default">
+        <component>
+            <opaque>false</opaque>
+        </component>
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebPanelPainter">
+            <margin>2,5,2,5</margin>
+            <webColoredBackground>false</webColoredBackground>
+        </painter>
+    </style>
+    <style type="panel" id="colorchooser-buttons" extends="default">
+        <component>
+            <opaque>false</opaque>
+        </component>
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebPanelPainter">
+            <margin>5,0,3,0</margin>
+            <webColoredBackground>false</webColoredBackground>
+        </painter>
     </style>
 
 </skin>

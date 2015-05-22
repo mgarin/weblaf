@@ -21,6 +21,7 @@ import com.alee.utils.GraphicsUtils;
 import com.alee.utils.SwingUtils;
 
 import javax.swing.*;
+import javax.swing.plaf.ComponentUI;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
@@ -36,7 +37,7 @@ import java.util.Map;
  * @see Painter
  */
 
-public class TitledBorderPainter<E extends JComponent> extends BorderPainter<E> implements SwingConstants
+public class TitledBorderPainter<E extends JComponent, U extends ComponentUI> extends BorderPainter<E, U> implements SwingConstants
 {
     /**
      * todo 1. Left/Right title position
@@ -228,31 +229,31 @@ public class TitledBorderPainter<E extends JComponent> extends BorderPainter<E> 
     }
 
     @Override
-    public Insets getMargin ( final E c )
+    public Insets getMargin ()
     {
-        final Insets m = super.getMargin ( c );
+        final Insets m = super.getMargin ();
         if ( !isEmptyTitle () )
         {
             switch ( titleSide )
             {
                 case TOP:
                 {
-                    m.top += getTitleAreaHeight ( c );
+                    m.top += getTitleAreaHeight ( component );
                     break;
                 }
                 case LEFT:
                 {
-                    m.left += getTitleAreaHeight ( c );
+                    m.left += getTitleAreaHeight ( component );
                     break;
                 }
                 case BOTTOM:
                 {
-                    m.bottom += getTitleAreaHeight ( c );
+                    m.bottom += getTitleAreaHeight ( component );
                     break;
                 }
                 case RIGHT:
                 {
-                    m.right += getTitleAreaHeight ( c );
+                    m.right += getTitleAreaHeight ( component );
                     break;
                 }
             }
@@ -261,39 +262,7 @@ public class TitledBorderPainter<E extends JComponent> extends BorderPainter<E> 
     }
 
     @Override
-    public Dimension getPreferredSize ( final E c )
-    {
-        if ( isEmptyTitle () )
-        {
-            return super.getPreferredSize ( c );
-        }
-        else
-        {
-            final int titleAreaHeight = getTitleAreaHeight ( c );
-            final int titleWidth = c.getFontMetrics ( c.getFont () ).stringWidth ( titleText );
-            final int border = Math.max ( width, round );
-            final int title = Math.max ( titleAreaHeight, border );
-            switch ( titleSide )
-            {
-                case TOP:
-                case BOTTOM:
-                {
-                    return new Dimension ( border * 2 + titleWidth + titleOffset * 2 +
-                            titleBorderGap * 2, title + border );
-                }
-                case LEFT:
-                case RIGHT:
-                {
-                    return new Dimension ( title + border, border * 2 + titleWidth + titleOffset * 2 +
-                            titleBorderGap * 2 );
-                }
-            }
-            return null;
-        }
-    }
-
-    @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c )
+    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
     {
         // Initializing values
         w = c.getWidth ();
@@ -517,5 +486,37 @@ public class TitledBorderPainter<E extends JComponent> extends BorderPainter<E> 
             }
         }
         return null;
+    }
+
+    @Override
+    public Dimension getPreferredSize ()
+    {
+        if ( isEmptyTitle () )
+        {
+            return super.getPreferredSize ();
+        }
+        else
+        {
+            final int titleAreaHeight = getTitleAreaHeight ( component );
+            final int titleWidth = component.getFontMetrics ( component.getFont () ).stringWidth ( titleText );
+            final int border = Math.max ( width, round );
+            final int title = Math.max ( titleAreaHeight, border );
+            switch ( titleSide )
+            {
+                case TOP:
+                case BOTTOM:
+                {
+                    return new Dimension ( border * 2 + titleWidth + titleOffset * 2 +
+                            titleBorderGap * 2, title + border );
+                }
+                case LEFT:
+                case RIGHT:
+                {
+                    return new Dimension ( title + border, border * 2 + titleWidth + titleOffset * 2 +
+                            titleBorderGap * 2 );
+                }
+            }
+            return null;
+        }
     }
 }

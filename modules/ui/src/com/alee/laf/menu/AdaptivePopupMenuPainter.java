@@ -30,7 +30,8 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public class AdaptivePopupMenuPainter<E extends JPopupMenu> extends AdaptivePainter<E> implements PopupMenuPainter<E>
+public class AdaptivePopupMenuPainter<E extends JPopupMenu, U extends WebPopupMenuUI> extends AdaptivePainter<E, U>
+        implements PopupMenuPainter<E, U>
 {
     /**
      * Constructs new AdaptiveLabelPainter for the specified painter.

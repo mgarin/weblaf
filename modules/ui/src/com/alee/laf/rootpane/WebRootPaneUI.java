@@ -249,7 +249,6 @@ public class WebRootPaneUI extends BasicRootPaneUI implements SwingConstants
         this.round = round;
         if ( styled )
         {
-            updateWindowButtonsStyle ();
             root.revalidate ();
             root.repaint ();
         }
@@ -721,8 +720,8 @@ public class WebRootPaneUI extends BasicRootPaneUI implements SwingConstants
         };
 
         final TitleLabel titleLabel = new TitleLabel ();
-        titleLabel.setDrawShade ( true );
-        titleLabel.setHorizontalAlignment ( WebLabel.CENTER );
+        titleLabel.setFontSize ( 13 );
+        titleLabel.setHorizontalAlignment ( CENTER );
         titleLabel.addComponentListener ( new ComponentAdapter ()
         {
             @Override
@@ -731,11 +730,8 @@ public class WebRootPaneUI extends BasicRootPaneUI implements SwingConstants
                 titleLabel.setHorizontalAlignment ( titleLabel.getRequiredSize ().width > titleLabel.getWidth () ? LEADING : CENTER );
             }
         } );
-        SwingUtils.setFontSize ( titleLabel, 13 );
 
-        final WebPanel titlePanel = new WebPanel ( new BorderLayout ( 5, 0 ) );
-        titlePanel.setOpaque ( false );
-        titlePanel.setMargin ( 4, 5, 4, 10 );
+        final WebPanel titlePanel = new WebPanel ( "window-title-panel", new BorderLayout ( 5, 0 ) );
         titlePanel.add ( titleIcon, BorderLayout.LINE_START );
         titlePanel.add ( titleLabel, BorderLayout.CENTER );
 
@@ -776,10 +772,19 @@ public class WebRootPaneUI extends BasicRootPaneUI implements SwingConstants
     }
 
     /**
-     *
+     * Custom decoration title label.
      */
     public class TitleLabel extends WebLabel
     {
+        /**
+         * Constructs new title label.
+         */
+        public TitleLabel ()
+        {
+            super ();
+            setStyleId ( "window-title" );
+        }
+
         /**
          * Returns window title text.
          * There is a small workaround to show window title even when it is empty.
@@ -832,10 +837,9 @@ public class WebRootPaneUI extends BasicRootPaneUI implements SwingConstants
         final JComponent[] buttons = new JComponent[ 3 ];
         if ( showMinimizeButton && isFrame )
         {
-            final WebButton minimize = new WebButton ( minimizeIcon );
+            final WebButton minimize = new WebButton ( minimizeIcon, minimizeActiveIcon );
+            minimize.setStyleId ( "window-minimize-button" );
             minimize.setName ( "minimize" );
-            minimize.setRolloverIcon ( minimizeActiveIcon );
-            minimize.setFocusable ( false );
             minimize.addActionListener ( new ActionListener ()
             {
                 @Override
@@ -848,7 +852,7 @@ public class WebRootPaneUI extends BasicRootPaneUI implements SwingConstants
         }
         if ( showMaximizeButton && isResizable () && isFrame )
         {
-            final WebButton maximize = new WebButton ( maximizeIcon )
+            final WebButton maximize = new WebButton ( maximizeIcon, maximizeActiveIcon )
             {
                 @Override
                 public Icon getIcon ()
@@ -862,9 +866,8 @@ public class WebRootPaneUI extends BasicRootPaneUI implements SwingConstants
                     return isFrameMaximized () ? restoreActiveIcon : maximizeActiveIcon;
                 }
             };
+            maximize.setStyleId ( "window-maximize-button" );
             maximize.setName ( "maximize" );
-            maximize.setRolloverIcon ( maximizeActiveIcon );
-            maximize.setFocusable ( false );
             maximize.addActionListener ( new ActionListener ()
             {
                 @Override
@@ -887,10 +890,9 @@ public class WebRootPaneUI extends BasicRootPaneUI implements SwingConstants
         }
         if ( showCloseButton )
         {
-            final WebButton close = new WebButton ( closeIcon );
+            final WebButton close = new WebButton ( closeIcon, closeActiveIcon );
+            close.setStyleId ( "window-close-button" );
             close.setName ( "close" );
-            close.setRolloverIcon ( closeActiveIcon );
-            close.setFocusable ( false );
             close.addActionListener ( new ActionListener ()
             {
                 @Override
@@ -913,25 +915,8 @@ public class WebRootPaneUI extends BasicRootPaneUI implements SwingConstants
                 }
             }
         };
-        updateWindowButtonsStyle ();
 
         root.add ( windowButtons );
-    }
-
-    protected void updateWindowButtonsStyle ()
-    {
-        if ( windowButtons != null )
-        {
-            windowButtons.setButtonsDrawFocus ( false );
-            windowButtons.setButtonsShadeWidth ( WebRootPaneStyle.buttonsShadeWidth );
-            windowButtons.setButtonsRound ( round );
-            windowButtons.setButtonsMargin ( WebRootPaneStyle.buttonsMargin );
-            if ( attachButtons )
-            {
-                windowButtons.setButtonsDrawTop ( false );
-                windowButtons.setButtonsDrawRight ( round > 0 );
-            }
-        }
     }
 
     protected void uninstallDecorationComponents ()

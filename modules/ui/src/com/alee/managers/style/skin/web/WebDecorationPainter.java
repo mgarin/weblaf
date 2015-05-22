@@ -620,10 +620,11 @@ public class WebDecorationPainter<E extends JComponent, U extends ComponentUI> e
     @Override
     public Insets getMargin ()
     {
+        final Insets margin = super.getMargin ();
         if ( undecorated )
         {
-            // Empty painter margin
-            return null;
+            // Defaul margin
+            return margin;
         }
         else
         {
@@ -637,7 +638,7 @@ public class WebDecorationPainter<E extends JComponent, U extends ComponentUI> e
             final int left = actualPaintLeft ? spacing : actualPaintLeftLine ? 1 : 0;
             final int bottom = paintBottom ? spacing : paintBottomLine ? 1 : 0;
             final int right = actualPaintRight ? spacing : actualPaintRightLine ? 1 : 0;
-            return new Insets ( top, left, bottom, right );
+            return new Insets ( margin.top + top, margin.left + left, margin.bottom + bottom, margin.right + right );
         }
     }
 
@@ -696,7 +697,7 @@ public class WebDecorationPainter<E extends JComponent, U extends ComponentUI> e
      * @param c           painted component
      * @param borderShape component border shape
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     protected void paintShade ( final Graphics2D g2d, final Rectangle bounds, final E c, final Shape borderShape )
     {
         if ( shadeWidth < 4 )
@@ -729,7 +730,7 @@ public class WebDecorationPainter<E extends JComponent, U extends ComponentUI> e
      * @param c               painted component
      * @param backgroundShape component background shape
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     protected void paintBackground ( final Graphics2D g2d, final Rectangle bounds, final E c, final Shape backgroundShape )
     {
         if ( webColoredBackground )
@@ -754,7 +755,7 @@ public class WebDecorationPainter<E extends JComponent, U extends ComponentUI> e
      * @param c           painted component
      * @param borderShape component border shape
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     protected void paintBorder ( final Graphics2D g2d, final Rectangle bounds, final E c, final Shape borderShape )
     {
         final Stroke os = GraphicsUtils.setupStroke ( g2d, borderStroke, borderStroke != null );
@@ -831,7 +832,7 @@ public class WebDecorationPainter<E extends JComponent, U extends ComponentUI> e
      * @param background whether should return background shape or not
      * @return decoration border shape
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     protected Shape createShape ( final E c, final boolean background )
     {
         if ( background )

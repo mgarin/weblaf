@@ -17,6 +17,7 @@
 
 package com.alee.managers.style.skin.web;
 
+import com.alee.laf.panel.WebPanelUI;
 import com.alee.utils.GraphicsUtils;
 
 import javax.swing.*;
@@ -31,7 +32,7 @@ import java.awt.*;
  * @see com.alee.extended.painter.Painter
  */
 
-public class WebSyntaxPanelPainter<E extends JPanel> extends WebPanelPainter<E>
+public class WebSyntaxPanelPainter<E extends JPanel, U extends WebPanelUI> extends WebPanelPainter<E, U>
 {
     /**
      * Used colors.
@@ -70,7 +71,7 @@ public class WebSyntaxPanelPainter<E extends JPanel> extends WebPanelPainter<E>
      * {@inheritDoc}
      */
     @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E panel )
+    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E panel, final U ui )
     {
         // Paint simple background if undecorated & opaque
         if ( panel.isOpaque () )

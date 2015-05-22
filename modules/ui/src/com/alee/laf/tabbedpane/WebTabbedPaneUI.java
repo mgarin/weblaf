@@ -192,7 +192,7 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider,
 
     private Insets getBackgroundInsets ( final JComponent c )
     {
-        return painter != null ? painter.getMargin ( c ) : new Insets ( 0, 0, 0, 0 );
+        return painter != null ? painter.getMargin () : new Insets ( 0, 0, 0, 0 );
     }
 
     public int getShadeWidth ()
@@ -595,7 +595,7 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider,
         {
             final Shape old = GraphicsUtils.intersectClip ( g2d, bgShape );
             final Painter bp = backgroundPainterAt.get ( tabIndex );
-            bp.paint ( g2d, new Rectangle ( x, y, w, h ), tabPane );
+            bp.paint ( g2d, new Rectangle ( x, y, w, h ), tabPane, this );
             GraphicsUtils.restoreClip ( g2d, old );
         }
         else
@@ -886,7 +886,7 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider,
             if ( backgroundPainterAt.containsKey ( selectedIndex ) )
             {
                 final Shape old = GraphicsUtils.intersectClip ( g2d, bs );
-                backgroundPainterAt.get ( selectedIndex ).paint ( g2d, bs.getBounds (), tabPane );
+                backgroundPainterAt.get ( selectedIndex ).paint ( g2d, bs.getBounds (), tabPane, this );
                 GraphicsUtils.restoreClip ( g2d, old );
             }
             else
@@ -908,7 +908,7 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider,
             // Area background
             if ( backgroundPainterAt.containsKey ( selectedIndex ) )
             {
-                backgroundPainterAt.get ( selectedIndex ).paint ( g2d, bs.getBounds (), tabPane );
+                backgroundPainterAt.get ( selectedIndex ).paint ( g2d, bs.getBounds (), tabPane, this );
             }
             else
             {
@@ -1202,7 +1202,7 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider,
         // Background painter
         if ( painter != null )
         {
-            painter.paint ( ( Graphics2D ) g, SwingUtils.size ( c ), c );
+            painter.paint ( ( Graphics2D ) g, SwingUtils.size ( c ), c, this );
         }
 
         // Basic paintings

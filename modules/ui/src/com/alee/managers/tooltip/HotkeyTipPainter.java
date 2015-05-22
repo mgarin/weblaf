@@ -19,6 +19,7 @@ package com.alee.managers.tooltip;
 
 import com.alee.extended.painter.AbstractPainter;
 import com.alee.global.StyleConstants;
+import com.alee.laf.label.WebLabelUI;
 import com.alee.managers.style.skin.web.WebLabelPainter;
 import com.alee.utils.GraphicsUtils;
 
@@ -32,7 +33,7 @@ import java.awt.*;
  * @see com.alee.extended.painter.Painter
  */
 
-public class HotkeyTipPainter<T extends HotkeyTipLabel> extends WebLabelPainter<T>
+public class HotkeyTipPainter<T extends HotkeyTipLabel, U extends WebLabelUI> extends WebLabelPainter<T, U>
 {
     /**
      * Style constants.
@@ -52,13 +53,13 @@ public class HotkeyTipPainter<T extends HotkeyTipLabel> extends WebLabelPainter<
      * {@inheritDoc}
      */
     @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final T c )
+    public void paint ( final Graphics2D g2d, final Rectangle bounds, final T c, final U ui )
     {
         final Object aa = GraphicsUtils.setupAntialias ( g2d );
         g2d.setColor ( bg );
         g2d.fillRoundRect ( bounds.x, bounds.y, bounds.width, bounds.height, round * 2, round * 2 );
         GraphicsUtils.restoreAntialias ( g2d, aa );
 
-        super.paint ( g2d, bounds, c );
+        super.paint ( g2d, bounds, c, ui );
     }
 }

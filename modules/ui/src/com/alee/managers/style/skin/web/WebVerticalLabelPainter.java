@@ -17,6 +17,8 @@
 
 package com.alee.managers.style.skin.web;
 
+import com.alee.extended.label.WebVerticalLabelUI;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -27,7 +29,7 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public class WebVerticalLabelPainter<E extends JLabel> extends WebLabelPainter<E>
+public class WebVerticalLabelPainter<E extends JLabel, U extends WebVerticalLabelUI> extends WebLabelPainter<E, U>
 {
     /**
      * Runtime variables.
@@ -102,9 +104,9 @@ public class WebVerticalLabelPainter<E extends JLabel> extends WebLabelPainter<E
      * {@inheritDoc}
      */
     @Override
-    public Dimension getPreferredSize ( final E label )
+    public Dimension getPreferredSize ()
     {
-        return transposeDimension ( super.getPreferredSize ( label ) );
+        return transposeDimension ( super.getPreferredSize () );
     }
 
     /**

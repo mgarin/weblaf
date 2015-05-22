@@ -27,6 +27,7 @@ import com.alee.utils.ninepatch.NinePatchIcon;
 import com.alee.utils.swing.DataProvider;
 
 import javax.swing.*;
+import javax.swing.plaf.ComponentUI;
 import java.awt.*;
 import java.awt.geom.GeneralPath;
 
@@ -38,8 +39,9 @@ import java.awt.geom.GeneralPath;
  * @author Mikle Garin
  */
 
-@SuppressWarnings ( "UnusedParameters" )
-public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> implements PainterShapeProvider<E>, SwingConstants
+@SuppressWarnings ("UnusedParameters")
+public class WebPopupPainter<E extends JComponent, U extends ComponentUI> extends AbstractPainter<E, U>
+        implements PainterShapeProvider<E>, SwingConstants
 {
     /**
      * Shape cache keys.
@@ -368,14 +370,14 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
     @Override
     public Shape provideShape ( final E component, final Rectangle bounds )
     {
-        return getBorderShape ( component, bounds.getSize(), false );
+        return getBorderShape ( component, bounds.getSize (), false );
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Boolean isOpaque ( final E c )
+    public Boolean isOpaque ()
     {
         return !transparent;
     }
@@ -384,10 +386,9 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
      * {@inheritDoc}
      */
     @Override
-    public Insets getMargin ( final E c )
+    public Insets getMargin ()
     {
         // Actual margin
-        final boolean ltr = c.getComponentOrientation ().isLeftToRight ();
         final Insets m = new Insets ( margin.top, ltr ? margin.left : margin.right, margin.bottom, ltr ? margin.right : margin.left );
 
         // Calculating additional borders
@@ -414,7 +415,7 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
      * {@inheritDoc}
      */
     @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E popup )
+    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E popup, final U ui )
     {
         final Object aa = GraphicsUtils.setupAntialias ( g2d );
         if ( transparent )
@@ -623,14 +624,13 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
     /**
      * Returns an array of shape settings cached along with the shape.
      *
-     * @param popup popup component
+     * @param popup     popup component
      * @param popupSize popup size
      * @return an array of shape settings cached along with the shape
      */
     protected Object[] getCachedShapeSettings ( final E popup, final Dimension popupSize )
     {
-        return new Object[]{ round, shadeWidth, cornerWidth, cornerSide, relativeCorner, cornerAlignment, popupSize,
-                popup.getComponentOrientation ().isLeftToRight () };
+        return new Object[]{ round, shadeWidth, cornerWidth, cornerSide, relativeCorner, cornerAlignment, popupSize, ltr };
     }
 
     /**
@@ -683,7 +683,6 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
         final int sideWidth = getSideWidth ();
 
         // Corner left spacing
-        final boolean ltr = popup.getComponentOrientation ().isLeftToRight ();
         final int cornerShear = sideWidth + shear + round + cornerWidth * 2;
         final int length = topCorner || bottomCorner ? popupSize.width : popupSize.height;
         final int spacing;
@@ -801,7 +800,6 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
         final int sideWidth = getSideWidth ();
 
         // Corner left spacing
-        final boolean ltr = popupMenu.getComponentOrientation ().isLeftToRight ();
         final int cornerShear = sideWidth + shear + round + cornerWidth * 2;
         final int length = topCorner || bottomCorner ? menuSize.width : menuSize.height;
         final int spacing;

@@ -21,6 +21,7 @@ import com.alee.extended.layout.ComponentPanelLayout;
 import com.alee.extended.painter.AbstractPainter;
 import com.alee.global.StyleConstants;
 import com.alee.laf.panel.WebPanel;
+import com.alee.laf.panel.WebPanelUI;
 import com.alee.managers.focus.DefaultFocusTracker;
 import com.alee.managers.focus.FocusManager;
 import com.alee.managers.hotkey.Hotkey;
@@ -50,7 +51,7 @@ public class WebComponentPanel extends WebPanel
 
     private final List<ComponentReorderListener> listeners = new ArrayList<ComponentReorderListener> ( 1 );
 
-    private WebPanel container;
+    private final WebPanel container;
     private final Map<Component, WebSelectablePanel> components = new LinkedHashMap<Component, WebSelectablePanel> ();
 
     private Insets elementMargin = new Insets ( 2, 2, 2, 2 );
@@ -61,20 +62,7 @@ public class WebComponentPanel extends WebPanel
 
     public WebComponentPanel ()
     {
-        super ();
-        initialize ();
-    }
-
-    public WebComponentPanel ( final boolean decorated )
-    {
-        super ( decorated );
-        initialize ();
-    }
-
-    private void initialize ()
-    {
-        // Default styling
-        setWebColoredBackground ( false );
+        super ( "components-panel" );
 
         // Elements layout
         container = new WebPanel ();
@@ -456,7 +444,8 @@ public class WebComponentPanel extends WebPanel
             final int bottom = index == components.size () - 1 ? elementMargin.bottom : elementMargin.bottom + 1;
             final int right = elementMargin.right + ( reorderingAllowed && showReorderGrippers && !ltr ? GRIPPER_SIZE : 0 );
 
-            setMargin ( top, left, bottom, right );
+            // todo Create styles
+            // setMargin ( top, left, bottom, right );
         }
 
         public boolean isFocused ()
@@ -483,7 +472,7 @@ public class WebComponentPanel extends WebPanel
     /**
      * Custom painter for selectable panels.
      */
-    public class WebSelectablePanelPainter extends AbstractPainter<WebSelectablePanel>
+    public class WebSelectablePanelPainter extends AbstractPainter<WebSelectablePanel, WebPanelUI>
     {
         /**
          * Style settings.
@@ -496,7 +485,7 @@ public class WebComponentPanel extends WebPanel
          * {@inheritDoc}
          */
         @Override
-        public Boolean isOpaque ( final WebSelectablePanel c )
+        public Boolean isOpaque ()
         {
             return true;
         }
@@ -505,7 +494,7 @@ public class WebComponentPanel extends WebPanel
          * {@inheritDoc}
          */
         @Override
-        public void paint ( final Graphics2D g2d, final Rectangle bounds, final WebSelectablePanel panel )
+        public void paint ( final Graphics2D g2d, final Rectangle bounds, final WebSelectablePanel panel, final WebPanelUI ui )
         {
             final boolean notFirst = panel.getIndex () > 0;
             final boolean notLast = panel.getIndex () < components.size () - 1;

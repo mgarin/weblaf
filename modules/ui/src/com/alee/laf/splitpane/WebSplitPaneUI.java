@@ -63,7 +63,7 @@ public class WebSplitPaneUI extends BasicSplitPaneUI implements BorderMethods
      * @param c component that will use UI instance
      * @return instance of the WebSplitPaneUI
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebSplitPaneUI ();
@@ -241,11 +241,10 @@ public class WebSplitPaneUI extends BasicSplitPaneUI implements BorderMethods
             {
                 final boolean hor = orientation == JSplitPane.HORIZONTAL_SPLIT;
                 final ImageIcon icon = getOneTouchIcon ( true, hor );
-                final WebButton iconWebButton = WebButton.createIconWebButton ( icon, 0, 0, 0, false, true, false );
-                iconWebButton.setBorder ( BorderFactory.createEmptyBorder ( 0, 0, 0, 0 ) );
+                final WebButton iconWebButton = new WebButton ( icon );
+                iconWebButton.setStyleId ( "splitpane-onetouch-left" );
                 iconWebButton.setCursor ( Cursor.getDefaultCursor () );
                 iconWebButton.setPreferredSize ( getOneTouchButtonSize ( hor ) );
-                iconWebButton.setFocusable ( false );
                 return iconWebButton;
             }
 
@@ -254,11 +253,10 @@ public class WebSplitPaneUI extends BasicSplitPaneUI implements BorderMethods
             {
                 final boolean hor = orientation == JSplitPane.HORIZONTAL_SPLIT;
                 final ImageIcon icon = getOneTouchIcon ( false, hor );
-                final JButton iconWebButton = WebButton.createIconWebButton ( icon, 0, 0, 0, false, true, false );
-                iconWebButton.setBorder ( BorderFactory.createEmptyBorder ( 0, 0, 0, 0 ) );
+                final WebButton iconWebButton = new WebButton ( icon );
+                iconWebButton.setStyleId ( "splitpane-onetouch-left" );
                 iconWebButton.setCursor ( Cursor.getDefaultCursor () );
                 iconWebButton.setPreferredSize ( getOneTouchButtonSize ( hor ) );
-                iconWebButton.setFocusable ( false );
                 return iconWebButton;
             }
 
