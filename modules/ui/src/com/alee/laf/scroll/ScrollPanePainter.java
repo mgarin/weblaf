@@ -15,29 +15,19 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.laf.panel;
+package com.alee.laf.scroll;
 
-import com.alee.extended.painter.AdaptivePainter;
 import com.alee.extended.painter.Painter;
+import com.alee.extended.painter.SpecificPainter;
 
 import javax.swing.*;
 
 /**
- * Simple PanelPainter adapter class.
- * It is used to install simple non-specific painters into WebPanelUI.
+ * Base interface for JScrollPane component painters.
  *
  * @author Mikle Garin
  */
 
-public class AdaptivePanelPainter<E extends JPanel, U extends WebPanelUI> extends AdaptivePainter<E, U> implements PanelPainter<E, U>
+public interface ScrollPanePainter<E extends JScrollPane, U extends WebScrollPaneUI> extends Painter<E, U>, SpecificPainter
 {
-    /**
-     * Constructs new AdaptivePanelPainter for the specified painter.
-     *
-     * @param painter painter to adapt
-     */
-    public AdaptivePanelPainter ( final Painter painter )
-    {
-        super ( painter );
-    }
 }

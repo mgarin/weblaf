@@ -17,12 +17,8 @@
 
 package com.alee.utils;
 
-import com.alee.extended.painter.AdaptivePainter;
-import com.alee.extended.painter.Painter;
-import com.alee.extended.painter.SpecificPainter;
 import com.alee.extended.painter.TexturePainter;
 import com.alee.global.StyleConstants;
-import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
 import com.alee.laf.scroll.WebScrollBarUI;
@@ -45,7 +41,6 @@ import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
 import java.awt.geom.*;
 import java.awt.image.BufferedImage;
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -106,12 +101,12 @@ public final class LafUtils
     }
 
     /**
-     * Sets scroll pane bars style ID.
+     * Sets scroll pane vertical bar style ID.
      *
      * @param scrollPane scroll pane to process
-     * @param styleId    scroll pane bars style ID
+     * @param styleId    scroll pane bar style ID
      */
-    public static void setScrollBarStyleId ( final JScrollPane scrollPane, final String styleId )
+    public static void setVerticalScrollBarStyleId ( final JScrollPane scrollPane, final String styleId )
     {
         final JScrollBar vsb = scrollPane.getVerticalScrollBar ();
         if ( vsb != null )
@@ -123,6 +118,16 @@ public final class LafUtils
                 ui.setStyleId ( styleId );
             }
         }
+    }
+
+    /**
+     * Sets scroll pane horizontal bar style ID.
+     *
+     * @param scrollPane scroll pane to process
+     * @param styleId    scroll pane bar style ID
+     */
+    public static void setHorizontalScrollBarStyleId ( final JScrollPane scrollPane, final String styleId )
+    {
         final JScrollBar hsb = scrollPane.getHorizontalScrollBar ();
         if ( hsb != null )
         {

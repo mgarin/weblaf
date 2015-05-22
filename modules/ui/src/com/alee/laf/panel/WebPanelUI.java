@@ -70,6 +70,7 @@ public class WebPanelUI extends BasicPanelUI implements Styleable, ShapeProvider
     @Override
     public void installUI ( final JComponent c )
     {
+        // Installing UI
         super.installUI ( c );
 
         // Saving panel to local variable

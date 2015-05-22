@@ -15,8 +15,9 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.laf.scroll;
+package com.alee.managers.style.skin.web;
 
+import com.alee.laf.scroll.WebScrollBarStyle;
 import com.alee.utils.SwingUtils;
 
 import javax.swing.*;

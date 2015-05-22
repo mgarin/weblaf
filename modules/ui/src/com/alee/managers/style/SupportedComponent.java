@@ -86,7 +86,7 @@ public enum SupportedComponent
      * Scroll-related components.
      */
     scrollBar ( true, JScrollBar.class, "ScrollBarUI", WebLookAndFeel.scrollBarUI ),
-    scrollPane ( false, JScrollPane.class, "ScrollPaneUI", WebLookAndFeel.scrollPaneUI ),
+    scrollPane ( true, JScrollPane.class, "ScrollPaneUI", WebLookAndFeel.scrollPaneUI ),
     viewport ( true, JViewport.class, "ViewportUI", WebLookAndFeel.viewportUI ),
 
     /**

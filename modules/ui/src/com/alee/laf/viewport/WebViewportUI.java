@@ -21,6 +21,7 @@ import com.alee.extended.painter.Painter;
 import com.alee.extended.painter.PainterSupport;
 import com.alee.managers.style.StyleManager;
 import com.alee.utils.SwingUtils;
+import com.alee.utils.laf.ShapeProvider;
 import com.alee.utils.laf.Styleable;
 import com.alee.utils.swing.DataRunnable;
 
@@ -35,7 +36,7 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public class WebViewportUI extends BasicViewportUI implements Styleable
+public class WebViewportUI extends BasicViewportUI implements Styleable, ShapeProvider
 {
     /**
      * Component painter.
@@ -55,7 +56,7 @@ public class WebViewportUI extends BasicViewportUI implements Styleable
      * @param c component that will use UI instance
      * @return instance of the WebViewportUI
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebViewportUI ();
@@ -113,6 +114,15 @@ public class WebViewportUI extends BasicViewportUI implements Styleable
     {
         this.styleId = id;
         StyleManager.applySkin ( viewport );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Shape provideShape ()
+    {
+        return PainterSupport.getShape ( viewport, painter );
     }
 
     /**

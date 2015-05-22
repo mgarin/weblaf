@@ -49,7 +49,12 @@
     </style>
 
     <!-- JScrollBar styling for JScrollPane -->
-    <style type="scrollBar" id="scroll-pane" extends="default">
+    <style type="scrollBar" id="scrollpane-horizontal" extends="default">
+        <ui>
+            <paintTrack>true</paintTrack>
+        </ui>
+    </style>
+    <style type="scrollBar" id="scrollpane-vertical" extends="default">
         <ui>
             <paintTrack>true</paintTrack>
         </ui>

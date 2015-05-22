@@ -18,7 +18,6 @@
 package com.alee.laf.panel;
 
 import com.alee.extended.painter.Painter;
-import com.alee.extended.painter.PartialDecoration;
 import com.alee.extended.painter.SpecificPainter;
 
 import javax.swing.*;
@@ -31,18 +30,4 @@ import javax.swing.*;
 
 public interface PanelPainter<E extends JPanel, U extends WebPanelUI> extends Painter<E, U>, SpecificPainter
 {
-    /**
-     * Sets whether panel decoration should be painted or not.
-     *
-     * @param undecorated whether panel decoration should be painted or not
-     */
-    public void setUndecorated ( boolean undecorated );
-
-    /**
-     * Sets whether focus should be painted or not.
-     * Panel focus is displayed when either panel or one of its children are focused.
-     *
-     * @param paint whether focus should be painted or not
-     */
-    public void setPaintFocus ( final boolean paint );
 }
