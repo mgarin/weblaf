@@ -1,5 +1,19 @@
 WebLaF
 ==========
+This is a temporary fork for styling improvements publishing.
+It is not compileable yet and still in work, but will soon be useable.
+
+As soon as all changes are done it will be merged into the main repository.
+It contains major changes to all components styling methods.
+
+Basically - almost all bridge methods will be removed from Web-components.
+All those settings will now be provided through XML styling files.
+I will publish an extensive guide on how it can be used as soon as it is released.
+
+
+
+WebLaF
+==========
 **WebLaf** is a Java Swing Look and Feel and extended components library for cross-platform applications.<br>
 ![Preview](./screenshots/weblaf-preview.png)<br>
 You can find some more screenshots at the end of this page!
