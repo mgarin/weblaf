@@ -1,4 +1,4 @@
-WebLaF
+Important information
 ==========
 This is a temporary fork for styling improvements publishing.
 It is not compileable yet and still in work, but will soon be useable.
