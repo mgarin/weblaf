@@ -20,12 +20,14 @@ package com.alee.laf.viewport;
 import com.alee.extended.painter.Painter;
 import com.alee.extended.painter.PainterSupport;
 import com.alee.managers.style.StyleManager;
+import com.alee.utils.SwingUtils;
 import com.alee.utils.laf.Styleable;
 import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicViewportUI;
+import java.awt.*;
 
 /**
  * Custom UI for JViewport component.
@@ -53,7 +55,7 @@ public class WebViewportUI extends BasicViewportUI implements Styleable
      * @param c component that will use UI instance
      * @return instance of the WebViewportUI
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebViewportUI ();
@@ -139,5 +141,20 @@ public class WebViewportUI extends BasicViewportUI implements Styleable
                 WebViewportUI.this.painter = newPainter;
             }
         }, this.painter, painter, ViewportPainter.class, AdaptiveViewportPainter.class );
+    }
+
+    /**
+     * Paints viewport.
+     *
+     * @param g graphics
+     * @param c component
+     */
+    @Override
+    public void paint ( final Graphics g, final JComponent c )
+    {
+        if ( painter != null )
+        {
+            painter.paint ( ( Graphics2D ) g, SwingUtils.size ( c ), c, this );
+        }
     }
 }

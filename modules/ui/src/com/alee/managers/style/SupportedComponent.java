@@ -138,7 +138,7 @@ public enum SupportedComponent
     /**
      * Desktop-pane-related components.
      */
-    desktopPane ( false, JDesktopPane.class, "DesktopPaneUI", WebLookAndFeel.desktopPaneUI ),
+    desktopPane ( true, JDesktopPane.class, "DesktopPaneUI", WebLookAndFeel.desktopPaneUI ),
     desktopIcon ( false, JInternalFrame.JDesktopIcon.class, "DesktopIconUI", WebLookAndFeel.desktopIconUI ),
     internalFrame ( false, JInternalFrame.class, "InternalFrameUI", WebLookAndFeel.internalFrameUI ),
 

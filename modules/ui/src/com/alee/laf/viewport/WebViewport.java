@@ -83,16 +83,6 @@ public class WebViewport extends JViewport implements Styleable
     }
 
     /**
-     * Returns Web-UI applied to this class.
-     *
-     * @return Web-UI applied to this class
-     */
-    public WebViewportUI getWebUI ()
-    {
-        return ( WebViewportUI ) getUI ();
-    }
-
-    /**
      * Installs a Web-UI into this component.
      */
     @Override
@@ -114,5 +104,15 @@ public class WebViewport extends JViewport implements Styleable
         {
             setUI ( getUI () );
         }
+    }
+
+    /**
+     * Returns Web-UI applied to this class.
+     *
+     * @return Web-UI applied to this class
+     */
+    private WebViewportUI getWebUI ()
+    {
+        return ( WebViewportUI ) getUI ();
     }
 }

@@ -17,36 +17,135 @@
 
 package com.alee.laf.desktoppane;
 
-import com.alee.global.StyleConstants;
-import com.alee.laf.WebLookAndFeel;
-import com.alee.utils.LafUtils;
+import com.alee.extended.painter.Painter;
+import com.alee.extended.painter.PainterSupport;
+import com.alee.managers.style.StyleManager;
 import com.alee.utils.SwingUtils;
+import com.alee.utils.laf.Styleable;
+import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicDesktopPaneUI;
+import java.awt.*;
 
 /**
  * User: mgarin Date: 17.08.11 Time: 23:14
  */
 
-public class WebDesktopPaneUI extends BasicDesktopPaneUI
+public class WebDesktopPaneUI extends BasicDesktopPaneUI implements Styleable
 {
-    @SuppressWarnings ( "UnusedParameters" )
+    /**
+     * Component painter.
+     */
+    protected DesktopPanePainter painter;
+
+    /**
+     * Runtime variables.
+     */
+    protected String styleId = null;
+    protected JDesktopPane desktopPane = null;
+
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebDesktopPaneUI ();
     }
 
+    /**
+     * Installs UI in the specified component.
+     *
+     * @param c component for this UI
+     */
     @Override
     public void installUI ( final JComponent c )
     {
         super.installUI ( c );
 
-        // Default settings
-        SwingUtils.setOrientation ( c );
-        LookAndFeel.installProperty ( c, WebLookAndFeel.OPAQUE_PROPERTY, Boolean.TRUE );
-        c.setBorder ( LafUtils.createWebBorder ( 0, 0, 0, 0 ) );
-        c.setBackground ( StyleConstants.backgroundColor );
+        // Saving desktop pane to local variable
+        desktopPane = ( JDesktopPane ) c;
+
+        // Applying skin
+        StyleManager.applySkin ( desktopPane );
+    }
+
+    /**
+     * Uninstalls UI from the specified component.
+     *
+     * @param c component with this UI
+     */
+    @Override
+    public void uninstallUI ( final JComponent c )
+    {
+        // Uninstalling applied skin
+        StyleManager.removeSkin ( desktopPane );
+
+        // Cleaning up reference
+        desktopPane = null;
+
+        // Uninstalling UI
+        super.uninstallUI ( c );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getStyleId ()
+    {
+        return styleId;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setStyleId ( final String id )
+    {
+        this.styleId = id;
+        StyleManager.applySkin ( desktopPane );
+    }
+
+    /**
+     * Returns desktop pane painter.
+     *
+     * @return desktop pane painter
+     */
+    public Painter getPainter ()
+    {
+        return PainterSupport.getAdaptedPainter ( painter );
+    }
+
+    /**
+     * Sets desktop pane painter.
+     * Pass null to remove desktop pane painter.
+     *
+     * @param painter new desktop pane painter
+     */
+    public void setPainter ( final Painter painter )
+    {
+        PainterSupport.setPainter ( desktopPane, new DataRunnable<DesktopPanePainter> ()
+        {
+            @Override
+            public void run ( final DesktopPanePainter newPainter )
+            {
+                WebDesktopPaneUI.this.painter = newPainter;
+            }
+        }, this.painter, painter, DesktopPanePainter.class, AdaptiveDesktopPanePainter.class );
+    }
+
+    /**
+     * Paints desktop pane.
+     *
+     * @param g graphics
+     * @param c component
+     */
+    @Override
+    public void paint ( final Graphics g, final JComponent c )
+    {
+        if ( painter != null )
+        {
+            painter.paint ( ( Graphics2D ) g, SwingUtils.size ( c ), c, this );
+        }
     }
 }

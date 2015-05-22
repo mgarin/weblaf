@@ -98,16 +98,6 @@ public class WebToolTip extends JToolTip implements Styleable, ShapeProvider, Fo
     }
 
     /**
-     * Returns Web-UI applied to this class.
-     *
-     * @return Web-UI applied to this class
-     */
-    public WebToolTipUI getWebUI ()
-    {
-        return ( WebToolTipUI ) getUI ();
-    }
-
-    /**
      * Installs a Web-UI into this component.
      */
     @Override
@@ -291,5 +281,15 @@ public class WebToolTip extends JToolTip implements Styleable, ShapeProvider, Fo
     public WebToolTip setFontName ( final String fontName )
     {
         return SwingUtils.setFontName ( this, fontName );
+    }
+
+    /**
+     * Returns Web-UI applied to this class.
+     *
+     * @return Web-UI applied to this class
+     */
+    private WebToolTipUI getWebUI ()
+    {
+        return ( WebToolTipUI ) getUI ();
     }
 }
