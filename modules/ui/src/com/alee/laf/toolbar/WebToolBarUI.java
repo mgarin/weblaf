@@ -115,7 +115,6 @@ public class WebToolBarUI extends BasicToolBarUI implements Styleable, ShapeProv
         StyleManager.applySkin ( toolBar );
     }
 
-
     @Override
     public Shape provideShape ()
     {

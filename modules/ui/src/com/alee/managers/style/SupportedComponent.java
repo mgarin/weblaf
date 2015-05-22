@@ -75,7 +75,7 @@ public enum SupportedComponent
     menuItem ( false, JMenuItem.class, "MenuItemUI", WebLookAndFeel.menuItemUI ),
     checkBoxMenuItem ( false, JCheckBoxMenuItem.class, "CheckBoxMenuItemUI", WebLookAndFeel.checkBoxMenuItemUI ),
     radioButtonMenuItem ( false, JRadioButtonMenuItem.class, "RadioButtonMenuItemUI", WebLookAndFeel.radioButtonMenuItemUI ),
-    popupMenuSeparator ( false, JPopupMenu.Separator.class, "PopupMenuSeparatorUI", WebLookAndFeel.popupMenuSeparatorUI ),
+    popupMenuSeparator ( true, JPopupMenu.Separator.class, "PopupMenuSeparatorUI", WebLookAndFeel.popupMenuSeparatorUI ),
 
     /**
      * Separator component.

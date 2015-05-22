@@ -17,12 +17,13 @@
 
 package com.alee.laf.menu;
 
+import com.alee.extended.painter.Painter;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.log.Log;
 import com.alee.utils.ReflectUtils;
+import com.alee.utils.laf.Styleable;
 
 import javax.swing.*;
-import java.awt.*;
 
 /**
  * Custom menu separator component based on JSeparator.
@@ -30,7 +31,7 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public class WebPopupMenuSeparator extends JSeparator
+public class WebPopupMenuSeparator extends JSeparator implements Styleable
 {
     /**
      * Constructs new menu separator.
@@ -41,87 +42,44 @@ public class WebPopupMenuSeparator extends JSeparator
     }
 
     /**
-     * Returns separator color.
+     * Returns separator painter.
      *
-     * @return separator color
+     * @return separator painter
      */
-    public Color getColor ()
+    public Painter getPainter ()
     {
-        return getWebUI ().getColor ();
+        return getWebUI ().getPainter ();
     }
 
     /**
-     * Sets separator color.
+     * Sets separator painter.
+     * Pass null to remove separator painter.
      *
-     * @param color new separator color
+     * @param painter new separator painter
+     * @return this separator
      */
-    public WebPopupMenuSeparator setColor ( final Color color )
+    public WebPopupMenuSeparator setPainter ( final Painter painter )
     {
-        getWebUI ().setColor ( color );
+        getWebUI ().setPainter ( painter );
         return this;
     }
 
     /**
-     * Returns separator stroke.
-     *
-     * @return separator stroke
+     * {@inheritDoc}
      */
-    public Stroke getStroke ()
+    @Override
+    public String getStyleId ()
     {
-        return getWebUI ().getStroke ();
+        return getWebUI ().getStyleId ();
     }
 
     /**
-     * Sets separator stroke.
-     *
-     * @param stroke new separator stroke
+     * {@inheritDoc}
      */
-    public WebPopupMenuSeparator setStroke ( final Stroke stroke )
+    @Override
+    public void setStyleId ( final String id )
     {
-        getWebUI ().setStroke ( stroke );
-        return this;
-    }
-
-    /**
-     * Returns separator upper and lower spacing.
-     *
-     * @return separator upper and lower spacing
-     */
-    public int getSpacing ()
-    {
-        return getWebUI ().getSpacing ();
-    }
-
-    /**
-     * Sets separator upper and lower spacing.
-     *
-     * @param spacing new separator upper and lower spacing
-     */
-    public WebPopupMenuSeparator setSpacing ( final int spacing )
-    {
-        getWebUI ().setSpacing ( spacing );
-        return this;
-    }
-
-    /**
-     * Returns separator side spacing.
-     *
-     * @return separator side spacing
-     */
-    public int getSideSpacing ()
-    {
-        return getWebUI ().getSideSpacing ();
-    }
-
-    /**
-     * Sets separator side spacing.
-     *
-     * @param sideSpacing new separator side spacing
-     */
-    public WebPopupMenuSeparator setSideSpacing ( final int sideSpacing )
-    {
-        getWebUI ().setSideSpacing ( sideSpacing );
-        return this;
+        getWebUI ().setStyleId ( id );
     }
 
     /**
