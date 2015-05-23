@@ -62,9 +62,7 @@ public class WebSyntaxArea extends RSyntaxTextArea implements DocumentEventMetho
     public WebSyntaxArea ( final SyntaxPreset... presets )
     {
         super ();
-        applyPresets ( presets );
-        applyPresets ( SyntaxPreset.ideaTheme );
-        initialize ();
+        initialize ( presets );
     }
 
     /**
@@ -76,10 +74,7 @@ public class WebSyntaxArea extends RSyntaxTextArea implements DocumentEventMetho
     public WebSyntaxArea ( final String text, final SyntaxPreset... presets )
     {
         super ( text );
-        applyPresets ( presets );
-        applyPresets ( SyntaxPreset.ideaTheme );
-        clearHistory ();
-        initialize ();
+        initialize ( presets );
     }
 
     /**
@@ -92,9 +87,7 @@ public class WebSyntaxArea extends RSyntaxTextArea implements DocumentEventMetho
     public WebSyntaxArea ( final int rows, final int cols, final SyntaxPreset... presets )
     {
         super ( rows, cols );
-        applyPresets ( presets );
-        applyPresets ( SyntaxPreset.ideaTheme );
-        initialize ();
+        initialize ( presets );
     }
 
     /**
@@ -108,10 +101,7 @@ public class WebSyntaxArea extends RSyntaxTextArea implements DocumentEventMetho
     public WebSyntaxArea ( final String text, final int rows, final int cols, final SyntaxPreset... presets )
     {
         super ( text, rows, cols );
-        applyPresets ( presets );
-        applyPresets ( SyntaxPreset.ideaTheme );
-        clearHistory ();
-        initialize ();
+        initialize ( presets );
     }
 
     /**
@@ -123,16 +113,38 @@ public class WebSyntaxArea extends RSyntaxTextArea implements DocumentEventMetho
     public WebSyntaxArea ( final int textMode, final SyntaxPreset... presets )
     {
         super ( textMode );
-        applyPresets ( presets );
-        applyPresets ( SyntaxPreset.ideaTheme );
-        initialize ();
+        initialize ( presets );
     }
 
     /**
      * Initializes additional custom settings.
+     *
+     * @param presets presets to apply
      */
-    protected void initialize ()
+    protected void initialize ( final SyntaxPreset... presets )
     {
+        // Applying provided presets
+        applyPresets ( presets );
+
+        // Applying default theme if it wasn't provided
+        boolean themeProvided = false;
+        for ( final SyntaxPreset preset : presets )
+        {
+            if ( preset.getType () == PresetType.theme )
+            {
+                themeProvided = true;
+                break;
+            }
+        }
+        if ( !themeProvided )
+        {
+            applyPresets ( SyntaxPreset.ideaTheme );
+        }
+
+        // Clearing history to avoid initial text removal on undo
+        clearHistory ();
+
+        // Adding redo action
         onKeyPress ( Hotkey.CTRL_SHIFT_Z, new KeyEventRunnable ()
         {
             @Override
@@ -180,33 +192,10 @@ public class WebSyntaxArea extends RSyntaxTextArea implements DocumentEventMetho
      */
     public WebSyntaxScrollPane createScroll ()
     {
-        return createScroll ( true, true );
-    }
-
-    /**
-     * Returns properly styled and configured scroll.
-     *
-     * @param drawBorder whether should draw outer scrollpane border or not
-     * @return properly styled and configured scroll
-     */
-    public WebSyntaxScrollPane createScroll ( final boolean drawBorder )
-    {
-        return createScroll ( drawBorder, true );
-    }
-
-    /**
-     * Returns properly styled and configured scroll.
-     *
-     * @param drawBorder      whether should draw outer scrollpane border or not
-     * @param drawInnerBorder whether should draw inner scrollpane border or not
-     * @return properly styled and configured scroll
-     */
-    public WebSyntaxScrollPane createScroll ( final boolean drawBorder, final boolean drawInnerBorder )
-    {
         // Creating editor scroll with preferred settings
-        final WebSyntaxScrollPane scrollPane = new WebSyntaxScrollPane ( this, drawBorder, drawInnerBorder );
+        final WebSyntaxScrollPane scrollPane = new WebSyntaxScrollPane ( this );
 
-        // Applying theme
+        // Applying syntax area theme
         if ( themePreset != null )
         {
             themePreset.apply ( this );
