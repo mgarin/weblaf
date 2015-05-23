@@ -65,7 +65,7 @@ public class WebScrollPanePainter<E extends JScrollPane, U extends WebScrollPane
         // Updating scrollpane corner
         updateCorners ();
 
-        // Listenin to orientation change to update corners
+        // Listening to orientation change to update corners
         propertyChangeListener = new PropertyChangeListener ()
         {
             @Override
@@ -135,9 +135,9 @@ public class WebScrollPanePainter<E extends JScrollPane, U extends WebScrollPane
     }
 
     /**
-     * Returns upper traiing corner.
+     * Returns upper trailing corner.
      *
-     * @return upper traiing corner
+     * @return upper trailing corner
      */
     protected WebScrollPaneCorner getUpperTrailing ()
     {

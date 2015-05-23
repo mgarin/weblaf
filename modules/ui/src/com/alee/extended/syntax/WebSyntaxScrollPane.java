@@ -21,7 +21,6 @@ import com.alee.extended.painter.Painter;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.panel.WebPanelUI;
 import com.alee.laf.scroll.WebScrollBar;
-import com.alee.laf.scroll.WebScrollPane;
 import com.alee.laf.scroll.WebScrollPaneUI;
 import com.alee.managers.language.LanguageContainerMethods;
 import com.alee.managers.language.LanguageManager;
@@ -38,43 +37,73 @@ import org.fife.ui.rtextarea.RTextScrollPane;
 import java.awt.*;
 
 /**
+ * Special scrollpane exclusively for {@link com.alee.extended.syntax.WebSyntaxArea} component.
+ *
  * @author Mikle Garin
  */
 
 public class WebSyntaxScrollPane extends RTextScrollPane
         implements Styleable, ShapeProvider, SizeMethods<WebSyntaxScrollPane>, LanguageContainerMethods
 {
+    /**
+     * Constructs new empty syntax scrollpane.
+     */
     public WebSyntaxScrollPane ()
     {
         super ();
         initialize ();
     }
 
-    public WebSyntaxScrollPane ( final Component comp )
+    /**
+     * Constructs new syntax scrollpane with the specified syntax area inside.
+     *
+     * @param syntaxArea {@link com.alee.extended.syntax.WebSyntaxArea}
+     */
+    public WebSyntaxScrollPane ( final WebSyntaxArea syntaxArea )
     {
-        super ( comp );
+        super ( syntaxArea );
         initialize ();
     }
 
-    public WebSyntaxScrollPane ( final Component comp, final boolean lineNumbers )
+    /**
+     * Constructs new syntax scrollpane with the specified syntax area inside.
+     *
+     * @param syntaxArea  {@link com.alee.extended.syntax.WebSyntaxArea}
+     * @param lineNumbers whether or not should display line numbers
+     */
+    public WebSyntaxScrollPane ( final WebSyntaxArea syntaxArea, final boolean lineNumbers )
     {
-        super ( comp, lineNumbers );
+        super ( syntaxArea, lineNumbers );
         initialize ();
     }
 
-    public WebSyntaxScrollPane ( final Component comp, final boolean lineNumbers, final Color lineNumberColor )
+    /**
+     * Constructs new syntax scrollpane with the specified syntax area inside.
+     *
+     * @param syntaxArea      {@link com.alee.extended.syntax.WebSyntaxArea}
+     * @param lineNumbers     whether or not should display line numbers
+     * @param lineNumberColor line numbers foreground
+     */
+    public WebSyntaxScrollPane ( final WebSyntaxArea syntaxArea, final boolean lineNumbers, final Color lineNumberColor )
     {
-        super ( comp, lineNumbers, lineNumberColor );
+        super ( syntaxArea, lineNumbers, lineNumberColor );
         initialize ();
     }
 
+    /**
+     * Initializes default scrollpane styling.
+     */
     protected void initialize ()
     {
         setStyleId ( "syntax-scroll" );
         setGutterStyleId ( "syntax-scroll-gutter" );
-        setVerticalScrollBarPolicy ( WebScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED );
     }
 
+    /**
+     * Sets gutter panel style ID.
+     *
+     * @param id gutter panel style ID
+     */
     public void setGutterStyleId ( final String id )
     {
         if ( getGutter ().getUI () instanceof WebPanelUI )

@@ -22,7 +22,7 @@ import javax.swing.plaf.ComponentUI;
 import java.awt.*;
 
 /**
- * Base web-style painter for contaners.
+ * Base web-style painter for containers.
  *
  * @param <E> component type
  * @param <U> component UI type

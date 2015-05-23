@@ -14,6 +14,10 @@ NOTES:
 13. WebSplitPane - one-touch icons
 14. WebPopupMenuPainter - check preparePopupMenu method and menu positioning
 
+FEATURES TO DO:
+1. Allow variables (with specified types) like colors, sizes etc.
+2. Improve styles loading/overriding mechanics
+
 
 -------------------------------------------------------------------------
 
