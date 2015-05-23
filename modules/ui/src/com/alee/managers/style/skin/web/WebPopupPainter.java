@@ -487,7 +487,7 @@ public class WebPopupPainter<E extends JComponent, U extends ComponentUI> extend
 
     /**
      * Returns current shade transparency.
-     * This part moved to a separate method to make it simple to override without touchin the actual transparency value.
+     * This part moved to a separate method to make it simple to override without touching the actual transparency value.
      *
      * @return current shade transparency
      */
@@ -669,6 +669,7 @@ public class WebPopupPainter<E extends JComponent, U extends ComponentUI> extend
      * @param fill      whether it is a fill shape or not
      * @return dropdown style shape
      */
+    @SuppressWarnings ( "ConstantConditions" )
     protected GeneralPath createDropdownShape ( final E popup, final Dimension popupSize, final boolean fill )
     {
         final boolean topCorner = cornerSide == TOP;
@@ -707,7 +708,7 @@ public class WebPopupPainter<E extends JComponent, U extends ComponentUI> extend
         // Side spacings
         final int top = sideWidth + shear;
         final int right = popupSize.width - 1 - sideWidth;
-        final int botom = popupSize.height - 1 - sideWidth;
+        final int bottom = popupSize.height - 1 - sideWidth;
         final int left = sideWidth + shear;
 
         final GeneralPath shape = new GeneralPath ( GeneralPath.WIND_EVEN_ODD );
@@ -731,18 +732,18 @@ public class WebPopupPainter<E extends JComponent, U extends ComponentUI> extend
             shape.lineTo ( right + cornerWidth, top + round + spacing + cornerWidth * 2 + 1 );
             shape.lineTo ( right, top + round + spacing + cornerWidth * 3 + 1 );
         }
-        shape.lineTo ( right, botom - round );
-        shape.quadTo ( right, botom, right - round, botom );
+        shape.lineTo ( right, bottom - round );
+        shape.quadTo ( right, bottom, right - round, bottom );
         if ( bottomCorner )
         {
             // Bottom corner
-            shape.lineTo ( left + round + spacing + cornerWidth * 3 + 1, botom );
-            shape.lineTo ( left + round + spacing + cornerWidth * 2 + 1, botom + cornerWidth );
-            shape.lineTo ( left + round + spacing + cornerWidth * 2, botom + cornerWidth );
-            shape.lineTo ( left + round + spacing + cornerWidth, botom );
+            shape.lineTo ( left + round + spacing + cornerWidth * 3 + 1, bottom );
+            shape.lineTo ( left + round + spacing + cornerWidth * 2 + 1, bottom + cornerWidth );
+            shape.lineTo ( left + round + spacing + cornerWidth * 2, bottom + cornerWidth );
+            shape.lineTo ( left + round + spacing + cornerWidth, bottom );
         }
-        shape.lineTo ( left + round, botom );
-        shape.quadTo ( left, botom, left, botom - round );
+        shape.lineTo ( left + round, bottom );
+        shape.quadTo ( left, bottom, left, bottom - round );
         if ( leftCorner )
         {
             // Left corner
@@ -786,6 +787,7 @@ public class WebPopupPainter<E extends JComponent, U extends ComponentUI> extend
      * @param fill      whether it is a fill shape or not
      * @return dropdown style corner shape
      */
+    @SuppressWarnings ( "ConstantConditions" )
     protected GeneralPath createDropdownCornerShape ( final E popupMenu, final Dimension menuSize, final boolean fill )
     {
         final boolean topCorner = cornerSide == TOP;
@@ -824,7 +826,7 @@ public class WebPopupPainter<E extends JComponent, U extends ComponentUI> extend
         // Side spacings
         final int top = sideWidth + shear;
         final int right = menuSize.width - 1 - sideWidth;
-        final int botom = menuSize.height - 1 - sideWidth;
+        final int bottom = menuSize.height - 1 - sideWidth;
         final int left = sideWidth + shear;
 
         final GeneralPath shape = new GeneralPath ( GeneralPath.WIND_EVEN_ODD );
@@ -848,10 +850,10 @@ public class WebPopupPainter<E extends JComponent, U extends ComponentUI> extend
         if ( bottomCorner )
         {
             // Bottom corner
-            shape.moveTo ( left + round + spacing + cornerWidth * 3 + 1, botom );
-            shape.lineTo ( left + round + spacing + cornerWidth * 2 + 1, botom + cornerWidth );
-            shape.lineTo ( left + round + spacing + cornerWidth * 2, botom + cornerWidth );
-            shape.lineTo ( left + round + spacing + cornerWidth, botom );
+            shape.moveTo ( left + round + spacing + cornerWidth * 3 + 1, bottom );
+            shape.lineTo ( left + round + spacing + cornerWidth * 2 + 1, bottom + cornerWidth );
+            shape.lineTo ( left + round + spacing + cornerWidth * 2, bottom + cornerWidth );
+            shape.lineTo ( left + round + spacing + cornerWidth, bottom );
             shape.closePath ();
         }
         if ( leftCorner )

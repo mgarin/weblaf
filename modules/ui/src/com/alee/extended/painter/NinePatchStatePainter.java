@@ -17,12 +17,12 @@
 
 package com.alee.extended.painter;
 
-import com.alee.laf.toolbar.WebToolBar;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.ninepatch.NinePatchIcon;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
+import javax.swing.plaf.basic.BasicToolBarUI;
 import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
@@ -114,9 +114,9 @@ public class NinePatchStatePainter<E extends JComponent, U extends ComponentUI> 
     }
 
     /**
-     * Returns whether atleast one state icon is available or not.
+     * Returns whether at least one state icon is available or not.
      *
-     * @return true if atleast one state icon is available, false otherwise
+     * @return true if at least one state icon is available, false otherwise
      */
     public boolean hasStateIcons ()
     {
@@ -190,7 +190,7 @@ public class NinePatchStatePainter<E extends JComponent, U extends ComponentUI> 
      */
     protected NinePatchIcon getToolBarBackground ( final JToolBar toolbar )
     {
-        if ( toolbar instanceof WebToolBar && ( ( WebToolBar ) toolbar ).isFloating () )
+        if ( toolbar.getUI () instanceof BasicToolBarUI && ( ( BasicToolBarUI ) toolbar.getUI () ).isFloating () )
         {
             return getStateIcon ( toolbar.isEnabled () ? ComponentState.floating : ComponentState.floatingDisabled );
         }

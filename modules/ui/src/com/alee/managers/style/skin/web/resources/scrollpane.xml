@@ -1,0 +1,16 @@
+<skin>
+
+    <!-- JScrollPane styling -->
+    <style type="scrollpane" id="default">
+        <component>
+            <background>237,237,237</background>
+        </component>
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebPanelPainter">
+            <round>2</round>
+            <shadeWidth>2</shadeWidth>
+            <paintBackground>true</paintBackground>
+            <webColoredBackground>true</webColoredBackground>
+        </painter>
+    </style>
+
+</skin>

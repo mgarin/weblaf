@@ -106,8 +106,8 @@
         </painter>
     </style>
 
-    <!-- Custom editor gutter panel styling -->
-    <style type="panel" id="editor-gutter" extends="default">
+    <!-- WebSyntaxScrollPane gutter styling -->
+    <style type="panel" id="syntax-scroll-gutter" extends="default">
         <component>
             <background>white</background>
         </component>

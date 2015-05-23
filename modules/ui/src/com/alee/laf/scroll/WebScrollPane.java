@@ -87,9 +87,9 @@ public class WebScrollPane extends JScrollPane implements Styleable, ShapeProvid
     }
 
     /**
-     * Returns panel painter.
+     * Returns scrollpane painter.
      *
-     * @return panel painter
+     * @return scrollpane painter
      */
     public Painter getPainter ()
     {
@@ -97,11 +97,11 @@ public class WebScrollPane extends JScrollPane implements Styleable, ShapeProvid
     }
 
     /**
-     * Sets panel painter.
-     * Pass null to remove panel painter.
+     * Sets scrollpane painter.
+     * Pass null to remove scrollpane painter.
      *
-     * @param painter new panel painter
-     * @return this panel
+     * @param painter new scrollpane painter
+     * @return this scrollpane
      */
     public WebScrollPane setPainter ( final Painter painter )
     {

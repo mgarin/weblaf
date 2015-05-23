@@ -32,7 +32,8 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public class WebPopupMenuPainter<E extends JPopupMenu> extends WebPopupPainter<E> implements PopupMenuPainter<E>
+public class WebPopupMenuPainter<E extends JPopupMenu, U extends WebPopupMenuUI> extends WebPopupPainter<E, U>
+        implements PopupMenuPainter<E, U>
 {
     /**
      * todo 1. Incorrect menu placement when corner is off (spacing == shade)
@@ -116,9 +117,9 @@ public class WebPopupMenuPainter<E extends JPopupMenu> extends WebPopupPainter<E
      * {@inheritDoc}
      */
     @Override
-    public Insets getMargin ( final E c )
+    public Insets getMargin ()
     {
-        final Insets margin = super.getMargin ( c );
+        final Insets margin = super.getMargin ();
         margin.top += round;
         margin.bottom += round;
         return margin;
@@ -160,8 +161,7 @@ public class WebPopupMenuPainter<E extends JPopupMenu> extends WebPopupPainter<E
         {
             // Check that menu item is attached to menu side
             final boolean top = cornerSide == TOP;
-            final WebPopupMenuUI pmui = ( WebPopupMenuUI ) popupMenu.getUI ();
-            final boolean stick = top ? ( pmui.getMargin ().top + margin.top == 0 ) : ( pmui.getMargin ().bottom + margin.bottom == 0 );
+            final boolean stick = top ? ( ui.getMargin ().top + margin.top == 0 ) : ( ui.getMargin ().bottom + margin.bottom == 0 );
             if ( stick )
             {
                 // Checking that we can actually retrieve what item wants to fill corner with
@@ -242,18 +242,20 @@ public class WebPopupMenuPainter<E extends JPopupMenu> extends WebPopupPainter<E
     @Override
     public Point preparePopupMenu ( final E popupMenu, final Component invoker, int x, int y )
     {
-        // Default corner position
-        final boolean ltr = invoker.getComponentOrientation ().isLeftToRight ();
-        relativeCorner = ltr ? 0 : Integer.MAX_VALUE;
-
         // Updating popup location according to popup menu UI settings
         if ( invoker != null )
         {
-            // Position calculations constants
-            final Point los = invoker.isShowing () ? invoker.getLocationOnScreen () : null;
-            final boolean fixLocation = this.fixLocation && invoker.isShowing ();
+            // Default corner position according to invoker's orientation
+            final boolean ltr = invoker.getComponentOrientation ().isLeftToRight ();
+            relativeCorner = ltr ? 0 : Integer.MAX_VALUE;
+
+            // Calculating position variables
+            final boolean showing = invoker.isShowing ();
+            final Point los = showing ? invoker.getLocationOnScreen () : new Point ( 0, 0 );
+            final boolean fixLocation = this.fixLocation && showing;
             final int sideWidth = getSideWidth ();
 
+            // Calculating final position variables
             if ( invoker instanceof JMenu )
             {
                 if ( invoker.getParent () instanceof JPopupMenu )
@@ -383,6 +385,11 @@ public class WebPopupMenuPainter<E extends JPopupMenu> extends WebPopupPainter<E
                     //                    }
                 }
             }
+        }
+        else
+        {
+            // Default corner position
+            relativeCorner = 0;
         }
 
         // Resetting preferred popup menu display way

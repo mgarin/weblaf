@@ -1,4 +1,24 @@
+NOTES:
+1. WebButtonUI - move calc methods into painter
+2. WebButtonPainter - missing border / overall animation
+3. WebScrollBarButtonPainter - broken animation due to missing timer now
+4. WebSplitButton - check functionality
+5. WebScrollPane - check style reset, might throw exceptions (null styleId)
+6. WebComponentPanel - subpanels should have their own painter and updated styleId
+7. WebButtonPopup - requires a lot of changes
+8. HotkeyTipLabel - replace with simple label (just use styling)
+9. WebButtonGroup - requires rework now
+10. WebToolBarCornerPainter - requires style for it, now simply applies to any panel
+11. WebRootPaneUI - lost some window button options
+12. WebBreadcrumb - check whether has issues
+13. WebSplitPane - one-touch icons
+14. WebPopupMenuPainter - check preparePopupMenu method and menu positioning
 
+
+-------------------------------------------------------------------------
+
+
+Missing styles / required style additions
 
 ===================== WebButton:
 default
@@ -25,25 +45,6 @@ scrollbar-increase-button
 ===================== WebStyledLabel
 default
 - setMaximumSize ( null );
-
-
--------------------------------------------------------------------------
-
-
-NOTES:
-1. WebButtonUI - move calc methods into painter
-2. WebButtonPainter - missing border / overall animation
-3. WebScrollBarButtonPainter - broken animation due to missing timer now
-4. WebSplitButton - check functionality
-5. WebScrollPane - check style reset, might throw exceptions (null styleId)
-6. WebComponentPanel - subpanels should have their own painter and updated styleId
-7. WebButtonPopup - requires a lot of changes
-8. HotkeyTipLabel - replace with simple label (just use styling)
-9. WebButtonGroup - requires rework now
-10. WebToolBarCornerPainter - requires style for it, now simply applies to any panel
-11. WebRootPaneUI - lost some window button options
-12. WebBreadcrumb - check whether has issues
-13. WebSplitPane - one-touch icons
 
 
 -------------------------------------------------------------------------
