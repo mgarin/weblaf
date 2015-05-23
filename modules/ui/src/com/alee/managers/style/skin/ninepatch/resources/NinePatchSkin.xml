@@ -15,6 +15,6 @@
     <!-- Separate style classes -->
     <include>resources/label.xml</include>
     <include>resources/panel.xml</include>
-    <include>resources/scrollBar.xml</include>
+    <include>resources/scrollbar.xml</include>
 
 </skin>

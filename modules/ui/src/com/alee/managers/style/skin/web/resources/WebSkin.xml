@@ -12,8 +12,10 @@
 
     <!-- Separate style classes -->
     <include>resources/label.xml</include>
+    <include>resources/button.xml</include>
     <include>resources/panel.xml</include>
-    <include>resources/scrollBar.xml</include>
-    <include>resources/popupMenu.xml</include>
+    <include>resources/scrollbar.xml</include>
+    <include>resources/scrollpane.xml</include>
+    <include>resources/popupmenu.xml</include>
 
 </skin>
