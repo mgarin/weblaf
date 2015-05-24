@@ -1,0 +1,15 @@
+<skin>
+
+    <!-- com.alee.extended.syntax.WebSyntaxArea --><!-- com.alee.extended.syntax.WebSyntaxScrollPane -->
+
+    <!-- Area scrollpane -->
+    <style type="scrollPane" id="syntaxarea" extends="default" />
+
+    <!-- Area scrollpane gutter -->
+    <style type="panel" id="syntaxarea-gutter" extends="default">
+        <component>
+            <background>white</background>
+        </component>
+    </style>
+
+</skin>

@@ -17,6 +17,7 @@
 
 package com.alee.managers.tooltip;
 
+import com.alee.laf.Styles;
 import com.alee.laf.label.WebLabel;
 import com.alee.utils.SwingUtils;
 
@@ -34,13 +35,9 @@ public class HotkeyTipLabel extends WebLabel
     public HotkeyTipLabel ()
     {
         super ();
-        setStyleId ( "hotkey-tip-label" );
+        setStyleId ( Styles.customtooltipHotkeyLabel );
 
-        setForeground ( WebCustomTooltipStyle.hotkeyColor );
         SwingUtils.setBoldFont ( this );
         SwingUtils.changeFontSize ( this, -1 );
-
-        setHorizontalAlignment ( WebLabel.CENTER );
-        setVerticalAlignment ( WebLabel.CENTER );
     }
 }

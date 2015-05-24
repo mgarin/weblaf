@@ -18,15 +18,18 @@
 package com.alee.extended.statusbar;
 
 import com.alee.global.StyleConstants;
+import com.alee.laf.Styles;
 import com.alee.laf.label.WebLabel;
+import com.alee.laf.panel.WebPanel;
 import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.tooltip.TooltipManager;
 import com.alee.managers.tooltip.WebCustomTooltip;
-import com.alee.utils.*;
-import com.alee.utils.laf.ShapeProvider;
+import com.alee.utils.CollectionUtils;
+import com.alee.utils.FileUtils;
+import com.alee.utils.GraphicsUtils;
+import com.alee.utils.LafUtils;
 import com.alee.utils.swing.ComponentUpdater;
-import com.alee.utils.swing.SizeMethods;
 
 import javax.swing.*;
 import java.awt.*;
@@ -41,7 +44,7 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public class WebMemoryBar extends WebLabel implements ShapeProvider, SizeMethods<WebLabel>
+public class WebMemoryBar extends WebPanel
 {
     public static final String THREAD_NAME = "WebMemoryBar.updater";
 
@@ -75,21 +78,21 @@ public class WebMemoryBar extends WebLabel implements ShapeProvider, SizeMethods
 
     private boolean pressed = false;
 
+    private final WebLabel label;
     private WebCustomTooltip tooltip;
     private final WebLabel tooltipLabel;
 
     public WebMemoryBar ()
     {
-        super ();
-
-        setOpaque ( false );
+        super ( Styles.memorybar );
         setFocusable ( true );
-        setHorizontalAlignment ( WebLabel.CENTER );
 
-        updateBorder ();
+        label = new WebLabel ();
+        label.setStyleId ( Styles.memorybarLabel );
+        add ( label );
 
         tooltipLabel = new WebLabel ( memoryIcon );
-        tooltipLabel.setStyleId ( "memory-bar-tip" );
+        tooltipLabel.setStyleId ( Styles.memorybarTooltipLabel );
         updateTooltip ();
 
         updateMemory ();
@@ -184,18 +187,6 @@ public class WebMemoryBar extends WebLabel implements ShapeProvider, SizeMethods
         fireGcCompleted ();
     }
 
-    private void updateBorder ()
-    {
-        if ( drawBorder )
-        {
-            setMargin ( shadeWidth + 2, shadeWidth + 2 + leftRightSpacing, shadeWidth + 2, shadeWidth + 2 + leftRightSpacing );
-        }
-        else
-        {
-            setMargin ( 2, 2 + leftRightSpacing, 2, 2 + leftRightSpacing );
-        }
-    }
-
     protected void updateMemory ()
     {
         // Determining current memory usage state
@@ -205,7 +196,7 @@ public class WebMemoryBar extends WebLabel implements ShapeProvider, SizeMethods
         maxMemory = mu.getMax ();
 
         // Updating bar text
-        setText ( getMemoryBarText () );
+        label.setText ( getMemoryBarText () );
 
         // Updating tooltip text
         if ( showTooltip )
@@ -282,7 +273,6 @@ public class WebMemoryBar extends WebLabel implements ShapeProvider, SizeMethods
     public void setShadeWidth ( final int shadeWidth )
     {
         this.shadeWidth = shadeWidth;
-        updateBorder ();
     }
 
     public Color getAllocatedBorderColor ()
@@ -333,7 +323,6 @@ public class WebMemoryBar extends WebLabel implements ShapeProvider, SizeMethods
     public void setLeftRightSpacing ( final int leftRightSpacing )
     {
         this.leftRightSpacing = leftRightSpacing;
-        updateBorder ();
     }
 
     public boolean isDrawBorder ()
@@ -344,7 +333,6 @@ public class WebMemoryBar extends WebLabel implements ShapeProvider, SizeMethods
     public void setDrawBorder ( final boolean drawBorder )
     {
         this.drawBorder = drawBorder;
-        updateBorder ();
     }
 
     public boolean isFillBackground ()
@@ -441,12 +429,6 @@ public class WebMemoryBar extends WebLabel implements ShapeProvider, SizeMethods
     }
 
     @Override
-    public Shape provideShape ()
-    {
-        return LafUtils.getWebBorderShape ( WebMemoryBar.this, getShadeWidth (), getRound () );
-    }
-
-    @Override
     protected void paintComponent ( final Graphics g )
     {
         final Graphics2D g2d = ( Graphics2D ) g;
@@ -536,135 +518,5 @@ public class WebMemoryBar extends WebLabel implements ShapeProvider, SizeMethods
         {
             listener.gcCompleted ();
         }
-    }
-
-    /**
-     * Size methods.
-     */
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int getPreferredWidth ()
-    {
-        return SizeUtils.getPreferredWidth ( this );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public WebMemoryBar setPreferredWidth ( final int preferredWidth )
-    {
-        return SizeUtils.setPreferredWidth ( this, preferredWidth );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int getPreferredHeight ()
-    {
-        return SizeUtils.getPreferredHeight ( this );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public WebMemoryBar setPreferredHeight ( final int preferredHeight )
-    {
-        return SizeUtils.setPreferredHeight ( this, preferredHeight );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int getMinimumWidth ()
-    {
-        return SizeUtils.getMinimumWidth ( this );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public WebMemoryBar setMinimumWidth ( final int minimumWidth )
-    {
-        return SizeUtils.setMinimumWidth ( this, minimumWidth );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int getMinimumHeight ()
-    {
-        return SizeUtils.getMinimumHeight ( this );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public WebMemoryBar setMinimumHeight ( final int minimumHeight )
-    {
-        return SizeUtils.setMinimumHeight ( this, minimumHeight );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int getMaximumWidth ()
-    {
-        return SizeUtils.getMaximumWidth ( this );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public WebMemoryBar setMaximumWidth ( final int maximumWidth )
-    {
-        return SizeUtils.setMaximumWidth ( this, maximumWidth );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int getMaximumHeight ()
-    {
-        return SizeUtils.getMaximumHeight ( this );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public WebMemoryBar setMaximumHeight ( final int maximumHeight )
-    {
-        return SizeUtils.setMaximumHeight ( this, maximumHeight );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Dimension getPreferredSize ()
-    {
-        return SizeUtils.getPreferredSize ( this, super.getPreferredSize () );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public WebMemoryBar setPreferredSize ( final int width, final int height )
-    {
-        return SizeUtils.setPreferredSize ( this, width, height );
     }
 }

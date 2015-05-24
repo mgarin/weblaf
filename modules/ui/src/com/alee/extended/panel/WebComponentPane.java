@@ -20,6 +20,7 @@ package com.alee.extended.panel;
 import com.alee.extended.layout.ComponentPanelLayout;
 import com.alee.extended.painter.AbstractPainter;
 import com.alee.global.StyleConstants;
+import com.alee.laf.Styles;
 import com.alee.laf.panel.WebPanel;
 import com.alee.laf.panel.WebPanelUI;
 import com.alee.managers.focus.DefaultFocusTracker;
@@ -41,10 +42,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * User: mgarin Date: 29.02.12 Time: 16:53
+ * @author Mikle Garin
  */
 
-public class WebComponentPanel extends WebPanel
+public class WebComponentPane extends WebPanel
 {
     public static final int GRIPPER_SIZE = 7;
     public static final int SINGLE_GRIPPER_STEP = 4;
@@ -60,9 +61,9 @@ public class WebComponentPanel extends WebPanel
     private boolean upDownHotkeysAllowed = true;
     private boolean leftRightHotkeysAllowed = false;
 
-    public WebComponentPanel ()
+    public WebComponentPane ()
     {
-        super ( "components-panel" );
+        super ( Styles.componentpane );
 
         // Elements layout
         container = new WebPanel ();
@@ -320,7 +321,7 @@ public class WebComponentPanel extends WebPanel
                     {
                         WebSelectablePanel.this.transferFocus ();
                     }
-                    if ( WebComponentPanel.this.isEnabled () && SwingUtilities.isLeftMouseButton ( e ) )
+                    if ( WebComponentPane.this.isEnabled () && SwingUtilities.isLeftMouseButton ( e ) )
                     {
                         dragged = true;
                         startY = getY ();
@@ -436,15 +437,16 @@ public class WebComponentPanel extends WebPanel
 
         public void updateBorder ()
         {
-            final int index = getIndex ();
-            final boolean ltr = getComponentOrientation ().isLeftToRight ();
-
-            final int top = index == 0 ? elementMargin.top : elementMargin.top + 1;
-            final int left = elementMargin.left + ( reorderingAllowed && showReorderGrippers && ltr ? GRIPPER_SIZE : 0 );
-            final int bottom = index == components.size () - 1 ? elementMargin.bottom : elementMargin.bottom + 1;
-            final int right = elementMargin.right + ( reorderingAllowed && showReorderGrippers && !ltr ? GRIPPER_SIZE : 0 );
-
             // todo Create styles
+
+            //            final int index = getIndex ();
+            //            final boolean ltr = getComponentOrientation ().isLeftToRight ();
+            //
+            //            final int top = index == 0 ? elementMargin.top : elementMargin.top + 1;
+            //            final int left = elementMargin.left + ( reorderingAllowed && showReorderGrippers && ltr ? GRIPPER_SIZE : 0 );
+            //            final int bottom = index == components.size () - 1 ? elementMargin.bottom : elementMargin.bottom + 1;
+            //            final int right = elementMargin.right + ( reorderingAllowed && showReorderGrippers && !ltr ? GRIPPER_SIZE : 0 );
+            //
             // setMargin ( top, left, bottom, right );
         }
 

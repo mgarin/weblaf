@@ -17,6 +17,7 @@
 
 package com.alee.extended.syntax;
 
+import com.alee.laf.Styles;
 import com.alee.laf.panel.WebPanel;
 
 import java.awt.event.FocusAdapter;
@@ -57,7 +58,7 @@ public class WebSyntaxPanel extends WebPanel
      */
     public WebSyntaxPanel ( final String code, final SyntaxPreset... presets )
     {
-        super ( "syntax-panel" );
+        super ( Styles.syntaxpanel );
 
         // Syntax area
         syntaxArea = new WebSyntaxArea ( code );
@@ -110,7 +111,7 @@ public class WebSyntaxPanel extends WebPanel
     }
 
     /**
-     * Applies presets to undelying WebSyntaxArea.
+     * Applies presets to underlying WebSyntaxArea.
      *
      * @param presets presets to apply
      */
@@ -120,7 +121,7 @@ public class WebSyntaxPanel extends WebPanel
     }
 
     /**
-     * Applies presets to undelying WebSyntaxArea.
+     * Applies presets to underlying WebSyntaxArea.
      *
      * @param presets presets to apply
      */

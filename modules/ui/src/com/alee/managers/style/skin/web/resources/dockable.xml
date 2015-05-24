@@ -1,0 +1,61 @@
+<skin>
+
+    <!-- com.alee.extended.dock.WebDockablePane --><!-- com.alee.extended.dock.WebDockablePane -->
+
+    <!-- Dockable frame -->
+    <style type="panel" id="dockable-frame" extends="default">
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebPanelPainter">
+            <shadeWidth>0</shadeWidth>
+            <webColoredBackground>false</webColoredBackground>
+        </painter>
+    </style>
+
+    <!-- Dockable frame title panel -->
+    <style type="panel" id="dockable-frame-title" extends="default">
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebPanelPainter">
+            <undecorated>false</undecorated>
+            <round>0</round>
+            <shadeWidth>0</shadeWidth>
+            <paintBackground>true</paintBackground>
+            <webColoredBackground>true</webColoredBackground>
+            <paintTop>false</paintTop>
+            <paintLeft>false</paintLeft>
+            <paintBottom>true</paintBottom>
+            <paintRight>false</paintRight>
+        </painter>
+    </style>
+
+    <!-- Dockable frame title label -->
+    <style type="label" id="dockable-frame-title" extends="shade-label">
+        <ui>
+            <margin>3,3,3,10</margin>
+        </ui>
+    </style>
+
+    <!-- Dockable frame tool buttons panel -->
+    <style type="panel" id="dockable-frame-buttons" extends="default">
+        <component>
+            <opaque>false</opaque>
+        </component>
+    </style>
+
+    <!-- Dockable frame tool button -->
+    <style type="button" id="dockable-frame-tool" extends="default">
+        <component>
+            <focusable>false</focusable>
+        </component>
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebButtonPainter">
+            <shadeWidth>0</shadeWidth>
+            <paintTop>false</paintTop>
+            <paintLeft>true</paintLeft>
+            <paintBottom>false</paintBottom>
+            <paintRight>false</paintRight>
+        </painter>
+    </style>
+    <style type="button" id="dockable-frame-tool-icon" extends="dockable-frame-tool">
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebButtonPainter">
+            <leftRightSpacing>0</leftRightSpacing>
+        </painter>
+    </style>
+
+</skin>

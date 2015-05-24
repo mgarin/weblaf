@@ -895,7 +895,7 @@ public class WebLookAndFeelDemo extends WebFrame
         // Styled tooltips:
         // WebCustomTooltipStyle.round = 0;
         // WebCustomTooltipStyle.shadeWidth = 0;
-        // WebCustomTooltipStyle.trasparency = 1f;
+        // WebCustomTooltipStyle.transparency = 1f;
 
         // Frame/dialog decoration:
         // WebLookAndFeel.setDecorateAllWindows ( true );

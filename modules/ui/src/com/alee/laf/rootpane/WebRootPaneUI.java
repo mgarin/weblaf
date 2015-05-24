@@ -20,6 +20,7 @@ package com.alee.laf.rootpane;
 import com.alee.extended.panel.WebButtonGroup;
 import com.alee.extended.window.ComponentMoveAdapter;
 import com.alee.global.StyleConstants;
+import com.alee.laf.Styles;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.label.WebLabel;
@@ -500,7 +501,7 @@ public class WebRootPaneUI extends BasicRootPaneUI implements SwingConstants
     {
         if ( root.getWindowDecorationStyle () != JRootPane.NONE )
         {
-            window = root != null ? SwingUtils.getWindowAncestor ( root ) : null;
+            window = SwingUtils.getWindowAncestor ( root );
             frame = window instanceof Frame ? ( Frame ) window : null;
             dialog = window instanceof Dialog ? ( Dialog ) window : null;
             installProperties ();
@@ -583,7 +584,7 @@ public class WebRootPaneUI extends BasicRootPaneUI implements SwingConstants
         window.addPropertyChangeListener ( WebLookAndFeel.WINDOW_ICON_PROPERTY, titleChangeListener );
         window.addPropertyChangeListener ( WebLookAndFeel.WINDOW_TITLE_PROPERTY, titleChangeListener );
 
-        // Listen to window resizability changes
+        // Listen to window resizeability changes
         resizableChangeListener = new PropertyChangeListener ()
         {
             @Override
@@ -731,7 +732,7 @@ public class WebRootPaneUI extends BasicRootPaneUI implements SwingConstants
             }
         } );
 
-        final WebPanel titlePanel = new WebPanel ( "window-title-panel", new BorderLayout ( 5, 0 ) );
+        final WebPanel titlePanel = new WebPanel ( Styles.windowTitlePanel, new BorderLayout ( 5, 0 ) );
         titlePanel.add ( titleIcon, BorderLayout.LINE_START );
         titlePanel.add ( titleLabel, BorderLayout.CENTER );
 
@@ -782,7 +783,7 @@ public class WebRootPaneUI extends BasicRootPaneUI implements SwingConstants
         public TitleLabel ()
         {
             super ();
-            setStyleId ( "window-title" );
+            setStyleId ( Styles.windowTitleLabel );
         }
 
         /**
@@ -838,7 +839,7 @@ public class WebRootPaneUI extends BasicRootPaneUI implements SwingConstants
         if ( showMinimizeButton && isFrame )
         {
             final WebButton minimize = new WebButton ( minimizeIcon, minimizeActiveIcon );
-            minimize.setStyleId ( "window-minimize-button" );
+            minimize.setStyleId ( Styles.windowMinimizeButton );
             minimize.setName ( "minimize" );
             minimize.addActionListener ( new ActionListener ()
             {
@@ -866,7 +867,7 @@ public class WebRootPaneUI extends BasicRootPaneUI implements SwingConstants
                     return isFrameMaximized () ? restoreActiveIcon : maximizeActiveIcon;
                 }
             };
-            maximize.setStyleId ( "window-maximize-button" );
+            maximize.setStyleId ( Styles.windowMaximizeButton );
             maximize.setName ( "maximize" );
             maximize.addActionListener ( new ActionListener ()
             {
@@ -891,7 +892,7 @@ public class WebRootPaneUI extends BasicRootPaneUI implements SwingConstants
         if ( showCloseButton )
         {
             final WebButton close = new WebButton ( closeIcon, closeActiveIcon );
-            close.setStyleId ( "window-close-button" );
+            close.setStyleId ( Styles.windowCloseButton );
             close.setName ( "close" );
             close.addActionListener ( new ActionListener ()
             {
@@ -1011,11 +1012,9 @@ public class WebRootPaneUI extends BasicRootPaneUI implements SwingConstants
         }
     }
 
-
     /**
      * Closes the Window.
      */
-
     protected void close ()
     {
         if ( window != null )
@@ -1027,7 +1026,6 @@ public class WebRootPaneUI extends BasicRootPaneUI implements SwingConstants
     /**
      * Iconifies the Frame.
      */
-
     protected void iconify ()
     {
         if ( frame != null )
@@ -1039,7 +1037,6 @@ public class WebRootPaneUI extends BasicRootPaneUI implements SwingConstants
     /**
      * Maximizes the Frame.
      */
-
     protected void maximize ()
     {
         if ( frame != null )
@@ -1058,7 +1055,6 @@ public class WebRootPaneUI extends BasicRootPaneUI implements SwingConstants
     /**
      * Restores the Frame size.
      */
-
     protected void restore ()
     {
         if ( frame != null )
@@ -1107,6 +1103,7 @@ public class WebRootPaneUI extends BasicRootPaneUI implements SwingConstants
      * Custom window decoration
      */
 
+    @SuppressWarnings ( "SuspiciousNameCombination" )
     @Override
     public void paint ( final Graphics g, final JComponent c )
     {

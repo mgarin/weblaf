@@ -21,7 +21,7 @@ import com.alee.examples.WebLookAndFeelDemo;
 import com.alee.examples.content.DefaultExample;
 import com.alee.extended.panel.GridPanel;
 import com.alee.extended.panel.GroupPanel;
-import com.alee.extended.panel.WebComponentPanel;
+import com.alee.extended.panel.WebComponentPane;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.slider.WebSlider;
@@ -30,10 +30,10 @@ import com.alee.laf.text.WebTextField;
 import java.awt.*;
 
 /**
- * User: mgarin Date: 01.03.12 Time: 14:17
+ * @author Mikle Garin
  */
 
-public class WebComponentPanelExample extends DefaultExample
+public class WebComponentPaneExample extends DefaultExample
 {
     @Override
     public String getTitle ()
@@ -51,32 +51,32 @@ public class WebComponentPanelExample extends DefaultExample
     public Component getPreview ( WebLookAndFeelDemo owner )
     {
         // Creating WebComponentPanel to place some components into it
-        WebComponentPanel webComponentPanel = new WebComponentPanel ( true );
-        webComponentPanel.setElementMargin ( 10 );
-        webComponentPanel.setReorderingAllowed ( true );
+        WebComponentPane webComponentPane = new WebComponentPane ();
+        webComponentPane.setElementMargin ( 10 );
+        webComponentPane.setReorderingAllowed ( true );
 
         // Adding a panel with buttons
         WebButton b1 = new WebButton ( "Button" );
         WebButton b2 = new WebButton ( "Button" );
         WebButton b3 = new WebButton ( "Button" );
-        webComponentPanel.addElement ( new GridPanel ( 10, b1, b2, b3 ) );
+        webComponentPane.addElement ( new GridPanel ( 10, b1, b2, b3 ) );
 
         // Adding a panel with label and field
         WebLabel label = new WebLabel ( "Field" );
         WebTextField field = new WebTextField ();
         field.putClientProperty ( GroupPanel.FILL_CELL, true );
-        webComponentPanel.addElement ( new GroupPanel ( 10, label, field ) );
+        webComponentPane.addElement ( new GroupPanel ( 10, label, field ) );
 
         // Adding a simple slider
         WebSlider slider = new WebSlider ( WebSlider.HORIZONTAL, 0, 100, 50 );
-        webComponentPanel.addElement ( slider );
+        webComponentPane.addElement ( slider );
 
         // Adding a panel with textfields
         WebTextField f1 = new WebTextField ();
         WebTextField f2 = new WebTextField ();
         WebTextField f3 = new WebTextField ();
-        webComponentPanel.addElement ( new GridPanel ( 10, f1, f2, f3 ) );
+        webComponentPane.addElement ( new GridPanel ( 10, f1, f2, f3 ) );
 
-        return new GroupPanel ( webComponentPanel );
+        return new GroupPanel ( webComponentPane );
     }
 }

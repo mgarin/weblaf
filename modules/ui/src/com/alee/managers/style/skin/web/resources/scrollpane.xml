@@ -1,7 +1,9 @@
 <skin>
 
-    <!-- JScrollPane styling -->
-    <style type="scrollpane" id="default">
+    <!-- javax.swing.JScrollPane -->
+
+    <!-- Base style -->
+    <style type="scrollPane" id="default">
         <component>
             <background>237,237,237</background>
             <verticalScrollBarPolicy>20</verticalScrollBarPolicy>
@@ -14,8 +16,5 @@
             <webColoredBackground>false</webColoredBackground>
         </painter>
     </style>
-
-    <!-- WebSyntaxScrollPane style -->
-    <style type="scrollpane" id="syntax-scroll" extends="default" />
 
 </skin>

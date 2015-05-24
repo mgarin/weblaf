@@ -1,0 +1,27 @@
+<skin>
+
+    <!-- com.alee.extended.statusbar.WebMemoryBar -->
+
+    <!-- Memory bar -->
+    <style type="panel" id="memorybar" extends="default">
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebPanelPainter">
+            <undecorated>false</undecorated>
+        </painter>
+    </style>
+
+    <!-- Information label -->
+    <style type="label" id="memorybar-label" extends="default">
+        <component>
+            <opaque>false</opaque>
+            <horizontalAlignment>0</horizontalAlignment>
+        </component>
+    </style>
+
+    <!-- Tooltip label styling -->
+    <style type="label" id="memorybar-tip" extends="default">
+        <component>
+            <foreground>white</foreground>
+        </component>
+    </style>
+
+</skin>

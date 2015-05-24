@@ -19,6 +19,7 @@ package com.alee.extended.dock;
 
 import com.alee.extended.layout.HorizontalFlowLayout;
 import com.alee.extended.painter.Painter;
+import com.alee.laf.Styles;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
@@ -31,7 +32,7 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * User: mgarin Date: 28.06.12 Time: 13:31
+ * @author Mikle Garin
  */
 
 public class WebDockableFrame extends WebPanel implements LanguageMethods
@@ -83,29 +84,22 @@ public class WebDockableFrame extends WebPanel implements LanguageMethods
 
     public WebDockableFrame ( final String frameId, final Icon frameIcon, final String frameTitle )
     {
-        super ( true );
+        super ( Styles.dockableFrame );
 
         this.frameId = frameId;
 
-        setShadeWidth ( 0 );
-        setWebColoredBackground ( false );
-        setPaintSides ( false, false, false, false );
-
-        titlePanel = new WebPanel ( "dockable-frame-title" );
+        titlePanel = new WebPanel ( Styles.dockableFrameTitlePanel );
         add ( titlePanel, BorderLayout.NORTH );
 
         titleLabel = new WebLabel ( frameTitle, frameIcon );
-        titleLabel.setStyleId ( "dockable-frame-title" );
+        titleLabel.setStyleId ( Styles.dockableFrameTitleLabel );
         titlePanel.add ( titleLabel, BorderLayout.CENTER );
 
-        buttonsPanel = new WebPanel ( "dockable-frame-buttons", new HorizontalFlowLayout ( 0, false ) );
+        buttonsPanel = new WebPanel ( Styles.dockableFrameTitleButtons, new HorizontalFlowLayout ( 0, false ) );
         titlePanel.add ( buttonsPanel, BorderLayout.EAST );
 
         dockButton = new WebButton ();
-        dockButton.setLeftRightSpacing ( 0 );
-        dockButton.setShadeWidth ( 0 );
-        dockButton.setFocusable ( false );
-        dockButton.setDrawSides ( false, true, false, false );
+        dockButton.setStyleId ( Styles.dockableFrameTitleButton );
         buttonsPanel.add ( dockButton );
     }
 
@@ -138,9 +132,9 @@ public class WebDockableFrame extends WebPanel implements LanguageMethods
     {
         this.frameType = frameType;
 
-        // Changing displayed sides
-        setPaintSides ( frameType.equals ( FrameType.bottom ), frameType.equals ( FrameType.right ), frameType.equals ( FrameType.top ),
-                frameType.equals ( FrameType.left ) );
+        // todo Changing displayed sides
+        //        setPaintSides ( frameType.equals ( FrameType.bottom ), frameType.equals ( FrameType.right ), frameType.equals ( FrameType.top ),
+        //                frameType.equals ( FrameType.left ) );
 
         // Changing tool icons
         dockButton.setIcon ( getDockIcon ( frameType ) );
@@ -174,12 +168,8 @@ public class WebDockableFrame extends WebPanel implements LanguageMethods
     public void addButton ( final WebButton button )
     {
         // Styling button properly
-        button.setShadeWidth ( 0 );
-        button.setDrawSides ( false, true, false, false );
-        if ( button.getText () == null || button.getText ().trim ().length () == 0 )
-        {
-            button.setLeftRightSpacing ( 0 );
-        }
+        final boolean emptyText = TextUtils.isEmpty ( button.getText () );
+        button.setStyleId ( emptyText ? Styles.dockableFrameTitleIconButton : Styles.dockableFrameTitleButton );
 
         // Adding new button
         buttonsPanel.add ( button, 0 );

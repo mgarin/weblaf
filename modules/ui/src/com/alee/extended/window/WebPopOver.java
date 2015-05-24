@@ -17,6 +17,7 @@
 
 package com.alee.extended.window;
 
+import com.alee.laf.Styles;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.panel.WebPanel;
 import com.alee.laf.rootpane.WebDialog;
@@ -223,8 +224,7 @@ public class WebPopOver extends WebDialog implements Styleable, PopOverEventMeth
         //        painter.setTransparency ( WebPopOverStyle.transparency );
         //        painter.setPopupStyle ( PopupStyle.simple );
 
-        container = new WebPanel ( /*painter*/ );
-        container.setStyleId ( "pop-over" );
+        container = new WebPanel ( Styles.popover );
         setContentPane ( container );
 
         if ( !ProprietaryUtils.isWindowTransparencyAllowed () && ProprietaryUtils.isWindowShapeAllowed () )
@@ -236,7 +236,9 @@ public class WebPopOver extends WebDialog implements Styleable, PopOverEventMeth
                 {
                     if ( getPainter () != null )
                     {
-                        Rectangle bounds = getBounds (); ++bounds.width; ++bounds.height;
+                        final Rectangle bounds = getBounds ();
+                        ++bounds.width;
+                        ++bounds.height;
                         ProprietaryUtils.setWindowShape ( WebPopOver.this, getPainter ().provideShape ( container, bounds ) );
                     }
                 }

@@ -34,51 +34,104 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
+ * This JScrollPane extension class provides a direct access to WebScrollPaneUI methods.
+ * It also provides a few additional constructors and methods to setup the scrollpane.
+ * <p/>
+ * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
+ * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
+ *
  * @author Mikle Garin
  */
 
 public class WebScrollPane extends JScrollPane implements Styleable, ShapeProvider, SizeMethods<WebScrollPane>, LanguageContainerMethods
 {
+    /**
+     * Constructs new empty scrollpane.
+     */
     public WebScrollPane ()
     {
         super ();
     }
 
+    /**
+     * Construct new scrollpane with the specified view.
+     *
+     * @param view scrollpane view component
+     */
     public WebScrollPane ( final Component view )
     {
         super ( view );
     }
 
+    /**
+     * Construct new empty scrollpane with the specified scroll policies.
+     *
+     * @param vsbPolicy vertical scroll bar policy
+     * @param hsbPolicy horizontal scroll bar policy
+     */
     public WebScrollPane ( final int vsbPolicy, final int hsbPolicy )
     {
         super ( vsbPolicy, hsbPolicy );
     }
 
+    /**
+     * Construct new scrollpane with the specified view and scroll policies.
+     *
+     * @param view      scrollpane view component
+     * @param vsbPolicy vertical scroll bar policy
+     * @param hsbPolicy horizontal scroll bar policy
+     */
     public WebScrollPane ( final Component view, final int vsbPolicy, final int hsbPolicy )
     {
         super ( view, vsbPolicy, hsbPolicy );
     }
 
+    /**
+     * Construct new empty scrollpane with the specified style.
+     *
+     * @param styleId scrollpane style ID
+     */
     public WebScrollPane ( final String styleId )
     {
         super ();
         setStyleId ( styleId );
     }
 
-    public WebScrollPane ( final Component view, final String styleId )
+    /**
+     * Construct new scrollpane with the specified view and style.
+     *
+     * @param styleId scrollpane style ID
+     * @param view    scrollpane view component
+     */
+    public WebScrollPane ( final String styleId, final Component view )
     {
         super ( view );
         setStyleId ( styleId );
     }
 
-    public WebScrollPane ( final Component view, final String styleId, final String barStyleId )
+    /**
+     * Construct new scrollpane with the specified view and styles.
+     *
+     * @param styleId    scrollpane style ID
+     * @param barStyleId scrollpane bars style ID
+     * @param view       scrollpane view component
+     */
+    public WebScrollPane ( final String styleId, final String barStyleId, final Component view )
     {
         super ( view );
         setStyleId ( styleId );
         setScrollBarStyleId ( barStyleId );
     }
 
-    public WebScrollPane ( final Component view, final String styleId, final String horizontalBarStyleId, final String verticalBarStyleId )
+    /**
+     * Construct new scrollpane with the specified view and styles.
+     *
+     * @param styleId              scrollpane style ID
+     * @param horizontalBarStyleId scrollpane horizontal bar style ID
+     * @param verticalBarStyleId   scrollpane vertical bar style ID
+     * @param view                 scrollpane view component
+     */
+    public WebScrollPane ( final String styleId, final String horizontalBarStyleId, final String verticalBarStyleId, final Component view )
     {
         super ( view );
         setStyleId ( styleId );

@@ -4,7 +4,7 @@ NOTES:
 3. WebScrollBarButtonPainter - broken animation due to missing timer now
 4. WebSplitButton - check functionality
 5. WebScrollPane - check style reset, might throw exceptions (null styleId)
-6. WebComponentPanel - subpanels should have their own painter and updated styleId
+6. WebComponentPane - subpanels should have their own painter and updated styleId + move em into separate class
 7. WebButtonPopup - requires a lot of changes
 8. HotkeyTipLabel - replace with simple label (just use styling)
 9. WebButtonGroup - requires rework now
@@ -13,10 +13,14 @@ NOTES:
 12. WebBreadcrumb - check whether has issues
 13. WebSplitPane - one-touch icons
 14. WebPopupMenuPainter - check preparePopupMenu method and menu positioning
+15. WebPathField - elements styling might be wrong + list styling
+16. WebMemoryBar - move painting into painter
+17. HotkeyTipLabel - remove and replace with simple label
 
 FEATURES TO DO:
 1. Allow variables (with specified types) like colors, sizes etc.
 2. Improve styles loading/overriding mechanics
+3. Add option to provide font easily (short XML descriptor)
 
 
 -------------------------------------------------------------------------

@@ -20,6 +20,7 @@ package com.alee.extended.filechooser;
 import com.alee.extended.drag.FileDragAndDropHandler;
 import com.alee.extended.layout.WrapFlowLayout;
 import com.alee.global.StyleConstants;
+import com.alee.laf.Styles;
 import com.alee.laf.panel.WebPanel;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.language.LanguageMethods;
@@ -83,7 +84,7 @@ public class WebFileDrop extends WebPanel implements LanguageMethods
 
     public WebFileDrop ()
     {
-        super ( "file-drop", new WrapFlowLayout ( true ) );
+        super ( Styles.filedrop, new WrapFlowLayout ( true ) );
 
         // Default visual settings
         setFont ( SwingUtils.getDefaultLabelFont ().deriveFont ( Font.BOLD ).deriveFont ( 20f ) );
