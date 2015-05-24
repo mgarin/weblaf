@@ -252,8 +252,7 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
                     final WebPopupMenu menu = pmg.getMenu ();
                     final Dimension mps = menu.getPreferredSize ();
                     final Rectangle bounds = tabbedPane.getBoundsAt ( index );
-                    menu.show ( tabbedPane, bounds.x + bounds.width / 2 - mps.width / 2,
-                            bounds.y + bounds.height - menu.getShadeWidth () + 5 );
+                    menu.show ( tabbedPane, bounds.x + bounds.width / 2 - mps.width / 2, bounds.y + bounds.height + 5 );
                 }
             }
         } );

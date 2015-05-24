@@ -24,6 +24,12 @@ public final class Styles
      */
 
     /**
+     * {@link com.alee.laf.panel.WebPanel} style IDs.
+     */
+    public static String panelTransparent = "transparent";
+    public static String panelWhite = "white";
+
+    /**
      * {@link com.alee.laf.button.WebButton} style IDs.
      */
     public static String buttonIconOnly = "icon";
@@ -132,6 +138,18 @@ public final class Styles
     public static String memorybar = "memorybar";
     public static String memorybarLabel = "memorybar-label";
     public static String memorybarTooltipLabel = "memorybar-tip";
+
+    /**
+     * {@link com.alee.extended.filechooser.WebPathField} style IDs.
+     */
+    public static String filechooserfield = "filechooserfield";
+    public static String filechooserfieldContentScroll = "filechooserfield-content";
+    public static String filechooserfieldContentScrollBar = "filechooserfield-content";
+    public static String filechooserfieldContentPanel = "filechooserfield-content";
+    public static String filechooserfieldFilePlate = "filechooserfield-file";
+    public static String filechooserfieldFileNameLabel = "filechooserfield-file";
+    public static String filechooserfieldFileRemoveButton = "filechooserfield-file-remove";
+    public static String filechooserfieldChooseButton = "filechooserfield-choose";
 
     /**
      * {@link com.alee.extended.filechooser.WebPathField} style IDs.

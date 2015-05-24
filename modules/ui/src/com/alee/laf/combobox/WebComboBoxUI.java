@@ -23,10 +23,8 @@ import com.alee.laf.Styles;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.list.WebListUI;
-import com.alee.laf.menu.WebPopupMenuUI;
 import com.alee.laf.scroll.WebScrollPane;
 import com.alee.laf.text.WebTextFieldUI;
-import com.alee.managers.style.skin.web.PopupStyle;
 import com.alee.utils.LafUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.laf.ShapeProvider;
@@ -35,8 +33,6 @@ import com.alee.utils.swing.RendererListener;
 import com.alee.utils.swing.WebDefaultCellEditor;
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 import javax.swing.plaf.ComponentUI;
@@ -357,37 +353,38 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider, Bor
                     webListUI.setDecorateSelection ( false );
                 }
 
+                // todo Handle inside of the popup painter
                 // Custom listener to update popup menu dropdown corner
-                list.addListSelectionListener ( new ListSelectionListener ()
-                {
-                    @Override
-                    public void valueChanged ( final ListSelectionEvent e )
-                    {
-                        // Checking that popup is still displaying on screen
-                        if ( isShowing () && getUI () instanceof WebPopupMenuUI )
-                        {
-                            // Only do additional repaints for dropdown-styled menu
-                            final WebPopupMenuUI ui = ( WebPopupMenuUI ) getUI ();
-                            if ( ui.getPopupStyle () == PopupStyle.dropdown )
-                            {
-                                // Retrieving menu and combobox position on screen and deciding which side to repaint
-                                final int py = getLocationOnScreen ().y;
-                                final int cbi = comboBox.getLocationOnScreen ().y;
-                                final Insets pi = getInsets ();
-                                if ( py > cbi )
-                                {
-                                    // Repainting top corner area
-                                    repaint ( 0, 0, getWidth (), pi.top );
-                                }
-                                else
-                                {
-                                    // Repainting bottom corner area
-                                    repaint ( 0, getHeight () - pi.bottom, getWidth (), pi.bottom );
-                                }
-                            }
-                        }
-                    }
-                } );
+                //                list.addListSelectionListener ( new ListSelectionListener ()
+                //                {
+                //                    @Override
+                //                    public void valueChanged ( final ListSelectionEvent e )
+                //                    {
+                //                        // Checking that popup is still displaying on screen
+                //                        if ( isShowing () && getUI () instanceof WebPopupMenuUI )
+                //                        {
+                //                            // Only do additional repaints for dropdown-styled menu
+                //                            final WebPopupMenuUI ui = ( WebPopupMenuUI ) getUI ();
+                //                            if ( ui.getPopupStyle () == PopupStyle.dropdown )
+                //                            {
+                //                                // Retrieving menu and combobox position on screen and deciding which side to repaint
+                //                                final int py = getLocationOnScreen ().y;
+                //                                final int cbi = comboBox.getLocationOnScreen ().y;
+                //                                final Insets pi = getInsets ();
+                //                                if ( py > cbi )
+                //                                {
+                //                                    // Repainting top corner area
+                //                                    repaint ( 0, 0, getWidth (), pi.top );
+                //                                }
+                //                                else
+                //                                {
+                //                                    // Repainting bottom corner area
+                //                                    repaint ( 0, getHeight () - pi.bottom, getWidth (), pi.bottom );
+                //                                }
+                //                            }
+                //                        }
+                //                    }
+                //                } );
 
                 return list;
             }

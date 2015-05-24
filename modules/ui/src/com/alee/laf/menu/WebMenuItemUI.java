@@ -73,7 +73,7 @@ public class WebMenuItemUI extends BasicMenuItemUI implements BorderMethods
      * @param c component that will use UI instance
      * @return instance of the WebMenuItemUI
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebMenuItemUI ();
@@ -153,7 +153,7 @@ public class WebMenuItemUI extends BasicMenuItemUI implements BorderMethods
             if ( painter != null )
             {
                 // Painter borders
-                final Insets pi = painter.getMargin ( menuItem );
+                final Insets pi = painter.getMargin ();
                 m.top += pi.top;
                 m.bottom += pi.bottom;
                 m.left += ltr ? pi.left : pi.right;
@@ -466,7 +466,7 @@ public class WebMenuItemUI extends BasicMenuItemUI implements BorderMethods
         int x = ltr ? bi.left : w - bi.right - iconPlaceholderWidth;
         paintBackground ( g2d, menuItem, x, y, iconPlaceholderWidth, ih, selected, ltr );
         paintIcon ( g2d, menuItem, x, y, iconPlaceholderWidth, ih, selected, ltr );
-        x += ltr ? ( iconPlaceholderWidth + gap ) : -gap;
+        x += ltr ? iconPlaceholderWidth + gap : -gap;
 
         // Painting text and accelerator
         final String text = menuItem.getText ();
@@ -511,13 +511,13 @@ public class WebMenuItemUI extends BasicMenuItemUI implements BorderMethods
      * @param selected whether menu item is selected or not
      * @param ltr      whether menu item has left-to-right orientation or not
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     protected void paintBackground ( final Graphics2D g2d, final JMenuItem menuItem, final int x, final int y, final int w, final int h,
                                      final boolean selected, final boolean ltr )
     {
         if ( painter != null )
         {
-            painter.paint ( g2d, SwingUtils.size ( menuItem ), menuItem );
+            painter.paint ( g2d, SwingUtils.size ( menuItem ), menuItem, this );
         }
         else
         {
@@ -541,7 +541,7 @@ public class WebMenuItemUI extends BasicMenuItemUI implements BorderMethods
      * @param selected whether menu item is selected or not
      * @param ltr      whether menu item has left-to-right orientation or not
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     protected void paintIcon ( final Graphics2D g2d, final JMenuItem menuItem, final int x, final int y, final int w, final int h,
                                final boolean selected, final boolean ltr )
     {
@@ -551,8 +551,8 @@ public class WebMenuItemUI extends BasicMenuItemUI implements BorderMethods
                 enabled ? menuItem.getIcon () : menuItem.getDisabledIcon ();
         if ( icon != null )
         {
-            final boolean left = ltr ? ( iconAlignment == SwingConstants.LEFT || iconAlignment == SwingConstants.LEADING ) :
-                    ( iconAlignment == SwingConstants.RIGHT || iconAlignment == SwingConstants.TRAILING );
+            final boolean left = ltr ? iconAlignment == SwingConstants.LEFT || iconAlignment == SwingConstants.LEADING :
+                    iconAlignment == SwingConstants.RIGHT || iconAlignment == SwingConstants.TRAILING;
             final boolean center = iconAlignment == SwingConstants.CENTER;
             final int iconX = left ? x : center ? x + w / 2 - icon.getIconWidth () / 2 : x + w - icon.getIconWidth ();
             icon.paintIcon ( menuItem, g2d, iconX, y + h / 2 - icon.getIconHeight () / 2 );
@@ -572,7 +572,7 @@ public class WebMenuItemUI extends BasicMenuItemUI implements BorderMethods
      * @param selected whether menu item is selected or not
      * @param ltr      whether menu item has left-to-right orientation or not
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     protected void paintText ( final Graphics2D g2d, final JMenuItem menuItem, final FontMetrics fm, final int x, final int y, final int w,
                                final int h, final boolean selected, final boolean ltr )
     {
@@ -586,8 +586,8 @@ public class WebMenuItemUI extends BasicMenuItemUI implements BorderMethods
         }
         else
         {
-            final int mnem = WebLookAndFeel.isMnemonicHidden () ? -1 : menuItem.getDisplayedMnemonicIndex ();
-            SwingUtils.drawStringUnderlineCharAt ( g2d, menuItem.getText (), mnem, x, y + h / 2 + LafUtils.getTextCenterShearY ( fm ) );
+            final int mnemonic = WebLookAndFeel.isMnemonicHidden () ? -1 : menuItem.getDisplayedMnemonicIndex ();
+            SwingUtils.drawStringUnderlineCharAt ( g2d, menuItem.getText (), mnemonic, x, y + h / 2 + LafUtils.getTextCenterShearY ( fm ) );
         }
         GraphicsUtils.restoreFont ( g2d, oldFont );
     }
@@ -606,7 +606,7 @@ public class WebMenuItemUI extends BasicMenuItemUI implements BorderMethods
      * @param selected whether menu item is selected or not
      * @param ltr      whether menu item has left-to-right orientation or not
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     protected void paintAcceleratorText ( final Graphics2D g2d, final JMenuItem menuItem, final String accText, final FontMetrics fm,
                                           final int x, final int y, final int w, final int h, final boolean selected, final boolean ltr )
     {

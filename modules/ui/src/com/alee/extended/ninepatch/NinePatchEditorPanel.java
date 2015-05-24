@@ -119,7 +119,6 @@ public class NinePatchEditorPanel extends WebPanel
     private final WebFileTree fileTree;
     private NinePatchEditor ninePatchEditor;
 
-    private WebToolBar toolBar;
     private WebButton save;
     private WebButton saveAs;
 
@@ -238,7 +237,7 @@ public class NinePatchEditorPanel extends WebPanel
 
         //
 
-        toolBar = new WebToolBar ( WebToolBar.HORIZONTAL );
+        final WebToolBar toolBar = new WebToolBar ( WebToolBar.HORIZONTAL );
         toolBar.setToolbarStyle ( ToolbarStyle.attached );
         toolBar.setFloatable ( false );
         editorPanel.add ( toolBar, BorderLayout.NORTH );
@@ -683,7 +682,7 @@ public class NinePatchEditorPanel extends WebPanel
                 return;
             }
 
-            // Ignore unloadable images
+            // Ignore non-loadable images
             if ( file.isDirectory () || !ImageUtils.isImageLoadable ( file.getName () ) )
             {
                 return;

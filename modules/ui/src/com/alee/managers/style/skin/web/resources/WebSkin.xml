@@ -36,6 +36,7 @@
     <include>resources/filedrop.xml</include>
     <include>resources/popover.xml</include>
     <include>resources/memorybar.xml</include>
+    <include>resources/filechooserfield.xml</include>
     <include>resources/pathfield.xml</include>
     <include>resources/breadcrumb.xml</include>
     <include>resources/syntaxarea.xml</include>
