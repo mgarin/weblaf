@@ -17,14 +17,11 @@
 
 package com.alee.managers.style.skin.web;
 
-import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.scroll.ScrollPanePainter;
 import com.alee.laf.scroll.WebScrollPaneUI;
 import com.alee.utils.LafUtils;
 
 import javax.swing.*;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 
 /**
  * Web-style painter for JScrollPane component.
@@ -38,11 +35,6 @@ import java.beans.PropertyChangeListener;
 public class WebScrollPanePainter<E extends JScrollPane, U extends WebScrollPaneUI> extends WebContainerPainter<E, U>
         implements ScrollPanePainter<E, U>
 {
-    /**
-     * Listeners.
-     */
-    protected PropertyChangeListener propertyChangeListener;
-
     /**
      * Runtime variables.
      */
@@ -64,17 +56,6 @@ public class WebScrollPanePainter<E extends JScrollPane, U extends WebScrollPane
 
         // Updating scrollpane corner
         updateCorners ();
-
-        // Listening to orientation change to update corners
-        propertyChangeListener = new PropertyChangeListener ()
-        {
-            @Override
-            public void propertyChange ( final PropertyChangeEvent evt )
-            {
-                updateCorners ();
-            }
-        };
-        component.addPropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, propertyChangeListener );
     }
 
     /**
@@ -88,22 +69,42 @@ public class WebScrollPanePainter<E extends JScrollPane, U extends WebScrollPane
         LafUtils.setVerticalScrollBarStyleId ( component, null );
 
         // Removing listener and custom corners
-        component.removePropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, propertyChangeListener );
-        component.remove ( getLowerLeadingCorner () );
-        component.remove ( getLowerTrailingCorner () );
-        component.remove ( getUpperTrailing () );
+        removeCorners ();
 
         super.uninstall ( c, ui );
     }
 
     /**
-     * Updates scrollpane corner.
+     * {@inheritDoc}
+     */
+    @Override
+    protected void orientationChange ()
+    {
+        // Performing default actions
+        super.orientationChange ();
+
+        // Updating scrollpane corners
+        updateCorners ();
+    }
+
+    /**
+     * Updates custom scrollpane corners.
      */
     protected void updateCorners ()
     {
         component.setCorner ( JScrollPane.LOWER_LEADING_CORNER, getLowerLeadingCorner () );
         component.setCorner ( JScrollPane.LOWER_TRAILING_CORNER, getLowerTrailingCorner () );
         component.setCorner ( JScrollPane.UPPER_TRAILING_CORNER, getUpperTrailing () );
+    }
+
+    /**
+     * Removes custom scrollpane corners.
+     */
+    private void removeCorners ()
+    {
+        component.remove ( getLowerLeadingCorner () );
+        component.remove ( getLowerTrailingCorner () );
+        component.remove ( getUpperTrailing () );
     }
 
     /**

@@ -32,49 +32,6 @@ import java.awt.*;
 public interface PopupMenuPainter<E extends JPopupMenu, U extends WebPopupMenuUI> extends Painter<E, U>, SpecificPainter
 {
     /**
-     * Sets whether popup menu is transparent or not.
-     * This mark is updated only once per component as it is initialized on UI initialization only.
-     *
-     * @param transparent whether popup menu is transparent or not
-     */
-    public void setTransparent ( boolean transparent );
-
-    /**
-     * Sets spacing between popup menus.
-     *
-     * @param spacing spacing between popup menus
-     */
-    public void setMenuSpacing ( int spacing );
-
-    /**
-     * Sets whether should fix initial popup menu location or not.
-     * If set to true popup menu will try to use best possible location to show up.
-     * <p/>
-     * This is set to true by default to place menubar and menu popups correctly.
-     * You might want to set this to false for some specific popup menu, but not all of them at once.
-     *
-     * @param fix whether should fix initial popup menu location or not
-     */
-    public void setFixLocation ( boolean fix );
-
-    /**
-     * Sets preferred popup menu display way.
-     * This value is updated right before preparePopupMenu method call.
-     *
-     * @param way preferred popup menu display way
-     */
-    public void setPopupMenuWay ( PopupMenuWay way );
-
-    /**
-     * Sets popup menu type.
-     * This value is updated right before popup menu window becomes visible.
-     * You can use it to draw different popup menu decoration for each popup menu type.
-     *
-     * @param type popup menu type
-     */
-    public void setPopupMenuType ( final PopupMenuType type );
-
-    /**
      * Prepares popup menu to be displayed.
      *
      * @param popupMenu JPopupMenu to prepare for display

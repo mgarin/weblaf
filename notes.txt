@@ -19,6 +19,8 @@ NOTES:
 18. WebHotkeyLabel - check view, add methods to set hotkey
 19. List renderers - check view and replace parent class with interface
 20. WebComboBox - popup list, scroll, bars and stuff
+21. WebToolBar - check/update view and changes listening
+22. WebPopupMenu - check display position, styling and other stuff
 
 FEATURES TO DO:
 1. Allow variables (with specified types) like colors, sizes etc.

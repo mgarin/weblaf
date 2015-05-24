@@ -80,11 +80,8 @@ public class WebScrollBarUI extends BasicScrollBarUI implements Styleable
     @Override
     public void installUI ( final JComponent c )
     {
+        // Installing UI
         super.installUI ( c );
-
-        // Faster wheel scrolling by default
-        // Scrolling becomes pretty annoying if this option is not set
-        c.putClientProperty ( "JScrollBar.fastWheelScrolling", Boolean.TRUE );
 
         // Enabled handling mark
         SwingUtils.setHandlesEnableStateMark ( scrollbar );

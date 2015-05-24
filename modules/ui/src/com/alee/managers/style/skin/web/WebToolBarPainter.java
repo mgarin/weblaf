@@ -36,7 +36,6 @@ public class WebToolBarPainter<E extends JToolBar, U extends WebToolBarUI> exten
      */
     protected AncestorListener ancestorListener;
     protected PropertyChangeListener propertyChangeListener;
-    protected PropertyChangeListener componentOrientationListener;
 
     /**
      * Runtime variables.
@@ -54,6 +53,7 @@ public class WebToolBarPainter<E extends JToolBar, U extends WebToolBarUI> exten
     {
         super.install ( c, ui );
 
+        // Updating initial layout
         updateLayout ( c, true );
 
         // Border and layout update listeners
@@ -67,6 +67,8 @@ public class WebToolBarPainter<E extends JToolBar, U extends WebToolBarUI> exten
             }
         };
         c.addAncestorListener ( ancestorListener );
+
+        // Toolbar properties change listener
         propertyChangeListener = new PropertyChangeListener ()
         {
             @Override
@@ -78,15 +80,6 @@ public class WebToolBarPainter<E extends JToolBar, U extends WebToolBarUI> exten
         };
         c.addPropertyChangeListener ( WebLookAndFeel.TOOLBAR_FLOATABLE_PROPERTY, propertyChangeListener );
         c.addPropertyChangeListener ( WebLookAndFeel.TOOLBAR_ORIENTATION_PROPERTY, propertyChangeListener );
-        componentOrientationListener = new PropertyChangeListener ()
-        {
-            @Override
-            public void propertyChange ( final PropertyChangeEvent evt )
-            {
-                updateBorder ();
-            }
-        };
-        c.addPropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, componentOrientationListener );
     }
 
     /**
@@ -96,10 +89,9 @@ public class WebToolBarPainter<E extends JToolBar, U extends WebToolBarUI> exten
     public void uninstall ( final E c, final U ui )
     {
         // Removing listeners
-        c.removeAncestorListener ( ancestorListener );
         c.removePropertyChangeListener ( WebLookAndFeel.TOOLBAR_ORIENTATION_PROPERTY, propertyChangeListener );
         c.removePropertyChangeListener ( WebLookAndFeel.TOOLBAR_FLOATABLE_PROPERTY, propertyChangeListener );
-        c.removePropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, componentOrientationListener );
+        c.removeAncestorListener ( ancestorListener );
 
         super.uninstall ( c, ui );
     }
@@ -116,7 +108,7 @@ public class WebToolBarPainter<E extends JToolBar, U extends WebToolBarUI> exten
         super.paint ( g2d, bounds, c, ui );
 
         // Painting gripper
-        paintGripper ( g2d, bounds, c, ui );
+        paintGripper ( g2d, c );
 
         GraphicsUtils.restoreAntialias ( g2d, aa );
     }
@@ -257,7 +249,7 @@ public class WebToolBarPainter<E extends JToolBar, U extends WebToolBarUI> exten
         //        }
     }
 
-    protected void paintGripper ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
+    protected void paintGripper ( final Graphics2D g2d, final E c )
     {
         if ( c.isFloatable () )
         {

@@ -89,12 +89,16 @@ public class WebScrollBarPainter<E extends JScrollBar, U extends WebScrollBarUI>
      * {@inheritDoc}
      */
     @Override
-    public void install ( final E scrollbar, final U ui )
+    public void install ( final E c, final U ui )
     {
-        super.install ( scrollbar, ui );
+        super.install ( c, ui );
 
         // This styling is animated
         animated = true;
+
+        // Faster wheel scrolling by default
+        // Scrolling becomes pretty annoying if this option is not set
+        component.putClientProperty ( "JScrollBar.fastWheelScrolling", Boolean.TRUE );
 
         // Mouse listener
         mouseAdapter = new MouseAdapter ()
@@ -129,21 +133,21 @@ public class WebScrollBarPainter<E extends JScrollBar, U extends WebScrollBarUI>
                 setRollover ( false );
             }
         };
-        scrollbar.addMouseListener ( mouseAdapter );
-        scrollbar.addMouseMotionListener ( mouseAdapter );
+        component.addMouseListener ( mouseAdapter );
+        component.addMouseMotionListener ( mouseAdapter );
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void uninstall ( final E scrollbar, final U ui )
+    public void uninstall ( final E c, final U ui )
     {
         // Removing listeners
-        scrollbar.removeMouseListener ( mouseAdapter );
-        scrollbar.removeMouseMotionListener ( mouseAdapter );
+        component.removeMouseListener ( mouseAdapter );
+        component.removeMouseMotionListener ( mouseAdapter );
 
-        super.uninstall ( scrollbar, ui );
+        super.uninstall ( c, ui );
     }
 
     /**
@@ -697,7 +701,7 @@ public class WebScrollBarPainter<E extends JScrollBar, U extends WebScrollBarUI>
             }
             final boolean ver = scrollbar.getOrientation () == Adjustable.VERTICAL;
             final boolean ltr = scrollbar.getComponentOrientation ().isLeftToRight ();
-            return ver ? ( ltr ? thumbMargin : thumbMarginR ) : ( ltr ? thumbMarginHL : thumbMarginHR );
+            return ver ? ltr ? thumbMargin : thumbMarginR : ltr ? thumbMarginHL : thumbMarginHR;
         }
         else
         {
@@ -713,9 +717,8 @@ public class WebScrollBarPainter<E extends JScrollBar, U extends WebScrollBarUI>
      */
     protected Color getCurrentThumbBorderColor ( final E scrollbar )
     {
-        return scrollbar.isEnabled () ? ( pressed || dragged ? thumbPressedBorderColor : ( rollover ? thumbRolloverBorderColor :
-                ColorUtils.getIntermediateColor ( thumbBorderColor, thumbRolloverBorderColor, rolloverState ) ) ) :
-                thumbDisabledBorderColor;
+        return scrollbar.isEnabled () ? pressed || dragged ? thumbPressedBorderColor : rollover ? thumbRolloverBorderColor :
+                ColorUtils.getIntermediateColor ( thumbBorderColor, thumbRolloverBorderColor, rolloverState ) : thumbDisabledBorderColor;
     }
 
     /**
@@ -726,8 +729,8 @@ public class WebScrollBarPainter<E extends JScrollBar, U extends WebScrollBarUI>
      */
     protected Color getCurrentThumbBackgroundColor ( final E scrollbar )
     {
-        return scrollbar.isEnabled () ? ( pressed || dragged ? thumbPressedBackgroundColor : ( rollover ? thumbRolloverBackgroundColor :
-                ColorUtils.getIntermediateColor ( thumbBackgroundColor, thumbRolloverBackgroundColor, rolloverState ) ) ) :
+        return scrollbar.isEnabled () ? pressed || dragged ? thumbPressedBackgroundColor : rollover ? thumbRolloverBackgroundColor :
+                ColorUtils.getIntermediateColor ( thumbBackgroundColor, thumbRolloverBackgroundColor, rolloverState ) :
                 thumbDisabledBackgroundColor;
     }
 

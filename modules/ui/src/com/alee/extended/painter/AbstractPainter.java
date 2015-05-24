@@ -105,20 +105,10 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
             @Override
             public void propertyChange ( final PropertyChangeEvent evt )
             {
-                saveOrientation ();
-                revalidate ();
-                repaint ();
+                orientationChange ();
             }
         };
         c.addPropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, propertyChangeListener );
-    }
-
-    /**
-     * Saves current component orientation state.
-     */
-    protected void saveOrientation ()
-    {
-        ltr = component.getComponentOrientation ().isLeftToRight ();
     }
 
     /**
@@ -132,6 +122,24 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
 
         // Cleaning up references
         this.component = null;
+    }
+
+    /**
+     * Performs various updates on orientation change.
+     */
+    protected void orientationChange ()
+    {
+        saveOrientation ();
+        revalidate ();
+        repaint ();
+    }
+
+    /**
+     * Saves current component orientation state.
+     */
+    protected void saveOrientation ()
+    {
+        ltr = component.getComponentOrientation ().isLeftToRight ();
     }
 
     /**

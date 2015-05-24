@@ -18,10 +18,7 @@
 package com.alee.managers.style.skin.web;
 
 import com.alee.extended.painter.AbstractPainter;
-import com.alee.utils.ColorUtils;
-import com.alee.utils.GraphicsUtils;
-import com.alee.utils.NinePatchUtils;
-import com.alee.utils.ShapeCache;
+import com.alee.utils.*;
 import com.alee.utils.laf.PainterShapeProvider;
 import com.alee.utils.ninepatch.NinePatchIcon;
 import com.alee.utils.swing.DataProvider;
@@ -69,6 +66,19 @@ public class WebPopupPainter<E extends JComponent, U extends ComponentUI> extend
     protected int cornerSide = TOP;
     protected int relativeCorner = 0;
     protected int cornerAlignment = -1;
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void install ( final E c, final U ui )
+    {
+        super.install ( c, ui );
+
+        // todo Rename into "shaped" or something similar since this is not exactly transparency mark anymore
+        // Initializing transparency availability mark
+        transparent = ProprietaryUtils.isWindowTransparencyAllowed () || ProprietaryUtils.isWindowShapeAllowed ();
+    }
 
     /**
      * Returns popup style.
@@ -669,7 +679,7 @@ public class WebPopupPainter<E extends JComponent, U extends ComponentUI> extend
      * @param fill      whether it is a fill shape or not
      * @return dropdown style shape
      */
-    @SuppressWarnings ( "ConstantConditions" )
+    @SuppressWarnings ("ConstantConditions")
     protected GeneralPath createDropdownShape ( final E popup, final Dimension popupSize, final boolean fill )
     {
         final boolean topCorner = cornerSide == TOP;
@@ -787,7 +797,7 @@ public class WebPopupPainter<E extends JComponent, U extends ComponentUI> extend
      * @param fill      whether it is a fill shape or not
      * @return dropdown style corner shape
      */
-    @SuppressWarnings ( "ConstantConditions" )
+    @SuppressWarnings ("ConstantConditions")
     protected GeneralPath createDropdownCornerShape ( final E popupMenu, final Dimension menuSize, final boolean fill )
     {
         final boolean topCorner = cornerSide == TOP;

@@ -47,51 +47,6 @@ public class AdaptivePopupMenuPainter<E extends JPopupMenu, U extends WebPopupMe
      * {@inheritDoc}
      */
     @Override
-    public void setTransparent ( final boolean transparent )
-    {
-        // Ignore this method in adaptive class
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setMenuSpacing ( final int spacing )
-    {
-        // Ignore this method in adaptive class
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setFixLocation ( final boolean fix )
-    {
-        // Ignore this method in adaptive class
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setPopupMenuWay ( final PopupMenuWay way )
-    {
-        // Ignore this method in adaptive class
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setPopupMenuType ( final PopupMenuType type )
-    {
-        // Ignore this method in adaptive class
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public Point preparePopupMenu ( final E popupMenu, final Component invoker, final int x, final int y )
     {
         return new Point ( x, y );
