@@ -10,6 +10,7 @@
             <horizontalScrollBarPolicy>30</horizontalScrollBarPolicy>
         </component>
         <painter id="painter" class="com.alee.managers.style.skin.web.WebScrollPanePainter">
+            <undecorated>false</undecorated>
             <round>2</round>
             <shadeWidth>2</shadeWidth>
             <paintBackground>true</paintBackground>

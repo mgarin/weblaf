@@ -105,7 +105,7 @@ public class WebComboBox extends JComboBox
 
     /**
      * Returns selected value index.
-     * This method is overriden by WebComboBox to fix issue with "null" value from the model being ignored if selected.
+     * This method is overridden by WebComboBox to fix issue with "null" value from the model being ignored if selected.
      * By default (in JComboBox) this method will not return index of "null" value in the model if it is selected.
      *
      * @return index of the selected value
@@ -160,16 +160,6 @@ public class WebComboBox extends JComboBox
     public void setCollapseIcon ( final ImageIcon collapseIcon )
     {
         getWebUI ().setCollapseIcon ( collapseIcon );
-    }
-
-    public int getIconSpacing ()
-    {
-        return getWebUI ().getIconSpacing ();
-    }
-
-    public void setIconSpacing ( final int iconSpacing )
-    {
-        getWebUI ().setIconSpacing ( iconSpacing );
     }
 
     public boolean isDrawBorder ()

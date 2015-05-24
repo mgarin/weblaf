@@ -21,6 +21,7 @@ import com.alee.extended.painter.Painter;
 import com.alee.extended.painter.PainterSupport;
 import com.alee.laf.label.WebLabelUI;
 import com.alee.managers.style.StyleManager;
+import com.alee.utils.CompareUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.laf.Styleable;
 import com.alee.utils.swing.DataRunnable;
@@ -50,7 +51,7 @@ public class WebStyledLabelUI extends WebLabelUI implements Styleable, SwingCons
      * @param c component that will use UI instance
      * @return instance of the WebStyledLabelUI
      */
-    @SuppressWarnings ( { "UnusedDeclaration" } )
+    @SuppressWarnings ({ "UnusedDeclaration" })
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebStyledLabelUI ();
@@ -123,8 +124,11 @@ public class WebStyledLabelUI extends WebLabelUI implements Styleable, SwingCons
     @Override
     public void setStyleId ( final String id )
     {
-        this.styleId = id;
-        StyleManager.applySkin ( label );
+        if ( !CompareUtils.equals ( this.styleId, id ) )
+        {
+            this.styleId = id;
+            StyleManager.applySkin ( label );
+        }
     }
 
     /**

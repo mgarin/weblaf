@@ -21,6 +21,7 @@ import com.alee.extended.painter.Painter;
 import com.alee.extended.painter.PainterSupport;
 import com.alee.laf.button.WebButton;
 import com.alee.managers.style.StyleManager;
+import com.alee.utils.CompareUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.laf.Styleable;
 import com.alee.utils.swing.DataRunnable;
@@ -65,7 +66,7 @@ public class WebScrollBarUI extends BasicScrollBarUI implements Styleable
      * @param c component that will use UI instance
      * @return instance of the WebScrollBarUI
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebScrollBarUI ();
@@ -125,8 +126,11 @@ public class WebScrollBarUI extends BasicScrollBarUI implements Styleable
     @Override
     public void setStyleId ( final String id )
     {
-        this.styleId = id;
-        StyleManager.applySkin ( scrollbar );
+        if ( !CompareUtils.equals ( this.styleId, id ) )
+        {
+            this.styleId = id;
+            StyleManager.applySkin ( scrollbar );
+        }
     }
 
     /**

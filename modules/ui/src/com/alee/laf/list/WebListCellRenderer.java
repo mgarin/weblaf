@@ -17,8 +17,9 @@
 
 package com.alee.laf.list;
 
+import com.alee.laf.Styles;
+
 import javax.swing.*;
-import javax.swing.plaf.ListUI;
 import java.awt.*;
 
 /**
@@ -52,6 +53,12 @@ public class WebListCellRenderer extends WebListElement implements ListCellRende
     public Component getListCellRendererComponent ( final JList list, final Object value, final int index, final boolean isSelected,
                                                     final boolean cellHasFocus )
     {
+        // Updating style ID
+        setStyleId ( getIcon () != null ? Styles.listIconCellRenderer : Styles.listCellRenderer );
+
+        // Orientation
+        setComponentOrientation ( list.getComponentOrientation () );
+
         // Visual settings
         setFont ( list.getFont () );
         setEnabled ( list.isEnabled () );
@@ -68,14 +75,6 @@ public class WebListCellRenderer extends WebListElement implements ListCellRende
             setIcon ( null );
             setText ( value == null ? "" : value.toString () );
         }
-
-        // Border
-        final ListUI lui = list.getUI ();
-        final int sw = lui instanceof WebListUI ? ( ( WebListUI ) lui ).getSelectionShadeWidth () : WebListStyle.selectionShadeWidth;
-        setMargin ( sw + 2, sw + ( getIcon () != null ? 2 : 4 ), sw + 2, sw + 4 );
-
-        // Orientation
-        setComponentOrientation ( list.getComponentOrientation () );
 
         return this;
     }

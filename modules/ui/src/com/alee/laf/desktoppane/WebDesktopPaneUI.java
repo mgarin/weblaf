@@ -20,6 +20,7 @@ package com.alee.laf.desktoppane;
 import com.alee.extended.painter.Painter;
 import com.alee.extended.painter.PainterSupport;
 import com.alee.managers.style.StyleManager;
+import com.alee.utils.CompareUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.laf.Styleable;
 import com.alee.utils.swing.DataRunnable;
@@ -102,8 +103,11 @@ public class WebDesktopPaneUI extends BasicDesktopPaneUI implements Styleable
     @Override
     public void setStyleId ( final String id )
     {
-        this.styleId = id;
-        StyleManager.applySkin ( desktopPane );
+        if ( !CompareUtils.equals ( this.styleId, id ) )
+        {
+            this.styleId = id;
+            StyleManager.applySkin ( desktopPane );
+        }
     }
 
     /**

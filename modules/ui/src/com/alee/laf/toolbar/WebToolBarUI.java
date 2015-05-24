@@ -21,6 +21,7 @@ import com.alee.extended.painter.Painter;
 import com.alee.extended.painter.PainterSupport;
 import com.alee.laf.rootpane.WebDialog;
 import com.alee.managers.style.StyleManager;
+import com.alee.utils.CompareUtils;
 import com.alee.utils.ProprietaryUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.laf.ShapeProvider;
@@ -56,7 +57,7 @@ public class WebToolBarUI extends BasicToolBarUI implements Styleable, ShapeProv
      * @param c component that will use UI instance
      * @return instance of the WebButtonUI
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebToolBarUI ();
@@ -111,8 +112,11 @@ public class WebToolBarUI extends BasicToolBarUI implements Styleable, ShapeProv
     @Override
     public void setStyleId ( final String id )
     {
-        this.styleId = id;
-        StyleManager.applySkin ( toolBar );
+        if ( !CompareUtils.equals ( this.styleId, id ) )
+        {
+            this.styleId = id;
+            StyleManager.applySkin ( toolBar );
+        }
     }
 
     @Override

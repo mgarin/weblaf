@@ -3,7 +3,7 @@
     <!-- com.alee.laf.table.WebTable -->
 
     <!-- Default table cell renderer label -->
-    <style type="label" id="table-cell-renderer" extends="default">
+    <style type="label" id="table-cell" extends="default">
         <component>
             <opaque>true</opaque>
         </component>

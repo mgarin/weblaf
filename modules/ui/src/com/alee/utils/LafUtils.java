@@ -101,6 +101,18 @@ public final class LafUtils
     }
 
     /**
+     * Sets scroll pane bar style ID.
+     *
+     * @param scrollPane scroll pane to process
+     * @param styleId    scroll pane bar style ID
+     */
+    public static void setScrollBarStyleId ( final JScrollPane scrollPane, final String styleId )
+    {
+        setVerticalScrollBarStyleId ( scrollPane, styleId );
+        setHorizontalScrollBarStyleId ( scrollPane, styleId );
+    }
+
+    /**
      * Sets scroll pane vertical bar style ID.
      *
      * @param scrollPane scroll pane to process
@@ -141,11 +153,11 @@ public final class LafUtils
     }
 
     /**
-     * Returns component UI or null if UI cannot be retreived.
+     * Returns component UI or null if UI cannot be retrieved.
      *
      * @param component component to retrieve UI from
      * @param <T>       UI class type
-     * @return component UI or null if UI cannot be retreived
+     * @return component UI or null if UI cannot be retrieved
      */
     public static <T extends ComponentUI> T getUI ( final Component component )
     {

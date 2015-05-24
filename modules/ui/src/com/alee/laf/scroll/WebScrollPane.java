@@ -225,8 +225,7 @@ public class WebScrollPane extends JScrollPane implements Styleable, ShapeProvid
      */
     public void setScrollBarStyleId ( final String id )
     {
-        LafUtils.setHorizontalScrollBarStyleId ( this, id );
-        LafUtils.setVerticalScrollBarStyleId ( this, id );
+        LafUtils.setScrollBarStyleId ( this, id );
     }
 
     /**

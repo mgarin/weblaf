@@ -20,6 +20,7 @@ package com.alee.laf.progressbar;
 import com.alee.extended.painter.Painter;
 import com.alee.extended.painter.PainterSupport;
 import com.alee.managers.style.StyleManager;
+import com.alee.utils.CompareUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.laf.ShapeProvider;
 import com.alee.utils.laf.Styleable;
@@ -48,7 +49,7 @@ public class WebProgressBarUI extends BasicProgressBarUI implements Styleable, S
      */
     protected String styleId = null;
 
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebProgressBarUI ();
@@ -103,8 +104,11 @@ public class WebProgressBarUI extends BasicProgressBarUI implements Styleable, S
     @Override
     public void setStyleId ( final String id )
     {
-        this.styleId = id;
-        StyleManager.applySkin ( progressBar );
+        if ( !CompareUtils.equals ( this.styleId, id ) )
+        {
+            this.styleId = id;
+            StyleManager.applySkin ( progressBar );
+        }
     }
 
     /**

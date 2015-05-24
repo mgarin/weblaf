@@ -37,13 +37,22 @@ public final class Styles
      * {@link com.alee.laf.combobox.WebComboBox} style IDs.
      */
     public static String comboboxSelectedLabel = "combobox-selected";
+    public static String comboboxArrowButton = "combobox-arrow";
+    public static String comboboxListScrollPane = "combobox-list";
     public static String comboboxListScrollBar = "combobox-list";
-    public static String comboboxListLabel = "combobox-list";
+    public static String comboboxListLabel = "combobox-list-cell";
 
     /**
-     * {@link com.alee.laf.rootpane.WebRootPane} style IDs.
+     * {@link com.alee.laf.list.WebList} style IDs.
      */
-    public static String tableCellRenderer = "table-cell-renderer";
+    public static String listCellRenderer = "list-cell";
+    public static String listTextCellRenderer = "list-text-cell";
+    public static String listIconCellRenderer = "list-icon-cell";
+
+    /**
+     * {@link com.alee.laf.table.WebTable} style IDs.
+     */
+    public static String tableCellRenderer = "table-cell";
 
     /**
      * {@link com.alee.laf.rootpane.WebRootPane} style IDs.

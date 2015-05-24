@@ -17,6 +17,7 @@
     <include>resources/button.xml</include>
     <include>resources/togglebutton.xml</include>
     <include>resources/combobox.xml</include>
+    <include>resources/list.xml</include>
     <include>resources/table.xml</include>
     <include>resources/panel.xml</include>
     <include>resources/scrollbar.xml</include>

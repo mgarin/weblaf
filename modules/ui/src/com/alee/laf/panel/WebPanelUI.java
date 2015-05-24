@@ -20,6 +20,7 @@ package com.alee.laf.panel;
 import com.alee.extended.painter.Painter;
 import com.alee.extended.painter.PainterSupport;
 import com.alee.managers.style.StyleManager;
+import com.alee.utils.CompareUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.laf.ShapeProvider;
 import com.alee.utils.laf.Styleable;
@@ -113,8 +114,11 @@ public class WebPanelUI extends BasicPanelUI implements Styleable, ShapeProvider
     @Override
     public void setStyleId ( final String id )
     {
-        this.styleId = id;
-        StyleManager.applySkin ( panel );
+        if ( !CompareUtils.equals ( this.styleId, id ) )
+        {
+            this.styleId = id;
+            StyleManager.applySkin ( panel );
+        }
     }
 
     /**

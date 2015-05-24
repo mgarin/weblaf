@@ -20,6 +20,7 @@ package com.alee.laf.viewport;
 import com.alee.extended.painter.Painter;
 import com.alee.extended.painter.PainterSupport;
 import com.alee.managers.style.StyleManager;
+import com.alee.utils.CompareUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.laf.ShapeProvider;
 import com.alee.utils.laf.Styleable;
@@ -56,7 +57,7 @@ public class WebViewportUI extends BasicViewportUI implements Styleable, ShapePr
      * @param c component that will use UI instance
      * @return instance of the WebViewportUI
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebViewportUI ();
@@ -112,8 +113,11 @@ public class WebViewportUI extends BasicViewportUI implements Styleable, ShapePr
     @Override
     public void setStyleId ( final String id )
     {
-        this.styleId = id;
-        StyleManager.applySkin ( viewport );
+        if ( !CompareUtils.equals ( this.styleId, id ) )
+        {
+            this.styleId = id;
+            StyleManager.applySkin ( viewport );
+        }
     }
 
     /**
