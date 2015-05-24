@@ -24,6 +24,16 @@ public final class Styles
      */
 
     /**
+     * {@link com.alee.laf.button.WebButton} style IDs.
+     */
+    public static String buttonIconOnly = "icon";
+
+    /**
+     * {@link com.alee.laf.button.WebToggleButton} style IDs.
+     */
+    public static String togglebuttonIconOnly = "icon";
+
+    /**
      * {@link com.alee.laf.combobox.WebComboBox} style IDs.
      */
     public static String comboboxSelectedLabel = "combobox-selected";
@@ -98,6 +108,7 @@ public final class Styles
      */
     public static String pathfield = "pathfield";
     public static String pathfieldContentPanel = "pathfield-content";
+    public static String pathfieldRootButton = "pathfield-root";
     public static String pathfieldPathButton = "pathfield-path";
     public static String pathfieldChildrenButton = "pathfield-children";
     public static String pathfieldPopupScroll = "pathfield-popup";

@@ -757,15 +757,7 @@ public class WebPathField extends WebPanel
                 children.setStyleId ( Styles.pathfieldChildrenButton );
                 children.setIcon ( ltr ? right : left );
                 children.setSelectedIcon ( down );
-                children.setShadeToggleIcon ( false );
-                children.setRound ( 0 );
-                children.setShadeWidth ( 0 );
-                children.setRolloverDecoratedOnly ( true );
-                children.setRolloverDarkBorderOnly ( false );
-                children.setFocusable ( false );
                 children.setComponentPopupMenu ( menu );
-                children.setMargin ( 0 );
-                children.setLeftRightSpacing ( 0 );
                 children.setEnabled ( childrenCount > 0 );
                 children.addActionListener ( new ActionListener ()
                 {
@@ -872,15 +864,8 @@ public class WebPathField extends WebPanel
     {
         if ( myComputer == null )
         {
-            myComputer = WebButton.createIconWebButton ( FileUtils.getMyComputerIcon () );
-            myComputer.setRound ( getRound () );
-            myComputer.setShadeWidth ( 0 );
-            myComputer.setLeftRightSpacing ( 0 );
-            myComputer.setRolloverDecoratedOnly ( true );
-            myComputer.setRolloverDarkBorderOnly ( false );
-            myComputer.setDrawFocus ( false );
-            myComputer.setDrawRight ( false );
-            myComputer.setDrawRightLine ( true );
+            myComputer = new WebButton ( FileUtils.getMyComputerIcon () );
+            myComputer.setStyleId ( Styles.pathfieldRootButton );
             myComputer.addActionListener ( new ActionListener ()
             {
                 @Override
@@ -933,16 +918,9 @@ public class WebPathField extends WebPanel
             }
 
             rootsArrowButton = new WebToggleButton ();
+            rootsArrowButton.setStyleId ( Styles.pathfieldChildrenButton );
             rootsArrowButton.setIcon ( ltr ? right : left );
             rootsArrowButton.setSelectedIcon ( down );
-            rootsArrowButton.setShadeToggleIcon ( false );
-            rootsArrowButton.setRound ( 0 );
-            rootsArrowButton.setShadeWidth ( 0 );
-            rootsArrowButton.setRolloverDecoratedOnly ( true );
-            rootsArrowButton.setRolloverDarkBorderOnly ( false );
-            rootsArrowButton.setFocusable ( false );
-            rootsArrowButton.setMargin ( 0 );
-            rootsArrowButton.setLeftRightSpacing ( 0 );
             rootsArrowButton.setComponentPopupMenu ( rootsMenu );
             rootsArrowButton.addActionListener ( new ActionListener ()
             {

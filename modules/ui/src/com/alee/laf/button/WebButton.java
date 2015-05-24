@@ -18,6 +18,7 @@
 package com.alee.laf.button;
 
 import com.alee.extended.painter.Painter;
+import com.alee.laf.Styles;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.hotkey.HotkeyInfo;
@@ -61,14 +62,14 @@ public class WebButton extends JButton
     public WebButton ( final Icon icon )
     {
         super ( icon );
-        setStyleId ( "icon-button" );
+        setStyleId ( Styles.buttonIconOnly );
     }
 
     public WebButton ( final Icon icon, final Icon rolloverIcon )
     {
         super ( icon );
         setRolloverIcon ( rolloverIcon );
-        setStyleId ( "icon-button" );
+        setStyleId ( Styles.buttonIconOnly );
     }
 
     public WebButton ( final String text )
@@ -90,7 +91,7 @@ public class WebButton extends JButton
     public WebButton ( final Icon icon, final ActionListener listener )
     {
         super ( icon );
-        setStyleId ( "icon-button" );
+        setStyleId ( Styles.buttonIconOnly );
         addActionListener ( listener );
     }
 
@@ -201,7 +202,7 @@ public class WebButton extends JButton
     }
 
     /**
-     * Proxified kotkey manager methods
+     * Proxied hotkey manager methods
      */
 
     public HotkeyInfo addHotkey ( final Integer keyCode )

@@ -25,6 +25,23 @@
         </component>
     </style>
 
+    <!-- Root button -->
+    <style type="button" id="pathfield-root" extends="default">
+        <component>
+            <focusable>false</focusable>
+        </component>
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebButtonPainter">
+            <round>2</round>
+            <shadeWidth>0</shadeWidth>
+            <leftRightSpacing>0</leftRightSpacing>
+            <rolloverDecoratedOnly>true</rolloverDecoratedOnly>
+            <rolloverDarkBorderOnly>false</rolloverDarkBorderOnly>
+            <paintFocus>false</paintFocus>
+            <paintRight>false</paintRight>
+            <paintRightLine>true</paintRightLine>
+        </painter>
+    </style>
+
     <!-- Path button -->
     <style type="button" id="pathfield-path" extends="default">
         <component>
@@ -45,8 +62,10 @@
             <focusable>false</focusable>
         </component>
         <painter id="painter" class="com.alee.managers.style.skin.web.WebButtonPainter">
-            <round>2</round>
+            <margin>0,0,0,0</margin>
+            <round>0</round>
             <shadeWidth>0</shadeWidth>
+            <shadeToggleIcon>false</shadeToggleIcon>
             <leftRightSpacing>0</leftRightSpacing>
             <rolloverDecoratedOnly>true</rolloverDecoratedOnly>
             <rolloverDarkBorderOnly>false</rolloverDarkBorderOnly>

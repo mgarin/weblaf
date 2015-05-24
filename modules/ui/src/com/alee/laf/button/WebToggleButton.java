@@ -18,6 +18,7 @@
 package com.alee.laf.button;
 
 import com.alee.extended.painter.Painter;
+import com.alee.laf.Styles;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.hotkey.HotkeyInfo;
@@ -66,7 +67,7 @@ public class WebToggleButton extends JToggleButton
     public WebToggleButton ( final Icon icon )
     {
         super ( icon );
-        setStyleId ( "icon-toggle-button" );
+        setStyleId ( Styles.togglebuttonIconOnly );
     }
 
     public WebToggleButton ( final Icon icon, final boolean selected )
@@ -103,7 +104,7 @@ public class WebToggleButton extends JToggleButton
     public WebToggleButton ( final Icon icon, final ActionListener listener )
     {
         super ( icon );
-        setStyleId ( "icon-toggle-button" );
+        setStyleId ( Styles.togglebuttonIconOnly );
         addActionListener ( listener );
     }
 
@@ -226,7 +227,7 @@ public class WebToggleButton extends JToggleButton
     }
 
     /**
-     * Proxified kotkey manager methods
+     * Proxied hotkey manager methods
      */
 
     public HotkeyInfo addHotkey ( final Integer keyCode )

@@ -1,9 +1,9 @@
 <skin>
 
-    <!-- com.alee.laf.button.WebButton -->
+    <!-- com.alee.laf.button.WebToggleButton -->
 
-    <!-- Button -->
-    <style type="button" id="default">
+    <!-- Toggle button -->
+    <style type="toggleButton" id="default">
         <component>
             <focusable>true</focusable>
         </component>
@@ -16,8 +16,8 @@
         </painter>
     </style>
 
-    <!-- Icon-only button -->
-    <style type="button" id="icon" extends="default">
+    <!-- Icon-only toggle button -->
+    <style type="toggleButton" id="icon" extends="default">
         <painter id="painter" class="com.alee.managers.style.skin.web.WebButtonPainter">
             <round>2</round>
             <leftRightSpacing>0</leftRightSpacing>
