@@ -28,6 +28,7 @@ import com.alee.extended.panel.GroupPanel;
 import com.alee.extended.tree.WebFileTree;
 import com.alee.global.GlobalConstants;
 import com.alee.global.StyleConstants;
+import com.alee.laf.Styles;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.combobox.WebComboBox;
 import com.alee.laf.combobox.WebComboBoxCellRenderer;
@@ -442,7 +443,7 @@ public class WebFileChooserPanel extends WebPanel
                 vsb.setPaintButtons ( WebComboBoxStyle.scrollBarButtonsVisible );
                 vsb.setPaintTrack ( WebComboBoxStyle.scrollBarTrackVisible );
 
-                LafUtils.setScrollBarStyleId ( scrollPane, "combo-box" );
+                LafUtils.setScrollBarStyleId ( scrollPane, Styles.comboboxListScrollBar );
 
                 historyPopup.add ( scrollPane );
 

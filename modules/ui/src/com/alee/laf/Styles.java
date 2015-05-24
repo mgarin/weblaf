@@ -24,6 +24,18 @@ public final class Styles
      */
 
     /**
+     * {@link com.alee.laf.combobox.WebComboBox} style IDs.
+     */
+    public static String comboboxSelectedLabel = "combobox-selected";
+    public static String comboboxListScrollBar = "combobox-list";
+    public static String comboboxListLabel = "combobox-list";
+
+    /**
+     * {@link com.alee.laf.rootpane.WebRootPane} style IDs.
+     */
+    public static String tableCellRenderer = "table-cell-renderer";
+
+    /**
      * {@link com.alee.laf.rootpane.WebRootPane} style IDs.
      */
     public static String windowTitlePanel = "window-title";
@@ -47,6 +59,11 @@ public final class Styles
     /**
      * Custom WebLaF components.
      */
+
+    /**
+     * {@link com.alee.extended.label.WebHotkeyLabel} style IDs.
+     */
+    public static String hotkeylabel = "hotkeylabel";
 
     /**
      * {@link com.alee.managers.tooltip.WebCustomTooltip} style IDs.

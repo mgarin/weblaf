@@ -19,6 +19,7 @@ package com.alee.extended.style;
 
 import com.alee.extended.window.PopOverDirection;
 import com.alee.extended.window.WebPopOver;
+import com.alee.laf.Styles;
 import com.alee.laf.colorchooser.WebColorChooserPanel;
 import com.alee.laf.combobox.WebComboBoxCellRenderer;
 import com.alee.laf.combobox.WebComboBoxElement;
@@ -222,7 +223,7 @@ public class CodeLinkGenerator implements LinkGenerator
                                     vsb.setMargin ( WebComboBoxStyle.scrollBarMargin );
                                     vsb.setPaintButtons ( WebComboBoxStyle.scrollBarButtonsVisible );
                                     vsb.setPaintTrack ( WebComboBoxStyle.scrollBarTrackVisible );
-                                    LafUtils.setScrollBarStyleId ( scrollPane, "combo-box" );
+                                    LafUtils.setScrollBarStyleId ( scrollPane, Styles.comboboxListScrollBar );
 
                                     typeChooser.add ( scrollPane );
 

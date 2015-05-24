@@ -2,7 +2,7 @@
 
     <!-- com.alee.laf.panel.WebPanel -->
 
-    <!-- Base style -->
+    <!-- Panel -->
     <style type="panel" id="default">
         <component>
             <background>237,237,237</background>

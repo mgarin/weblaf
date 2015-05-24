@@ -12,7 +12,11 @@
 
     <!-- Basic styles, order is important! -->
     <include>resources/label.xml</include>
+    <include>resources/verticallabel.xml</include>
+    <include>resources/styledlabel.xml</include>
     <include>resources/button.xml</include>
+    <include>resources/combobox.xml</include>
+    <include>resources/table.xml</include>
     <include>resources/panel.xml</include>
     <include>resources/scrollbar.xml</include>
     <include>resources/scrollpane.xml</include>
@@ -22,6 +26,7 @@
     <include>resources/rootpane.xml</include>
 
     <!-- Custom components styles -->
+    <include>resources/hotkeylabel.xml</include>
     <include>resources/customtooltip.xml</include>
     <include>resources/syntaxpanel.xml</include>
     <include>resources/filedrop.xml</include>

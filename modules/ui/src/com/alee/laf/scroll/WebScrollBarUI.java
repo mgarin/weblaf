@@ -39,12 +39,12 @@ import java.awt.*;
 public class WebScrollBarUI extends BasicScrollBarUI implements Styleable
 {
     /**
-     * Wheher or not scroll bar buttons should be displayed.
+     * Whether or not scroll bar buttons should be displayed.
      */
     protected boolean paintButtons = WebScrollBarStyle.paintButtons;
 
     /**
-     * Whether or not scroll bar trck should be displayed.
+     * Whether or not scroll bar track should be displayed.
      */
     protected boolean paintTrack = WebScrollBarStyle.paintTrack;
 

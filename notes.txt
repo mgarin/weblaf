@@ -16,6 +16,7 @@ NOTES:
 15. WebPathField - elements styling might be wrong + list styling
 16. WebMemoryBar - move painting into painter
 17. HotkeyTipLabel - remove and replace with simple label
+18. WebHotkeyLabel - check view, add methods to set hotkey
 
 FEATURES TO DO:
 1. Allow variables (with specified types) like colors, sizes etc.

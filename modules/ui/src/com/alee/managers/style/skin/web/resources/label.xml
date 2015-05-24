@@ -2,7 +2,7 @@
 
     <!-- com.alee.laf.label.WebLabel -->
 
-    <!-- Base style -->
+    <!-- Label -->
     <style type="label" id="default">
         <component>
             <foreground>black</foreground>
@@ -15,64 +15,12 @@
             <shadeColor>230,230,230</shadeColor>
         </painter>
     </style>
+
+    <!-- Label with text shade -->
     <style type="label" id="shade-label" extends="default">
         <ui>
             <drawShade>true</drawShade>
         </ui>
-    </style>
-
-    <!-- WebVerticalLabel styling -->
-    <style type="verticalLabel" id="default">
-        <component>
-            <foreground>black</foreground>
-            <background>237,237,237</background>
-        </component>
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebVerticalLabelPainter">
-            <drawShade>false</drawShade>
-            <shadeColor>230,230,230</shadeColor>
-        </painter>
-    </style>
-
-    <!-- WebStyledLabel styling -->
-    <style type="styledLabel" id="default">
-        <component>
-            <foreground>black</foreground>
-            <background>237,237,237</background>
-        </component>
-        <painter id="painter" class="com.alee.extended.label.WebStyledLabelPainter">
-            <drawShade>false</drawShade>
-        </painter>
-    </style>
-
-    <!-- JComboBox value and list element renderers styling -->
-    <style type="label" id="combo-box-box" extends="default">
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebComboBoxElementPainter">
-            <margin>2,2,2,2</margin>
-        </painter>
-    </style>
-    <style type="label" id="combo-box-list" extends="default">
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebComboBoxElementPainter">
-            <margin>4,6,4,6</margin>
-            <topSelectedBackgroundColor>208,208,198</topSelectedBackgroundColor>
-            <bottomSelectedBackgroundColor>196,196,186</bottomSelectedBackgroundColor>
-        </painter>
-    </style>
-
-    <!-- WebTable styling -->
-    <style type="label" id="table-cell-renderer" extends="default">
-        <component>
-            <opaque>true</opaque>
-        </component>
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebLabelPainter">
-            <margin>2,2,2,2</margin>
-        </painter>
-    </style>
-
-    <!-- WebHotkeyLabel styling -->
-    <style type="label" id="hotkey-label" extends="default">
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebHotkeyLabelPainter">
-            <margin>2,6,3,6</margin>
-        </painter>
     </style>
 
 </skin>

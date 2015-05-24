@@ -19,6 +19,7 @@ package com.alee.laf.combobox;
 
 import com.alee.extended.layout.AbstractLayoutManager;
 import com.alee.global.StyleConstants;
+import com.alee.laf.Styles;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.list.WebListUI;
@@ -369,7 +370,7 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider, Bor
                     }
                 }
 
-                LafUtils.setScrollBarStyleId ( scroll, "combo-box" );
+                LafUtils.setScrollBarStyleId ( scroll, Styles.comboboxListScrollBar );
 
                 return scroll;
             }

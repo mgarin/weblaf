@@ -1,0 +1,33 @@
+<skin>
+
+    <!-- com.alee.laf.combobox.WebComboBox -->
+
+    <!-- Combobox selected value label -->
+    <style type="label" id="combobox-selected" extends="default">
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebComboBoxElementPainter">
+            <margin>2,2,2,2</margin>
+        </painter>
+    </style>
+
+    <!-- Combobox popup list scrollbar -->
+    <style type="scrollBar" id="combo-box" extends="default">
+        <ui>
+            <paintButtons>false</paintButtons>
+        </ui>
+        <painter id="painter" base="true" class="com.alee.managers.style.skin.web.WebScrollBarPainter">
+            <margin>0,2,0,2</margin>
+            <thumbRound>4</thumbRound>
+            <thumbMargin>0,2,0,2</thumbMargin>
+        </painter>
+    </style>
+
+    <!-- Combobox popup list value label -->
+    <style type="label" id="combobox-list" extends="default">
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebComboBoxElementPainter">
+            <margin>4,6,4,6</margin>
+            <topSelectedBackgroundColor>208,208,198</topSelectedBackgroundColor>
+            <bottomSelectedBackgroundColor>196,196,186</bottomSelectedBackgroundColor>
+        </painter>
+    </style>
+
+</skin>

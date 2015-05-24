@@ -2,7 +2,7 @@
 
     <!-- com.alee.laf.button.WebButton -->
 
-    <!-- Base style -->
+    <!-- Button -->
     <style type="button" id="default">
         <component>
             <focusable>true</focusable>

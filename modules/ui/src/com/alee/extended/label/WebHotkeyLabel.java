@@ -17,13 +17,14 @@
 
 package com.alee.extended.label;
 
+import com.alee.laf.Styles;
 import com.alee.laf.label.WebLabel;
 import com.alee.managers.hotkey.HotkeyData;
 
 import java.awt.event.KeyEvent;
 
 /**
- * This class provides a quick access to hotkey-styled label with additional costructors for quick hotkey text initialization.
+ * This class provides a quick access to hotkey-styled label with additional constructors for quick hotkey text initialization.
  * This label is only a hotkey visualization and have nothing to do with real hotkeys.
  * To modify actual hotkeys use HotkeyManager or key listeners.
  *
@@ -35,35 +36,35 @@ public class WebHotkeyLabel extends WebLabel
     public WebHotkeyLabel ()
     {
         super ();
-        initializeView ();
+        initialize ();
     }
 
     public WebHotkeyLabel ( final int keyCode )
     {
         super ( KeyEvent.getKeyText ( keyCode ) );
-        initializeView ();
+        initialize ();
     }
 
     public WebHotkeyLabel ( final int keyCode, final int modifiers )
     {
         super ( KeyEvent.getKeyModifiersText ( modifiers ) + "+" + KeyEvent.getKeyText ( keyCode ) );
-        initializeView ();
+        initialize ();
     }
 
     public WebHotkeyLabel ( final HotkeyData hotkeyData )
     {
         super ( hotkeyData.toString () );
-        initializeView ();
+        initialize ();
     }
 
     public WebHotkeyLabel ( final String text )
     {
         super ( text );
-        initializeView ();
+        initialize ();
     }
 
-    private void initializeView ()
+    private void initialize ()
     {
-        setStyleId ( "hotkey-label" );
+        setStyleId ( Styles.hotkeylabel );
     }
 }

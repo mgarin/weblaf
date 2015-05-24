@@ -1,0 +1,12 @@
+<skin>
+
+    <!-- com.alee.extended.label.WebHotkeyLabel -->
+
+    <!-- Hotkey label -->
+    <style type="label" id="hotkeylabel" extends="default">
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebHotkeyLabelPainter">
+            <margin>2,6,3,6</margin>
+        </painter>
+    </style>
+
+</skin>
