@@ -1,0 +1,32 @@
+<skin>
+
+    <!-- com.alee.laf.toolbar.WebToolBar -->
+
+    <!-- Toolbar -->
+    <style type="toolBar" id="default">
+        <component>
+            <orientation>0</orientation>
+            <floatable>true</floatable>
+        </component>
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebToolBarPainter">
+            <margin>3,3,3,3</margin>
+            <undecorated>false</undecorated>
+            <round>6</round>
+            <shadeWidth>2</shadeWidth>
+            <paintBackground>true</paintBackground>
+            <webColoredBackground>true</webColoredBackground>
+            <spacing>2</spacing>
+            <topBgColor>white</topBgColor>
+            <bottomBgColor>229,233,238</bottomBgColor>
+            <toolbarStyle>standalone</toolbarStyle>
+        </painter>
+    </style>
+
+    <!-- Attached toolbar -->
+    <style type="toolBar" id="attached" extends="default">
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebToolBarPainter">
+            <toolbarStyle>attached</toolbarStyle>
+        </painter>
+    </style>
+
+</skin>

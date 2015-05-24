@@ -24,13 +24,4 @@ public class AdaptiveToolBarPainter<E extends JToolBar, U extends WebToolBarUI> 
     {
         super ( painter );
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setFloating ( final boolean floating )
-    {
-        // Ignore this method in adaptive class
-    }
 }

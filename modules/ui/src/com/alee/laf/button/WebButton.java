@@ -25,6 +25,7 @@ import com.alee.managers.hotkey.HotkeyInfo;
 import com.alee.managers.hotkey.HotkeyManager;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.language.LanguageMethods;
+import com.alee.managers.language.LanguageUtils;
 import com.alee.managers.language.data.TooltipWay;
 import com.alee.managers.language.updaters.LanguageUpdater;
 import com.alee.managers.log.Log;
@@ -74,12 +75,14 @@ public class WebButton extends JButton
 
     public WebButton ( final String text )
     {
-        super ( text );
+        super ( LanguageUtils.getInitialText ( text ) );
+        LanguageUtils.registerInitialLanguage ( this, text );
     }
 
     public WebButton ( final String text, final Icon icon )
     {
-        super ( text, icon );
+        super ( LanguageUtils.getInitialText ( text ), icon );
+        LanguageUtils.registerInitialLanguage ( this, text );
     }
 
     public WebButton ( final ActionListener listener )
@@ -97,13 +100,15 @@ public class WebButton extends JButton
 
     public WebButton ( final String text, final ActionListener listener )
     {
-        super ( text );
+        super ( LanguageUtils.getInitialText ( text ) );
+        LanguageUtils.registerInitialLanguage ( this, text );
         addActionListener ( listener );
     }
 
     public WebButton ( final String text, final Icon icon, final ActionListener listener )
     {
-        super ( text, icon );
+        super ( LanguageUtils.getInitialText ( text ), icon );
+        LanguageUtils.registerInitialLanguage ( this, text );
         addActionListener ( listener );
     }
 

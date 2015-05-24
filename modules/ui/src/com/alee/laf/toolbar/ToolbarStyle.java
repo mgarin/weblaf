@@ -18,7 +18,7 @@
 package com.alee.laf.toolbar;
 
 /**
- * User: mgarin Date: 14.10.11 Time: 15:33
+ * @author Mikle Garin
  */
 
 public enum ToolbarStyle

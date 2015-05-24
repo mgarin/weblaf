@@ -23,7 +23,7 @@ package com.alee.laf.filechooser;
  * @author Mikle Garin
  */
 
-public enum FileApproveText
+public enum FileAcceptText
 {
     /**
      * Save text.

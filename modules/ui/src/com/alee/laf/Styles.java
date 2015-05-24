@@ -55,6 +55,11 @@ public final class Styles
     public static String tableCellRenderer = "table-cell";
 
     /**
+     * {@link com.alee.laf.toolbar.WebToolBar} style IDs.
+     */
+    public static String toolbarAttached = "attached";
+
+    /**
      * {@link com.alee.laf.rootpane.WebRootPane} style IDs.
      */
     public static String windowTitlePanel = "window-title";
@@ -65,7 +70,7 @@ public final class Styles
     public static String windowCloseButton = "window-close";
 
     /**
-     * {@link com.alee.laf.colorchooser.WebColorChooser}
+     * {@link com.alee.laf.colorchooser.WebColorChooser} style IDs.
      */
     public static String colorchooser = "colorchooser";
     public static String colorchooserLabel = "colorchooser-label";
@@ -74,6 +79,22 @@ public final class Styles
     public static String colorchooserOkButton = "colorchooser-ok";
     public static String colorchooserResetButton = "colorchooser-reset";
     public static String colorchooserCancelButton = "colorchooser-cancel";
+
+    /**
+     * {@link com.alee.laf.filechooser.WebFileChooser} style IDs.
+     */
+    public static String filechooserToolbar = "filechooser";
+    public static String filechooserUndecoratedToolbar = "filechooser-undecorated";
+    public static String filechooserToolbarButton = "filechooser-tool";
+    public static String filechooserHistoryScrollPane = "filechooser-history";
+    public static String filechooserHistoryScrollBar = "filechooser-history";
+    public static String filechooserCenterPanel = "filechooser-center";
+    public static String filechooserSouthPanel = "filechooser-south";
+    public static String filechooserSelectedLabel = "filechooser-selected";
+    public static String filechooserButton = "filechooser";
+    public static String filechooserAcceptButton = "filechooser-accept";
+    public static String filechooserCancelButton = "filechooser-cancel";
+    public static String filechooserRemovalListPanel = "filechooser-removal-list";
 
     /**
      * Custom WebLaF components.

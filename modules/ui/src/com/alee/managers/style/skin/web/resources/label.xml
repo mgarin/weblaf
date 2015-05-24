@@ -8,19 +8,17 @@
             <foreground>black</foreground>
             <background>237,237,237</background>
         </component>
-        <ui>
-            <drawShade>false</drawShade>
-        </ui>
         <painter id="painter" class="com.alee.managers.style.skin.web.WebLabelPainter">
+            <drawShade>false</drawShade>
             <shadeColor>230,230,230</shadeColor>
         </painter>
     </style>
 
     <!-- Label with text shade -->
     <style type="label" id="shade-label" extends="default">
-        <ui>
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebLabelPainter">
             <drawShade>true</drawShade>
-        </ui>
+        </painter>
     </style>
 
 </skin>

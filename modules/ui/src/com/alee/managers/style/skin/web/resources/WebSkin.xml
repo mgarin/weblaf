@@ -20,11 +20,13 @@
     <include>resources/list.xml</include>
     <include>resources/table.xml</include>
     <include>resources/panel.xml</include>
+    <include>resources/toolbar.xml</include>
     <include>resources/scrollbar.xml</include>
     <include>resources/scrollpane.xml</include>
     <include>resources/splitpane.xml</include>
     <include>resources/popupmenu.xml</include>
     <include>resources/colorchooser.xml</include>
+    <include>resources/filechooser.xml</include>
     <include>resources/rootpane.xml</include>
 
     <!-- Custom components styles -->

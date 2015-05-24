@@ -40,7 +40,6 @@ public class WebToolBarPainter<E extends JToolBar, U extends WebToolBarUI> exten
     /**
      * Runtime variables.
      */
-    protected boolean floating;
     protected final Color middleColor = new Color ( 158, 158, 158 );
     protected final Color[] gradient = new Color[]{ StyleConstants.transparent, middleColor, middleColor, StyleConstants.transparent };
     protected final float[] fractions = { 0f, 0.33f, 0.66f, 1f };
@@ -54,32 +53,32 @@ public class WebToolBarPainter<E extends JToolBar, U extends WebToolBarUI> exten
         super.install ( c, ui );
 
         // Updating initial layout
-        updateLayout ( c, true );
+        updateLayout ( true );
 
-        // Border and layout update listeners
+        // Ancestor listener for border and layout updates when entering floating mode
         ancestorListener = new AncestorAdapter ()
         {
             @Override
             public void ancestorAdded ( final AncestorEvent event )
             {
                 updateBorder ();
-                updateLayout ( c, false );
+                updateLayout ( false );
             }
         };
-        c.addAncestorListener ( ancestorListener );
+        component.addAncestorListener ( ancestorListener );
 
-        // Toolbar properties change listener
+        // Toolbar properties change listener for border and layout updates
         propertyChangeListener = new PropertyChangeListener ()
         {
             @Override
             public void propertyChange ( final PropertyChangeEvent evt )
             {
                 updateBorder ();
-                updateLayout ( c, false );
+                updateLayout ( false );
             }
         };
-        c.addPropertyChangeListener ( WebLookAndFeel.TOOLBAR_FLOATABLE_PROPERTY, propertyChangeListener );
-        c.addPropertyChangeListener ( WebLookAndFeel.TOOLBAR_ORIENTATION_PROPERTY, propertyChangeListener );
+        component.addPropertyChangeListener ( WebLookAndFeel.TOOLBAR_FLOATABLE_PROPERTY, propertyChangeListener );
+        component.addPropertyChangeListener ( WebLookAndFeel.TOOLBAR_ORIENTATION_PROPERTY, propertyChangeListener );
     }
 
     /**
@@ -89,11 +88,34 @@ public class WebToolBarPainter<E extends JToolBar, U extends WebToolBarUI> exten
     public void uninstall ( final E c, final U ui )
     {
         // Removing listeners
-        c.removePropertyChangeListener ( WebLookAndFeel.TOOLBAR_ORIENTATION_PROPERTY, propertyChangeListener );
-        c.removePropertyChangeListener ( WebLookAndFeel.TOOLBAR_FLOATABLE_PROPERTY, propertyChangeListener );
-        c.removeAncestorListener ( ancestorListener );
+        component.removePropertyChangeListener ( WebLookAndFeel.TOOLBAR_ORIENTATION_PROPERTY, propertyChangeListener );
+        component.removePropertyChangeListener ( WebLookAndFeel.TOOLBAR_FLOATABLE_PROPERTY, propertyChangeListener );
+        component.removeAncestorListener ( ancestorListener );
 
         super.uninstall ( c, ui );
+    }
+
+    /**
+     * Updates toolbar layout settings.
+     * todo Something shady is going on here, should check this
+     *
+     * @param install whether or not should install layout if not installed
+     */
+    protected void updateLayout ( final boolean install )
+    {
+        final boolean installed = component.getLayout () instanceof ToolbarLayout;
+        if ( !install && !installed )
+        {
+            return;
+        }
+
+        final ToolbarLayout layout = new ToolbarLayout ( spacing, component.getOrientation () );
+        if ( installed )
+        {
+            final ToolbarLayout old = ( ToolbarLayout ) component.getLayout ();
+            layout.setConstraints ( old.getConstraints () );
+        }
+        component.setLayout ( layout );
     }
 
     /**
@@ -102,23 +124,16 @@ public class WebToolBarPainter<E extends JToolBar, U extends WebToolBarUI> exten
     @Override
     public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
     {
-        final Object aa = GraphicsUtils.setupAntialias ( g2d );
-
         // Painting toolbar
         super.paint ( g2d, bounds, c, ui );
 
         // Painting gripper
         paintGripper ( g2d, c );
-
-        GraphicsUtils.restoreAntialias ( g2d, aa );
     }
 
-    @Override
-    public void setFloating ( final boolean floating )
-    {
-        this.floating = floating;
-    }
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void paintBorder ( final Graphics2D g2d, final Rectangle bounds, final E c, final Shape borderShape )
     {
@@ -249,10 +264,17 @@ public class WebToolBarPainter<E extends JToolBar, U extends WebToolBarUI> exten
         //        }
     }
 
+    /**
+     * Paints toolbar gripper.
+     *
+     * @param g2d graphics context
+     * @param c   toolbar component
+     */
     protected void paintGripper ( final Graphics2D g2d, final E c )
     {
         if ( c.isFloatable () )
         {
+            final Object aa = GraphicsUtils.setupAntialias ( g2d );
             if ( c.getOrientation () == WebToolBar.HORIZONTAL )
             {
                 final int gradY = shadeWidth + 1;
@@ -262,7 +284,7 @@ public class WebToolBarPainter<E extends JToolBar, U extends WebToolBarUI> exten
                     g2d.setPaint ( new LinearGradientPaint ( 0, gradY, 0, gradEndY, fractions, gradient ) );
 
                     // Determining gripper X coordinate
-                    int x = toolbarStyle.equals ( ToolbarStyle.standalone ) ? shadeWidth + 1 + margin.left + ( floating ? -1 : 1 ) :
+                    int x = toolbarStyle.equals ( ToolbarStyle.standalone ) ? shadeWidth + 1 + margin.left + ( ui.isFloating () ? -1 : 1 ) :
                             margin.left + gripperSpace / 2 - 1;
                     if ( !ltr )
                     {
@@ -289,8 +311,8 @@ public class WebToolBarPainter<E extends JToolBar, U extends WebToolBarUI> exten
                     g2d.setPaint ( new LinearGradientPaint ( gradX, 0, gradEndX, 0, fractions, gradient ) );
 
                     // Determining gripper Y coordinate
-                    final int y = toolbarStyle.equals ( ToolbarStyle.standalone ) ? shadeWidth + 1 + margin.top + ( floating ? -1 : 1 ) :
-                            margin.top + gripperSpace / 2 - 1;
+                    final int y = toolbarStyle.equals ( ToolbarStyle.standalone ) ? shadeWidth + 1 + margin.top +
+                            ( ui.isFloating () ? -1 : 1 ) : margin.top + gripperSpace / 2 - 1;
 
                     // Painting gripper
                     for ( int i = c.getWidth () / 2 - 3; i >= gradX; i -= 4 )
@@ -303,23 +325,7 @@ public class WebToolBarPainter<E extends JToolBar, U extends WebToolBarUI> exten
                     }
                 }
             }
+            GraphicsUtils.restoreAntialias ( g2d, aa );
         }
-    }
-
-    private void updateLayout ( final JComponent c, final boolean install )
-    {
-        final boolean installed = c.getLayout () instanceof ToolbarLayout;
-        if ( !install && !installed )
-        {
-            return;
-        }
-
-        final ToolbarLayout layout = new ToolbarLayout ( spacing, component.getOrientation () );
-        if ( installed )
-        {
-            final ToolbarLayout old = ( ToolbarLayout ) c.getLayout ();
-            layout.setConstraints ( old.getConstraints () );
-        }
-        c.setLayout ( layout );
     }
 }

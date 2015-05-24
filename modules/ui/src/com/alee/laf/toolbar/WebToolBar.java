@@ -46,6 +46,11 @@ public class WebToolBar extends JToolBar implements Styleable, ShapeProvider, Si
         super ();
     }
 
+    public WebToolBar ( final int orientation )
+    {
+        super ( orientation );
+    }
+
     public WebToolBar ( final String name )
     {
         super ( name );
@@ -54,11 +59,6 @@ public class WebToolBar extends JToolBar implements Styleable, ShapeProvider, Si
     public WebToolBar ( final String name, final int orientation )
     {
         super ( name, orientation );
-    }
-
-    public WebToolBar ( final int orientation )
-    {
-        super ( orientation );
     }
 
     /**
@@ -144,7 +144,7 @@ public class WebToolBar extends JToolBar implements Styleable, ShapeProvider, Si
     }
 
     /**
-     * Additional childs interaction methods
+     * Additional children interaction methods
      */
 
     public void add ( final List<? extends Component> components, final int index )

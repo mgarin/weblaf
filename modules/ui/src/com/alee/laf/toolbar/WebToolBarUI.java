@@ -71,10 +71,8 @@ public class WebToolBarUI extends BasicToolBarUI implements Styleable, ShapeProv
     @Override
     public void installUI ( final JComponent c )
     {
+        // Installing UI
         super.installUI ( c );
-
-        // Saving toolbar reference
-        toolBar = ( JToolBar ) c;
 
         // Applying skin
         StyleManager.applySkin ( toolBar );
@@ -91,9 +89,11 @@ public class WebToolBarUI extends BasicToolBarUI implements Styleable, ShapeProv
         // Uninstalling applied skin
         StyleManager.removeSkin ( toolBar );
 
+        // Uninstalling UI
         super.uninstallUI ( c );
 
-        // Swing doesn't cleanup this value on its own
+        // Swing doesn't cleanup this value in some versions
+        // So we will give a hand here and simply nullify it
         toolBar = null;
     }
 
@@ -164,7 +164,6 @@ public class WebToolBarUI extends BasicToolBarUI implements Styleable, ShapeProv
     {
         if ( painter != null )
         {
-            painter.setFloating ( isFloating () );
             painter.paint ( ( Graphics2D ) g, SwingUtils.size ( c ), c, this );
         }
     }
@@ -239,7 +238,6 @@ public class WebToolBarUI extends BasicToolBarUI implements Styleable, ShapeProv
         dialog.setResizable ( false );
         final WindowListener wl = createFrameListener ();
         dialog.addWindowListener ( wl );
-        //        dialog.setUndecorated ( true );
         return dialog;
     }
 

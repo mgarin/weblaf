@@ -13,9 +13,4 @@ import javax.swing.*;
 
 public interface ToolBarPainter<E extends JToolBar, U extends WebToolBarUI> extends Painter<E, U>, SpecificPainter
 {
-    /**
-     *
-     * @param floating
-     */
-    public void setFloating ( boolean floating );
 }

@@ -26,6 +26,7 @@ FEATURES TO DO:
 1. Allow variables (with specified types) like colors, sizes etc.
 2. Improve styles loading/overriding mechanics
 3. Add option to provide font easily (short XML descriptor)
+4. Container methods with additional useful methods to add children into container component
 
 
 -------------------------------------------------------------------------

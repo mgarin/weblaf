@@ -237,9 +237,9 @@ public class WebFileChooser extends JFileChooser implements LanguageMethods, Lan
     }
 
     /**
-     * Returns currenly active file filter.
+     * Returns currently active file filter.
      *
-     * @return currenly active file filter
+     * @return currently active file filter
      */
     public AbstractFileFilter getActiveFileFilter ()
     {
@@ -271,7 +271,7 @@ public class WebFileChooser extends JFileChooser implements LanguageMethods, Lan
      *
      * @param approveText approve button text type
      */
-    public void setApproveButtonText ( final FileApproveText approveText )
+    public void setApproveButtonText ( final FileAcceptText approveText )
     {
         getWebUI ().setApproveButtonText ( approveText );
     }
