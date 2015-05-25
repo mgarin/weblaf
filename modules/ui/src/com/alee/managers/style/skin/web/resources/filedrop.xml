@@ -1,0 +1,16 @@
+<skin>
+
+    <!-- com.alee.extended.filechooser.WebFileDrop -->
+
+    <!-- Container panel -->
+    <style type="panel" id="filedrop" extends="default">
+        <component>
+            <background>white</background>
+            <focusable>true</focusable>
+        </component>
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebPanelPainter">
+            <margin>2,2,2,2</margin>
+        </painter>
+    </style>
+
+</skin>

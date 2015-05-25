@@ -20,7 +20,7 @@ package com.alee.extended.filechooser;
 import com.alee.extended.drag.FileDragAndDropHandler;
 import com.alee.extended.layout.HorizontalFlowLayout;
 import com.alee.global.GlobalConstants;
-import com.alee.global.StyleConstants;
+import com.alee.laf.Styles;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.button.WebToggleButton;
 import com.alee.laf.list.WebList;
@@ -138,15 +138,7 @@ public class WebPathField extends WebPanel
 
     public WebPathField ( final File path )
     {
-        super ( true );
-
-        // Default settings
-        setMargin ( -1 );
-        setOpaque ( false );
-        setPaintFocus ( true );
-        setWebColoredBackground ( false );
-        setBackground ( Color.WHITE );
-        setForeground ( WebPathFieldStyle.foreground );
+        super ( Styles.pathfield );
 
         // Files TransferHandler
         setTransferHandler ( new FileDragAndDropHandler ()
@@ -175,9 +167,7 @@ public class WebPathField extends WebPanel
             }
         } );
 
-        contentPanel = new WebPanel ();
-        contentPanel.setOpaque ( false );
-        contentPanel.setLayout ( new HorizontalFlowLayout ( 0, true ) );
+        contentPanel = new WebPanel ( Styles.pathfieldContentPanel, new HorizontalFlowLayout ( 0, true ) );
         add ( contentPanel, BorderLayout.CENTER );
 
         //        WebImage editImage = new WebImage ( WebPathField.class, "icons/edit.png" );
@@ -210,10 +200,10 @@ public class WebPathField extends WebPanel
                     }
                     else
                     {
-                        final File choosenPath = new File ( pathField.getText () );
-                        if ( choosenPath.exists () && choosenPath.isDirectory () )
+                        final File chosenPath = new File ( pathField.getText () );
+                        if ( chosenPath.exists () && chosenPath.isDirectory () )
                         {
-                            folderSelected ( choosenPath );
+                            folderSelected ( chosenPath );
                         }
                         else
                         {
@@ -340,10 +330,7 @@ public class WebPathField extends WebPanel
                             }
                         }
                     } );
-                    listScroll = new WebScrollPane ( list );
-                    listScroll.setShadeWidth ( 0 );
-                    //                    listScroll.setHorizontalScrollBarPolicy (
-                    //                            WebScrollPane.HORIZONTAL_SCROLLBAR_NEVER );
+                    listScroll = new WebScrollPane ( Styles.pathfieldPopupScroll, list );
                     autocompleteDialog.getContentPane ().add ( listScroll, BorderLayout.CENTER );
 
                     pathField.addKeyListener ( new KeyAdapter ()
@@ -431,7 +418,7 @@ public class WebPathField extends WebPanel
                 final String parentPath = t.substring ( 0, beginIndex );
                 final File parent = parentPath.trim ().equals ( "" ) ? null : new File ( parentPath );
 
-                final List<File> similar = getSimilarFileChilds ( parent, t.substring ( beginIndex ) );
+                final List<File> similar = getSimilarFileChildren ( parent, t.substring ( beginIndex ) );
                 if ( similar != null && similar.size () > 0 )
                 {
                     updateList ( similar );
@@ -555,7 +542,7 @@ public class WebPathField extends WebPanel
         };
         FocusManager.addFocusTracker ( WebPathField.this, focusTracker );
 
-        // Updatin initial path
+        // Updating initial path
         updatePath ( path );
     }
 
@@ -688,7 +675,7 @@ public class WebPathField extends WebPanel
         pathField.removeFocusListener ( pathFocusListener );
         contentPanel.removeAll ();
 
-        // Determining oriention
+        // Determining orientation
         final boolean ltr = WebPathField.this.getComponentOrientation ().isLeftToRight ();
 
         // Determining root
@@ -716,13 +703,7 @@ public class WebPathField extends WebPanel
             for ( final File file : parents )
             {
                 final WebButton wb = new WebButton ();
-                wb.setRound ( !SystemUtils.isWindows () && first ? StyleConstants.smallRound : 0 );
-                wb.setShadeWidth ( 0 );
-                wb.setLeftRightSpacing ( 0 );
-                wb.setRolloverDecoratedOnly ( true );
-                wb.setRolloverDarkBorderOnly ( false );
-                wb.setFocusable ( false );
-                wb.setForeground ( WebPathField.this.getForeground () );
+                wb.setStyleId ( Styles.pathfieldPathButton );
                 if ( !SystemUtils.isWindows () && first )
                 {
                     wb.setIcon ( FileUtils.getMyComputerIcon () );
@@ -743,9 +724,9 @@ public class WebPathField extends WebPanel
                 } );
                 contentPanel.add ( wb );
 
-                int childsCount = 0;
+                int childrenCount = 0;
                 final WebPopupMenu menu = new WebPopupMenu ();
-                final File[] files = FileUtils.sortFiles ( getFileChilds ( file ) );
+                final File[] files = FileUtils.sortFiles ( getFileChildren ( file ) );
                 if ( files != null )
                 {
                     for ( final File root : files )
@@ -763,29 +744,22 @@ public class WebPathField extends WebPanel
                                 }
                             } );
                             menu.add ( menuItem );
-                            childsCount++;
+                            childrenCount++;
                         }
                     }
                 }
                 if ( !SystemUtils.isWindows () && first )
                 {
-                    setRootsMenu ( menu, childsCount );
+                    setRootsMenu ( menu, childrenCount );
                 }
 
-                final WebToggleButton childs = new WebToggleButton ();
-                childs.setIcon ( ltr ? right : left );
-                childs.setSelectedIcon ( down );
-                childs.setShadeToggleIcon ( false );
-                childs.setRound ( 0 );
-                childs.setShadeWidth ( 0 );
-                childs.setRolloverDecoratedOnly ( true );
-                childs.setRolloverDarkBorderOnly ( false );
-                childs.setFocusable ( false );
-                childs.setComponentPopupMenu ( menu );
-                childs.setMargin ( 0 );
-                childs.setLeftRightSpacing ( 0 );
-                childs.setEnabled ( childsCount > 0 );
-                childs.addActionListener ( new ActionListener ()
+                final WebToggleButton children = new WebToggleButton ();
+                children.setStyleId ( Styles.pathfieldChildrenButton );
+                children.setIcon ( ltr ? right : left );
+                children.setSelectedIcon ( down );
+                children.setComponentPopupMenu ( menu );
+                children.setEnabled ( childrenCount > 0 );
+                children.addActionListener ( new ActionListener ()
                 {
                     @Override
                     public void actionPerformed ( final ActionEvent e )
@@ -793,10 +767,10 @@ public class WebPathField extends WebPanel
                         // todo Apply orientation globally on change, not here
                         WebPathField.this.transferFocus ();
                         SwingUtils.applyOrientation ( menu );
-                        menu.showBelowMiddle ( childs );
+                        menu.showBelowMiddle ( children );
                     }
                 } );
-                contentPanel.add ( childs );
+                contentPanel.add ( children );
 
                 menu.addPopupMenuListener ( new PopupMenuListener ()
                 {
@@ -809,13 +783,13 @@ public class WebPathField extends WebPanel
                     @Override
                     public void popupMenuWillBecomeInvisible ( final PopupMenuEvent e )
                     {
-                        childs.setSelected ( false );
+                        children.setSelected ( false );
                     }
 
                     @Override
                     public void popupMenuCanceled ( final PopupMenuEvent e )
                     {
-                        childs.setSelected ( false );
+                        children.setSelected ( false );
                     }
                 } );
 
@@ -826,7 +800,7 @@ public class WebPathField extends WebPanel
         // Filling space
         contentPanel.add ( new JLabel () );
 
-        // Shortening long elemets
+        // Shortening long elements
         if ( !SystemUtils.isWindows () )
         {
             while ( getRootsMenu ().getComponentCount () > getRootsMenuItemsCount () )
@@ -840,7 +814,7 @@ public class WebPathField extends WebPanel
         }
         while ( canShortenPath () )
         {
-            // Andding menu element
+            // Adding menu element
             final WebButton wb = ( WebButton ) contentPanel.getComponent ( 2 );
             final WebMenuItem menuItem = new WebMenuItem ();
             menuItem.setIcon ( ( Icon ) wb.getClientProperty ( FILE_ICON ) );
@@ -858,14 +832,14 @@ public class WebPathField extends WebPanel
         repaint ();
     }
 
-    protected List<File> getSimilarFileChilds ( final File file, final String namePart )
+    protected List<File> getSimilarFileChildren ( final File file, final String namePart )
     {
         final String searchText = namePart.toLowerCase ();
-        final File[] childs = getFileChilds ( file );
+        final File[] children = getFileChildren ( file );
         final List<File> similar = new ArrayList<File> ();
-        if ( childs != null )
+        if ( children != null )
         {
-            for ( final File child : childs )
+            for ( final File child : children )
             {
                 if ( child.getName ().toLowerCase ().contains ( searchText ) )
                 {
@@ -876,7 +850,7 @@ public class WebPathField extends WebPanel
         return similar;
     }
 
-    protected File[] getFileChilds ( final File file )
+    protected File[] getFileChildren ( final File file )
     {
         return file != null ? file.listFiles ( fileFilter ) : FileUtils.getDiskRoots ();
     }
@@ -890,15 +864,8 @@ public class WebPathField extends WebPanel
     {
         if ( myComputer == null )
         {
-            myComputer = WebButton.createIconWebButton ( FileUtils.getMyComputerIcon () );
-            myComputer.setRound ( getRound () );
-            myComputer.setShadeWidth ( 0 );
-            myComputer.setLeftRightSpacing ( 0 );
-            myComputer.setRolloverDecoratedOnly ( true );
-            myComputer.setRolloverDarkBorderOnly ( false );
-            myComputer.setDrawFocus ( false );
-            myComputer.setDrawRight ( false );
-            myComputer.setDrawRightLine ( true );
+            myComputer = new WebButton ( FileUtils.getMyComputerIcon () );
+            myComputer.setStyleId ( Styles.pathfieldRootButton );
             myComputer.addActionListener ( new ActionListener ()
             {
                 @Override
@@ -921,10 +888,10 @@ public class WebPathField extends WebPanel
         return rootsMenuItemsCount;
     }
 
-    public void setRootsMenu ( final WebPopupMenu rootsMenu, final int childsCount )
+    public void setRootsMenu ( final WebPopupMenu rootsMenu, final int childrenCount )
     {
         this.rootsMenu = rootsMenu;
-        this.rootsMenuItemsCount = childsCount;
+        this.rootsMenuItemsCount = childrenCount;
     }
 
     protected WebToggleButton getRootsArrowButton ( final boolean ltr )
@@ -951,16 +918,9 @@ public class WebPathField extends WebPanel
             }
 
             rootsArrowButton = new WebToggleButton ();
+            rootsArrowButton.setStyleId ( Styles.pathfieldChildrenButton );
             rootsArrowButton.setIcon ( ltr ? right : left );
             rootsArrowButton.setSelectedIcon ( down );
-            rootsArrowButton.setShadeToggleIcon ( false );
-            rootsArrowButton.setRound ( 0 );
-            rootsArrowButton.setShadeWidth ( 0 );
-            rootsArrowButton.setRolloverDecoratedOnly ( true );
-            rootsArrowButton.setRolloverDarkBorderOnly ( false );
-            rootsArrowButton.setFocusable ( false );
-            rootsArrowButton.setMargin ( 0 );
-            rootsArrowButton.setLeftRightSpacing ( 0 );
             rootsArrowButton.setComponentPopupMenu ( rootsMenu );
             rootsArrowButton.addActionListener ( new ActionListener ()
             {

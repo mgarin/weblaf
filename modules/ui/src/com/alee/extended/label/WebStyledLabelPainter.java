@@ -33,7 +33,8 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public class WebStyledLabelPainter<E extends WebStyledLabel> extends WebLabelPainter<E> implements StyledLabelPainter<E>, SwingConstants
+public class WebStyledLabelPainter<E extends WebStyledLabel, U extends WebStyledLabelUI> extends WebLabelPainter<E, U>
+        implements StyledLabelPainter<E, U>, SwingConstants
 {
     /**
      * Style settings.
@@ -63,7 +64,6 @@ public class WebStyledLabelPainter<E extends WebStyledLabel> extends WebLabelPai
     /**
      * {@inheritDoc}
      */
-    @Override
     public void setPreferredRowCount ( final int rows )
     {
         this.preferredRowCount = rows;
@@ -84,7 +84,6 @@ public class WebStyledLabelPainter<E extends WebStyledLabel> extends WebLabelPai
     /**
      * {@inheritDoc}
      */
-    @Override
     public void setIgnoreColorSettings ( final boolean ignore )
     {
         this.ignoreColorSettings = ignore;
@@ -104,7 +103,6 @@ public class WebStyledLabelPainter<E extends WebStyledLabel> extends WebLabelPai
     /**
      * {@inheritDoc}
      */
-    @Override
     public void setScriptFontRatio ( final float ratio )
     {
         this.scriptFontRatio = ratio;
@@ -125,7 +123,6 @@ public class WebStyledLabelPainter<E extends WebStyledLabel> extends WebLabelPai
     /**
      * {@inheritDoc}
      */
-    @Override
     public void setTruncatedTextSuffix ( final String suffix )
     {
         this.truncatedTextSuffix = suffix;
@@ -196,9 +193,9 @@ public class WebStyledLabelPainter<E extends WebStyledLabel> extends WebLabelPai
             try
             {
                 label.setRows ( 0 );
-                lw = getPreferredSize ( label ).width;
+                lw = getPreferredSize ().width;
                 label.setPreferredWidth ( oldPreferredWidth > 0 ? Math.min ( label.getWidth (), oldPreferredWidth ) : label.getWidth () );
-                final Dimension sizeOnWidth = getPreferredSize ( label );
+                final Dimension sizeOnWidth = getPreferredSize ();
                 if ( sizeOnWidth.width < lw )
                 {
                     lw = sizeOnWidth.width;
@@ -1113,17 +1110,17 @@ public class WebStyledLabelPainter<E extends WebStyledLabel> extends WebLabelPai
                 {
                     label.setPreferredWidth ( label.getWidth () );
                 }
-                size = getPreferredSize ( label );
+                size = getPreferredSize ();
                 if ( oldPreferredWidth > 0 && oldPreferredWidth < label.getWidth () )
                 {
                     label.setPreferredWidth ( oldPreferredWidth );
-                    size = getPreferredSize ( label );
+                    size = getPreferredSize ();
                 }
                 else if ( label.isLineWrap () && label.getMinimumRows () > 0 )
                 {
                     label.setPreferredWidth ( 0 );
                     label.setRows ( 0 );
-                    final Dimension minSize = getPreferredSize ( label );
+                    final Dimension minSize = getPreferredSize ();
                     if ( minSize.height > size.height )
                     {
                         size = minSize;
@@ -1159,10 +1156,10 @@ public class WebStyledLabelPainter<E extends WebStyledLabel> extends WebLabelPai
      * {@inheritDoc}
      */
     @Override
-    public Dimension getPreferredSize ( final E label )
+    public Dimension getPreferredSize ()
     {
         retrievingPreferredSize = true;
-        final Dimension ps = getPreferredSizeImpl ( label );
+        final Dimension ps = getPreferredSizeImpl ();
         retrievingPreferredSize = false;
         return ps;
     }
@@ -1173,16 +1170,16 @@ public class WebStyledLabelPainter<E extends WebStyledLabel> extends WebLabelPai
      * @param label label to retrieve preferred size for
      * @return label preferred size
      */
-    protected Dimension getPreferredSizeImpl ( final E label )
+    protected Dimension getPreferredSizeImpl ()
     {
-        StyledLabelUtils.buildTextRanges ( label, textRanges );
+        StyledLabelUtils.buildTextRanges ( component, textRanges );
 
-        Font font = StyledLabelUtils.getFont ( label );
-        final FontMetrics fm = label.getFontMetrics ( font );
+        Font font = StyledLabelUtils.getFont ( component );
+        final FontMetrics fm = component.getFontMetrics ( font );
         FontMetrics fm2;
         final int defaultFontSize = font.getSize ();
-        final boolean lineWrap = label.isLineWrap () ||
-                ( label.getText () != null && ( label.getText ().contains ( "\r" ) || label.getText ().contains ( "\n" ) ) );
+        final boolean lineWrap = component.isLineWrap () ||
+                ( component.getText () != null && ( component.getText ().contains ( "\r" ) || component.getText ().contains ( "\n" ) ) );
 
         final TextRange[] texts = textRanges.toArray ( new TextRange[ textRanges.size () ] );
 
@@ -1194,12 +1191,12 @@ public class WebStyledLabelPainter<E extends WebStyledLabel> extends WebLabelPai
             final int size = ( style != null && ( style.isSuperscript () || style.isSubscript () ) ) ?
                     Math.round ( ( float ) defaultFontSize / scriptFontRatio ) : defaultFontSize;
 
-            font = StyledLabelUtils.getFont ( label );
+            font = StyledLabelUtils.getFont ( component );
             int styleHeight = fm.getHeight ();
             if ( style != null && ( ( style.getStyle () != -1 && font.getStyle () != style.getStyle () ) || font.getSize () != size ) )
             {
                 font = FontUtils.getCachedDerivedFont ( font, style.getStyle () == -1 ? font.getStyle () : style.getStyle (), size );
-                fm2 = label.getFontMetrics ( font );
+                fm2 = component.getFontMetrics ( font );
                 styleHeight = fm2.getHeight ();
             }
             styleHeight++;
@@ -1218,7 +1215,7 @@ public class WebStyledLabelPainter<E extends WebStyledLabel> extends WebLabelPai
             final StyleRange style = textRange.styleRange;
             final int size = ( style != null && ( style.isSuperscript () || style.isSubscript () ) ) ?
                     Math.round ( ( float ) defaultFontSize / scriptFontRatio ) : defaultFontSize;
-            font = StyledLabelUtils.getFont ( label );
+            font = StyledLabelUtils.getFont ( component );
             final String s = textRange.text.substring ( nextRowStartIndex );
             if ( s.startsWith ( "\r" ) || s.startsWith ( "\n" ) )
             {
@@ -1226,7 +1223,7 @@ public class WebStyledLabelPainter<E extends WebStyledLabel> extends WebLabelPai
                 maxWidth = Math.max ( width, maxWidth );
                 width = 0;
                 naturalRowCount++;
-                if ( label.getMaximumRows () > 0 && naturalRowCount >= label.getMaximumRows () )
+                if ( component.getMaximumRows () > 0 && naturalRowCount >= component.getMaximumRows () )
                 {
                     break;
                 }
@@ -1235,7 +1232,7 @@ public class WebStyledLabelPainter<E extends WebStyledLabel> extends WebLabelPai
             if ( style != null && ( ( style.getStyle () != -1 && font.getStyle () != style.getStyle () ) || font.getSize () != size ) )
             {
                 font = FontUtils.getCachedDerivedFont ( font, style.getStyle () == -1 ? font.getStyle () : style.getStyle (), size );
-                fm2 = label.getFontMetrics ( font );
+                fm2 = component.getFontMetrics ( font );
                 width += fm2.stringWidth ( s );
             }
             else
@@ -1250,50 +1247,51 @@ public class WebStyledLabelPainter<E extends WebStyledLabel> extends WebLabelPai
         preferredRowCount = naturalRowCount;
 
         // if getPreferredWidth() is not set but getRows() is set, get maximum width and row count based on the required rows.
-        if ( lineWrap && label.getPreferredWidth () <= 0 && label.getRows () > 0 )
+        if ( lineWrap && component.getPreferredWidth () <= 0 && component.getRows () > 0 )
         {
-            maxWidth = getMaximumWidth ( label, maxWidth, naturalRowCount, label.getRows () );
+            maxWidth = getMaximumWidth ( component, maxWidth, naturalRowCount, component.getRows () );
         }
 
         // if calculated maximum width is larger than label's maximum size, wrap again to get the updated row count and use the label's maximum width as the maximum width.
-        int preferredWidth = label.getPreferredWidth ();
-        final Insets insets = label.getInsets ();
+        int preferredWidth = component.getPreferredWidth ();
+        final Insets insets = component.getInsets ();
         if ( preferredWidth > 0 && insets != null )
         {
             preferredWidth -= insets.left + insets.right;
         }
-        if ( label.getIcon () != null && label.getHorizontalTextPosition () != SwingConstants.CENTER )
+        if ( component.getIcon () != null && component.getHorizontalTextPosition () != SwingConstants.CENTER )
         {
-            preferredWidth -= label.getIcon ().getIconWidth () + label.getIconTextGap ();
+            preferredWidth -= component.getIcon ().getIconWidth () + component.getIconTextGap ();
         }
         if ( lineWrap && preferredWidth > 0 && maxWidth > preferredWidth )
         {
-            maxWidth = getLayoutWidth ( label, preferredWidth );
+            maxWidth = getLayoutWidth ( component, preferredWidth );
         }
 
         // Recalculate the maximum width according to the maximum rows
-        if ( lineWrap && label.getMaximumRows () > 0 && preferredRowCount > label.getMaximumRows () )
+        if ( lineWrap && component.getMaximumRows () > 0 && preferredRowCount > component.getMaximumRows () )
         {
-            if ( label.getPreferredWidth () <= 0 )
+            if ( component.getPreferredWidth () <= 0 )
             {
-                maxWidth = getMaximumWidth ( label, maxWidth, naturalRowCount, label.getMaximumRows () );
+                maxWidth = getMaximumWidth ( component, maxWidth, naturalRowCount, component.getMaximumRows () );
             }
             else
             {
-                preferredRowCount = label.getMaximumRows ();
+                preferredRowCount = component.getMaximumRows ();
             }
         }
 
         // Recalculate the maximum width according to the minimum rows
-        if ( lineWrap && label.getPreferredWidth () <= 0 && label.getMinimumRows () > 0 && preferredRowCount < label.getMinimumRows () )
+        if ( lineWrap && component.getPreferredWidth () <= 0 && component.getMinimumRows () > 0 &&
+                preferredRowCount < component.getMinimumRows () )
         {
-            maxWidth = getMaximumWidth ( label, maxWidth, naturalRowCount, label.getMinimumRows () );
+            maxWidth = getMaximumWidth ( component, maxWidth, naturalRowCount, component.getMinimumRows () );
         }
-        if ( retrievingPreferredSize && label.getRows () > 0 && preferredRowCount > label.getRows () &&
-                ( label.getPreferredWidth () <= 0 || label.getPreferredWidth () >= maxLineWidth ||
-                        naturalRowCount > label.getRows () ) )
+        if ( retrievingPreferredSize && component.getRows () > 0 && preferredRowCount > component.getRows () &&
+                ( component.getPreferredWidth () <= 0 || component.getPreferredWidth () >= maxLineWidth ||
+                        naturalRowCount > component.getRows () ) )
         {
-            preferredRowCount = label.getRows ();
+            preferredRowCount = component.getRows ();
             maxLineWidth = 0;
             for ( int i = 0; i < lineWidths.size () && i < preferredRowCount; i++ )
             {
@@ -1302,14 +1300,15 @@ public class WebStyledLabelPainter<E extends WebStyledLabel> extends WebLabelPai
         }
 
         Dimension dimension = new Dimension ( Math.min ( maxWidth, maxLineWidth ),
-                ( maxRowHeight + Math.max ( 0, label.getRowGap () ) ) * preferredRowCount );
-        if ( label.getIcon () != null )
+                ( maxRowHeight + Math.max ( 0, component.getRowGap () ) ) * preferredRowCount );
+        if ( component.getIcon () != null )
         {
-            dimension = new Dimension ( dimension.width + label.getIconTextGap () + label.getIcon ().getIconWidth (), dimension.height );
+            dimension = new Dimension ( dimension.width + component.getIconTextGap () + component.getIcon ().getIconWidth (),
+                    dimension.height );
         }
 
-//        dimension.width += insets.right + insets.left;
-//        dimension.height += insets.bottom + insets. top;
+        //        dimension.width += insets.right + insets.left;
+        //        dimension.height += insets.bottom + insets. top;
 
         return dimension;
     }

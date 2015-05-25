@@ -18,10 +18,17 @@
 package com.alee.extended.painter;
 
 import com.alee.laf.WebLookAndFeel;
+import com.alee.managers.log.Log;
 import com.alee.utils.LafUtils;
+import com.alee.utils.ReflectUtils;
+import com.alee.utils.SwingUtils;
+import com.alee.utils.laf.PainterShapeProvider;
+import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
+import java.awt.*;
 import java.lang.ref.WeakReference;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 import java.util.WeakHashMap;
 
@@ -64,17 +71,14 @@ public final class PainterSupport
         if ( !installedPainters.containsKey ( painter ) )
         {
             // Installing painter
-            painter.install ( component );
+            painter.install ( component, LafUtils.getUI ( component ) );
 
             // Applying initial component settings
-            final Boolean opaque = painter.isOpaque ( component );
+            final Boolean opaque = painter.isOpaque ();
             if ( opaque != null )
             {
                 LookAndFeel.installProperty ( component, WebLookAndFeel.OPAQUE_PROPERTY, opaque ? Boolean.TRUE : Boolean.FALSE );
             }
-
-            // Updating border
-            LafUtils.updateBorder ( component );
 
             // Creating weak references to use them inside the listener
             // Otherwise we will force it to keep strong reference to component and painter if we use them directly
@@ -101,10 +105,6 @@ public final class PainterSupport
                 @Override
                 public void revalidate ()
                 {
-                    // todo Move to separate "updateBorder" method in PainterListener?
-                    // Forcing border updates
-                    LafUtils.updateBorder ( c.get () );
-
                     // Forcing layout updates
                     c.get ().revalidate ();
                 }
@@ -116,7 +116,7 @@ public final class PainterSupport
                     final Painter painter = p.get ();
                     if ( painter != null )
                     {
-                        final Boolean opaque = painter.isOpaque ( c.get () );
+                        final Boolean opaque = painter.isOpaque ();
                         if ( opaque != null )
                         {
                             c.get ().setOpaque ( opaque );
@@ -146,10 +146,183 @@ public final class PainterSupport
         if ( listeners != null )
         {
             // Uninstalling painter
-            painter.uninstall ( component );
+            painter.uninstall ( component, LafUtils.getUI ( component ) );
 
             // Removing painter listener
             listeners.remove ( painter );
         }
+    }
+
+    /**
+     * Returns the specified painter if it can be assigned to proper painter type.
+     * Otherwise returns newly created adapter painter that wraps the specified painter.
+     * Used by component UIs to adapt general-type painters for their specific-type needs.
+     *
+     * @param painter      processed painter
+     * @param properClass  proper painter class
+     * @param adapterClass adapter painter class
+     * @param <T>          proper painter type
+     * @return specified painter if it can be assigned to proper painter type, new painter adapter if it cannot be assigned
+     */
+    public static <T extends Painter & SpecificPainter> T getProperPainter ( final Painter painter, final Class<T> properClass,
+                                                                             final Class<? extends T> adapterClass )
+    {
+        return painter == null ? null : ReflectUtils.isAssignable ( properClass, painter.getClass () ) ? ( T ) painter :
+                ( T ) ReflectUtils.createInstanceSafely ( adapterClass, painter );
+    }
+
+    /**
+     * Returns either the specified painter if it is not an adapted painter or the adapted painter.
+     * Used by component UIs to retrieve painters adapted for their specific needs.
+     *
+     * @param painter painter to process
+     * @param <T>     desired painter type
+     * @return either the specified painter if it is not an adapted painter or the adapted painter
+     */
+    public static <T extends Painter> T getAdaptedPainter ( final Painter painter )
+    {
+        return ( T ) ( painter != null && painter instanceof AdaptivePainter ? ( ( AdaptivePainter ) painter ).getPainter () : painter );
+    }
+
+    /**
+     * Sets panel painter.
+     * Pass null to remove panel painter.
+     *
+     * @param painter new panel painter
+     */
+    public static <P extends Painter & SpecificPainter> void setPainter ( final JComponent component, final DataRunnable<P> setter,
+                                                                          final P oldPainter, final Painter painter,
+                                                                          final Class<P> properClass,
+                                                                          final Class<? extends P> adapterClass )
+    {
+        // Creating adaptive painter if required
+        final P properPainter = getProperPainter ( painter, properClass, adapterClass );
+
+        // Properly updating painter
+        PainterSupport.uninstallPainter ( component, oldPainter );
+        setter.run ( properPainter );
+        PainterSupport.installPainter ( component, properPainter );
+
+        // Firing painter change event
+        // This is made using reflection because required method is protected within Component class
+        firePainterChanged ( component, oldPainter, properPainter );
+    }
+
+    /**
+     * Fires painter property change event.
+     * This is a workaround since {@code firePropertyChange()} method is protected and cannot be called w/o using reflection.
+     *
+     * @param component  component to fire property change to
+     * @param oldPainter old painter
+     * @param newPainter new painter
+     */
+    public static void firePainterChanged ( final JComponent component, final Painter oldPainter, final Painter newPainter )
+    {
+        try
+        {
+            ReflectUtils.callMethod ( component, "firePropertyChange", WebLookAndFeel.PAINTER_PROPERTY, oldPainter, newPainter );
+        }
+        catch ( final NoSuchMethodException e )
+        {
+            Log.error ( LafUtils.class, e );
+        }
+        catch ( final InvocationTargetException e )
+        {
+            Log.error ( LafUtils.class, e );
+        }
+        catch ( final IllegalAccessException e )
+        {
+            Log.error ( LafUtils.class, e );
+        }
+    }
+
+    /**
+     * Updates component border using the specified margin
+     *
+     * @param component component which border needs to be updated
+     * @param margin    component margin, or null if it doesn't have one
+     * @param painter   component painter, or null if it doesn't have one
+     */
+    public static void updateBorder ( final JComponent component, final Insets margin, final Painter painter )
+    {
+        if ( component != null )
+        {
+            // Preserve old borders
+            if ( SwingUtils.isPreserveBorders ( component ) )
+            {
+                return;
+            }
+
+            final boolean ltr = component.getComponentOrientation ().isLeftToRight ();
+            final Insets m = new Insets ( 0, 0, 0, 0 );
+
+            // Calculating margin borders
+            if ( margin != null )
+            {
+                m.top += margin.top;
+                m.left += ltr ? margin.left : margin.right;
+                m.bottom += margin.bottom;
+                m.right += ltr ? margin.right : margin.left;
+            }
+
+            // Calculating painter borders
+            if ( painter != null )
+            {
+                // Painter borders
+                final Insets pi = painter.getMargin ();
+                if ( pi != null )
+                {
+                    m.top += pi.top;
+                    m.left += ltr ? pi.left : pi.right;
+                    m.bottom += pi.bottom;
+                    m.right += ltr ? pi.right : pi.left;
+                }
+            }
+
+            // Installing border
+            component.setBorder ( LafUtils.createWebBorder ( m ) );
+        }
+    }
+
+    /**
+     * Returns component shape according to its painter.
+     *
+     * @param component component painter is applied to
+     * @param painter   component painter
+     * @return component shape according to its painter
+     */
+    public static Shape getShape ( final JComponent component, final Painter painter )
+    {
+        if ( painter != null && painter instanceof PainterShapeProvider )
+        {
+            return ( ( PainterShapeProvider ) painter ).provideShape ( component, SwingUtils.size ( component ) );
+        }
+        else
+        {
+            return SwingUtils.size ( component );
+        }
+    }
+
+    /**
+     * Returns component preferred size with painter taken into account.
+     *
+     * @param component component painter is applied to
+     * @param ps        default component preferred size
+     * @param painter   component painter
+     * @return component preferred size with painter taken into account
+     */
+    public static Dimension getPreferredSize ( final JComponent component, final Dimension ps, final Painter painter )
+    {
+        // Painter's preferred size
+        Dimension pps = painter != null ? SwingUtils.max ( ps, painter.getPreferredSize () ) : ps;
+
+        // Checking layout preferred size
+        final LayoutManager layout = component.getLayout ();
+        if ( layout != null )
+        {
+            pps = SwingUtils.max ( ps, layout.preferredLayoutSize ( component ) );
+        }
+
+        return pps;
     }
 }

@@ -55,7 +55,7 @@ public class PanelsGroup extends DefaultExampleGroup
         examples.add ( new DecoratedPanelExample () );
         examples.add ( new PartialPanelsExample () );
         examples.add ( new FocusTrackingPanelsExample () );
-        examples.add ( new WebComponentPanelExample () );
+        examples.add ( new WebComponentPaneExample () );
         return examples;
     }
 }

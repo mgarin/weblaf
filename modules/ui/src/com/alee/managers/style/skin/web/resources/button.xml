@@ -1,0 +1,27 @@
+<skin>
+
+    <!-- com.alee.laf.button.WebButton -->
+
+    <!-- Button -->
+    <style type="button" id="default">
+        <component>
+            <focusable>true</focusable>
+        </component>
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebButtonPainter">
+            <round>3</round>
+            <shadeWidth>2</shadeWidth>
+            <paintBackground>true</paintBackground>
+            <webColoredBackground>true</webColoredBackground>
+            <leftRightSpacing>4</leftRightSpacing>
+        </painter>
+    </style>
+
+    <!-- Icon-only button -->
+    <style type="button" id="icon" extends="default">
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebButtonPainter">
+            <round>2</round>
+            <leftRightSpacing>0</leftRightSpacing>
+        </painter>
+    </style>
+
+</skin>

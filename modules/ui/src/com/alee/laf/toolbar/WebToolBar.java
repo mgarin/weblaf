@@ -27,8 +27,8 @@ import com.alee.managers.language.LanguageManager;
 import com.alee.managers.log.Log;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SizeUtils;
-import com.alee.utils.SwingUtils;
 import com.alee.utils.laf.ShapeProvider;
+import com.alee.utils.laf.Styleable;
 import com.alee.utils.swing.SizeMethods;
 
 import javax.swing.*;
@@ -39,11 +39,16 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public class WebToolBar extends JToolBar implements ShapeProvider, SizeMethods<WebToolBar>, LanguageContainerMethods
+public class WebToolBar extends JToolBar implements Styleable, ShapeProvider, SizeMethods<WebToolBar>, LanguageContainerMethods
 {
     public WebToolBar ()
     {
         super ();
+    }
+
+    public WebToolBar ( final int orientation )
+    {
+        super ( orientation );
     }
 
     public WebToolBar ( final String name )
@@ -54,23 +59,6 @@ public class WebToolBar extends JToolBar implements ShapeProvider, SizeMethods<W
     public WebToolBar ( final String name, final int orientation )
     {
         super ( name, orientation );
-    }
-
-    public WebToolBar ( final int orientation )
-    {
-        super ( orientation );
-    }
-
-    public WebToolBar ( final ToolbarStyle style )
-    {
-        super ();
-        setToolbarStyle ( style );
-    }
-
-    public WebToolBar ( final int orientation, final ToolbarStyle style )
-    {
-        super ( orientation );
-        setToolbarStyle ( style );
     }
 
     /**
@@ -124,7 +112,9 @@ public class WebToolBar extends JToolBar implements ShapeProvider, SizeMethods<W
     {
         final boolean hor = getOrientation () == HORIZONTAL;
         final WebSeparator separator = new WebSeparator ( hor ? VERTICAL : HORIZONTAL );
-        add ( separator.setMargin ( hor ? 0 : spacing, hor ? spacing : 0, hor ? 0 : spacing, hor ? spacing : 0 ), constrain );
+        // todo style id for toolbar separator
+        // separator.setStyleId ();
+        add ( separator, constrain );
         return separator;
     }
 
@@ -154,7 +144,7 @@ public class WebToolBar extends JToolBar implements ShapeProvider, SizeMethods<W
     }
 
     /**
-     * Additional childs interaction methods
+     * Additional children interaction methods
      */
 
     public void add ( final List<? extends Component> components, final int index )
@@ -250,127 +240,45 @@ public class WebToolBar extends JToolBar implements ShapeProvider, SizeMethods<W
     /**
      * UI methods
      */
-
-    public boolean isUndecorated ()
-    {
-        return getWebUI ().isUndecorated ();
-    }
-
-    public void setUndecorated ( final boolean undecorated )
-    {
-        getWebUI ().setUndecorated ( undecorated );
-    }
-
+    /**
+     * Returns toolbar painter.
+     *
+     * @return toolbar painter
+     */
     public Painter getPainter ()
     {
         return getWebUI ().getPainter ();
     }
 
-    public void setPainter ( final Painter painter )
+    /**
+     * Sets toolbar painter.
+     * Pass null to remove toolbar painter.
+     *
+     * @param painter new toolbar painter
+     * @return this toolbar
+     */
+    public WebToolBar setPainter ( final Painter painter )
     {
         getWebUI ().setPainter ( painter );
+        return this;
     }
 
-    public int getRound ()
-    {
-        return getWebUI ().getRound ();
-    }
-
-    public void setRound ( final int round )
-    {
-        getWebUI ().setRound ( round );
-    }
-
-    public int getShadeWidth ()
-    {
-        return getWebUI ().getShadeWidth ();
-    }
-
-    public void setShadeWidth ( final int shadeWidth )
-    {
-        getWebUI ().setShadeWidth ( shadeWidth );
-    }
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public Insets getMargin ()
+    public String getStyleId ()
     {
-        return getWebUI ().getMargin ();
+        return getWebUI ().getStyleId ();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public void setMargin ( final Insets margin )
+    public void setStyleId ( final String id )
     {
-        getWebUI ().setMargin ( margin );
-    }
-
-    public void setMargin ( final int top, final int left, final int bottom, final int right )
-    {
-        setMargin ( new Insets ( top, left, bottom, right ) );
-    }
-
-    public void setMargin ( final int spacing )
-    {
-        setMargin ( spacing, spacing, spacing, spacing );
-    }
-
-    public ToolbarStyle getToolbarStyle ()
-    {
-        return getWebUI ().getToolbarStyle ();
-    }
-
-    public void setToolbarStyle ( final ToolbarStyle toolbarStyle )
-    {
-        getWebUI ().setToolbarStyle ( toolbarStyle );
-    }
-
-    public int getSpacing ()
-    {
-        return getWebUI ().getSpacing ();
-    }
-
-    public void setSpacing ( final int spacing )
-    {
-        getWebUI ().setSpacing ( spacing );
-    }
-
-    public Color getTopBgColor ()
-    {
-        return getWebUI ().getTopBgColor ();
-    }
-
-    public void setTopBgColor ( final Color topBgColor )
-    {
-        getWebUI ().setTopBgColor ( topBgColor );
-    }
-
-    public Color getBottomBgColor ()
-    {
-        return getWebUI ().getBottomBgColor ();
-    }
-
-    public void setBottomBgColor ( final Color bottomBgColor )
-    {
-        getWebUI ().setBottomBgColor ( bottomBgColor );
-    }
-
-    public Color getBorderColor ()
-    {
-        return getWebUI ().getBorderColor ();
-    }
-
-    public void setBorderColor ( final Color lowerBorderColor )
-    {
-        getWebUI ().setBorderColor ( lowerBorderColor );
-    }
-
-    public ToolbarLayout getToolbarLayout ()
-    {
-        return ( ToolbarLayout ) getLayout ();
-    }
-
-    public boolean isFloating ()
-    {
-        return getWebUI ().isFloating ();
+        getWebUI ().setStyleId ( id );
     }
 
     @Override
@@ -511,24 +419,6 @@ public class WebToolBar extends JToolBar implements ShapeProvider, SizeMethods<W
     public WebToolBar setMaximumHeight ( final int maximumHeight )
     {
         return SizeUtils.setMaximumHeight ( this, maximumHeight );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Dimension getPreferredSize ()
-    {
-        Dimension ps = SizeUtils.getPreferredSize ( this, super.getPreferredSize () );
-
-        // Fix to take painter preferres size into account
-        final Painter painter = getPainter ();
-        if ( painter != null )
-        {
-            ps = SwingUtils.max ( ps, painter.getPreferredSize ( this ) );
-        }
-
-        return ps;
     }
 
     /**

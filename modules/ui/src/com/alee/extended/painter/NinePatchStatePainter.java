@@ -17,11 +17,12 @@
 
 package com.alee.extended.painter;
 
-import com.alee.laf.toolbar.WebToolBar;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.ninepatch.NinePatchIcon;
 
 import javax.swing.*;
+import javax.swing.plaf.ComponentUI;
+import javax.swing.plaf.basic.BasicToolBarUI;
 import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
@@ -32,17 +33,17 @@ import java.util.Map;
  *
  * @param <E> component type
  * @author Mikle Garin
- * @see ComponentState
- * @see NinePatchIcon
+ * @see com.alee.extended.painter.ComponentState
+ * @see com.alee.utils.ninepatch.NinePatchIcon
  * @see com.alee.extended.painter.NinePatchIconPainter
- * @see AbstractPainter
- * @see Painter
+ * @see com.alee.extended.painter.AbstractPainter
+ * @see com.alee.extended.painter.Painter
  */
 
-public class NinePatchStatePainter<E extends JComponent> extends AbstractPainter<E>
+public class NinePatchStatePainter<E extends JComponent, U extends ComponentUI> extends AbstractPainter<E, U>
 {
     /**
-     * todo 1. Move each component support to separate classes
+     * todo 1. Move each component support to separate classes?
      */
 
     /**
@@ -113,59 +114,13 @@ public class NinePatchStatePainter<E extends JComponent> extends AbstractPainter
     }
 
     /**
-     * Returns whether atleast one state icon is available or not.
+     * Returns whether at least one state icon is available or not.
      *
-     * @return true if atleast one state icon is available, false otherwise
+     * @return true if at least one state icon is available, false otherwise
      */
     public boolean hasStateIcons ()
     {
         return stateIcons != null && stateIcons.size () > 0;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c )
-    {
-        if ( hasStateIcons () && c != null )
-        {
-            // Current state icon retrieval
-            final NinePatchIcon stateIcon;
-            if ( c instanceof AbstractButton )
-            {
-                // Button component
-                stateIcon = getButtonBackground ( ( AbstractButton ) c );
-            }
-            else if ( c instanceof JToolBar )
-            {
-                // Toolbar component
-                stateIcon = getToolBarBackground ( ( JToolBar ) c );
-            }
-            else
-            {
-                // Any component
-                stateIcon = getComponentBackground ( c );
-            }
-
-            // Draw background
-            if ( stateIcon != null )
-            {
-                stateIcon.setComponent ( c );
-                stateIcon.paintIcon ( g2d, bounds );
-            }
-
-            // Draw focus
-            if ( isFocused ( c ) )
-            {
-                final NinePatchIcon focusIcon = getExactStateIcon ( ComponentState.focused );
-                if ( focusIcon != null )
-                {
-                    focusIcon.setComponent ( c );
-                    focusIcon.paintIcon ( g2d, bounds );
-                }
-            }
-        }
     }
 
     /**
@@ -235,7 +190,7 @@ public class NinePatchStatePainter<E extends JComponent> extends AbstractPainter
      */
     protected NinePatchIcon getToolBarBackground ( final JToolBar toolbar )
     {
-        if ( toolbar instanceof WebToolBar && ( ( WebToolBar ) toolbar ).isFloating () )
+        if ( toolbar.getUI () instanceof BasicToolBarUI && ( ( BasicToolBarUI ) toolbar.getUI () ).isFloating () )
         {
             return getStateIcon ( toolbar.isEnabled () ? ComponentState.floating : ComponentState.floatingDisabled );
         }
@@ -318,37 +273,15 @@ public class NinePatchStatePainter<E extends JComponent> extends AbstractPainter
      * {@inheritDoc}
      */
     @Override
-    public Dimension getPreferredSize ( final E c )
+    public Insets getMargin ()
     {
-        if ( hasStateIcons () )
-        {
-            Dimension maxDimension = new Dimension ( 0, 0 );
-            for ( final NinePatchIcon npi : stateIcons.values () )
-            {
-                npi.setComponent ( c );
-                maxDimension = SwingUtils.max ( maxDimension, npi.getPreferredSize () );
-            }
-            return maxDimension;
-        }
-        else
-        {
-            return super.getPreferredSize ( c );
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Insets getMargin ( final E c )
-    {
-        final Insets margin = super.getMargin ( c );
+        final Insets margin = super.getMargin ();
         if ( hasStateIcons () )
         {
             Insets maxInsets = new Insets ( 0, 0, 0, 0 );
             for ( final NinePatchIcon npi : stateIcons.values () )
             {
-                npi.setComponent ( c );
+                npi.setComponent ( component );
                 maxInsets = SwingUtils.max ( maxInsets, npi.getMargin () );
             }
             return SwingUtils.max ( margin, maxInsets );
@@ -356,6 +289,74 @@ public class NinePatchStatePainter<E extends JComponent> extends AbstractPainter
         else
         {
             return margin;
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
+    {
+        if ( hasStateIcons () && c != null )
+        {
+            // Current state icon retrieval
+            final NinePatchIcon stateIcon;
+            if ( c instanceof AbstractButton )
+            {
+                // Button component
+                stateIcon = getButtonBackground ( ( AbstractButton ) c );
+            }
+            else if ( c instanceof JToolBar )
+            {
+                // Toolbar component
+                stateIcon = getToolBarBackground ( ( JToolBar ) c );
+            }
+            else
+            {
+                // Any component
+                stateIcon = getComponentBackground ( c );
+            }
+
+            // Draw background
+            if ( stateIcon != null )
+            {
+                stateIcon.setComponent ( c );
+                stateIcon.paintIcon ( g2d, bounds );
+            }
+
+            // Draw focus
+            if ( isFocused ( c ) )
+            {
+                final NinePatchIcon focusIcon = getExactStateIcon ( ComponentState.focused );
+                if ( focusIcon != null )
+                {
+                    focusIcon.setComponent ( c );
+                    focusIcon.paintIcon ( g2d, bounds );
+                }
+            }
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Dimension getPreferredSize ()
+    {
+        if ( hasStateIcons () )
+        {
+            Dimension maxDimension = new Dimension ( 0, 0 );
+            for ( final NinePatchIcon npi : stateIcons.values () )
+            {
+                npi.setComponent ( component );
+                maxDimension = SwingUtils.max ( maxDimension, npi.getPreferredSize () );
+            }
+            return maxDimension;
+        }
+        else
+        {
+            return super.getPreferredSize ();
         }
     }
 }

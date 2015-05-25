@@ -17,8 +17,8 @@
 
 package com.alee.managers.tooltip;
 
-import com.alee.extended.painter.AbstractPainter;
 import com.alee.global.StyleConstants;
+import com.alee.laf.label.WebLabelUI;
 import com.alee.managers.style.skin.web.WebLabelPainter;
 import com.alee.utils.GraphicsUtils;
 
@@ -28,17 +28,16 @@ import java.awt.*;
  * Custom painter for HotkeyTipLabel component.
  *
  * @author Mikle Garin
- * @see AbstractPainter
+ * @see com.alee.extended.painter.AbstractPainter
  * @see com.alee.extended.painter.Painter
  */
 
-public class HotkeyTipPainter<T extends HotkeyTipLabel> extends WebLabelPainter<T>
+public class HotkeyTipPainter<T extends HotkeyTipLabel, U extends WebLabelUI> extends WebLabelPainter<T, U>
 {
     /**
-     * Style constants.
+     * Style settings.
      */
-    public static Color bg = new Color ( 255, 255, 255, 178 );
-    public static int round = StyleConstants.smallRound;
+    protected int round = StyleConstants.smallRound;
 
     /**
      * Constructs new hotkey tip painter.
@@ -49,16 +48,50 @@ public class HotkeyTipPainter<T extends HotkeyTipLabel> extends WebLabelPainter<
     }
 
     /**
+     * Returns decoration round.
+     *
+     * @return decoration round
+     */
+    public int getRound ()
+    {
+        return round;
+    }
+
+    /**
+     * Sets decoration round.
+     *
+     * @param round decoration round
+     */
+    public void setRound ( int round )
+    {
+        this.round = round;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final T c )
+    public void paint ( final Graphics2D g2d, final Rectangle bounds, final T c, final U ui )
+    {
+        // Painting custom background
+        paintBackground ( g2d, bounds, c );
+
+        // Painting label
+        super.paint ( g2d, bounds, c, ui );
+    }
+
+    /**
+     * Paints custom hotkey tip background.
+     *
+     * @param g2d    graphics context
+     * @param bounds label bounds
+     * @param c      label component
+     */
+    protected void paintBackground ( Graphics2D g2d, Rectangle bounds, T c )
     {
         final Object aa = GraphicsUtils.setupAntialias ( g2d );
-        g2d.setColor ( bg );
+        g2d.setColor ( c.getBackground () );
         g2d.fillRoundRect ( bounds.x, bounds.y, bounds.width, bounds.height, round * 2, round * 2 );
         GraphicsUtils.restoreAntialias ( g2d, aa );
-
-        super.paint ( g2d, bounds, c );
     }
 }

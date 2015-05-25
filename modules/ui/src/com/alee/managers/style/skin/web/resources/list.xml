@@ -1,0 +1,27 @@
+<skin>
+
+    <!-- com.alee.laf.list.WebList -->
+
+    <!-- todo List selection painter -->
+
+    <!-- Default cell renderer label -->
+    <style type="label" id="list-text-cell" extends="default">
+        <component>
+            <opaque>false</opaque>
+        </component>
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebLabelPainter">
+            <margin>2,2,2,2</margin>
+        </painter>
+    </style>
+
+    <!-- Text cell renderer label -->
+    <style type="label" id="list-text-cell" extends="list-text-cell">
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebLabelPainter">
+            <margin>2,4,2,2</margin>
+        </painter>
+    </style>
+
+    <!-- Icon cell renderer label -->
+    <style type="label" id="list-icon-cell" extends="list-text-cell" />
+
+</skin>

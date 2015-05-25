@@ -1,0 +1,74 @@
+<skin>
+
+    <!-- com.alee.laf.filechooser.WebFileChooser -->
+
+    <!-- Toolbar -->
+    <style type="toolBar" id="filechooser" extends="attached">
+        <component>
+            <floatable>false</floatable>
+        </component>
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebToolBarPainter">
+            <spacing>0</spacing>
+        </painter>
+    </style>
+
+    <!-- Undecorated toolbar -->
+    <style type="toolBar" id="filechooser-undecorated" extends="filechooser">
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebToolBarPainter">
+            <undecorated>true</undecorated>
+        </painter>
+    </style>
+
+    <!-- Toolbar button -->
+    <style type="button" id="filechooser-toolbar" extends="icon">
+        <component>
+            <focusable>false</focusable>
+        </component>
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebButtonPainter">
+            <rolloverDecoratedOnly>true</rolloverDecoratedOnly>
+        </painter>
+    </style>
+
+    <!-- History popup list scrollpane -->
+    <style type="scrollPane" id="filechooser-history" extends="combobox-list" />
+
+    <!-- History popup list scrollbar -->
+    <style type="scrollBar" id="filechooser-history" extends="combobox-list" />
+
+    <!-- Central panel -->
+    <style type="panel" id="filechooser-center" extends="default">
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebPanelPainter">
+            <margin>4,4,4,4</margin>
+        </painter>
+    </style>
+
+    <!-- South panel -->
+    <style type="panel" id="filechooser-center" extends="default">
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebPanelPainter">
+            <margin>0,4,4,4</margin>
+        </painter>
+    </style>
+
+    <!-- Selected files title label -->
+    <style type="label" id="filechooser-selected" extends="shade-label">
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebLabelPainter">
+            <margin>0,4,0,0</margin>
+        </painter>
+    </style>
+
+    <!-- Buttons -->
+    <style type="button" id="filechooser" extends="default" />
+    <style type="button" id="filechooser-accept" extends="default" />
+    <style type="button" id="filechooser-cancel" extends="default" />
+
+    <!-- Files removal confirmation list panel -->
+    <style type="panel" id="filechooser-removal-list" extends="default">
+        <component>
+            <background>white</background>
+        </component>
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebPanelPainter">
+            <margin>4,4,4,4</margin>
+        </painter>
+    </style>
+
+</skin>

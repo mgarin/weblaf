@@ -20,7 +20,7 @@ package com.alee.extended.filechooser;
 import com.alee.extended.drag.FileDragAndDropHandler;
 import com.alee.extended.layout.HorizontalFlowLayout;
 import com.alee.extended.panel.CenterPanel;
-import com.alee.global.StyleConstants;
+import com.alee.laf.Styles;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.filechooser.WebFileChooser;
 import com.alee.laf.label.WebLabel;
@@ -38,7 +38,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * User: mgarin Date: 07.08.11 Time: 15:44
+ * @author Mikle Garin
  */
 
 public class WebFileChooserField extends WebPanel
@@ -84,19 +84,11 @@ public class WebFileChooserField extends WebPanel
 
     public WebFileChooserField ( final Window owner, final boolean showChooseButton )
     {
-        super ( true );
+        super ( Styles.filechooserfield, new BorderLayout ( 0, 0 ) );
 
         this.showChooseButton = showChooseButton;
 
-        setOpaque ( false );
-        setLayout ( new BorderLayout ( 0, 0 ) );
-        setWebColoredBackground ( false );
-        setPaintFocus ( true );
-        setMargin ( -1 );
-        setBackground ( Color.WHITE );
-
-        contentPanel = new WebPanel ();
-        contentPanel.setOpaque ( false );
+        contentPanel = new WebPanel ( Styles.filechooserfieldContentPanel );
 
         // Files TransferHandler
         setTransferHandler ( new FileDragAndDropHandler ()
@@ -127,7 +119,7 @@ public class WebFileChooserField extends WebPanel
             }
         } );
 
-        scroll = new WebScrollPane ( contentPanel, false )
+        scroll = new WebScrollPane ( contentPanel )
         {
             @Override
             public Dimension getPreferredSize ()
@@ -137,11 +129,8 @@ public class WebFileChooserField extends WebPanel
                 return ps;
             }
         };
-        scroll.setHorizontalScrollBarPolicy ( WebScrollPane.HORIZONTAL_SCROLLBAR_NEVER );
-        scroll.setVerticalScrollBarPolicy ( WebScrollPane.VERTICAL_SCROLLBAR_NEVER );
-        scroll.setMargin ( 1 );
-        scroll.setOpaque ( false );
-        scroll.getViewport ().setOpaque ( false );
+        scroll.setStyleId ( Styles.filechooserfieldContentScroll );
+        scroll.setScrollBarStyleId ( Styles.filechooserfieldContentScrollBar );
         add ( scroll, BorderLayout.CENTER );
 
         if ( this.showChooseButton )
@@ -162,13 +151,7 @@ public class WebFileChooserField extends WebPanel
             } );
 
             chooseButton = new WebButton ( "..." );
-            chooseButton.setRound ( WebFileChooserField.this.getRound () );
-            chooseButton.setLeftRightSpacing ( StyleConstants.smallLeftRightSpacing );
-            chooseButton.setDrawFocus ( false );
-            chooseButton.setDrawLeft ( false );
-            chooseButton.setDrawLeftLine ( true );
-            chooseButton.setRolloverDarkBorderOnly ( false );
-            chooseButton.setShadeWidth ( 0 );
+            chooseButton.setStyleId ( Styles.filechooserfieldChooseButton );
             chooseButton.addActionListener ( new ActionListener ()
             {
                 @Override
@@ -374,13 +357,7 @@ public class WebFileChooserField extends WebPanel
     {
         public FilePlate ( final File file )
         {
-            super ( true );
-
-            setLayout ( new BorderLayout () );
-            setPaintSides ( false, false, false, true );
-            setShadeWidth ( 0 );
-            setMargin ( 0, 3, 0, 1 );
-            setFocusable ( true );
+            super ( Styles.filechooserfieldFilePlate, new BorderLayout () );
 
             // File name label
             final String actualFileName = FileUtils.getDisplayFileName ( file );
@@ -389,7 +366,7 @@ public class WebFileChooserField extends WebPanel
             final String absolutePath = file.getAbsolutePath ();
             final WebLabel fileName = new WebLabel ( showFileShortName ? displayFileName : absolutePath );
             fileName.setIcon ( showFileIcon ? FileUtils.getFileIcon ( file, false ) : null );
-            fileName.setMargin ( 0, 0, 0, 2 );
+            fileName.setStyleId ( Styles.filechooserfieldFileNameLabel );
             add ( fileName, BorderLayout.CENTER );
 
             addMouseListener ( new MouseAdapter ()
@@ -429,12 +406,7 @@ public class WebFileChooserField extends WebPanel
             if ( showRemoveButton )
             {
                 final WebButton remove = new WebButton ( CROSS_ICON );
-                remove.setLeftRightSpacing ( 0 );
-                remove.setInnerShadeWidth ( 2 );
-                remove.setRound ( StyleConstants.smallRound );
-                remove.setShadeWidth ( StyleConstants.shadeWidth );
-                remove.setFocusable ( false );
-                remove.setRolloverDecoratedOnly ( true );
+                remove.setStyleId ( Styles.filechooserfieldFileRemoveButton );
                 remove.addActionListener ( new ActionListener ()
                 {
                     @Override

@@ -18,12 +18,13 @@
 package com.alee.extended.breadcrumb;
 
 import com.alee.extended.layout.BreadcrumbLayout;
+import com.alee.laf.Styles;
 import com.alee.laf.panel.WebPanel;
 
 import java.awt.*;
 
 /**
- * User: mgarin Date: 01.03.12 Time: 18:54
+ * @author Mikle Garin
  */
 
 public class WebBreadcrumb extends WebPanel
@@ -38,36 +39,7 @@ public class WebBreadcrumb extends WebPanel
 
     public WebBreadcrumb ()
     {
-        this ( true );
-    }
-
-    public WebBreadcrumb ( final boolean decorated )
-    {
-        super ( decorated, createDefaultLayout () );
-
-        setPaintFocus ( true );
-
-        //        addContainerListener ( new ContainerListener ()
-        //        {
-        //            @Override
-        //            public void componentAdded ( final ContainerEvent e )
-        //            {
-        //                if ( autoUpdate )
-        //                {
-        //                    updateElement ( e.getChild () );
-        //                    updateElementTypes ();
-        //                }
-        //            }
-        //
-        //            @Override
-        //            public void componentRemoved ( final ContainerEvent e )
-        //            {
-        //                if ( autoUpdate )
-        //                {
-        //                    updateElementTypes ();
-        //                }
-        //            }
-        //        } );
+        super ( Styles.breadcrumb, createDefaultLayout () );
     }
 
     protected boolean isAutoUpdate ()
@@ -149,10 +121,10 @@ public class WebBreadcrumb extends WebPanel
 
     //    protected void updateElement ( final Component element )
     //    {
-    //        // Updating added component and its childs orientation
+    //        // Updating added component and its children orientation
     //        SwingUtils.copyOrientation ( WebBreadcrumb.this, element );
     //
-    //        // Updating standart properties
+    //        // Updating standard properties
     //        if ( element instanceof BreadcrumbElement )
     //        {
     //            final BreadcrumbElement be = ( BreadcrumbElement ) element;

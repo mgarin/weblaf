@@ -21,6 +21,7 @@ import com.alee.utils.SwingUtils;
 import com.alee.utils.ninepatch.NinePatchIcon;
 
 import javax.swing.*;
+import javax.swing.plaf.ComponentUI;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.net.URL;
@@ -36,7 +37,7 @@ import java.net.URL;
  * @see Painter
  */
 
-public class NinePatchIconPainter<E extends JComponent> extends AbstractPainter<E>
+public class NinePatchIconPainter<E extends JComponent, U extends ComponentUI> extends AbstractPainter<E, U>
 {
     /**
      * 9-patch icon to paint.
@@ -137,29 +138,12 @@ public class NinePatchIconPainter<E extends JComponent> extends AbstractPainter<
      * {@inheritDoc}
      */
     @Override
-    public Dimension getPreferredSize ( final E c )
+    public Insets getMargin ()
     {
+        final Insets margin = super.getMargin ();
         if ( icon != null )
         {
-            icon.setComponent ( c );
-            return icon.getPreferredSize ();
-        }
-        else
-        {
-            return super.getPreferredSize ( c );
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Insets getMargin ( final E c )
-    {
-        final Insets margin = super.getMargin ( c );
-        if ( icon != null )
-        {
-            icon.setComponent ( c );
+            icon.setComponent ( component );
             return SwingUtils.max ( margin, icon.getMargin () );
         }
         else
@@ -172,12 +156,29 @@ public class NinePatchIconPainter<E extends JComponent> extends AbstractPainter<
      * {@inheritDoc}
      */
     @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c )
+    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
     {
         if ( icon != null )
         {
             icon.setComponent ( c );
             icon.paintIcon ( c, g2d );
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Dimension getPreferredSize ()
+    {
+        if ( icon != null )
+        {
+            icon.setComponent ( component );
+            return icon.getPreferredSize ();
+        }
+        else
+        {
+            return super.getPreferredSize ();
         }
     }
 }

@@ -18,6 +18,7 @@
 package com.alee.managers.style.skin.web;
 
 import com.alee.laf.panel.PanelPainter;
+import com.alee.laf.panel.WebPanelUI;
 
 import javax.swing.*;
 
@@ -28,7 +29,7 @@ import javax.swing.*;
  * @author Mikle Garin
  */
 
-public class WebPopOverPainter<E extends JPanel> extends WebPopupPainter<E> implements PanelPainter<E>
+public class WebPopOverPainter<E extends JPanel, U extends WebPanelUI> extends WebPopupPainter<E, U> implements PanelPainter<E, U>
 {
     /**
      * Runtime variables.
@@ -67,113 +68,5 @@ public class WebPopOverPainter<E extends JPanel> extends WebPopupPainter<E> impl
     {
         // Reducing the shade when WebPopOver is not focused
         return popOverFocused ? shadeTransparency : shadeTransparency * 0.7f;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setUndecorated ( final boolean undecorated )
-    {
-        // Ignored setting
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setPaintFocus ( final boolean paint )
-    {
-        // Ignored setting
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setPaintTop ( final boolean top )
-    {
-        // Ignored setting
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setPaintLeft ( final boolean left )
-    {
-        // Ignored setting
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setPaintBottom ( final boolean bottom )
-    {
-        // Ignored setting
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setPaintRight ( final boolean right )
-    {
-        // Ignored setting
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setPaintSides ( final boolean top, final boolean left, final boolean bottom, final boolean right )
-    {
-        // Ignored setting
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setPaintTopLine ( final boolean top )
-    {
-        // Ignored setting
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setPaintLeftLine ( final boolean left )
-    {
-        // Ignored setting
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setPaintBottomLine ( final boolean bottom )
-    {
-        // Ignored setting
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setPaintRightLine ( final boolean right )
-    {
-        // Ignored setting
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setPaintSideLines ( final boolean top, final boolean left, final boolean bottom, final boolean right )
-    {
-        // Ignored setting
     }
 }

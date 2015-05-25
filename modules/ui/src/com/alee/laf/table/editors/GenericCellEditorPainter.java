@@ -19,6 +19,7 @@ package com.alee.laf.table.editors;
 
 import com.alee.extended.painter.AbstractPainter;
 import com.alee.laf.table.WebTableStyle;
+import com.alee.laf.text.WebTextFieldUI;
 import com.alee.utils.GraphicsUtils;
 
 import java.awt.*;
@@ -31,7 +32,7 @@ import java.awt.*;
  * @see com.alee.extended.painter.Painter
  */
 
-public class GenericCellEditorPainter extends AbstractPainter<GenericCellEditor>
+public class GenericCellEditorPainter extends AbstractPainter<GenericCellEditor, WebTextFieldUI>
 {
     /**
      * Constructs new generic cell editor painter.
@@ -45,7 +46,7 @@ public class GenericCellEditorPainter extends AbstractPainter<GenericCellEditor>
      * {@inheritDoc}
      */
     @Override
-    public Insets getMargin ( final GenericCellEditor c )
+    public Insets getMargin ()
     {
         return new Insets ( 0, 1, 0, 1 );
     }
@@ -54,7 +55,7 @@ public class GenericCellEditorPainter extends AbstractPainter<GenericCellEditor>
      * {@inheritDoc}
      */
     @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final GenericCellEditor c )
+    public void paint ( final Graphics2D g2d, final Rectangle bounds, final GenericCellEditor c, final WebTextFieldUI ui )
     {
         g2d.setPaint ( WebTableStyle.cellEditorBackground );
         g2d.fillRect ( bounds.x, bounds.y, bounds.width, bounds.height );

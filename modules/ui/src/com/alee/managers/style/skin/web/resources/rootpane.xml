@@ -1,0 +1,32 @@
+<skin>
+
+    <!-- com.alee.laf.rootpane.WebRootPane -->
+
+    <!-- Title panel -->
+    <style type="panel" id="window-title" extends="default">
+        <component>
+            <opaque>false</opaque>
+        </component>
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebPanelPainter">
+            <margin>4,5,4,10</margin>
+        </painter>
+    </style>
+
+    <!-- Title label -->
+    <style type="label" id="window-title" extends="shade-label" />
+
+    <!-- Custom window decoration control buttons -->
+    <style type="button" id="window-button" extends="default">
+        <component>
+            <focusable>false</focusable>
+        </component>
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebButtonPainter">
+            <margin>1,4,1,4</margin>
+            <round>6</round>
+        </painter>
+    </style>
+    <style type="button" id="window-minimize" extends="window-button" />
+    <style type="button" id="window-maximize" extends="window-button" />
+    <style type="button" id="window-close" extends="window-button" />
+
+</skin>

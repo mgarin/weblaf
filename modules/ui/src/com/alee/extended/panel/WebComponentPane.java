@@ -20,7 +20,9 @@ package com.alee.extended.panel;
 import com.alee.extended.layout.ComponentPanelLayout;
 import com.alee.extended.painter.AbstractPainter;
 import com.alee.global.StyleConstants;
+import com.alee.laf.Styles;
 import com.alee.laf.panel.WebPanel;
+import com.alee.laf.panel.WebPanelUI;
 import com.alee.managers.focus.DefaultFocusTracker;
 import com.alee.managers.focus.FocusManager;
 import com.alee.managers.hotkey.Hotkey;
@@ -40,17 +42,17 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * User: mgarin Date: 29.02.12 Time: 16:53
+ * @author Mikle Garin
  */
 
-public class WebComponentPanel extends WebPanel
+public class WebComponentPane extends WebPanel
 {
     public static final int GRIPPER_SIZE = 7;
     public static final int SINGLE_GRIPPER_STEP = 4;
 
     private final List<ComponentReorderListener> listeners = new ArrayList<ComponentReorderListener> ( 1 );
 
-    private WebPanel container;
+    private final WebPanel container;
     private final Map<Component, WebSelectablePanel> components = new LinkedHashMap<Component, WebSelectablePanel> ();
 
     private Insets elementMargin = new Insets ( 2, 2, 2, 2 );
@@ -59,22 +61,9 @@ public class WebComponentPanel extends WebPanel
     private boolean upDownHotkeysAllowed = true;
     private boolean leftRightHotkeysAllowed = false;
 
-    public WebComponentPanel ()
+    public WebComponentPane ()
     {
-        super ();
-        initialize ();
-    }
-
-    public WebComponentPanel ( final boolean decorated )
-    {
-        super ( decorated );
-        initialize ();
-    }
-
-    private void initialize ()
-    {
-        // Default styling
-        setWebColoredBackground ( false );
+        super ( Styles.componentpane );
 
         // Elements layout
         container = new WebPanel ();
@@ -332,7 +321,7 @@ public class WebComponentPanel extends WebPanel
                     {
                         WebSelectablePanel.this.transferFocus ();
                     }
-                    if ( WebComponentPanel.this.isEnabled () && SwingUtilities.isLeftMouseButton ( e ) )
+                    if ( WebComponentPane.this.isEnabled () && SwingUtilities.isLeftMouseButton ( e ) )
                     {
                         dragged = true;
                         startY = getY ();
@@ -448,15 +437,17 @@ public class WebComponentPanel extends WebPanel
 
         public void updateBorder ()
         {
-            final int index = getIndex ();
-            final boolean ltr = getComponentOrientation ().isLeftToRight ();
+            // todo Create styles
 
-            final int top = index == 0 ? elementMargin.top : elementMargin.top + 1;
-            final int left = elementMargin.left + ( reorderingAllowed && showReorderGrippers && ltr ? GRIPPER_SIZE : 0 );
-            final int bottom = index == components.size () - 1 ? elementMargin.bottom : elementMargin.bottom + 1;
-            final int right = elementMargin.right + ( reorderingAllowed && showReorderGrippers && !ltr ? GRIPPER_SIZE : 0 );
-
-            setMargin ( top, left, bottom, right );
+            //            final int index = getIndex ();
+            //            final boolean ltr = getComponentOrientation ().isLeftToRight ();
+            //
+            //            final int top = index == 0 ? elementMargin.top : elementMargin.top + 1;
+            //            final int left = elementMargin.left + ( reorderingAllowed && showReorderGrippers && ltr ? GRIPPER_SIZE : 0 );
+            //            final int bottom = index == components.size () - 1 ? elementMargin.bottom : elementMargin.bottom + 1;
+            //            final int right = elementMargin.right + ( reorderingAllowed && showReorderGrippers && !ltr ? GRIPPER_SIZE : 0 );
+            //
+            // setMargin ( top, left, bottom, right );
         }
 
         public boolean isFocused ()
@@ -483,7 +474,7 @@ public class WebComponentPanel extends WebPanel
     /**
      * Custom painter for selectable panels.
      */
-    public class WebSelectablePanelPainter extends AbstractPainter<WebSelectablePanel>
+    public class WebSelectablePanelPainter extends AbstractPainter<WebSelectablePanel, WebPanelUI>
     {
         /**
          * Style settings.
@@ -496,7 +487,7 @@ public class WebComponentPanel extends WebPanel
          * {@inheritDoc}
          */
         @Override
-        public Boolean isOpaque ( final WebSelectablePanel c )
+        public Boolean isOpaque ()
         {
             return true;
         }
@@ -505,7 +496,7 @@ public class WebComponentPanel extends WebPanel
          * {@inheritDoc}
          */
         @Override
-        public void paint ( final Graphics2D g2d, final Rectangle bounds, final WebSelectablePanel panel )
+        public void paint ( final Graphics2D g2d, final Rectangle bounds, final WebSelectablePanel panel, final WebPanelUI ui )
         {
             final boolean notFirst = panel.getIndex () > 0;
             final boolean notLast = panel.getIndex () < components.size () - 1;

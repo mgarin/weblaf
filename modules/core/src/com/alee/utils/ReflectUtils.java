@@ -46,7 +46,7 @@ public final class ReflectUtils
     /**
      * Whether should allow safe methods to log errors or not.
      * By default it is disabled to hide some WebLaF exceptions which occur due to various method checks.
-     * You can enable it in case you need a depper look into whats happening here.
+     * You can enable it in case you need a deeper look into whats happening here.
      */
     private static boolean safeMethodsLoggingEnabled = false;
 
@@ -490,13 +490,13 @@ public final class ReflectUtils
      *
      * @param jarClass          any class within the JAR
      * @param allowedExtensions list of extension filters
-     * @param allowedPackgages  list of allowed packages
+     * @param allowedPackages  list of allowed packages
      * @return JAR archive structure
      */
     public static JarStructure getJarStructure ( final Class jarClass, final List<String> allowedExtensions,
-                                                 final List<String> allowedPackgages )
+                                                 final List<String> allowedPackages )
     {
-        return getJarStructure ( jarClass, allowedExtensions, allowedPackgages, null );
+        return getJarStructure ( jarClass, allowedExtensions, allowedPackages, null );
     }
 
     /**
@@ -504,12 +504,12 @@ public final class ReflectUtils
      *
      * @param jarClass          any class within the JAR
      * @param allowedExtensions list of extension filters
-     * @param allowedPackgages  list of allowed packages
+     * @param allowedPackages  list of allowed packages
      * @param listener          jar download listener
      * @return JAR archive structure
      */
     public static JarStructure getJarStructure ( final Class jarClass, final List<String> allowedExtensions,
-                                                 final List<String> allowedPackgages, final FileDownloadListener listener )
+                                                 final List<String> allowedPackages, final FileDownloadListener listener )
     {
         try
         {
@@ -547,7 +547,7 @@ public final class ReflectUtils
                 while ( ( zipEntry = zip.getNextEntry () ) != null )
                 {
                     final String entryName = zipEntry.getName ();
-                    if ( isAllowedPackage ( entryName, allowedPackgages ) &&
+                    if ( isAllowedPackage ( entryName, allowedPackages ) &&
                             ( zipEntry.isDirectory () || isAllowedExtension ( entryName, allowedExtensions ) ) )
                     {
                         parseElement ( jarEntry, entryName, zipEntry );
@@ -634,18 +634,18 @@ public final class ReflectUtils
      * Returns whether JAR entry with the specified name is allowed by the packages list or not.
      *
      * @param entryName        JAR entry name
-     * @param allowedPackgages list of allowed packages
+     * @param allowedPackages list of allowed packages
      * @return true if JAR entry with the specified name is allowed by the packages list, false otherwise
      */
-    private static boolean isAllowedPackage ( final String entryName, final List<String> allowedPackgages )
+    private static boolean isAllowedPackage ( final String entryName, final List<String> allowedPackages )
     {
-        if ( allowedPackgages == null || allowedPackgages.size () == 0 )
+        if ( allowedPackages == null || allowedPackages.size () == 0 )
         {
             return true;
         }
         else
         {
-            for ( final String packageStart : allowedPackgages )
+            for ( final String packageStart : allowedPackages )
             {
                 if ( entryName.startsWith ( packageStart ) )
                 {
@@ -739,7 +739,7 @@ public final class ReflectUtils
      */
     public static Class getCallerClass ( final int additionalDepth )
     {
-        // Depth explaination:
+        // Depth explanation:
         // 0 - this method class
         // 1 - this method caller class
         // 2 - caller's class caller
@@ -1005,12 +1005,6 @@ public final class ReflectUtils
                     continue;
                 }
 
-                // Constructor with no parameters
-                if ( types.length == parameterTypes.length && types.length == 0 )
-                {
-                    return constructor;
-                }
-
                 // Checking types
                 boolean fits = true;
                 for ( int i = 0; i < types.length; i++ )
@@ -1257,12 +1251,12 @@ public final class ReflectUtils
     }
 
     /**
-     * Returns field getter methor by popular method naming pattern.
+     * Returns field getter method by popular method naming pattern.
      * Basically those are "getFieldName"-like and "isFieldName"-like method names.
      *
      * @param object object
      * @param field  field name
-     * @return field getter methor by popular method naming pattern
+     * @return field getter method by popular method naming pattern
      */
     public static Method getFieldGetter ( final Object object, final String field )
     {
@@ -1270,12 +1264,12 @@ public final class ReflectUtils
     }
 
     /**
-     * Returns field getter methor by popular method naming pattern.
+     * Returns field getter method by popular method naming pattern.
      * Basically those are "getFieldName"-like and "isFieldName"-like method names.
      *
      * @param aClass object class
      * @param field  field name
-     * @return field getter methor by popular method naming pattern
+     * @return field getter method by popular method naming pattern
      */
     public static Method getFieldGetter ( final Class aClass, final String field )
     {

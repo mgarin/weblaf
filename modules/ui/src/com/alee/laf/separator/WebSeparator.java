@@ -17,179 +17,92 @@
 
 package com.alee.laf.separator;
 
+import com.alee.extended.painter.Painter;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.log.Log;
 import com.alee.utils.ReflectUtils;
+import com.alee.utils.laf.Styleable;
 
 import javax.swing.*;
-import java.awt.*;
 
 /**
  * User: mgarin Date: 21.09.2010 Time: 15:37:04
  */
 
-public class WebSeparator extends JSeparator
+public class WebSeparator extends JSeparator implements Styleable
 {
+    /**
+     * Constructs new panel.
+     */
     public WebSeparator ()
     {
         super ();
     }
 
+    /**
+     * Constructs new panel with the specified component orientation.
+     *
+     * @param orientation component orientation
+     */
     public WebSeparator ( final int orientation )
     {
         super ( orientation );
     }
 
-    public WebSeparator ( final boolean reversedColors )
+    /**
+     * Returns separator painter.
+     *
+     * @return separator painter
+     */
+    public Painter getPainter ()
     {
-        super ();
-        setReversedColors ( reversedColors );
+        return getWebUI ().getPainter ();
     }
 
-    public WebSeparator ( final int orientation, final boolean reversedColors )
+    /**
+     * Sets separator painter.
+     * Pass null to remove separator painter.
+     *
+     * @param painter new separator painter
+     * @return this separator
+     */
+    public WebSeparator setPainter ( final Painter painter )
     {
-        super ( orientation );
-        setReversedColors ( reversedColors );
-    }
-
-    public WebSeparator ( final boolean drawSideLines, final int orientation )
-    {
-        super ( orientation );
-        setDrawSideLines ( drawSideLines );
-    }
-
-    public WebSeparator ( final boolean drawSideLines, final int orientation, final boolean reversedColors )
-    {
-        super ( orientation );
-        setDrawSideLines ( drawSideLines );
-        setReversedColors ( reversedColors );
-    }
-
-    public WebSeparator ( final boolean drawLeadingLine, final boolean drawTrailingLine )
-    {
-        super ();
-        setDrawLeadingLine ( drawLeadingLine );
-        setDrawTrailingLine ( drawTrailingLine );
-    }
-
-    public WebSeparator ( final boolean drawLeadingLine, final boolean drawTrailingLine, final int orientation )
-    {
-        super ( orientation );
-        setDrawLeadingLine ( drawLeadingLine );
-        setDrawTrailingLine ( drawTrailingLine );
-    }
-
-    public WebSeparator ( final boolean drawLeadingLine, final boolean drawTrailingLine, final int orientation,
-                          final boolean reversedColors )
-    {
-        super ( orientation );
-        setDrawLeadingLine ( drawLeadingLine );
-        setDrawTrailingLine ( drawTrailingLine );
-        setReversedColors ( reversedColors );
-    }
-
-    public Color getSeparatorColor ()
-    {
-        return getWebUI ().getSeparatorColor ();
-    }
-
-    public void setSeparatorColor ( final Color separatorColor )
-    {
-        getWebUI ().setSeparatorColor ( separatorColor );
-    }
-
-    public Color getSeparatorUpperColor ()
-    {
-        return getWebUI ().getSeparatorUpperColor ();
-    }
-
-    public void setSeparatorUpperColor ( final Color separatorUpperColor )
-    {
-        getWebUI ().setSeparatorUpperColor ( separatorUpperColor );
-    }
-
-    public Color getSeparatorLightColor ()
-    {
-        return getWebUI ().getSeparatorLightColor ();
-    }
-
-    public void setSeparatorLightColor ( final Color separatorLightColor )
-    {
-        getWebUI ().setSeparatorLightColor ( separatorLightColor );
-    }
-
-    public Color getSeparatorLightUpperColor ()
-    {
-        return getWebUI ().getSeparatorLightUpperColor ();
-    }
-
-    public void setSeparatorLightUpperColor ( final Color separatorLightUpperColor )
-    {
-        getWebUI ().setSeparatorLightUpperColor ( separatorLightUpperColor );
-    }
-
-    public boolean isReversedColors ()
-    {
-        return getWebUI ().isReversedColors ();
-    }
-
-    public void setReversedColors ( final boolean reversedColors )
-    {
-        getWebUI ().setReversedColors ( reversedColors );
-    }
-
-    public void setDrawSideLines ( final boolean drawSideLines )
-    {
-        setDrawLeadingLine ( drawSideLines );
-        setDrawTrailingLine ( drawSideLines );
-    }
-
-    public boolean isDrawLeadingLine ()
-    {
-        return getWebUI ().isDrawLeadingLine ();
-    }
-
-    public void setDrawLeadingLine ( final boolean drawLeadingLine )
-    {
-        getWebUI ().setDrawLeadingLine ( drawLeadingLine );
-    }
-
-    public boolean isDrawTrailingLine ()
-    {
-        return getWebUI ().isDrawTrailingLine ();
-    }
-
-    public void setDrawTrailingLine ( final boolean drawTrailingLine )
-    {
-        getWebUI ().setDrawTrailingLine ( drawTrailingLine );
-    }
-
-    public Insets getMargin ()
-    {
-        return getWebUI ().getMargin ();
-    }
-
-    public void setMargin ( final Insets margin )
-    {
-        getWebUI ().setMargin ( margin );
-    }
-
-    public WebSeparator setMargin ( final int top, final int left, final int bottom, final int right )
-    {
-        setMargin ( new Insets ( top, left, bottom, right ) );
+        getWebUI ().setPainter ( painter );
         return this;
     }
 
-    public WebSeparator setMargin ( final int spacing )
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getStyleId ()
     {
-        return setMargin ( spacing, spacing, spacing, spacing );
+        return getWebUI ().getStyleId ();
     }
 
-    public WebSeparatorUI getWebUI ()
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setStyleId ( final String id )
+    {
+        getWebUI ().setStyleId ( id );
+    }
+
+    /**
+     * Returns Web-UI applied to this class.
+     *
+     * @return Web-UI applied to this class
+     */
+    private WebSeparatorUI getWebUI ()
     {
         return ( WebSeparatorUI ) getUI ();
     }
 
+    /**
+     * Installs a Web-UI into this component.
+     */
     @Override
     public void updateUI ()
     {

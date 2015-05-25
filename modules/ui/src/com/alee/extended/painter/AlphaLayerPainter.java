@@ -20,6 +20,7 @@ package com.alee.extended.painter;
 import com.alee.utils.LafUtils;
 
 import javax.swing.*;
+import javax.swing.plaf.ComponentUI;
 import java.awt.*;
 
 /**
@@ -32,7 +33,7 @@ import java.awt.*;
  * @see Painter
  */
 
-public class AlphaLayerPainter<E extends JComponent> extends AbstractPainter<E>
+public class AlphaLayerPainter<E extends JComponent, U extends ComponentUI> extends AbstractPainter<E, U>
 {
     /**
      * Square size.
@@ -158,7 +159,7 @@ public class AlphaLayerPainter<E extends JComponent> extends AbstractPainter<E>
      * @return true if visual data provided by this painter is opaque, false otherwise
      */
     @Override
-    public Boolean isOpaque ( final E c )
+    public Boolean isOpaque ()
     {
         return lightSquareColor.getAlpha () == 255 && darkSquareColor.getAlpha () == 255;
     }
@@ -173,7 +174,7 @@ public class AlphaLayerPainter<E extends JComponent> extends AbstractPainter<E>
      * @param c      component to process
      */
     @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c )
+    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
     {
         // todo Optimize paint by using generated texture image
         LafUtils.drawAlphaLayer ( g2d, bounds.x, bounds.y, bounds.width, bounds.height, squareSize, lightSquareColor, darkSquareColor );

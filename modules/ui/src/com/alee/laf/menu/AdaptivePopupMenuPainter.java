@@ -30,7 +30,8 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public class AdaptivePopupMenuPainter<E extends JPopupMenu> extends AdaptivePainter<E> implements PopupMenuPainter<E>
+public class AdaptivePopupMenuPainter<E extends JPopupMenu, U extends WebPopupMenuUI> extends AdaptivePainter<E, U>
+        implements PopupMenuPainter<E, U>
 {
     /**
      * Constructs new AdaptiveLabelPainter for the specified painter.
@@ -40,51 +41,6 @@ public class AdaptivePopupMenuPainter<E extends JPopupMenu> extends AdaptivePain
     public AdaptivePopupMenuPainter ( final Painter painter )
     {
         super ( painter );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setTransparent ( final boolean transparent )
-    {
-        // Ignore this method in adaptive class
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setMenuSpacing ( final int spacing )
-    {
-        // Ignore this method in adaptive class
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setFixLocation ( final boolean fix )
-    {
-        // Ignore this method in adaptive class
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setPopupMenuWay ( final PopupMenuWay way )
-    {
-        // Ignore this method in adaptive class
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setPopupMenuType ( final PopupMenuType type )
-    {
-        // Ignore this method in adaptive class
     }
 
     /**

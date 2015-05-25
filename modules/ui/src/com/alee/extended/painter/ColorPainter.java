@@ -18,6 +18,7 @@
 package com.alee.extended.painter;
 
 import javax.swing.*;
+import javax.swing.plaf.ComponentUI;
 import java.awt.*;
 
 /**
@@ -26,11 +27,11 @@ import java.awt.*;
  *
  * @param <E> component type
  * @author Mikle Garin
- * @see AbstractPainter
- * @see Painter
+ * @see com.alee.extended.painter.AbstractPainter
+ * @see com.alee.extended.painter.Painter
  */
 
-public class ColorPainter<E extends JComponent> extends AbstractPainter<E>
+public class ColorPainter<E extends JComponent, U extends ComponentUI> extends AbstractPainter<E, U>
 {
     /**
      * Color to fill component with.
@@ -73,7 +74,7 @@ public class ColorPainter<E extends JComponent> extends AbstractPainter<E>
      * {@inheritDoc}
      */
     @Override
-    public Boolean isOpaque ( final E c )
+    public Boolean isOpaque ()
     {
         return color != null && color.getAlpha () == 255;
     }
@@ -82,7 +83,7 @@ public class ColorPainter<E extends JComponent> extends AbstractPainter<E>
      * {@inheritDoc}
      */
     @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c )
+    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
     {
         // Do not paint anything if color is not set
         if ( color != null )

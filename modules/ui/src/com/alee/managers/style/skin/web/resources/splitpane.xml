@@ -1,0 +1,18 @@
+<skin>
+
+    <!-- com.alee.laf.splitpane.WebSplitPane -->
+
+    <!-- Split one-touch collapse buttons -->
+    <style type="button" id="splitpane-onetouch" extends="default">
+        <component>
+            <focusable>false</focusable>
+        </component>
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebButtonPainter">
+            <margin>0,0,0,0</margin>
+            <undecorated>true</undecorated>
+        </painter>
+    </style>
+    <style type="button" id="splitpane-onetouch-left" extends="splitpane-onetouch" />
+    <style type="button" id="splitpane-onetouch-right" extends="splitpane-onetouch" />
+
+</skin>

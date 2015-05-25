@@ -17,6 +17,7 @@
 
 package com.alee.managers.tooltip;
 
+import com.alee.laf.Styles;
 import com.alee.laf.WebFonts;
 import com.alee.laf.label.WebLabel;
 import com.alee.managers.hotkey.HotkeyManager;
@@ -81,7 +82,7 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
     private Color topBgColor = WebCustomTooltipStyle.topBgColor;
     private Color bottomBgColor = WebCustomTooltipStyle.bottomBgColor;
     private Color textColor = WebCustomTooltipStyle.textColor;
-    private float trasparency = WebCustomTooltipStyle.trasparency;
+    private float transparency = WebCustomTooltipStyle.transparency;
 
     /**
      * Tooltip listeners.
@@ -316,7 +317,7 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
                 final String hotkeyText = HotkeyManager.getComponentHotkeysString ( ( JComponent ) c );
                 if ( !TextUtils.isEmpty ( hotkeyText ) )
                 {
-                    // Updatings hotkey
+                    // Updating hotkey
                     hotkey.setText ( hotkeyText );
 
                     // Adding or re-adding hotkey label to tooltip
@@ -1002,14 +1003,14 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
      * Tooltip background transparency
      */
 
-    public float getTrasparency ()
+    public float getTransparency ()
     {
-        return trasparency;
+        return transparency;
     }
 
-    public void setTrasparency ( final float trasparency )
+    public void setTransparency ( final float transparency )
     {
-        this.trasparency = trasparency;
+        this.transparency = transparency;
     }
 
     /**
@@ -1041,9 +1042,9 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
             GraphicsUtils.setupAlphaComposite ( g2d, fade );
         }
         Composite oc = null;
-        if ( trasparency < 1f )
+        if ( transparency < 1f )
         {
-            oc = GraphicsUtils.setupAlphaComposite ( g2d, trasparency );
+            oc = GraphicsUtils.setupAlphaComposite ( g2d, transparency );
         }
 
         // Tooltip settings
@@ -1100,6 +1101,7 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
         GraphicsUtils.restoreAntialias ( g2d, aa );
     }
 
+    @SuppressWarnings ( "SuspiciousNameCombination" )
     private Shape getTooltipShape ( final TooltipWay displayWay, final boolean fill )
     {
         final Area borderShape;
@@ -1205,7 +1207,7 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
     public static WebLabel createDefaultComponent ( final Icon icon, final String tooltip )
     {
         final WebLabel label = new WebLabel ( tooltip, icon );
-        label.setStyleId ( "custom-tooltip-label" );
+        label.setStyleId ( Styles.customtooltipLabel );
         label.setFont ( WebFonts.getSystemTooltipFont () );
         return label;
     }

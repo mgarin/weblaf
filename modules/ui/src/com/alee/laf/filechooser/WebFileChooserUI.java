@@ -109,7 +109,7 @@ public class WebFileChooserUI extends FileChooserUI
         fileChooserPanel = new WebFileChooserPanel ( getFileChooserType (), fileChooser.getControlButtonsAreShown () );
         fileChooserPanel.setMultiSelectionEnabled ( fileChooser.isMultiSelectionEnabled () );
         fileChooserPanel.setShowHiddenFiles ( !fileChooser.isFileHidingEnabled () );
-        fileChooserPanel.setApproveListener ( new ActionListener ()
+        fileChooserPanel.setAcceptListener ( new ActionListener ()
         {
             @Override
             public void actionPerformed ( final ActionEvent e )
@@ -228,9 +228,9 @@ public class WebFileChooserUI extends FileChooserUI
      *
      * @param approveText approve button text type
      */
-    public void setApproveButtonText ( final FileApproveText approveText )
+    public void setApproveButtonText ( final FileAcceptText approveText )
     {
-        fileChooserPanel.setApproveButtonText ( approveText );
+        fileChooserPanel.setAcceptButtonText ( approveText );
     }
 
     /**
@@ -240,7 +240,7 @@ public class WebFileChooserUI extends FileChooserUI
      */
     public void setApproveButtonLanguage ( final String key )
     {
-        fileChooserPanel.setApproveButtonLanguage ( key );
+        fileChooserPanel.setAcceptButtonLanguage ( key );
     }
 
     /**
@@ -257,7 +257,7 @@ public class WebFileChooserUI extends FileChooserUI
         }
         else if ( prop.equals ( JFileChooser.APPROVE_BUTTON_TEXT_CHANGED_PROPERTY ) )
         {
-            fileChooserPanel.setApproveButtonText ( fileChooser.getApproveButtonText () );
+            fileChooserPanel.setAcceptButtonText ( fileChooser.getApproveButtonText () );
         }
         else if ( prop.equals ( JFileChooser.CONTROL_BUTTONS_ARE_SHOWN_CHANGED_PROPERTY ) )
         {
@@ -382,7 +382,7 @@ public class WebFileChooserUI extends FileChooserUI
     @Override
     public String getApproveButtonText ( final JFileChooser fc )
     {
-        return fileChooserPanel.getApproveButtonText ();
+        return fileChooserPanel.getAcceptButtonText ();
     }
 
     /**

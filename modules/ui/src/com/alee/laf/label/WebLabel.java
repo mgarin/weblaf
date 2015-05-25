@@ -46,7 +46,7 @@ import java.util.List;
 
 /**
  * This JLabel extension class provides a direct access to WebLabelUI methods.
- * It also provides a few additional constructors nad methods to setup the label.
+ * It also provides a few additional constructors and methods to setup the label.
  * <p/>
  * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
  * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
@@ -68,34 +68,11 @@ public class WebLabel extends JLabel
     /**
      * Constructs label with the specified preferences.
      *
-     * @param margin label margin
-     */
-    public WebLabel ( final Insets margin )
-    {
-        super ();
-        setMargin ( margin );
-    }
-
-    /**
-     * Constructs label with the specified preferences.
-     *
      * @param icon icon
      */
     public WebLabel ( final Icon icon )
     {
         super ( icon );
-    }
-
-    /**
-     * Constructs label with the specified preferences.
-     *
-     * @param icon   label icon
-     * @param margin label margin
-     */
-    public WebLabel ( final Icon icon, final Insets margin )
-    {
-        super ( icon );
-        setMargin ( margin );
     }
 
     /**
@@ -112,19 +89,6 @@ public class WebLabel extends JLabel
     /**
      * Constructs label with the specified preferences.
      *
-     * @param horizontalAlignment horizontal alignment
-     * @param margin              label margin
-     */
-    public WebLabel ( final int horizontalAlignment, final Insets margin )
-    {
-        super ();
-        setHorizontalAlignment ( horizontalAlignment );
-        setMargin ( margin );
-    }
-
-    /**
-     * Constructs label with the specified preferences.
-     *
      * @param icon                label icon
      * @param horizontalAlignment horizontal alignment
      */
@@ -136,56 +100,12 @@ public class WebLabel extends JLabel
     /**
      * Constructs label with the specified preferences.
      *
-     * @param icon                label icon
-     * @param horizontalAlignment horizontal alignment
-     * @param margin              label margin
-     */
-    public WebLabel ( final Icon icon, final int horizontalAlignment, final Insets margin )
-    {
-        super ( icon, horizontalAlignment );
-        setMargin ( margin );
-    }
-
-    /**
-     * Constructs label with the specified preferences.
-     *
      * @param text text or translation key
      */
     public WebLabel ( final String text )
     {
         super ( LanguageUtils.getInitialText ( text ) );
         LanguageUtils.registerInitialLanguage ( this, text );
-    }
-
-    /**
-     * todo This constructor causes compile-time issues on JDK7 and replaced with its simple version.
-     * todo Reference to the issue: https://github.com/mgarin/weblaf/issues/175
-     * todo Return better constructor when fully switched to JDK8+ support only
-     */
-    //    /**
-    //     * Constructs label with the specified preferences.
-    //     *
-    //     * @param text text or translation key
-    //     * @param data language data, may not be passed
-    //     */
-    //    public WebLabel ( final String text, final Object... data )
-    //    {
-    //        super ( LanguageUtils.getInitialText ( text, data ) );
-    //        LanguageUtils.registerInitialLanguage ( this, text, data );
-    //    }
-
-    /**
-     * Constructs label with the specified preferences.
-     *
-     * @param text   text or translation key
-     * @param margin label margin
-     * @param data   language data, may not be passed
-     */
-    public WebLabel ( final String text, final Insets margin, final Object... data )
-    {
-        super ( LanguageUtils.getInitialText ( text, data ) );
-        LanguageUtils.registerInitialLanguage ( this, text, data );
-        setMargin ( margin );
     }
 
     /**
@@ -204,21 +124,6 @@ public class WebLabel extends JLabel
     /**
      * Constructs label with the specified preferences.
      *
-     * @param text                text or translation key
-     * @param horizontalAlignment horizontal alignment
-     * @param margin              label margin
-     * @param data                language data, may not be passed
-     */
-    public WebLabel ( final String text, final int horizontalAlignment, final Insets margin, final Object... data )
-    {
-        super ( LanguageUtils.getInitialText ( text, data ), horizontalAlignment );
-        LanguageUtils.registerInitialLanguage ( this, text, data );
-        setMargin ( margin );
-    }
-
-    /**
-     * Constructs label with the specified preferences.
-     *
      * @param text text or translation key
      * @param icon label icon
      */
@@ -226,39 +131,6 @@ public class WebLabel extends JLabel
     {
         super ( LanguageUtils.getInitialText ( text ), icon, LEADING );
         LanguageUtils.registerInitialLanguage ( this, text );
-    }
-
-    /**
-     * todo This constructor causes compile-time issues on JDK7 and replaced with its simple version.
-     * todo Reference to the issue: https://github.com/mgarin/weblaf/issues/175
-     * todo Return better constructor when fully switched to JDK8+ support only
-     */
-    //    /**
-    //     * Constructs label with the specified preferences.
-    //     *
-    //     * @param text text or translation key
-    //     * @param icon label icon
-    //     * @param data language data, may not be passed
-    //     */
-    //    public WebLabel ( final String text, final Icon icon, final Object... data )
-    //    {
-    //        super ( LanguageUtils.getInitialText ( text, data ), icon, LEADING );
-    //        LanguageUtils.registerInitialLanguage ( this, text, data );
-    //    }
-
-    /**
-     * Constructs label with the specified preferences.
-     *
-     * @param text   text or translation key
-     * @param icon   label icon
-     * @param margin label margin
-     * @param data   language data, may not be passed
-     */
-    public WebLabel ( final String text, final Icon icon, final Insets margin, final Object... data )
-    {
-        super ( LanguageUtils.getInitialText ( text, data ), icon, LEADING );
-        LanguageUtils.registerInitialLanguage ( this, text, data );
-        setMargin ( margin );
     }
 
     /**
@@ -273,70 +145,6 @@ public class WebLabel extends JLabel
     {
         super ( LanguageUtils.getInitialText ( text, data ), icon, horizontalAlignment );
         LanguageUtils.registerInitialLanguage ( this, text, data );
-    }
-
-    /**
-     * Constructs label with the specified preferences.
-     *
-     * @param text                text or translation key
-     * @param icon                label icon
-     * @param horizontalAlignment horizontal alignment
-     * @param margin              label margin
-     * @param data                language data, may not be passed
-     */
-    public WebLabel ( final String text, final Icon icon, final int horizontalAlignment, final Insets margin, final Object... data )
-    {
-        super ( LanguageUtils.getInitialText ( text, data ), icon, horizontalAlignment );
-        LanguageUtils.registerInitialLanguage ( this, text, data );
-        setMargin ( margin );
-    }
-
-    /**
-     * Returns label margin.
-     *
-     * @return label margin
-     */
-    public Insets getMargin ()
-    {
-        return getWebUI ().getMargin ();
-    }
-
-    /**
-     * Sets label margin.
-     *
-     * @param margin new label margin
-     * @return this label
-     */
-    public WebLabel setMargin ( final Insets margin )
-    {
-        getWebUI ().setMargin ( margin );
-        return this;
-    }
-
-    /**
-     * Sets label margin.
-     *
-     * @param top    top label margin
-     * @param left   left label margin
-     * @param bottom bottom label margin
-     * @param right  right label margin
-     * @return this label
-     */
-    public WebLabel setMargin ( final int top, final int left, final int bottom, final int right )
-    {
-        setMargin ( new Insets ( top, left, bottom, right ) );
-        return this;
-    }
-
-    /**
-     * Sets label margin.
-     *
-     * @param spacing label margin
-     * @return this label
-     */
-    public WebLabel setMargin ( final int spacing )
-    {
-        return setMargin ( spacing, spacing, spacing, spacing );
     }
 
     /**
@@ -363,69 +171,6 @@ public class WebLabel extends JLabel
     }
 
     /**
-     * Returns whether text shade is displayed or not.
-     *
-     * @return true if text shade is displayed, false otherwise
-     */
-    public boolean isDrawShade ()
-    {
-        return getWebUI ().isDrawShade ();
-    }
-
-    /**
-     * Sets whether text shade should be displayed or not.
-     *
-     * @param drawShade whether text shade should be displayed or not
-     */
-    public WebLabel setDrawShade ( final boolean drawShade )
-    {
-        getWebUI ().setDrawShade ( drawShade );
-        return this;
-    }
-
-    /**
-     * Returns text shade color.
-     *
-     * @return text shade color
-     */
-    public Color getShadeColor ()
-    {
-        return getWebUI ().getShadeColor ();
-    }
-
-    /**
-     * Sets text shade color.
-     *
-     * @param shadeColor text shade color
-     */
-    public WebLabel setShadeColor ( final Color shadeColor )
-    {
-        getWebUI ().setShadeColor ( shadeColor );
-        return this;
-    }
-
-    /**
-     * Returns label transparency.
-     *
-     * @return label transparency
-     */
-    public Float getTransparency ()
-    {
-        return getWebUI ().getTransparency ();
-    }
-
-    /**
-     * Sets label transparency.
-     *
-     * @param transparency label transparency
-     */
-    public WebLabel setTransparency ( final Float transparency )
-    {
-        getWebUI ().setTransparency ( transparency );
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -448,7 +193,7 @@ public class WebLabel extends JLabel
      *
      * @return Web-UI applied to this class
      */
-    public WebLabelUI getWebUI ()
+    private WebLabelUI getWebUI ()
     {
         return ( WebLabelUI ) getUI ();
     }

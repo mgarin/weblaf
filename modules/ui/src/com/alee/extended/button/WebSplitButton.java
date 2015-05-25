@@ -26,7 +26,8 @@ import com.alee.managers.style.SupportedComponent;
 import com.alee.utils.ReflectUtils;
 
 import javax.swing.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.Serializable;
 
 /**
@@ -40,7 +41,7 @@ import java.io.Serializable;
  * @see #setPopupMenu(javax.swing.JPopupMenu)
  */
 
-public class WebSplitButton extends WebButton implements MouseMotionListener, MouseListener, ActionListener, Serializable
+public class WebSplitButton extends WebButton implements ActionListener, Serializable
 {
     /**
      * Whether should always display popup menu when button is clicked or not.
@@ -59,9 +60,9 @@ public class WebSplitButton extends WebButton implements MouseMotionListener, Mo
     protected JPopupMenu popupMenu = null;
 
     /**
-     * Whether mouse is on the split button or not.
+     * Split button icon.
      */
-    protected boolean onSplit = false;
+    protected ImageIcon splitIcon = WebSplitButtonStyle.splitIcon;
 
     /**
      * Constructs new split button.
@@ -164,8 +165,6 @@ public class WebSplitButton extends WebButton implements MouseMotionListener, Mo
     {
         super.init ( text, icon );
 
-        addMouseMotionListener ( this );
-        addMouseListener ( this );
         addActionListener ( this );
     }
 
@@ -238,7 +237,7 @@ public class WebSplitButton extends WebButton implements MouseMotionListener, Mo
      */
     public ImageIcon getSplitIcon ()
     {
-        return getWebUI ().getSplitIcon ();
+        return splitIcon;
     }
 
     /**
@@ -248,47 +247,7 @@ public class WebSplitButton extends WebButton implements MouseMotionListener, Mo
      */
     public void setSplitIcon ( final ImageIcon splitIcon )
     {
-        getWebUI ().setSplitIcon ( splitIcon );
-    }
-
-    /**
-     * Returns gap between split icon and split part sides.
-     *
-     * @return gap between split icon and split part sides
-     */
-    public int getSplitIconGap ()
-    {
-        return getWebUI ().getSplitIconGap ();
-    }
-
-    /**
-     * Sets gap between split icon and split part sides
-     *
-     * @param splitIconGap gap between split icon and split part sides
-     */
-    public void setSplitIconGap ( final int splitIconGap )
-    {
-        getWebUI ().setSplitIconGap ( splitIconGap );
-    }
-
-    /**
-     * Returns gap between split part and button content.
-     *
-     * @return gap between split part and button content
-     */
-    public int getContentGap ()
-    {
-        return getWebUI ().getContentGap ();
-    }
-
-    /**
-     * Sets gap between split part and button content.
-     *
-     * @param contentGap gap between split part and button content
-     */
-    public void setContentGap ( final int contentGap )
-    {
-        getWebUI ().setContentGap ( contentGap );
+        this.splitIcon = splitIcon;
     }
 
     /**
@@ -334,7 +293,7 @@ public class WebSplitButton extends WebButton implements MouseMotionListener, Mo
             showPopupMenu ();
             fireButtonClicked ( e );
         }
-        else if ( onSplit )
+        else if ( getWebUI ().isOnSplit () )
         {
             showPopupMenu ();
             fireSplitbuttonClicked ( e );
@@ -365,85 +324,10 @@ public class WebSplitButton extends WebButton implements MouseMotionListener, Mo
     }
 
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void mouseMoved ( final MouseEvent e )
-    {
-        final boolean wasOnSplit = onSplit;
-        onSplit = getWebUI ().getSplitButtonHitbox ( this ).contains ( e.getPoint () );
-        if ( wasOnSplit != onSplit )
-        {
-            repaint ( getWebUI ().getSplitButtonBounds ( this ) );
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void mouseDragged ( final MouseEvent e )
-    {
-        // Unused listener method
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void mouseClicked ( final MouseEvent e )
-    {
-        // Unused listener method
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void mousePressed ( final MouseEvent e )
-    {
-        // Unused listener method
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void mouseReleased ( final MouseEvent e )
-    {
-        // Unused listener method
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void mouseEntered ( final MouseEvent e )
-    {
-        // Unused listener method
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void mouseExited ( final MouseEvent e )
-    {
-        final boolean wasOnSplit = onSplit;
-        onSplit = false;
-        if ( wasOnSplit != onSplit )
-        {
-            repaint ( getWebUI ().getSplitButtonBounds ( this ) );
-        }
-    }
-
-    /**
-     * Notifies all listeners that have registered interest for
-     * notification on this event type.  The event instance
-     * is lazily created using the {@code event}
-     * parameter.
+     * Notifies all listeners that have registered interest for notification on this event type.
+     * The event instance is lazily created using the {@code event} parameter.
      *
-     * @param event the {@code ActionEvent} object
+     * @param event the {@code java.awt.event.ActionEvent} object
      * @see javax.swing.event.EventListenerList
      */
     protected void fireButtonClicked ( final ActionEvent event )
@@ -474,12 +358,10 @@ public class WebSplitButton extends WebButton implements MouseMotionListener, Mo
     }
 
     /**
-     * Notifies all listeners that have registered interest for
-     * notification on this event type.  The event instance
-     * is lazily created using the {@code event}
-     * parameter.
+     * Notifies all listeners that have registered interest for notification on this event type.
+     * The event instance is lazily created using the {@code event} parameter.
      *
-     * @param event the {@code ActionEvent} object
+     * @param event the {@code java.awt.event.ActionEvent} object
      * @see javax.swing.event.EventListenerList
      */
     protected void fireSplitbuttonClicked ( final ActionEvent event )
@@ -512,8 +394,7 @@ public class WebSplitButton extends WebButton implements MouseMotionListener, Mo
     /**
      * {@inheritDoc}
      */
-    @Override
-    public WebSplitButtonUI getWebUI ()
+    private WebSplitButtonUI getWebUI ()
     {
         return ( WebSplitButtonUI ) getUI ();
     }

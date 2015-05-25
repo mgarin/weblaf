@@ -67,13 +67,33 @@ public class WebStyledLabel extends JLabel implements EventMethods, ToolTipMetho
     protected List<StyleRange> styleRanges;
 
     /**
-     * Whether should wrap
+     * Whether or not should enable line wrap.
      */
     protected boolean lineWrap;
+
+    /**
+     * Amount of rows used to wrap label text.
+     */
     protected int rows;
+
+    /**
+     * Maximum amount of rows.
+     */
     protected int maximumRows;
+
+    /**
+     * Minimum amount of rows.
+     */
     protected int minimumRows;
+
+    /**
+     * Preferred width.
+     */
     protected int preferredWidth;
+
+    /**
+     * Gap between rows.
+     */
     protected int rowGap;
 
     /**
@@ -87,34 +107,11 @@ public class WebStyledLabel extends JLabel implements EventMethods, ToolTipMetho
     /**
      * Constructs label with the specified preferences.
      *
-     * @param margin label margin
-     */
-    public WebStyledLabel ( final Insets margin )
-    {
-        super ();
-        setMargin ( margin );
-    }
-
-    /**
-     * Constructs label with the specified preferences.
-     *
      * @param icon icon
      */
     public WebStyledLabel ( final Icon icon )
     {
         super ( icon );
-    }
-
-    /**
-     * Constructs label with the specified preferences.
-     *
-     * @param icon   label icon
-     * @param margin label margin
-     */
-    public WebStyledLabel ( final Icon icon, final Insets margin )
-    {
-        super ( icon );
-        setMargin ( margin );
     }
 
     /**
@@ -131,38 +128,12 @@ public class WebStyledLabel extends JLabel implements EventMethods, ToolTipMetho
     /**
      * Constructs label with the specified preferences.
      *
-     * @param horizontalAlignment horizontal alignment
-     * @param margin              label margin
-     */
-    public WebStyledLabel ( final int horizontalAlignment, final Insets margin )
-    {
-        super ();
-        setHorizontalAlignment ( horizontalAlignment );
-        setMargin ( margin );
-    }
-
-    /**
-     * Constructs label with the specified preferences.
-     *
      * @param icon                label icon
      * @param horizontalAlignment horizontal alignment
      */
     public WebStyledLabel ( final Icon icon, final int horizontalAlignment )
     {
         super ( icon, horizontalAlignment );
-    }
-
-    /**
-     * Constructs label with the specified preferences.
-     *
-     * @param icon                label icon
-     * @param horizontalAlignment horizontal alignment
-     * @param margin              label margin
-     */
-    public WebStyledLabel ( final Icon icon, final int horizontalAlignment, final Insets margin )
-    {
-        super ( icon, horizontalAlignment );
-        setMargin ( margin );
     }
 
     /**
@@ -175,20 +146,6 @@ public class WebStyledLabel extends JLabel implements EventMethods, ToolTipMetho
     {
         super ( LanguageUtils.getInitialText ( text, data ) );
         LanguageUtils.registerInitialLanguage ( this, text, data );
-    }
-
-    /**
-     * Constructs label with the specified preferences.
-     *
-     * @param text   text or translation key
-     * @param margin label margin
-     * @param data   language data, may not be passed
-     */
-    public WebStyledLabel ( final String text, final Insets margin, final Object... data )
-    {
-        super ( LanguageUtils.getInitialText ( text, data ) );
-        LanguageUtils.registerInitialLanguage ( this, text, data );
-        setMargin ( margin );
     }
 
     /**
@@ -207,21 +164,6 @@ public class WebStyledLabel extends JLabel implements EventMethods, ToolTipMetho
     /**
      * Constructs label with the specified preferences.
      *
-     * @param text                text or translation key
-     * @param horizontalAlignment horizontal alignment
-     * @param margin              label margin
-     * @param data                language data, may not be passed
-     */
-    public WebStyledLabel ( final String text, final int horizontalAlignment, final Insets margin, final Object... data )
-    {
-        super ( LanguageUtils.getInitialText ( text, data ), horizontalAlignment );
-        LanguageUtils.registerInitialLanguage ( this, text, data );
-        setMargin ( margin );
-    }
-
-    /**
-     * Constructs label with the specified preferences.
-     *
      * @param text text or translation key
      * @param icon label icon
      * @param data language data, may not be passed
@@ -230,21 +172,6 @@ public class WebStyledLabel extends JLabel implements EventMethods, ToolTipMetho
     {
         super ( LanguageUtils.getInitialText ( text, data ), icon, LEADING );
         LanguageUtils.registerInitialLanguage ( this, text, data );
-    }
-
-    /**
-     * Constructs label with the specified preferences.
-     *
-     * @param text   text or translation key
-     * @param icon   label icon
-     * @param margin label margin
-     * @param data   language data, may not be passed
-     */
-    public WebStyledLabel ( final String text, final Icon icon, final Insets margin, final Object... data )
-    {
-        super ( LanguageUtils.getInitialText ( text, data ), icon, LEADING );
-        LanguageUtils.registerInitialLanguage ( this, text, data );
-        setMargin ( margin );
     }
 
     /**
@@ -259,22 +186,6 @@ public class WebStyledLabel extends JLabel implements EventMethods, ToolTipMetho
     {
         super ( LanguageUtils.getInitialText ( text, data ), icon, horizontalAlignment );
         LanguageUtils.registerInitialLanguage ( this, text, data );
-    }
-
-    /**
-     * Constructs label with the specified preferences.
-     *
-     * @param text                text or translation key
-     * @param icon                label icon
-     * @param horizontalAlignment horizontal alignment
-     * @param margin              label margin
-     * @param data                language data, may not be passed
-     */
-    public WebStyledLabel ( final String text, final Icon icon, final int horizontalAlignment, final Insets margin, final Object... data )
-    {
-        super ( LanguageUtils.getInitialText ( text, data ), icon, horizontalAlignment );
-        LanguageUtils.registerInitialLanguage ( this, text, data );
-        setMargin ( margin );
     }
 
     /**
@@ -295,54 +206,6 @@ public class WebStyledLabel extends JLabel implements EventMethods, ToolTipMetho
         {
             setStyleRanges ( styles );
         }
-    }
-
-    /**
-     * Returns label margin.
-     *
-     * @return label margin
-     */
-    public Insets getMargin ()
-    {
-        return getWebUI ().getMargin ();
-    }
-
-    /**
-     * Sets label margin.
-     *
-     * @param margin new label margin
-     * @return this label
-     */
-    public WebStyledLabel setMargin ( final Insets margin )
-    {
-        getWebUI ().setMargin ( margin );
-        return this;
-    }
-
-    /**
-     * Sets label margin.
-     *
-     * @param top    top label margin
-     * @param left   left label margin
-     * @param bottom bottom label margin
-     * @param right  right label margin
-     * @return this label
-     */
-    public WebStyledLabel setMargin ( final int top, final int left, final int bottom, final int right )
-    {
-        setMargin ( new Insets ( top, left, bottom, right ) );
-        return this;
-    }
-
-    /**
-     * Sets label margin.
-     *
-     * @param spacing label margin
-     * @return this label
-     */
-    public WebStyledLabel setMargin ( final int spacing )
-    {
-        return setMargin ( spacing, spacing, spacing, spacing );
     }
 
     /**
@@ -575,9 +438,9 @@ public class WebStyledLabel extends JLabel implements EventMethods, ToolTipMetho
     }
 
     /**
-     * Returns row count used to wrap label text.
+     * Returns amount of rows used to wrap label text.
      *
-     * @return row count used to wrap label text
+     * @return amount of rows used to wrap label text
      */
     public int getRows ()
     {
@@ -585,13 +448,13 @@ public class WebStyledLabel extends JLabel implements EventMethods, ToolTipMetho
     }
 
     /**
-     * Sets row count used to wrap label text.
+     * Sets amount of rows used to wrap label text.
      * By default it is set to zero.
      * <p/>
      * Note that it has lower priority than preferred width.
      * If preferred width is set this value is ignored.
      *
-     * @param rows the row count
+     * @param rows amount of rows used to wrap label text
      */
     public void setRows ( final int rows )
     {
@@ -683,7 +546,7 @@ public class WebStyledLabel extends JLabel implements EventMethods, ToolTipMetho
      *
      * @return Web-UI applied to this class
      */
-    public WebStyledLabelUI getWebUI ()
+    private WebStyledLabelUI getWebUI ()
     {
         return ( WebStyledLabelUI ) getUI ();
     }

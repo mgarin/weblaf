@@ -21,6 +21,7 @@ import com.alee.extended.layout.TableLayout;
 import com.alee.global.StyleConstants;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.panel.WebPanel;
+import com.alee.laf.panel.WebPanelUI;
 import com.alee.managers.style.skin.web.WebPanelPainter;
 import com.alee.utils.LafUtils;
 import com.alee.utils.SwingUtils;
@@ -266,23 +267,24 @@ public class WebButtonPopup extends WebPopup
             add ( container, "1,0,1,1" );
         }
 
-        final int margin = button.getShadeWidth () + 1;
-        if ( isDown () )
-        {
-            container.setMargin ( new Insets ( 0, margin, margin, margin ) );
-        }
-        else if ( isUp () )
-        {
-            container.setMargin ( new Insets ( margin, margin, 0, margin ) );
-        }
-        else if ( isLeft () )
-        {
-            container.setMargin ( new Insets ( margin, margin, margin, 0 ) );
-        }
-        else if ( isRight () )
-        {
-            container.setMargin ( new Insets ( margin, 0, margin, margin ) );
-        }
+        // todo FIX
+        //        final int margin = button.getShadeWidth () + 1;
+        //        if ( isDown () )
+        //        {
+        //            container.setMargin ( new Insets ( 0, margin, margin, margin ) );
+        //        }
+        //        else if ( isUp () )
+        //        {
+        //            container.setMargin ( new Insets ( margin, margin, 0, margin ) );
+        //        }
+        //        else if ( isLeft () )
+        //        {
+        //            container.setMargin ( new Insets ( margin, margin, margin, 0 ) );
+        //        }
+        //        else if ( isRight () )
+        //        {
+        //            container.setMargin ( new Insets ( margin, 0, margin, margin ) );
+        //        }
 
         revalidate ();
     }
@@ -330,7 +332,8 @@ public class WebButtonPopup extends WebPopup
         copySettings ( button, copy );
 
         copy.setFocusable ( true );
-        copy.setUndecorated ( true );
+        // todo FIX
+        //        copy.setUndecorated ( true );
         copy.setCursor ( button.getCursor () );
 
         return copy;
@@ -380,8 +383,7 @@ public class WebButtonPopup extends WebPopup
             {
                 setBounds (
                         new Rectangle ( new Point ( rl.x + button.getWidth () / 2 - ps.width / 2, rl.y + button.getHeight () - ps.height ),
-                                ps )
-                );
+                                ps ) );
             }
             else if ( popupWay.equals ( PopupWay.upRight ) )
             {
@@ -397,8 +399,7 @@ public class WebButtonPopup extends WebPopup
             {
                 setBounds (
                         new Rectangle ( new Point ( rl.x + button.getWidth () - ps.width, rl.y + button.getHeight () / 2 - ps.height / 2 ),
-                                ps )
-                );
+                                ps ) );
             }
             else if ( popupWay.equals ( PopupWay.leftDown ) )
             {
@@ -430,8 +431,9 @@ public class WebButtonPopup extends WebPopup
 
     public Shape getPopupShape ( final WebButtonPopup c )
     {
-        final int shadeWidth = button.getShadeWidth ();
-        final int round = button.getRound ();
+        // todo FIX
+        final int shadeWidth = StyleConstants.shadeWidth;//button.getShadeWidth ();
+        final int round = StyleConstants.mediumRound;//button.getRound ();
 
         final int bh = button.getHeight () - 1;
         final int bw = button.getWidth () - 1;
@@ -616,17 +618,18 @@ public class WebButtonPopup extends WebPopup
     /**
      * Custom button popup painter.
      */
-    protected class WebButtonPopupPainter extends WebPanelPainter<WebButtonPopup>
+    protected class WebButtonPopupPainter extends WebPanelPainter<WebButtonPopup, WebPanelUI>
     {
         /**
          * {@inheritDoc}
          */
         @Override
-        public void paint ( final Graphics2D g2d, final Rectangle bounds, final WebButtonPopup c )
+        public void paint ( final Graphics2D g2d, final Rectangle bounds, final WebButtonPopup c, final WebPanelUI ui )
         {
-            LafUtils.drawCustomWebBorder ( g2d, c, getPopupShape ( c ),
-                    button.isFocusable () && button.isDrawFocus () && focused ? StyleConstants.fieldFocusColor : StyleConstants.shadeColor,
-                    button.getShadeWidth (), true, isWebColoredBackground () );
+            // todo FIX
+            //            LafUtils.drawCustomWebBorder ( g2d, c, getPopupShape ( c ),
+            //                    button.isFocusable () && button.isDrawFocus () && focused ? StyleConstants.fieldFocusColor : StyleConstants.shadeColor,
+            //                    button.getShadeWidth (), true, isWebColoredBackground () );
         }
     }
 }

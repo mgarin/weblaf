@@ -17,10 +17,16 @@
 
 package com.alee.extended.painter;
 
+import com.alee.laf.WebLookAndFeel;
 import com.alee.utils.CollectionUtils;
+import com.alee.utils.SwingUtils;
+import com.alee.utils.swing.BorderMethods;
 
 import javax.swing.*;
+import javax.swing.plaf.ComponentUI;
 import java.awt.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,11 +35,12 @@ import java.util.List;
  * Usually this class is extended by various painters instead of implementing Painter interface directly.
  *
  * @param <E> component type
+ * @param <U> component UI type
  * @author Mikle Garin
  * @see Painter
  */
 
-public abstract class AbstractPainter<E extends JComponent> implements Painter<E>
+public abstract class AbstractPainter<E extends JComponent, U extends ComponentUI> implements Painter<E, U>, BorderMethods
 {
     /**
      * Whether visual data is opaque or not.
@@ -56,28 +63,99 @@ public abstract class AbstractPainter<E extends JComponent> implements Painter<E
     protected List<PainterListener> listeners = new ArrayList<PainterListener> ( 1 );
 
     /**
+     * Listeners.
+     */
+    protected PropertyChangeListener propertyChangeListener;
+
+    /**
+     * Component reference.
+     */
+    protected E component;
+
+    /**
+     * Component UI reference.
+     */
+    protected U ui;
+
+    /**
+     * Whether or not painted component has LTR orientation.
+     */
+    protected boolean ltr;
+
+    /**
      * {@inheritDoc}
      */
     @Override
-    public void install ( final E c )
+    public void install ( final E c, final U ui )
     {
-        // Simply do nothing by default
+        // Saving references
+        this.component = c;
+        this.ui = ui;
+
+        // Default settings
+        SwingUtils.setOrientation ( c );
+        saveOrientation ();
+
+        // Updating border
+        updateBorder ();
+
+        // Orientation change listener
+        propertyChangeListener = new PropertyChangeListener ()
+        {
+            @Override
+            public void propertyChange ( final PropertyChangeEvent evt )
+            {
+                orientationChange ();
+            }
+        };
+        c.addPropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, propertyChangeListener );
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void uninstall ( final E c )
+    public void uninstall ( final E c, final U ui )
     {
-        // Simply do nothing by default
+        // Removing listeners
+        c.removePropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, propertyChangeListener );
+
+        // Cleaning up references
+        this.component = null;
+    }
+
+    /**
+     * Performs various updates on orientation change.
+     */
+    protected void orientationChange ()
+    {
+        saveOrientation ();
+        revalidate ();
+        repaint ();
+    }
+
+    /**
+     * Saves current component orientation state.
+     */
+    protected void saveOrientation ()
+    {
+        ltr = component.getComponentOrientation ().isLeftToRight ();
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Boolean isOpaque ( final E c )
+    public void updateBorder ()
+    {
+        PainterSupport.updateBorder ( component, null, this );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Boolean isOpaque ()
     {
         return opaque;
     }
@@ -97,7 +175,7 @@ public abstract class AbstractPainter<E extends JComponent> implements Painter<E
      * {@inheritDoc}
      */
     @Override
-    public Dimension getPreferredSize ( final E c )
+    public Dimension getPreferredSize ()
     {
         return preferredSize;
     }
@@ -117,7 +195,7 @@ public abstract class AbstractPainter<E extends JComponent> implements Painter<E
      * {@inheritDoc}
      */
     @Override
-    public Insets getMargin ( final E c )
+    public Insets getMargin ()
     {
         return margin;
     }
@@ -216,6 +294,10 @@ public abstract class AbstractPainter<E extends JComponent> implements Painter<E
      */
     public void revalidate ()
     {
+        // Updating border to have correct size
+        updateBorder ();
+
+        // Revalidating layout
         for ( final PainterListener listener : CollectionUtils.copy ( listeners ) )
         {
             listener.revalidate ();

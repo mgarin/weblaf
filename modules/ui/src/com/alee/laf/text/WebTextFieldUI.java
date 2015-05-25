@@ -466,7 +466,7 @@ public class WebTextFieldUI extends BasicTextFieldUI implements ShapeProvider, S
         PainterSupport.uninstallPainter ( textField, this.painter );
 
         this.painter = painter;
-        getComponent ().setOpaque ( painter == null || painter.isOpaque ( textField ) );
+        getComponent ().setOpaque ( painter == null || painter.isOpaque () );
         PainterSupport.installPainter ( textField, this.painter );
         updateBorder ();
     }
@@ -511,7 +511,7 @@ public class WebTextFieldUI extends BasicTextFieldUI implements ShapeProvider, S
             final Insets m;
             if ( painter != null )
             {
-                m = painter.getMargin ( getComponent () );
+                m = painter.getMargin ();
             }
             else if ( drawBorder )
             {
@@ -563,7 +563,7 @@ public class WebTextFieldUI extends BasicTextFieldUI implements ShapeProvider, S
         final JTextComponent c = getComponent ();
         final Graphics2D g2d = ( Graphics2D ) g;
 
-        if ( c.isOpaque () && ( painter == null || !painter.isOpaque ( textField ) ) )
+        if ( c.isOpaque () && ( painter == null || !painter.isOpaque () ) )
         {
             // Paint default background
             g.setColor ( c.getBackground () );
@@ -576,7 +576,7 @@ public class WebTextFieldUI extends BasicTextFieldUI implements ShapeProvider, S
             if ( painter != null )
             {
                 // Use background painter instead of default UI graphics
-                painter.paint ( g2d, SwingUtils.size ( c ), c );
+                painter.paint ( g2d, SwingUtils.size ( c ), c, this );
             }
             else if ( drawBorder )
             {
@@ -652,7 +652,7 @@ public class WebTextFieldUI extends BasicTextFieldUI implements ShapeProvider, S
         // Background painter preferred size
         if ( painter != null )
         {
-            ps = SwingUtils.max ( ps, painter.getPreferredSize ( c ) );
+            ps = SwingUtils.max ( ps, painter.getPreferredSize () );
         }
 
         return ps;

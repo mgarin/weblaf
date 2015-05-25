@@ -17,9 +17,11 @@
 
 package com.alee.laf.desktoppane;
 
+import com.alee.extended.painter.Painter;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.log.Log;
 import com.alee.utils.ReflectUtils;
+import com.alee.utils.laf.Styleable;
 
 import javax.swing.*;
 
@@ -27,18 +29,60 @@ import javax.swing.*;
  * User: mgarin Date: 24.08.11 Time: 17:46
  */
 
-public class WebDesktopPane extends JDesktopPane
+public class WebDesktopPane extends JDesktopPane implements Styleable
 {
+    /**
+     * Constructs new desktop pane component.
+     */
     public WebDesktopPane ()
     {
         super ();
     }
 
-    public WebDesktopPaneUI getWebUI ()
+    /**
+     * Returns desktop pane painter.
+     *
+     * @return desktop pane painter
+     */
+    public Painter getPainter ()
     {
-        return ( WebDesktopPaneUI ) getUI ();
+        return getWebUI ().getPainter ();
     }
 
+    /**
+     * Sets desktop pane painter.
+     * Pass null to remove desktop pane painter.
+     *
+     * @param painter new desktop pane painter
+     * @return this desktop pane
+     */
+    public WebDesktopPane setPainter ( final Painter painter )
+    {
+        getWebUI ().setPainter ( painter );
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getStyleId ()
+    {
+        return getWebUI ().getStyleId ();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setStyleId ( final String id )
+    {
+        getWebUI ().setStyleId ( id );
+    }
+
+    /**
+     * Installs a Web-UI into this component.
+     */
     @Override
     public void updateUI ()
     {
@@ -58,5 +102,15 @@ public class WebDesktopPane extends JDesktopPane
         {
             setUI ( getUI () );
         }
+    }
+
+    /**
+     * Returns Web-UI applied to this class.
+     *
+     * @return Web-UI applied to this class
+     */
+    private WebDesktopPaneUI getWebUI ()
+    {
+        return ( WebDesktopPaneUI ) getUI ();
     }
 }

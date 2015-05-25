@@ -21,7 +21,7 @@ import com.alee.extended.colorchooser.DoubleColorField;
 import com.alee.extended.colorchooser.DoubleColorFieldListener;
 import com.alee.extended.layout.TableLayout;
 import com.alee.extended.layout.ToolbarLayout;
-import com.alee.global.StyleConstants;
+import com.alee.laf.Styles;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.checkbox.WebCheckBox;
 import com.alee.laf.label.WebLabel;
@@ -48,7 +48,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * User: mgarin Date: 10.03.11 Time: 16:46
+ * @author Mikle Garin
  */
 
 public class WebColorChooserPanel extends WebPanel implements DialogOptions
@@ -87,14 +87,10 @@ public class WebColorChooserPanel extends WebPanel implements DialogOptions
 
     public WebColorChooserPanel ( final boolean showButtonsPanel )
     {
-        super ();
+        super ( Styles.colorchooser );
 
         this.showButtonsPanel = showButtonsPanel;
 
-        // Panel settings
-        setOpaque ( false );
-        setWebColoredBackground ( false );
-        setMargin ( 2, 5, 2, 5 );
         setLayout ( new TableLayout ( new double[][]{ { TableLayout.FILL, 4, TableLayout.PREFERRED, 4, TableLayout.PREFERRED },
                 { TableLayout.PREFERRED, TableLayout.PREFERRED } } ) );
 
@@ -167,32 +163,32 @@ public class WebColorChooserPanel extends WebPanel implements DialogOptions
 
         // Hue
         final WebLabel hueButton = new WebLabel ( "H:" );
-        hueButton.setDrawShade ( true );
+        hueButton.setStyleId ( Styles.colorchooserLabel );
         colorsPanel.add ( hueButton, "0,0" );
         hueField = new WebTextField ();
         colorsPanel.add ( hueField, "2,0" );
         final WebLabel hueSuffix = new WebLabel ( "°" );
-        hueSuffix.setDrawShade ( true );
+        hueSuffix.setStyleId ( Styles.colorchooserLabel );
         colorsPanel.add ( hueSuffix, "4,0" );
 
         // Saturation
         final WebLabel saturationButton = new WebLabel ( "S:" );
-        saturationButton.setDrawShade ( true );
+        saturationButton.setStyleId ( Styles.colorchooserLabel );
         colorsPanel.add ( saturationButton, "0,2" );
         saturationField = new WebTextField ();
         colorsPanel.add ( saturationField, "2,2" );
         final WebLabel saturationSuffix = new WebLabel ( "%" );
-        saturationSuffix.setDrawShade ( true );
+        saturationSuffix.setStyleId ( Styles.colorchooserLabel );
         colorsPanel.add ( saturationSuffix, "4,2" );
 
         // Brightness
         final WebLabel brightnessButton = new WebLabel ( "B:" );
-        brightnessButton.setDrawShade ( true );
+        brightnessButton.setStyleId ( Styles.colorchooserLabel );
         colorsPanel.add ( brightnessButton, "0,4" );
         brightnessField = new WebTextField ();
         colorsPanel.add ( brightnessField, "2,4" );
         final WebLabel brightnessSuffix = new WebLabel ( "%" );
-        brightnessSuffix.setDrawShade ( true );
+        brightnessSuffix.setStyleId ( Styles.colorchooserLabel );
         colorsPanel.add ( brightnessSuffix, "4,4" );
 
         final CaretListener hsbListener = new CaretListener ()
@@ -230,21 +226,21 @@ public class WebColorChooserPanel extends WebPanel implements DialogOptions
 
 
         final WebLabel redButton = new WebLabel ( "R:" );
-        redButton.setDrawShade ( true );
+        redButton.setStyleId ( Styles.colorchooserLabel );
         colorsPanel.add ( redButton, "0,8" );
         redField = new WebTextField ();
         redField.setColumns ( 3 );
         colorsPanel.add ( redField, "2,8" );
 
         final WebLabel greenButton = new WebLabel ( "G:" );
-        greenButton.setDrawShade ( true );
+        greenButton.setStyleId ( Styles.colorchooserLabel );
         colorsPanel.add ( greenButton, "0,10" );
         greenField = new WebTextField ();
         greenField.setColumns ( 3 );
         colorsPanel.add ( greenField, "2,10" );
 
         final WebLabel blueButton = new WebLabel ( "B:" );
-        blueButton.setDrawShade ( true );
+        blueButton.setStyleId ( Styles.colorchooserLabel );
         colorsPanel.add ( blueButton, "0,12" );
         blueField = new WebTextField ();
         blueField.setColumns ( 3 );
@@ -285,7 +281,7 @@ public class WebColorChooserPanel extends WebPanel implements DialogOptions
 
 
         final WebLabel hexLabel = new WebLabel ( "#" );
-        hexLabel.setDrawShade ( true );
+        hexLabel.setStyleId ( Styles.colorchooserLabel );
         infoPanel.add ( hexLabel, "0,11" );
         hexColor = new WebTextField ();
         updateHexField ( color );
@@ -345,9 +341,7 @@ public class WebColorChooserPanel extends WebPanel implements DialogOptions
 
     private WebPanel createButtonsPanel ()
     {
-        final WebPanel buttonsPanel = new WebPanel ( new ToolbarLayout ( 2, ToolbarLayout.HORIZONTAL ) );
-        buttonsPanel.setOpaque ( false );
-        buttonsPanel.setMargin ( 5, 0, 3, 0 );
+        final WebPanel buttonsPanel = new WebPanel ( Styles.colorchooserButtonsPanel, new ToolbarLayout ( 2, ToolbarLayout.HORIZONTAL ) );
 
         final WebCheckBox webOnly = new WebCheckBox ();
         webOnly.setLanguage ( "weblaf.colorchooser.webonly" );
@@ -364,12 +358,9 @@ public class WebColorChooserPanel extends WebPanel implements DialogOptions
         buttonsPanel.add ( webOnly );
 
         final WebButton ok = new WebButton ();
+        ok.setStyleId ( Styles.colorchooserOkButton );
         ok.setLanguage ( "weblaf.colorchooser.choose" );
         ok.addHotkey ( WebColorChooserPanel.this, Hotkey.ENTER );
-        if ( StyleConstants.highlightControlButtons )
-        {
-            ok.setShineColor ( StyleConstants.greenHighlight );
-        }
         ok.addActionListener ( new ActionListener ()
         {
             @Override
@@ -393,12 +384,9 @@ public class WebColorChooserPanel extends WebPanel implements DialogOptions
         buttonsPanel.add ( ok, ToolbarLayout.END );
 
         final WebButton reset = new WebButton ();
+        reset.setStyleId ( Styles.colorchooserResetButton );
         reset.setLanguage ( "weblaf.colorchooser.reset" );
         reset.addHotkey ( WebColorChooserPanel.this, Hotkey.ALT_R );
-        if ( StyleConstants.highlightControlButtons )
-        {
-            reset.setShineColor ( StyleConstants.blueHighlight );
-        }
         reset.addActionListener ( new ActionListener ()
         {
             @Override
@@ -411,12 +399,9 @@ public class WebColorChooserPanel extends WebPanel implements DialogOptions
         buttonsPanel.add ( reset, ToolbarLayout.END );
 
         final WebButton cancel = new WebButton ();
+        reset.setStyleId ( Styles.colorchooserCancelButton );
         cancel.setLanguage ( "weblaf.colorchooser.cancel" );
         cancel.addHotkey ( WebColorChooserPanel.this, Hotkey.ESCAPE );
-        if ( StyleConstants.highlightControlButtons )
-        {
-            cancel.setShineColor ( StyleConstants.redHighlight );
-        }
         cancel.addActionListener ( new ActionListener ()
         {
             @Override

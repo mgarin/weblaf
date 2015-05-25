@@ -17,6 +17,7 @@
 
 package com.alee.laf.progressbar;
 
+import com.alee.extended.painter.Painter;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.language.LanguageManager;
@@ -32,6 +33,7 @@ import com.alee.utils.ReflectUtils;
 import com.alee.utils.SizeUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.laf.ShapeProvider;
+import com.alee.utils.laf.Styleable;
 import com.alee.utils.swing.*;
 
 import javax.swing.*;
@@ -46,7 +48,8 @@ import java.util.List;
  */
 
 public class WebProgressBar extends JProgressBar
-        implements ShapeProvider, EventMethods, ToolTipMethods, LanguageMethods, FontMethods<WebProgressBar>, SizeMethods<WebProgressBar>
+        implements Styleable, ShapeProvider, EventMethods, ToolTipMethods, LanguageMethods, FontMethods<WebProgressBar>,
+        SizeMethods<WebProgressBar>
 {
     public WebProgressBar ()
     {
@@ -84,137 +87,64 @@ public class WebProgressBar extends JProgressBar
         getUI ().installUI ( this );
     }
 
-    public int getRound ()
+    /**
+     * Returns progress bar painter.
+     *
+     * @return progress bar painter
+     */
+    public Painter getPainter ()
     {
-        return getWebUI ().getRound ();
+        return getWebUI ().getPainter ();
     }
 
-    public void setRound ( final int round )
+    /**
+     * Sets progress bar painter.
+     * Pass null to remove progress bar painter.
+     *
+     * @param painter new progress bar painter
+     * @return this progress bar
+     */
+    public WebProgressBar setPainter ( final Painter painter )
     {
-        getWebUI ().setRound ( round );
+        getWebUI ().setPainter ( painter );
+        return this;
     }
 
-    public int getInnerRound ()
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getStyleId ()
     {
-        return getWebUI ().getInnerRound ();
+        return getWebUI ().getStyleId ();
     }
 
-    public void setInnerRound ( final int innerRound )
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setStyleId ( final String id )
     {
-        getWebUI ().setInnerRound ( innerRound );
+        getWebUI ().setStyleId ( id );
     }
 
-    public int getShadeWidth ()
-    {
-        return getWebUI ().getShadeWidth ();
-    }
-
-    public void setShadeWidth ( final int shadeWidth )
-    {
-        getWebUI ().setShadeWidth ( shadeWidth );
-    }
-
-    public boolean isPaintIndeterminateBorder ()
-    {
-        return getWebUI ().isPaintIndeterminateBorder ();
-    }
-
-    public void setPaintIndeterminateBorder ( final boolean paintIndeterminateBorder )
-    {
-        getWebUI ().setPaintIndeterminateBorder ( paintIndeterminateBorder );
-    }
-
-    public int getPreferredProgressWidth ()
-    {
-        return getWebUI ().getPreferredProgressWidth ();
-    }
-
-    public void setPreferredProgressWidth ( final int preferredWidth )
-    {
-        getWebUI ().setPreferredProgressWidth ( preferredWidth );
-    }
-
-    public Color getBgTop ()
-    {
-        return getWebUI ().getBgTop ();
-    }
-
-    public void setBgTop ( final Color bgTop )
-    {
-        getWebUI ().setBgTop ( bgTop );
-    }
-
-    public Color getBgBottom ()
-    {
-        return getWebUI ().getBgBottom ();
-    }
-
-    public void setBgBottom ( final Color bgBottom )
-    {
-        getWebUI ().setBgBottom ( bgBottom );
-    }
-
-    public Color getProgressTopColor ()
-    {
-        return getWebUI ().getProgressTopColor ();
-    }
-
-    public void setProgressTopColor ( final Color progressTopColor )
-    {
-        getWebUI ().setProgressTopColor ( progressTopColor );
-    }
-
-    public Color getProgressBottomColor ()
-    {
-        return getWebUI ().getProgressBottomColor ();
-    }
-
-    public void setProgressBottomColor ( final Color progressBottomColor )
-    {
-        getWebUI ().setProgressBottomColor ( progressBottomColor );
-    }
-
-    public Color getIndeterminateBorder ()
-    {
-        return getWebUI ().getIndeterminateBorder ();
-    }
-
-    public void setIndeterminateBorder ( final Color indeterminateBorder )
-    {
-        getWebUI ().setIndeterminateBorder ( indeterminateBorder );
-    }
-
-    public Color getHighlightWhite ()
-    {
-        return getWebUI ().getHighlightWhite ();
-    }
-
-    public void setHighlightWhite ( final Color highlightWhite )
-    {
-        getWebUI ().setHighlightWhite ( highlightWhite );
-    }
-
-    public Color getHighlightDarkWhite ()
-    {
-        return getWebUI ().getHighlightDarkWhite ();
-    }
-
-    public void setHighlightDarkWhite ( final Color highlightDarkWhite )
-    {
-        getWebUI ().setHighlightDarkWhite ( highlightDarkWhite );
-    }
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Shape provideShape ()
     {
         return getWebUI ().provideShape ();
     }
 
-    public WebProgressBarUI getWebUI ()
+    private WebProgressBarUI getWebUI ()
     {
         return ( WebProgressBarUI ) getUI ();
     }
 
+    /**
+     * Installs a Web-UI into this component.
+     */
     @Override
     public void updateUI ()
     {

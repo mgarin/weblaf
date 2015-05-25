@@ -54,14 +54,14 @@ public enum SupportedComponent
     verticalLabel ( true, WebVerticalLabel.class, "VerticalLabelUI", WebLookAndFeel.verticalLabelUI ),
     multiLineLabel ( false, WebMultiLineLabel.class, "MultiLineLabelUI", WebLookAndFeel.multiLineLabelUI ),
     styledLabel ( true, WebStyledLabel.class, "StyledLabelUI", WebLookAndFeel.styledLabelUI ),
-    toolTip ( false, JToolTip.class, "ToolTipUI", WebLookAndFeel.toolTipUI ),
+    toolTip ( true, JToolTip.class, "ToolTipUI", WebLookAndFeel.toolTipUI ),
 
     /**
      * Button-related components.
      */
-    button ( false, JButton.class, "ButtonUI", WebLookAndFeel.buttonUI ),
-    splitButton ( false, WebSplitButton.class, "SplitButtonUI", WebLookAndFeel.splitButtonUI ),
-    toggleButton ( false, JToggleButton.class, "ToggleButtonUI", WebLookAndFeel.toggleButtonUI ),
+    button ( true, JButton.class, "ButtonUI", WebLookAndFeel.buttonUI ),
+    splitButton ( true, WebSplitButton.class, "SplitButtonUI", WebLookAndFeel.splitButtonUI ),
+    toggleButton ( true, JToggleButton.class, "ToggleButtonUI", WebLookAndFeel.toggleButtonUI ),
     checkBox ( false, JCheckBox.class, "CheckBoxUI", WebLookAndFeel.checkBoxUI ),
     tristateCheckBox ( false, WebTristateCheckBox.class, "TristateCheckBoxUI", WebLookAndFeel.tristateCheckBoxUI ),
     radioButton ( false, JRadioButton.class, "RadioButtonUI", WebLookAndFeel.radioButtonUI ),
@@ -75,19 +75,19 @@ public enum SupportedComponent
     menuItem ( false, JMenuItem.class, "MenuItemUI", WebLookAndFeel.menuItemUI ),
     checkBoxMenuItem ( false, JCheckBoxMenuItem.class, "CheckBoxMenuItemUI", WebLookAndFeel.checkBoxMenuItemUI ),
     radioButtonMenuItem ( false, JRadioButtonMenuItem.class, "RadioButtonMenuItemUI", WebLookAndFeel.radioButtonMenuItemUI ),
-    popupMenuSeparator ( false, JPopupMenu.Separator.class, "PopupMenuSeparatorUI", WebLookAndFeel.popupMenuSeparatorUI ),
+    popupMenuSeparator ( true, JPopupMenu.Separator.class, "PopupMenuSeparatorUI", WebLookAndFeel.popupMenuSeparatorUI ),
 
     /**
      * Separator component.
      */
-    separator ( false, JSeparator.class, "SeparatorUI", WebLookAndFeel.separatorUI ),
+    separator ( true, JSeparator.class, "SeparatorUI", WebLookAndFeel.separatorUI ),
 
     /**
      * Scroll-related components.
      */
     scrollBar ( true, JScrollBar.class, "ScrollBarUI", WebLookAndFeel.scrollBarUI ),
-    scrollPane ( false, JScrollPane.class, "ScrollPaneUI", WebLookAndFeel.scrollPaneUI ),
-    viewport ( false, JViewport.class, "ViewportUI", WebLookAndFeel.viewportUI ),
+    scrollPane ( true, JScrollPane.class, "ScrollPaneUI", WebLookAndFeel.scrollPaneUI ),
+    viewport ( true, JViewport.class, "ViewportUI", WebLookAndFeel.viewportUI ),
 
     /**
      * Text-related components.
@@ -102,8 +102,8 @@ public enum SupportedComponent
     /**
      * Toolbar-related components.
      */
-    toolBar ( false, JToolBar.class, "ToolBarUI", WebLookAndFeel.toolBarUI ),
-    toolBarSeparator ( false, JToolBar.Separator.class, "ToolBarSeparatorUI", WebLookAndFeel.toolBarSeparatorUI ),
+    toolBar ( true, JToolBar.class, "ToolBarUI", WebLookAndFeel.toolBarUI ),
+    toolBarSeparator ( true, JToolBar.Separator.class, "ToolBarSeparatorUI", WebLookAndFeel.toolBarSeparatorUI ),
 
     /**
      * Table-related components.
@@ -128,7 +128,7 @@ public enum SupportedComponent
     /**
      * Other data-related components.
      */
-    progressBar ( false, JProgressBar.class, "ProgressBarUI", WebLookAndFeel.progressBarUI ),
+    progressBar ( true, JProgressBar.class, "ProgressBarUI", WebLookAndFeel.progressBarUI ),
     slider ( false, JSlider.class, "SliderUI", WebLookAndFeel.sliderUI ),
     spinner ( false, JSpinner.class, "SpinnerUI", WebLookAndFeel.spinnerUI ),
     tree ( false, JTree.class, "TreeUI", WebLookAndFeel.treeUI ),
@@ -138,7 +138,7 @@ public enum SupportedComponent
     /**
      * Desktop-pane-related components.
      */
-    desktopPane ( false, JDesktopPane.class, "DesktopPaneUI", WebLookAndFeel.desktopPaneUI ),
+    desktopPane ( true, JDesktopPane.class, "DesktopPaneUI", WebLookAndFeel.desktopPaneUI ),
     desktopIcon ( false, JInternalFrame.JDesktopIcon.class, "DesktopIconUI", WebLookAndFeel.desktopIconUI ),
     internalFrame ( false, JInternalFrame.class, "InternalFrameUI", WebLookAndFeel.internalFrameUI ),
 
@@ -147,6 +147,16 @@ public enum SupportedComponent
      */
     optionPane ( false, JOptionPane.class, "OptionPaneUI", WebLookAndFeel.optionPaneUI );
 
+    /**
+     * Component type icons cache.
+     */
+    private static final Map<SupportedComponent, ImageIcon> componentIcons =
+            new EnumMap<SupportedComponent, ImageIcon> ( SupportedComponent.class );
+    /**
+     * Lazily initialized component types map by their UI class IDs.
+     */
+    private static final Map<String, SupportedComponent> componentByUIClassID =
+            new HashMap<String, SupportedComponent> ( values ().length );
     /**
      * Enum constant settings.
      */
@@ -170,6 +180,42 @@ public enum SupportedComponent
         this.componentClass = componentClass;
         this.uiClassID = uiClassID;
         this.defaultUIClass = defaultUIClass;
+    }
+
+    /**
+     * Returns supported component type by UI class ID.
+     *
+     * @param uiClassID UI class ID
+     * @return supported component type by UI class ID
+     */
+    public static SupportedComponent getComponentTypeByUIClassID ( final String uiClassID )
+    {
+        if ( componentByUIClassID.size () == 0 )
+        {
+            for ( final SupportedComponent supportedComponent : values () )
+            {
+                componentByUIClassID.put ( supportedComponent.getUIClassID (), supportedComponent );
+            }
+        }
+        return componentByUIClassID.get ( uiClassID );
+    }
+
+    /**
+     * Returns list of component types which supports painters.
+     *
+     * @return list of component types which supports painters
+     */
+    public static List<SupportedComponent> getPainterSupportedComponents ()
+    {
+        final List<SupportedComponent> supportedComponents = new ArrayList<SupportedComponent> ();
+        for ( final SupportedComponent sc : SupportedComponent.values () )
+        {
+            if ( sc.supportsPainters () )
+            {
+                supportedComponents.add ( sc );
+            }
+        }
+        return supportedComponents;
     }
 
     /**
@@ -241,12 +287,6 @@ public enum SupportedComponent
     }
 
     /**
-     * Component type icons cache.
-     */
-    private static final Map<SupportedComponent, ImageIcon> componentIcons =
-            new EnumMap<SupportedComponent, ImageIcon> ( SupportedComponent.class );
-
-    /**
      * Returns component type icon.
      *
      * @return component type icon
@@ -268,47 +308,5 @@ public enum SupportedComponent
             }
         }
         return icon;
-    }
-
-    /**
-     * Lazily initialized component types map by their UI class IDs.
-     */
-    private static final Map<String, SupportedComponent> componentByUIClassID =
-            new HashMap<String, SupportedComponent> ( values ().length );
-
-    /**
-     * Returns supported component type by UI class ID.
-     *
-     * @param uiClassID UI class ID
-     * @return supported component type by UI class ID
-     */
-    public static SupportedComponent getComponentTypeByUIClassID ( final String uiClassID )
-    {
-        if ( componentByUIClassID.size () == 0 )
-        {
-            for ( final SupportedComponent supportedComponent : values () )
-            {
-                componentByUIClassID.put ( supportedComponent.getUIClassID (), supportedComponent );
-            }
-        }
-        return componentByUIClassID.get ( uiClassID );
-    }
-
-    /**
-     * Returns list of component types which supports painters.
-     *
-     * @return list of component types which supports painters
-     */
-    public static List<SupportedComponent> getPainterSupportedComponents ()
-    {
-        final List<SupportedComponent> supportedComponents = new ArrayList<SupportedComponent> ();
-        for ( final SupportedComponent sc : SupportedComponent.values () )
-        {
-            if ( sc.supportsPainters () )
-            {
-                supportedComponents.add ( sc );
-            }
-        }
-        return supportedComponents;
     }
 }

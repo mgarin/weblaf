@@ -1,13 +1,15 @@
 <skin>
 
-    <!-- JScrollBar styling -->
+    <!-- com.alee.laf.scroll.WebScrollBar -->
+
+    <!-- Scroll bar -->
     <style type="scrollBar" id="default">
         <ui>
-            <margin>1,1,1,1</margin>
             <paintButtons>true</paintButtons>
             <paintTrack>false</paintTrack>
         </ui>
         <painter id="painter" base="true" class="com.alee.managers.style.skin.web.WebScrollBarPainter">
+            <margin>1,1,1,1</margin>
             <thumbRound>8</thumbRound>
             <thumbMargin>1,2,1,2</thumbMargin>
             <trackBorderColor>230,230,230</trackBorderColor>
@@ -21,7 +23,14 @@
             <thumbPressedBorderColor>126,126,126</thumbPressedBorderColor>
             <thumbPressedBackgroundColor>145,145,145</thumbPressedBackgroundColor>
         </painter>
-        <painter id="decreaseButtonPainter,increaseButtonPainter" class="com.alee.managers.style.skin.web.WebScrollBarButtonPainter">
+    </style>
+
+    <!-- Scroll bar button -->
+    <style type="button" id="scrollbar-button" extends="default">
+        <component>
+            <focusable>false</focusable>
+        </component>
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebScrollBarButtonPainter">
             <borderColor>189,189,189</borderColor>
             <backgroundColor>217,217,217</backgroundColor>
             <disabledBorderColor>210,210,210</disabledBorderColor>
@@ -33,22 +42,17 @@
         </painter>
     </style>
 
-    <!-- JScrollBar styling for JScrollPane -->
-    <style type="scrollBar" id="scroll-pane" extends="default">
-        <ui>
-            <paintTrack>true</paintTrack>
-        </ui>
+    <!-- Decrease (scroll up/left) scroll bar button -->
+    <style type="button" id="scrollbar-decrease-button" extends="scrollbar-button">
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebScrollBarButtonPainter">
+            <buttonType>decrease</buttonType>
+        </painter>
     </style>
 
-    <!-- JScrollBar styling for JComboBox -->
-    <style type="scrollBar" id="combo-box" extends="default">
-        <ui>
-            <margin>0,2,0,2</margin>
-            <paintButtons>false</paintButtons>
-        </ui>
-        <painter id="painter" base="true" class="com.alee.managers.style.skin.web.WebScrollBarPainter">
-            <thumbRound>4</thumbRound>
-            <thumbMargin>0,2,0,2</thumbMargin>
+    <!-- Increase (scroll down/right) scroll bar button -->
+    <style type="button" id="scrollbar-increase-button" extends="scrollbar-button">
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebScrollBarButtonPainter">
+            <buttonType>increase</buttonType>
         </painter>
     </style>
 

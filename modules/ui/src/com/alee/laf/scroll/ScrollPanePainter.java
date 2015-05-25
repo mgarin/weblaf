@@ -15,38 +15,19 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.laf.filechooser;
+package com.alee.laf.scroll;
+
+import com.alee.extended.painter.Painter;
+import com.alee.extended.painter.SpecificPainter;
+
+import javax.swing.*;
 
 /**
- * This enumeration represents default file chooser approve button types and provides language keys for them.
+ * Base interface for JScrollPane component painters.
  *
  * @author Mikle Garin
  */
 
-public enum FileApproveText
+public interface ScrollPanePainter<E extends JScrollPane, U extends WebScrollPaneUI> extends Painter<E, U>, SpecificPainter
 {
-    /**
-     * Save text.
-     */
-    save,
-
-    /**
-     * Open text.
-     */
-    open,
-
-    /**
-     * Choose text.
-     */
-    choose;
-
-    /**
-     * Returns approve text language key.
-     *
-     * @return approve text language key
-     */
-    public String getLanguageKey ()
-    {
-        return "weblaf.filechooser." + this;
-    }
 }

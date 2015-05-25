@@ -1,0 +1,36 @@
+<skin>
+
+    <!-- com.alee.laf.colorchooser.WebColorChooser -->
+
+    <!-- Main content panel -->
+    <style type="panel" id="colorchooser" extends="default">
+        <component>
+            <opaque>false</opaque>
+        </component>
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebPanelPainter">
+            <margin>2,5,2,5</margin>
+            <webColoredBackground>false</webColoredBackground>
+        </painter>
+    </style>
+
+    <!-- Field title labels -->
+    <style type="label" id="colorchooser-label" extends="shade-label" />
+
+    <!-- Control buttons panel -->
+    <style type="panel" id="colorchooser-buttons" extends="default">
+        <component>
+            <opaque>false</opaque>
+        </component>
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebPanelPainter">
+            <margin>5,0,3,0</margin>
+            <webColoredBackground>false</webColoredBackground>
+        </painter>
+    </style>
+
+    <!-- Control buttons buttons -->
+    <style type="button" id="colorchooser-button" extends="default" />
+    <style type="button" id="colorchooser-ok" extends="colorchooser-button" />
+    <style type="button" id="colorchooser-reset" extends="colorchooser-button" />
+    <style type="button" id="colorchooser-cancel" extends="colorchooser-button" />
+
+</skin>

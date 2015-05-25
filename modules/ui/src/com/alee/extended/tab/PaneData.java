@@ -17,6 +17,7 @@
 
 package com.alee.extended.tab;
 
+import com.alee.laf.Styles;
 import com.alee.laf.menu.WebPopupMenu;
 import com.alee.laf.splitpane.WebSplitPane;
 import com.alee.laf.tabbedpane.TabbedPaneStyle;
@@ -161,7 +162,7 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
                             spl && ( ( WebSplitPane ) tabbedPane.getParent () ).getOrientation () == WebSplitPane.HORIZONTAL_SPLIT;
 
                     // Creating popup menu
-                    final PopupMenuGenerator pmg = new PopupMenuGenerator ( "document-pane-menu" );
+                    final PopupMenuGenerator pmg = new PopupMenuGenerator ( Styles.documentpaneMenu );
                     pmg.setIconSettings ( PaneData.class, "icons/menu/", ".png" );
                     pmg.setLanguagePrefix ( "weblaf.ex.docpane" );
                     pmg.addItem ( "close", "close", Hotkey.CTRL_W, csb, new ActionListener ()
@@ -251,8 +252,7 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
                     final WebPopupMenu menu = pmg.getMenu ();
                     final Dimension mps = menu.getPreferredSize ();
                     final Rectangle bounds = tabbedPane.getBoundsAt ( index );
-                    menu.show ( tabbedPane, bounds.x + bounds.width / 2 - mps.width / 2,
-                            bounds.y + bounds.height - menu.getShadeWidth () + 5 );
+                    menu.show ( tabbedPane, bounds.x + bounds.width / 2 - mps.width / 2, bounds.y + bounds.height + 5 );
                 }
             }
         } );

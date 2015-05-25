@@ -18,15 +18,13 @@
 package com.alee.managers.style.skin.web;
 
 import com.alee.extended.painter.AbstractPainter;
-import com.alee.utils.ColorUtils;
-import com.alee.utils.GraphicsUtils;
-import com.alee.utils.NinePatchUtils;
-import com.alee.utils.ShapeCache;
+import com.alee.utils.*;
 import com.alee.utils.laf.PainterShapeProvider;
 import com.alee.utils.ninepatch.NinePatchIcon;
 import com.alee.utils.swing.DataProvider;
 
 import javax.swing.*;
+import javax.swing.plaf.ComponentUI;
 import java.awt.*;
 import java.awt.geom.GeneralPath;
 
@@ -38,8 +36,9 @@ import java.awt.geom.GeneralPath;
  * @author Mikle Garin
  */
 
-@SuppressWarnings ( "UnusedParameters" )
-public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> implements PainterShapeProvider<E>, SwingConstants
+@SuppressWarnings ("UnusedParameters")
+public class WebPopupPainter<E extends JComponent, U extends ComponentUI> extends AbstractPainter<E, U>
+        implements PainterShapeProvider<E>, SwingConstants
 {
     /**
      * Shape cache keys.
@@ -67,6 +66,19 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
     protected int cornerSide = TOP;
     protected int relativeCorner = 0;
     protected int cornerAlignment = -1;
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void install ( final E c, final U ui )
+    {
+        super.install ( c, ui );
+
+        // todo Rename into "shaped" or something similar since this is not exactly transparency mark anymore
+        // Initializing transparency availability mark
+        transparent = ProprietaryUtils.isWindowTransparencyAllowed () || ProprietaryUtils.isWindowShapeAllowed ();
+    }
 
     /**
      * Returns popup style.
@@ -368,14 +380,14 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
     @Override
     public Shape provideShape ( final E component, final Rectangle bounds )
     {
-        return getBorderShape ( component, bounds.getSize(), false );
+        return getBorderShape ( component, bounds.getSize (), false );
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Boolean isOpaque ( final E c )
+    public Boolean isOpaque ()
     {
         return !transparent;
     }
@@ -384,10 +396,9 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
      * {@inheritDoc}
      */
     @Override
-    public Insets getMargin ( final E c )
+    public Insets getMargin ()
     {
         // Actual margin
-        final boolean ltr = c.getComponentOrientation ().isLeftToRight ();
         final Insets m = new Insets ( margin.top, ltr ? margin.left : margin.right, margin.bottom, ltr ? margin.right : margin.left );
 
         // Calculating additional borders
@@ -414,7 +425,7 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
      * {@inheritDoc}
      */
     @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E popup )
+    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E popup, final U ui )
     {
         final Object aa = GraphicsUtils.setupAntialias ( g2d );
         if ( transparent )
@@ -486,7 +497,7 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
 
     /**
      * Returns current shade transparency.
-     * This part moved to a separate method to make it simple to override without touchin the actual transparency value.
+     * This part moved to a separate method to make it simple to override without touching the actual transparency value.
      *
      * @return current shade transparency
      */
@@ -623,14 +634,13 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
     /**
      * Returns an array of shape settings cached along with the shape.
      *
-     * @param popup popup component
+     * @param popup     popup component
      * @param popupSize popup size
      * @return an array of shape settings cached along with the shape
      */
     protected Object[] getCachedShapeSettings ( final E popup, final Dimension popupSize )
     {
-        return new Object[]{ round, shadeWidth, cornerWidth, cornerSide, relativeCorner, cornerAlignment, popupSize,
-                popup.getComponentOrientation ().isLeftToRight () };
+        return new Object[]{ round, shadeWidth, cornerWidth, cornerSide, relativeCorner, cornerAlignment, popupSize, ltr };
     }
 
     /**
@@ -669,6 +679,7 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
      * @param fill      whether it is a fill shape or not
      * @return dropdown style shape
      */
+    @SuppressWarnings ("ConstantConditions")
     protected GeneralPath createDropdownShape ( final E popup, final Dimension popupSize, final boolean fill )
     {
         final boolean topCorner = cornerSide == TOP;
@@ -683,7 +694,6 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
         final int sideWidth = getSideWidth ();
 
         // Corner left spacing
-        final boolean ltr = popup.getComponentOrientation ().isLeftToRight ();
         final int cornerShear = sideWidth + shear + round + cornerWidth * 2;
         final int length = topCorner || bottomCorner ? popupSize.width : popupSize.height;
         final int spacing;
@@ -708,7 +718,7 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
         // Side spacings
         final int top = sideWidth + shear;
         final int right = popupSize.width - 1 - sideWidth;
-        final int botom = popupSize.height - 1 - sideWidth;
+        final int bottom = popupSize.height - 1 - sideWidth;
         final int left = sideWidth + shear;
 
         final GeneralPath shape = new GeneralPath ( GeneralPath.WIND_EVEN_ODD );
@@ -732,18 +742,18 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
             shape.lineTo ( right + cornerWidth, top + round + spacing + cornerWidth * 2 + 1 );
             shape.lineTo ( right, top + round + spacing + cornerWidth * 3 + 1 );
         }
-        shape.lineTo ( right, botom - round );
-        shape.quadTo ( right, botom, right - round, botom );
+        shape.lineTo ( right, bottom - round );
+        shape.quadTo ( right, bottom, right - round, bottom );
         if ( bottomCorner )
         {
             // Bottom corner
-            shape.lineTo ( left + round + spacing + cornerWidth * 3 + 1, botom );
-            shape.lineTo ( left + round + spacing + cornerWidth * 2 + 1, botom + cornerWidth );
-            shape.lineTo ( left + round + spacing + cornerWidth * 2, botom + cornerWidth );
-            shape.lineTo ( left + round + spacing + cornerWidth, botom );
+            shape.lineTo ( left + round + spacing + cornerWidth * 3 + 1, bottom );
+            shape.lineTo ( left + round + spacing + cornerWidth * 2 + 1, bottom + cornerWidth );
+            shape.lineTo ( left + round + spacing + cornerWidth * 2, bottom + cornerWidth );
+            shape.lineTo ( left + round + spacing + cornerWidth, bottom );
         }
-        shape.lineTo ( left + round, botom );
-        shape.quadTo ( left, botom, left, botom - round );
+        shape.lineTo ( left + round, bottom );
+        shape.quadTo ( left, bottom, left, bottom - round );
         if ( leftCorner )
         {
             // Left corner
@@ -787,6 +797,7 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
      * @param fill      whether it is a fill shape or not
      * @return dropdown style corner shape
      */
+    @SuppressWarnings ("ConstantConditions")
     protected GeneralPath createDropdownCornerShape ( final E popupMenu, final Dimension menuSize, final boolean fill )
     {
         final boolean topCorner = cornerSide == TOP;
@@ -801,7 +812,6 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
         final int sideWidth = getSideWidth ();
 
         // Corner left spacing
-        final boolean ltr = popupMenu.getComponentOrientation ().isLeftToRight ();
         final int cornerShear = sideWidth + shear + round + cornerWidth * 2;
         final int length = topCorner || bottomCorner ? menuSize.width : menuSize.height;
         final int spacing;
@@ -826,7 +836,7 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
         // Side spacings
         final int top = sideWidth + shear;
         final int right = menuSize.width - 1 - sideWidth;
-        final int botom = menuSize.height - 1 - sideWidth;
+        final int bottom = menuSize.height - 1 - sideWidth;
         final int left = sideWidth + shear;
 
         final GeneralPath shape = new GeneralPath ( GeneralPath.WIND_EVEN_ODD );
@@ -850,10 +860,10 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
         if ( bottomCorner )
         {
             // Bottom corner
-            shape.moveTo ( left + round + spacing + cornerWidth * 3 + 1, botom );
-            shape.lineTo ( left + round + spacing + cornerWidth * 2 + 1, botom + cornerWidth );
-            shape.lineTo ( left + round + spacing + cornerWidth * 2, botom + cornerWidth );
-            shape.lineTo ( left + round + spacing + cornerWidth, botom );
+            shape.moveTo ( left + round + spacing + cornerWidth * 3 + 1, bottom );
+            shape.lineTo ( left + round + spacing + cornerWidth * 2 + 1, bottom + cornerWidth );
+            shape.lineTo ( left + round + spacing + cornerWidth * 2, bottom + cornerWidth );
+            shape.lineTo ( left + round + spacing + cornerWidth, bottom );
             shape.closePath ();
         }
         if ( leftCorner )

@@ -106,7 +106,7 @@ public class StyleManager
     /**
      * Whether strict style checks are enabled or not.
      * <p/>
-     * In case strick checks are enabled any incorrect properties or painters getter and setter calls will cause exceptions.
+     * In case strict checks are enabled any incorrect properties or painters getter and setter calls will cause exceptions.
      * These exceptions will not cause UI to halt but they will properly inform about missing styles, incorrect settings etc.
      * <p/>
      * It is highly recommended to keep this property enabled to see and fix all problems right away.
@@ -248,7 +248,7 @@ public class StyleManager
      */
     public static WebLafSkin applyDefaultSkin ()
     {
-        return applySkin ( getDefaultSkin () );
+        return installSkin ( getDefaultSkin () );
     }
 
     /**
@@ -268,9 +268,9 @@ public class StyleManager
      * @param skinClassName class name of the skin to be applied
      * @return previously applied skin
      */
-    public static WebLafSkin applySkin ( final String skinClassName )
+    public static WebLafSkin installSkin ( final String skinClassName )
     {
-        return applySkin ( ReflectUtils.getClassSafely ( skinClassName ) );
+        return installSkin ( ReflectUtils.getClassSafely ( skinClassName ) );
     }
 
     /**
@@ -280,9 +280,9 @@ public class StyleManager
      * @param skinClass class of the skin to be applied
      * @return previously applied skin
      */
-    public static WebLafSkin applySkin ( final Class skinClass )
+    public static WebLafSkin installSkin ( final Class skinClass )
     {
-        return applySkin ( createSkin ( skinClass ) );
+        return installSkin ( createSkin ( skinClass ) );
     }
 
     /**
@@ -292,7 +292,7 @@ public class StyleManager
      * @param skin skin to be applied
      * @return previously applied skin
      */
-    public static WebLafSkin applySkin ( final WebLafSkin skin )
+    public static WebLafSkin installSkin ( final WebLafSkin skin )
     {
         // Checking skin support
         checkSupport ( skin );
@@ -486,7 +486,7 @@ public class StyleManager
 
     /**
      * Clears all custom painter properties for the specified component.
-     * This is required when painter changes to avoid setting unexisting variables into painter.
+     * This is required when painter changes to avoid setting non-existing variables into painter.
      *
      * @param component component to clear custom painter properties for
      */

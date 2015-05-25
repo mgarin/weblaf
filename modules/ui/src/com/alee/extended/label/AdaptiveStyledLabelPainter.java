@@ -27,7 +27,8 @@ import com.alee.extended.painter.Painter;
  * @author Mikle Garin
  */
 
-public class AdaptiveStyledLabelPainter<E extends WebStyledLabel> extends AdaptivePainter<E> implements StyledLabelPainter<E>
+public class AdaptiveStyledLabelPainter<E extends WebStyledLabel, U extends WebStyledLabelUI> extends AdaptivePainter<E, U>
+        implements StyledLabelPainter<E, U>
 {
     /**
      * Constructs new AdaptiveLabelPainter for the specified painter.
@@ -37,42 +38,6 @@ public class AdaptiveStyledLabelPainter<E extends WebStyledLabel> extends Adapti
     public AdaptiveStyledLabelPainter ( final Painter painter )
     {
         super ( painter );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setPreferredRowCount ( final int rows )
-    {
-        // Ignore this method in adaptive class
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setIgnoreColorSettings ( final boolean ignore )
-    {
-        // Ignore this method in adaptive class
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setScriptFontRatio ( final float ratio )
-    {
-        // Ignore this method in adaptive class
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setTruncatedTextSuffix ( final String suffix )
-    {
-        // Ignore this method in adaptive class
     }
 
     /**

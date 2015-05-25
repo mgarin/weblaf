@@ -37,24 +37,6 @@ public class WebBreadcrumbPanel extends WebPanel implements BreadcrumbElement
         initialize ();
     }
 
-    public WebBreadcrumbPanel ( final boolean decorated )
-    {
-        super ( decorated );
-        initialize ();
-    }
-
-    public WebBreadcrumbPanel ( final boolean decorated, final LayoutManager layout )
-    {
-        super ( decorated, layout );
-        initialize ();
-    }
-
-    public WebBreadcrumbPanel ( final boolean decorated, final Component component )
-    {
-        super ( decorated, component );
-        initialize ();
-    }
-
     public WebBreadcrumbPanel ( final Component component )
     {
         super ( component );

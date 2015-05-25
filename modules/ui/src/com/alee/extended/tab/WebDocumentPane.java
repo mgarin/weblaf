@@ -17,6 +17,7 @@
 
 package com.alee.extended.tab;
 
+import com.alee.laf.Styles;
 import com.alee.laf.panel.WebPanel;
 import com.alee.laf.splitpane.WebSplitPane;
 import com.alee.laf.tabbedpane.WebTabbedPane;
@@ -47,7 +48,7 @@ import java.util.Map;
  * This component is basically a special container for customizable documents described by DocumentData class.
  * You can also override DocumentData class and for example include your own data into the document itself.
  * <p/>
- * This component uses either single or multiply tabbed panes and allow tabs reorder, drag, split and closability.
+ * This component uses either single or multiply tabbed panes and allow tabs reorder, drag, split and closeability.
  * All those features are of course configurable within the WebDocumentPane instance.
  *
  * @param <T> document type
@@ -214,7 +215,7 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel
     public WebDocumentPane ( final Customizer<WebSplitPane> splitPaneCustomizer, final Customizer<WebTabbedPane> tabbedPaneCustomizer,
                              final TabTitleComponentProvider<T> tabTitleComponentProvider )
     {
-        super ( "document-pane" );
+        super ( Styles.documentpane );
 
         // Customizers
         this.tabbedPaneCustomizer = tabbedPaneCustomizer;
@@ -711,7 +712,7 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel
             result = toPane;
         }
 
-        // Uodate active pane
+        // Update active pane
         if ( activePane == first || activePane == last )
         {
             activePane = result.findClosestPane ();
@@ -872,7 +873,7 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel
     }
 
     /**
-     * Collects all PaneData available under the specified stucture element into list.
+     * Collects all PaneData available under the specified structure element into list.
      *
      * @param structureData structure element
      * @param panes         PaneData list
@@ -904,7 +905,7 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel
     }
 
     /**
-     * Collects all SplitData available under the specified stucture element into list.
+     * Collects all SplitData available under the specified structure element into list.
      *
      * @param structureData structure element
      * @param splits        SplitData list
@@ -1274,7 +1275,7 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel
             final StructureData<T> last = restoreStructureStateImpl ( splitState.getValue (), documents );
             final SplitData<T> splitData = new SplitData<T> ( this, state.getSplitOrientation (), first, last );
 
-            // todo Location updates should be queued and performed 1 by 1 from top to bottom to avoid incorrect layouting
+            // todo Location updates should be queued and performed 1 by 1 from top to bottom to avoid incorrect layout
             // We have to wait until split is properly sized before restoring divider location
             splitData.getSplitPane ().addComponentListener ( new ComponentAdapter ()
             {

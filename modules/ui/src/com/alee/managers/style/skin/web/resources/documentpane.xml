@@ -1,0 +1,20 @@
+<skin>
+
+    <!-- com.alee.extended.tab.WebDocumentPane -->
+
+    <!-- WebDocumentPane styling -->
+    <style type="panel" id="documentpane" extends="default">
+        <component>
+            <opaque>false</opaque>
+        </component>
+    </style>
+
+    <!-- WebDocumentPane tab menu styling -->
+    <style type="popupMenu" id="documentpane" extends="default">
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebPopupMenuPainter">
+            <popupStyle>dropdown</popupStyle>
+            <cornerAlignment>0</cornerAlignment>
+        </painter>
+    </style>
+
+</skin>

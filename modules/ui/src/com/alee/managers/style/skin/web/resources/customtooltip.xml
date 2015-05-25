@@ -1,0 +1,25 @@
+<skin>
+
+    <!-- com.alee.managers.tooltip.WebCustomTooltip -->
+
+    <!-- Tooltip label -->
+    <style type="label" id="customtooltip" extends="default">
+        <component>
+            <foreground>white</foreground>
+        </component>
+    </style>
+
+    <!-- Tooltip hotkey shortcut label -->
+    <style type="label" id="hotkey-tip-label" extends="default">
+        <component>
+            <background>255,255,255,178</background>
+            <foreground>black</foreground>
+            <horizontalAlignment>0</horizontalAlignment>
+            <verticalAlignment>0</verticalAlignment>
+        </component>
+        <painter id="painter" class="com.alee.managers.tooltip.HotkeyTipPainter">
+            <margin>0,3,1,3</margin>
+        </painter>
+    </style>
+
+</skin>

@@ -17,11 +17,8 @@
 
 package com.alee.utils;
 
-import com.alee.extended.painter.AdaptivePainter;
-import com.alee.extended.painter.Painter;
 import com.alee.extended.painter.TexturePainter;
 import com.alee.global.StyleConstants;
-import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
 import com.alee.laf.scroll.WebScrollBarUI;
@@ -32,7 +29,6 @@ import com.alee.utils.laf.ShapeProvider;
 import com.alee.utils.laf.Styleable;
 import com.alee.utils.laf.WeblafBorder;
 import com.alee.utils.ninepatch.NinePatchIcon;
-import com.alee.utils.swing.BorderMethods;
 import com.alee.utils.xml.ResourceFile;
 
 import javax.swing.*;
@@ -45,7 +41,6 @@ import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
 import java.awt.geom.*;
 import java.awt.image.BufferedImage;
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -106,70 +101,24 @@ public final class LafUtils
     }
 
     /**
-     * Returns the specified painter if it can be assigned to proper painter type.
-     * Otherwise returns newly created adapter painter that wraps the specified painter.
-     * Used by component UIs to adapt general-type painters for their specific-type needs.
-     *
-     * @param painter      processed painter
-     * @param properClass  proper painter class
-     * @param adapterClass adapter painter class
-     * @param <T>          proper painter type
-     * @return specified painter if it can be assigned to proper painter type, new painter adapter if it cannot be assigned
-     */
-    public static <T extends Painter> T getProperPainter ( final Painter painter, final Class properClass, final Class adapterClass )
-    {
-        return painter == null ? null : ReflectUtils.isAssignable ( properClass, painter.getClass () ) ? ( T ) painter :
-                ( T ) ReflectUtils.createInstanceSafely ( adapterClass, painter );
-    }
-
-    /**
-     * Returns either the specified painter if it is not an adapted painter or the adapted painter.
-     * Used by component UIs to retrieve painters adapted for their specific needs.
-     *
-     * @param painter painter to process
-     * @param <T>     desired painter type
-     * @return either the specified painter if it is not an adapted painter or the adapted painter
-     */
-    public static <T extends Painter> T getAdaptedPainter ( final Painter painter )
-    {
-        return ( T ) ( painter != null && painter instanceof AdaptivePainter ? ( ( AdaptivePainter ) painter ).getPainter () : painter );
-    }
-
-    /**
-     * Fires painter property change event.
-     * This is a workaround since {@code firePropertyChange()} method is protected and cannot be called w/o using reflection.
-     *
-     * @param component  component to fire property change to
-     * @param oldPainter old painter
-     * @param newPainter new painter
-     */
-    public static void firePainterChanged ( final JComponent component, final Painter oldPainter, final Painter newPainter )
-    {
-        try
-        {
-            ReflectUtils.callMethod ( component, "firePropertyChange", WebLookAndFeel.PAINTER_PROPERTY, oldPainter, newPainter );
-        }
-        catch ( final NoSuchMethodException e )
-        {
-            Log.error ( LafUtils.class, e );
-        }
-        catch ( final InvocationTargetException e )
-        {
-            Log.error ( LafUtils.class, e );
-        }
-        catch ( final IllegalAccessException e )
-        {
-            Log.error ( LafUtils.class, e );
-        }
-    }
-
-    /**
-     * Sets scroll pane bars style ID.
+     * Sets scroll pane bar style ID.
      *
      * @param scrollPane scroll pane to process
-     * @param styleId    scroll pane bars style ID
+     * @param styleId    scroll pane bar style ID
      */
     public static void setScrollBarStyleId ( final JScrollPane scrollPane, final String styleId )
+    {
+        setVerticalScrollBarStyleId ( scrollPane, styleId );
+        setHorizontalScrollBarStyleId ( scrollPane, styleId );
+    }
+
+    /**
+     * Sets scroll pane vertical bar style ID.
+     *
+     * @param scrollPane scroll pane to process
+     * @param styleId    scroll pane bar style ID
+     */
+    public static void setVerticalScrollBarStyleId ( final JScrollPane scrollPane, final String styleId )
     {
         final JScrollBar vsb = scrollPane.getVerticalScrollBar ();
         if ( vsb != null )
@@ -181,6 +130,16 @@ public final class LafUtils
                 ui.setStyleId ( styleId );
             }
         }
+    }
+
+    /**
+     * Sets scroll pane horizontal bar style ID.
+     *
+     * @param scrollPane scroll pane to process
+     * @param styleId    scroll pane bar style ID
+     */
+    public static void setHorizontalScrollBarStyleId ( final JScrollPane scrollPane, final String styleId )
+    {
         final JScrollBar hsb = scrollPane.getHorizontalScrollBar ();
         if ( hsb != null )
         {
@@ -194,87 +153,15 @@ public final class LafUtils
     }
 
     /**
-     * Returns component UI or null if UI cannot be retreived.
+     * Returns component UI or null if UI cannot be retrieved.
      *
      * @param component component to retrieve UI from
      * @param <T>       UI class type
-     * @return component UI or null if UI cannot be retreived
+     * @return component UI or null if UI cannot be retrieved
      */
     public static <T extends ComponentUI> T getUI ( final Component component )
     {
         return ReflectUtils.callMethodSafely ( component, "getUI" );
-    }
-
-    /**
-     * Updates component border using the specified margin
-     *
-     * @param component component which border needs to be updated
-     * @param margin    component margin, or null if it doesn't have one
-     * @param painter   component painter, or null if it doesn't have one
-     */
-    public static void updateBorder ( final JComponent component, final Insets margin, final Painter painter )
-    {
-        if ( component != null )
-        {
-            // Preserve old borders
-            if ( SwingUtils.isPreserveBorders ( component ) )
-            {
-                return;
-            }
-
-            final boolean ltr = component.getComponentOrientation ().isLeftToRight ();
-            final Insets m = new Insets ( 0, 0, 0, 0 );
-
-            // Calculating margin borders
-            if ( margin != null )
-            {
-                m.top += margin.top;
-                m.left += ltr ? margin.left : margin.right;
-                m.bottom += margin.bottom;
-                m.right += ltr ? margin.right : margin.left;
-            }
-
-            // Calculating additional borders
-            if ( painter != null )
-            {
-                // Painter borders
-                final Insets pi = painter.getMargin ( component );
-                if ( pi != null )
-                {
-                    m.top += pi.top;
-                    m.left += ltr ? pi.left : pi.right;
-                    m.bottom += pi.bottom;
-                    m.right += ltr ? pi.right : pi.left;
-                }
-            }
-
-            // Installing border
-            component.setBorder ( LafUtils.createWebBorder ( m ) );
-        }
-    }
-
-    /**
-     * Returns preferred size for component UI.
-     *
-     * @param component component to compute preferred size for
-     * @param painter   component painter, or null if it doesn't have one
-     * @return preferred size
-     */
-    public static Dimension getPreferredSize ( final JComponent component, final Painter painter )
-    {
-        Dimension ps;
-
-        // Checking painter's preferred size
-        ps = painter != null ? painter.getPreferredSize ( component ) : new Dimension ( 0, 0 );
-
-        // Checking layout preferred size
-        final LayoutManager layout = component.getLayout ();
-        if ( layout != null )
-        {
-            ps = SwingUtils.max ( ps, layout.preferredLayoutSize ( component ) );
-        }
-
-        return ps;
     }
 
     /**
@@ -1353,50 +1240,6 @@ public final class LafUtils
     }
 
     /**
-     * Attempts to update component border if border methods are available for it.
-     * Returns whether attempt has succeed or not.
-     *
-     * @param component component which border should be updated
-     * @return true if attempt has succeed, false otherwise
-     */
-    public static boolean updateBorder ( final Component component )
-    {
-        final BorderMethods borderMethods = LafUtils.getBorderMethods ( component );
-        if ( borderMethods != null )
-        {
-            borderMethods.updateBorder ();
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-    /**
-     * Returns BorderMethods for the specified component or null if custom WebLaF border is not supported.
-     *
-     * @param component component to process
-     * @return BorderMethods for the specified component or null if custom WebLaF border is not supported
-     */
-    public static BorderMethods getBorderMethods ( final Component component )
-    {
-        if ( component instanceof BorderMethods )
-        {
-            return ( BorderMethods ) component;
-        }
-        else
-        {
-            final ComponentUI ui = getUI ( component );
-            if ( ui != null && ui instanceof BorderMethods )
-            {
-                return ( BorderMethods ) ui;
-            }
-        }
-        return null;
-    }
-
-    /**
      * Returns shape provider for the specified component or null if shape provider is not supported.
      * This might be used to provide dynamic component shape to other components.
      *
@@ -1497,9 +1340,10 @@ public final class LafUtils
         bounds.width -= lm.left + lm.right;
         bounds.height -= lm.top + lm.bottom;
 
+        // todo Do something with shade width
         // Field settings
-        final Insets fm = editor.getMargin ();
-        final int dm = 2 + editor.getShadeWidth ();
+        final Insets fm = editor.getInsets ();
+        final int dm = 2 + StyleConstants.shadeWidth;
         bounds.x -= fm.left + dm;
         bounds.y -= fm.top + dm;
         bounds.width += fm.left + fm.right + dm * 2;

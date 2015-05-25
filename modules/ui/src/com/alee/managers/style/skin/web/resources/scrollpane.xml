@@ -1,0 +1,35 @@
+<skin>
+
+    <!-- javax.swing.JScrollPane -->
+
+    <!-- Scroll pane -->
+    <style type="scrollPane" id="default">
+        <component>
+            <background>237,237,237</background>
+            <verticalScrollBarPolicy>20</verticalScrollBarPolicy>
+            <horizontalScrollBarPolicy>30</horizontalScrollBarPolicy>
+        </component>
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebScrollPanePainter">
+            <undecorated>false</undecorated>
+            <round>2</round>
+            <shadeWidth>2</shadeWidth>
+            <paintBackground>true</paintBackground>
+            <webColoredBackground>false</webColoredBackground>
+        </painter>
+    </style>
+
+    <!-- Horizontal scroll bar -->
+    <style type="scrollBar" id="scrollpane-horizontal" extends="default">
+        <ui>
+            <paintTrack>true</paintTrack>
+        </ui>
+    </style>
+
+    <!-- Vertical scroll bar -->
+    <style type="scrollBar" id="scrollpane-vertical" extends="default">
+        <ui>
+            <paintTrack>true</paintTrack>
+        </ui>
+    </style>
+
+</skin>

@@ -21,6 +21,7 @@ import com.alee.utils.GraphicsUtils;
 import com.alee.utils.ImageUtils;
 
 import javax.swing.*;
+import javax.swing.plaf.ComponentUI;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
@@ -35,7 +36,7 @@ import java.awt.image.BufferedImage;
  * @see Painter
  */
 
-public class TexturePainter<E extends JComponent> extends AbstractPainter<E>
+public class TexturePainter<E extends JComponent, U extends ComponentUI> extends AbstractPainter<E, U>
 {
     /**
      * Cached texture paint.
@@ -153,7 +154,7 @@ public class TexturePainter<E extends JComponent> extends AbstractPainter<E>
      * @param c      component to process
      */
     @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c )
+    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
     {
         // Do not paint anything if texture paint is not set
         if ( paint != null )

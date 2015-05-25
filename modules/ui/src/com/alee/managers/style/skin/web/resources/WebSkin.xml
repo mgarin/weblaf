@@ -10,10 +10,38 @@
     <!-- Base skin class, included resources with no specified "nearClass" attribute will use this class -->
     <class>com.alee.managers.style.skin.web.WebSkin</class>
 
-    <!-- Separate style classes -->
+    <!-- Basic styles, order is important! -->
     <include>resources/label.xml</include>
+    <include>resources/verticallabel.xml</include>
+    <include>resources/styledlabel.xml</include>
+    <include>resources/button.xml</include>
+    <include>resources/togglebutton.xml</include>
+    <include>resources/combobox.xml</include>
+    <include>resources/list.xml</include>
+    <include>resources/table.xml</include>
     <include>resources/panel.xml</include>
-    <include>resources/scrollBar.xml</include>
-    <include>resources/popupMenu.xml</include>
+    <include>resources/toolbar.xml</include>
+    <include>resources/scrollbar.xml</include>
+    <include>resources/scrollpane.xml</include>
+    <include>resources/splitpane.xml</include>
+    <include>resources/popupmenu.xml</include>
+    <include>resources/colorchooser.xml</include>
+    <include>resources/filechooser.xml</include>
+    <include>resources/rootpane.xml</include>
+
+    <!-- Custom components styles -->
+    <include>resources/hotkeylabel.xml</include>
+    <include>resources/customtooltip.xml</include>
+    <include>resources/syntaxpanel.xml</include>
+    <include>resources/filedrop.xml</include>
+    <include>resources/popover.xml</include>
+    <include>resources/memorybar.xml</include>
+    <include>resources/filechooserfield.xml</include>
+    <include>resources/pathfield.xml</include>
+    <include>resources/breadcrumb.xml</include>
+    <include>resources/syntaxarea.xml</include>
+    <include>resources/componentpane.xml</include>
+    <include>resources/documentpane.xml</include>
+    <include>resources/dockable.xml</include>
 
 </skin>

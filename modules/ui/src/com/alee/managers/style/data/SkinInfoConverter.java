@@ -54,6 +54,13 @@ public class SkinInfoConverter extends ReflectionConverter
      */
 
     /**
+     * Skin includes identifier mark.
+     * It identifies whether or not current skin is a simple include or a standalone skin.
+     */
+    private static boolean includeSkin = false;
+    private static final Object skinLock = new Object ();
+
+    /**
      * Converter constants.
      */
     public static final String ID_NODE = "id";
@@ -98,121 +105,136 @@ public class SkinInfoConverter extends ReflectionConverter
     @Override
     public Object unmarshal ( final HierarchicalStreamReader reader, final UnmarshallingContext context )
     {
-        // Creating component style
-        final SkinInfo skinInfo = new SkinInfo ();
-        final List<ComponentStyle> styles = new ArrayList<ComponentStyle> ();
-        final List<ResourceFile> includes = new ArrayList<ResourceFile> ();
-        while ( reader.hasMoreChildren () )
+        synchronized ( skinLock )
         {
-            // Read next node
-            reader.moveDown ();
-            final String nodeName = reader.getNodeName ();
-            if ( nodeName.equals ( ID_NODE ) )
+            // Creating component style
+            final SkinInfo skinInfo = new SkinInfo ();
+            final List<ComponentStyle> styles = new ArrayList<ComponentStyle> ();
+            final List<ResourceFile> includes = new ArrayList<ResourceFile> ();
+            while ( reader.hasMoreChildren () )
             {
-                skinInfo.setId ( reader.getValue () );
-            }
-            else if ( nodeName.equals ( NAME_NODE ) )
-            {
-                skinInfo.setName ( reader.getValue () );
-            }
-            else if ( nodeName.equals ( DESCRIPTION_NODE ) )
-            {
-                skinInfo.setDescription ( reader.getValue () );
-            }
-            else if ( nodeName.equals ( AUTHOR_NODE ) )
-            {
-                skinInfo.setAuthor ( reader.getValue () );
-            }
-            else if ( nodeName.equals ( SUPPORTED_SYSTEMS_NODE ) )
-            {
-                skinInfo.setSupportedSystems ( reader.getValue () );
-            }
-            else if ( nodeName.equals ( CLASS_NODE ) )
-            {
-                skinInfo.setSkinClass ( reader.getValue () );
-            }
-            else if ( nodeName.equals ( CLASS_NODE ) )
-            {
-                skinInfo.setSkinClass ( reader.getValue () );
-            }
-            else if ( nodeName.equals ( STYLE_NODE ) )
-            {
-                // Reading component style
-                styles.add ( ( ComponentStyle ) context.convertAnother ( styles, ComponentStyle.class ) );
-            }
-            else if ( nodeName.equals ( INCLUDE_NODE ) )
-            {
-                // Reading included file information
-                final String nearClass = reader.getAttribute ( NEAR_CLASS_ATTRIBUTE );
-                final String file = reader.getValue ();
-                includes.add ( new ResourceFile ( ResourceLocation.nearClass, file, nearClass ) );
-            }
-            reader.moveUp ();
-        }
-
-        // Reading all additional included files
-        // This operation performed in the end when all required information is read from XML
-        for ( int i = 0; i < includes.size (); i++ )
-        {
-            final ResourceFile resourceFile = includes.get ( i );
-
-            // Replacing null relative class with skin class
-            if ( resourceFile.getClassName () == null )
-            {
-                final String skinClass = skinInfo.getSkinClass ();
-                if ( skinClass == null )
+                // Read next node
+                reader.moveDown ();
+                final String nodeName = reader.getNodeName ();
+                if ( nodeName.equals ( ID_NODE ) )
                 {
-                    throw new StyleException (
-                            "Included skin file \"" + resourceFile.getSource () + "\" specified but skin \"class\" property is not set!" );
+                    skinInfo.setId ( reader.getValue () );
                 }
-                resourceFile.setClassName ( skinClass );
+                else if ( nodeName.equals ( NAME_NODE ) )
+                {
+                    skinInfo.setName ( reader.getValue () );
+                }
+                else if ( nodeName.equals ( DESCRIPTION_NODE ) )
+                {
+                    skinInfo.setDescription ( reader.getValue () );
+                }
+                else if ( nodeName.equals ( AUTHOR_NODE ) )
+                {
+                    skinInfo.setAuthor ( reader.getValue () );
+                }
+                else if ( nodeName.equals ( SUPPORTED_SYSTEMS_NODE ) )
+                {
+                    skinInfo.setSupportedSystems ( reader.getValue () );
+                }
+                else if ( nodeName.equals ( CLASS_NODE ) )
+                {
+                    skinInfo.setSkinClass ( reader.getValue () );
+                }
+                else if ( nodeName.equals ( CLASS_NODE ) )
+                {
+                    skinInfo.setSkinClass ( reader.getValue () );
+                }
+                else if ( nodeName.equals ( STYLE_NODE ) )
+                {
+                    // Reading component style
+                    styles.add ( ( ComponentStyle ) context.convertAnother ( styles, ComponentStyle.class ) );
+                }
+                else if ( nodeName.equals ( INCLUDE_NODE ) )
+                {
+                    // Reading included file information
+                    final String nearClass = reader.getAttribute ( NEAR_CLASS_ATTRIBUTE );
+                    final String file = reader.getValue ();
+                    includes.add ( new ResourceFile ( ResourceLocation.nearClass, file, nearClass ) );
+                }
+                reader.moveUp ();
             }
 
-            // Reading skin part from included file
-            final SkinInfo include = loadSkinInfo ( resourceFile );
-            if ( include == null )
+            // Marking all futher
+            final boolean wasInclude = includeSkin;
+            includeSkin = true;
+
+            // Reading all additional included files
+            // This operation performed in the end when all required information is read from XML
+            for ( int i = 0; i < includes.size (); i++ )
             {
-                throw new StyleException ( "Included skin file \"" + resourceFile.getSource () + "\" cannot be read!" );
+                final ResourceFile resourceFile = includes.get ( i );
+
+                // Replacing null relative class with skin class
+                if ( resourceFile.getClassName () == null )
+                {
+                    final String skinClass = skinInfo.getSkinClass ();
+                    if ( skinClass == null )
+                    {
+                        throw new StyleException ( "Included skin file \"" + resourceFile.getSource () +
+                                "\" specified but skin \"class\" property is not set!" );
+                    }
+                    resourceFile.setClassName ( skinClass );
+                }
+
+                // Reading skin part from included file
+                final SkinInfo include = loadSkinInfo ( resourceFile );
+                if ( include == null )
+                {
+                    throw new StyleException ( "Included skin file \"" + resourceFile.getSource () + "\" cannot be read!" );
+                }
+
+                // Adding information from included file
+                // Included styles order is preserved to preserve styles override order
+                styles.addAll ( i, include.getStyles () );
             }
 
-            // Adding information from included file
-            // Included styles order is preserved to preserve styles override order
-            styles.addAll ( i, include.getStyles () );
-        }
+            // Saving all read styles into the skin
+            // At this point there might be more than one style with the same ID
+            skinInfo.setStyles ( styles );
 
-        // Saving all read styles into the skin
-        // At this point there might be more than one style with the same ID
-        skinInfo.setStyles ( styles );
+            // Restoring include mark
+            includeSkin = wasInclude;
 
-        // Generating skin info cache
-        // Also merging all styles with the same ID
-        final Map<SupportedComponent, Map<String, ComponentStyle>> stylesCache =
-                new LinkedHashMap<SupportedComponent, Map<String, ComponentStyle>> ( SupportedComponent.values ().length );
-        for ( final ComponentStyle style : styles )
-        {
-            final SupportedComponent type = style.getType ();
-            Map<String, ComponentStyle> componentStyles = stylesCache.get ( type );
-            if ( componentStyles == null )
+            // Compiling skin information
+            // This is done only for root skin file
+            if ( !includeSkin )
             {
-                componentStyles = new LinkedHashMap<String, ComponentStyle> ( 1 );
-                stylesCache.put ( type, componentStyles );
-            }
-            componentStyles.put ( style.getId (), style );
-        }
-        skinInfo.setStylesCache ( stylesCache );
+                // Generating skin info cache
+                // Also merging all styles with the same ID
+                final Map<SupportedComponent, Map<String, ComponentStyle>> stylesCache =
+                        new LinkedHashMap<SupportedComponent, Map<String, ComponentStyle>> ( SupportedComponent.values ().length );
+                for ( final ComponentStyle style : styles )
+                {
+                    final SupportedComponent type = style.getType ();
+                    Map<String, ComponentStyle> componentStyles = stylesCache.get ( type );
+                    if ( componentStyles == null )
+                    {
+                        componentStyles = new LinkedHashMap<String, ComponentStyle> ( 1 );
+                        stylesCache.put ( type, componentStyles );
+                    }
+                    componentStyles.put ( style.getId (), style );
+                }
+                skinInfo.setStylesCache ( stylesCache );
 
-        // Compiling extending styles
-        for ( final Map.Entry<SupportedComponent, Map<String, ComponentStyle>> entry : stylesCache.entrySet () )
-        {
-            final List<String> compiledStyles = new ArrayList<String> ();
-            final Map<String, ComponentStyle> stylesById = entry.getValue ();
-            for ( final Map.Entry<String, ComponentStyle> style : stylesById.entrySet () )
-            {
-                compileStyle ( style.getKey (), style.getValue (), stylesById, compiledStyles );
+                // Compiling extending styles
+                for ( final Map.Entry<SupportedComponent, Map<String, ComponentStyle>> entry : stylesCache.entrySet () )
+                {
+                    final List<String> compiledStyles = new ArrayList<String> ();
+                    final Map<String, ComponentStyle> stylesById = entry.getValue ();
+                    for ( final Map.Entry<String, ComponentStyle> style : stylesById.entrySet () )
+                    {
+                        compileStyle ( style.getKey (), style.getValue (), stylesById, compiledStyles );
+                    }
+                }
             }
-        }
 
-        return skinInfo;
+            return skinInfo;
+        }
     }
 
     /**

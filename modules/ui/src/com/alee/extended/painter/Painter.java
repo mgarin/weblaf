@@ -18,6 +18,7 @@
 package com.alee.extended.painter;
 
 import javax.swing.*;
+import javax.swing.plaf.ComponentUI;
 import java.awt.*;
 
 /**
@@ -29,27 +30,30 @@ import java.awt.*;
  * multiply components unless noted otherwise.
  *
  * @param <E> component type
+ * @param <U> component UI type
  * @author Mikle Garin
  * @see AbstractPainter
  */
 
-public interface Painter<E extends JComponent>
+public interface Painter<E extends JComponent, U extends ComponentUI>
 {
     /**
      * Called when painter is intalled into some component.
      * You might want to use this method to add custom component listeners or modify component settings.
      *
-     * @param c component to process
+     * @param c  component to process
+     * @param ui component UI
      */
-    public void install ( E c );
+    public void install ( E c, U ui );
 
     /**
      * Called when painter is intalled into some component.
      * You might want to use this method to add custom component listeners or modify component settings.
      *
-     * @param c component to process
+     * @param c  component to process
+     * @param ui component UI
      */
-    public void uninstall ( E c );
+    public void uninstall ( E c, U ui );
 
     /**
      * Returns whether visual data provided by this painter is opaque or not.
@@ -59,7 +63,7 @@ public interface Painter<E extends JComponent>
      * @param c component to process
      * @return true if visual data provided by this painter is opaque, false otherwise
      */
-    public Boolean isOpaque ( E c );
+    public Boolean isOpaque ();
 
     /**
      * Returns preferred size required for proper painting of visual data provided by this painter.
@@ -68,7 +72,7 @@ public interface Painter<E extends JComponent>
      * @param c component to process
      * @return preferred size required for proper painting of visual data provided by this painter
      */
-    public Dimension getPreferredSize ( E c );
+    public Dimension getPreferredSize ();
 
     /**
      * Returns margin required for visual data provided by this painter.
@@ -78,7 +82,7 @@ public interface Painter<E extends JComponent>
      * @param c component to process
      * @return margin required for visual data provided by this painter or null for zero margin
      */
-    public Insets getMargin ( E c );
+    public Insets getMargin ();
 
     /**
      * Paints visual data onto the component graphics.
@@ -87,9 +91,10 @@ public interface Painter<E extends JComponent>
      *
      * @param g2d    component graphics
      * @param bounds bounds for painter visual data
-     * @param c      component to process
+     * @param c      painted component
+     * @param ui     painted component UI
      */
-    public void paint ( Graphics2D g2d, Rectangle bounds, E c );
+    public void paint ( Graphics2D g2d, Rectangle bounds, E c, U ui );
 
     /**
      * Adds new painter listener.

@@ -17,6 +17,7 @@
 
 package com.alee.laf.table.renderers;
 
+import com.alee.laf.Styles;
 import com.alee.laf.label.WebLabel;
 
 import javax.swing.*;
@@ -35,8 +36,7 @@ public class WebTableCellRenderer extends WebLabel implements TableCellRenderer
     public WebTableCellRenderer ()
     {
         super ();
-        setOpaque ( true );
-        setMargin ( 2 );
+        setStyleId ( Styles.tableCellRenderer );
         setName ( "Table.cellRenderer" );
     }
 
@@ -69,10 +69,12 @@ public class WebTableCellRenderer extends WebLabel implements TableCellRenderer
     public Component getTableCellRendererComponent ( final JTable table, final Object value, final boolean isSelected,
                                                      final boolean hasFocus, final int row, final int column )
     {
-        final Color fg = null;
-        final Color bg = null;
 
         // todo Drop indication
+        //
+        //        final Color fg = null;
+        //        final Color bg = null;
+        //
         //        JTable.DropLocation dropLocation = table.getDropLocation ();
         //        if ( dropLocation != null && !dropLocation.isInsertRow () && !dropLocation.isInsertColumn () && dropLocation.getRow () == row &&
         //                dropLocation.getColumn () == column )
@@ -85,8 +87,8 @@ public class WebTableCellRenderer extends WebLabel implements TableCellRenderer
 
         if ( isSelected )
         {
-            super.setForeground ( fg == null ? table.getSelectionForeground () : fg );
-            super.setBackground ( bg == null ? table.getSelectionBackground () : bg );
+            super.setForeground ( table.getSelectionForeground () );
+            super.setBackground ( table.getSelectionBackground () );
         }
         else
         {
@@ -179,5 +181,3 @@ public class WebTableCellRenderer extends WebLabel implements TableCellRenderer
     //    {
     //    }
 }
-
-

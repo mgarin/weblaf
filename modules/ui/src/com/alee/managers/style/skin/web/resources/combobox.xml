@@ -1,0 +1,59 @@
+<skin>
+
+    <!-- com.alee.laf.combobox.WebComboBox -->
+
+    <!-- Selected value label -->
+    <style type="label" id="combobox-selected" extends="default">
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebComboBoxElementPainter">
+            <margin>2,2,2,2</margin>
+        </painter>
+    </style>
+
+    <!-- Arrow button -->
+    <style type="button" id="combobox-arrow" extends="default">
+        <component>
+            <focusable>false</focusable>
+        </component>
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebButtonPainter">
+            <undecorated>true</undecorated>
+            <paintFocus>false</paintFocus>
+            <moveIconOnPress>false</moveIconOnPress>
+            <leftRightSpacing>3</leftRightSpacing>
+        </painter>
+    </style>
+
+    <!-- Popup list scrollpane -->
+    <style type="scrollPane" id="combobox-list" extends="default">
+        <component>
+            <opaque>false</opaque>
+            <verticalScrollBarPolicy>20</verticalScrollBarPolicy>
+            <horizontalScrollBarPolicy>31</horizontalScrollBarPolicy>
+        </component>
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebScrollPanePainter">
+            <undecorated>true</undecorated>
+        </painter>
+    </style>
+
+    <!-- Popup list scrollbar -->
+    <style type="scrollBar" id="combobox-list" extends="default">
+        <ui>
+            <paintButtons>false</paintButtons>
+            <paintTrack>false</paintTrack>
+        </ui>
+        <painter id="painter" base="true" class="com.alee.managers.style.skin.web.WebScrollBarPainter">
+            <margin>0,1,0,1</margin>
+            <thumbRound>4</thumbRound>
+            <thumbMargin>0,2,0,2</thumbMargin>
+        </painter>
+    </style>
+
+    <!-- Popup list value label -->
+    <style type="label" id="combobox-list-cell" extends="default">
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebComboBoxElementPainter">
+            <margin>4,6,4,6</margin>
+            <topSelectedBackgroundColor>208,208,198</topSelectedBackgroundColor>
+            <bottomSelectedBackgroundColor>196,196,186</bottomSelectedBackgroundColor>
+        </painter>
+    </style>
+
+</skin>

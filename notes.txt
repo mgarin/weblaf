@@ -1,0 +1,73 @@
+NOTES:
+1. WebButtonUI - move calc methods into painter
+2. WebButtonPainter - missing border / overall animation
+3. WebScrollBarButtonPainter - broken animation due to missing timer now
+4. WebSplitButton - check functionality
+5. WebScrollPane - check style reset, might throw exceptions (null styleId)
+6. WebComponentPane - subpanels should have their own painter and updated styleId + move em into separate class
+7. WebButtonPopup - requires a lot of changes
+8. HotkeyTipLabel - replace with simple label (just use styling)
+9. WebButtonGroup - requires rework now
+10. WebToolBarCornerPainter - requires style for it, now simply applies to any panel
+11. WebRootPaneUI - lost some window button options
+12. WebBreadcrumb - check whether has issues
+13. WebSplitPane - one-touch icons
+14. WebPopupMenuPainter - check preparePopupMenu method and menu positioning
+15. WebPathField - elements styling might be wrong + list styling
+16. WebMemoryBar - move painting into painter
+17. HotkeyTipLabel - remove and replace with simple label
+18. WebHotkeyLabel - check view, add methods to set hotkey
+19. List renderers - check view and replace parent class with interface
+20. WebComboBox - popup list, scroll, bars and stuff
+21. WebToolBar - check/update view and changes listening
+22. WebPopupMenu - check display position, styling and other stuff
+23. PaneData - menu display location might require fix
+24. WebComboBoxUI - handle popup corner repaint inside of the UI
+
+FEATURES TO DO:
+1. Allow variables (with specified types) like colors, sizes etc.
+2. Improve styles loading/overriding mechanics
+3. Add option to provide font easily (short XML descriptor)
+4. Container methods with additional useful methods to add children into container component
+
+
+-------------------------------------------------------------------------
+
+
+Missing styles / required style additions
+
+===================== WebButton:
+default
+- setFocusPainted ( false );
+- setContentAreaFilled ( false );
+- setBorderPainted ( false );
++ setFocusable ( true );
+
+icon-button
+- setRound ( WebButtonStyle.iconRound );
+- setLeftRightSpacing ( WebButtonStyle.iconLeftRightSpacing );
+
+===================== WebToggleButton:
+icon-toggle-button
+- setRound ( WebButtonStyle.iconRound );
+- setLeftRightSpacing ( WebButtonStyle.iconLeftRightSpacing );
+
+===================== WebScrollBar
+scrollbar-decrease-button
+scrollbar-increase-button
++ setFocusable ( false );
+- setLeftRightSpacing ( 0 );
+
+===================== WebStyledLabel
+default
+- setMaximumSize ( null );
+
+
+-------------------------------------------------------------------------
+
+
+Update stages:
+-> 1. Swing all components to be painter-based
+2. Remove all *Style classes and place all defaults into XML
+3. Improve XML features available
+4. Cleanup and polish StyleEditor for release

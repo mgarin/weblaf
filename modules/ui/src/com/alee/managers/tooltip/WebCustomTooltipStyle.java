@@ -142,7 +142,7 @@ public final class WebCustomTooltipStyle
     public static Color hotkeyColor = Color.BLACK;
 
     /**
-     * Tooltip background trasparency.
+     * Tooltip background transparency.
      */
-    public static float trasparency = StyleConstants.mediumTransparent;
+    public static float transparency = StyleConstants.mediumTransparent;
 }

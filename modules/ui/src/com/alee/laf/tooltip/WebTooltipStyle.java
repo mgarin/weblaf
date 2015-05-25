@@ -40,7 +40,7 @@ public final class WebTooltipStyle
     public static Color backgroundColor = Color.BLACK;
 
     /**
-     * Tooltip background trasparency.
+     * Tooltip background transparency.
      */
     public static float trasparency = StyleConstants.mediumTransparent;
 

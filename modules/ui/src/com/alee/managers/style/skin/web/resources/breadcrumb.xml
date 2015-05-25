@@ -1,0 +1,29 @@
+<skin>
+
+    <!-- com.alee.extended.breadcrumb.WebBreadcrumb -->
+
+    <!-- Content panel -->
+    <style type="panel" id="breadcrumb" extends="default">
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebPanelPainter">
+            <undecorated>false</undecorated>
+            <paintFocus>true</paintFocus>
+        </painter>
+    </style>
+
+    <!-- Label element -->
+    <style type="label" id="breadcrumb-element" extends="default">
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebBreadcrumbLabelPainter">
+            <margin>1,5,1,5</margin>
+            <undecorated>false</undecorated>
+        </painter>
+    </style>
+
+    <!-- Panel element -->
+    <style type="panel" id="breadcrumb-element" extends="default">
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebBreadcrumbPanelPainter">
+            <margin>1,5,1,5</margin>
+            <undecorated>false</undecorated>
+        </painter>
+    </style>
+
+</skin>

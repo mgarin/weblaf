@@ -1,0 +1,82 @@
+<skin>
+
+    <!-- com.alee.extended.filechooser.WebPathField -->
+
+    <!-- Main panel -->
+    <style type="panel" id="pathfield" extends="default">
+        <component>
+            <background>255,255,255</background>
+            <opaque>false</opaque>
+        </component>
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebPanelPainter">
+            <margin>-1,-1,-1,-1</margin>
+            <round>2</round>
+            <shadeWidth>2</shadeWidth>
+            <paintFocus>true</paintFocus>
+            <paintBackground>true</paintBackground>
+            <webColoredBackground>false</webColoredBackground>
+        </painter>
+    </style>
+
+    <!-- Path content panel -->
+    <style type="panel" id="pathfield-content" extends="default">
+        <component>
+            <opaque>false</opaque>
+        </component>
+    </style>
+
+    <!-- Root button -->
+    <style type="button" id="pathfield-root" extends="default">
+        <component>
+            <focusable>false</focusable>
+        </component>
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebButtonPainter">
+            <round>2</round>
+            <shadeWidth>0</shadeWidth>
+            <leftRightSpacing>0</leftRightSpacing>
+            <rolloverDecoratedOnly>true</rolloverDecoratedOnly>
+            <rolloverDarkBorderOnly>false</rolloverDarkBorderOnly>
+            <paintFocus>false</paintFocus>
+            <paintRight>false</paintRight>
+            <paintRightLine>true</paintRightLine>
+        </painter>
+    </style>
+
+    <!-- Path button -->
+    <style type="button" id="pathfield-path" extends="default">
+        <component>
+            <focusable>false</focusable>
+        </component>
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebButtonPainter">
+            <round>2</round>
+            <shadeWidth>0</shadeWidth>
+            <leftRightSpacing>0</leftRightSpacing>
+            <rolloverDecoratedOnly>true</rolloverDecoratedOnly>
+            <rolloverDarkBorderOnly>false</rolloverDarkBorderOnly>
+        </painter>
+    </style>
+
+    <!-- Path menu button -->
+    <style type="toggleButton" id="pathfield-children" extends="default">
+        <component>
+            <focusable>false</focusable>
+        </component>
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebButtonPainter">
+            <margin>0,0,0,0</margin>
+            <round>0</round>
+            <shadeWidth>0</shadeWidth>
+            <shadeToggleIcon>false</shadeToggleIcon>
+            <leftRightSpacing>0</leftRightSpacing>
+            <rolloverDecoratedOnly>true</rolloverDecoratedOnly>
+            <rolloverDarkBorderOnly>false</rolloverDarkBorderOnly>
+        </painter>
+    </style>
+
+    <!-- Autocomplete popup list scroll -->
+    <style type="scrollPane" id="pathfield-popup" extends="default">
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebScrollPanePainter">
+            <shadeWidth>0</shadeWidth>
+        </painter>
+    </style>
+
+</skin>

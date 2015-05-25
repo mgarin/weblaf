@@ -21,6 +21,7 @@ import com.alee.extended.breadcrumb.BreadcrumbUtils;
 import com.alee.extended.breadcrumb.WebBreadcrumb;
 import com.alee.extended.breadcrumb.WebBreadcrumbToggleButton;
 import com.alee.extended.painter.AbstractPainter;
+import com.alee.laf.button.WebToggleButtonUI;
 import com.alee.utils.swing.AncestorAdapter;
 
 import javax.swing.event.AncestorEvent;
@@ -32,7 +33,8 @@ import java.awt.event.ContainerEvent;
  * @author Mikle Garin
  */
 
-public class WebBreadcrumbToggleButtonPainter<E extends WebBreadcrumbToggleButton> extends AbstractPainter<E>
+public class WebBreadcrumbToggleButtonPainter<E extends WebBreadcrumbToggleButton, U extends WebToggleButtonUI>
+        extends AbstractPainter<E, U>
 {
     /**
      * Listeners.
@@ -49,8 +51,10 @@ public class WebBreadcrumbToggleButtonPainter<E extends WebBreadcrumbToggleButto
      * {@inheritDoc}
      */
     @Override
-    public void install ( final E c )
+    public void install ( final E c, final U ui )
     {
+        super.install ( c, ui );
+
         containerAdapter = new ContainerAdapter ()
         {
             @Override
@@ -100,12 +104,14 @@ public class WebBreadcrumbToggleButtonPainter<E extends WebBreadcrumbToggleButto
      * {@inheritDoc}
      */
     @Override
-    public void uninstall ( final E c )
+    public void uninstall ( final E c, final U ui )
     {
         removeBreadcrumbAdapter ();
         containerAdapter = null;
         c.removeAncestorListener ( ancestorAdapter );
         ancestorAdapter = null;
+
+        super.uninstall ( c, ui );
     }
 
     /**
@@ -124,7 +130,7 @@ public class WebBreadcrumbToggleButtonPainter<E extends WebBreadcrumbToggleButto
      * {@inheritDoc}
      */
     @Override
-    public Boolean isOpaque ( final E c )
+    public Boolean isOpaque ()
     {
         return false;
     }
@@ -133,16 +139,16 @@ public class WebBreadcrumbToggleButtonPainter<E extends WebBreadcrumbToggleButto
      * {@inheritDoc}
      */
     @Override
-    public Insets getMargin ( final E c )
+    public Insets getMargin ()
     {
-        return BreadcrumbUtils.getElementMargin ( c );
+        return BreadcrumbUtils.getElementMargin ( component );
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c )
+    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
     {
         // Painting background
         BreadcrumbUtils.paintElementBackground ( g2d, c );
