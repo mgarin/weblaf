@@ -138,8 +138,7 @@ public class WebVerticalLabel extends WebLabel
      *
      * @return Web-UI applied to this class
      */
-    @Override
-    public WebVerticalLabelUI getWebUI ()
+    private WebVerticalLabelUI getWebUI ()
     {
         return ( WebVerticalLabelUI ) getUI ();
     }
