@@ -14,4 +14,11 @@
         </painter>
     </style>
 
+    <!-- Vertical label with text shade -->
+    <style type="verticalLabel" id="shade" extends="default">
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebVerticalLabelPainter">
+            <drawShade>true</drawShade>
+        </painter>
+    </style>
+
 </skin>

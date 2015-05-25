@@ -17,11 +17,23 @@ public final class Styles
     /**
      * todo 1. Create style reference system on interfaces
      * todo 2. Provide them instead of strings to avoid confusion in constructors and style types
+     * todo 3. Provide default styles here and overall as well
+     * todo 4. Structural styles descriptors in XML
      */
 
     /**
      * Base components.
      */
+
+    /**
+     * {@link com.alee.laf.label.WebLabel} style IDs.
+     */
+    public static String labelShade = "shade";
+
+    /**
+     * {@link com.alee.extended.label.WebVerticalLabel} style IDs.
+     */
+    public static String verticallabelShade = "shade";
 
     /**
      * {@link com.alee.laf.panel.WebPanel} style IDs.
@@ -126,6 +138,14 @@ public final class Styles
      * {@link com.alee.extended.filechooser.WebFileDrop} style IDs.
      */
     public static String filedrop = "filedrop";
+
+    /**
+     * {@link com.alee.extended.panel.WebCollapsiblePane} style IDs.
+     */
+    public static String collapsiblepane = "collapsiblepane";
+    public static String collapsiblepaneHeaderPanel = "collapsiblepane-header";
+    public static String collapsiblepaneExpandButton = "collapsiblepane-expand";
+    public static String collapsiblepaneContentPanel = "collapsiblepane-content";
 
     /**
      * {@link com.alee.extended.window.WebPopOver}

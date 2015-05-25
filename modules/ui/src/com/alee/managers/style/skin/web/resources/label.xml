@@ -15,7 +15,7 @@
     </style>
 
     <!-- Label with text shade -->
-    <style type="label" id="shade-label" extends="default">
+    <style type="label" id="shade" extends="default">
         <painter id="painter" class="com.alee.managers.style.skin.web.WebLabelPainter">
             <drawShade>true</drawShade>
         </painter>

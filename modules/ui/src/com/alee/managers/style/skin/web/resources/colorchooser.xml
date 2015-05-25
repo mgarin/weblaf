@@ -14,7 +14,7 @@
     </style>
 
     <!-- Field title labels -->
-    <style type="label" id="colorchooser-label" extends="shade-label" />
+    <style type="label" id="colorchooser-label" extends="shade" />
 
     <!-- Control buttons panel -->
     <style type="panel" id="colorchooser-buttons" extends="default">

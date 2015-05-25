@@ -13,7 +13,7 @@
     </style>
 
     <!-- Title label -->
-    <style type="label" id="window-title" extends="shade-label" />
+    <style type="label" id="window-title" extends="shade" />
 
     <!-- Custom window decoration control buttons -->
     <style type="button" id="window-button" extends="default">

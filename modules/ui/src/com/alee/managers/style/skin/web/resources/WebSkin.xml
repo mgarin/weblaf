@@ -34,6 +34,7 @@
     <include>resources/customtooltip.xml</include>
     <include>resources/syntaxpanel.xml</include>
     <include>resources/filedrop.xml</include>
+    <include>resources/collapsiblepane.xml</include>
     <include>resources/popover.xml</include>
     <include>resources/memorybar.xml</include>
     <include>resources/filechooserfield.xml</include>

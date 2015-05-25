@@ -20,6 +20,7 @@ package com.alee.extended.panel;
 import com.alee.extended.icon.OrientedIcon;
 import com.alee.extended.label.WebVerticalLabel;
 import com.alee.global.StyleConstants;
+import com.alee.laf.Styles;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.label.WebLabel;
@@ -95,11 +96,6 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
      * Title pane position in collapsible pane.
      */
     protected int titlePanePostion = WebCollapsiblePaneStyle.titlePanePostion;
-
-    /**
-     * Content margin.
-     */
-    protected Insets contentMargin = WebCollapsiblePaneStyle.contentMargin;
 
     /**
      * Collapsible pane listeners.
@@ -232,27 +228,16 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
      */
     public WebCollapsiblePane ( final Icon icon, final String title, final Component content )
     {
-        super ();
+        super ( Styles.collapsiblepane, new BorderLayout ( 0, 0 ) );
 
         // todo Handle enable/disable
         // putClientProperty ( SwingUtils.HANDLES_ENABLE_STATE, true );
 
         this.content = content;
 
-        setFocusable ( true );
-        setPaintFocus ( true );
-        setUndecorated ( false );
-        setWebColoredBackground ( false );
-        setRound ( StyleConstants.smallRound );
-        setLayout ( new BorderLayout ( 0, 0 ) );
-
         // Header
 
-        headerPanel = new WebPanel ();
-        headerPanel.setOpaque ( true );
-        headerPanel.setUndecorated ( false );
-        headerPanel.setShadeWidth ( 0 );
-        headerPanel.setLayout ( new BorderLayout () );
+        headerPanel = new WebPanel ( Styles.collapsiblepaneHeaderPanel, new BorderLayout () );
         headerPanel.addMouseListener ( new MouseAdapter ()
         {
             @Override
@@ -284,12 +269,9 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
         updateHeaderPosition ();
 
         updateDefaultTitleComponent ( icon, title );
-        updateDefaultTitleBorder ();
 
         expandButton = new WebButton ( collapseIcon );
-        expandButton.setUndecorated ( true );
-        expandButton.setFocusable ( false );
-        expandButton.setMoveIconOnPress ( false );
+        expandButton.setStyleId ( Styles.collapsiblepaneExpandButton );
         expandButton.addActionListener ( new ActionListener ()
         {
             @Override
@@ -305,7 +287,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
 
         // Content
 
-        contentPanel = new WebPanel ()
+        contentPanel = new WebPanel ( Styles.collapsiblepaneContentPanel, new BorderLayout ( 0, 0 ) )
         {
             @Override
             public Dimension getPreferredSize ()
@@ -338,9 +320,6 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
                 return ps;
             }
         };
-        contentPanel.setOpaque ( false );
-        contentPanel.setLayout ( new BorderLayout ( 0, 0 ) );
-        contentPanel.setMargin ( contentMargin );
         add ( contentPanel, BorderLayout.CENTER );
 
         if ( this.content != null )
@@ -404,36 +383,10 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
     }
 
     /**
-     * Updates default title component border.
-     */
-    protected void updateDefaultTitleBorder ()
-    {
-        if ( titleComponent != null && !customTitle )
-        {
-            // todo Proper updates for RTL
-            // boolean ltr = getComponentOrientation ().isLeftToRight ();
-
-            // Updating title margin according to title pane position
-            Insets margin = getIcon () != null || titlePanePostion != LEFT || titlePanePostion == RIGHT ? new Insets ( 2, 2, 2, 2 ) :
-                    new Insets ( 2, 4, 2, 2 );
-            if ( titlePanePostion == LEFT )
-            {
-                margin = new Insets ( margin.right, margin.top, margin.left, margin.bottom );
-            }
-            else if ( titlePanePostion == RIGHT )
-            {
-                margin = new Insets ( margin.left, margin.bottom, margin.right, margin.top );
-            }
-            ( ( WebLabel ) titleComponent ).setMargin ( margin );
-        }
-    }
-
-    /**
      * Updates header panel position.
      */
     protected void updateHeaderPosition ()
     {
-        updateHeaderSides ();
         if ( titlePanePostion == TOP )
         {
             add ( headerPanel, BorderLayout.NORTH );
@@ -451,15 +404,6 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
             add ( headerPanel, BorderLayout.LINE_END );
         }
         revalidate ();
-    }
-
-    /**
-     * Updates header panel sides style.
-     */
-    protected void updateHeaderSides ()
-    {
-        headerPanel.setPaintSides ( expanded && titlePanePostion == BOTTOM, expanded && titlePanePostion == RIGHT,
-                expanded && titlePanePostion == TOP, expanded && titlePanePostion == LEFT );
     }
 
     /**
@@ -511,16 +455,18 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
         if ( titlePanePostion == LEFT )
         {
             defaultTitle = new WebVerticalLabel ( title, icon, WebLabel.LEADING, false );
+            defaultTitle.setStyleId ( Styles.verticallabelShade );
         }
         else if ( titlePanePostion == RIGHT )
         {
             defaultTitle = new WebVerticalLabel ( title, icon, WebLabel.LEADING, true );
+            defaultTitle.setStyleId ( Styles.verticallabelShade );
         }
         else
         {
             defaultTitle = new WebLabel ( title, icon, WebLabel.LEADING );
+            defaultTitle.setStyleId ( Styles.labelShade );
         }
-        defaultTitle.setDrawShade ( true );
         return defaultTitle;
     }
 
@@ -697,9 +643,6 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
      */
     protected void finishCollapseAction ()
     {
-        // Hide title border
-        updateHeaderSides ();
-
         // Hide content
         if ( content != null )
         {
@@ -748,9 +691,6 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
         {
             content.setVisible ( true );
         }
-
-        // Show title border
-        updateHeaderSides ();
 
         fireExpanding ();
 
@@ -827,55 +767,9 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
     {
         this.titlePanePostion = titlePanePostion;
         updateDefaultTitleComponent ();
-        updateDefaultTitleBorder ();
         updateHeaderPosition ();
         updateStateIcons ();
         updateStateIconPosition ();
-    }
-
-    /**
-     * Returns content margin.
-     *
-     * @return content margin
-     */
-    public Insets getContentMargin ()
-    {
-        return contentMargin;
-    }
-
-    /**
-     * Sets content margin.
-     *
-     * @param margin content margin
-     */
-    public void setContentMargin ( final Insets margin )
-    {
-        this.contentMargin = margin;
-        contentPanel.setMargin ( margin );
-        revalidate ();
-    }
-
-    /**
-     * Sets content margin.
-     *
-     * @param top    top content margin
-     * @param left   left content margin
-     * @param bottom bottom content margin
-     * @param right  right content margin
-     */
-    public void setContentMargin ( final int top, final int left, final int bottom, final int right )
-    {
-        setContentMargin ( new Insets ( top, left, bottom, right ) );
-    }
-
-    /**
-     * Sets content margin.
-     *
-     * @param margin content margin
-     */
-    public void setContentMargin ( final int margin )
-    {
-        setContentMargin ( margin, margin, margin, margin );
     }
 
     /**
@@ -918,7 +812,6 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
         if ( !customTitle )
         {
             ( ( WebLabel ) titleComponent ).setIcon ( icon );
-            updateDefaultTitleBorder ();
         }
     }
 

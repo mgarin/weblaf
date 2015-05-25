@@ -1,6 +1,6 @@
 <skin>
 
-    <!-- com.alee.extended.dock.WebDockablePane --><!-- com.alee.extended.dock.WebDockablePane -->
+    <!-- com.alee.extended.dock.WebDockablePane --><!-- com.alee.extended.dock.WebDockableFrame -->
 
     <!-- Dockable frame -->
     <style type="panel" id="dockable-frame" extends="default">
@@ -26,7 +26,7 @@
     </style>
 
     <!-- Dockable frame title label -->
-    <style type="label" id="dockable-frame-title" extends="shade-label">
+    <style type="label" id="dockable-frame-title" extends="shade">
         <ui>
             <margin>3,3,3,10</margin>
         </ui>
