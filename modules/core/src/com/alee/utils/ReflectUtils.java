@@ -450,7 +450,7 @@ public final class ReflectUtils
     {
         try
         {
-            return Class.forName ( canonicalName );
+            return canonicalName != null ? Class.forName ( canonicalName ) : null;
         }
         catch ( final ClassNotFoundException e )
         {
@@ -490,7 +490,7 @@ public final class ReflectUtils
      *
      * @param jarClass          any class within the JAR
      * @param allowedExtensions list of extension filters
-     * @param allowedPackages  list of allowed packages
+     * @param allowedPackages   list of allowed packages
      * @return JAR archive structure
      */
     public static JarStructure getJarStructure ( final Class jarClass, final List<String> allowedExtensions,
@@ -504,7 +504,7 @@ public final class ReflectUtils
      *
      * @param jarClass          any class within the JAR
      * @param allowedExtensions list of extension filters
-     * @param allowedPackages  list of allowed packages
+     * @param allowedPackages   list of allowed packages
      * @param listener          jar download listener
      * @return JAR archive structure
      */
@@ -633,7 +633,7 @@ public final class ReflectUtils
     /**
      * Returns whether JAR entry with the specified name is allowed by the packages list or not.
      *
-     * @param entryName        JAR entry name
+     * @param entryName       JAR entry name
      * @param allowedPackages list of allowed packages
      * @return true if JAR entry with the specified name is allowed by the packages list, false otherwise
      */
