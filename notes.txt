@@ -23,6 +23,7 @@ NOTES:
 22. WebPopupMenu - check display position, styling and other stuff
 23. PaneData - menu display location might require fix
 24. WebComboBoxUI - handle popup corner repaint inside of the UI
+25. WebCollapsiblePane - fix collapse separator (through grouping?)
 
 FEATURES TO DO:
 1. Allow variables (with specified types) like colors, sizes etc.

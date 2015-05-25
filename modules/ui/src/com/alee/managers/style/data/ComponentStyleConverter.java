@@ -28,6 +28,7 @@ import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 import com.thoughtworks.xstream.mapper.Mapper;
 
+import javax.swing.*;
 import java.lang.reflect.Method;
 import java.util.*;
 
@@ -50,6 +51,7 @@ public class ComponentStyleConverter extends ReflectionConverter
     public static final String COMPONENT_TYPE_ATTRIBUTE = "type";
     public static final String EXTENDS_ID_ATTRIBUTE = "extends";
     public static final String COMPONENT_NODE = "component";
+    public static final String COMPONENT_CLASS_ATTRIBUTE = "class";
     public static final String UI_NODE = "ui";
     public static final String PAINTER_NODE = "painter";
     public static final String PAINTER_ID_ATTRIBUTE = "id";
@@ -184,7 +186,15 @@ public class ComponentStyleConverter extends ReflectionConverter
             if ( nodeName.equals ( COMPONENT_NODE ) )
             {
                 // Reading component property
-                final Class componentClass = type.getComponentClass ();
+                final String componentClassName = reader.getAttribute ( COMPONENT_CLASS_ATTRIBUTE );
+                final Class<? extends JComponent> cc = ReflectUtils.getClassSafely ( componentClassName );
+                final Class<? extends JComponent> typeClass = type.getComponentClass ();
+                if ( cc != null && !typeClass.isAssignableFrom ( cc ) )
+                {
+                    throw new StyleException ( "Specified custom component class \"" + cc.getCanonicalName () +
+                            "\" is not assignable from the base component class \"" + typeClass.getCanonicalName () + "\"" );
+                }
+                final Class<? extends JComponent> componentClass = cc != null ? cc : typeClass;
                 while ( reader.hasMoreChildren () )
                 {
                     reader.moveDown ();
@@ -330,7 +340,7 @@ public class ComponentStyleConverter extends ReflectionConverter
                 else
                 {
                     throw new StyleException ( "Component property \"" + propertyName + "\" type from style \"" + componentStyleId +
-                            "\" cannot be determined! Make sure it points to existing field or getter method." );
+                            "\" cannot be determined! Make sure it points to existing field or getter method" );
                 }
             }
         }
