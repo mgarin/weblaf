@@ -266,7 +266,7 @@ public class WebSliderUI extends BasicSliderUI implements BorderMethods
             if ( painter != null )
             {
                 // Painter borders
-                final Insets pi = painter.getMargin ( slider );
+                final Insets pi = painter.getMargin ();
                 m.top += pi.top;
                 m.bottom += pi.bottom;
                 m.left += ltr ? pi.left : pi.right;
@@ -561,7 +561,7 @@ public class WebSliderUI extends BasicSliderUI implements BorderMethods
         // Force painter to draw background
         if ( painter != null )
         {
-            painter.paint ( ( Graphics2D ) g, SwingUtils.size ( c ), c );
+            painter.paint ( ( Graphics2D ) g, SwingUtils.size ( c ), c, this );
         }
 
         super.paint ( g, c );
@@ -751,12 +751,12 @@ public class WebSliderUI extends BasicSliderUI implements BorderMethods
             if ( slider.getOrientation () == JSlider.HORIZONTAL )
             {
                 g2d.setPaint ( new GradientPaint ( 0, bounds.y + progressShadeWidth, progressTrackBgTop, 0,
-                                bounds.y + bounds.height - progressShadeWidth, progressTrackBgBottom ) );
+                        bounds.y + bounds.height - progressShadeWidth, progressTrackBgBottom ) );
             }
             else
             {
                 g2d.setPaint ( new GradientPaint ( bounds.x + progressShadeWidth, 0, progressTrackBgTop,
-                                bounds.x + bounds.width - progressShadeWidth, 0, progressTrackBgBottom ) );
+                        bounds.x + bounds.width - progressShadeWidth, 0, progressTrackBgBottom ) );
             }
             g2d.fill ( ps );
 

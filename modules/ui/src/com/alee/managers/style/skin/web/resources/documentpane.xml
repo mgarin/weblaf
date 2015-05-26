@@ -9,8 +9,18 @@
         </component>
     </style>
 
+    <!-- Close document button -->
+    <style type="button" id="documentpane-close" extends="icon">
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebButtonPainter">
+            <undecorated>true</undecorated>
+        </painter>
+    </style>
+
     <!-- WebDocumentPane tab menu styling -->
     <style type="popupMenu" id="documentpane" extends="default">
+        <component>
+            <focusable>false</focusable>
+        </component>
         <painter id="painter" class="com.alee.managers.style.skin.web.WebPopupMenuPainter">
             <popupStyle>dropdown</popupStyle>
             <cornerAlignment>0</cornerAlignment>

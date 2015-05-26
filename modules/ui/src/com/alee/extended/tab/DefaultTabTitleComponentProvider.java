@@ -17,6 +17,7 @@
 
 package com.alee.extended.tab;
 
+import com.alee.laf.Styles;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
@@ -82,8 +83,7 @@ public class DefaultTabTitleComponentProvider<T extends DocumentData> implements
     protected JComponent createCloseButton ( final PaneData<T> paneData, final T document )
     {
         final WebButton closeButton = new WebButton ( WebDocumentPane.closeTabIcon, WebDocumentPane.closeTabRolloverIcon );
-        closeButton.setUndecorated ( true );
-        closeButton.setFocusable ( false );
+        closeButton.setStyleId ( Styles.documentpaneCloseButton );
         closeButton.addActionListener ( new ActionListener ()
         {
             @Override

@@ -27,6 +27,7 @@ NOTES:
 26. BreadcrumbUtils - painting should be moved into painters
 27. WebInternalFrameTitlePane - buttons grouping
 28. WebCalendar - dates foreground should be moved into styles and separated for more cases
+29. NinePatchEditorPanel - styling fixes required
 
 FEATURES TO DO:
 - Structural styles descriptors in XML
@@ -36,6 +37,7 @@ FEATURES TO DO:
 - Allow variables (with specified types) like colors, sizes etc.
 - Add option to provide font easily (short XML descriptor)
 - Container methods with additional useful methods to add children into container component
+- Move 9-patch editor into a separate module
 
 
 -------------------------------------------------------------------------

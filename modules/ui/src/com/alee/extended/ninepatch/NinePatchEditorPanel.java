@@ -26,6 +26,7 @@ import com.alee.extended.panel.WebButtonGroup;
 import com.alee.extended.statusbar.WebStatusBar;
 import com.alee.extended.tree.WebFileTree;
 import com.alee.global.GlobalConstants;
+import com.alee.laf.Styles;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.button.WebToggleButton;
 import com.alee.laf.colorchooser.WebColorChooserDialog;
@@ -37,7 +38,6 @@ import com.alee.laf.scroll.WebScrollPane;
 import com.alee.laf.slider.WebSlider;
 import com.alee.laf.splitpane.WebSplitPane;
 import com.alee.laf.text.WebTextField;
-import com.alee.laf.toolbar.ToolbarStyle;
 import com.alee.laf.toolbar.WebToolBar;
 import com.alee.laf.tree.TreeSelectionStyle;
 import com.alee.managers.hotkey.Hotkey;
@@ -183,7 +183,7 @@ public class NinePatchEditorPanel extends WebPanel
             }
         } );
 
-        final WebScrollPane filesView = new WebScrollPane ( fileTree, false );
+        final WebScrollPane filesView = new WebScrollPane ( Styles.scrollpaneUndecorated, fileTree );
         filesView.setMinimumWidth ( 200 );
         filesView.setPreferredHeight ( 0 );
         //        filesView.setBorder ( BorderFactory.createMatteBorder ( 0, 0, 0, 1, WebToolBarStyle.borderColor ) );
@@ -238,14 +238,13 @@ public class NinePatchEditorPanel extends WebPanel
         //
 
         final WebToolBar toolBar = new WebToolBar ( WebToolBar.HORIZONTAL );
-        toolBar.setToolbarStyle ( ToolbarStyle.attached );
-        toolBar.setFloatable ( false );
+        toolBar.setStyleId ( Styles.toolbarAttached );
         editorPanel.add ( toolBar, BorderLayout.NORTH );
 
         final WebButton open = new WebButton ( OPEN_ICON );
+        open.setStyleId ( Styles.buttonRolloverIconOnly );
         open.setLanguage ( "weblaf.ex.npeditor.openImage" );
         open.addHotkey ( NinePatchEditorPanel.this, Hotkey.CTRL_O );
-        open.setRolloverDecoratedOnly ( true );
         open.addActionListener ( new ActionListener ()
         {
             private WebFileChooser wfc = null;
@@ -276,9 +275,9 @@ public class NinePatchEditorPanel extends WebPanel
         toolBar.addSeparator ();
 
         save = new WebButton ( SAVE_ICON );
+        save.setStyleId ( Styles.buttonRolloverIconOnly );
         save.setLanguage ( "weblaf.ex.npeditor.saveImage" );
         save.addHotkey ( NinePatchEditorPanel.this, Hotkey.CTRL_S );
-        save.setRolloverDecoratedOnly ( true );
         save.setEnabled ( false );
         save.addActionListener ( new ActionListener ()
         {
@@ -301,9 +300,9 @@ public class NinePatchEditorPanel extends WebPanel
         toolBar.add ( save );
 
         saveAs = new WebButton ( SAVE_AS_ICON );
+        saveAs.setStyleId ( Styles.buttonRolloverIconOnly );
         saveAs.setLanguage ( "weblaf.ex.npeditor.saveImageAs" );
         saveAs.addHotkey ( NinePatchEditorPanel.this, Hotkey.CTRL_SHIFT_S );
-        saveAs.setRolloverDecoratedOnly ( true );
         saveAs.addActionListener ( new ActionListener ()
         {
             private WebFileChooser wfc = null;
@@ -340,9 +339,9 @@ public class NinePatchEditorPanel extends WebPanel
         toolBar.addSeparator ();
 
         final WebButton undo = new WebButton ( UNDO_ICON );
+        undo.setStyleId ( Styles.buttonRolloverIconOnly );
         undo.setLanguage ( "weblaf.ex.npeditor.undo" );
         undo.addHotkey ( NinePatchEditorPanel.this, Hotkey.CTRL_Z );
-        undo.setRolloverDecoratedOnly ( true );
         undo.addActionListener ( new ActionListener ()
         {
             @Override
@@ -354,10 +353,10 @@ public class NinePatchEditorPanel extends WebPanel
         toolBar.add ( undo );
 
         final WebButton redo = new WebButton ( REDO_ICON );
+        redo.setStyleId ( Styles.buttonRolloverIconOnly );
         redo.setLanguage ( "weblaf.ex.npeditor.redo" );
         redo.addHotkey ( NinePatchEditorPanel.this, Hotkey.CTRL_R ).setHidden ( true );
         redo.addHotkey ( NinePatchEditorPanel.this, Hotkey.CTRL_SHIFT_Z );
-        redo.setRolloverDecoratedOnly ( true );
         redo.addActionListener ( new ActionListener ()
         {
             @Override
@@ -393,9 +392,9 @@ public class NinePatchEditorPanel extends WebPanel
         editorPanel.add ( ninePatchEditor.getView (), BorderLayout.CENTER );
 
         final WebButton copy = new WebButton ( COPY_ICON );
+        copy.setStyleId ( Styles.buttonRolloverIconOnly );
         copy.setLanguage ( "weblaf.ex.npeditor.copyInfo" );
         copy.addHotkey ( NinePatchEditorPanel.this, Hotkey.CTRL_C );
-        copy.setRolloverDecoratedOnly ( true );
         copy.addActionListener ( new ActionListener ()
         {
             @Override
@@ -410,9 +409,9 @@ public class NinePatchEditorPanel extends WebPanel
         toolBar.addToEnd ( copy );
 
         final WebButton paste = new WebButton ( PASTE_ICON );
+        paste.setStyleId ( Styles.buttonRolloverIconOnly );
         paste.setLanguage ( "weblaf.ex.npeditor.pasteInfo" );
         paste.addHotkey ( NinePatchEditorPanel.this, Hotkey.CTRL_V );
-        paste.setRolloverDecoratedOnly ( true );
         paste.addActionListener ( new ActionListener ()
         {
             @Override
@@ -437,8 +436,8 @@ public class NinePatchEditorPanel extends WebPanel
         toolBar.addSeparatorToEnd ();
 
         final WebButton rotateCCW = new WebButton ( ROTATE_CCW_ICON );
+        rotateCCW.setStyleId ( Styles.buttonRolloverIconOnly );
         rotateCCW.setLanguage ( "weblaf.ex.npeditor.rotateCCW" );
-        rotateCCW.setRolloverDecoratedOnly ( true );
         rotateCCW.addActionListener ( new ActionListener ()
         {
             @Override
@@ -454,8 +453,8 @@ public class NinePatchEditorPanel extends WebPanel
         toolBar.addToEnd ( rotateCCW );
 
         final WebButton rotateCW = new WebButton ( ROTATE_CW_ICON );
+        rotateCW.setStyleId ( Styles.buttonRolloverIconOnly );
         rotateCW.setLanguage ( "weblaf.ex.npeditor.rotateCW" );
-        rotateCW.setRolloverDecoratedOnly ( true );
         rotateCW.addActionListener ( new ActionListener ()
         {
             @Override
@@ -471,8 +470,8 @@ public class NinePatchEditorPanel extends WebPanel
         toolBar.addToEnd ( rotateCW );
 
         final WebButton rotate180 = new WebButton ( ROTATE_180_ICON );
+        rotate180.setStyleId ( Styles.buttonRolloverIconOnly );
         rotate180.setLanguage ( "weblaf.ex.npeditor.rotate180" );
-        rotate180.setRolloverDecoratedOnly ( true );
         rotate180.addActionListener ( new ActionListener ()
         {
             @Override
@@ -494,8 +493,8 @@ public class NinePatchEditorPanel extends WebPanel
 
         final boolean sgs = SettingsManager.get ( "NinePatchEditor", "showSpacing", true );
         final WebToggleButton showGuidesSpacing = new WebToggleButton ( GUIDES_ICON );
+        showGuidesSpacing.setStyleId ( Styles.togglebuttonRolloverIconOnly );
         showGuidesSpacing.setLanguage ( "weblaf.ex.npeditor.showSpacing" );
-        showGuidesSpacing.setRolloverDecoratedOnly ( true );
         showGuidesSpacing.setSelected ( sgs );
         ninePatchEditor.setShowGuideSpacing ( sgs );
         showGuidesSpacing.addActionListener ( new ActionListener ()
@@ -511,8 +510,8 @@ public class NinePatchEditorPanel extends WebPanel
 
         final boolean sr = SettingsManager.get ( "NinePatchEditor", "showRuler", true );
         final WebToggleButton showRuler = new WebToggleButton ( RULER_ICON );
+        showRuler.setStyleId ( Styles.togglebuttonRolloverIconOnly );
         showRuler.setLanguage ( "weblaf.ex.npeditor.showRuler" );
-        showRuler.setRolloverDecoratedOnly ( true );
         showRuler.setSelected ( sr );
         ninePatchEditor.setShowRuler ( sr );
         showRuler.addActionListener ( new ActionListener ()
@@ -528,8 +527,8 @@ public class NinePatchEditorPanel extends WebPanel
 
         final boolean fc = SettingsManager.get ( "NinePatchEditor", "fillContent", true );
         final WebToggleButton fillContent = new WebToggleButton ( CONTENT_ICON );
+        fillContent.setStyleId ( Styles.togglebuttonRolloverIconOnly );
         fillContent.setLanguage ( "weblaf.ex.npeditor.fillContent" );
-        fillContent.setRolloverDecoratedOnly ( true );
         fillContent.setSelected ( fc );
         ninePatchEditor.setFillContentArea ( fc );
         fillContent.addActionListener ( new ActionListener ()
@@ -545,8 +544,8 @@ public class NinePatchEditorPanel extends WebPanel
 
         final boolean fs = SettingsManager.get ( "NinePatchEditor", "fillStretch", true );
         final WebToggleButton fillStretch = new WebToggleButton ( STRETCH_ICON );
+        fillStretch.setStyleId ( Styles.togglebuttonRolloverIconOnly );
         fillStretch.setLanguage ( "weblaf.ex.npeditor.fillStretch" );
-        fillStretch.setRolloverDecoratedOnly ( true );
         fillStretch.setSelected ( fs );
         ninePatchEditor.setFillStretchAreas ( fs );
         fillStretch.addActionListener ( new ActionListener ()
@@ -562,8 +561,8 @@ public class NinePatchEditorPanel extends WebPanel
 
         final boolean rc = SettingsManager.get ( "NinePatchEditor", "rulerCursor", true );
         final WebToggleButton rulerCursor = new WebToggleButton ( RULER_CURSOR_ICON );
+        rulerCursor.setStyleId ( Styles.togglebuttonRolloverIconOnly );
         rulerCursor.setLanguage ( "weblaf.ex.npeditor.rulerCursor" );
-        rulerCursor.setRolloverDecoratedOnly ( true );
         rulerCursor.setSelected ( rc );
         ninePatchEditor.setShowRulerCursorPosition ( rc );
         rulerCursor.addActionListener ( new ActionListener ()
@@ -579,8 +578,8 @@ public class NinePatchEditorPanel extends WebPanel
 
         final boolean ac = SettingsManager.get ( "NinePatchEditor", "areaCursor", false );
         final WebToggleButton areaCursor = new WebToggleButton ( AREA_CURSOR_ICON );
+        areaCursor.setStyleId ( Styles.togglebuttonRolloverIconOnly );
         areaCursor.setLanguage ( "weblaf.ex.npeditor.areaCursor" );
-        areaCursor.setRolloverDecoratedOnly ( true );
         areaCursor.setSelected ( ac );
         ninePatchEditor.setShowAreaCursorPosition ( ac );
         areaCursor.addActionListener ( new ActionListener ()
@@ -623,7 +622,7 @@ public class NinePatchEditorPanel extends WebPanel
         ninePatchEditor.addZoomChangeListener ( zoomChangeListener );
 
         final WebButton minZoom = new WebButton ( MIN_ICON );
-        minZoom.setRolloverDecoratedOnly ( true );
+        minZoom.setStyleId ( Styles.buttonRolloverIconOnly );
         minZoom.addActionListener ( new ActionListener ()
         {
             @Override
@@ -634,7 +633,7 @@ public class NinePatchEditorPanel extends WebPanel
         } );
 
         final WebButton maxZoom = new WebButton ( MAX_ICON );
-        maxZoom.setRolloverDecoratedOnly ( true );
+        maxZoom.setStyleId ( Styles.buttonRolloverIconOnly );
         maxZoom.addActionListener ( new ActionListener ()
         {
             @Override
@@ -791,16 +790,15 @@ public class NinePatchEditorPanel extends WebPanel
         //
 
         final WebToolBar toolBar = new WebToolBar ( WebToolBar.HORIZONTAL );
-        toolBar.setToolbarStyle ( ToolbarStyle.attached );
-        toolBar.setFloatable ( false );
+        toolBar.setStyleId ( Styles.toolbarAttached );
         previewPanel.add ( toolBar, "0,0,2,0" );
 
         final boolean si = SettingsManager.get ( "NinePatchEditor", "preview.showIcon", false );
         preview.setIcon ( si ? ICON : null );
 
         final WebToggleButton showIcon = new WebToggleButton ( SHOW_ICON_ICON );
+        showIcon.setStyleId ( Styles.togglebuttonRolloverIconOnly );
         showIcon.setLanguage ( "weblaf.ex.npeditor.preview.showIcon" );
-        showIcon.setRolloverDecoratedOnly ( true );
         showIcon.setSelected ( si );
         showIcon.addActionListener ( new ActionListener ()
         {
@@ -816,14 +814,9 @@ public class NinePatchEditorPanel extends WebPanel
 
         final boolean st = SettingsManager.get ( "NinePatchEditor", "preview.showText", true );
         final WebToggleButton showText = new WebToggleButton ( SHOW_TEXT_ICON );
+        showText.setStyleId ( Styles.togglebuttonRolloverIconOnly  );
         showText.setLanguage ( "weblaf.ex.npeditor.preview.showText" );
         showText.setCursor ( Cursor.getDefaultCursor () );
-        showText.setDrawFocus ( false );
-        showText.setRolloverDecoratedOnly ( true );
-        showText.setRolloverDarkBorderOnly ( false );
-        showText.setDrawRight ( false );
-        showText.setDrawRightLine ( true );
-        showText.setShadeWidth ( 0 );
         showText.setSelected ( st );
 
         final String defaultPreviewText = LanguageManager.get ( "weblaf.ex.npeditor.preview.text" );
@@ -861,15 +854,10 @@ public class NinePatchEditorPanel extends WebPanel
 
 
         final WebButton chooseColor = new WebButton ( FOREGROUND_COLOR_ICON );
+        chooseColor.setStyleId ( Styles.buttonRolloverIconOnly  );
         chooseColor.setLanguage ( "weblaf.ex.npeditor.preview.foregroundColor" );
         preview.setForeground ( SettingsManager.get ( "NinePatchEditor", "preview.foregroundColor", Color.WHITE ) );
         chooseColor.setCursor ( Cursor.getDefaultCursor () );
-        chooseColor.setDrawFocus ( false );
-        chooseColor.setRolloverDecoratedOnly ( true );
-        chooseColor.setRolloverDarkBorderOnly ( false );
-        chooseColor.setDrawLeft ( false );
-        chooseColor.setDrawLeftLine ( true );
-        chooseColor.setShadeWidth ( 0 );
         chooseColor.addActionListener ( new ActionListener ()
         {
             private WebColorChooserDialog webColorChooser = null;

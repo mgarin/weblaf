@@ -46,11 +46,15 @@ public final class Styles
      * {@link com.alee.laf.button.WebButton} style IDs.
      */
     public static String buttonIconOnly = "icon";
+    public static String buttonRolloverOnly = "rollover";
+    public static String buttonRolloverIconOnly = "rolloverIcon";
 
     /**
      * {@link com.alee.laf.button.WebToggleButton} style IDs.
      */
     public static String togglebuttonIconOnly = "icon";
+    public static String togglebuttonRolloverOnly = "rollover";
+    public static String togglebuttonRolloverIconOnly = "rolloverIcon";
 
     /**
      * {@link com.alee.laf.spinner.WebSpinner} style IDs.
@@ -254,6 +258,7 @@ public final class Styles
      * {@link com.alee.extended.tab.WebDocumentPane} style IDs.
      */
     public static String documentpane = "documentpane";
+    public static String documentpaneCloseButton = "documentpane-close";
     public static String documentpaneMenu = "documentpane";
 
     /**
