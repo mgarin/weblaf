@@ -24,12 +24,18 @@ NOTES:
 23. PaneData - menu display location might require fix
 24. WebComboBoxUI - handle popup corner repaint inside of the UI
 25. WebCollapsiblePane - fix collapse separator (through grouping?)
+26. BreadcrumbUtils - painting should be moved into painters
+27. WebInternalFrameTitlePane - buttons grouping
+28. WebCalendar - dates foreground should be moved into styles and separated for more cases
 
 FEATURES TO DO:
-1. Allow variables (with specified types) like colors, sizes etc.
-2. Improve styles loading/overriding mechanics
-3. Add option to provide font easily (short XML descriptor)
-4. Container methods with additional useful methods to add children into container component
+- Structural styles descriptors in XML
+- Possibility to extend globally defined painters
+- Create style reference system on interfaces, provide them instead of strings to avoid confusion in constructors and style types
+- Provide base default and custom styles in Styles class for whole WebLaF
+- Allow variables (with specified types) like colors, sizes etc.
+- Add option to provide font easily (short XML descriptor)
+- Container methods with additional useful methods to add children into container component
 
 
 -------------------------------------------------------------------------

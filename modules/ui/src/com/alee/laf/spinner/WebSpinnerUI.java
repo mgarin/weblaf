@@ -18,6 +18,7 @@
 package com.alee.laf.spinner;
 
 import com.alee.global.StyleConstants;
+import com.alee.laf.Styles;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.text.WebTextFieldUI;
@@ -153,29 +154,21 @@ public class WebSpinnerUI extends BasicSpinnerUI implements ShapeProvider, Borde
     @Override
     protected Component createNextButton ()
     {
-        final WebButton nextButton = WebButton.createIconWebButton ( UP_ICON, StyleConstants.smallRound, 1, 2 );
-        nextButton.setLeftRightSpacing ( 1 );
-        nextButton.setDrawFocus ( false );
-        nextButton.setFocusable ( false );
-
+        final WebButton nextButton = new WebButton ( UP_ICON );
+        nextButton.setStyleId ( Styles.spinnerNextButton );
         nextButton.setName ( "Spinner.nextButton" );
         installNextButtonListeners ( nextButton );
-
         return nextButton;
     }
 
     @Override
     protected Component createPreviousButton ()
     {
-        final WebButton previousButton = WebButton.createIconWebButton ( DOWN_ICON, StyleConstants.smallRound, 1, 2 );
-        previousButton.setLeftRightSpacing ( 1 );
-        previousButton.setDrawFocus ( false );
-        previousButton.setFocusable ( false );
-
-        previousButton.setName ( "Spinner.previousButton" );
-        installPreviousButtonListeners ( previousButton );
-
-        return previousButton;
+        final WebButton prevButton = new WebButton ( DOWN_ICON );
+        prevButton.setStyleId ( Styles.spinnerPrevButton );
+        prevButton.setName ( "Spinner.previousButton" );
+        installPreviousButtonListeners ( prevButton );
+        return prevButton;
     }
 
     @Override

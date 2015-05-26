@@ -32,7 +32,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
- * User: mgarin Date: 16.09.11 Time: 13:45
+ * @author Mikle Garin
  */
 
 public class WebTipLabel extends JComponent implements SwingConstants, ActionListener
@@ -99,8 +99,7 @@ public class WebTipLabel extends JComponent implements SwingConstants, ActionLis
         layout.setHGap ( 4 );
         setLayout ( layout );
 
-        hideButton = new WebButton ( HIDE_ICON );
-        hideButton.setRolloverIcon ( HIDE_DARK_ICON );
+        hideButton = new WebButton ( HIDE_ICON, HIDE_DARK_ICON );
         hideButton.setUndecorated ( true );
         hideButton.addActionListener ( WebTipLabel.this );
 

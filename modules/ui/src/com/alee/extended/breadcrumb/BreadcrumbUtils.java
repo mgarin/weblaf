@@ -18,6 +18,7 @@
 package com.alee.extended.breadcrumb;
 
 import com.alee.global.StyleConstants;
+import com.alee.laf.panel.WebPanelStyle;
 import com.alee.utils.ColorUtils;
 import com.alee.utils.GraphicsUtils;
 import com.alee.utils.ShapeCache;
@@ -78,7 +79,7 @@ public final class BreadcrumbUtils
             final BreadcrumbElementType type = BreadcrumbElementType.getType ( element, wbc );
             final boolean isNone = type.equals ( BreadcrumbElementType.none );
             left = isNone ? 0 : type.equals ( BreadcrumbElementType.start ) ? 0 : wbc.getElementOverlap ();
-            right = isNone ? 0 : type.equals ( BreadcrumbElementType.end ) ? 0 : wbc.getElementOverlap () + wbc.getShadeWidth ();
+            right = isNone ? 0 : type.equals ( BreadcrumbElementType.end ) ? 0 : wbc.getElementOverlap () + WebBreadcrumbStyle.shadeWidth;
         }
         else
         {
@@ -116,8 +117,8 @@ public final class BreadcrumbUtils
         // Variables
         final WebBreadcrumb breadcrumb = ( WebBreadcrumb ) container;
         final int overlap = breadcrumb.getElementOverlap ();
-        final int shadeWidth = breadcrumb.getShadeWidth ();
-        final int round = breadcrumb.getRound ();
+        final int shadeWidth = WebBreadcrumbStyle.shadeWidth;
+        final int round = WebPanelStyle.round;
         final boolean encloseLast = breadcrumb.isEncloseLastElement ();
         final BreadcrumbElement breadcrumbElement = ( BreadcrumbElement ) element;
         final int w = element.getWidth ();
@@ -454,8 +455,8 @@ public final class BreadcrumbUtils
             final WebBreadcrumb breadcrumb = ( WebBreadcrumb ) container;
             final BreadcrumbElementType type = BreadcrumbElementType.getType ( element, breadcrumb );
             final int overlap = breadcrumb.getElementOverlap ();
-            final int shadeWidth = breadcrumb.getShadeWidth ();
-            final int round = breadcrumb.getRound ();
+            final int shadeWidth = WebBreadcrumbStyle.shadeWidth;
+            final int round = WebPanelStyle.round;
             final boolean encloseLast = breadcrumb.isEncloseLastElement ();
             final boolean ltr = element.getComponentOrientation ().isLeftToRight ();
             return getFillShape ( element, type, w, h, overlap, shadeWidth, round, encloseLast, ltr ).contains ( x, y );

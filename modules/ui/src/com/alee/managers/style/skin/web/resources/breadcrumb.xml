@@ -18,6 +18,24 @@
         </painter>
     </style>
 
+    <!-- Button element -->
+    <style type="button" id="breadcrumb-element" extends="default">
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebBreadcrumbButtonPainter">
+            <margin>2,5,2,5</margin>
+            <leftRightSpacing>0</leftRightSpacing>
+            <undecorated>false</undecorated>
+        </painter>
+    </style>
+
+    <!-- Toggle button element -->
+    <style type="toggleButton" id="breadcrumb-element" extends="default">
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebBreadcrumbToggleButtonPainter">
+            <margin>2,5,2,5</margin>
+            <leftRightSpacing>0</leftRightSpacing>
+            <undecorated>false</undecorated>
+        </painter>
+    </style>
+
     <!-- Panel element -->
     <style type="panel" id="breadcrumb-element" extends="default">
         <painter id="painter" class="com.alee.managers.style.skin.web.WebBreadcrumbPanelPainter">

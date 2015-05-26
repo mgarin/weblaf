@@ -61,7 +61,7 @@
         <component>
             <focusable>false</focusable>
         </component>
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebButtonPainter">
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebToggleButtonPainter">
             <margin>0,0,0,0</margin>
             <round>0</round>
             <shadeWidth>0</shadeWidth>

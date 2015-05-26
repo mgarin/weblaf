@@ -6,14 +6,20 @@
     <style type="button" id="default">
         <component>
             <focusable>true</focusable>
+            <foreground>black</foreground>
+            <horizontalAlignment>0</horizontalAlignment>
+            <verticalAlignment>0</verticalAlignment>
         </component>
         <painter id="painter" class="com.alee.managers.style.skin.web.WebButtonPainter">
             <undecorated>false</undecorated>
             <round>3</round>
             <shadeWidth>2</shadeWidth>
+            <innerShadeWidth>2</innerShadeWidth>
             <paintBackground>true</paintBackground>
             <webColoredBackground>true</webColoredBackground>
             <leftRightSpacing>4</leftRightSpacing>
+            <rolloverShine>false</rolloverShine>
+            <shineColor>white</shineColor>
         </painter>
     </style>
 

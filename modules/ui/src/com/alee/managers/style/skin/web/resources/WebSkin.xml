@@ -25,8 +25,10 @@
     <include>resources/scrollpane.xml</include>
     <include>resources/splitpane.xml</include>
     <include>resources/popupmenu.xml</include>
+    <include>resources/optionpane.xml</include>
     <include>resources/colorchooser.xml</include>
     <include>resources/filechooser.xml</include>
+    <include>resources/internalframe.xml</include>
     <include>resources/rootpane.xml</include>
 
     <!-- Custom components styles -->
@@ -37,6 +39,8 @@
     <include>resources/collapsiblepane.xml</include>
     <include>resources/popover.xml</include>
     <include>resources/memorybar.xml</include>
+    <include>resources/calendar.xml</include>
+    <include>resources/datefield.xml</include>
     <include>resources/filechooserfield.xml</include>
     <include>resources/pathfield.xml</include>
     <include>resources/breadcrumb.xml</include>

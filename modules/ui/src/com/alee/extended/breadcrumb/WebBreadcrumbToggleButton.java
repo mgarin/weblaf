@@ -17,8 +17,8 @@
 
 package com.alee.extended.breadcrumb;
 
+import com.alee.laf.Styles;
 import com.alee.laf.button.WebToggleButton;
-import com.alee.managers.style.skin.web.WebBreadcrumbToggleButtonPainter;
 
 import javax.swing.*;
 
@@ -63,9 +63,7 @@ public class WebBreadcrumbToggleButton extends WebToggleButton implements Breadc
 
     private void initialize ()
     {
-        setMargin ( WebBreadcrumbStyle.elementMargin );
-        setLeftRightSpacing ( 0 );
-        setPainter ( new WebBreadcrumbToggleButtonPainter () );
+        setStyleId ( Styles.breadcrumbToggleButton );
     }
 
     /**

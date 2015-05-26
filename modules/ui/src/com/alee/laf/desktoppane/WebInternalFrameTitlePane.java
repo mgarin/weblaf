@@ -19,6 +19,7 @@ package com.alee.laf.desktoppane;
 
 import com.alee.extended.panel.BorderPanel;
 import com.alee.global.StyleConstants;
+import com.alee.laf.Styles;
 import com.alee.laf.WebFonts;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.label.WebLabel;
@@ -29,7 +30,7 @@ import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
 import java.awt.*;
 
 /**
- * User: mgarin Date: 24.08.11 Time: 20:30
+ * @author Mikle Garin
  */
 
 public class WebInternalFrameTitlePane extends BasicInternalFrameTitlePane
@@ -131,76 +132,19 @@ public class WebInternalFrameTitlePane extends BasicInternalFrameTitlePane
     @Override
     protected void createButtons ()
     {
-        iconButton = new WebButton ()
-        {
-            {
-                setEnabled ( frame.isIconifiable () );
-                setRolloverDarkBorderOnly ( false );
-                setShadeWidth ( 0 );
-                setRound ( StyleConstants.bigRound );
-                setInnerShadeWidth ( 2 );
-                setFocusable ( false );
-                if ( isFrameTitle () )
-                {
-                    setDrawRight ( false );
-                    setDrawRightLine ( true );
-                    setDrawTop ( false );
-                    setDrawTopLine ( true );
-                }
-                else
-                {
-                    setDrawLeft ( false );
-                    setDrawLeftLine ( true );
-                    setDrawRight ( false );
-                    setDrawRightLine ( true );
-                }
-                setBorder ( BorderFactory.createEmptyBorder ( 4, 7, 4, 6 ) );
-            }
-        };
+        iconButton = new WebButton ();
+        ( ( WebButton ) iconButton ).setStyleId ( Styles.internalframeMinimizeButton );
+        iconButton.setEnabled ( frame.isIconifiable () );
         iconButton.addActionListener ( iconifyAction );
 
-        maxButton = new WebButton ()
-        {
-            {
-                setEnabled ( frame.isMaximizable () );
-                setRolloverDarkBorderOnly ( false );
-                setShadeWidth ( 0 );
-                setRound ( StyleConstants.bigRound );
-                setInnerShadeWidth ( 2 );
-                setFocusable ( false );
-                setDrawLeft ( false );
-                setDrawLeftLine ( false );
-                setDrawRight ( false );
-                setDrawRightLine ( true );
-                setBorder ( BorderFactory.createEmptyBorder ( 4, 6, 4, 6 ) );
-            }
-        };
+        maxButton = new WebButton ();
+        ( ( WebButton ) maxButton ).setStyleId ( Styles.internalframeMaximizeButton );
+        maxButton.setEnabled ( frame.isMaximizable () );
         maxButton.addActionListener ( maximizeAction );
 
-        closeButton = new WebButton ()
-        {
-            {
-                setEnabled ( frame.isClosable () );
-                setRolloverDarkBorderOnly ( false );
-                setShadeWidth ( 0 );
-                setRound ( StyleConstants.bigRound );
-                setInnerShadeWidth ( 2 );
-                setFocusable ( false );
-                if ( isFrameTitle () )
-                {
-                    setDrawLeft ( false );
-                    setDrawLeftLine ( false );
-                    setDrawBottom ( false );
-                    setDrawBottomLine ( true );
-                }
-                else
-                {
-                    setDrawLeft ( false );
-                    setDrawLeftLine ( false );
-                }
-                setBorder ( BorderFactory.createEmptyBorder ( 4, 6, 4, 7 ) );
-            }
-        };
+        closeButton = new WebButton ();
+        ( ( WebButton ) closeButton ).setStyleId ( Styles.internalframeCloseButton );
+        closeButton.setEnabled ( frame.isClosable () );
         closeButton.addActionListener ( closeAction );
 
         setButtonIcons ();

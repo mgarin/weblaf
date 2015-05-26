@@ -17,6 +17,7 @@
 
 package com.alee.managers.style.skin.web;
 
+import com.alee.laf.Styles;
 import com.alee.laf.scroll.ScrollPanePainter;
 import com.alee.laf.scroll.WebScrollPaneUI;
 import com.alee.utils.LafUtils;
@@ -51,8 +52,8 @@ public class WebScrollPanePainter<E extends JScrollPane, U extends WebScrollPane
         super.install ( c, ui );
 
         // Scroll bars styling
-        LafUtils.setHorizontalScrollBarStyleId ( component, "scrollpane-horizontal" );
-        LafUtils.setVerticalScrollBarStyleId ( component, "scrollpane-vertical" );
+        LafUtils.setVerticalScrollBarStyleId ( component, Styles.scrollpaneVerticalBar );
+        LafUtils.setHorizontalScrollBarStyleId ( component, Styles.scrollpaneHorizontalBar );
 
         // Updating scrollpane corner
         updateCorners ();

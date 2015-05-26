@@ -19,6 +19,7 @@ package com.alee.extended.ninepatch;
 
 import com.alee.extended.layout.TableLayout;
 import com.alee.global.StyleConstants;
+import com.alee.laf.Styles;
 import com.alee.laf.scroll.WebScrollPane;
 import com.alee.utils.*;
 import com.alee.utils.ninepatch.NinePatchIcon;
@@ -100,7 +101,7 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
 
         setFont ( new JLabel ().getFont ().deriveFont ( 10f ) );
 
-        view = new WebScrollPane ( this, false );
+        view = new WebScrollPane ( Styles.scrollpaneUndecorated, this );
 
         final NinePatchEditorMouseAdapter npema = new NinePatchEditorMouseAdapter ();
         addMouseListener ( npema );

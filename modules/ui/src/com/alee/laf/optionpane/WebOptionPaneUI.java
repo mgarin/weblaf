@@ -17,7 +17,7 @@
 
 package com.alee.laf.optionpane;
 
-import com.alee.global.StyleConstants;
+import com.alee.laf.Styles;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
 import com.alee.managers.language.LM;
@@ -43,7 +43,7 @@ public class WebOptionPaneUI extends BasicOptionPaneUI
     public static final ImageIcon ERROR_ICON = new ImageIcon ( WebOptionPaneUI.class.getResource ( "icons/error.png" ) );
     public static final ImageIcon QUESTION_ICON = new ImageIcon ( WebOptionPaneUI.class.getResource ( "icons/question.png" ) );
 
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebOptionPaneUI ();
@@ -189,50 +189,34 @@ public class WebOptionPaneUI extends BasicOptionPaneUI
                 if ( type == JOptionPane.YES_NO_OPTION )
                 {
                     defaultOptions = new WebButton[ 2 ];
-
-                    defaultOptions[ 0 ] = new WebButton ( "" );
-                    defaultOptions[ 0 ].setShineColor ( StyleConstants.greenHighlight );
-                    defaultOptions[ 0 ].setLanguage ( "weblaf.optionpane.yes" );
-
-                    defaultOptions[ 1 ] = new WebButton ( "" );
-                    defaultOptions[ 1 ].setShineColor ( StyleConstants.redHighlight );
-                    defaultOptions[ 1 ].setLanguage ( "weblaf.optionpane.no" );
+                    defaultOptions[ 0 ] = new WebButton ( "weblaf.optionpane.yes" );
+                    defaultOptions[ 0 ].setStyleId ( Styles.optionpaneYesButton );
+                    defaultOptions[ 1 ] = new WebButton ( "weblaf.optionpane.no" );
+                    defaultOptions[ 1 ].setStyleId ( Styles.optionpaneNoButton );
                 }
                 else if ( type == JOptionPane.YES_NO_CANCEL_OPTION )
                 {
                     defaultOptions = new WebButton[ 3 ];
-
-                    defaultOptions[ 0 ] = new WebButton ( "" );
-                    defaultOptions[ 0 ].setShineColor ( StyleConstants.greenHighlight );
-                    defaultOptions[ 0 ].setLanguage ( "weblaf.optionpane.yes" );
-
-                    defaultOptions[ 1 ] = new WebButton ( "" );
-                    defaultOptions[ 1 ].setShineColor ( StyleConstants.redHighlight );
-                    defaultOptions[ 1 ].setLanguage ( "weblaf.optionpane.no" );
-
-                    defaultOptions[ 2 ] = new WebButton ( "" );
-                    defaultOptions[ 2 ].setShineColor ( StyleConstants.yellowHighlight );
-                    defaultOptions[ 2 ].setLanguage ( "weblaf.optionpane.cancel" );
+                    defaultOptions[ 0 ] = new WebButton ( "weblaf.optionpane.yes" );
+                    defaultOptions[ 0 ].setStyleId ( Styles.optionpaneYesButton );
+                    defaultOptions[ 1 ] = new WebButton ( "weblaf.optionpane.no" );
+                    defaultOptions[ 1 ].setStyleId ( Styles.optionpaneNoButton );
+                    defaultOptions[ 2 ] = new WebButton ( "weblaf.optionpane.cancel" );
+                    defaultOptions[ 2 ].setStyleId ( Styles.optionpaneCancelButton );
                 }
                 else if ( type == JOptionPane.OK_CANCEL_OPTION )
                 {
                     defaultOptions = new WebButton[ 2 ];
-
-                    defaultOptions[ 0 ] = new WebButton ( "" );
-                    defaultOptions[ 0 ].setShineColor ( StyleConstants.greenHighlight );
-                    defaultOptions[ 0 ].setLanguage ( "weblaf.optionpane.ok" );
-
-                    defaultOptions[ 1 ] = new WebButton ( "" );
-                    defaultOptions[ 1 ].setShineColor ( StyleConstants.redHighlight );
-                    defaultOptions[ 1 ].setLanguage ( "weblaf.optionpane.cancel" );
+                    defaultOptions[ 0 ] = new WebButton ( "weblaf.optionpane.ok" );
+                    defaultOptions[ 0 ].setStyleId ( Styles.optionpaneOkButton );
+                    defaultOptions[ 1 ] = new WebButton ( "weblaf.optionpane.cancel" );
+                    defaultOptions[ 1 ].setStyleId ( Styles.optionpaneCancelButton );
                 }
                 else
                 {
                     defaultOptions = new WebButton[ 1 ];
-
-                    defaultOptions[ 0 ] = new WebButton ( "" );
-                    defaultOptions[ 0 ].setShineColor ( StyleConstants.greenHighlight );
-                    defaultOptions[ 0 ].setLanguage ( "weblaf.optionpane.ok" );
+                    defaultOptions[ 0 ] = new WebButton ( "weblaf.optionpane.ok" );
+                    defaultOptions[ 0 ].setStyleId ( Styles.optionpaneOkButton );
                 }
 
                 int count = 0;
@@ -257,10 +241,10 @@ public class WebOptionPaneUI extends BasicOptionPaneUI
 
     private void configureButton ( final WebButton button )
     {
-        button.setLeftRightSpacing ( 10 );
+        // Minimum size
         button.setMinimumSize ( new Dimension ( 70, 0 ) );
-        button.setRolloverShine ( WebOptionPaneStyle.highlightControlButtons );
 
+        // Proper font
         final Font buttonFont = UIManager.getFont ( "OptionPane.buttonFont" );
         if ( buttonFont != null )
         {

@@ -178,7 +178,6 @@ public class WebSplitButtonUI extends BasicButtonUI implements Styleable, ShapeP
     {
         if ( painter != null )
         {
-            // Painting button
             painter.paint ( ( Graphics2D ) g, SwingUtils.size ( c ), c, this );
         }
     }

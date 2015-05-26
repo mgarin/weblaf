@@ -29,8 +29,6 @@ import java.awt.*;
 
 public class WebBreadcrumb extends WebPanel
 {
-    public static final String ELEMENT_STYLE_ID = "breadcrumb-element";
-
     private int elementOverlap = WebBreadcrumbStyle.elementOverlap;
     private Insets elementMargin = WebBreadcrumbStyle.elementMargin;
     private boolean encloseLastElement = WebBreadcrumbStyle.encloseLastElement;

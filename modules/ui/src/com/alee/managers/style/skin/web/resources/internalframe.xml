@@ -1,0 +1,22 @@
+<skin>
+
+    <!-- com.alee.laf.button.WebButton -->
+
+    <!-- Internal frame decoration control buttons -->
+    <style type="button" id="internalframe" extends="default">
+        <component>
+            <focusable>false</focusable>
+        </component>
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebButtonPainter">
+            <margin>4,6,4,6</margin>
+            <round>4</round>
+            <shadeWidth>0</shadeWidth>
+            <innerShadeWidth>2</innerShadeWidth>
+            <rolloverDarkBorderOnly>false</rolloverDarkBorderOnly>
+        </painter>
+    </style>
+    <style type="button" id="internalframe-minimize" extends="internalframe" />
+    <style type="button" id="internalframe-maximize" extends="internalframe" />
+    <style type="button" id="internalframe-close" extends="internalframe" />
+
+</skin>

@@ -17,8 +17,8 @@
 
 package com.alee.extended.breadcrumb;
 
+import com.alee.laf.Styles;
 import com.alee.laf.button.WebButton;
-import com.alee.managers.style.skin.web.WebBreadcrumbButtonPainter;
 
 import javax.swing.*;
 
@@ -63,9 +63,7 @@ public class WebBreadcrumbButton extends WebButton implements BreadcrumbElement
 
     private void initialize ()
     {
-        setMargin ( WebBreadcrumbStyle.elementMargin );
-        setLeftRightSpacing ( 0 );
-        setPainter ( new WebBreadcrumbButtonPainter () );
+        setStyleId ( Styles.breadcrumbButton );
     }
 
     /**

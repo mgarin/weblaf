@@ -15,13 +15,6 @@ package com.alee.laf;
 public final class Styles
 {
     /**
-     * todo 1. Create style reference system on interfaces
-     * todo 2. Provide them instead of strings to avoid confusion in constructors and style types
-     * todo 3. Provide default styles here and overall as well
-     * todo 4. Structural styles descriptors in XML
-     */
-
-    /**
      * Base components.
      */
 
@@ -42,6 +35,14 @@ public final class Styles
     public static String panelWhite = "white";
 
     /**
+     * {@link com.alee.laf.scroll.WebScrollPane} style IDs.
+     */
+    public static String scrollpaneBar = "scrollpane";
+    public static String scrollpaneVerticalBar = "scrollpane-vertical";
+    public static String scrollpaneHorizontalBar = "scrollpane-horizontal";
+    public static String scrollpaneUndecorated = "scrollpane-undecorated";
+
+    /**
      * {@link com.alee.laf.button.WebButton} style IDs.
      */
     public static String buttonIconOnly = "icon";
@@ -50,6 +51,13 @@ public final class Styles
      * {@link com.alee.laf.button.WebToggleButton} style IDs.
      */
     public static String togglebuttonIconOnly = "icon";
+
+    /**
+     * {@link com.alee.laf.spinner.WebSpinner} style IDs.
+     */
+    public static String spinnerButton = "spinner";
+    public static String spinnerNextButton = "spinner-next";
+    public static String spinnerPrevButton = "spinner-prev";
 
     /**
      * {@link com.alee.laf.combobox.WebComboBox} style IDs.
@@ -78,14 +86,13 @@ public final class Styles
     public static String toolbarAttached = "attached";
 
     /**
-     * {@link com.alee.laf.rootpane.WebRootPane} style IDs.
+     * {@link com.alee.laf.optionpane.WebOptionPane} style IDs.
      */
-    public static String windowTitlePanel = "window-title";
-    public static String windowTitleLabel = "window-title";
-    public static String windowButton = "window-button";
-    public static String windowMinimizeButton = "window-minimize";
-    public static String windowMaximizeButton = "window-maximize";
-    public static String windowCloseButton = "window-close";
+    public static String optionpaneButton = "optionpane";
+    public static String optionpaneYesButton = "optionpane-yes";
+    public static String optionpaneNoButton = "optionpane-no";
+    public static String optionpaneOkButton = "optionpane-ok";
+    public static String optionpaneCancelButton = "optionpane-cancel";
 
     /**
      * {@link com.alee.laf.colorchooser.WebColorChooser} style IDs.
@@ -113,6 +120,24 @@ public final class Styles
     public static String filechooserAcceptButton = "filechooser-accept";
     public static String filechooserCancelButton = "filechooser-cancel";
     public static String filechooserRemovalListPanel = "filechooser-removal-list";
+
+    /**
+     * {@link com.alee.laf.desktoppane.WebInternalFrame} style IDs.
+     */
+    public static String internalframeButton = "internalframe";
+    public static String internalframeMinimizeButton = "internalframe-minimize";
+    public static String internalframeMaximizeButton = "internalframe-maximize";
+    public static String internalframeCloseButton = "internalframe-close";
+
+    /**
+     * {@link com.alee.laf.rootpane.WebRootPane} style IDs.
+     */
+    public static String windowTitlePanel = "window-title";
+    public static String windowTitleLabel = "window-title";
+    public static String windowButton = "window";
+    public static String windowMinimizeButton = "window-minimize";
+    public static String windowMaximizeButton = "window-maximize";
+    public static String windowCloseButton = "window-close";
 
     /**
      * Custom WebLaF components.
@@ -160,6 +185,30 @@ public final class Styles
     public static String memorybarTooltipLabel = "memorybar-tip";
 
     /**
+     * {@link com.alee.extended.date.WebCalendar} style IDs.
+     */
+    public static String calendar = "calendar";
+    public static String calendarButton = "calendar-button";
+    public static String calendarPrevYearButton = "calendar-prev-year";
+    public static String calendarPrevMonthButton = "calendar-prev-month";
+    public static String calendarTitleLabel = "calendar-title";
+    public static String calendarNextMonthButton = "calendar-next-month";
+    public static String calendarNextYearButton = "calendar-next-year";
+    public static String calendarWeekTitlesPanel = "calendar-week-titles";
+    public static String calendarWeekTitleLabel = "calendar-week-title";
+    public static String calendarMonthPanel = "calendar-month";
+    public static String calendarMonthDateToggleButton = "calendar-date";
+    public static String calendarPrevMonthDateToggleButton = "calendar-prev-date";
+    public static String calendarCurrentMonthDateToggleButton = "calendar-current-date";
+    public static String calendarNextMonthDateToggleButton = "calendar-next-date";
+
+    /**
+     * {@link com.alee.extended.date.WebDateField} style IDs.
+     */
+    public static String datefieldChooseButton = "datefield-choose";
+    public static String datefieldCalendar = "datefield";
+
+    /**
      * {@link com.alee.extended.filechooser.WebPathField} style IDs.
      */
     public static String filechooserfield = "filechooserfield";
@@ -185,8 +234,10 @@ public final class Styles
      * {@link com.alee.extended.breadcrumb.WebBreadcrumb} style IDs.
      */
     public static String breadcrumb = "breadcrumb";
-    public static String breadcrumbLabelElement = "breadcrumb-element";
-    public static String breadcrumbPanelElement = "breadcrumb-element";
+    public static String breadcrumbLabel = "breadcrumb-element";
+    public static String breadcrumbButton = "breadcrumb-element";
+    public static String breadcrumbToggleButton = "breadcrumb-element";
+    public static String breadcrumbPanel = "breadcrumb-element";
 
     /**
      * {@link com.alee.extended.syntax.WebSyntaxArea} and {@link com.alee.extended.syntax.WebSyntaxScrollPane} style IDs.

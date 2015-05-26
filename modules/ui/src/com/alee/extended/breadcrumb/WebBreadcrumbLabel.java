@@ -17,6 +17,7 @@
 
 package com.alee.extended.breadcrumb;
 
+import com.alee.laf.Styles;
 import com.alee.laf.label.WebLabel;
 
 import javax.swing.*;
@@ -77,7 +78,7 @@ public class WebBreadcrumbLabel extends WebLabel implements BreadcrumbElement
 
     private void initialize ()
     {
-        setStyleId ( WebBreadcrumb.ELEMENT_STYLE_ID );
+        setStyleId ( Styles.breadcrumbLabel );
     }
 
     /**

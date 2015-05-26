@@ -17,7 +17,7 @@
 
 package com.alee.extended.date;
 
-import com.alee.global.StyleConstants;
+import com.alee.laf.Styles;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.rootpane.WebWindow;
@@ -144,11 +144,8 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
         setDrawFocus ( WebDateFieldStyle.drawFocus );
 
         // Popup button
-        popupButton = WebButton.createIconWebButton ( selectDateIcon, WebDateFieldStyle.round );
-        popupButton.setFocusable ( false );
-        popupButton.setShadeWidth ( 0 );
-        popupButton.setMoveIconOnPress ( false );
-        popupButton.setRolloverDecoratedOnly ( true );
+        popupButton = new WebButton ( selectDateIcon );
+        popupButton.setStyleId ( Styles.datefieldChooseButton );
         popupButton.setCursor ( Cursor.getDefaultCursor () );
         popupButton.addActionListener ( new ActionListener ()
         {
@@ -261,16 +258,6 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
      * {@inheritDoc}
      */
     @Override
-    public void setRound ( final int round )
-    {
-        super.setRound ( round );
-        popupButton.setRound ( round );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public void setDrawBorder ( final boolean drawBorder )
     {
         super.setDrawBorder ( drawBorder );
@@ -332,9 +319,7 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
 
             // Calendar
             calendar = new WebCalendar ( date );
-            calendar.setPaintFocus ( false );
-            calendar.setRound ( StyleConstants.smallRound );
-            calendar.setShadeWidth ( 0 );
+            calendar.setStyleId ( Styles.datefieldCalendar );
 
             // Customizing calendar
             if ( calendarCustomizer != null )
@@ -392,7 +377,7 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
         calendar.transferFocus ();
     }
 
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     protected void customizePopup ( final WebWindow popup )
     {
         // You can customize date field popup window here

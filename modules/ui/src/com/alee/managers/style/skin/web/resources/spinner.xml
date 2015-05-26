@@ -1,0 +1,24 @@
+<skin>
+
+    <!-- com.alee.laf.spinner.WebSpinner -->
+
+    <!-- Buttons -->
+    <style type="button" id="spinner" extends="default">
+        <component>
+            <focusable>false</focusable>
+        </component>
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebButtonPainter">
+            <round>2</round>
+            <shadeWidth>1</shadeWidth>
+            <innerShadeWidth>2</innerShadeWidth>
+            <leftRightSpacing>1</leftRightSpacing>
+        </painter>
+    </style>
+
+    <!-- Next button (up) -->
+    <style type="button" id="spinner-next" extends="spinner" />
+
+    <!-- Previous button (down) -->
+    <style type="button" id="spinner-prev" extends="spinner" />
+
+</skin>

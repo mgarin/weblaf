@@ -25,6 +25,7 @@ import com.alee.managers.hotkey.HotkeyInfo;
 import com.alee.managers.hotkey.HotkeyManager;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.language.LanguageMethods;
+import com.alee.managers.language.LanguageUtils;
 import com.alee.managers.language.data.TooltipWay;
 import com.alee.managers.language.updaters.LanguageUpdater;
 import com.alee.managers.log.Log;
@@ -77,22 +78,26 @@ public class WebToggleButton extends JToggleButton
 
     public WebToggleButton ( final String text )
     {
-        super ( text );
+        super ( LanguageUtils.getInitialText ( text ) );
+        LanguageUtils.registerInitialLanguage ( this, text );
     }
 
     public WebToggleButton ( final String text, final boolean selected )
     {
-        super ( text, selected );
+        super ( LanguageUtils.getInitialText ( text ), selected );
+        LanguageUtils.registerInitialLanguage ( this, text );
     }
 
     public WebToggleButton ( final String text, final Icon icon )
     {
-        super ( text, icon );
+        super ( LanguageUtils.getInitialText ( text ), icon );
+        LanguageUtils.registerInitialLanguage ( this, text );
     }
 
     public WebToggleButton ( final String text, final Icon icon, final boolean selected )
     {
-        super ( text, icon, selected );
+        super ( LanguageUtils.getInitialText ( text ), icon, selected );
+        LanguageUtils.registerInitialLanguage ( this, text );
     }
 
     public WebToggleButton ( final ActionListener listener )
@@ -116,25 +121,29 @@ public class WebToggleButton extends JToggleButton
 
     public WebToggleButton ( final String text, final ActionListener listener )
     {
-        super ( text );
+        super ( LanguageUtils.getInitialText ( text ) );
+        LanguageUtils.registerInitialLanguage ( this, text );
         addActionListener ( listener );
     }
 
     public WebToggleButton ( final String text, final boolean selected, final ActionListener listener )
     {
-        super ( text, selected );
+        super ( LanguageUtils.getInitialText ( text ), selected );
+        LanguageUtils.registerInitialLanguage ( this, text );
         addActionListener ( listener );
     }
 
     public WebToggleButton ( final String text, final Icon icon, final ActionListener listener )
     {
-        super ( text, icon );
+        super ( LanguageUtils.getInitialText ( text ), icon );
+        LanguageUtils.registerInitialLanguage ( this, text );
         addActionListener ( listener );
     }
 
     public WebToggleButton ( final String text, final Icon icon, final boolean selected, final ActionListener listener )
     {
-        super ( text, icon, selected );
+        super ( LanguageUtils.getInitialText ( text ), icon, selected );
+        LanguageUtils.registerInitialLanguage ( this, text );
         addActionListener ( listener );
     }
 

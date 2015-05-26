@@ -453,7 +453,7 @@ public class WebPasswordFieldUI extends BasicPasswordFieldUI implements ShapePro
         PainterSupport.uninstallPainter ( passwordField, this.painter );
 
         this.painter = painter;
-        getComponent ().setOpaque ( painter == null || painter.isOpaque ( passwordField ) );
+        getComponent ().setOpaque ( painter == null || painter.isOpaque () );
         PainterSupport.installPainter ( passwordField, this.painter );
         updateBorder ();
     }
@@ -498,7 +498,7 @@ public class WebPasswordFieldUI extends BasicPasswordFieldUI implements ShapePro
             final Insets m;
             if ( painter != null )
             {
-                m = painter.getMargin ( getComponent () );
+                m = painter.getMargin ();
             }
             else if ( drawBorder )
             {
@@ -550,7 +550,7 @@ public class WebPasswordFieldUI extends BasicPasswordFieldUI implements ShapePro
         final JTextComponent c = getComponent ();
         final Graphics2D g2d = ( Graphics2D ) g;
 
-        if ( c.isOpaque () && ( painter == null || !painter.isOpaque ( passwordField ) ) )
+        if ( c.isOpaque () && ( painter == null || !painter.isOpaque () ) )
         {
             // Paint default background
             g.setColor ( c.getBackground () );
@@ -563,7 +563,7 @@ public class WebPasswordFieldUI extends BasicPasswordFieldUI implements ShapePro
             if ( painter != null )
             {
                 // Use background painter instead of default UI graphics
-                painter.paint ( g2d, SwingUtils.size ( c ), c );
+                painter.paint ( g2d, SwingUtils.size ( c ), c, this );
             }
             else if ( drawBorder )
             {
@@ -638,7 +638,7 @@ public class WebPasswordFieldUI extends BasicPasswordFieldUI implements ShapePro
         // Background painter preferred size
         if ( painter != null )
         {
-            ps = SwingUtils.max ( ps, painter.getPreferredSize ( c ) );
+            ps = SwingUtils.max ( ps, painter.getPreferredSize () );
         }
 
         return ps;

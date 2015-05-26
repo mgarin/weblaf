@@ -16,7 +16,7 @@
     <style type="label" id="window-title" extends="shade" />
 
     <!-- Custom window decoration control buttons -->
-    <style type="button" id="window-button" extends="default">
+    <style type="button" id="window" extends="default">
         <component>
             <focusable>false</focusable>
         </component>
@@ -25,8 +25,8 @@
             <round>6</round>
         </painter>
     </style>
-    <style type="button" id="window-minimize" extends="window-button" />
-    <style type="button" id="window-maximize" extends="window-button" />
-    <style type="button" id="window-close" extends="window-button" />
+    <style type="button" id="window-minimize" extends="window" />
+    <style type="button" id="window-maximize" extends="window" />
+    <style type="button" id="window-close" extends="window" />
 
 </skin>
