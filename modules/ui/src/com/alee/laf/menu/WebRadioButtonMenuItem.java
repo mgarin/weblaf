@@ -30,6 +30,8 @@ import com.alee.managers.settings.SettingsMethods;
 import com.alee.managers.settings.SettingsProcessor;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SwingUtils;
+import com.alee.utils.laf.ShapeProvider;
+import com.alee.utils.laf.Styleable;
 import com.alee.utils.swing.FontMethods;
 
 import javax.swing.*;
@@ -42,7 +44,7 @@ import java.awt.*;
  */
 
 public class WebRadioButtonMenuItem extends JRadioButtonMenuItem
-        implements LanguageMethods, SettingsMethods, FontMethods<WebRadioButtonMenuItem>
+        implements Styleable, ShapeProvider, LanguageMethods, SettingsMethods, FontMethods<WebRadioButtonMenuItem>
 {
     /**
      * Constructs new radiobutton menu item.
@@ -216,228 +218,6 @@ public class WebRadioButtonMenuItem extends JRadioButtonMenuItem
     }
 
     /**
-     * Returns menu item margin.
-     *
-     * @return menu item margin
-     */
-    @Override
-    public Insets getMargin ()
-    {
-        return getWebUI ().getMargin ();
-    }
-
-    /**
-     * Sets menu item margin.
-     *
-     * @param margin new menu item margin
-     */
-    @Override
-    public void setMargin ( final Insets margin )
-    {
-        getWebUI ().setMargin ( margin );
-    }
-
-    /**
-     * Returns spacing between menu item content and its left/right borders.
-     *
-     * @return spacing between menu item content and its left/right borders
-     */
-    public int getSideSpacing ()
-    {
-        return getWebUI ().getSideSpacing ();
-    }
-
-    /**
-     * Sets spacing between menu item content and its left/right borders
-     *
-     * @param sideSpacing spacing between menu item content and its left/right borders
-     */
-    public void setSideSpacing ( final int sideSpacing )
-    {
-        getWebUI ().setSideSpacing ( sideSpacing );
-    }
-
-    /**
-     * Returns disabled menu item foreground.
-     *
-     * @return disabled menu item foreground
-     */
-    public Color getDisabledFg ()
-    {
-        return getWebUI ().getDisabledFg ();
-    }
-
-    /**
-     * Sets disabled menu item foreground.
-     *
-     * @param foreground new disabled menu item foreground
-     */
-    public void setDisabledFg ( final Color foreground )
-    {
-        getWebUI ().setDisabledFg ( foreground );
-    }
-
-    /**
-     * Returns top background color for selected item.
-     *
-     * @return top background color for selected item
-     */
-    public Color getSelectedTopBg ()
-    {
-        return getWebUI ().getSelectedTopBg ();
-    }
-
-    /**
-     * Sets top background color for selected item.
-     *
-     * @param background new top background color for selected item
-     */
-    public void setSelectedTopBg ( final Color background )
-    {
-        getWebUI ().setSelectedTopBg ( background );
-    }
-
-    /**
-     * Returns bottom background color for selected item.
-     *
-     * @return bottom background color for selected item
-     */
-    public Color getSelectedBottomBg ()
-    {
-        return getWebUI ().getSelectedBottomBg ();
-    }
-
-    /**
-     * Sets bottom background color for selected item.
-     *
-     * @param background new bottom background color for selected item
-     */
-    public void setSelectedBottomBg ( final Color background )
-    {
-        getWebUI ().setSelectedBottomBg ( background );
-    }
-
-    /**
-     * Returns accelerator text background.
-     *
-     * @return accelerator text background
-     */
-    public Color getAcceleratorBg ()
-    {
-        return getWebUI ().getAcceleratorBg ();
-    }
-
-    /**
-     * Sets accelerator text background.
-     *
-     * @param background new accelerator text background
-     */
-    public void setAcceleratorBg ( final Color background )
-    {
-        getWebUI ().setAcceleratorBg ( background );
-    }
-
-    /**
-     * Returns accelerator foreground.
-     *
-     * @return accelerator foreground
-     */
-    public Color getAcceleratorFg ()
-    {
-        return getWebUI ().getAcceleratorFg ();
-    }
-
-    /**
-     * Sets accelerator foreground.
-     *
-     * @param foreground new accelerator foreground
-     */
-    public void setAcceleratorFg ( final Color foreground )
-    {
-        getWebUI ().setAcceleratorFg ( foreground );
-    }
-
-    /**
-     * Returns disabled accelerator foreground.
-     *
-     * @return disabled accelerator foreground
-     */
-    public Color getAcceleratorDisabledFg ()
-    {
-        return getWebUI ().getAcceleratorDisabledFg ();
-    }
-
-    /**
-     * Sets disabled accelerator foreground.
-     *
-     * @param foreground new disabled accelerator foreground
-     */
-    public void setAcceleratorDisabledFg ( final Color foreground )
-    {
-        getWebUI ().setAcceleratorDisabledFg ( foreground );
-    }
-
-    /**
-     * Returns gap between menu item icon/text and accelerator.
-     *
-     * @return gap between menu item icon/text and accelerator
-     */
-    public int getAcceleratorGap ()
-    {
-        return getWebUI ().getAcceleratorGap ();
-    }
-
-    /**
-     * Sets gap between menu icon/text and accelerator.
-     *
-     * @param gap new gap between menu icon/text and accelerator
-     */
-    public void setAcceleratorGap ( final int gap )
-    {
-        getWebUI ().setAcceleratorGap ( gap );
-    }
-
-    /**
-     * Returns whether should align all item texts to a single vertical line within single popup menu or not.
-     *
-     * @return true if should align all item texts to a single vertical line within single popup menu, false otherwise
-     */
-    public boolean isAlignTextToMenuIcons ()
-    {
-        return getWebUI ().isAlignTextToMenuIcons ();
-    }
-
-    /**
-     * Sets whether should align all item texts to a single vertical line within single popup menu or not.
-     *
-     * @param align whether should align all item texts to a single vertical line within single popup menu or not
-     */
-    public void setAlignTextToMenuIcons ( final boolean align )
-    {
-        getWebUI ().setAlignTextToMenuIcons ( align );
-    }
-
-    /**
-     * Returns icon alignment.
-     *
-     * @return icon alignment
-     */
-    public int getIconAlignment ()
-    {
-        return getWebUI ().getIconAlignment ();
-    }
-
-    /**
-     * Sets icon alignment
-     *
-     * @param alignment new icon alignment
-     */
-    public void setIconAlignment ( final int alignment )
-    {
-        getWebUI ().setIconAlignment ( alignment );
-    }
-
-    /**
      * Returns menu item painter.
      *
      * @return menu item painter
@@ -449,32 +229,42 @@ public class WebRadioButtonMenuItem extends JRadioButtonMenuItem
 
     /**
      * Sets menu item painter.
+     * Pass null to remove menu item painter.
      *
      * @param painter new menu item painter
+     * @return this menu item
      */
-    public void setPainter ( final Painter painter )
+    public WebRadioButtonMenuItem setPainter ( final Painter painter )
     {
         getWebUI ().setPainter ( painter );
+        return this;
     }
 
     /**
-     * Returns checkbox menu item check color.
-     *
-     * @return checkbox menu item check color
+     * {@inheritDoc}
      */
-    public Color getCheckColor ()
+    @Override
+    public String getStyleId ()
     {
-        return getWebUI ().getCheckColor ();
+        return getWebUI ().getStyleId ();
     }
 
     /**
-     * Sets checkbox menu item check color.
-     *
-     * @param color checkbox menu item check color
+     * {@inheritDoc}
      */
-    public void setCheckColor ( final Color color )
+    @Override
+    public void setStyleId ( final String id )
     {
-        getWebUI ().setCheckColor ( color );
+        getWebUI ().setStyleId ( id );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Shape provideShape ()
+    {
+        return getWebUI ().provideShape ();
     }
 
     /**

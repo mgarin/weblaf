@@ -26,7 +26,6 @@ import com.alee.utils.SwingUtils;
 import com.alee.utils.SystemUtils;
 
 import javax.swing.*;
-import javax.swing.plaf.basic.BasicComboPopup;
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -338,62 +337,63 @@ public class WebPopupMenuPainter<E extends JPopupMenu, U extends WebPopupMenuUI>
             final boolean stick = top ? getMargin ().top == 0 : getMargin ().bottom == 0;
             if ( stick )
             {
-                // Checking that we can actually retrieve what item wants to fill corner with
-                final int zIndex = top ? 0 : popupMenu.getComponentCount () - 1;
-                final Component component = popupMenu.getComponent ( zIndex );
-                if ( popupMenu instanceof BasicComboPopup )
-                {
-                    // Filling corner according to combobox preferences
-                    if ( component instanceof JScrollPane )
-                    {
-                        // Usually there will be a scrollpane with list as the first element
-                        final JScrollPane scrollPane = ( JScrollPane ) component;
-                        final JList list = ( JList ) scrollPane.getViewport ().getView ();
-                        if ( top && list.getSelectedIndex () == 0 )
-                        {
-                            // Filling top corner when first list element is selected
-                            final WebComboBoxUI ui = geComboBoxUI ( popupMenu );
-                            if ( ui != null )
-                            {
-                                g2d.setPaint ( ui.getNorthCornerFill () );
-                                g2d.fill ( getDropdownCornerShape ( popupMenu, menuSize, true ) );
-                            }
-                        }
-                        else if ( !top && list.getSelectedIndex () == list.getModel ().getSize () - 1 )
-                        {
-                            // Filling bottom corner when last list element is selected
-                            final WebComboBoxUI ui = geComboBoxUI ( popupMenu );
-                            if ( ui != null )
-                            {
-                                g2d.setPaint ( ui.getSouthCornerFill () );
-                                g2d.fill ( getDropdownCornerShape ( popupMenu, menuSize, true ) );
-                            }
-                        }
-                    }
-                }
-                else if ( component instanceof JMenuItem )
-                {
-                    // Filling corner if selected menu item is placed nearby
-                    final JMenuItem menuItem = ( JMenuItem ) component;
-                    if ( menuItem.isEnabled () && ( menuItem.getModel ().isArmed () || menuItem.isSelected () ) )
-                    {
-                        // Filling corner properly
-                        if ( menuItem.getUI () instanceof WebMenuUI )
-                        {
-                            // Filling corner according to WebMenu styling
-                            final WebMenuUI ui = ( WebMenuUI ) menuItem.getUI ();
-                            g2d.setPaint ( top ? ui.getNorthCornerFill () : ui.getSouthCornerFill () );
-                            g2d.fill ( getDropdownCornerShape ( popupMenu, menuSize, true ) );
-                        }
-                        else if ( menuItem.getUI () instanceof WebMenuItemUI )
-                        {
-                            // Filling corner according to WebMenuItem styling
-                            final WebMenuItemUI ui = ( WebMenuItemUI ) menuItem.getUI ();
-                            g2d.setPaint ( top ? ui.getNorthCornerFill () : ui.getSouthCornerFill () );
-                            g2d.fill ( getDropdownCornerShape ( popupMenu, menuSize, true ) );
-                        }
-                    }
-                }
+                // todo Implement corner support
+                //                // Checking that we can actually retrieve what item wants to fill corner with
+                //                final int zIndex = top ? 0 : popupMenu.getComponentCount () - 1;
+                //                final Component component = popupMenu.getComponent ( zIndex );
+                //                if ( popupMenu instanceof BasicComboPopup )
+                //                {
+                //                    // Filling corner according to combobox preferences
+                //                    if ( component instanceof JScrollPane )
+                //                    {
+                //                        // Usually there will be a scrollpane with list as the first element
+                //                        final JScrollPane scrollPane = ( JScrollPane ) component;
+                //                        final JList list = ( JList ) scrollPane.getViewport ().getView ();
+                //                        if ( top && list.getSelectedIndex () == 0 )
+                //                        {
+                //                            // Filling top corner when first list element is selected
+                //                            final WebComboBoxUI ui = geComboBoxUI ( popupMenu );
+                //                            if ( ui != null )
+                //                            {
+                //                                g2d.setPaint ( ui.getNorthCornerFill () );
+                //                                g2d.fill ( getDropdownCornerShape ( popupMenu, menuSize, true ) );
+                //                            }
+                //                        }
+                //                        else if ( !top && list.getSelectedIndex () == list.getModel ().getSize () - 1 )
+                //                        {
+                //                            // Filling bottom corner when last list element is selected
+                //                            final WebComboBoxUI ui = geComboBoxUI ( popupMenu );
+                //                            if ( ui != null )
+                //                            {
+                //                                g2d.setPaint ( ui.getSouthCornerFill () );
+                //                                g2d.fill ( getDropdownCornerShape ( popupMenu, menuSize, true ) );
+                //                            }
+                //                        }
+                //                    }
+                //                }
+                //                else if ( component instanceof JMenuItem )
+                //                {
+                //                    // Filling corner if selected menu item is placed nearby
+                //                    final JMenuItem menuItem = ( JMenuItem ) component;
+                //                    if ( menuItem.isEnabled () && ( menuItem.getModel ().isArmed () || menuItem.isSelected () ) )
+                //                    {
+                //                        // Filling corner properly
+                //                        if ( menuItem.getUI () instanceof WebMenuUI )
+                //                        {
+                //                            // Filling corner according to WebMenu styling
+                //                            final WebMenuUI ui = ( WebMenuUI ) menuItem.getUI ();
+                //                            g2d.setPaint ( top ? ui.getNorthCornerFill () : ui.getSouthCornerFill () );
+                //                            g2d.fill ( getDropdownCornerShape ( popupMenu, menuSize, true ) );
+                //                        }
+                //                        else if ( menuItem.getUI () instanceof WebMenuItemUI )
+                //                        {
+                //                            // Filling corner according to WebMenuItem styling
+                //                            final WebMenuItemUI ui = ( WebMenuItemUI ) menuItem.getUI ();
+                //                            g2d.setPaint ( top ? ui.getNorthCornerFill () : ui.getSouthCornerFill () );
+                //                            g2d.fill ( getDropdownCornerShape ( popupMenu, menuSize, true ) );
+                //                        }
+                //                    }
+                //                }
             }
         }
     }

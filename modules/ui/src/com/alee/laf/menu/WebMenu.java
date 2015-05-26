@@ -25,6 +25,8 @@ import com.alee.managers.language.updaters.LanguageUpdater;
 import com.alee.managers.log.Log;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SwingUtils;
+import com.alee.utils.laf.ShapeProvider;
+import com.alee.utils.laf.Styleable;
 import com.alee.utils.swing.FontMethods;
 
 import javax.swing.*;
@@ -36,7 +38,7 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public class WebMenu extends JMenu implements LanguageMethods, FontMethods<WebMenu>
+public class WebMenu extends JMenu implements Styleable, ShapeProvider, LanguageMethods, FontMethods<WebMenu>
 {
     /**
      * Constructs new menu.
@@ -90,211 +92,9 @@ public class WebMenu extends JMenu implements LanguageMethods, FontMethods<WebMe
     }
 
     /**
-     * Returns top-level menu border rounding.
+     * Returns menu painter.
      *
-     * @return top-level menu border rounding
-     */
-    public int getRound ()
-    {
-        return getWebUI ().getRound ();
-    }
-
-    /**
-     * Sets top-level menu border rounding.
-     *
-     * @param round new top-level menu border rounding
-     */
-    public void setRound ( final int round )
-    {
-        getWebUI ().setRound ( round );
-    }
-
-    /**
-     * Returns top-level menu shade width.
-     *
-     * @return top-level menu shade width
-     */
-    public int getShadeWidth ()
-    {
-        return getWebUI ().getShadeWidth ();
-    }
-
-    /**
-     * Sets top-level menu shade width.
-     *
-     * @param shadeWidth new top-level menu shade width
-     */
-    public void setShadeWidth ( final int shadeWidth )
-    {
-        getWebUI ().setShadeWidth ( shadeWidth );
-    }
-
-    /**
-     * Returns menu item margin.
-     *
-     * @return menu item margin
-     */
-    @Override
-    public Insets getMargin ()
-    {
-        return getWebUI ().getMargin ();
-    }
-
-    /**
-     * Sets menu item margin.
-     *
-     * @param margin new menu item margin
-     */
-    @Override
-    public void setMargin ( final Insets margin )
-    {
-        getWebUI ().setMargin ( margin );
-    }
-
-    /**
-     * Returns spacing between menu item content and its left/right borders.
-     *
-     * @return spacing between menu item content and its left/right borders
-     */
-    public int getSideSpacing ()
-    {
-        return getWebUI ().getSideSpacing ();
-    }
-
-    /**
-     * Sets spacing between menu item content and its left/right borders
-     *
-     * @param sideSpacing spacing between menu item content and its left/right borders
-     */
-    public void setSideSpacing ( final int sideSpacing )
-    {
-        getWebUI ().setSideSpacing ( sideSpacing );
-    }
-
-    /**
-     * Returns disabled menu item foreground.
-     *
-     * @return disabled menu item foreground
-     */
-    public Color getDisabledFg ()
-    {
-        return getWebUI ().getDisabledFg ();
-    }
-
-    /**
-     * Sets disabled menu item foreground.
-     *
-     * @param foreground new disabled menu item foreground
-     */
-    public void setDisabledFg ( final Color foreground )
-    {
-        getWebUI ().setDisabledFg ( foreground );
-    }
-
-    /**
-     * Returns top background color for selected item.
-     *
-     * @return top background color for selected item
-     */
-    public Color getSelectedTopBg ()
-    {
-        return getWebUI ().getSelectedTopBg ();
-    }
-
-    /**
-     * Sets top background color for selected item.
-     *
-     * @param background new top background color for selected item
-     */
-    public void setSelectedTopBg ( final Color background )
-    {
-        getWebUI ().setSelectedTopBg ( background );
-    }
-
-    /**
-     * Returns bottom background color for selected item.
-     *
-     * @return bottom background color for selected item
-     */
-    public Color getSelectedBottomBg ()
-    {
-        return getWebUI ().getSelectedBottomBg ();
-    }
-
-    /**
-     * Sets bottom background color for selected item.
-     *
-     * @param background new bottom background color for selected item
-     */
-    public void setSelectedBottomBg ( final Color background )
-    {
-        getWebUI ().setSelectedBottomBg ( background );
-    }
-
-    /**
-     * Returns gap between menu icon/text and submenu arrow.
-     *
-     * @return gap between menu icon/text and submenu arrow
-     */
-    public int getArrowGap ()
-    {
-        return getWebUI ().getArrowGap ();
-    }
-
-    /**
-     * Sets gap between menu icon/text and submenu arrow.
-     *
-     * @param gap new gap between menu icon/text and submenu arrow
-     */
-    public void setArrowGap ( final int gap )
-    {
-        getWebUI ().setArrowGap ( gap );
-    }
-
-    /**
-     * Returns whether should align all item texts to a single vertical line within single popup menu or not.
-     *
-     * @return true if should align all item texts to a single vertical line within single popup menu, false otherwise
-     */
-    public boolean isAlignTextToMenuIcons ()
-    {
-        return getWebUI ().isAlignTextToMenuIcons ();
-    }
-
-    /**
-     * Sets whether should align all item texts to a single vertical line within single popup menu or not.
-     *
-     * @param align whether should align all item texts to a single vertical line within single popup menu or not
-     */
-    public void setAlignTextToMenuIcons ( final boolean align )
-    {
-        getWebUI ().setAlignTextToMenuIcons ( align );
-    }
-
-    /**
-     * Returns icon alignment.
-     *
-     * @return icon alignment
-     */
-    public int getIconAlignment ()
-    {
-        return getWebUI ().getIconAlignment ();
-    }
-
-    /**
-     * Sets icon alignment
-     *
-     * @param alignment new icon alignment
-     */
-    public void setIconAlignment ( final int alignment )
-    {
-        getWebUI ().setIconAlignment ( alignment );
-    }
-
-    /**
-     * Returns menu item painter.
-     *
-     * @return menu item painter
+     * @return menu painter
      */
     public Painter getPainter ()
     {
@@ -302,13 +102,43 @@ public class WebMenu extends JMenu implements LanguageMethods, FontMethods<WebMe
     }
 
     /**
-     * Sets menu item painter.
+     * Sets menu painter.
+     * Pass null to remove menu painter.
      *
-     * @param painter new menu item painter
+     * @param painter new menu painter
+     * @return this menu item
      */
-    public void setPainter ( final Painter painter )
+    public WebMenu setPainter ( final Painter painter )
     {
         getWebUI ().setPainter ( painter );
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getStyleId ()
+    {
+        return getWebUI ().getStyleId ();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setStyleId ( final String id )
+    {
+        getWebUI ().setStyleId ( id );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Shape provideShape ()
+    {
+        return getWebUI ().provideShape ();
     }
 
     /**
@@ -316,7 +146,7 @@ public class WebMenu extends JMenu implements LanguageMethods, FontMethods<WebMe
      *
      * @return Web-UI applied to this class
      */
-    public WebMenuUI getWebUI ()
+    private WebMenuUI getWebUI ()
     {
         return ( WebMenuUI ) getUI ();
     }

@@ -69,12 +69,12 @@ public enum SupportedComponent
     /**
      * Menu-related components.
      */
-    menuBar ( false, JMenuBar.class, "MenuBarUI", WebLookAndFeel.menuBarUI ),
-    menu ( false, JMenu.class, "MenuUI", WebLookAndFeel.menuUI ),
+    menuBar ( true, JMenuBar.class, "MenuBarUI", WebLookAndFeel.menuBarUI ),
+    menu ( true, JMenu.class, "MenuUI", WebLookAndFeel.menuUI ),
     popupMenu ( true, JPopupMenu.class, "PopupMenuUI", WebLookAndFeel.popupMenuUI ),
-    menuItem ( false, JMenuItem.class, "MenuItemUI", WebLookAndFeel.menuItemUI ),
-    checkBoxMenuItem ( false, JCheckBoxMenuItem.class, "CheckBoxMenuItemUI", WebLookAndFeel.checkBoxMenuItemUI ),
-    radioButtonMenuItem ( false, JRadioButtonMenuItem.class, "RadioButtonMenuItemUI", WebLookAndFeel.radioButtonMenuItemUI ),
+    menuItem ( true, JMenuItem.class, "MenuItemUI", WebLookAndFeel.menuItemUI ),
+    checkBoxMenuItem ( true, JCheckBoxMenuItem.class, "CheckBoxMenuItemUI", WebLookAndFeel.checkBoxMenuItemUI ),
+    radioButtonMenuItem ( true, JRadioButtonMenuItem.class, "RadioButtonMenuItemUI", WebLookAndFeel.radioButtonMenuItemUI ),
     popupMenuSeparator ( true, JPopupMenu.Separator.class, "PopupMenuSeparatorUI", WebLookAndFeel.popupMenuSeparatorUI ),
 
     /**

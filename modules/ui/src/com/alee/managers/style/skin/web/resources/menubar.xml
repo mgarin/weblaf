@@ -1,0 +1,22 @@
+<skin>
+
+    <!-- com.alee.laf.menu.WebMenuBar -->
+
+    <!-- Menu bar -->
+    <style type="menuBar" id="default">
+        <component>
+            <orientation>0</orientation>
+            <opaque>false</opaque>
+        </component>
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebMenuBarPainter">
+            <undecorated>false</undecorated>
+            <round>4</round>
+            <shadeWidth>0</shadeWidth>
+            <borderColor>170,170,170</borderColor>
+            <topBgColor>white</topBgColor>
+            <bottomBgColor>235,235,235</bottomBgColor>
+            <menuBarStyle>attached</menuBarStyle>
+        </painter>
+    </style>
+
+</skin>

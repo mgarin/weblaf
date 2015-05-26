@@ -17,10 +17,12 @@
 
 package com.alee.laf.menu;
 
+import com.alee.extended.painter.Painter;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.log.Log;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.laf.ShapeProvider;
+import com.alee.utils.laf.Styleable;
 
 import javax.swing.*;
 import java.awt.*;
@@ -29,76 +31,69 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public class WebMenuBar extends JMenuBar implements ShapeProvider
+public class WebMenuBar extends JMenuBar implements Styleable, ShapeProvider
 {
     public WebMenuBar ()
     {
         super ();
     }
 
-    public WebMenuBar ( final MenuBarStyle menuBarStyle )
+    /**
+     * Returns menu bar painter.
+     *
+     * @return menu bar painter
+     */
+    public Painter getPainter ()
     {
-        super ();
-        setMenuBarStyle ( menuBarStyle );
+        return getWebUI ().getPainter ();
     }
 
-    public boolean isUndecorated ()
+    /**
+     * Sets menu bar painter.
+     * Pass null to remove menu bar painter.
+     *
+     * @param painter new menu bar painter
+     * @return this menu bar
+     */
+    public WebMenuBar setPainter ( final Painter painter )
     {
-        return getWebUI ().isUndecorated ();
+        getWebUI ().setPainter ( painter );
+        return this;
     }
 
-    public void setUndecorated ( final boolean undecorated )
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getStyleId ()
     {
-        getWebUI ().setUndecorated ( undecorated );
+        return getWebUI ().getStyleId ();
     }
 
-    public MenuBarStyle getMenuBarStyle ()
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setStyleId ( final String id )
     {
-        return getWebUI ().getMenuBarStyle ();
+        getWebUI ().setStyleId ( id );
     }
 
-    public void setMenuBarStyle ( final MenuBarStyle menuBarStyle )
-    {
-        getWebUI ().setMenuBarStyle ( menuBarStyle );
-    }
-
-    public Color getBorderColor ()
-    {
-        return getWebUI ().getBorderColor ();
-    }
-
-    public void setBorderColor ( final Color borderColor )
-    {
-        getWebUI ().setBorderColor ( borderColor );
-    }
-
-    public int getRound ()
-    {
-        return getWebUI ().getRound ();
-    }
-
-    public void setRound ( final int round )
-    {
-        getWebUI ().setRound ( round );
-    }
-
-    public int getShadeWidth ()
-    {
-        return getWebUI ().getShadeWidth ();
-    }
-
-    public void setShadeWidth ( final int shadeWidth )
-    {
-        getWebUI ().setShadeWidth ( shadeWidth );
-    }
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Shape provideShape ()
     {
         return getWebUI ().provideShape ();
     }
 
-    public WebMenuBarUI getWebUI ()
+    /**
+     * Returns Web-UI applied to this class.
+     *
+     * @return Web-UI applied to this class
+     */
+    private WebMenuBarUI getWebUI ()
     {
         return ( WebMenuBarUI ) getUI ();
     }
