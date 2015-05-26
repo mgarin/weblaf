@@ -1,12 +1,16 @@
 <skin>
 
-    <!-- com.alee.laf.button.WebButton -->
+    <!-- com.alee.laf.optionpane.WebOptionPane -->
 
-    <!-- Button -->
+    <!-- Buttons -->
     <style type="button" id="optionpane" extends="default">
         <painter id="painter" class="com.alee.managers.style.skin.web.WebButtonPainter">
             <leftRightSpacing>10</leftRightSpacing>
         </painter>
     </style>
+    <style type="button" id="optionpane-yes" extends="optionpane" />
+    <style type="button" id="optionpane-no" extends="optionpane" />
+    <style type="button" id="optionpane-ok" extends="optionpane" />
+    <style type="button" id="optionpane-cancel" extends="optionpane" />
 
 </skin>
