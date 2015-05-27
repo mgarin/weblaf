@@ -16,6 +16,9 @@
     <include>resources/styledlabel.xml</include>
     <include>resources/button.xml</include>
     <include>resources/togglebutton.xml</include>
+    <include>resources/radiobutton.xml</include>
+    <include>resources/checkbox.xml</include>
+    <include>resources/tristatecheckbox.xml</include>
     <include>resources/separator.xml</include>
     <include>resources/spinner.xml</include>
     <include>resources/menubar.xml</include>

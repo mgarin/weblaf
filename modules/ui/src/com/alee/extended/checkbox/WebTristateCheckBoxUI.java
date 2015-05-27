@@ -17,11 +17,19 @@
 
 package com.alee.extended.checkbox;
 
-import com.alee.laf.checkbox.CheckIcon;
-import com.alee.laf.checkbox.WebCheckBoxUI;
+import com.alee.extended.painter.Painter;
+import com.alee.extended.painter.PainterSupport;
+import com.alee.managers.style.StyleManager;
+import com.alee.utils.CompareUtils;
+import com.alee.utils.SwingUtils;
+import com.alee.utils.laf.ShapeProvider;
+import com.alee.utils.laf.Styleable;
+import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
+import javax.swing.plaf.basic.BasicCheckBoxUI;
+import java.awt.*;
 
 /**
  * Custom UI for WebTristateCheckBox component.
@@ -29,8 +37,19 @@ import javax.swing.plaf.ComponentUI;
  * @author Mikle Garin
  */
 
-public class WebTristateCheckBoxUI extends WebCheckBoxUI
+public class WebTristateCheckBoxUI extends BasicCheckBoxUI implements Styleable, ShapeProvider
 {
+    /**
+     * Component painter.
+     */
+    protected TrisateCheckBoxPainter painter;
+
+    /**
+     * Runtime variables.
+     */
+    protected String styleId = null;
+    protected JCheckBox checkBox = null;
+
     /**
      * Returns an instance of the WebTristateCheckBoxUI for the specified component.
      * This tricky method is used by UIManager to create component UIs when needed.
@@ -54,46 +73,126 @@ public class WebTristateCheckBoxUI extends WebCheckBoxUI
     {
         super.installUI ( c );
 
-        // Initial check state
-        checkIcon.setState ( getTristateCheckbox ().getState () );
+        // Saving checkbox to local variable
+        checkBox = ( JCheckBox ) c;
+
+        // Applying skin
+        StyleManager.applySkin ( checkBox );
+
+        // todo
+        //        SwingUtils.setOrientation ( checkBox );
+        //        LookAndFeel.installProperty ( checkBox, WebLookAndFeel.OPAQUE_PROPERTY, Boolean.FALSE );
     }
 
     /**
-     * Returns tristate checkbox which uses this UI.
+     * Uninstalls UI from the specified component.
      *
-     * @return tristate checkbox which uses this UI
+     * @param c component with this UI
      */
-    protected WebTristateCheckBox getTristateCheckbox ()
+    @Override
+    public void uninstallUI ( final JComponent c )
     {
-        return ( WebTristateCheckBox ) checkBox;
+        // Uninstalling applied skin
+        StyleManager.removeSkin ( checkBox );
+
+        checkBox = null;
+
+        // Uninstalling UI
+        super.uninstallUI ( c );
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected CheckIcon createCheckStateIcon ()
+    public String getStyleId ()
     {
-        return new TristateCheckIcon ( getTristateCheckbox () );
+        return styleId;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected void performStateChanged ()
+    public void setStyleId ( final String id )
     {
-        final WebTristateCheckBox tcb = getTristateCheckbox ();
-        if ( isAnimationAllowed () && isAnimated () && tcb.isEnabled () )
+        if ( !CompareUtils.equals ( this.styleId, id ) )
         {
-            checkIcon.setNextState ( tcb.getState () );
-            checkTimer.start ();
+            this.styleId = id;
+            StyleManager.applySkin ( checkBox );
         }
-        else
+    }
+
+    @Override
+    public Shape provideShape ()
+    {
+        return PainterSupport.getShape ( checkBox, painter );
+    }
+
+    /**
+     * Returns checkbox painter.
+     *
+     * @return checkbox painter
+     */
+    public Painter getPainter ()
+    {
+        return PainterSupport.getAdaptedPainter ( painter );
+    }
+
+    /**
+     * Sets checkbox painter.
+     * Pass null to remove checkbox painter.
+     *
+     * @param painter new checkbox painter
+     */
+    public void setPainter ( final Painter painter )
+    {
+        PainterSupport.setPainter ( checkBox, new DataRunnable<TrisateCheckBoxPainter> ()
         {
-            checkTimer.stop ();
-            checkIcon.setState ( tcb.getState () );
-            tcb.repaint ();
+            @Override
+            public void run ( final TrisateCheckBoxPainter newPainter )
+            {
+                WebTristateCheckBoxUI.this.painter = newPainter;
+            }
+        }, this.painter, painter, TrisateCheckBoxPainter.class, AdaptiveTrisateCheckBoxPainter.class );
+    }
+
+    /**
+     * Paints checkbox.
+     *
+     * @param g graphics context
+     * @param c painted component
+     */
+    @Override
+    public void paint ( final Graphics g, final JComponent c )
+    {
+        if ( painter != null )
+        {
+            painter.paint ( ( Graphics2D ) g, SwingUtils.size ( c ), c, this );
         }
+    }
+
+    /**
+     * Returns icon bounds.
+     *
+     * @return icon bounds
+     */
+    public Rectangle getIconRect ()
+    {
+        if ( painter != null )
+        {
+            return painter.getIconRect ();
+        }
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Dimension getPreferredSize ( final JComponent c )
+    {
+        return PainterSupport.getPreferredSize ( c, super.getPreferredSize ( c ), painter );
     }
 }

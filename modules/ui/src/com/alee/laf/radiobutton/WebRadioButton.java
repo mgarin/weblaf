@@ -38,6 +38,7 @@ import com.alee.utils.ReflectUtils;
 import com.alee.utils.SizeUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.laf.ShapeProvider;
+import com.alee.utils.laf.Styleable;
 import com.alee.utils.swing.*;
 
 import javax.swing.*;
@@ -52,7 +53,7 @@ import java.util.List;
  */
 
 public class WebRadioButton extends JRadioButton
-        implements ShapeProvider, EventMethods, ToolTipMethods, LanguageMethods, SettingsMethods, FontMethods<WebRadioButton>,
+        implements Styleable, ShapeProvider, EventMethods, ToolTipMethods, LanguageMethods, SettingsMethods, FontMethods<WebRadioButton>,
         SizeMethods<WebRadioButton>
 {
     public WebRadioButton ()
@@ -160,171 +161,26 @@ public class WebRadioButton extends JRadioButton
     }
 
     /**
-     * UI methods
+     * {@inheritDoc}
      */
-
     @Override
-    public Insets getMargin ()
+    public String getStyleId ()
     {
-        return getWebUI ().getMargin ();
+        return getWebUI ().getStyleId ();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public void setMargin ( final Insets margin )
+    public void setStyleId ( final String id )
     {
-        getWebUI ().setMargin ( margin );
+        getWebUI ().setStyleId ( id );
     }
 
-    public void setMargin ( final int top, final int left, final int bottom, final int right )
-    {
-        setMargin ( new Insets ( top, left, bottom, right ) );
-    }
-
-    public void setMargin ( final int spacing )
-    {
-        setMargin ( spacing, spacing, spacing, spacing );
-    }
-
-    public boolean isAnimated ()
-    {
-        return getWebUI ().isAnimated ();
-    }
-
-    public void setAnimated ( final boolean animated )
-    {
-        getWebUI ().setAnimated ( animated );
-    }
-
-    public boolean isRolloverDarkBorderOnly ()
-    {
-        return getWebUI ().isRolloverDarkBorderOnly ();
-    }
-
-    public void setRolloverDarkBorderOnly ( final boolean rolloverDarkBorderOnly )
-    {
-        getWebUI ().setRolloverDarkBorderOnly ( rolloverDarkBorderOnly );
-    }
-
-    public Color getBorderColor ()
-    {
-        return getWebUI ().getBorderColor ();
-    }
-
-    public void setBorderColor ( final Color borderColor )
-    {
-        getWebUI ().setBorderColor ( borderColor );
-    }
-
-    public Color getDarkBorderColor ()
-    {
-        return getWebUI ().getDarkBorderColor ();
-    }
-
-    public void setDarkBorderColor ( final Color darkBorderColor )
-    {
-        getWebUI ().setDarkBorderColor ( darkBorderColor );
-    }
-
-    public Color getDisabledBorderColor ()
-    {
-        return getWebUI ().getDisabledBorderColor ();
-    }
-
-    public void setDisabledBorderColor ( final Color disabledBorderColor )
-    {
-        getWebUI ().setDisabledBorderColor ( disabledBorderColor );
-    }
-
-    public Color getTopBgColor ()
-    {
-        return getWebUI ().getTopBgColor ();
-    }
-
-    public void setTopBgColor ( final Color topBgColor )
-    {
-        getWebUI ().setTopBgColor ( topBgColor );
-    }
-
-    public Color getBottomBgColor ()
-    {
-        return getWebUI ().getBottomBgColor ();
-    }
-
-    public void setBottomBgColor ( final Color bottomBgColor )
-    {
-        getWebUI ().setBottomBgColor ( bottomBgColor );
-    }
-
-    public Color getTopSelectedBgColor ()
-    {
-        return getWebUI ().getTopSelectedBgColor ();
-    }
-
-    public void setTopSelectedBgColor ( final Color topSelectedBgColor )
-    {
-        getWebUI ().setTopSelectedBgColor ( topSelectedBgColor );
-    }
-
-    public Color getBottomSelectedBgColor ()
-    {
-        return getWebUI ().getBottomSelectedBgColor ();
-    }
-
-    public void setBottomSelectedBgColor ( final Color bottomSelectedBgColor )
-    {
-        getWebUI ().setBottomSelectedBgColor ( bottomSelectedBgColor );
-    }
-
-    public int getShadeWidth ()
-    {
-        return getWebUI ().getShadeWidth ();
-    }
-
-    public void setShadeWidth ( final int shadeWidth )
-    {
-        getWebUI ().setShadeWidth ( shadeWidth );
-    }
-
-    public int getIconWidth ()
-    {
-        return getWebUI ().getIconWidth ();
-    }
-
-    public void setIconWidth ( final int iconWidth )
-    {
-        getWebUI ().setIconWidth ( iconWidth );
-    }
-
-    public int getIconHeight ()
-    {
-        return getWebUI ().getIconHeight ();
-    }
-
-    public void setIconHeight ( final int iconHeight )
-    {
-        getWebUI ().setIconHeight ( iconHeight );
-    }
-
-    @Override
-    public void setSelected ( final boolean b )
-    {
-        setSelected ( b, isShowing () );
-    }
-
-    public void setSelected ( final boolean b, final boolean withAnimation )
-    {
-        final boolean animated = isAnimated ();
-        if ( !withAnimation && animated )
-        {
-            setAnimated ( false );
-        }
-        super.setSelected ( b );
-        if ( !withAnimation )
-        {
-            setAnimated ( animated );
-        }
-    }
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Shape provideShape ()
     {
@@ -355,6 +211,26 @@ public class WebRadioButton extends JRadioButton
         {
             setUI ( getUI () );
         }
+    }
+
+    @Override
+    public void setSelected ( final boolean b )
+    {
+        setSelected ( b, isShowing () );
+    }
+
+    public void setSelected ( final boolean b, final boolean withAnimation )
+    {
+        //        final boolean animated = isAnimated ();
+        //        if ( !withAnimation && animated )
+        //        {
+        //            setAnimated ( false );
+        //        }
+        //        super.setSelected ( b );
+        //        if ( !withAnimation )
+        //        {
+        //            setAnimated ( animated );
+        //        }
     }
 
     /**

@@ -62,9 +62,9 @@ public enum SupportedComponent
     button ( true, JButton.class, "ButtonUI", WebLookAndFeel.buttonUI ),
     splitButton ( true, WebSplitButton.class, "SplitButtonUI", WebLookAndFeel.splitButtonUI ),
     toggleButton ( true, JToggleButton.class, "ToggleButtonUI", WebLookAndFeel.toggleButtonUI ),
-    checkBox ( false, JCheckBox.class, "CheckBoxUI", WebLookAndFeel.checkBoxUI ),
-    tristateCheckBox ( false, WebTristateCheckBox.class, "TristateCheckBoxUI", WebLookAndFeel.tristateCheckBoxUI ),
-    radioButton ( false, JRadioButton.class, "RadioButtonUI", WebLookAndFeel.radioButtonUI ),
+    checkBox ( true, JCheckBox.class, "CheckBoxUI", WebLookAndFeel.checkBoxUI ),
+    tristateCheckBox ( true, WebTristateCheckBox.class, "TristateCheckBoxUI", WebLookAndFeel.tristateCheckBoxUI ),
+    radioButton ( true, JRadioButton.class, "RadioButtonUI", WebLookAndFeel.radioButtonUI ),
 
     /**
      * Menu-related components.

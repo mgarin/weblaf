@@ -1,0 +1,29 @@
+<skin>
+
+    <!-- com.alee.extended.checkbox.WebTristateCheckBox -->
+
+    <!-- Tristate checkbox -->
+    <style type="tristateCheckBox" id="default">
+        <component>
+            <opaque>false</opaque>
+        </component>
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebTristateCheckBoxPainter">
+            <round>2</round>
+            <shadeWidth>2</shadeWidth>
+            <iconWidth>16</iconWidth>
+            <iconHeight>16</iconHeight>
+            <borderStroke>1.5</borderStroke>
+            <margin>0,0,0,0</margin>
+            <borderColor>170,170,170</borderColor>
+            <darkBorderColor>128,128,128</darkBorderColor>
+            <disabledBorderColor>192,192,192</disabledBorderColor>
+            <topBgColor>255,255,255</topBgColor>
+            <bottomBgColor>223,223,223</bottomBgColor>
+            <topSelectedBgColor>242,242,242</topSelectedBgColor>
+            <bottomSelectedBgColor>213,213,213</bottomSelectedBgColor>
+            <animated>true</animated>
+            <rolloverDarkBorderOnly>false</rolloverDarkBorderOnly>
+        </painter>
+    </style>
+
+</skin>
