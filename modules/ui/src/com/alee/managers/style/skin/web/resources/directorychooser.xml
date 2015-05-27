@@ -1,0 +1,31 @@
+<skin>
+
+    <!-- com.alee.extended.filechooser.WebDirectoryChooser -->
+
+    <!-- Toolbar -->
+    <style type="toolBar" id="directorychooser" extends="attached">
+        <component>
+            <orientation>0</orientation>
+            <floatable>false</floatable>
+        </component>
+    </style>
+
+    <!-- Tool buttons -->
+    <style type="button" id="directorychooser-tool" extends="icon">
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebButtonPainter">
+            <rolloverDecoratedOnly>true</rolloverDecoratedOnly>
+        </painter>
+    </style>
+    <style type="button" id="directorychooser-tool-folderup" extends="directorychooser-tool" />
+    <style type="button" id="directorychooser-tool-home" extends="directorychooser-tool" />
+    <style type="button" id="directorychooser-tool-drive" extends="directorychooser-tool" />
+    <style type="button" id="directorychooser-tool-refresh" extends="directorychooser-tool" />
+    <style type="button" id="directorychooser-tool-newfolder" extends="directorychooser-tool" />
+    <style type="button" id="directorychooser-tool-delete" extends="directorychooser-tool" />
+
+    <!-- Control buttons -->
+    <style type="button" id="directorychooser" extends="default" />
+    <style type="button" id="directorychooser-accept" extends="directorychooser" />
+    <style type="button" id="directorychooser-cancel" extends="directorychooser" />
+
+</skin>

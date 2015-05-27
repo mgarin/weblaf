@@ -20,26 +20,11 @@ package com.alee.extended.button;
 import com.alee.global.StyleConstants;
 
 /**
- * User: mgarin Date: 04.01.13 Time: 17:09
+ * @author Mikle Garin
  */
 
 public final class WebSwitchStyle
 {
-    /**
-     * Decoration rounding
-     */
-    public static int round = StyleConstants.bigRound;
-
-    /**
-     * Decoration rounding
-     */
-    public static int gripperRound = Math.max ( 0, StyleConstants.bigRound - 3 );
-
-    /**
-     * Decoration shade width
-     */
-    public static int shadeWidth = StyleConstants.shadeWidth;
-
     /**
      * Animate component
      */

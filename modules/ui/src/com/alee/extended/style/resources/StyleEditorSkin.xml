@@ -13,8 +13,45 @@
     <!-- Including WebLaF default skin, will use its style as a base -->
     <include nearClass="com.alee.managers.style.skin.web.WebSkin">resources/WebSkin.xml</include>
 
+    <!-- Preview components toolbar -->
+    <style type="toolBar" id="preview-toolbar" extends="attached">
+        <component>
+            <orientation>0</orientation>
+            <floatable>false</floatable>
+        </component>
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebToolBarPainter">
+            <margin>4,4,4,4</margin>
+            <spacing>4</spacing>
+        </painter>
+    </style>
+
+    <!-- Preview tool buttons -->
+    <style type="button" id="preview-tool-button" extends="icon">
+        <component>
+            <focusable>false</focusable>
+        </component>
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebButtonPainter">
+            <round>0</round>
+        </painter>
+    </style>
+    <style type="toggleButton" id="preview-tool-toggle-button" extends="icon">
+        <component>
+            <focusable>false</focusable>
+        </component>
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebToggleButtonPainter">
+            <round>0</round>
+        </painter>
+    </style>
+
+    <!-- Preview component title label -->
+    <style type="label" id="preview-title" extends="shade">
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebLabelPainter">
+            <margin>0,7,3,0</margin>
+        </painter>
+    </style>
+
     <!-- Custom panel styling with inner shade used for components preview -->
-    <style type="panel" id="inner-shade">
+    <style type="panel" id="inner-shade" extends="default">
         <painter id="painter" class="com.alee.extended.painter.InnerShadePainter">
             <shadeWidth>10</shadeWidth>
             <round>2</round>
@@ -23,14 +60,14 @@
     </style>
 
     <!-- Custom panel styling with dashed/empty border used for components bounds preview -->
-    <style type="panel" id="dashed-border">
+    <style type="panel" id="dashed-border" extends="default">
         <painter id="painter" class="com.alee.extended.painter.DashedBorderPainter">
             <width>1</width>
             <round>0</round>
             <color>darkGray</color>
         </painter>
     </style>
-    <style type="panel" id="empty-border">
+    <style type="panel" id="empty-border" extends="default">
         <painter id="painter" class="com.alee.extended.painter.BorderPainter">
             <width>1</width>
             <round>0</round>
@@ -39,11 +76,7 @@
     </style>
 
     <!-- Custom scroll bars styling for preview area -->
-    <style type="scrollBar" id="preview-scroll" extends="default">
-        <ui>
-            <paintTrack>true</paintTrack>
-        </ui>
-    </style>
+    <style type="scrollBar" id="preview-scroll" extends="decorated" />
 
     <!-- Custom WebPopOver styling -->
     <style type="panel" id="editor-pop-over" extends="popover">
@@ -54,9 +87,9 @@
 
     <!-- Status lael styling -->
     <style type="label" id="status-message-label" extends="breadcrumb-element">
-        <ui>
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebBreadcrumbLabelPainter">
             <margin>2,10,2,5</margin>
-        </ui>
+        </painter>
     </style>
 
 </skin>

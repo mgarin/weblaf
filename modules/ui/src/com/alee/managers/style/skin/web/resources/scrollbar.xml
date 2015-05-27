@@ -25,6 +25,38 @@
         </painter>
     </style>
 
+    <!-- Decorated scrollbar -->
+    <style type="scrollBar" id="decorated" extends="default">
+        <ui>
+            <paintButtons>true</paintButtons>
+            <paintTrack>true</paintTrack>
+        </ui>
+    </style>
+
+    <!-- Undecorated scrollbar -->
+    <style type="scrollBar" id="undecorated" extends="default">
+        <ui>
+            <paintButtons>true</paintButtons>
+            <paintTrack>false</paintTrack>
+        </ui>
+    </style>
+
+    <!-- Button-less scrollbar -->
+    <style type="scrollBar" id="buttonless" extends="default">
+        <ui>
+            <paintButtons>false</paintButtons>
+            <paintTrack>true</paintTrack>
+        </ui>
+    </style>
+
+    <!-- Undecorated button-less scrollbar -->
+    <style type="scrollBar" id="undecorated-buttonless" extends="default">
+        <ui>
+            <paintButtons>false</paintButtons>
+            <paintTrack>false</paintTrack>
+        </ui>
+    </style>
+
     <!-- Scroll bar button -->
     <style type="button" id="scrollbar-button" extends="default">
         <component>

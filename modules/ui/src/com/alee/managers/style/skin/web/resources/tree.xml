@@ -1,0 +1,15 @@
+<skin>
+
+    <!-- com.alee.laf.tree.WebTree -->
+
+    <!-- Default tree cell renderer label -->
+    <style type="label" id="table-cell" extends="default">
+        <component>
+            <opaque>false</opaque>
+        </component>
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebLabelPainter">
+            <margin>4,4,4,6</margin>
+        </painter>
+    </style>
+
+</skin>

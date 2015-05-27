@@ -18,8 +18,8 @@
 package com.alee.extended.panel;
 
 import com.alee.extended.layout.AccordionLayout;
+import com.alee.laf.Styles;
 import com.alee.laf.panel.WebPanel;
-import com.alee.laf.panel.WebPanelStyle;
 import com.alee.managers.settings.DefaultValue;
 import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.settings.SettingsMethods;
@@ -107,30 +107,8 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
      */
     public WebAccordion ()
     {
-        super ();
-        initializeDefaultSettings ( WebAccordionStyle.accordionStyle );
-    }
-
-    /**
-     * Constructs empty accordion with the specified style.
-     *
-     * @param style accordion style
-     */
-    public WebAccordion ( final AccordionStyle style )
-    {
-        super ();
-        initializeDefaultSettings ( style );
-    }
-
-    /**
-     * Initializes default accordion settings.
-     */
-    protected void initializeDefaultSettings ( final AccordionStyle style )
-    {
-        setPaintFocus ( true );
-        setWebColoredBackground ( false );
+        super ( Styles.accordion );
         setLayout ( new AccordionLayout ( this ) );
-        setAccordionStyle ( style );
     }
 
     /**
@@ -623,25 +601,26 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
         final boolean separated = accordionStyle.equals ( AccordionStyle.separated );
         final boolean hor = orientation == HORIZONTAL;
 
-        // Accordion decoration
-        setUndecorated ( !united );
-
-        // Panes decoration
-        for ( int i = 0; i < panes.size (); i++ )
-        {
-            final WebCollapsiblePane pane = panes.get ( i );
-            pane.setTitlePanePostion ( hor ? LEFT : TOP );
-            if ( separated )
-            {
-                pane.setShadeWidth ( WebPanelStyle.shadeWidth );
-                pane.setPaintSides ( separated, separated, separated, separated );
-            }
-            else
-            {
-                pane.setShadeWidth ( 0 );
-                pane.setPaintSides ( !hor && i > 0, hor && i > 0, false, false );
-            }
-        }
+        // todo Fix
+        //        // Accordion decoration
+        //        setUndecorated ( !united );
+        //
+        //        // Panes decoration
+        //        for ( int i = 0; i < panes.size (); i++ )
+        //        {
+        //            final WebCollapsiblePane pane = panes.get ( i );
+        //            pane.setTitlePanePostion ( hor ? LEFT : TOP );
+        //            if ( separated )
+        //            {
+        //                pane.setShadeWidth ( WebPanelStyle.shadeWidth );
+        //                pane.setPaintSides ( separated, separated, separated, separated );
+        //            }
+        //            else
+        //            {
+        //                pane.setShadeWidth ( 0 );
+        //                pane.setPaintSides ( !hor && i > 0, hor && i > 0, false, false );
+        //            }
+        //        }
 
         // Updating accordion
         revalidate ();
@@ -796,7 +775,9 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
      */
     public Insets getContentMarginAt ( final int index )
     {
-        return panes.get ( index ).getContentMargin ();
+        // todo Fix
+        //        return panes.get ( index ).getContentMargin ();
+        return new Insets ( 0, 0, 0, 0 );
     }
 
     /**
@@ -807,7 +788,8 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
      */
     public void setContentMarginAt ( final int index, final Insets margin )
     {
-        panes.get ( index ).setContentMargin ( margin );
+        // todo Fix
+        //        panes.get ( index ).setContentMargin ( margin );
     }
 
     /**

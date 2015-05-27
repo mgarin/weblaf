@@ -1,0 +1,16 @@
+<skin>
+
+    <!-- com.alee.extended.panel.WebAccordion -->
+
+    <!-- Accordion -->
+    <style type="panel" id="accordion" extends="default">
+        <component>
+            <accordionStyle>united</accordionStyle>
+        </component>
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebPanelPainter">
+            <paintFocus>true</paintFocus>
+            <webColoredBackground>false</webColoredBackground>
+        </painter>
+    </style>
+
+</skin>

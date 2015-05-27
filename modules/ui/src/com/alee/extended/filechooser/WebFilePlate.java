@@ -20,6 +20,7 @@ package com.alee.extended.filechooser;
 import com.alee.extended.drag.FileDragAndDropHandler;
 import com.alee.extended.layout.TableLayout;
 import com.alee.global.StyleConstants;
+import com.alee.laf.Styles;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
@@ -71,17 +72,9 @@ public class WebFilePlate extends WebPanel
 
     public WebFilePlate ( final File file )
     {
-        this ( file, true );
-    }
-
-    public WebFilePlate ( final File file, final boolean decorated )
-    {
-        super ( decorated );
+        super ( Styles.filedropPlate );
 
         this.file = file;
-
-        // setPaintFocus ( true );
-        setMargin ( 0, 3, 0, 0 );
 
         final TableLayout tableLayout =
                 new TableLayout ( new double[][]{ { TableLayout.FILL, TableLayout.PREFERRED }, { TableLayout.PREFERRED } } );
@@ -91,7 +84,8 @@ public class WebFilePlate extends WebPanel
 
         // Displayed file name
         fileName = new WebLabel ();
-        fileName.setMargin ( 0, 0, 0, showRemoveButton ? 1 : 0 );
+        fileName.setStyleId ( Styles.filedropPlateFileLabel );
+        // fileName.setMargin ( 0, 0, 0, showRemoveButton ? 1 : 0 );
         add ( fileName, "0,0" );
 
         // Updating current file name
@@ -247,8 +241,8 @@ public class WebFilePlate extends WebPanel
     {
         if ( remove == null )
         {
-            remove = WebButton.createIconWebButton ( CROSS_ICON, StyleConstants.smallRound, 3, 1, true, false );
-            remove.setFocusable ( false );
+            remove = new WebButton ( CROSS_ICON );
+            remove.setStyleId ( Styles.filedropPlateRemoveButton );
             remove.addActionListener ( new ActionListener ()
             {
                 @Override

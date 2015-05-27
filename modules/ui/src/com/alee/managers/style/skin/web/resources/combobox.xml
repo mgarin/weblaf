@@ -35,11 +35,7 @@
     </style>
 
     <!-- Popup list scrollbar -->
-    <style type="scrollBar" id="combobox-list" extends="default">
-        <ui>
-            <paintButtons>false</paintButtons>
-            <paintTrack>false</paintTrack>
-        </ui>
+    <style type="scrollBar" id="combobox-list" extends="undecorated-buttonless">
         <painter id="painter" base="true" class="com.alee.managers.style.skin.web.WebScrollBarPainter">
             <margin>0,1,0,1</margin>
             <thumbRound>4</thumbRound>

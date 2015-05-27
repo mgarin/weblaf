@@ -33,6 +33,14 @@ public final class Styles
      */
     public static String panelTransparent = "transparent";
     public static String panelWhite = "white";
+    public static String panelDecorated = "decorated";
+
+    /**
+     * {@link com.alee.laf.scroll.WebScrollBar} style IDs.
+     */
+    public static String scrollbarUndecorated = "undecorated";
+    public static String scrollbarButtonless = "buttonless";
+    public static String scrollbarUndecoratedButtonless = "undecorated-buttonless";
 
     /**
      * {@link com.alee.laf.scroll.WebScrollPane} style IDs.
@@ -83,6 +91,11 @@ public final class Styles
      * {@link com.alee.laf.table.WebTable} style IDs.
      */
     public static String tableCellRenderer = "table-cell";
+
+    /**
+     * {@link com.alee.laf.table.WebTable} style IDs.
+     */
+    public static String treeCellRenderer = "tree-cell";
 
     /**
      * {@link com.alee.laf.toolbar.WebToolBar} style IDs.
@@ -159,6 +172,15 @@ public final class Styles
     public static String customtooltipHotkeyLabel = "customtooltip-hotkey";
 
     /**
+     * {@link com.alee.extended.button.WebSwitch} style IDs.
+     */
+    public static String wswitch = "wswitch";
+    public static String wswitchGripper = "wswitch-gripper";
+    public static String wswitchLabel = "wswitch";
+    public static String wswitchOffLabel = "wswitch-on";
+    public static String wswitchOnLabel = "wswitch-off";
+
+    /**
      * {@link com.alee.extended.syntax.WebSyntaxPanel} style IDs.
      */
     public static String syntaxpanel = "syntaxpanel";
@@ -167,6 +189,9 @@ public final class Styles
      * {@link com.alee.extended.filechooser.WebFileDrop} style IDs.
      */
     public static String filedrop = "filedrop";
+    public static String filedropPlate = "filedrop-plate";
+    public static String filedropPlateFileLabel = "filedrop-plate-file";
+    public static String filedropPlateRemoveButton = "filedrop-plate-remove";
 
     /**
      * {@link com.alee.extended.panel.WebCollapsiblePane} style IDs.
@@ -175,6 +200,11 @@ public final class Styles
     public static String collapsiblepaneHeaderPanel = "collapsiblepane-header";
     public static String collapsiblepaneExpandButton = "collapsiblepane-expand";
     public static String collapsiblepaneContentPanel = "collapsiblepane-content";
+
+    /**
+     * {@link com.alee.extended.panel.WebAccordion} style IDs.
+     */
+    public static String accordion = "accordion";
 
     /**
      * {@link com.alee.extended.window.WebPopOver}
@@ -253,6 +283,21 @@ public final class Styles
      * {@link com.alee.extended.panel.WebComponentPane} style IDs.
      */
     public static String componentpane = "componentpane";
+
+    /**
+     * {@link com.alee.extended.filechooser.WebDirectoryChooser} style IDs.
+     */
+    public static String directorychooserToolbar = "directorychooser";
+    public static String directorychooserToolButton = "directorychooser-tool";
+    public static String directorychooserFolderUpButton = "directorychooser-tool-folderup";
+    public static String directorychooserHomeButton = "directorychooser-tool-home";
+    public static String directorychooserDriveButton = "directorychooser-tool-drive";
+    public static String directorychooserRefreshButton = "directorychooser-tool-refresh";
+    public static String directorychooserNewFolderButton = "directorychooser-tool-newfolder";
+    public static String directorychooserDeleteButton = "directorychooser-tool-delete";
+    public static String directorychooserButton = "directorychooser";
+    public static String directorychooserAcceptButton = "directorychooser-accept";
+    public static String directorychooserCancelButton = "directorychooser-cancel";
 
     /**
      * {@link com.alee.extended.tab.WebDocumentPane} style IDs.

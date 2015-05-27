@@ -17,6 +17,7 @@
 
 package com.alee.extended.window;
 
+import com.alee.laf.Styles;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
 import com.alee.laf.progressbar.WebProgressBar;
@@ -69,7 +70,7 @@ public class WebProgressDialog extends WebDialog
                 return ps;
             }
         };
-        titleText.setDrawShade ( true );
+        titleText.setStyleId ( Styles.labelShade );
         container.add ( titleText, BorderLayout.NORTH );
 
         // Default progress bar

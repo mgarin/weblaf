@@ -28,8 +28,12 @@ NOTES:
 27. WebInternalFrameTitlePane - buttons grouping
 28. WebCalendar - dates foreground should be moved into styles and separated for more cases
 29. NinePatchEditorPanel - styling fixes required
+30. WebAccordion - fix styling
+31. LibraryInfoDialog - check current styling
+32. WebFileBreadcrumb - popup list scroll needs fix or replacement, file tooltip separator needs update
 
 FEATURES TO DO:
+- Check what happens if you don't extend any style -> document this behavior
 - Structural styles descriptors in XML
 - Possibility to extend globally defined painters
 - Create style reference system on interfaces, provide them instead of strings to avoid confusion in constructors and style types

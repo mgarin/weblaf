@@ -18,6 +18,7 @@
 package com.alee.extended.breadcrumb;
 
 import com.alee.extended.layout.VerticalFlowLayout;
+import com.alee.laf.Styles;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.list.WebList;
 import com.alee.laf.list.WebListCellRenderer;
@@ -75,25 +76,6 @@ public class WebFileBreadcrumb extends WebBreadcrumb
     public WebFileBreadcrumb ( final File root )
     {
         super ();
-        initialize ();
-        setRoot ( root );
-    }
-
-    public WebFileBreadcrumb ( final boolean decorated )
-    {
-        super ( decorated );
-        initialize ();
-        setRoot ( FileUtils.getSystemRoot () );
-    }
-
-    public WebFileBreadcrumb ( final String root, final boolean decorated )
-    {
-        this ( new File ( root ), decorated );
-    }
-
-    public WebFileBreadcrumb ( final File root, final boolean decorated )
-    {
-        super ( decorated );
         initialize ();
         setRoot ( root );
     }
@@ -390,9 +372,7 @@ public class WebFileBreadcrumb extends WebBreadcrumb
             }
         } );
 
-        final WebScrollPane listScroll = new WebScrollPane ( list );
-        listScroll.setShadeWidth ( 0 );
-        listScroll.setDrawFocus ( false );
+        final WebScrollPane listScroll = new WebScrollPane ( Styles.scrollpaneUndecorated, list );
         window.add ( listScroll );
 
         window.applyComponentOrientation ( getComponentOrientation () );
@@ -425,7 +405,7 @@ public class WebFileBreadcrumb extends WebBreadcrumb
         {
             // Full file name
             panel.add ( new WebLabel ( FileUtils.getDisplayFileName ( file ), FileUtils.getFileIcon ( file ) ) );
-            panel.add ( new WebSeparator ( false, WebSeparator.HORIZONTAL, true ) );
+            panel.add ( new WebSeparator ( WebSeparator.HORIZONTAL ) );
         }
 
         // File description

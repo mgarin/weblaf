@@ -17,11 +17,11 @@
 
 package com.alee.laf.tree;
 
+import com.alee.laf.Styles;
 import com.alee.utils.ImageUtils;
 import com.alee.utils.TextUtils;
 
 import javax.swing.*;
-import javax.swing.plaf.TreeUI;
 import javax.swing.tree.TreeCellRenderer;
 
 /**
@@ -68,6 +68,7 @@ public class WebTreeCellRenderer extends WebTreeElement implements TreeCellRende
     {
         super ();
         setId ();
+        setStyleId ( Styles.treeCellRenderer );
         setName ( "Tree.cellRenderer" );
         setForeground ( UIManager.getColor ( "Tree.textForeground" ) );
     }
@@ -116,11 +117,6 @@ public class WebTreeCellRenderer extends WebTreeElement implements TreeCellRende
 
         // Text
         setText ( tree.convertValueToText ( value, isSelected, expanded, leaf, row, hasFocus ) );
-
-        // Border
-        final TreeUI tui = tree.getUI ();
-        final int sw = tui instanceof WebTreeUI ? ( ( WebTreeUI ) tui ).getSelectionShadeWidth () : WebTreeStyle.selectionShadeWidth;
-        setMargin ( sw + 2, sw + 2, sw + 2, sw + 4 );
 
         // Orientation
         setComponentOrientation ( tree.getComponentOrientation () );

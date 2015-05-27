@@ -1,0 +1,35 @@
+<skin>
+
+    <!-- com.alee.extended.button.WebSwitch -->
+
+    <!-- Switch -->
+    <style type="panel" id="wswitch" extends="decorated">
+        <component>
+            <focusable>true</focusable>
+        </component>
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebPanelPainter">
+            <round>4</round>
+            <paintFocus>true</paintFocus>
+        </painter>
+    </style>
+
+    <!-- Switch gripper -->
+    <style type="panel" id="wswitch-gripper" extends="decorated">
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebPanelPainter">
+            <round>1</round>
+        </painter>
+    </style>
+
+    <!-- Switch state label -->
+    <style type="panel" id="wswitch" extends="shade">
+        <component>
+            <foreground>darkGray</foreground>
+        </component>
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebLabelPainter">
+            <margin>2,5,2,5</margin>
+        </painter>
+    </style>
+    <style type="panel" id="wswitch-on" extends="wswitch" />
+    <style type="panel" id="wswitch-off" extends="wswitch" />
+
+</skin>

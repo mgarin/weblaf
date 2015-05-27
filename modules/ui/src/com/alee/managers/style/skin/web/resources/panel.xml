@@ -32,4 +32,14 @@
         </component>
     </style>
 
+    <!-- Decorated panel -->
+    <style type="panel" id="decorated" extends="default">
+        <component>
+            <opaque>false</opaque>
+        </component>
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebPanelPainter">
+            <undecorated>false</undecorated>
+        </painter>
+    </style>
+
 </skin>

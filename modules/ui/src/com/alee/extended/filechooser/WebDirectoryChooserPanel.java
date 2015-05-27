@@ -22,11 +22,11 @@ import com.alee.extended.tree.FileTreeNode;
 import com.alee.extended.tree.FileTreeRootType;
 import com.alee.extended.tree.WebFileTree;
 import com.alee.global.GlobalConstants;
+import com.alee.laf.Styles;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.optionpane.WebOptionPane;
 import com.alee.laf.panel.WebPanel;
 import com.alee.laf.scroll.WebScrollPane;
-import com.alee.laf.toolbar.ToolbarStyle;
 import com.alee.laf.toolbar.WebToolBar;
 import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.language.LanguageManager;
@@ -114,14 +114,12 @@ public class WebDirectoryChooserPanel extends WebPanel
         setOpaque ( true );
 
         // Controls pane
-        final WebToolBar contolsToolbar = new WebToolBar ( WebToolBar.HORIZONTAL );
-        contolsToolbar.setToolbarStyle ( ToolbarStyle.attached );
-        contolsToolbar.setFloatable ( false );
+        final WebToolBar contolsToolbar = new WebToolBar ();
+        contolsToolbar.setStyleId ( Styles.directorychooserToolbar );
 
-        folderUp = new WebButton ( FOLDER_UP_ICON );
-        folderUp.setLanguage ( "weblaf.ex.dirchooser.folderup" );
+        folderUp = new WebButton ( "weblaf.ex.dirchooser.folderup", FOLDER_UP_ICON );
+        folderUp.setStyleId ( Styles.directorychooserFolderUpButton );
         folderUp.addHotkey ( WebDirectoryChooserPanel.this, Hotkey.ALT_UP ).setHotkeyDisplayWay ( TooltipWay.down );
-        folderUp.setRolloverDecoratedOnly ( true );
         folderUp.addActionListener ( new ActionListener ()
         {
             @Override
@@ -135,10 +133,9 @@ public class WebDirectoryChooserPanel extends WebPanel
         } );
         contolsToolbar.add ( folderUp );
 
-        folderHome = new WebButton ( FOLDER_HOME_ICON );
-        folderHome.setLanguage ( "weblaf.ex.dirchooser.home" );
+        folderHome = new WebButton ( "weblaf.ex.dirchooser.home", FOLDER_HOME_ICON );
+        folderHome.setStyleId ( Styles.directorychooserHomeButton );
         folderHome.addHotkey ( WebDirectoryChooserPanel.this, Hotkey.ALT_H ).setHotkeyDisplayWay ( TooltipWay.trailing );
-        folderHome.setRolloverDecoratedOnly ( true );
         folderHome.addActionListener ( new ActionListener ()
         {
             @Override
@@ -154,8 +151,8 @@ public class WebDirectoryChooserPanel extends WebPanel
         for ( final File file : FileTreeRootType.drives.getRoots () )
         {
             final WebButton root = new WebButton ( FileUtils.getFileIcon ( file ) );
+            root.setStyleId ( Styles.directorychooserDriveButton );
             TooltipManager.setTooltip ( root, FileUtils.getDisplayFileName ( file ) );
-            root.setRolloverDecoratedOnly ( true );
             root.addActionListener ( new ActionListener ()
             {
                 @Override
@@ -168,10 +165,9 @@ public class WebDirectoryChooserPanel extends WebPanel
         }
 
 
-        refresh = new WebButton ( REFRESH_ICON );
-        refresh.setLanguage ( "weblaf.ex.dirchooser.refresh" );
+        refresh = new WebButton ( "weblaf.ex.dirchooser.refresh", REFRESH_ICON );
+        refresh.setStyleId ( Styles.directorychooserRefreshButton );
         refresh.addHotkey ( WebDirectoryChooserPanel.this, Hotkey.F5 ).setHotkeyDisplayWay ( TooltipWay.leading );
-        refresh.setRolloverDecoratedOnly ( true );
         refresh.addActionListener ( new ActionListener ()
         {
             @Override
@@ -189,10 +185,9 @@ public class WebDirectoryChooserPanel extends WebPanel
         } );
         contolsToolbar.add ( refresh, ToolbarLayout.END );
 
-        folderNew = new WebButton ( FOLDER_NEW_ICON );
-        folderNew.setLanguage ( "weblaf.ex.dirchooser.newfolder" );
+        folderNew = new WebButton ( "weblaf.ex.dirchooser.newfolder", FOLDER_NEW_ICON );
+        folderNew.setStyleId ( Styles.directorychooserNewFolderButton );
         folderNew.addHotkey ( WebDirectoryChooserPanel.this, Hotkey.CTRL_N ).setHotkeyDisplayWay ( TooltipWay.down );
-        folderNew.setRolloverDecoratedOnly ( true );
         folderNew.addActionListener ( new ActionListener ()
         {
             @Override
@@ -222,10 +217,9 @@ public class WebDirectoryChooserPanel extends WebPanel
         } );
         contolsToolbar.add ( folderNew, ToolbarLayout.END );
 
-        remove = new WebButton ( REMOVE_ICON );
-        remove.setLanguage ( "weblaf.ex.dirchooser.delete" );
+        remove = new WebButton ( "weblaf.ex.dirchooser.delete", REMOVE_ICON );
+        remove.setStyleId ( Styles.directorychooserDeleteButton );
         remove.addHotkey ( WebDirectoryChooserPanel.this, Hotkey.DELETE ).setHotkeyDisplayWay ( TooltipWay.down );
-        remove.setRolloverDecoratedOnly ( true );
         remove.addActionListener ( new ActionListener ()
         {
             @Override

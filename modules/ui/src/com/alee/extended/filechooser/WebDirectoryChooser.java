@@ -18,7 +18,6 @@
 package com.alee.extended.filechooser;
 
 import com.alee.extended.panel.GroupPanel;
-import com.alee.global.StyleConstants;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.panel.WebPanel;
 import com.alee.laf.rootpane.WebDialog;
@@ -113,11 +112,8 @@ public class WebDirectoryChooser extends WebDialog implements DialogOptions
         buttonsPanel.setLayout ( new BorderLayout ( 0, 0 ) );
         getContentPane ().add ( buttonsPanel, BorderLayout.SOUTH );
 
-        approveButton = new WebButton ( "", OK_ICON );
-        approveButton.setLanguage ( "weblaf.ex.dirchooser.choose" );
+        approveButton = new WebButton ( "weblaf.ex.dirchooser.choose", OK_ICON );
         approveButton.addHotkey ( WebDirectoryChooser.this, Hotkey.CTRL_ENTER );
-        approveButton.setRolloverShine ( StyleConstants.highlightControlButtons );
-        approveButton.setShineColor ( StyleConstants.greenHighlight );
         approveButton.setEnabled ( false );
         approveButton.addActionListener ( new ActionListener ()
         {
@@ -129,11 +125,8 @@ public class WebDirectoryChooser extends WebDialog implements DialogOptions
             }
         } );
 
-        cancelButton = new WebButton ( "", CANCEL_ICON );
-        cancelButton.setLanguage ( "weblaf.ex.dirchooser.cancel" );
+        cancelButton = new WebButton ( "weblaf.ex.dirchooser.cancel", CANCEL_ICON );
         cancelButton.addHotkey ( WebDirectoryChooser.this, Hotkey.ESCAPE );
-        cancelButton.setRolloverShine ( StyleConstants.highlightControlButtons );
-        cancelButton.setShineColor ( StyleConstants.redHighlight );
         cancelButton.addActionListener ( new ActionListener ()
         {
             @Override

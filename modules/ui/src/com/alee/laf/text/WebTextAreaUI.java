@@ -202,7 +202,7 @@ public class WebTextAreaUI extends BasicTextAreaUI implements BorderMethods, Swi
         PainterSupport.uninstallPainter ( textComponent, this.painter );
 
         this.painter = painter;
-        textComponent.setOpaque ( painter == null || painter.isOpaque ( textComponent ) );
+        textComponent.setOpaque ( painter == null || painter.isOpaque () );
         PainterSupport.installPainter ( textComponent, this.painter );
         updateBorder ();
     }
@@ -254,7 +254,7 @@ public class WebTextAreaUI extends BasicTextAreaUI implements BorderMethods, Swi
             if ( painter != null )
             {
                 // Painter borders
-                final Insets pi = painter.getMargin ( component );
+                final Insets pi = painter.getMargin ();
                 m.top += pi.top;
                 m.bottom += pi.bottom;
                 m.left += ltr ? pi.left : pi.right;
@@ -278,7 +278,7 @@ public class WebTextAreaUI extends BasicTextAreaUI implements BorderMethods, Swi
         final Graphics2D g2d = ( Graphics2D ) g;
         final JTextComponent c = getComponent ();
 
-        if ( c.isOpaque () && ( painter == null || !painter.isOpaque ( c ) ) )
+        if ( c.isOpaque () && ( painter == null || !painter.isOpaque () ) )
         {
             // Paint default background
             g2d.setPaint ( c.getBackground () );
@@ -288,7 +288,7 @@ public class WebTextAreaUI extends BasicTextAreaUI implements BorderMethods, Swi
         if ( painter != null )
         {
             // Use background painter instead of default UI graphics
-            painter.paint ( g2d, SwingUtils.size ( c ), c );
+            painter.paint ( g2d, SwingUtils.size ( c ), c, this );
         }
 
         final Map hints = SwingUtils.setupTextAntialias ( g2d );
@@ -343,7 +343,7 @@ public class WebTextAreaUI extends BasicTextAreaUI implements BorderMethods, Swi
             {
                 ps = SwingUtils.max ( ps, c.getLayout ().preferredLayoutSize ( c ) );
             }
-            ps = SwingUtils.max ( ps, painter.getPreferredSize ( c ) );
+            ps = SwingUtils.max ( ps, painter.getPreferredSize () );
         }
         return ps;
     }

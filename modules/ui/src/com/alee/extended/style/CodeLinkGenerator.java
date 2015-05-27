@@ -23,9 +23,7 @@ import com.alee.laf.Styles;
 import com.alee.laf.colorchooser.WebColorChooserPanel;
 import com.alee.laf.combobox.WebComboBoxCellRenderer;
 import com.alee.laf.combobox.WebComboBoxElement;
-import com.alee.laf.combobox.WebComboBoxStyle;
 import com.alee.laf.list.WebList;
-import com.alee.laf.scroll.WebScrollBar;
 import com.alee.laf.scroll.WebScrollPane;
 import com.alee.laf.slider.WebSlider;
 import com.alee.managers.hotkey.Hotkey;
@@ -33,7 +31,6 @@ import com.alee.managers.log.Log;
 import com.alee.managers.style.SupportedComponent;
 import com.alee.managers.style.data.ComponentStyleConverter;
 import com.alee.utils.CompareUtils;
-import com.alee.utils.LafUtils;
 import com.alee.utils.MathUtils;
 import com.alee.utils.xml.ColorConverter;
 import com.alee.utils.xml.InsetsConverter;
@@ -214,16 +211,8 @@ public class CodeLinkGenerator implements LinkGenerator
                                         }
                                     } );
 
-                                    final WebScrollPane scrollPane = new WebScrollPane ( historyList, false, false );
-                                    scrollPane.setOpaque ( false );
-                                    scrollPane.getViewport ().setOpaque ( false );
-                                    scrollPane.setShadeWidth ( 0 );
-
-                                    final WebScrollBar vsb = scrollPane.getWebVerticalScrollBar ();
-                                    vsb.setMargin ( WebComboBoxStyle.scrollBarMargin );
-                                    vsb.setPaintButtons ( WebComboBoxStyle.scrollBarButtonsVisible );
-                                    vsb.setPaintTrack ( WebComboBoxStyle.scrollBarTrackVisible );
-                                    LafUtils.setScrollBarStyleId ( scrollPane, Styles.comboboxListScrollBar );
+                                    final WebScrollPane scrollPane = new WebScrollPane ( Styles.comboboxListScrollPane, historyList );
+                                    scrollPane.setScrollBarStyleId ( Styles.comboboxListScrollBar );
 
                                     typeChooser.add ( scrollPane );
 

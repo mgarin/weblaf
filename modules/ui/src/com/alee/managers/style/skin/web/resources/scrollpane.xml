@@ -19,11 +19,7 @@
     </style>
 
     <!-- Scroll bars -->
-    <style type="scrollBar" id="scrollpane" extends="default">
-        <ui>
-            <paintTrack>true</paintTrack>
-        </ui>
-    </style>
+    <style type="scrollBar" id="scrollpane" extends="decorated" />
     <style type="scrollBar" id="scrollpane-vertical" extends="scrollpane" />
     <style type="scrollBar" id="scrollpane-horizontal" extends="scrollpane" />
 

@@ -18,13 +18,13 @@
 package com.alee.extended.button;
 
 import com.alee.global.StyleConstants;
+import com.alee.laf.Styles;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.WebTimer;
 
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -43,26 +43,26 @@ public class WebSwitch extends WebPanel
     /**
      * Switch action listeners.
      */
-    private final List<ActionListener> actionListeners = new ArrayList<ActionListener> ( 1 );
+    protected final List<ActionListener> actionListeners = new ArrayList<ActionListener> ( 1 );
 
     /**
      * Style settings.
      */
-    private boolean animate = WebSwitchStyle.animate;
+    protected boolean animate = WebSwitchStyle.animate;
 
     /**
      * Runtime variables.
      */
-    private boolean selected = false;
-    private boolean animating = false;
-    private WebTimer animator;
+    protected boolean selected = false;
+    protected boolean animating = false;
+    protected WebTimer animator;
 
     /**
      * UI elements.
      */
-    private final WebSwitchGripper gripper;
-    private WebLabel leftComponent;
-    private WebLabel rightComponent;
+    protected final WebPanel gripper;
+    protected WebLabel leftComponent;
+    protected WebLabel rightComponent;
 
     /**
      * Constructs a deselected switch.
@@ -79,32 +79,23 @@ public class WebSwitch extends WebPanel
      */
     public WebSwitch ( final boolean selected )
     {
-        super ( true, new WebSwitchLayout () );
-
-        // Switch syling
+        super ( Styles.wswitch, new WebSwitchLayout () );
         putClientProperty ( SwingUtils.HANDLES_ENABLE_STATE, true );
-        setRound ( WebSwitchStyle.round );
-        setPaintFocus ( true );
-        setFocusable ( true );
 
         // Switch gripper
-        gripper = new WebSwitchGripper ();
+        gripper = new WebPanel ( Styles.wswitchGripper );
         add ( gripper, WebSwitchLayout.GRIPPER );
 
         // Left switch label
         leftComponent = new WebLabel ( "ON", WebLabel.CENTER );
+        leftComponent.setStyleId ( Styles.wswitchOffLabel );
         leftComponent.setBoldFont ();
-        leftComponent.setMargin ( 2, 5, 2, 5 );
-        leftComponent.setDrawShade ( true );
-        leftComponent.setForeground ( Color.DARK_GRAY );
         add ( leftComponent, WebSwitchLayout.LEFT );
 
         // Right switch label
         rightComponent = new WebLabel ( "OFF", WebLabel.CENTER );
+        leftComponent.setStyleId ( Styles.wswitchOnLabel );
         rightComponent.setBoldFont ();
-        rightComponent.setMargin ( 2, 5, 2, 5 );
-        rightComponent.setDrawShade ( true );
-        rightComponent.setForeground ( Color.DARK_GRAY );
         add ( rightComponent, WebSwitchLayout.RIGHT );
 
         // Switch animator
@@ -191,7 +182,7 @@ public class WebSwitch extends WebPanel
      *
      * @return switch gripper
      */
-    public WebSwitchGripper getGripper ()
+    public WebPanel getGripper ()
     {
         return gripper;
     }
@@ -260,21 +251,6 @@ public class WebSwitch extends WebPanel
         gripper.setEnabled ( enabled );
         leftComponent.setEnabled ( enabled );
         rightComponent.setEnabled ( enabled );
-    }
-
-    /**
-     * Sets switch corners rounding.
-     *
-     * @param round switch corners rounding
-     */
-    @Override
-    public WebPanel setRound ( final int round )
-    {
-        if ( gripper != null )
-        {
-            gripper.setRound ( Math.max ( round - 3, 0 ) );
-        }
-        return super.setRound ( round );
     }
 
     /**

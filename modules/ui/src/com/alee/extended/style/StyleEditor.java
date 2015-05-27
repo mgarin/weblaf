@@ -32,6 +32,7 @@ import com.alee.extended.syntax.SyntaxPreset;
 import com.alee.extended.syntax.WebSyntaxArea;
 import com.alee.extended.syntax.WebSyntaxScrollPane;
 import com.alee.global.StyleConstants;
+import com.alee.laf.Styles;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.button.WebToggleButton;
@@ -47,7 +48,6 @@ import com.alee.laf.splitpane.WebSplitPane;
 import com.alee.laf.tabbedpane.TabbedPaneStyle;
 import com.alee.laf.tabbedpane.WebTabbedPane;
 import com.alee.laf.text.WebTextField;
-import com.alee.laf.toolbar.ToolbarStyle;
 import com.alee.laf.toolbar.WebToolBar;
 import com.alee.managers.glasspane.GlassPaneManager;
 import com.alee.managers.glasspane.WebGlassPane;
@@ -60,7 +60,6 @@ import com.alee.managers.style.SupportedComponent;
 import com.alee.managers.style.data.SkinInfo;
 import com.alee.managers.style.data.SkinInfoConverter;
 import com.alee.managers.style.skin.CustomSkin;
-import com.alee.managers.tooltip.TooltipManager;
 import com.alee.utils.*;
 import com.alee.utils.swing.DocumentEventRunnable;
 import com.alee.utils.swing.IntDocumentChangeListener;
@@ -148,22 +147,18 @@ public class StyleEditor extends WebFrame
 
     private void initializeToolBar ()
     {
-        toolBar = new WebToolBar ( WebToolBar.HORIZONTAL );
-        toolBar.setToolbarStyle ( ToolbarStyle.attached );
-        toolBar.setMargin ( 4 );
-        toolBar.setSpacing ( 4 );
-        toolBar.setFloatable ( false );
+        toolBar = new WebToolBar ();
+        toolBar.setStyleId ( "preview-toolbar" );
 
         final ImageIcon magnifierIcon = new ImageIcon ( StyleEditor.class.getResource ( "icons/editor/magnifier.png" ) );
         final WebToggleButton magnifierButton = new WebToggleButton ( magnifierIcon );
-        TooltipManager.setTooltip ( magnifierButton, magnifierIcon, "Show/hide magnifier tool" );
+        magnifierButton.setStyleId ( "preview-tool-toggle-button" );
+        magnifierButton.setToolTip ( magnifierIcon, "Show/hide magnifier tool" );
         magnifierButton.addHotkey ( Hotkey.ALT_Q );
-        magnifierButton.setRound ( 0 );
-        magnifierButton.setFocusable ( false );
         initializeMagnifier ( magnifierButton );
+
         final WebButton zoomFactorButton = new WebButton ( "4x" );
-        zoomFactorButton.setRound ( 0 );
-        zoomFactorButton.setFocusable ( false );
+        zoomFactorButton.setStyleId ( "preview-tool-button" );
         zoomFactorButton.addActionListener ( new ActionListener ()
         {
             @Override
@@ -188,14 +183,14 @@ public class StyleEditor extends WebFrame
                 menu.showBelowMiddle ( zoomFactorButton );
             }
         } );
+
         toolBar.add ( new WebButtonGroup ( magnifierButton, zoomFactorButton ) );
 
         final ImageIcon boundsIcon = new ImageIcon ( StyleEditor.class.getResource ( "icons/editor/bounds.png" ) );
         final WebToggleButton boundsButton = new WebToggleButton ( boundsIcon );
-        TooltipManager.setTooltip ( boundsButton, boundsIcon, "Show/hide component bounds" );
+        boundsButton.setStyleId ( "preview-tool-toggle-button" );
+        boundsButton.setToolTip ( boundsIcon, "Show/hide component bounds" );
         boundsButton.addHotkey ( Hotkey.ALT_W );
-        boundsButton.setRound ( 0 );
-        boundsButton.setFocusable ( false );
         boundsButton.addActionListener ( new ActionListener ()
         {
             @Override
@@ -211,10 +206,9 @@ public class StyleEditor extends WebFrame
 
         final ImageIcon disabledIcon = new ImageIcon ( StyleEditor.class.getResource ( "icons/editor/disabled.png" ) );
         final WebToggleButton disabledButton = new WebToggleButton ( disabledIcon );
-        TooltipManager.setTooltip ( disabledButton, disabledIcon, "Disable/enable components" );
+        disabledButton.setStyleId ( "preview-tool-toggle-button" );
+        disabledButton.setToolTip ( disabledIcon, "Disable/enable components" );
         disabledButton.addHotkey ( Hotkey.ALT_D );
-        disabledButton.setRound ( 0 );
-        disabledButton.setFocusable ( false );
         disabledButton.addActionListener ( new ActionListener ()
         {
             @Override
@@ -233,10 +227,9 @@ public class StyleEditor extends WebFrame
 
         final ImageIcon orientationIcon = new ImageIcon ( StyleEditor.class.getResource ( "icons/editor/orientation.png" ) );
         final WebToggleButton orientationButton = new WebToggleButton ( orientationIcon );
-        TooltipManager.setTooltip ( orientationButton, orientationIcon, "Change components orientation" );
+        orientationButton.setStyleId ( "preview-tool-toggle-button" );
+        orientationButton.setToolTip ( orientationIcon, "Change components orientation" );
         orientationButton.addHotkey ( Hotkey.ALT_R );
-        orientationButton.setRound ( 0 );
-        orientationButton.setFocusable ( false );
         orientationButton.setSelected ( !orientation.isLeftToRight () );
         orientationButton.addActionListener ( new ActionListener ()
         {
@@ -277,7 +270,7 @@ public class StyleEditor extends WebFrame
 
         //
 
-        final WebBreadcrumb updateBreadcrumb = new WebBreadcrumb ( false );
+        final WebBreadcrumb updateBreadcrumb = new WebBreadcrumb ();
         updateBreadcrumb.setEncloseLastElement ( false );
 
         final ImageIcon updateIcon = new ImageIcon ( StyleEditor.class.getResource ( "icons/editor/update.png" ) );
@@ -297,7 +290,7 @@ public class StyleEditor extends WebFrame
                 }
             }
         } );
-        final WebLabel msLabel = new WebLabel ( "ms" ).setMargin ( 4 );
+        final WebLabel msLabel = new WebLabel ( "ms" );
         final WebBreadcrumbPanel panel = new WebBreadcrumbPanel ();
         panel.setLayout ( new HorizontalFlowLayout ( 4, false ) );
         panel.add ( delayLabel, new CenterPanel ( delayField, false, true ), msLabel );
@@ -323,7 +316,7 @@ public class StyleEditor extends WebFrame
         componentViewer = new WebPanel ( new VerticalFlowLayout ( VerticalFlowLayout.TOP, 0, 15, true, false ) );
         componentViewer.setMargin ( 10 );
 
-        final WebScrollPane previewScroll = new WebScrollPane ( componentViewer, false );
+        final WebScrollPane previewScroll = new WebScrollPane ( Styles.scrollpaneUndecorated, componentViewer );
         previewScroll.setScrollBarStyleId ( "preview-scroll" );
         previewScroll.setVerticalScrollBarPolicy ( ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS );
 
@@ -395,7 +388,8 @@ public class StyleEditor extends WebFrame
     {
         final SupportedComponent type = SupportedComponent.getComponentTypeByUIClassID ( view.getUIClassID () );
 
-        final WebLabel titleLabel = new WebLabel ( title, type.getIcon () ).setMargin ( 0, 7, 3, 0 );
+        final WebLabel titleLabel = new WebLabel ( title, type.getIcon () );
+        titleLabel.setStyleId ( "preview-title" );
 
         final WebPanel boundsPanel = new WebPanel ( displayedView );
         boundsPanel.setStyleId ( "empty-border" );
@@ -427,7 +421,7 @@ public class StyleEditor extends WebFrame
     {
         // Creating XML editors tabbed pane
         final WebTabbedPane editorTabs = new WebTabbedPane ( TabbedPaneStyle.attached );
-        editorsContainer = new WebPanel ( false, editorTabs );
+        editorsContainer = new WebPanel ( editorTabs );
 
         // Loading editor code theme
         final Theme theme = loadXmlEditorTheme ();
