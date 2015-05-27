@@ -39,7 +39,8 @@
         <painter id="painter" base="true" class="com.alee.managers.style.skin.web.WebScrollBarPainter">
             <margin>0,1,0,1</margin>
             <thumbRound>4</thumbRound>
-            <thumbMargin>0,2,0,2</thumbMargin>
+            <thumbMargin>0,2,0,4</thumbMargin>
+            <scrollBarWidth>12</scrollBarWidth>
         </painter>
     </style>
 

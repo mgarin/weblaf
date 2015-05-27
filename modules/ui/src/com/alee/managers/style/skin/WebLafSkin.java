@@ -458,6 +458,7 @@ public abstract class WebLafSkin
             return false;
         }
 
+        // todo Still need to check method here? Throw exceptions?
         // Trying to use setter method to apply the specified value
         try
         {

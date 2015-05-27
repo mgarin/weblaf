@@ -29,4 +29,20 @@
         </painter>
     </style>
 
+    <!-- Separator -->
+    <style type="toolBarSeparator" id="default">
+        <component>
+            <opaque>false</opaque>
+        </component>
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebToolBarSeparatorPainter">
+            <separatorLightUpperColor>255,255,255,5</separatorLightUpperColor>
+            <separatorLightColor>white</separatorLightColor>
+            <separatorUpperColor>176,182,188,5</separatorUpperColor>
+            <separatorColor>176,182,188</separatorColor>
+            <reversedColors>false</reversedColors>
+            <drawLeadingLine>false</drawLeadingLine>
+            <drawTrailingLine>true</drawTrailingLine>
+        </painter>
+    </style>
+
 </skin>

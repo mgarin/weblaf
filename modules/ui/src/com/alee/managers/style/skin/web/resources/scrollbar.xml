@@ -4,6 +4,9 @@
 
     <!-- Scroll bar -->
     <style type="scrollBar" id="default">
+        <component>
+            <opaque>false</opaque>
+        </component>
         <ui>
             <paintButtons>true</paintButtons>
             <paintTrack>false</paintTrack>
@@ -28,6 +31,9 @@
 
     <!-- Decorated scrollbar -->
     <style type="scrollBar" id="decorated" extends="default">
+        <component>
+            <opaque>true</opaque>
+        </component>
         <ui>
             <paintButtons>true</paintButtons>
             <paintTrack>true</paintTrack>
@@ -44,6 +50,9 @@
 
     <!-- Button-less scrollbar -->
     <style type="scrollBar" id="buttonless" extends="default">
+        <component>
+            <opaque>true</opaque>
+        </component>
         <ui>
             <paintButtons>false</paintButtons>
             <paintTrack>true</paintTrack>

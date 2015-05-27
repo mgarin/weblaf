@@ -111,6 +111,7 @@ public class CodeLinkGenerator implements LinkGenerator
         {
             text = code;
             src = new Source ( code );
+            src.setLogger ( null );
             src.fullSequentialParse ();
         }
 

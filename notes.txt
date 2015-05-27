@@ -44,6 +44,7 @@ FEATURES TO DO:
 - Add option to provide font easily (short XML descriptor)
 - Container methods with additional useful methods to add children into container component
 - Move 9-patch editor into a separate module
+- WebLafSkin - method check exceptions not thrown right now
 
 
 -------------------------------------------------------------------------

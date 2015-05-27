@@ -328,6 +328,11 @@ public class StyleEditor extends WebFrame
 
         //
 
+        final WebButton button = new WebButton ( "Simple button", WebLookAndFeel.getIcon ( 16 ) );
+        addViewComponent ( "JButton", button, button, true );
+
+        //
+
         final WebScrollBar hsb = new WebScrollBar ( WebScrollBar.HORIZONTAL, 45, 10, 0, 100 );
         addViewComponent ( "JScrollBar (horizontal)", hsb, hsb, false );
 
@@ -525,6 +530,7 @@ public class StyleEditor extends WebFrame
     {
         final ResourceFile rf = resources.get ( 0 );
         final Source xmlSource = new Source ( ReflectUtils.getClassSafely ( rf.getClassName () ).getResource ( rf.getSource () ) );
+        xmlSource.setLogger ( null );
         xmlSource.fullSequentialParse ();
 
         final Element baseClassTag = xmlSource.getFirstElement ( SkinInfoConverter.CLASS_NODE );

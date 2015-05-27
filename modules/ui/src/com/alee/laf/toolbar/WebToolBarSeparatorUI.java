@@ -32,7 +32,7 @@ import javax.swing.plaf.basic.BasicSeparatorUI;
 import java.awt.*;
 
 /**
- * User: mgarin Date: 17.08.11 Time: 22:58
+ * @author Mikle Garin
  */
 
 public class WebToolBarSeparatorUI extends BasicSeparatorUI implements Styleable, ShapeProvider

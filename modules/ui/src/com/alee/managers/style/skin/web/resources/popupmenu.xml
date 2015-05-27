@@ -1,6 +1,8 @@
 <skin>
 
-    <!-- JPopupMenu styling -->
+    <!-- com.alee.laf.menu.WebPopupMenu --><!-- com.alee.laf.menu.WebPopupMenuSeparator -->
+
+    <!-- Popup menu -->
     <style type="popupMenu" id="default">
         <painter id="painter" class="com.alee.managers.style.skin.web.WebPopupMenuPainter">
             <popupStyle>dropdown</popupStyle>
@@ -10,6 +12,18 @@
             <shadeTransparency>0.75</shadeTransparency>
             <cornerWidth>6</cornerWidth>
             <transparency>0.95</transparency>
+        </painter>
+    </style>
+
+    <!-- Popup menu separator -->
+    <style type="popupMenuSeparator" id="default">
+        <component>
+            <opaque>false</opaque>
+        </component>
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebPopupMenuSeparatorPainter">
+            <color>220,220,220</color>
+            <spacing>5</spacing>
+            <sideSpacing>4</sideSpacing>
         </painter>
     </style>
 
