@@ -18,7 +18,7 @@
 package com.alee.utils.laf;
 
 /**
- * This interface must be implemented by components and UIs which support styling through WebLaF skins.
+ * This interface is implemented by components and UIs which support styling through WebLaF skins.
  * It provides only two methods to allow default component style ID modifications.
  *
  * @author Mikle Garin

@@ -31,6 +31,8 @@ import com.alee.managers.tooltip.WebCustomTooltip;
 import com.alee.utils.EventUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SizeUtils;
+import com.alee.utils.laf.MarginSupport;
+import com.alee.utils.laf.PaddingSupport;
 import com.alee.utils.laf.ShapeProvider;
 import com.alee.utils.laf.Styleable;
 import com.alee.utils.swing.*;
@@ -53,7 +55,8 @@ import java.util.List;
  */
 
 public class WebPanel extends JPanel
-        implements Styleable, ShapeProvider, EventMethods, ToolTipMethods, SizeMethods<WebPanel>, LanguageContainerMethods
+        implements Styleable, ShapeProvider, MarginSupport, PaddingSupport, EventMethods, ToolTipMethods, SizeMethods<WebPanel>,
+        LanguageContainerMethods
 {
     /**
      * Constructs new panel.
@@ -497,6 +500,88 @@ public class WebPanel extends JPanel
     public Shape provideShape ()
     {
         return getWebUI ().provideShape ();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Insets getMargin ()
+    {
+        return getWebUI ().getMargin ();
+    }
+
+    /**
+     * Sets new margin.
+     *
+     * @param margin new margin
+     */
+    public void setMargin ( final int margin )
+    {
+        setMargin ( margin, margin, margin, margin );
+    }
+
+    /**
+     * Sets new margin.
+     *
+     * @param top    new top margin
+     * @param left   new left margin
+     * @param bottom new bottom margin
+     * @param right  new right margin
+     */
+    public void setMargin ( final int top, final int left, final int bottom, final int right )
+    {
+        setMargin ( new Insets ( top, left, bottom, right ) );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setMargin ( final Insets margin )
+    {
+        getWebUI ().setMargin ( margin );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Insets getPadding ()
+    {
+        return getWebUI ().getPadding ();
+    }
+
+    /**
+     * Sets new padding.
+     *
+     * @param padding new padding
+     */
+    public void setPadding ( final int padding )
+    {
+        setPadding ( padding, padding, padding, padding );
+    }
+
+    /**
+     * Sets new padding.
+     *
+     * @param top    new top padding
+     * @param left   new left padding
+     * @param bottom new bottom padding
+     * @param right  new right padding
+     */
+    public void setPadding ( final int top, final int left, final int bottom, final int right )
+    {
+        setPadding ( new Insets ( top, left, bottom, right ) );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setPadding ( final Insets padding )
+    {
+        getWebUI ().setPadding ( padding );
     }
 
     /**

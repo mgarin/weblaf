@@ -200,9 +200,12 @@ public class UsageExample
 
 Roadmap
 ----------
-You can always check what fixes, features and improvements are coming by checking the milestones page:<br>
-https://github.com/mgarin/weblaf/issues/milestones
+You can always find out what fixes, features and improvements are coming on the milestones page:<br>
+https://github.com/mgarin/weblaf/milestones
 I am not updating them very frequently, but they actually represent features I want to focus on.
+
+ETA might not and usually will not be accurate.
+I really love this project and will not abandon it, but unfortunately I usually have a few other projects running which I have
 
 
 Updates

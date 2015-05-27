@@ -50,7 +50,7 @@ public class ResizablePanel extends WebPanel
         this ( null );
     }
 
-    public ResizablePanel ( Component component )
+    public ResizablePanel ( final Component component )
     {
         super ();
 
@@ -63,9 +63,9 @@ public class ResizablePanel extends WebPanel
             add ( component, BorderLayout.CENTER );
         }
 
-        MouseAdapter mouseAdapter = new MouseAdapter ()
+        final MouseAdapter mouseAdapter = new MouseAdapter ()
         {
-            private void updateResizeType ( MouseEvent e )
+            private void updateResizeType ( final MouseEvent e )
             {
                 if ( new Rectangle ( 0, 0, SIZER, SIZER ).contains ( e.getPoint () ) )
                 {
@@ -115,13 +115,13 @@ public class ResizablePanel extends WebPanel
             }
 
             @Override
-            public void mouseMoved ( MouseEvent e )
+            public void mouseMoved ( final MouseEvent e )
             {
                 updateResizeType ( e );
             }
 
             @Override
-            public void mousePressed ( MouseEvent e )
+            public void mousePressed ( final MouseEvent e )
             {
                 updateResizeType ( e );
                 if ( SwingUtilities.isLeftMouseButton ( e ) && resizeCorner != -1 )
@@ -133,7 +133,7 @@ public class ResizablePanel extends WebPanel
             }
 
             @Override
-            public void mouseDragged ( MouseEvent e )
+            public void mouseDragged ( final MouseEvent e )
             {
                 if ( resizing && startX != -1 && startY != -1 )
                 {
@@ -154,7 +154,7 @@ public class ResizablePanel extends WebPanel
             }
 
             @Override
-            public void mouseReleased ( MouseEvent e )
+            public void mouseReleased ( final MouseEvent e )
             {
                 if ( SwingUtilities.isLeftMouseButton ( e ) )
                 {
@@ -171,7 +171,7 @@ public class ResizablePanel extends WebPanel
 
     private void updateSpacing ()
     {
-        setMargin ( innerSpacing.top, innerSpacing.left, innerSpacing.bottom, innerSpacing.right );
+        setPadding ( innerSpacing.top, innerSpacing.left, innerSpacing.bottom, innerSpacing.right );
     }
 
     public Insets getInnerSpacing ()
@@ -179,19 +179,19 @@ public class ResizablePanel extends WebPanel
         return innerSpacing;
     }
 
-    public void setInnerSpacing ( int innerSpacing )
+    public void setInnerSpacing ( final int innerSpacing )
     {
         setInnerSpacing ( new Insets ( innerSpacing, innerSpacing, innerSpacing, innerSpacing ) );
     }
 
-    public void setInnerSpacing ( Insets innerSpacing )
+    public void setInnerSpacing ( final Insets innerSpacing )
     {
         this.innerSpacing = innerSpacing;
         updateSpacing ();
     }
 
     @Override
-    protected void paintComponent ( Graphics g )
+    protected void paintComponent ( final Graphics g )
     {
         super.paintComponent ( g );
 
@@ -201,7 +201,7 @@ public class ResizablePanel extends WebPanel
     @Override
     public Dimension getPreferredSize ()
     {
-        Dimension ps = super.getPreferredSize ();
+        final Dimension ps = super.getPreferredSize ();
         ps.width = ps.width + widthChange;
         ps.height = ps.height + heightChange;
         return ps;

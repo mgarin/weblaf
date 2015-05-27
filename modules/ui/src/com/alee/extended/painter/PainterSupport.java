@@ -23,6 +23,7 @@ import com.alee.utils.LafUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.laf.PainterShapeProvider;
+import com.alee.utils.swing.BorderMethods;
 import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
@@ -237,7 +238,20 @@ public final class PainterSupport
     }
 
     /**
-     * Updates component border using the specified margin
+     * Force painter to update border of the component it is attached to.
+     *
+     * @param painter painter to ask for border update
+     */
+    public static void updateBorder ( final Painter painter )
+    {
+        if ( painter instanceof BorderMethods )
+        {
+            ( ( BorderMethods ) painter ).updateBorder ();
+        }
+    }
+
+    /**
+     * Updates component border using the specified margin.
      *
      * @param component component which border needs to be updated
      * @param margin    component margin, or null if it doesn't have one

@@ -203,7 +203,7 @@ public class WebDockablePane extends WebPanel
         {
             content.addTab ( "Tab " + i, new WebLabel () );
         }
-        return new WebPanel ( true, content ).setShadeWidth ( 3 );
+        return new WebPanel ( content );
         //        return new WebPanel ( PopupManager.getPopupPainter ( PopupStyle.lightSmall ), content );
     }
 }
