@@ -18,6 +18,7 @@
 package com.alee.extended.list;
 
 import com.alee.extended.layout.AbstractLayoutManager;
+import com.alee.laf.Styles;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.list.WebListCellRenderer;
@@ -44,12 +45,6 @@ public class WebFileListCellRenderer extends WebListCellRenderer
      */
     public static final Dimension tileCellSize = new Dimension ( 220, 65 );
     public static final Dimension iconCellSize = new Dimension ( 90, 90 );
-
-    /**
-     * Constant cell margins.
-     */
-    public static final Insets tileCellMargin = new Insets ( 6, 6, 5, 8 );
-    public static final Insets iconCellMargin = new Insets ( 5, 5, 8, 5 );
 
     /**
      * Image thumbnails size.
@@ -223,14 +218,7 @@ public class WebFileListCellRenderer extends WebListCellRenderer
     }
 
     /**
-     * Returns list cell renderer component.
-     *
-     * @param list         tree
-     * @param value        cell value
-     * @param index        cell index
-     * @param isSelected   whether cell is selected or not
-     * @param cellHasFocus whether cell has focus or not
-     * @return cell renderer component
+     * {@inheritDoc}
      */
     @Override
     public Component getListCellRendererComponent ( final JList list, final Object value, final int index, final boolean isSelected,
@@ -240,9 +228,6 @@ public class WebFileListCellRenderer extends WebListCellRenderer
 
         final FileElement element = ( FileElement ) value;
         final File file = element.getFile ();
-
-        // Proper margin
-        setMargin ( isTilesView () ? tileCellMargin : iconCellMargin );
 
         // Renderer icon
         String imageSize = null;
@@ -318,6 +303,16 @@ public class WebFileListCellRenderer extends WebListCellRenderer
         }
 
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected String getStyleId ( final JList list, final Object value, final int index, final boolean isSelected,
+                                  final boolean cellHasFocus )
+    {
+        return isTilesView () ? Styles.filelistTileCellRenderer : Styles.filelistIconCellRenderer;
     }
 
     /**

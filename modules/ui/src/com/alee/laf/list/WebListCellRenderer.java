@@ -54,7 +54,7 @@ public class WebListCellRenderer extends WebListElement implements ListCellRende
                                                     final boolean cellHasFocus )
     {
         // Updating style ID
-        setStyleId ( getIcon () != null ? Styles.listIconCellRenderer : Styles.listCellRenderer );
+        setStyleId ( getStyleId ( list, value, index, isSelected, cellHasFocus ) );
 
         // Orientation
         setComponentOrientation ( list.getComponentOrientation () );
@@ -77,6 +77,22 @@ public class WebListCellRenderer extends WebListElement implements ListCellRende
         }
 
         return this;
+    }
+
+    /**
+     * Returns style ID for specific list cell.
+     *
+     * @param list         tree
+     * @param value        cell value
+     * @param index        cell index
+     * @param isSelected   whether cell is selected or not
+     * @param cellHasFocus whether cell has focus or not
+     * @return style ID for specific list cell
+     */
+    protected String getStyleId ( final JList list, final Object value, final int index, final boolean isSelected,
+                                  final boolean cellHasFocus )
+    {
+        return getIcon () != null ? Styles.listIconCellRenderer : Styles.listCellRenderer;
     }
 
     /**

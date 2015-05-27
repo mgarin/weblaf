@@ -171,14 +171,14 @@ public class WebImageGallery extends JComponent
 
     public WebScrollPane getView ()
     {
-        return getView ( true );
+        return getView ( null );
     }
 
-    public WebScrollPane getView ( final boolean withBorder )
+    public WebScrollPane getView ( final String scrollStyleId )
     {
         if ( view == null )
         {
-            view = new WebScrollPane ( WebImageGallery.this, withBorder )
+            view = new WebScrollPane ( scrollStyleId, WebImageGallery.this )
             {
                 @Override
                 public Dimension getPreferredSize ()
@@ -445,8 +445,7 @@ public class WebImageGallery extends JComponent
                     borderWidth * 2 ) );
             gp.subtract ( new Area (
                     new Rectangle ( x - rwidth / 2 + borderWidth, y2 - rheight / 2 + addition + borderWidth, rwidth - borderWidth * 2,
-                            rheight - borderWidth * 2 )
-            ) );
+                            rheight - borderWidth * 2 ) ) );
             g2d.setPaint ( new GradientPaint ( 0, y2 - imageHeight / 2 + addition, selectedIndex == i ? selectedLight : light, 0,
                     y2 - imageHeight / 2 + addition + imageHeight * fadeHeight, selectedIndex == i ? selectedTransparent : transparent ) );
             g2d.fill ( gp );

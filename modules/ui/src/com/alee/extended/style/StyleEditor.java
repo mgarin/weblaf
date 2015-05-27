@@ -318,7 +318,6 @@ public class StyleEditor extends WebFrame
 
         final WebScrollPane previewScroll = new WebScrollPane ( Styles.scrollpaneUndecorated, componentViewer );
         previewScroll.setScrollBarStyleId ( "preview-scroll" );
-        previewScroll.setVerticalScrollBarPolicy ( ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS );
 
         split.setLeftComponent ( new GroupPanel ( GroupingType.fillLast, 0, false, toolBar, previewScroll ) );
 
@@ -470,7 +469,7 @@ public class StyleEditor extends WebFrame
         } );
 
         // Creating editor scroll with preferred settings
-        final WebSyntaxScrollPane xmlEditorScroll = new WebSyntaxScrollPane ( xmlEditor, false );
+        final WebSyntaxScrollPane xmlEditorScroll = new WebSyntaxScrollPane ( xmlEditor );
 
         // Applying editor theme after scroll creation
         theme.apply ( xmlEditor );

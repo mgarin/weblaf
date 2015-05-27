@@ -5,7 +5,6 @@
     <!-- Menu bar -->
     <style type="menuBar" id="default">
         <component>
-            <orientation>0</orientation>
             <opaque>false</opaque>
         </component>
         <painter id="painter" class="com.alee.managers.style.skin.web.WebMenuBarPainter">

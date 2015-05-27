@@ -4,7 +4,7 @@
 
     <!-- Accordion -->
     <style type="panel" id="accordion" extends="default">
-        <component>
+        <component class="com.alee.extended.panel.WebAccordion">
             <accordionStyle>united</accordionStyle>
         </component>
         <painter id="painter" class="com.alee.managers.style.skin.web.WebPanelPainter">

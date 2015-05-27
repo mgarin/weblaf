@@ -467,15 +467,15 @@ public abstract class WebLafSkin
         }
         catch ( final NoSuchMethodException e )
         {
-            Log.error ( WebLafSkin.class, e );
+            // Log.error ( WebLafSkin.class, e );
         }
         catch ( final InvocationTargetException e )
         {
-            Log.error ( WebLafSkin.class, e );
+            // Log.error ( WebLafSkin.class, e );
         }
         catch ( final IllegalAccessException e )
         {
-            Log.error ( WebLafSkin.class, e );
+            // Log.error ( WebLafSkin.class, e );
         }
 
         // Applying field value directly

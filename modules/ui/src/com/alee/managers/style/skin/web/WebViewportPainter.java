@@ -20,6 +20,15 @@ public class WebViewportPainter<E extends JViewport, U extends WebViewportUI> ex
      * {@inheritDoc}
      */
     @Override
+    public void updateBorder ()
+    {
+        // {@link javax.swing.JViewport} doesn't support border so we do nothing here
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
     {
         // Empty by default

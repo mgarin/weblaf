@@ -14,7 +14,6 @@
     <style type="label" id="breadcrumb-element" extends="default">
         <painter id="painter" class="com.alee.managers.style.skin.web.WebBreadcrumbLabelPainter">
             <margin>1,5,1,5</margin>
-            <undecorated>false</undecorated>
         </painter>
     </style>
 
@@ -22,8 +21,6 @@
     <style type="button" id="breadcrumb-element" extends="default">
         <painter id="painter" class="com.alee.managers.style.skin.web.WebBreadcrumbButtonPainter">
             <margin>2,5,2,5</margin>
-            <leftRightSpacing>0</leftRightSpacing>
-            <undecorated>false</undecorated>
         </painter>
     </style>
 
@@ -31,8 +28,6 @@
     <style type="toggleButton" id="breadcrumb-element" extends="default">
         <painter id="painter" class="com.alee.managers.style.skin.web.WebBreadcrumbToggleButtonPainter">
             <margin>2,5,2,5</margin>
-            <leftRightSpacing>0</leftRightSpacing>
-            <undecorated>false</undecorated>
         </painter>
     </style>
 
@@ -40,7 +35,6 @@
     <style type="panel" id="breadcrumb-element" extends="default">
         <painter id="painter" class="com.alee.managers.style.skin.web.WebBreadcrumbPanelPainter">
             <margin>1,5,1,5</margin>
-            <undecorated>false</undecorated>
         </painter>
     </style>
 

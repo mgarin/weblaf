@@ -5,7 +5,6 @@
     <!-- Menu item -->
     <style type="checkBoxMenuItem" id="default">
         <component>
-            <orientation>0</orientation>
             <opaque>false</opaque>
             <iconTextGap>7</iconTextGap>
         </component>

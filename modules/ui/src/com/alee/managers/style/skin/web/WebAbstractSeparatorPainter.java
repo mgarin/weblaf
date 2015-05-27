@@ -1,5 +1,6 @@
 package com.alee.managers.style.skin.web;
 
+import com.alee.extended.painter.AbstractPainter;
 import com.alee.laf.separator.AbstractSeparatorPainter;
 import com.alee.laf.separator.WebSeparator;
 import com.alee.laf.separator.WebSeparatorStyle;
@@ -13,7 +14,7 @@ import java.awt.*;
  * @author Alexandr Zernov
  */
 
-public class WebAbstractSeparatorPainter<E extends JSeparator, U extends BasicSeparatorUI> extends WebDecorationPainter<E, U>
+public class WebAbstractSeparatorPainter<E extends JSeparator, U extends BasicSeparatorUI> extends AbstractPainter<E, U>
         implements AbstractSeparatorPainter<E, U>
 {
     // todo

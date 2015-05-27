@@ -1,0 +1,22 @@
+<skin>
+
+    <!-- com.alee.extended.list.WebFileList -->
+
+    <!-- File cell renderer label -->
+    <style type="label" id="filelist-cell" extends="list-cell" />
+
+    <!-- Tile cells renderer label -->
+    <style type="label" id="filelist-tile-cell" extends="filelist-cell">
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebLabelPainter">
+            <margin>6,6,5,8</margin>
+        </painter>
+    </style>
+
+    <!-- Icon cells renderer label -->
+    <style type="label" id="filelist-icon-cell" extends="filelist-cell">
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebLabelPainter">
+            <margin>5,5,8,5</margin>
+        </painter>
+    </style>
+
+</skin>

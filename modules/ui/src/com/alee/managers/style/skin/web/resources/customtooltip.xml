@@ -10,7 +10,7 @@
     </style>
 
     <!-- Tooltip hotkey shortcut label -->
-    <style type="label" id="hotkey-tip-label" extends="default">
+    <style type="label" id="customtooltip-hotkey" extends="default">
         <component>
             <background>255,255,255,178</background>
             <foreground>black</foreground>

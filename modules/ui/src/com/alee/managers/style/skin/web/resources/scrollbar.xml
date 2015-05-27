@@ -12,6 +12,7 @@
             <margin>1,1,1,1</margin>
             <thumbRound>8</thumbRound>
             <thumbMargin>1,2,1,2</thumbMargin>
+            <scrollBarWidth>13</scrollBarWidth>
             <trackBorderColor>230,230,230</trackBorderColor>
             <trackBackgroundColor>245,245,245</trackBackgroundColor>
             <thumbBorderColor>189,189,189</thumbBorderColor>

@@ -22,6 +22,7 @@ import com.alee.laf.button.WebButtonUI;
 import com.alee.laf.scroll.ScrollBarButtonPainter;
 import com.alee.laf.scroll.ScrollBarButtonType;
 import com.alee.laf.scroll.WebScrollBarStyle;
+import com.alee.utils.GraphicsUtils;
 import com.alee.utils.ShapeCache;
 import com.alee.utils.swing.DataProvider;
 
@@ -286,6 +287,8 @@ public class WebScrollBarButtonPainter<E extends JButton, U extends WebButtonUI>
     @Override
     public void paint ( final Graphics2D g2d, final Rectangle bounds, final E button, final U ui )
     {
+        final Object aa = GraphicsUtils.setupAntialias ( g2d );
+
         verticalScroll = isVerticalScroll ();
 
         // Button model state
@@ -303,6 +306,8 @@ public class WebScrollBarButtonPainter<E extends JButton, U extends WebButtonUI>
         g2d.setPaint (
                 enabled ? ( pressed ? pressedBorderColor : ( rollover ? rolloverBorderColor : borderColor ) ) : disabledBorderColor );
         g2d.draw ( shape );
+
+        GraphicsUtils.restoreAntialias ( g2d, aa );
     }
 
     /**

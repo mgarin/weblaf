@@ -5,6 +5,7 @@
     <!-- Button -->
     <style type="button" id="default">
         <component>
+            <opaque>false</opaque>
             <focusable>true</focusable>
             <foreground>black</foreground>
             <horizontalAlignment>0</horizontalAlignment>

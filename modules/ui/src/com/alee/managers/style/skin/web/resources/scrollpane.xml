@@ -1,6 +1,6 @@
 <skin>
 
-    <!-- javax.swing.JScrollPane -->
+    <!-- com.alee.laf.scroll.WebScrollPane -->
 
     <!-- Scroll pane -->
     <style type="scrollPane" id="default">
@@ -24,7 +24,7 @@
     <style type="scrollBar" id="scrollpane-horizontal" extends="scrollpane" />
 
     <!-- Undecorated scroll pane -->
-    <style type="scrollPane" id="undecorated" extends="default">
+    <style type="scrollPane" id="scrollpane-undecorated" extends="default">
         <painter id="painter" class="com.alee.managers.style.skin.web.WebScrollPanePainter">
             <undecorated>true</undecorated>
         </painter>

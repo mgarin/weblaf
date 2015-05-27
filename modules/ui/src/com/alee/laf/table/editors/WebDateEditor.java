@@ -19,7 +19,6 @@ package com.alee.laf.table.editors;
 
 import com.alee.extended.date.DateSelectionListener;
 import com.alee.extended.date.WebDateField;
-import com.alee.laf.button.WebButton;
 import com.alee.utils.swing.WebDefaultCellEditor;
 
 import java.util.Date;
@@ -44,11 +43,6 @@ public class WebDateEditor extends WebDefaultCellEditor<WebDateField>
                 stopCellEditing ();
             }
         } );
-
-        final WebButton popupButton = editorComponent.getPopupButton ();
-        popupButton.setRound ( 0 );
-        popupButton.setLeftRightSpacing ( 0 );
-        popupButton.setDrawSides ( false, true, false, false );
 
         delegate = new EditorDelegate ()
         {

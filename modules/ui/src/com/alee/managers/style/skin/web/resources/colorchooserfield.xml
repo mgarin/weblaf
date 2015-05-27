@@ -1,0 +1,17 @@
+<skin>
+
+    <!-- com.alee.extended.colorchooser.WebColorChooserField -->
+
+    <!-- Color choose button -->
+    <style type="button" id="colorchooserfield-color" extends="icon">
+        <component>
+            <focusable>false</focusable>
+        </component>
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebButtonPainter">
+            <shadeWidth>0</shadeWidth>
+            <moveIconOnPress>false</moveIconOnPress>
+            <rolloverDecoratedOnly>true</rolloverDecoratedOnly>
+        </painter>
+    </style>
+
+</skin>

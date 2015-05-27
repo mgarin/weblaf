@@ -21,6 +21,7 @@ import com.alee.extended.image.WebImage;
 import com.alee.extended.layout.HorizontalFlowLayout;
 import com.alee.extended.layout.TableLayout;
 import com.alee.extended.panel.CenterPanel;
+import com.alee.laf.Styles;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.optionpane.WebOptionPane;
@@ -325,9 +326,8 @@ public class WebExtendedOptionPane extends WebDialog
 
     private WebButton createControlButton ( final String key )
     {
-        final WebButton cancel = new WebButton ();
-        cancel.setLanguage ( key );
-        cancel.setLeftRightSpacing ( 10 );
+        final WebButton cancel = new WebButton ( key );
+        cancel.setStyleId ( Styles.optionpaneButton );
         cancel.setMinimumSize ( new Dimension ( 70, 0 ) );
         return cancel;
     }

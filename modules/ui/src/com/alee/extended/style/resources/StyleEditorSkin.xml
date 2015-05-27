@@ -22,6 +22,10 @@
         <painter id="painter" class="com.alee.managers.style.skin.web.WebToolBarPainter">
             <margin>4,4,4,4</margin>
             <spacing>4</spacing>
+            <shadeWidth>0</shadeWidth>
+            <paintTop>false</paintTop>
+            <paintLeft>false</paintLeft>
+            <paintRight>false</paintRight>
         </painter>
     </style>
 
@@ -89,6 +93,12 @@
     <style type="label" id="status-message-label" extends="breadcrumb-element">
         <painter id="painter" class="com.alee.managers.style.skin.web.WebBreadcrumbLabelPainter">
             <margin>2,10,2,5</margin>
+        </painter>
+    </style>
+
+    <style type="scrollPane" id="syntaxarea" extends="default">
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebScrollPanePainter">
+            <undecorated>true</undecorated>
         </painter>
     </style>
 

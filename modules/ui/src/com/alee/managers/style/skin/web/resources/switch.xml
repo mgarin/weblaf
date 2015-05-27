@@ -21,7 +21,7 @@
     </style>
 
     <!-- Switch state label -->
-    <style type="panel" id="wswitch" extends="shade">
+    <style type="label" id="wswitch" extends="shade">
         <component>
             <foreground>darkGray</foreground>
         </component>
@@ -29,7 +29,7 @@
             <margin>2,5,2,5</margin>
         </painter>
     </style>
-    <style type="panel" id="wswitch-on" extends="wswitch" />
-    <style type="panel" id="wswitch-off" extends="wswitch" />
+    <style type="label" id="wswitch-on" extends="wswitch" />
+    <style type="label" id="wswitch-off" extends="wswitch" />
 
 </skin>

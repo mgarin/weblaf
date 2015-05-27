@@ -1,0 +1,10 @@
+<skin>
+
+    <!-- com.alee.laf.viewport.WebViewport -->
+
+    <!-- Viewport -->
+    <style type="viewport" id="default">
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebViewportPainter" />
+    </style>
+
+</skin>

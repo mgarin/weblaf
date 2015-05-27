@@ -31,6 +31,8 @@ NOTES:
 30. WebAccordion - fix styling
 31. LibraryInfoDialog - check current styling
 32. WebFileBreadcrumb - popup list scroll needs fix or replacement, file tooltip separator needs update
+33. WebDateEditor - must be working better now, basically should not change style - WebDateField should have button inside of it
+34. WebTitledPanel - get it done right
 
 FEATURES TO DO:
 - Check what happens if you don't extend any style -> document this behavior

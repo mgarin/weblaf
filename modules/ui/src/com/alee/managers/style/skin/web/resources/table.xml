@@ -2,6 +2,18 @@
 
     <!-- com.alee.laf.table.WebTable -->
 
+    <!-- Default table header cell renderer label -->
+    <style type="label" id="table-header-cell" extends="shade">
+        <component>
+            <opaque>true</opaque>
+            <horizontalAlignment>0</horizontalAlignment>
+        </component>
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebLabelPainter">
+            <margin>0,10,1,10</margin>
+            <shadeColor>230,230,230</shadeColor>
+        </painter>
+    </style>
+
     <!-- Default table cell renderer label -->
     <style type="label" id="table-cell" extends="default">
         <component>

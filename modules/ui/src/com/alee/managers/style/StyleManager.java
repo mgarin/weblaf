@@ -23,6 +23,7 @@ import com.alee.managers.style.data.SkinInfo;
 import com.alee.managers.style.skin.WebLafSkin;
 import com.alee.managers.style.skin.web.WebSkin;
 import com.alee.utils.LafUtils;
+import com.alee.utils.MapUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.XmlUtils;
 import com.alee.utils.laf.Styleable;
@@ -292,7 +293,7 @@ public class StyleManager
      * @param skin skin to be applied
      * @return previously applied skin
      */
-    public static WebLafSkin installSkin ( final WebLafSkin skin )
+    public static synchronized WebLafSkin installSkin ( final WebLafSkin skin )
     {
         // Checking skin support
         checkSupport ( skin );
@@ -304,7 +305,8 @@ public class StyleManager
         currentSkin = skin;
 
         // Applying new skin to all existing skinnable components
-        for ( final Map.Entry<JComponent, WebLafSkin> entry : appliedSkins.entrySet () )
+        final HashMap<JComponent, WebLafSkin> skins = MapUtils.copyMap ( appliedSkins );
+        for ( final Map.Entry<JComponent, WebLafSkin> entry : skins.entrySet () )
         {
             final JComponent component = entry.getKey ();
             final WebLafSkin oldSkin = entry.getValue ();
@@ -316,7 +318,7 @@ public class StyleManager
             {
                 skin.applySkin ( component );
             }
-            entry.setValue ( skin );
+            appliedSkins.put ( entry.getKey (), skin );
         }
 
         return previousSkin;

@@ -1,5 +1,8 @@
 package com.alee.laf;
 
+import com.alee.extended.window.TestFrame;
+import com.alee.laf.spinner.WebSpinner;
+
 /**
  * Class containing various custom style IDs.
  * <p/>
@@ -14,6 +17,13 @@ package com.alee.laf;
 
 public final class Styles
 {
+    public static void main ( final String[] args )
+    {
+        WebLookAndFeel.install ();
+        TestFrame.show ( new WebSpinner (  ) );
+    }
+
+
     /**
      * Base components.
      */
@@ -90,6 +100,7 @@ public final class Styles
     /**
      * {@link com.alee.laf.table.WebTable} style IDs.
      */
+    public static String tableHeaderCellRenderer = "table-header-cell";
     public static String tableCellRenderer = "table-cell";
 
     /**
@@ -186,6 +197,13 @@ public final class Styles
     public static String syntaxpanel = "syntaxpanel";
 
     /**
+     * {@link com.alee.extended.list.WebFileList} style IDs.
+     */
+    public static String filelistCellRenderer = "filelist-cell";
+    public static String filelistTileCellRenderer = "filelist-tile-cell";
+    public static String filelistIconCellRenderer = "filelist-icon-cell";
+
+    /**
      * {@link com.alee.extended.filechooser.WebFileDrop} style IDs.
      */
     public static String filedrop = "filedrop";
@@ -243,7 +261,12 @@ public final class Styles
     public static String datefieldCalendar = "datefield";
 
     /**
-     * {@link com.alee.extended.filechooser.WebPathField} style IDs.
+     * {@link com.alee.extended.colorchooser.WebColorChooserField} style IDs.
+     */
+    public static String colorchooserfieldColorButton = "colorchooserfield-color";
+
+    /**
+     * {@link com.alee.extended.filechooser.WebFileChooserField} style IDs.
      */
     public static String filechooserfield = "filechooserfield";
     public static String filechooserfieldContentScroll = "filechooserfield-content";

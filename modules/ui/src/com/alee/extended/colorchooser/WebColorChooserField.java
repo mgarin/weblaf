@@ -22,12 +22,15 @@ import com.alee.extended.painter.AbstractPainter;
 import com.alee.extended.window.PopOverAlignment;
 import com.alee.extended.window.PopOverDirection;
 import com.alee.extended.window.WebPopOver;
+import com.alee.laf.Styles;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.colorchooser.ColorChooserListener;
 import com.alee.laf.colorchooser.WebColorChooserPanel;
 import com.alee.laf.label.WebLabel;
+import com.alee.laf.label.WebLabelUI;
 import com.alee.laf.panel.WebPanel;
+import com.alee.laf.panel.WebPanelUI;
 import com.alee.laf.rootpane.WebWindow;
 import com.alee.laf.text.WebTextField;
 import com.alee.managers.hotkey.Hotkey;
@@ -124,10 +127,7 @@ public class WebColorChooserField extends WebTextField
 
         // Trailing color choose button
         colorButton = new WebButton ( ImageUtils.createColorChooserIcon ( color ) );
-        colorButton.setFocusable ( false );
-        colorButton.setShadeWidth ( 0 );
-        colorButton.setMoveIconOnPress ( false );
-        colorButton.setRolloverDecoratedOnly ( true );
+        colorButton.setStyleId ( Styles.colorchooserfieldColorButton );
         colorButton.setCursor ( Cursor.getDefaultCursor () );
         colorButton.addActionListener ( new ActionListener ()
         {
@@ -473,13 +473,13 @@ public class WebColorChooserField extends WebTextField
                             }
                         } );
 
-                        final AbstractPainter<WebPanel> screenPainter = new AbstractPainter<WebPanel> ()
+                        final AbstractPainter<WebPanel, WebPanelUI> screenPainter = new AbstractPainter<WebPanel, WebPanelUI> ()
                         {
                             /**
                              * {@inheritDoc}
                              */
                             @Override
-                            public void paint ( final Graphics2D g2d, final Rectangle bounds, final WebPanel c )
+                            public void paint ( final Graphics2D g2d, final Rectangle bounds, final WebPanel c, final WebPanelUI ui )
                             {
                                 if ( window.isShowing () && robot != null )
                                 {
@@ -514,7 +514,6 @@ public class WebColorChooserField extends WebTextField
                         window.add ( screen, BorderLayout.CENTER );
 
                         info = new WebLabel ( WebLabel.LEADING );
-                        info.setMargin ( 4 );
                         info.setIcon ( new Icon ()
                         {
                             @Override
@@ -544,22 +543,22 @@ public class WebColorChooserField extends WebTextField
                                 return 16;
                             }
                         } );
-                        info.setPainter ( new AbstractPainter<WebLabel> ()
+                        info.setPainter ( new AbstractPainter<WebLabel, WebLabelUI> ()
                         {
                             /**
                              * {@inheritDoc}
                              */
                             @Override
-                            public Insets getMargin ( final WebLabel c )
+                            public Insets getMargin ()
                             {
-                                return new Insets ( 0, 2, 2, 2 );
+                                return new Insets ( 4, 6, 6, 6 );
                             }
 
                             /**
                              * {@inheritDoc}
                              */
                             @Override
-                            public void paint ( final Graphics2D g2d, final Rectangle bounds, final WebLabel c )
+                            public void paint ( final Graphics2D g2d, final Rectangle bounds, final WebLabel c, final WebLabelUI ui )
                             {
                                 g2d.setPaint ( Color.BLACK );
                                 g2d.drawRect ( bounds.x, bounds.y - 1, bounds.width - 1, bounds.height );

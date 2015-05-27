@@ -5,7 +5,6 @@
     <!-- Menu bar -->
     <style type="menu" id="default">
         <component>
-            <orientation>0</orientation>
             <opaque>false</opaque>
             <background>196,196,186</background>
             <iconTextGap>7</iconTextGap>
