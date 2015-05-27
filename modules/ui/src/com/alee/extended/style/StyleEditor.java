@@ -333,6 +333,11 @@ public class StyleEditor extends WebFrame
 
         //
 
+        final WebButton iconButton = new WebButton ( WebLookAndFeel.getIcon ( 16 ) );
+        addViewComponent ( "JButton (icon-only)", iconButton, iconButton, true );
+
+        //
+
         final WebScrollBar hsb = new WebScrollBar ( WebScrollBar.HORIZONTAL, 45, 10, 0, 100 );
         addViewComponent ( "JScrollBar (horizontal)", hsb, hsb, false );
 

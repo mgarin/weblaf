@@ -21,6 +21,7 @@ import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.language.LanguageMethods;
+import com.alee.managers.language.LanguageUtils;
 import com.alee.managers.language.data.TooltipWay;
 import com.alee.managers.language.updaters.LanguageUpdater;
 import com.alee.managers.log.Log;
@@ -128,6 +129,16 @@ public class WebTristateCheckBox extends JCheckBox
     /**
      * Constructs new tristate checkbox.
      *
+     * @param action checkbox action
+     */
+    public WebTristateCheckBox ( final Action action )
+    {
+        super ( action );
+    }
+
+    /**
+     * Constructs new tristate checkbox.
+     *
      * @param text checkbox text
      */
     public WebTristateCheckBox ( final String text )
@@ -196,16 +207,6 @@ public class WebTristateCheckBox extends JCheckBox
     }
 
     /**
-     * Constructs new tristate checkbox.
-     *
-     * @param action checkbox action
-     */
-    public WebTristateCheckBox ( final Action action )
-    {
-        super ( action );
-    }
-
-    /**
      * Initializes checkbox settings.
      *
      * @param text initial text
@@ -218,7 +219,9 @@ public class WebTristateCheckBox extends JCheckBox
         model = new TristateCheckBoxModel ();
         setModel ( model );
 
-        super.init ( text, icon );
+        // Initializing transltation if required
+        super.init ( LanguageUtils.getInitialText ( text ), icon );
+        LanguageUtils.registerInitialLanguage ( this, text );
     }
 
     /**

@@ -343,10 +343,8 @@ public class WebColorChooserPanel extends WebPanel implements DialogOptions
     {
         final WebPanel buttonsPanel = new WebPanel ( Styles.colorchooserButtonsPanel, new ToolbarLayout ( 2, ToolbarLayout.HORIZONTAL ) );
 
-        final WebCheckBox webOnly = new WebCheckBox ();
-        webOnly.setLanguage ( "weblaf.colorchooser.webonly" );
-        webOnly.setSelected ( isWebOnlyColors () );
-        webOnly.setMargin ( 0, 5, 0, 5 );
+        final WebCheckBox webOnly = new WebCheckBox ( "weblaf.colorchooser.webonly", isWebOnlyColors () );
+        webOnly.setStyleId ( Styles.colorchooserWebonlyCheck );
         webOnly.addActionListener ( new ActionListener ()
         {
             @Override

@@ -128,6 +128,7 @@ public final class Styles
     public static String colorchooser = "colorchooser";
     public static String colorchooserLabel = "colorchooser-label";
     public static String colorchooserButtonsPanel = "colorchooser-buttons";
+    public static String colorchooserWebonlyCheck = "colorchooser-webonly";
     public static String colorchooserButton = "colorchooser-button";
     public static String colorchooserOkButton = "colorchooser-ok";
     public static String colorchooserResetButton = "colorchooser-reset";

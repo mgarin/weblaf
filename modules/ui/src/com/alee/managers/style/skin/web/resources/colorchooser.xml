@@ -27,6 +27,13 @@
         </painter>
     </style>
 
+    <!-- Web-only color check -->
+    <style type="checkBox" id="colorchooser-webonly" extends="default">
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebCheckBoxPainter">
+            <margin>0,5,0,5</margin>
+        </painter>
+    </style>
+
     <!-- Control buttons buttons -->
     <style type="button" id="colorchooser-button" extends="default" />
     <style type="button" id="colorchooser-ok" extends="colorchooser-button" />

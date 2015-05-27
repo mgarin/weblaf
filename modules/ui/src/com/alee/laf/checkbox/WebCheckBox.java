@@ -23,6 +23,7 @@ import com.alee.managers.hotkey.HotkeyInfo;
 import com.alee.managers.hotkey.HotkeyManager;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.language.LanguageMethods;
+import com.alee.managers.language.LanguageUtils;
 import com.alee.managers.language.data.TooltipWay;
 import com.alee.managers.language.updaters.LanguageUpdater;
 import com.alee.managers.log.Log;
@@ -76,14 +77,14 @@ public class WebCheckBox extends JCheckBox
         super ( icon, selected );
     }
 
-    public WebCheckBox ( final String text )
-    {
-        super ( text );
-    }
-
     public WebCheckBox ( final Action a )
     {
         super ( a );
+    }
+
+    public WebCheckBox ( final String text )
+    {
+        super ( text );
     }
 
     public WebCheckBox ( final String text, final boolean selected )
@@ -99,6 +100,20 @@ public class WebCheckBox extends JCheckBox
     public WebCheckBox ( final String text, final Icon icon, final boolean selected )
     {
         super ( text, icon, selected );
+    }
+
+    /**
+     * Initializes checkbox settings.
+     *
+     * @param text initial text
+     * @param icon initial icon
+     */
+    @Override
+    protected void init ( final String text, final Icon icon )
+    {
+        // Initializing transltation if required
+        super.init ( LanguageUtils.getInitialText ( text ), icon );
+        LanguageUtils.registerInitialLanguage ( this, text );
     }
 
     /**
