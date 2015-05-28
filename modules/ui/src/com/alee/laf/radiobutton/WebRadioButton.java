@@ -252,26 +252,6 @@ public class WebRadioButton extends JRadioButton
         }
     }
 
-    @Override
-    public void setSelected ( final boolean b )
-    {
-        setSelected ( b, isShowing () );
-    }
-
-    public void setSelected ( final boolean b, final boolean withAnimation )
-    {
-        //        final boolean animated = isAnimated ();
-        //        if ( !withAnimation && animated )
-        //        {
-        //            setAnimated ( false );
-        //        }
-        //        super.setSelected ( b );
-        //        if ( !withAnimation )
-        //        {
-        //            setAnimated ( animated );
-        //        }
-    }
-
     /**
      * {@inheritDoc}
      */

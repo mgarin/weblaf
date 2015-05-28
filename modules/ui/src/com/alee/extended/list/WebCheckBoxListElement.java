@@ -35,7 +35,18 @@ public class WebCheckBoxListElement extends WebCheckBox
     public WebCheckBoxListElement ()
     {
         super ();
-        setOpaque ( false );
+        setName ( "List.cellRenderer" );
+    }
+
+    /**
+     * Constructs default checkbox list cell renderer element in the specified state.
+     *
+     * @param selected whether or not checkbox is selected
+     */
+    public WebCheckBoxListElement ( final boolean selected )
+    {
+        super ( selected );
+        setName ( "List.cellRenderer" );
     }
 
     /**

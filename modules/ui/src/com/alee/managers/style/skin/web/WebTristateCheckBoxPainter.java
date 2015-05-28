@@ -52,7 +52,7 @@ public class WebTristateCheckBoxPainter<E extends JCheckBox, U extends WebTrista
     protected void performStateChanged ()
     {
         final WebTristateCheckBox tcb = getTristateCheckbox ();
-        if ( isAnimationAllowed () && isAnimated () && tcb.isEnabled () )
+        if ( isAnimationAllowed () )
         {
             stateIcon.setNextState ( tcb.getState () );
             checkTimer.start ();

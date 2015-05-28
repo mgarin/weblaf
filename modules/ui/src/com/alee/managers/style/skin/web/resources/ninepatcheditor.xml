@@ -1,0 +1,28 @@
+<skin>
+
+    <!-- com.alee.extended.ninepatch.NinePatchEditor -->
+
+    <!-- Zoom slider -->
+    <style type="slider" id="ninepatcheditor-zoom" extends="default">
+        <component>
+            <paintTicks>false</paintTicks>
+            <paintLabels>false</paintLabels>
+        </component>
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebSliderPainter">
+            <angledThumb>false</angledThumb>
+        </painter>
+    </style>
+
+    <!-- Float editor slider -->
+    <style type="slider" id="ninepatcheditor-editor-float" extends="default">
+        <component>
+            <paintTicks>true</paintTicks>
+            <paintLabels>false</paintLabels>
+            <snapToTicks>true</snapToTicks>
+        </component>
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebSliderPainter">
+            <margin>10,10,10,10</margin>
+        </painter>
+    </style>
+
+</skin>

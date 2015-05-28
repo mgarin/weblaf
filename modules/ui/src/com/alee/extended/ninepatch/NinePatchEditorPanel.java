@@ -594,10 +594,8 @@ public class NinePatchEditorPanel extends WebPanel
         } );
 
         final WebSlider zoomSlider = new WebSlider ( NinePatchEditor.MIN_ZOOM, NinePatchEditor.MAX_ZOOM, ninePatchEditor.getZoom () );
+        zoomSlider.setStyleId ( Styles.ninepatcheditorZoomSlider );
         zoomSlider.setPreferredWidth ( 170 );
-        zoomSlider.setAngledThumb ( false );
-        zoomSlider.setPaintTicks ( false );
-        zoomSlider.setPaintLabels ( false );
         changeListener = new ChangeListener ()
         {
             @Override

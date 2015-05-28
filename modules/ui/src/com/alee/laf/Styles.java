@@ -1,8 +1,5 @@
 package com.alee.laf;
 
-import com.alee.extended.window.TestFrame;
-import com.alee.laf.spinner.WebSpinner;
-
 /**
  * Class containing various custom style IDs.
  * <p/>
@@ -17,13 +14,6 @@ import com.alee.laf.spinner.WebSpinner;
 
 public final class Styles
 {
-    public static void main ( final String[] args )
-    {
-        WebLookAndFeel.install ();
-        TestFrame.show ( new WebSpinner (  ) );
-    }
-
-
     /**
      * Base components.
      */
@@ -205,6 +195,11 @@ public final class Styles
     public static String syntaxpanel = "syntaxpanel";
 
     /**
+     * {@link com.alee.extended.list.WebCheckBoxList} style IDs.
+     */
+    public static String checkboxlistCellRenderer = "checkboxlist-cell";
+
+    /**
      * {@link com.alee.extended.list.WebFileList} style IDs.
      */
     public static String filelistCellRenderer = "filelist-cell";
@@ -329,6 +324,12 @@ public final class Styles
     public static String directorychooserButton = "directorychooser";
     public static String directorychooserAcceptButton = "directorychooser-accept";
     public static String directorychooserCancelButton = "directorychooser-cancel";
+
+    /**
+     * {@link com.alee.extended.ninepatch.NinePatchEditor} style IDs.
+     */
+    public static String ninepatcheditorZoomSlider = "ninepatcheditor-zoom";
+    public static String ninepatcheditorFloatEditorSlider = "ninepatcheditor-editor-float";
 
     /**
      * {@link com.alee.extended.tab.WebDocumentPane} style IDs.

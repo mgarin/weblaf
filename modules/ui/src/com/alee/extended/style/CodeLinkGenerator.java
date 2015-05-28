@@ -340,12 +340,9 @@ public class CodeLinkGenerator implements LinkGenerator
 
                                     final int value = MathUtils.limit ( Math.round ( 1000 * f ), 0, 1000 );
                                     final WebSlider slider = new WebSlider ( WebSlider.HORIZONTAL, 0, 1000, value );
-                                    slider.setPaintTicks ( true );
+                                    slider.setStyleId ( Styles.ninepatcheditorFloatEditorSlider );
                                     slider.setMajorTickSpacing ( 50 );
                                     slider.setMinorTickSpacing ( 10 );
-                                    slider.setPaintLabels ( false );
-                                    slider.setSnapToTicks ( true );
-                                    slider.setMargin ( 10 );
                                     slider.setPreferredWidth ( 500 );
                                     slider.addChangeListener ( new ChangeListener ()
                                     {
@@ -361,8 +358,8 @@ public class CodeLinkGenerator implements LinkGenerator
                                     } );
                                     transparencyChooser.add ( slider );
 
-                                    final Rectangle wb =
-                                            source.getUI ().modelToView ( source, ( content.getBegin () + content.getEnd () ) / 2 );
+                                    final int pos = ( content.getBegin () + content.getEnd () ) / 2;
+                                    final Rectangle wb = source.getUI ().modelToView ( source, pos );
                                     transparencyChooser.show ( source, wb.x, wb.y, wb.width, wb.height, PopOverDirection.down );
 
                                     return new HyperlinkEvent ( this, HyperlinkEvent.EventType.EXITED, null );

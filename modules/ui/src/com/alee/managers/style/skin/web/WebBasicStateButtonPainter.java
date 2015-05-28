@@ -9,6 +9,7 @@ import com.alee.laf.list.WebListElement;
 import com.alee.laf.radiobutton.BasicStateButtonPainter;
 import com.alee.laf.radiobutton.WebRadioButtonStyle;
 import com.alee.laf.tree.WebTreeElement;
+import com.alee.managers.style.StyleException;
 import com.alee.utils.ColorUtils;
 import com.alee.utils.GraphicsUtils;
 import com.alee.utils.ReflectUtils;
@@ -91,13 +92,16 @@ public class WebBasicStateButtonPainter<E extends AbstractButton, U extends Basi
         stateIcon.setEnabled ( component.isEnabled () );
         stateIcon.setState ( component.isSelected () ? CheckState.checked : CheckState.unchecked );
 
+        // Animation
+        animated = isAnimatedByDefault ();
+
+        // State icon
+        component.setIcon ( createIcon () );
+
         // component state change listeners
         installEnabledStateListeners ();
         installRolloverListeners ();
         installStateChangeListeners ();
-
-        component.setIcon ( createIcon () );
-        animated = isAnimatedByDefault ();
     }
 
     /**
@@ -185,6 +189,7 @@ public class WebBasicStateButtonPainter<E extends AbstractButton, U extends Basi
     protected void uninstallEnabledStateListeners ()
     {
         component.removePropertyChangeListener ( WebLookAndFeel.ENABLED_PROPERTY, enabledStateListener );
+        enabledStateListener = null;
     }
 
     /**
@@ -220,7 +225,7 @@ public class WebBasicStateButtonPainter<E extends AbstractButton, U extends Basi
             public void mouseEntered ( final MouseEvent e )
             {
                 rollover = true;
-                if ( isAnimated () && component.isEnabled () )
+                if ( isAnimationAllowed () )
                 {
                     bgTimer.start ();
                 }
@@ -235,7 +240,7 @@ public class WebBasicStateButtonPainter<E extends AbstractButton, U extends Basi
             public void mouseExited ( final MouseEvent e )
             {
                 rollover = false;
-                if ( isAnimated () && component.isEnabled () )
+                if ( isAnimationAllowed () )
                 {
                     bgTimer.start ();
                 }
@@ -255,6 +260,8 @@ public class WebBasicStateButtonPainter<E extends AbstractButton, U extends Basi
     protected void uninstallRolloverListeners ()
     {
         component.removeMouseListener ( mouseAdapter );
+        mouseAdapter = null;
+        bgTimer.stop ();
     }
 
     /**
@@ -308,7 +315,11 @@ public class WebBasicStateButtonPainter<E extends AbstractButton, U extends Basi
     protected void uninstallStateChangeListeners ()
     {
         component.removeItemListener ( itemListener );
+        itemListener = null;
         component.removePropertyChangeListener ( modelChangeListener );
+        modelChangeListener = null;
+        checkTimer.stop ();
+        checkTimer = null;
     }
 
     /**
@@ -317,7 +328,7 @@ public class WebBasicStateButtonPainter<E extends AbstractButton, U extends Basi
      */
     protected void performStateChanged ()
     {
-        if ( isAnimationAllowed () && isAnimated () && component.isEnabled () )
+        if ( isAnimationAllowed () )
         {
             stateIcon.setNextState ( component.isSelected () ? CheckState.checked : CheckState.unchecked );
             checkTimer.start ();
@@ -331,35 +342,29 @@ public class WebBasicStateButtonPainter<E extends AbstractButton, U extends Basi
     }
 
     /**
-     * Returns whether component is animated or not.
+     * Returns whether component can be animated right now or not.
      *
-     * @return true if component is animated, false otherwise
-     */
-    protected boolean isAnimated ()
-    {
-        return animated && ( component == null || component.getParent () == null ||
-                !( component.getParent () instanceof WebListElement || component.getParent () instanceof WebTreeElement ) );
-    }
-
-    /**
-     * Returns whether component can be animated or not.
-     *
-     * @return true if component can be animated, false otherwise
+     * @return true if component can be animated right now, false otherwise
      */
     protected boolean isAnimationAllowed ()
     {
+        return animated && component.isEnabled () && component.isShowing () && isAnimationAllowedByParent ();
+    }
+
+    /**
+     * Returns whether or not component animation is allowed by parent.
+     *
+     * @return true if component animation is allowed by parent, false otherwise
+     */
+    protected boolean isAnimationAllowedByParent ()
+    {
+        // Workaround for list and tree elements, those should not be animated, at least yet
+        // The only exception here is {@link com.alee.extended.list.WebCheckBoxListElement} but we don't mention it here
         final Container parent = component.getParent ();
-        if ( parent == null )
-        {
-            return true;
-        }
-        else
-        {
-            // Workaround for Jide checkbox list and tree
-            final Class parentClass = parent.getClass ();
-            return !ReflectUtils.containsInClassOrSuperclassName ( parentClass, "com.jidesoft.swing.CheckBoxList" ) &&
-                    !ReflectUtils.containsInClassOrSuperclassName ( parentClass, "com.jidesoft.swing.CheckBoxTreeCellRenderer" );
-        }
+        return parent == null || !WebListElement.class.isAssignableFrom ( component.getParent ().getClass () ) &&
+                !WebTreeElement.class.isAssignableFrom ( component.getParent ().getClass () ) &&
+                !ReflectUtils.containsInClassOrSuperclassName ( parent.getClass (), "com.jidesoft.swing.CheckBoxList" ) &&
+                !ReflectUtils.containsInClassOrSuperclassName ( parent.getClass (), "com.jidesoft.swing.CheckBoxTreeCellRenderer" );
     }
 
     /**
@@ -392,7 +397,7 @@ public class WebBasicStateButtonPainter<E extends AbstractButton, U extends Basi
      */
     protected CheckIcon createCheckStateIcon ()
     {
-        return null;
+        throw new StyleException ( "Basic state icon is not supported" );
     }
 
     /**

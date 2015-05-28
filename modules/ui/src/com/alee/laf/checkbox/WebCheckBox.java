@@ -252,27 +252,6 @@ public class WebCheckBox extends JCheckBox
         }
     }
 
-    @Override
-    public void setSelected ( final boolean b )
-    {
-        setSelected ( b, isShowing () );
-    }
-
-    public void setSelected ( final boolean b, final boolean withAnimation )
-    {
-        // todo check
-        //        final boolean animated = isAnimated ();
-        //        if ( !withAnimation && animated )
-        //        {
-        //            setAnimated ( false );
-        //        }
-        //        super.setSelected ( b );
-        //        if ( !withAnimation )
-        //        {
-        //            setAnimated ( animated );
-        //        }
-    }
-
     /**
      * {@inheritDoc}
      */

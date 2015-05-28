@@ -17,12 +17,9 @@
 
 package com.alee.extended.list;
 
-import com.alee.laf.checkbox.WebCheckBoxStyle;
-import com.alee.laf.list.WebListStyle;
-import com.alee.laf.list.WebListUI;
+import com.alee.laf.Styles;
 
 import javax.swing.*;
-import javax.swing.plaf.ListUI;
 import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
@@ -76,11 +73,6 @@ public class WebCheckBoxListCellRenderer implements ListCellRenderer
         // Selection and text
         renderer.setText ( data.getUserObject () == null ? "" : data.getUserObject ().toString () );
 
-        // Border
-        final ListUI lui = list.getUI ();
-        final int sw = lui instanceof WebListUI ? ( ( WebListUI ) lui ).getSelectionShadeWidth () : WebListStyle.selectionShadeWidth;
-        renderer.setMargin ( sw + 2, sw + 2, sw + 2, sw + 4 );
-
         // Orientation
         renderer.setComponentOrientation ( list.getComponentOrientation () );
 
@@ -99,14 +91,13 @@ public class WebCheckBoxListCellRenderer implements ListCellRenderer
         if ( elements.containsKey ( key ) )
         {
             final WebCheckBoxListElement element = elements.get ( key );
-            element.setSelected ( data.isSelected (), WebCheckBoxStyle.animated );
+            element.setSelected ( data.isSelected () );
             return element;
         }
         else
         {
-            final WebCheckBoxListElement element = new WebCheckBoxListElement ();
-            element.setName ( "List.cellRenderer" );
-            element.setSelected ( data.isSelected (), false );
+            final WebCheckBoxListElement element = new WebCheckBoxListElement ( data.isSelected () );
+            element.setStyleId ( Styles.checkboxlistCellRenderer );
             elements.put ( key, element );
             return element;
         }
