@@ -293,20 +293,24 @@ public enum SupportedComponent
      */
     public ImageIcon getIcon ()
     {
-        ImageIcon icon = componentIcons.get ( this );
-        if ( icon == null )
+        if ( componentIcons.containsKey ( this ) )
+        {
+            return componentIcons.get ( this );
+        }
+        else
         {
             try
             {
-                icon = new ImageIcon ( SupportedComponent.class.getResource ( "icons/component/" + this + ".png" ) );
+                final ImageIcon icon = new ImageIcon ( SupportedComponent.class.getResource ( "icons/component/" + this + ".png" ) );
                 componentIcons.put ( this, icon );
+                return icon;
             }
             catch ( final Throwable e )
             {
                 Log.get ().error ( "Unable to find component icon: " + this, e );
                 componentIcons.put ( this, null );
+                return null;
             }
         }
-        return icon;
     }
 }
