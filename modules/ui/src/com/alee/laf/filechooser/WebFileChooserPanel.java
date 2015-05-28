@@ -1025,7 +1025,7 @@ public class WebFileChooserPanel extends WebPanel
             }
         } );
 
-        cancelButton = new WebButton ("weblaf.filechooser.cancel",  CANCEL_ICON );
+        cancelButton = new WebButton ( "weblaf.filechooser.cancel", CANCEL_ICON );
         acceptButton.setStyleId ( Styles.filechooserCancelButton );
         cancelButton.addHotkey ( WebFileChooserPanel.this, Hotkey.ESCAPE, TooltipWay.up );
         cancelButton.putClientProperty ( GroupPanel.FILL_CELL, true );

@@ -17,6 +17,7 @@
 
 package com.alee.laf.tree;
 
+import com.alee.extended.painter.Painter;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.log.Log;
@@ -30,6 +31,8 @@ import com.alee.utils.GeometryUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.compare.Filter;
+import com.alee.utils.laf.ShapeProvider;
+import com.alee.utils.laf.Styleable;
 import com.alee.utils.swing.*;
 
 import javax.swing.*;
@@ -55,7 +58,8 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements EventMethods, SettingsMethods, FontMethods<WebTree<E>>
+public class WebTree<E extends DefaultMutableTreeNode> extends JTree
+        implements Styleable, ShapeProvider, EventMethods, SettingsMethods, FontMethods<WebTree<E>>
 {
     /**
      * Bound property name for tree data provider.
@@ -1184,46 +1188,6 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
     }
 
     /**
-     * Returns whether tree should paint structure lines or not.
-     *
-     * @return true if tree should paint structure lines, false otherwise
-     */
-    public boolean isPaintLines ()
-    {
-        return getWebUI ().isPaintLines ();
-    }
-
-    /**
-     * Sets whether tree should paint structure lines or not.
-     *
-     * @param paint whether tree should paint structure lines or not
-     */
-    public void setPaintLines ( final boolean paint )
-    {
-        getWebUI ().setPaintLines ( paint );
-    }
-
-    /**
-     * Returns tree structure lines color.
-     *
-     * @return tree structure lines color
-     */
-    public Color getLinesColor ()
-    {
-        return getWebUI ().getLinesColor ();
-    }
-
-    /**
-     * Sets tree structure lines color.
-     *
-     * @param color tree structure lines color
-     */
-    public void setLinesColor ( final Color color )
-    {
-        getWebUI ().setLinesColor ( color );
-    }
-
-    /**
      * Returns tree selection style.
      *
      * @return tree selection style
@@ -1244,228 +1208,55 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree implements 
     }
 
     /**
-     * Returns tree selection rounding.
+     * Returns tree painter.
      *
-     * @return tree selection rounding
+     * @return tree painter
      */
-    public int getSelectionRound ()
+    public Painter getPainter ()
     {
-        return getWebUI ().getSelectionRound ();
+        return getWebUI ().getPainter ();
     }
 
     /**
-     * Sets tree selection rounding.
+     * Sets tree painter.
+     * Pass null to remove tree painter.
      *
-     * @param round tree selection rounding
+     * @param painter new tree painter
+     * @return this tree
      */
-    public void setSelectionRound ( final int round )
+    public WebTree setPainter ( final Painter painter )
     {
-        getWebUI ().setSelectionRound ( round );
+        getWebUI ().setPainter ( painter );
+        return this;
     }
 
     /**
-     * Returns tree selection shade width.
-     *
-     * @return tree selection shade width
+     * {@inheritDoc}
      */
-    public int getSelectionShadeWidth ()
+    @Override
+    public String getStyleId ()
     {
-        return getWebUI ().getSelectionShadeWidth ();
+        return getWebUI ().getStyleId ();
     }
 
     /**
-     * Sets tree selection shade width.
-     *
-     * @param shadeWidth tree selection shade width
+     * {@inheritDoc}
      */
-    public void setSelectionShadeWidth ( final int shadeWidth )
+    @Override
+    public void setStyleId ( final String id )
     {
-        getWebUI ().setSelectionShadeWidth ( shadeWidth );
+        getWebUI ().setStyleId ( id );
     }
 
     /**
-     * Returns whether selector is enabled or not.
-     *
-     * @return true if selector is enabled, false otherwise
+     * {@inheritDoc}
      */
-    public boolean isSelectorEnabled ()
+    @Override
+    public Shape provideShape ()
     {
-        return getWebUI ().isSelectorEnabled ();
+        return getWebUI ().provideShape ();
     }
 
-    /**
-     * Sets whether selector is enabled or not.
-     *
-     * @param enabled whether selector is enabled or not
-     */
-    public void setSelectorEnabled ( final boolean enabled )
-    {
-        getWebUI ().setSelectorEnabled ( enabled );
-    }
-
-    /**
-     * Returns selector color.
-     *
-     * @return selector color
-     */
-    public Color getSelectorColor ()
-    {
-        return getWebUI ().getSelectorColor ();
-    }
-
-    /**
-     * Sets selector color.
-     *
-     * @param color selector color
-     */
-    public void setSelectorColor ( final Color color )
-    {
-        getWebUI ().setSelectorColor ( color );
-    }
-
-    /**
-     * Returns selector border color.
-     *
-     * @return selector border color
-     */
-    public Color getSelectorBorderColor ()
-    {
-        return getWebUI ().getSelectorBorderColor ();
-    }
-
-    /**
-     * Sets selector border color.
-     *
-     * @param color selector border color
-     */
-    public void setSelectorBorderColor ( final Color color )
-    {
-        getWebUI ().setSelectorBorderColor ( color );
-    }
-
-    /**
-     * Returns selector rounding.
-     *
-     * @return selector rounding
-     */
-    public int getSelectorRound ()
-    {
-        return getWebUI ().getSelectorRound ();
-    }
-
-    /**
-     * Sets selector rounding.
-     *
-     * @param round selector rounding
-     */
-    public void setSelectorRound ( final int round )
-    {
-        getWebUI ().setSelectorRound ( round );
-    }
-
-    /**
-     * Returns selector border stroke.
-     *
-     * @return selector border stroke
-     */
-    public BasicStroke getSelectorStroke ()
-    {
-        return getWebUI ().getSelectorStroke ();
-    }
-
-    /**
-     * Sets selector border stroke.
-     *
-     * @param stroke selector border stroke
-     */
-    public void setSelectorStroke ( final BasicStroke stroke )
-    {
-        getWebUI ().setSelectorStroke ( stroke );
-    }
-
-    /**
-     * Returns whether selection should be web-colored or not.
-     * In case it is not web-colored selectionBackgroundColor value will be used as background color.
-     *
-     * @return true if selection should be web-colored, false otherwise
-     */
-    public boolean isWebColoredSelection ()
-    {
-        return getWebUI ().isWebColoredSelection ();
-    }
-
-    /**
-     * Sets whether selection should be web-colored or not.
-     * In case it is not web-colored selectionBackgroundColor value will be used as background color.
-     *
-     * @param webColored whether selection should be web-colored or not
-     */
-    public void setWebColoredSelection ( final boolean webColored )
-    {
-        getWebUI ().setWebColoredSelection ( webColored );
-    }
-
-    /**
-     * Returns selection border color.
-     *
-     * @return selection border color
-     */
-    public Color getSelectionBorderColor ()
-    {
-        return getWebUI ().getSelectionBorderColor ();
-    }
-
-    /**
-     * Sets selection border color.
-     *
-     * @param color selection border color
-     */
-    public void setSelectionBorderColor ( final Color color )
-    {
-        getWebUI ().setSelectionBorderColor ( color );
-    }
-
-    /**
-     * Returns selection background color.
-     * It is used only when webColoredSelection is set to false.
-     *
-     * @return selection background color
-     */
-    public Color getSelectionBackgroundColor ()
-    {
-        return getWebUI ().getSelectionBackgroundColor ();
-    }
-
-    /**
-     * Sets selection background color.
-     * It is used only when webColoredSelection is set to false.
-     *
-     * @param color selection background color
-     */
-    public void setSelectionBackgroundColor ( final Color color )
-    {
-        getWebUI ().setSelectionBackgroundColor ( color );
-    }
-
-    /**
-     * Returns drop cell highlight shade width.
-     *
-     * @return drop cell highlight shade width
-     */
-    public int getDropCellShadeWidth ()
-    {
-        return getWebUI ().getDropCellShadeWidth ();
-    }
-
-    /**
-     * Sets drop cell highlight shade width.
-     *
-     * @param dropCellShadeWidth new drop cell highlight shade width
-     */
-    public void setDropCellShadeWidth ( final int dropCellShadeWidth )
-    {
-        getWebUI ().setDropCellShadeWidth ( dropCellShadeWidth );
-    }
 
     /**
      * Returns Web-UI applied to this class.

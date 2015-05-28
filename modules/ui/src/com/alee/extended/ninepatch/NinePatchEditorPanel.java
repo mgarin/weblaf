@@ -812,7 +812,7 @@ public class NinePatchEditorPanel extends WebPanel
 
         final boolean st = SettingsManager.get ( "NinePatchEditor", "preview.showText", true );
         final WebToggleButton showText = new WebToggleButton ( SHOW_TEXT_ICON );
-        showText.setStyleId ( Styles.togglebuttonRolloverIconOnly  );
+        showText.setStyleId ( Styles.togglebuttonRolloverIconOnly );
         showText.setLanguage ( "weblaf.ex.npeditor.preview.showText" );
         showText.setCursor ( Cursor.getDefaultCursor () );
         showText.setSelected ( st );
@@ -852,7 +852,7 @@ public class NinePatchEditorPanel extends WebPanel
 
 
         final WebButton chooseColor = new WebButton ( FOREGROUND_COLOR_ICON );
-        chooseColor.setStyleId ( Styles.buttonRolloverIconOnly  );
+        chooseColor.setStyleId ( Styles.buttonRolloverIconOnly );
         chooseColor.setLanguage ( "weblaf.ex.npeditor.preview.foregroundColor" );
         preview.setForeground ( SettingsManager.get ( "NinePatchEditor", "preview.foregroundColor", Color.WHITE ) );
         chooseColor.setCursor ( Cursor.getDefaultCursor () );

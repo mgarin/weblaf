@@ -160,8 +160,8 @@ public class WebTreeCellEditor<C extends JComponent> extends WebDefaultCellEdito
             if ( cellEditor instanceof WebTextField )
             {
                 final TreeUI tui = tree.getUI ();
-                final int sw =
-                        tui instanceof WebTreeUI ? ( ( WebTreeUI ) tui ).getSelectionShadeWidth () : WebTreeStyle.selectionShadeWidth;
+                final int sw = tui instanceof WebTreeUI ? /*( ( WebTreeUI ) tui ).getSelectionShadeWidth () todo style in the editor*/2 :
+                        WebTreeStyle.selectionShadeWidth;
 
                 // Field styling
                 final WebTextField editor = ( WebTextField ) cellEditor;

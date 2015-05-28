@@ -2,6 +2,24 @@
 
     <!-- com.alee.laf.tree.WebTree -->
 
+    <!-- Tree -->
+    <style type="tree" id="default">
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebTreePainter">
+            <selectionRound>2</selectionRound>
+            <selectionShadeWidth>2</selectionShadeWidth>
+            <selectorRound>2</selectorRound>
+            <dropCellShadeWidth>8</dropCellShadeWidth>
+            <linesColor>gray</linesColor>
+            <selectorColor>0, 0, 255, 50</selectorColor>
+            <selectorBorderColor>gray</selectorBorderColor>
+            <selectionBorderColor>gray</selectionBorderColor>
+            <selectionBackgroundColor>223, 223, 223</selectionBackgroundColor>
+            <paintLines>true</paintLines>
+            <webColoredSelection>true</webColoredSelection>
+            <selectorEnabled>true</selectorEnabled>
+        </painter>
+    </style>
+
     <!-- Default tree cell renderer label -->
     <style type="label" id="tree-cell" extends="default">
         <component>
