@@ -17,6 +17,7 @@
 
 package com.alee.laf.table.editors;
 
+import com.alee.laf.Styles;
 import com.alee.laf.checkbox.WebCheckBox;
 import com.alee.utils.swing.WebDefaultCellEditor;
 
@@ -47,13 +48,7 @@ public class WebBooleanEditor extends WebDefaultCellEditor<WebCheckBox>
     private static WebCheckBox createEditorComponent ()
     {
         final WebCheckBox editor = new WebCheckBox ();
-        editor.setHorizontalAlignment ( JCheckBox.CENTER );
-        editor.setAnimated ( false );
-        editor.setOpaque ( true );
-        editor.setFocusable ( false );
-        editor.setShadeWidth ( 0 );
-        editor.setIconWidth ( 12 );
-        editor.setIconHeight ( 12 );
+        editor.setStyleId ( Styles.tableBooleanCellEditor );
         return editor;
     }
 }

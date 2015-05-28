@@ -1,0 +1,16 @@
+<skin>
+
+    <!-- com.alee.extended.tree.WebCheckBoxTree -->
+
+    <!-- Checkbox tree cell renderer checkbox -->
+    <style type="checkBox" id="tree-cell" extends="default">
+        <component>
+            <opaque>false</opaque>
+        </component>
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebCheckBoxPainter">
+            <margin>0,4,0,0</margin>
+            <animated>false</animated>
+        </painter>
+    </style>
+
+</skin>

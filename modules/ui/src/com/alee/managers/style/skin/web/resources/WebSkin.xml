@@ -32,6 +32,7 @@
     <include>resources/list.xml</include>
     <include>resources/table.xml</include>
     <include>resources/tree.xml</include>
+    <include>resources/checkboxtree.xml</include>
     <include>resources/panel.xml</include>
     <include>resources/toolbar.xml</include>
     <include>resources/scrollbar.xml</include>

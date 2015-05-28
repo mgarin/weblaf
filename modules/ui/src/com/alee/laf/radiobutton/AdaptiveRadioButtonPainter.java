@@ -2,7 +2,6 @@ package com.alee.laf.radiobutton;
 
 import com.alee.extended.painter.AdaptivePainter;
 import com.alee.extended.painter.Painter;
-import com.alee.laf.checkbox.WebCheckBoxUI;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,7 +13,7 @@ import java.awt.*;
  * @author Alexandr Zernov
  */
 
-public class AdaptiveRadioButtonPainter<E extends JCheckBox, U extends WebCheckBoxUI> extends AdaptivePainter<E, U>
+public class AdaptiveRadioButtonPainter<E extends JRadioButton, U extends WebRadioButtonUI> extends AdaptivePainter<E, U>
         implements RadioButtonPainter<E, U>
 {
     /**

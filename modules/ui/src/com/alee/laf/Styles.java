@@ -102,11 +102,18 @@ public final class Styles
      */
     public static String tableHeaderCellRenderer = "table-header-cell";
     public static String tableCellRenderer = "table-cell";
+    public static String tableBooleanCellRenderer = "table-bool-cell";
+    public static String tableBooleanCellEditor = "table-bool-editor";
 
     /**
      * {@link com.alee.laf.table.WebTable} style IDs.
      */
     public static String treeCellRenderer = "tree-cell";
+
+    /**
+     * {@link com.alee.extended.tree.WebCheckBoxTree} style IDs.
+     */
+    public static String checkboxTreeCellRenderer = "tree-cell";
 
     /**
      * {@link com.alee.laf.toolbar.WebToolBar} style IDs.

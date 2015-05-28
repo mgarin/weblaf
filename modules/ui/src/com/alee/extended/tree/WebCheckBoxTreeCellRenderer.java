@@ -18,6 +18,7 @@
 package com.alee.extended.tree;
 
 import com.alee.extended.checkbox.WebTristateCheckBox;
+import com.alee.laf.Styles;
 import com.alee.laf.panel.WebPanel;
 
 import javax.swing.*;
@@ -56,8 +57,7 @@ public class WebCheckBoxTreeCellRenderer extends WebPanel implements CheckBoxTre
         setOpaque ( false );
 
         checkBox = new WebTristateCheckBox ();
-        checkBox.setAnimated ( false );
-        checkBox.setMargin ( 0, 4, 0, WebCheckBoxTreeStyle.checkBoxRendererGap );
+        checkBox.setStyleId ( Styles.checkboxTreeCellRenderer );
         add ( checkBox, BorderLayout.LINE_START );
     }
 

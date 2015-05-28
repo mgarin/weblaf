@@ -18,10 +18,10 @@
 package com.alee.extended.list;
 
 import com.alee.laf.checkbox.WebCheckBoxStyle;
-import com.alee.laf.checkbox.WebCheckBoxUI;
 import com.alee.laf.list.WebList;
 import com.alee.laf.list.editor.ListCellEditor;
 import com.alee.managers.hotkey.Hotkey;
+import com.alee.managers.style.skin.web.WebCheckBoxPainter;
 import com.alee.utils.swing.WebTimer;
 
 import javax.swing.*;
@@ -159,9 +159,9 @@ public class WebCheckBoxList extends WebList
         if ( WebCheckBoxStyle.animated )
         {
             // For checkbox proper animation
-            WebTimer.repeat ( "WebCheckBoxList.animator", WebCheckBoxUI.UPDATE_DELAY, new ActionListener ()
+            WebTimer.repeat ( "WebCheckBoxList.animator", WebCheckBoxPainter.UPDATE_DELAY, new ActionListener ()
             {
-                private int left = WebCheckBoxUI.MAX_DARKNESS + 1;
+                private int left = WebCheckBoxPainter.MAX_DARKNESS + 1;
 
                 @Override
                 public void actionPerformed ( final ActionEvent e )

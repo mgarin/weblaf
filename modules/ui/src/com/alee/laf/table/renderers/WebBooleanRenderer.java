@@ -17,6 +17,7 @@
 
 package com.alee.laf.table.renderers;
 
+import com.alee.laf.Styles;
 import com.alee.laf.checkbox.WebCheckBox;
 
 import javax.swing.*;
@@ -33,12 +34,7 @@ public class WebBooleanRenderer extends WebCheckBox implements TableCellRenderer
     public WebBooleanRenderer ()
     {
         super ();
-        setOpaque ( true );
-        setAnimated ( false );
-        setHorizontalAlignment ( JLabel.CENTER );
-        setShadeWidth ( 0 );
-        setIconWidth ( 12 );
-        setIconHeight ( 12 );
+        setStyleId ( Styles.tableBooleanCellRenderer );
     }
 
     @Override

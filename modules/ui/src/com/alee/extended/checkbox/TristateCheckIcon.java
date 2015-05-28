@@ -316,7 +316,8 @@ public class TristateCheckIcon extends SimpleCheckIcon
             if ( mixedStep > -1 )
             {
                 final int r = 3 - mixedStep;
-                final int s = cb.getShadeWidth () + 3;
+                // todo check shade width provide needs
+                final int s = /*cb.getShadeWidth ()*/ + 3;
                 final Rectangle b = new Rectangle ( x + s, y + s, w - s * 2, h - s * 2 );
                 final RoundRectangle2D shape = new RoundRectangle2D.Double ( b.x + r, b.y + r, b.width - r * 2, b.height - r * 2, 3, 3 );
                 final Point center = GeometryUtils.middle ( b );

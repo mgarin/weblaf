@@ -24,4 +24,25 @@
         </painter>
     </style>
 
+    <!-- Boolean table cell renderer -->
+    <style type="checkBox" id="table-bool-cell" extends="default">
+        <component>
+            <opaque>true</opaque>
+            <horizontalAlignment>0</horizontalAlignment>
+        </component>
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebCheckBoxPainter">
+            <shadeWidth>0</shadeWidth>
+            <animated>false</animated>
+            <iconWidth>12</iconWidth>
+            <iconHeight>12</iconHeight>
+        </painter>
+    </style>
+
+    <!-- Boolean table cell editor -->
+    <style type="checkBox" id="table-bool-editor" extends="list-bool-cell">
+        <component>
+            <focusable>false</focusable>
+        </component>
+    </style>
+
 </skin>
