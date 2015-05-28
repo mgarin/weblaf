@@ -17,6 +17,7 @@
 
 package com.alee.extended.checkbox;
 
+import com.alee.extended.painter.Painter;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.language.LanguageManager;
@@ -337,6 +338,29 @@ public class WebTristateCheckBox extends JCheckBox
     public void setUnchecked ()
     {
         setState ( CheckState.unchecked );
+    }
+
+    /**
+     * Returns tristate checkbox painter.
+     *
+     * @return tristate checkbox painter
+     */
+    public Painter getPainter ()
+    {
+        return getWebUI ().getPainter ();
+    }
+
+    /**
+     * Sets tristate checkbox painter.
+     * Pass null to remove tristate checkbox painter.
+     *
+     * @param painter new tristate checkbox painter
+     * @return this tristate checkbox
+     */
+    public WebTristateCheckBox setPainter ( final Painter painter )
+    {
+        getWebUI ().setPainter ( painter );
+        return this;
     }
 
     /**

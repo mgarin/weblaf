@@ -2,6 +2,18 @@
 
     <!-- com.alee.laf.spinner.WebSpinner -->
 
+    <!-- Spinner -->
+    <style type="spinner" id="default">
+        <component>
+            <opaque>false</opaque>
+            <background>255,255,255</background>
+        </component>
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebSpinnerPainter">
+            <round>4</round>
+            <shadeWidth>2</shadeWidth>
+        </painter>
+    </style>
+
     <!-- Buttons -->
     <style type="button" id="spinner" extends="default">
         <component>

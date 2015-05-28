@@ -21,10 +21,10 @@
             <thumbAngleLength>4</thumbAngleLength>
             <trackBgTop>242,242,242</trackBgTop>
             <trackBgBottom>223,223,223</trackBgBottom>
-            <progressTrackBgTop>0,0,0</progressTrackBgTop>
+            <progressTrackBgTop>255,255,255</progressTrackBgTop>
             <progressTrackBgBottom>223,223,223</progressTrackBgBottom>
             <progressBorderColor>128,128,128</progressBorderColor>
-            <thumbBgTop>0,0,0</thumbBgTop>
+            <thumbBgTop>255,255,255</thumbBgTop>
             <thumbBgBottom>223,223,223</thumbBgBottom>
             <drawProgress>true</drawProgress>
             <drawThumb>true</drawThumb>

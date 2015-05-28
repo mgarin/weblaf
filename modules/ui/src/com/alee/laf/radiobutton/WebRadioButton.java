@@ -17,6 +17,7 @@
 
 package com.alee.laf.radiobutton;
 
+import com.alee.extended.painter.Painter;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.hotkey.HotkeyInfo;
@@ -173,6 +174,29 @@ public class WebRadioButton extends JRadioButton
     public void removeHotkeys ()
     {
         HotkeyManager.unregisterHotkeys ( this );
+    }
+
+    /**
+     * Returns radiobutton painter.
+     *
+     * @return radiobutton painter
+     */
+    public Painter getPainter ()
+    {
+        return getWebUI ().getPainter ();
+    }
+
+    /**
+     * Sets radiobutton painter.
+     * Pass null to remove radiobutton painter.
+     *
+     * @param painter new radiobutton painter
+     * @return this radiobutton
+     */
+    public WebRadioButton setPainter ( final Painter painter )
+    {
+        getWebUI ().setPainter ( painter );
+        return this;
     }
 
     /**

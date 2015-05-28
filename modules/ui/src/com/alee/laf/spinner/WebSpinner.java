@@ -17,6 +17,7 @@
 
 package com.alee.laf.spinner;
 
+import com.alee.extended.painter.Painter;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.language.data.TooltipWay;
@@ -28,6 +29,7 @@ import com.alee.utils.EventUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.laf.ShapeProvider;
+import com.alee.utils.laf.Styleable;
 import com.alee.utils.swing.*;
 
 import javax.swing.*;
@@ -41,7 +43,7 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public class WebSpinner extends JSpinner implements EventMethods, ToolTipMethods, ShapeProvider, FontMethods<WebSpinner>
+public class WebSpinner extends JSpinner implements Styleable, ShapeProvider, EventMethods, ToolTipMethods, FontMethods<WebSpinner>
 {
     public WebSpinner ()
     {
@@ -53,46 +55,89 @@ public class WebSpinner extends JSpinner implements EventMethods, ToolTipMethods
         super ( model );
     }
 
-    public int getShadeWidth ()
+    /**
+     * Returns spinner painter.
+     *
+     * @return spinner painter
+     */
+    public Painter getPainter ()
     {
-        return getWebUI ().getShadeWidth ();
+        return getWebUI ().getPainter ();
     }
 
-    public void setShadeWidth ( final int shadeWidth )
+    /**
+     * Sets spinner painter.
+     * Pass null to remove spinner painter.
+     *
+     * @param painter new spinner painter
+     * @return this spinner
+     */
+    public WebSpinner setPainter ( final Painter painter )
     {
-        getWebUI ().setShadeWidth ( shadeWidth );
+        getWebUI ().setPainter ( painter );
+        return this;
     }
 
-    public int getRound ()
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getStyleId ()
     {
-        return getWebUI ().getRound ();
+        return getWebUI ().getStyleId ();
     }
 
-    public void setRound ( final int round )
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setStyleId ( final String id )
     {
-        getWebUI ().setRound ( round );
+        getWebUI ().setStyleId ( id );
     }
 
-    public boolean isDrawBorder ()
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Shape provideShape ()
     {
-        return getWebUI ().isDrawBorder ();
+        return getWebUI ().provideShape ();
     }
 
-    public void setDrawBorder ( final boolean drawBorder )
+    private WebSpinnerUI getWebUI ()
     {
-        getWebUI ().setDrawBorder ( drawBorder );
+        return ( WebSpinnerUI ) getUI ();
     }
 
-    public boolean isDrawFocus ()
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void updateUI ()
     {
-        return getWebUI ().isDrawFocus ();
+        if ( getUI () == null || !( getUI () instanceof WebSpinnerUI ) )
+        {
+            try
+            {
+                setUI ( ( WebSpinnerUI ) ReflectUtils.createInstance ( WebLookAndFeel.spinnerUI ) );
+            }
+            catch ( final Throwable e )
+            {
+                Log.error ( this, e );
+                setUI ( new WebSpinnerUI () );
+            }
+        }
+        else
+        {
+            setUI ( getUI () );
+        }
+        revalidate ();
     }
 
-    public void setDrawFocus ( final boolean drawFocus )
-    {
-        getWebUI ().setDrawFocus ( drawFocus );
-    }
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected JComponent createEditor ( final SpinnerModel model )
     {
@@ -120,39 +165,6 @@ public class WebSpinner extends JSpinner implements EventMethods, ToolTipMethods
             WebSpinnerUI.installFieldUI ( defaultEditor.getTextField (), WebSpinner.this );
             return defaultEditor;
         }
-    }
-
-    @Override
-    public Shape provideShape ()
-    {
-        return getWebUI ().provideShape ();
-    }
-
-    public WebSpinnerUI getWebUI ()
-    {
-        return ( WebSpinnerUI ) getUI ();
-    }
-
-    @Override
-    public void updateUI ()
-    {
-        if ( getUI () == null || !( getUI () instanceof WebSpinnerUI ) )
-        {
-            try
-            {
-                setUI ( ( WebSpinnerUI ) ReflectUtils.createInstance ( WebLookAndFeel.spinnerUI ) );
-            }
-            catch ( final Throwable e )
-            {
-                Log.error ( this, e );
-                setUI ( new WebSpinnerUI () );
-            }
-        }
-        else
-        {
-            setUI ( getUI () );
-        }
-        revalidate ();
     }
 
     /**
