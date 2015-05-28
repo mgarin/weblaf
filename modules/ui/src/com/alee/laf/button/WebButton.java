@@ -75,14 +75,12 @@ public class WebButton extends JButton
 
     public WebButton ( final String text )
     {
-        super ( LanguageUtils.getInitialText ( text ) );
-        LanguageUtils.registerInitialLanguage ( this, text );
+        super ( text );
     }
 
     public WebButton ( final String text, final Icon icon )
     {
-        super ( LanguageUtils.getInitialText ( text ), icon );
-        LanguageUtils.registerInitialLanguage ( this, text );
+        super ( text, icon );
     }
 
     public WebButton ( final ActionListener listener )
@@ -100,15 +98,13 @@ public class WebButton extends JButton
 
     public WebButton ( final String text, final ActionListener listener )
     {
-        super ( LanguageUtils.getInitialText ( text ) );
-        LanguageUtils.registerInitialLanguage ( this, text );
+        super ( text );
         addActionListener ( listener );
     }
 
     public WebButton ( final String text, final Icon icon, final ActionListener listener )
     {
-        super ( LanguageUtils.getInitialText ( text ), icon );
-        LanguageUtils.registerInitialLanguage ( this, text );
+        super ( text, icon );
         addActionListener ( listener );
     }
 
@@ -121,6 +117,16 @@ public class WebButton extends JButton
     {
         super ();
         setPainter ( painter );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void init ( final String text, final Icon icon )
+    {
+        super.init ( LanguageUtils.getInitialText ( text ), icon );
+        LanguageUtils.registerInitialLanguage ( this, text );
     }
 
     public Painter getPainter ()
