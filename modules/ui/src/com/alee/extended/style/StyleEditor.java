@@ -40,6 +40,7 @@ import com.alee.laf.button.WebToggleButton;
 import com.alee.laf.checkbox.WebCheckBox;
 import com.alee.laf.combobox.WebComboBox;
 import com.alee.laf.label.WebLabel;
+import com.alee.laf.menu.WebCheckBoxMenuItem;
 import com.alee.laf.menu.WebMenuItem;
 import com.alee.laf.menu.WebPopupMenu;
 import com.alee.laf.panel.WebPanel;
@@ -397,6 +398,8 @@ public class StyleEditor extends WebFrame
         //
 
         final WebPopupMenu popupMenu = new WebPopupMenu ();
+        popupMenu.add ( new WebCheckBoxMenuItem ( "Check item", WebLookAndFeel.getIcon ( 16 ) ) );
+        popupMenu.addSeparator ();
         popupMenu.add ( new WebMenuItem ( "Item 1", WebLookAndFeel.getIcon ( 16 ) ) );
         popupMenu.add ( new WebMenuItem ( "Item 2" ) );
         popupMenu.add ( new WebMenuItem ( "Item 3" ) );
