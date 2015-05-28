@@ -187,9 +187,9 @@ public class WebToolBarPainter<E extends JToolBar, U extends WebToolBarUI> exten
     }
 
     @Override
-    protected void paintBackground ( final Graphics2D g2d, final Rectangle bounds, final E c, final Shape backgroundShape )
+    protected void paintBackground ( final Graphics2D g2d, final Rectangle bounds, final Shape backgroundShape )
     {
-        super.paintBackground ( g2d, bounds, c, backgroundShape );
+        super.paintBackground ( g2d, bounds, backgroundShape );
         //
         //        final boolean horizontal = c.getOrientation () == WebToolBar.HORIZONTAL;
         //
@@ -284,8 +284,8 @@ public class WebToolBarPainter<E extends JToolBar, U extends WebToolBarUI> exten
                     g2d.setPaint ( new LinearGradientPaint ( 0, gradY, 0, gradEndY, fractions, gradient ) );
 
                     // Determining gripper X coordinate
-                    int x = toolbarStyle.equals ( ToolbarStyle.standalone ) ? shadeWidth + 1 + margin.left + ( ui.isFloating () ? -1 : 1 ) :
-                            margin.left + gripperSpace / 2 - 1;
+                    int x = toolbarStyle.equals ( ToolbarStyle.standalone ) ? shadeWidth + 1 + ( ui.isFloating () ? -1 : 1 ) :
+                            gripperSpace / 2 - 1;
                     if ( !ltr )
                     {
                         x = c.getWidth () - x - 2;
@@ -311,8 +311,8 @@ public class WebToolBarPainter<E extends JToolBar, U extends WebToolBarUI> exten
                     g2d.setPaint ( new LinearGradientPaint ( gradX, 0, gradEndX, 0, fractions, gradient ) );
 
                     // Determining gripper Y coordinate
-                    final int y = toolbarStyle.equals ( ToolbarStyle.standalone ) ? shadeWidth + 1 + margin.top +
-                            ( ui.isFloating () ? -1 : 1 ) : margin.top + gripperSpace / 2 - 1;
+                    final int y = toolbarStyle.equals ( ToolbarStyle.standalone ) ? shadeWidth + 1 +
+                            ( ui.isFloating () ? -1 : 1 ) : gripperSpace / 2 - 1;
 
                     // Painting gripper
                     for ( int i = c.getWidth () / 2 - 3; i >= gradX; i -= 4 )

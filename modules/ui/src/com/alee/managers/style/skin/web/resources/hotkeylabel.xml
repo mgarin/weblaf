@@ -4,9 +4,9 @@
 
     <!-- Hotkey label -->
     <style type="label" id="hotkeylabel" extends="default">
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebHotkeyLabelPainter">
-            <margin>2,6,3,6</margin>
-        </painter>
+        <ui>
+            <padding>2,6,3,6</padding>
+        </ui>
     </style>
 
 </skin>

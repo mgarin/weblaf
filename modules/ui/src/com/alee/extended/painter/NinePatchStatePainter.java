@@ -273,9 +273,9 @@ public class NinePatchStatePainter<E extends JComponent, U extends ComponentUI> 
      * {@inheritDoc}
      */
     @Override
-    public Insets getMargin ()
+    public Insets getBorders ()
     {
-        final Insets margin = super.getMargin ();
+        final Insets margin = super.getBorders ();
         if ( hasStateIcons () )
         {
             Insets maxInsets = new Insets ( 0, 0, 0, 0 );

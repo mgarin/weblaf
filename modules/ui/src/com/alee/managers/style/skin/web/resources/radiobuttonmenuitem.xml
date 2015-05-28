@@ -9,7 +9,6 @@
             <iconTextGap>7</iconTextGap>
         </component>
         <painter id="painter" class="com.alee.managers.style.skin.web.WebRadioButtonMenuItemPainter">
-            <margin>0,0,0,0</margin>
             <acceleratorGap>15</acceleratorGap>
             <iconAlignment>0</iconAlignment>
             <disabledFg>192,192,192</disabledFg>

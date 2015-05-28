@@ -4,9 +4,9 @@
 
     <!-- Selected value label -->
     <style type="label" id="combobox-selected" extends="default">
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebComboBoxElementPainter">
-            <margin>2,2,2,2</margin>
-        </painter>
+        <ui>
+            <padding>2,2,2,2</padding>
+        </ui>
     </style>
 
     <!-- Arrow button -->
@@ -36,8 +36,10 @@
 
     <!-- Popup list scrollbar -->
     <style type="scrollBar" id="combobox-list" extends="undecorated-buttonless">
+        <ui>
+            <padding>0,1,0,1</padding>
+        </ui>
         <painter id="painter" base="true" class="com.alee.managers.style.skin.web.WebScrollBarPainter">
-            <margin>0,1,0,1</margin>
             <thumbRound>4</thumbRound>
             <thumbMargin>0,2,0,4</thumbMargin>
             <scrollBarWidth>12</scrollBarWidth>
@@ -46,8 +48,10 @@
 
     <!-- Popup list value label -->
     <style type="label" id="combobox-list-cell" extends="default">
+        <ui>
+            <padding>4,6,4,6</padding>
+        </ui>
         <painter id="painter" class="com.alee.managers.style.skin.web.WebComboBoxElementPainter">
-            <margin>4,6,4,6</margin>
             <topSelectedBackgroundColor>208,208,198</topSelectedBackgroundColor>
             <bottomSelectedBackgroundColor>196,196,186</bottomSelectedBackgroundColor>
         </painter>

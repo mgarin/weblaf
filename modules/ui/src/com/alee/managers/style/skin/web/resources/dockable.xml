@@ -27,9 +27,9 @@
 
     <!-- Dockable frame title label -->
     <style type="label" id="dockable-frame-title" extends="shade">
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebLabelPainter">
-            <margin>3,3,3,10</margin>
-        </painter>
+        <ui>
+            <padding>3,3,3,10</padding>
+        </ui>
     </style>
 
     <!-- Dockable frame tool buttons panel -->

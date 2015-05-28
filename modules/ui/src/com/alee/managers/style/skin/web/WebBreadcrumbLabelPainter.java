@@ -139,7 +139,7 @@ public class WebBreadcrumbLabelPainter<E extends WebBreadcrumbLabel, U extends W
      * {@inheritDoc}
      */
     @Override
-    public Insets getMargin ()
+    public Insets getBorders ()
     {
         return BreadcrumbUtils.getElementMargin ( component );
     }

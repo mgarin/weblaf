@@ -7,9 +7,9 @@
         <component>
             <opaque>false</opaque>
         </component>
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebPanelPainter">
-            <margin>4,5,4,10</margin>
-        </painter>
+        <ui>
+            <padding>4,5,4,10</padding>
+        </ui>
     </style>
 
     <!-- Title label -->
@@ -20,8 +20,10 @@
         <component>
             <focusable>false</focusable>
         </component>
+        <ui>
+            <padding>1,4,1,4</padding>
+        </ui>
         <painter id="painter" class="com.alee.managers.style.skin.web.WebButtonPainter">
-            <margin>1,4,1,4</margin>
             <round>6</round>
         </painter>
     </style>

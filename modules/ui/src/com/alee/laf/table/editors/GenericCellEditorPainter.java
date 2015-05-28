@@ -46,7 +46,7 @@ public class GenericCellEditorPainter extends AbstractPainter<GenericCellEditor,
      * {@inheritDoc}
      */
     @Override
-    public Insets getMargin ()
+    public Insets getBorders ()
     {
         return new Insets ( 0, 1, 0, 1 );
     }

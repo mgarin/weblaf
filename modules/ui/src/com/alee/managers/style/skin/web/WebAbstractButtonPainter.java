@@ -258,6 +258,27 @@ public class WebAbstractButtonPainter<E extends AbstractButton, U extends BasicB
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Insets getBorders ()
+    {
+        if ( undecorated )
+        {
+            return null;
+        }
+        else
+        {
+            final Insets borders = super.getBorders ();
+            borders.top += innerShadeWidth;
+            borders.left += innerShadeWidth + leftRightSpacing;
+            borders.bottom += innerShadeWidth;
+            borders.right += innerShadeWidth + leftRightSpacing;
+            return borders;
+        }
+    }
+
+    /**
      * Updates atually used shine color.
      */
     protected void updateTransparentShineColor ()
@@ -277,16 +298,16 @@ public class WebAbstractButtonPainter<E extends AbstractButton, U extends BasicB
         pressed = model.isPressed () || model.isSelected ();
 
         // Calculating bounds we will need late
-        calculateBounds ( g2d, bounds, c, ui );
+        calculateBounds ( SwingUtilities2.getFontMetrics ( c, g2d ), bounds );
 
         // Painting button
         super.paint ( g2d, bounds, c, ui );
 
         // Painting icon
-        paintIcon ( g2d, bounds, c, ui );
+        paintIcon ( g2d, bounds );
 
         // Painting text
-        paintText ( g2d, bounds, c, ui );
+        paintText ( g2d, bounds );
 
         // Cleaning up
         model = null;
@@ -295,16 +316,22 @@ public class WebAbstractButtonPainter<E extends AbstractButton, U extends BasicB
     /**
      * Calculates view, icon and text bounds for future usage.
      *
-     * @param g2d    graphics context
-     * @param bounds paint bounds
-     * @param c      painted button
-     * @param ui     painted button UI
+     * @param fm font metrics
      */
-    protected void calculateBounds ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
+    protected void calculateBounds ( final FontMetrics fm )
     {
-        final FontMetrics fm = SwingUtilities2.getFontMetrics ( c, g2d );
+        calculateBounds ( fm, new Rectangle ( Short.MAX_VALUE, Short.MAX_VALUE ) );
+    }
 
-        final Insets i = c.getInsets ();
+    /**
+     * Calculates view, icon and text bounds for future usage.
+     *
+     * @param fm     font metrics
+     * @param bounds paint bounds
+     */
+    protected void calculateBounds ( final FontMetrics fm, final Rectangle bounds )
+    {
+        final Insets i = component.getInsets ();
         viewRect.x = bounds.x + i.left;
         viewRect.y = bounds.y + i.top;
         viewRect.width = bounds.width - ( i.right + viewRect.x );
@@ -314,26 +341,26 @@ public class WebAbstractButtonPainter<E extends AbstractButton, U extends BasicB
         iconRect.x = iconRect.y = iconRect.width = iconRect.height = 0;
 
         // Layout the text and icon
-        SwingUtilities.layoutCompoundLabel ( c, fm, c.getText (), c.getIcon (), c.getVerticalAlignment (), c.getHorizontalAlignment (),
-                c.getVerticalTextPosition (), c.getHorizontalTextPosition (), viewRect, iconRect, textRect,
-                c.getText () == null ? 0 : c.getIconTextGap () );
+        SwingUtilities.layoutCompoundLabel ( component, fm, component.getText (), component.getIcon (), component.getVerticalAlignment (),
+                component.getHorizontalAlignment (), component.getVerticalTextPosition (), component.getHorizontalTextPosition (), viewRect,
+                iconRect, textRect, component.getText () == null ? 0 : component.getIconTextGap () );
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected void paintBackground ( final Graphics2D g2d, final Rectangle bounds, final E c, final Shape backgroundShape )
+    protected void paintBackground ( final Graphics2D g2d, final Rectangle bounds, final Shape backgroundShape )
     {
         g2d.setPaint ( new GradientPaint ( 0, paintTop ? shadeWidth : 0, getCurrentTopBgColor ( pressed ), 0,
-                c.getHeight () - ( paintBottom ? shadeWidth : 0 ), getCurrentBottomBgColor ( pressed ) ) );
+                component.getHeight () - ( paintBottom ? shadeWidth : 0 ), getCurrentBottomBgColor ( pressed ) ) );
         g2d.fill ( backgroundShape );
 
         // Cursor-following highlight
-        if ( rolloverShine && mousePoint != null && c.isEnabled () )
+        if ( rolloverShine && mousePoint != null && component.isEnabled () )
         {
             final Shape oldClip = GraphicsUtils.intersectClip ( g2d, backgroundShape );
-            g2d.setPaint ( new RadialGradientPaint ( mousePoint.x, c.getHeight (), c.getWidth (), new float[]{ 0f, 1f },
+            g2d.setPaint ( new RadialGradientPaint ( mousePoint.x, component.getHeight (), component.getWidth (), new float[]{ 0f, 1f },
                     new Color[]{ transparentShineColor, StyleConstants.transparent } ) );
             g2d.fill ( backgroundShape );
             GraphicsUtils.restoreClip ( g2d, oldClip );
@@ -348,11 +375,11 @@ public class WebAbstractButtonPainter<E extends AbstractButton, U extends BasicB
      * @param c      painted button
      * @param ui     painted button UI
      */
-    protected void paintIcon ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
+    protected void paintIcon ( final Graphics2D g2d, final Rectangle bounds )
     {
-        if ( c.getIcon () != null )
+        if ( component.getIcon () != null )
         {
-            Icon icon = c.getIcon ();
+            Icon icon = component.getIcon ();
             Icon tmpIcon = null;
 
             if ( icon == null )
@@ -365,7 +392,7 @@ public class WebAbstractButtonPainter<E extends AbstractButton, U extends BasicB
             /* the fallback icon should be based on the selected state */
             if ( model.isSelected () )
             {
-                selectedIcon = c.getSelectedIcon ();
+                selectedIcon = component.getSelectedIcon ();
                 if ( selectedIcon != null )
                 {
                     icon = selectedIcon;
@@ -376,7 +403,7 @@ public class WebAbstractButtonPainter<E extends AbstractButton, U extends BasicB
             {
                 if ( model.isSelected () )
                 {
-                    tmpIcon = c.getDisabledSelectedIcon ();
+                    tmpIcon = component.getDisabledSelectedIcon ();
                     if ( tmpIcon == null )
                     {
                         tmpIcon = selectedIcon;
@@ -385,18 +412,18 @@ public class WebAbstractButtonPainter<E extends AbstractButton, U extends BasicB
 
                 if ( tmpIcon == null )
                 {
-                    tmpIcon = c.getDisabledIcon ();
+                    tmpIcon = component.getDisabledIcon ();
                 }
             }
             else if ( model.isPressed () && model.isArmed () )
             {
-                tmpIcon = c.getPressedIcon ();
+                tmpIcon = component.getPressedIcon ();
             }
-            else if ( c.isRolloverEnabled () && model.isRollover () )
+            else if ( component.isRolloverEnabled () && model.isRollover () )
             {
                 if ( model.isSelected () )
                 {
-                    tmpIcon = c.getRolloverSelectedIcon ();
+                    tmpIcon = component.getRolloverSelectedIcon ();
                     if ( tmpIcon == null )
                     {
                         tmpIcon = selectedIcon;
@@ -405,7 +432,7 @@ public class WebAbstractButtonPainter<E extends AbstractButton, U extends BasicB
 
                 if ( tmpIcon == null )
                 {
-                    tmpIcon = c.getRolloverIcon ();
+                    tmpIcon = component.getRolloverIcon ();
                 }
             }
 
@@ -416,11 +443,11 @@ public class WebAbstractButtonPainter<E extends AbstractButton, U extends BasicB
 
             if ( model.isPressed () && model.isArmed () )
             {
-                icon.paintIcon ( c, g2d, iconRect.x, iconRect.y );
+                icon.paintIcon ( component, g2d, iconRect.x, iconRect.y );
             }
             else
             {
-                icon.paintIcon ( c, g2d, iconRect.x, iconRect.y );
+                icon.paintIcon ( component, g2d, iconRect.x, iconRect.y );
             }
         }
     }
@@ -433,36 +460,36 @@ public class WebAbstractButtonPainter<E extends AbstractButton, U extends BasicB
      * @param c      painted button
      * @param ui     painted button UI
      */
-    protected void paintText ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
+    protected void paintText ( final Graphics2D g2d, final Rectangle bounds )
     {
         final Map map = SwingUtils.setupTextAntialias ( g2d );
-        final String text = c.getText ();
+        final String text = component.getText ();
         if ( text != null && !text.equals ( "" ) )
         {
-            final View v = ( View ) c.getClientProperty ( BasicHTML.propertyKey );
+            final View v = ( View ) component.getClientProperty ( BasicHTML.propertyKey );
             if ( v != null )
             {
                 v.paint ( g2d, textRect );
             }
             else
             {
-                final FontMetrics fm = SwingUtils.getFontMetrics ( c, g2d );
-                final int mnemonicIndex = c.getDisplayedMnemonicIndex ();
+                final FontMetrics fm = SwingUtils.getFontMetrics ( component, g2d );
+                final int mnemonicIndex = component.getDisplayedMnemonicIndex ();
 
                 // Drawing text
                 if ( model.isEnabled () )
                 {
                     // Drawing normal text
-                    g2d.setColor ( model.isPressed () || model.isSelected () ? selectedForeground : c.getForeground () );
+                    g2d.setColor ( model.isPressed () || model.isSelected () ? selectedForeground : component.getForeground () );
                     SwingUtils.drawStringUnderlineCharAt ( g2d, text, mnemonicIndex, textRect.x, textRect.y + fm.getAscent () );
                 }
                 else
                 {
                     // todo Paint single-colored text
                     // Drawing disabled text
-                    g2d.setColor ( c.getBackground ().brighter () );
+                    g2d.setColor ( component.getBackground ().brighter () );
                     SwingUtils.drawStringUnderlineCharAt ( g2d, text, mnemonicIndex, textRect.x + 1, textRect.y + fm.getAscent () + 1 );
-                    g2d.setColor ( c.getBackground ().darker () );
+                    g2d.setColor ( component.getBackground ().darker () );
                     SwingUtils.drawStringUnderlineCharAt ( g2d, text, mnemonicIndex, textRect.x, textRect.y + fm.getAscent () );
                 }
             }
@@ -490,6 +517,17 @@ public class WebAbstractButtonPainter<E extends AbstractButton, U extends BasicB
     protected Color getCurrentBottomBgColor ( final boolean pressed )
     {
         return pressed ? bottomSelectedBgColor : bottomBgColor;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Dimension getContentPreferredSize ()
+    {
+        // Calculating icon and text rects union as content size
+        calculateBounds ( component.getFontMetrics ( component.getFont () ) );
+        return textRect.union ( iconRect ).getSize ();
     }
 
     /**

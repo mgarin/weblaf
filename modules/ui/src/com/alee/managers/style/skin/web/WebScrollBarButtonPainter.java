@@ -268,7 +268,7 @@ public class WebScrollBarButtonPainter<E extends JButton, U extends WebButtonUI>
      * {@inheritDoc}
      */
     @Override
-    public Insets getMargin ()
+    public Insets getBorders ()
     {
         final boolean decr = buttonType == ScrollBarButtonType.decrease;
         if ( isVerticalScroll () )

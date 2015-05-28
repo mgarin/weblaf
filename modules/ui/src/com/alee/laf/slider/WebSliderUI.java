@@ -182,6 +182,6 @@ public class WebSliderUI extends BasicSliderUI implements Styleable, ShapeProvid
     @Override
     public Dimension getPreferredSize ( final JComponent c )
     {
-        return PainterSupport.getPreferredSize ( c, super.getPreferredSize ( c ), painter );
+        return PainterSupport.getPreferredSize ( c, painter );
     }
 }

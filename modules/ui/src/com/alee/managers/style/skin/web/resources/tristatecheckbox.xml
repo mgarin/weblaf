@@ -8,7 +8,6 @@
             <opaque>false</opaque>
         </component>
         <painter id="painter" class="com.alee.managers.style.skin.web.WebTristateCheckBoxPainter">
-            <margin>0,0,0,0</margin>
             <undecorated>true</undecorated>
             <round>2</round>
             <shadeWidth>2</shadeWidth>

@@ -8,8 +8,10 @@
             <opaque>false</opaque>
             <background>white</background>
         </component>
+        <ui>
+            <padding>-1,-1,-1,-1</padding>
+        </ui>
         <painter id="painter" class="com.alee.managers.style.skin.web.WebPanelPainter">
-            <margin>-1,-1,-1,-1</margin>
             <undecorated>false</undecorated>
             <round>2</round>
             <webColoredBackground>true</webColoredBackground>
@@ -23,8 +25,10 @@
             <verticalScrollBarPolicy>21</verticalScrollBarPolicy>
             <horizontalScrollBarPolicy>31</horizontalScrollBarPolicy>
         </component>
+        <ui>
+            <padding>1,1,1,1</padding>
+        </ui>
         <painter id="painter" class="com.alee.managers.style.skin.web.WebScrollPanePainter">
-            <margin>1,1,1,1</margin>
             <undecorated>true</undecorated>
         </painter>
     </style>
@@ -40,8 +44,10 @@
         <component>
             <focusable>true</focusable>
         </component>
+        <ui>
+            <padding>0,3,0,1</padding>
+        </ui>
         <painter id="painter" class="com.alee.managers.style.skin.web.WebPanelPainter">
-            <margin>0,3,0,1</margin>
             <undecorated>false</undecorated>
             <round>2</round>
             <shadeWidth>0</shadeWidth>
@@ -54,9 +60,9 @@
 
     <!-- Selected file name label -->
     <style type="label" id="filechooserfield-file" extends="default">
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebLabelPainter">
-            <margin>0,0,0,2</margin>
-        </painter>
+        <ui>
+            <padding>0,0,0,2</padding>
+        </ui>
     </style>
 
     <!-- Selected file removal button -->

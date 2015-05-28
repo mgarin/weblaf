@@ -9,7 +9,6 @@
             <floatable>true</floatable>
         </component>
         <painter id="painter" class="com.alee.managers.style.skin.web.WebToolBarPainter">
-            <margin>3,3,3,3</margin>
             <undecorated>false</undecorated>
             <round>6</round>
             <shadeWidth>2</shadeWidth>

@@ -7,8 +7,10 @@
         <component>
             <opaque>false</opaque>
         </component>
+        <ui>
+            <padding>2,5,2,5</padding>
+        </ui>
         <painter id="painter" class="com.alee.managers.style.skin.web.WebPanelPainter">
-            <margin>2,5,2,5</margin>
             <webColoredBackground>false</webColoredBackground>
         </painter>
     </style>
@@ -21,17 +23,19 @@
         <component>
             <opaque>false</opaque>
         </component>
+        <ui>
+            <padding>5,0,3,0</padding>
+        </ui>
         <painter id="painter" class="com.alee.managers.style.skin.web.WebPanelPainter">
-            <margin>5,0,3,0</margin>
             <webColoredBackground>false</webColoredBackground>
         </painter>
     </style>
 
     <!-- Web-only color check -->
     <style type="checkBox" id="colorchooser-webonly" extends="default">
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebCheckBoxPainter">
-            <margin>0,5,0,5</margin>
-        </painter>
+        <ui>
+            <padding>0,5,0,5</padding>
+        </ui>
     </style>
 
     <!-- Control buttons buttons -->

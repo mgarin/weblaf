@@ -188,6 +188,6 @@ public class WebSplitButtonUI extends BasicButtonUI implements Styleable, ShapeP
     @Override
     public Dimension getPreferredSize ( final JComponent c )
     {
-        return PainterSupport.getPreferredSize ( c, super.getPreferredSize ( c ), painter );
+        return PainterSupport.getPreferredSize ( c, painter );
     }
 }

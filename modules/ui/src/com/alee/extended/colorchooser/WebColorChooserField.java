@@ -549,7 +549,7 @@ public class WebColorChooserField extends WebTextField
                              * {@inheritDoc}
                              */
                             @Override
-                            public Insets getMargin ()
+                            public Insets getBorders ()
                             {
                                 return new Insets ( 4, 6, 6, 6 );
                             }

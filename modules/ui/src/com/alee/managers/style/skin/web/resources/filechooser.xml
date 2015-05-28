@@ -37,23 +37,23 @@
 
     <!-- Central panel -->
     <style type="panel" id="filechooser-center" extends="default">
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebPanelPainter">
-            <margin>4,4,4,4</margin>
-        </painter>
+        <ui>
+            <padding>4,4,4,4</padding>
+        </ui>
     </style>
 
     <!-- South panel -->
     <style type="panel" id="filechooser-center" extends="default">
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebPanelPainter">
-            <margin>0,4,4,4</margin>
-        </painter>
+        <ui>
+            <padding>0,4,4,4</padding>
+        </ui>
     </style>
 
     <!-- Selected files title label -->
     <style type="label" id="filechooser-selected" extends="shade">
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebLabelPainter">
-            <margin>0,4,0,0</margin>
-        </painter>
+        <ui>
+            <padding>0,4,0,0</padding>
+        </ui>
     </style>
 
     <!-- Buttons -->
@@ -66,9 +66,9 @@
         <component>
             <background>white</background>
         </component>
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebPanelPainter">
-            <margin>4,4,4,4</margin>
-        </painter>
+        <ui>
+            <padding>4,4,4,4</padding>
+        </ui>
     </style>
 
 </skin>

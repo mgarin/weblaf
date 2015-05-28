@@ -44,7 +44,6 @@
             <opaque>false</opaque>
         </component>
         <painter id="painter" class="com.alee.managers.style.skin.web.WebPanelPainter">
-            <margin>0,0,0,0</margin>
             <undecorated>false</undecorated>
             <round>2</round>
             <shadeWidth>0</shadeWidth>

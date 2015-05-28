@@ -167,9 +167,9 @@ public class WebLabelPainter<E extends JLabel, U extends WebLabelUI> extends Abs
      * {@inheritDoc}
      */
     @Override
-    public Insets getMargin ()
+    public Insets getBorders ()
     {
-        return backgroundPainter != null ? backgroundPainter.getMargin () : super.getMargin ();
+        return backgroundPainter != null ? backgroundPainter.getBorders () : null;
     }
 
     /**

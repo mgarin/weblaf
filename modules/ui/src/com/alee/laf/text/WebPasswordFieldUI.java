@@ -498,7 +498,7 @@ public class WebPasswordFieldUI extends BasicPasswordFieldUI implements ShapePro
             final Insets m;
             if ( painter != null )
             {
-                m = painter.getMargin ();
+                m = painter.getBorders ();
             }
             else if ( drawBorder )
             {

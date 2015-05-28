@@ -138,9 +138,9 @@ public class NinePatchIconPainter<E extends JComponent, U extends ComponentUI> e
      * {@inheritDoc}
      */
     @Override
-    public Insets getMargin ()
+    public Insets getBorders ()
     {
-        final Insets margin = super.getMargin ();
+        final Insets margin = super.getBorders ();
         if ( icon != null )
         {
             icon.setComponent ( component );

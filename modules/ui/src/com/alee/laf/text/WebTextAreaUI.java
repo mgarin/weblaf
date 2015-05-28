@@ -254,7 +254,7 @@ public class WebTextAreaUI extends BasicTextAreaUI implements BorderMethods, Swi
             if ( painter != null )
             {
                 // Painter borders
-                final Insets pi = painter.getMargin ();
+                final Insets pi = painter.getBorders ();
                 m.top += pi.top;
                 m.bottom += pi.bottom;
                 m.left += ltr ? pi.left : pi.right;

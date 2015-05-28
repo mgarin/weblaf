@@ -7,8 +7,10 @@
         <component>
             <opaque>false</opaque>
         </component>
+        <ui>
+            <padding>0,4,0,0</padding>
+        </ui>
         <painter id="painter" class="com.alee.managers.style.skin.web.WebCheckBoxPainter">
-            <margin>0,4,0,0</margin>
             <animated>false</animated>
         </painter>
     </style>

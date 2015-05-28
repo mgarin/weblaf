@@ -51,7 +51,6 @@ public class WebBasicStateButtonPainter<E extends AbstractButton, U extends Basi
     protected int iconWidth = 16;
     protected int iconHeight = 16;
     protected Stroke borderStroke = new BasicStroke ( 1.5f );
-    protected Insets margin = WebRadioButtonStyle.margin;
     protected Color darkBorderColor = WebRadioButtonStyle.darkBorderColor;
     protected Color topBgColor = WebRadioButtonStyle.topBgColor;
     protected Color bottomBgColor = WebRadioButtonStyle.bottomBgColor;

@@ -24,6 +24,8 @@ import com.alee.managers.style.StyleManager;
 import com.alee.utils.CompareUtils;
 import com.alee.utils.ProprietaryUtils;
 import com.alee.utils.SwingUtils;
+import com.alee.utils.laf.MarginSupport;
+import com.alee.utils.laf.PaddingSupport;
 import com.alee.utils.laf.ShapeProvider;
 import com.alee.utils.laf.Styleable;
 import com.alee.utils.swing.DataRunnable;
@@ -38,7 +40,7 @@ import java.awt.event.WindowListener;
  * @author Mikle Garin
  */
 
-public class WebToolBarUI extends BasicToolBarUI implements Styleable, ShapeProvider
+public class WebToolBarUI extends BasicToolBarUI implements Styleable, ShapeProvider, MarginSupport, PaddingSupport
 {
     /**
      * Component painter.
@@ -49,6 +51,8 @@ public class WebToolBarUI extends BasicToolBarUI implements Styleable, ShapeProv
      * Runtime variables.
      */
     protected String styleId = null;
+    protected Insets margin = null;
+    protected Insets padding = null;
 
     /**
      * Returns an instance of the WebButtonUI for the specified component.
@@ -126,6 +130,44 @@ public class WebToolBarUI extends BasicToolBarUI implements Styleable, ShapeProv
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Insets getMargin ()
+    {
+        return margin;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setMargin ( final Insets margin )
+    {
+        this.margin = margin;
+        PainterSupport.updateBorder ( getPainter () );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Insets getPadding ()
+    {
+        return padding;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setPadding ( final Insets padding )
+    {
+        this.padding = padding;
+        PainterSupport.updateBorder ( getPainter () );
+    }
+
+    /**
      * Returns toolbar painter.
      *
      * @return toolbar painter
@@ -174,9 +216,12 @@ public class WebToolBarUI extends BasicToolBarUI implements Styleable, ShapeProv
     @Override
     public Dimension getPreferredSize ( final JComponent c )
     {
-        return PainterSupport.getPreferredSize ( c, super.getPreferredSize ( c ), painter );
+        return PainterSupport.getPreferredSize ( c, painter );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected RootPaneContainer createFloatingWindow ( final JToolBar toolbar )
     {
@@ -241,6 +286,9 @@ public class WebToolBarUI extends BasicToolBarUI implements Styleable, ShapeProv
         return dialog;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected DragWindow createDragWindow ( final JToolBar toolbar )
     {
@@ -249,36 +297,54 @@ public class WebToolBarUI extends BasicToolBarUI implements Styleable, ShapeProv
         return dragWindow;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void installRolloverBorders ( final JComponent c )
     {
         // Do not touch any elements here as it will break WebLaF borders
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void installNonRolloverBorders ( final JComponent c )
     {
         // Do not touch any elements here as it will break WebLaF borders
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void installNormalBorders ( final JComponent c )
     {
         // Do not touch any elements here as it will break WebLaF borders
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void setBorderToRollover ( final Component c )
     {
         // Do not touch any elements here as it will break WebLaF borders
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void setBorderToNonRollover ( final Component c )
     {
         // Do not touch any elements here as it will break WebLaF borders
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void setBorderToNormal ( final Component c )
     {

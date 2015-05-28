@@ -192,7 +192,7 @@ public class WebTabbedPaneUI extends BasicTabbedPaneUI implements ShapeProvider,
 
     private Insets getBackgroundInsets ( final JComponent c )
     {
-        return painter != null ? painter.getMargin () : new Insets ( 0, 0, 0, 0 );
+        return painter != null ? painter.getBorders () : new Insets ( 0, 0, 0, 0 );
     }
 
     public int getShadeWidth ()

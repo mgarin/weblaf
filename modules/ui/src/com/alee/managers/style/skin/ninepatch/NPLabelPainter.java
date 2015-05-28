@@ -227,10 +227,10 @@ public class NPLabelPainter<E extends JLabel, U extends WebLabelUI> extends WebL
      * {@inheritDoc}
      */
     @Override
-    public Insets getMargin ()
+    public Insets getBorders ()
     {
         final NinePatchIcon backgroundIcon = getCurrentBackgroundIcon ();
-        return !undecorated && backgroundIcon != null ? backgroundIcon.getMargin () : super.getMargin ();
+        return !undecorated && backgroundIcon != null ? backgroundIcon.getMargin () : super.getBorders ();
     }
 
     /**

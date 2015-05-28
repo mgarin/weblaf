@@ -3,13 +3,13 @@
     <!-- com.alee.laf.tree.WebTree -->
 
     <!-- Default tree cell renderer label -->
-    <style type="label" id="table-cell" extends="default">
+    <style type="label" id="tree-cell" extends="default">
         <component>
             <opaque>false</opaque>
         </component>
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebLabelPainter">
-            <margin>4,4,4,6</margin>
-        </painter>
+        <ui>
+            <padding>4,4,4,6</padding>
+        </ui>
     </style>
 
 </skin>

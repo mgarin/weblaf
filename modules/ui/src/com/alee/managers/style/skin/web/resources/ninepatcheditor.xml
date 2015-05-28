@@ -21,7 +21,7 @@
             <snapToTicks>true</snapToTicks>
         </component>
         <painter id="painter" class="com.alee.managers.style.skin.web.WebSliderPainter">
-            <margin>10,10,10,10</margin>
+            <padding>10,10,10,10</padding>
         </painter>
     </style>
 

@@ -8,8 +8,10 @@
             <opaque>true</opaque>
             <horizontalAlignment>0</horizontalAlignment>
         </component>
+        <ui>
+            <padding>0,10,1,10</padding>
+        </ui>
         <painter id="painter" class="com.alee.managers.style.skin.web.WebLabelPainter">
-            <margin>0,10,1,10</margin>
             <shadeColor>230,230,230</shadeColor>
         </painter>
     </style>
@@ -19,9 +21,9 @@
         <component>
             <opaque>true</opaque>
         </component>
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebLabelPainter">
-            <margin>2,2,2,2</margin>
-        </painter>
+        <ui>
+            <padding>2,2,2,2</padding>
+        </ui>
     </style>
 
     <!-- Boolean table cell renderer -->

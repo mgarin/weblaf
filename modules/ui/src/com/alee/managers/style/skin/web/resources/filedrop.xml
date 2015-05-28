@@ -8,16 +8,16 @@
             <background>white</background>
             <focusable>true</focusable>
         </component>
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebPanelPainter">
-            <margin>2,2,2,2</margin>
-        </painter>
+        <ui>
+            <padding>2,2,2,2</padding>
+        </ui>
     </style>
 
     <!-- Single file panel -->
     <style type="panel" id="filedrop-plate" extends="default">
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebPanelPainter">
-            <margin>0,3,0,0</margin>
-        </painter>
+        <ui>
+            <padding>0,3,0,0</padding>
+        </ui>
     </style>
 
     <!-- Single file name label -->

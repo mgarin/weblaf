@@ -121,4 +121,15 @@ public class WebAbstractSeparatorPainter<E extends JSeparator, U extends BasicSe
         return reversedColors ? new Color[]{ separatorLightUpperColor, Color.WHITE, separatorLightUpperColor } :
                 new Color[]{ separatorUpperColor, separatorColor, separatorUpperColor };
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Dimension getContentPreferredSize ()
+    {
+        // Calculating separator width as content size
+        final int bonus = 1 + ( drawLeadingLine ? 1 : 0 ) + ( drawTrailingLine ? 1 : 0 );
+        return component.getOrientation () == WebSeparator.VERTICAL ? new Dimension ( bonus, 0 ) : new Dimension ( 0, bonus );
+    }
 }

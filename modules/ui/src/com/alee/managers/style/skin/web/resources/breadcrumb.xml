@@ -12,30 +12,34 @@
 
     <!-- Label element -->
     <style type="label" id="breadcrumb-element" extends="default">
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebBreadcrumbLabelPainter">
-            <margin>1,5,1,5</margin>
-        </painter>
+        <ui>
+            <padding>1,5,1,5</padding>
+        </ui>
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebBreadcrumbLabelPainter" />
     </style>
 
     <!-- Button element -->
     <style type="button" id="breadcrumb-element" extends="default">
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebBreadcrumbButtonPainter">
-            <margin>2,5,2,5</margin>
-        </painter>
+        <ui>
+            <padding>2,5,2,5</padding>
+        </ui>
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebBreadcrumbButtonPainter" />
     </style>
 
     <!-- Toggle button element -->
     <style type="toggleButton" id="breadcrumb-element" extends="default">
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebBreadcrumbToggleButtonPainter">
-            <margin>2,5,2,5</margin>
-        </painter>
+        <ui>
+            <padding>2,5,2,5</padding>
+        </ui>
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebBreadcrumbToggleButtonPainter" />
     </style>
 
     <!-- Panel element -->
     <style type="panel" id="breadcrumb-element" extends="default">
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebBreadcrumbPanelPainter">
-            <margin>1,5,1,5</margin>
-        </painter>
+        <ui>
+            <padding>1,5,1,5</padding>
+        </ui>
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebBreadcrumbPanelPainter" />
     </style>
 
 </skin>

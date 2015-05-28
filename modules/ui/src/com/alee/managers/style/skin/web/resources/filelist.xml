@@ -7,16 +7,16 @@
 
     <!-- Tile cells renderer label -->
     <style type="label" id="filelist-tile-cell" extends="filelist-cell">
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebLabelPainter">
-            <margin>6,6,5,8</margin>
-        </painter>
+        <ui>
+            <padding>6,6,5,8</padding>
+        </ui>
     </style>
 
     <!-- Icon cells renderer label -->
     <style type="label" id="filelist-icon-cell" extends="filelist-cell">
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebLabelPainter">
-            <margin>5,5,8,5</margin>
-        </painter>
+        <ui>
+            <padding>5,5,8,5</padding>
+        </ui>
     </style>
 
 </skin>

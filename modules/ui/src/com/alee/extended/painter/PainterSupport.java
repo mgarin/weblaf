@@ -251,54 +251,6 @@ public final class PainterSupport
     }
 
     /**
-     * Updates component border using the specified margin.
-     *
-     * @param component component which border needs to be updated
-     * @param margin    component margin, or null if it doesn't have one
-     * @param painter   component painter, or null if it doesn't have one
-     */
-    public static void updateBorder ( final JComponent component, final Insets margin, final Painter painter )
-    {
-        if ( component != null )
-        {
-            // Preserve old borders
-            if ( SwingUtils.isPreserveBorders ( component ) )
-            {
-                return;
-            }
-
-            final boolean ltr = component.getComponentOrientation ().isLeftToRight ();
-            final Insets m = new Insets ( 0, 0, 0, 0 );
-
-            // Calculating margin borders
-            if ( margin != null )
-            {
-                m.top += margin.top;
-                m.left += ltr ? margin.left : margin.right;
-                m.bottom += margin.bottom;
-                m.right += ltr ? margin.right : margin.left;
-            }
-
-            // Calculating painter borders
-            if ( painter != null )
-            {
-                // Painter borders
-                final Insets pi = painter.getMargin ();
-                if ( pi != null )
-                {
-                    m.top += pi.top;
-                    m.left += ltr ? pi.left : pi.right;
-                    m.bottom += pi.bottom;
-                    m.right += ltr ? pi.right : pi.left;
-                }
-            }
-
-            // Installing border
-            component.setBorder ( LafUtils.createWebBorder ( m ) );
-        }
-    }
-
-    /**
      * Returns component shape according to its painter.
      *
      * @param component component painter is applied to
@@ -318,25 +270,27 @@ public final class PainterSupport
     }
 
     /**
-     * Returns component preferred size with painter taken into account.
+     * Returns component preferred size or {@code null} if there is no preferred size.
      *
      * @param component component painter is applied to
-     * @param ps        default component preferred size
      * @param painter   component painter
-     * @return component preferred size with painter taken into account
+     * @return component preferred size or {@code null} if there is no preferred size
      */
-    public static Dimension getPreferredSize ( final JComponent component, final Dimension ps, final Painter painter )
+    public static Dimension getPreferredSize ( final JComponent component, final Painter painter )
     {
         // Painter's preferred size
-        Dimension pps = painter != null ? SwingUtils.max ( ps, painter.getPreferredSize () ) : ps;
+        Dimension ps = painter != null ? painter.getPreferredSize () : null;
 
-        // Checking layout preferred size
+        // Layout preferred size
         final LayoutManager layout = component.getLayout ();
         if ( layout != null )
         {
-            pps = SwingUtils.max ( ps, layout.preferredLayoutSize ( component ) );
+            synchronized ( component.getTreeLock () )
+            {
+                ps = SwingUtils.max ( ps, layout.preferredLayoutSize ( component ) );
+            }
         }
 
-        return pps;
+        return ps;
     }
 }

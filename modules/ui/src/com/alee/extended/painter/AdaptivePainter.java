@@ -91,18 +91,9 @@ public abstract class AdaptivePainter<E extends JComponent, U extends ComponentU
      * {@inheritDoc}
      */
     @Override
-    public Dimension getPreferredSize ()
+    public Insets getBorders ()
     {
-        return painter.getPreferredSize ();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Insets getMargin ()
-    {
-        return painter.getMargin ();
+        return painter.getBorders ();
     }
 
     /**
@@ -130,5 +121,14 @@ public abstract class AdaptivePainter<E extends JComponent, U extends ComponentU
     public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
     {
         painter.paint ( g2d, bounds, c, ui );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Dimension getPreferredSize ()
+    {
+        return painter.getPreferredSize ();
     }
 }

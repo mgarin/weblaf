@@ -585,7 +585,7 @@ public class WebScrollBarPainter<E extends JScrollBar, U extends WebScrollBarUI>
      * {@inheritDoc}
      */
     @Override
-    public Insets getMargin ()
+    public Insets getBorders ()
     {
         if ( ui.isPaintTrack () )
         {
@@ -596,7 +596,7 @@ public class WebScrollBarPainter<E extends JScrollBar, U extends WebScrollBarUI>
         }
         else
         {
-            return super.getMargin ();
+            return super.getBorders ();
         }
     }
 

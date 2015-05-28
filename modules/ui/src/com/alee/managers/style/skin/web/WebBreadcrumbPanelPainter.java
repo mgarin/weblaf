@@ -144,7 +144,7 @@ public class WebBreadcrumbPanelPainter<E extends WebBreadcrumbPanel, U extends W
      * {@inheritDoc}
      */
     @Override
-    public Insets getMargin ()
+    public Insets getBorders ()
     {
         return BreadcrumbUtils.getElementMargin ( component );
     }

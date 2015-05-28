@@ -9,11 +9,11 @@
             <background>237,237,237</background>
         </component>
         <ui>
+            <padding>1,1,1,1</padding>
             <paintButtons>true</paintButtons>
             <paintTrack>false</paintTrack>
         </ui>
         <painter id="painter" base="true" class="com.alee.managers.style.skin.web.WebScrollBarPainter">
-            <margin>1,1,1,1</margin>
             <thumbRound>8</thumbRound>
             <thumbMargin>1,2,1,2</thumbMargin>
             <scrollBarWidth>13</scrollBarWidth>

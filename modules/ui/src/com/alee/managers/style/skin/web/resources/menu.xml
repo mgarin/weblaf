@@ -11,7 +11,6 @@
         </component>
         <painter id="painter" class="com.alee.managers.style.skin.web.WebMenuPainter">
             <round>2</round>
-            <margin>0,0,0,0</margin>
             <shadeWidth>2</shadeWidth>
             <arrowGap>15</arrowGap>
             <iconAlignment>0</iconAlignment>

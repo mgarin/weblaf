@@ -19,7 +19,10 @@ package com.alee.extended.painter;
 
 import com.alee.laf.WebLookAndFeel;
 import com.alee.utils.CollectionUtils;
+import com.alee.utils.LafUtils;
 import com.alee.utils.SwingUtils;
+import com.alee.utils.laf.MarginSupport;
+import com.alee.utils.laf.PaddingSupport;
 import com.alee.utils.swing.BorderMethods;
 
 import javax.swing.*;
@@ -42,21 +45,6 @@ import java.util.List;
 
 public abstract class AbstractPainter<E extends JComponent, U extends ComponentUI> implements Painter<E, U>, BorderMethods
 {
-    /**
-     * Whether visual data is opaque or not.
-     */
-    protected Boolean opaque = false;
-
-    /**
-     * Visual data preferred size.
-     */
-    protected Dimension preferredSize = new Dimension ( 0, 0 );
-
-    /**
-     * Visual data margin.
-     */
-    protected Insets margin = new Insets ( 0, 0, 0, 0 );
-
     /**
      * Painter listeners.
      */
@@ -125,6 +113,24 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Boolean isOpaque ()
+    {
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Insets getBorders ()
+    {
+        return null;
+    }
+
+    /**
      * Performs various updates on orientation change.
      */
     protected void orientationChange ()
@@ -143,95 +149,73 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
     }
 
     /**
-     * {@inheritDoc}
+     * Updates component with complete border.
+     * This border takes painter borders and component margin and padding into account.
      */
     @Override
     public void updateBorder ()
     {
-        PainterSupport.updateBorder ( component, null, this );
+        final Insets border = getCompleteBorder ();
+        if ( border != null )
+        {
+            component.setBorder ( LafUtils.createWebBorder ( border ) );
+        }
     }
 
     /**
-     * {@inheritDoc}
+     * Updates component border according to component's margin and padding and painter's borders.
      */
-    @Override
-    public Boolean isOpaque ()
+    public Insets getCompleteBorder ()
     {
-        return opaque;
-    }
+        if ( component != null && ui != null && !SwingUtils.isPreserveBorders ( component ) )
+        {
+            final Insets border = new Insets ( 0, 0, 0, 0 );
+            final boolean ltr = component.getComponentOrientation ().isLeftToRight ();
 
-    /**
-     * Sets whether visual data provided by this painter is opaque or not.
-     *
-     * @param opaque whether visual data provided by this painter is opaque or not
-     */
-    public void setOpaque ( final Boolean opaque )
-    {
-        this.opaque = opaque;
-        repaint ();
-    }
+            // Calculating margin borders
+            if ( ui instanceof MarginSupport )
+            {
+                final Insets margin = ( ( MarginSupport ) ui ).getMargin ();
+                if ( margin != null )
+                {
+                    border.top += margin.top;
+                    border.left += ltr ? margin.left : margin.right;
+                    border.bottom += margin.bottom;
+                    border.right += ltr ? margin.right : margin.left;
+                }
+            }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Dimension getPreferredSize ()
-    {
-        return preferredSize;
-    }
+            // Painter borders
+            final Insets borders = getBorders ();
+            if ( borders != null )
+            {
+                border.top += borders.top;
+                border.left += ltr ? borders.left : borders.right;
+                border.bottom += borders.bottom;
+                border.right += ltr ? borders.right : borders.left;
+            }
 
-    /**
-     * Sets preferred size for visual data provided by this painter.
-     *
-     * @param preferredSize preferred size for visual data provided by this painter
-     */
-    public void setPreferredSize ( final Dimension preferredSize )
-    {
-        this.preferredSize = preferredSize;
-        revalidate ();
-    }
+            // Calculating padding borders
+            if ( ui instanceof PaddingSupport )
+            {
+                final Insets padding = ( ( PaddingSupport ) ui ).getPadding ();
+                if ( padding != null )
+                {
+                    border.top += padding.top;
+                    border.left += ltr ? padding.left : padding.right;
+                    border.bottom += padding.bottom;
+                    border.right += ltr ? padding.right : padding.left;
+                }
+            }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Insets getMargin ()
-    {
-        return margin;
-    }
-
-    /**
-     * Sets margin required for visual data provided by this painter.
-     *
-     * @param margin margin required for visual data provided by this painter
-     */
-    public void setMargin ( final Insets margin )
-    {
-        this.margin = margin;
-        revalidate ();
-    }
-
-    /**
-     * Sets margin required for visual data provided by this painter.
-     *
-     * @param top    top margin required for visual data provided by this painter
-     * @param left   left margin required for visual data provided by this painter
-     * @param bottom bottom margin required for visual data provided by this painter
-     * @param right  right margin required for visual data provided by this painter
-     */
-    public void setMargin ( final int top, final int left, final int bottom, final int right )
-    {
-        setMargin ( new Insets ( top, left, bottom, right ) );
-    }
-
-    /**
-     * Sets margin required for visual data provided by this painter.
-     *
-     * @param margin margin required for visual data provided by this painter
-     */
-    public void setMargin ( final int margin )
-    {
-        setMargin ( margin, margin, margin, margin );
+            // Return final border
+            return border;
+        }
+        else
+        {
+            // Return {@code null} to prevent border updates
+            return null;
+        }
     }
 
     /**
@@ -340,5 +324,27 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
     protected Point p ( final int x, final int y )
     {
         return new Point ( x, y );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Dimension getPreferredSize ()
+    {
+        final Insets borders = getCompleteBorder ();
+        final Dimension content = getContentPreferredSize ();
+        return new Dimension ( borders.left + ( content != null ? content.width : 0 ) + borders.right,
+                borders.top + ( content != null ? content.height : 0 ) + borders.bottom );
+    }
+
+    /**
+     * Returns content preferred size.
+     *
+     * @return content preferred size
+     */
+    public Dimension getContentPreferredSize ()
+    {
+        return null;
     }
 }

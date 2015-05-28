@@ -139,7 +139,7 @@ public class WebBreadcrumbToggleButtonPainter<E extends WebBreadcrumbToggleButto
      * {@inheritDoc}
      */
     @Override
-    public Insets getMargin ()
+    public Insets getBorders ()
     {
         return BreadcrumbUtils.getElementMargin ( component );
     }

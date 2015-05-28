@@ -182,6 +182,6 @@ public class WebStyledLabelUI extends WebLabelUI implements Styleable, SwingCons
     @Override
     public Dimension getPreferredSize ( final JComponent c )
     {
-        return PainterSupport.getPreferredSize ( c, super.getPreferredSize ( c ), painter );
+        return PainterSupport.getPreferredSize ( c, painter );
     }
 }

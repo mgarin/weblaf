@@ -607,7 +607,7 @@ public class NPDecorationPainter<E extends JComponent, U extends ComponentUI> ex
      * {@inheritDoc}
      */
     @Override
-    public Insets getMargin ()
+    public Insets getBorders ()
     {
         final NinePatchIcon backgroundIcon = getCurrentBackgroundIcon ();
         if ( !undecorated && backgroundIcon != null )
@@ -637,7 +637,7 @@ public class NPDecorationPainter<E extends JComponent, U extends ComponentUI> ex
         }
         else
         {
-            return super.getMargin ();
+            return super.getBorders ();
         }
     }
 

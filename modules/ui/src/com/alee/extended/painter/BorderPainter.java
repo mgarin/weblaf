@@ -222,10 +222,9 @@ public class BorderPainter<E extends JComponent, U extends ComponentUI> extends 
      * @return margin required for visual data provided by this painter
      */
     @Override
-    public Insets getMargin ()
+    public Insets getBorders ()
     {
-        final Insets m = super.getMargin ();
-        return new Insets ( m.top + width, m.left + width, m.bottom + width, m.right + width );
+        return new Insets ( width, width, width, width );
     }
 
     /**

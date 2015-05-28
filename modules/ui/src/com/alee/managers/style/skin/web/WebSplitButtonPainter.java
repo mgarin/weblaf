@@ -148,10 +148,10 @@ public class WebSplitButtonPainter<E extends WebSplitButton, U extends WebSplitB
      * {@inheritDoc}
      */
     @Override
-    public Insets getMargin ()
+    public Insets getBorders ()
     {
         // Retrieving default button margin
-        final Insets margin = super.getMargin ();
+        final Insets margin = super.getBorders ();
 
         // Adding split part width to appropriate border side
         final ImageIcon splitIcon = component.getSplitIcon ();

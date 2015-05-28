@@ -290,9 +290,9 @@ public class WebPopupMenuPainter<E extends JPopupMenu, U extends WebPopupMenuUI>
      * {@inheritDoc}
      */
     @Override
-    public Insets getMargin ()
+    public Insets getBorders ()
     {
-        final Insets margin = super.getMargin ();
+        final Insets margin = super.getBorders ();
         margin.top += round;
         margin.bottom += round;
         return margin;
@@ -334,7 +334,7 @@ public class WebPopupMenuPainter<E extends JPopupMenu, U extends WebPopupMenuUI>
         {
             // Check that menu item is attached to menu side
             final boolean top = cornerSide == TOP;
-            final boolean stick = top ? getMargin ().top == 0 : getMargin ().bottom == 0;
+            final boolean stick = top ? getBorders ().top == 0 : getBorders ().bottom == 0;
             if ( stick )
             {
                 // todo Implement corner support

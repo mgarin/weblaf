@@ -511,7 +511,7 @@ public class WebTextFieldUI extends BasicTextFieldUI implements ShapeProvider, S
             final Insets m;
             if ( painter != null )
             {
-                m = painter.getMargin ();
+                m = painter.getBorders ();
             }
             else if ( drawBorder )
             {

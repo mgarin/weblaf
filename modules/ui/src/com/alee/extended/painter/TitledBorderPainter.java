@@ -229,9 +229,9 @@ public class TitledBorderPainter<E extends JComponent, U extends ComponentUI> ex
     }
 
     @Override
-    public Insets getMargin ()
+    public Insets getBorders ()
     {
-        final Insets m = super.getMargin ();
+        final Insets m = super.getBorders ();
         if ( !isEmptyTitle () )
         {
             switch ( titleSide )

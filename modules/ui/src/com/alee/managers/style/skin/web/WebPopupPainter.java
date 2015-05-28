@@ -396,29 +396,17 @@ public class WebPopupPainter<E extends JComponent, U extends ComponentUI> extend
      * {@inheritDoc}
      */
     @Override
-    public Insets getMargin ()
+    public Insets getBorders ()
     {
-        // Actual margin
-        final Insets m = new Insets ( margin.top, ltr ? margin.left : margin.right, margin.bottom, ltr ? margin.right : margin.left );
-
-        // Calculating additional borders
         if ( transparent )
         {
             final int sideWidth = getSideWidth ();
-            m.top += sideWidth + 1;
-            m.left += sideWidth + 1;
-            m.bottom += sideWidth + 1;
-            m.right += sideWidth + 1;
+            return new Insets ( sideWidth + 1, sideWidth + 1, sideWidth + 1, sideWidth + 1 );
         }
         else
         {
-            m.top += 1;
-            m.left += 1;
-            m.bottom += 1;
-            m.right += 1;
+            return new Insets ( 1, 1, 1, 1 );
         }
-
-        return m;
     }
 
     /**

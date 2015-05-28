@@ -4,9 +4,9 @@
 
     <!-- Default cell renderer checkbox -->
     <style type="checkBox" id="checkboxlist-cell" extends="default">
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebCheckBoxPainter">
-            <margin>4,4,4,6</margin>
-        </painter>
+        <ui>
+            <padding>4,4,4,6</padding>
+        </ui>
     </style>
 
 </skin>

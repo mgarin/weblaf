@@ -7,8 +7,10 @@
         <component>
             <opaque>false</opaque>
         </component>
+        <ui>
+            <padding>2,4,2,4</padding>
+        </ui>
         <painter id="painter" class="com.alee.managers.style.skin.web.WebSyntaxPanelPainter">
-            <margin>2,4,2,4</margin>
             <style>thick</style>
         </painter>
     </style>

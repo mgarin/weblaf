@@ -25,9 +25,9 @@
         <component>
             <foreground>darkGray</foreground>
         </component>
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebLabelPainter">
-            <margin>2,5,2,5</margin>
-        </painter>
+        <ui>
+            <padding>2,5,2,5</padding>
+        </ui>
     </style>
     <style type="label" id="wswitch-on" extends="wswitch" />
     <style type="label" id="wswitch-off" extends="wswitch" />

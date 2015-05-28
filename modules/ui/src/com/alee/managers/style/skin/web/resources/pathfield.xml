@@ -8,8 +8,10 @@
             <background>255,255,255</background>
             <opaque>false</opaque>
         </component>
+        <ui>
+            <padding>-1,-1,-1,-1</padding>
+        </ui>
         <painter id="painter" class="com.alee.managers.style.skin.web.WebPanelPainter">
-            <margin>-1,-1,-1,-1</margin>
             <round>2</round>
             <shadeWidth>2</shadeWidth>
             <paintFocus>true</paintFocus>
@@ -62,7 +64,6 @@
             <focusable>false</focusable>
         </component>
         <painter id="painter" class="com.alee.managers.style.skin.web.WebToggleButtonPainter">
-            <margin>0,0,0,0</margin>
             <round>0</round>
             <shadeWidth>0</shadeWidth>
             <shadeToggleIcon>false</shadeToggleIcon>
