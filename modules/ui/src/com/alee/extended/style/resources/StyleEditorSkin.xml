@@ -54,7 +54,7 @@
             <background>247,247,247</background>
         </component>
         <painter id="painter" class="com.alee.extended.painter.InnerShadePainter">
-            <shadeWidth>10</shadeWidth>
+            <shadeWidth>15</shadeWidth>
             <round>0</round>
             <shadeOpacity>0.75</shadeOpacity>
         </painter>

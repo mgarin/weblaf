@@ -20,6 +20,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Map;
 
 /**
  * @author Mikle Garin
@@ -434,6 +435,7 @@ public class WebAbstractButtonPainter<E extends AbstractButton, U extends BasicB
      */
     protected void paintText ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
     {
+        final Map map = SwingUtils.setupTextAntialias ( g2d );
         final String text = c.getText ();
         if ( text != null && !text.equals ( "" ) )
         {
@@ -459,12 +461,13 @@ public class WebAbstractButtonPainter<E extends AbstractButton, U extends BasicB
                     // todo Paint single-colored text
                     // Drawing disabled text
                     g2d.setColor ( c.getBackground ().brighter () );
-                    SwingUtils.drawStringUnderlineCharAt ( g2d, text, mnemonicIndex, textRect.x, textRect.y + fm.getAscent () );
+                    SwingUtils.drawStringUnderlineCharAt ( g2d, text, mnemonicIndex, textRect.x + 1, textRect.y + fm.getAscent () + 1 );
                     g2d.setColor ( c.getBackground ().darker () );
-                    SwingUtils.drawStringUnderlineCharAt ( g2d, text, mnemonicIndex, textRect.x - 1, textRect.y + fm.getAscent () - 1 );
+                    SwingUtils.drawStringUnderlineCharAt ( g2d, text, mnemonicIndex, textRect.x, textRect.y + fm.getAscent () );
                 }
             }
         }
+        SwingUtils.restoreTextAntialias ( g2d, map );
     }
 
     /**

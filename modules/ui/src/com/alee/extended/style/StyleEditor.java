@@ -32,6 +32,8 @@ import com.alee.extended.statusbar.WebStatusBar;
 import com.alee.extended.syntax.SyntaxPreset;
 import com.alee.extended.syntax.WebSyntaxArea;
 import com.alee.extended.syntax.WebSyntaxScrollPane;
+import com.alee.extended.window.PopOverLocation;
+import com.alee.extended.window.WebPopOver;
 import com.alee.global.StyleConstants;
 import com.alee.laf.Styles;
 import com.alee.laf.WebLookAndFeel;
@@ -65,10 +67,7 @@ import com.alee.managers.style.data.SkinInfo;
 import com.alee.managers.style.data.SkinInfoConverter;
 import com.alee.managers.style.skin.CustomSkin;
 import com.alee.utils.*;
-import com.alee.utils.swing.DocumentEventRunnable;
-import com.alee.utils.swing.IntDocumentChangeListener;
-import com.alee.utils.swing.IntTextDocument;
-import com.alee.utils.swing.WebTimer;
+import com.alee.utils.swing.*;
 import com.alee.utils.xml.ResourceFile;
 import com.alee.utils.xml.ResourceLocation;
 import com.thoughtworks.xstream.converters.ConversionException;
@@ -477,6 +476,59 @@ public class StyleEditor extends WebFrame
 
         // Adding XML editors container into split
         split.setRightComponent ( editorsContainer );
+
+        // Quick file search
+        HotkeyManager.registerHotkey ( Hotkey.CTRL_N, new HotkeyRunnable ()
+        {
+            @Override
+            public void run ( final KeyEvent e )
+            {
+                final WebPopOver popOver = new WebPopOver ( StyleEditor.this );
+                popOver.setCloseOnFocusLoss ( true );
+
+                // File name search field
+                final WebTextField searchField = new WebTextField ( 25 );
+                searchField.setInputPrompt ( "Jump to file..." );
+                popOver.add ( searchField );
+
+                // Jump to tabs while typing
+                searchField.getDocument ().addDocumentListener ( new DocumentChangeListener ()
+                {
+                    @Override
+                    public void documentChanged ( final DocumentEvent e )
+                    {
+                        final String text = searchField.getText ().toLowerCase ();
+                        if ( !TextUtils.isEmpty ( text ) )
+                        {
+                            for ( final String name : xmlNames )
+                            {
+                                if ( name.toLowerCase ().contains ( text ) )
+                                {
+                                    editorTabs.setSelectedIndex ( xmlNames.indexOf ( name ) );
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                } );
+
+                // Close pop-over on ENTER or ESCAPE
+                final KeyEventRunnable closeRunnable = new KeyEventRunnable ()
+                {
+                    @Override
+                    public void run ( final KeyEvent e )
+                    {
+                        popOver.dispose ();
+                        editors.get ( editorTabs.getSelectedIndex () ).requestFocus ();
+                        editors.get ( editorTabs.getSelectedIndex () ).requestFocusInWindow ();
+                    }
+                };
+                searchField.onKeyPress ( Hotkey.ENTER, closeRunnable );
+                searchField.onKeyPress ( Hotkey.ESCAPE, closeRunnable );
+
+                popOver.show ( PopOverLocation.center );
+            }
+        } );
     }
 
     private Component createSingleXmlEditor ( final Theme theme, final String xml, final ResourceFile xmlFile )

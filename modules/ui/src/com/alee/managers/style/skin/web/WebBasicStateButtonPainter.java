@@ -166,7 +166,6 @@ public class WebBasicStateButtonPainter<E extends AbstractButton, U extends Basi
         return ( float ) bgDarkness / MAX_DARKNESS;
     }
 
-
     /**
      * Installs enabled state listeners.
      */
