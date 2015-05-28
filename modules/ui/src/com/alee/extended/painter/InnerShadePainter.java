@@ -22,6 +22,7 @@ import com.alee.utils.NinePatchUtils;
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
 import java.awt.*;
+import java.awt.geom.RoundRectangle2D;
 
 /**
  * @author Mikle Garin
@@ -29,6 +30,7 @@ import java.awt.*;
 
 public class InnerShadePainter<E extends JComponent, U extends ComponentUI> extends NinePatchIconPainter<E, U>
 {
+    protected boolean paintBackground = true;
     protected int shadeWidth = 10;
     protected int round = 0;
     protected float shadeOpacity = 0.75f;
@@ -164,6 +166,13 @@ public class InnerShadePainter<E extends JComponent, U extends ComponentUI> exte
     @Override
     public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
     {
+        // Background
+        if ( paintBackground )
+        {
+            final RoundRectangle2D.Double s = new RoundRectangle2D.Double ( bounds.x, bounds.y, bounds.width, bounds.height, round, round );
+            paintBackground ( g2d, bounds, c, s );
+        }
+
         // Updating icon dynamically only when actually needed
         if ( cachedShadeWidth != shadeWidth || cachedRound != round || cachedShadeOpacity != shadeOpacity || icon == null )
         {
@@ -178,5 +187,11 @@ public class InnerShadePainter<E extends JComponent, U extends ComponentUI> exte
                     bounds.width + ( drawLeft ? 0 : shadeWidth ) + ( drawRight ? 0 : shadeWidth ),
                     bounds.height + ( drawTop ? 0 : shadeWidth ) + ( drawBottom ? 0 : shadeWidth ) );
         }
+    }
+
+    protected void paintBackground ( final Graphics2D g2d, final Rectangle bounds, final E c, final Shape shape )
+    {
+        g2d.setPaint ( c.getBackground () );
+        g2d.fill ( shape );
     }
 }

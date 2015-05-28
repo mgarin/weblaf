@@ -19,8 +19,10 @@ package com.alee.laf.scroll;
 
 import com.alee.extended.painter.Painter;
 import com.alee.extended.painter.PainterSupport;
+import com.alee.laf.Styles;
 import com.alee.managers.style.StyleManager;
 import com.alee.utils.CompareUtils;
+import com.alee.utils.LafUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.laf.ShapeProvider;
 import com.alee.utils.laf.Styleable;
@@ -72,6 +74,10 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements Styleable, Sha
     {
         // Installing UI
         super.installUI ( c );
+
+        // Scroll bars styling
+        LafUtils.setVerticalScrollBarStyleId ( scrollpane, Styles.scrollpaneVerticalBar );
+        LafUtils.setHorizontalScrollBarStyleId ( scrollpane, Styles.scrollpaneHorizontalBar );
 
         // Applying skin
         StyleManager.applySkin ( scrollpane );

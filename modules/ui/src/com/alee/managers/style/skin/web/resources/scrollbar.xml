@@ -6,6 +6,7 @@
     <style type="scrollBar" id="default">
         <component>
             <opaque>false</opaque>
+            <background>237,237,237</background>
         </component>
         <ui>
             <paintButtons>true</paintButtons>

@@ -18,6 +18,7 @@
 package com.alee.extended.panel;
 
 import com.alee.extended.layout.TableLayout;
+import com.alee.laf.Styles;
 import com.alee.laf.panel.WebPanel;
 
 import java.awt.*;
@@ -35,8 +36,7 @@ public class CenterPanel extends WebPanel
 
     public CenterPanel ( final Component component, final boolean centerHor, final boolean centerVer )
     {
-        super ();
-        setOpaque ( false );
+        super ( Styles.panelTransparent );
 
         if ( centerHor && centerVer )
         {

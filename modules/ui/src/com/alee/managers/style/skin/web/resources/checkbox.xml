@@ -9,11 +9,11 @@
         </component>
         <painter id="painter" class="com.alee.managers.style.skin.web.WebCheckBoxPainter">
             <margin>0,0,0,0</margin>
+            <undecorated>true</undecorated>
             <round>2</round>
             <shadeWidth>2</shadeWidth>
             <iconWidth>16</iconWidth>
             <iconHeight>16</iconHeight>
-            <borderStroke>1.5</borderStroke>
             <borderColor>170,170,170</borderColor>
             <darkBorderColor>128,128,128</darkBorderColor>
             <disabledBorderColor>192,192,192</disabledBorderColor>

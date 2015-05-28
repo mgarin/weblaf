@@ -8,11 +8,12 @@
             <opaque>false</opaque>
         </component>
         <painter id="painter" class="com.alee.managers.style.skin.web.WebRadioButtonPainter">
+            <margin>0,0,0,0</margin>
+            <undecorated>true</undecorated>
+            <round>5</round>
             <shadeWidth>2</shadeWidth>
             <iconWidth>16</iconWidth>
             <iconHeight>16</iconHeight>
-            <borderStroke>1.5</borderStroke>
-            <margin>0,0,0,0</margin>
             <borderColor>170,170,170</borderColor>
             <darkBorderColor>128,128,128</darkBorderColor>
             <disabledBorderColor>192,192,192</disabledBorderColor>

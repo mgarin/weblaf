@@ -4,6 +4,10 @@
 
     <!-- Viewport -->
     <style type="viewport" id="default">
+        <component>
+            <opaque>false</opaque>
+            <background>237,237,237</background>
+        </component>
         <painter id="painter" class="com.alee.managers.style.skin.web.WebViewportPainter" />
     </style>
 

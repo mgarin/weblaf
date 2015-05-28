@@ -5,6 +5,7 @@
     <!-- Scroll pane -->
     <style type="scrollPane" id="default">
         <component>
+            <opaque>false</opaque>
             <background>237,237,237</background>
             <verticalScrollBarPolicy>20</verticalScrollBarPolicy>
             <horizontalScrollBarPolicy>30</horizontalScrollBarPolicy>

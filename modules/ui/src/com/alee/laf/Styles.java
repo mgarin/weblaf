@@ -92,8 +92,8 @@ public final class Styles
      */
     public static String tableHeaderCellRenderer = "table-header-cell";
     public static String tableCellRenderer = "table-cell";
-    public static String tableBooleanCellRenderer = "table-bool-cell";
-    public static String tableBooleanCellEditor = "table-bool-editor";
+    public static String tableBooleanCellRenderer = "table-cell-boolean";
+    public static String tableBooleanCellEditor = "table-editor-boolean";
 
     /**
      * {@link com.alee.laf.table.WebTable} style IDs.

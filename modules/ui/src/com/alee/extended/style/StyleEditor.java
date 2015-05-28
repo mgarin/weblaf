@@ -20,6 +20,7 @@ package com.alee.extended.style;
 import com.alee.extended.breadcrumb.WebBreadcrumb;
 import com.alee.extended.breadcrumb.WebBreadcrumbLabel;
 import com.alee.extended.breadcrumb.WebBreadcrumbPanel;
+import com.alee.extended.checkbox.WebTristateCheckBox;
 import com.alee.extended.layout.HorizontalFlowLayout;
 import com.alee.extended.layout.VerticalFlowLayout;
 import com.alee.extended.panel.CenterPanel;
@@ -36,11 +37,13 @@ import com.alee.laf.Styles;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.button.WebToggleButton;
+import com.alee.laf.checkbox.WebCheckBox;
 import com.alee.laf.combobox.WebComboBox;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.menu.WebMenuItem;
 import com.alee.laf.menu.WebPopupMenu;
 import com.alee.laf.panel.WebPanel;
+import com.alee.laf.radiobutton.WebRadioButton;
 import com.alee.laf.rootpane.WebFrame;
 import com.alee.laf.scroll.WebScrollBar;
 import com.alee.laf.scroll.WebScrollPane;
@@ -313,7 +316,7 @@ public class StyleEditor extends WebFrame
 
     private void initializeViewer ()
     {
-        componentViewer = new WebPanel ( new VerticalFlowLayout ( VerticalFlowLayout.TOP, 0, 15, true, false ) );
+        componentViewer = new WebPanel ( "preview-pane", new VerticalFlowLayout ( VerticalFlowLayout.TOP, 0, 15, true, false ) );
         componentViewer.setMargin ( 10 );
 
         final WebScrollPane previewScroll = new WebScrollPane ( Styles.scrollpaneUndecorated, componentViewer );
@@ -335,6 +338,25 @@ public class StyleEditor extends WebFrame
 
         final WebButton iconButton = new WebButton ( WebLookAndFeel.getIcon ( 16 ) );
         addViewComponent ( "JButton (icon-only)", iconButton, iconButton, true );
+
+        //
+
+        final WebCheckBox checkBox = new WebCheckBox ( "Check me" );
+        addViewComponent ( "JCheckBox", checkBox, checkBox, true );
+
+        //
+
+        final WebTristateCheckBox tristateCheckBox = new WebTristateCheckBox ( "Check me more" );
+        addViewComponent ( "WebTristateCheckBox", tristateCheckBox, tristateCheckBox, true );
+
+        //
+
+        final WebRadioButton radioButton1 = new WebRadioButton ( "Radio button 1" );
+        final WebRadioButton radioButton2 = new WebRadioButton ( "Radio button 2" );
+        final WebRadioButton radioButton3 = new WebRadioButton ( "Radio button 3" );
+        SwingUtils.groupButtons ( radioButton1, radioButton2, radioButton3 );
+        final GroupPanel radioGroup = new GroupPanel ( false, radioButton1, radioButton2, radioButton3 );
+        addViewComponent ( "JCheckBox", radioGroup, radioGroup, true );
 
         //
 
@@ -400,14 +422,12 @@ public class StyleEditor extends WebFrame
         final WebLabel titleLabel = new WebLabel ( title, type.getIcon () );
         titleLabel.setStyleId ( "preview-title" );
 
-        final WebPanel boundsPanel = new WebPanel ( displayedView );
-        boundsPanel.setStyleId ( "empty-border" );
+        final WebPanel boundsPanel = new WebPanel ( "empty-border", displayedView );
         boundsPanels.add ( boundsPanel );
 
-        final WebPanel viewPanel = new WebPanel ( center ? new CenterPanel ( boundsPanel ) : boundsPanel );
-        viewPanel.setStyleId ( "inner-shade" );
+        final WebPanel viewPanel = new WebPanel ( "inner-shade", center ? new CenterPanel ( boundsPanel ) : boundsPanel );
 
-        final WebPanel container = new WebPanel ( new BorderLayout ( 0, 0 ) );
+        final WebPanel container = new WebPanel ( Styles.panelTransparent, new BorderLayout ( 0, 0 ) );
         container.add ( titleLabel, BorderLayout.NORTH );
         container.add ( viewPanel, BorderLayout.CENTER );
         componentViewer.add ( container );

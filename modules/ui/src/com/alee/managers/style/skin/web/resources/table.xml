@@ -25,7 +25,7 @@
     </style>
 
     <!-- Boolean table cell renderer -->
-    <style type="checkBox" id="table-bool-cell" extends="default">
+    <style type="checkBox" id="table-cell-boolean" extends="default">
         <component>
             <opaque>true</opaque>
             <horizontalAlignment>0</horizontalAlignment>
@@ -39,7 +39,7 @@
     </style>
 
     <!-- Boolean table cell editor -->
-    <style type="checkBox" id="table-bool-editor" extends="list-bool-cell">
+    <style type="checkBox" id="table-editor-boolean" extends="table-cell-boolean">
         <component>
             <focusable>false</focusable>
         </component>
