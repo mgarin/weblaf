@@ -129,7 +129,7 @@ public enum SupportedComponent
      * Other data-related components.
      */
     progressBar ( true, JProgressBar.class, "ProgressBarUI", WebLookAndFeel.progressBarUI ),
-    slider ( false, JSlider.class, "SliderUI", WebLookAndFeel.sliderUI ),
+    slider ( true, JSlider.class, "SliderUI", WebLookAndFeel.sliderUI ),
     spinner ( false, JSpinner.class, "SpinnerUI", WebLookAndFeel.spinnerUI ),
     tree ( false, JTree.class, "TreeUI", WebLookAndFeel.treeUI ),
     list ( false, JList.class, "ListUI", WebLookAndFeel.listUI ),

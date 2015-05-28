@@ -33,6 +33,8 @@ import com.alee.utils.EventUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SizeUtils;
 import com.alee.utils.SwingUtils;
+import com.alee.utils.laf.ShapeProvider;
+import com.alee.utils.laf.Styleable;
 import com.alee.utils.swing.*;
 
 import javax.swing.*;
@@ -47,7 +49,7 @@ import java.util.List;
  */
 
 public class WebSlider extends JSlider
-        implements EventMethods, ToolTipMethods, SettingsMethods, FontMethods<WebSlider>, SizeMethods<WebSlider>
+        implements Styleable, ShapeProvider, EventMethods, ToolTipMethods, SettingsMethods, FontMethods<WebSlider>, SizeMethods<WebSlider>
 {
     public WebSlider ()
     {
@@ -79,276 +81,54 @@ public class WebSlider extends JSlider
         super ( brm );
     }
 
-    public boolean isAnimated ()
-    {
-        return getWebUI ().isAnimated ();
-    }
-
-    public void setAnimated ( final boolean animated )
-    {
-        getWebUI ().setAnimated ( animated );
-    }
-
-    public boolean isRolloverDarkBorderOnly ()
-    {
-        return getWebUI ().isRolloverDarkBorderOnly ();
-    }
-
-    public void setRolloverDarkBorderOnly ( final boolean rolloverDarkBorderOnly )
-    {
-        getWebUI ().setRolloverDarkBorderOnly ( rolloverDarkBorderOnly );
-    }
-
-    public boolean isInvertMouseWheelDirection ()
-    {
-        return getWebUI ().isInvertMouseWheelDirection ();
-    }
-
-    public void setInvertMouseWheelDirection ( final boolean invert )
-    {
-        getWebUI ().setInvertMouseWheelDirection ( invert );
-    }
-
-    public Color getTrackBgTop ()
-    {
-        return getWebUI ().getTrackBgTop ();
-    }
-
-    public void setTrackBgTop ( final Color trackBgTop )
-    {
-        getWebUI ().setTrackBgTop ( trackBgTop );
-    }
-
-    public Color getTrackBgBottom ()
-    {
-        return getWebUI ().getTrackBgBottom ();
-    }
-
-    public void setTrackBgBottom ( final Color trackBgBottom )
-    {
-        getWebUI ().setTrackBgBottom ( trackBgBottom );
-    }
-
-    public int getTrackHeight ()
-    {
-        return getWebUI ().getTrackHeight ();
-    }
-
-    public void setTrackHeight ( final int trackHeight )
-    {
-        getWebUI ().setTrackHeight ( trackHeight );
-    }
-
-    public int getTrackRound ()
-    {
-        return getWebUI ().getTrackRound ();
-    }
-
-    public void setTrackRound ( final int trackRound )
-    {
-        getWebUI ().setTrackRound ( trackRound );
-    }
-
-    public int getTrackShadeWidth ()
-    {
-        return getWebUI ().getTrackShadeWidth ();
-    }
-
-    public void setTrackShadeWidth ( final int trackShadeWidth )
-    {
-        getWebUI ().setTrackShadeWidth ( trackShadeWidth );
-    }
-
-    public boolean isDrawProgress ()
-    {
-        return getWebUI ().isDrawProgress ();
-    }
-
-    public void setDrawProgress ( final boolean drawProgress )
-    {
-        getWebUI ().setDrawProgress ( drawProgress );
-    }
-
-    public Color getProgressTrackBgTop ()
-    {
-        return getWebUI ().getProgressTrackBgTop ();
-    }
-
-    public void setProgressTrackBgTop ( final Color progressTrackBgTop )
-    {
-        getWebUI ().setProgressTrackBgTop ( progressTrackBgTop );
-    }
-
-    public Color getProgressTrackBgBottom ()
-    {
-        return getWebUI ().getProgressTrackBgBottom ();
-    }
-
-    public void setProgressTrackBgBottom ( final Color progressTrackBgBottom )
-    {
-        getWebUI ().setProgressTrackBgBottom ( progressTrackBgBottom );
-    }
-
-    public Color getProgressBorderColor ()
-    {
-        return getWebUI ().getProgressBorderColor ();
-    }
-
-    public void setProgressBorderColor ( final Color progressBorderColor )
-    {
-        getWebUI ().setProgressBorderColor ( progressBorderColor );
-    }
-
-    public int getProgressRound ()
-    {
-        return getWebUI ().getProgressRound ();
-    }
-
-    public void setProgressRound ( final int progressRound )
-    {
-        getWebUI ().setProgressRound ( progressRound );
-    }
-
-    public int getProgressShadeWidth ()
-    {
-        return getWebUI ().getProgressShadeWidth ();
-    }
-
-    public void setProgressShadeWidth ( final int progressShadeWidth )
-    {
-        getWebUI ().setProgressShadeWidth ( progressShadeWidth );
-    }
-
-    public boolean isDrawThumb ()
-    {
-        return getWebUI ().isDrawThumb ();
-    }
-
-    public void setDrawThumb ( final boolean drawThumb )
-    {
-        getWebUI ().setDrawThumb ( drawThumb );
-    }
-
-    public Color getThumbBgTop ()
-    {
-        return getWebUI ().getThumbBgTop ();
-    }
-
-    public void setThumbBgTop ( final Color thumbBgTop )
-    {
-        getWebUI ().setThumbBgTop ( thumbBgTop );
-    }
-
-    public Color getThumbBgBottom ()
-    {
-        return getWebUI ().getThumbBgBottom ();
-    }
-
-    public void setThumbBgBottom ( final Color thumbBgBottom )
-    {
-        getWebUI ().setThumbBgBottom ( thumbBgBottom );
-    }
-
-    public int getThumbWidth ()
-    {
-        return getWebUI ().getThumbWidth ();
-    }
-
-    public void setThumbWidth ( final int thumbWidth )
-    {
-        getWebUI ().setThumbWidth ( thumbWidth );
-    }
-
-    public int getThumbHeight ()
-    {
-        return getWebUI ().getThumbHeight ();
-    }
-
-    public void setThumbHeight ( final int thumbHeight )
-    {
-        getWebUI ().setThumbHeight ( thumbHeight );
-    }
-
-    public int getThumbRound ()
-    {
-        return getWebUI ().getThumbRound ();
-    }
-
-    public void setThumbRound ( final int thumbRound )
-    {
-        getWebUI ().setThumbRound ( thumbRound );
-    }
-
-    public int getThumbShadeWidth ()
-    {
-        return getWebUI ().getThumbShadeWidth ();
-    }
-
-    public void setThumbShadeWidth ( final int thumbShadeWidth )
-    {
-        getWebUI ().setThumbShadeWidth ( thumbShadeWidth );
-    }
-
-    public boolean isAngledThumb ()
-    {
-        return getWebUI ().isAngledThumb ();
-    }
-
-    public void setAngledThumb ( final boolean angledThumb )
-    {
-        getWebUI ().setAngledThumb ( angledThumb );
-    }
-
-    public boolean isSharpThumbAngle ()
-    {
-        return getWebUI ().isSharpThumbAngle ();
-    }
-
-    public void setSharpThumbAngle ( final boolean sharpThumbAngle )
-    {
-        getWebUI ().setSharpThumbAngle ( sharpThumbAngle );
-    }
-
-    public int getThumbAngleLength ()
-    {
-        return getWebUI ().getThumbAngleLength ();
-    }
-
-    public void setThumbAngleLength ( final int thumbAngleLength )
-    {
-        getWebUI ().setThumbAngleLength ( thumbAngleLength );
-    }
-
-    public Insets getMargin ()
-    {
-        return getWebUI ().getMargin ();
-    }
-
-    public void setMargin ( final Insets margin )
-    {
-        getWebUI ().setMargin ( margin );
-    }
-
-    public WebSlider setMargin ( final int top, final int left, final int bottom, final int right )
-    {
-        setMargin ( new Insets ( top, left, bottom, right ) );
-        return this;
-    }
-
-    public WebSlider setMargin ( final int spacing )
-    {
-        return setMargin ( spacing, spacing, spacing, spacing );
-    }
-
+    /**
+     * Returns slider painter.
+     *
+     * @return slider painter
+     */
     public Painter getPainter ()
     {
         return getWebUI ().getPainter ();
     }
 
+    /**
+     * Sets slider painter.
+     * Pass null to remove slider painter.
+     *
+     * @param painter new slider painter
+     * @return this slider
+     */
     public WebSlider setPainter ( final Painter painter )
     {
         getWebUI ().setPainter ( painter );
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getStyleId ()
+    {
+        return getWebUI ().getStyleId ();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setStyleId ( final String id )
+    {
+        getWebUI ().setStyleId ( id );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Shape provideShape ()
+    {
+        return getWebUI ().provideShape ();
     }
 
     public WebSliderUI getWebUI ()

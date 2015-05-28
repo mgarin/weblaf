@@ -20,6 +20,7 @@
     <include>resources/checkbox.xml</include>
     <include>resources/tristatecheckbox.xml</include>
     <include>resources/separator.xml</include>
+    <include>resources/slider.xml</include>
     <include>resources/spinner.xml</include>
     <include>resources/menubar.xml</include>
     <include>resources/menu.xml</include>
