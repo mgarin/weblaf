@@ -419,13 +419,4 @@ public class WebScrollBarButtonPainter<E extends JButton, U extends WebButtonUI>
         final Container parent = component.getParent ();
         return !( parent instanceof JScrollBar ) || parent.getComponentOrientation ().isLeftToRight ();
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Dimension getPreferredSize ()
-    {
-        return new Dimension ( WebScrollBarStyle.buttonsSize );
-    }
 }

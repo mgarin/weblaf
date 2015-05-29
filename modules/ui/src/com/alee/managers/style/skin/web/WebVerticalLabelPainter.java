@@ -101,15 +101,6 @@ public class WebVerticalLabelPainter<E extends JLabel, U extends WebVerticalLabe
     }
 
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Dimension getPreferredSize ()
-    {
-        return transposeDimension ( super.getPreferredSize () );
-    }
-
-    /**
      * Returns transposed dimension.
      *
      * @param from dimension to transpose

@@ -5,7 +5,6 @@ import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.menu.*;
 import com.alee.utils.GraphicsUtils;
 import com.alee.utils.LafUtils;
-import com.alee.utils.MathUtils;
 import com.alee.utils.SwingUtils;
 
 import javax.swing.*;
@@ -273,50 +272,5 @@ public class WebAbstractMenuItemPainter<E extends JMenuItem, U extends BasicMenu
     public void fillCorner ( final Graphics2D g2d, final Rectangle clip, final Shape corner, final int cornerSide )
     {
         // todo Implement corner support
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Dimension getPreferredSize ()
-    {
-        final Insets bi = component.getInsets ();
-        final FontMetrics fm = component.getFontMetrics ( component.getFont () );
-        final FontMetrics afm = component.getFontMetrics ( acceleratorFont );
-
-        // Icon
-        final int iconPlaceholderWidth = MenuUtils.getIconPlaceholderWidth ( component, alignTextToMenuIcons );
-
-        // Text
-        final View html = ( View ) component.getClientProperty ( BasicHTML.propertyKey );
-        final int textWidth;
-        final int textHeight;
-        if ( html != null )
-        {
-            // Text is HTML
-            textWidth = ( int ) html.getPreferredSpan ( View.X_AXIS );
-            textHeight = ( int ) html.getPreferredSpan ( View.Y_AXIS );
-        }
-        else
-        {
-            // Text isn't HTML
-            final String text = component.getText ();
-            textWidth = text != null && text.length () > 0 ? fm.stringWidth ( text ) : 0;
-            textHeight = fm.getHeight ();
-        }
-
-        // Icon-Text gap
-        final int gap = textWidth > 0 && iconPlaceholderWidth > 0 ? component.getIconTextGap () : 0;
-
-        // Acceleration text and its gap
-        final String accelerationText = MenuUtils.getAcceleratorText ( component );
-        final int accWidth = accelerationText != null ? acceleratorGap + afm.stringWidth ( accelerationText ) : 0;
-
-        // Content height
-        final int iconHeight = component.getIcon () != null ? component.getIcon ().getIconHeight () : 0;
-        final int contentHeight = MathUtils.max ( iconHeight, textHeight, afm.getHeight () );
-
-        return new Dimension ( bi.left + iconPlaceholderWidth + gap + textWidth + accWidth + bi.right, bi.top + contentHeight + bi.bottom );
     }
 }

@@ -203,19 +203,6 @@ public class BorderPainter<E extends JComponent, U extends ComponentUI> extends 
     }
 
     /**
-     * Returns preferred size required for proper painting of visual data provided by this painter.
-     * This should not take into account any sizes not related to this painter settings (for example text size on button).
-     *
-     * @param c component to process
-     * @return preferred size required for proper painting of visual data provided by this painter
-     */
-    @Override
-    public Dimension getPreferredSize ()
-    {
-        return new Dimension ( Math.max ( width * 2, round * 2 ), Math.max ( width * 2, round * 2 ) );
-    }
-
-    /**
      * Returns margin required for visual data provided by this painter.
      * This margin is usually added to component's margin when the final component border is calculated.
      *

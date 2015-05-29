@@ -1100,47 +1100,4 @@ public class WebListPainter<E extends JList, U extends WebListUI> extends Abstra
     {
         this.selectionBackgroundColor = color;
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Dimension getPreferredSize ()
-    {
-        if ( updateLayoutStateNeeded )
-        {
-            rendererPane = ui.getCellRendererPane ();
-            updateLayoutState ();
-            rendererPane = null;
-        }
-
-        final int lastRow = component.getModel ().getSize () - 1;
-        if ( lastRow < 0 )
-        {
-            return new Dimension ( 0, 0 );
-        }
-
-        final Insets insets = component.getInsets ();
-        final int width = cellWidth * columnCount + insets.left + insets.right;
-        final int height;
-
-        if ( layoutOrientation != JList.VERTICAL )
-        {
-            height = preferredHeight;
-        }
-        else
-        {
-            final Rectangle bounds = ui.getCellBounds ( component, lastRow, lastRow );
-
-            if ( bounds != null )
-            {
-                height = bounds.y + bounds.height + insets.bottom;
-            }
-            else
-            {
-                height = 0;
-            }
-        }
-        return new Dimension ( width, height );
-    }
 }

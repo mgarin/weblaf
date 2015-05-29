@@ -34,13 +34,4 @@ public class WebPopupMenuSeparatorPainter<E extends JSeparator, U extends WebPop
         g2d.drawLine ( sideSpacing, c.getHeight () / 2, c.getWidth () - sideSpacing - 1, c.getHeight () / 2 );
         GraphicsUtils.restoreAntialias ( g2d, aa );
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Dimension getPreferredSize ()
-    {
-        return new Dimension ( 0, spacing * 2 + 1 );
-    }
 }

@@ -332,18 +332,6 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
     public Dimension getPreferredSize ()
     {
         final Insets borders = getCompleteBorder ();
-        final Dimension content = getContentPreferredSize ();
-        return new Dimension ( borders.left + ( content != null ? content.width : 0 ) + borders.right,
-                borders.top + ( content != null ? content.height : 0 ) + borders.bottom );
-    }
-
-    /**
-     * Returns content preferred size.
-     *
-     * @return content preferred size
-     */
-    public Dimension getContentPreferredSize ()
-    {
-        return null;
+        return new Dimension ( borders.left +  borders.right,  borders.top +borders.bottom );
     }
 }
