@@ -19,13 +19,12 @@ package com.alee.utils.swing;
 
 import com.alee.managers.log.Log;
 import com.alee.utils.CollectionUtils;
+import com.alee.utils.CoreSwingUtils;
 import com.alee.utils.TextUtils;
 import com.alee.utils.TimeUtils;
 
-import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
@@ -133,6 +132,13 @@ public class WebTimer
      * This option should be set before starting timer to have any effect.
      */
     protected boolean useDaemonThread = false;
+
+    /**
+     * Whether or not timer should use non-blocking stop method behavior.
+     * Blocking behavior will join execution thread (and possibly EDT with it).
+     * Non-blockng behavior will simply send abort commands and continue without waiting for actual exection to stop.
+     */
+    protected boolean nonBlockingStop = false;
 
     /**
      * Action command for fired events.
@@ -487,10 +493,33 @@ public class WebTimer
      * This option should be set before starting timer to have any effect.
      *
      * @param useDaemonThread whether should use daemon thread instead of user one or not
+     * @return this timer
      */
     public WebTimer setUseDaemonThread ( final boolean useDaemonThread )
     {
         this.useDaemonThread = useDaemonThread;
+        return this;
+    }
+
+    /**
+     * Returns whether or not timer should use non-blocking stop method behavior.
+     *
+     * @return true if timer should use non-blocking stop method behavior, false otherwise
+     */
+    public boolean isNonBlockingStop ()
+    {
+        return nonBlockingStop;
+    }
+
+    /**
+     * Sets whether or not timer should use non-blocking stop method behavior.
+     *
+     * @param nonBlockingStop whether or not timer should use non-blocking stop method behavior
+     * @return this timer
+     */
+    public WebTimer setNonBlockingStop ( final boolean nonBlockingStop )
+    {
+        this.nonBlockingStop = nonBlockingStop;
         return this;
     }
 
@@ -773,7 +802,7 @@ public class WebTimer
                             while ( shouldContinue ( cycleCount, currentId ) )
                             {
                                 // Firing events
-                                fireActionPerformed ();
+                                fireActionPerformed ( currentId );
 
                                 // Incrementing cycles count
                                 cycleCount++;
@@ -797,7 +826,7 @@ public class WebTimer
                         else
                         {
                             // Single event
-                            fireActionPerformed ();
+                            fireActionPerformed ( currentId );
 
                             // Incrementing cycles count
                             cycleCount++;
@@ -821,7 +850,7 @@ public class WebTimer
      * Returns whether thread with specified ID should continue execution or not.
      *
      * @param cycle cycle number
-     * @param id    thread ID
+     * @param id    execution thread ID
      * @return true if thread with specified ID should continue execution, false otherwise
      */
     protected boolean shouldContinue ( final int cycle, final int id )
@@ -863,14 +892,18 @@ public class WebTimer
             // Stop execution from inside
             setAlive ( lastId, false );
 
-            // Wait for execution to stop
-            try
+            // Depedning on behavior we might join current execution thread
+            if ( !nonBlockingStop )
             {
-                exec.join ();
-            }
-            catch ( final InterruptedException e )
-            {
-                Log.error ( this, e );
+                try
+                {
+                    // Wait for execution to stop
+                    exec.join ();
+                }
+                catch ( final InterruptedException e )
+                {
+                    Log.error ( this, e );
+                }
             }
         }
     }
@@ -918,8 +951,10 @@ public class WebTimer
 
     /**
      * Fires action events.
+     *
+     * @param id execution thread ID
      */
-    public void fireActionPerformed ()
+    public void fireActionPerformed ( final int id )
     {
         if ( listeners.size () > 0 )
         {
@@ -934,32 +969,40 @@ public class WebTimer
             {
                 if ( coalesce )
                 {
-                    // Merge all events into single call to event dispatch thread
-                    invokeAndWaitSafely ( new Runnable ()
+                    // Check execution stop
+                    if ( shouldContinue ( cycleCount, id ) )
                     {
-                        @Override
-                        public void run ()
+                        // Merge all events into single call to event dispatch thread
+                        CoreSwingUtils.invokeAndWaitSafely ( new Runnable ()
                         {
-                            for ( final ActionListener listener : listenerList )
+                            @Override
+                            public void run ()
                             {
-                                listener.actionPerformed ( actionEvent );
+                                for ( final ActionListener listener : listenerList )
+                                {
+                                    listener.actionPerformed ( actionEvent );
+                                }
                             }
-                        }
-                    } );
+                        } );
+                    }
                 }
                 else
                 {
                     // Make separate event calls to event dispatch thread
                     for ( final ActionListener listener : listenerList )
                     {
-                        invokeAndWaitSafely ( new Runnable ()
+                        // Check execution stop
+                        if ( shouldContinue ( cycleCount, id ) )
                         {
-                            @Override
-                            public void run ()
+                            CoreSwingUtils.invokeAndWaitSafely ( new Runnable ()
                             {
-                                listener.actionPerformed ( actionEvent );
-                            }
-                        } );
+                                @Override
+                                public void run ()
+                                {
+                                    listener.actionPerformed ( actionEvent );
+                                }
+                            } );
+                        }
                     }
                 }
             }
@@ -1506,45 +1549,9 @@ public class WebTimer
         final WebTimer repeat = new WebTimer ( name, delay, initialDelay, listener );
         repeat.setRepeats ( true );
         repeat.setUseDaemonThread ( useDaemonThread );
+        repeat.setUseEventDispatchThread ( false );
         repeat.setCyclesLimit ( cyclesLimit );
         repeat.start ();
         return repeat;
-    }
-
-    /**
-     * Will invoke the specified action in EDT in case it is called from non-EDT thread.
-     * It will also block any exceptions thrown by "invokeAndWait" method.
-     *
-     * @param runnable runnable
-     */
-    private static void invokeAndWaitSafely ( final Runnable runnable )
-    {
-        try
-        {
-            invokeAndWait ( runnable );
-        }
-        catch ( final Throwable e )
-        {
-            //
-        }
-    }
-
-    /**
-     * Will invoke the specified action in EDT in case it is called from non-EDT thread.
-     *
-     * @param runnable runnable
-     * @throws InterruptedException
-     * @throws java.lang.reflect.InvocationTargetException
-     */
-    public static void invokeAndWait ( final Runnable runnable ) throws InterruptedException, InvocationTargetException
-    {
-        if ( SwingUtilities.isEventDispatchThread () )
-        {
-            runnable.run ();
-        }
-        else
-        {
-            SwingUtilities.invokeAndWait ( runnable );
-        }
     }
 }

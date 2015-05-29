@@ -128,6 +128,7 @@ public class WebScrollBarUI extends BasicScrollBarUI implements Styleable, Borde
         // Uninstalling applied skin
         StyleManager.removeSkin ( scrollbar );
 
+        // Uninstalling UI
         super.uninstallUI ( c );
     }
 

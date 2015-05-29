@@ -115,13 +115,16 @@ public class WebLabelUI extends BasicLabelUI implements Styleable, BorderMethods
     @Override
     public void uninstallUI ( final JComponent c )
     {
-        // Removing label listeners
+        // Removing listeners
         label.removePropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, propertyChangeListener );
 
         // Uninstalling applied skin
         StyleManager.removeSkin ( label );
 
+        // Cleaning up reference
         label = null;
+
+        // Uninstalling UI
         super.uninstallUI ( c );
     }
 

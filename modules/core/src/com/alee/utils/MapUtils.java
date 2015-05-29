@@ -272,4 +272,36 @@ public final class MapUtils
             }
         }
     }
+
+    /**
+     * Merges specified maps into one new map and returns it.
+     *
+     * @param maps maps to merge into new one
+     * @param <K>  key type
+     * @param <V>  value type
+     * @return new map containing all provided maps merged into it
+     */
+    public static <K, V> HashMap<K, V> merge ( final Map<K, V>... maps )
+    {
+        // Preparing new map size
+        int size = 0;
+        for ( final Map<K, V> map : maps )
+        {
+            if ( map != null )
+            {
+                size += map.size ();
+            }
+        }
+
+        // Creating and filling new map
+        final HashMap<K, V> merged = new HashMap<K, V> ( size );
+        for ( final Map<K, V> map : maps )
+        {
+            if ( map != null )
+            {
+                merged.putAll ( map );
+            }
+        }
+        return merged;
+    }
 }
