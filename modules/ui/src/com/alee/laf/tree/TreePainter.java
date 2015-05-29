@@ -4,7 +4,6 @@ import com.alee.extended.painter.Painter;
 import com.alee.extended.painter.SpecificPainter;
 
 import javax.swing.*;
-import javax.swing.tree.AbstractLayoutCache;
 import javax.swing.tree.TreeCellRenderer;
 import javax.swing.tree.TreePath;
 import java.util.Hashtable;
@@ -20,10 +19,8 @@ public interface TreePainter<E extends JTree, U extends WebTreeUI> extends Paint
     /**
      * Prepares painter to pain tree.
      *
-     * @param treeState           object represents state of tree
      * @param drawingCache        vertical lines drawing cache
      * @param currentCellRenderer current cell renderer
      */
-    public void prepareToPaint ( AbstractLayoutCache treeState, Hashtable<TreePath, Boolean> drawingCache,
-                                 TreeCellRenderer currentCellRenderer );
+    public void prepareToPaint ( Hashtable<TreePath, Boolean> drawingCache, TreeCellRenderer currentCellRenderer );
 }

@@ -4,7 +4,6 @@ import com.alee.extended.painter.AdaptivePainter;
 import com.alee.extended.painter.Painter;
 
 import javax.swing.*;
-import javax.swing.tree.AbstractLayoutCache;
 import javax.swing.tree.TreeCellRenderer;
 import javax.swing.tree.TreePath;
 import java.util.Hashtable;
@@ -32,8 +31,7 @@ public class AdaptiveTreePainter<E extends JTree, U extends WebTreeUI> extends A
      * {@inheritDoc}
      */
     @Override
-    public void prepareToPaint ( final AbstractLayoutCache treeState, final Hashtable<TreePath, Boolean> drawingCache,
-                                 final TreeCellRenderer currentCellRenderer )
+    public void prepareToPaint ( final Hashtable<TreePath, Boolean> drawingCache, final TreeCellRenderer currentCellRenderer )
     {
         // Ignore this method in adaptive class
     }

@@ -17,6 +17,7 @@
 
 package com.alee.laf.list;
 
+import com.alee.extended.painter.Painter;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.list.editor.DefaultListCellEditor;
 import com.alee.laf.list.editor.ListCellEditor;
@@ -25,6 +26,8 @@ import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.log.Log;
 import com.alee.managers.tooltip.ToolTipProvider;
 import com.alee.utils.*;
+import com.alee.utils.laf.ShapeProvider;
+import com.alee.utils.laf.Styleable;
 import com.alee.utils.swing.*;
 
 import javax.swing.*;
@@ -48,7 +51,7 @@ import java.util.Vector;
  * @author Mikle Garin
  */
 
-public class WebList extends JList implements EventMethods, FontMethods<WebList>, SizeMethods<WebList>
+public class WebList extends JList implements Styleable, ShapeProvider, EventMethods, FontMethods<WebList>, SizeMethods<WebList>
 {
     /**
      * todo 1. Generics usage when migrated to JDK8+
@@ -476,26 +479,6 @@ public class WebList extends JList implements EventMethods, FontMethods<WebList>
     }
 
     /**
-     * Returns whether should decorate selected and rollover cells or not.
-     *
-     * @return true if should decorate selected and rollover cells, false otherwise
-     */
-    public boolean isDecorateSelection ()
-    {
-        return getWebUI ().isDecorateSelection ();
-    }
-
-    /**
-     * Sets whether should decorate selected and rollover cells or not.
-     *
-     * @param decorateSelection whether should decorate selected and rollover cells or not
-     */
-    public void setDecorateSelection ( final boolean decorateSelection )
-    {
-        getWebUI ().setDecorateSelection ( decorateSelection );
-    }
-
-    /**
      * Returns whether should highlight rollover cell or not.
      *
      * @return true if rollover cell is being highlighted, false otherwise
@@ -516,110 +499,6 @@ public class WebList extends JList implements EventMethods, FontMethods<WebList>
     }
 
     /**
-     * Returns cells selection rounding.
-     *
-     * @return cells selection rounding
-     */
-    public int getSelectionRound ()
-    {
-        return getWebUI ().getSelectionRound ();
-    }
-
-    /**
-     * Sets cells selection rounding.
-     *
-     * @param selectionRound new cells selection rounding
-     */
-    public void setSelectionRound ( final int selectionRound )
-    {
-        getWebUI ().setSelectionRound ( selectionRound );
-    }
-
-    /**
-     * Returns cells selection shade width.
-     *
-     * @return cells selection shade width
-     */
-    public int getSelectionShadeWidth ()
-    {
-        return getWebUI ().getSelectionShadeWidth ();
-    }
-
-    /**
-     * Sets cells selection shade width.
-     *
-     * @param selectionShadeWidth new cells selection shade width
-     */
-    public void setSelectionShadeWidth ( final int selectionShadeWidth )
-    {
-        getWebUI ().setSelectionShadeWidth ( selectionShadeWidth );
-    }
-
-    /**
-     * Returns whether selection should be web-colored or not.
-     * In case it is not web-colored selectionBackgroundColor value will be used as background color.
-     *
-     * @return true if selection should be web-colored, false otherwise
-     */
-    public boolean isWebColoredSelection ()
-    {
-        return getWebUI ().isWebColoredSelection ();
-    }
-
-    /**
-     * Sets whether selection should be web-colored or not.
-     * In case it is not web-colored selectionBackgroundColor value will be used as background color.
-     *
-     * @param webColored whether selection should be web-colored or not
-     */
-    public void setWebColoredSelection ( final boolean webColored )
-    {
-        getWebUI ().setWebColoredSelection ( webColored );
-    }
-
-    /**
-     * Returns selection border color.
-     *
-     * @return selection border color
-     */
-    public Color getSelectionBorderColor ()
-    {
-        return getWebUI ().getSelectionBorderColor ();
-    }
-
-    /**
-     * Sets selection border color.
-     *
-     * @param color selection border color
-     */
-    public void setSelectionBorderColor ( final Color color )
-    {
-        getWebUI ().setSelectionBorderColor ( color );
-    }
-
-    /**
-     * Returns selection background color.
-     * It is used only when webColoredSelection is set to false.
-     *
-     * @return selection background color
-     */
-    public Color getSelectionBackgroundColor ()
-    {
-        return getWebUI ().getSelectionBackgroundColor ();
-    }
-
-    /**
-     * Sets selection background color.
-     * It is used only when webColoredSelection is set to false.
-     *
-     * @param color selection background color
-     */
-    public void setSelectionBackgroundColor ( final Color color )
-    {
-        getWebUI ().setSelectionBackgroundColor ( color );
-    }
-
-    /**
      * Returns whether to scroll list down to selection automatically or not.
      *
      * @return true if list is being automatically scrolled to selection, false otherwise
@@ -637,6 +516,56 @@ public class WebList extends JList implements EventMethods, FontMethods<WebList>
     public void setAutoScrollToSelection ( final boolean autoScrollToSelection )
     {
         getWebUI ().setAutoScrollToSelection ( autoScrollToSelection );
+    }
+
+    /**
+     * Returns list painter.
+     *
+     * @return list painter
+     */
+    public Painter getPainter ()
+    {
+        return getWebUI ().getPainter ();
+    }
+
+    /**
+     * Sets list painter.
+     * Pass null to remove list painter.
+     *
+     * @param painter new list painter
+     * @return this list
+     */
+    public WebList setPainter ( final Painter painter )
+    {
+        getWebUI ().setPainter ( painter );
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getStyleId ()
+    {
+        return getWebUI ().getStyleId ();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setStyleId ( final String id )
+    {
+        getWebUI ().setStyleId ( id );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Shape provideShape ()
+    {
+        return getWebUI ().provideShape ();
     }
 
     /**

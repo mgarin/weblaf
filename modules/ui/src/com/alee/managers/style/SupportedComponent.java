@@ -131,8 +131,8 @@ public enum SupportedComponent
     progressBar ( true, JProgressBar.class, "ProgressBarUI", WebLookAndFeel.progressBarUI ),
     slider ( true, JSlider.class, "SliderUI", WebLookAndFeel.sliderUI ),
     spinner ( true, JSpinner.class, "SpinnerUI", WebLookAndFeel.spinnerUI ),
-    tree ( false, JTree.class, "TreeUI", WebLookAndFeel.treeUI ),
-    list ( false, JList.class, "ListUI", WebLookAndFeel.listUI ),
+    tree ( true, JTree.class, "TreeUI", WebLookAndFeel.treeUI ),
+    list ( true, JList.class, "ListUI", WebLookAndFeel.listUI ),
     comboBox ( false, JComboBox.class, "ComboBoxUI", WebLookAndFeel.comboBoxUI ),
 
     /**

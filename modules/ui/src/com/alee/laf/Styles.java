@@ -84,6 +84,7 @@ public final class Styles
     public static final String comboboxArrowButton = "combobox-arrow";
     public static final String comboboxListScrollPane = "combobox-list";
     public static final String comboboxListScrollBar = "combobox-list";
+    public static final String comboboxListComponent = "combobox-list-component";
     public static final String comboboxListLabel = "combobox-list-cell";
 
     /**

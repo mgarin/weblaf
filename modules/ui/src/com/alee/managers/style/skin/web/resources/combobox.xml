@@ -46,6 +46,13 @@
         </painter>
     </style>
 
+    <!-- Popup list component -->
+    <style type="list" id="combobox-list-component" extends="default">
+        <painter id="painter" base="true" class="com.alee.managers.style.skin.web.WebListPainter">
+            <decorateSelection>false</decorateSelection>
+        </painter>
+    </style>
+
     <!-- Popup list value label -->
     <style type="label" id="combobox-list-cell" extends="default">
         <ui>

@@ -32,6 +32,7 @@ import com.alee.extended.statusbar.WebStatusBar;
 import com.alee.extended.syntax.SyntaxPreset;
 import com.alee.extended.syntax.WebSyntaxArea;
 import com.alee.extended.syntax.WebSyntaxScrollPane;
+import com.alee.extended.tree.WebFileTree;
 import com.alee.extended.window.PopOverLocation;
 import com.alee.extended.window.WebPopOver;
 import com.alee.global.StyleConstants;
@@ -42,6 +43,7 @@ import com.alee.laf.button.WebToggleButton;
 import com.alee.laf.checkbox.WebCheckBox;
 import com.alee.laf.combobox.WebComboBox;
 import com.alee.laf.label.WebLabel;
+import com.alee.laf.list.WebList;
 import com.alee.laf.menu.WebCheckBoxMenuItem;
 import com.alee.laf.menu.WebMenuItem;
 import com.alee.laf.menu.WebPopupMenu;
@@ -56,6 +58,7 @@ import com.alee.laf.tabbedpane.WebTabbedPane;
 import com.alee.laf.text.WebTextArea;
 import com.alee.laf.text.WebTextField;
 import com.alee.laf.toolbar.WebToolBar;
+import com.alee.laf.tree.TreeSelectionStyle;
 import com.alee.managers.glasspane.GlassPaneManager;
 import com.alee.managers.glasspane.WebGlassPane;
 import com.alee.managers.hotkey.Hotkey;
@@ -343,7 +346,7 @@ public class StyleEditor extends WebFrame
 
         //
 
-        final WebToggleButton toggleButton = new WebToggleButton ( "Toggle me",WebLookAndFeel.getIcon ( 16 ) );
+        final WebToggleButton toggleButton = new WebToggleButton ( "Toggle me", WebLookAndFeel.getIcon ( 16 ) );
         addViewComponent ( "Toggle button", toggleButton, toggleButton, true );
 
         //
@@ -398,6 +401,23 @@ public class StyleEditor extends WebFrame
                 "Alice Manson", "Nancy Drew", "John Linderman", "Trisha Mathew", "Annae Mendy", "Wendy Anderson", "Alex Kurovski" };
         final WebComboBox cb = new WebComboBox ( d );
         addViewComponent ( "Combo box", cb, cb, true );
+
+        //
+
+        final WebList wl = new WebList ( d );
+        final WebScrollPane wlScroll = new WebScrollPane ( wl );
+        wlScroll.setPreferredSize ( new Dimension ( 200, 150 ) );
+        addViewComponent ( "List", wlScroll, wl, false );
+
+        //
+
+        final WebFileTree homeFileTree = new WebFileTree ( FileUtils.getUserHomePath () );
+        homeFileTree.setAutoExpandSelectedNode ( false );
+        homeFileTree.setShowsRootHandles ( true );
+        homeFileTree.setSelectionStyle ( TreeSelectionStyle.group );
+        final WebScrollPane homeFileTreeScroll = new WebScrollPane ( homeFileTree );
+        homeFileTreeScroll.setPreferredSize ( new Dimension ( 200, 150 ) );
+        addViewComponent ( "Tree", homeFileTreeScroll, homeFileTree, false );
 
         //
 

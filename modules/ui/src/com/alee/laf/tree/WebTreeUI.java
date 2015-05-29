@@ -25,6 +25,7 @@ import com.alee.managers.style.StyleManager;
 import com.alee.utils.CompareUtils;
 import com.alee.utils.ImageUtils;
 import com.alee.utils.SwingUtils;
+import com.alee.utils.laf.MarginSupport;
 import com.alee.utils.laf.ShapeProvider;
 import com.alee.utils.laf.Styleable;
 import com.alee.utils.swing.DataRunnable;
@@ -32,10 +33,7 @@ import com.alee.utils.swing.DataRunnable;
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicTreeUI;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreeCellEditor;
-import javax.swing.tree.TreeCellRenderer;
-import javax.swing.tree.TreePath;
+import javax.swing.tree.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 
@@ -45,7 +43,7 @@ import java.awt.event.MouseEvent;
  * @author Mikle Garin
  */
 
-public class WebTreeUI extends BasicTreeUI implements Styleable, ShapeProvider
+public class WebTreeUI extends BasicTreeUI implements Styleable, ShapeProvider, MarginSupport
 {
     /**
      * Expand and collapse control icons.
@@ -79,6 +77,7 @@ public class WebTreeUI extends BasicTreeUI implements Styleable, ShapeProvider
      * Runtime variables.
      */
     protected String styleId = null;
+    protected Insets margin = null;
 
     /**
      * Returns an instance of the WebTreeUI for the specified component.
@@ -87,7 +86,7 @@ public class WebTreeUI extends BasicTreeUI implements Styleable, ShapeProvider
      * @param c component that will use UI instance
      * @return instance of the WebTreeUI
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebTreeUI ();
@@ -166,10 +165,32 @@ public class WebTreeUI extends BasicTreeUI implements Styleable, ShapeProvider
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Shape provideShape ()
     {
         return PainterSupport.getShape ( tree, painter );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Insets getMargin ()
+    {
+        return margin;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setMargin ( final Insets margin )
+    {
+        this.margin = margin;
+        PainterSupport.updateBorder ( getPainter () );
     }
 
     /**
@@ -211,7 +232,7 @@ public class WebTreeUI extends BasicTreeUI implements Styleable, ShapeProvider
     {
         if ( painter != null )
         {
-            painter.prepareToPaint ( treeState, drawingCache, currentCellRenderer );
+            painter.prepareToPaint ( drawingCache, currentCellRenderer );
             painter.paint ( ( Graphics2D ) g, SwingUtils.size ( c ), c, this );
         }
     }
@@ -416,6 +437,16 @@ public class WebTreeUI extends BasicTreeUI implements Styleable, ShapeProvider
     public CellRendererPane getCellRendererPane ()
     {
         return rendererPane;
+    }
+
+    /**
+     * Returns state of tree.
+     *
+     * @return state of tree
+     */
+    public AbstractLayoutCache getTreeState ()
+    {
+        return treeState;
     }
 
     /**

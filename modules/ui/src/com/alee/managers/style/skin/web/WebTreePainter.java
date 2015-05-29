@@ -488,11 +488,14 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
         {
             throw new InternalError ( "incorrect component" );
         }
+
+
+        // Prepare to paint
+        treeState = ui.getTreeState ();
         if ( treeState == null )
         {
             return;
         }
-
         treeModel = component.getModel ();
         totalChildIndent = ui.getLeftChildIndent () + ui.getRightChildIndent ();
         rendererPane = ui.getCellRendererPane ();
@@ -523,10 +526,8 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
     }
 
     @Override
-    public void prepareToPaint ( final AbstractLayoutCache treeState, final Hashtable<TreePath, Boolean> drawingCache,
-                                 final TreeCellRenderer currentCellRenderer )
+    public void prepareToPaint ( final Hashtable<TreePath, Boolean> drawingCache, final TreeCellRenderer currentCellRenderer )
     {
-        this.treeState = treeState;
         this.drawingCache = drawingCache;
         this.currentCellRenderer = currentCellRenderer;
     }
@@ -817,9 +818,10 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
      * in the area of row that is used to expand/collapse the node and
      * the node at <code>row</code> does not represent a leaf.
      */
+    @SuppressWarnings ("UnusedParameters")
     protected boolean isLocationInExpandControl ( final TreePath path, final int mouseX, final int mouseY )
     {
-        if ( path != null && !treeModel.isLeaf ( path.getLastPathComponent () ) )
+        if ( path != null && !component.getModel ().isLeaf ( path.getLastPathComponent () ) )
         {
             final int boxWidth;
             final Insets i = component.getInsets ();
@@ -854,6 +856,7 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
     /**
      * Paints the expand (toggle) part of a row. The receiver should NOT modify <code>clipBounds</code>, or <code>insets</code>.
      */
+    @SuppressWarnings ("UnusedParameters")
     protected void paintExpandControl ( final Graphics g, final Rectangle clipBounds, final Insets insets, final Rectangle bounds,
                                         final TreePath path, final int row, final boolean isExpanded, final boolean hasBeenExpanded,
                                         final boolean isLeaf )
@@ -928,6 +931,7 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
     /**
      * Returns true if the expand (toggle) control should be drawn for the specified row.
      */
+    @SuppressWarnings ("UnusedParameters")
     protected boolean shouldPaintExpandControl ( final TreePath path, final int row, final boolean isExpanded,
                                                  final boolean hasBeenExpanded, final boolean isLeaf )
     {
@@ -937,12 +941,7 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
         }
 
         final int depth = path.getPathCount () - 1;
-
-        if ( ( depth == 0 || ( depth == 1 && !isRootVisible () ) ) && !getShowsRootHandles () )
-        {
-            return false;
-        }
-        return true;
+        return !( ( depth == 0 || ( depth == 1 && !isRootVisible () ) ) && !getShowsRootHandles () );
     }
 
     protected boolean isRootVisible ()
@@ -968,6 +967,7 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
      * @param hasBeenExpanded whether row has been expanded once before or not
      * @param isLeaf          whether node is leaf or not
      */
+    @SuppressWarnings ("UnusedParameters")
     protected void paintHorizontalPartOfLeg ( final Graphics g, final Rectangle clipBounds, final Insets insets, final Rectangle bounds,
                                               final TreePath path, final int row, final boolean isExpanded, final boolean hasBeenExpanded,
                                               final boolean isLeaf )
@@ -977,7 +977,7 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
             return;
         }
 
-        // Don't paint the legs for the root'ish node if the
+        // Don't paint the legs for the root node if the
         final int depth = path.getPathCount () - 1;
         if ( ( depth == 0 || ( depth == 1 && !isRootVisible () ) ) && !getShowsRootHandles () )
         {
@@ -1191,6 +1191,7 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
      * @param depth Depth of the row
      * @return amount to indent the given row.
      */
+    @SuppressWarnings ("UnusedParameters")
     protected int getRowX ( final int row, final int depth )
     {
         return totalChildIndent * ( depth + depthOffset );
@@ -1488,5 +1489,68 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
     {
         return component != null && component.isEnabled () && component.getDragEnabled () && component.getTransferHandler () != null &&
                 component.getTransferHandler ().getSourceActions ( component ) > 0;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Dimension getPreferredSize ()
+    {
+        final Dimension preferredSize = new Dimension ();
+        treeState = ui.getTreeState ();
+        if ( treeState != null )
+        {
+            final Insets i = component.getInsets ();
+
+            if ( component.isLargeModel () )
+            {
+                final Rectangle visRect = component.getVisibleRect ();
+
+                if ( visRect.x == 0 && visRect.y == 0 &&
+                        visRect.width == 0 && visRect.height == 0 &&
+                        component.getVisibleRowCount () > 0 )
+                {
+                    // The tree doesn't have a valid bounds yet. Calculate
+                    // based on visible row count.
+                    visRect.width = 1;
+                    visRect.height = component.getRowHeight () * component.getVisibleRowCount ();
+                }
+                else
+                {
+                    visRect.x -= i.left;
+                    visRect.y -= i.top;
+                }
+                // we should consider a non-visible area above
+                Component parent = SwingUtilities.getUnwrappedParent ( component );
+                if ( parent instanceof JViewport )
+                {
+                    parent = parent.getParent ();
+                    if ( parent instanceof JScrollPane )
+                    {
+                        final JScrollPane pane = ( JScrollPane ) parent;
+                        final JScrollBar bar = pane.getHorizontalScrollBar ();
+                        if ( ( bar != null ) && bar.isVisible () )
+                        {
+                            final int height = bar.getHeight ();
+                            visRect.y -= height;
+                            visRect.height += height;
+                        }
+                    }
+                }
+                preferredSize.width = treeState.getPreferredWidth ( visRect );
+            }
+            else
+            {
+                preferredSize.width = treeState.getPreferredWidth ( null );
+            }
+            preferredSize.height = treeState.getPreferredHeight ();
+            preferredSize.width += i.left + i.right;
+            preferredSize.height += i.top + i.bottom;
+        }
+
+        treeState = null;
+
+        return preferredSize;
     }
 }

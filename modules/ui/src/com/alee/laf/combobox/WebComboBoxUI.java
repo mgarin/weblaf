@@ -350,7 +350,7 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider, Bor
                 {
                     final WebListUI webListUI = ( WebListUI ) listUI;
                     webListUI.setHighlightRolloverCell ( false );
-                    webListUI.setDecorateSelection ( false );
+                    webListUI.setStyleId ( Styles.comboboxListComponent );
                 }
 
                 // todo Handle inside of the popup painter
