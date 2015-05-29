@@ -2,6 +2,25 @@
 
     <!-- com.alee.laf.combobox.WebComboBox -->
 
+    <!-- Combobox -->
+    <style type="comboBox" id="default">
+        <component>
+            <opaque>false</opaque>
+            <focusable>true</focusable>
+        </component>
+        <painter class="com.alee.managers.style.skin.web.WebComboBoxPainter">
+            <round>2</round>
+            <shadeWidth>2</shadeWidth>
+            <iconSpacing>3</iconSpacing>
+            <expandedBgColor>223,220,213</expandedBgColor>
+            <selectedMenuTopBg>208,208,198</selectedMenuTopBg>
+            <selectedMenuBottomBg>196,196,186</selectedMenuBottomBg>
+            <webColoredBackground>true</webColoredBackground>
+            <drawFocus>true</drawFocus>
+            <drawBorder>true</drawBorder>
+        </painter>
+    </style>
+
     <!-- Selected value label -->
     <style type="label" id="combobox-selected" extends="default">
         <ui>

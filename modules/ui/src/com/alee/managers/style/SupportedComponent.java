@@ -133,7 +133,7 @@ public enum SupportedComponent
     spinner ( true, JSpinner.class, "SpinnerUI", WebLookAndFeel.spinnerUI ),
     tree ( true, JTree.class, "TreeUI", WebLookAndFeel.treeUI ),
     list ( true, JList.class, "ListUI", WebLookAndFeel.listUI ),
-    comboBox ( false, JComboBox.class, "ComboBoxUI", WebLookAndFeel.comboBoxUI ),
+    comboBox ( true, JComboBox.class, "ComboBoxUI", WebLookAndFeel.comboBoxUI ),
 
     /**
      * Desktop-pane-related components.

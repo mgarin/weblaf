@@ -17,6 +17,7 @@
 
 package com.alee.laf.combobox;
 
+import com.alee.extended.painter.Painter;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.language.data.TooltipWay;
@@ -30,6 +31,7 @@ import com.alee.managers.tooltip.TooltipManager;
 import com.alee.managers.tooltip.WebCustomTooltip;
 import com.alee.utils.*;
 import com.alee.utils.laf.ShapeProvider;
+import com.alee.utils.laf.Styleable;
 import com.alee.utils.swing.*;
 
 import javax.swing.*;
@@ -45,7 +47,8 @@ import java.util.Vector;
  */
 
 public class WebComboBox extends JComboBox
-        implements ShapeProvider, EventMethods, ToolTipMethods, SettingsMethods, FontMethods<WebComboBox>, SizeMethods<WebComboBox>
+        implements Styleable, ShapeProvider, EventMethods, ToolTipMethods, SettingsMethods, FontMethods<WebComboBox>,
+        SizeMethods<WebComboBox>
 {
     public WebComboBox ()
     {
@@ -162,66 +165,6 @@ public class WebComboBox extends JComboBox
         getWebUI ().setCollapseIcon ( collapseIcon );
     }
 
-    public boolean isDrawBorder ()
-    {
-        return getWebUI ().isDrawBorder ();
-    }
-
-    public void setDrawBorder ( final boolean drawBorder )
-    {
-        getWebUI ().setDrawBorder ( drawBorder );
-    }
-
-    public boolean isWebColoredBackground ()
-    {
-        return getWebUI ().isWebColoredBackground ();
-    }
-
-    public void setWebColoredBackground ( final boolean webColored )
-    {
-        getWebUI ().setWebColoredBackground ( webColored );
-    }
-
-    public Color getExpandedBgColor ()
-    {
-        return getWebUI ().getExpandedBgColor ();
-    }
-
-    public void setExpandedBgColor ( final Color color )
-    {
-        getWebUI ().setExpandedBgColor ( color );
-    }
-
-    public boolean isDrawFocus ()
-    {
-        return getWebUI ().isDrawFocus ();
-    }
-
-    public void setDrawFocus ( final boolean drawFocus )
-    {
-        getWebUI ().setDrawFocus ( drawFocus );
-    }
-
-    public int getRound ()
-    {
-        return getWebUI ().getRound ();
-    }
-
-    public void setRound ( final int round )
-    {
-        getWebUI ().setRound ( round );
-    }
-
-    public int getShadeWidth ()
-    {
-        return getWebUI ().getShadeWidth ();
-    }
-
-    public void setShadeWidth ( final int shadeWidth )
-    {
-        getWebUI ().setShadeWidth ( shadeWidth );
-    }
-
     public boolean isMouseWheelScrollingEnabled ()
     {
         return getWebUI ().isMouseWheelScrollingEnabled ();
@@ -232,6 +175,50 @@ public class WebComboBox extends JComboBox
         getWebUI ().setMouseWheelScrollingEnabled ( enabled );
     }
 
+    /**
+     * Returns combobox painter.
+     *
+     * @return combobox painter
+     */
+    public Painter getPainter ()
+    {
+        return getWebUI ().getPainter ();
+    }
+
+    /**
+     * Sets combobox painter.
+     * Pass null to remove combobox painter.
+     *
+     * @param painter new combobox painter
+     * @return this combobox
+     */
+    public WebComboBox setPainter ( final Painter painter )
+    {
+        getWebUI ().setPainter ( painter );
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getStyleId ()
+    {
+        return getWebUI ().getStyleId ();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setStyleId ( final String id )
+    {
+        getWebUI ().setStyleId ( id );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Shape provideShape ()
     {

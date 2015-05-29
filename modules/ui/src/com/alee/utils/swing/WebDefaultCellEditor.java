@@ -126,7 +126,7 @@ public class WebDefaultCellEditor<C extends JComponent> extends AbstractCellEdit
             if ( comboBox.getUI () instanceof WebComboBoxUI )
             {
                 final WebComboBoxUI webComboBoxUI = ( WebComboBoxUI ) comboBox.getUI ();
-                webComboBoxUI.setDrawBorder ( false );
+//                webComboBoxUI.setDrawBorder ( false );
             }
             comboBox.putClientProperty ( COMBOBOX_CELL_EDITOR, Boolean.TRUE );
             delegate = new EditorDelegate ()

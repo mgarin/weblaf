@@ -18,18 +18,20 @@
 package com.alee.laf.combobox;
 
 import com.alee.extended.layout.AbstractLayoutManager;
-import com.alee.global.StyleConstants;
+import com.alee.extended.painter.Painter;
+import com.alee.extended.painter.PainterSupport;
 import com.alee.laf.Styles;
-import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.list.WebListUI;
 import com.alee.laf.scroll.WebScrollPane;
 import com.alee.laf.text.WebTextFieldUI;
-import com.alee.utils.LafUtils;
-import com.alee.utils.SwingUtils;
+import com.alee.managers.style.StyleManager;
+import com.alee.utils.CompareUtils;
+import com.alee.utils.laf.MarginSupport;
+import com.alee.utils.laf.PaddingSupport;
 import com.alee.utils.laf.ShapeProvider;
-import com.alee.utils.swing.BorderMethods;
-import com.alee.utils.swing.RendererListener;
+import com.alee.utils.laf.Styleable;
+import com.alee.utils.swing.DataRunnable;
 import com.alee.utils.swing.WebDefaultCellEditor;
 
 import javax.swing.*;
@@ -43,10 +45,6 @@ import javax.swing.plaf.basic.ComboPopup;
 import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
-import java.awt.event.MouseWheelEvent;
-import java.awt.event.MouseWheelListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 
 /**
  * Custom UI for JComboBox component.
@@ -54,33 +52,41 @@ import java.beans.PropertyChangeListener;
  * @author Mikle Garin
  */
 
-public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider, BorderMethods
+public class WebComboBoxUI extends BasicComboBoxUI implements Styleable, ShapeProvider, MarginSupport, PaddingSupport
 {
     /**
      * Default combobox renderer.
      */
     protected static ListCellRenderer DEFAULT_RENDERER;
 
+    /**
+     * Style settings.
+     */
     protected ImageIcon expandIcon = WebComboBoxStyle.expandIcon;
     protected ImageIcon collapseIcon = WebComboBoxStyle.collapseIcon;
-    protected int iconSpacing = WebComboBoxStyle.iconSpacing;
-    protected boolean drawBorder = WebComboBoxStyle.drawBorder;
-    protected boolean webColoredBackground = WebComboBoxStyle.webColoredBackground;
-    protected Color expandedBgColor = WebComboBoxStyle.expandedBgColor;
-    protected int round = WebComboBoxStyle.round;
-    protected int shadeWidth = WebComboBoxStyle.shadeWidth;
-    protected boolean drawFocus = WebComboBoxStyle.drawFocus;
-    protected Color selectedMenuTopBg = WebComboBoxStyle.selectedMenuTopBg;
-    protected Color selectedMenuBottomBg = WebComboBoxStyle.selectedMenuBottomBg;
     protected boolean mouseWheelScrollingEnabled = WebComboBoxStyle.mouseWheelScrollingEnabled;
     protected boolean widerPopupAllowed = WebComboBoxStyle.widerPopupAllowed;
     protected boolean useFirstValueAsPrototype = false;
 
-    protected MouseWheelListener mouseWheelListener = null;
-    protected RendererListener rendererListener = null;
-    protected PropertyChangeListener rendererChangeListener = null;
-    protected PropertyChangeListener enabledStateListener = null;
+    /**
+     * Component painter.
+     */
+    protected ComboBoxPainter painter;
 
+    /**
+     * Runtime variables.
+     */
+    protected String styleId = null;
+    protected Insets margin = null;
+    protected Insets padding = null;
+
+    /**
+     * Returns an instance of the WebComboBoxUI for the specified component.
+     * This tricky method is used by UIManager to create component UIs when needed.
+     *
+     * @param c component that will use UI instance
+     * @return instance of the WebComboBoxUI
+     */
     @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
@@ -95,82 +101,14 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider, Bor
     {
         super.installUI ( c );
 
-        // Default settings
-        SwingUtils.setOrientation ( comboBox );
-        comboBox.setFocusable ( true );
-        LookAndFeel.installProperty ( comboBox, WebLookAndFeel.OPAQUE_PROPERTY, Boolean.FALSE );
-
-        // Updating border
-        updateBorder ();
-
         // Default renderer
         if ( !( comboBox.getRenderer () instanceof WebComboBoxCellRenderer ) )
         {
             comboBox.setRenderer ( new WebComboBoxCellRenderer () );
         }
 
-        // Rollover scrolling listener
-        mouseWheelListener = new MouseWheelListener ()
-        {
-            @Override
-            public void mouseWheelMoved ( final MouseWheelEvent e )
-            {
-                if ( mouseWheelScrollingEnabled && comboBox.isEnabled () && isFocused () )
-                {
-                    // Changing selection in case index actually changed
-                    final int index = comboBox.getSelectedIndex ();
-                    final int newIndex = Math.min ( Math.max ( 0, index + e.getWheelRotation () ), comboBox.getModel ().getSize () - 1 );
-                    if ( newIndex != index )
-                    {
-                        comboBox.setSelectedIndex ( newIndex );
-                    }
-                }
-            }
-        };
-        comboBox.addMouseWheelListener ( mouseWheelListener );
-
-        // Renderer change listener
-        // Used to provide feedback from the renderer
-        rendererListener = new RendererListener ()
-        {
-            @Override
-            public void repaint ()
-            {
-                comboBox.repaint ();
-                listBox.repaint ();
-            }
-
-            @Override
-            public void revalidate ()
-            {
-                isMinimumSizeDirty = true;
-                comboBox.revalidate ();
-                listBox.revalidate ();
-            }
-        };
-        installRendererListener ( comboBox.getRenderer () );
-        rendererChangeListener = new PropertyChangeListener ()
-        {
-            @Override
-            public void propertyChange ( final PropertyChangeEvent e )
-            {
-                uninstallRendererListener ( e.getOldValue () );
-                installRendererListener ( e.getNewValue () );
-            }
-        };
-        comboBox.addPropertyChangeListener ( WebLookAndFeel.RENDERER_PROPERTY, rendererChangeListener );
-
-        // Enabled property change listener
-        // This is a workaround to allow box renderer properly inherit enabled state
-        enabledStateListener = new PropertyChangeListener ()
-        {
-            @Override
-            public void propertyChange ( final PropertyChangeEvent evt )
-            {
-                listBox.setEnabled ( comboBox.isEnabled () );
-            }
-        };
-        comboBox.addPropertyChangeListener ( WebLookAndFeel.ENABLED_PROPERTY, enabledStateListener );
+        // Applying skin
+        StyleManager.applySkin ( comboBox );
     }
 
     /**
@@ -179,62 +117,107 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider, Bor
     @Override
     public void uninstallUI ( final JComponent c )
     {
-        comboBox.removePropertyChangeListener ( WebLookAndFeel.ENABLED_PROPERTY, enabledStateListener );
-
-        comboBox.removePropertyChangeListener ( WebLookAndFeel.RENDERER_PROPERTY, rendererChangeListener );
-        uninstallRendererListener ( comboBox.getRenderer () );
-        rendererListener = null;
-
-        c.removeMouseWheelListener ( mouseWheelListener );
-        mouseWheelListener = null;
+        // Uninstalling applied skin
+        StyleManager.removeSkin ( comboBox );
 
         super.uninstallUI ( c );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public void updateBorder ()
+    public String getStyleId ()
     {
-        // Preserve old borders
-        if ( SwingUtils.isPreserveBorders ( comboBox ) )
-        {
-            return;
-        }
-
-        final Insets m = new Insets ( 0, 0, 0, 0 );
-        if ( drawBorder )
-        {
-            m.top += shadeWidth + 1;
-            m.left += shadeWidth + 1;
-            m.bottom += shadeWidth + 1;
-            m.right += shadeWidth + 1;
-        }
-        comboBox.setBorder ( LafUtils.createWebBorder ( m ) );
+        return styleId;
     }
 
     /**
-     * Installs RendererListener into specified renderer if possible.
-     *
-     * @param renderer RendererListener to install
+     * {@inheritDoc}
      */
-    protected void installRendererListener ( final Object renderer )
+    @Override
+    public void setStyleId ( final String id )
     {
-        if ( renderer != null && renderer instanceof WebComboBoxCellRenderer )
+        if ( !CompareUtils.equals ( this.styleId, id ) )
         {
-            ( ( WebComboBoxCellRenderer ) renderer ).addRendererListener ( rendererListener );
+            this.styleId = id;
+            StyleManager.applySkin ( comboBox );
         }
     }
 
     /**
-     * Uninstalls RendererListener from specified renderer if possible.
-     *
-     * @param renderer RendererListener to uninstall
+     * {@inheritDoc}
      */
-    protected void uninstallRendererListener ( final Object renderer )
+    @Override
+    public Shape provideShape ()
     {
-        if ( renderer != null && renderer instanceof WebComboBoxCellRenderer )
+        return PainterSupport.getShape ( comboBox, painter );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Insets getMargin ()
+    {
+        return margin;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setMargin ( final Insets margin )
+    {
+        this.margin = margin;
+        PainterSupport.updateBorder ( getPainter () );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Insets getPadding ()
+    {
+        return padding;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setPadding ( final Insets padding )
+    {
+        this.padding = padding;
+        PainterSupport.updateBorder ( getPainter () );
+    }
+
+    /**
+     * Returns combobox painter.
+     *
+     * @return combobox painter
+     */
+    public com.alee.extended.painter.Painter getPainter ()
+    {
+        return PainterSupport.getAdaptedPainter ( painter );
+    }
+
+    /**
+     * Sets combobox painter.
+     * Pass null to remove combobox painter.
+     *
+     * @param painter new combobox painter
+     */
+    public void setPainter ( final Painter painter )
+    {
+        PainterSupport.setPainter ( comboBox, new DataRunnable<ComboBoxPainter> ()
         {
-            ( ( WebComboBoxCellRenderer ) renderer ).removeRendererListener ( rendererListener );
-        }
+            @Override
+            public void run ( final ComboBoxPainter newPainter )
+            {
+                WebComboBoxUI.this.painter = newPainter;
+            }
+        }, this.painter, painter, ComboBoxPainter.class, AdaptiveComboBoxPainter.class );
     }
 
     /**
@@ -485,22 +468,6 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider, Bor
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Shape provideShape ()
-    {
-        if ( drawBorder )
-        {
-            return LafUtils.getWebBorderShape ( comboBox, shadeWidth, round );
-        }
-        else
-        {
-            return SwingUtils.size ( comboBox );
-        }
-    }
-
     public void setEditorColumns ( final int columns )
     {
         if ( editor instanceof JTextField )
@@ -549,68 +516,68 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider, Bor
         }
     }
 
-    public boolean isDrawBorder ()
-    {
-        return drawBorder;
-    }
-
-    public void setDrawBorder ( final boolean drawBorder )
-    {
-        this.drawBorder = drawBorder;
-        updateBorder ();
-    }
-
-    public boolean isWebColoredBackground ()
-    {
-        return webColoredBackground;
-    }
-
-    public void setWebColoredBackground ( final boolean webColored )
-    {
-        this.webColoredBackground = webColored;
-    }
-
-    public Color getExpandedBgColor ()
-    {
-        return expandedBgColor;
-    }
-
-    public void setExpandedBgColor ( final Color color )
-    {
-        this.expandedBgColor = color;
-    }
-
-    public boolean isDrawFocus ()
-    {
-        return drawFocus;
-    }
-
-    public void setDrawFocus ( final boolean drawFocus )
-    {
-        this.drawFocus = drawFocus;
-    }
-
-    public int getRound ()
-    {
-        return round;
-    }
-
-    public void setRound ( final int round )
-    {
-        this.round = round;
-    }
-
-    public int getShadeWidth ()
-    {
-        return shadeWidth;
-    }
-
-    public void setShadeWidth ( final int shadeWidth )
-    {
-        this.shadeWidth = shadeWidth;
-        updateBorder ();
-    }
-
+    //    public boolean isDrawBorder ()
+    //    {
+    //        return drawBorder;
+    //    }
+    //
+    //    public void setDrawBorder ( final boolean drawBorder )
+    //    {
+    //        this.drawBorder = drawBorder;
+    //        updateBorder ();
+    //    }
+    //
+    //    public boolean isWebColoredBackground ()
+    //    {
+    //        return webColoredBackground;
+    //    }
+    //
+    //    public void setWebColoredBackground ( final boolean webColored )
+    //    {
+    //        this.webColoredBackground = webColored;
+    //    }
+    //
+    //    public Color getExpandedBgColor ()
+    //    {
+    //        return expandedBgColor;
+    //    }
+    //
+    //    public void setExpandedBgColor ( final Color color )
+    //    {
+    //        this.expandedBgColor = color;
+    //    }
+    //
+    //    public boolean isDrawFocus ()
+    //    {
+    //        return drawFocus;
+    //    }
+    //
+    //    public void setDrawFocus ( final boolean drawFocus )
+    //    {
+    //        this.drawFocus = drawFocus;
+    //    }
+    //
+    //    public int getRound ()
+    //    {
+    //        return round;
+    //    }
+    //
+    //    public void setRound ( final int round )
+    //    {
+    //        this.round = round;
+    //    }
+    //
+    //    public int getShadeWidth ()
+    //    {
+    //        return shadeWidth;
+    //    }
+    //
+    //    public void setShadeWidth ( final int shadeWidth )
+    //    {
+    //        this.shadeWidth = shadeWidth;
+    //        updateBorder ();
+    //    }
+    //
     public boolean isMouseWheelScrollingEnabled ()
     {
         return mouseWheelScrollingEnabled;
@@ -636,19 +603,28 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider, Bor
      *
      * @return paint used to fill north popup menu corner when first list element is selected
      */
-    public Paint getNorthCornerFill ()
-    {
-        return selectedMenuTopBg;
-    }
+    //    public Paint getNorthCornerFill () todo
+    //    {
+    //        return selectedMenuTopBg;
+    //    }
 
     /**
      * Returns paint used to fill south popup menu corner when last list element is selected.
      *
      * @return paint used to fill south popup menu corner when last list element is selected
      */
-    public Paint getSouthCornerFill ()
+    //    public Paint getSouthCornerFill ()
+    //    {
+    //        return selectedMenuBottomBg;
+    //    }
+    public JList getListBox ()
     {
-        return selectedMenuBottomBg;
+        return listBox;
+    }
+
+    public void pinMinimumSizeDirty ()
+    {
+        isMinimumSizeDirty = true;
     }
 
     /**
@@ -657,111 +633,17 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider, Bor
     @Override
     public void paint ( final Graphics g, final JComponent c )
     {
-        hasFocus = comboBox.hasFocus ();
-        final Rectangle r = rectangleForCurrentValue ();
-
-        // Background
-        paintCurrentValueBackground ( g, r, hasFocus );
-
-        // Selected non-editable value
-        if ( !comboBox.isEditable () )
-        {
-            paintCurrentValue ( g, r, hasFocus );
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void paintCurrentValueBackground ( final Graphics g, final Rectangle bounds, final boolean hasFocus )
-    {
-        final Graphics2D g2d = ( Graphics2D ) g;
-
-        if ( drawBorder )
-        {
-            // Border and background
-            final Color shadeColor = drawFocus && isFocused () ? StyleConstants.fieldFocusColor : StyleConstants.shadeColor;
-            final boolean popupVisible = isPopupVisible ( comboBox );
-            final Color backgroundColor = !popupVisible ? comboBox.getBackground () : expandedBgColor;
-            LafUtils.drawWebStyle ( g2d, comboBox, shadeColor, shadeWidth, round, true, webColoredBackground && !popupVisible,
-                    StyleConstants.darkBorderColor, StyleConstants.disabledBorderColor, backgroundColor, 1f );
-        }
-        else
-        {
-            // Simple background
-            final boolean pressed = isPopupVisible ( comboBox );
-            final Rectangle cb = SwingUtils.size ( comboBox );
-            g2d.setPaint ( new GradientPaint ( 0, shadeWidth, pressed ? StyleConstants.topSelectedBgColor : StyleConstants.topBgColor, 0,
-                    comboBox.getHeight () - shadeWidth, pressed ? StyleConstants.bottomSelectedBgColor : StyleConstants.bottomBgColor ) );
-            g2d.fillRect ( cb.x, cb.y, cb.width, cb.height );
-        }
-
-        // Separator line
-        if ( comboBox.isEditable () )
-        {
-            final boolean ltr = comboBox.getComponentOrientation ().isLeftToRight ();
-            final Insets insets = comboBox.getInsets ();
-            final int lx = ltr ? comboBox.getWidth () - insets.right - arrowButton.getWidth () - 1 : insets.left + arrowButton.getWidth ();
-
-            g2d.setPaint ( comboBox.isEnabled () ? StyleConstants.borderColor : StyleConstants.disabledBorderColor );
-            g2d.drawLine ( lx, insets.top + 1, lx, comboBox.getHeight () - insets.bottom - 2 );
-        }
-    }
-
-    /**
-     * Returns whether combobox or one of its children is focused or not.
-     *
-     * @return true if combobox or one of its children is focused, false otherwise
-     */
-    protected boolean isFocused ()
-    {
-        return SwingUtils.hasFocusOwner ( comboBox );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void paintCurrentValue ( final Graphics g, final Rectangle bounds, final boolean hasFocus )
-    {
-        final ListCellRenderer renderer = comboBox.getRenderer ();
-        final Component c;
-
-        if ( hasFocus && !isPopupVisible ( comboBox ) )
-        {
-            c = renderer.getListCellRendererComponent ( listBox, comboBox.getSelectedItem (), -1, true, false );
-        }
-        else
-        {
-            c = renderer.getListCellRendererComponent ( listBox, comboBox.getSelectedItem (), -1, false, false );
-            c.setBackground ( UIManager.getColor ( "ComboBox.background" ) );
-        }
-        c.setFont ( comboBox.getFont () );
-
-        if ( comboBox.isEnabled () )
-        {
-            c.setForeground ( comboBox.getForeground () );
-            c.setBackground ( comboBox.getBackground () );
-        }
-        else
-        {
-            c.setForeground ( UIManager.getColor ( "ComboBox.disabledForeground" ) );
-            c.setBackground ( UIManager.getColor ( "ComboBox.disabledBackground" ) );
-        }
-
-        boolean shouldValidate = false;
-        if ( c instanceof JPanel )
-        {
-            shouldValidate = true;
-        }
-
-        final int x = bounds.x;
-        final int y = bounds.y;
-        final int w = bounds.width;
-        final int h = bounds.height;
-
-        currentValuePane.paintComponent ( g, c, comboBox, x, y, w, h, shouldValidate );
+        //        hasFocus = comboBox.hasFocus ();
+        //        final Rectangle r = rectangleForCurrentValue ();
+        //
+        //        // Background
+        //        paintCurrentValueBackground ( g, r, hasFocus );
+        //
+        //        // Selected non-editable value
+        //        if ( !comboBox.isEditable () )
+        //        {
+        //            paintCurrentValue ( g, r, hasFocus );
+        //        }
     }
 
     /**
@@ -884,37 +766,6 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider, Bor
     }
 
     /**
-     * Returns the area that is reserved for drawing the currently selected item.
-     * This method was overridden to provide additional 1px spacing for separator between combobox editor and arrow button.
-     */
-    @Override
-    protected Rectangle rectangleForCurrentValue ()
-    {
-        final int width = comboBox.getWidth ();
-        final int height = comboBox.getHeight ();
-        final Insets insets = comboBox.getInsets ();
-
-        // Calculating button size
-        int buttonSize = height - ( insets.top + insets.bottom );
-        if ( arrowButton != null )
-        {
-            buttonSize = arrowButton.getWidth ();
-        }
-
-        // Return editor
-        if ( comboBox.getComponentOrientation ().isLeftToRight () )
-        {
-            return new Rectangle ( insets.left, insets.top, width - ( insets.left + insets.right + buttonSize ) - 1,
-                    height - ( insets.top + insets.bottom ) );
-        }
-        else
-        {
-            return new Rectangle ( insets.left + buttonSize + 1, insets.top, width - ( insets.left + insets.right + buttonSize ),
-                    height - ( insets.top + insets.bottom ) );
-        }
-    }
-
-    /**
      * Returns default list cell renderer instance.
      *
      * @return default list cell renderer instance
@@ -996,5 +847,14 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider, Bor
                 editor.setBounds ( rectangleForCurrentValue () );
             }
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Dimension getPreferredSize ( final JComponent c )
+    {
+        return PainterSupport.getPreferredSize ( c, super.getPreferredSize ( c ), painter );
     }
 }
