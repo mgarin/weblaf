@@ -48,6 +48,7 @@ public class WebStyledLabelPainter<E extends WebStyledLabel, U extends WebStyled
      * Runtime variables.
      */
     protected final List<TextRange> textRanges = new ArrayList<TextRange> ();
+    protected boolean retrievingPreferredSize = false;
     protected boolean truncated = false;
 
     /**
@@ -169,7 +170,7 @@ public class WebStyledLabelPainter<E extends WebStyledLabel, U extends WebStyled
         // Resetting truncated flag
         truncated = false;
 
-        // Patinting styled text
+        // Painting styled text
         final int labelWidth = getLabelWidth ( label );
         final int textWidth = getTextWidth ( label );
         final int w = Math.min ( labelWidth, textWidth );
@@ -1149,5 +1150,454 @@ public class WebStyledLabelPainter<E extends WebStyledLabel, U extends WebStyled
         final int htp = label.getHorizontalTextPosition ();
         final int gap = label.getIconTextGap ();
         return StyledLabelUtils.layoutCompoundLabel ( label, text, icon, va, ha, vtp, htp, viewR, iconR, textR, gap );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Dimension getPreferredSize ()
+    {
+        retrievingPreferredSize = true;
+        final Dimension ps = getPreferredSizeImpl ();
+        retrievingPreferredSize = false;
+        return ps;
+    }
+
+    /**
+     * Returns label preferred size.
+     *
+     * @param label label to retrieve preferred size for
+     * @return label preferred size
+     */
+    protected Dimension getPreferredSizeImpl ()
+    {
+        StyledLabelUtils.buildTextRanges ( component, textRanges );
+
+        Font font = StyledLabelUtils.getFont ( component );
+        final FontMetrics fm = component.getFontMetrics ( font );
+        FontMetrics fm2;
+        final int defaultFontSize = font.getSize ();
+        final boolean lineWrap = component.isLineWrap () ||
+                ( component.getText () != null && ( component.getText ().contains ( "\r" ) || component.getText ().contains ( "\n" ) ) );
+
+        final TextRange[] texts = textRanges.toArray ( new TextRange[ textRanges.size () ] );
+
+        // get maximum row height first by comparing all fonts of styled texts
+        int maxRowHeight = fm.getHeight ();
+        for ( final TextRange textRange : texts )
+        {
+            final StyleRange style = textRange.styleRange;
+            final int size = ( style != null && ( style.isSuperscript () || style.isSubscript () ) ) ?
+                    Math.round ( ( float ) defaultFontSize / scriptFontRatio ) : defaultFontSize;
+
+            font = StyledLabelUtils.getFont ( component );
+            int styleHeight = fm.getHeight ();
+            if ( style != null && ( ( style.getStyle () != -1 && font.getStyle () != style.getStyle () ) || font.getSize () != size ) )
+            {
+                font = FontUtils.getCachedDerivedFont ( font, style.getStyle () == -1 ? font.getStyle () : style.getStyle (), size );
+                fm2 = component.getFontMetrics ( font );
+                styleHeight = fm2.getHeight ();
+            }
+            styleHeight++;
+            maxRowHeight = Math.max ( maxRowHeight, styleHeight );
+        }
+
+        int naturalRowCount = 1;
+        final int nextRowStartIndex = 0;
+        int width = 0;
+        int maxWidth = 0;
+        final java.util.List<Integer> lineWidths = new ArrayList<Integer> ();
+
+        // Calculate one line width
+        for ( final TextRange textRange : textRanges )
+        {
+            final StyleRange style = textRange.styleRange;
+            final int size = ( style != null && ( style.isSuperscript () || style.isSubscript () ) ) ?
+                    Math.round ( ( float ) defaultFontSize / scriptFontRatio ) : defaultFontSize;
+            font = StyledLabelUtils.getFont ( component );
+            final String s = textRange.text.substring ( nextRowStartIndex );
+            if ( s.startsWith ( "\r" ) || s.startsWith ( "\n" ) )
+            {
+                lineWidths.add ( width );
+                maxWidth = Math.max ( width, maxWidth );
+                width = 0;
+                naturalRowCount++;
+                if ( component.getMaximumRows () > 0 && naturalRowCount >= component.getMaximumRows () )
+                {
+                    break;
+                }
+                continue;
+            }
+            if ( style != null && ( ( style.getStyle () != -1 && font.getStyle () != style.getStyle () ) || font.getSize () != size ) )
+            {
+                font = FontUtils.getCachedDerivedFont ( font, style.getStyle () == -1 ? font.getStyle () : style.getStyle (), size );
+                fm2 = component.getFontMetrics ( font );
+                width += fm2.stringWidth ( s );
+            }
+            else
+            {
+                //                    fm2 = fm;
+                width += fm.stringWidth ( s );
+            }
+        }
+        lineWidths.add ( width );
+        maxWidth = Math.max ( width, maxWidth );
+        int maxLineWidth = maxWidth;
+        preferredRowCount = naturalRowCount;
+
+        // if getPreferredWidth() is not set but getRows() is set, get maximum width and row count based on the required rows.
+        if ( lineWrap && component.getPreferredWidth () <= 0 && component.getRows () > 0 )
+        {
+            maxWidth = getMaximumWidth ( component, maxWidth, naturalRowCount, component.getRows () );
+        }
+
+        // if calculated maximum width is larger than label's maximum size, wrap again to get the updated row count and use the label's maximum width as the maximum width.
+        int preferredWidth = component.getPreferredWidth ();
+        final Insets insets = component.getInsets ();
+        if ( preferredWidth > 0 && insets != null )
+        {
+            preferredWidth -= insets.left + insets.right;
+        }
+        if ( component.getIcon () != null && component.getHorizontalTextPosition () != SwingConstants.CENTER )
+        {
+            preferredWidth -= component.getIcon ().getIconWidth () + component.getIconTextGap ();
+        }
+        if ( lineWrap && preferredWidth > 0 && maxWidth > preferredWidth )
+        {
+            maxWidth = getLayoutWidth ( component, preferredWidth );
+        }
+
+        // Recalculate the maximum width according to the maximum rows
+        if ( lineWrap && component.getMaximumRows () > 0 && preferredRowCount > component.getMaximumRows () )
+        {
+            if ( component.getPreferredWidth () <= 0 )
+            {
+                maxWidth = getMaximumWidth ( component, maxWidth, naturalRowCount, component.getMaximumRows () );
+            }
+            else
+            {
+                preferredRowCount = component.getMaximumRows ();
+            }
+        }
+
+        // Recalculate the maximum width according to the minimum rows
+        if ( lineWrap && component.getPreferredWidth () <= 0 && component.getMinimumRows () > 0 &&
+                preferredRowCount < component.getMinimumRows () )
+        {
+            maxWidth = getMaximumWidth ( component, maxWidth, naturalRowCount, component.getMinimumRows () );
+        }
+        if ( retrievingPreferredSize && component.getRows () > 0 && preferredRowCount > component.getRows () &&
+                ( component.getPreferredWidth () <= 0 || component.getPreferredWidth () >= maxLineWidth ||
+                        naturalRowCount > component.getRows () ) )
+        {
+            preferredRowCount = component.getRows ();
+            maxLineWidth = 0;
+            for ( int i = 0; i < lineWidths.size () && i < preferredRowCount; i++ )
+            {
+                maxLineWidth = Math.max ( maxLineWidth, lineWidths.get ( i ) );
+            }
+        }
+
+        Dimension dimension = new Dimension ( Math.min ( maxWidth, maxLineWidth ),
+                ( maxRowHeight + Math.max ( 0, component.getRowGap () ) ) * preferredRowCount );
+        if ( component.getIcon () != null )
+        {
+            dimension = new Dimension ( dimension.width + component.getIconTextGap () + component.getIcon ().getIconWidth (),
+                    dimension.height );
+        }
+
+        //        dimension.width += insets.right + insets.left;
+        //        dimension.height += insets.bottom + insets. top;
+
+        return dimension;
+    }
+
+    /**
+     * Returns layout width.
+     *
+     * @param label    painted label
+     * @param maxWidth maximum width
+     * @return layout width
+     */
+    protected int getLayoutWidth ( final E label, final int maxWidth )
+    {
+        int nextRowStartIndex;
+        Font font = StyledLabelUtils.getFont ( label );
+        final int defaultFontSize = font.getSize ();
+        final FontMetrics fm = label.getFontMetrics ( font );
+        FontMetrics fm2;
+        nextRowStartIndex = 0;
+        int x = 0;
+        preferredRowCount = 1;
+        for ( int i = 0; i < textRanges.size (); i++ )
+        {
+            final TextRange textRange = textRanges.get ( i );
+            final StyleRange style = textRange.styleRange;
+            if ( textRange.text.contains ( "\r" ) || textRange.text.contains ( "\n" ) )
+            {
+                x = 0;
+                preferredRowCount++;
+                continue;
+            }
+
+            final int size = ( style != null && ( style.isSuperscript () || style.isSubscript () ) ) ?
+                    Math.round ( ( float ) defaultFontSize / scriptFontRatio ) : defaultFontSize;
+
+            font = StyledLabelUtils.getFont ( label ); // cannot omit this one
+            if ( style != null && ( ( style.getStyle () != -1 && font.getStyle () != style.getStyle () ) || font.getSize () != size ) )
+            {
+                font = FontUtils.getCachedDerivedFont ( font, style.getStyle () == -1 ? font.getStyle () : style.getStyle (), size );
+                fm2 = label.getFontMetrics ( font );
+            }
+            else
+            {
+                fm2 = fm;
+            }
+
+            String s = textRange.text.substring ( nextRowStartIndex );
+
+            int strWidth = fm2.stringWidth ( s );
+
+            boolean wrapped = false;
+            final int widthLeft = maxWidth - x;
+            if ( widthLeft < strWidth )
+            {
+                wrapped = true;
+                int availLength = s.length () * widthLeft / strWidth + 1;
+                int nextWordStartIndex;
+                int nextRowStartIndexInSubString = 0;
+                boolean needBreak = false;
+                boolean needContinue = false;
+                int loopCount = 0;
+                do
+                {
+                    final String subString = s.substring ( 0, Math.min ( availLength, s.length () ) );
+                    int firstRowWordEndIndex = StyledLabelUtils.findFirstRowWordEndIndex ( subString );
+                    nextWordStartIndex = firstRowWordEndIndex < 0 ? 0 : StyledLabelUtils.findNextWordStartIndex ( s, firstRowWordEndIndex );
+                    if ( firstRowWordEndIndex < 0 )
+                    {
+                        if ( x != 0 )
+                        {
+                            x = 0;
+                            i--;
+                            preferredRowCount++;
+                            if ( label.getMaximumRows () > 0 && preferredRowCount >= label.getMaximumRows () )
+                            {
+                                needBreak = true;
+                            }
+                            needContinue = true;
+                            break;
+                        }
+                        else
+                        {
+                            firstRowWordEndIndex = 0;
+                            nextWordStartIndex = Math.min ( s.length (), availLength );
+                        }
+                    }
+                    nextRowStartIndexInSubString = firstRowWordEndIndex + 1;
+                    final String subStringThisRow = s.substring ( 0, Math.min ( nextRowStartIndexInSubString, s.length () ) );
+                    strWidth = fm2.stringWidth ( subStringThisRow );
+                    if ( strWidth > widthLeft )
+                    {
+                        availLength = subString.length () * widthLeft / strWidth;
+                    }
+                    loopCount++;
+                    if ( loopCount > 50 )
+                    {
+                        Log.error ( "Styled label paint error: " + textRange );
+                        break;
+                    }
+                }
+                while ( strWidth > widthLeft && availLength > 0 );
+                if ( needBreak )
+                {
+                    break;
+                }
+                if ( needContinue )
+                {
+                    continue;
+                }
+                while ( nextRowStartIndexInSubString < nextWordStartIndex )
+                {
+                    strWidth += fm2.charWidth ( s.charAt ( nextRowStartIndexInSubString ) );
+                    if ( strWidth >= widthLeft )
+                    {
+                        break;
+                    }
+                    nextRowStartIndexInSubString++;
+                }
+                final String subStringThisRow = s.substring ( 0, Math.min ( nextRowStartIndexInSubString, s.length () ) );
+                strWidth = fm2.stringWidth ( subStringThisRow );
+                while ( nextRowStartIndexInSubString < nextWordStartIndex )
+                {
+                    strWidth += fm2.charWidth ( s.charAt ( nextRowStartIndexInSubString ) );
+                    if ( strWidth >= widthLeft )
+                    {
+                        break;
+                    }
+                    nextRowStartIndexInSubString++;
+                }
+                s = s.substring ( 0, Math.min ( nextRowStartIndexInSubString, s.length () ) );
+                strWidth = fm2.stringWidth ( s );
+                nextRowStartIndex += nextRowStartIndexInSubString;
+            }
+            else
+            {
+                nextRowStartIndex = 0;
+            }
+
+            if ( wrapped )
+            {
+                preferredRowCount++;
+                x = 0;
+                i--;
+            }
+            else
+            {
+                x += strWidth;
+            }
+        }
+        return maxWidth;
+    }
+
+    /**
+     * Returns maximum width.
+     *
+     * @param label    painted label
+     * @param maxWidth maximum width
+     * @param natural  natural row count
+     * @param limited  limited row count
+     * @return maximum width
+     */
+    protected int getMaximumWidth ( final E label, int maxWidth, final int natural, final int limited )
+    {
+        int textWidth = label.getWidth () - label.getInsets ().left - label.getInsets ().right;
+        if ( label.getIcon () != null )
+        {
+            textWidth -= label.getIcon ().getIconWidth () + label.getIconTextGap ();
+        }
+        if ( natural > 1 )
+        {
+            int proposedMaxWidthMin = 1;
+            int proposedMaxWidthMax = maxWidth;
+            preferredRowCount = natural;
+            while ( proposedMaxWidthMin < proposedMaxWidthMax )
+            {
+                final int middle = ( proposedMaxWidthMax + proposedMaxWidthMin ) / 2;
+                maxWidth = getLayoutWidth ( label, middle );
+                if ( preferredRowCount > limited )
+                {
+                    proposedMaxWidthMin = middle + 1;
+                    preferredRowCount = natural;
+                }
+                else
+                {
+                    proposedMaxWidthMax = middle - 1;
+                }
+            }
+            return maxWidth + maxWidth / 20;
+        }
+
+        final int estimatedWidth = maxWidth / limited + 1;
+        int x = 0;
+        int nextRowStartIndex = 0;
+        Font font = StyledLabelUtils.getFont ( label );
+        final FontMetrics fm = label.getFontMetrics ( font );
+        final int defaultFontSize = font.getSize ();
+        FontMetrics fm2;
+        for ( int i = 0; i < textRanges.size (); i++ )
+        {
+            final TextRange textRange = textRanges.get ( i );
+            final StyleRange style = textRange.styleRange;
+            final int size = ( style != null && ( style.isSuperscript () || style.isSubscript () ) ) ?
+                    Math.round ( ( float ) defaultFontSize / scriptFontRatio ) : defaultFontSize;
+            font = StyledLabelUtils.getFont ( label );
+            if ( style != null && ( ( style.getStyle () != -1 && font.getStyle () != style.getStyle () ) || font.getSize () != size ) )
+            {
+                font = FontUtils.getCachedDerivedFont ( font, style.getStyle () == -1 ? font.getStyle () : style.getStyle (), size );
+                fm2 = label.getFontMetrics ( font );
+            }
+            else
+            {
+                fm2 = fm;
+            }
+
+            String s = textRange.text.substring ( nextRowStartIndex );
+            int strWidth = fm2.stringWidth ( s );
+            final int widthLeft = estimatedWidth - x;
+            if ( widthLeft < strWidth )
+            {
+                final int availLength = s.length () * widthLeft / strWidth + 1;
+                final String subString = s.substring ( 0, Math.min ( availLength, s.length () ) );
+                int firstRowWordEndIndex = StyledLabelUtils.findFirstRowWordEndIndex ( subString );
+                final int nextWordStartIndex = StyledLabelUtils.findNextWordStartIndex ( s, firstRowWordEndIndex );
+                if ( firstRowWordEndIndex < 0 )
+                {
+                    if ( nextWordStartIndex < s.length () )
+                    {
+                        firstRowWordEndIndex = StyledLabelUtils.findFirstRowWordEndIndex ( s.substring ( 0, nextWordStartIndex ) );
+                    }
+                    else
+                    {
+                        firstRowWordEndIndex = nextWordStartIndex;
+                    }
+                }
+                int nextRowStartIndexInSubString = firstRowWordEndIndex + 1;
+                final String subStringThisRow = s.substring ( 0, Math.min ( nextRowStartIndexInSubString, s.length () ) );
+                strWidth = fm2.stringWidth ( subStringThisRow );
+                while ( nextRowStartIndexInSubString < nextWordStartIndex )
+                {
+                    strWidth += fm2.charWidth ( s.charAt ( nextRowStartIndexInSubString ) );
+                    nextRowStartIndexInSubString++;
+                    if ( strWidth >= widthLeft )
+                    {
+                        break;
+                    }
+                }
+                s = s.substring ( 0, Math.min ( nextRowStartIndexInSubString, s.length () ) );
+                strWidth = fm2.stringWidth ( s );
+                nextRowStartIndex += nextRowStartIndexInSubString;
+                if ( x + strWidth >= maxWidth )
+                {
+                    x = Math.max ( x, strWidth );
+                    break;
+                }
+                if ( x + strWidth >= estimatedWidth )
+                {
+                    x += strWidth;
+                    break;
+                }
+                i--;
+            }
+            x += strWidth;
+        }
+        int paintWidth = x;
+        if ( label.getInsets () != null )
+        {
+            paintWidth += label.getInsets ().left + label.getInsets ().right;
+        }
+        int paintRows = paintStyledTextImpl ( label, null, 0, 0, paintWidth );
+        if ( paintRows != limited )
+        {
+            maxWidth = Math.min ( maxWidth, textWidth );
+            while ( paintRows > limited && paintWidth < maxWidth )
+            {
+                paintWidth += 2;
+                paintRows = paintStyledTextImpl ( label, null, 0, 0, paintWidth );
+            }
+            while ( paintRows < limited && paintWidth > 0 )
+            {
+                paintWidth -= 2;
+                paintRows = paintStyledTextImpl ( label, null, 0, 0, paintWidth );
+            }
+            x = paintWidth;
+            if ( label.getInsets () != null )
+            {
+                x -= label.getInsets ().left + label.getInsets ().right;
+            }
+        }
+        preferredRowCount = limited;
+        return x;
     }
 }

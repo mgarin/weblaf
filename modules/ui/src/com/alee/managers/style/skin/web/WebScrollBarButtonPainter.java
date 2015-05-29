@@ -270,14 +270,14 @@ public class WebScrollBarButtonPainter<E extends JButton, U extends WebButtonUI>
     @Override
     public Insets getBorders ()
     {
-        final boolean decr = buttonType == ScrollBarButtonType.decrease;
+        final boolean decrease = buttonType == ScrollBarButtonType.decrease;
         if ( isVerticalScroll () )
         {
-            return new Insets ( decr ? 1 : 0, 1, decr ? 0 : 1, 1 );
+            return new Insets ( decrease ? 1 : 0, 1, decrease ? 0 : 1, 1 );
         }
         else
         {
-            return new Insets ( 1, decr ? 1 : 0, 1, decr ? 0 : 1 );
+            return new Insets ( 1, decrease ? 1 : 0, 1, decrease ? 0 : 1 );
         }
     }
 
@@ -418,5 +418,15 @@ public class WebScrollBarButtonPainter<E extends JButton, U extends WebButtonUI>
     {
         final Container parent = component.getParent ();
         return !( parent instanceof JScrollBar ) || parent.getComponentOrientation ().isLeftToRight ();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Dimension getPreferredSize ()
+    {
+        // todo Get these sizes into this painter class
+        return new Dimension ( WebScrollBarStyle.buttonsSize );
     }
 }

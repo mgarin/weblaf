@@ -748,4 +748,16 @@ public class WebScrollBarPainter<E extends JScrollBar, U extends WebScrollBarUI>
             repaint ();
         }
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Dimension getPreferredSize ()
+    {
+        final Insets i = component.getInsets ();
+        final boolean ver = component.getOrientation () == Adjustable.VERTICAL;
+        return ver ? new Dimension ( i.left + scrollBarWidth + i.right, i.top + 48 + i.bottom ) :
+                new Dimension ( i.left + 48 + i.right, i.top + scrollBarWidth + i.bottom );
+    }
 }

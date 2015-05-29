@@ -284,7 +284,7 @@ public class WebListPainter<E extends JList, U extends WebListUI> extends Abstra
 
         for ( int colCounter = startColumn; colCounter <= endColumn; colCounter++ )
         {
-            // And then how many rows in this columnn
+            // And then how many rows in this column
             int row = convertLocationToRowInColumn ( paintBounds.y, colCounter );
             final int rowCount = getRowCount ( colCounter );
             int index = getModelIndex ( colCounter, row );
@@ -402,8 +402,7 @@ public class WebListPainter<E extends JList, U extends WebListUI> extends Abstra
     }
 
     /**
-     * Invoked when the list is layed out horizontally to determine how
-     * many columns to create.
+     * Invoked when the list is layed out horizontally to determine how many columns to create.
      * <p/>
      * This updates the <code>rowsPerColumn, </code><code>columnCount</code>,
      * <code>preferredHeight</code> and potentially <code>cellHeight</code>

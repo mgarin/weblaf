@@ -279,7 +279,7 @@ public class WebAbstractButtonPainter<E extends AbstractButton, U extends BasicB
     }
 
     /**
-     * Updates atually used shine color.
+     * Updates actually used shine color.
      */
     protected void updateTransparentShineColor ()
     {
@@ -515,17 +515,6 @@ public class WebAbstractButtonPainter<E extends AbstractButton, U extends BasicB
     protected Color getCurrentBottomBgColor ( final boolean pressed )
     {
         return pressed ? bottomSelectedBgColor : bottomBgColor;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Dimension getContentPreferredSize ()
-    {
-        // Calculating icon and text rects union as content size
-        calculateBounds ( component.getFontMetrics ( component.getFont () ) );
-        return textRect.union ( iconRect ).getSize ();
     }
 
     /**

@@ -75,7 +75,7 @@ public class SkinInfoConverter extends ReflectionConverter
 
     /**
      * Custom resource map used by StyleEditor to link resources and modified XML files.
-     * In other circumstances this map shouln't be required and will be empty.
+     * In other circumstances this map shouldn't be required and will be empty.
      */
     private static final Map<String, Map<String, String>> resourceMap = new LinkedHashMap<String, Map<String, String>> ();
 
@@ -159,7 +159,7 @@ public class SkinInfoConverter extends ReflectionConverter
                 reader.moveUp ();
             }
 
-            // Marking all futher
+            // Marking all further
             final boolean wasInclude = includeSkin;
             includeSkin = true;
 
@@ -328,7 +328,7 @@ public class SkinInfoConverter extends ReflectionConverter
     }
 
     /**
-     * Peforms settings copy from extended style.
+     * Performs settings copy from extended style.
      *
      * @param properties         style properties
      * @param extendedProperties extended style properties
