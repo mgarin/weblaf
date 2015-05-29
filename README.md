@@ -42,7 +42,7 @@ Advantages
 
 - Simple and stylish cross-platform default theme
 - Lots of useful custom Swing components
-- Fully stylable through settings, painters and custom skins
+- Fully styleable through settings, painters and custom skins
 - Language, settings, hotkey, tooltip and other custom managers
 - Various Swing and general utilities for many possible cases
 - Full support for RTL components orientation

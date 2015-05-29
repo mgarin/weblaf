@@ -23,6 +23,7 @@ import com.alee.managers.style.SupportedComponent;
 import com.alee.utils.CompareUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.TextUtils;
+import com.alee.utils.xml.InsetsConverter;
 import com.thoughtworks.xstream.converters.MarshallingContext;
 import com.thoughtworks.xstream.converters.UnmarshallingContext;
 import com.thoughtworks.xstream.converters.reflection.ReflectionConverter;
@@ -32,8 +33,10 @@ import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 import com.thoughtworks.xstream.mapper.Mapper;
 
 import javax.swing.*;
+import java.awt.*;
 import java.lang.reflect.Method;
 import java.util.*;
+import java.util.List;
 
 /**
  * Custom XStream converter for ComponentStyle class.
@@ -50,9 +53,11 @@ public class ComponentStyleConverter extends ReflectionConverter
      * Converter constants.
      */
     public static final String STYLE_NODE = "style";
-    public static final String STYLE_ID_ATTRIBUTE = "id";
     public static final String COMPONENT_TYPE_ATTRIBUTE = "type";
+    public static final String STYLE_ID_ATTRIBUTE = "id";
     public static final String EXTENDS_ID_ATTRIBUTE = "extends";
+    public static final String MARGIN_ATTRIBUTE = "margin";
+    public static final String PADDING_ATTRIBUTE = "padding";
     public static final String COMPONENT_NODE = "component";
     public static final String COMPONENT_CLASS_ATTRIBUTE = "class";
     public static final String UI_NODE = "ui";
@@ -90,13 +95,16 @@ public class ComponentStyleConverter extends ReflectionConverter
     public void marshal ( final Object source, final HierarchicalStreamWriter writer, final MarshallingContext context )
     {
         final ComponentStyle componentStyle = ( ComponentStyle ) source;
+        final Map<String, Object> componentProperties = componentStyle.getComponentProperties ();
+        final Map<String, Object> uiProperties = componentStyle.getUIProperties ();
+        final List<PainterStyle> painters = componentStyle.getPainters ();
+
+        // Style component type
+        writer.addAttribute ( COMPONENT_TYPE_ATTRIBUTE, componentStyle.getType ().toString () );
 
         // Component style ID
         final String componentStyleId = componentStyle.getId ();
         writer.addAttribute ( STYLE_ID_ATTRIBUTE, componentStyleId != null ? componentStyleId : Styles.defaultStyle );
-
-        // Style component type
-        writer.addAttribute ( COMPONENT_TYPE_ATTRIBUTE, componentStyle.getType ().toString () );
 
         // Extended style ID
         final String extendsId = componentStyle.getExtendsId ();
@@ -105,8 +113,22 @@ public class ComponentStyleConverter extends ReflectionConverter
             writer.addAttribute ( EXTENDS_ID_ATTRIBUTE, extendsId );
         }
 
+        // Margin and padding
+        if ( uiProperties != null )
+        {
+            final Insets margin = ( Insets ) uiProperties.get ( MARGIN_ATTRIBUTE );
+            if ( margin != null )
+            {
+                writer.addAttribute ( MARGIN_ATTRIBUTE, InsetsConverter.insetsToString ( margin ) );
+            }
+            final Insets padding = ( Insets ) uiProperties.get ( PADDING_ATTRIBUTE );
+            if ( padding != null )
+            {
+                writer.addAttribute ( PADDING_ATTRIBUTE, InsetsConverter.insetsToString ( padding ) );
+            }
+        }
+
         // Component properties
-        final Map<String, Object> componentProperties = componentStyle.getComponentProperties ();
         if ( componentProperties != null )
         {
             writer.startNode ( COMPONENT_NODE );
@@ -120,21 +142,23 @@ public class ComponentStyleConverter extends ReflectionConverter
         }
 
         // UI properties
-        final Map<String, Object> uiProperties = componentStyle.getUIProperties ();
         if ( uiProperties != null )
         {
             writer.startNode ( UI_NODE );
             for ( final Map.Entry<String, Object> property : uiProperties.entrySet () )
             {
-                writer.startNode ( property.getKey () );
-                context.convertAnother ( property.getValue () );
-                writer.endNode ();
+                final String key = property.getKey ();
+                if ( !CompareUtils.equals ( key, MARGIN_ATTRIBUTE, PADDING_ATTRIBUTE ) )
+                {
+                    writer.startNode ( key );
+                    context.convertAnother ( property.getValue () );
+                    writer.endNode ();
+                }
             }
             writer.endNode ();
         }
 
         // Painters
-        final List<PainterStyle> painters = componentStyle.getPainters ();
         if ( painters != null )
         {
             for ( final PainterStyle painterStyle : painters )
@@ -164,23 +188,35 @@ public class ComponentStyleConverter extends ReflectionConverter
     {
         // Creating component style
         final ComponentStyle componentStyle = new ComponentStyle ();
-
-        // Reading style ID
-        final String componentStyleId = reader.getAttribute ( STYLE_ID_ATTRIBUTE );
-        componentStyle.setId ( componentStyleId != null ? componentStyleId : Styles.defaultStyle );
+        final Map<String, Object> componentProperties = new LinkedHashMap<String, Object> ();
+        final Map<String, Object> uiProperties = new LinkedHashMap<String, Object> ();
+        final List<PainterStyle> painters = new ArrayList<PainterStyle> ();
 
         // Reading style component type
         final SupportedComponent type = SupportedComponent.valueOf ( reader.getAttribute ( COMPONENT_TYPE_ATTRIBUTE ) );
         componentStyle.setType ( type );
 
+        // Reading style ID
+        final String componentStyleId = reader.getAttribute ( STYLE_ID_ATTRIBUTE );
+        componentStyle.setId ( componentStyleId != null ? componentStyleId : Styles.defaultStyle );
+
         // Reading extended style ID
         componentStyle.setExtendsId ( reader.getAttribute ( EXTENDS_ID_ATTRIBUTE ) );
 
+        // Reading margin and padding
+        final String margin = reader.getAttribute ( MARGIN_ATTRIBUTE );
+        if ( margin != null )
+        {
+            uiProperties.put ( MARGIN_ATTRIBUTE, InsetsConverter.insetsFromString ( margin ) );
+        }
+        final String padding = reader.getAttribute ( PADDING_ATTRIBUTE );
+        if ( padding != null )
+        {
+            uiProperties.put ( PADDING_ATTRIBUTE, InsetsConverter.insetsFromString ( padding ) );
+        }
+
         // Reading component style properties and painters
         // Using LinkedHashMap to keep properties order intact
-        final Map<String, Object> componentProperties = new LinkedHashMap<String, Object> ();
-        final Map<String, Object> uiProperties = new LinkedHashMap<String, Object> ();
-        final List<PainterStyle> painters = new ArrayList<PainterStyle> ();
         while ( reader.hasMoreChildren () )
         {
             // Read next node

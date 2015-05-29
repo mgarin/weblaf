@@ -45,6 +45,26 @@ public class InsetsConverter extends AbstractSingleValueConverter
     @Override
     public Object fromString ( final String insets )
     {
+        return insetsFromString ( insets );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString ( final Object object )
+    {
+        return insetsToString ( ( Insets ) object );
+    }
+
+    /**
+     * Returns insets read from string.
+     *
+     * @param insets insets string
+     * @return insets read from string
+     */
+    public static Insets insetsFromString ( final String insets )
+    {
         try
         {
             final StringTokenizer tokenizer = new StringTokenizer ( insets, ",", false );
@@ -69,12 +89,13 @@ public class InsetsConverter extends AbstractSingleValueConverter
     }
 
     /**
-     * {@inheritDoc}
+     * Returns insets converted into string.
+     *
+     * @param insets insets to convert
+     * @return insets converted into string
      */
-    @Override
-    public String toString ( final Object object )
+    public static String insetsToString ( final Insets insets )
     {
-        final Insets insets = ( Insets ) object;
         return insets.top + "," + insets.left + "," + insets.bottom + "," + insets.right;
     }
 }

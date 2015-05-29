@@ -3,15 +3,12 @@
     <!-- com.alee.laf.menu.WebMenu -->
 
     <!-- Menu bar -->
-    <style type="menu" id="default">
+    <style type="menu" id="default" padding="5,8,5,11">
         <component>
             <opaque>false</opaque>
             <background>196,196,186</background>
             <iconTextGap>7</iconTextGap>
         </component>
-        <ui>
-            <padding>5,8,5,11</padding>
-        </ui>
         <painter class="com.alee.managers.style.skin.web.WebMenuPainter">
             <round>2</round>
             <shadeWidth>2</shadeWidth>

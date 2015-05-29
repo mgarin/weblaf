@@ -123,7 +123,15 @@ public class WebPopupMenuPainter<E extends JPopupMenu, U extends WebPopupMenuUI>
                 @Override
                 public void propertyChange ( final PropertyChangeEvent evt )
                 {
-                    if ( evt.getNewValue () == Boolean.FALSE )
+                    if ( evt.getNewValue () == Boolean.TRUE )
+                    {
+                        final Window window = SwingUtils.getWindowAncestor ( component );
+                        if ( window != null )
+                        {
+                            configurePopup ( window, component );
+                        }
+                    }
+                    else
                     {
                         // Restoring menu opacity state in case menu is in a separate heavy-weight window
                         if ( SwingUtils.isHeavyWeightWindow ( ancestor ) )
@@ -549,29 +557,38 @@ public class WebPopupMenuPainter<E extends JPopupMenu, U extends WebPopupMenuUI>
     {
         if ( transparent )
         {
-            final Component host = ReflectUtils.callMethodSafely ( popup, "getComponent" );
-            if ( host instanceof Window )
+            final Component window = ReflectUtils.callMethodSafely ( popup, "getComponent" );
+            if ( window instanceof Window )
             {
-                final Window ancestor = ( Window ) host;
-
-                // Workaround to remove Mac OS X shade around the menu window
-                if ( ancestor instanceof JWindow && SystemUtils.isMac () )
-                {
-                    ( ( JWindow ) ancestor ).getRootPane ().putClientProperty ( "Window.shadow", Boolean.FALSE );
-                }
-
-                ProprietaryUtils.setWindowOpaque ( ancestor, false );
-
-                if ( !ProprietaryUtils.isWindowTransparencyAllowed () && ProprietaryUtils.isWindowShapeAllowed () )
-                {
-                    ancestor.pack ();
-                    final Rectangle bounds = ancestor.getBounds ();
-                    ++bounds.width;
-                    ++bounds.height;
-                    final Shape shape = provideShape ( popupMenu, bounds );
-                    ProprietaryUtils.setWindowShape ( ancestor, shape );
-                }
+                configurePopup ( ( Window ) window, popupMenu );
             }
+        }
+    }
+
+    /**
+     * Configures popup menu window transparency and shape.
+     *
+     * @param window    popup menu window
+     * @param popupMenu popup menu
+     */
+    public void configurePopup ( final Window window, final E popupMenu )
+    {
+        // Workaround to remove Mac OS X shade around the menu window
+        if ( window instanceof JWindow && SystemUtils.isMac () )
+        {
+            ( ( JWindow ) window ).getRootPane ().putClientProperty ( "Window.shadow", Boolean.FALSE );
+        }
+
+        ProprietaryUtils.setWindowOpaque ( window, false );
+
+        if ( !ProprietaryUtils.isWindowTransparencyAllowed () && ProprietaryUtils.isWindowShapeAllowed () )
+        {
+            window.pack ();
+            final Rectangle bounds = window.getBounds ();
+            ++bounds.width;
+            ++bounds.height;
+            final Shape shape = provideShape ( popupMenu, bounds );
+            ProprietaryUtils.setWindowShape ( window, shape );
         }
     }
 }

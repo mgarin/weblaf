@@ -45,6 +45,7 @@ import com.alee.laf.combobox.WebComboBox;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.list.WebList;
 import com.alee.laf.menu.WebCheckBoxMenuItem;
+import com.alee.laf.menu.WebMenu;
 import com.alee.laf.menu.WebMenuItem;
 import com.alee.laf.menu.WebPopupMenu;
 import com.alee.laf.panel.WebPanel;
@@ -426,9 +427,13 @@ public class StyleEditor extends WebFrame
         popupMenu.addSeparator ();
         popupMenu.add ( new WebMenuItem ( "Item 1", WebLookAndFeel.getIcon ( 16 ) ) );
         popupMenu.add ( new WebMenuItem ( "Item 2" ) );
-        popupMenu.add ( new WebMenuItem ( "Item 3" ) );
+        popupMenu.add ( new WebMenuItem ( "Item 3" ), Hotkey.ALT_F4 );
         popupMenu.addSeparator ();
-        popupMenu.add ( new WebMenuItem ( "Item 4", WebLookAndFeel.getIcon ( 16 ), Hotkey.ALT_F4 ) );
+        final WebMenu menu = new WebMenu ( "Sub-menu", WebLookAndFeel.getIcon ( 16 ) );
+        menu.add ( new WebMenuItem ( "Item 1", WebLookAndFeel.getIcon ( 16 ) ) );
+        menu.add ( new WebMenuItem ( "Item 2", Hotkey.CTRL_X ) );
+        menu.add ( new WebMenuItem ( "Item 3" ) );
+        popupMenu.add ( menu );
 
         final WebButton popupButton = new WebButton ( "Show popup menu", new ActionListener ()
         {
