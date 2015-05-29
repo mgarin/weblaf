@@ -56,7 +56,7 @@ public final class ProprietaryUtils
     /**
      * Whether or not window shape is allowed globally or not.
      */
-    private static boolean windowShapeAllowed = false;
+    private static boolean windowShapeAllowed = true;
 
     /**
      * Allow per-pixel transparent windows usage on Linux systems.

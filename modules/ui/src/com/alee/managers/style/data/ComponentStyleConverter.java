@@ -20,7 +20,9 @@ package com.alee.managers.style.data;
 import com.alee.laf.Styles;
 import com.alee.managers.style.StyleException;
 import com.alee.managers.style.SupportedComponent;
+import com.alee.utils.CompareUtils;
 import com.alee.utils.ReflectUtils;
+import com.alee.utils.TextUtils;
 import com.thoughtworks.xstream.converters.MarshallingContext;
 import com.thoughtworks.xstream.converters.UnmarshallingContext;
 import com.thoughtworks.xstream.converters.reflection.ReflectionConverter;
@@ -56,6 +58,8 @@ public class ComponentStyleConverter extends ReflectionConverter
     public static final String UI_NODE = "ui";
     public static final String PAINTER_NODE = "painter";
     public static final String PAINTER_ID_ATTRIBUTE = "id";
+    public static final String PAINTER_IDS_SEPARATOR = ",";
+    public static final String DEFAULT_PAINTER_ID = "painter";
     public static final String PAINTER_CLASS_ATTRIBUTE = "class";
     public static final String IGNORED_ATTRIBUTE = "ignored";
 
@@ -136,7 +140,10 @@ public class ComponentStyleConverter extends ReflectionConverter
             for ( final PainterStyle painterStyle : painters )
             {
                 writer.startNode ( PAINTER_NODE );
-                writer.addAttribute ( PAINTER_ID_ATTRIBUTE, painterStyle.getId () );
+                if ( !CompareUtils.equals ( painterStyle.getId (), DEFAULT_PAINTER_ID ) )
+                {
+                    writer.addAttribute ( PAINTER_ID_ATTRIBUTE, painterStyle.getId () );
+                }
                 writer.addAttribute ( PAINTER_CLASS_ATTRIBUTE, painterStyle.getPainterClass () );
                 for ( final Map.Entry<String, Object> property : painterStyle.getProperties ().entrySet () )
                 {
@@ -214,19 +221,20 @@ public class ComponentStyleConverter extends ReflectionConverter
             else if ( nodeName.equals ( PAINTER_NODE ) )
             {
                 // Collecting style IDs
-                final String indicesString = reader.getAttribute ( PAINTER_ID_ATTRIBUTE );
+                final String ids = reader.getAttribute ( PAINTER_ID_ATTRIBUTE );
                 final List<String> indices = new ArrayList<String> ( 1 );
-                if ( indicesString.contains ( "," ) )
+                if ( ids.contains ( PAINTER_IDS_SEPARATOR ) )
                 {
-                    final StringTokenizer st = new StringTokenizer ( indicesString, ",", false );
+                    final StringTokenizer st = new StringTokenizer ( ids, PAINTER_IDS_SEPARATOR, false );
                     while ( st.hasMoreTokens () )
                     {
-                        indices.add ( st.nextToken () );
+                        final String id = st.nextToken ();
+                        indices.add ( TextUtils.isEmpty ( id ) ? DEFAULT_PAINTER_ID : id );
                     }
                 }
                 else
                 {
-                    indices.add ( indicesString );
+                    indices.add ( TextUtils.isEmpty ( ids ) ? DEFAULT_PAINTER_ID : ids );
                 }
 
                 // Creating separate painter styles for each style ID
