@@ -56,7 +56,7 @@ public class OpacityFilter extends PointFilter
      *
      * @param opacity the opacity (alpha) in the range 0..255
      */
-    public OpacityFilter ( int opacity )
+    public OpacityFilter ( final int opacity )
     {
         setOpacity ( opacity );
     }
@@ -67,7 +67,7 @@ public class OpacityFilter extends PointFilter
      * @param opacity the opacity (alpha) in the range 0..255
      * @see #getOpacity
      */
-    public void setOpacity ( int opacity )
+    public void setOpacity ( final int opacity )
     {
         this.opacity = opacity;
         opacity24 = opacity << 24;
@@ -85,7 +85,7 @@ public class OpacityFilter extends PointFilter
     }
 
     @Override
-    public int filterRGB ( int x, int y, int rgb )
+    public int filterRGB ( final int x, final int y, final int rgb )
     {
         if ( ( rgb & 0xff000000 ) != 0 )
         {
@@ -94,4 +94,3 @@ public class OpacityFilter extends PointFilter
         return rgb;
     }
 }
-

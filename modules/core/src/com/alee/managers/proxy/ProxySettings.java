@@ -187,7 +187,7 @@ public class ProxySettings implements Serializable, Cloneable
     /**
      * Returns integer proxy port.
      *
-     * @return interger proxy port
+     * @return integer proxy port
      */
     public int getProxyPortInt ()
     {

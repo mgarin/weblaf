@@ -12,6 +12,7 @@ package com.alee.laf;
  * @author Mikle Garin
  */
 
+@SuppressWarnings ( "SpellCheckingInspection" )
 public final class Styles
 {
     /**

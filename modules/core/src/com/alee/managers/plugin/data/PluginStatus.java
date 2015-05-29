@@ -32,7 +32,7 @@ import javax.swing.*;
 public enum PluginStatus
 {
     /**
-     * Plugin was detected and waiting for futher actions.
+     * Plugin was detected and waiting for further actions.
      */
     detected,
 
@@ -42,7 +42,7 @@ public enum PluginStatus
     loading,
 
     /**
-     * Plugin successfuly loaded.
+     * Plugin successfully loaded.
      */
     loaded,
 
@@ -78,7 +78,7 @@ public enum PluginStatus
             case loading:
                 return "Loading...";
             case loaded:
-                return "Loaded succesfully";
+                return "Loaded successfully";
             case failed:
                 return "Failed to load";
             default:

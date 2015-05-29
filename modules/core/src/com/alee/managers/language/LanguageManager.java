@@ -35,7 +35,7 @@ import java.util.*;
 import java.util.List;
 
 /**
- * This manager allows you to quickly setup changeable lanugage onto different components and to listen to application-wide language change
+ * This manager allows you to quickly setup changeable language onto different components and to listen to application-wide language change
  * events. Language could be either loaded from structured xml files or added directly from the application by adding Dictionary type
  * objects into this manager.
  * <p/>
@@ -286,7 +286,7 @@ public class LanguageManager implements LanguageConstants
     protected static final Map<String, ImageIcon> languageIcons = new HashMap<String, ImageIcon> ();
 
     /**
-     * Currrent tooltip support.
+     * Current tooltip support.
      * This is a custom support object that provides tooltips according to language files.
      */
     protected static TooltipLanguageSupport tooltipLanguageSupport;
@@ -1364,7 +1364,7 @@ public class LanguageManager implements LanguageConstants
         // Updating global cache
         updateCache ( dictionary );
 
-        // Caching dictinary by its cache key
+        // Caching dictionary by its cache key
         if ( cacheKey != null )
         {
             dictionariesCache.put ( cacheKey, dictionary );
@@ -1803,7 +1803,7 @@ public class LanguageManager implements LanguageConstants
             }
         }
 
-        // Parsing subdictionaries
+        // Parsing sub-dictionaries
         if ( dictionary.getSubdictionaries () != null )
         {
             for ( final Dictionary subDictionary : dictionary.getSubdictionaries () )

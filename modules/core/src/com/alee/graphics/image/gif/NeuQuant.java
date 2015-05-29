@@ -39,6 +39,7 @@ package com.alee.graphics.image.gif;
  * @author K Weiner
  */
 
+@SuppressWarnings ( "SpellCheckingInspection" )
 public class NeuQuant
 {
     protected static final int netsize = 256; /* number of colours used */

@@ -50,7 +50,7 @@ import java.util.*;
  * <p/>
  * Note that methods which request information about files from the system has their own caches to improve performance.
  * If you will need to clear that cache simply call the corresponding clearCache method, for example:
- * For method "isHidden" you will need to call "clearIsHiddenCache" and all cached values will be resetted.
+ * For method "isHidden" you will need to call "clearIsHiddenCache" and all cached values will be reset.
  *
  * @author Mikle Garin
  */
@@ -637,7 +637,7 @@ public final class FileUtils
      * @param file  file to look for
      * @return true if list of files or file paths contains the specified file, false otherwise
      */
-    public static boolean containtsFile ( final List files, final File file )
+    public static boolean containsFile ( final List files, final File file )
     {
         for ( final Object f : files )
         {
@@ -1356,13 +1356,13 @@ public final class FileUtils
      */
     public static boolean copyDirectory ( final File srcDir, final File dstDir, final boolean stopOnFail )
     {
-        // todo Actually ignore exceptions aswell if stopOnFail = false
+        // todo Actually ignore exceptions as well if stopOnFail = false
         if ( srcDir.exists () && srcDir.isDirectory () )
         {
             // Ensure destination directory exists and perform copy
             if ( ensureDirectoryExists ( dstDir ) )
             {
-                // Copying all subdirectories and subfiles
+                // Copying all subdirectories and sub-files
                 boolean success = true;
                 for ( final File file : srcDir.listFiles () )
                 {
@@ -1738,9 +1738,9 @@ public final class FileUtils
      * @param dir path of directory to process
      * @return list of file paths
      */
-    public static List<String> getSubpaths ( final String dir )
+    public static List<String> getSubPaths ( final String dir )
     {
-        return getSubpaths ( new File ( dir ) );
+        return getSubPaths ( new File ( dir ) );
     }
 
     /**
@@ -1749,9 +1749,9 @@ public final class FileUtils
      * @param dir directory to process
      * @return list of file paths
      */
-    public static List<String> getSubpaths ( final File dir )
+    public static List<String> getSubPaths ( final File dir )
     {
-        return getSubpaths ( dir, "" );
+        return getSubPaths ( dir, "" );
     }
 
     /**
@@ -1761,9 +1761,9 @@ public final class FileUtils
      * @param path path to current position
      * @return list of file paths
      */
-    public static List<String> getSubpaths ( final File dir, final String path )
+    public static List<String> getSubPaths ( final File dir, final String path )
     {
-        return getSubpaths ( dir, path, new ArrayList<String> () );
+        return getSubPaths ( dir, path, new ArrayList<String> () );
     }
 
     /**
@@ -1774,7 +1774,7 @@ public final class FileUtils
      * @param paths list of collected paths
      * @return list of file paths
      */
-    public static List<String> getSubpaths ( final File dir, final String path, final List<String> paths )
+    public static List<String> getSubPaths ( final File dir, final String path, final List<String> paths )
     {
         for ( final File file : dir.listFiles () )
         {
@@ -1784,7 +1784,7 @@ public final class FileUtils
             }
             else if ( file.isDirectory () )
             {
-                getSubpaths ( file, path + file.getName () + File.separator, paths );
+                getSubPaths ( file, path + file.getName () + File.separator, paths );
             }
         }
         return paths;
@@ -2016,7 +2016,7 @@ public final class FileUtils
             // Creating URLConnection
             final URLConnection uc = ProxyManager.getURLConnection ( url );
 
-            // todo Tihs size is limited to maximum of 2GB, should retrieve long instead
+            // todo This size is limited to maximum of 2GB, should retrieve long instead
             // Retrieving file size
             return uc.getContentLength ();
         }
@@ -2713,7 +2713,7 @@ public final class FileUtils
         //        }
         //        else
         //        {
-        return getStandartFileIcon ( file, large );
+        return getStandardFileIcon ( file, large );
         //        }
     }
 
@@ -2724,9 +2724,9 @@ public final class FileUtils
      * @param large whether return large icon or not
      * @return either large or small file icon
      */
-    public static ImageIcon getStandartFileIcon ( final File file, final boolean large )
+    public static ImageIcon getStandardFileIcon ( final File file, final boolean large )
     {
-        return getStandartFileIcon ( file, large, true );
+        return getStandardFileIcon ( file, large, true );
     }
 
     /**
@@ -2736,7 +2736,7 @@ public final class FileUtils
      * @param large whether return large icon or not
      * @return either large or small file icon
      */
-    public static ImageIcon getStandartFileIcon ( final File file, final boolean large, final boolean enabled )
+    public static ImageIcon getStandardFileIcon ( final File file, final boolean large, final boolean enabled )
     {
         if ( file == null )
         {
@@ -2774,7 +2774,7 @@ public final class FileUtils
 
         // Constructing icon cache key
         final float transparency = isHidden ( file ) ? 0.5f : 1f;
-        final String key = getStandartFileIconCacheKey ( extension, large, transparency, enabled );
+        final String key = getStandardFileIconCacheKey ( extension, large, transparency, enabled );
 
         // Retrieving icon
         final boolean contains;
@@ -2792,11 +2792,11 @@ public final class FileUtils
         else
         {
             // Retrieving file type icon
-            ImageIcon icon = getStandartFileIcon ( large, extension, transparency );
+            ImageIcon icon = getStandardFileIcon ( large, extension, transparency );
             if ( icon == null )
             {
                 // Simply use unknown file icon
-                icon = getStandartFileIcon ( large, "file", transparency );
+                icon = getStandardFileIcon ( large, "file", transparency );
             }
 
             // Caching the resulting icon
@@ -2813,7 +2813,7 @@ public final class FileUtils
                 // Cache enabled icon
                 synchronized ( extensionIconsCacheLock )
                 {
-                    extensionIconsCache.put ( getStandartFileIconCacheKey ( extension, large, transparency, true ), icon );
+                    extensionIconsCache.put ( getStandardFileIconCacheKey ( extension, large, transparency, true ), icon );
                 }
 
                 // Cache disabled icon
@@ -2829,15 +2829,15 @@ public final class FileUtils
     }
 
     /**
-     * Returns standart file icon cache key.
+     * Returns standard file icon cache key.
      *
      * @param extension    file extension or identifier
      * @param large        whether large icon used or not
      * @param transparency icon transparency
      * @param enabled      whether enabled icon or not
-     * @return standart file icon cache key
+     * @return standard file icon cache key
      */
-    private static String getStandartFileIconCacheKey ( final String extension, final boolean large, final float transparency,
+    private static String getStandardFileIconCacheKey ( final String extension, final boolean large, final float transparency,
                                                         final boolean enabled )
     {
         return extension + StyleConstants.SEPARATOR + large + StyleConstants.SEPARATOR + transparency + StyleConstants.SEPARATOR + enabled;
@@ -2851,7 +2851,7 @@ public final class FileUtils
      * @param transparency icon transparency
      * @return either large or small icon for the specified extension
      */
-    public static ImageIcon getStandartFileIcon ( final boolean large, final String extension, final float transparency )
+    public static ImageIcon getStandardFileIcon ( final boolean large, final String extension, final float transparency )
     {
         return getIconResource ( FileUtils.class, "icons/extensions/" + ( large ? "32" : "16" ) + "/file_extension_" + extension +
                 ".png", transparency );

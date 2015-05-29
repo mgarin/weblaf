@@ -109,7 +109,7 @@ public class GifIcon implements Icon
 
                         if ( repaintListener != null )
                         {
-                            repaintListener.imageRepaintOccured ();
+                            repaintListener.imageRepaintOccurred ();
                         }
                     }
                 }

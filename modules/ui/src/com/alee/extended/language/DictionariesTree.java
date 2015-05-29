@@ -108,7 +108,7 @@ public class DictionariesTree extends WebTree
                             if ( uo != null )
                             {
                                 Dictionary parent = ( Dictionary ) uo;
-                                parent.removeSubdictionary ( ( Dictionary ) type );
+                                parent.removeSubDictionary ( ( Dictionary ) type );
                             }
                         }
                         else if ( type instanceof Record )

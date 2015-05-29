@@ -30,7 +30,7 @@ public final class MathUtils
     /**
      * Random numbers generator.
      */
-    private static Random random = new Random ();
+    private static final Random random = new Random ();
 
     /**
      * Returns random integer number between 0 (inclusive) and 100 (inclusive).

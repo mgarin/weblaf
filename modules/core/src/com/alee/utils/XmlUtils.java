@@ -90,11 +90,11 @@ public final class XmlUtils
     {
         try
         {
-            // XStream instnce initialization
+            // XStream instance initialization
             xStream = new XStream ( new DomDriver () );
             // xStream.setMode ( XStream.ID_REFERENCES );
 
-            // Standart Java-classes aliases
+            // Standard Java-classes aliases
             if ( aliasJdkClasses )
             {
                 xStream.alias ( "Point", Point.class );
@@ -503,7 +503,7 @@ public final class XmlUtils
         {
             try
             {
-                return FileUtils.readToString ( new URL ( resource.getSource () )  );
+                return FileUtils.readToString ( new URL ( resource.getSource () ) );
             }
             catch ( final IOException e )
             {

@@ -298,9 +298,8 @@ public final class ReflectUtils
      * @param classType type of the class where field can be located
      * @param fieldName field name
      * @return specified class field
-     * @throws NoSuchFieldException
      */
-    public static Field getFieldImpl ( final Class classType, final String fieldName ) throws NoSuchFieldException
+    public static Field getFieldImpl ( final Class classType, final String fieldName )
     {
         Field field;
         try
@@ -987,7 +986,7 @@ public final class ReflectUtils
     {
         // todo Constructors priority check (by super types)
         // todo For now some constructor with [Object] arg might be used instead of constructor with [String]
-        // todo To avoid issues don't call constructors with same amount of arguments and which are castable to each other
+        // todo To avoid issues don't call constructors with same amount of arguments and which are cast-able to each other
         if ( parameterTypes.length == 0 )
         {
             return theClass.getConstructor ();
@@ -1395,7 +1394,7 @@ public final class ReflectUtils
     {
         // todo Methods priority check (by super types)
         // todo For now some method with [Object] arg might be used instead of method with [String]
-        // todo To avoid issues don't call methods with same amount of arguments and which are castable to each other
+        // todo To avoid issues don't call methods with same amount of arguments and which are cast-able to each other
 
         // Method key
         final Class[] classTypes = getClassTypes ( arguments );
@@ -1464,12 +1463,10 @@ public final class ReflectUtils
      * @param methodName   method name
      * @param types        method argument types
      * @return object's method with the specified name and arguments
-     * @throws IllegalAccessException
-     * @throws InvocationTargetException
      * @throws NoSuchMethodException
      */
     private static Method getMethod ( final Class topClass, final Class currentClass, final String methodName, final Class[] types )
-            throws IllegalAccessException, InvocationTargetException, NoSuchMethodException
+            throws NoSuchMethodException
     {
         // Searching for the specified method in object's class or one of its superclasses
         for ( final Method method : currentClass.getDeclaredMethods () )

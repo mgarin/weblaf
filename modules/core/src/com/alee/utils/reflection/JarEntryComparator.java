@@ -22,15 +22,15 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * User: mgarin Date: 05.03.12 Time: 13:54
+ * @author Mikle Garin
  */
 
 public class JarEntryComparator implements Comparator<JarEntry>
 {
-    private List<JarEntryType> typePriority = Arrays.asList ( JarEntryType.values () );
+    private final List<JarEntryType> typePriority = Arrays.asList ( JarEntryType.values () );
 
     @Override
-    public int compare ( JarEntry e1, JarEntry e2 )
+    public int compare ( final JarEntry e1, final JarEntry e2 )
     {
         return Integer.valueOf ( typePriority.indexOf ( e1.getType () ) ).compareTo ( typePriority.indexOf ( e2.getType () ) );
     }

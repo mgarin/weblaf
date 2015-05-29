@@ -145,7 +145,7 @@ public class LanguageUtils
             }
         }
 
-        // Parsing subdictionaries
+        // Parsing sub-dictionaries
         if ( dictionary.getSubdictionaries () != null )
         {
             for ( final Dictionary subDictionary : dictionary.getSubdictionaries () )

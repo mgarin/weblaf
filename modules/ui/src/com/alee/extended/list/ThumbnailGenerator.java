@@ -320,7 +320,7 @@ public class ThumbnailGenerator implements Runnable
         }
 
         // Generating standard file extension icon
-        final ImageIcon enabledThumbnail = FileUtils.getStandartFileIcon ( file, true, true );
+        final ImageIcon enabledThumbnail = FileUtils.getStandardFileIcon ( file, true, true );
 
         // Process abort check here
         if ( aborted )
@@ -343,7 +343,7 @@ public class ThumbnailGenerator implements Runnable
         if ( disabled )
         {
             // Standard icons are cached so we don't need to re-use enabled icon for disabled state one generation
-            final ImageIcon disabledThumbnail = FileUtils.getStandartFileIcon ( file, true, false );
+            final ImageIcon disabledThumbnail = FileUtils.getStandardFileIcon ( file, true, false );
 
             // Process abort check here
             if ( aborted )

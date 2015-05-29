@@ -51,7 +51,7 @@ public class BoxBlurFilter extends AbstractBufferedImageOp
         super ();
     }
 
-    public BoxBlurFilter ( int hRadius, int vRadius, int iterations )
+    public BoxBlurFilter ( final int hRadius, final int vRadius, final int iterations )
     {
         super ();
         setHRadius ( hRadius );
@@ -59,7 +59,7 @@ public class BoxBlurFilter extends AbstractBufferedImageOp
         setIterations ( iterations );
     }
 
-    public void setHRadius ( int hRadius )
+    public void setHRadius ( final int hRadius )
     {
         this.hRadius = hRadius;
     }
@@ -69,7 +69,7 @@ public class BoxBlurFilter extends AbstractBufferedImageOp
         return hRadius;
     }
 
-    public void setVRadius ( int vRadius )
+    public void setVRadius ( final int vRadius )
     {
         this.vRadius = vRadius;
     }
@@ -79,7 +79,7 @@ public class BoxBlurFilter extends AbstractBufferedImageOp
         return vRadius;
     }
 
-    public void setRadius ( int radius )
+    public void setRadius ( final int radius )
     {
         this.hRadius = this.vRadius = radius;
     }
@@ -89,7 +89,7 @@ public class BoxBlurFilter extends AbstractBufferedImageOp
         return hRadius;
     }
 
-    public void setIterations ( int iterations )
+    public void setIterations ( final int iterations )
     {
         this.iterations = iterations;
     }
@@ -100,18 +100,18 @@ public class BoxBlurFilter extends AbstractBufferedImageOp
     }
 
     @Override
-    public BufferedImage filter ( BufferedImage src, BufferedImage dst )
+    public BufferedImage filter ( final BufferedImage src, BufferedImage dst )
     {
-        int width = src.getWidth ();
-        int height = src.getHeight ();
+        final int width = src.getWidth ();
+        final int height = src.getHeight ();
 
         if ( dst == null )
         {
             dst = createCompatibleDestImage ( src, null );
         }
 
-        int[] inPixels = new int[ width * height ];
-        int[] outPixels = new int[ width * height ];
+        final int[] inPixels = new int[ width * height ];
+        final int[] outPixels = new int[ width * height ];
         getRGB ( src, 0, 0, width, height, inPixels );
 
         for ( int i = 0; i < iterations; i++ )
@@ -124,11 +124,11 @@ public class BoxBlurFilter extends AbstractBufferedImageOp
         return dst;
     }
 
-    public static void blur ( int[] in, int[] out, int width, int height, int radius )
+    public static void blur ( final int[] in, final int[] out, final int width, final int height, final int radius )
     {
-        int widthMinus1 = width - 1;
-        int tableSize = 2 * radius + 1;
-        int divide[] = new int[ 256 * tableSize ];
+        final int widthMinus1 = width - 1;
+        final int tableSize = 2 * radius + 1;
+        final int[] divide = new int[ 256 * tableSize ];
 
         for ( int i = 0; i < 256 * tableSize; i++ )
         {
@@ -144,7 +144,7 @@ public class BoxBlurFilter extends AbstractBufferedImageOp
 
             for ( int i = -radius; i <= radius; i++ )
             {
-                int rgb = in[ inIndex + ImageMath.clamp ( i, 0, width - 1 ) ];
+                final int rgb = in[ inIndex + ImageMath.clamp ( i, 0, width - 1 ) ];
                 ta += ( rgb >> 24 ) & 0xff;
                 tr += ( rgb >> 16 ) & 0xff;
                 tg += ( rgb >> 8 ) & 0xff;
@@ -166,8 +166,8 @@ public class BoxBlurFilter extends AbstractBufferedImageOp
                 {
                     i2 = 0;
                 }
-                int rgb1 = in[ inIndex + i1 ];
-                int rgb2 = in[ inIndex + i2 ];
+                final int rgb1 = in[ inIndex + i1 ];
+                final int rgb2 = in[ inIndex + i2 ];
 
                 ta += ( ( rgb1 >> 24 ) & 0xff ) - ( ( rgb2 >> 24 ) & 0xff );
                 tr += ( ( rgb1 & 0xff0000 ) - ( rgb2 & 0xff0000 ) ) >> 16;
@@ -179,4 +179,3 @@ public class BoxBlurFilter extends AbstractBufferedImageOp
         }
     }
 }
-

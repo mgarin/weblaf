@@ -796,7 +796,7 @@ public class XMLChar
      *
      * @param c The character to check.
      */
-    public static boolean isSupplemental ( int c )
+    public static boolean isSupplemental ( final int c )
     {
         return ( c >= 0x10000 && c <= 0x10FFFF );
     }
@@ -808,7 +808,7 @@ public class XMLChar
      * @param h The high surrogate.
      * @param l The low surrogate.
      */
-    public static int supplemental ( char h, char l )
+    public static int supplemental ( final char h, final char l )
     {
         return ( h - 0xD800 ) * 0x400 + ( l - 0xDC00 ) + 0x10000;
     }
@@ -818,7 +818,7 @@ public class XMLChar
      *
      * @param c The supplemental character to "split".
      */
-    public static char highSurrogate ( int c )
+    public static char highSurrogate ( final int c )
     {
         return ( char ) ( ( ( c - 0x00010000 ) >> 10 ) + 0xD800 );
     }
@@ -828,7 +828,7 @@ public class XMLChar
      *
      * @param c The supplemental character to "split".
      */
-    public static char lowSurrogate ( int c )
+    public static char lowSurrogate ( final int c )
     {
         return ( char ) ( ( ( c - 0x00010000 ) & 0x3FF ) + 0xDC00 );
     }
@@ -838,7 +838,7 @@ public class XMLChar
      *
      * @param c The character to check.
      */
-    public static boolean isHighSurrogate ( int c )
+    public static boolean isHighSurrogate ( final int c )
     {
         return ( 0xD800 <= c && c <= 0xDBFF );
     }
@@ -848,7 +848,7 @@ public class XMLChar
      *
      * @param c The character to check.
      */
-    public static boolean isLowSurrogate ( int c )
+    public static boolean isLowSurrogate ( final int c )
     {
         return ( 0xDC00 <= c && c <= 0xDFFF );
     }
@@ -864,7 +864,7 @@ public class XMLChar
      *
      * @param c The character to check.
      */
-    public static boolean isValid ( int c )
+    public static boolean isValid ( final int c )
     {
         return ( c < 0x10000 && ( CHARS[ c ] & MASK_VALID ) != 0 ) || ( 0x10000 <= c && c <= 0x10FFFF );
     } // isValid(int):boolean
@@ -874,7 +874,7 @@ public class XMLChar
      *
      * @param c The character to check.
      */
-    public static boolean isInvalid ( int c )
+    public static boolean isInvalid ( final int c )
     {
         return !isValid ( c );
     } // isInvalid(int):boolean
@@ -884,7 +884,7 @@ public class XMLChar
      *
      * @param c The character to check.
      */
-    public static boolean isContent ( int c )
+    public static boolean isContent ( final int c )
     {
         return ( c < 0x10000 && ( CHARS[ c ] & MASK_CONTENT ) != 0 ) || ( 0x10000 <= c && c <= 0x10FFFF );
     } // isContent(int):boolean
@@ -895,7 +895,7 @@ public class XMLChar
      *
      * @param c The character to check.
      */
-    public static boolean isMarkup ( int c )
+    public static boolean isMarkup ( final int c )
     {
         return c == '<' || c == '&' || c == '%';
     } // isMarkup(int):boolean
@@ -906,7 +906,7 @@ public class XMLChar
      *
      * @param c The character to check.
      */
-    public static boolean isSpace ( int c )
+    public static boolean isSpace ( final int c )
     {
         return c <= 0x20 && ( CHARS[ c ] & MASK_SPACE ) != 0;
     } // isSpace(int):boolean
@@ -918,7 +918,7 @@ public class XMLChar
      *
      * @param c The character to check.
      */
-    public static boolean isNameStart ( int c )
+    public static boolean isNameStart ( final int c )
     {
         return c < 0x10000 && ( CHARS[ c ] & MASK_NAME_START ) != 0;
     } // isNameStart(int):boolean
@@ -930,7 +930,7 @@ public class XMLChar
      *
      * @param c The character to check.
      */
-    public static boolean isName ( int c )
+    public static boolean isName ( final int c )
     {
         return c < 0x10000 && ( CHARS[ c ] & MASK_NAME ) != 0;
     } // isName(int):boolean
@@ -942,7 +942,7 @@ public class XMLChar
      *
      * @param c The character to check.
      */
-    public static boolean isNCNameStart ( int c )
+    public static boolean isNCNameStart ( final int c )
     {
         return c < 0x10000 && ( CHARS[ c ] & MASK_NCNAME_START ) != 0;
     } // isNCNameStart(int):boolean
@@ -954,19 +954,17 @@ public class XMLChar
      *
      * @param c The character to check.
      */
-    public static boolean isNCName ( int c )
+    public static boolean isNCName ( final int c )
     {
         return c < 0x10000 && ( CHARS[ c ] & MASK_NCNAME ) != 0;
     } // isNCName(int):boolean
 
     /**
-     * Returns true if the specified character is a valid Pubid
-     * character as defined by production [13] in the XML 1.0
-     * specification.
+     * Returns true if the specified character is a valid Pubid character as defined by production [13] in the XML 1.0 specification.
      *
      * @param c The character to check.
      */
-    public static boolean isPubid ( int c )
+    public static boolean isPubid ( final int c )
     {
         return c < 0x10000 && ( CHARS[ c ] & MASK_PUBID ) != 0;
     } // isPubid(int):boolean
@@ -982,7 +980,7 @@ public class XMLChar
      * @param name string to check
      * @return true if name is a valid Name
      */
-    public static boolean isValidName ( String name )
+    public static boolean isValidName ( final String name )
     {
         if ( name.length () == 0 )
         {
@@ -1017,7 +1015,7 @@ public class XMLChar
      * @param name string to check
      * @return true if name is a valid NCName
      */
-    public static boolean isValidNCName ( String name )
+    public static boolean isValidNCName ( final String name )
     {
         if ( name.length () == 0 )
         {
@@ -1040,25 +1038,25 @@ public class XMLChar
     } // isValidNCName(String):boolean
 
     /*
-     * [7] Nmtoken ::= (NameChar)+
+     * [7] NmToken ::= (NameChar)+
      */
 
     /**
-     * Check to see if a string is a valid Nmtoken according to [7]
+     * Check to see if a string is a valid NmToken according to [7]
      * in the XML 1.0 Recommendation
      *
-     * @param nmtoken string to check
-     * @return true if nmtoken is a valid Nmtoken
+     * @param nmToken string to check
+     * @return true if nmToken is a valid NmToken
      */
-    public static boolean isValidNmtoken ( String nmtoken )
+    public static boolean isValidNmToken ( final String nmToken )
     {
-        if ( nmtoken.length () == 0 )
+        if ( nmToken.length () == 0 )
         {
             return false;
         }
-        for ( int i = 0; i < nmtoken.length (); i++ )
+        for ( int i = 0; i < nmToken.length (); i++ )
         {
-            char ch = nmtoken.charAt ( i );
+            final char ch = nmToken.charAt ( i );
             if ( !isName ( ch ) )
             {
                 return false;
@@ -1078,11 +1076,11 @@ public class XMLChar
      *
      * @param ianaEncoding The IANA encoding name.
      */
-    public static boolean isValidIANAEncoding ( String ianaEncoding )
+    public static boolean isValidIANAEncoding ( final String ianaEncoding )
     {
         if ( ianaEncoding != null )
         {
-            int length = ianaEncoding.length ();
+            final int length = ianaEncoding.length ();
             if ( length > 0 )
             {
                 char c = ianaEncoding.charAt ( 0 );
@@ -1113,16 +1111,16 @@ public class XMLChar
      *
      * @param javaEncoding The Java encoding name.
      */
-    public static boolean isValidJavaEncoding ( String javaEncoding )
+    public static boolean isValidJavaEncoding ( final String javaEncoding )
     {
         if ( javaEncoding != null )
         {
-            int length = javaEncoding.length ();
+            final int length = javaEncoding.length ();
             if ( length > 0 )
             {
                 for ( int i = 1; i < length; i++ )
                 {
-                    char c = javaEncoding.charAt ( i );
+                    final char c = javaEncoding.charAt ( i );
                     if ( ( c < 'A' || c > 'Z' ) && ( c < 'a' || c > 'z' ) &&
                             ( c < '0' || c > '9' ) && c != '.' && c != '_' &&
                             c != '-' )

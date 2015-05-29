@@ -53,7 +53,7 @@ public class JarEntry
         setParent ( null );
     }
 
-    public JarEntry ( JarEntryType type, String name )
+    public JarEntry ( final JarEntryType type, final String name )
     {
         super ();
         setType ( type );
@@ -61,7 +61,7 @@ public class JarEntry
         setParent ( null );
     }
 
-    public JarEntry ( JarEntryType type, String name, JarEntry parent )
+    public JarEntry ( final JarEntryType type, final String name, final JarEntry parent )
     {
         super ();
         setType ( type );
@@ -69,7 +69,7 @@ public class JarEntry
         setParent ( parent );
     }
 
-    public JarEntry ( JarEntryType type, String name, JarEntry parent, List<JarEntry> childs )
+    public JarEntry ( final JarEntryType type, final String name, final JarEntry parent, final List<JarEntry> childs )
     {
         super ();
         setType ( type );
@@ -92,7 +92,7 @@ public class JarEntry
         setId ( TextUtils.generateId ( ID_PREFIX ) );
     }
 
-    public void setId ( String id )
+    public void setId ( final String id )
     {
         this.id = id;
     }
@@ -102,7 +102,7 @@ public class JarEntry
         return type;
     }
 
-    public void setType ( JarEntryType type )
+    public void setType ( final JarEntryType type )
     {
         this.type = type;
     }
@@ -112,7 +112,7 @@ public class JarEntry
         return name;
     }
 
-    public void setName ( String name )
+    public void setName ( final String name )
     {
         this.name = name;
     }
@@ -122,7 +122,7 @@ public class JarEntry
         return parent;
     }
 
-    public void setParent ( JarEntry parent )
+    public void setParent ( final JarEntry parent )
     {
         this.parent = parent;
     }
@@ -132,7 +132,7 @@ public class JarEntry
         return zipEntry;
     }
 
-    public void setZipEntry ( ZipEntry zipEntry )
+    public void setZipEntry ( final ZipEntry zipEntry )
     {
         this.zipEntry = zipEntry;
     }
@@ -142,14 +142,14 @@ public class JarEntry
         return childs;
     }
 
-    public JarEntry getChild ( int index )
+    public JarEntry getChild ( final int index )
     {
         return childs.get ( index );
     }
 
-    public JarEntry getChildByName ( String name )
+    public JarEntry getChildByName ( final String name )
     {
-        for ( JarEntry child : childs )
+        for ( final JarEntry child : childs )
         {
             if ( child.getName ().equals ( name ) )
             {
@@ -159,22 +159,22 @@ public class JarEntry
         return null;
     }
 
-    public void setChilds ( List<JarEntry> childs )
+    public void setChilds ( final List<JarEntry> childs )
     {
         this.childs = childs;
     }
 
-    public void addChild ( JarEntry child )
+    public void addChild ( final JarEntry child )
     {
         this.childs.add ( child );
     }
 
-    public void addChild ( int index, JarEntry child )
+    public void addChild ( final int index, final JarEntry child )
     {
         this.childs.add ( index, child );
     }
 
-    public void removeChild ( JarEntry child )
+    public void removeChild ( final JarEntry child )
     {
         this.childs.remove ( child );
     }
@@ -203,7 +203,7 @@ public class JarEntry
         }
         else
         {
-            ImageIcon icon = FileUtils.getStandartFileIcon ( false, getEntryExtension (), 1f );
+            final ImageIcon icon = FileUtils.getStandardFileIcon ( false, getEntryExtension (), 1f );
             if ( icon != null )
             {
                 return icon;
@@ -215,7 +215,7 @@ public class JarEntry
         }
     }
 
-    public void setIcon ( ImageIcon icon )
+    public void setIcon ( final ImageIcon icon )
     {
         this.icon = icon;
     }
@@ -225,7 +225,7 @@ public class JarEntry
         return FileUtils.getFileExtPart ( name, false );
     }
 
-    public boolean isClassEntry ( Class classType )
+    public boolean isClassEntry ( final Class classType )
     {
         return classType != null && classType.getCanonicalName ().equals ( getCanonicalEntryName () );
     }
@@ -266,7 +266,7 @@ public class JarEntry
 
     public List<JarEntry> getPath ()
     {
-        List<JarEntry> path = new ArrayList<JarEntry> ();
+        final List<JarEntry> path = new ArrayList<JarEntry> ();
         JarEntry current = JarEntry.this;
         while ( current != null && !current.getType ().equals ( JarEntryType.jarEntry ) )
         {
@@ -276,7 +276,7 @@ public class JarEntry
         return path;
     }
 
-    public boolean equals ( Object obj )
+    public boolean equals ( final Object obj )
     {
         return obj != null && obj instanceof JarEntry && ( ( JarEntry ) obj ).getCanonicalEntryPath ().equals ( getCanonicalEntryPath () );
     }

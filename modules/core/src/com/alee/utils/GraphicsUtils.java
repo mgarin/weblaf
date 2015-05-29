@@ -481,13 +481,13 @@ public final class GraphicsUtils
         }
         else
         {
-            // Drawing comples gradient shade
+            // Drawing complex gradient shade
             width = width * 2;
             for ( int i = width; i >= 2; i -= 2 )
             {
-                // float minTransp = 0.2f;
-                // float maxTransp = 0.6f;
-                // float opacity = minTransp + ( maxTransp - minTransp ) * ( 1 - ( i - 2 ) / ( width - 2 ) );
+                // float minTransparency = 0.2f;
+                // float maxTransparency = 0.6f;
+                // float opacity = minTransparency + ( maxTransparency - minTransparency ) * ( 1 - ( i - 2 ) / ( width - 2 ) );
                 final float opacity = ( float ) ( width - i ) / ( width - 1 );
                 g2d.setComposite ( AlphaComposite.getInstance ( AlphaComposite.SRC_OVER, opacity * currentComposite ) );
                 g2d.setStroke ( getStroke ( i, round ? BasicStroke.CAP_ROUND : BasicStroke.CAP_BUTT ) );
@@ -495,7 +495,7 @@ public final class GraphicsUtils
             }
         }
 
-        // Restoring initial grphics settings
+        // Restoring initial graphics settings
         restoreStroke ( g2d, oldStroke );
         restoreComposite ( g2d, oldComposite );
         restoreClip ( g2d, oldClip );

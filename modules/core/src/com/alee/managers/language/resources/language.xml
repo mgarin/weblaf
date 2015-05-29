@@ -1760,16 +1760,16 @@
         </Dictionary>
         <Dictionary name="WebAsyncTreeFilterField language" prefix="treefilter">
             <record key="inputprompt">
-                <value lang="en" state="inputPropmt">Search...</value>
-                <value lang="ru" state="inputPropmt">Искать...</value>
-                <value lang="pl" state="inputPropmt">Szukaj...</value>
-                <value lang="ar" state="inputPropmt">بحث ...</value>
-                <value lang="es" state="inputPropmt">Buscar...</value>
-                <value lang="fr" state="inputPropmt">Rechercher...</value>
-                <value lang="pt" state="inputPropmt">Pesquisar...</value>
-                <value lang="de" state="inputPropmt">Suchen...</value>
-                <value lang="it" state="inputPropmt">Cerca...</value>
-                <value lang="tr" state="inputPropmt">Ara…</value>
+                <value lang="en" state="inputPrompt">Search...</value>
+                <value lang="ru" state="inputPrompt">Искать...</value>
+                <value lang="pl" state="inputPrompt">Szukaj...</value>
+                <value lang="ar" state="inputPrompt">بحث ...</value>
+                <value lang="es" state="inputPrompt">Buscar...</value>
+                <value lang="fr" state="inputPrompt">Rechercher...</value>
+                <value lang="pt" state="inputPrompt">Pesquisar...</value>
+                <value lang="de" state="inputPrompt">Suchen...</value>
+                <value lang="it" state="inputPrompt">Cerca...</value>
+                <value lang="tr" state="inputPrompt">Ara…</value>
             </record>
         </Dictionary>
         <Dictionary name="WebDocumentPane language" prefix="docpane">

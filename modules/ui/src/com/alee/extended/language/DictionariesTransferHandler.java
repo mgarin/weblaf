@@ -202,7 +202,7 @@ public class DictionariesTransferHandler extends TransferHandler
                 {
                     Dictionary dictionary = ( Dictionary ) droppedObject;
                     dictionary.setId ();
-                    dropTo.addSubdictionary ( dictionary );
+                    dropTo.addSubDictionary ( dictionary );
                     DefaultMutableTreeNode dn = tree.createDictionaryNode ( dictionary );
                     tree.getActualModel ().insertNodeInto ( dn, dropLocation, dropLocation.getChildCount () );
                     tree.selectAndShow ( dn );

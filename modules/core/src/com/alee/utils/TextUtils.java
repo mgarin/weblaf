@@ -195,11 +195,11 @@ public final class TextUtils
     }
 
     /**
-     * Returns a list of text parts splitted using specified separator.
+     * Returns a list of text parts split using specified separator.
      *
      * @param text      text to split
      * @param separator text parts separator
-     * @return list of splitted parts
+     * @return list of split parts
      */
     public static List<String> split ( final String text, final String separator )
     {
@@ -235,7 +235,7 @@ public final class TextUtils
      * This method works faster than simple replaceAll("\\p{Cntrl}", "").
      *
      * @param text text to modify
-     * @return text without conytol symbols
+     * @return text without control symbols
      */
     public static String removeControlSymbols ( final String text )
     {
@@ -259,7 +259,7 @@ public final class TextUtils
      * Returns shortened text.
      *
      * @param text      text to shorten
-     * @param maxLength maximum shortened text lenght
+     * @param maxLength maximum shortened text length
      * @param addDots   add dots at the end of the text when shortened
      * @return shortened text
      */
@@ -273,7 +273,7 @@ public final class TextUtils
      * Returns shortened text.
      *
      * @param text      text to shorten
-     * @param maxLength maximum shortened text lenght
+     * @param maxLength maximum shortened text length
      * @param addDots   add dots at the end of the text when shortened
      * @return shortened text
      */
@@ -284,11 +284,11 @@ public final class TextUtils
     }
 
     /**
-     * Returns a list of text parts splitted using specified separator.
+     * Returns a list of text parts split using specified separator.
      *
      * @param string    text to split
      * @param separator text parts separator
-     * @return list of splitted parts
+     * @return list of split parts
      */
     public static List<String> stringToList ( final String string, final String separator )
     {
@@ -305,11 +305,11 @@ public final class TextUtils
     }
 
     /**
-     * Returns a list of integer parts splitted using specified separator.
+     * Returns a list of integer parts split using specified separator.
      *
      * @param string    text to split
      * @param separator text parts separator
-     * @return list of splitted parts
+     * @return list of split parts
      */
     public static List<Integer> stringToIntList ( final String string, final String separator )
     {
@@ -505,13 +505,13 @@ public final class TextUtils
     }
 
     /**
-     * Replaces all occurences of str found in the specified text with provided text.
+     * Replaces all occurrences of str found in the specified text with provided text.
      *
-     * @param text       text to replace string occurences in
-     * @param ignoreCase whether should ignore case while searching for occurences or not
+     * @param text       text to replace string occurrences in
+     * @param ignoreCase whether should ignore case while searching for occurrences or not
      * @param str        text to replace
      * @param provider   text replacement
-     * @return text with replaced occurences of the specified str
+     * @return text with replaced occurrences of the specified str
      */
     public static String replaceAll ( final String text, final boolean ignoreCase, final String str, final TextProvider<String> provider )
     {
@@ -626,7 +626,7 @@ public final class TextUtils
 
     /**
      * Either returns delay retrieved from string or throws an exception if it cannot be parsed.
-     * Full string format is "Xd Yh Zm s ms" but you can skip any part of it. Yet you must specify atleast one value.
+     * Full string format is "Xd Yh Zm s ms" but you can skip any part of it. Yet you must specify at least one value.
      * For example string "2h 5s" will be a valid delay declaration and will be converted into (2*60*60*1000+5*1000) long value.
      *
      * @param delay string delay
@@ -636,7 +636,7 @@ public final class TextUtils
     {
         try
         {
-            long summ = 0;
+            long sum = 0;
             final String[] parts = delay.split ( " " );
             for ( final String part : parts )
             {
@@ -649,26 +649,26 @@ public final class TextUtils
                         switch ( type )
                         {
                             case d:
-                                summ += time * msInDay;
+                                sum += time * msInDay;
                                 break;
                             case h:
-                                summ += time * msInHour;
+                                sum += time * msInHour;
                                 break;
                             case m:
-                                summ += time * msInMinute;
+                                sum += time * msInMinute;
                                 break;
                             case s:
-                                summ += time * msInSecond;
+                                sum += time * msInSecond;
                                 break;
                             case ms:
-                                summ += time;
+                                sum += time;
                                 break;
                         }
                         break;
                     }
                 }
             }
-            return summ;
+            return sum;
         }
         catch ( final Throwable e )
         {

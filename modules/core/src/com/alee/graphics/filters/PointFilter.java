@@ -46,25 +46,25 @@ public abstract class PointFilter extends AbstractBufferedImageOp
     protected boolean canFilterIndexColorModel = false;
 
     @Override
-    public BufferedImage filter ( BufferedImage src, BufferedImage dst )
+    public BufferedImage filter ( final BufferedImage src, BufferedImage dst )
     {
-        int width = src.getWidth ();
-        int height = src.getHeight ();
-        int type = src.getType ();
-        WritableRaster srcRaster = src.getRaster ();
+        final int width = src.getWidth ();
+        final int height = src.getHeight ();
+        final int type = src.getType ();
+        final WritableRaster srcRaster = src.getRaster ();
 
         if ( dst == null )
         {
             dst = createCompatibleDestImage ( src, null );
         }
-        WritableRaster dstRaster = dst.getRaster ();
+        final WritableRaster dstRaster = dst.getRaster ();
 
         setDimensions ( width, height );
 
-        int[] inPixels = new int[ width ];
+        final int[] inPixels = new int[ width ];
         for ( int y = 0; y < height; y++ )
         {
-            // We try to avoid calling getRGB on images as it causes them to become unmanaged, causing horrible performance problems.
+            // We try to avoid calling getRGB on images as it causes them to become un-managed, causing horrible performance problems.
             if ( type == BufferedImage.TYPE_INT_ARGB )
             {
                 srcRaster.getDataElements ( 0, y, width, 1, inPixels );
@@ -88,7 +88,7 @@ public abstract class PointFilter extends AbstractBufferedImageOp
         return dst;
     }
 
-    public void setDimensions ( int width, int height )
+    public void setDimensions ( final int width, final int height )
     {
     }
 

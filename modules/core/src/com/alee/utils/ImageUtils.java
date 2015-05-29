@@ -643,7 +643,7 @@ public final class ImageUtils
      */
 
     public static final ImageIcon coloredChooserIcon = new ImageIcon ( ImageUtils.class.getResource ( "icons/color/color.png" ) );
-    public static final ImageIcon transarentChooserIcon = new ImageIcon ( ImageUtils.class.getResource ( "icons/color/transparent.png" ) );
+    public static final ImageIcon transparentChooserIcon = new ImageIcon ( ImageUtils.class.getResource ( "icons/color/transparent.png" ) );
 
     public static ImageIcon createColorChooserIcon ( final Color color )
     {
@@ -656,7 +656,7 @@ public final class ImageUtils
         final Graphics2D g2d = image.createGraphics ();
         if ( color == null || color.getAlpha () < 255 )
         {
-            g2d.drawImage ( transarentChooserIcon.getImage (), 0, 0, null );
+            g2d.drawImage ( transparentChooserIcon.getImage (), 0, 0, null );
         }
         if ( color != null )
         {
@@ -778,7 +778,7 @@ public final class ImageUtils
     {
         if ( image.getWidth () > width || image.getHeight () > height )
         {
-            // Calcuating maximum preview length
+            // Calculating maximum preview length
             if ( height * ( ( float ) image.getWidth () / image.getHeight () ) <= width )
             {
                 return createPreviewImage ( image,
@@ -1233,27 +1233,27 @@ public final class ImageUtils
      * Creating partially transparent ImageIcon
      */
 
-    private static final Map<String, ImageIcon> trasparentCache = new HashMap<String, ImageIcon> ();
+    private static final Map<String, ImageIcon> transparentCache = new HashMap<String, ImageIcon> ();
 
-    public static ImageIcon getTransparentCopy ( final String id, final ImageIcon imageIcon, final float trasparency )
+    public static ImageIcon getTransparentCopy ( final String id, final ImageIcon imageIcon, final float transparency )
     {
-        if ( trasparentCache.containsKey ( id ) )
+        if ( transparentCache.containsKey ( id ) )
         {
-            return trasparentCache.get ( id );
+            return transparentCache.get ( id );
         }
         else
         {
-            trasparentCache.put ( id, createTransparentCopy ( imageIcon, trasparency ) );
-            return trasparentCache.get ( id );
+            transparentCache.put ( id, createTransparentCopy ( imageIcon, transparency ) );
+            return transparentCache.get ( id );
         }
     }
 
-    public static ImageIcon createTransparentCopy ( final ImageIcon imageIcon, final float trasparency )
+    public static ImageIcon createTransparentCopy ( final ImageIcon imageIcon, final float transparency )
     {
         final BufferedImage bi = createCompatibleImage ( imageIcon.getIconWidth (), imageIcon.getIconHeight (), Transparency.TRANSLUCENT );
 
         final Graphics2D g2d = bi.createGraphics ();
-        GraphicsUtils.setupAlphaComposite ( g2d, trasparency );
+        GraphicsUtils.setupAlphaComposite ( g2d, transparency );
         g2d.drawImage ( imageIcon.getImage (), 0, 0, null );
         g2d.dispose ();
 
@@ -1316,7 +1316,7 @@ public final class ImageUtils
     {
         // todo Properly use height
         final int width = shadeWidth * 2 + w;
-        @SuppressWarnings ("UnusedDeclaration") final int height = shadeWidth * 2 + h;
+        // final int height = shadeWidth * 2 + h;
 
         // Creating template image
         final BufferedImage bi = createCompatibleImage ( width, width, Transparency.TRANSLUCENT );

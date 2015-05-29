@@ -62,13 +62,13 @@ public class ValueConverter implements Converter
             writer.addAttribute ( LANGUAGE, value.getLang () );
         }
 
-        // Adding mnemnic
+        // Adding mnemonic
         if ( value.getMnemonic () != null )
         {
             writer.addAttribute ( MNEMONIC, value.getMnemonic ().toString () );
         }
 
-        // Adding mnemnic
+        // Adding hotkey
         if ( value.getHotkey () != null )
         {
             writer.addAttribute ( HOTKEY, value.getHotkey () );

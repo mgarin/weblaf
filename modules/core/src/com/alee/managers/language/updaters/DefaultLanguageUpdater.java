@@ -23,7 +23,7 @@ import javax.swing.*;
 import java.lang.reflect.ParameterizedType;
 
 /**
- * This class prvides an additional set of methods to simplify language updaters usage.
+ * This class provides an additional set of methods to simplify language updaters usage.
  * Most of default predefined language updaters extend this class.
  *
  * @author Mikle Garin
@@ -34,7 +34,7 @@ public abstract class DefaultLanguageUpdater<E extends JComponent> implements La
     /**
      * Predefined component states.
      */
-    public static final String INPUT_PROMPT = "inputPropmt";
+    public static final String INPUT_PROMPT = "inputPrompt";
     public static final String DROP_TEXT = "dropText";
 
     /**

@@ -139,7 +139,7 @@ public class SettingsManager
     /**
      * Whether settings log is enabled or not.
      * Log will display what settings are being loaded and saved and when that happens.
-     * Log might contain exceptions if settings cannot be read due to corrupted file or modified object stucture.
+     * Log might contain exceptions if settings cannot be read due to corrupted file or modified object structure.
      */
     protected static boolean loggingEnabled = true;
 
@@ -957,7 +957,7 @@ public class SettingsManager
             oldValue = settingsGroup.remove ( key );
         }
 
-        // Forcing settings group save in case value was resetted
+        // Forcing settings group save in case value was reset
         if ( oldValue != null )
         {
             saveSettingsGroup ( group );

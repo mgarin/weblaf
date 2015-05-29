@@ -158,8 +158,8 @@ public class SettingsConverter extends ReflectionConverter
             else
             {
                 // Reading new settings style
-                final String keyAttribue = reader.getAttribute ( "key" );
-                final String key = keyAttribue != null ? keyAttribue : nodeName;
+                final String keyAttribute = reader.getAttribute ( "key" );
+                final String key = keyAttribute != null ? keyAttribute : nodeName;
                 try
                 {
                     // Determining data type

@@ -25,11 +25,11 @@ import com.thoughtworks.xstream.annotations.XStreamConverter;
 import java.io.Serializable;
 
 /**
- * User: mgarin Date: 16.05.12 Time: 17:17
+ * @author Mikle Garin
  */
 
-@XStreamAlias ("text")
-@XStreamConverter (TextConverter.class)
+@XStreamAlias ( "text" )
+@XStreamConverter ( TextConverter.class )
 public final class Text implements Serializable, Cloneable
 {
     private String text;
@@ -40,12 +40,12 @@ public final class Text implements Serializable, Cloneable
         this ( "" );
     }
 
-    public Text ( String text )
+    public Text ( final String text )
     {
         this ( text, null );
     }
 
-    public Text ( String text, String state )
+    public Text ( final String text, final String state )
     {
         super ();
         this.text = text;
@@ -57,7 +57,7 @@ public final class Text implements Serializable, Cloneable
         return text;
     }
 
-    public void setText ( String text )
+    public void setText ( final String text )
     {
         this.text = text;
     }
@@ -67,7 +67,7 @@ public final class Text implements Serializable, Cloneable
         return state;
     }
 
-    public void setState ( String state )
+    public void setState ( final String state )
     {
         this.state = state;
     }

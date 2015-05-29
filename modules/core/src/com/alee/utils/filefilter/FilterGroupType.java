@@ -26,7 +26,7 @@ package com.alee.utils.filefilter;
 public enum FilterGroupType
 {
     /**
-     * Filter accepts file if atleast one of grouped filters accept that file.
+     * Filter accepts file if at least one of grouped filters accept that file.
      */
     OR,
 

@@ -101,7 +101,7 @@ public class PluginInformation implements Serializable
 
     /**
      * Constructs new plugin information data object.
-     * This constuctor might be used by XStream in some cases to create information instance from plugin XML descriptor.
+     * This constructor might be used by XStream in some cases to create information instance from plugin XML descriptor.
      */
     public PluginInformation ()
     {
@@ -449,7 +449,7 @@ public class PluginInformation implements Serializable
      *
      * @return plugin dependencies count
      */
-    public int getDependencieCount ()
+    public int getDependenciesCount ()
     {
         return dependencies != null && dependencies.size () > 0 ? dependencies.size () : 0;
     }

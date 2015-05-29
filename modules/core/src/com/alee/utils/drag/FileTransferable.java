@@ -43,7 +43,7 @@ public class FileTransferable implements Transferable
     public static final DataFlavor[] flavors = new DataFlavor[]{ DataFlavor.javaFileListFlavor, DragUtils.getUriListDataFlavor () };
 
     /**
-     * Transfered files.
+     * Transferred files.
      */
     protected final List<File> files;
 

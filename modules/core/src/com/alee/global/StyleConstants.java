@@ -123,7 +123,7 @@ public class StyleConstants
     public static float shadeToggleIconTransparency = 0.5f;
 
     /**
-     * Contol buttons highlight settings.
+     * Control buttons highlight settings.
      */
     public static boolean highlightControlButtons = false;
 

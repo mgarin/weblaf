@@ -31,12 +31,12 @@ public class JavaVersion
     /**
      * Java version string pattern.
      */
-    private static Pattern versionPattern = Pattern.compile ( "(\\d+\\.\\d+)(\\.(\\d+))?(_([^-]+))?(.*)" );
+    private static final Pattern versionPattern = Pattern.compile ( "(\\d+\\.\\d+)(\\.(\\d+))?(_([^-]+))?(.*)" );
 
     /**
      * Simple java version string pattern.
      */
-    private static Pattern simpleVersionPattern = Pattern.compile ( "(\\d+\\.\\d+)(\\.(\\d+))?(.*)" );
+    private static final Pattern simpleVersionPattern = Pattern.compile ( "(\\d+\\.\\d+)(\\.(\\d+))?(.*)" );
 
     /**
      * Major java version.
@@ -64,7 +64,7 @@ public class JavaVersion
      * @param major  major java version
      * @param update java update number
      */
-    public JavaVersion ( double major, int update )
+    public JavaVersion ( final double major, final int update )
     {
         super ();
         majorVersion = major;
@@ -79,7 +79,7 @@ public class JavaVersion
      * @param minor  minor java version
      * @param update java update number
      */
-    public JavaVersion ( double major, int minor, int update )
+    public JavaVersion ( final double major, final int minor, final int update )
     {
         super ();
         majorVersion = major;
@@ -92,7 +92,7 @@ public class JavaVersion
      *
      * @param version java version string
      */
-    public JavaVersion ( String version )
+    public JavaVersion ( final String version )
     {
         super ();
         applyJavaVersion ( version );
@@ -103,14 +103,14 @@ public class JavaVersion
      *
      * @param version java version
      */
-    public void applyJavaVersion ( String version )
+    public void applyJavaVersion ( final String version )
     {
         try
         {
-            Matcher matcher = versionPattern.matcher ( version );
+            final Matcher matcher = versionPattern.matcher ( version );
             if ( matcher.matches () )
             {
-                int groups = matcher.groupCount ();
+                final int groups = matcher.groupCount ();
                 majorVersion = Double.parseDouble ( matcher.group ( 1 ) );
                 if ( groups >= 3 && matcher.group ( 3 ) != null )
                 {
@@ -122,14 +122,14 @@ public class JavaVersion
                     {
                         updateNumber = Integer.parseInt ( matcher.group ( 5 ) );
                     }
-                    catch ( NumberFormatException e )
+                    catch ( final NumberFormatException e )
                     {
                         patch = matcher.group ( 5 );
                     }
                 }
                 if ( groups >= 6 && matcher.group ( 6 ) != null )
                 {
-                    String s = matcher.group ( 6 );
+                    final String s = matcher.group ( 6 );
                     if ( s != null && s.trim ().length () > 0 )
                     {
                         patch = s;
@@ -137,14 +137,14 @@ public class JavaVersion
                 }
             }
         }
-        catch ( NumberFormatException e )
+        catch ( final NumberFormatException e )
         {
             try
             {
-                Matcher matcher = simpleVersionPattern.matcher ( version );
+                final Matcher matcher = simpleVersionPattern.matcher ( version );
                 if ( matcher.matches () )
                 {
-                    int groups = matcher.groupCount ();
+                    final int groups = matcher.groupCount ();
                     majorVersion = Double.parseDouble ( matcher.group ( 1 ) );
                     if ( groups >= 3 && matcher.group ( 3 ) != null )
                     {
@@ -152,7 +152,7 @@ public class JavaVersion
                     }
                 }
             }
-            catch ( NumberFormatException e1 )
+            catch ( final NumberFormatException e1 )
             {
                 majorVersion = 1.4;
                 minorVersion = 0;
@@ -169,14 +169,14 @@ public class JavaVersion
      * @param update java update number
      * @return a negative integer, zero, or a positive integer if this java version is less than, equal to, or greater than the other one
      */
-    public int compareVersion ( double major, int minor, int update )
+    public int compareVersion ( final double major, final int minor, final int update )
     {
-        double majorResult = majorVersion - major;
+        final double majorResult = majorVersion - major;
         if ( majorResult != 0 )
         {
             return majorResult < 0 ? -1 : 1;
         }
-        int result = minorVersion - minor;
+        final int result = minorVersion - minor;
         if ( result != 0 )
         {
             return result;

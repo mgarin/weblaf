@@ -279,7 +279,7 @@ public class WebFileDrop extends WebPanel implements LanguageMethods
     protected boolean addSelectedFileImpl ( final File file )
     {
         if ( ( fileFilter == null || fileFilter.accept ( file ) ) &&
-                ( allowSameFiles || !FileUtils.containtsFile ( selectedFiles, file ) ) )
+                ( allowSameFiles || !FileUtils.containsFile ( selectedFiles, file ) ) )
         {
             add ( createFilePlate ( file ) );
             selectedFiles.add ( file );
@@ -344,7 +344,7 @@ public class WebFileDrop extends WebPanel implements LanguageMethods
 
     protected boolean removeSelectedFileImpl ( final File file, final boolean animate )
     {
-        if ( FileUtils.containtsFile ( selectedFiles, file ) )
+        if ( FileUtils.containsFile ( selectedFiles, file ) )
         {
             for ( final WebFilePlate filePlate : getFilePlates ( file ) )
             {

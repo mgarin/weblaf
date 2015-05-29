@@ -276,11 +276,11 @@ public final class CollectionUtils
     }
 
     /**
-     * Returns collection with clonable values being cloned and non-clonable values simply copied from source collection.
+     * Returns collection with cloneable values being cloned and non-cloneable values simply copied from source collection.
      *
      * @param collection collection to perform action for
      * @param <T>        collection objects type
-     * @return collection with clonable values being cloned and non-clonable values simply copied from source collection
+     * @return collection with cloneable values being cloned and non-cloneable values simply copied from source collection
      */
     public static <T> ArrayList<T> cloneOrCopy ( final Collection<T> collection )
     {
@@ -431,7 +431,7 @@ public final class CollectionUtils
     /**
      * Returns list of elements filtered from collection.
      *
-     * @param collection collecton to filter
+     * @param collection collection to filter
      * @param filter     filter to process
      * @param <T>        elements type
      * @return list of elements filtered from collection

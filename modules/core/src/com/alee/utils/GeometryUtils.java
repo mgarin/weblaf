@@ -95,18 +95,18 @@ public final class GeometryUtils
     /**
      * Returns rectangle containing all specified rectangles.
      *
-     * @param rects rectangles to process
+     * @param rectangles rectangles to process
      * @return rectangle containing all specified rectangles
      */
-    public static Rectangle getContainingRect ( final Rectangle... rects )
+    public static Rectangle getContainingRect ( final Rectangle... rectangles )
     {
-        if ( rects != null && rects.length > 0 )
+        if ( rectangles != null && rectangles.length > 0 )
         {
-            Rectangle rect = rects[ 0 ];
+            Rectangle rect = rectangles[ 0 ];
             int i = 1;
-            while ( i < rects.length )
+            while ( i < rectangles.length )
             {
-                rect = getContainingRect ( rect, rects[ i ] );
+                rect = getContainingRect ( rect, rectangles[ i ] );
                 i++;
             }
             return rect;
@@ -281,11 +281,11 @@ public final class GeometryUtils
     }
 
     /**
-     * Returns intersection point of the rectangle and the line goin from the middle of that rectangle to the outer point.
+     * Returns intersection point of the rectangle and the line going from the middle of that rectangle to the outer point.
      *
      * @param rect  rectangle to process
      * @param outer outer point to process
-     * @return intersection point of the rectangle and the line goin from the middle of that rectangle to the outer point
+     * @return intersection point of the rectangle and the line going from the middle of that rectangle to the outer point
      */
     public static Point findMiddleLineIntersection ( final Rectangle rect, final Point outer )
     {
