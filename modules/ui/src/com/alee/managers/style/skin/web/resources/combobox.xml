@@ -9,6 +9,7 @@
             <focusable>true</focusable>
         </component>
         <painter class="com.alee.managers.style.skin.web.WebComboBoxPainter">
+            <undecorated>false</undecorated>
             <round>2</round>
             <shadeWidth>2</shadeWidth>
             <iconSpacing>3</iconSpacing>

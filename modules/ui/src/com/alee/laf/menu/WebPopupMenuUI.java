@@ -247,8 +247,17 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements Styleable, Shape
         // Resetting preferred popup menu display way
         popupMenuWay = null;
 
-        // Returning popup
-        return super.getPopup ( popup, x, y );
+        // Creating actual popup to place menu into
+        final Popup p = super.getPopup ( popup, x, y );
+
+        // Configuring actual popup if needed
+        if ( painter != null )
+        {
+            painter.configurePopup ( popup, popup.getInvoker (), x, y, p );
+        }
+
+        // Returning actual popup
+        return p;
     }
 
     /**

@@ -174,6 +174,8 @@ public class WebComboBoxPainter<E extends JComboBox, U extends WebComboBoxUI> ex
         hasFocus = component.hasFocus ();
         final Rectangle r = rectangleForCurrentValue ();
 
+        super.paint ( g2d, bounds, c, ui );
+
         // Background
         paintCurrentValueBackground ( g2d, r, hasFocus );
 

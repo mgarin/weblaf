@@ -40,4 +40,14 @@ public interface PopupMenuPainter<E extends JPopupMenu, U extends WebPopupMenuUI
      * @return modified popup display location
      */
     public Point preparePopupMenu ( E popupMenu, Component invoker, int x, int y );
+
+    /**
+     * Configures created popup to be displayed.
+     *
+     * @param popupMenu JPopupMenu to prepare for display
+     * @param x         screen x location actual popup is to be shown at
+     * @param y         screen y location actual popup is to be shown at
+     * @param popup     popup to be configured
+     */
+    public void configurePopup ( E popupMenu, Component invoker, int x, int y, Popup popup );
 }

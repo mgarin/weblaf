@@ -279,16 +279,34 @@ public final class PainterSupport
      */
     public static Dimension getPreferredSize ( final JComponent component, final Dimension preferred, final Painter painter )
     {
+        return getPreferredSize ( component, preferred, painter, false );
+    }
+
+    /**
+     * Returns component preferred size or {@code null} if there is no preferred size.
+     *
+     * @param component        component painter is applied to
+     * @param preferred        component preferred size
+     * @param painter          component painter
+     * @param ignoreLayoutSize whether or not layout preferred size should be ignored
+     * @return component preferred size or {@code null} if there is no preferred size
+     */
+    public static Dimension getPreferredSize ( final JComponent component, final Dimension preferred, final Painter painter,
+                                               final boolean ignoreLayoutSize )
+    {
         // Painter's preferred size
         Dimension ps = SwingUtils.max ( preferred, painter != null ? painter.getPreferredSize () : null );
 
         // Layout preferred size
-        final LayoutManager layout = component.getLayout ();
-        if ( layout != null )
+        if ( !ignoreLayoutSize )
         {
             synchronized ( component.getTreeLock () )
             {
-                ps = SwingUtils.max ( ps, layout.preferredLayoutSize ( component ) );
+                final LayoutManager layout = component.getLayout ();
+                if ( layout != null )
+                {
+                    ps = SwingUtils.max ( ps, layout.preferredLayoutSize ( component ) );
+                }
             }
         }
 

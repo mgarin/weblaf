@@ -51,4 +51,13 @@ public class AdaptivePopupMenuPainter<E extends JPopupMenu, U extends WebPopupMe
     {
         return new Point ( x, y );
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void configurePopup ( final E popupMenu, final Component invoker, final int x, final int y, final Popup popup )
+    {
+        // Do nothing by default
+    }
 }
