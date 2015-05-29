@@ -170,7 +170,6 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
         if ( component != null && ui != null && !SwingUtils.isPreserveBorders ( component ) )
         {
             final Insets border = new Insets ( 0, 0, 0, 0 );
-            final boolean ltr = component.getComponentOrientation ().isLeftToRight ();
 
             // Calculating margin borders
             if ( ui instanceof MarginSupport )

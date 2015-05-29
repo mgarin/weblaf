@@ -273,13 +273,14 @@ public final class PainterSupport
      * Returns component preferred size or {@code null} if there is no preferred size.
      *
      * @param component component painter is applied to
+     * @param preferred component preferred size
      * @param painter   component painter
      * @return component preferred size or {@code null} if there is no preferred size
      */
-    public static Dimension getPreferredSize ( final JComponent component, final Painter painter )
+    public static Dimension getPreferredSize ( final JComponent component, final Dimension preferred, final Painter painter )
     {
         // Painter's preferred size
-        Dimension ps = painter != null ? painter.getPreferredSize () : null;
+        Dimension ps = SwingUtils.max ( preferred, painter != null ? painter.getPreferredSize () : null );
 
         // Layout preferred size
         final LayoutManager layout = component.getLayout ();

@@ -4,7 +4,7 @@
 
     <!-- Buttons -->
     <style type="button" id="optionpane" extends="default">
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebButtonPainter">
+        <painter class="com.alee.managers.style.skin.web.WebButtonPainter">
             <leftRightSpacing>10</leftRightSpacing>
         </painter>
     </style>

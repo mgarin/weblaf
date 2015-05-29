@@ -38,7 +38,7 @@ import java.awt.*;
 public interface Painter<E extends JComponent, U extends ComponentUI>
 {
     /**
-     * Called when painter is intalled into some component.
+     * Called when painter is installed into some component.
      * You might want to use this method to add custom component listeners or modify component settings.
      *
      * @param c  component to process
@@ -47,7 +47,7 @@ public interface Painter<E extends JComponent, U extends ComponentUI>
     public void install ( E c, U ui );
 
     /**
-     * Called when painter is intalled into some component.
+     * Called when painter is installed into some component.
      * You might want to use this method to add custom component listeners or modify component settings.
      *
      * @param c  component to process

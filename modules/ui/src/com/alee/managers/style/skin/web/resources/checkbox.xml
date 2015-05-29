@@ -7,7 +7,7 @@
         <component>
             <opaque>false</opaque>
         </component>
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebCheckBoxPainter">
+        <painter class="com.alee.managers.style.skin.web.WebCheckBoxPainter">
             <undecorated>true</undecorated>
             <leftRightSpacing>0</leftRightSpacing>
             <round>2</round>

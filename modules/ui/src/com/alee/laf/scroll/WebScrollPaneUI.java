@@ -220,6 +220,6 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements Styleable, Sha
     @Override
     public Dimension getPreferredSize ( final JComponent c )
     {
-        return PainterSupport.getPreferredSize ( c, painter );
+        return PainterSupport.getPreferredSize ( c, super.getPreferredSize ( c ), painter );
     }
 }

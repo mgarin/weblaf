@@ -11,7 +11,7 @@
             <background>white</background>
             <foreground>black</foreground>
         </component>
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebListPainter">
+        <painter class="com.alee.managers.style.skin.web.WebListPainter">
             <selectionRound>2</selectionRound>
             <selectionShadeWidth>2</selectionShadeWidth>
             <selectionBorderColor>gray</selectionBorderColor>

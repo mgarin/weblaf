@@ -4,7 +4,7 @@
 
     <!-- Content panel -->
     <style type="panel" id="breadcrumb" extends="default">
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebPanelPainter">
+        <painter class="com.alee.managers.style.skin.web.WebPanelPainter">
             <undecorated>false</undecorated>
             <paintFocus>true</paintFocus>
         </painter>
@@ -15,7 +15,7 @@
         <ui>
             <padding>1,5,1,5</padding>
         </ui>
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebBreadcrumbLabelPainter" />
+        <painter class="com.alee.managers.style.skin.web.WebBreadcrumbLabelPainter" />
     </style>
 
     <!-- Button element -->
@@ -23,7 +23,7 @@
         <ui>
             <padding>2,5,2,5</padding>
         </ui>
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebBreadcrumbButtonPainter" />
+        <painter class="com.alee.managers.style.skin.web.WebBreadcrumbButtonPainter" />
     </style>
 
     <!-- Toggle button element -->
@@ -31,7 +31,7 @@
         <ui>
             <padding>2,5,2,5</padding>
         </ui>
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebBreadcrumbToggleButtonPainter" />
+        <painter class="com.alee.managers.style.skin.web.WebBreadcrumbToggleButtonPainter" />
     </style>
 
     <!-- Panel element -->
@@ -39,7 +39,7 @@
         <ui>
             <padding>1,5,1,5</padding>
         </ui>
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebBreadcrumbPanelPainter" />
+        <painter class="com.alee.managers.style.skin.web.WebBreadcrumbPanelPainter" />
     </style>
 
 </skin>

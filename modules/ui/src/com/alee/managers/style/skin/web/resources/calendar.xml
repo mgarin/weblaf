@@ -4,7 +4,7 @@
 
     <!-- Calendar -->
     <style type="panel" id="calendar" extends="default">
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebPanelPainter">
+        <painter class="com.alee.managers.style.skin.web.WebPanelPainter">
             <undecorated>false</undecorated>
             <round>2</round>
             <paintFocus>true</paintFocus>
@@ -16,7 +16,7 @@
         <component>
             <focusable>true</focusable>
         </component>
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebButtonPainter">
+        <painter class="com.alee.managers.style.skin.web.WebButtonPainter">
             <round>2</round>
             <paintFocus>false</paintFocus>
             <rolloverDecoratedOnly>true</rolloverDecoratedOnly>
@@ -42,7 +42,7 @@
         <ui>
             <padding>2,1,3,1</padding>
         </ui>
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebPanelPainter">
+        <painter class="com.alee.managers.style.skin.web.WebPanelPainter">
             <undecorated>false</undecorated>
             <shadeWidth>0</shadeWidth>
             <paintTop>true</paintTop>
@@ -75,7 +75,7 @@
             <focusable>false</focusable>
             <horizontalAlignment>4</horizontalAlignment>
         </component>
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebToggleButtonPainter">
+        <painter class="com.alee.managers.style.skin.web.WebToggleButtonPainter">
             <round>2</round>
             <rolloverDecoratedOnly>true</rolloverDecoratedOnly>
         </painter>

@@ -7,14 +7,14 @@
         <component>
             <floatable>false</floatable>
         </component>
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebToolBarPainter">
+        <painter class="com.alee.managers.style.skin.web.WebToolBarPainter">
             <spacing>0</spacing>
         </painter>
     </style>
 
     <!-- Undecorated toolbar -->
     <style type="toolBar" id="filechooser-undecorated" extends="filechooser">
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebToolBarPainter">
+        <painter class="com.alee.managers.style.skin.web.WebToolBarPainter">
             <undecorated>true</undecorated>
         </painter>
     </style>
@@ -24,7 +24,7 @@
         <component>
             <focusable>false</focusable>
         </component>
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebButtonPainter">
+        <painter class="com.alee.managers.style.skin.web.WebButtonPainter">
             <rolloverDecoratedOnly>true</rolloverDecoratedOnly>
         </painter>
     </style>

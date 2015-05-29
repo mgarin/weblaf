@@ -11,7 +11,7 @@
         <ui>
             <padding>-1,-1,-1,-1</padding>
         </ui>
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebPanelPainter">
+        <painter class="com.alee.managers.style.skin.web.WebPanelPainter">
             <round>2</round>
             <shadeWidth>2</shadeWidth>
             <paintFocus>true</paintFocus>
@@ -32,7 +32,7 @@
         <component>
             <focusable>false</focusable>
         </component>
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebButtonPainter">
+        <painter class="com.alee.managers.style.skin.web.WebButtonPainter">
             <round>2</round>
             <shadeWidth>0</shadeWidth>
             <leftRightSpacing>0</leftRightSpacing>
@@ -49,7 +49,7 @@
         <component>
             <focusable>false</focusable>
         </component>
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebButtonPainter">
+        <painter class="com.alee.managers.style.skin.web.WebButtonPainter">
             <round>2</round>
             <shadeWidth>0</shadeWidth>
             <leftRightSpacing>0</leftRightSpacing>
@@ -63,7 +63,7 @@
         <component>
             <focusable>false</focusable>
         </component>
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebToggleButtonPainter">
+        <painter class="com.alee.managers.style.skin.web.WebToggleButtonPainter">
             <round>0</round>
             <shadeWidth>0</shadeWidth>
             <shadeToggleIcon>false</shadeToggleIcon>
@@ -75,7 +75,7 @@
 
     <!-- Autocomplete popup list scroll -->
     <style type="scrollPane" id="pathfield-popup" extends="default">
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebScrollPanePainter">
+        <painter class="com.alee.managers.style.skin.web.WebScrollPanePainter">
             <shadeWidth>0</shadeWidth>
         </painter>
     </style>

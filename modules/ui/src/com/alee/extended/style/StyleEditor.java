@@ -120,7 +120,7 @@ public class StyleEditor extends WebFrame
     private WebPanel componentViewer;
     private WebPanel editorsContainer;
 
-    private WebStatusBar statusbar;
+    private WebStatusBar statusBar;
     private WebBreadcrumbLabel statusMessage;
 
     private final List<JComponent> previewComponents = new ArrayList<JComponent> ();
@@ -274,7 +274,7 @@ public class StyleEditor extends WebFrame
 
     private void initializeStatusBar ()
     {
-        statusbar = new WebStatusBar ();
+        statusBar = new WebStatusBar ();
 
         //
 
@@ -308,15 +308,15 @@ public class StyleEditor extends WebFrame
         statusMessage.setStyleId ( "status-message-label" );
         updateBreadcrumb.add ( statusMessage );
 
-        statusbar.add ( updateBreadcrumb );
+        statusBar.add ( updateBreadcrumb );
 
         //
 
-        statusbar.addToEnd ( new WebMemoryBar ().setPreferredWidth ( 200 ) );
+        statusBar.addToEnd ( new WebMemoryBar ().setPreferredWidth ( 200 ) );
 
         //
 
-        container.add ( statusbar, BorderLayout.SOUTH );
+        container.add ( statusBar, BorderLayout.SOUTH );
     }
 
     private void initializeViewer ()
@@ -680,7 +680,7 @@ public class StyleEditor extends WebFrame
             // Information in status bar
             time = System.currentTimeMillis () - time;
             statusMessage.setIcon ( ok );
-            statusMessage.setText ( "Style updated succesfully within " + time + " ms" );
+            statusMessage.setText ( "Style updated successfully within " + time + " ms" );
         }
         catch ( final ConversionException ex )
         {

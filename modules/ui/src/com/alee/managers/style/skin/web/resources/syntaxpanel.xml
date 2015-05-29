@@ -10,7 +10,7 @@
         <ui>
             <padding>2,4,2,4</padding>
         </ui>
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebSyntaxPanelPainter">
+        <painter class="com.alee.managers.style.skin.web.WebSyntaxPanelPainter">
             <style>thick</style>
         </painter>
     </style>

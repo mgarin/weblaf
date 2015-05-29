@@ -222,8 +222,9 @@ public class ComponentStyleConverter extends ReflectionConverter
             {
                 // Collecting style IDs
                 final String ids = reader.getAttribute ( PAINTER_ID_ATTRIBUTE );
+                final boolean emptyIds = TextUtils.isEmpty ( ids );
                 final List<String> indices = new ArrayList<String> ( 1 );
-                if ( ids.contains ( PAINTER_IDS_SEPARATOR ) )
+                if ( !emptyIds && ids.contains ( PAINTER_IDS_SEPARATOR ) )
                 {
                     final StringTokenizer st = new StringTokenizer ( ids, PAINTER_IDS_SEPARATOR, false );
                     while ( st.hasMoreTokens () )
@@ -234,7 +235,7 @@ public class ComponentStyleConverter extends ReflectionConverter
                 }
                 else
                 {
-                    indices.add ( TextUtils.isEmpty ( ids ) ? DEFAULT_PAINTER_ID : ids );
+                    indices.add ( emptyIds ? DEFAULT_PAINTER_ID : ids );
                 }
 
                 // Creating separate painter styles for each style ID

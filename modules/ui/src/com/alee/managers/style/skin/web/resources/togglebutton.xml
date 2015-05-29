@@ -10,7 +10,7 @@
             <horizontalAlignment>0</horizontalAlignment>
             <verticalAlignment>0</verticalAlignment>
         </component>
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebToggleButtonPainter">
+        <painter class="com.alee.managers.style.skin.web.WebToggleButtonPainter">
             <undecorated>false</undecorated>
             <round>3</round>
             <shadeWidth>2</shadeWidth>
@@ -23,7 +23,7 @@
 
     <!-- Icon-only toggle button -->
     <style type="toggleButton" id="icon" extends="default">
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebToggleButtonPainter">
+        <painter class="com.alee.managers.style.skin.web.WebToggleButtonPainter">
             <round>2</round>
             <leftRightSpacing>0</leftRightSpacing>
         </painter>
@@ -31,14 +31,14 @@
 
     <!-- Rollover-decorated-only toggle button -->
     <style type="toggleButton" id="rollover" extends="default">
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebToggleButtonPainter">
+        <painter class="com.alee.managers.style.skin.web.WebToggleButtonPainter">
             <rolloverDecoratedOnly>true</rolloverDecoratedOnly>
         </painter>
     </style>
 
     <!-- Icon-only and rollover-decorated-only toggle button -->
     <style type="toggleButton" id="rolloverIcon" extends="icon">
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebToggleButtonPainter">
+        <painter class="com.alee.managers.style.skin.web.WebToggleButtonPainter">
             <rolloverDecoratedOnly>true</rolloverDecoratedOnly>
         </painter>
     </style>

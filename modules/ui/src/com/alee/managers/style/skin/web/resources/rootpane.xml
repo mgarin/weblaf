@@ -23,7 +23,7 @@
         <ui>
             <padding>1,4,1,4</padding>
         </ui>
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebButtonPainter">
+        <painter class="com.alee.managers.style.skin.web.WebButtonPainter">
             <round>6</round>
         </painter>
     </style>

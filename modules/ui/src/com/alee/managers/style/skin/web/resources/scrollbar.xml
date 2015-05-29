@@ -13,7 +13,7 @@
             <paintButtons>true</paintButtons>
             <paintTrack>false</paintTrack>
         </ui>
-        <painter id="painter" base="true" class="com.alee.managers.style.skin.web.WebScrollBarPainter">
+        <painter base="true" class="com.alee.managers.style.skin.web.WebScrollBarPainter">
             <thumbRound>8</thumbRound>
             <thumbMargin>1,2,1,2</thumbMargin>
             <scrollBarWidth>13</scrollBarWidth>
@@ -73,7 +73,7 @@
         <component>
             <focusable>false</focusable>
         </component>
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebScrollBarButtonPainter">
+        <painter class="com.alee.managers.style.skin.web.WebScrollBarButtonPainter">
             <borderColor>189,189,189</borderColor>
             <backgroundColor>217,217,217</backgroundColor>
             <disabledBorderColor>210,210,210</disabledBorderColor>
@@ -87,14 +87,14 @@
 
     <!-- Decrease (scroll up/left) scroll bar button -->
     <style type="button" id="scrollbar-decrease-button" extends="scrollbar-button">
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebScrollBarButtonPainter">
+        <painter class="com.alee.managers.style.skin.web.WebScrollBarButtonPainter">
             <buttonType>decrease</buttonType>
         </painter>
     </style>
 
     <!-- Increase (scroll down/right) scroll bar button -->
     <style type="button" id="scrollbar-increase-button" extends="scrollbar-button">
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebScrollBarButtonPainter">
+        <painter class="com.alee.managers.style.skin.web.WebScrollBarButtonPainter">
             <buttonType>increase</buttonType>
         </painter>
     </style>

@@ -8,7 +8,7 @@
             <orientation>0</orientation>
             <floatable>true</floatable>
         </component>
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebToolBarPainter">
+        <painter class="com.alee.managers.style.skin.web.WebToolBarPainter">
             <undecorated>false</undecorated>
             <round>6</round>
             <shadeWidth>2</shadeWidth>
@@ -23,7 +23,7 @@
 
     <!-- Attached toolbar -->
     <style type="toolBar" id="attached" extends="default">
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebToolBarPainter">
+        <painter class="com.alee.managers.style.skin.web.WebToolBarPainter">
             <toolbarStyle>attached</toolbarStyle>
         </painter>
     </style>
@@ -33,7 +33,7 @@
         <component>
             <opaque>false</opaque>
         </component>
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebToolBarSeparatorPainter">
+        <painter class="com.alee.managers.style.skin.web.WebToolBarSeparatorPainter">
             <separatorLightUpperColor>255,255,255,5</separatorLightUpperColor>
             <separatorLightColor>white</separatorLightColor>
             <separatorUpperColor>176,182,188,5</separatorUpperColor>

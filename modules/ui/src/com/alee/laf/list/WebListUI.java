@@ -255,6 +255,6 @@ public class WebListUI extends BasicListUI implements Styleable, ShapeProvider, 
     @Override
     public Dimension getPreferredSize ( final JComponent c )
     {
-        return PainterSupport.getPreferredSize ( c, painter );
+        return PainterSupport.getPreferredSize ( c, super.getPreferredSize ( c ), painter );
     }
 }

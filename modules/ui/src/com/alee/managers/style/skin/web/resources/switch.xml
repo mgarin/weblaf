@@ -7,7 +7,7 @@
         <component>
             <focusable>true</focusable>
         </component>
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebPanelPainter">
+        <painter class="com.alee.managers.style.skin.web.WebPanelPainter">
             <round>4</round>
             <paintFocus>true</paintFocus>
         </painter>
@@ -15,7 +15,7 @@
 
     <!-- Switch gripper -->
     <style type="panel" id="wswitch-gripper" extends="decorated">
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebPanelPainter">
+        <painter class="com.alee.managers.style.skin.web.WebPanelPainter">
             <round>1</round>
         </painter>
     </style>

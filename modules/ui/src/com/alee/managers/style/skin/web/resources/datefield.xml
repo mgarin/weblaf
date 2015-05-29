@@ -7,7 +7,7 @@
         <component>
             <focusable>false</focusable>
         </component>
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebButtonPainter">
+        <painter class="com.alee.managers.style.skin.web.WebButtonPainter">
             <round>2</round>
             <shadeWidth>0</shadeWidth>
             <moveIconOnPress>false</moveIconOnPress>
@@ -17,7 +17,7 @@
 
     <!-- Calendar -->
     <style type="panel" id="datefield" extends="calendar">
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebPanelPainter">
+        <painter class="com.alee.managers.style.skin.web.WebPanelPainter">
             <undecorated>false</undecorated>
             <round>2</round>
             <shadeWidth>0</shadeWidth>

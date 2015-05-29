@@ -4,7 +4,7 @@
 
     <!-- Tree -->
     <style type="tree" id="default">
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebTreePainter">
+        <painter class="com.alee.managers.style.skin.web.WebTreePainter">
             <selectionRound>2</selectionRound>
             <selectionShadeWidth>2</selectionShadeWidth>
             <selectorRound>2</selectorRound>

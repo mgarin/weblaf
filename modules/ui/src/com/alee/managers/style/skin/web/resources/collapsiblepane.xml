@@ -7,7 +7,7 @@
         <component>
             <focusable>true</focusable>
         </component>
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebPanelPainter">
+        <painter class="com.alee.managers.style.skin.web.WebPanelPainter">
             <undecorated>false</undecorated>
             <round>2</round>
             <webColoredBackground>false</webColoredBackground>
@@ -20,7 +20,7 @@
         <component>
             <opaque>true</opaque>
         </component>
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebPanelPainter">
+        <painter class="com.alee.managers.style.skin.web.WebPanelPainter">
             <undecorated>false</undecorated>
             <round>2</round>
             <shadeWidth>0</shadeWidth>
@@ -32,7 +32,7 @@
         <component>
             <focusable>false</focusable>
         </component>
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebButtonPainter">
+        <painter class="com.alee.managers.style.skin.web.WebButtonPainter">
             <undecorated>true</undecorated>
             <moveIconOnPress>false</moveIconOnPress>
         </painter>
@@ -43,7 +43,7 @@
         <component>
             <opaque>false</opaque>
         </component>
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebPanelPainter">
+        <painter class="com.alee.managers.style.skin.web.WebPanelPainter">
             <undecorated>false</undecorated>
             <round>2</round>
             <shadeWidth>0</shadeWidth>

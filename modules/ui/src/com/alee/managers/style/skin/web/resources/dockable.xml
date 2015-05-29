@@ -4,7 +4,7 @@
 
     <!-- Dockable frame -->
     <style type="panel" id="dockable-frame" extends="default">
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebPanelPainter">
+        <painter class="com.alee.managers.style.skin.web.WebPanelPainter">
             <shadeWidth>0</shadeWidth>
             <webColoredBackground>false</webColoredBackground>
         </painter>
@@ -12,7 +12,7 @@
 
     <!-- Dockable frame title panel -->
     <style type="panel" id="dockable-frame-title" extends="default">
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebPanelPainter">
+        <painter class="com.alee.managers.style.skin.web.WebPanelPainter">
             <undecorated>false</undecorated>
             <round>0</round>
             <shadeWidth>0</shadeWidth>
@@ -44,7 +44,7 @@
         <component>
             <focusable>false</focusable>
         </component>
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebButtonPainter">
+        <painter class="com.alee.managers.style.skin.web.WebButtonPainter">
             <shadeWidth>0</shadeWidth>
             <paintTop>false</paintTop>
             <paintLeft>true</paintLeft>
@@ -53,7 +53,7 @@
         </painter>
     </style>
     <style type="button" id="dockable-frame-tool-icon" extends="dockable-frame-tool">
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebButtonPainter">
+        <painter class="com.alee.managers.style.skin.web.WebButtonPainter">
             <leftRightSpacing>0</leftRightSpacing>
         </painter>
     </style>

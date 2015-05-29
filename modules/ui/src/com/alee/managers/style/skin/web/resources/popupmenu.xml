@@ -4,7 +4,7 @@
 
     <!-- Popup menu -->
     <style type="popupMenu" id="default">
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebPopupMenuPainter">
+        <painter class="com.alee.managers.style.skin.web.WebPopupMenuPainter">
             <popupStyle>dropdown</popupStyle>
             <borderColor>128,128,128,128</borderColor>
             <round>4</round>
@@ -20,7 +20,7 @@
         <component>
             <opaque>false</opaque>
         </component>
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebPopupMenuSeparatorPainter">
+        <painter class="com.alee.managers.style.skin.web.WebPopupMenuSeparatorPainter">
             <color>220,220,220</color>
             <spacing>5</spacing>
             <sideSpacing>4</sideSpacing>

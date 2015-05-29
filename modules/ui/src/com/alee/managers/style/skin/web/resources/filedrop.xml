@@ -28,7 +28,7 @@
         <component>
             <focusable>false</focusable>
         </component>
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebButtonPainter">
+        <painter class="com.alee.managers.style.skin.web.WebButtonPainter">
             <round>2</round>
             <shadeWidth>3</shadeWidth>
             <innerShadeWidth>1</innerShadeWidth>

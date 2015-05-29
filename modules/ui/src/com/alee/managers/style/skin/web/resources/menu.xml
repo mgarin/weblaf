@@ -12,7 +12,7 @@
         <ui>
             <padding>5,8,5,11</padding>
         </ui>
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebMenuPainter">
+        <painter class="com.alee.managers.style.skin.web.WebMenuPainter">
             <round>2</round>
             <shadeWidth>2</shadeWidth>
             <arrowGap>15</arrowGap>

@@ -14,7 +14,7 @@
         <component>
             <focusable>false</focusable>
         </component>
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebButtonPainter">
+        <painter class="com.alee.managers.style.skin.web.WebButtonPainter">
             <undecorated>true</undecorated>
             <paintFocus>false</paintFocus>
             <moveIconOnPress>false</moveIconOnPress>
@@ -29,7 +29,7 @@
             <verticalScrollBarPolicy>20</verticalScrollBarPolicy>
             <horizontalScrollBarPolicy>31</horizontalScrollBarPolicy>
         </component>
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebScrollPanePainter">
+        <painter class="com.alee.managers.style.skin.web.WebScrollPanePainter">
             <undecorated>true</undecorated>
         </painter>
     </style>
@@ -39,7 +39,7 @@
         <ui>
             <padding>0,1,0,1</padding>
         </ui>
-        <painter id="painter" base="true" class="com.alee.managers.style.skin.web.WebScrollBarPainter">
+        <painter base="true" class="com.alee.managers.style.skin.web.WebScrollBarPainter">
             <thumbRound>4</thumbRound>
             <thumbMargin>0,2,0,4</thumbMargin>
             <scrollBarWidth>12</scrollBarWidth>
@@ -48,7 +48,7 @@
 
     <!-- Popup list component -->
     <style type="list" id="combobox-list-component" extends="default">
-        <painter id="painter" base="true" class="com.alee.managers.style.skin.web.WebListPainter">
+        <painter base="true" class="com.alee.managers.style.skin.web.WebListPainter">
             <decorateSelection>false</decorateSelection>
         </painter>
     </style>
@@ -58,7 +58,7 @@
         <ui>
             <padding>4,6,4,6</padding>
         </ui>
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebComboBoxElementPainter">
+        <painter class="com.alee.managers.style.skin.web.WebComboBoxElementPainter">
             <topSelectedBackgroundColor>208,208,198</topSelectedBackgroundColor>
             <bottomSelectedBackgroundColor>196,196,186</bottomSelectedBackgroundColor>
         </painter>

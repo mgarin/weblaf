@@ -8,7 +8,7 @@
             <paintTicks>false</paintTicks>
             <paintLabels>false</paintLabels>
         </component>
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebSliderPainter">
+        <painter class="com.alee.managers.style.skin.web.WebSliderPainter">
             <angledThumb>false</angledThumb>
         </painter>
     </style>
@@ -20,7 +20,7 @@
             <paintLabels>false</paintLabels>
             <snapToTicks>true</snapToTicks>
         </component>
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebSliderPainter">
+        <painter class="com.alee.managers.style.skin.web.WebSliderPainter">
             <padding>10,10,10,10</padding>
         </painter>
     </style>

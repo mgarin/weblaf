@@ -11,7 +11,7 @@
         <ui>
             <padding>-1,-1,-1,-1</padding>
         </ui>
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebPanelPainter">
+        <painter class="com.alee.managers.style.skin.web.WebPanelPainter">
             <undecorated>false</undecorated>
             <round>2</round>
             <webColoredBackground>true</webColoredBackground>
@@ -28,7 +28,7 @@
         <ui>
             <padding>1,1,1,1</padding>
         </ui>
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebScrollPanePainter">
+        <painter class="com.alee.managers.style.skin.web.WebScrollPanePainter">
             <undecorated>true</undecorated>
         </painter>
     </style>
@@ -47,7 +47,7 @@
         <ui>
             <padding>0,3,0,1</padding>
         </ui>
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebPanelPainter">
+        <painter class="com.alee.managers.style.skin.web.WebPanelPainter">
             <undecorated>false</undecorated>
             <round>2</round>
             <shadeWidth>0</shadeWidth>
@@ -70,7 +70,7 @@
         <component>
             <focusable>false</focusable>
         </component>
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebButtonPainter">
+        <painter class="com.alee.managers.style.skin.web.WebButtonPainter">
             <round>2</round>
             <shadeWidth>2</shadeWidth>
             <rolloverDecoratedOnly>true</rolloverDecoratedOnly>
@@ -85,7 +85,7 @@
         <component>
             <focusable>false</focusable>
         </component>
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebButtonPainter">
+        <painter class="com.alee.managers.style.skin.web.WebButtonPainter">
             <round>2</round>
             <shadeWidth>0</shadeWidth>
             <paintBackground>true</paintBackground>

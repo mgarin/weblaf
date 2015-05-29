@@ -10,7 +10,7 @@
         <ui>
             <padding>2,5,2,5</padding>
         </ui>
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebPanelPainter">
+        <painter class="com.alee.managers.style.skin.web.WebPanelPainter">
             <webColoredBackground>false</webColoredBackground>
         </painter>
     </style>
@@ -26,7 +26,7 @@
         <ui>
             <padding>5,0,3,0</padding>
         </ui>
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebPanelPainter">
+        <painter class="com.alee.managers.style.skin.web.WebPanelPainter">
             <webColoredBackground>false</webColoredBackground>
         </painter>
     </style>

@@ -8,7 +8,7 @@
             <opaque>false</opaque>
             <foreground>0,0,0</foreground>
         </component>
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebSliderPainter">
+        <painter class="com.alee.managers.style.skin.web.WebSliderPainter">
             <trackHeight>9</trackHeight>
             <trackRound>4</trackRound>
             <trackShadeWidth>2</trackShadeWidth>

@@ -8,7 +8,7 @@
             <foreground>black</foreground>
             <background>237,237,237</background>
         </component>
-        <painter id="painter" class="com.alee.extended.label.WebStyledLabelPainter">
+        <painter class="com.alee.extended.label.WebStyledLabelPainter">
             <drawShade>false</drawShade>
         </painter>
     </style>

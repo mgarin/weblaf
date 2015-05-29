@@ -4,7 +4,7 @@
 
     <!-- Memory bar -->
     <style type="panel" id="memorybar" extends="default">
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebPanelPainter">
+        <painter class="com.alee.managers.style.skin.web.WebPanelPainter">
             <undecorated>false</undecorated>
         </painter>
     </style>

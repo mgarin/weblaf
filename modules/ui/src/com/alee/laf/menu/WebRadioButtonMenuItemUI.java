@@ -224,6 +224,6 @@ public class WebRadioButtonMenuItemUI extends BasicMenuItemUI implements Styleab
     @Override
     public Dimension getPreferredSize ( final JComponent c )
     {
-        return PainterSupport.getPreferredSize ( c, painter );
+        return PainterSupport.getPreferredSize ( c, super.getPreferredSize ( c ), painter );
     }
 }

@@ -12,7 +12,7 @@
 
     <!-- Tool buttons -->
     <style type="button" id="directorychooser-tool" extends="icon">
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebButtonPainter">
+        <painter class="com.alee.managers.style.skin.web.WebButtonPainter">
             <rolloverDecoratedOnly>true</rolloverDecoratedOnly>
         </painter>
     </style>

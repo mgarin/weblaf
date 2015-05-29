@@ -7,7 +7,7 @@
         <component>
             <opaque>false</opaque>
         </component>
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebMenuBarPainter">
+        <painter class="com.alee.managers.style.skin.web.WebMenuBarPainter">
             <undecorated>false</undecorated>
             <round>4</round>
             <shadeWidth>0</shadeWidth>
