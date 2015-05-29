@@ -265,7 +265,7 @@ public class WebAbstractButtonPainter<E extends AbstractButton, U extends BasicB
     {
         if ( undecorated )
         {
-            return null;
+            return new Insets ( 0, leftRightSpacing, 0, leftRightSpacing );
         }
         else
         {
@@ -372,9 +372,8 @@ public class WebAbstractButtonPainter<E extends AbstractButton, U extends BasicB
      *
      * @param g2d    graphics context
      * @param bounds paint bounds
-     * @param c      painted button
-     * @param ui     painted button UI
      */
+    @SuppressWarnings ( "UnusedParameters" )
     protected void paintIcon ( final Graphics2D g2d, final Rectangle bounds )
     {
         if ( component.getIcon () != null )
@@ -457,9 +456,8 @@ public class WebAbstractButtonPainter<E extends AbstractButton, U extends BasicB
      *
      * @param g2d    graphics context
      * @param bounds paint bounds
-     * @param c      painted button
-     * @param ui     painted button UI
      */
+    @SuppressWarnings ( "UnusedParameters" )
     protected void paintText ( final Graphics2D g2d, final Rectangle bounds )
     {
         final Map map = SwingUtils.setupTextAntialias ( g2d );

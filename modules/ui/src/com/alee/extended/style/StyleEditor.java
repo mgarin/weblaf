@@ -53,6 +53,7 @@ import com.alee.laf.scroll.WebScrollPane;
 import com.alee.laf.splitpane.WebSplitPane;
 import com.alee.laf.tabbedpane.TabbedPaneStyle;
 import com.alee.laf.tabbedpane.WebTabbedPane;
+import com.alee.laf.text.WebTextArea;
 import com.alee.laf.text.WebTextField;
 import com.alee.laf.toolbar.WebToolBar;
 import com.alee.managers.glasspane.GlassPaneManager;
@@ -68,6 +69,7 @@ import com.alee.managers.style.data.SkinInfoConverter;
 import com.alee.managers.style.skin.CustomSkin;
 import com.alee.utils.*;
 import com.alee.utils.swing.*;
+import com.alee.utils.text.LoremIpsum;
 import com.alee.utils.xml.ResourceFile;
 import com.alee.utils.xml.ResourceLocation;
 import com.thoughtworks.xstream.converters.ConversionException;
@@ -327,27 +329,27 @@ public class StyleEditor extends WebFrame
         //
 
         final WebLabel label = new WebLabel ( "Just a label", WebLookAndFeel.getIcon ( 16 ) );
-        addViewComponent ( "JLabel", label, label, true );
+        addViewComponent ( "Label", label, label, true );
 
         //
 
         final WebButton button = new WebButton ( "Simple button", WebLookAndFeel.getIcon ( 16 ) );
-        addViewComponent ( "JButton", button, button, true );
+        addViewComponent ( "Button", button, button, true );
 
         //
 
-        final WebButton iconButton = new WebButton ( WebLookAndFeel.getIcon ( 16 ) );
-        addViewComponent ( "JButton (icon-only)", iconButton, iconButton, true );
+        final WebButton iconButton = new WebButton ( WebLookAndFeel.getIcon ( 24 ) );
+        addViewComponent ( "Icon button", iconButton, iconButton, true );
 
         //
 
         final WebCheckBox checkBox = new WebCheckBox ( "Check me" );
-        addViewComponent ( "JCheckBox", checkBox, checkBox, true );
+        addViewComponent ( "Checkbox", checkBox, checkBox, true );
 
         //
 
         final WebTristateCheckBox tristateCheckBox = new WebTristateCheckBox ( "Check me more" );
-        addViewComponent ( "WebTristateCheckBox", tristateCheckBox, tristateCheckBox, true );
+        addViewComponent ( "Tristate checkbox", tristateCheckBox, tristateCheckBox, true );
 
         //
 
@@ -356,35 +358,29 @@ public class StyleEditor extends WebFrame
         final WebRadioButton radioButton3 = new WebRadioButton ( "Radio button 3" );
         SwingUtils.groupButtons ( radioButton1, radioButton2, radioButton3 );
         final GroupPanel radioGroup = new GroupPanel ( false, radioButton1, radioButton2, radioButton3 );
-        addViewComponent ( "JCheckBox", radioGroup, radioGroup, true );
+        addViewComponent ( "Radio button", radioGroup, radioGroup, true );
 
         //
 
         final WebScrollBar hsb = new WebScrollBar ( WebScrollBar.HORIZONTAL, 45, 10, 0, 100 );
-        addViewComponent ( "JScrollBar (horizontal)", hsb, hsb, false );
+        addViewComponent ( "Horizontal scroll bar", hsb, hsb, false );
 
         //
 
         final WebScrollBar vsb = new WebScrollBar ( WebScrollBar.VERTICAL, 45, 10, 0, 100 ).setPreferredHeight ( 100 );
-        addViewComponent ( "JScrollBar (vertical)", vsb, vsb, true );
+        addViewComponent ( "Vertical scroll bar", vsb, vsb, true );
 
         //
 
-        final WebLabel scrollComponent = new WebLabel ();
-        scrollComponent.setPreferredSize ( new Dimension ( 1000, 600 ) );
-        scrollComponent.setFocusable ( true );
-        scrollComponent.addMouseListener ( new MouseAdapter ()
-        {
-            @Override
-            public void mousePressed ( final MouseEvent e )
-            {
-                scrollComponent.requestFocusInWindow ();
-            }
-        } );
+        final WebTextArea textArea = new WebTextArea ();
+        textArea.setRows ( 5 );
 
-        final WebScrollPane sp = new WebScrollPane ( scrollComponent );
-        sp.setPreferredSize ( new Dimension ( 1, 100 ) );
-        addViewComponent ( "JScrollBar in JScrollPane", sp, sp, false );
+        final LoremIpsum loremIpsum = new LoremIpsum ();
+        textArea.setText ( loremIpsum.getParagraphs ( 5 ) );
+
+        final WebScrollPane sp = new WebScrollPane ( textArea );
+        sp.setPreferredWidth ( 0 );
+        addViewComponent ( "Scroll pane", sp, sp, false );
 
         //
 
@@ -392,7 +388,7 @@ public class StyleEditor extends WebFrame
                 new String[]{ "Mikle Garin", "Lilly Stewart", "Alex Jackson", "Joshua Martin", "Mark Einsberg", "Joe Phillips",
                         "Alice Manson", "Nancy Drew", "John Linderman", "Trisha Mathew" };
         final WebComboBox cb = new WebComboBox ( comboData );
-        addViewComponent ( "JScrollBar in JComboBox", cb, cb, true );
+        addViewComponent ( "Combo box", cb, cb, true );
 
         //
 
@@ -414,14 +410,14 @@ public class StyleEditor extends WebFrame
             }
         } );
 
-        addViewComponent ( "JPopupMenu under JButton", popupButton, popupMenu, true );
+        addViewComponent ( "Popup menu", popupButton, popupMenu, true );
     }
 
     private void addViewComponent ( final String title, final JComponent displayedView, final JComponent view, final boolean center )
     {
         final SupportedComponent type = SupportedComponent.getComponentTypeByUIClassID ( view.getUIClassID () );
 
-        final WebLabel titleLabel = new WebLabel ( title, type.getIcon () );
+        final WebLabel titleLabel = new WebLabel ( title, type.getIcon (), WebLabel.LEADING );
         titleLabel.setStyleId ( "preview-title" );
 
         final WebPanel boundsPanel = new WebPanel ( "empty-border", displayedView );

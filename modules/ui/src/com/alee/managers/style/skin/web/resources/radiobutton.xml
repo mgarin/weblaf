@@ -9,6 +9,7 @@
         </component>
         <painter id="painter" class="com.alee.managers.style.skin.web.WebRadioButtonPainter">
             <undecorated>true</undecorated>
+            <leftRightSpacing>0</leftRightSpacing>
             <round>5</round>
             <shadeWidth>2</shadeWidth>
             <iconWidth>16</iconWidth>

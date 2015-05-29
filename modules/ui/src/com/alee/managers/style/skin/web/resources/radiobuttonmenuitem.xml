@@ -8,6 +8,9 @@
             <opaque>false</opaque>
             <iconTextGap>7</iconTextGap>
         </component>
+        <ui>
+            <padding>5,8,5,11</padding>
+        </ui>
         <painter id="painter" class="com.alee.managers.style.skin.web.WebRadioButtonMenuItemPainter">
             <acceleratorGap>15</acceleratorGap>
             <iconAlignment>0</iconAlignment>

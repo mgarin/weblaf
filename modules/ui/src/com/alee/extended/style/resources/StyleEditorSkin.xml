@@ -65,7 +65,7 @@
     <!-- Preview component title label -->
     <style type="label" id="preview-title" extends="shade">
         <ui>
-            <margin>0,7,3,0</margin>
+            <margin>0,7,3,7</margin>
         </ui>
     </style>
 

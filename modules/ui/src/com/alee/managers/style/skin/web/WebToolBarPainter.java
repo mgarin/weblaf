@@ -135,9 +135,10 @@ public class WebToolBarPainter<E extends JToolBar, U extends WebToolBarUI> exten
      * {@inheritDoc}
      */
     @Override
-    protected void paintBorder ( final Graphics2D g2d, final Rectangle bounds, final E c, final Shape borderShape )
+    protected void paintBorder ( final Graphics2D g2d, final Rectangle bounds, final Shape borderShape )
     {
-        super.paintBorder ( g2d, bounds, c, borderShape );
+        super.paintBorder ( g2d, bounds, borderShape );
+
         //        if ( c != null )
         //        {
         //            // Preserve old borders

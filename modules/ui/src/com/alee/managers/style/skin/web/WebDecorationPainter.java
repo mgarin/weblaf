@@ -665,19 +665,19 @@ public class WebDecorationPainter<E extends JComponent, U extends ComponentUI> e
                 // Outer shadow
                 if ( anyBorder && shadeWidth > 0 )
                 {
-                    paintShade ( g2d, bounds, c, borderShape );
+                    paintShade ( g2d, bounds, borderShape );
                 }
 
                 // Background
                 if ( paintBackground )
                 {
-                    paintBackground ( g2d, bounds,  backgroundShape );
+                    paintBackground ( g2d, bounds, backgroundShape );
                 }
 
                 // Border
                 if ( anyBorder && ( enabled ? borderColor != null : disabledBorderColor != null ) )
                 {
-                    paintBorder ( g2d, bounds, c, borderShape );
+                    paintBorder ( g2d, bounds, borderShape );
                 }
 
                 GraphicsUtils.restoreAntialias ( g2d, aa );
@@ -690,11 +690,10 @@ public class WebDecorationPainter<E extends JComponent, U extends ComponentUI> e
      *
      * @param g2d         graphics context
      * @param bounds      painting bounds
-     * @param c           painted component
      * @param borderShape component border shape
      */
-    @SuppressWarnings ("UnusedParameters")
-    protected void paintShade ( final Graphics2D g2d, final Rectangle bounds, final E c, final Shape borderShape )
+    @SuppressWarnings ( "UnusedParameters" )
+    protected void paintShade ( final Graphics2D g2d, final Rectangle bounds, final Shape borderShape )
     {
         if ( shadeWidth < 4 )
         {
@@ -723,10 +722,8 @@ public class WebDecorationPainter<E extends JComponent, U extends ComponentUI> e
      *
      * @param g2d             graphics context
      * @param bounds          painting bounds
-     * @param c               painted component
      * @param backgroundShape component background shape
      */
-    @SuppressWarnings ("UnusedParameters")
     protected void paintBackground ( final Graphics2D g2d, final Rectangle bounds, final Shape backgroundShape )
     {
         if ( webColoredBackground )
@@ -748,14 +745,12 @@ public class WebDecorationPainter<E extends JComponent, U extends ComponentUI> e
      *
      * @param g2d         graphics context
      * @param bounds      painting bounds
-     * @param c           painted component
      * @param borderShape component border shape
      */
-    @SuppressWarnings ("UnusedParameters")
-    protected void paintBorder ( final Graphics2D g2d, final Rectangle bounds, final E c, final Shape borderShape )
+    protected void paintBorder ( final Graphics2D g2d, final Rectangle bounds, final Shape borderShape )
     {
         final Stroke os = GraphicsUtils.setupStroke ( g2d, borderStroke, borderStroke != null );
-        g2d.setPaint ( c.isEnabled () ? borderColor : disabledBorderColor );
+        g2d.setPaint ( component.isEnabled () ? borderColor : disabledBorderColor );
 
         // Painting smart border
         g2d.draw ( borderShape );
@@ -764,26 +759,26 @@ public class WebDecorationPainter<E extends JComponent, U extends ComponentUI> e
         if ( !paintTop && paintTopLine )
         {
             final int x = actualPaintLeft ? shadeWidth : 0;
-            g2d.drawLine ( x, 0, x + c.getWidth () - ( actualPaintLeft ? shadeWidth : 0 ) -
+            g2d.drawLine ( x, 0, x + component.getWidth () - ( actualPaintLeft ? shadeWidth : 0 ) -
                     ( actualPaintRight ? shadeWidth + 1 : 0 ), 0 );
         }
         if ( !paintBottom && paintBottomLine )
         {
             final int x = actualPaintLeft ? shadeWidth : 0;
-            g2d.drawLine ( x, c.getHeight () - 1, x + c.getWidth () - ( actualPaintLeft ? shadeWidth : 0 ) -
-                    ( actualPaintRight ? shadeWidth + 1 : 0 ), c.getHeight () - 1 );
+            g2d.drawLine ( x, component.getHeight () - 1, x + component.getWidth () - ( actualPaintLeft ? shadeWidth : 0 ) -
+                    ( actualPaintRight ? shadeWidth + 1 : 0 ), component.getHeight () - 1 );
         }
         if ( !paintLeft && paintLeftLine )
         {
             final int y = paintTop ? shadeWidth : 0;
-            g2d.drawLine ( 0, y, 0, y + c.getHeight () - ( paintTop ? shadeWidth : 0 ) -
+            g2d.drawLine ( 0, y, 0, y + component.getHeight () - ( paintTop ? shadeWidth : 0 ) -
                     ( paintBottom ? shadeWidth + 1 : 0 ) );
         }
         if ( !paintRight && paintRightLine )
         {
             final int y = paintTop ? shadeWidth : 0;
-            g2d.drawLine ( c.getWidth () - 1, y, c.getWidth () - 1, y + c.getHeight () - ( paintTop ? shadeWidth : 0 ) -
-                    ( paintBottom ? shadeWidth + 1 : 0 ) );
+            g2d.drawLine ( component.getWidth () - 1, y, component.getWidth () - 1,
+                    y + component.getHeight () - ( paintTop ? shadeWidth : 0 ) - ( paintBottom ? shadeWidth + 1 : 0 ) );
         }
 
         GraphicsUtils.restoreStroke ( g2d, os, borderStroke != null );

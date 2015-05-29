@@ -494,6 +494,6 @@ public class WebTreeUI extends BasicTreeUI implements Styleable, ShapeProvider
     @Override
     public Dimension getPreferredSize ( final JComponent c )
     {
-        return PainterSupport.getPreferredSize ( c, super.getPreferredSize ( c ), painter );
+        return PainterSupport.getPreferredSize ( c, painter );
     }
 }
