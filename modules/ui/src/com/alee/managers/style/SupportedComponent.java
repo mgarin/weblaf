@@ -22,9 +22,9 @@ import com.alee.extended.checkbox.WebTristateCheckBox;
 import com.alee.extended.label.WebMultiLineLabel;
 import com.alee.extended.label.WebStyledLabel;
 import com.alee.extended.label.WebVerticalLabel;
+import com.alee.laf.Styles;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.log.Log;
-import com.alee.managers.style.data.ComponentStyleConverter;
 import com.alee.utils.LafUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.laf.Styleable;
@@ -269,8 +269,8 @@ public enum SupportedComponent
     public String getComponentStyleId ( final JComponent component )
     {
         final Styleable styleable = LafUtils.getStyleable ( component );
-        final String styleId = styleable != null ? styleable.getStyleId () : ComponentStyleConverter.DEFAULT_STYLE_ID;
-        return styleId != null ? styleId : ComponentStyleConverter.DEFAULT_STYLE_ID;
+        final String styleId = styleable != null ? styleable.getStyleId () : Styles.defaultStyle;
+        return styleId != null ? styleId : Styles.defaultStyle;
     }
 
     /**

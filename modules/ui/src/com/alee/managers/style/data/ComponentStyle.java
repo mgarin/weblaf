@@ -33,8 +33,8 @@ import java.util.Map;
  * @see com.alee.managers.style.StyleManager
  */
 
-@XStreamAlias ( "style" )
-@XStreamConverter ( ComponentStyleConverter.class )
+@XStreamAlias ("style")
+@XStreamConverter (ComponentStyleConverter.class)
 public final class ComponentStyle implements Serializable
 {
     /**
@@ -45,7 +45,7 @@ public final class ComponentStyle implements Serializable
 
     /**
      * Unique component style ID.
-     * Default component style always has "default" ID.
+     * Default component style always has {@link com.alee.laf.Styles#defaultStyle} ID.
      */
     private String id;
 

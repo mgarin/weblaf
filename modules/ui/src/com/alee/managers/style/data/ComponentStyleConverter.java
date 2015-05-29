@@ -17,6 +17,7 @@
 
 package com.alee.managers.style.data;
 
+import com.alee.laf.Styles;
 import com.alee.managers.style.StyleException;
 import com.alee.managers.style.SupportedComponent;
 import com.alee.utils.ReflectUtils;
@@ -59,11 +60,6 @@ public class ComponentStyleConverter extends ReflectionConverter
     public static final String IGNORED_ATTRIBUTE = "ignored";
 
     /**
-     * Default component style ID.
-     */
-    public static final String DEFAULT_STYLE_ID = "default";
-
-    /**
      * Constructs ComponentStyleConverter with the specified mapper and reflection provider.
      *
      * @param mapper             mapper
@@ -93,7 +89,7 @@ public class ComponentStyleConverter extends ReflectionConverter
 
         // Component style ID
         final String componentStyleId = componentStyle.getId ();
-        writer.addAttribute ( STYLE_ID_ATTRIBUTE, componentStyleId != null ? componentStyleId : DEFAULT_STYLE_ID );
+        writer.addAttribute ( STYLE_ID_ATTRIBUTE, componentStyleId != null ? componentStyleId : Styles.defaultStyle );
 
         // Style component type
         writer.addAttribute ( COMPONENT_TYPE_ATTRIBUTE, componentStyle.getType ().toString () );
@@ -164,7 +160,7 @@ public class ComponentStyleConverter extends ReflectionConverter
 
         // Reading style ID
         final String componentStyleId = reader.getAttribute ( STYLE_ID_ATTRIBUTE );
-        componentStyle.setId ( componentStyleId != null ? componentStyleId : DEFAULT_STYLE_ID );
+        componentStyle.setId ( componentStyleId != null ? componentStyleId : Styles.defaultStyle );
 
         // Reading style component type
         final SupportedComponent type = SupportedComponent.valueOf ( reader.getAttribute ( COMPONENT_TYPE_ATTRIBUTE ) );
