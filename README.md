@@ -1,15 +1,10 @@
 Important information!
 ==========
-This is a temporary beanch for styling improvements publishing.
-It is not compileable yet and still in work, but will soon be useable.
+This is a temporary branch for styling improvements publishing.
 
-As soon as all changes are done and properly tested - it will be merged into the main repository.
-It contains major changes to the way in which all components are styled.
-It also removes all deprecated APIs from Web- components and UIs.
+As soon as all changes in this branch are done and properly tested - it will be merged into the main repository. It contains major changes to the way in which all components are styled. It also removes all deprecated APIs from Web- components and UIs.
 
-All styling settings will now be provided through XML styling files.
-I will publish an extensive guide on how it can be used as soon as it is released.
-Don't worry, all previously existing features will still be available in one or another form.
+All styling settings will now be provided through XML styling files. I will publish an extensive guide on how it can be used as soon as it is released. Don't worry, all previously existing features will still be available in one or another form.
 
 
 WebLaF
