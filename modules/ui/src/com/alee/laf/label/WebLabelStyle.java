@@ -54,7 +54,7 @@ public final class WebLabelStyle
     /**
      * Default label shade color.
      */
-    public static Color shadeColor = new Color ( 230, 230, 230 );
+    public static Color shadeColor = new Color ( 210, 210, 210 );
 
     /**
      * Default label transparency.
