@@ -772,7 +772,7 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
                     {
                         // This will only happen if the model changes out
                         // from under us (usually in another thread).
-                        // Swing isn't multithreaded, but I'll put this
+                        // Swing isn't multi-threaded, but I'll put this
                         // check in anyway.
                         return;
                     }
@@ -1058,7 +1058,7 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
             if ( lastChildBounds == null )
             // This shouldn't happen, but if the model is modified
             // in another thread it is possible for this to happen.
-            // Swing isn't multithreaded, but I'll add this check in
+            // Swing isn't multi-threaded, but I'll add this check in
             // anyway.
             {
                 return;
@@ -1522,7 +1522,8 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
                     visRect.y -= i.top;
                 }
                 // we should consider a non-visible area above
-                Component parent = SwingUtilities.getUnwrappedParent ( component );
+                // todo In later JDK should use: SwingUtilities.getUnwrappedParent ( component );
+                Component parent = component.getParent ();
                 if ( parent instanceof JViewport )
                 {
                     parent = parent.getParent ();
