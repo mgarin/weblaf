@@ -343,6 +343,16 @@ public class StyleEditor extends WebFrame
 
         //
 
+        final WebToggleButton toggleButton = new WebToggleButton ( "Toggle me",WebLookAndFeel.getIcon ( 16 ) );
+        addViewComponent ( "Toggle button", toggleButton, toggleButton, true );
+
+        //
+
+        final WebToggleButton iconToggleButton = new WebToggleButton ( WebLookAndFeel.getIcon ( 24 ) );
+        addViewComponent ( "Icon toggle button", iconToggleButton, iconToggleButton, true );
+
+        //
+
         final WebCheckBox checkBox = new WebCheckBox ( "Check me" );
         addViewComponent ( "Checkbox", checkBox, checkBox, true );
 
@@ -384,10 +394,9 @@ public class StyleEditor extends WebFrame
 
         //
 
-        final String[] comboData =
-                new String[]{ "Mikle Garin", "Lilly Stewart", "Alex Jackson", "Joshua Martin", "Mark Einsberg", "Joe Phillips",
-                        "Alice Manson", "Nancy Drew", "John Linderman", "Trisha Mathew" };
-        final WebComboBox cb = new WebComboBox ( comboData );
+        final String[] d = new String[]{ "Mikle Garin", "Joe Phillips", "Lilly Stewart", "Alex Jackson", "Joshua Martin", "Mark Einsberg",
+                "Alice Manson", "Nancy Drew", "John Linderman", "Trisha Mathew", "Annae Mendy", "Wendy Anderson", "Alex Kurovski" };
+        final WebComboBox cb = new WebComboBox ( d );
         addViewComponent ( "Combo box", cb, cb, true );
 
         //
