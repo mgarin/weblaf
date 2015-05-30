@@ -30,8 +30,6 @@ public class WebComboBoxPainter<E extends JComboBox, U extends WebComboBoxUI> ex
     protected Color selectedMenuTopBg = WebComboBoxStyle.selectedMenuTopBg;
     protected Color selectedMenuBottomBg = WebComboBoxStyle.selectedMenuBottomBg;
     protected boolean webColoredBackground = WebComboBoxStyle.webColoredBackground;
-    protected boolean drawFocus = WebComboBoxStyle.drawFocus;
-    protected boolean drawBorder = WebComboBoxStyle.drawBorder;
 
     /**
      * Listeners.
@@ -44,7 +42,6 @@ public class WebComboBoxPainter<E extends JComboBox, U extends WebComboBoxUI> ex
     /**
      * Painting variables.
      */
-    protected boolean hasFocus = false;
     protected JButton arrowButton = null;
     protected CellRendererPane currentValuePane = null;
 
@@ -165,24 +162,72 @@ public class WebComboBoxPainter<E extends JComboBox, U extends WebComboBoxUI> ex
         }
     }
 
+    public int getIconSpacing ()
+    {
+        return iconSpacing;
+    }
+
+    public void setIconSpacing ( final int iconSpacing )
+    {
+        this.iconSpacing = iconSpacing;
+    }
+
+    public boolean isWebColoredBackground ()
+    {
+        return webColoredBackground;
+    }
+
+    public void setWebColoredBackground ( final boolean webColored )
+    {
+        this.webColoredBackground = webColored;
+    }
+
+    public Color getExpandedBgColor ()
+    {
+        return expandedBgColor;
+    }
+
+    public void setExpandedBgColor ( final Color color )
+    {
+        this.expandedBgColor = color;
+    }
+
+    /**
+     * Returns paint used to fill north popup menu corner when first list element is selected.
+     *
+     * @return paint used to fill north popup menu corner when first list element is selected
+     */
+    public Paint getNorthCornerFill ()
+    {
+        return selectedMenuTopBg;
+    }
+
+    /**
+     * Returns paint used to fill south popup menu corner when last list element is selected.
+     *
+     * @return paint used to fill south popup menu corner when last list element is selected
+     */
+    public Paint getSouthCornerFill ()
+    {
+        return selectedMenuBottomBg;
+    }
+
     /**
      * {@inheritDoc}
      */
     @Override
     public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
     {
-        hasFocus = component.hasFocus ();
         final Rectangle r = rectangleForCurrentValue ();
 
+        // Painting decoration
         super.paint ( g2d, bounds, c, ui );
-
-        // Background
-        paintCurrentValueBackground ( g2d, r, hasFocus );
 
         // Selected non-editable value
         if ( !component.isEditable () )
         {
-            paintCurrentValue ( g2d, r, hasFocus );
+            paintSeparatorLine ( g2d, r );
+            paintCurrentValue ( g2d, r );
         }
 
         arrowButton = null;
@@ -200,6 +245,27 @@ public class WebComboBoxPainter<E extends JComboBox, U extends WebComboBoxUI> ex
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void paintBackground ( final Graphics2D g2d, final Rectangle bounds, final Shape backgroundShape )
+    {
+        final boolean popupVisible = component.isPopupVisible ();
+        if ( webColoredBackground && !popupVisible )
+        {
+            // Setup cached gradient paint
+            final Rectangle bgBounds = backgroundShape.getBounds ();
+            g2d.setPaint ( LafUtils.getWebGradientPaint ( 0, bgBounds.y, 0, bgBounds.y + bgBounds.height ) );
+        }
+        else
+        {
+            // Setup single color paint
+            g2d.setPaint ( !popupVisible ? component.getBackground () : expandedBgColor );
+        }
+        g2d.fill ( backgroundShape );
+    }
+
+    /**
      * Returns the area that is reserved for drawing the currently selected item.
      * This method was overridden to provide additional 1px spacing for separator between combobox editor and arrow button.
      */
@@ -213,7 +279,6 @@ public class WebComboBoxPainter<E extends JComboBox, U extends WebComboBoxUI> ex
         int buttonSize = height - ( insets.top + insets.bottom );
         if ( arrowButton != null )
         {
-            // todo provide
             buttonSize = arrowButton.getWidth ();
         }
 
@@ -231,60 +296,33 @@ public class WebComboBoxPainter<E extends JComboBox, U extends WebComboBoxUI> ex
     }
 
     /**
-     * {@inheritDoc}
-     */
-    public void paintCurrentValueBackground ( final Graphics2D g2d, final Rectangle bounds, final boolean hasFocus )
-    {
-        if ( drawBorder )
-        {
-            // Border and background
-            final Color shadeColor = drawFocus && isFocused () ? StyleConstants.fieldFocusColor : StyleConstants.shadeColor;
-            final boolean popupVisible = component.isPopupVisible ();
-            final Color backgroundColor = !popupVisible ? component.getBackground () : expandedBgColor;
-            LafUtils.drawWebStyle ( g2d, component, shadeColor, shadeWidth, round, true, webColoredBackground && !popupVisible,
-                    StyleConstants.darkBorderColor, StyleConstants.disabledBorderColor, backgroundColor, 1f );
-        }
-        else
-        {
-            // Simple background
-            final boolean pressed = component.isPopupVisible ();
-            final Rectangle cb = SwingUtils.size ( component );
-            g2d.setPaint ( new GradientPaint ( 0, shadeWidth, pressed ? StyleConstants.topSelectedBgColor : StyleConstants.topBgColor, 0,
-                    component.getHeight () - shadeWidth, pressed ? StyleConstants.bottomSelectedBgColor : StyleConstants.bottomBgColor ) );
-            g2d.fillRect ( cb.x, cb.y, cb.width, cb.height );
-        }
-
-        // Separator line
-        if ( component.isEditable () )
-        {
-            final boolean ltr = component.getComponentOrientation ().isLeftToRight ();
-            final Insets insets = component.getInsets ();
-            final int lx = ltr ? component.getWidth () - insets.right - arrowButton.getWidth () - 1 : insets.left + arrowButton.getWidth ();
-
-            g2d.setPaint ( component.isEnabled () ? StyleConstants.borderColor : StyleConstants.disabledBorderColor );
-            g2d.drawLine ( lx, insets.top + 1, lx, component.getHeight () - insets.bottom - 2 );
-        }
-    }
-
-    /**
-     * Returns whether combobox or one of its children is focused or not.
+     * Paints the separator line.
      *
-     * @return true if combobox or one of its children is focused, false otherwise
+     * @param g2d    graphics context
+     * @param bounds bounds
      */
-    protected boolean isFocused ()
+    protected void paintSeparatorLine ( final Graphics2D g2d, final Rectangle bounds )
     {
-        return SwingUtils.hasFocusOwner ( component );
+        final boolean ltr = component.getComponentOrientation ().isLeftToRight ();
+        final Insets insets = component.getInsets ();
+        final int lx = ltr ? component.getWidth () - insets.right - arrowButton.getWidth () - 1 : insets.left + arrowButton.getWidth ();
+
+        g2d.setPaint ( component.isEnabled () ? StyleConstants.borderColor : StyleConstants.disabledBorderColor );
+        g2d.drawLine ( lx, insets.top + 1, lx, component.getHeight () - insets.bottom - 2 );
     }
 
     /**
-     * {@inheritDoc}
+     * Paints the currently selected item.
+     *
+     * @param g2d    graphics context
+     * @param bounds bounds
      */
-    public void paintCurrentValue ( final Graphics g, final Rectangle bounds, final boolean hasFocus )
+    protected void paintCurrentValue ( final Graphics2D g2d, final Rectangle bounds )
     {
         final ListCellRenderer renderer = component.getRenderer ();
         final Component c;
 
-        if ( hasFocus && !component.isPopupVisible () )
+        if ( focused && !component.isPopupVisible () )
         {
             c = renderer.getListCellRendererComponent ( ui.getListBox (), component.getSelectedItem (), -1, true, false );
         }
@@ -317,6 +355,16 @@ public class WebComboBoxPainter<E extends JComboBox, U extends WebComboBoxUI> ex
         final int w = bounds.width;
         final int h = bounds.height;
 
-        currentValuePane.paintComponent ( g, c, component, x, y, w, h, shouldValidate );
+        currentValuePane.paintComponent ( g2d, c, component, x, y, w, h, shouldValidate );
+    }
+
+    /**
+     * Returns whether combobox or one of its children is focused or not.
+     *
+     * @return true if combobox or one of its children is focused, false otherwise
+     */
+    protected boolean isFocused ()
+    {
+        return SwingUtils.hasFocusOwner ( component );
     }
 }

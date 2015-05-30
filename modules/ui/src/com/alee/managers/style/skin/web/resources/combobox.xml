@@ -12,13 +12,12 @@
             <undecorated>false</undecorated>
             <round>2</round>
             <shadeWidth>2</shadeWidth>
+            <paintFocus>true</paintFocus>
+            <webColoredBackground>true</webColoredBackground>
             <iconSpacing>3</iconSpacing>
             <expandedBgColor>223,220,213</expandedBgColor>
             <selectedMenuTopBg>208,208,198</selectedMenuTopBg>
             <selectedMenuBottomBg>196,196,186</selectedMenuBottomBg>
-            <webColoredBackground>true</webColoredBackground>
-            <drawFocus>true</drawFocus>
-            <drawBorder>true</drawBorder>
         </painter>
     </style>
 

@@ -27,6 +27,7 @@ import com.alee.laf.scroll.WebScrollPane;
 import com.alee.laf.text.WebTextFieldUI;
 import com.alee.managers.style.StyleManager;
 import com.alee.utils.CompareUtils;
+import com.alee.utils.SwingUtils;
 import com.alee.utils.laf.MarginSupport;
 import com.alee.utils.laf.PaddingSupport;
 import com.alee.utils.laf.ShapeProvider;
@@ -91,6 +92,20 @@ public class WebComboBoxUI extends BasicComboBoxUI implements Styleable, ShapePr
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebComboBoxUI ();
+    }
+
+    /**
+     * Returns default list cell renderer instance.
+     *
+     * @return default list cell renderer instance
+     */
+    protected static ListCellRenderer getDefaultListCellRenderer ()
+    {
+        if ( DEFAULT_RENDERER == null )
+        {
+            DEFAULT_RENDERER = new WebComboBoxCellRenderer ();
+        }
+        return DEFAULT_RENDERER;
     }
 
     /**
@@ -197,7 +212,7 @@ public class WebComboBoxUI extends BasicComboBoxUI implements Styleable, ShapePr
      *
      * @return combobox painter
      */
-    public com.alee.extended.painter.Painter getPainter ()
+    public Painter getPainter ()
     {
         return PainterSupport.getAdaptedPainter ( painter );
     }
@@ -516,68 +531,6 @@ public class WebComboBoxUI extends BasicComboBoxUI implements Styleable, ShapePr
         }
     }
 
-    //    public boolean isDrawBorder ()
-    //    {
-    //        return drawBorder;
-    //    }
-    //
-    //    public void setDrawBorder ( final boolean drawBorder )
-    //    {
-    //        this.drawBorder = drawBorder;
-    //        updateBorder ();
-    //    }
-    //
-    //    public boolean isWebColoredBackground ()
-    //    {
-    //        return webColoredBackground;
-    //    }
-    //
-    //    public void setWebColoredBackground ( final boolean webColored )
-    //    {
-    //        this.webColoredBackground = webColored;
-    //    }
-    //
-    //    public Color getExpandedBgColor ()
-    //    {
-    //        return expandedBgColor;
-    //    }
-    //
-    //    public void setExpandedBgColor ( final Color color )
-    //    {
-    //        this.expandedBgColor = color;
-    //    }
-    //
-    //    public boolean isDrawFocus ()
-    //    {
-    //        return drawFocus;
-    //    }
-    //
-    //    public void setDrawFocus ( final boolean drawFocus )
-    //    {
-    //        this.drawFocus = drawFocus;
-    //    }
-    //
-    //    public int getRound ()
-    //    {
-    //        return round;
-    //    }
-    //
-    //    public void setRound ( final int round )
-    //    {
-    //        this.round = round;
-    //    }
-    //
-    //    public int getShadeWidth ()
-    //    {
-    //        return shadeWidth;
-    //    }
-    //
-    //    public void setShadeWidth ( final int shadeWidth )
-    //    {
-    //        this.shadeWidth = shadeWidth;
-    //        updateBorder ();
-    //    }
-    //
     public boolean isMouseWheelScrollingEnabled ()
     {
         return mouseWheelScrollingEnabled;
@@ -598,25 +551,6 @@ public class WebComboBoxUI extends BasicComboBoxUI implements Styleable, ShapePr
         this.widerPopupAllowed = allowed;
     }
 
-    /**
-     * Returns paint used to fill north popup menu corner when first list element is selected.
-     *
-     * @return paint used to fill north popup menu corner when first list element is selected
-     */
-    //    public Paint getNorthCornerFill () todo
-    //    {
-    //        return selectedMenuTopBg;
-    //    }
-
-    /**
-     * Returns paint used to fill south popup menu corner when last list element is selected.
-     *
-     * @return paint used to fill south popup menu corner when last list element is selected
-     */
-    //    public Paint getSouthCornerFill ()
-    //    {
-    //        return selectedMenuBottomBg;
-    //    }
     public JList getListBox ()
     {
         return listBox;
@@ -633,17 +567,11 @@ public class WebComboBoxUI extends BasicComboBoxUI implements Styleable, ShapePr
     @Override
     public void paint ( final Graphics g, final JComponent c )
     {
-        //        hasFocus = comboBox.hasFocus ();
-        //        final Rectangle r = rectangleForCurrentValue ();
-        //
-        //        // Background
-        //        paintCurrentValueBackground ( g, r, hasFocus );
-        //
-        //        // Selected non-editable value
-        //        if ( !comboBox.isEditable () )
-        //        {
-        //            paintCurrentValue ( g, r, hasFocus );
-        //        }
+        if ( painter != null )
+        {
+            painter.prepareToPaint ( arrowButton, currentValuePane );
+            painter.paint ( ( Graphics2D ) g, SwingUtils.size ( c ), c, this );
+        }
     }
 
     /**
@@ -766,20 +694,6 @@ public class WebComboBoxUI extends BasicComboBoxUI implements Styleable, ShapePr
     }
 
     /**
-     * Returns default list cell renderer instance.
-     *
-     * @return default list cell renderer instance
-     */
-    protected static ListCellRenderer getDefaultListCellRenderer ()
-    {
-        if ( DEFAULT_RENDERER == null )
-        {
-            DEFAULT_RENDERER = new WebComboBoxCellRenderer ();
-        }
-        return DEFAULT_RENDERER;
-    }
-
-    /**
      * Returns renderer component preferred size.
      *
      * @param c renderer component
@@ -795,10 +709,20 @@ public class WebComboBoxUI extends BasicComboBoxUI implements Styleable, ShapePr
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Dimension getPreferredSize ( final JComponent c )
+    {
+        return PainterSupport.getPreferredSize ( c, super.getPreferredSize ( c ), painter, true );
+    }
+
+    /**
      * Custom layout manager for WebComboBoxUI.
      */
     protected class WebComboBoxLayout extends AbstractLayoutManager
     {
+
         /**
          * {@inheritDoc}
          */
@@ -847,14 +771,6 @@ public class WebComboBoxUI extends BasicComboBoxUI implements Styleable, ShapePr
                 editor.setBounds ( rectangleForCurrentValue () );
             }
         }
-    }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Dimension getPreferredSize ( final JComponent c )
-    {
-        return PainterSupport.getPreferredSize ( c, super.getPreferredSize ( c ), painter, true );
     }
 }
