@@ -337,4 +337,26 @@ public class NinePatchStatePainter<E extends JComponent, U extends ComponentUI> 
             }
         }
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Dimension getPreferredSize ()
+    {
+        if ( hasStateIcons () )
+        {
+            Dimension maxDimension = new Dimension ( 0, 0 );
+            for ( final NinePatchIcon npi : stateIcons.values () )
+            {
+                npi.setComponent ( component );
+                maxDimension = SwingUtils.max ( maxDimension, npi.getPreferredSize () );
+            }
+            return maxDimension;
+        }
+        else
+        {
+            return super.getPreferredSize ();
+        }
+    }
 }

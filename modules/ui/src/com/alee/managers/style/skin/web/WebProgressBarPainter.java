@@ -10,6 +10,8 @@ import com.alee.utils.SwingUtils;
 import com.alee.utils.ThreadUtils;
 import com.alee.utils.swing.AncestorAdapter;
 import com.alee.utils.swing.WebTimer;
+import sun.swing.DefaultLookup;
+import sun.swing.SwingUtilities2;
 
 import javax.swing.*;
 import javax.swing.event.AncestorEvent;
@@ -533,5 +535,92 @@ public class WebProgressBarPainter<E extends JProgressBar, U extends WebProgress
             }
         }
         return progress;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Dimension getPreferredSize ()
+    {
+        Dimension size;
+        Insets border = component.getInsets ();
+        FontMetrics fontSizer = component.getFontMetrics ( component.getFont () );
+
+        if ( component.getOrientation () == JProgressBar.HORIZONTAL )
+        {
+            size = new Dimension ( getPreferredInnerHorizontal () );
+            // Ensure that the progress string will fit
+            if ( component.isStringPainted () )
+            {
+                // I'm doing this for completeness.
+                String progString = component.getString ();
+                int stringWidth = SwingUtilities2.stringWidth ( component, fontSizer, progString );
+                if ( stringWidth > size.width )
+                {
+                    size.width = stringWidth;
+                }
+                // This uses both Height and Descent to be sure that
+                // there is more than enough room in the progress bar
+                // for everything.
+                // This does have a strange dependency on
+                // getStringPlacememnt() in a funny way.
+                int stringHeight = fontSizer.getHeight () + fontSizer.getDescent ();
+                if ( stringHeight > size.height )
+                {
+                    size.height = stringHeight;
+                }
+            }
+        }
+        else
+        {
+            size = new Dimension ( getPreferredInnerVertical () );
+            // Ensure that the progress string will fit.
+            if ( component.isStringPainted () )
+            {
+                String progString = component.getString ();
+                int stringHeight = fontSizer.getHeight () + fontSizer.getDescent ();
+                if ( stringHeight > size.width )
+                {
+                    size.width = stringHeight;
+                }
+                // This is also for completeness.
+                int stringWidth = SwingUtilities2.stringWidth ( component, fontSizer, progString );
+                if ( stringWidth > size.height )
+                {
+                    size.height = stringWidth;
+                }
+            }
+        }
+
+        size.width += border.left + border.right;
+        size.height += border.top + border.bottom;
+        return size;
+    }
+
+    protected Dimension getPreferredInnerHorizontal ()
+    {
+        Dimension horizDim = ( Dimension ) DefaultLookup.get ( component, ui, "ProgressBar.horizontalSize" );
+        if ( horizDim == null )
+        {
+            horizDim = new Dimension ( 146, 12 );
+        }
+
+        horizDim.width = preferredProgressWidth;
+
+        return horizDim;
+    }
+
+    protected Dimension getPreferredInnerVertical ()
+    {
+        Dimension vertDim = ( Dimension ) DefaultLookup.get ( component, ui, "ProgressBar.vertictalSize" );
+        if ( vertDim == null )
+        {
+            vertDim = new Dimension ( 12, 146 );
+        }
+
+        vertDim.height = preferredProgressWidth;
+
+        return vertDim;
     }
 }

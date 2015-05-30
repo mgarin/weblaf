@@ -487,4 +487,36 @@ public class TitledBorderPainter<E extends JComponent, U extends ComponentUI> ex
         }
         return null;
     }
+
+    @Override
+    public Dimension getPreferredSize ()
+    {
+        if ( isEmptyTitle () )
+        {
+            return super.getPreferredSize ();
+        }
+        else
+        {
+            final int titleAreaHeight = getTitleAreaHeight ( component );
+            final int titleWidth = component.getFontMetrics ( component.getFont () ).stringWidth ( titleText );
+            final int border = Math.max ( width, round );
+            final int title = Math.max ( titleAreaHeight, border );
+            switch ( titleSide )
+            {
+                case TOP:
+                case BOTTOM:
+                {
+                    return new Dimension ( border * 2 + titleWidth + titleOffset * 2 +
+                            titleBorderGap * 2, title + border );
+                }
+                case LEFT:
+                case RIGHT:
+                {
+                    return new Dimension ( title + border, border * 2 + titleWidth + titleOffset * 2 +
+                            titleBorderGap * 2 );
+                }
+            }
+            return null;
+        }
+    }
 }

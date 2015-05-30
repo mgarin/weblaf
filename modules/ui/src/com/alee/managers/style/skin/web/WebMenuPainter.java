@@ -187,4 +187,19 @@ public class WebMenuPainter<E extends JMenu, U extends WebMenuUI> extends WebAbs
             return null;
         }
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Dimension getPreferredSize ()
+    {
+        final Dimension size = super.getPreferredSize ();
+
+        // Sub-menu arrow icon
+        final Icon subMenuArrowIcon = getArrowIcon ( component );
+        final int arrowWidth = subMenuArrowIcon != null ? arrowGap + subMenuArrowIcon.getIconWidth () : 0;
+
+        return new Dimension ( size.width + arrowWidth, size.height );
+    }
 }

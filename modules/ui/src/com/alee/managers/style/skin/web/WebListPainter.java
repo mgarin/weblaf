@@ -252,6 +252,11 @@ public class WebListPainter<E extends JList, U extends WebListUI> extends Abstra
                 break;
         }
 
+        if ( updateLayoutStateNeeded )
+        {
+            updateLayoutState ();
+        }
+
         final ListCellRenderer renderer = component.getCellRenderer ();
         final ListModel dataModel = component.getModel ();
         final ListSelectionModel selModel = component.getSelectionModel ();
@@ -924,21 +929,6 @@ public class WebListPainter<E extends JList, U extends WebListUI> extends Abstra
     protected void paintCell ( final Graphics g, final int index, final Rectangle rowBounds, final ListCellRenderer cellRenderer,
                                final ListModel dataModel, final ListSelectionModel selModel, final int leadIndex )
     {
-        //        if ( list.getLayoutOrientation () == WebList.VERTICAL && ( evenLineColor != null || oddLineColor != null ) )
-        //        {
-        //            boolean even = index % 2 == 0;
-        //            if ( even && evenLineColor != null )
-        //            {
-        //                g.setColor ( evenLineColor );
-        //                g.fillRect ( rowBounds.x, rowBounds.y, rowBounds.width, rowBounds.height );
-        //            }
-        //            if ( !even && oddLineColor != null )
-        //            {
-        //                g.setColor ( oddLineColor );
-        //                g.fillRect ( rowBounds.x, rowBounds.y, rowBounds.width, rowBounds.height );
-        //            }
-        //        }
-
         final Object value = dataModel.getElementAt ( index );
         final boolean isSelected = selModel.isSelectedIndex ( index );
 

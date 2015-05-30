@@ -164,4 +164,21 @@ public class NinePatchIconPainter<E extends JComponent, U extends ComponentUI> e
             icon.paintIcon ( c, g2d );
         }
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Dimension getPreferredSize ()
+    {
+        if ( icon != null )
+        {
+            icon.setComponent ( component );
+            return icon.getPreferredSize ();
+        }
+        else
+        {
+            return super.getPreferredSize ();
+        }
+    }
 }
