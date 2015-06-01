@@ -3,27 +3,21 @@
     <!-- com.alee.laf.table.WebTable -->
 
     <!-- Default table header cell renderer label -->
-    <style type="label" id="table-header-cell" extends="shade">
+    <style type="label" id="table-header-cell" extends="shade" padding="0,10,1,10">
         <component>
             <opaque>true</opaque>
             <horizontalAlignment>0</horizontalAlignment>
         </component>
-        <ui>
-            <padding>0,10,1,10</padding>
-        </ui>
         <painter class="com.alee.managers.style.skin.web.WebLabelPainter">
             <shadeColor>230,230,230</shadeColor>
         </painter>
     </style>
 
     <!-- Default table cell renderer label -->
-    <style type="label" id="table-cell" extends="default">
+    <style type="label" id="table-cell" extends="default" padding="2,2,2,2">
         <component>
             <opaque>true</opaque>
         </component>
-        <ui>
-            <padding>2,2,2,2</padding>
-        </ui>
     </style>
 
     <!-- Boolean table cell renderer -->

@@ -26,11 +26,7 @@
     </style>
 
     <!-- Dockable frame title label -->
-    <style type="label" id="dockable-frame-title" extends="shade">
-        <ui>
-            <padding>3,3,3,10</padding>
-        </ui>
-    </style>
+    <style type="label" id="dockable-frame-title" extends="shade" padding="3,3,3,10" />
 
     <!-- Dockable frame tool buttons panel -->
     <style type="panel" id="dockable-frame-buttons" extends="default">

@@ -35,13 +35,10 @@
     </style>
 
     <!-- Week titles panel -->
-    <style type="panel" id="calendar-week-titles" extends="default">
+    <style type="panel" id="calendar-week-titles" extends="default" padding="2,1,3,1">
         <component>
             <opaque>false</opaque>
         </component>
-        <ui>
-            <padding>2,1,3,1</padding>
-        </ui>
         <painter class="com.alee.managers.style.skin.web.WebPanelPainter">
             <undecorated>false</undecorated>
             <shadeWidth>0</shadeWidth>
@@ -53,13 +50,10 @@
     </style>
 
     <!-- Month panel -->
-    <style type="panel" id="calendar-month" extends="default">
+    <style type="panel" id="calendar-month" extends="default" padding="1,1,1,1">
         <component>
             <opaque>false</opaque>
         </component>
-        <ui>
-            <padding>1,1,1,1</padding>
-        </ui>
     </style>
 
     <!-- Week title label -->

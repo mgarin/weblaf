@@ -3,10 +3,6 @@
     <!-- com.alee.extended.label.WebHotkeyLabel -->
 
     <!-- Hotkey label -->
-    <style type="label" id="hotkeylabel" extends="default">
-        <ui>
-            <padding>2,6,3,6</padding>
-        </ui>
-    </style>
+    <style type="label" id="hotkeylabel" extends="default" padding="2,6,3,6" />
 
 </skin>

@@ -3,22 +3,15 @@
     <!-- com.alee.extended.filechooser.WebFileDrop -->
 
     <!-- Container panel -->
-    <style type="panel" id="filedrop" extends="default">
+    <style type="panel" id="filedrop" extends="default" padding="2,2,2,2">
         <component>
             <background>white</background>
             <focusable>true</focusable>
         </component>
-        <ui>
-            <padding>2,2,2,2</padding>
-        </ui>
     </style>
 
     <!-- Single file panel -->
-    <style type="panel" id="filedrop-plate" extends="default">
-        <ui>
-            <padding>0,3,0,0</padding>
-        </ui>
-    </style>
+    <style type="panel" id="filedrop-plate" extends="default" padding="0,3,0,0" />
 
     <!-- Single file name label -->
     <style type="label" id="filedrop-plate-file" extends="default" />

@@ -21,13 +21,10 @@
     </style>
 
     <!-- Default tree cell renderer label -->
-    <style type="label" id="tree-cell" extends="default">
+    <style type="label" id="tree-cell" extends="default" padding="4,4,4,6">
         <component>
             <opaque>false</opaque>
         </component>
-        <ui>
-            <padding>4,4,4,6</padding>
-        </ui>
     </style>
 
 </skin>

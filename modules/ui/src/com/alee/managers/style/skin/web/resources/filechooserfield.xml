@@ -3,14 +3,11 @@
     <!-- com.alee.extended.filechooser.WebFileChooserField -->
 
     <!-- File chooser field -->
-    <style type="panel" id="filechooserfield" extends="default">
+    <style type="panel" id="filechooserfield" extends="default" padding="-1,-1,-1,-1">
         <component>
             <opaque>false</opaque>
             <background>white</background>
         </component>
-        <ui>
-            <padding>-1,-1,-1,-1</padding>
-        </ui>
         <painter class="com.alee.managers.style.skin.web.WebPanelPainter">
             <undecorated>false</undecorated>
             <round>2</round>
@@ -20,14 +17,11 @@
     </style>
 
     <!-- Selected files scroll -->
-    <style type="scrollPane" id="filechooserfield-content" extends="default">
+    <style type="scrollPane" id="filechooserfield-content" extends="default" padding="1,1,1,1">
         <component>
             <verticalScrollBarPolicy>21</verticalScrollBarPolicy>
             <horizontalScrollBarPolicy>31</horizontalScrollBarPolicy>
         </component>
-        <ui>
-            <padding>1,1,1,1</padding>
-        </ui>
         <painter class="com.alee.managers.style.skin.web.WebScrollPanePainter">
             <undecorated>true</undecorated>
         </painter>
@@ -40,13 +34,10 @@
     <style type="panel" id="filechooserfield-content" extends="transparent" />
 
     <!-- Selected file plate -->
-    <style type="panel" id="filechooserfield-file" extends="default">
+    <style type="panel" id="filechooserfield-file" extends="default" padding="0,3,0,1">
         <component>
             <focusable>true</focusable>
         </component>
-        <ui>
-            <padding>0,3,0,1</padding>
-        </ui>
         <painter class="com.alee.managers.style.skin.web.WebPanelPainter">
             <undecorated>false</undecorated>
             <round>2</round>
@@ -59,11 +50,7 @@
     </style>
 
     <!-- Selected file name label -->
-    <style type="label" id="filechooserfield-file" extends="default">
-        <ui>
-            <padding>0,0,0,2</padding>
-        </ui>
-    </style>
+    <style type="label" id="filechooserfield-file" extends="default" padding="0,0,0,2" />
 
     <!-- Selected file removal button -->
     <style type="button" id="filechooserfield-file-remove" extends="default">

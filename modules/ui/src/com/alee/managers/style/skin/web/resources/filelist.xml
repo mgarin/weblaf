@@ -6,17 +6,9 @@
     <style type="label" id="filelist-cell" extends="list-cell" />
 
     <!-- Tile cells renderer label -->
-    <style type="label" id="filelist-tile-cell" extends="filelist-cell">
-        <ui>
-            <padding>6,6,5,8</padding>
-        </ui>
-    </style>
+    <style type="label" id="filelist-tile-cell" extends="filelist-cell" padding="6,6,5,8" />
 
     <!-- Icon cells renderer label -->
-    <style type="label" id="filelist-icon-cell" extends="filelist-cell">
-        <ui>
-            <padding>5,5,8,5</padding>
-        </ui>
-    </style>
+    <style type="label" id="filelist-icon-cell" extends="filelist-cell" padding="5,5,8,5" />
 
 </skin>

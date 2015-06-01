@@ -3,7 +3,6 @@ package com.alee.managers.style.skin.web;
 import com.alee.extended.painter.AbstractPainter;
 import com.alee.global.StyleConstants;
 import com.alee.laf.WebLookAndFeel;
-import com.alee.laf.label.WebLabelStyle;
 import com.alee.laf.slider.SliderPainter;
 import com.alee.laf.slider.WebSliderStyle;
 import com.alee.laf.slider.WebSliderUI;
@@ -44,7 +43,6 @@ public class WebSliderPainter<E extends JSlider, U extends WebSliderUI> extends 
     protected int thumbHeight = WebSliderStyle.thumbHeight;
     protected int thumbRound = WebSliderStyle.thumbRound;
     protected int thumbAngleLength = WebSliderStyle.thumbAngleLength;
-    protected Insets margin = WebLabelStyle.margin;
     protected Color trackBgTop = WebSliderStyle.trackBgTop;
     protected Color trackBgBottom = WebSliderStyle.trackBgBottom;
     protected Color progressTrackBgTop = WebSliderStyle.progressTrackBgTop;
@@ -1057,7 +1055,7 @@ public class WebSliderPainter<E extends JSlider, U extends WebSliderUI> extends 
                 while ( value <= component.getMaximum () )
                 {
                     xPos = xPositionForValue ( value );
-                    paintMinorTickForHorizSlider ( g, tickBounds, xPos );
+                    paintMinorTickForHorizontalSlider ( g, tickBounds, xPos );
                     value += component.getMinorTickSpacing ();
                 }
             }
@@ -1069,7 +1067,7 @@ public class WebSliderPainter<E extends JSlider, U extends WebSliderUI> extends 
                 while ( value <= component.getMaximum () )
                 {
                     xPos = xPositionForValue ( value );
-                    paintMajorTickForHorizSlider ( g, tickBounds, xPos );
+                    paintMajorTickForHorizontalSlider ( g, tickBounds, xPos );
                     value += component.getMajorTickSpacing ();
                 }
             }
@@ -1095,7 +1093,7 @@ public class WebSliderPainter<E extends JSlider, U extends WebSliderUI> extends 
                 while ( value <= component.getMaximum () )
                 {
                     yPos = yPositionForValue ( value );
-                    paintMinorTickForVertSlider ( g, tickBounds, yPos );
+                    paintMinorTickForVerticalSlider ( g, tickBounds, yPos );
                     value += component.getMinorTickSpacing ();
                 }
 
@@ -1116,7 +1114,7 @@ public class WebSliderPainter<E extends JSlider, U extends WebSliderUI> extends 
                 while ( value <= component.getMaximum () )
                 {
                     yPos = yPositionForValue ( value );
-                    paintMajorTickForVertSlider ( g, tickBounds, yPos );
+                    paintMajorTickForVerticalSlider ( g, tickBounds, yPos );
                     value += component.getMajorTickSpacing ();
                 }
 
@@ -1129,22 +1127,22 @@ public class WebSliderPainter<E extends JSlider, U extends WebSliderUI> extends 
         }
     }
 
-    protected void paintMinorTickForHorizSlider ( final Graphics g, final Rectangle tickBounds, final int x )
+    protected void paintMinorTickForHorizontalSlider ( final Graphics g, final Rectangle tickBounds, final int x )
     {
         g.drawLine ( x, 0, x, tickBounds.height / 2 - 1 );
     }
 
-    protected void paintMajorTickForHorizSlider ( final Graphics g, final Rectangle tickBounds, final int x )
+    protected void paintMajorTickForHorizontalSlider ( final Graphics g, final Rectangle tickBounds, final int x )
     {
         g.drawLine ( x, 0, x, tickBounds.height - 2 );
     }
 
-    protected void paintMinorTickForVertSlider ( final Graphics g, final Rectangle tickBounds, final int y )
+    protected void paintMinorTickForVerticalSlider ( final Graphics g, final Rectangle tickBounds, final int y )
     {
         g.drawLine ( 0, y, tickBounds.width / 2 - 1, y );
     }
 
-    protected void paintMajorTickForVertSlider ( final Graphics g, final Rectangle tickBounds, final int y )
+    protected void paintMajorTickForVerticalSlider ( final Graphics g, final Rectangle tickBounds, final int y )
     {
         g.drawLine ( 0, y, tickBounds.width - 2, y );
     }

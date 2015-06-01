@@ -3,13 +3,10 @@
     <!-- com.alee.extended.syntax.WebSyntaxPanel -->
 
     <!-- Container panel -->
-    <style type="panel" id="syntaxpanel" extends="default">
+    <style type="panel" id="syntaxpanel" extends="default" padding="2,4,2,4">
         <component>
             <opaque>false</opaque>
         </component>
-        <ui>
-            <padding>2,4,2,4</padding>
-        </ui>
         <painter class="com.alee.managers.style.skin.web.WebSyntaxPanelPainter">
             <style>thick</style>
         </painter>

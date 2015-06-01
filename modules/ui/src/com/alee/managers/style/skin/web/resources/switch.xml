@@ -21,13 +21,10 @@
     </style>
 
     <!-- Switch state label -->
-    <style type="label" id="wswitch" extends="shade">
+    <style type="label" id="wswitch" extends="shade" padding="2,5,2,5">
         <component>
             <foreground>darkGray</foreground>
         </component>
-        <ui>
-            <padding>2,5,2,5</padding>
-        </ui>
     </style>
     <style type="label" id="wswitch-on" extends="wswitch" />
     <style type="label" id="wswitch-off" extends="wswitch" />

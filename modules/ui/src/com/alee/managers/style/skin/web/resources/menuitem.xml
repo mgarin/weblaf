@@ -3,14 +3,11 @@
     <!-- com.alee.laf.menu.WebMenuItem -->
 
     <!-- Menu item -->
-    <style type="menuItem" id="default">
+    <style type="menuItem" id="default" padding="5,8,5,11">
         <component>
             <opaque>false</opaque>
             <iconTextGap>7</iconTextGap>
         </component>
-        <ui>
-            <padding>5,8,5,11</padding>
-        </ui>
         <painter class="com.alee.managers.style.skin.web.WebMenuItemPainter">
             <acceleratorGap>15</acceleratorGap>
             <iconAlignment>0</iconAlignment>

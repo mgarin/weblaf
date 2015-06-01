@@ -14,15 +14,12 @@
     </style>
 
     <!-- Float editor slider -->
-    <style type="slider" id="ninepatcheditor-editor-float" extends="default">
+    <style type="slider" id="ninepatcheditor-editor-float" extends="default" padding="10,10,10,10">
         <component>
             <paintTicks>true</paintTicks>
             <paintLabels>false</paintLabels>
             <snapToTicks>true</snapToTicks>
         </component>
-        <painter class="com.alee.managers.style.skin.web.WebSliderPainter">
-            <padding>10,10,10,10</padding>
-        </painter>
     </style>
 
 </skin>

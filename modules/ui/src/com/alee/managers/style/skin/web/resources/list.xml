@@ -22,21 +22,10 @@
     </style>
 
     <!-- Default cell renderer label -->
-    <style type="label" id="list-cell" extends="default">
-        <component>
-            <opaque>false</opaque>
-        </component>
-        <ui>
-            <padding>2,2,2,2</padding>
-        </ui>
-    </style>
+    <style type="label" id="list-cell" extends="default" padding="2,2,2,2" />
 
     <!-- Text cell renderer label -->
-    <style type="label" id="list-text-cell" extends="list-cell">
-        <ui>
-            <padding>2,4,2,2</padding>
-        </ui>
-    </style>
+    <style type="label" id="list-text-cell" extends="list-cell" padding="2,4,2,2" />
 
     <!-- Icon cell renderer label -->
     <style type="label" id="list-icon-cell" extends="list-cell" />

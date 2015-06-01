@@ -3,14 +3,11 @@
     <!-- com.alee.extended.filechooser.WebPathField -->
 
     <!-- Main panel -->
-    <style type="panel" id="pathfield" extends="default">
+    <style type="panel" id="pathfield" extends="default" padding="-1,-1,-1,-1">
         <component>
             <background>255,255,255</background>
             <opaque>false</opaque>
         </component>
-        <ui>
-            <padding>-1,-1,-1,-1</padding>
-        </ui>
         <painter class="com.alee.managers.style.skin.web.WebPanelPainter">
             <round>2</round>
             <shadeWidth>2</shadeWidth>

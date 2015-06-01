@@ -3,13 +3,10 @@
     <!-- com.alee.laf.colorchooser.WebColorChooser -->
 
     <!-- Main content panel -->
-    <style type="panel" id="colorchooser" extends="default">
+    <style type="panel" id="colorchooser" extends="default" padding="2,5,2,5">
         <component>
             <opaque>false</opaque>
         </component>
-        <ui>
-            <padding>2,5,2,5</padding>
-        </ui>
         <painter class="com.alee.managers.style.skin.web.WebPanelPainter">
             <webColoredBackground>false</webColoredBackground>
         </painter>
@@ -19,24 +16,17 @@
     <style type="label" id="colorchooser-label" extends="shade" />
 
     <!-- Control buttons panel -->
-    <style type="panel" id="colorchooser-buttons" extends="default">
+    <style type="panel" id="colorchooser-buttons" extends="default" padding="5,0,3,0">
         <component>
             <opaque>false</opaque>
         </component>
-        <ui>
-            <padding>5,0,3,0</padding>
-        </ui>
         <painter class="com.alee.managers.style.skin.web.WebPanelPainter">
             <webColoredBackground>false</webColoredBackground>
         </painter>
     </style>
 
     <!-- Web-only color check -->
-    <style type="checkBox" id="colorchooser-webonly" extends="default">
-        <ui>
-            <padding>0,5,0,5</padding>
-        </ui>
-    </style>
+    <style type="checkBox" id="colorchooser-webonly" extends="default" padding="0,5,0,5" />
 
     <!-- Control buttons buttons -->
     <style type="button" id="colorchooser-button" extends="default" />

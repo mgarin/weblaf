@@ -3,10 +3,6 @@
     <!-- com.alee.extended.list.WebCheckBoxList -->
 
     <!-- Default cell renderer checkbox -->
-    <style type="checkBox" id="checkboxlist-cell" extends="default">
-        <ui>
-            <padding>4,4,4,6</padding>
-        </ui>
-    </style>
+    <style type="checkBox" id="checkboxlist-cell" extends="default" padding="4,4,4,6" />
 
 </skin>

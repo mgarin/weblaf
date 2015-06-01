@@ -3,26 +3,20 @@
     <!-- com.alee.laf.rootpane.WebRootPane -->
 
     <!-- Title panel -->
-    <style type="panel" id="window-title" extends="default">
+    <style type="panel" id="window-title" extends="default" padding="4,5,4,10">
         <component>
             <opaque>false</opaque>
         </component>
-        <ui>
-            <padding>4,5,4,10</padding>
-        </ui>
     </style>
 
     <!-- Title label -->
     <style type="label" id="window-title" extends="shade" />
 
     <!-- Custom window decoration control buttons -->
-    <style type="button" id="window" extends="default">
+    <style type="button" id="window" extends="default" padding="1,4,1,4">
         <component>
             <focusable>false</focusable>
         </component>
-        <ui>
-            <padding>1,4,1,4</padding>
-        </ui>
         <painter class="com.alee.managers.style.skin.web.WebButtonPainter">
             <round>6</round>
         </painter>

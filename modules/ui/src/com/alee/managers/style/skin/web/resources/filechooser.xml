@@ -36,25 +36,13 @@
     <style type="scrollBar" id="filechooser-history" extends="combobox-list" />
 
     <!-- Central panel -->
-    <style type="panel" id="filechooser-center" extends="default">
-        <ui>
-            <padding>4,4,4,4</padding>
-        </ui>
-    </style>
+    <style type="panel" id="filechooser-center" extends="default" padding="4,4,4,4" />
 
     <!-- South panel -->
-    <style type="panel" id="filechooser-center" extends="default">
-        <ui>
-            <padding>0,4,4,4</padding>
-        </ui>
-    </style>
+    <style type="panel" id="filechooser-center" extends="default" padding="0,4,4,4" />
 
     <!-- Selected files title label -->
-    <style type="label" id="filechooser-selected" extends="shade">
-        <ui>
-            <padding>0,4,0,0</padding>
-        </ui>
-    </style>
+    <style type="label" id="filechooser-selected" extends="shade" padding="0,4,0,0" />
 
     <!-- Buttons -->
     <style type="button" id="filechooser" extends="default" />
@@ -62,13 +50,10 @@
     <style type="button" id="filechooser-cancel" extends="default" />
 
     <!-- Files removal confirmation list panel -->
-    <style type="panel" id="filechooser-removal-list" extends="default">
+    <style type="panel" id="filechooser-removal-list" extends="default" padding="4,4,4,4">
         <component>
             <background>white</background>
         </component>
-        <ui>
-            <padding>4,4,4,4</padding>
-        </ui>
     </style>
 
 </skin>
