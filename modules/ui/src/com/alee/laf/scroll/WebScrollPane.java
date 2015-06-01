@@ -186,7 +186,7 @@ public class WebScrollPane extends JScrollPane implements Styleable, ShapeProvid
     @Override
     public WebScrollBar createHorizontalScrollBar ()
     {
-        return new WebScrollBar ( WebScrollBar.HORIZONTAL );
+        return new WebScrollPaneBar ( this, WebScrollBar.HORIZONTAL );
     }
 
     /**
@@ -195,7 +195,7 @@ public class WebScrollPane extends JScrollPane implements Styleable, ShapeProvid
     @Override
     public WebScrollBar createVerticalScrollBar ()
     {
-        return new WebScrollBar ( WebScrollBar.VERTICAL );
+        return new WebScrollPaneBar ( this, WebScrollBar.VERTICAL );
     }
 
     /**

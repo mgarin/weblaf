@@ -96,10 +96,6 @@ public class WebScrollBarPainter<E extends JScrollBar, U extends WebScrollBarUI>
         // This styling is animated
         animated = true;
 
-        // Faster wheel scrolling by default
-        // Scrolling becomes pretty annoying if this option is not set
-        component.putClientProperty ( "JScrollBar.fastWheelScrolling", Boolean.TRUE );
-
         // Mouse listener
         mouseAdapter = new MouseAdapter ()
         {

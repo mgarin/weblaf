@@ -22,6 +22,7 @@ import com.alee.laf.Styles;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.panel.WebPanelUI;
 import com.alee.laf.scroll.WebScrollBar;
+import com.alee.laf.scroll.WebScrollPaneBar;
 import com.alee.laf.scroll.WebScrollPaneUI;
 import com.alee.managers.language.LanguageContainerMethods;
 import com.alee.managers.language.LanguageManager;
@@ -160,7 +161,7 @@ public class WebSyntaxScrollPane extends RTextScrollPane
     @Override
     public WebScrollBar createHorizontalScrollBar ()
     {
-        return new WebScrollBar ( WebScrollBar.HORIZONTAL );
+        return new WebScrollPaneBar ( this, WebScrollBar.HORIZONTAL );
     }
 
     /**
@@ -169,7 +170,7 @@ public class WebSyntaxScrollPane extends RTextScrollPane
     @Override
     public WebScrollBar createVerticalScrollBar ()
     {
-        return new WebScrollBar ( WebScrollBar.VERTICAL );
+        return new WebScrollPaneBar ( this, WebScrollBar.VERTICAL );
     }
 
     /**
