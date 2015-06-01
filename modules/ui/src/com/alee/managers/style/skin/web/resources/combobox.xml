@@ -21,6 +21,13 @@
         </painter>
     </style>
 
+    <!-- Combobox undecorated -->
+    <style type="comboBox" id="combobox-undecorated">
+        <painter class="com.alee.managers.style.skin.web.WebComboBoxPainter">
+            <undecorated>true</undecorated>
+        </painter>
+    </style>
+
     <!-- Selected value label -->
     <style type="label" id="combobox-selected" extends="default">
         <ui>

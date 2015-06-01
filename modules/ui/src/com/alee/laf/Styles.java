@@ -80,6 +80,7 @@ public final class Styles
     /**
      * {@link com.alee.laf.combobox.WebComboBox} style IDs.
      */
+    public static final String comboboxUndecorated = "combobox-undecorated";
     public static final String comboboxSelectedLabel = "combobox-selected";
     public static final String comboboxArrowButton = "combobox-arrow";
     public static final String comboboxListScrollPane = "combobox-list";

@@ -771,6 +771,5 @@ public class WebComboBoxUI extends BasicComboBoxUI implements Styleable, ShapePr
                 editor.setBounds ( rectangleForCurrentValue () );
             }
         }
-
     }
 }

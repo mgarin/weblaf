@@ -172,16 +172,6 @@ public class WebComboBoxPainter<E extends JComboBox, U extends WebComboBoxUI> ex
         this.iconSpacing = iconSpacing;
     }
 
-    public boolean isWebColoredBackground ()
-    {
-        return webColoredBackground;
-    }
-
-    public void setWebColoredBackground ( final boolean webColored )
-    {
-        this.webColoredBackground = webColored;
-    }
-
     public Color getExpandedBgColor ()
     {
         return expandedBgColor;
