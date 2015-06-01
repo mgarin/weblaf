@@ -354,7 +354,7 @@ public class WebFormattedTextFieldUI extends BasicTextFieldUI implements Styleab
 
     public void setInputPrompt ( final String inputPrompt )
     {
-        if ( !this.inputPrompt.equals ( inputPrompt ) )
+        if ( inputPrompt != null && !inputPrompt.equals ( this.inputPrompt ) )
         {
             this.inputPrompt = inputPrompt;
             textField.repaint ();

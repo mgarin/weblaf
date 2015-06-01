@@ -343,7 +343,7 @@ public class WebTextFieldUI extends BasicTextFieldUI implements Styleable, Shape
 
     public void setInputPrompt ( final String inputPrompt )
     {
-        if ( !this.inputPrompt.equals ( inputPrompt ) )
+        if ( inputPrompt != null && !inputPrompt.equals ( this.inputPrompt ) )
         {
             this.inputPrompt = inputPrompt;
             textField.repaint ();
