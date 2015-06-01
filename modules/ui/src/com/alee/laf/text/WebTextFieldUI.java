@@ -39,7 +39,8 @@ import java.awt.event.ComponentEvent;
 import java.beans.PropertyChangeEvent;
 
 /**
- * User: mgarin Date: 16.05.11 Time: 16:39
+ * @author Mikle Garin
+ * @author Alexandr Zernov
  */
 
 public class WebTextFieldUI extends BasicTextFieldUI implements Styleable, ShapeProvider, MarginSupport, PaddingSupport
@@ -49,6 +50,9 @@ public class WebTextFieldUI extends BasicTextFieldUI implements Styleable, Shape
      */
     protected TextFieldPainter painter;
 
+    /**
+     * Input prompt text.
+     */
     protected String inputPrompt = WebTextFieldStyle.inputPrompt;
 
     /**
@@ -73,7 +77,7 @@ public class WebTextFieldUI extends BasicTextFieldUI implements Styleable, Shape
      * @param c component that will use UI instance
      * @return instance of the WebTextFieldUI
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebTextFieldUI ();
